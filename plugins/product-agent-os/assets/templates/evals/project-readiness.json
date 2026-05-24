@@ -1,0 +1,309 @@
+{
+  "name": "project-readiness",
+  "version": "1.0.0",
+  "purpose": "Evaluate whether a Product-Agent OS workspace has enough control-plane structure to begin scoped work.",
+  "cases": [
+    {
+      "id": "control-plane-present",
+      "input": "Inspect Product-Agent OS control-plane files.",
+      "expected": {
+        "required_files": ["AGENTS.md", "REQUIREMENTS.md", "PLAN.md", "TEST.md", "EVALS.md", "RUNLOG.md"],
+        "fields": ["project", "profile", "detected_stack", "risks", "verification"],
+        "methodology_gates": [
+          "product_hypothesis",
+          "architecture_boundary",
+          "acceptance_scenarios_when_behavior_changes",
+          "domain_model_when_complex_domain",
+          "bounded_context_architecture_boundary_trace",
+          "ubiquitous_language_traceability",
+          "fsd_structure_when_ui_architecture_applies",
+          "metric_hardening_when_product_behavior_changes",
+          "evidence_before_completion",
+          "test_eval_first_evidence",
+          "docs_as_code_impact",
+          "docs_tooling_selector",
+          "standards_trigger_policy",
+          "release_measurement"
+        ],
+        "methodology_signals": [
+          "architecture_docs",
+          "adr",
+          "openapi_or_asyncapi_when_api_changes",
+          "storybook_when_ui_components_change",
+          "database_docs_when_schema_changes",
+          "domain_model",
+          "fsd_structure",
+          "metric_spec",
+          "completion_evidence",
+          "docs_tooling_decision",
+          "governance_proposal",
+          "metrics_when_product_behavior_changes"
+        ],
+        "readiness_statuses": [
+          "not_applicable",
+          "applicable_missing",
+          "present_unverified",
+          "present_verified",
+          "proposal_staged",
+          "explicit_gap_accepted",
+          "approval_required"
+        ],
+        "readiness_transition_rules": [
+          "Detection alone may set present_unverified, but never present_verified.",
+          "Applicable gates without required evidence are applicable_missing until a proposal, verified artifact, or explicit_gap_accepted is recorded.",
+          "Use not_applicable only with an applicability reason.",
+          "Use explicit_gap_accepted only with owner, reason, residual risk, and follow-up condition.",
+          "Use approval_required for external writes, hosted docs, production DB access, security-sensitive changes, release publishing, PR creation, hook activation, or other irreversible operations."
+        ],
+        "docs_as_code_impact_statuses": [
+          "not_applicable",
+          "present_unverified",
+          "present_verified",
+          "proposal_staged",
+          "explicit_gap_accepted",
+          "approval_required"
+        ],
+        "docs_tooling_selector_contract": [
+          "docs-tooling-decision.md",
+          "selected tools",
+          "rejected tools",
+          "evidence owner",
+          "maintenance owner",
+          "no forced install",
+          "no CI activation without approval",
+          "hosted docs approval",
+          "DB introspection approval",
+          "docs-light",
+          "internal-only"
+        ],
+        "conditional_readiness_gates": {
+          "acceptance_scenarios_when_behavior_changes": {
+            "applies_when": "User-facing behavior, business rule, workflow, UI state, API semantics, or agent behavior changes.",
+            "pass_condition": "Set present_verified when acceptance scenarios map requirement -> scenario -> check -> evidence owner; use present_unverified for drafted scenarios and applicable_missing when no scenario/check exists.",
+            "accepted_gap": "Use explicit_gap_accepted only when RUNLOG names owner, reason, residual risk, and the fallback manual/eval check.",
+            "required_evidence": ["acceptance-scenarios.md", "TEST.md mapping", "EVALS.md mapping", "RUNLOG gap when needed"],
+            "owner": "requirements-author",
+            "residual_risk": "Behavior can be implemented against vague requirements or untested edge cases."
+          },
+          "domain_model_when_complex_domain": {
+            "applies_when": "Complex backend, workflow, enterprise, data-heavy, multi-service, or multi-context domain.",
+            "pass_condition": "Set present_verified when domain model or proposal covers bounded context, ubiquitous language, aggregate/invariant, and owner review; use applicable_missing when complexity applies and model/gap is absent.",
+            "accepted_gap": "Use explicit_gap_accepted when complexity is judged low for the slice or owner accepts delayed modeling with residual risk.",
+            "required_evidence": ["domain-modeling.md", "architecture-overview.md", "domain expert or owner review"],
+            "owner": "implementation-planner",
+            "residual_risk": "Code may encode hidden domain rules and make later refactors unsafe."
+          },
+          "fsd_boundary_when_ui_grows": {
+            "applies_when": "Growing web UI or reusable component architecture with feature/slice boundaries or owner decision for Feature-Sliced Design.",
+            "pass_condition": "Set present_verified when feature/layer/slice/segment/public API/import rule or stack-appropriate alternative is named; use not_applicable for backend, native, simple CRUD, or simple MVP work.",
+            "accepted_gap": "Use explicit_gap_accepted when UI owner accepts a temporary non-FSD structure with reason and cleanup trigger.",
+            "required_evidence": ["component-card.md", "PLAN.md structure notes", "UI owner review when available"],
+            "owner": "implementation-planner",
+            "residual_risk": "UI files can become tangled and hard to split across features."
+          },
+          "ai_eval_spec_when_ai_behavior_changes": {
+            "applies_when": "Prompt, model, RAG, tool, agent route, retrieval, ranking, or judge behavior changes.",
+            "pass_condition": "Set present_verified when baseline, dataset, rubric, threshold, rerun command, latency/cost policy, and failure examples are recorded; use present_unverified until eval rerun evidence exists.",
+            "accepted_gap": "Use explicit_gap_accepted only when owner accepts manual_eval_required for one iteration with threshold follow-up.",
+            "required_evidence": ["ai-eval-spec.md", "baseline result", "rerun command", "no-secrets dataset policy"],
+            "owner": "test-eval-designer",
+            "residual_risk": "AI quality can regress while deterministic tests still pass."
+          },
+          "docs_tooling_decision": {
+            "applies_when": "New docs system, public docs, generated docs, API/UI/DB/code reference changes, or docs-as-code impact.",
+            "pass_condition": "Set present_verified when docs-tooling-decision.md records selected tools, rejected tools, owners, commands, approval needs, and docs_as_code_impact status; use not_applicable for docs-light/internal-only work with reason.",
+            "accepted_gap": "Use explicit_gap_accepted only when docs owner accepts missing tooling with residual risk and follow-up.",
+            "required_evidence": ["docs-tooling-decision.md", "documentation-system.md", "docs command evidence when available"],
+            "owner": "docs-maintainer",
+            "residual_risk": "Docs tooling can be over-forced or skipped without a clear maintenance owner."
+          },
+          "contract_docs_when_api_or_event_changes": {
+            "applies_when": "HTTP API, event, webhook, queue message, generated client, or integration contract changes.",
+            "pass_condition": "Set present_verified when OpenAPI, AsyncAPI, contract tests, generated client impact, or proposal is updated; use applicable_missing when contract change has no documented source.",
+            "accepted_gap": "Use explicit_gap_accepted for internal-only prototype contracts with accepted consumer risk.",
+            "required_evidence": ["api-contract-review.md", "OpenAPI or AsyncAPI source", "contract test or consumer review"],
+            "owner": "implementation-planner",
+            "residual_risk": "Consumers can break without a visible contract change record."
+          },
+          "db_docs_when_schema_changes": {
+            "applies_when": "Schema, migration, backfill, retention, persistent data model, PII, or critical query changes.",
+            "pass_condition": "Set present_verified when database dictionary, DBML, schema docs, migration plan, validation, rollback, and owner review exist; use approval_required before production DB introspection.",
+            "accepted_gap": "Use explicit_gap_accepted when no persistent schema is touched or owner accepts delayed DB docs with risk.",
+            "required_evidence": ["database-dictionary.md", "migration-plan.md", "dry-run or validation evidence", "rollback note"],
+            "owner": "implementation-planner",
+            "residual_risk": "Data migration or retention changes can be unsafe without schema evidence."
+          },
+          "release_version_impact_when_public_contract_changes": {
+            "applies_when": "Plugin, package, API, SDK, public app, or public contract changes.",
+            "pass_condition": "Set present_verified when SemVer/changelog/release impact and consumer notes are recorded; use not_applicable when no public contract changes.",
+            "accepted_gap": "Use explicit_gap_accepted only when owner accepts no version impact for an internal-only change.",
+            "required_evidence": ["release-readiness.md", "changelog note", "SemVer impact", "consumer impact"],
+            "owner": "pr-release-operator",
+            "residual_risk": "Public users can receive breaking changes without warning."
+          },
+          "reproduction_evidence_when_bug_rescue": {
+            "applies_when": "Bug rescue mode, user reports broken behavior, repeated failed fixes, or unclear failure.",
+            "pass_condition": "Set present_verified when failing command, log excerpt, regression test, screenshot, manual repro, or explicit no-repro stop condition exists; use applicable_missing before broad code edits.",
+            "accepted_gap": "Use explicit_gap_accepted only for no-repro diagnosis packet with owner and residual risk.",
+            "required_evidence": ["bug-rescue-report.md", "failing command or log", "regression test or manual repro"],
+            "owner": "workspace-discovery-auditor",
+            "residual_risk": "Fixes may target symptoms rather than the actual failure."
+          },
+          "approval_before_greenfield_scaffold": {
+            "applies_when": "Empty folder, idea-stage project, new product scaffold, or first vertical slice proposal.",
+            "pass_condition": "Set present_verified when selected direction, non-goals, first slice, and approval are recorded before applying scaffold/write proposal; use approval_required before external writes.",
+            "accepted_gap": "Use explicit_gap_accepted when user explicitly requests research/spec only and no scaffold is applied.",
+            "required_evidence": ["greenfield-idea-brief.md", "approval record", "first slice proposal"],
+            "owner": "requirements-author",
+            "residual_risk": "Scaffold can lock in unapproved scope or architecture."
+          },
+          "integration_catalog_when_external_systems_exist": {
+            "applies_when": "Multiple integrations, webhooks, queues, external APIs, generated clients, auth providers, or third-party data flows exist.",
+            "pass_condition": "Set present_verified when integration catalog names systems, owners, auth, data exchanged, retry/idempotency, observability, rollback, and secrets policy; use not_applicable for simple local-only work.",
+            "accepted_gap": "Use explicit_gap_accepted when no integration is touched or owner accepts delayed catalog with risk.",
+            "required_evidence": ["integration-catalog.md", "secrets policy", "owner review"],
+            "owner": "architect",
+            "residual_risk": "External dependency behavior and secrets handling can stay implicit."
+          },
+          "ownership_split_when_parallel_agents_used": {
+            "applies_when": "Complex system acceleration, parallel build request, subagent team, or worktree-based execution.",
+            "pass_condition": "Set present_verified when owned files/subsystems and forbidden files are non-overlapping, or work stays sequential; use not_applicable when parallelism is not used.",
+            "accepted_gap": "Use explicit_gap_accepted only when sequential fallback is chosen with reason.",
+            "required_evidence": ["worktree ownership workflow", "agent task packet", "owned files", "forbidden files"],
+            "owner": "agent-team-designer",
+            "residual_risk": "Parallel workers can overwrite each other or duplicate decisions."
+          },
+          "pr_risk_review_when_review_mode": {
+            "applies_when": "PR review mode, diff-focused request, requested changes, or pre-merge quality gate.",
+            "pass_condition": "Set present_verified when changed areas, spec compliance, quality/risk verdict, missing checks, docs/release/security impact, and residual risk are named; use applicable_missing when diff context is absent.",
+            "accepted_gap": "Use explicit_gap_accepted when no diff/change context exists and review stops at intake.",
+            "required_evidence": ["PR risk review artifact", "diff summary", "commands or inspection evidence"],
+            "owner": "reviewer",
+            "residual_risk": "Review may miss behavioral or release impact outside the touched files."
+          },
+          "onboarding_map_when_legacy_repo": {
+            "applies_when": "Legacy repo onboarding, undocumented existing project, missing run/docs map, or first maintenance pass.",
+            "pass_condition": "Set present_verified when entry points, run commands, docs debt, architecture clues, and verification status are recorded; use present_unverified until commands run.",
+            "accepted_gap": "Use explicit_gap_accepted when user requests only a narrow code change and accepts onboarding risk.",
+            "required_evidence": ["onboarding-map.md", "entry points", "run commands", "docs debt", "verification status"],
+            "owner": "workspace-discovery-auditor",
+            "residual_risk": "Work can proceed with false assumptions about how the system runs."
+          },
+          "migration_plan_when_contract_or_data_changes": {
+            "applies_when": "API contract, schema, backfill, retention, compatibility, public consumer, or breaking data change.",
+            "pass_condition": "Set present_verified when migration plan includes current/target state, compatibility, rollout, validation, rollback, owner review, and release impact; use applicable_missing before implementation when absent.",
+            "accepted_gap": "Use explicit_gap_accepted for prototype work with no persisted data or public consumers.",
+            "required_evidence": ["migration-plan.md", "validation plan", "rollback plan", "owner review"],
+            "owner": "implementation-planner",
+            "residual_risk": "Contract/data changes can be irreversible or break consumers."
+          },
+          "security_review_when_sensitive_surface": {
+            "applies_when": "Auth, authorization, permissions, payments, billing, secrets, PII, sensitive data, abuse controls, or external writes.",
+            "pass_condition": "Set present_verified when security risk review covers threat surface, authn/authz, payment, secrets, sensitive data, abuse controls, tests, rollback, owner review, and approvals; use approval_required before sensitive external action.",
+            "accepted_gap": "Use explicit_gap_accepted only when no sensitive surface is touched and reviewer accepts residual risk.",
+            "required_evidence": ["security review artifact", "test or review evidence", "approval needs", "rollback note"],
+            "owner": "reviewer",
+            "residual_risk": "Security-sensitive changes can ship without threat and permission review."
+          },
+          "platform_runtime_check_when_native_or_desktop": {
+            "applies_when": "Mobile/native, desktop/local-first, filesystem, local DB, background job, permissions, offline state, or platform runtime change.",
+            "pass_condition": "Set present_verified when platform build/run/log/screenshot/simulator/manual check is named; use present_unverified for detected platform clues until runtime evidence exists.",
+            "accepted_gap": "Use explicit_gap_accepted for docs-only or non-runtime change with owner-approved manual OS gap.",
+            "required_evidence": ["native-mobile-feature.md or desktop-local-first.md", "build command", "logs or screenshot", "manual gap if needed"],
+            "owner": "test-eval-designer",
+            "residual_risk": "Code inspection can miss platform permission, packaging, or runtime failures."
+          },
+          "ci_failure_evidence_when_ci_stabilization": {
+            "applies_when": "CI stabilization mode, flaky tests, failing hosted runner, or build pipeline diagnosis.",
+            "pass_condition": "Set present_verified when failing job, command, logs, environment, deterministic/flaky classification, local reproduction or rerun evidence exist; use approval_required before remote CI mutation.",
+            "accepted_gap": "Use explicit_gap_accepted when CI context is unavailable and work stops at local reproduction plan.",
+            "required_evidence": ["ci-stabilization-report.md", "failing job", "command/log evidence", "classification"],
+            "owner": "test-eval-designer",
+            "residual_risk": "CI fixes can mask flakes or mutate remote settings without diagnosis."
+          },
+          "release_readiness_when_distribution_changes": {
+            "applies_when": "Package, SDK, plugin, public app, open-source release, marketplace submission, or distribution change.",
+            "pass_condition": "Set present_verified when release readiness covers scope, package metadata, version, SemVer, changelog, build/test/docs/security/license/artifacts, publish approval, rollback, and owner review; use approval_required before publishing/tagging/uploading.",
+            "accepted_gap": "Use explicit_gap_accepted for internal-only unreleased work with residual risk.",
+            "required_evidence": ["release-readiness.md", "build evidence", "test evidence", "docs evidence", "publish approval boundary"],
+            "owner": "pr-release-operator",
+            "residual_risk": "Release artifacts can be incomplete or externally published without approval."
+          },
+          "plugin_success_metric_for_major_workflow": {
+            "applies_when": "New scenario workflow, new route, major Product-Agent OS behavior, or workflow quality change.",
+            "pass_condition": "Set present_verified when metric defines time-to-first-useful-artifact, false positive gate rate, scenario success rate, owner, and review cadence; use present_unverified until measurement baseline exists.",
+            "accepted_gap": "Use explicit_gap_accepted only when workflow is experimental and marked for follow-up measurement.",
+            "required_evidence": ["metric-spec.md", "baseline or planned baseline", "owner signoff"],
+            "owner": "requirements-author",
+            "residual_risk": "Workflow changes can feel comprehensive while reducing actual user throughput."
+          },
+          "root_cause_before_bug_fix": {
+            "applies_when": "Bug rescue mode, repeated failed fixes, ambiguous failure, or user reports unclear behavior.",
+            "pass_condition": "Set present_verified when reproduction, trace, hypotheses, eliminated causes, and chosen fix path exist before broad edits; use applicable_missing when patching starts without diagnosis.",
+            "accepted_gap": "Use explicit_gap_accepted for one-line typo with obvious failing test and owner-accepted lightweight path.",
+            "required_evidence": ["bug-rescue-report.md", "hypotheses", "eliminated causes", "trace evidence"],
+            "owner": "builder",
+            "residual_risk": "Repeated fixes can accumulate without addressing the cause."
+          },
+          "no_placeholder_plan_when_plan_ready": {
+            "applies_when": "Implementation plan is produced for non-trivial product, code, docs, migration, eval, or release work.",
+            "pass_condition": "Set present_verified when exact files, concrete steps, commands, expected outputs, rollback, evidence owner, and placeholder scan are present; use applicable_missing for vague validation or repeated-by-reference steps.",
+            "accepted_gap": "Use explicit_gap_accepted for mechanical docs/config edits with reduced plan and reason.",
+            "required_evidence": ["PLAN.md", "plan-quality-check.md", "exact commands", "expected outputs"],
+            "owner": "implementation-planner",
+            "residual_risk": "Plans can look complete while leaving key work unspecified."
+          },
+          "two_stage_review_when_risky_or_parallel": {
+            "applies_when": "Parallel work, public contract, migration, security-sensitive, data, release-bound, or risky slice.",
+            "pass_condition": "Set present_verified when review includes spec-compliance verdict first and quality/risk verdict second; use applicable_missing when a generic review replaces required staged review.",
+            "accepted_gap": "Use explicit_gap_accepted for narrow low-risk slice with single-review reason.",
+            "required_evidence": ["review-slice.md", "PR risk review artifact", "spec compliance verdict", "quality/risk verdict"],
+            "owner": "reviewer",
+            "residual_risk": "Generic review can miss requirement drift before judging implementation quality."
+          },
+          "fresh_context_handoff_when_subagents_used": {
+            "applies_when": "Any subagent, parallel worker, worktree owner, or delegated role receives work.",
+            "pass_condition": "Set present_verified when task packet includes complete context, source constraints, allowed sources, inputs used, owned files, forbidden files, expected evidence, output schema, stop conditions, and sequential fallback; use not_applicable for inline sequential work.",
+            "accepted_gap": "Use explicit_gap_accepted only when no subagent is used and sequential fallback is explicit.",
+            "required_evidence": ["agent task packet", "handoff-contract.md", "worktree-ownership.md"],
+            "owner": "agent-team-designer",
+            "residual_risk": "A worker can act on stale or incomplete context."
+          },
+          "behavioral_eval_when_new_route_added": {
+            "applies_when": "New usage_mode, workflow, skill route, first response behavior, or shortcut-resistance behavior is added.",
+            "pass_condition": "Set present_verified when prompt/session fixture proves expected route, minimum artifacts, forbidden actions, and residual risk; use present_unverified until eval is run.",
+            "accepted_gap": "Use explicit_gap_accepted only for one experimental iteration marked manual_eval_required.",
+            "required_evidence": ["behavioral-eval-case.md", "behavioral-workflows.json", "fixture eval result"],
+            "owner": "test-eval-designer",
+            "residual_risk": "Structural tests can pass while the agent chooses the wrong route."
+          },
+          "codex_only_compatibility_when_plugin_packaging_changes": {
+            "applies_when": "Plugin manifest, skills, MCP config, hook templates, install docs, README, or packaging behavior changes.",
+            "pass_condition": "Set present_verified when compatibility report covers Codex App, CLI, IDE extension, .codex-plugin, staged hooks, and non-Codex adapters remain out of scope; use present_unverified until compatibility command runs.",
+            "accepted_gap": "Use explicit_gap_accepted only when official Codex platform change requires follow-up research and owner accepts temporary gap.",
+            "required_evidence": ["codex-compatibility-report.md", "validate_codex_compatibility.py result", "README/install docs"],
+            "owner": "release-operator",
+            "residual_risk": "Packaging can drift toward unsupported non-Codex surfaces or break Codex installation."
+          },
+          "finish_options_when_release_ready": {
+            "applies_when": "PR packet, release packet, merge/apply path, package distribution, or branch finish menu is produced.",
+            "pass_condition": "Set present_verified when user-facing options show evidence state for keep branch, create PR packet, approved apply/merge path, rollback, and cleanup; use approval_required for PR creation, push, publish, tag, release, or external write.",
+            "accepted_gap": "Use explicit_gap_accepted only when release is deferred and finish menu records residual risk.",
+            "required_evidence": ["release-packet.md", "release-readiness.md", "rollback note", "approval boundary"],
+            "owner": "pr-release-operator",
+            "residual_risk": "Finish actions can imply external mutation without explicit approval."
+          },
+          "standards_trigger_policy_when_architecture_api_release_or_governance_changes": {
+            "applies_when": "Architecture boundary, API contract, storage, auth/security, irreversible migration, automation activation, OpenAPI, AsyncAPI, SemVer, Keep a Changelog, CODEOWNERS, GitHub Actions, or governance changes are in scope.",
+            "pass_condition": "Set present_verified when ADR trigger policy, C4/arc42 applicability, OpenAPI source of truth, AsyncAPI event contract, SemVer impact, Keep a Changelog categories, CODEOWNERS status, GitHub Actions least privilege, governance-proposal.md, and no forced external activation evidence are recorded; use not_applicable with reason for lightweight slices.",
+            "accepted_gap": "Use explicit_gap_accepted only when owner accepts a missing standards artifact with reason, residual risk, and follow-up; use approval_required before CODEOWNERS, GitHub Actions, repository settings, branch protection, required checks, release publishing, or external activation.",
+            "required_evidence": ["adr.md", "architecture-overview.md", "api-contract-review.md", "release-packet.md", "governance-proposal.md", "approval boundary"],
+            "owner": "implementation-planner",
+            "residual_risk": "Standards can be over-forced on small changes or skipped on public, irreversible, or governance-sensitive changes."
+          }
+        },
+        "result": "Required artifacts exist and open risks are named."
+      }
+    }
+  ]
+}

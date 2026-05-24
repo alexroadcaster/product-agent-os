@@ -1,0 +1,6 @@
+{
+  "name": "synthetic-simple-crud-no-ddd",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Synthetic simple CRUD fixture proving src/domain folders do not force DDD."
+}

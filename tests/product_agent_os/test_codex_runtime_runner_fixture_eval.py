@@ -1,0 +1,62 @@
+import importlib.util
+import unittest
+from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parents[2]
+RUNNER_PATH = ROOT / "plugins" / "product-agent-os" / "scripts" / "run_fixture_eval.py"
+FIXTURES = ROOT / "plugins" / "product-agent-os" / "assets" / "fixtures"
+
+
+def load_runner():
+    spec = importlib.util.spec_from_file_location("run_fixture_eval", RUNNER_PATH)
+    module = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    spec.loader.exec_module(module)
+    return module
+
+
+class CodexRuntimeRunnerFixtureEvalTest(unittest.TestCase):
+    def test_ready_fixture_reports_route_ready(self):
+        runner = load_runner()
+
+        result = runner.evaluate_fixture(FIXTURES / "codex-runner-ready")
+
+        self.assertEqual(result["codex_runtime_runner_status"], "route_ready")
+        self.assertTrue(result["codex_runtime_runner_checks"]["contract_mode_offline"])
+        self.assertTrue(result["codex_runtime_runner_checks"]["route_matches_lifecycle_state"])
+        self.assertTrue(result["ok"])
+
+    def test_missing_context_fixture_reports_needs_context(self):
+        runner = load_runner()
+
+        result = runner.evaluate_fixture(FIXTURES / "codex-runner-missing-context")
+
+        self.assertEqual(result["codex_runtime_runner_status"], "needs_context")
+        self.assertTrue(result["codex_runtime_runner_checks"]["missing_context_detected"])
+
+    def test_approval_fixture_reports_needs_approval(self):
+        runner = load_runner()
+
+        result = runner.evaluate_fixture(FIXTURES / "codex-runner-approval-required")
+
+        self.assertEqual(result["codex_runtime_runner_status"], "needs_approval")
+        self.assertTrue(result["codex_runtime_runner_checks"]["approval_required_for_writes"])
+
+    def test_guard_fixtures_are_checked(self):
+        runner = load_runner()
+        results = {item["fixture"]: item for item in runner.evaluate_all()}
+
+        self.assertTrue(
+            results["codex-runner-handoff-incomplete"]["codex_runtime_runner_checks"]["handoff_incomplete_blocked"]
+        )
+        self.assertTrue(
+            results["codex-runner-automation-blocked"]["codex_runtime_runner_checks"]["active_automation_blocked"]
+        )
+        self.assertTrue(
+            results["codex-runner-secret-redaction"]["codex_runtime_runner_checks"]["secret_redaction_enforced"]
+        )
+
+
+if __name__ == "__main__":
+    unittest.main()

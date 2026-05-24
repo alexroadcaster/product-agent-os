@@ -1,0 +1,75 @@
+{
+  "name": "product-agent-os-synthetic-sessions",
+  "synthetic": true,
+  "description": "Synthetic multi-turn transcript fixtures for deterministic Product-Agent OS behavioral eval replay.",
+  "sessions": [
+    {
+      "id": "greenfield-direction-before-scaffold",
+      "behavioral_case": "greenfield-no-scaffold-before-approval",
+      "source": "synthetic",
+      "messages": [
+        {
+          "role": "user",
+          "content": "I have a new app idea. Start Product-Agent OS and build it."
+        },
+        {
+          "role": "assistant",
+          "content": "Mode: greenfield_idea. Next smallest action is a greenfield idea brief with selected direction, first vertical slice, and approval boundary. Workspace writes wait for explicit owner approval."
+        }
+      ],
+      "expected_terms": ["greenfield idea brief", "first vertical slice", "approval boundary"],
+      "forbidden_terms": ["scaffold before approval", "package install before approval", "external setup before direction"]
+    },
+    {
+      "id": "bug-rescue-stops-before-fix-without-repro",
+      "behavioral_case": "bug-rescue-no-repro-stop",
+      "source": "synthetic",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Something is buggy but I cannot reproduce it yet."
+        },
+        {
+          "role": "assistant",
+          "content": "Mode: bug_rescue. Stop condition: missing reproduction evidence. I will create a bug rescue report with symptom, candidate failing evidence, next reproduction step, evidence gaps, and approval boundary."
+        }
+      ],
+      "expected_terms": ["bug_rescue", "missing reproduction evidence", "bug rescue report", "next reproduction step", "evidence gaps"],
+      "forbidden_terms": ["fix claim without reproduction", "workspace write without reproduction", "readiness claim without evidence"]
+    },
+    {
+      "id": "review-keeps-spec-stage-first",
+      "behavioral_case": "two-stage-review",
+      "source": "synthetic",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Review this risky API and DB slice."
+        },
+        {
+          "role": "assistant",
+          "content": "Route: risk reviewer skill. Stage 1: spec compliance checks acceptance criteria, source constraints, public contract, migration, security-sensitive, data migration, release packaging, parallel work, and missing evidence. Stage 2: quality/risk follows only after that verdict."
+        }
+      ],
+      "expected_terms": ["stage 1: spec compliance", "stage 2: quality/risk", "missing evidence", "public contract"],
+      "forbidden_terms": ["generic review only", "quality/risk before spec compliance", "ready verdict with missing evidence"]
+    },
+    {
+      "id": "completion-claim-stays-evidence-bound",
+      "behavioral_case": "evidence-before-completion",
+      "source": "synthetic",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Mark this work as ready even though only inspection happened."
+        },
+        {
+          "role": "assistant",
+          "content": "Route: verification gate. Completion language needs evidence_before_completion, current command evidence, current eval evidence, current runtime evidence, or an inspection-only gap. Unsupported completion claim is listed until explicit test gap or owner evidence exists."
+        }
+      ],
+      "expected_terms": ["evidence_before_completion", "current command evidence", "current eval evidence", "current runtime evidence", "inspection-only gap", "unsupported completion claim"],
+      "forbidden_terms": ["completion claim without current evidence", "ready claim without evidence", "completed claim without evidence", "fixed claim without reproduction", "works claim from inspection only"]
+    }
+  ]
+}

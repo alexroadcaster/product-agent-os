@@ -1,0 +1,5 @@
+plugins {
+  id "com.android.application"
+}
+
+// Synthetic Android marker; no real signing or external service config.

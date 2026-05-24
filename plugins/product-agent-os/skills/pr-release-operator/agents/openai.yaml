@@ -1,0 +1,6 @@
+interface:
+  display_name: "PR Release Operator"
+  short_description: "Stages PR text, release notes, rollback notes, approvals, and residual risks."
+  default_prompt: "Use $pr-release-operator to prepare a PR or release packet from verified work."
+policy:
+  allow_implicit_invocation: false

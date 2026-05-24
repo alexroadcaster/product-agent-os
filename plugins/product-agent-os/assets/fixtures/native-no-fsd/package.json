@@ -1,0 +1,9 @@
+{
+  "name": "synthetic-native-no-fsd",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "react-native": "latest"
+  },
+  "description": "Synthetic native fixture proving mobile folders do not force FSD."
+}

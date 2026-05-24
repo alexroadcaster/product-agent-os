@@ -1,0 +1,6 @@
+interface:
+  display_name: "Learning Loop Maintainer"
+  short_description: "Stages lessons, failures, durable-rule candidates, skill candidates, and runlog compaction."
+  default_prompt: "Use $learning-loop-maintainer to capture lessons from this Product-Agent OS run."
+policy:
+  allow_implicit_invocation: false

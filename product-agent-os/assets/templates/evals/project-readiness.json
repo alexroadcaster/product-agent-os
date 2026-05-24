@@ -1,0 +1,16 @@
+{
+  "name": "project-readiness",
+  "version": "1.0.0",
+  "purpose": "Evaluate whether a Product-Agent OS workspace has enough control-plane structure to begin scoped work.",
+  "cases": [
+    {
+      "id": "control-plane-present",
+      "input": "Inspect Product-Agent OS control-plane files.",
+      "expected": {
+        "required_files": ["AGENTS.md", "REQUIREMENTS.md", "PLAN.md", "TEST.md", "EVALS.md", "RUNLOG.md"],
+        "fields": ["project", "profile", "detected_stack", "risks", "verification"],
+        "result": "Required artifacts exist and open risks are named."
+      }
+    }
+  ]
+}

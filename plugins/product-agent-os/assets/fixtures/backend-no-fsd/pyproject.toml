@@ -1,0 +1,4 @@
+[project]
+name = "synthetic-backend-no-fsd"
+version = "0.1.0"
+description = "Synthetic backend fixture proving FSD is not inferred from backend feature folder names."

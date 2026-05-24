@@ -1,0 +1,15 @@
+{
+  "name": "handoff-completeness",
+  "version": "1.0.0",
+  "purpose": "Evaluate whether a role handoff gives the next owner enough context, evidence, and stop conditions.",
+  "cases": [
+    {
+      "id": "handoff-fields",
+      "input": "Inspect a role handoff.",
+      "expected": {
+        "fields": ["sources", "assumptions", "files", "evidence", "risks", "next_role", "stop_reason"],
+        "result": "Sources, assumptions, files, evidence, risks, and next role are present."
+      }
+    }
+  ]
+}

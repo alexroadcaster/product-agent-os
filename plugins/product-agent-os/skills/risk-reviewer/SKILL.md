@@ -1,0 +1,196 @@
+---
+name: risk-reviewer
+description: Use when a Product-Agent OS plan, diff, implementation slice, or quality gate needs risk review before readiness or release.
+---
+
+# Risk Reviewer
+
+## Trigger
+
+Use this skill when a Product-Agent OS diff, implementation slice, plan, or quality gate needs review before release readiness or handoff.
+
+## Boundaries
+
+This is a Track 2 skill. Produce a staged `risk_review_packet` only.
+
+Do not store secrets, tokens, credentials, private keys, private customer data, or raw private chat logs.
+Do not create active automation, recurring automation, hooks, workflow files, project templates, MCP servers, or an Agents SDK runner.
+Do not mutate global config. Do not modify config. Do not edit project config.
+Do not edit files, apply fixes, run destructive commands, install external dependencies, use network access, write user-level memory, or connect to external systems.
+For PR review, do not perform external writes, PR creation, push, publish actions, deployment, release tagging, or package publishing without explicit approval.
+Do not claim readiness, security, test coverage, command success, runtime behavior, or risk closure without evidence from the current run.
+Ask for approval before any write, external action, expanded scope, dependency installation, or operation outside the allowed workspace.
+
+Read shared references when needed: [Lifecycle states](../references/lifecycle-states.md), [Handoff contract](../references/handoff-contract.md), [Source policy](../references/source-policy.md), and [Complexity routing](../references/complexity-routing.md).
+
+## Inputs
+
+- Diff summary, proposed changes, implementation slice summary, or quality gate packet.
+- Generalized two-stage review input when applicable: `review-slice.md`, `RUNLOG.md`, risk triggers, changed files, acceptance criteria, source constraints, public contract, migration, security-sensitive, data migration, release packaging, parallel work, missing evidence, and residual risk.
+- PR review input when applicable: diff source, changed files map, base branch or comparison point, changed files, and reviewer questions already known.
+- Security-sensitive input when applicable: `security-risk-review.md`, threat surface, authn, authz, permissions, payment, billing, secrets, PII, sensitive data, abuse controls, rate limit, audit logging, tests, rollback, owner review, approval, and residual risk.
+- CI stabilization input when applicable: `ci-stabilization-report.md`, failing job, command, logs, environment, deterministic/flaky classification, failure evidence, isolation plan, local reproduction, rerun evidence, remote CI, GitHub Actions, approval, and residual risk.
+- Release packaging input when applicable: `release-readiness.md`, release scope, package metadata, version, SemVer impact, changelog, build evidence, test evidence, docs evidence, security notes, license notes, artifacts, package registry, publish approval, tag boundary, rollback, owner review, and residual risk.
+- Metric hardening input when product behavior changes: `metric-spec.md`, `metric_hardening_when_product_behavior_changes`, North Star or primary value metric, input metric, counter-metric, proxy metric risk, guardrail, qualitative review, privacy classification, retention period, data minimization, owner signoff, and post-release review evidence.
+- `requirements_packet` with scope, acceptance criteria, constraints, and source requirements.
+- `implementation_plan_packet` with slices, rollback notes, ownership, and verification gates.
+- Commands run, observed results, verification evidence, unsupported claims, and known test gaps.
+- Known risks, approvals, data constraints, migration concerns, source constraints, and external-system boundaries.
+
+## Process
+
+1. Validate that enough context exists to review behavior against requirements and the lifecycle state is `build_active` or `quality_gate`.
+2. Lead with findings by severity: blocker, high, medium, low, or note.
+3. Identify whether generalized two-stage review is required. It is required for PR review, public contract changes, migration, security-sensitive work, data migration, release packaging, parallel work, external-system changes, or any slice with missing evidence.
+4. For required two-stage review, run `stage 1: spec compliance` before `stage 2: quality/risk`; do not collapse the stages, do not accept generic review only, and do not run quality/risk before spec compliance.
+5. Stage 1 checks changed or proposed behavior against acceptance criteria, source constraints, public contract, compatibility, owner decisions, scope, ownership, rollback, and approval boundaries.
+6. Stage 2 checks implementation quality, tests, evidence strength, regressions, security, privacy, docs, release impact, runtime risk, maintainability, and unsupported claims.
+7. For PR review, require a changed files map and use the same two-stage review: spec compliance verdict first, then quality/risk verdict.
+8. Map review impact across behavior impact, API impact, database impact, UI impact, security impact, docs impact, and release impact.
+9. For security-sensitive review, require `security-risk-review.md` or an explicit gap and check threat surface, authn, authz, permissions, payment, billing, secrets, PII, sensitive data, abuse controls, rate limit, audit logging, tests, rollback, owner review, approval, and residual risk before readiness.
+10. For CI stabilization review, require `ci-stabilization-report.md` or an explicit gap and check failing job, command, logs, environment, deterministic/flaky classification, failure evidence, isolation plan, local reproduction, rerun evidence, remote CI, GitHub Actions, approval, and residual risk before readiness.
+11. For release packaging review, require `release-readiness.md` or an explicit gap and check release scope, package metadata, version, SemVer impact, changelog, build evidence, test evidence, docs evidence, security notes, license notes, artifacts, package registry, publish approval, tag boundary, rollback, owner review, and residual risk before readiness.
+12. For product behavior changes, review `metric_hardening_when_product_behavior_changes` before readiness: require `metric-spec.md`, North Star or primary value metric, input metric, counter-metric, proxy metric risk, guardrail, qualitative review, privacy classification, retention period, data minimization, owner signoff, and post-release review evidence. Do not claim success from a proxy metric without counter-metric, guardrail, qualitative review, and post-release review evidence.
+13. Review conditional readiness gates. Required `readiness_statuses` are `not_applicable`, `applicable_missing`, `present_unverified`, `present_verified`, `proposal_staged`, `explicit_gap_accepted`, and `approval_required`.
+14. Treat detection alone as `present_unverified`; block readiness when an applicable gate lacks required evidence, owner, applicability reason, or residual risk.
+15. Check architecture boundary drift, missing test-first or eval-first evidence, documentation source-of-truth gaps, and unmeasured product hypotheses.
+16. Check missing tests, weak evidence, unverifiable claims, stale source assumptions, missing checks, and commands listed without observed results.
+17. Check approval, sandbox, security, secrets, data handling, migration, dependency, destructive-command, external writes, PR creation, publish actions, release packaging, package registry, tagging, remote CI, GitHub Actions, and external-system risks.
+18. Assign verdict `blocked`, `changes_requested`, or `ready` based on evidence and remaining risk.
+19. Block a ready verdict with missing evidence. If either stage is missing or blocked, keep the overall verdict out of `ready`.
+20. Keep summary secondary to findings and do not rewrite artifacts directly.
+21. Return `review_ready` only when the verdict is `ready`; otherwise return the lifecycle state that needs follow-up.
+
+## Outputs
+
+Return a risk review packet:
+
+```yaml
+risk_review_packet:
+  review_type: "standard | generalized_two_stage"
+  risk_triggers: []
+  stage_order:
+    - "stage 1: spec compliance"
+    - "stage 2: quality/risk"
+  findings: []
+  changed_files: []
+  spec_compliance_verdict: "blocked | changes_requested | ready"
+  quality_risk_verdict: "blocked | changes_requested | ready"
+  behavior_impact: ""
+  api_impact: ""
+  database_impact: ""
+  ui_impact: ""
+  security_impact: ""
+  docs_impact: ""
+  release_impact: ""
+  missing_tests: []
+  missing_checks: []
+  reviewer_questions: []
+  approval_risks: []
+  external_write_risks: []
+  pr_creation_risks: []
+  publish_action_risks: []
+  source_risks: []
+  security_risks: []
+  security_sensitive_review:
+    threat_surface: ""
+    authn: ""
+    authz: ""
+    payment: ""
+    secrets: ""
+    pii: ""
+    approval: ""
+    rollback: ""
+  ci_stabilization_review:
+    failing_job: ""
+    command: ""
+    logs: ""
+    environment: ""
+    classification: "deterministic | flaky | unknown"
+    local_reproduction: ""
+    rerun_evidence: ""
+    remote_ci: ""
+    approval: ""
+    residual_risk: ""
+  release_packaging_review:
+    release_scope: ""
+    package_metadata: ""
+    version: ""
+    semver: ""
+    changelog: ""
+    publish_approval: ""
+    package_registry: ""
+    rollback: ""
+    residual_risk: ""
+  metric_hardening_review:
+    artifact: "metric-spec.md"
+    gate: "metric_hardening_when_product_behavior_changes"
+    north_star_or_primary_value_metric: ""
+    input_metric: ""
+    counter_metric: ""
+    proxy_metric_risk: ""
+    guardrail: ""
+    qualitative_review: ""
+    privacy_classification: ""
+    retention_period: ""
+    data_minimization: ""
+    owner_signoff: ""
+    post_release_review_evidence: ""
+  conditional_readiness_review:
+    readiness_statuses: "not_applicable | applicable_missing | present_unverified | present_verified | proposal_staged | explicit_gap_accepted | approval_required"
+    gates_reviewed: []
+    detection_alone_claims: []
+    applicable_missing: []
+    not_applicable_without_reason: []
+    explicit_gap_accepted_without_owner_or_residual_risk: []
+    approval_required: []
+  architecture_risks: []
+  documentation_gaps: []
+  measurement_gaps: []
+  unsupported_claims: []
+  verdict: "blocked | changes_requested | ready"
+  next_action: ""
+  next_lifecycle_state: "review_ready"
+```
+
+## Conditional Readiness Gates
+
+Review conditional readiness gates before readiness or release. `readiness_statuses` are `not_applicable`, `applicable_missing`, `present_unverified`, `present_verified`, `proposal_staged`, `explicit_gap_accepted`, and `approval_required`. Detection alone can only justify `present_unverified`; `present_verified` needs current command evidence, owner evidence, or verified artifact evidence. Flag `applicable_missing` gates as blockers when they are required for the requested lifecycle state. Reject `not_applicable` without an applicability reason and `explicit_gap_accepted` without owner, residual risk, and follow-up condition.
+
+## Docs Tooling Selector
+
+Use `docs_tooling_selector` with `docs-tooling-decision.md` to close `docs_as_code_impact` without forcing a docs portal. Record `not_applicable`, `present_unverified`, `present_verified`, `proposal_staged`, `explicit_gap_accepted`, or `approval_required`; selected tools, rejected tools, evidence owner, maintenance owner, no forced install, no CI activation without approval, hosted docs approval, DB introspection approval, docs-light, and internal-only reasons.
+
+## Standards Trigger Policy
+
+Review `standards_trigger_policy` before readiness when architecture, API, release, ownership, or CI governance changes are present. Check ADR trigger policy for architecture boundary, API contract, storage, auth/security, irreversible migration, or automation activation. Check C4 and arc42 coverage for architecture goals, constraints, quality attributes, and risks. Check OpenAPI source of truth and Swagger UI separation for HTTP APIs, AsyncAPI coverage for event contracts, SemVer impact and Keep a Changelog categories for release-bound public changes, and `governance-proposal.md` for CODEOWNERS status or GitHub Actions. For GitHub Actions, require least privilege, workflow names, commands, permissions, triggers, owners, `proposal_staged` or `approval_required`, no external activation without approval, and no forced external activation.
+
+## Evidence Before Completion
+
+Evidence-before-completion (`evidence_before_completion`): do not make a ready claim, completed claim, fixed claim, works claim, or release claim without current command evidence, current eval evidence, current runtime evidence, owner evidence, or an explicit test gap. If only inspection happened, label the result `inspection-only` and list every unsupported completion claim. Treat completion claim without current evidence as blocked.
+
+## Verification
+
+Check that every finding has severity, evidence, affected scope, and required action. Check that missing tests and approval risks are explicit, source constraints are respected, and `review_ready` appears only with a `ready` verdict. Do not claim without evidence.
+For generalized two-stage review, check that `stage 1: spec compliance` appears before `stage 2: quality/risk`, both `spec compliance verdict` and `quality/risk verdict` are explicit, acceptance criteria and source constraints are checked before public contract, migration, security-sensitive, data migration, release packaging, or parallel work quality review, and `RUNLOG.md` records missing evidence. Do not collapse the review into generic review only. Do not allow quality/risk before spec compliance. Do not allow a ready verdict with missing evidence.
+For PR review, check that changed files, spec compliance verdict, quality/risk verdict, impact map, missing checks, reviewer questions, external writes, PR creation, publish actions, and release impact are explicit.
+For release packaging, check that `release-readiness.md`, SemVer impact, changelog, package registry, publish approval, tag boundary, rollback, and residual risk are explicit before readiness.
+For metric hardening, check that `metric_hardening_when_product_behavior_changes` has `metric-spec.md`, North Star or primary value metric, input metric, counter-metric, proxy metric risk, guardrail, qualitative review, privacy classification, retention period, data minimization, owner signoff, and post-release review evidence before readiness. Do not claim success from a proxy metric without counter-metric, guardrail, qualitative review, and post-release review evidence.
+For conditional readiness gates, check that every applicable gate names status, required evidence, owner, applicability reason, and residual risk before readiness.
+
+## Failure Modes
+
+- If no diff, slice, or plan summary exists, stop and request the missing review input.
+- If PR review lacks a changed files map or diff source, stop and request review input instead of guessing impact.
+- If risky work lacks a generalized two-stage review, return `blocked` and request `review-slice.md` or equivalent review input.
+- If the review uses generic review only, skips source constraints, or runs quality/risk before spec compliance, return `blocked`.
+- If either stage has missing evidence, do not return a ready verdict with missing evidence.
+- If requirements are absent, stop and route to `requirements-author`.
+- If verification evidence is absent, return `changes_requested` or `blocked` with missing evidence.
+- If product behavior changes lack metric hardening, return `blocked` with the missing metric-spec, counter-metric, qualitative review, privacy classification, retention period, data minimization, owner signoff, or post-release review evidence.
+- If secrets, approval gaps, migration risk, or external-system risk is unresolved, return `blocked`.
+- If source claims lack authoritative support, record source risks and request verification.
+
+## Final Response Contract
+
+Return status, lifecycle state, `risk_review_packet`, findings by severity, missing tests, approval requirements, verification evidence, unsupported claims, verdict, risks, and the next recommended skill.

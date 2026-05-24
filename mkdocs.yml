@@ -1,0 +1,147 @@
+site_name: OpenAI Codex Knowledge Base
+site_description: Russian knowledge base for advanced OpenAI Codex and agentic workflows.
+site_url: ""
+docs_dir: docs
+site_dir: site
+repo_url: ""
+use_directory_urls: false
+
+theme:
+  name: material
+  language: ru
+  features:
+    - navigation.sections
+    - navigation.expand
+    - navigation.indexes
+    - navigation.top
+    - search.highlight
+    - search.suggest
+    - content.code.copy
+  palette:
+    - scheme: default
+      primary: teal
+      accent: deep orange
+
+extra:
+  generator: false
+
+extra_css:
+  - assets/stylesheets/extra.css
+
+plugins:
+  - search:
+      lang:
+        - ru
+        - en
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+extra_javascript:
+  - https://unpkg.com/mermaid@10/dist/mermaid.min.js
+
+nav:
+  - Главная: index.md
+  - Диаграммы:
+      - Обзор диаграмм: diagrams/index.md
+      - Архитектура проекта: diagrams/architecture.md
+      - Product-Agent Delivery Lifecycle: diagrams/product-delivery-lifecycle.md
+      - Команда агентов и skills: diagrams/agent-team-and-skills.md
+      - Runtime decision map: diagrams/runtime-decision-map.md
+      - Skill lifecycle: diagrams/skill-lifecycle.md
+      - Context, memory, verification: diagrams/context-memory-verification.md
+  - Источники:
+      - Реестр источников: sources/registry.md
+      - Анализ Context7: sources/context7-research.md
+      - Шаблон карточки источника: sources/source-card-template.md
+  - Codex:
+      - Обзор: codex/overview.md
+      - Поверхности работы: codex/surfaces.md
+      - Конфигурация и расширяемость: codex/configuration.md
+      - Безопасность и approvals: codex/security.md
+      - Рабочие процессы: codex/workflows.md
+      - Deep analysis of use cases: codex/use-cases-deep-analysis.md
+  - Prompt & Context Engineering:
+      - Обзор: prompting/overview.md
+      - Проектирование вопросов: prompting/question-design.md
+      - Context engineering: prompting/context-engineering.md
+      - Контроль галлюцинаций: prompting/anti-hallucination.md
+  - Product-Agent Workflows:
+      - Обзор: product-agent/overview.md
+      - Product lifecycle: product-agent/lifecycle.md
+      - Роли агентной команды: product-agent/roles.md
+      - Control-plane files: product-agent/control-plane.md
+  - Product-Agent OS plugin:
+      - Обзор: product-agent-os/index.md
+      - Технические особенности и установка: product-agent-os/technical.md
+      - Engineering standards layer: product-agent-os/development-standards.md
+      - Сценарии и usage modes: product-agent-os/scenarios.md
+      - Behavioral evals: product-agent-os/behavioral-evals.md
+      - Codex compatibility: product-agent-os/codex-compatibility.md
+      - Диаграммы и принципы работы: product-agent-os/architecture.md
+  - Methodologies for Large Projects:
+      - Обзор: methodologies/index.md
+      - Business & Product: methodologies/business-product.md
+      - Requirements & Domain: methodologies/requirements-domain.md
+      - Solution Architecture: methodologies/solution-architecture.md
+      - Frontend: methodologies/frontend.md
+      - Backend: methodologies/backend.md
+      - API & Integrations: methodologies/api-integrations.md
+      - Database & Data: methodologies/database-data.md
+      - LLM / AI / RAG: methodologies/llm-ai-rag.md
+      - Quality, Testing & Evals: methodologies/quality-testing-evals.md
+      - Security, Privacy & Compliance: methodologies/security-privacy-compliance.md
+      - Delivery, Release & Operations: methodologies/delivery-release-operations.md
+      - Codex / Agentic Workflow: methodologies/codex-agentic-workflow.md
+  - Codex Automation & Runtime:
+      - Обзор runtime: runtime/overview.md
+      - Non-interactive и MCP: runtime/non-interactive-and-mcp.md
+      - Automations и GitHub: runtime/automations-github.md
+      - Worktrees, hooks, rules: runtime/worktrees-hooks-rules.md
+  - Агентные системы:
+      - Архитектура: agent-systems/overview.md
+      - Память: agent-systems/memory.md
+      - Контроль сессий: agent-systems/session-control.md
+      - Subagents, Skills, AGENTS.md: agent-systems/subagents-skills.md
+      - Agents SDK patterns: agent-systems/sdk-patterns.md
+      - Evals и observability: agent-systems/evals-observability.md
+      - Шаблоны агентов: agent-systems/templates.md
+  - Playbooks:
+      - Research loop: playbooks/research-loop.md
+      - Context7 deep research: playbooks/context7-deep-research.md
+      - Grounded answering: playbooks/grounded-answering.md
+      - Build full feature: playbooks/build-full-feature.md
+      - Workflow to skill: playbooks/workflow-to-skill.md
+      - Use case to plugin: playbooks/use-case-to-plugin.md
+      - Eval-driven improvement: playbooks/eval-driven-improvement.md
+      - Product-ready PR: playbooks/product-ready-pr.md
+      - Agent operating docs: playbooks/maintain-agent-operating-docs.md
+      - Workspace readiness audit: playbooks/workspace-readiness-audit.md
+      - Обновление документации: playbooks/docs-update.md
+      - Code review: playbooks/code-review.md
+      - AI-native команда: playbooks/ai-team-design.md
+  - Templates:
+      - Prompt template: artifact-templates/prompt-packet.md
+      - Control-plane templates: artifact-templates/control-plane-files.md
+      - RUNLOG template: artifact-templates/runlog.md
+      - Skill template: artifact-templates/product-skill.md
+      - Plugin blueprint: artifact-templates/plugin-blueprint.md
+  - Insights:
+      - Правила слоя insights: insights/index.md
+      - Шаблон карточки insight: insights/insight-card-template.md
+      - Начальный backlog: insights/seed-insights.md

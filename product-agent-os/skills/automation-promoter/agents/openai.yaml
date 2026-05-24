@@ -1,0 +1,6 @@
+interface:
+  display_name: "Automation Promoter"
+  short_description: "Stages candidate-only automation readiness analysis for stable repeated workflows."
+  default_prompt: "Use $automation-promoter to evaluate whether this repeated workflow is ready as an automation candidate."
+policy:
+  allow_implicit_invocation: false

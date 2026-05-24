@@ -1,0 +1,33 @@
+# Python caches and local environments
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+
+# Node and frontend build artifacts
+node_modules/
+dist/
+build/
+
+# Documentation build output
+site/
+
+# Local temporary workspaces and OS/editor noise
+.tmp-external/
+tmp/
+*.log
+!plugins/product-agent-os/assets/fixtures/**/*.log
+!product-agent-os/assets/fixtures/**/*.log
+.DS_Store
+Thumbs.db
+
+# Local secrets and machine-specific environment files
+.env
+.env.*
+!.env.example
+!.env.template

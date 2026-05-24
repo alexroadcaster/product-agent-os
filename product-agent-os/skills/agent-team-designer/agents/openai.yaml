@@ -1,0 +1,5 @@
+interface:
+  display_name: "Agent Team Designer"
+  short_description: "Stages agent roles, ownership, handoffs, and stop rules."
+  default_prompt: "Use $agent-team-designer to design role ownership and handoffs for this plan."
+  allow_implicit_invocation: false
