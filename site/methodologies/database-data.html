@@ -1,0 +1,4039 @@
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Russian knowledge base for advanced OpenAI Codex and agentic workflows.">
+      
+      
+      
+      
+        <link rel="prev" href="api-integrations.html">
+      
+      
+        <link rel="next" href="llm-ai-rag.html">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Database & Data - OpenAI Codex Knowledge Base</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="deep-orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#database-data" class="md-skip">
+          Перейти к содержанию
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href="../index.html" title="OpenAI Codex Knowledge Base" class="md-header__button md-logo" aria-label="OpenAI Codex Knowledge Base" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OpenAI Codex Knowledge Base
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Database & Data
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="deep-orange"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Поиск" placeholder="Поиск" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Поиск">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Очистить" aria-label="Очистить" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Инициализация поиска
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="OpenAI Codex Knowledge Base" class="md-nav__button md-logo" aria-label="OpenAI Codex Knowledge Base" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    OpenAI Codex Knowledge Base
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Главная
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../diagrams/index.html" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Диаграммы
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Диаграммы
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../diagrams/architecture.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Архитектура проекта
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../diagrams/product-delivery-lifecycle.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Product-Agent Delivery Lifecycle
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../diagrams/agent-team-and-skills.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Команда агентов и skills
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../diagrams/runtime-decision-map.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Runtime decision map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../diagrams/skill-lifecycle.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Skill lifecycle
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../diagrams/context-memory-verification.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Context, memory, verification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Источники
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Источники
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/registry.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Реестр источников
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/context7-research.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Анализ Context7
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/source-card-template.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Шаблон карточки источника
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Codex
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Codex
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../codex/overview.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Обзор
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../codex/surfaces.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Поверхности работы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../codex/configuration.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Конфигурация и расширяемость
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../codex/security.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Безопасность и approvals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../codex/workflows.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Рабочие процессы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../codex/use-cases-deep-analysis.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deep analysis of use cases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prompt & Context Engineering
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Prompt & Context Engineering
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../prompting/overview.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Обзор
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../prompting/question-design.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Проектирование вопросов
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../prompting/context-engineering.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Context engineering
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../prompting/anti-hallucination.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Контроль галлюцинаций
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Product-Agent Workflows
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Product-Agent Workflows
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../product-agent/overview.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Обзор
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../product-agent/lifecycle.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Product lifecycle
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../product-agent/roles.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Роли агентной команды
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../product-agent/control-plane.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Control-plane files
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../product-agent-os/index.html" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Product-Agent OS plugin
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_7" id="__nav_7_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Product-Agent OS plugin
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../product-agent-os/technical.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Технические особенности и установка
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../product-agent-os/development-standards.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Engineering standards layer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../product-agent-os/scenarios.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Сценарии и usage modes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../product-agent-os/behavioral-evals.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Behavioral evals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../product-agent-os/codex-compatibility.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Codex compatibility
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../product-agent-os/architecture.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Диаграммы и принципы работы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="index.html" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Methodologies for Large Projects
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Methodologies for Large Projects
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="business-product.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Business & Product
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="requirements-domain.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Requirements & Domain
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="solution-architecture.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Solution Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="frontend.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Frontend
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="backend.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Backend
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api-integrations.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API & Integrations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database & Data
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="database-data.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database & Data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#deep-research" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deep research цель
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Поддержанные факты
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#assumptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assumptions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Инструкции применения на проекте
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Применяемые методологии разработки
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Инструменты, артефакты и стандарты документирования
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#product-agent-os-routing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Product-Agent OS routing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#candidate-readiness-gates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Candidate readiness gates
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#candidate-eval-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Candidate eval fields
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tooling-candidates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tooling candidates
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Проверки
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#failure-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unsupported-claims-not-adopted" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unsupported claims not adopted
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-questions-for-future-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open questions for future implementation
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="llm-ai-rag.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM / AI / RAG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quality-testing-evals.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quality, Testing & Evals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="security-privacy-compliance.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security, Privacy & Compliance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="delivery-release-operations.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Delivery, Release & Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="codex-agentic-workflow.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Codex / Agentic Workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Codex Automation & Runtime
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Codex Automation & Runtime
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../runtime/overview.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Обзор runtime
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../runtime/non-interactive-and-mcp.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Non-interactive и MCP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../runtime/automations-github.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Automations и GitHub
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../runtime/worktrees-hooks-rules.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Worktrees, hooks, rules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Агентные системы
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Агентные системы
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agent-systems/overview.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Архитектура
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agent-systems/memory.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Память
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agent-systems/session-control.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Контроль сессий
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agent-systems/subagents-skills.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Subagents, Skills, AGENTS.md
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agent-systems/sdk-patterns.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agents SDK patterns
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agent-systems/evals-observability.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evals и observability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agent-systems/templates.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Шаблоны агентов
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Playbooks
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Playbooks
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../playbooks/research-loop.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research loop
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../playbooks/context7-deep-research.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Context7 deep research
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../playbooks/grounded-answering.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Grounded answering
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../playbooks/build-full-feature.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Build full feature
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../playbooks/workflow-to-skill.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Workflow to skill
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../playbooks/use-case-to-plugin.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Use case to plugin
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../playbooks/eval-driven-improvement.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Eval-driven improvement
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../playbooks/product-ready-pr.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Product-ready PR
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../playbooks/maintain-agent-operating-docs.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agent operating docs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../playbooks/workspace-readiness-audit.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Workspace readiness audit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../playbooks/docs-update.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Обновление документации
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../playbooks/code-review.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code review
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../playbooks/ai-team-design.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI-native команда
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Templates
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Templates
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../artifact-templates/prompt-packet.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prompt template
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../artifact-templates/control-plane-files.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Control-plane templates
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../artifact-templates/runlog.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RUNLOG template
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../artifact-templates/product-skill.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Skill template
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../artifact-templates/plugin-blueprint.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Plugin blueprint
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_13" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../insights/index.html" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Insights
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_13" id="__nav_13_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Insights
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../insights/insight-card-template.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Шаблон карточки insight
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../insights/seed-insights.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Начальный backlog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#deep-research" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deep research цель
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Поддержанные факты
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#assumptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assumptions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Инструкции применения на проекте
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Применяемые методологии разработки
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Инструменты, артефакты и стандарты документирования
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#product-agent-os-routing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Product-Agent OS routing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#candidate-readiness-gates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Candidate readiness gates
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#candidate-eval-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Candidate eval fields
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tooling-candidates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tooling candidates
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Проверки
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#failure-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure modes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unsupported-claims-not-adopted" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unsupported claims not adopted
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-questions-for-future-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open questions for future implementation
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="database-data">Database &amp; Data<a class="headerlink" href="#database-data" title="Permanent link">&para;</a></h1>
+<p>Source status: <code>official + expert reference + vendor documentation + local implementation evidence + tool-assisted</code></p>
+<p>Источники: <a href="https://www.postgresql.org/docs/current/transaction-iso.html">PostgreSQL Transaction Isolation</a>, <a href="https://www.postgresql.org/docs/current/backup.html">PostgreSQL Backup and Restore</a>, <a href="https://www.postgresql.org/docs/current/ddl-constraints.html">PostgreSQL Constraints</a>, <a href="https://www.postgresql.org/docs/current/indexes.html">PostgreSQL Indexes</a>, <a href="https://www.postgresql.org/docs/current/sql-explain.html">PostgreSQL EXPLAIN</a>, <a href="https://www.liquibase.org/get-started/core-usage/liquibase-core-concepts-author-database-changes">Liquibase core concepts</a>, <a href="https://docs.liquibase.com/commands/rollback/rollback.html">Liquibase rollback</a>, <a href="https://documentation.red-gate.com/flyway/flyway-concepts/migrations">Flyway migrations</a>, <a href="https://docs.getdbt.com/docs/build/data-tests">dbt data tests</a>, <a href="https://docs.getdbt.com/docs/mesh/govern/model-contracts">dbt model contracts</a>, <a href="https://docs.greatexpectations.io/docs/cloud/expectations/expectations_overview/">Great Expectations</a>, <a href="https://openlineage.io/docs/">OpenLineage</a>, <a href="https://www.nist.gov/privacy-framework/using-privacy-framework-11">NIST Privacy Framework</a>, <a href="https://martinfowler.com/articles/evodb.html">Evolutionary Database Design</a>, <a href="https://www.prisma.io/dataguide/types/relational/expand-and-contract-pattern">Prisma expand/contract pattern</a>, <a href="../sources/context7-research.html">Context7 research</a>, <a href="../sources/methodology-research/database-data.html">research dossier</a>.</p>
+<h2 id="deep-research">Deep research цель<a class="headerlink" href="#deep-research" title="Permanent link">&para;</a></h2>
+<p>Database &amp; Data слой описывает schema ownership, migrations, constraints, indexes, transactions, backfills, data quality, privacy classification, retention, lineage, backup/restore and production data access.</p>
+<p>Главный принцип: data change нельзя считать завершенным, если понятен SQL или ORM diff, но не понятны production impact, rollback/compensation, backup/restore path, data quality checks, privacy boundary and performance evidence.</p>
+<h2 id="_1">Поддержанные факты<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<ul>
+<li>PostgreSQL transaction isolation documentation describes Read Committed, Repeatable Read and Serializable behavior, including serialization failure retry requirements for stronger isolation levels.</li>
+<li>PostgreSQL constraints documentation defines integrity mechanisms such as check, not-null, unique, primary key, foreign key and exclusion constraints.</li>
+<li>PostgreSQL indexes and <code>EXPLAIN</code> documentation support performance review through index design and query-plan evidence. <code>EXPLAIN ANALYZE</code> executes the statement, so write statements require transaction/rollback care.</li>
+<li>PostgreSQL backup and restore documentation separates SQL dump and file-system-level backup approaches; production database work needs restore evidence, not only "backups exist".</li>
+<li>Liquibase documents changelogs as ordered changesets tracked in <code>DATABASECHANGELOG</code>, and supports rollback definitions, preconditions, contexts and labels.</li>
+<li>Flyway documents version-controlled migrations, versioned and repeatable migration concepts, dry-run/deployment reports and schema history.</li>
+<li>dbt data tests are SQL assertions that return failing rows; zero failing rows means the assertion passes. dbt model contracts define and enforce model column names and data types.</li>
+<li>Great Expectations defines executable Expectations for completeness, schema, uniqueness, validity, volume and custom SQL checks.</li>
+<li>OpenLineage defines an open standard around dataset, job and run entities for data lineage.</li>
+<li>NIST Privacy Framework supports privacy requirements, profiles, SDLC alignment and data-processing ecosystem risk management.</li>
+<li>Evolutionary Database Design describes small version-controlled migration scripts, application changes in CI/deployment pipelines and transition phases for destructive changes.</li>
+<li>Expand/contract migration introduces new structures in parallel, updates writes, backfills, validates, switches reads/writes and removes old structures after compatibility.</li>
+</ul>
+<h2 id="assumptions">Assumptions<a class="headerlink" href="#assumptions" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Product-Agent OS should not mandate PostgreSQL, Liquibase, Flyway, dbt, Great Expectations or OpenLineage. These provide vocabulary and candidate artifacts; actual tools come from project inventory.</li>
+<li>Data work is risky when it touches production data, destructive changes, sensitive fields, external consumers, analytics, AI/RAG sources, public APIs or high-volume backfills.</li>
+<li>Migration rollback can be reversible, compensating or irreversible. It is unsafe to call a destructive migration rollback-safe without evidence.</li>
+<li>Manual SQL can be operational evidence, but it cannot be the only durable record for schema/data changes.</li>
+<li>Production data must not appear in docs, prompts, examples, fixtures or templates.</li>
+<li>Data quality checks must be repeatable. Ad hoc SQL in a chat thread is not enough for a long-lived project gate.</li>
+</ul>
+<h2 id="_2">Инструкции применения на проекте<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Классифицируйте работу: schema change, data migration, backfill, retention/deletion, data quality, query/index performance, analytics model, lineage, backup/restore or production data access.</li>
+<li>Назовите database engine, environment, owner, data domain and schema/migration source of truth.</li>
+<li>Зафиксируйте, затрагивает ли change production data, PII/sensitive fields, external consumers, analytics, AI/RAG sources or public APIs.</li>
+<li>Для любого schema/backfill/retention change создайте <code>database-migration-plan.md</code> before implementation.</li>
+<li>Держите migrations small, ordered, version-controlled and repeatable; manual production SQL не должен быть единственным record.</li>
+<li>Для live/shared systems применяйте expand/contract или другой compatibility-preserving rollout before destructive changes.</li>
+<li>Для multi-step writes/backfills опишите transaction boundary, isolation assumptions, lock impact, retry behavior and idempotency.</li>
+<li>Для constraints and indexes опишите invariant/query, deployment impact and verification evidence.</li>
+<li>Для performance-sensitive changes приложите query plan evidence and expected runtime/lock budget.</li>
+<li>Для backfills опишите batch size, resume key, throttling, validation counts, observability and abort behavior.</li>
+<li>Классифицируйте rollback как reversible, compensating or irreversible. Irreversible change требует owner acceptance.</li>
+<li>Для production data заранее подтвердите backup/restore path and restore evidence.</li>
+<li>Классифицируйте PII/sensitive fields до docs, prompts, fixtures and examples. Production data cannot be copied into examples.</li>
+<li>Добавьте executable data quality checks для primary keys, nullability, relationships, accepted values, counts and critical business assertions.</li>
+<li>Для analytics or AI/RAG pipelines опишите data contracts and lineage или explicit gap.</li>
+<li>Для production data access требуйте approval, least privilege, audit trail and no-secrets/no-customer-data evidence.</li>
+</ol>
+<h2 id="_3">Применяемые методологии разработки<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Методология</th>
+<th>Когда применять</th>
+<th>Как выглядит в проекте</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Evolutionary Database Design</td>
+<td>Product schema evolves continuously</td>
+<td>Small versioned migrations, application changes and tests move together through CI/CD.</td>
+</tr>
+<tr>
+<td>Migration-first planning</td>
+<td>Schema, backfill or retention change</td>
+<td><code>database-migration-plan.md</code> exists before execution.</td>
+</tr>
+<tr>
+<td>Expand/contract migration</td>
+<td>Live systems, shared DB, public consumers, destructive changes</td>
+<td>Add new structure, dual-write/backfill, switch reads/writes, remove old structure after compatibility window.</td>
+</tr>
+<tr>
+<td>Database DevOps / migrations-as-code</td>
+<td>Team-owned DB changes</td>
+<td>Migrations are versioned, reviewed, repeatable and automated.</td>
+</tr>
+<tr>
+<td>Data integrity by constraint</td>
+<td>Relational correctness matters</td>
+<td>Constraints, keys and indexes are explicit design artifacts.</td>
+</tr>
+<tr>
+<td>Transaction and concurrency design</td>
+<td>Multi-step writes, financial/accounting/state workflows</td>
+<td>Isolation level, locks, retries and idempotency are documented.</td>
+</tr>
+<tr>
+<td>Data quality gates</td>
+<td>Critical product, analytics or AI/RAG data</td>
+<td>Executable assertions validate keys, nulls, relationships, counts, drift and business rules.</td>
+</tr>
+<tr>
+<td>Data contracts</td>
+<td>Data model has consumers</td>
+<td>Columns, types, semantics, compatibility and owner are explicit.</td>
+</tr>
+<tr>
+<td>Privacy-by-design</td>
+<td>PII/sensitive/regulated data</td>
+<td>Classification, minimization, retention, deletion and access boundary are captured early.</td>
+</tr>
+<tr>
+<td>Backup/restore-first change management</td>
+<td>Production or irreversible data work</td>
+<td>Restore path and restore drill evidence exist before risky execution.</td>
+</tr>
+<tr>
+<td>Lineage-aware data operations</td>
+<td>Analytics, reporting, ML/RAG, cross-system movement</td>
+<td>Dataset/job/run lineage is captured or marked as a gap.</td>
+</tr>
+<tr>
+<td>Performance-by-design</td>
+<td>Indexes, heavy queries, high-volume backfills</td>
+<td>Query plan, lock/runtime budget and index impact are reviewed.</td>
+</tr>
+<tr>
+<td>Production data access control</td>
+<td>Agent/developer touches prod data</td>
+<td>Approval, least privilege, audit trail and no-secrets/no-customer-data policy are enforced.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_4">Инструменты, артефакты и стандарты документирования<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Артефакт</th>
+<th>Зачем нужен</th>
+<th>Практический формат</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>database-inventory.md</code></td>
+<td>Databases, owners, environments, engines, connection boundaries and data domains.</td>
+<td>Product-Agent OS template.</td>
+</tr>
+<tr>
+<td><code>database-dictionary.md</code></td>
+<td>Tables/collections, fields, types, business meaning, owner, sensitivity and retention.</td>
+<td>DBML, dbdocs, SchemaSpy, Markdown.</td>
+</tr>
+<tr>
+<td>Schema source of truth</td>
+<td>Machine-readable schema or migration history used for review.</td>
+<td>Migrations, DBML, ORM schema, SQL DDL.</td>
+</tr>
+<tr>
+<td><code>database-migration-plan.md</code></td>
+<td>Change intent, ordered steps, dry-run, validation, rollout, rollback/compensation and approvals.</td>
+<td>Migration plan.</td>
+</tr>
+<tr>
+<td><code>database-expand-contract-record.md</code></td>
+<td>Parallel structures, dual-write/read switch, cleanup and compatibility window.</td>
+<td>ADR or migration record.</td>
+</tr>
+<tr>
+<td><code>database-backfill-runbook.md</code></td>
+<td>Batching, idempotency, resume, throttling, progress, validation and abort behavior.</td>
+<td>Runbook.</td>
+</tr>
+<tr>
+<td><code>database-rollback-feasibility.md</code></td>
+<td>Reversible, compensating or irreversible classification with owner acceptance.</td>
+<td>Rollback record.</td>
+</tr>
+<tr>
+<td><code>database-backup-restore-evidence.md</code></td>
+<td>Backup source, restore drill, restore target, RPO/RTO and verification result.</td>
+<td>DB/platform docs and runbook.</td>
+</tr>
+<tr>
+<td><code>database-data-classification-matrix.md</code></td>
+<td>PII/sensitive fields, legal basis, access boundary, retention and deletion behavior.</td>
+<td>NIST Privacy Framework profile.</td>
+</tr>
+<tr>
+<td><code>database-data-quality-checks.md</code></td>
+<td>Executable checks for keys, nulls, relationships, accepted values, counts and drift.</td>
+<td>dbt tests, Great Expectations, SQL checks.</td>
+</tr>
+<tr>
+<td><code>database-data-contract.md</code></td>
+<td>Consumer-facing data model columns, types, meaning, compatibility and owner.</td>
+<td>dbt model contracts or Markdown.</td>
+</tr>
+<tr>
+<td><code>database-lineage-map.md</code></td>
+<td>Datasets, jobs, runs, sources, sinks and owners.</td>
+<td>OpenLineage or data catalog.</td>
+</tr>
+<tr>
+<td><code>database-query-performance-review.md</code></td>
+<td>Query plan, index choices, cardinality, lock impact and expected runtime.</td>
+<td>PostgreSQL <code>EXPLAIN</code>, stack-native tooling.</td>
+</tr>
+<tr>
+<td><code>database-retention-deletion-policy.md</code></td>
+<td>What is retained, where, how long, deletion path and audit evidence.</td>
+<td>Privacy profile / compliance policy.</td>
+</tr>
+<tr>
+<td><code>database-synthetic-fixtures-policy.md</code></td>
+<td>Safe fixture generation, anonymization limits and prohibition on production secrets/data.</td>
+<td>Project security policy.</td>
+</tr>
+<tr>
+<td><code>database-production-access-approval.md</code></td>
+<td>Who can access prod data, why, duration, commands and audit evidence.</td>
+<td>Approval record.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="product-agent-os-routing">Product-Agent OS routing<a class="headerlink" href="#product-agent-os-routing" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>data_migration</code> usage mode routes schema/data changes to migration planning before implementation.</li>
+<li><code>workspace-discovery-auditor</code> detects migrations, ORM schemas, SQL, dbt/GX/OpenLineage signals and production-data risk.</li>
+<li><code>requirements-author</code> records data ownership, consumer impact, privacy constraints and accepted gaps.</li>
+<li><code>implementation-planner</code> blocks risky data work when migration plan, rollback classification, backup/restore or validation evidence is missing.</li>
+<li><code>test-eval-designer</code> selects migration dry-run, integration tests, data quality checks, query-plan checks and fixture safety checks.</li>
+<li><code>risk-reviewer</code> handles PII/sensitive fields, destructive migration, production access, irreversible change and performance risk.</li>
+<li><code>pr-release-operator</code> includes migration notes, restore/rollback guidance, data quality evidence and operational runbook impact.</li>
+</ul>
+<h2 id="candidate-readiness-gates">Candidate readiness gates<a class="headerlink" href="#candidate-readiness-gates" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>database_schema_source_present</code>: schema/migration source of truth is named.</li>
+<li><code>database_migration_plan_present</code>: ordered steps, validation, rollout and owner are documented.</li>
+<li><code>database_expand_contract_reviewed</code>: live/shared/destructive change has compatibility plan and cleanup window.</li>
+<li><code>database_transaction_boundary_present</code>: isolation, locks, retry and idempotency are documented for multi-step writes.</li>
+<li><code>database_backup_restore_evidence_present</code>: production/high-risk change has backup/restore path and restore evidence.</li>
+<li><code>database_rollback_feasibility_present</code>: reversible/compensating/irreversible classification exists.</li>
+<li><code>database_data_classification_present</code>: PII/sensitive fields have classification, retention and access boundary.</li>
+<li><code>database_data_quality_contract_present</code>: executable quality checks or explicit gap exists.</li>
+<li><code>database_performance_review_present</code>: query/index/backfill changes include plan, lock and runtime evidence.</li>
+<li><code>database_lineage_present</code>: analytics or AI/RAG data movement has sources, jobs, sinks and owners.</li>
+<li><code>database_production_access_approval_present</code>: production data access is approval-bound and auditable.</li>
+<li><code>database_synthetic_fixture_policy_present</code>: examples/fixtures are synthetic and secret-free.</li>
+</ul>
+<h2 id="candidate-eval-fields">Candidate eval fields<a class="headerlink" href="#candidate-eval-fields" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Database engine, owner and environment are named.</li>
+<li>Schema/migration source of truth is linked.</li>
+<li>Migration plan has ordered steps, dry-run and validation commands.</li>
+<li>Backfill plan includes batching, idempotency, resume and progress evidence.</li>
+<li>Rollback feasibility is classified as reversible, compensating or irreversible.</li>
+<li>Backup/restore evidence exists for production or high-risk changes.</li>
+<li>PII/sensitive fields are classified and examples are synthetic.</li>
+<li>Data quality checks are executable or the tooling gap is explicit.</li>
+<li>Query/index changes include plan evidence and lock/runtime notes.</li>
+<li>Data lineage is documented for analytics or AI/RAG data movement.</li>
+<li>Production data access is approval-bound and auditable.</li>
+</ul>
+<h2 id="tooling-candidates">Tooling candidates<a class="headerlink" href="#tooling-candidates" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Tooling area</th>
+<th>Candidate</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Relational source reference</td>
+<td>PostgreSQL docs</td>
+<td>Useful for transaction, constraint, index, query-plan and backup vocabulary.</td>
+</tr>
+<tr>
+<td>Migration management</td>
+<td>Liquibase</td>
+<td>Changelog/changeset model, rollback, preconditions, contexts and labels.</td>
+</tr>
+<tr>
+<td>Migration management</td>
+<td>Flyway</td>
+<td>Versioned/repeatable migrations, schema history, dry-run reports and validation.</td>
+</tr>
+<tr>
+<td>Stack-native migration signals</td>
+<td><code>alembic.ini</code>, <code>schema.prisma</code>, Rails/Django migrations</td>
+<td>Discovery signals; tool choice follows project inventory.</td>
+</tr>
+<tr>
+<td>Schema documentation</td>
+<td>DBML, dbdocs, SchemaSpy</td>
+<td>Useful for dictionaries and relationship maps; requires secret-safe generation.</td>
+</tr>
+<tr>
+<td>Data tests/contracts</td>
+<td>dbt</td>
+<td>Strong fit for warehouse/analytics models, data tests and model contracts.</td>
+</tr>
+<tr>
+<td>Data quality</td>
+<td>Great Expectations</td>
+<td>Executable Expectations for data quality and multi-source comparisons.</td>
+</tr>
+<tr>
+<td>Data lineage</td>
+<td>OpenLineage</td>
+<td>Open standard model for dataset/job/run lineage.</td>
+</tr>
+<tr>
+<td>Privacy governance</td>
+<td>NIST Privacy Framework</td>
+<td>Useful vocabulary for privacy profiles, SDLC alignment and data-processing ecosystem roles.</td>
+</tr>
+<tr>
+<td>Query performance</td>
+<td><code>EXPLAIN</code>, DB-native tooling</td>
+<td>Attach evidence; avoid side-effecting analysis without transaction safety.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_5">Проверки<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Migration plan exists before schema/data execution.</li>
+<li>Dry-run or staging migration command is named with expected output.</li>
+<li>Validation checks include counts and semantic business assertions.</li>
+<li>Backfill has batching, idempotency, resume and progress evidence.</li>
+<li>Rollback feasibility is explicit; irreversible risk is accepted by owner.</li>
+<li>Backup/restore evidence exists for production data work.</li>
+<li>Sensitive fields are classified and examples are synthetic.</li>
+<li>Query/index changes have query-plan and lock/runtime review.</li>
+<li>Data quality checks are executable or tooling gap is recorded.</li>
+<li>Production data access has approval and audit evidence.</li>
+</ul>
+<h2 id="failure-modes">Failure modes<a class="headerlink" href="#failure-modes" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Manual production SQL is the only record of a change.</li>
+<li>ORM schema and real database constraints drift silently.</li>
+<li>Index is added without lock/write-impact and query-plan review.</li>
+<li>Column is dropped or renamed before consumers move.</li>
+<li>Migration is called rollback-safe despite data loss.</li>
+<li>Backfill has no batching, idempotency or resume key.</li>
+<li>Validation checks count rows but miss semantic equivalence.</li>
+<li><code>EXPLAIN ANALYZE</code> is run on writes without transaction/rollback control.</li>
+<li>Production data leaks into fixtures, prompts, examples or docs.</li>
+<li>Backup exists but restore was never tested.</li>
+<li>Data quality checks are ad hoc queries, not repeatable gates.</li>
+<li>Analytics or AI/RAG lineage is unknown after an incident.</li>
+<li>Agent receives broad production database access instead of scoped approval.</li>
+</ul>
+<h2 id="unsupported-claims-not-adopted">Unsupported claims not adopted<a class="headerlink" href="#unsupported-claims-not-adopted" title="Permanent link">&para;</a></h2>
+<ul>
+<li>"ORM schema is the database source of truth." It can be one source, but real constraints, migrations and database state must not drift silently.</li>
+<li>"Migration applied means migration safe." Safety requires dry-run/staging, validation, rollback/compensation and owner review.</li>
+<li>"Rollback is just down migration." Destructive data changes may require compensation or explicit irreversible acceptance.</li>
+<li>"Backups exist, so restore is safe." Restore path needs evidence, not assumption.</li>
+<li>"Data quality can be checked manually." Long-lived product data needs repeatable checks or explicit tooling gap.</li>
+<li>"Anonymized production data is safe by default." Synthetic fixtures are safer; anonymization needs privacy review.</li>
+<li>"Analytics/RAG data lineage can be reconstructed later." Lineage gaps become expensive during incidents and deletion requests.</li>
+</ul>
+<h2 id="open-questions-for-future-implementation">Open questions for future implementation<a class="headerlink" href="#open-questions-for-future-implementation" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Which migration tool defaults should Product-Agent OS recommend by stack: Alembic, Prisma Migrate, Rails migrations, Django migrations, Liquibase, Flyway or framework-neutral?</li>
+<li>Should database readiness gates live only under data methodology, or also gate backend/API/LLM workflows when data changes are detected?</li>
+<li>Which schema-diff tools are mature enough to recommend without encouraging unsafe auto-migration behavior?</li>
+<li>How should Product-Agent OS detect destructive migrations from SQL/ORM diffs?</li>
+<li>Should the plugin ship default data-quality templates for dbt/GX, or only generic SQL checks?</li>
+<li>How should RAG ingestion lineage and data retention connect to database methodology and LLM methodology?</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  К началу
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.expand", "navigation.indexes", "navigation.top", "search.highlight", "search.suggest", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+    
+  </body>
+</html>

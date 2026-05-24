@@ -14,9 +14,6 @@ node_modules/
 dist/
 build/
 
-# Documentation build output
-site/
-
 # Local temporary workspaces and OS/editor noise
 .tmp-external/
 tmp/
