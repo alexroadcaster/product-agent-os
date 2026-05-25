@@ -45,6 +45,11 @@ class PluginStructureTest(unittest.TestCase):
             with self.subTest(relative=relative):
                 self.assertTrue((PLUGIN_ROOT / relative).exists())
 
+    def test_methodology_catalog_is_packaged(self):
+        catalog = PLUGIN_ROOT / "assets" / "methodology" / "methodology-catalog.json"
+
+        self.assertTrue(catalog.is_file())
+
     def test_main_spec_classifies_track_three_workflow_templates_explicitly(self):
         text = SPEC.read_text(encoding="utf-8")
 
