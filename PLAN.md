@@ -2,15 +2,15 @@
 
 <!-- product-agent-os:start plan -->
 Project: Codex Docs / Product-Agent OS
-Generated at: 2026-05-24
+Generated at: 2026-05-25
 
 ## Current State
 
-- `T8-D` detailed discovery model status depth is complete.
-- Verification baseline after `T8-D`: focused T8-D discovery/fixture tests ran 48 tests with `OK`; full unittest ran 326 tests with `OK`; fixture eval exited `0` with 40 fixtures, 0 failures, renderer file count 75 and `methodology_applicability_contract_present: true`; transcript eval exited `0` with 4 sessions and 0 failures; Codex compatibility returned `status: compatible`; docs check passed; strict MkDocs exited `0`.
+- `T9-D2` Requirements & Domain methodology integration is complete.
+- Verification baseline after `T9-D2`: focused catalog/audit tests ran 18 tests with `OK`; focused renderer/lifecycle/fixture tests ran 97 tests with `OK`; full unittest ran 357 tests with `OK`; fixture eval exited `0` with renderer file count 88 and `requirements_domain_contract_present: true`; Codex compatibility returned `status: compatible`; docs check passed; diff hygiene passed.
 - Track 9 design is recorded in `docs/superpowers/specs/2026-05-25-track-9-methodology-intelligence-design.md`.
 - Track 9 implementation plan is recorded in `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`.
-- Next implementation slice: start Track 9 from the plan's repository hygiene and foundation tasks, then continue domain-by-domain.
+- Next implementation slice: `T9-D3` Solution Architecture methodology integration.
 
 ## Architecture Boundary
 
@@ -24,10 +24,10 @@ Generated at: 2026-05-24
 
 | Order | Task | Status | Expected artifact |
 | --- | --- | --- | --- |
-| 0 | Repository hygiene before Track 9 | `planned` | Clean intentional base before Track 9 implementation |
-| 1 | `T9-F0` methodology intelligence foundation | `planned` | Catalog, audit model, report/JSON output, discovery integration |
-| 2 | `T9-D1` Business & Product | `planned` | Product hypothesis, metrics, experiment and measurement gates |
-| 3 | `T9-D2` Requirements & Domain | `planned` | Requirements traceability, business rules, domain model and language gates |
+| 0 | Repository hygiene before Track 9 | `done` | Clean intentional base before Track 9 implementation |
+| 1 | `T9-F0` methodology intelligence foundation | `done` | Catalog, audit model, report/JSON output, discovery integration |
+| 2 | `T9-D1` Business & Product | `done` | Product hypothesis, metrics, experiment and measurement gates |
+| 3 | `T9-D2` Requirements & Domain | `done` | Requirements traceability, business rules, domain model and language gates |
 | 4 | `T9-D3` Solution Architecture | `planned` | Architecture boundary, C4/arc42/ADR and quality attribute gates |
 | 5 | `T9-D4` Quality, Testing & Evals | `planned` | Risk-based test/eval strategy and current evidence gates |
 | 6 | `T9-D5` Codex / Agentic Workflow | `planned` | Control-plane, skills, subagents, handoff, MCP and automation gates |
@@ -64,6 +64,8 @@ For each Track 9 section:
 - Evidence-before-completion gate: `evidence_before_completion` blocks ready/completed/fixed/works/release claims unless current command evidence, current eval evidence, current runtime evidence, owner evidence or explicit test gap is present; inspection-only answers must stay labeled as inspection-only and list unsupported completion claims.
 - Docs tooling gate: `docs_tooling_selector` records `docs_as_code_impact`, `docs-tooling-decision.md`, selected tools, rejected tools, evidence owner, maintenance owner, applicable docs commands, accepted gaps and approval boundaries; docs-light/internal-only work can be `not_applicable`, while hosted docs, CI activation and DB introspection stay approval-bound.
 - Standards trigger gate: `standards_trigger_policy` records ADR trigger policy, C4/arc42 applicability, OpenAPI source of truth, AsyncAPI event contract, SemVer impact, Keep a Changelog categories, CODEOWNERS status, GitHub Actions least privilege and `governance-proposal.md`; external activation remains approval-bound.
+- Requirements/domain gate: `requirements_domain` records requirements scope/owner, requirement quality, stable IDs, declarative acceptance scenarios, requirements traceability, business rules, non-goals/constraints, open questions, domain events, API/UI/data traceability, domain expert review, accepted gaps and change impact.
+- Requirements/domain artifacts: `requirement-registry.md`, `stakeholder-owner-map.md`, `story-slice-map.md`, `requirements-traceability-matrix.md`, `business-rules.md`, `example-map.md`, `requirement-change-impact.md`, `domain-review-record.md`.
 - Conditional readiness gate: `project-readiness.json` defines `readiness_statuses` and per-gate `applies_when`, pass condition, accepted gap, required evidence, owner and residual risk. Detection alone can only support `present_unverified`; `present_verified` requires current command, owner or artifact evidence.
 - Test gate: deterministic tests, contract checks, evals or accepted gaps are named before implementation.
 - Documentation gate: docs-as-code artifacts and source-of-truth updates are named.
@@ -151,6 +153,19 @@ For each Track 9 section:
 - Reused readiness statuses: `not_applicable`, `applicable_missing`, `present_unverified`, `present_verified`, `proposal_staged`, `explicit_gap_accepted` and `approval_required`.
 - Added focused discovery tests for packet shape and status transitions, plus fixture eval coverage via `methodology_applicability_contract_present`.
 - Synced Product-Agent OS README/docs/backlog and root control-plane files.
+
+## T9-D1 Completed Slice
+
+- Added `business_product` methodology catalog coverage for product hypothesis, target segment, value proposition, opportunity framing, metrics, analytics tracking, qualitative feedback, privacy classification, AI product eval, release measurement, workflow-promotion value evidence, decision horizon and metric scope.
+- Added artifact templates: `product-brief.md`, `value-proposition.md`, `opportunity-tree.md`, `experiment-plan.md`, and `tracking-plan.md`.
+- Added read-only audit recommendations, false-positive coverage, lifecycle skill routing and fixture eval coverage through `business_product_contract_present`.
+
+## T9-D2 Completed Slice
+
+- Added `requirements_domain` methodology catalog coverage for requirement quality, stable IDs, acceptance scenarios, declarative scenario quality, traceability, business rules, non-goals/constraints, open questions, domain events, API/UI/data traceability, owner review, accepted gaps and change impact.
+- Added artifact templates: `requirement-registry.md`, `stakeholder-owner-map.md`, `story-slice-map.md`, `requirements-traceability-matrix.md`, `business-rules.md`, `example-map.md`, `requirement-change-impact.md`, and `domain-review-record.md`.
+- Added `docs-maintainer` lifecycle skill and strengthened requirements/planning/testing/review skills with Requirements & Domain gates.
+- Added read-only audit recommendations, false-positive and unsupported-claim coverage, renderer registration and fixture eval coverage through `requirements_domain_contract_present`.
 
 ## Rollback
 

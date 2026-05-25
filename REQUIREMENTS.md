@@ -2,7 +2,7 @@
 
 <!-- product-agent-os:start requirements -->
 Project: Codex Docs / Product-Agent OS
-Generated at: 2026-05-24
+Generated at: 2026-05-25
 
 ## Goal
 
@@ -11,11 +11,11 @@ Generated at: 2026-05-24
 
 ## Current Slice
 
-- Last completed slice: `T8-D` detailed discovery model status depth.
+- Last completed slice: `T9-D2` Requirements & Domain methodology integration.
 - Active planning artifact: `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`.
-- Next slice: Track 9 methodology intelligence implementation starts from the plan's repository hygiene and foundation tasks, then proceeds domain-by-domain.
+- Next slice: `T9-D3` Solution Architecture methodology integration.
 - Current route: long-running plugin/skill/docs/evals work.
-- Scenario status: Track 8 scenario/eval/Codex compatibility docs, transcript/session eval runner, standards trigger hardening, false-positive fixture hardening and detailed discovery status packets are complete for the current Track 8 scope. Track 9 planning is now the active forward path.
+- Scenario status: Track 9 foundation, Business/Product and Requirements/Domain slices are implemented. Track 9 continues domain-by-domain from `T9-D3`.
 
 ## Scope
 
@@ -49,6 +49,9 @@ Generated at: 2026-05-24
 - T8-D adds `methodology_applicability` discovery packets for architecture boundary, test/eval-first evidence, docs-as-code ownership, product measurement, complex-domain DDD, applicable FSD structure, docs tooling decision and standards trigger policy, each with status, applicability reason, evidence, required evidence, owner and residual risk.
 - Track 9 work must follow the section implementation protocol: read the relevant task block in `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`, deeply audit the matching `docs/methodologies/` source file, update the task list or backlog if the audit finds missing nuances, and only then implement the focused slice.
 - Track 9 domain slices must record methodology concepts, readiness gates, artifact templates, discovery signals, false-positive risks, lifecycle skill impacts, tests/evals and docs sync before being marked complete.
+- T9-D1 Business/Product is complete with product hypothesis, value proposition, opportunity tree, experiment plan, tracking plan, metric scope, decision horizon and workflow-promotion value evidence.
+- T9-D2 Requirements/Domain is complete with `requirements_domain` catalog data, requirement quality, stable IDs, acceptance scenario quality, business rules, requirements traceability, API/UI/data traceability, domain events, owner review, accepted gaps, change impact and unsupported-claim rejection.
+- `docs-maintainer` is now a packaged lifecycle skill for requirement IDs, source registry, glossary/ubiquitous-language and traceability docs after the requirements packet exists.
 
 ## Assumptions
 

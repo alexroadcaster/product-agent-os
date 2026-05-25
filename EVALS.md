@@ -2,7 +2,7 @@
 
 <!-- product-agent-os:start evals -->
 Project: Codex Docs / Product-Agent OS
-Generated at: 2026-05-24
+Generated at: 2026-05-25
 
 ## Rubrics
 
@@ -35,6 +35,7 @@ Generated at: 2026-05-24
 - False-positive scenario fixture coverage: implemented in `T8-GX`.
 - Detailed discovery status depth: implemented in `T8-D`.
 - Track 9 methodology intelligence plan: authored in `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`.
+- Track 9 foundation, `T9-D1` Business/Product and `T9-D2` Requirements/Domain: implemented.
 
 ## Track 9 Methodology Intelligence Evals
 
@@ -44,6 +45,21 @@ Generated at: 2026-05-24
 - Proportionality: DDD, FSD, docs portals, security/compliance, AI/RAG evals, database production gates and release governance must be conditional, with `not_applicable` or accepted gaps allowed when justified.
 - Evidence: section completion requires focused tests/evals plus full verification proportional to touched files.
 - Residual risk: semantic methodology quality still requires owner/domain/security/product review and cannot be proven by template presence alone.
+
+## Business Product Evals
+
+- `business_product_contract_present`: implemented in `T9-D1`.
+- Required evidence: product hypothesis, target segment, value proposition, opportunity framing, decision horizon, metric scope, analytics tracking plan, qualitative feedback loop, privacy classification, AI product eval where applicable, release measurement evidence and workflow-promotion value evidence.
+- False-positive protection: typo-only docs edits, formatting-only edits and dependency pins without behavior impact do not force product methodology.
+- Residual risk: product artifacts prove the evidence shape, not that the selected market, value proposition or metric is strategically correct.
+
+## Requirements Domain Evals
+
+- `requirements_domain_contract_present`: implemented in `T9-D2`.
+- Required evidence: requirements scope, requirements owner, requirement quality, stable IDs, acceptance scenarios, declarative scenario quality, requirements traceability, business rules, non-goals/constraints, constraints traceability, open questions, stakeholder owner map, story slice map, Example Mapping, domain discovery, domain model when complex, bounded context trace, ubiquitous language trace, invariants/failure modes, domain event contracts, API/UI/data traceability, domain expert review, requirement change impact, accepted gap and requirements evidence before implementation.
+- False-positive protection: typo-only docs edits, formatting-only edits and dependency metadata without behavior impact do not force Requirements & Domain methodology on README-only work.
+- Unsupported claims rejected: BDD replaces testing, Gherkin is mandatory, user story template is complete requirements, glossary is ubiquitous language and OpenAPI is requirements source of truth.
+- Residual risk: requirements/domain artifacts prove traceability structure, not that domain experts have semantically validated every business rule.
 
 ## Completion Evidence Evals
 

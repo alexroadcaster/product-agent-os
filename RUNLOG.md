@@ -2,15 +2,15 @@
 
 <!-- product-agent-os:start runlog -->
 Project: Codex Docs / Product-Agent OS
-Generated at: 2026-05-24
+Generated at: 2026-05-25
 
 ## Current Lifecycle Marker
 
-`plan_ready`
+`quality_gate`
 
 ## Latest Completed Slice
 
-`T8-D` detailed discovery model status depth.
+`T9-D2` Requirements & Domain methodology integration.
 
 ## Latest Planning Artifact
 
@@ -20,22 +20,23 @@ Generated at: 2026-05-24
 
 ### Changes
 
-- Added `methodology_applicability` to discovery output.
-- Added methodology/tooling status packets for architecture boundary, test/eval-first evidence, docs-as-code ownership, product measurement, complex-domain DDD, applicable FSD structure, docs tooling decision and standards trigger policy.
-- Added focused discovery tests for packet shape and status transitions.
-- Added fixture eval coverage via `methodology_applicability_contract_present`.
-- Synced Product-Agent OS README/docs/backlog and root control-plane files for T8-D.
+- Added `requirements_domain` catalog data with gates, artifacts, eval fields, applicability and false-positive rules.
+- Added read-only methodology audit recommendations for behavior changes, requirement quality, stable IDs, constraints, API/UI/data traceability, stakeholder/owner map, story slicing, Example Mapping, business rules, domain discovery, invariants/failure modes, domain events, owner review, accepted gaps, declarative scenario quality and requirement change impact.
+- Added eight staged artifact templates: `requirement-registry.md`, `stakeholder-owner-map.md`, `story-slice-map.md`, `requirements-traceability-matrix.md`, `business-rules.md`, `example-map.md`, `requirement-change-impact.md`, and `domain-review-record.md`.
+- Strengthened `acceptance-scenarios.md`, `domain-modeling.md`, generated control-plane templates, lifecycle skills and fixture eval.
+- Added packaged `docs-maintainer` lifecycle skill.
+- Synced Product-Agent OS README, Track 9 plan/backlog and root control-plane files.
 
 ### Verification Evidence
 
-- RED check: focused discovery/fixture tests failed on missing `methodology_applicability` and missing `methodology_applicability_contract_present`.
-- Focused T8-D discovery/fixture suite: `python -m unittest tests.product_agent_os.test_discovery tests.product_agent_os.test_fixture_eval_runner -v` ran 48 tests with `OK`.
-- Full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 326 tests with `OK`.
-- Fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0`; summary check showed 40 fixtures, 0 failures, renderer file count 75 and `methodology_applicability_contract_present: true`.
-- Transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 4 sessions and 0 failures.
+- RED check: focused T9-D2 suite failed as expected before implementation on missing `requirements_domain` gates, artifact templates, audit recommendations, `docs-maintainer` skill and fixture check.
+- Focused catalog/audit suite: `python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit -v` ran 18 tests with `OK`.
+- Focused renderer/lifecycle/fixture suite: `python -m unittest tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_fixture_eval_runner -v` ran 97 tests with `OK`.
+- Fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0`; renderer file count is 88 and `requirements_domain_contract_present` is true.
+- Full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 357 tests with `OK`.
 - Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible`.
 - Docs check: `python tools\check_docs.py` passed.
-- Strict MkDocs: `$env:PYTHONPATH='C:\tmp\codex_docs_mkdocs'; $env:NO_MKDOCS_2_WARNING='1'; python -m mkdocs build --strict` exited `0`.
+- Diff hygiene: `git diff --check` exited `0`.
 
 ## Methodology Trace
 
@@ -54,14 +55,16 @@ Generated at: 2026-05-24
 - Standards trigger policy: implemented as `standards_trigger_policy` with ADR trigger policy, C4/arc42, OpenAPI source of truth, AsyncAPI, SemVer impact, Keep a Changelog, CODEOWNERS status, GitHub Actions least privilege and `governance-proposal.md`.
 - False-positive fixture hardening: implemented through synthetic backend/native/simple CRUD/docs-light/hosted-docs fixtures with named fixture eval checks.
 - Detailed discovery status depth: implemented as `methodology_applicability` status packets with applicability, evidence, required evidence, owner and residual risk.
-- Test-first or eval-first evidence: T8-D was implemented with failing-focused tests first, then focused GREEN.
-- Documentation impact: docs and root control-plane files synchronized for T8-D.
-- Review outcome: focused checks, full unittest, fixture eval, transcript eval, Codex compatibility, docs check and strict MkDocs are clean in this run.
+- Business/Product methodology: implemented as `business_product` with product hypothesis, value, opportunity, metric, analytics, feedback, release measurement and workflow-promotion evidence gates.
+- Requirements/Domain methodology: implemented as `requirements_domain` with requirement quality, stable IDs, traceability, business rules, domain event contracts, API/UI/data traceability, owner review, accepted gaps, change impact and unsupported-claim rejection.
+- Test-first or eval-first evidence: T9-D2 was implemented with failing-focused tests first, then focused GREEN.
+- Documentation impact: docs and root control-plane files synchronized for T9-D2.
+- Review outcome: focused checks, full unittest, fixture eval, Codex compatibility, docs check and diff hygiene are clean in this run.
 
 ## Next Action
 
-- Start Track 9 from the implementation plan's repository hygiene and foundation tasks.
-- For every Track 9 section, follow the section implementation protocol before writing code or templates.
+- Start `T9-D3` Solution Architecture methodology integration.
+- First read the T9-D3 task block, then deeply audit `docs/methodologies/solution-architecture.md`, update plan/backlog if gaps are found, and only then implement.
 
 ## Residual Risks
 
@@ -75,5 +78,7 @@ Generated at: 2026-05-24
 - Standards trigger policy proves applicability and proposal fields are recorded, not that every real project needs every standard.
 - T8-GX false-positive fixtures cover selected synthetic workspaces, not every possible real project layout.
 - `methodology_applicability` packets prove discovery status structure, not semantic correctness of the underlying project evidence.
+- `business_product` gates prove product evidence is structured, not that the product hypothesis or metric is strategically correct.
+- `requirements_domain` gates prove requirements/domain evidence is structured, not that every business rule has been semantically validated by a domain expert.
 - Root control-plane files are initialized manually for this repository; generated target-project assets still remain staged-first and approval-bound.
 <!-- product-agent-os:end runlog -->

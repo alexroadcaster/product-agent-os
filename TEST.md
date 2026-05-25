@@ -2,17 +2,18 @@
 
 <!-- product-agent-os:start test-plan -->
 Project: Codex Docs / Product-Agent OS
-Generated at: 2026-05-24
+Generated at: 2026-05-25
 
 ## Current Baseline
 
-- Focused T8-D discovery/fixture suite: `python -m unittest tests.product_agent_os.test_discovery tests.product_agent_os.test_fixture_eval_runner -v` ran 48 tests with `OK`.
-- Full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 326 tests with `OK`.
-- Fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0`; summary check showed 40 fixtures, 0 failures, renderer file count 75 and `methodology_applicability_contract_present: true`.
-- Transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 4 sessions, 4 passed and 0 failed.
-- Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible`.
+- T9-D2 RED check: focused catalog/audit/renderer/lifecycle/fixture suite failed as expected before implementation on missing `requirements_domain` gates, artifact templates, audit recommendations, `docs-maintainer` skill and fixture check.
+- Focused T9-D2 catalog/audit suite: `python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit -v` ran 18 tests with `OK`.
+- Focused T9-D2 renderer/lifecycle/fixture suite: `python -m unittest tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_fixture_eval_runner -v` ran 97 tests with `OK`.
+- Fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0`; renderer file count is 88 and `requirements_domain_contract_present` is true.
+- Full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 357 tests with `OK`.
+- Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
 - Docs check: `python tools\check_docs.py` passed.
-- Strict MkDocs: `$env:PYTHONPATH='C:\tmp\codex_docs_mkdocs'; $env:NO_MKDOCS_2_WARNING='1'; python -m mkdocs build --strict` exited `0`.
+- Diff hygiene: `git diff --check` exited `0`.
 
 ## Required Checks After Docs Changes
 
@@ -112,6 +113,20 @@ python tools\check_docs.py
 - Confirmed every packet has `status`, `applies_when`, `reason`, `evidence`, `required_evidence`, `owner` and `residual_risk`.
 - Confirmed status transitions for complex-domain DDD (`applicable_missing`), applicable FSD structure (`present_unverified`), docs tooling approval boundaries (`approval_required`) and standards trigger context (`present_unverified`).
 - Confirmed fixture eval exposes `methodology_applicability_contract_present`.
+
+## Completed Focused Checks For T9-D1
+
+- Added RED then GREEN tests for `business_product` catalog contract, audit recommendations, staged product templates, lifecycle skill wording and fixture eval coverage.
+- Confirmed `business_product_contract_present` covers product hypothesis, value proposition, opportunity framing, decision horizon, metric scope, analytics tracking, qualitative feedback, release measurement and workflow-promotion value evidence.
+- Confirmed typo-only docs edits, formatting-only edits and dependency pins without behavior impact keep Business/Product methodology not applicable.
+
+## Completed Focused Checks For T9-D2
+
+- Added RED then GREEN tests for `requirements_domain` catalog contract, audit recommendations, staged requirements/domain templates, lifecycle skill wording and fixture eval coverage.
+- Confirmed behavior-changing work without acceptance scenarios is a `P0_blocker`.
+- Confirmed risky/public-contract work requires requirement quality, stable IDs, constraints traceability and API/UI/data traceability.
+- Confirmed unclear stories, business rules, domain events, owner review, accepted gaps, declarative scenario quality and requirement change impact produce deterministic recommendations.
+- Confirmed unsupported methodology claims are rejected as evidence: BDD replaces testing, Gherkin is mandatory, user story template is complete requirements, glossary is ubiquitous language and OpenAPI is requirements source of truth.
 
 ## Evidence Format
 
