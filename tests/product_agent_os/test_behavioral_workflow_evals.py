@@ -19,7 +19,7 @@ class BehavioralWorkflowEvalTest(unittest.TestCase):
         report = validate_behavioral_eval_template(path)
 
         self.assertEqual(report["status"], "ok")
-        self.assertEqual(report["case_count"], 34)
+        self.assertEqual(report["case_count"], 35)
         self.assertEqual(report["missing_required_cases"], [])
         self.assertEqual(report["unsafe_cases"], [])
         self.assertTrue(report["codex_only"])
@@ -36,6 +36,24 @@ class BehavioralWorkflowEvalTest(unittest.TestCase):
         codex = cases["codex-only-compatibility"]
         self.assertEqual(codex["expected"]["supported_surfaces"], ["Codex App", "CLI", "IDE extension"])
         self.assertIn("non-Codex adapter requirement", codex["forbidden"])
+
+        methodology = cases["methodology-intelligence-read-only-first"]
+        for expected in [
+            "complexity/maturity classification",
+            "Delivery Map",
+            "recommendations",
+            "questions for owner",
+            "no target workspace writes",
+            "staged artifacts only after approval",
+        ]:
+            self.assertIn(expected, methodology["expected"]["required_fields"])
+        for forbidden in [
+            "generating docs without recommendation",
+            "claiming readiness from file detection alone",
+            "requiring every methodology domain for a simple workspace",
+            "activating hooks, automation, CI or external writes",
+        ]:
+            self.assertIn(forbidden, methodology["forbidden"])
 
         broad_rewrite = cases["bug-rescue-no-broad-rewrite"]
         self.assertEqual(broad_rewrite["expected"]["usage_mode"], "bug_rescue")

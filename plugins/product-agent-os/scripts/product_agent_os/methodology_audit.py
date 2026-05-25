@@ -11,6 +11,14 @@ from product_agent_os.contracts import CONTROL_PLANE_FILES
 from product_agent_os.methodology_catalog import load_methodology_catalog
 
 
+PRIORITY_ORDER = {
+    "P0_blocker": 0,
+    "P1_high_risk": 1,
+    "P2_recommended": 2,
+    "P3_optional_maturity": 3,
+    "not_applicable": 4,
+}
+
 STACK_MARKERS = {
     "package.json",
     "pyproject.toml",
@@ -69,7 +77,9 @@ def build_methodology_audit(workspace: Path, intent_hint: str = "") -> dict[str,
         complexity_profile["selected"],
         bool(files),
     )
-    recommendations = _recommendations(root, lowered_files, lowered_dirs, observed, intent, complexity_profile["selected"])
+    recommendations = _prioritize_recommendations(
+        _recommendations(root, lowered_files, lowered_dirs, observed, intent, complexity_profile["selected"])
+    )
 
     return {
         "status": "ok",
@@ -432,6 +442,17 @@ def _recommendation(
         "residual_risk": residual_risk,
         "safe_next_action": safe_next_action,
     }
+
+
+def _prioritize_recommendations(recommendations: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    return sorted(
+        recommendations,
+        key=lambda recommendation: (
+            PRIORITY_ORDER.get(str(recommendation.get("priority", "not_applicable")), 99),
+            str(recommendation.get("domain", "")),
+            str(recommendation.get("gate", "")),
+        ),
+    )
 
 
 def _delivery_map(
