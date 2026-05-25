@@ -280,6 +280,85 @@ REQUIREMENTS_DOMAIN_TERMS = (
     "gherkin is mandatory",
     "openapi is requirements source of truth",
 )
+SOLUTION_ARCHITECTURE_GATES = (
+    "solution_architecture_scope_present",
+    "architecture_context_view_present",
+    "architecture_container_boundary_present",
+    "architecture_boundary_per_slice",
+    "boundary_responsibility_owner_present",
+    "bounded_context_architecture_boundary_trace",
+    "dependency_rules_present",
+    "public_contract_boundary_trace_present",
+    "data_ownership_boundary_present",
+    "runtime_deployment_topology_present",
+    "observability_architecture_present",
+    "quality_attribute_scenarios_present",
+    "tradeoff_record_for_high_impact_decision",
+    "adr_for_architecture_decision",
+    "trust_boundary_security_review_present",
+    "domain_to_architecture_trace_present",
+    "diagram_render_check_present",
+    "architecture_fitness_function_present",
+    "migration_rollback_path_present",
+    "architecture_docs_as_code_present",
+    "architecture_owner_review_present",
+    "accepted_gap_recorded",
+)
+SOLUTION_ARCHITECTURE_ARTIFACTS = (
+    "architecture-overview.md",
+    "adr.md",
+    "architecture-review-record.md",
+    "architecture-fitness-functions.md",
+    "trust-boundary-map.md",
+    "architecture-docs-tooling-decision.md",
+    "api-contract-review.md",
+    "database-dictionary.md",
+    "security-risk-review.md",
+    "migration-plan.md",
+    "integration-catalog.md",
+)
+SOLUTION_ARCHITECTURE_EVAL_FIELDS = (
+    "solution_architecture_scope_contract_present",
+    "architecture_context_view_contract_present",
+    "architecture_boundary_contract_present",
+    "boundary_owner_contract_present",
+    "domain_architecture_trace_contract_present",
+    "public_contract_trace_contract_present",
+    "data_ownership_boundary_contract_present",
+    "trust_boundary_review_contract_present",
+    "quality_attribute_scenarios_contract_present",
+    "architecture_decision_record_contract_present",
+    "runtime_observability_contract_present",
+    "diagram_render_check_contract_present",
+    "architecture_fitness_function_contract_present",
+    "migration_rollback_contract_present",
+    "architecture_docs_lifecycle_contract_present",
+    "accepted_gap_contract_present",
+    "unsupported_architecture_claims_rejected_contract_present",
+)
+SOLUTION_ARCHITECTURE_TERMS = (
+    "solution_architecture_scope_present",
+    "architecture_boundary_per_slice",
+    "boundary_responsibility_owner_present",
+    "adr_for_architecture_decision",
+    "diagram_render_check_present",
+    "runtime_deployment_topology_present",
+    "observability_architecture_present",
+    "migration_rollback_path_present",
+    "architecture_fitness_function_present",
+    "architecture-overview.md",
+    "adr.md",
+    "architecture-review-record.md",
+    "architecture-fitness-functions.md",
+    "trust-boundary-map.md",
+    "architecture-docs-tooling-decision.md",
+    "c4/arc42 only when applicable",
+    "architecture-as-code is conditional",
+    "well-architected review is conditional",
+    "architecture means diagrams",
+    "rendered diagram proves correctness",
+    "adr is bureaucracy",
+)
 COMPLETION_EVIDENCE_TERMS = (
     "evidence_before_completion",
     "evidence-before-completion",
@@ -689,6 +768,7 @@ def _expected_checks(
         checks["standards_trigger_contract_present"] = _standards_trigger_contract_present()
         checks["business_product_contract_present"] = _business_product_contract_present()
         checks["requirements_domain_contract_present"] = _requirements_domain_contract_present()
+        checks["solution_architecture_contract_present"] = _solution_architecture_contract_present()
         checks["methodology_applicability_contract_present"] = (
             _methodology_applicability_contract_present(audit)
         )
@@ -1037,6 +1117,55 @@ def _requirements_domain_contract_present() -> bool:
         f"{path.name}\n{path.read_text(encoding='utf-8')}" for path in paths
     ).lower()
     return all(term in payload for term in REQUIREMENTS_DOMAIN_TERMS)
+
+
+def _solution_architecture_contract_present() -> bool:
+    try:
+        catalog = load_methodology_catalog()
+    except (OSError, ValueError, json.JSONDecodeError):
+        return False
+    if validate_methodology_catalog(catalog):
+        return False
+    domains = {
+        str(domain.get("id")): domain
+        for domain in catalog.get("domains", [])
+        if isinstance(domain, dict) and domain.get("id")
+    }
+    solution_architecture = domains.get("solution_architecture")
+    if not isinstance(solution_architecture, dict):
+        return False
+    if not set(SOLUTION_ARCHITECTURE_GATES).issubset(set(solution_architecture.get("gates", []))):
+        return False
+    if not set(SOLUTION_ARCHITECTURE_ARTIFACTS).issubset(set(solution_architecture.get("artifacts", []))):
+        return False
+    if not set(SOLUTION_ARCHITECTURE_EVAL_FIELDS).issubset(set(solution_architecture.get("eval_fields", []))):
+        return False
+
+    paths = [
+        PLUGIN_ROOT / "assets" / "methodology" / "methodology-catalog.json",
+        TEMPLATE_ROOT / "artifact-templates" / "architecture-overview.md",
+        TEMPLATE_ROOT / "artifact-templates" / "adr.md",
+        TEMPLATE_ROOT / "artifact-templates" / "architecture-review-record.md",
+        TEMPLATE_ROOT / "artifact-templates" / "architecture-fitness-functions.md",
+        TEMPLATE_ROOT / "artifact-templates" / "trust-boundary-map.md",
+        TEMPLATE_ROOT / "artifact-templates" / "architecture-docs-tooling-decision.md",
+        TEMPLATE_ROOT / "artifact-templates" / "api-contract-review.md",
+        TEMPLATE_ROOT / "artifact-templates" / "database-dictionary.md",
+        TEMPLATE_ROOT / "artifact-templates" / "security-risk-review.md",
+        TEMPLATE_ROOT / "artifact-templates" / "migration-plan.md",
+        TEMPLATE_ROOT / "artifact-templates" / "integration-catalog.md",
+        PLUGIN_ROOT / "skills" / "workspace-discovery-auditor" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "requirements-author" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "implementation-planner" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "agent-team-designer" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "test-eval-designer" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "risk-reviewer" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "docs-maintainer" / "SKILL.md",
+    ]
+    payload = "\n".join(
+        f"{path.name}\n{path.read_text(encoding='utf-8')}" for path in paths
+    ).lower()
+    return all(term in payload for term in SOLUTION_ARCHITECTURE_TERMS)
 
 
 def _completion_evidence_contract_present() -> bool:

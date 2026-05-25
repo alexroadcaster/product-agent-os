@@ -103,6 +103,7 @@ class FixtureEvalRunnerTest(unittest.TestCase):
         self.assertTrue(results["python-app"]["expected_checks"]["methodology_applicability_contract_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["business_product_contract_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["requirements_domain_contract_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["solution_architecture_contract_present"])
         for check_name in [
             "methodology_catalog_contract_present",
             "methodology_intelligence_contract_present",

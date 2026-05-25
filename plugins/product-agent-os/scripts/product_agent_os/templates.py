@@ -184,6 +184,30 @@ _TEMPLATES: tuple[TemplateSpec, ...] = (
         ".codex/artifact-templates/architecture-overview.md",
     ),
     _spec(
+        "artifact-architecture-review-record",
+        "artifact-templates",
+        "artifact-templates/architecture-review-record.md",
+        ".codex/artifact-templates/architecture-review-record.md",
+    ),
+    _spec(
+        "artifact-architecture-fitness-functions",
+        "artifact-templates",
+        "artifact-templates/architecture-fitness-functions.md",
+        ".codex/artifact-templates/architecture-fitness-functions.md",
+    ),
+    _spec(
+        "artifact-trust-boundary-map",
+        "artifact-templates",
+        "artifact-templates/trust-boundary-map.md",
+        ".codex/artifact-templates/trust-boundary-map.md",
+    ),
+    _spec(
+        "artifact-architecture-docs-tooling-decision",
+        "artifact-templates",
+        "artifact-templates/architecture-docs-tooling-decision.md",
+        ".codex/artifact-templates/architecture-docs-tooling-decision.md",
+    ),
+    _spec(
         "artifact-domain-modeling",
         "artifact-templates",
         "artifact-templates/domain-modeling.md",

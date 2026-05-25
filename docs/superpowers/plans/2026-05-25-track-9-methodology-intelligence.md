@@ -1889,6 +1889,36 @@ Expected: commit succeeds.
 - Create: `trust-boundary-map.md`
 - Create: `architecture-docs-tooling-decision.md`
 
+Deep-audit update from `docs/methodologies/solution-architecture.md` and `docs/sources/methodology-research/solution-architecture.md`:
+
+- The compact task list below must use the full Solution Architecture gate set from the methodology source, not only the initial subset.
+- Additional gates required before implementation: `bounded_context_architecture_boundary_trace`, `adr_for_architecture_decision`, `observability_architecture_present`, and `migration_rollback_path_present`.
+- Unsupported claims must be rejected as evidence: architecture equals diagrams, rendered diagram proves correctness, C4 code diagrams are always required, ADR is bureaucracy, Well-Architected review proves quality, architecture-as-code is always required, and AI can design architecture from chat alone.
+- Template scope for this slice is intentionally four new artifacts plus extensions to `architecture-overview.md` and `adr.md`; broader candidate artifacts such as `boundary-responsibility-map.md`, `quality-attribute-scenarios.md`, `architecture-tradeoff-record.md`, `dependency-rules.md`, `integration-catalog.md`, and `runtime-topology.md` must either be mapped to existing artifacts in this slice or recorded in the Track 9 backlog with an explicit defer reason.
+- Architecture-as-code, C4 detail level, cloud Well-Architected review, and docs portal/tooling are conditional recommendations, not universal gates. Tests must preserve `not_applicable` or accepted-gap behavior for docs-light prototypes, non-cloud work, and architecture notes that do not need rendered/diffable diagrams.
+
+Repeat-review additions to preserve during implementation:
+
+- Catalog eval fields must be explicit and stable: `solution_architecture_scope_contract_present`, `architecture_context_view_contract_present`, `architecture_boundary_contract_present`, `boundary_owner_contract_present`, `domain_architecture_trace_contract_present`, `public_contract_trace_contract_present`, `data_ownership_boundary_contract_present`, `trust_boundary_review_contract_present`, `quality_attribute_scenarios_contract_present`, `architecture_decision_record_contract_present`, `runtime_observability_contract_present`, `diagram_render_check_contract_present`, `architecture_fitness_function_contract_present`, `migration_rollback_contract_present`, `architecture_docs_lifecycle_contract_present`, `accepted_gap_contract_present`, and `unsupported_architecture_claims_rejected_contract_present`.
+- Recommendation artifact mapping must be tested, not inferred: architecture scope/context/container -> `architecture-overview.md`; owner and accepted gaps -> `architecture-review-record.md`; public contracts -> `api-contract-review.md`; data ownership -> `database-dictionary.md`; trust boundaries -> `trust-boundary-map.md` and `security-risk-review.md`; ADR/tradeoffs -> `adr.md`; runtime topology and rollback -> `architecture-overview.md` and `migration-plan.md`; observability, dependency rules and fitness functions -> `architecture-fitness-functions.md`; docs-as-code/render checks -> `architecture-docs-tooling-decision.md`.
+- Existing architecture templates strengthened in this slice must also meet the current artifact operating contract: `Source status:`, owner, accepted gap, residual risk, evidence, verification, rollback or no-rollback rationale, and no secrets/private data guidance.
+
+#### T9-D3 Task Matrix
+
+| ID | Task | Primary files | Acceptance criteria | Verification |
+| --- | --- | --- | --- | --- |
+| `T9-D3-M0` | Refresh plan/backlog before implementation | `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`, `docs/sources/product-agent-os-track-9-backlog.md` | Full source audit deltas are recorded: four additional gates, unsupported claims, template scope, deferred candidate artifacts, false-positive risks, exact eval fields, recommendation artifact mapping, and verification commands. | `python tools\check_docs.py` |
+| `T9-D3-M1` | Add RED catalog contract for `solution_architecture` | `tests/product_agent_os/test_methodology_catalog.py` | Test asserts full gate set, artifact list, explicit eval field names from repeat-review additions, applicability, false-positive routing, maturity/complexity impact and overlaps. | `python -m unittest tests.product_agent_os.test_methodology_catalog -v` fails before catalog implementation on missing architecture gates or eval fields. |
+| `T9-D3-M2` | Add RED audit recommendation coverage | `tests/product_agent_os/test_methodology_audit.py` | Tests cover multi-surface project without architecture overview, public contract/data boundary without owner, diagram without render check, boundary drift, ADR trigger, observability, migration rollback, accepted-gap shape, recommendation gate -> artifact mapping, unsupported claims and typo/format/docs-only false positives. | `python -m unittest tests.product_agent_os.test_methodology_audit -v` fails before audit implementation on missing architecture recommendations. |
+| `T9-D3-M3` | Add RED template, lifecycle and fixture checks | `tests/product_agent_os/test_infrastructure_templates.py`, `tests/product_agent_os/test_lifecycle_skills.py`, `tests/product_agent_os/test_fixture_eval_runner.py` | Tests require four new templates, renderer registration, `solution_architecture_contract_present`, lifecycle skill wording for architecture boundary/owner/ADR/render/runtime/rollback gates, and renderer file count increase by four files from the current T9-D2 baseline. | `python -m unittest tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_fixture_eval_runner -v` fails before templates and eval check exist. |
+| `T9-D3-M4` | Fill `solution_architecture` catalog data | `plugins/product-agent-os/assets/methodology/methodology-catalog.json` | Domain records applies/not-applicable rules, Track 8 scenarios, artifacts, all gates, explicit eval fields and overlaps for requirements, API, data, security, backend, delivery, AI and agent ownership. | Focused catalog test passes for `solution_architecture`. |
+| `T9-D3-M5` | Implement read-only architecture audit recommendations | `plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py` | Audit emits prioritized recommendations for architecture overview, boundary owner, public contract trace, data ownership, ADR, quality attributes, trust boundary, runtime topology, observability, migration rollback, render check and fitness functions; recommendation packets use the explicit artifact mapping; false-positive intents stay `not_applicable`. | Focused audit tests pass and recommendation packets keep the stable shape. |
+| `T9-D3-M6` | Add and register architecture artifact templates | `plugins/product-agent-os/assets/templates/artifact-templates/architecture-review-record.md`, `plugins/product-agent-os/assets/templates/artifact-templates/architecture-fitness-functions.md`, `plugins/product-agent-os/assets/templates/artifact-templates/trust-boundary-map.md`, `plugins/product-agent-os/assets/templates/artifact-templates/architecture-docs-tooling-decision.md`, `plugins/product-agent-os/scripts/product_agent_os/templates.py` | Templates include `Source status:`, owner, evidence, accepted gap, residual risk, approval boundary, verification and no secrets/private data guidance; renderer target paths are `.codex/artifact-templates/<name>`. | Infrastructure template tests pass and rendered templates have no unresolved substitutions. |
+| `T9-D3-M7` | Strengthen existing architecture templates | `plugins/product-agent-os/assets/templates/artifact-templates/architecture-overview.md`, `plugins/product-agent-os/assets/templates/artifact-templates/adr.md` | `architecture-overview.md` covers stakeholders/concerns, architecture question, C4 context/container, boundary responsibility, dependency rules, public contract, data ownership, trust boundary, runtime topology, observability, quality scenarios, render check and owner review. `adr.md` covers ADR trigger, options, tradeoff, verification, rollback and accepted gap. Both templates include `Source status:`, owner, residual risk, evidence, accepted gap, rollback or no-rollback rationale, and no secrets/private data guidance. | Infrastructure template tests pass for required architecture terms and current artifact operating contract. |
+| `T9-D3-M8` | Route Solution Architecture through lifecycle skills | `plugins/product-agent-os/skills/workspace-discovery-auditor/SKILL.md`, `plugins/product-agent-os/skills/requirements-author/SKILL.md`, `plugins/product-agent-os/skills/implementation-planner/SKILL.md`, `plugins/product-agent-os/skills/agent-team-designer/SKILL.md`, `plugins/product-agent-os/skills/test-eval-designer/SKILL.md`, `plugins/product-agent-os/skills/risk-reviewer/SKILL.md`, `plugins/product-agent-os/skills/docs-maintainer/SKILL.md` | Skills require architecture boundary per non-trivial slice, owner evidence, ADR for significant decisions, C4/arc42 only when applicable, render/build evidence, runtime/observability/rollback evidence, and boundary-to-agent ownership for parallel work. | Lifecycle skill tests pass for architecture methodology wording. |
+| `T9-D3-M9` | Add fixture eval contract | `plugins/product-agent-os/scripts/run_fixture_eval.py`, `tests/product_agent_os/test_fixture_eval_runner.py` | `solution_architecture_contract_present` validates catalog gates, artifacts, eval fields, templates and lifecycle skill coverage. `python-app` expected checks include the new contract. | `python plugins\product-agent-os\scripts\run_fixture_eval.py` exits `0` after implementation. |
+| `T9-D3-M10` | Sync docs and control-plane evidence | `PLAN.md`, `TEST.md`, `EVALS.md`, `RUNLOG.md`, `docs/sources/product-agent-os-track-9-backlog.md`, `docs/product-agent-os/methodology-intelligence.md`, `docs/product-agent-os/behavioral-evals.md`, Product-Agent OS README/docs only when behavior is user-facing | Current state records `T9-D3` completion, RED/GREEN evidence, renderer file count delta, deferred candidate artifact rationale, residual risks and next action `T9-D4`. Source registry is updated only if new source-backed claims are added outside existing source entries. | Full verification commands below pass; `git diff --check` exits `0`. Run strict MkDocs only if navigation, Mermaid diagrams, Markdown extensions, MkDocs config or Product-Agent OS docs navigation changed. |
+
 - [ ] **Step 1: Add RED test for architecture gates**
 
 Assert `solution_architecture` gates include:
@@ -1900,19 +1930,47 @@ Assert `solution_architecture` gates include:
     "architecture_container_boundary_present",
     "architecture_boundary_per_slice",
     "boundary_responsibility_owner_present",
+    "bounded_context_architecture_boundary_trace",
     "dependency_rules_present",
     "public_contract_boundary_trace_present",
     "data_ownership_boundary_present",
     "runtime_deployment_topology_present",
+    "observability_architecture_present",
     "quality_attribute_scenarios_present",
     "tradeoff_record_for_high_impact_decision",
+    "adr_for_architecture_decision",
     "trust_boundary_security_review_present",
     "domain_to_architecture_trace_present",
     "diagram_render_check_present",
     "architecture_fitness_function_present",
+    "migration_rollback_path_present",
     "architecture_docs_as_code_present",
     "architecture_owner_review_present",
     "accepted_gap_recorded",
+]
+```
+
+Assert `solution_architecture` eval fields include:
+
+```python
+[
+    "solution_architecture_scope_contract_present",
+    "architecture_context_view_contract_present",
+    "architecture_boundary_contract_present",
+    "boundary_owner_contract_present",
+    "domain_architecture_trace_contract_present",
+    "public_contract_trace_contract_present",
+    "data_ownership_boundary_contract_present",
+    "trust_boundary_review_contract_present",
+    "quality_attribute_scenarios_contract_present",
+    "architecture_decision_record_contract_present",
+    "runtime_observability_contract_present",
+    "diagram_render_check_contract_present",
+    "architecture_fitness_function_contract_present",
+    "migration_rollback_contract_present",
+    "architecture_docs_lifecycle_contract_present",
+    "accepted_gap_contract_present",
+    "unsupported_architecture_claims_rejected_contract_present",
 ]
 ```
 
@@ -1953,24 +2011,51 @@ Recommendations:
 - multi-surface project without architecture overview -> `P1_high_risk`;
 - public contract or data boundary without owner -> `P1_high_risk`;
 - architecture docs without render check -> `P2_recommended`;
-- repeated boundary drift signals -> `P2_recommended` for fitness functions.
+- high-impact decision without ADR or accepted gap -> `P1_high_risk`;
+- service/runtime behavior without observability evidence -> `P1_high_risk`;
+- architecture migration or service split without rollback path -> `P1_high_risk`;
+- repeated boundary drift signals -> `P2_recommended` for fitness functions;
+- unsupported claims listed in the deep-audit update -> `P1_high_risk` as rejected evidence.
+
+Recommendation artifacts:
+
+| Gate or signal | Recommendation artifact |
+| --- | --- |
+| Architecture scope, context view, container boundary | `architecture-overview.md` |
+| Boundary owner, owner review, accepted gap | `architecture-review-record.md` |
+| Public API/event/SDK/generated client contract | `api-contract-review.md` |
+| Persistent data, analytics, PII, migration data ownership | `database-dictionary.md` |
+| Trust boundary and security-sensitive boundary | `trust-boundary-map.md`, `security-risk-review.md` |
+| High-impact decision, tradeoff, ADR trigger | `adr.md` |
+| Runtime topology and migration rollback | `architecture-overview.md`, `migration-plan.md` |
+| Observability, dependency rules, architecture fitness functions | `architecture-fitness-functions.md` |
+| Architecture-as-code, diagram render check, docs lifecycle | `architecture-docs-tooling-decision.md` |
+
+False-positive and accepted-gap coverage must keep C4 detail level, architecture-as-code, Well-Architected review and docs tooling conditional rather than universal requirements.
 
 - [ ] **Step 6: Update skills and evals**
 
-Update planner and risk reviewer to require architecture boundary and owner evidence for high-impact slices. Add fixture eval check `solution_architecture_contract_present`.
+Update planner and risk reviewer to require architecture boundary, owner evidence, ADR trigger, render evidence, runtime/observability evidence and rollback evidence for high-impact slices. Add fixture eval check `solution_architecture_contract_present`.
 
 - [ ] **Step 7: Run verification and commit**
 
 Run:
 
 ```powershell
-python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_fixture_eval_runner -v
+python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_fixture_eval_runner -v
 python plugins\product-agent-os\scripts\run_fixture_eval.py
-git add plugins\product-agent-os tests\product_agent_os docs\sources\product-agent-os-track-9-backlog.md
+python -m unittest discover -s tests -p "test_*.py" -v
+python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json
+python plugins\product-agent-os\scripts\validate_codex_compatibility.py
+python tools\check_docs.py
+git diff --check
+git add plugins\product-agent-os tests\product_agent_os docs\sources\product-agent-os-track-9-backlog.md docs\superpowers\plans\2026-05-25-track-9-methodology-intelligence.md PLAN.md TEST.md EVALS.md RUNLOG.md docs\product-agent-os
 git commit -m "feat: integrate solution architecture methodology"
 ```
 
-Expected: tests and fixture eval pass before commit.
+Expected: focused tests, fixture eval, full unittest, transcript eval, compatibility check, docs check and diff hygiene pass before commit.
+
+Run `python -m mkdocs build --strict` only if implementation changes navigation, Mermaid diagrams, Markdown extensions, MkDocs configuration or Product-Agent OS docs navigation.
 
 ---
 

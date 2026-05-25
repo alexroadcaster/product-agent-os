@@ -45,8 +45,17 @@ Examples:
 
 - business/product work needs a hypothesis, success metric, counter-metric and measurement owner;
 - complex domain work needs domain model and bounded-context traceability;
+- solution architecture work needs scope, context/container boundaries, boundary owner, ADR/tradeoff evidence, public contract trace, data ownership, trust boundary review, observability, rollback and diagram render evidence when applicable;
 - AI/RAG work needs baseline eval, dataset policy, grounding evidence and cost/latency guardrails;
 - release or migration work needs rollback, compatibility and owner approval evidence.
+
+## Implemented Domain Contracts
+
+| Domain | Fixture eval check | Current artifact coverage |
+| --- | --- | --- |
+| Business/Product | `business_product_contract_present` | `product-brief.md`, `value-proposition.md`, `opportunity-tree.md`, `experiment-plan.md`, `tracking-plan.md`, `metric-spec.md`. |
+| Requirements/Domain | `requirements_domain_contract_present` | `requirement-registry.md`, `stakeholder-owner-map.md`, `story-slice-map.md`, `requirements-traceability-matrix.md`, `business-rules.md`, `example-map.md`, `domain-modeling.md`, `domain-review-record.md`. |
+| Solution Architecture | `solution_architecture_contract_present` | `architecture-overview.md`, `adr.md`, `architecture-review-record.md`, `architecture-fitness-functions.md`, `trust-boundary-map.md`, `architecture-docs-tooling-decision.md`. |
 
 ## Approval Boundary
 

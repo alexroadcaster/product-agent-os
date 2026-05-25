@@ -282,6 +282,89 @@ class MethodologyAuditContractTest(unittest.TestCase):
                 self.assertEqual(recommendation["priority"], "P1_high_risk")
                 self.assertEqual(recommendation["artifact"], "domain-review-record.md")
 
+    def test_solution_architecture_recommends_boundary_decision_runtime_and_evidence_artifacts(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "package.json").write_text('{"scripts":{"test":"vitest"}}\n', encoding="utf-8")
+            (root / "openapi.yaml").write_text(
+                "openapi: 3.1.0\ninfo:\n  title: API\n  version: 1.0.0\npaths: {}\n",
+                encoding="utf-8",
+            )
+            (root / "migrations").mkdir()
+            (root / "migrations" / "001_split_orders.sql").write_text("alter table orders add column region text;\n")
+            (root / "docs").mkdir()
+            (root / "docs" / "context.mmd").write_text("flowchart LR\n  A-->B\n", encoding="utf-8")
+            result = build_methodology_audit(
+                root,
+                intent_hint=(
+                    "ship multi-service public API service split with generated client, persistent data, "
+                    "PII, trust boundary, observability, runtime topology, ADR, rollback and parallel agent ownership"
+                ),
+            )
+
+        self.assertNotEqual(self._domain_status(result, "solution_architecture"), "not_applicable")
+        expected = {
+            "solution_architecture_scope_present": ("P1_high_risk", "architecture-overview.md"),
+            "architecture_context_view_present": ("P1_high_risk", "architecture-overview.md"),
+            "architecture_container_boundary_present": ("P1_high_risk", "architecture-overview.md"),
+            "boundary_responsibility_owner_present": ("P1_high_risk", "architecture-review-record.md"),
+            "public_contract_boundary_trace_present": ("P1_high_risk", "api-contract-review.md"),
+            "data_ownership_boundary_present": ("P1_high_risk", "database-dictionary.md"),
+            "trust_boundary_security_review_present": ("P1_high_risk", "trust-boundary-map.md"),
+            "adr_for_architecture_decision": ("P1_high_risk", "adr.md"),
+            "observability_architecture_present": ("P1_high_risk", "architecture-fitness-functions.md"),
+            "migration_rollback_path_present": ("P1_high_risk", "migration-plan.md"),
+            "diagram_render_check_present": ("P2_recommended", "architecture-docs-tooling-decision.md"),
+            "architecture_fitness_function_present": ("P2_recommended", "architecture-fitness-functions.md"),
+        }
+        for gate, (priority, artifact) in expected.items():
+            with self.subTest(gate=gate):
+                recommendation = self._recommendation_by_gate(result, gate)
+                self.assertEqual(recommendation["priority"], priority)
+                self.assertEqual(recommendation["artifact"], artifact)
+
+    def test_solution_architecture_false_positive_intents_are_not_applicable(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        for intent in [
+            "typo-only docs edit",
+            "formatting-only markdown cleanup",
+            "docs-light prototype without reviewed/diffable diagrams",
+            "non-cloud work without Well-Architected review",
+        ]:
+            with self.subTest(intent=intent):
+                with tempfile.TemporaryDirectory() as tmp:
+                    root = Path(tmp)
+                    (root / "README.md").write_text("# Demo\n", encoding="utf-8")
+                    result = build_methodology_audit(root, intent_hint=intent)
+
+                self.assertEqual(self._domain_status(result, "solution_architecture"), "not_applicable")
+
+    def test_solution_architecture_rejects_unsupported_methodology_claims_as_evidence(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        unsupported_claims = [
+            "Architecture means diagrams",
+            "rendered diagram proves correctness",
+            "C4 code diagrams are always required",
+            "ADR is bureaucracy",
+            "Well-Architected review proves architecture quality",
+            "Architecture-as-code is always required",
+            "AI can design architecture from chat alone",
+        ]
+        for claim in unsupported_claims:
+            with self.subTest(claim=claim):
+                with tempfile.TemporaryDirectory() as tmp:
+                    root = Path(tmp)
+                    (root / "package.json").write_text('{"scripts":{"test":"pytest"}}\n', encoding="utf-8")
+                    result = build_methodology_audit(root, intent_hint=claim)
+
+                recommendation = self._recommendation_by_gate(result, "unsupported_architecture_claims_rejected")
+                self.assertEqual(recommendation["priority"], "P1_high_risk")
+                self.assertEqual(recommendation["artifact"], "architecture-review-record.md")
+
 
 if __name__ == "__main__":
     unittest.main()

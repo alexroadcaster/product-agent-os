@@ -27,7 +27,7 @@ Track 9 turns the methodology atlas in `docs/methodologies/` into read-only Prod
 | --- | --- | --- | --- |
 | `done` | `T9-D1` | `business-product.md` | Product hypothesis, value, opportunities, metrics, guardrails and measurement. |
 | `done` | `T9-D2` | `requirements-domain.md` | Requirements quality, acceptance scenarios, business rules, domain model, traceability and change impact. |
-| `planned` | `T9-D3` | `solution-architecture.md` | Architecture boundaries, views, ADRs, quality attributes, tradeoffs, ownership and fitness checks. |
+| `done` | `T9-D3` | `solution-architecture.md` | Architecture boundaries, views, ADRs, quality attributes, tradeoffs, ownership and fitness checks. |
 | `planned` | `T9-D4` | `quality-testing-evals.md` | Risk-based tests, evals, current evidence, runtime/manual/visual evidence and CI quality gates. |
 | `planned` | `T9-D5` | `codex-agentic-workflow.md` | Control-plane maturity, model/reasoning policy, handoffs, subagents, MCP, hooks, skills, plugins and automation promotion. |
 | `planned` | `T9-D6` | `frontend.md` | UI behavior, component states, Storybook applicability, visual/a11y evidence, responsive checks, performance and FSD boundaries. |
@@ -110,6 +110,35 @@ Severity and false-positive resolution:
 - Typo-only docs edits, formatting-only edits and dependency metadata without behavior impact keep `requirements_domain` not applicable for README-only work.
 - Unsupported claims are rejected as evidence: BDD replaces testing, Gherkin is mandatory, user story template is complete requirements, glossary is ubiquitous language, and OpenAPI is requirements source of truth.
 
+### `T9-D3` Solution Architecture Integration
+
+Status: `done`
+
+Source audited: `docs/methodologies/solution-architecture.md`
+
+Deep-audit deltas implemented:
+
+- Used the full Solution Architecture gate set, including `bounded_context_architecture_boundary_trace`, `adr_for_architecture_decision`, `observability_architecture_present` and `migration_rollback_path_present`.
+- Kept C4 detail level, architecture-as-code, Well-Architected review and docs tooling conditional rather than universal requirements.
+- Rejected unsupported claims as evidence: architecture means diagrams, rendered diagram proves correctness, C4 code diagrams are always required, ADR is bureaucracy, Well-Architected review proves architecture quality, architecture-as-code is always required and AI can design architecture from chat alone.
+- Mapped candidate artifacts into this slice or existing artifacts; deferred standalone `boundary-responsibility-map.md`, `quality-attribute-scenarios.md`, `architecture-tradeoff-record.md`, `dependency-rules.md` and `runtime-topology.md` because their fields are covered by `architecture-overview.md`, `adr.md`, `architecture-review-record.md`, `architecture-fitness-functions.md`, `integration-catalog.md` and `migration-plan.md` until a later domain proves a separate artifact is needed.
+
+Implemented scope:
+
+- Added `solution_architecture` catalog coverage for architecture scope, context/container views, slice boundaries, boundary owner, bounded-context trace, dependency rules, public contracts, data ownership, runtime topology, observability, quality attributes, ADR/tradeoffs, trust boundary review, diagram render checks, fitness functions, migration rollback, docs lifecycle, owner review and accepted gaps.
+- Added staged artifact templates: `architecture-review-record.md`, `architecture-fitness-functions.md`, `trust-boundary-map.md`, and `architecture-docs-tooling-decision.md`.
+- Strengthened `architecture-overview.md` and `adr.md` with owner, evidence, accepted gap, residual risk, rollback/no-rollback rationale and no-secrets guidance.
+- Added read-only audit recommendations and false-positive coverage for multi-surface work, public contracts, data ownership, trust boundaries, ADR, observability, rollback, diagram render checks, architecture fitness functions and typo/format/docs-light/non-cloud work.
+- Routed Solution Architecture methodology into `workspace-discovery-auditor`, `requirements-author`, `implementation-planner`, `agent-team-designer`, `test-eval-designer`, `risk-reviewer` and `docs-maintainer`.
+- Added fixture eval check `solution_architecture_contract_present`; renderer file count is now 92 after adding four Solution Architecture artifact templates.
+
+Severity and false-positive resolution:
+
+- Missing architecture scope, context/container boundaries, boundary owner, public contract trace, data ownership, trust boundary review, ADR, observability and migration rollback are `P1_high_risk` when applicable.
+- Diagram render checks and architecture fitness functions are `P2_recommended` unless a later risk gate raises severity.
+- Typo-only docs edits, formatting-only edits, docs-light prototypes without reviewed/diffable diagrams and non-cloud work without Well-Architected review keep `solution_architecture` not applicable.
+- Unsupported architecture claims are rejected as evidence and routed to `architecture-review-record.md`.
+
 ## Cross-Domain Synthesis Backlog
 
 | Status | Item | Reason |
@@ -121,6 +150,7 @@ Severity and false-positive resolution:
 | `planned` | Standardize no-production-telemetry fallback language. | Product, release and operations domains need the same rule: lack of telemetry is a gap, not success evidence. |
 | `planned` | Carry workflow-promotion value evidence into agentic workflow and operations domains. | Automation promotion should require manual stability plus value evidence such as engineering time saved before any schedule or external action. |
 | `planned` | Synthesize requirement/API/UI/data traceability across Requirements, Architecture, API, UI and Data domains. | T9-D2 introduces the trace chain before later domains own contract, UI and schema-specific enforcement. |
+| `planned` | Split architecture candidate artifacts only when later slices prove separate ownership. | T9-D3 maps boundary responsibility, quality scenarios, tradeoff records, dependency rules and runtime topology into existing architecture artifacts to avoid template sprawl. |
 | `planned` | Reuse stakeholder/owner mapping across Product, Requirements, Security, Release and Operations domains. | Owner review appears repeatedly and should have one durable shape for source, decision authority and escalation. |
 | `planned` | Carry story-slice and MVP boundary evidence into Product, Frontend and Delivery domains. | Requirements slicing should inform UI scope, rollout scope and release notes without forcing heavy ceremonies. |
 | `planned` | Normalize domain event requirements across Requirements, API/Integrations and Data domains. | Event meaning, schema, ordering, idempotency and privacy classification will be shared by multiple later slices. |
@@ -156,6 +186,19 @@ Domain slices must also run the focused catalog/audit tests, fixture evals and a
 - `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0`; fixture renderer file count is now 88 and `requirements_domain_contract_present` is true for `python-app`.
 - `python -m unittest discover -s tests -p "test_*.py" -v` ran 357 tests with `OK`.
 - `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
+
+`T9-D3` evidence:
+
+- RED runs failed as expected before implementation on missing `solution_architecture` catalog gates, audit recommendations, architecture templates, lifecycle skill routing and fixture eval check.
+- `python -m unittest tests.product_agent_os.test_methodology_catalog -v` ran 7 tests with `OK`.
+- `python -m unittest tests.product_agent_os.test_methodology_audit -v` ran 15 tests with `OK`.
+- `python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_fixture_eval_runner -v` ran 120 tests with `OK`.
+- `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0`; fixture renderer file count is now 92 and `solution_architecture_contract_present` is true for `python-app`.
+- `python -m unittest discover -s tests -p "test_*.py" -v` ran 362 tests with `OK`.
+- `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 4 sessions and 0 failures.
+- `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
+- `python tools\check_docs.py` passed.
+- `git diff --check` exited `0`.
 
 ## Residual Risks
 

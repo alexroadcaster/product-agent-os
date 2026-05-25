@@ -611,6 +611,43 @@ class LifecycleSkillsTest(unittest.TestCase):
         ]:
             self.assertIn(expected, docs_maintainer)
 
+    def test_lifecycle_skills_route_solution_architecture_methodology(self):
+        shared_terms = [
+            "solution_architecture_scope_present",
+            "architecture_boundary_per_slice",
+            "boundary_responsibility_owner_present",
+            "adr_for_architecture_decision",
+            "diagram_render_check_present",
+            "runtime_deployment_topology_present",
+            "observability_architecture_present",
+            "migration_rollback_path_present",
+            "architecture_fitness_function_present",
+            "architecture-overview.md",
+            "adr.md",
+            "architecture-review-record.md",
+            "architecture-fitness-functions.md",
+            "trust-boundary-map.md",
+            "architecture-docs-tooling-decision.md",
+            "c4/arc42 only when applicable",
+            "architecture-as-code is conditional",
+            "well-architected review is conditional",
+        ]
+        skill_names = [
+            "workspace-discovery-auditor",
+            "requirements-author",
+            "implementation-planner",
+            "agent-team-designer",
+            "test-eval-designer",
+            "risk-reviewer",
+            "docs-maintainer",
+        ]
+
+        for name in skill_names:
+            text = self._skill_text(name).lower()
+            with self.subTest(name=name):
+                for expected in shared_terms:
+                    self.assertIn(expected, text)
+
     def test_lifecycle_skills_generalize_evidence_before_completion(self):
         shared_terms = [
             "evidence-before-completion",
