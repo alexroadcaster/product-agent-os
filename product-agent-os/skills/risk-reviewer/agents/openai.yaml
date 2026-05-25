@@ -1,6 +1,0 @@
-interface:
-  display_name: "Risk Reviewer"
-  short_description: "Stages severity-led risk findings, missing tests, approval risks, and readiness verdicts."
-  default_prompt: "Use $risk-reviewer to review this project slice before release readiness."
-policy:
-  allow_implicit_invocation: false

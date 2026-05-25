@@ -1,6 +1,0 @@
-interface:
-  display_name: "Project Lifecycle Orchestrator"
-  short_description: "Routes Product-Agent OS lifecycle state."
-  default_prompt: "Use $project-lifecycle-orchestrator to route this Product-Agent OS project to the next staged lifecycle skill."
-policy:
-  allow_implicit_invocation: false

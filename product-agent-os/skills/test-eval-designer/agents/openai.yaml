@@ -1,6 +1,0 @@
-interface:
-  display_name: "Test Eval Designer"
-  short_description: "Stages deterministic checks, manual checks, eval gates, thresholds, and test gaps."
-  default_prompt: "Use $test-eval-designer to design verification and eval gates for this project."
-policy:
-  allow_implicit_invocation: false

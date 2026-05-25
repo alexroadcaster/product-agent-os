@@ -1,6 +1,0 @@
-interface:
-  display_name: "Workspace Discovery Auditor"
-  short_description: "Audits workspace state read-only."
-  default_prompt: "Use $workspace-discovery-auditor to audit this workspace read-only and produce a staged Product-Agent OS discovery packet."
-policy:
-  allow_implicit_invocation: false

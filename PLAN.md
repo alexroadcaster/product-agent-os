@@ -15,7 +15,7 @@ Generated at: 2026-05-24
 - Primary implementation boundary: `plugins/product-agent-os/`.
 - Documentation boundary: `docs/product-agent-os/`, `docs/product-agent/`, `docs/sources/`, root control-plane files.
 - Tests boundary: `tests/product_agent_os/`.
-- Out of scope unless explicitly requested: root `product-agent-os/` packaged copy, external automation activation, marketplace publishing, live target-workspace writes.
+- Out of scope unless explicitly requested: separate `product-agent-os/` packaged copy or release artifact, external automation activation, marketplace publishing, live target-workspace writes.
 
 ## Next Implementation Queue
 

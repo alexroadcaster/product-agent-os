@@ -1,5 +1,0 @@
-[sandbox]
-mode = "workspace-write"
-
-[approvals]
-policy = "on-request"
