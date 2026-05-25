@@ -99,6 +99,17 @@ Generated at: {generated_at}
 - Quality artifacts: `quality-strategy.md`, `test-eval-matrix.md`, `ci-evidence-record.md`, `flaky-test-policy.md`, `manual-qa-evidence.md`
 - Coverage is a signal, not proof:
 - Quality status: `present_unverified | explicit_gap_accepted | approval_required`
+- Frontend methodology:
+- `frontend`:
+- Artifacts: `frontend-flow-spec.md`, `frontend-state-matrix.md`, `frontend-visual-qa.md`, `frontend-accessibility-review.md`, `frontend-performance-budget.md`
+- Aliases: `ui-flow-spec.md`, `component-state-matrix.md`, `accessibility-review.md`
+- Gates: `frontend_user_flow_acceptance_present`, `frontend_component_docs_present`, `frontend_component_state_matrix_present`, `frontend_design_system_boundary_present`, `frontend_fsd_boundary_reviewed`, `frontend_api_contract_alignment_present`, `frontend_accessibility_review_present`, `frontend_keyboard_focus_contract_present`, `frontend_responsive_viewport_matrix_present`, `frontend_visual_evidence_present`, `frontend_runtime_console_evidence_present`, `frontend_performance_budget_present`, `frontend_browser_support_present`, `frontend_content_i18n_boundary_present`, `frontend_interaction_test_evidence_present`
+- Route params, auth/permission, SEO/meta:
+- Token owner, variant policy:
+- Local state, server-cache, persisted state:
+- Browser/runtime evidence, console status, Playwright trace:
+- Baseline owner, reduced motion, input modality, WCAG 2.2 AA, external visual service approval:
+- Unsupported claims rejected: Storybook proves UI quality, desktop-only screenshot proves responsive UI, automated accessibility addon output is enough, lab Web Vitals always represent production UX, code inspection proves UI completion.
 - Codex agentic workflow:
 - `codex_agentic_workflow`:
 - Runtime routes: Codex App, CLI, IDE extension, `codex exec`, GitHub Action, MCP, Agents SDK, automation

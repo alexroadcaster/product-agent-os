@@ -88,6 +88,16 @@ Generated at: {generated_at}
 - Public API:
 - Import rule:
 - FSD accepted gap or not applicable reason:
+- Frontend methodology (`frontend`):
+- Frontend flow artifact: `frontend-flow-spec.md` (`ui-flow-spec.md` alias)
+- Frontend state artifact: `frontend-state-matrix.md` (`component-state-matrix.md` alias)
+- Frontend visual QA artifact: `frontend-visual-qa.md`
+- Frontend accessibility artifact: `frontend-accessibility-review.md` (`accessibility-review.md` alias)
+- Frontend performance artifact: `frontend-performance-budget.md`
+- Frontend gates: `frontend_user_flow_acceptance_present`, `frontend_component_docs_present`, `frontend_component_state_matrix_present`, `frontend_design_system_boundary_present`, `frontend_fsd_boundary_reviewed`, `frontend_api_contract_alignment_present`, `frontend_accessibility_review_present`, `frontend_keyboard_focus_contract_present`, `frontend_responsive_viewport_matrix_present`, `frontend_visual_evidence_present`, `frontend_runtime_console_evidence_present`, `frontend_performance_budget_present`, `frontend_browser_support_present`, `frontend_content_i18n_boundary_present`, `frontend_interaction_test_evidence_present`
+- Route params, auth/permission, SEO/meta, token owner, variant policy, local state, server-cache and persisted state:
+- Browser/runtime evidence, console status, Playwright trace, baseline owner, reduced motion, input modality, WCAG 2.2 AA and external visual service approval:
+- Unsupported frontend claims: Storybook proves UI quality, desktop-only screenshot proves responsive UI, automated accessibility addon output is enough, lab Web Vitals always represent production UX, code inspection proves UI completion.
 - Ubiquitous language traceability (`ubiquitous_language_traceability`):
 - Term-to-requirement trace:
 - API/event/contract:

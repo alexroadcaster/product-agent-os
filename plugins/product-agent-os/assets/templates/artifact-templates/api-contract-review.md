@@ -6,8 +6,11 @@ Project: {project_name}
 
 - HTTP API covered by OpenAPI:
 - Message-driven API covered by AsyncAPI:
+- Pact or provider contract:
+- protobuf / gRPC contract:
 - Generated clients or SDKs:
 - Consumers:
+- Linked backend-service-overview.md:
 
 ## Standards Trigger Policy
 
@@ -57,5 +60,7 @@ Project: {project_name}
 
 - Contract tests:
 - Integration tests:
+- Backend code sync:
+- API/event contract sync with code:
 - Generated docs build:
 - Consumer review:

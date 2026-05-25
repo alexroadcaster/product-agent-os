@@ -46,6 +46,20 @@ Use this artifact for `solution_architecture_scope_present`, `architecture_conte
 | --- | --- | --- | --- | --- | --- | --- |
 |  |  |  |  |  |  |  |
 
+## Backend Boundary Overlay
+
+Use this section with `backend-service-overview.md` when backend runtime or service ownership changes.
+
+- Backend unit classification:
+- Purpose:
+- Owner:
+- Inbound contracts:
+- Outbound dependencies:
+- Data ownership:
+- Deployment/runtime shape:
+- Modular monolith or microservice rationale:
+- ADR or owner-review link:
+
 ## Domain Model Boundary Traceability
 
 Use this section when a domain model exists. It keeps `context-to-boundary traceability` visible from architecture review, so every mapped bounded context has a matching architecture boundary and clear ownership.

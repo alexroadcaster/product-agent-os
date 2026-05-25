@@ -114,6 +114,22 @@ REQUIRED_TARGETS = {
     ".codex/artifact-templates/hook-governance.md",
     ".codex/artifact-templates/skill-promotion-record.md",
     ".codex/artifact-templates/agent-eval-workflow.md",
+    ".codex/artifact-templates/frontend-flow-spec.md",
+    ".codex/artifact-templates/frontend-state-matrix.md",
+    ".codex/artifact-templates/frontend-visual-qa.md",
+    ".codex/artifact-templates/frontend-accessibility-review.md",
+    ".codex/artifact-templates/frontend-performance-budget.md",
+    ".codex/artifact-templates/backend-service-overview.md",
+    ".codex/artifact-templates/backend-runtime-behavior.md",
+    ".codex/artifact-templates/backend-dependency-failure-matrix.md",
+    ".codex/artifact-templates/backend-observability-map.md",
+    ".codex/artifact-templates/backend-slo-sheet.md",
+    ".codex/artifact-templates/backend-health-check-contract.md",
+    ".codex/artifact-templates/backend-job-queue-contract.md",
+    ".codex/artifact-templates/backend-data-consistency-record.md",
+    ".codex/artifact-templates/backend-config-secrets-manifest.md",
+    ".codex/artifact-templates/backend-release-rollback-notes.md",
+    ".codex/artifact-templates/backend-operational-runbook.md",
     ".codex/runlogs/archive/README.md",
     ".codex/evals/project-readiness.json",
     ".codex/evals/handoff-completeness.json",
@@ -261,6 +277,179 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 text = path.read_text(encoding="utf-8")
                 for term in required_terms:
                     self.assertIn(term, text)
+
+    def test_frontend_artifact_templates_have_operating_contracts(self):
+        expected_templates = [
+            "frontend-flow-spec.md",
+            "frontend-state-matrix.md",
+            "frontend-visual-qa.md",
+            "frontend-accessibility-review.md",
+            "frontend-performance-budget.md",
+        ]
+        required_terms = [
+            "Source status:",
+            "Owner",
+            "Evidence",
+            "Accepted Gap",
+            "Residual Risk",
+            "Approval Boundary",
+            "Verification",
+            "Rollback",
+            "No Secrets",
+            "frontend_user_flow_acceptance_present",
+            "frontend_runtime_console_evidence_present",
+        ]
+
+        for filename in expected_templates:
+            path = TEMPLATE_ROOT / "artifact-templates" / filename
+            with self.subTest(filename=filename):
+                self.assertTrue(path.exists(), path)
+                text = path.read_text(encoding="utf-8")
+                for term in required_terms:
+                    self.assertIn(term, text)
+
+    def test_frontend_templates_connect_control_plane_and_evals(self):
+        payloads = {
+            "frontend-flow-spec.md": (
+                TEMPLATE_ROOT / "artifact-templates" / "frontend-flow-spec.md"
+            ).read_text(encoding="utf-8").lower(),
+            "frontend-state-matrix.md": (
+                TEMPLATE_ROOT / "artifact-templates" / "frontend-state-matrix.md"
+            ).read_text(encoding="utf-8").lower(),
+            "frontend-visual-qa.md": (
+                TEMPLATE_ROOT / "artifact-templates" / "frontend-visual-qa.md"
+            ).read_text(encoding="utf-8").lower(),
+            "frontend-accessibility-review.md": (
+                TEMPLATE_ROOT / "artifact-templates" / "frontend-accessibility-review.md"
+            ).read_text(encoding="utf-8").lower(),
+            "frontend-performance-budget.md": (
+                TEMPLATE_ROOT / "artifact-templates" / "frontend-performance-budget.md"
+            ).read_text(encoding="utf-8").lower(),
+            "component-card.md": (
+                TEMPLATE_ROOT / "artifact-templates" / "component-card.md"
+            ).read_text(encoding="utf-8").lower(),
+            "control-plane": "\n".join(
+                (TEMPLATE_ROOT / "control-plane" / name).read_text(encoding="utf-8").lower()
+                for name in ["PLAN.md", "TEST.md", "EVALS.md", "RUNLOG.md"]
+            ),
+            "project-readiness.json": (TEMPLATE_ROOT / "evals" / "project-readiness.json").read_text(
+                encoding="utf-8"
+            ).lower(),
+            "behavioral-workflows.json": (
+                TEMPLATE_ROOT / "evals" / "behavioral-workflows.json"
+            ).read_text(encoding="utf-8").lower(),
+        }
+
+        shared_terms = [
+            "frontend",
+            "frontend-flow-spec.md",
+            "frontend-state-matrix.md",
+            "frontend-visual-qa.md",
+            "frontend-accessibility-review.md",
+            "frontend-performance-budget.md",
+            "ui-flow-spec.md",
+            "component-state-matrix.md",
+            "accessibility-review.md",
+            "route params",
+            "auth/permission",
+            "seo/meta",
+            "token owner",
+            "variant policy",
+            "local state",
+            "server-cache",
+            "persisted state",
+            "browser/runtime evidence",
+            "console status",
+            "playwright trace",
+            "baseline owner",
+            "reduced motion",
+            "input modality",
+            "wcag 2.2 aa",
+            "external visual service approval",
+            "storybook proves ui quality",
+        ]
+        for name, text in payloads.items():
+            with self.subTest(name=name):
+                for expected in shared_terms:
+                    self.assertIn(expected, text)
+
+    def test_backend_artifact_templates_have_operating_contracts(self):
+        expected_templates = [
+            "backend-service-overview.md",
+            "backend-runtime-behavior.md",
+            "backend-dependency-failure-matrix.md",
+            "backend-observability-map.md",
+            "backend-slo-sheet.md",
+            "backend-health-check-contract.md",
+            "backend-job-queue-contract.md",
+            "backend-data-consistency-record.md",
+            "backend-config-secrets-manifest.md",
+            "backend-release-rollback-notes.md",
+            "backend-operational-runbook.md",
+        ]
+        required_terms = [
+            "Source status:",
+            "Owner",
+            "Evidence",
+            "Accepted Gap",
+            "Residual Risk",
+            "Approval Boundary",
+            "Verification",
+            "Rollback",
+            "No Secrets",
+            "backend_service_boundary_present",
+            "backend_runtime_behavior_present",
+            "backend_rollback_plan_present",
+        ]
+
+        for filename in expected_templates:
+            path = TEMPLATE_ROOT / "artifact-templates" / filename
+            with self.subTest(filename=filename):
+                self.assertTrue(path.exists(), path)
+                text = path.read_text(encoding="utf-8")
+                for term in required_terms:
+                    self.assertIn(term, text)
+
+    def test_backend_templates_connect_architecture_api_and_quality_evidence(self):
+        filenames = [
+            "backend-service-overview.md",
+            "backend-runtime-behavior.md",
+            "backend-dependency-failure-matrix.md",
+            "backend-observability-map.md",
+            "backend-job-queue-contract.md",
+            "architecture-overview.md",
+            "api-contract-review.md",
+            "quality-strategy.md",
+            "test-eval-matrix.md",
+            "manual-qa-evidence.md",
+        ]
+        combined = "\n".join(
+            (TEMPLATE_ROOT / "artifact-templates" / filename).read_text(encoding="utf-8").lower()
+            for filename in filenames
+        )
+
+        for expected in [
+            "backend-service-overview.md",
+            "backend-runtime-behavior.md",
+            "purpose",
+            "owner",
+            "inbound contracts",
+            "outbound dependencies",
+            "data ownership",
+            "deployment/runtime shape",
+            "openapi",
+            "asyncapi",
+            "pact",
+            "protobuf",
+            "unit",
+            "integration",
+            "contract",
+            "runtime",
+            "operational checks",
+            "code inspection alone",
+        ]:
+            with self.subTest(expected=expected):
+                self.assertIn(expected, combined)
 
     def test_template_text_has_no_unsafe_literals(self):
         for item in required_templates():
@@ -1094,6 +1283,177 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 "approval_required",
                 "residual risk",
             ],
+            "frontend-flow-spec.md": [
+                "frontend_user_flow_acceptance_present",
+                "ui-flow-spec.md",
+                "route params",
+                "auth/permission",
+                "seo/meta",
+                "frontend_runtime_console_evidence_present",
+                "no secrets",
+                "residual risk",
+            ],
+            "frontend-state-matrix.md": [
+                "frontend_component_state_matrix_present",
+                "component-state-matrix.md",
+                "local state",
+                "server-cache",
+                "persisted state",
+                "storybook proves ui quality",
+                "no secrets",
+                "residual risk",
+            ],
+            "frontend-visual-qa.md": [
+                "frontend_visual_evidence_present",
+                "frontend_runtime_console_evidence_present",
+                "browser/runtime evidence",
+                "console status",
+                "playwright trace",
+                "baseline owner",
+                "external visual service approval",
+                "no secrets",
+            ],
+            "frontend-accessibility-review.md": [
+                "frontend_accessibility_review_present",
+                "frontend_keyboard_focus_contract_present",
+                "accessibility-review.md",
+                "wcag 2.2 aa",
+                "keyboard",
+                "focus",
+                "no secrets",
+                "residual risk",
+            ],
+            "frontend-performance-budget.md": [
+                "frontend_performance_budget_present",
+                "lcp",
+                "inp",
+                "cls",
+                "lab vs field/rum",
+                "playwright trace",
+                "no secrets",
+                "residual risk",
+            ],
+            "backend-service-overview.md": [
+                "backend_service_boundary_present",
+                "backend_runtime_behavior_present",
+                "purpose",
+                "owner",
+                "inbound contracts",
+                "outbound dependencies",
+                "data ownership",
+                "deployment/runtime shape",
+                "ports and adapters",
+                "openapi",
+                "no secrets",
+                "residual risk",
+            ],
+            "backend-runtime-behavior.md": [
+                "backend_runtime_behavior_present",
+                "timeout",
+                "retry",
+                "backoff",
+                "max attempts",
+                "idempotency",
+                "replay",
+                "recovery",
+                "code inspection alone",
+                "no secrets",
+                "residual risk",
+            ],
+            "backend-dependency-failure-matrix.md": [
+                "backend_dependency_failure_matrix_present",
+                "timeout",
+                "retry",
+                "circuit breaker",
+                "fallback",
+                "alert",
+                "owner",
+                "no secrets",
+                "residual risk",
+            ],
+            "backend-observability-map.md": [
+                "backend_observability_contract_present",
+                "traces",
+                "metrics",
+                "logs",
+                "dashboards",
+                "alerts",
+                "correlation ids",
+                "redaction",
+                "no secrets",
+                "residual risk",
+            ],
+            "backend-slo-sheet.md": [
+                "backend_slo_or_gap_present",
+                "user journey",
+                "sli",
+                "slo target",
+                "measurement window",
+                "alert policy",
+                "no secrets",
+                "residual risk",
+            ],
+            "backend-health-check-contract.md": [
+                "backend_health_probe_contract_present",
+                "liveness",
+                "readiness",
+                "startup",
+                "platform-unavailable gap",
+                "no secrets",
+                "residual risk",
+            ],
+            "backend-job-queue-contract.md": [
+                "backend_job_queue_contract_present",
+                "payload contract",
+                "retry policy",
+                "dead-letter behavior",
+                "idempotency key",
+                "replay",
+                "no secrets",
+                "residual risk",
+            ],
+            "backend-data-consistency-record.md": [
+                "backend_data_consistency_strategy_present",
+                "transaction boundary",
+                "consistency model",
+                "outbox",
+                "saga",
+                "compensation",
+                "recovery path",
+                "no secrets",
+                "residual risk",
+            ],
+            "backend-config-secrets-manifest.md": [
+                "backend_config_secrets_boundary_present",
+                "env/config keys without values",
+                "secret source",
+                "rotation notes",
+                "local/prod parity",
+                "required/optional",
+                "no secrets",
+                "residual risk",
+            ],
+            "backend-release-rollback-notes.md": [
+                "backend_rollback_plan_present",
+                "migration",
+                "feature flag",
+                "rollback trigger",
+                "replay",
+                "data recovery",
+                "no secrets",
+                "residual risk",
+            ],
+            "backend-operational-runbook.md": [
+                "backend_rollback_plan_present",
+                "common failures",
+                "dashboard links",
+                "log links",
+                "recovery steps",
+                "escalation",
+                "operational checks",
+                "no secrets",
+                "residual risk",
+            ],
         }
         self.assertEqual(set(templates), set(expected_templates))
         for name, required_terms in expected_templates.items():
@@ -1357,6 +1717,7 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 "fresh-context-handoff",
                 "evidence-before-completion",
                 "quality-current-evidence-before-completion",
+                "frontend-evidence-before-completion",
                 "finish-options",
                 "codex-only-compatibility",
                 "cost-model-budget",
@@ -1768,6 +2129,7 @@ class InfrastructureTemplateTest(unittest.TestCase):
         self.assertIn("bounded_context_architecture_boundary_trace", expected["methodology_gates"])
         self.assertIn("ubiquitous_language_traceability", expected["methodology_gates"])
         self.assertIn("fsd_structure_when_ui_architecture_applies", expected["methodology_gates"])
+        self.assertIn("frontend_methodology", expected["methodology_gates"])
         self.assertIn("metric_hardening_when_product_behavior_changes", expected["methodology_gates"])
         self.assertIn("evidence_before_completion", expected["methodology_gates"])
         self.assertIn("test_eval_first_evidence", expected["methodology_gates"])
@@ -1777,6 +2139,7 @@ class InfrastructureTemplateTest(unittest.TestCase):
         self.assertIn("standards_trigger_policy", expected["methodology_gates"])
         self.assertIn("domain_model", expected["methodology_signals"])
         self.assertIn("fsd_structure", expected["methodology_signals"])
+        self.assertIn("frontend", expected["methodology_signals"])
         self.assertIn("metric_spec", expected["methodology_signals"])
         self.assertIn("completion_evidence", expected["methodology_signals"])
         self.assertIn("docs_tooling_decision", expected["methodology_signals"])
@@ -1816,6 +2179,7 @@ class InfrastructureTemplateTest(unittest.TestCase):
             "acceptance_scenarios_when_behavior_changes",
             "domain_model_when_complex_domain",
             "fsd_boundary_when_ui_grows",
+            "frontend_methodology",
             "ai_eval_spec_when_ai_behavior_changes",
             "docs_tooling_decision",
             "contract_docs_when_api_or_event_changes",

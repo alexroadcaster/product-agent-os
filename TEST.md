@@ -6,10 +6,10 @@ Generated at: 2026-05-25
 
 ## Current Baseline
 
-- T9-D5 RED checks: focused catalog/audit/discovery/template/lifecycle/behavioral/fixture checks failed as expected before implementation on missing `codex_agentic_workflow` gates, audit recommendations, discovery signals, five Codex workflow templates, lifecycle skill routing, behavioral eval coverage and fixture eval check.
-- Focused T9-D5 suites: catalog/audit/discovery ran 70 tests with `OK`; template/lifecycle/behavioral/automation/runtime contract checks ran 105 tests with `OK`; targeted fixture runner checks passed.
-- Fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0`; renderer file count is 102 and `codex_agentic_workflow_contract_present` is true.
-- Full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 378 tests with `OK`.
+- T9-D6 RED checks: focused catalog/audit/discovery/template/lifecycle/behavioral/fixture checks failed as expected before implementation on missing `frontend` gates, audit recommendations, discovery signals, five Frontend templates, lifecycle skill routing, behavioral eval coverage and fixture eval check.
+- Focused T9-D6 suite: `python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_discovery tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_behavioral_workflow_evals tests.product_agent_os.test_fixture_eval_runner tests.product_agent_os.test_fixtures -v` ran 200 tests with `OK`.
+- Fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0`; renderer file count is 107 and `frontend_contract_present` is true.
+- Full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 386 tests with `OK`.
 - Transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 4 sessions and 0 failures.
 - Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
 - Docs check: `python tools\check_docs.py` passed.
@@ -152,6 +152,15 @@ python tools\check_docs.py
 - Confirmed simple docs/local work does not force subagents, worktrees, MCP review, hooks, plugin packaging, automation, Agents SDK orchestration or agent evals.
 - Confirmed unsupported agentic workflow claims are rejected as evidence: memory as source of truth, subagents always faster, MCP safe by default, hooks harmless, immediate automation, Agents SDK equals Codex runtime and inspection proves completion.
 - Confirmed fixture eval exposes `codex_agentic_workflow_contract_present`.
+
+## Completed Focused Checks For T9-D6
+
+- Added RED then GREEN tests for `frontend` catalog contract, audit recommendations, discovery signals, staged frontend templates, lifecycle skill wording, behavioral eval coverage, synthetic frontend fixture and fixture eval coverage.
+- Confirmed user-visible UI work routes to Frontend methodology with `present_unverified` discovery status until current evidence exists.
+- Confirmed backend-only, data-only, CLI-only, docs-only, native-only, dependency-only and simple CRUD work does not force frontend gates.
+- Confirmed Storybook and Feature-Sliced Design are conditional, not proof by themselves.
+- Confirmed unsupported frontend claims are rejected as evidence: FSD mandatory, Storybook proves UI quality, automated a11y addon enough, desktop screenshot proves responsive UI, lab Web Vitals always represent production UX and code inspection proves UI completion.
+- Confirmed fixture eval exposes `frontend_contract_present`.
 
 ## Evidence Format
 

@@ -51,6 +51,7 @@ class FixtureCompletenessTest(unittest.TestCase):
             "simple-crud-no-ddd",
             "docs-light-no-portal",
             "hosted-docs-approval",
+            "frontend-ui-app",
         ]:
             with self.subTest(name=name):
                 self.assertTrue((FIXTURES / name).is_dir())
@@ -161,6 +162,7 @@ class FixtureCompletenessTest(unittest.TestCase):
             "simple-crud-no-ddd",
             "docs-light-no-portal",
             "hosted-docs-approval",
+            "frontend-ui-app",
         ]:
             with self.subTest(name=name):
                 text = "\n".join(

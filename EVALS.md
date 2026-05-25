@@ -35,7 +35,7 @@ Generated at: 2026-05-25
 - False-positive scenario fixture coverage: implemented in `T8-GX`.
 - Detailed discovery status depth: implemented in `T8-D`.
 - Track 9 methodology intelligence plan: authored in `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`.
-- Track 9 foundation, `T9-D1` Business/Product, `T9-D2` Requirements/Domain, `T9-D3` Solution Architecture, `T9-D4` Quality/Testing/Evals and `T9-D5` Codex/Agentic Workflow: implemented.
+- Track 9 foundation, `T9-D1` Business/Product, `T9-D2` Requirements/Domain, `T9-D3` Solution Architecture, `T9-D4` Quality/Testing/Evals, `T9-D5` Codex/Agentic Workflow and `T9-D6` Frontend: implemented.
 
 ## Track 9 Methodology Intelligence Evals
 
@@ -84,6 +84,14 @@ Generated at: 2026-05-25
 - False-positive protection: simple docs/local work does not force subagents, worktrees, MCP review, hook governance, plugin packaging, automation, Agents SDK orchestration or agent eval workflow unless signals, intent or side-effect risk make them applicable.
 - Unsupported claims rejected: memory is project source of truth, subagents are automatically faster, MCP tools are safe because they are tools, hooks are harmless convenience scripts, repeated workflows should become automation immediately, Agents SDK and Codex runtime are the same layer, and inspection proves completion.
 - Residual risk: Codex workflow artifacts prove governance shape and approval routing, not that a human owner has approved every model, subagent, MCP, hook, skill, plugin or automation decision for a real project.
+
+## Frontend Evals
+
+- `frontend_contract_present`: implemented in `T9-D6`.
+- Required evidence: user-flow acceptance, component docs, component state matrix, design-system boundary, conditional FSD boundary review, API/data state alignment, accessibility review, keyboard/focus contract, responsive viewport matrix, visual evidence, browser/runtime evidence, console status, Playwright trace or accepted gap, performance budget, browser support, content/i18n boundary and interaction test evidence.
+- False-positive protection: backend-only, data-only, CLI-only, docs-only, native-only, dependency-only and simple CRUD work does not force Frontend methodology.
+- Unsupported claims rejected: FSD is mandatory for every frontend project, Storybook proves UI quality, automated accessibility addon output is enough, a desktop screenshot proves responsive UI, lab Web Vitals always represent production UX and code inspection proves UI completion.
+- Residual risk: frontend artifacts prove UI evidence shape and route/gate coverage, not that a human owner has semantically accepted every screenshot, interaction test, accessibility review or performance budget as sufficient for a real product.
 
 ## Completion Evidence Evals
 

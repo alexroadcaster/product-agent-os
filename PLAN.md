@@ -6,11 +6,11 @@ Generated at: 2026-05-25
 
 ## Current State
 
-- `T9-D5` Codex / Agentic Workflow methodology integration is complete.
-- Verification baseline after `T9-D5`: focused T9-D5 checks passed; fixture eval exited `0` with renderer file count 102 and `codex_agentic_workflow_contract_present: true`; full verification is recorded in `RUNLOG.md`.
+- `T9-D6` Frontend methodology integration is complete.
+- Verification baseline after `T9-D6`: focused T9-D6 checks ran 200 tests with `OK`; fixture eval exited `0` with renderer file count 107 and `frontend_contract_present: true`; full verification is recorded in `RUNLOG.md`.
 - Track 9 design is recorded in `docs/superpowers/specs/2026-05-25-track-9-methodology-intelligence-design.md`.
 - Track 9 implementation plan is recorded in `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`.
-- Next implementation slice: `T9-D6` Frontend methodology integration.
+- Next implementation slice: `T9-D7` Backend methodology integration.
 
 ## Architecture Boundary
 
@@ -31,7 +31,7 @@ Generated at: 2026-05-25
 | 4 | `T9-D3` Solution Architecture | `done` | Architecture boundary, C4/arc42/ADR and quality attribute gates |
 | 5 | `T9-D4` Quality, Testing & Evals | `done` | Risk-based test/eval strategy and current evidence gates |
 | 6 | `T9-D5` Codex / Agentic Workflow | `done` | Control-plane, skills, subagents, handoff, MCP and automation gates |
-| 7 | `T9-D6` Frontend | `planned` | UI behavior, component state, FSD, Storybook, a11y and visual evidence gates |
+| 7 | `T9-D6` Frontend | `done` | UI behavior, component state, FSD, Storybook, a11y and visual evidence gates |
 | 8 | `T9-D7` Backend | `planned` | Service boundary, runtime, observability, SLO and rollback gates |
 | 9 | `T9-D8` API & Integrations | `planned` | OpenAPI/AsyncAPI/GraphQL/gRPC contract and compatibility gates |
 | 10 | `T9-D9` Database & Data | `planned` | Schema, migration, data quality, lineage, privacy and production access gates |
@@ -72,6 +72,8 @@ For each Track 9 section:
 - Quality/testing/evals artifacts: `test-eval-matrix.md`, `quality-strategy.md`, `ci-evidence-record.md`, `flaky-test-policy.md`, `manual-qa-evidence.md`, plus existing `TEST.md`, `EVALS.md`, `RUNLOG.md`, `ai-eval-spec.md`, `api-contract-review.md`, `bug-rescue-report.md` and `ci-stabilization-report.md` when applicable.
 - Codex/agentic workflow gate: `codex_agentic_workflow` records agentic scope, source of truth, control plane, read-only discovery, approval boundary, fresh-context handoff, ownership split, safe subagent parallelism, skill promotion evidence, plugin boundary, MCP permission review, hook activation approval, automation manual stability, model/reasoning policy, memory policy, agent eval workflow and evidence before completion.
 - Codex/agentic workflow artifacts: `model-reasoning-policy.md`, `mcp-permission-review.md`, `hook-governance.md`, `skill-promotion-record.md`, `agent-eval-workflow.md`, plus existing `AGENTS.md`, `.codex/config.toml`, `agent-task-packet.md`, `handoff-contract.md`, `worktree-ownership.md`, `automation-candidate.md`, `PLAN.md`, `TEST.md`, `EVALS.md` and `RUNLOG.md`.
+- Frontend gate: `frontend` records user-flow acceptance, component docs, component state matrix, design-system boundary, conditional FSD boundary review, API/data state alignment, accessibility review, keyboard/focus evidence, responsive viewport matrix, visual evidence, runtime console evidence, performance budget, browser support, content/i18n boundary, interaction test evidence and unsupported-claim rejection.
+- Frontend artifacts: `frontend-flow-spec.md`, `frontend-state-matrix.md`, `frontend-visual-qa.md`, `frontend-accessibility-review.md`, `frontend-performance-budget.md`, plus existing `component-card.md`, `acceptance-scenarios.md`, `api-contract-review.md`, `quality-strategy.md`, `test-eval-matrix.md` and `manual-qa-evidence.md`.
 - Conditional readiness gate: `project-readiness.json` defines `readiness_statuses` and per-gate `applies_when`, pass condition, accepted gap, required evidence, owner and residual risk. Detection alone can only support `present_unverified`; `present_verified` requires current command, owner or artifact evidence.
 - Test gate: deterministic tests, contract checks, evals or accepted gaps are named before implementation.
 - Documentation gate: docs-as-code artifacts and source-of-truth updates are named.
@@ -178,6 +180,13 @@ For each Track 9 section:
 - Added `solution_architecture` methodology catalog coverage for architecture scope, context/container views, slice boundaries, owner responsibility, bounded-context trace, dependency rules, public contracts, data ownership, runtime topology, observability, quality attributes, ADR/tradeoffs, trust boundaries, diagram render checks, fitness functions, migration rollback, docs lifecycle, owner review and accepted gaps.
 - Added artifact templates: `architecture-review-record.md`, `architecture-fitness-functions.md`, `trust-boundary-map.md`, and `architecture-docs-tooling-decision.md`.
 - Strengthened `architecture-overview.md` and `adr.md` with `Source status:`, owner, evidence, accepted gaps, residual risk, rollback/no-rollback rationale and no-secrets guidance.
+
+## T9-D6 Completed Slice
+
+- Added `frontend` methodology catalog coverage for user flows, component docs/state, design-system governance, conditional FSD, API/data state alignment, accessibility, keyboard/focus, responsive/visual/runtime evidence, interaction tests, performance, browser support, content/i18n and unsupported-claim rejection.
+- Added artifact templates: `frontend-flow-spec.md`, `frontend-state-matrix.md`, `frontend-visual-qa.md`, `frontend-accessibility-review.md` and `frontend-performance-budget.md`.
+- Strengthened `component-card.md`, generated `PLAN/TEST/EVALS/RUNLOG`, `project-readiness.json`, `behavioral-workflows.json` and lifecycle skills with Frontend gates.
+- Added synthetic `frontend-ui-app` fixture and fixture eval coverage through `frontend_contract_present`.
 - Added read-only audit recommendations, false-positive and unsupported-claim coverage, renderer registration, lifecycle skill routing and fixture eval coverage through `solution_architecture_contract_present`.
 
 ## T9-D4 Completed Slice

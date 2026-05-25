@@ -14,6 +14,10 @@ Use this artifact for `quality_testing_evals` traceability. Map requirement, sce
 | --- | --- | --- | --- | --- | --- | --- |
 | TBD | TBD | TBD | TBD | current command/eval/runtime/manual evidence | TBD | `present_unverified` |
 
+## Backend Check Mapping
+
+Backend behavior should map service boundary, runtime behavior, dependency failure, queue/job, data consistency, health, observability and rollback claims to unit, integration, contract, runtime and operational checks. Code inspection alone is not backend completion evidence.
+
 ## Quality Gate References
 
 - `quality_strategy_present`

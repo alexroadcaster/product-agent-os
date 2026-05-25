@@ -34,6 +34,7 @@ REQUIRED_BEHAVIORAL_CASES = {
     "bug-rescue-no-repro-stop",
     "acceptance-scenarios-traceability",
     "quality-current-evidence-before-completion",
+    "frontend-evidence-before-completion",
     "no-placeholder-plan",
     "two-stage-review",
     "fresh-context-handoff",

@@ -18,6 +18,10 @@ Use this artifact for `quality_testing_evals` strategy, risk based scope and acc
 
 Record impact, likelihood, user harm, data/security exposure, failure history, selected checks and deferred checks.
 
+## Backend Runtime Evidence
+
+For backend work, map `backend-runtime-behavior.md`, `backend-dependency-failure-matrix.md`, `backend-observability-map.md`, `backend-health-check-contract.md`, `backend-job-queue-contract.md` and `backend-release-rollback-notes.md` to unit, integration, contract, runtime and operational checks. Code inspection alone is not backend completion evidence.
+
 ## Quality Gate References
 
 - `quality_strategy_present`

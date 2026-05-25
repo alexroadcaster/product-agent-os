@@ -106,7 +106,9 @@ class FixtureEvalRunnerTest(unittest.TestCase):
         self.assertTrue(results["python-app"]["expected_checks"]["solution_architecture_contract_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["quality_testing_evals_contract_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["codex_agentic_workflow_contract_present"])
-        self.assertEqual(results["python-app"]["renderer_file_count"], 102)
+        self.assertTrue(results["python-app"]["expected_checks"]["frontend_contract_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["backend_contract_present"])
+        self.assertEqual(results["python-app"]["renderer_file_count"], 118)
         for check_name in [
             "methodology_catalog_contract_present",
             "methodology_intelligence_contract_present",
@@ -161,6 +163,7 @@ class FixtureEvalRunnerTest(unittest.TestCase):
             "simple-crud-no-ddd": "domain_model_not_forced_for_simple_crud",
             "docs-light-no-portal": "docs_light_does_not_select_heavy_portal",
             "hosted-docs-approval": "hosted_docs_and_db_introspection_require_approval",
+            "frontend-ui-app": "frontend_contract_present",
         }
         for fixture, check_name in expected_checks.items():
             with self.subTest(fixture=fixture):

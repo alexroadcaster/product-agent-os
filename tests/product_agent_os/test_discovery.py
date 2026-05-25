@@ -844,6 +844,90 @@ class DiscoveryTest(unittest.TestCase):
         self.assertIn("Codex workflow signal exists", applicability["reason"])
         self.assertIn("detection alone does not prove safe activation", applicability["residual_risk"])
 
+    def test_frontend_methodology_signals_are_present_unverified(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            workspace = Path(tmpdir)
+            self._write_files(
+                workspace,
+                {
+                    "package.json": (
+                        '{"dependencies":{"react":"latest","@storybook/react":"latest",'
+                        '"@playwright/test":"latest","@testing-library/react":"latest","axe-core":"latest"}}\n'
+                    ),
+                    "vite.config.ts": "export default {};\n",
+                    "components.json": "{}\n",
+                    "tokens/colors.json": "{}\n",
+                    "src/pages/home/HomePage.tsx": "export const HomePage = () => null;\n",
+                    "src/widgets/header/Header.tsx": "export const Header = () => null;\n",
+                    "src/features/search/SearchBox.tsx": "export const SearchBox = () => null;\n",
+                    "src/shared/ui/Button.stories.tsx": "export default {};\n",
+                    ".storybook/main.ts": "export default {};\n",
+                    "playwright.config.ts": "export default {};\n",
+                    "docs/frontend-qa.md": (
+                        "Synthetic frontend route component Storybook visual regression screenshot "
+                        "viewport accessibility WCAG keyboard focus responsive Core Web Vitals LCP INP CLS\n"
+                    ),
+                },
+            )
+
+            result = analyze_workspace(workspace)
+
+        signals = result["methodology_signals"]
+        self.assertTrue(signals["frontend"])
+        self.assertIn(
+            "frontend",
+            result["route_inputs"]["workspace_signals"]["methodology_signals"],
+        )
+        applicability = result["methodology_applicability"]["frontend_methodology"]
+        self.assertEqual(applicability["status"], "present_unverified")
+        self.assertIn("frontend signal exists", applicability["reason"])
+        self.assertIn("browser/runtime evidence", applicability["required_evidence"])
+        self.assertIn("detection alone does not prove UI completion", applicability["residual_risk"])
+
+    def test_backend_methodology_signals_are_present_unverified(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            workspace = Path(tmpdir)
+            self._write_files(
+                workspace,
+                {
+                    "pyproject.toml": "[project]\nname = 'orders-api'\n",
+                    "requirements.txt": "fastapi\ncelery\nredis\npsycopg\n",
+                    "server/app.py": "def app():\n    return None\n",
+                    "services/orders/service.py": "def handle():\n    return None\n",
+                    "workers/email_worker.py": "def run():\n    return None\n",
+                    "jobs/nightly.py": "def run():\n    return None\n",
+                    "queues/orders.py": "QUEUE = 'orders'\n",
+                    "adapters/payment_client.py": "class PaymentClient:\n    pass\n",
+                    "repositories/order_repository.py": "class OrderRepository:\n    pass\n",
+                    "migrations/001_init.sql": "create table orders(id text);\n",
+                    "Dockerfile": "FROM python:3.12\n",
+                    "docker-compose.yml": "services: {}\n",
+                    "k8s/deployment.yaml": "apiVersion: apps/v1\n",
+                    "openapi.yaml": "openapi: 3.1.0\ninfo:\n  title: API\n  version: 1.0.0\npaths: {}\n",
+                    "asyncapi.yaml": "asyncapi: 3.0.0\ninfo:\n  title: Events\n  version: 1.0.0\n",
+                    "proto/orders.proto": "syntax = 'proto3';\n",
+                    "docs/backend-runtime.md": (
+                        "retry timeout idempotency circuit breaker health check readiness liveness "
+                        "SLO runbook observability traces metrics logs correlation\n"
+                    ),
+                },
+            )
+
+            result = analyze_workspace(workspace)
+
+        signals = result["methodology_signals"]
+        self.assertTrue(signals["backend"])
+        self.assertIn(
+            "backend",
+            result["route_inputs"]["workspace_signals"]["methodology_signals"],
+        )
+        applicability = result["methodology_applicability"]["backend_methodology"]
+        self.assertEqual(applicability["status"], "present_unverified")
+        self.assertIn("backend signal exists", applicability["reason"])
+        self.assertIn("backend-service-overview.md", applicability["required_evidence"])
+        self.assertIn("runtime/failure evidence", applicability["required_evidence"])
+        self.assertIn("detection alone does not prove backend runtime safety", applicability["residual_risk"])
+
     def test_methodology_applicability_reports_status_packets(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             workspace = Path(tmpdir)
@@ -868,6 +952,8 @@ class DiscoveryTest(unittest.TestCase):
             "product_measurement",
             "domain_model_when_complex_domain",
             "fsd_structure_when_ui_architecture_applies",
+            "frontend_methodology",
+            "backend_methodology",
             "docs_tooling_decision",
             "standards_trigger_policy",
             "codex_agentic_workflow",

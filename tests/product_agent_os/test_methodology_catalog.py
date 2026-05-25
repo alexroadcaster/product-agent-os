@@ -564,6 +564,202 @@ class MethodologyCatalogContractTest(unittest.TestCase):
         self.assertIn("team", workflow["maturity_impact"])
         self.assertIn("high_risk", workflow["complexity_impact"])
 
+    def test_frontend_domain_has_track_nine_contract(self):
+        from product_agent_os.methodology_catalog import load_methodology_catalog
+
+        catalog = load_methodology_catalog()
+        domains = {domain["id"]: domain for domain in catalog["domains"]}
+        frontend = domains["frontend"]
+
+        expected_gates = [
+            "frontend_user_flow_acceptance_present",
+            "frontend_component_docs_present",
+            "frontend_component_state_matrix_present",
+            "frontend_design_system_boundary_present",
+            "frontend_fsd_boundary_reviewed",
+            "frontend_api_contract_alignment_present",
+            "frontend_accessibility_review_present",
+            "frontend_keyboard_focus_contract_present",
+            "frontend_responsive_viewport_matrix_present",
+            "frontend_visual_evidence_present",
+            "frontend_runtime_console_evidence_present",
+            "frontend_performance_budget_present",
+            "frontend_browser_support_present",
+            "frontend_content_i18n_boundary_present",
+            "frontend_interaction_test_evidence_present",
+        ]
+        expected_artifacts = [
+            "frontend-flow-spec.md",
+            "frontend-state-matrix.md",
+            "frontend-visual-qa.md",
+            "frontend-accessibility-review.md",
+            "frontend-performance-budget.md",
+            "component-card.md",
+            "acceptance-scenarios.md",
+            "api-contract-review.md",
+            "quality-strategy.md",
+            "test-eval-matrix.md",
+            "manual-qa-evidence.md",
+        ]
+        expected_eval_fields = [
+            "frontend_user_flow_contract_present",
+            "frontend_component_docs_contract_present",
+            "frontend_component_state_matrix_contract_present",
+            "frontend_design_system_boundary_contract_present",
+            "frontend_fsd_boundary_contract_present",
+            "frontend_api_contract_alignment_contract_present",
+            "frontend_accessibility_review_contract_present",
+            "frontend_keyboard_focus_contract_present",
+            "frontend_responsive_viewport_matrix_contract_present",
+            "frontend_visual_evidence_contract_present",
+            "frontend_runtime_console_evidence_contract_present",
+            "frontend_performance_budget_contract_present",
+            "frontend_browser_support_contract_present",
+            "frontend_content_i18n_contract_present",
+            "frontend_interaction_test_evidence_contract_present",
+            "unsupported_frontend_claims_rejected_contract_present",
+        ]
+
+        for term in [
+            "user-visible UI change",
+            "route, page, screen or component work",
+            "reusable component or design-system primitive",
+            "browser-rendered runtime behavior",
+            "frontend stack, Storybook, Playwright or visual evidence signal",
+        ]:
+            with self.subTest(applies_when=term):
+                self.assertIn(term, frontend["applies_when"])
+        for term in [
+            "backend-only work",
+            "data-only work",
+            "CLI-only work",
+            "docs-only work",
+            "native-only work",
+            "dependency metadata without UI behavior impact",
+            "simple CRUD without non-trivial frontend state",
+        ]:
+            with self.subTest(not_applicable_when=term):
+                self.assertIn(term, frontend["not_applicable_when"])
+        for gate in expected_gates:
+            with self.subTest(gate=gate):
+                self.assertIn(gate, frontend["gates"])
+        for artifact in expected_artifacts:
+            with self.subTest(artifact=artifact):
+                self.assertIn(artifact, frontend["artifacts"])
+        for eval_field in expected_eval_fields:
+            with self.subTest(eval_field=eval_field):
+                self.assertIn(eval_field, frontend["eval_fields"])
+        for overlap in [
+            "requirements acceptance scenarios",
+            "quality visual and accessibility evidence",
+            "API contract alignment",
+            "release runtime evidence",
+            "agent workflow evidence-before-completion",
+        ]:
+            with self.subTest(overlap=overlap):
+                self.assertIn(overlap, frontend["overlaps"])
+        self.assertIn("team", frontend["maturity_impact"])
+        self.assertIn("standard", frontend["complexity_impact"])
+
+    def test_backend_domain_has_track_nine_contract(self):
+        from product_agent_os.methodology_catalog import load_methodology_catalog
+
+        catalog = load_methodology_catalog()
+        domains = {domain["id"]: domain for domain in catalog["domains"]}
+        backend = domains["backend"]
+
+        expected_gates = [
+            "backend_service_boundary_present",
+            "backend_runtime_behavior_present",
+            "backend_dependency_failure_matrix_present",
+            "backend_observability_contract_present",
+            "backend_slo_or_gap_present",
+            "backend_health_probe_contract_present",
+            "backend_job_queue_contract_present",
+            "backend_data_consistency_strategy_present",
+            "backend_config_secrets_boundary_present",
+            "backend_security_reviewed",
+            "backend_rollback_plan_present",
+        ]
+        expected_artifacts = [
+            "backend-service-overview.md",
+            "backend-runtime-behavior.md",
+            "backend-dependency-failure-matrix.md",
+            "backend-observability-map.md",
+            "backend-slo-sheet.md",
+            "backend-health-check-contract.md",
+            "backend-job-queue-contract.md",
+            "backend-data-consistency-record.md",
+            "backend-config-secrets-manifest.md",
+            "backend-release-rollback-notes.md",
+            "backend-operational-runbook.md",
+            "architecture-overview.md",
+            "api-contract-review.md",
+            "quality-strategy.md",
+            "test-eval-matrix.md",
+            "manual-qa-evidence.md",
+            "security-risk-review.md",
+            "release-packet.md",
+        ]
+        expected_eval_fields = [
+            "backend_service_boundary_contract_present",
+            "backend_runtime_behavior_contract_present",
+            "backend_dependency_failure_matrix_contract_present",
+            "backend_observability_contract_present",
+            "backend_slo_or_gap_contract_present",
+            "backend_health_probe_contract_present",
+            "backend_job_queue_contract_present",
+            "backend_data_consistency_contract_present",
+            "backend_config_secrets_boundary_contract_present",
+            "backend_security_review_contract_present",
+            "backend_rollback_plan_contract_present",
+            "unsupported_backend_claims_rejected_contract_present",
+        ]
+
+        for term in [
+            "server, API, service, worker, queue or backend framework signal",
+            "new service/module/worker or changed backend responsibility",
+            "runtime behavior, remote dependency, job or queue change",
+            "production or user-facing backend service",
+            "auth, secrets, sensitive data, money, privileged operation or irreversible side effect",
+        ]:
+            with self.subTest(applies_when=term):
+                self.assertIn(term, backend["applies_when"])
+        for term in [
+            "frontend-only work",
+            "docs-only work",
+            "CLI-only work",
+            "native-only work",
+            "dependency metadata without backend runtime behavior",
+            "package-name-only service folder without runtime evidence",
+        ]:
+            with self.subTest(not_applicable_when=term):
+                self.assertIn(term, backend["not_applicable_when"])
+        for gate in expected_gates:
+            with self.subTest(gate=gate):
+                self.assertIn(gate, backend["gates"])
+        for artifact in expected_artifacts:
+            with self.subTest(artifact=artifact):
+                self.assertIn(artifact, backend["artifacts"])
+        for eval_field in expected_eval_fields:
+            with self.subTest(eval_field=eval_field):
+                self.assertIn(eval_field, backend["eval_fields"])
+        for overlap in [
+            "architecture service boundaries",
+            "quality runtime evidence",
+            "API and event contracts",
+            "database data consistency",
+            "security secrets and privacy",
+            "delivery release operations",
+            "agent workflow evidence-before-completion",
+        ]:
+            with self.subTest(overlap=overlap):
+                self.assertIn(overlap, backend["overlaps"])
+        self.assertIn("team", backend["maturity_impact"])
+        self.assertIn("production", backend["maturity_impact"])
+        self.assertIn("standard", backend["complexity_impact"])
+        self.assertIn("high_risk", backend["complexity_impact"])
+
 
 if __name__ == "__main__":
     unittest.main()

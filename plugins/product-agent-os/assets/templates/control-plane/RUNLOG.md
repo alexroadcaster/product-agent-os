@@ -53,6 +53,22 @@ Generated at: {generated_at}
 - Public API:
 - Import rule:
 - FSD accepted gap or not applicable reason:
+- Frontend methodology (`frontend`):
+- Frontend artifacts: `frontend-flow-spec.md`, `frontend-state-matrix.md`, `frontend-visual-qa.md`, `frontend-accessibility-review.md`, `frontend-performance-budget.md`
+- Source aliases: `ui-flow-spec.md`, `component-state-matrix.md`, `accessibility-review.md`
+- Frontend gates: `frontend_user_flow_acceptance_present`, `frontend_component_docs_present`, `frontend_component_state_matrix_present`, `frontend_design_system_boundary_present`, `frontend_fsd_boundary_reviewed`, `frontend_api_contract_alignment_present`, `frontend_accessibility_review_present`, `frontend_keyboard_focus_contract_present`, `frontend_responsive_viewport_matrix_present`, `frontend_visual_evidence_present`, `frontend_runtime_console_evidence_present`, `frontend_performance_budget_present`, `frontend_browser_support_present`, `frontend_content_i18n_boundary_present`, `frontend_interaction_test_evidence_present`
+- Route params, auth/permission, SEO/meta:
+- Token owner, variant policy:
+- Local state, server-cache, persisted state:
+- Browser/runtime evidence:
+- Console status:
+- Playwright trace:
+- Baseline owner:
+- Reduced motion:
+- Input modality:
+- WCAG 2.2 AA:
+- External visual service approval:
+- Unsupported frontend claims rejected: Storybook proves UI quality, desktop-only screenshot proves responsive UI, automated accessibility addon output is enough, lab Web Vitals always represent production UX, code inspection proves UI completion.
 - Domain model applicability (`domain_model_when_complex_domain`):
 - Bounded context architecture trace (`bounded_context_architecture_boundary_trace`):
 - Bounded context -> architecture boundary:

@@ -6,11 +6,11 @@ Generated at: 2026-05-25
 
 ## Current Lifecycle Marker
 
-`agentic_workflow_gate`
+`frontend_gate`
 
 ## Latest Completed Slice
 
-`T9-D5` Codex / Agentic Workflow methodology integration.
+`T9-D6` Frontend methodology integration.
 
 ## Latest Planning Artifact
 
@@ -20,18 +20,18 @@ Generated at: 2026-05-25
 
 ### Changes
 
-- Added `codex_agentic_workflow` catalog data with gates, artifacts, eval fields, applicability and false-positive rules.
-- Added read-only methodology audit recommendations for control plane, source of truth, read-only discovery, approval boundary, fresh-context handoff, ownership split, subagent safety, MCP review, hook governance, plugin boundary, skill promotion, automation stability, model/reasoning policy, memory policy, agent eval workflow, completion evidence and unsupported agentic workflow claims.
-- Added five staged artifact templates: `model-reasoning-policy.md`, `mcp-permission-review.md`, `hook-governance.md`, `skill-promotion-record.md`, and `agent-eval-workflow.md`.
-- Strengthened generated `AGENTS.md`, `.codex/config.toml`, `PLAN.md`, `TEST.md`, `EVALS.md`, `RUNLOG.md`, `project-readiness.json`, `behavioral-workflows.json`, lifecycle skills and fixture eval with Codex / Agentic Workflow gates.
-- Synced Track 9 plan, Track 9 backlog, Product-Agent OS docs and root control-plane files.
+- Added `frontend` catalog data with gates, artifacts, eval fields, applicability and false-positive rules.
+- Added read-only methodology audit recommendations for user-flow acceptance, component docs/state, design-system governance, conditional FSD, API/data state alignment, accessibility, keyboard/focus, responsive/visual/runtime evidence, interaction tests, performance, browser support, content/i18n and unsupported frontend claims.
+- Added five staged artifact templates: `frontend-flow-spec.md`, `frontend-state-matrix.md`, `frontend-visual-qa.md`, `frontend-accessibility-review.md`, and `frontend-performance-budget.md`.
+- Strengthened `component-card.md`, generated `PLAN.md`, `TEST.md`, `EVALS.md`, `RUNLOG.md`, `project-readiness.json`, `behavioral-workflows.json`, lifecycle skills and fixture eval with Frontend gates.
+- Added synthetic `frontend-ui-app` fixture and synced Track 9 plan, Track 9 backlog, Product-Agent OS docs and root control-plane files.
 
 ### Verification Evidence
 
-- RED checks: focused T9-D5 checks failed as expected before implementation on missing `codex_agentic_workflow` gates, audit recommendations, discovery signals, five artifact templates, lifecycle skill routing, behavioral eval coverage and fixture eval check.
-- Focused T9-D5 suites: catalog/audit/discovery ran 70 tests with `OK`; template/lifecycle/behavioral/automation/runtime contract checks ran 105 tests with `OK`; targeted fixture runner checks passed.
-- Fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0`; renderer file count is 102 and `codex_agentic_workflow_contract_present` is true.
-- Full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 378 tests with `OK`.
+- RED checks: focused T9-D6 checks failed as expected before implementation on missing `frontend` gates, audit recommendations, discovery signals, five artifact templates, lifecycle skill routing, behavioral eval coverage and fixture eval check.
+- Focused T9-D6 suite: `python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_discovery tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_behavioral_workflow_evals tests.product_agent_os.test_fixture_eval_runner tests.product_agent_os.test_fixtures -v` ran 200 tests with `OK`.
+- Fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0`; renderer file count is 107 and `frontend_contract_present` is true.
+- Full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 386 tests with `OK`.
 - Transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 4 sessions and 0 failures.
 - Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
 - Docs check: `python tools\check_docs.py` passed.
@@ -59,13 +59,14 @@ Generated at: 2026-05-25
 - Solution Architecture methodology: implemented as `solution_architecture` with architecture scope, boundary ownership, public contract trace, data ownership, trust boundary review, ADR/tradeoff, runtime topology, observability, diagram render check, fitness functions, migration rollback, docs lifecycle, accepted gaps and unsupported-claim rejection.
 - Quality, Testing and Evals methodology: implemented as `quality_testing_evals` with quality strategy, risk based scope, test-first evidence or accepted gap, acceptance traceability, contract/runtime/manual/visual evidence, eval spec/reruns, CI gates, flaky policy, coverage policy, test data privacy, bug reproduction, regression impact, evidence before completion and unsupported-claim rejection.
 - Codex / Agentic Workflow methodology: implemented as `codex_agentic_workflow` with control-plane maturity, source of truth, read-only discovery, approval boundary, model/reasoning policy, memory policy, fresh-context handoff, ownership split, subagent safety, MCP review, hook governance, plugin boundary, skill promotion, automation stability, agent eval workflow, evidence before completion and unsupported-claim rejection.
-- Test-first or eval-first evidence: T9-D5 was implemented with failing-focused tests first, then focused GREEN.
-- Documentation impact: root control-plane files, Product-Agent OS docs, Track 9 plan and Track 9 backlog synchronized for T9-D5.
-- Review outcome: focused checks, full unittest, fixture eval, transcript eval, Codex compatibility, docs check and diff hygiene are clean for T9-D5.
+- Frontend methodology: implemented as `frontend` with user-flow acceptance, component docs/state, design-system governance, conditional Storybook/FSD routing, API/data state alignment, WCAG 2.2 AA target or accepted exception, keyboard/focus, responsive/visual/runtime evidence, interaction tests, performance, browser support, content/i18n and unsupported-claim rejection.
+- Test-first or eval-first evidence: T9-D6 was implemented with failing-focused tests first, then focused GREEN.
+- Documentation impact: root control-plane files, Product-Agent OS docs, Track 9 plan and Track 9 backlog synchronized for T9-D6.
+- Review outcome: focused checks, full unittest, fixture eval, transcript eval, Codex compatibility, docs check and diff hygiene are clean for T9-D6.
 
 ## Next Action
 
-- Start `T9-D6` Frontend methodology integration after T9-D5 review or commit decision.
+- Start `T9-D7` Backend methodology integration after T9-D6 review or commit decision.
 
 ## Residual Risks
 
@@ -84,5 +85,6 @@ Generated at: 2026-05-25
 - `solution_architecture` gates prove architecture evidence is structured, not that the selected architecture is semantically optimal, production-safe or owner-approved for a real system.
 - `quality_testing_evals` gates prove current evidence shape and unsupported-claim routing, not that a human owner has judged every test, eval or manual QA artifact sufficient for the real project risk.
 - `codex_agentic_workflow` gates prove governance shape and approval routing, not that a human owner has approved every model, subagent, MCP, hook, skill, plugin or automation decision for a real project.
+- `frontend` gates prove UI evidence shape, route/gate coverage and unsupported-claim routing, not that a human owner has accepted every screenshot, interaction test, accessibility review or performance budget as sufficient for a real product.
 - Root control-plane files are initialized manually for this repository; generated target-project assets still remain staged-first and approval-bound.
 <!-- product-agent-os:end runlog -->

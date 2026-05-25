@@ -1,0 +1,7 @@
+{
+  "source": "Synthetic component registry for frontend methodology fixture",
+  "designSystem": {
+    "tokenOwner": "Design Systems",
+    "variantPolicy": "Every public variant needs component state coverage before release"
+  }
+}

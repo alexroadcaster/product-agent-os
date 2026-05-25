@@ -30,8 +30,8 @@ Track 9 turns the methodology atlas in `docs/methodologies/` into read-only Prod
 | `done` | `T9-D3` | `solution-architecture.md` | Architecture boundaries, views, ADRs, quality attributes, tradeoffs, ownership and fitness checks. |
 | `done` | `T9-D4` | `quality-testing-evals.md` | Risk-based tests, evals, current evidence, runtime/manual/visual evidence and CI quality gates. |
 | `done` | `T9-D5` | `codex-agentic-workflow.md` | Control-plane maturity, model/reasoning policy, handoffs, subagents, MCP, hooks, skills, plugins and automation promotion. |
-| `planned` | `T9-D6` | `frontend.md` | UI behavior, component states, Storybook applicability, visual/a11y evidence, responsive checks, performance and FSD boundaries. |
-| `planned` | `T9-D7` | `backend.md` | Service boundaries, modular monolith vs microservices, runtime behavior, queues, observability, SLOs and rollback. |
+| `done` | `T9-D6` | `frontend.md` | UI behavior, component states, Storybook applicability, visual/a11y evidence, responsive checks, performance and FSD boundaries. |
+| `in_progress` | `T9-D7` | `backend.md` | Service boundaries, modular monolith vs microservices, runtime behavior, queues, observability, SLOs and rollback. |
 | `planned` | `T9-D8` | `api-integrations.md` | OpenAPI/AsyncAPI/GraphQL/gRPC contracts, consumers, compatibility, errors, generated clients and external writes. |
 | `planned` | `T9-D9` | `database-data.md` | Database inventory, schema source, migrations, transactions, data quality, classification and production access. |
 | `planned` | `T9-D10` | `llm-ai-rag.md` | AI behavior spec, eval baseline, prompts, models, tools, RAG sources, grounding, datasets, approvals and cost/latency. |
@@ -222,6 +222,91 @@ Severity and false-positive resolution:
 - Skill promotion evidence, plugin boundary, model/reasoning policy, memory policy and agent eval workflow are high-risk or recommended depending on scope and side-effect risk.
 - Simple docs/local work does not force subagents, worktrees, MCP review, hooks, plugin packaging, automation, Agents SDK orchestration or agent eval workflow unless explicit signals, user intent or side-effect boundaries make them applicable.
 - Unsupported agentic workflow claims are rejected as evidence: memory is project source of truth, subagents are automatically faster, MCP tools are safe because they are tools, hooks are harmless convenience scripts, repeated workflows should become automation immediately, Agents SDK and Codex runtime are the same layer, and inspection proves completion.
+
+### `T9-D6` Frontend Integration
+
+Status: `done`
+
+Source audited: `docs/methodologies/frontend.md`
+
+Deep-audit deltas implemented:
+
+- Represented frontend as user-observable UI behavior and browser/runtime evidence, not component hierarchy or code inspection.
+- Used the full gate set: `frontend_user_flow_acceptance_present`, `frontend_component_docs_present`, `frontend_component_state_matrix_present`, `frontend_design_system_boundary_present`, `frontend_fsd_boundary_reviewed`, `frontend_api_contract_alignment_present`, `frontend_accessibility_review_present`, `frontend_keyboard_focus_contract_present`, `frontend_responsive_viewport_matrix_present`, `frontend_visual_evidence_present`, `frontend_runtime_console_evidence_present`, `frontend_performance_budget_present`, `frontend_browser_support_present`, `frontend_content_i18n_boundary_present` and `frontend_interaction_test_evidence_present`.
+- Kept Storybook and Feature-Sliced Design conditional: Storybook is documentation and verification surface, not proof by itself; FSD applies only when UI scale/coupling or owner decision justifies layer/slice/segment/public API/import-rule review.
+- Set public UI default accessibility target to WCAG 2.2 AA unless an owner records an accepted exception.
+- Required browser/runtime evidence, console status, Playwright trace or accepted gap before UI completion claims.
+- Added visual baseline stability, responsive/input/theme coverage, API/data state alignment, route/page inventory and performance budget policies.
+- Rejected unsupported frontend claims as evidence: FSD is mandatory for every frontend project, Storybook proves UI quality, automated accessibility addon output is enough, a desktop screenshot proves responsive UI, lab Web Vitals always represent production UX and code inspection proves UI completion.
+
+Implemented scope:
+
+- Added `frontend` catalog coverage for user flows, component docs, state matrices, design-system governance, FSD boundaries, API/data alignment, accessibility, keyboard/focus, responsive/visual/runtime evidence, interaction tests, performance, browser support, content/i18n and unsupported-claim rejection.
+- Added frontend discovery signals for UI framework/package/filesystem evidence, routes/pages/components, Storybook, Playwright, Testing Library, axe, Chromatic, tokens/themes/components metadata and UI terms. Detection remains `present_unverified`.
+- Added read-only audit recommendations with deterministic priority, gate, artifact, evidence, approval, accepted-gap and residual-risk fields for frontend gaps.
+- Added staged artifact templates: `frontend-flow-spec.md`, `frontend-state-matrix.md`, `frontend-visual-qa.md`, `frontend-accessibility-review.md` and `frontend-performance-budget.md`.
+- Strengthened `component-card.md` with the full Track 9 template contract plus user flow, component state, Storybook, FSD, API, accessibility and design-system ownership fields.
+- Strengthened generated `PLAN.md`, `TEST.md`, `EVALS.md`, `RUNLOG.md`, `project-readiness.json` and `behavioral-workflows.json` with frontend readiness, evidence and shortcut-resistance fields.
+- Routed Frontend methodology into `workspace-discovery-auditor`, `requirements-author`, `implementation-planner`, `test-eval-designer`, `risk-reviewer`, `docs-maintainer` and `pr-release-operator`.
+- Added synthetic `frontend-ui-app` fixture with React/Vite, Storybook, Playwright, Testing Library/a11y, design token/component metadata and no secrets/private data.
+- Added fixture eval check `frontend_contract_present`; renderer file count is now 107 after adding five Frontend artifact templates.
+
+Candidate artifact mapping:
+
+- `ui-flow-spec.md` is covered by `frontend-flow-spec.md`.
+- `component-state-matrix.md` is covered by `frontend-state-matrix.md`.
+- `accessibility-review.md` is covered by `frontend-accessibility-review.md`.
+- `route-page-inventory.md`, `frontend-api-dependency-map.md` and `frontend-content-i18n-record.md` are covered by `frontend-flow-spec.md` until a later slice proves separate ownership.
+- `storybook-story-map.md`, `design-system-inventory.md`, `design-tokens-reference.md`, `frontend-boundary-map.md` and `fsd-boundary-record.md` are covered by `component-card.md` and `frontend-state-matrix.md`.
+- `responsive-viewport-matrix.md`, `keyboard-focus-map.md`, `visual-evidence-packet.md` and `frontend-browser-support-matrix.md` are covered by `frontend-visual-qa.md` and `frontend-accessibility-review.md`.
+- `frontend-interaction-test-matrix.md` is covered by `test-eval-matrix.md`, `manual-qa-evidence.md` and the frontend interaction evidence gate.
+- TypeScript alias/import/public API violation analysis for FSD is deferred to a later architecture/static-analysis hardening slice; T9-D6 implements lightweight structure detection plus owner/gap routing to avoid false positives.
+- `docs/sources/registry.md` was checked for T9-D6 source impact; no new registry entry was added because the relevant frontend source entries already exist for Codex frontend designs, Storybook, Playwright, Testing Library, WCAG, web.dev and Feature-Sliced Design.
+
+Severity and false-positive resolution:
+
+- Missing user-flow acceptance, API/data state alignment, accessibility, runtime console evidence, interaction evidence and unsupported completion claims are blocker or high-risk when applicable.
+- Component docs, design-system governance, FSD boundary review, responsive/visual coverage, performance budgets, browser support and content/i18n are high-risk or recommended depending on public surface and release risk.
+- Backend-only, data-only, CLI-only, docs-only, native-only, dependency-only and simple CRUD work does not force frontend gates.
+- External visual services, hosted browser services, production-data screenshots and publication remain `approval_required`.
+
+### `T9-D7` Backend Integration
+
+Status: `in_progress`
+
+Source audited: `docs/methodologies/backend.md`
+
+Batch 1 implemented scope (`T9-D7-M0` through `T9-D7-M9`):
+
+- Represented backend as runtime behavior, production failure modes, operational evidence and owner-reviewed boundaries, not as package structure or service count.
+- Added `backend` catalog coverage for service boundaries, runtime behavior, dependency failure policy, observability, SLO/gap, health probes, jobs/queues, data consistency, config/secrets, security review, rollback and unsupported-claim rejection.
+- Added backend discovery signals for backend/server/service/worker/job/queue/scheduler/consumer/adapter/repository/migration paths, Docker/Procfile/docker-compose/Kubernetes/serverless files, OpenAPI/AsyncAPI/protobuf contracts and backend runtime terms. Detection remains `present_unverified`.
+- Added read-only audit recommendations with deterministic priority, gate, artifact, evidence, approval, accepted-gap and residual-risk fields for backend gaps.
+- Added staged artifact templates: `backend-service-overview.md`, `backend-runtime-behavior.md`, `backend-dependency-failure-matrix.md`, `backend-observability-map.md`, `backend-slo-sheet.md`, `backend-health-check-contract.md`, `backend-job-queue-contract.md`, `backend-data-consistency-record.md`, `backend-config-secrets-manifest.md`, `backend-release-rollback-notes.md` and `backend-operational-runbook.md`.
+- Strengthened `architecture-overview.md`, `api-contract-review.md`, `quality-strategy.md`, `test-eval-matrix.md` and `manual-qa-evidence.md` with backend boundary, API/event contract and runtime verification overlap terms.
+
+Candidate artifact mapping:
+
+- Module/service boundary map is covered by `backend-service-overview.md` and `architecture-overview.md`.
+- Ports and Adapters map is covered by `backend-service-overview.md` until a later architecture slice proves separate ownership.
+- Security notes are covered by `security-risk-review.md` and `backend-config-secrets-manifest.md`.
+- SLO ownership remains split: backend owns service SLI/SLO shape via `backend-slo-sheet.md`; Delivery/Operations will own release and operational gate depth in `T9-D12`.
+- Distributed workflow recovery evidence is covered by `backend-data-consistency-record.md`, `backend-runtime-behavior.md` and `backend-operational-runbook.md`.
+- Contract-aware backend development is covered by `api-contract-review.md`, `backend-service-overview.md` and `backend-job-queue-contract.md` until `T9-D8` owns API/Integration detail.
+
+Batch 1 false-positive and unsupported-claim resolution:
+
+- Frontend-only, docs-only, CLI-only, native-only, dependency-metadata-only and package-name-only service folder work does not force backend gates.
+- Unsupported backend claims are rejected as evidence: backend means only business logic files, microservices are the professional default, retries make systems reliable, health endpoint solves readiness, logs are observability and SLOs only matter for large companies.
+- Fixture eval renderer/count sync is added as a batch-1 guard: `backend_contract_present` now covers the catalog/templates/discovery/audit backend contract and renderer output is `118` files. Full lifecycle skill routing, generated control-plane/eval template sync, source registry/docs sync and final `T9-D7-M13` depth remain pending later T9-D7 batches.
+
+Batch 1 verification:
+
+- `python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_discovery tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_fixture_eval_runner -v` ran 150 tests with `OK`.
+- `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0`.
+- `python tools\check_docs.py` passed.
+- `git diff --check` exited `0`.
+- `python -m unittest discover -s tests -p "test_*.py" -v` ran 393 tests with `OK`.
 
 ## Cross-Domain Synthesis Backlog
 

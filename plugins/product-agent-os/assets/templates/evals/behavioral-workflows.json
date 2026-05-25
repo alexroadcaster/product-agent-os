@@ -901,6 +901,71 @@
       "residual_risk": "Inspection-only answers can still be useful, but they must not be promoted into completion claims."
     },
     {
+      "name": "frontend-evidence-before-completion",
+      "input": {
+        "prompt": "Ship this frontend UI as complete from code inspection, Storybook and one desktop screenshot.",
+        "workspace_fixture": "frontend-ui-app",
+        "control_plane_state": "quality_gate"
+      },
+      "expected": {
+        "route": "frontend methodology gates",
+        "minimum_artifacts": [
+          "frontend-flow-spec.md",
+          "frontend-state-matrix.md",
+          "frontend-visual-qa.md",
+          "frontend-accessibility-review.md",
+          "frontend-performance-budget.md"
+        ],
+        "required_fields": [
+          "frontend_user_flow_acceptance_present",
+          "frontend_component_docs_present",
+          "frontend_component_state_matrix_present",
+          "frontend_design_system_boundary_present",
+          "frontend_fsd_boundary_reviewed",
+          "frontend_api_contract_alignment_present",
+          "frontend_accessibility_review_present",
+          "frontend_keyboard_focus_contract_present",
+          "frontend_responsive_viewport_matrix_present",
+          "frontend_visual_evidence_present",
+          "frontend_runtime_console_evidence_present",
+          "frontend_performance_budget_present",
+          "frontend_browser_support_present",
+          "frontend_content_i18n_boundary_present",
+          "frontend_interaction_test_evidence_present",
+          "ui-flow-spec.md",
+          "component-state-matrix.md",
+          "accessibility-review.md",
+          "route params",
+          "auth/permission",
+          "SEO/meta",
+          "token owner",
+          "variant policy",
+          "local state",
+          "server-cache",
+          "persisted state",
+          "browser/runtime evidence",
+          "console status",
+          "Playwright trace",
+          "baseline owner",
+          "reduced motion",
+          "input modality",
+          "WCAG 2.2 AA",
+          "responsive viewport matrix",
+          "interaction test evidence",
+          "external visual service approval",
+          "no secrets"
+        ]
+      },
+      "forbidden": [
+        "UI completion from code inspection only",
+        "desktop-only screenshot proves responsive UI",
+        "Storybook proves UI quality by itself",
+        "automated accessibility addon output is enough",
+        "lab Web Vitals always represent production UX"
+      ],
+      "residual_risk": "Frontend completion claims need current browser/runtime, responsive, accessibility, visual and privacy-safe evidence or an explicit accepted gap."
+    },
+    {
       "name": "finish-options",
       "input": {
         "prompt": "Prepare this verified work for release.",

@@ -554,6 +554,218 @@ class MethodologyAuditContractTest(unittest.TestCase):
                 self.assertEqual(recommendation["priority"], "P1_high_risk")
                 self.assertEqual(recommendation["artifact"], "model-reasoning-policy.md")
 
+    def test_frontend_recommends_gate_priority_and_artifact_mapping(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "package.json").write_text(
+                '{"dependencies":{"react":"latest","@storybook/react":"latest","@playwright/test":"latest"}}\n',
+                encoding="utf-8",
+            )
+            (root / ".storybook").mkdir()
+            (root / ".storybook" / "main.ts").write_text("export default {};\n", encoding="utf-8")
+            (root / "playwright.config.ts").write_text("export default {};\n", encoding="utf-8")
+            (root / "src" / "pages" / "checkout").mkdir(parents=True)
+            (root / "src" / "pages" / "checkout" / "CheckoutPage.tsx").write_text(
+                "export const CheckoutPage = () => null;\n",
+                encoding="utf-8",
+            )
+            result = build_methodology_audit(
+                root,
+                intent_hint=(
+                    "ship public frontend route page reusable component design-system primitive token variant "
+                    "FSD API data contract accessibility keyboard focus responsive visual runtime console "
+                    "interaction test performance browser support i18n long text state ownership ready"
+                ),
+            )
+
+        self.assertNotEqual(self._domain_status(result, "frontend"), "not_applicable")
+        expected = {
+            "frontend_user_flow_acceptance_present": ("P0_blocker", "frontend-flow-spec.md"),
+            "frontend_component_state_matrix_present": ("P1_high_risk", "frontend-state-matrix.md"),
+            "frontend_component_docs_present": ("P1_high_risk", "component-card.md"),
+            "frontend_design_system_boundary_present": ("P1_high_risk", "component-card.md"),
+            "frontend_fsd_boundary_reviewed": ("P2_recommended", "component-card.md"),
+            "frontend_api_contract_alignment_present": ("P1_high_risk", "frontend-flow-spec.md"),
+            "frontend_accessibility_review_present": ("P1_high_risk", "frontend-accessibility-review.md"),
+            "frontend_keyboard_focus_contract_present": ("P1_high_risk", "frontend-accessibility-review.md"),
+            "frontend_responsive_viewport_matrix_present": ("P1_high_risk", "frontend-visual-qa.md"),
+            "frontend_visual_evidence_present": ("P1_high_risk", "frontend-visual-qa.md"),
+            "frontend_runtime_console_evidence_present": ("P0_blocker", "frontend-visual-qa.md"),
+            "frontend_interaction_test_evidence_present": ("P1_high_risk", "test-eval-matrix.md"),
+            "frontend_performance_budget_present": ("P1_high_risk", "frontend-performance-budget.md"),
+            "frontend_browser_support_present": ("P2_recommended", "frontend-visual-qa.md"),
+            "frontend_content_i18n_boundary_present": ("P2_recommended", "frontend-flow-spec.md"),
+        }
+        for gate, (priority, artifact) in expected.items():
+            with self.subTest(gate=gate):
+                recommendation = self._recommendation_by_gate(result, gate)
+                self.assertEqual(recommendation["priority"], priority)
+                self.assertEqual(recommendation["artifact"], artifact)
+
+        runtime = self._recommendation_by_gate(result, "frontend_runtime_console_evidence_present")
+        self.assertIn("console status", " ".join(runtime["evidence_required"]).lower())
+        self.assertIn("trace", " ".join(runtime["evidence_required"]).lower())
+        design = self._recommendation_by_gate(result, "frontend_design_system_boundary_present")
+        self.assertIn("token owner", " ".join(design["evidence_required"]).lower())
+        self.assertIn("migration", " ".join(design["evidence_required"]).lower())
+
+    def test_frontend_false_positive_intents_are_not_applicable(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        cases = [
+            ("backend-only service worker queue work", {"pyproject.toml": "[project]\nname='api'\n"}),
+            ("data-only migration and backfill", {"migrations/001.sql": "create table users(id text);\n"}),
+            ("CLI-only command parser", {"src/cli.py": "print('Synthetic')\n"}),
+            ("docs-only markdown cleanup", {"README.md": "# Synthetic docs\n"}),
+            ("native-only Android iOS feature", {"android/app/build.gradle": "plugins {}\n"}),
+            ("dependency metadata without UI behavior impact", {"package.json": "{}\n"}),
+            (
+                "simple CRUD without non-trivial frontend state",
+                {
+                    "package.json": '{"dependencies":{"react":"latest"}}\n',
+                    "src/App.tsx": "export const App = () => null;\n",
+                },
+            ),
+        ]
+        for intent, files in cases:
+            with self.subTest(intent=intent), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                for relative, text in files.items():
+                    path = root / relative
+                    path.parent.mkdir(parents=True, exist_ok=True)
+                    path.write_text(text, encoding="utf-8")
+
+                result = build_methodology_audit(root, intent_hint=intent)
+
+                self.assertEqual(self._domain_status(result, "frontend"), "not_applicable")
+                frontend_recommendations = [
+                    item for item in result["recommendations"] if item["domain"] == "frontend"
+                ]
+                self.assertEqual(frontend_recommendations, [])
+
+    def test_frontend_rejects_unsupported_claims_as_evidence(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        unsupported_claims = [
+            "FSD should be mandatory for every frontend project",
+            "Storybook proves UI quality by itself",
+            "automated a11y addon output is enough",
+            "a desktop screenshot proves responsive UI",
+            "lab Web Vitals always represent production UX",
+            "code inspection proves UI completion",
+        ]
+        for claim in unsupported_claims:
+            with self.subTest(claim=claim), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                (root / "package.json").write_text('{"dependencies":{"react":"latest"}}\n', encoding="utf-8")
+                result = build_methodology_audit(root, intent_hint=claim)
+
+                recommendation = self._recommendation_by_gate(result, "unsupported_frontend_claims_rejected")
+                self.assertEqual(recommendation["priority"], "P1_high_risk")
+                self.assertEqual(recommendation["artifact"], "frontend-visual-qa.md")
+
+    def test_backend_recommends_gate_priority_and_artifact_mapping(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "pyproject.toml").write_text("[project]\nname='orders-api'\n", encoding="utf-8")
+            (root / "server").mkdir()
+            (root / "server" / "app.py").write_text("def app():\n    return None\n", encoding="utf-8")
+            (root / "workers").mkdir()
+            (root / "workers" / "email_worker.py").write_text("def run():\n    return None\n", encoding="utf-8")
+            (root / "Dockerfile").write_text("FROM python:3.12\n", encoding="utf-8")
+            result = build_methodology_audit(
+                root,
+                intent_hint=(
+                    "ship production backend service worker queue scheduler remote dependency retry timeout "
+                    "idempotency backpressure ordering replay observability traces metrics logs correlation "
+                    "SLO health check readiness liveness config secret auth payment external write migration "
+                    "rollback API event contract storage external adapter"
+                ),
+            )
+
+        self.assertNotEqual(self._domain_status(result, "backend"), "not_applicable")
+        expected = {
+            "backend_service_boundary_present": ("P0_blocker", "backend-service-overview.md"),
+            "backend_runtime_behavior_present": ("P0_blocker", "backend-runtime-behavior.md"),
+            "backend_dependency_failure_matrix_present": ("P1_high_risk", "backend-dependency-failure-matrix.md"),
+            "backend_observability_contract_present": ("P1_high_risk", "backend-observability-map.md"),
+            "backend_slo_or_gap_present": ("P1_high_risk", "backend-slo-sheet.md"),
+            "backend_health_probe_contract_present": ("P1_high_risk", "backend-health-check-contract.md"),
+            "backend_job_queue_contract_present": ("P1_high_risk", "backend-job-queue-contract.md"),
+            "backend_data_consistency_strategy_present": ("P1_high_risk", "backend-data-consistency-record.md"),
+            "backend_config_secrets_boundary_present": ("P1_high_risk", "backend-config-secrets-manifest.md"),
+            "backend_security_reviewed": ("P1_high_risk", "security-risk-review.md"),
+            "backend_rollback_plan_present": ("P1_high_risk", "backend-release-rollback-notes.md"),
+        }
+        for gate, (priority, artifact) in expected.items():
+            with self.subTest(gate=gate):
+                recommendation = self._recommendation_by_gate(result, gate)
+                self.assertEqual(recommendation["priority"], priority)
+                self.assertEqual(recommendation["artifact"], artifact)
+
+        boundary = self._recommendation_by_gate(result, "backend_service_boundary_present")
+        self.assertIn("owner", " ".join(boundary["evidence_required"]).lower())
+        self.assertIn("data ownership", " ".join(boundary["evidence_required"]).lower())
+        runtime = self._recommendation_by_gate(result, "backend_runtime_behavior_present")
+        self.assertIn("idempotency", " ".join(runtime["evidence_required"]).lower())
+        self.assertIn("replay", " ".join(runtime["evidence_required"]).lower())
+        quality = self._recommendation_by_gate(result, "backend_observability_contract_present")
+        self.assertIn("correlation", " ".join(quality["evidence_required"]).lower())
+        self.assertIn("redaction", " ".join(quality["evidence_required"]).lower())
+
+    def test_backend_false_positive_intents_are_not_applicable(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        cases = [
+            ("frontend-only route component", {"package.json": '{"dependencies":{"react":"latest"}}\n'}),
+            ("docs-only backend architecture article", {"docs/backend-notes.md": "# Backend article\n"}),
+            ("CLI-only command parser", {"src/cli.py": "print('Synthetic')\n"}),
+            ("native-only Android iOS feature", {"android/app/build.gradle": "plugins {}\n"}),
+            ("dependency metadata without backend runtime behavior", {"requirements.txt": "requests==2.0\n"}),
+            ("package-name-only service folder without runtime evidence", {"services/README.md": "# Service docs\n"}),
+        ]
+        for intent, files in cases:
+            with self.subTest(intent=intent), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                for relative, text in files.items():
+                    path = root / relative
+                    path.parent.mkdir(parents=True, exist_ok=True)
+                    path.write_text(text, encoding="utf-8")
+
+                result = build_methodology_audit(root, intent_hint=intent)
+
+                self.assertEqual(self._domain_status(result, "backend"), "not_applicable")
+                backend_recommendations = [
+                    item for item in result["recommendations"] if item["domain"] == "backend"
+                ]
+                self.assertEqual(backend_recommendations, [])
+
+    def test_backend_rejects_unsupported_claims_as_evidence(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        unsupported_claims = [
+            "Backend means only business logic files",
+            "Microservices are the professional default",
+            "Retries make systems reliable",
+            "Health endpoint exists, so readiness is solved",
+            "Logs are observability",
+            "SLOs are only for large companies",
+        ]
+        for claim in unsupported_claims:
+            with self.subTest(claim=claim), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                (root / "server").mkdir()
+                (root / "server" / "app.py").write_text("def app():\n    return None\n", encoding="utf-8")
+                result = build_methodology_audit(root, intent_hint=claim)
+
+                recommendation = self._recommendation_by_gate(result, "unsupported_backend_claims_rejected")
+                self.assertEqual(recommendation["priority"], "P1_high_risk")
+                self.assertEqual(recommendation["artifact"], "backend-service-overview.md")
+
 
 if __name__ == "__main__":
     unittest.main()

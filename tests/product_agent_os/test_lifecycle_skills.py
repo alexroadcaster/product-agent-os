@@ -827,6 +827,45 @@ class LifecycleSkillsTest(unittest.TestCase):
                 for expected in shared_terms:
                     self.assertIn(expected, text)
 
+    def test_lifecycle_skills_route_frontend_methodology(self):
+        shared_terms = [
+            "frontend",
+            "frontend-flow-spec.md",
+            "frontend-state-matrix.md",
+            "frontend-visual-qa.md",
+            "frontend-accessibility-review.md",
+            "frontend-performance-budget.md",
+            "frontend_user_flow_acceptance_present",
+            "frontend_component_state_matrix_present",
+            "frontend_design_system_boundary_present",
+            "frontend_api_contract_alignment_present",
+            "frontend_runtime_console_evidence_present",
+            "frontend_interaction_test_evidence_present",
+            "storybook",
+            "feature-sliced design",
+            "wcag 2.2 aa",
+            "browser/runtime evidence",
+            "console status",
+            "playwright trace",
+            "no secrets",
+            "approval_required",
+            "present_unverified",
+        ]
+
+        for name in [
+            "workspace-discovery-auditor",
+            "requirements-author",
+            "implementation-planner",
+            "test-eval-designer",
+            "risk-reviewer",
+            "docs-maintainer",
+            "pr-release-operator",
+        ]:
+            text = self._skill_text(name).lower()
+            with self.subTest(name=name):
+                for expected in shared_terms:
+                    self.assertIn(expected, text)
+
     def test_risk_reviewer_generalizes_two_stage_review_for_risky_slices(self):
         risk_reviewer = self._skill_text("risk-reviewer").lower()
 

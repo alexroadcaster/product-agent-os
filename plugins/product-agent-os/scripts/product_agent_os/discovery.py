@@ -233,6 +233,151 @@ def _detect_fsd_structure(files: set[str]) -> bool:
     return has_component_file and len(detected_layers) >= 4
 
 
+def _detect_frontend_signal(files: set[str]) -> bool:
+    lowered = {path.lower().replace("\\", "/") for path in files}
+    if any(path.startswith(("android/", "ios/")) for path in lowered):
+        return False
+
+    directory_prefixes = (
+        "app/",
+        "pages/",
+        "routes/",
+        "components/",
+        "widgets/",
+        "features/",
+        "entities/",
+        "shared/ui/",
+        "stories/",
+        ".storybook/",
+        "e2e/",
+        "tests/playwright/",
+        "src/app/",
+        "src/pages/",
+        "src/routes/",
+        "src/components/",
+        "src/widgets/",
+        "src/features/",
+        "src/entities/",
+        "src/shared/ui/",
+    )
+    exact_files = {
+        "components.json",
+        "vite.config.js",
+        "vite.config.ts",
+        "next.config.js",
+        "next.config.ts",
+        "nuxt.config.js",
+        "nuxt.config.ts",
+        "svelte.config.js",
+        "svelte.config.ts",
+        "astro.config.mjs",
+        "astro.config.ts",
+        "playwright.config.js",
+        "playwright.config.ts",
+        "tailwind.config.js",
+        "tailwind.config.ts",
+    }
+    fragments = (
+        ".stories.",
+        ".story.",
+        "storybook",
+        "playwright",
+        "testing-library",
+        "axe",
+        "chromatic",
+        "tokens",
+        "theme",
+        "viewport",
+        "accessibility",
+        "wcag",
+        "keyboard",
+        "focus",
+        "responsive",
+        "web-vitals",
+        "lcp",
+        "inp",
+        "cls",
+    )
+    frontend_extensions = (".tsx", ".jsx", ".vue", ".svelte", ".css", ".scss")
+    return any(
+        path in exact_files
+        or path.startswith(directory_prefixes)
+        or any(fragment in path for fragment in fragments)
+        or path.endswith(frontend_extensions)
+        for path in lowered
+    )
+
+
+def _detect_backend_signal(files: set[str]) -> bool:
+    lowered = {path.lower().replace("\\", "/") for path in files}
+    directory_prefixes = (
+        "adapters/",
+        "backend/",
+        "consumers/",
+        "cron/",
+        "jobs/",
+        "queues/",
+        "repositories/",
+        "schedulers/",
+        "server/",
+        "services/",
+        "workers/",
+        "src/adapters/",
+        "src/backend/",
+        "src/consumers/",
+        "src/jobs/",
+        "src/queues/",
+        "src/repositories/",
+        "src/schedulers/",
+        "src/server/",
+        "src/services/",
+        "src/workers/",
+    )
+    exact_files = {
+        "dockerfile",
+        "docker-compose.yml",
+        "procfile",
+        "serverless.yml",
+        "openapi.yaml",
+        "openapi.yml",
+        "openapi.json",
+        "asyncapi.yaml",
+        "asyncapi.yml",
+        "asyncapi.json",
+    }
+    fragments = (
+        "backend",
+        "celery",
+        "consumer",
+        "controller",
+        "django",
+        "fastapi",
+        "flask",
+        "grpc",
+        "health",
+        "idempotency",
+        "job",
+        "liveness",
+        "queue",
+        "readiness",
+        "repository",
+        "retry",
+        "runbook",
+        "scheduler",
+        "service",
+        "slo",
+        "spring",
+        "worker",
+    )
+    return any(
+        path in exact_files
+        or path.startswith(directory_prefixes)
+        or path.endswith((".proto", "/openapi.yaml", "/openapi.yml", "/openapi.json", "/asyncapi.yaml", "/asyncapi.yml"))
+        or any(fragment in path for fragment in fragments)
+        for path in lowered
+    )
+
+
 def _detect_methodology_signals(files: set[str], profile: dict[str, Any]) -> dict[str, bool]:
     lowered = {path.lower() for path in files}
     ci_present = bool(profile.get("drivers", {}).get("ci_present")) if isinstance(profile, dict) else False
@@ -270,6 +415,8 @@ def _detect_methodology_signals(files: set[str], profile: dict[str, Any]) -> dic
             or ".story." in path
             for path in lowered
         ),
+        "frontend": _detect_frontend_signal(files),
+        "backend": _detect_backend_signal(files),
         "fsd_structure": _detect_fsd_structure(files),
         "database_docs": any(
             path.endswith(".dbml")
@@ -1999,6 +2146,8 @@ def _methodology_applicability(
     docs_status = docs_impact.get("status", "not_applicable") if isinstance(docs_impact, dict) else "not_applicable"
     domain_model_needed = _needs_domain_model(files, signals, profile)
     fsd_needed = signals.get("fsd_structure", False) or _needs_fsd_structure(files)
+    frontend_needed = signals.get("frontend", False)
+    backend_needed = signals.get("backend", False)
     standards_evidence = [
         name
         for name in ("architecture_docs", "adr", "openapi", "asyncapi", "codeowners", "ci")
@@ -2055,6 +2204,33 @@ def _methodology_applicability(
             ["component-card.md boundary fields or accepted UI architecture gap"],
             "builder",
             "directory detection does not prove Feature-Sliced Design quality",
+        ),
+        "frontend_methodology": _applicability_packet(
+            "present_unverified" if frontend_needed else "not_applicable",
+            "frontend signal exists" if frontend_needed else "no frontend signal",
+            _signal_evidence(signals, "frontend", "storybook", "fsd_structure"),
+            [
+                "frontend-flow-spec.md",
+                "frontend-state-matrix.md",
+                "browser/runtime evidence",
+                "console status",
+                "privacy-safe screenshot or accepted explicit gap",
+            ],
+            "builder",
+            "detection alone does not prove UI completion, browser/runtime evidence or owner acceptance",
+        ),
+        "backend_methodology": _applicability_packet(
+            "present_unverified" if backend_needed else "not_applicable",
+            "backend signal exists" if backend_needed else "no backend signal",
+            _signal_evidence(signals, "backend", "openapi", "asyncapi", "database_docs", "ci"),
+            [
+                "backend-service-overview.md",
+                "backend-runtime-behavior.md",
+                "runtime/failure evidence",
+                "observability/SLO/health evidence or accepted explicit gap",
+            ],
+            "backend owner",
+            "detection alone does not prove backend runtime safety, failure-mode coverage or owner acceptance",
         ),
         "docs_tooling_decision": _applicability_packet(
             docs_status if docs_status in READINESS_STATUSES else "present_unverified",

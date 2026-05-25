@@ -32,6 +32,7 @@ Behavioral evals проверяют не синтаксис Markdown, а пов�
 | Methodology intelligence eval | Read-only methodology audit returns catalog coverage, `maturity_level`, `complexity_profile`, prioritized recommendations and no target-workspace mutation. | Implemented for Track 9 foundation. | `methodology-intelligence-read-only-first` and `methodology_intelligence_contract_present`. |
 | Solution architecture eval | Catalog, audit, templates and lifecycle skills preserve conditional architecture gates and reject unsupported architecture claims. | Implemented in `T9-D3`. | `solution_architecture_contract_present`. |
 | Codex agentic workflow eval | Catalog, audit, templates and lifecycle skills preserve source-of-truth, approval, handoff, MCP, hook, skill, plugin, automation, model/reasoning, memory and agent eval gates without silent activation. | Implemented in `T9-D5`. | `codex_agentic_workflow_contract_present`. |
+| Frontend eval | Catalog, audit, templates, lifecycle skills and fixtures preserve user-flow, component-state, Storybook/FSD, visual, accessibility, runtime, interaction and performance gates without accepting code-inspection-only UI completion. | Implemented in `T9-D6`. | `frontend_contract_present`. |
 | Readiness contract eval | `project-readiness.json` has conditional gates, statuses, evidence owner and residual risk. | Implemented through T8-F. | `conditional_readiness_gates_contract_present`. |
 | Codex compatibility eval | Plugin remains Codex-only and avoids non-Codex adapter requirements. | Implemented. | `python plugins\product-agent-os\scripts\validate_codex_compatibility.py`. |
 | transcript/session eval runner | Replay synthetic or redacted Codex session transcripts for multi-turn shortcut resistance, evidence quality and privacy/no-secrets checks. | Implemented in `T8-GY` as deterministic local replay. | `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json`. |
@@ -53,6 +54,7 @@ Examples:
 - `methodology-intelligence-read-only-first`: methodology audit must return a Delivery Map, prioritized recommendations and owner questions before any staged proposal.
 - `solution_architecture_contract_present`: architecture gates require scope, boundaries, owner, ADR/tradeoff, observability, rollback, render check and accepted-gap evidence without forcing C4 detail, architecture-as-code or Well-Architected review when not applicable.
 - `codex_agentic_workflow_contract_present`: Codex workflow gates require control plane, source of truth, read-only discovery, approval boundaries, model/reasoning policy, memory policy, fresh-context handoff, ownership split, subagent safety, MCP review, hook governance, skill promotion, plugin boundary, automation stability and agent eval workflow.
+- `frontend_contract_present`: frontend gates require user-flow acceptance, component state matrix, design-system boundary, Storybook/FSD routing, API/data state alignment, WCAG 2.2 AA target or accepted exception, browser/runtime evidence, console status, Playwright trace or accepted gap, visual evidence, interaction checks and performance budget where applicable.
 - `false-positive fixtures`: backend/native work does not force FSD, simple CRUD `src/domain/*` does not force DDD, docs-light does not force a docs portal, hosted docs and DB introspection stay approval-required.
 
 ## Forbidden Behavior
@@ -69,6 +71,7 @@ Forbidden behavior is the part that catches shortcuts:
 - release claim without build/test/docs evidence;
 - methodology recommendation that writes target files, enables hooks, creates automation or mutates external systems before approval;
 - Codex workflow recommendation that treats memory as source of truth, subagents as automatically faster, MCP as safe by default, hooks as harmless, Agents SDK as the Codex runtime layer, or repeated workflows as immediately automation-ready;
+- frontend completion from code inspection only, Storybook-only evidence, desktop-only screenshot, automated accessibility addon output alone, mandatory FSD claim, or lab Web Vitals as guaranteed production UX;
 - source-backed OpenAI/Codex claim without Source status or registry support;
 - external write, remote CI mutation, publish, tag, upload or package-registry action without approval.
 

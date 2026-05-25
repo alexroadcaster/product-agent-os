@@ -1,0 +1,9 @@
+{
+  "source": "Synthetic design tokens for fixture coverage",
+  "colors": {
+    "surface": "#ffffff",
+    "text": "#17202a",
+    "accent": "#2563eb",
+    "danger": "#b42318"
+  }
+}

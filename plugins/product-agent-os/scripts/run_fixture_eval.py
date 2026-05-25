@@ -423,6 +423,170 @@ QUALITY_TESTING_EVALS_TERMS = (
     "explicit_gap_accepted",
     "approval_required",
 )
+FRONTEND_GATES = (
+    "frontend_user_flow_acceptance_present",
+    "frontend_component_docs_present",
+    "frontend_component_state_matrix_present",
+    "frontend_design_system_boundary_present",
+    "frontend_fsd_boundary_reviewed",
+    "frontend_api_contract_alignment_present",
+    "frontend_accessibility_review_present",
+    "frontend_keyboard_focus_contract_present",
+    "frontend_responsive_viewport_matrix_present",
+    "frontend_visual_evidence_present",
+    "frontend_runtime_console_evidence_present",
+    "frontend_performance_budget_present",
+    "frontend_browser_support_present",
+    "frontend_content_i18n_boundary_present",
+    "frontend_interaction_test_evidence_present",
+)
+FRONTEND_ARTIFACTS = (
+    "frontend-flow-spec.md",
+    "frontend-state-matrix.md",
+    "frontend-visual-qa.md",
+    "frontend-accessibility-review.md",
+    "frontend-performance-budget.md",
+    "component-card.md",
+    "acceptance-scenarios.md",
+    "api-contract-review.md",
+    "quality-strategy.md",
+    "test-eval-matrix.md",
+    "manual-qa-evidence.md",
+)
+FRONTEND_EVAL_FIELDS = (
+    "frontend_user_flow_contract_present",
+    "frontend_component_docs_contract_present",
+    "frontend_component_state_matrix_contract_present",
+    "frontend_design_system_boundary_contract_present",
+    "frontend_fsd_boundary_contract_present",
+    "frontend_api_contract_alignment_contract_present",
+    "frontend_accessibility_review_contract_present",
+    "frontend_keyboard_focus_contract_present",
+    "frontend_responsive_viewport_matrix_contract_present",
+    "frontend_visual_evidence_contract_present",
+    "frontend_runtime_console_evidence_contract_present",
+    "frontend_performance_budget_contract_present",
+    "frontend_browser_support_contract_present",
+    "frontend_content_i18n_contract_present",
+    "frontend_interaction_test_evidence_contract_present",
+    "unsupported_frontend_claims_rejected_contract_present",
+)
+FRONTEND_TERMS = (
+    "frontend",
+    "frontend-flow-spec.md",
+    "frontend-state-matrix.md",
+    "frontend-visual-qa.md",
+    "frontend-accessibility-review.md",
+    "frontend-performance-budget.md",
+    "route params",
+    "auth/permission",
+    "seo/meta",
+    "token owner",
+    "variant policy",
+    "local state",
+    "server-cache",
+    "persisted state",
+    "browser/runtime evidence",
+    "console status",
+    "playwright trace",
+    "baseline owner",
+    "reduced motion",
+    "input modality",
+    "wcag 2.2 aa",
+    "external visual service approval",
+    "storybook proves ui quality",
+    "present_unverified",
+    "explicit_gap_accepted",
+    "approval_required",
+    "no secrets",
+)
+BACKEND_GATES = (
+    "backend_service_boundary_present",
+    "backend_runtime_behavior_present",
+    "backend_dependency_failure_matrix_present",
+    "backend_observability_contract_present",
+    "backend_slo_or_gap_present",
+    "backend_health_probe_contract_present",
+    "backend_job_queue_contract_present",
+    "backend_data_consistency_strategy_present",
+    "backend_config_secrets_boundary_present",
+    "backend_security_reviewed",
+    "backend_rollback_plan_present",
+)
+BACKEND_ARTIFACTS = (
+    "backend-service-overview.md",
+    "backend-runtime-behavior.md",
+    "backend-dependency-failure-matrix.md",
+    "backend-observability-map.md",
+    "backend-slo-sheet.md",
+    "backend-health-check-contract.md",
+    "backend-job-queue-contract.md",
+    "backend-data-consistency-record.md",
+    "backend-config-secrets-manifest.md",
+    "backend-release-rollback-notes.md",
+    "backend-operational-runbook.md",
+    "architecture-overview.md",
+    "api-contract-review.md",
+    "quality-strategy.md",
+    "test-eval-matrix.md",
+    "manual-qa-evidence.md",
+    "security-risk-review.md",
+    "release-packet.md",
+)
+BACKEND_EVAL_FIELDS = (
+    "backend_service_boundary_contract_present",
+    "backend_runtime_behavior_contract_present",
+    "backend_dependency_failure_matrix_contract_present",
+    "backend_observability_contract_present",
+    "backend_slo_or_gap_contract_present",
+    "backend_health_probe_contract_present",
+    "backend_job_queue_contract_present",
+    "backend_data_consistency_contract_present",
+    "backend_config_secrets_boundary_contract_present",
+    "backend_security_review_contract_present",
+    "backend_rollback_plan_contract_present",
+    "unsupported_backend_claims_rejected_contract_present",
+)
+BACKEND_TERMS = (
+    "backend",
+    "backend-service-overview.md",
+    "backend-runtime-behavior.md",
+    "backend-dependency-failure-matrix.md",
+    "backend-observability-map.md",
+    "backend-slo-sheet.md",
+    "backend-health-check-contract.md",
+    "backend-job-queue-contract.md",
+    "backend-data-consistency-record.md",
+    "backend-config-secrets-manifest.md",
+    "backend-release-rollback-notes.md",
+    "backend-operational-runbook.md",
+    "module/service boundary",
+    "ports and adapters",
+    "inbound contracts",
+    "outbound dependencies",
+    "deployment/runtime shape",
+    "openapi",
+    "asyncapi",
+    "pact",
+    "protobuf",
+    "timeout",
+    "retry",
+    "idempotency",
+    "replay",
+    "observability",
+    "slo",
+    "health check",
+    "queue",
+    "data consistency",
+    "env/config keys without values",
+    "secret source",
+    "rollback trigger",
+    "code inspection alone is not backend completion evidence",
+    "present_unverified",
+    "explicit_gap_accepted",
+    "approval_required",
+    "no secrets",
+)
 CODEX_AGENTIC_WORKFLOW_GATES = (
     "agentic_scope_classified",
     "control_plane_present",
@@ -639,6 +803,7 @@ CONDITIONAL_READINESS_GATE_IDS = (
     "standards_trigger_policy_when_architecture_api_release_or_governance_changes",
     "quality_testing_evals_when_non_trivial_change",
     "codex_agentic_workflow",
+    "frontend_methodology",
 )
 READINESS_STATUSES = (
     "not_applicable",
@@ -915,6 +1080,8 @@ def _expected_checks(
         checks["solution_architecture_contract_present"] = _solution_architecture_contract_present()
         checks["quality_testing_evals_contract_present"] = _quality_testing_evals_contract_present()
         checks["codex_agentic_workflow_contract_present"] = _codex_agentic_workflow_contract_present()
+        checks["frontend_contract_present"] = _frontend_contract_present()
+        checks["backend_contract_present"] = _backend_contract_present()
         checks["methodology_applicability_contract_present"] = (
             _methodology_applicability_contract_present(audit)
         )
@@ -983,6 +1150,19 @@ def _expected_checks(
         checks["docs_light_does_not_select_heavy_portal"] = _docs_light_no_portal_check(audit)
     if fixture == "hosted-docs-approval":
         checks["hosted_docs_and_db_introspection_require_approval"] = _hosted_docs_approval_check(audit)
+    if fixture == "frontend-ui-app":
+        applicability = audit.get("methodology_applicability", {})
+        frontend_packet = (
+            applicability.get("frontend_methodology", {}) if isinstance(applicability, dict) else {}
+        )
+        checks["frontend_contract_present"] = _frontend_contract_present()
+        checks["frontend_methodology_detected_for_ui"] = (
+            isinstance(signals, dict)
+            and signals.get("frontend") is True
+            and "frontend" in route_methodology_signals
+            and isinstance(frontend_packet, dict)
+            and frontend_packet.get("status") == "present_unverified"
+        )
     return checks
 
 
@@ -1052,6 +1232,8 @@ def _methodology_applicability_contract_present(audit: dict[str, Any]) -> bool:
         "docs_tooling_decision",
         "standards_trigger_policy",
         "codex_agentic_workflow",
+        "frontend_methodology",
+        "backend_methodology",
     }
     allowed_statuses = {
         "not_applicable",
@@ -1363,6 +1545,107 @@ def _quality_testing_evals_contract_present() -> bool:
         f"{path.name}\n{path.read_text(encoding='utf-8')}" for path in paths
     ).lower()
     return all(term in payload for term in QUALITY_TESTING_EVALS_TERMS)
+
+
+def _frontend_contract_present() -> bool:
+    try:
+        catalog = load_methodology_catalog()
+    except (OSError, ValueError, json.JSONDecodeError):
+        return False
+    if validate_methodology_catalog(catalog):
+        return False
+    domains = {
+        str(domain.get("id")): domain
+        for domain in catalog.get("domains", [])
+        if isinstance(domain, dict) and domain.get("id")
+    }
+    frontend = domains.get("frontend")
+    if not isinstance(frontend, dict):
+        return False
+    if not set(FRONTEND_GATES).issubset(set(frontend.get("gates", []))):
+        return False
+    if not set(FRONTEND_ARTIFACTS).issubset(set(frontend.get("artifacts", []))):
+        return False
+    if not set(FRONTEND_EVAL_FIELDS).issubset(set(frontend.get("eval_fields", []))):
+        return False
+
+    paths = [
+        PLUGIN_ROOT / "assets" / "methodology" / "methodology-catalog.json",
+        TEMPLATE_ROOT / "artifact-templates" / "frontend-flow-spec.md",
+        TEMPLATE_ROOT / "artifact-templates" / "frontend-state-matrix.md",
+        TEMPLATE_ROOT / "artifact-templates" / "frontend-visual-qa.md",
+        TEMPLATE_ROOT / "artifact-templates" / "frontend-accessibility-review.md",
+        TEMPLATE_ROOT / "artifact-templates" / "frontend-performance-budget.md",
+        TEMPLATE_ROOT / "artifact-templates" / "component-card.md",
+        TEMPLATE_ROOT / "control-plane" / "PLAN.md",
+        TEMPLATE_ROOT / "control-plane" / "TEST.md",
+        TEMPLATE_ROOT / "control-plane" / "EVALS.md",
+        TEMPLATE_ROOT / "control-plane" / "RUNLOG.md",
+        TEMPLATE_ROOT / "evals" / "project-readiness.json",
+        TEMPLATE_ROOT / "evals" / "behavioral-workflows.json",
+        PLUGIN_ROOT / "skills" / "workspace-discovery-auditor" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "requirements-author" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "implementation-planner" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "test-eval-designer" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "risk-reviewer" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "docs-maintainer" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "pr-release-operator" / "SKILL.md",
+        PLUGIN_ROOT / "scripts" / "product_agent_os" / "discovery.py",
+        PLUGIN_ROOT / "scripts" / "product_agent_os" / "methodology_audit.py",
+    ]
+    payload = "\n".join(
+        f"{path.name}\n{path.read_text(encoding='utf-8')}" for path in paths
+    ).lower()
+    return all(term in payload for term in FRONTEND_TERMS)
+
+
+def _backend_contract_present() -> bool:
+    try:
+        catalog = load_methodology_catalog()
+    except (OSError, ValueError, json.JSONDecodeError):
+        return False
+    if validate_methodology_catalog(catalog):
+        return False
+    domains = {
+        str(domain.get("id")): domain
+        for domain in catalog.get("domains", [])
+        if isinstance(domain, dict) and domain.get("id")
+    }
+    backend = domains.get("backend")
+    if not isinstance(backend, dict):
+        return False
+    if not set(BACKEND_GATES).issubset(set(backend.get("gates", []))):
+        return False
+    if not set(BACKEND_ARTIFACTS).issubset(set(backend.get("artifacts", []))):
+        return False
+    if not set(BACKEND_EVAL_FIELDS).issubset(set(backend.get("eval_fields", []))):
+        return False
+
+    paths = [
+        PLUGIN_ROOT / "assets" / "methodology" / "methodology-catalog.json",
+        TEMPLATE_ROOT / "artifact-templates" / "backend-service-overview.md",
+        TEMPLATE_ROOT / "artifact-templates" / "backend-runtime-behavior.md",
+        TEMPLATE_ROOT / "artifact-templates" / "backend-dependency-failure-matrix.md",
+        TEMPLATE_ROOT / "artifact-templates" / "backend-observability-map.md",
+        TEMPLATE_ROOT / "artifact-templates" / "backend-slo-sheet.md",
+        TEMPLATE_ROOT / "artifact-templates" / "backend-health-check-contract.md",
+        TEMPLATE_ROOT / "artifact-templates" / "backend-job-queue-contract.md",
+        TEMPLATE_ROOT / "artifact-templates" / "backend-data-consistency-record.md",
+        TEMPLATE_ROOT / "artifact-templates" / "backend-config-secrets-manifest.md",
+        TEMPLATE_ROOT / "artifact-templates" / "backend-release-rollback-notes.md",
+        TEMPLATE_ROOT / "artifact-templates" / "backend-operational-runbook.md",
+        TEMPLATE_ROOT / "artifact-templates" / "architecture-overview.md",
+        TEMPLATE_ROOT / "artifact-templates" / "api-contract-review.md",
+        TEMPLATE_ROOT / "artifact-templates" / "quality-strategy.md",
+        TEMPLATE_ROOT / "artifact-templates" / "test-eval-matrix.md",
+        TEMPLATE_ROOT / "artifact-templates" / "manual-qa-evidence.md",
+        PLUGIN_ROOT / "scripts" / "product_agent_os" / "discovery.py",
+        PLUGIN_ROOT / "scripts" / "product_agent_os" / "methodology_audit.py",
+    ]
+    payload = "\n".join(
+        f"{path.name}\n{path.read_text(encoding='utf-8')}" for path in paths
+    ).lower()
+    return all(term in payload for term in BACKEND_TERMS)
 
 
 def _codex_agentic_workflow_contract_present() -> bool:

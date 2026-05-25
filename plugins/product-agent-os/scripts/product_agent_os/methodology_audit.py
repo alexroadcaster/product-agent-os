@@ -52,7 +52,118 @@ BUSINESS_INTENT_TERMS = {
 }
 BEHAVIOR_INTENT_TERMS = {"behavior", "feature", "change", "ship", "release", "user"}
 UI_INTENT_TERMS = {"frontend", "ui", "ux", "component", "screen", "page"}
-BACKEND_INTENT_TERMS = {"server", "api", "service", "worker", "queue", "backend"}
+FRONTEND_INTENT_TERMS = UI_INTENT_TERMS | {
+    "a11y",
+    "accessibility",
+    "browser",
+    "console",
+    "design-system",
+    "design system",
+    "fsd",
+    "frontend",
+    "interaction",
+    "keyboard",
+    "layout",
+    "playwright",
+    "responsive",
+    "route",
+    "storybook",
+    "visual",
+    "wcag",
+}
+BACKEND_INTENT_TERMS = {
+    "api",
+    "backend",
+    "circuit breaker",
+    "consumer",
+    "health check",
+    "idempotency",
+    "liveness",
+    "microservice",
+    "microservices",
+    "queue",
+    "readiness",
+    "retry",
+    "runbook",
+    "scheduler",
+    "server",
+    "service",
+    "slo",
+    "worker",
+}
+BACKEND_NOT_APPLICABLE_PHRASES = {
+    "cli-only",
+    "dependency metadata without backend runtime behavior",
+    "docs-only",
+    "frontend-only",
+    "native-only",
+    "package-name-only service folder without runtime evidence",
+}
+BACKEND_RUNTIME_TERMS = {
+    "background job",
+    "backpressure",
+    "consumer",
+    "deduplication",
+    "distributed workflow",
+    "failure mode",
+    "idempotency",
+    "job",
+    "ordering",
+    "queue",
+    "replay",
+    "retry",
+    "scheduler",
+    "timeout",
+    "worker",
+}
+BACKEND_DEPENDENCY_TERMS = {
+    "cache",
+    "dependency",
+    "external adapter",
+    "external provider",
+    "message broker",
+    "payment",
+    "remote dependency",
+    "search",
+    "storage",
+    "third-party",
+}
+BACKEND_OBSERVABILITY_TERMS = {
+    "alert",
+    "correlation",
+    "dashboard",
+    "log",
+    "logs",
+    "metric",
+    "metrics",
+    "observability",
+    "redaction",
+    "trace",
+    "traces",
+}
+BACKEND_HEALTH_TERMS = {"health", "health check", "liveness", "readiness", "startup"}
+BACKEND_DATA_CONSISTENCY_TERMS = {
+    "compensation",
+    "consistency",
+    "data recovery",
+    "distributed transaction",
+    "migration",
+    "outbox",
+    "saga",
+    "transaction",
+}
+BACKEND_CONFIG_SECRET_TERMS = {"config", "env", "environment", "secret", "secrets", "token"}
+BACKEND_SECURITY_TERMS = {"auth", "authorization", "external write", "money", "payment", "pii", "privileged", "secret"}
+BACKEND_ROLLBACK_TERMS = {"feature flag", "irreversible", "migration", "recovery", "replay", "rollback"}
+BACKEND_CONTRACT_TERMS = {"api", "asyncapi", "contract", "event", "openapi", "pact", "protobuf", "provider"}
+UNSUPPORTED_BACKEND_CLAIMS = {
+    "backend means only business logic files",
+    "health endpoint exists, so readiness is solved",
+    "logs are observability",
+    "microservices are the professional default",
+    "retries make systems reliable",
+    "slos are only for large companies",
+}
 API_INTENT_TERMS = {"api", "webhook", "integration", "external", "graphql", "grpc", "protobuf"}
 AI_INTENT_TERMS = {"prompt", "model", "eval", "rag", "vector", "embedding", "ai", "llm"}
 DELIVERY_INTENT_TERMS = {"production", "release", "deploy", "package", "docker", "kubernetes", "operations"}
@@ -241,6 +352,35 @@ CODEX_AGENTIC_NOT_APPLICABLE_PHRASES = {
     "single local deterministic command without agent delegation",
     "read-only research without staged artifacts or external writes",
 }
+FRONTEND_NOT_APPLICABLE_PHRASES = {
+    "backend-only",
+    "cli-only",
+    "data-only",
+    "dependency metadata without ui behavior impact",
+    "docs-only",
+    "native-only",
+    "simple crud without non-trivial frontend state",
+}
+FRONTEND_REUSABLE_TERMS = {"component", "reusable", "design-system", "design system", "primitive", "storybook"}
+FRONTEND_DESIGN_SYSTEM_TERMS = {"design-system", "design system", "token", "variant", "icon", "typography", "theme"}
+FRONTEND_DATA_TERMS = {"api", "contract", "data", "cache", "permission", "auth", "pagination", "stale"}
+FRONTEND_ACCESSIBILITY_TERMS = {"accessibility", "a11y", "keyboard", "focus", "wcag", "form", "public"}
+FRONTEND_VISUAL_TERMS = {"visual", "layout", "screenshot", "responsive", "viewport", "theme", "dark"}
+FRONTEND_PERFORMANCE_TERMS = {"performance", "web vitals", "lcp", "inp", "cls"}
+FRONTEND_BROWSER_TERMS = {"browser", "device", "webview", "chrome", "firefox", "safari"}
+FRONTEND_I18N_TERMS = {"i18n", "localization", "long text", "rtl", "pluralization", "user-generated"}
+FRONTEND_STATE_TERMS = {"state", "loading", "empty", "error", "disabled", "success", "skeleton", "offline"}
+UNSUPPORTED_FRONTEND_CLAIMS = {
+    "fsd should be mandatory for every frontend project",
+    "storybook proves ui quality",
+    "storybook proves ui quality by itself",
+    "automated a11y addon output is enough",
+    "automated accessibility addon output is enough",
+    "a desktop screenshot proves responsive ui",
+    "desktop screenshot proves responsive ui",
+    "lab web vitals always represent production ux",
+    "code inspection proves ui completion",
+}
 CODEX_AGENTIC_INTENT_TERMS = {
     "agent",
     "agentic",
@@ -405,6 +545,8 @@ def _observed_signals(root: Path, files: set[str], directories: set[str]) -> lis
     add("release_file", [path for path in files if path in RELEASE_FILE_MARKERS or path.startswith(".changeset/")])
     add("docs_or_control_plane", [path for path in files if path in DOC_CONTROL_FILES] + ["docs" for item in directories if item == "docs"])
     add("codex_agentic_workflow", _codex_agentic_signal_evidence(files, directories))
+    add("frontend", _frontend_signal_evidence(files, directories))
+    add("backend", _backend_signal_evidence(files, directories))
     add(
         "ai_eval_or_rag",
         [
@@ -432,6 +574,163 @@ def _observed_signals(root: Path, files: set[str], directories: set[str]) -> lis
     if _has_package_test_script(root):
         add("test_command", ["package.json"])
     return signals
+
+
+def _frontend_signal_evidence(files: set[str], directories: set[str]) -> list[str]:
+    native_markers = ("android/", "ios/", "app.json", "app.config.js", "app.config.ts")
+    if any(path.startswith(native_markers) for path in files):
+        return []
+    directory_prefixes = (
+        ".storybook/",
+        "app/",
+        "components/",
+        "e2e/",
+        "entities/",
+        "features/",
+        "pages/",
+        "routes/",
+        "shared/ui/",
+        "stories/",
+        "tests/playwright/",
+        "widgets/",
+        "src/app/",
+        "src/components/",
+        "src/entities/",
+        "src/features/",
+        "src/pages/",
+        "src/routes/",
+        "src/shared/ui/",
+        "src/widgets/",
+    )
+    exact_files = {
+        "components.json",
+        "vite.config.js",
+        "vite.config.ts",
+        "next.config.js",
+        "next.config.ts",
+        "nuxt.config.js",
+        "nuxt.config.ts",
+        "svelte.config.js",
+        "svelte.config.ts",
+        "astro.config.mjs",
+        "astro.config.ts",
+        "playwright.config.js",
+        "playwright.config.ts",
+        "tailwind.config.js",
+        "tailwind.config.ts",
+    }
+    fragments = (
+        ".stories.",
+        ".story.",
+        "storybook",
+        "playwright",
+        "testing-library",
+        "axe",
+        "chromatic",
+        "tokens",
+        "theme",
+        "viewport",
+        "accessibility",
+        "wcag",
+        "keyboard",
+        "focus",
+        "responsive",
+        "web-vitals",
+        "lcp",
+        "inp",
+        "cls",
+    )
+    extensions = (".tsx", ".jsx", ".vue", ".svelte", ".css", ".scss")
+    evidence = [
+        path
+        for path in files
+        if path in exact_files
+        or path.startswith(directory_prefixes)
+        or any(fragment in path for fragment in fragments)
+        or path.endswith(extensions)
+    ]
+    evidence.extend(directory for directory in directories if directory.startswith(("components", "pages", "routes", "src/components", "src/pages")))
+    return evidence
+
+
+def _backend_signal_evidence(files: set[str], directories: set[str]) -> list[str]:
+    directory_prefixes = (
+        "adapters/",
+        "backend/",
+        "consumers/",
+        "cron/",
+        "jobs/",
+        "queues/",
+        "repositories/",
+        "schedulers/",
+        "server/",
+        "services/",
+        "src/adapters/",
+        "src/backend/",
+        "src/consumers/",
+        "src/jobs/",
+        "src/queues/",
+        "src/repositories/",
+        "src/schedulers/",
+        "src/server/",
+        "src/services/",
+        "src/workers/",
+        "workers/",
+    )
+    exact_files = {
+        "docker-compose.yml",
+        "dockerfile",
+        "procfile",
+        "serverless.yml",
+    }
+    file_fragments = (
+        "celery",
+        "consumer",
+        "controller",
+        "django",
+        "fastapi",
+        "flask",
+        "grpc",
+        "health",
+        "job",
+        "queue",
+        "repository",
+        "retry",
+        "scheduler",
+        "service",
+        "sidekiq",
+        "spring",
+        "worker",
+    )
+    evidence = [
+        path
+        for path in files
+        if path in exact_files
+        or path.startswith(directory_prefixes)
+        or path in OPENAPI_MARKERS
+        or path in ASYNCAPI_MARKERS
+        or path.endswith((".proto", "/openapi.yaml", "/openapi.yml", "/openapi.json", "/asyncapi.yaml", "/asyncapi.yml"))
+        or any(fragment in path for fragment in file_fragments)
+    ]
+    evidence.extend(
+        directory
+        for directory in directories
+        if directory in {
+            "adapters",
+            "backend",
+            "consumers",
+            "cron",
+            "jobs",
+            "queues",
+            "repositories",
+            "schedulers",
+            "server",
+            "services",
+            "workers",
+        }
+        or directory.startswith(directory_prefixes)
+    )
+    return evidence
 
 
 def _codex_agentic_signal_evidence(files: set[str], directories: set[str]) -> list[str]:
@@ -658,9 +957,8 @@ def _methodology_domains(
         ),
         "quality_testing_evals": _quality_testing_evals_applies(observed, has_files, intent),
         "codex_agentic_workflow": _codex_agentic_workflow_applies(observed, intent),
-        "frontend": _has_signal(observed, "stack_manifest") and _mentions_any(intent, UI_INTENT_TERMS) or _mentions_any(intent, UI_INTENT_TERMS),
-        "backend": _mentions_any(intent, BACKEND_INTENT_TERMS)
-        or _has_any_signal(observed, {"openapi_contract", "asyncapi_contract", "database_migration_or_schema"}),
+        "frontend": _frontend_applies(observed, intent),
+        "backend": _backend_applies(observed, intent),
         "api_integrations": _mentions_any(intent, API_INTENT_TERMS)
         or _has_any_signal(observed, {"openapi_contract", "asyncapi_contract", "graphql_schema", "protobuf_schema"}),
         "database_data": _has_signal(observed, "database_migration_or_schema") or "production data" in intent,
@@ -767,6 +1065,31 @@ def _codex_agentic_workflow_applies(observed: list[dict[str, Any]], intent: str)
 
 def _codex_agentic_workflow_not_applicable(intent: str) -> bool:
     return any(phrase in intent for phrase in CODEX_AGENTIC_NOT_APPLICABLE_PHRASES)
+
+
+def _frontend_applies(observed: list[dict[str, Any]], intent: str) -> bool:
+    if _frontend_not_applicable(intent):
+        return False
+    return _has_signal(observed, "frontend") or _mentions_any(intent, FRONTEND_INTENT_TERMS)
+
+
+def _frontend_not_applicable(intent: str) -> bool:
+    return any(phrase in intent for phrase in FRONTEND_NOT_APPLICABLE_PHRASES)
+
+
+def _backend_applies(observed: list[dict[str, Any]], intent: str) -> bool:
+    if _backend_not_applicable(intent):
+        return False
+    return (
+        _has_signal(observed, "backend")
+        or _has_any_signal(observed, {"openapi_contract", "asyncapi_contract", "database_migration_or_schema"})
+        or _mentions_any(intent, BACKEND_INTENT_TERMS | BACKEND_RUNTIME_TERMS | BACKEND_CONTRACT_TERMS)
+        or _mentions_any(intent, UNSUPPORTED_BACKEND_CLAIMS)
+    )
+
+
+def _backend_not_applicable(intent: str) -> bool:
+    return any(phrase in intent for phrase in BACKEND_NOT_APPLICABLE_PHRASES)
 
 
 def _business_product_recommendations(files: set[str], intent: str) -> list[dict[str, Any]]:
@@ -1975,6 +2298,352 @@ def _codex_agentic_workflow_recommendations(
     return recommendations
 
 
+def _frontend_recommendations(
+    files: set[str],
+    observed: list[dict[str, Any]],
+    intent: str,
+) -> list[dict[str, Any]]:
+    if not _frontend_applies(observed, intent):
+        return []
+
+    recommendations: list[dict[str, Any]] = []
+
+    def add(
+        gate: str,
+        priority: str,
+        artifact: str,
+        reason: str,
+        evidence: list[str],
+        *,
+        owner: str = "UI owner",
+        approval: str = "not required for read-only audit; approval_required before external browser, visual service or production-data actions",
+        gap: str = "explicit_gap_accepted with owner, reason, residual risk and review date",
+        residual: str = "UI behavior can be claimed complete without user-observable browser evidence.",
+        action: str = "Stage the frontend artifact or accepted gap before claiming UI completion.",
+    ) -> None:
+        recommendations.append(
+            _recommendation(
+                priority=priority,
+                reason=reason,
+                domain="frontend",
+                gate=gate,
+                artifact=artifact,
+                evidence_required=evidence,
+                evidence_owner=owner,
+                approval_boundary=approval,
+                accepted_gap_option=gap,
+                residual_risk=residual,
+                safe_next_action=action,
+            )
+        )
+
+    add(
+        "frontend_user_flow_acceptance_present",
+        "P0_blocker",
+        "frontend-flow-spec.md",
+        "Frontend work needs user flow, route/screen and acceptance scenario before implementation.",
+        ["user goal", "route/screen", "acceptance scenario", "visible state path", "owner"],
+        residual="UI can optimize component structure while the actual user flow remains vague.",
+    )
+    add(
+        "frontend_component_state_matrix_present",
+        "P1_high_risk",
+        "frontend-state-matrix.md",
+        "Frontend component or page work needs visible state coverage.",
+        [
+            "default/loading/skeleton",
+            "empty/error/validation error",
+            "disabled/success/focus",
+            "long-content/responsive states",
+            "state ownership",
+        ],
+        residual="Missing state coverage hides loading, empty, error, focus or long-content regressions.",
+    )
+    add(
+        "frontend_component_docs_present",
+        "P1_high_risk",
+        "component-card.md",
+        "Reusable UI or design-system work needs component documentation or an explicit docs gap.",
+        ["component card", "Storybook story", "Autodocs/MDX note", "state coverage", "owner"],
+        residual="Reusable UI can be shipped without stable usage, state or ownership documentation.",
+    )
+    add(
+        "frontend_design_system_boundary_present",
+        "P1_high_risk",
+        "component-card.md",
+        "Design-system changes need reuse or extension decision and owner review.",
+        [
+            "existing primitive reuse",
+            "token owner",
+            "variant policy",
+            "icon/typography/spacing/theme rule",
+            "breaking component API migration notes",
+        ],
+        owner="design-system owner",
+        residual="Unowned tokens, variants or primitives can drift from product and brand constraints.",
+    )
+    add(
+        "frontend_fsd_boundary_reviewed",
+        "P2_recommended",
+        "component-card.md",
+        "FSD or growing UI structure needs boundary review when it applies.",
+        ["layer", "slice", "segment", "public API", "import direction", "not applicable reason"],
+        residual="Folders can imitate Feature-Sliced Design while imports and public APIs remain tangled.",
+    )
+    add(
+        "frontend_api_contract_alignment_present",
+        "P1_high_risk",
+        "frontend-flow-spec.md",
+        "UI data dependencies need contract examples, auth, permission, cache and error mapping.",
+        ["endpoint/query/mutation", "contract examples", "auth/permission", "error shape", "cache/stale/pagination"],
+        owner="API and UI owners",
+        residual="UI can assume ideal data and miss permission, stale, loading or error states.",
+    )
+    add(
+        "frontend_accessibility_review_present",
+        "P1_high_risk",
+        "frontend-accessibility-review.md",
+        "Interactive or public UI needs accessibility review beyond scanner output.",
+        ["WCAG 2.2 AA target or accepted exception", "semantic controls", "labels/names", "errors", "contrast"],
+        owner="accessibility owner",
+        residual="Automated checks can miss keyboard, semantic and error-announcement behavior.",
+    )
+    add(
+        "frontend_keyboard_focus_contract_present",
+        "P1_high_risk",
+        "frontend-accessibility-review.md",
+        "Interactive UI needs keyboard and focus behavior specified or marked as gap.",
+        ["tab order", "visible focus", "focus trap/release", "escape behavior", "modal/menu/listbox/dialog behavior"],
+        owner="accessibility owner",
+        residual="Keyboard users can be blocked even when visual UI looks complete.",
+    )
+    add(
+        "frontend_responsive_viewport_matrix_present",
+        "P1_high_risk",
+        "frontend-visual-qa.md",
+        "Layout or visual work needs responsive viewport evidence.",
+        ["mobile viewport", "desktop viewport", "orientation", "input modality", "reduced motion/preferences", "theme"],
+        residual="Desktop-only screenshots can hide mobile, input and preference regressions.",
+    )
+    add(
+        "frontend_visual_evidence_present",
+        "P1_high_risk",
+        "frontend-visual-qa.md",
+        "Visual UI work needs privacy-safe screenshot, baseline or explicit gap.",
+        [
+            "screenshot/story baseline",
+            "browser/OS/viewport",
+            "baseline owner",
+            "known noisy diffs",
+            "privacy-safe mock data",
+        ],
+        approval="approval_required before external visual service, hosted screenshot upload or production-data screenshot",
+        residual="Visual regressions can ship without deterministic or reviewable evidence.",
+    )
+    add(
+        "frontend_runtime_console_evidence_present",
+        "P0_blocker",
+        "frontend-visual-qa.md",
+        "UI completion requires current browser/runtime evidence or explicit verification gap.",
+        ["dev-server or preview URL/context", "browser/OS", "console status", "network/runtime errors", "Playwright trace"],
+        residual="Code inspection cannot prove the UI renders, runs or has no relevant console/runtime errors.",
+    )
+    add(
+        "frontend_interaction_test_evidence_present",
+        "P1_high_risk",
+        "test-eval-matrix.md",
+        "Interaction changes need user-observable test or manual interaction evidence.",
+        ["role/name query", "keyboard input", "click/tap", "form submit", "async state assertion"],
+        owner="tester",
+        residual="Implementation-oriented checks can miss observable user behavior.",
+    )
+    add(
+        "frontend_performance_budget_present",
+        "P1_high_risk",
+        "frontend-performance-budget.md",
+        "User-facing or interaction-heavy routes need Web Vitals budget or non-applicability.",
+        ["LCP target", "INP target", "CLS target", "measurement path", "lab vs field/RUM status"],
+        owner="performance owner",
+        residual="Lab metrics can be mistaken for production UX and performance can regress late.",
+    )
+    add(
+        "frontend_browser_support_present",
+        "P2_recommended",
+        "frontend-visual-qa.md",
+        "Public UI needs supported browsers/devices or known gaps named.",
+        ["supported browsers", "devices/webviews", "Playwright projects", "known gaps", "fallback"],
+        residual="Browser-specific behavior can fail outside the developer's default browser.",
+    )
+    add(
+        "frontend_content_i18n_boundary_present",
+        "P2_recommended",
+        "frontend-flow-spec.md",
+        "Long text, localization or user-generated content needs layout and i18n assumptions recorded.",
+        ["long text", "wrapping/truncation", "localization", "pluralization", "RTL/locales", "non-overlap assumptions"],
+        owner="product copy or i18n owner",
+        residual="Content variants can break layout or meaning after implementation appears complete.",
+    )
+
+    if _mentions_any(intent, UNSUPPORTED_FRONTEND_CLAIMS):
+        add(
+            "unsupported_frontend_claims_rejected",
+            "P1_high_risk",
+            "frontend-visual-qa.md",
+            "Unsupported frontend methodology claim was used as evidence.",
+            ["claim", "source status", "verification status", "replacement frontend evidence"],
+            residual="Frontend myths can bypass browser, accessibility, responsive or owner-review evidence.",
+            action="Record the unsupported claim and replace it with frontend evidence or an accepted gap.",
+        )
+
+    return recommendations
+
+
+def _backend_recommendations(
+    files: set[str],
+    observed: list[dict[str, Any]],
+    intent: str,
+) -> list[dict[str, Any]]:
+    if not _backend_applies(observed, intent):
+        return []
+
+    recommendations: list[dict[str, Any]] = []
+
+    def add(
+        gate: str,
+        priority: str,
+        artifact: str,
+        reason: str,
+        evidence: list[str],
+        *,
+        owner: str = "backend owner",
+        approval: str = "not required for read-only audit; approval_required before production data, external writes, secrets or deploy actions",
+        gap: str = "explicit_gap_accepted with owner, reason, residual risk and review date",
+        residual: str = "Backend behavior can be claimed complete without runtime, failure or owner-reviewed evidence.",
+        action: str = "Stage the backend artifact or accepted gap before claiming backend completion.",
+    ) -> None:
+        recommendations.append(
+            _recommendation(
+                priority=priority,
+                reason=reason,
+                domain="backend",
+                gate=gate,
+                artifact=artifact,
+                evidence_required=evidence,
+                evidence_owner=owner,
+                approval_boundary=approval,
+                accepted_gap_option=gap,
+                residual_risk=residual,
+                safe_next_action=action,
+            )
+        )
+
+    add(
+        "backend_service_boundary_present",
+        "P0_blocker",
+        "backend-service-overview.md",
+        "Backend work needs service/module boundary, owner, contracts, dependencies, data ownership and runtime shape.",
+        ["purpose", "owner", "inbound contracts", "outbound dependencies", "data ownership", "deployment/runtime shape"],
+        residual="Package or service names can hide unclear ownership and runtime boundaries.",
+    )
+    add(
+        "backend_runtime_behavior_present",
+        "P0_blocker",
+        "backend-runtime-behavior.md",
+        "Backend runtime behavior needs retries, timeouts, idempotency, ordering, replay and failure modes documented.",
+        ["jobs/queues/remote calls", "timeout", "backoff/max attempts", "idempotency", "ordering", "replay/recovery"],
+        residual="Retries, workers or distributed behavior can amplify failures without idempotency and replay evidence.",
+    )
+    add(
+        "backend_dependency_failure_matrix_present",
+        "P1_high_risk",
+        "backend-dependency-failure-matrix.md",
+        "Remote dependencies need timeout, retry, circuit breaker or non-applicability, fallback, alert and owner policy.",
+        ["dependency", "timeout", "retry", "circuit breaker or gap", "fallback", "alert", "owner"],
+        residual="A backend dependency can fail in production with no bounded failure policy.",
+    )
+    add(
+        "backend_observability_contract_present",
+        "P1_high_risk",
+        "backend-observability-map.md",
+        "Backend runtime changes need traces, metrics, logs, dashboards, alerts, correlation IDs and redaction notes.",
+        ["traces", "metrics", "logs", "dashboards", "alerts", "correlation IDs", "redaction/no-secrets"],
+        residual="Logs alone cannot prove observability or safe production debugging.",
+    )
+    add(
+        "backend_slo_or_gap_present",
+        "P1_high_risk",
+        "backend-slo-sheet.md",
+        "Production or user-facing backend needs SLI/SLO or explicit no-telemetry/not-yet-production gap.",
+        ["user journey", "user-relevant SLI", "SLO target", "measurement window", "alert policy", "owner"],
+        residual="Reliability expectations can remain implicit until incidents expose them.",
+    )
+    add(
+        "backend_health_probe_contract_present",
+        "P1_high_risk",
+        "backend-health-check-contract.md",
+        "Deployable backend needs health semantics and verification or a platform-unavailable gap.",
+        ["liveness", "readiness", "startup or platform equivalent", "test evidence", "platform-unavailable gap"],
+        residual="A vague health endpoint can route traffic to an alive but not ready service.",
+    )
+    add(
+        "backend_job_queue_contract_present",
+        "P1_high_risk",
+        "backend-job-queue-contract.md",
+        "Jobs, queues, consumers or schedulers need payload, retry, DLQ, idempotency and replay contract.",
+        ["queue/job", "producer", "consumer", "payload contract", "retry policy", "DLQ", "idempotency key", "replay"],
+        residual="Duplicate or poison messages can corrupt state without dedupe and recovery procedures.",
+    )
+    add(
+        "backend_data_consistency_strategy_present",
+        "P1_high_risk",
+        "backend-data-consistency-record.md",
+        "Distributed data behavior needs transaction boundary, consistency model, outbox/saga/compensation and recovery path.",
+        ["transaction boundary", "consistency model", "outbox", "saga/compensation", "monitoring", "recovery path"],
+        owner="backend and data owners",
+        residual="Distributed workflow can partially commit without compensation or reconciliation evidence.",
+    )
+    add(
+        "backend_config_secrets_boundary_present",
+        "P1_high_risk",
+        "backend-config-secrets-manifest.md",
+        "Backend config and secrets need manifest without values, secret source, rotation and local/prod parity.",
+        ["env/config keys without values", "secret source", "rotation notes", "local/prod parity", "required/optional"],
+        residual="Secrets or environment assumptions can leak into docs, fixtures, prompts, logs or examples.",
+    )
+    add(
+        "backend_security_reviewed",
+        "P1_high_risk",
+        "security-risk-review.md",
+        "Security-sensitive backend behavior needs authn/authz, secrets, rate limits, audit logging and abuse-case review.",
+        ["authn/authz", "secrets", "rate limits", "audit logging", "sensitive data", "abuse cases"],
+        owner="security or backend owner",
+        approval="approval_required before touching auth, secrets, PII, money movement, privileged operations or external writes",
+        residual="Security-sensitive backend behavior can ship without explicit risk ownership.",
+    )
+    add(
+        "backend_rollback_plan_present",
+        "P1_high_risk",
+        "backend-release-rollback-notes.md",
+        "Risky backend changes need rollback trigger, migration/feature flag plan, replay and data recovery path.",
+        ["rollback trigger", "feature flag", "migration", "rollback/no-rollback rationale", "replay", "data recovery"],
+        owner="backend and release owners",
+        residual="Production backend changes can become irreversible without rollback, recovery or replay evidence.",
+    )
+
+    if _mentions_any(intent, UNSUPPORTED_BACKEND_CLAIMS):
+        add(
+            "unsupported_backend_claims_rejected",
+            "P1_high_risk",
+            "backend-service-overview.md",
+            "Unsupported backend methodology claim was used as evidence.",
+            ["claim", "source status", "verification status", "replacement backend evidence"],
+            residual="Backend myths can bypass runtime, failure-mode, observability, SLO or owner-review evidence.",
+            action="Record the unsupported claim and replace it with backend evidence or an accepted gap.",
+        )
+
+    return recommendations
+
+
 def _recommendations(
     root: Path,
     files: set[str],
@@ -1989,6 +2658,8 @@ def _recommendations(
     recommendations.extend(_solution_architecture_recommendations(files, observed, intent, complexity_profile))
     recommendations.extend(_quality_testing_evals_recommendations(root, files, observed, intent, complexity_profile))
     recommendations.extend(_codex_agentic_workflow_recommendations(files, observed, intent))
+    recommendations.extend(_frontend_recommendations(files, observed, intent))
+    recommendations.extend(_backend_recommendations(files, observed, intent))
     if _has_any_signal(observed, {"openapi_contract", "asyncapi_contract", "graphql_schema", "protobuf_schema"}) and not _has_contract_tests(files):
         recommendations.append(
             _recommendation(
@@ -2189,6 +2860,8 @@ def _observed_domain_ids(observed: list[dict[str, Any]]) -> set[str]:
         "deployment_configuration": "delivery_release_operations",
         "release_file": "delivery_release_operations",
         "codex_agentic_workflow": "codex_agentic_workflow",
+        "backend": "backend",
+        "frontend": "frontend",
     }
     return {mapping[signal["id"]] for signal in observed if signal["id"] in mapping}
 

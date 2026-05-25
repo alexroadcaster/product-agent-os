@@ -15,6 +15,10 @@ Keep the evidence `present_unverified` until environment, criteria, reviewer and
 | --- | --- | --- | --- | --- | --- | --- |
 | TBD | TBD | TBD | TBD | TBD | current manual evidence required | screenshot/log/trace |
 
+## Backend Runtime Evidence
+
+For backend work, record API output, worker/job run, queue replay dry run, health check response, logs/metrics/traces, dependency fallback behavior, rollback rehearsal or an explicit runtime gap. Code inspection alone is not backend completion evidence.
+
 ## Quality Gate References
 
 - `quality_strategy_present`

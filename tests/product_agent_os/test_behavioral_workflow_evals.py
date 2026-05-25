@@ -19,7 +19,7 @@ class BehavioralWorkflowEvalTest(unittest.TestCase):
         report = validate_behavioral_eval_template(path)
 
         self.assertEqual(report["status"], "ok")
-        self.assertEqual(report["case_count"], 37)
+        self.assertEqual(report["case_count"], 38)
         self.assertEqual(report["missing_required_cases"], [])
         self.assertEqual(report["unsafe_cases"], [])
         self.assertTrue(report["codex_only"])
@@ -593,6 +593,38 @@ class BehavioralWorkflowEvalTest(unittest.TestCase):
             "release claim without approval evidence",
         ]:
             self.assertIn(forbidden, completion["forbidden"])
+
+        frontend = cases["frontend-evidence-before-completion"]
+        self.assertEqual(frontend["expected"]["route"], "frontend methodology gates")
+        for artifact in [
+            "frontend-flow-spec.md",
+            "frontend-state-matrix.md",
+            "frontend-visual-qa.md",
+            "frontend-accessibility-review.md",
+            "frontend-performance-budget.md",
+        ]:
+            self.assertIn(artifact, frontend["expected"]["minimum_artifacts"])
+        for expected in [
+            "frontend_user_flow_acceptance_present",
+            "frontend_component_state_matrix_present",
+            "frontend_runtime_console_evidence_present",
+            "browser/runtime evidence",
+            "console status",
+            "Playwright trace",
+            "WCAG 2.2 AA",
+            "responsive viewport matrix",
+            "interaction test evidence",
+            "no secrets",
+        ]:
+            self.assertIn(expected, frontend["expected"]["required_fields"])
+        for forbidden in [
+            "UI completion from code inspection only",
+            "desktop-only screenshot proves responsive UI",
+            "Storybook proves UI quality by itself",
+            "automated accessibility addon output is enough",
+            "lab Web Vitals always represent production UX",
+        ]:
+            self.assertIn(forbidden, frontend["forbidden"])
 
 
 if __name__ == "__main__":
