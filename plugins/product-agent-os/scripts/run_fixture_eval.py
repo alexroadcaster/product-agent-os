@@ -359,6 +359,70 @@ SOLUTION_ARCHITECTURE_TERMS = (
     "rendered diagram proves correctness",
     "adr is bureaucracy",
 )
+QUALITY_TESTING_EVALS_GATES = (
+    "quality_strategy_present",
+    "risk_based_scope_present",
+    "test_first_or_gap_present",
+    "acceptance_traceability_present",
+    "contract_check_present",
+    "runtime_evidence_present",
+    "manual_qa_evidence_present",
+    "visual_a11y_evidence_present",
+    "eval_spec_present",
+    "eval_rerun_evidence_present",
+    "current_evidence_before_completion",
+    "ci_quality_gate_present",
+    "flaky_test_policy_present",
+    "coverage_policy_present",
+    "test_data_privacy_present",
+    "bug_reproduction_evidence_present",
+    "regression_impact_present",
+)
+QUALITY_TESTING_EVALS_ARTIFACTS = (
+    "test-eval-matrix.md",
+    "quality-strategy.md",
+    "ci-evidence-record.md",
+    "flaky-test-policy.md",
+    "manual-qa-evidence.md",
+)
+QUALITY_TESTING_EVALS_EVAL_FIELDS = (
+    "quality_strategy_contract_present",
+    "risk_based_scope_contract_present",
+    "test_first_or_gap_contract_present",
+    "acceptance_traceability_contract_present",
+    "contract_check_contract_present",
+    "runtime_evidence_contract_present",
+    "manual_qa_evidence_contract_present",
+    "visual_a11y_evidence_contract_present",
+    "eval_spec_contract_present",
+    "eval_rerun_evidence_contract_present",
+    "current_evidence_before_completion_contract_present",
+    "ci_quality_gate_contract_present",
+    "flaky_test_policy_contract_present",
+    "coverage_policy_contract_present",
+    "test_data_privacy_contract_present",
+    "bug_reproduction_evidence_contract_present",
+    "regression_impact_contract_present",
+    "unsupported_quality_claims_rejected_contract_present",
+)
+QUALITY_TESTING_EVALS_TERMS = (
+    "quality_testing_evals",
+    "quality-strategy.md",
+    "test-eval-matrix.md",
+    "ci-evidence-record.md",
+    "flaky-test-policy.md",
+    "manual-qa-evidence.md",
+    "current command evidence",
+    "current eval evidence",
+    "current runtime evidence",
+    "manual qa",
+    "visual_a11y_evidence_present",
+    "coverage is a signal, not proof",
+    "test data privacy",
+    "present_unverified",
+    "explicit_gap_accepted",
+    "approval_required",
+)
 COMPLETION_EVIDENCE_TERMS = (
     "evidence_before_completion",
     "evidence-before-completion",
@@ -495,6 +559,7 @@ CONDITIONAL_READINESS_GATE_IDS = (
     "codex_only_compatibility_when_plugin_packaging_changes",
     "finish_options_when_release_ready",
     "standards_trigger_policy_when_architecture_api_release_or_governance_changes",
+    "quality_testing_evals_when_non_trivial_change",
 )
 READINESS_STATUSES = (
     "not_applicable",
@@ -769,6 +834,7 @@ def _expected_checks(
         checks["business_product_contract_present"] = _business_product_contract_present()
         checks["requirements_domain_contract_present"] = _requirements_domain_contract_present()
         checks["solution_architecture_contract_present"] = _solution_architecture_contract_present()
+        checks["quality_testing_evals_contract_present"] = _quality_testing_evals_contract_present()
         checks["methodology_applicability_contract_present"] = (
             _methodology_applicability_contract_present(audit)
         )
@@ -1166,6 +1232,56 @@ def _solution_architecture_contract_present() -> bool:
         f"{path.name}\n{path.read_text(encoding='utf-8')}" for path in paths
     ).lower()
     return all(term in payload for term in SOLUTION_ARCHITECTURE_TERMS)
+
+
+def _quality_testing_evals_contract_present() -> bool:
+    try:
+        catalog = load_methodology_catalog()
+    except (OSError, ValueError, json.JSONDecodeError):
+        return False
+    if validate_methodology_catalog(catalog):
+        return False
+    domains = {
+        str(domain.get("id")): domain
+        for domain in catalog.get("domains", [])
+        if isinstance(domain, dict) and domain.get("id")
+    }
+    quality = domains.get("quality_testing_evals")
+    if not isinstance(quality, dict):
+        return False
+    if not set(QUALITY_TESTING_EVALS_GATES).issubset(set(quality.get("gates", []))):
+        return False
+    if not set(QUALITY_TESTING_EVALS_ARTIFACTS).issubset(set(quality.get("artifacts", []))):
+        return False
+    if not set(QUALITY_TESTING_EVALS_EVAL_FIELDS).issubset(set(quality.get("eval_fields", []))):
+        return False
+
+    paths = [
+        PLUGIN_ROOT / "assets" / "methodology" / "methodology-catalog.json",
+        TEMPLATE_ROOT / "artifact-templates" / "quality-strategy.md",
+        TEMPLATE_ROOT / "artifact-templates" / "test-eval-matrix.md",
+        TEMPLATE_ROOT / "artifact-templates" / "ci-evidence-record.md",
+        TEMPLATE_ROOT / "artifact-templates" / "flaky-test-policy.md",
+        TEMPLATE_ROOT / "artifact-templates" / "manual-qa-evidence.md",
+        TEMPLATE_ROOT / "control-plane" / "TEST.md",
+        TEMPLATE_ROOT / "control-plane" / "EVALS.md",
+        TEMPLATE_ROOT / "control-plane" / "RUNLOG.md",
+        TEMPLATE_ROOT / "evals" / "project-readiness.json",
+        TEMPLATE_ROOT / "evals" / "behavioral-workflows.json",
+        PLUGIN_ROOT / "skills" / "workspace-discovery-auditor" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "requirements-author" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "implementation-planner" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "test-eval-designer" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "risk-reviewer" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "docs-maintainer" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "pr-release-operator" / "SKILL.md",
+        PLUGIN_ROOT / "scripts" / "product_agent_os" / "discovery.py",
+        PLUGIN_ROOT / "scripts" / "product_agent_os" / "methodology_audit.py",
+    ]
+    payload = "\n".join(
+        f"{path.name}\n{path.read_text(encoding='utf-8')}" for path in paths
+    ).lower()
+    return all(term in payload for term in QUALITY_TESTING_EVALS_TERMS)
 
 
 def _completion_evidence_contract_present() -> bool:

@@ -714,6 +714,57 @@
       "residual_risk": "Scenario quality still needs product, development, and testing review."
     },
     {
+      "name": "quality-current-evidence-before-completion",
+      "input": {
+        "prompt": "Finish this quality-sensitive slice and tell me whether it is ready.",
+        "workspace_fixture": "python-app",
+        "control_plane_state": "quality_gate"
+      },
+      "expected": {
+        "route": "test-eval-designer",
+        "minimum_artifacts": ["quality strategy", "test/eval matrix"],
+        "required_fields": [
+          "quality_testing_evals",
+          "quality_strategy_present",
+          "risk_based_scope_present",
+          "test_first_or_gap_present",
+          "acceptance_traceability_present",
+          "contract_check_present",
+          "runtime_evidence_present",
+          "manual_qa_evidence_present",
+          "visual_a11y_evidence_present",
+          "eval_spec_present",
+          "eval_rerun_evidence_present",
+          "current_evidence_before_completion",
+          "ci_quality_gate_present",
+          "flaky_test_policy_present",
+          "coverage_policy_present",
+          "test_data_privacy_present",
+          "bug_reproduction_evidence_present",
+          "regression_impact_present",
+          "current command evidence",
+          "current eval evidence",
+          "current runtime evidence",
+          "manual qa charter",
+          "test/eval matrix",
+          "accepted gap",
+          "residual risk",
+          "test data privacy",
+          "coverage is a signal, not proof",
+          "present_unverified",
+          "explicit_gap_accepted",
+          "approval_required"
+        ]
+      },
+      "forbidden": [
+        "ready claim without current evidence",
+        "100 percent coverage proves correctness",
+        "manual qa is not evidence",
+        "old ci run as current evidence"
+      ],
+      "residual_risk": "Quality evidence can be stale or incomplete when test files, coverage or old CI logs are treated as proof."
+    },
+    {
       "name": "no-placeholder-plan",
       "input": {
         "prompt": "Create the implementation plan.",

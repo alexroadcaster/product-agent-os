@@ -104,6 +104,11 @@ REQUIRED_TARGETS = {
     ".codex/artifact-templates/security-risk-review.md",
     ".codex/artifact-templates/ci-stabilization-report.md",
     ".codex/artifact-templates/release-readiness.md",
+    ".codex/artifact-templates/test-eval-matrix.md",
+    ".codex/artifact-templates/quality-strategy.md",
+    ".codex/artifact-templates/ci-evidence-record.md",
+    ".codex/artifact-templates/flaky-test-policy.md",
+    ".codex/artifact-templates/manual-qa-evidence.md",
     ".codex/runlogs/archive/README.md",
     ".codex/evals/project-readiness.json",
     ".codex/evals/handoff-completeness.json",
@@ -184,6 +189,35 @@ class InfrastructureTemplateTest(unittest.TestCase):
             "domain-review-record.md",
         ]
         required_terms = ["Source status:", "Owner", "Evidence", "Accepted Gap", "Residual Risk"]
+
+        for filename in expected_templates:
+            path = TEMPLATE_ROOT / "artifact-templates" / filename
+            with self.subTest(filename=filename):
+                self.assertTrue(path.exists(), path)
+                text = path.read_text(encoding="utf-8")
+                for term in required_terms:
+                    self.assertIn(term, text)
+
+    def test_quality_testing_evals_artifact_templates_have_operating_contracts(self):
+        expected_templates = [
+            "test-eval-matrix.md",
+            "quality-strategy.md",
+            "ci-evidence-record.md",
+            "flaky-test-policy.md",
+            "manual-qa-evidence.md",
+        ]
+        required_terms = [
+            "Source status:",
+            "Owner",
+            "Current Evidence",
+            "Accepted Gap",
+            "Residual Risk",
+            "Approval Boundary",
+            "Verification",
+            "Rollback",
+            "test data privacy",
+            "No Secrets",
+        ]
 
         for filename in expected_templates:
             path = TEMPLATE_ROOT / "artifact-templates" / filename
@@ -882,6 +916,72 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 "approval",
                 "residual risk",
             ],
+            "test-eval-matrix.md": [
+                "quality_testing_evals",
+                "quality_strategy_present",
+                "risk_based_scope_present",
+                "acceptance_traceability_present",
+                "contract_check_present",
+                "current_evidence_before_completion",
+                "explicit_gap_accepted",
+                "approval_required",
+                "test data privacy",
+                "coverage is a signal, not proof",
+                "no secrets",
+                "residual risk",
+            ],
+            "quality-strategy.md": [
+                "quality_testing_evals",
+                "quality_strategy_present",
+                "risk_based_scope_present",
+                "test_first_or_gap_present",
+                "coverage_policy_present",
+                "test_data_privacy_present",
+                "unsupported claims",
+                "explicit_gap_accepted",
+                "approval_required",
+                "test data privacy",
+                "coverage is a signal, not proof",
+                "no secrets",
+                "residual risk",
+            ],
+            "ci-evidence-record.md": [
+                "quality_testing_evals",
+                "ci_quality_gate_present",
+                "current_evidence_before_completion",
+                "least privilege",
+                "present_unverified",
+                "approval_required",
+                "test data privacy",
+                "coverage is a signal, not proof",
+                "no secrets",
+                "residual risk",
+            ],
+            "flaky-test-policy.md": [
+                "quality_testing_evals",
+                "flaky_test_policy_present",
+                "present_unverified",
+                "explicit_gap_accepted",
+                "approval_required",
+                "owner",
+                "expiry",
+                "test data privacy",
+                "coverage is a signal, not proof",
+                "no secrets",
+                "residual risk",
+            ],
+            "manual-qa-evidence.md": [
+                "quality_testing_evals",
+                "runtime_evidence_present",
+                "manual_qa_evidence_present",
+                "visual_a11y_evidence_present",
+                "present_unverified",
+                "approval_required",
+                "test data privacy",
+                "coverage is a signal, not proof",
+                "no secrets",
+                "residual risk",
+            ],
             "release-readiness.md": [
                 "release scope",
                 "package metadata",
@@ -1162,6 +1262,7 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 "two-stage-review",
                 "fresh-context-handoff",
                 "evidence-before-completion",
+                "quality-current-evidence-before-completion",
                 "finish-options",
                 "codex-only-compatibility",
                 "cost-model-budget",
@@ -1641,6 +1742,7 @@ class InfrastructureTemplateTest(unittest.TestCase):
             "codex_only_compatibility_when_plugin_packaging_changes",
             "finish_options_when_release_ready",
             "standards_trigger_policy_when_architecture_api_release_or_governance_changes",
+            "quality_testing_evals_when_non_trivial_change",
         }
         self.assertEqual(set(gates), required_gates)
 
@@ -1918,6 +2020,64 @@ class InfrastructureTemplateTest(unittest.TestCase):
             "control-plane": control_plane,
             "behavioral-workflows.json": behavioral,
         }.items():
+            with self.subTest(name=name):
+                for expected in shared_terms:
+                    self.assertIn(expected, text)
+
+    def test_quality_testing_evals_templates_connect_control_plane_and_evals(self):
+        payloads = {
+            "quality-strategy.md": (
+                TEMPLATE_ROOT / "artifact-templates" / "quality-strategy.md"
+            ).read_text(encoding="utf-8").lower(),
+            "test-eval-matrix.md": (
+                TEMPLATE_ROOT / "artifact-templates" / "test-eval-matrix.md"
+            ).read_text(encoding="utf-8").lower(),
+            "ci-evidence-record.md": (
+                TEMPLATE_ROOT / "artifact-templates" / "ci-evidence-record.md"
+            ).read_text(encoding="utf-8").lower(),
+            "flaky-test-policy.md": (
+                TEMPLATE_ROOT / "artifact-templates" / "flaky-test-policy.md"
+            ).read_text(encoding="utf-8").lower(),
+            "manual-qa-evidence.md": (
+                TEMPLATE_ROOT / "artifact-templates" / "manual-qa-evidence.md"
+            ).read_text(encoding="utf-8").lower(),
+            "control-plane": "\n".join(
+                (TEMPLATE_ROOT / "control-plane" / name).read_text(encoding="utf-8").lower()
+                for name in ["TEST.md", "EVALS.md", "RUNLOG.md"]
+            ),
+            "project-readiness.json": (TEMPLATE_ROOT / "evals" / "project-readiness.json").read_text(
+                encoding="utf-8"
+            ).lower(),
+            "behavioral-workflows.json": (
+                TEMPLATE_ROOT / "evals" / "behavioral-workflows.json"
+            ).read_text(encoding="utf-8").lower(),
+        }
+
+        shared_terms = [
+            "quality_testing_evals",
+            "quality_strategy_present",
+            "risk_based_scope_present",
+            "test_first_or_gap_present",
+            "acceptance_traceability_present",
+            "contract_check_present",
+            "runtime_evidence_present",
+            "manual_qa_evidence_present",
+            "visual_a11y_evidence_present",
+            "eval_spec_present",
+            "eval_rerun_evidence_present",
+            "current_evidence_before_completion",
+            "ci_quality_gate_present",
+            "flaky_test_policy_present",
+            "coverage_policy_present",
+            "test_data_privacy_present",
+            "bug_reproduction_evidence_present",
+            "regression_impact_present",
+            "coverage is a signal, not proof",
+            "present_unverified",
+            "explicit_gap_accepted",
+            "approval_required",
+        ]
+        for name, text in payloads.items():
             with self.subTest(name=name):
                 for expected in shared_terms:
                     self.assertIn(expected, text)

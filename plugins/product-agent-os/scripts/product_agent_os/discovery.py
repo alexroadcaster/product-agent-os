@@ -296,8 +296,68 @@ def _detect_methodology_signals(files: set[str], profile: dict[str, Any]) -> dic
             or "promptfoo" in path
             for path in lowered
         ),
+        "quality_testing_evals": _has_quality_testing_signal(lowered, profile),
         "metrics": _has_any(files, ["metrics", "analytics", "telemetry", "observability"]),
     }
+
+
+def _has_quality_testing_signal(lowered_files: set[str], profile: dict[str, Any]) -> bool:
+    drivers = profile.get("drivers", {}) if isinstance(profile, dict) else {}
+    if drivers.get("test_maturity") != "none":
+        return True
+    directory_prefixes = (
+        "tests/",
+        "test/",
+        "spec/",
+        "e2e/",
+        "playwright/",
+        "cypress/",
+        "evals/",
+        ".github/workflows/",
+        "fixtures/",
+        "__tests__/",
+        "snapshots/",
+    )
+    exact_files = {
+        "test.md",
+        "evals.md",
+        "runlog.md",
+        "pytest.ini",
+        "tox.ini",
+        "promptfoo.yaml",
+        "promptfooconfig.yaml",
+        "openapi.yaml",
+        "openapi.yml",
+        "openapi.json",
+        "asyncapi.yaml",
+        "asyncapi.yml",
+        "asyncapi.json",
+    }
+    name_fragments = (
+        "vitest.config.",
+        "jest.config.",
+        "playwright.config.",
+        "coverage",
+        "pact",
+        "junit",
+        "pytest",
+        "unittest",
+        "testing-library",
+        "storybook",
+        "stryker",
+        "hypothesis",
+        "ragas",
+        "codecov",
+        "github actions",
+        "flaky",
+        "retry",
+    )
+    return any(
+        path in exact_files
+        or path.startswith(directory_prefixes)
+        or any(fragment in path for fragment in name_fragments)
+        for path in lowered_files
+    )
 
 
 def _has_docs_tooling_signal(lowered_files: set[str]) -> bool:
@@ -369,7 +429,7 @@ def _methodology_gaps(signals: dict[str, bool], profile: dict[str, Any], files: 
     test_maturity = drivers.get("test_maturity", "none")
     if not (signals["architecture_docs"] or signals["adr"]):
         gaps.append("missing architecture documentation signals")
-    if test_maturity == "none" and not signals["evals"]:
+    if test_maturity == "none" and not signals["evals"] and not signals["quality_testing_evals"]:
         gaps.append("missing test or eval signals")
     if not (signals["codeowners"] or signals["ci"]):
         gaps.append("missing docs-as-code ownership or CI signals")
@@ -1897,7 +1957,7 @@ def _methodology_applicability(
             _test_eval_evidence(signals, profile),
             ["test command, eval command or accepted explicit gap"],
             "tester",
-            "detected tests or evals still need current run evidence",
+            "detection alone does not prove quality evidence; current run evidence is still required",
         ),
         "docs_as_code_ownership": _applicability_packet(
             "present_unverified" if signals.get("codeowners") or signals.get("ci") else "applicable_missing",
@@ -1975,7 +2035,11 @@ def _applicability_packet(
 
 def _has_test_or_eval_evidence(signals: dict[str, bool], profile: dict[str, Any]) -> bool:
     drivers = profile.get("drivers", {}) if isinstance(profile, dict) else {}
-    return signals.get("evals", False) or drivers.get("test_maturity") != "none"
+    return (
+        signals.get("evals", False)
+        or signals.get("quality_testing_evals", False)
+        or drivers.get("test_maturity") != "none"
+    )
 
 
 def _test_eval_evidence(signals: dict[str, bool], profile: dict[str, Any]) -> list[str]:
@@ -1985,6 +2049,8 @@ def _test_eval_evidence(signals: dict[str, bool], profile: dict[str, Any]) -> li
         evidence.append("test_maturity")
     if signals.get("evals"):
         evidence.append("evals")
+    if signals.get("quality_testing_evals"):
+        evidence.append("quality_testing_evals")
     return evidence
 
 

@@ -6,11 +6,11 @@ Generated at: 2026-05-25
 
 ## Current State
 
-- `T9-D3` Solution Architecture methodology integration is complete.
-- Verification baseline after `T9-D3`: focused T9-D3 checks passed; fixture eval exited `0` with renderer file count 92 and `solution_architecture_contract_present: true`; full verification is recorded in `RUNLOG.md`.
+- `T9-D4` Quality, Testing & Evals methodology integration is complete.
+- Verification baseline after `T9-D4`: focused T9-D4 checks passed; fixture eval exited `0` with renderer file count 97 and `quality_testing_evals_contract_present: true`; full verification is recorded in `RUNLOG.md`.
 - Track 9 design is recorded in `docs/superpowers/specs/2026-05-25-track-9-methodology-intelligence-design.md`.
 - Track 9 implementation plan is recorded in `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`.
-- Next implementation slice: `T9-D4` Quality, Testing & Evals methodology integration.
+- Next implementation slice: `T9-D5` Codex / Agentic Workflow methodology integration.
 
 ## Architecture Boundary
 
@@ -29,7 +29,7 @@ Generated at: 2026-05-25
 | 2 | `T9-D1` Business & Product | `done` | Product hypothesis, metrics, experiment and measurement gates |
 | 3 | `T9-D2` Requirements & Domain | `done` | Requirements traceability, business rules, domain model and language gates |
 | 4 | `T9-D3` Solution Architecture | `done` | Architecture boundary, C4/arc42/ADR and quality attribute gates |
-| 5 | `T9-D4` Quality, Testing & Evals | `planned` | Risk-based test/eval strategy and current evidence gates |
+| 5 | `T9-D4` Quality, Testing & Evals | `done` | Risk-based test/eval strategy and current evidence gates |
 | 6 | `T9-D5` Codex / Agentic Workflow | `planned` | Control-plane, skills, subagents, handoff, MCP and automation gates |
 | 7 | `T9-D6` Frontend | `planned` | UI behavior, component state, FSD, Storybook, a11y and visual evidence gates |
 | 8 | `T9-D7` Backend | `planned` | Service boundary, runtime, observability, SLO and rollback gates |
@@ -68,6 +68,8 @@ For each Track 9 section:
 - Requirements/domain artifacts: `requirement-registry.md`, `stakeholder-owner-map.md`, `story-slice-map.md`, `requirements-traceability-matrix.md`, `business-rules.md`, `example-map.md`, `requirement-change-impact.md`, `domain-review-record.md`.
 - Solution architecture gate: `solution_architecture` records architecture scope, context/container boundaries, boundary owner, domain-to-architecture trace, public contract trace, data ownership, trust boundary review, quality attributes, ADR/tradeoff, runtime topology, observability, diagram render check, fitness functions, docs lifecycle, accepted gaps and unsupported-claim rejection.
 - Solution architecture artifacts: `architecture-overview.md`, `adr.md`, `architecture-review-record.md`, `architecture-fitness-functions.md`, `trust-boundary-map.md`, `architecture-docs-tooling-decision.md`, `api-contract-review.md`, `database-dictionary.md`, `security-risk-review.md`, `migration-plan.md`, `integration-catalog.md`.
+- Quality/testing/evals gate: `quality_testing_evals` records quality strategy, risk based scope, test-first evidence or accepted gap, acceptance traceability, contract checks, runtime/manual/visual evidence, eval spec/rerun evidence, current evidence before completion, CI quality gate, flaky-test policy, coverage policy, test data privacy, bug reproduction, regression impact and unsupported-claim rejection.
+- Quality/testing/evals artifacts: `test-eval-matrix.md`, `quality-strategy.md`, `ci-evidence-record.md`, `flaky-test-policy.md`, `manual-qa-evidence.md`, plus existing `TEST.md`, `EVALS.md`, `RUNLOG.md`, `ai-eval-spec.md`, `api-contract-review.md`, `bug-rescue-report.md` and `ci-stabilization-report.md` when applicable.
 - Conditional readiness gate: `project-readiness.json` defines `readiness_statuses` and per-gate `applies_when`, pass condition, accepted gap, required evidence, owner and residual risk. Detection alone can only support `present_unverified`; `present_verified` requires current command, owner or artifact evidence.
 - Test gate: deterministic tests, contract checks, evals or accepted gaps are named before implementation.
 - Documentation gate: docs-as-code artifacts and source-of-truth updates are named.
@@ -175,6 +177,13 @@ For each Track 9 section:
 - Added artifact templates: `architecture-review-record.md`, `architecture-fitness-functions.md`, `trust-boundary-map.md`, and `architecture-docs-tooling-decision.md`.
 - Strengthened `architecture-overview.md` and `adr.md` with `Source status:`, owner, evidence, accepted gaps, residual risk, rollback/no-rollback rationale and no-secrets guidance.
 - Added read-only audit recommendations, false-positive and unsupported-claim coverage, renderer registration, lifecycle skill routing and fixture eval coverage through `solution_architecture_contract_present`.
+
+## T9-D4 Completed Slice
+
+- Added `quality_testing_evals` methodology catalog coverage for quality strategy, risk based scope, current command/eval/runtime/manual evidence, acceptance traceability, contract checks, eval reruns, CI gates, flaky-test ownership, coverage policy, test data privacy, bug reproduction, regression impact and evidence before completion.
+- Added artifact templates: `test-eval-matrix.md`, `quality-strategy.md`, `ci-evidence-record.md`, `flaky-test-policy.md`, and `manual-qa-evidence.md`.
+- Strengthened generated `TEST.md`, `EVALS.md`, `RUNLOG.md`, `project-readiness.json` and `behavioral-workflows.json` with quality statuses, evidence gates and the `quality-current-evidence-before-completion` behavioral case.
+- Added read-only audit recommendations, false-positive and unsupported-claim coverage, discovery signals, renderer registration, lifecycle skill routing and fixture eval coverage through `quality_testing_evals_contract_present`.
 
 ## Rollback
 

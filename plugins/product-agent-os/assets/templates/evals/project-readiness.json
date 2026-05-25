@@ -20,6 +20,7 @@
           "metric_hardening_when_product_behavior_changes",
           "evidence_before_completion",
           "test_eval_first_evidence",
+          "quality_testing_evals",
           "docs_as_code_impact",
           "docs_tooling_selector",
           "standards_trigger_policy",
@@ -35,6 +36,7 @@
           "fsd_structure",
           "metric_spec",
           "completion_evidence",
+          "quality_testing_evals",
           "docs_tooling_decision",
           "governance_proposal",
           "metrics_when_product_behavior_changes"
@@ -108,6 +110,14 @@
             "required_evidence": ["ai-eval-spec.md", "baseline result", "rerun command", "no-secrets dataset policy"],
             "owner": "test-eval-designer",
             "residual_risk": "AI quality can regress while deterministic tests still pass."
+          },
+          "quality_testing_evals_when_non_trivial_change": {
+            "applies_when": "Non-trivial product, code, docs, AI, runtime, UI, API, bugfix, refactor, migration, release or quality claim work.",
+            "pass_condition": "Set present_verified when quality_testing_evals evidence records quality_strategy_present, risk_based_scope_present, acceptance_traceability_present, test_first_or_gap_present, contract_check_present, runtime_evidence_present, manual_qa_evidence_present, visual_a11y_evidence_present, eval_spec_present, eval_rerun_evidence_present, current_evidence_before_completion, ci_quality_gate_present, flaky_test_policy_present, coverage_policy_present, test_data_privacy_present, bug_reproduction_evidence_present and regression_impact_present; use present_unverified for detected signals until current evidence is recorded.",
+            "accepted_gap": "Use explicit_gap_accepted only when owner names reason, scope, residual risk, review date and follow-up; use approval_required before external CI writes, remote reruns, production data use, or publication.",
+            "required_evidence": ["quality-strategy.md", "test-eval-matrix.md", "ci-evidence-record.md", "flaky-test-policy.md", "manual-qa-evidence.md", "TEST.md", "EVALS.md", "RUNLOG.md", "coverage is a signal, not proof"],
+            "owner": "test-eval-designer",
+            "residual_risk": "Completion, readiness, release or quality claims can be made from stale evidence, coverage-only claims or file detection alone."
           },
           "docs_tooling_decision": {
             "applies_when": "New docs system, public docs, generated docs, API/UI/DB/code reference changes, or docs-as-code impact.",

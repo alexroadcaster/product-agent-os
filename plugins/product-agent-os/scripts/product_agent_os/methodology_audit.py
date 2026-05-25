@@ -175,6 +175,67 @@ UNSUPPORTED_ARCHITECTURE_CLAIMS = {
     "architecture-as-code is always required",
     "ai can design architecture from chat alone",
 }
+QUALITY_NOT_APPLICABLE_PHRASES = {
+    "typo-only docs edit",
+    "formatting-only markdown cleanup",
+    "formatting-only edit",
+    "docs-only source cleanup",
+    "dependency metadata without behavior impact",
+    "pure dependency metadata without behavior impact",
+}
+QUALITY_INTENT_TERMS = {
+    "test",
+    "tests",
+    "eval",
+    "evals",
+    "quality",
+    "verification",
+    "runtime",
+    "manual qa",
+    "visual",
+    "accessibility",
+    "ci",
+    "coverage",
+    "flaky",
+    "retry",
+    "regression",
+    "bugfix",
+    "bug fix",
+    "completion",
+    "ready",
+}
+QUALITY_RISK_TERMS = {"risky", "broad", "constrained", "high-risk", "high risk"}
+DETERMINISTIC_CHANGE_TERMS = {"deterministic", "business rule", "bugfix", "bug fix"}
+RUNTIME_EVIDENCE_TERMS = {"runtime", "run behavior", "runtime behavior", "works claim"}
+MANUAL_QA_TERMS = {"manual qa", "manual test", "exploratory testing"}
+VISUAL_A11Y_TERMS = {"ui", "visual", "accessibility", "a11y", "keyboard", "focus", "responsive"}
+QUALITY_EVAL_TERMS = {"ai", "rag", "docs", "ux", "search", "subjective", "eval", "evals", "baseline", "rerun"}
+CI_QUALITY_TERMS = {"ci", "github actions", "shared branch", "release", "pull request", "pr"}
+FLAKY_TEST_TERMS = {"flaky", "retry", "retries", "quarantine", "intermittent"}
+COVERAGE_POLICY_TERMS = {"coverage", "line coverage", "branch coverage", "codecov"}
+TEST_DATA_PRIVACY_TERMS = {
+    "test data privacy",
+    "fixture privacy",
+    "fixtures privacy",
+    "eval dataset",
+    "logs privacy",
+    "trace privacy",
+    "screenshot privacy",
+    "private data",
+    "secrets in tests",
+}
+REGRESSION_IMPACT_TERMS = {"regression impact", "refactor", "migration", "dependency update", "shared-code"}
+COMPLETION_CLAIM_TERMS = {"completion", "ready", "readiness", "release", "quality claim", "works claim", "done"}
+UNSUPPORTED_QUALITY_CLAIMS = {
+    "more tests always means better quality",
+    "coverage proves correctness",
+    "line coverage proves correctness",
+    "100 percent line coverage proves correctness",
+    "100% line coverage proves correctness",
+    "e2e tests should dominate because they are most realistic",
+    "manual qa is not evidence",
+    "ai evals are optional for ai behavior changes",
+}
 PUBLIC_CONTRACT_TERMS = {"public api", "public contract", "event contract", "generated client", "sdk"}
 DATA_BOUNDARY_TERMS = {"persistent data", "pii", "retention", "migration", "database", "data ownership"}
 TRUST_BOUNDARY_TERMS = {"trust boundary", "auth", "authorization", "security boundary", "pii", "payment"}
@@ -308,6 +369,7 @@ def _observed_signals(root: Path, files: set[str], directories: set[str]) -> lis
         + [directory for directory in directories if directory in {"evals", "prompts", "rag", "vector", "embeddings"}],
     )
     add("test_evidence", [path for path in files if "test" in path or path.startswith("evals/")])
+    add("quality_testing_signal", _quality_signal_evidence(files, directories))
     add(
         "architecture_docs",
         [
@@ -324,6 +386,61 @@ def _observed_signals(root: Path, files: set[str], directories: set[str]) -> lis
     return signals
 
 
+def _quality_signal_evidence(files: set[str], directories: set[str]) -> list[str]:
+    directory_names = {
+        "tests",
+        "test",
+        "spec",
+        "e2e",
+        "playwright",
+        "cypress",
+        "coverage",
+        "evals",
+        ".github/workflows",
+        "fixtures",
+        "__tests__",
+        "snapshots",
+    }
+    exact_files = {
+        "test.md",
+        "evals.md",
+        "runlog.md",
+        "pytest.ini",
+        "tox.ini",
+        "promptfoo.yaml",
+        "promptfooconfig.yaml",
+    }
+    file_fragments = (
+        "vitest.config.",
+        "jest.config.",
+        "playwright.config.",
+        "coverage",
+        "pact",
+        "openapi",
+        "asyncapi",
+        "junit",
+        "pytest",
+        "unittest",
+        "testing-library",
+        "storybook",
+        "stryker",
+        "hypothesis",
+        "ragas",
+        "codecov",
+        "flaky",
+        "retry",
+    )
+    evidence = [
+        path
+        for path in files
+        if path in exact_files
+        or path.startswith(tuple(f"{directory}/" for directory in directory_names))
+        or any(fragment in path for fragment in file_fragments)
+    ]
+    evidence.extend(directory for directory in directories if directory in directory_names)
+    return evidence
+
+
 def _intent_signals(intent: str) -> list[dict[str, str]]:
     signals: list[dict[str, str]] = []
     for category, terms in [
@@ -334,6 +451,7 @@ def _intent_signals(intent: str) -> list[dict[str, str]]:
         ("backend", BACKEND_INTENT_TERMS),
         ("api_integrations", API_INTENT_TERMS),
         ("solution_architecture", ARCHITECTURE_INTENT_TERMS),
+        ("quality_testing_evals", QUALITY_INTENT_TERMS),
         ("llm_ai_rag", AI_INTENT_TERMS),
         ("delivery_release_operations", DELIVERY_INTENT_TERMS),
         ("high_risk", HIGH_RISK_INTENT_TERMS),
@@ -432,7 +550,7 @@ def _methodology_domains(
             maturity_level,
             complexity_profile,
         ),
-        "quality_testing_evals": has_files or _has_signal(observed, "test_evidence") or _has_signal(observed, "test_command"),
+        "quality_testing_evals": _quality_testing_evals_applies(observed, has_files, intent),
         "codex_agentic_workflow": True,
         "frontend": _has_signal(observed, "stack_manifest") and _mentions_any(intent, UI_INTENT_TERMS) or _mentions_any(intent, UI_INTENT_TERMS),
         "backend": _mentions_any(intent, BACKEND_INTENT_TERMS)
@@ -519,6 +637,20 @@ def _solution_architecture_applies(
 
 def _solution_architecture_not_applicable(intent: str) -> bool:
     return any(phrase in intent for phrase in SOLUTION_ARCHITECTURE_NOT_APPLICABLE_PHRASES)
+
+
+def _quality_testing_evals_applies(observed: list[dict[str, Any]], has_files: bool, intent: str) -> bool:
+    if _quality_testing_evals_not_applicable(intent):
+        return False
+    return (
+        has_files
+        or _mentions_any(intent, QUALITY_INTENT_TERMS | BEHAVIOR_INTENT_TERMS | DELIVERY_INTENT_TERMS)
+        or _has_any_signal(observed, {"test_evidence", "test_command", "quality_testing_signal"})
+    )
+
+
+def _quality_testing_evals_not_applicable(intent: str) -> bool:
+    return any(phrase in intent for phrase in QUALITY_NOT_APPLICABLE_PHRASES)
 
 
 def _business_product_recommendations(files: set[str], intent: str) -> list[dict[str, Any]]:
@@ -1276,6 +1408,244 @@ def _solution_architecture_recommendations(
     return recommendations
 
 
+def _quality_testing_evals_recommendations(
+    root: Path,
+    files: set[str],
+    observed: list[dict[str, Any]],
+    intent: str,
+    complexity_profile: str,
+) -> list[dict[str, Any]]:
+    if not _quality_testing_evals_applies(observed, bool(files), intent):
+        return []
+
+    recommendations: list[dict[str, Any]] = []
+
+    def add(
+        gate: str,
+        priority: str,
+        artifact: str,
+        reason: str,
+        evidence_required: list[str],
+        evidence_owner: str = "tester",
+        approval_boundary: str = "not required for drafting quality evidence; approval_required before external writes",
+        accepted_gap_option: str = "explicit_gap_accepted with owner, reason, residual risk and review date",
+        residual_risk: str = "Quality claims can be made without current evidence.",
+        safe_next_action: str = "Stage the smallest quality evidence artifact before implementation or completion claims.",
+    ) -> None:
+        recommendations.append(
+            _recommendation(
+                priority=priority,
+                reason=reason,
+                domain="quality_testing_evals",
+                gate=gate,
+                artifact=artifact,
+                evidence_required=evidence_required,
+                evidence_owner=evidence_owner,
+                approval_boundary=approval_boundary,
+                accepted_gap_option=accepted_gap_option,
+                residual_risk=residual_risk,
+                safe_next_action=safe_next_action,
+            )
+        )
+
+    if any(claim in intent for claim in UNSUPPORTED_QUALITY_CLAIMS):
+        add(
+            "unsupported_quality_claims_rejected",
+            "P1_high_risk",
+            "quality-strategy.md",
+            "Unsupported quality methodology claim appeared as evidence.",
+            ["claim", "source or owner verification", "replacement evidence", "claim disposition"],
+            residual_risk="Quality slogans can replace current evidence, risk scope or eval results.",
+        )
+
+    if not _has_test_command_or_evidence(root, files, observed):
+        add(
+            "quality_strategy_present",
+            "P0_blocker",
+            "quality-strategy.md",
+            "No current local test command or quality evidence was detected.",
+            ["test command", "eval command", "current output", "evidence owner or accepted gap"],
+            residual_risk="Completion claims remain unsupported without a current verification path.",
+            safe_next_action="Stage quality-strategy.md with the smallest local verification command or accepted gap.",
+        )
+
+    if complexity_profile == "high_risk" or _mentions_any(intent, QUALITY_RISK_TERMS):
+        add(
+            "risk_based_scope_present",
+            "P1_high_risk",
+            "quality-strategy.md",
+            "Risky, broad or constrained scope needs risk-based quality scope.",
+            ["risk areas", "impact", "likelihood", "selected checks", "accepted gaps"],
+            evidence_owner="implementation planner",
+            residual_risk="Verification can over-focus on easy checks while missing user, data or operational risk.",
+        )
+
+    behavior_or_rule = _mentions_any(intent, BEHAVIOR_INTENT_TERMS | DETERMINISTIC_CHANGE_TERMS)
+    if behavior_or_rule and not _artifact_present(files, "test-eval-matrix.md"):
+        add(
+            "acceptance_traceability_present",
+            "P1_high_risk",
+            "test-eval-matrix.md",
+            "Behavior or business-rule work needs acceptance criteria mapped to checks, evals or gaps.",
+            ["acceptance criterion", "check or eval", "manual charter", "owner", "explicit gap"],
+            evidence_owner="requirements owner",
+            residual_risk="Tests can exist without proving the accepted behavior.",
+        )
+    if _mentions_any(intent, DETERMINISTIC_CHANGE_TERMS) and "red-green" not in intent and "test-first" not in intent:
+        add(
+            "test_first_or_gap_present",
+            "P1_high_risk",
+            "test-eval-matrix.md",
+            "Deterministic bugfix or business rule needs Red-Green-Refactor evidence or a recorded gap.",
+            ["failing command", "passing command", "refactor evidence", "exception reason"],
+            evidence_owner="builder",
+            residual_risk="A deterministic change can be implemented without proving the test catches the issue.",
+        )
+
+    if (
+        _mentions_any(intent, API_INTENT_TERMS | PUBLIC_CONTRACT_TERMS | {"schema", "event"})
+        or _has_any_signal(observed, {"openapi_contract", "asyncapi_contract", "graphql_schema", "protobuf_schema"})
+    ) and not _has_contract_tests(files):
+        add(
+            "contract_check_present",
+            "P1_high_risk",
+            "api-contract-review.md",
+            "API, event, schema or public package change needs contract compatibility evidence.",
+            ["contract source", "consumer/provider impact", "contract check command", "compatibility result"],
+            evidence_owner="API owner",
+            approval_boundary="approval_required before external API writes or breaking contract changes",
+            residual_risk="Contract files do not prove consumers remain compatible.",
+        )
+
+    if _mentions_any(intent, RUNTIME_EVIDENCE_TERMS):
+        add(
+            "runtime_evidence_present",
+            "P1_high_risk",
+            "manual-qa-evidence.md",
+            "Runtime behavior claim needs current runtime evidence.",
+            ["command", "environment", "logs", "screenshot, trace or API output", "actual result"],
+            evidence_owner="tester",
+            residual_risk="Runtime behavior can differ from code inspection or stale logs.",
+        )
+    if _mentions_any(intent, MANUAL_QA_TERMS):
+        add(
+            "manual_qa_evidence_present",
+            "P2_recommended",
+            "manual-qa-evidence.md",
+            "Manual QA needs a charter, environment, criteria, reviewer, notes and result.",
+            ["charter", "environment", "criteria", "reviewer", "notes", "result"],
+            evidence_owner="tester",
+            residual_risk="Manual QA without structure cannot be repeated or reviewed.",
+        )
+    if _mentions_any(intent, VISUAL_A11Y_TERMS):
+        public_ui = "public ui" in intent or ("public" in intent and "ui" in intent and "internal" not in intent)
+        add(
+            "visual_a11y_evidence_present",
+            "P1_high_risk" if public_ui else "P2_recommended",
+            "manual-qa-evidence.md",
+            "UI visual or accessibility change needs viewport, keyboard/focus and screenshot evidence.",
+            ["viewport", "component state", "keyboard/focus check", "a11y result", "screenshot or accepted diff"],
+            evidence_owner="tester",
+            residual_risk="User-facing UI regressions can remain invisible to unit tests.",
+        )
+
+    if _mentions_any(intent, QUALITY_EVAL_TERMS):
+        add(
+            "eval_spec_present",
+            "P1_high_risk",
+            "ai-eval-spec.md",
+            "AI, docs, UX, search or subjective quality change needs an eval spec.",
+            ["dataset", "rubric", "grader or assertion", "threshold", "owner"],
+            evidence_owner="test-eval designer",
+            residual_risk="Subjective quality can drift without a baseline and rubric.",
+        )
+        add(
+            "eval_rerun_evidence_present",
+            "P1_high_risk",
+            "EVALS.md",
+            "Eval-governed change needs baseline/current result, failed cases and rerun command.",
+            ["baseline result", "current result", "failed cases", "rerun command", "threshold"],
+            evidence_owner="test-eval designer",
+            residual_risk="Eval claims can be stale or hide regressions without rerun evidence.",
+        )
+
+    if _mentions_any(intent, CI_QUALITY_TERMS) or _has_signal(observed, "ci_configuration"):
+        release_or_shared = _mentions_any(intent, {"release", "shared branch", "production"})
+        add(
+            "ci_quality_gate_present",
+            "P1_high_risk" if release_or_shared else "P2_recommended",
+            "ci-evidence-record.md",
+            "CI quality gate needs command/job, trigger, permissions, artifacts and current result.",
+            ["job or command", "trigger", "permissions", "artifact", "exit code", "rerun path"],
+            evidence_owner="release operator",
+            approval_boundary="approval_required before changing remote CI, rerunning remote jobs or external writes",
+            residual_risk="CI configuration does not prove the latest run supports the claim.",
+        )
+    if _mentions_any(intent, FLAKY_TEST_TERMS):
+        add(
+            "flaky_test_policy_present",
+            "P2_recommended",
+            "flaky-test-policy.md",
+            "Flaky tests or retries need owner, classification, expiry and follow-up.",
+            ["test", "symptom", "owner", "root-cause class", "expiry", "follow-up"],
+            evidence_owner="tester",
+            residual_risk="Retries can hide intermittent failures without accountability.",
+        )
+    if _mentions_any(intent, COVERAGE_POLICY_TERMS):
+        add(
+            "coverage_policy_present",
+            "P2_recommended",
+            "quality-strategy.md",
+            "Coverage claim needs critical-path mapping and non-goals.",
+            ["coverage type", "threshold", "critical path", "exclusions", "non-goals"],
+            evidence_owner="tester",
+            residual_risk="Coverage is a signal, not proof of correctness.",
+        )
+    if _mentions_any(intent, TEST_DATA_PRIVACY_TERMS):
+        add(
+            "test_data_privacy_present",
+            "P1_high_risk",
+            "quality-strategy.md",
+            "Tests, fixtures, logs, traces, screenshots or eval datasets need privacy status.",
+            ["synthetic or sanitized status", "no secrets", "retention", "owner", "redaction policy"],
+            evidence_owner="security or data owner",
+            approval_boundary="approval_required before using production data, private customer data or secrets",
+            residual_risk="Quality evidence can leak secrets or private customer data.",
+        )
+    if _mentions_any(intent, {"bugfix", "bug fix"}) and not _artifact_present(files, "bug-rescue-report.md"):
+        add(
+            "bug_reproduction_evidence_present",
+            "P0_blocker",
+            "bug-rescue-report.md",
+            "Bugfix needs reproduction evidence or an accepted reproduction gap.",
+            ["original failure", "reproduction command or steps", "environment", "fixed evidence"],
+            evidence_owner="builder",
+            residual_risk="A bugfix can miss the original failure without reproduction evidence.",
+        )
+    if _mentions_any(intent, REGRESSION_IMPACT_TERMS):
+        add(
+            "regression_impact_present",
+            "P1_high_risk",
+            "test-eval-matrix.md",
+            "Refactor, migration, dependency or shared-code work needs regression impact mapping.",
+            ["changed files/contracts/data", "impacted behavior", "checks to rerun", "owner"],
+            evidence_owner="implementation planner",
+            residual_risk="Unchanged behavior can regress outside the edited files.",
+        )
+    if _mentions_any(intent, COMPLETION_CLAIM_TERMS):
+        add(
+            "current_evidence_before_completion",
+            "P0_blocker",
+            "RUNLOG.md",
+            "Completion, readiness, release or quality claim needs current evidence.",
+            ["current command evidence", "current eval evidence", "current runtime/manual evidence", "accepted gap"],
+            evidence_owner="release operator",
+            residual_risk="Old evidence or inspection-only review can be mistaken for current verification.",
+        )
+
+    return recommendations
+
+
 def _recommendations(
     root: Path,
     files: set[str],
@@ -1288,6 +1658,7 @@ def _recommendations(
     recommendations.extend(_business_product_recommendations(files, intent))
     recommendations.extend(_requirements_domain_recommendations(files, intent))
     recommendations.extend(_solution_architecture_recommendations(files, observed, intent, complexity_profile))
+    recommendations.extend(_quality_testing_evals_recommendations(root, files, observed, intent, complexity_profile))
     missing_control_plane = [name for name in CONTROL_PLANE_FILES if name.lower() not in files]
     if missing_control_plane:
         recommendations.append(
@@ -1303,22 +1674,6 @@ def _recommendations(
                 accepted_gap_option="explicit_gap_accepted with owner and reason for operating without project control plane",
                 residual_risk="Missing control-plane files can leave requirements, verification and ownership implicit.",
                 safe_next_action="Stage control-plane artifact proposals without mutating existing workspace files.",
-            )
-        )
-    if not _has_test_command_or_evidence(root, files, observed):
-        recommendations.append(
-            _recommendation(
-                priority="P0_blocker",
-                reason="No test command or test evidence was detected.",
-                domain="quality_testing_evals",
-                gate="quality_strategy_present",
-                artifact="TEST.md",
-                evidence_required=["test command", "expected output", "evidence owner or accepted gap"],
-                evidence_owner="tester",
-                approval_boundary="not required for drafting a test plan; approval_required before external CI changes",
-                accepted_gap_option="explicit_gap_accepted with owner, reason, residual risk and review date",
-                residual_risk="Without test evidence, completion claims remain unsupported.",
-                safe_next_action="Stage a test strategy proposal with the smallest local verification command.",
             )
         )
     if _has_any_signal(observed, {"openapi_contract", "asyncapi_contract", "graphql_schema", "protobuf_schema"}) and not _has_contract_tests(files):
@@ -1510,6 +1865,7 @@ def _observed_domain_ids(observed: list[dict[str, Any]]) -> set[str]:
     mapping = {
         "test_evidence": "quality_testing_evals",
         "test_command": "quality_testing_evals",
+        "quality_testing_signal": "quality_testing_evals",
         "openapi_contract": "api_integrations",
         "asyncapi_contract": "api_integrations",
         "graphql_schema": "api_integrations",

@@ -35,7 +35,7 @@ Generated at: 2026-05-25
 - False-positive scenario fixture coverage: implemented in `T8-GX`.
 - Detailed discovery status depth: implemented in `T8-D`.
 - Track 9 methodology intelligence plan: authored in `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`.
-- Track 9 foundation, `T9-D1` Business/Product, `T9-D2` Requirements/Domain and `T9-D3` Solution Architecture: implemented.
+- Track 9 foundation, `T9-D1` Business/Product, `T9-D2` Requirements/Domain, `T9-D3` Solution Architecture and `T9-D4` Quality/Testing/Evals: implemented.
 
 ## Track 9 Methodology Intelligence Evals
 
@@ -68,6 +68,14 @@ Generated at: 2026-05-25
 - False-positive protection: typo-only docs edits, formatting-only edits, docs-light prototypes without reviewed/diffable diagrams and non-cloud work without Well-Architected review do not force Solution Architecture methodology.
 - Unsupported claims rejected: architecture means diagrams, rendered diagram proves correctness, C4 code diagrams are always required, ADR is bureaucracy, Well-Architected review proves architecture quality, architecture-as-code is always required and AI can design architecture from chat alone.
 - Residual risk: architecture artifacts prove boundary and evidence shape, not that the selected architecture is semantically optimal or owner-approved for a real production system.
+
+## Quality Testing Evals
+
+- `quality_testing_evals_contract_present`: implemented in `T9-D4`.
+- Required evidence: quality strategy, risk based scope, test-first evidence or explicit gap, acceptance traceability, contract checks, runtime evidence, manual QA evidence, visual/a11y evidence, eval spec, eval rerun evidence, current evidence before completion, CI quality gate, flaky-test policy, coverage policy, test data privacy, bug reproduction evidence and regression impact.
+- False-positive protection: typo-only docs edits, formatting-only edits, docs-only source cleanup and dependency metadata changes without behavior impact do not force Quality, Testing & Evals methodology.
+- Unsupported claims rejected: more tests always means better quality, 100 percent line coverage proves correctness, E2E tests should dominate because they are most realistic, manual QA is not evidence and AI evals are optional for AI behavior changes.
+- Residual risk: quality artifacts prove current evidence shape and gate routing, not that a human owner has judged every check sufficient for the real project risk.
 
 ## Completion Evidence Evals
 

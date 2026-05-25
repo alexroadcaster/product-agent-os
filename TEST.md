@@ -6,12 +6,10 @@ Generated at: 2026-05-25
 
 ## Current Baseline
 
-- T9-D3 RED check: focused catalog/audit/template/lifecycle/fixture checks failed as expected before implementation on missing `solution_architecture` gates, audit recommendations, four architecture templates, lifecycle skill routing and fixture eval check.
-- Focused T9-D3 catalog test: `python -m unittest tests.product_agent_os.test_methodology_catalog -v` ran 7 tests with `OK`.
-- Focused T9-D3 audit test: `python -m unittest tests.product_agent_os.test_methodology_audit -v` ran 15 tests with `OK`.
-- Combined focused T9-D3 suite: `python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_fixture_eval_runner -v` ran 120 tests with `OK`.
-- Fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0`; renderer file count is 92 and `solution_architecture_contract_present` is true.
-- Full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 362 tests with `OK`.
+- T9-D4 RED check: focused catalog/audit/discovery/template/lifecycle/behavioral/fixture checks failed as expected before implementation on missing `quality_testing_evals` gates, audit recommendations, quality discovery signals, five quality templates, lifecycle skill routing, behavioral eval coverage and fixture eval check.
+- Combined focused T9-D4 suite: `python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_discovery tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_behavioral_workflow_evals tests.product_agent_os.test_fixture_eval_runner -v` ran 168 tests with `OK`.
+- Fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0`; renderer file count is 97 and `quality_testing_evals_contract_present` is true.
+- Full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 370 tests with `OK`.
 - Transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 4 sessions and 0 failures.
 - Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
 - Docs check: `python tools\check_docs.py` passed.
@@ -137,6 +135,15 @@ python tools\check_docs.py
 - Confirmed typo-only docs edits, formatting-only edits, docs-light prototypes without reviewed/diffable diagrams and non-cloud work without Well-Architected review keep Solution Architecture methodology not applicable.
 - Confirmed unsupported architecture claims are rejected as evidence: architecture means diagrams, rendered diagram proves correctness, C4 code diagrams are always required, ADR is bureaucracy, Well-Architected review proves architecture quality, architecture-as-code is always required and AI can design architecture from chat alone.
 - Confirmed fixture eval exposes `solution_architecture_contract_present`.
+
+## Completed Focused Checks For T9-D4
+
+- Added RED then GREEN tests for `quality_testing_evals` catalog contract, audit recommendations, discovery signals, staged quality templates, lifecycle skill wording, behavioral eval coverage and fixture eval coverage.
+- Confirmed missing local command/evidence and completion claims without current evidence are `P0_blocker`.
+- Confirmed risky scope, acceptance traceability, deterministic change, API/event/schema contracts, runtime/manual/visual evidence, AI eval reruns, CI gates, test data privacy, bug reproduction and regression impact produce deterministic recommendations with stable artifacts.
+- Confirmed typo-only docs edits, formatting-only edits, docs-only source cleanup and dependency metadata without behavior impact keep Quality, Testing & Evals methodology not applicable.
+- Confirmed unsupported quality claims are rejected as evidence: more tests always means better quality, 100 percent line coverage proves correctness, E2E tests should dominate, manual QA is not evidence and AI evals are optional for AI behavior changes.
+- Confirmed fixture eval exposes `quality_testing_evals_contract_present`.
 
 ## Evidence Format
 

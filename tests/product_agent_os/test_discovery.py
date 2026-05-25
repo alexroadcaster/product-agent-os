@@ -758,6 +758,55 @@ class DiscoveryTest(unittest.TestCase):
         self.assertTrue(signals["metrics"])
         self.assertEqual(result["methodology_gaps"], [])
 
+    def test_quality_testing_evals_signals_are_present_unverified(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            workspace = Path(tmpdir)
+            self._write_files(
+                workspace,
+                {
+                    "package.json": '{"dependencies":{"vitest":"latest","@playwright/test":"latest"}}\n',
+                    "tests/test_app.py": "def test_app():\n    assert True\n",
+                    "spec/cart.spec.ts": "test('cart', () => {})\n",
+                    "e2e/checkout.spec.ts": "test('checkout', () => {})\n",
+                    "playwright/smoke.spec.ts": "test('smoke', () => {})\n",
+                    "cypress/e2e/login.cy.ts": "describe('login', () => {})\n",
+                    "fixtures/user.json": "{}\n",
+                    "__tests__/button.test.tsx": "test('button', () => {})\n",
+                    "snapshots/home.snap": "snapshot\n",
+                    ".github/workflows/ci.yml": "name: ci\n",
+                    "TEST.md": "# Test plan\n",
+                    "EVALS.md": "# Evals\n",
+                    "RUNLOG.md": "# Runlog\n",
+                    "pytest.ini": "[pytest]\n",
+                    "tox.ini": "[tox]\n",
+                    "vitest.config.ts": "export default {}\n",
+                    "jest.config.js": "module.exports = {}\n",
+                    "playwright.config.ts": "export default {}\n",
+                    "coverage-summary.json": "{}\n",
+                    "promptfoo.yaml": "providers: []\n",
+                    "pact/consumer.json": "{}\n",
+                    "openapi.yaml": "openapi: 3.1.0\ninfo:\n  title: API\n  version: 1.0.0\npaths: {}\n",
+                    "asyncapi.yaml": "asyncapi: 3.0.0\ninfo:\n  title: Events\n  version: 1.0.0\n",
+                    "docs/testing.md": (
+                        "pytest unittest JUnit Jest Vitest Playwright Testing Library Storybook Pact "
+                        "Stryker Hypothesis Promptfoo Ragas Codecov GitHub Actions flaky retry\n"
+                    ),
+                },
+            )
+
+            result = analyze_workspace(workspace)
+
+        signals = result["methodology_signals"]
+        self.assertTrue(signals["quality_testing_evals"])
+        self.assertIn(
+            "quality_testing_evals",
+            result["route_inputs"]["workspace_signals"]["methodology_signals"],
+        )
+        applicability = result["methodology_applicability"]["test_eval_first_evidence"]
+        self.assertEqual(applicability["status"], "present_unverified")
+        self.assertNotEqual(applicability["status"], "present_verified")
+        self.assertIn("detection alone does not prove quality evidence", applicability["residual_risk"])
+
     def test_methodology_applicability_reports_status_packets(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             workspace = Path(tmpdir)

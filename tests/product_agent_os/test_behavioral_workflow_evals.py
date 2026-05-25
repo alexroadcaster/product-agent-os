@@ -19,7 +19,7 @@ class BehavioralWorkflowEvalTest(unittest.TestCase):
         report = validate_behavioral_eval_template(path)
 
         self.assertEqual(report["status"], "ok")
-        self.assertEqual(report["case_count"], 35)
+        self.assertEqual(report["case_count"], 36)
         self.assertEqual(report["missing_required_cases"], [])
         self.assertEqual(report["unsafe_cases"], [])
         self.assertTrue(report["codex_only"])
@@ -86,6 +86,28 @@ class BehavioralWorkflowEvalTest(unittest.TestCase):
             "bdd replaces tests",
         ]:
             self.assertIn(forbidden, acceptance["forbidden"])
+
+        quality = cases["quality-current-evidence-before-completion"]
+        self.assertEqual(quality["expected"]["route"], "test-eval-designer")
+        self.assertIn("quality strategy", quality["expected"]["minimum_artifacts"])
+        for expected in [
+            "current command evidence",
+            "current eval evidence",
+            "current runtime evidence",
+            "manual qa charter",
+            "test/eval matrix",
+            "accepted gap",
+            "residual risk",
+            "test data privacy",
+        ]:
+            self.assertIn(expected, quality["expected"]["required_fields"])
+        for forbidden in [
+            "ready claim without current evidence",
+            "100 percent coverage proves correctness",
+            "manual qa is not evidence",
+            "old ci run as current evidence",
+        ]:
+            self.assertIn(forbidden, quality["forbidden"])
 
         empty_first_run = cases["first-run-empty-greenfield"]
         self.assertEqual(empty_first_run["expected"]["usage_mode"], "greenfield_idea")

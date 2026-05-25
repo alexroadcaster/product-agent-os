@@ -355,6 +355,110 @@ class MethodologyCatalogContractTest(unittest.TestCase):
         self.assertIn("requirements and domain traceability", solution_architecture["overlaps"])
         self.assertIn("agent team ownership", solution_architecture["overlaps"])
 
+    def test_quality_testing_evals_domain_has_track_nine_contract(self):
+        from product_agent_os.methodology_catalog import load_methodology_catalog
+
+        catalog = load_methodology_catalog()
+        domains = {domain["id"]: domain for domain in catalog["domains"]}
+        quality = domains["quality_testing_evals"]
+
+        expected_gates = [
+            "quality_strategy_present",
+            "risk_based_scope_present",
+            "test_first_or_gap_present",
+            "acceptance_traceability_present",
+            "contract_check_present",
+            "runtime_evidence_present",
+            "manual_qa_evidence_present",
+            "visual_a11y_evidence_present",
+            "eval_spec_present",
+            "eval_rerun_evidence_present",
+            "current_evidence_before_completion",
+            "ci_quality_gate_present",
+            "flaky_test_policy_present",
+            "coverage_policy_present",
+            "test_data_privacy_present",
+            "bug_reproduction_evidence_present",
+            "regression_impact_present",
+        ]
+        expected_artifacts = [
+            "test-eval-matrix.md",
+            "quality-strategy.md",
+            "ci-evidence-record.md",
+            "flaky-test-policy.md",
+            "manual-qa-evidence.md",
+            "TEST.md",
+            "EVALS.md",
+            "RUNLOG.md",
+            "ai-eval-spec.md",
+            "api-contract-review.md",
+            "bug-rescue-report.md",
+            "ci-stabilization-report.md",
+        ]
+        expected_eval_fields = [
+            "quality_strategy_contract_present",
+            "risk_based_scope_contract_present",
+            "test_first_or_gap_contract_present",
+            "acceptance_traceability_contract_present",
+            "contract_check_contract_present",
+            "runtime_evidence_contract_present",
+            "manual_qa_evidence_contract_present",
+            "visual_a11y_evidence_contract_present",
+            "eval_spec_contract_present",
+            "eval_rerun_evidence_contract_present",
+            "current_evidence_before_completion_contract_present",
+            "ci_quality_gate_contract_present",
+            "flaky_test_policy_contract_present",
+            "coverage_policy_contract_present",
+            "test_data_privacy_contract_present",
+            "bug_reproduction_evidence_contract_present",
+            "regression_impact_contract_present",
+            "unsupported_quality_claims_rejected_contract_present",
+        ]
+
+        for term in [
+            "non-trivial product or engineering work",
+            "behavior-changing work",
+            "bugfix, refactor, migration or dependency update",
+            "API, event, schema or public package change",
+            "AI, RAG, docs, UX, search or subjective quality change",
+            "completion, readiness, release or quality claim",
+        ]:
+            with self.subTest(applies_when=term):
+                self.assertIn(term, quality["applies_when"])
+        for term in [
+            "typo-only docs edit",
+            "formatting-only edit",
+            "docs-only source cleanup",
+            "pure dependency metadata without behavior impact",
+        ]:
+            with self.subTest(not_applicable_when=term):
+                self.assertIn(term, quality["not_applicable_when"])
+        for gate in expected_gates:
+            with self.subTest(gate=gate):
+                self.assertIn(gate, quality["gates"])
+        for artifact in expected_artifacts:
+            with self.subTest(artifact=artifact):
+                self.assertIn(artifact, quality["artifacts"])
+        for eval_field in expected_eval_fields:
+            with self.subTest(eval_field=eval_field):
+                self.assertIn(eval_field, quality["eval_fields"])
+        for overlap in [
+            "requirements traceability",
+            "solution architecture contracts",
+            "frontend visual and accessibility evidence",
+            "backend runtime evidence",
+            "API contract compatibility",
+            "database and security test data privacy",
+            "LLM/AI/RAG eval baselines",
+            "delivery and release CI gates",
+            "agent workflow evidence-before-completion",
+        ]:
+            with self.subTest(overlap=overlap):
+                self.assertIn(overlap, quality["overlaps"])
+        self.assertIn("baseline", quality["maturity_impact"])
+        self.assertIn("high_risk", quality["complexity_impact"])
+
 
 if __name__ == "__main__":
     unittest.main()

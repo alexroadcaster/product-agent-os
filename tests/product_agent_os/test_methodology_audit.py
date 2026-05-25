@@ -365,6 +365,97 @@ class MethodologyAuditContractTest(unittest.TestCase):
                 self.assertEqual(recommendation["priority"], "P1_high_risk")
                 self.assertEqual(recommendation["artifact"], "architecture-review-record.md")
 
+    def test_quality_testing_evals_recommends_gate_priority_and_artifact_mapping(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "package.json").write_text('{"name":"quality-fixture"}\n', encoding="utf-8")
+            (root / "src").mkdir()
+            (root / "src" / "checkout.py").write_text("def total():\n    return 0\n", encoding="utf-8")
+            (root / "openapi.yaml").write_text(
+                "openapi: 3.1.0\ninfo:\n  title: API\n  version: 1.0.0\npaths: {}\n",
+                encoding="utf-8",
+            )
+            (root / ".github" / "workflows").mkdir(parents=True)
+            (root / ".github" / "workflows" / "ci.yml").write_text("name: ci\n", encoding="utf-8")
+            result = build_methodology_audit(
+                root,
+                intent_hint=(
+                    "ship risky broad constrained public UI API schema deterministic bugfix business rule "
+                    "runtime behavior manual QA visual accessibility AI eval baseline rerun release shared branch "
+                    "flaky retry coverage proves correctness 100 percent line coverage test data privacy "
+                    "regression impact completion ready quality claim"
+                ),
+            )
+
+        self.assertNotEqual(self._domain_status(result, "quality_testing_evals"), "not_applicable")
+        expected = {
+            "quality_strategy_present": ("P0_blocker", "quality-strategy.md"),
+            "risk_based_scope_present": ("P1_high_risk", "quality-strategy.md"),
+            "acceptance_traceability_present": ("P1_high_risk", "test-eval-matrix.md"),
+            "test_first_or_gap_present": ("P1_high_risk", "test-eval-matrix.md"),
+            "contract_check_present": ("P1_high_risk", "api-contract-review.md"),
+            "runtime_evidence_present": ("P1_high_risk", "manual-qa-evidence.md"),
+            "manual_qa_evidence_present": ("P2_recommended", "manual-qa-evidence.md"),
+            "visual_a11y_evidence_present": ("P1_high_risk", "manual-qa-evidence.md"),
+            "eval_spec_present": ("P1_high_risk", "ai-eval-spec.md"),
+            "eval_rerun_evidence_present": ("P1_high_risk", "EVALS.md"),
+            "ci_quality_gate_present": ("P1_high_risk", "ci-evidence-record.md"),
+            "flaky_test_policy_present": ("P2_recommended", "flaky-test-policy.md"),
+            "coverage_policy_present": ("P2_recommended", "quality-strategy.md"),
+            "test_data_privacy_present": ("P1_high_risk", "quality-strategy.md"),
+            "bug_reproduction_evidence_present": ("P0_blocker", "bug-rescue-report.md"),
+            "regression_impact_present": ("P1_high_risk", "test-eval-matrix.md"),
+            "current_evidence_before_completion": ("P0_blocker", "RUNLOG.md"),
+            "unsupported_quality_claims_rejected": ("P1_high_risk", "quality-strategy.md"),
+        }
+        for gate, (priority, artifact) in expected.items():
+            with self.subTest(gate=gate):
+                recommendation = self._recommendation_by_gate(result, gate)
+                self.assertEqual(recommendation["priority"], priority)
+                self.assertEqual(recommendation["artifact"], artifact)
+
+        flaky = self._recommendation_by_gate(result, "flaky_test_policy_present")
+        self.assertIn("owner", " ".join(flaky["evidence_required"]).lower())
+        self.assertIn("expiry", " ".join(flaky["evidence_required"]).lower())
+
+    def test_quality_testing_evals_false_positive_intents_are_not_applicable(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        for intent in [
+            "typo-only docs edit",
+            "formatting-only markdown cleanup",
+            "docs-only source cleanup",
+            "dependency metadata without behavior impact",
+        ]:
+            with self.subTest(intent=intent):
+                with tempfile.TemporaryDirectory() as tmp:
+                    root = Path(tmp)
+                    (root / "README.md").write_text("# Demo\n", encoding="utf-8")
+                    result = build_methodology_audit(root, intent_hint=intent)
+
+                self.assertEqual(self._domain_status(result, "quality_testing_evals"), "not_applicable")
+                quality_recommendations = [
+                    item for item in result["recommendations"] if item["domain"] == "quality_testing_evals"
+                ]
+                self.assertEqual(quality_recommendations, [])
+
+    def test_quality_testing_evals_uses_lower_visual_priority_for_internal_ui(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "package.json").write_text('{"scripts":{"test":"vitest"}}\n', encoding="utf-8")
+            result = build_methodology_audit(
+                root,
+                intent_hint="internal UI layout change with visual accessibility evidence gap",
+            )
+
+        recommendation = self._recommendation_by_gate(result, "visual_a11y_evidence_present")
+        self.assertEqual(recommendation["priority"], "P2_recommended")
+        self.assertEqual(recommendation["artifact"], "manual-qa-evidence.md")
+
 
 if __name__ == "__main__":
     unittest.main()

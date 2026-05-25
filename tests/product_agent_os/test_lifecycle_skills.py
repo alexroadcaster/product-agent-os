@@ -732,6 +732,52 @@ class LifecycleSkillsTest(unittest.TestCase):
                 for expected in shared_terms:
                     self.assertIn(expected, text)
 
+    def test_lifecycle_skills_route_quality_testing_evals_methodology(self):
+        shared_terms = [
+            "quality_testing_evals",
+            "quality-strategy.md",
+            "test-eval-matrix.md",
+            "ci-evidence-record.md",
+            "flaky-test-policy.md",
+            "manual-qa-evidence.md",
+            "quality_strategy_present",
+            "risk_based_scope_present",
+            "test_first_or_gap_present",
+            "acceptance_traceability_present",
+            "contract_check_present",
+            "runtime_evidence_present",
+            "manual_qa_evidence_present",
+            "visual_a11y_evidence_present",
+            "eval_spec_present",
+            "eval_rerun_evidence_present",
+            "current_evidence_before_completion",
+            "ci_quality_gate_present",
+            "flaky_test_policy_present",
+            "coverage_policy_present",
+            "test_data_privacy_present",
+            "bug_reproduction_evidence_present",
+            "regression_impact_present",
+            "coverage is a signal, not proof",
+            "do not force tdd",
+            "do not force e2e",
+            "do not force coverage",
+            "do not force ai evals",
+        ]
+
+        for name in [
+            "workspace-discovery-auditor",
+            "requirements-author",
+            "implementation-planner",
+            "test-eval-designer",
+            "risk-reviewer",
+            "docs-maintainer",
+            "pr-release-operator",
+        ]:
+            text = self._skill_text(name).lower()
+            with self.subTest(name=name):
+                for expected in shared_terms:
+                    self.assertIn(expected, text)
+
     def test_risk_reviewer_generalizes_two_stage_review_for_risky_slices(self):
         risk_reviewer = self._skill_text("risk-reviewer").lower()
 

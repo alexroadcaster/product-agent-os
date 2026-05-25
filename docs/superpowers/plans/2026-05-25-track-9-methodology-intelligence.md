@@ -2070,7 +2070,49 @@ Run `python -m mkdocs build --strict` only if implementation changes navigation,
 - Create: `flaky-test-policy.md`
 - Create: `manual-qa-evidence.md`
 
-- [ ] **Step 1: Add RED test for quality gates**
+Deep-audit update from `docs/methodologies/quality-testing-evals.md` and `docs/sources/methodology-research/quality-testing-evals.md`:
+
+- The compact task list below must represent quality as current evidence, not as a generic "tests exist" signal.
+- Required gates include risk-based test portfolio, acceptance traceability, Red-Green-Refactor or explicit gap, contract checks, runtime evidence, manual QA evidence, visual/a11y evidence, eval spec, eval rerun evidence, CI quality gate, flaky-test policy, coverage policy, test data privacy, bug reproduction evidence, regression impact and evidence-before-completion.
+- Unsupported claims must be rejected as evidence: more tests always means better quality, 100 percent line coverage proves correctness, E2E tests should dominate because they are most realistic, manual QA is not evidence, and AI evals are optional for AI behavior changes.
+- Template scope for this slice is intentionally five new artifacts plus strengthened generated `TEST.md`, `EVALS.md`, `RUNLOG.md`, `project-readiness.json` and `behavioral-workflows.json`; broader candidate artifacts such as `red-green-refactor-log.md`, `bug-reproduction.md`, `risk-based-test-plan.md`, `regression-impact-map.md`, `contract-test-map.md`, `runtime-evidence.md`, `visual-a11y-evidence.md`, `coverage-policy.md`, `mutation-test-report.md`, `property-test-spec.md`, `flaky-test-ledger.md`, `ci-quality-gates.md`, `eval-run-report.md`, `manual-qa-charter.md` and `evidence-packet.md` must either be mapped to the five artifacts or existing control-plane artifacts in this slice, or recorded in the Track 9 backlog with an explicit defer reason.
+- Coverage, mutation testing, property-based testing, Playwright/visual checks, Promptfoo/Ragas and CI workflow changes are conditional recommendations, not universal gates. Tests must preserve lightweight behavior for typo-only docs edits, formatting-only changes, docs-only source cleanup and dependency metadata changes without behavior impact.
+
+#### T9-D4 Task Matrix
+
+| ID | Task | Primary files | Acceptance criteria | Verification |
+| --- | --- | --- | --- | --- |
+| `T9-D4-M0` | Refresh plan/backlog before implementation | `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`, `docs/sources/product-agent-os-track-9-backlog.md` | Deep-audit deltas are recorded: current evidence, risk-based portfolio, regression impact, contract/runtime/manual/visual/eval evidence, CI permissions, flaky ownership, coverage-as-signal, test data privacy, unsupported claims, template scope and deferred artifact mapping. | `python tools\check_docs.py` |
+| `T9-D4-M1` | Add RED catalog contract for `quality_testing_evals` | `tests/product_agent_os/test_methodology_catalog.py` | Test asserts full gate set, five new artifacts, explicit eval field names, applies/not-applicable rules, maturity/complexity impact, Track 8 scenarios, overlaps and unsupported-claim rejection contract. | `python -m unittest tests.product_agent_os.test_methodology_catalog -v` fails before catalog implementation on missing quality gates, artifacts or eval fields. |
+| `T9-D4-M2` | Add RED audit recommendation coverage | `tests/product_agent_os/test_methodology_audit.py` | Tests cover no test command/evidence, missing acceptance traceability, bugfix without reproduction, deterministic change without test-first evidence or gap, API/event/schema without contract check, runtime claim without evidence, UI visual/a11y severity split, AI eval baseline/rerun gaps, regression impact, flaky/retry ownership, coverage-as-proof rejection, test data privacy, unsupported claims and typo/format/docs-only false positives. | `python -m unittest tests.product_agent_os.test_methodology_audit -v` fails before audit implementation on missing quality recommendations. |
+| `T9-D4-M3` | Add RED template, lifecycle and fixture checks | `tests/product_agent_os/test_infrastructure_templates.py`, `tests/product_agent_os/test_lifecycle_skills.py`, `tests/product_agent_os/test_fixture_eval_runner.py`, `tests/product_agent_os/test_behavioral_workflow_evals.py` | Tests require five registered templates, `quality_testing_evals_contract_present`, renderer file count increase by five from the current T9-D3 baseline, lifecycle wording for evidence/current-run/risk/contract/eval/flaky/privacy gates, and behavioral eval coverage for completion claims without current evidence. | `python -m unittest tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_fixture_eval_runner tests.product_agent_os.test_behavioral_workflow_evals -v` fails before templates and eval checks exist. |
+| `T9-D4-M4` | Fill `quality_testing_evals` catalog data | `plugins/product-agent-os/assets/methodology/methodology-catalog.json` | Domain records applies/not-applicable rules, Track 8 scenarios, artifacts, all gates, explicit eval fields and overlaps with requirements, architecture, frontend, backend, API, data, AI, release, security and agent workflow domains. | Focused catalog test passes for `quality_testing_evals`. |
+| `T9-D4-M5` | Implement read-only quality audit recommendations | `plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py` | Audit emits prioritized recommendations with stable shape and artifact mapping: strategy/risk scope -> `quality-strategy.md`; traceability and contract/eval mapping -> `test-eval-matrix.md`; CI evidence -> `ci-evidence-record.md`; flaky/retry -> `flaky-test-policy.md`; manual/runtime/visual evidence -> `manual-qa-evidence.md`; AI eval gaps -> `ai-eval-spec.md`/`EVALS.md`; API contract gaps -> `api-contract-review.md`; completion evidence -> `RUNLOG.md`. False-positive intents stay `not_applicable`. | Focused audit tests pass and recommendation packets keep priority, domain, gate, artifact, evidence, approval, accepted-gap and residual-risk fields. |
+| `T9-D4-M6` | Add and register quality artifact templates | `plugins/product-agent-os/assets/templates/artifact-templates/test-eval-matrix.md`, `plugins/product-agent-os/assets/templates/artifact-templates/quality-strategy.md`, `plugins/product-agent-os/assets/templates/artifact-templates/ci-evidence-record.md`, `plugins/product-agent-os/assets/templates/artifact-templates/flaky-test-policy.md`, `plugins/product-agent-os/assets/templates/artifact-templates/manual-qa-evidence.md`, `plugins/product-agent-os/scripts/product_agent_os/templates.py` | Templates include `Source status:`, owner, current evidence, command/eval/runtime/manual evidence, accepted gap, residual risk, approval boundary, verification, rollback or no-rollback rationale, test data privacy/no secrets guidance and target paths `.codex/artifact-templates/<name>`. | Infrastructure template tests pass and rendered templates have no unresolved substitutions. |
+| `T9-D4-M7` | Strengthen generated control-plane and eval templates | `plugins/product-agent-os/assets/templates/control-plane/TEST.md`, `plugins/product-agent-os/assets/templates/control-plane/EVALS.md`, `plugins/product-agent-os/assets/templates/control-plane/RUNLOG.md`, `plugins/product-agent-os/assets/templates/evals/project-readiness.json`, `plugins/product-agent-os/assets/templates/evals/behavioral-workflows.json` | Generated artifacts expose quality strategy, test/eval matrix, risk-based scope, acceptance traceability, contract/runtime/manual/visual evidence, eval baseline/rerun, CI evidence, flaky policy, coverage policy, test data privacy and current evidence before completion. Behavioral evals keep completion claims evidence-bound. | Infrastructure and behavioral eval template tests pass. |
+| `T9-D4-M8` | Route Quality, Testing & Evals through lifecycle skills | `plugins/product-agent-os/skills/workspace-discovery-auditor/SKILL.md`, `plugins/product-agent-os/skills/requirements-author/SKILL.md`, `plugins/product-agent-os/skills/implementation-planner/SKILL.md`, `plugins/product-agent-os/skills/test-eval-designer/SKILL.md`, `plugins/product-agent-os/skills/risk-reviewer/SKILL.md`, `plugins/product-agent-os/skills/docs-maintainer/SKILL.md`, `plugins/product-agent-os/skills/pr-release-operator/SKILL.md` | Skills require current evidence before completion claims, route quality gates to `test-eval-designer` and `risk-reviewer`, preserve explicit-gap language, and do not force TDD, E2E, coverage, visual, mutation, property-based, CI or AI evals when not applicable. | Lifecycle skill tests pass for shared quality methodology wording. |
+| `T9-D4-M9` | Add fixture eval contract | `plugins/product-agent-os/scripts/run_fixture_eval.py`, `tests/product_agent_os/test_fixture_eval_runner.py` | `quality_testing_evals_contract_present` validates catalog gates, artifacts, eval fields, templates, lifecycle skill coverage and evidence-before-completion continuity. `python-app` expected checks include the new contract. | `python plugins\product-agent-os\scripts\run_fixture_eval.py` exits `0` after implementation with renderer file count 97. |
+| `T9-D4-M10` | Sync docs and control-plane evidence | `PLAN.md`, `TEST.md`, `EVALS.md`, `RUNLOG.md`, `docs/sources/product-agent-os-track-9-backlog.md`, `docs/product-agent-os/behavioral-evals.md`, Product-Agent OS README/docs only when behavior is user-facing | Current state records `T9-D4` completion, RED/GREEN evidence, renderer file count delta, unsupported-claim handling, deferred candidate artifact rationale, residual risks and next action `T9-D5`. Source registry is updated only if new source-backed claims are added outside existing source entries. | Full verification commands below pass; `git diff --check` exits `0`. Run strict MkDocs only if navigation, Mermaid diagrams, Markdown extensions, MkDocs config or Product-Agent OS docs navigation changed. |
+| `T9-D4-M11` | Add quality discovery-signal contract | `plugins/product-agent-os/scripts/product_agent_os/discovery.py`, `plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py`, `tests/product_agent_os/test_discovery.py`, `tests/product_agent_os/test_methodology_audit.py` | Discovery and audit recognize quality signals from directories (`tests/`, `test/`, `spec/`, `e2e/`, `playwright/`, `cypress/`, `coverage/`, `evals/`, `.github/workflows/`, `fixtures/`, `__tests__/`, `snapshots/`), files (`TEST.md`, `EVALS.md`, `RUNLOG.md`, `pytest.ini`, `tox.ini`, `vitest.config.*`, `jest.config.*`, `playwright.config.*`, `coverage.*`, `promptfoo.yaml`, `promptfooconfig.yaml`, `pact.*`, `openapi.*`, `asyncapi.*`), terms and dependency signals (`pytest`, `unittest`, `JUnit`, `Jest`, `Vitest`, `Playwright`, `Testing Library`, `Storybook`, `Pact`, `Stryker`, `Hypothesis`, `Promptfoo`, `Ragas`, `Codecov`, `GitHub Actions`). Detection alone remains `present_unverified`, not `present_verified`. | `python -m unittest tests.product_agent_os.test_discovery tests.product_agent_os.test_methodology_audit -v` fails RED before signal implementation and passes after. |
+| `T9-D4-M12` | Lock explicit quality eval-field names | `tests/product_agent_os/test_methodology_catalog.py`, `plugins/product-agent-os/assets/methodology/methodology-catalog.json`, `plugins/product-agent-os/scripts/run_fixture_eval.py` | Catalog and fixture eval use these stable fields: `quality_strategy_contract_present`, `risk_based_scope_contract_present`, `test_first_or_gap_contract_present`, `acceptance_traceability_contract_present`, `contract_check_contract_present`, `runtime_evidence_contract_present`, `manual_qa_evidence_contract_present`, `visual_a11y_evidence_contract_present`, `eval_spec_contract_present`, `eval_rerun_evidence_contract_present`, `current_evidence_before_completion_contract_present`, `ci_quality_gate_contract_present`, `flaky_test_policy_contract_present`, `coverage_policy_contract_present`, `test_data_privacy_contract_present`, `bug_reproduction_evidence_contract_present`, `regression_impact_contract_present`, and `unsupported_quality_claims_rejected_contract_present`. | Focused catalog and fixture eval tests fail RED before fields exist and pass after implementation. |
+| `T9-D4-M13` | Add exact quality gate priority and artifact mapping | `tests/product_agent_os/test_methodology_audit.py`, `plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py`, `docs/sources/product-agent-os-track-9-backlog.md` | Tests assert gate -> priority -> artifact mapping, including: missing local test command/evidence -> `quality_strategy_present` `P0_blocker` -> `quality-strategy.md`; risky/broad/constrained scope -> `risk_based_scope_present` `P1_high_risk` -> `quality-strategy.md`; missing acceptance/check mapping -> `acceptance_traceability_present` `P1_high_risk` -> `test-eval-matrix.md`; deterministic bugfix/business rule without test-first or gap -> `test_first_or_gap_present` `P1_high_risk` -> `test-eval-matrix.md`; public API/event/schema without contract check -> `contract_check_present` `P1_high_risk` -> `api-contract-review.md`; runtime claim without evidence -> `runtime_evidence_present` `P1_high_risk` -> `manual-qa-evidence.md`; public UI visual/a11y gap -> `P1_high_risk`, internal UI visual/a11y gap -> `P2_recommended`, both -> `manual-qa-evidence.md`; AI/subjective eval spec or rerun gap -> `P1_high_risk` -> `ai-eval-spec.md` or `EVALS.md`; CI quality gate missing -> `P1_high_risk` for release/shared branch and `P2_recommended` otherwise -> `ci-evidence-record.md`; flaky/retry without owner/expiry -> `P2_recommended` -> `flaky-test-policy.md`; coverage-as-proof claim -> `P1_high_risk` rejected evidence and coverage policy gap -> `P2_recommended` -> `quality-strategy.md`; test data privacy gap -> `P1_high_risk` -> `quality-strategy.md`; bugfix without reproduction -> `P0_blocker` or accepted gap -> `bug-rescue-report.md`/`RUNLOG.md`; regression impact missing -> `P1_high_risk` -> `test-eval-matrix.md`; completion claim without current evidence -> `P0_blocker` -> `RUNLOG.md`; unsupported quality claims -> `P1_high_risk` -> `quality-strategy.md`. | `python -m unittest tests.product_agent_os.test_methodology_audit -v` asserts every mapping and false-positive exception. |
+| `T9-D4-M14` | Update cross-domain synthesis backlog and deferred artifact mapping | `docs/sources/product-agent-os-track-9-backlog.md`, `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md` | Backlog records cross-domain synthesis items for shared runtime evidence with Frontend/Backend/Desktop/Native, visual/a11y evidence with Frontend, contract checks with API/Integrations, test data privacy with Database/Security/AI, eval baseline/rerun with LLM/AI/RAG, CI quality gates with Delivery/Operations, and completion evidence with all domains. Every candidate artifact from the source artifact is explicitly mapped to one of the five T9-D4 artifacts or existing `TEST.md`, `EVALS.md`, `RUNLOG.md`, `ai-eval-spec.md`, `api-contract-review.md`, `bug-rescue-report.md`, `ci-stabilization-report.md`, or deferred with owner/reason. | `python tools\check_docs.py` passes and backlog contains T9-D4 cross-domain and deferred-artifact entries. |
+| `T9-D4-M15` | Expand final verification and staging scope | `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md` | Step 6 final commands include focused T9-D4 tests, fixture eval, full unittest, transcript eval, Codex compatibility check, docs check and `git diff --check`; staging includes `plugins/product-agent-os`, `tests/product_agent_os`, `docs/sources/product-agent-os-track-9-backlog.md`, `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`, `PLAN.md`, `TEST.md`, `EVALS.md`, `RUNLOG.md`, and `docs/product-agent-os` when changed. | Plan review confirms no verification/staging gap before `feat: integrate quality testing evals methodology`. |
+
+- [x] **Step 0: Record deep-audit deltas before implementation**
+
+Modify `docs/sources/product-agent-os-track-9-backlog.md` before code implementation and record these `T9-D4` deep-audit deltas from `docs/methodologies/quality-testing-evals.md` and `docs/sources/methodology-research/quality-testing-evals.md`:
+
+- Quality evidence is current command/eval/runtime/manual evidence or an explicit inspection-only gap, not generic "tests exist" or old CI status.
+- Discovery must recognize quality signals from test directories, test/eval config files, CI workflows, coverage reports, Playwright/Cypress/Storybook/Pact/Promptfoo/Ragas/Stryker/Hypothesis/Codecov/GitHub Actions signals and flaky-test evidence; detection alone remains `present_unverified`.
+- Stable eval fields must include every `quality_testing_evals` gate plus `unsupported_quality_claims_rejected_contract_present`.
+- Recommendation mapping must name the exact gate, priority and artifact for test strategy, risk scope, acceptance traceability, test-first gap, contract checks, runtime/manual/visual evidence, eval spec/rerun, CI quality gate, flaky policy, coverage policy, test data privacy, bug reproduction, regression impact and completion evidence.
+- Candidate artifacts from the source methodology must be mapped to the five T9-D4 templates or existing control-plane artifacts, or deferred with owner/reason.
+- Cross-domain synthesis backlog must capture shared runtime evidence, visual/a11y evidence, contract checks, test data privacy, eval baseline/rerun, CI quality gates and evidence-before-completion so later domains do not duplicate or conflict with T9-D4.
+- Unsupported claims must be rejected as evidence: more tests always means better quality, 100 percent line coverage proves correctness, E2E tests should dominate because they are most realistic, manual QA is not evidence and AI evals are optional for AI behavior changes.
+- Lightweight false-positive rules must preserve `not_applicable` or accepted-gap behavior for typo-only docs edits, formatting-only changes, docs-only source cleanup and dependency metadata changes without behavior impact.
+
+- [x] **Step 1: Add RED test for quality gates**
 
 Assert `quality_testing_evals` gates include:
 
@@ -2096,7 +2138,7 @@ Assert `quality_testing_evals` gates include:
 ]
 ```
 
-- [ ] **Step 2: Run RED test**
+- [x] **Step 2: Run RED test**
 
 Run:
 
@@ -2106,7 +2148,7 @@ python -m unittest tests.product_agent_os.test_methodology_catalog -v
 
 Expected: fail on missing quality gates.
 
-- [ ] **Step 3: Add quality catalog and recommendations**
+- [x] **Step 3: Add quality catalog and recommendations**
 
 Rules:
 
@@ -2116,7 +2158,7 @@ Rules:
 - UI changes without visual/a11y evidence are `P1_high_risk` for public UI and `P2_recommended` for internal UI;
 - flaky tests produce owner question and `P2_recommended` policy recommendation.
 
-- [ ] **Step 4: Add templates and skill updates**
+- [x] **Step 4: Add templates and skill updates**
 
 Create and register:
 
@@ -2128,23 +2170,27 @@ Create and register:
 
 Update `test-eval-designer`, `risk-reviewer` and `implementation-planner` with current evidence rules.
 
-- [ ] **Step 5: Add eval runner checks**
+- [x] **Step 5: Add eval runner checks**
 
 Update fixture eval with `quality_testing_evals_contract_present` and assert current evidence before completion remains active.
 
-- [ ] **Step 6: Run verification and commit**
+- [x] **Step 6: Run verification and commit**
 
 Run:
 
 ```powershell
-python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_behavioral_workflow_evals tests.product_agent_os.test_fixture_eval_runner -v
+python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_discovery tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_behavioral_workflow_evals tests.product_agent_os.test_fixture_eval_runner -v
 python plugins\product-agent-os\scripts\run_fixture_eval.py
+python -m unittest discover -s tests -p "test_*.py" -v
 python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json
-git add plugins\product-agent-os tests\product_agent_os docs\sources\product-agent-os-track-9-backlog.md
+python plugins\product-agent-os\scripts\validate_codex_compatibility.py
+python tools\check_docs.py
+git diff --check
+git add plugins\product-agent-os tests\product_agent_os docs\sources\product-agent-os-track-9-backlog.md docs\superpowers\plans\2026-05-25-track-9-methodology-intelligence.md PLAN.md TEST.md EVALS.md RUNLOG.md docs\product-agent-os
 git commit -m "feat: integrate quality testing evals methodology"
 ```
 
-Expected: tests, fixture eval and transcript eval pass before commit.
+Expected: focused tests, fixture eval, full unittest, transcript eval, compatibility check, docs check and diff hygiene pass before commit.
 
 ---
 

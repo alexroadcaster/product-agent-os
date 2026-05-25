@@ -28,7 +28,7 @@ Track 9 turns the methodology atlas in `docs/methodologies/` into read-only Prod
 | `done` | `T9-D1` | `business-product.md` | Product hypothesis, value, opportunities, metrics, guardrails and measurement. |
 | `done` | `T9-D2` | `requirements-domain.md` | Requirements quality, acceptance scenarios, business rules, domain model, traceability and change impact. |
 | `done` | `T9-D3` | `solution-architecture.md` | Architecture boundaries, views, ADRs, quality attributes, tradeoffs, ownership and fitness checks. |
-| `planned` | `T9-D4` | `quality-testing-evals.md` | Risk-based tests, evals, current evidence, runtime/manual/visual evidence and CI quality gates. |
+| `done` | `T9-D4` | `quality-testing-evals.md` | Risk-based tests, evals, current evidence, runtime/manual/visual evidence and CI quality gates. |
 | `planned` | `T9-D5` | `codex-agentic-workflow.md` | Control-plane maturity, model/reasoning policy, handoffs, subagents, MCP, hooks, skills, plugins and automation promotion. |
 | `planned` | `T9-D6` | `frontend.md` | UI behavior, component states, Storybook applicability, visual/a11y evidence, responsive checks, performance and FSD boundaries. |
 | `planned` | `T9-D7` | `backend.md` | Service boundaries, modular monolith vs microservices, runtime behavior, queues, observability, SLOs and rollback. |
@@ -139,6 +139,44 @@ Severity and false-positive resolution:
 - Typo-only docs edits, formatting-only edits, docs-light prototypes without reviewed/diffable diagrams and non-cloud work without Well-Architected review keep `solution_architecture` not applicable.
 - Unsupported architecture claims are rejected as evidence and routed to `architecture-review-record.md`.
 
+### `T9-D4` Quality, Testing and Evals Integration
+
+Status: `done`
+
+Source audited: `docs/methodologies/quality-testing-evals.md`
+
+Deep-audit deltas implemented:
+
+- Treat quality as current evidence: command, eval, runtime, manual or explicit inspection-only gap evidence with owner, freshness, environment, expected result, actual result and residual risk.
+- Do not treat generic "tests exist", old CI status, line coverage, screenshots without criteria or inspection-only review as quality proof.
+- Add discovery signals for quality directories, test/eval config files, CI workflows, coverage reports, Playwright/Cypress/Storybook/Pact/Promptfoo/Ragas/Stryker/Hypothesis/Codecov/GitHub Actions signals and flaky-test evidence; detection remains `present_unverified`.
+- Add stable eval fields for every quality gate: `quality_strategy_contract_present`, `risk_based_scope_contract_present`, `test_first_or_gap_contract_present`, `acceptance_traceability_contract_present`, `contract_check_contract_present`, `runtime_evidence_contract_present`, `manual_qa_evidence_contract_present`, `visual_a11y_evidence_contract_present`, `eval_spec_contract_present`, `eval_rerun_evidence_contract_present`, `current_evidence_before_completion_contract_present`, `ci_quality_gate_contract_present`, `flaky_test_policy_contract_present`, `coverage_policy_contract_present`, `test_data_privacy_contract_present`, `bug_reproduction_evidence_contract_present`, `regression_impact_contract_present` and `unsupported_quality_claims_rejected_contract_present`.
+- Map recommendations with exact gate, priority and artifact: missing local test command/evidence -> `quality_strategy_present` `P0_blocker` -> `quality-strategy.md`; risky/broad/constrained scope -> `risk_based_scope_present` `P1_high_risk` -> `quality-strategy.md`; acceptance traceability -> `acceptance_traceability_present` `P1_high_risk` -> `test-eval-matrix.md`; deterministic bugfix/business rule without test-first or gap -> `test_first_or_gap_present` `P1_high_risk` -> `test-eval-matrix.md`; API/event/schema contract gap -> `contract_check_present` `P1_high_risk` -> `api-contract-review.md`; runtime claim without evidence -> `runtime_evidence_present` `P1_high_risk` -> `manual-qa-evidence.md`; visual/a11y gap -> `visual_a11y_evidence_present` `P1_high_risk` for public UI and `P2_recommended` for internal UI -> `manual-qa-evidence.md`; AI/subjective eval spec or rerun gap -> `eval_spec_present` or `eval_rerun_evidence_present` `P1_high_risk` -> `ai-eval-spec.md` or `EVALS.md`; CI quality gate gap -> `ci_quality_gate_present` `P1_high_risk` for release/shared branch and `P2_recommended` otherwise -> `ci-evidence-record.md`; flaky/retry without owner/expiry -> `flaky_test_policy_present` `P2_recommended` -> `flaky-test-policy.md`; coverage-as-proof claim -> `unsupported_quality_claims_rejected` `P1_high_risk` and coverage policy gap -> `coverage_policy_present` `P2_recommended` -> `quality-strategy.md`; test data privacy gap -> `test_data_privacy_present` `P1_high_risk` -> `quality-strategy.md`; bugfix without reproduction -> `bug_reproduction_evidence_present` `P0_blocker` or accepted gap -> `bug-rescue-report.md`/`RUNLOG.md`; regression impact missing -> `regression_impact_present` `P1_high_risk` -> `test-eval-matrix.md`; completion claim without current evidence -> `current_evidence_before_completion` `P0_blocker` -> `RUNLOG.md`; unsupported quality claims -> `unsupported_quality_claims_rejected` `P1_high_risk` -> `quality-strategy.md`.
+- Create five staged artifact templates in this slice: `test-eval-matrix.md`, `quality-strategy.md`, `ci-evidence-record.md`, `flaky-test-policy.md` and `manual-qa-evidence.md`.
+- Strengthen generated `TEST.md`, `EVALS.md`, `RUNLOG.md`, `project-readiness.json` and `behavioral-workflows.json` with quality strategy, risk scope, acceptance traceability, contract/runtime/manual/visual evidence, eval baseline/rerun, CI evidence, flaky policy, coverage policy, test data privacy and current evidence before completion.
+- Map source candidate artifacts into the five templates or existing artifacts: `red-green-refactor-log.md`, `bug-reproduction.md`, `risk-based-test-plan.md`, `regression-impact-map.md`, `contract-test-map.md`, `runtime-evidence.md`, `visual-a11y-evidence.md`, `coverage-policy.md`, `manual-qa-charter.md` and `evidence-packet.md` are covered by the five templates plus `TEST.md`, `EVALS.md`, `RUNLOG.md`, `ai-eval-spec.md`, `api-contract-review.md`, `bug-rescue-report.md` and `ci-stabilization-report.md`. Standalone `mutation-test-report.md`, `property-test-spec.md`, `flaky-test-ledger.md`, `ci-quality-gates.md` and `eval-run-report.md` are deferred until a later domain or stack-specific slice proves separate ownership.
+- Route Quality, Testing and Evals through `workspace-discovery-auditor`, `requirements-author`, `implementation-planner`, `test-eval-designer`, `risk-reviewer`, `docs-maintainer` and `pr-release-operator`.
+- Reject unsupported claims as evidence: more tests always means better quality, 100 percent line coverage proves correctness, E2E tests should dominate because they are most realistic, manual QA is not evidence and AI evals are optional for AI behavior changes.
+- Preserve lightweight false-positive behavior for typo-only docs edits, formatting-only changes, docs-only source cleanup and dependency metadata changes without behavior impact.
+
+Implemented scope:
+
+- Added `quality_testing_evals` catalog coverage for quality strategy, risk based scope, test-first evidence or accepted gap, acceptance traceability, contract checks, runtime evidence, manual QA evidence, visual/a11y evidence, eval spec, eval rerun evidence, current evidence before completion, CI quality gate, flaky-test policy, coverage policy, test data privacy, bug reproduction, regression impact and unsupported-claim rejection.
+- Added read-only audit recommendations with deterministic gate, priority and artifact mapping for missing local evidence, risky scope, traceability, deterministic changes, API/event/schema contracts, runtime claims, public/internal UI visual evidence, AI evals, CI gates, flaky retries, coverage-as-proof claims, test data privacy, bug reproduction, regression impact and completion claims.
+- Added staged artifact templates: `test-eval-matrix.md`, `quality-strategy.md`, `ci-evidence-record.md`, `flaky-test-policy.md` and `manual-qa-evidence.md`.
+- Strengthened generated `TEST.md`, `EVALS.md`, `RUNLOG.md`, `project-readiness.json` and `behavioral-workflows.json` with quality evidence gates, statuses and behavioral eval coverage for completion claims without current evidence.
+- Added quality discovery signals and kept detection as `present_unverified`, not readiness evidence.
+- Routed Quality, Testing and Evals into `workspace-discovery-auditor`, `requirements-author`, `implementation-planner`, `test-eval-designer`, `risk-reviewer`, `docs-maintainer` and `pr-release-operator`.
+- Added fixture eval check `quality_testing_evals_contract_present`; renderer file count is now 97 after adding five Quality, Testing and Evals artifact templates.
+
+Severity and false-positive resolution:
+
+- Missing local command/evidence and completion claims without current evidence are `P0_blocker`.
+- Risky scope, missing acceptance traceability, deterministic change without test-first evidence or accepted gap, public API/event/schema contract gaps, runtime evidence gaps, public UI visual/a11y gaps, AI eval baseline/rerun gaps, test data privacy gaps and regression impact gaps are `P1_high_risk` when applicable.
+- Internal UI visual/a11y gaps, flaky-test ownership and coverage policy gaps are `P2_recommended` unless another risk gate raises severity.
+- Typo-only docs edits, formatting-only edits, docs-only source cleanup and dependency metadata changes without behavior impact keep `quality_testing_evals` not applicable.
+- Unsupported quality claims are rejected as evidence and routed to `quality-strategy.md`.
+
 ## Cross-Domain Synthesis Backlog
 
 | Status | Item | Reason |
@@ -157,6 +195,14 @@ Severity and false-positive resolution:
 | `planned` | Normalize accepted-gap records across all methodology gates. | Accepted gaps need owner, reason, scope, review date, downstream risk and follow-up condition everywhere, not only in T9-D2. |
 | `planned` | Normalize owner/domain expert review across business-critical, compliance, finance/legal and AI-generated claims. | Later Security, AI and Release domains need the same human-review evidence packet. |
 | `planned` | Normalize change-impact review across requirements, API, data, UI, docs, release and rollback. | Requirement changes after planning should produce a shared impact review rather than domain-specific fragments. |
+| `planned` | Reuse runtime evidence packets across Quality, Frontend, Backend, Desktop and Native domains. | T9-D4 establishes current runtime/manual evidence shape before platform-specific domains add their own build/run/screenshot/log details. |
+| `planned` | Share visual and accessibility evidence with the Frontend domain. | T9-D4 defines when visual/a11y evidence is required, while T9-D6 will own UI state, responsive and component-specific depth. |
+| `planned` | Share contract-check evidence with API/Integrations. | T9-D4 blocks unsupported API/event/schema quality claims, while T9-D8 will own contract-source and compatibility detail. |
+| `planned` | Share test data privacy evidence with Database, Security and AI domains. | Fixtures, traces, screenshots, eval datasets and logs need one no-secrets/private-data policy across later data, security and AI slices. |
+| `planned` | Share eval baseline/rerun evidence with LLM/AI/RAG. | T9-D4 defines eval evidence as a quality gate; T9-D10 will own AI behavior, retrieval, grounding, model and grader detail. |
+| `planned` | Share CI quality gate evidence with Delivery and Operations. | T9-D4 defines local/CI evidence and permission boundaries; T9-D12 will own release, rollout and operational gate depth. |
+| `planned` | Normalize current evidence before completion across all domains. | Completion/readiness claims must stay evidence-bound regardless of which methodology domain owns the slice. |
+| `planned` | Revisit deferred quality artifacts after stack-specific slices. | Mutation, property-based, flaky ledger, CI quality gates and eval run report may deserve standalone templates only after later domains prove separate ownership. |
 | `planned` | Synthesize final `methodology-applicability.json` contract. | Give lifecycle skills a stable packet for route decisions and staged artifact suggestions. |
 | `planned` | Update operator docs after all domain slices. | Keep the public docs aligned with the implemented domain catalog. |
 
@@ -195,6 +241,17 @@ Domain slices must also run the focused catalog/audit tests, fixture evals and a
 - `python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_fixture_eval_runner -v` ran 120 tests with `OK`.
 - `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0`; fixture renderer file count is now 92 and `solution_architecture_contract_present` is true for `python-app`.
 - `python -m unittest discover -s tests -p "test_*.py" -v` ran 362 tests with `OK`.
+- `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 4 sessions and 0 failures.
+- `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
+- `python tools\check_docs.py` passed.
+- `git diff --check` exited `0`.
+
+`T9-D4` evidence:
+
+- RED run: focused catalog/audit/discovery/template/lifecycle/behavioral/fixture tests failed as expected before implementation on missing `quality_testing_evals` gates, audit recommendations, quality discovery signals, five artifact templates, lifecycle skill routing, behavioral eval coverage and fixture eval check.
+- Focused T9-D4 suite: `python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_discovery tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_behavioral_workflow_evals tests.product_agent_os.test_fixture_eval_runner -v` ran 168 tests with `OK`.
+- `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0`; fixture renderer file count is now 97 and `quality_testing_evals_contract_present` is true for `python-app`.
+- `python -m unittest discover -s tests -p "test_*.py" -v` ran 370 tests with `OK`.
 - `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 4 sessions and 0 failures.
 - `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
 - `python tools\check_docs.py` passed.

@@ -77,6 +77,28 @@ Generated at: {generated_at}
 - GitHub Actions:
 - Least privilege:
 - No forced external activation:
+- Quality methodology:
+- `quality_testing_evals`:
+- `quality_strategy_present`:
+- `risk_based_scope_present`:
+- `test_first_or_gap_present`:
+- `acceptance_traceability_present`:
+- `contract_check_present`:
+- `runtime_evidence_present`:
+- `manual_qa_evidence_present`:
+- `visual_a11y_evidence_present`:
+- `eval_spec_present`:
+- `eval_rerun_evidence_present`:
+- `current_evidence_before_completion`:
+- `ci_quality_gate_present`:
+- `flaky_test_policy_present`:
+- `coverage_policy_present`:
+- `test_data_privacy_present`:
+- `bug_reproduction_evidence_present`:
+- `regression_impact_present`:
+- Quality artifacts: `quality-strategy.md`, `test-eval-matrix.md`, `ci-evidence-record.md`, `flaky-test-policy.md`, `manual-qa-evidence.md`
+- Coverage is a signal, not proof:
+- Quality status: `present_unverified | explicit_gap_accepted | approval_required`
 - AI answer quality:
 - Retrieval quality:
 - Handoff quality:

@@ -69,6 +69,31 @@ Generated at: {generated_at}
 - Explicit test gap:
 - Unsupported completion claim:
 - Completion claim without current evidence:
+- Quality methodology (`quality_testing_evals`):
+- Quality strategy artifact: `quality-strategy.md`
+- Test/eval matrix artifact: `test-eval-matrix.md`
+- CI evidence artifact: `ci-evidence-record.md`
+- Flaky test policy artifact: `flaky-test-policy.md`
+- Manual QA evidence artifact: `manual-qa-evidence.md`
+- Quality strategy gate (`quality_strategy_present`):
+- Risk based scope gate (`risk_based_scope_present`):
+- Test-first or gap gate (`test_first_or_gap_present`):
+- Acceptance traceability gate (`acceptance_traceability_present`):
+- Contract check gate (`contract_check_present`):
+- Runtime evidence gate (`runtime_evidence_present`):
+- Manual QA evidence gate (`manual_qa_evidence_present`):
+- Visual/a11y evidence gate (`visual_a11y_evidence_present`):
+- Eval spec gate (`eval_spec_present`):
+- Eval rerun evidence gate (`eval_rerun_evidence_present`):
+- Current evidence before completion (`current_evidence_before_completion`):
+- CI quality gate (`ci_quality_gate_present`):
+- Flaky test policy gate (`flaky_test_policy_present`):
+- Coverage policy gate (`coverage_policy_present`):
+- Test data privacy gate (`test_data_privacy_present`):
+- Bug reproduction evidence gate (`bug_reproduction_evidence_present`):
+- Regression impact gate (`regression_impact_present`):
+- Coverage is a signal, not proof:
+- Quality status: `present_unverified | explicit_gap_accepted | approval_required`
 - FSD structure applicability (`fsd_structure`):
 - Feature-Sliced Design layer/slice/segment:
 - Public API:
