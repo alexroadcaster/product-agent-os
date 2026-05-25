@@ -2893,6 +2893,7 @@ Create `tests/product_agent_os/test_methodology_synthesis.py` with tests that as
 - no duplicate artifact ids with conflicting owners;
 - `security_risk_review_present` maps to security domain as owner and backend/API/data/AI/delivery as consumers;
 - `evidence_before_completion` concepts are normalized under quality/Codex/delivery rules;
+- semantic evidence sufficiency review is normalized as a shared owner-review gate for high-risk, production, release, security-sensitive, AI behavior and public-contract slices; it can be satisfied by explicit owner review evidence or an accepted gap with owner, reason, review date, downstream risk and follow-up condition;
 - mutually exclusive recommendations cannot both be `P0_blocker` for the same workspace;
 - simple docs-only fixture receives no frontend/backend/API/database/security/release hard blockers.
 
@@ -2912,6 +2913,7 @@ Modify catalog:
 
 - add owner domain for shared gates;
 - add consumer domains for shared gates;
+- add semantic evidence sufficiency owner-review rules for high-risk, production, release, security-sensitive, AI behavior and public-contract slices;
 - add conflict rules for mutually exclusive frameworks;
 - merge duplicate artifacts where one template can serve multiple domains;
 - keep domain-specific templates only when the evidence model differs.
@@ -2956,6 +2958,7 @@ Update `docs/sources/product-agent-os-track-9-backlog.md`:
 - record deduplicated gates;
 - record merged artifacts;
 - record known accepted overlaps;
+- record semantic evidence sufficiency review ownership, accepted-gap shape and consumer domains;
 - record final false-positive coverage.
 
 - [ ] **Step 8: Commit synthesis**

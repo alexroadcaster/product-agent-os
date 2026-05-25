@@ -202,6 +202,7 @@ Severity and false-positive resolution:
 | `planned` | Share eval baseline/rerun evidence with LLM/AI/RAG. | T9-D4 defines eval evidence as a quality gate; T9-D10 will own AI behavior, retrieval, grounding, model and grader detail. |
 | `planned` | Share CI quality gate evidence with Delivery and Operations. | T9-D4 defines local/CI evidence and permission boundaries; T9-D12 will own release, rollout and operational gate depth. |
 | `planned` | Normalize current evidence before completion across all domains. | Completion/readiness claims must stay evidence-bound regardless of which methodology domain owns the slice. |
+| `planned` | Normalize semantic evidence sufficiency review across high-risk domains. | High-risk, production, release, security-sensitive, AI behavior and public-contract slices need explicit owner review that the recorded tests/evals/manual evidence are sufficient for the real project risk, or an accepted gap with owner, reason, review date, downstream risk and follow-up condition. |
 | `planned` | Revisit deferred quality artifacts after stack-specific slices. | Mutation, property-based, flaky ledger, CI quality gates and eval run report may deserve standalone templates only after later domains prove separate ownership. |
 | `planned` | Synthesize final `methodology-applicability.json` contract. | Give lifecycle skills a stable packet for route decisions and staged artifact suggestions. |
 | `planned` | Update operator docs after all domain slices. | Keep the public docs aligned with the implemented domain catalog. |
