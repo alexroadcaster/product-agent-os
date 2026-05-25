@@ -2205,17 +2205,64 @@ Expected: focused tests, fixture eval, full unittest, transcript eval, compatibi
 - Create: `skill-promotion-record.md`
 - Create: `agent-eval-workflow.md`
 
-- [ ] **Step 1: Add RED test for Codex workflow gates**
+Deep-audit update from `docs/methodologies/codex-agentic-workflow.md` and `docs/sources/methodology-research/codex-agentic-workflow.md`:
+
+- The compact task list below must represent Codex / Agentic Workflow as durable project state and capability governance, not as chat memory or broad agent orchestration.
+- Required gates include `agentic_scope_classified`, `source_of_truth_present`, `control_plane_present`, `read_only_discovery_complete`, `approval_boundary_present`, `fresh_context_handoff_present`, `ownership_split_present`, `subagent_parallelism_safe`, `skill_promotion_evidence_present`, `plugin_boundary_present`, `mcp_permission_review_present`, `hook_activation_approval_present`, `automation_manual_stability_present`, `model_reasoning_policy_present`, `memory_policy_present`, `agent_eval_workflow_present`, and `agentic_evidence_before_completion`.
+- Existing artifacts must be reused instead of duplicated where possible: `agent-task-packet.md`, `handoff-contract.md`, `worktree-ownership.md`, `automation-candidate.md`, `plugin-blueprint.md`, `approval-record.md`, `REQUIREMENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md`, `RUNLOG.md`, and `AGENTS.md`.
+- New template scope for this slice is intentionally five artifacts unless the implementation audit proves separate ownership for additional candidates: `model-reasoning-policy.md`, `mcp-permission-review.md`, `hook-governance.md`, `skill-promotion-record.md`, and `agent-eval-workflow.md`.
+- Candidate artifacts not in the compact task list must be explicitly mapped or deferred: `context-memory-policy.md`, `agentic-workflow-readiness.md`, `agent-eval-case.md`, `skill-candidate.md`, `skill-failure-log.md`, and `hook-activation-record.md`.
+- Discovery must recognize `.codex/`, `.codex/agents/`, `.codex/workflows/`, `.codex/artifact-templates/`, `.agents/skills/`, `.agents/plugins/`, `plugins/`, `skills/`, `subagents/`, `docs/playbooks/`, `docs/artifact-templates/`, `docs/product-agent/`, `docs/runtime/`, `docs/insights/`, `AGENTS.md`, `AGENTS.override.md`, `SKILL.md`, `.codex-plugin/plugin.json`, `.mcp.json`, `hooks.json`, `config.toml`, `automation.toml`, `agent-task-packet.md`, `handoff-contract.md`, `worktree-ownership.md`, `plugin-blueprint.md`, `automation-candidate.md`, Codex/App/CLI/IDE/subagent/skill/MCP/hook/plugin/automation/worktree/runlog/eval/handoff/task-packet/source-of-truth/approval-boundary/evidence terms, and external-write/network/production/secrets/GitHub Action/publish/deploy/CI/side-effect/overlap risks.
+- Recommendations must reject unsupported claims as evidence: memory is project source of truth, subagents are automatically faster, MCP tools are safe because they are tools, hooks are harmless convenience scripts, a repeated workflow should become automation immediately, Agents SDK and Codex runtime are the same layer, and inspection proves completion.
+- False-positive behavior must preserve lightweight local/docs/simple work: do not force subagents, worktrees, MCP review, hook governance, plugin packaging, automation promotion, Agents SDK orchestration, or agent evals unless the source signals, intent or risk boundary makes them applicable.
+- The implementation must resolve source open questions instead of leaving them implicit: hard-block vs warning-level gate policy, runtime routing shape, skill trigger tests and failure logs, automation manual stability threshold, hook review depth, MCP review applicability, worktree requirements for subagents, Codex-native subagents vs Agents SDK decision, agent eval workflow depth, and official-source registry freshness.
+
+#### T9-D5 Task Matrix
+
+| ID | Task | Primary files | Acceptance criteria | Verification |
+| --- | --- | --- | --- | --- |
+| `T9-D5-M0` | Refresh plan/backlog before implementation | `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`, `docs/sources/product-agent-os-track-9-backlog.md` | Deep-audit deltas are recorded: full gate set, reused artifacts, five-template scope, candidate artifact mapping/defer list, discovery signals, false-positive rules, unsupported claims, runtime routing and verification scope. | `python tools\check_docs.py` |
+| `T9-D5-M1` | Add RED catalog contract for `codex_agentic_workflow` | `tests/product_agent_os/test_methodology_catalog.py` | Test asserts full gate set, applies/not-applicable rules, maturity/complexity impact, Track 8 scenarios, artifact list, eval field list and overlaps for quality, delivery, security, AI, plugin, automation and ownership domains. | `python -m unittest tests.product_agent_os.test_methodology_catalog -v` fails before catalog implementation on missing Codex workflow gates, artifacts or eval fields. |
+| `T9-D5-M2` | Add RED audit recommendation coverage | `tests/product_agent_os/test_methodology_audit.py` | Tests cover missing control plane/source of truth, missing read-only discovery evidence, subagent/parallel intent without ownership split, MCP side effects without permission review, hook activation without approval, plugin packaging without boundary, repeated workflow without manual evidence, automation without stability, memory-as-source-of-truth, missing model/reasoning policy, agent behavior without eval workflow, and unsupported claims. | `python -m unittest tests.product_agent_os.test_methodology_audit -v` fails before audit implementation on missing Codex workflow recommendations. |
+| `T9-D5-M3` | Add RED discovery-signal coverage | `tests/product_agent_os/test_discovery.py`, `plugins/product-agent-os/scripts/product_agent_os/discovery.py` | Discovery reports `codex_agentic_workflow` signals from Codex directories, files, config, MCP, hooks, plugins, skills, subagents, automations, task packets, handoff/worktree artifacts, terms and side-effect risks. Detection remains `present_unverified`. | `python -m unittest tests.product_agent_os.test_discovery -v` fails before signal implementation and passes after. |
+| `T9-D5-M4` | Fill `codex_agentic_workflow` catalog data | `plugins/product-agent-os/assets/methodology/methodology-catalog.json` | Domain records applies/not-applicable rules, Track 8 scenarios, artifacts, all gates, eval fields, maturity/complexity impact and overlaps. Includes `agentic_scope_classified`, `read_only_discovery_complete` and `subagent_parallelism_safe`, not only the compact original gate list. | Focused catalog test passes for `codex_agentic_workflow`. |
+| `T9-D5-M5` | Implement read-only audit recommendations | `plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py` | Audit emits prioritized recommendations with stable shape and artifact mapping for control plane, source of truth, read-only discovery, approval boundaries, handoffs, ownership, MCP, hooks, plugin packaging, skills, automation, model/reasoning, memory, agent evals and completion evidence. | Focused audit tests pass and recommendation packets keep priority, domain, gate, artifact, evidence, approval, accepted-gap and residual-risk fields. |
+| `T9-D5-M6` | Add and register Codex workflow artifact templates | `plugins/product-agent-os/assets/templates/artifact-templates/model-reasoning-policy.md`, `plugins/product-agent-os/assets/templates/artifact-templates/mcp-permission-review.md`, `plugins/product-agent-os/assets/templates/artifact-templates/hook-governance.md`, `plugins/product-agent-os/assets/templates/artifact-templates/skill-promotion-record.md`, `plugins/product-agent-os/assets/templates/artifact-templates/agent-eval-workflow.md`, `plugins/product-agent-os/scripts/product_agent_os/templates.py` | Templates include `Source status:`, owner, evidence, accepted gap, residual risk, approval boundary, verification, rollback/disable path where applicable, no secrets/private data guidance and renderer targets under `.codex/artifact-templates/`. | Infrastructure template tests pass and rendered templates have no unresolved substitutions. |
+| `T9-D5-M7` | Map or defer extra source artifacts | `docs/sources/product-agent-os-track-9-backlog.md`, `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md` | `context-memory-policy.md`, `agentic-workflow-readiness.md`, `agent-eval-case.md`, `skill-candidate.md`, `skill-failure-log.md`, and `hook-activation-record.md` are mapped to the five templates/existing artifacts or deferred with owner and reason. | `python tools\check_docs.py` passes and backlog contains the mapping/defer decisions. |
+| `T9-D5-M8` | Strengthen generated `AGENTS.md` template | `plugins/product-agent-os/assets/templates/control-plane/AGENTS.md` | Template covers source-of-truth boundaries, memory as recall only, runtime routing, approval boundaries, model/reasoning policy, manual -> playbook -> skill -> plugin -> automation promotion, and no hooks/MCP/automation/external writes without approval. | Infrastructure template tests assert required terms. |
+| `T9-D5-M9` | Strengthen generated `.codex/config.toml` template | `plugins/product-agent-os/assets/templates/config/config.toml` | Template records role/risk model policy, approval defaults, sandbox defaults, MCP/hook/automation activation boundaries and no silent activation. | Config template TOML tests and infrastructure template tests pass. |
+| `T9-D5-M10` | Strengthen generated control-plane and eval templates | `plugins/product-agent-os/assets/templates/control-plane/PLAN.md`, `plugins/product-agent-os/assets/templates/control-plane/TEST.md`, `plugins/product-agent-os/assets/templates/control-plane/EVALS.md`, `plugins/product-agent-os/assets/templates/control-plane/RUNLOG.md`, `plugins/product-agent-os/assets/templates/evals/project-readiness.json`, `plugins/product-agent-os/assets/templates/evals/behavioral-workflows.json` | Generated artifacts expose Codex workflow gates, readiness statuses, runtime routing, approval boundaries, agent eval workflow, memory policy and completion evidence. Behavioral evals block automation/hook/MCP/Agents SDK shortcuts. | Infrastructure and behavioral workflow eval tests pass. |
+| `T9-D5-M11` | Route Codex workflow through lifecycle skills | `plugins/product-agent-os/skills/project-lifecycle-orchestrator/SKILL.md`, `plugins/product-agent-os/skills/workspace-discovery-auditor/SKILL.md`, `plugins/product-agent-os/skills/requirements-author/SKILL.md`, `plugins/product-agent-os/skills/implementation-planner/SKILL.md`, `plugins/product-agent-os/skills/agent-team-designer/SKILL.md`, `plugins/product-agent-os/skills/test-eval-designer/SKILL.md`, `plugins/product-agent-os/skills/risk-reviewer/SKILL.md`, `plugins/product-agent-os/skills/docs-maintainer/SKILL.md`, `plugins/product-agent-os/skills/pr-release-operator/SKILL.md`, `plugins/product-agent-os/skills/learning-loop-maintainer/SKILL.md`, `plugins/product-agent-os/skills/automation-promoter/SKILL.md` | Skills mention Track 9 methodology recommendations as context, enforce staged-first/write approval, route subagents through fresh task packets and ownership, keep memory recall-only, and forbid hook/MCP/automation/external activation without explicit approval. | Lifecycle skill tests pass for shared Codex workflow wording. |
+| `T9-D5-M12` | Add fixture eval contract | `plugins/product-agent-os/scripts/run_fixture_eval.py`, `tests/product_agent_os/test_fixture_eval_runner.py` | `codex_agentic_workflow_contract_present` validates catalog gates, artifacts, eval fields, templates, lifecycle skill coverage and compatibility with candidate-only hooks/automation behavior. `python-app` expected checks include the new contract and renderer file count increases by five from the T9-D4 baseline. | `python plugins\product-agent-os\scripts\run_fixture_eval.py` exits `0` after implementation with expected renderer file count. |
+| `T9-D5-M13` | Add false-positive and approval-bound coverage | `tests/product_agent_os/test_methodology_audit.py`, `tests/product_agent_os/test_discovery.py`, `tests/product_agent_os/test_fixture_eval_runner.py` | Simple docs/local work does not force subagents, worktrees, MCP review, hooks, plugin packaging, automation, Agents SDK or agent evals. Side-effecting MCP, hook activation, automation schedule, external writes and production data remain `approval_required`. | Focused audit/discovery/fixture tests pass. |
+| `T9-D5-M14` | Add unsupported-claim rejection | `tests/product_agent_os/test_methodology_audit.py`, `plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py` | Unsupported claims are rejected as evidence: memory as source of truth, subagents always faster, MCP safe by default, hooks harmless, immediate automation, Agents SDK equals Codex runtime, and inspection proves completion. | Focused audit tests assert each unsupported claim creates a Codex workflow recommendation or owner question. |
+| `T9-D5-M15` | Sync docs and control-plane evidence | `PLAN.md`, `TEST.md`, `EVALS.md`, `RUNLOG.md`, `docs/sources/product-agent-os-track-9-backlog.md`, Product-Agent OS README/docs only when behavior is user-facing | Current state records `T9-D5` completion, RED/GREEN evidence, renderer file count delta, unsupported-claim handling, deferred artifact rationale, residual risks and next action `T9-D6`. | Full verification commands below pass; `git diff --check` exits `0`. |
+| `T9-D5-M16` | Expand final verification and staging scope | `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md` | Step 6 final commands include focused T9-D5 tests, fixture eval, full unittest, transcript eval, Codex compatibility check, docs check and `git diff --check`; commit/staging remains deferred to explicit user request. | Plan review confirms no verification gap before a later `feat: integrate codex agentic workflow methodology` commit. |
+| `T9-D5-M17` | Define readiness severity policy | `plugins/product-agent-os/assets/methodology/methodology-catalog.json`, `plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py`, `tests/product_agent_os/test_methodology_audit.py` | Codex workflow gates distinguish hard blockers from warnings: missing control plane/source of truth for multi-slice work, active automation, hook activation, side-effecting MCP, external writes, production data, overlapping subagents, missing approval boundary and completion claims without evidence are blocker/high-risk; lightweight docs/local work remains warning/not-applicable. | Focused audit tests assert priority mapping and no false hard blockers for simple docs/local fixtures. |
+| `T9-D5-M18` | Add runtime routing decision matrix | `plugins/product-agent-os/assets/templates/control-plane/AGENTS.md`, `plugins/product-agent-os/assets/templates/control-plane/PLAN.md`, `plugins/product-agent-os/assets/templates/artifact-templates/model-reasoning-policy.md`, `plugins/product-agent-os/skills/project-lifecycle-orchestrator/SKILL.md`, `tests/product_agent_os/test_infrastructure_templates.py`, `tests/product_agent_os/test_lifecycle_skills.py` | Runtime routing records when to use Codex App, IDE extension, CLI, `codex exec`, GitHub Action, MCP, Agents SDK and automation by ambiguity, local command needs, external permissions, repeatability and evidence needs. | Template and lifecycle tests assert every runtime surface and no default escalation to MCP, Agents SDK or automation. |
+| `T9-D5-M19` | Add skill lifecycle test policy | `plugins/product-agent-os/assets/templates/artifact-templates/skill-promotion-record.md`, `plugins/product-agent-os/skills/learning-loop-maintainer/SKILL.md`, `plugins/product-agent-os/skills/automation-promoter/SKILL.md`, `tests/product_agent_os/test_infrastructure_templates.py`, `tests/product_agent_os/test_lifecycle_skills.py` | Skill promotion requires trigger tests, negative trigger tests, missing-input behavior, verification failure behavior and failure log evidence, not only a happy-path manual run. | Template/lifecycle tests assert trigger, negative trigger, missing-input and failure-log terms. |
+| `T9-D5-M20` | Define automation manual stability threshold | `plugins/product-agent-os/assets/templates/artifact-templates/skill-promotion-record.md`, `plugins/product-agent-os/assets/templates/automations/automation-candidate.md`, `plugins/product-agent-os/skills/automation-promoter/SKILL.md`, `tests/product_agent_os/test_automation_policy.py`, `tests/product_agent_os/test_lifecycle_skills.py` | Automation promotion requires at least two successful manual runs or an explicit owner-approved accepted gap, plus durable prompt, cadence, environment, verification, owner and disable/rollback path. Active schedules remain out of scope. | Automation policy and lifecycle tests assert two-run or accepted-gap threshold and active automation remains blocked. |
+| `T9-D5-M21` | Define hook governance review depth | `plugins/product-agent-os/assets/templates/artifact-templates/hook-governance.md`, `plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py`, `tests/product_agent_os/test_methodology_audit.py`, `tests/product_agent_os/test_infrastructure_templates.py` | Hook governance distinguishes staged hook templates, read-only validation hooks and blocking/side-effecting hooks. Activation requires trust review, event/matcher/command, failure behavior, disable path and explicit approval; blocking or side-effecting hooks require two-stage risk review. | Focused tests assert unapproved hook activation is high-risk/approval-required and staged templates remain allowed. |
+| `T9-D5-M22` | Define MCP review applicability policy | `plugins/product-agent-os/assets/templates/artifact-templates/mcp-permission-review.md`, `plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py`, `tests/product_agent_os/test_methodology_audit.py`, `tests/product_agent_os/test_infrastructure_templates.py` | MCP review is required for new MCP config, changed trust boundary, auth/secrets, remote servers, side-effecting tools, production/customer data or external writes. Read-only local docs MCP can be lower severity but still records capability/data boundary. | Focused tests assert side-effecting MCP is high-risk and read-only MCP is not over-blocked. |
+| `T9-D5-M23` | Define worktree requirement policy for subagents | `plugins/product-agent-os/assets/templates/workflows/worktree-ownership.md`, `plugins/product-agent-os/assets/templates/artifact-templates/agent-task-packet.md`, `plugins/product-agent-os/skills/agent-team-designer/SKILL.md`, `tests/product_agent_os/test_infrastructure_templates.py`, `tests/product_agent_os/test_lifecycle_skills.py` | Parallel subagents require worktrees or explicit ownership when edits can overlap, when generated files are shared, when migrations/contracts are touched, or when merge/rollback risk is high; read-only research can use packets without worktrees. | Template/lifecycle tests assert worktree requirement and sequential fallback rules. |
+| `T9-D5-M24` | Add Codex-native subagents vs Agents SDK decision rule | `plugins/product-agent-os/assets/templates/artifact-templates/model-reasoning-policy.md`, `plugins/product-agent-os/assets/templates/control-plane/AGENTS.md`, `plugins/product-agent-os/skills/project-lifecycle-orchestrator/SKILL.md`, `tests/product_agent_os/test_infrastructure_templates.py`, `tests/product_agent_os/test_lifecycle_skills.py`, `tests/product_agent_os/test_codex_runtime_runner_contracts.py` | Codex-native subagents are the default for Codex App/CLI/IDE engineering delegation; Agents SDK is only for code-owned agent apps with application-owned orchestration, tools, guardrails, sessions, tracing and evals. Product-Agent OS must not require a standalone Agents SDK runner. | Tests assert Agents SDK is not treated as a Codex runtime surface and decision text is present. |
+| `T9-D5-M25` | Expand agent eval workflow depth | `plugins/product-agent-os/assets/templates/artifact-templates/agent-eval-workflow.md`, `plugins/product-agent-os/assets/templates/evals/behavioral-workflows.json`, `tests/product_agent_os/test_infrastructure_templates.py`, `tests/product_agent_os/test_behavioral_workflow_evals.py` | Agent eval workflow covers baseline, trace-derived dataset, tool-call correctness, handoff correctness, expected/forbidden behavior, grader or deterministic assertion, threshold, rerun command, regression label, latency/cost and privacy/no-secrets handling. | Infrastructure and behavioral eval tests assert the full eval contract. |
+| `T9-D5-M26` | Add official-source registry freshness check | `docs/sources/registry.md`, `docs/sources/product-agent-os-track-9-backlog.md`, `tests/product_agent_os/test_product_agent_os_docs.py`, `tools/check_docs.py` only if required paths change | T9-D5 records whether official OpenAI Codex/App/CLI/IDE/skills/subagents/MCP/hooks/plugins/approvals/memory/automation/Agents SDK/evals sources are already current or updated. New source-backed behavior outside existing registry entries updates the registry. | Docs tests or `python tools\check_docs.py` confirm source registry coverage; otherwise backlog records no registry update needed with reason. |
+
+- [x] **Step 1: Add RED test for Codex workflow gates**
 
 Assert `codex_agentic_workflow` gates include:
 
 ```python
 [
+    "agentic_scope_classified",
     "control_plane_present",
     "source_of_truth_present",
+    "read_only_discovery_complete",
     "model_reasoning_policy_present",
     "fresh_context_handoff_present",
     "ownership_split_present",
+    "subagent_parallelism_safe",
     "approval_boundary_present",
     "mcp_permission_review_present",
     "hook_activation_approval_present",
@@ -2228,7 +2275,7 @@ Assert `codex_agentic_workflow` gates include:
 ]
 ```
 
-- [ ] **Step 2: Run RED test**
+- [x] **Step 2: Run RED test**
 
 Run:
 
@@ -2238,7 +2285,7 @@ python -m unittest tests.product_agent_os.test_methodology_catalog -v
 
 Expected: fail on missing Codex workflow gates.
 
-- [ ] **Step 3: Add catalog and templates**
+- [x] **Step 3: Add catalog and templates**
 
 Create and register:
 
@@ -2250,7 +2297,7 @@ Create and register:
 
 Extend `AGENTS.md` and `.codex/config.toml` templates with model/reasoning policy and approval boundaries.
 
-- [ ] **Step 4: Add audit recommendations**
+- [x] **Step 4: Add audit recommendations**
 
 Recommendations:
 
@@ -2260,23 +2307,28 @@ Recommendations:
 - subagent/parallel intent without ownership split -> `P1_high_risk`;
 - repeated workflow without evidence -> `P2_recommended` skill promotion record.
 
-- [ ] **Step 5: Update lifecycle skills**
+- [x] **Step 5: Update lifecycle skills**
 
 All lifecycle skills must mention Track 9 methodology recommendations as context, but no skill should activate hooks, MCP, automation or external writes without approval.
 
-- [ ] **Step 6: Run verification and commit**
+- [x] **Step 6: Run verification; leave commit to explicit user request**
 
 Run:
 
 ```powershell
-python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_fixture_eval_runner tests.product_agent_os.test_codex_compatibility -v
+python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_discovery -v
+python -m unittest tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_behavioral_workflow_evals tests.product_agent_os.test_automation_policy tests.product_agent_os.test_codex_runtime_runner_contracts -v
+python -m unittest tests.product_agent_os.test_fixture_eval_runner.FixtureEvalRunnerTest.test_fixture_eval_checks_expected_renderer_behavior_by_fixture -v
+python -m unittest tests.product_agent_os.test_fixture_eval_runner.FixtureEvalRunnerTest.test_cli_prints_json_and_exits_zero_when_all_fixtures_are_ok -v
 python plugins\product-agent-os\scripts\run_fixture_eval.py
+python -m unittest discover -s tests -p "test_*.py" -v
+python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json
 python plugins\product-agent-os\scripts\validate_codex_compatibility.py
-git add plugins\product-agent-os tests\product_agent_os docs\sources\product-agent-os-track-9-backlog.md
-git commit -m "feat: integrate codex agentic workflow methodology"
+python tools\check_docs.py
+git diff --check
 ```
 
-Expected: tests, fixture eval and compatibility pass before commit.
+Expected: focused tests, fixture eval, full unittest, transcript eval, compatibility check, docs check and diff hygiene pass before commit. Commit is intentionally deferred until explicitly requested in the current working branch.
 
 ---
 

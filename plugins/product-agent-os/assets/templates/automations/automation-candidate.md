@@ -10,8 +10,10 @@ candidate_only: true
 ## manual stability evidence
 
 - Manual workflow runs:
+- Successful manual workflow runs:
 - Failures observed:
 - Required approvals:
+- Minimum threshold: at least two successful manual workflow runs or `explicit_gap_accepted` with owner, reason, residual risk, follow-up condition, and why active automation is still not enabled.
 
 ## Stable Inputs And Outputs
 

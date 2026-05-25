@@ -807,6 +807,43 @@ class DiscoveryTest(unittest.TestCase):
         self.assertNotEqual(applicability["status"], "present_verified")
         self.assertIn("detection alone does not prove quality evidence", applicability["residual_risk"])
 
+    def test_codex_agentic_workflow_signals_are_present_unverified(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            workspace = Path(tmpdir)
+            self._write_files(
+                workspace,
+                {
+                    "AGENTS.md": "# Agents\n",
+                    ".codex/config.toml": "model = 'gpt-5'\n",
+                    ".codex/agents/builder.toml": "name = 'builder'\n",
+                    ".codex/workflows/build-slice.md": "# Build slice\n",
+                    ".codex/artifact-templates/agent-task-packet.md": "# Task packet\n",
+                    ".agents/skills/review/SKILL.md": "# Skill\n",
+                    ".agents/plugins/demo/.codex-plugin/plugin.json": '{"name":"demo"}\n',
+                    ".mcp.json": '{"servers":{"docs":{"command":"node"}}}\n',
+                    "hooks.json": '{"hooks":{"PreToolUse":[]}}\n',
+                    "automation.toml": "name = 'candidate'\n",
+                    "docs/playbooks/use-case-to-plugin.md": "# Plugin playbook\n",
+                    "docs/runtime/codex.md": (
+                        "Codex App CLI IDE extension subagents skills MCP hooks plugin automation "
+                        "approval boundary external write worktree handoff eval evidence\n"
+                    ),
+                },
+            )
+
+            result = analyze_workspace(workspace)
+
+        signals = result["methodology_signals"]
+        self.assertTrue(signals["codex_agentic_workflow"])
+        self.assertIn(
+            "codex_agentic_workflow",
+            result["route_inputs"]["workspace_signals"]["methodology_signals"],
+        )
+        applicability = result["methodology_applicability"]["codex_agentic_workflow"]
+        self.assertEqual(applicability["status"], "present_unverified")
+        self.assertIn("Codex workflow signal exists", applicability["reason"])
+        self.assertIn("detection alone does not prove safe activation", applicability["residual_risk"])
+
     def test_methodology_applicability_reports_status_packets(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             workspace = Path(tmpdir)
@@ -833,6 +870,7 @@ class DiscoveryTest(unittest.TestCase):
             "fsd_structure_when_ui_architecture_applies",
             "docs_tooling_decision",
             "standards_trigger_policy",
+            "codex_agentic_workflow",
         }
         self.assertEqual(set(applicability), expected_keys)
         for gate, packet in applicability.items():

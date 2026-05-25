@@ -30,6 +30,32 @@ permission_changes = "explicit"
 automation_activation = "explicit"
 global_config_changes = "forbidden"
 
+[product_agent_os.codex_agentic_workflow]
+methodology = "codex_agentic_workflow"
+runtimes = ["Codex App", "CLI", "IDE extension", "codex exec", "GitHub Action", "MCP", "Agents SDK", "automation"]
+gates = [
+  "agentic_scope_classified",
+  "control_plane_present",
+  "source_of_truth_present",
+  "read_only_discovery_complete",
+  "model_reasoning_policy_present",
+  "fresh_context_handoff_present",
+  "ownership_split_present",
+  "subagent_parallelism_safe",
+  "approval_boundary_present",
+  "mcp_permission_review_present",
+  "hook_activation_approval_present",
+  "plugin_boundary_present",
+  "skill_promotion_evidence_present",
+  "automation_manual_stability_present",
+  "agent_eval_workflow_present",
+  "memory_policy_present",
+  "agentic_evidence_before_completion",
+]
+statuses = ["present_unverified", "explicit_gap_accepted", "approval_required"]
+memory_policy = "memory as recall only"
+activation_policy = "no silent activation"
+
 [workflows]
 source_context_pack = ".codex/workflows/source-context-pack.md"
 worktree_ownership = ".codex/workflows/worktree-ownership.md"

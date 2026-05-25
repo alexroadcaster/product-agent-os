@@ -109,6 +109,11 @@ REQUIRED_TARGETS = {
     ".codex/artifact-templates/ci-evidence-record.md",
     ".codex/artifact-templates/flaky-test-policy.md",
     ".codex/artifact-templates/manual-qa-evidence.md",
+    ".codex/artifact-templates/model-reasoning-policy.md",
+    ".codex/artifact-templates/mcp-permission-review.md",
+    ".codex/artifact-templates/hook-governance.md",
+    ".codex/artifact-templates/skill-promotion-record.md",
+    ".codex/artifact-templates/agent-eval-workflow.md",
     ".codex/runlogs/archive/README.md",
     ".codex/evals/project-readiness.json",
     ".codex/evals/handoff-completeness.json",
@@ -227,6 +232,36 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 for term in required_terms:
                     self.assertIn(term, text)
 
+    def test_codex_agentic_workflow_artifact_templates_have_operating_contracts(self):
+        expected_templates = [
+            "model-reasoning-policy.md",
+            "mcp-permission-review.md",
+            "hook-governance.md",
+            "skill-promotion-record.md",
+            "agent-eval-workflow.md",
+        ]
+        required_terms = [
+            "Source status:",
+            "Owner",
+            "Evidence",
+            "Accepted Gap",
+            "Residual Risk",
+            "Approval Boundary",
+            "Verification",
+            "Rollback",
+            "No Secrets",
+            "present_unverified",
+            "approval_required",
+        ]
+
+        for filename in expected_templates:
+            path = TEMPLATE_ROOT / "artifact-templates" / filename
+            with self.subTest(filename=filename):
+                self.assertTrue(path.exists(), path)
+                text = path.read_text(encoding="utf-8")
+                for term in required_terms:
+                    self.assertIn(term, text)
+
     def test_template_text_has_no_unsafe_literals(self):
         for item in required_templates():
             text = item.source_path.read_text(encoding="utf-8")
@@ -329,6 +364,8 @@ class InfrastructureTemplateTest(unittest.TestCase):
 
         self.assertIn("candidate_only", text)
         self.assertIn("manual stability evidence", text)
+        self.assertIn("at least two successful manual workflow runs", text)
+        self.assertIn("explicit_gap_accepted", text)
         self.assertIn("explicit approval", text)
         self.assertNotIn("RRULE", text)
         self.assertNotIn("schedule:", text)
@@ -1000,6 +1037,63 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 "rollback",
                 "residual risk",
             ],
+            "model-reasoning-policy.md": [
+                "codex_agentic_workflow",
+                "model_reasoning_policy_present",
+                "codex app",
+                "cli",
+                "ide extension",
+                "codex exec",
+                "github action",
+                "mcp",
+                "agents sdk",
+                "automation",
+                "memory as recall only",
+                "no silent activation",
+                "residual risk",
+            ],
+            "mcp-permission-review.md": [
+                "codex_agentic_workflow",
+                "mcp_permission_review_present",
+                "tools/resources/prompts",
+                "auth/secrets",
+                "side effects",
+                "approval_required",
+                "no silent activation",
+                "residual risk",
+            ],
+            "hook-governance.md": [
+                "codex_agentic_workflow",
+                "hook_activation_approval_present",
+                "read-only validation hook",
+                "blocking or side-effecting hook",
+                "two-stage review",
+                "approval_required",
+                "no silent activation",
+                "residual risk",
+            ],
+            "skill-promotion-record.md": [
+                "codex_agentic_workflow",
+                "skill_promotion_evidence_present",
+                "trigger tests",
+                "negative trigger tests",
+                "missing-input behavior",
+                "failure log",
+                "automation_manual_stability_present",
+                "no silent activation",
+                "residual risk",
+            ],
+            "agent-eval-workflow.md": [
+                "codex_agentic_workflow",
+                "agent_eval_workflow_present",
+                "trace-derived dataset",
+                "tool-call correctness",
+                "handoff correctness",
+                "threshold",
+                "privacy/no-secrets handling",
+                "approval_required",
+                "residual risk",
+            ],
         }
         self.assertEqual(set(templates), set(expected_templates))
         for name, required_terms in expected_templates.items():
@@ -1266,6 +1360,7 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 "finish-options",
                 "codex-only-compatibility",
                 "cost-model-budget",
+                "codex-agentic-workflow",
             },
         )
         for case in data["cases"]:
@@ -1646,6 +1741,10 @@ class InfrastructureTemplateTest(unittest.TestCase):
             "shared ownership ambiguity",
             "missing handoff schema",
             "do not advance to parallel work",
+            "shared generated files",
+            "contracts",
+            "migrations",
+            "read-only research",
         ]
 
         for name, text in {
@@ -1743,6 +1842,7 @@ class InfrastructureTemplateTest(unittest.TestCase):
             "finish_options_when_release_ready",
             "standards_trigger_policy_when_architecture_api_release_or_governance_changes",
             "quality_testing_evals_when_non_trivial_change",
+            "codex_agentic_workflow",
         }
         self.assertEqual(set(gates), required_gates)
 
@@ -2076,6 +2176,78 @@ class InfrastructureTemplateTest(unittest.TestCase):
             "present_unverified",
             "explicit_gap_accepted",
             "approval_required",
+        ]
+        for name, text in payloads.items():
+            with self.subTest(name=name):
+                for expected in shared_terms:
+                    self.assertIn(expected, text)
+
+    def test_codex_agentic_workflow_templates_connect_control_plane_and_evals(self):
+        payloads = {
+            "model-reasoning-policy.md": (
+                TEMPLATE_ROOT / "artifact-templates" / "model-reasoning-policy.md"
+            ).read_text(encoding="utf-8").lower(),
+            "mcp-permission-review.md": (
+                TEMPLATE_ROOT / "artifact-templates" / "mcp-permission-review.md"
+            ).read_text(encoding="utf-8").lower(),
+            "hook-governance.md": (
+                TEMPLATE_ROOT / "artifact-templates" / "hook-governance.md"
+            ).read_text(encoding="utf-8").lower(),
+            "skill-promotion-record.md": (
+                TEMPLATE_ROOT / "artifact-templates" / "skill-promotion-record.md"
+            ).read_text(encoding="utf-8").lower(),
+            "agent-eval-workflow.md": (
+                TEMPLATE_ROOT / "artifact-templates" / "agent-eval-workflow.md"
+            ).read_text(encoding="utf-8").lower(),
+            "AGENTS.md": (TEMPLATE_ROOT / "control-plane" / "AGENTS.md").read_text(
+                encoding="utf-8"
+            ).lower(),
+            "config.toml": (TEMPLATE_ROOT / "config" / "config.toml").read_text(
+                encoding="utf-8"
+            ).lower(),
+            "control-plane": "\n".join(
+                (TEMPLATE_ROOT / "control-plane" / name).read_text(encoding="utf-8").lower()
+                for name in ["PLAN.md", "TEST.md", "EVALS.md", "RUNLOG.md"]
+            ),
+            "project-readiness.json": (TEMPLATE_ROOT / "evals" / "project-readiness.json").read_text(
+                encoding="utf-8"
+            ).lower(),
+            "behavioral-workflows.json": (
+                TEMPLATE_ROOT / "evals" / "behavioral-workflows.json"
+            ).read_text(encoding="utf-8").lower(),
+        }
+
+        shared_terms = [
+            "codex_agentic_workflow",
+            "agentic_scope_classified",
+            "control_plane_present",
+            "source_of_truth_present",
+            "read_only_discovery_complete",
+            "model_reasoning_policy_present",
+            "fresh_context_handoff_present",
+            "ownership_split_present",
+            "subagent_parallelism_safe",
+            "approval_boundary_present",
+            "mcp_permission_review_present",
+            "hook_activation_approval_present",
+            "plugin_boundary_present",
+            "skill_promotion_evidence_present",
+            "automation_manual_stability_present",
+            "agent_eval_workflow_present",
+            "memory_policy_present",
+            "agentic_evidence_before_completion",
+            "codex app",
+            "ide extension",
+            "codex exec",
+            "github action",
+            "mcp",
+            "agents sdk",
+            "automation",
+            "present_unverified",
+            "explicit_gap_accepted",
+            "approval_required",
+            "no silent activation",
+            "memory as recall only",
         ]
         for name, text in payloads.items():
             with self.subTest(name=name):

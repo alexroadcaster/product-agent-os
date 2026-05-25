@@ -32,6 +32,8 @@ Use this as the fresh-context handoff for any subagent or parallel worker. The p
 - Cross-agent file ownership:
 - Conflict notes:
 - Shared ownership ambiguity:
+- Worktree required for shared generated files, contracts, migrations, public APIs, schemas, release files, or rollback-sensitive work:
+- Read-only research exception:
 
 ## Execution Contract
 

@@ -23,6 +23,8 @@ Profile: {profile_name}
 - Name owned files and files out of scope before editing.
 - Check whether another worker owns the same path.
 - Treat parallel writes to the same file, generated output, or shared config as a conflict.
+- Require worktrees or explicit ownership for write-heavy subagent tasks, shared generated files, contracts, migrations, public APIs, schemas, release files, or rollback-sensitive work.
+- Read-only research can use an agent task packet without a worktree when no writes, external actions, MCP activation, hooks, or automation are requested.
 - Require the agent task packet artifact for any subagent or parallel worker before parallel work starts.
 - Check that owned files, forbidden files, source constraints, expected evidence, stop conditions, and handoff output schema are explicit per worker.
 - Do not advance to parallel work when shared ownership ambiguity, missing handoff schema, missing expected evidence, raw conversation history dependency, or cross-agent file ownership remains.

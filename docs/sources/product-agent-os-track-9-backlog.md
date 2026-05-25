@@ -29,7 +29,7 @@ Track 9 turns the methodology atlas in `docs/methodologies/` into read-only Prod
 | `done` | `T9-D2` | `requirements-domain.md` | Requirements quality, acceptance scenarios, business rules, domain model, traceability and change impact. |
 | `done` | `T9-D3` | `solution-architecture.md` | Architecture boundaries, views, ADRs, quality attributes, tradeoffs, ownership and fitness checks. |
 | `done` | `T9-D4` | `quality-testing-evals.md` | Risk-based tests, evals, current evidence, runtime/manual/visual evidence and CI quality gates. |
-| `planned` | `T9-D5` | `codex-agentic-workflow.md` | Control-plane maturity, model/reasoning policy, handoffs, subagents, MCP, hooks, skills, plugins and automation promotion. |
+| `done` | `T9-D5` | `codex-agentic-workflow.md` | Control-plane maturity, model/reasoning policy, handoffs, subagents, MCP, hooks, skills, plugins and automation promotion. |
 | `planned` | `T9-D6` | `frontend.md` | UI behavior, component states, Storybook applicability, visual/a11y evidence, responsive checks, performance and FSD boundaries. |
 | `planned` | `T9-D7` | `backend.md` | Service boundaries, modular monolith vs microservices, runtime behavior, queues, observability, SLOs and rollback. |
 | `planned` | `T9-D8` | `api-integrations.md` | OpenAPI/AsyncAPI/GraphQL/gRPC contracts, consumers, compatibility, errors, generated clients and external writes. |
@@ -177,6 +177,52 @@ Severity and false-positive resolution:
 - Typo-only docs edits, formatting-only edits, docs-only source cleanup and dependency metadata changes without behavior impact keep `quality_testing_evals` not applicable.
 - Unsupported quality claims are rejected as evidence and routed to `quality-strategy.md`.
 
+### `T9-D5` Codex / Agentic Workflow Integration
+
+Status: `done`
+
+Source audited: `docs/methodologies/codex-agentic-workflow.md`
+
+Deep-audit deltas implemented:
+
+- Represented Codex / Agentic Workflow as durable control-plane and capability governance, not chat memory or broad agent orchestration.
+- Used the full gate set: `agentic_scope_classified`, `source_of_truth_present`, `control_plane_present`, `read_only_discovery_complete`, `approval_boundary_present`, `fresh_context_handoff_present`, `ownership_split_present`, `subagent_parallelism_safe`, `skill_promotion_evidence_present`, `plugin_boundary_present`, `mcp_permission_review_present`, `hook_activation_approval_present`, `automation_manual_stability_present`, `model_reasoning_policy_present`, `memory_policy_present`, `agent_eval_workflow_present` and `agentic_evidence_before_completion`.
+- Added severity policy so control-plane/source-of-truth gaps, side-effecting MCP, hook activation, external writes, production data, overlapping subagent edits, active automation and completion claims without evidence are blocker or high-risk when applicable, while lightweight docs/local work remains warning or not applicable.
+- Added runtime routing shape for Codex App, IDE extension, CLI, `codex exec`, GitHub Action, MCP, Agents SDK and automation, with no default escalation to MCP, Agents SDK or automation.
+- Added lifecycle test policy for skills: trigger tests, negative trigger tests, missing-input behavior, verification-failure behavior and failure-log evidence.
+- Set automation promotion threshold to at least two successful manual runs or an explicit owner-approved accepted gap.
+- Distinguished staged hook templates, read-only validation hooks and blocking/side-effecting hooks; hook activation requires trust review, event/matcher/command, failure behavior, disable path and explicit approval.
+- Required MCP review for new MCP config, changed trust boundary, auth/secrets, remote servers, side-effecting tools, production/customer data or external writes; read-only local docs MCP can be lower severity but still records capability/data boundary.
+- Required worktrees or explicit ownership for parallel subagents when edits can overlap, generated files are shared, migrations/contracts/public APIs/schemas are touched, or merge/rollback risk is high; read-only research can use packets without worktrees.
+- Clarified Codex-native subagents vs Agents SDK: Codex-native subagents are default for Codex App/CLI/IDE engineering delegation; Agents SDK is for code-owned agent apps with application-owned orchestration, tools, guardrails, sessions, tracing and evals.
+- Expanded agent eval workflow with baseline, trace-derived dataset, tool-call correctness, handoff correctness, expected/forbidden behavior, grader or deterministic assertion, threshold, rerun command, regression label, latency/cost and privacy/no-secrets handling.
+
+Implemented scope:
+
+- Added `codex_agentic_workflow` catalog coverage for control plane, source of truth, read-only discovery, approval boundaries, model/reasoning policy, memory policy, handoffs, ownership split, subagent safety, MCP review, hook governance, plugin boundary, skill promotion, automation stability, agent eval workflow, evidence before completion and unsupported-claim rejection.
+- Added read-only audit recommendations with deterministic gate, priority and artifact mapping for missing control plane, missing source of truth, missing read-only discovery, missing approval boundary, subagent/parallel work without ownership, MCP side effects, hook activation, plugin packaging, repeated workflow promotion, automation schedules, model/reasoning policy gaps, memory-as-source-of-truth claims, agent behavior without eval workflow and completion claims without evidence.
+- Added staged artifact templates: `model-reasoning-policy.md`, `mcp-permission-review.md`, `hook-governance.md`, `skill-promotion-record.md` and `agent-eval-workflow.md`.
+- Strengthened generated `AGENTS.md`, `.codex/config.toml`, `PLAN.md`, `TEST.md`, `EVALS.md`, `RUNLOG.md`, `project-readiness.json`, `behavioral-workflows.json`, `agent-task-packet.md`, `worktree-ownership.md`, `automation-candidate.md` and `handoff-contract.md` with Codex workflow gates, runtime routing, approval boundaries and no silent activation.
+- Added Codex workflow discovery signals for `.codex/`, agents, workflows, artifact templates, skills, plugins, subagents, MCP, hooks, automation, task packets, handoff/worktree artifacts, source-of-truth terms, approval-boundary terms and side-effect risks. Detection remains `present_unverified`.
+- Routed Codex / Agentic Workflow into all 11 lifecycle skills while keeping hooks, MCP, automation, external writes and Agents SDK orchestration approval-bound.
+- Added fixture eval check `codex_agentic_workflow_contract_present`; renderer file count is now 102 after adding five Codex workflow artifact templates.
+
+Candidate artifact mapping:
+
+- `context-memory-policy.md` is covered by `AGENTS.md`, `.codex/config.toml`, `model-reasoning-policy.md` and generated `PLAN/EVALS/RUNLOG` memory-policy fields until a later slice proves separate ownership.
+- `agentic-workflow-readiness.md` is covered by `project-readiness.json`, generated `PLAN/TEST/EVALS/RUNLOG` and the `codex_agentic_workflow_contract_present` fixture check.
+- `agent-eval-case.md` is covered by `agent-eval-workflow.md` plus `behavioral-workflows.json`; standalone cases can be added when a real agent app needs separate ownership.
+- `skill-candidate.md` and `skill-failure-log.md` are covered by `skill-promotion-record.md`.
+- `hook-activation-record.md` is covered by `hook-governance.md`.
+- `docs/sources/registry.md` was checked for T9-D5 source impact; no new registry entry was added because this slice operationalizes already checked-in methodology/research files and existing official Codex references rather than introducing new external source-backed platform claims. The existing Track 9 internal source entry was refreshed to mention T9-D5 coverage.
+
+Severity and false-positive resolution:
+
+- Missing control plane, source of truth, approval boundary, side-effecting MCP review, hook activation approval, overlapping subagent ownership, active automation stability and evidence-before-completion are blocker or high-risk when applicable.
+- Skill promotion evidence, plugin boundary, model/reasoning policy, memory policy and agent eval workflow are high-risk or recommended depending on scope and side-effect risk.
+- Simple docs/local work does not force subagents, worktrees, MCP review, hooks, plugin packaging, automation, Agents SDK orchestration or agent eval workflow unless explicit signals, user intent or side-effect boundaries make them applicable.
+- Unsupported agentic workflow claims are rejected as evidence: memory is project source of truth, subagents are automatically faster, MCP tools are safe because they are tools, hooks are harmless convenience scripts, repeated workflows should become automation immediately, Agents SDK and Codex runtime are the same layer, and inspection proves completion.
+
 ## Cross-Domain Synthesis Backlog
 
 | Status | Item | Reason |
@@ -204,6 +250,9 @@ Severity and false-positive resolution:
 | `planned` | Normalize current evidence before completion across all domains. | Completion/readiness claims must stay evidence-bound regardless of which methodology domain owns the slice. |
 | `planned` | Normalize semantic evidence sufficiency review across high-risk domains. | High-risk, production, release, security-sensitive, AI behavior and public-contract slices need explicit owner review that the recorded tests/evals/manual evidence are sufficient for the real project risk, or an accepted gap with owner, reason, review date, downstream risk and follow-up condition. |
 | `planned` | Revisit deferred quality artifacts after stack-specific slices. | Mutation, property-based, flaky ledger, CI quality gates and eval run report may deserve standalone templates only after later domains prove separate ownership. |
+| `planned` | Reuse Codex runtime routing across AI, security and delivery domains. | T9-D5 defines Codex App/CLI/IDE/codex exec/GitHub Action/MCP/Agents SDK/automation boundaries before later domains add model, security and release-specific depth. |
+| `planned` | Normalize capability activation approvals across MCP, hooks, plugins, automations, CI and external systems. | T9-D5 keeps capability activation staged-first and approval-bound; Security and Delivery slices will own least-privilege and release-risk details. |
+| `planned` | Revisit deferred Codex workflow artifacts after AI and Operations slices. | Standalone memory, agent readiness, agent eval case, skill failure log and hook activation records may deserve separate templates only after later slices prove separate ownership. |
 | `planned` | Synthesize final `methodology-applicability.json` contract. | Give lifecycle skills a stable packet for route decisions and staged artifact suggestions. |
 | `planned` | Update operator docs after all domain slices. | Keep the public docs aligned with the implemented domain catalog. |
 
@@ -258,8 +307,22 @@ Domain slices must also run the focused catalog/audit tests, fixture evals and a
 - `python tools\check_docs.py` passed.
 - `git diff --check` exited `0`.
 
+`T9-D5` evidence:
+
+- RED runs failed as expected before implementation on missing `codex_agentic_workflow` gates, audit recommendations, discovery signals, five artifact templates, lifecycle skill routing, behavioral eval coverage and fixture eval check.
+- Focused catalog/audit/discovery suite: `python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_discovery -v` ran 70 tests with `OK`.
+- Focused template/lifecycle/behavioral/automation/runtime suite: `python -m unittest tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_behavioral_workflow_evals tests.product_agent_os.test_automation_policy tests.product_agent_os.test_codex_runtime_runner_contracts -v` ran 105 tests with `OK`.
+- Targeted fixture runner checks passed for expected renderer behavior and CLI JSON exit.
+- `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0`; fixture renderer file count is now 102 and `codex_agentic_workflow_contract_present` is true for `python-app`.
+- `python -m unittest discover -s tests -p "test_*.py" -v` ran 378 tests with `OK`.
+- `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 4 sessions and 0 failures.
+- `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
+- `python tools\check_docs.py` passed.
+- `git diff --check` exited `0`.
+
 ## Residual Risks
 
 - The catalog currently represents foundation behavior and selected generic gates; domain slices can still reveal missing artifacts or conflicts.
 - Read-only audit can classify workspace signals, but owner intent, product risk and regulatory constraints still require human confirmation.
 - Recommendation priority order is deterministic, but real-world severity can change when a project has production traffic, sensitive data or external consumers.
+- Codex workflow gates prove governance shape and approval routing, not that a human owner has approved every model, subagent, MCP, hook, skill, plugin or automation decision for a real project.

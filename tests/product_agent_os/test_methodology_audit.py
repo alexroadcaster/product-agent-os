@@ -456,6 +456,104 @@ class MethodologyAuditContractTest(unittest.TestCase):
         self.assertEqual(recommendation["priority"], "P2_recommended")
         self.assertEqual(recommendation["artifact"], "manual-qa-evidence.md")
 
+    def test_codex_agentic_workflow_recommends_gate_priority_and_artifact_mapping(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "package.json").write_text('{"scripts":{"test":"pytest"}}\n', encoding="utf-8")
+            (root / ".codex" / "agents").mkdir(parents=True)
+            (root / ".codex" / "agents" / "builder.toml").write_text("name = 'builder'\n", encoding="utf-8")
+            (root / ".mcp.json").write_text('{"servers":{"remote":{"command":"npx"}}}\n', encoding="utf-8")
+            (root / "hooks.json").write_text('{"hooks":{"PreToolUse":[]}}\n', encoding="utf-8")
+            (root / ".codex-plugin").mkdir()
+            (root / ".codex-plugin" / "plugin.json").write_text('{"name":"demo"}\n', encoding="utf-8")
+            result = build_methodology_audit(
+                root,
+                intent_hint=(
+                    "Codex App CLI IDE extension subagents parallel worker overlap MCP side-effecting tool "
+                    "remote MCP auth secrets hook activation blocking hook plugin packaging repeated workflow "
+                    "skill promotion automation schedule external write production data model reasoning memory "
+                    "is source of truth Agents SDK app orchestration tool call handoff correctness completion "
+                    "ready inspection proves completion"
+                ),
+            )
+
+        self.assertNotEqual(self._domain_status(result, "codex_agentic_workflow"), "not_applicable")
+        expected = {
+            "agentic_scope_classified": ("P1_high_risk", "PLAN.md"),
+            "control_plane_present": ("P0_blocker", "AGENTS.md"),
+            "source_of_truth_present": ("P0_blocker", "AGENTS.md"),
+            "read_only_discovery_complete": ("P1_high_risk", "RUNLOG.md"),
+            "model_reasoning_policy_present": ("P1_high_risk", "model-reasoning-policy.md"),
+            "fresh_context_handoff_present": ("P1_high_risk", "agent-task-packet.md"),
+            "ownership_split_present": ("P1_high_risk", "worktree-ownership.md"),
+            "subagent_parallelism_safe": ("P1_high_risk", "worktree-ownership.md"),
+            "approval_boundary_present": ("P0_blocker", "approval-record.md"),
+            "mcp_permission_review_present": ("P1_high_risk", "mcp-permission-review.md"),
+            "hook_activation_approval_present": ("P1_high_risk", "hook-governance.md"),
+            "plugin_boundary_present": ("P2_recommended", "plugin-blueprint.md"),
+            "skill_promotion_evidence_present": ("P2_recommended", "skill-promotion-record.md"),
+            "automation_manual_stability_present": ("P1_high_risk", "automation-candidate.md"),
+            "agent_eval_workflow_present": ("P1_high_risk", "agent-eval-workflow.md"),
+            "memory_policy_present": ("P1_high_risk", "AGENTS.md"),
+            "agentic_evidence_before_completion": ("P0_blocker", "RUNLOG.md"),
+            "unsupported_agentic_claims_rejected": ("P1_high_risk", "model-reasoning-policy.md"),
+        }
+        for gate, (priority, artifact) in expected.items():
+            with self.subTest(gate=gate):
+                recommendation = self._recommendation_by_gate(result, gate)
+                self.assertEqual(recommendation["priority"], priority)
+                self.assertEqual(recommendation["artifact"], artifact)
+                self.assertIn("approval", recommendation["approval_boundary"].lower())
+
+    def test_codex_agentic_workflow_false_positive_intents_are_not_applicable(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        for intent in [
+            "typo-only docs edit without Codex workflow change",
+            "single local deterministic command without agent delegation",
+            "read-only research without staged artifacts or external writes",
+        ]:
+            with self.subTest(intent=intent):
+                with tempfile.TemporaryDirectory() as tmp:
+                    root = Path(tmp)
+                    (root / "README.md").write_text("# Demo\n", encoding="utf-8")
+                    result = build_methodology_audit(root, intent_hint=intent)
+
+                self.assertEqual(self._domain_status(result, "codex_agentic_workflow"), "not_applicable")
+                workflow_recommendations = [
+                    item for item in result["recommendations"] if item["domain"] == "codex_agentic_workflow"
+                ]
+                self.assertEqual(workflow_recommendations, [])
+
+    def test_codex_agentic_workflow_rejects_unsupported_claims_as_evidence(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        unsupported_claims = [
+            "memory is project source of truth",
+            "subagents are automatically faster",
+            "MCP tools are safe because they are tools",
+            "hooks are harmless convenience scripts",
+            "repeated workflow should become automation immediately",
+            "Agents SDK and Codex runtime are the same layer",
+            "inspection proves completion",
+        ]
+        for claim in unsupported_claims:
+            with self.subTest(claim=claim):
+                with tempfile.TemporaryDirectory() as tmp:
+                    root = Path(tmp)
+                    (root / ".codex" / "agents").mkdir(parents=True)
+                    (root / ".codex" / "agents" / "builder.toml").write_text(
+                        "name = 'builder'\n",
+                        encoding="utf-8",
+                    )
+                    result = build_methodology_audit(root, intent_hint=claim)
+
+                recommendation = self._recommendation_by_gate(result, "unsupported_agentic_claims_rejected")
+                self.assertEqual(recommendation["priority"], "P1_high_risk")
+                self.assertEqual(recommendation["artifact"], "model-reasoning-policy.md")
+
 
 if __name__ == "__main__":
     unittest.main()

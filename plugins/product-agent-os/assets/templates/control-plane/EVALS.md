@@ -99,6 +99,28 @@ Generated at: {generated_at}
 - Quality artifacts: `quality-strategy.md`, `test-eval-matrix.md`, `ci-evidence-record.md`, `flaky-test-policy.md`, `manual-qa-evidence.md`
 - Coverage is a signal, not proof:
 - Quality status: `present_unverified | explicit_gap_accepted | approval_required`
+- Codex agentic workflow:
+- `codex_agentic_workflow`:
+- Runtime routes: Codex App, CLI, IDE extension, `codex exec`, GitHub Action, MCP, Agents SDK, automation
+- `agentic_scope_classified`:
+- `control_plane_present`:
+- `source_of_truth_present`:
+- `read_only_discovery_complete`:
+- `model_reasoning_policy_present`:
+- `fresh_context_handoff_present`:
+- `ownership_split_present`:
+- `subagent_parallelism_safe`:
+- `approval_boundary_present`:
+- `mcp_permission_review_present`:
+- `hook_activation_approval_present`:
+- `plugin_boundary_present`:
+- `skill_promotion_evidence_present`:
+- `automation_manual_stability_present`:
+- `agent_eval_workflow_present`:
+- `memory_policy_present`:
+- `agentic_evidence_before_completion`:
+- No silent activation:
+- Memory as recall only:
 - AI answer quality:
 - Retrieval quality:
 - Handoff quality:

@@ -68,4 +68,6 @@ Rules:
 - `owned_files`, `forbidden_files`, and expected evidence must be explicit per worker.
 - The handoff output schema must say what the worker returns: files touched, files proposed, commands run, verification evidence, unsupported claims, risks, and stop reason.
 - Use sequential fallback when shared ownership ambiguity, missing handoff schema, cross-agent file ownership, missing expected evidence, or unresolved stop conditions remain.
+- Require worktrees or explicit ownership for shared generated files, contracts, migrations, public APIs, schemas, release files, or rollback-sensitive work.
+- Read-only research can proceed without a worktree when no writes, external actions, MCP activation, hooks, or automation are requested.
 - Do not advance to parallel work when a missing handoff schema or missing expected evidence remains.

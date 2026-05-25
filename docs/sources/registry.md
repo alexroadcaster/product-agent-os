@@ -2641,10 +2641,10 @@ url: "docs/superpowers/specs/2026-05-25-track-9-methodology-intelligence-design.
 type: "internal documentation"
 status: "checked-in project source"
 checked_at: "2026-05-25"
-summary: "Internal Track 9 design, implementation plan, backlog, operator docs and local audit tooling for Product-Agent OS methodology intelligence, including read-only methodology catalog, workspace audit, Delivery Map, prioritized recommendations, owner questions and staged artifact boundary."
-relevance: "Track 9 foundation, methodology audit docs, fixture eval expectations, read-only first guidance and future domain integration queue."
+summary: "Internal Track 9 design, implementation plan, backlog, operator docs and local audit tooling for Product-Agent OS methodology intelligence, including read-only methodology catalog, workspace audit, Delivery Map, prioritized recommendations, owner questions, staged artifact boundary, and domain integration through T9-D5 Codex / Agentic Workflow."
+relevance: "Track 9 foundation, methodology audit docs, fixture eval expectations, read-only first guidance, implemented T9-D1 through T9-D5 methodology gates, and future domain integration queue."
 trust_level: "high"
-verification_status: "Backed by Track 9 focused unit tests, fixture eval integration, product docs contract tests, documentation structure checks and strict MkDocs build in the Track 9 foundation verification loop."
+verification_status: "Backed by Track 9 focused unit tests, fixture eval integration, product docs contract tests, documentation structure checks, strict MkDocs build in the Track 9 foundation verification loop, and current T9-D5 focused/full verification evidence recorded in the Track 9 backlog."
 ```
 
 ```yaml

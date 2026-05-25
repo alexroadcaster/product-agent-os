@@ -297,8 +297,71 @@ def _detect_methodology_signals(files: set[str], profile: dict[str, Any]) -> dic
             for path in lowered
         ),
         "quality_testing_evals": _has_quality_testing_signal(lowered, profile),
+        "codex_agentic_workflow": _has_codex_agentic_workflow_signal(lowered),
         "metrics": _has_any(files, ["metrics", "analytics", "telemetry", "observability"]),
     }
+
+
+def _has_codex_agentic_workflow_signal(lowered_files: set[str]) -> bool:
+    exact_files = {
+        ".mcp.json",
+        "agents.md",
+        "agents.override.md",
+        "automation.toml",
+        "config.toml",
+        "hooks.json",
+        "skill.md",
+        "agent-task-packet.md",
+        "handoff-contract.md",
+        "worktree-ownership.md",
+        "plugin-blueprint.md",
+        "automation-candidate.md",
+        "model-reasoning-policy.md",
+        "mcp-permission-review.md",
+        "hook-governance.md",
+        "skill-promotion-record.md",
+        "agent-eval-workflow.md",
+    }
+    directory_prefixes = (
+        ".agents/",
+        ".codex/",
+        ".codex-plugin/",
+        "docs/artifact-templates/",
+        "docs/insights/",
+        "docs/playbooks/",
+        "docs/product-agent/",
+        "docs/runtime/",
+        "plugins/",
+        "skills/",
+        "subagents/",
+    )
+    terms = (
+        "codex",
+        "subagent",
+        "skill",
+        "mcp",
+        "hook",
+        "plugin",
+        "automation",
+        "approval boundary",
+        "external write",
+        "worktree",
+        "handoff",
+        "task packet",
+    )
+    return any(
+        path in exact_files
+        or path.startswith(directory_prefixes)
+        or path.endswith("/skill.md")
+        or path.endswith("/automation.toml")
+        or path.endswith("/hooks.json")
+        or path.endswith("/config.toml")
+        or path.endswith("/agent-task-packet.md")
+        or path.endswith("/handoff-contract.md")
+        or path.endswith("/worktree-ownership.md")
+        or any(term in path for term in terms)
+        for path in lowered_files
+    )
 
 
 def _has_quality_testing_signal(lowered_files: set[str], profile: dict[str, Any]) -> bool:
@@ -2010,6 +2073,14 @@ def _methodology_applicability(
             ["ADR/C4/arc42/OpenAPI/AsyncAPI/SemVer/CODEOWNERS/GitHub Actions applicability"],
             "architect",
             "standards context does not prove every standard is proportionate",
+        ),
+        "codex_agentic_workflow": _applicability_packet(
+            "present_unverified" if signals.get("codex_agentic_workflow") else "not_applicable",
+            "Codex workflow signal exists" if signals.get("codex_agentic_workflow") else "no Codex workflow signal",
+            _signal_evidence(signals, "codex_agentic_workflow"),
+            ["AGENTS.md, runtime routing, approval boundary, handoff, MCP/hook/automation review"],
+            "product-agent operator",
+            "detection alone does not prove safe activation, owner approval or current verification",
         ),
     }
 

@@ -778,6 +778,55 @@ class LifecycleSkillsTest(unittest.TestCase):
                 for expected in shared_terms:
                     self.assertIn(expected, text)
 
+    def test_lifecycle_skills_route_codex_agentic_workflow_methodology(self):
+        shared_terms = [
+            "codex_agentic_workflow",
+            "model-reasoning-policy.md",
+            "mcp-permission-review.md",
+            "hook-governance.md",
+            "skill-promotion-record.md",
+            "agent-eval-workflow.md",
+            "agentic_scope_classified",
+            "control_plane_present",
+            "source_of_truth_present",
+            "read_only_discovery_complete",
+            "model_reasoning_policy_present",
+            "fresh_context_handoff_present",
+            "ownership_split_present",
+            "subagent_parallelism_safe",
+            "approval_boundary_present",
+            "mcp_permission_review_present",
+            "hook_activation_approval_present",
+            "plugin_boundary_present",
+            "skill_promotion_evidence_present",
+            "automation_manual_stability_present",
+            "agent_eval_workflow_present",
+            "memory_policy_present",
+            "agentic_evidence_before_completion",
+            "memory as recall only",
+            "no silent activation",
+            "approval_required",
+            "present_unverified",
+        ]
+
+        for name in [
+            "project-lifecycle-orchestrator",
+            "workspace-discovery-auditor",
+            "requirements-author",
+            "implementation-planner",
+            "agent-team-designer",
+            "test-eval-designer",
+            "risk-reviewer",
+            "docs-maintainer",
+            "pr-release-operator",
+            "learning-loop-maintainer",
+            "automation-promoter",
+        ]:
+            text = self._skill_text(name).lower()
+            with self.subTest(name=name):
+                for expected in shared_terms:
+                    self.assertIn(expected, text)
+
     def test_risk_reviewer_generalizes_two_stage_review_for_risky_slices(self):
         risk_reviewer = self._skill_text("risk-reviewer").lower()
 

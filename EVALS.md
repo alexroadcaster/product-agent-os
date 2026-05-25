@@ -35,7 +35,7 @@ Generated at: 2026-05-25
 - False-positive scenario fixture coverage: implemented in `T8-GX`.
 - Detailed discovery status depth: implemented in `T8-D`.
 - Track 9 methodology intelligence plan: authored in `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`.
-- Track 9 foundation, `T9-D1` Business/Product, `T9-D2` Requirements/Domain, `T9-D3` Solution Architecture and `T9-D4` Quality/Testing/Evals: implemented.
+- Track 9 foundation, `T9-D1` Business/Product, `T9-D2` Requirements/Domain, `T9-D3` Solution Architecture, `T9-D4` Quality/Testing/Evals and `T9-D5` Codex/Agentic Workflow: implemented.
 
 ## Track 9 Methodology Intelligence Evals
 
@@ -76,6 +76,14 @@ Generated at: 2026-05-25
 - False-positive protection: typo-only docs edits, formatting-only edits, docs-only source cleanup and dependency metadata changes without behavior impact do not force Quality, Testing & Evals methodology.
 - Unsupported claims rejected: more tests always means better quality, 100 percent line coverage proves correctness, E2E tests should dominate because they are most realistic, manual QA is not evidence and AI evals are optional for AI behavior changes.
 - Residual risk: quality artifacts prove current evidence shape and gate routing, not that a human owner has judged every check sufficient for the real project risk.
+
+## Codex Agentic Workflow Evals
+
+- `codex_agentic_workflow_contract_present`: implemented in `T9-D5`.
+- Required evidence: agentic scope, project source of truth, control plane, read-only discovery, approval boundary, fresh-context handoff, ownership split, subagent parallelism safety, skill promotion evidence, plugin boundary, MCP permission review, hook activation approval, automation manual stability, model/reasoning policy, memory policy, agent eval workflow and evidence before completion.
+- False-positive protection: simple docs/local work does not force subagents, worktrees, MCP review, hook governance, plugin packaging, automation, Agents SDK orchestration or agent eval workflow unless signals, intent or side-effect risk make them applicable.
+- Unsupported claims rejected: memory is project source of truth, subagents are automatically faster, MCP tools are safe because they are tools, hooks are harmless convenience scripts, repeated workflows should become automation immediately, Agents SDK and Codex runtime are the same layer, and inspection proves completion.
+- Residual risk: Codex workflow artifacts prove governance shape and approval routing, not that a human owner has approved every model, subagent, MCP, hook, skill, plugin or automation decision for a real project.
 
 ## Completion Evidence Evals
 

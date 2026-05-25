@@ -21,6 +21,7 @@
           "evidence_before_completion",
           "test_eval_first_evidence",
           "quality_testing_evals",
+          "codex_agentic_workflow",
           "docs_as_code_impact",
           "docs_tooling_selector",
           "standards_trigger_policy",
@@ -37,6 +38,7 @@
           "metric_spec",
           "completion_evidence",
           "quality_testing_evals",
+          "codex_agentic_workflow",
           "docs_tooling_decision",
           "governance_proposal",
           "metrics_when_product_behavior_changes"
@@ -118,6 +120,14 @@
             "required_evidence": ["quality-strategy.md", "test-eval-matrix.md", "ci-evidence-record.md", "flaky-test-policy.md", "manual-qa-evidence.md", "TEST.md", "EVALS.md", "RUNLOG.md", "coverage is a signal, not proof"],
             "owner": "test-eval-designer",
             "residual_risk": "Completion, readiness, release or quality claims can be made from stale evidence, coverage-only claims or file detection alone."
+          },
+          "codex_agentic_workflow": {
+            "applies_when": "Product-Agent OS, Codex App, CLI, IDE extension, codex exec, GitHub Action, MCP, Agents SDK, automation, subagent, skill, plugin, hook, external write, approval boundary, memory or handoff work.",
+            "pass_condition": "Set present_verified when codex_agentic_workflow evidence records agentic_scope_classified, control_plane_present, source_of_truth_present, read_only_discovery_complete, model_reasoning_policy_present, fresh_context_handoff_present, ownership_split_present, subagent_parallelism_safe, approval_boundary_present, mcp_permission_review_present, hook_activation_approval_present, plugin_boundary_present, skill_promotion_evidence_present, automation_manual_stability_present, agent_eval_workflow_present, memory_policy_present and agentic_evidence_before_completion; use present_unverified for detected Codex assets until owner-reviewed evidence exists.",
+            "accepted_gap": "Use explicit_gap_accepted only when owner names reason, residual risk, follow-up condition and why no silent activation is still prevented; use approval_required before MCP, hook, automation, external writes, GitHub Action changes, production data or Agents SDK app orchestration.",
+            "required_evidence": ["AGENTS.md", "PLAN.md", "TEST.md", "EVALS.md", "RUNLOG.md", "model-reasoning-policy.md", "mcp-permission-review.md", "hook-governance.md", "skill-promotion-record.md", "agent-eval-workflow.md", "memory as recall only", "no silent activation"],
+            "owner": "product-agent operator",
+            "residual_risk": "Detection alone does not prove safe activation, owner approval, current verification or correct runtime routing."
           },
           "docs_tooling_decision": {
             "applies_when": "New docs system, public docs, generated docs, API/UI/DB/code reference changes, or docs-as-code impact.",

@@ -105,7 +105,8 @@ class FixtureEvalRunnerTest(unittest.TestCase):
         self.assertTrue(results["python-app"]["expected_checks"]["requirements_domain_contract_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["solution_architecture_contract_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["quality_testing_evals_contract_present"])
-        self.assertEqual(results["python-app"]["renderer_file_count"], 97)
+        self.assertTrue(results["python-app"]["expected_checks"]["codex_agentic_workflow_contract_present"])
+        self.assertEqual(results["python-app"]["renderer_file_count"], 102)
         for check_name in [
             "methodology_catalog_contract_present",
             "methodology_intelligence_contract_present",

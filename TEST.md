@@ -6,10 +6,10 @@ Generated at: 2026-05-25
 
 ## Current Baseline
 
-- T9-D4 RED check: focused catalog/audit/discovery/template/lifecycle/behavioral/fixture checks failed as expected before implementation on missing `quality_testing_evals` gates, audit recommendations, quality discovery signals, five quality templates, lifecycle skill routing, behavioral eval coverage and fixture eval check.
-- Combined focused T9-D4 suite: `python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_discovery tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_behavioral_workflow_evals tests.product_agent_os.test_fixture_eval_runner -v` ran 168 tests with `OK`.
-- Fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0`; renderer file count is 97 and `quality_testing_evals_contract_present` is true.
-- Full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 370 tests with `OK`.
+- T9-D5 RED checks: focused catalog/audit/discovery/template/lifecycle/behavioral/fixture checks failed as expected before implementation on missing `codex_agentic_workflow` gates, audit recommendations, discovery signals, five Codex workflow templates, lifecycle skill routing, behavioral eval coverage and fixture eval check.
+- Focused T9-D5 suites: catalog/audit/discovery ran 70 tests with `OK`; template/lifecycle/behavioral/automation/runtime contract checks ran 105 tests with `OK`; targeted fixture runner checks passed.
+- Fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0`; renderer file count is 102 and `codex_agentic_workflow_contract_present` is true.
+- Full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 378 tests with `OK`.
 - Transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 4 sessions and 0 failures.
 - Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
 - Docs check: `python tools\check_docs.py` passed.
@@ -144,6 +144,14 @@ python tools\check_docs.py
 - Confirmed typo-only docs edits, formatting-only edits, docs-only source cleanup and dependency metadata without behavior impact keep Quality, Testing & Evals methodology not applicable.
 - Confirmed unsupported quality claims are rejected as evidence: more tests always means better quality, 100 percent line coverage proves correctness, E2E tests should dominate, manual QA is not evidence and AI evals are optional for AI behavior changes.
 - Confirmed fixture eval exposes `quality_testing_evals_contract_present`.
+
+## Completed Focused Checks For T9-D5
+
+- Added RED then GREEN tests for `codex_agentic_workflow` catalog contract, audit recommendations, discovery signals, staged Codex workflow templates, lifecycle skill wording, behavioral eval coverage and fixture eval coverage.
+- Confirmed missing control plane, missing source of truth, side-effecting MCP without permission review, hook activation without approval, overlapping subagent work, automation without manual stability and completion claims without evidence produce deterministic recommendations.
+- Confirmed simple docs/local work does not force subagents, worktrees, MCP review, hooks, plugin packaging, automation, Agents SDK orchestration or agent evals.
+- Confirmed unsupported agentic workflow claims are rejected as evidence: memory as source of truth, subagents always faster, MCP safe by default, hooks harmless, immediate automation, Agents SDK equals Codex runtime and inspection proves completion.
+- Confirmed fixture eval exposes `codex_agentic_workflow_contract_present`.
 
 ## Evidence Format
 

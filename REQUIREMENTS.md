@@ -11,11 +11,11 @@ Generated at: 2026-05-25
 
 ## Current Slice
 
-- Last completed slice: `T9-D2` Requirements & Domain methodology integration.
+- Last completed slice: `T9-D5` Codex / Agentic Workflow methodology integration.
 - Active planning artifact: `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`.
-- Next slice: `T9-D3` Solution Architecture methodology integration.
+- Next slice: `T9-D6` Frontend methodology integration.
 - Current route: long-running plugin/skill/docs/evals work.
-- Scenario status: Track 9 foundation, Business/Product and Requirements/Domain slices are implemented. Track 9 continues domain-by-domain from `T9-D3`.
+- Scenario status: Track 9 foundation through `T9-D5` are implemented. Track 9 continues domain-by-domain from `T9-D6`.
 
 ## Scope
 
@@ -51,6 +51,9 @@ Generated at: 2026-05-25
 - Track 9 domain slices must record methodology concepts, readiness gates, artifact templates, discovery signals, false-positive risks, lifecycle skill impacts, tests/evals and docs sync before being marked complete.
 - T9-D1 Business/Product is complete with product hypothesis, value proposition, opportunity tree, experiment plan, tracking plan, metric scope, decision horizon and workflow-promotion value evidence.
 - T9-D2 Requirements/Domain is complete with `requirements_domain` catalog data, requirement quality, stable IDs, acceptance scenario quality, business rules, requirements traceability, API/UI/data traceability, domain events, owner review, accepted gaps, change impact and unsupported-claim rejection.
+- T9-D3 Solution Architecture is complete with `solution_architecture` catalog data, context/container boundaries, ownership, public contract trace, data ownership, trust boundary review, ADR/tradeoff, runtime topology, observability, diagram render checks, fitness functions, migration rollback, accepted gaps and unsupported-claim rejection.
+- T9-D4 Quality/Testing/Evals is complete with `quality_testing_evals` catalog data, quality strategy, risk scope, test/eval/runtime/manual/visual evidence, CI gates, flaky policy, coverage policy, test data privacy, bug reproduction, regression impact and evidence before completion.
+- T9-D5 Codex/Agentic Workflow is complete with `codex_agentic_workflow` catalog data, control plane, source of truth, read-only discovery, approval boundaries, model/reasoning policy, memory policy, handoffs, ownership split, subagent safety, MCP review, hook governance, plugin boundary, skill promotion, automation stability and agent eval workflow.
 - `docs-maintainer` is now a packaged lifecycle skill for requirement IDs, source registry, glossary/ubiquitous-language and traceability docs after the requirements packet exists.
 
 ## Assumptions

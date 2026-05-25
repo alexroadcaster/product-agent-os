@@ -47,6 +47,14 @@ Generated at: {generated_at}
 - Record `applicable_missing` when the gate applies but evidence is absent, `not_applicable` only with a reason, and `explicit_gap_accepted` only with owner, reason, residual risk, and follow-up condition.
 - Standards trigger policy (`standards_trigger_policy`) applies ADR trigger policy, C4/arc42, OpenAPI source of truth, AsyncAPI, SemVer impact, Keep a Changelog, CODEOWNERS status, GitHub Actions least privilege, `governance-proposal.md`, no external activation without approval, and no forced external activation only when project context makes them relevant.
 
+## Codex Agentic Workflow
+
+- Codex workflow methodology (`codex_agentic_workflow`) keeps Codex App, CLI, IDE extension, `codex exec`, GitHub Action, MCP, Agents SDK and automation as distinct runtime routes.
+- Classify `agentic_scope_classified`, `control_plane_present`, `source_of_truth_present`, `read_only_discovery_complete`, `model_reasoning_policy_present`, `fresh_context_handoff_present`, `ownership_split_present`, `subagent_parallelism_safe`, `approval_boundary_present`, `mcp_permission_review_present`, `hook_activation_approval_present`, `plugin_boundary_present`, `skill_promotion_evidence_present`, `automation_manual_stability_present`, `agent_eval_workflow_present`, `memory_policy_present`, and `agentic_evidence_before_completion` before broad agentic work.
+- Use memory as recall only; source-of-truth state belongs in `AGENTS.md`, `REQUIREMENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md`, `RUNLOG.md` or reviewed artifacts.
+- No silent activation: MCP, hooks, automation, external writes, GitHub Action changes, plugin packaging and Agents SDK app orchestration require `approval_required` or an explicit owner-approved gap.
+- Use `present_unverified` for detected Codex assets until current evidence exists; use `explicit_gap_accepted` only with owner, reason, residual risk and follow-up.
+
 ## Agent Handoff
 
 - Return sources or context used, assumptions, files touched or proposed, verification evidence, open risks, and recommended next role.

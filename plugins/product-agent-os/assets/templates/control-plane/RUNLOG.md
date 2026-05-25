@@ -145,6 +145,28 @@ Generated at: {generated_at}
 - CODEOWNERS status:
 - GitHub Actions least privilege:
 - No forced external activation:
+- Codex agentic workflow (`codex_agentic_workflow`):
+- Runtime routes: Codex App, CLI, IDE extension, `codex exec`, GitHub Action, MCP, Agents SDK, automation
+- Gate `agentic_scope_classified`:
+- Gate `control_plane_present`:
+- Gate `source_of_truth_present`:
+- Gate `read_only_discovery_complete`:
+- Gate `model_reasoning_policy_present`:
+- Gate `fresh_context_handoff_present`:
+- Gate `ownership_split_present`:
+- Gate `subagent_parallelism_safe`:
+- Gate `approval_boundary_present`:
+- Gate `mcp_permission_review_present`:
+- Gate `hook_activation_approval_present`:
+- Gate `plugin_boundary_present`:
+- Gate `skill_promotion_evidence_present`:
+- Gate `automation_manual_stability_present`:
+- Gate `agent_eval_workflow_present`:
+- Gate `memory_policy_present`:
+- Gate `agentic_evidence_before_completion`:
+- Status: `present_unverified | explicit_gap_accepted | approval_required`
+- No silent activation:
+- Memory as recall only:
 - Review outcome:
 - Post-release measurement plan:
 

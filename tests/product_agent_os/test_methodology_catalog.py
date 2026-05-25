@@ -459,6 +459,111 @@ class MethodologyCatalogContractTest(unittest.TestCase):
         self.assertIn("baseline", quality["maturity_impact"])
         self.assertIn("high_risk", quality["complexity_impact"])
 
+    def test_codex_agentic_workflow_domain_has_track_nine_contract(self):
+        from product_agent_os.methodology_catalog import load_methodology_catalog
+
+        catalog = load_methodology_catalog()
+        domains = {domain["id"]: domain for domain in catalog["domains"]}
+        workflow = domains["codex_agentic_workflow"]
+
+        expected_gates = [
+            "agentic_scope_classified",
+            "control_plane_present",
+            "source_of_truth_present",
+            "read_only_discovery_complete",
+            "model_reasoning_policy_present",
+            "fresh_context_handoff_present",
+            "ownership_split_present",
+            "subagent_parallelism_safe",
+            "approval_boundary_present",
+            "mcp_permission_review_present",
+            "hook_activation_approval_present",
+            "plugin_boundary_present",
+            "skill_promotion_evidence_present",
+            "automation_manual_stability_present",
+            "agent_eval_workflow_present",
+            "memory_policy_present",
+            "agentic_evidence_before_completion",
+            "unsupported_agentic_claims_rejected",
+        ]
+        expected_artifacts = [
+            "AGENTS.md",
+            "REQUIREMENTS.md",
+            "PLAN.md",
+            "TEST.md",
+            "EVALS.md",
+            "RUNLOG.md",
+            "agent-task-packet.md",
+            "handoff-contract.md",
+            "worktree-ownership.md",
+            "approval-record.md",
+            "plugin-blueprint.md",
+            "automation-candidate.md",
+            "model-reasoning-policy.md",
+            "mcp-permission-review.md",
+            "hook-governance.md",
+            "skill-promotion-record.md",
+            "agent-eval-workflow.md",
+        ]
+        expected_eval_fields = [
+            "agentic_scope_classified_contract_present",
+            "control_plane_contract_present",
+            "source_of_truth_contract_present",
+            "read_only_discovery_contract_present",
+            "model_reasoning_policy_contract_present",
+            "fresh_context_handoff_contract_present",
+            "ownership_split_contract_present",
+            "subagent_parallelism_safe_contract_present",
+            "approval_boundary_contract_present",
+            "mcp_permission_review_contract_present",
+            "hook_activation_approval_contract_present",
+            "plugin_boundary_contract_present",
+            "skill_promotion_evidence_contract_present",
+            "automation_manual_stability_contract_present",
+            "agent_eval_workflow_contract_present",
+            "memory_policy_contract_present",
+            "agentic_evidence_before_completion_contract_present",
+            "unsupported_agentic_claims_rejected_contract_present",
+        ]
+
+        for term in [
+            "Product-Agent OS, Codex App, CLI or IDE extension project work",
+            "subagents, skills, MCP, hooks, plugins or automation are configured",
+            "parallel agent work, external writes or approval boundaries exist",
+            "workflow is repeated and may become playbook, skill, plugin or automation",
+            "Agents SDK app orchestration is proposed",
+        ]:
+            with self.subTest(applies_when=term):
+                self.assertIn(term, workflow["applies_when"])
+        for term in [
+            "typo-only docs edit without Codex workflow change",
+            "single local deterministic command without agent delegation",
+            "read-only research without staged artifacts or external writes",
+        ]:
+            with self.subTest(not_applicable_when=term):
+                self.assertIn(term, workflow["not_applicable_when"])
+        for gate in expected_gates:
+            with self.subTest(gate=gate):
+                self.assertIn(gate, workflow["gates"])
+        for artifact in expected_artifacts:
+            with self.subTest(artifact=artifact):
+                self.assertIn(artifact, workflow["artifacts"])
+        for eval_field in expected_eval_fields:
+            with self.subTest(eval_field=eval_field):
+                self.assertIn(eval_field, workflow["eval_fields"])
+        for overlap in [
+            "quality evidence before completion",
+            "delivery and release approval boundaries",
+            "security and privacy trust boundaries",
+            "LLM/AI/RAG tool and eval governance",
+            "plugin and automation promotion",
+            "parallel ownership and worktree safety",
+        ]:
+            with self.subTest(overlap=overlap):
+                self.assertIn(overlap, workflow["overlaps"])
+        self.assertIn("team", workflow["maturity_impact"])
+        self.assertIn("high_risk", workflow["complexity_impact"])
+
 
 if __name__ == "__main__":
     unittest.main()

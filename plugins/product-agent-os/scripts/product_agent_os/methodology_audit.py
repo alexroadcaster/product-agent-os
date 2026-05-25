@@ -236,6 +236,53 @@ UNSUPPORTED_QUALITY_CLAIMS = {
     "manual qa is not evidence",
     "ai evals are optional for ai behavior changes",
 }
+CODEX_AGENTIC_NOT_APPLICABLE_PHRASES = {
+    "typo-only docs edit without codex workflow change",
+    "single local deterministic command without agent delegation",
+    "read-only research without staged artifacts or external writes",
+}
+CODEX_AGENTIC_INTENT_TERMS = {
+    "agent",
+    "agentic",
+    "agents sdk",
+    "automation",
+    "codex",
+    "codex app",
+    "codex exec",
+    "cli",
+    "external write",
+    "handoff",
+    "hook",
+    "ide extension",
+    "mcp",
+    "memory",
+    "plugin",
+    "skill",
+    "subagent",
+    "task packet",
+    "tool call",
+    "worktree",
+}
+CODEX_AGENTIC_HIGH_RISK_TERMS = {
+    "automation schedule",
+    "blocking hook",
+    "external write",
+    "production data",
+    "remote mcp",
+    "side-effecting tool",
+    "secrets",
+    "overlap",
+}
+UNSUPPORTED_AGENTIC_CLAIMS = {
+    "memory is source of truth",
+    "memory is project source of truth",
+    "subagents are automatically faster",
+    "mcp tools are safe because they are tools",
+    "hooks are harmless convenience scripts",
+    "repeated workflow should become automation immediately",
+    "agents sdk and codex runtime are the same layer",
+    "inspection proves completion",
+}
 PUBLIC_CONTRACT_TERMS = {"public api", "public contract", "event contract", "generated client", "sdk"}
 DATA_BOUNDARY_TERMS = {"persistent data", "pii", "retention", "migration", "database", "data ownership"}
 TRUST_BOUNDARY_TERMS = {"trust boundary", "auth", "authorization", "security boundary", "pii", "payment"}
@@ -357,6 +404,7 @@ def _observed_signals(root: Path, files: set[str], directories: set[str]) -> lis
     )
     add("release_file", [path for path in files if path in RELEASE_FILE_MARKERS or path.startswith(".changeset/")])
     add("docs_or_control_plane", [path for path in files if path in DOC_CONTROL_FILES] + ["docs" for item in directories if item == "docs"])
+    add("codex_agentic_workflow", _codex_agentic_signal_evidence(files, directories))
     add(
         "ai_eval_or_rag",
         [
@@ -384,6 +432,64 @@ def _observed_signals(root: Path, files: set[str], directories: set[str]) -> lis
     if _has_package_test_script(root):
         add("test_command", ["package.json"])
     return signals
+
+
+def _codex_agentic_signal_evidence(files: set[str], directories: set[str]) -> list[str]:
+    exact_files = {
+        ".mcp.json",
+        "agents.md",
+        "agents.override.md",
+        "automation.toml",
+        "config.toml",
+        "hooks.json",
+        "skill.md",
+        "agent-task-packet.md",
+        "handoff-contract.md",
+        "worktree-ownership.md",
+        "plugin-blueprint.md",
+        "automation-candidate.md",
+        "model-reasoning-policy.md",
+        "mcp-permission-review.md",
+        "hook-governance.md",
+        "skill-promotion-record.md",
+        "agent-eval-workflow.md",
+    }
+    directory_prefixes = (
+        ".agents/",
+        ".codex/",
+        ".codex-plugin/",
+        "docs/artifact-templates/",
+        "docs/insights/",
+        "docs/playbooks/",
+        "docs/product-agent/",
+        "docs/runtime/",
+        "plugins/",
+        "skills/",
+        "subagents/",
+    )
+    directory_names = {
+        ".agents",
+        ".codex",
+        ".codex-plugin",
+        "plugins",
+        "skills",
+        "subagents",
+    }
+    evidence = [
+        path
+        for path in files
+        if path in exact_files
+        or path.startswith(directory_prefixes)
+        or path.endswith("/skill.md")
+        or path.endswith("/automation.toml")
+        or path.endswith("/hooks.json")
+        or path.endswith("/config.toml")
+        or path.endswith("/agent-task-packet.md")
+        or path.endswith("/handoff-contract.md")
+        or path.endswith("/worktree-ownership.md")
+    ]
+    evidence.extend(directory for directory in directories if directory in directory_names)
+    return evidence
 
 
 def _quality_signal_evidence(files: set[str], directories: set[str]) -> list[str]:
@@ -551,7 +657,7 @@ def _methodology_domains(
             complexity_profile,
         ),
         "quality_testing_evals": _quality_testing_evals_applies(observed, has_files, intent),
-        "codex_agentic_workflow": True,
+        "codex_agentic_workflow": _codex_agentic_workflow_applies(observed, intent),
         "frontend": _has_signal(observed, "stack_manifest") and _mentions_any(intent, UI_INTENT_TERMS) or _mentions_any(intent, UI_INTENT_TERMS),
         "backend": _mentions_any(intent, BACKEND_INTENT_TERMS)
         or _has_any_signal(observed, {"openapi_contract", "asyncapi_contract", "database_migration_or_schema"}),
@@ -651,6 +757,16 @@ def _quality_testing_evals_applies(observed: list[dict[str, Any]], has_files: bo
 
 def _quality_testing_evals_not_applicable(intent: str) -> bool:
     return any(phrase in intent for phrase in QUALITY_NOT_APPLICABLE_PHRASES)
+
+
+def _codex_agentic_workflow_applies(observed: list[dict[str, Any]], intent: str) -> bool:
+    if _codex_agentic_workflow_not_applicable(intent):
+        return False
+    return _has_signal(observed, "codex_agentic_workflow") or _mentions_any(intent, CODEX_AGENTIC_INTENT_TERMS)
+
+
+def _codex_agentic_workflow_not_applicable(intent: str) -> bool:
+    return any(phrase in intent for phrase in CODEX_AGENTIC_NOT_APPLICABLE_PHRASES)
 
 
 def _business_product_recommendations(files: set[str], intent: str) -> list[dict[str, Any]]:
@@ -1646,6 +1762,219 @@ def _quality_testing_evals_recommendations(
     return recommendations
 
 
+def _codex_agentic_workflow_recommendations(
+    files: set[str],
+    observed: list[dict[str, Any]],
+    intent: str,
+) -> list[dict[str, Any]]:
+    if not _codex_agentic_workflow_applies(observed, intent):
+        return []
+
+    recommendations: list[dict[str, Any]] = []
+    high_risk = _mentions_any(intent, CODEX_AGENTIC_HIGH_RISK_TERMS | COMPLETION_CLAIM_TERMS)
+
+    def add(
+        gate: str,
+        priority: str,
+        artifact: str,
+        reason: str,
+        evidence_required: list[str],
+        *,
+        owner: str = "product-agent operator",
+        approval: str = "approval_required before workspace writes, external writes or activation",
+        accepted_gap: str = "explicit_gap_accepted with owner, reason, residual risk and review date",
+        residual: str = "Agentic workflow evidence is missing or unverified.",
+        next_action: str = "Stage the missing Codex workflow artifact before activating capabilities.",
+    ) -> None:
+        recommendations.append(
+            _recommendation(
+                priority=priority,
+                reason=reason,
+                domain="codex_agentic_workflow",
+                gate=gate,
+                artifact=artifact,
+                evidence_required=evidence_required,
+                evidence_owner=owner,
+                approval_boundary=approval,
+                accepted_gap_option=accepted_gap,
+                residual_risk=residual,
+                safe_next_action=next_action,
+            )
+        )
+
+    missing_control_plane = [name for name in CONTROL_PLANE_FILES if name.lower() not in files]
+    if missing_control_plane:
+        add(
+            "control_plane_present",
+            "P0_blocker" if high_risk or _has_signal(observed, "codex_agentic_workflow") else "P2_recommended",
+            "AGENTS.md",
+            "Product-Agent OS control-plane files are missing.",
+            ["AGENTS.md", "REQUIREMENTS.md", "PLAN.md", "TEST.md", "EVALS.md", "RUNLOG.md"],
+            residual="Missing control-plane files can leave requirements, verification and ownership implicit.",
+            next_action="Stage control-plane artifact proposals without mutating existing workspace files.",
+        )
+    if not {"agents.md", "requirements.md", "plan.md"} <= files:
+        add(
+            "source_of_truth_present",
+            "P0_blocker" if high_risk else "P1_high_risk",
+            "AGENTS.md",
+            "Codex workflow source-of-truth boundaries are missing.",
+            ["AGENTS.md rules", "REQUIREMENTS.md scope", "PLAN.md implementation contract"],
+            residual="Memory, chat or generated artifacts can be mistaken for project source of truth.",
+        )
+    if not _artifact_present(files, "PLAN.md"):
+        add(
+            "agentic_scope_classified",
+            "P1_high_risk",
+            "PLAN.md",
+            "Agentic scope and runtime path are not classified.",
+            ["use-case archetype", "runtime route", "owner", "non-goals", "approval boundary"],
+            residual="Agent orchestration can be selected before the smallest useful workflow is known.",
+        )
+    if not _artifact_present(files, "RUNLOG.md"):
+        add(
+            "read_only_discovery_complete",
+            "P1_high_risk",
+            "RUNLOG.md",
+            "Read-only discovery evidence is missing before Codex workflow decisions.",
+            ["files inspected", "signals observed", "assumptions", "unknowns", "safe next action"],
+            residual="Implementation can start from stale or incomplete repository context.",
+        )
+    if _mentions_any(intent, {"model", "reasoning", "agents sdk", "codex app", "cli", "ide extension"}):
+        add(
+            "model_reasoning_policy_present",
+            "P1_high_risk",
+            "model-reasoning-policy.md",
+            "Model and reasoning policy is missing for agentic work.",
+            ["default model", "reasoning effort", "escalation", "downgrade", "cost/latency budget"],
+            residual="Roles can silently overuse or underuse reasoning for risky decisions.",
+        )
+    if _mentions_any(intent, {"subagent", "subagents", "parallel", "handoff"}) and not _artifact_present(
+        files, "agent-task-packet.md"
+    ):
+        add(
+            "fresh_context_handoff_present",
+            "P1_high_risk",
+            "agent-task-packet.md",
+            "Subagent or parallel work lacks a fresh-context task packet.",
+            ["sources/context used", "assumptions", "owned files", "expected evidence", "stop conditions"],
+            residual="Subagents can act on stale context or unclear ownership.",
+        )
+    if _mentions_any(intent, {"subagent", "subagents", "parallel", "overlap"}) and not _artifact_present(
+        files, "worktree-ownership.md"
+    ):
+        add(
+            "ownership_split_present",
+            "P1_high_risk",
+            "worktree-ownership.md",
+            "Parallel or subagent work lacks explicit ownership split.",
+            ["owned files", "forbidden files", "merge order", "rollback owner"],
+            residual="Parallel edits can collide without ownership boundaries.",
+        )
+        add(
+            "subagent_parallelism_safe",
+            "P1_high_risk",
+            "worktree-ownership.md",
+            "Parallel subagent work lacks worktree or sequential fallback policy.",
+            ["worktree requirement", "shared generated files", "contract/migration ownership", "sequential fallback"],
+            residual="Parallel work can overwrite shared artifacts or hide merge risk.",
+        )
+    if high_risk and not _artifact_present(files, "approval-record.md"):
+        add(
+            "approval_boundary_present",
+            "P0_blocker",
+            "approval-record.md",
+            "External write, production, MCP, hook or automation boundary lacks approval evidence.",
+            ["requested action", "permission boundary", "owner", "approval result", "rollback"],
+            residual="A side-effecting workflow can execute without an auditable owner approval.",
+        )
+    if (
+        _has_signal(observed, "codex_agentic_workflow") and any(path.endswith(".mcp.json") for path in files)
+    ) or _mentions_any(intent, {"mcp", "remote mcp", "side-effecting tool"}):
+        add(
+            "mcp_permission_review_present",
+            "P1_high_risk",
+            "mcp-permission-review.md",
+            "MCP capability or trust-boundary review is missing.",
+            ["tools/resources/prompts", "auth/secrets", "data boundary", "side effects", "approval"],
+            residual="MCP tools can cross data or side-effect boundaries without explicit review.",
+        )
+    if any(path.endswith("hooks.json") for path in files) or _mentions_any(intent, {"hook", "blocking hook"}):
+        add(
+            "hook_activation_approval_present",
+            "P1_high_risk",
+            "hook-governance.md",
+            "Hook activation lacks governance and approval evidence.",
+            ["event", "matcher", "command", "trust review", "failure behavior", "disable path"],
+            residual="Hooks can run commands automatically without sufficient review.",
+        )
+    if any(path.startswith(".codex-plugin/") or path.startswith("plugins/") for path in files) or "plugin" in intent:
+        add(
+            "plugin_boundary_present",
+            "P2_recommended",
+            "plugin-blueprint.md",
+            "Plugin packaging boundary is missing or unreviewed.",
+            ["inputs", "outputs", "permissions", "owner", "eval cases", "update loop"],
+            residual="Reusable plugin behavior can ship without clear boundary or maintenance owner.",
+        )
+    if _mentions_any(intent, {"repeated workflow", "skill promotion", "playbook", "skill"}):
+        add(
+            "skill_promotion_evidence_present",
+            "P2_recommended",
+            "skill-promotion-record.md",
+            "Repeated workflow lacks skill promotion evidence.",
+            ["manual success evidence", "trigger tests", "negative trigger tests", "failure log"],
+            residual="A workflow can be promoted before repeatability and failure modes are known.",
+        )
+    if any(path.endswith("automation.toml") for path in files) or _mentions_any(intent, {"automation", "schedule"}):
+        add(
+            "automation_manual_stability_present",
+            "P1_high_risk" if high_risk else "P2_recommended",
+            "automation-candidate.md",
+            "Automation promotion lacks manual stability evidence.",
+            ["two successful manual runs or accepted gap", "owner", "cadence", "verification", "disable path"],
+            residual="A recurring workflow can run before the manual process is stable.",
+        )
+    if _mentions_any(intent, {"agents sdk", "tool call", "handoff correctness", "eval", "evals"}):
+        add(
+            "agent_eval_workflow_present",
+            "P1_high_risk",
+            "agent-eval-workflow.md",
+            "Agent behavior lacks an eval workflow.",
+            ["baseline", "trace-derived dataset", "tool-call correctness", "handoff correctness", "threshold"],
+            residual="Agent behavior can regress without replayable eval evidence.",
+        )
+    if "memory" in intent:
+        add(
+            "memory_policy_present",
+            "P1_high_risk",
+            "AGENTS.md",
+            "Memory policy is missing or confused with source of truth.",
+            ["memory as recall only", "durable source files", "secrets policy", "promotion path"],
+            residual="Memory can be treated as authoritative project state.",
+        )
+    if _mentions_any(intent, COMPLETION_CLAIM_TERMS):
+        add(
+            "agentic_evidence_before_completion",
+            "P0_blocker",
+            "RUNLOG.md",
+            "Completion or readiness claim lacks current agentic workflow evidence.",
+            ["current commands", "current evals", "runtime/manual evidence", "accepted gaps"],
+            residual="Inspection-only review can be mistaken for completed work.",
+        )
+    if any(claim in intent for claim in UNSUPPORTED_AGENTIC_CLAIMS):
+        add(
+            "unsupported_agentic_claims_rejected",
+            "P1_high_risk",
+            "model-reasoning-policy.md",
+            "Unsupported Codex workflow claim was used as evidence.",
+            ["claim", "source status", "verification status", "replacement evidence"],
+            residual="Agentic workflow myths can bypass evidence and approval gates.",
+        )
+
+    return recommendations
+
+
 def _recommendations(
     root: Path,
     files: set[str],
@@ -1659,23 +1988,7 @@ def _recommendations(
     recommendations.extend(_requirements_domain_recommendations(files, intent))
     recommendations.extend(_solution_architecture_recommendations(files, observed, intent, complexity_profile))
     recommendations.extend(_quality_testing_evals_recommendations(root, files, observed, intent, complexity_profile))
-    missing_control_plane = [name for name in CONTROL_PLANE_FILES if name.lower() not in files]
-    if missing_control_plane:
-        recommendations.append(
-            _recommendation(
-                priority="P2_recommended",
-                reason="Product-Agent OS control-plane files are missing.",
-                domain="codex_agentic_workflow",
-                gate="control_plane_present",
-                artifact="AGENTS.md",
-                evidence_required=["AGENTS.md", "REQUIREMENTS.md", "PLAN.md", "TEST.md", "EVALS.md", "RUNLOG.md"],
-                evidence_owner="product-agent operator",
-                approval_boundary="approval_required before writing staged control-plane artifacts into the workspace",
-                accepted_gap_option="explicit_gap_accepted with owner and reason for operating without project control plane",
-                residual_risk="Missing control-plane files can leave requirements, verification and ownership implicit.",
-                safe_next_action="Stage control-plane artifact proposals without mutating existing workspace files.",
-            )
-        )
+    recommendations.extend(_codex_agentic_workflow_recommendations(files, observed, intent))
     if _has_any_signal(observed, {"openapi_contract", "asyncapi_contract", "graphql_schema", "protobuf_schema"}) and not _has_contract_tests(files):
         recommendations.append(
             _recommendation(
@@ -1875,7 +2188,7 @@ def _observed_domain_ids(observed: list[dict[str, Any]]) -> set[str]:
         "ci_configuration": "delivery_release_operations",
         "deployment_configuration": "delivery_release_operations",
         "release_file": "delivery_release_operations",
-        "docs_or_control_plane": "codex_agentic_workflow",
+        "codex_agentic_workflow": "codex_agentic_workflow",
     }
     return {mapping[signal["id"]] for signal in observed if signal["id"] in mapping}
 
