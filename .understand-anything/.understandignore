@@ -31,6 +31,8 @@
 
 # --- Detected directories (uncomment to exclude) ---
 
+site/
+.understand-anything/
 # tests/
 
 # --- Test file patterns (uncomment to exclude) ---

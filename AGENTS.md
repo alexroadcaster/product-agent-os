@@ -42,6 +42,26 @@ This repository is a Russian knowledge base for researching OpenAI Codex, advanc
 - Use eval-driven loops for subjective or long-horizon tasks: baseline, one focused change, rerun eval, inspect artifacts, log result, stop only at threshold.
 - Promote reusable product workflows in this order: official use-case archetype, manual thread, playbook, skill, plugin, automation.
 
+## Windows Codex shell guard
+
+- In Codex App Windows PowerShell sessions, the inherited process environment may contain both `PATH` and `Path`. This breaks PowerShell/.NET environment enumeration and `Start-Process` when redirecting stdout or stderr with `An item with the same key has already been added`.
+- Before running PowerShell commands that use `Get-ChildItem Env:`, `[System.Environment]::GetEnvironmentVariables()`, `Start-Process` with `-RedirectStandardOutput` or `-RedirectStandardError`, long-running background helpers, or dashboard/dev-server launches, normalize `PATH`/`Path` in the same PowerShell invocation.
+- Use this guard as a process-local workaround only. Do not edit Windows registry `Path`, user environment variables, or machine environment variables for this issue unless the user explicitly asks for a system-level change.
+- Minimal pattern:
+
+```powershell
+$pathValue = [System.Environment]::GetEnvironmentVariable('Path', 'Process')
+if ([string]::IsNullOrEmpty($pathValue)) {
+    $pathValue = [System.Environment]::GetEnvironmentVariable('PATH', 'Process')
+}
+if (-not [string]::IsNullOrEmpty($pathValue)) {
+    [System.Environment]::SetEnvironmentVariable('Path', $null, 'Process')
+    [System.Environment]::SetEnvironmentVariable('PATH', $null, 'Process')
+    [System.Environment]::SetEnvironmentVariable('Path', $pathValue, 'Process')
+}
+# command that enumerates env or uses Start-Process redirect follows here
+```
+
 ## Product-Agent OS plugin rules
 
 - Treat `plugins/product-agent-os/` as the implementation package for the local Product-Agent OS plugin.

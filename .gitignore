@@ -17,6 +17,7 @@ build/
 # Local temporary workspaces and OS/editor noise
 .tmp-external/
 tmp/
+.understand-anything/
 *.log
 !plugins/product-agent-os/assets/fixtures/**/*.log
 !product-agent-os/assets/fixtures/**/*.log
