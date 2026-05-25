@@ -74,6 +74,22 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 self.assertIn(path, nav)
                 self.assertIn(path.replace("/", '" / "'), check_docs)
 
+    def test_track9_methodology_intelligence_docs_exist(self):
+        path = PRODUCT_AGENT_OS / "methodology-intelligence.md"
+        self.assertTrue(path.exists(), path)
+
+        text = path.read_text(encoding="utf-8")
+        self.assertIn("Source status:", text)
+        self.assertIn("Inputs", text)
+        self.assertIn("Outputs", text)
+        self.assertIn("Verification", text)
+        self.assertIn("Risks", text)
+
+        nav = MKDOCS.read_text(encoding="utf-8")
+        check_docs = CHECK_DOCS.read_text(encoding="utf-8")
+        self.assertIn("methodology-intelligence.md", nav)
+        self.assertIn('product-agent-os" / "methodology-intelligence.md', check_docs)
+
     def test_t8h_and_t8gy_source_and_backlog_closure_are_documented(self):
         registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
         backlog = TRACK_BACKLOG.read_text(encoding="utf-8")

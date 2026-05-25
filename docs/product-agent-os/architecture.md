@@ -87,6 +87,25 @@ flowchart LR
 | `learning_ready` | `automation-promoter` | `staged_only` |
 | `maintenance` | `project-lifecycle-orchestrator` | `read_only` |
 
+## Track 9 read-only methodology audit
+
+```mermaid
+flowchart LR
+    W["Workspace signals"] --> C["Methodology catalog"]
+    C --> A["Read-only audit"]
+    A --> M["maturity_level"]
+    A --> P["complexity_profile"]
+    A --> R["Prioritized recommendations"]
+    R --> Q["Owner questions"]
+    R --> D["Delivery Map"]
+    D --> S{"Write needed?"}
+    S -->|No| O["Report only"]
+    S -->|Yes| G["staged_only proposal"]
+    G --> X["explicit approval boundary"]
+```
+
+Track 9 adds methodology intelligence before lifecycle mutation. The audit can read the workspace and produce `methodology_applicability`, `methodology-audit-report.md`, Delivery Map priorities and owner questions. It does not write target-project files, enable hooks, activate automations or touch external systems. Any generated artifact after the report remains staged-only until explicit approval.
+
 ## Usage mode coverage
 
 ```mermaid

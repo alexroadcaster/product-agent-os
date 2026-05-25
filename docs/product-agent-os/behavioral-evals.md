@@ -29,6 +29,7 @@ Behavioral evals проверяют не синтаксис Markdown, а пов�
 | --- | --- | --- | --- |
 | Template validation | JSON shape, required fields and no placeholder behavior. | Implemented. | `tests/product_agent_os/test_behavioral_workflow_evals.py`. |
 | Route and fixture eval | Synthetic workspaces return expected `usage_mode`, artifacts and expected checks. | Implemented for current scenarios and T8-GX false-positive fixtures. | `python plugins\product-agent-os\scripts\run_fixture_eval.py`. |
+| Methodology intelligence eval | Read-only methodology audit returns catalog coverage, `maturity_level`, `complexity_profile`, prioritized recommendations and no target-workspace mutation. | Implemented for Track 9 foundation. | `methodology-intelligence-read-only-first` and `methodology_intelligence_contract_present`. |
 | Readiness contract eval | `project-readiness.json` has conditional gates, statuses, evidence owner and residual risk. | Implemented through T8-F. | `conditional_readiness_gates_contract_present`. |
 | Codex compatibility eval | Plugin remains Codex-only and avoids non-Codex adapter requirements. | Implemented. | `python plugins\product-agent-os\scripts\validate_codex_compatibility.py`. |
 | transcript/session eval runner | Replay synthetic or redacted Codex session transcripts for multi-turn shortcut resistance, evidence quality and privacy/no-secrets checks. | Implemented in `T8-GY` as deterministic local replay. | `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json`. |
@@ -47,6 +48,7 @@ Examples:
 - `ai_eval_regression`: baseline and rerun command before prompt/model/retrieval/rubric changes.
 - `release_packaging`: release readiness before publish/tag/upload/package registry mutation.
 - `evidence-before-completion`: ready/completed/fixed/works/release claims need current evidence or explicit inspection-only gap.
+- `methodology-intelligence-read-only-first`: methodology audit must return a Delivery Map, prioritized recommendations and owner questions before any staged proposal.
 - `false-positive fixtures`: backend/native work does not force FSD, simple CRUD `src/domain/*` does not force DDD, docs-light does not force a docs portal, hosted docs and DB introspection stay approval-required.
 
 ## Forbidden Behavior
@@ -61,6 +63,7 @@ Forbidden behavior is the part that catches shortcuts:
 - quality claim for AI/RAG without baseline or rerun;
 - CI health claim from stale logs;
 - release claim without build/test/docs evidence;
+- methodology recommendation that writes target files, enables hooks, creates automation or mutates external systems before approval;
 - source-backed OpenAI/Codex claim without Source status or registry support;
 - external write, remote CI mutation, publish, tag, upload or package-registry action without approval.
 

@@ -90,6 +90,7 @@ nav:
       - Обзор: product-agent-os/index.md
       - Технические особенности и установка: product-agent-os/technical.md
       - Engineering standards layer: product-agent-os/development-standards.md
+      - Methodology intelligence: product-agent-os/methodology-intelligence.md
       - Сценарии и usage modes: product-agent-os/scenarios.md
       - Behavioral evals: product-agent-os/behavioral-evals.md
       - Codex compatibility: product-agent-os/codex-compatibility.md
