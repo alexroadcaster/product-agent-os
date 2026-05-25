@@ -32,7 +32,7 @@ Track 9 turns the methodology atlas in `docs/methodologies/` into read-only Prod
 | `done` | `T9-D5` | `codex-agentic-workflow.md` | Control-plane maturity, model/reasoning policy, handoffs, subagents, MCP, hooks, skills, plugins and automation promotion. |
 | `done` | `T9-D6` | `frontend.md` | UI behavior, component states, Storybook applicability, visual/a11y evidence, responsive checks, performance and FSD boundaries. |
 | `done` | `T9-D7` | `backend.md` | Service boundaries, modular monolith vs microservices, runtime behavior, queues, observability, SLOs and rollback. |
-| `planned` | `T9-D8` | `api-integrations.md` | OpenAPI/AsyncAPI/GraphQL/gRPC contracts, consumers, compatibility, errors, generated clients and external writes. |
+| `done` | `T9-D8` | `api-integrations.md` | OpenAPI/AsyncAPI/GraphQL/gRPC contracts, consumers, compatibility, errors, generated clients and external writes. |
 | `planned` | `T9-D9` | `database-data.md` | Database inventory, schema source, migrations, transactions, data quality, classification and production access. |
 | `planned` | `T9-D10` | `llm-ai-rag.md` | AI behavior spec, eval baseline, prompts, models, tools, RAG sources, grounding, datasets, approvals and cost/latency. |
 | `planned` | `T9-D11` | `security-privacy-compliance.md` | Threat surface, ASVS/SSDF, authorization tests, secrets, privacy impact, supply chain, audit logging and compliance overlays. |
@@ -391,6 +391,55 @@ Batch 5 verification:
 - Focused backend/domain suite: `python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_discovery tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_product_agent_os_docs tests.product_agent_os.test_behavioral_workflow_evals tests.product_agent_os.test_fixture_eval_runner tests.product_agent_os.test_fixtures -v` ran 232 tests with `OK`.
 - Full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 414 tests with `OK`.
 - Fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0` with 42 fixtures, 0 failures, renderer file count 118 and `backend_contract_present: true`.
+- Transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 4 sessions and 0 failures.
+- Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
+- Docs check: `python tools\check_docs.py` passed.
+- Diff hygiene: `git diff --check` exited `0`.
+
+### `T9-D8` API and Integrations Integration
+
+Status: `done`
+
+Source audited: `docs/methodologies/api-integrations.md`
+
+Deep-audit deltas implemented:
+
+- Treat API methodology as a contract-source discipline, not a rendered-docs discipline: OpenAPI/AsyncAPI/GraphQL/protobuf/JSON Schema/Pact sources count as evidence, while Swagger UI is not source of truth.
+- Split schema validation from contract testing: contract-test evidence records provider verification, consumer-driven checks, negative cases, compatibility rules and missing-tool gaps.
+- Add explicit consumer and compatibility gates for public and internal APIs; internal APIs can still have consumers and breaking-change risk.
+- Add security and error depth: contract-linked security schemes, scopes, token claims, object-level authorization, rate limits, abuse cases, sensitive fields, RFC 9457 Problem Details or an explicit error-model compatibility gap.
+- Add event/webhook delivery evidence: schema, headers, signature verification, correlation ID, idempotency key, retry policy, ordering guarantee, replay, dead-letter behavior and CloudEvents applicability or non-applicability.
+- Add generated SDK reproducibility: generator, version, config, target languages, regeneration command, reviewable diff, SemVer impact and release process.
+- Keep API style choices conditional: GraphQL, gRPC, event-driven APIs, Spectral, Redocly and framework-native linting are not universal defaults.
+- Preserve API-only/backend false-positive protection: API-only contract fixtures do not force Backend blockers unless runtime/server/service/worker evidence exists.
+- Keep external writes approval-bound: provider mutation, generated client publication, webhook registration and other external actions require `approval_required`.
+
+Implemented scope:
+
+- Added `api_integrations` catalog coverage with applies/not-applicable rules, maturity/complexity impact, decision horizons, artifacts, gates, eval fields and overlaps.
+- Added read-only API discovery signals for OpenAPI, Swagger source files, AsyncAPI, GraphQL schema, protobuf, JSON Schema, Pact, webhooks/events, generated clients and external providers.
+- Added audit recommendations for `api_contract_source_present`, `api_consumer_map_present`, `api_breaking_change_reviewed`, `api_security_reviewed`, `api_error_contract_present`, `api_contract_test_matrix_present`, `event_delivery_contract_present`, `generated_client_manifest_present`, `external_write_approval_present`, `api_observability_contract_present`, `api_style_choice_recorded` and unsupported API claims.
+- Added staged artifact templates: `api-inventory.md`, `api-error-catalog.md`, `api-auth-authorization-matrix.md`, `api-consumer-map.md`, `api-compatibility-record.md`, `api-contract-test-matrix.md`, `generated-sdk-manifest.md`, `webhook-event-contract.md`, `external-integration-approval.md` and `api-style-guide.md`.
+- Strengthened `api-contract-review.md`, `migration-plan.md`, `integration-catalog.md`, generated control-plane templates, `project-readiness.json`, `behavioral-workflows.json`, lifecycle skills, Product-Agent OS README and operator docs.
+- Added synthetic fixtures for full API contract coverage, external-write approval, Swagger-UI-only false positive and GraphQL/gRPC style choice.
+- Added fixture eval check `api_integrations_contract_present`; renderer file count increased from 118 to 128 after the ten new API templates.
+
+Severity and false-positive resolution:
+
+- Public, breaking, security-sensitive, event/webhook, generated SDK and external-write gaps are high-risk or blocker depth as appropriate.
+- Simple local/internal prototype work can use `not_applicable`, `P2_recommended` or `explicit_gap_accepted` only with owner, reason, review date, downstream consumer risk and follow-up.
+- API-only contract fixtures do not force Backend blockers.
+- Unsupported claims rejected: Swagger UI is source of truth, schema validation is contract testing, OAuth proves API security, GraphQL/gRPC/events are mandatory defaults and internal APIs have no consumers.
+- API lint tooling deferred with owner/reason: Spectral, Redocly, framework-native linting, JSON Schema/protobuf/GraphQL/AsyncAPI compatibility rules, API security profile and stack-specific contract test generators remain candidate choices, not universal Product-Agent OS defaults.
+- multi-repository generated clients deferred until a later slice proves owner, repo boundaries, release process and safe write/approval flow.
+
+Verification:
+
+- RED runs: focused API catalog/audit/discovery/template/lifecycle/fixture/docs tests failed before implementation on missing API catalog gates, recommendations, discovery signals, readiness/control-plane terms, docs sync and fixture eval checks.
+- Focused T9-D8 GREEN runs passed for catalog, audit, discovery, template, lifecycle, fixture and docs contracts before the final verification batch.
+- Focused T9-D8 suite: `python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_discovery tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_product_agent_os_docs tests.product_agent_os.test_behavioral_workflow_evals tests.product_agent_os.test_fixture_eval_runner tests.product_agent_os.test_fixtures -v` ran 242 tests with `OK`.
+- Fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0` with 45 fixtures, 0 failures, renderer file count 128 and `api_integrations_contract_present: true`.
+- Full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 424 tests with `OK`.
 - Transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 4 sessions and 0 failures.
 - Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
 - Docs check: `python tools\check_docs.py` passed.

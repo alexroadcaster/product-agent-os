@@ -160,6 +160,55 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         self.assertIn("stack-specific backend snippets deferred", backlog)
         self.assertIn("cross-domain semantic sufficiency backlog", backlog)
 
+    def test_track9_api_integrations_docs_and_source_registry_are_synced(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK9_BACKLOG.read_text(encoding="utf-8")
+        behavioral_evals = (PRODUCT_AGENT_OS / "behavioral-evals.md").read_text(encoding="utf-8")
+        scenarios = (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8")
+        readme = (ROOT / "plugins" / "product-agent-os" / "README.md").read_text(encoding="utf-8")
+
+        for expected in [
+            "Product-Agent OS Track 9 API & Integrations methodology coverage",
+            "T9-D8",
+            "api_integrations_contract_present",
+            "docs/product-agent-os/behavioral-evals.md",
+            "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
+            "verification_status:",
+        ]:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        for expected in [
+            "api_integrations_contract_present",
+            "API & Integrations eval",
+            "Swagger UI is not source of truth",
+            "external writes are approval_required",
+        ]:
+            with self.subTest(behavioral_evals=expected):
+                self.assertIn(expected, behavioral_evals)
+
+        for expected in [
+            "API & Integrations methodology routing",
+            "api-inventory.md",
+            "api-contract-test-matrix.md",
+            "external-integration-approval.md",
+        ]:
+            with self.subTest(scenarios=expected):
+                self.assertIn(expected, scenarios)
+
+        for expected in [
+            "API & Integrations methodology",
+            "api_integrations_contract_present",
+            "api_contract_source_present",
+            "external_write_approval_present",
+        ]:
+            with self.subTest(readme=expected):
+                self.assertIn(expected, readme)
+
+        self.assertIn("T9-D8", backlog)
+        self.assertIn("API lint tooling", backlog)
+        self.assertIn("multi-repository generated clients deferred", backlog)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -240,6 +240,71 @@ class DiscoveryTest(unittest.TestCase):
         self.assertEqual(signals["verification_status"], "applicable_missing")
         self.assertIn("present_unverified until contract lint", signals["note"])
 
+    def test_api_integration_signals_record_contract_depth_without_execution(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            workspace = Path(tmpdir)
+            self._write_files(
+                workspace,
+                {
+                    "openapi/public.yaml": "openapi: 3.2.0\ninfo:\n  title: API\n  version: 1.0.0\npaths: {}\n",
+                    "asyncapi/events.yaml": "asyncapi: 3.1.0\ninfo:\n  title: Events\n  version: 1.0.0\nchannels: {}\n",
+                    "graphql/schema.graphql": "type Query { order(id: ID!): Order }\n",
+                    "proto/orders.proto": "syntax = 'proto3';\n",
+                    "schemas/order.schema.json": (
+                        '{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object"}\n'
+                    ),
+                    "pacts/order-consumer.json": "{}\n",
+                    "clients/generated/orders/README.md": "# generated client\n",
+                    "webhooks/order-created.md": "# webhook\n",
+                    "integrations/payment-provider.md": "# external provider\n",
+                    "docs/api-compatibility.md": "# compatibility and deprecation\n",
+                    "docs/oauth-scopes.md": "# OAuth scopes token rate limit errors\n",
+                },
+            )
+
+            result = analyze_workspace(workspace)
+
+        signals = result["route_inputs"]["workspace_signals"]["api_integration_signals"]
+        expected_sources = {
+            "contract_sources": "openapi/public.yaml",
+            "event_contract_sources": "asyncapi/events.yaml",
+            "graphql_sources": "graphql/schema.graphql",
+            "protobuf_sources": "proto/orders.proto",
+            "json_schema_sources": "schemas/order.schema.json",
+            "pact_sources": "pacts/order-consumer.json",
+            "generated_client_sources": "clients/generated/orders/README.md",
+            "webhook_event_sources": "webhooks/order-created.md",
+            "external_provider_sources": "integrations/payment-provider.md",
+            "security_auth_sources": "docs/oauth-scopes.md",
+            "compatibility_sources": "docs/api-compatibility.md",
+        }
+        for category, source in expected_sources.items():
+            with self.subTest(category=category):
+                packet = signals[category]
+                self.assertEqual(packet["status"], "present_unverified")
+                self.assertIn(source, packet["sources"])
+        self.assertIn("without executing API tools", signals["note"])
+        self.assertIn("external writes", signals["note"])
+        self.assertIn("approval_required", signals["note"])
+        self.assertIn("api_contract_surface", result["route_inputs"]["workspace_signals"]["active_surfaces"])
+
+    def test_swagger_ui_only_does_not_create_api_contract_surface(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            workspace = Path(tmpdir)
+            self._write_files(
+                workspace,
+                {
+                    "docs/swagger-ui.html": "<html>Swagger UI rendered output</html>\n",
+                    "docs/api/index.html": "<html>Rendered API docs</html>\n",
+                },
+            )
+
+            result = analyze_workspace(workspace)
+
+        self.assertNotIn("api_contract_surface", result["route_inputs"]["workspace_signals"]["active_surfaces"])
+        signals = result["route_inputs"]["workspace_signals"]["api_integration_signals"]
+        self.assertEqual(signals["contract_sources"]["status"], "applicable_missing")
+
     def test_ai_eval_repo_routes_regression_with_unverified_eval_signals(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             workspace = Path(tmpdir)

@@ -19,7 +19,7 @@ class BehavioralWorkflowEvalTest(unittest.TestCase):
         report = validate_behavioral_eval_template(path)
 
         self.assertEqual(report["status"], "ok")
-        self.assertEqual(report["case_count"], 39)
+        self.assertEqual(report["case_count"], 40)
         self.assertEqual(report["missing_required_cases"], [])
         self.assertEqual(report["unsafe_cases"], [])
         self.assertTrue(report["codex_only"])

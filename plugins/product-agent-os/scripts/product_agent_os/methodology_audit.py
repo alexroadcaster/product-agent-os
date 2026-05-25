@@ -30,6 +30,7 @@ STACK_MARKERS = {
 }
 
 OPENAPI_MARKERS = {"openapi.yaml", "openapi.yml", "openapi.json"}
+SWAGGER_CONTRACT_MARKERS = {"swagger.yaml", "swagger.yml", "swagger.json"}
 ASYNCAPI_MARKERS = {"asyncapi.yaml", "asyncapi.yml", "asyncapi.json"}
 DOC_CONTROL_FILES = {"readme.md", "agents.md", "requirements.md", "plan.md", "test.md", "evals.md", "runlog.md"}
 DEPLOY_MARKERS = {"dockerfile", "docker-compose.yml", "serverless.yml"}
@@ -165,6 +166,107 @@ UNSUPPORTED_BACKEND_CLAIMS = {
     "slos are only for large companies",
 }
 API_INTENT_TERMS = {"api", "webhook", "integration", "external", "graphql", "grpc", "protobuf"}
+API_CONTRACT_SIGNAL_IDS = {
+    "openapi_contract",
+    "asyncapi_contract",
+    "graphql_schema",
+    "protobuf_schema",
+    "json_schema_contract",
+    "pact_contract",
+}
+API_NOT_APPLICABLE_PHRASES = {
+    "typo-only docs edit",
+    "formatting-only",
+    "dependency metadata without api behavior impact",
+    "swagger ui only",
+    "rendered swagger ui docs cleanup",
+}
+API_CONSUMER_TERMS = {
+    "consumer",
+    "consumers",
+    "client",
+    "clients",
+    "mobile",
+    "multi-team",
+    "partner",
+    "public",
+    "sdk",
+}
+API_BREAKING_TERMS = {
+    "breaking",
+    "contract drift",
+    "deprecation",
+    "deprecated",
+    "migration",
+    "potentially breaking",
+    "removed",
+    "sunset",
+}
+API_SECURITY_TERMS = {
+    "abuse",
+    "auth",
+    "authorization",
+    "graphql auth",
+    "oauth",
+    "object-level",
+    "rate limit",
+    "scopes",
+    "security",
+    "sensitive",
+    "token",
+}
+API_ERROR_TERMS = {
+    "auth failure",
+    "domain failure",
+    "error",
+    "failure",
+    "problem details",
+    "rfc 9457",
+    "validation failure",
+}
+API_EVENT_TERMS = {
+    "asyncapi",
+    "cloudevents",
+    "dead-letter",
+    "event",
+    "events",
+    "idempotency",
+    "queue",
+    "replay",
+    "signature",
+    "stream",
+    "webhook",
+}
+API_SDK_TERMS = {"generated", "generator", "sdk", "client", "clients", "target languages"}
+API_EXTERNAL_WRITE_TERMS = {"external write", "external mutation", "mutate external", "write to external"}
+API_OBSERVABILITY_TERMS = {
+    "alert",
+    "correlation",
+    "error counters",
+    "latency",
+    "metrics",
+    "observability",
+    "rate-limit metrics",
+    "request id",
+}
+API_STYLE_TOOL_TERMS = {
+    "event-driven",
+    "framework-native",
+    "graphql",
+    "grpc",
+    "redocly",
+    "spectral",
+    "style guide",
+    "universal default",
+}
+UNSUPPORTED_API_CLAIMS = {
+    "rendered api docs are enough",
+    "schema validation is the same as contract testing",
+    "graphql is always more modern",
+    "graphql/grpc/event-driven is always more modern",
+    "oauth exists, so api security is handled",
+    "oauth-only claim",
+}
 AI_INTENT_TERMS = {"prompt", "model", "eval", "rag", "vector", "embedding", "ai", "llm"}
 DELIVERY_INTENT_TERMS = {"production", "release", "deploy", "package", "docker", "kubernetes", "operations"}
 ARCHITECTURE_INTENT_TERMS = {
@@ -527,8 +629,13 @@ def _observed_signals(root: Path, files: set[str], directories: set[str]) -> lis
     add("stack_manifest", [path for path in files if path in STACK_MARKERS])
     add("openapi_contract", [path for path in files if _is_openapi(path)])
     add("asyncapi_contract", [path for path in files if _is_asyncapi(path)])
-    add("graphql_schema", [path for path in files if path.endswith("schema.graphql")])
+    add("graphql_schema", [path for path in files if _is_graphql_schema(path)])
     add("protobuf_schema", [path for path in files if path.endswith(".proto")])
+    add("json_schema_contract", [path for path in files if _is_json_schema_contract(path)])
+    add("pact_contract", [path for path in files if _is_pact_contract(path)] + [directory for directory in directories if directory in {"pact", "pacts", "contract-tests", "consumer-contracts"}])
+    add("api_generated_client", [path for path in files if _is_api_generated_client(path)])
+    add("api_webhook_event", [path for path in files if _is_api_webhook_event(path)] + [directory for directory in directories if directory in {"webhooks", "events"}])
+    add("api_external_provider", [path for path in files if _is_api_external_provider(path)] + [directory for directory in directories if directory in {"integrations", "providers"}])
     add(
         "database_migration_or_schema",
         [path for path in files if path in {"alembic.ini", "dbt_project.yml"}]
@@ -707,9 +814,6 @@ def _backend_signal_evidence(files: set[str], directories: set[str]) -> list[str
         for path in files
         if path in exact_files
         or path.startswith(directory_prefixes)
-        or path in OPENAPI_MARKERS
-        or path in ASYNCAPI_MARKERS
-        or path.endswith((".proto", "/openapi.yaml", "/openapi.yml", "/openapi.json", "/asyncapi.yaml", "/asyncapi.yml"))
         or any(fragment in path for fragment in file_fragments)
     ]
     evidence.extend(
@@ -916,7 +1020,7 @@ def _classify_complexity(
             "confidence": "medium",
             "reasons": ["high-risk or regulated intent term detected"],
         }
-    has_api = _has_any_signal(observed, {"openapi_contract", "asyncapi_contract", "graphql_schema", "protobuf_schema"})
+    has_api = _has_any_signal(observed, API_CONTRACT_SIGNAL_IDS | {"api_generated_client", "api_webhook_event"})
     has_database = _has_signal(observed, "database_migration_or_schema")
     has_ci = _has_signal(observed, "ci_configuration")
     if has_api and (has_database or has_ci):
@@ -959,8 +1063,7 @@ def _methodology_domains(
         "codex_agentic_workflow": _codex_agentic_workflow_applies(observed, intent),
         "frontend": _frontend_applies(observed, intent),
         "backend": _backend_applies(observed, intent),
-        "api_integrations": _mentions_any(intent, API_INTENT_TERMS)
-        or _has_any_signal(observed, {"openapi_contract", "asyncapi_contract", "graphql_schema", "protobuf_schema"}),
+        "api_integrations": _api_integrations_applies(observed, intent),
         "database_data": _has_signal(observed, "database_migration_or_schema") or "production data" in intent,
         "llm_ai_rag": _mentions_any(intent, AI_INTENT_TERMS) or _has_signal(observed, "ai_eval_or_rag"),
         "security_privacy_compliance": complexity_profile == "high_risk"
@@ -1082,14 +1185,40 @@ def _backend_applies(observed: list[dict[str, Any]], intent: str) -> bool:
         return False
     return (
         _has_signal(observed, "backend")
-        or _has_any_signal(observed, {"openapi_contract", "asyncapi_contract", "database_migration_or_schema"})
-        or _mentions_any(intent, BACKEND_INTENT_TERMS | BACKEND_RUNTIME_TERMS | BACKEND_CONTRACT_TERMS)
+        or _mentions_any(intent, (BACKEND_INTENT_TERMS - {"api"}) | BACKEND_RUNTIME_TERMS)
         or _mentions_any(intent, UNSUPPORTED_BACKEND_CLAIMS)
     )
 
 
 def _backend_not_applicable(intent: str) -> bool:
     return any(phrase in intent for phrase in BACKEND_NOT_APPLICABLE_PHRASES)
+
+
+def _api_integrations_applies(observed: list[dict[str, Any]], intent: str) -> bool:
+    if _api_integrations_not_applicable(intent) and not _has_any_signal(observed, API_CONTRACT_SIGNAL_IDS):
+        return False
+    return (
+        _has_any_signal(observed, API_CONTRACT_SIGNAL_IDS | {"api_generated_client", "api_webhook_event", "api_external_provider"})
+        or _mentions_any(intent, API_INTENT_TERMS | API_CONSUMER_TERMS | API_SECURITY_TERMS | API_EVENT_TERMS | API_SDK_TERMS)
+        or _mentions_any(intent, UNSUPPORTED_API_CLAIMS)
+    )
+
+
+def _api_integrations_not_applicable(intent: str) -> bool:
+    return any(phrase in intent for phrase in API_NOT_APPLICABLE_PHRASES)
+
+
+def _api_has_complete_accepted_gap(intent: str) -> bool:
+    gap_marker = "explicit_gap_accepted" in intent or "accepted gap" in intent
+    required_terms = ("owner", "reason", "review date")
+    risk_terms = ("downstream risk", "residual risk")
+    follow_up_terms = ("follow-up", "follow up", "followup")
+    return (
+        gap_marker
+        and all(term in intent for term in required_terms)
+        and any(term in intent for term in risk_terms)
+        and any(term in intent for term in follow_up_terms)
+    )
 
 
 def _backend_severity_mode(intent: str) -> str:
@@ -2881,6 +3010,259 @@ def _backend_recommendations(
     return recommendations
 
 
+def _api_integrations_recommendations(
+    files: set[str],
+    observed: list[dict[str, Any]],
+    intent: str,
+) -> list[dict[str, Any]]:
+    if not _api_integrations_applies(observed, intent):
+        return []
+
+    recommendations: list[dict[str, Any]] = []
+    accepted_gap = _api_has_complete_accepted_gap(intent)
+    has_contract_signal = _has_any_signal(observed, API_CONTRACT_SIGNAL_IDS)
+
+    def priority(default: str = "P1_high_risk") -> str:
+        return "P2_recommended" if accepted_gap else default
+
+    def add(
+        gate: str,
+        artifact: str,
+        reason: str,
+        evidence: list[str],
+        *,
+        default_priority: str = "P1_high_risk",
+        approval: str = "approval_required before external API writes, generated client publication or breaking contract release",
+        residual: str = "API artifact presence does not prove consumers, security or compatibility are safe.",
+        action: str = "Stage API artifact evidence before implementation or release.",
+    ) -> None:
+        recommendations.append(
+            _recommendation(
+                priority=priority(default_priority),
+                reason=f"Accepted gap downgrade: {reason}" if accepted_gap else reason,
+                domain="api_integrations",
+                gate=gate,
+                artifact=artifact,
+                evidence_required=evidence,
+                evidence_owner="API owner",
+                approval_boundary=approval,
+                accepted_gap_option="explicit_gap_accepted with owner, reason, review date, downstream risk and follow-up condition",
+                residual_risk=residual,
+                safe_next_action=action,
+            )
+        )
+
+    add(
+        "api_contract_source_present",
+        "api-contract-review.md",
+        "API or integration work needs a contract source of truth before code or release claims.",
+        [
+            "OpenAPI, AsyncAPI, GraphQL schema, .proto, JSON Schema dialect or Pact source of truth",
+            "contract source owner and status",
+            "contract drift between source, code and generated docs",
+            "lifecycle state: draft, experimental, stable, deprecated, removed",
+            "Swagger UI/rendered docs are not source of truth",
+            "explicit gap with owner/reason/review date/downstream risk/follow-up",
+        ],
+    )
+    if _mentions_any(intent, API_CONSUMER_TERMS) or _has_signal(observed, "api_generated_client") or has_contract_signal:
+        add(
+            "api_consumer_map_present",
+            "api-consumer-map.md",
+            "API consumers, owners and generated clients are unknown or unreviewed.",
+            [
+                "consumer map",
+                "provider",
+                "human/system consumers",
+                "owners",
+                "generated clients",
+                "approval path",
+                "internal APIs still have consumers",
+            ],
+        )
+    if _mentions_any(intent, API_BREAKING_TERMS) or accepted_gap:
+        add(
+            "api_breaking_change_reviewed",
+            "api-compatibility-record.md",
+            "Breaking or potentially breaking API change lacks compatibility review.",
+            [
+                "additive, behavior-compatible, potentially breaking or breaking classification",
+                "migration plan",
+                "deprecation window",
+                "owner approval",
+                "release/rollback impact",
+                "contract drift blocks completion claims",
+            ],
+        )
+    if _mentions_any(intent, API_SECURITY_TERMS) or _has_signal(observed, "api_external_provider") or accepted_gap:
+        add(
+            "api_security_reviewed",
+            "api-auth-authorization-matrix.md",
+            "API auth, authorization or sensitive field change lacks contract-linked security evidence.",
+            [
+                "OpenAPI security schemes",
+                "GraphQL auth or equivalent scheme evidence",
+                "scopes",
+                "token claims",
+                "object-level authorization",
+                "rate limits",
+                "sensitive fields",
+                "abuse cases",
+                "prose-only security notes are unsupported",
+            ],
+        )
+    if _mentions_any(intent, API_ERROR_TERMS) or has_contract_signal:
+        add(
+            "api_error_contract_present",
+            "api-error-catalog.md",
+            "HTTP/API behavior lacks stable success and error examples.",
+            [
+                "success example",
+                "validation failure example",
+                "auth failure example",
+                "important domain failure example",
+                "RFC 9457 Problem Details or compatibility reason",
+                "status codes",
+                "error types",
+                "extensions",
+            ],
+        )
+    if has_contract_signal and not _has_contract_tests(files):
+        add(
+            "api_contract_test_matrix_present",
+            "api-contract-test-matrix.md",
+            "API contract sources exist without consumer/provider contract verification evidence.",
+            [
+                "schema validation",
+                "provider verification",
+                "consumer-driven tests",
+                "Pact where consumer expectations matter",
+                "negative auth/error cases",
+                "contract verification command or missing-tool gap",
+                "schema validation is not contract testing",
+            ],
+        )
+    if _mentions_any(intent, API_EVENT_TERMS) or _has_any_signal(observed, {"asyncapi_contract", "api_webhook_event"}):
+        add(
+            "event_delivery_contract_present",
+            "webhook-event-contract.md",
+            "Webhook/event change lacks delivery semantics.",
+            [
+                "schema",
+                "headers",
+                "signature verification",
+                "correlation ID",
+                "idempotency key",
+                "retry policy",
+                "ordering guarantee",
+                "replay",
+                "dead-letter behavior",
+                "CloudEvents applicability or explicit non-applicability",
+            ],
+        )
+    if _mentions_any(intent, API_SDK_TERMS) or _has_signal(observed, "api_generated_client"):
+        add(
+            "generated_client_manifest_present",
+            "generated-sdk-manifest.md",
+            "Generated SDK or client impact lacks reproducible generation evidence.",
+            [
+                "generator",
+                "version",
+                "config",
+                "target languages",
+                "owner",
+                "regeneration command",
+                "reviewable diff",
+                "SemVer impact",
+                "release process",
+                "multi-repository generated clients deferred with owner/reason",
+            ],
+        )
+    if _mentions_any(intent, API_EXTERNAL_WRITE_TERMS) or any(
+        "write" in path and ("integration" in path or "provider" in path or "external" in path)
+        for path in files
+    ):
+        recommendations.append(
+            _recommendation(
+                priority="P0_blocker",
+                reason="External system write or mutation lacks staged approval evidence.",
+                domain="api_integrations",
+                gate="external_write_approval_present",
+                artifact="external-integration-approval.md",
+                evidence_required=[
+                    "external system",
+                    "read/write capability",
+                    "sandbox or draft path",
+                    "owner approval",
+                    "rollback path",
+                    "no secrets or private customer data",
+                ],
+                evidence_owner="API owner and external system owner",
+                approval_boundary="approval_required before any external write, provider mutation or generated client publication",
+                accepted_gap_option="external writes cannot be downgraded without explicit owner approval record",
+                residual_risk="An agent can mutate external provider state or customer-visible integrations without audit trail.",
+                safe_next_action="Stage external-integration-approval.md and stop before external mutation.",
+            )
+        )
+    if _mentions_any(intent, API_OBSERVABILITY_TERMS) or has_contract_signal:
+        add(
+            "api_observability_contract_present",
+            "integration-catalog.md",
+            "API/integration observability and alert evidence is missing.",
+            [
+                "request IDs",
+                "correlation IDs",
+                "error counters",
+                "latency",
+                "rate-limit metrics",
+                "integration failure alerts",
+                "not_applicable or accepted gap with owner/reason",
+            ],
+        )
+    if _mentions_any(intent, API_STYLE_TOOL_TERMS) or _has_any_signal(observed, {"graphql_schema", "protobuf_schema"}):
+        add(
+            "api_style_choice_recorded",
+            "api-style-guide.md",
+            "API style or tooling was proposed without project-specific selection evidence.",
+            [
+                "no universal default",
+                "GraphQL",
+                "gRPC",
+                "event-driven",
+                "Spectral",
+                "Redocly",
+                "framework-native",
+                "API lint tooling deferred with owner/reason",
+                "compatibility rule deferrals for JSON Schema, protobuf, GraphQL and AsyncAPI",
+            ],
+            default_priority="P2_recommended",
+        )
+    if _mentions_any(intent, UNSUPPORTED_API_CLAIMS):
+        recommendations.append(
+            _recommendation(
+                priority="P1_high_risk",
+                reason="Unsupported API methodology claim was used as evidence.",
+                domain="api_integrations",
+                gate="api_unsupported_claims_rejected",
+                artifact="api-contract-review.md",
+                evidence_required=[
+                    "unsupported claim",
+                    "source status",
+                    "verification status",
+                    "replacement API evidence",
+                    "rendered docs, schema validation, OAuth-only and universal GraphQL/gRPC/event claims rejected",
+                ],
+                evidence_owner="API owner",
+                approval_boundary="approval_required before relying on unsupported API/security/compatibility claims",
+                accepted_gap_option="explicit_gap_accepted with owner, reason, residual risk and review date",
+                residual_risk="Unsupported API claims can bypass contract, consumer, security and compatibility review.",
+                safe_next_action="Record unsupported claim and replace it with source-backed API evidence or accepted gap.",
+            )
+        )
+
+    return recommendations
+
+
 def _recommendations(
     root: Path,
     files: set[str],
@@ -2897,22 +3279,7 @@ def _recommendations(
     recommendations.extend(_codex_agentic_workflow_recommendations(files, observed, intent))
     recommendations.extend(_frontend_recommendations(files, observed, intent))
     recommendations.extend(_backend_recommendations(files, observed, intent))
-    if _has_any_signal(observed, {"openapi_contract", "asyncapi_contract", "graphql_schema", "protobuf_schema"}) and not _has_contract_tests(files):
-        recommendations.append(
-            _recommendation(
-                priority="P1_high_risk",
-                reason="API contract signals exist without contract test evidence.",
-                domain="api_integrations",
-                gate="api_contract_source_present",
-                artifact="api-contract-review.md",
-                evidence_required=["contract source", "consumer impact", "contract test command", "compatibility notes"],
-                evidence_owner="API owner",
-                approval_boundary="approval_required before external API writes or breaking contract changes",
-                accepted_gap_option="explicit_gap_accepted with owner, reason, residual risk and review date",
-                residual_risk="A contract file does not prove consumers remain compatible.",
-                safe_next_action="Stage an API contract review before changing implementation or release behavior.",
-            )
-        )
+    recommendations.extend(_api_integrations_recommendations(files, observed, intent))
     if _has_signal(observed, "database_migration_or_schema"):
         recommendations.append(
             _recommendation(
@@ -3017,7 +3384,7 @@ def _delivery_map(
     return {
         "surface_map": {
             "ui": _has_any_signal(observed, {"stack_manifest"}) and bool(files & {"package.json"}),
-            "api": _has_any_signal(observed, {"openapi_contract", "asyncapi_contract", "graphql_schema", "protobuf_schema"}),
+            "api": _has_any_signal(observed, API_CONTRACT_SIGNAL_IDS | {"api_generated_client", "api_webhook_event", "api_external_provider"}),
             "data": _has_signal(observed, "database_migration_or_schema"),
             "ai": _has_signal(observed, "ai_eval_or_rag"),
             "delivery": _has_any_signal(observed, {"ci_configuration", "deployment_configuration"}),
@@ -3091,6 +3458,11 @@ def _observed_domain_ids(observed: list[dict[str, Any]]) -> set[str]:
         "asyncapi_contract": "api_integrations",
         "graphql_schema": "api_integrations",
         "protobuf_schema": "api_integrations",
+        "json_schema_contract": "api_integrations",
+        "pact_contract": "api_integrations",
+        "api_generated_client": "api_integrations",
+        "api_webhook_event": "api_integrations",
+        "api_external_provider": "api_integrations",
         "database_migration_or_schema": "database_data",
         "ai_eval_or_rag": "llm_ai_rag",
         "ci_configuration": "delivery_release_operations",
@@ -3150,8 +3522,52 @@ def _mentions_any(text: str, terms: set[str]) -> bool:
 
 
 def _is_openapi(path: str) -> bool:
-    return path in OPENAPI_MARKERS or path.startswith("openapi/") or path.endswith(("/openapi.yaml", "/openapi.yml", "/openapi.json"))
+    return (
+        path in OPENAPI_MARKERS
+        or path in SWAGGER_CONTRACT_MARKERS
+        or path.startswith("openapi/")
+        or path.endswith(("/openapi.yaml", "/openapi.yml", "/openapi.json", "/swagger.yaml", "/swagger.yml", "/swagger.json"))
+    )
 
 
 def _is_asyncapi(path: str) -> bool:
     return path in ASYNCAPI_MARKERS or path.startswith("asyncapi/") or path.endswith(("/asyncapi.yaml", "/asyncapi.yml", "/asyncapi.json"))
+
+
+def _is_graphql_schema(path: str) -> bool:
+    lowered = path.lower()
+    return lowered.endswith(".graphql") or lowered.endswith(".graphqls")
+
+
+def _is_json_schema_contract(path: str) -> bool:
+    lowered = path.lower()
+    return (
+        lowered.endswith(".schema.json")
+        or lowered.startswith(("schemas/", "schema/"))
+        and lowered.endswith(".json")
+        or "json-schema" in lowered
+    )
+
+
+def _is_pact_contract(path: str) -> bool:
+    lowered = path.lower()
+    return (
+        lowered.startswith(("pact/", "pacts/", "contract-tests/", "consumer-contracts/"))
+        or "pact" in lowered
+        and lowered.endswith(".json")
+    )
+
+
+def _is_api_generated_client(path: str) -> bool:
+    lowered = path.lower()
+    return "generated" in lowered and any(term in lowered for term in ("client", "clients", "sdk")) or lowered.startswith(("clients/", "sdk/"))
+
+
+def _is_api_webhook_event(path: str) -> bool:
+    lowered = path.lower()
+    return lowered.startswith(("webhooks/", "events/")) or any(term in lowered for term in ("webhook", "event-contract", "cloudevents"))
+
+
+def _is_api_external_provider(path: str) -> bool:
+    lowered = path.lower()
+    return lowered.startswith(("integrations/", "providers/")) or any(term in lowered for term in ("external-provider", "provider-client", "payment-provider"))

@@ -104,6 +104,12 @@ Generated at: {generated_at}
 - Runtime/failure evidence, dependency failure matrix, observability/SLO/health evidence, job/queue contract, data consistency strategy, security review and rollback/replay evidence:
 - Unsupported backend shortcuts rejected: package docs do not prove backend runtime safety, logs-only observability, health-endpoint-only readiness, retries prove reliability, and microservices by default.
 - Backend accepted gap: use `explicit_gap_accepted` only with owner, reason, review date, downstream risk and follow-up condition; use `approval_required` before production data, external writes, secrets, deploy actions or irreversible side effects.
+- API & Integrations methodology (`api_integrations`):
+- API artifacts: `api-inventory.md`, `api-contract-review.md`, `api-consumer-map.md`, `api-compatibility-record.md`, `api-contract-test-matrix.md`, `api-error-catalog.md`, `api-auth-authorization-matrix.md`, `generated-sdk-manifest.md`, `webhook-event-contract.md`, `external-integration-approval.md`, `api-style-guide.md`
+- API gates: `api_contract_source_present`, `api_consumer_map_present`, `api_breaking_change_reviewed`, `api_security_reviewed`, `api_error_contract_present`, `api_contract_test_matrix_present`, `event_delivery_contract_present`, `generated_client_manifest_present`, `external_write_approval_present`, `api_observability_contract_present`, `api_style_choice_recorded`, `api_unsupported_claims_rejected`
+- Contract source, consumers, compatibility, security schemes, error examples, event delivery, generated SDK manifest, request ID, correlation ID and external-write approval evidence:
+- Unsupported API shortcuts rejected: Swagger UI is not source of truth, schema validation alone is not contract testing, OAuth alone is not complete security evidence, GraphQL/gRPC/events are not universal defaults.
+- API accepted gap: use `explicit_gap_accepted` only with owner, reason, review date, downstream consumer risk and follow-up condition; external writes are `approval_required`.
 - Ubiquitous language traceability (`ubiquitous_language_traceability`):
 - Term-to-requirement trace:
 - API/event/contract:

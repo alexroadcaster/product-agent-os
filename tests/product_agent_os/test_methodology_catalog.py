@@ -760,6 +760,102 @@ class MethodologyCatalogContractTest(unittest.TestCase):
         self.assertIn("standard", backend["complexity_impact"])
         self.assertIn("high_risk", backend["complexity_impact"])
 
+    def test_api_integrations_domain_has_track_nine_contract(self):
+        from product_agent_os.methodology_catalog import load_methodology_catalog
+
+        catalog = load_methodology_catalog()
+        domains = {domain["id"]: domain for domain in catalog["domains"]}
+        api = domains["api_integrations"]
+
+        expected_gates = [
+            "api_contract_source_present",
+            "api_consumer_map_present",
+            "api_breaking_change_reviewed",
+            "api_security_reviewed",
+            "api_error_contract_present",
+            "api_contract_test_matrix_present",
+            "event_delivery_contract_present",
+            "generated_client_manifest_present",
+            "external_write_approval_present",
+            "api_observability_contract_present",
+            "api_style_choice_recorded",
+            "api_unsupported_claims_rejected",
+        ]
+        expected_artifacts = [
+            "api-inventory.md",
+            "api-contract-review.md",
+            "api-error-catalog.md",
+            "api-auth-authorization-matrix.md",
+            "api-consumer-map.md",
+            "api-compatibility-record.md",
+            "api-contract-test-matrix.md",
+            "generated-sdk-manifest.md",
+            "webhook-event-contract.md",
+            "external-integration-approval.md",
+            "api-style-guide.md",
+            "migration-plan.md",
+            "integration-catalog.md",
+            "security-risk-review.md",
+            "release-packet.md",
+        ]
+        expected_eval_fields = [
+            "api_integrations_contract_present",
+            "api_contract_source_contract_present",
+            "api_consumer_map_contract_present",
+            "api_breaking_change_review_contract_present",
+            "api_security_review_contract_present",
+            "api_error_contract_present",
+            "api_contract_test_matrix_contract_present",
+            "event_delivery_contract_present",
+            "generated_client_manifest_contract_present",
+            "external_write_approval_contract_present",
+            "api_observability_contract_present",
+            "unsupported_api_claims_rejected_contract_present",
+        ]
+
+        for term in [
+            "public, partner, mobile or multi-team API",
+            "OpenAPI, AsyncAPI, GraphQL, gRPC, JSON Schema, Pact or webhook contract",
+            "generated SDK or client",
+            "external provider or external write",
+            "auth, scopes, token claims, rate limits or sensitive fields",
+        ]:
+            with self.subTest(applies_when=term):
+                self.assertIn(term, api["applies_when"])
+        for term in [
+            "swagger ui or rendered API docs without machine-readable contract",
+            "GraphQL, gRPC or event-driven style mentioned as a universal default",
+            "schema validation claim without consumer/provider contract evidence",
+            "OAuth-only claim without authorization matrix",
+            "typo-only docs edit",
+        ]:
+            with self.subTest(not_applicable_when=term):
+                self.assertIn(term, api["not_applicable_when"])
+        for gate in expected_gates:
+            with self.subTest(gate=gate):
+                self.assertIn(gate, api["gates"])
+        for artifact in expected_artifacts:
+            with self.subTest(artifact=artifact):
+                self.assertIn(artifact, api["artifacts"])
+        for eval_field in expected_eval_fields:
+            with self.subTest(eval_field=eval_field):
+                self.assertIn(eval_field, api["eval_fields"])
+        for overlap in [
+            "quality contract checks",
+            "backend service boundaries without API-only false positives",
+            "security and privacy authorization review",
+            "delivery release and deprecation impact",
+            "database data contracts",
+            "frontend API alignment",
+            "solution architecture public contracts",
+        ]:
+            with self.subTest(overlap=overlap):
+                self.assertIn(overlap, api["overlaps"])
+        self.assertIn("team", api["maturity_impact"])
+        self.assertIn("production", api["maturity_impact"])
+        self.assertIn("standard", api["complexity_impact"])
+        self.assertIn("high_risk", api["complexity_impact"])
+
 
 if __name__ == "__main__":
     unittest.main()

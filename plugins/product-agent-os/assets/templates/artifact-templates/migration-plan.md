@@ -47,8 +47,12 @@ Profile: {profile_name}
 
 - Generated clients:
 - SDKs:
+- Generated SDK:
 - Client generation command:
+- Generator version/config:
+- Reviewable diff:
 - Client update impact:
+- SemVer impact:
 - Examples affected by generated clients:
 
 ## Deprecation
@@ -65,8 +69,10 @@ Profile: {profile_name}
 - Feature flags or staged enablement:
 - Monitoring:
 - Release impact:
+- Release/rollback impact:
 - Release notes:
 - Approval boundary:
+- External write approval:
 
 ## Validation
 
@@ -74,6 +80,7 @@ Profile: {profile_name}
 - OpenAPI validation:
 - AsyncAPI validation:
 - Contract tests:
+- Contract check command:
 - Consumer tests:
 - Example verification:
 - Owner review:

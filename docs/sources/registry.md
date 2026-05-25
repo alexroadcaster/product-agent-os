@@ -2660,6 +2660,18 @@ verification_status: "Backed by focused T9-D7 tests, fixture eval coverage, full
 ```
 
 ```yaml
+title: "Product-Agent OS Track 9 API & Integrations methodology coverage"
+url: "docs/methodologies/api-integrations.md; docs/sources/product-agent-os-track-9-backlog.md; docs/product-agent-os/behavioral-evals.md; docs/product-agent-os/scenarios.md; plugins/product-agent-os/scripts/product_agent_os/discovery.py; plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py; plugins/product-agent-os/scripts/run_fixture_eval.py"
+type: "internal documentation"
+status: "checked-in project source"
+checked_at: "2026-05-25"
+summary: "Internal T9-D8 API & Integrations methodology coverage for Product-Agent OS, including api_integrations_contract_present, contract source, consumer map, compatibility review, security schemes, error contract, event/webhook delivery, generated SDK manifest, API observability, external-write approval and unsupported API claim rejection."
+relevance: "Track 9 API & Integrations methodology implementation, Product-Agent OS API behavioral eval coverage, source-backed operator docs, discovery packets and audit recommendation contracts."
+trust_level: "high"
+verification_status: "Backed by focused T9-D8 catalog, audit, discovery, template, lifecycle, docs and fixture tests, fixture eval coverage, full Product-Agent OS unittest discovery, transcript eval, Codex compatibility validation, docs checks and git diff hygiene recorded in the Track 9 backlog."
+```
+
+```yaml
 title: "Product-Agent OS Track 8 scenario, eval and transcript docs with discovery status"
 url: "docs/product-agent-os/scenarios.md; docs/product-agent-os/behavioral-evals.md; docs/product-agent-os/codex-compatibility.md; plugins/product-agent-os/scripts/product_agent_os/discovery.py; plugins/product-agent-os/scripts/run_transcript_eval.py; plugins/product-agent-os/scripts/run_fixture_eval.py"
 type: "internal documentation"
