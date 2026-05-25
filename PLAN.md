@@ -6,11 +6,11 @@ Generated at: 2026-05-25
 
 ## Current State
 
-- `T9-D2` Requirements & Domain methodology integration is complete.
-- Verification baseline after `T9-D2`: focused catalog/audit tests ran 18 tests with `OK`; focused renderer/lifecycle/fixture tests ran 97 tests with `OK`; full unittest ran 357 tests with `OK`; fixture eval exited `0` with renderer file count 88 and `requirements_domain_contract_present: true`; Codex compatibility returned `status: compatible`; docs check passed; diff hygiene passed.
+- `T9-D3` Solution Architecture methodology integration is complete.
+- Verification baseline after `T9-D3`: focused T9-D3 checks passed; fixture eval exited `0` with renderer file count 92 and `solution_architecture_contract_present: true`; full verification is recorded in `RUNLOG.md`.
 - Track 9 design is recorded in `docs/superpowers/specs/2026-05-25-track-9-methodology-intelligence-design.md`.
 - Track 9 implementation plan is recorded in `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`.
-- Next implementation slice: `T9-D3` Solution Architecture methodology integration.
+- Next implementation slice: `T9-D4` Quality, Testing & Evals methodology integration.
 
 ## Architecture Boundary
 
@@ -28,7 +28,7 @@ Generated at: 2026-05-25
 | 1 | `T9-F0` methodology intelligence foundation | `done` | Catalog, audit model, report/JSON output, discovery integration |
 | 2 | `T9-D1` Business & Product | `done` | Product hypothesis, metrics, experiment and measurement gates |
 | 3 | `T9-D2` Requirements & Domain | `done` | Requirements traceability, business rules, domain model and language gates |
-| 4 | `T9-D3` Solution Architecture | `planned` | Architecture boundary, C4/arc42/ADR and quality attribute gates |
+| 4 | `T9-D3` Solution Architecture | `done` | Architecture boundary, C4/arc42/ADR and quality attribute gates |
 | 5 | `T9-D4` Quality, Testing & Evals | `planned` | Risk-based test/eval strategy and current evidence gates |
 | 6 | `T9-D5` Codex / Agentic Workflow | `planned` | Control-plane, skills, subagents, handoff, MCP and automation gates |
 | 7 | `T9-D6` Frontend | `planned` | UI behavior, component state, FSD, Storybook, a11y and visual evidence gates |
@@ -66,6 +66,8 @@ For each Track 9 section:
 - Standards trigger gate: `standards_trigger_policy` records ADR trigger policy, C4/arc42 applicability, OpenAPI source of truth, AsyncAPI event contract, SemVer impact, Keep a Changelog categories, CODEOWNERS status, GitHub Actions least privilege and `governance-proposal.md`; external activation remains approval-bound.
 - Requirements/domain gate: `requirements_domain` records requirements scope/owner, requirement quality, stable IDs, declarative acceptance scenarios, requirements traceability, business rules, non-goals/constraints, open questions, domain events, API/UI/data traceability, domain expert review, accepted gaps and change impact.
 - Requirements/domain artifacts: `requirement-registry.md`, `stakeholder-owner-map.md`, `story-slice-map.md`, `requirements-traceability-matrix.md`, `business-rules.md`, `example-map.md`, `requirement-change-impact.md`, `domain-review-record.md`.
+- Solution architecture gate: `solution_architecture` records architecture scope, context/container boundaries, boundary owner, domain-to-architecture trace, public contract trace, data ownership, trust boundary review, quality attributes, ADR/tradeoff, runtime topology, observability, diagram render check, fitness functions, docs lifecycle, accepted gaps and unsupported-claim rejection.
+- Solution architecture artifacts: `architecture-overview.md`, `adr.md`, `architecture-review-record.md`, `architecture-fitness-functions.md`, `trust-boundary-map.md`, `architecture-docs-tooling-decision.md`, `api-contract-review.md`, `database-dictionary.md`, `security-risk-review.md`, `migration-plan.md`, `integration-catalog.md`.
 - Conditional readiness gate: `project-readiness.json` defines `readiness_statuses` and per-gate `applies_when`, pass condition, accepted gap, required evidence, owner and residual risk. Detection alone can only support `present_unverified`; `present_verified` requires current command, owner or artifact evidence.
 - Test gate: deterministic tests, contract checks, evals or accepted gaps are named before implementation.
 - Documentation gate: docs-as-code artifacts and source-of-truth updates are named.
@@ -166,6 +168,13 @@ For each Track 9 section:
 - Added artifact templates: `requirement-registry.md`, `stakeholder-owner-map.md`, `story-slice-map.md`, `requirements-traceability-matrix.md`, `business-rules.md`, `example-map.md`, `requirement-change-impact.md`, and `domain-review-record.md`.
 - Added `docs-maintainer` lifecycle skill and strengthened requirements/planning/testing/review skills with Requirements & Domain gates.
 - Added read-only audit recommendations, false-positive and unsupported-claim coverage, renderer registration and fixture eval coverage through `requirements_domain_contract_present`.
+
+## T9-D3 Completed Slice
+
+- Added `solution_architecture` methodology catalog coverage for architecture scope, context/container views, slice boundaries, owner responsibility, bounded-context trace, dependency rules, public contracts, data ownership, runtime topology, observability, quality attributes, ADR/tradeoffs, trust boundaries, diagram render checks, fitness functions, migration rollback, docs lifecycle, owner review and accepted gaps.
+- Added artifact templates: `architecture-review-record.md`, `architecture-fitness-functions.md`, `trust-boundary-map.md`, and `architecture-docs-tooling-decision.md`.
+- Strengthened `architecture-overview.md` and `adr.md` with `Source status:`, owner, evidence, accepted gaps, residual risk, rollback/no-rollback rationale and no-secrets guidance.
+- Added read-only audit recommendations, false-positive and unsupported-claim coverage, renderer registration, lifecycle skill routing and fixture eval coverage through `solution_architecture_contract_present`.
 
 ## Rollback
 

@@ -6,11 +6,13 @@ Generated at: 2026-05-25
 
 ## Current Baseline
 
-- T9-D2 RED check: focused catalog/audit/renderer/lifecycle/fixture suite failed as expected before implementation on missing `requirements_domain` gates, artifact templates, audit recommendations, `docs-maintainer` skill and fixture check.
-- Focused T9-D2 catalog/audit suite: `python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit -v` ran 18 tests with `OK`.
-- Focused T9-D2 renderer/lifecycle/fixture suite: `python -m unittest tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_fixture_eval_runner -v` ran 97 tests with `OK`.
-- Fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0`; renderer file count is 88 and `requirements_domain_contract_present` is true.
-- Full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 357 tests with `OK`.
+- T9-D3 RED check: focused catalog/audit/template/lifecycle/fixture checks failed as expected before implementation on missing `solution_architecture` gates, audit recommendations, four architecture templates, lifecycle skill routing and fixture eval check.
+- Focused T9-D3 catalog test: `python -m unittest tests.product_agent_os.test_methodology_catalog -v` ran 7 tests with `OK`.
+- Focused T9-D3 audit test: `python -m unittest tests.product_agent_os.test_methodology_audit -v` ran 15 tests with `OK`.
+- Combined focused T9-D3 suite: `python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_fixture_eval_runner -v` ran 120 tests with `OK`.
+- Fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0`; renderer file count is 92 and `solution_architecture_contract_present` is true.
+- Full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 362 tests with `OK`.
+- Transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 4 sessions and 0 failures.
 - Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
 - Docs check: `python tools\check_docs.py` passed.
 - Diff hygiene: `git diff --check` exited `0`.
@@ -127,6 +129,14 @@ python tools\check_docs.py
 - Confirmed risky/public-contract work requires requirement quality, stable IDs, constraints traceability and API/UI/data traceability.
 - Confirmed unclear stories, business rules, domain events, owner review, accepted gaps, declarative scenario quality and requirement change impact produce deterministic recommendations.
 - Confirmed unsupported methodology claims are rejected as evidence: BDD replaces testing, Gherkin is mandatory, user story template is complete requirements, glossary is ubiquitous language and OpenAPI is requirements source of truth.
+
+## Completed Focused Checks For T9-D3
+
+- Added RED then GREEN tests for `solution_architecture` catalog contract, audit recommendations, staged architecture templates, lifecycle skill wording and fixture eval coverage.
+- Confirmed multi-surface public API/data/runtime work produces architecture recommendations for scope, context/container boundaries, boundary owner, public contract trace, data ownership, trust boundary review, ADR, observability, rollback, diagram render checks and fitness functions.
+- Confirmed typo-only docs edits, formatting-only edits, docs-light prototypes without reviewed/diffable diagrams and non-cloud work without Well-Architected review keep Solution Architecture methodology not applicable.
+- Confirmed unsupported architecture claims are rejected as evidence: architecture means diagrams, rendered diagram proves correctness, C4 code diagrams are always required, ADR is bureaucracy, Well-Architected review proves architecture quality, architecture-as-code is always required and AI can design architecture from chat alone.
+- Confirmed fixture eval exposes `solution_architecture_contract_present`.
 
 ## Evidence Format
 

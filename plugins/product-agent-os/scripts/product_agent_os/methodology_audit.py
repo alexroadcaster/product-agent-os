@@ -56,6 +56,20 @@ BACKEND_INTENT_TERMS = {"server", "api", "service", "worker", "queue", "backend"
 API_INTENT_TERMS = {"api", "webhook", "integration", "external", "graphql", "grpc", "protobuf"}
 AI_INTENT_TERMS = {"prompt", "model", "eval", "rag", "vector", "embedding", "ai", "llm"}
 DELIVERY_INTENT_TERMS = {"production", "release", "deploy", "package", "docker", "kubernetes", "operations"}
+ARCHITECTURE_INTENT_TERMS = {
+    "adr",
+    "architecture",
+    "boundary",
+    "c4",
+    "container",
+    "deployment",
+    "diagram",
+    "multi-service",
+    "observability",
+    "runtime",
+    "service split",
+    "topology",
+}
 BUSINESS_NOT_APPLICABLE_PHRASES = {
     "typo-only",
     "formatting-only",
@@ -68,6 +82,14 @@ REQUIREMENTS_NOT_APPLICABLE_PHRASES = {
     "dependency metadata without behavior impact",
     "dependency pin without behavior impact",
     "without behavior impact",
+}
+SOLUTION_ARCHITECTURE_NOT_APPLICABLE_PHRASES = {
+    "typo-only",
+    "formatting-only",
+    "docs-light prototype without reviewed/diffable diagrams",
+    "non-cloud work without well-architected review",
+    "dependency metadata without behavior impact",
+    "dependency pin without behavior impact",
 }
 IMPLEMENTATION_OR_RELEASE_TERMS = {"implement", "implementation", "ship", "release", "build", "deliver"}
 PRODUCT_ANALYTICS_TERMS = {"analytics", "usage", "event", "events", "dashboard", "telemetry", "tracking"}
@@ -144,6 +166,32 @@ UNSUPPORTED_REQUIREMENTS_CLAIMS = {
     "openapi is requirements source of truth",
     "openapi is the requirements source of truth",
 }
+UNSUPPORTED_ARCHITECTURE_CLAIMS = {
+    "architecture means diagrams",
+    "rendered diagram proves correctness",
+    "c4 code diagrams are always required",
+    "adr is bureaucracy",
+    "well-architected review proves architecture quality",
+    "architecture-as-code is always required",
+    "ai can design architecture from chat alone",
+}
+PUBLIC_CONTRACT_TERMS = {"public api", "public contract", "event contract", "generated client", "sdk"}
+DATA_BOUNDARY_TERMS = {"persistent data", "pii", "retention", "migration", "database", "data ownership"}
+TRUST_BOUNDARY_TERMS = {"trust boundary", "auth", "authorization", "security boundary", "pii", "payment"}
+HIGH_IMPACT_ARCHITECTURE_TERMS = {
+    "adr",
+    "decision",
+    "hard to reverse",
+    "irreversible",
+    "service split",
+    "multi-service",
+    "tradeoff",
+}
+RUNTIME_ARCHITECTURE_TERMS = {"runtime", "topology", "deployment", "service", "worker", "queue"}
+OBSERVABILITY_TERMS = {"observability", "trace", "tracing", "metrics", "logs", "dashboard", "alert"}
+MIGRATION_ROLLBACK_TERMS = {"migration", "rollback", "service split", "split"}
+FITNESS_FUNCTION_TERMS = {"boundary drift", "dependency rule", "fitness function", "parallel agent", "parallel"}
+ARCHITECTURE_DIAGRAM_SUFFIXES = (".mmd", ".puml", ".plantuml", ".dsl")
 HIGH_RISK_INTENT_TERMS = {
     "security",
     "privacy",
@@ -260,6 +308,17 @@ def _observed_signals(root: Path, files: set[str], directories: set[str]) -> lis
         + [directory for directory in directories if directory in {"evals", "prompts", "rag", "vector", "embeddings"}],
     )
     add("test_evidence", [path for path in files if "test" in path or path.startswith("evals/")])
+    add(
+        "architecture_docs",
+        [
+            path
+            for path in files
+            if _artifact_present({path}, "architecture-overview.md")
+            or _artifact_present({path}, "adr.md")
+            or path.startswith(("docs/architecture/", "architecture/", "docs/adr/", "adr/", "docs/diagrams/"))
+            or path.endswith(ARCHITECTURE_DIAGRAM_SUFFIXES)
+        ],
+    )
     if _has_package_test_script(root):
         add("test_command", ["package.json"])
     return signals
@@ -274,6 +333,7 @@ def _intent_signals(intent: str) -> list[dict[str, str]]:
         ("frontend", UI_INTENT_TERMS),
         ("backend", BACKEND_INTENT_TERMS),
         ("api_integrations", API_INTENT_TERMS),
+        ("solution_architecture", ARCHITECTURE_INTENT_TERMS),
         ("llm_ai_rag", AI_INTENT_TERMS),
         ("delivery_release_operations", DELIVERY_INTENT_TERMS),
         ("high_risk", HIGH_RISK_INTENT_TERMS),
@@ -366,9 +426,12 @@ def _methodology_domains(
     applicable = {
         "business_product": _business_product_applies(intent),
         "requirements_domain": _requirements_domain_applies(has_files, intent),
-        "solution_architecture": complexity_profile in {"complex", "high_risk"}
-        or maturity_level in {"team", "production", "regulated"}
-        or _has_any_signal(observed, {"openapi_contract", "database_migration_or_schema", "ai_eval_or_rag", "deployment_configuration"}),
+        "solution_architecture": _solution_architecture_applies(
+            observed,
+            intent,
+            maturity_level,
+            complexity_profile,
+        ),
         "quality_testing_evals": has_files or _has_signal(observed, "test_evidence") or _has_signal(observed, "test_command"),
         "codex_agentic_workflow": True,
         "frontend": _has_signal(observed, "stack_manifest") and _mentions_any(intent, UI_INTENT_TERMS) or _mentions_any(intent, UI_INTENT_TERMS),
@@ -424,6 +487,38 @@ def _requirements_domain_applies(has_files: bool, intent: str) -> bool:
 
 def _requirements_domain_not_applicable(intent: str) -> bool:
     return any(phrase in intent for phrase in REQUIREMENTS_NOT_APPLICABLE_PHRASES)
+
+
+def _solution_architecture_applies(
+    observed: list[dict[str, Any]],
+    intent: str,
+    maturity_level: str,
+    complexity_profile: str,
+) -> bool:
+    if _solution_architecture_not_applicable(intent):
+        return False
+    return (
+        complexity_profile in {"complex", "high_risk"}
+        or maturity_level in {"team", "production", "regulated"}
+        or _mentions_any(intent, ARCHITECTURE_INTENT_TERMS | PUBLIC_CONTRACT_TERMS | DATA_BOUNDARY_TERMS)
+        or _has_any_signal(
+            observed,
+            {
+                "openapi_contract",
+                "asyncapi_contract",
+                "graphql_schema",
+                "protobuf_schema",
+                "database_migration_or_schema",
+                "ai_eval_or_rag",
+                "deployment_configuration",
+                "architecture_docs",
+            },
+        )
+    )
+
+
+def _solution_architecture_not_applicable(intent: str) -> bool:
+    return any(phrase in intent for phrase in SOLUTION_ARCHITECTURE_NOT_APPLICABLE_PHRASES)
 
 
 def _business_product_recommendations(files: set[str], intent: str) -> list[dict[str, Any]]:
@@ -965,6 +1060,222 @@ def _requirements_domain_recommendations(files: set[str], intent: str) -> list[d
     return recommendations
 
 
+def _solution_architecture_recommendations(
+    files: set[str],
+    observed: list[dict[str, Any]],
+    intent: str,
+    complexity_profile: str,
+) -> list[dict[str, Any]]:
+    maturity_assumption = "team" if files and files != {"readme.md"} else "baseline"
+    if not _solution_architecture_applies(observed, intent, maturity_assumption, complexity_profile):
+        return []
+
+    recommendations: list[dict[str, Any]] = []
+    has_architecture_overview = _artifact_present(files, "architecture-overview.md")
+    high_impact = _mentions_any(intent, HIGH_IMPACT_ARCHITECTURE_TERMS | HIGH_RISK_INTENT_TERMS)
+    has_public_contract = _has_any_signal(
+        observed,
+        {"openapi_contract", "asyncapi_contract", "graphql_schema", "protobuf_schema"},
+    ) or _mentions_any(intent, PUBLIC_CONTRACT_TERMS)
+    has_data_boundary = _has_signal(observed, "database_migration_or_schema") or _mentions_any(intent, DATA_BOUNDARY_TERMS)
+    has_runtime_change = _has_signal(observed, "deployment_configuration") or _mentions_any(
+        intent,
+        RUNTIME_ARCHITECTURE_TERMS,
+    )
+    has_observability_need = has_runtime_change or _mentions_any(intent, OBSERVABILITY_TERMS)
+    has_diagram = _has_architecture_diagram(files)
+
+    def add(
+        *,
+        priority: str,
+        reason: str,
+        gate: str,
+        artifact: str,
+        evidence_required: list[str],
+        residual_risk: str,
+        safe_next_action: str,
+        evidence_owner: str = "architecture owner",
+        approval_boundary: str = "not required for read-only audit",
+        accepted_gap_option: str = "explicit_gap_accepted with owner, reason, scope, review date and residual risk",
+    ) -> None:
+        recommendations.append(
+            _recommendation(
+                priority=priority,
+                reason=reason,
+                domain="solution_architecture",
+                gate=gate,
+                artifact=artifact,
+                evidence_required=evidence_required,
+                evidence_owner=evidence_owner,
+                approval_boundary=approval_boundary,
+                accepted_gap_option=accepted_gap_option,
+                residual_risk=residual_risk,
+                safe_next_action=safe_next_action,
+            )
+        )
+
+    if _mentions_any(intent, UNSUPPORTED_ARCHITECTURE_CLAIMS):
+        add(
+            priority="P1_high_risk",
+            reason="Unsupported solution architecture claim appeared as evidence.",
+            gate="unsupported_architecture_claims_rejected",
+            artifact="architecture-review-record.md",
+            evidence_required=["claim", "source or owner verification", "replacement evidence", "claim disposition"],
+            residual_risk="Architecture slogans can replace boundary, decision, verification or owner evidence.",
+            safe_next_action="Record the unsupported architecture claim in architecture-review-record.md before planning.",
+        )
+
+    if not has_architecture_overview:
+        for gate, reason, evidence in [
+            (
+                "solution_architecture_scope_present",
+                "Complex or multi-surface work needs architecture scope, stakeholders and non-goals.",
+                ["scope", "stakeholders", "architecture question", "non-goals", "owner"],
+            ),
+            (
+                "architecture_context_view_present",
+                "External users, systems or trust boundaries need a context view or equivalent boundary map.",
+                ["external actors", "systems", "trust boundary", "owner"],
+            ),
+            (
+                "architecture_container_boundary_present",
+                "Multiple runtime units need container, service, storage, queue or worker boundaries.",
+                ["runtime unit", "boundary", "responsibility", "owner"],
+            ),
+        ]:
+            add(
+                priority="P1_high_risk",
+                reason=reason,
+                gate=gate,
+                artifact="architecture-overview.md",
+                evidence_required=evidence,
+                residual_risk="Implementation can cross implicit system boundaries without review.",
+                safe_next_action="Stage architecture-overview.md with scope, context and container boundaries.",
+            )
+
+    if high_impact or has_public_contract or has_data_boundary or "parallel" in intent:
+        add(
+            priority="P1_high_risk",
+            reason="Architecture boundary changes need responsibility, owner and review evidence.",
+            gate="boundary_responsibility_owner_present",
+            artifact="architecture-review-record.md",
+            evidence_required=["boundary", "responsibility", "owner", "public contract or data ownership", "review outcome"],
+            residual_risk="A changed boundary can be owned by no one or reviewed by the wrong owner.",
+            safe_next_action="Stage architecture-review-record.md with boundary owner evidence.",
+        )
+
+    if has_public_contract:
+        add(
+            priority="P1_high_risk",
+            reason="Public API, event or generated client changes need architecture boundary traceability.",
+            gate="public_contract_boundary_trace_present",
+            artifact="api-contract-review.md",
+            evidence_required=["contract source", "boundary", "consumers", "versioning", "compatibility check"],
+            evidence_owner="API owner",
+            approval_boundary="approval_required before public contract or generated client changes",
+            residual_risk="Consumers can break when contract ownership and boundary semantics are implicit.",
+            safe_next_action="Stage api-contract-review.md and link it to the architecture boundary.",
+        )
+
+    if has_data_boundary:
+        add(
+            priority="P1_high_risk",
+            reason="Persistent data, PII, retention or migration changes need data ownership evidence.",
+            gate="data_ownership_boundary_present",
+            artifact="database-dictionary.md",
+            evidence_required=["data owner", "source of truth", "retention", "deletion", "migration ownership"],
+            evidence_owner="data owner",
+            approval_boundary="approval_required before production data or migration changes",
+            residual_risk="Data responsibility can diverge from system boundaries and privacy obligations.",
+            safe_next_action="Stage database-dictionary.md ownership rows for affected architecture boundaries.",
+        )
+
+    if _mentions_any(intent, TRUST_BOUNDARY_TERMS):
+        add(
+            priority="P1_high_risk",
+            reason="Trust boundary or security-sensitive boundary changes need security review evidence.",
+            gate="trust_boundary_security_review_present",
+            artifact="trust-boundary-map.md",
+            evidence_required=["trust boundary", "data flow", "auth", "PII", "security review", "approval boundary"],
+            evidence_owner="security or architecture owner",
+            approval_boundary="approval_required before auth, payment, PII or security boundary changes",
+            residual_risk="Security assumptions can cross runtime and data boundaries without explicit review.",
+            safe_next_action="Stage trust-boundary-map.md and link security-risk-review.md where needed.",
+        )
+
+    if high_impact:
+        add(
+            priority="P1_high_risk",
+            reason="High-impact or hard-to-reverse architecture decisions need ADR evidence.",
+            gate="adr_for_architecture_decision",
+            artifact="adr.md",
+            evidence_required=["decision", "options", "tradeoff", "verification", "rollback or no-rollback rationale"],
+            residual_risk="Architecture choices can become irreversible without recorded alternatives and rollback logic.",
+            safe_next_action="Stage adr.md for the architecture decision before implementation.",
+        )
+
+    if has_runtime_change:
+        add(
+            priority="P1_high_risk",
+            reason="Runtime or deployment changes need topology evidence.",
+            gate="runtime_deployment_topology_present",
+            artifact="architecture-overview.md",
+            evidence_required=["runtime unit", "deployment target", "dependency", "health check", "rollback path"],
+            residual_risk="Runtime behavior can diverge from documented service boundaries.",
+            safe_next_action="Add runtime topology to architecture-overview.md.",
+        )
+
+    if has_observability_need:
+        add(
+            priority="P1_high_risk",
+            reason="Service or runtime behavior needs observability architecture evidence.",
+            gate="observability_architecture_present",
+            artifact="architecture-fitness-functions.md",
+            evidence_required=["signals", "logs", "metrics", "traces", "dashboards or alerts", "owner"],
+            evidence_owner="architecture or operations owner",
+            residual_risk="Runtime failures can ship without measurable health or diagnostics.",
+            safe_next_action="Stage architecture-fitness-functions.md with observability checks.",
+        )
+
+    if _mentions_any(intent, MIGRATION_ROLLBACK_TERMS) or _has_signal(observed, "database_migration_or_schema"):
+        add(
+            priority="P1_high_risk",
+            reason="Architecture migration or service split needs rollback or compensation evidence.",
+            gate="migration_rollback_path_present",
+            artifact="migration-plan.md",
+            evidence_required=["migration step", "rollback", "compensation", "owner", "verification command"],
+            evidence_owner="implementation planner",
+            approval_boundary="approval_required before irreversible migration or service split",
+            residual_risk="A boundary migration can strand data, consumers or runtime traffic without recovery.",
+            safe_next_action="Stage migration-plan.md with rollback or accepted no-rollback rationale.",
+        )
+
+    if has_diagram and not _artifact_present(files, "architecture-docs-tooling-decision.md"):
+        add(
+            priority="P2_recommended",
+            reason="Architecture diagram files need render or validate evidence when used for review.",
+            gate="diagram_render_check_present",
+            artifact="architecture-docs-tooling-decision.md",
+            evidence_required=["diagram source", "render command", "validation result", "maintenance owner"],
+            evidence_owner="docs or architecture owner",
+            residual_risk="A diagram can exist but fail to render or drift from reviewed architecture.",
+            safe_next_action="Record render check policy in architecture-docs-tooling-decision.md.",
+        )
+
+    if _mentions_any(intent, FITNESS_FUNCTION_TERMS) or high_impact:
+        add(
+            priority="P2_recommended",
+            reason="Boundary drift, dependency rules or parallel ownership need architecture fitness functions.",
+            gate="architecture_fitness_function_present",
+            artifact="architecture-fitness-functions.md",
+            evidence_required=["fitness function", "dependency rule", "contract drift check", "owner", "command"],
+            residual_risk="Architecture rules can remain advisory and regress silently.",
+            safe_next_action="Stage architecture-fitness-functions.md with dependency and drift checks.",
+        )
+
+    return recommendations
+
+
 def _recommendations(
     root: Path,
     files: set[str],
@@ -976,6 +1287,7 @@ def _recommendations(
     recommendations: list[dict[str, Any]] = []
     recommendations.extend(_business_product_recommendations(files, intent))
     recommendations.extend(_requirements_domain_recommendations(files, intent))
+    recommendations.extend(_solution_architecture_recommendations(files, observed, intent, complexity_profile))
     missing_control_plane = [name for name in CONTROL_PLANE_FILES if name.lower() not in files]
     if missing_control_plane:
         recommendations.append(
@@ -1236,6 +1548,10 @@ def _has_test_signal(files: set[str], observed: list[dict[str, Any]]) -> bool:
 
 def _has_contract_tests(files: set[str]) -> bool:
     return any("contract" in path and "test" in path for path in files)
+
+
+def _has_architecture_diagram(files: set[str]) -> bool:
+    return any(path.endswith(ARCHITECTURE_DIAGRAM_SUFFIXES) for path in files)
 
 
 def _artifact_present(files: set[str], name: str) -> bool:

@@ -262,6 +262,99 @@ class MethodologyCatalogContractTest(unittest.TestCase):
             with self.subTest(eval_field=eval_field):
                 self.assertIn(eval_field, requirements_domain["eval_fields"])
 
+    def test_solution_architecture_domain_has_track_nine_contract(self):
+        from product_agent_os.methodology_catalog import load_methodology_catalog
+
+        catalog = load_methodology_catalog()
+        domains = {domain["id"]: domain for domain in catalog["domains"]}
+        solution_architecture = domains["solution_architecture"]
+
+        expected_gates = [
+            "solution_architecture_scope_present",
+            "architecture_context_view_present",
+            "architecture_container_boundary_present",
+            "architecture_boundary_per_slice",
+            "boundary_responsibility_owner_present",
+            "bounded_context_architecture_boundary_trace",
+            "dependency_rules_present",
+            "public_contract_boundary_trace_present",
+            "data_ownership_boundary_present",
+            "runtime_deployment_topology_present",
+            "observability_architecture_present",
+            "quality_attribute_scenarios_present",
+            "tradeoff_record_for_high_impact_decision",
+            "adr_for_architecture_decision",
+            "trust_boundary_security_review_present",
+            "domain_to_architecture_trace_present",
+            "diagram_render_check_present",
+            "architecture_fitness_function_present",
+            "migration_rollback_path_present",
+            "architecture_docs_as_code_present",
+            "architecture_owner_review_present",
+            "accepted_gap_recorded",
+        ]
+        expected_artifacts = [
+            "architecture-overview.md",
+            "adr.md",
+            "architecture-review-record.md",
+            "architecture-fitness-functions.md",
+            "trust-boundary-map.md",
+            "architecture-docs-tooling-decision.md",
+            "api-contract-review.md",
+            "database-dictionary.md",
+            "security-risk-review.md",
+            "migration-plan.md",
+            "integration-catalog.md",
+        ]
+        expected_eval_fields = [
+            "solution_architecture_scope_contract_present",
+            "architecture_context_view_contract_present",
+            "architecture_boundary_contract_present",
+            "boundary_owner_contract_present",
+            "domain_architecture_trace_contract_present",
+            "public_contract_trace_contract_present",
+            "data_ownership_boundary_contract_present",
+            "trust_boundary_review_contract_present",
+            "quality_attribute_scenarios_contract_present",
+            "architecture_decision_record_contract_present",
+            "runtime_observability_contract_present",
+            "diagram_render_check_contract_present",
+            "architecture_fitness_function_contract_present",
+            "migration_rollback_contract_present",
+            "architecture_docs_lifecycle_contract_present",
+            "accepted_gap_contract_present",
+            "unsupported_architecture_claims_rejected_contract_present",
+        ]
+
+        for term in [
+            "complex or multi-surface system",
+            "public API, event contract or generated client",
+            "persistent data, PII, migration or retention change",
+            "runtime, deployment, observability or rollback change",
+            "parallel agent ownership or team boundary",
+        ]:
+            with self.subTest(applies_when=term):
+                self.assertIn(term, solution_architecture["applies_when"])
+        for term in [
+            "typo-only docs edit",
+            "formatting-only edit",
+            "docs-light prototype without reviewed/diffable diagrams",
+            "non-cloud work without Well-Architected review",
+        ]:
+            with self.subTest(not_applicable_when=term):
+                self.assertIn(term, solution_architecture["not_applicable_when"])
+        for gate in expected_gates:
+            with self.subTest(gate=gate):
+                self.assertIn(gate, solution_architecture["gates"])
+        for artifact in expected_artifacts:
+            with self.subTest(artifact=artifact):
+                self.assertIn(artifact, solution_architecture["artifacts"])
+        for eval_field in expected_eval_fields:
+            with self.subTest(eval_field=eval_field):
+                self.assertIn(eval_field, solution_architecture["eval_fields"])
+        self.assertIn("requirements and domain traceability", solution_architecture["overlaps"])
+        self.assertIn("agent team ownership", solution_architecture["overlaps"])
+
 
 if __name__ == "__main__":
     unittest.main()

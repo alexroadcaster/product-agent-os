@@ -30,6 +30,7 @@ Behavioral evals проверяют не синтаксис Markdown, а пов�
 | Template validation | JSON shape, required fields and no placeholder behavior. | Implemented. | `tests/product_agent_os/test_behavioral_workflow_evals.py`. |
 | Route and fixture eval | Synthetic workspaces return expected `usage_mode`, artifacts and expected checks. | Implemented for current scenarios and T8-GX false-positive fixtures. | `python plugins\product-agent-os\scripts\run_fixture_eval.py`. |
 | Methodology intelligence eval | Read-only methodology audit returns catalog coverage, `maturity_level`, `complexity_profile`, prioritized recommendations and no target-workspace mutation. | Implemented for Track 9 foundation. | `methodology-intelligence-read-only-first` and `methodology_intelligence_contract_present`. |
+| Solution architecture eval | Catalog, audit, templates and lifecycle skills preserve conditional architecture gates and reject unsupported architecture claims. | Implemented in `T9-D3`. | `solution_architecture_contract_present`. |
 | Readiness contract eval | `project-readiness.json` has conditional gates, statuses, evidence owner and residual risk. | Implemented through T8-F. | `conditional_readiness_gates_contract_present`. |
 | Codex compatibility eval | Plugin remains Codex-only and avoids non-Codex adapter requirements. | Implemented. | `python plugins\product-agent-os\scripts\validate_codex_compatibility.py`. |
 | transcript/session eval runner | Replay synthetic or redacted Codex session transcripts for multi-turn shortcut resistance, evidence quality and privacy/no-secrets checks. | Implemented in `T8-GY` as deterministic local replay. | `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json`. |
@@ -49,6 +50,7 @@ Examples:
 - `release_packaging`: release readiness before publish/tag/upload/package registry mutation.
 - `evidence-before-completion`: ready/completed/fixed/works/release claims need current evidence or explicit inspection-only gap.
 - `methodology-intelligence-read-only-first`: methodology audit must return a Delivery Map, prioritized recommendations and owner questions before any staged proposal.
+- `solution_architecture_contract_present`: architecture gates require scope, boundaries, owner, ADR/tradeoff, observability, rollback, render check and accepted-gap evidence without forcing C4 detail, architecture-as-code or Well-Architected review when not applicable.
 - `false-positive fixtures`: backend/native work does not force FSD, simple CRUD `src/domain/*` does not force DDD, docs-light does not force a docs portal, hosted docs and DB introspection stay approval-required.
 
 ## Forbidden Behavior

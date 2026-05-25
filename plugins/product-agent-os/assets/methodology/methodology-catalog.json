@@ -248,16 +248,103 @@
       "title": "Solution Architecture",
       "source_file": "docs/methodologies/solution-architecture.md",
       "purpose": "Architecture boundaries, views, ADRs, quality attributes, tradeoffs, ownership and fitness checks.",
-      "applies_when": [],
-      "not_applicable_when": [],
-      "maturity_impact": [],
-      "complexity_impact": [],
-      "track8_scenarios": [],
+      "applies_when": [
+        "complex or multi-surface system",
+        "public API, event contract or generated client",
+        "persistent data, PII, migration or retention change",
+        "runtime, deployment, observability or rollback change",
+        "parallel agent ownership or team boundary"
+      ],
+      "not_applicable_when": [
+        "typo-only docs edit",
+        "formatting-only edit",
+        "docs-light prototype without reviewed/diffable diagrams",
+        "non-cloud work without Well-Architected review"
+      ],
+      "maturity_impact": [
+        "team",
+        "production",
+        "regulated"
+      ],
+      "complexity_impact": [
+        "standard",
+        "complex",
+        "high_risk"
+      ],
+      "track8_scenarios": [
+        "complex_system_acceleration",
+        "api_migration",
+        "data_migration",
+        "security_sensitive_change",
+        "release_packaging",
+        "ai_eval_regression"
+      ],
       "decision_horizons": [],
-      "artifacts": [],
-      "gates": [],
-      "eval_fields": [],
-      "overlaps": []
+      "artifacts": [
+        "architecture-overview.md",
+        "adr.md",
+        "architecture-review-record.md",
+        "architecture-fitness-functions.md",
+        "trust-boundary-map.md",
+        "architecture-docs-tooling-decision.md",
+        "api-contract-review.md",
+        "database-dictionary.md",
+        "security-risk-review.md",
+        "migration-plan.md",
+        "integration-catalog.md"
+      ],
+      "gates": [
+        "solution_architecture_scope_present",
+        "architecture_context_view_present",
+        "architecture_container_boundary_present",
+        "architecture_boundary_per_slice",
+        "boundary_responsibility_owner_present",
+        "bounded_context_architecture_boundary_trace",
+        "dependency_rules_present",
+        "public_contract_boundary_trace_present",
+        "data_ownership_boundary_present",
+        "runtime_deployment_topology_present",
+        "observability_architecture_present",
+        "quality_attribute_scenarios_present",
+        "tradeoff_record_for_high_impact_decision",
+        "adr_for_architecture_decision",
+        "trust_boundary_security_review_present",
+        "domain_to_architecture_trace_present",
+        "diagram_render_check_present",
+        "architecture_fitness_function_present",
+        "migration_rollback_path_present",
+        "architecture_docs_as_code_present",
+        "architecture_owner_review_present",
+        "accepted_gap_recorded"
+      ],
+      "eval_fields": [
+        "solution_architecture_scope_contract_present",
+        "architecture_context_view_contract_present",
+        "architecture_boundary_contract_present",
+        "boundary_owner_contract_present",
+        "domain_architecture_trace_contract_present",
+        "public_contract_trace_contract_present",
+        "data_ownership_boundary_contract_present",
+        "trust_boundary_review_contract_present",
+        "quality_attribute_scenarios_contract_present",
+        "architecture_decision_record_contract_present",
+        "runtime_observability_contract_present",
+        "diagram_render_check_contract_present",
+        "architecture_fitness_function_contract_present",
+        "migration_rollback_contract_present",
+        "architecture_docs_lifecycle_contract_present",
+        "accepted_gap_contract_present",
+        "unsupported_architecture_claims_rejected_contract_present"
+      ],
+      "overlaps": [
+        "requirements and domain traceability",
+        "API and event contracts",
+        "database and data ownership",
+        "security and trust boundaries",
+        "delivery and rollback",
+        "AI runtime and observability",
+        "agent team ownership"
+      ]
     },
     {
       "id": "quality_testing_evals",

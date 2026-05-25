@@ -35,7 +35,7 @@ Generated at: 2026-05-25
 - False-positive scenario fixture coverage: implemented in `T8-GX`.
 - Detailed discovery status depth: implemented in `T8-D`.
 - Track 9 methodology intelligence plan: authored in `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`.
-- Track 9 foundation, `T9-D1` Business/Product and `T9-D2` Requirements/Domain: implemented.
+- Track 9 foundation, `T9-D1` Business/Product, `T9-D2` Requirements/Domain and `T9-D3` Solution Architecture: implemented.
 
 ## Track 9 Methodology Intelligence Evals
 
@@ -60,6 +60,14 @@ Generated at: 2026-05-25
 - False-positive protection: typo-only docs edits, formatting-only edits and dependency metadata without behavior impact do not force Requirements & Domain methodology on README-only work.
 - Unsupported claims rejected: BDD replaces testing, Gherkin is mandatory, user story template is complete requirements, glossary is ubiquitous language and OpenAPI is requirements source of truth.
 - Residual risk: requirements/domain artifacts prove traceability structure, not that domain experts have semantically validated every business rule.
+
+## Solution Architecture Evals
+
+- `solution_architecture_contract_present`: implemented in `T9-D3`.
+- Required evidence: architecture scope, C4 context/container or equivalent boundary map, slice boundary, boundary responsibility owner, bounded-context-to-architecture trace, dependency rules, public contract trace, data ownership boundary, runtime topology, observability architecture, quality attribute scenarios, ADR/tradeoff record, trust boundary review, diagram render check, architecture fitness functions, migration rollback path, architecture docs lifecycle, owner review and accepted gaps.
+- False-positive protection: typo-only docs edits, formatting-only edits, docs-light prototypes without reviewed/diffable diagrams and non-cloud work without Well-Architected review do not force Solution Architecture methodology.
+- Unsupported claims rejected: architecture means diagrams, rendered diagram proves correctness, C4 code diagrams are always required, ADR is bureaucracy, Well-Architected review proves architecture quality, architecture-as-code is always required and AI can design architecture from chat alone.
+- Residual risk: architecture artifacts prove boundary and evidence shape, not that the selected architecture is semantically optimal or owner-approved for a real production system.
 
 ## Completion Evidence Evals
 
