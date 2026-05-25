@@ -262,6 +262,8 @@ Required gates: `backend_service_boundary_present`, `backend_runtime_behavior_pr
 
 Keep microservices conditional. Modular monolith remains the default until independent deploy/scale/team/ownership evidence justifies a service split. Backend readiness requires runtime/failure/observability/security/rollback evidence or `explicit_gap_accepted`; use `approval_required` before production data, external writes, secrets, deploy actions or irreversible side effects.
 
+During workspace discovery, record backend stack, backend commands, CI, APIs, DB, queues, workers, deployment manifests and security signals as `present_unverified`. Do this without executing deployments, running commands, triggering CI, touching external writes or mutating external systems. Use `approval_required` before any deploy action, external write, secret access, production data access or irreversible side effect.
+
 ## Evidence Before Completion
 
 Evidence-before-completion (`evidence_before_completion`): do not make a ready claim, completed claim, fixed claim, works claim, or release claim without current command evidence, current eval evidence, current runtime evidence, owner evidence, or an explicit test gap. If only inspection happened, label the result `inspection-only` and list every unsupported completion claim. Treat completion claim without current evidence as blocked.

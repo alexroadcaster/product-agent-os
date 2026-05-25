@@ -1292,6 +1292,99 @@ def _security_sensitive_signals(files: set[str]) -> dict[str, Any]:
     }
 
 
+def _backend_dependency_signals(files: set[str]) -> dict[str, Any]:
+    normalized = {path.replace("\\", "/") for path in files}
+
+    def packet(sources: list[str]) -> dict[str, Any]:
+        return {
+            "sources": sources[:20],
+            "status": "present_unverified" if sources else "applicable_missing",
+        }
+
+    categories = {
+        "database": sorted(path for path in normalized if _is_backend_database_dependency_source(path)),
+        "message_broker": sorted(path for path in normalized if _is_backend_message_broker_dependency_source(path)),
+        "cache": sorted(path for path in normalized if _is_backend_cache_dependency_source(path)),
+        "payment": sorted(path for path in normalized if _is_backend_payment_dependency_source(path)),
+        "email": sorted(path for path in normalized if _is_backend_email_dependency_source(path)),
+        "storage": sorted(path for path in normalized if _is_backend_storage_dependency_source(path)),
+        "search": sorted(path for path in normalized if _is_backend_search_dependency_source(path)),
+        "third_party_http_provider": sorted(
+            path for path in normalized if _is_backend_third_party_http_provider_source(path)
+        ),
+    }
+    result = {name: packet(sources) for name, sources in categories.items()}
+    result["note"] = (
+        "backend dependency categories include database, message broker, cache, payment, email, "
+        "storage, search and third-party HTTP/provider clients; present_unverified until owner review, "
+        "contract evidence and runtime verification confirm dependency behavior"
+    )
+    return result
+
+
+def _backend_delivery_signals(files: set[str], stack: list[str]) -> dict[str, Any]:
+    normalized = {path.replace("\\", "/") for path in files}
+
+    def packet(sources: list[str]) -> dict[str, Any]:
+        return {
+            "sources": sources[:20],
+            "status": "present_unverified" if sources else "applicable_missing",
+        }
+
+    stack_sources = sorted(path for path in normalized if _is_backend_stack_source(path, stack))
+    command_sources = sorted(path for path in normalized if _is_run_command_candidate(path))
+    ci_sources = sorted(path for path in normalized if _is_ci_workflow_source(path))
+    api_sources = sorted(path for path in normalized if _is_contract_source(path))
+    database_sources = sorted(path for path in normalized if _is_backend_database_dependency_source(path))
+    queue_sources = sorted(path for path in normalized if _is_backend_message_broker_dependency_source(path))
+    worker_sources = sorted(path for path in normalized if _is_backend_worker_source(path))
+    deployment_sources = sorted(path for path in normalized if _is_backend_deployment_manifest_source(path))
+    security_sources = sorted(path for path in normalized if _is_backend_security_signal_source(path))
+
+    return {
+        "backend_stack": packet(stack_sources),
+        "commands": packet(command_sources),
+        "ci": packet(ci_sources),
+        "api_contracts": packet(api_sources),
+        "database": packet(database_sources),
+        "queues": packet(queue_sources),
+        "workers": packet(worker_sources),
+        "deployment_manifests": packet(deployment_sources),
+        "security": packet(security_sources),
+        "note": (
+            "Workspace discovery records backend stack, backend commands, CI, APIs, DB, queues, "
+            "workers, deployment manifests and security signals as present_unverified without "
+            "executing deployments, commands or external writes; approval_required applies before "
+            "deployment, production data, secrets or other external mutations."
+        ),
+    }
+
+
+def _backend_resilience_signals(files: set[str]) -> dict[str, Any]:
+    normalized = {path.replace("\\", "/") for path in files}
+
+    def packet(sources: list[str]) -> dict[str, Any]:
+        return {
+            "sources": sources[:20],
+            "status": "present_unverified" if sources else "applicable_missing",
+        }
+
+    retry_idempotency_sources = sorted(path for path in normalized if _is_backend_retry_idempotency_source(path))
+    job_context_sources = sorted(path for path in normalized if _is_backend_job_context_source(path))
+    dependency_context_sources = sorted(path for path in normalized if _is_backend_dependency_context_source(path))
+
+    return {
+        "retry_idempotency_terms": packet(retry_idempotency_sources),
+        "job_context": packet(job_context_sources),
+        "dependency_context": packet(dependency_context_sources),
+        "note": (
+            "T9-D7 uses lightweight read-only signals for retry/idempotency terms and "
+            "dependency/job context only; deeper static analysis deferred to avoid false positives "
+            "until a later stack-specific slice has owner, examples and verification."
+        ),
+    }
+
+
 def _ci_stabilization_signals(files: set[str]) -> dict[str, Any]:
     workflow_sources = sorted(path for path in files if _is_ci_workflow_source(path))
     failure_log_sources = sorted(path for path in files if _is_ci_failure_log_source(path))
@@ -1588,6 +1681,188 @@ def _is_security_rollback_source(relative: str) -> bool:
 def _is_security_approval_source(relative: str) -> bool:
     lowered = relative.lower()
     return any(term in lowered for term in ("approval", "owner-review", "security-review", "risk-review"))
+
+
+def _is_backend_database_dependency_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return (
+        lowered.startswith(("repositories/", "src/repositories/", "db/", "database/", "migrations/"))
+        or lowered.endswith((".sql", ".dbml", "schema.prisma"))
+        or any(term in lowered for term in ("postgres", "psycopg", "mysql", "sqlite", "database", "repository"))
+    )
+
+
+def _is_backend_message_broker_dependency_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return (
+        lowered.startswith(("queues/", "src/queues/", "consumers/", "src/consumers/"))
+        or any(
+            term in lowered
+            for term in (
+                "message-broker",
+                "message_broker",
+                "broker",
+                "queue",
+                "consumer",
+                "kafka",
+                "rabbitmq",
+                "sqs",
+                "pubsub",
+                "nats",
+            )
+        )
+    )
+
+
+def _is_backend_cache_dependency_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return lowered.startswith(("cache/", "src/cache/")) or any(
+        term in lowered for term in ("redis", "memcache", "memcached", "cache")
+    )
+
+
+def _is_backend_payment_dependency_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return any(term in lowered for term in ("payment", "billing", "checkout", "stripe", "invoice", "subscription"))
+
+
+def _is_backend_email_dependency_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return any(term in lowered for term in ("email", "mail", "smtp", "sendgrid", "ses", "postmark"))
+
+
+def _is_backend_storage_dependency_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return lowered.startswith(("storage/", "src/storage/")) or any(
+        term in lowered for term in ("blob", "object-store", "object_store", "s3", "gcs", "r2", "storage")
+    )
+
+
+def _is_backend_search_dependency_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return lowered.startswith(("search/", "src/search/")) or any(
+        term in lowered for term in ("search", "elasticsearch", "opensearch", "algolia", "meilisearch")
+    )
+
+
+def _is_backend_third_party_http_provider_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return (
+        lowered.startswith(("adapters/", "src/adapters/", "integrations/", "src/integrations/"))
+        or any(
+            term in lowered
+            for term in (
+                "provider_client",
+                "provider-client",
+                "http_client",
+                "http-client",
+                "api_client",
+                "api-client",
+                "external_client",
+                "external-client",
+                "third_party",
+                "third-party",
+                "webhook",
+            )
+        )
+    )
+
+
+def _is_backend_stack_source(relative: str, stack: list[str]) -> bool:
+    lowered = relative.lower()
+    stack_markers = {
+        "package.json",
+        "pyproject.toml",
+        "requirements.txt",
+        "go.mod",
+        "pom.xml",
+        "build.gradle",
+        "cargo.toml",
+    }
+    return (
+        lowered in stack_markers
+        or _detect_backend_signal({relative})
+        or bool(stack)
+        and lowered in stack_markers
+    )
+
+
+def _is_backend_worker_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return lowered.startswith(
+        (
+            "workers/",
+            "src/workers/",
+            "jobs/",
+            "src/jobs/",
+            "schedulers/",
+            "src/schedulers/",
+            "consumers/",
+            "src/consumers/",
+        )
+    ) or any(term in lowered for term in ("worker", "scheduler", "consumer", "job"))
+
+
+def _is_backend_deployment_manifest_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return (
+        lowered in {"dockerfile", "docker-compose.yml", "docker-compose.yaml", "procfile", "serverless.yml"}
+        or lowered.startswith(("k8s/", "kubernetes/", "helm/", "charts/", ".github/workflows/deploy"))
+        or lowered.endswith((".tf", ".tf.json"))
+        and any(term in lowered for term in ("deploy", "service", "worker", "backend"))
+    )
+
+
+def _is_backend_security_signal_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return (
+        lowered.startswith(("security/", "src/security/", "auth/", "src/auth/"))
+        or _is_security_authn_source(relative)
+        or _is_security_authz_source(relative)
+        or _is_security_permission_source(relative)
+        or _is_security_payment_source(relative)
+        or _is_security_secret_source(relative)
+        or _is_security_sensitive_data_source(relative)
+        or _is_security_abuse_control_source(relative)
+        or _is_security_audit_logging_source(relative)
+    )
+
+
+def _is_backend_retry_idempotency_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return any(
+        term in lowered
+        for term in (
+            "retry",
+            "retries",
+            "backoff",
+            "timeout",
+            "idempotency",
+            "idempotent",
+            "dedupe",
+            "deduplication",
+            "circuit-breaker",
+            "circuit_breaker",
+        )
+    )
+
+
+def _is_backend_job_context_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return _is_backend_worker_source(relative) or _is_backend_message_broker_dependency_source(relative)
+
+
+def _is_backend_dependency_context_source(relative: str) -> bool:
+    return (
+        _is_backend_database_dependency_source(relative)
+        or _is_backend_message_broker_dependency_source(relative)
+        or _is_backend_cache_dependency_source(relative)
+        or _is_backend_payment_dependency_source(relative)
+        or _is_backend_email_dependency_source(relative)
+        or _is_backend_storage_dependency_source(relative)
+        or _is_backend_search_dependency_source(relative)
+        or _is_backend_third_party_http_provider_source(relative)
+    )
 
 
 def _is_ci_workflow_source(relative: str) -> bool:
@@ -2396,6 +2671,9 @@ def _behavioral_route_inputs(
             "desktop_local_signals": _desktop_local_signals(files),
             "data_migration_signals": _data_migration_signals(files),
             "security_sensitive_signals": _security_sensitive_signals(files),
+            "backend_dependency_signals": _backend_dependency_signals(files),
+            "backend_delivery_signals": _backend_delivery_signals(files, stack),
+            "backend_resilience_signals": _backend_resilience_signals(files),
             "ci_stabilization_signals": _ci_stabilization_signals(files),
             "release_packaging_signals": _release_packaging_signals(files),
         },
@@ -2505,6 +2783,9 @@ def analyze_workspace(root: str | Path, *, intent_hint: str = "") -> dict[str, A
         "desktop_local_signals": _desktop_local_signals(files),
         "data_migration_signals": _data_migration_signals(files),
         "security_sensitive_signals": _security_sensitive_signals(files),
+        "backend_dependency_signals": _backend_dependency_signals(files),
+        "backend_delivery_signals": _backend_delivery_signals(files, stack),
+        "backend_resilience_signals": _backend_resilience_signals(files),
         "ci_stabilization_signals": _ci_stabilization_signals(files),
         "release_packaging_signals": _release_packaging_signals(files),
         "route_inputs": route_inputs,

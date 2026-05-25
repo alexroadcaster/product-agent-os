@@ -996,6 +996,212 @@ class MethodologyAuditContractTest(unittest.TestCase):
                 with self.subTest(recommendation=name, expected=expected):
                     self.assertIn(expected.lower(), evidence)
 
+    def test_backend_intake_security_ops_contract_and_health_recommendations(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "server").mkdir()
+            (root / "server" / "app.py").write_text("def app():\n    return None\n", encoding="utf-8")
+            result = build_methodology_audit(
+                root,
+                intent_hint=(
+                    "production backend service/user behavior affected backend unit dependencies data stores "
+                    "runtime constraints operational assumptions explicit gaps security authn authz secrets "
+                    "rate limits audit logging sensitive data abuse cases no-secrets evidence traces metrics "
+                    "logs dashboards alerts semantic conventions collector instrumentation context propagation "
+                    "redaction policy SLO user journey health platform-unavailable gap reason follow-up "
+                    "runbook severity assumptions log query links rollback verification command feature flag "
+                    "OpenAPI AsyncAPI Pact protobuf provider contracts external providers contract changes "
+                    "synced with code and tests"
+                ),
+            )
+
+        boundary = self._recommendation_by_gate(result, "backend_service_boundary_present")
+        security = self._recommendation_by_gate(result, "backend_security_reviewed")
+        observability = self._recommendation_by_gate(result, "backend_observability_contract_present")
+        health = self._recommendation_by_gate(result, "backend_health_probe_contract_present")
+        config = self._recommendation_by_gate(result, "backend_config_secrets_boundary_present")
+        rollback = self._recommendation_by_gate(result, "backend_rollback_plan_present")
+
+        expected_by_recommendation = {
+            "boundary": (
+                boundary,
+                [
+                    "service/user behavior",
+                    "affected backend unit",
+                    "data stores",
+                    "operational assumptions",
+                    "APIs/events/external providers",
+                    "OpenAPI/AsyncAPI/Pact/protobuf/provider contracts where applicable",
+                    "contract changes synced with code and tests",
+                ],
+            ),
+            "security": (
+                security,
+                [
+                    "authn/authz",
+                    "secrets",
+                    "rate limits",
+                    "audit logging",
+                    "sensitive data",
+                    "abuse cases",
+                    "privileged operations",
+                    "no-secrets evidence",
+                ],
+            ),
+            "observability": (
+                observability,
+                [
+                    "semantic conventions or accepted gaps",
+                    "collector/instrumentation notes",
+                    "context propagation",
+                    "redaction policy",
+                ],
+            ),
+            "health": (
+                health,
+                [
+                    "tested where platform/runtime is available",
+                    "platform-unavailable gap owner",
+                    "platform-unavailable gap reason",
+                    "platform-unavailable follow-up",
+                    "documentation alone is not sufficient",
+                ],
+            ),
+            "config": (
+                config,
+                [
+                    "required/optional status",
+                    "no-secrets/no-private-data constraints",
+                    "docs, prompts, fixtures, logs and examples",
+                ],
+            ),
+            "rollback": (
+                rollback,
+                [
+                    "feature flag",
+                    "verification command",
+                    "rollback/no-rollback rationale",
+                    "contract changes synced with code/tests where applicable",
+                ],
+            ),
+        }
+        for name, (recommendation, expected_terms) in expected_by_recommendation.items():
+            evidence = " ".join(recommendation["evidence_required"]).lower()
+            for expected in expected_terms:
+                with self.subTest(recommendation=name, expected=expected):
+                    self.assertIn(expected.lower(), evidence)
+
+    def test_backend_severity_policy_and_lightweight_retry_recommendations(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "server").mkdir()
+            (root / "server" / "app.py").write_text("def app():\n    return None\n", encoding="utf-8")
+            production_result = build_methodology_audit(
+                root,
+                intent_hint=(
+                    "ship production backend service remote dependency retry idempotency observability "
+                    "SLO health security rollback owner review"
+                ),
+            )
+            accepted_gap_result = build_methodology_audit(
+                root,
+                intent_hint=(
+                    "ship production backend SLO health observability explicit_gap_accepted owner reason "
+                    "review date downstream risk follow-up condition"
+                ),
+            )
+            local_result = build_methodology_audit(
+                root,
+                intent_hint="simple local/backend-light backend helper script without production users",
+            )
+
+        self.assertEqual(
+            self._recommendation_by_gate(production_result, "backend_service_boundary_present")["priority"],
+            "P0_blocker",
+        )
+        self.assertEqual(
+            self._recommendation_by_gate(production_result, "backend_runtime_behavior_present")["priority"],
+            "P0_blocker",
+        )
+        for gate in [
+            "backend_security_reviewed",
+            "backend_rollback_plan_present",
+            "backend_observability_contract_present",
+            "backend_slo_or_gap_present",
+            "backend_health_probe_contract_present",
+        ]:
+            with self.subTest(gate=gate):
+                self.assertEqual(
+                    self._recommendation_by_gate(production_result, gate)["priority"],
+                    "P1_high_risk",
+                )
+
+        for gate in [
+            "backend_observability_contract_present",
+            "backend_slo_or_gap_present",
+            "backend_health_probe_contract_present",
+        ]:
+            with self.subTest(accepted_gap=gate):
+                recommendation = self._recommendation_by_gate(accepted_gap_result, gate)
+                self.assertEqual(recommendation["priority"], "P2_recommended")
+                self.assertIn("accepted gap downgrade", recommendation["reason"].lower())
+
+        local_priorities = {
+            item["priority"]
+            for item in local_result["recommendations"]
+            if item["domain"] == "backend"
+        }
+        self.assertTrue(local_priorities)
+        self.assertTrue(local_priorities.issubset({"P2_recommended", "P3_optional_maturity"}))
+
+        runtime = self._recommendation_by_gate(production_result, "backend_runtime_behavior_present")
+        runtime_evidence = " ".join(runtime["evidence_required"]).lower()
+        for expected in [
+            "lightweight read-only retry/idempotency signals",
+            "dependency/job context",
+            "deeper static analysis deferred",
+            "avoid false positives",
+        ]:
+            with self.subTest(expected=expected):
+                self.assertIn(expected, runtime_evidence)
+
+    def test_backend_routes_semantic_evidence_sufficiency_to_owner_review_backlog(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "server").mkdir()
+            (root / "server" / "app.py").write_text("def app():\n    return None\n", encoding="utf-8")
+            result = build_methodology_audit(
+                root,
+                intent_hint="production backend completion evidence tests evals runtime real project risk",
+            )
+
+        recommendation = self._recommendation_by_gate(
+            result,
+            "backend_evidence_sufficiency_owner_reviewed",
+        )
+        self.assertEqual(recommendation["priority"], "P1_high_risk")
+        self.assertEqual(recommendation["artifact"], "EVALS.md")
+        evidence = " ".join(recommendation["evidence_required"]).lower()
+        for expected in [
+            "owner reviewed test/eval/runtime evidence sufficiency",
+            "real project risk",
+            "accepted gap owner",
+            "accepted gap reason",
+            "review date",
+            "downstream risk",
+            "follow-up",
+            "t9-s",
+            "cross-domain semantic sufficiency backlog",
+        ]:
+            with self.subTest(expected=expected):
+                self.assertIn(expected, evidence)
+
 
 if __name__ == "__main__":
     unittest.main()

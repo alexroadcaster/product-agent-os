@@ -16,7 +16,7 @@ Profile: {profile_name}
 - Assemble a staged release draft.
 - Summarize the pull request scope and user impact.
 - Include checks, rollback, residual risks, and approval requirements.
-- For backend rollback, include rollback command, manual procedure, data recovery/replay, irreversible side effects, owner approval and residual risk.
+- For backend rollback, include feature flag, rollback command, manual procedure, verification command, rollback/no-rollback rationale, data recovery/replay, irreversible side effects, owner approval and residual risk.
 - Apply `evidence_before_completion` before any ready claim, completed claim,
   fixed claim, works claim, or release claim.
 - Require current command evidence, current eval evidence, current runtime
@@ -47,6 +47,9 @@ Profile: {profile_name}
 - User impact:
 - Rollback:
 - Backend rollback:
+- Feature flag:
+- Verification command:
+- Rollback/no-rollback rationale:
 - Rollback command:
 - Manual procedure:
 - Data recovery/replay:

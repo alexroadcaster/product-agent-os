@@ -1092,6 +1092,51 @@ def _backend_not_applicable(intent: str) -> bool:
     return any(phrase in intent for phrase in BACKEND_NOT_APPLICABLE_PHRASES)
 
 
+def _backend_severity_mode(intent: str) -> str:
+    lightweight_terms = (
+        "backend-light",
+        "local/backend-light",
+        "simple local",
+        "local-only",
+        "prototype",
+        "without production users",
+        "non-production",
+    )
+    if any(term in intent for term in lightweight_terms):
+        return "lightweight"
+    production_terms = (
+        "production",
+        "deploy",
+        "release",
+        "ship",
+        "external write",
+        "irreversible",
+        "payment",
+        "pii",
+        "sensitive",
+        "security",
+        "migration",
+        "public api",
+        "public contract",
+    )
+    if any(term in intent for term in production_terms):
+        return "production"
+    return "standard"
+
+
+def _backend_has_complete_accepted_gap(intent: str) -> bool:
+    gap_marker = "explicit_gap_accepted" in intent or "accepted gap" in intent
+    required_terms = ("owner", "reason", "review date")
+    risk_terms = ("downstream risk", "residual risk")
+    follow_up_terms = ("follow-up", "follow up", "followup")
+    return (
+        gap_marker
+        and all(term in intent for term in required_terms)
+        and any(term in intent for term in risk_terms)
+        and any(term in intent for term in follow_up_terms)
+    )
+
+
 def _business_product_recommendations(files: set[str], intent: str) -> list[dict[str, Any]]:
     if not _business_product_applies(intent):
         return []
@@ -2507,6 +2552,16 @@ def _backend_recommendations(
         return []
 
     recommendations: list[dict[str, Any]] = []
+    severity_mode = _backend_severity_mode(intent)
+    accepted_gap_recorded = _backend_has_complete_accepted_gap(intent)
+    blocker_priority = "P2_recommended" if severity_mode == "lightweight" else "P0_blocker"
+    high_risk_priority = "P3_optional_maturity" if severity_mode == "lightweight" else "P1_high_risk"
+    accepted_gap_priority = "P2_recommended" if accepted_gap_recorded else high_risk_priority
+    accepted_gap_reason = (
+        " Accepted gap downgrade applies because owner, reason, review date, downstream risk and follow-up are recorded."
+        if accepted_gap_recorded
+        else ""
+    )
 
     def add(
         gate: str,
@@ -2539,17 +2594,21 @@ def _backend_recommendations(
 
     add(
         "backend_service_boundary_present",
-        "P0_blocker",
+        blocker_priority,
         "backend-service-overview.md",
         "Backend work needs service/module boundary, owner, contracts, dependencies, data ownership and runtime shape.",
         [
             "changed backend responsibility",
+            "service/user behavior",
+            "affected backend unit",
             "purpose",
             "owner",
             "inbound contracts",
             "outbound dependencies",
+            "data stores",
             "data ownership",
             "deployment/runtime shape",
+            "operational assumptions",
             "modular monolith default",
             "microservice rationale",
             "independent deploy/scale/team/ownership evidence",
@@ -2562,12 +2621,15 @@ def _backend_recommendations(
             "domain logic independent from HTTP/DB/queue/vendor SDK",
             "Twelve-Factor vocabulary",
             "explicit dependencies",
+            "APIs/events/external providers",
+            "OpenAPI/AsyncAPI/Pact/protobuf/provider contracts where applicable",
+            "contract changes synced with code and tests",
         ],
         residual="Package or service names can hide unclear ownership and runtime boundaries.",
     )
     add(
         "backend_runtime_behavior_present",
-        "P0_blocker",
+        blocker_priority,
         "backend-runtime-behavior.md",
         "Backend runtime behavior needs retries, timeouts, idempotency, ordering, replay and failure modes documented.",
         [
@@ -2584,12 +2646,16 @@ def _backend_recommendations(
             "admin tasks",
             "logs-as-event-stream",
             "stateless process or accepted gap",
+            "lightweight read-only retry/idempotency signals",
+            "dependency/job context",
+            "deeper static analysis deferred",
+            "avoid false positives",
         ],
         residual="Retries, workers or distributed behavior can amplify failures without idempotency and replay evidence.",
     )
     add(
         "backend_dependency_failure_matrix_present",
-        "P1_high_risk",
+        high_risk_priority,
         "backend-dependency-failure-matrix.md",
         "Remote dependencies need timeout, retry, circuit breaker or non-applicability, fallback, alert and owner policy.",
         [
@@ -2605,9 +2671,10 @@ def _backend_recommendations(
     )
     add(
         "backend_observability_contract_present",
-        "P1_high_risk",
+        accepted_gap_priority,
         "backend-observability-map.md",
-        "Backend runtime changes need traces, metrics, logs, dashboards, alerts, correlation IDs and redaction notes.",
+        "Backend runtime changes need traces, metrics, logs, dashboards, alerts, correlation IDs and redaction notes."
+        + accepted_gap_reason,
         [
             "traces",
             "metrics",
@@ -2616,6 +2683,10 @@ def _backend_recommendations(
             "alerts",
             "correlation IDs",
             "redaction/no-secrets",
+            "context propagation",
+            "semantic conventions or accepted gaps",
+            "collector/instrumentation notes",
+            "redaction policy",
             "alert ownership",
             "no-private-payload logging",
             "logs alone are not accepted as observability",
@@ -2624,9 +2695,10 @@ def _backend_recommendations(
     )
     add(
         "backend_slo_or_gap_present",
-        "P1_high_risk",
+        accepted_gap_priority,
         "backend-slo-sheet.md",
-        "Production or user-facing backend needs SLI/SLO or explicit no-telemetry/not-yet-production gap.",
+        "Production or user-facing backend needs SLI/SLO or explicit no-telemetry/not-yet-production gap."
+        + accepted_gap_reason,
         [
             "SLI/SLO or explicit gap",
             "user journey",
@@ -2641,9 +2713,10 @@ def _backend_recommendations(
     )
     add(
         "backend_health_probe_contract_present",
-        "P1_high_risk",
+        accepted_gap_priority,
         "backend-health-check-contract.md",
-        "Deployable backend needs health semantics and verification or a platform-unavailable gap.",
+        "Deployable backend needs health semantics and verification or a platform-unavailable gap."
+        + accepted_gap_reason,
         [
             "health endpoint semantics",
             "liveness",
@@ -2652,12 +2725,17 @@ def _backend_recommendations(
             "platform equivalent",
             "test evidence or accepted gap",
             "platform-unavailable gap",
+            "tested where platform/runtime is available",
+            "platform-unavailable gap owner",
+            "platform-unavailable gap reason",
+            "platform-unavailable follow-up",
+            "documentation alone is not sufficient",
         ],
         residual="A vague health endpoint can route traffic to an alive but not ready service.",
     )
     add(
         "backend_job_queue_contract_present",
-        "P1_high_risk",
+        high_risk_priority,
         "backend-job-queue-contract.md",
         "Jobs, queues, consumers or schedulers need payload, retry, DLQ, idempotency and replay contract.",
         [
@@ -2676,7 +2754,7 @@ def _backend_recommendations(
     )
     add(
         "backend_data_consistency_strategy_present",
-        "P1_high_risk",
+        high_risk_priority,
         "backend-data-consistency-record.md",
         "Distributed data behavior needs transaction boundary, consistency model, outbox/saga/compensation and recovery path.",
         [
@@ -2696,7 +2774,7 @@ def _backend_recommendations(
     )
     add(
         "backend_config_secrets_boundary_present",
-        "P1_high_risk",
+        high_risk_priority,
         "backend-config-secrets-manifest.md",
         "Backend config and secrets need manifest without values, secret source, rotation and local/prod parity.",
         [
@@ -2705,12 +2783,15 @@ def _backend_recommendations(
             "rotation notes",
             "local/prod parity",
             "required/optional",
+            "required/optional status",
             "authn/authz config",
             "tokens",
             "PII",
             "explicit dependencies",
             "build-release-run boundary",
             "dev/prod parity",
+            "no-secrets/no-private-data constraints",
+            "docs, prompts, fixtures, logs and examples",
         ],
         residual=(
             "Secrets or environment assumptions can leak into docs, prompts, fixtures and logs, "
@@ -2719,7 +2800,7 @@ def _backend_recommendations(
     )
     add(
         "backend_security_reviewed",
-        "P1_high_risk",
+        high_risk_priority,
         "security-risk-review.md",
         "Security-sensitive backend behavior needs authn/authz, secrets, rate limits, audit logging and abuse-case review.",
         [
@@ -2735,6 +2816,7 @@ def _backend_recommendations(
             "audit logging",
             "sensitive data",
             "abuse cases",
+            "no-secrets evidence",
         ],
         owner="security or backend owner",
         approval="approval_required before touching auth, secrets, PII, money movement, privileged operations or external writes",
@@ -2742,7 +2824,7 @@ def _backend_recommendations(
     )
     add(
         "backend_rollback_plan_present",
-        "P1_high_risk",
+        high_risk_priority,
         "backend-release-rollback-notes.md",
         "Risky backend changes need rollback trigger, migration/feature flag plan, replay and data recovery path.",
         [
@@ -2751,13 +2833,38 @@ def _backend_recommendations(
             "migration",
             "rollback command or manual procedure",
             "rollback/no-rollback rationale",
+            "verification command",
             "data recovery/replay",
             "irreversible side effects",
             "owner approval",
             "residual risk",
+            "contract changes synced with code/tests where applicable",
         ],
         owner="backend and release owners",
         residual="Production backend changes can become irreversible without rollback, recovery or replay evidence.",
+    )
+    add(
+        "backend_evidence_sufficiency_owner_reviewed",
+        high_risk_priority,
+        "EVALS.md",
+        "Backend completion evidence needs human owner review of test/eval/runtime sufficiency for real project risk.",
+        [
+            "owner reviewed test/eval/runtime evidence sufficiency",
+            "real project risk",
+            "accepted gap owner",
+            "accepted gap reason",
+            "review date",
+            "downstream risk",
+            "follow-up",
+            "T9-S",
+            "cross-domain semantic sufficiency backlog",
+        ],
+        owner="human owner and backend owner",
+        residual=(
+            "A backend route can prove evidence shape without proving the human owner accepted that the "
+            "specific checks are sufficient for this project's production risk."
+        ),
+        action="Record owner-reviewed evidence sufficiency in EVALS/RUNLOG or route the gap to T9-S.",
     )
 
     if _mentions_any(intent, UNSUPPORTED_BACKEND_CLAIMS):

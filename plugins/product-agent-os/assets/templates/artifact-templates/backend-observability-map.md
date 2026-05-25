@@ -6,7 +6,7 @@ Owner: backend owner
 
 ## Scope
 
-Use this artifact for `backend_observability_contract_present`, traces, metrics, logs, dashboards, alerts, alert ownership, correlation IDs, context propagation, redaction, no-private-payload logging and OpenTelemetry-style vocabulary.
+Use this artifact for `backend_observability_contract_present`, traces, metrics, logs, dashboards, alerts, alert ownership, correlation IDs, context propagation, semantic conventions or accepted gaps, collector/instrumentation notes, redaction policy, no-private-payload logging and OpenTelemetry-style vocabulary.
 
 ## Observability Signals
 
@@ -16,8 +16,9 @@ Use this artifact for `backend_observability_contract_present`, traces, metrics,
 
 ## Instrumentation Notes
 
-- Semantic conventions or accepted gap:
+- Semantic conventions or accepted gaps:
 - Collector/exporter or platform path:
+- Collector/instrumentation notes:
 - Context propagation:
 - Baggage/privacy boundary:
 
@@ -43,7 +44,10 @@ Use this artifact for `backend_observability_contract_present`, traces, metrics,
 - alert ownership
 - correlation IDs
 - context propagation
+- semantic conventions or accepted gaps
+- collector/instrumentation notes
 - redaction
+- redaction policy
 - no-private-payload logging
 - collector/exporter
 - logs alone are not accepted as observability

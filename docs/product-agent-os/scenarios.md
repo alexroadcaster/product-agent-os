@@ -51,6 +51,7 @@ Source status: `official + experiment`
 - Route selection is covered by discovery tests, `usage_mode` fixture checks, and T8-GX false-positive fixtures for selected methodology/tooling gates.
 - Scenario behavior is covered by `behavioral-workflows.json` and `run_fixture_eval.py`.
 - Frontend methodology routing is covered by `frontend_contract_present` and the synthetic `frontend-ui-app` fixture: UI completion requires user-flow, component state, visual/accessibility/runtime/interaction evidence or an accepted gap, not Storybook-only or inspection-only evidence.
+- Backend methodology routing is covered by `backend_contract_present` and the synthetic `backend-service-app` fixture: backend completion requires `backend-service-overview.md`, `backend-runtime-behavior.md`, runtime/failure evidence, observability/SLO/health evidence, security/rollback evidence and owner reviewed sufficiency or accepted gap, not package docs or logs-only evidence.
 - Docs and source claims are checked by `tools/check_docs.py`, source policy and strict MkDocs when navigation changes.
 - Completion language must pass evidence-before-completion: current command evidence, current eval evidence, current runtime evidence, owner evidence or explicit inspection-only gap.
 

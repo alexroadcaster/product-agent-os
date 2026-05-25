@@ -33,6 +33,16 @@ Use this artifact for `backend_runtime_behavior_present`, retries, timeouts, ide
 - Admin tasks:
 - Logs-as-event-stream:
 
+## Detection And Snippets Policy
+
+- T9-D7 runtime guidance is framework-agnostic:
+- Stack-specific snippets deferred until separate research proves owner, examples and verification:
+- Node.js, Python, Java, .NET and Go snippets:
+- Lightweight read-only retry/idempotency signals:
+- Dependency/job context:
+- Deeper static analysis deferred:
+- Avoid false positives:
+
 ## Backend Shared Contract Terms
 
 - `backend_service_boundary_present`
@@ -62,6 +72,11 @@ Use this artifact for `backend_runtime_behavior_present`, retries, timeouts, ide
 - stateless process
 - admin tasks
 - logs-as-event-stream
+- framework-agnostic
+- stack-specific snippets deferred
+- Node.js, Python, Java, .NET and Go snippets
+- deeper static analysis deferred
+- avoid false positives
 - code inspection alone is not backend completion evidence
 
 ## Evidence

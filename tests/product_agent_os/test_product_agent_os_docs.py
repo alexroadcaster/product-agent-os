@@ -9,6 +9,7 @@ MKDOCS = ROOT / "mkdocs.yml"
 CHECK_DOCS = ROOT / "tools" / "check_docs.py"
 SOURCE_REGISTRY = DOCS / "sources" / "registry.md"
 TRACK_BACKLOG = DOCS / "sources" / "product-agent-os-track-8-detailed-backlog.md"
+TRACK9_BACKLOG = DOCS / "sources" / "product-agent-os-track-9-backlog.md"
 
 
 class ProductAgentOsDocsTest(unittest.TestCase):
@@ -109,6 +110,55 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         self.assertIn("deterministic transcript/session runner", backlog)
         self.assertIn("| `T8-D` discovery model | `done` |", backlog)
         self.assertIn("methodology_applicability", backlog)
+
+    def test_track9_backend_docs_and_source_registry_are_synced(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK9_BACKLOG.read_text(encoding="utf-8")
+        behavioral_evals = (PRODUCT_AGENT_OS / "behavioral-evals.md").read_text(encoding="utf-8")
+        scenarios = (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8")
+        readme = (ROOT / "plugins" / "product-agent-os" / "README.md").read_text(encoding="utf-8")
+
+        for expected in [
+            "Product-Agent OS Track 9 backend methodology coverage",
+            "T9-D7",
+            "backend_contract_present",
+            "docs/product-agent-os/behavioral-evals.md",
+            "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
+            "verification_status:",
+        ]:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        for expected in [
+            "backend_contract_present",
+            "Backend eval",
+            "runtime/failure/observability/security/rollback evidence",
+            "owner reviewed test/eval/runtime evidence sufficiency",
+        ]:
+            with self.subTest(behavioral_evals=expected):
+                self.assertIn(expected, behavioral_evals)
+
+        for expected in [
+            "Backend methodology routing",
+            "backend-service-overview.md",
+            "backend-runtime-behavior.md",
+            "runtime/failure evidence",
+        ]:
+            with self.subTest(scenarios=expected):
+                self.assertIn(expected, scenarios)
+
+        for expected in [
+            "Backend methodology",
+            "backend_contract_present",
+            "backend_service_boundary_present",
+            "owner reviewed test/eval/runtime evidence sufficiency",
+        ]:
+            with self.subTest(readme=expected):
+                self.assertIn(expected, readme)
+
+        self.assertIn("T9-D7-M40..M45", backlog)
+        self.assertIn("stack-specific backend snippets deferred", backlog)
+        self.assertIn("cross-domain semantic sufficiency backlog", backlog)
 
 
 if __name__ == "__main__":

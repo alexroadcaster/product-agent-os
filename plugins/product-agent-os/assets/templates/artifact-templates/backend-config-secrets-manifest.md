@@ -6,9 +6,9 @@ Owner: backend owner
 
 ## Scope
 
-Use this artifact for `backend_config_secrets_boundary_present`, config/env keys, env/config keys without values, explicit dependencies, build-release-run boundary, secret sources, rotation notes, local/prod parity, dev/prod parity and no-secrets evidence.
+Use this artifact for `backend_config_secrets_boundary_present`, config/env keys, env/config keys without values, explicit dependencies, build-release-run boundary, secret sources, rotation notes, local/prod parity, dev/prod parity, required/optional status, no-secrets/no-private-data constraints and no-secrets evidence.
 
-Backend config and secret review includes authn/authz settings, tokens, PII handling, money movement flags, privileged operations, external writes and irreversible side effects. Docs, prompts, fixtures and logs must record key names and sources only, never values or private customer data.
+Backend config and secret review includes authn/authz settings, tokens, PII handling, money movement flags, privileged operations, external writes and irreversible side effects. Docs, prompts, fixtures, logs and examples must record key names and sources only, never values or private customer data.
 
 Twelve-Factor vocabulary is used as optional service discipline wording: config/env keys without values, explicit dependencies, build-release-run boundary and dev/prod parity are documented without forcing a framework choice.
 
@@ -41,6 +41,9 @@ Twelve-Factor vocabulary is used as optional service discipline wording: config/
 - local/prod parity
 - dev/prod parity
 - required/optional
+- required/optional status
+- no-secrets/no-private-data constraints
+- docs, prompts, fixtures, logs and examples
 - authn/authz config
 - tokens
 - PII

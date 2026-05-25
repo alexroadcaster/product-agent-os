@@ -671,6 +671,201 @@ class InfrastructureTemplateTest(unittest.TestCase):
             with self.subTest(expected=expected):
                 self.assertIn(expected, required_evidence)
 
+    def test_backend_intake_security_ops_and_contract_depth(self):
+        payloads = {
+            "requirements-author": (PLUGIN_ROOT / "skills" / "requirements-author" / "SKILL.md")
+            .read_text(encoding="utf-8")
+            .lower(),
+            "REQUIREMENTS.md": (TEMPLATE_ROOT / "control-plane" / "REQUIREMENTS.md").read_text(
+                encoding="utf-8"
+            ).lower(),
+            "TEST.md": (TEMPLATE_ROOT / "control-plane" / "TEST.md").read_text(encoding="utf-8").lower(),
+            "security-risk-review.md": (TEMPLATE_ROOT / "artifact-templates" / "security-risk-review.md").read_text(
+                encoding="utf-8"
+            ).lower(),
+            "backend-observability-map.md": (
+                TEMPLATE_ROOT / "artifact-templates" / "backend-observability-map.md"
+            ).read_text(encoding="utf-8").lower(),
+            "backend-health-check-contract.md": (
+                TEMPLATE_ROOT / "artifact-templates" / "backend-health-check-contract.md"
+            ).read_text(encoding="utf-8").lower(),
+            "backend-operational-runbook.md": (
+                TEMPLATE_ROOT / "artifact-templates" / "backend-operational-runbook.md"
+            ).read_text(encoding="utf-8").lower(),
+            "backend-config-secrets-manifest.md": (
+                TEMPLATE_ROOT / "artifact-templates" / "backend-config-secrets-manifest.md"
+            ).read_text(encoding="utf-8").lower(),
+            "backend-release-rollback-notes.md": (
+                TEMPLATE_ROOT / "artifact-templates" / "backend-release-rollback-notes.md"
+            ).read_text(encoding="utf-8").lower(),
+            "release-packet.md": (TEMPLATE_ROOT / "workflows" / "release-packet.md").read_text(
+                encoding="utf-8"
+            ).lower(),
+            "backend-service-overview.md": (
+                TEMPLATE_ROOT / "artifact-templates" / "backend-service-overview.md"
+            ).read_text(encoding="utf-8").lower(),
+            "api-contract-review.md": (
+                TEMPLATE_ROOT / "artifact-templates" / "api-contract-review.md"
+            ).read_text(encoding="utf-8").lower(),
+            "backend-job-queue-contract.md": (
+                TEMPLATE_ROOT / "artifact-templates" / "backend-job-queue-contract.md"
+            ).read_text(encoding="utf-8").lower(),
+        }
+        expected_by_payload = {
+            "requirements-author": [
+                "service/user behavior",
+                "affected backend unit",
+                "dependencies",
+                "data stores",
+                "runtime constraints",
+                "operational assumptions",
+                "explicit gaps before implementation planning",
+            ],
+            "REQUIREMENTS.md": [
+                "backend intake",
+                "service/user behavior",
+                "affected backend unit",
+                "backend dependencies",
+                "backend data stores",
+                "operational assumptions",
+                "explicit gaps before implementation planning",
+            ],
+            "TEST.md": [
+                "health checks are tested where the platform/runtime is available",
+                "platform-unavailable gap",
+                "documentation alone is not sufficient",
+            ],
+            "security-risk-review.md": [
+                "authn/authz",
+                "rate limits",
+                "audit logging",
+                "sensitive data",
+                "abuse cases",
+                "no-secrets evidence",
+            ],
+            "backend-observability-map.md": [
+                "semantic conventions or accepted gaps",
+                "collector/instrumentation notes",
+                "context propagation",
+                "redaction policy",
+            ],
+            "backend-health-check-contract.md": [
+                "platform-unavailable gap owner",
+                "platform-unavailable gap reason",
+                "platform-unavailable follow-up",
+                "documentation alone is not sufficient",
+            ],
+            "backend-operational-runbook.md": [
+                "common failures",
+                "dashboard links",
+                "log/query links or placeholders",
+                "severity assumptions",
+                "evidence freshness",
+            ],
+            "backend-config-secrets-manifest.md": [
+                "required/optional status",
+                "no-secrets/no-private-data constraints",
+                "docs, prompts, fixtures, logs and examples",
+            ],
+            "backend-release-rollback-notes.md": [
+                "verification command",
+                "rollback/no-rollback rationale",
+                "feature flag",
+            ],
+            "release-packet.md": [
+                "backend rollback",
+                "verification command",
+                "rollback/no-rollback rationale",
+                "feature flag",
+            ],
+            "backend-service-overview.md": [
+                "apis/events/external providers",
+                "contract changes synced with code and tests",
+                "provider contracts",
+            ],
+            "api-contract-review.md": [
+                "contract changes synced with code and tests",
+                "external provider contract",
+                "provider contract",
+            ],
+            "backend-job-queue-contract.md": [
+                "asyncapi or provider contract",
+                "contract changes synced with code and tests",
+            ],
+        }
+
+        for name, expected_terms in expected_by_payload.items():
+            text = payloads[name]
+            for expected in expected_terms:
+                with self.subTest(name=name, expected=expected):
+                    self.assertIn(expected, text)
+
+    def test_backend_framework_agnostic_and_evidence_sufficiency_policy(self):
+        payloads = {
+            "backend-service-overview.md": (
+                TEMPLATE_ROOT / "artifact-templates" / "backend-service-overview.md"
+            ).read_text(encoding="utf-8").lower(),
+            "backend-runtime-behavior.md": (
+                TEMPLATE_ROOT / "artifact-templates" / "backend-runtime-behavior.md"
+            ).read_text(encoding="utf-8").lower(),
+            "EVALS.md": (TEMPLATE_ROOT / "control-plane" / "EVALS.md").read_text(encoding="utf-8").lower(),
+            "RUNLOG.md": (TEMPLATE_ROOT / "control-plane" / "RUNLOG.md").read_text(encoding="utf-8").lower(),
+        }
+        expected_by_payload = {
+            "backend-service-overview.md": [
+                "framework-agnostic",
+                "stack-specific snippets deferred",
+                "node.js, python, java, .net and go snippets",
+                "owner, examples and verification",
+            ],
+            "backend-runtime-behavior.md": [
+                "framework-agnostic",
+                "stack-specific snippets deferred",
+                "node.js, python, java, .net and go snippets",
+                "deeper static analysis deferred",
+                "avoid false positives",
+            ],
+            "EVALS.md": [
+                "owner reviewed test/eval/runtime evidence sufficiency",
+                "real project risk",
+                "accepted gap owner",
+                "accepted gap reason",
+                "review date",
+                "downstream risk",
+                "follow-up",
+                "t9-s",
+            ],
+            "RUNLOG.md": [
+                "owner reviewed test/eval/runtime evidence sufficiency",
+                "real project risk",
+                "accepted gap owner",
+                "accepted gap reason",
+                "review date",
+                "downstream risk",
+                "follow-up",
+                "t9-s",
+            ],
+        }
+
+        for name, expected_terms in expected_by_payload.items():
+            text = payloads[name]
+            for expected in expected_terms:
+                with self.subTest(name=name, expected=expected):
+                    self.assertIn(expected, text)
+
+        readiness = json.loads((TEMPLATE_ROOT / "evals" / "project-readiness.json").read_text(encoding="utf-8"))
+        backend_gate = readiness["cases"][0]["expected"]["conditional_readiness_gates"][
+            "backend_readiness_when_backend_changes"
+        ]
+        readiness_payload = json.dumps(backend_gate).lower()
+        for expected in [
+            "blocker/high-risk",
+            "simple local/backend-light",
+            "accepted gap downgrade",
+        ]:
+            with self.subTest(expected=expected):
+                self.assertIn(expected, readiness_payload)
+
     def test_template_text_has_no_unsafe_literals(self):
         for item in required_templates():
             text = item.source_path.read_text(encoding="utf-8")

@@ -7,6 +7,8 @@ Project: {project_name}
 - HTTP API covered by OpenAPI:
 - Message-driven API covered by AsyncAPI:
 - Pact or provider contract:
+- External provider contract:
+- Provider contract:
 - protobuf / gRPC contract:
 - Generated clients or SDKs:
 - Consumers:
@@ -18,6 +20,7 @@ Project: {project_name}
 - OpenAPI source of truth: HTTP API contracts should point to the checked-in OpenAPI document or record an explicit gap.
 - Swagger UI: optional renderer/editor/tooling around OpenAPI, not the source of truth.
 - AsyncAPI source of truth: event, queue, webhook, or message-driven contracts should point to AsyncAPI or an accepted alternative/gap.
+- Provider contracts: Pact, protobuf, checked-in provider schemas or an accepted gap are required where external providers apply.
 
 ## Contract Checks
 
@@ -62,5 +65,6 @@ Project: {project_name}
 - Integration tests:
 - Backend code sync:
 - API/event contract sync with code:
+- Contract changes synced with code and tests:
 - Generated docs build:
 - Consumer review:

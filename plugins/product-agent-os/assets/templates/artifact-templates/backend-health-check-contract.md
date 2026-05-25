@@ -6,7 +6,7 @@ Owner: backend owner
 
 ## Scope
 
-Use this artifact for `backend_health_probe_contract_present`, health endpoint semantics, liveness, readiness, startup or platform-equivalent health semantics and verification.
+Use this artifact for `backend_health_probe_contract_present`, health endpoint semantics, liveness, readiness, startup or platform-equivalent health semantics and verification. Health checks are tested where the platform/runtime is available. Documentation alone is not sufficient for deployable service health readiness.
 
 ## Health Semantics
 
@@ -36,10 +36,14 @@ Use this artifact for `backend_health_probe_contract_present`, health endpoint s
 - startup
 - platform equivalent
 - platform-unavailable gap
+- platform-unavailable gap owner
+- platform-unavailable gap reason
+- platform-unavailable follow-up
+- documentation alone is not sufficient
 
 ## Evidence
 
-Record current health-check test, runtime command, health endpoint semantics, platform behavior or accepted platform-unavailable gap.
+Record current health-check test, runtime command, health endpoint semantics, platform behavior or accepted platform-unavailable gap. A platform-unavailable gap must name owner, reason and follow-up.
 
 ## Accepted Gap
 

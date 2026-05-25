@@ -928,12 +928,146 @@ class DiscoveryTest(unittest.TestCase):
         self.assertIn("runtime/failure evidence", applicability["required_evidence"])
         self.assertIn("detection alone does not prove backend runtime safety", applicability["residual_risk"])
 
+    def test_backend_dependency_signals_distinguish_categories_as_present_unverified(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            workspace = Path(tmpdir)
+            self._write_files(
+                workspace,
+                {
+                    "requirements.txt": "psycopg\nredis\nkafka-python\nstripe\nboto3\nelasticsearch\nhttpx\n",
+                    "server/app.py": "def app():\n    return None\n",
+                    "repositories/order_repository.py": "class OrderRepository:\n    pass\n",
+                    "queues/order_consumer.py": "QUEUE = 'orders'\n",
+                    "cache/redis_client.py": "class RedisClient:\n    pass\n",
+                    "adapters/payment_client.py": "class PaymentClient:\n    pass\n",
+                    "adapters/email_sender.py": "class EmailSender:\n    pass\n",
+                    "storage/blob_store.py": "class BlobStore:\n    pass\n",
+                    "search/index_client.py": "class SearchClient:\n    pass\n",
+                    "integrations/provider_client.py": "class ProviderClient:\n    pass\n",
+                },
+            )
+
+            result = analyze_workspace(workspace)
+
+        self.assertIn("backend_dependency_signals", result)
+        dependencies = result["backend_dependency_signals"]
+        expected = {
+            "database": "repositories/order_repository.py",
+            "message_broker": "queues/order_consumer.py",
+            "cache": "cache/redis_client.py",
+            "payment": "adapters/payment_client.py",
+            "email": "adapters/email_sender.py",
+            "storage": "storage/blob_store.py",
+            "search": "search/index_client.py",
+            "third_party_http_provider": "integrations/provider_client.py",
+        }
+        for category, source in expected.items():
+            with self.subTest(category=category):
+                packet = dependencies[category]
+                self.assertEqual(packet["status"], "present_unverified")
+                self.assertIn(source, packet["sources"])
+        self.assertIn("present_unverified until owner review", dependencies["note"])
+
+    def test_backend_delivery_signals_record_commands_ci_deploy_without_execution(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            workspace = Path(tmpdir)
+            self._write_files(
+                workspace,
+                {
+                    "pyproject.toml": "[project]\nname = 'orders-api'\n",
+                    "server/app.py": "def app():\n    return None\n",
+                    "workers/order_worker.py": "def run():\n    return None\n",
+                    "queues/orders.py": "QUEUE = 'orders'\n",
+                    "db/schema.sql": "create table orders(id text);\n",
+                    "openapi/orders.yaml": "openapi: 3.2.0\ninfo:\n  title: API\n  version: 1.0.0\npaths: {}\n",
+                    "scripts/start-api.sh": "#!/bin/sh\npython -m server.app\n",
+                    ".github/workflows/deploy.yml": "name: deploy\n",
+                    "Dockerfile": "FROM python:3.12\n",
+                    "k8s/deployment.yaml": "apiVersion: apps/v1\nkind: Deployment\n",
+                    "security/authz.py": "def authorize():\n    return True\n",
+                },
+            )
+
+            result = analyze_workspace(workspace)
+
+        self.assertIn("backend_delivery_signals", result)
+        delivery = result["backend_delivery_signals"]
+        expected_sources = {
+            "backend_stack": "pyproject.toml",
+            "commands": "scripts/start-api.sh",
+            "ci": ".github/workflows/deploy.yml",
+            "api_contracts": "openapi/orders.yaml",
+            "database": "db/schema.sql",
+            "queues": "queues/orders.py",
+            "workers": "workers/order_worker.py",
+            "deployment_manifests": "Dockerfile",
+            "security": "security/authz.py",
+        }
+        for category, source in expected_sources.items():
+            with self.subTest(category=category):
+                packet = delivery[category]
+                self.assertEqual(packet["status"], "present_unverified")
+                self.assertIn(source, packet["sources"])
+        self.assertIn("without executing deployments", delivery["note"])
+        self.assertIn("external writes", delivery["note"])
+        self.assertIn("approval_required", delivery["note"])
+        self.assertIn(
+            "backend_delivery_signals",
+            result["route_inputs"]["workspace_signals"],
+        )
+
+    def test_backend_resilience_signals_are_lightweight_present_unverified(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            workspace = Path(tmpdir)
+            self._write_files(
+                workspace,
+                {
+                    "server/app.py": "def app():\n    return None\n",
+                    "services/retry_policy.py": "MAX_ATTEMPTS = 3\n",
+                    "services/idempotency_keys.py": "KEY = 'synthetic'\n",
+                    "jobs/order_retry_worker.py": "def run():\n    return None\n",
+                    "integrations/payment_provider_client.py": "class Client:\n    pass\n",
+                },
+            )
+
+            result = analyze_workspace(workspace)
+
+        self.assertIn("backend_resilience_signals", result)
+        resilience = result["backend_resilience_signals"]
+        self.assertEqual(resilience["retry_idempotency_terms"]["status"], "present_unverified")
+        self.assertIn("services/retry_policy.py", resilience["retry_idempotency_terms"]["sources"])
+        self.assertIn("services/idempotency_keys.py", resilience["retry_idempotency_terms"]["sources"])
+        self.assertEqual(resilience["job_context"]["status"], "present_unverified")
+        self.assertIn("jobs/order_retry_worker.py", resilience["job_context"]["sources"])
+        self.assertEqual(resilience["dependency_context"]["status"], "present_unverified")
+        self.assertIn("integrations/payment_provider_client.py", resilience["dependency_context"]["sources"])
+        self.assertIn("lightweight read-only signals", resilience["note"])
+        self.assertIn("deeper static analysis deferred", resilience["note"])
+        self.assertIn("avoid false positives", resilience["note"])
+        self.assertIn(
+            "backend_resilience_signals",
+            result["route_inputs"]["workspace_signals"],
+        )
+
     def test_backend_service_fixture_routes_backend_methodology(self):
         workspace = FIXTURES / "backend-service-app"
 
         result = analyze_workspace(workspace)
 
         self.assertTrue(result["methodology_signals"]["backend"])
+        dependencies = result["backend_dependency_signals"]
+        for category in [
+            "database",
+            "message_broker",
+            "cache",
+            "payment",
+            "email",
+            "storage",
+            "search",
+            "third_party_http_provider",
+        ]:
+            with self.subTest(category=category):
+                self.assertEqual(dependencies[category]["status"], "present_unverified")
         self.assertIn(
             "backend",
             result["route_inputs"]["workspace_signals"]["methodology_signals"],

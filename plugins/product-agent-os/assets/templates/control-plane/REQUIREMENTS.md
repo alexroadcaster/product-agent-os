@@ -121,6 +121,20 @@ Generated at: {generated_at}
 - Data handling:
 - Runtime or stack constraints: {detected_stack_text}
 
+## Backend Intake
+
+- Backend methodology (`backend`) applicability:
+- Service/user behavior:
+- Non-goals:
+- Runtime constraints:
+- Affected backend unit:
+- Backend dependencies:
+- Backend data stores:
+- Operational assumptions:
+- Explicit gaps before implementation planning:
+- Approval boundary:
+- Evidence owner:
+
 ## Acceptance Criteria
 
 - Inputs, outputs, constraints, and verification commands are explicit.

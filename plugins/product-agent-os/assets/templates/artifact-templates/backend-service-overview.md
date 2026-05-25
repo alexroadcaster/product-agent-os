@@ -6,7 +6,7 @@ Owner: backend owner
 
 ## Scope
 
-Use this artifact for `backend_service_boundary_present`, `backend_runtime_behavior_present`, `backend_rollback_plan_present`, new or changed backend responsibility, module/service boundary mapping, owner review, ADR routing, Ports and Adapters boundary notes and optional Twelve-Factor vocabulary.
+Use this artifact for `backend_service_boundary_present`, `backend_runtime_behavior_present`, `backend_rollback_plan_present`, new or changed backend responsibility, module/service boundary mapping, owner review, ADR routing, APIs/events/external providers, provider contracts, Ports and Adapters boundary notes and optional Twelve-Factor vocabulary.
 
 ## Boundary
 
@@ -26,7 +26,9 @@ Use this artifact for `backend_service_boundary_present`, `backend_runtime_behav
 - Ports/Adapters boundary:
 - Domain logic independent from HTTP/DB/queue/vendor SDK concerns:
 - Domain model or bounded context link:
-- OpenAPI / AsyncAPI / Pact / protobuf / provider contract:
+- OpenAPI / AsyncAPI / Pact / protobuf / provider contracts:
+- APIs/events/external providers:
+- Contract changes synced with code and tests:
 - API/event contract sync with code:
 
 ## Twelve-Factor Service Discipline
@@ -40,6 +42,13 @@ Use this artifact for `backend_service_boundary_present`, `backend_runtime_behav
 - Admin tasks:
 - Dev/prod parity:
 - Logs-as-event-stream:
+
+## Stack-Specific Snippets Policy
+
+- T9-D7 backend templates are framework-agnostic:
+- Stack-specific snippets deferred until separate research proves owner, examples and verification:
+- Node.js, Python, Java, .NET and Go snippets:
+- Owner, examples and verification:
 
 ## Backend Shared Contract Terms
 
@@ -87,6 +96,13 @@ Use this artifact for `backend_service_boundary_present`, `backend_runtime_behav
 - AsyncAPI
 - Pact
 - protobuf
+- provider contracts
+- APIs/events/external providers
+- contract changes synced with code and tests
+- framework-agnostic
+- stack-specific snippets deferred
+- Node.js, Python, Java, .NET and Go snippets
+- owner, examples and verification
 - unit
 - integration
 - contract

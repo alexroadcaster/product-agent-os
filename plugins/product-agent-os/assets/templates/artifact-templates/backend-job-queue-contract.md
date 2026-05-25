@@ -6,7 +6,7 @@ Owner: backend owner
 
 ## Scope
 
-Use this artifact for `backend_job_queue_contract_present`, background jobs, queues, consumers, schedulers, payload contracts, retry, dead-letter queue, idempotency, replay, deduplication, ordering and backpressure.
+Use this artifact for `backend_job_queue_contract_present`, background jobs, queues, consumers, schedulers, payload contracts, AsyncAPI or provider contract, retry, dead-letter queue, idempotency, replay, deduplication, ordering and backpressure.
 
 ## Queue And Job Matrix
 
@@ -28,6 +28,8 @@ Use this artifact for `backend_job_queue_contract_present`, background jobs, que
 - `backend_security_reviewed`
 - `backend_rollback_plan_present`
 - AsyncAPI
+- AsyncAPI or provider contract
+- contract changes synced with code and tests
 - payload contract
 - retry policy
 - dead-letter queue

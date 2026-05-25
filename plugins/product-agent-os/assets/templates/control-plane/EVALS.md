@@ -116,6 +116,14 @@ Generated at: {generated_at}
 - Backend eval fields: `backend_service_boundary_contract_present`, `backend_runtime_behavior_contract_present`, `backend_dependency_failure_matrix_contract_present`, `backend_observability_contract_present`, `backend_slo_or_gap_contract_present`, `backend_health_probe_contract_present`, `backend_job_queue_contract_present`, `backend_data_consistency_contract_present`, `backend_config_secrets_boundary_contract_present`, `backend_security_review_contract_present`, `backend_rollback_plan_contract_present`, `unsupported_backend_claims_rejected_contract_present`
 - Runtime/failure evidence:
 - Owner reviewed evidence sufficiency:
+- Owner reviewed test/eval/runtime evidence sufficiency:
+- Real project risk:
+- Accepted gap owner:
+- Accepted gap reason:
+- Review date:
+- Downstream risk:
+- Follow-up:
+- T9-S shared semantic sufficiency backlog:
 - Explicit accepted gap:
 - Approval required:
 - Forbidden shortcuts: package docs do not prove backend runtime safety, logs-only observability, health-endpoint-only readiness, retries prove reliability, microservices by default.

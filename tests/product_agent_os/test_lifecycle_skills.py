@@ -912,6 +912,26 @@ class LifecycleSkillsTest(unittest.TestCase):
                 for expected in shared_terms:
                     self.assertIn(expected, text)
 
+    def test_workspace_discovery_records_backend_delivery_signals_without_execution(self):
+        discovery = self._skill_text("workspace-discovery-auditor").lower()
+
+        for expected in [
+            "backend stack",
+            "backend commands",
+            "ci",
+            "apis",
+            "db",
+            "queues",
+            "workers",
+            "deployment manifests",
+            "security signals",
+            "without executing deployments",
+            "external writes",
+            "approval_required",
+        ]:
+            with self.subTest(expected=expected):
+                self.assertIn(expected, discovery)
+
     def test_risk_reviewer_generalizes_two_stage_review_for_risky_slices(self):
         risk_reviewer = self._skill_text("risk-reviewer").lower()
 

@@ -115,6 +115,9 @@ Generated at: {generated_at}
 - Runtime/failure evidence:
 - Dependency failure matrix:
 - Observability/SLO/health evidence:
+- Health checks are tested where the platform/runtime is available:
+- Health-check platform-unavailable gap owner, reason and follow-up:
+- Documentation alone is not sufficient for deployable service health readiness:
 - Job/queue and data consistency checks:
 - Security and rollback evidence:
 - Unsupported backend claims rejected: package docs do not prove backend runtime safety, logs-only observability, health-endpoint-only readiness, retries prove reliability, microservices by default.

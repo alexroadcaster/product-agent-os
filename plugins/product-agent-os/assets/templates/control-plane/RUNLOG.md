@@ -76,6 +76,14 @@ Generated at: {generated_at}
 - Observability/SLO/health evidence:
 - Security and rollback evidence:
 - Owner reviewed evidence sufficiency:
+- Owner reviewed test/eval/runtime evidence sufficiency:
+- Real project risk:
+- Accepted gap owner:
+- Accepted gap reason:
+- Review date:
+- Downstream risk:
+- Follow-up:
+- T9-S shared semantic sufficiency backlog:
 - Unsupported backend shortcuts rejected: package docs do not prove backend runtime safety, logs-only observability, health-endpoint-only readiness, retries prove reliability, microservices by default.
 - Backend accepted gap or `approval_required` status:
 - Domain model applicability (`domain_model_when_complex_domain`):
