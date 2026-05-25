@@ -17,7 +17,7 @@ Proposed | Accepted | Superseded | Rejected | `not_applicable` | `explicit_gap_a
 ## Standards Trigger Policy
 
 - Gate: `standards_trigger_policy`.
-- ADR trigger policy: create or propose an ADR/MADR for architecture boundary, API contract, storage, auth/security, irreversible migration, automation activation, public contract, runtime topology, or high-cost technology decisions.
+- ADR trigger policy: create or propose an ADR/MADR for service boundary change, architecture boundary, API contract, storage, auth/security, irreversible migration, automation activation, public contract, runtime topology, or high-cost technology decisions.
 - Not applicable status: use `not_applicable` only when the slice has no significant decision and record the reason.
 - Accepted gap: use `explicit_gap_accepted` only with owner, reason, residual risk, and follow-up condition.
 
@@ -27,6 +27,11 @@ Proposed | Accepted | Superseded | Rejected | `not_applicable` | `explicit_gap_a
 - Which stakeholders, quality attributes, risks, and source facts matter?
 - Which alternatives were considered?
 - Architecture boundary affected:
+- Service boundary change:
+- Decision authority:
+- Boundary rationale:
+- ADR link:
+- Owner review:
 - Public contract affected:
 - Data ownership or trust boundary affected:
 

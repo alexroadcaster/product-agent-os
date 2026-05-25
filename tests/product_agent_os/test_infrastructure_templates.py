@@ -451,6 +451,226 @@ class InfrastructureTemplateTest(unittest.TestCase):
             with self.subTest(expected=expected):
                 self.assertIn(expected, combined)
 
+    def test_backend_security_and_secrets_overlap_is_explicit(self):
+        combined = "\n".join(
+            (TEMPLATE_ROOT / "artifact-templates" / filename).read_text(encoding="utf-8").lower()
+            for filename in [
+                "security-risk-review.md",
+                "backend-config-secrets-manifest.md",
+            ]
+        )
+
+        for expected in [
+            "authn/authz",
+            "tokens",
+            "pii",
+            "money movement",
+            "privileged operations",
+            "external writes",
+            "irreversible side effects",
+            "docs, prompts, fixtures and logs",
+            "private customer data",
+            "approval_required",
+        ]:
+            with self.subTest(expected=expected):
+                self.assertIn(expected, combined)
+
+    def test_backend_control_plane_and_eval_templates_cover_readiness_gates(self):
+        combined = "\n".join(
+            (TEMPLATE_ROOT / relative).read_text(encoding="utf-8").lower()
+            for relative in [
+                "control-plane/PLAN.md",
+                "control-plane/TEST.md",
+                "control-plane/EVALS.md",
+                "control-plane/RUNLOG.md",
+                "evals/project-readiness.json",
+                "evals/behavioral-workflows.json",
+            ]
+        )
+
+        for expected in [
+            "backend methodology (`backend`)",
+            "backend_service_boundary_present",
+            "backend_runtime_behavior_present",
+            "backend_dependency_failure_matrix_present",
+            "backend_observability_contract_present",
+            "backend_slo_or_gap_present",
+            "backend_health_probe_contract_present",
+            "backend_job_queue_contract_present",
+            "backend_data_consistency_strategy_present",
+            "backend_config_secrets_boundary_present",
+            "backend_security_reviewed",
+            "backend_rollback_plan_present",
+            "logs-only observability",
+            "health-endpoint-only readiness",
+            "package docs do not prove backend runtime safety",
+            "accepted gap",
+        ]:
+            with self.subTest(expected=expected):
+                self.assertIn(expected, combined)
+
+    def test_backend_modular_ports_and_runtime_policy_depth(self):
+        combined = "\n".join(
+            (TEMPLATE_ROOT / "artifact-templates" / filename).read_text(encoding="utf-8").lower()
+            for filename in [
+                "backend-service-overview.md",
+                "backend-runtime-behavior.md",
+                "domain-modeling.md",
+            ]
+        )
+
+        for expected in [
+            "modular monolith is the default",
+            "independent deploy/scale/team/ownership evidence",
+            "microservices require explicit owner review",
+            "migration/rollback notes",
+            "domain logic independent from http/db/queue/vendor sdk",
+            "ports/adapters boundary",
+            "bounded context",
+            "ubiquitous language",
+            "timeout",
+            "backoff",
+            "max attempts",
+            "idempotency",
+            "deduplication",
+            "ordering",
+            "backpressure",
+            "poison message",
+            "explicit_gap_accepted",
+        ]:
+            with self.subTest(expected=expected):
+                self.assertIn(expected, combined)
+
+    def test_backend_resilience_operations_twelve_factor_and_owner_review_depth(self):
+        artifact_terms = {
+            "backend-dependency-failure-matrix.md": [
+                "per dependency",
+                "verification evidence",
+                "backoff",
+                "max attempts",
+                "circuit breaker/non-applicability",
+            ],
+            "backend-job-queue-contract.md": [
+                "dead-letter queue",
+                "dead-letter behavior",
+                "deduplication policy",
+                "ordering guarantee",
+                "backpressure",
+                "poison-message handling",
+            ],
+            "backend-data-consistency-record.md": [
+                "local transaction",
+                "outbox",
+                "saga",
+                "compensation",
+                "reconciliation",
+                "migration impact",
+            ],
+            "backend-observability-map.md": [
+                "logs alone are not accepted as observability",
+                "alert ownership",
+                "no-private-payload logging",
+                "context propagation",
+                "collector/exporter",
+            ],
+            "backend-slo-sheet.md": [
+                "sli/slo or explicit gap",
+                "user-relevant sli",
+                "not-yet-production gap",
+                "no-telemetry gap",
+            ],
+            "backend-health-check-contract.md": [
+                "health endpoint semantics",
+                "liveness",
+                "readiness",
+                "startup",
+                "platform equivalent",
+            ],
+            "backend-operational-runbook.md": [
+                "operational owner",
+                "escalation path",
+                "handoff to delivery/operations",
+                "evidence freshness",
+            ],
+            "backend-release-rollback-notes.md": [
+                "rollback command",
+                "manual procedure",
+                "irreversible side effects",
+                "owner approval",
+                "residual risk",
+            ],
+            "backend-service-overview.md": [
+                "twelve-factor vocabulary",
+                "explicit dependencies",
+                "build-release-run",
+                "process model",
+                "admin tasks",
+                "dev/prod parity",
+                "owner review",
+                "decision authority",
+                "boundary rationale",
+                "adr link or accepted gap",
+            ],
+            "backend-config-secrets-manifest.md": [
+                "config/env keys",
+                "build-release-run",
+                "dev/prod parity",
+                "secret source",
+            ],
+            "backend-runtime-behavior.md": [
+                "logs-as-event-stream",
+                "process model",
+                "admin tasks",
+                "stateless process",
+            ],
+            "migration-plan.md": [
+                "data consistency",
+                "outbox",
+                "saga",
+                "compensation",
+                "reconciliation",
+                "data recovery",
+            ],
+            "../workflows/release-packet.md": [
+                "backend rollback",
+                "rollback command",
+                "manual procedure",
+                "data recovery/replay",
+                "irreversible side effects",
+            ],
+            "adr.md": [
+                "service boundary change",
+                "decision authority",
+                "boundary rationale",
+                "adr link",
+                "owner review",
+            ],
+        }
+        for filename, expected_terms in artifact_terms.items():
+            root = TEMPLATE_ROOT / "artifact-templates"
+            path = (root / filename).resolve() if filename.startswith("../") else root / filename
+            text = path.read_text(encoding="utf-8").lower()
+            for expected in expected_terms:
+                with self.subTest(filename=filename, expected=expected):
+                    self.assertIn(expected, text)
+
+        readiness = json.loads((TEMPLATE_ROOT / "evals" / "project-readiness.json").read_text(encoding="utf-8"))
+        gates = readiness["cases"][0]["expected"]["conditional_readiness_gates"]
+        backend_gate = gates["backend_readiness_when_backend_changes"]
+        required_evidence = "\n".join(backend_gate["required_evidence"]).lower()
+        for expected in [
+            "backend-dependency-failure-matrix.md",
+            "backend-slo-sheet.md",
+            "backend-health-check-contract.md",
+            "backend-job-queue-contract.md",
+            "backend-data-consistency-record.md",
+            "backend-config-secrets-manifest.md",
+            "backend-operational-runbook.md",
+            "owner-reviewed evidence sufficiency",
+        ]:
+            with self.subTest(expected=expected):
+                self.assertIn(expected, required_evidence)
+
     def test_template_text_has_no_unsafe_literals(self):
         for item in required_templates():
             text = item.source_path.read_text(encoding="utf-8")
@@ -1718,6 +1938,7 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 "evidence-before-completion",
                 "quality-current-evidence-before-completion",
                 "frontend-evidence-before-completion",
+                "backend-evidence-before-completion",
                 "finish-options",
                 "codex-only-compatibility",
                 "cost-model-budget",
@@ -2193,6 +2414,7 @@ class InfrastructureTemplateTest(unittest.TestCase):
             "onboarding_map_when_legacy_repo",
             "migration_plan_when_contract_or_data_changes",
             "security_review_when_sensitive_surface",
+            "backend_readiness_when_backend_changes",
             "platform_runtime_check_when_native_or_desktop",
             "ci_failure_evidence_when_ci_stabilization",
             "release_readiness_when_distribution_changes",

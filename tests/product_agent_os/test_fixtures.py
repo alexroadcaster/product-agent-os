@@ -52,6 +52,7 @@ class FixtureCompletenessTest(unittest.TestCase):
             "docs-light-no-portal",
             "hosted-docs-approval",
             "frontend-ui-app",
+            "backend-service-app",
         ]:
             with self.subTest(name=name):
                 self.assertTrue((FIXTURES / name).is_dir())
@@ -174,6 +175,26 @@ class FixtureCompletenessTest(unittest.TestCase):
                 self.assertNotIn("private customer", text.lower())
                 self.assertNotIn("token=", text.lower())
                 self.assertNotIn("api_key", text.lower())
+
+    def test_backend_service_fixture_is_synthetic_and_secret_free(self):
+        text = "\n".join(
+            path.read_text(encoding="utf-8")
+            for path in (FIXTURES / "backend-service-app").rglob("*")
+            if path.is_file()
+        )
+        for expected in [
+            "Synthetic",
+            "backend",
+            "health",
+            "queue",
+            "worker",
+            "observability",
+            "runbook",
+        ]:
+            self.assertIn(expected, text)
+        self.assertNotIn("private customer", text.lower())
+        self.assertNotIn("token=", text.lower())
+        self.assertNotIn("api_key", text.lower())
 
 
 if __name__ == "__main__":

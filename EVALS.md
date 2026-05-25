@@ -36,6 +36,7 @@ Generated at: 2026-05-25
 - Detailed discovery status depth: implemented in `T8-D`.
 - Track 9 methodology intelligence plan: authored in `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`.
 - Track 9 foundation, `T9-D1` Business/Product, `T9-D2` Requirements/Domain, `T9-D3` Solution Architecture, `T9-D4` Quality/Testing/Evals, `T9-D5` Codex/Agentic Workflow and `T9-D6` Frontend: implemented.
+- `T9-D7` Backend is implemented through `T9-D7-M29`; final Backend closure remains open until `T9-D7-M30..M45` complete.
 
 ## Track 9 Methodology Intelligence Evals
 
@@ -92,6 +93,19 @@ Generated at: 2026-05-25
 - False-positive protection: backend-only, data-only, CLI-only, docs-only, native-only, dependency-only and simple CRUD work does not force Frontend methodology.
 - Unsupported claims rejected: FSD is mandatory for every frontend project, Storybook proves UI quality, automated accessibility addon output is enough, a desktop screenshot proves responsive UI, lab Web Vitals always represent production UX and code inspection proves UI completion.
 - Residual risk: frontend artifacts prove UI evidence shape and route/gate coverage, not that a human owner has semantically accepted every screenshot, interaction test, accessibility review or performance budget as sufficient for a real product.
+
+## Backend Evals
+
+- `backend_contract_present`: implemented through `T9-D7-M29`; final closure remains open until remaining Backend rows are complete.
+- Required evidence: service/module boundary, owner, inbound contracts, outbound dependencies, data ownership, deployment/runtime shape, runtime behavior, dependency failure matrix, observability, SLI/SLO or explicit gap, health endpoint semantics, job/queue contract, data consistency strategy, config/secrets boundary, security review, rollback/recovery and owner-reviewed evidence sufficiency or accepted gap.
+- Resilience depth: remote dependencies record per dependency timeout, retry/backoff/max attempts, circuit breaker non-applicability, fallback, alert owner and verification evidence.
+- Jobs and data depth: queues/jobs record payload contract, retry policy, dead-letter behavior, dead-letter queue, idempotency key, replay procedure, poison-message handling, deduplication, ordering and backpressure; risky distributed data behavior records local transaction, outbox, saga, compensation, monitoring, reconciliation, migration impact and recovery path.
+- Operations depth: observability rejects logs-only evidence and requires traces, metrics, logs, dashboards, alerts, correlation IDs, alert ownership, redaction and no-private-payload logging; health checks distinguish liveness, readiness, startup and platform equivalents.
+- Rollback and boundary depth: risky backend changes record rollback command or manual procedure, data recovery/replay, irreversible side effects, owner approval and residual risk; new or changed backend responsibility records owner review, decision authority, boundary rationale and ADR link or accepted gap.
+- Twelve-Factor depth: backend templates use Twelve-Factor vocabulary for explicit dependencies, config/env keys, build-release-run, process model, stateless process or accepted gap, admin tasks, dev/prod parity and logs-as-event-stream without making Twelve-Factor a mandatory framework.
+- False-positive protection: frontend-only, docs-only, CLI-only, native-only, dependency metadata without backend runtime behavior and package-name-only service folders do not force Backend methodology.
+- Unsupported claims rejected: backend means only business logic files, microservices are the professional default, retries make systems reliable, health endpoint exists so readiness is solved, logs are observability and SLOs are only for large companies.
+- Residual risk: backend artifacts prove evidence shape and route/gate coverage, not that a human owner has judged runtime tests, SLOs, health checks, rollback plans or operational runbooks sufficient for a real production system.
 
 ## Completion Evidence Evals
 

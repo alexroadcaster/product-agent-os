@@ -6,11 +6,11 @@ Owner: backend operator
 
 ## Scope
 
-Use this artifact for `backend_rollback_plan_present`, backend operational readiness, common failures, dashboard/log links, recovery steps and escalation.
+Use this artifact for `backend_rollback_plan_present`, backend operational readiness, common failures, dashboard/log links, recovery steps, operational owner, escalation path and handoff to Delivery/Operations.
 
 ## Runbook
 
-| Failure | Signal | Dashboard/log link or placeholder | Recovery steps | Escalation | Owner | Evidence freshness | Status |
+| Failure | Signal | Dashboard/log link or placeholder | Recovery steps | Escalation path | Operational owner | Evidence freshness | Status |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | TBD | TBD | TBD | TBD | TBD | TBD | current run required | `present_unverified` |
 
@@ -32,11 +32,14 @@ Use this artifact for `backend_rollback_plan_present`, backend operational readi
 - log links
 - recovery steps
 - escalation
+- escalation path
+- operational owner
+- handoff to Delivery/Operations
 - operational checks
 
 ## Evidence
 
-Record current runbook evidence, alert links or placeholders, operational owner review and accepted gaps.
+Record current runbook evidence, alert links or placeholders, operational owner review, handoff to Delivery/Operations and accepted gaps.
 
 ## Accepted Gap
 

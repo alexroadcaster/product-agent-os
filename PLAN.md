@@ -7,10 +7,11 @@ Generated at: 2026-05-25
 ## Current State
 
 - `T9-D6` Frontend methodology integration is complete.
-- Verification baseline after `T9-D6`: focused T9-D6 checks ran 200 tests with `OK`; fixture eval exited `0` with renderer file count 107 and `frontend_contract_present: true`; full verification is recorded in `RUNLOG.md`.
+- `T9-D7` Backend methodology integration is in progress; rows `T9-D7-M0..M29` are implemented and rows `T9-D7-M30..M45` remain open.
+- Verification baseline after the latest `T9-D7` batch: focused backend template/audit/fixture checks ran 105 tests with `OK`; broader verification is recorded in `RUNLOG.md`.
 - Track 9 design is recorded in `docs/superpowers/specs/2026-05-25-track-9-methodology-intelligence-design.md`.
 - Track 9 implementation plan is recorded in `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`.
-- Next implementation slice: `T9-D7` Backend methodology integration.
+- Next implementation slice: continue `T9-D7` Backend methodology integration with `T9-D7-M30..M39`.
 
 ## Architecture Boundary
 
@@ -32,7 +33,7 @@ Generated at: 2026-05-25
 | 5 | `T9-D4` Quality, Testing & Evals | `done` | Risk-based test/eval strategy and current evidence gates |
 | 6 | `T9-D5` Codex / Agentic Workflow | `done` | Control-plane, skills, subagents, handoff, MCP and automation gates |
 | 7 | `T9-D6` Frontend | `done` | UI behavior, component state, FSD, Storybook, a11y and visual evidence gates |
-| 8 | `T9-D7` Backend | `planned` | Service boundary, runtime, observability, SLO and rollback gates |
+| 8 | `T9-D7` Backend | `in_progress` | Service boundary, runtime, observability, SLO and rollback gates |
 | 9 | `T9-D8` API & Integrations | `planned` | OpenAPI/AsyncAPI/GraphQL/gRPC contract and compatibility gates |
 | 10 | `T9-D9` Database & Data | `planned` | Schema, migration, data quality, lineage, privacy and production access gates |
 | 11 | `T9-D10` LLM / AI / RAG | `planned` | AI behavior, prompt/model/tool/RAG eval and safety gates |
@@ -74,6 +75,8 @@ For each Track 9 section:
 - Codex/agentic workflow artifacts: `model-reasoning-policy.md`, `mcp-permission-review.md`, `hook-governance.md`, `skill-promotion-record.md`, `agent-eval-workflow.md`, plus existing `AGENTS.md`, `.codex/config.toml`, `agent-task-packet.md`, `handoff-contract.md`, `worktree-ownership.md`, `automation-candidate.md`, `PLAN.md`, `TEST.md`, `EVALS.md` and `RUNLOG.md`.
 - Frontend gate: `frontend` records user-flow acceptance, component docs, component state matrix, design-system boundary, conditional FSD boundary review, API/data state alignment, accessibility review, keyboard/focus evidence, responsive viewport matrix, visual evidence, runtime console evidence, performance budget, browser support, content/i18n boundary, interaction test evidence and unsupported-claim rejection.
 - Frontend artifacts: `frontend-flow-spec.md`, `frontend-state-matrix.md`, `frontend-visual-qa.md`, `frontend-accessibility-review.md`, `frontend-performance-budget.md`, plus existing `component-card.md`, `acceptance-scenarios.md`, `api-contract-review.md`, `quality-strategy.md`, `test-eval-matrix.md` and `manual-qa-evidence.md`.
+- Backend gate: `backend` records service boundary, runtime behavior, dependency failure policy, observability, SLI/SLO or explicit gap, health endpoint semantics, job/queue contract, data consistency strategy, config/secrets boundary, security review, rollback/recovery and unsupported-claim rejection.
+- Backend artifacts: `backend-service-overview.md`, `backend-runtime-behavior.md`, `backend-dependency-failure-matrix.md`, `backend-observability-map.md`, `backend-slo-sheet.md`, `backend-health-check-contract.md`, `backend-job-queue-contract.md`, `backend-data-consistency-record.md`, `backend-config-secrets-manifest.md`, `backend-release-rollback-notes.md`, `backend-operational-runbook.md`, plus overlap with `adr.md`, `migration-plan.md`, `security-risk-review.md`, `release-packet.md`, `api-contract-review.md`, `quality-strategy.md`, `test-eval-matrix.md` and `manual-qa-evidence.md`.
 - Conditional readiness gate: `project-readiness.json` defines `readiness_statuses` and per-gate `applies_when`, pass condition, accepted gap, required evidence, owner and residual risk. Detection alone can only support `present_unverified`; `present_verified` requires current command, owner or artifact evidence.
 - Test gate: deterministic tests, contract checks, evals or accepted gaps are named before implementation.
 - Documentation gate: docs-as-code artifacts and source-of-truth updates are named.
@@ -188,6 +191,12 @@ For each Track 9 section:
 - Strengthened `component-card.md`, generated `PLAN/TEST/EVALS/RUNLOG`, `project-readiness.json`, `behavioral-workflows.json` and lifecycle skills with Frontend gates.
 - Added synthetic `frontend-ui-app` fixture and fixture eval coverage through `frontend_contract_present`.
 - Added read-only audit recommendations, false-positive and unsupported-claim coverage, renderer registration, lifecycle skill routing and fixture eval coverage through `solution_architecture_contract_present`.
+
+## T9-D7 Backend In-Progress Slice
+
+- Rows `T9-D7-M0..M19` established backend catalog coverage, discovery, read-only audit recommendations, staged backend artifacts, generated control-plane/eval coverage, lifecycle routing, unsupported-claim rejection and synthetic `backend-service-app` fixture coverage.
+- Rows `T9-D7-M20..M29` deepen dependency failure policy, job/queue/DLQ/replay policy, data consistency and saga policy, observability/no-private-payload logging, SLI/SLO or explicit gap, health endpoint semantics, operational runbook handoff, rollback/recovery policy, Twelve-Factor vocabulary and service-boundary owner review/ADR routing.
+- Final `T9-D7` closure remains open until rows `T9-D7-M30..M45` complete; do not mark Backend methodology complete or move to `T9-D8` yet.
 
 ## T9-D4 Completed Slice
 

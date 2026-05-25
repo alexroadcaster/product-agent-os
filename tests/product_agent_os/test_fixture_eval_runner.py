@@ -133,6 +133,36 @@ class FixtureEvalRunnerTest(unittest.TestCase):
                 self.assertIn(fixture, results)
                 self.assertTrue(results[fixture]["expected_checks"][f"usage_mode_{mode}"])
 
+    def test_backend_contract_terms_include_resilience_ops_depth(self):
+        runner = load_runner()
+
+        for expected in [
+            "verification evidence",
+            "retry/backoff/max attempts",
+            "dead-letter behavior",
+            "dead-letter queue",
+            "reconciliation",
+            "migration impact",
+            "alert ownership",
+            "no-private-payload logging",
+            "logs alone are not accepted as observability",
+            "sli/slo or explicit gap",
+            "health endpoint semantics",
+            "handoff to delivery/operations",
+            "rollback command",
+            "manual procedure",
+            "data recovery/replay",
+            "irreversible side effects",
+            "twelve-factor vocabulary",
+            "build-release-run",
+            "logs-as-event-stream",
+            "decision authority",
+            "boundary rationale",
+            "adr link or accepted gap",
+        ]:
+            with self.subTest(expected=expected):
+                self.assertIn(expected, runner.BACKEND_TERMS)
+
     def test_fixture_eval_reports_applicable_methodology_domains_for_core_fixtures(self):
         runner = load_runner()
 
@@ -164,6 +194,7 @@ class FixtureEvalRunnerTest(unittest.TestCase):
             "docs-light-no-portal": "docs_light_does_not_select_heavy_portal",
             "hosted-docs-approval": "hosted_docs_and_db_introspection_require_approval",
             "frontend-ui-app": "frontend_contract_present",
+            "backend-service-app": "backend_methodology_detected_for_service",
         }
         for fixture, check_name in expected_checks.items():
             with self.subTest(fixture=fixture):

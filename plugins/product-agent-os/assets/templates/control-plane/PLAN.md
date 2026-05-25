@@ -98,6 +98,12 @@ Generated at: {generated_at}
 - Route params, auth/permission, SEO/meta, token owner, variant policy, local state, server-cache and persisted state:
 - Browser/runtime evidence, console status, Playwright trace, baseline owner, reduced motion, input modality, WCAG 2.2 AA and external visual service approval:
 - Unsupported frontend claims: Storybook proves UI quality, desktop-only screenshot proves responsive UI, automated accessibility addon output is enough, lab Web Vitals always represent production UX, code inspection proves UI completion.
+- Backend methodology (`backend`):
+- Backend artifacts: `backend-service-overview.md`, `backend-runtime-behavior.md`, `backend-dependency-failure-matrix.md`, `backend-observability-map.md`, `backend-slo-sheet.md`, `backend-health-check-contract.md`, `backend-job-queue-contract.md`, `backend-data-consistency-record.md`, `backend-config-secrets-manifest.md`, `backend-release-rollback-notes.md`, `backend-operational-runbook.md`
+- Backend gates: `backend_service_boundary_present`, `backend_runtime_behavior_present`, `backend_dependency_failure_matrix_present`, `backend_observability_contract_present`, `backend_slo_or_gap_present`, `backend_health_probe_contract_present`, `backend_job_queue_contract_present`, `backend_data_consistency_strategy_present`, `backend_config_secrets_boundary_present`, `backend_security_reviewed`, `backend_rollback_plan_present`
+- Runtime/failure evidence, dependency failure matrix, observability/SLO/health evidence, job/queue contract, data consistency strategy, security review and rollback/replay evidence:
+- Unsupported backend shortcuts rejected: package docs do not prove backend runtime safety, logs-only observability, health-endpoint-only readiness, retries prove reliability, and microservices by default.
+- Backend accepted gap: use `explicit_gap_accepted` only with owner, reason, review date, downstream risk and follow-up condition; use `approval_required` before production data, external writes, secrets, deploy actions or irreversible side effects.
 - Ubiquitous language traceability (`ubiquitous_language_traceability`):
 - Term-to-requirement trace:
 - API/event/contract:

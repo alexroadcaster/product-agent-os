@@ -109,6 +109,16 @@ Generated at: {generated_at}
 - Browser/runtime evidence, console status and Playwright trace:
 - Baseline owner, reduced motion, input modality, WCAG 2.2 AA and external visual service approval:
 - Unsupported frontend claims rejected: Storybook proves UI quality, desktop-only screenshot proves responsive UI, automated accessibility addon output is enough, lab Web Vitals always represent production UX, code inspection proves UI completion.
+- Backend methodology (`backend`):
+- Backend artifacts: `backend-service-overview.md`, `backend-runtime-behavior.md`, `backend-dependency-failure-matrix.md`, `backend-observability-map.md`, `backend-slo-sheet.md`, `backend-health-check-contract.md`, `backend-job-queue-contract.md`, `backend-data-consistency-record.md`, `backend-config-secrets-manifest.md`, `backend-release-rollback-notes.md`, `backend-operational-runbook.md`
+- Backend gates: `backend_service_boundary_present`, `backend_runtime_behavior_present`, `backend_dependency_failure_matrix_present`, `backend_observability_contract_present`, `backend_slo_or_gap_present`, `backend_health_probe_contract_present`, `backend_job_queue_contract_present`, `backend_data_consistency_strategy_present`, `backend_config_secrets_boundary_present`, `backend_security_reviewed`, `backend_rollback_plan_present`
+- Runtime/failure evidence:
+- Dependency failure matrix:
+- Observability/SLO/health evidence:
+- Job/queue and data consistency checks:
+- Security and rollback evidence:
+- Unsupported backend claims rejected: package docs do not prove backend runtime safety, logs-only observability, health-endpoint-only readiness, retries prove reliability, microservices by default.
+- Backend accepted gap or `approval_required` status:
 - Domain model applicability (`domain_model_when_complex_domain`):
 - Bounded context -> architecture boundary trace (`bounded_context_architecture_boundary_trace`):
 - Ubiquitous language traceability (`ubiquitous_language_traceability`):

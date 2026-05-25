@@ -6,13 +6,13 @@ Owner: backend and release owners
 
 ## Scope
 
-Use this artifact for `backend_rollback_plan_present`, risky backend release, migration, feature flag, rollback, replay and data recovery evidence.
+Use this artifact for `backend_rollback_plan_present`, risky backend release, migration, feature flag, rollback command, manual procedure, replay, data recovery, irreversible side effects and owner approval evidence.
 
 ## Rollback Plan
 
-| Change | Risk | Feature flag | Migration impact | Rollback trigger | Rollback/no-rollback rationale | Replay/data recovery | Owner approval | Status |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| TBD | TBD | TBD | TBD | TBD | TBD | TBD | TBD | `present_unverified` |
+| Change | Risk | Feature flag | Migration impact | Rollback trigger | Rollback command/manual procedure | Rollback/no-rollback rationale | Replay/data recovery | Irreversible side effects | Owner approval | Residual risk | Status |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| TBD | TBD | TBD | TBD | TBD | TBD | TBD | TBD | TBD | TBD | TBD | `present_unverified` |
 
 ## Backend Shared Contract Terms
 
@@ -30,8 +30,13 @@ Use this artifact for `backend_rollback_plan_present`, risky backend release, mi
 - migration
 - feature flag
 - rollback trigger
+- rollback command
+- manual procedure
 - replay
 - data recovery
+- irreversible side effects
+- owner approval
+- residual risk
 
 ## Evidence
 

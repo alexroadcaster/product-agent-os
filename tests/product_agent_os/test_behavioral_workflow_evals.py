@@ -19,7 +19,7 @@ class BehavioralWorkflowEvalTest(unittest.TestCase):
         report = validate_behavioral_eval_template(path)
 
         self.assertEqual(report["status"], "ok")
-        self.assertEqual(report["case_count"], 38)
+        self.assertEqual(report["case_count"], 39)
         self.assertEqual(report["missing_required_cases"], [])
         self.assertEqual(report["unsafe_cases"], [])
         self.assertTrue(report["codex_only"])
@@ -625,6 +625,45 @@ class BehavioralWorkflowEvalTest(unittest.TestCase):
             "lab Web Vitals always represent production UX",
         ]:
             self.assertIn(forbidden, frontend["forbidden"])
+
+        backend = cases["backend-evidence-before-completion"]
+        self.assertEqual(backend["expected"]["route"], "backend methodology gates")
+        for artifact in [
+            "backend-service-overview.md",
+            "backend-runtime-behavior.md",
+            "backend-dependency-failure-matrix.md",
+            "backend-observability-map.md",
+            "backend-health-check-contract.md",
+            "backend-release-rollback-notes.md",
+        ]:
+            self.assertIn(artifact, backend["expected"]["minimum_artifacts"])
+        for expected in [
+            "backend_service_boundary_present",
+            "backend_runtime_behavior_present",
+            "backend_dependency_failure_matrix_present",
+            "backend_observability_contract_present",
+            "backend_slo_or_gap_present",
+            "backend_health_probe_contract_present",
+            "backend_job_queue_contract_present",
+            "backend_data_consistency_strategy_present",
+            "backend_config_secrets_boundary_present",
+            "backend_security_reviewed",
+            "backend_rollback_plan_present",
+            "runtime/failure evidence",
+            "owner reviewed evidence sufficiency",
+            "explicit_gap_accepted",
+            "approval_required",
+        ]:
+            self.assertIn(expected, backend["expected"]["required_fields"])
+        for forbidden in [
+            "package docs prove backend runtime safety",
+            "logs-only observability",
+            "health-endpoint-only readiness",
+            "retries prove reliability",
+            "microservices by default",
+            "backend completion without owner-reviewed evidence sufficiency",
+        ]:
+            self.assertIn(forbidden, backend["forbidden"])
 
 
 if __name__ == "__main__":

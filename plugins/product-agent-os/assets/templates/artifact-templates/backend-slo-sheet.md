@@ -6,7 +6,7 @@ Owner: backend owner
 
 ## Scope
 
-Use this artifact for `backend_slo_or_gap_present`, user-facing or production backend reliability expectations and explicit no-telemetry or not-yet-production gaps.
+Use this artifact for `backend_slo_or_gap_present`, SLI/SLO or explicit gap, user-facing or production backend reliability expectations and explicit no-telemetry gap or not-yet-production gap.
 
 ## SLO Table
 
@@ -28,11 +28,15 @@ Use this artifact for `backend_slo_or_gap_present`, user-facing or production ba
 - `backend_security_reviewed`
 - `backend_rollback_plan_present`
 - SLOs are only for large companies is an unsupported claim
+- SLI/SLO or explicit gap
 - user journey
+- user-relevant SLI
 - SLI
 - SLO target
 - measurement window
 - alert policy
+- no-telemetry gap
+- not-yet-production gap
 
 ## Evidence
 

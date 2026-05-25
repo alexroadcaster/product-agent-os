@@ -6,11 +6,11 @@ Owner: backend owner
 
 ## Scope
 
-Use this artifact for `backend_dependency_failure_matrix_present`, remote service, database, cache, queue, payment, email, storage, search or third-party provider failure policy.
+Use this artifact for `backend_dependency_failure_matrix_present`, per dependency remote service, database, cache, queue, payment, email, storage, search or third-party provider failure policy.
 
 ## Matrix
 
-| Dependency | Owner | Timeout | Retry | Circuit breaker/non-applicability | Fallback | Alert | Verification | Status |
+| Dependency | Owner | Timeout | Retry/backoff/max attempts | Circuit breaker/non-applicability | Fallback | Alert owner | Verification evidence | Status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | TBD | TBD | TBD | TBD | TBD | TBD | TBD | unit/integration/contract/runtime | `present_unverified` |
 
@@ -28,16 +28,21 @@ Use this artifact for `backend_dependency_failure_matrix_present`, remote servic
 - `backend_security_reviewed`
 - `backend_rollback_plan_present`
 - backend-dependency-failure-matrix.md
+- per dependency
 - timeout
 - retry
+- backoff
+- max attempts
 - circuit breaker
+- circuit breaker/non-applicability
 - fallback
 - alert
 - owner
+- verification evidence
 
 ## Evidence
 
-Record dependency owner, failure policy, linked runtime behavior, current verification command and accepted gap.
+Record per dependency owner, failure policy, linked runtime behavior, current verification command, verification evidence and accepted gap.
 
 ## Accepted Gap
 

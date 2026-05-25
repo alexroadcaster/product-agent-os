@@ -19,9 +19,19 @@ Use this artifact for `backend_runtime_behavior_present`, retries, timeouts, ide
 - Duplicate processing:
 - Timeout behavior:
 - Circuit breaker or fallback:
+- Deduplication:
+- Ordering:
+- Backpressure:
 - Poison message:
 - Replay procedure:
 - Recovery owner:
+
+## Process Discipline
+
+- Process model:
+- Stateless process or accepted gap:
+- Admin tasks:
+- Logs-as-event-stream:
 
 ## Backend Shared Contract Terms
 
@@ -43,8 +53,15 @@ Use this artifact for `backend_runtime_behavior_present`, retries, timeouts, ide
 - max attempts
 - idempotency
 - deduplication
+- ordering
+- backpressure
+- poison message
 - replay
 - recovery
+- process model
+- stateless process
+- admin tasks
+- logs-as-event-stream
 - code inspection alone is not backend completion evidence
 
 ## Evidence

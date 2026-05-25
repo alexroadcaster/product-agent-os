@@ -85,6 +85,17 @@ Profile: {profile_name}
 - Rollback owner:
 - Data or compatibility risk:
 
+## Backend Data Consistency Overlap
+
+- Data consistency:
+- Local transaction:
+- Outbox:
+- Saga:
+- Compensation:
+- Reconciliation:
+- Migration impact:
+- Data recovery:
+
 ## Risks
 
 - Residual risk:

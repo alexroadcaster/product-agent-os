@@ -571,16 +571,52 @@ BACKEND_TERMS = (
     "protobuf",
     "timeout",
     "retry",
+    "verification evidence",
+    "retry/backoff/max attempts",
     "idempotency",
     "replay",
+    "dead-letter behavior",
+    "dead-letter queue",
     "observability",
+    "reconciliation",
+    "migration impact",
+    "alert ownership",
+    "no-private-payload logging",
+    "logs alone are not accepted as observability",
     "slo",
+    "sli/slo or explicit gap",
     "health check",
+    "health endpoint semantics",
     "queue",
     "data consistency",
     "env/config keys without values",
     "secret source",
     "rollback trigger",
+    "handoff to delivery/operations",
+    "rollback command",
+    "manual procedure",
+    "data recovery/replay",
+    "irreversible side effects",
+    "twelve-factor vocabulary",
+    "build-release-run",
+    "logs-as-event-stream",
+    "decision authority",
+    "boundary rationale",
+    "adr link or accepted gap",
+    "track 9 backend methodology",
+    "microservices conditional",
+    "modular monolith is the default",
+    "independent deploy/scale/team/ownership evidence",
+    "microservices require explicit owner review",
+    "ports/adapters boundary",
+    "domain logic independent from http/db/queue/vendor sdk",
+    "backpressure",
+    "poison message",
+    "runtime/failure/observability/security/rollback evidence",
+    "owner reviewed evidence sufficiency",
+    "logs-only observability",
+    "health-endpoint-only readiness",
+    "package docs do not prove backend runtime safety",
     "code inspection alone is not backend completion evidence",
     "present_unverified",
     "explicit_gap_accepted",
@@ -789,6 +825,7 @@ CONDITIONAL_READINESS_GATE_IDS = (
     "onboarding_map_when_legacy_repo",
     "migration_plan_when_contract_or_data_changes",
     "security_review_when_sensitive_surface",
+    "backend_readiness_when_backend_changes",
     "platform_runtime_check_when_native_or_desktop",
     "ci_failure_evidence_when_ci_stabilization",
     "release_readiness_when_distribution_changes",
@@ -1162,6 +1199,19 @@ def _expected_checks(
             and "frontend" in route_methodology_signals
             and isinstance(frontend_packet, dict)
             and frontend_packet.get("status") == "present_unverified"
+        )
+    if fixture == "backend-service-app":
+        applicability = audit.get("methodology_applicability", {})
+        backend_packet = (
+            applicability.get("backend_methodology", {}) if isinstance(applicability, dict) else {}
+        )
+        checks["backend_contract_present"] = _backend_contract_present()
+        checks["backend_methodology_detected_for_service"] = (
+            isinstance(signals, dict)
+            and signals.get("backend") is True
+            and "backend" in route_methodology_signals
+            and isinstance(backend_packet, dict)
+            and backend_packet.get("status") == "present_unverified"
         )
     return checks
 
@@ -1639,6 +1689,22 @@ def _backend_contract_present() -> bool:
         TEMPLATE_ROOT / "artifact-templates" / "quality-strategy.md",
         TEMPLATE_ROOT / "artifact-templates" / "test-eval-matrix.md",
         TEMPLATE_ROOT / "artifact-templates" / "manual-qa-evidence.md",
+        TEMPLATE_ROOT / "artifact-templates" / "security-risk-review.md",
+        TEMPLATE_ROOT / "artifact-templates" / "domain-modeling.md",
+        TEMPLATE_ROOT / "workflows" / "release-packet.md",
+        TEMPLATE_ROOT / "control-plane" / "PLAN.md",
+        TEMPLATE_ROOT / "control-plane" / "TEST.md",
+        TEMPLATE_ROOT / "control-plane" / "EVALS.md",
+        TEMPLATE_ROOT / "control-plane" / "RUNLOG.md",
+        TEMPLATE_ROOT / "evals" / "project-readiness.json",
+        TEMPLATE_ROOT / "evals" / "behavioral-workflows.json",
+        PLUGIN_ROOT / "skills" / "workspace-discovery-auditor" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "requirements-author" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "implementation-planner" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "test-eval-designer" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "risk-reviewer" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "docs-maintainer" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "pr-release-operator" / "SKILL.md",
         PLUGIN_ROOT / "scripts" / "product_agent_os" / "discovery.py",
         PLUGIN_ROOT / "scripts" / "product_agent_os" / "methodology_audit.py",
     ]

@@ -766,6 +766,236 @@ class MethodologyAuditContractTest(unittest.TestCase):
                 self.assertEqual(recommendation["priority"], "P1_high_risk")
                 self.assertEqual(recommendation["artifact"], "backend-service-overview.md")
 
+    def test_backend_security_approval_and_secrets_policy_depth(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "server").mkdir()
+            (root / "server" / "app.py").write_text("def app():\n    return None\n", encoding="utf-8")
+            result = build_methodology_audit(
+                root,
+                intent_hint=(
+                    "production backend auth tokens PII money movement privileged operations "
+                    "external writes irreversible side effects secrets config"
+                ),
+            )
+
+        security = self._recommendation_by_gate(result, "backend_security_reviewed")
+        config = self._recommendation_by_gate(result, "backend_config_secrets_boundary_present")
+        for expected in [
+            "authn/authz",
+            "tokens",
+            "PII",
+            "money movement",
+            "privileged operations",
+            "external writes",
+            "irreversible side effects",
+        ]:
+            with self.subTest(expected=expected):
+                self.assertIn(expected.lower(), " ".join(security["evidence_required"]).lower())
+        self.assertIn("private customer data", config["residual_risk"].lower())
+        self.assertIn("docs, prompts, fixtures and logs", config["residual_risk"].lower())
+        self.assertIn("approval_required", security["approval_boundary"])
+
+    def test_backend_modular_ports_and_runtime_policy_recommendations(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "server").mkdir()
+            (root / "server" / "app.py").write_text("def app():\n    return None\n", encoding="utf-8")
+            result = build_methodology_audit(
+                root,
+                intent_hint=(
+                    "production backend microservice ports adapters DDD retry timeout idempotency "
+                    "backpressure ordering poison message replay"
+                ),
+            )
+
+        boundary = self._recommendation_by_gate(result, "backend_service_boundary_present")
+        runtime = self._recommendation_by_gate(result, "backend_runtime_behavior_present")
+        boundary_evidence = " ".join(boundary["evidence_required"]).lower()
+        runtime_evidence = " ".join(runtime["evidence_required"]).lower()
+        for expected in [
+            "modular monolith default",
+            "microservice rationale",
+            "independent deploy/scale/team/ownership evidence",
+            "owner review",
+            "adr",
+            "ports/adapters boundary",
+            "domain logic independent from http/db/queue/vendor sdk",
+        ]:
+            with self.subTest(expected=expected):
+                self.assertIn(expected, boundary_evidence)
+        for expected in [
+            "timeout",
+            "backoff/max attempts",
+            "idempotency",
+            "deduplication",
+            "ordering",
+            "backpressure",
+            "poison message",
+            "replay/recovery",
+        ]:
+            with self.subTest(expected=expected):
+                self.assertIn(expected, runtime_evidence)
+
+    def test_backend_resilience_ops_twelve_factor_and_owner_review_recommendations(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "server").mkdir()
+            (root / "server" / "app.py").write_text("def app():\n    return None\n", encoding="utf-8")
+            (root / "workers").mkdir()
+            (root / "workers" / "sync_worker.py").write_text("def run():\n    return None\n", encoding="utf-8")
+            result = build_methodology_audit(
+                root,
+                intent_hint=(
+                    "production backend new changed responsibility remote dependency timeout retry backoff "
+                    "max attempts circuit breaker fallback alert queue job DLQ dead-letter poison message "
+                    "deduplication ordering backpressure payload idempotency replay local transaction outbox "
+                    "saga compensation reconciliation migration impact observability traces metrics logs "
+                    "correlation alert ownership no-private-payload logging SLI SLO explicit gap health "
+                    "liveness readiness startup operational owner escalation rollback command manual procedure "
+                    "data recovery irreversible side effects owner approval Twelve-Factor explicit dependencies "
+                    "build-release-run process model admin tasks dev/prod parity logs-as-event-stream ADR "
+                    "decision authority boundary rationale"
+                ),
+            )
+
+        boundary = self._recommendation_by_gate(result, "backend_service_boundary_present")
+        runtime = self._recommendation_by_gate(result, "backend_runtime_behavior_present")
+        dependency = self._recommendation_by_gate(result, "backend_dependency_failure_matrix_present")
+        observability = self._recommendation_by_gate(result, "backend_observability_contract_present")
+        slo = self._recommendation_by_gate(result, "backend_slo_or_gap_present")
+        health = self._recommendation_by_gate(result, "backend_health_probe_contract_present")
+        queue = self._recommendation_by_gate(result, "backend_job_queue_contract_present")
+        consistency = self._recommendation_by_gate(result, "backend_data_consistency_strategy_present")
+        config = self._recommendation_by_gate(result, "backend_config_secrets_boundary_present")
+        rollback = self._recommendation_by_gate(result, "backend_rollback_plan_present")
+
+        expected_by_recommendation = {
+            "boundary": (
+                boundary,
+                [
+                    "changed backend responsibility",
+                    "owner review",
+                    "decision authority",
+                    "boundary rationale",
+                    "adr link or accepted gap",
+                    "twelve-factor vocabulary",
+                    "explicit dependencies",
+                ],
+            ),
+            "runtime": (
+                runtime,
+                [
+                    "process model",
+                    "admin tasks",
+                    "logs-as-event-stream",
+                    "stateless process or accepted gap",
+                ],
+            ),
+            "dependency": (
+                dependency,
+                [
+                    "per dependency",
+                    "timeout",
+                    "retry/backoff/max attempts",
+                    "circuit breaker non-applicability",
+                    "fallback",
+                    "alert owner",
+                    "verification evidence",
+                ],
+            ),
+            "observability": (
+                observability,
+                [
+                    "traces",
+                    "metrics",
+                    "logs",
+                    "correlation IDs",
+                    "alert ownership",
+                    "no-private-payload logging",
+                    "logs alone are not accepted as observability",
+                ],
+            ),
+            "slo": (
+                slo,
+                [
+                    "SLI/SLO or explicit gap",
+                    "user journey",
+                    "user-relevant SLI",
+                    "SLO target",
+                    "no-telemetry or not-yet-production gap",
+                ],
+            ),
+            "health": (
+                health,
+                [
+                    "health endpoint semantics",
+                    "liveness",
+                    "readiness",
+                    "startup",
+                    "platform equivalent",
+                    "test evidence or accepted gap",
+                ],
+            ),
+            "queue": (
+                queue,
+                [
+                    "payload contract",
+                    "retry policy",
+                    "dead-letter behavior",
+                    "dead-letter queue",
+                    "idempotency key",
+                    "replay procedure",
+                    "poison-message handling",
+                ],
+            ),
+            "consistency": (
+                consistency,
+                [
+                    "local transaction",
+                    "outbox",
+                    "saga",
+                    "compensation",
+                    "monitoring",
+                    "reconciliation",
+                    "migration impact",
+                    "recovery path",
+                ],
+            ),
+            "config": (
+                config,
+                [
+                    "config/env keys without values",
+                    "explicit dependencies",
+                    "build-release-run boundary",
+                    "dev/prod parity",
+                    "secret source",
+                ],
+            ),
+            "rollback": (
+                rollback,
+                [
+                    "rollback trigger",
+                    "rollback command or manual procedure",
+                    "data recovery/replay",
+                    "irreversible side effects",
+                    "owner approval",
+                    "residual risk",
+                ],
+            ),
+        }
+        for name, (recommendation, expected_terms) in expected_by_recommendation.items():
+            evidence = " ".join(recommendation["evidence_required"]).lower()
+            for expected in expected_terms:
+                with self.subTest(recommendation=name, expected=expected):
+                    self.assertIn(expected.lower(), evidence)
+
 
 if __name__ == "__main__":
     unittest.main()

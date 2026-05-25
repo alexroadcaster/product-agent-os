@@ -6,11 +6,11 @@ Owner: backend owner
 
 ## Scope
 
-Use this artifact for `backend_observability_contract_present`, traces, metrics, logs, dashboards, alerts, correlation IDs, context propagation, redaction and OpenTelemetry-style vocabulary.
+Use this artifact for `backend_observability_contract_present`, traces, metrics, logs, dashboards, alerts, alert ownership, correlation IDs, context propagation, redaction, no-private-payload logging and OpenTelemetry-style vocabulary.
 
 ## Observability Signals
 
-| Runtime path | Trace/span | Metric | Log event | Correlation ID | Dashboard | Alert | Redaction/no-secrets note | Status |
+| Runtime path | Trace/span | Metric | Log event | Correlation ID | Dashboard | Alert ownership | Redaction/no-secrets/no-private-payload logging note | Status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | TBD | TBD | TBD | TBD | TBD | TBD | TBD | TBD | `present_unverified` |
 
@@ -40,12 +40,17 @@ Use this artifact for `backend_observability_contract_present`, traces, metrics,
 - logs
 - dashboards
 - alerts
+- alert ownership
 - correlation IDs
+- context propagation
 - redaction
+- no-private-payload logging
+- collector/exporter
+- logs alone are not accepted as observability
 
 ## Evidence
 
-Record current observability evidence, dashboard/log query links or placeholders, and no-secrets logging evidence.
+Record current observability evidence, dashboard/log query links or placeholders, alert ownership, no-secrets logging evidence and no-private-payload logging evidence.
 
 ## Accepted Gap
 
@@ -53,7 +58,7 @@ Use `explicit_gap_accepted` only with owner, reason, scope, downstream risk, rev
 
 ## Residual Risk
 
-Logs alone are not sufficient observability and may expose secrets if redaction is not explicit.
+Logs alone are not accepted as observability and may expose secrets if redaction and no-private-payload logging are not explicit.
 
 ## Approval Boundary
 

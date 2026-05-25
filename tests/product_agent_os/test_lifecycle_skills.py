@@ -866,6 +866,52 @@ class LifecycleSkillsTest(unittest.TestCase):
                 for expected in shared_terms:
                     self.assertIn(expected, text)
 
+    def test_lifecycle_skills_route_backend_methodology(self):
+        shared_terms = [
+            "track 9 backend methodology",
+            "backend",
+            "backend-service-overview.md",
+            "backend-runtime-behavior.md",
+            "backend-dependency-failure-matrix.md",
+            "backend-observability-map.md",
+            "backend-slo-sheet.md",
+            "backend-health-check-contract.md",
+            "backend-job-queue-contract.md",
+            "backend-data-consistency-record.md",
+            "backend-config-secrets-manifest.md",
+            "backend-release-rollback-notes.md",
+            "backend-operational-runbook.md",
+            "backend_service_boundary_present",
+            "backend_runtime_behavior_present",
+            "backend_dependency_failure_matrix_present",
+            "backend_observability_contract_present",
+            "backend_slo_or_gap_present",
+            "backend_health_probe_contract_present",
+            "backend_job_queue_contract_present",
+            "backend_data_consistency_strategy_present",
+            "backend_config_secrets_boundary_present",
+            "backend_security_reviewed",
+            "backend_rollback_plan_present",
+            "microservices conditional",
+            "runtime/failure/observability/security/rollback evidence",
+            "approval_required",
+            "explicit_gap_accepted",
+        ]
+
+        for name in [
+            "workspace-discovery-auditor",
+            "requirements-author",
+            "implementation-planner",
+            "test-eval-designer",
+            "risk-reviewer",
+            "docs-maintainer",
+            "pr-release-operator",
+        ]:
+            text = self._skill_text(name).lower()
+            with self.subTest(name=name):
+                for expected in shared_terms:
+                    self.assertIn(expected, text)
+
     def test_risk_reviewer_generalizes_two_stage_review_for_risky_slices(self):
         risk_reviewer = self._skill_text("risk-reviewer").lower()
 

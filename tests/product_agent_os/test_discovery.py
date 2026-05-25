@@ -928,6 +928,26 @@ class DiscoveryTest(unittest.TestCase):
         self.assertIn("runtime/failure evidence", applicability["required_evidence"])
         self.assertIn("detection alone does not prove backend runtime safety", applicability["residual_risk"])
 
+    def test_backend_service_fixture_routes_backend_methodology(self):
+        workspace = FIXTURES / "backend-service-app"
+
+        result = analyze_workspace(workspace)
+
+        self.assertTrue(result["methodology_signals"]["backend"])
+        self.assertIn(
+            "backend",
+            result["route_inputs"]["workspace_signals"]["methodology_signals"],
+        )
+        applicability = result["methodology_applicability"]["backend_methodology"]
+        self.assertEqual(applicability["status"], "present_unverified")
+        for expected in [
+            "backend-service-overview.md",
+            "backend-runtime-behavior.md",
+            "runtime/failure evidence",
+            "observability/SLO/health evidence or accepted explicit gap",
+        ]:
+            self.assertIn(expected, applicability["required_evidence"])
+
     def test_methodology_applicability_reports_status_packets(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             workspace = Path(tmpdir)

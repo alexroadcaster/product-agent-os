@@ -1,0 +1,5 @@
+[project]
+name = "synthetic-backend-service-app"
+version = "0.1.0"
+description = "Synthetic backend fixture for Product-Agent OS methodology evals."
+

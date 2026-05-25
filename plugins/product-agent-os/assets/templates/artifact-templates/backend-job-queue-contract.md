@@ -6,13 +6,13 @@ Owner: backend owner
 
 ## Scope
 
-Use this artifact for `backend_job_queue_contract_present`, background jobs, queues, consumers, schedulers, payload contracts, retry, DLQ, idempotency and replay.
+Use this artifact for `backend_job_queue_contract_present`, background jobs, queues, consumers, schedulers, payload contracts, retry, dead-letter queue, idempotency, replay, deduplication, ordering and backpressure.
 
 ## Queue And Job Matrix
 
-| Queue/job | Producer | Consumer | Payload contract | Retry policy | DLQ | Idempotency key | Replay procedure | Poison-message handling | Status |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| TBD | TBD | TBD | TBD | TBD | TBD | TBD | TBD | TBD | `present_unverified` |
+| Queue/job | Producer | Consumer | Payload contract | Retry policy | Dead-letter queue | Dead-letter behavior | Idempotency key | Deduplication policy | Ordering guarantee | Backpressure | Replay procedure | Poison-message handling | Status |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| TBD | TBD | TBD | TBD | TBD | TBD | TBD | TBD | TBD | TBD | TBD | TBD | TBD | `present_unverified` |
 
 ## Backend Shared Contract Terms
 
@@ -30,13 +30,19 @@ Use this artifact for `backend_job_queue_contract_present`, background jobs, que
 - AsyncAPI
 - payload contract
 - retry policy
+- dead-letter queue
 - dead-letter behavior
 - idempotency key
+- deduplication policy
+- ordering guarantee
+- backpressure
 - replay
+- replay procedure
+- poison-message handling
 
 ## Evidence
 
-Record payload examples with synthetic data, retry/DLQ behavior, replay command or accepted gap.
+Record payload examples with synthetic data, retry/dead-letter behavior, deduplication policy, ordering guarantee, backpressure, replay command or accepted gap.
 
 ## Accepted Gap
 

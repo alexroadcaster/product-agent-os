@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: synthetic-backend
+spec:
+  selector:
+    matchLabels:
+      app: synthetic-backend
+  template:
+    metadata:
+      labels:
+        app: synthetic-backend
+    spec:
+      containers:
+        - name: synthetic-backend
+          image: synthetic/backend:local
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8080
+

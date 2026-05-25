@@ -6,13 +6,13 @@ Owner: backend and data owners
 
 ## Scope
 
-Use this artifact for `backend_data_consistency_strategy_present`, transaction boundary, consistency model, outbox, saga, compensation, monitoring and recovery path.
+Use this artifact for `backend_data_consistency_strategy_present`, local transaction, transaction boundary, consistency model, outbox, saga, compensation, monitoring, reconciliation, migration impact and recovery path.
 
 ## Consistency Strategy
 
-| Workflow/change | Transaction boundary | Consistency model | Outbox/saga/compensation | Monitoring | Recovery path | Owner | Status |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| TBD | TBD | TBD | local transaction/outbox/saga/compensation | TBD | TBD | TBD | `present_unverified` |
+| Workflow/change | Transaction boundary | Consistency model | Outbox/saga/compensation | Monitoring | Reconciliation | Migration impact | Recovery path | Owner | Status |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| TBD | TBD | TBD | local transaction/outbox/saga/compensation | TBD | TBD | TBD | TBD | TBD | `present_unverified` |
 
 ## Backend Shared Contract Terms
 
@@ -31,11 +31,13 @@ Use this artifact for `backend_data_consistency_strategy_present`, transaction b
 - outbox
 - saga
 - compensation
+- reconciliation
+- migration impact
 - recovery path
 
 ## Evidence
 
-Record migration impact, consistency decision, verification command and linked rollback/replay notes.
+Record migration impact, consistency decision, reconciliation path, verification command and linked rollback/replay notes.
 
 ## Accepted Gap
 

@@ -20,6 +20,8 @@ Use this artifact for security-sensitive Product-Agent OS work before implementa
 - Trust boundaries:
 - Privileged operations:
 - External systems:
+- External writes:
+- Irreversible side effects:
 - Data exposed:
 - Abuse cases:
 
@@ -44,12 +46,19 @@ Use this artifact for security-sensitive Product-Agent OS work before implementa
 ## Secrets And Sensitive Data
 
 - Secrets touched:
+- Tokens touched:
 - Secret storage policy:
 - PII touched:
 - Sensitive data touched:
 - Customer data boundary:
 - Data minimization:
 - Do not include raw secrets, credentials, private keys, payment data, raw PII, or raw customer data here.
+
+## Backend Security Notes
+
+For backend changes, record `backend_security_reviewed` and route authn/authz, tokens, PII, money movement, privileged operations, external writes and irreversible side effects to this risk review before implementation or release. Docs, prompts, fixtures and logs must not contain secrets, credentials, tokens, raw PII, production payloads or private customer data.
+
+Use `approval_required` before touching auth, secrets, PII, money movement, privileged operations, production data, external writes or irreversible side effects. If the security surface is intentionally out of scope, record `explicit_gap_accepted` with owner, reason, review date, downstream risk and follow-up condition.
 
 ## Abuse Controls And Audit Logging
 

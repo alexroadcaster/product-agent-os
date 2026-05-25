@@ -14,6 +14,13 @@ Generated at: 2026-05-25
 - Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
 - Docs check: `python tools\check_docs.py` passed.
 - Diff hygiene: `git diff --check` exited `0`.
+- T9-D7 batch status: rows `T9-D7-M0..M29` are implemented; rows `T9-D7-M30..M45` remain open.
+- Latest focused T9-D7 checks: catalog/audit/discovery ran 84 tests with `OK`; template/lifecycle/behavioral/fixture checks ran 134 tests with `OK`; backend depth subset ran 105 tests with `OK`.
+- Latest fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0`; renderer file count is 118 and backend contract checks are true.
+- Latest full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 404 tests with `OK`.
+- Latest transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 4 sessions and 0 failures.
+- Latest Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
+- Latest docs/diff hygiene: `python tools\check_docs.py` passed and `git diff --check` exited `0`.
 
 ## Required Checks After Docs Changes
 
@@ -161,6 +168,17 @@ python tools\check_docs.py
 - Confirmed Storybook and Feature-Sliced Design are conditional, not proof by themselves.
 - Confirmed unsupported frontend claims are rejected as evidence: FSD mandatory, Storybook proves UI quality, automated a11y addon enough, desktop screenshot proves responsive UI, lab Web Vitals always represent production UX and code inspection proves UI completion.
 - Confirmed fixture eval exposes `frontend_contract_present`.
+
+## Completed Focused Checks For T9-D7 Through M29
+
+- Added RED then GREEN tests for backend resilience/operations depth in artifact templates, audit recommendations and fixture eval contract terms.
+- Confirmed backend dependency failure matrix requires per dependency timeout, retry/backoff/max attempts, circuit breaker non-applicability, fallback, alert owner and verification evidence.
+- Confirmed job/queue policy records payload contract, retry policy, dead-letter behavior, dead-letter queue, idempotency key, replay procedure, poison-message handling, deduplication, ordering and backpressure.
+- Confirmed data consistency policy records local transaction, outbox, saga, compensation, monitoring, reconciliation, migration impact and recovery path.
+- Confirmed observability rejects logs-only evidence and requires traces, metrics, logs, dashboards, alerts, correlation IDs, alert ownership, redaction and no-private-payload logging.
+- Confirmed SLI/SLO or explicit gap, health endpoint semantics, operational owner/escalation handoff, rollback command/manual procedure, data recovery/replay, irreversible side effects, owner approval and residual risk are represented.
+- Confirmed Twelve-Factor vocabulary stays optional and framework-agnostic while recording explicit dependencies, build-release-run, process model, admin tasks, dev/prod parity, logs-as-event-stream and stateless process or accepted gap.
+- Confirmed service boundary changes require owner review, decision authority, boundary rationale and ADR link or accepted gap.
 
 ## Evidence Format
 

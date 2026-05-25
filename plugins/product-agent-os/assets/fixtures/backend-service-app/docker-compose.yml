@@ -1,0 +1,7 @@
+services:
+  synthetic-backend:
+    build: .
+    command: python -m server.app
+  synthetic-redis:
+    image: redis:7-alpine
+

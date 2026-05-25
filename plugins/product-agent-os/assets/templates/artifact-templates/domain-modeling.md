@@ -20,6 +20,7 @@ Use this template for complex backend, enterprise, workflow, or data-heavy chang
 - Not required for simple CRUD or simple MVP work unless the owner explicitly wants DDD.
 - Every bounded context must map to an architecture boundary in `.codex/artifact-templates/architecture-overview.md`, or record an accepted gap.
 - Every ubiquitous language term must trace to a requirement or source and at least one API/event/contract, UI label, code module, or owner; otherwise record an accepted gap.
+- For backend DDD overlap, record the ports/adapters boundary and prove domain logic independent from HTTP/DB/queue/vendor SDK concerns, or record `explicit_gap_accepted`.
 - Accepted gap:
 - Reason DDD is not applicable:
 - Evidence owner:

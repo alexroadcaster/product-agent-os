@@ -308,6 +308,51 @@ Batch 1 verification:
 - `git diff --check` exited `0`.
 - `python -m unittest discover -s tests -p "test_*.py" -v` ran 393 tests with `OK`.
 
+Batch 2 implemented scope (`T9-D7-M10` through `T9-D7-M19`):
+
+- Strengthened backend security/secrets overlap: `security-risk-review.md` and `backend-config-secrets-manifest.md` now cover authn/authz, tokens, PII, money movement, privileged operations, external writes, irreversible side effects, no-secrets handling for docs/prompts/fixtures/logs and `approval_required` boundaries.
+- Added generated control-plane/eval backend coverage in `PLAN.md`, `TEST.md`, `EVALS.md`, `RUNLOG.md`, `project-readiness.json` and `behavioral-workflows.json`; backend shortcuts now explicitly reject package-docs-only runtime proof, logs-only observability, health-endpoint-only readiness, retry-only reliability and default microservices.
+- Routed Backend through lifecycle skills for workspace discovery, requirements, implementation planning, test/eval design, risk review, docs maintenance and PR/release operation. Shared wording keeps microservices conditional and requires runtime/failure/observability/security/rollback evidence or accepted gaps.
+- Completed the first full `backend_contract_present` fixture eval depth by adding lifecycle/control-plane/eval coverage and a positive synthetic `backend-service-app` fixture.
+- Strengthened false-positive and approval-bound behavior: backend detection remains `present_unverified`, production data/external writes/secrets/deploy actions remain approval-bound, and backend completion needs owner-reviewed evidence sufficiency or an accepted gap.
+- Deepened unsupported-claim handling, modular-monolith/microservice policy, Ports and Adapters / DDD boundary policy, and runtime/retry/idempotency/backpressure policy in templates and audit recommendations.
+
+Batch 2 verification:
+
+- `python -m unittest tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_behavioral_workflow_evals tests.product_agent_os.test_fixtures tests.product_agent_os.test_discovery tests.product_agent_os.test_fixture_eval_runner -v` ran 204 tests with `OK`.
+- `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0` with renderer output still at 118 files.
+- `python tools\check_docs.py` passed.
+- `git diff --check` exited `0`.
+- `python -m unittest discover -s tests -p "test_*.py" -v` ran 401 tests with `OK`.
+
+Batch 3 implemented scope (`T9-D7-M20` through `T9-D7-M29`):
+
+- Clarified the active Track 9 plan so `T9-D7-M26/M27` record incremental backend batch evidence and final verification scope, without claiming full `T9-D7` closure while `T9-D7-M30..M45` remain open.
+- Deepened dependency failure policy: `backend-dependency-failure-matrix.md` and audit recommendations now require per dependency timeout, retry/backoff/max attempts, circuit breaker non-applicability, fallback, alert owner and verification evidence.
+- Deepened job/queue policy: `backend-job-queue-contract.md` now records dead-letter queue, dead-letter behavior, idempotency key, replay procedure, poison-message handling, deduplication policy, ordering guarantee and backpressure.
+- Deepened data consistency policy: `backend-data-consistency-record.md` and `migration-plan.md` now cover local transaction, outbox, saga, compensation, monitoring, reconciliation, migration impact and recovery path.
+- Deepened observability and logging policy: `backend-observability-map.md` now rejects logs-only observability and requires traces, metrics, logs, dashboards, alerts, correlation IDs, alert ownership, redaction and no-private-payload logging.
+- Deepened SLI/SLO, health and operations evidence: `backend-slo-sheet.md`, `backend-health-check-contract.md`, `backend-operational-runbook.md` and readiness gates now record SLI/SLO or explicit gap, no-telemetry/not-yet-production gap, health endpoint semantics, liveness/readiness/startup/platform equivalent, operational owner, escalation path, evidence freshness and handoff to Delivery/Operations.
+- Deepened rollback/recovery evidence: `backend-release-rollback-notes.md` and `release-packet.md` now require rollback command or manual procedure, data recovery/replay, irreversible side effects, owner approval and residual risk.
+- Added optional Twelve-Factor service discipline vocabulary across backend service/config/runtime templates: explicit dependencies, config/env keys, build-release-run, process model, stateless process or accepted gap, admin tasks, dev/prod parity and logs-as-event-stream, without making Twelve-Factor mandatory.
+- Added service-boundary owner review and ADR routing depth: `backend-service-overview.md`, `adr.md` and audit recommendations now require changed backend responsibility, owner review, decision authority, boundary rationale and ADR link or accepted gap.
+- Expanded `backend_contract_present` fixture eval terms and payload sources to include the new resilience, operations, Twelve-Factor and owner-review evidence.
+- Synced root `PLAN.md`, `TEST.md`, `EVALS.md` and `RUNLOG.md` with batch-level backend evidence and residual risk; Product-Agent OS public docs/source registry refresh remains planned in `T9-D7-M44`.
+
+Batch 3 verification:
+
+- RED run: focused new tests failed as expected before implementation on missing resilience/operations/Twelve-Factor/owner-review terms in backend templates, audit recommendations and fixture eval contract.
+- `python -m unittest tests.product_agent_os.test_infrastructure_templates.InfrastructureTemplateTest.test_backend_resilience_operations_twelve_factor_and_owner_review_depth tests.product_agent_os.test_methodology_audit.MethodologyAuditContractTest.test_backend_resilience_ops_twelve_factor_and_owner_review_recommendations tests.product_agent_os.test_fixture_eval_runner.FixtureEvalRunnerTest.test_backend_contract_terms_include_resilience_ops_depth -v` ran 3 tests with `OK`.
+- `python -m unittest tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_fixture_eval_runner -v` ran 105 tests with `OK`.
+- `python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_discovery -v` ran 84 tests with `OK`.
+- `python -m unittest tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_behavioral_workflow_evals tests.product_agent_os.test_fixture_eval_runner tests.product_agent_os.test_fixtures -v` ran 134 tests with `OK`.
+- `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0`; renderer file count stayed 118.
+- `python -m unittest discover -s tests -p "test_*.py" -v` ran 404 tests with `OK`.
+- `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 4 sessions and 0 failures.
+- `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
+- `python tools\check_docs.py` passed.
+- `git diff --check` exited `0`.
+
 ## Cross-Domain Synthesis Backlog
 
 | Status | Item | Reason |

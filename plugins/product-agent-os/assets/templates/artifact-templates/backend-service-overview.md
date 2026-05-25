@@ -6,7 +6,7 @@ Owner: backend owner
 
 ## Scope
 
-Use this artifact for `backend_service_boundary_present`, `backend_runtime_behavior_present`, `backend_rollback_plan_present`, module/service boundary mapping and Ports and Adapters boundary notes.
+Use this artifact for `backend_service_boundary_present`, `backend_runtime_behavior_present`, `backend_rollback_plan_present`, new or changed backend responsibility, module/service boundary mapping, owner review, ADR routing, Ports and Adapters boundary notes and optional Twelve-Factor vocabulary.
 
 ## Boundary
 
@@ -16,12 +16,30 @@ Use this artifact for `backend_service_boundary_present`, `backend_runtime_behav
 
 ## Architecture And Contract Links
 
-- Modular monolith default or microservice rationale:
+- Modular monolith is the default unless independent deploy/scale/team/ownership evidence justifies a service split:
+- Microservices require explicit owner review, ADR link and migration/rollback notes:
 - Owner review and ADR link:
-- Ports and Adapters boundary:
+- New or changed backend responsibility:
+- Decision authority:
+- Boundary rationale:
+- ADR link or accepted gap:
+- Ports/Adapters boundary:
+- Domain logic independent from HTTP/DB/queue/vendor SDK concerns:
 - Domain model or bounded context link:
 - OpenAPI / AsyncAPI / Pact / protobuf / provider contract:
 - API/event contract sync with code:
+
+## Twelve-Factor Service Discipline
+
+- Twelve-Factor vocabulary is optional service discipline vocabulary, not a mandatory framework:
+- Explicit dependencies:
+- Config/env keys:
+- Build-release-run boundary:
+- Process model:
+- Stateless process or accepted gap:
+- Admin tasks:
+- Dev/prod parity:
+- Logs-as-event-stream:
 
 ## Backend Shared Contract Terms
 
@@ -44,6 +62,27 @@ Use this artifact for `backend_service_boundary_present`, `backend_runtime_behav
 - outbound dependencies
 - data ownership
 - deployment/runtime shape
+- modular monolith is the default
+- independent deploy/scale/team/ownership evidence
+- microservices require explicit owner review
+- migration/rollback notes
+- owner review
+- ADR
+- ADR link or accepted gap
+- decision authority
+- boundary rationale
+- ports/adapters boundary
+- domain logic independent from HTTP/DB/queue/vendor SDK
+- new or changed backend responsibility
+- Twelve-Factor vocabulary
+- explicit dependencies
+- config/env keys
+- build-release-run
+- process model
+- stateless process
+- admin tasks
+- dev/prod parity
+- logs-as-event-stream
 - OpenAPI
 - AsyncAPI
 - Pact

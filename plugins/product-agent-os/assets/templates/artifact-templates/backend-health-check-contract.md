@@ -6,7 +6,7 @@ Owner: backend owner
 
 ## Scope
 
-Use this artifact for `backend_health_probe_contract_present`, liveness, readiness, startup or platform-equivalent health semantics and verification.
+Use this artifact for `backend_health_probe_contract_present`, health endpoint semantics, liveness, readiness, startup or platform-equivalent health semantics and verification.
 
 ## Health Semantics
 
@@ -30,14 +30,16 @@ Use this artifact for `backend_health_probe_contract_present`, liveness, readine
 - `backend_security_reviewed`
 - `backend_rollback_plan_present`
 - health endpoint exists, so readiness is solved is an unsupported claim
+- health endpoint semantics
 - liveness
 - readiness
 - startup
+- platform equivalent
 - platform-unavailable gap
 
 ## Evidence
 
-Record current health-check test, runtime command, platform behavior or accepted platform-unavailable gap.
+Record current health-check test, runtime command, health endpoint semantics, platform behavior or accepted platform-unavailable gap.
 
 ## Accepted Gap
 
