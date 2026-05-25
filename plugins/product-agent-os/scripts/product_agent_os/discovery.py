@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from product_agent_os.contracts import CONTROL_PLANE_FILES
+from product_agent_os.methodology_audit import build_methodology_audit
 
 
 FIRST_RESPONSE_CONTRACT = [
@@ -2131,6 +2132,7 @@ def analyze_workspace(root: str | Path, *, intent_hint: str = "") -> dict[str, A
     profile = _profile_for(files, stack)
     methodology_signals = _detect_methodology_signals(files, profile)
     docs_tooling_decision = _docs_tooling_decision(files, stack, profile, methodology_signals)
+    methodology_intelligence = build_methodology_audit(workspace, intent_hint=intent_hint)
     methodology_gaps = _methodology_gaps(methodology_signals, profile, files)
     methodology_applicability = _methodology_applicability(
         files,
@@ -2180,6 +2182,7 @@ def analyze_workspace(root: str | Path, *, intent_hint: str = "") -> dict[str, A
         "methodology_signals": methodology_signals,
         "methodology_gaps": methodology_gaps,
         "methodology_applicability": methodology_applicability,
+        "methodology_intelligence": methodology_intelligence,
         "docs_tooling_decision": docs_tooling_decision,
         "bug_reproduction_signals": bug_reproduction_signals,
         "legacy_onboarding_signals": _legacy_onboarding_signals(files, methodology_signals, existing_control_plane),
@@ -2196,6 +2199,10 @@ def analyze_workspace(root: str | Path, *, intent_hint: str = "") -> dict[str, A
         "risks": risks,
         "complexity_profile": profile,
     }
+
+
+def discover_workspace(root: str | Path, *, intent_hint: str = "") -> dict[str, Any]:
+    return analyze_workspace(root, intent_hint=intent_hint)
 
 
 def main(argv: list[str]) -> int:

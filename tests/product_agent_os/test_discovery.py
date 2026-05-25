@@ -9,7 +9,7 @@ SCRIPTS = ROOT / "plugins" / "product-agent-os" / "scripts"
 FIXTURES = ROOT / "plugins" / "product-agent-os" / "assets" / "fixtures"
 sys.path.insert(0, str(SCRIPTS))
 
-from product_agent_os.discovery import analyze_workspace  # noqa: E402
+from product_agent_os.discovery import analyze_workspace, discover_workspace  # noqa: E402
 
 
 class DiscoveryTest(unittest.TestCase):
@@ -21,6 +21,17 @@ class DiscoveryTest(unittest.TestCase):
         self.assertEqual(result["complexity_profile"]["name"], "guided-small")
         self.assertEqual(result["usage_mode"]["primary"], "standard_feature")
         self.assertIn("workspace audit packet", result["usage_mode"]["minimum_artifacts"])
+
+    def test_discovery_includes_methodology_intelligence_packet(self):
+        result = discover_workspace(FIXTURES / "node-app")
+
+        self.assertIn("methodology_intelligence", result)
+        packet = result["methodology_intelligence"]
+        self.assertIn("maturity_level", packet)
+        self.assertIn("complexity_profile", packet)
+        self.assertIn("delivery_map", packet)
+        self.assertIn("recommendations", packet)
+        self.assertEqual(packet["write_policy"], "read_only")
 
     def test_docs_repo_detection(self):
         result = analyze_workspace(FIXTURES / "docs-repo")
