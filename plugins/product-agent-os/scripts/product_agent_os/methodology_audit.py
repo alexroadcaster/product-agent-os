@@ -62,10 +62,88 @@ BUSINESS_NOT_APPLICABLE_PHRASES = {
     "dependency pin without behavior impact",
     "without behavior impact",
 }
+REQUIREMENTS_NOT_APPLICABLE_PHRASES = {
+    "typo-only",
+    "formatting-only",
+    "dependency metadata without behavior impact",
+    "dependency pin without behavior impact",
+    "without behavior impact",
+}
 IMPLEMENTATION_OR_RELEASE_TERMS = {"implement", "implementation", "ship", "release", "build", "deliver"}
 PRODUCT_ANALYTICS_TERMS = {"analytics", "usage", "event", "events", "dashboard", "telemetry", "tracking"}
 PRODUCT_SUCCESS_TERMS = {"success", "north star", "value metric", "product value"}
 WORKFLOW_PROMOTION_TERMS = {"workflow promotion", "promote workflow", "automation", "skill promotion", "playbook"}
+REQUIREMENTS_INTENT_TERMS = {
+    "acceptance",
+    "behavior",
+    "business rule",
+    "change",
+    "constraint",
+    "domain",
+    "feature",
+    "requirement",
+    "scenario",
+    "story",
+    "user",
+    "workflow",
+}
+REQUIREMENT_ID_TERMS = {
+    "multi-slice",
+    "regulatory",
+    "regulated",
+    "risky",
+    "long-lived",
+    "public contract",
+    "public api",
+}
+CONSTRAINT_TERMS = {
+    "accessibility",
+    "compliance",
+    "cost",
+    "localization",
+    "operational",
+    "performance",
+    "platform",
+    "privacy",
+    "retention",
+    "rollback",
+    "rollout",
+    "security",
+}
+UNCLEAR_STORY_TERMS = {"unclear", "large", "disputed", "ambiguous"}
+STORY_SLICE_TERMS = {"story", "mvp", "deferred", "slice", "slices", "non-goal", "non-goals"}
+STAKEHOLDER_OWNER_TERMS = {"stakeholder", "owner", "domain expert", "process", "value ambiguity"}
+DOMAIN_DISCOVERY_TERMS = {"cross-silo", "eventstorming", "domain storytelling", "overloaded language"}
+DOMAIN_EVENT_TERMS = {"domain event", "event across boundary", "event-driven", "producer", "consumer"}
+STATE_TRANSITION_TERMS = {"state transition", "invariant", "invalid transition", "failure mode"}
+API_UI_DATA_TRACE_TERMS = {"api", "ui", "data", "schema", "database", "contract", "event"}
+CHANGE_IMPACT_TERMS = {"changed after planning", "change impact", "requirement changed", "domain rule changes"}
+DECLARATIVE_SCENARIO_LEAK_TERMS = {
+    "css selector",
+    "database table",
+    "db table",
+    "function name",
+    "test harness",
+    "ui selector",
+}
+DOMAIN_REVIEW_TERMS = {
+    "ai generated",
+    "ai-generated",
+    "business-critical",
+    "compliance",
+    "finance",
+    "legal",
+}
+UNSUPPORTED_REQUIREMENTS_CLAIMS = {
+    "bdd replaces testing",
+    "gherkin is mandatory",
+    "user story template is complete requirement",
+    "a user story template is a complete requirement",
+    "glossary is ubiquitous language",
+    "a glossary is ubiquitous language",
+    "openapi is requirements source of truth",
+    "openapi is the requirements source of truth",
+}
 HIGH_RISK_INTENT_TERMS = {
     "security",
     "privacy",
@@ -191,6 +269,7 @@ def _intent_signals(intent: str) -> list[dict[str, str]]:
     signals: list[dict[str, str]] = []
     for category, terms in [
         ("business_product", BUSINESS_INTENT_TERMS),
+        ("requirements_domain", REQUIREMENTS_INTENT_TERMS),
         ("behavior_change", BEHAVIOR_INTENT_TERMS),
         ("frontend", UI_INTENT_TERMS),
         ("backend", BACKEND_INTENT_TERMS),
@@ -286,7 +365,7 @@ def _methodology_domains(
     catalog = load_methodology_catalog()
     applicable = {
         "business_product": _business_product_applies(intent),
-        "requirements_domain": has_files or _mentions_any(intent, BEHAVIOR_INTENT_TERMS),
+        "requirements_domain": _requirements_domain_applies(has_files, intent),
         "solution_architecture": complexity_profile in {"complex", "high_risk"}
         or maturity_level in {"team", "production", "regulated"}
         or _has_any_signal(observed, {"openapi_contract", "database_migration_or_schema", "ai_eval_or_rag", "deployment_configuration"}),
@@ -335,6 +414,16 @@ def _business_product_applies(intent: str) -> bool:
 
 def _business_product_not_applicable(intent: str) -> bool:
     return any(phrase in intent for phrase in BUSINESS_NOT_APPLICABLE_PHRASES)
+
+
+def _requirements_domain_applies(has_files: bool, intent: str) -> bool:
+    if _requirements_domain_not_applicable(intent):
+        return False
+    return has_files or _mentions_any(intent, REQUIREMENTS_INTENT_TERMS | BEHAVIOR_INTENT_TERMS)
+
+
+def _requirements_domain_not_applicable(intent: str) -> bool:
+    return any(phrase in intent for phrase in REQUIREMENTS_NOT_APPLICABLE_PHRASES)
 
 
 def _business_product_recommendations(files: set[str], intent: str) -> list[dict[str, Any]]:
@@ -532,6 +621,350 @@ def _business_product_recommendations(files: set[str], intent: str) -> list[dict
     return recommendations
 
 
+def _requirements_domain_recommendations(files: set[str], intent: str) -> list[dict[str, Any]]:
+    if not _requirements_domain_applies(bool(files), intent):
+        return []
+
+    recommendations: list[dict[str, Any]] = []
+    behavior_change = _mentions_any(intent, BEHAVIOR_INTENT_TERMS | {"behavior change", "feature"})
+    requirements_intent = _mentions_any(intent, REQUIREMENTS_INTENT_TERMS)
+    non_trivial = bool(files) and (behavior_change or requirements_intent)
+
+    if _mentions_any(intent, UNSUPPORTED_REQUIREMENTS_CLAIMS):
+        recommendations.append(
+            _recommendation(
+                priority="P1_high_risk",
+                reason="Unsupported requirements or domain methodology claim appeared as evidence.",
+                domain="requirements_domain",
+                gate="unsupported_claims_rejected",
+                artifact="domain-review-record.md",
+                evidence_required=[
+                    "claim",
+                    "source or owner verification",
+                    "replacement evidence",
+                    "unsupported claim disposition",
+                ],
+                evidence_owner="requirements owner",
+                approval_boundary="not required for read-only audit; approval_required before using claim as delivery evidence",
+                accepted_gap_option="explicit_gap_accepted with owner, reason, downstream risk and follow-up condition",
+                residual_risk="A method slogan can be mistaken for requirements, test or domain evidence.",
+                safe_next_action="Record the unsupported claim in domain-review-record.md before planning implementation.",
+            )
+        )
+
+    if behavior_change and not _artifact_present(files, "acceptance-scenarios.md"):
+        recommendations.append(
+            _recommendation(
+                priority="P0_blocker",
+                reason="Behavior-changing work needs acceptance scenarios before implementation.",
+                domain="requirements_domain",
+                gate="acceptance_scenarios_when_behavior_changes",
+                artifact="acceptance-scenarios.md",
+                evidence_required=[
+                    "requirement",
+                    "scenario",
+                    "observable outcome",
+                    "check",
+                    "evidence owner",
+                ],
+                evidence_owner="requirements owner",
+                approval_boundary="not required for staging scenarios; approval_required before broad implementation",
+                accepted_gap_option="explicit_gap_accepted with owner, reason, scope, review date and residual risk",
+                residual_risk="Implementation can change behavior without a shared acceptance contract.",
+                safe_next_action="Stage acceptance-scenarios.md before implementation.",
+            )
+        )
+    if non_trivial:
+        recommendations.extend(
+            [
+                _recommendation(
+                    priority="P1_high_risk",
+                    reason="Non-trivial product or system work needs requirement quality evidence.",
+                    domain="requirements_domain",
+                    gate="requirement_quality_present",
+                    artifact="requirement-registry.md",
+                    evidence_required=[
+                        "atomicity",
+                        "clarity",
+                        "testability",
+                        "feasibility",
+                        "traceability",
+                        "source",
+                        "owner",
+                    ],
+                    evidence_owner="requirements owner",
+                    approval_boundary="not required for read-only audit",
+                    accepted_gap_option="explicit_gap_accepted with owner, reason, scope, review date and residual risk",
+                    residual_risk="A story title or vague requirement can be planned as complete scope.",
+                    safe_next_action="Stage requirement-registry.md and record quality fields.",
+                ),
+                _recommendation(
+                    priority="P1_high_risk",
+                    reason="Requirements evidence must exist before implementation starts.",
+                    domain="requirements_domain",
+                    gate="requirements_evidence_before_implementation",
+                    artifact="PLAN.md",
+                    evidence_required=[
+                        "requirements packet",
+                        "acceptance scenarios",
+                        "traceability",
+                        "owner",
+                        "accepted gap if incomplete",
+                    ],
+                    evidence_owner="implementation planner",
+                    approval_boundary="approval_required before implementation proceeds with missing requirements evidence",
+                    accepted_gap_option="explicit_gap_accepted with owner, reason, scope, review date and residual risk",
+                    residual_risk="Build work can proceed from assumptions instead of source-backed requirements.",
+                    safe_next_action="Block implementation until requirements evidence or accepted gaps are recorded.",
+                ),
+            ]
+        )
+    if _mentions_any(intent, REQUIREMENT_ID_TERMS):
+        recommendations.append(
+            _recommendation(
+                priority="P1_high_risk",
+                reason="Multi-slice, regulatory, risky, long-lived or public-contract work needs stable requirement IDs.",
+                domain="requirements_domain",
+                gate="requirement_ids_present",
+                artifact="requirement-registry.md",
+                evidence_required=["stable requirement ID", "status", "source", "owner", "linked artifacts"],
+                evidence_owner="requirements owner",
+                approval_boundary="not required for registry staging",
+                accepted_gap_option="explicit_gap_accepted with owner, reason, scope, review date and residual risk",
+                residual_risk="Tests, contracts, docs and release evidence cannot reliably reference changing requirements.",
+                safe_next_action="Create requirement IDs in requirement-registry.md.",
+            )
+        )
+    if _mentions_any(intent, CONSTRAINT_TERMS):
+        recommendations.append(
+            _recommendation(
+                priority="P1_high_risk",
+                reason="Constraint evidence needs traceability to requirements, tests, contracts and release decisions.",
+                domain="requirements_domain",
+                gate="constraints_traceability_present",
+                artifact="requirements-traceability-matrix.md",
+                evidence_required=[
+                    "compliance/privacy/security/operational/performance/platform/accessibility/retention/localization/cost constraint",
+                    "affected requirement",
+                    "check or eval",
+                    "owner",
+                ],
+                evidence_owner="requirements owner",
+                approval_boundary="approval_required before sensitive, external or irreversible constraint changes",
+                accepted_gap_option="explicit_gap_accepted with owner, reason, scope, review date and residual risk",
+                residual_risk="Constraints can be lost between requirements, implementation and release evidence.",
+                safe_next_action="Add constraint rows to requirements-traceability-matrix.md.",
+            )
+        )
+    if _mentions_any(intent, API_UI_DATA_TRACE_TERMS):
+        recommendations.append(
+            _recommendation(
+                priority="P1_high_risk",
+                reason="Requirement or domain terms touching API, UI or data need downstream traceability.",
+                domain="requirements_domain",
+                gate="api_ui_data_traceability_present",
+                artifact="requirements-traceability-matrix.md",
+                evidence_required=[
+                    "requirement or domain term",
+                    "API/event/schema",
+                    "UI label or state",
+                    "data field",
+                    "code/test/eval evidence",
+                ],
+                evidence_owner="requirements owner",
+                approval_boundary="approval_required before public contract, schema or user-visible behavior changes",
+                accepted_gap_option="explicit_gap_accepted with owner, reason, scope, review date and residual risk",
+                residual_risk="API, UI and data semantics can diverge from business requirements.",
+                safe_next_action="Stage requirements-traceability-matrix.md with API/UI/data mappings.",
+            )
+        )
+    if _mentions_any(intent, STAKEHOLDER_OWNER_TERMS) or "business rule" in intent or _mentions_any(intent, DOMAIN_REVIEW_TERMS):
+        recommendations.append(
+            _recommendation(
+                priority="P2_recommended",
+                reason="Stakeholder, process or value ambiguity needs an owner map.",
+                domain="requirements_domain",
+                gate="stakeholder_owner_map_present",
+                artifact="stakeholder-owner-map.md",
+                evidence_required=["stakeholder", "domain expert", "technical owner", "decision authority", "escalation path"],
+                evidence_owner="requirements owner",
+                approval_boundary="not required for owner-map staging",
+                accepted_gap_option="explicit_gap_accepted with owner, reason, scope, review date and residual risk",
+                residual_risk="Domain meaning and business rules can be reviewed by the wrong owner.",
+                safe_next_action="Stage stakeholder-owner-map.md before finalizing the requirements packet.",
+            )
+        )
+    if _mentions_any(intent, STORY_SLICE_TERMS):
+        recommendations.append(
+            _recommendation(
+                priority="P2_recommended",
+                reason="User stories, MVP boundaries or deferred slices need story-slice evidence.",
+                domain="requirements_domain",
+                gate="story_slice_map_present",
+                artifact="story-slice-map.md",
+                evidence_required=["user story", "value slice", "risk slice", "MVP boundary", "deferred slices", "non-goals"],
+                evidence_owner="requirements owner",
+                approval_boundary="not required for story-slice staging",
+                accepted_gap_option="explicit_gap_accepted with owner, reason, scope, review date and residual risk",
+                residual_risk="A story title can be mistaken for complete requirements and release scope.",
+                safe_next_action="Stage story-slice-map.md and link it to acceptance scenarios.",
+            )
+        )
+    if _mentions_any(intent, UNCLEAR_STORY_TERMS):
+        recommendations.append(
+            _recommendation(
+                priority="P2_recommended",
+                reason="Unclear, large or disputed stories need Example Mapping before implementation.",
+                domain="requirements_domain",
+                gate="example_mapping_when_unclear_story",
+                artifact="example-map.md",
+                evidence_required=["story", "rules", "examples", "questions", "owner", "next action"],
+                evidence_owner="requirements owner",
+                approval_boundary="not required for clarification artifact staging",
+                accepted_gap_option="explicit_gap_accepted with owner, reason, scope, review date and residual risk",
+                residual_risk="Ambiguous stories can hide rules, examples and unresolved questions.",
+                safe_next_action="Run Example Mapping or stage example-map.md before slicing implementation.",
+            )
+        )
+    if "business rule" in intent or "business rules" in intent:
+        recommendations.append(
+            _recommendation(
+                priority="P1_high_risk",
+                reason="Business rules need source, owner, enforcement layer, exceptions and failure behavior.",
+                domain="requirements_domain",
+                gate="business_rules_present",
+                artifact="business-rules.md",
+                evidence_required=["rule", "source", "owner", "enforcement layer", "exceptions", "failure mode"],
+                evidence_owner="domain owner",
+                approval_boundary="approval_required before business-critical or compliance rule changes",
+                accepted_gap_option="explicit_gap_accepted with owner, reason, scope, review date and residual risk",
+                residual_risk="Implicit business rules can be enforced inconsistently across code, API, UI and tests.",
+                safe_next_action="Stage business-rules.md before implementation planning.",
+            )
+        )
+    if _mentions_any(intent, DOMAIN_DISCOVERY_TERMS):
+        recommendations.append(
+            _recommendation(
+                priority="P2_recommended",
+                reason="Complex process or overloaded domain language needs discovery workshop evidence.",
+                domain="requirements_domain",
+                gate="domain_discovery_workshop_when_complex_process",
+                artifact="domain-modeling.md",
+                evidence_required=["EventStorming, Domain Storytelling, interview or accepted gap", "owner", "hotspots"],
+                evidence_owner="domain owner",
+                approval_boundary="not required for discovery notes",
+                accepted_gap_option="explicit_gap_accepted with owner, reason, scope, review date and residual risk",
+                residual_risk="Cross-silo process behavior can be planned from a partial mental model.",
+                safe_next_action="Record domain discovery evidence or accepted gap in domain-modeling.md.",
+            )
+        )
+    if _mentions_any(intent, STATE_TRANSITION_TERMS):
+        recommendations.append(
+            _recommendation(
+                priority="P1_high_risk",
+                reason="Domain state transitions need invariants and failure modes.",
+                domain="requirements_domain",
+                gate="invariants_and_failure_modes_present",
+                artifact="domain-modeling.md",
+                evidence_required=["invariant", "invalid transition", "enforcement layer", "failure behavior", "test/eval evidence"],
+                evidence_owner="domain owner",
+                approval_boundary="approval_required before risky state transition changes",
+                accepted_gap_option="explicit_gap_accepted with owner, reason, scope, review date and residual risk",
+                residual_risk="Invalid domain transitions can ship without explicit failure behavior.",
+                safe_next_action="Add invariants and failure modes to domain-modeling.md.",
+            )
+        )
+    if _mentions_any(intent, DOMAIN_EVENT_TERMS):
+        recommendations.append(
+            _recommendation(
+                priority="P1_high_risk",
+                reason="Domain events crossing a boundary need contract semantics.",
+                domain="requirements_domain",
+                gate="domain_event_contracts_present",
+                artifact="requirements-traceability-matrix.md",
+                evidence_required=["meaning", "producer", "consumers", "schema link", "ordering/idempotency", "privacy classification"],
+                evidence_owner="domain or API owner",
+                approval_boundary="approval_required before event contract or public integration changes",
+                accepted_gap_option="explicit_gap_accepted with owner, reason, scope, review date and residual risk",
+                residual_risk="Technical events can lose business meaning, compatibility and privacy assumptions.",
+                safe_next_action="Trace the domain event in requirements-traceability-matrix.md.",
+            )
+        )
+    if _mentions_any(intent, DOMAIN_REVIEW_TERMS):
+        recommendations.append(
+            _recommendation(
+                priority="P1_high_risk",
+                reason="Business-critical, compliance, finance/legal or AI-generated domain claims need owner review.",
+                domain="requirements_domain",
+                gate="domain_expert_review_present",
+                artifact="domain-review-record.md",
+                evidence_required=["domain expert", "claim", "source", "review outcome", "conflicts or accepted gap"],
+                evidence_owner="domain expert",
+                approval_boundary="approval_required before using reviewed claim for release or external behavior",
+                accepted_gap_option="explicit_gap_accepted with owner, reason, scope, review date and residual risk",
+                residual_risk="AI or unreviewed domain claims can become unverified system behavior.",
+                safe_next_action="Stage domain-review-record.md before implementation or release claims.",
+            )
+        )
+    if _mentions_any(intent, CHANGE_IMPACT_TERMS):
+        recommendations.append(
+            _recommendation(
+                priority="P1_high_risk",
+                reason="Requirement or domain rule changes after planning need impact review.",
+                domain="requirements_domain",
+                gate="requirement_change_impact_review_present",
+                artifact="requirement-change-impact.md",
+                evidence_required=["tests/evals", "API", "DB", "UI", "docs", "rollout", "rollback", "approval boundary"],
+                evidence_owner="implementation planner",
+                approval_boundary="approval_required before applying changed scope to public, data or release surfaces",
+                accepted_gap_option="explicit_gap_accepted with owner, reason, scope, review date and residual risk",
+                residual_risk="Downstream tests, contracts, data, UI, docs or release plans can remain stale after scope changes.",
+                safe_next_action="Stage requirement-change-impact.md before continuing implementation.",
+            )
+        )
+    if "accepted gap" in intent and not all(
+        term in intent for term in ["owner", "reason", "scope", "review date", "downstream risk", "follow-up"]
+    ):
+        recommendations.append(
+            _recommendation(
+                priority="P1_high_risk",
+                reason="Accepted gaps require owner, reason, scope, review date, downstream risk and follow-up condition.",
+                domain="requirements_domain",
+                gate="accepted_gap_recorded",
+                artifact="domain-review-record.md",
+                evidence_required=["owner", "reason", "scope", "review date", "downstream risk", "follow-up condition"],
+                evidence_owner="requirements owner",
+                approval_boundary="approval_required before treating an incomplete methodology gate as accepted",
+                accepted_gap_option="explicit_gap_accepted only when all accepted-gap fields are present",
+                residual_risk="Accepted gaps can become invisible scope debt without owner and review conditions.",
+                safe_next_action="Complete the accepted-gap record before proceeding.",
+            )
+        )
+    if _mentions_any(intent, DECLARATIVE_SCENARIO_LEAK_TERMS):
+        recommendations.append(
+            _recommendation(
+                priority="P1_high_risk",
+                reason="Business-facing acceptance scenarios must stay declarative and avoid implementation details.",
+                domain="requirements_domain",
+                gate="declarative_acceptance_scenarios_present",
+                artifact="acceptance-scenarios.md",
+                evidence_required=[
+                    "actor",
+                    "context",
+                    "trigger",
+                    "observable outcome",
+                    "no UI selectors, DB internals, function names or test harness details",
+                ],
+                evidence_owner="requirements owner",
+                approval_boundary="not required for scenario rewrite",
+                accepted_gap_option="explicit_gap_accepted with owner, reason, scope, review date and residual risk",
+                residual_risk="Implementation-specific scenarios can stop being readable or reviewable by domain owners.",
+                safe_next_action="Rewrite acceptance scenarios in declarative business language.",
+            )
+        )
+    return recommendations
+
+
 def _recommendations(
     root: Path,
     files: set[str],
@@ -542,6 +975,7 @@ def _recommendations(
 ) -> list[dict[str, Any]]:
     recommendations: list[dict[str, Any]] = []
     recommendations.extend(_business_product_recommendations(files, intent))
+    recommendations.extend(_requirements_domain_recommendations(files, intent))
     missing_control_plane = [name for name in CONTROL_PLANE_FILES if name.lower() not in files]
     if missing_control_plane:
         recommendations.append(
@@ -802,6 +1236,10 @@ def _has_test_signal(files: set[str], observed: list[dict[str, Any]]) -> bool:
 
 def _has_contract_tests(files: set[str]) -> bool:
     return any("contract" in path and "test" in path for path in files)
+
+
+def _artifact_present(files: set[str], name: str) -> bool:
+    return any(path == name or path.endswith(f"/{name}") for path in files)
 
 
 def _has_signal(observed: list[dict[str, Any]], signal_id: str) -> bool:

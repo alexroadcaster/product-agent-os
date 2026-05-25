@@ -48,6 +48,7 @@ The plugin bundles these skills under `skills/`:
 | `agent-team-designer` | Define project-scoped agent roles and handoff boundaries |
 | `test-eval-designer` | Define tests, evals, and quality gates |
 | `risk-reviewer` | Review risk, unsupported claims, and missing verification |
+| `docs-maintainer` | Align requirement IDs, source registry, glossary, and traceability docs |
 | `pr-release-operator` | Prepare PR or release packets |
 | `learning-loop-maintainer` | Capture lessons, failures, and durable rules |
 | `automation-promoter` | Produce candidate-only automation readiness packets |
@@ -69,6 +70,8 @@ Generalized two-stage review is now a hard review gate for risky slices: PR revi
 Fresh-context handoff is now a hard team gate for subagents and parallel workers: `agent-team-designer`, `handoff-contract.md`, `agent-task-packet.md`, `worktree-ownership.md`, and `behavioral-workflows.json` require complete task context, source constraints, allowed sources, inputs used, owned files, forbidden files, expected evidence, handoff output schema, stop conditions, and sequential fallback before parallel work. Raw conversation history is not a valid worker context.
 
 Acceptance scenarios are now a hard ATDD/BDD gate for behavior changes: `requirements-author`, `implementation-planner`, `test-eval-designer`, `REQUIREMENTS.md`, `TEST.md`, `EVALS.md`, `development-standards.md`, `project-readiness.json`, `behavioral-workflows.json`, and `acceptance-scenarios.md` require `requirement -> scenario -> check -> evidence owner`, Given/When/Then or an equivalent behavior format, business rule, edge case, non-goal, explicit gap handling, and proof that BDD does not replace unit, integration, contract tests, or evals.
+
+Requirements & Domain methodology now extends acceptance and conditional DDD gates with `requirements_domain`: `requirement-registry.md`, `stakeholder-owner-map.md`, `story-slice-map.md`, `requirements-traceability-matrix.md`, `business-rules.md`, `example-map.md`, `requirement-change-impact.md`, and `domain-review-record.md` cover requirement quality, stable IDs, owner review, story slicing, business rules, constraints, domain events, API/UI/data traceability, change impact, accepted gaps, and unsupported-claim rejection. `docs-maintainer` keeps requirement IDs, source registry, glossary/ubiquitous language and traceability docs aligned after the requirements packet exists.
 
 Conditional DDD domain modeling is now a hard gate only when it applies: `discovery.py`, `domain-modeling.md`, `architecture-overview.md`, `project-readiness.json`, `implementation-planner`, and fixture eval require `domain_model_when_complex_domain` for complex backend, workflow, enterprise, data-heavy, multi-service, or multi-context work, `bounded_context_architecture_boundary_trace` from every bounded context to an architecture boundary or accepted gap, and `ubiquitous_language_traceability` from each domain term to a requirement/source plus API/event/contract, UI label, code module or owner. Simple CRUD and simple MVP work can record DDD as not applicable or an accepted gap instead of being forced into domain ceremony.
 
@@ -245,6 +248,7 @@ product-agent-os/
     agent-team-designer/
     test-eval-designer/
     risk-reviewer/
+    docs-maintainer/
     pr-release-operator/
     learning-loop-maintainer/
     automation-promoter/

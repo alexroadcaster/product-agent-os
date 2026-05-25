@@ -20,6 +20,7 @@ SKILL_NAMES = [
     "agent-team-designer",
     "test-eval-designer",
     "risk-reviewer",
+    "docs-maintainer",
     "pr-release-operator",
     "learning-loop-maintainer",
     "automation-promoter",
@@ -565,6 +566,50 @@ class LifecycleSkillsTest(unittest.TestCase):
                 for expected in shared_terms:
                     self.assertIn(expected, text)
         self.assertIn("engineering time saved", self._skill_text("automation-promoter").lower())
+
+    def test_lifecycle_skills_enforce_requirements_domain_methodology(self):
+        shared_terms = [
+            "requirement-registry.md",
+            "stakeholder-owner-map.md",
+            "story-slice-map.md",
+            "requirements-traceability-matrix.md",
+            "business-rules.md",
+            "example-map.md",
+            "requirement-change-impact.md",
+            "domain-review-record.md",
+            "requirements_traceability_present",
+            "requirement_quality_present",
+            "constraints_traceability_present",
+            "declarative_acceptance_scenarios_present",
+            "business_rules_present",
+            "domain_expert_review_present",
+            "requirement_change_impact_review_present",
+            "accepted_gap_recorded",
+            "requirements_evidence_before_implementation",
+        ]
+        skill_names = [
+            "requirements-author",
+            "implementation-planner",
+            "agent-team-designer",
+            "test-eval-designer",
+            "risk-reviewer",
+        ]
+
+        for name in skill_names:
+            text = self._skill_text(name).lower()
+            with self.subTest(name=name):
+                for expected in shared_terms:
+                    self.assertIn(expected, text)
+
+        docs_maintainer = self._skill_text("docs-maintainer").lower()
+        for expected in [
+            "requirement ids",
+            "source registry",
+            "glossary",
+            "ubiquitous language",
+            "traceability docs",
+        ]:
+            self.assertIn(expected, docs_maintainer)
 
     def test_lifecycle_skills_generalize_evidence_before_completion(self):
         shared_terms = [

@@ -83,6 +83,30 @@ Generated at: {generated_at}
 - Code module or owner:
 - Domain expert review:
 - Accepted gap:
+- Requirements scope gate (`requirements_scope_present`):
+- Requirements owner gate (`requirements_owner_present`):
+- Requirement quality gate (`requirement_quality_present`):
+- Requirement IDs gate (`requirement_ids_present`):
+- Requirements traceability gate (`requirements_traceability_present`):
+- Business rules gate (`business_rules_present`):
+- Non-goals and constraints gate (`non_goals_constraints_present`):
+- Constraints traceability gate (`constraints_traceability_present`):
+- Open questions gate (`open_questions_recorded`):
+- Declarative acceptance scenarios gate (`declarative_acceptance_scenarios_present`):
+- Domain event contracts gate (`domain_event_contracts_present`):
+- API/UI/data traceability gate (`api_ui_data_traceability_present`):
+- Domain expert review gate (`domain_expert_review_present`):
+- Requirement change impact review gate (`requirement_change_impact_review_present`):
+- Accepted gap recorded (`accepted_gap_recorded`):
+- Requirements evidence before implementation (`requirements_evidence_before_implementation`):
+- Requirement registry: `requirement-registry.md`
+- Stakeholder owner map: `stakeholder-owner-map.md`
+- Story slice map: `story-slice-map.md`
+- Requirements traceability matrix: `requirements-traceability-matrix.md`
+- Business rules artifact: `business-rules.md`
+- Example map: `example-map.md`
+- Requirement change impact: `requirement-change-impact.md`
+- Domain review record: `domain-review-record.md`
 - Approval review:
 - Conditional readiness gates:
 - Readiness statuses (`readiness_statuses`): `not_applicable | applicable_missing | present_unverified | present_verified | proposal_staged | explicit_gap_accepted | approval_required`

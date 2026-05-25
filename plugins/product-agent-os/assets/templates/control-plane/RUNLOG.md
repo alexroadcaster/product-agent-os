@@ -63,6 +63,26 @@ Generated at: {generated_at}
 - Code module or owner:
 - Domain expert review:
 - Accepted gap:
+- Requirements scope (`requirements_scope_present`):
+- Requirements owner (`requirements_owner_present`):
+- Requirement quality (`requirement_quality_present`):
+- Requirement IDs (`requirement_ids_present`):
+- Requirement registry: `requirement-registry.md`
+- Stakeholder owner map: `stakeholder-owner-map.md`
+- Story slice map: `story-slice-map.md`
+- Requirements traceability (`requirements_traceability_present`): `requirements-traceability-matrix.md`
+- Business rules (`business_rules_present`): `business-rules.md`
+- Non-goals and constraints (`non_goals_constraints_present`):
+- Constraints traceability (`constraints_traceability_present`):
+- Open questions (`open_questions_recorded`):
+- Declarative acceptance scenarios (`declarative_acceptance_scenarios_present`):
+- Domain event contracts (`domain_event_contracts_present`):
+- API/UI/data traceability (`api_ui_data_traceability_present`):
+- Requirement change impact review (`requirement_change_impact_review_present`): `requirement-change-impact.md`
+- Domain expert review (`domain_expert_review_present`): `domain-review-record.md`
+- Accepted gap recorded (`accepted_gap_recorded`):
+- Requirements evidence before implementation (`requirements_evidence_before_implementation`):
+- Unsupported requirements claims rejected:
 - Test-first or eval-first evidence:
 - Conditional readiness gates:
 - Readiness statuses (`readiness_statuses`): `not_applicable | applicable_missing | present_unverified | present_verified | proposal_staged | explicit_gap_accepted | approval_required`

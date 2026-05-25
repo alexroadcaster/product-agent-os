@@ -1,5 +1,7 @@
 # Acceptance Scenarios
 
+Source status: `local methodology artifact`
+
 Use this artifact as the ATDD and BDD traceability layer before behavior changes. It does not replace requirements; it links requirements to observable behavior and verification evidence.
 
 ## Scope
@@ -21,12 +23,18 @@ Use the chain `requirement -> scenario -> check -> evidence owner`.
 ## Behavior Scenario
 
 - Scenario id:
+- Gate: `declarative_acceptance_scenarios_present`
 - Business rule:
 - User or actor:
 - Given:
 - When:
 - Then:
 - Equivalent behavior format:
+- Declarative scenario quality:
+- Actor:
+- Context:
+- Trigger:
+- Observable outcome:
 - Edge case:
 - Non-goal covered:
 - Data, privacy, or approval boundary:
@@ -50,6 +58,11 @@ Use the chain `requirement -> scenario -> check -> evidence owner`.
 - Does not replace contract tests.
 - Does not replace evals.
 - BDD describes shared behavior language; it is not a substitute for implementation proof.
+- Gherkin is optional; use an equivalent behavior format when it preserves actor, context, trigger, observable outcome and evidence.
+- No UI selectors.
+- No database internals.
+- No function names.
+- No test harness details.
 
 ## Stop Conditions
 
@@ -58,4 +71,6 @@ Use the chain `requirement -> scenario -> check -> evidence owner`.
 - Scenario without check.
 - Scenario without evidence owner.
 - BDD replaces tests.
+- Gherkin is mandatory.
+- User story template is complete requirements.
 - Behavior changes without explicit gap.

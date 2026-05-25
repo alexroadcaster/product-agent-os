@@ -153,6 +153,135 @@ class MethodologyAuditContractTest(unittest.TestCase):
 
                 self.assertEqual(self._domain_status(result, "business_product"), "not_applicable")
 
+    def test_requirements_domain_behavior_intent_routes_domain_and_blocks_missing_scenarios(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "package.json").write_text('{"scripts":{"test":"vitest"}}\n', encoding="utf-8")
+            result = build_methodology_audit(root, intent_hint="ship user behavior change")
+
+        self.assertNotEqual(self._domain_status(result, "requirements_domain"), "not_applicable")
+        recommendation = self._recommendation_by_gate(result, "acceptance_scenarios_when_behavior_changes")
+        self.assertEqual(recommendation["priority"], "P0_blocker")
+        self.assertEqual(recommendation["artifact"], "acceptance-scenarios.md")
+
+    def test_requirements_domain_risky_public_contract_work_requires_ids_quality_and_constraints(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "openapi.yaml").write_text(
+                "openapi: 3.1.0\ninfo:\n  title: API\n  version: 1.0.0\npaths: {}\n",
+                encoding="utf-8",
+            )
+            result = build_methodology_audit(
+                root,
+                intent_hint="regulatory multi-slice public API requirement with privacy rollback constraints",
+            )
+
+        expected = {
+            "requirement_quality_present": ("P1_high_risk", "requirement-registry.md"),
+            "requirement_ids_present": ("P1_high_risk", "requirement-registry.md"),
+            "constraints_traceability_present": ("P1_high_risk", "requirements-traceability-matrix.md"),
+            "api_ui_data_traceability_present": ("P1_high_risk", "requirements-traceability-matrix.md"),
+        }
+        for gate, (priority, artifact) in expected.items():
+            with self.subTest(gate=gate):
+                recommendation = self._recommendation_by_gate(result, gate)
+                self.assertEqual(recommendation["priority"], priority)
+                self.assertEqual(recommendation["artifact"], artifact)
+
+    def test_requirements_domain_story_domain_event_and_owner_review_recommendations(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "package.json").write_text('{"scripts":{"test":"pytest"}}\n', encoding="utf-8")
+            result = build_methodology_audit(
+                root,
+                intent_hint=(
+                    "unclear large disputed user story with MVP deferred slices and business rule "
+                    "for payment domain event across boundary from AI generated finance legal claim"
+                ),
+            )
+
+        expected = {
+            "stakeholder_owner_map_present": ("P2_recommended", "stakeholder-owner-map.md"),
+            "story_slice_map_present": ("P2_recommended", "story-slice-map.md"),
+            "example_mapping_when_unclear_story": ("P2_recommended", "example-map.md"),
+            "business_rules_present": ("P1_high_risk", "business-rules.md"),
+            "domain_event_contracts_present": ("P1_high_risk", "requirements-traceability-matrix.md"),
+            "domain_expert_review_present": ("P1_high_risk", "domain-review-record.md"),
+        }
+        for gate, (priority, artifact) in expected.items():
+            with self.subTest(gate=gate):
+                recommendation = self._recommendation_by_gate(result, gate)
+                self.assertEqual(recommendation["priority"], priority)
+                self.assertEqual(recommendation["artifact"], artifact)
+
+    def test_requirements_domain_change_impact_accepted_gap_and_declarative_scenario_recommendations(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "package.json").write_text('{"scripts":{"test":"pytest"}}\n', encoding="utf-8")
+            result = build_methodology_audit(
+                root,
+                intent_hint=(
+                    "requirement changed after planning with accepted gap missing review date "
+                    "and acceptance scenario using css selector database table function name test harness"
+                ),
+            )
+
+        expected = {
+            "requirement_change_impact_review_present": ("P1_high_risk", "requirement-change-impact.md"),
+            "accepted_gap_recorded": ("P1_high_risk", "domain-review-record.md"),
+            "declarative_acceptance_scenarios_present": ("P1_high_risk", "acceptance-scenarios.md"),
+        }
+        for gate, (priority, artifact) in expected.items():
+            with self.subTest(gate=gate):
+                recommendation = self._recommendation_by_gate(result, gate)
+                self.assertEqual(recommendation["priority"], priority)
+                self.assertEqual(recommendation["artifact"], artifact)
+
+    def test_requirements_domain_false_positive_intents_are_not_applicable_for_readme_only_work(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        for intent in [
+            "typo-only docs edit",
+            "formatting-only markdown cleanup",
+            "dependency metadata without behavior impact",
+        ]:
+            with self.subTest(intent=intent):
+                with tempfile.TemporaryDirectory() as tmp:
+                    root = Path(tmp)
+                    (root / "README.md").write_text("# Demo\n", encoding="utf-8")
+                    result = build_methodology_audit(root, intent_hint=intent)
+
+                self.assertEqual(self._domain_status(result, "requirements_domain"), "not_applicable")
+
+    def test_requirements_domain_rejects_unsupported_methodology_claims_as_evidence(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        unsupported_claims = [
+            "BDD replaces testing",
+            "Gherkin is mandatory",
+            "user story template is complete requirement",
+            "glossary is ubiquitous language",
+            "OpenAPI is requirements source of truth",
+        ]
+        for claim in unsupported_claims:
+            with self.subTest(claim=claim):
+                with tempfile.TemporaryDirectory() as tmp:
+                    root = Path(tmp)
+                    (root / "package.json").write_text('{"scripts":{"test":"pytest"}}\n', encoding="utf-8")
+                    result = build_methodology_audit(root, intent_hint=claim)
+
+                recommendation = self._recommendation_by_gate(result, "unsupported_claims_rejected")
+                self.assertEqual(recommendation["priority"], "P1_high_risk")
+                self.assertEqual(recommendation["artifact"], "domain-review-record.md")
+
 
 if __name__ == "__main__":
     unittest.main()

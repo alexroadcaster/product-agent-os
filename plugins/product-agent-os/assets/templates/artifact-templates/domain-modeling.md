@@ -1,5 +1,7 @@
 # Domain Modeling Template
 
+Source status: `local methodology artifact`
+
 Project: {project_name}
 
 ## Purpose
@@ -11,6 +13,9 @@ Use this template for complex backend, enterprise, workflow, or data-heavy chang
 - Gate: `domain_model_when_complex_domain`.
 - Traceability gate: `bounded_context_architecture_boundary_trace`.
 - Language traceability gate: `ubiquitous_language_traceability`.
+- Invariants and failure modes gate: `invariants_and_failure_modes_present`.
+- Domain event contract gate: `domain_event_contracts_present`.
+- Domain expert review gate: `domain_expert_review_present`.
 - Required when the project or slice is complex backend, enterprise, workflow, data-heavy, multi-service, or multi-context.
 - Not required for simple CRUD or simple MVP work unless the owner explicitly wants DDD.
 - Every bounded context must map to an architecture boundary in `.codex/artifact-templates/architecture-overview.md`, or record an accepted gap.
@@ -44,21 +49,27 @@ Use this as the `ubiquitous_language_traceability` record. It prevents domain la
 ## Domain Expert Review
 
 - Domain expert reviewer:
+- Domain owner:
+- AI-generated claim status:
+- Unresolved conflicts:
+- Accepted gap:
+- Downstream risk:
+- Follow-up owner:
 - Terms reviewed:
 - Terms with accepted gap:
 - Follow-up owner:
 
-## Aggregates And Invariants
+## Aggregates, Invariants And Failure Modes
 
-| Aggregate | Root | Invariant | Transaction boundary | Failure mode |
-| --- | --- | --- | --- | --- |
-|  |  |  |  |  |
+| Aggregate | Root | State transition | Invariant | Invalid transition | Enforcement layer | Failure mode | Test/eval evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|  |  |  |  |  |  |  |  |
 
 ## Domain Events
 
-| Event | Producer | Consumers | Payload source | Ordering or idempotency rule |
-| --- | --- | --- | --- | --- |
-|  |  |  |  |  |
+| Event | Meaning | Producer | Consumers | Schema link | Ordering/idempotency rule | Privacy classification |
+| --- | --- | --- | --- | --- | --- | --- |
+|  |  |  |  |  |  |  |
 
 ## Context Map
 
@@ -74,3 +85,25 @@ Use this as the `ubiquitous_language_traceability` record. It prevents domain la
 - Acceptance tests:
 - Contract tests:
 - Migration or backfill checks:
+
+## Evidence
+
+- Source:
+- Owner review:
+- Requirement IDs:
+- Linked acceptance scenarios:
+- Linked requirements-traceability-matrix.md:
+
+## Accepted Gap
+
+- Owner:
+- Reason:
+- Scope:
+- Review date:
+- Downstream risk:
+- Follow-up condition:
+
+## Residual Risk
+
+- Risk:
+- Mitigation:

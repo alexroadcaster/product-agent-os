@@ -1598,13 +1598,79 @@ Expected: commit succeeds.
 - Modify: `methodology-catalog.json`
 - Modify: `methodology_audit.py`
 - Modify: `domain-modeling.md`, `acceptance-scenarios.md`, generated control-plane templates
+- Create: `plugins/product-agent-os/assets/templates/artifact-templates/requirement-registry.md`
+- Create: `plugins/product-agent-os/assets/templates/artifact-templates/stakeholder-owner-map.md`
+- Create: `plugins/product-agent-os/assets/templates/artifact-templates/story-slice-map.md`
 - Create: `plugins/product-agent-os/assets/templates/artifact-templates/requirements-traceability-matrix.md`
 - Create: `plugins/product-agent-os/assets/templates/artifact-templates/business-rules.md`
+- Create: `plugins/product-agent-os/assets/templates/artifact-templates/example-map.md`
 - Create: `plugins/product-agent-os/assets/templates/artifact-templates/requirement-change-impact.md`
 - Create: `plugins/product-agent-os/assets/templates/artifact-templates/domain-review-record.md`
 - Tests: methodology catalog, audit, renderer, fixture eval
 
-- [ ] **Step 1: Add RED test for requirements/domain gates**
+**Deep-Audit Task Matrix:**
+
+This matrix keeps every audited requirement visible as its own task row. The detailed checklist below remains the executable step plan, so several matrix rows can map to the same implementation step.
+
+| ID | Task | Existing step mapping | Output |
+| --- | --- | --- | --- |
+| `T9-D2-0` | Record deep-audit deltas from `docs/methodologies/requirements-domain.md` before implementation. | Step 0 | Track 9 plan/backlog records missing gates, artifacts, false-positive risks and residual risks. |
+| `T9-D2-1` | Add RED catalog tests for the complete `requirements_domain` contract. | Step 1, Step 2 | Catalog tests cover gates, artifacts, eval fields, applies/not-applicable rules and overlaps. |
+| `T9-D2-2` | Add `requirements_domain` catalog data. | Step 3 | `methodology-catalog.json` contains applies/not-applicable rules, maturity/complexity impact, artifacts, gates and eval fields. |
+| `T9-D2-3` | Represent requirement taxonomy. | Step 0, Step 1, Step 3, Step 4 | Functional, non-functional, compliance, operational, AI behavior, data/privacy and release/rollback requirements are explicit when relevant. |
+| `T9-D2-4` | Add `requirement_quality_present`. | Step 0, Step 1, Step 3, Step 4, Step 5 | Atomicity, clarity, testability, feasibility, traceability, source and owner become a first-class gate/eval field. |
+| `T9-D2-5` | Add stable requirement IDs and registry. | Step 1, Step 3, Step 4, Step 5 | `requirement_ids_present` and `requirement-registry.md` cover ID, status, source, owner and linked artifacts. |
+| `T9-D2-6` | Add stakeholder/owner map. | Step 0, Step 1, Step 4, Step 5, Step 6 | `stakeholder-owner-map.md` captures stakeholder, domain expert, technical owner, decision authority and escalation path. |
+| `T9-D2-7` | Add story slicing and MVP/deferred slice map. | Step 0, Step 1, Step 4, Step 5 | `story-slice-map.md` covers value slice, risk slice, MVP boundary, deferred slices, non-goals and scenario links. |
+| `T9-D2-8` | Strengthen acceptance scenarios and declarative scenario quality. | Step 1, Step 4, Step 5, Step 6 | `acceptance-scenarios.md` keeps actor/context/trigger/outcome/evidence and rejects UI selectors, DB internals, function names and test harness details. |
+| `T9-D2-9` | Add requirements traceability matrix. | Step 1, Step 4, Step 5, Step 6 | `requirements-traceability-matrix.md` maps requirement -> scenario -> implementation -> check/eval -> evidence owner -> release/docs evidence. |
+| `T9-D2-10` | Add business rules artifact and gate. | Step 1, Step 4, Step 5, Step 6 | `business-rules.md` records rule, source, owner, enforcement layer, exceptions, failure mode and tests/evals. |
+| `T9-D2-11` | Add non-goals and constraints traceability. | Step 0, Step 1, Step 3, Step 4, Step 5 | `non_goals_constraints_present` and `constraints_traceability_present` cover compliance, privacy, security, operational, performance, platform, accessibility, retention, localization, cost, rollout and rollback. |
+| `T9-D2-12` | Add open questions with owner and next action. | Step 1, Step 4, Step 5 | `open_questions_recorded` and `open_questions_contract_present` prevent unresolved requirements from staying in chat. |
+| `T9-D2-13` | Add Example Mapping for unclear stories. | Step 1, Step 4, Step 5 | `example-map.md` captures story -> rules -> examples -> questions, deferred slices, owner and next action. |
+| `T9-D2-14` | Add domain discovery workshop evidence. | Step 0, Step 1, Step 5 | Complex workflow/cross-silo/overloaded-language work records EventStorming, Domain Storytelling, interview or accepted-gap evidence. |
+| `T9-D2-15` | Preserve conditional DDD without duplicating Track 8. | Step 0, Step 1, Step 3, Step 7 | `domain_model_when_complex_domain`, `bounded_context_architecture_boundary_trace` and `ubiquitous_language_traceability` remain conditional and do not force DDD on simple CRUD/MVP. |
+| `T9-D2-16` | Add invariants and failure modes. | Step 1, Step 4, Step 5, Step 6 | Domain state transitions record invariant, invalid transition, enforcement layer, failure behavior and test/eval evidence. |
+| `T9-D2-17` | Add domain event contract requirements. | Step 1, Step 4, Step 5, Step 6 | Cross-boundary events record meaning, producer, consumers, schema link, ordering/idempotency and privacy classification. |
+| `T9-D2-18` | Add API/UI/data traceability. | Step 1, Step 4, Step 5, Step 6 | Requirement/domain terms map to API/event/schema, UI label/copy/error/accessibility name, data field/schema, code/test and owner. |
+| `T9-D2-19` | Add domain expert / owner review. | Step 1, Step 4, Step 5, Step 6 | `domain-review-record.md` covers business-critical, compliance, finance/legal and AI-generated domain claims, conflicts and accepted gaps. |
+| `T9-D2-20` | Add requirement change impact review. | Step 1, Step 4, Step 5, Step 6 | `requirement-change-impact.md` records affected tests/evals, API, DB, UI, docs, rollout, rollback and approval boundary after planning changes. |
+| `T9-D2-21` | Add accepted gap policy. | Step 0, Step 1, Step 3, Step 4, Step 5, Step 6 | `accepted_gap_recorded` requires owner, reason, scope, review date, downstream risk and follow-up condition. |
+| `T9-D2-22` | Add requirements evidence before implementation. | Step 1, Step 5, Step 6, Step 8 | `requirements_evidence_before_implementation` blocks build claims when requirements/scenarios/domain gates are missing and no accepted gap exists. |
+| `T9-D2-23` | Update lifecycle skills including `docs-maintainer`. | Step 6 | `requirements-author`, `implementation-planner`, `agent-team-designer`, `test-eval-designer`, `risk-reviewer`, `docs-maintainer` enforce the domain contract. |
+| `T9-D2-24` | Add fixture eval contract coverage. | Step 8 | `requirements_domain_contract_present` checks catalog, templates, lifecycle wording and fixture output. |
+| `T9-D2-25` | Add false-positive coverage. | Step 7 | Docs typo, formatting-only, dependency metadata and simple CRUD with `src/domain/` do not force DDD or heavy requirements ceremony. |
+| `T9-D2-26` | Add unsupported-claim negative tests. | Step 7 | BDD replaces testing, Gherkin is mandatory, story template is complete requirements, glossary is ubiquitous language and OpenAPI is requirements source of truth are rejected. |
+| `T9-D2-27` | Update cross-domain synthesis backlog. | Step 0 | API/UI/data traceability, stakeholder/owner mapping, story slicing, domain events, accepted gaps, owner review and change impact are queued for later synthesis. |
+| `T9-D2-28` | Run verification and commit. | Step 8, Step 9 | Focused tests, fixture eval, docs check and commit evidence are recorded. |
+
+- [x] **Step 0: Record deep-audit deltas before implementation**
+
+Modify `docs/sources/product-agent-os-track-9-backlog.md` before code implementation and record these `T9-D2` deep-audit deltas from `docs/methodologies/requirements-domain.md`:
+
+- Current Track 8 already covers acceptance scenarios, conditional DDD, bounded-context-to-architecture traceability, ubiquitous-language traceability and simple CRUD / simple MVP false-positive protection; `T9-D2` must extend, not duplicate, those gates.
+- Requirement taxonomy must be explicit when relevant: functional, non-functional, compliance, operational, AI behavior, data/privacy and release/rollback.
+- Requirement quality criteria must be represented: atomicity, clarity, testability, feasibility, traceability, source and owner.
+- Stable requirement IDs are needed for multi-slice, regulatory, risky or long-lived work.
+- Requirement registry needs status, owner, source and linked artifacts.
+- Stakeholder/owner map is a first-class Requirements & Domain artifact because source-backed domain meaning and business rules need accountable reviewers.
+- User story and story slicing evidence must preserve value slice, MVP boundary, deferred slices, risk and non-goals; a story title alone is not a requirement.
+- Business rules need source, owner, enforcement layer, exceptions and failure behavior.
+- Example Mapping is needed when stories are unclear, large or disputed: story -> rules -> examples -> questions.
+- Domain discovery workshop evidence is needed for complex workflow, cross-silo process or overloaded domain language.
+- `requirement_quality_present` must cover atomicity, clarity, testability, feasibility, traceability, source and owner instead of being hidden inside scope.
+- Constraint evidence must cover compliance, privacy, security, operational, performance, platform, accessibility, data retention, localization, cost, rollout and rollback when relevant.
+- Acceptance scenarios must be declarative: no UI selectors, database internals, function names or test harness details in business-facing scenarios.
+- Domain events crossing boundaries need meaning, producer, consumers, schema link, ordering/idempotency assumptions and privacy classification.
+- Invariants and failure modes are required when domain state transitions matter.
+- API/UI/data traceability is distinct from DDD traceability: requirement/domain term -> API/event/schema/UI/data/code/test/eval.
+- Domain expert review is required for business-critical, compliance, finance/legal or AI-generated domain claims.
+- Requirement change impact review is required when requirements/domain rules change after planning: tests/evals, API, DB, UI, docs, rollout and rollback.
+- Accepted gaps are valid only with owner, reason, scope, review date, downstream risk and follow-up condition.
+- `docs-maintainer` owns requirement IDs, source registry, glossary/ubiquitous-language docs and traceability docs after the requirements packet exists.
+- Unsupported claims must be rejected: BDD replaces testing, Gherkin is mandatory, a user-story template is a complete requirement, a glossary is ubiquitous language, OpenAPI is requirements source of truth.
+
+- [x] **Step 1: Add RED test for requirements/domain gates**
 
 Assert `requirements_domain` gates include:
 
@@ -1612,11 +1678,14 @@ Assert `requirements_domain` gates include:
 [
     "requirements_scope_present",
     "requirements_owner_present",
+    "requirement_quality_present",
     "requirement_ids_present",
     "acceptance_scenarios_when_behavior_changes",
+    "declarative_acceptance_scenarios_present",
     "requirements_traceability_present",
     "business_rules_present",
     "non_goals_constraints_present",
+    "constraints_traceability_present",
     "open_questions_recorded",
     "example_mapping_when_unclear_story",
     "domain_discovery_workshop_when_complex_process",
@@ -1633,7 +1702,57 @@ Assert `requirements_domain` gates include:
 ]
 ```
 
-- [ ] **Step 2: Run RED test**
+Also assert artifacts include:
+
+```python
+[
+    "requirement-registry.md",
+    "stakeholder-owner-map.md",
+    "story-slice-map.md",
+    "acceptance-scenarios.md",
+    "requirements-traceability-matrix.md",
+    "business-rules.md",
+    "example-map.md",
+    "domain-modeling.md",
+    "requirement-change-impact.md",
+    "domain-review-record.md",
+]
+```
+
+Also assert eval fields include:
+
+```python
+[
+    "requirements_scope_contract_present",
+    "requirements_owner_contract_present",
+    "requirement_quality_contract_present",
+    "requirement_ids_contract_present",
+    "acceptance_scenarios_contract_present",
+    "declarative_scenario_quality_contract_present",
+    "requirements_traceability_contract_present",
+    "business_rules_contract_present",
+    "non_goals_constraints_contract_present",
+    "constraints_traceability_contract_present",
+    "open_questions_contract_present",
+    "stakeholder_owner_map_contract_present",
+    "story_slice_map_contract_present",
+    "example_mapping_contract_present",
+    "domain_discovery_contract_present",
+    "domain_model_contract_present",
+    "bounded_context_trace_contract_present",
+    "ubiquitous_language_traceability_contract_present",
+    "invariants_failure_modes_contract_present",
+    "domain_event_contracts_present",
+    "api_ui_data_traceability_contract_present",
+    "domain_expert_review_contract_present",
+    "requirement_change_impact_contract_present",
+    "accepted_gap_contract_present",
+    "requirements_evidence_before_implementation_contract_present",
+    "unsupported_claims_rejected_contract_present",
+]
+```
+
+- [x] **Step 2: Run RED test**
 
 Run:
 
@@ -1643,7 +1762,7 @@ python -m unittest tests.product_agent_os.test_methodology_catalog -v
 
 Expected: fail on missing requirements/domain gates.
 
-- [ ] **Step 3: Add catalog data and false-positive rules**
+- [x] **Step 3: Add catalog data and false-positive rules**
 
 Rules:
 
@@ -1651,28 +1770,65 @@ Rules:
 - not applicable for docs typo, formatting-only, pure dependency metadata without behavior impact;
 - do not force DDD for simple CRUD/MVP when accepted gap exists;
 - overloaded domain terms become owner questions, not verified evidence.
+- requirements scope/owner/scenarios apply to behavior-changing work even when DDD is not applicable;
+- requirement quality applies to non-trivial product/system work and must not be treated as satisfied by a story title alone;
+- requirement IDs apply to multi-slice, regulatory, risky, long-lived or public-contract work;
+- constraints traceability applies when compliance, privacy, security, operational, performance, platform, accessibility, retention, localization, cost, rollout or rollback constraints are present;
+- declarative scenario quality applies when business-facing scenarios contain UI selectors, database internals, function names or test harness details;
+- stakeholder/owner mapping applies when domain meaning, business rules or owner review is required;
+- story-slice mapping applies when user stories, MVP boundary, value/risk slices or deferred slices are part of scope;
+- domain expert review applies to business-critical, compliance, finance/legal and AI-generated domain claims;
+- requirement change impact applies when requirements/domain rules change after planning.
+- unsupported claims are never accepted as methodology evidence: BDD replaces testing, Gherkin is mandatory, a user-story template is complete requirements, a glossary is ubiquitous language, OpenAPI is requirements source of truth.
 
-- [ ] **Step 4: Add and register templates**
+- [x] **Step 4: Add and register templates**
 
 Create templates:
 
+- `requirement-registry.md`;
+- `stakeholder-owner-map.md`;
+- `story-slice-map.md`;
 - `requirements-traceability-matrix.md`;
 - `business-rules.md`;
+- `example-map.md`;
 - `requirement-change-impact.md`;
 - `domain-review-record.md`.
 
 Each template must include source, owner, linked requirements, evidence owner, accepted gap and residual risk.
 
-- [ ] **Step 5: Extend audit recommendations**
+Template-specific fields:
+
+- `requirement-registry.md`: requirement ID, type, status, source, owner, scope, linked scenarios, linked tests/evals, linked contracts/docs and change impact.
+- `stakeholder-owner-map.md`: stakeholder, domain expert, technical owner, review responsibility, decision authority, escalation path, unavailable owner gap and review cadence.
+- `story-slice-map.md`: user story, value slice, risk slice, MVP boundary, deferred slices, non-goals, owner and acceptance scenario links.
+- `requirements-traceability-matrix.md`: requirement -> scenario -> implementation -> check/eval -> evidence owner -> release/docs evidence.
+- `business-rules.md`: rule, source, owner, enforcement layer, exceptions, failure mode, affected requirement IDs and tests/evals.
+- `example-map.md`: story, rules, examples, questions, deferred slices, owner and next action.
+- `requirement-change-impact.md`: changed requirement/rule, affected tests/evals, API, DB, UI, docs, rollout, rollback and approval boundary.
+- `domain-review-record.md`: domain expert/owner review, AI-generated claim status, unresolved conflicts, accepted gaps, downstream risk and follow-up owner.
+
+- [x] **Step 5: Extend audit recommendations**
 
 Add recommendations:
 
 - behavior intent with missing acceptance scenarios -> `P0_blocker`;
+- non-trivial product/system work with missing `requirement_quality_present` -> `P1_high_risk`;
+- behavior-facing scenario with UI selectors, database internals, function names or test harness details -> `P1_high_risk`;
 - domain/API/UI/data crossing without traceability -> `P1_high_risk`;
 - complex domain without domain model or accepted gap -> `P1_high_risk`;
 - changed requirement after planning -> `P1_high_risk` for impact review.
+- compliance, privacy, security, operational, performance, platform, accessibility, retention, localization, cost, rollout or rollback constraints without traceability -> `P1_high_risk`;
+- multi-slice, regulatory, risky or long-lived work without stable requirement IDs -> `P1_high_risk`;
+- stakeholder/process/value ambiguity without `stakeholder-owner-map.md` -> `P2_recommended`;
+- user story, MVP boundary or deferred slice work without `story-slice-map.md` -> `P2_recommended`;
+- unclear/large/disputed story without Example Mapping -> `P2_recommended`;
+- business rule without source, owner, enforcement layer or exception policy -> `P1_high_risk`;
+- domain event crossing a boundary without meaning, schema, producer/consumer, ordering/idempotency or privacy classification -> `P1_high_risk`;
+- business-critical, compliance, finance/legal or AI-generated domain claim without owner/domain expert review -> `P1_high_risk`;
+- accepted gap without owner, reason, scope, review date, downstream risk or follow-up condition -> `P1_high_risk`.
+- unsupported methodology claim appears as evidence -> `P1_high_risk` and owner question.
 
-- [ ] **Step 6: Update lifecycle skills**
+- [x] **Step 6: Update lifecycle skills**
 
 Update:
 
@@ -1681,28 +1837,41 @@ Update:
 - `agent-team-designer`: use bounded contexts for ownership split.
 - `test-eval-designer`: map scenarios to tests/evals.
 - `risk-reviewer`: check domain claims and accepted gaps.
+- `docs-maintainer`: keep requirement IDs, source registry, glossary/ubiquitous-language pages and traceability docs aligned.
 
-- [ ] **Step 7: Add false-positive fixture**
+Each skill must mention `requirement-registry.md`, `stakeholder-owner-map.md`, `story-slice-map.md`, `requirements-traceability-matrix.md`, `business-rules.md`, `example-map.md`, `requirement-change-impact.md`, `domain-review-record.md`, `requirements_traceability_present`, `requirement_quality_present`, `constraints_traceability_present`, `declarative_acceptance_scenarios_present`, `business_rules_present`, `domain_expert_review_present`, `requirement_change_impact_review_present` and `accepted_gap_recorded`.
+
+- [x] **Step 7: Add false-positive and unsupported-claim fixtures**
 
 Create or extend a fixture for simple CRUD that has `src/domain/` but no complex domain indicators. Assert DDD remains `not_applicable` or accepted gap, not `applicable_missing`.
 
-- [ ] **Step 8: Run verification**
+Add negative coverage for unsupported methodology claims:
+
+- "BDD replaces testing" must not satisfy test/eval evidence.
+- "Gherkin is mandatory" must not force Gherkin when equivalent behavior tables preserve actor, context, trigger, observable outcome and evidence.
+- "A user story template is a complete requirement" must not satisfy `requirements_scope_present`, `requirement_quality_present` or `acceptance_scenarios_when_behavior_changes`.
+- "A glossary is ubiquitous language" must not satisfy `ubiquitous_language_traceability`.
+- "OpenAPI is the requirements source of truth" must not satisfy business intent, acceptance scenarios or requirements traceability by itself.
+
+- [x] **Step 8: Run verification**
 
 Run:
 
 ```powershell
 python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_discovery tests.product_agent_os.test_fixture_eval_runner -v
+python -m unittest tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_lifecycle_skills -v
 python plugins\product-agent-os\scripts\run_fixture_eval.py
+python tools\check_docs.py
 ```
 
 Expected: all commands exit `0`.
 
-- [ ] **Step 9: Commit T9-D2**
+- [x] **Step 9: Commit T9-D2**
 
 Run:
 
 ```powershell
-git add plugins\product-agent-os tests\product_agent_os docs\sources\product-agent-os-track-9-backlog.md
+git add plugins\product-agent-os tests\product_agent_os docs\sources\product-agent-os-track-9-backlog.md docs\superpowers\plans\2026-05-25-track-9-methodology-intelligence.md
 git commit -m "feat: integrate requirements domain methodology"
 ```
 

@@ -164,6 +164,104 @@ class MethodologyCatalogContractTest(unittest.TestCase):
             ["discovery", "MVP", "beta", "production", "scale"],
         )
 
+    def test_requirements_domain_has_track_nine_contract(self):
+        from product_agent_os.methodology_catalog import load_methodology_catalog
+
+        catalog = load_methodology_catalog()
+        domains = {domain["id"]: domain for domain in catalog["domains"]}
+        requirements_domain = domains["requirements_domain"]
+
+        expected_gates = [
+            "requirements_scope_present",
+            "requirements_owner_present",
+            "requirement_quality_present",
+            "requirement_ids_present",
+            "acceptance_scenarios_when_behavior_changes",
+            "declarative_acceptance_scenarios_present",
+            "requirements_traceability_present",
+            "business_rules_present",
+            "non_goals_constraints_present",
+            "constraints_traceability_present",
+            "open_questions_recorded",
+            "example_mapping_when_unclear_story",
+            "domain_discovery_workshop_when_complex_process",
+            "domain_model_when_complex_domain",
+            "bounded_context_architecture_boundary_trace",
+            "ubiquitous_language_traceability",
+            "invariants_and_failure_modes_present",
+            "domain_event_contracts_present",
+            "api_ui_data_traceability_present",
+            "domain_expert_review_present",
+            "requirement_change_impact_review_present",
+            "accepted_gap_recorded",
+            "requirements_evidence_before_implementation",
+        ]
+        expected_artifacts = [
+            "requirement-registry.md",
+            "stakeholder-owner-map.md",
+            "story-slice-map.md",
+            "acceptance-scenarios.md",
+            "requirements-traceability-matrix.md",
+            "business-rules.md",
+            "example-map.md",
+            "domain-modeling.md",
+            "requirement-change-impact.md",
+            "domain-review-record.md",
+        ]
+        expected_eval_fields = [
+            "requirements_scope_contract_present",
+            "requirements_owner_contract_present",
+            "requirement_quality_contract_present",
+            "requirement_ids_contract_present",
+            "acceptance_scenarios_contract_present",
+            "declarative_scenario_quality_contract_present",
+            "requirements_traceability_contract_present",
+            "business_rules_contract_present",
+            "non_goals_constraints_contract_present",
+            "constraints_traceability_contract_present",
+            "open_questions_contract_present",
+            "stakeholder_owner_map_contract_present",
+            "story_slice_map_contract_present",
+            "example_mapping_contract_present",
+            "domain_discovery_contract_present",
+            "domain_model_contract_present",
+            "bounded_context_trace_contract_present",
+            "ubiquitous_language_traceability_contract_present",
+            "invariants_failure_modes_contract_present",
+            "domain_event_contracts_present",
+            "api_ui_data_traceability_contract_present",
+            "domain_expert_review_contract_present",
+            "requirement_change_impact_contract_present",
+            "accepted_gap_contract_present",
+            "requirements_evidence_before_implementation_contract_present",
+            "unsupported_claims_rejected_contract_present",
+        ]
+
+        for term in [
+            "behavior-changing work",
+            "domain terms or business rules",
+            "API/UI/data contract change",
+            "AI behavior change",
+        ]:
+            with self.subTest(applies_when=term):
+                self.assertIn(term, requirements_domain["applies_when"])
+        for term in [
+            "typo-only docs edit",
+            "formatting-only edit",
+            "pure dependency metadata without behavior impact",
+        ]:
+            with self.subTest(not_applicable_when=term):
+                self.assertIn(term, requirements_domain["not_applicable_when"])
+        for gate in expected_gates:
+            with self.subTest(gate=gate):
+                self.assertIn(gate, requirements_domain["gates"])
+        for artifact in expected_artifacts:
+            with self.subTest(artifact=artifact):
+                self.assertIn(artifact, requirements_domain["artifacts"])
+        for eval_field in expected_eval_fields:
+            with self.subTest(eval_field=eval_field):
+                self.assertIn(eval_field, requirements_domain["eval_fields"])
+
 
 if __name__ == "__main__":
     unittest.main()

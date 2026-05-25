@@ -82,6 +82,14 @@ REQUIRED_TARGETS = {
     ".codex/artifact-templates/bug-rescue-report.md",
     ".codex/artifact-templates/greenfield-idea-brief.md",
     ".codex/artifact-templates/acceptance-scenarios.md",
+    ".codex/artifact-templates/requirement-registry.md",
+    ".codex/artifact-templates/stakeholder-owner-map.md",
+    ".codex/artifact-templates/story-slice-map.md",
+    ".codex/artifact-templates/requirements-traceability-matrix.md",
+    ".codex/artifact-templates/business-rules.md",
+    ".codex/artifact-templates/example-map.md",
+    ".codex/artifact-templates/requirement-change-impact.md",
+    ".codex/artifact-templates/domain-review-record.md",
     ".codex/artifact-templates/docs-tooling-decision.md",
     ".codex/artifact-templates/governance-proposal.md",
     ".codex/artifact-templates/integration-catalog.md",
@@ -149,6 +157,27 @@ class InfrastructureTemplateTest(unittest.TestCase):
             "opportunity-tree.md",
             "experiment-plan.md",
             "tracking-plan.md",
+        ]
+        required_terms = ["Source status:", "Owner", "Evidence", "Accepted Gap", "Residual Risk"]
+
+        for filename in expected_templates:
+            path = TEMPLATE_ROOT / "artifact-templates" / filename
+            with self.subTest(filename=filename):
+                self.assertTrue(path.exists(), path)
+                text = path.read_text(encoding="utf-8")
+                for term in required_terms:
+                    self.assertIn(term, text)
+
+    def test_requirements_domain_artifact_templates_have_operating_contracts(self):
+        expected_templates = [
+            "requirement-registry.md",
+            "stakeholder-owner-map.md",
+            "story-slice-map.md",
+            "requirements-traceability-matrix.md",
+            "business-rules.md",
+            "example-map.md",
+            "requirement-change-impact.md",
+            "domain-review-record.md",
         ]
         required_terms = ["Source status:", "Owner", "Evidence", "Accepted Gap", "Residual Risk"]
 
@@ -505,6 +534,111 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 "integration tests",
                 "contract tests",
                 "evals",
+                "declarative_acceptance_scenarios_present",
+                "no ui selectors",
+                "database internals",
+                "function names",
+                "test harness",
+            ],
+            "requirement-registry.md": [
+                "requirement_ids_present",
+                "requirement_quality_present",
+                "requirement id",
+                "type",
+                "status",
+                "source",
+                "owner",
+                "linked scenarios",
+                "linked tests/evals",
+                "change impact",
+                "accepted gap",
+                "residual risk",
+            ],
+            "stakeholder-owner-map.md": [
+                "requirements_owner_present",
+                "stakeholder",
+                "domain expert",
+                "technical owner",
+                "decision authority",
+                "escalation path",
+                "unavailable owner gap",
+                "review cadence",
+                "accepted gap",
+                "residual risk",
+            ],
+            "story-slice-map.md": [
+                "story_slice_map_present",
+                "user story",
+                "value slice",
+                "risk slice",
+                "mvp boundary",
+                "deferred slices",
+                "non-goals",
+                "acceptance scenario links",
+                "accepted gap",
+                "residual risk",
+            ],
+            "requirements-traceability-matrix.md": [
+                "requirements_traceability_present",
+                "api_ui_data_traceability_present",
+                "requirement -> scenario -> implementation -> check/eval -> evidence owner",
+                "api/event/schema",
+                "ui label",
+                "data field",
+                "release/docs evidence",
+                "accepted gap",
+                "residual risk",
+            ],
+            "business-rules.md": [
+                "business_rules_present",
+                "rule",
+                "source",
+                "owner",
+                "enforcement layer",
+                "exceptions",
+                "failure mode",
+                "affected requirement ids",
+                "tests/evals",
+                "accepted gap",
+                "residual risk",
+            ],
+            "example-map.md": [
+                "example_mapping_when_unclear_story",
+                "story",
+                "rules",
+                "examples",
+                "questions",
+                "deferred slices",
+                "owner",
+                "next action",
+                "accepted gap",
+                "residual risk",
+            ],
+            "requirement-change-impact.md": [
+                "requirement_change_impact_review_present",
+                "changed requirement",
+                "affected tests/evals",
+                "api",
+                "db",
+                "ui",
+                "docs",
+                "rollout",
+                "rollback",
+                "approval boundary",
+                "accepted gap",
+                "residual risk",
+            ],
+            "domain-review-record.md": [
+                "domain_expert_review_present",
+                "accepted_gap_recorded",
+                "domain expert",
+                "ai-generated claim",
+                "unresolved conflicts",
+                "downstream risk",
+                "follow-up owner",
+                "unsupported claims",
+                "accepted gap",
+                "residual risk",
             ],
             "docs-tooling-decision.md": [
                 "docs_as_code_impact",
@@ -776,6 +910,50 @@ class InfrastructureTemplateTest(unittest.TestCase):
             "does not replace evals",
         ]:
             self.assertIn(term, acceptance)
+
+    def test_requirements_domain_templates_connect_control_plane_and_artifacts(self):
+        control_plane = "\n".join(
+            (TEMPLATE_ROOT / "control-plane" / name).read_text(encoding="utf-8").lower()
+            for name in ["REQUIREMENTS.md", "PLAN.md", "TEST.md", "EVALS.md", "RUNLOG.md"]
+        )
+        artifacts = "\n".join(
+            (TEMPLATE_ROOT / "artifact-templates" / name).read_text(encoding="utf-8").lower()
+            for name in [
+                "requirement-registry.md",
+                "stakeholder-owner-map.md",
+                "story-slice-map.md",
+                "acceptance-scenarios.md",
+                "requirements-traceability-matrix.md",
+                "business-rules.md",
+                "example-map.md",
+                "domain-modeling.md",
+                "requirement-change-impact.md",
+                "domain-review-record.md",
+            ]
+        )
+        payloads = {"control-plane": control_plane, "artifacts": artifacts}
+        shared_terms = [
+            "requirements_scope_present",
+            "requirements_owner_present",
+            "requirement_quality_present",
+            "requirement_ids_present",
+            "requirements_traceability_present",
+            "business_rules_present",
+            "non_goals_constraints_present",
+            "constraints_traceability_present",
+            "open_questions_recorded",
+            "declarative_acceptance_scenarios_present",
+            "domain_event_contracts_present",
+            "api_ui_data_traceability_present",
+            "domain_expert_review_present",
+            "requirement_change_impact_review_present",
+            "accepted_gap_recorded",
+            "requirements_evidence_before_implementation",
+        ]
+        for name, text in payloads.items():
+            with self.subTest(name=name):
+                for expected in shared_terms:
+                    self.assertIn(expected, text)
 
     def test_control_plane_templates_include_bounded_context_traceability(self):
         plan = (TEMPLATE_ROOT / "control-plane" / "PLAN.md").read_text(encoding="utf-8").lower()

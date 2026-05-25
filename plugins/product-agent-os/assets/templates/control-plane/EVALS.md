@@ -112,6 +112,32 @@ Generated at: {generated_at}
 - Acceptance scenarios:
 - ATDD or BDD mapping:
 - Requirement -> scenario -> check -> evidence owner:
+- `requirements_scope_contract_present`:
+- `requirements_owner_contract_present`:
+- `requirement_quality_contract_present`:
+- `requirement_ids_contract_present`:
+- `acceptance_scenarios_contract_present`:
+- `declarative_scenario_quality_contract_present`:
+- `requirements_traceability_contract_present`:
+- `business_rules_contract_present`:
+- `non_goals_constraints_contract_present`:
+- `constraints_traceability_contract_present`:
+- `open_questions_contract_present`:
+- `stakeholder_owner_map_contract_present`:
+- `story_slice_map_contract_present`:
+- `example_mapping_contract_present`:
+- `domain_discovery_contract_present`:
+- `domain_model_contract_present`:
+- `bounded_context_trace_contract_present`:
+- `ubiquitous_language_traceability_contract_present`:
+- `invariants_failure_modes_contract_present`:
+- `domain_event_contracts_present`:
+- `api_ui_data_traceability_contract_present`:
+- `domain_expert_review_contract_present`:
+- `requirement_change_impact_contract_present`:
+- `accepted_gap_contract_present`:
+- `requirements_evidence_before_implementation_contract_present`:
+- `unsupported_claims_rejected_contract_present`:
 - Given:
 - When:
 - Then:
@@ -122,6 +148,10 @@ Generated at: {generated_at}
 - Behavior changes:
 - Explicit gap:
 - Evidence owner:
+- Declarative acceptance scenarios (`declarative_acceptance_scenarios_present`): no UI selectors, database internals, function names, or test harness details.
+- Requirements traceability (`requirements_traceability_present`): requirement -> scenario -> implementation -> check/eval -> evidence owner.
+- Business rules (`business_rules_present`): source, owner, enforcement layer, exceptions, failure mode and tests/evals.
+- Accepted gap (`accepted_gap_recorded`): owner, reason, scope, review date, downstream risk and follow-up condition.
 
 ## Domain Model Evals
 

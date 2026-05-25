@@ -1,0 +1,5 @@
+interface:
+  display_name: "Docs Maintainer"
+  short_description: "Stages source-backed docs and traceability updates."
+  default_prompt: "Use $docs-maintainer to align requirements, source registry, glossary, and traceability docs."
+  allow_implicit_invocation: false

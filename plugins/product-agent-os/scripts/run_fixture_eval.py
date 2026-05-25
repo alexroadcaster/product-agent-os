@@ -189,6 +189,97 @@ BUSINESS_PRODUCT_TERMS = (
     "no-production-telemetry",
     "engineering time saved",
 )
+REQUIREMENTS_DOMAIN_GATES = (
+    "requirements_scope_present",
+    "requirements_owner_present",
+    "requirement_quality_present",
+    "requirement_ids_present",
+    "acceptance_scenarios_when_behavior_changes",
+    "declarative_acceptance_scenarios_present",
+    "requirements_traceability_present",
+    "business_rules_present",
+    "non_goals_constraints_present",
+    "constraints_traceability_present",
+    "open_questions_recorded",
+    "example_mapping_when_unclear_story",
+    "domain_discovery_workshop_when_complex_process",
+    "domain_model_when_complex_domain",
+    "bounded_context_architecture_boundary_trace",
+    "ubiquitous_language_traceability",
+    "invariants_and_failure_modes_present",
+    "domain_event_contracts_present",
+    "api_ui_data_traceability_present",
+    "domain_expert_review_present",
+    "requirement_change_impact_review_present",
+    "accepted_gap_recorded",
+    "requirements_evidence_before_implementation",
+)
+REQUIREMENTS_DOMAIN_ARTIFACTS = (
+    "requirement-registry.md",
+    "stakeholder-owner-map.md",
+    "story-slice-map.md",
+    "acceptance-scenarios.md",
+    "requirements-traceability-matrix.md",
+    "business-rules.md",
+    "example-map.md",
+    "domain-modeling.md",
+    "requirement-change-impact.md",
+    "domain-review-record.md",
+)
+REQUIREMENTS_DOMAIN_EVAL_FIELDS = (
+    "requirements_scope_contract_present",
+    "requirements_owner_contract_present",
+    "requirement_quality_contract_present",
+    "requirement_ids_contract_present",
+    "acceptance_scenarios_contract_present",
+    "declarative_scenario_quality_contract_present",
+    "requirements_traceability_contract_present",
+    "business_rules_contract_present",
+    "non_goals_constraints_contract_present",
+    "constraints_traceability_contract_present",
+    "open_questions_contract_present",
+    "stakeholder_owner_map_contract_present",
+    "story_slice_map_contract_present",
+    "example_mapping_contract_present",
+    "domain_discovery_contract_present",
+    "domain_model_contract_present",
+    "bounded_context_trace_contract_present",
+    "ubiquitous_language_traceability_contract_present",
+    "invariants_failure_modes_contract_present",
+    "domain_event_contracts_present",
+    "api_ui_data_traceability_contract_present",
+    "domain_expert_review_contract_present",
+    "requirement_change_impact_contract_present",
+    "accepted_gap_contract_present",
+    "requirements_evidence_before_implementation_contract_present",
+    "unsupported_claims_rejected_contract_present",
+)
+REQUIREMENTS_DOMAIN_TERMS = (
+    "requirement-registry.md",
+    "stakeholder-owner-map.md",
+    "story-slice-map.md",
+    "requirements-traceability-matrix.md",
+    "business-rules.md",
+    "example-map.md",
+    "requirement-change-impact.md",
+    "domain-review-record.md",
+    "requirements_traceability_present",
+    "requirement_quality_present",
+    "constraints_traceability_present",
+    "declarative_acceptance_scenarios_present",
+    "business_rules_present",
+    "domain_expert_review_present",
+    "requirement_change_impact_review_present",
+    "accepted_gap_recorded",
+    "requirements_evidence_before_implementation",
+    "no ui selectors",
+    "database internals",
+    "function names",
+    "test harness",
+    "bdd replaces testing",
+    "gherkin is mandatory",
+    "openapi is requirements source of truth",
+)
 COMPLETION_EVIDENCE_TERMS = (
     "evidence_before_completion",
     "evidence-before-completion",
@@ -597,6 +688,7 @@ def _expected_checks(
         )
         checks["standards_trigger_contract_present"] = _standards_trigger_contract_present()
         checks["business_product_contract_present"] = _business_product_contract_present()
+        checks["requirements_domain_contract_present"] = _requirements_domain_contract_present()
         checks["methodology_applicability_contract_present"] = (
             _methodology_applicability_contract_present(audit)
         )
@@ -893,6 +985,58 @@ def _business_product_contract_present() -> bool:
         f"{path.name}\n{path.read_text(encoding='utf-8')}" for path in paths
     ).lower()
     return all(term in payload for term in BUSINESS_PRODUCT_TERMS)
+
+
+def _requirements_domain_contract_present() -> bool:
+    try:
+        catalog = load_methodology_catalog()
+    except (OSError, ValueError, json.JSONDecodeError):
+        return False
+    if validate_methodology_catalog(catalog):
+        return False
+    domains = {
+        str(domain.get("id")): domain
+        for domain in catalog.get("domains", [])
+        if isinstance(domain, dict) and domain.get("id")
+    }
+    requirements_domain = domains.get("requirements_domain")
+    if not isinstance(requirements_domain, dict):
+        return False
+    if not set(REQUIREMENTS_DOMAIN_GATES).issubset(set(requirements_domain.get("gates", []))):
+        return False
+    if not set(REQUIREMENTS_DOMAIN_ARTIFACTS).issubset(set(requirements_domain.get("artifacts", []))):
+        return False
+    if not set(REQUIREMENTS_DOMAIN_EVAL_FIELDS).issubset(set(requirements_domain.get("eval_fields", []))):
+        return False
+
+    paths = [
+        PLUGIN_ROOT / "assets" / "methodology" / "methodology-catalog.json",
+        TEMPLATE_ROOT / "artifact-templates" / "requirement-registry.md",
+        TEMPLATE_ROOT / "artifact-templates" / "stakeholder-owner-map.md",
+        TEMPLATE_ROOT / "artifact-templates" / "story-slice-map.md",
+        TEMPLATE_ROOT / "artifact-templates" / "acceptance-scenarios.md",
+        TEMPLATE_ROOT / "artifact-templates" / "requirements-traceability-matrix.md",
+        TEMPLATE_ROOT / "artifact-templates" / "business-rules.md",
+        TEMPLATE_ROOT / "artifact-templates" / "example-map.md",
+        TEMPLATE_ROOT / "artifact-templates" / "domain-modeling.md",
+        TEMPLATE_ROOT / "artifact-templates" / "requirement-change-impact.md",
+        TEMPLATE_ROOT / "artifact-templates" / "domain-review-record.md",
+        TEMPLATE_ROOT / "control-plane" / "REQUIREMENTS.md",
+        TEMPLATE_ROOT / "control-plane" / "PLAN.md",
+        TEMPLATE_ROOT / "control-plane" / "TEST.md",
+        TEMPLATE_ROOT / "control-plane" / "EVALS.md",
+        TEMPLATE_ROOT / "control-plane" / "RUNLOG.md",
+        PLUGIN_ROOT / "skills" / "requirements-author" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "implementation-planner" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "agent-team-designer" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "test-eval-designer" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "risk-reviewer" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "docs-maintainer" / "SKILL.md",
+    ]
+    payload = "\n".join(
+        f"{path.name}\n{path.read_text(encoding='utf-8')}" for path in paths
+    ).lower()
+    return all(term in payload for term in REQUIREMENTS_DOMAIN_TERMS)
 
 
 def _completion_evidence_contract_present() -> bool:

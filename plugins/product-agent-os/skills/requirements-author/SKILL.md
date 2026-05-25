@@ -118,6 +118,10 @@ requirements_packet:
   next_lifecycle_state: "requirements_ready"
 ```
 
+## Requirements Domain Methodology
+
+When Requirements & Domain applies, stage or reference `requirement-registry.md`, `stakeholder-owner-map.md`, `story-slice-map.md`, `requirements-traceability-matrix.md`, `business-rules.md`, `example-map.md`, `requirement-change-impact.md`, and `domain-review-record.md`. Require `requirements_traceability_present`, `requirement_quality_present`, `constraints_traceability_present`, `declarative_acceptance_scenarios_present`, `business_rules_present`, `domain_expert_review_present`, `requirement_change_impact_review_present`, `accepted_gap_recorded`, and `requirements_evidence_before_implementation` before calling the requirements packet ready. Accepted gaps need owner, reason, scope, review date, downstream risk, and follow-up condition.
+
 ## Evidence Before Completion
 
 Evidence-before-completion (`evidence_before_completion`): do not make a ready claim, completed claim, fixed claim, works claim, or release claim without current command evidence, current eval evidence, current runtime evidence, owner evidence, or an explicit test gap. If only inspection happened, label the result `inspection-only` and list every unsupported completion claim. Treat completion claim without current evidence as blocked.

@@ -72,6 +72,33 @@ Generated at: {generated_at}
 - Files or systems in scope:
 - Expected outputs:
 
+## Requirements And Domain
+
+- Requirements scope gate (`requirements_scope_present`):
+- Requirements owner gate (`requirements_owner_present`):
+- Requirement quality gate (`requirement_quality_present`): atomicity, clarity, testability, feasibility, traceability, source, owner.
+- Requirement IDs gate (`requirement_ids_present`):
+- Requirement registry: `requirement-registry.md`
+- Stakeholder owner map: `stakeholder-owner-map.md`
+- Story slice map: `story-slice-map.md`
+- Requirement taxonomy: `functional | non-functional | compliance | operational | AI behavior | data/privacy | release/rollback`
+- Business rules gate (`business_rules_present`): `business-rules.md`
+- Non-goals and constraints gate (`non_goals_constraints_present`):
+- Constraints traceability gate (`constraints_traceability_present`):
+- Open questions gate (`open_questions_recorded`):
+- Requirements traceability gate (`requirements_traceability_present`): `requirements-traceability-matrix.md`
+- API/UI/data traceability gate (`api_ui_data_traceability_present`):
+- Domain event contract gate (`domain_event_contracts_present`):
+- Invariants and failure modes gate (`invariants_and_failure_modes_present`):
+- Domain expert review gate (`domain_expert_review_present`): `domain-review-record.md`
+- Requirement change impact gate (`requirement_change_impact_review_present`): `requirement-change-impact.md`
+- Accepted gap gate (`accepted_gap_recorded`): owner, reason, scope, review date, downstream risk, follow-up condition.
+- Requirements evidence before implementation (`requirements_evidence_before_implementation`):
+- Example Mapping gate (`example_mapping_when_unclear_story`): `example-map.md`
+- Domain discovery gate (`domain_discovery_workshop_when_complex_process`):
+- Declarative acceptance scenario gate (`declarative_acceptance_scenarios_present`):
+- Unsupported claims rejected: BDD replaces testing, Gherkin is mandatory, user story template is complete requirements, glossary is ubiquitous language, OpenAPI is requirements source of truth.
+
 ## Source-Of-Truth Artifacts
 
 - Architecture docs:
@@ -98,8 +125,12 @@ Generated at: {generated_at}
 
 - Inputs, outputs, constraints, and verification commands are explicit.
 - Acceptance scenarios are explicit for behavior changes, or an explicit gap is recorded.
+- Requirements evidence is explicit before implementation, or an accepted gap is recorded.
 - ATDD and BDD scenario mapping uses `requirement -> scenario -> check -> evidence owner`.
 - Given, When, Then or an equivalent behavior format captures the business rule, edge case, non-goal, and evidence owner.
+- Acceptance scenarios are declarative: no UI selectors, database internals, function names, or test harness details.
+- Requirement quality includes atomicity, clarity, testability, feasibility, traceability, source, and owner.
+- Requirement IDs, business rules, constraints, traceability, owner review, accepted gaps, and change impact are explicit when relevant.
 - Scenario status is explicit: completed workflow, partial methodology gate, pending template, or not applicable.
 - Safety boundaries cover sandbox, approvals, external systems, and data handling.
 - Architecture boundary, documentation impact, and test or eval path are explicit.

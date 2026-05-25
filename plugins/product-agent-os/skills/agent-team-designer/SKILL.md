@@ -87,6 +87,10 @@ agent_team_design_packet:
   next_lifecycle_state: "team_ready"
 ```
 
+## Requirements Domain Methodology
+
+Use Requirements & Domain evidence to assign ownership. `requirement-registry.md`, `stakeholder-owner-map.md`, `story-slice-map.md`, `requirements-traceability-matrix.md`, `business-rules.md`, `example-map.md`, `requirement-change-impact.md`, and `domain-review-record.md` identify owners, bounded contexts, business rules, domain expert review, accepted gaps, and handoff boundaries. Treat `requirements_traceability_present`, `requirement_quality_present`, `constraints_traceability_present`, `declarative_acceptance_scenarios_present`, `business_rules_present`, `domain_expert_review_present`, `requirement_change_impact_review_present`, `accepted_gap_recorded`, and `requirements_evidence_before_implementation` as ownership inputs before splitting work.
+
 ## Evidence Before Completion
 
 Evidence-before-completion (`evidence_before_completion`): do not make a ready claim, completed claim, fixed claim, works claim, or release claim without current command evidence, current eval evidence, current runtime evidence, owner evidence, or an explicit test gap. If only inspection happened, label the result `inspection-only` and list every unsupported completion claim. Treat completion claim without current evidence as blocked.

@@ -94,6 +94,25 @@ Generated at: {generated_at}
 - UI label:
 - Code module or owner:
 - Domain expert review:
+- Requirements scope (`requirements_scope_present`):
+- Requirements owner (`requirements_owner_present`):
+- Requirement quality (`requirement_quality_present`):
+- Requirement IDs (`requirement_ids_present`):
+- Requirement registry: `requirement-registry.md`
+- Stakeholder owner map: `stakeholder-owner-map.md`
+- Story slice map: `story-slice-map.md`
+- Requirements traceability (`requirements_traceability_present`): `requirements-traceability-matrix.md`
+- Business rules (`business_rules_present`): `business-rules.md`
+- Non-goals and constraints (`non_goals_constraints_present`):
+- Constraints traceability (`constraints_traceability_present`):
+- Open questions (`open_questions_recorded`):
+- Declarative acceptance scenarios (`declarative_acceptance_scenarios_present`):
+- Domain event contracts (`domain_event_contracts_present`):
+- API/UI/data traceability (`api_ui_data_traceability_present`):
+- Domain expert review (`domain_expert_review_present`): `domain-review-record.md`
+- Requirement change impact review (`requirement_change_impact_review_present`): `requirement-change-impact.md`
+- Accepted gap recorded (`accepted_gap_recorded`):
+- Requirements evidence before implementation (`requirements_evidence_before_implementation`):
 - Exact commands:
 - Expected outputs:
 - Evidence owner:
@@ -165,6 +184,11 @@ Generated at: {generated_at}
 - Domain model gate: `domain_model_when_complex_domain` is satisfied or explicitly not applicable for simple CRUD/MVP work.
 - Bounded context trace gate: `bounded_context_architecture_boundary_trace` maps every bounded context to an architecture boundary or accepted gap.
 - Ubiquitous language trace gate: `ubiquitous_language_traceability` maps every domain term through term-to-requirement evidence and at least one API/event/contract, UI label, code module or owner, or accepted gap with domain expert review.
+- Requirements & Domain gate: `requirements_scope_present`, `requirements_owner_present`, `requirement_quality_present`, `requirement_ids_present`, `requirements_traceability_present`, `business_rules_present`, `non_goals_constraints_present`, `constraints_traceability_present`, `open_questions_recorded`, `declarative_acceptance_scenarios_present`, `domain_event_contracts_present`, `api_ui_data_traceability_present`, `domain_expert_review_present`, `requirement_change_impact_review_present`, `accepted_gap_recorded`, and `requirements_evidence_before_implementation` are satisfied, explicitly not applicable, or accepted as gaps before implementation.
+- Requirements artifacts gate: `requirement-registry.md`, `stakeholder-owner-map.md`, `story-slice-map.md`, `requirements-traceability-matrix.md`, `business-rules.md`, `example-map.md`, `domain-review-record.md`, and `requirement-change-impact.md` are staged when their gates apply.
+- Declarative scenario gate: `declarative_acceptance_scenarios_present` rejects UI selectors, database internals, function names and test harness details in business-facing scenarios.
+- Accepted gap gate: `accepted_gap_recorded` requires owner, reason, scope, review date, downstream risk and follow-up condition.
+- Requirement change gate: `requirement_change_impact_review_present` reviews affected tests/evals, API, DB, UI, docs, rollout, rollback and approval boundary.
 - FSD structure gate: `fsd_structure` applies only to web UI/component architecture with FSD-like layer directories or explicit owner decision; backend, native, simple CRUD, and simple MVP work record not applicable or accepted gap.
 - Test gate: deterministic tests, contract checks, evals, or accepted gaps are named before implementation.
 - Documentation gate: required docs-as-code artifacts and source-of-truth updates are named.
