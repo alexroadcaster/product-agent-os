@@ -34,6 +34,7 @@ REQUIRED_PATHS = [
     DOCS / "product-agent-os" / "index.md",
     DOCS / "product-agent-os" / "technical.md",
     DOCS / "product-agent-os" / "development-standards.md",
+    DOCS / "product-agent-os" / "methodology-intelligence.md",
     DOCS / "product-agent-os" / "scenarios.md",
     DOCS / "product-agent-os" / "behavioral-evals.md",
     DOCS / "product-agent-os" / "codex-compatibility.md",

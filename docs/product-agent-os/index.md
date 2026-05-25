@@ -82,6 +82,7 @@ Plugin держит lifecycle последовательным. Он не дол
 - Docs tooling selector in `docs-tooling-decision.md`, `documentation-system.md`, generated `PLAN/TEST/EVALS/RUNLOG`, `project-readiness.json`, lifecycle skills, discovery and fixture eval: `docs_as_code_impact` can be `not_applicable`, `present_unverified`, `present_verified`, `proposal_staged`, `explicit_gap_accepted` or `approval_required`; docs-light/internal-only projects are not forced into heavy portals, and hosted docs or DB introspection require approval.
 - Conditional readiness gates in `project-readiness.json`, generated `AGENTS/PLAN/TEST/EVALS/RUNLOG`, lifecycle skills and fixture eval: `readiness_statuses` include `not_applicable`, `applicable_missing`, `present_unverified`, `present_verified`, `proposal_staged`, `explicit_gap_accepted` and `approval_required`; every gate names applicability, required evidence, owner and residual risk, and detection alone cannot claim readiness.
 - Transcript/session eval runner in `product_agent_os/transcript_evals.py`, `run_transcript_eval.py`, `product-agent-os-synthetic-sessions.json` and fixture eval: synthetic or redacted sessions replay against `behavioral-workflows.json`, check `expected_terms`, `forbidden_terms`, `missing_expected_terms`, `forbidden_terms_present` and `privacy_errors`, and avoid external systems.
+- Track 9 methodology intelligence foundation with read-only methodology catalog, workspace audit, `maturity_level`, `complexity_profile`, Delivery Map, prioritized recommendations, owner questions, `methodology-audit-report.md` and fixture eval coverage.
 - API migration artifact templates for migration plans and contract reviews with OpenAPI/AsyncAPI, consumers, generated clients, compatibility, deprecation, rollout, release impact and owner review gates.
 - AI eval artifact templates for baseline, no-secrets dataset policy, rubric, threshold, rerun command, latency, cost, grounding, failure examples and residual risk.
 - Native/mobile workflow coverage for platform assumptions, permissions, offline state, simulator/emulator, device, logs, screenshots, build command, runtime evidence, manual device gaps and approval boundaries.
@@ -103,6 +104,7 @@ Plugin держит lifecycle последовательным. Он не дол
 
 - [Технические особенности и установка](technical.md) - реальные файлы, команды, capabilities и install boundary.
 - [Engineering standards layer](development-standards.md) - как plugin внедряет DDD/FSD/TDD/ADD, docs-as-code и eval-driven quality без превращения их в dogma.
+- [Methodology intelligence](methodology-intelligence.md) - read-only audit, Delivery Map, recommendations, owner questions and staged artifact boundary for Track 9.
 - [Scenarios and usage modes](scenarios.md) - first response, minimum artifacts, approval boundary and verification gates for Track 8 scenarios.
 - [Behavioral evals](behavioral-evals.md) - expected behavior, forbidden behavior, fixture eval and transcript/session replay.
 - [Codex compatibility](codex-compatibility.md) - Codex App, CLI, IDE extension, `.codex-plugin`, skills, MCP and staged hooks support boundary.

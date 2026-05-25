@@ -2636,6 +2636,18 @@ trust_level: "medium"
 ## Community and experiment intake
 
 ```yaml
+title: "Product-Agent OS Track 9 methodology intelligence design and backlog"
+url: "docs/superpowers/specs/2026-05-25-track-9-methodology-intelligence-design.md; docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md; docs/sources/product-agent-os-track-9-backlog.md; docs/product-agent-os/methodology-intelligence.md; plugins/product-agent-os/scripts/product_agent_os/methodology_catalog.py; plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py; plugins/product-agent-os/scripts/run_methodology_audit.py"
+type: "internal documentation"
+status: "checked-in project source"
+checked_at: "2026-05-25"
+summary: "Internal Track 9 design, implementation plan, backlog, operator docs and local audit tooling for Product-Agent OS methodology intelligence, including read-only methodology catalog, workspace audit, Delivery Map, prioritized recommendations, owner questions and staged artifact boundary."
+relevance: "Track 9 foundation, methodology audit docs, fixture eval expectations, read-only first guidance and future domain integration queue."
+trust_level: "high"
+verification_status: "Backed by Track 9 focused unit tests, fixture eval integration, product docs contract tests, documentation structure checks and strict MkDocs build in the Track 9 foundation verification loop."
+```
+
+```yaml
 title: "Product-Agent OS Track 8 scenario, eval and transcript docs with discovery status"
 url: "docs/product-agent-os/scenarios.md; docs/product-agent-os/behavioral-evals.md; docs/product-agent-os/codex-compatibility.md; plugins/product-agent-os/scripts/product_agent_os/discovery.py; plugins/product-agent-os/scripts/run_transcript_eval.py; plugins/product-agent-os/scripts/run_fixture_eval.py"
 type: "internal documentation"

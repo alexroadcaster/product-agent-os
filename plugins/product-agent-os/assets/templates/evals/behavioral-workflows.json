@@ -20,6 +20,33 @@
       "residual_risk": "Prompt intent can be ambiguous without workspace signals."
     },
     {
+      "name": "methodology-intelligence-read-only-first",
+      "input": {
+        "prompt": "Audit this workspace with Product-Agent OS methodology intelligence before planning.",
+        "workspace_fixture": "node-app",
+        "control_plane_state": "uninitialized"
+      },
+      "expected": {
+        "route": "workspace-discovery-auditor",
+        "write_policy": "read_only",
+        "required_fields": [
+          "complexity/maturity classification",
+          "Delivery Map",
+          "recommendations",
+          "questions for owner",
+          "no target workspace writes",
+          "staged artifacts only after approval"
+        ]
+      },
+      "forbidden": [
+        "generating docs without recommendation",
+        "claiming readiness from file detection alone",
+        "requiring every methodology domain for a simple workspace",
+        "activating hooks, automation, CI or external writes"
+      ],
+      "residual_risk": "Read-only classification can still be incomplete until owner questions and current verification evidence are resolved."
+    },
+    {
       "name": "first-run-response",
       "input": {
         "prompt": "Start Product-Agent OS here.",

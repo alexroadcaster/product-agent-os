@@ -14,6 +14,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from product_agent_os.discovery import analyze_workspace  # noqa: E402
 from product_agent_os.automation_policy import validate_automation_candidate  # noqa: E402
 from product_agent_os.infrastructure import InfrastructureError, render_infrastructure_plan, stage_infrastructure  # noqa: E402
+from product_agent_os.methodology_audit import build_methodology_audit  # noqa: E402
+from product_agent_os.methodology_catalog import load_methodology_catalog, validate_methodology_catalog  # noqa: E402
 from product_agent_os.merge_infrastructure import (  # noqa: E402
     ROLLBACK_MANIFEST_NAME,
     MergeInfrastructureError,
@@ -293,6 +295,7 @@ def _failed_result(fixture: str, reason: str) -> dict[str, Any]:
         "failure_log_regression_status": "",
         "codex_runtime_runner_status": "",
         "codex_runtime_runner_checks": {},
+        "methodology_domains": [],
         "renderer_file_count": 0,
         "renderer_actions": {},
         "expected_checks": {},
@@ -303,6 +306,7 @@ def _failed_result(fixture: str, reason: str) -> dict[str, Any]:
 def evaluate_fixture(path: Path) -> dict[str, Any]:
     try:
         audit = analyze_workspace(path)
+        methodology_audit = build_methodology_audit(path)
     except (FileNotFoundError, NotADirectoryError, OSError) as exc:
         return _failed_result(path.name, str(exc))
     except Exception as exc:
@@ -337,6 +341,7 @@ def evaluate_fixture(path: Path) -> dict[str, Any]:
             )
         )
         expected_checks.update(behavior["expected_checks"])
+        expected_checks.update(_methodology_expected_checks(methodology_audit))
         merge_status = behavior["merge_status"] or renderer_status
         evidence = _evidence(path, source_policy_status, automation_status, behavior)
         renderer_ok = (
@@ -353,6 +358,7 @@ def evaluate_fixture(path: Path) -> dict[str, Any]:
         failure_log_status = ""
         codex_runtime_runner_status = ""
         codex_runtime_runner_checks = {}
+        methodology_audit = {}
         renderer_files = []
         renderer_actions = {}
         expected_checks = {}
@@ -367,6 +373,7 @@ def evaluate_fixture(path: Path) -> dict[str, Any]:
         automation_status = ""
         rollback_status = ""
         failure_log_status = ""
+        methodology_audit = {}
         renderer_files = []
         renderer_actions = {}
         expected_checks = {}
@@ -389,11 +396,94 @@ def evaluate_fixture(path: Path) -> dict[str, Any]:
         "failure_log_regression_status": failure_log_status,
         "codex_runtime_runner_status": codex_runtime_runner_status,
         "codex_runtime_runner_checks": codex_runtime_runner_checks,
+        "methodology_domains": _applicable_methodology_domains(methodology_audit),
         "renderer_file_count": len(renderer_files),
         "renderer_actions": renderer_actions,
         "expected_checks": expected_checks,
         "evidence": evidence,
     }
+
+
+def _applicable_methodology_domains(methodology_audit: dict[str, Any]) -> list[str]:
+    domains = methodology_audit.get("methodology_domains", {}) if isinstance(methodology_audit, dict) else []
+    if not isinstance(domains, list):
+        return []
+    return [
+        str(domain["id"])
+        for domain in domains
+        if isinstance(domain, dict) and domain.get("id") and domain.get("status") != "not_applicable"
+    ]
+
+
+def _methodology_expected_checks(methodology_audit: dict[str, Any]) -> dict[str, bool]:
+    return {
+        "methodology_catalog_contract_present": _methodology_catalog_contract_present(),
+        "methodology_intelligence_contract_present": _methodology_intelligence_contract_present(methodology_audit),
+        "methodology_recommendations_prioritized": _methodology_recommendations_prioritized(methodology_audit),
+        "methodology_audit_read_only": methodology_audit.get("write_policy") == "read_only"
+        if isinstance(methodology_audit, dict)
+        else False,
+    }
+
+
+def _methodology_catalog_contract_present() -> bool:
+    try:
+        catalog = load_methodology_catalog()
+    except (OSError, ValueError, json.JSONDecodeError):
+        return False
+    return not validate_methodology_catalog(catalog) and len(catalog.get("domains", [])) == 12
+
+
+def _methodology_intelligence_contract_present(methodology_audit: dict[str, Any]) -> bool:
+    if not isinstance(methodology_audit, dict):
+        return False
+    required_keys = {
+        "status",
+        "write_policy",
+        "maturity_level",
+        "complexity_profile",
+        "observed_signals",
+        "intent_signals",
+        "unknowns",
+        "questions_for_owner",
+        "provisional_assumptions",
+        "delivery_map",
+        "methodology_domains",
+        "recommendations",
+        "safe_next_action",
+    }
+    if not required_keys.issubset(methodology_audit):
+        return False
+    if methodology_audit.get("write_policy") != "read_only":
+        return False
+    delivery_map = methodology_audit.get("delivery_map")
+    if not isinstance(delivery_map, dict):
+        return False
+    return all(
+        key in delivery_map
+        for key in ["surface_map", "system_map", "lifecycle_map", "methodology_map", "next_action_map"]
+    )
+
+
+def _methodology_recommendations_prioritized(methodology_audit: dict[str, Any]) -> bool:
+    if not isinstance(methodology_audit, dict):
+        return False
+    recommendations = methodology_audit.get("recommendations", [])
+    if not isinstance(recommendations, list):
+        return False
+    priority_order = {
+        "P0_blocker": 0,
+        "P1_high_risk": 1,
+        "P2_recommended": 2,
+        "P3_optional_maturity": 3,
+        "not_applicable": 4,
+    }
+    ranks = [
+        priority_order.get(str(recommendation.get("priority", "not_applicable")), 99)
+        for recommendation in recommendations
+        if isinstance(recommendation, dict)
+    ]
+    return ranks == sorted(ranks)
 
 
 def _renderer_actions(files: list[dict[str, Any]]) -> dict[str, str]:

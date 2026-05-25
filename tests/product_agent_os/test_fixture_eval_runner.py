@@ -48,6 +48,7 @@ class FixtureEvalRunnerTest(unittest.TestCase):
                         "failure_log_regression_status",
                         "codex_runtime_runner_status",
                         "codex_runtime_runner_checks",
+                        "methodology_domains",
                         "renderer_file_count",
                         "renderer_actions",
                         "expected_checks",
@@ -65,6 +66,7 @@ class FixtureEvalRunnerTest(unittest.TestCase):
                 self.assertIsInstance(item["failure_log_regression_status"], str)
                 self.assertIsInstance(item["codex_runtime_runner_status"], str)
                 self.assertIsInstance(item["codex_runtime_runner_checks"], dict)
+                self.assertIsInstance(item["methodology_domains"], list)
                 self.assertIsInstance(item["renderer_file_count"], int)
                 self.assertIsInstance(item["renderer_actions"], dict)
                 self.assertIsInstance(item["expected_checks"], dict)
@@ -99,6 +101,14 @@ class FixtureEvalRunnerTest(unittest.TestCase):
         self.assertTrue(results["python-app"]["expected_checks"]["transcript_session_eval_runner_contract_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["standards_trigger_contract_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["methodology_applicability_contract_present"])
+        for check_name in [
+            "methodology_catalog_contract_present",
+            "methodology_intelligence_contract_present",
+            "methodology_recommendations_prioritized",
+            "methodology_audit_read_only",
+        ]:
+            with self.subTest(check_name=check_name):
+                self.assertTrue(results["python-app"]["expected_checks"][check_name])
         expected_modes = {
             "legacy-undocumented-repo": "legacy_onboarding",
             "api-migration-repo": "api_migration",
@@ -114,6 +124,25 @@ class FixtureEvalRunnerTest(unittest.TestCase):
             with self.subTest(fixture=fixture):
                 self.assertIn(fixture, results)
                 self.assertTrue(results[fixture]["expected_checks"][f"usage_mode_{mode}"])
+
+    def test_fixture_eval_reports_applicable_methodology_domains_for_core_fixtures(self):
+        runner = load_runner()
+
+        results = {item["fixture"]: item for item in runner.evaluate_all()}
+
+        for fixture in [
+            "node-app",
+            "python-app",
+            "docs-repo",
+            "api-migration-repo",
+            "data-migration-pii",
+            "rag-quality-regression",
+            "security-auth-payment",
+            "package-release",
+        ]:
+            with self.subTest(fixture=fixture):
+                self.assertIn(fixture, results)
+                self.assertGreaterEqual(len(results[fixture]["methodology_domains"]), 1)
 
     def test_fixture_eval_checks_false_positive_scenario_gates(self):
         runner = load_runner()
@@ -229,6 +258,7 @@ class FixtureEvalRunnerTest(unittest.TestCase):
                     "failure_log_regression_status": "",
                     "codex_runtime_runner_status": "",
                     "codex_runtime_runner_checks": {},
+                    "methodology_domains": [],
                     "renderer_file_count": 0,
                     "renderer_actions": {},
                     "expected_checks": {},
@@ -265,6 +295,7 @@ class FixtureEvalRunnerTest(unittest.TestCase):
                 "failure_log_regression_status": "",
                 "codex_runtime_runner_status": "",
                 "codex_runtime_runner_checks": {},
+                "methodology_domains": [],
                 "renderer_file_count": 0,
                 "renderer_actions": {},
                 "expected_checks": {},
@@ -288,6 +319,7 @@ class FixtureEvalRunnerTest(unittest.TestCase):
                 "failure_log_regression_status": "not_applicable",
                 "codex_runtime_runner_status": "not_applicable",
                 "codex_runtime_runner_checks": {},
+                "methodology_domains": [],
                 "renderer_file_count": 34,
                 "renderer_actions": {},
                 "expected_checks": {},
@@ -306,6 +338,7 @@ class FixtureEvalRunnerTest(unittest.TestCase):
                 "failure_log_regression_status": "",
                 "codex_runtime_runner_status": "",
                 "codex_runtime_runner_checks": {},
+                "methodology_domains": [],
                 "renderer_file_count": 0,
                 "renderer_actions": {},
                 "expected_checks": {},

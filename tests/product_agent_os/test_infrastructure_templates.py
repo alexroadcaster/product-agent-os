@@ -797,6 +797,7 @@ class InfrastructureTemplateTest(unittest.TestCase):
             case_names,
             {
                 "route-selection",
+                "methodology-intelligence-read-only-first",
                 "first-run-response",
                 "first-run-empty-greenfield",
                 "first-run-broken-bug-rescue",
