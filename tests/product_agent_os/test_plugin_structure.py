@@ -50,6 +50,11 @@ class PluginStructureTest(unittest.TestCase):
 
         self.assertTrue(catalog.is_file())
 
+    def test_methodology_audit_report_template_is_packaged(self):
+        template = PLUGIN_ROOT / "assets" / "templates" / "reports" / "methodology-audit-report.md"
+
+        self.assertTrue(template.is_file())
+
     def test_main_spec_classifies_track_three_workflow_templates_explicitly(self):
         text = SPEC.read_text(encoding="utf-8")
 
