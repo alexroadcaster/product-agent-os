@@ -12,14 +12,17 @@ Generated at: 2026-05-24
 ## Current Slice
 
 - Last completed slice: `T8-D` detailed discovery model status depth.
-- Next slice: no queued implementation slice remains in the current Track 8 list.
+- Active planning artifact: `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`.
+- Next slice: Track 9 methodology intelligence implementation starts from the plan's repository hygiene and foundation tasks, then proceeds domain-by-domain.
 - Current route: long-running plugin/skill/docs/evals work.
-- Scenario status: dedicated scenario/eval/Codex compatibility docs, transcript/session eval runner, standards trigger hardening, false-positive fixture hardening and detailed discovery status packets are complete for the current Track 8 scope.
+- Scenario status: Track 8 scenario/eval/Codex compatibility docs, transcript/session eval runner, standards trigger hardening, false-positive fixture hardening and detailed discovery status packets are complete for the current Track 8 scope. Track 9 planning is now the active forward path.
 
 ## Scope
 
 - Product-Agent OS implementation package: `plugins/product-agent-os/`.
 - User-facing docs: `docs/product-agent-os/`, `docs/product-agent/`, `docs/sources/`.
+- Track 9 methodology sources: `docs/methodologies/`.
+- Track 9 plan: `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`.
 - Project control-plane files: `AGENTS.md`, `REQUIREMENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md`, `RUNLOG.md`.
 - Verification: unit tests, fixture eval, Codex compatibility, docs check, strict MkDocs build when docs/nav-sensitive changes are made.
 
@@ -44,6 +47,8 @@ Generated at: 2026-05-24
 - T8-B adds `standards_trigger_policy` for ADR/C4/arc42/OpenAPI/AsyncAPI/SemVer/Keep a Changelog/CODEOWNERS/GitHub Actions applicability, with `governance-proposal.md`, no forced external activation and approval-bound governance changes.
 - T8-GX adds fixture-level false-positive coverage for backend/native FSD routing, simple CRUD DDD routing, docs-light no-portal routing and hosted docs/DB introspection approval boundaries.
 - T8-D adds `methodology_applicability` discovery packets for architecture boundary, test/eval-first evidence, docs-as-code ownership, product measurement, complex-domain DDD, applicable FSD structure, docs tooling decision and standards trigger policy, each with status, applicability reason, evidence, required evidence, owner and residual risk.
+- Track 9 work must follow the section implementation protocol: read the relevant task block in `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`, deeply audit the matching `docs/methodologies/` source file, update the task list or backlog if the audit finds missing nuances, and only then implement the focused slice.
+- Track 9 domain slices must record methodology concepts, readiness gates, artifact templates, discovery signals, false-positive risks, lifecycle skill impacts, tests/evals and docs sync before being marked complete.
 
 ## Assumptions
 

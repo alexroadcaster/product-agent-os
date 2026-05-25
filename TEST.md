@@ -35,6 +35,29 @@ python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-a
 python plugins\product-agent-os\scripts\validate_codex_compatibility.py
 ```
 
+## Track 9 Section Verification Protocol
+
+Before implementing a Track 9 section:
+
+- Inspect the relevant task block in `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`.
+- Inspect the matching source file under `docs/methodologies/`.
+- If the deep audit changes scope, update the plan or Track 9 backlog first and run `python tools\check_docs.py`.
+
+For each Track 9 implementation section:
+
+- Add focused RED tests for new catalog, discovery, readiness gate, artifact template, lifecycle skill or eval behavior before implementation.
+- Add false-positive tests when a methodology can be over-applied.
+- Run focused tests for the touched section before the full suite.
+- Run full plugin verification after plugin scripts, templates, fixtures or tests change:
+
+```powershell
+python -m unittest discover -s tests -p "test_*.py" -v
+python plugins\product-agent-os\scripts\run_fixture_eval.py
+python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json
+python plugins\product-agent-os\scripts\validate_codex_compatibility.py
+python tools\check_docs.py
+```
+
 ## Completed Focused Checks For T8-C
 
 - Added RED then GREEN tests for `docs-tooling-decision.md` and `T8-A11` docs-as-code applicability statuses.

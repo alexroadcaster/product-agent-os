@@ -6,11 +6,17 @@ Generated at: 2026-05-24
 
 ## Current Lifecycle Marker
 
-`requirements_ready`
+`plan_ready`
 
 ## Latest Completed Slice
 
 `T8-D` detailed discovery model status depth.
+
+## Latest Planning Artifact
+
+- Track 9 design: `docs/superpowers/specs/2026-05-25-track-9-methodology-intelligence-design.md`.
+- Track 9 implementation plan: `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`.
+- Track 9 execution principle: read the relevant plan section, deeply audit the matching file under `docs/methodologies/`, update the plan or backlog if the audit finds missing nuance, then implement the focused section with tests/evals/docs sync.
 
 ### Changes
 
@@ -54,8 +60,8 @@ Generated at: 2026-05-24
 
 ## Next Action
 
-- No queued implementation slice remains in the current Track 8 list.
-- Recommended next step: schedule only regression-driven fixture/status refinements or start a new explicitly scoped track.
+- Start Track 9 from the implementation plan's repository hygiene and foundation tasks.
+- For every Track 9 section, follow the section implementation protocol before writing code or templates.
 
 ## Residual Risks
 

@@ -45,6 +45,10 @@ This repository is a Russian knowledge base for researching OpenAI Codex, advanc
 ## Product-Agent OS plugin rules
 
 - Treat `plugins/product-agent-os/` as the implementation package for the local Product-Agent OS plugin.
+- Treat `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md` as the active Track 9 implementation plan.
+- Track 9 methodology intelligence work is section-by-section. Before implementing any Track 9 section, read only that section's task block in the plan, then perform a deep audit of the matching source file under `docs/methodologies/`.
+- If the deep audit finds concepts, gates, artifacts, false-positive risks, tooling choices or conflicts that are not represented in the Track 9 plan, update the plan or Track 9 backlog before implementation. Do not implement from an outdated task list.
+- After the plan/backlog is current for that section, implement the focused slice with tests/evals/docs sync and record verification evidence.
 - Track 3 infrastructure generation is staged-first. The renderer may inspect a target workspace and write staged artifacts only to an explicit staging directory; it must not silently mutate the target project.
 - Use `python plugins\product-agent-os\scripts\render_infrastructure.py <workspace> --dry-run` before staging infrastructure for a project.
 - Use `--stage <output-dir>` only with an output directory outside the target workspace unless a later Track 4 merge workflow explicitly proves a safe approved write path.
@@ -105,7 +109,9 @@ This repository is a Russian knowledge base for researching OpenAI Codex, advanc
 - Track 8 T8-D detailed discovery model status depth is implemented with top-level `methodology_applicability` packets in discovery output, status transitions for methodology/tooling readiness, and fixture eval coverage for `methodology_applicability_contract_present`.
 - Track 8 T8-D baseline was refreshed on 2026-05-24: focused T8-D discovery/fixture tests ran 48 tests with `OK`, `python -m unittest discover -s tests -p "test_*.py" -v` ran 326 tests with `OK`, `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0` with 40 fixtures, 0 failures, renderer file count 75 and `methodology_applicability_contract_present: true`, transcript eval exited `0` with 4 sessions and 0 failures, `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible`, `python tools\check_docs.py` passed, and strict MkDocs exited `0` with `NO_MKDOCS_2_WARNING=1`.
 - Root project control-plane files were updated on 2026-05-24: `REQUIREMENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md`, and `RUNLOG.md` now track the active Product-Agent OS Track 8 implementation state after `T8-D`.
-- Next Track 8 implementation queue after T8-D: no queued implementation slice remains in the current Track 8 list; future work should be regression-driven or explicitly scoped as a new track.
+- Track 9 methodology intelligence design is captured in `docs/superpowers/specs/2026-05-25-track-9-methodology-intelligence-design.md`.
+- Track 9 implementation plan is captured in `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`.
+- Next Product-Agent OS implementation work should follow Track 9 plan order. For every Track 9 domain section, first read the relevant plan task, then deeply audit the matching file in `docs/methodologies/`, update the plan/backlog if gaps are found, and only then implement.
 
 ## Source and insight policy
 

@@ -8,11 +8,14 @@ Generated at: 2026-05-24
 
 - `T8-D` detailed discovery model status depth is complete.
 - Verification baseline after `T8-D`: focused T8-D discovery/fixture tests ran 48 tests with `OK`; full unittest ran 326 tests with `OK`; fixture eval exited `0` with 40 fixtures, 0 failures, renderer file count 75 and `methodology_applicability_contract_present: true`; transcript eval exited `0` with 4 sessions and 0 failures; Codex compatibility returned `status: compatible`; docs check passed; strict MkDocs exited `0`.
-- Next implementation slice: no queued implementation slice remains in the current Track 8 list.
+- Track 9 design is recorded in `docs/superpowers/specs/2026-05-25-track-9-methodology-intelligence-design.md`.
+- Track 9 implementation plan is recorded in `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`.
+- Next implementation slice: start Track 9 from the plan's repository hygiene and foundation tasks, then continue domain-by-domain.
 
 ## Architecture Boundary
 
 - Primary implementation boundary: `plugins/product-agent-os/`.
+- Track 9 methodology source boundary: `docs/methodologies/`.
 - Documentation boundary: `docs/product-agent-os/`, `docs/product-agent/`, `docs/sources/`, root control-plane files.
 - Tests boundary: `tests/product_agent_os/`.
 - Out of scope unless explicitly requested: separate `product-agent-os/` packaged copy or release artifact, external automation activation, marketplace publishing, live target-workspace writes.
@@ -21,9 +24,33 @@ Generated at: 2026-05-24
 
 | Order | Task | Status | Expected artifact |
 | --- | --- | --- | --- |
-| 1 | `T8-B` standards trigger hardening | `done` | ADR/C4/OpenAPI/SemVer/governance trigger rules |
-| 2 | `T8-GX` fixture coverage hardening | `done` | False-positive and approval-bound scenario fixtures |
-| 3 | `T8-D` detailed discovery model status depth | `done` | `methodology_applicability` discovery status packets |
+| 0 | Repository hygiene before Track 9 | `planned` | Clean intentional base before Track 9 implementation |
+| 1 | `T9-F0` methodology intelligence foundation | `planned` | Catalog, audit model, report/JSON output, discovery integration |
+| 2 | `T9-D1` Business & Product | `planned` | Product hypothesis, metrics, experiment and measurement gates |
+| 3 | `T9-D2` Requirements & Domain | `planned` | Requirements traceability, business rules, domain model and language gates |
+| 4 | `T9-D3` Solution Architecture | `planned` | Architecture boundary, C4/arc42/ADR and quality attribute gates |
+| 5 | `T9-D4` Quality, Testing & Evals | `planned` | Risk-based test/eval strategy and current evidence gates |
+| 6 | `T9-D5` Codex / Agentic Workflow | `planned` | Control-plane, skills, subagents, handoff, MCP and automation gates |
+| 7 | `T9-D6` Frontend | `planned` | UI behavior, component state, FSD, Storybook, a11y and visual evidence gates |
+| 8 | `T9-D7` Backend | `planned` | Service boundary, runtime, observability, SLO and rollback gates |
+| 9 | `T9-D8` API & Integrations | `planned` | OpenAPI/AsyncAPI/GraphQL/gRPC contract and compatibility gates |
+| 10 | `T9-D9` Database & Data | `planned` | Schema, migration, data quality, lineage, privacy and production access gates |
+| 11 | `T9-D10` LLM / AI / RAG | `planned` | AI behavior, prompt/model/tool/RAG eval and safety gates |
+| 12 | `T9-D11` Security, Privacy & Compliance | `planned` | Threat, privacy, ASVS/SSDF, secrets, supply-chain and compliance gates |
+| 13 | `T9-D12` Delivery, Release & Operations | `planned` | Release readiness, artifact manifest, rollout, rollback and operations gates |
+| 14 | `T9-S` cross-domain synthesis | `planned` | Deduplicated gates, merged artifacts, conflict rules and final baseline |
+
+## Track 9 Section Implementation Protocol
+
+For each Track 9 section:
+
+1. Read the relevant task block in `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`.
+2. Run a deep audit of the matching source file under `docs/methodologies/`.
+3. Compare the plan task with the source file's methodology concepts, gates, artifacts, tooling candidates, false-positive risks, unsupported claims and open questions.
+4. If the plan misses nuances, update the plan or Track 9 backlog before writing implementation code or templates.
+5. Implement only the focused section slice after the plan/backlog is current.
+6. Add or update tests/evals/docs for that section.
+7. Record verification evidence and residual risk in `RUNLOG.md`.
 
 ## Methodology Gates
 

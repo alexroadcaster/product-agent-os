@@ -34,6 +34,16 @@ Generated at: 2026-05-24
 - Standards trigger policy: implemented in `T8-B`.
 - False-positive scenario fixture coverage: implemented in `T8-GX`.
 - Detailed discovery status depth: implemented in `T8-D`.
+- Track 9 methodology intelligence plan: authored in `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`.
+
+## Track 9 Methodology Intelligence Evals
+
+- Section protocol: every Track 9 section must start by reading its plan task and deeply auditing the matching `docs/methodologies/` source file.
+- Plan freshness: if the source-file audit finds missing gates, artifacts, tooling candidates, false-positive risks, unsupported claims or open questions, the plan or Track 9 backlog must be updated before implementation.
+- Domain coverage: every domain section must map source methodology concepts to catalog entries, discovery signals, readiness gates, artifact templates, lifecycle skill guidance, tests/evals and docs sync.
+- Proportionality: DDD, FSD, docs portals, security/compliance, AI/RAG evals, database production gates and release governance must be conditional, with `not_applicable` or accepted gaps allowed when justified.
+- Evidence: section completion requires focused tests/evals plus full verification proportional to touched files.
+- Residual risk: semantic methodology quality still requires owner/domain/security/product review and cannot be proven by template presence alone.
 
 ## Completion Evidence Evals
 
