@@ -122,6 +122,16 @@ Generated at: {generated_at}
 - Security and rollback evidence:
 - Unsupported backend claims rejected: package docs do not prove backend runtime safety, logs-only observability, health-endpoint-only readiness, retries prove reliability, microservices by default.
 - Backend accepted gap or `approval_required` status:
+- API & Integrations methodology (`api_integrations`):
+- API artifacts: `api-inventory.md`, `api-contract-review.md`, `api-consumer-map.md`, `api-compatibility-record.md`, `api-contract-test-matrix.md`, `api-error-catalog.md`, `api-auth-authorization-matrix.md`, `generated-sdk-manifest.md`, `webhook-event-contract.md`, `external-integration-approval.md`, `api-style-guide.md`
+- API gates: `api_contract_source_present`, `api_consumer_map_present`, `api_breaking_change_reviewed`, `api_security_reviewed`, `api_error_contract_present`, `api_contract_test_matrix_present`, `event_delivery_contract_present`, `generated_client_manifest_present`, `external_write_approval_present`, `api_observability_contract_present`, `api_style_choice_recorded`, `api_unsupported_claims_rejected`
+- Contract source and consumer map:
+- Compatibility and breaking-change review:
+- Security schemes, scopes, token claims, object-level authorization and rate limits:
+- Error model with Problem Details or explicit compatibility gap:
+- Contract test matrix, event delivery, generated SDK manifest and observability evidence:
+- Unsupported API claims rejected: Swagger UI is not source of truth, schema validation alone is not contract testing, OAuth alone is not complete security evidence, GraphQL/gRPC/events are not universal defaults.
+- External writes are `approval_required`:
 - Domain model applicability (`domain_model_when_complex_domain`):
 - Bounded context -> architecture boundary trace (`bounded_context_architecture_boundary_trace`):
 - Ubiquitous language traceability (`ubiquitous_language_traceability`):

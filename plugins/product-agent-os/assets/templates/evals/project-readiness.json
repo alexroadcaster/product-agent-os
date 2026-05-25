@@ -23,6 +23,7 @@
           "test_eval_first_evidence",
           "quality_testing_evals",
           "codex_agentic_workflow",
+          "api_integrations",
           "docs_as_code_impact",
           "docs_tooling_selector",
           "standards_trigger_policy",
@@ -41,6 +42,11 @@
           "completion_evidence",
           "quality_testing_evals",
           "codex_agentic_workflow",
+          "api_contract_source",
+          "api_consumer_map",
+          "api_generated_client",
+          "api_webhook_event",
+          "api_external_provider",
           "docs_tooling_decision",
           "governance_proposal",
           "metrics_when_product_behavior_changes"
@@ -197,6 +203,14 @@
             "required_evidence": ["api-contract-review.md", "OpenAPI or AsyncAPI source", "contract test or consumer review"],
             "owner": "implementation-planner",
             "residual_risk": "Consumers can break without a visible contract change record."
+          },
+          "api_contract_readiness_when_api_or_integration_changes": {
+            "applies_when": "API & Integrations methodology (`api_integrations`), OpenAPI, AsyncAPI, GraphQL, gRPC/protobuf, JSON Schema, Pact, webhook/event, generated SDK, external provider, consumer, compatibility, auth/error contract, or external write change.",
+            "pass_condition": "Set present_verified only when api_contract_source_present, api_consumer_map_present, api_breaking_change_reviewed, api_security_reviewed, api_error_contract_present, api_contract_test_matrix_present, event_delivery_contract_present, generated_client_manifest_present, external_write_approval_present, api_observability_contract_present, api_style_choice_recorded, and api_unsupported_claims_rejected are verified or explicitly gapped. Swagger UI is not source of truth, schema validation alone is not contract testing, OAuth alone is not complete security evidence, and GraphQL/gRPC/events are not universal defaults.",
+            "accepted_gap": "Use explicit_gap_accepted only with owner, reason, review date, downstream consumer risk and follow-up condition. Use approval_required before external writes, generated client publication, provider mutation, production credentials, webhook registration, release publishing or other irreversible external action.",
+            "required_evidence": ["api-inventory.md", "api-contract-review.md", "api-consumer-map.md", "api-compatibility-record.md", "api-contract-test-matrix.md", "api-error-catalog.md", "api-auth-authorization-matrix.md", "generated-sdk-manifest.md", "webhook-event-contract.md", "external-integration-approval.md", "api-style-guide.md", "integration-catalog.md", "migration-plan.md", "contract source", "consumer map", "compatibility review", "security schemes", "Problem Details or explicit error-model gap", "request ID and correlation ID", "approval_required for external writes"],
+            "owner": "implementation-planner",
+            "residual_risk": "Rendered docs, generated clients, schema validation or prose-only security notes can look complete while consumers, compatibility, authz, error semantics, events, SDK releases or external writes remain unsafe."
           },
           "db_docs_when_schema_changes": {
             "applies_when": "Schema, migration, backfill, retention, persistent data model, PII, or critical query changes.",

@@ -1,0 +1,7 @@
+type Query {
+  syntheticOrder(id: ID!): SyntheticOrder
+}
+
+type SyntheticOrder {
+  id: ID!
+}

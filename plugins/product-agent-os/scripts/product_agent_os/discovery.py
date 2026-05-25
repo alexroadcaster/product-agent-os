@@ -397,6 +397,9 @@ def _detect_methodology_signals(files: set[str], profile: dict[str, Any]) -> dic
         ),
         "openapi": any(
             path.startswith("openapi/")
+            or path.endswith("swagger.yaml")
+            or path.endswith("swagger.yml")
+            or path.endswith("swagger.json")
             or path.endswith("openapi.yaml")
             or path.endswith("openapi.yml")
             or path.endswith("openapi.json")
@@ -409,6 +412,13 @@ def _detect_methodology_signals(files: set[str], profile: dict[str, Any]) -> dic
             or path.endswith("asyncapi.json")
             for path in lowered
         ),
+        "graphql_schema": any(path.endswith((".graphql", ".graphqls")) for path in lowered),
+        "protobuf_schema": any(path.endswith(".proto") for path in lowered),
+        "json_schema": any(_is_json_schema_source(path) for path in lowered),
+        "pact_contract": any(_is_pact_source(path) for path in lowered),
+        "api_external_provider": any(_is_external_provider_source(path) for path in lowered),
+        "api_generated_client": any(_is_generated_client_source(path) for path in lowered),
+        "api_webhook_event": any(_is_webhook_event_source(path) for path in lowered),
         "storybook": any(
             path.startswith(".storybook/")
             or ".stories." in path
@@ -918,9 +928,37 @@ def _has_integration_surface(lowered_files: set[str]) -> bool:
 
 
 def _has_api_contract_surface(lowered_files: set[str], signals: dict[str, bool]) -> bool:
-    if not (signals["openapi"] or signals["asyncapi"]):
+    api_signal_names = (
+        "openapi",
+        "asyncapi",
+        "graphql_schema",
+        "protobuf_schema",
+        "json_schema",
+        "pact_contract",
+        "api_generated_client",
+        "api_webhook_event",
+        "api_external_provider",
+    )
+    if not any(signals.get(name) for name in api_signal_names):
         return False
-    migration_terms = ["migration", "breaking", "deprecation", "version", "v2", "consumer", "contract"]
+    migration_terms = [
+        "migration",
+        "breaking",
+        "deprecation",
+        "version",
+        "v2",
+        "consumer",
+        "contract",
+        "openapi",
+        "asyncapi",
+        "graphql",
+        "proto",
+        "schema",
+        "pact",
+        "webhook",
+        "integration",
+        "sdk",
+    ]
     return any(any(term in path for term in migration_terms) for path in lowered_files)
 
 
@@ -1106,6 +1144,47 @@ def _api_migration_signals(files: set[str], signals: dict[str, bool]) -> dict[st
         "compatibility_status": "present_unverified" if compatibility_sources else "applicable_missing",
         "verification_status": "applicable_missing",
         "note": "present_unverified until contract lint, generated client checks, or owner evidence confirms compatibility",
+    }
+
+
+def _api_integration_signals(files: set[str]) -> dict[str, Any]:
+    normalized = {path.replace("\\", "/") for path in files}
+
+    def packet(sources: list[str]) -> dict[str, Any]:
+        return {
+            "sources": sources[:20],
+            "status": "present_unverified" if sources else "applicable_missing",
+        }
+
+    contract_sources = sorted(path for path in normalized if _is_http_contract_source(path))
+    event_contract_sources = sorted(path for path in normalized if _is_asyncapi_contract_source(path))
+    graphql_sources = sorted(path for path in normalized if path.lower().endswith((".graphql", ".graphqls")))
+    protobuf_sources = sorted(path for path in normalized if path.lower().endswith(".proto"))
+    json_schema_sources = sorted(path for path in normalized if _is_json_schema_source(path))
+    pact_sources = sorted(path for path in normalized if _is_pact_source(path))
+    generated_client_sources = sorted(path for path in normalized if _is_generated_client_source(path))
+    webhook_event_sources = sorted(path for path in normalized if _is_webhook_event_source(path))
+    external_provider_sources = sorted(path for path in normalized if _is_external_provider_source(path))
+    security_auth_sources = sorted(path for path in normalized if _is_api_security_auth_source(path))
+    compatibility_sources = sorted(path for path in normalized if _is_compatibility_source(path))
+
+    return {
+        "contract_sources": packet(contract_sources),
+        "event_contract_sources": packet(event_contract_sources),
+        "graphql_sources": packet(graphql_sources),
+        "protobuf_sources": packet(protobuf_sources),
+        "json_schema_sources": packet(json_schema_sources),
+        "pact_sources": packet(pact_sources),
+        "generated_client_sources": packet(generated_client_sources),
+        "webhook_event_sources": packet(webhook_event_sources),
+        "external_provider_sources": packet(external_provider_sources),
+        "security_auth_sources": packet(security_auth_sources),
+        "compatibility_sources": packet(compatibility_sources),
+        "note": (
+            "API discovery records contracts, consumers, generated clients, webhooks, providers, auth "
+            "and compatibility signals as present_unverified without executing API tools, publishing SDKs "
+            "or performing external writes; approval_required applies before side effects."
+        ),
     }
 
 
@@ -2107,9 +2186,45 @@ def _is_ai_failure_example_source(relative: str) -> bool:
 def _is_contract_source(relative: str) -> bool:
     lowered = relative.lower()
     return (
-        lowered.startswith(("openapi/", "asyncapi/"))
+        _is_http_contract_source(lowered)
+        or _is_asyncapi_contract_source(lowered)
+        or lowered.endswith((".graphql", ".graphqls", ".proto"))
+        or _is_json_schema_source(lowered)
+        or _is_pact_source(lowered)
+    )
+
+
+def _is_http_contract_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return (
+        lowered.startswith("openapi/")
         or lowered.endswith(("openapi.yaml", "openapi.yml", "openapi.json"))
+        or lowered.endswith(("swagger.yaml", "swagger.yml", "swagger.json"))
+    )
+
+
+def _is_asyncapi_contract_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return (
+        lowered.startswith("asyncapi/")
         or lowered.endswith(("asyncapi.yaml", "asyncapi.yml", "asyncapi.json"))
+    )
+
+
+def _is_json_schema_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return (
+        lowered.endswith(".schema.json")
+        or lowered.startswith(("schemas/", "schema/")) and lowered.endswith(".json")
+        or "json-schema" in lowered
+    )
+
+
+def _is_pact_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return (
+        lowered.startswith(("pact/", "pacts/", "contract-tests/", "consumer-contracts/"))
+        or "pact" in lowered and lowered.endswith(".json")
     )
 
 
@@ -2131,6 +2246,25 @@ def _is_consumer_source(relative: str) -> bool:
 def _is_generated_client_source(relative: str) -> bool:
     lowered = relative.lower()
     return any(term in lowered for term in ("generated", "clients/", "sdk/"))
+
+
+def _is_webhook_event_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return lowered.startswith(("webhooks/", "events/")) or any(
+        term in lowered for term in ("webhook", "event-contract", "cloudevents")
+    )
+
+
+def _is_external_provider_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return lowered.startswith(("integrations/", "providers/")) or any(
+        term in lowered for term in ("external-provider", "provider-client", "payment-provider")
+    )
+
+
+def _is_api_security_auth_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return any(term in lowered for term in ("auth", "oauth", "scope", "token", "rate-limit", "rate_limit", "security"))
 
 
 def _is_deprecation_source(relative: str) -> bool:
@@ -2666,6 +2800,7 @@ def _behavioral_route_inputs(
             "docs_tooling_decision": _docs_tooling_decision(files, stack, profile, signals),
             "legacy_onboarding_signals": _legacy_onboarding_signals(files, signals, existing_control_plane),
             "api_migration_signals": _api_migration_signals(files, signals),
+            "api_integration_signals": _api_integration_signals(files),
             "ai_eval_signals": _ai_eval_signals(files),
             "native_mobile_signals": _native_mobile_signals(files),
             "desktop_local_signals": _desktop_local_signals(files),

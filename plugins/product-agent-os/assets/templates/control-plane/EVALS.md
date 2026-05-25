@@ -127,6 +127,12 @@ Generated at: {generated_at}
 - Explicit accepted gap:
 - Approval required:
 - Forbidden shortcuts: package docs do not prove backend runtime safety, logs-only observability, health-endpoint-only readiness, retries prove reliability, microservices by default.
+- API & Integrations methodology (`api_integrations`):
+- API artifacts: `api-inventory.md`, `api-contract-review.md`, `api-consumer-map.md`, `api-compatibility-record.md`, `api-contract-test-matrix.md`, `api-error-catalog.md`, `api-auth-authorization-matrix.md`, `generated-sdk-manifest.md`, `webhook-event-contract.md`, `external-integration-approval.md`, `api-style-guide.md`
+- API eval fields: `api_integrations_contract_present`, `api_contract_source_present`, `api_consumer_map_present`, `api_breaking_change_reviewed`, `api_security_reviewed`, `api_error_contract_present`, `api_contract_test_matrix_present`, `event_delivery_contract_present`, `generated_client_manifest_present`, `external_write_approval_present`, `api_observability_contract_present`, `api_style_choice_recorded`, `api_unsupported_claims_rejected`
+- Contract source, consumer, compatibility, security, error, event, SDK and external-write evidence:
+- Forbidden shortcuts: Swagger UI is not source of truth, schema validation alone is not contract testing, OAuth alone is not complete security evidence, GraphQL/gRPC/events are not universal defaults.
+- External writes are `approval_required`; generated client publication, provider mutation and webhook registration need approval before external action.
 - Codex agentic workflow:
 - `codex_agentic_workflow`:
 - Runtime routes: Codex App, CLI, IDE extension, `codex exec`, GitHub Action, MCP, Agents SDK, automation

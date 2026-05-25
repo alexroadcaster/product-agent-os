@@ -1202,6 +1202,243 @@ class MethodologyAuditContractTest(unittest.TestCase):
             with self.subTest(expected=expected):
                 self.assertIn(expected, evidence)
 
+    def test_api_integrations_recommends_contract_consumer_security_event_sdk_and_approval_gates(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "openapi").mkdir()
+            (root / "openapi" / "public.yaml").write_text(
+                "openapi: 3.2.0\ninfo:\n  title: Public API\n  version: 2.0.0\npaths: {}\n",
+                encoding="utf-8",
+            )
+            (root / "asyncapi").mkdir()
+            (root / "asyncapi" / "events.yaml").write_text(
+                "asyncapi: 3.1.0\ninfo:\n  title: Events\n  version: 2.0.0\nchannels: {}\n",
+                encoding="utf-8",
+            )
+            (root / "graphql").mkdir()
+            (root / "graphql" / "schema.graphql").write_text("type Query { order(id: ID!): Order }\n", encoding="utf-8")
+            (root / "proto").mkdir()
+            (root / "proto" / "orders.proto").write_text("syntax = 'proto3';\n", encoding="utf-8")
+            (root / "schemas").mkdir()
+            (root / "schemas" / "order.schema.json").write_text(
+                '{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object"}\n',
+                encoding="utf-8",
+            )
+            (root / "pacts").mkdir()
+            (root / "pacts" / "consumer-provider.json").write_text("{}\n", encoding="utf-8")
+            (root / "clients" / "generated").mkdir(parents=True)
+            (root / "clients" / "generated" / "orders-sdk.md").write_text("# generated SDK\n", encoding="utf-8")
+
+            result = build_methodology_audit(
+                root,
+                intent_hint=(
+                    "public partner mobile API migration breaking change with consumers generated SDK "
+                    "GraphQL gRPC protobuf JSON Schema Pact webhook event external provider external write "
+                    "auth scopes token claims object-level authorization rate limits sensitive fields "
+                    "RFC 9457 problem details validation failure auth failure domain failure request id "
+                    "correlation id latency metrics integration failure alert deprecation rollback"
+                ),
+            )
+
+        self.assertNotEqual(self._domain_status(result, "api_integrations"), "not_applicable")
+        expected = {
+            "api_contract_source_present": ("P1_high_risk", "api-contract-review.md"),
+            "api_consumer_map_present": ("P1_high_risk", "api-consumer-map.md"),
+            "api_breaking_change_reviewed": ("P1_high_risk", "api-compatibility-record.md"),
+            "api_security_reviewed": ("P1_high_risk", "api-auth-authorization-matrix.md"),
+            "api_error_contract_present": ("P1_high_risk", "api-error-catalog.md"),
+            "api_contract_test_matrix_present": ("P1_high_risk", "api-contract-test-matrix.md"),
+            "event_delivery_contract_present": ("P1_high_risk", "webhook-event-contract.md"),
+            "generated_client_manifest_present": ("P1_high_risk", "generated-sdk-manifest.md"),
+            "external_write_approval_present": ("P0_blocker", "external-integration-approval.md"),
+            "api_observability_contract_present": ("P1_high_risk", "integration-catalog.md"),
+        }
+        for gate, (priority, artifact) in expected.items():
+            with self.subTest(gate=gate):
+                recommendation = self._recommendation_by_gate(result, gate)
+                self.assertEqual(recommendation["priority"], priority)
+                self.assertEqual(recommendation["artifact"], artifact)
+
+        contract = self._recommendation_by_gate(result, "api_contract_source_present")
+        contract_evidence = " ".join(contract["evidence_required"]).lower()
+        for expected_term in [
+            "openapi",
+            "asyncapi",
+            "graphql schema",
+            ".proto",
+            "json schema dialect",
+            "pact",
+            "source of truth",
+        ]:
+            with self.subTest(contract_evidence=expected_term):
+                self.assertIn(expected_term, contract_evidence)
+
+    def test_api_integrations_severity_false_positives_and_unsupported_claims(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        with tempfile.TemporaryDirectory() as tmp:
+            swagger_root = Path(tmp) / "swagger_only"
+            swagger_root.mkdir()
+            (swagger_root / "docs").mkdir()
+            (swagger_root / "docs" / "swagger-ui.html").write_text("<html>Swagger UI</html>\n", encoding="utf-8")
+            swagger_result = build_methodology_audit(swagger_root, intent_hint="rendered swagger ui docs cleanup")
+
+            openapi_root = Path(tmp) / "openapi_only"
+            openapi_root.mkdir()
+            (openapi_root / "openapi.yaml").write_text(
+                "openapi: 3.2.0\ninfo:\n  title: API\n  version: 1.0.0\npaths: {}\n",
+                encoding="utf-8",
+            )
+            openapi_result = build_methodology_audit(openapi_root, intent_hint="public API contract review")
+
+            unsupported_root = Path(tmp) / "unsupported"
+            unsupported_root.mkdir()
+            (unsupported_root / "openapi.yaml").write_text(
+                "openapi: 3.2.0\ninfo:\n  title: API\n  version: 1.0.0\npaths: {}\n",
+                encoding="utf-8",
+            )
+            unsupported_result = build_methodology_audit(
+                unsupported_root,
+                intent_hint=(
+                    "rendered API docs are enough; schema validation is the same as contract testing; "
+                    "GraphQL is always more modern; OAuth exists, so API security is handled"
+                ),
+            )
+
+            accepted_gap_root = Path(tmp) / "accepted_gap"
+            accepted_gap_root.mkdir()
+            (accepted_gap_root / "openapi.yaml").write_text(
+                "openapi: 3.2.0\ninfo:\n  title: internal API\n  version: 1.0.0\npaths: {}\n",
+                encoding="utf-8",
+            )
+            accepted_gap_result = build_methodology_audit(
+                accepted_gap_root,
+                intent_hint=(
+                    "simple internal prototype API explicit_gap_accepted owner reason review date "
+                    "downstream risk follow-up condition"
+                ),
+            )
+
+        self.assertEqual(self._domain_status(swagger_result, "api_integrations"), "not_applicable")
+        self.assertNotEqual(self._domain_status(openapi_result, "api_integrations"), "not_applicable")
+        self.assertEqual(self._domain_status(openapi_result, "backend"), "not_applicable")
+
+        unsupported = self._recommendation_by_gate(unsupported_result, "api_unsupported_claims_rejected")
+        self.assertEqual(unsupported["priority"], "P1_high_risk")
+        self.assertEqual(unsupported["artifact"], "api-contract-review.md")
+
+        for gate in [
+            "api_consumer_map_present",
+            "api_breaking_change_reviewed",
+            "api_security_reviewed",
+            "api_error_contract_present",
+            "api_observability_contract_present",
+        ]:
+            with self.subTest(accepted_gap=gate):
+                recommendation = self._recommendation_by_gate(accepted_gap_result, gate)
+                self.assertIn(recommendation["priority"], {"P2_recommended", "P3_optional_maturity"})
+                self.assertIn("accepted gap", recommendation["reason"].lower())
+
+    def test_api_integrations_contract_drift_security_examples_and_style_choice_depth(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "openapi.yaml").write_text(
+                "openapi: 3.2.0\ninfo:\n  title: API\n  version: 1.0.0\npaths: {}\n",
+                encoding="utf-8",
+            )
+            result = build_methodology_audit(
+                root,
+                intent_hint=(
+                    "API contract drift between source code and generated docs lifecycle stable deprecated removed "
+                    "success example validation failure auth failure domain failure RFC 9457 problem details "
+                    "OpenAPI security schemes GraphQL auth scopes token claims object-level authorization "
+                    "rate limits abuse cases sensitive fields prose-only security notes request id correlation id "
+                    "error counters latency rate-limit metrics integration failure alerts "
+                    "generated SDK generator version config target languages regeneration command reviewable diff "
+                    "SemVer impact release process multi-repo generated clients webhook signature verification replay "
+                    "dead-letter CloudEvents GraphQL gRPC event-driven universal default Spectral Redocly"
+                ),
+            )
+
+        expected_by_gate = {
+            "api_contract_source_present": [
+                "contract drift",
+                "source, code and generated docs",
+                "lifecycle state",
+                "draft",
+                "experimental",
+                "stable",
+                "deprecated",
+                "removed",
+            ],
+            "api_error_contract_present": [
+                "success example",
+                "validation failure",
+                "auth failure",
+                "domain failure",
+                "rfc 9457",
+                "problem details",
+            ],
+            "api_security_reviewed": [
+                "security schemes",
+                "graphql auth",
+                "scopes",
+                "token claims",
+                "object-level authorization",
+                "rate limits",
+                "abuse cases",
+                "prose-only security notes are unsupported",
+            ],
+            "api_observability_contract_present": [
+                "request ids",
+                "correlation ids",
+                "error counters",
+                "latency",
+                "rate-limit metrics",
+                "integration failure alerts",
+            ],
+            "generated_client_manifest_present": [
+                "generator",
+                "version",
+                "config",
+                "target languages",
+                "regeneration command",
+                "reviewable diff",
+                "semver impact",
+                "multi-repository generated clients deferred",
+            ],
+            "event_delivery_contract_present": [
+                "signature verification",
+                "correlation id",
+                "idempotency key",
+                "retry policy",
+                "ordering guarantee",
+                "replay",
+                "dead-letter",
+                "cloudevents applicability",
+            ],
+            "api_style_choice_recorded": [
+                "no universal default",
+                "graphql",
+                "grpc",
+                "event-driven",
+                "spectral",
+                "redocly",
+                "framework-native",
+                "deferred with owner/reason",
+            ],
+        }
+        for gate, expected_terms in expected_by_gate.items():
+            recommendation = self._recommendation_by_gate(result, gate)
+            evidence = " ".join(recommendation["evidence_required"]).lower()
+            for expected in expected_terms:
+                with self.subTest(gate=gate, expected=expected):
+                    self.assertIn(expected, evidence)
+
 
 if __name__ == "__main__":
     unittest.main()

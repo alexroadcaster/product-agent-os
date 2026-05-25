@@ -648,6 +648,95 @@ BACKEND_TERMS = (
     "approval_required",
     "no secrets",
 )
+API_INTEGRATIONS_GATES = (
+    "api_contract_source_present",
+    "api_consumer_map_present",
+    "api_breaking_change_reviewed",
+    "api_security_reviewed",
+    "api_error_contract_present",
+    "api_contract_test_matrix_present",
+    "event_delivery_contract_present",
+    "generated_client_manifest_present",
+    "external_write_approval_present",
+    "api_observability_contract_present",
+    "api_style_choice_recorded",
+    "api_unsupported_claims_rejected",
+)
+API_INTEGRATIONS_ARTIFACTS = (
+    "api-inventory.md",
+    "api-contract-review.md",
+    "api-error-catalog.md",
+    "api-auth-authorization-matrix.md",
+    "api-consumer-map.md",
+    "api-compatibility-record.md",
+    "api-contract-test-matrix.md",
+    "generated-sdk-manifest.md",
+    "webhook-event-contract.md",
+    "external-integration-approval.md",
+    "api-style-guide.md",
+    "migration-plan.md",
+    "integration-catalog.md",
+    "security-risk-review.md",
+    "release-packet.md",
+)
+API_INTEGRATIONS_EVAL_FIELDS = (
+    "api_integrations_contract_present",
+    "api_contract_source_contract_present",
+    "api_consumer_map_contract_present",
+    "api_breaking_change_review_contract_present",
+    "api_security_review_contract_present",
+    "api_error_contract_present",
+    "api_contract_test_matrix_contract_present",
+    "event_delivery_contract_present",
+    "generated_client_manifest_contract_present",
+    "external_write_approval_contract_present",
+    "api_observability_contract_present",
+    "unsupported_api_claims_rejected_contract_present",
+)
+API_INTEGRATIONS_TERMS = (
+    "openapi",
+    "asyncapi",
+    "graphql schema",
+    "grpc/protobuf",
+    "json schema dialect",
+    "pact",
+    "source of truth",
+    "swagger ui is not source of truth",
+    "consumer map",
+    "generated clients",
+    "breaking/non-breaking classification",
+    "contract drift",
+    "rfc 9457 problem details",
+    "success example",
+    "validation failure",
+    "auth failure",
+    "domain failure",
+    "security schemes",
+    "scopes",
+    "token claims",
+    "object-level authorization",
+    "rate limits",
+    "abuse cases",
+    "request ids",
+    "correlation ids",
+    "error counters",
+    "latency",
+    "integration failure alerts",
+    "provider verification",
+    "consumer-driven tests",
+    "schema validation is not contract testing",
+    "generator config",
+    "reviewable diff",
+    "multi-repository generated clients deferred",
+    "signature verification",
+    "idempotency key",
+    "dead-letter",
+    "cloudevents",
+    "external writes are approval_required",
+    "no universal graphql/grpc/event default",
+    "spectral/redocly/framework-native deferred",
+    "api-only contract fixtures do not force backend blockers",
+)
 CODEX_AGENTIC_WORKFLOW_GATES = (
     "agentic_scope_classified",
     "control_plane_present",
@@ -840,6 +929,7 @@ CONDITIONAL_READINESS_GATE_IDS = (
     "ai_eval_spec_when_ai_behavior_changes",
     "docs_tooling_decision",
     "contract_docs_when_api_or_event_changes",
+    "api_contract_readiness_when_api_or_integration_changes",
     "db_docs_when_schema_changes",
     "release_version_impact_when_public_contract_changes",
     "reproduction_evidence_when_bug_rescue",
@@ -933,7 +1023,7 @@ def evaluate_fixture(path: Path) -> dict[str, Any]:
         renderer_files = rendered["rendered_artifacts"]["files"]
         renderer_validation = rendered["rendered_artifacts"]["validation"]
         renderer_actions = _renderer_actions(renderer_files)
-        expected_checks = _expected_checks(path.name, audit, rendered, renderer_actions)
+        expected_checks = _expected_checks(path.name, audit, methodology_audit, rendered, renderer_actions)
         source_policy_status = _source_policy_status(path)
         automation_status = _automation_status(path)
         behavior = _track_four_behavior(path)
@@ -1108,6 +1198,7 @@ def _renderer_actions(files: list[dict[str, Any]]) -> dict[str, str]:
 def _expected_checks(
     fixture: str,
     audit: dict[str, Any],
+    methodology_audit: dict[str, Any],
     rendered: dict[str, Any],
     actions: dict[str, str],
 ) -> dict[str, bool]:
@@ -1144,6 +1235,9 @@ def _expected_checks(
         checks["codex_agentic_workflow_contract_present"] = _codex_agentic_workflow_contract_present()
         checks["frontend_contract_present"] = _frontend_contract_present()
         checks["backend_contract_present"] = _backend_contract_present()
+        checks["api_integrations_contract_present"] = _api_integrations_contract_present()
+        checks["api_contract_source_present"] = _api_integrations_contract_present()
+        checks["external_write_approval_present"] = _api_integrations_contract_present()
         checks["methodology_applicability_contract_present"] = (
             _methodology_applicability_contract_present(audit)
         )
@@ -1237,6 +1331,31 @@ def _expected_checks(
             and "backend" in route_methodology_signals
             and isinstance(backend_packet, dict)
             and backend_packet.get("status") == "present_unverified"
+        )
+    if fixture == "api-migration-repo":
+        checks["api_integrations_detected"] = (
+            "api_integrations" in _applicable_methodology_domains(methodology_audit)
+            and primary_mode == "api_migration"
+        )
+        checks["api_contract_source_present"] = _api_integrations_contract_present()
+    if fixture == "api-external-write-approval":
+        recommendations = methodology_audit.get("recommendations", [])
+        checks["external_write_approval_required"] = any(
+            isinstance(item, dict)
+            and item.get("gate") == "external_write_approval_present"
+            and item.get("priority") == "P0_blocker"
+            for item in recommendations
+        )
+    if fixture == "swagger-ui-only-api-docs":
+        checks["swagger_ui_only_not_api_contract"] = (
+            "api_contract_surface" not in audit.get("route_inputs", {}).get("workspace_signals", {}).get("active_surfaces", [])
+        )
+    if fixture == "graphql-grpc-style-choice":
+        recommendations = methodology_audit.get("recommendations", [])
+        checks["api_style_choice_not_universal_default"] = any(
+            isinstance(item, dict)
+            and item.get("gate") == "api_style_choice_recorded"
+            for item in recommendations
         )
     return checks
 
@@ -1737,6 +1856,66 @@ def _backend_contract_present() -> bool:
         f"{path.name}\n{path.read_text(encoding='utf-8')}" for path in paths
     ).lower()
     return all(term in payload for term in BACKEND_TERMS)
+
+
+def _api_integrations_contract_present() -> bool:
+    try:
+        catalog = load_methodology_catalog()
+    except (OSError, ValueError, json.JSONDecodeError):
+        return False
+    if validate_methodology_catalog(catalog):
+        return False
+    domains = {
+        str(domain.get("id")): domain
+        for domain in catalog.get("domains", [])
+        if isinstance(domain, dict) and domain.get("id")
+    }
+    api = domains.get("api_integrations")
+    if not isinstance(api, dict):
+        return False
+    if not set(API_INTEGRATIONS_GATES).issubset(set(api.get("gates", []))):
+        return False
+    if not set(API_INTEGRATIONS_ARTIFACTS).issubset(set(api.get("artifacts", []))):
+        return False
+    if not set(API_INTEGRATIONS_EVAL_FIELDS).issubset(set(api.get("eval_fields", []))):
+        return False
+
+    paths = [
+        PLUGIN_ROOT / "assets" / "methodology" / "methodology-catalog.json",
+        TEMPLATE_ROOT / "artifact-templates" / "api-inventory.md",
+        TEMPLATE_ROOT / "artifact-templates" / "api-contract-review.md",
+        TEMPLATE_ROOT / "artifact-templates" / "api-error-catalog.md",
+        TEMPLATE_ROOT / "artifact-templates" / "api-auth-authorization-matrix.md",
+        TEMPLATE_ROOT / "artifact-templates" / "api-consumer-map.md",
+        TEMPLATE_ROOT / "artifact-templates" / "api-compatibility-record.md",
+        TEMPLATE_ROOT / "artifact-templates" / "api-contract-test-matrix.md",
+        TEMPLATE_ROOT / "artifact-templates" / "generated-sdk-manifest.md",
+        TEMPLATE_ROOT / "artifact-templates" / "webhook-event-contract.md",
+        TEMPLATE_ROOT / "artifact-templates" / "external-integration-approval.md",
+        TEMPLATE_ROOT / "artifact-templates" / "api-style-guide.md",
+        TEMPLATE_ROOT / "artifact-templates" / "integration-catalog.md",
+        TEMPLATE_ROOT / "artifact-templates" / "migration-plan.md",
+        TEMPLATE_ROOT / "artifact-templates" / "security-risk-review.md",
+        TEMPLATE_ROOT / "workflows" / "release-packet.md",
+        TEMPLATE_ROOT / "control-plane" / "PLAN.md",
+        TEMPLATE_ROOT / "control-plane" / "TEST.md",
+        TEMPLATE_ROOT / "control-plane" / "EVALS.md",
+        TEMPLATE_ROOT / "control-plane" / "RUNLOG.md",
+        TEMPLATE_ROOT / "evals" / "project-readiness.json",
+        TEMPLATE_ROOT / "evals" / "behavioral-workflows.json",
+        PLUGIN_ROOT / "skills" / "workspace-discovery-auditor" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "implementation-planner" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "test-eval-designer" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "risk-reviewer" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "docs-maintainer" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "pr-release-operator" / "SKILL.md",
+        PLUGIN_ROOT / "scripts" / "product_agent_os" / "discovery.py",
+        PLUGIN_ROOT / "scripts" / "product_agent_os" / "methodology_audit.py",
+    ]
+    payload = "\n".join(
+        f"{path.name}\n{path.read_text(encoding='utf-8')}" for path in paths
+    ).lower()
+    return all(term in payload for term in API_INTEGRATIONS_TERMS)
 
 
 def _codex_agentic_workflow_contract_present() -> bool:

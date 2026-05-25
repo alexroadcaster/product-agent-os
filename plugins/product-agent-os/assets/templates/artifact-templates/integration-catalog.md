@@ -31,6 +31,12 @@
 ## Operations
 
 - Observability:
+- Request ID:
+- Correlation ID:
+- Error counters:
+- Latency:
+- Rate-limit metrics:
+- Integration failure alerts:
 - Logs:
 - Metrics:
 - Alerts:

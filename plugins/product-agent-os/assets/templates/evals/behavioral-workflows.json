@@ -1011,6 +1011,52 @@
       "residual_risk": "Backend completion claims need current runtime/failure, dependency, observability, security and rollback evidence or an owner-accepted gap."
     },
     {
+      "name": "api-integrations-evidence-before-completion",
+      "input": {
+        "prompt": "Ship this API integration as complete from Swagger UI, OAuth notes and schema validation.",
+        "workspace_fixture": "api-migration-repo",
+        "control_plane_state": "quality_gate"
+      },
+      "expected": {
+        "route": "API & Integrations methodology (`api_integrations`)",
+        "minimum_artifacts": [
+          "api-inventory.md",
+          "api-contract-review.md",
+          "api-consumer-map.md",
+          "api-compatibility-record.md",
+          "api-contract-test-matrix.md",
+          "api-error-catalog.md",
+          "api-auth-authorization-matrix.md",
+          "generated-sdk-manifest.md",
+          "webhook-event-contract.md",
+          "external-integration-approval.md"
+        ],
+        "required_fields": [
+          "api_contract_source_present",
+          "api_consumer_map_present",
+          "api_breaking_change_reviewed",
+          "api_security_reviewed",
+          "api_error_contract_present",
+          "api_contract_test_matrix_present",
+          "event_delivery_contract_present",
+          "generated_client_manifest_present",
+          "external_write_approval_present",
+          "api_observability_contract_present",
+          "api_style_choice_recorded",
+          "api_unsupported_claims_rejected",
+          "external writes are approval_required"
+        ]
+      },
+      "forbidden": [
+        "Swagger UI is not source of truth",
+        "schema validation alone is not contract testing",
+        "OAuth alone is not complete security evidence",
+        "GraphQL/gRPC/events are not universal defaults",
+        "external write without approval"
+      ],
+      "residual_risk": "API completion claims need contract source, consumers, compatibility, security, error, event, SDK and external-write evidence or an owner-accepted gap."
+    },
+    {
       "name": "finish-options",
       "input": {
         "prompt": "Prepare this verified work for release.",

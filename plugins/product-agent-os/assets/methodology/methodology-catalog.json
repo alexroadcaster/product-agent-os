@@ -775,16 +775,98 @@
       "title": "API & Integrations",
       "source_file": "docs/methodologies/api-integrations.md",
       "purpose": "OpenAPI/AsyncAPI/GraphQL/gRPC contracts, consumers, compatibility, errors, generated clients and external writes.",
-      "applies_when": [],
-      "not_applicable_when": [],
-      "maturity_impact": [],
-      "complexity_impact": [],
-      "track8_scenarios": [],
-      "decision_horizons": [],
-      "artifacts": [],
-      "gates": [],
-      "eval_fields": [],
-      "overlaps": []
+      "applies_when": [
+        "public, partner, mobile or multi-team API",
+        "OpenAPI, AsyncAPI, GraphQL, gRPC, JSON Schema, Pact or webhook contract",
+        "generated SDK or client",
+        "external provider or external write",
+        "auth, scopes, token claims, rate limits or sensitive fields"
+      ],
+      "not_applicable_when": [
+        "swagger ui or rendered API docs without machine-readable contract",
+        "GraphQL, gRPC or event-driven style mentioned as a universal default",
+        "schema validation claim without consumer/provider contract evidence",
+        "OAuth-only claim without authorization matrix",
+        "typo-only docs edit"
+      ],
+      "maturity_impact": [
+        "team",
+        "production",
+        "regulated"
+      ],
+      "complexity_impact": [
+        "standard",
+        "complex",
+        "high_risk"
+      ],
+      "track8_scenarios": [
+        "api_migration",
+        "complex_system_acceleration",
+        "security_sensitive_change",
+        "release_packaging",
+        "frontend UI/API alignment"
+      ],
+      "decision_horizons": [
+        "discovery",
+        "MVP",
+        "beta",
+        "production",
+        "scale"
+      ],
+      "artifacts": [
+        "api-inventory.md",
+        "api-contract-review.md",
+        "api-error-catalog.md",
+        "api-auth-authorization-matrix.md",
+        "api-consumer-map.md",
+        "api-compatibility-record.md",
+        "api-contract-test-matrix.md",
+        "generated-sdk-manifest.md",
+        "webhook-event-contract.md",
+        "external-integration-approval.md",
+        "api-style-guide.md",
+        "migration-plan.md",
+        "integration-catalog.md",
+        "security-risk-review.md",
+        "release-packet.md"
+      ],
+      "gates": [
+        "api_contract_source_present",
+        "api_consumer_map_present",
+        "api_breaking_change_reviewed",
+        "api_security_reviewed",
+        "api_error_contract_present",
+        "api_contract_test_matrix_present",
+        "event_delivery_contract_present",
+        "generated_client_manifest_present",
+        "external_write_approval_present",
+        "api_observability_contract_present",
+        "api_style_choice_recorded",
+        "api_unsupported_claims_rejected"
+      ],
+      "eval_fields": [
+        "api_integrations_contract_present",
+        "api_contract_source_contract_present",
+        "api_consumer_map_contract_present",
+        "api_breaking_change_review_contract_present",
+        "api_security_review_contract_present",
+        "api_error_contract_present",
+        "api_contract_test_matrix_contract_present",
+        "event_delivery_contract_present",
+        "generated_client_manifest_contract_present",
+        "external_write_approval_contract_present",
+        "api_observability_contract_present",
+        "unsupported_api_claims_rejected_contract_present"
+      ],
+      "overlaps": [
+        "quality contract checks",
+        "backend service boundaries without API-only false positives",
+        "security and privacy authorization review",
+        "delivery release and deprecation impact",
+        "database data contracts",
+        "frontend API alignment",
+        "solution architecture public contracts"
+      ]
     },
     {
       "id": "database_data",

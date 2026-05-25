@@ -14,10 +14,10 @@ Generated at: 2026-05-25
 - Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
 - Docs check: `python tools\check_docs.py` passed.
 - Diff hygiene: `git diff --check` exited `0`.
-- T9-D7 batch status: rows `T9-D7-M0..M45` are implemented.
-- Latest focused T9-D7 checks: backend/domain template/audit/discovery/lifecycle/docs/fixture suite ran 232 tests with `OK`.
-- Latest fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0` with 42 fixtures, 0 failures, renderer file count 118 and `backend_contract_present: true`.
-- Latest full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 414 tests with `OK`.
+- T9-D8 status: API & Integrations methodology integration is implemented.
+- Latest focused T9-D8 checks: API catalog/audit/discovery/template/lifecycle/docs/fixture suite ran 242 tests with `OK`.
+- Latest fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0` with 45 fixtures, 0 failures, renderer file count 128 and `api_integrations_contract_present: true`.
+- Latest full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 424 tests with `OK`.
 - Latest transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 4 sessions and 0 failures.
 - Latest Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
 - Latest docs/diff hygiene: `python tools\check_docs.py` passed and `git diff --check` exited `0`.
@@ -194,6 +194,15 @@ python tools\check_docs.py
 - Confirmed risky production backend keeps service boundary/runtime blockers and high-risk security/rollback/observability/SLO/health gaps, while complete accepted-gap fields downgrade eligible high-risk recommendations and simple local/backend-light work stays warning-level.
 - Confirmed T9-D7 templates stay framework-agnostic and defer Node.js, Python, Java, .NET and Go snippets until stack-specific owner/examples/verification exist.
 - Confirmed generated `EVALS.md`, `RUNLOG.md` and audit recommendations route owner reviewed test/eval/runtime evidence sufficiency to T9-S/cross-domain semantic sufficiency backlog.
+
+## Completed Focused Checks For T9-D8
+
+- Added RED then GREEN tests for `api_integrations` catalog, audit, discovery, readiness/control-plane templates, lifecycle skills, docs/source sync, fixture eval coverage and false-positive fixtures.
+- Confirmed discovery exposes API contract source signals for OpenAPI, Swagger source files, AsyncAPI, GraphQL, protobuf, JSON Schema, Pact, webhooks/events, generated clients and external providers.
+- Confirmed Swagger UI/rendered docs are not treated as source of truth, schema validation alone is not contract testing, OAuth alone is not complete security evidence and GraphQL/gRPC/events are not universal defaults.
+- Confirmed API-only contract fixtures do not force Backend blockers, while external writes stay `approval_required`.
+- Confirmed staged artifacts cover API inventory, consumer map, compatibility, errors, auth/authorization, contract tests, generated SDKs, webhooks, external approvals and API style decisions.
+- Confirmed fixture eval exposes `api_integrations_contract_present` with 45 fixtures, 0 failures and renderer file count 128.
 
 ## Evidence Format
 

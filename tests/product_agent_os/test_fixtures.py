@@ -53,6 +53,9 @@ class FixtureCompletenessTest(unittest.TestCase):
             "hosted-docs-approval",
             "frontend-ui-app",
             "backend-service-app",
+            "api-external-write-approval",
+            "swagger-ui-only-api-docs",
+            "graphql-grpc-style-choice",
         ]:
             with self.subTest(name=name):
                 self.assertTrue((FIXTURES / name).is_dir())
@@ -164,6 +167,9 @@ class FixtureCompletenessTest(unittest.TestCase):
             "docs-light-no-portal",
             "hosted-docs-approval",
             "frontend-ui-app",
+            "api-external-write-approval",
+            "swagger-ui-only-api-docs",
+            "graphql-grpc-style-choice",
         ]:
             with self.subTest(name=name):
                 text = "\n".join(

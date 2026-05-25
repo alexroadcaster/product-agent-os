@@ -1,0 +1,8 @@
+{
+  "consumer": {
+    "name": "synthetic-order-client"
+  },
+  "provider": {
+    "name": "synthetic-order-api"
+  }
+}

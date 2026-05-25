@@ -932,6 +932,50 @@ class LifecycleSkillsTest(unittest.TestCase):
             with self.subTest(expected=expected):
                 self.assertIn(expected, discovery)
 
+    def test_lifecycle_skills_route_api_integrations_methodology(self):
+        shared_terms = [
+            "track 9 api & integrations methodology",
+            "api-integrations",
+            "api-inventory.md",
+            "api-contract-review.md",
+            "api-error-catalog.md",
+            "api-auth-authorization-matrix.md",
+            "api-consumer-map.md",
+            "api-compatibility-record.md",
+            "api-contract-test-matrix.md",
+            "generated-sdk-manifest.md",
+            "webhook-event-contract.md",
+            "external-integration-approval.md",
+            "api_contract_source_present",
+            "api_consumer_map_present",
+            "api_breaking_change_reviewed",
+            "api_security_reviewed",
+            "api_error_contract_present",
+            "api_contract_test_matrix_present",
+            "event_delivery_contract_present",
+            "generated_client_manifest_present",
+            "external_write_approval_present",
+            "swagger ui is not source of truth",
+            "contract drift blocks completion claims",
+            "external writes are approval_required",
+            "no universal graphql/grpc/event default",
+            "present_unverified",
+            "explicit_gap_accepted",
+        ]
+
+        for name in [
+            "workspace-discovery-auditor",
+            "implementation-planner",
+            "test-eval-designer",
+            "risk-reviewer",
+            "docs-maintainer",
+            "pr-release-operator",
+        ]:
+            text = self._skill_text(name).lower()
+            with self.subTest(name=name):
+                for expected in shared_terms:
+                    self.assertIn(expected, text)
+
     def test_risk_reviewer_generalizes_two_stage_review_for_risky_slices(self):
         risk_reviewer = self._skill_text("risk-reviewer").lower()
 

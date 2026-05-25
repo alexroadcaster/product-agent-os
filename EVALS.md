@@ -35,7 +35,7 @@ Generated at: 2026-05-25
 - False-positive scenario fixture coverage: implemented in `T8-GX`.
 - Detailed discovery status depth: implemented in `T8-D`.
 - Track 9 methodology intelligence plan: authored in `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`.
-- Track 9 foundation, `T9-D1` Business/Product, `T9-D2` Requirements/Domain, `T9-D3` Solution Architecture, `T9-D4` Quality/Testing/Evals, `T9-D5` Codex/Agentic Workflow, `T9-D6` Frontend and `T9-D7` Backend: implemented.
+- Track 9 foundation, `T9-D1` Business/Product, `T9-D2` Requirements/Domain, `T9-D3` Solution Architecture, `T9-D4` Quality/Testing/Evals, `T9-D5` Codex/Agentic Workflow, `T9-D6` Frontend, `T9-D7` Backend and `T9-D8` API & Integrations: implemented.
 
 ## Track 9 Methodology Intelligence Evals
 
@@ -110,6 +110,14 @@ Generated at: 2026-05-25
 - False-positive protection: frontend-only, docs-only, CLI-only, native-only, dependency metadata without backend runtime behavior and package-name-only service folders do not force Backend methodology.
 - Unsupported claims rejected: backend means only business logic files, microservices are the professional default, retries make systems reliable, health endpoint exists so readiness is solved, logs are observability and SLOs are only for large companies.
 - Residual risk: backend artifacts prove evidence shape and route/gate coverage, not that a human owner has judged runtime tests, SLOs, health checks, rollback plans, operational runbooks or provider contracts sufficient for a real production system.
+
+## API Integrations Evals
+
+- `api_integrations_contract_present`: implemented in `T9-D8`.
+- Required evidence: source-of-truth contract, consumer map, compatibility/breaking-change review, security schemes/scopes/token claims/object-level authorization/rate limits, error contract, contract-test matrix, event/webhook delivery contract, generated SDK manifest, external-write approval, request ID, correlation ID, API observability, style choice and unsupported API claim rejection.
+- False-positive protection: Swagger UI/rendered docs alone does not make an API contract source, API-only contract fixtures do not force Backend blockers, internal APIs can still have consumers, and GraphQL/gRPC/events are not universal defaults.
+- Unsupported claims rejected: Swagger UI is source of truth, schema validation is contract testing, OAuth proves API security, GraphQL/gRPC/events are mandatory defaults and internal APIs have no consumers.
+- Residual risk: API artifacts prove contract evidence shape and route/gate coverage, not that a human owner has judged every consumer, compatibility rule, authz rule, error semantic, event delivery policy, generated SDK release or external-write approval sufficient for a real production system.
 
 ## Completion Evidence Evals
 

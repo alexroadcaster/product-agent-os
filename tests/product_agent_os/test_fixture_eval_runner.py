@@ -108,7 +108,10 @@ class FixtureEvalRunnerTest(unittest.TestCase):
         self.assertTrue(results["python-app"]["expected_checks"]["codex_agentic_workflow_contract_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["frontend_contract_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["backend_contract_present"])
-        self.assertEqual(results["python-app"]["renderer_file_count"], 118)
+        self.assertTrue(results["python-app"]["expected_checks"]["api_integrations_contract_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["api_contract_source_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["external_write_approval_present"])
+        self.assertEqual(results["python-app"]["renderer_file_count"], 128)
         for check_name in [
             "methodology_catalog_contract_present",
             "methodology_intelligence_contract_present",
@@ -132,6 +135,11 @@ class FixtureEvalRunnerTest(unittest.TestCase):
             with self.subTest(fixture=fixture):
                 self.assertIn(fixture, results)
                 self.assertTrue(results[fixture]["expected_checks"][f"usage_mode_{mode}"])
+        self.assertTrue(results["api-migration-repo"]["expected_checks"]["api_integrations_detected"])
+        self.assertTrue(results["api-migration-repo"]["expected_checks"]["api_contract_source_present"])
+        self.assertTrue(results["api-external-write-approval"]["expected_checks"]["external_write_approval_required"])
+        self.assertTrue(results["swagger-ui-only-api-docs"]["expected_checks"]["swagger_ui_only_not_api_contract"])
+        self.assertTrue(results["graphql-grpc-style-choice"]["expected_checks"]["api_style_choice_not_universal_default"])
 
     def test_backend_contract_terms_include_resilience_ops_depth(self):
         runner = load_runner()
@@ -187,6 +195,56 @@ class FixtureEvalRunnerTest(unittest.TestCase):
         ]:
             with self.subTest(expected=expected):
                 self.assertIn(expected, runner.BACKEND_TERMS)
+
+    def test_api_integrations_contract_terms_include_contract_security_and_approval_depth(self):
+        runner = load_runner()
+
+        for expected in [
+            "openapi",
+            "asyncapi",
+            "graphql schema",
+            "grpc/protobuf",
+            "json schema dialect",
+            "pact",
+            "source of truth",
+            "swagger ui is not source of truth",
+            "consumer map",
+            "generated clients",
+            "breaking/non-breaking classification",
+            "contract drift",
+            "rfc 9457 problem details",
+            "success example",
+            "validation failure",
+            "auth failure",
+            "domain failure",
+            "security schemes",
+            "scopes",
+            "token claims",
+            "object-level authorization",
+            "rate limits",
+            "abuse cases",
+            "request ids",
+            "correlation ids",
+            "error counters",
+            "latency",
+            "integration failure alerts",
+            "provider verification",
+            "consumer-driven tests",
+            "schema validation is not contract testing",
+            "generator config",
+            "reviewable diff",
+            "multi-repository generated clients deferred",
+            "signature verification",
+            "idempotency key",
+            "dead-letter",
+            "cloudevents",
+            "external writes are approval_required",
+            "no universal graphql/grpc/event default",
+            "spectral/redocly/framework-native deferred",
+            "api-only contract fixtures do not force backend blockers",
+        ]:
+            with self.subTest(expected=expected):
+                self.assertIn(expected, runner.API_INTEGRATIONS_TERMS)
 
     def test_fixture_eval_reports_applicable_methodology_domains_for_core_fixtures(self):
         runner = load_runner()
