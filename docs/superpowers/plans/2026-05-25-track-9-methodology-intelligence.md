@@ -1919,7 +1919,7 @@ Repeat-review additions to preserve during implementation:
 | `T9-D3-M9` | Add fixture eval contract | `plugins/product-agent-os/scripts/run_fixture_eval.py`, `tests/product_agent_os/test_fixture_eval_runner.py` | `solution_architecture_contract_present` validates catalog gates, artifacts, eval fields, templates and lifecycle skill coverage. `python-app` expected checks include the new contract. | `python plugins\product-agent-os\scripts\run_fixture_eval.py` exits `0` after implementation. |
 | `T9-D3-M10` | Sync docs and control-plane evidence | `PLAN.md`, `TEST.md`, `EVALS.md`, `RUNLOG.md`, `docs/sources/product-agent-os-track-9-backlog.md`, `docs/product-agent-os/methodology-intelligence.md`, `docs/product-agent-os/behavioral-evals.md`, Product-Agent OS README/docs only when behavior is user-facing | Current state records `T9-D3` completion, RED/GREEN evidence, renderer file count delta, deferred candidate artifact rationale, residual risks and next action `T9-D4`. Source registry is updated only if new source-backed claims are added outside existing source entries. | Full verification commands below pass; `git diff --check` exits `0`. Run strict MkDocs only if navigation, Mermaid diagrams, Markdown extensions, MkDocs config or Product-Agent OS docs navigation changed. |
 
-- [ ] **Step 1: Add RED test for architecture gates**
+- [x] **Step 1: Add RED test for architecture gates**
 
 Assert `solution_architecture` gates include:
 
@@ -1974,7 +1974,7 @@ Assert `solution_architecture` eval fields include:
 ]
 ```
 
-- [ ] **Step 2: Run RED test**
+- [x] **Step 2: Run RED test**
 
 Run:
 
@@ -1984,7 +1984,7 @@ python -m unittest tests.product_agent_os.test_methodology_catalog -v
 
 Expected: fail on missing architecture gates.
 
-- [ ] **Step 3: Add architecture catalog data**
+- [x] **Step 3: Add architecture catalog data**
 
 Rules:
 
@@ -1993,7 +1993,7 @@ Rules:
 - high-impact decisions trigger ADR or architecture review;
 - diagram presence alone is `present_unverified`.
 
-- [ ] **Step 4: Add and register templates**
+- [x] **Step 4: Add and register templates**
 
 Create:
 
@@ -2004,7 +2004,7 @@ Create:
 
 Extend `architecture-overview.md` and `adr.md` with owner, boundary, quality attribute, verification and rollback fields.
 
-- [ ] **Step 5: Add audit recommendations**
+- [x] **Step 5: Add audit recommendations**
 
 Recommendations:
 
@@ -2033,11 +2033,11 @@ Recommendation artifacts:
 
 False-positive and accepted-gap coverage must keep C4 detail level, architecture-as-code, Well-Architected review and docs tooling conditional rather than universal requirements.
 
-- [ ] **Step 6: Update skills and evals**
+- [x] **Step 6: Update skills and evals**
 
 Update planner and risk reviewer to require architecture boundary, owner evidence, ADR trigger, render evidence, runtime/observability evidence and rollback evidence for high-impact slices. Add fixture eval check `solution_architecture_contract_present`.
 
-- [ ] **Step 7: Run verification and commit**
+- [x] **Step 7: Run verification and commit**
 
 Run:
 
