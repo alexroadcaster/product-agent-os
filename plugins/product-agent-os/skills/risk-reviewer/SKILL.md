@@ -32,6 +32,7 @@ Read shared references when needed: [Lifecycle states](../references/lifecycle-s
 - CI stabilization input when applicable: `ci-stabilization-report.md`, failing job, command, logs, environment, deterministic/flaky classification, failure evidence, isolation plan, local reproduction, rerun evidence, remote CI, GitHub Actions, approval, and residual risk.
 - Release packaging input when applicable: `release-readiness.md`, release scope, package metadata, version, SemVer impact, changelog, build evidence, test evidence, docs evidence, security notes, license notes, artifacts, package registry, publish approval, tag boundary, rollback, owner review, and residual risk.
 - Metric hardening input when product behavior changes: `metric-spec.md`, `metric_hardening_when_product_behavior_changes`, North Star or primary value metric, input metric, counter-metric, proxy metric risk, guardrail, qualitative review, privacy classification, retention period, data minimization, owner signoff, and post-release review evidence.
+- Business/Product methodology input when product, MVP, user value, analytics, release measurement, or workflow promotion claims are present: `product_hypothesis_present`, `value_proposition_evidence_present`, `analytics_tracking_plan_present`, `qualitative_feedback_loop_present`, `release_measurement_evidence_present`, `decision_horizon_present`, `outcome_metric_level_separated`, `metric_scope_classified`, `.codex/artifact-templates/tracking-plan.md`, accepted gap, owner, residual risk, and evidence status.
 - `requirements_packet` with scope, acceptance criteria, constraints, and source requirements.
 - `implementation_plan_packet` with slices, rollback notes, ownership, and verification gates.
 - Commands run, observed results, verification evidence, unsupported claims, and known test gaps.
@@ -51,15 +52,18 @@ Read shared references when needed: [Lifecycle states](../references/lifecycle-s
 10. For CI stabilization review, require `ci-stabilization-report.md` or an explicit gap and check failing job, command, logs, environment, deterministic/flaky classification, failure evidence, isolation plan, local reproduction, rerun evidence, remote CI, GitHub Actions, approval, and residual risk before readiness.
 11. For release packaging review, require `release-readiness.md` or an explicit gap and check release scope, package metadata, version, SemVer impact, changelog, build evidence, test evidence, docs evidence, security notes, license notes, artifacts, package registry, publish approval, tag boundary, rollback, owner review, and residual risk before readiness.
 12. For product behavior changes, review `metric_hardening_when_product_behavior_changes` before readiness: require `metric-spec.md`, North Star or primary value metric, input metric, counter-metric, proxy metric risk, guardrail, qualitative review, privacy classification, retention period, data minimization, owner signoff, and post-release review evidence. Do not claim success from a proxy metric without counter-metric, guardrail, qualitative review, and post-release review evidence.
-13. Review conditional readiness gates. Required `readiness_statuses` are `not_applicable`, `applicable_missing`, `present_unverified`, `present_verified`, `proposal_staged`, `explicit_gap_accepted`, and `approval_required`.
-14. Treat detection alone as `present_unverified`; block readiness when an applicable gate lacks required evidence, owner, applicability reason, or residual risk.
-15. Check architecture boundary drift, missing test-first or eval-first evidence, documentation source-of-truth gaps, and unmeasured product hypotheses.
-16. Check missing tests, weak evidence, unverifiable claims, stale source assumptions, missing checks, and commands listed without observed results.
-17. Check approval, sandbox, security, secrets, data handling, migration, dependency, destructive-command, external writes, PR creation, publish actions, release packaging, package registry, tagging, remote CI, GitHub Actions, and external-system risks.
-18. Assign verdict `blocked`, `changes_requested`, or `ready` based on evidence and remaining risk.
-19. Block a ready verdict with missing evidence. If either stage is missing or blocked, keep the overall verdict out of `ready`.
-20. Keep summary secondary to findings and do not rewrite artifacts directly.
-21. Return `review_ready` only when the verdict is `ready`; otherwise return the lifecycle state that needs follow-up.
+13. For Business/Product methodology, block readiness when `product_hypothesis_present`, `value_proposition_evidence_present`, `decision_horizon_present`, `outcome_metric_level_separated`, or `metric_scope_classified` are missing for product behavior changes without accepted gap evidence.
+14. For analytics, telemetry, usage data, or dashboard claims, review `analytics_tracking_plan_present` and `.codex/artifact-templates/tracking-plan.md`; require event taxonomy, property definitions, validation evidence, owner, and privacy classification before readiness.
+15. For product discovery and release claims, require `qualitative_feedback_loop_present` and `release_measurement_evidence_present` or explicit accepted gaps before readiness.
+16. Review conditional readiness gates. Required `readiness_statuses` are `not_applicable`, `applicable_missing`, `present_unverified`, `present_verified`, `proposal_staged`, `explicit_gap_accepted`, and `approval_required`.
+17. Treat detection alone as `present_unverified`; block readiness when an applicable gate lacks required evidence, owner, applicability reason, or residual risk.
+18. Check architecture boundary drift, missing test-first or eval-first evidence, documentation source-of-truth gaps, and unmeasured product hypotheses.
+19. Check missing tests, weak evidence, unverifiable claims, stale source assumptions, missing checks, and commands listed without observed results.
+20. Check approval, sandbox, security, secrets, data handling, migration, dependency, destructive-command, external writes, PR creation, publish actions, release packaging, package registry, tagging, remote CI, GitHub Actions, and external-system risks.
+21. Assign verdict `blocked`, `changes_requested`, or `ready` based on evidence and remaining risk.
+22. Block a ready verdict with missing evidence. If either stage is missing or blocked, keep the overall verdict out of `ready`.
+23. Keep summary secondary to findings and do not rewrite artifacts directly.
+24. Return `review_ready` only when the verdict is `ready`; otherwise return the lifecycle state that needs follow-up.
 
 ## Outputs
 
@@ -136,6 +140,19 @@ risk_review_packet:
     data_minimization: ""
     owner_signoff: ""
     post_release_review_evidence: ""
+  business_product_review:
+    gates:
+      - "product_hypothesis_present"
+      - "value_proposition_evidence_present"
+      - "analytics_tracking_plan_present"
+      - "qualitative_feedback_loop_present"
+      - "release_measurement_evidence_present"
+      - "decision_horizon_present"
+      - "outcome_metric_level_separated"
+      - "metric_scope_classified"
+    tracking_plan_artifact: ".codex/artifact-templates/tracking-plan.md"
+    accepted_gaps: []
+    blockers: []
   conditional_readiness_review:
     readiness_statuses: "not_applicable | applicable_missing | present_unverified | present_verified | proposal_staged | explicit_gap_accepted | approval_required"
     gates_reviewed: []
@@ -176,6 +193,7 @@ For generalized two-stage review, check that `stage 1: spec compliance` appears 
 For PR review, check that changed files, spec compliance verdict, quality/risk verdict, impact map, missing checks, reviewer questions, external writes, PR creation, publish actions, and release impact are explicit.
 For release packaging, check that `release-readiness.md`, SemVer impact, changelog, package registry, publish approval, tag boundary, rollback, and residual risk are explicit before readiness.
 For metric hardening, check that `metric_hardening_when_product_behavior_changes` has `metric-spec.md`, North Star or primary value metric, input metric, counter-metric, proxy metric risk, guardrail, qualitative review, privacy classification, retention period, data minimization, owner signoff, and post-release review evidence before readiness. Do not claim success from a proxy metric without counter-metric, guardrail, qualitative review, and post-release review evidence.
+For Business/Product methodology, check that `product_hypothesis_present`, `value_proposition_evidence_present`, `analytics_tracking_plan_present`, `qualitative_feedback_loop_present`, `release_measurement_evidence_present`, `decision_horizon_present`, `outcome_metric_level_separated`, and `metric_scope_classified` are present, explicitly not applicable, or accepted gaps with owner and residual risk. Check `.codex/artifact-templates/tracking-plan.md` when analytics, telemetry, usage data, or dashboard claims exist.
 For conditional readiness gates, check that every applicable gate names status, required evidence, owner, applicability reason, and residual risk before readiness.
 
 ## Failure Modes
@@ -188,6 +206,7 @@ For conditional readiness gates, check that every applicable gate names status, 
 - If requirements are absent, stop and route to `requirements-author`.
 - If verification evidence is absent, return `changes_requested` or `blocked` with missing evidence.
 - If product behavior changes lack metric hardening, return `blocked` with the missing metric-spec, counter-metric, qualitative review, privacy classification, retention period, data minimization, owner signoff, or post-release review evidence.
+- If product behavior changes lack Business/Product methodology evidence, return `blocked` with missing `product_hypothesis_present`, `value_proposition_evidence_present`, `decision_horizon_present`, `outcome_metric_level_separated`, `metric_scope_classified`, `analytics_tracking_plan_present`, `qualitative_feedback_loop_present`, `release_measurement_evidence_present`, or `.codex/artifact-templates/tracking-plan.md`.
 - If secrets, approval gaps, migration risk, or external-system risk is unresolved, return `blocked`.
 - If source claims lack authoritative support, record source risks and request verification.
 

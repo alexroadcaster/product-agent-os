@@ -29,6 +29,7 @@ Read shared references when needed: [Lifecycle states](../references/lifecycle-s
 - Explicit constraints, available commands, approval limits, and rollback expectations.
 - Complexity profile and lifecycle state from the orchestrator.
 - Acceptance scenario packet when behavior changes: `.codex/artifact-templates/acceptance-scenarios.md`, ATDD, BDD, `requirement -> scenario -> check -> evidence owner`, Given, When, Then, equivalent behavior format, business rule, edge case, non-goal, explicit gap, and evidence owner.
+- Business/Product methodology packet when product, MVP, user value, analytics, release measurement, or workflow promotion claims are present: `product_hypothesis_present`, `value_proposition_evidence_present`, `analytics_tracking_plan_present`, `qualitative_feedback_loop_present`, `release_measurement_evidence_present`, `decision_horizon_present`, `outcome_metric_level_separated`, `metric_scope_classified`, `.codex/artifact-templates/product-brief.md`, `.codex/artifact-templates/value-proposition.md`, `.codex/artifact-templates/opportunity-tree.md`, `.codex/artifact-templates/experiment-plan.md`, `.codex/artifact-templates/tracking-plan.md`, and accepted gap status.
 - Domain modeling input when `domain_model_when_complex_domain` applies: `.codex/artifact-templates/domain-modeling.md`, `.codex/artifact-templates/architecture-overview.md`, complex backend, workflow, enterprise, data-heavy, bounded context, ubiquitous language, invariant, accepted gap, `bounded_context_architecture_boundary_trace`, `context-to-boundary traceability`, `ubiquitous_language_traceability`, term-to-requirement, requirement or source, API/event/contract, UI label, code module or owner, domain expert review, and `missing domain model for complex domain`.
 - UI architecture input when `fsd_structure` applies: `.codex/artifact-templates/component-card.md`, Feature-Sliced Design, layer, slice, segment, public API, import rule, `not applicable` reason, accepted gap, backend, native, simple CRUD, simple MVP, and `missing fsd structure boundary`.
 
@@ -38,31 +39,34 @@ Read shared references when needed: [Lifecycle states](../references/lifecycle-s
 2. Route back to `requirements-author` if acceptance criteria, constraints, or open questions are incomplete.
 3. For behavior changes, stop before implementation unless `.codex/artifact-templates/acceptance-scenarios.md` or an explicit gap maps ATDD or BDD scenarios through `requirement -> scenario -> check -> evidence owner`.
 4. Accept Given, When, Then or an equivalent behavior format when it names business rule, edge case, non-goal, and evidence owner.
-5. Apply `domain_model_when_complex_domain` only when the slice is complex backend, workflow, enterprise, data-heavy, multi-service, or multi-context.
-6. When `domain_model_when_complex_domain` applies, require `.codex/artifact-templates/domain-modeling.md` or an accepted gap with bounded context, ubiquitous language, and invariant status before returning `plan_ready`.
-7. When a domain model is required, enforce `bounded_context_architecture_boundary_trace`: every bounded context maps to architecture boundary in `.codex/artifact-templates/architecture-overview.md`, or an accepted gap names the reason and evidence owner.
-8. If a bounded context has no architecture boundary mapping, stop before build with `missing bounded context architecture boundary trace`.
-9. When a domain model is required, enforce `ubiquitous_language_traceability`: every ubiquitous language term maps through term-to-requirement evidence, a requirement or source, and at least one API/event/contract, UI label, code module or owner.
-10. If a ubiquitous language term is untraceable, require an accepted gap names the reason and evidence owner plus domain expert review; otherwise stop before build with `missing ubiquitous language traceability`.
-11. Do not force DDD for simple CRUD or simple MVP work; record `not_applicable` or accepted gap instead of adding ceremony.
-12. If the workspace audit reports `missing domain model for complex domain`, stop before build and route to domain model planning or return a plan repair packet.
-13. Apply `fsd_structure` only for web UI/component architecture when the workspace audit detects Feature-Sliced Design directories or the owner explicitly chooses that boundary.
-14. When `fsd_structure` applies, require `.codex/artifact-templates/component-card.md` or an accepted gap with layer, slice, segment, public API, and import rule before returning `plan_ready`.
-15. If `fsd_structure` applies but layer, slice, segment, public API, or import rule is missing, stop before build with `missing fsd structure boundary`.
-16. Do not force FSD for backend, native, simple CRUD, or simple MVP work; record `not applicable` or accepted gap instead of adding UI architecture ceremony.
-17. For every relevant methodology/tooling gate, fill conditional readiness gates with `readiness_statuses`: `not_applicable`, `applicable_missing`, `present_unverified`, `present_verified`, `proposal_staged`, `explicit_gap_accepted`, and `approval_required`.
-18. Detection alone can only support `present_unverified`; return `plan_ready` only when applicable gates have required evidence, owner, applicability reason, and residual risk, or an explicit accepted gap.
-19. Decompose work into focused slices with clear acceptance criteria and verification per slice.
-20. For each slice, name the architecture boundary, test-first or eval-first path, documentation impact, acceptance scenarios, domain model applicability, context-to-boundary traceability, ubiquitous language traceability, FSD applicability, and post-release measurement note.
-21. Run the no-placeholder planning gate before returning `plan_ready`.
-22. For every non-trivial slice, fill the `plan_quality_check` fields from `.codex/artifact-templates/plan-quality-check.md`: exact files, owned files, forbidden files, exact commands, expected outputs, rollback, evidence owner, and placeholder scan.
-23. Treat vague validation, repeated-by-reference steps, command steps without expected outputs, undefined file names, and hidden "fill later" work as blocking gaps.
-24. Use `mechanical_change` only for small docs, formatting, or config edits whose reduced plan still names exact files, exact commands or explicit no-command gap, rollback, evidence owner, and the mechanical_change reason.
-25. If the no-placeholder gate fails, stop before build and return a plan repair packet instead of `plan_ready`.
-26. Identify dependencies, file or subsystem ownership, rollback notes, risks, and command evidence needed.
-27. Keep commands as proposed `commands_to_run` unless already run in the current session.
-28. Route to `agent-team-designer` if ownership overlaps, parallel work is needed, or handoff risk is high.
-29. Return `plan_ready` only when slices, verification gates, rollback notes, documentation impact, risks, conditional readiness gates, and `plan_quality_check` are staged.
+5. For product, MVP, value, analytics, release measurement, or workflow promotion claims, stop before build unless `product_hypothesis_present`, `value_proposition_evidence_present`, `decision_horizon_present`, `outcome_metric_level_separated`, and `metric_scope_classified` are present, explicitly not applicable, or accepted as gaps with owner and residual risk.
+6. For analytics, telemetry, usage data, or dashboard claims, require `analytics_tracking_plan_present` and `.codex/artifact-templates/tracking-plan.md` or an accepted gap before returning `plan_ready`.
+7. For discovery or product feedback loops, require `qualitative_feedback_loop_present`; for release or success claims, require `release_measurement_evidence_present`.
+8. Apply `domain_model_when_complex_domain` only when the slice is complex backend, workflow, enterprise, data-heavy, multi-service, or multi-context.
+9. When `domain_model_when_complex_domain` applies, require `.codex/artifact-templates/domain-modeling.md` or an accepted gap with bounded context, ubiquitous language, and invariant status before returning `plan_ready`.
+10. When a domain model is required, enforce `bounded_context_architecture_boundary_trace`: every bounded context maps to architecture boundary in `.codex/artifact-templates/architecture-overview.md`, or an accepted gap names the reason and evidence owner.
+11. If a bounded context has no architecture boundary mapping, stop before build with `missing bounded context architecture boundary trace`.
+12. When a domain model is required, enforce `ubiquitous_language_traceability`: every ubiquitous language term maps through term-to-requirement evidence, a requirement or source, and at least one API/event/contract, UI label, code module or owner.
+13. If a ubiquitous language term is untraceable, require an accepted gap names the reason and evidence owner plus domain expert review; otherwise stop before build with `missing ubiquitous language traceability`.
+14. Do not force DDD for simple CRUD or simple MVP work; record `not_applicable` or accepted gap instead of adding ceremony.
+15. If the workspace audit reports `missing domain model for complex domain`, stop before build and route to domain model planning or return a plan repair packet.
+16. Apply `fsd_structure` only for web UI/component architecture when the workspace audit detects Feature-Sliced Design directories or the owner explicitly chooses that boundary.
+17. When `fsd_structure` applies, require `.codex/artifact-templates/component-card.md` or an accepted gap with layer, slice, segment, public API, and import rule before returning `plan_ready`.
+18. If `fsd_structure` applies but layer, slice, segment, public API, or import rule is missing, stop before build with `missing fsd structure boundary`.
+19. Do not force FSD for backend, native, simple CRUD, or simple MVP work; record `not applicable` or accepted gap instead of adding UI architecture ceremony.
+20. For every relevant methodology/tooling gate, fill conditional readiness gates with `readiness_statuses`: `not_applicable`, `applicable_missing`, `present_unverified`, `present_verified`, `proposal_staged`, `explicit_gap_accepted`, and `approval_required`.
+21. Detection alone can only support `present_unverified`; return `plan_ready` only when applicable gates have required evidence, owner, applicability reason, and residual risk, or an explicit accepted gap.
+22. Decompose work into focused slices with clear acceptance criteria and verification per slice.
+23. For each slice, name the architecture boundary, test-first or eval-first path, documentation impact, acceptance scenarios, Business/Product methodology gates, domain model applicability, context-to-boundary traceability, ubiquitous language traceability, FSD applicability, and post-release measurement note.
+24. Run the no-placeholder planning gate before returning `plan_ready`.
+25. For every non-trivial slice, fill the `plan_quality_check` fields from `.codex/artifact-templates/plan-quality-check.md`: exact files, owned files, forbidden files, exact commands, expected outputs, rollback, evidence owner, and placeholder scan.
+26. Treat vague validation, repeated-by-reference steps, command steps without expected outputs, undefined file names, and hidden "fill later" work as blocking gaps.
+27. Use `mechanical_change` only for small docs, formatting, or config edits whose reduced plan still names exact files, exact commands or explicit no-command gap, rollback, evidence owner, and the mechanical_change reason.
+28. If the no-placeholder gate fails, stop before build and return a plan repair packet instead of `plan_ready`.
+29. Identify dependencies, file or subsystem ownership, rollback notes, risks, and command evidence needed.
+30. Keep commands as proposed `commands_to_run` unless already run in the current session.
+31. Route to `agent-team-designer` if ownership overlaps, parallel work is needed, or handoff risk is high.
+32. Return `plan_ready` only when slices, verification gates, rollback notes, documentation impact, risks, conditional readiness gates, and `plan_quality_check` are staged.
 
 ## Outputs
 
@@ -113,6 +117,24 @@ implementation_plan_packet:
     edge_case: ""
     non_goal: ""
     evidence_owner: ""
+  business_product_gate:
+    gates:
+      - "product_hypothesis_present"
+      - "value_proposition_evidence_present"
+      - "analytics_tracking_plan_present"
+      - "qualitative_feedback_loop_present"
+      - "release_measurement_evidence_present"
+      - "decision_horizon_present"
+      - "outcome_metric_level_separated"
+      - "metric_scope_classified"
+    artifacts:
+      - ".codex/artifact-templates/product-brief.md"
+      - ".codex/artifact-templates/value-proposition.md"
+      - ".codex/artifact-templates/opportunity-tree.md"
+      - ".codex/artifact-templates/experiment-plan.md"
+      - ".codex/artifact-templates/tracking-plan.md"
+    status: "not_applicable | applicable_missing | present_unverified | present_verified | explicit_gap_accepted"
+    residual_risk: ""
   conditional_readiness_gates:
     readiness_statuses:
       - "not_applicable"

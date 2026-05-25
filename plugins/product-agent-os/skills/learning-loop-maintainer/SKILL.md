@@ -29,6 +29,7 @@ Read shared references when needed: [Lifecycle states](../references/lifecycle-s
 - Failures, decisions, blocked paths, repeated gaps, and open questions.
 - Review findings, reusable methods, recurring manual steps, and observed recovery actions.
 - Approval constraints, source status, unsupported claims, and evidence gaps.
+- Business/Product methodology evidence after delivery when product, MVP, user value, analytics, release measurement, or workflow promotion claims were made: `product_hypothesis_present`, `value_proposition_evidence_present`, `analytics_tracking_plan_present`, `qualitative_feedback_loop_present`, `release_measurement_evidence_present`, `decision_horizon_present`, `outcome_metric_level_separated`, `metric_scope_classified`, `.codex/artifact-templates/tracking-plan.md`, accepted gaps, and residual risks.
 
 ## Process
 
@@ -37,9 +38,11 @@ Read shared references when needed: [Lifecycle states](../references/lifecycle-s
 3. Propose durable-rule candidates only when repeated evidence supports a stable project rule.
 4. Propose skill candidates only after repeated manual success, clear reuse, named inputs, named outputs, verification, and failure modes.
 5. Propose runlog compaction that summarizes lessons without deleting evidence or hiding failed attempts.
-6. Route stable recurring workflows to `automation-promoter` for candidate-only analysis.
-7. Keep all updates staged and list approval needs before any durable artifact change.
-8. Return next lifecycle state `learning_ready` only when decisions, failures, proposed compaction, candidates, and next action are explicit.
+6. Capture Business/Product methodology lessons when product claims were made: record whether `product_hypothesis_present`, `value_proposition_evidence_present`, `analytics_tracking_plan_present`, `qualitative_feedback_loop_present`, `release_measurement_evidence_present`, `decision_horizon_present`, `outcome_metric_level_separated`, and `metric_scope_classified` were satisfied, accepted as gaps, or disproved by evidence.
+7. Use `.codex/artifact-templates/tracking-plan.md` and release evidence to compare planned product analytics with observed instrumentation, qualitative feedback, and release measurement evidence.
+8. Route stable recurring workflows to `automation-promoter` for candidate-only analysis, but only after value evidence, owner evidence, verification evidence, and residual risk are recorded.
+9. Keep all updates staged and list approval needs before any durable artifact change.
+10. Return next lifecycle state `learning_ready` only when decisions, failures, proposed compaction, candidates, and next action are explicit.
 
 ## Outputs
 
@@ -53,6 +56,19 @@ learning_loop_packet:
   skill_candidates: []
   runlog_compaction: []
   observations: []
+  business_product_learning:
+    gates_reviewed:
+      - "product_hypothesis_present"
+      - "value_proposition_evidence_present"
+      - "analytics_tracking_plan_present"
+      - "qualitative_feedback_loop_present"
+      - "release_measurement_evidence_present"
+      - "decision_horizon_present"
+      - "outcome_metric_level_separated"
+      - "metric_scope_classified"
+    tracking_plan_artifact: ".codex/artifact-templates/tracking-plan.md"
+    confirmed_lessons: []
+    residual_risks: []
   files_proposed:
     - "RUNLOG.md"
     - "AGENTS.md"
@@ -66,7 +82,7 @@ Evidence-before-completion (`evidence_before_completion`): do not make a ready c
 
 ## Verification
 
-Check that every decision, failure, durable-rule candidate, skill candidate, and runlog compaction note is backed by current evidence. Confirm that proposed files remain staged, approval needs are explicit, and unsupported claims are listed instead of promoted.
+Check that every decision, failure, durable-rule candidate, skill candidate, and runlog compaction note is backed by current evidence. For Business/Product methodology, check that `product_hypothesis_present`, `value_proposition_evidence_present`, `analytics_tracking_plan_present`, `qualitative_feedback_loop_present`, `release_measurement_evidence_present`, `decision_horizon_present`, `outcome_metric_level_separated`, `metric_scope_classified`, and `.codex/artifact-templates/tracking-plan.md` status are recorded before promoting a product lesson. Confirm that proposed files remain staged, approval needs are explicit, and unsupported claims are listed instead of promoted.
 
 ## Failure Modes
 

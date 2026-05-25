@@ -35,13 +35,37 @@ DOC_CONTROL_FILES = {"readme.md", "agents.md", "requirements.md", "plan.md", "te
 DEPLOY_MARKERS = {"dockerfile", "docker-compose.yml", "serverless.yml"}
 RELEASE_FILE_MARKERS = {"changelog.md", "changes.md", "release.md", "release-notes.md"}
 
-BUSINESS_INTENT_TERMS = {"behavior", "product", "mvp", "release", "user", "value", "metric"}
+BUSINESS_INTENT_TERMS = {
+    "analytics",
+    "behavior",
+    "dashboard",
+    "experiment",
+    "metric",
+    "mvp",
+    "product",
+    "release",
+    "success",
+    "telemetry",
+    "usage",
+    "user",
+    "value",
+}
 BEHAVIOR_INTENT_TERMS = {"behavior", "feature", "change", "ship", "release", "user"}
 UI_INTENT_TERMS = {"frontend", "ui", "ux", "component", "screen", "page"}
 BACKEND_INTENT_TERMS = {"server", "api", "service", "worker", "queue", "backend"}
 API_INTENT_TERMS = {"api", "webhook", "integration", "external", "graphql", "grpc", "protobuf"}
 AI_INTENT_TERMS = {"prompt", "model", "eval", "rag", "vector", "embedding", "ai", "llm"}
 DELIVERY_INTENT_TERMS = {"production", "release", "deploy", "package", "docker", "kubernetes", "operations"}
+BUSINESS_NOT_APPLICABLE_PHRASES = {
+    "typo-only",
+    "formatting-only",
+    "dependency pin without behavior impact",
+    "without behavior impact",
+}
+IMPLEMENTATION_OR_RELEASE_TERMS = {"implement", "implementation", "ship", "release", "build", "deliver"}
+PRODUCT_ANALYTICS_TERMS = {"analytics", "usage", "event", "events", "dashboard", "telemetry", "tracking"}
+PRODUCT_SUCCESS_TERMS = {"success", "north star", "value metric", "product value"}
+WORKFLOW_PROMOTION_TERMS = {"workflow promotion", "promote workflow", "automation", "skill promotion", "playbook"}
 HIGH_RISK_INTENT_TERMS = {
     "security",
     "privacy",
@@ -261,7 +285,7 @@ def _methodology_domains(
 ) -> list[dict[str, Any]]:
     catalog = load_methodology_catalog()
     applicable = {
-        "business_product": _mentions_any(intent, BUSINESS_INTENT_TERMS),
+        "business_product": _business_product_applies(intent),
         "requirements_domain": has_files or _mentions_any(intent, BEHAVIOR_INTENT_TERMS),
         "solution_architecture": complexity_profile in {"complex", "high_risk"}
         or maturity_level in {"team", "production", "regulated"}
@@ -303,6 +327,211 @@ def _methodology_domains(
     return domain_packets
 
 
+def _business_product_applies(intent: str) -> bool:
+    if _business_product_not_applicable(intent):
+        return False
+    return _mentions_any(intent, BUSINESS_INTENT_TERMS | IMPLEMENTATION_OR_RELEASE_TERMS)
+
+
+def _business_product_not_applicable(intent: str) -> bool:
+    return any(phrase in intent for phrase in BUSINESS_NOT_APPLICABLE_PHRASES)
+
+
+def _business_product_recommendations(files: set[str], intent: str) -> list[dict[str, Any]]:
+    if not _business_product_applies(intent):
+        return []
+
+    recommendations: list[dict[str, Any]] = []
+    implementation_or_release = bool(files) and _mentions_any(intent, IMPLEMENTATION_OR_RELEASE_TERMS)
+    product_hypothesis_priority = "P1_high_risk" if implementation_or_release else "P2_recommended"
+    recommendations.append(
+        _recommendation(
+            priority=product_hypothesis_priority,
+            reason="Product or behavior-changing intent needs a product hypothesis before implementation.",
+            domain="business_product",
+            gate="product_hypothesis_present",
+            artifact="product-brief.md",
+            evidence_required=[
+                "target user segment",
+                "problem or opportunity",
+                "expected outcome",
+                "non-goals",
+                "owner",
+            ],
+            evidence_owner="product owner",
+            approval_boundary="not required for read-only audit; approval_required before broad implementation",
+            accepted_gap_option="explicit_gap_accepted with owner, reason, residual risk and review date",
+            residual_risk="Implementation can optimize the wrong behavior when product intent is implicit.",
+            safe_next_action="Stage a product brief before requirements slicing or implementation.",
+        )
+    )
+    recommendations.append(
+        _recommendation(
+            priority="P2_recommended",
+            reason="Decision horizon is missing for product methodology depth.",
+            domain="business_product",
+            gate="decision_horizon_present",
+            artifact="product-brief.md",
+            evidence_required=["discovery, MVP, beta, production or scale", "owner", "review window"],
+            evidence_owner="product owner",
+            approval_boundary="not required for drafting methodology recommendations",
+            accepted_gap_option="explicit_gap_accepted with owner and reason for unknown decision horizon",
+            residual_risk="The same process depth can be over-applied to discovery work or under-applied to production work.",
+            safe_next_action="Classify the decision horizon before choosing required artifacts.",
+        )
+    )
+    recommendations.append(
+        _recommendation(
+            priority="P1_high_risk" if implementation_or_release else "P2_recommended",
+            reason="Metric scope is not classified for product behavior work.",
+            domain="business_product",
+            gate="metric_scope_classified",
+            artifact="REQUIREMENTS.md",
+            evidence_required=["metric_scope required, not_applicable or accepted_gap", "owner", "residual risk"],
+            evidence_owner="product owner",
+            approval_boundary="not required for read-only classification",
+            accepted_gap_option="explicit_gap_accepted with owner, reason, residual risk and review date",
+            residual_risk="Unclassified metric scope can turn planned measurement into unsupported success claims.",
+            safe_next_action="Classify metric scope before planning implementation or release text.",
+        )
+    )
+    if _mentions_any(intent, PRODUCT_SUCCESS_TERMS):
+        recommendations.append(
+            _recommendation(
+                priority="P2_recommended",
+                reason="Product success or North Star wording needs metric-level separation.",
+                domain="business_product",
+                gate="outcome_metric_level_separated",
+                artifact="metric-spec.md",
+                evidence_required=["business outcome", "product outcome", "feature traction metric"],
+                evidence_owner="product owner",
+                approval_boundary="not required for metric classification",
+                accepted_gap_option="explicit_gap_accepted with owner and reason for metric-level ambiguity",
+                residual_risk="A local feature traction metric can be mistaken for a product value metric.",
+                safe_next_action="Separate business outcome, product outcome and feature traction metric.",
+            )
+        )
+    if _mentions_any(intent, {"metric", "success", "measurement", "analytics", "dashboard"}):
+        recommendations.append(
+            _recommendation(
+                priority="P1_high_risk",
+                reason="Metric claim needs counter-metric, guardrail, qualitative review and privacy classification.",
+                domain="business_product",
+                gate="metric_hardening_when_product_behavior_changes",
+                artifact="metric-spec.md",
+                evidence_required=[
+                    "primary metric",
+                    "input metric",
+                    "counter-metric",
+                    "guardrail",
+                    "proxy metric risk",
+                    "qualitative review",
+                    "privacy classification",
+                ],
+                evidence_owner="product owner",
+                approval_boundary="approval_required before external analytics writes or product success claims",
+                accepted_gap_option="explicit_gap_accepted with owner, reason, residual risk and review date",
+                residual_risk="A single metric can improve while product quality, trust, support load or privacy degrades.",
+                safe_next_action="Stage metric hardening before implementation or success claims.",
+            )
+        )
+        recommendations.append(
+            _recommendation(
+                priority="P2_recommended",
+                reason="Metric claim needs qualitative feedback or an accepted qualitative evidence gap.",
+                domain="business_product",
+                gate="qualitative_feedback_loop_present",
+                artifact="metric-spec.md",
+                evidence_required=["user research, support, sales, customer-success or owner review evidence"],
+                evidence_owner="product owner",
+                approval_boundary="not required for read-only audit",
+                accepted_gap_option="explicit_gap_accepted with owner and reason for missing qualitative loop",
+                residual_risk="Quantitative movement can hide user trust, support or satisfaction regressions.",
+                safe_next_action="Record a qualitative feedback loop or accepted gap.",
+            )
+        )
+    if _mentions_any(intent, PRODUCT_ANALYTICS_TERMS):
+        recommendations.append(
+            _recommendation(
+                priority="P1_high_risk",
+                reason="Product analytics claim needs event taxonomy, property definitions, owner and validation evidence.",
+                domain="business_product",
+                gate="analytics_tracking_plan_present",
+                artifact="tracking-plan.md",
+                evidence_required=[
+                    "event names",
+                    "properties",
+                    "property types",
+                    "taxonomy",
+                    "owner",
+                    "validation command or report",
+                    "privacy classification",
+                ],
+                evidence_owner="data or product analytics owner",
+                approval_boundary="approval_required before external analytics writes or production telemetry changes",
+                accepted_gap_option="explicit_gap_accepted with owner, reason, residual risk and review date",
+                residual_risk="Analytics events without taxonomy or validation can make product decisions unreliable.",
+                safe_next_action="Stage a tracking plan before instrumentation or analytics claims.",
+            )
+        )
+    if _mentions_any(intent, AI_INTENT_TERMS):
+        recommendations.append(
+            _recommendation(
+                priority="P1_high_risk",
+                reason="AI product behavior needs both eval evidence and product value evidence.",
+                domain="business_product",
+                gate="ai_product_eval_when_ai_behavior_changes",
+                artifact="ai-eval-spec.md",
+                evidence_required=["user-visible promise", "baseline eval", "threshold", "failure review owner"],
+                evidence_owner="AI product owner",
+                approval_boundary="not required for baseline planning; approval_required before external AI behavior release",
+                accepted_gap_option="explicit_gap_accepted with owner, reason, residual risk and review date",
+                residual_risk="AI eval score can be mistaken for product value without user outcome evidence.",
+                safe_next_action="Stage AI product eval and value evidence before prompt, model, retrieval or agent changes.",
+            )
+        )
+    if "release" in intent or "after release" in intent or "telemetry" in intent:
+        recommendations.append(
+            _recommendation(
+                priority="P1_high_risk",
+                reason="Product success claim after release needs actual evidence or an accepted evidence gap.",
+                domain="business_product",
+                gate="release_measurement_evidence_present",
+                artifact="RUNLOG.md",
+                evidence_required=[
+                    "actual metric",
+                    "eval result",
+                    "user feedback",
+                    "support signal",
+                    "owner review",
+                    "accepted evidence gap",
+                ],
+                evidence_owner="learning-loop maintainer",
+                approval_boundary="approval_required before release success claims or external release actions",
+                accepted_gap_option="explicit_gap_accepted with owner, reason, residual risk and review date",
+                residual_risk="Planned measurement alone is not product success evidence.",
+                safe_next_action="Record post-release evidence or accepted gap before success claims.",
+            )
+        )
+    if _mentions_any(intent, WORKFLOW_PROMOTION_TERMS):
+        recommendations.append(
+            _recommendation(
+                priority="P2_recommended",
+                reason="Workflow promotion needs value evidence, verification, owner and safety boundary.",
+                domain="business_product",
+                gate="workflow_promotion_value_evidence_present",
+                artifact="skill-promotion-record.md",
+                evidence_required=["engineering time saved", "verification", "owner", "safety boundary"],
+                evidence_owner="workflow owner",
+                approval_boundary="approval_required before active automation or durable promotion",
+                accepted_gap_option="explicit_gap_accepted with owner and reason for no external product metric",
+                residual_risk="A repeated workflow can be automated before it has stable value or safety evidence.",
+                safe_next_action="Record workflow value evidence before promotion to skill, plugin or automation.",
+            )
+        )
+    return recommendations
+
+
 def _recommendations(
     root: Path,
     files: set[str],
@@ -312,6 +541,7 @@ def _recommendations(
     complexity_profile: str,
 ) -> list[dict[str, Any]]:
     recommendations: list[dict[str, Any]] = []
+    recommendations.extend(_business_product_recommendations(files, intent))
     missing_control_plane = [name for name in CONTROL_PLANE_FILES if name.lower() not in files]
     if missing_control_plane:
         recommendations.append(

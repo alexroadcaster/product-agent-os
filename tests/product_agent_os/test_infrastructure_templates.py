@@ -67,6 +67,11 @@ REQUIRED_TARGETS = {
     ".codex/artifact-templates/architecture-overview.md",
     ".codex/artifact-templates/domain-modeling.md",
     ".codex/artifact-templates/metric-spec.md",
+    ".codex/artifact-templates/product-brief.md",
+    ".codex/artifact-templates/value-proposition.md",
+    ".codex/artifact-templates/opportunity-tree.md",
+    ".codex/artifact-templates/experiment-plan.md",
+    ".codex/artifact-templates/tracking-plan.md",
     ".codex/artifact-templates/api-contract-review.md",
     ".codex/artifact-templates/component-card.md",
     ".codex/artifact-templates/database-dictionary.md",
@@ -136,6 +141,24 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 self.assertTrue(item.source_path.exists(), item.source_path)
                 self.assertTrue(item.source_path.is_file(), item.source_path)
                 self.assertTrue(item.source_path.resolve().is_relative_to(TEMPLATE_ROOT.resolve()))
+
+    def test_business_product_artifact_templates_have_operating_contracts(self):
+        expected_templates = [
+            "product-brief.md",
+            "value-proposition.md",
+            "opportunity-tree.md",
+            "experiment-plan.md",
+            "tracking-plan.md",
+        ]
+        required_terms = ["Source status:", "Owner", "Evidence", "Accepted Gap", "Residual Risk"]
+
+        for filename in expected_templates:
+            path = TEMPLATE_ROOT / "artifact-templates" / filename
+            with self.subTest(filename=filename):
+                self.assertTrue(path.exists(), path)
+                text = path.read_text(encoding="utf-8")
+                for term in required_terms:
+                    self.assertIn(term, text)
 
     def test_template_text_has_no_unsafe_literals(self):
         for item in required_templates():
@@ -352,6 +375,57 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 "data minimization",
                 "owner signoff",
                 "post-release review evidence",
+            ],
+            "product-brief.md": [
+                "product_hypothesis_present",
+                "target user segment",
+                "decision horizon",
+                "business outcome",
+                "product outcome",
+                "feature traction metric",
+                "evidence",
+                "accepted gap",
+                "residual risk",
+            ],
+            "value-proposition.md": [
+                "value_proposition_evidence_present",
+                "target user segment",
+                "job",
+                "alternative",
+                "evidence",
+                "accepted gap",
+                "residual risk",
+            ],
+            "opportunity-tree.md": [
+                "opportunity_not_solution_present",
+                "opportunity",
+                "solution",
+                "assumption",
+                "evidence",
+                "accepted gap",
+                "residual risk",
+            ],
+            "experiment-plan.md": [
+                "product_hypothesis_present",
+                "decision horizon",
+                "hypothesis",
+                "primary metric",
+                "guardrail",
+                "evidence",
+                "accepted gap",
+                "residual risk",
+            ],
+            "tracking-plan.md": [
+                "analytics_tracking_plan_present",
+                "event",
+                "properties",
+                "privacy classification",
+                "owner",
+                "validation",
+                "dashboard",
+                "evidence",
+                "accepted gap",
+                "residual risk",
             ],
             "api-contract-review.md": ["openapi", "asyncapi", "auth", "errors"],
             "component-card.md": [

@@ -538,6 +538,34 @@ class LifecycleSkillsTest(unittest.TestCase):
                 for expected in shared_terms:
                     self.assertIn(expected, text)
 
+    def test_lifecycle_skills_enforce_business_product_methodology(self):
+        shared_terms = [
+            "product_hypothesis_present",
+            "value_proposition_evidence_present",
+            "analytics_tracking_plan_present",
+            "qualitative_feedback_loop_present",
+            "release_measurement_evidence_present",
+            "decision_horizon_present",
+            "outcome_metric_level_separated",
+            "metric_scope_classified",
+            "tracking-plan.md",
+        ]
+        skill_names = [
+            "requirements-author",
+            "implementation-planner",
+            "test-eval-designer",
+            "risk-reviewer",
+            "learning-loop-maintainer",
+            "automation-promoter",
+        ]
+
+        for name in skill_names:
+            text = self._skill_text(name).lower()
+            with self.subTest(name=name):
+                for expected in shared_terms:
+                    self.assertIn(expected, text)
+        self.assertIn("engineering time saved", self._skill_text("automation-promoter").lower())
+
     def test_lifecycle_skills_generalize_evidence_before_completion(self):
         shared_terms = [
             "evidence-before-completion",

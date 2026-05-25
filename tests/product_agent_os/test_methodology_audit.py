@@ -10,6 +10,16 @@ sys.path.insert(0, str(SCRIPTS))
 
 
 class MethodologyAuditContractTest(unittest.TestCase):
+    def _domain_status(self, result, domain_id):
+        domains = {domain["id"]: domain for domain in result["methodology_domains"]}
+        return domains[domain_id]["status"]
+
+    def _recommendation_by_gate(self, result, gate):
+        for recommendation in result["recommendations"]:
+            if recommendation["gate"] == gate:
+                return recommendation
+        self.fail(f"missing recommendation for gate {gate}")
+
     def test_empty_workspace_returns_baseline_simple_with_questions(self):
         from product_agent_os.methodology_audit import build_methodology_audit
 
@@ -72,6 +82,76 @@ class MethodologyAuditContractTest(unittest.TestCase):
         self.assertGreaterEqual(len(result["recommendations"]), 1)
         for recommendation in result["recommendations"]:
             self.assertEqual(set(recommendation), required_keys)
+
+    def test_business_product_intent_routes_domain_and_product_hypothesis_priority(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        with tempfile.TemporaryDirectory() as tmp:
+            discovery_result = build_methodology_audit(Path(tmp), intent_hint="new MVP idea")
+            implementation_root = Path(tmp) / "implementation"
+            implementation_root.mkdir()
+            (implementation_root / "package.json").write_text('{"scripts":{"test":"vitest"}}\n', encoding="utf-8")
+            implementation_result = build_methodology_audit(
+                implementation_root,
+                intent_hint="ship MVP product metric experiment",
+            )
+
+        self.assertNotEqual(self._domain_status(discovery_result, "business_product"), "not_applicable")
+        self.assertNotEqual(self._domain_status(implementation_result, "business_product"), "not_applicable")
+        self.assertEqual(
+            self._recommendation_by_gate(discovery_result, "product_hypothesis_present")["priority"],
+            "P2_recommended",
+        )
+        self.assertEqual(
+            self._recommendation_by_gate(implementation_result, "product_hypothesis_present")["priority"],
+            "P1_high_risk",
+        )
+
+    def test_business_product_metric_ai_analytics_and_release_claims_create_recommendations(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "package.json").write_text('{"scripts":{"test":"vitest"}}\n', encoding="utf-8")
+            result = build_methodology_audit(
+                root,
+                intent_hint=(
+                    "ship AI product analytics dashboard with usage events and product success "
+                    "metric after release without telemetry and workflow promotion"
+                ),
+            )
+
+        expected = {
+            "metric_hardening_when_product_behavior_changes": ("P1_high_risk", "metric-spec.md"),
+            "ai_product_eval_when_ai_behavior_changes": ("P1_high_risk", "ai-eval-spec.md"),
+            "analytics_tracking_plan_present": ("P1_high_risk", "tracking-plan.md"),
+            "release_measurement_evidence_present": ("P1_high_risk", "RUNLOG.md"),
+            "decision_horizon_present": ("P2_recommended", "product-brief.md"),
+            "outcome_metric_level_separated": ("P2_recommended", "metric-spec.md"),
+            "metric_scope_classified": ("P1_high_risk", "REQUIREMENTS.md"),
+            "workflow_promotion_value_evidence_present": ("P2_recommended", "skill-promotion-record.md"),
+        }
+        for gate, (priority, artifact) in expected.items():
+            with self.subTest(gate=gate):
+                recommendation = self._recommendation_by_gate(result, gate)
+                self.assertEqual(recommendation["priority"], priority)
+                self.assertEqual(recommendation["artifact"], artifact)
+
+    def test_business_product_false_positive_intents_are_not_applicable(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        for intent in [
+            "typo-only docs edit",
+            "formatting-only markdown cleanup",
+            "dependency pin without behavior impact",
+        ]:
+            with self.subTest(intent=intent):
+                with tempfile.TemporaryDirectory() as tmp:
+                    root = Path(tmp)
+                    (root / "README.md").write_text("# Demo\n", encoding="utf-8")
+                    result = build_methodology_audit(root, intent_hint=intent)
+
+                self.assertEqual(self._domain_status(result, "business_product"), "not_applicable")
 
 
 if __name__ == "__main__":

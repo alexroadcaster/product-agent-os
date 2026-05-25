@@ -30,6 +30,7 @@ Read shared references when needed: [Lifecycle states](../references/lifecycle-s
 - Known test, lint, build, docs, browser, native, API, visual, or eval commands and their limits.
 - Risk profile, approval limits, acceptance criteria, and required verification evidence.
 - Acceptance scenario packet when behavior changes: `.codex/artifact-templates/acceptance-scenarios.md`, ATDD, BDD, `requirement -> scenario -> check -> evidence owner`, Given, When, Then, equivalent behavior format, business rule, edge case, non-goal, explicit gap, and evidence owner.
+- Business/Product methodology packet when product, MVP, user value, analytics, release measurement, or workflow promotion claims are present: `product_hypothesis_present`, `value_proposition_evidence_present`, `analytics_tracking_plan_present`, `qualitative_feedback_loop_present`, `release_measurement_evidence_present`, `decision_horizon_present`, `outcome_metric_level_separated`, `metric_scope_classified`, `.codex/artifact-templates/tracking-plan.md`, metric evidence, feedback evidence, release measurement evidence, and accepted gap status.
 
 ## Process
 
@@ -38,16 +39,18 @@ Read shared references when needed: [Lifecycle states](../references/lifecycle-s
 3. For behavior changes, require acceptance scenarios or an explicit gap before implementation; block implementation before acceptance scenarios when no gap is accepted.
 4. Verify ATDD or BDD traceability as `requirement -> scenario -> check -> evidence owner`.
 5. Accept Given, When, Then or an equivalent behavior format when it names the business rule, edge case, non-goal, explicit gap, and evidence owner.
-6. Prefer test-first or eval-first gates before implementation for behavior changes, contract changes, AI/RAG changes, and documentation quality changes.
-7. Add manual checks only when runtime, visual, UX, device, or external-environment verification cannot be automated in the available workspace.
-8. Add eval gates for AI behavior, UX judgment, documentation quality, subjective acceptance, or long-horizon quality criteria.
-9. Add documentation checks for architecture docs, API/event contracts, UI component docs, database docs, and release/user-facing docs when those artifacts are impacted.
-10. Mark missing, unavailable, unknown, or approval-gated commands as test gaps instead of inventing evidence.
-11. Define thresholds, pass criteria, failure signals, artifacts to inspect, and evidence required for each check or eval gate.
-12. For conditional readiness gates, test applicable/missing/not-applicable/accepted-gap transitions with `readiness_statuses`: `not_applicable`, `applicable_missing`, `present_unverified`, `present_verified`, `proposal_staged`, `explicit_gap_accepted`, and `approval_required`.
-13. Detection alone can only support `present_unverified`; `present_verified` requires current command evidence, owner evidence, or verified artifact evidence, and each gate must name owner, applicability reason, and residual risk.
-14. Keep proposed artifacts staged as `TEST.md` and `EVALS.md`; do not write them directly.
-15. Return `build_active` only when deterministic checks, manual checks, eval gates, docs checks, thresholds, evidence, gaps, and conditional readiness gates are explicit.
+6. For product, MVP, value, analytics, release measurement, or workflow promotion claims, map `product_hypothesis_present`, `value_proposition_evidence_present`, `analytics_tracking_plan_present`, `qualitative_feedback_loop_present`, `release_measurement_evidence_present`, `decision_horizon_present`, `outcome_metric_level_separated`, and `metric_scope_classified` to deterministic checks, eval gates, manual evidence, or explicit gaps.
+7. For product analytics, require `.codex/artifact-templates/tracking-plan.md` checks for event taxonomy, property definitions, validation evidence, dashboard/report evidence, owner, and privacy classification.
+8. Prefer test-first or eval-first gates before implementation for behavior changes, contract changes, AI/RAG changes, product measurement changes, and documentation quality changes.
+9. Add manual checks only when runtime, visual, UX, device, owner review, qualitative feedback, or external-environment verification cannot be automated in the available workspace.
+10. Add eval gates for AI behavior, UX judgment, documentation quality, product outcome claims, subjective acceptance, or long-horizon quality criteria.
+11. Add documentation checks for architecture docs, API/event contracts, UI component docs, database docs, tracking plans, metrics, and release/user-facing docs when those artifacts are impacted.
+12. Mark missing, unavailable, unknown, or approval-gated commands as test gaps instead of inventing evidence.
+13. Define thresholds, pass criteria, failure signals, artifacts to inspect, and evidence required for each check or eval gate.
+14. For conditional readiness gates, test applicable/missing/not-applicable/accepted-gap transitions with `readiness_statuses`: `not_applicable`, `applicable_missing`, `present_unverified`, `present_verified`, `proposal_staged`, `explicit_gap_accepted`, and `approval_required`.
+15. Detection alone can only support `present_unverified`; `present_verified` requires current command evidence, owner evidence, or verified artifact evidence, and each gate must name owner, applicability reason, and residual risk.
+16. Keep proposed artifacts staged as `TEST.md` and `EVALS.md`; do not write them directly.
+17. Return `build_active` only when deterministic checks, manual checks, eval gates, docs checks, thresholds, evidence, gaps, and conditional readiness gates are explicit.
 
 ## Outputs
 
@@ -65,6 +68,21 @@ test_eval_packet:
     edge_case: ""
     non_goal: ""
     evidence_owner: ""
+  business_product_checks:
+    gates:
+      - "product_hypothesis_present"
+      - "value_proposition_evidence_present"
+      - "analytics_tracking_plan_present"
+      - "qualitative_feedback_loop_present"
+      - "release_measurement_evidence_present"
+      - "decision_horizon_present"
+      - "outcome_metric_level_separated"
+      - "metric_scope_classified"
+    tracking_plan_artifact: ".codex/artifact-templates/tracking-plan.md"
+    deterministic_checks: []
+    manual_feedback_checks: []
+    eval_gates: []
+    gaps: []
   manual_checks: []
   evals: []
   documentation_checks: []
@@ -107,6 +125,10 @@ Check that each acceptance criterion maps to a deterministic check, manual check
 
 - If acceptance criteria are missing, stop and route to `requirements-author`.
 - If behavior changes lack acceptance scenarios and no explicit gap is accepted, stop with `implementation before acceptance scenarios`.
+- If Business/Product methodology applies and `product_hypothesis_present`, `value_proposition_evidence_present`, `decision_horizon_present`, `outcome_metric_level_separated`, or `metric_scope_classified` cannot be mapped to evidence or an accepted gap, stop before build.
+- If analytics or telemetry claims lack `analytics_tracking_plan_present` or `.codex/artifact-templates/tracking-plan.md`, stop before build or record an explicit accepted gap.
+- If qualitative feedback is required but `qualitative_feedback_loop_present` lacks a check or owner evidence, keep the packet out of `build_active`.
+- If release success is claimed but `release_measurement_evidence_present` is missing, keep the packet out of `build_active`.
 - If there is a scenario without requirement, scenario without check, or scenario without evidence owner, stop and route to `requirements-author`.
 - If the packet implies `BDD replaces tests`, reject it and map the scenario to unit tests, integration tests, contract tests, manual checks, or evals.
 - If implementation slices or ownership are missing, stop and route to `implementation-planner` or `agent-team-designer`.

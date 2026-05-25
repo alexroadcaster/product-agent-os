@@ -196,6 +196,36 @@ _TEMPLATES: tuple[TemplateSpec, ...] = (
         ".codex/artifact-templates/metric-spec.md",
     ),
     _spec(
+        "artifact-product-brief",
+        "artifact-templates",
+        "artifact-templates/product-brief.md",
+        ".codex/artifact-templates/product-brief.md",
+    ),
+    _spec(
+        "artifact-value-proposition",
+        "artifact-templates",
+        "artifact-templates/value-proposition.md",
+        ".codex/artifact-templates/value-proposition.md",
+    ),
+    _spec(
+        "artifact-opportunity-tree",
+        "artifact-templates",
+        "artifact-templates/opportunity-tree.md",
+        ".codex/artifact-templates/opportunity-tree.md",
+    ),
+    _spec(
+        "artifact-experiment-plan",
+        "artifact-templates",
+        "artifact-templates/experiment-plan.md",
+        ".codex/artifact-templates/experiment-plan.md",
+    ),
+    _spec(
+        "artifact-tracking-plan",
+        "artifact-templates",
+        "artifact-templates/tracking-plan.md",
+        ".codex/artifact-templates/tracking-plan.md",
+    ),
+    _spec(
         "artifact-api-contract-review",
         "artifact-templates",
         "artifact-templates/api-contract-review.md",

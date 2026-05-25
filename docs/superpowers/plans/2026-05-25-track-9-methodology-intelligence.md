@@ -1242,17 +1242,76 @@ Expected: commit succeeds.
 - Modify: `plugins/product-agent-os/assets/methodology/methodology-catalog.json`
 - Modify: `plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py`
 - Modify: `plugins/product-agent-os/assets/templates/control-plane/REQUIREMENTS.md`
+- Modify: `plugins/product-agent-os/assets/templates/control-plane/PLAN.md`
+- Modify: `plugins/product-agent-os/assets/templates/control-plane/EVALS.md`
+- Modify: `plugins/product-agent-os/assets/templates/control-plane/RUNLOG.md`
 - Modify: `plugins/product-agent-os/assets/templates/artifact-templates/metric-spec.md`
+- Modify: `plugins/product-agent-os/assets/templates/pr/release-notes.md`
 - Create: `plugins/product-agent-os/assets/templates/artifact-templates/product-brief.md`
 - Create: `plugins/product-agent-os/assets/templates/artifact-templates/value-proposition.md`
 - Create: `plugins/product-agent-os/assets/templates/artifact-templates/opportunity-tree.md`
 - Create: `plugins/product-agent-os/assets/templates/artifact-templates/experiment-plan.md`
+- Create: `plugins/product-agent-os/assets/templates/artifact-templates/tracking-plan.md`
 - Modify: lifecycle skills listed in File Structure
 - Test: `tests/product_agent_os/test_methodology_catalog.py`
 - Test: `tests/product_agent_os/test_methodology_audit.py`
+- Test: `tests/product_agent_os/test_infrastructure_templates.py`
+- Test: `tests/product_agent_os/test_lifecycle_skills.py`
 - Test: `tests/product_agent_os/test_fixture_eval_runner.py`
 
-- [ ] **Step 1: Add RED catalog test for business/product gates**
+**Deep-Audit Task Matrix:**
+
+This matrix maps the `docs/methodologies/business-product.md` audit findings to the concrete execution steps below. The numbered steps remain the implementation checklist; this table is the traceability layer that shows where each finding lands.
+
+| Audit finding | Plan step(s) | Implementation target |
+| --- | --- | --- |
+| Product hypothesis before implementation | Step 0, Step 1, Step 7, Step 8, Step 10 | `product_hypothesis_present`, audit recommendations, `requirements-author`, `implementation-planner`. |
+| Target user segment and excluded users | Step 1, Step 4, Step 9 | Catalog gates, `product-brief.md`, `REQUIREMENTS.md`, `PLAN.md`. |
+| Value Proposition Canvas evidence | Step 0, Step 1, Step 4, Step 9, Step 11 | `value_proposition_evidence_present`, `value-proposition.md`, fixture eval contract. |
+| Opportunity must not be only a solution request | Step 1, Step 4, Step 7, Step 9 | `opportunity_not_solution_present`, `opportunity-tree.md`, audit false-positive tests. |
+| Decision horizon controls required formality | Step 0, Step 1, Step 3, Step 4, Step 8, Step 9, Step 11 | `decision_horizon_present`, `decision_horizons`, `product-brief.md`, `experiment-plan.md`. |
+| Business outcome, product outcome and feature traction metric are separate | Step 0, Step 1, Step 4, Step 7, Step 8, Step 9, Step 11 | `outcome_metric_level_separated`, metric-level audit questions, control-plane fields. |
+| Success metric or explicit not-applicable reason | Step 1, Step 8, Step 9, Step 10 | `success_metric_present`, `metric_scope_classified`, lifecycle skill gates. |
+| `metric_scope` must be `required`, `not_applicable` or `accepted_gap` | Step 0, Step 1, Step 8, Step 9, Step 10, Step 11 | `metric_scope_classified`, `REQUIREMENTS.md`, `requirements-author`, fixture eval. |
+| Metric hardening for product behavior claims | Step 1, Step 7, Step 8, Step 9, Step 10 | `metric_hardening_when_product_behavior_changes`, `metric-spec.md`, risk review. |
+| HEART metrics are optional UX/product quality lenses | Step 0, Step 4, Step 9 | `metric-spec.md` or `tracking-plan.md` optional fields. |
+| Product analytics needs tracking plan | Step 0, Step 1, Step 4, Step 5, Step 6, Step 7, Step 8, Step 11 | `analytics_tracking_plan_present`, `tracking-plan.md`, renderer registry, audit test. |
+| Qualitative feedback loop is required or accepted as a gap | Step 0, Step 1, Step 7, Step 8, Step 9 | `qualitative_feedback_loop_present`, metric hardening and post-release evidence. |
+| Privacy classification for metrics | Step 1, Step 4, Step 8, Step 9 | `privacy_classification_for_metrics_present`, `metric-spec.md`, `tracking-plan.md`. |
+| AI product behavior needs eval and value evidence | Step 1, Step 7, Step 8, Step 9, Step 10 | `ai_product_eval_when_ai_behavior_changes`, `EVALS.md`, `test-eval-designer`, `risk-reviewer`. |
+| Post-release measurement plan | Step 1, Step 8, Step 9, Step 10 | `post_release_measurement_plan_present`, `RUNLOG.md`, `release-notes.md`, `learning-loop-maintainer`. |
+| Release measurement evidence before success claims | Step 0, Step 1, Step 7, Step 8, Step 9, Step 11 | `release_measurement_evidence_present`, audit recommendation, fixture eval. |
+| No-production-telemetry fallback | Step 0, Step 7, Step 8, Step 9, Step 13 | Manual, qualitative, support, customer-success or owner review evidence policy. |
+| Release notes need affected users, measurement window and rollback/disable signal | Step 0, Step 9, Step 11 | `plugins/product-agent-os/assets/templates/pr/release-notes.md`, fixture eval. |
+| `PLAN.md`, `EVALS.md` and `RUNLOG.md` carry outcome/eval/measurement evidence | Step 0, Step 9 | Control-plane templates. |
+| Workflow promotion needs value evidence and safety boundary | Step 0, Step 1, Step 7, Step 10, Step 11 | `workflow_promotion_value_evidence_present`, `learning-loop-maintainer`, `automation-promoter`. |
+| Mechanical edits should not force Business/Product methodology | Step 0, Step 3, Step 7, Step 8 | Catalog `not_applicable_when`, audit false-positive tests. |
+| Backlog must record audit decisions and residual risks | Step 0, Step 13 | `docs/sources/product-agent-os-track-9-backlog.md`. |
+| Verification must prove catalog, templates, lifecycle and fixture contracts | Step 2, Step 5, Step 7, Step 12 | Focused unit tests and `run_fixture_eval.py`. |
+
+- [x] **Step 0: Record deep-audit deltas before implementation**
+
+Do not create a new branch for this slice when the operator explicitly asks to continue on the current branch.
+
+Modify `docs/sources/product-agent-os-track-9-backlog.md` before code implementation and record these `T9-D1` deep-audit deltas from `docs/methodologies/business-product.md`:
+
+- `value_proposition_evidence_present` is required in addition to the original Task 8 gate list.
+- `analytics_tracking_plan_present` is required when product usage data or product analytics is claimed.
+- `qualitative_feedback_loop_present` is required for user research, support, sales, customer-success signal or accepted qualitative evidence gap.
+- `release_measurement_evidence_present` is required before product success claims after release.
+- `tracking-plan.md` is a required candidate artifact for product analytics governance.
+- Severity resolution: missing `product_hypothesis_present` is `P2_recommended` for discovery-only or empty workspace audits, but becomes `P1_high_risk` or stronger when the user asks to implement, ship or release a behavior-changing slice without hypothesis, metric/gap and owner evidence.
+- `decision_horizon` must be recorded as `discovery`, `MVP`, `beta`, `production` or `scale`; it determines how much formality the Product-Agent OS recommendation should require.
+- `business_outcome`, `product_outcome` and `feature_traction_metric` must be separated so a local feature metric is not treated as a North Star metric.
+- HEART metrics are optional UX/product quality lenses, not a mandatory full set; when used, record which of `Happiness`, `Engagement`, `Adoption`, `Retention` and `Task success` applies.
+- `release-notes.md` is part of the Business/Product surface because user-facing changes need affected users, measurement window and rollback/disable signal.
+- `PLAN.md`, `EVALS.md` and `RUNLOG.md` must carry outcome-driven planning, AI product eval and post-release measurement evidence, not only `REQUIREMENTS.md` and `metric-spec.md`.
+- `metric_scope` must be explicit as `required`, `not_applicable` or `accepted_gap`.
+- `tracking-plan.md` is required only when product usage data, analytics events, dashboards, event properties or product analytics claims exist; plain metric hardening can stay in `metric-spec.md`.
+- If production telemetry does not exist, post-release measurement can use manual, qualitative, support or owner review evidence, but product success claims must remain blocked until current evidence or accepted gap exists.
+- Internal workflow promotion can use engineering time saved plus verification, owner and safety boundary evidence; it does not always need an external product metric.
+
+- [x] **Step 1: Add RED catalog test for business/product gates**
 
 Add a test asserting `business_product` includes these gates:
 
@@ -1260,13 +1319,20 @@ Add a test asserting `business_product` includes these gates:
 [
     "product_hypothesis_present",
     "target_user_segment_present",
+    "value_proposition_evidence_present",
     "opportunity_not_solution_present",
     "success_metric_present",
     "metric_hardening_when_product_behavior_changes",
+    "analytics_tracking_plan_present",
+    "qualitative_feedback_loop_present",
     "privacy_classification_for_metrics_present",
     "ai_product_eval_when_ai_behavior_changes",
     "post_release_measurement_plan_present",
+    "release_measurement_evidence_present",
     "workflow_promotion_value_evidence_present",
+    "decision_horizon_present",
+    "outcome_metric_level_separated",
+    "metric_scope_classified",
 ]
 ```
 
@@ -1278,12 +1344,33 @@ Also assert artifacts include:
     "value-proposition.md",
     "opportunity-tree.md",
     "experiment-plan.md",
+    "tracking-plan.md",
     "metric-spec.md",
     "acceptance-scenarios.md",
 ]
 ```
 
-- [ ] **Step 2: Run RED test**
+Also assert eval fields include:
+
+```python
+[
+    "product_hypothesis_contract_present",
+    "target_user_segment_contract_present",
+    "value_proposition_trace_present",
+    "opportunity_solution_assumption_trace_present",
+    "metric_hardening_contract_present",
+    "analytics_tracking_plan_contract_present",
+    "privacy_classification_for_metrics_present",
+    "ai_behavior_eval_contract_present",
+    "post_release_measurement_contract_present",
+    "workflow_promotion_value_evidence_present",
+    "decision_horizon_contract_present",
+    "outcome_metric_level_contract_present",
+    "metric_scope_contract_present",
+]
+```
+
+- [x] **Step 2: Run RED test**
 
 Run:
 
@@ -1293,7 +1380,7 @@ python -m unittest tests.product_agent_os.test_methodology_catalog.MethodologyCa
 
 Expected: fail because business/product gates and artifacts are missing.
 
-- [ ] **Step 3: Add business/product catalog data**
+- [x] **Step 3: Add business/product catalog data**
 
 Modify `methodology-catalog.json` domain `business_product` with:
 
@@ -1302,34 +1389,122 @@ Modify `methodology-catalog.json` domain `business_product` with:
 - maturity_impact: `baseline`, `team`, `production`;
 - complexity_impact: `standard`, `high_risk` when AI/product promise/measurement claims exist;
 - track8_scenarios: `greenfield_idea`, `release_packaging`, `ai_eval_regression`, `standard_feature`;
+- decision_horizons: `discovery`, `MVP`, `beta`, `production`, `scale`;
 - gates and artifacts from Step 1;
-- overlaps: quality eval evidence, delivery measurement, requirements acceptance scenarios.
+- eval_fields from Step 1;
+- overlaps: quality eval evidence, delivery measurement, requirements acceptance scenarios, AI behavior evals, data/privacy classification and workflow promotion.
 
-- [ ] **Step 4: Add artifact templates**
+- [x] **Step 4: Add artifact templates**
 
 Create:
 
-- `product-brief.md`: user/segment, problem/opportunity, outcome, non-goals, assumptions, evidence gaps, owner.
+- `product-brief.md`: user/segment, problem/opportunity, decision horizon, business outcome, product outcome, feature traction metric, non-goals, assumptions, evidence gaps, owner.
 - `value-proposition.md`: jobs, pains, gains, pain relievers, gain creators, evidence source, owner.
 - `opportunity-tree.md`: desired outcome, opportunities, candidate solutions, riskiest assumptions, tests, decision.
-- `experiment-plan.md`: smallest build, metric, learning threshold, pivot/persevere rule, owner, review date.
+- `experiment-plan.md`: decision horizon, hypothesis, smallest build, measure plan, learning threshold, pivot/persevere rule, owner, review date.
+- `tracking-plan.md`: event name, business question, properties, property types, taxonomy/naming convention, data owner, instrumentation owner, validation command/report, dashboard/report, privacy classification, retention and review owner.
 
-Every template must include `Source status:`, owner, evidence, accepted gap and residual risk fields.
+Every template must include `Source status:`, owner, evidence, accepted gap and residual risk fields. `metric-spec.md` or `tracking-plan.md` must mention HEART metrics as optional lenses: `Happiness`, `Engagement`, `Adoption`, `Retention` and `Task success`.
 
-- [ ] **Step 5: Register templates**
+- [x] **Step 5: Add RED renderer/template tests**
+
+Modify `tests/product_agent_os/test_infrastructure_templates.py` and assert the renderer registry includes these targets exactly once:
+
+```python
+[
+    ".codex/artifact-templates/product-brief.md",
+    ".codex/artifact-templates/value-proposition.md",
+    ".codex/artifact-templates/opportunity-tree.md",
+    ".codex/artifact-templates/experiment-plan.md",
+    ".codex/artifact-templates/tracking-plan.md",
+]
+```
+
+Also add a focused template-content test that checks each new template contains:
+
+```python
+[
+    "Source status:",
+    "Owner",
+    "Evidence",
+    "Accepted Gap",
+    "Residual Risk",
+]
+```
+
+Run:
+
+```powershell
+python -m unittest tests.product_agent_os.test_infrastructure_templates.InfrastructureTemplateTest -v
+```
+
+Expected: fail before the templates and registry entries exist.
+
+- [x] **Step 6: Register templates**
 
 Modify `plugins/product-agent-os/scripts/product_agent_os/templates.py` so the renderer can stage the new artifact templates under `.codex/artifact-templates/`.
 
-- [ ] **Step 6: Add audit recommendations**
+- [x] **Step 7: Add RED audit tests**
+
+Modify `tests/product_agent_os/test_methodology_audit.py` with focused tests that assert:
+
+- `build_methodology_audit(..., intent_hint="ship MVP product metric experiment")` marks `business_product` as applicable.
+- product implementation or release intent without product hypothesis produces a `business_product` recommendation for `product_hypothesis_present` with `P1_high_risk` or stronger.
+- discovery-only or empty workspace MVP intent can use `P2_recommended` for `product_hypothesis_present`.
+- metric claim without counter-metric, guardrail, qualitative review or privacy classification produces `metric_hardening_when_product_behavior_changes` with `P1_high_risk`.
+- AI behavior change produces `ai_product_eval_when_ai_behavior_changes` with `P1_high_risk`.
+- product analytics or usage data claim produces `analytics_tracking_plan_present` and artifact `tracking-plan.md`.
+- product success claim after release without actual metrics, eval result, user feedback or accepted evidence gap produces `release_measurement_evidence_present`.
+- North Star or product success language for a small isolated slice records `outcome_metric_level_separated` and asks whether the metric is business outcome, product outcome or feature traction.
+- intent without telemetry can still recommend manual/qualitative/support evidence, but must not claim product success from planned measurement alone.
+- workflow promotion intent without product metric can satisfy `workflow_promotion_value_evidence_present` with engineering time saved, verification, owner and safety boundary evidence.
+- typo-only docs edit, formatting-only edit and dependency pin without behavior impact keep `business_product` not applicable or `not_applicable`.
+
+Run:
+
+```powershell
+python -m unittest tests.product_agent_os.test_methodology_audit.MethodologyAuditContractTest -v
+```
+
+Expected: fail before audit recommendations and false-positive rules are implemented.
+
+- [x] **Step 8: Add audit recommendations**
 
 Modify `methodology_audit.py`:
 
 - product/MVP/value/metric intent triggers `business_product`;
-- missing product hypothesis creates `P2_recommended`;
+- missing product hypothesis creates `P2_recommended` for discovery-only or empty workspace audits;
+- missing product hypothesis creates `P1_high_risk` or stronger for explicit implementation, ship or release behavior-changing intent;
 - metric claim without guardrails creates `P1_high_risk`;
 - AI behavior change creates `P1_high_risk` for `ai_product_eval_when_ai_behavior_changes`.
+- product usage data or analytics claims without event taxonomy, properties, owner, validation plan and privacy classification create `P1_high_risk` for `analytics_tracking_plan_present`.
+- missing qualitative feedback loop creates `P2_recommended` unless the success claim relies only on a proxy metric, where it remains part of `P1_high_risk` metric hardening.
+- product success claim after release without actual metrics, eval result, user feedback or explicit evidence gap creates `P1_high_risk` for `release_measurement_evidence_present`.
+- missing decision horizon creates `P2_recommended` for `decision_horizon_present`.
+- North Star wording on a local feature metric creates `P2_recommended` for `outcome_metric_level_separated`.
+- product metric work without `metric_scope` creates `P1_high_risk` for `metric_scope_classified` when implementation/release intent is present and `P2_recommended` for discovery-only intent.
+- no-production-telemetry cases should recommend manual, qualitative, support or owner review evidence as acceptable post-release measurement substitutes, while still forbidding success claims without current evidence or an accepted gap.
 
-- [ ] **Step 7: Update lifecycle skills**
+- [x] **Step 9: Update control-plane, release and metric templates**
+
+Modify `plugins/product-agent-os/assets/templates/control-plane/REQUIREMENTS.md`, `plugins/product-agent-os/assets/templates/control-plane/PLAN.md`, `plugins/product-agent-os/assets/templates/control-plane/EVALS.md`, `plugins/product-agent-os/assets/templates/control-plane/RUNLOG.md`, `plugins/product-agent-os/assets/templates/pr/release-notes.md` and `plugins/product-agent-os/assets/templates/artifact-templates/metric-spec.md` so behavior-changing work captures:
+
+- target user segment and explicitly excluded users;
+- opportunity/problem statement that is not just a solution request;
+- decision horizon: `discovery | MVP | beta | production | scale`;
+- business outcome, product outcome and feature traction metric as separate fields;
+- `metric_scope`: `required | not_applicable | accepted_gap`;
+- value proposition evidence or accepted evidence gap;
+- primary metric, input metric, counter-metric, proxy metric risk and guardrail;
+- optional HEART metrics categories when UX/product quality metrics apply;
+- qualitative feedback loop;
+- privacy classification, retention and data minimization for metrics;
+- analytics tracking plan status when product usage data is claimed;
+- post-release measurement plan and release measurement evidence.
+- no-production-telemetry fallback: manual, qualitative, support, customer-success, owner review or explicit accepted gap evidence;
+- release notes fields for affected users, measurement window and rollback/disable signal.
+
+- [x] **Step 10: Update lifecycle skills**
 
 Add concise wording:
 
@@ -1337,19 +1512,61 @@ Add concise wording:
 - `test-eval-designer`: product behavior claims need metric/eval evidence.
 - `risk-reviewer`: proxy metric and AI product value claims need counter-metric or accepted gap.
 - `learning-loop-maintainer`: post-release measurement feeds workflow promotion.
+- `implementation-planner`: behavior-changing implementation must not proceed when product hypothesis, acceptance scenario, metric/gap or owner are missing.
+- `automation-promoter`: workflow promotion needs manual stability, value evidence, owner, verification and safety boundary; internal workflows may use engineering time saved when external product metrics are not applicable.
 
-- [ ] **Step 8: Run focused verification**
+Add or extend lifecycle skill tests in `tests/product_agent_os/test_lifecycle_skills.py` so these terms are enforced:
+
+```python
+[
+    "product_hypothesis_present",
+    "value_proposition_evidence_present",
+    "analytics_tracking_plan_present",
+    "qualitative_feedback_loop_present",
+    "release_measurement_evidence_present",
+    "decision_horizon_present",
+    "outcome_metric_level_separated",
+    "metric_scope_classified",
+    "tracking-plan.md",
+    "engineering time saved",
+]
+```
+
+- [x] **Step 11: Add fixture eval check**
+
+Modify `plugins/product-agent-os/scripts/run_fixture_eval.py` and `tests/product_agent_os/test_fixture_eval_runner.py` with a check named `business_product_contract_present`.
+
+The check must verify catalog, templates and lifecycle text contain the T9-D1 gates and artifacts, including:
+
+```python
+[
+    "product_hypothesis_present",
+    "value_proposition_evidence_present",
+    "analytics_tracking_plan_present",
+    "qualitative_feedback_loop_present",
+    "release_measurement_evidence_present",
+    "decision_horizon_present",
+    "outcome_metric_level_separated",
+    "metric_scope_classified",
+    "tracking-plan.md",
+    "release-notes.md",
+]
+```
+
+Keep the fixture eval read-only and do not require every simple workspace to apply the business/product domain.
+
+- [x] **Step 12: Run focused verification**
 
 Run:
 
 ```powershell
-python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_infrastructure_renderer -v
+python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_fixture_eval_runner -v
 python plugins\product-agent-os\scripts\run_fixture_eval.py
 ```
 
-Expected: all commands exit `0`; renderer file count increases by the number of registered templates.
+Expected: all commands exit `0`; renderer file count increases by 5 registered artifact templates.
 
-- [ ] **Step 9: Update Track 9 backlog**
+- [x] **Step 13: Update Track 9 backlog**
 
 Modify `docs/sources/product-agent-os-track-9-backlog.md`:
 
@@ -1357,9 +1574,11 @@ Modify `docs/sources/product-agent-os-track-9-backlog.md`:
 - record gates added;
 - record templates added;
 - record verification evidence;
-- record overlaps for synthesis.
+- record overlaps for synthesis;
+- record the severity resolution for `product_hypothesis_present`.
+- record decision horizon, outcome/metric split, telemetry fallback and internal workflow promotion policy.
 
-- [ ] **Step 10: Commit T9-D1**
+- [x] **Step 14: Commit T9-D1**
 
 Run:
 

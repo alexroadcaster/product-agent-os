@@ -151,17 +151,31 @@ Generated at: {generated_at}
 ## Metric Hardening Evals
 
 - `metric_hardening_when_product_behavior_changes`:
+- Product hypothesis (`product_hypothesis_present`):
+- Decision horizon (`decision_horizon_present`):
+- Business outcome:
+- Product outcome:
+- Feature traction metric:
+- Outcome metric level separated (`outcome_metric_level_separated`):
+- Metric scope (`metric_scope_classified`):
 - North Star or primary value metric:
 - Input metric:
 - Counter-metric:
 - Proxy metric risk:
 - Guardrail:
 - Qualitative review:
+- Qualitative feedback loop (`qualitative_feedback_loop_present`):
+- Optional HEART metrics: Happiness, Engagement, Adoption, Retention, Task success.
+- Analytics tracking plan (`analytics_tracking_plan_present`):
 - Privacy classification:
+- Privacy classification for metrics (`privacy_classification_for_metrics_present`):
 - Retention period:
 - Data minimization:
 - Owner signoff:
 - Post-release review evidence:
+- Release measurement evidence (`release_measurement_evidence_present`):
+- AI product eval gate (`ai_product_eval_when_ai_behavior_changes`):
+- Value proposition evidence (`value_proposition_evidence_present`):
 - Do not claim success from a proxy metric without counter-metric, guardrail, qualitative review, and post-release review evidence:
 
 ## Regression Notes

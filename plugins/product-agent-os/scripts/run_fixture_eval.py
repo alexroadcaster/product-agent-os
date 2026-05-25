@@ -119,6 +119,76 @@ METRIC_HARDENING_TERMS = (
     "post-release review evidence",
     "do not claim success",
 )
+BUSINESS_PRODUCT_GATES = (
+    "product_hypothesis_present",
+    "target_user_segment_present",
+    "value_proposition_evidence_present",
+    "opportunity_not_solution_present",
+    "success_metric_present",
+    "metric_hardening_when_product_behavior_changes",
+    "analytics_tracking_plan_present",
+    "qualitative_feedback_loop_present",
+    "privacy_classification_for_metrics_present",
+    "ai_product_eval_when_ai_behavior_changes",
+    "post_release_measurement_plan_present",
+    "release_measurement_evidence_present",
+    "workflow_promotion_value_evidence_present",
+    "decision_horizon_present",
+    "outcome_metric_level_separated",
+    "metric_scope_classified",
+)
+BUSINESS_PRODUCT_ARTIFACTS = (
+    "product-brief.md",
+    "value-proposition.md",
+    "opportunity-tree.md",
+    "experiment-plan.md",
+    "tracking-plan.md",
+    "metric-spec.md",
+    "acceptance-scenarios.md",
+)
+BUSINESS_PRODUCT_EVAL_FIELDS = (
+    "product_hypothesis_contract_present",
+    "target_user_segment_contract_present",
+    "value_proposition_trace_present",
+    "opportunity_solution_assumption_trace_present",
+    "metric_hardening_contract_present",
+    "analytics_tracking_plan_contract_present",
+    "privacy_classification_for_metrics_present",
+    "ai_behavior_eval_contract_present",
+    "post_release_measurement_contract_present",
+    "workflow_promotion_value_evidence_present",
+    "decision_horizon_contract_present",
+    "outcome_metric_level_contract_present",
+    "metric_scope_contract_present",
+)
+BUSINESS_PRODUCT_DECISION_HORIZONS = (
+    "discovery",
+    "MVP",
+    "beta",
+    "production",
+    "scale",
+)
+BUSINESS_PRODUCT_TERMS = (
+    "product_hypothesis_present",
+    "value_proposition_evidence_present",
+    "analytics_tracking_plan_present",
+    "qualitative_feedback_loop_present",
+    "release_measurement_evidence_present",
+    "decision_horizon_present",
+    "outcome_metric_level_separated",
+    "metric_scope_classified",
+    "tracking-plan.md",
+    "product-brief.md",
+    "value-proposition.md",
+    "opportunity-tree.md",
+    "experiment-plan.md",
+    "business outcome",
+    "product outcome",
+    "feature traction metric",
+    "heart",
+    "no-production-telemetry",
+    "engineering time saved",
+)
 COMPLETION_EVIDENCE_TERMS = (
     "evidence_before_completion",
     "evidence-before-completion",
@@ -526,6 +596,7 @@ def _expected_checks(
             _transcript_session_eval_runner_contract_present()
         )
         checks["standards_trigger_contract_present"] = _standards_trigger_contract_present()
+        checks["business_product_contract_present"] = _business_product_contract_present()
         checks["methodology_applicability_contract_present"] = (
             _methodology_applicability_contract_present(audit)
         )
@@ -772,6 +843,56 @@ def _metric_hardening_contract_present() -> bool:
     ]
     payload = "\n".join(path.read_text(encoding="utf-8") for path in paths).lower()
     return all(term in payload for term in METRIC_HARDENING_TERMS)
+
+
+def _business_product_contract_present() -> bool:
+    try:
+        catalog = load_methodology_catalog()
+    except (OSError, ValueError, json.JSONDecodeError):
+        return False
+    if validate_methodology_catalog(catalog):
+        return False
+    domains = {
+        str(domain.get("id")): domain
+        for domain in catalog.get("domains", [])
+        if isinstance(domain, dict) and domain.get("id")
+    }
+    business_product = domains.get("business_product")
+    if not isinstance(business_product, dict):
+        return False
+    if not set(BUSINESS_PRODUCT_GATES).issubset(set(business_product.get("gates", []))):
+        return False
+    if not set(BUSINESS_PRODUCT_ARTIFACTS).issubset(set(business_product.get("artifacts", []))):
+        return False
+    if not set(BUSINESS_PRODUCT_EVAL_FIELDS).issubset(set(business_product.get("eval_fields", []))):
+        return False
+    if tuple(business_product.get("decision_horizons", [])) != BUSINESS_PRODUCT_DECISION_HORIZONS:
+        return False
+
+    paths = [
+        PLUGIN_ROOT / "assets" / "methodology" / "methodology-catalog.json",
+        TEMPLATE_ROOT / "artifact-templates" / "product-brief.md",
+        TEMPLATE_ROOT / "artifact-templates" / "value-proposition.md",
+        TEMPLATE_ROOT / "artifact-templates" / "opportunity-tree.md",
+        TEMPLATE_ROOT / "artifact-templates" / "experiment-plan.md",
+        TEMPLATE_ROOT / "artifact-templates" / "tracking-plan.md",
+        TEMPLATE_ROOT / "artifact-templates" / "metric-spec.md",
+        TEMPLATE_ROOT / "control-plane" / "REQUIREMENTS.md",
+        TEMPLATE_ROOT / "control-plane" / "PLAN.md",
+        TEMPLATE_ROOT / "control-plane" / "EVALS.md",
+        TEMPLATE_ROOT / "control-plane" / "RUNLOG.md",
+        TEMPLATE_ROOT / "pr" / "release-notes.md",
+        PLUGIN_ROOT / "skills" / "requirements-author" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "implementation-planner" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "test-eval-designer" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "risk-reviewer" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "learning-loop-maintainer" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "automation-promoter" / "SKILL.md",
+    ]
+    payload = "\n".join(
+        f"{path.name}\n{path.read_text(encoding='utf-8')}" for path in paths
+    ).lower()
+    return all(term in payload for term in BUSINESS_PRODUCT_TERMS)
 
 
 def _completion_evidence_contract_present() -> bool:

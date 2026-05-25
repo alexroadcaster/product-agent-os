@@ -27,6 +27,7 @@ Read shared references when needed: [Lifecycle states](../references/lifecycle-s
 - Manual stability evidence from repeated successful manual runs.
 - Workflow purpose, trigger or cadence, owner, expected inputs, and expected outputs.
 - Verification method, known failure modes, rollback or disable path, and recovery notes.
+- Business/Product methodology evidence for internal workflow promotion when automation is justified by product or operating value: `product_hypothesis_present`, `value_proposition_evidence_present`, `analytics_tracking_plan_present`, `qualitative_feedback_loop_present`, `release_measurement_evidence_present`, `decision_horizon_present`, `outcome_metric_level_separated`, `metric_scope_classified`, `.codex/artifact-templates/tracking-plan.md`, engineering time saved, owner acceptance, and residual risk.
 - Write policy preference: `read_only`, `draft_only`, or `approved_write`.
 - Approval requirements, scope boundaries, source status, and unsupported claims.
 
@@ -38,8 +39,11 @@ Read shared references when needed: [Lifecycle states](../references/lifecycle-s
 4. Name verification checks, failure modes, owner, trigger or cadence, and rollback_or_disable path.
 5. Mark approval requirements for any future write, schedule, external action, or privileged operation.
 6. Return `candidate_only` readiness without activating, scheduling, connecting, or executing anything.
-7. Block promotion when manual stability evidence, owner, stable inputs, stable outputs, verification, or rollback_or_disable is missing.
-8. Return next lifecycle state `maintenance` only when candidate readiness and blockers are explicit.
+7. For internal workflow promotion, require product or operating value evidence such as engineering time saved, cycle-time reduction, quality improvement, or reduced manual error; map it to `value_proposition_evidence_present`, `outcome_metric_level_separated`, and `metric_scope_classified`.
+8. If the automation depends on product analytics, telemetry, usage data, or dashboards, require `analytics_tracking_plan_present` and `.codex/artifact-templates/tracking-plan.md` or block promotion with an accepted gap requirement.
+9. Keep `product_hypothesis_present`, `qualitative_feedback_loop_present`, `release_measurement_evidence_present`, and `decision_horizon_present` explicit when the automation candidate is promoted as a product or workflow improvement.
+10. Block promotion when manual stability evidence, owner, stable inputs, stable outputs, verification, rollback_or_disable, value evidence, or residual risk is missing.
+11. Return next lifecycle state `maintenance` only when candidate readiness and blockers are explicit.
 
 ## Outputs
 
@@ -57,6 +61,19 @@ automation_candidate:
   failure_modes: []
   owner: ""
   rollback_or_disable: ""
+  business_product_value:
+    gates:
+      - "product_hypothesis_present"
+      - "value_proposition_evidence_present"
+      - "analytics_tracking_plan_present"
+      - "qualitative_feedback_loop_present"
+      - "release_measurement_evidence_present"
+      - "decision_horizon_present"
+      - "outcome_metric_level_separated"
+      - "metric_scope_classified"
+    tracking_plan_artifact: ".codex/artifact-templates/tracking-plan.md"
+    engineering_time_saved: ""
+    residual_risk: ""
   approval_required: []
   readiness: "candidate_only"
   next_lifecycle_state: "maintenance"
@@ -68,7 +85,7 @@ Evidence-before-completion (`evidence_before_completion`): do not make a ready c
 
 ## Verification
 
-Check that manual stability evidence is present, owner is named, required inputs and stable outputs are explicit, write policy is one allowed value, rollback_or_disable is actionable, approval requirements are listed, and readiness remains `candidate_only`. Do not claim without evidence.
+Check that manual stability evidence is present, owner is named, required inputs and stable outputs are explicit, write policy is one allowed value, rollback_or_disable is actionable, approval requirements are listed, and readiness remains `candidate_only`. For internal workflow promotion, check engineering time saved or another value signal before using `value_proposition_evidence_present`, and keep `product_hypothesis_present`, `analytics_tracking_plan_present`, `qualitative_feedback_loop_present`, `release_measurement_evidence_present`, `decision_horizon_present`, `outcome_metric_level_separated`, `metric_scope_classified`, and `.codex/artifact-templates/tracking-plan.md` explicit when applicable. Do not claim without evidence.
 
 ## Failure Modes
 
@@ -77,6 +94,8 @@ Check that manual stability evidence is present, owner is named, required inputs
 - If stable inputs or stable outputs are missing, stop and request a clearer workflow contract.
 - If verification or failure modes are missing, stop and request evidence from manual runs.
 - If rollback_or_disable is missing, stop and request an operational disable path.
+- If engineering time saved or another value signal is missing for internal workflow promotion, keep readiness `candidate_only` with blockers.
+- If product analytics evidence is required but `analytics_tracking_plan_present` or `.codex/artifact-templates/tracking-plan.md` is missing, keep readiness `candidate_only` with blockers.
 - If approval is needed, stop before writes, schedules, external actions, or runtime execution.
 
 ## Final Response Contract

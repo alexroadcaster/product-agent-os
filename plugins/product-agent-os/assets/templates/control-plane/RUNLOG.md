@@ -151,6 +151,14 @@ Generated at: {generated_at}
 
 ## Measurement Notes
 
+- Product hypothesis (`product_hypothesis_present`):
+- Value proposition evidence (`value_proposition_evidence_present`):
+- Decision horizon (`decision_horizon_present`): `discovery | MVP | beta | production | scale`
+- Business outcome:
+- Product outcome:
+- Feature traction metric:
+- Outcome metric level separated (`outcome_metric_level_separated`):
+- Metric scope (`metric_scope_classified`): `required | not_applicable | accepted_gap`
 - Metric:
 - Baseline:
 - Current observation:
@@ -159,11 +167,17 @@ Generated at: {generated_at}
 - Proxy metric risk:
 - Guardrail:
 - Qualitative review:
+- Qualitative feedback loop (`qualitative_feedback_loop_present`):
+- Optional HEART metrics: Happiness, Engagement, Adoption, Retention, Task success.
+- Analytics tracking plan (`analytics_tracking_plan_present`):
 - Privacy classification:
 - Retention period:
 - Data minimization:
 - Owner signoff:
 - Post-release review evidence:
+- Release measurement evidence (`release_measurement_evidence_present`):
+- No-production-telemetry fallback:
+- Workflow promotion value evidence (`workflow_promotion_value_evidence_present`):
 - Do not claim success from a proxy metric without counter-metric, guardrail, qualitative review, and post-release review evidence:
 - Decision or next experiment:
 

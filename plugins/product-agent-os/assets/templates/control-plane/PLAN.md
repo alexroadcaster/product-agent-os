@@ -29,6 +29,13 @@ Generated at: {generated_at}
 - Slice:
 - User value:
 - Product hypothesis or metric:
+- Product hypothesis gate (`product_hypothesis_present`):
+- Decision horizon (`decision_horizon_present`): `discovery | MVP | beta | production | scale`
+- Business outcome:
+- Product outcome:
+- Feature traction metric:
+- Outcome metric level separated (`outcome_metric_level_separated`):
+- Metric scope (`metric_scope_classified`): `required | not_applicable | accepted_gap`
 - Architecture boundary:
 - Exact files:
 - Owned files:
@@ -64,6 +71,11 @@ Generated at: {generated_at}
 - Input metric:
 - Counter-metric:
 - Proxy metric risk:
+- Value proposition evidence (`value_proposition_evidence_present`):
+- Analytics tracking plan (`analytics_tracking_plan_present`):
+- Qualitative feedback loop (`qualitative_feedback_loop_present`):
+- Release measurement evidence (`release_measurement_evidence_present`):
+- No-production-telemetry fallback:
 - Guardrail:
 - Qualitative review:
 - Privacy classification:
@@ -147,6 +159,7 @@ Generated at: {generated_at}
 ## Methodology Gates
 
 - Product/data gate: hypothesis, metric, and measurement plan are clear or marked not applicable.
+- Business/Product gate: product_hypothesis_present, value_proposition_evidence_present, decision_horizon_present, outcome_metric_level_separated, metric_scope_classified, analytics_tracking_plan_present, qualitative_feedback_loop_present, and release_measurement_evidence_present are satisfied or explicitly gapped before behavior-changing implementation.
 - Metric hardening gate: `metric_hardening_when_product_behavior_changes` requires a North Star or primary value metric, input metric, counter-metric, proxy metric risk, guardrail, qualitative review, privacy classification, retention period, data minimization, owner signoff, and post-release review evidence for product behavior changes. Do not claim success from a proxy metric without the counter evidence.
 - Architecture gate: slice boundary, dependency rule, public contract, and ownership are clear.
 - Domain model gate: `domain_model_when_complex_domain` is satisfied or explicitly not applicable for simple CRUD/MVP work.
