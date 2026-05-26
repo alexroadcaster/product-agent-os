@@ -447,6 +447,7 @@ def _detect_methodology_signals(files: set[str], profile: dict[str, Any]) -> dic
             or "promptfoo" in path
             for path in lowered
         ),
+        "llm_ai_rag": _has_llm_ai_rag_signal(lowered),
         "quality_testing_evals": _has_quality_testing_signal(lowered, profile),
         "codex_agentic_workflow": _has_codex_agentic_workflow_signal(lowered),
         "metrics": _has_any(files, ["metrics", "analytics", "telemetry", "observability"]),
@@ -1211,6 +1212,59 @@ def _ai_eval_signals(files: set[str]) -> dict[str, Any]:
         "failure_examples_status": "present_unverified" if failure_examples else "applicable_missing",
         "verification_status": "applicable_missing",
         "note": "present_unverified until eval rerun, baseline comparison, or owner evidence confirms quality",
+    }
+
+
+def _source_packet(sources: list[str]) -> dict[str, Any]:
+    return {
+        "sources": sources[:20],
+        "status": "present_unverified" if sources else "applicable_missing",
+    }
+
+
+def _llm_ai_rag_signals(files: set[str]) -> dict[str, Any]:
+    prompt_sources = sorted(path for path in files if _is_ai_prompt_context_source(path))
+    model_config_sources = sorted(path for path in files if _is_ai_model_config_source(path))
+    structured_output_sources = sorted(path for path in files if _is_ai_structured_output_source(path))
+    tool_sources = sorted(path for path in files if _is_ai_tool_source(path))
+    retrieval_sources = sorted(path for path in files if _is_ai_retrieval_source(path))
+    dataset_sources = sorted(path for path in files if _is_ai_dataset_source(path))
+    eval_sources = sorted(path for path in files if _is_ai_eval_source(path))
+    agent_trace_sources = sorted(path for path in files if _is_ai_agent_trace_source(path))
+    safety_sources = sorted(path for path in files if _is_ai_safety_source(path))
+    latency_cost_sources = sorted(path for path in files if _is_ai_latency_cost_source(path))
+    core_signal_present = any(
+        [
+            prompt_sources,
+            model_config_sources,
+            structured_output_sources,
+            tool_sources,
+            retrieval_sources,
+            dataset_sources,
+            eval_sources,
+            agent_trace_sources,
+            safety_sources,
+        ]
+    )
+
+    return {
+        "prompt_sources": _source_packet(prompt_sources),
+        "model_config_sources": _source_packet(model_config_sources),
+        "structured_output_sources": _source_packet(structured_output_sources),
+        "tool_sources": _source_packet(tool_sources),
+        "retrieval_sources": _source_packet(retrieval_sources),
+        "dataset_sources": _source_packet(dataset_sources),
+        "eval_sources": _source_packet(eval_sources),
+        "agent_trace_sources": _source_packet(agent_trace_sources),
+        "safety_sources": _source_packet(safety_sources),
+        "latency_cost_sources": _source_packet(latency_cost_sources),
+        "verification_status": "applicable_missing" if core_signal_present else "not_applicable",
+        "note": (
+            "AI/RAG discovery is read-only: no model calls, eval runs, vector DB access, "
+            "external writes or owner approvals are performed; signals remain present_unverified."
+            if core_signal_present
+            else "no AI/RAG behavior signal detected"
+        ),
     }
 
 
@@ -2294,18 +2348,119 @@ def _is_ai_dataset_source(relative: str) -> bool:
     return (
         lowered.startswith(("datasets/", "evals/", "fixtures/"))
         and lowered.endswith((".json", ".jsonl", ".csv", ".yaml", ".yml", ".md"))
-        or any(term in lowered for term in ("dataset", "eval-cases", "testset"))
+        and _has_ai_rag_context_term(lowered)
+        or any(term in lowered for term in ("ai-dataset", "rag-dataset"))
+        or (any(term in lowered for term in ("eval-cases", "testset")) and _has_ai_rag_context_term(lowered))
     )
 
 
 def _is_ai_prompt_context_source(relative: str) -> bool:
     lowered = relative.lower()
-    return lowered.startswith("prompts/") or any(term in lowered for term in ("prompt", "context", "retrieval"))
+    return lowered.startswith("prompts/") or any(term in lowered for term in ("prompt", "retrieval"))
 
 
 def _is_ai_retrieval_source(relative: str) -> bool:
     lowered = relative.lower()
     return any(term in lowered for term in ("rag", "retrieval", "vector", "embedding", "rerank", "grounding"))
+
+
+def _is_ai_model_config_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return (
+        lowered.startswith(("model-config/", "config/ai/", "config/openai/"))
+        or (
+            any(term in lowered for term in ("model-config", "model_config", "openai", "llm"))
+            and lowered.endswith((".json", ".yaml", ".yml", ".toml", ".md"))
+        )
+    )
+
+
+def _is_ai_structured_output_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return (
+        lowered.startswith("structured-output/")
+        or any(term in lowered for term in ("structured-output", "structured_output", "json-schema", "json_schema"))
+        and _has_ai_rag_context_term(lowered)
+    )
+
+
+def _is_ai_tool_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return lowered.startswith("mcp/") or any(
+        term in lowered for term in ("ai-tool", "tool-call", "function_call", "function-call", "mcp")
+    ) or (
+        lowered.startswith(("tools/", "functions/"))
+        and "tool" in lowered
+    )
+
+
+def _is_ai_eval_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return any(term in lowered for term in ("promptfoo", "ragas")) or (
+        (lowered.startswith("evals/") or "eval" in lowered)
+        and _has_ai_rag_context_term(lowered)
+    )
+
+
+def _is_ai_agent_trace_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return (
+        lowered.startswith("agents/")
+        and any(term in lowered for term in ("trace", "span", "handoff", "workflow"))
+    ) or any(
+        term in lowered for term in ("agents-sdk", "openai-agents", "agent-trace", "open telemetry", "opentelemetry")
+    )
+
+
+def _is_ai_safety_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return lowered.startswith(("guardrails/", "safety/", "red-team/")) or any(
+        term in lowered for term in ("guardrail", "safety", "red-team", "red_team", "prompt-injection", "prompt_injection")
+    )
+
+
+def _has_ai_rag_context_term(lowered: str) -> bool:
+    normalized = lowered.replace("_", "-")
+    return any(
+        term in normalized
+        for term in (
+            "ai-",
+            "/ai/",
+            "llm",
+            "rag",
+            "retrieval",
+            "prompt",
+            "embedding",
+            "vector-store",
+            "vector-db",
+            "grounding",
+            "hallucination",
+            "judge",
+            "openai",
+            "ragas",
+            "promptfoo",
+            "guardrail",
+            "model-config",
+            "function-call",
+            "tool-call",
+            "structured-output",
+        )
+    )
+
+
+def _has_llm_ai_rag_signal(lowered_files: set[str]) -> bool:
+    return any(
+        _is_ai_prompt_context_source(path)
+        or _is_ai_model_config_source(path)
+        or _is_ai_structured_output_source(path)
+        or _is_ai_tool_source(path)
+        or _is_ai_retrieval_source(path)
+        or _is_ai_dataset_source(path)
+        or _is_ai_eval_source(path)
+        or _is_ai_agent_trace_source(path)
+        or _is_ai_safety_source(path)
+        for path in lowered_files
+    )
 
 
 def _is_ai_judge_rubric_source(relative: str) -> bool:
@@ -2704,6 +2859,7 @@ def _methodology_applicability(
     frontend_needed = signals.get("frontend", False)
     backend_needed = signals.get("backend", False)
     database_needed = signals.get("database_data", False) or signals.get("database_docs", False)
+    ai_rag_needed = signals.get("llm_ai_rag", False)
     standards_evidence = [
         name
         for name in ("architecture_docs", "adr", "openapi", "asyncapi", "codeowners", "ci")
@@ -2801,6 +2957,26 @@ def _methodology_applicability(
             ],
             "data owner",
             "detection alone does not prove database safety, migration readiness, production access approval or data quality",
+        ),
+        "llm_ai_rag_readiness": _applicability_packet(
+            "present_unverified" if ai_rag_needed else "not_applicable",
+            "AI/RAG behavior signal exists" if ai_rag_needed else "no AI/RAG behavior signal",
+            _signal_evidence(signals, "llm_ai_rag"),
+            [
+                "ai-behavior-spec.md",
+                "ai-eval-spec.md",
+                "eval-run-report.md",
+                "prompt-contract.md",
+                "model-decision-record.md",
+                "rag-source-inventory.md",
+                "rag-retrieval-config.md",
+                "grounding rubric",
+                "tool contract",
+                "approval boundary",
+                "cost and latency evidence or accepted explicit gap",
+            ],
+            "test-eval-designer",
+            "detection alone does not prove AI/RAG quality, grounding, tool safety, owner approval or cost/latency readiness",
         ),
         "docs_tooling_decision": _applicability_packet(
             docs_status if docs_status in READINESS_STATUSES else "present_unverified",
@@ -2963,6 +3139,7 @@ def _behavioral_route_inputs(
             "api_migration_signals": _api_migration_signals(files, signals),
             "api_integration_signals": _api_integration_signals(files),
             "ai_eval_signals": _ai_eval_signals(files),
+            "llm_ai_rag_signals": _llm_ai_rag_signals(files),
             "native_mobile_signals": _native_mobile_signals(files),
             "desktop_local_signals": _desktop_local_signals(files),
             "data_migration_signals": _data_migration_signals(files),
@@ -3076,6 +3253,7 @@ def analyze_workspace(root: str | Path, *, intent_hint: str = "") -> dict[str, A
         "legacy_onboarding_signals": _legacy_onboarding_signals(files, methodology_signals, existing_control_plane),
         "api_migration_signals": _api_migration_signals(files, methodology_signals),
         "ai_eval_signals": _ai_eval_signals(files),
+        "llm_ai_rag_signals": _llm_ai_rag_signals(files),
         "native_mobile_signals": _native_mobile_signals(files),
         "desktop_local_signals": _desktop_local_signals(files),
         "data_migration_signals": _data_migration_signals(files),

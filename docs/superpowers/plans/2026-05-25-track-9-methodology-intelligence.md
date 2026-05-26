@@ -2884,6 +2884,13 @@ This matrix maps the `docs/methodologies/llm-ai-rag.md` deep-audit findings to c
 | `T9-D10-M35` | Add AI incident workflow boundary | `plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py`, `plugins/product-agent-os/assets/templates/artifact-templates/guardrail-matrix.md`, `plugins/product-agent-os/assets/templates/artifact-templates/eval-run-report.md`, `plugins/product-agent-os/assets/templates/control-plane/RUNLOG.md`, `tests/product_agent_os/test_methodology_audit.py`, `tests/product_agent_os/test_infrastructure_templates.py` | Failed eval, hallucination report, unsafe output, tool misuse or data exposure routes to an incident boundary with owner, severity, evidence, mitigation, follow-up eval and Security/Privacy handoff when applicable. T9-D10 records the AI behavior incident contract without claiming full T9-D11 compliance closure. | Focused audit/template tests assert incident terms and security/privacy overlap language. |
 | `T9-D10-M36` | Add methodology report/render coverage for AI/RAG | `plugins/product-agent-os/scripts/product_agent_os/methodology_report.py`, `tests/product_agent_os/test_methodology_report.py`, `tests/product_agent_os/test_methodology_audit.py` | Methodology audit reports render AI/RAG recommendations, approval boundaries, residual risks, accepted gaps and safe next actions without leaking prompts, traces, private data, credentials or raw customer text. | `python -m unittest tests.product_agent_os.test_methodology_report tests.product_agent_os.test_methodology_audit -v` passes after implementation. |
 
+**T9-D10 execution batching policy:**
+
+- Execute T9-D10 rows in batches of up to 10 matrix rows: `M0..M9`, `M10..M19`, `M20..M29`, then `M30..M36`.
+- After each batch, stop broad implementation work and report to the user: rows completed, files changed, checks run, results, unresolved risks and the next batch.
+- Do not start the next T9-D10 batch until the previous batch report is written in the thread.
+- Commit, push and PR actions remain deferred until explicitly requested by the user.
+
 - [ ] **Step 1: Add RED test for AI/RAG gates**
 
 Assert `llm_ai_rag` gates include:

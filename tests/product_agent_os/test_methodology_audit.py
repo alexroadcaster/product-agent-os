@@ -1593,6 +1593,235 @@ class MethodologyAuditContractTest(unittest.TestCase):
         approval = self._recommendation_by_gate(destructive_result, "database_production_access_approval_present")
         self.assertEqual(approval["priority"], "P0_blocker")
 
+    def test_llm_ai_rag_recommends_baseline_rerun_prompt_model_tool_rag_safety_and_cost_gates(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "prompts").mkdir()
+            (root / "prompts" / "support.prompt.md").write_text("You are a synthetic support assistant.\n", encoding="utf-8")
+            (root / "rag").mkdir()
+            (root / "rag" / "retrieval.py").write_text("def retrieve():\n    return []\n", encoding="utf-8")
+            (root / "tools").mkdir()
+            (root / "tools" / "refund_tool.py").write_text("def refund():\n    return 'synthetic'\n", encoding="utf-8")
+            (root / "agents").mkdir()
+            (root / "agents" / "triage_agent.py").write_text("AGENT = 'synthetic'\n", encoding="utf-8")
+            (root / "schemas").mkdir()
+            (root / "schemas" / "answer.schema.json").write_text('{"type":"object"}\n', encoding="utf-8")
+
+            result = build_methodology_audit(
+                root,
+                intent_hint=(
+                    "ship user-facing high-volume AI prompt model migration RAG retrieval vector embeddings "
+                    "structured output schema tool function call MCP side-effecting approval agent routing "
+                    "guardrail safety prompt injection private data eval regression latency cost grounding"
+                ),
+            )
+
+        self.assertNotEqual(self._domain_status(result, "llm_ai_rag"), "not_applicable")
+        expected = {
+            "ai_behavior_spec_present": ("P1_high_risk", "ai-behavior-spec.md"),
+            "ai_baseline_eval_present": ("P0_blocker", "ai-eval-spec.md"),
+            "ai_eval_rerun_command_present": ("P1_high_risk", "eval-run-report.md"),
+            "ai_dataset_governance_present": ("P1_high_risk", "ai-dataset-manifest.md"),
+            "ai_prompt_contract_present": ("P1_high_risk", "prompt-contract.md"),
+            "ai_model_decision_record_present": ("P1_high_risk", "model-decision-record.md"),
+            "ai_structured_output_contract_present": ("P1_high_risk", "structured-output-schema.md"),
+            "ai_tool_contract_present": ("P1_high_risk", "ai-tool-contract.md"),
+            "ai_human_approval_boundary_present": ("P0_blocker", "guardrail-matrix.md"),
+            "rag_source_inventory_present": ("P1_high_risk", "rag-source-inventory.md"),
+            "rag_retrieval_config_present": ("P1_high_risk", "rag-retrieval-config.md"),
+            "rag_grounding_eval_present": ("P1_high_risk", "rag-eval-report.md"),
+            "agent_workflow_trace_present": ("P1_high_risk", "trace-evidence-packet.md"),
+            "ai_safety_review_present": ("P1_high_risk", "guardrail-matrix.md"),
+            "ai_cost_latency_budget_present": ("P1_high_risk", "ai-cost-latency-budget.md"),
+        }
+        for gate, (priority, artifact) in expected.items():
+            with self.subTest(gate=gate):
+                recommendation = self._recommendation_by_gate(result, gate)
+                self.assertEqual(recommendation["priority"], priority)
+                self.assertEqual(recommendation["artifact"], artifact)
+
+        rerun = self._recommendation_by_gate(result, "ai_eval_rerun_command_present")
+        rerun_evidence = " ".join(rerun["evidence_required"]).lower()
+        for expected_term in ["rerun command", "threshold", "baseline/current comparison", "failed cases", "current-run evidence"]:
+            with self.subTest(rerun_evidence=expected_term):
+                self.assertIn(expected_term, rerun_evidence)
+
+        prompt = self._recommendation_by_gate(result, "ai_prompt_contract_present")
+        prompt_evidence = " ".join(prompt["evidence_required"]).lower()
+        for expected_term in [
+            "version",
+            "role",
+            "goal",
+            "context",
+            "variables",
+            "constraints",
+            "examples",
+            "uncertainty",
+            "refusal",
+            "output format",
+            "verification route",
+        ]:
+            with self.subTest(prompt_evidence=expected_term):
+                self.assertIn(expected_term, prompt_evidence)
+
+        dataset = self._recommendation_by_gate(result, "ai_dataset_governance_present")
+        dataset_evidence = " ".join(dataset["evidence_required"]).lower()
+        for expected_term in [
+            "dataset source",
+            "privacy class",
+            "synthetic",
+            "sanitized",
+            "retention",
+            "owner",
+            "no secrets",
+            "credentials",
+            "private customer data",
+            "raw private chat",
+        ]:
+            with self.subTest(dataset_evidence=expected_term):
+                self.assertIn(expected_term, dataset_evidence)
+
+        model = self._recommendation_by_gate(result, "ai_model_decision_record_present")
+        model_evidence = " ".join(model["evidence_required"]).lower()
+        for expected_term in [
+            "snapshot/alias policy",
+            "reasoning effort",
+            "modality",
+            "context window",
+            "tool support",
+            "latency",
+            "cost",
+            "fallback",
+            "rollback",
+            "migration note",
+        ]:
+            with self.subTest(model_evidence=expected_term):
+                self.assertIn(expected_term, model_evidence)
+
+        structured = self._recommendation_by_gate(result, "ai_structured_output_contract_present")
+        structured_evidence = " ".join(structured["evidence_required"]).lower()
+        for expected_term in ["schema", "typed contract", "strictness", "parser validation", "refusal", "fallback", "failure cases"]:
+            with self.subTest(structured_evidence=expected_term):
+                self.assertIn(expected_term, structured_evidence)
+
+        tool = self._recommendation_by_gate(result, "ai_tool_contract_present")
+        tool_evidence = " ".join(tool["evidence_required"]).lower()
+        for expected_term in ["schema", "permissions", "side effects", "idempotency", "retries", "errors"]:
+            with self.subTest(tool_evidence=expected_term):
+                self.assertIn(expected_term, tool_evidence)
+
+        approval = self._recommendation_by_gate(result, "ai_human_approval_boundary_present")
+        approval_evidence = " ".join(approval["evidence_required"]).lower()
+        for expected_term in ["writes", "shell", "money", "data exposure", "irreversible", "approval route"]:
+            with self.subTest(approval_evidence=expected_term):
+                self.assertIn(expected_term, approval_evidence)
+
+        rag_source = self._recommendation_by_gate(result, "rag_source_inventory_present")
+        rag_source_evidence = " ".join(rag_source["evidence_required"]).lower()
+        for expected_term in ["corpus authority", "freshness", "owner", "ingestion path", "exclusions", "source policy", "unsupported-claim behavior"]:
+            with self.subTest(rag_source_evidence=expected_term):
+                self.assertIn(expected_term, rag_source_evidence)
+
+        rag_config = self._recommendation_by_gate(result, "rag_retrieval_config_present")
+        rag_config_evidence = " ".join(rag_config["evidence_required"]).lower()
+        for expected_term in ["chunking", "embeddings", "vector store", "filters", "top-k", "reranking", "metadata"]:
+            with self.subTest(rag_config_evidence=expected_term):
+                self.assertIn(expected_term, rag_config_evidence)
+
+        rag_eval = self._recommendation_by_gate(result, "rag_grounding_eval_present")
+        rag_eval_evidence = " ".join(rag_eval["evidence_required"]).lower()
+        for expected_term in ["context precision", "context recall", "faithfulness", "answer relevance", "grounding rubric", "failed queries", "source gaps"]:
+            with self.subTest(rag_eval_evidence=expected_term):
+                self.assertIn(expected_term, rag_eval_evidence)
+
+        agent_trace = self._recommendation_by_gate(result, "agent_workflow_trace_present")
+        agent_trace_evidence = " ".join(agent_trace["evidence_required"]).lower()
+        for expected_term in ["smallest-useful workflow", "trace id", "tool calls", "handoffs", "state", "final-answer owner", "stop conditions"]:
+            with self.subTest(agent_trace_evidence=expected_term):
+                self.assertIn(expected_term, agent_trace_evidence)
+
+        safety = self._recommendation_by_gate(result, "ai_safety_review_present")
+        safety_evidence = " ".join(safety["evidence_required"]).lower()
+        for expected_term in [
+            "prompt injection",
+            "private data",
+            "risky tool actions",
+            "minors",
+            "cybersecurity",
+            "finance",
+            "healthcare",
+            "legal",
+            "support",
+            "irreversible side effects",
+            "red-team cases",
+            "fallback",
+        ]:
+            with self.subTest(safety_evidence=expected_term):
+                self.assertIn(expected_term, safety_evidence)
+
+        budget = self._recommendation_by_gate(result, "ai_cost_latency_budget_present")
+        budget_evidence = " ".join(budget["evidence_required"]).lower()
+        for expected_term in ["timeout", "retry", "cache", "background/batch mode", "fallback", "token/cost budget", "measurement", "explicit unavailable gap"]:
+            with self.subTest(budget_evidence=expected_term):
+                self.assertIn(expected_term, budget_evidence)
+
+    def test_llm_ai_rag_false_positives_and_unsupported_claims(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        with tempfile.TemporaryDirectory() as tmp:
+            readme_root = Path(tmp) / "readme_only"
+            readme_root.mkdir()
+            (readme_root / "README.md").write_text("# Synthetic AI glossary typo cleanup\n", encoding="utf-8")
+            readme_result = build_methodology_audit(
+                readme_root,
+                intent_hint="typo-only docs edit without AI behavior change",
+            )
+
+            prompt_docs_root = Path(tmp) / "prompt_docs"
+            prompt_docs_root.mkdir()
+            (prompt_docs_root / "docs").mkdir()
+            (prompt_docs_root / "docs" / "prompt-writing.md").write_text(
+                "# Prompt writing editorial guide\n",
+                encoding="utf-8",
+            )
+            prompt_docs_result = build_methodology_audit(
+                prompt_docs_root,
+                intent_hint="non-behavior prompt docs cleanup without AI behavior change",
+            )
+
+            unsupported_root = Path(tmp) / "unsupported"
+            unsupported_root.mkdir()
+            (unsupported_root / "prompts").mkdir()
+            (unsupported_root / "prompts" / "answer.prompt.md").write_text("Synthetic prompt\n", encoding="utf-8")
+            unsupported_result = build_methodology_audit(
+                unsupported_root,
+                intent_hint=(
+                    "manual spot checks are enough for AI quality; citations alone prove RAG correctness; "
+                    "a tool schema is enough for safe tool use; model upgrade automatically improves product quality"
+                ),
+            )
+
+        self.assertEqual(self._domain_status(readme_result, "llm_ai_rag"), "not_applicable")
+        self.assertEqual(
+            [item for item in readme_result["recommendations"] if item["domain"] == "llm_ai_rag"],
+            [],
+        )
+        self.assertEqual(self._domain_status(prompt_docs_result, "llm_ai_rag"), "not_applicable")
+        self.assertEqual(
+            [item for item in prompt_docs_result["recommendations"] if item["domain"] == "llm_ai_rag"],
+            [],
+        )
+
+        unsupported = self._recommendation_by_gate(unsupported_result, "ai_unsupported_claims_rejected")
+        self.assertEqual(unsupported["priority"], "P1_high_risk")
+        self.assertEqual(unsupported["artifact"], "ai-eval-spec.md")
+        evidence = " ".join(unsupported["evidence_required"]).lower()
+        for expected_term in ["manual spot checks", "citations alone", "tool schema", "model upgrade"]:
+            with self.subTest(unsupported_evidence=expected_term):
+                self.assertIn(expected_term, evidence)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -969,6 +969,118 @@ class MethodologyCatalogContractTest(unittest.TestCase):
         self.assertIn("complex", database["complexity_impact"])
         self.assertIn("high_risk", database["complexity_impact"])
 
+    def test_llm_ai_rag_domain_has_track_nine_contract(self):
+        from product_agent_os.methodology_catalog import load_methodology_catalog
+
+        catalog = load_methodology_catalog()
+        domains = {domain["id"]: domain for domain in catalog["domains"]}
+        ai_rag = domains["llm_ai_rag"]
+
+        expected_gates = [
+            "ai_behavior_spec_present",
+            "ai_baseline_eval_present",
+            "ai_eval_rerun_command_present",
+            "ai_dataset_governance_present",
+            "ai_prompt_contract_present",
+            "ai_model_decision_record_present",
+            "ai_structured_output_contract_present",
+            "ai_tool_contract_present",
+            "ai_human_approval_boundary_present",
+            "rag_source_inventory_present",
+            "rag_retrieval_config_present",
+            "rag_grounding_eval_present",
+            "agent_workflow_trace_present",
+            "ai_safety_review_present",
+            "ai_cost_latency_budget_present",
+            "ai_no_private_data_in_fixtures_present",
+            "ai_unsupported_claims_rejected",
+        ]
+        expected_artifacts = [
+            "ai-behavior-spec.md",
+            "prompt-contract.md",
+            "model-decision-record.md",
+            "ai-eval-spec.md",
+            "eval-run-report.md",
+            "ai-dataset-manifest.md",
+            "structured-output-schema.md",
+            "ai-tool-contract.md",
+            "rag-source-inventory.md",
+            "rag-retrieval-config.md",
+            "rag-eval-report.md",
+            "grounding-rubric.md",
+            "agent-workflow-map.md",
+            "guardrail-matrix.md",
+            "trace-evidence-packet.md",
+            "ai-cost-latency-budget.md",
+            "security-risk-review.md",
+            "test-eval-matrix.md",
+        ]
+        expected_eval_fields = [
+            "llm_ai_rag_contract_present",
+            "ai_behavior_spec_contract_present",
+            "ai_baseline_eval_contract_present",
+            "ai_eval_rerun_command_contract_present",
+            "ai_dataset_governance_contract_present",
+            "ai_prompt_contract_contract_present",
+            "ai_model_decision_record_contract_present",
+            "ai_structured_output_contract_present",
+            "ai_tool_contract_contract_present",
+            "ai_human_approval_boundary_contract_present",
+            "rag_source_inventory_contract_present",
+            "rag_retrieval_config_contract_present",
+            "rag_grounding_eval_contract_present",
+            "agent_workflow_trace_contract_present",
+            "ai_safety_review_contract_present",
+            "ai_cost_latency_budget_contract_present",
+            "ai_no_private_data_in_fixtures_contract_present",
+            "unsupported_ai_claims_rejected_contract_present",
+        ]
+
+        for term in [
+            "prompt, model, output schema, tool, RAG corpus, retrieval config, agent routing, guardrail, eval, latency/cost or safety behavior change",
+            "AI eval, prompt, RAG, vector, embedding, model config, tool call, function call, Agents SDK trace or guardrail signal",
+            "RAG/file search/vector store source-grounding or retrieval quality claim",
+            "model, snapshot, reasoning, provider or prompt migration",
+            "tool/function/MCP capability that can write, spend money, call shell, expose data or affect users",
+        ]:
+            with self.subTest(applies_when=term):
+                self.assertIn(term, ai_rag["applies_when"])
+        for term in [
+            "typo-only docs edit without AI behavior change",
+            "frontend model folder or data model file without AI behavior",
+            "vector math or embedding word used outside AI/RAG context",
+            "package-name-only AI mention without prompt, model, retrieval, tool or eval surface",
+            "raw prompt inspection treated as sufficient eval evidence",
+        ]:
+            with self.subTest(not_applicable_when=term):
+                self.assertIn(term, ai_rag["not_applicable_when"])
+        for gate in expected_gates:
+            with self.subTest(gate=gate):
+                self.assertIn(gate, ai_rag["gates"])
+        for artifact in expected_artifacts:
+            with self.subTest(artifact=artifact):
+                self.assertIn(artifact, ai_rag["artifacts"])
+        for eval_field in expected_eval_fields:
+            with self.subTest(eval_field=eval_field):
+                self.assertIn(eval_field, ai_rag["eval_fields"])
+        for overlap in [
+            "quality eval baselines and rerun evidence",
+            "Codex/agentic workflow model reasoning and handoff policy",
+            "backend runtime, observability and cost budgets",
+            "API/tool contracts and external write approvals",
+            "database/RAG ingestion, retention and production data boundaries",
+            "security privacy prompt injection and sensitive data review",
+            "product value and AI behavior promises",
+            "delivery release rollback and model migration readiness",
+        ]:
+            with self.subTest(overlap=overlap):
+                self.assertIn(overlap, ai_rag["overlaps"])
+        self.assertIn("team", ai_rag["maturity_impact"])
+        self.assertIn("production", ai_rag["maturity_impact"])
+        self.assertIn("regulated", ai_rag["maturity_impact"])
+        self.assertIn("standard", ai_rag["complexity_impact"])
+        self.assertIn("high_risk", ai_rag["complexity_impact"])
+
 
 if __name__ == "__main__":
     unittest.main()

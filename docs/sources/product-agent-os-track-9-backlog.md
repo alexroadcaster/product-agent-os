@@ -34,7 +34,7 @@ Track 9 turns the methodology atlas in `docs/methodologies/` into read-only Prod
 | `done` | `T9-D7` | `backend.md` | Service boundaries, modular monolith vs microservices, runtime behavior, queues, observability, SLOs and rollback. |
 | `done` | `T9-D8` | `api-integrations.md` | OpenAPI/AsyncAPI/GraphQL/gRPC contracts, consumers, compatibility, errors, generated clients and external writes. |
 | `done` | `T9-D9` | `database-data.md` | Database inventory, schema source, migrations, transactions, data quality, classification and production access. |
-| `planned` | `T9-D10` | `llm-ai-rag.md` | AI behavior spec, eval baseline, prompts, models, tools, RAG sources, grounding, datasets, approvals and cost/latency. |
+| `in_progress` | `T9-D10` | `llm-ai-rag.md` | AI behavior spec, eval baseline, prompts, models, tools, RAG sources, grounding, datasets, approvals and cost/latency. |
 | `planned` | `T9-D11` | `security-privacy-compliance.md` | Threat surface, ASVS/SSDF, authorization tests, secrets, privacy impact, supply chain, audit logging and compliance overlays. |
 | `planned` | `T9-D12` | `delivery-release-operations.md` | Release readiness, versioning, changelog, artifact manifest, rollout, rollback, CI/CD governance, runbooks and operations. |
 
@@ -490,6 +490,64 @@ Verification:
 - Docs check: `python tools\check_docs.py` passed.
 - Strict MkDocs: `$env:PYTHONPATH='C:\tmp\codex_docs_mkdocs'; $env:NO_MKDOCS_2_WARNING='1'; python -m mkdocs build --strict` exited `0`.
 - Diff hygiene: `git diff --check` exited `0`.
+
+### `T9-D10` LLM / AI / RAG Integration
+
+Status: `in_progress`
+
+Source audited: `docs/methodologies/llm-ai-rag.md`
+
+Execution policy:
+
+- Implement T9-D10 in batches of up to 10 matrix rows and report after each batch: `M0..M9`, `M10..M19`, `M20..M29`, then `M30..M36`.
+- Commit, push and PR actions remain deferred until explicitly requested.
+
+Deep-audit deltas to implement:
+
+- Treat LLM / AI / RAG as a full methodology domain, not only the existing `ai_eval_regression` usage-mode workflow.
+- Separate gates for user-visible AI behavior, baseline eval, eval rerun report, dataset governance, prompt contract, model decision, structured output, tool/function/MCP contract, human approval boundary, RAG source inventory, retrieval config, grounding eval, agent workflow trace, safety review, cost/latency budget, no private data in fixtures and unsupported-claim rejection.
+- Preserve existing Track 8 `ai_eval_regression` route and `ai_eval_signals`, while adding a stable read-only `llm_ai_rag_signals` packet.
+- Detection remains `present_unverified`; no model calls, eval runs, vector DB access, external writes or owner approvals are performed during discovery.
+- Keep eval tooling conditional. Promptfoo, OpenAI Evals, pytest/Jest app-backed evals, Ragas and LangSmith are candidate tools, not universal defaults.
+- Record template naming compatibility: source names such as `prompt-contract.md`, `model-decision-record.md` and `rag-eval-report.md` are canonical unless aliases are explicitly mapped.
+- RAG quality must split retrieval quality and answer quality; citations alone are not proof.
+- Tool/function calling is product capability: schema, permissions, side effects, idempotency, retries, errors and approvals are part of the contract.
+- Agent workflows start with the smallest useful single-agent or manager pattern; multi-agent handoffs need owner and trace evidence.
+- Datasets, prompts, fixtures, traces and screenshots must exclude secrets, credentials, raw private chats and private customer data.
+
+Batch `M0..M9` implementation scope:
+
+- Add RED tests for `llm_ai_rag` catalog, audit recommendations, discovery packet, false positives, readiness gate and `ai-eval-spec.md` rerun evidence.
+- Fill `llm_ai_rag` catalog metadata and cross-domain overlaps.
+- Add read-only `llm_ai_rag_signals` and `llm_ai_rag_readiness_when_ai_behavior_changes`.
+- Add baseline eval and eval rerun/report recommendations with stable priority/artifact mapping.
+- Strengthen `ai-eval-spec.md` for user-visible behavior promise, current result, baseline/current comparison, failed cases, current-run evidence, inspection-only gap and dataset privacy terms.
+
+Batch `M0..M9` completed scope:
+
+- Implemented the `llm_ai_rag` catalog contract, read-only discovery packet, readiness packet, baseline/rerun audit recommendations, unsupported-claim handling and false-positive guard for generic eval docs, docs-only AI mentions, generic context maps, `AGENTS.md`, generic tools, generic schemas and latency/cost-only evidence.
+- Synced the existing fixture eval oracle with the new `llm_ai_rag_readiness` packet and conditional readiness gate id without adding the full AI/RAG fixture contract yet.
+- Verification: focused T9-D10 tests ran 172 tests with `OK`; full unittest ran 438 tests with `OK`; fixture eval exited `0` after 49 fixtures with 0 failures; `python tools\check_docs.py` passed; `git diff --check` exited `0`.
+
+Deferred from `M0..M9` to later T9-D10 batches:
+
+- Full AI/RAG artifact template set, renderer registration and dedicated AI/RAG fixture eval contract are handled in `M20..M29`.
+- Agent handoff compatibility, eval tooling selector, model migration threshold policy, RAG lifecycle/deletion/privacy, diff-signal policy, incident workflow and methodology report coverage are handled in `M30..M36`.
+
+Batch `M10..M19` completed scope:
+
+- Strengthened `llm_ai_rag` audit recommendation evidence for dataset governance, prompt contracts, model decisions, structured output, tool/function/MCP contracts, human approval boundaries, RAG source/retrieval/grounding, agent workflow traces, safety/guardrails and cost/latency budgets.
+- Added a false-positive guard for non-behavior prompt documentation cleanup so prompt-writing docs do not force AI/RAG methodology blockers.
+- Added source-aligned AI/RAG artifact templates: `ai-behavior-spec.md`, `prompt-contract.md`, `model-decision-record.md`, `eval-run-report.md`, `ai-dataset-manifest.md`, `structured-output-schema.md`, `ai-tool-contract.md`, `rag-source-inventory.md`, `rag-retrieval-config.md`, `rag-eval-report.md`, `grounding-rubric.md`, `agent-workflow-map.md`, `guardrail-matrix.md`, `trace-evidence-packet.md` and `ai-cost-latency-budget.md`.
+- Synced template inventory tests with the new files. Renderer registration, generated target mapping and renderer file count updates remain deferred to `T9-D10-M22`.
+- Verification: focused audit/template suite ran 108 tests with `OK`; full unittest ran 439 tests with `OK`; fixture eval exited `0`; `python tools\check_docs.py` passed; `git diff --check` exited `0`.
+
+Deferred from `M10..M19` to later T9-D10 batches:
+
+- Template naming compatibility and aliases are handled in `M20`.
+- Existing AI eval workflow/spec strengthening beyond the current `ai-eval-spec.md` contract is handled in `M21`.
+- Renderer registration, `REQUIRED_TARGETS`, dedicated AI/RAG fixture eval contract, lifecycle skill routing, behavioral/transcript coverage and docs/control-plane sync are handled in `M22..M29`.
+- Agent handoff compatibility, eval tooling selector, model migration threshold policy, RAG lifecycle/deletion/privacy, diff-signal policy, incident workflow and methodology report coverage remain in `M30..M36`.
 
 ## Cross-Domain Synthesis Backlog
 

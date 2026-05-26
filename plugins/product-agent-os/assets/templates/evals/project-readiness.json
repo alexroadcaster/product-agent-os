@@ -24,6 +24,7 @@
           "quality_testing_evals",
           "codex_agentic_workflow",
           "api_integrations",
+          "llm_ai_rag_readiness_when_ai_behavior_changes",
           "docs_as_code_impact",
           "docs_tooling_selector",
           "standards_trigger_policy",
@@ -42,6 +43,7 @@
           "completion_evidence",
           "quality_testing_evals",
           "codex_agentic_workflow",
+          "llm_ai_rag",
           "api_contract_source",
           "api_consumer_map",
           "api_generated_client",
@@ -171,6 +173,14 @@
             "required_evidence": ["ai-eval-spec.md", "baseline result", "rerun command", "no-secrets dataset policy"],
             "owner": "test-eval-designer",
             "residual_risk": "AI quality can regress while deterministic tests still pass."
+          },
+          "llm_ai_rag_readiness_when_ai_behavior_changes": {
+            "applies_when": "Prompt, model, structured output, tool/function/MCP, RAG corpus, retrieval config, agent route, guardrail, eval, latency/cost or safety behavior changes.",
+            "pass_condition": "Set present_verified when ai-behavior-spec.md, ai-eval-spec.md, eval-run-report.md, prompt-contract.md, model-decision-record.md, RAG source/retrieval evidence, grounding evidence, tool contract, approval boundary, cost and latency evidence are recorded; use present_unverified for detected AI/RAG signals until current eval/runtime evidence exists.",
+            "accepted_gap": "Use explicit_gap_accepted only when owner records reason, residual risk, review date and follow-up; use approval_required before tool writes, shell, money, data exposure, external model/eval calls or irreversible actions.",
+            "required_evidence": ["ai-behavior-spec.md", "ai-eval-spec.md", "eval-run-report.md", "prompt-contract.md", "model-decision-record.md", "rag-source-inventory.md", "rag-retrieval-config.md", "grounding rubric", "tool contract", "approval boundary", "cost and latency evidence"],
+            "owner": "test-eval-designer",
+            "residual_risk": "Detection alone does not prove AI/RAG quality, grounding, safe tool use, approval sufficiency or cost/latency readiness."
           },
           "quality_testing_evals_when_non_trivial_change": {
             "applies_when": "Non-trivial product, code, docs, AI, runtime, UI, API, bugfix, refactor, migration, release or quality claim work.",

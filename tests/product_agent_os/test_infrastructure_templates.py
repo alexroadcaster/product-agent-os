@@ -302,6 +302,139 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 for term in required_terms:
                     self.assertIn(term, text)
 
+    def test_llm_ai_rag_artifact_templates_have_operating_contracts(self):
+        expected_terms = {
+            "ai-behavior-spec.md": [
+                "user-visible behavior promise",
+                "accepted outputs",
+                "refusal",
+                "fallback",
+            ],
+            "prompt-contract.md": [
+                "prompt version",
+                "role",
+                "goal",
+                "variables",
+                "examples",
+                "verification route",
+            ],
+            "model-decision-record.md": [
+                "snapshot/alias policy",
+                "reasoning effort",
+                "modality",
+                "context window",
+                "tool support",
+                "rollback",
+            ],
+            "eval-run-report.md": [
+                "baseline/current comparison",
+                "failed cases",
+                "current-run evidence",
+                "inspection-only gap",
+            ],
+            "ai-dataset-manifest.md": [
+                "dataset source",
+                "privacy class",
+                "synthetic/sanitized status",
+                "retention",
+                "raw private chat logs exclusion",
+            ],
+            "structured-output-schema.md": [
+                "typed contract",
+                "strictness",
+                "parser validation",
+                "refusal",
+                "fallback",
+            ],
+            "ai-tool-contract.md": [
+                "tool schema",
+                "permissions",
+                "side effects",
+                "idempotency",
+                "approval policy",
+            ],
+            "rag-source-inventory.md": [
+                "corpus authority",
+                "freshness",
+                "ingestion path",
+                "exclusions",
+                "unsupported-claim behavior",
+            ],
+            "rag-retrieval-config.md": [
+                "chunking",
+                "embeddings",
+                "vector store",
+                "filters",
+                "top-k",
+                "reranking",
+            ],
+            "rag-eval-report.md": [
+                "context precision",
+                "context recall",
+                "faithfulness",
+                "answer relevance",
+                "failed queries",
+            ],
+            "grounding-rubric.md": [
+                "citation/source rules",
+                "unsupported claim handling",
+                "conflict handling",
+                "abstention policy",
+            ],
+            "agent-workflow-map.md": [
+                "smallest useful workflow",
+                "handoffs",
+                "state",
+                "final-answer owner",
+                "stop conditions",
+            ],
+            "guardrail-matrix.md": [
+                "prompt injection",
+                "private data",
+                "risky tool actions",
+                "human approvals",
+                "red-team cases",
+            ],
+            "trace-evidence-packet.md": [
+                "trace ids",
+                "model/tool calls",
+                "retrieved context",
+                "latency",
+                "cost",
+                "redaction",
+            ],
+            "ai-cost-latency-budget.md": [
+                "tokens",
+                "cache strategy",
+                "timeout",
+                "retry",
+                "batch/background mode",
+                "fallback",
+            ],
+        }
+        common_terms = [
+            "Source status:",
+            "Owner",
+            "Evidence",
+            "Accepted Gap",
+            "Residual Risk",
+            "Approval Boundary",
+            "Verification",
+            "No Secrets",
+            "private customer data",
+        ]
+
+        for filename, specific_terms in expected_terms.items():
+            path = TEMPLATE_ROOT / "artifact-templates" / filename
+            with self.subTest(filename=filename):
+                self.assertTrue(path.exists(), path)
+                text = path.read_text(encoding="utf-8")
+                lowered = text.lower()
+                for term in common_terms:
+                    self.assertIn(term, text)
+                for term in specific_terms:
+                    self.assertIn(term, lowered)
+
     def test_frontend_artifact_templates_have_operating_contracts(self):
         expected_templates = [
             "frontend-flow-spec.md",
@@ -1629,6 +1762,164 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 "failure examples",
                 "residual risk",
             ],
+            "ai-behavior-spec.md": [
+                "source status:",
+                "user-visible behavior promise",
+                "accepted outputs",
+                "refusal behavior",
+                "fallback behavior",
+                "approval boundary",
+                "no secrets",
+                "residual risk",
+            ],
+            "prompt-contract.md": [
+                "source status:",
+                "prompt version",
+                "variables",
+                "examples",
+                "uncertainty policy",
+                "refusal policy",
+                "verification route",
+                "no secrets",
+                "residual risk",
+            ],
+            "model-decision-record.md": [
+                "source status:",
+                "snapshot/alias policy",
+                "reasoning effort",
+                "modality",
+                "context window",
+                "tool support",
+                "migration note",
+                "no secrets",
+                "residual risk",
+            ],
+            "eval-run-report.md": [
+                "source status:",
+                "baseline/current comparison",
+                "current-run evidence",
+                "failed cases",
+                "inspection-only gap",
+                "approval boundary",
+                "no secrets",
+                "residual risk",
+            ],
+            "ai-dataset-manifest.md": [
+                "source status:",
+                "dataset source",
+                "privacy class",
+                "synthetic/sanitized status",
+                "retention",
+                "raw private chat logs exclusion",
+                "no secrets",
+                "residual risk",
+            ],
+            "structured-output-schema.md": [
+                "source status:",
+                "typed contract",
+                "strictness",
+                "parser validation",
+                "refusal behavior",
+                "fallback behavior",
+                "failure cases",
+                "no secrets",
+                "residual risk",
+            ],
+            "ai-tool-contract.md": [
+                "source status:",
+                "tool schema",
+                "permissions",
+                "side effects",
+                "idempotency",
+                "approval policy",
+                "approval boundary",
+                "no secrets",
+                "residual risk",
+            ],
+            "rag-source-inventory.md": [
+                "source status:",
+                "corpus authority",
+                "freshness",
+                "ingestion path",
+                "exclusions",
+                "source policy",
+                "unsupported-claim behavior",
+                "no secrets",
+                "residual risk",
+            ],
+            "rag-retrieval-config.md": [
+                "source status:",
+                "chunking",
+                "embeddings",
+                "vector store",
+                "filters",
+                "top-k",
+                "reranking",
+                "no secrets",
+                "residual risk",
+            ],
+            "rag-eval-report.md": [
+                "source status:",
+                "context precision",
+                "context recall",
+                "faithfulness",
+                "answer relevance",
+                "failed queries",
+                "source gaps",
+                "no secrets",
+                "residual risk",
+            ],
+            "grounding-rubric.md": [
+                "source status:",
+                "citation/source rules",
+                "unsupported claim handling",
+                "conflict handling",
+                "abstention policy",
+                "no secrets",
+                "residual risk",
+            ],
+            "agent-workflow-map.md": [
+                "source status:",
+                "smallest useful workflow",
+                "handoffs",
+                "state",
+                "final-answer owner",
+                "stop conditions",
+                "no secrets",
+                "residual risk",
+            ],
+            "guardrail-matrix.md": [
+                "source status:",
+                "prompt injection",
+                "private data",
+                "risky tool actions",
+                "human approvals",
+                "red-team cases",
+                "no secrets",
+                "residual risk",
+            ],
+            "trace-evidence-packet.md": [
+                "source status:",
+                "trace ids",
+                "model/tool calls",
+                "retrieved context",
+                "latency",
+                "cost",
+                "redaction",
+                "no secrets",
+                "residual risk",
+            ],
+            "ai-cost-latency-budget.md": [
+                "source status:",
+                "tokens",
+                "cache strategy",
+                "timeout",
+                "retry",
+                "batch/background mode",
+                "fallback",
+                "no secrets",
+                "residual risk",
+            ],
             "security-risk-review.md": [
                 "threat surface",
                 "authn",
@@ -2506,6 +2797,32 @@ class InfrastructureTemplateTest(unittest.TestCase):
         ]:
             self.assertIn(expected, text)
 
+    def test_ai_eval_spec_records_baseline_rerun_report_and_current_evidence_contract(self):
+        text = (TEMPLATE_ROOT / "artifact-templates" / "ai-eval-spec.md").read_text(encoding="utf-8").lower()
+
+        for expected in [
+            "source status:",
+            "app path",
+            "user-visible behavior promise",
+            "baseline result",
+            "current result",
+            "baseline/current comparison",
+            "rerun command",
+            "threshold",
+            "failed cases",
+            "current-run evidence",
+            "inspection-only gap",
+            "dataset source",
+            "privacy class",
+            "no secrets",
+            "private customer data",
+            "raw private chat logs",
+            "owner",
+            "residual risk",
+        ]:
+            with self.subTest(expected=expected):
+                self.assertIn(expected, text)
+
     def test_native_mobile_feature_workflow_requires_platform_runtime_gates(self):
         text = (TEMPLATE_ROOT / "workflows" / "native-mobile-feature.md").read_text(encoding="utf-8").lower()
 
@@ -2920,6 +3237,7 @@ class InfrastructureTemplateTest(unittest.TestCase):
             "fsd_boundary_when_ui_grows",
             "frontend_methodology",
             "ai_eval_spec_when_ai_behavior_changes",
+            "llm_ai_rag_readiness_when_ai_behavior_changes",
             "docs_tooling_decision",
             "contract_docs_when_api_or_event_changes",
             "api_contract_readiness_when_api_or_integration_changes",
@@ -2973,6 +3291,26 @@ class InfrastructureTemplateTest(unittest.TestCase):
                     gate_payload,
                     r"not_applicable|applicable_missing|present_unverified|present_verified|approval_required",
                 )
+
+        ai_rag_gate = gates["llm_ai_rag_readiness_when_ai_behavior_changes"]
+        ai_rag_payload = json.dumps(ai_rag_gate, sort_keys=True).lower()
+        for expected_term in [
+            "ai-behavior-spec.md",
+            "ai-eval-spec.md",
+            "eval-run-report.md",
+            "prompt-contract.md",
+            "model-decision-record.md",
+            "rag-source-inventory.md",
+            "rag-retrieval-config.md",
+            "grounding",
+            "tool contract",
+            "approval boundary",
+            "cost",
+            "latency",
+            "present_unverified",
+        ]:
+            with self.subTest(ai_rag_gate=expected_term):
+                self.assertIn(expected_term, ai_rag_payload)
 
     def test_standards_trigger_templates_cover_architecture_api_release_and_governance(self):
         payloads = {

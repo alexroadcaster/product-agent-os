@@ -320,6 +320,11 @@ class DiscoveryTest(unittest.TestCase):
                     "docs/eval-rubric.md": "# Judge rubric\n",
                     "reports/latency-cost.md": "# Latency and cost\n",
                     "reports/failure-examples.md": "# Failure examples\n",
+                    "tools/refund_tool.py": "def refund():\n    return 'synthetic'\n",
+                    "agents/triage.trace.json": '{"trace_id": "synthetic"}\n',
+                    "structured-output/answer.contract.md": "# Structured output schema\n",
+                    "guardrails/safety.md": "# Prompt injection safety\n",
+                    "model-config/openai.json": '{"model": "synthetic-snapshot"}\n',
                     "scripts/run-evals.js": "console.log('synthetic eval runner');\n",
                 },
             )
@@ -345,6 +350,46 @@ class DiscoveryTest(unittest.TestCase):
         self.assertEqual(signals["failure_examples_status"], "present_unverified")
         self.assertEqual(signals["verification_status"], "applicable_missing")
         self.assertIn("present_unverified until eval rerun", signals["note"])
+
+        llm_signals = result["llm_ai_rag_signals"]
+        self.assertEqual(llm_signals["prompt_sources"]["status"], "present_unverified")
+        self.assertEqual(llm_signals["retrieval_sources"]["status"], "present_unverified")
+        self.assertEqual(llm_signals["tool_sources"]["status"], "present_unverified")
+        self.assertEqual(llm_signals["agent_trace_sources"]["status"], "present_unverified")
+        self.assertEqual(llm_signals["structured_output_sources"]["status"], "present_unverified")
+        self.assertEqual(llm_signals["model_config_sources"]["status"], "present_unverified")
+        self.assertEqual(llm_signals["safety_sources"]["status"], "present_unverified")
+        self.assertEqual(llm_signals["latency_cost_sources"]["status"], "present_unverified")
+        self.assertEqual(llm_signals["verification_status"], "applicable_missing")
+        self.assertIn("no model calls", llm_signals["note"])
+        self.assertEqual(
+            result["route_inputs"]["workspace_signals"]["llm_ai_rag_signals"],
+            llm_signals,
+        )
+
+        readiness = result["methodology_applicability"]["llm_ai_rag_readiness"]
+        self.assertEqual(readiness["status"], "present_unverified")
+        self.assertIn("ai-eval-spec.md", readiness["required_evidence"])
+        self.assertIn("prompt-contract.md", readiness["required_evidence"])
+        self.assertIn("rag-source-inventory.md", readiness["required_evidence"])
+        self.assertIn("detection alone", readiness["residual_risk"])
+
+    def test_llm_ai_rag_discovery_false_positive_docs_only_ai_mention(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            workspace = Path(tmpdir)
+            self._write_files(
+                workspace,
+                {
+                    "README.md": "# Synthetic AI glossary typo cleanup\n",
+                    "src/models/user.ts": "export type User = { id: string }\n",
+                },
+            )
+
+            result = analyze_workspace(workspace, intent_hint="typo-only docs edit without AI behavior change")
+
+        self.assertNotIn("ai_eval_surface", result["route_inputs"]["workspace_signals"]["active_surfaces"])
+        self.assertEqual(result["llm_ai_rag_signals"]["verification_status"], "not_applicable")
+        self.assertEqual(result["methodology_applicability"]["llm_ai_rag_readiness"]["status"], "not_applicable")
 
     def test_native_mobile_repo_routes_feature_with_unverified_platform_signals(self):
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -1264,6 +1309,7 @@ class DiscoveryTest(unittest.TestCase):
             "docs_tooling_decision",
             "standards_trigger_policy",
             "codex_agentic_workflow",
+            "llm_ai_rag_readiness",
         }
         self.assertEqual(set(applicability), expected_keys)
         for gate, packet in applicability.items():
@@ -1300,6 +1346,7 @@ class DiscoveryTest(unittest.TestCase):
         self.assertEqual(applicability["product_measurement"]["status"], "present_unverified")
         self.assertEqual(applicability["domain_model_when_complex_domain"]["status"], "not_applicable")
         self.assertEqual(applicability["database_data_readiness"]["status"], "not_applicable")
+        self.assertEqual(applicability["llm_ai_rag_readiness"]["status"], "not_applicable")
 
     def test_methodology_applicability_reports_status_transitions(self):
         with tempfile.TemporaryDirectory() as tmpdir:

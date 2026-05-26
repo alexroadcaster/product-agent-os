@@ -1,5 +1,7 @@
 # AI Eval Spec
 
+Source status: `project-proposed`
+
 Project: {project_name}
 Profile: {profile_name}
 
@@ -8,6 +10,7 @@ Profile: {profile_name}
 - Eval goal:
 - App path:
 - AI/RAG behavior:
+- User-visible behavior promise:
 - User-visible risk:
 - Regression handling:
 - Residual risk:
@@ -17,10 +20,15 @@ Profile: {profile_name}
 - Dataset:
 - Dataset source:
 - Dataset policy:
+- Privacy class:
 - No-secrets policy:
+- No secrets:
 - Private data exclusions:
+- Private customer data exclusion:
+- Raw private chat logs exclusion:
 - Fixture format:
 - Dataset owner:
+- Retention:
 
 ## Baseline
 
@@ -29,6 +37,14 @@ Profile: {profile_name}
 - Baseline date:
 - Baseline model or retrieval boundary:
 - Baseline failure examples:
+
+## Current Run
+
+- Current result:
+- Baseline/current comparison:
+- Current-run evidence:
+- Failed cases:
+- Inspection-only gap:
 
 ## Rubric
 

@@ -324,6 +324,45 @@ UNSUPPORTED_DATABASE_CLAIMS = {
     "schema-only artifact is safety proof",
 }
 AI_INTENT_TERMS = {"prompt", "model", "eval", "rag", "vector", "embedding", "ai", "llm"}
+AI_NOT_APPLICABLE_PHRASES = {
+    "typo-only docs edit without ai behavior change",
+    "non-behavior prompt docs cleanup without ai behavior change",
+    "frontend model folder",
+    "data model file without ai behavior",
+    "vector math",
+    "package-name-only ai mention",
+}
+UNSUPPORTED_AI_CLAIMS = {
+    "manual spot checks are enough for ai quality",
+    "citations alone prove rag correctness",
+    "a tool schema is enough for safe tool use",
+    "model upgrade automatically improves product quality",
+    "raw prompt inspection is enough",
+    "prompt inspection is enough",
+}
+AI_BASELINE_CHANGE_TERMS = {
+    "prompt",
+    "model",
+    "rag",
+    "retrieval",
+    "tool",
+    "function call",
+    "agent",
+    "structured output",
+}
+AI_TOOL_TERMS = {"tool", "function call", "mcp", "side-effecting", "shell", "money", "refund", "approval"}
+AI_SAFETY_TERMS = {
+    "guardrail",
+    "safety",
+    "prompt injection",
+    "private data",
+    "sensitive",
+    "minors",
+    "cybersecurity",
+    "healthcare",
+    "finance",
+    "legal",
+}
 DELIVERY_INTENT_TERMS = {"production", "release", "deploy", "package", "docker", "kubernetes", "operations"}
 ARCHITECTURE_INTENT_TERMS = {
     "adr",
@@ -1145,7 +1184,7 @@ def _methodology_domains(
         "backend": _backend_applies(observed, intent),
         "api_integrations": _api_integrations_applies(observed, intent),
         "database_data": _database_data_applies(observed, intent),
-        "llm_ai_rag": _mentions_any(intent, AI_INTENT_TERMS) or _has_signal(observed, "ai_eval_or_rag"),
+        "llm_ai_rag": _llm_ai_rag_applies(observed, intent),
         "security_privacy_compliance": complexity_profile == "high_risk"
         or maturity_level == "regulated"
         or _mentions_any(intent, HIGH_RISK_INTENT_TERMS),
@@ -1238,6 +1277,16 @@ def _quality_testing_evals_applies(observed: list[dict[str, Any]], has_files: bo
 
 def _quality_testing_evals_not_applicable(intent: str) -> bool:
     return any(phrase in intent for phrase in QUALITY_NOT_APPLICABLE_PHRASES)
+
+
+def _llm_ai_rag_applies(observed: list[dict[str, Any]], intent: str) -> bool:
+    if _llm_ai_rag_not_applicable(intent):
+        return False
+    return _mentions_any(intent, AI_INTENT_TERMS) or _has_signal(observed, "ai_eval_or_rag")
+
+
+def _llm_ai_rag_not_applicable(intent: str) -> bool:
+    return any(phrase in intent for phrase in AI_NOT_APPLICABLE_PHRASES)
 
 
 def _codex_agentic_workflow_applies(observed: list[dict[str, Any]], intent: str) -> bool:
@@ -3684,6 +3733,295 @@ def _database_data_recommendations(
     return recommendations
 
 
+def _llm_ai_rag_recommendations(files: set[str], observed: list[dict[str, Any]], intent: str) -> list[dict[str, Any]]:
+    if not _llm_ai_rag_applies(observed, intent):
+        return []
+
+    recommendations: list[dict[str, Any]] = []
+
+    def add(
+        gate: str,
+        artifact: str,
+        reason: str,
+        evidence: list[str],
+        *,
+        priority: str = "P1_high_risk",
+        owner: str = "AI product owner",
+        approval: str = "not required for planning; approval_required before external AI behavior release or tool side effects",
+        residual: str = "AI/RAG behavior can regress or become unsafe without owner-reviewed evidence.",
+        action: str = "Stage the missing AI/RAG evidence artifact before implementation or quality claims.",
+    ) -> None:
+        recommendations.append(
+            _recommendation(
+                priority=priority,
+                reason=reason,
+                domain="llm_ai_rag",
+                gate=gate,
+                artifact=artifact,
+                evidence_required=evidence,
+                evidence_owner=owner,
+                approval_boundary=approval,
+                accepted_gap_option="explicit_gap_accepted with owner, reason, residual risk and review date",
+                residual_risk=residual,
+                safe_next_action=action,
+            )
+        )
+
+    if any(claim in intent for claim in UNSUPPORTED_AI_CLAIMS):
+        add(
+            "ai_unsupported_claims_rejected",
+            "ai-eval-spec.md",
+            "Unsupported AI/RAG quality or safety claim was detected.",
+            [
+                "manual spot checks are not eval evidence",
+                "citations alone do not prove RAG correctness",
+                "tool schema alone does not prove safe tool use",
+                "model upgrade does not automatically improve product quality",
+                "source-backed replacement evidence or accepted gap",
+            ],
+            action="Replace unsupported AI claim with eval, grounding, tool-safety or accepted-gap evidence.",
+        )
+
+    if _mentions_any(intent, AI_INTENT_TERMS | AI_BASELINE_CHANGE_TERMS) and not _artifact_present(
+        files, "ai-behavior-spec.md"
+    ):
+        add(
+            "ai_behavior_spec_present",
+            "ai-behavior-spec.md",
+            "AI behavior needs an explicit user-visible promise before implementation or evaluation.",
+            ["user-visible behavior promise", "accepted outputs", "refusal or fallback behavior", "risk and owner"],
+            action="Stage ai-behavior-spec.md before changing AI behavior.",
+        )
+
+    if _mentions_any(intent, AI_BASELINE_CHANGE_TERMS) and not _artifact_present(files, "ai-eval-spec.md"):
+        add(
+            "ai_baseline_eval_present",
+            "ai-eval-spec.md",
+            "Prompt, model, RAG, tool, structured-output or agent behavior changes need baseline eval evidence.",
+            ["baseline eval", "dataset", "rubric", "seed or failure cases", "accepted baseline gap"],
+            priority="P0_blocker",
+            action="Stage ai-eval-spec.md with baseline evidence before changing AI behavior.",
+        )
+
+    if _mentions_any(intent, {"eval", "regression", "prompt", "model", "rag", "retrieval", "tool", "agent"}):
+        if not _artifact_present(files, "eval-run-report.md"):
+            add(
+                "ai_eval_rerun_command_present",
+                "eval-run-report.md",
+                "Eval-governed AI change needs rerun command, threshold and current evidence.",
+                [
+                    "rerun command",
+                    "threshold",
+                    "owner",
+                    "baseline/current comparison",
+                    "failed cases",
+                    "current-run evidence",
+                    "inspection-only gap if no eval can run",
+                ],
+                action="Record eval-run-report.md or accepted inspection-only gap before quality claims.",
+            )
+        if not _artifact_present(files, "ai-dataset-manifest.md"):
+            add(
+                "ai_dataset_governance_present",
+                "ai-dataset-manifest.md",
+                "Eval or RAG dataset source, privacy and retention are not explicit.",
+                [
+                    "dataset source",
+                    "privacy class",
+                    "synthetic or sanitized status",
+                    "retention",
+                    "owner",
+                    "no secrets, credentials, private customer data or raw private chat logs",
+                ],
+                action="Stage ai-dataset-manifest.md before using eval or RAG datasets.",
+            )
+
+    if "prompt" in intent and not _artifact_present(files, "prompt-contract.md"):
+        add(
+            "ai_prompt_contract_present",
+            "prompt-contract.md",
+            "Production prompt behavior needs a versioned prompt contract.",
+            [
+                "version",
+                "role",
+                "goal",
+                "context",
+                "variables",
+                "constraints",
+                "examples",
+                "uncertainty",
+                "refusal policy",
+                "output format",
+                "verification route",
+            ],
+            action="Stage prompt-contract.md before editing production prompts.",
+        )
+
+    if _mentions_any(intent, {"model", "snapshot", "provider", "reasoning", "model migration"}) and not _artifact_present(
+        files, "model-decision-record.md"
+    ):
+        add(
+            "ai_model_decision_record_present",
+            "model-decision-record.md",
+            "Model or provider changes need quality, latency, cost, context and fallback rationale.",
+            [
+                "model or snapshot/alias policy",
+                "reasoning effort",
+                "modality",
+                "context window",
+                "tool support",
+                "quality",
+                "latency",
+                "cost",
+                "fallback",
+                "rollback",
+                "migration note",
+            ],
+            action="Stage model-decision-record.md before model migration or release.",
+        )
+
+    if _mentions_any(intent, {"structured output", "schema", "json schema"}) and not _artifact_present(
+        files, "structured-output-schema.md"
+    ):
+        add(
+            "ai_structured_output_contract_present",
+            "structured-output-schema.md",
+            "Structured AI output that feeds code, UI, API, eval grader or another agent needs schema and failure handling.",
+            ["schema", "typed contract", "strictness", "parser validation", "refusal", "fallback", "failure cases"],
+            action="Stage structured-output-schema.md before wiring AI output downstream.",
+        )
+
+    if _mentions_any(intent, AI_TOOL_TERMS) and not _artifact_present(files, "ai-tool-contract.md"):
+        add(
+            "ai_tool_contract_present",
+            "ai-tool-contract.md",
+            "Tool/function/MCP capability needs schema, permissions and failure behavior.",
+            ["tool schema", "permissions", "side effects", "idempotency", "retries", "errors"],
+            action="Stage ai-tool-contract.md before enabling tool calls.",
+        )
+        add(
+            "ai_human_approval_boundary_present",
+            "guardrail-matrix.md",
+            "AI tool can write, spend money, call shell, expose data or affect users without an approval route.",
+            [
+                "human approval route",
+                "staged draft behavior",
+                "writes",
+                "shell",
+                "money",
+                "data exposure",
+                "irreversible actions",
+                "risky actions",
+                "side effects",
+                "owner",
+            ],
+            priority="P0_blocker",
+            approval="approval_required before tool writes, shell commands, money movement, data exposure or irreversible actions",
+            residual="Side-effecting AI tools can mutate external systems or expose data without review.",
+            action="Stage guardrail-matrix.md and stop before side-effecting tool activation.",
+        )
+
+    if _mentions_any(intent, {"rag", "retrieval", "vector", "embedding", "grounding"}):
+        if not _artifact_present(files, "rag-source-inventory.md"):
+            add(
+                "rag_source_inventory_present",
+                "rag-source-inventory.md",
+                "RAG claims need corpus authority, freshness, owner and source policy.",
+                [
+                    "corpus authority",
+                    "freshness",
+                    "owner",
+                    "ingestion path",
+                    "exclusions",
+                    "source policy",
+                    "unsupported-claim behavior",
+                ],
+                action="Stage rag-source-inventory.md before RAG quality claims.",
+            )
+        if not _artifact_present(files, "rag-retrieval-config.md"):
+            add(
+                "rag_retrieval_config_present",
+                "rag-retrieval-config.md",
+                "Retrieval behavior needs chunking, embedding and ranking assumptions.",
+                ["chunking", "embeddings", "vector store", "filters", "top-k", "reranking", "metadata"],
+                action="Stage rag-retrieval-config.md before changing retrieval config.",
+            )
+        if not _artifact_present(files, "rag-eval-report.md"):
+            add(
+                "rag_grounding_eval_present",
+                "rag-eval-report.md",
+                "RAG answer quality must be separated from retrieval quality and grounding evidence.",
+                [
+                    "context precision",
+                    "context recall",
+                    "faithfulness",
+                    "answer relevance",
+                    "grounding rubric",
+                    "failed queries",
+                    "source gaps",
+                ],
+                action="Stage rag-eval-report.md before claiming grounded answer quality.",
+            )
+
+    if _mentions_any(intent, {"agent", "handoff", "agent routing", "trace"}) and not _artifact_present(
+        files, "trace-evidence-packet.md"
+    ):
+        add(
+            "agent_workflow_trace_present",
+            "trace-evidence-packet.md",
+            "Agent/tool/handoff routing change needs trace or equivalent runtime evidence.",
+            ["smallest-useful workflow", "trace id", "tool calls", "handoffs", "state", "final-answer owner", "stop conditions"],
+            action="Stage trace-evidence-packet.md before multi-step agent readiness claims.",
+        )
+
+    if _mentions_any(intent, AI_SAFETY_TERMS) and not _artifact_present(files, "guardrail-matrix.md"):
+        add(
+            "ai_safety_review_present",
+            "guardrail-matrix.md",
+            "AI user input, prompt injection, private data or risky tools need safety and red-team review.",
+            [
+                "prompt injection",
+                "private data",
+                "risky tool actions",
+                "minors",
+                "cybersecurity",
+                "finance",
+                "healthcare",
+                "legal",
+                "support",
+                "irreversible side effects",
+                "red-team cases",
+                "fallback",
+                "owner review",
+            ],
+            approval="approval_required before risky tool activation, sensitive data exposure or external release",
+            residual="AI safety gaps can create harmful output, data exposure or unsafe side effects.",
+            action="Stage guardrail-matrix.md and route sensitive surfaces to risk review.",
+        )
+
+    if _mentions_any(intent, {"latency", "cost", "high-volume", "user-facing"}) and not _artifact_present(
+        files, "ai-cost-latency-budget.md"
+    ):
+        add(
+            "ai_cost_latency_budget_present",
+            "ai-cost-latency-budget.md",
+            "User-facing or high-volume AI feature needs latency and cost budget before release.",
+            [
+                "timeout",
+                "retry",
+                "cache",
+                "background/batch mode",
+                "fallback",
+                "token/cost budget",
+                "measurement",
+                "explicit unavailable gap",
+            ],
+            action="Stage ai-cost-latency-budget.md before release readiness claims.",
+        )
+
+    return recommendations
+
+
 def _recommendations(
     root: Path,
     files: set[str],
@@ -3702,6 +4040,7 @@ def _recommendations(
     recommendations.extend(_backend_recommendations(files, observed, intent))
     recommendations.extend(_api_integrations_recommendations(files, observed, intent))
     recommendations.extend(_database_data_recommendations(root, files, observed, intent))
+    recommendations.extend(_llm_ai_rag_recommendations(files, observed, intent))
     if complexity_profile == "high_risk":
         recommendations.append(
             _recommendation(

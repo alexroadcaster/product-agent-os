@@ -1055,6 +1055,7 @@ CONDITIONAL_READINESS_GATE_IDS = (
     "quality_testing_evals_when_non_trivial_change",
     "codex_agentic_workflow",
     "frontend_methodology",
+    "llm_ai_rag_readiness_when_ai_behavior_changes",
 )
 READINESS_STATUSES = (
     "not_applicable",
@@ -1565,6 +1566,7 @@ def _methodology_applicability_contract_present(audit: dict[str, Any]) -> bool:
         "frontend_methodology",
         "backend_methodology",
         "database_data_readiness",
+        "llm_ai_rag_readiness",
     }
     allowed_statuses = {
         "not_applicable",
