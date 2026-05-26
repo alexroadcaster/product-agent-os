@@ -26,6 +26,15 @@ Project: {project_name}
 - Support:
 - Irreversible side effects:
 
+## AI Incident Workflow
+
+- AI incident:
+- Hallucination report:
+- Unsafe output:
+- Tool misuse:
+- Data exposure:
+- Security/Privacy handoff:
+
 ## Evidence
 
 - Safety review:

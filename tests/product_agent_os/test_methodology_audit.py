@@ -1822,6 +1822,103 @@ class MethodologyAuditContractTest(unittest.TestCase):
             with self.subTest(unsupported_evidence=expected_term):
                 self.assertIn(expected_term, evidence)
 
+    def test_llm_ai_rag_final_batch_recommendations_cover_handoff_tooling_migration_lifecycle_diff_and_incident(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "prompts").mkdir()
+            (root / "prompts" / "assistant.prompt.md").write_text("Synthetic prompt\n", encoding="utf-8")
+            result = build_methodology_audit(
+                root,
+                intent_hint=(
+                    "ship AI agent handoff with Promptfoo OpenAI Evals pytest Jest Ragas LangSmith "
+                    "eval tooling selector deferred runner model migration snapshot alias prompt migration "
+                    "minimum threshold sampling temperature rollback RAG corpus lifecycle deletion retention "
+                    "privacy vector store lifecycle stale-source pruning diff changed files code config diff "
+                    "failed eval hallucination report unsafe output tool misuse data exposure incident"
+                ),
+            )
+
+        expected = {
+            "ai_agent_handoff_contract_compatible": ("P1_high_risk", "agent-task-packet.md"),
+            "ai_eval_tooling_selector_present": ("P2_recommended", "ai-eval-spec.md"),
+            "ai_model_migration_policy_present": ("P1_high_risk", "model-decision-record.md"),
+            "rag_corpus_lifecycle_privacy_present": ("P1_high_risk", "rag-source-inventory.md"),
+            "ai_behavior_diff_signal_policy_present": ("P2_recommended", "RUNLOG.md"),
+            "ai_incident_workflow_present": ("P1_high_risk", "guardrail-matrix.md"),
+        }
+        for gate, (priority, artifact) in expected.items():
+            with self.subTest(gate=gate):
+                recommendation = self._recommendation_by_gate(result, gate)
+                self.assertEqual(recommendation["priority"], priority)
+                self.assertEqual(recommendation["artifact"], artifact)
+
+        handoff = self._recommendation_by_gate(result, "ai_agent_handoff_contract_compatible")
+        for expected_term in ["handoff owner", "inputs", "output schema", "stop condition", "trace evidence"]:
+            with self.subTest(handoff_evidence=expected_term):
+                self.assertIn(expected_term, " ".join(handoff["evidence_required"]).lower())
+
+        tooling = self._recommendation_by_gate(result, "ai_eval_tooling_selector_present")
+        for expected_term in [
+            "promptfoo",
+            "openai evals",
+            "pytest/jest",
+            "ragas",
+            "langsmith",
+            "selected runner",
+            "rejected runner",
+            "deferred decision",
+            "stack/privacy/ci fit",
+        ]:
+            with self.subTest(tooling_evidence=expected_term):
+                self.assertIn(expected_term, " ".join(tooling["evidence_required"]).lower())
+        self.assertIn("not defaults", tooling["reason"].lower())
+
+        migration = self._recommendation_by_gate(result, "ai_model_migration_policy_present")
+        for expected_term in [
+            "snapshot or approved alias",
+            "prompt migration impact",
+            "compatibility checks",
+            "rollback",
+            "baseline/current eval comparison",
+            "minimum threshold",
+            "sampling parameter rationale",
+        ]:
+            with self.subTest(migration_evidence=expected_term):
+                self.assertIn(expected_term, " ".join(migration["evidence_required"]).lower())
+
+        lifecycle = self._recommendation_by_gate(result, "rag_corpus_lifecycle_privacy_present")
+        for expected_term in [
+            "deletion path",
+            "retention",
+            "source exclusion",
+            "stale-source pruning",
+            "privacy owner",
+            "vector store lifecycle",
+            "database/security overlap",
+        ]:
+            with self.subTest(lifecycle_evidence=expected_term):
+                self.assertIn(expected_term, " ".join(lifecycle["evidence_required"]).lower())
+
+        diff_policy = self._recommendation_by_gate(result, "ai_behavior_diff_signal_policy_present")
+        self.assertIn("limited to workspace and intent signals", diff_policy["reason"].lower())
+        for expected_term in ["no external branches", "no network", "filename changes alone are not certainty"]:
+            with self.subTest(diff_policy_evidence=expected_term):
+                self.assertIn(expected_term, " ".join(diff_policy["evidence_required"]).lower())
+
+        incident = self._recommendation_by_gate(result, "ai_incident_workflow_present")
+        for expected_term in [
+            "owner",
+            "severity",
+            "evidence",
+            "mitigation",
+            "follow-up eval",
+            "security/privacy handoff",
+        ]:
+            with self.subTest(incident_evidence=expected_term):
+                self.assertIn(expected_term, " ".join(incident["evidence_required"]).lower())
+
 
 if __name__ == "__main__":
     unittest.main()

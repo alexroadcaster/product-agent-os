@@ -34,7 +34,7 @@ Track 9 turns the methodology atlas in `docs/methodologies/` into read-only Prod
 | `done` | `T9-D7` | `backend.md` | Service boundaries, modular monolith vs microservices, runtime behavior, queues, observability, SLOs and rollback. |
 | `done` | `T9-D8` | `api-integrations.md` | OpenAPI/AsyncAPI/GraphQL/gRPC contracts, consumers, compatibility, errors, generated clients and external writes. |
 | `done` | `T9-D9` | `database-data.md` | Database inventory, schema source, migrations, transactions, data quality, classification and production access. |
-| `in_progress` | `T9-D10` | `llm-ai-rag.md` | AI behavior spec, eval baseline, prompts, models, tools, RAG sources, grounding, datasets, approvals and cost/latency. |
+| `done` | `T9-D10` | `llm-ai-rag.md` | AI behavior spec, eval baseline, prompts, models, tools, RAG sources, grounding, datasets, approvals, cost/latency, handoff, tooling, migration, lifecycle, diff policy and incidents. |
 | `planned` | `T9-D11` | `security-privacy-compliance.md` | Threat surface, ASVS/SSDF, authorization tests, secrets, privacy impact, supply chain, audit logging and compliance overlays. |
 | `planned` | `T9-D12` | `delivery-release-operations.md` | Release readiness, versioning, changelog, artifact manifest, rollout, rollback, CI/CD governance, runbooks and operations. |
 
@@ -544,10 +544,32 @@ Batch `M10..M19` completed scope:
 
 Deferred from `M10..M19` to later T9-D10 batches:
 
-- Template naming compatibility and aliases are handled in `M20`.
-- Existing AI eval workflow/spec strengthening beyond the current `ai-eval-spec.md` contract is handled in `M21`.
-- Renderer registration, `REQUIRED_TARGETS`, dedicated AI/RAG fixture eval contract, lifecycle skill routing, behavioral/transcript coverage and docs/control-plane sync are handled in `M22..M29`.
 - Agent handoff compatibility, eval tooling selector, model migration threshold policy, RAG lifecycle/deletion/privacy, diff-signal policy, incident workflow and methodology report coverage remain in `M30..M36`.
+
+Batch `M20..M29` completed scope:
+
+- Resolved AI/RAG template naming compatibility with source-aligned canonical names: `prompt-contract.md`, `model-decision-record.md` and `rag-eval-report.md`. Plan-era names `ai-prompt-contract.md`, `ai-model-decision-record.md` and `rag-grounding-eval.md` are mapped through aliases rather than registered as duplicate renderer targets.
+- Strengthened the existing Track 8 `ai-eval-regression.md` workflow and `ai-eval-spec.md` with app-backed eval path, baseline/current comparison, prompt/context inventory, retrieval metrics, grounding evidence, dataset governance, thresholds, failed cases, cost/latency and current-run evidence.
+- Registered 15 AI/RAG artifact templates in the staged renderer under `.codex/artifact-templates/`; the `python-app` renderer file count increased from 142 to 157.
+- Strengthened generated `PLAN.md`, `TEST.md`, `EVALS.md` and `RUNLOG.md` templates with `llm_ai_rag_readiness_when_ai_behavior_changes`, AI behavior promise, baseline/rerun evidence, dataset governance, prompt/model/schema/tool/RAG/agent/safety/cost evidence, accepted-gap handling and forbidden shortcut language.
+- Added behavioral case `llm-ai-rag-evidence-before-completion` and a fifth synthetic transcript session so prompt-inspection-only and current-evidence-free AI/RAG quality claims are rejected.
+- Added synthetic AI/RAG fixtures for prompt/model changes, tool approval, structured output, agent trace, latency/cost budget and RAG quality regression; fixture privacy checks reject secrets, tokens, raw private chats, customer data and live API keys.
+- Added `llm_ai_rag_contract_present` to fixture eval coverage and routed `llm_ai_rag` through lifecycle skills without forcing one eval runner, multi-agent architecture or live model/API calls.
+- Verification: focused AI/RAG fast suite ran 190 tests with `OK`; focused fixture runner suite ran 15 tests with `OK`; full unittest ran 445 tests with `OK`; fixture eval exited `0` with 54 fixtures, 0 failures, renderer file count 157 and `llm_ai_rag_contract_present: true`; transcript eval exited `0` with 5 sessions and 0 failures; Codex compatibility returned `status: compatible`; `python tools\check_docs.py` passed; `git diff --check` exited `0`.
+
+Deferred from `M20..M29` to later T9-D10 batches:
+
+- Agent handoff compatibility, eval tooling selector and deferred runner policy, model migration threshold policy, RAG lifecycle/deletion/privacy, AI behavior diff-signal policy, AI incident workflow boundary and methodology report/render coverage remain in `M30..M36`.
+
+Batch `M30..M36` completed scope:
+
+- Mapped source/legacy `agent-handoff-contract.md` to existing `agent-task-packet.md` without registering a duplicate generated contract, while strengthening handoff owner, inputs, output schema, stop condition and trace evidence fields.
+- Added final `llm_ai_rag` catalog gates/eval fields for handoff compatibility, eval tooling selector, model migration policy, RAG corpus lifecycle/privacy, AI behavior diff-signal policy and AI incident workflow.
+- Strengthened `ai-eval-spec.md` with Promptfoo, OpenAI Evals, pytest/Jest, Ragas and LangSmith as conditional candidates, including selected runner, rejected runner, deferred decision, stack/privacy/CI fit and no forced eval runner.
+- Strengthened model/eval/RAG/dataset/guardrail/RUNLOG templates with snapshot or approved alias, prompt migration impact, compatibility checks, minimum threshold, sampling parameter rationale, deletion path, retention, stale-source pruning, privacy owner, vector store lifecycle, deletion propagation, deduplication, privacy review, AI incident boundary, severity, mitigation, follow-up eval and Security/Privacy handoff.
+- Added read-only `diff_signal_policy` to `llm_ai_rag_signals`; it is limited to workspace and intent signals, records no external branches, no network and no filename-only certainty.
+- Added audit recommendations for final-batch gates and methodology report rendering for `evidence_required`, `evidence_owner`, `approval_boundary`, `accepted_gap_option`, `residual_risk` and `safe_next_action` with redaction of local paths and private data markers.
+- Verification: focused M30..M36 RED checks failed as expected before implementation; focused GREEN check ran 6 tests with `OK`; full unittest ran 449 tests with `OK`; fixture eval exited `0` with 54 fixtures, renderer file count 157 and `llm_ai_rag_contract_present: true`; transcript eval exited `0` with 5 sessions and 0 failures; Codex compatibility returned `status: compatible`; `python tools\check_docs.py` passed; `git diff --check` exited `0`.
 
 ## Cross-Domain Synthesis Backlog
 

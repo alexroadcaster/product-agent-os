@@ -113,6 +113,7 @@ Track 8 hardening добавляет scenario-first routing:
 - Docs-as-code не означает автоматическое создание CI, CODEOWNERS, GitHub Actions или публикации. Product-Agent OS может stage proposals, но не активирует external workflows без explicit approval.
 - Docs tooling selection records selected tools, rejected tools, evidence owner, maintenance owner and approval boundaries; docs-light/internal-only work can be `not_applicable`.
 - AI/RAG quality нельзя закрывать только unit tests. Для retrieval, grounding, hallucination risk, latency и cost нужны evals или явно записанный gap.
+- `llm_ai_rag_readiness_when_ai_behavior_changes` нельзя закрывать prompt inspection, citations-only grounding, stale eval output или automatic model-upgrade quality claim; live model calls, external eval services, vector DB access и tool writes остаются approval-bound.
 
 ## Definition of done для Product-Agent OS slice
 
@@ -127,5 +128,6 @@ Slice можно считать готовым к review только если:
 - docs tooling impact is recorded as `not_applicable`, `present_unverified`, `present_verified`, `proposal_staged`, `explicit_gap_accepted` or `approval_required`;
 - standards trigger impact is recorded through `standards_trigger_policy` when ADR/C4/arc42/OpenAPI/AsyncAPI/SemVer/Keep a Changelog/CODEOWNERS/GitHub Actions context applies;
 - conditional readiness gates record `not_applicable`, `applicable_missing`, `present_unverified`, `present_verified`, `proposal_staged`, `explicit_gap_accepted` or `approval_required` with applicability reason, owner and residual risk;
+- AI/RAG behavior changes record `llm_ai_rag` evidence: behavior promise, baseline/current eval, prompt/model/schema/tool/RAG/grounding/trace/guardrail/cost evidence, current-run evidence or an accepted gap;
 - команды, exit codes, artifacts и residual risks записаны в `RUNLOG.md`;
 - approvals, security, privacy, migration и rollback risks не скрыты.

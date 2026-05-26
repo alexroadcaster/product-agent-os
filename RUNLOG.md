@@ -6,15 +6,15 @@ Generated at: 2026-05-26
 
 ## Current Lifecycle Marker
 
-`database_data_gate`
+`llm_ai_rag_gate_complete`
 
 ## Latest Completed Slice
 
-`T9-D9` Database & Data methodology integration.
+`T9-D10 M30..M36` LLM / AI / RAG final batch.
 
 ## Current Active Slice
 
-`T9-D10` LLM / AI / RAG has not started.
+`T9-D10` is implemented through `M30..M36`.
 
 ## Latest Planning Artifact
 
@@ -37,6 +37,9 @@ Generated at: 2026-05-26
 - Added API false-positive and approval boundaries: Swagger UI is not source of truth, schema validation alone is not contract testing, OAuth alone is not complete security evidence, GraphQL/gRPC/events are not universal defaults, API-only contract fixtures do not force Backend blockers and external writes are `approval_required`.
 - Added Database & Data methodology depth through `T9-D9`: `database_data` catalog gates, schema/migration/tooling/ORM/dictionary/quality/lineage/performance/production/destructive/pipeline/RAG/backup/privacy discovery, read-only audit recommendations, database artifact templates, generated control-plane/eval coverage, lifecycle skill routing and synthetic fixtures.
 - Added Database & Data false-positive and approval boundaries: schema-only artifacts are not safety proof, runtime pipeline/RAG signals stay `present_unverified`, database tooling has no universal default, schema-diff tooling deferred, and production DB/data access, migration execution, backup restore, retention mutation and destructive migration remain `approval_required`.
+- Added LLM / AI / RAG methodology depth through `T9-D10-M20..M29`: source-aligned template aliasing, renderer registration for 15 AI/RAG templates, strengthened AI eval workflow/spec terms, generated control-plane evidence fields, behavioral/transcript coverage, synthetic AI/RAG fixtures, fixture eval coverage and lifecycle skill routing.
+- Added AI/RAG evidence and shortcut boundaries: prompt inspection is not enough, citations alone do not prove grounding, model upgrades do not imply quality, live model calls/external eval/vector DB access remain approval-bound, and quality claims require baseline/current eval or an explicit accepted gap.
+- Added final LLM / AI / RAG methodology depth through `T9-D10-M30..M36`: `agent-handoff-contract.md` aliasing to `agent-task-packet.md`, eval tooling selector/deferred runner policy, model migration thresholds, RAG deletion/privacy lifecycle, workspace/intent-only diff-signal policy, AI incident workflow and methodology report rendering of evidence/approval/gap/risk fields.
 
 ### Verification Evidence
 
@@ -84,6 +87,23 @@ Generated at: 2026-05-26
 - T9-D9 docs check: `python tools\check_docs.py` passed.
 - T9-D9 strict MkDocs: `$env:PYTHONPATH='C:\tmp\codex_docs_mkdocs'; $env:NO_MKDOCS_2_WARNING='1'; python -m mkdocs build --strict` exited `0`.
 - T9-D9 diff hygiene: `git diff --check` exited `0`.
+- T9-D10 M20..M29 RED checks: focused new tests failed as expected before implementation on missing AI/RAG template aliases, missing behavioral case coverage, missing synthetic AI/RAG fixtures and missing lifecycle skill wording.
+- T9-D10 M20..M29 focused fast suite: `python -m unittest tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_behavioral_workflow_evals tests.product_agent_os.test_transcript_session_evals tests.product_agent_os.test_fixtures tests.product_agent_os.test_discovery tests.product_agent_os.test_lifecycle_skills -v` ran 190 tests with `OK`.
+- T9-D10 M20..M29 focused fixture runner suite: `python -m unittest tests.product_agent_os.test_fixture_eval_runner -v` ran 15 tests with `OK`.
+- T9-D10 M20..M29 fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0` with 54 fixtures, 0 failures, renderer file count 157 and `llm_ai_rag_contract_present: true`.
+- T9-D10 M20..M29 full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 445 tests with `OK`.
+- T9-D10 M20..M29 transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 5 sessions and 0 failures.
+- T9-D10 M20..M29 Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
+- T9-D10 M20..M29 docs check: `python tools\check_docs.py` passed.
+- T9-D10 M20..M29 diff hygiene: `git diff --check` exited `0`.
+- T9-D10 M30..M36 RED checks: focused new tests failed as expected before implementation on missing handoff alias, final-batch template terms, catalog gates/eval fields, audit recommendations, diff-signal policy and report rendering fields.
+- T9-D10 M30..M36 focused GREEN check: `python -m unittest tests.product_agent_os.test_infrastructure_templates.InfrastructureTemplateTest.test_ai_rag_template_names_are_canonical_and_legacy_names_are_mapped tests.product_agent_os.test_infrastructure_templates.InfrastructureTemplateTest.test_llm_ai_rag_final_batch_templates_cover_handoff_tooling_migration_lifecycle_and_incidents tests.product_agent_os.test_methodology_catalog.MethodologyCatalogContractTest.test_llm_ai_rag_domain_has_track_nine_contract tests.product_agent_os.test_methodology_audit.MethodologyAuditContractTest.test_llm_ai_rag_final_batch_recommendations_cover_handoff_tooling_migration_lifecycle_diff_and_incident tests.product_agent_os.test_discovery.DiscoveryTest.test_llm_ai_rag_diff_signal_policy_is_limited_and_read_only tests.product_agent_os.test_methodology_report.MethodologyReportTest.test_ai_rag_report_renders_evidence_approvals_gaps_and_redacts_sensitive_terms -v` ran 6 tests with `OK`.
+- T9-D10 M30..M36 full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 449 tests with `OK`.
+- T9-D10 M30..M36 fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0` with 54 fixtures, renderer file count 157 and `llm_ai_rag_contract_present: true`.
+- T9-D10 M30..M36 transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 5 sessions and 0 failures.
+- T9-D10 M30..M36 Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
+- T9-D10 M30..M36 docs check: `python tools\check_docs.py` passed.
+- T9-D10 M30..M36 diff hygiene: `git diff --check` exited `0`.
 
 ## Methodology Trace
 
@@ -111,15 +131,17 @@ Generated at: 2026-05-26
 - Backend methodology: implemented through `T9-D7-M45` with service boundary, runtime behavior, dependency failure matrix, job/queue contract, data consistency strategy, observability, SLI/SLO or explicit gap, health endpoint semantics and verification policy, operational runbook, config/secrets boundary, security review, rollback/recovery, optional Twelve-Factor vocabulary, service-boundary owner review/ADR routing, backend intake fields, contract sync, dependency category discovery, backend delivery discovery, severity policy, stack-specific snippet deferral, retry/idempotency detection limits and owner-reviewed evidence sufficiency routing.
 - API & Integrations methodology: implemented as `api_integrations` with contract source, consumer map, compatibility review, security review, error contract, contract-test matrix, event delivery, generated SDK manifest, external-write approval, API observability, style choice and unsupported-claim rejection. Swagger UI/rendered docs, schema-only checks, OAuth-only notes, universal API style defaults and API-only Backend blockers are rejected.
 - Database & Data methodology: implemented as `database_data` with database inventory, dictionary, schema source, migration plan, expand-contract rollout, transaction boundary, rollback feasibility, backup/restore evidence, data classification, data quality, producer/consumer data contract, lineage, query/index performance, retention/deletion, synthetic fixture policy, production access approval, constraints/integrity and unsupported-claim rejection. Schema-only artifacts are not safety proof; runtime pipeline/RAG signals stay `present_unverified`; production access and migration execution remain approval-bound.
+- LLM / AI / RAG methodology: implemented through `T9-D10-M36` as `llm_ai_rag` with AI behavior promise, baseline eval, eval rerun evidence, dataset governance, prompt contract, model decision, structured output schema, tool/function/MCP contract, human approval boundary, RAG source inventory, retrieval config, grounding rubric, agent task packet, agent workflow trace, guardrails, trace evidence, cost/latency budget, handoff compatibility, eval tooling selection, model migration thresholds, RAG lifecycle/privacy, diff-signal limits, AI incident workflow, synthetic fixture privacy and unsupported-claim rejection.
 - Test-first or eval-first evidence: T9-D7 batch checks were implemented with failing-focused tests first, then focused GREEN.
 - Test-first or eval-first evidence: T9-D8 checks were implemented with failing-focused tests first, then focused GREEN.
 - Test-first or eval-first evidence: T9-D9 checks were implemented with failing-focused tests first, then focused GREEN.
-- Documentation impact: root control-plane files, Track 9 backlog, source registry, Product-Agent OS docs and plugin README synchronized for `T9-D9`.
-- Review outcome: focused Database & Data checks and final verification evidence are clean for `T9-D9`; semantic sufficiency still requires owner review on real projects.
+- Test-first or eval-first evidence: T9-D10 M20..M29 and M30..M36 checks were implemented with failing-focused tests first, then focused GREEN.
+- Documentation impact: root control-plane files, Track 9 backlog, Product-Agent OS docs and plugin README synchronized for `T9-D10-M30..M36`. Source registry was not changed because this batch added no new external source-backed claims.
+- Review outcome: focused LLM / AI / RAG checks are clean through `M36`; semantic sufficiency still requires owner review on real projects.
 
 ## Next Action
 
-- Complete final T9-D9 verification, then begin `T9-D10` LLM / AI / RAG with a deep audit of `docs/methodologies/llm-ai-rag.md`.
+- Report `T9-D10 M30..M36`, then wait for explicit approval before starting `T9-D11`.
 
 ## Residual Risks
 
@@ -142,6 +164,7 @@ Generated at: 2026-05-26
 - `backend` gates through `T9-D7-M45` prove backend evidence shape, route/gate coverage and unsupported-claim routing, not that a human owner has accepted every runtime test, dependency policy, observability map, SLO, health check, rollback plan, operational runbook or provider contract as sufficient for a real production system.
 - `api_integrations` gates prove API evidence shape, route/gate coverage and unsupported-claim routing, not that a human owner has accepted every consumer map, compatibility rule, security scheme, error model, event delivery policy, generated SDK release or external-write approval as sufficient for a real production system.
 - `database_data` gates prove database/data evidence shape, route/gate coverage and unsupported-claim routing, not that a human owner has accepted every migration plan, data contract, rollback, restore, lineage, quality, privacy or production-access decision as sufficient for a real production system.
+- `llm_ai_rag` gates through `T9-D10-M36` prove AI/RAG evidence shape, route/gate coverage and unsupported-claim routing, not that a human owner has accepted every eval threshold, prompt, model decision, grounding result, tool permission, guardrail, trace, cost/latency budget, incident workflow or eval-tooling decision as sufficient for a real production system.
 - Semantic evidence sufficiency for concrete real-project tests/evals remains a shared T9-S/cross-domain owner-review concern.
 - Root control-plane files are initialized manually for this repository; generated target-project assets still remain staged-first and approval-bound.
 <!-- product-agent-os:end runlog -->

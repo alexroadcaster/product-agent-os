@@ -23,6 +23,14 @@ Project: {project_name}
 - Conflict handling:
 - Stale-source handling:
 
+## Corpus Lifecycle
+
+- Deletion path:
+- Retention:
+- Source exclusion:
+- Stale-source pruning:
+- Privacy owner:
+
 ## Evidence
 
 - Source review:

@@ -15,6 +15,9 @@ Project: {project_name}
 - Chunking:
 - Embeddings:
 - Vector store:
+- Vector store lifecycle:
+- Deletion propagation:
+- Privacy owner:
 - Filters:
 - Top-k:
 - Reranking:

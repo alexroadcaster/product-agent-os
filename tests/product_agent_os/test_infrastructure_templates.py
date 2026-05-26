@@ -15,7 +15,7 @@ TEMPLATE_ROOT = ROOT / "plugins" / "product-agent-os" / "assets" / "templates"
 PLUGIN_ROOT = ROOT / "plugins" / "product-agent-os"
 sys.path.insert(0, str(SCRIPTS))
 
-from product_agent_os.templates import required_templates, render_template  # noqa: E402
+from product_agent_os.templates import AI_RAG_TEMPLATE_ALIASES, required_templates, render_template  # noqa: E402
 from product_agent_os.validators import validate_agent_file, validate_hook_file  # noqa: E402
 
 
@@ -125,6 +125,21 @@ REQUIRED_TARGETS = {
     ".codex/artifact-templates/onboarding-map.md",
     ".codex/artifact-templates/migration-plan.md",
     ".codex/artifact-templates/ai-eval-spec.md",
+    ".codex/artifact-templates/ai-behavior-spec.md",
+    ".codex/artifact-templates/prompt-contract.md",
+    ".codex/artifact-templates/model-decision-record.md",
+    ".codex/artifact-templates/eval-run-report.md",
+    ".codex/artifact-templates/ai-dataset-manifest.md",
+    ".codex/artifact-templates/structured-output-schema.md",
+    ".codex/artifact-templates/ai-tool-contract.md",
+    ".codex/artifact-templates/rag-source-inventory.md",
+    ".codex/artifact-templates/rag-retrieval-config.md",
+    ".codex/artifact-templates/rag-eval-report.md",
+    ".codex/artifact-templates/grounding-rubric.md",
+    ".codex/artifact-templates/agent-workflow-map.md",
+    ".codex/artifact-templates/guardrail-matrix.md",
+    ".codex/artifact-templates/trace-evidence-packet.md",
+    ".codex/artifact-templates/ai-cost-latency-budget.md",
     ".codex/artifact-templates/security-risk-review.md",
     ".codex/artifact-templates/ci-stabilization-report.md",
     ".codex/artifact-templates/release-readiness.md",
@@ -196,6 +211,173 @@ class InfrastructureTemplateTest(unittest.TestCase):
 
         self.assertEqual(set(targets), REQUIRED_TARGETS)
         self.assertEqual(len(targets), len(set(targets)))
+
+    def test_ai_rag_template_names_are_canonical_and_legacy_names_are_mapped(self):
+        canonical_names = {
+            "prompt-contract.md",
+            "model-decision-record.md",
+            "rag-eval-report.md",
+        }
+        legacy_aliases = {
+            "ai-prompt-contract.md": "prompt-contract.md",
+            "ai-model-decision-record.md": "model-decision-record.md",
+            "rag-grounding-eval.md": "rag-eval-report.md",
+            "agent-handoff-contract.md": "agent-task-packet.md",
+        }
+        targets = {item.target_path for item in required_templates()}
+        catalog = json.loads(
+            (PLUGIN_ROOT / "assets" / "methodology" / "methodology-catalog.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        domains = {
+            domain["id"]: domain
+            for domain in catalog["domains"]
+            if isinstance(domain, dict) and domain.get("id")
+        }
+        artifacts = set(domains["llm_ai_rag"]["artifacts"])
+
+        for canonical in canonical_names:
+            with self.subTest(canonical=canonical):
+                self.assertIn(f".codex/artifact-templates/{canonical}", targets)
+                self.assertIn(canonical, artifacts)
+
+        self.assertEqual(AI_RAG_TEMPLATE_ALIASES, legacy_aliases)
+        for legacy, canonical in legacy_aliases.items():
+            with self.subTest(legacy=legacy):
+                self.assertNotIn(f".codex/artifact-templates/{legacy}", targets)
+                self.assertNotIn(legacy, artifacts)
+                self.assertIn(canonical, artifacts)
+
+    def test_llm_ai_rag_final_batch_templates_cover_handoff_tooling_migration_lifecycle_and_incidents(self):
+        targets = {item.target_path for item in required_templates()}
+        self.assertNotIn(".codex/artifact-templates/agent-handoff-contract.md", targets)
+        self.assertIn(".codex/artifact-templates/agent-task-packet.md", targets)
+        self.assertIn(".codex/artifact-templates/agent-workflow-map.md", targets)
+
+        templates = {
+            "agent-task-packet.md": (TEMPLATE_ROOT / "artifact-templates" / "agent-task-packet.md").read_text(
+                encoding="utf-8"
+            ).lower(),
+            "agent-workflow-map.md": (TEMPLATE_ROOT / "artifact-templates" / "agent-workflow-map.md").read_text(
+                encoding="utf-8"
+            ).lower(),
+            "trace-evidence-packet.md": (
+                TEMPLATE_ROOT / "artifact-templates" / "trace-evidence-packet.md"
+            ).read_text(encoding="utf-8").lower(),
+            "ai-eval-spec.md": (TEMPLATE_ROOT / "artifact-templates" / "ai-eval-spec.md").read_text(
+                encoding="utf-8"
+            ).lower(),
+            "model-decision-record.md": (
+                TEMPLATE_ROOT / "artifact-templates" / "model-decision-record.md"
+            ).read_text(encoding="utf-8").lower(),
+            "eval-run-report.md": (TEMPLATE_ROOT / "artifact-templates" / "eval-run-report.md").read_text(
+                encoding="utf-8"
+            ).lower(),
+            "rag-source-inventory.md": (
+                TEMPLATE_ROOT / "artifact-templates" / "rag-source-inventory.md"
+            ).read_text(encoding="utf-8").lower(),
+            "rag-retrieval-config.md": (
+                TEMPLATE_ROOT / "artifact-templates" / "rag-retrieval-config.md"
+            ).read_text(encoding="utf-8").lower(),
+            "ai-dataset-manifest.md": (
+                TEMPLATE_ROOT / "artifact-templates" / "ai-dataset-manifest.md"
+            ).read_text(encoding="utf-8").lower(),
+            "guardrail-matrix.md": (TEMPLATE_ROOT / "artifact-templates" / "guardrail-matrix.md").read_text(
+                encoding="utf-8"
+            ).lower(),
+            "control-plane-runlog.md": (TEMPLATE_ROOT / "control-plane" / "RUNLOG.md").read_text(
+                encoding="utf-8"
+            ).lower(),
+        }
+
+        expected_terms = {
+            "agent-task-packet.md": [
+                "agent-handoff-contract.md",
+                "handoff owner",
+                "inputs",
+                "output schema",
+                "trace evidence",
+            ],
+            "agent-workflow-map.md": [
+                "handoff owner",
+                "inputs",
+                "output schema",
+                "trace source",
+                "sequential fallback",
+            ],
+            "trace-evidence-packet.md": [
+                "trace source type",
+                "agents sdk trace",
+                "opentelemetry genai span",
+                "tool-specific report",
+                "redaction boundary",
+            ],
+            "ai-eval-spec.md": [
+                "promptfoo",
+                "openai evals",
+                "pytest/jest",
+                "ragas",
+                "langsmith",
+                "selected runner",
+                "rejected runner",
+                "deferred decision",
+                "stack/privacy/ci fit",
+                "no forced eval runner",
+            ],
+            "model-decision-record.md": [
+                "snapshot or approved alias",
+                "prompt migration impact",
+                "compatibility checks",
+                "minimum threshold",
+                "sampling parameter rationale",
+            ],
+            "eval-run-report.md": [
+                "model migration",
+                "minimum threshold",
+                "accepted regression",
+                "ai incident",
+                "follow-up eval",
+            ],
+            "rag-source-inventory.md": [
+                "deletion path",
+                "retention",
+                "source exclusion",
+                "stale-source pruning",
+                "privacy owner",
+            ],
+            "rag-retrieval-config.md": [
+                "vector store lifecycle",
+                "deletion propagation",
+                "privacy owner",
+            ],
+            "ai-dataset-manifest.md": [
+                "deduplication",
+                "stale-case pruning",
+                "privacy review",
+            ],
+            "guardrail-matrix.md": [
+                "ai incident",
+                "hallucination report",
+                "unsafe output",
+                "tool misuse",
+                "data exposure",
+                "security/privacy handoff",
+            ],
+            "control-plane-runlog.md": [
+                "ai incident boundary",
+                "severity",
+                "mitigation",
+                "follow-up eval",
+                "security/privacy handoff",
+            ],
+        }
+
+        for filename, terms in expected_terms.items():
+            with self.subTest(filename=filename):
+                text = templates[filename]
+                for term in terms:
+                    self.assertIn(term, text)
 
     def test_template_source_files_exist(self):
         for item in required_templates():
@@ -2629,6 +2811,7 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 "quality-current-evidence-before-completion",
                 "frontend-evidence-before-completion",
                 "backend-evidence-before-completion",
+                "llm-ai-rag-evidence-before-completion",
                 "api-integrations-evidence-before-completion",
                 "finish-options",
                 "codex-only-compatibility",
@@ -2777,20 +2960,25 @@ class InfrastructureTemplateTest(unittest.TestCase):
         text = (TEMPLATE_ROOT / "workflows" / "ai-eval-regression.md").read_text(encoding="utf-8").lower()
 
         for expected in [
+            "app-backed path",
             "baseline",
+            "baseline/current comparison",
             "dataset policy",
             "no-secrets",
             "prompt/context",
+            "prompt/context inventory",
             "retrieval metrics",
             "judge rubric",
-            "threshold",
+            "thresholds",
             "latency",
             "cost",
             "grounding",
             "one-factor-at-a-time",
             "rerun command",
+            "failed cases",
             "failure examples",
             "eval evidence",
+            "current eval evidence",
             "do not change model",
             "do not claim quality",
             "approval",
@@ -2802,13 +2990,20 @@ class InfrastructureTemplateTest(unittest.TestCase):
 
         for expected in [
             "source status:",
+            "app-backed path",
             "app path",
             "user-visible behavior promise",
+            "prompt/context inventory",
             "baseline result",
             "current result",
             "baseline/current comparison",
             "rerun command",
-            "threshold",
+            "thresholds",
+            "retrieval metrics",
+            "judge rubric",
+            "latency",
+            "cost",
+            "grounding",
             "failed cases",
             "current-run evidence",
             "inspection-only gap",
@@ -2822,6 +3017,48 @@ class InfrastructureTemplateTest(unittest.TestCase):
         ]:
             with self.subTest(expected=expected):
                 self.assertIn(expected, text)
+
+    def test_llm_ai_rag_templates_connect_control_plane_and_evals(self):
+        payloads = {
+            "control-plane": "\n".join(
+                (TEMPLATE_ROOT / "control-plane" / name).read_text(encoding="utf-8").lower()
+                for name in ["PLAN.md", "TEST.md", "EVALS.md", "RUNLOG.md"]
+            ),
+            "behavioral-workflows.json": (
+                TEMPLATE_ROOT / "evals" / "behavioral-workflows.json"
+            ).read_text(encoding="utf-8").lower(),
+            "ai-eval-regression.md": (
+                TEMPLATE_ROOT / "workflows" / "ai-eval-regression.md"
+            ).read_text(encoding="utf-8").lower(),
+        }
+        shared_terms = [
+            "llm_ai_rag",
+            "llm_ai_rag_readiness_when_ai_behavior_changes",
+            "ai behavior promise",
+            "baseline eval",
+            "eval rerun",
+            "dataset governance",
+            "prompt-contract.md",
+            "model-decision-record.md",
+            "structured-output-schema.md",
+            "ai-tool-contract.md",
+            "rag-source-inventory.md",
+            "rag-retrieval-config.md",
+            "rag-eval-report.md",
+            "agent-workflow-map.md",
+            "guardrail-matrix.md",
+            "trace-evidence-packet.md",
+            "ai-cost-latency-budget.md",
+            "current-run evidence",
+            "accepted-gap handling",
+            "prompt inspection is enough",
+            "ai quality claim without current eval evidence",
+        ]
+
+        for name, text in payloads.items():
+            with self.subTest(name=name):
+                for expected in shared_terms:
+                    self.assertIn(expected, text)
 
     def test_native_mobile_feature_workflow_requires_platform_runtime_gates(self):
         text = (TEMPLATE_ROOT / "workflows" / "native-mobile-feature.md").read_text(encoding="utf-8").lower()

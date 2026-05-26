@@ -1258,6 +1258,15 @@ def _llm_ai_rag_signals(files: set[str]) -> dict[str, Any]:
         "agent_trace_sources": _source_packet(agent_trace_sources),
         "safety_sources": _source_packet(safety_sources),
         "latency_cost_sources": _source_packet(latency_cost_sources),
+        "diff_signal_policy": {
+            "status": "limited_to_workspace_and_intent_signals",
+            "external_git_or_network_used": False,
+            "limitations": [
+                "no external branches",
+                "no network",
+                "filename changes alone are not certainty",
+            ],
+        },
         "verification_status": "applicable_missing" if core_signal_present else "not_applicable",
         "note": (
             "AI/RAG discovery is read-only: no model calls, eval runs, vector DB access, "

@@ -26,6 +26,7 @@ Project: {project_name}
 - Source review:
 - Sampling method:
 - Deduplication:
+- Privacy review:
 - No secrets scan:
 - Private data review:
 

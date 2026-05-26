@@ -133,6 +133,22 @@ Generated at: {generated_at}
 - Contract source, consumer, compatibility, security, error, event, SDK and external-write evidence:
 - Forbidden shortcuts: Swagger UI is not source of truth, schema validation alone is not contract testing, OAuth alone is not complete security evidence, GraphQL/gRPC/events are not universal defaults.
 - External writes are `approval_required`; generated client publication, provider mutation and webhook registration need approval before external action.
+- LLM / AI / RAG methodology (`llm_ai_rag`):
+- LLM / AI / RAG eval fields: `llm_ai_rag_contract_present`, `llm_ai_rag_readiness_when_ai_behavior_changes`, `ai_behavior_promise_present`, `ai_baseline_eval_present`, `ai_eval_rerun_evidence_present`, `ai_dataset_governance_present`, `ai_prompt_contract_present`, `ai_model_decision_record_present`, `ai_structured_output_contract_present`, `ai_tool_contract_present`, `rag_source_inventory_present`, `rag_retrieval_config_present`, `rag_eval_report_present`, `agent_workflow_trace_present`, `ai_safety_review_present`, `ai_cost_latency_budget_present`, `ai_agent_handoff_contract_compatibility_present`, `ai_eval_tooling_selector_contract_present`, `ai_model_migration_policy_contract_present`, `rag_corpus_lifecycle_privacy_contract_present`, `ai_behavior_diff_signal_policy_contract_present`, `ai_incident_workflow_contract_present`
+- AI behavior promise:
+- Baseline eval:
+- Eval rerun:
+- Eval rerun evidence:
+- App-backed path:
+- App-backed eval path:
+- Dataset governance:
+- Prompt/context inventory:
+- AI/RAG artifacts: `ai-behavior-spec.md`, `prompt-contract.md`, `model-decision-record.md`, `eval-run-report.md`, `ai-dataset-manifest.md`, `structured-output-schema.md`, `ai-tool-contract.md`, `rag-source-inventory.md`, `rag-retrieval-config.md`, `rag-eval-report.md`, `grounding-rubric.md`, agent task packet, `agent-workflow-map.md`, `guardrail-matrix.md`, `trace-evidence-packet.md`, `ai-cost-latency-budget.md`
+- AI/RAG final-depth eval: handoff compatibility, conditional eval tooling, model migration thresholds, RAG deletion/privacy lifecycle, workspace/intent-only diff-signal policy, AI incident workflow and report evidence/approval/gap/risk rendering:
+- Retrieval metrics, grounding, context precision, context recall, failed cases and current-run evidence:
+- Structured output, tool approval boundary, agent trace, safety evidence and cost evidence:
+- Accepted-gap handling:
+- Forbidden shortcuts: prompt inspection is enough, ai quality claim without current eval evidence, citations alone prove grounding, model upgrade automatically improves quality.
 - Database & Data methodology (`database_data`):
 - Database eval fields: `database_data_contract_present`, `database_inventory_contract_present`, `database_dictionary_contract_present`, `database_schema_source_contract_present`, `database_migration_plan_contract_present`, `database_backup_restore_contract_present`, `database_constraints_integrity_contract_present`, `database_production_access_approval_contract_present`, and `unsupported_database_claims_rejected_contract_present`
 - Database eval rejects schema-only artifact is not safety proof, production access without approval_required, destructive migration without rollback/backup evidence, and runtime pipeline/RAG ingestion claims that are not `present_unverified` or verified by current evidence.

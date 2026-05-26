@@ -363,6 +363,43 @@ AI_SAFETY_TERMS = {
     "finance",
     "legal",
 }
+AI_AGENT_HANDOFF_TERMS = {"agent handoff", "handoff"}
+AI_EVAL_TOOLING_TERMS = {
+    "promptfoo",
+    "openai evals",
+    "pytest",
+    "jest",
+    "ragas",
+    "langsmith",
+    "eval tooling",
+    "deferred runner",
+}
+AI_MODEL_MIGRATION_TERMS = {
+    "model migration",
+    "snapshot",
+    "alias",
+    "prompt migration",
+    "minimum threshold",
+    "sampling",
+    "temperature",
+}
+RAG_CORPUS_LIFECYCLE_TERMS = {
+    "corpus lifecycle",
+    "deletion",
+    "retention",
+    "stale-source",
+    "stale-source pruning",
+    "vector store lifecycle",
+}
+AI_BEHAVIOR_DIFF_TERMS = {"diff", "changed files", "code config diff", "code/config diff"}
+AI_INCIDENT_TERMS = {
+    "failed eval",
+    "hallucination report",
+    "unsafe output",
+    "tool misuse",
+    "data exposure",
+    "incident",
+}
 DELIVERY_INTENT_TERMS = {"production", "release", "deploy", "package", "docker", "kubernetes", "operations"}
 ARCHITECTURE_INTENT_TERMS = {
     "adr",
@@ -3972,6 +4009,88 @@ def _llm_ai_rag_recommendations(files: set[str], observed: list[dict[str, Any]],
             "Agent/tool/handoff routing change needs trace or equivalent runtime evidence.",
             ["smallest-useful workflow", "trace id", "tool calls", "handoffs", "state", "final-answer owner", "stop conditions"],
             action="Stage trace-evidence-packet.md before multi-step agent readiness claims.",
+        )
+
+    if _mentions_any(intent, AI_AGENT_HANDOFF_TERMS) and not _artifact_present(files, "agent-task-packet.md"):
+        add(
+            "ai_agent_handoff_contract_compatible",
+            "agent-task-packet.md",
+            "AI agent handoff needs a compatible agent-task-packet.md contract rather than a duplicate legacy artifact.",
+            ["handoff owner", "inputs", "output schema", "stop condition", "trace evidence"],
+            action="Stage agent-task-packet.md with AI/RAG handoff ownership, inputs, output schema and trace evidence.",
+        )
+
+    if _mentions_any(intent, AI_EVAL_TOOLING_TERMS) and not _artifact_present(files, "ai-eval-spec.md"):
+        add(
+            "ai_eval_tooling_selector_present",
+            "ai-eval-spec.md",
+            "Eval tooling choices are methodology decisions, not defaults.",
+            [
+                "Promptfoo",
+                "OpenAI Evals",
+                "pytest/Jest",
+                "Ragas",
+                "LangSmith",
+                "selected runner",
+                "rejected runner",
+                "deferred decision",
+                "stack/privacy/CI fit",
+            ],
+            priority="P2_recommended",
+            action="Record selected and rejected eval runners in ai-eval-spec.md before treating eval tooling as settled.",
+        )
+
+    if _mentions_any(intent, AI_MODEL_MIGRATION_TERMS) and not _artifact_present(files, "model-decision-record.md"):
+        add(
+            "ai_model_migration_policy_present",
+            "model-decision-record.md",
+            "Model migration needs explicit alias/snapshot, prompt migration and rollback policy.",
+            [
+                "snapshot or approved alias",
+                "prompt migration impact",
+                "compatibility checks",
+                "rollback",
+                "baseline/current eval comparison",
+                "minimum threshold",
+                "sampling parameter rationale",
+            ],
+            action="Stage model-decision-record.md with migration thresholds, compatibility checks and rollback.",
+        )
+
+    if _mentions_any(intent, RAG_CORPUS_LIFECYCLE_TERMS) and not _artifact_present(files, "rag-source-inventory.md"):
+        add(
+            "rag_corpus_lifecycle_privacy_present",
+            "rag-source-inventory.md",
+            "RAG corpus lifecycle, privacy and deletion behavior need owner-reviewed evidence.",
+            [
+                "deletion path",
+                "retention",
+                "source exclusion",
+                "stale-source pruning",
+                "privacy owner",
+                "vector store lifecycle",
+                "database/security overlap",
+            ],
+            action="Stage rag-source-inventory.md with corpus lifecycle, deletion and privacy ownership evidence.",
+        )
+
+    if _mentions_any(intent, AI_BEHAVIOR_DIFF_TERMS) and not _artifact_present(files, "RUNLOG.md"):
+        add(
+            "ai_behavior_diff_signal_policy_present",
+            "RUNLOG.md",
+            "AI behavior diff signals are limited to workspace and intent signals; external branch or network checks are not inferred.",
+            ["no external branches", "no network", "filename changes alone are not certainty"],
+            priority="P2_recommended",
+            action="Record AI/RAG diff-signal limits in RUNLOG.md before using changed files as behavior evidence.",
+        )
+
+    if _mentions_any(intent, AI_INCIDENT_TERMS) and not _artifact_present(files, "guardrail-matrix.md"):
+        add(
+            "ai_incident_workflow_present",
+            "guardrail-matrix.md",
+            "Failed eval, hallucination report, unsafe output, tool misuse or data exposure needs an AI incident workflow.",
+            ["owner", "severity", "evidence", "mitigation", "follow-up eval", "security/privacy handoff"],
+            action="Stage guardrail-matrix.md with AI incident severity, mitigation and follow-up eval workflow.",
         )
 
     if _mentions_any(intent, AI_SAFETY_TERMS) and not _artifact_present(files, "guardrail-matrix.md"):

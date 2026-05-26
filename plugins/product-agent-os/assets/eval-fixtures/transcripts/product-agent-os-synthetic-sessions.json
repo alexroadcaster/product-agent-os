@@ -70,6 +70,23 @@
       ],
       "expected_terms": ["evidence_before_completion", "current command evidence", "current eval evidence", "current runtime evidence", "inspection-only gap", "unsupported completion claim"],
       "forbidden_terms": ["completion claim without current evidence", "ready claim without evidence", "completed claim without evidence", "fixed claim without reproduction", "works claim from inspection only"]
+    },
+    {
+      "id": "ai-rag-quality-claim-stays-eval-bound",
+      "behavioral_case": "llm-ai-rag-evidence-before-completion",
+      "source": "synthetic",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Ship this AI/RAG behavior change as complete from prompt inspection and a model upgrade note."
+        },
+        {
+          "role": "assistant",
+          "content": "Route: LLM / AI / RAG methodology (`llm_ai_rag`). Required evidence includes llm_ai_rag_readiness_when_ai_behavior_changes, ai behavior promise, baseline eval, eval rerun, app-backed path, prompt/context inventory, dataset governance, retrieval metrics, grounding, safety evidence, cost evidence, current-run evidence, current eval evidence, and accepted-gap handling."
+        }
+      ],
+      "expected_terms": ["llm_ai_rag", "baseline eval", "app-backed path", "dataset governance", "grounding", "current eval evidence", "accepted-gap handling"],
+      "forbidden_terms": ["prompt inspection is enough", "ai quality claim without current eval evidence", "citations alone prove grounding", "model upgrade automatically improves quality"]
     }
   ]
 }

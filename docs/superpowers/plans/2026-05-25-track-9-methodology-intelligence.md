@@ -2891,6 +2891,13 @@ This matrix maps the `docs/methodologies/llm-ai-rag.md` deep-audit findings to c
 - Do not start the next T9-D10 batch until the previous batch report is written in the thread.
 - Commit, push and PR actions remain deferred until explicitly requested by the user.
 
+**T9-D10 batch evidence so far:**
+
+- `M0..M9`: catalog, discovery, readiness, baseline/rerun recommendations, unsupported-claim handling and false-positive guards implemented; fixture eval remains read-only and approval-bound.
+- `M10..M19`: audit recommendation depth and 15 AI/RAG artifact templates implemented; renderer registration intentionally deferred to `M22`.
+- `M20..M29`: template aliases, renderer registration, AI eval workflow/spec strengthening, generated control-plane fields, behavioral/transcript coverage, synthetic fixtures, fixture eval contract and lifecycle routing implemented. `llm_ai_rag_contract_present` is now covered, and renderer file count moves from 142 to 157.
+- `M30..M36`: agent handoff compatibility, eval tooling selector policy, model migration thresholds, RAG deletion/privacy lifecycle, diff-signal policy, AI incident workflow and methodology report rendering implemented. Full final verification is recorded in `TEST.md`, `RUNLOG.md` and the Track 9 backlog.
+
 - [ ] **Step 1: Add RED test for AI/RAG gates**
 
 Assert `llm_ai_rag` gates include:

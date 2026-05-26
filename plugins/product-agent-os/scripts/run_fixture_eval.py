@@ -16,6 +16,7 @@ from product_agent_os.automation_policy import validate_automation_candidate  # 
 from product_agent_os.infrastructure import InfrastructureError, render_infrastructure_plan, stage_infrastructure  # noqa: E402
 from product_agent_os.methodology_audit import build_methodology_audit  # noqa: E402
 from product_agent_os.methodology_catalog import load_methodology_catalog, validate_methodology_catalog  # noqa: E402
+from product_agent_os.templates import AI_RAG_TEMPLATE_ALIASES, required_templates  # noqa: E402
 from product_agent_os.merge_infrastructure import (  # noqa: E402
     ROLLBACK_MANIFEST_NAME,
     MergeInfrastructureError,
@@ -914,6 +915,118 @@ CODEX_AGENTIC_WORKFLOW_TERMS = (
     "explicit_gap_accepted",
     "approval_required",
 )
+LLM_AI_RAG_GATES = (
+    "ai_behavior_spec_present",
+    "ai_baseline_eval_present",
+    "ai_eval_rerun_command_present",
+    "ai_dataset_governance_present",
+    "ai_prompt_contract_present",
+    "ai_model_decision_record_present",
+    "ai_structured_output_contract_present",
+    "ai_tool_contract_present",
+    "ai_human_approval_boundary_present",
+    "rag_source_inventory_present",
+    "rag_retrieval_config_present",
+    "rag_grounding_eval_present",
+    "agent_workflow_trace_present",
+    "ai_safety_review_present",
+    "ai_cost_latency_budget_present",
+    "ai_no_private_data_in_fixtures_present",
+    "ai_unsupported_claims_rejected",
+    "ai_agent_handoff_contract_compatible",
+    "ai_eval_tooling_selector_present",
+    "ai_model_migration_policy_present",
+    "rag_corpus_lifecycle_privacy_present",
+    "ai_behavior_diff_signal_policy_present",
+    "ai_incident_workflow_present",
+)
+LLM_AI_RAG_ARTIFACTS = (
+    "ai-behavior-spec.md",
+    "prompt-contract.md",
+    "model-decision-record.md",
+    "ai-eval-spec.md",
+    "eval-run-report.md",
+    "ai-dataset-manifest.md",
+    "structured-output-schema.md",
+    "ai-tool-contract.md",
+    "rag-source-inventory.md",
+    "rag-retrieval-config.md",
+    "rag-eval-report.md",
+    "grounding-rubric.md",
+    "agent-task-packet.md",
+    "agent-workflow-map.md",
+    "guardrail-matrix.md",
+    "trace-evidence-packet.md",
+    "ai-cost-latency-budget.md",
+)
+LLM_AI_RAG_EVAL_FIELDS = (
+    "llm_ai_rag_contract_present",
+    "ai_behavior_spec_contract_present",
+    "ai_baseline_eval_contract_present",
+    "ai_eval_rerun_command_contract_present",
+    "ai_dataset_governance_contract_present",
+    "ai_prompt_contract_contract_present",
+    "ai_model_decision_record_contract_present",
+    "ai_structured_output_contract_present",
+    "ai_tool_contract_contract_present",
+    "ai_human_approval_boundary_contract_present",
+    "rag_source_inventory_contract_present",
+    "rag_retrieval_config_contract_present",
+    "rag_grounding_eval_contract_present",
+    "agent_workflow_trace_contract_present",
+    "ai_safety_review_contract_present",
+    "ai_cost_latency_budget_contract_present",
+    "ai_no_private_data_in_fixtures_contract_present",
+    "unsupported_ai_claims_rejected_contract_present",
+    "ai_agent_handoff_contract_compatibility_present",
+    "ai_eval_tooling_selector_contract_present",
+    "ai_model_migration_policy_contract_present",
+    "rag_corpus_lifecycle_privacy_contract_present",
+    "ai_behavior_diff_signal_policy_contract_present",
+    "ai_incident_workflow_contract_present",
+)
+LLM_AI_RAG_TERMS = (
+    "llm_ai_rag",
+    "llm_ai_rag_readiness_when_ai_behavior_changes",
+    "ai behavior promise",
+    "baseline eval",
+    "eval rerun evidence",
+    "app-backed eval path",
+    "prompt/context inventory",
+    "dataset governance",
+    "retrieval metrics",
+    "grounding",
+    "safety evidence",
+    "cost evidence",
+    "current-run evidence",
+    "accepted-gap handling",
+    "prompt inspection is enough",
+    "ai quality claim without current eval evidence",
+    "citations alone prove grounding",
+    "model upgrade automatically improves quality",
+    "do not force one eval runner",
+    "do not force multi-agent architecture",
+    "do not run live model calls",
+    "present_unverified",
+    "not_applicable",
+    "approval_required",
+    "private customer data",
+    "raw private chat logs",
+    "agent-handoff-contract.md",
+    "handoff owner",
+    "trace source type",
+    "opentelemetry genai span",
+    "promptfoo",
+    "openai evals",
+    "pytest/jest",
+    "ragas",
+    "langsmith",
+    "snapshot or approved alias",
+    "prompt migration impact",
+    "vector store lifecycle",
+    "ai incident boundary",
+    "security/privacy handoff",
+)
 COMPLETION_EVIDENCE_TERMS = (
     "evidence_before_completion",
     "evidence-before-completion",
@@ -1339,6 +1452,7 @@ def _expected_checks(
         checks["api_contract_source_present"] = _api_integrations_contract_present()
         checks["external_write_approval_present"] = _api_integrations_contract_present()
         checks["database_data_contract_present"] = _database_data_contract_present()
+        checks["llm_ai_rag_contract_present"] = _llm_ai_rag_contract_present()
         checks["methodology_applicability_contract_present"] = (
             _methodology_applicability_contract_present(audit)
         )
@@ -1368,6 +1482,11 @@ def _expected_checks(
         "legacy-undocumented-repo": "legacy_onboarding",
         "api-migration-repo": "api_migration",
         "rag-quality-regression": "ai_eval_regression",
+        "ai-prompt-model-change": "ai_eval_regression",
+        "ai-tool-approval": "ai_eval_regression",
+        "ai-structured-output": "ai_eval_regression",
+        "ai-agent-trace": "ai_eval_regression",
+        "ai-latency-cost-budget": "ai_eval_regression",
         "native-mobile-permissions": "native_mobile_feature",
         "desktop-local-indexer": "desktop_local_first",
         "data-migration-pii": "data_migration",
@@ -1494,6 +1613,25 @@ def _expected_checks(
             and db_signals.get("rag_ingestion_sources", {}).get("status") == "present_unverified"
             and db_signals.get("pipeline_sources", {}).get("status") == "present_unverified"
         )
+    if fixture in {
+        "rag-quality-regression",
+        "ai-prompt-model-change",
+        "ai-tool-approval",
+        "ai-structured-output",
+        "ai-agent-trace",
+        "ai-latency-cost-budget",
+    }:
+        llm_signals = audit.get("llm_ai_rag_signals", {})
+        readiness = audit.get("methodology_applicability", {}).get("llm_ai_rag_readiness", {})
+        checks["llm_ai_rag_detected"] = (
+            "llm_ai_rag" in _applicable_methodology_domains(methodology_audit)
+            and isinstance(llm_signals, dict)
+            and llm_signals.get("verification_status") == "applicable_missing"
+            and isinstance(readiness, dict)
+            and readiness.get("status") == "present_unverified"
+        )
+        checks["llm_ai_rag_contract_present"] = _llm_ai_rag_contract_present()
+        checks["llm_ai_rag_privacy_safe_fixture"] = _ai_rag_fixture_privacy_safe(FIXTURES / fixture)
     return checks
 
 
@@ -2115,6 +2253,94 @@ def _database_data_contract_present() -> bool:
         f"{path.name}\n{path.read_text(encoding='utf-8')}" for path in paths
     ).lower()
     return all(term.lower() in payload for term in DATABASE_DATA_TERMS)
+
+
+def _llm_ai_rag_contract_present() -> bool:
+    try:
+        catalog = load_methodology_catalog()
+    except (OSError, ValueError, json.JSONDecodeError):
+        return False
+    if validate_methodology_catalog(catalog):
+        return False
+    domains = {
+        str(domain.get("id")): domain
+        for domain in catalog.get("domains", [])
+        if isinstance(domain, dict) and domain.get("id")
+    }
+    ai_rag = domains.get("llm_ai_rag")
+    if not isinstance(ai_rag, dict):
+        return False
+    if not set(LLM_AI_RAG_GATES).issubset(set(ai_rag.get("gates", []))):
+        return False
+    if not set(LLM_AI_RAG_ARTIFACTS).issubset(set(ai_rag.get("artifacts", []))):
+        return False
+    if not set(LLM_AI_RAG_EVAL_FIELDS).issubset(set(ai_rag.get("eval_fields", []))):
+        return False
+
+    canonical_targets = {
+        f".codex/artifact-templates/{name}" for name in LLM_AI_RAG_ARTIFACTS
+    }
+    rendered_targets = {item.target_path for item in required_templates()}
+    if not canonical_targets.issubset(rendered_targets):
+        return False
+    if any(
+        f".codex/artifact-templates/{legacy}" in rendered_targets
+        for legacy in AI_RAG_TEMPLATE_ALIASES
+    ):
+        return False
+    if AI_RAG_TEMPLATE_ALIASES != {
+        "ai-prompt-contract.md": "prompt-contract.md",
+        "ai-model-decision-record.md": "model-decision-record.md",
+        "rag-grounding-eval.md": "rag-eval-report.md",
+        "agent-handoff-contract.md": "agent-task-packet.md",
+    }:
+        return False
+
+    paths = [
+        PLUGIN_ROOT / "assets" / "methodology" / "methodology-catalog.json",
+        TEMPLATE_ROOT / "workflows" / "ai-eval-regression.md",
+        TEMPLATE_ROOT / "evals" / "behavioral-workflows.json",
+        TEMPLATE_ROOT / "evals" / "project-readiness.json",
+        PLUGIN_ROOT / "scripts" / "product_agent_os" / "discovery.py",
+        PLUGIN_ROOT / "scripts" / "product_agent_os" / "methodology_audit.py",
+        PLUGIN_ROOT / "skills" / "workspace-discovery-auditor" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "project-lifecycle-orchestrator" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "requirements-author" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "implementation-planner" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "test-eval-designer" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "risk-reviewer" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "docs-maintainer" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "learning-loop-maintainer" / "SKILL.md",
+    ]
+    paths.extend(TEMPLATE_ROOT / "control-plane" / name for name in ["PLAN.md", "TEST.md", "EVALS.md", "RUNLOG.md"])
+    paths.extend(TEMPLATE_ROOT / "artifact-templates" / name for name in LLM_AI_RAG_ARTIFACTS)
+    if not all(path.exists() for path in paths):
+        return False
+    payload = "\n".join(
+        f"{path.name}\n{path.read_text(encoding='utf-8')}" for path in paths
+    ).lower()
+    return all(term in payload for term in LLM_AI_RAG_TERMS)
+
+
+def _ai_rag_fixture_privacy_safe(path: Path) -> bool:
+    if not path.is_dir():
+        return False
+    payload = "\n".join(
+        item.read_text(encoding="utf-8")
+        for item in path.rglob("*")
+        if item.is_file()
+    )
+    lowered = payload.lower()
+    forbidden = (
+        "sk-",
+        "token=",
+        "api_key",
+        "begin private key",
+        "password=",
+        "private customer",
+        "raw private chat",
+    )
+    return "synthetic" in payload and not any(marker in lowered for marker in forbidden)
 
 
 def _codex_agentic_workflow_contract_present() -> bool:

@@ -54,6 +54,16 @@ Minimum staged artifacts include `database-inventory.md`, `database-dictionary.m
 
 Approval boundary stays explicit: DB introspection, production DB access, production data access, migration execution, destructive cleanup, backup restore and retention mutation are not automatic actions.
 
+## LLM / AI / RAG methodology routing
+
+AI/RAG work keeps the Track 8 `ai_eval_regression` route for compatibility, but Track 9 also adds a dedicated LLM / AI / RAG methodology packet. When prompts, models, eval configs, structured outputs, tool/function/MCP calls, RAG corpora, retrieval, vector stores, embeddings, grounding, agent traces, guardrails or latency/cost signals appear, the route should stage or request AI/RAG-specific evidence before implementation or quality claims.
+
+Minimum staged artifacts include `ai-behavior-spec.md`, `prompt-contract.md`, `model-decision-record.md`, `eval-run-report.md`, `ai-dataset-manifest.md`, `structured-output-schema.md`, `ai-tool-contract.md`, `rag-source-inventory.md`, `rag-retrieval-config.md`, `rag-eval-report.md`, `grounding-rubric.md`, `agent-task-packet.md`, `agent-workflow-map.md`, `guardrail-matrix.md`, `trace-evidence-packet.md`, `ai-cost-latency-budget.md` and the existing `ai-eval-spec.md` when user-visible AI behavior changes. `agent-handoff-contract.md` is a legacy/source alias to `agent-task-packet.md`, not a duplicate generated contract.
+
+Eval tooling remains conditional: Promptfoo, OpenAI Evals, pytest/Jest app-backed evals, Ragas and LangSmith are recorded as selected, rejected or deferred choices based on stack/privacy/CI fit. Model migration records snapshot or approved alias, prompt migration impact, compatibility checks, rollback, minimum threshold and sampling parameter rationale. RAG evidence records deletion path, retention, source exclusion, stale-source pruning, privacy owner, vector store lifecycle and deletion propagation. Failed evals, hallucination reports, unsafe outputs, tool misuse or data exposure route to an AI incident workflow with severity, mitigation, follow-up eval and Security/Privacy handoff.
+
+Approval boundary stays explicit: live model calls, external eval services, vector DB access, raw prompts/traces/customer text, tool writes, shell/money/data exposure and irreversible side effects are not automatic actions.
+
 ## Verification
 
 - Route selection is covered by discovery tests, `usage_mode` fixture checks, and T8-GX false-positive fixtures for selected methodology/tooling gates.
@@ -62,6 +72,7 @@ Approval boundary stays explicit: DB introspection, production DB access, produc
 - Backend methodology routing is covered by `backend_contract_present` and the synthetic `backend-service-app` fixture: backend completion requires `backend-service-overview.md`, `backend-runtime-behavior.md`, runtime/failure evidence, observability/SLO/health evidence, security/rollback evidence and owner reviewed sufficiency or accepted gap, not package docs or logs-only evidence.
 - API & Integrations methodology routing is covered by `api_integrations_contract_present` and synthetic API fixtures: API completion requires `api-inventory.md`, `api-contract-review.md`, `api-consumer-map.md`, `api-contract-test-matrix.md`, `external-integration-approval.md` and related compatibility/security/error/event/SDK evidence, not Swagger UI or schema-only evidence.
 - Database & Data methodology routing is covered by `database_data_contract_present` and synthetic database fixtures: database completion requires inventory, dictionary, schema source, migration plan, expand-contract, data contract, rollback/backup, classification, data quality, lineage, performance, retention, synthetic fixtures and production access approval evidence where applicable.
+- LLM / AI / RAG methodology routing is covered by `llm_ai_rag_contract_present` and synthetic AI/RAG fixtures: AI/RAG completion requires baseline/current eval, prompt/model/schema/tool/RAG/grounding/trace/guardrail/cost evidence, handoff/tooling/migration/lifecycle/incident evidence and current-run evidence, not prompt inspection, stale eval output, citations-only grounding, filename-only diffs or automatic model-upgrade quality claims.
 - Docs and source claims are checked by `tools/check_docs.py`, source policy and strict MkDocs when navigation changes.
 - Completion language must pass evidence-before-completion: current command evidence, current eval evidence, current runtime evidence, owner evidence or explicit inspection-only gap.
 

@@ -132,6 +132,22 @@ Generated at: {generated_at}
 - Contract test matrix, event delivery, generated SDK manifest and observability evidence:
 - Unsupported API claims rejected: Swagger UI is not source of truth, schema validation alone is not contract testing, OAuth alone is not complete security evidence, GraphQL/gRPC/events are not universal defaults.
 - External writes are `approval_required`:
+- LLM / AI / RAG methodology (`llm_ai_rag`):
+- LLM / AI / RAG readiness gate (`llm_ai_rag_readiness_when_ai_behavior_changes`):
+- AI behavior promise:
+- Baseline eval:
+- Eval rerun:
+- Eval rerun evidence:
+- App-backed path:
+- App-backed eval path:
+- Dataset governance:
+- Prompt/context inventory:
+- AI/RAG artifacts: `ai-behavior-spec.md`, `prompt-contract.md`, `model-decision-record.md`, `eval-run-report.md`, `ai-dataset-manifest.md`, `structured-output-schema.md`, `ai-tool-contract.md`, `rag-source-inventory.md`, `rag-retrieval-config.md`, `rag-eval-report.md`, `grounding-rubric.md`, agent task packet, `agent-workflow-map.md`, `guardrail-matrix.md`, `trace-evidence-packet.md`, `ai-cost-latency-budget.md`
+- AI/RAG final-depth checks: handoff compatibility, eval tooling selector, model migration threshold, RAG deletion/privacy lifecycle, diff-signal limits, AI incident workflow and methodology report evidence/approval/gap/risk rendering:
+- Retrieval metrics, grounding, context precision, context recall, failed cases and current-run evidence:
+- Structured output, tool approval boundary, agent trace, safety evidence and cost evidence:
+- Accepted-gap handling:
+- Unsupported AI/RAG shortcuts rejected: prompt inspection is enough, ai quality claim without current eval evidence, citations alone prove grounding, model upgrade automatically improves quality.
 - Database & Data methodology (`database_data`):
 - Database checks cover database inventory, database dictionary, schema source, data contract, constraints, indexes, foreign keys, unique, not null, transaction boundary, expand-contract, backfill, dry run, rollback feasibility, backup restore evidence, PII, retention, deletion, data quality, Great Expectations, dbt tests, lineage, OpenLineage, query performance, destructive migration, DROP/rename/truncate, production access approval_required, and no production data in fixtures.
 - Runtime pipeline and RAG ingestion signals stay `present_unverified`; schema-only artifact is not safety proof; do not access production data and do not run migration during tests without explicit approval.
@@ -245,9 +261,16 @@ Generated at: {generated_at}
 
 - Eval command:
 - Dataset or fixtures:
+- Baseline eval:
+- Eval rerun evidence:
+- App-backed eval path:
+- Dataset governance:
+- Prompt/context inventory:
 - Grounding or citation checks:
 - Retrieval metrics:
 - Latency or cost thresholds:
+- Current-run evidence:
+- Accepted-gap handling:
 
 ## Known Gaps
 

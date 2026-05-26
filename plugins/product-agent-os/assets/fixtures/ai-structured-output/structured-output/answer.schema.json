@@ -1,0 +1,9 @@
+{
+  "title": "SyntheticAnswer",
+  "type": "object",
+  "properties": {
+    "answer": { "type": "string" },
+    "confidence": { "type": "string" }
+  },
+  "required": ["answer", "confidence"]
+}

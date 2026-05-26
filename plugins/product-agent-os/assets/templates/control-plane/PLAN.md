@@ -110,6 +110,22 @@ Generated at: {generated_at}
 - Contract source, consumers, compatibility, security schemes, error examples, event delivery, generated SDK manifest, request ID, correlation ID and external-write approval evidence:
 - Unsupported API shortcuts rejected: Swagger UI is not source of truth, schema validation alone is not contract testing, OAuth alone is not complete security evidence, GraphQL/gRPC/events are not universal defaults.
 - API accepted gap: use `explicit_gap_accepted` only with owner, reason, review date, downstream consumer risk and follow-up condition; external writes are `approval_required`.
+- LLM / AI / RAG methodology (`llm_ai_rag`):
+- LLM / AI / RAG readiness gate: `llm_ai_rag_readiness_when_ai_behavior_changes`
+- AI behavior promise:
+- Baseline eval:
+- Eval rerun:
+- Eval rerun evidence:
+- App-backed path:
+- App-backed eval path:
+- Dataset governance:
+- Prompt/context inventory:
+- AI/RAG artifacts: `ai-behavior-spec.md`, `prompt-contract.md`, `model-decision-record.md`, `eval-run-report.md`, `ai-dataset-manifest.md`, `structured-output-schema.md`, `ai-tool-contract.md`, `rag-source-inventory.md`, `rag-retrieval-config.md`, `rag-eval-report.md`, `grounding-rubric.md`, agent task packet, `agent-workflow-map.md`, `guardrail-matrix.md`, `trace-evidence-packet.md`, `ai-cost-latency-budget.md`
+- AI/RAG final-depth evidence: handoff compatibility, eval tooling selector, selected/rejected/deferred runner, model migration threshold, RAG deletion/privacy lifecycle, workspace/intent-only diff-signal limits, AI incident workflow and reportable approval/gap/risk fields.
+- Retrieval metrics, grounding, context precision, context recall, failed cases and current-run evidence:
+- Structured output, tool approval boundary, agent trace, safety evidence and cost evidence:
+- Accepted-gap handling: use `explicit_gap_accepted` only with owner, reason, review date, residual risk and follow-up condition; live model/API calls, external tools and irreversible side effects are `approval_required`.
+- Unsupported AI/RAG shortcuts rejected: prompt inspection is enough, ai quality claim without current eval evidence, citations alone prove grounding, model upgrade automatically improves quality.
 - Database & Data methodology (`database_data`):
 - Database artifacts: `database-inventory.md`, `database-dictionary.md`, `database-migration-plan.md`, `database-data-contract.md`, `database-backup-restore-evidence.md`, `database-production-access-approval.md`
 - Database gates: `database_migration_plan_present`, `database_backup_restore_evidence_present`, `database_constraints_integrity_review_present`, `database_production_access_approval_present`
@@ -245,6 +261,7 @@ Generated at: {generated_at}
 - Documentation gate: required docs-as-code artifacts and source-of-truth updates are named.
 - Docs tooling gate: `docs_tooling_selector` records `docs_as_code_impact`, `docs-tooling-decision.md`, selected tools, rejected tools, `not_applicable`, `present_unverified`, `present_verified`, `proposal_staged`, `explicit_gap_accepted`, `approval_required`, evidence owner, maintenance owner, no forced install, no CI activation without approval, hosted docs approval, DB introspection approval, and any docs-light or internal-only reason.
 - Standards trigger gate: `standards_trigger_policy` records ADR trigger policy, C4/arc42 applicability, OpenAPI source of truth, AsyncAPI contract, SemVer impact, Keep a Changelog categories, CODEOWNERS status, GitHub Actions least privilege, `governance-proposal.md`, no external activation without approval, and no forced external activation.
+- LLM / AI / RAG gate: `llm_ai_rag_readiness_when_ai_behavior_changes` requires AI behavior promise, baseline eval, eval rerun evidence, app-backed eval path, dataset governance, prompt/model/schema/tool/RAG/agent artifacts, safety evidence, cost evidence, handoff/tooling/migration/lifecycle/incident evidence, current-run evidence and accepted-gap handling before AI quality or RAG grounding claims.
 - Review gate: security, privacy, performance, migration, and rollback risks are reviewable.
 - Scenario gate: current `usage_mode` has the required minimum artifacts, or a partial/pending evidence gap is explicit before implementation.
 - Conditional readiness gates: every applicable gate records `applies_when`, required evidence, status, owner, accepted gap, and residual risk. Detection alone can only produce `present_unverified`; missing evidence is `applicable_missing`; verified command/owner evidence is required for `present_verified`; low-scope exclusions are `not_applicable` with an applicability reason; accepted gaps are `explicit_gap_accepted`; external or irreversible actions are `approval_required`.

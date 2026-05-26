@@ -19,7 +19,7 @@ class BehavioralWorkflowEvalTest(unittest.TestCase):
         report = validate_behavioral_eval_template(path)
 
         self.assertEqual(report["status"], "ok")
-        self.assertEqual(report["case_count"], 40)
+        self.assertEqual(report["case_count"], 41)
         self.assertEqual(report["missing_required_cases"], [])
         self.assertEqual(report["unsafe_cases"], [])
         self.assertTrue(report["codex_only"])
@@ -664,6 +664,46 @@ class BehavioralWorkflowEvalTest(unittest.TestCase):
             "backend completion without owner-reviewed evidence sufficiency",
         ]:
             self.assertIn(forbidden, backend["forbidden"])
+
+        ai_rag = cases["llm-ai-rag-evidence-before-completion"]
+        self.assertEqual(ai_rag["expected"]["route"], "LLM / AI / RAG methodology (`llm_ai_rag`)")
+        for artifact in [
+            "ai-behavior-spec.md",
+            "prompt-contract.md",
+            "model-decision-record.md",
+            "eval-run-report.md",
+            "ai-dataset-manifest.md",
+            "structured-output-schema.md",
+            "ai-tool-contract.md",
+            "rag-source-inventory.md",
+            "rag-retrieval-config.md",
+            "rag-eval-report.md",
+            "agent-workflow-map.md",
+            "guardrail-matrix.md",
+            "trace-evidence-packet.md",
+            "ai-cost-latency-budget.md",
+        ]:
+            self.assertIn(artifact, ai_rag["expected"]["minimum_artifacts"])
+        for expected in [
+            "baseline eval",
+            "app-backed path",
+            "prompt/context inventory",
+            "dataset governance",
+            "retrieval metrics",
+            "grounding",
+            "safety evidence",
+            "cost evidence",
+            "current eval evidence",
+            "accepted-gap handling",
+        ]:
+            self.assertIn(expected, ai_rag["expected"]["required_fields"])
+        for forbidden in [
+            "prompt inspection is enough",
+            "ai quality claim without current eval evidence",
+            "citations alone prove grounding",
+            "model upgrade automatically improves quality",
+        ]:
+            self.assertIn(forbidden, ai_rag["forbidden"])
 
 
 if __name__ == "__main__":

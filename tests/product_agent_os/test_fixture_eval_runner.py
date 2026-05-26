@@ -112,7 +112,8 @@ class FixtureEvalRunnerTest(unittest.TestCase):
         self.assertTrue(results["python-app"]["expected_checks"]["api_contract_source_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["external_write_approval_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["database_data_contract_present"])
-        self.assertEqual(results["python-app"]["renderer_file_count"], 142)
+        self.assertTrue(results["python-app"]["expected_checks"]["llm_ai_rag_contract_present"])
+        self.assertEqual(results["python-app"]["renderer_file_count"], 157)
         for check_name in [
             "methodology_catalog_contract_present",
             "methodology_intelligence_contract_present",
@@ -125,6 +126,11 @@ class FixtureEvalRunnerTest(unittest.TestCase):
             "legacy-undocumented-repo": "legacy_onboarding",
             "api-migration-repo": "api_migration",
             "rag-quality-regression": "ai_eval_regression",
+            "ai-prompt-model-change": "ai_eval_regression",
+            "ai-tool-approval": "ai_eval_regression",
+            "ai-structured-output": "ai_eval_regression",
+            "ai-agent-trace": "ai_eval_regression",
+            "ai-latency-cost-budget": "ai_eval_regression",
             "native-mobile-permissions": "native_mobile_feature",
             "desktop-local-indexer": "desktop_local_first",
             "data-migration-pii": "data_migration",
@@ -149,6 +155,18 @@ class FixtureEvalRunnerTest(unittest.TestCase):
         self.assertTrue(results["database-destructive-migration"]["expected_checks"]["database_destructive_change_requires_approval"])
         self.assertTrue(results["database-production-access-approval"]["expected_checks"]["database_production_access_requires_approval"])
         self.assertTrue(results["database-lineage-rag-overlap"]["expected_checks"]["database_lineage_rag_overlap_present_unverified"])
+        for fixture in [
+            "rag-quality-regression",
+            "ai-prompt-model-change",
+            "ai-tool-approval",
+            "ai-structured-output",
+            "ai-agent-trace",
+            "ai-latency-cost-budget",
+        ]:
+            with self.subTest(ai_rag_fixture=fixture):
+                self.assertTrue(results[fixture]["expected_checks"]["llm_ai_rag_detected"])
+                self.assertTrue(results[fixture]["expected_checks"]["llm_ai_rag_contract_present"])
+                self.assertTrue(results[fixture]["expected_checks"]["llm_ai_rag_privacy_safe_fixture"])
 
     def test_backend_contract_terms_include_resilience_ops_depth(self):
         runner = load_runner()

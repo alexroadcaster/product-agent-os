@@ -40,6 +40,11 @@ class FixtureCompletenessTest(unittest.TestCase):
             "legacy-undocumented-repo",
             "api-migration-repo",
             "rag-quality-regression",
+            "ai-prompt-model-change",
+            "ai-tool-approval",
+            "ai-structured-output",
+            "ai-agent-trace",
+            "ai-latency-cost-budget",
             "native-mobile-permissions",
             "desktop-local-indexer",
             "data-migration-pii",
@@ -189,6 +194,32 @@ class FixtureCompletenessTest(unittest.TestCase):
                 self.assertNotIn("private customer", text.lower())
                 self.assertNotIn("token=", text.lower())
                 self.assertNotIn("api_key", text.lower())
+
+    def test_ai_rag_methodology_fixtures_are_synthetic_and_secret_free(self):
+        expected_terms = {
+            "rag-quality-regression": ["Synthetic", "RAG", "grounding", "baseline"],
+            "ai-prompt-model-change": ["Synthetic", "prompt", "model", "baseline"],
+            "ai-tool-approval": ["Synthetic", "tool", "approval", "side effects"],
+            "ai-structured-output": ["Synthetic", "structured output", "schema", "fallback"],
+            "ai-agent-trace": ["Synthetic", "agent", "trace", "handoff"],
+            "ai-latency-cost-budget": ["Synthetic", "latency", "cost", "budget"],
+        }
+
+        for name, terms in expected_terms.items():
+            with self.subTest(name=name):
+                text = "\n".join(
+                    path.read_text(encoding="utf-8")
+                    for path in (FIXTURES / name).rglob("*")
+                    if path.is_file()
+                )
+                for expected in terms:
+                    self.assertIn(expected, text)
+                lowered = text.lower()
+                self.assertNotIn("private customer", lowered)
+                self.assertNotIn("raw private chat", lowered)
+                self.assertNotIn("token=", lowered)
+                self.assertNotIn("api_key", lowered)
+                self.assertNotIn("sk-", lowered)
 
     def test_backend_service_fixture_is_synthetic_and_secret_free(self):
         text = "\n".join(

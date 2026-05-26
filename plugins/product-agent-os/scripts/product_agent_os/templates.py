@@ -34,6 +34,14 @@ class TemplateSpec:
     managed_section: str = ""
 
 
+AI_RAG_TEMPLATE_ALIASES = {
+    "ai-prompt-contract.md": "prompt-contract.md",
+    "ai-model-decision-record.md": "model-decision-record.md",
+    "rag-grounding-eval.md": "rag-eval-report.md",
+    "agent-handoff-contract.md": "agent-task-packet.md",
+}
+
+
 def _spec(
     key: str,
     category: str,
@@ -542,6 +550,96 @@ _TEMPLATES: tuple[TemplateSpec, ...] = (
         "artifact-templates",
         "artifact-templates/ai-eval-spec.md",
         ".codex/artifact-templates/ai-eval-spec.md",
+    ),
+    _spec(
+        "artifact-ai-behavior-spec",
+        "artifact-templates",
+        "artifact-templates/ai-behavior-spec.md",
+        ".codex/artifact-templates/ai-behavior-spec.md",
+    ),
+    _spec(
+        "artifact-prompt-contract",
+        "artifact-templates",
+        "artifact-templates/prompt-contract.md",
+        ".codex/artifact-templates/prompt-contract.md",
+    ),
+    _spec(
+        "artifact-model-decision-record",
+        "artifact-templates",
+        "artifact-templates/model-decision-record.md",
+        ".codex/artifact-templates/model-decision-record.md",
+    ),
+    _spec(
+        "artifact-eval-run-report",
+        "artifact-templates",
+        "artifact-templates/eval-run-report.md",
+        ".codex/artifact-templates/eval-run-report.md",
+    ),
+    _spec(
+        "artifact-ai-dataset-manifest",
+        "artifact-templates",
+        "artifact-templates/ai-dataset-manifest.md",
+        ".codex/artifact-templates/ai-dataset-manifest.md",
+    ),
+    _spec(
+        "artifact-structured-output-schema",
+        "artifact-templates",
+        "artifact-templates/structured-output-schema.md",
+        ".codex/artifact-templates/structured-output-schema.md",
+    ),
+    _spec(
+        "artifact-ai-tool-contract",
+        "artifact-templates",
+        "artifact-templates/ai-tool-contract.md",
+        ".codex/artifact-templates/ai-tool-contract.md",
+    ),
+    _spec(
+        "artifact-rag-source-inventory",
+        "artifact-templates",
+        "artifact-templates/rag-source-inventory.md",
+        ".codex/artifact-templates/rag-source-inventory.md",
+    ),
+    _spec(
+        "artifact-rag-retrieval-config",
+        "artifact-templates",
+        "artifact-templates/rag-retrieval-config.md",
+        ".codex/artifact-templates/rag-retrieval-config.md",
+    ),
+    _spec(
+        "artifact-rag-eval-report",
+        "artifact-templates",
+        "artifact-templates/rag-eval-report.md",
+        ".codex/artifact-templates/rag-eval-report.md",
+    ),
+    _spec(
+        "artifact-grounding-rubric",
+        "artifact-templates",
+        "artifact-templates/grounding-rubric.md",
+        ".codex/artifact-templates/grounding-rubric.md",
+    ),
+    _spec(
+        "artifact-agent-workflow-map",
+        "artifact-templates",
+        "artifact-templates/agent-workflow-map.md",
+        ".codex/artifact-templates/agent-workflow-map.md",
+    ),
+    _spec(
+        "artifact-guardrail-matrix",
+        "artifact-templates",
+        "artifact-templates/guardrail-matrix.md",
+        ".codex/artifact-templates/guardrail-matrix.md",
+    ),
+    _spec(
+        "artifact-trace-evidence-packet",
+        "artifact-templates",
+        "artifact-templates/trace-evidence-packet.md",
+        ".codex/artifact-templates/trace-evidence-packet.md",
+    ),
+    _spec(
+        "artifact-ai-cost-latency-budget",
+        "artifact-templates",
+        "artifact-templates/ai-cost-latency-budget.md",
+        ".codex/artifact-templates/ai-cost-latency-budget.md",
     ),
     _spec(
         "artifact-security-risk-review",

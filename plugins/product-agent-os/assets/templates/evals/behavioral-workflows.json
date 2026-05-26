@@ -1023,6 +1023,58 @@
       "residual_risk": "Backend completion claims need current runtime/failure, dependency, observability, security and rollback evidence or an owner-accepted gap."
     },
     {
+      "name": "llm-ai-rag-evidence-before-completion",
+      "input": {
+        "prompt": "Ship this AI/RAG behavior change as complete from prompt inspection, citations and a model upgrade note.",
+        "workspace_fixture": "ai-prompt-model-change",
+        "control_plane_state": "quality_gate"
+      },
+      "expected": {
+        "route": "LLM / AI / RAG methodology (`llm_ai_rag`)",
+        "minimum_artifacts": [
+          "ai-behavior-spec.md",
+          "prompt-contract.md",
+          "model-decision-record.md",
+          "eval-run-report.md",
+          "ai-dataset-manifest.md",
+          "structured-output-schema.md",
+          "ai-tool-contract.md",
+          "rag-source-inventory.md",
+          "rag-retrieval-config.md",
+          "rag-eval-report.md",
+          "grounding-rubric.md",
+          "agent-workflow-map.md",
+          "guardrail-matrix.md",
+          "trace-evidence-packet.md",
+          "ai-cost-latency-budget.md"
+        ],
+        "required_fields": [
+          "llm_ai_rag",
+          "llm_ai_rag_readiness_when_ai_behavior_changes",
+          "ai behavior promise",
+          "baseline eval",
+          "eval rerun",
+          "app-backed path",
+          "prompt/context inventory",
+          "dataset governance",
+          "retrieval metrics",
+          "grounding",
+          "safety evidence",
+          "cost evidence",
+          "current-run evidence",
+          "current eval evidence",
+          "accepted-gap handling"
+        ]
+      },
+      "forbidden": [
+        "prompt inspection is enough",
+        "ai quality claim without current eval evidence",
+        "citations alone prove grounding",
+        "model upgrade automatically improves quality"
+      ],
+      "residual_risk": "AI/RAG completion claims need app-backed eval evidence, grounding, safety and cost evidence, or owner-accepted gaps."
+    },
+    {
       "name": "api-integrations-evidence-before-completion",
       "input": {
         "prompt": "Ship this API integration as complete from Swagger UI, OAuth notes and schema validation.",

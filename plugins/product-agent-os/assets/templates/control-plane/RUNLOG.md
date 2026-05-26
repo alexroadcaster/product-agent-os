@@ -96,6 +96,27 @@ Generated at: {generated_at}
 - Event delivery, generated SDK manifest, request ID, correlation ID and integration alert evidence:
 - Unsupported API shortcuts rejected: Swagger UI is not source of truth, schema validation alone is not contract testing, OAuth alone is not complete security evidence, GraphQL/gRPC/events are not universal defaults.
 - External writes are `approval_required`; generated client publication, provider mutation and webhook registration need explicit approval.
+- LLM / AI / RAG methodology (`llm_ai_rag`):
+- LLM / AI / RAG readiness gate (`llm_ai_rag_readiness_when_ai_behavior_changes`):
+- AI behavior promise:
+- Baseline eval:
+- Eval rerun:
+- Eval rerun evidence:
+- App-backed path:
+- App-backed eval path:
+- Dataset governance:
+- Prompt/context inventory:
+- AI/RAG artifacts: `ai-behavior-spec.md`, `prompt-contract.md`, `model-decision-record.md`, `eval-run-report.md`, `ai-dataset-manifest.md`, `structured-output-schema.md`, `ai-tool-contract.md`, `rag-source-inventory.md`, `rag-retrieval-config.md`, `rag-eval-report.md`, `grounding-rubric.md`, agent task packet, `agent-workflow-map.md`, `guardrail-matrix.md`, `trace-evidence-packet.md`, `ai-cost-latency-budget.md`
+- Retrieval metrics, grounding, context precision, context recall, failed cases and current-run evidence:
+- Structured output, tool approval boundary, agent trace, safety evidence and cost evidence:
+- AI incident boundary:
+- Severity:
+- Mitigation:
+- Follow-up eval:
+- Security/Privacy handoff:
+- AI behavior diff signal policy: limited to workspace and intent signals; no external branches; no network; filename changes alone are not certainty.
+- Accepted-gap handling:
+- Unsupported AI/RAG shortcuts rejected: prompt inspection is enough, ai quality claim without current eval evidence, citations alone prove grounding, model upgrade automatically improves quality.
 - Database & Data methodology (`database_data`):
 - Database artifacts/gates reviewed:
 - Database `database_data_signals` status:

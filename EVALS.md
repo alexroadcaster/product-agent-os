@@ -35,7 +35,7 @@ Generated at: 2026-05-26
 - False-positive scenario fixture coverage: implemented in `T8-GX`.
 - Detailed discovery status depth: implemented in `T8-D`.
 - Track 9 methodology intelligence plan: authored in `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`.
-- Track 9 foundation, `T9-D1` Business/Product, `T9-D2` Requirements/Domain, `T9-D3` Solution Architecture, `T9-D4` Quality/Testing/Evals, `T9-D5` Codex/Agentic Workflow, `T9-D6` Frontend, `T9-D7` Backend, `T9-D8` API & Integrations and `T9-D9` Database & Data: implemented.
+- Track 9 foundation, `T9-D1` Business/Product, `T9-D2` Requirements/Domain, `T9-D3` Solution Architecture, `T9-D4` Quality/Testing/Evals, `T9-D5` Codex/Agentic Workflow, `T9-D6` Frontend, `T9-D7` Backend, `T9-D8` API & Integrations, `T9-D9` Database & Data and `T9-D10` LLM / AI / RAG: implemented.
 
 ## Track 9 Methodology Intelligence Evals
 
@@ -127,6 +127,18 @@ Generated at: 2026-05-26
 - Approval boundary: DB introspection, production DB access, production data access, migration execution, destructive cleanup, backup restore and retention mutation remain `approval_required`.
 - Unsupported claims rejected: ORM schema is database source of truth, migration applied means safe, down migration means rollback-safe, backups exist means restore-safe, manual SQL is enough, anonymized production data is safe by default and lineage can be reconstructed later.
 - Residual risk: database artifacts prove evidence shape and route/gate coverage, not that a human owner has accepted migration safety, data quality, rollback, restore, lineage, privacy or production-access sufficiency for a real production system.
+
+## LLM AI RAG Evals
+
+- `llm_ai_rag_contract_present`: implemented through `T9-D10-M36`.
+- Required evidence: AI behavior promise, baseline eval, eval rerun evidence, app-backed eval path, dataset governance, prompt contract, model decision record, structured output schema, tool/function/MCP contract, human approval boundary, RAG source inventory, retrieval config, grounding rubric, agent task packet, agent workflow trace, guardrail matrix, trace evidence packet, cost/latency budget and current-run evidence before AI/RAG quality claims.
+- Tooling and migration depth: eval tooling selector records Promptfoo, OpenAI Evals, pytest/Jest app-backed evals, Ragas and LangSmith as conditional choices with selected/rejected/deferred runner rationale; model migration records snapshot or approved alias, prompt migration impact, compatibility checks, rollback, minimum threshold and sampling parameter rationale.
+- RAG lifecycle and incident depth: RAG source/retrieval/dataset artifacts record deletion path, retention, source exclusion, stale-source pruning, privacy owner, vector store lifecycle, deletion propagation, deduplication and privacy review; failed eval, hallucination report, unsafe output, tool misuse or data exposure routes to an AI incident workflow with severity, mitigation, follow-up eval and Security/Privacy handoff.
+- Discovery/report depth: AI behavior diff signals are limited to workspace and intent signals with no external branches or network dependency; methodology reports render evidence_required, approval_boundary, accepted_gap_option, residual_risk and safe_next_action with redaction.
+- False-positive protection: docs-only AI mentions, generic context maps, generic tools, generic schemas, frontend `model/` folders, vector math and non-behavior prompt documentation do not force AI/RAG methodology blockers.
+- Approval boundary: live model calls, external eval services, vector DB access, raw prompt/trace/customer-data review, tool writes, shell/money/data exposure and irreversible side effects remain approval-bound.
+- Unsupported claims rejected: prompt inspection is enough, citations alone prove grounding, model upgrade automatically improves quality, schema presence proves tool safety and AI quality can be claimed without current eval evidence.
+- Residual risk: AI/RAG artifacts prove evidence shape and route/gate coverage, not that a human owner has judged eval thresholds, prompts, model choice, grounding quality, tool permissions, guardrails or cost/latency budgets sufficient for a real production system.
 
 ## Completion Evidence Evals
 

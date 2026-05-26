@@ -18,6 +18,8 @@ Project: {project_name}
 - Current-run evidence:
 - Changed factor:
 - Threshold:
+- Model migration:
+- Minimum threshold:
 
 ## Results
 
@@ -25,6 +27,9 @@ Project: {project_name}
 - Current result:
 - Passing cases:
 - Failed cases:
+- Accepted regression:
+- AI incident:
+- Follow-up eval:
 - Inspection-only gap:
 - Residual Risk:
 

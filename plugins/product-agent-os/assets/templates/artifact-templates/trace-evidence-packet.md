@@ -12,7 +12,11 @@ Project: {project_name}
 
 ## Trace
 
+- Trace source type: Agents SDK trace | OpenTelemetry GenAI span | tool-specific report | accepted gap.
 - Trace IDs:
+- Agents SDK trace:
+- OpenTelemetry GenAI span:
+- Tool-specific report:
 - Model/tool calls:
 - Retrieved context:
 - Handoffs:
@@ -21,6 +25,7 @@ Project: {project_name}
 - Latency:
 - Cost:
 - Redaction:
+- Redaction boundary:
 
 ## Evidence
 

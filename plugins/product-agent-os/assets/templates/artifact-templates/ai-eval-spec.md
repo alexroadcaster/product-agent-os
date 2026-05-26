@@ -9,6 +9,7 @@ Profile: {profile_name}
 
 - Eval goal:
 - App path:
+- App-backed path:
 - AI/RAG behavior:
 - User-visible behavior promise:
 - User-visible risk:
@@ -29,6 +30,15 @@ Profile: {profile_name}
 - Fixture format:
 - Dataset owner:
 - Retention:
+- Dataset governance:
+
+## Prompt And Context
+
+- Prompt/context inventory:
+- Prompt contract:
+- Context sources:
+- Retrieval context:
+- Changed prompt/context factor:
 
 ## Baseline
 
@@ -37,6 +47,19 @@ Profile: {profile_name}
 - Baseline date:
 - Baseline model or retrieval boundary:
 - Baseline failure examples:
+
+## Eval Tooling Selector
+
+- Promptfoo applicability:
+- OpenAI Evals applicability:
+- pytest/Jest app-backed eval applicability:
+- Ragas applicability:
+- LangSmith applicability:
+- Selected runner:
+- Rejected runner:
+- Deferred decision:
+- Stack/privacy/CI fit:
+- No forced eval runner:
 
 ## Current Run
 
@@ -60,7 +83,11 @@ Profile: {profile_name}
 ## Metrics And Thresholds
 
 - Retrieval metrics:
+- Context precision:
+- Context recall:
+- Grounding:
 - Grounding threshold:
+- Thresholds:
 - Quality threshold:
 - Latency threshold:
 - Cost threshold:
@@ -75,6 +102,7 @@ Profile: {profile_name}
 - Changed factor:
 - One-factor-at-a-time note:
 - Result artifact:
+- Current eval evidence:
 
 ## Review
 

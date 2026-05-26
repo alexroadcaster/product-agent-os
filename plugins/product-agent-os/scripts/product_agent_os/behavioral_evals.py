@@ -36,6 +36,7 @@ REQUIRED_BEHAVIORAL_CASES = {
     "quality-current-evidence-before-completion",
     "frontend-evidence-before-completion",
     "backend-evidence-before-completion",
+    "llm-ai-rag-evidence-before-completion",
     "no-placeholder-plan",
     "two-stage-review",
     "fresh-context-handoff",

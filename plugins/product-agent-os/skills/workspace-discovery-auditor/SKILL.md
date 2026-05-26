@@ -246,6 +246,14 @@ Use `codex_agentic_workflow` when Codex App, CLI, IDE extension, subagents, skil
 
 Track `agentic_scope_classified`, `control_plane_present`, `source_of_truth_present`, `read_only_discovery_complete`, `model_reasoning_policy_present`, `fresh_context_handoff_present`, `ownership_split_present`, `subagent_parallelism_safe`, `approval_boundary_present`, `mcp_permission_review_present`, `hook_activation_approval_present`, `plugin_boundary_present`, `skill_promotion_evidence_present`, `automation_manual_stability_present`, `agent_eval_workflow_present`, `memory_policy_present`, and `agentic_evidence_before_completion`. Use memory as recall only. Use `present_unverified` for detected assets until evidence exists. No silent activation: MCP, hooks, automation, external writes, plugin packaging, GitHub Actions, and Agents SDK app orchestration require `approval_required` or explicit owner-approved gap.
 
+## Track 9 LLM / AI / RAG Methodology
+
+Use `llm_ai_rag` when prompts, model selection, structured outputs, AI tools, MCP/function calling, RAG retrieval, grounding, eval datasets, agent traces, safety, latency or cost signals appear. Record `llm_ai_rag_signals` as `present_unverified` until current eval evidence or owner-reviewed artifact evidence exists.
+
+Require AI behavior promise, baseline eval, eval rerun evidence, app-backed eval path, prompt/context inventory, dataset governance, safety evidence and cost evidence when AI behavior changes. Stage or request `ai-behavior-spec.md`, `prompt-contract.md`, `model-decision-record.md`, `eval-run-report.md`, `ai-dataset-manifest.md`, `structured-output-schema.md`, `ai-tool-contract.md`, `rag-source-inventory.md`, `rag-retrieval-config.md`, `rag-eval-report.md`, `grounding-rubric.md`, `agent-workflow-map.md`, `guardrail-matrix.md`, `trace-evidence-packet.md`, and `ai-cost-latency-budget.md` when the corresponding gate applies.
+
+Do not force one eval runner, do not force multi-agent architecture, and do not run live model calls, vector DB calls, live API calls, external tools or eval jobs during discovery. Use `approval_required` before live model/API calls, external writes, risky tools, data exposure or irreversible side effects.
+
 ## Track 9 Frontend Methodology
 
 When frontend work applies, route it through `frontend` methodology before UI completion claims.

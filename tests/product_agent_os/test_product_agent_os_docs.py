@@ -258,6 +258,62 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         self.assertIn("schema-diff tooling deferred", backlog)
         self.assertIn("runtime/pipeline/RAG signals stay `present_unverified`", backlog)
 
+    def test_track9_llm_ai_rag_docs_and_backlog_are_synced_through_m36(self):
+        backlog = TRACK9_BACKLOG.read_text(encoding="utf-8")
+        behavioral_evals = (PRODUCT_AGENT_OS / "behavioral-evals.md").read_text(encoding="utf-8")
+        scenarios = (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8")
+        development_standards = (PRODUCT_AGENT_OS / "development-standards.md").read_text(
+            encoding="utf-8"
+        )
+        readme = (ROOT / "plugins" / "product-agent-os" / "README.md").read_text(encoding="utf-8")
+
+        for expected in [
+            "Batch `M20..M29` completed scope",
+            "Batch `M30..M36` completed scope",
+            "llm_ai_rag_contract_present",
+            "renderer file count increased from 142 to 157",
+            "diff_signal_policy",
+            "AI incident workflow",
+        ]:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        for expected in [
+            "LLM / AI / RAG eval",
+            "llm_ai_rag_contract_present",
+            "Prompt inspection is not enough",
+            "citations alone do not prove grounding",
+            "eval tooling selector",
+            "AI incident workflow",
+        ]:
+            with self.subTest(behavioral_evals=expected):
+                self.assertIn(expected, behavioral_evals)
+
+        for expected in [
+            "LLM / AI / RAG methodology routing",
+            "ai-behavior-spec.md",
+            "rag-retrieval-config.md",
+            "live model calls",
+            "agent-handoff-contract.md",
+            "filename-only diffs",
+        ]:
+            with self.subTest(scenarios=expected):
+                self.assertIn(expected, scenarios)
+
+        for expected in [
+            "LLM / AI / RAG methodology",
+            "llm_ai_rag_contract_present",
+            "ai-cost-latency-budget.md",
+            "live model calls",
+            "agent-task-packet.md",
+            "eval tooling selector",
+        ]:
+            with self.subTest(readme=expected):
+                self.assertIn(expected, readme)
+
+        self.assertIn("llm_ai_rag_readiness_when_ai_behavior_changes", development_standards)
+        self.assertIn("AI/RAG behavior changes record `llm_ai_rag` evidence", development_standards)
+
 
 if __name__ == "__main__":
     unittest.main()

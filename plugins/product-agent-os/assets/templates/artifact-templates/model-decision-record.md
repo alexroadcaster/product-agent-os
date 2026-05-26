@@ -14,6 +14,7 @@ Project: {project_name}
 
 - Model:
 - Snapshot/alias policy:
+- Snapshot or approved alias:
 - Provider:
 - Reasoning effort:
 - Modality:
@@ -22,6 +23,8 @@ Project: {project_name}
 - Fallback model:
 - Rollback:
 - Migration note:
+- Prompt migration impact:
+- Sampling parameter rationale:
 
 ## Evidence
 
@@ -30,6 +33,7 @@ Project: {project_name}
 - Latency evidence:
 - Cost evidence:
 - Compatibility checks:
+- Minimum threshold:
 
 ## Approval Boundary
 

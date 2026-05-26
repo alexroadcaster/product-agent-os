@@ -46,6 +46,15 @@ Use this as the fresh-context handoff for any subagent or parallel worker. The p
 - Rollback notes:
 - Handoff output schema:
 
+## AI/RAG Handoff Compatibility
+
+- Legacy alias: `agent-handoff-contract.md` maps to this agent task packet.
+- Handoff owner:
+- Inputs:
+- Output schema:
+- Trace evidence:
+- Stop condition:
+
 ## Stop Conditions
 
 - Owned files are unclear.

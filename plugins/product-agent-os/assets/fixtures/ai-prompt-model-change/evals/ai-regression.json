@@ -1,0 +1,5 @@
+{
+  "name": "synthetic-ai-regression",
+  "baseline": "synthetic",
+  "metric": "ai quality"
+}

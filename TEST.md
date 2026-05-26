@@ -29,6 +29,20 @@ Generated at: 2026-05-26
 - Latest transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 4 sessions and 0 failures.
 - Latest Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
 - Latest docs/build/diff hygiene: `python tools\check_docs.py` passed, strict MkDocs exited `0` with `PYTHONPATH=C:\tmp\codex_docs_mkdocs`, and `git diff --check` exited `0`.
+- T9-D10 status: LLM / AI / RAG methodology integration is implemented through `M30..M36`.
+- Latest T9-D10 focused AI/RAG fast suite: `python -m unittest tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_behavioral_workflow_evals tests.product_agent_os.test_transcript_session_evals tests.product_agent_os.test_fixtures tests.product_agent_os.test_discovery tests.product_agent_os.test_lifecycle_skills -v` ran 190 tests with `OK`.
+- Latest T9-D10 focused fixture runner suite: `python -m unittest tests.product_agent_os.test_fixture_eval_runner -v` ran 15 tests with `OK`.
+- Latest T9-D10 fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0` with 54 fixtures, 0 failures, renderer file count 157 and `llm_ai_rag_contract_present: true`.
+- Latest T9-D10 full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 445 tests with `OK`.
+- Latest T9-D10 transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 5 sessions and 0 failures.
+- Latest T9-D10 Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
+- Latest T9-D10 docs/diff hygiene: `python tools\check_docs.py` passed and `git diff --check` exited `0`.
+- Latest T9-D10 M30..M36 focused contract check: focused handoff/tooling/model/RAG lifecycle/diff/incident/report tests ran 6 tests with `OK`.
+- Latest T9-D10 final full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 449 tests with `OK`.
+- Latest T9-D10 final fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0` with 54 fixtures, renderer file count 157 and `llm_ai_rag_contract_present: true`.
+- Latest T9-D10 final transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 5 sessions and 0 failures.
+- Latest T9-D10 final Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
+- Latest T9-D10 final docs/diff hygiene: `python tools\check_docs.py` passed and `git diff --check` exited `0`.
 
 ## Required Checks After Docs Changes
 
@@ -221,6 +235,25 @@ python tools\check_docs.py
 - Confirmed stack-specific database tooling has no universal default; schema-diff tooling deferred until owner, safety policy and verification evidence exist.
 - Confirmed staged artifacts cover inventory, dictionary, migration plan, expand-contract, backfill, rollback feasibility, backup/restore, classification, data quality, data contract, lineage, query performance, retention/deletion, synthetic fixtures and production access approval.
 - Confirmed fixture eval exposes `database_data_contract_present` with 49 fixtures, 0 failures and renderer file count 142.
+
+## Completed Focused Checks For T9-D10 Through M29
+
+- Added RED then GREEN tests for AI/RAG template alias compatibility, renderer target registration, strengthened AI eval workflow/spec terms, generated control-plane evidence fields, behavioral/transcript coverage, synthetic AI/RAG fixtures, fixture eval contract coverage and lifecycle skill routing.
+- Confirmed source-aligned template names are canonical: `prompt-contract.md`, `model-decision-record.md` and `rag-eval-report.md`; legacy plan names are mapped through `AI_RAG_TEMPLATE_ALIASES` without duplicate generated contracts.
+- Confirmed the renderer now stages 15 AI/RAG artifact templates under `.codex/artifact-templates/` and raises the `python-app` renderer file count from 142 to 157.
+- Confirmed `ai-eval-regression.md` and `ai-eval-spec.md` require app-backed eval path, baseline/current comparison, prompt/context inventory, retrieval metrics, grounding evidence, dataset governance, thresholds, failed cases and current-run evidence before AI quality claims.
+- Confirmed `llm-ai-rag-evidence-before-completion` behavioral eval coverage and a fifth transcript session reject prompt-inspection-only and current-evidence-free AI/RAG quality claims.
+- Confirmed synthetic AI/RAG fixtures cover prompt/model change, tool approval boundary, structured output, agent trace, latency/cost budget and RAG quality regression without secrets, tokens, raw private chats, customer data or live API keys.
+- Confirmed lifecycle skills route `llm_ai_rag` methodology without forcing one eval runner, multi-agent architecture or live model/API calls.
+
+## Completed Focused Checks For T9-D10 Through M36
+
+- Added RED then GREEN tests for agent handoff compatibility, eval tooling selector/deferred runner policy, model migration thresholds, RAG deletion/privacy lifecycle, AI behavior diff-signal policy, AI incident workflow and methodology report rendering.
+- Confirmed `agent-handoff-contract.md` is mapped to existing `agent-task-packet.md` without registering a duplicate generated contract.
+- Confirmed `ai-eval-spec.md` records Promptfoo, OpenAI Evals, pytest/Jest, Ragas, LangSmith, selected/rejected runner rationale, deferred decision and no forced eval runner.
+- Confirmed `model-decision-record.md`, `eval-run-report.md`, RAG source/retrieval/dataset templates, `guardrail-matrix.md` and generated `RUNLOG.md` include model migration, threshold, deletion/privacy, incident and Security/Privacy handoff fields.
+- Confirmed discovery exposes `diff_signal_policy` as limited to workspace and intent signals, with no external branches, no network and no filename-only certainty.
+- Confirmed methodology reports render AI/RAG evidence, approvals, accepted gaps, residual risk and safe next action while redacting local paths, private chat logs and private customer data.
 
 ## Evidence Format
 

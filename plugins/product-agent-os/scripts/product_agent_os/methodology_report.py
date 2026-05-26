@@ -104,8 +104,19 @@ def _recommendation_lines(recommendations: Any) -> list[str]:
         lines.append(f"  - gate: {item.get('gate', 'unknown')}")
         lines.append(f"  - artifact: {item.get('artifact', 'unknown')}")
         lines.append(f"  - reason: {item.get('reason', 'unknown')}")
+        lines.append(f"  - evidence_required: {_format_value(item.get('evidence_required', []))}")
+        lines.append(f"  - evidence_owner: {item.get('evidence_owner', 'unknown')}")
+        lines.append(f"  - approval_boundary: {item.get('approval_boundary', 'unknown')}")
+        lines.append(f"  - accepted_gap_option: {item.get('accepted_gap_option', 'unknown')}")
+        lines.append(f"  - residual_risk: {item.get('residual_risk', 'unknown')}")
         lines.append(f"  - safe_next_action: {item.get('safe_next_action', 'unknown')}")
     return lines or ["- none"]
+
+
+def _format_value(value: Any) -> str:
+    if isinstance(value, list):
+        return "; ".join(str(item) for item in value) if value else "none"
+    return str(value)
 
 
 def _list_lines(items: Any) -> list[str]:

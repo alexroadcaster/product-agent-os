@@ -155,6 +155,14 @@ Required gates: `database_inventory_present`, `database_dictionary_present`, `da
 
 Use `database_data_signals` with `migration_tools`, `destructive_change_sources`, `production_access_sources`, `pipeline_sources`, and `rag_ingestion_sources` as `present_unverified` until owner-reviewed evidence exists. Production access is `approval_required`. Do not access production data, do not run migration, and do not run destructive migration without explicit approval.
 
+## Track 9 LLM / AI / RAG Methodology
+
+Use `llm_ai_rag` when prompts, model selection, structured outputs, AI tools, MCP/function calling, RAG retrieval, grounding, eval datasets, agent traces, safety, latency or cost signals appear. Route to requirements, planning, test/eval or review before AI behavior changes and quality claims.
+
+Require AI behavior promise, baseline eval, eval rerun evidence, app-backed eval path, prompt/context inventory, dataset governance, safety evidence and cost evidence. Stage or request `ai-behavior-spec.md`, `prompt-contract.md`, `model-decision-record.md`, `eval-run-report.md`, `ai-dataset-manifest.md`, `structured-output-schema.md`, `ai-tool-contract.md`, `rag-source-inventory.md`, `rag-retrieval-config.md`, `rag-eval-report.md`, `grounding-rubric.md`, `agent-workflow-map.md`, `guardrail-matrix.md`, `trace-evidence-packet.md`, and `ai-cost-latency-budget.md` when applicable.
+
+Do not force one eval runner, do not force multi-agent architecture, and do not run live model calls during lifecycle routing. Use `approval_required` before live model/API calls, external writes, risky tools, data exposure or irreversible side effects.
+
 ## Evidence Before Completion
 
 Evidence-before-completion (`evidence_before_completion`): do not make a ready claim, completed claim, fixed claim, works claim, or release claim without current command evidence, current eval evidence, current runtime evidence, owner evidence, or an explicit test gap. If only inspection happened, label the result `inspection-only` and list every unsupported completion claim. Treat completion claim without current evidence as blocked.

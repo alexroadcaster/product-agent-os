@@ -1098,6 +1098,47 @@ class LifecycleSkillsTest(unittest.TestCase):
         ]:
             self.assertIn(expected, discovery)
 
+    def test_lifecycle_skills_route_llm_ai_rag_methodology_without_forced_live_calls(self):
+        shared_terms = [
+            "llm_ai_rag",
+            "ai behavior promise",
+            "baseline eval",
+            "eval rerun evidence",
+            "app-backed eval path",
+            "prompt-contract.md",
+            "model-decision-record.md",
+            "structured-output-schema.md",
+            "ai-tool-contract.md",
+            "rag-source-inventory.md",
+            "rag-retrieval-config.md",
+            "rag-eval-report.md",
+            "agent-workflow-map.md",
+            "guardrail-matrix.md",
+            "trace-evidence-packet.md",
+            "ai-cost-latency-budget.md",
+            "safety evidence",
+            "cost evidence",
+            "do not force one eval runner",
+            "do not force multi-agent architecture",
+            "do not run live model calls",
+            "approval_required",
+        ]
+
+        for name in [
+            "workspace-discovery-auditor",
+            "project-lifecycle-orchestrator",
+            "requirements-author",
+            "implementation-planner",
+            "test-eval-designer",
+            "risk-reviewer",
+            "docs-maintainer",
+            "learning-loop-maintainer",
+        ]:
+            text = self._skill_text(name).lower()
+            with self.subTest(name=name):
+                for expected in shared_terms:
+                    self.assertIn(expected, text)
+
     def test_native_mobile_lifecycle_wording_requires_platform_runtime_evidence(self):
         orchestrator = self._skill_text("project-lifecycle-orchestrator").lower()
         discovery = self._skill_text("workspace-discovery-auditor").lower()

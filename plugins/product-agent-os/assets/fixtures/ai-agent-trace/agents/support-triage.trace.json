@@ -1,0 +1,5 @@
+{
+  "trace_id": "synthetic-trace",
+  "handoff": "synthetic-reviewer",
+  "stop_condition": "needs_owner_review"
+}

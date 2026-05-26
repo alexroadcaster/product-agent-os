@@ -16,8 +16,13 @@ Project: {project_name}
 - Agents:
 - Tools:
 - Handoffs:
+- Handoff owner:
+- Inputs:
+- Output schema:
 - State:
+- Trace source:
 - Stop conditions:
+- Sequential fallback:
 - Escalation:
 
 ## Evidence

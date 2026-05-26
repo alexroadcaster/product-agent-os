@@ -391,6 +391,51 @@ class DiscoveryTest(unittest.TestCase):
         self.assertEqual(result["llm_ai_rag_signals"]["verification_status"], "not_applicable")
         self.assertEqual(result["methodology_applicability"]["llm_ai_rag_readiness"]["status"], "not_applicable")
 
+    def test_packaged_ai_rag_fixtures_route_with_unverified_contract_signals(self):
+        for fixture in [
+            "rag-quality-regression",
+            "ai-prompt-model-change",
+            "ai-tool-approval",
+            "ai-structured-output",
+            "ai-agent-trace",
+            "ai-latency-cost-budget",
+        ]:
+            with self.subTest(fixture=fixture):
+                result = analyze_workspace(FIXTURES / fixture)
+                self.assertEqual(result["usage_mode"]["primary"], "ai_eval_regression")
+                self.assertIn("ai-eval-regression-plan", result["usage_mode"]["behavioral_eval_cases"])
+                self.assertIn("ai_eval_surface", result["route_inputs"]["workspace_signals"]["active_surfaces"])
+                llm = result["llm_ai_rag_signals"]
+                self.assertEqual(llm["verification_status"], "applicable_missing")
+                self.assertNotIn("present_verified", str(llm))
+                self.assertEqual(
+                    result["methodology_applicability"]["llm_ai_rag_readiness"]["status"],
+                    "present_unverified",
+                )
+
+    def test_llm_ai_rag_diff_signal_policy_is_limited_and_read_only(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            workspace = Path(tmpdir)
+            self._write_files(
+                workspace,
+                {
+                    "prompts/support.prompt.md": "Synthetic prompt\n",
+                    "model-config/openai.json": '{"model":"synthetic"}\n',
+                },
+            )
+
+            result = analyze_workspace(
+                workspace,
+                intent_hint="review AI behavior changed files and code/config diff before model migration",
+            )
+
+        policy = result["llm_ai_rag_signals"]["diff_signal_policy"]
+        self.assertEqual(policy["status"], "limited_to_workspace_and_intent_signals")
+        self.assertFalse(policy["external_git_or_network_used"])
+        self.assertIn("no external branches", policy["limitations"])
+        self.assertIn("filename changes alone are not certainty", policy["limitations"])
+        self.assertNotIn("present_verified", str(policy))
+
     def test_native_mobile_repo_routes_feature_with_unverified_platform_signals(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             workspace = Path(tmpdir)
