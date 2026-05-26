@@ -36,7 +36,7 @@ Track 9 turns the methodology atlas in `docs/methodologies/` into read-only Prod
 | `done` | `T9-D9` | `database-data.md` | Database inventory, schema source, migrations, transactions, data quality, classification and production access. |
 | `done` | `T9-D10` | `llm-ai-rag.md` | AI behavior spec, eval baseline, prompts, models, tools, RAG sources, grounding, datasets, approvals, cost/latency, handoff, tooling, migration, lifecycle, diff policy and incidents. |
 | `done` | `T9-D11` | `security-privacy-compliance.md` | Threat surface, ASVS/SSDF, authorization tests, secrets, privacy impact, supply chain, audit logging and compliance overlays. |
-| `planned` | `T9-D12` | `delivery-release-operations.md` | Release readiness, versioning, changelog, artifact manifest, rollout, rollback, CI/CD governance, runbooks and operations. |
+| `in_progress` | `T9-D12` | `delivery-release-operations.md` | Release readiness, versioning, changelog, artifact manifest, rollout, rollback, CI/CD governance, runbooks and operations. |
 
 ## Domain Deep-Audit Log
 
@@ -624,6 +624,49 @@ Verification so far:
 - Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
 - Docs check: `python tools\check_docs.py` passed.
 - Diff hygiene: `git diff --check` exited `0`.
+
+### `T9-D12` Delivery, Release & Operations Integration
+
+Status: `in_progress`
+
+Source audited: `docs/methodologies/delivery-release-operations.md`
+
+Deep-audit deltas to implement:
+
+- Treat Delivery, Release & Operations as a planning-first methodology domain for release readiness, versioning, changelog/release notes, artifact manifests, rollout, rollback/recovery, CI/CD governance, environments, operations runbooks, incident/postmortem learning, DORA and automation promotion.
+- Use the full gate set from the methodology source and second-pass plan audit: release scope, version impact, changelog/release notes, artifact manifest, current release evidence, rollout, rollback, environment and external approval boundaries, CI/CD governance, observability/SLO, operations runbook, incident response, post-release measurement, automation manual stability, release mode, build-release-run, platform distribution, release communication, versioning tooling, GitHub environment controls, DORA five-metric design, blameless postmortem, observability/on-call tooling, security handoff and owner-reviewed evidence sufficiency.
+- Resolve artifact-name compatibility before broad renderer registration. Plan-era names such as `release-scope.md`, `version-impact-record.md`, `artifact-manifest.md`, `rollout-strategy.md`, `ci-cd-governance.md`, `incident-response-path.md` and `post-release-measurement.md` map to canonical names rather than becoming duplicate templates.
+- Detection alone can only justify `present_unverified`. Release-ready, deployed, published, operational-ready and automated claims require current evidence, owner evidence or an explicit accepted gap with owner, reason, review date, residual risk and follow-up condition.
+- External release actions remain approval-bound: publish, tag, GitHub Release creation, artifact upload, deploy, package registry mutation, marketplace/store submission, PR creation, branch push, CI/CD environment mutation and active automation.
+- False-positive policy: `CHANGELOG.md`, docs-only release notes, CI config, Dockerfile, health check, generated changelog, feature flag or GitOps file alone cannot prove readiness.
+- Unsupported claims must be rejected as evidence gaps: CI green means release ready, tests passed so release is ready, rollback is just revert, feature flags remove risk, GitOps is automatically safe, generated changelog is enough for users, DORA proves individual performance and repeatable automation is automatically safe.
+
+Implemented scope in batch `M0..M9`:
+
+- Refreshed Track 9 plan/backlog state for T9-D12 batch execution and preserved the user-requested 10-row checkpoint policy.
+- Added `delivery_release_operations` catalog coverage for the full planned gate/artifact/eval/overlap set so later batches can attach behavior to stable gate ids without renaming.
+- Added `DELIVERY_TEMPLATE_ALIASES` for plan-era artifact names mapped to canonical release/operations artifact names.
+- Added read-only discovery signal depth for release intent, version, changelog/release notes, artifact, deployment, GitHub Actions, GitHub environments, GitOps, feature flags, rollout, rollback, SLO, observability, incident, postmortem, DORA and automation promotion. Discovery records these as `present_unverified` and does not claim release readiness.
+- Added methodology applicability packet `delivery_release_operations_readiness` with required evidence and residual-risk language.
+- Added audit routing and initial recommendations for release scope, version impact, changelog/release notes, release evidence, release evidence before completion and unsupported delivery claims.
+- Added `versioning-policy.md` and strengthened `release-readiness.md` and `release-packet.md` for M7..M9 fields.
+
+Implemented scope in batch `M10..M19`:
+
+- Added audit recommendations for `artifact_manifest_present`, `rollout_strategy_present`, `rollback_recovery_present`, `environment_approval_boundary_present`, `external_release_approval_present`, `ci_cd_governance_present`, `observability_release_evidence_present`, `slo_or_operational_gap_present`, `operations_runbook_present`, `incident_response_path_present` and `post_release_measurement_present`.
+- Added delivery/operations artifact templates for release artifact manifests, rollout plans, rollback/recovery, environment matrices, deployment plans, CI/CD workflow inventory, observability maps, SLO specs, operations runbooks, incident records, postmortems and post-release reviews.
+- Strengthened shared `approval-record.md`, `ci-permissions-review.md` and `metric-spec.md` for external release approvals, CI/CD governance and DORA/anti-Goodhart process measurement.
+- Kept renderer registration deferred to `T9-D12-M21`; the new delivery templates are source templates now, but not yet staged into generated `.codex/artifact-templates/` outputs.
+
+Verification so far:
+
+- RED focused run failed as expected before implementation on missing `delivery_release_operations` catalog data, delivery aliases, discovery packet, audit recommendations and `versioning-policy.md`.
+- Focused batch suite: `python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_discovery tests.product_agent_os.test_infrastructure_templates -v` ran 191 tests with `OK`.
+- Batch `M10..M19` RED run failed as expected before implementation on missing operational delivery gates, missing new templates and missing strengthened release approval/CI/DORA terms.
+- Batch `M10..M19` focused suite: `python -m unittest tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_infrastructure_templates -v` ran 123 tests with `OK`.
+- Fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0`; renderer file count remained 173 because renderer registration is deferred to `T9-D12-M21`.
+- Full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 469 tests with `OK`.
+- Commit, push and PR actions remain deferred until explicitly requested.
 
 ## Cross-Domain Synthesis Backlog
 

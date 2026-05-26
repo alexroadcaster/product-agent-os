@@ -1867,6 +1867,7 @@ def _methodology_applicability_contract_present(audit: dict[str, Any]) -> bool:
         "database_data_readiness",
         "llm_ai_rag_readiness",
         "security_privacy_compliance_readiness",
+        "delivery_release_operations_readiness",
     }
     allowed_statuses = {
         "not_applicable",

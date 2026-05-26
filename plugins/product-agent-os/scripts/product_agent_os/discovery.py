@@ -451,6 +451,7 @@ def _detect_methodology_signals(files: set[str], profile: dict[str, Any]) -> dic
         "security_privacy_compliance": _has_security_surface(lowered),
         "quality_testing_evals": _has_quality_testing_signal(lowered, profile),
         "codex_agentic_workflow": _has_codex_agentic_workflow_signal(lowered),
+        "delivery_release_operations": _has_delivery_release_operations_signal(lowered, ci_present),
         "metrics": _has_any(files, ["metrics", "analytics", "telemetry", "observability"]),
     }
 
@@ -1046,6 +1047,41 @@ def _has_release_surface(lowered_files: set[str]) -> bool:
         or "release.md" in path
         or path.startswith(".github/workflows/release")
         or _is_release_artifact_source(path)
+        for path in lowered_files
+    )
+
+
+def _has_delivery_release_operations_signal(lowered_files: set[str], ci_present: bool) -> bool:
+    if ci_present:
+        return True
+    return any(
+        _is_package_metadata_source(path)
+        or _is_release_source(path)
+        or _is_release_artifact_source(path)
+        or _is_release_rollback_source(path)
+        or _is_ci_workflow_source(path)
+        or _is_ci_environment_source(path)
+        or path in {"dockerfile", "docker-compose.yml", "serverless.yml"}
+        or path.startswith(("k8s/", "helm/", "gitops/", "deploy/", "deployment/", "release/", "releases/"))
+        or any(
+            term in path
+            for term in (
+                "publish",
+                "semver",
+                "version",
+                "release-notes",
+                "feature-flag",
+                "feature_flag",
+                "rollout",
+                "rollback",
+                "slo",
+                "observability",
+                "incident",
+                "postmortem",
+                "dora",
+                "automation-candidate",
+            )
+        )
         for path in lowered_files
     )
 
@@ -1721,6 +1757,88 @@ def _release_packaging_signals(files: set[str]) -> dict[str, Any]:
         "note": (
             "present_unverified until release evidence, SemVer review, build and test evidence, "
             "docs evidence, security/license review, owner review, publish approval, and rollback evidence confirm readiness"
+        ),
+    }
+
+
+def _delivery_release_operations_signals(files: set[str]) -> dict[str, Any]:
+    def status(sources: list[str]) -> str:
+        return "present_unverified" if sources else "applicable_missing"
+
+    release_intent_sources = sorted(path for path in files if _is_release_source(path) or _is_package_metadata_source(path))
+    version_sources = sorted(path for path in files if _is_release_version_source(path))
+    changelog_sources = sorted(path for path in files if _is_release_changelog_source(path) or "release-notes" in path.lower())
+    artifact_sources = sorted(path for path in files if _is_release_artifact_source(path))
+    deployment_sources = sorted(
+        path
+        for path in files
+        if path.lower() in {"dockerfile", "docker-compose.yml", "serverless.yml"}
+        or path.lower().startswith(("k8s/", "helm/", "deploy/", "deployment/"))
+    )
+    github_actions_sources = sorted(path for path in files if _is_ci_workflow_source(path))
+    github_environment_sources = sorted(path for path in files if _is_ci_environment_source(path))
+    gitops_sources = sorted(path for path in files if path.lower().startswith("gitops/") or "gitops" in path.lower())
+    feature_flag_sources = sorted(
+        path for path in files if any(term in path.lower() for term in ("feature-flag", "feature_flag", "flags."))
+    )
+    rollout_sources = sorted(path for path in files if "rollout" in path.lower() or "canary" in path.lower() or "blue-green" in path.lower())
+    rollback_sources = sorted(path for path in files if _is_release_rollback_source(path))
+    slo_sources = sorted(path for path in files if "slo" in path.lower() or "sli" in path.lower())
+    observability_sources = sorted(
+        path
+        for path in files
+        if any(term in path.lower() for term in ("observability", "dashboard", "metrics", "traces", "logs", "opentelemetry"))
+    )
+    incident_sources = sorted(path for path in files if "incident" in path.lower())
+    postmortem_sources = sorted(path for path in files if "postmortem" in path.lower() or "post-mortem" in path.lower())
+    dora_sources = sorted(path for path in files if "dora" in path.lower())
+    automation_promotion_sources = sorted(
+        path
+        for path in files
+        if "automation-candidate" in path.lower()
+        or "skill-promotion" in path.lower()
+        or path.lower().startswith(".codex/automations/")
+    )
+
+    return {
+        "release_intent_sources": release_intent_sources[:20],
+        "release_intent_status": status(release_intent_sources),
+        "version_sources": version_sources[:20],
+        "version_status": status(version_sources),
+        "changelog_sources": changelog_sources[:20],
+        "changelog_status": status(changelog_sources),
+        "artifact_sources": artifact_sources[:20],
+        "artifact_status": status(artifact_sources),
+        "deployment_sources": deployment_sources[:20],
+        "deployment_status": status(deployment_sources),
+        "github_actions_sources": github_actions_sources[:20],
+        "github_actions_status": status(github_actions_sources),
+        "github_environment_sources": github_environment_sources[:20],
+        "github_environment_status": status(github_environment_sources),
+        "gitops_sources": gitops_sources[:20],
+        "gitops_status": status(gitops_sources),
+        "feature_flag_sources": feature_flag_sources[:20],
+        "feature_flag_status": status(feature_flag_sources),
+        "rollout_sources": rollout_sources[:20],
+        "rollout_status": status(rollout_sources),
+        "rollback_sources": rollback_sources[:20],
+        "rollback_status": status(rollback_sources),
+        "slo_sources": slo_sources[:20],
+        "slo_status": status(slo_sources),
+        "observability_sources": observability_sources[:20],
+        "observability_status": status(observability_sources),
+        "incident_sources": incident_sources[:20],
+        "incident_status": status(incident_sources),
+        "postmortem_sources": postmortem_sources[:20],
+        "postmortem_status": status(postmortem_sources),
+        "dora_sources": dora_sources[:20],
+        "dora_status": status(dora_sources),
+        "automation_promotion_sources": automation_promotion_sources[:20],
+        "automation_promotion_status": status(automation_promotion_sources),
+        "verification_status": "applicable_missing",
+        "note": (
+            "present_unverified until release scope, version impact, current release evidence, "
+            "owner evidence, approval boundary and accepted gaps confirm readiness"
         ),
     }
 
@@ -2996,6 +3114,7 @@ def _methodology_applicability(
     database_needed = signals.get("database_data", False) or signals.get("database_docs", False)
     ai_rag_needed = signals.get("llm_ai_rag", False)
     security_needed = signals.get("security_privacy_compliance", False)
+    delivery_needed = signals.get("delivery_release_operations", False) or signals.get("ci", False)
     standards_evidence = [
         name
         for name in ("architecture_docs", "adr", "openapi", "asyncapi", "codeowners", "ci")
@@ -3130,6 +3249,20 @@ def _methodology_applicability(
             ],
             "security or product owner",
             "detection alone does not prove security readiness, privacy compliance, scan execution or legal review",
+        ),
+        "delivery_release_operations_readiness": _applicability_packet(
+            "present_unverified" if delivery_needed else "not_applicable",
+            "delivery/release/operations signal exists" if delivery_needed else "no delivery/release/operations signal",
+            _signal_evidence(signals, "delivery_release_operations", "ci", "security_privacy_compliance"),
+            [
+                "release-readiness.md",
+                "versioning-policy.md",
+                "release evidence",
+                "owner evidence or accepted explicit gap",
+                "approval boundary before publish, tag, deploy, upload, package registry, marketplace or store action",
+            ],
+            "release operator",
+            "detection alone does not prove release readiness, deployment safety, operation readiness or publish approval",
         ),
         "docs_tooling_decision": _applicability_packet(
             docs_status if docs_status in READINESS_STATUSES else "present_unverified",
@@ -3303,6 +3436,7 @@ def _behavioral_route_inputs(
             "backend_resilience_signals": _backend_resilience_signals(files),
             "ci_stabilization_signals": _ci_stabilization_signals(files),
             "release_packaging_signals": _release_packaging_signals(files),
+            "delivery_release_operations_signals": _delivery_release_operations_signals(files),
         },
         "control_plane_state": {
             "existing_control_plane_files": existing_control_plane,
@@ -3417,6 +3551,7 @@ def analyze_workspace(root: str | Path, *, intent_hint: str = "") -> dict[str, A
         "backend_resilience_signals": _backend_resilience_signals(files),
         "ci_stabilization_signals": _ci_stabilization_signals(files),
         "release_packaging_signals": _release_packaging_signals(files),
+        "delivery_release_operations_signals": _delivery_release_operations_signals(files),
         "route_inputs": route_inputs,
         "usage_mode": usage_mode,
         "risks": risks,

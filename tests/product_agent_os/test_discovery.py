@@ -987,6 +987,70 @@ class DiscoveryTest(unittest.TestCase):
             signals,
         )
 
+    def test_delivery_release_operations_signals_record_depth_without_claiming_readiness(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            workspace = Path(tmpdir)
+            self._write_files(
+                workspace,
+                {
+                    "package.json": (
+                        '{"name": "fixture-release", "version": "1.2.0", '
+                        '"scripts": {"build": "npm run bundle", "test": "npm test"}}\n'
+                    ),
+                    "CHANGELOG.md": "# Changelog\n",
+                    "docs/release-notes.md": "# Release notes\n",
+                    "dist/package.tgz": "synthetic artifact placeholder\n",
+                    "Dockerfile": "FROM scratch\n",
+                    "k8s/deployment.yaml": "kind: Deployment\n",
+                    ".github/workflows/deploy.yml": "name: Deploy\njobs: {}\n",
+                    ".github/environments/production.md": "# Production environment\n",
+                    "gitops/app.yaml": "kind: Application\n",
+                    "config/feature-flags.yaml": "new_checkout: false\n",
+                    "docs/rollout-plan.md": "# Rollout\n",
+                    "docs/rollback-recovery-plan.md": "# Rollback\n",
+                    "docs/slo-spec.md": "# SLO\n",
+                    "docs/observability-map.md": "# Observability\n",
+                    "docs/incident-record.md": "# Incident\n",
+                    "docs/postmortem.md": "# Postmortem\n",
+                    ".codex/automations/automation-candidate.md": "# Candidate\n",
+                },
+            )
+
+            result = analyze_workspace(workspace)
+
+        self.assertTrue(result["methodology_signals"]["delivery_release_operations"])
+        applicability = result["methodology_applicability"]["delivery_release_operations_readiness"]
+        self.assertEqual(applicability["status"], "present_unverified")
+        self.assertIn("release-readiness.md", applicability["required_evidence"])
+        self.assertIn("detection alone does not prove release readiness", applicability["residual_risk"])
+
+        signals = result["delivery_release_operations_signals"]
+        for key in [
+            "release_intent_status",
+            "version_status",
+            "changelog_status",
+            "artifact_status",
+            "deployment_status",
+            "github_actions_status",
+            "github_environment_status",
+            "gitops_status",
+            "feature_flag_status",
+            "rollout_status",
+            "rollback_status",
+            "slo_status",
+            "observability_status",
+            "incident_status",
+            "postmortem_status",
+            "automation_promotion_status",
+        ]:
+            self.assertEqual(signals[key], "present_unverified", key)
+        self.assertEqual(signals["verification_status"], "applicable_missing")
+        self.assertIn("present_unverified until release scope", signals["note"])
+        self.assertEqual(
+            result["route_inputs"]["workspace_signals"]["delivery_release_operations_signals"],
+            signals,
+        )
+
     def test_missing_workspace_raises_file_not_found(self):
         with self.assertRaises(FileNotFoundError):
             analyze_workspace(FIXTURES / "does-not-exist")
@@ -1416,6 +1480,7 @@ class DiscoveryTest(unittest.TestCase):
             "backend_methodology",
             "database_data_readiness",
             "security_privacy_compliance_readiness",
+            "delivery_release_operations_readiness",
             "docs_tooling_decision",
             "standards_trigger_policy",
             "codex_agentic_workflow",

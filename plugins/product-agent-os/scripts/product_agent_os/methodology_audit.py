@@ -400,7 +400,82 @@ AI_INCIDENT_TERMS = {
     "data exposure",
     "incident",
 }
-DELIVERY_INTENT_TERMS = {"production", "release", "deploy", "package", "docker", "kubernetes", "operations"}
+DELIVERY_INTENT_TERMS = {
+    "approval",
+    "artifact",
+    "automation promotion",
+    "changelog",
+    "ci/cd",
+    "continuous deployment",
+    "deploy",
+    "deployed",
+    "deployment",
+    "docker",
+    "dora",
+    "feature flag",
+    "gitops",
+    "incident",
+    "kubernetes",
+    "operations",
+    "package",
+    "postmortem",
+    "production",
+    "publish",
+    "published",
+    "release",
+    "release notes",
+    "release-ready",
+    "rollback",
+    "rollout",
+    "semver",
+    "slo",
+    "tag",
+    "version",
+}
+DELIVERY_NOT_APPLICABLE_PHRASES = {
+    "docs-only release note edit without publish, package, runtime, ci/cd or user-impact claim",
+    "keyword-only release mention without release target or external action boundary",
+}
+DELIVERY_READINESS_CLAIMS = {
+    "deployed",
+    "operational-ready",
+    "published",
+    "release ready",
+    "release-ready",
+}
+DELIVERY_VERSION_TERMS = {
+    "breaking",
+    "compatibility",
+    "deprecation",
+    "deprecated",
+    "generated client",
+    "migration",
+    "non-semver",
+    "public api",
+    "sdk",
+    "semver",
+    "version",
+}
+DELIVERY_CHANGELOG_TERMS = {
+    "changelog",
+    "generated changelog",
+    "keep a changelog",
+    "known issues",
+    "migration",
+    "release notes",
+    "support contact",
+    "user impact",
+}
+UNSUPPORTED_DELIVERY_CLAIMS = {
+    "automation is safer",
+    "ci green means release ready",
+    "dora metrics prove individual performance",
+    "feature flags remove release risk",
+    "generated changelog",
+    "gitops is automatically safe",
+    "rollback is just revert",
+    "tests passed, so release is ready",
+}
 ARCHITECTURE_INTENT_TERMS = {
     "adr",
     "architecture",
@@ -1403,9 +1478,12 @@ def _methodology_domains(
             maturity_level,
             complexity_profile,
         ),
-        "delivery_release_operations": maturity_level in {"production", "regulated"}
-        or _mentions_any(intent, DELIVERY_INTENT_TERMS)
-        or _has_any_signal(observed, {"ci_configuration", "deployment_configuration"}),
+        "delivery_release_operations": _delivery_release_operations_applies(
+            observed,
+            intent,
+            maturity_level,
+            complexity_profile,
+        ),
     }
 
     domain_packets: list[dict[str, Any]] = []
@@ -1523,6 +1601,26 @@ def _security_privacy_compliance_applies(
 
 def _security_privacy_compliance_not_applicable(intent: str) -> bool:
     return any(phrase in intent for phrase in SECURITY_NOT_APPLICABLE_PHRASES)
+
+
+def _delivery_release_operations_applies(
+    observed: list[dict[str, Any]],
+    intent: str,
+    maturity_level: str,
+    complexity_profile: str,
+) -> bool:
+    if _delivery_release_operations_not_applicable(intent):
+        return False
+    return (
+        maturity_level in {"production", "regulated"}
+        or complexity_profile == "high_risk"
+        or _mentions_any(intent, DELIVERY_INTENT_TERMS | UNSUPPORTED_DELIVERY_CLAIMS)
+        or _has_any_signal(observed, {"ci_configuration", "deployment_configuration", "release_file"})
+    )
+
+
+def _delivery_release_operations_not_applicable(intent: str) -> bool:
+    return any(phrase in intent for phrase in DELIVERY_NOT_APPLICABLE_PHRASES)
 
 
 def _codex_agentic_workflow_applies(observed: list[dict[str, Any]], intent: str) -> bool:
@@ -4602,6 +4700,458 @@ def _security_privacy_compliance_recommendations(
     return recommendations
 
 
+def _delivery_release_operations_recommendations(
+    files: set[str],
+    observed: list[dict[str, Any]],
+    intent: str,
+    maturity_level: str,
+    complexity_profile: str,
+) -> list[dict[str, Any]]:
+    if not _delivery_release_operations_applies(observed, intent, maturity_level, complexity_profile):
+        return []
+
+    recommendations: list[dict[str, Any]] = []
+    high_risk_release = (
+        maturity_level in {"production", "regulated"}
+        or complexity_profile == "high_risk"
+        or _mentions_any(intent, {"publish", "published", "deploy", "deployed", "production", "store", "marketplace"})
+    )
+    readiness_claim = _mentions_any(intent, DELIVERY_READINESS_CLAIMS)
+    operational_release = (
+        high_risk_release
+        or _mentions_any(
+            intent,
+            {
+                "artifact",
+                "manifest",
+                "rollout",
+                "release train",
+                "feature flag",
+                "canary",
+                "blue-green",
+                "shadow traffic",
+                "manual promotion",
+                "rollback",
+                "restore",
+                "unpublish",
+                "yank",
+                "environment",
+                "ci/cd",
+                "github environments",
+                "gitops",
+                "desired state",
+                "observability",
+                "slo",
+                "sli",
+                "runbook",
+                "incident",
+                "postmortem",
+                "post-release",
+                "dora",
+            },
+        )
+        or _has_any_signal(observed, {"ci_configuration", "deployment_configuration"})
+    )
+
+    def add(
+        gate: str,
+        artifact: str,
+        reason: str,
+        evidence_required: list[str],
+        *,
+        priority: str = "P1_high_risk",
+        owner: str = "release operator",
+        approval_boundary: str = "approval_required before publish, tag, release creation, artifact upload, deploy, package registry, marketplace/store submission, PR creation, branch push or CI/CD environment mutation",
+        accepted_gap_option: str = "explicit_gap_accepted with owner, reason, review date, residual risk and follow-up condition",
+        residual_risk: str = "Release readiness can be inferred from files or claims without current owner-reviewed evidence.",
+        action: str = "Stage release readiness evidence before external release actions.",
+    ) -> None:
+        recommendations.append(
+            _recommendation(
+                priority=priority,
+                reason=reason,
+                domain="delivery_release_operations",
+                gate=gate,
+                artifact=artifact,
+                evidence_required=evidence_required,
+                evidence_owner=owner,
+                approval_boundary=approval_boundary,
+                accepted_gap_option=accepted_gap_option,
+                residual_risk=residual_risk,
+                safe_next_action=action,
+            )
+        )
+
+    if _mentions_any(intent, UNSUPPORTED_DELIVERY_CLAIMS):
+        add(
+            "delivery_unsupported_claims_rejected",
+            "release-readiness.md",
+            "Unsupported delivery/release claim appeared as evidence.",
+            [
+                "CI green means release ready",
+                "tests passed",
+                "rollback is just revert",
+                "feature flags remove release risk",
+                "GitOps is automatically safe",
+                "generated changelog",
+                "DORA metrics prove individual performance",
+                "automation is safer",
+                "replacement release evidence",
+                "claim disposition",
+            ],
+            residual_risk="Release slogans can replace artifact, rollout, rollback, owner, approval or operations evidence.",
+            action="Record unsupported delivery claim and replace it with release evidence or accepted gap.",
+        )
+
+    if not _artifact_present(files, "release-readiness.md"):
+        add(
+            "release_scope_present",
+            "release-readiness.md",
+            "Release, deployment or publish work needs explicit scope before readiness claims.",
+            [
+                "release type",
+                "target",
+                "owner",
+                "external boundary",
+                "lifecycle stage",
+                "docs-only/internal/production distinction",
+            ],
+            priority="P1_high_risk" if high_risk_release else "P2_recommended",
+            residual_risk="Without release scope, docs-only, internal and production releases can receive the same unsafe ceremony or approval path.",
+            action="Stage release-readiness.md with release scope, owner and external boundary.",
+        )
+
+    if (_mentions_any(intent, DELIVERY_VERSION_TERMS) or high_risk_release) and not _artifact_present(
+        files,
+        "versioning-policy.md",
+    ):
+        add(
+            "version_impact_present",
+            "versioning-policy.md",
+            "Public package, SDK, API, plugin or production release needs version and compatibility review.",
+            [
+                "SemVer",
+                "non-SemVer",
+                "compatibility impact",
+                "deprecation",
+                "migration guidance",
+                "generated client",
+            ],
+            priority="P1_high_risk",
+            residual_risk="A version bump can hide public API, generated client, plugin, SDK or data compatibility impact.",
+            action="Stage versioning-policy.md before release text or package publishing.",
+        )
+
+    has_changelog = _artifact_present(files, "changelog.md")
+    has_release_notes = _artifact_present(files, "release-notes.md")
+    if (_mentions_any(intent, DELIVERY_CHANGELOG_TERMS) or high_risk_release) and not (
+        has_changelog and has_release_notes
+    ):
+        add(
+            "changelog_release_notes_present",
+            "release-readiness.md",
+            "Release communication must be user-facing, not only generated commit summaries.",
+            [
+                "changelog",
+                "release notes",
+                "user impact",
+                "migration guidance",
+                "compatibility",
+                "known issues",
+                "support contact",
+            ],
+            priority="P1_high_risk",
+            residual_risk="Users can miss migration, compatibility, known issue or support information.",
+            action="Record changelog and release-notes evidence before publishing or announcing release.",
+        )
+
+    if operational_release and not _artifact_present(files, "release-artifact-manifest.md"):
+        add(
+            "artifact_manifest_present",
+            "release-artifact-manifest.md",
+            "Release artifacts need a manifest before publish, deploy or artifact upload actions.",
+            [
+                "artifact names",
+                "versions",
+                "creation command",
+                "storage location",
+                "retention",
+                "integrity notes",
+                "checksums when applicable",
+                "signatures when applicable",
+                "SBOM when applicable",
+                "provenance when applicable",
+                "docs-only/no build artifact fallback",
+            ],
+            residual_risk="A release can publish or deploy the wrong artifact, lose retention context or imply integrity evidence that does not apply.",
+            action="Stage release-artifact-manifest.md with artifact identity, storage and integrity applicability.",
+        )
+
+    if operational_release and not _artifact_present(files, "rollout-plan.md"):
+        add(
+            "rollout_strategy_present",
+            "rollout-plan.md",
+            "Release work needs an explicit rollout strategy and progressive-delivery limits where applicable.",
+            [
+                "immediate release",
+                "release train",
+                "staged rollout",
+                "feature flag",
+                "canary",
+                "blue-green",
+                "shadow traffic",
+                "manual promotion",
+                "cohorts/traffic",
+                "promotion",
+                "abort criteria",
+                "blast radius",
+                "default value",
+                "flag owner",
+                "targeting rules",
+                "cleanup date",
+                "observability",
+                "kill switch",
+                "failure mode",
+                "flag presence alone does not remove release risk",
+            ],
+            residual_risk="A feature flag, canary or GitOps file can be mistaken for controlled rollout without owner, abort and cleanup evidence.",
+            action="Stage rollout-plan.md before rollout, flag activation, traffic shifting or manual promotion.",
+        )
+
+    if operational_release and not _artifact_present(files, "rollback-recovery-plan.md"):
+        add(
+            "rollback_recovery_present",
+            "rollback-recovery-plan.md",
+            "Release work needs an executable rollback or recovery path for the actual release target.",
+            [
+                "revert",
+                "redeploy previous artifact",
+                "disable flag",
+                "unpublish",
+                "yank",
+                "restore backup",
+                "compensate data",
+                "incident mitigation",
+                "command/manual procedure",
+                "owner",
+                "residual risk",
+            ],
+            residual_risk="Rollback can be named but fail for packages, stores, data changes, flags or runtime incidents.",
+            action="Stage rollback-recovery-plan.md with command/manual steps and residual risk.",
+        )
+
+    if operational_release and not _artifact_present(files, "environment-matrix.md"):
+        add(
+            "environment_approval_boundary_present",
+            "environment-matrix.md",
+            "Release work needs explicit target environments, secret boundaries and GitOps desired-state status.",
+            [
+                "dev",
+                "stage",
+                "prod",
+                "local",
+                "mobile",
+                "store",
+                "registry",
+                "branch/tag rules",
+                "secret boundaries",
+                "desired-state source",
+                "reconciliation controller",
+                "drift behavior",
+                "approval path",
+                "rollback/revert",
+                "present_unverified",
+            ],
+            residual_risk="Deployment targets, store/registry actions or GitOps reconciliation can mutate external state without explicit approval or drift handling.",
+            action="Stage environment-matrix.md before deploy, publish, store, registry or GitOps changes.",
+        )
+
+    if operational_release and not _artifact_present(files, "approval-record.md"):
+        add(
+            "external_release_approval_present",
+            "approval-record.md",
+            "External release actions need explicit approval and rollback/unpublish path before side effects.",
+            [
+                "publish",
+                "tag",
+                "GitHub Release",
+                "artifact upload",
+                "deployment",
+                "PR creation",
+                "branch push",
+                "package registry",
+                "marketplace",
+                "store submission",
+                "approval_required",
+                "rollback/unpublish",
+            ],
+            priority="P0_blocker",
+            residual_risk="Release side effects can occur without owner approval, audit evidence or recovery path.",
+            action="Record approval_required in approval-record.md before external release actions.",
+        )
+
+    if operational_release and not _artifact_present(files, "ci-cd-workflow-inventory.md"):
+        add(
+            "ci_cd_governance_present",
+            "ci-cd-workflow-inventory.md",
+            "CI/CD workflows that publish, deploy or mutate environments need governance review.",
+            [
+                "workflow names",
+                "triggers",
+                "permissions",
+                "secrets",
+                "environments",
+                "required reviewers",
+                "wait timers",
+                "branch/tag restrictions",
+                "artifacts",
+                "cache",
+                "concurrency",
+                "external action pinning",
+                "remote CI mutation approval",
+            ],
+            residual_risk="Workflow edits can silently expand permissions, secrets access, deployment triggers or external release actions.",
+            action="Stage ci-cd-workflow-inventory.md and ci-permissions-review.md before CI/CD release changes.",
+        )
+
+    if operational_release and not _artifact_present(files, "observability-map.md"):
+        add(
+            "observability_release_evidence_present",
+            "observability-map.md",
+            "Runtime releases need diagnosable observability evidence or an accepted no-telemetry gap.",
+            [
+                "logs",
+                "metrics",
+                "traces",
+                "dashboards",
+                "alert owner",
+                "redaction",
+                "sampling",
+                "user journey",
+            ],
+            residual_risk="A release can reach users without enough runtime evidence for incident response or rollback judgement.",
+            action="Stage observability-map.md before runtime release or record an explicit accepted gap.",
+        )
+
+    if operational_release and not _artifact_present(files, "slo-spec.md"):
+        add(
+            "slo_or_operational_gap_present",
+            "slo-spec.md",
+            "Production runtime releases need SLI/SLO evidence or an explicit operational gap.",
+            [
+                "user journey",
+                "SLI",
+                "SLO",
+                "measurement source",
+                "alert policy",
+                "accepted no-telemetry",
+                "not-yet-production gap",
+            ],
+            residual_risk="Reliability expectations can be implied without measurement source, alerting or owner-accepted gap.",
+            action="Stage slo-spec.md for production service releases or document the operational gap.",
+        )
+
+    if operational_release and not _artifact_present(files, "operations-runbook.md"):
+        add(
+            "operations_runbook_present",
+            "operations-runbook.md",
+            "Runtime or deployment releases need an operations runbook for deploy, rollback and first response.",
+            [
+                "deploy",
+                "rollback",
+                "first response",
+                "escalation",
+                "diagnostics",
+                "incident criteria",
+            ],
+            residual_risk="Operators can know a release exists but lack first-response and recovery steps when it fails.",
+            action="Stage operations-runbook.md before production deploy or runtime release completion.",
+        )
+
+    if operational_release and not _artifact_present(files, "incident-record.md"):
+        add(
+            "incident_response_path_present",
+            "incident-record.md",
+            "Release work needs incident criteria, owner, communication path and postmortem trigger.",
+            [
+                "incident criteria",
+                "owner",
+                "communication path",
+                "postmortem trigger",
+                "timeline",
+                "mitigation",
+            ],
+            residual_risk="Failed releases can be rolled back quickly but skip incident learning, communication and follow-up ownership.",
+            action="Stage incident-record.md and postmortem.md triggers before runtime release completion.",
+        )
+
+    if operational_release and not _artifact_present(files, "post-release-review.md"):
+        add(
+            "post_release_measurement_present",
+            "post-release-review.md",
+            "Release work needs post-release measurement and learning tied to product or reliability hypotheses.",
+            [
+                "metrics",
+                "support signals",
+                "defects",
+                "latency/cost",
+                "review date",
+                "DORA measurement source",
+                "anti-Goodhart",
+                "product/reliability hypotheses",
+            ],
+            residual_risk="Delivery metrics can become vanity signals or individual quotas instead of process learning.",
+            action="Stage post-release-review.md and metric-spec.md updates before closing release learning loop.",
+        )
+
+    has_release_evidence = _artifact_present(files, "release-readiness.md") and _artifact_present(files, "release-packet.md")
+    if (readiness_claim or high_risk_release) and not has_release_evidence:
+        add(
+            "release_evidence_present",
+            "release-readiness.md",
+            "Release-ready, deployed or published claims need current evidence, not inspection or stale CI assumptions.",
+            [
+                "current build",
+                "test evidence",
+                "docs evidence",
+                "eval evidence",
+                "runtime evidence",
+                "artifact evidence",
+                "owner evidence",
+                "explicit gap",
+                "inspection-only label when only files were inspected",
+            ],
+            priority="P0_blocker" if readiness_claim or high_risk_release else "P1_high_risk",
+            residual_risk="CI, changelog, Docker or package files do not prove that this release is ready.",
+            action="Record current release evidence or accepted gap before any release-ready/deployed/published claim.",
+        )
+
+    if readiness_claim and not _artifact_present(files, "release-packet.md"):
+        add(
+            "release_evidence_before_completion",
+            "release-packet.md",
+            "Release completion claims need current evidence or an explicit accepted gap.",
+            [
+                "current build",
+                "test",
+                "docs",
+                "eval",
+                "runtime",
+                "artifact",
+                "owner evidence",
+                "explicit gap",
+                "inspection-only",
+                "residual risk",
+                "safe next action",
+            ],
+            priority="P0_blocker",
+            residual_risk="A release claim can be presented as verified when only code or docs were inspected.",
+            action="Stage release-packet.md with evidence-before-completion before final response.",
+        )
+
+    return recommendations
+
+
 def _recommendations(
     root: Path,
     files: set[str],
@@ -4623,25 +5173,15 @@ def _recommendations(
     recommendations.extend(_database_data_recommendations(root, files, observed, intent))
     recommendations.extend(_llm_ai_rag_recommendations(files, observed, intent))
     recommendations.extend(_security_privacy_compliance_recommendations(observed, intent, maturity_level, complexity_profile))
-    if _mentions_any(intent, DELIVERY_INTENT_TERMS) or _has_any_signal(
-        observed,
-        {"ci_configuration", "deployment_configuration", "release_file"},
-    ):
-        recommendations.append(
-            _recommendation(
-                priority="P1_high_risk",
-                reason="Production, release, CI or deployment signals were detected.",
-                domain="delivery_release_operations",
-                gate="release_evidence_present",
-                artifact="release-readiness.md",
-                evidence_required=["build command", "test evidence", "artifact manifest", "rollback", "owner approval"],
-                evidence_owner="release operator",
-                approval_boundary="approval_required before publish, tag, deploy or release creation",
-                accepted_gap_option="explicit_gap_accepted with owner, reason, residual risk and review date",
-                residual_risk="CI or deployment files do not prove the release is ready.",
-                safe_next_action="Stage release readiness evidence before external release actions.",
-            )
+    recommendations.extend(
+        _delivery_release_operations_recommendations(
+            files,
+            observed,
+            intent,
+            maturity_level,
+            complexity_profile,
         )
+    )
     return recommendations
 
 

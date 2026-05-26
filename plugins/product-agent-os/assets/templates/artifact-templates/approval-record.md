@@ -2,7 +2,7 @@
 
 Source status: `codex-plugin-template`
 
-Use this before production data, external writes, payment/billing, customer data, secret rotation, policy changes or external security-system mutations.
+Use this before production data, external writes, payment/billing, customer data, secret rotation, policy changes, external security-system mutations or release side effects.
 
 ## Scope
 
@@ -23,6 +23,17 @@ Use this before production data, external writes, payment/billing, customer data
 - Secret rotation:
 - Policy change:
 - External security system:
+- Publish:
+- Tag:
+- GitHub Release:
+- Artifact upload:
+- Deployment:
+- PR creation:
+- Branch push:
+- Package registry:
+- Marketplace:
+- Store submission:
+- Rollback/unpublish:
 - Rollback:
 - Expiry/review date:
 - Audit-ready evidence:

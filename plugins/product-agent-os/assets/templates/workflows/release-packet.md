@@ -5,6 +5,12 @@ Profile: {profile_name}
 
 ## Inputs
 
+- Delivery gates:
+  - `release_scope_present`:
+  - `version_impact_present`:
+  - `changelog_release_notes_present`:
+  - `release_evidence_present`:
+  - `release_evidence_before_completion`:
 - Completed slice:
 - Review verdict:
 - Verification evidence:

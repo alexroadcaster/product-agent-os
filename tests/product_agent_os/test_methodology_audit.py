@@ -2051,6 +2051,374 @@ class MethodologyAuditContractTest(unittest.TestCase):
             with self.subTest(unsupported_evidence=expected_term):
                 self.assertIn(expected_term, evidence)
 
+    def test_delivery_release_operations_recommends_initial_gate_priority_and_artifact_mapping(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "package.json").write_text(
+                '{"name":"synthetic-release","version":"1.2.0","scripts":{"build":"vite build","test":"vitest"}}\n',
+                encoding="utf-8",
+            )
+            (root / "CHANGELOG.md").write_text("# Changelog\n", encoding="utf-8")
+            (root / ".github" / "workflows").mkdir(parents=True)
+            (root / ".github" / "workflows" / "release.yml").write_text("name: Release\n", encoding="utf-8")
+            (root / "Dockerfile").write_text("FROM scratch\n", encoding="utf-8")
+            result = build_methodology_audit(
+                root,
+                intent_hint=(
+                    "publish production package release-ready deployed SemVer changelog release notes "
+                    "migration deprecation compatibility external boundary owner current build test docs eval "
+                    "runtime artifact evidence inspection-only"
+                ),
+            )
+
+        self.assertNotEqual(self._domain_status(result, "delivery_release_operations"), "not_applicable")
+        expected = {
+            "release_scope_present": ("P1_high_risk", "release-readiness.md"),
+            "version_impact_present": ("P1_high_risk", "versioning-policy.md"),
+            "changelog_release_notes_present": ("P1_high_risk", "release-readiness.md"),
+            "release_evidence_present": ("P0_blocker", "release-readiness.md"),
+            "release_evidence_before_completion": ("P0_blocker", "release-packet.md"),
+        }
+        for gate, (priority, artifact) in expected.items():
+            with self.subTest(gate=gate):
+                recommendation = self._recommendation_by_domain_gate(
+                    result,
+                    "delivery_release_operations",
+                    gate,
+                )
+                self.assertEqual(recommendation["priority"], priority)
+                self.assertEqual(recommendation["artifact"], artifact)
+
+        scope = self._recommendation_by_domain_gate(result, "delivery_release_operations", "release_scope_present")
+        scope_evidence = " ".join(scope["evidence_required"]).lower()
+        for expected_term in ["release type", "target", "owner", "external boundary", "lifecycle stage", "docs-only/internal/production"]:
+            with self.subTest(scope_evidence=expected_term):
+                self.assertIn(expected_term, scope_evidence)
+
+        version = self._recommendation_by_domain_gate(result, "delivery_release_operations", "version_impact_present")
+        version_evidence = " ".join(version["evidence_required"]).lower()
+        for expected_term in ["semver", "non-semver", "compatibility impact", "deprecation", "migration guidance", "generated client"]:
+            with self.subTest(version_evidence=expected_term):
+                self.assertIn(expected_term, version_evidence)
+
+        evidence = self._recommendation_by_domain_gate(result, "delivery_release_operations", "release_evidence_before_completion")
+        evidence_required = " ".join(evidence["evidence_required"]).lower()
+        for expected_term in [
+            "current build",
+            "test",
+            "docs",
+            "eval",
+            "runtime",
+            "artifact",
+            "owner evidence",
+            "explicit gap",
+            "inspection-only",
+        ]:
+            with self.subTest(release_evidence=expected_term):
+                self.assertIn(expected_term, evidence_required)
+
+    def test_delivery_release_operations_recommends_operational_gate_priority_and_artifact_mapping(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "package.json").write_text(
+                '{"name":"synthetic-release","version":"2.0.0","scripts":{"build":"vite build","test":"vitest"}}\n',
+                encoding="utf-8",
+            )
+            (root / ".github" / "workflows").mkdir(parents=True)
+            (root / ".github" / "workflows" / "deploy.yml").write_text(
+                "name: Deploy\non:\n  push:\n    tags: ['v*']\npermissions: write-all\n",
+                encoding="utf-8",
+            )
+            (root / "Dockerfile").write_text("FROM scratch\n", encoding="utf-8")
+            (root / "k8s").mkdir()
+            (root / "k8s" / "deployment.yaml").write_text("kind: Deployment\n", encoding="utf-8")
+            (root / "gitops").mkdir()
+            (root / "gitops" / "app.yaml").write_text("kind: Application\n", encoding="utf-8")
+            (root / "config").mkdir()
+            (root / "config" / "feature-flags.yaml").write_text("new_checkout: false\n", encoding="utf-8")
+            (root / "observability").mkdir()
+            (root / "observability" / "dashboards.yaml").write_text("dashboards: []\n", encoding="utf-8")
+            result = build_methodology_audit(
+                root,
+                intent_hint=(
+                    "production deploy release artifact manifest canary blue-green staged rollout shadow traffic "
+                    "manual promotion feature flag gitops desired state reconciliation drift rollback restore "
+                    "unpublish yank environment approval github environments branch tag restrictions secrets "
+                    "ci/cd governance required reviewers wait timers action pinning cache concurrency "
+                    "observability logs metrics traces dashboard alert owner redaction sampling slo sli "
+                    "operations runbook incident postmortem post-release dora support defects latency cost"
+                ),
+            )
+
+        expected = {
+            "artifact_manifest_present": ("P1_high_risk", "release-artifact-manifest.md"),
+            "rollout_strategy_present": ("P1_high_risk", "rollout-plan.md"),
+            "rollback_recovery_present": ("P1_high_risk", "rollback-recovery-plan.md"),
+            "environment_approval_boundary_present": ("P1_high_risk", "environment-matrix.md"),
+            "external_release_approval_present": ("P0_blocker", "approval-record.md"),
+            "ci_cd_governance_present": ("P1_high_risk", "ci-cd-workflow-inventory.md"),
+            "observability_release_evidence_present": ("P1_high_risk", "observability-map.md"),
+            "slo_or_operational_gap_present": ("P1_high_risk", "slo-spec.md"),
+            "operations_runbook_present": ("P1_high_risk", "operations-runbook.md"),
+            "incident_response_path_present": ("P1_high_risk", "incident-record.md"),
+            "post_release_measurement_present": ("P1_high_risk", "post-release-review.md"),
+        }
+        for gate, (priority, artifact) in expected.items():
+            with self.subTest(gate=gate):
+                recommendation = self._recommendation_by_domain_gate(
+                    result,
+                    "delivery_release_operations",
+                    gate,
+                )
+                self.assertEqual(recommendation["priority"], priority)
+                self.assertEqual(recommendation["artifact"], artifact)
+
+        evidence_terms = {
+            "artifact_manifest_present": [
+                "artifact names",
+                "versions",
+                "creation command",
+                "storage location",
+                "retention",
+                "integrity notes",
+                "checksums",
+                "signatures",
+                "sbom",
+                "provenance",
+            ],
+            "rollout_strategy_present": [
+                "immediate release",
+                "release train",
+                "staged rollout",
+                "feature flag",
+                "canary",
+                "blue-green",
+                "shadow traffic",
+                "manual promotion",
+                "cohorts/traffic",
+                "promotion",
+                "abort criteria",
+                "blast radius",
+            ],
+            "rollback_recovery_present": [
+                "revert",
+                "redeploy previous artifact",
+                "disable flag",
+                "unpublish",
+                "yank",
+                "restore backup",
+                "compensate data",
+                "incident mitigation",
+                "owner",
+                "residual risk",
+            ],
+            "environment_approval_boundary_present": [
+                "dev",
+                "stage",
+                "prod",
+                "local",
+                "mobile",
+                "store",
+                "registry",
+                "branch/tag rules",
+                "secret boundaries",
+            ],
+            "ci_cd_governance_present": [
+                "workflow names",
+                "triggers",
+                "permissions",
+                "secrets",
+                "environments",
+                "required reviewers",
+                "branch/tag restrictions",
+                "artifacts",
+                "cache",
+                "concurrency",
+                "external action pinning",
+            ],
+            "observability_release_evidence_present": [
+                "logs",
+                "metrics",
+                "traces",
+                "dashboards",
+                "alert owner",
+                "redaction",
+                "sampling",
+            ],
+            "slo_or_operational_gap_present": [
+                "user journey",
+                "sli",
+                "slo",
+                "measurement source",
+                "alert policy",
+                "accepted no-telemetry",
+                "not-yet-production gap",
+            ],
+            "operations_runbook_present": [
+                "deploy",
+                "rollback",
+                "first response",
+                "escalation",
+                "diagnostics",
+            ],
+            "incident_response_path_present": [
+                "incident criteria",
+                "owner",
+                "communication path",
+                "postmortem trigger",
+            ],
+            "post_release_measurement_present": [
+                "metrics",
+                "support signals",
+                "defects",
+                "latency/cost",
+                "review date",
+                "dora measurement source",
+                "anti-goodhart",
+                "product/reliability hypotheses",
+            ],
+        }
+        for gate, terms in evidence_terms.items():
+            recommendation = self._recommendation_by_domain_gate(result, "delivery_release_operations", gate)
+            evidence = " ".join(recommendation["evidence_required"]).lower()
+            for expected_term in terms:
+                with self.subTest(gate=gate, evidence=expected_term):
+                    self.assertIn(expected_term, evidence)
+
+    def test_delivery_release_operations_gitops_flags_and_ci_claims_stay_unverified(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "package.json").write_text('{"version":"3.0.0"}\n', encoding="utf-8")
+            (root / "gitops").mkdir()
+            (root / "gitops" / "service.yaml").write_text("kind: Application\n", encoding="utf-8")
+            (root / "config").mkdir()
+            (root / "config" / "flags.yaml").write_text("new_checkout: false\n", encoding="utf-8")
+            result = build_methodology_audit(
+                root,
+                intent_hint=(
+                    "GitOps is automatically safe. Feature flags remove release risk. Rollback is just revert. "
+                    "production deploy with gitops feature flag ci/cd governance and rollback"
+                ),
+            )
+
+        unsupported = self._recommendation_by_domain_gate(
+            result,
+            "delivery_release_operations",
+            "delivery_unsupported_claims_rejected",
+        )
+        unsupported_text = " ".join(unsupported["evidence_required"]).lower()
+        for expected_term in [
+            "gitops is automatically safe",
+            "feature flags remove release risk",
+            "rollback is just revert",
+        ]:
+            with self.subTest(unsupported_evidence=expected_term):
+                self.assertIn(expected_term, unsupported_text)
+
+        rollout = self._recommendation_by_domain_gate(result, "delivery_release_operations", "rollout_strategy_present")
+        rollout_text = " ".join(rollout["evidence_required"]).lower()
+        for expected_term in [
+            "default value",
+            "flag owner",
+            "targeting rules",
+            "cleanup date",
+            "kill switch",
+            "failure mode",
+            "flag presence alone does not remove release risk",
+        ]:
+            with self.subTest(flag_evidence=expected_term):
+                self.assertIn(expected_term, rollout_text)
+
+        environment = self._recommendation_by_domain_gate(
+            result,
+            "delivery_release_operations",
+            "environment_approval_boundary_present",
+        )
+        environment_text = " ".join(environment["evidence_required"]).lower()
+        for expected_term in [
+            "desired-state source",
+            "reconciliation controller",
+            "drift behavior",
+            "approval path",
+            "rollback/revert",
+            "present_unverified",
+        ]:
+            with self.subTest(gitops_evidence=expected_term):
+                self.assertIn(expected_term, environment_text)
+
+        ci = self._recommendation_by_domain_gate(result, "delivery_release_operations", "ci_cd_governance_present")
+        ci_text = " ".join(ci["evidence_required"]).lower()
+        for expected_term in [
+            "required reviewers",
+            "wait timers",
+            "branch/tag restrictions",
+            "action pinning",
+            "remote ci mutation approval",
+        ]:
+            with self.subTest(ci_evidence=expected_term):
+                self.assertIn(expected_term, ci_text)
+
+    def test_delivery_release_operations_false_positives_and_unsupported_claims(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        with tempfile.TemporaryDirectory() as tmp:
+            docs_root = Path(tmp) / "docs_only"
+            docs_root.mkdir()
+            (docs_root / "docs").mkdir()
+            (docs_root / "docs" / "release-notes.md").write_text("# Release notes\n", encoding="utf-8")
+            docs_result = build_methodology_audit(
+                docs_root,
+                intent_hint="docs-only release note edit without publish, package, runtime, CI/CD or user-impact claim",
+            )
+
+            unsupported_root = Path(tmp) / "unsupported"
+            unsupported_root.mkdir()
+            (unsupported_root / "package.json").write_text('{"version":"1.0.0"}\n', encoding="utf-8")
+            unsupported_result = build_methodology_audit(
+                unsupported_root,
+                intent_hint=(
+                    "CI green means release ready. Tests passed, so release is ready. "
+                    "Rollback is just revert. Feature flags remove release risk. "
+                    "GitOps is automatically safe. Generated changelog is enough for users. "
+                    "DORA metrics prove individual performance. Automation is safer because it is repeatable."
+                ),
+            )
+
+        docs_delivery_recommendations = [
+            item for item in docs_result["recommendations"] if item["domain"] == "delivery_release_operations"
+        ]
+        self.assertNotIn(
+            "release_evidence_present",
+            {item["gate"] for item in docs_delivery_recommendations},
+        )
+
+        unsupported = self._recommendation_by_domain_gate(
+            unsupported_result,
+            "delivery_release_operations",
+            "delivery_unsupported_claims_rejected",
+        )
+        self.assertEqual(unsupported["priority"], "P1_high_risk")
+        self.assertEqual(unsupported["artifact"], "release-readiness.md")
+        evidence = " ".join(unsupported["evidence_required"]).lower()
+        for expected_term in [
+            "ci green",
+            "tests passed",
+            "rollback is just revert",
+            "feature flags remove release risk",
+            "gitops is automatically safe",
+            "generated changelog",
+            "dora metrics prove individual performance",
+            "automation is safer",
+        ]:
+            with self.subTest(unsupported_evidence=expected_term):
+                self.assertIn(expected_term, evidence)
+
 
 if __name__ == "__main__":
     unittest.main()

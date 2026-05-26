@@ -50,6 +50,16 @@ SECURITY_TEMPLATE_ALIASES = {
     "compliance-applicability-matrix.md": "compliance-overlay.md",
 }
 
+DELIVERY_TEMPLATE_ALIASES = {
+    "release-scope.md": "release-readiness.md",
+    "version-impact-record.md": "versioning-policy.md",
+    "artifact-manifest.md": "release-artifact-manifest.md",
+    "rollout-strategy.md": "rollout-plan.md",
+    "ci-cd-governance.md": "ci-cd-workflow-inventory.md",
+    "incident-response-path.md": "incident-record.md",
+    "post-release-measurement.md": "post-release-review.md",
+}
+
 
 def _spec(
     key: str,

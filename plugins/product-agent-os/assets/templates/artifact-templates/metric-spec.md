@@ -107,3 +107,16 @@ Use HEART metrics only when they fit the product question; not every category is
 - Qualitative review result:
 - Decision:
 - Next experiment:
+
+## DORA Process Metrics
+
+- DORA measurement source:
+- Change lead time:
+- Deployment frequency:
+- Failed deployment recovery time:
+- Change fail rate:
+- Deployment rework rate:
+- Anti-Goodhart warning:
+- Individual performance quota prohibition:
+
+DORA metrics are process-learning signals. Do not use DORA metrics as an individual performance quota or personal productivity score.

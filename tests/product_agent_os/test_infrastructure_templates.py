@@ -15,7 +15,13 @@ TEMPLATE_ROOT = ROOT / "plugins" / "product-agent-os" / "assets" / "templates"
 PLUGIN_ROOT = ROOT / "plugins" / "product-agent-os"
 sys.path.insert(0, str(SCRIPTS))
 
-from product_agent_os.templates import AI_RAG_TEMPLATE_ALIASES, SECURITY_TEMPLATE_ALIASES, required_templates, render_template  # noqa: E402
+from product_agent_os.templates import (  # noqa: E402
+    AI_RAG_TEMPLATE_ALIASES,
+    DELIVERY_TEMPLATE_ALIASES,
+    SECURITY_TEMPLATE_ALIASES,
+    required_templates,
+    render_template,
+)
 from product_agent_os.validators import validate_agent_file, validate_hook_file  # noqa: E402
 
 
@@ -306,6 +312,260 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 self.assertNotIn(f".codex/artifact-templates/{source_name}", targets)
                 self.assertNotIn(source_name, artifacts)
                 self.assertIn(canonical, artifacts)
+
+    def test_delivery_template_names_are_canonical_and_plan_names_are_mapped(self):
+        plan_aliases = {
+            "release-scope.md": "release-readiness.md",
+            "version-impact-record.md": "versioning-policy.md",
+            "artifact-manifest.md": "release-artifact-manifest.md",
+            "rollout-strategy.md": "rollout-plan.md",
+            "ci-cd-governance.md": "ci-cd-workflow-inventory.md",
+            "incident-response-path.md": "incident-record.md",
+            "post-release-measurement.md": "post-release-review.md",
+        }
+        catalog = json.loads(
+            (PLUGIN_ROOT / "assets" / "methodology" / "methodology-catalog.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        domains = {
+            domain["id"]: domain
+            for domain in catalog["domains"]
+            if isinstance(domain, dict) and domain.get("id")
+        }
+        artifacts = set(domains["delivery_release_operations"]["artifacts"])
+
+        self.assertEqual(DELIVERY_TEMPLATE_ALIASES, plan_aliases)
+        for plan_name, canonical in plan_aliases.items():
+            with self.subTest(plan_name=plan_name):
+                self.assertNotIn(plan_name, artifacts)
+                self.assertIn(canonical, artifacts)
+
+    def test_delivery_release_initial_templates_cover_scope_version_and_evidence(self):
+        expected_terms = {
+            "release-readiness.md": [
+                "release type",
+                "external boundary",
+                "lifecycle stage",
+                "docs-only/internal/production distinction",
+                "current build/test/docs/eval/runtime/artifact evidence",
+                "owner evidence",
+                "explicit gap",
+                "inspection-only",
+            ],
+            "release-packet.md": [
+                "release_scope_present",
+                "version_impact_present",
+                "changelog_release_notes_present",
+                "release_evidence_present",
+                "release_evidence_before_completion",
+            ],
+            "versioning-policy.md": [
+                "semver",
+                "non-semver",
+                "compatibility impact",
+                "deprecation",
+                "migration guidance",
+                "generated client",
+            ],
+        }
+        template_dirs = [TEMPLATE_ROOT / "artifact-templates", TEMPLATE_ROOT / "workflows"]
+        for name, terms in expected_terms.items():
+            with self.subTest(template=name):
+                path = next((directory / name for directory in template_dirs if (directory / name).is_file()), None)
+                self.assertIsNotNone(path, name)
+                text = path.read_text(encoding="utf-8").lower()
+                for term in terms:
+                    with self.subTest(template=name, term=term):
+                        self.assertIn(term, text)
+
+    def test_delivery_release_operational_templates_cover_batch_two_gates(self):
+        expected_terms = {
+            "release-artifact-manifest.md": [
+                "artifact names",
+                "versions",
+                "creation command",
+                "storage location",
+                "retention",
+                "integrity notes",
+                "checksums",
+                "signatures",
+                "sbom",
+                "provenance",
+                "docs-only/no build artifact",
+            ],
+            "rollout-plan.md": [
+                "immediate release",
+                "release train",
+                "staged rollout",
+                "feature flag",
+                "canary",
+                "blue-green",
+                "shadow traffic",
+                "manual promotion",
+                "cohorts/traffic",
+                "promotion",
+                "abort criteria",
+                "blast radius",
+                "default value",
+                "flag owner",
+                "targeting rules",
+                "cleanup date",
+                "kill switch",
+                "failure mode",
+                "flag presence alone does not remove release risk",
+            ],
+            "rollback-recovery-plan.md": [
+                "revert",
+                "redeploy previous artifact",
+                "disable flag",
+                "unpublish",
+                "yank",
+                "restore backup",
+                "compensate data",
+                "incident mitigation",
+                "command/manual procedure",
+                "owner",
+                "residual risk",
+            ],
+            "environment-matrix.md": [
+                "dev",
+                "stage",
+                "prod",
+                "local",
+                "mobile",
+                "store",
+                "registry",
+                "branch/tag rules",
+                "secret boundaries",
+                "desired-state source",
+                "reconciliation controller",
+                "drift behavior",
+                "approval path",
+                "rollback/revert",
+                "present_unverified",
+            ],
+            "deployment-plan.md": [
+                "target environment",
+                "release candidate",
+                "deploy command",
+                "approval",
+                "rollout window",
+                "stop criteria",
+                "desired-state source",
+                "reconciliation controller",
+                "drift behavior",
+                "rollback/revert",
+            ],
+            "approval-record.md": [
+                "publish",
+                "tag",
+                "github release",
+                "artifact upload",
+                "deployment",
+                "pr creation",
+                "branch push",
+                "package registry",
+                "marketplace",
+                "store submission",
+                "approval_required",
+                "rollback/unpublish",
+            ],
+            "ci-cd-workflow-inventory.md": [
+                "workflow names",
+                "triggers",
+                "permissions",
+                "secrets",
+                "environments",
+                "required reviewers",
+                "wait timers",
+                "branch/tag restrictions",
+                "artifacts",
+                "cache",
+                "concurrency",
+                "external action pinning",
+                "remote ci mutation approval",
+            ],
+            "ci-permissions-review.md": [
+                "required reviewers",
+                "wait timers",
+                "branch/tag restrictions",
+                "external action pinning",
+                "remote ci mutation approval",
+            ],
+            "observability-map.md": [
+                "logs",
+                "metrics",
+                "traces",
+                "dashboards",
+                "alert owner",
+                "redaction",
+                "sampling",
+                "user journey",
+            ],
+            "slo-spec.md": [
+                "user journey",
+                "sli",
+                "slo",
+                "measurement source",
+                "alert policy",
+                "accepted no-telemetry",
+                "not-yet-production gap",
+            ],
+            "operations-runbook.md": [
+                "deploy",
+                "rollback",
+                "first response",
+                "escalation",
+                "diagnostics",
+                "incident criteria",
+            ],
+            "incident-record.md": [
+                "incident criteria",
+                "owner",
+                "communication path",
+                "timeline",
+                "mitigation",
+                "postmortem trigger",
+            ],
+            "postmortem.md": [
+                "impact",
+                "detection",
+                "root causes",
+                "contributing factors",
+                "action items",
+                "review status",
+                "quick rollback does not skip learning",
+            ],
+            "post-release-review.md": [
+                "metrics",
+                "support signals",
+                "defects",
+                "latency/cost",
+                "review date",
+                "dora measurement source",
+                "anti-goodhart",
+                "product/reliability hypotheses",
+            ],
+            "metric-spec.md": [
+                "dora measurement source",
+                "change lead time",
+                "deployment frequency",
+                "failed deployment recovery time",
+                "change fail rate",
+                "deployment rework rate",
+                "anti-goodhart",
+                "individual performance quota",
+            ],
+        }
+        for name, terms in expected_terms.items():
+            with self.subTest(template=name):
+                path = TEMPLATE_ROOT / "artifact-templates" / name
+                self.assertTrue(path.is_file(), name)
+                text = path.read_text(encoding="utf-8").lower()
+                for term in terms:
+                    with self.subTest(template=name, term=term):
+                        self.assertIn(term, text)
 
     def test_security_privacy_compliance_templates_cover_source_artifact_set(self):
         expected_terms = {
@@ -2484,6 +2744,163 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 "rollback",
                 "residual risk",
             ],
+            "release-artifact-manifest.md": [
+                "source status:",
+                "artifact names",
+                "versions",
+                "creation command",
+                "storage location",
+                "retention",
+                "integrity notes",
+                "checksums",
+                "signatures",
+                "sbom",
+                "provenance",
+                "docs-only/no build artifact",
+                "no secrets",
+                "residual risk",
+            ],
+            "rollout-plan.md": [
+                "source status:",
+                "immediate release",
+                "release train",
+                "staged rollout",
+                "feature flag",
+                "canary",
+                "blue-green",
+                "shadow traffic",
+                "manual promotion",
+                "cohorts/traffic",
+                "promotion",
+                "abort criteria",
+                "blast radius",
+                "kill switch",
+                "residual risk",
+            ],
+            "rollback-recovery-plan.md": [
+                "source status:",
+                "revert",
+                "redeploy previous artifact",
+                "disable flag",
+                "unpublish",
+                "yank",
+                "restore backup",
+                "compensate data",
+                "incident mitigation",
+                "command/manual procedure",
+                "residual risk",
+            ],
+            "environment-matrix.md": [
+                "source status:",
+                "dev",
+                "stage",
+                "prod",
+                "local",
+                "mobile",
+                "store",
+                "registry",
+                "branch/tag rules",
+                "secret boundaries",
+                "desired-state source",
+                "reconciliation controller",
+                "drift behavior",
+                "present_unverified",
+                "residual risk",
+            ],
+            "deployment-plan.md": [
+                "source status:",
+                "target environment",
+                "release candidate",
+                "deploy command",
+                "approval",
+                "rollout window",
+                "stop criteria",
+                "desired-state source",
+                "reconciliation controller",
+                "rollback/revert",
+                "residual risk",
+            ],
+            "ci-cd-workflow-inventory.md": [
+                "source status:",
+                "workflow names",
+                "triggers",
+                "permissions",
+                "secrets",
+                "environments",
+                "required reviewers",
+                "branch/tag restrictions",
+                "artifacts",
+                "cache",
+                "concurrency",
+                "external action pinning",
+                "residual risk",
+            ],
+            "observability-map.md": [
+                "source status:",
+                "logs",
+                "metrics",
+                "traces",
+                "dashboards",
+                "alert owner",
+                "redaction",
+                "sampling",
+                "user journey",
+                "residual risk",
+            ],
+            "slo-spec.md": [
+                "source status:",
+                "user journey",
+                "sli",
+                "slo",
+                "measurement source",
+                "alert policy",
+                "accepted no-telemetry",
+                "not-yet-production gap",
+                "residual risk",
+            ],
+            "operations-runbook.md": [
+                "source status:",
+                "deploy",
+                "rollback",
+                "first response",
+                "escalation",
+                "diagnostics",
+                "incident criteria",
+                "residual risk",
+            ],
+            "incident-record.md": [
+                "source status:",
+                "incident criteria",
+                "timeline",
+                "impact",
+                "mitigation",
+                "communication path",
+                "postmortem trigger",
+                "residual risk",
+            ],
+            "postmortem.md": [
+                "source status:",
+                "impact",
+                "detection",
+                "root causes",
+                "contributing factors",
+                "action items",
+                "review status",
+                "quick rollback does not skip learning",
+                "residual risk",
+            ],
+            "post-release-review.md": [
+                "source status:",
+                "metrics",
+                "support signals",
+                "defects",
+                "latency/cost",
+                "review date",
+                "dora measurement source",
+                "anti-goodhart",
+                "product/reliability hypotheses",
+                "residual risk",
+            ],
             "database-inventory.md": [
                 "datastore",
                 "environment",
@@ -2808,6 +3225,18 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 "escalation",
                 "operational checks",
                 "no secrets",
+                "residual risk",
+            ],
+            "versioning-policy.md": [
+                "source status:",
+                "semver",
+                "non-semver",
+                "compatibility impact",
+                "deprecation",
+                "migration guidance",
+                "generated client",
+                "owner evidence",
+                "explicit gap",
                 "residual risk",
             ],
         }

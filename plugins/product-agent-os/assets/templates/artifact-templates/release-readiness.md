@@ -6,8 +6,14 @@ Use this artifact before publishing, tagging, release creation, package registry
 
 ## Scope
 
+- Gate: `release_scope_present`
 - Release scope:
+- Release type:
+- Release target:
 - Owner:
+- External boundary:
+- Lifecycle stage:
+- Docs-only/internal/production distinction:
 - Package or app type:
 - Target package registry or distribution channel:
 - Publish approval:
@@ -26,22 +32,33 @@ Use this artifact before publishing, tagging, release creation, package registry
 
 ## Changelog And Docs
 
+- Gate: `changelog_release_notes_present`
 - Changelog:
 - Release notes:
+- User impact:
 - Docs evidence:
 - Examples evidence:
 - Migration notes:
+- Compatibility notes:
+- Known issues:
 - Known documentation gaps:
 
 ## Build, Test, And Artifacts
 
+- Gate: `release_evidence_present`
 - Build evidence:
 - Test evidence:
 - Docs evidence:
+- Eval evidence:
+- Runtime evidence:
+- Current build/test/docs/eval/runtime/artifact evidence:
+- Owner evidence:
 - Artifact list:
 - Artifact source:
 - Artifact integrity notes:
 - Provenance or SBOM notes:
+- Explicit gap:
+- Inspection-only:
 - Missing evidence:
 
 ## Security And License
@@ -77,6 +94,7 @@ Use this artifact before publishing, tagging, release creation, package registry
 
 ## Verdict
 
+- Gate: `release_evidence_before_completion`
 - Release readiness status:
 - Unsupported claims:
 - Approval needs:

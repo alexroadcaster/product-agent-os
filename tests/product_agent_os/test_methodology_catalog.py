@@ -1221,6 +1221,127 @@ class MethodologyCatalogContractTest(unittest.TestCase):
         self.assertIn("complex", security["complexity_impact"])
         self.assertIn("high_risk", security["complexity_impact"])
 
+    def test_delivery_release_operations_domain_has_track_nine_contract(self):
+        from product_agent_os.methodology_catalog import load_methodology_catalog
+
+        catalog = load_methodology_catalog()
+        domains = {domain["id"]: domain for domain in catalog["domains"]}
+        delivery = domains["delivery_release_operations"]
+
+        expected_gates = [
+            "release_scope_present",
+            "version_impact_present",
+            "changelog_release_notes_present",
+            "artifact_manifest_present",
+            "release_evidence_present",
+            "release_evidence_before_completion",
+            "rollout_strategy_present",
+            "rollback_recovery_present",
+            "environment_approval_boundary_present",
+            "external_release_approval_present",
+            "ci_cd_governance_present",
+            "slo_or_operational_gap_present",
+            "observability_release_evidence_present",
+            "operations_runbook_present",
+            "incident_response_path_present",
+            "post_release_measurement_present",
+            "automation_manual_stability_present",
+            "release_mode_policy_present",
+            "build_release_run_boundary_present",
+            "platform_distribution_evidence_present",
+            "release_communication_present",
+            "versioning_tooling_decision_present",
+            "github_environment_controls_present",
+            "dora_measurement_design_present",
+            "incident_postmortem_learning_present",
+            "observability_on_call_tooling_present",
+            "release_integrity_security_handoff_present",
+            "release_evidence_sufficiency_owner_reviewed",
+            "delivery_unsupported_claims_rejected",
+        ]
+        expected_artifacts = [
+            "release-readiness.md",
+            "versioning-policy.md",
+            "release-artifact-manifest.md",
+            "rollout-plan.md",
+            "rollback-recovery-plan.md",
+            "environment-matrix.md",
+            "ci-cd-workflow-inventory.md",
+            "observability-map.md",
+            "slo-spec.md",
+            "operations-runbook.md",
+            "incident-record.md",
+            "postmortem.md",
+            "automation-candidate.md",
+            "post-release-review.md",
+            "approval-record.md",
+            "metric-spec.md",
+            "supply-chain-review.md",
+            "sbom-manifest.md",
+            "vulnerability-response-record.md",
+        ]
+        expected_eval_fields = [
+            "delivery_release_operations_contract_present",
+            "release_scope_contract_present",
+            "version_impact_contract_present",
+            "changelog_release_notes_contract_present",
+            "release_evidence_contract_present",
+            "release_evidence_before_completion_contract_present",
+            "artifact_manifest_contract_present",
+            "rollout_strategy_contract_present",
+            "rollback_recovery_contract_present",
+            "ci_cd_governance_contract_present",
+            "operations_runbook_contract_present",
+            "incident_response_contract_present",
+            "post_release_measurement_contract_present",
+            "automation_manual_stability_contract_present",
+            "unsupported_delivery_claims_rejected_contract_present",
+        ]
+
+        for term in [
+            "release, deploy, publish, tag, package, plugin, SDK, marketplace, store, production service or infrastructure change",
+            "CI/CD, Docker, Kubernetes, GitOps, feature flag, rollout, rollback, observability, SLO, incident, postmortem or automation promotion signal",
+            "release-ready, deployed, published, operational-ready, SemVer, changelog, DORA or generated release notes claim",
+            "desktop installer, mobile app, AI prompt/model release, data migration or regulated production release",
+        ]:
+            with self.subTest(applies_when=term):
+                self.assertIn(term, delivery["applies_when"])
+        for term in [
+            "docs-only release note edit without publish, package, runtime, CI/CD or user-impact claim",
+            "CI config, Dockerfile, generated changelog, feature flag or GitOps file alone is only a present_unverified signal",
+            "keyword-only release mention without release target or external action boundary",
+        ]:
+            with self.subTest(not_applicable_when=term):
+                self.assertIn(term, delivery["not_applicable_when"])
+        for gate in expected_gates:
+            with self.subTest(gate=gate):
+                self.assertIn(gate, delivery["gates"])
+        for artifact in expected_artifacts:
+            with self.subTest(artifact=artifact):
+                self.assertIn(artifact, delivery["artifacts"])
+        for eval_field in expected_eval_fields:
+            with self.subTest(eval_field=eval_field):
+                self.assertIn(eval_field, delivery["eval_fields"])
+        for overlap in [
+            "product release measurement and user impact",
+            "quality current evidence, CI quality gates and evidence before completion",
+            "backend runtime, SLO, observability, health and rollback",
+            "API/SDK versioning, compatibility, generated clients and deprecation",
+            "database migration rollout, backup, restore and compensation",
+            "LLM/AI/RAG model, prompt, eval and incident release readiness",
+            "security CI permissions, SBOM, provenance, vulnerability response and release signing",
+            "Codex approvals, external actions, automation promotion and verified operations",
+        ]:
+            with self.subTest(overlap=overlap):
+                self.assertIn(overlap, delivery["overlaps"])
+        self.assertIn("baseline", delivery["maturity_impact"])
+        self.assertIn("team", delivery["maturity_impact"])
+        self.assertIn("production", delivery["maturity_impact"])
+        self.assertIn("regulated", delivery["maturity_impact"])
+        self.assertIn("standard", delivery["complexity_impact"])
+        self.assertIn("complex", delivery["complexity_impact"])
+        self.assertIn("high_risk", delivery["complexity_impact"])
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -21,12 +21,17 @@ Use this for GitHub Actions, CI workflows, automation workflows, package release
 - Secrets:
 - External actions:
 - Action pinning:
+- External action pinning:
 - Artifacts:
 - Cache:
 - Environment approvals:
+- Required reviewers:
+- Wait timers:
+- Branch/tag restrictions:
 - Approval boundary:
 - External writes:
 - Release/publish capability:
+- Remote CI mutation approval:
 - Rollback/disable path:
 - Verification:
 
