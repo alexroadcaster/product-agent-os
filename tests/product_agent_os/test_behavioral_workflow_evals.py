@@ -19,7 +19,7 @@ class BehavioralWorkflowEvalTest(unittest.TestCase):
         report = validate_behavioral_eval_template(path)
 
         self.assertEqual(report["status"], "ok")
-        self.assertEqual(report["case_count"], 41)
+        self.assertEqual(report["case_count"], 42)
         self.assertEqual(report["missing_required_cases"], [])
         self.assertEqual(report["unsafe_cases"], [])
         self.assertTrue(report["codex_only"])
@@ -417,6 +417,39 @@ class BehavioralWorkflowEvalTest(unittest.TestCase):
             "Codex Security scan implied without explicit request",
         ]:
             self.assertIn(forbidden, security_sensitive["forbidden"])
+
+        security_methodology = cases["security-privacy-compliance-planning-first"]
+        self.assertEqual(
+            security_methodology["expected"]["route"],
+            "Security, Privacy & Compliance methodology (`security_privacy_compliance`)",
+        )
+        for artifact in [
+            "security risk review",
+            "threat-surface.md",
+            "data-classification-register.md",
+            "privacy-impact-record.md",
+            "approval-record.md",
+        ]:
+            self.assertIn(artifact, security_methodology["expected"]["minimum_artifacts"])
+        for expected in [
+            "security_sensitive_classification_present",
+            "authz_negative_tests_present",
+            "data_redaction_lifecycle_present",
+            "compliance_overlay_taxonomy_present",
+            "Codex Security scan status not requested/run/blocked",
+            "approval_required",
+            "not legal advice",
+            "docs-only security articles are not regulated automatically",
+        ]:
+            self.assertIn(expected, security_methodology["expected"]["required_fields"])
+        for forbidden in [
+            "ASVS/OWASP proves compliance",
+            "SBOM once is enough",
+            "Codex Security scan is implied",
+            "OAuth proves API security",
+            "compliance certification claim without legal owner",
+        ]:
+            self.assertIn(forbidden, security_methodology["forbidden"])
 
         ci_stabilization = cases["ci-stabilization-plan"]
         self.assertEqual(ci_stabilization["expected"]["usage_mode"], "ci_stabilization")

@@ -448,6 +448,7 @@ def _detect_methodology_signals(files: set[str], profile: dict[str, Any]) -> dic
             for path in lowered
         ),
         "llm_ai_rag": _has_llm_ai_rag_signal(lowered),
+        "security_privacy_compliance": _has_security_surface(lowered),
         "quality_testing_evals": _has_quality_testing_signal(lowered, profile),
         "codex_agentic_workflow": _has_codex_agentic_workflow_signal(lowered),
         "metrics": _has_any(files, ["metrics", "analytics", "telemetry", "observability"]),
@@ -1000,8 +1001,43 @@ def _has_security_surface(lowered_files: set[str]) -> bool:
         "abuse",
         "rate-limit",
         "rate_limit",
+        "audit",
+        "compliance",
+        "gdpr",
+        "ccpa",
+        "hipaa",
+        "pci",
+        "soc2",
+        "sbom",
+        "slsa",
+        "provenance",
+        "cyclonedx",
+        "spdx",
+        "vulnerability",
+        "codex/approval",
+        "approval-record",
     ]
-    return any(any(term in path for term in terms) for path in lowered_files)
+    candidates = [path for path in lowered_files if any(term in path for term in terms)]
+    if not candidates:
+        return False
+    return not _security_candidates_are_docs_only(candidates)
+
+
+def _security_candidates_are_docs_only(paths: list[str]) -> bool:
+    if not paths:
+        return False
+    durable_policy_terms = (
+        "approval-record",
+        "compliance-overlay",
+        "data-classification",
+        "privacy-impact",
+        "security-risk-review",
+        "secrets-policy",
+        "threat-surface",
+    )
+    if any(term in path for path in paths for term in durable_policy_terms):
+        return False
+    return all(path.startswith("docs/") or path == "readme.md" for path in paths)
 
 
 def _has_release_surface(lowered_files: set[str]) -> bool:
@@ -1446,6 +1482,18 @@ def _security_sensitive_signals(files: set[str]) -> dict[str, Any]:
     test_sources = sorted(path for path in files if _is_security_test_source(path))
     rollback_sources = sorted(path for path in files if _is_security_rollback_source(path))
     approval_sources = sorted(path for path in files if _is_security_approval_source(path))
+    supply_chain_sources = sorted(path for path in files if _is_security_supply_chain_source(path))
+    sbom_provenance_sources = sorted(path for path in files if _is_security_sbom_provenance_source(path))
+    ci_permission_sources = sorted(path for path in files if _is_security_ci_permission_source(path))
+    compliance_sources = sorted(path for path in files if _is_security_compliance_source(path))
+    ai_agent_security_sources = sorted(path for path in files if _is_security_ai_agent_source(path))
+    codex_approval_sources = sorted(path for path in files if _is_security_codex_approval_source(path))
+
+    def packet(sources: list[str]) -> dict[str, Any]:
+        return {
+            "sources": sources[:20],
+            "status": "present_unverified" if sources else "applicable_missing",
+        }
 
     return {
         "authn_sources": authn_sources[:20],
@@ -1470,10 +1518,29 @@ def _security_sensitive_signals(files: set[str]) -> dict[str, Any]:
         "rollback_status": "present_unverified" if rollback_sources else "applicable_missing",
         "approval_sources": approval_sources[:20],
         "approval_status": "present_unverified" if approval_sources else "applicable_missing",
+        "authn": packet(authn_sources),
+        "authz": packet(authz_sources),
+        "permissions": packet(permission_sources),
+        "payments": packet(payment_sources),
+        "secrets": packet(secret_sources),
+        "sensitive_data": packet(sensitive_data_sources),
+        "abuse_controls": packet(abuse_control_sources),
+        "audit_logging": packet(audit_logging_sources),
+        "security_tests": packet(test_sources),
+        "rollback": packet(rollback_sources),
+        "approvals": packet(approval_sources),
+        "supply_chain": packet(supply_chain_sources),
+        "sbom_provenance": packet(sbom_provenance_sources),
+        "ci_permissions": packet(ci_permission_sources),
+        "compliance": packet(compliance_sources),
+        "ai_agent_security": packet(ai_agent_security_sources),
+        "codex_approval_boundaries": packet(codex_approval_sources),
         "verification_status": "applicable_missing",
         "note": (
             "present_unverified until security tests, owner review, approval, "
-            "rollback evidence, and abuse-control evidence confirm behavior"
+            "rollback evidence, abuse-control evidence, source/legal owner review and explicit "
+            "Codex Security scan status is explicit and confirms behavior; discovery is read-only and does not "
+            "claim compliance or scan execution"
         ),
     }
 
@@ -1923,7 +1990,7 @@ def _is_security_authz_source(relative: str) -> bool:
 
 def _is_security_permission_source(relative: str) -> bool:
     lowered = relative.lower()
-    return any(term in lowered for term in ("permission", "entitlement", "scope", "role", "access-control", "access_control"))
+    return any(term in lowered for term in ("permission", "entitlement", "scope", "role", "rbac", "acl", "policy", "access-control", "access_control"))
 
 
 def _is_security_payment_source(relative: str) -> bool:
@@ -1968,6 +2035,65 @@ def _is_security_rollback_source(relative: str) -> bool:
 def _is_security_approval_source(relative: str) -> bool:
     lowered = relative.lower()
     return any(term in lowered for term in ("approval", "owner-review", "security-review", "risk-review"))
+
+
+def _is_security_supply_chain_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return (
+        lowered in {"package-lock.json", "pnpm-lock.yaml", "yarn.lock", "poetry.lock", "cargo.lock", "go.sum"}
+        or lowered.startswith(("supply-chain/", "dependencies/", ".github/dependabot"))
+        or any(
+            term in lowered
+            for term in (
+                "dependency",
+                "vulnerability",
+                "slsa",
+                "scorecard",
+                "trivy",
+                "grype",
+                "sbom",
+                "spdx",
+                "cyclonedx",
+                "provenance",
+                "release",
+            )
+        )
+    )
+
+
+def _is_security_sbom_provenance_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return any(term in lowered for term in ("sbom", "spdx", "cyclonedx", "provenance", "cosign", "attestation"))
+
+
+def _is_security_ci_permission_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return lowered.startswith(".github/workflows/") or any(
+        term in lowered for term in ("ci-permission", "ci_permission", "workflow-permission", "github-token")
+    )
+
+
+def _is_security_compliance_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return lowered.startswith(("compliance/", "privacy/")) or any(
+        term in lowered
+        for term in ("gdpr", "ccpa", "hipaa", "pci", "soc2", "soc-2", "regulatory", "legal", "contractual")
+    )
+
+
+def _is_security_ai_agent_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return (
+        lowered.startswith(("agents/", "prompts/", "rag/", "tools/", "guardrails/"))
+        or any(term in lowered for term in ("prompt-injection", "tool-misuse", "ai-security", "agent-security"))
+    )
+
+
+def _is_security_codex_approval_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return lowered.startswith(".codex/") and any(
+        term in lowered for term in ("approval", "mcp", "hook", "automation", "permission", "external-write")
+    )
 
 
 def _is_backend_database_dependency_source(relative: str) -> bool:
@@ -2869,6 +2995,7 @@ def _methodology_applicability(
     backend_needed = signals.get("backend", False)
     database_needed = signals.get("database_data", False) or signals.get("database_docs", False)
     ai_rag_needed = signals.get("llm_ai_rag", False)
+    security_needed = signals.get("security_privacy_compliance", False)
     standards_evidence = [
         name
         for name in ("architecture_docs", "adr", "openapi", "asyncapi", "codeowners", "ci")
@@ -2986,6 +3113,23 @@ def _methodology_applicability(
             ],
             "test-eval-designer",
             "detection alone does not prove AI/RAG quality, grounding, tool safety, owner approval or cost/latency readiness",
+        ),
+        "security_privacy_compliance_readiness": _applicability_packet(
+            "present_unverified" if security_needed else "not_applicable",
+            "security/privacy/compliance signal exists" if security_needed else "no security/privacy/compliance signal",
+            _signal_evidence(signals, "security_privacy_compliance", "openapi", "ci", "llm_ai_rag", "codex_agentic_workflow"),
+            [
+                "security-risk-review.md",
+                "threat-surface.md",
+                "data-classification-register.md",
+                "privacy-impact-record.md",
+                "authz-negative-test-matrix.md",
+                "supply-chain-review.md",
+                "Codex Security scan status",
+                "approval boundary or accepted explicit gap",
+            ],
+            "security or product owner",
+            "detection alone does not prove security readiness, privacy compliance, scan execution or legal review",
         ),
         "docs_tooling_decision": _applicability_packet(
             docs_status if docs_status in READINESS_STATUSES else "present_unverified",

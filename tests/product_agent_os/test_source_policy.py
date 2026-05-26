@@ -65,6 +65,26 @@ class SourcePolicyTest(unittest.TestCase):
         self.assertEqual(report["status"], "blocked")
         self.assertTrue(report["secret_findings"])
 
+    def test_sensitive_data_marker_literals_block_report(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            workspace = Path(tmp)
+            docs = workspace / "docs"
+            docs.mkdir()
+            (docs / "security-fixture.md").write_text(
+                "# Fixture\n\n"
+                "Source status: `experiment`\n\n"
+                "raw_pii = \"Synthetic Person <synthetic@example.test>\"\n"
+                "payment_data = \"4242 4242 4242 4242\"\n"
+                "private_customer_data = \"synthetic customer text\"\n",
+                encoding="utf-8",
+            )
+
+            report = validate_source_policy(workspace)
+
+        self.assertEqual(report["status"], "blocked")
+        findings = "\n".join(report["secret_findings"]).lower()
+        self.assertIn("raw pii/private data/payment data marker is forbidden", findings)
+
     def test_community_claim_without_trust_metadata_needs_review(self):
         workspace = FIXTURES / "source-policy-conflict"
 

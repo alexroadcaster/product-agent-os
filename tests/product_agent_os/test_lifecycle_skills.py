@@ -1139,6 +1139,45 @@ class LifecycleSkillsTest(unittest.TestCase):
                 for expected in shared_terms:
                     self.assertIn(expected, text)
 
+    def test_lifecycle_skills_route_security_privacy_compliance_methodology(self):
+        shared_terms = [
+            "security_privacy_compliance",
+            "security_sensitive_classification_present",
+            "threat-surface.md",
+            "asvs-ssdf-mapping.md",
+            "authz-negative-test-matrix.md",
+            "secrets-policy.md",
+            "data-classification-register.md",
+            "privacy-impact-record.md",
+            "supply-chain-review.md",
+            "sbom-manifest.md",
+            "ci-permissions-review.md",
+            "ai-security-review.md",
+            "compliance-overlay.md",
+            "vulnerability-response-record.md",
+            "approval-record.md",
+            "codex security scan status",
+            "not legal advice",
+            "docs-only security article",
+            "approval_required",
+            "explicit_gap_accepted",
+        ]
+
+        for name in [
+            "workspace-discovery-auditor",
+            "project-lifecycle-orchestrator",
+            "requirements-author",
+            "implementation-planner",
+            "test-eval-designer",
+            "risk-reviewer",
+            "docs-maintainer",
+            "learning-loop-maintainer",
+        ]:
+            text = self._skill_text(name).lower()
+            with self.subTest(name=name):
+                for expected in shared_terms:
+                    self.assertIn(expected, text)
+
     def test_native_mobile_lifecycle_wording_requires_platform_runtime_evidence(self):
         orchestrator = self._skill_text("project-lifecycle-orchestrator").lower()
         discovery = self._skill_text("workspace-discovery-auditor").lower()

@@ -64,6 +64,16 @@ Eval tooling remains conditional: Promptfoo, OpenAI Evals, pytest/Jest app-backe
 
 Approval boundary stays explicit: live model calls, external eval services, vector DB access, raw prompts/traces/customer text, tool writes, shell/money/data exposure and irreversible side effects are not automatic actions.
 
+## Security, Privacy & Compliance methodology routing
+
+Security-sensitive work keeps the Track 8 `security_sensitive_change` route for compatibility, but Track 9 also adds a dedicated Security, Privacy & Compliance methodology packet. When authn/authz, permissions, secrets, PII, sensitive data, payment/billing, abuse controls, audit logging, supply chain, SBOM/provenance, CI permissions, AI/tool security, external writes, production data, policy changes or compliance overlays appear, the route should stage or request security-specific evidence before implementation or completion claims.
+
+Minimum staged artifacts include `security-risk-review.md`, `threat-surface.md`, `asvs-ssdf-mapping.md`, `authz-negative-test-matrix.md`, `secrets-policy.md`, `data-classification-register.md`, `privacy-impact-record.md`, `api-security-review.md`, `abuse-rate-limit-plan.md`, `supply-chain-review.md`, `sbom-manifest.md`, `ci-permissions-review.md`, `audit-logging-review.md`, `ai-security-review.md`, `compliance-overlay.md`, `vulnerability-response-record.md` and `approval-record.md` when the corresponding risk applies. Source-era names such as `threat-model.md`, `asvs-mapping.md`, `secrets-inventory.md`, `authz-matrix.md`, `audit-log-policy.md` and `compliance-applicability-matrix.md` are aliases, not duplicate generated contracts.
+
+Codex Security scans remain explicit opt-in: the route may recommend a scan or record `not requested`, but it must not imply that a scan ran from security terminology alone. Compliance overlays record applicability, owner, evidence, non-goals, gaps and review cadence without claiming legal compliance or certification.
+
+Approval boundary stays explicit: payment/billing, production data, secret rotation, policy changes, external security-system mutations, external writes, publish actions and Codex Security scans are not automatic actions.
+
 ## Verification
 
 - Route selection is covered by discovery tests, `usage_mode` fixture checks, and T8-GX false-positive fixtures for selected methodology/tooling gates.
@@ -73,6 +83,7 @@ Approval boundary stays explicit: live model calls, external eval services, vect
 - API & Integrations methodology routing is covered by `api_integrations_contract_present` and synthetic API fixtures: API completion requires `api-inventory.md`, `api-contract-review.md`, `api-consumer-map.md`, `api-contract-test-matrix.md`, `external-integration-approval.md` and related compatibility/security/error/event/SDK evidence, not Swagger UI or schema-only evidence.
 - Database & Data methodology routing is covered by `database_data_contract_present` and synthetic database fixtures: database completion requires inventory, dictionary, schema source, migration plan, expand-contract, data contract, rollback/backup, classification, data quality, lineage, performance, retention, synthetic fixtures and production access approval evidence where applicable.
 - LLM / AI / RAG methodology routing is covered by `llm_ai_rag_contract_present` and synthetic AI/RAG fixtures: AI/RAG completion requires baseline/current eval, prompt/model/schema/tool/RAG/grounding/trace/guardrail/cost evidence, handoff/tooling/migration/lifecycle/incident evidence and current-run evidence, not prompt inspection, stale eval output, citations-only grounding, filename-only diffs or automatic model-upgrade quality claims.
+- Security, Privacy & Compliance methodology routing is covered by `security_privacy_compliance_contract_present` and synthetic security fixtures: security completion requires security-sensitive classification, threat surface, ASVS/SSDF/SAMM mapping, authz negative tests, secrets/data/privacy evidence, supply-chain/SBOM/CI evidence, audit logging, compliance overlay taxonomy, vulnerability response workflow, explicit Codex Security scan status and owner/approval evidence, not docs-only security articles or implied scan/compliance claims.
 - Docs and source claims are checked by `tools/check_docs.py`, source policy and strict MkDocs when navigation changes.
 - Completion language must pass evidence-before-completion: current command evidence, current eval evidence, current runtime evidence, owner evidence or explicit inspection-only gap.
 

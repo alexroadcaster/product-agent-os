@@ -23,6 +23,7 @@
           "test_eval_first_evidence",
           "quality_testing_evals",
           "codex_agentic_workflow",
+          "security_privacy_compliance",
           "api_integrations",
           "llm_ai_rag_readiness_when_ai_behavior_changes",
           "docs_as_code_impact",
@@ -43,6 +44,10 @@
           "completion_evidence",
           "quality_testing_evals",
           "codex_agentic_workflow",
+          "security_privacy_compliance",
+          "security_sensitive_surface",
+          "sbom_provenance",
+          "ci_permissions",
           "llm_ai_rag",
           "api_contract_source",
           "api_consumer_map",
@@ -301,6 +306,14 @@
             "required_evidence": ["security review artifact", "test or review evidence", "approval needs", "rollback note"],
             "owner": "reviewer",
             "residual_risk": "Security-sensitive changes can ship without threat and permission review."
+          },
+          "security_privacy_compliance_when_sensitive_surface": {
+            "applies_when": "Security, privacy or compliance methodology (`security_privacy_compliance`), authn/authz, permissions, secrets, PII, sensitive data, payment/billing, abuse controls, audit logging, supply chain, SBOM/provenance, CI permissions, AI/tool security, external writes, production data, policy changes, regulated, contractual or compliance overlays.",
+            "pass_condition": "Set present_verified only when security_sensitive_classification_present, threat_surface_present, security_risk_review_present, asvs_mapping_present, asvs_level_selection_present, secure_sdlc_ssdf_samm_present, api_security_scheme_present, authz_negative_tests_present, secrets_policy_present, data_classification_present, data_redaction_lifecycle_present, privacy_impact_record_present, external_write_approval_present, abuse_rate_limit_review_present, audit_logging_review_present, supply_chain_review_present, sbom_provenance_decision_present, ci_permission_review_present, ai_security_review_present, compliance_overlay_present, compliance_overlay_taxonomy_present, vulnerability_response_workflow_present, Codex Security scan status and security_evidence_before_completion are verified or explicitly gapped.",
+            "accepted_gap": "Use explicit_gap_accepted only with security/privacy/compliance owner, reason, residual risk, review date and follow-up. Use approval_required before payment/billing, production data, secret rotation, policy change, external security-system mutation, external write or publish action.",
+            "required_evidence": ["security risk review", "threat-surface.md", "asvs-ssdf-mapping.md", "api-security-review.md", "authz-negative-test-matrix.md", "secrets-policy.md", "data-classification-register.md", "privacy-impact-record.md", "abuse-rate-limit-plan.md", "audit-logging-review.md", "supply-chain-review.md", "sbom-manifest.md", "ci-permissions-review.md", "ai-security-review.md", "compliance-overlay.md", "vulnerability-response-record.md", "approval-record.md", "Codex Security scan status not requested/run/blocked"],
+            "owner": "security/privacy/compliance owner",
+            "residual_risk": "Detection alone does not prove security, privacy, compliance, supply-chain, authorization, data redaction or Codex Security scan readiness. Docs-only security articles and keyword-only mentions must not become regulated/compliance blockers without touched sensitive surface or owner claim."
           },
           "backend_readiness_when_backend_changes": {
             "applies_when": "Backend methodology (`backend`), service, API, worker, queue, scheduler, remote dependency, production runtime, data consistency, config/secrets, security-sensitive backend, or rollback-relevant backend change.",

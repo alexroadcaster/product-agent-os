@@ -47,6 +47,7 @@ Examples:
 - complex domain work needs domain model and bounded-context traceability;
 - solution architecture work needs scope, context/container boundaries, boundary owner, ADR/tradeoff evidence, public contract trace, data ownership, trust boundary review, observability, rollback and diagram render evidence when applicable;
 - AI/RAG work needs baseline eval, dataset policy, grounding evidence and cost/latency guardrails;
+- Security/Privacy/Compliance work needs threat surface, security-sensitive classification, data classification, authorization negative tests, privacy impact, supply-chain evidence, Codex Security scan status and compliance overlay ownership;
 - release or migration work needs rollback, compatibility and owner approval evidence.
 
 ## Implemented Domain Contracts
@@ -56,6 +57,11 @@ Examples:
 | Business/Product | `business_product_contract_present` | `product-brief.md`, `value-proposition.md`, `opportunity-tree.md`, `experiment-plan.md`, `tracking-plan.md`, `metric-spec.md`. |
 | Requirements/Domain | `requirements_domain_contract_present` | `requirement-registry.md`, `stakeholder-owner-map.md`, `story-slice-map.md`, `requirements-traceability-matrix.md`, `business-rules.md`, `example-map.md`, `domain-modeling.md`, `domain-review-record.md`. |
 | Solution Architecture | `solution_architecture_contract_present` | `architecture-overview.md`, `adr.md`, `architecture-review-record.md`, `architecture-fitness-functions.md`, `trust-boundary-map.md`, `architecture-docs-tooling-decision.md`. |
+| Backend | `backend_contract_present` | `backend-service-overview.md`, `backend-runtime-behavior.md`, `backend-dependency-failure-matrix.md`, `backend-observability-map.md`, `backend-operational-runbook.md`. |
+| API & Integrations | `api_integrations_contract_present` | `api-inventory.md`, `api-contract-review.md`, `api-consumer-map.md`, `api-contract-test-matrix.md`, `external-integration-approval.md`. |
+| Database & Data | `database_data_contract_present` | `database-inventory.md`, `database-dictionary.md`, `database-migration-plan.md`, `database-data-contract.md`, `database-production-access-approval.md`. |
+| LLM / AI / RAG | `llm_ai_rag_contract_present` | `ai-behavior-spec.md`, `prompt-contract.md`, `model-decision-record.md`, `eval-run-report.md`, `rag-source-inventory.md`, `guardrail-matrix.md`. |
+| Security/Privacy/Compliance | `security_privacy_compliance_contract_present` | `security-risk-review.md`, `threat-surface.md`, `asvs-ssdf-mapping.md`, `authz-negative-test-matrix.md`, `secrets-policy.md`, `data-classification-register.md`, `privacy-impact-record.md`, `supply-chain-review.md`, `sbom-manifest.md`, `compliance-overlay.md`, `vulnerability-response-record.md`, `approval-record.md`. |
 
 ## Approval Boundary
 

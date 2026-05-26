@@ -2983,7 +2983,44 @@ Expected: focused tests, fixture eval, full unittest, transcript eval, compatibi
 - Create: `audit-logging-review.md`
 - Create: `compliance-overlay.md`
 
-- [ ] **Step 1: Add RED test for security gates**
+Deep-audit update from `docs/methodologies/security-privacy-compliance.md` and `docs/sources/methodology-research/security-privacy-compliance.md`:
+
+- The compact checklist below must use the full Security, Privacy & Compliance gate set from the methodology source, not only the initial subset in this task.
+- Source references are methodology evidence and platform/security guidance, not legal advice. Compliance output must record applicability, owner, evidence, non-goals and review cadence without claiming GDPR, CCPA, HIPAA, PCI, SOC 2 or enterprise compliance certification.
+- Template naming must be resolved before implementation: source-era artifact names such as `threat-model.md`, `asvs-mapping.md`, `secrets-inventory.md`, `authz-matrix.md`, `audit-log-policy.md` and `compliance-applicability-matrix.md` must either become canonical or be mapped to the plan-era names without duplicate conflicting contracts.
+- Codex Security scan remains explicit opt-in. Security-sensitive routing can recommend a scan or record `not requested`, but must not imply a scan ran from security terminology alone.
+
+This matrix maps the deep-audit findings to concrete implementation work. The numbered steps below remain the compact execution checklist; this table is the traceability layer for the focused T9-D11 slice.
+
+| ID | Work | Files | Acceptance / Evidence | Verification |
+| --- | --- | --- | --- | --- |
+| `T9-D11-M0` | Refresh plan/backlog before implementation | `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`, `docs/sources/product-agent-os-track-9-backlog.md` | Deep-audit deltas record full gate set, artifact-name compatibility, legal/compliance boundary, false-positive risks, unsupported claims, Codex Security opt-in policy and exact verification commands. | `python tools\check_docs.py` |
+| `T9-D11-M1` | Add RED catalog contract for `security_privacy_compliance` | `tests/product_agent_os/test_methodology_catalog.py` | Test asserts gates, artifacts, eval fields, applies/not-applicable rules, maturity levels, complexity impact and overlaps from the source artifact. | Focused catalog test fails before catalog implementation on missing security/privacy/compliance gates. |
+| `T9-D11-M2` | Resolve security artifact naming compatibility | `plugins/product-agent-os/assets/methodology/methodology-catalog.json`, `plugins/product-agent-os/scripts/product_agent_os/templates.py`, `tests/product_agent_os/test_infrastructure_templates.py` | One effective contract exists per purpose for threat surface/model, ASVS/SSDF mapping, secrets policy/inventory, authz negative tests, audit logging and compliance overlay/applicability. No duplicate conflicting artifact ownership remains. | Template/catalog tests assert canonical names or explicit aliases. |
+| `T9-D11-M3` | Fill `security_privacy_compliance` catalog data | `plugins/product-agent-os/assets/methodology/methodology-catalog.json` | Domain records applies/not-applicable rules, maturity impact `baseline/team/production/regulated`, complexity impact, Track 8 scenario coverage, decision horizons, artifacts, gates, eval fields and overlaps with Backend, API, Database, AI/RAG, Quality, Delivery, Architecture, Product and Codex workflow. | `python -m unittest tests.product_agent_os.test_methodology_catalog -v` |
+| `T9-D11-M4` | Add security/privacy discovery depth | `plugins/product-agent-os/scripts/product_agent_os/discovery.py`, `tests/product_agent_os/test_discovery.py` | Discovery exposes authn/authz, permissions, secrets, PII/sensitive data, payment/billing, abuse/rate limit, audit logging, supply chain, SBOM/provenance, CI permissions, compliance, AI/agent security and Codex approval-bound signals as `present_unverified`. | Focused discovery tests assert signal packets and no readiness claims from detection alone. |
+| `T9-D11-M5` | Implement domain applicability routing | `plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py`, `tests/product_agent_os/test_methodology_audit.py` | Auth, PII, payment, secrets, external writes, production data, AI agents, compliance terms, supply chain and CI permission signals route the domain; docs-only security articles and keyword-only claims do not become regulated automatically. | Audit tests assert applicable, `present_unverified` and `not_applicable` transitions. |
+| `T9-D11-M6` | Implement granular security recommendations | `plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py`, `tests/product_agent_os/test_methodology_audit.py` | Recommendations map every gate to stable priority, artifact, evidence owner, approval boundary, accepted-gap option, residual risk and safe next action. Payment/billing, production data, secret rotation, policy changes and external security-system mutations are `approval_required`. | Focused audit tests assert gate-to-artifact mapping and priorities. |
+| `T9-D11-M7` | Add unsupported-claim rejection | `plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py`, `tests/product_agent_os/test_methodology_audit.py` | Unsupported claims are rejected: security review after coding, no-secrets-in-code means safe, ASVS/OWASP proves compliance, SBOM once is enough, Codex Security scan is implied, OAuth proves API security and privacy compliance is universal. | Audit tests assert `P1_high_risk` recommendations with source/legal boundary wording. |
+| `T9-D11-M8` | Create and strengthen security templates | `plugins/product-agent-os/assets/templates/artifact-templates/*.md`, `tests/product_agent_os/test_infrastructure_templates.py` | Templates cover threat surface, ASVS/SSDF mapping, authz negative tests, secrets policy, privacy impact, supply chain review, audit logging review, compliance overlay and strengthened `security-risk-review.md`; templates forbid raw secrets, credentials, payment data, raw PII and private customer data. | Infrastructure template tests assert required terms and no unresolved placeholders. |
+| `T9-D11-M9` | Register security templates in renderer | `plugins/product-agent-os/scripts/product_agent_os/templates.py`, `tests/product_agent_os/test_infrastructure_templates.py`, `tests/product_agent_os/test_fixture_eval_runner.py` | New artifact templates are staged under `.codex/artifact-templates/`; renderer file count is updated intentionally and fixture eval checks include `security_privacy_compliance_contract_present`. | Renderer/template/fixture tests pass with updated file count. |
+| `T9-D11-M10` | Harden source and no-secrets policy | `plugins/product-agent-os/scripts/product_agent_os/source_policy.py`, `tests/product_agent_os/test_source_policy.py` | Source policy rejects secret-like literals, credentials, access tokens, raw PII/private data/payment data markers in docs/templates/fixtures and keeps OpenAI/Codex/security freshness claims source-reviewed. | `python -m unittest tests.product_agent_os.test_source_policy -v` |
+| `T9-D11-M11` | Update readiness and behavioral eval contracts | `plugins/product-agent-os/assets/templates/evals/project-readiness.json`, `plugins/product-agent-os/assets/templates/evals/behavioral-workflows.json`, `tests/product_agent_os/test_behavioral_workflow_evals.py`, `tests/product_agent_os/test_infrastructure_templates.py` | Readiness records `security_privacy_compliance`, conditional gates, transition statuses, approval boundaries and false-positive behavior without replacing existing `security_review_when_sensitive_surface`. | Behavioral/template tests assert expected/forbidden terms. |
+| `T9-D11-M12` | Add fixture coverage for security false positives and approvals | `plugins/product-agent-os/assets/fixtures/*`, `plugins/product-agent-os/scripts/run_fixture_eval.py`, `tests/product_agent_os/test_fixture_eval_runner.py`, `tests/product_agent_os/test_fixtures.py` | Fixtures cover security-docs-only mention, payment/billing high risk, docs-only security article not regulated, CI permissions, SBOM/provenance, compliance claim without owner and no raw secrets/private data. | Fixture eval asserts route, priorities, false positives and privacy safety. |
+| `T9-D11-M13` | Route methodology through lifecycle skills | `plugins/product-agent-os/skills/workspace-discovery-auditor/SKILL.md`, `plugins/product-agent-os/skills/project-lifecycle-orchestrator/SKILL.md`, `plugins/product-agent-os/skills/requirements-author/SKILL.md`, `plugins/product-agent-os/skills/implementation-planner/SKILL.md`, `plugins/product-agent-os/skills/test-eval-designer/SKILL.md`, `plugins/product-agent-os/skills/risk-reviewer/SKILL.md`, `plugins/product-agent-os/skills/docs-maintainer/SKILL.md`, `plugins/product-agent-os/skills/learning-loop-maintainer/SKILL.md` | Skills require planning-first security classification, threat surface, data classification, owner review, tests/evidence, rollback, approval boundary, compliance owner and explicit Codex Security scan status. | Lifecycle skill tests assert wording and stop conditions. |
+| `T9-D11-M14` | Sync Product-Agent OS docs and control plane | `PLAN.md`, `TEST.md`, `EVALS.md`, `RUNLOG.md`, `plugins/product-agent-os/README.md`, `docs/product-agent-os/methodology-intelligence.md`, `docs/product-agent-os/behavioral-evals.md`, `docs/product-agent-os/scenarios.md`, `docs/product-agent-os/development-standards.md`, `docs/sources/product-agent-os-track-9-backlog.md` | Current state records T9-D11 completion evidence, residual risks, false-positive coverage, source/legal boundary, renderer file count delta and next action T9-D12. Source registry changes only if new source-backed claims are added. | Product docs tests and `python tools\check_docs.py` pass. |
+| `T9-D11-M15` | Run focused and final verification | `tests/product_agent_os/*`, `plugins/product-agent-os/scripts/run_fixture_eval.py` | Focused tests, fixture eval, full unittest as needed, docs check and diff hygiene pass before completion claim. Commit is intentionally deferred unless explicitly requested in the current branch. | `python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_source_policy tests.product_agent_os.test_fixture_eval_runner -v`; `python plugins\product-agent-os\scripts\run_fixture_eval.py`; `python tools\check_docs.py` |
+| `T9-D11-M16` | Map or defer the full source artifact set | `plugins/product-agent-os/assets/methodology/methodology-catalog.json`, `plugins/product-agent-os/scripts/product_agent_os/templates.py`, `tests/product_agent_os/test_infrastructure_templates.py`, `docs/sources/product-agent-os-track-9-backlog.md` | Source artifacts `data-classification-register.md`, `api-security-review.md`, `abuse-rate-limit-plan.md`, `sbom-manifest.md`, `ci-permissions-review.md`, `ai-security-review.md`, `vulnerability-response-record.md` and `approval-record.md` are added, aliased to existing templates or explicitly deferred with owner, reason and residual risk. | Catalog/template/backlog tests or docs checks assert no source artifact is silently dropped. |
+| `T9-D11-M17` | Add SSDF, SAMM and ASVS level policy | `plugins/product-agent-os/assets/methodology/methodology-catalog.json`, `plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py`, `plugins/product-agent-os/assets/templates/artifact-templates/asvs-ssdf-mapping.md`, `tests/product_agent_os/test_methodology_catalog.py`, `tests/product_agent_os/test_methodology_audit.py`, `tests/product_agent_os/test_infrastructure_templates.py` | Secure SDLC/SSDF and SAMM are represented as lifecycle/maturity vocabulary. ASVS Level 1/2/3 selection records applicability, project risk, owner, evidence and explicit gaps without claiming compliance. | Focused catalog/audit/template tests assert SSDF/SAMM terms and ASVS level selection behavior. |
+| `T9-D11-M18` | Add API authorization negative-test depth | `plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py`, `plugins/product-agent-os/assets/templates/artifact-templates/authz-negative-test-matrix.md`, `plugins/product-agent-os/assets/templates/artifact-templates/api-security-review.md`, `tests/product_agent_os/test_methodology_audit.py`, `tests/product_agent_os/test_infrastructure_templates.py` | Authz negative tests cover allowed and forbidden behavior, BOLA, BFLA, object property authorization, role/scope/resource ownership checks, rate limits and unsafe consumption. OAuth or API docs alone are not accepted as security evidence. | Focused audit/template tests assert negative-test matrix terms and unsupported OAuth/security claims. |
+| `T9-D11-M19` | Add data classification and redaction lifecycle | `plugins/product-agent-os/scripts/product_agent_os/source_policy.py`, `plugins/product-agent-os/assets/templates/artifact-templates/data-classification-register.md`, `plugins/product-agent-os/assets/templates/artifact-templates/privacy-impact-record.md`, `tests/product_agent_os/test_source_policy.py`, `tests/product_agent_os/test_infrastructure_templates.py` | Prompts, docs, fixtures, eval datasets, logs, traces and screenshots record data class, purpose, retention, access, sharing, no-secrets/no-private-data status and redaction policy. Raw secrets, credentials, payment data, raw PII, raw private chats and private customer data are blocked. | Source-policy/template tests assert redaction coverage across docs/templates/fixtures. |
+| `T9-D11-M20` | Add SBOM and provenance decision policy | `plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py`, `plugins/product-agent-os/assets/templates/artifact-templates/supply-chain-review.md`, `plugins/product-agent-os/assets/templates/artifact-templates/sbom-manifest.md`, `tests/product_agent_os/test_methodology_audit.py`, `tests/product_agent_os/test_infrastructure_templates.py` | Internal app, package, plugin, container and release artifact paths record vulnerability status, update path, license status, SBOM format, provenance, action pinning, release signing or an explicit not-applicable/accepted-gap reason. SBOM alone is not supply-chain closure. | Focused audit/template tests assert SBOM/provenance conditions and false-positive handling. |
+| `T9-D11-M21` | Add vulnerability and security incident response workflow | `plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py`, `plugins/product-agent-os/assets/templates/artifact-templates/vulnerability-response-record.md`, `plugins/product-agent-os/assets/templates/control-plane/RUNLOG.md`, `tests/product_agent_os/test_methodology_audit.py`, `tests/product_agent_os/test_infrastructure_templates.py` | Security bug, advisory, leaked secret, abuse incident, dependency alert or data exposure routes to triage, severity, containment, fix evidence, verification, disclosure path, patch/release plan and post-incident lessons. This general incident path is separate from the AI incident workflow in T9-D10. | Focused audit/template tests assert vulnerability response terms and security/privacy handoff behavior. |
+| `T9-D11-M22` | Add compliance overlay taxonomy and domain overlays | `plugins/product-agent-os/assets/methodology/methodology-catalog.json`, `plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py`, `plugins/product-agent-os/assets/templates/artifact-templates/compliance-overlay.md`, `tests/product_agent_os/test_methodology_catalog.py`, `tests/product_agent_os/test_methodology_audit.py`, `tests/product_agent_os/test_infrastructure_templates.py` | Compliance overlays separate legal/regulatory obligations, customer contractual obligations and internal policy. Finance, healthcare, minors, enterprise, public sector, marketplace and AI agent tooling are recorded as conditional overlays with owner, applicability, evidence, gaps, non-goals and review cadence. | Catalog/audit/template tests assert overlay taxonomy and no generic compliance certification claim. |
+| `T9-D11-M23` | Add methodology report rendering coverage for security/privacy | `plugins/product-agent-os/scripts/product_agent_os/methodology_report.py`, `tests/product_agent_os/test_methodology_report.py`, `tests/product_agent_os/test_methodology_audit.py` | Methodology audit reports render security/privacy recommendations, Codex Security scan status, approval boundaries, accepted gaps, residual risks and safe next actions without leaking secrets, prompts, traces, payment data, raw PII or private customer data. | `python -m unittest tests.product_agent_os.test_methodology_report tests.product_agent_os.test_methodology_audit -v` passes after implementation. |
+| `T9-D11-M24` | Align compact checklist and verification policy | `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`, `docs/sources/product-agent-os-track-9-backlog.md` | The compact Step 6 uses verification without implicit commit, includes diff hygiene, and does not conflict with the matrix policy that commit, push and PR actions remain deferred unless explicitly requested. | `python tools\check_docs.py`; plan review confirms no remaining commit-policy contradiction. |
+
+- [x] **Step 1: Add RED test for security gates**
 
 Assert `security_privacy_compliance` gates include:
 
@@ -3009,7 +3046,7 @@ Assert `security_privacy_compliance` gates include:
 ]
 ```
 
-- [ ] **Step 2: Run RED test**
+- [x] **Step 2: Run RED test**
 
 Run:
 
@@ -3019,7 +3056,7 @@ python -m unittest tests.product_agent_os.test_methodology_catalog -v
 
 Expected: fail on missing security gates.
 
-- [ ] **Step 3: Add security catalog and rules**
+- [x] **Step 3: Add security catalog and rules**
 
 Rules:
 
@@ -3028,11 +3065,11 @@ Rules:
 - compliance overlay records applicability and owner, not certification;
 - secrets in generated outputs are blocked.
 
-- [ ] **Step 4: Add templates and detection**
+- [x] **Step 4: Add templates and detection**
 
 Create all security templates listed in Files. Detect auth, OAuth, JWT, payment, billing, secrets, PII, rate limit, audit log, SBOM, package lock and CI permission signals.
 
-- [ ] **Step 5: Add false-positive fixtures**
+- [x] **Step 5: Add false-positive fixtures**
 
 Add or extend fixtures:
 
@@ -3040,18 +3077,20 @@ Add or extend fixtures:
 - payment/billing signals create `P1_high_risk`;
 - docs-only repository with security article does not become regulated automatically.
 
-- [ ] **Step 6: Run verification and commit**
+- [x] **Step 6: Run verification without implicit commit**
 
 Run:
 
 ```powershell
 python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_source_policy tests.product_agent_os.test_fixture_eval_runner -v
 python plugins\product-agent-os\scripts\run_fixture_eval.py
-git add plugins\product-agent-os tests\product_agent_os docs\sources\product-agent-os-track-9-backlog.md
-git commit -m "feat: integrate security privacy compliance methodology"
+python -m unittest discover -s tests -p "test_*.py" -v
+python plugins\product-agent-os\scripts\validate_codex_compatibility.py
+python tools\check_docs.py
+git diff --check
 ```
 
-Expected: tests and fixture eval pass before commit.
+Expected: focused tests, fixture eval, full unittest, compatibility check, docs check and diff hygiene pass. Commit is intentionally deferred until explicitly requested in the current working branch.
 
 ---
 

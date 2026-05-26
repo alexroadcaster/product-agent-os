@@ -20,6 +20,12 @@ class MethodologyAuditContractTest(unittest.TestCase):
                 return recommendation
         self.fail(f"missing recommendation for gate {gate}")
 
+    def _recommendation_by_domain_gate(self, result, domain, gate):
+        for recommendation in result["recommendations"]:
+            if recommendation["domain"] == domain and recommendation["gate"] == gate:
+                return recommendation
+        self.fail(f"missing recommendation for domain {domain} gate {gate}")
+
     def test_empty_workspace_returns_baseline_simple_with_questions(self):
         from product_agent_os.methodology_audit import build_methodology_audit
 
@@ -1918,6 +1924,132 @@ class MethodologyAuditContractTest(unittest.TestCase):
         ]:
             with self.subTest(incident_evidence=expected_term):
                 self.assertIn(expected_term, " ".join(incident["evidence_required"]).lower())
+
+    def test_security_privacy_compliance_recommends_gate_priority_and_artifact_mapping(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "auth").mkdir()
+            (root / "auth" / "login.py").write_text("def login():\n    return None\n", encoding="utf-8")
+            (root / "billing").mkdir()
+            (root / "billing" / "stripe_checkout.py").write_text("def pay():\n    return None\n", encoding="utf-8")
+            (root / ".github" / "workflows").mkdir(parents=True)
+            (root / ".github" / "workflows" / "deploy.yml").write_text("permissions: write-all\n", encoding="utf-8")
+            result = build_methodology_audit(
+                root,
+                intent_hint=(
+                    "ship production authn authz OAuth API with role scope resource ownership BOLA BFLA "
+                    "object property authorization rate limit unsafe consumption payment billing secrets PII "
+                    "privacy logs traces screenshots eval datasets audit logging supply chain SBOM provenance "
+                    "CI permissions AI agent prompt injection tool misuse compliance finance healthcare minors "
+                    "enterprise public sector marketplace legal regulatory contract external write production data "
+                    "secret rotation vulnerability advisory leaked secret data exposure Codex Security scan"
+                ),
+            )
+
+        self.assertNotEqual(self._domain_status(result, "security_privacy_compliance"), "not_applicable")
+        expected = {
+            "security_sensitive_classification_present": ("P1_high_risk", "security-risk-review.md"),
+            "threat_surface_present": ("P1_high_risk", "threat-surface.md"),
+            "security_risk_review_present": ("P1_high_risk", "security-risk-review.md"),
+            "asvs_mapping_present": ("P1_high_risk", "asvs-ssdf-mapping.md"),
+            "asvs_level_selection_present": ("P1_high_risk", "asvs-ssdf-mapping.md"),
+            "secure_sdlc_ssdf_samm_present": ("P2_recommended", "asvs-ssdf-mapping.md"),
+            "api_security_scheme_present": ("P1_high_risk", "api-security-review.md"),
+            "authz_negative_tests_present": ("P1_high_risk", "authz-negative-test-matrix.md"),
+            "secrets_policy_present": ("P0_blocker", "secrets-policy.md"),
+            "data_classification_present": ("P1_high_risk", "data-classification-register.md"),
+            "data_redaction_lifecycle_present": ("P1_high_risk", "data-classification-register.md"),
+            "privacy_impact_record_present": ("P1_high_risk", "privacy-impact-record.md"),
+            "external_write_approval_present": ("P0_blocker", "approval-record.md"),
+            "abuse_rate_limit_review_present": ("P1_high_risk", "abuse-rate-limit-plan.md"),
+            "audit_logging_review_present": ("P1_high_risk", "audit-logging-review.md"),
+            "supply_chain_review_present": ("P1_high_risk", "supply-chain-review.md"),
+            "sbom_provenance_decision_present": ("P1_high_risk", "sbom-manifest.md"),
+            "ci_permission_review_present": ("P1_high_risk", "ci-permissions-review.md"),
+            "ai_security_review_present": ("P1_high_risk", "ai-security-review.md"),
+            "compliance_overlay_present": ("P1_high_risk", "compliance-overlay.md"),
+            "compliance_overlay_taxonomy_present": ("P1_high_risk", "compliance-overlay.md"),
+            "vulnerability_response_workflow_present": ("P1_high_risk", "vulnerability-response-record.md"),
+            "codex_security_scan_status_present": ("P2_recommended", "security-risk-review.md"),
+            "security_evidence_before_completion": ("P0_blocker", "RUNLOG.md"),
+        }
+        for gate, (priority, artifact) in expected.items():
+            with self.subTest(gate=gate):
+                recommendation = self._recommendation_by_domain_gate(result, "security_privacy_compliance", gate)
+                self.assertEqual(recommendation["priority"], priority)
+                self.assertEqual(recommendation["artifact"], artifact)
+
+        authz = self._recommendation_by_domain_gate(result, "security_privacy_compliance", "authz_negative_tests_present")
+        authz_evidence = " ".join(authz["evidence_required"]).lower()
+        for expected_term in ["allowed behavior", "forbidden behavior", "bola", "bfla", "object property", "role", "scope", "resource ownership", "rate limits", "unsafe consumption"]:
+            with self.subTest(authz_evidence=expected_term):
+                self.assertIn(expected_term, authz_evidence)
+
+        data = self._recommendation_by_domain_gate(result, "security_privacy_compliance", "data_redaction_lifecycle_present")
+        data_evidence = " ".join(data["evidence_required"]).lower()
+        for expected_term in ["prompts", "docs", "fixtures", "eval datasets", "logs", "traces", "screenshots", "redaction"]:
+            with self.subTest(data_evidence=expected_term):
+                self.assertIn(expected_term, data_evidence)
+
+        compliance = self._recommendation_by_domain_gate(result, "security_privacy_compliance", "compliance_overlay_taxonomy_present")
+        compliance_evidence = " ".join(compliance["evidence_required"]).lower()
+        for expected_term in ["legal/regulatory", "customer contractual", "internal policy", "finance", "healthcare", "minors", "enterprise", "public sector", "marketplace", "ai agent tooling"]:
+            with self.subTest(compliance_evidence=expected_term):
+                self.assertIn(expected_term, compliance_evidence)
+
+    def test_security_privacy_compliance_false_positives_and_unsupported_claims(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        with tempfile.TemporaryDirectory() as tmp:
+            docs_root = Path(tmp) / "docs_only"
+            docs_root.mkdir()
+            (docs_root / "docs").mkdir()
+            (docs_root / "docs" / "security-article.md").write_text("# Security article\n", encoding="utf-8")
+            docs_result = build_methodology_audit(
+                docs_root,
+                intent_hint="docs-only security article without code, data, CI, dependency or policy change",
+            )
+
+            unsupported_root = Path(tmp) / "unsupported"
+            unsupported_root.mkdir()
+            (unsupported_root / "auth").mkdir()
+            (unsupported_root / "auth" / "oauth.py").write_text("def oauth():\n    return None\n", encoding="utf-8")
+            unsupported_result = build_methodology_audit(
+                unsupported_root,
+                intent_hint=(
+                    "security review can happen after coding; no secrets in code means safe; "
+                    "ASVS OWASP proves compliance; SBOM once is enough; Codex Security scan is implied; "
+                    "OAuth proves API security; privacy compliance is universal"
+                ),
+            )
+
+        self.assertEqual(self._domain_status(docs_result, "security_privacy_compliance"), "not_applicable")
+        self.assertEqual(
+            [item for item in docs_result["recommendations"] if item["domain"] == "security_privacy_compliance"],
+            [],
+        )
+
+        unsupported = self._recommendation_by_domain_gate(
+            unsupported_result,
+            "security_privacy_compliance",
+            "security_unsupported_claims_rejected",
+        )
+        self.assertEqual(unsupported["priority"], "P1_high_risk")
+        self.assertEqual(unsupported["artifact"], "security-risk-review.md")
+        evidence = " ".join(unsupported["evidence_required"]).lower()
+        for expected_term in [
+            "security review after coding",
+            "no-secrets-in-code",
+            "asvs/owasp",
+            "sbom once",
+            "codex security scan is implied",
+            "oauth proves api security",
+            "privacy compliance is universal",
+        ]:
+            with self.subTest(unsupported_evidence=expected_term):
+                self.assertIn(expected_term, evidence)
 
 
 if __name__ == "__main__":

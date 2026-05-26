@@ -12,6 +12,7 @@ from tempfile import TemporaryDirectory
 ROOT = Path(__file__).resolve().parents[2]
 RUNNER_PATH = ROOT / "plugins" / "product-agent-os" / "scripts" / "run_fixture_eval.py"
 FIXTURES = ROOT / "plugins" / "product-agent-os" / "assets" / "fixtures"
+_EVALUATE_ALL_CACHE = None
 
 
 def load_runner():
@@ -22,11 +23,18 @@ def load_runner():
     return module
 
 
+def evaluate_all_cached(runner):
+    global _EVALUATE_ALL_CACHE
+    if _EVALUATE_ALL_CACHE is None:
+        _EVALUATE_ALL_CACHE = runner.evaluate_all()
+    return _EVALUATE_ALL_CACHE
+
+
 class FixtureEvalRunnerTest(unittest.TestCase):
     def test_fixture_eval_returns_stable_named_results(self):
         runner = load_runner()
 
-        results = runner.evaluate_all()
+        results = evaluate_all_cached(runner)
 
         names = [item["fixture"] for item in results]
         self.assertEqual(names, sorted(names))
@@ -75,7 +83,7 @@ class FixtureEvalRunnerTest(unittest.TestCase):
     def test_fixture_eval_checks_expected_renderer_behavior_by_fixture(self):
         runner = load_runner()
 
-        results = {item["fixture"]: item for item in runner.evaluate_all()}
+        results = {item["fixture"]: item for item in evaluate_all_cached(runner)}
 
         self.assertTrue(results["existing-codex-config"]["expected_checks"]["config_leave_unchanged"])
         self.assertTrue(results["existing-codex-config"]["expected_checks"]["agents_md_leave_unchanged"])
@@ -113,7 +121,8 @@ class FixtureEvalRunnerTest(unittest.TestCase):
         self.assertTrue(results["python-app"]["expected_checks"]["external_write_approval_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["database_data_contract_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["llm_ai_rag_contract_present"])
-        self.assertEqual(results["python-app"]["renderer_file_count"], 157)
+        self.assertTrue(results["python-app"]["expected_checks"]["security_privacy_compliance_contract_present"])
+        self.assertEqual(results["python-app"]["renderer_file_count"], 173)
         for check_name in [
             "methodology_catalog_contract_present",
             "methodology_intelligence_contract_present",
@@ -155,6 +164,12 @@ class FixtureEvalRunnerTest(unittest.TestCase):
         self.assertTrue(results["database-destructive-migration"]["expected_checks"]["database_destructive_change_requires_approval"])
         self.assertTrue(results["database-production-access-approval"]["expected_checks"]["database_production_access_requires_approval"])
         self.assertTrue(results["database-lineage-rag-overlap"]["expected_checks"]["database_lineage_rag_overlap_present_unverified"])
+        self.assertTrue(results["security-auth-payment"]["expected_checks"]["security_privacy_compliance_detected"])
+        self.assertTrue(results["security-auth-payment"]["expected_checks"]["security_sensitive_approval_required"])
+        self.assertTrue(results["security-auth-payment"]["expected_checks"]["security_privacy_fixture_safe"])
+        self.assertTrue(results["security-docs-only-mention"]["expected_checks"]["security_docs_only_not_forced"])
+        self.assertTrue(results["security-compliance-claim"]["expected_checks"]["unsupported_security_claims_rejected"])
+        self.assertTrue(results["security-ci-sbom"]["expected_checks"]["security_supply_chain_ci_sbom_present_unverified"])
         for fixture in [
             "rag-quality-regression",
             "ai-prompt-model-change",
@@ -319,7 +334,7 @@ class FixtureEvalRunnerTest(unittest.TestCase):
     def test_fixture_eval_reports_applicable_methodology_domains_for_core_fixtures(self):
         runner = load_runner()
 
-        results = {item["fixture"]: item for item in runner.evaluate_all()}
+        results = {item["fixture"]: item for item in evaluate_all_cached(runner)}
 
         for fixture in [
             "node-app",
@@ -341,7 +356,7 @@ class FixtureEvalRunnerTest(unittest.TestCase):
     def test_fixture_eval_checks_false_positive_scenario_gates(self):
         runner = load_runner()
 
-        results = {item["fixture"]: item for item in runner.evaluate_all()}
+        results = {item["fixture"]: item for item in evaluate_all_cached(runner)}
 
         expected_checks = {
             "backend-no-fsd": "fsd_structure_not_detected_for_backend",
@@ -373,7 +388,7 @@ class FixtureEvalRunnerTest(unittest.TestCase):
     def test_fixture_eval_checks_automation_candidate_behavior(self):
         runner = load_runner()
 
-        results = {item["fixture"]: item for item in runner.evaluate_all()}
+        results = {item["fixture"]: item for item in evaluate_all_cached(runner)}
 
         self.assertEqual(results["automation-candidate-valid"]["automation_status"], "ready_for_manual_approval")
         self.assertEqual(results["automation-candidate-invalid"]["automation_status"], "blocked")
@@ -382,7 +397,7 @@ class FixtureEvalRunnerTest(unittest.TestCase):
     def test_fixture_eval_encodes_expected_track_four_statuses(self):
         runner = load_runner()
 
-        results = {item["fixture"]: item for item in runner.evaluate_all()}
+        results = {item["fixture"]: item for item in evaluate_all_cached(runner)}
 
         self.assertTrue(
             results["automation-candidate-valid"]["expected_checks"][

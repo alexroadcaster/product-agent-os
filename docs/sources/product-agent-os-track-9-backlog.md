@@ -35,7 +35,7 @@ Track 9 turns the methodology atlas in `docs/methodologies/` into read-only Prod
 | `done` | `T9-D8` | `api-integrations.md` | OpenAPI/AsyncAPI/GraphQL/gRPC contracts, consumers, compatibility, errors, generated clients and external writes. |
 | `done` | `T9-D9` | `database-data.md` | Database inventory, schema source, migrations, transactions, data quality, classification and production access. |
 | `done` | `T9-D10` | `llm-ai-rag.md` | AI behavior spec, eval baseline, prompts, models, tools, RAG sources, grounding, datasets, approvals, cost/latency, handoff, tooling, migration, lifecycle, diff policy and incidents. |
-| `planned` | `T9-D11` | `security-privacy-compliance.md` | Threat surface, ASVS/SSDF, authorization tests, secrets, privacy impact, supply chain, audit logging and compliance overlays. |
+| `done` | `T9-D11` | `security-privacy-compliance.md` | Threat surface, ASVS/SSDF, authorization tests, secrets, privacy impact, supply chain, audit logging and compliance overlays. |
 | `planned` | `T9-D12` | `delivery-release-operations.md` | Release readiness, versioning, changelog, artifact manifest, rollout, rollback, CI/CD governance, runbooks and operations. |
 
 ## Domain Deep-Audit Log
@@ -447,7 +447,7 @@ Verification:
 
 ### `T9-D9` Database and Data Integration
 
-Status: `in_progress`
+Status: `done`
 
 Source audited: `docs/methodologies/database-data.md`
 
@@ -570,6 +570,60 @@ Batch `M30..M36` completed scope:
 - Added read-only `diff_signal_policy` to `llm_ai_rag_signals`; it is limited to workspace and intent signals, records no external branches, no network and no filename-only certainty.
 - Added audit recommendations for final-batch gates and methodology report rendering for `evidence_required`, `evidence_owner`, `approval_boundary`, `accepted_gap_option`, `residual_risk` and `safe_next_action` with redaction of local paths and private data markers.
 - Verification: focused M30..M36 RED checks failed as expected before implementation; focused GREEN check ran 6 tests with `OK`; full unittest ran 449 tests with `OK`; fixture eval exited `0` with 54 fixtures, renderer file count 157 and `llm_ai_rag_contract_present: true`; transcript eval exited `0` with 5 sessions and 0 failures; Codex compatibility returned `status: compatible`; `python tools\check_docs.py` passed; `git diff --check` exited `0`.
+
+### `T9-D11` Security, Privacy & Compliance Integration
+
+Status: `in_progress`
+
+Source audited: `docs/methodologies/security-privacy-compliance.md`
+
+Deep-audit deltas to implement:
+
+- Treat Security, Privacy & Compliance as a planning-first methodology domain for authn, authz, permissions, secrets, PII, sensitive data, payments, billing, abuse/rate limits, audit logging, supply chain, CI permissions, AI/agent security, external writes and compliance overlays.
+- Use the full gate set from the methodology source: security-sensitive classification, threat surface, security risk review, ASVS mapping, API security scheme, authz negative tests, secrets policy, data classification, privacy impact, external-write approval, abuse/rate-limit review, audit logging, supply chain, CI permissions, AI security, compliance overlay and evidence before completion.
+- Record source references as methodology evidence and platform/security guidance, not legal advice. Compliance output must record applicability, owner, evidence, non-goals, gaps and review cadence without claiming GDPR, CCPA, HIPAA, PCI, SOC 2 or enterprise compliance certification.
+- Resolve artifact-name compatibility before renderer registration: source-era names such as `threat-model.md`, `asvs-mapping.md`, `secrets-inventory.md`, `authz-matrix.md`, `audit-log-policy.md` and `compliance-applicability-matrix.md` must map to canonical Product-Agent OS templates or aliases without duplicate conflicting contracts.
+- Map or explicitly defer the full source artifact set: `data-classification-register.md`, `api-security-review.md`, `abuse-rate-limit-plan.md`, `sbom-manifest.md`, `ci-permissions-review.md`, `ai-security-review.md`, `vulnerability-response-record.md` and `approval-record.md` must not be silently dropped.
+- Represent Secure SDLC/SSDF and OWASP SAMM as lifecycle/maturity vocabulary. ASVS Level 1/2/3 selection must record applicability, project risk, owner, evidence and gaps without claiming compliance.
+- API authorization negative tests must cover allowed and forbidden behavior, BOLA, BFLA, object property authorization, role/scope/resource ownership, rate limits and unsafe consumption. OAuth or API docs alone are not accepted as security evidence.
+- Data classification and redaction lifecycle must cover prompts, docs, fixtures, eval datasets, logs, traces and screenshots. Raw secrets, credentials, payment data, raw PII, raw private chats and private customer data are blocked.
+- SBOM/provenance policy must distinguish internal apps, packages, plugins, containers and release artifacts, and must connect SBOM to vulnerability status, update path, license status, provenance, action pinning, release signing or an explicit accepted gap.
+- Vulnerability/security incident workflow must cover security bugs, advisories, leaked secrets, abuse incidents, dependency alerts and data exposure with triage, severity, containment, fix evidence, verification, disclosure, release/patch plan and post-incident lessons.
+- Compliance overlays must separate legal/regulatory obligations, customer contractual obligations and internal policy, with conditional overlays for finance, healthcare, minors, enterprise, public sector, marketplace and AI agent tooling.
+- Codex Security scan remains explicit opt-in. Security-sensitive routing can recommend a scan or record `not requested`, but must not imply that a scan ran from security terminology alone.
+- False-positive policy: security docs mention without code path remains `present_unverified`; docs-only repositories with security articles do not become regulated automatically; keyword-only compliance claims do not prove compliance; no-secrets-in-code does not prove artifact safety.
+- Unsupported claims must be rejected as high-risk evidence gaps: security review after coding, no-secrets-in-code means safe, ASVS/OWASP proves compliance, SBOM once is enough, Codex Security scan is implied, OAuth proves API security and privacy compliance is universal.
+
+Implemented scope:
+
+- Added `security_privacy_compliance` catalog coverage for security-sensitive classification, threat surface, security risk review, ASVS/SSDF/SAMM mapping, ASVS level selection, API security scheme, authorization negative tests, secrets policy, data classification, redaction lifecycle, privacy impact, external-write approval, abuse/rate-limit review, audit logging, supply chain, SBOM/provenance, CI permissions, AI security, compliance overlay taxonomy, vulnerability response workflow, explicit Codex Security scan status, security evidence before completion and unsupported-claim rejection.
+- Added read-only discovery/audit coverage for authn/authz, permissions, secrets, PII/sensitive data, payment/billing, abuse/rate limits, audit logging, supply chain, SBOM/provenance, CI permissions, compliance terms, AI/agent security and Codex approval-bound signals. Detection remains `present_unverified`; no scan, security mutation, external write or compliance certification is implied.
+- Resolved source-era artifact naming through canonical templates and aliases for threat surface/model, ASVS/SSDF mapping, secrets policy/inventory, authz negative tests, audit logging and compliance overlay/applicability.
+- Added or strengthened Security, Privacy & Compliance artifact templates: `security-risk-review.md`, `threat-surface.md`, `asvs-ssdf-mapping.md`, `authz-negative-test-matrix.md`, `secrets-policy.md`, `data-classification-register.md`, `privacy-impact-record.md`, `api-security-review.md`, `abuse-rate-limit-plan.md`, `supply-chain-review.md`, `sbom-manifest.md`, `ci-permissions-review.md`, `audit-logging-review.md`, `ai-security-review.md`, `compliance-overlay.md`, `vulnerability-response-record.md` and `approval-record.md`.
+- Registered the 16 new security templates in the staged renderer; renderer file count increased from 157 to 173 and `security_privacy_compliance_contract_present` is true for `python-app`.
+- Strengthened source policy to block raw PII/private data/payment data markers in docs/templates/fixtures in addition to secret-like literals.
+- Added readiness and behavioral eval coverage for `security_privacy_compliance_when_sensitive_surface`, false-positive handling, approval boundaries and unsupported security/compliance claims.
+- Added synthetic fixtures for payment/billing high risk, docs-only security article false positive, unsupported compliance claim rejection, CI permissions and SBOM/provenance `present_unverified` behavior, all without raw secrets or private data.
+- Routed the methodology through lifecycle skills with planning-first classification, threat surface, data classification, owner review, tests/evidence, rollback, approval boundary, compliance owner and explicit Codex Security scan status.
+- Added methodology report coverage for security/privacy recommendations, approval boundaries, accepted gaps, residual risks and redaction of secrets, payment data, raw PII and private customer data.
+
+Verification policy:
+
+- RED catalog check: `python -m unittest tests.product_agent_os.test_methodology_catalog -v` should fail before catalog implementation on missing `security_privacy_compliance` gates.
+- Focused security slice check: `python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_source_policy tests.product_agent_os.test_fixture_eval_runner -v`.
+- Final implementation check: `python plugins\product-agent-os\scripts\run_fixture_eval.py`; `python -m unittest discover -s tests -p "test_*.py" -v`; `python plugins\product-agent-os\scripts\validate_codex_compatibility.py`; `python tools\check_docs.py`; `git diff --check`.
+- Commit, push and PR actions remain deferred until explicitly requested.
+
+Verification so far:
+
+- RED catalog check failed as expected before implementation on missing `security_privacy_compliance` gates.
+- Focused security suite: `python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_source_policy tests.product_agent_os.test_fixture_eval_runner -v` ran 81 tests with `OK`.
+- Fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0` with 57 fixtures, 0 failures, renderer file count 173 and `security_privacy_compliance_contract_present: true`.
+- Full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 460 tests with `OK`.
+- Transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 5 sessions and 0 failures.
+- Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
+- Docs check: `python tools\check_docs.py` passed.
+- Diff hygiene: `git diff --check` exited `0`.
 
 ## Cross-Domain Synthesis Backlog
 

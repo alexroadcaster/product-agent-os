@@ -20,6 +20,9 @@ FRESHNESS_PATTERN = re.compile(
     r"\b(current|latest|today|сейчас|актуальн|models?|pricing|security|approvals?|hooks?|Agents SDK|MCP|automation)\b",
     re.IGNORECASE,
 )
+SENSITIVE_DATA_LITERAL_PATTERN = re.compile(
+    r"(?i)^\s*(?:raw_?pii|pii_value|payment_?data|private_?customer_?data|raw_?private_?chat|customer_?data_value)\s*[=:]\s*[^\r\n]+"
+)
 
 
 def validate_source_policy(workspace: str | Path) -> dict[str, Any]:
@@ -96,6 +99,8 @@ def _validate_file(workspace: Path, path: Path) -> dict[str, Any]:
     for line_number, line in _non_fenced_lines(text):
         if is_forbidden_secret_assignment(line):
             secret_findings.append(f"{relative}:{line_number}: secret-like literal is forbidden")
+        if SENSITIVE_DATA_LITERAL_PATTERN.search(line):
+            secret_findings.append(f"{relative}:{line_number}: raw PII/private data/payment data marker is forbidden")
 
     return {
         "path": relative,

@@ -1,1 +1,1 @@
-export const permission = "synthetic";
+export const permission = "synthetic authorization role";

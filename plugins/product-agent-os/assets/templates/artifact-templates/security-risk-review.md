@@ -4,17 +4,24 @@ Source status: `codex-plugin-template`
 
 Use this artifact for security-sensitive Product-Agent OS work before implementation, release, production changes, or readiness claims.
 
+Codex Security scan status is explicit: `run with evidence`, `not requested`, or `blocked`. Do not imply that a scan ran from security terminology alone.
+
 ## Scope
 
 - Change:
 - Owner:
 - Security reviewer:
 - Approval status:
+- Codex Security scan status:
 - Files proposed:
 - Systems affected:
+- Current Evidence:
+- Accepted Gap:
+- Residual Risk:
 
 ## Threat Surface
 
+- Link to `threat-surface.md`:
 - Entry points:
 - Actors:
 - Trust boundaries:
@@ -51,8 +58,31 @@ Use this artifact for security-sensitive Product-Agent OS work before implementa
 - PII touched:
 - Sensitive data touched:
 - Customer data boundary:
+- Data classification register:
+- Redaction lifecycle for prompts, docs, fixtures, eval datasets, logs, traces and screenshots:
 - Data minimization:
 - Do not include raw secrets, credentials, private keys, payment data, raw PII, or raw customer data here.
+
+## Compliance Boundary
+
+- Compliance overlay:
+- Legal/regulatory obligation:
+- Customer contractual obligation:
+- Internal policy:
+- Owner/legal reviewer:
+- Evidence:
+- Non-goals:
+- Review cadence:
+- This artifact is not legal advice and does not claim GDPR, CCPA, HIPAA, PCI, SOC 2 or enterprise compliance certification.
+
+## Supply Chain And CI
+
+- Supply-chain review:
+- SBOM/provenance decision:
+- CI permission review:
+- Action pinning:
+- Vulnerability response link:
+- Release integrity:
 
 ## Backend Security Notes
 

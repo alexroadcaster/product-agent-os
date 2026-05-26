@@ -49,6 +49,9 @@ class FixtureCompletenessTest(unittest.TestCase):
             "desktop-local-indexer",
             "data-migration-pii",
             "security-auth-payment",
+            "security-docs-only-mention",
+            "security-compliance-claim",
+            "security-ci-sbom",
             "ci-flaky-tests",
             "package-release",
             "backend-no-fsd",
@@ -65,6 +68,9 @@ class FixtureCompletenessTest(unittest.TestCase):
             "database-destructive-migration",
             "database-production-access-approval",
             "database-lineage-rag-overlap",
+            "security-docs-only-mention",
+            "security-compliance-claim",
+            "security-ci-sbom",
         ]:
             with self.subTest(name=name):
                 self.assertTrue((FIXTURES / name).is_dir())
@@ -194,6 +200,31 @@ class FixtureCompletenessTest(unittest.TestCase):
                 self.assertNotIn("private customer", text.lower())
                 self.assertNotIn("token=", text.lower())
                 self.assertNotIn("api_key", text.lower())
+
+    def test_security_methodology_fixtures_are_synthetic_and_secret_free(self):
+        expected_terms = {
+            "security-auth-payment": ["Synthetic", "payment", "authorization", "permissions"],
+            "security-docs-only-mention": ["Synthetic", "docs-only", "security article"],
+            "security-compliance-claim": ["Synthetic", "compliance", "unsupported claim"],
+            "security-ci-sbom": ["Synthetic", "SBOM", "CI permissions", "supply chain"],
+        }
+
+        for name, terms in expected_terms.items():
+            with self.subTest(name=name):
+                text = "\n".join(
+                    path.read_text(encoding="utf-8")
+                    for path in (FIXTURES / name).rglob("*")
+                    if path.is_file()
+                )
+                for expected in terms:
+                    self.assertIn(expected, text)
+                lowered = text.lower()
+                self.assertNotIn("private customer", lowered)
+                self.assertNotIn("raw pii", lowered)
+                self.assertNotIn("payment data", lowered)
+                self.assertNotIn("token=", lowered)
+                self.assertNotIn("api_key", lowered)
+                self.assertNotIn("sk-", lowered)
 
     def test_ai_rag_methodology_fixtures_are_synthetic_and_secret_free(self):
         expected_terms = {

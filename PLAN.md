@@ -9,10 +9,11 @@ Generated at: 2026-05-26
 - `T9-D8` API & Integrations methodology integration is implemented; final verification evidence is recorded in `TEST.md` and `RUNLOG.md`.
 - `T9-D9` Database & Data methodology integration is implemented; final verification evidence is recorded in `TEST.md`, `RUNLOG.md` and the Track 9 backlog.
 - `T9-D10` LLM / AI / RAG methodology integration is implemented through rows `M30..M36`; final batch verification is recorded in `TEST.md`, `RUNLOG.md` and the Track 9 backlog.
-- Verification baseline after the latest completed Track 9 batch: T9-D10 focused AI/RAG handoff/tooling/model/RAG lifecycle/diff/incident/report checks pass; full final verification is recorded in `TEST.md`, `RUNLOG.md` and the Track 9 backlog.
+- `T9-D11` Security, Privacy & Compliance methodology integration is implemented; focused security checks and fixture eval evidence are recorded in `TEST.md`, `RUNLOG.md` and the Track 9 backlog.
+- Verification baseline after the latest completed Track 9 batch: T9-D11 focused security catalog/audit/source-policy/fixture checks pass; final full verification is recorded in `TEST.md`, `RUNLOG.md` and the Track 9 backlog.
 - Track 9 design is recorded in `docs/superpowers/specs/2026-05-25-track-9-methodology-intelligence-design.md`.
 - Track 9 implementation plan is recorded in `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`.
-- Next implementation slice after the `T9-D10 M30..M36` report: `T9-D11` Security, Privacy & Compliance.
+- Next implementation slice after the `T9-D11` report: `T9-D12` Delivery, Release & Operations.
 
 ## Architecture Boundary
 
@@ -38,7 +39,7 @@ Generated at: 2026-05-26
 | 9 | `T9-D8` API & Integrations | `done` | OpenAPI/AsyncAPI/GraphQL/gRPC contract and compatibility gates |
 | 10 | `T9-D9` Database & Data | `done` | Schema, migration, data quality, lineage, privacy and production access gates |
 | 11 | `T9-D10` LLM / AI / RAG | `done` | AI behavior, prompt/model/tool/RAG eval and safety gates |
-| 12 | `T9-D11` Security, Privacy & Compliance | `planned` | Threat, privacy, ASVS/SSDF, secrets, supply-chain and compliance gates |
+| 12 | `T9-D11` Security, Privacy & Compliance | `done` | Threat, privacy, ASVS/SSDF, secrets, supply-chain and compliance gates |
 | 13 | `T9-D12` Delivery, Release & Operations | `planned` | Release readiness, artifact manifest, rollout, rollback and operations gates |
 | 14 | `T9-S` cross-domain synthesis | `planned` | Deduplicated gates, merged artifacts, conflict rules and final baseline |
 
@@ -84,6 +85,8 @@ For each Track 9 section:
 - Database & Data artifacts: `database-inventory.md`, `database-dictionary.md`, `database-migration-plan.md`, `database-expand-contract-record.md`, `database-backfill-runbook.md`, `database-rollback-feasibility.md`, `database-backup-restore-evidence.md`, `database-data-classification-matrix.md`, `database-data-quality-checks.md`, `database-data-contract.md`, `database-lineage-map.md`, `database-query-performance-review.md`, `database-retention-deletion-policy.md`, `database-synthetic-fixtures-policy.md`, `database-production-access-approval.md`, plus overlap with `migration-plan.md`, `security-risk-review.md`, `quality-strategy.md`, `test-eval-matrix.md` and `release-packet.md`.
 - LLM / AI / RAG gate: `llm_ai_rag` records user-visible AI behavior promise, baseline eval, eval rerun evidence, dataset governance, prompt contract, model decision, structured output schema, tool/function/MCP contract, human approval boundary, RAG source inventory, retrieval config, grounding rubric, agent workflow trace, safety/guardrail review, cost/latency budget, current-run evidence, handoff compatibility, eval tooling selection, model migration thresholds, RAG lifecycle/privacy, diff-signal limits, AI incident workflow and unsupported-claim rejection.
 - LLM / AI / RAG artifacts: `ai-behavior-spec.md`, `prompt-contract.md`, `model-decision-record.md`, `eval-run-report.md`, `ai-dataset-manifest.md`, `structured-output-schema.md`, `ai-tool-contract.md`, `rag-source-inventory.md`, `rag-retrieval-config.md`, `rag-eval-report.md`, `grounding-rubric.md`, `agent-task-packet.md`, `agent-workflow-map.md`, `guardrail-matrix.md`, `trace-evidence-packet.md`, `ai-cost-latency-budget.md`, plus existing `ai-eval-spec.md`, `PLAN.md`, `TEST.md`, `EVALS.md` and `RUNLOG.md`.
+- Security, Privacy & Compliance gate: `security_privacy_compliance` records security-sensitive classification, threat surface, security risk review, ASVS/SSDF/SAMM mapping, ASVS level selection, API security scheme, authorization negative tests, secrets policy, data classification, redaction lifecycle, privacy impact, external-write approval, abuse/rate-limit review, audit logging, supply chain, SBOM/provenance, CI permissions, AI security, compliance overlay taxonomy, vulnerability response workflow, explicit Codex Security scan status, evidence before completion and unsupported-claim rejection.
+- Security, Privacy & Compliance artifacts: `security-risk-review.md`, `threat-surface.md`, `asvs-ssdf-mapping.md`, `authz-negative-test-matrix.md`, `secrets-policy.md`, `data-classification-register.md`, `privacy-impact-record.md`, `api-security-review.md`, `abuse-rate-limit-plan.md`, `supply-chain-review.md`, `sbom-manifest.md`, `ci-permissions-review.md`, `audit-logging-review.md`, `ai-security-review.md`, `compliance-overlay.md`, `vulnerability-response-record.md` and `approval-record.md`.
 - Conditional readiness gate: `project-readiness.json` defines `readiness_statuses` and per-gate `applies_when`, pass condition, accepted gap, required evidence, owner and residual risk. Detection alone can only support `present_unverified`; `present_verified` requires current command, owner or artifact evidence.
 - Test gate: deterministic tests, contract checks, evals or accepted gaps are named before implementation.
 - Documentation gate: docs-as-code artifacts and source-of-truth updates are named.
@@ -229,6 +232,13 @@ For each Track 9 section:
 - Rows `T9-D10-M10..M19` strengthened audit recommendations for dataset governance, prompts, models, structured output, tool/function/MCP contracts, human approvals, RAG, agent traces, guardrails and cost/latency, and added the AI/RAG artifact template set.
 - Rows `T9-D10-M20..M29` resolved source-aligned template aliases, registered 15 AI/RAG templates in the renderer, strengthened `ai-eval-regression.md`, `ai-eval-spec.md` and generated `PLAN/TEST/EVALS/RUNLOG`, added behavioral/transcript coverage, synthetic AI/RAG fixtures, `llm_ai_rag_contract_present` fixture eval coverage and lifecycle skill routing.
 - Rows `T9-D10-M30..M36` closed agent handoff compatibility, eval tooling selector policy, model migration thresholds, RAG deletion/privacy lifecycle, diff-signal policy, AI incident boundary and methodology report rendering.
+
+## T9-D11 Security, Privacy & Compliance Completed Slice
+
+- Rows `T9-D11-M0..M7` added the `security_privacy_compliance` catalog contract, read-only discovery depth, domain routing, granular gate recommendations and unsupported-claim rejection.
+- Rows `T9-D11-M8..M13` strengthened the security artifact set, renderer registration, source/no-secrets policy, readiness and behavioral eval contracts, synthetic false-positive fixtures and lifecycle skill routing.
+- Rows `T9-D11-M16..M23` mapped the full source artifact set, ASVS/SSDF/SAMM policy, authorization negative-test depth, redaction lifecycle, SBOM/provenance policy, vulnerability response workflow, compliance overlay taxonomy and methodology report redaction.
+- The staged renderer now includes 16 new Security, Privacy & Compliance templates and the `python-app` renderer file count increased from 157 to 173.
 
 ## T9-D4 Completed Slice
 

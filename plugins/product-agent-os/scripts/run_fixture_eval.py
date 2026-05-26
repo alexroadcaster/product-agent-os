@@ -16,7 +16,7 @@ from product_agent_os.automation_policy import validate_automation_candidate  # 
 from product_agent_os.infrastructure import InfrastructureError, render_infrastructure_plan, stage_infrastructure  # noqa: E402
 from product_agent_os.methodology_audit import build_methodology_audit  # noqa: E402
 from product_agent_os.methodology_catalog import load_methodology_catalog, validate_methodology_catalog  # noqa: E402
-from product_agent_os.templates import AI_RAG_TEMPLATE_ALIASES, required_templates  # noqa: E402
+from product_agent_os.templates import AI_RAG_TEMPLATE_ALIASES, SECURITY_TEMPLATE_ALIASES, required_templates  # noqa: E402
 from product_agent_os.merge_infrastructure import (  # noqa: E402
     ROLLBACK_MANIFEST_NAME,
     MergeInfrastructureError,
@@ -1027,6 +1027,123 @@ LLM_AI_RAG_TERMS = (
     "ai incident boundary",
     "security/privacy handoff",
 )
+SECURITY_PRIVACY_COMPLIANCE_GATES = (
+    "security_sensitive_classification_present",
+    "threat_surface_present",
+    "security_risk_review_present",
+    "asvs_mapping_present",
+    "asvs_level_selection_present",
+    "secure_sdlc_ssdf_samm_present",
+    "api_security_scheme_present",
+    "authz_negative_tests_present",
+    "secrets_policy_present",
+    "data_classification_present",
+    "data_redaction_lifecycle_present",
+    "privacy_impact_record_present",
+    "external_write_approval_present",
+    "abuse_rate_limit_review_present",
+    "audit_logging_review_present",
+    "supply_chain_review_present",
+    "sbom_provenance_decision_present",
+    "ci_permission_review_present",
+    "ai_security_review_present",
+    "compliance_overlay_present",
+    "compliance_overlay_taxonomy_present",
+    "vulnerability_response_workflow_present",
+    "codex_security_scan_status_present",
+    "security_evidence_before_completion",
+    "security_unsupported_claims_rejected",
+)
+SECURITY_PRIVACY_COMPLIANCE_ARTIFACTS = (
+    "security-risk-review.md",
+    "threat-surface.md",
+    "asvs-ssdf-mapping.md",
+    "authz-negative-test-matrix.md",
+    "secrets-policy.md",
+    "data-classification-register.md",
+    "privacy-impact-record.md",
+    "api-security-review.md",
+    "abuse-rate-limit-plan.md",
+    "supply-chain-review.md",
+    "sbom-manifest.md",
+    "ci-permissions-review.md",
+    "audit-logging-review.md",
+    "ai-security-review.md",
+    "compliance-overlay.md",
+    "vulnerability-response-record.md",
+    "approval-record.md",
+)
+SECURITY_PRIVACY_COMPLIANCE_EVAL_FIELDS = (
+    "security_privacy_compliance_contract_present",
+    "security_sensitive_classification_contract_present",
+    "threat_surface_contract_present",
+    "security_risk_review_contract_present",
+    "asvs_ssdf_mapping_contract_present",
+    "asvs_level_selection_contract_present",
+    "secure_sdlc_ssdf_samm_contract_present",
+    "api_security_review_contract_present",
+    "authz_negative_tests_contract_present",
+    "secrets_policy_contract_present",
+    "data_classification_contract_present",
+    "data_redaction_lifecycle_contract_present",
+    "privacy_impact_contract_present",
+    "external_write_approval_contract_present",
+    "abuse_rate_limit_contract_present",
+    "audit_logging_contract_present",
+    "supply_chain_contract_present",
+    "sbom_provenance_contract_present",
+    "ci_permission_contract_present",
+    "ai_security_review_contract_present",
+    "compliance_overlay_contract_present",
+    "compliance_overlay_taxonomy_contract_present",
+    "vulnerability_response_contract_present",
+    "codex_security_scan_status_contract_present",
+    "security_evidence_before_completion_contract_present",
+    "unsupported_security_claims_rejected_contract_present",
+)
+SECURITY_PRIVACY_COMPLIANCE_TERMS = (
+    "security_privacy_compliance",
+    "security_privacy_compliance_when_sensitive_surface",
+    "security_sensitive_surface",
+    "security_sensitive_classification_present",
+    "threat surface",
+    "codex security scan status",
+    "not requested/run/blocked",
+    "asvs level 1",
+    "asvs level 2",
+    "asvs level 3",
+    "ssdf",
+    "samm",
+    "bola",
+    "bfla",
+    "object property authorization",
+    "unsafe consumption",
+    "raw secrets",
+    "payment data",
+    "raw pii",
+    "private customer data",
+    "data redaction lifecycle",
+    "sbom/provenance",
+    "ci permissions",
+    "supply chain",
+    "compliance overlay",
+    "legal/regulatory",
+    "customer contractual",
+    "internal policy",
+    "vulnerability response",
+    "approval_required",
+    "explicit_gap_accepted",
+    "not legal advice",
+    "docs-only security article",
+    "docs-only security articles are not regulated automatically",
+    "security review after coding",
+    "no secrets in code means safe",
+    "asvs/owasp proves compliance",
+    "sbom once is enough",
+    "codex security scan is implied",
+    "oauth proves api security",
+    "privacy compliance is universal",
+)
 COMPLETION_EVIDENCE_TERMS = (
     "evidence_before_completion",
     "evidence-before-completion",
@@ -1152,6 +1269,7 @@ CONDITIONAL_READINESS_GATE_IDS = (
     "onboarding_map_when_legacy_repo",
     "migration_plan_when_contract_or_data_changes",
     "security_review_when_sensitive_surface",
+    "security_privacy_compliance_when_sensitive_surface",
     "backend_readiness_when_backend_changes",
     "platform_runtime_check_when_native_or_desktop",
     "ci_failure_evidence_when_ci_stabilization",
@@ -1453,6 +1571,7 @@ def _expected_checks(
         checks["external_write_approval_present"] = _api_integrations_contract_present()
         checks["database_data_contract_present"] = _database_data_contract_present()
         checks["llm_ai_rag_contract_present"] = _llm_ai_rag_contract_present()
+        checks["security_privacy_compliance_contract_present"] = _security_privacy_compliance_contract_present()
         checks["methodology_applicability_contract_present"] = (
             _methodology_applicability_contract_present(audit)
         )
@@ -1613,6 +1732,48 @@ def _expected_checks(
             and db_signals.get("rag_ingestion_sources", {}).get("status") == "present_unverified"
             and db_signals.get("pipeline_sources", {}).get("status") == "present_unverified"
         )
+    if fixture == "security-auth-payment":
+        recommendations = methodology_audit.get("recommendations", [])
+        checks["security_privacy_compliance_detected"] = (
+            "security_privacy_compliance" in _applicable_methodology_domains(methodology_audit)
+            and isinstance(signals, dict)
+            and signals.get("security_privacy_compliance") is True
+            and _security_privacy_compliance_contract_present()
+        )
+        checks["security_sensitive_approval_required"] = any(
+            isinstance(item, dict)
+            and item.get("domain") == "security_privacy_compliance"
+            and item.get("gate") == "external_write_approval_present"
+            and item.get("priority") == "P0_blocker"
+            and "approval_required" in str(item.get("approval_boundary", ""))
+            for item in recommendations
+        )
+        checks["security_privacy_fixture_safe"] = _security_fixture_privacy_safe(FIXTURES / fixture)
+    if fixture == "security-docs-only-mention":
+        checks["security_docs_only_not_forced"] = (
+            "security_privacy_compliance" not in _applicable_methodology_domains(methodology_audit)
+            and isinstance(signals, dict)
+            and signals.get("security_privacy_compliance") is False
+            and "security_privacy_compliance" not in route_methodology_signals
+        )
+    if fixture == "security-compliance-claim":
+        intent_audit = build_methodology_audit(FIXTURES / fixture, intent_hint=_fixture_text(FIXTURES / fixture))
+        checks["unsupported_security_claims_rejected"] = any(
+            isinstance(item, dict)
+            and item.get("domain") == "security_privacy_compliance"
+            and item.get("gate") == "security_unsupported_claims_rejected"
+            and item.get("priority") == "P1_high_risk"
+            for item in intent_audit.get("recommendations", [])
+        )
+    if fixture == "security-ci-sbom":
+        security_signals = audit.get("security_sensitive_signals", {})
+        checks["security_supply_chain_ci_sbom_present_unverified"] = (
+            "security_privacy_compliance" in _applicable_methodology_domains(methodology_audit)
+            and isinstance(security_signals, dict)
+            and security_signals.get("supply_chain", {}).get("status") == "present_unverified"
+            and security_signals.get("sbom_provenance", {}).get("status") == "present_unverified"
+            and security_signals.get("ci_permissions", {}).get("status") == "present_unverified"
+        )
     if fixture in {
         "rag-quality-regression",
         "ai-prompt-model-change",
@@ -1705,6 +1866,7 @@ def _methodology_applicability_contract_present(audit: dict[str, Any]) -> bool:
         "backend_methodology",
         "database_data_readiness",
         "llm_ai_rag_readiness",
+        "security_privacy_compliance_readiness",
     }
     allowed_statuses = {
         "not_applicable",
@@ -2320,6 +2482,100 @@ def _llm_ai_rag_contract_present() -> bool:
         f"{path.name}\n{path.read_text(encoding='utf-8')}" for path in paths
     ).lower()
     return all(term in payload for term in LLM_AI_RAG_TERMS)
+
+
+def _security_privacy_compliance_contract_present() -> bool:
+    try:
+        catalog = load_methodology_catalog()
+    except (OSError, ValueError, json.JSONDecodeError):
+        return False
+    if validate_methodology_catalog(catalog):
+        return False
+    domains = {
+        str(domain.get("id")): domain
+        for domain in catalog.get("domains", [])
+        if isinstance(domain, dict) and domain.get("id")
+    }
+    security = domains.get("security_privacy_compliance")
+    if not isinstance(security, dict):
+        return False
+    if not set(SECURITY_PRIVACY_COMPLIANCE_GATES).issubset(set(security.get("gates", []))):
+        return False
+    if not set(SECURITY_PRIVACY_COMPLIANCE_ARTIFACTS).issubset(set(security.get("artifacts", []))):
+        return False
+    if not set(SECURITY_PRIVACY_COMPLIANCE_EVAL_FIELDS).issubset(set(security.get("eval_fields", []))):
+        return False
+
+    canonical_targets = {
+        f".codex/artifact-templates/{name}" for name in SECURITY_PRIVACY_COMPLIANCE_ARTIFACTS
+    }
+    rendered_targets = {item.target_path for item in required_templates()}
+    if not canonical_targets.issubset(rendered_targets):
+        return False
+    if any(
+        f".codex/artifact-templates/{source_name}" in rendered_targets
+        for source_name in SECURITY_TEMPLATE_ALIASES
+    ):
+        return False
+    if SECURITY_TEMPLATE_ALIASES != {
+        "threat-model.md": "threat-surface.md",
+        "asvs-mapping.md": "asvs-ssdf-mapping.md",
+        "secrets-inventory.md": "secrets-policy.md",
+        "authz-matrix.md": "authz-negative-test-matrix.md",
+        "audit-log-policy.md": "audit-logging-review.md",
+        "compliance-applicability-matrix.md": "compliance-overlay.md",
+    }:
+        return False
+
+    paths = [
+        PLUGIN_ROOT / "assets" / "methodology" / "methodology-catalog.json",
+        TEMPLATE_ROOT / "evals" / "behavioral-workflows.json",
+        TEMPLATE_ROOT / "evals" / "project-readiness.json",
+        PLUGIN_ROOT / "scripts" / "product_agent_os" / "discovery.py",
+        PLUGIN_ROOT / "scripts" / "product_agent_os" / "methodology_audit.py",
+        PLUGIN_ROOT / "scripts" / "product_agent_os" / "source_policy.py",
+        PLUGIN_ROOT / "skills" / "workspace-discovery-auditor" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "project-lifecycle-orchestrator" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "requirements-author" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "implementation-planner" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "test-eval-designer" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "risk-reviewer" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "docs-maintainer" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "learning-loop-maintainer" / "SKILL.md",
+    ]
+    paths.extend(TEMPLATE_ROOT / "control-plane" / name for name in ["PLAN.md", "TEST.md", "EVALS.md", "RUNLOG.md"])
+    paths.extend(TEMPLATE_ROOT / "artifact-templates" / name for name in SECURITY_PRIVACY_COMPLIANCE_ARTIFACTS)
+    if not all(path.exists() for path in paths):
+        return False
+    payload = "\n".join(
+        f"{path.name}\n{path.read_text(encoding='utf-8')}" for path in paths
+    ).lower()
+    return all(term.lower() in payload for term in SECURITY_PRIVACY_COMPLIANCE_TERMS)
+
+
+def _fixture_text(path: Path) -> str:
+    if not path.is_dir():
+        return ""
+    return "\n".join(
+        item.read_text(encoding="utf-8", errors="ignore")
+        for item in path.rglob("*")
+        if item.is_file()
+    )
+
+
+def _security_fixture_privacy_safe(path: Path) -> bool:
+    lowered = _fixture_text(path).lower()
+    forbidden = [
+        "private customer",
+        "raw private chat",
+        "raw pii",
+        "payment data",
+        "token=",
+        "api_key",
+        "sk-",
+        "begin private key",
+    ]
+    return bool(lowered) and all(term not in lowered for term in forbidden)
 
 
 def _ai_rag_fixture_privacy_safe(path: Path) -> bool:

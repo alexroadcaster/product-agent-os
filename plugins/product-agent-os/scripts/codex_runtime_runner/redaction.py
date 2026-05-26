@@ -6,7 +6,9 @@ from typing import Any
 
 SECRET_ASSIGNMENT = re.compile(r"(?im)^\s*[A-Z_]*(?:SECRET|TOKEN|PASSWORD|KEY)[A-Z_]*\s*[=:]\s*[^\r\n]+")
 WINDOWS_USER_PATH = re.compile(r"C:\\Users\\[^\s\\]+(?:\\[^\s]+)*", re.IGNORECASE)
-PRIVATE_MARKERS = re.compile(r"(?i)(private customer data|raw private chat log|raw chat log)")
+PRIVATE_MARKERS = re.compile(
+    r"(?i)(private customer data|raw private chat log|raw chat log|payment data|raw pii|raw personally identifiable information)"
+)
 
 
 def redact_text(text: str) -> tuple[str, dict[str, object]]:

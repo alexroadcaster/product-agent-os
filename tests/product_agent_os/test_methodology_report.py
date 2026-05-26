@@ -102,6 +102,57 @@ class MethodologyReportTest(unittest.TestCase):
         self.assertNotIn("raw private chat log", report.lower())
         self.assertNotIn("private customer data", report.lower())
 
+    def test_security_privacy_report_renders_scan_status_approvals_gaps_and_redacts_sensitive_terms(self):
+        from product_agent_os.methodology_report import render_methodology_audit_report
+
+        audit = {
+            "maturity_level": {"selected": "regulated", "confidence": "medium", "reasons": []},
+            "complexity_profile": {"selected": "high_risk", "confidence": "medium", "reasons": []},
+            "delivery_map": {"surface_map": {"workspace": "C:\\Users\\person\\project\\repo"}},
+            "methodology_domains": [{"id": "security_privacy_compliance", "status": "applicable_missing"}],
+            "recommendations": [
+                {
+                    "priority": "P1_high_risk",
+                    "domain": "security_privacy_compliance",
+                    "gate": "codex_security_scan_status_present",
+                    "artifact": "security-risk-review.md",
+                    "reason": "Codex Security scan status must be explicit: run with evidence, not requested or blocked.",
+                    "evidence_required": [
+                        "Codex Security scan status",
+                        "approval_boundary",
+                        "accepted_gap_option",
+                    ],
+                    "evidence_owner": "security or product owner",
+                    "approval_boundary": "approval_required before external security-system mutation",
+                    "accepted_gap_option": "explicit_gap_accepted with owner and review date",
+                    "residual_risk": "raw private chat log, private customer data, payment data and raw PII can leak in security evidence.",
+                    "safe_next_action": "Stage security-risk-review.md before completion claim.",
+                }
+            ],
+            "questions_for_owner": ["Should review C:\\Users\\person\\project\\repo security evidence?"],
+            "provisional_assumptions": [],
+            "safe_next_action": "Stage security-risk-review.md",
+        }
+
+        report = render_methodology_audit_report(audit)
+
+        for expected in [
+            "security_privacy_compliance",
+            "codex_security_scan_status_present",
+            "Codex Security scan status",
+            "approval_boundary",
+            "accepted_gap_option",
+            "residual_risk",
+            "safe_next_action",
+        ]:
+            with self.subTest(expected=expected):
+                self.assertIn(expected, report)
+        self.assertNotIn("C:\\Users\\person", report)
+        self.assertNotIn("raw private chat log", report.lower())
+        self.assertNotIn("private customer data", report.lower())
+        self.assertNotIn("payment data", report.lower())
+        self.assertNotIn("raw pii", report.lower())
+
     def test_cli_prints_json_when_requested(self):
         with tempfile.TemporaryDirectory() as tmp:
             workspace = self._workspace(Path(tmp))

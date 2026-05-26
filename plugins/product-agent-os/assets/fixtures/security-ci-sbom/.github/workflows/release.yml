@@ -1,0 +1,15 @@
+name: synthetic-release
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Synthetic CI permissions review placeholder
+        run: echo "Synthetic supply chain release fixture"

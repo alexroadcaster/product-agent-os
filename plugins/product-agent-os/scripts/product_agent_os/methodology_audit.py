@@ -688,6 +688,92 @@ HIGH_RISK_INTENT_TERMS = {
     "secret",
 }
 REGULATED_INTENT_TERMS = {"regulated", "compliance", "audit", "hipaa", "pci", "soc2", "finance", "healthcare", "minors"}
+SECURITY_INTENT_TERMS = {
+    "abuse",
+    "access token",
+    "agent security",
+    "api security",
+    "asvs",
+    "audit logging",
+    "auth",
+    "authentication",
+    "authorization",
+    "authn",
+    "authz",
+    "billing",
+    "bfla",
+    "bola",
+    "ccpa",
+    "ci permissions",
+    "codex security",
+    "compliance",
+    "credential",
+    "customer data",
+    "data exposure",
+    "external security",
+    "external write",
+    "gdpr",
+    "healthcare",
+    "hipaa",
+    "leaked secret",
+    "legal",
+    "minors",
+    "oauth",
+    "owasp",
+    "payment",
+    "pci",
+    "permission",
+    "pii",
+    "privacy",
+    "production data",
+    "prompt injection",
+    "provenance",
+    "rate limit",
+    "regulated",
+    "regulatory",
+    "sbom",
+    "secret",
+    "security",
+    "sensitive data",
+    "soc 2",
+    "soc2",
+    "supply chain",
+    "tool misuse",
+    "vulnerability",
+}
+SECURITY_NOT_APPLICABLE_PHRASES = {
+    "docs-only security article without code, data, ci, dependency or policy change",
+    "keyword-only security mention without touched sensitive surface",
+    "docs-only repository with security article is not regulated automatically",
+    "oauth-only claim without authorization evidence",
+    "no-secrets-in-code claim without artifact redaction evidence",
+}
+UNSUPPORTED_SECURITY_CLAIMS = {
+    "security review can happen after coding",
+    "security review after coding",
+    "no secrets in code means safe",
+    "no-secrets-in-code",
+    "asvs owasp proves compliance",
+    "asvs/owasp proves compliance",
+    "owasp proves compliance",
+    "asvs proves compliance",
+    "sbom once is enough",
+    "codex security scan is implied",
+    "oauth proves api security",
+    "privacy compliance is universal",
+}
+SECURITY_APPROVAL_TERMS = {
+    "external write",
+    "external security",
+    "payment",
+    "billing",
+    "production data",
+    "secret rotation",
+    "policy change",
+}
+SECURITY_AI_AGENT_TERMS = {"ai agent", "agent", "prompt injection", "tool misuse", "rag", "mcp", "excessive agency"}
+SECURITY_SUPPLY_CHAIN_TERMS = {"dependency", "package", "container", "release artifact", "supply chain", "sbom", "provenance"}
+SECURITY_INCIDENT_TERMS = {"vulnerability", "advisory", "leaked secret", "abuse incident", "dependency alert", "data exposure"}
 
 
 def build_methodology_audit(workspace: Path, intent_hint: str = "") -> dict[str, Any]:
@@ -710,7 +796,15 @@ def build_methodology_audit(workspace: Path, intent_hint: str = "") -> dict[str,
         bool(files),
     )
     recommendations = _prioritize_recommendations(
-        _recommendations(root, lowered_files, lowered_dirs, observed, intent, complexity_profile["selected"])
+        _recommendations(
+            root,
+            lowered_files,
+            lowered_dirs,
+            observed,
+            intent,
+            maturity_level["selected"],
+            complexity_profile["selected"],
+        )
     )
 
     return {
@@ -810,6 +904,7 @@ def _observed_signals(root: Path, files: set[str], directories: set[str]) -> lis
     add("codex_agentic_workflow", _codex_agentic_signal_evidence(files, directories))
     add("frontend", _frontend_signal_evidence(files, directories))
     add("backend", _backend_signal_evidence(files, directories))
+    add("security_sensitive_surface", _security_signal_evidence(files, directories))
     add(
         "ai_eval_or_rag",
         [
@@ -1051,6 +1146,85 @@ def _codex_agentic_signal_evidence(files: set[str], directories: set[str]) -> li
     return evidence
 
 
+def _security_signal_evidence(files: set[str], directories: set[str]) -> list[str]:
+    directory_prefixes = (
+        ".codex/",
+        ".github/workflows/",
+        "abuse/",
+        "agents/",
+        "audit/",
+        "auth/",
+        "billing/",
+        "compliance/",
+        "config/",
+        "payments/",
+        "policies/",
+        "privacy/",
+        "security/",
+        "secrets/",
+        "supply-chain/",
+    )
+    file_fragments = (
+        "approval",
+        "asvs",
+        "auth",
+        "billing",
+        "ccpa",
+        "credential",
+        "cyclonedx",
+        "gdpr",
+        "hipaa",
+        "oauth",
+        "payment",
+        "permission",
+        "pii",
+        "privacy",
+        "provenance",
+        "rate-limit",
+        "rate_limit",
+        "sbom",
+        "secret",
+        "security",
+        "sensitive",
+        "soc2",
+        "spdx",
+        "vulnerability",
+    )
+    evidence = [
+        path
+        for path in files
+        if path.startswith(directory_prefixes)
+        or any(fragment in path for fragment in file_fragments)
+        or path in {"security.md", "dependabot.yml", "package-lock.json", "pnpm-lock.yaml", "yarn.lock", "poetry.lock"}
+    ]
+    evidence.extend(
+        directory
+        for directory in directories
+        if directory in {"auth", "security", "privacy", "compliance", "audit", "abuse", "payments", "billing", "secrets"}
+        or directory.startswith(directory_prefixes)
+    )
+    if _security_evidence_is_docs_only_article(evidence):
+        return []
+    return evidence
+
+
+def _security_evidence_is_docs_only_article(evidence: list[str]) -> bool:
+    if not evidence:
+        return False
+    durable_policy_terms = (
+        "approval-record",
+        "compliance-overlay",
+        "data-classification",
+        "privacy-impact",
+        "security-risk-review",
+        "secrets-policy",
+        "threat-surface",
+    )
+    if any(term in item for item in evidence for term in durable_policy_terms):
+        return False
+    return all(item == "docs" or item.startswith("docs/") or item == "readme.md" for item in evidence)
+
+
 def _quality_signal_evidence(files: set[str], directories: set[str]) -> list[str]:
     directory_names = {
         "tests",
@@ -1118,6 +1292,7 @@ def _intent_signals(intent: str) -> list[dict[str, str]]:
         ("solution_architecture", ARCHITECTURE_INTENT_TERMS),
         ("quality_testing_evals", QUALITY_INTENT_TERMS),
         ("llm_ai_rag", AI_INTENT_TERMS),
+        ("security_privacy_compliance", SECURITY_INTENT_TERMS),
         ("delivery_release_operations", DELIVERY_INTENT_TERMS),
         ("high_risk", HIGH_RISK_INTENT_TERMS),
         ("regulated", REGULATED_INTENT_TERMS),
@@ -1222,9 +1397,12 @@ def _methodology_domains(
         "api_integrations": _api_integrations_applies(observed, intent),
         "database_data": _database_data_applies(observed, intent),
         "llm_ai_rag": _llm_ai_rag_applies(observed, intent),
-        "security_privacy_compliance": complexity_profile == "high_risk"
-        or maturity_level == "regulated"
-        or _mentions_any(intent, HIGH_RISK_INTENT_TERMS),
+        "security_privacy_compliance": _security_privacy_compliance_applies(
+            observed,
+            intent,
+            maturity_level,
+            complexity_profile,
+        ),
         "delivery_release_operations": maturity_level in {"production", "regulated"}
         or _mentions_any(intent, DELIVERY_INTENT_TERMS)
         or _has_any_signal(observed, {"ci_configuration", "deployment_configuration"}),
@@ -1324,6 +1502,27 @@ def _llm_ai_rag_applies(observed: list[dict[str, Any]], intent: str) -> bool:
 
 def _llm_ai_rag_not_applicable(intent: str) -> bool:
     return any(phrase in intent for phrase in AI_NOT_APPLICABLE_PHRASES)
+
+
+def _security_privacy_compliance_applies(
+    observed: list[dict[str, Any]],
+    intent: str,
+    maturity_level: str,
+    complexity_profile: str,
+) -> bool:
+    if _security_privacy_compliance_not_applicable(intent):
+        return False
+    return (
+        _has_signal(observed, "security_sensitive_surface")
+        or maturity_level == "regulated"
+        or complexity_profile == "high_risk"
+        or _mentions_any(intent, SECURITY_INTENT_TERMS | HIGH_RISK_INTENT_TERMS | REGULATED_INTENT_TERMS)
+        or _mentions_any(intent, UNSUPPORTED_SECURITY_CLAIMS)
+    )
+
+
+def _security_privacy_compliance_not_applicable(intent: str) -> bool:
+    return any(phrase in intent for phrase in SECURITY_NOT_APPLICABLE_PHRASES)
 
 
 def _codex_agentic_workflow_applies(observed: list[dict[str, Any]], intent: str) -> bool:
@@ -4141,12 +4340,275 @@ def _llm_ai_rag_recommendations(files: set[str], observed: list[dict[str, Any]],
     return recommendations
 
 
+def _security_privacy_compliance_recommendations(
+    observed: list[dict[str, Any]],
+    intent: str,
+    maturity_level: str,
+    complexity_profile: str,
+) -> list[dict[str, Any]]:
+    if not _security_privacy_compliance_applies(observed, intent, maturity_level, complexity_profile):
+        return []
+
+    recommendations: list[dict[str, Any]] = []
+
+    def add(
+        gate: str,
+        artifact: str,
+        reason: str,
+        evidence: list[str],
+        *,
+        priority: str = "P1_high_risk",
+        owner: str = "security or product owner",
+        approval: str = "not required for read-only audit; approval_required before secrets, payment, production data, policy or external security-system mutation",
+        residual: str = "Security/privacy/compliance readiness can be overstated without owner-reviewed evidence and explicit gaps.",
+        action: str = "Stage the missing security/privacy evidence artifact before implementation or readiness claims.",
+    ) -> None:
+        recommendations.append(
+            _recommendation(
+                priority=priority,
+                reason=reason,
+                domain="security_privacy_compliance",
+                gate=gate,
+                artifact=artifact,
+                evidence_required=evidence,
+                evidence_owner=owner,
+                approval_boundary=approval,
+                accepted_gap_option="explicit_gap_accepted with owner, reason, residual risk and review date",
+                residual_risk=residual,
+                safe_next_action=action,
+            )
+        )
+
+    if _mentions_any(intent, UNSUPPORTED_SECURITY_CLAIMS):
+        add(
+            "security_unsupported_claims_rejected",
+            "security-risk-review.md",
+            "Unsupported security, privacy or compliance claim was used as evidence.",
+            [
+                "security review after coding is not accepted",
+                "no-secrets-in-code is not no-leakage proof",
+                "ASVS/OWASP mapping does not prove compliance",
+                "SBOM once is not supply-chain closure",
+                "Codex Security scan is implied is not evidence",
+                "OAuth proves API security is not accepted",
+                "privacy compliance is universal is not accepted",
+                "source-backed replacement evidence or accepted gap",
+            ],
+            priority="P1_high_risk",
+            residual="Unsupported security claims can bypass threat surface, privacy, supply-chain or legal-owner review.",
+            action="Record unsupported security claim and replace it with source-backed evidence or accepted gap.",
+        )
+
+    add(
+        "security_sensitive_classification_present",
+        "security-risk-review.md",
+        "Security-sensitive scope must be classified before implementation.",
+        ["authn/authz impact", "secrets", "PII", "payment/billing", "production data", "CI permissions", "external write", "owner"],
+        action="Stage security-risk-review.md with classification before implementation.",
+    )
+    add(
+        "threat_surface_present",
+        "threat-surface.md",
+        "Threat surface is missing for a sensitive boundary.",
+        ["actors", "assets", "entry points", "trust boundaries", "privileged operations", "data exposed", "external systems", "abuse cases"],
+        action="Stage threat-surface.md before touching sensitive boundaries.",
+    )
+    add(
+        "security_risk_review_present",
+        "security-risk-review.md",
+        "Security risk review needs threat surface, tests, owner review, rollback and residual risk.",
+        ["threat surface", "auth or data impact", "security tests", "owner review", "rollback", "residual risk"],
+        action="Stage security-risk-review.md before implementation or security readiness claims.",
+    )
+    add(
+        "asvs_mapping_present",
+        "asvs-ssdf-mapping.md",
+        "Web/security controls need versioned ASVS evidence when ASVS applies.",
+        ["ASVS version", "applicable controls", "test evidence", "accepted gaps", "owner"],
+        action="Stage asvs-ssdf-mapping.md with applicable controls or explicit not-applicable rationale.",
+    )
+    add(
+        "asvs_level_selection_present",
+        "asvs-ssdf-mapping.md",
+        "ASVS level selection needs applicability, project risk and explicit gaps.",
+        ["ASVS Level 1", "ASVS Level 2", "ASVS Level 3", "project risk", "owner", "evidence", "explicit gaps"],
+        action="Record ASVS level selection before treating ASVS mapping as settled.",
+    )
+    add(
+        "secure_sdlc_ssdf_samm_present",
+        "asvs-ssdf-mapping.md",
+        "Secure SDLC/SSDF and SAMM maturity vocabulary should be explicit for production or shared software.",
+        ["Secure SDLC", "SSDF", "SAMM", "requirements", "design", "implementation", "tests", "release", "vulnerability response"],
+        priority="P2_recommended",
+        action="Record SSDF/SAMM lifecycle vocabulary in asvs-ssdf-mapping.md or accepted gap.",
+    )
+    add(
+        "api_security_scheme_present",
+        "api-security-review.md",
+        "API security scheme, scopes, error behavior and negative examples are missing.",
+        ["security scheme", "OAuth/JWT/session policy", "scopes", "error behavior", "negative examples", "OpenAPI or equivalent contract"],
+        action="Stage api-security-review.md before API security claims.",
+    )
+    add(
+        "authz_negative_tests_present",
+        "authz-negative-test-matrix.md",
+        "Authorization changes need allowed and forbidden behavior plus negative tests.",
+        [
+            "allowed behavior",
+            "forbidden behavior",
+            "BOLA",
+            "BFLA",
+            "object property authorization",
+            "role",
+            "scope",
+            "resource ownership",
+            "rate limits",
+            "unsafe consumption",
+        ],
+        action="Stage authz-negative-test-matrix.md before auth/authz readiness claims.",
+    )
+    add(
+        "secrets_policy_present",
+        "secrets-policy.md",
+        "Secrets/tokens/keys need storage, rotation, access and incident policy without values.",
+        ["secret storage", "rotation", "access scope", "scanning", "incident path", "no raw secrets", "no credentials", "no access tokens"],
+        priority="P0_blocker",
+        approval="approval_required before secret rotation, credential changes or secret-manager mutation",
+        residual="Raw secrets can leak through prompts, logs, traces, screenshots, fixtures or generated docs.",
+        action="Stage secrets-policy.md and stop before any secret value handling.",
+    )
+    add(
+        "data_classification_present",
+        "data-classification-register.md",
+        "Data class, purpose, retention, access and sharing are not explicit.",
+        ["data class", "sensitivity", "purpose", "retention", "access", "sharing", "storage", "deletion/export"],
+        action="Stage data-classification-register.md before examples, fixtures, evals, logs, traces, screenshots or docs.",
+    )
+    add(
+        "data_redaction_lifecycle_present",
+        "data-classification-register.md",
+        "Data redaction lifecycle must cover artifact and runtime evidence channels.",
+        ["prompts", "docs", "fixtures", "eval datasets", "logs", "traces", "screenshots", "redaction", "no raw PII", "no payment data"],
+        action="Stage data-classification-register.md with redaction policy before evidence capture.",
+    )
+    add(
+        "privacy_impact_record_present",
+        "privacy-impact-record.md",
+        "Privacy-impacting work needs purpose, minimization, retention, deletion/export, sharing and owner review.",
+        ["purpose", "data minimization", "notice/consent", "retention", "deletion/export", "access", "sharing", "legal owner"],
+        action="Stage privacy-impact-record.md before privacy-impacting implementation or claims.",
+    )
+    add(
+        "external_write_approval_present",
+        "approval-record.md",
+        "Production data, payment/billing, secret rotation, policy changes or external security-system mutations need approval and rollback.",
+        ["approval", "rollback", "production data", "payment/billing", "secret rotation", "policy change", "external security system"],
+        priority="P0_blocker",
+        approval="approval_required before production data, payment/billing, secret rotation, policy change or external security-system mutation",
+        residual="Unapproved sensitive mutations can expose data, move money or change security posture.",
+        action="Stage approval-record.md and stop before side-effecting sensitive actions.",
+    )
+    add(
+        "abuse_rate_limit_review_present",
+        "abuse-rate-limit-plan.md",
+        "Public endpoints, payments, uploads, messaging and AI/tool actions need abuse and rate-limit review.",
+        ["abuse cases", "rate limits", "monitoring", "fallback", "kill switch", "escalation"],
+        action="Stage abuse-rate-limit-plan.md before exposing abuse-prone surfaces.",
+    )
+    add(
+        "audit_logging_review_present",
+        "audit-logging-review.md",
+        "Sensitive/admin/payment/data-access actions need audit logging, redaction, retention and alerting.",
+        ["event taxonomy", "sensitive-data exclusions", "redaction", "retention", "alerting", "investigation owner"],
+        action="Stage audit-logging-review.md before sensitive action readiness claims.",
+    )
+    add(
+        "supply_chain_review_present",
+        "supply-chain-review.md",
+        "Dependency, package, container, CI action or release artifact changes need supply-chain review.",
+        ["dependencies", "licenses", "vulnerabilities", "SBOM", "provenance", "CI action pinning", "release signing", "update path"],
+        action="Stage supply-chain-review.md before release or package readiness claims.",
+    )
+    add(
+        "sbom_provenance_decision_present",
+        "sbom-manifest.md",
+        "SBOM/provenance decision must distinguish internal app, package, plugin, container and release artifact paths.",
+        ["internal app", "package", "plugin", "container", "release artifact", "SBOM format", "provenance", "validation command", "storage policy"],
+        action="Stage sbom-manifest.md or explicit not-applicable/accepted-gap reason.",
+    )
+    add(
+        "ci_permission_review_present",
+        "ci-permissions-review.md",
+        "CI/workflow/action changes need least-privilege token permissions and approval boundary.",
+        ["workflow triggers", "token permissions", "secrets", "external actions", "artifacts", "cache", "approval boundary"],
+        action="Stage ci-permissions-review.md before changing CI permissions or workflow security.",
+    )
+    add(
+        "ai_security_review_present",
+        "ai-security-review.md",
+        "AI/RAG/agent security needs prompt injection, data leakage, tool misuse and excessive agency review.",
+        ["prompt injection", "data leakage", "tool misuse", "excessive agency", "RAG data exposure", "red-team cases", "eval evidence"],
+        action="Stage ai-security-review.md and link to AI/RAG eval evidence before release.",
+    )
+    add(
+        "compliance_overlay_present",
+        "compliance-overlay.md",
+        "Compliance-sensitive work needs applicability, owner, evidence, non-goals, gaps and review cadence.",
+        ["applicability", "owner", "evidence", "non-goals", "gaps", "review cadence", "no certification claim"],
+        action="Stage compliance-overlay.md before compliance claims.",
+    )
+    add(
+        "compliance_overlay_taxonomy_present",
+        "compliance-overlay.md",
+        "Compliance overlays must separate obligation types and domain overlays.",
+        [
+            "legal/regulatory",
+            "customer contractual",
+            "internal policy",
+            "finance",
+            "healthcare",
+            "minors",
+            "enterprise",
+            "public sector",
+            "marketplace",
+            "AI agent tooling",
+        ],
+        action="Stage compliance-overlay.md with obligation taxonomy and owner review.",
+    )
+    add(
+        "vulnerability_response_workflow_present",
+        "vulnerability-response-record.md",
+        "Security bugs, advisories, leaked secrets, abuse incidents, dependency alerts or data exposure need incident workflow.",
+        ["triage", "severity", "containment", "fix evidence", "verification", "disclosure path", "patch/release plan", "post-incident lessons"],
+        action="Stage vulnerability-response-record.md before closing security incident work.",
+    )
+    add(
+        "codex_security_scan_status_present",
+        "security-risk-review.md",
+        "Codex Security scan status must be explicit: run with evidence, not requested or blocked.",
+        ["Codex Security scan status", "run with evidence", "not requested", "blocked", "no implied scan"],
+        priority="P2_recommended",
+        action="Record Codex Security scan status in security-risk-review.md before claiming scan coverage.",
+    )
+    add(
+        "security_evidence_before_completion",
+        "RUNLOG.md",
+        "Security readiness claims need current tests, review evidence, scan evidence, owner evidence or explicit gap.",
+        ["current tests", "review evidence", "scan evidence", "owner evidence", "explicit gap", "residual risk", "safe next action"],
+        priority="P0_blocker",
+        action="Record current security evidence or accepted gap in RUNLOG.md before completion claim.",
+    )
+
+    return recommendations
+
+
 def _recommendations(
     root: Path,
     files: set[str],
     directories: set[str],
     observed: list[dict[str, Any]],
     intent: str,
+    maturity_level: str,
     complexity_profile: str,
 ) -> list[dict[str, Any]]:
     recommendations: list[dict[str, Any]] = []
@@ -4160,22 +4622,7 @@ def _recommendations(
     recommendations.extend(_api_integrations_recommendations(files, observed, intent))
     recommendations.extend(_database_data_recommendations(root, files, observed, intent))
     recommendations.extend(_llm_ai_rag_recommendations(files, observed, intent))
-    if complexity_profile == "high_risk":
-        recommendations.append(
-            _recommendation(
-                priority="P1_high_risk",
-                reason="High-risk security, privacy, payment, compliance or sensitive-data intent was detected.",
-                domain="security_privacy_compliance",
-                gate="security_risk_review_present",
-                artifact="security-risk-review.md",
-                evidence_required=["threat surface", "auth or data impact", "tests", "rollback", "owner review"],
-                evidence_owner="security or product owner",
-                approval_boundary="approval_required before touching secrets, payment, auth, PII or production data",
-                accepted_gap_option="explicit_gap_accepted with owner, reason, residual risk and review date",
-                residual_risk="Intent classification does not prove all security requirements are known.",
-                safe_next_action="Stage a security risk review and list unknowns before implementation.",
-            )
-        )
+    recommendations.extend(_security_privacy_compliance_recommendations(observed, intent, maturity_level, complexity_profile))
     if _mentions_any(intent, DELIVERY_INTENT_TERMS) or _has_any_signal(
         observed,
         {"ci_configuration", "deployment_configuration", "release_file"},
@@ -4352,6 +4799,7 @@ def _observed_domain_ids(observed: list[dict[str, Any]]) -> set[str]:
         "codex_agentic_workflow": "codex_agentic_workflow",
         "backend": "backend",
         "frontend": "frontend",
+        "security_sensitive_surface": "security_privacy_compliance",
     }
     return {mapping[signal["id"]] for signal in observed if signal["id"] in mapping}
 

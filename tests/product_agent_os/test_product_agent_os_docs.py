@@ -314,6 +314,75 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         self.assertIn("llm_ai_rag_readiness_when_ai_behavior_changes", development_standards)
         self.assertIn("AI/RAG behavior changes record `llm_ai_rag` evidence", development_standards)
 
+    def test_track9_security_privacy_compliance_docs_and_backlog_are_synced(self):
+        backlog = TRACK9_BACKLOG.read_text(encoding="utf-8")
+        behavioral_evals = (PRODUCT_AGENT_OS / "behavioral-evals.md").read_text(encoding="utf-8")
+        scenarios = (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8")
+        methodology_intelligence = (PRODUCT_AGENT_OS / "methodology-intelligence.md").read_text(
+            encoding="utf-8"
+        )
+        development_standards = (PRODUCT_AGENT_OS / "development-standards.md").read_text(
+            encoding="utf-8"
+        )
+        readme = (ROOT / "plugins" / "product-agent-os" / "README.md").read_text(encoding="utf-8")
+
+        for expected in [
+            "T9-D11",
+            "Security, Privacy & Compliance",
+            "security_privacy_compliance_contract_present",
+            "renderer file count increased from 157 to 173",
+            "Codex Security scan status",
+            "docs-only security article",
+        ]:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        for expected in [
+            "Security, Privacy & Compliance eval",
+            "security_privacy_compliance_contract_present",
+            "security_sensitive_classification_present",
+            "Codex Security scan is implied",
+            "privacy compliance is universal",
+        ]:
+            with self.subTest(behavioral_evals=expected):
+                self.assertIn(expected, behavioral_evals)
+
+        for expected in [
+            "Security, Privacy & Compliance methodology routing",
+            "threat-surface.md",
+            "asvs-ssdf-mapping.md",
+            "approval-record.md",
+            "Codex Security scans",
+        ]:
+            with self.subTest(scenarios=expected):
+                self.assertIn(expected, scenarios)
+
+        for expected in [
+            "Security/Privacy/Compliance",
+            "security_privacy_compliance_contract_present",
+            "data-classification-register.md",
+            "vulnerability-response-record.md",
+        ]:
+            with self.subTest(methodology_intelligence=expected):
+                self.assertIn(expected, methodology_intelligence)
+
+        for expected in [
+            "security_privacy_compliance_when_sensitive_surface",
+            "Security/Privacy/Compliance-sensitive slices record `security_privacy_compliance` evidence",
+        ]:
+            with self.subTest(development_standards=expected):
+                self.assertIn(expected, development_standards)
+
+        for expected in [
+            "Security, Privacy & Compliance methodology",
+            "security_privacy_compliance_contract_present",
+            "threat-surface.md",
+            "Codex Security scan status",
+            "approval_required",
+        ]:
+            with self.subTest(readme=expected):
+                self.assertIn(expected, readme)
+
 
 if __name__ == "__main__":
     unittest.main()

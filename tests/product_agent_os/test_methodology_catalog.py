@@ -1093,6 +1093,134 @@ class MethodologyCatalogContractTest(unittest.TestCase):
         self.assertIn("standard", ai_rag["complexity_impact"])
         self.assertIn("high_risk", ai_rag["complexity_impact"])
 
+    def test_security_privacy_compliance_domain_has_track_nine_contract(self):
+        from product_agent_os.methodology_catalog import load_methodology_catalog
+
+        catalog = load_methodology_catalog()
+        domains = {domain["id"]: domain for domain in catalog["domains"]}
+        security = domains["security_privacy_compliance"]
+
+        expected_gates = [
+            "security_sensitive_classification_present",
+            "threat_surface_present",
+            "security_risk_review_present",
+            "asvs_mapping_present",
+            "asvs_level_selection_present",
+            "secure_sdlc_ssdf_samm_present",
+            "api_security_scheme_present",
+            "authz_negative_tests_present",
+            "secrets_policy_present",
+            "data_classification_present",
+            "data_redaction_lifecycle_present",
+            "privacy_impact_record_present",
+            "external_write_approval_present",
+            "abuse_rate_limit_review_present",
+            "audit_logging_review_present",
+            "supply_chain_review_present",
+            "sbom_provenance_decision_present",
+            "ci_permission_review_present",
+            "ai_security_review_present",
+            "compliance_overlay_present",
+            "compliance_overlay_taxonomy_present",
+            "vulnerability_response_workflow_present",
+            "codex_security_scan_status_present",
+            "security_evidence_before_completion",
+            "security_unsupported_claims_rejected",
+        ]
+        expected_artifacts = [
+            "security-risk-review.md",
+            "threat-surface.md",
+            "asvs-ssdf-mapping.md",
+            "authz-negative-test-matrix.md",
+            "secrets-policy.md",
+            "data-classification-register.md",
+            "privacy-impact-record.md",
+            "api-security-review.md",
+            "abuse-rate-limit-plan.md",
+            "supply-chain-review.md",
+            "sbom-manifest.md",
+            "ci-permissions-review.md",
+            "audit-logging-review.md",
+            "ai-security-review.md",
+            "compliance-overlay.md",
+            "vulnerability-response-record.md",
+            "approval-record.md",
+        ]
+        expected_eval_fields = [
+            "security_privacy_compliance_contract_present",
+            "security_sensitive_classification_contract_present",
+            "threat_surface_contract_present",
+            "security_risk_review_contract_present",
+            "asvs_ssdf_mapping_contract_present",
+            "asvs_level_selection_contract_present",
+            "secure_sdlc_ssdf_samm_contract_present",
+            "api_security_review_contract_present",
+            "authz_negative_tests_contract_present",
+            "secrets_policy_contract_present",
+            "data_classification_contract_present",
+            "data_redaction_lifecycle_contract_present",
+            "privacy_impact_contract_present",
+            "external_write_approval_contract_present",
+            "abuse_rate_limit_contract_present",
+            "audit_logging_contract_present",
+            "supply_chain_contract_present",
+            "sbom_provenance_contract_present",
+            "ci_permission_contract_present",
+            "ai_security_review_contract_present",
+            "compliance_overlay_contract_present",
+            "compliance_overlay_taxonomy_contract_present",
+            "vulnerability_response_contract_present",
+            "codex_security_scan_status_contract_present",
+            "security_evidence_before_completion_contract_present",
+            "unsupported_security_claims_rejected_contract_present",
+        ]
+
+        for term in [
+            "authn, authz, permissions, secrets, PII, sensitive data, payment, billing, abuse, rate limit or audit logging change",
+            "external write, production data, CI permission, dependency, package, container, release artifact or supply-chain change",
+            "AI/RAG/agent workflow with prompt injection, data leakage, tool misuse or excessive agency risk",
+            "regulated, contractual, finance, healthcare, minors, enterprise, public sector, marketplace or AI agent compliance overlay",
+            "security readiness, privacy compliance, ASVS/OWASP, SBOM, OAuth or Codex Security scan claim",
+        ]:
+            with self.subTest(applies_when=term):
+                self.assertIn(term, security["applies_when"])
+        for term in [
+            "docs-only security article without code, data, CI, dependency or policy change",
+            "keyword-only security mention without touched sensitive surface",
+            "docs-only repository with security article is not regulated automatically",
+            "OAuth-only claim without authorization evidence",
+            "no-secrets-in-code claim without artifact redaction evidence",
+        ]:
+            with self.subTest(not_applicable_when=term):
+                self.assertIn(term, security["not_applicable_when"])
+        for gate in expected_gates:
+            with self.subTest(gate=gate):
+                self.assertIn(gate, security["gates"])
+        for artifact in expected_artifacts:
+            with self.subTest(artifact=artifact):
+                self.assertIn(artifact, security["artifacts"])
+        for eval_field in expected_eval_fields:
+            with self.subTest(eval_field=eval_field):
+                self.assertIn(eval_field, security["eval_fields"])
+        for overlap in [
+            "backend auth, secrets and production runtime boundaries",
+            "API authorization, scopes, rate limits and external integrations",
+            "database data classification, retention and production access",
+            "LLM/AI/RAG prompt injection, tool misuse and data leakage",
+            "quality negative tests, scan evidence and evidence before completion",
+            "delivery release, CI permissions, SBOM, provenance and incident response",
+            "Codex workflow sandbox, approvals, MCP, hooks and automation boundaries",
+            "product compliance promises and legal or contractual owner review",
+        ]:
+            with self.subTest(overlap=overlap):
+                self.assertIn(overlap, security["overlaps"])
+        self.assertIn("team", security["maturity_impact"])
+        self.assertIn("production", security["maturity_impact"])
+        self.assertIn("regulated", security["maturity_impact"])
+        self.assertIn("standard", security["complexity_impact"])
+        self.assertIn("complex", security["complexity_impact"])
+        self.assertIn("high_risk", security["complexity_impact"])
+
 
 if __name__ == "__main__":
     unittest.main()

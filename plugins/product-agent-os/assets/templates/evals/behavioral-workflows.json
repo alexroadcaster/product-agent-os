@@ -542,6 +542,63 @@
       "residual_risk": "Security-sensitive behavior still requires project-specific tests, owner review, approval, and any explicitly requested security scan evidence."
     },
     {
+      "name": "security-privacy-compliance-planning-first",
+      "input": {
+        "prompt": "Ship this payment auth and compliance change from OAuth notes, ASVS notes and SBOM presence.",
+        "workspace_fixture": "security-auth-payment",
+        "control_plane_state": "quality_gate"
+      },
+      "expected": {
+        "route": "Security, Privacy & Compliance methodology (`security_privacy_compliance`)",
+        "minimum_artifacts": [
+          "security risk review",
+          "threat-surface.md",
+          "data-classification-register.md",
+          "privacy-impact-record.md",
+          "approval-record.md"
+        ],
+        "required_fields": [
+          "security_sensitive_classification_present",
+          "threat_surface_present",
+          "security_risk_review_present",
+          "asvs_level_selection_present",
+          "secure_sdlc_ssdf_samm_present",
+          "api_security_scheme_present",
+          "authz_negative_tests_present",
+          "secrets_policy_present",
+          "data_classification_present",
+          "data_redaction_lifecycle_present",
+          "privacy_impact_record_present",
+          "external_write_approval_present",
+          "abuse_rate_limit_review_present",
+          "audit_logging_review_present",
+          "supply_chain_review_present",
+          "sbom_provenance_decision_present",
+          "ci_permission_review_present",
+          "ai_security_review_present",
+          "compliance_overlay_taxonomy_present",
+          "vulnerability_response_workflow_present",
+          "Codex Security scan status not requested/run/blocked",
+          "approval_required",
+          "explicit_gap_accepted",
+          "not legal advice",
+          "docs-only security articles are not regulated automatically"
+        ]
+      },
+      "forbidden": [
+        "security review after coding",
+        "no secrets in code means safe",
+        "ASVS/OWASP proves compliance",
+        "SBOM once is enough",
+        "Codex Security scan is implied",
+        "OAuth proves API security",
+        "privacy compliance is universal",
+        "docs-only security article becomes regulated automatically",
+        "compliance certification claim without legal owner"
+      ],
+      "residual_risk": "Security/privacy/compliance completion needs owner-reviewed evidence, explicit gaps, approval boundaries and scan status; methodology routing is not legal advice or a scan result."
+    },
+    {
       "name": "ci-stabilization-plan",
       "input": {
         "prompt": "Stabilize the flaky GitHub Actions job without changing remote settings.",

@@ -41,6 +41,15 @@ AI_RAG_TEMPLATE_ALIASES = {
     "agent-handoff-contract.md": "agent-task-packet.md",
 }
 
+SECURITY_TEMPLATE_ALIASES = {
+    "threat-model.md": "threat-surface.md",
+    "asvs-mapping.md": "asvs-ssdf-mapping.md",
+    "secrets-inventory.md": "secrets-policy.md",
+    "authz-matrix.md": "authz-negative-test-matrix.md",
+    "audit-log-policy.md": "audit-logging-review.md",
+    "compliance-applicability-matrix.md": "compliance-overlay.md",
+}
+
 
 def _spec(
     key: str,
@@ -646,6 +655,102 @@ _TEMPLATES: tuple[TemplateSpec, ...] = (
         "artifact-templates",
         "artifact-templates/security-risk-review.md",
         ".codex/artifact-templates/security-risk-review.md",
+    ),
+    _spec(
+        "artifact-threat-surface",
+        "artifact-templates",
+        "artifact-templates/threat-surface.md",
+        ".codex/artifact-templates/threat-surface.md",
+    ),
+    _spec(
+        "artifact-asvs-ssdf-mapping",
+        "artifact-templates",
+        "artifact-templates/asvs-ssdf-mapping.md",
+        ".codex/artifact-templates/asvs-ssdf-mapping.md",
+    ),
+    _spec(
+        "artifact-authz-negative-test-matrix",
+        "artifact-templates",
+        "artifact-templates/authz-negative-test-matrix.md",
+        ".codex/artifact-templates/authz-negative-test-matrix.md",
+    ),
+    _spec(
+        "artifact-secrets-policy",
+        "artifact-templates",
+        "artifact-templates/secrets-policy.md",
+        ".codex/artifact-templates/secrets-policy.md",
+    ),
+    _spec(
+        "artifact-data-classification-register",
+        "artifact-templates",
+        "artifact-templates/data-classification-register.md",
+        ".codex/artifact-templates/data-classification-register.md",
+    ),
+    _spec(
+        "artifact-privacy-impact-record",
+        "artifact-templates",
+        "artifact-templates/privacy-impact-record.md",
+        ".codex/artifact-templates/privacy-impact-record.md",
+    ),
+    _spec(
+        "artifact-api-security-review",
+        "artifact-templates",
+        "artifact-templates/api-security-review.md",
+        ".codex/artifact-templates/api-security-review.md",
+    ),
+    _spec(
+        "artifact-abuse-rate-limit-plan",
+        "artifact-templates",
+        "artifact-templates/abuse-rate-limit-plan.md",
+        ".codex/artifact-templates/abuse-rate-limit-plan.md",
+    ),
+    _spec(
+        "artifact-supply-chain-review",
+        "artifact-templates",
+        "artifact-templates/supply-chain-review.md",
+        ".codex/artifact-templates/supply-chain-review.md",
+    ),
+    _spec(
+        "artifact-sbom-manifest",
+        "artifact-templates",
+        "artifact-templates/sbom-manifest.md",
+        ".codex/artifact-templates/sbom-manifest.md",
+    ),
+    _spec(
+        "artifact-ci-permissions-review",
+        "artifact-templates",
+        "artifact-templates/ci-permissions-review.md",
+        ".codex/artifact-templates/ci-permissions-review.md",
+    ),
+    _spec(
+        "artifact-audit-logging-review",
+        "artifact-templates",
+        "artifact-templates/audit-logging-review.md",
+        ".codex/artifact-templates/audit-logging-review.md",
+    ),
+    _spec(
+        "artifact-ai-security-review",
+        "artifact-templates",
+        "artifact-templates/ai-security-review.md",
+        ".codex/artifact-templates/ai-security-review.md",
+    ),
+    _spec(
+        "artifact-compliance-overlay",
+        "artifact-templates",
+        "artifact-templates/compliance-overlay.md",
+        ".codex/artifact-templates/compliance-overlay.md",
+    ),
+    _spec(
+        "artifact-vulnerability-response-record",
+        "artifact-templates",
+        "artifact-templates/vulnerability-response-record.md",
+        ".codex/artifact-templates/vulnerability-response-record.md",
+    ),
+    _spec(
+        "artifact-approval-record",
+        "artifact-templates",
+        "artifact-templates/approval-record.md",
+        ".codex/artifact-templates/approval-record.md",
     ),
     _spec(
         "artifact-ci-stabilization-report",

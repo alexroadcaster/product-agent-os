@@ -104,6 +104,8 @@ Track 8 hardening добавляет scenario-first routing:
 - Detailed discovery status now has `methodology_applicability` packets in discovery output for architecture boundary, test/eval-first evidence, docs-as-code ownership, product measurement, complex-domain DDD, applicable FSD structure, docs tooling decision and standards trigger policy.
 - Readiness gates must distinguish “route detected” from verified readiness. Completion claims require current evidence or an explicit inspection-only gap.
 
+Track 9 security methodology adds `security_privacy_compliance_when_sensitive_surface` as a conditional readiness gate for authn/authz, permissions, secrets, PII, sensitive data, payment/billing, abuse controls, audit logging, supply chain, SBOM/provenance, CI permissions, AI/tool security, external writes, production data, policy changes and compliance overlays. Security/Privacy/Compliance-sensitive slices record `security_privacy_compliance` evidence before completion claims: threat surface, security risk review, ASVS/SSDF/SAMM mapping, authorization negative tests, secrets policy, data classification, privacy impact, external-write approval, supply-chain/SBOM/CI evidence, audit logging, compliance overlay taxonomy, vulnerability response workflow, explicit Codex Security scan status or `not requested`, and approval boundaries.
+
 ## Важные ограничения
 
 - Data-Driven Development в source-файле не является тем же термином, что Domain-Driven Design. В core guidance используем формулировки `data-informed product decisions`, `product hypothesis` и `success metric`, чтобы не смешивать термины.
@@ -114,6 +116,7 @@ Track 8 hardening добавляет scenario-first routing:
 - Docs tooling selection records selected tools, rejected tools, evidence owner, maintenance owner and approval boundaries; docs-light/internal-only work can be `not_applicable`.
 - AI/RAG quality нельзя закрывать только unit tests. Для retrieval, grounding, hallucination risk, latency и cost нужны evals или явно записанный gap.
 - `llm_ai_rag_readiness_when_ai_behavior_changes` нельзя закрывать prompt inspection, citations-only grounding, stale eval output или automatic model-upgrade quality claim; live model calls, external eval services, vector DB access и tool writes остаются approval-bound.
+- `security_privacy_compliance_when_sensitive_surface` нельзя закрывать docs-only security article, no-secrets-in-code claim, OAuth-only note, one-time SBOM, implied Codex Security scan или generic compliance/certification wording. Legal, contractual and internal-policy overlays need owner, evidence, non-goals, gaps and review cadence.
 
 ## Definition of done для Product-Agent OS slice
 
@@ -129,5 +132,6 @@ Slice можно считать готовым к review только если:
 - standards trigger impact is recorded through `standards_trigger_policy` when ADR/C4/arc42/OpenAPI/AsyncAPI/SemVer/Keep a Changelog/CODEOWNERS/GitHub Actions context applies;
 - conditional readiness gates record `not_applicable`, `applicable_missing`, `present_unverified`, `present_verified`, `proposal_staged`, `explicit_gap_accepted` or `approval_required` with applicability reason, owner and residual risk;
 - AI/RAG behavior changes record `llm_ai_rag` evidence: behavior promise, baseline/current eval, prompt/model/schema/tool/RAG/grounding/trace/guardrail/cost evidence, current-run evidence or an accepted gap;
+- Security/Privacy/Compliance-sensitive slices record `security_privacy_compliance` evidence: classification, threat surface, ASVS/SSDF/SAMM mapping, authz negative tests, secrets/data/privacy handling, supply-chain/SBOM/CI review, audit logging, compliance overlay, vulnerability response and explicit Codex Security scan status or accepted gap;
 - команды, exit codes, artifacts и residual risks записаны в `RUNLOG.md`;
 - approvals, security, privacy, migration и rollback risks не скрыты.

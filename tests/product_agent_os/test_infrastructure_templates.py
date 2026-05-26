@@ -15,7 +15,7 @@ TEMPLATE_ROOT = ROOT / "plugins" / "product-agent-os" / "assets" / "templates"
 PLUGIN_ROOT = ROOT / "plugins" / "product-agent-os"
 sys.path.insert(0, str(SCRIPTS))
 
-from product_agent_os.templates import AI_RAG_TEMPLATE_ALIASES, required_templates, render_template  # noqa: E402
+from product_agent_os.templates import AI_RAG_TEMPLATE_ALIASES, SECURITY_TEMPLATE_ALIASES, required_templates, render_template  # noqa: E402
 from product_agent_os.validators import validate_agent_file, validate_hook_file  # noqa: E402
 
 
@@ -141,6 +141,22 @@ REQUIRED_TARGETS = {
     ".codex/artifact-templates/trace-evidence-packet.md",
     ".codex/artifact-templates/ai-cost-latency-budget.md",
     ".codex/artifact-templates/security-risk-review.md",
+    ".codex/artifact-templates/threat-surface.md",
+    ".codex/artifact-templates/asvs-ssdf-mapping.md",
+    ".codex/artifact-templates/authz-negative-test-matrix.md",
+    ".codex/artifact-templates/secrets-policy.md",
+    ".codex/artifact-templates/data-classification-register.md",
+    ".codex/artifact-templates/privacy-impact-record.md",
+    ".codex/artifact-templates/api-security-review.md",
+    ".codex/artifact-templates/abuse-rate-limit-plan.md",
+    ".codex/artifact-templates/supply-chain-review.md",
+    ".codex/artifact-templates/sbom-manifest.md",
+    ".codex/artifact-templates/ci-permissions-review.md",
+    ".codex/artifact-templates/audit-logging-review.md",
+    ".codex/artifact-templates/ai-security-review.md",
+    ".codex/artifact-templates/compliance-overlay.md",
+    ".codex/artifact-templates/vulnerability-response-record.md",
+    ".codex/artifact-templates/approval-record.md",
     ".codex/artifact-templates/ci-stabilization-report.md",
     ".codex/artifact-templates/release-readiness.md",
     ".codex/artifact-templates/test-eval-matrix.md",
@@ -248,6 +264,95 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 self.assertNotIn(f".codex/artifact-templates/{legacy}", targets)
                 self.assertNotIn(legacy, artifacts)
                 self.assertIn(canonical, artifacts)
+
+    def test_security_template_names_are_canonical_and_source_names_are_mapped(self):
+        canonical_names = {
+            "threat-surface.md",
+            "asvs-ssdf-mapping.md",
+            "secrets-policy.md",
+            "authz-negative-test-matrix.md",
+            "audit-logging-review.md",
+            "compliance-overlay.md",
+        }
+        source_aliases = {
+            "threat-model.md": "threat-surface.md",
+            "asvs-mapping.md": "asvs-ssdf-mapping.md",
+            "secrets-inventory.md": "secrets-policy.md",
+            "authz-matrix.md": "authz-negative-test-matrix.md",
+            "audit-log-policy.md": "audit-logging-review.md",
+            "compliance-applicability-matrix.md": "compliance-overlay.md",
+        }
+        targets = {item.target_path for item in required_templates()}
+        catalog = json.loads(
+            (PLUGIN_ROOT / "assets" / "methodology" / "methodology-catalog.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        domains = {
+            domain["id"]: domain
+            for domain in catalog["domains"]
+            if isinstance(domain, dict) and domain.get("id")
+        }
+        artifacts = set(domains["security_privacy_compliance"]["artifacts"])
+
+        for canonical in canonical_names:
+            with self.subTest(canonical=canonical):
+                self.assertIn(f".codex/artifact-templates/{canonical}", targets)
+                self.assertIn(canonical, artifacts)
+
+        self.assertEqual(SECURITY_TEMPLATE_ALIASES, source_aliases)
+        for source_name, canonical in source_aliases.items():
+            with self.subTest(source_name=source_name):
+                self.assertNotIn(f".codex/artifact-templates/{source_name}", targets)
+                self.assertNotIn(source_name, artifacts)
+                self.assertIn(canonical, artifacts)
+
+    def test_security_privacy_compliance_templates_cover_source_artifact_set(self):
+        expected_terms = {
+            "security-risk-review.md": [
+                "codex security scan status",
+                "data classification register",
+                "compliance overlay",
+                "supply-chain review",
+                "sbom/provenance decision",
+            ],
+            "threat-surface.md": ["actors", "assets", "entry points", "trust boundaries", "abuse cases"],
+            "asvs-ssdf-mapping.md": ["asvs level 1", "asvs level 2", "asvs level 3", "ssdf", "samm"],
+            "authz-negative-test-matrix.md": ["bola", "bfla", "object property authorization", "unsafe consumption"],
+            "secrets-policy.md": ["storage", "rotation", "access scope", "scanning", "incident path"],
+            "data-classification-register.md": ["prompts", "docs", "fixtures", "eval datasets", "logs", "traces", "screenshots"],
+            "privacy-impact-record.md": ["purpose", "data minimization", "retention", "deletion/export", "legal owner"],
+            "api-security-review.md": ["security scheme", "scopes", "error behavior", "negative examples", "object-level authorization"],
+            "abuse-rate-limit-plan.md": ["abuse cases", "rate limits", "monitoring", "kill switch", "escalation"],
+            "supply-chain-review.md": ["dependencies", "licenses", "vulnerabilities", "sbom", "provenance", "release signing"],
+            "sbom-manifest.md": ["spdx", "cyclonedx", "generation command", "validation command", "provenance"],
+            "ci-permissions-review.md": ["workflow triggers", "token permissions", "external actions", "action pinning", "approval boundary"],
+            "audit-logging-review.md": ["event taxonomy", "redaction", "retention", "alerting", "investigation owner"],
+            "ai-security-review.md": ["prompt injection", "data leakage", "tool misuse", "excessive agency", "red-team cases"],
+            "compliance-overlay.md": ["legal/regulatory", "customer contractual", "internal policy", "finance", "healthcare", "ai agent tooling"],
+            "vulnerability-response-record.md": ["triage", "severity", "containment", "fix evidence", "disclosure path", "post-incident lessons"],
+            "approval-record.md": ["production data", "external write", "payment/billing", "secret rotation", "policy change"],
+        }
+        required_boundary_terms = [
+            "Source status:",
+            "Owner",
+            "Current Evidence",
+            "Accepted Gap",
+            "Residual Risk",
+            "raw secrets",
+            "payment data",
+            "raw PII",
+            "private customer data",
+        ]
+
+        for filename, terms in expected_terms.items():
+            text = (TEMPLATE_ROOT / "artifact-templates" / filename).read_text(encoding="utf-8")
+            lowered = text.lower()
+            with self.subTest(filename=filename):
+                for term in required_boundary_terms:
+                    self.assertIn(term.lower(), lowered)
+                for term in terms:
+                    self.assertIn(term.lower(), lowered)
 
     def test_llm_ai_rag_final_batch_templates_cover_handoff_tooling_migration_lifecycle_and_incidents(self):
         targets = {item.target_path for item in required_templates()}
@@ -2120,6 +2225,165 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 "rollback",
                 "residual risk",
             ],
+            "threat-surface.md": [
+                "source status:",
+                "actors",
+                "assets",
+                "entry points",
+                "trust boundaries",
+                "abuse cases",
+                "no secrets",
+                "residual risk",
+            ],
+            "asvs-ssdf-mapping.md": [
+                "source status:",
+                "asvs level 1",
+                "asvs level 2",
+                "asvs level 3",
+                "ssdf",
+                "samm",
+                "compliance",
+                "residual risk",
+            ],
+            "authz-negative-test-matrix.md": [
+                "source status:",
+                "bola",
+                "bfla",
+                "object property authorization",
+                "unsafe consumption",
+                "abuse case",
+                "residual risk",
+            ],
+            "secrets-policy.md": [
+                "source status:",
+                "storage",
+                "rotation",
+                "access scope",
+                "scanning",
+                "incident path",
+                "no secrets",
+                "residual risk",
+            ],
+            "data-classification-register.md": [
+                "source status:",
+                "prompts",
+                "docs",
+                "fixtures",
+                "eval datasets",
+                "logs",
+                "traces",
+                "screenshots",
+                "redaction lifecycle",
+                "residual risk",
+            ],
+            "privacy-impact-record.md": [
+                "source status:",
+                "purpose",
+                "data minimization",
+                "retention",
+                "deletion/export",
+                "legal owner",
+                "not legal advice",
+                "residual risk",
+            ],
+            "api-security-review.md": [
+                "source status:",
+                "security scheme",
+                "scopes",
+                "error behavior",
+                "negative examples",
+                "object-level authorization",
+                "unsafe consumption",
+                "residual risk",
+            ],
+            "abuse-rate-limit-plan.md": [
+                "source status:",
+                "abuse cases",
+                "rate limits",
+                "monitoring",
+                "kill switch",
+                "escalation",
+                "residual risk",
+            ],
+            "supply-chain-review.md": [
+                "source status:",
+                "dependencies",
+                "licenses",
+                "vulnerabilities",
+                "sbom",
+                "provenance",
+                "release signing",
+                "residual risk",
+            ],
+            "sbom-manifest.md": [
+                "source status:",
+                "spdx",
+                "cyclonedx",
+                "generation command",
+                "validation command",
+                "provenance",
+                "residual risk",
+            ],
+            "ci-permissions-review.md": [
+                "source status:",
+                "workflow triggers",
+                "token permissions",
+                "external actions",
+                "action pinning",
+                "approval boundary",
+                "least privilege",
+                "residual risk",
+            ],
+            "audit-logging-review.md": [
+                "source status:",
+                "event taxonomy",
+                "redaction",
+                "retention",
+                "alerting",
+                "investigation owner",
+                "residual risk",
+            ],
+            "ai-security-review.md": [
+                "source status:",
+                "prompt injection",
+                "data leakage",
+                "tool misuse",
+                "excessive agency",
+                "red-team cases",
+                "approval boundary",
+                "residual risk",
+            ],
+            "compliance-overlay.md": [
+                "source status:",
+                "legal/regulatory",
+                "customer contractual",
+                "internal policy",
+                "finance",
+                "healthcare",
+                "ai agent tooling",
+                "not legal advice",
+                "residual risk",
+            ],
+            "vulnerability-response-record.md": [
+                "source status:",
+                "triage",
+                "severity",
+                "containment",
+                "fix evidence",
+                "disclosure path",
+                "post-incident lessons",
+                "residual risk",
+            ],
+            "approval-record.md": [
+                "source status:",
+                "production data",
+                "external write",
+                "payment/billing",
+                "secret rotation",
+                "policy change",
+                "approval_required",
+                "residual risk",
+            ],
             "ci-stabilization-report.md": [
                 "failing job",
                 "command",
@@ -2802,6 +3066,7 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 "desktop-local-runtime-plan",
                 "data-migration-plan",
                 "security-sensitive-change-plan",
+                "security-privacy-compliance-planning-first",
                 "ci-stabilization-plan",
                 "release-packaging-readiness",
                 "no-placeholder-plan",
@@ -3430,6 +3695,7 @@ class InfrastructureTemplateTest(unittest.TestCase):
         self.assertIn("release_measurement", expected["methodology_gates"])
         self.assertIn("docs_tooling_selector", expected["methodology_gates"])
         self.assertIn("standards_trigger_policy", expected["methodology_gates"])
+        self.assertIn("security_privacy_compliance", expected["methodology_gates"])
         self.assertIn("domain_model", expected["methodology_signals"])
         self.assertIn("fsd_structure", expected["methodology_signals"])
         self.assertIn("frontend", expected["methodology_signals"])
@@ -3437,6 +3703,10 @@ class InfrastructureTemplateTest(unittest.TestCase):
         self.assertIn("completion_evidence", expected["methodology_signals"])
         self.assertIn("docs_tooling_decision", expected["methodology_signals"])
         self.assertIn("governance_proposal", expected["methodology_signals"])
+        self.assertIn("security_privacy_compliance", expected["methodology_signals"])
+        self.assertIn("security_sensitive_surface", expected["methodology_signals"])
+        self.assertIn("sbom_provenance", expected["methodology_signals"])
+        self.assertIn("ci_permissions", expected["methodology_signals"])
         self.assertIn("docs_as_code_impact_statuses", expected)
         self.assertEqual(
             expected["docs_as_code_impact_statuses"],
@@ -3488,6 +3758,7 @@ class InfrastructureTemplateTest(unittest.TestCase):
             "onboarding_map_when_legacy_repo",
             "migration_plan_when_contract_or_data_changes",
             "security_review_when_sensitive_surface",
+            "security_privacy_compliance_when_sensitive_surface",
             "backend_readiness_when_backend_changes",
             "platform_runtime_check_when_native_or_desktop",
             "ci_failure_evidence_when_ci_stabilization",
@@ -3548,6 +3819,23 @@ class InfrastructureTemplateTest(unittest.TestCase):
         ]:
             with self.subTest(ai_rag_gate=expected_term):
                 self.assertIn(expected_term, ai_rag_payload)
+
+        security_gate = gates["security_privacy_compliance_when_sensitive_surface"]
+        security_payload = json.dumps(security_gate, sort_keys=True).lower()
+        for expected_term in [
+            "security_privacy_compliance",
+            "threat-surface.md",
+            "asvs-ssdf-mapping.md",
+            "authz-negative-test-matrix.md",
+            "data-classification-register.md",
+            "privacy-impact-record.md",
+            "sbom-manifest.md",
+            "codex security scan status",
+            "approval_required",
+            "docs-only security articles",
+        ]:
+            with self.subTest(security_gate=expected_term):
+                self.assertIn(expected_term, security_payload)
 
     def test_standards_trigger_templates_cover_architecture_api_release_and_governance(self):
         payloads = {

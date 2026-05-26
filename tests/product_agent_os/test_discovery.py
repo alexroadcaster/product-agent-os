@@ -288,6 +288,70 @@ class DiscoveryTest(unittest.TestCase):
         self.assertIn("approval_required", signals["note"])
         self.assertIn("api_contract_surface", result["route_inputs"]["workspace_signals"]["active_surfaces"])
 
+    def test_security_privacy_compliance_signals_record_depth_without_claiming_readiness(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            workspace = Path(tmpdir)
+            self._write_files(
+                workspace,
+                {
+                    "auth/login.py": "def login():\n    return None\n",
+                    "policies/rbac.yml": "roles: []\n",
+                    "billing/stripe_checkout.ts": "export const checkout = true;\n",
+                    "config/secrets-policy.md": "# Secret storage and rotation\n",
+                    "privacy/pii-retention.md": "# PII retention and deletion\n",
+                    "abuse/rate-limit.ts": "export const limit = 10;\n",
+                    "audit/security-log.md": "# Audit logging\n",
+                    "supply-chain/sbom.cyclonedx.json": "{}\n",
+                    ".github/workflows/permissions-review.yml": "permissions: read-all\n",
+                    "compliance/soc2-gap.md": "# SOC 2 applicability gap\n",
+                    "agents/payment-tool.md": "# Agent tool permissions and prompt injection\n",
+                    ".codex/approval-record.md": "# Approval boundary\n",
+                    "openapi/public.yaml": "openapi: 3.2.0\ninfo:\n  title: API\n  version: 1.0.0\npaths: {}\n",
+                },
+            )
+
+            result = analyze_workspace(workspace)
+
+        self.assertTrue(result["methodology_signals"]["security_privacy_compliance"])
+        self.assertIn("security_sensitive_surface", result["route_inputs"]["workspace_signals"]["active_surfaces"])
+        signals = result["security_sensitive_signals"]
+        expected_sources = {
+            "authn": "auth/login.py",
+            "authz": "policies/rbac.yml",
+            "permissions": "policies/rbac.yml",
+            "payments": "billing/stripe_checkout.ts",
+            "secrets": "config/secrets-policy.md",
+            "sensitive_data": "privacy/pii-retention.md",
+            "abuse_controls": "abuse/rate-limit.ts",
+            "audit_logging": "audit/security-log.md",
+            "supply_chain": "supply-chain/sbom.cyclonedx.json",
+            "sbom_provenance": "supply-chain/sbom.cyclonedx.json",
+            "ci_permissions": ".github/workflows/permissions-review.yml",
+            "compliance": "compliance/soc2-gap.md",
+            "ai_agent_security": "agents/payment-tool.md",
+            "codex_approval_boundaries": ".codex/approval-record.md",
+        }
+        for category, source in expected_sources.items():
+            with self.subTest(category=category):
+                packet = signals[category]
+                self.assertEqual(packet["status"], "present_unverified")
+                self.assertIn(source, packet["sources"])
+        self.assertEqual(signals["verification_status"], "applicable_missing")
+        self.assertIn("Codex Security scan status is explicit", signals["note"])
+        self.assertIn("present_unverified", signals["note"])
+
+        route_signals = result["route_inputs"]["workspace_signals"]["security_sensitive_signals"]
+        self.assertEqual(route_signals["compliance"]["status"], "present_unverified")
+        applicability = result["methodology_applicability"]["security_privacy_compliance_readiness"]
+        self.assertEqual(applicability["status"], "present_unverified")
+        for expected in [
+            "threat-surface.md",
+            "data-classification-register.md",
+            "privacy-impact-record.md",
+            "Codex Security scan status",
+        ]:
+            self.assertIn(expected, applicability["required_evidence"])
+
     def test_swagger_ui_only_does_not_create_api_contract_surface(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             workspace = Path(tmpdir)
@@ -1351,6 +1415,7 @@ class DiscoveryTest(unittest.TestCase):
             "frontend_methodology",
             "backend_methodology",
             "database_data_readiness",
+            "security_privacy_compliance_readiness",
             "docs_tooling_decision",
             "standards_trigger_policy",
             "codex_agentic_workflow",
@@ -1391,6 +1456,7 @@ class DiscoveryTest(unittest.TestCase):
         self.assertEqual(applicability["product_measurement"]["status"], "present_unverified")
         self.assertEqual(applicability["domain_model_when_complex_domain"]["status"], "not_applicable")
         self.assertEqual(applicability["database_data_readiness"]["status"], "not_applicable")
+        self.assertEqual(applicability["security_privacy_compliance_readiness"]["status"], "not_applicable")
         self.assertEqual(applicability["llm_ai_rag_readiness"]["status"], "not_applicable")
 
     def test_methodology_applicability_reports_status_transitions(self):

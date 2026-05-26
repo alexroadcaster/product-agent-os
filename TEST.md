@@ -43,6 +43,13 @@ Generated at: 2026-05-26
 - Latest T9-D10 final transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 5 sessions and 0 failures.
 - Latest T9-D10 final Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
 - Latest T9-D10 final docs/diff hygiene: `python tools\check_docs.py` passed and `git diff --check` exited `0`.
+- T9-D11 status: Security, Privacy & Compliance methodology integration is implemented.
+- Latest T9-D11 focused security suite: `python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_source_policy tests.product_agent_os.test_fixture_eval_runner -v` ran 81 tests with `OK`.
+- Latest T9-D11 fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0` with 57 fixtures, 0 failures, renderer file count 173 and `security_privacy_compliance_contract_present: true`.
+- Latest T9-D11 full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 460 tests with `OK`.
+- Latest T9-D11 transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 5 sessions and 0 failures.
+- Latest T9-D11 Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
+- Latest T9-D11 docs/diff hygiene: `python tools\check_docs.py` passed and `git diff --check` exited `0`.
 
 ## Required Checks After Docs Changes
 
@@ -254,6 +261,15 @@ python tools\check_docs.py
 - Confirmed `model-decision-record.md`, `eval-run-report.md`, RAG source/retrieval/dataset templates, `guardrail-matrix.md` and generated `RUNLOG.md` include model migration, threshold, deletion/privacy, incident and Security/Privacy handoff fields.
 - Confirmed discovery exposes `diff_signal_policy` as limited to workspace and intent signals, with no external branches, no network and no filename-only certainty.
 - Confirmed methodology reports render AI/RAG evidence, approvals, accepted gaps, residual risk and safe next action while redacting local paths, private chat logs and private customer data.
+
+## Completed Focused Checks For T9-D11
+
+- Added RED then GREEN tests for `security_privacy_compliance` catalog, audit recommendations, discovery depth, source-policy redaction, renderer templates, readiness/behavioral evals, lifecycle skill routing, fixture eval coverage and methodology report redaction.
+- Confirmed the renderer stages 16 new Security, Privacy & Compliance artifact templates under `.codex/artifact-templates/` and raises the `python-app` renderer file count from 157 to 173.
+- Confirmed canonical template names and aliases cover threat surface/model, ASVS/SSDF mapping, secrets inventory/policy, authorization negative tests, audit logging and compliance overlay/applicability without duplicate generated contracts.
+- Confirmed source-policy checks block secret-like literals plus raw PII/private data/payment data markers in docs/templates/fixtures.
+- Confirmed synthetic security fixtures cover payment/billing high risk, docs-only security article false positive, unsupported compliance claims, CI permissions, SBOM/provenance and no raw secrets/private data.
+- Confirmed unsupported security claims are rejected: security review after coding, no-secrets-in-code means safe, ASVS/OWASP proves compliance, SBOM once is enough, Codex Security scan is implied, OAuth proves API security and privacy compliance is universal.
 
 ## Evidence Format
 
