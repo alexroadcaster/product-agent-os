@@ -2,7 +2,7 @@
 
 <!-- product-agent-os:start requirements -->
 Project: Codex Docs / Product-Agent OS
-Generated at: 2026-05-25
+Generated at: 2026-05-26
 
 ## Goal
 
@@ -11,11 +11,11 @@ Generated at: 2026-05-25
 
 ## Current Slice
 
-- Last completed slice: `T9-D5` Codex / Agentic Workflow methodology integration.
+- Last completed slice before this run: `T9-D8` API & Integrations methodology integration.
 - Active planning artifact: `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`.
-- Next slice: `T9-D6` Frontend methodology integration.
+- Current slice: `T9-D9` Database & Data methodology integration completed; next slice is `T9-D10` LLM / AI / RAG.
 - Current route: long-running plugin/skill/docs/evals work.
-- Scenario status: Track 9 foundation through `T9-D5` are implemented. Track 9 continues domain-by-domain from `T9-D6`.
+- Scenario status: Track 9 foundation through `T9-D9` are implemented. Track 9 continues domain-by-domain from `T9-D10`.
 
 ## Scope
 
@@ -54,6 +54,10 @@ Generated at: 2026-05-25
 - T9-D3 Solution Architecture is complete with `solution_architecture` catalog data, context/container boundaries, ownership, public contract trace, data ownership, trust boundary review, ADR/tradeoff, runtime topology, observability, diagram render checks, fitness functions, migration rollback, accepted gaps and unsupported-claim rejection.
 - T9-D4 Quality/Testing/Evals is complete with `quality_testing_evals` catalog data, quality strategy, risk scope, test/eval/runtime/manual/visual evidence, CI gates, flaky policy, coverage policy, test data privacy, bug reproduction, regression impact and evidence before completion.
 - T9-D5 Codex/Agentic Workflow is complete with `codex_agentic_workflow` catalog data, control plane, source of truth, read-only discovery, approval boundaries, model/reasoning policy, memory policy, handoffs, ownership split, subagent safety, MCP review, hook governance, plugin boundary, skill promotion, automation stability and agent eval workflow.
+- T9-D6 Frontend is complete with `frontend` catalog data, user-flow acceptance, component state matrix, design-system boundary, conditional Storybook/FSD routing, accessibility, visual/runtime evidence, performance budget and unsupported-claim rejection.
+- T9-D7 Backend is complete with `backend` catalog data, service boundary, runtime/failure/observability/security/rollback evidence, dependency/job/data/ops depth, CI/deployment discovery, severity policy and owner-reviewed evidence sufficiency routing.
+- T9-D8 API & Integrations is complete with `api_integrations` catalog data, contract source, consumer map, compatibility, security, errors, contract tests, events/webhooks, generated SDK manifest, external-write approval and unsupported-claim rejection.
+- T9-D9 Database & Data is complete with `database_data` catalog data, database inventory, dictionary, schema source, migration plan, expand-contract, transaction boundary, rollback/backup evidence, data classification, data quality, data contract, lineage, query performance, retention/deletion, synthetic fixture policy, production access approval and unsupported-claim rejection.
 - `docs-maintainer` is now a packaged lifecycle skill for requirement IDs, source registry, glossary/ubiquitous-language and traceability docs after the requirements packet exists.
 
 ## Assumptions

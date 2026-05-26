@@ -88,7 +88,21 @@ REQUIRED_TARGETS = {
     ".codex/artifact-templates/external-integration-approval.md",
     ".codex/artifact-templates/api-style-guide.md",
     ".codex/artifact-templates/component-card.md",
+    ".codex/artifact-templates/database-inventory.md",
     ".codex/artifact-templates/database-dictionary.md",
+    ".codex/artifact-templates/database-migration-plan.md",
+    ".codex/artifact-templates/database-expand-contract-record.md",
+    ".codex/artifact-templates/database-backfill-runbook.md",
+    ".codex/artifact-templates/database-rollback-feasibility.md",
+    ".codex/artifact-templates/database-backup-restore-evidence.md",
+    ".codex/artifact-templates/database-data-classification-matrix.md",
+    ".codex/artifact-templates/database-data-quality-checks.md",
+    ".codex/artifact-templates/database-data-contract.md",
+    ".codex/artifact-templates/database-lineage-map.md",
+    ".codex/artifact-templates/database-query-performance-review.md",
+    ".codex/artifact-templates/database-retention-deletion-policy.md",
+    ".codex/artifact-templates/database-synthetic-fixtures-policy.md",
+    ".codex/artifact-templates/database-production-access-approval.md",
     ".codex/artifact-templates/agent-task-packet.md",
     ".codex/artifact-templates/behavioral-eval-case.md",
     ".codex/artifact-templates/plan-quality-check.md",
@@ -1733,6 +1747,104 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 "rollback",
                 "residual risk",
             ],
+            "database-inventory.md": [
+                "datastore",
+                "environment",
+                "owner",
+                "production access",
+                "approval_required",
+            ],
+            "database-migration-plan.md": [
+                "expand-contract",
+                "transaction boundary",
+                "destructive change",
+                "liquibase",
+                "flyway",
+                "alembic",
+                "prisma",
+                "no universal default",
+                "schema-diff tooling deferred",
+            ],
+            "database-expand-contract-record.md": [
+                "expand phase",
+                "contract phase",
+                "backward compatibility",
+                "consumer compatibility",
+            ],
+            "database-backfill-runbook.md": [
+                "batch size",
+                "idempotency",
+                "resume",
+                "dry run",
+                "row counts",
+            ],
+            "database-rollback-feasibility.md": [
+                "rollback feasibility",
+                "restore",
+                "irreversible",
+                "accepted gap",
+                "owner approval",
+            ],
+            "database-backup-restore-evidence.md": [
+                "backup",
+                "restore test",
+                "restore point",
+                "no production data in prompts",
+            ],
+            "database-data-classification-matrix.md": [
+                "pii",
+                "sensitive",
+                "retention",
+                "deletion",
+                "access boundary",
+            ],
+            "database-data-quality-checks.md": [
+                "great expectations",
+                "dbt tests",
+                "constraints",
+                "row counts",
+                "drift",
+            ],
+            "database-data-contract.md": [
+                "producer",
+                "consumer",
+                "constraints",
+                "indexes",
+                "schema source",
+                "compatibility",
+            ],
+            "database-lineage-map.md": [
+                "lineage",
+                "openlineage",
+                "dbt",
+                "upstream",
+                "downstream",
+            ],
+            "database-query-performance-review.md": [
+                "query plan",
+                "index",
+                "explain",
+                "production load risk",
+            ],
+            "database-retention-deletion-policy.md": [
+                "retention",
+                "deletion",
+                "legal hold",
+                "audit evidence",
+            ],
+            "database-synthetic-fixtures-policy.md": [
+                "synthetic",
+                "no secrets",
+                "no production data",
+                "fixtures",
+            ],
+            "database-production-access-approval.md": [
+                "production access",
+                "approval_required",
+                "read-only",
+                "introspection",
+                "least privilege",
+            ],
             "model-reasoning-policy.md": [
                 "codex_agentic_workflow",
                 "model_reasoning_policy_present",
@@ -2465,6 +2577,124 @@ class InfrastructureTemplateTest(unittest.TestCase):
         ]:
             self.assertIn(expected, text)
 
+    def test_database_data_artifact_templates_cover_contract_safety_and_approval_depth(self):
+        templates = {
+            "database-inventory.md": [
+                "datastore",
+                "owner",
+                "environment",
+                "production access",
+                "approval_required",
+            ],
+            "database-dictionary.md": [
+                "business meaning",
+                "owner",
+                "classification",
+                "retention",
+                "source of truth",
+            ],
+            "database-migration-plan.md": [
+                "expand-contract",
+                "transaction boundary",
+                "destructive change",
+                "liquibase",
+                "flyway",
+                "alembic",
+                "prisma",
+                "no universal default",
+                "schema-diff tooling deferred",
+                "do not run migration",
+            ],
+            "database-expand-contract-record.md": [
+                "expand phase",
+                "contract phase",
+                "backward compatibility",
+                "consumer compatibility",
+            ],
+            "database-backfill-runbook.md": [
+                "batch size",
+                "idempotency",
+                "resume",
+                "dry run",
+                "row counts",
+            ],
+            "database-rollback-feasibility.md": [
+                "rollback feasibility",
+                "restore",
+                "irreversible",
+                "accepted gap",
+                "owner approval",
+            ],
+            "database-backup-restore-evidence.md": [
+                "backup",
+                "restore test",
+                "restore point",
+                "no production data in prompts",
+            ],
+            "database-data-classification-matrix.md": [
+                "pii",
+                "sensitive",
+                "retention",
+                "deletion",
+                "access boundary",
+            ],
+            "database-data-quality-checks.md": [
+                "great expectations",
+                "dbt tests",
+                "constraints",
+                "row counts",
+                "drift",
+            ],
+            "database-data-contract.md": [
+                "producer",
+                "consumer",
+                "constraints",
+                "indexes",
+                "schema source",
+                "compatibility",
+            ],
+            "database-lineage-map.md": [
+                "lineage",
+                "openlineage",
+                "dbt",
+                "upstream",
+                "downstream",
+            ],
+            "database-query-performance-review.md": [
+                "query plan",
+                "index",
+                "explain",
+                "production load risk",
+                "write-side EXPLAIN ANALYZE requires approval",
+            ],
+            "database-retention-deletion-policy.md": [
+                "retention",
+                "deletion",
+                "legal hold",
+                "audit evidence",
+            ],
+            "database-synthetic-fixtures-policy.md": [
+                "synthetic",
+                "no secrets",
+                "no production data",
+                "fixtures",
+            ],
+            "database-production-access-approval.md": [
+                "production access",
+                "approval_required",
+                "read-only",
+                "introspection",
+                "least privilege",
+                "do not access production data",
+            ],
+        }
+
+        for filename, expected_terms in templates.items():
+            with self.subTest(template=filename):
+                text = (TEMPLATE_ROOT / "artifact-templates" / filename).read_text(encoding="utf-8").lower()
+                for expected in expected_terms:
+                    self.assertIn(expected.lower(), text)
+
     def test_security_sensitive_workflow_requires_risk_review_and_approval_gates(self):
         text = (TEMPLATE_ROOT / "workflows" / "security-sensitive-change.md").read_text(encoding="utf-8").lower()
 
@@ -2693,7 +2923,7 @@ class InfrastructureTemplateTest(unittest.TestCase):
             "docs_tooling_decision",
             "contract_docs_when_api_or_event_changes",
             "api_contract_readiness_when_api_or_integration_changes",
-            "db_docs_when_schema_changes",
+            "database_data_readiness_when_database_or_data_changes",
             "release_version_impact_when_public_contract_changes",
             "reproduction_evidence_when_bug_rescue",
             "approval_before_greenfield_scaffold",
@@ -2720,6 +2950,7 @@ class InfrastructureTemplateTest(unittest.TestCase):
             "codex_agentic_workflow",
         }
         self.assertEqual(set(gates), required_gates)
+        self.assertNotIn("db_docs_when_schema_changes", gates)
 
         for gate_id, gate in gates.items():
             with self.subTest(gate=gate_id):

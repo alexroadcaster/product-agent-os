@@ -132,6 +132,9 @@ Generated at: {generated_at}
 - Contract test matrix, event delivery, generated SDK manifest and observability evidence:
 - Unsupported API claims rejected: Swagger UI is not source of truth, schema validation alone is not contract testing, OAuth alone is not complete security evidence, GraphQL/gRPC/events are not universal defaults.
 - External writes are `approval_required`:
+- Database & Data methodology (`database_data`):
+- Database checks cover database inventory, database dictionary, schema source, data contract, constraints, indexes, foreign keys, unique, not null, transaction boundary, expand-contract, backfill, dry run, rollback feasibility, backup restore evidence, PII, retention, deletion, data quality, Great Expectations, dbt tests, lineage, OpenLineage, query performance, destructive migration, DROP/rename/truncate, production access approval_required, and no production data in fixtures.
+- Runtime pipeline and RAG ingestion signals stay `present_unverified`; schema-only artifact is not safety proof; do not access production data and do not run migration during tests without explicit approval.
 - Domain model applicability (`domain_model_when_complex_domain`):
 - Bounded context -> architecture boundary trace (`bounded_context_architecture_boundary_trace`):
 - Ubiquitous language traceability (`ubiquitous_language_traceability`):

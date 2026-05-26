@@ -1439,6 +1439,160 @@ class MethodologyAuditContractTest(unittest.TestCase):
                 with self.subTest(gate=gate, expected=expected):
                     self.assertIn(expected, evidence)
 
+    def test_database_data_recommends_inventory_migration_contract_privacy_and_approval_gates(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "db").mkdir()
+            (root / "db" / "schema.dbml").write_text("Table orders { id integer user_email varchar }\n", encoding="utf-8")
+            (root / "prisma").mkdir()
+            (root / "prisma" / "schema.prisma").write_text("model Order { id String @id userEmail String }\n", encoding="utf-8")
+            (root / "migrations").mkdir()
+            (root / "migrations" / "001_add_orders.sql").write_text(
+                "alter table orders add column user_email text;\n",
+                encoding="utf-8",
+            )
+            (root / "migrations" / "002_backfill_orders.sql").write_text(
+                "-- backfill production orders with synthetic dry run first\n",
+                encoding="utf-8",
+            )
+            (root / "alembic.ini").write_text("[alembic]\nscript_location = migrations\n", encoding="utf-8")
+            (root / "liquibase").mkdir()
+            (root / "liquibase" / "changelog.xml").write_text(
+                "<databaseChangeLog><changeSet id=\"1\" author=\"synthetic\"/></databaseChangeLog>\n",
+                encoding="utf-8",
+            )
+            (root / "flyway.conf").write_text("flyway.locations=filesystem:migrations\n", encoding="utf-8")
+            (root / "analytics").mkdir()
+            (root / "analytics" / "orders.sql").write_text("select id, user_email from orders\n", encoding="utf-8")
+            (root / "great_expectations.yml").write_text("config_version: 3\n", encoding="utf-8")
+            (root / "lineage").mkdir()
+            (root / "lineage" / "openlineage.json").write_text('{"eventType":"START"}\n', encoding="utf-8")
+            (root / "pipelines").mkdir()
+            (root / "pipelines" / "rag_ingest.py").write_text("def ingest():\n    return 'synthetic rag pipeline'\n", encoding="utf-8")
+            (root / "reports").mkdir()
+            (root / "reports" / "query-plan.txt").write_text("EXPLAIN SELECT * FROM orders;\n", encoding="utf-8")
+            (root / "docs").mkdir()
+            (root / "docs" / "production-data-access.md").write_text(
+                "# Synthetic production data access approval\nPII retention backup restore rollback owner review\n",
+                encoding="utf-8",
+            )
+
+            result = build_methodology_audit(
+                root,
+                intent_hint=(
+                    "production database data migration backfill PII sensitive retention deletion privacy "
+                    "schema source data contract lineage data quality query index performance backup restore "
+                    "rollback transaction boundary expand contract production access approval RAG ingestion "
+                    "dbt Great Expectations OpenLineage Alembic Liquibase Flyway Prisma"
+                ),
+            )
+
+        self.assertNotEqual(self._domain_status(result, "database_data"), "not_applicable")
+        expected = {
+            "database_inventory_present": ("P1_high_risk", "database-inventory.md"),
+            "database_dictionary_present": ("P1_high_risk", "database-dictionary.md"),
+            "database_schema_source_present": ("P1_high_risk", "database-data-contract.md"),
+            "database_migration_plan_present": ("P1_high_risk", "database-migration-plan.md"),
+            "database_expand_contract_reviewed": ("P1_high_risk", "database-expand-contract-record.md"),
+            "database_transaction_boundary_present": ("P1_high_risk", "database-data-contract.md"),
+            "database_rollback_feasibility_present": ("P1_high_risk", "database-rollback-feasibility.md"),
+            "database_backup_restore_evidence_present": ("P1_high_risk", "database-backup-restore-evidence.md"),
+            "database_data_classification_present": ("P1_high_risk", "database-data-classification-matrix.md"),
+            "database_data_quality_contract_present": ("P1_high_risk", "database-data-quality-checks.md"),
+            "database_data_contract_present": ("P1_high_risk", "database-data-contract.md"),
+            "database_lineage_present": ("P2_recommended", "database-lineage-map.md"),
+            "database_performance_review_present": ("P2_recommended", "database-query-performance-review.md"),
+            "database_retention_deletion_policy_present": ("P1_high_risk", "database-retention-deletion-policy.md"),
+            "database_synthetic_fixture_policy_present": ("P2_recommended", "database-synthetic-fixtures-policy.md"),
+            "database_production_access_approval_present": ("P0_blocker", "database-production-access-approval.md"),
+            "database_constraints_integrity_review_present": ("P1_high_risk", "database-data-contract.md"),
+        }
+        for gate, (priority, artifact) in expected.items():
+            with self.subTest(gate=gate):
+                recommendation = self._recommendation_by_gate(result, gate)
+                self.assertEqual(recommendation["priority"], priority)
+                self.assertEqual(recommendation["artifact"], artifact)
+
+        migration = self._recommendation_by_gate(result, "database_migration_plan_present")
+        migration_evidence = " ".join(migration["evidence_required"]).lower()
+        for expected_term in [
+            "liquibase",
+            "flyway",
+            "alembic",
+            "prisma",
+            "rails/django",
+            "expand-contract",
+            "preconditions",
+            "databasechangelog",
+            "schema history",
+            "versioned/repeatable",
+            "no universal default",
+            "schema-diff tooling deferred",
+        ]:
+            with self.subTest(migration_evidence=expected_term):
+                self.assertIn(expected_term, migration_evidence)
+
+        constraints = self._recommendation_by_gate(result, "database_constraints_integrity_review_present")
+        constraints_evidence = " ".join(constraints["evidence_required"]).lower()
+        for expected_term in ["constraints", "indexes", "foreign keys", "unique", "not null", "data drift"]:
+            with self.subTest(constraints_evidence=expected_term):
+                self.assertIn(expected_term, constraints_evidence)
+
+        production_access = self._recommendation_by_gate(result, "database_production_access_approval_present")
+        self.assertIn("approval_required", production_access["approval_boundary"])
+
+    def test_database_data_false_positives_unsupported_claims_and_destructive_changes(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        with tempfile.TemporaryDirectory() as tmp:
+            readme_root = Path(tmp) / "readme_only"
+            readme_root.mkdir()
+            (readme_root / "README.md").write_text("# Synthetic database glossary cleanup\n", encoding="utf-8")
+            readme_result = build_methodology_audit(
+                readme_root,
+                intent_hint="typo-only docs edit without schema data or query behavior change",
+            )
+
+            unsupported_root = Path(tmp) / "unsupported"
+            unsupported_root.mkdir()
+            (unsupported_root / "prisma").mkdir()
+            (unsupported_root / "prisma" / "schema.prisma").write_text("model Account { id String @id }\n", encoding="utf-8")
+            unsupported_result = build_methodology_audit(
+                unsupported_root,
+                intent_hint=(
+                    "Prisma introspection proves database safety; ORM schema equals production schema; "
+                    "EXPLAIN ANALYZE is safe on writes; dbdocs alone are enough; generated ERD proves constraints"
+                ),
+            )
+
+            destructive_root = Path(tmp) / "destructive"
+            destructive_root.mkdir()
+            (destructive_root / "migrations").mkdir()
+            (destructive_root / "migrations" / "003_destructive.sql").write_text(
+                "DROP TABLE legacy_orders;\nTRUNCATE TABLE staging_orders;\nALTER TABLE orders RENAME TO orders_old;\n",
+                encoding="utf-8",
+            )
+            destructive_result = build_methodology_audit(
+                destructive_root,
+                intent_hint="production database migration with drop truncate rename cleanup purge rollback",
+            )
+
+        self.assertEqual(self._domain_status(readme_result, "database_data"), "not_applicable")
+
+        unsupported = self._recommendation_by_gate(unsupported_result, "database_unsupported_claims_rejected")
+        self.assertEqual(unsupported["priority"], "P1_high_risk")
+        self.assertEqual(unsupported["artifact"], "database-data-contract.md")
+
+        migration = self._recommendation_by_gate(destructive_result, "database_migration_plan_present")
+        evidence = " ".join(migration["evidence_required"]).lower()
+        for expected_term in ["drop", "rename", "truncate", "cleanup", "purge", "destructive migration"]:
+            with self.subTest(destructive_evidence=expected_term):
+                self.assertIn(expected_term, evidence)
+        approval = self._recommendation_by_gate(destructive_result, "database_production_access_approval_present")
+        self.assertEqual(approval["priority"], "P0_blocker")
+
 
 if __name__ == "__main__":
     unittest.main()

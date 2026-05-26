@@ -111,7 +111,8 @@ class FixtureEvalRunnerTest(unittest.TestCase):
         self.assertTrue(results["python-app"]["expected_checks"]["api_integrations_contract_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["api_contract_source_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["external_write_approval_present"])
-        self.assertEqual(results["python-app"]["renderer_file_count"], 128)
+        self.assertTrue(results["python-app"]["expected_checks"]["database_data_contract_present"])
+        self.assertEqual(results["python-app"]["renderer_file_count"], 142)
         for check_name in [
             "methodology_catalog_contract_present",
             "methodology_intelligence_contract_present",
@@ -127,6 +128,10 @@ class FixtureEvalRunnerTest(unittest.TestCase):
             "native-mobile-permissions": "native_mobile_feature",
             "desktop-local-indexer": "desktop_local_first",
             "data-migration-pii": "data_migration",
+            "database-schema-only": "data_migration",
+            "database-destructive-migration": "data_migration",
+            "database-production-access-approval": "data_migration",
+            "database-lineage-rag-overlap": "data_migration",
             "security-auth-payment": "security_sensitive_change",
             "ci-flaky-tests": "ci_stabilization",
             "package-release": "release_packaging",
@@ -140,6 +145,10 @@ class FixtureEvalRunnerTest(unittest.TestCase):
         self.assertTrue(results["api-external-write-approval"]["expected_checks"]["external_write_approval_required"])
         self.assertTrue(results["swagger-ui-only-api-docs"]["expected_checks"]["swagger_ui_only_not_api_contract"])
         self.assertTrue(results["graphql-grpc-style-choice"]["expected_checks"]["api_style_choice_not_universal_default"])
+        self.assertTrue(results["database-schema-only"]["expected_checks"]["database_schema_only_not_safety_proof"])
+        self.assertTrue(results["database-destructive-migration"]["expected_checks"]["database_destructive_change_requires_approval"])
+        self.assertTrue(results["database-production-access-approval"]["expected_checks"]["database_production_access_requires_approval"])
+        self.assertTrue(results["database-lineage-rag-overlap"]["expected_checks"]["database_lineage_rag_overlap_present_unverified"])
 
     def test_backend_contract_terms_include_resilience_ops_depth(self):
         runner = load_runner()
@@ -246,6 +255,49 @@ class FixtureEvalRunnerTest(unittest.TestCase):
             with self.subTest(expected=expected):
                 self.assertIn(expected, runner.API_INTEGRATIONS_TERMS)
 
+    def test_database_data_contract_terms_include_migration_privacy_lineage_and_approval_depth(self):
+        runner = load_runner()
+
+        for expected in [
+            "database_data",
+            "database_data_signals",
+            "database inventory",
+            "database dictionary",
+            "schema source",
+            "data contract",
+            "constraints",
+            "indexes",
+            "foreign keys",
+            "unique",
+            "not null",
+            "transaction boundary",
+            "expand-contract",
+            "backfill",
+            "dry run",
+            "rollback feasibility",
+            "backup restore evidence",
+            "pii",
+            "retention",
+            "deletion",
+            "data quality",
+            "great expectations",
+            "dbt tests",
+            "lineage",
+            "openlineage",
+            "query performance",
+            "destructive migration",
+            "drop/rename/truncate",
+            "production access approval_required",
+            "do not access production data",
+            "do not run migration",
+            "no universal database tooling default",
+            "schema-diff tooling deferred",
+            "runtime pipeline and RAG ingestion signals are present_unverified",
+            "schema-only artifact is not safety proof",
+        ]:
+            with self.subTest(expected=expected):
+                self.assertIn(expected, runner.DATABASE_DATA_TERMS)
+
     def test_fixture_eval_reports_applicable_methodology_domains_for_core_fixtures(self):
         runner = load_runner()
 
@@ -257,6 +309,9 @@ class FixtureEvalRunnerTest(unittest.TestCase):
             "docs-repo",
             "api-migration-repo",
             "data-migration-pii",
+            "database-destructive-migration",
+            "database-production-access-approval",
+            "database-lineage-rag-overlap",
             "rag-quality-regression",
             "security-auth-payment",
             "package-release",

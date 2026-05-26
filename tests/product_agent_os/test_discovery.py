@@ -471,6 +471,93 @@ class DiscoveryTest(unittest.TestCase):
         self.assertEqual(signals["verification_status"], "applicable_missing")
         self.assertIn("present_unverified until migration dry run", signals["note"])
 
+    def test_database_data_signals_capture_tools_data_contracts_approvals_and_overlaps(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            workspace = Path(tmpdir)
+            self._write_files(
+                workspace,
+                {
+                    "schema.prisma": "model Order { id String @id email String }\n",
+                    "alembic.ini": "[alembic]\nscript_location = migrations\n",
+                    "liquibase/changelog.xml": "<databaseChangeLog><changeSet id=\"1\" author=\"synthetic\"/></databaseChangeLog>\n",
+                    "flyway.conf": "flyway.locations=filesystem:migrations\n",
+                    "migrations/002_drop_legacy.sql": (
+                        "DROP TABLE legacy_orders;\n"
+                        "TRUNCATE TABLE staging_orders;\n"
+                        "ALTER TABLE orders RENAME TO orders_old;\n"
+                    ),
+                    "db/schema.dbml": "Table orders { id integer email varchar }\n",
+                    "dbt_project.yml": "name: synthetic_warehouse\n",
+                    "great_expectations.yml": "config_version: 3\n",
+                    "lineage/openlineage.json": "{\"eventType\":\"START\"}\n",
+                    "warehouse/models/orders.sql": "select id, email from orders\n",
+                    "pipelines/rag_ingestion.py": "def ingest():\n    return 'synthetic rag pipeline'\n",
+                    "reports/query-plan.txt": "EXPLAIN SELECT * FROM orders;\n",
+                    "docs/production-data-access.md": (
+                        "# Synthetic production data access\n"
+                        "PII retention backup restore approval owner review\n"
+                    ),
+                },
+            )
+
+            result = analyze_workspace(
+                workspace,
+                intent_hint="database production data migration with RAG ingestion and query performance review",
+            )
+
+        self.assertIn("database_data_signals", result)
+        self.assertIn("database_data_signals", result["route_inputs"]["workspace_signals"])
+        self.assertIn("data_migration_signals", result)
+
+        signals = result["database_data_signals"]
+        expected_sources = {
+            "schema_sources": "db/schema.dbml",
+            "migration_sources": "migrations/002_drop_legacy.sql",
+            "migration_tools": "alembic.ini",
+            "orm_models": "schema.prisma",
+            "dictionary_sources": "db/schema.dbml",
+            "data_quality_sources": "great_expectations.yml",
+            "lineage_sources": "lineage/openlineage.json",
+            "query_performance_sources": "reports/query-plan.txt",
+            "production_access_sources": "docs/production-data-access.md",
+            "destructive_change_sources": "migrations/002_drop_legacy.sql",
+            "pipeline_sources": "warehouse/models/orders.sql",
+            "rag_ingestion_sources": "pipelines/rag_ingestion.py",
+            "backup_restore_sources": "docs/production-data-access.md",
+            "privacy_retention_sources": "docs/production-data-access.md",
+        }
+        for category, source in expected_sources.items():
+            with self.subTest(category=category):
+                packet = signals[category]
+                self.assertEqual(packet["status"], "present_unverified")
+                self.assertIn(source, packet["sources"])
+        self.assertEqual(signals["verification_status"], "applicable_missing")
+        self.assertIn("present_unverified", signals["note"])
+        self.assertIn("approval_required", signals["note"])
+        self.assertIn("without database connections", signals["note"])
+        self.assertIn("do not claim database safety", signals["note"])
+        self.assertIn("database_data_surface", result["route_inputs"]["workspace_signals"]["active_surfaces"])
+
+    def test_database_schema_only_signal_does_not_claim_migration_or_runtime_safety(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            workspace = Path(tmpdir)
+            self._write_files(
+                workspace,
+                {
+                    "db/schema.dbml": "Table orders { id integer }\n",
+                    "docs/schema-diagram.md": "# Synthetic schema diagram\n",
+                },
+            )
+
+            result = analyze_workspace(workspace, intent_hint="review database schema documentation")
+
+        signals = result["database_data_signals"]
+        self.assertEqual(signals["schema_sources"]["status"], "present_unverified")
+        self.assertEqual(signals["migration_sources"]["status"], "applicable_missing")
+        self.assertEqual(signals["production_access_sources"]["status"], "applicable_missing")
+        self.assertEqual(signals["verification_status"], "applicable_missing")
+        self.assertNotIn("present_verified", signals["note"])
+
     def test_security_sensitive_repo_routes_with_unverified_security_signals(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             workspace = Path(tmpdir)
@@ -1173,6 +1260,7 @@ class DiscoveryTest(unittest.TestCase):
             "fsd_structure_when_ui_architecture_applies",
             "frontend_methodology",
             "backend_methodology",
+            "database_data_readiness",
             "docs_tooling_decision",
             "standards_trigger_policy",
             "codex_agentic_workflow",
@@ -1211,6 +1299,7 @@ class DiscoveryTest(unittest.TestCase):
         self.assertEqual(applicability["docs_as_code_ownership"]["status"], "present_unverified")
         self.assertEqual(applicability["product_measurement"]["status"], "present_unverified")
         self.assertEqual(applicability["domain_model_when_complex_domain"]["status"], "not_applicable")
+        self.assertEqual(applicability["database_data_readiness"]["status"], "not_applicable")
 
     def test_methodology_applicability_reports_status_transitions(self):
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -1239,6 +1328,7 @@ class DiscoveryTest(unittest.TestCase):
             applicability["domain_model_when_complex_domain"]["status"],
             "applicable_missing",
         )
+        self.assertEqual(applicability["database_data_readiness"]["status"], "present_unverified")
         self.assertEqual(
             applicability["fsd_structure_when_ui_architecture_applies"]["status"],
             "present_unverified",

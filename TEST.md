@@ -2,7 +2,7 @@
 
 <!-- product-agent-os:start test-plan -->
 Project: Codex Docs / Product-Agent OS
-Generated at: 2026-05-25
+Generated at: 2026-05-26
 
 ## Current Baseline
 
@@ -21,6 +21,14 @@ Generated at: 2026-05-25
 - Latest transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 4 sessions and 0 failures.
 - Latest Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
 - Latest docs/diff hygiene: `python tools\check_docs.py` passed and `git diff --check` exited `0`.
+- T9-D9 status: Database & Data methodology integration is implemented.
+- Latest focused T9-D9 suite: `python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_discovery tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_fixtures tests.product_agent_os.test_product_agent_os_docs -v` ran 234 tests with `OK`.
+- Latest T9-D9 fixture runner tests: `python -m unittest tests.product_agent_os.test_fixture_eval_runner -v` ran 15 tests with `OK`.
+- Latest fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0` with 49 fixtures, 0 failures, renderer file count 142 and `database_data_contract_present: true`.
+- Latest full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 433 tests with `OK`.
+- Latest transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 4 sessions and 0 failures.
+- Latest Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
+- Latest docs/build/diff hygiene: `python tools\check_docs.py` passed, strict MkDocs exited `0` with `PYTHONPATH=C:\tmp\codex_docs_mkdocs`, and `git diff --check` exited `0`.
 
 ## Required Checks After Docs Changes
 
@@ -203,6 +211,16 @@ python tools\check_docs.py
 - Confirmed API-only contract fixtures do not force Backend blockers, while external writes stay `approval_required`.
 - Confirmed staged artifacts cover API inventory, consumer map, compatibility, errors, auth/authorization, contract tests, generated SDKs, webhooks, external approvals and API style decisions.
 - Confirmed fixture eval exposes `api_integrations_contract_present` with 45 fixtures, 0 failures and renderer file count 128.
+
+## Completed Focused Checks For T9-D9
+
+- Added RED then GREEN tests for `database_data` catalog, audit, discovery, readiness/control-plane templates, lifecycle skills, docs/source sync, fixture eval coverage and false-positive fixtures.
+- Confirmed discovery exposes `database_data_signals` while preserving backward-compatible `data_migration_signals`.
+- Confirmed schema-only artifacts are `present_unverified`, not safety proof, and do not automatically claim migration/runtime readiness.
+- Confirmed production DB/data access, migration execution, backup restore, retention mutation and destructive migration stay `approval_required`.
+- Confirmed stack-specific database tooling has no universal default; schema-diff tooling deferred until owner, safety policy and verification evidence exist.
+- Confirmed staged artifacts cover inventory, dictionary, migration plan, expand-contract, backfill, rollback feasibility, backup/restore, classification, data quality, data contract, lineage, query performance, retention/deletion, synthetic fixtures and production access approval.
+- Confirmed fixture eval exposes `database_data_contract_present` with 49 fixtures, 0 failures and renderer file count 142.
 
 ## Evidence Format
 

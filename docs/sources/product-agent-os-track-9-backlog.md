@@ -33,7 +33,7 @@ Track 9 turns the methodology atlas in `docs/methodologies/` into read-only Prod
 | `done` | `T9-D6` | `frontend.md` | UI behavior, component states, Storybook applicability, visual/a11y evidence, responsive checks, performance and FSD boundaries. |
 | `done` | `T9-D7` | `backend.md` | Service boundaries, modular monolith vs microservices, runtime behavior, queues, observability, SLOs and rollback. |
 | `done` | `T9-D8` | `api-integrations.md` | OpenAPI/AsyncAPI/GraphQL/gRPC contracts, consumers, compatibility, errors, generated clients and external writes. |
-| `planned` | `T9-D9` | `database-data.md` | Database inventory, schema source, migrations, transactions, data quality, classification and production access. |
+| `done` | `T9-D9` | `database-data.md` | Database inventory, schema source, migrations, transactions, data quality, classification and production access. |
 | `planned` | `T9-D10` | `llm-ai-rag.md` | AI behavior spec, eval baseline, prompts, models, tools, RAG sources, grounding, datasets, approvals and cost/latency. |
 | `planned` | `T9-D11` | `security-privacy-compliance.md` | Threat surface, ASVS/SSDF, authorization tests, secrets, privacy impact, supply chain, audit logging and compliance overlays. |
 | `planned` | `T9-D12` | `delivery-release-operations.md` | Release readiness, versioning, changelog, artifact manifest, rollout, rollback, CI/CD governance, runbooks and operations. |
@@ -272,7 +272,7 @@ Severity and false-positive resolution:
 
 ### `T9-D7` Backend Integration
 
-Status: `in_progress`
+Status: `done`
 
 Source audited: `docs/methodologies/backend.md`
 
@@ -443,6 +443,52 @@ Verification:
 - Transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 4 sessions and 0 failures.
 - Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
 - Docs check: `python tools\check_docs.py` passed.
+- Diff hygiene: `git diff --check` exited `0`.
+
+### `T9-D9` Database and Data Integration
+
+Status: `in_progress`
+
+Source audited: `docs/methodologies/database-data.md`
+
+Deep-audit deltas to implement:
+
+- Treat Database & Data as a full methodology domain, not only the existing `data_migration` usage-mode workflow.
+- Separate database gates for inventory, dictionary, schema source, migration plan, expand/contract rollout, transaction boundary, rollback feasibility, backup/restore evidence, data classification, data quality, data contract, lineage, query/index performance, retention/deletion, synthetic fixtures, production access approval and unsupported-claim rejection.
+- Keep database tooling conditional. PostgreSQL, Liquibase, Flyway, Alembic, Prisma, Rails/Django migrations, dbt, Great Expectations, OpenLineage, DBML, dbdocs, SchemaSpy and schema-diff tooling are candidate evidence sources, not universal Product-Agent OS defaults.
+- Keep DB introspection, production DB access, production data access, migration execution, destructive cleanup, backup restore and retention mutation `approval_required`.
+- Use conservative destructive-change detection for `DROP`, rename, truncate, destructive cleanup, retention purge, unsafe `EXPLAIN ANALYZE` on writes, ORM/schema drift and manual SQL-only changes. These are questions/recommendations, not execution or full SQL parser claims.
+- Preserve Track 8 `data_migration` compatibility: existing route mode and generic `migration-plan.md` remain valid, while database-specific work also stages or recommends `database-migration-plan.md` and related database artifacts.
+- Add a stable `database_data_signals` packet while keeping backward-compatible `data_migration_signals`.
+- Cover runtime/data pipeline signals: database clients, ORM models, data warehouse jobs, scheduled pipelines, reporting tables, analytics models and RAG ingestion sources stay `present_unverified`.
+- Explicit eval wording: runtime/pipeline/RAG signals stay `present_unverified` until owner-reviewed runtime, lineage or ingestion evidence exists.
+- Deepen privacy and restore evidence: legal basis, minimization, retention, deletion/export path, access boundary, restore target, RPO/RTO, restore drill date/result and verification result.
+
+Planned implementation scope:
+
+- Fill `database_data` catalog coverage with applies/not-applicable rules, maturity/complexity impact, decision horizons, artifacts, gates, eval fields and cross-domain overlaps.
+- Add read-only database discovery, audit recommendations, fixture eval contract, generated control-plane/eval coverage, lifecycle skill routing and synthetic fixtures.
+- Add staged database artifact templates for inventory, migration plan, expand/contract, backfill runbook, rollback feasibility, backup/restore, data classification, data quality, data contract, lineage, query performance, retention/deletion, synthetic fixtures and production access approval.
+- Strengthen `database-dictionary.md`, `data-migration.md`, operator docs, README, source registry and root control-plane files after behavior is implemented.
+
+Severity and false-positive resolution:
+
+- Production data access, destructive migration, irreversible data loss, missing rollback, missing restore evidence, sensitive data leakage and broad production credentials are blocker/high-risk depth as appropriate.
+- Schema-only files and local/demo database fixtures are `present_unverified` signals, not readiness proof and not automatic production blockers.
+- Unsupported claims rejected: ORM schema is database source of truth, migration applied means safe, down migration means rollback-safe, backups exist means restore-safe, manual SQL is enough, anonymized production data is safe by default and lineage can be reconstructed later.
+- Stack-specific migration tool defaults and schema-diff tooling deferred until a later stack/tooling decision proves owner, safety policy and verification evidence.
+
+Verification:
+
+- RED checks failed as expected before implementation on missing `database_data` catalog gates, audit recommendations, discovery packets, readiness/control-plane terms, docs/source sync and fixture eval checks.
+- Focused T9-D9 suite: `python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_discovery tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_fixtures tests.product_agent_os.test_product_agent_os_docs -v` ran 234 tests with `OK`.
+- Fixture runner tests: `python -m unittest tests.product_agent_os.test_fixture_eval_runner -v` ran 15 tests with `OK`.
+- Fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0` with 49 fixtures, 0 failures, renderer file count 142 and `database_data_contract_present: true`.
+- Full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 433 tests with `OK`.
+- Transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 4 sessions and 0 failures.
+- Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
+- Docs check: `python tools\check_docs.py` passed.
+- Strict MkDocs: `$env:PYTHONPATH='C:\tmp\codex_docs_mkdocs'; $env:NO_MKDOCS_2_WARNING='1'; python -m mkdocs build --strict` exited `0`.
 - Diff hygiene: `git diff --check` exited `0`.
 
 ## Cross-Domain Synthesis Backlog

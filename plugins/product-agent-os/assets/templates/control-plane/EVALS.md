@@ -133,6 +133,9 @@ Generated at: {generated_at}
 - Contract source, consumer, compatibility, security, error, event, SDK and external-write evidence:
 - Forbidden shortcuts: Swagger UI is not source of truth, schema validation alone is not contract testing, OAuth alone is not complete security evidence, GraphQL/gRPC/events are not universal defaults.
 - External writes are `approval_required`; generated client publication, provider mutation and webhook registration need approval before external action.
+- Database & Data methodology (`database_data`):
+- Database eval fields: `database_data_contract_present`, `database_inventory_contract_present`, `database_dictionary_contract_present`, `database_schema_source_contract_present`, `database_migration_plan_contract_present`, `database_backup_restore_contract_present`, `database_constraints_integrity_contract_present`, `database_production_access_approval_contract_present`, and `unsupported_database_claims_rejected_contract_present`
+- Database eval rejects schema-only artifact is not safety proof, production access without approval_required, destructive migration without rollback/backup evidence, and runtime pipeline/RAG ingestion claims that are not `present_unverified` or verified by current evidence.
 - Codex agentic workflow:
 - `codex_agentic_workflow`:
 - Runtime routes: Codex App, CLI, IDE extension, `codex exec`, GitHub Action, MCP, Agents SDK, automation

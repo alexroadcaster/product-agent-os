@@ -2,7 +2,7 @@
 
 <!-- product-agent-os:start evals -->
 Project: Codex Docs / Product-Agent OS
-Generated at: 2026-05-25
+Generated at: 2026-05-26
 
 ## Rubrics
 
@@ -35,7 +35,7 @@ Generated at: 2026-05-25
 - False-positive scenario fixture coverage: implemented in `T8-GX`.
 - Detailed discovery status depth: implemented in `T8-D`.
 - Track 9 methodology intelligence plan: authored in `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`.
-- Track 9 foundation, `T9-D1` Business/Product, `T9-D2` Requirements/Domain, `T9-D3` Solution Architecture, `T9-D4` Quality/Testing/Evals, `T9-D5` Codex/Agentic Workflow, `T9-D6` Frontend, `T9-D7` Backend and `T9-D8` API & Integrations: implemented.
+- Track 9 foundation, `T9-D1` Business/Product, `T9-D2` Requirements/Domain, `T9-D3` Solution Architecture, `T9-D4` Quality/Testing/Evals, `T9-D5` Codex/Agentic Workflow, `T9-D6` Frontend, `T9-D7` Backend, `T9-D8` API & Integrations and `T9-D9` Database & Data: implemented.
 
 ## Track 9 Methodology Intelligence Evals
 
@@ -118,6 +118,15 @@ Generated at: 2026-05-25
 - False-positive protection: Swagger UI/rendered docs alone does not make an API contract source, API-only contract fixtures do not force Backend blockers, internal APIs can still have consumers, and GraphQL/gRPC/events are not universal defaults.
 - Unsupported claims rejected: Swagger UI is source of truth, schema validation is contract testing, OAuth proves API security, GraphQL/gRPC/events are mandatory defaults and internal APIs have no consumers.
 - Residual risk: API artifacts prove contract evidence shape and route/gate coverage, not that a human owner has judged every consumer, compatibility rule, authz rule, error semantic, event delivery policy, generated SDK release or external-write approval sufficient for a real production system.
+
+## Database Data Evals
+
+- `database_data_contract_present`: implemented in `T9-D9`.
+- Required evidence: database inventory, database dictionary, schema source, migration plan, expand-contract rollout, transaction boundary, rollback feasibility, backup/restore evidence, data classification, data quality checks, producer/consumer data contract, lineage, query/index performance, retention/deletion policy, synthetic fixture policy, production access approval, constraints/integrity and unsupported database claim rejection.
+- False-positive protection: schema-only files and local/demo database fixtures stay `present_unverified`; runtime pipeline and RAG ingestion signals stay `present_unverified` until owner-reviewed runtime, lineage or ingestion evidence exists.
+- Approval boundary: DB introspection, production DB access, production data access, migration execution, destructive cleanup, backup restore and retention mutation remain `approval_required`.
+- Unsupported claims rejected: ORM schema is database source of truth, migration applied means safe, down migration means rollback-safe, backups exist means restore-safe, manual SQL is enough, anonymized production data is safe by default and lineage can be reconstructed later.
+- Residual risk: database artifacts prove evidence shape and route/gate coverage, not that a human owner has accepted migration safety, data quality, rollback, restore, lineage, privacy or production-access sufficiency for a real production system.
 
 ## Completion Evidence Evals
 

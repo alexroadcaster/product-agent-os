@@ -1209,6 +1209,41 @@ class LifecycleSkillsTest(unittest.TestCase):
         ]:
             self.assertIn(expected, discovery)
 
+    def test_database_data_lifecycle_wording_requires_full_methodology_contract(self):
+        orchestrator = self._skill_text("project-lifecycle-orchestrator").lower()
+        discovery = self._skill_text("workspace-discovery-auditor").lower()
+
+        for expected in [
+            "database_data",
+            "database-inventory.md",
+            "database-migration-plan.md",
+            "database-data-contract.md",
+            "database-backup-restore-evidence.md",
+            "database-production-access-approval.md",
+            "database_migration_plan_present",
+            "database_backup_restore_evidence_present",
+            "database_constraints_integrity_review_present",
+            "database_production_access_approval_present",
+            "approval_required",
+            "no universal database tooling default",
+            "do not access production data",
+            "do not run destructive migration",
+        ]:
+            self.assertIn(expected, orchestrator)
+
+        for expected in [
+            "database_data_signals",
+            "migration_tools",
+            "destructive_change_sources",
+            "production_access_sources",
+            "pipeline_sources",
+            "rag_ingestion_sources",
+            "present_unverified",
+            "approval_required",
+            "do not claim database safety",
+        ]:
+            self.assertIn(expected, discovery)
+
     def test_security_sensitive_lifecycle_wording_requires_risk_review_and_approval(self):
         orchestrator = self._skill_text("project-lifecycle-orchestrator").lower()
         discovery = self._skill_text("workspace-discovery-auditor").lower()

@@ -173,6 +173,12 @@ Required gates: `api_contract_source_present`, `api_consumer_map_present`, `api_
 
 Contract drift blocks completion claims. External writes are approval_required. Use `explicit_gap_accepted` only with owner, reason, review date, downstream risk and follow-up. No universal GraphQL/gRPC/event default; style/tool choices remain project-specific.
 
+## Track 9 Database & Data Methodology
+
+When `database_data` applies, tests/evals must cover database inventory, database dictionary, schema source, migration plan, data contract, constraints, indexes, foreign keys, unique, not null, transaction boundary, expand-contract, backfill, dry run, rollback feasibility, backup restore evidence, PII, retention, deletion, data quality, Great Expectations, dbt tests, lineage, OpenLineage, query performance, destructive migration, DROP/rename/truncate, and production access approval_required.
+
+Keep runtime pipeline and RAG ingestion signals as `present_unverified` until current evidence exists. Reject schema-only artifact is not safety proof. Do not access production data, do not run migration, and do not claim database safety without evidence.
+
 ## Verification
 
 Check that each acceptance criterion maps to a deterministic check, manual check, eval gate, or explicit gap. For behavior changes, check that acceptance scenarios map `requirement -> scenario -> check -> evidence owner`, use ATDD/BDD or equivalent behavior format, and name business rule, edge case, non-goal, explicit gap, and evidence owner. Check that conditional readiness gates exercise applicable_missing, not_applicable, explicit_gap_accepted, present_unverified, present_verified, and approval_required states where relevant. Check that thresholds are observable, evidence is named, approval needs are flagged, and every proposed artifact remains staged. Do not claim without evidence.

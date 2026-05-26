@@ -56,6 +56,10 @@ class FixtureCompletenessTest(unittest.TestCase):
             "api-external-write-approval",
             "swagger-ui-only-api-docs",
             "graphql-grpc-style-choice",
+            "database-schema-only",
+            "database-destructive-migration",
+            "database-production-access-approval",
+            "database-lineage-rag-overlap",
         ]:
             with self.subTest(name=name):
                 self.assertTrue((FIXTURES / name).is_dir())
@@ -170,6 +174,10 @@ class FixtureCompletenessTest(unittest.TestCase):
             "api-external-write-approval",
             "swagger-ui-only-api-docs",
             "graphql-grpc-style-choice",
+            "database-schema-only",
+            "database-destructive-migration",
+            "database-production-access-approval",
+            "database-lineage-rag-overlap",
         ]:
             with self.subTest(name=name):
                 text = "\n".join(

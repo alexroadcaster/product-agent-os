@@ -856,6 +856,119 @@ class MethodologyCatalogContractTest(unittest.TestCase):
         self.assertIn("standard", api["complexity_impact"])
         self.assertIn("high_risk", api["complexity_impact"])
 
+    def test_database_data_domain_has_track_nine_contract(self):
+        from product_agent_os.methodology_catalog import load_methodology_catalog
+
+        catalog = load_methodology_catalog()
+        domains = {domain["id"]: domain for domain in catalog["domains"]}
+        database = domains["database_data"]
+
+        expected_gates = [
+            "database_inventory_present",
+            "database_dictionary_present",
+            "database_schema_source_present",
+            "database_migration_plan_present",
+            "database_expand_contract_reviewed",
+            "database_transaction_boundary_present",
+            "database_rollback_feasibility_present",
+            "database_backup_restore_evidence_present",
+            "database_data_classification_present",
+            "database_data_quality_contract_present",
+            "database_data_contract_present",
+            "database_lineage_present",
+            "database_performance_review_present",
+            "database_retention_deletion_policy_present",
+            "database_synthetic_fixture_policy_present",
+            "database_production_access_approval_present",
+            "database_constraints_integrity_review_present",
+            "database_unsupported_claims_rejected",
+        ]
+        expected_artifacts = [
+            "database-inventory.md",
+            "database-dictionary.md",
+            "database-migration-plan.md",
+            "database-expand-contract-record.md",
+            "database-backfill-runbook.md",
+            "database-rollback-feasibility.md",
+            "database-backup-restore-evidence.md",
+            "database-data-classification-matrix.md",
+            "database-data-quality-checks.md",
+            "database-data-contract.md",
+            "database-lineage-map.md",
+            "database-query-performance-review.md",
+            "database-retention-deletion-policy.md",
+            "database-synthetic-fixtures-policy.md",
+            "database-production-access-approval.md",
+            "migration-plan.md",
+            "security-risk-review.md",
+            "api-contract-review.md",
+            "ai-eval-spec.md",
+            "release-readiness.md",
+        ]
+        expected_eval_fields = [
+            "database_data_contract_present",
+            "database_inventory_contract_present",
+            "database_dictionary_contract_present",
+            "database_schema_source_contract_present",
+            "database_migration_plan_contract_present",
+            "database_expand_contract_contract_present",
+            "database_transaction_boundary_contract_present",
+            "database_rollback_feasibility_contract_present",
+            "database_backup_restore_contract_present",
+            "database_data_classification_contract_present",
+            "database_data_quality_contract_present",
+            "database_lineage_contract_present",
+            "database_performance_review_contract_present",
+            "database_retention_deletion_contract_present",
+            "database_synthetic_fixture_policy_contract_present",
+            "database_production_access_approval_contract_present",
+            "database_constraints_integrity_contract_present",
+            "unsupported_database_claims_rejected_contract_present",
+        ]
+
+        for term in [
+            "schema, migration, backfill or persistent data model change",
+            "production data, PII, retention, deletion or backup/restore workflow",
+            "database migration tooling such as Liquibase, Flyway, Alembic, Prisma, Rails or Django",
+            "data quality, lineage, analytics, data contract, RAG ingestion or runtime pipeline",
+            "query performance, index, constraint or transaction boundary review",
+        ]:
+            with self.subTest(applies_when=term):
+                self.assertIn(term, database["applies_when"])
+        for term in [
+            "typo-only docs edit without schema, data or query behavior change",
+            "README-only database mention without persistent data ownership impact",
+            "schema-only artifact treated as proof of migration safety",
+            "ORM model treated as complete production schema evidence",
+            "database tooling mentioned as a universal default",
+        ]:
+            with self.subTest(not_applicable_when=term):
+                self.assertIn(term, database["not_applicable_when"])
+        for gate in expected_gates:
+            with self.subTest(gate=gate):
+                self.assertIn(gate, database["gates"])
+        for artifact in expected_artifacts:
+            with self.subTest(artifact=artifact):
+                self.assertIn(artifact, database["artifacts"])
+        for eval_field in expected_eval_fields:
+            with self.subTest(eval_field=eval_field):
+                self.assertIn(eval_field, database["eval_fields"])
+        for overlap in [
+            "backend data consistency and operational runbooks",
+            "API data contracts and consumer compatibility",
+            "security privacy retention and production access approvals",
+            "LLM/RAG ingestion and evaluation datasets",
+            "delivery release rollback and destructive migration gates",
+            "analytics and product measurement data quality",
+        ]:
+            with self.subTest(overlap=overlap):
+                self.assertIn(overlap, database["overlaps"])
+        self.assertIn("team", database["maturity_impact"])
+        self.assertIn("production", database["maturity_impact"])
+        self.assertIn("regulated", database["maturity_impact"])
+        self.assertIn("complex", database["complexity_impact"])
+        self.assertIn("high_risk", database["complexity_impact"])
+
 
 if __name__ == "__main__":
     unittest.main()

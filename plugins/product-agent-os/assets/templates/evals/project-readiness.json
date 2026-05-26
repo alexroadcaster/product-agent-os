@@ -212,13 +212,13 @@
             "owner": "implementation-planner",
             "residual_risk": "Rendered docs, generated clients, schema validation or prose-only security notes can look complete while consumers, compatibility, authz, error semantics, events, SDK releases or external writes remain unsafe."
           },
-          "db_docs_when_schema_changes": {
-            "applies_when": "Schema, migration, backfill, retention, persistent data model, PII, or critical query changes.",
-            "pass_condition": "Set present_verified when database dictionary, DBML, schema docs, migration plan, validation, rollback, and owner review exist; use approval_required before production DB introspection.",
-            "accepted_gap": "Use explicit_gap_accepted when no persistent schema is touched or owner accepts delayed DB docs with risk.",
-            "required_evidence": ["database-dictionary.md", "migration-plan.md", "dry-run or validation evidence", "rollback note"],
+          "database_data_readiness_when_database_or_data_changes": {
+            "applies_when": "Database & Data methodology (`database_data`), schema, migration, backfill, persistent data model, production data, PII, retention, deletion, backup/restore, data quality, data contract, lineage, RAG ingestion, runtime pipeline, query performance, index, constraint or transaction boundary changes.",
+            "pass_condition": "Set present_verified only when database_inventory_present, database_dictionary_present, database_schema_source_present, database_migration_plan_present, database_expand_contract_reviewed, database_transaction_boundary_present, database_rollback_feasibility_present, database_backup_restore_evidence_present, database_data_classification_present, database_data_quality_contract_present, database_data_contract_present, database_lineage_present, database_performance_review_present, database_retention_deletion_policy_present, database_synthetic_fixture_policy_present, database_production_access_approval_present, database_constraints_integrity_review_present and database_unsupported_claims_rejected are verified or explicitly gapped. Schema-only artifacts, ORM models, generated ERDs and dbdocs are not safety proof.",
+            "accepted_gap": "Use explicit_gap_accepted only with owner, reason, review date, downstream data/API/security/AI/release risk and follow-up condition. Use approval_required before DB introspection, production database access, production data access, migration execution, destructive cleanup, backup restore or retention mutation.",
+            "required_evidence": ["database-inventory.md", "database-dictionary.md", "database-migration-plan.md", "database-expand-contract-record.md", "database-backfill-runbook.md", "database-rollback-feasibility.md", "database-backup-restore-evidence.md", "database-data-classification-matrix.md", "database-data-quality-checks.md", "database-data-contract.md", "database-lineage-map.md", "database-query-performance-review.md", "database-retention-deletion-policy.md", "database-synthetic-fixtures-policy.md", "database-production-access-approval.md", "schema source", "constraints and indexes", "dry run or validation evidence", "backup restore evidence", "production access approval_required"],
             "owner": "implementation-planner",
-            "residual_risk": "Data migration or retention changes can be unsafe without schema evidence."
+            "residual_risk": "Data migrations, schema drift, retention changes, runtime pipelines or RAG ingestion can look complete while production access, rollback, data quality, constraints, lineage or privacy evidence remains missing."
           },
           "release_version_impact_when_public_contract_changes": {
             "applies_when": "Plugin, package, API, SDK, public app, or public contract changes.",

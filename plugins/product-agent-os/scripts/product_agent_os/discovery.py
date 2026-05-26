@@ -428,14 +428,8 @@ def _detect_methodology_signals(files: set[str], profile: dict[str, Any]) -> dic
         "frontend": _detect_frontend_signal(files),
         "backend": _detect_backend_signal(files),
         "fsd_structure": _detect_fsd_structure(files),
-        "database_docs": any(
-            path.endswith(".dbml")
-            or path.startswith("db/")
-            or path.startswith("database/")
-            or path.startswith("migrations/")
-            or "schema" in path and path.endswith((".md", ".sql", ".dbml"))
-            for path in lowered
-        ),
+        "database_docs": any(_is_database_data_source(path) for path in lowered),
+        "database_data": any(_is_database_data_source(path) for path in lowered),
         "domain_model": _has_domain_model_signal(lowered),
         "docs_portal": any(
             path in {"mkdocs.yml", "docusaurus.config.js", "docusaurus.config.ts", "antora-playbook.yml"}
@@ -1327,6 +1321,56 @@ def _data_migration_signals(files: set[str]) -> dict[str, Any]:
     }
 
 
+def _database_data_signals(files: set[str]) -> dict[str, Any]:
+    normalized = {path.replace("\\", "/") for path in files}
+
+    def packet(sources: list[str]) -> dict[str, Any]:
+        return {
+            "sources": sources[:20],
+            "status": "present_unverified" if sources else "applicable_missing",
+        }
+
+    schema_sources = sorted(path for path in normalized if _is_data_schema_source(path))
+    migration_sources = sorted(path for path in normalized if _is_database_migration_source(path))
+    migration_tools = sorted(path for path in normalized if _is_database_migration_tool_source(path))
+    orm_models = sorted(path for path in normalized if _is_database_orm_source(path))
+    dictionary_sources = sorted(path for path in normalized if _is_database_dictionary_source(path))
+    data_quality_sources = sorted(path for path in normalized if _is_database_quality_source(path))
+    lineage_sources = sorted(path for path in normalized if _is_database_lineage_source(path))
+    query_performance_sources = sorted(path for path in normalized if _is_database_query_performance_source(path))
+    production_access_sources = sorted(path for path in normalized if _is_database_production_access_source(path))
+    destructive_change_sources = sorted(path for path in normalized if _is_database_destructive_source(path))
+    pipeline_sources = sorted(path for path in normalized if _is_database_pipeline_source(path))
+    rag_ingestion_sources = sorted(path for path in normalized if _is_database_rag_ingestion_source(path))
+    backup_restore_sources = sorted(path for path in normalized if _is_database_backup_restore_source(path))
+    privacy_retention_sources = sorted(path for path in normalized if _is_database_privacy_retention_source(path))
+
+    return {
+        "schema_sources": packet(schema_sources),
+        "migration_sources": packet(migration_sources),
+        "migration_tools": packet(migration_tools),
+        "orm_models": packet(orm_models),
+        "dictionary_sources": packet(dictionary_sources),
+        "data_quality_sources": packet(data_quality_sources),
+        "lineage_sources": packet(lineage_sources),
+        "query_performance_sources": packet(query_performance_sources),
+        "production_access_sources": packet(production_access_sources),
+        "destructive_change_sources": packet(destructive_change_sources),
+        "pipeline_sources": packet(pipeline_sources),
+        "rag_ingestion_sources": packet(rag_ingestion_sources),
+        "backup_restore_sources": packet(backup_restore_sources),
+        "privacy_retention_sources": packet(privacy_retention_sources),
+        "verification_status": "applicable_missing",
+        "note": (
+            "database_data_signals are present_unverified until owner review, dry run, validation, "
+            "backup/restore, query-plan, lineage, data-quality or runtime evidence exists; discovery is "
+            "read-only without database connections; approval_required applies before DB introspection, "
+            "production access, production data access, destructive migration, backup restore, retention "
+            "mutation or migration execution; do not claim database safety from detection."
+        ),
+    }
+
+
 def _security_sensitive_signals(files: set[str]) -> dict[str, Any]:
     authn_sources = sorted(path for path in files if _is_security_authn_source(path))
     authz_sources = sorted(path for path in files if _is_security_authz_source(path))
@@ -1659,6 +1703,27 @@ def _is_release_workflow_source(relative: str) -> bool:
     )
 
 
+def _is_database_data_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return (
+        lowered in {"alembic.ini", "dbt_project.yml", "flyway.conf", "schemaspy.properties"}
+        or lowered.endswith((".dbml", ".sql", "schema.prisma"))
+        or lowered.startswith(("db/", "database/", "migrations/", "prisma/", "liquibase/", "warehouse/"))
+        or any(
+            term in lowered
+            for term in (
+                "backfill",
+                "retention",
+                "lineage",
+                "openlineage",
+                "great_expectations",
+                "query-plan",
+                "production-data",
+            )
+        )
+    )
+
+
 def _is_data_schema_source(relative: str) -> bool:
     lowered = relative.lower()
     return (
@@ -1701,6 +1766,86 @@ def _is_data_dry_run_source(relative: str) -> bool:
 def _is_database_dictionary_source(relative: str) -> bool:
     lowered = relative.lower()
     return any(term in lowered for term in ("database-dictionary", "data-dictionary", "schema.dbml", ".dbml"))
+
+
+def _is_database_migration_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return lowered.startswith("migrations/") or "migration" in lowered or lowered.endswith(".sql")
+
+
+def _is_database_migration_tool_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return (
+        lowered in {"alembic.ini", "flyway.conf", "dbt_project.yml"}
+        or lowered.startswith("liquibase/")
+        or lowered.startswith("prisma/")
+        or "liquibase" in lowered
+        or "flyway" in lowered
+        or "alembic" in lowered
+        or "prisma" in lowered
+    )
+
+
+def _is_database_orm_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return (
+        lowered.endswith("schema.prisma")
+        or "models.py" in lowered
+        or lowered.endswith(("entity.ts", "model.ts", "model.py"))
+        or "typeorm" in lowered
+        or "sequelize" in lowered
+        or "active_record" in lowered
+    )
+
+
+def _is_database_quality_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return any(
+        term in lowered
+        for term in ("great_expectations", "data-quality", "data_quality", "dbt_project.yml", "dbt", "row-count", "checksum", "constraint")
+    )
+
+
+def _is_database_lineage_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return any(term in lowered for term in ("lineage", "openlineage", "dbt_project.yml", "dbt"))
+
+
+def _is_database_query_performance_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return any(term in lowered for term in ("query-plan", "explain", "performance", "index-review", "slow-query"))
+
+
+def _is_database_production_access_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return any(term in lowered for term in ("production-data", "production-db", "prod-db", "prod-data", "production-access"))
+
+
+def _is_database_destructive_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return any(term in lowered for term in ("drop", "truncate", "rename", "cleanup", "purge", "destructive"))
+
+
+def _is_database_pipeline_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return lowered.startswith(("warehouse/", "pipelines/", "etl/", "elt/")) or any(
+        term in lowered for term in ("pipeline", "warehouse", "dbt_project.yml", "model.sql")
+    )
+
+
+def _is_database_rag_ingestion_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return any(term in lowered for term in ("rag_ingest", "rag-ingest", "rag_ingestion", "rag-ingestion", "retrieval"))
+
+
+def _is_database_backup_restore_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return any(term in lowered for term in ("backup", "restore", "snapshot", "dump", "production-data"))
+
+
+def _is_database_privacy_retention_source(relative: str) -> bool:
+    lowered = relative.lower()
+    return any(term in lowered for term in ("pii", "privacy", "retention", "deletion", "sensitive", "production-data"))
 
 
 def _is_security_authn_source(relative: str) -> bool:
@@ -2318,6 +2463,7 @@ def _active_route_surfaces(
         ("ai_eval_surface", _has_ai_eval_surface(lowered_files)),
         ("native_mobile_surface", _has_native_mobile_surface(lowered_files)),
         ("desktop_local_surface", _has_desktop_local_surface(lowered_files)),
+        ("database_data_surface", signals["database_data"]),
         ("data_migration_surface", signals["database_docs"]),
         ("security_sensitive_surface", _has_security_surface(lowered_files)),
         ("ci_failure_surface", _has_ci_failure_surface(lowered_files, profile)),
@@ -2557,6 +2703,7 @@ def _methodology_applicability(
     fsd_needed = signals.get("fsd_structure", False) or _needs_fsd_structure(files)
     frontend_needed = signals.get("frontend", False)
     backend_needed = signals.get("backend", False)
+    database_needed = signals.get("database_data", False) or signals.get("database_docs", False)
     standards_evidence = [
         name
         for name in ("architecture_docs", "adr", "openapi", "asyncapi", "codeowners", "ci")
@@ -2640,6 +2787,20 @@ def _methodology_applicability(
             ],
             "backend owner",
             "detection alone does not prove backend runtime safety, failure-mode coverage or owner acceptance",
+        ),
+        "database_data_readiness": _applicability_packet(
+            "present_unverified" if database_needed else "not_applicable",
+            "database/data signal exists" if database_needed else "no database/data signal",
+            _signal_evidence(signals, "database_data", "database_docs"),
+            [
+                "database-inventory.md",
+                "database-dictionary.md",
+                "database-migration-plan.md",
+                "database-data-contract.md",
+                "backup/restore, data quality, lineage and production access evidence or accepted explicit gap",
+            ],
+            "data owner",
+            "detection alone does not prove database safety, migration readiness, production access approval or data quality",
         ),
         "docs_tooling_decision": _applicability_packet(
             docs_status if docs_status in READINESS_STATUSES else "present_unverified",
@@ -2805,6 +2966,7 @@ def _behavioral_route_inputs(
             "native_mobile_signals": _native_mobile_signals(files),
             "desktop_local_signals": _desktop_local_signals(files),
             "data_migration_signals": _data_migration_signals(files),
+            "database_data_signals": _database_data_signals(files),
             "security_sensitive_signals": _security_sensitive_signals(files),
             "backend_dependency_signals": _backend_dependency_signals(files),
             "backend_delivery_signals": _backend_delivery_signals(files, stack),
@@ -2917,6 +3079,7 @@ def analyze_workspace(root: str | Path, *, intent_hint: str = "") -> dict[str, A
         "native_mobile_signals": _native_mobile_signals(files),
         "desktop_local_signals": _desktop_local_signals(files),
         "data_migration_signals": _data_migration_signals(files),
+        "database_data_signals": _database_data_signals(files),
         "security_sensitive_signals": _security_sensitive_signals(files),
         "backend_dependency_signals": _backend_dependency_signals(files),
         "backend_delivery_signals": _backend_delivery_signals(files, stack),

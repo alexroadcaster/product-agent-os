@@ -267,6 +267,62 @@ UNSUPPORTED_API_CLAIMS = {
     "oauth exists, so api security is handled",
     "oauth-only claim",
 }
+DATABASE_INTENT_TERMS = {
+    "alembic",
+    "analytics",
+    "backup",
+    "backfill",
+    "constraint",
+    "constraints",
+    "data contract",
+    "data quality",
+    "database",
+    "dbt",
+    "deletion",
+    "dry run",
+    "flyway",
+    "great expectations",
+    "index",
+    "indexes",
+    "lineage",
+    "liquibase",
+    "migration",
+    "openlineage",
+    "persistent data",
+    "pii",
+    "prisma",
+    "production data",
+    "query",
+    "rag ingestion",
+    "restore",
+    "retention",
+    "rollback",
+    "schema",
+    "transaction",
+}
+DATABASE_NOT_APPLICABLE_PHRASES = {
+    "typo-only docs edit without schema data or query behavior change",
+    "formatting-only markdown cleanup",
+    "readme-only database mention without persistent data ownership impact",
+}
+DATABASE_PRODUCTION_ACCESS_TERMS = {
+    "backup restore",
+    "destructive",
+    "drop",
+    "production",
+    "production access",
+    "production data",
+    "restore",
+    "truncate",
+}
+UNSUPPORTED_DATABASE_CLAIMS = {
+    "prisma introspection proves database safety",
+    "orm schema equals production schema",
+    "explain analyze is safe on writes",
+    "dbdocs alone are enough",
+    "generated erd proves constraints",
+    "schema-only artifact is safety proof",
+}
 AI_INTENT_TERMS = {"prompt", "model", "eval", "rag", "vector", "embedding", "ai", "llm"}
 DELIVERY_INTENT_TERMS = {"production", "release", "deploy", "package", "docker", "kubernetes", "operations"}
 ARCHITECTURE_INTENT_TERMS = {
@@ -638,8 +694,32 @@ def _observed_signals(root: Path, files: set[str], directories: set[str]) -> lis
     add("api_external_provider", [path for path in files if _is_api_external_provider(path)] + [directory for directory in directories if directory in {"integrations", "providers"}])
     add(
         "database_migration_or_schema",
-        [path for path in files if path in {"alembic.ini", "dbt_project.yml"}]
-        + [directory for directory in directories if directory in {"migrations", "prisma"}],
+        [
+            path
+            for path in files
+            if path in {"alembic.ini", "dbt_project.yml", "flyway.conf", "schemaspy.properties"}
+            or path.endswith((".dbml", ".sql", "schema.prisma"))
+            or path.startswith(("db/", "database/", "migrations/", "prisma/", "liquibase/", "warehouse/"))
+            or any(
+                term in path
+                for term in (
+                    "database",
+                    "schema",
+                    "migration",
+                    "backfill",
+                    "retention",
+                    "lineage",
+                    "great_expectations",
+                    "openlineage",
+                    "query-plan",
+                )
+            )
+        ]
+        + [
+            directory
+            for directory in directories
+            if directory in {"migrations", "prisma", "db", "database", "liquibase", "warehouse", "lineage"}
+        ],
     )
     add(
         "ci_configuration",
@@ -1064,7 +1144,7 @@ def _methodology_domains(
         "frontend": _frontend_applies(observed, intent),
         "backend": _backend_applies(observed, intent),
         "api_integrations": _api_integrations_applies(observed, intent),
-        "database_data": _has_signal(observed, "database_migration_or_schema") or "production data" in intent,
+        "database_data": _database_data_applies(observed, intent),
         "llm_ai_rag": _mentions_any(intent, AI_INTENT_TERMS) or _has_signal(observed, "ai_eval_or_rag"),
         "security_privacy_compliance": complexity_profile == "high_risk"
         or maturity_level == "regulated"
@@ -1206,6 +1286,20 @@ def _api_integrations_applies(observed: list[dict[str, Any]], intent: str) -> bo
 
 def _api_integrations_not_applicable(intent: str) -> bool:
     return any(phrase in intent for phrase in API_NOT_APPLICABLE_PHRASES)
+
+
+def _database_data_applies(observed: list[dict[str, Any]], intent: str) -> bool:
+    if _database_data_not_applicable(intent) and not _has_signal(observed, "database_migration_or_schema"):
+        return False
+    return (
+        _has_signal(observed, "database_migration_or_schema")
+        or _mentions_any(intent, DATABASE_INTENT_TERMS)
+        or _mentions_any(intent, UNSUPPORTED_DATABASE_CLAIMS)
+    )
+
+
+def _database_data_not_applicable(intent: str) -> bool:
+    return any(phrase in intent for phrase in DATABASE_NOT_APPLICABLE_PHRASES)
 
 
 def _api_has_complete_accepted_gap(intent: str) -> bool:
@@ -3263,6 +3357,333 @@ def _api_integrations_recommendations(
     return recommendations
 
 
+def _database_data_recommendations(
+    root: Path,
+    files: set[str],
+    observed: list[dict[str, Any]],
+    intent: str,
+) -> list[dict[str, Any]]:
+    if not _database_data_applies(observed, intent):
+        return []
+
+    recommendations: list[dict[str, Any]] = []
+    production_or_destructive = (
+        _mentions_any(intent, DATABASE_PRODUCTION_ACCESS_TERMS)
+        or _database_has_destructive_change(root, files)
+        or any(
+            any(
+                term in path.lower()
+                for term in (
+                    "production-data",
+                    "production_access",
+                    "production-access",
+                    "backup",
+                    "restore",
+                    "destructive",
+                )
+            )
+            for path in files
+        )
+    )
+
+    def add(
+        gate: str,
+        artifact: str,
+        reason: str,
+        evidence: list[str],
+        *,
+        priority: str = "P1_high_risk",
+        approval: str = (
+            "approval_required before database introspection, production database access, "
+            "production data access, migration execution, destructive cleanup, backup restore "
+            "or retention mutation"
+        ),
+        residual: str = "Database artifact presence does not prove migration, data quality or runtime safety.",
+        action: str = "Stage database evidence before connecting to production data or running migrations.",
+    ) -> None:
+        recommendations.append(
+            _recommendation(
+                priority=priority,
+                reason=reason,
+                domain="database_data",
+                gate=gate,
+                artifact=artifact,
+                evidence_required=evidence,
+                evidence_owner="data owner",
+                approval_boundary=approval,
+                accepted_gap_option=(
+                    "explicit_gap_accepted with owner, reason, review date, downstream risk, "
+                    "residual risk and follow-up condition"
+                ),
+                residual_risk=residual,
+                safe_next_action=action,
+            )
+        )
+
+    add(
+        "database_inventory_present",
+        "database-inventory.md",
+        "Database/data work needs datastore inventory and ownership before readiness claims.",
+        [
+            "database inventory",
+            "datastore",
+            "environment",
+            "owner",
+            "data classification",
+            "production access",
+            "approval_required",
+        ],
+    )
+    add(
+        "database_dictionary_present",
+        "database-dictionary.md",
+        "Database fields, tables and ownership need a dictionary before migration or data safety claims.",
+        [
+            "database dictionary",
+            "business meaning",
+            "owner",
+            "classification",
+            "retention",
+            "source of truth",
+        ],
+    )
+    add(
+        "database_schema_source_present",
+        "database-data-contract.md",
+        "Schema source of truth is missing or only inferred from tooling.",
+        [
+            "schema source",
+            "DBML/SQL/ORM/migration source",
+            "source of truth",
+            "ORM model is not complete production schema evidence",
+            "schema-only artifact is not safety proof",
+        ],
+    )
+    add(
+        "database_migration_plan_present",
+        "database-migration-plan.md",
+        "Database migration or schema signals were detected.",
+        [
+            "ordered migration steps",
+            "dry run command",
+            "rollback or compensation",
+            "owner approval",
+            "Liquibase",
+            "Flyway",
+            "Alembic",
+            "Prisma",
+            "Rails/Django",
+            "expand-contract",
+            "preconditions",
+            "databasechangelog",
+            "schema history",
+            "versioned/repeatable",
+            "DROP",
+            "rename",
+            "truncate",
+            "cleanup",
+            "purge",
+            "destructive migration",
+            "no universal default",
+            "schema-diff tooling deferred",
+        ],
+    )
+    add(
+        "database_expand_contract_reviewed",
+        "database-expand-contract-record.md",
+        "Schema evolution needs expand-contract compatibility review.",
+        [
+            "expand phase",
+            "contract phase",
+            "backward compatibility",
+            "consumer compatibility",
+            "feature flag or dual-read/write path",
+        ],
+    )
+    add(
+        "database_transaction_boundary_present",
+        "database-data-contract.md",
+        "Transaction boundaries and side effects are not explicit.",
+        [
+            "transaction boundary",
+            "atomic operation",
+            "idempotency",
+            "side effects",
+            "retry/replay behavior",
+        ],
+    )
+    add(
+        "database_rollback_feasibility_present",
+        "database-rollback-feasibility.md",
+        "Rollback or compensation feasibility is unknown.",
+        [
+            "rollback feasibility",
+            "restore",
+            "compensation",
+            "irreversible changes",
+            "accepted gap",
+            "owner approval",
+        ],
+    )
+    add(
+        "database_backup_restore_evidence_present",
+        "database-backup-restore-evidence.md",
+        "Backup/restore evidence is missing for database risk.",
+        [
+            "backup restore evidence",
+            "backup",
+            "restore test",
+            "restore point",
+            "no production data in prompts",
+            "approval_required before production restore",
+        ],
+    )
+    add(
+        "database_data_classification_present",
+        "database-data-classification-matrix.md",
+        "PII, sensitive data, retention and access classification are not explicit.",
+        [
+            "PII",
+            "sensitive",
+            "retention",
+            "deletion",
+            "access boundary",
+            "legal hold",
+        ],
+    )
+    add(
+        "database_data_quality_contract_present",
+        "database-data-quality-checks.md",
+        "Data quality expectations and verification are missing.",
+        [
+            "data quality",
+            "Great Expectations",
+            "dbt tests",
+            "constraints",
+            "row counts",
+            "checksum",
+            "drift",
+        ],
+    )
+    add(
+        "database_data_contract_present",
+        "database-data-contract.md",
+        "Producer/consumer data contract is not explicit.",
+        [
+            "data contract",
+            "producer",
+            "consumer",
+            "compatibility",
+            "schema source",
+            "constraints",
+            "indexes",
+        ],
+    )
+    add(
+        "database_lineage_present",
+        "database-lineage-map.md",
+        "Lineage, runtime pipeline or RAG ingestion impact is unreviewed.",
+        [
+            "lineage",
+            "OpenLineage",
+            "dbt",
+            "upstream",
+            "downstream",
+            "runtime pipeline and RAG ingestion signals are present_unverified",
+        ],
+        priority="P2_recommended",
+    )
+    add(
+        "database_performance_review_present",
+        "database-query-performance-review.md",
+        "Query/index/performance impact is unreviewed.",
+        [
+            "query performance",
+            "query plan",
+            "index",
+            "EXPLAIN",
+            "production load risk",
+            "write-side EXPLAIN ANALYZE requires approval",
+        ],
+        priority="P2_recommended",
+    )
+    add(
+        "database_retention_deletion_policy_present",
+        "database-retention-deletion-policy.md",
+        "Retention/deletion behavior is not explicit.",
+        [
+            "retention",
+            "deletion",
+            "purge",
+            "archive",
+            "legal hold",
+            "audit evidence",
+        ],
+    )
+    add(
+        "database_synthetic_fixture_policy_present",
+        "database-synthetic-fixtures-policy.md",
+        "Database fixtures need synthetic/no-secrets/no-production-data policy.",
+        [
+            "synthetic fixtures",
+            "no secrets",
+            "no production data",
+            "no private customer data",
+            "fixtures",
+        ],
+        priority="P2_recommended",
+    )
+    if production_or_destructive:
+        add(
+            "database_production_access_approval_present",
+            "database-production-access-approval.md",
+            "Production data, production database access, backup restore or destructive migration needs approval evidence.",
+            [
+                "production access approval_required",
+                "read-only",
+                "introspection",
+                "least privilege",
+                "do not access production data",
+                "do not run migration",
+                "destructive migration",
+            ],
+            priority="P0_blocker",
+        )
+    add(
+        "database_constraints_integrity_review_present",
+        "database-data-contract.md",
+        "Constraint, index and data drift integrity evidence is missing.",
+        [
+            "constraints",
+            "indexes",
+            "foreign keys",
+            "unique",
+            "not null",
+            "data drift",
+        ],
+    )
+    if _mentions_any(intent, UNSUPPORTED_DATABASE_CLAIMS):
+        add(
+            "database_unsupported_claims_rejected",
+            "database-data-contract.md",
+            "Unsupported database methodology claim was used as evidence.",
+            [
+                "unsupported claim",
+                "Prisma introspection is not safety proof",
+                "ORM schema is not complete production schema evidence",
+                "EXPLAIN ANALYZE on writes requires approval",
+                "dbdocs alone are not enough",
+                "generated ERD does not prove constraints",
+                "schema-only artifact is not safety proof",
+            ],
+            priority="P1_high_risk",
+            residual="Unsupported database claims can bypass migration, data quality, integrity or production-access review.",
+            action="Record unsupported database claim and replace it with database evidence or accepted gap.",
+        )
+
+    return recommendations
+
+
 def _recommendations(
     root: Path,
     files: set[str],
@@ -3280,22 +3701,7 @@ def _recommendations(
     recommendations.extend(_frontend_recommendations(files, observed, intent))
     recommendations.extend(_backend_recommendations(files, observed, intent))
     recommendations.extend(_api_integrations_recommendations(files, observed, intent))
-    if _has_signal(observed, "database_migration_or_schema"):
-        recommendations.append(
-            _recommendation(
-                priority="P1_high_risk",
-                reason="Database migration or schema signals were detected.",
-                domain="database_data",
-                gate="database_migration_plan_present",
-                artifact="database-migration-plan.md",
-                evidence_required=["ordered migration steps", "dry run command", "rollback or compensation", "owner approval"],
-                evidence_owner="data owner",
-                approval_boundary="approval_required before production database access or migration execution",
-                accepted_gap_option="explicit_gap_accepted with owner, reason, residual risk and review date",
-                residual_risk="Artifact presence does not prove the migration is safe.",
-                safe_next_action="Stage a migration plan proposal without connecting to production data.",
-            )
-        )
+    recommendations.extend(_database_data_recommendations(root, files, observed, intent))
     if complexity_profile == "high_risk":
         recommendations.append(
             _recommendation(
@@ -3332,6 +3738,23 @@ def _recommendations(
             )
         )
     return recommendations
+
+
+def _database_has_destructive_change(root: Path, files: set[str]) -> bool:
+    destructive_terms = ("drop ", "drop table", "rename ", "truncate ", "cleanup", "purge")
+    for relative in files:
+        lowered = relative.lower()
+        if any(term.strip() in lowered for term in destructive_terms):
+            return True
+        if not lowered.endswith((".sql", ".prisma", ".xml", ".yml", ".yaml")):
+            continue
+        try:
+            text = (root / relative).read_text(encoding="utf-8").lower()
+        except (OSError, UnicodeDecodeError):
+            continue
+        if any(term in text for term in destructive_terms):
+            return True
+    return False
 
 
 def _recommendation(

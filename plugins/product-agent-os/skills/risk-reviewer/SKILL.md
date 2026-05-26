@@ -242,6 +242,12 @@ Required gates: `api_contract_source_present`, `api_consumer_map_present`, `api_
 
 Contract drift blocks completion claims. External writes are approval_required. Use `explicit_gap_accepted` only with owner, reason, review date, downstream risk and follow-up. No universal GraphQL/gRPC/event default; style/tool choices remain project-specific.
 
+## Track 9 Database & Data Methodology
+
+Review `database_data` before readiness when schema, migration, backfill, persistent data model, production data, PII, retention, deletion, backup/restore, data quality, data contract, lineage, RAG ingestion, runtime pipeline, query performance, index, constraint or transaction boundary changes are present.
+
+Block readiness when `database_migration_plan_present`, `database_backup_restore_evidence_present`, `database_constraints_integrity_review_present`, or `database_production_access_approval_present` is applicable but missing. Production access is `approval_required`; schema-only artifact is not safety proof; runtime pipeline and RAG ingestion signals are `present_unverified`; no universal database tooling default; schema-diff tooling deferred needs owner/reason. Do not access production data or run destructive migration without explicit approval.
+
 ## Verification
 
 Check that every finding has severity, evidence, affected scope, and required action. Check that missing tests and approval risks are explicit, source constraints are respected, and `review_ready` appears only with a `ready` verdict. Do not claim without evidence.

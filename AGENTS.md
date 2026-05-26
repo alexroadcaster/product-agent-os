@@ -33,7 +33,8 @@ This repository is a Russian knowledge base for researching OpenAI Codex, advanc
 - Use `AGENTS.md` for durable project rules.
 - Use `REQUIREMENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md`, and `RUNLOG.md` templates for long-running product work.
 - Use skills for repeatable methods and automations only after a skill or manual workflow is stable.
-- Use worktrees or explicit ownership when parallel agents may edit overlapping files.
+- Do not create or switch to a new git branch or worktree unless the user explicitly asks for it. By default, work in the current branch and only report when isolation would be useful.
+- Use worktrees or explicit ownership when parallel agents may edit overlapping files, but only after explicit user approval for the worktree or branch change.
 - Design agent teams around ownership, handoff artifacts, verification, and stop conditions rather than vague roles.
 - Give every durable project agent an explicit model/reasoning policy: default model, reasoning effort, escalation rules, downgrade rules, and cost/latency budget.
 - Use stronger reasoning for planning, architecture, review, debugging, eval judging, security, and ambiguous multi-step work; use lower reasoning for bounded, mechanical, or read-only collection tasks.

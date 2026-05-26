@@ -474,6 +474,16 @@
           "dry run",
           "backup",
           "database dictionary",
+          "database_data",
+          "database_data_signals",
+          "database inventory",
+          "database data contract",
+          "constraints",
+          "indexes",
+          "lineage",
+          "query performance",
+          "production access approval_required",
+          "schema-only artifact is not safety proof",
           "owner review",
           "production db",
           "residual risk"
@@ -484,9 +494,11 @@
         "migration run without dry run",
         "destructive migration without rollback",
         "pii exposure in artifact",
-        "data safety claim without validation evidence"
+        "data safety claim without validation evidence",
+        "schema-only artifact as safety proof",
+        "runtime pipeline or RAG ingestion safety claim from detection"
       ],
-      "residual_risk": "Production database access, sensitive-data handling, and rollback safety still require owner-approved environment-specific evidence."
+      "residual_risk": "Production database access, sensitive-data handling, rollback safety, data quality, lineage, runtime pipeline, RAG ingestion, constraints and query performance still require owner-approved environment-specific evidence."
     },
     {
       "name": "security-sensitive-change-plan",

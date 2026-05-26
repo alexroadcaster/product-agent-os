@@ -209,6 +209,55 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         self.assertIn("API lint tooling", backlog)
         self.assertIn("multi-repository generated clients deferred", backlog)
 
+    def test_track9_database_data_docs_and_source_registry_are_synced(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK9_BACKLOG.read_text(encoding="utf-8")
+        behavioral_evals = (PRODUCT_AGENT_OS / "behavioral-evals.md").read_text(encoding="utf-8")
+        scenarios = (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8")
+        readme = (ROOT / "plugins" / "product-agent-os" / "README.md").read_text(encoding="utf-8")
+
+        for expected in [
+            "Product-Agent OS Track 9 Database & Data methodology coverage",
+            "T9-D9",
+            "database_data_contract_present",
+            "docs/product-agent-os/behavioral-evals.md",
+            "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
+            "verification_status:",
+        ]:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        for expected in [
+            "database_data_contract_present",
+            "Database & Data eval",
+            "schema-only artifact is not safety proof",
+            "production access approval_required",
+        ]:
+            with self.subTest(behavioral_evals=expected):
+                self.assertIn(expected, behavioral_evals)
+
+        for expected in [
+            "Database & Data methodology routing",
+            "database-inventory.md",
+            "database-migration-plan.md",
+            "database-production-access-approval.md",
+        ]:
+            with self.subTest(scenarios=expected):
+                self.assertIn(expected, scenarios)
+
+        for expected in [
+            "Database & Data methodology",
+            "database_data_contract_present",
+            "database_migration_plan_present",
+            "database_production_access_approval_present",
+        ]:
+            with self.subTest(readme=expected):
+                self.assertIn(expected, readme)
+
+        self.assertIn("T9-D9", backlog)
+        self.assertIn("schema-diff tooling deferred", backlog)
+        self.assertIn("runtime/pipeline/RAG signals stay `present_unverified`", backlog)
+
 
 if __name__ == "__main__":
     unittest.main()

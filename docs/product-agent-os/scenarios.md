@@ -46,6 +46,14 @@ Source status: `official + experiment`
 | `standard_feature` | Bounded feature work without special scenario risk. | Use normal lifecycle route. | Requirements, plan, test/eval evidence. | Writes follow sandbox and project approval policy. | Unit/integration/contract checks, docs impact, review. |
 | `maintenance` | Small upkeep, formatting or status sync. | Keep scope mechanical and evidence explicit. | RUNLOG note or control-plane sync. | No unrelated refactor. | Focused command or explicit inspection-only gap. |
 
+## Database & Data methodology routing
+
+Database/data work keeps the Track 8 `data_migration` route for compatibility, but Track 9 also adds a dedicated Database & Data methodology packet. When schema, migration, ORM, warehouse, data quality, lineage, retention, backup/restore or production-data signals appear, the route should stage or request database-specific evidence before implementation or execution.
+
+Minimum staged artifacts include `database-inventory.md`, `database-dictionary.md`, `database-migration-plan.md`, `database-data-contract.md`, `database-backup-restore-evidence.md`, `database-lineage-map.md`, `database-query-performance-review.md`, `database-retention-deletion-policy.md`, `database-synthetic-fixtures-policy.md` and `database-production-access-approval.md` when production data, production DB access, backup restore or destructive migration is involved.
+
+Approval boundary stays explicit: DB introspection, production DB access, production data access, migration execution, destructive cleanup, backup restore and retention mutation are not automatic actions.
+
 ## Verification
 
 - Route selection is covered by discovery tests, `usage_mode` fixture checks, and T8-GX false-positive fixtures for selected methodology/tooling gates.
@@ -53,6 +61,7 @@ Source status: `official + experiment`
 - Frontend methodology routing is covered by `frontend_contract_present` and the synthetic `frontend-ui-app` fixture: UI completion requires user-flow, component state, visual/accessibility/runtime/interaction evidence or an accepted gap, not Storybook-only or inspection-only evidence.
 - Backend methodology routing is covered by `backend_contract_present` and the synthetic `backend-service-app` fixture: backend completion requires `backend-service-overview.md`, `backend-runtime-behavior.md`, runtime/failure evidence, observability/SLO/health evidence, security/rollback evidence and owner reviewed sufficiency or accepted gap, not package docs or logs-only evidence.
 - API & Integrations methodology routing is covered by `api_integrations_contract_present` and synthetic API fixtures: API completion requires `api-inventory.md`, `api-contract-review.md`, `api-consumer-map.md`, `api-contract-test-matrix.md`, `external-integration-approval.md` and related compatibility/security/error/event/SDK evidence, not Swagger UI or schema-only evidence.
+- Database & Data methodology routing is covered by `database_data_contract_present` and synthetic database fixtures: database completion requires inventory, dictionary, schema source, migration plan, expand-contract, data contract, rollback/backup, classification, data quality, lineage, performance, retention, synthetic fixtures and production access approval evidence where applicable.
 - Docs and source claims are checked by `tools/check_docs.py`, source policy and strict MkDocs when navigation changes.
 - Completion language must pass evidence-before-completion: current command evidence, current eval evidence, current runtime evidence, owner evidence or explicit inspection-only gap.
 

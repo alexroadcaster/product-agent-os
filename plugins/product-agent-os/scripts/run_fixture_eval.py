@@ -737,6 +737,105 @@ API_INTEGRATIONS_TERMS = (
     "spectral/redocly/framework-native deferred",
     "api-only contract fixtures do not force backend blockers",
 )
+DATABASE_DATA_GATES = (
+    "database_inventory_present",
+    "database_dictionary_present",
+    "database_schema_source_present",
+    "database_migration_plan_present",
+    "database_expand_contract_reviewed",
+    "database_transaction_boundary_present",
+    "database_rollback_feasibility_present",
+    "database_backup_restore_evidence_present",
+    "database_data_classification_present",
+    "database_data_quality_contract_present",
+    "database_data_contract_present",
+    "database_lineage_present",
+    "database_performance_review_present",
+    "database_retention_deletion_policy_present",
+    "database_synthetic_fixture_policy_present",
+    "database_production_access_approval_present",
+    "database_constraints_integrity_review_present",
+    "database_unsupported_claims_rejected",
+)
+DATABASE_DATA_ARTIFACTS = (
+    "database-inventory.md",
+    "database-dictionary.md",
+    "database-migration-plan.md",
+    "database-expand-contract-record.md",
+    "database-backfill-runbook.md",
+    "database-rollback-feasibility.md",
+    "database-backup-restore-evidence.md",
+    "database-data-classification-matrix.md",
+    "database-data-quality-checks.md",
+    "database-data-contract.md",
+    "database-lineage-map.md",
+    "database-query-performance-review.md",
+    "database-retention-deletion-policy.md",
+    "database-synthetic-fixtures-policy.md",
+    "database-production-access-approval.md",
+    "migration-plan.md",
+    "security-risk-review.md",
+    "api-contract-review.md",
+    "ai-eval-spec.md",
+    "release-readiness.md",
+)
+DATABASE_DATA_EVAL_FIELDS = (
+    "database_data_contract_present",
+    "database_inventory_contract_present",
+    "database_dictionary_contract_present",
+    "database_schema_source_contract_present",
+    "database_migration_plan_contract_present",
+    "database_expand_contract_contract_present",
+    "database_transaction_boundary_contract_present",
+    "database_rollback_feasibility_contract_present",
+    "database_backup_restore_contract_present",
+    "database_data_classification_contract_present",
+    "database_data_quality_contract_present",
+    "database_lineage_contract_present",
+    "database_performance_review_contract_present",
+    "database_retention_deletion_contract_present",
+    "database_synthetic_fixture_policy_contract_present",
+    "database_production_access_approval_contract_present",
+    "database_constraints_integrity_contract_present",
+    "unsupported_database_claims_rejected_contract_present",
+)
+DATABASE_DATA_TERMS = (
+    "database_data",
+    "database_data_signals",
+    "database inventory",
+    "database dictionary",
+    "schema source",
+    "data contract",
+    "constraints",
+    "indexes",
+    "foreign keys",
+    "unique",
+    "not null",
+    "transaction boundary",
+    "expand-contract",
+    "backfill",
+    "dry run",
+    "rollback feasibility",
+    "backup restore evidence",
+    "pii",
+    "retention",
+    "deletion",
+    "data quality",
+    "great expectations",
+    "dbt tests",
+    "lineage",
+    "openlineage",
+    "query performance",
+    "destructive migration",
+    "drop/rename/truncate",
+    "production access approval_required",
+    "do not access production data",
+    "do not run migration",
+    "no universal database tooling default",
+    "schema-diff tooling deferred",
+    "runtime pipeline and RAG ingestion signals are present_unverified",
+    "schema-only artifact is not safety proof",
+)
 CODEX_AGENTIC_WORKFLOW_GATES = (
     "agentic_scope_classified",
     "control_plane_present",
@@ -930,7 +1029,7 @@ CONDITIONAL_READINESS_GATE_IDS = (
     "docs_tooling_decision",
     "contract_docs_when_api_or_event_changes",
     "api_contract_readiness_when_api_or_integration_changes",
-    "db_docs_when_schema_changes",
+    "database_data_readiness_when_database_or_data_changes",
     "release_version_impact_when_public_contract_changes",
     "reproduction_evidence_when_bug_rescue",
     "approval_before_greenfield_scaffold",
@@ -1238,6 +1337,7 @@ def _expected_checks(
         checks["api_integrations_contract_present"] = _api_integrations_contract_present()
         checks["api_contract_source_present"] = _api_integrations_contract_present()
         checks["external_write_approval_present"] = _api_integrations_contract_present()
+        checks["database_data_contract_present"] = _database_data_contract_present()
         checks["methodology_applicability_contract_present"] = (
             _methodology_applicability_contract_present(audit)
         )
@@ -1270,6 +1370,10 @@ def _expected_checks(
         "native-mobile-permissions": "native_mobile_feature",
         "desktop-local-indexer": "desktop_local_first",
         "data-migration-pii": "data_migration",
+        "database-schema-only": "data_migration",
+        "database-destructive-migration": "data_migration",
+        "database-production-access-approval": "data_migration",
+        "database-lineage-rag-overlap": "data_migration",
         "security-auth-payment": "security_sensitive_change",
         "ci-flaky-tests": "ci_stabilization",
         "package-release": "release_packaging",
@@ -1357,6 +1461,38 @@ def _expected_checks(
             and item.get("gate") == "api_style_choice_recorded"
             for item in recommendations
         )
+    if fixture == "database-schema-only":
+        db_signals = audit.get("database_data_signals", {})
+        checks["database_schema_only_not_safety_proof"] = (
+            isinstance(db_signals, dict)
+            and db_signals.get("schema_sources", {}).get("status") == "present_unverified"
+            and db_signals.get("migration_sources", {}).get("status") == "applicable_missing"
+            and "present_verified" not in db_signals.get("note", "")
+        )
+    if fixture == "database-destructive-migration":
+        recommendations = methodology_audit.get("recommendations", [])
+        checks["database_destructive_change_requires_approval"] = any(
+            isinstance(item, dict)
+            and item.get("gate") == "database_production_access_approval_present"
+            and item.get("priority") == "P0_blocker"
+            for item in recommendations
+        )
+    if fixture == "database-production-access-approval":
+        recommendations = methodology_audit.get("recommendations", [])
+        checks["database_production_access_requires_approval"] = any(
+            isinstance(item, dict)
+            and item.get("gate") == "database_production_access_approval_present"
+            and "approval_required" in str(item.get("approval_boundary", ""))
+            for item in recommendations
+        )
+    if fixture == "database-lineage-rag-overlap":
+        db_signals = audit.get("database_data_signals", {})
+        checks["database_lineage_rag_overlap_present_unverified"] = (
+            isinstance(db_signals, dict)
+            and db_signals.get("lineage_sources", {}).get("status") == "present_unverified"
+            and db_signals.get("rag_ingestion_sources", {}).get("status") == "present_unverified"
+            and db_signals.get("pipeline_sources", {}).get("status") == "present_unverified"
+        )
     return checks
 
 
@@ -1428,6 +1564,7 @@ def _methodology_applicability_contract_present(audit: dict[str, Any]) -> bool:
         "codex_agentic_workflow",
         "frontend_methodology",
         "backend_methodology",
+        "database_data_readiness",
     }
     allowed_statuses = {
         "not_applicable",
@@ -1916,6 +2053,66 @@ def _api_integrations_contract_present() -> bool:
         f"{path.name}\n{path.read_text(encoding='utf-8')}" for path in paths
     ).lower()
     return all(term in payload for term in API_INTEGRATIONS_TERMS)
+
+
+def _database_data_contract_present() -> bool:
+    try:
+        catalog = load_methodology_catalog()
+    except (OSError, ValueError, json.JSONDecodeError):
+        return False
+    if validate_methodology_catalog(catalog):
+        return False
+    domains = {
+        str(domain.get("id")): domain
+        for domain in catalog.get("domains", [])
+        if isinstance(domain, dict) and domain.get("id")
+    }
+    database = domains.get("database_data")
+    if not isinstance(database, dict):
+        return False
+    if not set(DATABASE_DATA_GATES).issubset(set(database.get("gates", []))):
+        return False
+    if not set(DATABASE_DATA_ARTIFACTS).issubset(set(database.get("artifacts", []))):
+        return False
+    if not set(DATABASE_DATA_EVAL_FIELDS).issubset(set(database.get("eval_fields", []))):
+        return False
+
+    paths = [
+        PLUGIN_ROOT / "assets" / "methodology" / "methodology-catalog.json",
+        TEMPLATE_ROOT / "artifact-templates" / "database-inventory.md",
+        TEMPLATE_ROOT / "artifact-templates" / "database-dictionary.md",
+        TEMPLATE_ROOT / "artifact-templates" / "database-migration-plan.md",
+        TEMPLATE_ROOT / "artifact-templates" / "database-expand-contract-record.md",
+        TEMPLATE_ROOT / "artifact-templates" / "database-backfill-runbook.md",
+        TEMPLATE_ROOT / "artifact-templates" / "database-rollback-feasibility.md",
+        TEMPLATE_ROOT / "artifact-templates" / "database-backup-restore-evidence.md",
+        TEMPLATE_ROOT / "artifact-templates" / "database-data-classification-matrix.md",
+        TEMPLATE_ROOT / "artifact-templates" / "database-data-quality-checks.md",
+        TEMPLATE_ROOT / "artifact-templates" / "database-data-contract.md",
+        TEMPLATE_ROOT / "artifact-templates" / "database-lineage-map.md",
+        TEMPLATE_ROOT / "artifact-templates" / "database-query-performance-review.md",
+        TEMPLATE_ROOT / "artifact-templates" / "database-retention-deletion-policy.md",
+        TEMPLATE_ROOT / "artifact-templates" / "database-synthetic-fixtures-policy.md",
+        TEMPLATE_ROOT / "artifact-templates" / "database-production-access-approval.md",
+        TEMPLATE_ROOT / "workflows" / "data-migration.md",
+        TEMPLATE_ROOT / "control-plane" / "PLAN.md",
+        TEMPLATE_ROOT / "control-plane" / "TEST.md",
+        TEMPLATE_ROOT / "control-plane" / "EVALS.md",
+        TEMPLATE_ROOT / "control-plane" / "RUNLOG.md",
+        TEMPLATE_ROOT / "evals" / "project-readiness.json",
+        TEMPLATE_ROOT / "evals" / "behavioral-workflows.json",
+        PLUGIN_ROOT / "skills" / "workspace-discovery-auditor" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "project-lifecycle-orchestrator" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "implementation-planner" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "test-eval-designer" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "risk-reviewer" / "SKILL.md",
+        PLUGIN_ROOT / "scripts" / "product_agent_os" / "discovery.py",
+        PLUGIN_ROOT / "scripts" / "product_agent_os" / "methodology_audit.py",
+    ]
+    payload = "\n".join(
+        f"{path.name}\n{path.read_text(encoding='utf-8')}" for path in paths
+    ).lower()
+    return all(term.lower() in payload for term in DATABASE_DATA_TERMS)
 
 
 def _codex_agentic_workflow_contract_present() -> bool:

@@ -2,19 +2,19 @@
 
 <!-- product-agent-os:start runlog -->
 Project: Codex Docs / Product-Agent OS
-Generated at: 2026-05-25
+Generated at: 2026-05-26
 
 ## Current Lifecycle Marker
 
-`api_integrations_gate`
+`database_data_gate`
 
 ## Latest Completed Slice
 
-`T9-D8` API & Integrations methodology integration.
+`T9-D9` Database & Data methodology integration.
 
 ## Current Active Slice
 
-`T9-D9` Database & Data deep audit and task-matrix refresh.
+`T9-D10` LLM / AI / RAG has not started.
 
 ## Latest Planning Artifact
 
@@ -35,6 +35,8 @@ Generated at: 2026-05-25
 - Added final backend batch depth through `T9-D7-M45`: backend delivery discovery signals, lightweight retry/idempotency detection, severity policy with accepted-gap downgrade, framework-agnostic snippet policy, Product-Agent OS docs/source registry sync and semantic evidence sufficiency routing to T9-S.
 - Added API & Integrations methodology depth through `T9-D8`: `api_integrations` catalog gates, OpenAPI/Swagger-source/AsyncAPI/GraphQL/protobuf/JSON Schema/Pact/webhook/generated-client/external-provider discovery, read-only audit recommendations, API artifact templates, generated control-plane/eval coverage, lifecycle skill routing and synthetic fixtures.
 - Added API false-positive and approval boundaries: Swagger UI is not source of truth, schema validation alone is not contract testing, OAuth alone is not complete security evidence, GraphQL/gRPC/events are not universal defaults, API-only contract fixtures do not force Backend blockers and external writes are `approval_required`.
+- Added Database & Data methodology depth through `T9-D9`: `database_data` catalog gates, schema/migration/tooling/ORM/dictionary/quality/lineage/performance/production/destructive/pipeline/RAG/backup/privacy discovery, read-only audit recommendations, database artifact templates, generated control-plane/eval coverage, lifecycle skill routing and synthetic fixtures.
+- Added Database & Data false-positive and approval boundaries: schema-only artifacts are not safety proof, runtime pipeline/RAG signals stay `present_unverified`, database tooling has no universal default, schema-diff tooling deferred, and production DB/data access, migration execution, backup restore, retention mutation and destructive migration remain `approval_required`.
 
 ### Verification Evidence
 
@@ -71,6 +73,17 @@ Generated at: 2026-05-25
 - T9-D8 Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
 - T9-D8 docs check: `python tools\check_docs.py` passed.
 - T9-D8 diff hygiene: `git diff --check` exited `0`.
+- T9-D9 RED checks: focused database catalog/audit/discovery/template/lifecycle/fixture/docs tests failed as expected before implementation on missing `database_data` gates, audit recommendations, discovery packets, readiness/control-plane terms, docs/source sync and fixture eval checks.
+- T9-D9 focused suite: `python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_discovery tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_fixtures tests.product_agent_os.test_product_agent_os_docs -v` ran 234 tests with `OK`.
+- T9-D9 focused fixture runner check: `python -m unittest tests.product_agent_os.test_fixture_eval_runner -v` ran 15 tests with `OK`.
+- T9-D9 focused lifecycle/fixtures/docs check: `python -m unittest tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_fixtures tests.product_agent_os.test_product_agent_os_docs -v` ran 67 tests with `OK`.
+- T9-D9 fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0` with 49 fixtures, 0 failures, renderer file count 142 and `database_data_contract_present: true`.
+- T9-D9 full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 433 tests with `OK`.
+- T9-D9 transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 4 sessions and 0 failures.
+- T9-D9 Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
+- T9-D9 docs check: `python tools\check_docs.py` passed.
+- T9-D9 strict MkDocs: `$env:PYTHONPATH='C:\tmp\codex_docs_mkdocs'; $env:NO_MKDOCS_2_WARNING='1'; python -m mkdocs build --strict` exited `0`.
+- T9-D9 diff hygiene: `git diff --check` exited `0`.
 
 ## Methodology Trace
 
@@ -97,14 +110,16 @@ Generated at: 2026-05-25
 - Frontend methodology: implemented as `frontend` with user-flow acceptance, component docs/state, design-system governance, conditional Storybook/FSD routing, API/data state alignment, WCAG 2.2 AA target or accepted exception, keyboard/focus, responsive/visual/runtime evidence, interaction tests, performance, browser support, content/i18n and unsupported-claim rejection.
 - Backend methodology: implemented through `T9-D7-M45` with service boundary, runtime behavior, dependency failure matrix, job/queue contract, data consistency strategy, observability, SLI/SLO or explicit gap, health endpoint semantics and verification policy, operational runbook, config/secrets boundary, security review, rollback/recovery, optional Twelve-Factor vocabulary, service-boundary owner review/ADR routing, backend intake fields, contract sync, dependency category discovery, backend delivery discovery, severity policy, stack-specific snippet deferral, retry/idempotency detection limits and owner-reviewed evidence sufficiency routing.
 - API & Integrations methodology: implemented as `api_integrations` with contract source, consumer map, compatibility review, security review, error contract, contract-test matrix, event delivery, generated SDK manifest, external-write approval, API observability, style choice and unsupported-claim rejection. Swagger UI/rendered docs, schema-only checks, OAuth-only notes, universal API style defaults and API-only Backend blockers are rejected.
+- Database & Data methodology: implemented as `database_data` with database inventory, dictionary, schema source, migration plan, expand-contract rollout, transaction boundary, rollback feasibility, backup/restore evidence, data classification, data quality, producer/consumer data contract, lineage, query/index performance, retention/deletion, synthetic fixture policy, production access approval, constraints/integrity and unsupported-claim rejection. Schema-only artifacts are not safety proof; runtime pipeline/RAG signals stay `present_unverified`; production access and migration execution remain approval-bound.
 - Test-first or eval-first evidence: T9-D7 batch checks were implemented with failing-focused tests first, then focused GREEN.
 - Test-first or eval-first evidence: T9-D8 checks were implemented with failing-focused tests first, then focused GREEN.
-- Documentation impact: root control-plane files, Track 9 plan, Track 9 backlog, source registry, Product-Agent OS docs and plugin README synchronized for `T9-D8`.
-- Review outcome: focused API/domain checks and full verification evidence are clean for `T9-D8`; semantic sufficiency still requires owner review on real projects.
+- Test-first or eval-first evidence: T9-D9 checks were implemented with failing-focused tests first, then focused GREEN.
+- Documentation impact: root control-plane files, Track 9 backlog, source registry, Product-Agent OS docs and plugin README synchronized for `T9-D9`.
+- Review outcome: focused Database & Data checks and final verification evidence are clean for `T9-D9`; semantic sufficiency still requires owner review on real projects.
 
 ## Next Action
 
-- Begin `T9-D9` with a deep audit of `docs/methodologies/database-data.md` and refresh the Track 9 task matrix before implementation.
+- Complete final T9-D9 verification, then begin `T9-D10` LLM / AI / RAG with a deep audit of `docs/methodologies/llm-ai-rag.md`.
 
 ## Residual Risks
 
@@ -126,6 +141,7 @@ Generated at: 2026-05-25
 - `frontend` gates prove UI evidence shape, route/gate coverage and unsupported-claim routing, not that a human owner has accepted every screenshot, interaction test, accessibility review or performance budget as sufficient for a real product.
 - `backend` gates through `T9-D7-M45` prove backend evidence shape, route/gate coverage and unsupported-claim routing, not that a human owner has accepted every runtime test, dependency policy, observability map, SLO, health check, rollback plan, operational runbook or provider contract as sufficient for a real production system.
 - `api_integrations` gates prove API evidence shape, route/gate coverage and unsupported-claim routing, not that a human owner has accepted every consumer map, compatibility rule, security scheme, error model, event delivery policy, generated SDK release or external-write approval as sufficient for a real production system.
+- `database_data` gates prove database/data evidence shape, route/gate coverage and unsupported-claim routing, not that a human owner has accepted every migration plan, data contract, rollback, restore, lineage, quality, privacy or production-access decision as sufficient for a real production system.
 - Semantic evidence sufficiency for concrete real-project tests/evals remains a shared T9-S/cross-domain owner-review concern.
 - Root control-plane files are initialized manually for this repository; generated target-project assets still remain staged-first and approval-bound.
 <!-- product-agent-os:end runlog -->

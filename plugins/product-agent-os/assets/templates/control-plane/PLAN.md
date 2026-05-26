@@ -110,6 +110,10 @@ Generated at: {generated_at}
 - Contract source, consumers, compatibility, security schemes, error examples, event delivery, generated SDK manifest, request ID, correlation ID and external-write approval evidence:
 - Unsupported API shortcuts rejected: Swagger UI is not source of truth, schema validation alone is not contract testing, OAuth alone is not complete security evidence, GraphQL/gRPC/events are not universal defaults.
 - API accepted gap: use `explicit_gap_accepted` only with owner, reason, review date, downstream consumer risk and follow-up condition; external writes are `approval_required`.
+- Database & Data methodology (`database_data`):
+- Database artifacts: `database-inventory.md`, `database-dictionary.md`, `database-migration-plan.md`, `database-data-contract.md`, `database-backup-restore-evidence.md`, `database-production-access-approval.md`
+- Database gates: `database_migration_plan_present`, `database_backup_restore_evidence_present`, `database_constraints_integrity_review_present`, `database_production_access_approval_present`
+- Database readiness uses `database_data_signals` as `present_unverified`; schema-only artifact is not safety proof; production access approval_required; no universal database tooling default; schema-diff tooling deferred needs owner/reason.
 - Ubiquitous language traceability (`ubiquitous_language_traceability`):
 - Term-to-requirement trace:
 - API/event/contract:

@@ -96,6 +96,12 @@ Generated at: {generated_at}
 - Event delivery, generated SDK manifest, request ID, correlation ID and integration alert evidence:
 - Unsupported API shortcuts rejected: Swagger UI is not source of truth, schema validation alone is not contract testing, OAuth alone is not complete security evidence, GraphQL/gRPC/events are not universal defaults.
 - External writes are `approval_required`; generated client publication, provider mutation and webhook registration need explicit approval.
+- Database & Data methodology (`database_data`):
+- Database artifacts/gates reviewed:
+- Database `database_data_signals` status:
+- Database production access approval_required:
+- Database unsupported claims rejected:
+- Database residual risk:
 - Domain model applicability (`domain_model_when_complex_domain`):
 - Bounded context architecture trace (`bounded_context_architecture_boundary_trace`):
 - Bounded context -> architecture boundary:

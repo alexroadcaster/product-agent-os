@@ -1,0 +1,4 @@
+Table orders {
+  id integer [primary key]
+  status varchar
+}
