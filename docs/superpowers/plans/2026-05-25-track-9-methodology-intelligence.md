@@ -3650,8 +3650,10 @@ Expected: all commands exit `0`. Strict MkDocs is required only if navigation, M
 - Modify: `docs/product-agent-os/scenarios.md`
 - Modify: `docs/product-agent-os/behavioral-evals.md`
 - Modify: `docs/product-agent-os/codex-compatibility.md`
+- Modify: `docs/product-agent-os/methodology-intelligence.md`
 - Modify: `plugins/product-agent-os/README.md`
 - Modify: `README.md`
+- Modify: `tests/product_agent_os/test_product_agent_os_docs.py`
 - Modify: `REQUIREMENTS.md`
 - Modify: `PLAN.md`
 - Modify: `TEST.md`
@@ -3659,16 +3661,49 @@ Expected: all commands exit `0`. Strict MkDocs is required only if navigation, M
 - Modify: `RUNLOG.md`
 - Modify: `docs/sources/registry.md`
 
+Task 22 consolidated implementation matrix (file/theme-based, preserving Track 1-9 traceability):
+
+| ID | Task | Files | Acceptance | Covers |
+| --- | --- | --- | --- | --- |
+| `T22-U-M0` | Add consolidated docs regression tests | `tests/product_agent_os/test_product_agent_os_docs.py` | Tests assert final docs preserve Track 1-9 contracts, lifecycle skills, docs-maintainer, generated infrastructure, hardening, runtime runner, standards, scenarios, Track 9 packet behavior, stale-claim rejection and source registry closure. | Former docs-test and stale-claim rows: `F-M0`, `L-M0`, `L-M3`, `L-M7`, `G-M0`, `G-M5`, `H-M0`, `C-M0`, `C-M9`, `E-M0`, `E-M9`, `Q-M0`, `M0`, `M3`, `M5`, `M9`, `M10`, `M11`, `M22`. |
+| `T22-U-M1` | Run RED docs tests before docs edits | `tests/product_agent_os/test_product_agent_os_docs.py` | Focused docs tests fail before user-facing docs, registry and README updates are applied; failures map to consolidated acceptance groups rather than 94 micro-rows. | Former Step 1/Step 2. |
+| `T22-U-M2` | Rewrite Product-Agent OS product overview around user jobs | `docs/product-agent-os/index.md`, `README.md`, `plugins/product-agent-os/README.md` | Overview explains the full Product-Agent OS stack for real projects: inspect workspace, route safely, stage infrastructure, apply approved writes, run Codex-only routing, apply conditional methodology gates and require evidence before completion. Track history is provenance, not the primary user journey. | `L-M2`, `L-M6`, `G-M1`, `G-M4`, `C-M4`, `E-M1`, `E-M2`, `Q-M1`, `M6`, `M13`, `M19`. |
+| `T22-U-M3` | Document Track 1-9 layer architecture without stale Track 1->8->9 shortcut | `docs/product-agent-os/architecture.md`, `docs/product-agent-os/technical.md`, `plugins/product-agent-os/README.md` | Architecture shows Track 1 foundation, Track 2 lifecycle, Track 3 staged generation, Track 4 approved merge, Track 5 Codex runtime, Track 6 standards, Track 7 hardening, Track 8 scenarios and Track 9 methodology intelligence as one ordered stack. | Resolves stale `F-M1`; covers `G-M1`, `E-M1`, `Q-M1`, `M1`, `M15`. |
+| `T22-U-M4` | Document workspace audit, complexity vocabulary and route input separation | `docs/product-agent-os/technical.md`, `docs/product-agent-os/methodology-intelligence.md`, `docs/product-agent-os/scenarios.md` | Docs distinguish base workspace audit profile values from Track 9 methodology audit complexity values, and keep prompt intent, workspace signals and control-plane state separate; `--intent-hint` cannot override source, approval or write guards. | `F-M2`, `C-M7`, `M2`. |
+| `T22-U-M5` | Document lifecycle skill governance and staged packet boundary | `docs/product-agent-os/architecture.md`, `docs/product-agent-os/technical.md`, `docs/product-agent-os/codex-compatibility.md`, `plugins/product-agent-os/README.md` | Docs cover lifecycle state -> skill/subagent route map, shared references, `allow_implicit_invocation: false`, source-sensitive skills, no hidden external writes, and that lifecycle skills produce staged packets/proposals rather than direct infrastructure writes. | `L-M1`, `L-M2`, `L-M3`, `L-M4`, `L-M5`, `L-M6`, `L-M7`, `C-M5`. |
+| `T22-U-M6` | Document generated infrastructure and renderer contract | `docs/product-agent-os/technical.md`, `docs/product-agent-os/architecture.md`, `docs/product-agent-os/index.md`, `plugins/product-agent-os/README.md` | Docs cover template registry, dry-run, stage output outside target workspace, renderer JSON/status fields, managed sections, companion proposals, generated artifact categories, profile routing as depth and fixture eval renderer bridge. | `G-M1`, `G-M2`, `G-M3`, `G-M4`, `G-M6`, `G-M7`. |
+| `T22-U-M7` | Document production hardening merge, rollback, source and automation controls | `docs/product-agent-os/technical.md`, `docs/product-agent-os/architecture.md`, `docs/product-agent-os/codex-compatibility.md`, `plugins/product-agent-os/README.md` | Docs cover stage manifest, approval record, read-only merge plan, approval-gated apply, merge safety invariants, rollback refusal on changed digest, hook activation gate, source-policy validator and automation promotion validator. | `H-M1`, `H-M2`, `H-M3`, `H-M4`, `H-M5`, `H-M6`, `H-M7`, `H-M8`. |
+| `T22-U-M8` | Clarify Codex-only runtime and optional Agents SDK boundary | `docs/product-agent-os/architecture.md`, `docs/product-agent-os/technical.md`, `docs/product-agent-os/codex-compatibility.md`, `plugins/product-agent-os/README.md` | Docs state the runtime runner works only inside Codex App, CLI, IDE extension, skills and subagents context; it has contract mode, CLI/validator, `codex_runner_result`, lifecycle inference and guardrails. Optional Agents SDK runner remains design-only, inactive, no dependency install, no network default and no credential storage. | Resolves `H-M9` vs `C-M1`/`M18`; covers `H-M9`, `C-M1`, `C-M2`, `C-M3`, `C-M4`, `C-M6`, `C-M8`, `C-M9`, `M18`. |
+| `T22-U-M9` | Document Methodology Intelligence final implemented contract | `docs/product-agent-os/methodology-intelligence.md`, `docs/product-agent-os/technical.md`, `docs/product-agent-os/architecture.md` | Page describes actual read-only audit, catalog/report/JSON, Delivery Map, two-axis classification, methodology synthesis, recommendation groups, runtime packet, owner questions, source artifact ledger, staged artifact boundary and safe next action. | `M1`, `M3`, `M12`, `M14`, `M15`. |
+| `T22-U-M10` | Document scenario and finish-option application | `docs/product-agent-os/scenarios.md`, `docs/product-agent-os/index.md`, `README.md` | Scenarios map real project entry points such as bug, greenfield, PR review, API, AI/RAG, native/mobile, desktop, data, security, CI and release to route, methodology domains, finish options, safe next action and required evidence without forcing unrelated gates. | `M2`, `M5`, `M6`, `M16`. |
+| `T22-U-M11` | Establish canonical safety and compatibility boundaries | `docs/product-agent-os/codex-compatibility.md`, `docs/product-agent-os/technical.md`, `docs/product-agent-os/development-standards.md` | One canonical section covers no standalone runtime activation, no API key/live model call, no silent MCP/hook/automation activation, no global config mutation, no unapproved external writes, no hosted docs/DB introspection without approval and no readiness claims from detection. Other pages link back to this boundary. | Consolidates safety rows: `F-M3`, `L-M2`, `L-M3`, `G-M5`, `H-M3`, `H-M5`, `H-M7`, `C-M1`, `C-M6`, `C-M7`, `C-M9`, `E-M8`, `Q-M11`, `M18`. |
+| `T22-U-M12` | Establish canonical readiness status vocabulary for Track 6-9 | `docs/product-agent-os/development-standards.md`, `docs/product-agent-os/behavioral-evals.md`, `docs/product-agent-os/technical.md`, `docs/product-agent-os/index.md` | Docs define `not_applicable`, `applicable_missing`, `present_unverified`, `present_verified`, `proposal_staged`, `explicit_gap_accepted` and `approval_required` as a shared Track 6-9 contract; detection may produce `present_unverified` but never readiness or completion. | Resolves narrow `M7`; covers `E-M7`, `Q-M4`, `M7`. |
+| `T22-U-M13` | Document engineering standards loop and generated control-plane fields | `docs/product-agent-os/development-standards.md`, `docs/product-agent-os/technical.md`, `plugins/product-agent-os/README.md` | Docs cover product hypothesis, architecture boundary, test/eval-first, bounded agentic implementation, docs-as-code, source context/source-backed claims, human review, measurement, learning loop and generated `AGENTS/REQUIREMENTS/PLAN/TEST/EVALS/RUNLOG` fields. | `E-M2`, `E-M3`, `E-M4`, `E-M5`, `E-M6`. |
+| `T22-U-M14` | Document no-forced-ceremony and false-positive protection | `docs/product-agent-os/development-standards.md`, `docs/product-agent-os/scenarios.md`, `docs/product-agent-os/behavioral-evals.md` | Docs/tests preserve that mechanical edits, inspection-only work, docs-light/internal work, backend/native work, simple CRUD and simple MVP can record `not_applicable` or accepted gaps instead of forcing DDD, FSD, docs portals or full standards ceremony. | `E-M9`, `Q-M3`, `Q-M7`, `Q-M10`, `M5`. |
+| `T22-U-M15` | Document Track 7 artifact template catalog | `docs/product-agent-os/development-standards.md`, `docs/product-agent-os/technical.md`, `docs/product-agent-os/architecture.md` | One catalog documents ADR, architecture overview, domain modeling, metric spec, API contract review, component card and database dictionary templates with owners, evidence, accepted gaps, residual risks, no-secrets rules and verification expectations. | `Q-M6`, `Q-M7`, `Q-M8`, `Q-M9`, `Q-M10`, `Q-M11`. |
+| `T22-U-M16` | Document methodology signal discovery and workspace gaps | `docs/product-agent-os/technical.md`, `docs/product-agent-os/development-standards.md`, `docs/product-agent-os/scenarios.md` | Docs list architecture docs, ADR, OpenAPI, AsyncAPI, Storybook, database docs, CODEOWNERS, CI, evals, metrics, domain model and optional `fsd_structure` signals; missing signals are audit risks/gaps, not automatic blockers for every small task. | `Q-M2`, `Q-M3`. |
+| `T22-U-M17` | Document Red-Green-Refactor and evidence-before-completion model | `docs/product-agent-os/development-standards.md`, `docs/product-agent-os/behavioral-evals.md`, `TEST.md`, `EVALS.md`, `RUNLOG.md` | Docs require Red -> Green -> Refactor evidence or explicit gap for applicable bugfix/shared behavior; completion/fixed/ready/release claims need current command, eval, runtime, manual QA or explicit inspection-only gap evidence. | `Q-M5`, `M17`, parts of `F-M4`, `G-M7`, `H-M8`, `C-M8`. |
+| `T22-U-M18` | Consolidate behavioral eval and fixture eval documentation | `docs/product-agent-os/behavioral-evals.md`, `plugins/product-agent-os/README.md` | Behavioral docs cover fixture eval limits, renderer checks, hardening statuses, runtime packet safety, transcript/session replay, deterministic privacy/no-secrets constraints and that synthetic regression evidence does not prove real project readiness. | `F-M4`, `G-M7`, `H-M8`, `C-M8`, `M4`, `M17`, `M23` verification scope. |
+| `T22-U-M19` | Update technical commands, schemas and validators | `docs/product-agent-os/technical.md`, `plugins/product-agent-os/README.md` | Technical docs include real commands, JSON fields, schema v1 compatibility, validators, renderer output, runtime CLI, fixture eval checks, transcript eval and limitations without presenting implemented features as planned. | `F-M3`, `G-M2`, `C-M2`, `C-M3`, `M14`. |
+| `T22-U-M20` | Update README quickstart and value proposition for the full stack | `README.md`, `plugins/product-agent-os/README.md` | README text explains Product-Agent OS value across Track 1-9, not only Track 8/9: package, lifecycle, staged generation, approved merge, runtime routing, engineering standards, hardening, scenarios and methodology intelligence. | Resolves narrow `M19`; covers README parts of many former rows. |
+| `T22-U-M21` | Update source registry closure for Track 1-9 | `docs/sources/registry.md` | Registry includes Track 1-9 closure entries for inventory, design/backlog docs, implementation paths, docs pages, source policies, OpenAPI v3.2.0 freshness claim, eval/fixture/transcript evidence and current verification baseline. | Resolves narrow `M20`; covers `F-M5`, `G-M8`, `H-M6`, `H-M10`, `C-M10`, `E-M5`, `E-M10`, `Q-M9`, `Q-M12`, `M11`, `M20`. |
+| `T22-U-M22` | Update root control-plane closure state | `REQUIREMENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md`, `RUNLOG.md` | Root control plane records Task 22 consolidated scope, Track 1-9 acceptance, verification commands, eval rubrics, residual risks, source inventory links, focused evidence and next Task 23 baseline verification. | `F-M5`, `G-M8`, `H-M10`, `C-M10`, `E-M10`, `Q-M12`, `M21`. |
+| `T22-U-M23` | Run final docs verification and diff hygiene | docs tests, transcript eval, docs check, strict MkDocs, `git diff --check` | `python -m unittest tests.product_agent_os.test_product_agent_os_docs -v`, transcript eval, `python tools\check_docs.py`, strict MkDocs and `git diff --check` exit `0`; this absorbs the former verification expansion meta-task. | Resolves `M8`/`M23` duplication. |
+| `T22-U-M24` | Keep commit/push explicit-only | Git only after user approval | Do not run `git add`, `git commit`, push or PR creation unless the user explicitly asks; if approved, commit only after all verification evidence is current. This row is a release guard, not a docs implementation task. | Clarifies `M24`. |
+
 - [ ] **Step 1: Add docs RED tests**
 
-Extend `tests/product_agent_os/test_product_agent_os_docs.py` to assert Track 9 is documented in:
+Extend `tests/product_agent_os/test_product_agent_os_docs.py` with consolidated grouped assertions for:
 
-- Product-Agent OS index;
-- technical page;
-- architecture page;
-- methodology intelligence page;
-- behavioral evals page;
-- plugin README.
+- Product-Agent OS full-stack overview and user jobs;
+- Track 1-9 layer architecture;
+- lifecycle routing, staged packets and docs-maintainer ownership;
+- generated infrastructure and approved merge boundaries;
+- Codex-only runtime and optional Agents SDK design-only boundary;
+- engineering standards, Track 7 hardening and readiness statuses;
+- scenario routing, methodology packet and finish options;
+- behavioral evals, fixture eval limits and transcript eval;
+- source registry closure and stale-claim rejection.
 
 - [ ] **Step 2: Run RED docs tests**
 
@@ -3682,37 +3717,37 @@ Expected: fail until docs are updated.
 
 - [ ] **Step 3: Update user-facing docs**
 
-Update Product-Agent OS docs so they explain:
+Update Product-Agent OS docs by file/theme rather than by historical task row:
 
-- read-only first audit;
-- two-axis classification;
-- Delivery Map;
-- human report and JSON output;
-- recommendation priorities;
-- staged artifacts after approval;
-- 12 methodology domains;
-- cross-domain synthesis;
-- false-positive protection.
+- `index.md` and READMEs: full Product-Agent OS value proposition for real projects, with Tracks 1-9 as implementation provenance rather than the primary user journey;
+- `architecture.md`: ordered Track 1-9 stack, lifecycle -> staged generation -> approved merge -> Codex runtime -> standards -> scenarios -> methodology packet flow;
+- `technical.md`: commands, JSON/schema fields, validators, renderer output, runtime CLI, readiness statuses and limitations;
+- `methodology-intelligence.md`: final implemented audit/synthesis/runtime-packet contract, not planned wording;
+- `scenarios.md`: user-job route map, route input separation, finish options and false-positive boundaries;
+- `behavioral-evals.md`: fixture eval, transcript eval, runtime packet safety, detection-not-completion and evidence limits;
+- `codex-compatibility.md`: canonical safety boundary for Codex App, CLI, IDE extension, skills, MCP, staged hooks, optional Agents SDK design-only path, approvals and no external activation;
+- `development-standards.md`: Track 6/7 standards, artifact catalog, source-backed claims, Red-Green-Refactor, readiness status vocabulary and no-forced-ceremony rules.
 
 - [ ] **Step 4: Update root control-plane files**
 
 Update:
 
-- `REQUIREMENTS.md`: Track 9 goal, scope and acceptance criteria.
-- `PLAN.md`: Track 9 queue and current state.
-- `TEST.md`: Track 9 verification commands.
-- `EVALS.md`: Track 9 eval rubrics and residual risks.
-- `RUNLOG.md`: latest Track 9 completion evidence.
+- `REQUIREMENTS.md`: consolidated Task 22 goal, Track 1-9 scope and acceptance criteria.
+- `PLAN.md`: consolidated Task 22 queue and current state.
+- `TEST.md`: Task 22 verification commands, docs tests, transcript eval, docs check, strict MkDocs and diff hygiene.
+- `EVALS.md`: docs/eval rubrics, readiness/evidence quality and residual risks.
+- `RUNLOG.md`: latest Task 22 evidence, source inventory links and open risks.
 
 - [ ] **Step 5: Update source registry**
 
-Add Track 9 implementation closure entries to `docs/sources/registry.md` referencing:
+Add Track 1-9 implementation closure entries to `docs/sources/registry.md` referencing:
 
-- methodology design spec;
-- Track 9 backlog;
-- methodology intelligence docs;
-- catalog/audit implementation paths;
-- verification baseline.
+- pre-Track-8 implementation inventory;
+- Track 9 methodology design spec and backlog;
+- Product-Agent OS docs pages and READMEs;
+- catalog/audit/discovery/runtime/report implementation paths;
+- Track 6/7 methodology research, gap matrix and artifact templates;
+- fixture/transcript eval paths and current verification baseline.
 
 - [ ] **Step 6: Run docs verification**
 
@@ -3720,15 +3755,18 @@ Run:
 
 ```powershell
 python -m unittest tests.product_agent_os.test_product_agent_os_docs -v
+python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json
 python tools\check_docs.py
 $env:PYTHONPATH='C:\tmp\codex_docs_mkdocs'; $env:NO_MKDOCS_2_WARNING='1'; python -m mkdocs build --strict
+git diff --check
 ```
 
 Expected: all commands exit `0`.
 
-- [ ] **Step 7: Commit docs sync**
+- [ ] **Step 7: Commit docs sync, explicit-only**
 
-Run:
+Do not run this step unless the user explicitly asks for a commit. If approved, run:
+
 
 ```powershell
 git add README.md REQUIREMENTS.md PLAN.md TEST.md EVALS.md RUNLOG.md docs plugins\product-agent-os\README.md tests\product_agent_os\test_product_agent_os_docs.py mkdocs.yml tools\check_docs.py

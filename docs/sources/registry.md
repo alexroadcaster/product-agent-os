@@ -2636,6 +2636,18 @@ trust_level: "medium"
 ## Community and experiment intake
 
 ```yaml
+title: "Product-Agent OS pre-Track 8 implemented plans and specs inventory"
+url: "docs/sources/product-agent-os-pre-track-8-implementation-inventory.md; docs/product-agent/product-agent-os-plugin-spec.md; docs/superpowers/plans/2026-05-14-product-agent-os-plugin-core.md; docs/superpowers/plans/2026-05-14-product-agent-os-lifecycle-skills.md; docs/superpowers/plans/2026-05-14-product-agent-os-generated-infrastructure.md; docs/superpowers/plans/2026-05-14-product-agent-os-production-hardening.md; docs/superpowers/plans/2026-05-15-product-agent-os-codex-runtime-runner.md"
+type: "internal documentation"
+status: "checked-in project source"
+checked_at: "2026-05-27"
+summary: "Internal inventory of Product-Agent OS plans, specs and implementation-history artifacts realized before Track 8, including Track 1 plugin core, Track 2 lifecycle skills, Track 3 generated infrastructure, Track 4 production hardening, Track 5 Codex runtime runner and Track 6/7 methodology standards evidence."
+relevance: "Task 22 final documentation sync input queue for deep technical and product analysis before extending the Task 22 matrix."
+trust_level: "high"
+verification_status: "Backed by read-only checked-in file inventory and documentation structure checks in the Task 22 planning session."
+```
+
+```yaml
 title: "Product-Agent OS Track 9 methodology intelligence design and backlog"
 url: "docs/superpowers/specs/2026-05-25-track-9-methodology-intelligence-design.md; docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md; docs/sources/product-agent-os-track-9-backlog.md; docs/product-agent-os/methodology-intelligence.md; plugins/product-agent-os/scripts/product_agent_os/methodology_catalog.py; plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py; plugins/product-agent-os/scripts/run_methodology_audit.py"
 type: "internal documentation"
