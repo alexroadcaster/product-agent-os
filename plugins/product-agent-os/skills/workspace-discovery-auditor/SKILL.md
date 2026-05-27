@@ -337,3 +337,6 @@ Check that every detected stack, control-plane, `usage_mode`, `legacy_onboarding
 ## Final Response Contract
 
 Return status, detected stack, existing and missing control-plane assets, Codex assets, risks, complexity profile, evidence notes, approval requirements, and next lifecycle action.
+## Track 9 Cross-Domain Synthesis
+
+Consume `methodology_synthesis` and `recommendation_groups` as grouped recommendations; do not dump every methodology gate. Preserve owner domains, consumer domains, semantic evidence sufficiency, source artifact ledger, alias/deferred artifact ledger and risk-aware safe next action. Do not scaffold before approval, and remember that detection is not verification.

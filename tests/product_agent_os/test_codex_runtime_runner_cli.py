@@ -4,12 +4,17 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 
 ROOT = Path(__file__).resolve().parents[2]
 SCRIPTS = ROOT / "plugins" / "product-agent-os" / "scripts"
 WRAPPER = SCRIPTS / "run_codex_runtime_runner.py"
 VALIDATOR = SCRIPTS / "validate_codex_runtime_runner.py"
+sys.path.insert(0, str(SCRIPTS))
+
+from codex_runtime_runner import cli as runtime_cli  # noqa: E402
+from codex_runtime_runner.contracts import build_result  # noqa: E402
 
 
 class CodexRuntimeRunnerCliTest(unittest.TestCase):
@@ -156,6 +161,53 @@ class CodexRuntimeRunnerCliTest(unittest.TestCase):
         self.assertEqual(validate_result.returncode, 0, validate_result.stdout + validate_result.stderr)
         self.assertIn('"ok": true', validate_result.stdout)
 
+    def test_contract_run_redacts_methodology_route_payload_before_validation(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            workspace = Path(tmp)
+            self._write_control_plane(workspace, "lifecycle_state: quality_gate")
+            audit = self._audit(
+                methodology_intelligence=self._methodology_intelligence(
+                    safe_next_action="TOKEN=fixture-secret\nInspect C:\\Users\\person\\project\nraw private chat log",
+                    question="Can C:\\Users\\person\\project be inspected?",
+                )
+            )
+            with patch.object(runtime_cli, "analyze_workspace", return_value=audit):
+                payload = runtime_cli.run_contract(workspace)
+
+        text = json.dumps(payload, sort_keys=True)
+        self.assertNotIn("fixture-secret", text)
+        self.assertNotIn("C:\\Users\\person", text)
+        self.assertNotIn("raw private chat log", text)
+        self.assertIn("secret", payload["redactions"]["categories"])
+        self.assertNotIn("redaction:secret_retained", payload["errors"])
+
+    def test_validator_rejects_malformed_methodology_packet_without_traceback(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp) / "result.json"
+            payload = build_result(
+                status="route_ready",
+                workspace="C:/workspace/synthetic",
+                lifecycle_state="quality_gate",
+                route_packet={
+                    "write_policy": "read_only",
+                    "methodology_packet": {"write_policy": "staged_only"},
+                },
+                source_policy_status="ok",
+                approval_status="not_required",
+                next_action="Run risk-reviewer.",
+            )
+            output.write_text(json.dumps(payload), encoding="utf-8")
+            validate_result = subprocess.run(
+                [sys.executable, str(VALIDATOR), str(output)],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+        self.assertEqual(validate_result.returncode, 1)
+        self.assertIn("methodology_packet.safe_next_action:required", validate_result.stdout)
+        self.assertNotIn("Traceback", validate_result.stdout + validate_result.stderr)
+
     def _write_control_plane(self, workspace: Path, runlog_marker: str) -> None:
         (workspace / "AGENTS.md").write_text("# Rules\n", encoding="utf-8")
         (workspace / "REQUIREMENTS.md").write_text(
@@ -169,6 +221,72 @@ class CodexRuntimeRunnerCliTest(unittest.TestCase):
         agents = workspace / ".codex" / "agents"
         agents.mkdir(parents=True)
         (agents / "builder.toml").write_text('name = "builder"\n', encoding="utf-8")
+
+    def _audit(self, *, methodology_intelligence: dict):
+        return {
+            "usage_mode": {
+                "primary": "maintenance",
+                "secondary": [],
+                "confidence": "medium",
+                "reasons": ["synthetic patched audit"],
+                "fallback": "standard_feature",
+                "first_response_contract": [
+                    "mode",
+                    "confidence",
+                    "next smallest action",
+                    "minimum artifacts",
+                    "evidence gaps",
+                    "approval boundary",
+                ],
+                "minimum_artifacts": ["workspace audit packet"],
+                "behavioral_eval_cases": ["route-selection"],
+            },
+            "route_inputs": {
+                "intent_hint_present": False,
+                "workspace_signals": {
+                    "stack": [],
+                    "active_surfaces": [],
+                    "methodology_signals": [],
+                },
+                "control_plane_state": {
+                    "existing_control_plane_files": [],
+                    "has_codex_assets": False,
+                },
+            },
+            "methodology_intelligence": methodology_intelligence,
+        }
+
+    def _methodology_intelligence(self, *, safe_next_action: str, question: str = "Who owns the decision?"):
+        return {
+            "status": "present_unverified",
+            "write_policy": "read_only",
+            "methodology_domains": [{"id": "security", "status": "applicable_missing"}],
+            "recommendations": [
+                {
+                    "domain": "security",
+                    "artifact": "security-risk-review.md",
+                    "priority": "P1_high_risk",
+                    "safe_next_action": safe_next_action,
+                }
+            ],
+            "recommendation_groups": [
+                {
+                    "artifact": "security-risk-review.md",
+                    "owner_domain": "security",
+                    "consumer_domains": ["quality_testing_evals"],
+                    "priority": "P1_high_risk",
+                    "safe_next_action": safe_next_action,
+                }
+            ],
+            "questions_for_owner": [question],
+            "methodology_synthesis": {
+                "safe_next_action": safe_next_action,
+                "semantic_evidence_sufficiency": {"status": "present_unverified"},
+                "source_artifact_ledger": [
+                    {"artifact": "security-risk-review.md", "decision": "canonical_template"}
+                ],
+            },
+        }
 
 
 if __name__ == "__main__":

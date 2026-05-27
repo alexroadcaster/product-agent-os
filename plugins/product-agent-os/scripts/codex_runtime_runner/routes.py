@@ -2,6 +2,12 @@ from __future__ import annotations
 
 from typing import Any
 
+from codex_runtime_runner.contracts import (
+    build_methodology_packet,
+    methodology_requires_approval,
+    methodology_requires_automation_maturity,
+)
+
 
 ROUTES = {
     "uninitialized": ("workspace-discovery-auditor", "", "read_only", "Audit workspace readiness."),
@@ -24,6 +30,7 @@ def plan_route(
     allow_subagents: bool,
     usage_mode: dict[str, Any] | None = None,
     behavioral_route_inputs: dict[str, Any] | None = None,
+    methodology_intelligence: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     skill, subagent, write_policy, action = ROUTES[lifecycle_state]
     if subagent and not allow_subagents:
@@ -31,6 +38,25 @@ def plan_route(
         subagent = ""
     approval_requirements = ["explicit approval record required before workspace writes"] if write_policy == "approved_write" else []
     usage_mode = usage_mode or _default_usage_mode()
+    methodology_packet = build_methodology_packet(methodology_intelligence)
+    methodology_approval_required = methodology_requires_approval(methodology_packet)
+    automation_maturity_required = (
+        lifecycle_state == "learning_ready"
+        and methodology_requires_automation_maturity(methodology_packet)
+    )
+    if automation_maturity_required:
+        skill = "learning-loop-maintainer"
+        subagent = ""
+        action = "Record manual stability and workflow value evidence before automation promotion."
+    if methodology_approval_required:
+        approval_requirements.append("explicit approval required before methodology-recommended external or irreversible action")
+    if automation_maturity_required:
+        approval_requirements.append("manual stability and workflow value evidence required before automation promotion")
+    finish_options = _finish_options(
+        write_policy,
+        methodology_approval_required=methodology_approval_required,
+        automation_maturity_required=automation_maturity_required,
+    )
     route = {
         "lifecycle_state": lifecycle_state,
         "next_action": action,
@@ -50,20 +76,42 @@ def plan_route(
             "blocked source policy",
             "missing approval for approved_write route",
             "active automation request",
+            "methodology action requires explicit approval",
+            "automation promotion requires maturity evidence",
         ],
     }
     route["usage_mode"] = usage_mode
     route["behavioral_route_inputs"] = behavioral_route_inputs or _default_behavioral_route_inputs()
+    route["methodology_packet"] = methodology_packet
+    route["finish_options"] = finish_options
     route["first_response_contract"] = {
         "mode": usage_mode["primary"],
         "confidence": usage_mode["confidence"],
         "next_smallest_action": action,
+        "safe_next_action": methodology_packet["safe_next_action"],
         "required_fields": usage_mode["first_response_contract"],
         "minimum_artifacts": usage_mode["minimum_artifacts"],
         "evidence_gaps": [],
         "approval_boundary": write_policy,
+        "finish_options": finish_options,
     }
     return route
+
+
+def _finish_options(
+    write_policy: str,
+    *,
+    methodology_approval_required: bool = False,
+    automation_maturity_required: bool = False,
+) -> list[str]:
+    options = ["read_only_audit", "ask_owner"]
+    if write_policy == "staged_only" and not automation_maturity_required:
+        options.append("stage_proposal")
+    if write_policy == "approved_write" or methodology_approval_required:
+        options.append("request_approval")
+    options.append("run_verification")
+    options.append("stop_blocked")
+    return options
 
 
 def _default_usage_mode() -> dict[str, Any]:

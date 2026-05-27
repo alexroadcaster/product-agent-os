@@ -478,6 +478,56 @@
         "blocked_domains": [
           "frontend"
         ]
+      },
+      {
+        "id": "ci_only_without_release_mutation",
+        "applies_to": [
+          ".github/workflows/ci.yml",
+          "ci-only",
+          "test-only workflow"
+        ],
+        "blocked_domains": [
+          "security_privacy_compliance",
+          "delivery_release_operations"
+        ]
+      },
+      {
+        "id": "release_tooling_only_present_unverified",
+        "applies_to": [
+          "semantic-release",
+          "release-please",
+          "versioning tooling only"
+        ],
+        "blocked_domains": [
+          "delivery_release_operations"
+        ]
+      },
+      {
+        "id": "deployment_manifest_only_present_unverified",
+        "applies_to": [
+          "Dockerfile",
+          "k8s",
+          "helm",
+          "deployment manifest only"
+        ],
+        "blocked_domains": [
+          "delivery_release_operations"
+        ]
+      },
+      {
+        "id": "internal_cli_no_heavy_surfaces",
+        "applies_to": [
+          "internal CLI",
+          "local tool",
+          "no UI/API/release surface"
+        ],
+        "blocked_domains": [
+          "frontend",
+          "api_integrations",
+          "database_data",
+          "security_privacy_compliance",
+          "delivery_release_operations"
+        ]
       }
     ],
     "semantic_evidence_sufficiency": {

@@ -38,6 +38,7 @@ REQUIRED_BEHAVIORAL_CASES = {
     "backend-evidence-before-completion",
     "llm-ai-rag-evidence-before-completion",
     "cross-domain-semantic-evidence-sufficiency",
+    "cross-domain-synthesis-mixed-surface-routing",
     "no-placeholder-plan",
     "two-stage-review",
     "fresh-context-handoff",

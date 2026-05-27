@@ -19,7 +19,7 @@ class BehavioralWorkflowEvalTest(unittest.TestCase):
         report = validate_behavioral_eval_template(path)
 
         self.assertEqual(report["status"], "ok")
-        self.assertEqual(report["case_count"], 43)
+        self.assertEqual(report["case_count"], 44)
         self.assertEqual(report["missing_required_cases"], [])
         self.assertEqual(report["unsafe_cases"], [])
         self.assertTrue(report["codex_only"])
@@ -682,6 +682,26 @@ class BehavioralWorkflowEvalTest(unittest.TestCase):
             "accepted gap without downstream risk",
         ]:
             self.assertIn(forbidden, semantic["forbidden"])
+
+        synthesis = cases["cross-domain-synthesis-mixed-surface-routing"]
+        self.assertEqual(synthesis["expected"]["route"], "methodology_synthesis")
+        for expected in [
+            "recommendation_groups",
+            "owner domains",
+            "consumer domains",
+            "source_artifact_ledger",
+            "safe_next_action_risk_ordered",
+            "cross_domain_false_positive_guards_present",
+            "source_artifact_mapping_contract_present",
+        ]:
+            self.assertIn(expected, synthesis["expected"]["required_fields"])
+        for forbidden in [
+            "dumping every methodology gate",
+            "scaffolding before approval",
+            "detection becomes verification",
+            "generic quality strategy hides security approval",
+        ]:
+            self.assertIn(forbidden, synthesis["forbidden"])
 
         frontend = cases["frontend-evidence-before-completion"]
         self.assertEqual(frontend["expected"]["route"], "frontend methodology gates")

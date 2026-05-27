@@ -36,6 +36,7 @@ def run_contract(
         allow_subagents=allow_subagents,
         usage_mode=audit["usage_mode"],
         behavioral_route_inputs=audit["route_inputs"],
+        methodology_intelligence=audit["methodology_intelligence"],
     )
     errors: list[str] = []
     warnings: list[str] = []

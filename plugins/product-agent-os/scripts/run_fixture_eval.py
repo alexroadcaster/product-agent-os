@@ -16,6 +16,11 @@ from product_agent_os.automation_policy import validate_automation_candidate  # 
 from product_agent_os.infrastructure import InfrastructureError, render_infrastructure_plan, stage_infrastructure  # noqa: E402
 from product_agent_os.methodology_audit import build_methodology_audit  # noqa: E402
 from product_agent_os.methodology_catalog import load_methodology_catalog, validate_methodology_catalog  # noqa: E402
+from product_agent_os.methodology_synthesis import (  # noqa: E402
+    build_methodology_synthesis,
+    classify_source_artifact,
+    dedupe_owner_questions,
+)
 from product_agent_os.templates import (  # noqa: E402
     AI_RAG_TEMPLATE_ALIASES,
     DELIVERY_TEMPLATE_ALIASES,
@@ -32,8 +37,15 @@ from product_agent_os.source_policy import validate_source_policy  # noqa: E402
 from product_agent_os.stage_manifest import MANIFEST_NAME, content_digest, workspace_audit_digest  # noqa: E402
 from product_agent_os.transcript_evals import evaluate_transcript_sessions  # noqa: E402
 from codex_runtime_runner.cli import run_contract  # noqa: E402
-from codex_runtime_runner.guards import validate_automation_boundary, validate_codex_handoff  # noqa: E402
-from codex_runtime_runner.redaction import redact_text, validate_redaction  # noqa: E402
+from codex_runtime_runner.contracts import build_result, validate_runner_result  # noqa: E402
+from codex_runtime_runner.guards import (  # noqa: E402
+    validate_approval_boundary,
+    validate_automation_boundary,
+    validate_codex_handoff,
+    validate_route_packet,
+)
+from codex_runtime_runner.redaction import redact_payload, redact_text, validate_redaction  # noqa: E402
+from codex_runtime_runner.routes import plan_route  # noqa: E402
 
 
 PLUGIN_ROOT = Path(__file__).resolve().parents[1]
@@ -1629,6 +1641,10 @@ def _methodology_expected_checks(methodology_audit: dict[str, Any]) -> dict[str,
         "methodology_catalog_contract_present": _methodology_catalog_contract_present(),
         "methodology_intelligence_contract_present": _methodology_intelligence_contract_present(methodology_audit),
         "methodology_recommendations_prioritized": _methodology_recommendations_prioritized(methodology_audit),
+        "cross_domain_synthesis_contract_present": _cross_domain_synthesis_contract_present(methodology_audit),
+        "safe_next_action_risk_ordered": _safe_next_action_risk_ordered(),
+        "source_artifact_mapping_contract_present": _source_artifact_mapping_contract_present(methodology_audit),
+        "cross_domain_false_positive_guards_present": _cross_domain_false_positive_guards_present(),
         "methodology_audit_read_only": methodology_audit.get("write_policy") == "read_only"
         if isinstance(methodology_audit, dict)
         else False,
@@ -1695,6 +1711,130 @@ def _methodology_recommendations_prioritized(methodology_audit: dict[str, Any]) 
         if isinstance(recommendation, dict)
     ]
     return ranks == sorted(ranks)
+
+
+def _cross_domain_synthesis_contract_present(methodology_audit: dict[str, Any]) -> bool:
+    if not isinstance(methodology_audit, dict):
+        return False
+    packet = methodology_audit.get("methodology_synthesis")
+    if not isinstance(packet, dict):
+        return False
+    required_keys = {
+        "status",
+        "write_policy",
+        "recommendation_groups",
+        "source_artifact_ledger",
+        "semantic_evidence_sufficiency",
+        "owner_questions",
+        "safe_next_action",
+    }
+    if not required_keys.issubset(packet):
+        return False
+    if methodology_audit.get("recommendation_groups") != packet.get("recommendation_groups"):
+        return False
+    if packet.get("write_policy") != "read_only":
+        return False
+    semantic = packet.get("semantic_evidence_sufficiency")
+    ledger = packet.get("source_artifact_ledger")
+    if not isinstance(semantic, dict) or not isinstance(ledger, list):
+        return False
+    if "owner_reviewed_evidence_sufficient_for_real_project_risk" not in semantic.get("satisfied_by", []):
+        return False
+    decisions = {str(item.get("decision")) for item in ledger if isinstance(item, dict)}
+    if not {"alias", "existing_non_template"}.issubset(decisions):
+        return False
+    return bool(packet.get("safe_next_action"))
+
+
+def _safe_next_action_risk_ordered() -> bool:
+    packet = build_methodology_synthesis(
+        [
+            {
+                "priority": "P0_blocker",
+                "domain": "quality_testing_evals",
+                "gate": "quality_strategy_present",
+                "artifact": "quality-strategy.md",
+                "reason": "Generic quality strategy is missing.",
+                "evidence_required": ["verification command"],
+                "safe_next_action": "Stage quality-strategy.md.",
+            },
+            {
+                "priority": "P1_high_risk",
+                "domain": "security_privacy_compliance",
+                "gate": "external_write_approval_present",
+                "artifact": "approval-record.md",
+                "reason": "Payment or external write work needs approval.",
+                "evidence_required": ["approval_required", "owner"],
+                "safe_next_action": "Record approval_required before the external write.",
+            },
+            {
+                "priority": "P1_high_risk",
+                "domain": "delivery_release_operations",
+                "gate": "release_evidence_present",
+                "artifact": "release-readiness.md",
+                "reason": "Package release needs release readiness evidence.",
+                "evidence_required": ["release scope", "publish approval"],
+                "safe_next_action": "Stage release-readiness.md before publish.",
+            },
+        ]
+    )
+    artifacts = [str(group.get("artifact")) for group in packet.get("recommendation_groups", [])]
+    return (
+        artifacts[:2] == ["approval-record.md", "release-readiness.md"]
+        and "quality-strategy.md" in artifacts
+        and packet.get("safe_next_action") == "Record approval_required before the external write."
+    )
+
+
+def _source_artifact_mapping_contract_present(methodology_audit: dict[str, Any] | None = None) -> bool:
+    context_map = classify_source_artifact("context-map.md")
+    changelog = classify_source_artifact("CHANGELOG.md")
+    unknown = classify_source_artifact("unpackaged-source-experiment.md")
+    if context_map.get("decision") != "alias" or context_map.get("target") != "architecture-overview.md":
+        return False
+    if changelog.get("decision") != "existing_non_template":
+        return False
+    if unknown.get("decision") != "deferred" or not unknown.get("reason"):
+        return False
+    if methodology_audit:
+        ledger = methodology_audit.get("methodology_synthesis", {}).get("source_artifact_ledger", [])
+        if not isinstance(ledger, list) or not any(
+            isinstance(item, dict) and item.get("artifact") == "context-map.md" for item in ledger
+        ):
+            return False
+    return True
+
+
+def _cross_domain_false_positive_guards_present() -> bool:
+    try:
+        synthesis = load_methodology_catalog()["synthesis"]
+    except (OSError, ValueError, json.JSONDecodeError):
+        return False
+    rule_ids = {
+        str(rule.get("id"))
+        for rule in synthesis.get("false_positive_rules", [])
+        if isinstance(rule, dict)
+    }
+    return {
+        "docs_only_lightweight",
+        "backend_fsd_like_without_ui",
+        "ci_only_without_release_mutation",
+        "release_tooling_only_present_unverified",
+        "internal_cli_no_heavy_surfaces",
+    }.issubset(rule_ids)
+
+
+def _owner_question_dedupe_contract_present() -> bool:
+    return dedupe_owner_questions(
+        [
+            "Who owns the highest-priority missing methodology gate?",
+            "Who owns the highest priority missing methodology gate?",
+            "Which detected surfaces are in scope for this slice?",
+        ]
+    ) == [
+        "Who owns the highest-priority missing methodology gate?",
+        "Which detected surfaces are in scope for this slice?",
+    ]
 
 
 def _renderer_actions(files: list[dict[str, Any]]) -> dict[str, str]:
@@ -2069,6 +2209,33 @@ def _expected_checks(
         )
         checks["llm_ai_rag_contract_present"] = _llm_ai_rag_contract_present()
         checks["llm_ai_rag_privacy_safe_fixture"] = _ai_rag_fixture_privacy_safe(FIXTURES / fixture)
+    if fixture == "cross-domain-small-pii-app":
+        checks["small_pii_security_without_complexity"] = _small_pii_security_without_complexity(
+            audit,
+            methodology_audit,
+        )
+    if fixture == "cross-domain-complex-monorepo-no-prod":
+        checks["complex_monorepo_without_production_release_blockers"] = (
+            _complex_monorepo_without_production_release_blockers(audit, methodology_audit)
+        )
+    if fixture == "internal-cli-no-heavy-methodology":
+        checks["internal_cli_no_ui_api_release_hard_blockers"] = (
+            _internal_cli_no_ui_api_release_hard_blockers(methodology_audit)
+        )
+    if fixture == "cross-domain-ai-rag-data-security":
+        checks["ai_rag_data_security_overlap_present_unverified"] = (
+            _ai_rag_data_security_overlap_present_unverified(audit, methodology_audit)
+        )
+    if fixture == "package-release-security-handoff":
+        checks["package_release_security_handoff_prioritized"] = (
+            _package_release_security_handoff_prioritized(methodology_audit)
+        )
+    if fixture == "source-artifact-alias-mapping":
+        checks["source_artifact_alias_deferred_mapping_visible"] = (
+            _source_artifact_mapping_contract_present(methodology_audit)
+        )
+    if fixture == "owner-question-dedupe":
+        checks["owner_question_dedupe_visible"] = _owner_question_dedupe_contract_present()
     return checks
 
 
@@ -2123,6 +2290,108 @@ def _hosted_docs_approval_check(audit: dict[str, Any]) -> bool:
         and hosted_docs.get("status") == "approval_required"
         and isinstance(db_introspection, dict)
         and db_introspection.get("status") == "approval_required"
+    )
+
+
+def _small_pii_security_without_complexity(
+    audit: dict[str, Any],
+    methodology_audit: dict[str, Any],
+) -> bool:
+    domains = set(_applicable_methodology_domains(methodology_audit))
+    profile = audit.get("complexity_profile", {})
+    profile_name = str(profile.get("name", "")) if isinstance(profile, dict) else ""
+    return (
+        "security_privacy_compliance" in domains
+        and profile_name not in {"complex", "large", "enterprise"}
+        and not _has_domain_priority(methodology_audit, {"delivery_release_operations"}, {"P0_blocker"})
+    )
+
+
+def _complex_monorepo_without_production_release_blockers(
+    audit: dict[str, Any],
+    methodology_audit: dict[str, Any],
+) -> bool:
+    usage_mode = audit.get("usage_mode", {})
+    primary_mode = usage_mode.get("primary") if isinstance(usage_mode, dict) else ""
+    return (
+        primary_mode == "complex_system_acceleration"
+        and not _has_domain_priority(methodology_audit, {"delivery_release_operations"}, {"P0_blocker"})
+        and not _has_domain_priority(methodology_audit, {"security_privacy_compliance"}, {"P0_blocker"})
+    )
+
+
+def _internal_cli_no_ui_api_release_hard_blockers(methodology_audit: dict[str, Any]) -> bool:
+    return not _has_domain_priority(
+        methodology_audit,
+        {
+            "frontend",
+            "api_integrations",
+            "database_data",
+            "security_privacy_compliance",
+            "delivery_release_operations",
+        },
+        {"P0_blocker", "P1_high_risk"},
+    )
+
+
+def _ai_rag_data_security_overlap_present_unverified(
+    audit: dict[str, Any],
+    methodology_audit: dict[str, Any],
+) -> bool:
+    domains = set(_applicable_methodology_domains(methodology_audit))
+    applicability = audit.get("methodology_applicability", {})
+    if not isinstance(applicability, dict):
+        return False
+    expected_statuses = [
+        applicability.get("llm_ai_rag_readiness", {}).get("status"),
+        applicability.get("database_data_readiness", {}).get("status"),
+        applicability.get("security_privacy_compliance_readiness", {}).get("status"),
+    ]
+    return (
+        {"llm_ai_rag", "database_data", "security_privacy_compliance"}.issubset(domains)
+        and all(status == "present_unverified" for status in expected_statuses)
+        and "present_verified" not in json.dumps(applicability, sort_keys=True)
+    )
+
+
+def _package_release_security_handoff_prioritized(methodology_audit: dict[str, Any]) -> bool:
+    domains = set(_applicable_methodology_domains(methodology_audit))
+    groups = methodology_audit.get("recommendation_groups", [])
+    artifacts = [
+        str(group.get("artifact"))
+        for group in groups
+        if isinstance(group, dict)
+    ]
+    safe_next_action = str(methodology_audit.get("safe_next_action", "")).lower()
+    return (
+        {"delivery_release_operations", "security_privacy_compliance"}.issubset(domains)
+        and any(artifact in artifacts for artifact in ["approval-record.md", "security-risk-review.md"])
+        and "release-readiness.md" in artifacts
+        and (
+            "approval" in safe_next_action
+            or "security" in safe_next_action
+            or "release" in safe_next_action
+        )
+        and (
+            "quality-strategy.md" not in artifacts
+            or artifacts.index("release-readiness.md") < artifacts.index("quality-strategy.md")
+        )
+    )
+
+
+def _has_domain_priority(
+    methodology_audit: dict[str, Any],
+    domains: set[str],
+    priorities: set[str],
+) -> bool:
+    recommendations = methodology_audit.get("recommendations", [])
+    if not isinstance(recommendations, list):
+        return False
+    return any(
+        isinstance(item, dict)
+        and item.get("domain") in domains
+        and item.get("priority") in priorities
+        for item in recommendations
     )
 
 
@@ -3483,7 +3752,158 @@ def _codex_runtime_runner_eval(path: Path) -> tuple[str, dict[str, bool]]:
         checks["secret_redaction_enforced"] = validate_redaction(redacted) == []
         return "blocked", checks
 
+    if path.name == "codex-runner-methodology-ready":
+        result = run_contract(path)
+        packet = result["route_packet"].get("methodology_packet", {})
+        checks["runtime_methodology_packet_present"] = (
+            result["status"] == "route_ready"
+            and bool(packet.get("recommendation_groups"))
+            and bool(packet.get("safe_next_action"))
+            and bool(result["route_packet"].get("finish_options"))
+        )
+        return str(result["status"]), checks
+
+    if path.name == "codex-runner-methodology-approval-required":
+        route = plan_route(
+            "review_ready",
+            allow_subagents=False,
+            methodology_intelligence=_runtime_methodology_intelligence(
+                artifact="release-readiness.md",
+                safe_next_action="Publish package to the package registry.",
+            ),
+        )
+        approval_errors = validate_approval_boundary(route, {"approval_status": "not_required"})
+        checks["runtime_finish_options_approval_bound"] = (
+            "request_approval" in route["finish_options"]
+            and "approval:required_for_methodology_action" in approval_errors
+        )
+        return "needs_approval", checks
+
+    if path.name == "codex-runner-detection-completion-blocked":
+        route = plan_route(
+            "review_ready",
+            allow_subagents=False,
+            methodology_intelligence=_runtime_methodology_intelligence(
+                artifact="quality-strategy.md",
+                safe_next_action="Stage quality evidence before completion claim.",
+            ),
+        )
+        result = build_result(
+            status="completed",
+            workspace=str(path),
+            lifecycle_state="review_ready",
+            route_packet=route,
+            source_policy_status="ok",
+            approval_status="not_required",
+            next_action="No action.",
+        )
+        errors = validate_runner_result(result)
+        checks["runtime_detection_not_completion"] = "methodology_packet:detection_not_completion" in errors
+        return "blocked", checks
+
+    if path.name == "codex-runner-external-write-blocked":
+        route = plan_route(
+            "quality_gate",
+            allow_subagents=False,
+            methodology_intelligence=_runtime_methodology_intelligence(
+                artifact="external-integration-approval.md",
+                safe_next_action="Deploy service and mutate an external system.",
+            ),
+        )
+        approval_errors = validate_approval_boundary(route, {"approval_status": "not_required"})
+        checks["runtime_external_write_blocked"] = (
+            "approval:required_for_methodology_action" in approval_errors
+            and "deploy" not in " ".join(route["expected_outputs"]).lower()
+        )
+        return "needs_approval", checks
+
+    if path.name == "codex-runner-automation-maturity-missing":
+        route = plan_route(
+            "learning_ready",
+            allow_subagents=False,
+            methodology_intelligence=_runtime_methodology_intelligence(
+                artifact="automation-candidate.md",
+                safe_next_action="Promote this workflow to an active automation.",
+            ),
+        )
+        route_errors = validate_route_packet(route)
+        checks["runtime_automation_maturity_required"] = (
+            route["recommended_skill"] == "learning-loop-maintainer"
+            and "stage_proposal" not in route["finish_options"]
+            and "automation:maturity_evidence_required" in route_errors
+        )
+        return "blocked", checks
+
+    if path.name == "codex-runner-methodology-redaction":
+        route = plan_route(
+            "quality_gate",
+            allow_subagents=False,
+            methodology_intelligence=_runtime_methodology_intelligence(
+                artifact="security-risk-review.md",
+                safe_next_action="TOKEN=fixture-secret\nInspect C:\\Users\\person\\workspace\nraw private chat log.",
+            ),
+        )
+        payload, _redactions = redact_payload({"route_packet": route})
+        text = json.dumps(payload, sort_keys=True)
+        checks["runtime_methodology_redaction_enforced"] = validate_redaction(text) == []
+        return "blocked", checks
+
+    if path.name == "codex-runner-malformed-methodology-packet":
+        result = build_result(
+            status="route_ready",
+            workspace=str(path),
+            lifecycle_state="quality_gate",
+            route_packet={
+                "write_policy": "read_only",
+                "methodology_packet": {"write_policy": "staged_only"},
+            },
+            source_policy_status="ok",
+            approval_status="not_required",
+            next_action="Run risk-reviewer.",
+        )
+        errors = validate_runner_result(result)
+        checks["runtime_malformed_methodology_packet_blocked"] = (
+            "methodology_packet.safe_next_action:required" in errors
+            and "methodology_packet.write_policy:must_be_read_only" in errors
+        )
+        return "blocked", checks
+
     return "not_applicable", {}
+
+
+def _runtime_methodology_intelligence(
+    *,
+    artifact: str,
+    safe_next_action: str,
+) -> dict[str, Any]:
+    return {
+        "status": "present_unverified",
+        "write_policy": "read_only",
+        "methodology_domains": [{"id": "codex_agentic_workflow", "status": "applicable_missing"}],
+        "recommendations": [
+            {
+                "domain": "codex_agentic_workflow",
+                "artifact": artifact,
+                "priority": "P1_high_risk",
+                "safe_next_action": safe_next_action,
+            }
+        ],
+        "recommendation_groups": [
+            {
+                "artifact": artifact,
+                "owner_domain": "codex_agentic_workflow",
+                "consumer_domains": ["delivery_release_operations"],
+                "priority": "P1_high_risk",
+                "safe_next_action": safe_next_action,
+            }
+        ],
+        "questions_for_owner": ["Who owns the synthetic runtime methodology decision?"],
+        "methodology_synthesis": {
+            "safe_next_action": safe_next_action,
+            "semantic_evidence_sufficiency": {"status": "present_unverified"},
+            "source_artifact_ledger": [{"artifact": artifact, "decision": "canonical_template"}],
+        },
+    }
 
 
 def _evidence(

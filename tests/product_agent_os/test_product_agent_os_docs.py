@@ -472,6 +472,64 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             with self.subTest(readme=expected):
                 self.assertIn(expected, readme)
 
+    def test_track9_cross_domain_synthesis_docs_and_backlog_are_synced(self):
+        backlog = TRACK9_BACKLOG.read_text(encoding="utf-8")
+        behavioral_evals = (PRODUCT_AGENT_OS / "behavioral-evals.md").read_text(encoding="utf-8")
+        methodology_intelligence = (PRODUCT_AGENT_OS / "methodology-intelligence.md").read_text(
+            encoding="utf-8"
+        )
+        development_standards = (PRODUCT_AGENT_OS / "development-standards.md").read_text(
+            encoding="utf-8"
+        )
+
+        for expected in [
+            "T9-S-M10..M14",
+            "cross_domain_synthesis_contract_present",
+            "safe_next_action_risk_ordered",
+            "source_artifact_mapping_contract_present",
+            "cross_domain_false_positive_guards_present",
+            "semantic evidence sufficiency review ownership",
+            "source artifact alias/deferred decisions",
+        ]:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        for expected in [
+            "Cross-domain synthesis eval",
+            "cross_domain_synthesis_contract_present",
+            "safe_next_action_risk_ordered",
+            "source_artifact_mapping_contract_present",
+            "cross_domain_false_positive_guards_present",
+            "generic quality strategy hides security approval",
+        ]:
+            with self.subTest(behavioral_evals=expected):
+                self.assertIn(expected, behavioral_evals)
+
+        for expected in [
+            "Cross-Domain Synthesis",
+            "recommendation_groups",
+            "methodology_synthesis",
+            "source_artifact_ledger",
+            "risk-aware safe next action",
+            "owner domains",
+            "consumer domains",
+            "semantic evidence sufficiency",
+            "approval-bound behavior",
+        ]:
+            with self.subTest(methodology_intelligence=expected):
+                self.assertIn(expected, methodology_intelligence)
+
+        for expected in [
+            "semantic evidence sufficiency",
+            "owner_reviewed_evidence_sufficient_for_real_project_risk",
+            "explicit_gap_accepted",
+            "detection alone remains `present_unverified`",
+            "grouped methodology recommendations",
+            "approval-bound behavior",
+        ]:
+            with self.subTest(development_standards=expected):
+                self.assertIn(expected, development_standards)
+
 
 if __name__ == "__main__":
     unittest.main()

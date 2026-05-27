@@ -35,7 +35,7 @@ Generated at: 2026-05-27
 - False-positive scenario fixture coverage: implemented in `T8-GX`.
 - Detailed discovery status depth: implemented in `T8-D`.
 - Track 9 methodology intelligence plan: authored in `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`.
-- Track 9 foundation, `T9-D1` Business/Product, `T9-D2` Requirements/Domain, `T9-D3` Solution Architecture, `T9-D4` Quality/Testing/Evals, `T9-D5` Codex/Agentic Workflow, `T9-D6` Frontend, `T9-D7` Backend, `T9-D8` API & Integrations, `T9-D9` Database & Data, `T9-D10` LLM / AI / RAG, `T9-D11` Security, Privacy & Compliance and `T9-D12` Delivery, Release & Operations: implemented.
+- Track 9 foundation, `T9-D1` Business/Product, `T9-D2` Requirements/Domain, `T9-D3` Solution Architecture, `T9-D4` Quality/Testing/Evals, `T9-D5` Codex/Agentic Workflow, `T9-D6` Frontend, `T9-D7` Backend, `T9-D8` API & Integrations, `T9-D9` Database & Data, `T9-D10` LLM / AI / RAG, `T9-D11` Security, Privacy & Compliance, `T9-D12` Delivery, Release & Operations and `T9-S` Task 20 Cross-Domain Synthesis: implemented.
 
 ## Track 9 Methodology Intelligence Evals
 
@@ -157,6 +157,15 @@ Generated at: 2026-05-27
 - Approval boundary: publish, tag, GitHub Release creation, artifact upload, deploy, PR creation, branch push, package registry mutation, marketplace/store submission, CI/CD environment mutation and active automation remain `approval_required`.
 - Unsupported claims rejected: CI green means release ready, tests passed so release is ready, rollback is just revert, feature flags remove release risk, GitOps is automatically safe, generated changelog is enough for users, DORA metrics prove individual performance and repeatable automation is automatically safe.
 - Residual risk: delivery/release/operations artifacts prove evidence shape and route/gate coverage, not that a human release, operations, security or product owner has accepted every release risk for a real production system.
+
+## Cross Domain Synthesis Evals
+
+- `cross_domain_synthesis_contract_present`: implemented through `T9-S-M14`.
+- Required evidence: grouped recommendations, owner domains, consumer domains, source domains, merged gates, source artifact ledger, alias/deferred artifact decisions, semantic evidence sufficiency, owner-question dedupe, risk-aware safe next action and lifecycle skill consumption.
+- Fixture evidence: `run_fixture_eval.py` exposes `cross_domain_synthesis_contract_present`, `semantic_evidence_sufficiency_contract_present`, `safe_next_action_risk_ordered`, `source_artifact_mapping_contract_present` and `cross_domain_false_positive_guards_present`.
+- False-positive protection: small PII, complex non-production monorepo, internal CLI, docs-only release notes, CI-only workflows, tooling-only release files and backend FSD-like directories do not force unrelated heavy methodology gates without owner-reviewed evidence.
+- Approval boundary: synthesized recommendations stay read-only/staged; detection alone remains `present_unverified` and does not authorize scaffolding, external writes, release actions, production access, security scans, automations or finish claims.
+- Residual risk: synthesis artifacts prove packet shape, grouping and routing, not that a human owner has accepted every real-project overlap or evidence sufficiency decision.
 
 ## Completion Evidence Evals
 

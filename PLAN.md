@@ -11,10 +11,11 @@ Generated at: 2026-05-27
 - `T9-D10` LLM / AI / RAG methodology integration is implemented through rows `M30..M36`; final batch verification is recorded in `TEST.md`, `RUNLOG.md` and the Track 9 backlog.
 - `T9-D11` Security, Privacy & Compliance methodology integration is implemented; focused security checks and fixture eval evidence are recorded in `TEST.md`, `RUNLOG.md` and the Track 9 backlog.
 - `T9-D12` Delivery, Release & Operations methodology integration is implemented; final verification evidence is recorded in `TEST.md`, `RUNLOG.md` and the Track 9 backlog.
-- Verification baseline after the latest completed Track 9 batch: T9-D12 focused delivery/release/operations checks pass; final full verification is recorded in `TEST.md`, `RUNLOG.md` and the Track 9 backlog.
+- `T9-S` Task 20 Cross-Domain Synthesis is implemented through `M10..M14`; final fixture/report/lifecycle/docs handoff evidence is recorded in `TEST.md`, `RUNLOG.md` and the Track 9 backlog.
+- Verification baseline after the latest completed Track 9 batch: T9-S M10..M14 focused synthesis checks pass; final full verification is recorded in `TEST.md`, `RUNLOG.md` and the Track 9 backlog.
 - Track 9 design is recorded in `docs/superpowers/specs/2026-05-25-track-9-methodology-intelligence-design.md`.
 - Track 9 implementation plan is recorded in `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`.
-- Next implementation slice after the `T9-D12` report: `Task 20` Cross-Domain Synthesis.
+- Next implementation slice after Task 20: `Task 21` Update Runtime Runner And Finish Options.
 
 ## Architecture Boundary
 
@@ -42,7 +43,8 @@ Generated at: 2026-05-27
 | 11 | `T9-D10` LLM / AI / RAG | `done` | AI behavior, prompt/model/tool/RAG eval and safety gates |
 | 12 | `T9-D11` Security, Privacy & Compliance | `done` | Threat, privacy, ASVS/SSDF, secrets, supply-chain and compliance gates |
 | 13 | `T9-D12` Delivery, Release & Operations | `done` | Release readiness, artifact manifest, rollout, rollback and operations gates |
-| 14 | `T9-S` cross-domain synthesis | `planned` | Deduplicated gates, merged artifacts, conflict rules and final baseline |
+| 14 | `T9-S` cross-domain synthesis | `done` | Deduplicated gates, merged artifacts, conflict rules and final baseline |
+| 15 | `Task 21` runtime runner and finish options | `next` | Runtime consumption of synthesis packets and finish-option behavior |
 
 ## Track 9 Section Implementation Protocol
 
@@ -90,6 +92,8 @@ For each Track 9 section:
 - Security, Privacy & Compliance artifacts: `security-risk-review.md`, `threat-surface.md`, `asvs-ssdf-mapping.md`, `authz-negative-test-matrix.md`, `secrets-policy.md`, `data-classification-register.md`, `privacy-impact-record.md`, `api-security-review.md`, `abuse-rate-limit-plan.md`, `supply-chain-review.md`, `sbom-manifest.md`, `ci-permissions-review.md`, `audit-logging-review.md`, `ai-security-review.md`, `compliance-overlay.md`, `vulnerability-response-record.md` and `approval-record.md`.
 - Delivery, Release & Operations gate: `delivery_release_operations` records release scope, version impact, changelog/release notes, artifact manifest, release evidence before completion, rollout strategy, rollback/recovery, environment approval boundary, external release approval, CI/CD governance, observability/SLO, operations runbook, incident response, post-release review, automation manual stability, release mode policy, build-release-run boundary, platform distribution evidence, release communication, versioning tooling decision, GitHub environment controls, DORA measurement design, incident/postmortem learning, observability/on-call tooling, release integrity security handoff, owner-reviewed release evidence sufficiency and unsupported-claim rejection.
 - Delivery, Release & Operations artifacts: `versioning-policy.md`, `release-readiness.md`, `release-artifact-manifest.md`, `rollout-plan.md`, `rollback-recovery-plan.md`, `environment-matrix.md`, `deployment-plan.md`, `ci-cd-workflow-inventory.md`, `observability-map.md`, `slo-spec.md`, `operations-runbook.md`, `incident-record.md`, `postmortem.md`, `post-release-review.md`, `approval-record.md`, `automation-candidate.md`, plus cross-domain handoff to `supply-chain-review.md`, `sbom-manifest.md` and `vulnerability-response-record.md`.
+- Cross-domain synthesis gate: `methodology_synthesis` groups recommendations by owner artifact, records owner and consumer domains, merged gates, source artifact ledger, alias/deferred artifact decisions, semantic evidence sufficiency, owner-question dedupe, risk-aware safe next action and false-positive guards for mixed methodology surfaces.
+- Cross-domain synthesis artifacts: additive audit/discovery/report packets, grouped `recommendation_groups`, source artifact ledger, semantic evidence sufficiency fields in generated control-plane/eval templates, synthetic overlap fixtures and lifecycle skill routing guidance.
 - Conditional readiness gate: `project-readiness.json` defines `readiness_statuses` and per-gate `applies_when`, pass condition, accepted gap, required evidence, owner and residual risk. Detection alone can only support `present_unverified`; `present_verified` requires current command, owner or artifact evidence.
 - Test gate: deterministic tests, contract checks, evals or accepted gaps are named before implementation.
 - Documentation gate: docs-as-code artifacts and source-of-truth updates are named.
@@ -249,8 +253,15 @@ For each Track 9 section:
 - Rows `T9-D12-M10..M19` added artifact manifest, rollout, rollback/recovery, environment approval, external release approval, CI/CD governance, observability/SLO, operations runbook, incident response and post-release measurement gates.
 - Rows `T9-D12-M20..M29` added automation manual stability, renderer registration for 13 delivery templates, methodology report external-action status, generated control-plane/eval coverage, lifecycle skill routing and false-positive/approval fixtures.
 - Rows `T9-D12-M30..M40` added final release depth for release mode policy, build-release-run boundary, platform distribution, release communication, versioning tooling, GitHub environment controls, DORA measurement design, incident/postmortem learning, observability/on-call tooling, release integrity security handoff and owner-reviewed release evidence sufficiency.
-- The staged renderer keeps file count 186; fixture eval now covers 66 fixtures and exposes `delivery_release_operations_contract_present`.
-- Next Track 9 work is `Task 20: Cross-Domain Synthesis` to normalize duplicated gates, shared artifact ownership, semantic evidence sufficiency, false-positive routing and conflict rules across all methodology domains.
+- The staged renderer keeps file count 186; fixture eval covers 66 fixtures and exposes `delivery_release_operations_contract_present`.
+
+## T9-S Task 20 Cross-Domain Synthesis Completed Slice
+
+- Rows `T9-S-M0..M4` added synthesis contract tests, additive top-level `synthesis` catalog metadata, source artifact aliases/decisions and pure grouping/classification/dedupe helpers.
+- Rows `T9-S-M5..M9` integrated `methodology_synthesis` into audit output, added grouped recommendations, risk-aware safe next action, discovery applicability packets, semantic evidence sufficiency contracts and focused false-positive hardening.
+- Rows `T9-S-M10..M14` added packaged mixed-risk overlap fixtures, named fixture eval checks, Cross-Domain Synthesis report rendering, lifecycle skill consumption, behavioral eval/docs sync and final handoff evidence.
+- The staged renderer keeps file count 186; fixture eval covers 73 fixtures and exposes `cross_domain_synthesis_contract_present`, `semantic_evidence_sufficiency_contract_present`, `safe_next_action_risk_ordered`, `source_artifact_mapping_contract_present` and `cross_domain_false_positive_guards_present`.
+- Next Track 9 work is `Task 21: Update Runtime Runner And Finish Options` to consume synthesized packets in runtime routing and finish-option behavior without forcing unrelated methodology gates.
 
 ## T9-D4 Completed Slice
 

@@ -6,15 +6,15 @@ Generated at: 2026-05-27
 
 ## Current Lifecycle Marker
 
-`delivery_release_operations_gate_complete`
+`cross_domain_synthesis_gate_complete`
 
 ## Latest Completed Slice
 
-`T9-S-M5..M9` Task 20 Cross-Domain Synthesis audit/discovery integration.
+`T9-S-M10..M14` Task 20 Cross-Domain Synthesis final fixture/report/lifecycle/docs handoff.
 
 ## Current Active Slice
 
-`Task 20: Cross-Domain Synthesis` is in progress. Batch `T9-S-M5..M9` is implemented and verified; next active batch is `T9-S-M10..M14`.
+`Task 20: Cross-Domain Synthesis` is implemented and verified through `T9-S-M14`; next active work is `Task 21: Update Runtime Runner And Finish Options`.
 
 ## Latest Planning Artifact
 
@@ -48,6 +48,8 @@ Generated at: 2026-05-27
 - Registered 13 Delivery, Release & Operations artifact templates: `versioning-policy.md`, `release-artifact-manifest.md`, `rollout-plan.md`, `rollback-recovery-plan.md`, `environment-matrix.md`, `deployment-plan.md`, `ci-cd-workflow-inventory.md`, `observability-map.md`, `slo-spec.md`, `operations-runbook.md`, `incident-record.md`, `postmortem.md` and `post-release-review.md`; `release-readiness.md`, `approval-record.md` and `automation-candidate.md` were strengthened as shared artifacts.
 - Started Task 20 Cross-Domain Synthesis with batch `T9-S-M0..M4`: recorded duplicate gate/artifact/eval-field baseline, added synthesis contract tests, added additive top-level `synthesis` catalog metadata, added source artifact alias/decision coverage and created pure `methodology_synthesis.py` helpers for grouping recommendations, source artifact classification and owner-question dedupe.
 - Continued Task 20 Cross-Domain Synthesis with batch `T9-S-M5..M9`: integrated `methodology_synthesis` into audit output, added top-level `recommendation_groups`, made `safe_next_action` risk-aware, exposed a discovery `methodology_synthesis` applicability packet, added shared semantic evidence sufficiency control-plane/eval contracts and tightened false-positive routing for backend FSD-like directories, CI-only workflows, docs-only release notes and tooling-only release files.
+- Completed Task 20 Cross-Domain Synthesis with batch `T9-S-M10..M14`: added packaged mixed-risk overlap fixtures, named fixture eval checks, Cross-Domain Synthesis report rendering, lifecycle skill consumption of synthesized packets, behavioral eval/docs sync and final verification handoff for Task 21.
+- Synced root system/control-plane files after Task 20: `AGENTS.md`, `REQUIREMENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md` and `RUNLOG.md` now mark `T9-S-M10..M14` complete and route next work to `Task 21: Update Runtime Runner And Finish Options`.
 
 ### Verification Evidence
 
@@ -147,6 +149,33 @@ Generated at: 2026-05-27
 - T9-S M5..M9 Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
 - T9-S M5..M9 docs check: `python tools\check_docs.py` passed.
 - T9-S M5..M9 diff hygiene: `git diff --check` exited `0`.
+- T9-S M10..M14 RED checks failed as expected before implementation on missing cross-domain fixture checks, methodology report synthesis rendering, lifecycle skill packet wording, behavioral eval case coverage and docs/backlog sync.
+- T9-S M10..M14 focused GREEN check: `python -m unittest tests.product_agent_os.test_fixture_eval_runner.FixtureEvalRunnerTest.test_fixture_eval_checks_cross_domain_synthesis_fixtures tests.product_agent_os.test_fixture_eval_runner.FixtureEvalRunnerTest.test_fixture_eval_checks_expected_renderer_behavior_by_fixture tests.product_agent_os.test_fixtures.FixtureCompletenessTest.test_required_fixture_projects_exist tests.product_agent_os.test_fixtures.FixtureCompletenessTest.test_false_positive_scenario_fixtures_are_synthetic_and_secret_free tests.product_agent_os.test_methodology_report.MethodologyReportTest.test_report_renders_cross_domain_synthesis_groups_and_source_ledger tests.product_agent_os.test_lifecycle_skills.LifecycleSkillsTest.test_lifecycle_skills_consume_cross_domain_synthesis_packets tests.product_agent_os.test_behavioral_workflow_evals.BehavioralWorkflowEvalTest.test_behavioral_eval_template_validates_expected_contract tests.product_agent_os.test_behavioral_workflow_evals.BehavioralWorkflowEvalTest.test_behavioral_eval_cases_encode_forbidden_shortcuts tests.product_agent_os.test_product_agent_os_docs.ProductAgentOsDocsTest.test_track9_cross_domain_synthesis_docs_and_backlog_are_synced -v` ran 9 tests with `OK`.
+- T9-S M10..M14 focused synthesis suite: `python -m unittest tests.product_agent_os.test_methodology_synthesis tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_methodology_report tests.product_agent_os.test_discovery tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_behavioral_workflow_evals tests.product_agent_os.test_fixture_eval_runner tests.product_agent_os.test_fixtures tests.product_agent_os.test_product_agent_os_docs -v` ran 316 tests with `OK`.
+- T9-S M10..M14 fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0` with 73 fixtures, 0 failures, renderer file count 186 and `cross_domain_synthesis_contract_present: true`.
+- T9-S M10..M14 full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 496 tests with `OK`.
+- T9-S M10..M14 transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 5 sessions and 0 failures.
+- T9-S M10..M14 Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
+- T9-S M10..M14 product docs check: `python -m unittest tests.product_agent_os.test_product_agent_os_docs -v` ran 11 tests with `OK`.
+- T9-S M10..M14 docs check: `python tools\check_docs.py` passed.
+- T9-S M10..M14 diff hygiene: `git diff --check` exited `0`.
+- Root system/control-plane sync after T9-S: `python -m unittest tests.product_agent_os.test_product_agent_os_docs -v` ran 11 tests with `OK`, `python tools\check_docs.py` passed and `git diff --check` exited `0`.
+- T9-R M0..M6 RED run: `python -m unittest tests.product_agent_os.test_codex_runtime_runner_contracts tests.product_agent_os.test_codex_runtime_runner_state_routes -v` failed as expected before implementation on missing methodology packet constants/helpers, missing `methodology_intelligence` route argument and missing runtime propagation.
+- T9-R M0..M6 focused runtime suite: `python -m unittest tests.product_agent_os.test_codex_runtime_runner_contracts tests.product_agent_os.test_codex_runtime_runner_state_routes tests.product_agent_os.test_codex_runtime_runner_cli tests.product_agent_os.test_codex_runtime_runner_fixture_eval -v` ran 28 tests with `OK`.
+- T9-R M0..M6 full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 502 tests with `OK`.
+- T9-R M0..M6 fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0`.
+- T9-R M0..M6 transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 5 sessions and 0 failures.
+- T9-R M0..M6 Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
+- T9-R M0..M6 docs check: `python tools\check_docs.py` passed.
+- T9-R M0..M6 diff hygiene: `git diff --check` exited `0`.
+- T9-R M7..M13 RED/focused run: `python -m unittest tests.product_agent_os.test_codex_runtime_runner_contracts tests.product_agent_os.test_codex_runtime_runner_state_routes tests.product_agent_os.test_codex_runtime_runner_cli tests.product_agent_os.test_codex_runtime_runner_fixture_eval tests.product_agent_os.test_fixtures.FixtureCompletenessTest.test_codex_runner_fixtures_are_synthetic tests.product_agent_os.test_fixtures.FixtureCompletenessTest.test_required_fixture_projects_exist -v` first failed as expected on missing high-risk approval, automation maturity and fixture checks, then ran 36 tests with `OK`.
+- T9-R M7..M13 guard suite: `python -m unittest tests.product_agent_os.test_codex_runtime_runner_guards -v` ran 6 tests with `OK`.
+- T9-R M7..M13 full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 508 tests with `OK`.
+- T9-R M7..M13 fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0`; compact summary reported 80 fixtures, 0 failures, 13 codex-runner fixtures and new runtime checks `runtime_methodology_packet_present`, `runtime_finish_options_approval_bound`, `runtime_detection_not_completion`, `runtime_external_write_blocked`, `runtime_automation_maturity_required`, `runtime_methodology_redaction_enforced`, `runtime_malformed_methodology_packet_blocked` all `true`.
+- T9-R M7..M13 transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 5 sessions and 0 failures.
+- T9-R M7..M13 Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
+- T9-R M7..M13 docs check: `python tools\check_docs.py` passed.
+- T9-R M7..M13 diff hygiene: `git diff --check` exited `0`.
 
 ## Methodology Trace
 
@@ -177,6 +206,9 @@ Generated at: 2026-05-27
 - LLM / AI / RAG methodology: implemented through `T9-D10-M36` as `llm_ai_rag` with AI behavior promise, baseline eval, eval rerun evidence, dataset governance, prompt contract, model decision, structured output schema, tool/function/MCP contract, human approval boundary, RAG source inventory, retrieval config, grounding rubric, agent task packet, agent workflow trace, guardrails, trace evidence, cost/latency budget, handoff compatibility, eval tooling selection, model migration thresholds, RAG lifecycle/privacy, diff-signal limits, AI incident workflow, synthetic fixture privacy and unsupported-claim rejection.
 - Security, Privacy & Compliance methodology: implemented as `security_privacy_compliance` with security-sensitive classification, threat surface, security risk review, ASVS/SSDF/SAMM mapping, ASVS level selection, API security scheme, authorization negative tests, secrets policy, data classification, redaction lifecycle, privacy impact record, external-write approval, abuse/rate-limit review, audit logging, supply-chain review, SBOM/provenance decision, CI permissions, AI security review, compliance overlay taxonomy, vulnerability response workflow, explicit Codex Security scan status, evidence before completion, synthetic fixture privacy and unsupported-claim rejection.
 - Delivery, Release & Operations methodology: implemented as `delivery_release_operations` with release scope, version impact, changelog/release notes, artifact manifest, release evidence before completion, rollout strategy, rollback/recovery, environment approval, external release approval, CI/CD governance, observability/SLO, operations runbook, incident response, post-release review, automation manual stability, release mode policy, build-release-run boundary, platform distribution, release communication, versioning tooling, GitHub environment controls, DORA measurement design, incident/postmortem learning, observability/on-call tooling, release integrity security handoff, owner-reviewed release evidence sufficiency and unsupported-claim rejection.
+- Cross-Domain Synthesis: implemented as `methodology_synthesis` with grouped artifact recommendations, owner and consumer domains, source artifact ledger, alias/deferred artifact decisions, semantic evidence sufficiency, owner-question dedupe, risk-aware safe next action and false-positive guards for mixed methodology surfaces.
+- Runtime Runner methodology packet: implemented through `T9-R-M0..M6` with compact route-level `methodology_packet`, bounded methodology lists, runtime propagation from workspace discovery, finish options, read-only methodology write policy validation, no recommendation-only artifact staging on read-only routes and detection-only completion blocking.
+- Runtime Runner methodology safety: implemented through `T9-R-M7..M13` with approval-bound high-risk methodology actions, automation maturity blocking, methodology route payload redaction, malformed packet fallback validation and synthetic runtime methodology fixture checks.
 - Test-first or eval-first evidence: T9-D7 batch checks were implemented with failing-focused tests first, then focused GREEN.
 - Test-first or eval-first evidence: T9-D8 checks were implemented with failing-focused tests first, then focused GREEN.
 - Test-first or eval-first evidence: T9-D9 checks were implemented with failing-focused tests first, then focused GREEN.
@@ -184,12 +216,13 @@ Generated at: 2026-05-27
 - Test-first or eval-first evidence: T9-D11 checks were implemented with failing-focused tests first, then focused GREEN.
 - Test-first or eval-first evidence: T9-D12 checks were implemented in batches with failing-focused tests first, then focused GREEN.
 - Test-first or eval-first evidence: T9-S M5..M9 checks were implemented with failing-focused tests first, then focused GREEN.
-- Documentation impact: root control-plane files, Track 9 backlog, Product-Agent OS docs and plugin README synchronized for `T9-D12`. Source registry was not changed because this slice operationalized checked-in methodology artifacts and existing Product-Agent OS behavior rather than adding new external source-backed claims.
-- Review outcome: focused Delivery, Release & Operations checks are clean; semantic sufficiency still requires release, operations, security and product owner review on real projects.
+- Test-first or eval-first evidence: T9-S M10..M14 checks were implemented with failing-focused tests first, then focused GREEN.
+- Documentation impact: root control-plane files, Track 9 backlog and Product-Agent OS docs synchronized for `T9-S-M10..M14`. Source registry was not changed because this slice operationalized checked-in methodology artifacts and existing Product-Agent OS behavior rather than adding new external source-backed claims.
+- Review outcome: Task 20 Cross-Domain Synthesis checks are clean; semantic sufficiency still requires owner review on real projects.
 
 ## Next Action
 
-- Continue `Task 20: Cross-Domain Synthesis` with batch `T9-S-M10..M14` when the user asks to continue Track 9 implementation.
+- Continue Track 9 Task 21 with `T9-R-M14` evidence/backlog sync when the user asks for the next batch.
 
 ## Residual Risks
 
@@ -217,5 +250,8 @@ Generated at: 2026-05-27
 - `delivery_release_operations` gates prove release/operations evidence shape, route/gate coverage and unsupported-claim routing, not that a human release, operations, security or product owner has accepted every rollout, rollback, publishing, incident, DORA, observability or release integrity risk for a real production system.
 - Semantic evidence sufficiency for concrete real-project tests/evals remains a shared T9-S/cross-domain owner-review concern.
 - `T9-S-M5..M9` synthesis groups and prioritizes methodology recommendations, but it still does not prove real-project evidence sufficiency without owner-reviewed accepted gaps and follow-up conditions.
+- `T9-S-M10..M14` report/lifecycle/docs coverage proves synthesized packet shape and routing, not that every real project overlap has the right human owner or sufficient semantic evidence.
+- `T9-R-M0..M6` runtime propagation proves methodology packet shape, finish options and detection-only blocking, not the later high-risk action taxonomy, automation maturity routing, redaction-specific methodology fixture coverage or cross-domain runtime bridge checks.
+- `T9-R-M7..M13` runtime safety proves high-risk action approval binding, automation maturity blocking, redaction and malformed-packet fallback for synthetic runtime fixtures, not the later structured high-risk taxonomy, status-to-finish-options matrix, cross-domain runtime bridge or ownership/parallelism routing guards.
 - Root control-plane files are initialized manually for this repository; generated target-project assets still remain staged-first and approval-bound.
 <!-- product-agent-os:end runlog -->

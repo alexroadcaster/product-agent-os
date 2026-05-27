@@ -15,6 +15,7 @@ Methodology Intelligence is the Track 9 layer of Product-Agent OS. It reads work
 
 - `methodology_applicability` packet with `maturity_level`, `complexity_profile`, applicable domains, missing gates, owner questions and residual risks.
 - Delivery Map that groups recommendations into immediate blockers, high-risk gaps, useful maturity improvements and non-applicable items.
+- Cross-Domain Synthesis packet with `methodology_synthesis`, `recommendation_groups`, `source_artifact_ledger` and risk-aware safe next action.
 - `methodology-audit-report.md` as a human-readable report template for current evidence and next actions.
 - `methodology-applicability.json` as the planned stable machine-readable packet for lifecycle skills.
 - Questions for owner when evidence is missing, ambiguous or approval-bound.
@@ -49,6 +50,16 @@ Examples:
 - AI/RAG work needs baseline eval, dataset policy, grounding evidence and cost/latency guardrails;
 - Security/Privacy/Compliance work needs threat surface, security-sensitive classification, data classification, authorization negative tests, privacy impact, supply-chain evidence, Codex Security scan status and compliance overlay ownership;
 - release or migration work needs rollback, compatibility and owner approval evidence.
+
+## Cross-Domain Synthesis
+
+Cross-Domain Synthesis groups repeated methodology recommendations into `recommendation_groups` so operators see the owner artifact first instead of a dump of every methodology gate. Each group keeps owner domains, consumer domains, merged gates, evidence requirements, residual risk and the selected risk-aware safe next action.
+
+The machine packet is `methodology_synthesis`. It includes `source_artifact_ledger` for source-era artifact names, source artifact alias/deferred decisions, semantic evidence sufficiency and a read-only write policy. Source artifacts such as `context-map.md`, `ui-flow-spec.md`, `threat-model.md`, `runbook.md`, `slo.md` and `CHANGELOG.md` are classified as canonical templates, aliases, existing non-template project artifacts or deferred candidates with an owner and reason.
+
+Risk-aware safe next action means approval, security, release, production-data and destructive-change blockers can outrank generic quality strategy. Generic quality evidence remains visible, but it must not hide a more specific owner action. Detection alone remains `present_unverified`; it is never upgraded to readiness evidence without owner-reviewed proof.
+
+Semantic evidence sufficiency is shared across high-risk, production, release, security-sensitive, AI behavior and public-contract slices. It requires `owner_reviewed_evidence_sufficient_for_real_project_risk` or `explicit_gap_accepted` with owner, reason, review date, downstream risk and follow-up condition. This keeps approval-bound behavior explicit while avoiding heavy-process false positives for docs-only, internal CLI, backend FSD-like folders, CI-only workflows and tooling-only release files.
 
 ## Implemented Domain Contracts
 

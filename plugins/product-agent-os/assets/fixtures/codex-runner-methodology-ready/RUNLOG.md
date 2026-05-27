@@ -1,0 +1,4 @@
+# Synthetic Runlog
+
+lifecycle_state: quality_gate
+expected_codex_runner_check: runtime_methodology_packet_present

@@ -57,6 +57,46 @@ class CodexRuntimeRunnerFixtureEvalTest(unittest.TestCase):
             results["codex-runner-secret-redaction"]["codex_runtime_runner_checks"]["secret_redaction_enforced"]
         )
 
+    def test_runtime_methodology_fixtures_are_checked(self):
+        runner = load_runner()
+        results = {item["fixture"]: item for item in runner.evaluate_all()}
+
+        self.assertTrue(
+            results["codex-runner-methodology-ready"]["codex_runtime_runner_checks"][
+                "runtime_methodology_packet_present"
+            ]
+        )
+        self.assertTrue(
+            results["codex-runner-methodology-approval-required"]["codex_runtime_runner_checks"][
+                "runtime_finish_options_approval_bound"
+            ]
+        )
+        self.assertTrue(
+            results["codex-runner-detection-completion-blocked"]["codex_runtime_runner_checks"][
+                "runtime_detection_not_completion"
+            ]
+        )
+        self.assertTrue(
+            results["codex-runner-external-write-blocked"]["codex_runtime_runner_checks"][
+                "runtime_external_write_blocked"
+            ]
+        )
+        self.assertTrue(
+            results["codex-runner-automation-maturity-missing"]["codex_runtime_runner_checks"][
+                "runtime_automation_maturity_required"
+            ]
+        )
+        self.assertTrue(
+            results["codex-runner-methodology-redaction"]["codex_runtime_runner_checks"][
+                "runtime_methodology_redaction_enforced"
+            ]
+        )
+        self.assertTrue(
+            results["codex-runner-malformed-methodology-packet"]["codex_runtime_runner_checks"][
+                "runtime_malformed_methodology_packet_blocked"
+            ]
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

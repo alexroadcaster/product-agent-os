@@ -213,3 +213,6 @@ Check that the selected route matches the route map, the state is not skipped, e
 ## Final Response Contract
 
 Return current state, next state, recommended skill, blockers, questions, proposed files, scenario handoff status, approval requirements, unsupported claims, risks, and stop reason.
+## Track 9 Cross-Domain Synthesis
+
+Consume `methodology_synthesis` and `recommendation_groups` as grouped recommendations; do not dump every methodology gate. Preserve owner domains, consumer domains, semantic evidence sufficiency, source artifact ledger, alias/deferred artifact ledger and risk-aware safe next action. Do not scaffold before approval, and remember that detection is not verification.

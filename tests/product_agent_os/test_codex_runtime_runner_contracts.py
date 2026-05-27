@@ -11,8 +11,12 @@ from codex_runtime_runner.contracts import (  # noqa: E402
     ALLOWED_RUNNER_STATUSES,
     ALLOWED_RUNTIME_SURFACES,
     ALLOWED_WRITE_POLICIES,
+    METHODOLOGY_PACKET_LIMITS,
     REQUIRED_RESULT_FIELDS,
+    REQUIRED_METHODOLOGY_PACKET_KEYS,
+    build_methodology_packet,
     build_result,
+    validate_methodology_packet,
     validate_runner_request,
     validate_runner_result,
 )
@@ -61,6 +65,44 @@ class CodexRuntimeRunnerContractsTest(unittest.TestCase):
         self.assertEqual(validate_runner_result(result), [])
         self.assertEqual(result["redactions"], {"count": 0, "categories": []})
 
+    def test_route_packet_accepts_compact_methodology_packet_without_result_shape_change(self):
+        packet = build_methodology_packet(self._methodology_intelligence())
+        result = build_result(
+            status="route_ready",
+            workspace="C:/workspace/synthetic",
+            lifecycle_state="quality_gate",
+            route_packet={"write_policy": "read_only", "methodology_packet": packet},
+            source_policy_status="ok",
+            approval_status="not_required",
+            next_action="Run risk-reviewer.",
+        )
+
+        self.assertEqual(list(result.keys()), REQUIRED_RESULT_FIELDS)
+        self.assertEqual(list(packet.keys()), REQUIRED_METHODOLOGY_PACKET_KEYS)
+        self.assertEqual(validate_runner_result(result), [])
+        self.assertEqual(packet["write_policy"], "read_only")
+        self.assertLessEqual(len(packet["recommendation_groups"]), METHODOLOGY_PACKET_LIMITS["recommendation_groups"])
+        self.assertLessEqual(len(packet["questions_for_owner"]), METHODOLOGY_PACKET_LIMITS["questions_for_owner"])
+        self.assertEqual(packet["safe_next_action"], "Stage security-risk-review.md before implementation.")
+
+    def test_methodology_packet_validation_rejects_invalid_missing_oversized_and_non_read_only(self):
+        self.assertIn("methodology_packet:invalid", validate_methodology_packet("not a packet"))
+
+        missing = self._valid_methodology_packet()
+        del missing["safe_next_action"]
+        self.assertIn("methodology_packet.safe_next_action:required", validate_methodology_packet(missing))
+
+        oversized = self._valid_methodology_packet()
+        oversized["recommendation_groups"] = [{}] * (METHODOLOGY_PACKET_LIMITS["recommendation_groups"] + 1)
+        self.assertIn(
+            "methodology_packet.recommendation_groups:too_many",
+            validate_methodology_packet(oversized),
+        )
+
+        write_attempt = self._valid_methodology_packet()
+        write_attempt["write_policy"] = "staged_only"
+        self.assertIn("methodology_packet.write_policy:must_be_read_only", validate_methodology_packet(write_attempt))
+
     def test_result_rejects_completion_claim_without_evidence(self):
         result = build_result(
             status="completed",
@@ -75,6 +117,43 @@ class CodexRuntimeRunnerContractsTest(unittest.TestCase):
         errors = validate_runner_result(result)
 
         self.assertIn("verification_evidence:required_for_completed", errors)
+
+    def test_result_rejects_detection_only_methodology_packet_as_completion_evidence(self):
+        packet = self._valid_methodology_packet()
+        packet["status"] = "present_unverified"
+        result = build_result(
+            status="completed",
+            workspace="C:/workspace/synthetic",
+            lifecycle_state="review_ready",
+            route_packet={"write_policy": "staged_only", "methodology_packet": packet},
+            source_policy_status="ok",
+            approval_status="not_required",
+            next_action="No action.",
+        )
+
+        errors = validate_runner_result(result)
+
+        self.assertIn("verification_evidence:required_for_completed", errors)
+        self.assertIn("methodology_packet:detection_not_completion", errors)
+
+    def test_result_rejects_malformed_methodology_packet_with_stable_errors(self):
+        result = build_result(
+            status="route_ready",
+            workspace="C:/workspace/synthetic",
+            lifecycle_state="quality_gate",
+            route_packet={
+                "write_policy": "read_only",
+                "methodology_packet": {"write_policy": "staged_only"},
+            },
+            source_policy_status="ok",
+            approval_status="not_required",
+            next_action="Run risk-reviewer.",
+        )
+
+        errors = validate_runner_result(result)
+
+        self.assertIn("methodology_packet.safe_next_action:required", errors)
+        self.assertIn("methodology_packet.write_policy:must_be_read_only", errors)
 
     def _valid_request(self):
         return {
@@ -96,6 +175,80 @@ class CodexRuntimeRunnerContractsTest(unittest.TestCase):
                 "required": False,
                 "approval_file": "",
                 "approval_status": "not_required",
+            },
+        }
+
+    def _valid_methodology_packet(self):
+        return {
+            "methodology_domains": [{"id": "security", "status": "applicable_missing"}],
+            "methodology_recommendations": [
+                {
+                    "domain": "security",
+                    "artifact": "security-risk-review.md",
+                    "priority": "P1_high_risk",
+                    "safe_next_action": "Stage security-risk-review.md before implementation.",
+                }
+            ],
+            "recommendation_groups": [
+                {
+                    "artifact": "security-risk-review.md",
+                    "owner_domain": "security",
+                    "consumer_domains": ["quality_testing_evals"],
+                    "priority": "P1_high_risk",
+                    "safe_next_action": "Stage security-risk-review.md before implementation.",
+                }
+            ],
+            "questions_for_owner": ["Who owns the security review?"],
+            "safe_next_action": "Stage security-risk-review.md before implementation.",
+            "semantic_evidence_sufficiency": {
+                "status": "present_unverified",
+                "required_evidence": ["owner-reviewed evidence"],
+            },
+            "source_artifact_ledger": [{"artifact": "security-risk-review.md", "decision": "canonical_template"}],
+            "write_policy": "read_only",
+            "status": "present_unverified",
+        }
+
+    def _methodology_intelligence(self):
+        return {
+            "status": "present_unverified",
+            "write_policy": "read_only",
+            "methodology_domains": [
+                {"id": "security", "status": "applicable_missing"},
+                {"id": "delivery_release_operations", "status": "applicable_missing"},
+            ],
+            "recommendations": [
+                {
+                    "domain": "security",
+                    "artifact": "security-risk-review.md",
+                    "priority": "P1_high_risk",
+                    "safe_next_action": "Stage security-risk-review.md before implementation.",
+                }
+                for _ in range(METHODOLOGY_PACKET_LIMITS["methodology_recommendations"] + 3)
+            ],
+            "recommendation_groups": [
+                {
+                    "artifact": f"artifact-{index}.md",
+                    "owner_domain": "security",
+                    "consumer_domains": ["quality_testing_evals"],
+                    "priority": "P1_high_risk",
+                    "safe_next_action": "Stage security-risk-review.md before implementation.",
+                }
+                for index in range(METHODOLOGY_PACKET_LIMITS["recommendation_groups"] + 3)
+            ],
+            "questions_for_owner": [
+                f"Who owns methodology decision {index}?"
+                for index in range(METHODOLOGY_PACKET_LIMITS["questions_for_owner"] + 3)
+            ],
+            "methodology_synthesis": {
+                "safe_next_action": "Stage security-risk-review.md before implementation.",
+                "semantic_evidence_sufficiency": {
+                    "status": "present_unverified",
+                    "required_evidence": ["owner-reviewed evidence"],
+                },
+                "source_artifact_ledger": [
+                    {"artifact": "security-risk-review.md", "decision": "canonical_template"}
+                ],
             },
         }
 

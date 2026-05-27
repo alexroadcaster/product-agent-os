@@ -3,6 +3,11 @@ from __future__ import annotations
 import re
 from typing import Any
 
+from codex_runtime_runner.contracts import (
+    methodology_requires_approval,
+    methodology_requires_automation_maturity,
+    validate_methodology_packet,
+)
 from codex_runtime_runner.routes import ROUTES
 
 
@@ -23,13 +28,23 @@ def validate_route_packet(route: dict[str, Any]) -> list[str]:
         errors.append("route:unexpected_skill_for_state")
     if expected_subagent and route.get("recommended_subagent_role") not in {expected_subagent, ""}:
         errors.append("route:unexpected_subagent_for_state")
+    if "methodology_packet" in route:
+        errors.extend(validate_methodology_packet(route["methodology_packet"]))
+    if route.get("lifecycle_state") == "learning_ready" and isinstance(route.get("methodology_packet"), dict):
+        if methodology_requires_automation_maturity(route["methodology_packet"]):
+            errors.append("automation:maturity_evidence_required")
     return errors
 
 
 def validate_approval_boundary(route: dict[str, Any], approval: dict[str, Any]) -> list[str]:
+    errors: list[str] = []
     if route.get("write_policy") == "approved_write" and approval.get("approval_status") != "approved":
-        return ["approval:required_for_write"]
-    return []
+        errors.append("approval:required_for_write")
+    methodology_packet = route.get("methodology_packet")
+    if isinstance(methodology_packet, dict) and methodology_requires_approval(methodology_packet):
+        if approval.get("approval_status") != "approved":
+            errors.append("approval:required_for_methodology_action")
+    return errors
 
 
 def validate_codex_handoff(handoff: dict[str, Any]) -> list[str]:

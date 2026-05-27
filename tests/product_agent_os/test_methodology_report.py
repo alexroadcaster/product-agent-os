@@ -212,6 +212,91 @@ class MethodologyReportTest(unittest.TestCase):
                 self.assertIn(expected, report)
         self.assertNotIn("C:\\Users\\person", report)
 
+    def test_report_renders_cross_domain_synthesis_groups_and_source_ledger(self):
+        from product_agent_os.methodology_report import render_methodology_audit_report
+
+        audit = {
+            "maturity_level": {"selected": "team", "confidence": "medium", "reasons": []},
+            "complexity_profile": {"selected": "high_risk", "confidence": "medium", "reasons": []},
+            "delivery_map": {"next_action_map": ["Stage approval-record.md before external action."]},
+            "methodology_domains": [
+                {"id": "security_privacy_compliance", "status": "present_unverified"},
+                {"id": "delivery_release_operations", "status": "present_unverified"},
+            ],
+            "recommendations": [],
+            "recommendation_groups": [
+                {
+                    "artifact": "approval-record.md",
+                    "priority": "P0_blocker",
+                    "owner_domain": "security_privacy_compliance",
+                    "consumer_domains": ["delivery_release_operations"],
+                    "source_domains": ["security_privacy_compliance", "delivery_release_operations"],
+                    "gates": ["external_write_approval_present", "external_release_approval_present"],
+                    "reasons": ["External action and release need approval."],
+                    "evidence_required": ["approval_boundary", "owner", "rollback"],
+                    "safe_next_action": "Stage approval-record.md before external action.",
+                    "risk_rank": 100,
+                }
+            ],
+            "methodology_synthesis": {
+                "write_policy": "read_only",
+                "semantic_evidence_sufficiency": {
+                    "satisfied_by": [
+                        "owner_reviewed_evidence_sufficient_for_real_project_risk",
+                        "explicit_gap_accepted",
+                    ],
+                    "accepted_gap_required_fields": [
+                        "owner",
+                        "reason",
+                        "review_date",
+                        "downstream_risk",
+                        "follow_up_condition",
+                    ],
+                },
+                "source_artifact_ledger": [
+                    {
+                        "artifact": "context-map.md",
+                        "decision": "alias",
+                        "target": "architecture-overview.md",
+                        "owner_domain": "solution_architecture",
+                        "reason": "source-era alias",
+                    },
+                    {
+                        "artifact": "CHANGELOG.md",
+                        "decision": "existing_non_template",
+                        "target": "",
+                        "owner_domain": "delivery_release_operations",
+                        "reason": "project artifact",
+                    },
+                ],
+                "safe_next_action": "Stage approval-record.md before external action.",
+            },
+            "questions_for_owner": [],
+            "provisional_assumptions": [],
+            "safe_next_action": "Stage approval-record.md before external action.",
+        }
+
+        report = render_methodology_audit_report(audit)
+
+        for expected in [
+            "Cross-Domain Synthesis",
+            "grouped recommendations",
+            "approval-record.md",
+            "owner_domain: security_privacy_compliance",
+            "consumer_domains: delivery_release_operations",
+            "merged_gates: external_write_approval_present; external_release_approval_present",
+            "approval boundary",
+            "accepted-gap option",
+            "source artifact ledger",
+            "context-map.md -> architecture-overview.md",
+            "CHANGELOG.md",
+            "owner_reviewed_evidence_sufficient_for_real_project_risk",
+            "safe next action",
+            "no external actions are implied by this report",
+        ]:
+            with self.subTest(expected=expected):
+                self.assertIn(expected, report)
+
     def test_cli_prints_json_when_requested(self):
         with tempfile.TemporaryDirectory() as tmp:
             workspace = self._workspace(Path(tmp))

@@ -3574,74 +3574,70 @@ Expected: commit succeeds only when explicitly requested; otherwise leave change
 - Modify: `plugins/product-agent-os/scripts/codex_runtime_runner/routes.py`
 - Modify: `plugins/product-agent-os/scripts/codex_runtime_runner/contracts.py`
 - Modify: `plugins/product-agent-os/scripts/codex_runtime_runner/guards.py`
+- Modify: `plugins/product-agent-os/scripts/codex_runtime_runner/cli.py`
+- Modify: `plugins/product-agent-os/scripts/run_codex_runtime_runner.py`
+- Modify: `plugins/product-agent-os/scripts/validate_codex_runtime_runner.py`
+- Modify: `plugins/product-agent-os/scripts/run_fixture_eval.py`
+- Add or modify: `plugins/product-agent-os/assets/fixtures/codex-runner-*`
+- Modify: `plugins/product-agent-os/assets/templates/control-plane/PLAN.md`
+- Modify: `plugins/product-agent-os/assets/templates/control-plane/TEST.md`
+- Modify: `plugins/product-agent-os/assets/templates/control-plane/EVALS.md`
+- Modify: `plugins/product-agent-os/assets/templates/control-plane/RUNLOG.md`
+- Modify: `plugins/product-agent-os/assets/templates/evals/project-readiness.json`
+- Modify: `plugins/product-agent-os/assets/templates/evals/behavioral-workflows.json`
+- Modify: `plugins/product-agent-os/assets/templates/artifact-templates/agent-task-packet.md`
 - Modify: `tests/product_agent_os/test_codex_runtime_runner_contracts.py`
 - Modify: `tests/product_agent_os/test_codex_runtime_runner_state_routes.py`
+- Modify: `tests/product_agent_os/test_codex_runtime_runner_cli.py`
 - Modify: `tests/product_agent_os/test_codex_runtime_runner_fixture_eval.py`
+- Modify when templates/evals/docs change: `tests/product_agent_os/test_infrastructure_templates.py`, `tests/product_agent_os/test_behavioral_workflow_evals.py`, `tests/product_agent_os/test_product_agent_os_docs.py`
+- Modify when user-facing runtime behavior changes: `plugins/product-agent-os/README.md`, `docs/product-agent-os/technical.md`, `docs/product-agent-os/architecture.md`
+- Modify when evidence changes: `docs/sources/product-agent-os-track-9-backlog.md`, `RUNLOG.md`
 
-- [ ] **Step 1: Add RED runtime route tests**
+| ID | Task | Files | Acceptance | Verification |
+| --- | --- | --- | --- | --- |
+| `T9-R-M0` | Define compact runtime methodology packet schema | `contracts.py`, `test_codex_runtime_runner_contracts.py` | Route packets can carry a bounded additive `methodology_packet` without changing runner schema version or existing top-level result field order. Required compact keys: `methodology_domains`, `methodology_recommendations`, `recommendation_groups`, `questions_for_owner`, `safe_next_action`, `semantic_evidence_sufficiency`, `source_artifact_ledger`, `write_policy`, `status`. | RED contract tests fail before schema support and pass after implementation. |
+| `T9-R-M1` | Add RED propagation tests from discovery/audit to runtime route | `test_codex_runtime_runner_state_routes.py`, `test_codex_runtime_runner_fixture_eval.py` | Tests prove `run_contract()`/`plan_route()` do not drop `methodology_intelligence`, `recommendation_groups`, owner questions or risk-aware `safe_next_action` produced by Track 9 audit. | `python -m unittest tests.product_agent_os.test_codex_runtime_runner_contracts tests.product_agent_os.test_codex_runtime_runner_state_routes -v` fails RED before route support. |
+| `T9-R-M2` | Add methodology packet validation and size/type guards | `contracts.py`, `guards.py`, `test_codex_runtime_runner_contracts.py` | Invalid packet types, missing required compact keys, oversized recommendation/group/question lists and non-read-only methodology packet write policy produce deterministic validation errors without traceback. | Contract tests assert valid and malformed packets. |
+| `T9-R-M3` | Attach methodology packet to runtime routes | `routes.py`, `cli.py`, `test_codex_runtime_runner_state_routes.py` | `plan_route()` accepts optional methodology intelligence, emits `methodology_packet`, preserves `usage_mode`, `behavioral_route_inputs`, existing lifecycle statuses and current `route_ready`/`needs_context`/`needs_approval` behavior. No model calls, network calls or standalone runtime behavior are introduced. | Focused state-route tests pass. |
+| `T9-R-M4` | Define finish options model | `routes.py`, `contracts.py`, `test_codex_runtime_runner_state_routes.py` | Route packets include ordered `finish_options`: `read_only_audit`, `ask_owner`, `stage_proposal`, `request_approval`, `run_verification`, `stop_blocked`. Options are derived from methodology packet risk, approval boundary and evidence status, not from filename-only detection. | Tests assert finish options for read-only, staged-only, approved-write and blocked paths. |
+| `T9-R-M5` | Separate recommendation from staged artifact generation | `guards.py`, `routes.py`, `test_codex_runtime_runner_state_routes.py` | A methodology recommendation can suggest an artifact, but runtime route does not generate staged artifacts unless approval/stage target evidence exists. Missing approval yields `needs_approval` or a `request_approval` finish option, not a write. | Guard tests assert no staged generation from recommendation-only packets. |
+| `T9-R-M6` | Block completion/readiness claims from detection-only methodology signals | `guards.py`, `contracts.py`, `test_codex_runtime_runner_contracts.py` | `completed` status and finish claims require current verification evidence. `present_unverified` methodology detection, recommendation text, or source artifact presence cannot satisfy completion evidence. | Tests assert `verification_evidence:required_for_completed` plus methodology-specific detection-only errors. |
+| `T9-R-M7` | Block external writes and irreversible actions from recommendations | `guards.py`, `test_codex_runtime_runner_state_routes.py`, fixture eval | Recommendations mentioning publish, deploy, tag, release creation, PR/push, package registry mutation, marketplace/store submission, security scan, production data access, DB migration or external-system mutation produce approval-bound finish options and no external action. | Guard and fixture tests assert `approval_required`/`needs_approval` and no external mutation. |
+| `T9-R-M8` | Block automation promotion without maturity evidence | `guards.py`, `test_codex_runtime_runner_state_routes.py`, fixture eval | Automation-related methodology recommendations require manual stability and value/maturity evidence before `automation-promoter` or automation finish options can advance. Active/scheduled automation remains blocked without explicit approval. | Runtime guard tests plus existing active automation fixture remain green. |
+| `T9-R-M9` | Enforce redaction for methodology route payloads | `cli.py`, `contracts.py`, `test_codex_runtime_runner_contracts.py`, fixture eval | `methodology_packet`, owner questions, source artifact ledger and `safe_next_action` pass the existing redaction/no-secrets policy before JSON output. Absolute local paths, secret-like literals, private chat/customer markers and raw PII/payment markers are redacted or blocked. | Redaction tests and `codex-runner-secret-redaction` fixture pass. |
+| `T9-R-M10` | Add runtime methodology fixtures | `plugins/product-agent-os/assets/fixtures/codex-runner-*`, `test_codex_runtime_runner_fixture_eval.py` | Add synthetic fixtures for: methodology synthesis ready route, staged artifact approval required, detection-only completion blocked, external-write recommendation blocked, automation maturity missing, malformed methodology packet. Fixtures contain no secrets/private data. | Fixture completeness and runner fixture tests pass. |
+| `T9-R-M11` | Add named fixture eval checks for runtime methodology behavior | `run_fixture_eval.py`, `test_codex_runtime_runner_fixture_eval.py` | Fixture eval exposes stable checks: `runtime_methodology_packet_present`, `runtime_finish_options_approval_bound`, `runtime_detection_not_completion`, `runtime_external_write_blocked`, `runtime_automation_maturity_required`, `runtime_methodology_redaction_enforced`. | `python plugins\product-agent-os\scripts\run_fixture_eval.py` exits `0` and new checks are true. |
+| `T9-R-M12` | Add malformed packet fallback behavior | `contracts.py`, `guards.py`, `cli.py`, tests | Malformed methodology packets return `blocked` or `failed` with redacted errors; runner does not emit traceback and does not downgrade validation errors to warnings when writes or completion claims are involved. | Contract/CLI-style tests assert stable error codes and redacted output. |
+| `T9-R-M13` | Run full runtime verification | runtime tests, fixture eval, transcript eval, compatibility, docs check | Focused runtime suite, fixture eval, full unittest, transcript eval, Codex compatibility, docs check and diff hygiene pass before any completion claim. Strict MkDocs is required only if nav, Mermaid, Markdown extensions or MkDocs config change. | Commands listed in Task 21 verification policy exit `0`. |
+| `T9-R-M14` | Sync Track 9 evidence and next action | `docs/sources/product-agent-os-track-9-backlog.md`, `RUNLOG.md`, optionally root control-plane files if current state changes | Backlog/RUNLOG record RED/GREEN evidence, fixture count, runtime methodology checks, residual risks and next action `Task 22`. Source registry changes only if new external source-backed claims are added. | `python tools\check_docs.py` and `git diff --check` pass after docs sync. |
+| `T9-R-M15` | Keep commit/push optional and explicit-only | plan, final handoff | Commit is not part of required implementation in this repository unless explicitly requested by the user. If requested, commit only after verification and with staged scope limited to Task 21 files. | No `git add`, commit, push or PR without explicit user request. |
+| `T9-R-M16` | Add CLI and validator contract tests for methodology packet JSON output | `run_codex_runtime_runner.py`, `validate_codex_runtime_runner.py`, `test_codex_runtime_runner_cli.py` | CLI stdout and `--output` result include compact methodology packet and finish options after redaction; validator accepts additive schema v1 result and rejects malformed packets with stable errors. | CLI tests fail RED before support and pass after implementation. |
+| `T9-R-M17` | Update generated control-plane templates for runtime methodology packet | control-plane templates, `test_infrastructure_templates.py` | Generated `PLAN.md`, `TEST.md`, `EVALS.md` and `RUNLOG.md` include runtime methodology packet, finish options, owner questions, safe next action, evidence gaps, approval boundary and detection-only warning. | Infrastructure template tests assert generated control-plane terms. |
+| `T9-R-M18` | Add readiness and behavioral eval contracts for runtime packet safety | `project-readiness.json`, `behavioral-workflows.json`, `test_behavioral_workflow_evals.py`, `test_infrastructure_templates.py` | Readiness and behavioral evals encode `runtime_methodology_packet`, `finish_options`, `methodology_detection_not_completion`, approval boundary and no gate dump, scaffold or external action. | Behavioral/infrastructure tests pass and fixture eval includes stable checks when applicable. |
+| `T9-R-M19` | Update agent task packet handoff compatibility | `agent-task-packet.md`, `test_infrastructure_templates.py` | Handoff packet can carry compact methodology packet, owner and consumer domains, finish options, safe next action, approval requirements and stop conditions without raw conversation history. | Template tests assert handoff fields and fresh-context contract remains intact. |
+| `T9-R-M20` | Add backward compatibility tests for runner result schema v1 | `contracts.py`, `validate_codex_runtime_runner.py`, `test_codex_runtime_runner_contracts.py`, `test_codex_runtime_runner_cli.py` | Old valid result JSON without methodology packet remains valid; new additive route packet fields remain schema v1; malformed additive fields fail with stable errors. | Contract and CLI validator tests pass. |
+| `T9-R-M21` | Define lifecycle-status to finish-options mapping | `routes.py`, `contracts.py`, runtime tests | `route_ready`, `needs_context`, `needs_approval`, `blocked`, `completed` and `failed` each map to bounded finish options and next action; `blocked` and `needs_context` do not offer write/stage actions. | State-route tests assert status-specific options. |
+| `T9-R-M22` | Add runtime bridge checks for existing cross-domain fixtures | `run_fixture_eval.py`, codex-runner/cross-domain fixtures, `test_codex_runtime_runner_fixture_eval.py` | Runtime runner is evaluated against existing cross-domain fixtures such as `cross-domain-ai-rag-data-security`, `package-release-security-handoff`, `source-artifact-alias-mapping` or mirrored runner fixtures, proving synthesis survives runtime routing. | Fixture eval named checks pass for cross-domain runtime bridge. |
+| `T9-R-M23` | Add compact first-response contract fields | `routes.py`, `cli.py`, behavioral evals, tests | First response contract exposes `owner_questions`, `safe_next_action`, `evidence_gaps`, `approval_boundary`, `finish_options`, and does not dump every methodology gate. | Route and behavioral tests assert compact first response. |
+| `T9-R-M24` | Add structured high-risk action taxonomy for approval guards | `guards.py`, `contracts.py`, tests | Guards classify high-risk actions (`publish`, `deploy`, `tag`, `release_create`, `pr_or_push`, `package_registry_mutation`, `marketplace_submission`, `security_scan`, `production_data_access`, `db_migration`, `automation_activation`, `external_system_mutation`) instead of relying only on free-text matching. | Guard tests assert taxonomy decisions and false-positive safe text. |
+| `T9-R-M25` | Add ownership and parallelism routing guard | `routes.py`, `guards.py`, `agent-task-packet.md`, tests | Multiple owner domains or overlapping artifact/file ownership route to owner review or `agent-team-designer` before builder/subagent work; parallel work requires fresh context handoff and explicit ownership. | Route/guard/template tests assert owner review and no unsafe parallel route. |
 
-Add tests that assert runtime route packets can include:
-
-- `methodology_intelligence`;
-- `methodology_recommendations`;
-- `questions_for_owner`;
-- `safe_next_action`;
-- `write_policy=read_only` before approval;
-- `needs_approval` before staged artifact generation.
-
-- [ ] **Step 2: Run RED runtime tests**
-
-Run:
-
-```powershell
-python -m unittest tests.product_agent_os.test_codex_runtime_runner_contracts tests.product_agent_os.test_codex_runtime_runner_state_routes -v
-```
-
-Expected: fail because runtime contracts do not expose Track 9 methodology fields.
-
-- [ ] **Step 3: Extend runtime contracts**
-
-Modify contracts so `route_ready` can carry methodology intelligence while preserving current statuses:
-
-- `route_ready`;
-- `needs_context`;
-- `needs_approval`;
-- `blocked`;
-- `completed`;
-- `failed`.
-
-Do not introduce model calls or standalone runtime behavior.
-
-- [ ] **Step 4: Extend guards**
-
-Guards must block:
-
-- staged artifact generation without approval;
-- completion claims based on methodology detection;
-- automation promotion without maturity evidence;
-- external writes from methodology recommendations.
-
-- [ ] **Step 5: Run runtime verification**
-
-Run:
+Task 21 verification policy:
 
 ```powershell
 python -m unittest tests.product_agent_os.test_codex_runtime_runner_contracts tests.product_agent_os.test_codex_runtime_runner_state_routes tests.product_agent_os.test_codex_runtime_runner_fixture_eval -v
+python -m unittest tests.product_agent_os.test_codex_runtime_runner_cli -v
 python plugins\product-agent-os\scripts\run_fixture_eval.py
+python -m unittest tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_behavioral_workflow_evals tests.product_agent_os.test_product_agent_os_docs -v
+python -m unittest discover -s tests -p "test_*.py" -v
+python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json
+python plugins\product-agent-os\scripts\validate_codex_compatibility.py
+python tools\check_docs.py
+git diff --check
 ```
 
-Expected: all commands exit `0`.
-
-- [ ] **Step 6: Commit runtime integration**
-
-Run:
-
-```powershell
-git add plugins\product-agent-os\scripts\codex_runtime_runner tests\product_agent_os
-git commit -m "feat: expose methodology intelligence in runtime route"
-```
-
-Expected: commit succeeds.
+Expected: all commands exit `0`. Strict MkDocs is required only if navigation, Mermaid diagrams, Markdown extensions, MkDocs configuration or Product-Agent OS docs navigation change.
 
 ---
 

@@ -127,3 +127,6 @@ For fresh-context handoff, check that any subagent or parallel worker has comple
 ## Final Response Contract
 
 Return status, lifecycle state, `agent_team_design_packet`, files proposed, ownership overlaps, verification evidence, unsupported claims, approval requirements, risks, and the next recommended skill.
+## Track 9 Cross-Domain Synthesis
+
+Consume `methodology_synthesis` and `recommendation_groups` as grouped recommendations; do not dump every methodology gate. Preserve owner domains, consumer domains, semantic evidence sufficiency, source artifact ledger, alias/deferred artifact ledger and risk-aware safe next action. Do not scaffold before approval, and remember that detection is not verification.

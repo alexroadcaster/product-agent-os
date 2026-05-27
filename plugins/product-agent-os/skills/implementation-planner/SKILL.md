@@ -305,3 +305,6 @@ Check that each slice maps to acceptance criteria, each gate names evidence requ
 ## Final Response Contract
 
 Return status, lifecycle state, `implementation_plan_packet`, `plan_quality_check`, files proposed, commands proposed or run, verification evidence, unsupported claims, approval requirements, risks, and the next recommended skill.
+## Track 9 Cross-Domain Synthesis
+
+Consume `methodology_synthesis` and `recommendation_groups` as grouped recommendations; do not dump every methodology gate. Preserve owner domains, consumer domains, semantic evidence sufficiency, source artifact ledger, alias/deferred artifact ledger and risk-aware safe next action. Do not scaffold before approval, and remember that detection is not verification.

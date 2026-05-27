@@ -1554,6 +1554,40 @@ class LifecycleSkillsTest(unittest.TestCase):
                 for expected in shared_terms:
                     self.assertIn(expected, text)
 
+    def test_lifecycle_skills_consume_cross_domain_synthesis_packets(self):
+        shared_terms = [
+            "methodology_synthesis",
+            "recommendation_groups",
+            "grouped recommendations",
+            "owner domains",
+            "consumer domains",
+            "semantic evidence sufficiency",
+            "source artifact ledger",
+            "alias/deferred artifact ledger",
+            "risk-aware safe next action",
+            "do not dump every methodology gate",
+            "do not scaffold before approval",
+            "detection is not verification",
+        ]
+
+        for name in [
+            "workspace-discovery-auditor",
+            "project-lifecycle-orchestrator",
+            "requirements-author",
+            "implementation-planner",
+            "test-eval-designer",
+            "risk-reviewer",
+            "docs-maintainer",
+            "pr-release-operator",
+            "agent-team-designer",
+            "learning-loop-maintainer",
+            "automation-promoter",
+        ]:
+            text = self._skill_text(name).lower()
+            with self.subTest(name=name):
+                for expected in shared_terms:
+                    self.assertIn(expected, text)
+
     def test_implementation_planner_enforces_no_placeholder_plan_quality(self):
         planner = self._skill_text("implementation-planner").lower()
 

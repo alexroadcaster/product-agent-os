@@ -1,0 +1,11 @@
+{
+  "name": "synthetic-internal-cli",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "synthetic-cli": "src/cli.js"
+  },
+  "scripts": {
+    "test": "node src/cli.js --check"
+  }
+}

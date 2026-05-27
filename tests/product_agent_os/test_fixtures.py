@@ -37,6 +37,13 @@ class FixtureCompletenessTest(unittest.TestCase):
             "codex-runner-approval-required",
             "codex-runner-automation-blocked",
             "codex-runner-secret-redaction",
+            "codex-runner-methodology-ready",
+            "codex-runner-methodology-approval-required",
+            "codex-runner-detection-completion-blocked",
+            "codex-runner-external-write-blocked",
+            "codex-runner-automation-maturity-missing",
+            "codex-runner-methodology-redaction",
+            "codex-runner-malformed-methodology-packet",
             "legacy-undocumented-repo",
             "api-migration-repo",
             "rag-quality-regression",
@@ -80,6 +87,13 @@ class FixtureCompletenessTest(unittest.TestCase):
             "security-docs-only-mention",
             "security-compliance-claim",
             "security-ci-sbom",
+            "cross-domain-small-pii-app",
+            "cross-domain-complex-monorepo-no-prod",
+            "internal-cli-no-heavy-methodology",
+            "cross-domain-ai-rag-data-security",
+            "package-release-security-handoff",
+            "source-artifact-alias-mapping",
+            "owner-question-dedupe",
         ]:
             with self.subTest(name=name):
                 self.assertTrue((FIXTURES / name).is_dir())
@@ -173,6 +187,13 @@ class FixtureCompletenessTest(unittest.TestCase):
             "codex-runner-approval-required",
             "codex-runner-automation-blocked",
             "codex-runner-secret-redaction",
+            "codex-runner-methodology-ready",
+            "codex-runner-methodology-approval-required",
+            "codex-runner-detection-completion-blocked",
+            "codex-runner-external-write-blocked",
+            "codex-runner-automation-maturity-missing",
+            "codex-runner-methodology-redaction",
+            "codex-runner-malformed-methodology-packet",
         ]:
             with self.subTest(name=name):
                 text = "\n".join(
@@ -198,6 +219,13 @@ class FixtureCompletenessTest(unittest.TestCase):
             "database-destructive-migration",
             "database-production-access-approval",
             "database-lineage-rag-overlap",
+            "cross-domain-small-pii-app",
+            "cross-domain-complex-monorepo-no-prod",
+            "internal-cli-no-heavy-methodology",
+            "cross-domain-ai-rag-data-security",
+            "package-release-security-handoff",
+            "source-artifact-alias-mapping",
+            "owner-question-dedupe",
         ]:
             with self.subTest(name=name):
                 text = "\n".join(

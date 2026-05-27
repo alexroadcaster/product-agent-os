@@ -110,6 +110,10 @@ class FixtureEvalRunnerTest(unittest.TestCase):
         self.assertTrue(results["python-app"]["expected_checks"]["standards_trigger_contract_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["methodology_applicability_contract_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["semantic_evidence_sufficiency_contract_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["cross_domain_synthesis_contract_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["safe_next_action_risk_ordered"])
+        self.assertTrue(results["python-app"]["expected_checks"]["source_artifact_mapping_contract_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["cross_domain_false_positive_guards_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["business_product_contract_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["requirements_domain_contract_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["solution_architecture_contract_present"])
@@ -444,6 +448,26 @@ class FixtureEvalRunnerTest(unittest.TestCase):
             "hosted-docs-approval": "hosted_docs_and_db_introspection_require_approval",
             "frontend-ui-app": "frontend_contract_present",
             "backend-service-app": "backend_methodology_detected_for_service",
+        }
+        for fixture, check_name in expected_checks.items():
+            with self.subTest(fixture=fixture):
+                self.assertIn(fixture, results)
+                self.assertTrue(results[fixture]["expected_checks"][check_name])
+                self.assertTrue(results[fixture]["ok"])
+
+    def test_fixture_eval_checks_cross_domain_synthesis_fixtures(self):
+        runner = load_runner()
+
+        results = {item["fixture"]: item for item in evaluate_all_cached(runner)}
+
+        expected_checks = {
+            "cross-domain-small-pii-app": "small_pii_security_without_complexity",
+            "cross-domain-complex-monorepo-no-prod": "complex_monorepo_without_production_release_blockers",
+            "internal-cli-no-heavy-methodology": "internal_cli_no_ui_api_release_hard_blockers",
+            "cross-domain-ai-rag-data-security": "ai_rag_data_security_overlap_present_unverified",
+            "package-release-security-handoff": "package_release_security_handoff_prioritized",
+            "source-artifact-alias-mapping": "source_artifact_alias_deferred_mapping_visible",
+            "owner-question-dedupe": "owner_question_dedupe_visible",
         }
         for fixture, check_name in expected_checks.items():
             with self.subTest(fixture=fixture):

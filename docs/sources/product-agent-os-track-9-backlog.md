@@ -573,7 +573,7 @@ Batch `M30..M36` completed scope:
 
 ### `T9-D11` Security, Privacy & Compliance Integration
 
-Status: `in_progress`
+Status: `done`
 
 Source audited: `docs/methodologies/security-privacy-compliance.md`
 
@@ -740,6 +740,8 @@ Baseline duplicate eval fields before synthesis:
 
 Current fixture symptoms to resolve during Task 20:
 
+- backend FSD-like directories can trigger frontend recommendations unless UI/runtime evidence is checked before frontend blockers.
+- security/payment can be ordered behind generic quality strategy when `safe_next_action` only follows first sorted recommendation.
 - RAG ingestion can miss AI/RAG routing when no explicit `rag/` directory exists and the evidence is expressed through database ingestion or lineage terms.
 
 Symptoms resolved by batch `T9-S-M5..M9`:
@@ -764,12 +766,20 @@ Batch `T9-S-M5..M9` implemented:
 - Added shared `semantic_evidence_sufficiency` generated control-plane, readiness and behavioral eval contracts, including owner-reviewed accepted-gap fields.
 - Hardened false-positive routing for backend FSD-like TypeScript directories, CI-only workflows, docs-only release notes and tooling-only release artifacts.
 
+Batch `T9-S-M10..M14` implemented:
+
+- Added mixed-risk cross-domain fixtures for small PII app, complex monorepo without production users, internal CLI without UI/API/release hard blockers, AI/RAG plus data/security overlap, package release with security handoff, source artifact alias/deferred mapping and owner-question dedupe.
+- Fixture eval exposes `cross_domain_synthesis_contract_present`, `semantic_evidence_sufficiency_contract_present`, `safe_next_action_risk_ordered`, `source_artifact_mapping_contract_present` and `cross_domain_false_positive_guards_present`.
+- Methodology reports render a Cross-Domain Synthesis section with grouped recommendations, owner domains, consumer domains, merged gates, source artifact alias/deferred decisions, accepted-gap option, approval boundary, residual risk and safe next action.
+- Lifecycle skills consume synthesized packets without dumping every methodology gate, scaffolding before approval or treating detection as verification.
+- Product docs explain semantic evidence sufficiency review ownership, grouped recommendations, false-positive guards, source artifact alias/deferred decisions and approval-bound behavior.
+
 ## Cross-Domain Synthesis Backlog
 
 | Status | Item | Reason |
 | --- | --- | --- |
-| `in_progress` | Normalize repeated methodology gates across domains. | Avoid duplicate recommendations for owner questions, evidence, metrics, source status and approval boundaries. |
-| `in_progress` | Add cross-domain false-positive fixtures. | Ensure one methodology signal does not force unrelated heavy process on simple work. Batch `T9-S-M5..M9` added focused temp-workspace tests; packaged fixture expansion remains open. |
+| `done` | Normalize repeated methodology gates across domains. | `methodology_synthesis` now groups recommendations by owner artifact, preserves owner/consumer domains, dedupes owner questions and carries semantic evidence sufficiency into the shared packet. |
+| `done` | Add cross-domain false-positive fixtures. | Batch `T9-S-M10..M14` added packaged mixed-risk fixtures for small PII, complex non-production monorepo, internal CLI, AI/RAG plus data/security, package release plus security handoff, source artifact alias/deferred mapping and owner-question dedupe. |
 | `planned` | Reuse decision horizon across requirements, architecture, release and operations domains. | Product formalism should scale by `discovery`, `MVP`, `beta`, `production` and `scale` rather than forcing production ceremony on early discovery. |
 | `planned` | Normalize outcome metric levels across product, quality, release and workflow automation domains. | Separate `business_outcome`, `product_outcome` and `feature_traction_metric` to reduce proxy metric risk. |
 | `planned` | Standardize no-production-telemetry fallback language. | Product, release and operations domains need the same rule: lack of telemetry is a gap, not success evidence. |
@@ -794,8 +804,17 @@ Batch `T9-S-M5..M9` implemented:
 | `planned` | Reuse Codex runtime routing across AI, security and delivery domains. | T9-D5 defines Codex App/CLI/IDE/codex exec/GitHub Action/MCP/Agents SDK/automation boundaries before later domains add model, security and release-specific depth. |
 | `planned` | Normalize capability activation approvals across MCP, hooks, plugins, automations, CI and external systems. | T9-D5 keeps capability activation staged-first and approval-bound; Security and Delivery slices will own least-privilege and release-risk details. |
 | `planned` | Revisit deferred Codex workflow artifacts after AI and Operations slices. | Standalone memory, agent readiness, agent eval case, skill failure log and hook activation records may deserve separate templates only after later slices prove separate ownership. |
-| `in_progress` | Synthesize final `methodology-applicability.json` contract. | Batch `T9-S-M5..M9` added a `methodology_synthesis` applicability packet; final route/staged-artifact packet shape remains open. |
-| `planned` | Update operator docs after all domain slices. | Keep the public docs aligned with the implemented domain catalog. |
+| `done` | Synthesize final `methodology-applicability.json` contract. | Task 20 finalizes the additive discovery `methodology_synthesis` applicability packet and report/lifecycle consumption contract; Task 21 owns runtime runner consumption and finish-option routing. |
+| `done` | Update operator docs after all domain slices. | Product-Agent OS methodology, behavioral eval and development standards docs now describe grouped recommendations, false-positive protection, source artifact compatibility, semantic evidence sufficiency and approval-bound behavior. |
+
+Known accepted overlaps after `T9-S-M10..M14`:
+
+- `security-risk-review.md` is owned by Security/Privacy/Compliance and consumed by architecture, backend, API, database, AI/RAG and delivery handoffs.
+- `approval-record.md` is owned by Security/Privacy/Compliance and consumed by Codex workflow and Delivery/Release/Operations.
+- `api-contract-review.md` is owned by API & Integrations and consumed by architecture, quality, frontend, backend and database work.
+- `test-eval-matrix.md` is owned by Quality/Testing/Evals and consumed by frontend, backend and AI/RAG evidence.
+- `release-readiness.md` is owned by Delivery/Release/Operations and consumed by database, security and product release decisions.
+- `semantic_evidence_sufficiency` is owned by Quality/Testing/Evals and consumed by high-risk, production, release, security-sensitive, AI behavior and public-contract slices.
 
 ## Verification Evidence
 
@@ -828,6 +847,20 @@ Domain slices must also run the focused catalog/audit tests, fixture evals and a
 - Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
 - Docs check: `python tools\check_docs.py` passed.
 - Diff hygiene: `git diff --check` exited `0`.
+
+`T9-S` Task 20 batch `M10..M14` evidence:
+
+- RED checks failed as expected before implementation on missing cross-domain fixture checks, methodology report synthesis rendering, lifecycle skill packet wording, behavioral eval case coverage and docs/backlog sync.
+- Focused GREEN check: `python -m unittest tests.product_agent_os.test_fixture_eval_runner.FixtureEvalRunnerTest.test_fixture_eval_checks_cross_domain_synthesis_fixtures tests.product_agent_os.test_fixture_eval_runner.FixtureEvalRunnerTest.test_fixture_eval_checks_expected_renderer_behavior_by_fixture tests.product_agent_os.test_fixtures.FixtureCompletenessTest.test_required_fixture_projects_exist tests.product_agent_os.test_fixtures.FixtureCompletenessTest.test_false_positive_scenario_fixtures_are_synthetic_and_secret_free tests.product_agent_os.test_methodology_report.MethodologyReportTest.test_report_renders_cross_domain_synthesis_groups_and_source_ledger tests.product_agent_os.test_lifecycle_skills.LifecycleSkillsTest.test_lifecycle_skills_consume_cross_domain_synthesis_packets tests.product_agent_os.test_behavioral_workflow_evals.BehavioralWorkflowEvalTest.test_behavioral_eval_template_validates_expected_contract tests.product_agent_os.test_behavioral_workflow_evals.BehavioralWorkflowEvalTest.test_behavioral_eval_cases_encode_forbidden_shortcuts tests.product_agent_os.test_product_agent_os_docs.ProductAgentOsDocsTest.test_track9_cross_domain_synthesis_docs_and_backlog_are_synced -v` ran 9 tests with `OK`.
+- Focused synthesis suite: `python -m unittest tests.product_agent_os.test_methodology_synthesis tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_methodology_report tests.product_agent_os.test_discovery tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_behavioral_workflow_evals tests.product_agent_os.test_fixture_eval_runner tests.product_agent_os.test_fixtures tests.product_agent_os.test_product_agent_os_docs -v` ran 316 tests with `OK`.
+- Fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0` with 73 fixtures, 0 failures, renderer file count 186 and `cross_domain_synthesis_contract_present: true`.
+- Full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 496 tests with `OK`.
+- Transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 5 sessions and 0 failures.
+- Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
+- Product docs check: `python -m unittest tests.product_agent_os.test_product_agent_os_docs -v` ran 11 tests with `OK`.
+- Docs check: `python tools\check_docs.py` passed.
+- Diff hygiene: `git diff --check` exited `0`.
+- Commit, push and PR actions remain deferred until explicitly requested.
 
 `T9-D1` evidence:
 

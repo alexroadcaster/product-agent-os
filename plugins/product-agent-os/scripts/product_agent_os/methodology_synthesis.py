@@ -88,14 +88,6 @@ def classify_source_artifact(
             "owner_domain": record["owner_domain"],
             "reason": record.get("reason", "source-era name maps to canonical packaged artifact"),
         }
-    if artifact in _canonical_artifacts(active_catalog):
-        return {
-            "artifact": artifact,
-            "decision": "canonical_template",
-            "target": artifact,
-            "owner_domain": _artifact_owner(artifact, synthesis),
-            "reason": "artifact is already represented by the catalog or packaged templates",
-        }
     decisions = synthesis["source_artifact_decisions"]
     if artifact in decisions:
         record = decisions[artifact]
@@ -105,6 +97,14 @@ def classify_source_artifact(
             "target": record.get("target", ""),
             "owner_domain": record["owner_domain"],
             "reason": record["reason"],
+        }
+    if artifact in _canonical_artifacts(active_catalog):
+        return {
+            "artifact": artifact,
+            "decision": "canonical_template",
+            "target": artifact,
+            "owner_domain": _artifact_owner(artifact, synthesis),
+            "reason": "artifact is already represented by the catalog or packaged templates",
         }
     return {
         "artifact": artifact,

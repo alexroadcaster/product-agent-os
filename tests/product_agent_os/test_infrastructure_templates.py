@@ -3693,6 +3693,7 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 "evidence-before-completion",
                 "quality-current-evidence-before-completion",
                 "cross-domain-semantic-evidence-sufficiency",
+                "cross-domain-synthesis-mixed-surface-routing",
                 "frontend-evidence-before-completion",
                 "backend-evidence-before-completion",
                 "llm-ai-rag-evidence-before-completion",

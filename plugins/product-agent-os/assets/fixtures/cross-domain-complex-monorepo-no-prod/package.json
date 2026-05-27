@@ -1,0 +1,7 @@
+{
+  "name": "synthetic-cross-domain-monorepo",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ]
+}

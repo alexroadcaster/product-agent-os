@@ -916,6 +916,37 @@
       "residual_risk": "Cross-domain grouping can preserve all artifacts while still overstating readiness unless evidence sufficiency is owner-reviewed."
     },
     {
+      "name": "cross-domain-synthesis-mixed-surface-routing",
+      "input": {
+        "prompt": "Group mixed-risk methodology recommendations without forcing heavy process on simple surfaces.",
+        "workspace_fixture": "cross-domain-ai-rag-data-security",
+        "control_plane_state": "quality_gate"
+      },
+      "expected": {
+        "route": "methodology_synthesis",
+        "minimum_artifacts": ["methodology_synthesis", "recommendation_groups", "RUNLOG.md"],
+        "required_fields": [
+          "recommendation_groups",
+          "owner domains",
+          "consumer domains",
+          "source_artifact_ledger",
+          "semantic evidence sufficiency",
+          "safe_next_action_risk_ordered",
+          "cross_domain_false_positive_guards_present",
+          "source_artifact_mapping_contract_present",
+          "present_unverified",
+          "approval_required"
+        ]
+      },
+      "forbidden": [
+        "dumping every methodology gate",
+        "scaffolding before approval",
+        "detection becomes verification",
+        "generic quality strategy hides security approval"
+      ],
+      "residual_risk": "Mixed-risk synthesis is structural evidence only; owner review is still required for real-project sufficiency."
+    },
+    {
       "name": "no-placeholder-plan",
       "input": {
         "prompt": "Create the implementation plan.",

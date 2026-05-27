@@ -1,0 +1,6 @@
+{
+  "eventType": "COMPLETE",
+  "eventTime": "2026-01-01T00:00:00Z",
+  "job": {"namespace": "synthetic", "name": "rag_lineage"},
+  "run": {"runId": "synthetic-run"}
+}

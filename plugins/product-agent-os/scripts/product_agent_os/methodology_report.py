@@ -44,6 +44,10 @@ def render_methodology_audit_report(audit: dict[str, Any]) -> str:
         "",
         *_recommendation_lines(audit.get("recommendations", [])),
         "",
+        "## Cross-Domain Synthesis",
+        "",
+        *_synthesis_lines(audit),
+        "",
         "## Questions For Owner",
         "",
         *_list_lines(audit.get("questions_for_owner", [])),
@@ -116,6 +120,61 @@ def _recommendation_lines(recommendations: Any) -> list[str]:
         lines.append(f"  - residual_risk: {item.get('residual_risk', 'unknown')}")
         lines.append(f"  - safe_next_action: {item.get('safe_next_action', 'unknown')}")
     return lines or ["- none"]
+
+
+def _synthesis_lines(audit: dict[str, Any]) -> list[str]:
+    packet = audit.get("methodology_synthesis", {})
+    if not isinstance(packet, dict):
+        return ["- none"]
+    groups = audit.get("recommendation_groups", packet.get("recommendation_groups", []))
+    lines: list[str] = [
+        "- grouped recommendations:",
+    ]
+    if isinstance(groups, list) and groups:
+        for group in groups:
+            if not isinstance(group, dict):
+                continue
+            lines.append(f"  - artifact: {group.get('artifact', 'unknown')}")
+            lines.append(f"    - priority: {group.get('priority', 'not_applicable')}")
+            lines.append(f"    - owner_domain: {group.get('owner_domain', 'unknown')}")
+            lines.append(f"    - consumer_domains: {_format_value(group.get('consumer_domains', []))}")
+            lines.append(f"    - source_domains: {_format_value(group.get('source_domains', []))}")
+            lines.append(f"    - merged_gates: {_format_value(group.get('gates', []))}")
+            lines.append(f"    - evidence_required: {_format_value(group.get('evidence_required', []))}")
+            lines.append("    - approval boundary: approval_required when this group implies external mutation, production data, release, security, payment or irreversible action")
+            lines.append("    - accepted-gap option: explicit_gap_accepted with owner, reason, review_date, downstream_risk and follow_up_condition")
+            lines.append("    - residual risk: grouped evidence does not prove semantic sufficiency until owner-reviewed")
+            lines.append(f"    - safe next action: {group.get('safe_next_action', 'unknown')}")
+    else:
+        lines.append("  - none")
+
+    semantic = packet.get("semantic_evidence_sufficiency", {})
+    if isinstance(semantic, dict):
+        lines.append("- semantic evidence sufficiency:")
+        lines.append(f"  - satisfied_by: {_format_value(semantic.get('satisfied_by', []))}")
+        lines.append(
+            "  - accepted_gap_required_fields: "
+            + _format_value(semantic.get("accepted_gap_required_fields", []))
+        )
+
+    ledger = packet.get("source_artifact_ledger", [])
+    lines.append("- source artifact ledger:")
+    if isinstance(ledger, list) and ledger:
+        for item in ledger:
+            if not isinstance(item, dict):
+                continue
+            artifact = item.get("artifact", "unknown")
+            target = item.get("target", "")
+            decision = item.get("decision", "unknown")
+            owner = item.get("owner_domain", "unknown")
+            if target:
+                lines.append(f"  - {artifact} -> {target} ({decision}, owner: {owner})")
+            else:
+                lines.append(f"  - {artifact} ({decision}, owner: {owner})")
+    else:
+        lines.append("  - none")
+    lines.append(f"- safe next action: {packet.get('safe_next_action', audit.get('safe_next_action', 'none'))}")
+    return lines
 
 
 def _format_value(value: Any) -> str:
