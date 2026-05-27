@@ -36,6 +36,7 @@ Generated at: 2026-05-27
 - Detailed discovery status depth: implemented in `T8-D`.
 - Track 9 methodology intelligence plan: authored in `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`.
 - Track 9 foundation, `T9-D1` Business/Product, `T9-D2` Requirements/Domain, `T9-D3` Solution Architecture, `T9-D4` Quality/Testing/Evals, `T9-D5` Codex/Agentic Workflow, `T9-D6` Frontend, `T9-D7` Backend, `T9-D8` API & Integrations, `T9-D9` Database & Data, `T9-D10` LLM / AI / RAG, `T9-D11` Security, Privacy & Compliance, `T9-D12` Delivery, Release & Operations, `T9-S` Task 20 Cross-Domain Synthesis and `T9-R` Task 21 Runtime Runner And Finish Options through `M25`: implemented.
+- Track 10 guided questions and status dashboard plan: authored in `docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md`; implementation is planned after Track 9 Task 22.
 
 ## Track 9 Methodology Intelligence Evals
 
@@ -55,6 +56,16 @@ Generated at: 2026-05-27
 - Runtime safety checks: methodology route payloads are redacted, malformed packets return stable errors without traceback, and synthetic codex-runner fixtures cover approval, detection-only, external-write, automation maturity, redaction, malformed-packet, cross-domain bridge and compact first-response paths.
 - Finish and ownership checks: CLI/validator JSON output, schema-v1 additive compatibility, lifecycle-status finish options, structured high-risk action taxonomy and ownership/parallelism rerouting are covered by focused unit tests and fixture eval checks.
 - Residual risk: runtime checks prove the local contract shape and guard behavior for synthetic fixtures; they do not prove a real project's methodology evidence is semantically sufficient without owner review or an explicit accepted gap.
+
+## Track 10 Guided Questions And Dashboard Evals
+
+- Status: planned, not implemented.
+- Planned contract checks: typed `question_queue`, stable question IDs, one blocking question maximum in first response, bounded total question count, answer type validation, owner-question compatibility and no broad interview loops.
+- Planned evidence checks: `answer_ledger` schema, stale-answer policy, private-data status, no secret-like values, status snapshot redaction, readiness/evidence summary and next safe action.
+- Planned dashboard checks: offline `status.html`, no external URLs, safe embedded JSON, mobile-readable sections, stale evidence banner and generated-view-only source boundary.
+- Planned fixture evidence: `question_queue_contract_present`, `status_snapshot_present`, `status_dashboard_present` and a false-positive guard for simple docs/mechanical/inspection-only work.
+- Approval boundary: question ledgers, snapshots and dashboards are staged artifacts; they must not silently mutate a target workspace, activate hooks/automation or become a database/source of truth.
+- Residual risk: guided questions and dashboards can structure progress, but they do not prove product decisions, implementation evidence or owner approvals are semantically sufficient for a real project.
 
 ## Business Product Evals
 

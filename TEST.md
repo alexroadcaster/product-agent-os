@@ -82,6 +82,8 @@ Generated at: 2026-05-27
 - Latest T9-R M16..M25 transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 5 sessions and 0 failures.
 - Latest T9-R M16..M25 Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
 - Latest T9-R M16..M25 docs/diff hygiene: `python tools\check_docs.py` passed and `git diff --check` exited `0`.
+- Track 10 plan status: `docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md` is staged as the next implementation plan after Track 9 Task 22; no Track 10 plugin code, templates, fixtures or tests have been implemented yet.
+- Track 10 plan hygiene: `python tools\check_docs.py` passed and `git diff --check` exited `0` after creating the plan; root system-file sync requires the same docs/diff checks.
 
 ## Required Checks After Docs Changes
 
@@ -102,6 +104,25 @@ python -m unittest discover -s tests -p "test_*.py" -v
 python plugins\product-agent-os\scripts\run_fixture_eval.py
 python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json
 python plugins\product-agent-os\scripts\validate_codex_compatibility.py
+```
+
+## Required Checks For Track 10 Implementation
+
+Before Track 10 `Task 23` implementation:
+
+- Confirm Track 9 `Task 22` is closed and the legacy Track 9 final verification baseline is recorded in Task 22 evidence.
+- Re-read `docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md`.
+- Inspect current `discovery.py`, `methodology_audit.py`, `methodology_synthesis.py`, `codex_runtime_runner/contracts.py`, `codex_runtime_runner/routes.py`, `infrastructure.py`, `templates.py`, fixture eval runner, lifecycle skills and docs.
+
+For Track 10 code/template/test changes, run focused tests first, then:
+
+```powershell
+python -m unittest discover -s tests -p "test_*.py" -v
+python plugins\product-agent-os\scripts\run_fixture_eval.py
+python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json
+python plugins\product-agent-os\scripts\validate_codex_compatibility.py
+python tools\check_docs.py
+git diff --check
 ```
 
 ## Track 9 Section Verification Protocol
