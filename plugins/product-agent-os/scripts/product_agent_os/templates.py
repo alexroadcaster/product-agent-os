@@ -60,6 +60,85 @@ DELIVERY_TEMPLATE_ALIASES = {
     "post-release-measurement.md": "post-release-review.md",
 }
 
+CODEX_TEMPLATE_ALIASES = {
+    "agent-eval-case.md": "agent-eval-workflow.md",
+    "agentic-workflow-readiness.md": "project-readiness.json",
+    "context-memory-policy.md": "model-reasoning-policy.md",
+    "hook-activation-record.md": "hook-governance.md",
+    "skill-candidate.md": "skill-promotion-record.md",
+    "skill-failure-log.md": "skill-promotion-record.md",
+}
+
+FRONTEND_TEMPLATE_ALIASES = {
+    "accessibility-review.md": "frontend-accessibility-review.md",
+    "component-state-matrix.md": "frontend-state-matrix.md",
+    "design-system-inventory.md": "component-card.md",
+    "design-tokens-reference.md": "component-card.md",
+    "frontend-api-dependency-map.md": "frontend-flow-spec.md",
+    "frontend-boundary-map.md": "component-card.md",
+    "frontend-browser-support-matrix.md": "frontend-visual-qa.md",
+    "frontend-content-i18n-record.md": "frontend-flow-spec.md",
+    "frontend-interaction-test-matrix.md": "frontend-flow-spec.md",
+    "fsd-boundary-record.md": "component-card.md",
+    "keyboard-focus-map.md": "frontend-accessibility-review.md",
+    "responsive-viewport-matrix.md": "frontend-visual-qa.md",
+    "route-page-inventory.md": "frontend-flow-spec.md",
+    "storybook-story-map.md": "component-card.md",
+    "ui-flow-spec.md": "frontend-flow-spec.md",
+    "visual-evidence-packet.md": "frontend-visual-qa.md",
+}
+
+QUALITY_TEMPLATE_ALIASES = {
+    "bug-reproduction.md": "bug-rescue-report.md",
+    "ci-quality-gates.md": "ci-evidence-record.md",
+    "contract-test-map.md": "api-contract-review.md",
+    "coverage-policy.md": "quality-strategy.md",
+    "evidence-packet.md": "RUNLOG.md",
+    "flaky-test-ledger.md": "flaky-test-policy.md",
+    "manual-qa-charter.md": "manual-qa-evidence.md",
+    "mutation-test-report.md": "test-eval-matrix.md",
+    "property-test-spec.md": "test-eval-matrix.md",
+    "red-green-refactor-log.md": "test-eval-matrix.md",
+    "regression-impact-map.md": "test-eval-matrix.md",
+    "risk-based-test-plan.md": "quality-strategy.md",
+    "runtime-evidence.md": "manual-qa-evidence.md",
+    "visual-a11y-evidence.md": "manual-qa-evidence.md",
+}
+
+REQUIREMENTS_TEMPLATE_ALIASES = {
+    "context-map.md": "architecture-overview.md",
+    "event-catalog.md": "requirements-traceability-matrix.md",
+    "glossary.md": "domain-modeling.md",
+    "ubiquitous-language.md": "domain-modeling.md",
+}
+
+ARCHITECTURE_TEMPLATE_ALIASES = {
+    "architecture.md": "architecture-overview.md",
+    "architecture-tradeoff-record.md": "adr.md",
+    "boundary-responsibility-map.md": "architecture-review-record.md",
+    "dependency-rules.md": "architecture-fitness-functions.md",
+    "docs-tooling-decision.md": "architecture-docs-tooling-decision.md",
+    "quality-attribute-scenarios.md": "architecture-fitness-functions.md",
+    "runtime-topology.md": "architecture-overview.md",
+}
+
+DELIVERY_SOURCE_TEMPLATE_ALIASES = {
+    "runbook.md": "operations-runbook.md",
+    "slo.md": "slo-spec.md",
+}
+
+SOURCE_ARTIFACT_TEMPLATE_ALIASES = {
+    **AI_RAG_TEMPLATE_ALIASES,
+    **SECURITY_TEMPLATE_ALIASES,
+    **DELIVERY_TEMPLATE_ALIASES,
+    **CODEX_TEMPLATE_ALIASES,
+    **FRONTEND_TEMPLATE_ALIASES,
+    **QUALITY_TEMPLATE_ALIASES,
+    **REQUIREMENTS_TEMPLATE_ALIASES,
+    **ARCHITECTURE_TEMPLATE_ALIASES,
+    **DELIVERY_SOURCE_TEMPLATE_ALIASES,
+}
+
 
 def _spec(
     key: str,

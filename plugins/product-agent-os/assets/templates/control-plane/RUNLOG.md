@@ -196,6 +196,15 @@ Generated at: {generated_at}
 - Quality strategy gate (`quality_strategy_present`):
 - Risk based scope gate (`risk_based_scope_present`):
 - Test-first or gap gate (`test_first_or_gap_present`):
+- Cross-domain semantic evidence sufficiency (`semantic_evidence_sufficiency`):
+- Applies when: high-risk, production, release, security-sensitive, AI or public-contract work is in scope:
+- Owner-reviewed evidence sufficient for real project risk (`owner_reviewed_evidence_sufficient_for_real_project_risk`):
+- Accepted gap owner:
+- Accepted gap reason:
+- Review date (`review_date`):
+- Downstream risk (`downstream_risk`):
+- Follow-up condition (`follow_up_condition`):
+- Status: `present_unverified | explicit_gap_accepted | approval_required`
 - Acceptance traceability gate (`acceptance_traceability_present`):
 - Contract check gate (`contract_check_present`):
 - Runtime evidence gate (`runtime_evidence_present`):

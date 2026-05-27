@@ -114,6 +114,12 @@ Generated at: {generated_at}
 - Quality artifacts: `quality-strategy.md`, `test-eval-matrix.md`, `ci-evidence-record.md`, `flaky-test-policy.md`, `manual-qa-evidence.md`
 - Coverage is a signal, not proof:
 - Quality status: `present_unverified | explicit_gap_accepted | approval_required`
+- Cross-domain semantic evidence sufficiency:
+- `semantic_evidence_sufficiency`:
+- `owner_reviewed_evidence_sufficient_for_real_project_risk`:
+- Applies when: high-risk, production, release, security-sensitive, AI or public-contract work is in scope:
+- Accepted gap fields: `owner`, `reason`, `review_date`, `downstream_risk`, `follow_up_condition`
+- Statuses: `present_unverified | explicit_gap_accepted | approval_required`
 - Frontend methodology:
 - `frontend`:
 - Artifacts: `frontend-flow-spec.md`, `frontend-state-matrix.md`, `frontend-visual-qa.md`, `frontend-accessibility-review.md`, `frontend-performance-budget.md`

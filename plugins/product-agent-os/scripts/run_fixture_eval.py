@@ -429,6 +429,24 @@ QUALITY_TESTING_EVALS_TERMS = (
     "explicit_gap_accepted",
     "approval_required",
 )
+SEMANTIC_EVIDENCE_SUFFICIENCY_TERMS = (
+    "semantic_evidence_sufficiency",
+    "owner_reviewed_evidence_sufficient_for_real_project_risk",
+    "high-risk",
+    "production",
+    "release",
+    "security-sensitive",
+    "ai",
+    "public-contract",
+    "owner",
+    "reason",
+    "review_date",
+    "downstream_risk",
+    "follow_up_condition",
+    "present_unverified",
+    "explicit_gap_accepted",
+    "approval_required",
+)
 FRONTEND_GATES = (
     "frontend_user_flow_acceptance_present",
     "frontend_component_docs_present",
@@ -1442,6 +1460,7 @@ CONDITIONAL_READINESS_GATE_IDS = (
     "finish_options_when_release_ready",
     "standards_trigger_policy_when_architecture_api_release_or_governance_changes",
     "quality_testing_evals_when_non_trivial_change",
+    "semantic_evidence_sufficiency",
     "codex_agentic_workflow",
     "frontend_methodology",
     "llm_ai_rag_readiness_when_ai_behavior_changes",
@@ -1640,6 +1659,8 @@ def _methodology_intelligence_contract_present(methodology_audit: dict[str, Any]
         "delivery_map",
         "methodology_domains",
         "recommendations",
+        "recommendation_groups",
+        "methodology_synthesis",
         "safe_next_action",
     }
     if not required_keys.issubset(methodology_audit):
@@ -1733,6 +1754,9 @@ def _expected_checks(
         checks["delivery_release_operations_contract_present"] = _delivery_release_operations_contract_present()
         checks["methodology_applicability_contract_present"] = (
             _methodology_applicability_contract_present(audit)
+        )
+        checks["semantic_evidence_sufficiency_contract_present"] = (
+            _semantic_evidence_sufficiency_contract_present()
         )
     if fixture in {"existing-codex-config", "unsafe-write-request"}:
         checks["config_leave_unchanged"] = actions.get(".codex/config.toml") == "leave_unchanged"
@@ -2120,6 +2144,7 @@ def _methodology_applicability_contract_present(audit: dict[str, Any]) -> bool:
         "llm_ai_rag_readiness",
         "security_privacy_compliance_readiness",
         "delivery_release_operations_readiness",
+        "methodology_synthesis",
     }
     allowed_statuses = {
         "not_applicable",
@@ -2431,6 +2456,21 @@ def _quality_testing_evals_contract_present() -> bool:
         f"{path.name}\n{path.read_text(encoding='utf-8')}" for path in paths
     ).lower()
     return all(term in payload for term in QUALITY_TESTING_EVALS_TERMS)
+
+
+def _semantic_evidence_sufficiency_contract_present() -> bool:
+    paths = [
+        TEMPLATE_ROOT / "control-plane" / "PLAN.md",
+        TEMPLATE_ROOT / "control-plane" / "TEST.md",
+        TEMPLATE_ROOT / "control-plane" / "EVALS.md",
+        TEMPLATE_ROOT / "control-plane" / "RUNLOG.md",
+        TEMPLATE_ROOT / "evals" / "project-readiness.json",
+        TEMPLATE_ROOT / "evals" / "behavioral-workflows.json",
+    ]
+    payload = "\n".join(
+        f"{path.name}\n{path.read_text(encoding='utf-8')}" for path in paths
+    ).lower()
+    return all(term in payload for term in SEMANTIC_EVIDENCE_SUFFICIENCY_TERMS)
 
 
 def _frontend_contract_present() -> bool:

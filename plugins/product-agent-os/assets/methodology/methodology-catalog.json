@@ -28,6 +28,499 @@
     "complex",
     "high_risk"
   ],
+  "synthesis": {
+    "schema_version": 1,
+    "output_packet_keys": [
+      "methodology_synthesis",
+      "recommendation_groups",
+      "source_artifact_ledger",
+      "safe_next_action"
+    ],
+    "supported_non_catalog_targets": [
+      "project-readiness.json",
+      "behavioral-workflows.json",
+      "release-notes.md",
+      "SKILL.md",
+      "plugin-blueprint.md",
+      "handoff-contract.md",
+      "CHANGELOG.md"
+    ],
+    "shared_gates": {
+      "accepted_gap_recorded": {
+        "owner_domain": "requirements_domain",
+        "consumer_domains": [
+          "solution_architecture"
+        ],
+        "reason": "Accepted gaps need one owner/reason/review-date/downstream-risk shape across requirements and architecture."
+      },
+      "automation_manual_stability_present": {
+        "owner_domain": "codex_agentic_workflow",
+        "consumer_domains": [
+          "delivery_release_operations"
+        ],
+        "reason": "Automation promotion is governed by Codex workflow maturity and consumed by release operations."
+      },
+      "bounded_context_architecture_boundary_trace": {
+        "owner_domain": "solution_architecture",
+        "consumer_domains": [
+          "requirements_domain"
+        ],
+        "reason": "Bounded-context traceability is an architecture boundary decision consumed by domain requirements."
+      },
+      "external_write_approval_present": {
+        "owner_domain": "security_privacy_compliance",
+        "consumer_domains": [
+          "api_integrations"
+        ],
+        "reason": "External mutation approval is a security/privacy boundary consumed by API and integration work."
+      }
+    },
+    "artifact_owners": {
+      "approval-record.md": {
+        "owner_domain": "security_privacy_compliance",
+        "consumer_domains": [
+          "codex_agentic_workflow",
+          "delivery_release_operations"
+        ]
+      },
+      "security-risk-review.md": {
+        "owner_domain": "security_privacy_compliance",
+        "consumer_domains": [
+          "solution_architecture",
+          "backend",
+          "api_integrations",
+          "database_data",
+          "llm_ai_rag"
+        ]
+      },
+      "api-contract-review.md": {
+        "owner_domain": "api_integrations",
+        "consumer_domains": [
+          "solution_architecture",
+          "quality_testing_evals",
+          "frontend",
+          "backend",
+          "database_data"
+        ]
+      },
+      "test-eval-matrix.md": {
+        "owner_domain": "quality_testing_evals",
+        "consumer_domains": [
+          "frontend",
+          "backend",
+          "llm_ai_rag"
+        ]
+      },
+      "release-readiness.md": {
+        "owner_domain": "delivery_release_operations",
+        "consumer_domains": [
+          "database_data"
+        ]
+      },
+      "architecture-overview.md": {
+        "owner_domain": "solution_architecture",
+        "consumer_domains": [
+          "backend"
+        ]
+      }
+    },
+    "artifact_aliases": {
+      "accessibility-review.md": {
+        "target": "frontend-accessibility-review.md",
+        "owner_domain": "frontend"
+      },
+      "agent-eval-case.md": {
+        "target": "agent-eval-workflow.md",
+        "owner_domain": "codex_agentic_workflow"
+      },
+      "agent-handoff-contract.md": {
+        "target": "agent-task-packet.md",
+        "owner_domain": "codex_agentic_workflow"
+      },
+      "agentic-workflow-readiness.md": {
+        "target": "project-readiness.json",
+        "owner_domain": "codex_agentic_workflow"
+      },
+      "ai-model-decision-record.md": {
+        "target": "model-decision-record.md",
+        "owner_domain": "llm_ai_rag"
+      },
+      "ai-prompt-contract.md": {
+        "target": "prompt-contract.md",
+        "owner_domain": "llm_ai_rag"
+      },
+      "architecture.md": {
+        "target": "architecture-overview.md",
+        "owner_domain": "solution_architecture"
+      },
+      "architecture-tradeoff-record.md": {
+        "target": "adr.md",
+        "owner_domain": "solution_architecture"
+      },
+      "artifact-manifest.md": {
+        "target": "release-artifact-manifest.md",
+        "owner_domain": "delivery_release_operations"
+      },
+      "asvs-mapping.md": {
+        "target": "asvs-ssdf-mapping.md",
+        "owner_domain": "security_privacy_compliance"
+      },
+      "audit-log-policy.md": {
+        "target": "audit-logging-review.md",
+        "owner_domain": "security_privacy_compliance"
+      },
+      "authz-matrix.md": {
+        "target": "authz-negative-test-matrix.md",
+        "owner_domain": "security_privacy_compliance"
+      },
+      "boundary-responsibility-map.md": {
+        "target": "architecture-review-record.md",
+        "owner_domain": "solution_architecture"
+      },
+      "bug-reproduction.md": {
+        "target": "bug-rescue-report.md",
+        "owner_domain": "quality_testing_evals"
+      },
+      "ci-cd-governance.md": {
+        "target": "ci-cd-workflow-inventory.md",
+        "owner_domain": "delivery_release_operations"
+      },
+      "ci-quality-gates.md": {
+        "target": "ci-evidence-record.md",
+        "owner_domain": "quality_testing_evals"
+      },
+      "compliance-applicability-matrix.md": {
+        "target": "compliance-overlay.md",
+        "owner_domain": "security_privacy_compliance"
+      },
+      "component-state-matrix.md": {
+        "target": "frontend-state-matrix.md",
+        "owner_domain": "frontend"
+      },
+      "context-map.md": {
+        "target": "architecture-overview.md",
+        "owner_domain": "solution_architecture"
+      },
+      "context-memory-policy.md": {
+        "target": "model-reasoning-policy.md",
+        "owner_domain": "codex_agentic_workflow"
+      },
+      "contract-test-map.md": {
+        "target": "api-contract-review.md",
+        "owner_domain": "quality_testing_evals"
+      },
+      "coverage-policy.md": {
+        "target": "quality-strategy.md",
+        "owner_domain": "quality_testing_evals"
+      },
+      "dependency-rules.md": {
+        "target": "architecture-fitness-functions.md",
+        "owner_domain": "solution_architecture"
+      },
+      "design-system-inventory.md": {
+        "target": "component-card.md",
+        "owner_domain": "frontend"
+      },
+      "design-tokens-reference.md": {
+        "target": "component-card.md",
+        "owner_domain": "frontend"
+      },
+      "docs-tooling-decision.md": {
+        "target": "architecture-docs-tooling-decision.md",
+        "owner_domain": "solution_architecture"
+      },
+      "event-catalog.md": {
+        "target": "requirements-traceability-matrix.md",
+        "owner_domain": "requirements_domain"
+      },
+      "evidence-packet.md": {
+        "target": "RUNLOG.md",
+        "owner_domain": "quality_testing_evals"
+      },
+      "flaky-test-ledger.md": {
+        "target": "flaky-test-policy.md",
+        "owner_domain": "quality_testing_evals"
+      },
+      "frontend-api-dependency-map.md": {
+        "target": "frontend-flow-spec.md",
+        "owner_domain": "frontend"
+      },
+      "frontend-boundary-map.md": {
+        "target": "component-card.md",
+        "owner_domain": "frontend"
+      },
+      "frontend-browser-support-matrix.md": {
+        "target": "frontend-visual-qa.md",
+        "owner_domain": "frontend"
+      },
+      "frontend-content-i18n-record.md": {
+        "target": "frontend-flow-spec.md",
+        "owner_domain": "frontend"
+      },
+      "frontend-interaction-test-matrix.md": {
+        "target": "frontend-flow-spec.md",
+        "owner_domain": "frontend"
+      },
+      "fsd-boundary-record.md": {
+        "target": "component-card.md",
+        "owner_domain": "frontend"
+      },
+      "glossary.md": {
+        "target": "domain-modeling.md",
+        "owner_domain": "requirements_domain"
+      },
+      "hook-activation-record.md": {
+        "target": "hook-governance.md",
+        "owner_domain": "codex_agentic_workflow"
+      },
+      "incident-response-path.md": {
+        "target": "incident-record.md",
+        "owner_domain": "delivery_release_operations"
+      },
+      "keyboard-focus-map.md": {
+        "target": "frontend-accessibility-review.md",
+        "owner_domain": "frontend"
+      },
+      "manual-qa-charter.md": {
+        "target": "manual-qa-evidence.md",
+        "owner_domain": "quality_testing_evals"
+      },
+      "mutation-test-report.md": {
+        "target": "test-eval-matrix.md",
+        "owner_domain": "quality_testing_evals"
+      },
+      "post-release-measurement.md": {
+        "target": "post-release-review.md",
+        "owner_domain": "delivery_release_operations"
+      },
+      "property-test-spec.md": {
+        "target": "test-eval-matrix.md",
+        "owner_domain": "quality_testing_evals"
+      },
+      "quality-attribute-scenarios.md": {
+        "target": "architecture-fitness-functions.md",
+        "owner_domain": "solution_architecture"
+      },
+      "rag-grounding-eval.md": {
+        "target": "rag-eval-report.md",
+        "owner_domain": "llm_ai_rag"
+      },
+      "red-green-refactor-log.md": {
+        "target": "test-eval-matrix.md",
+        "owner_domain": "quality_testing_evals"
+      },
+      "regression-impact-map.md": {
+        "target": "test-eval-matrix.md",
+        "owner_domain": "quality_testing_evals"
+      },
+      "release-scope.md": {
+        "target": "release-readiness.md",
+        "owner_domain": "delivery_release_operations"
+      },
+      "responsive-viewport-matrix.md": {
+        "target": "frontend-visual-qa.md",
+        "owner_domain": "frontend"
+      },
+      "risk-based-test-plan.md": {
+        "target": "quality-strategy.md",
+        "owner_domain": "quality_testing_evals"
+      },
+      "rollout-strategy.md": {
+        "target": "rollout-plan.md",
+        "owner_domain": "delivery_release_operations"
+      },
+      "route-page-inventory.md": {
+        "target": "frontend-flow-spec.md",
+        "owner_domain": "frontend"
+      },
+      "runbook.md": {
+        "target": "operations-runbook.md",
+        "owner_domain": "delivery_release_operations"
+      },
+      "runtime-evidence.md": {
+        "target": "manual-qa-evidence.md",
+        "owner_domain": "quality_testing_evals"
+      },
+      "runtime-topology.md": {
+        "target": "architecture-overview.md",
+        "owner_domain": "solution_architecture"
+      },
+      "secrets-inventory.md": {
+        "target": "secrets-policy.md",
+        "owner_domain": "security_privacy_compliance"
+      },
+      "skill-candidate.md": {
+        "target": "skill-promotion-record.md",
+        "owner_domain": "codex_agentic_workflow"
+      },
+      "skill-failure-log.md": {
+        "target": "skill-promotion-record.md",
+        "owner_domain": "codex_agentic_workflow"
+      },
+      "slo.md": {
+        "target": "slo-spec.md",
+        "owner_domain": "delivery_release_operations"
+      },
+      "storybook-story-map.md": {
+        "target": "component-card.md",
+        "owner_domain": "frontend"
+      },
+      "threat-model.md": {
+        "target": "threat-surface.md",
+        "owner_domain": "security_privacy_compliance"
+      },
+      "ubiquitous-language.md": {
+        "target": "domain-modeling.md",
+        "owner_domain": "requirements_domain"
+      },
+      "ui-flow-spec.md": {
+        "target": "frontend-flow-spec.md",
+        "owner_domain": "frontend"
+      },
+      "version-impact-record.md": {
+        "target": "versioning-policy.md",
+        "owner_domain": "delivery_release_operations"
+      },
+      "visual-a11y-evidence.md": {
+        "target": "manual-qa-evidence.md",
+        "owner_domain": "quality_testing_evals"
+      },
+      "visual-evidence-packet.md": {
+        "target": "frontend-visual-qa.md",
+        "owner_domain": "frontend"
+      }
+    },
+    "source_artifact_decisions": {
+      "CHANGELOG.md": {
+        "decision": "existing_non_template",
+        "owner_domain": "delivery_release_operations",
+        "reason": "Changelog is usually a project artifact; Product-Agent OS packages release notes and release readiness templates instead."
+      },
+      "SKILL.md": {
+        "decision": "existing_non_template",
+        "owner_domain": "codex_agentic_workflow",
+        "reason": "Skill manifests live inside checked-in skill directories rather than staged project artifact templates."
+      },
+      "handoff-contract.md": {
+        "decision": "existing_non_template",
+        "owner_domain": "codex_agentic_workflow",
+        "reason": "The canonical handoff contract is packaged as a lifecycle skill reference and consumed by agent-task-packet.md."
+      },
+      "plugin-blueprint.md": {
+        "decision": "existing_non_template",
+        "owner_domain": "codex_agentic_workflow",
+        "reason": "Plugin blueprint lives under docs/artifact-templates for plugin design, not as a generated target-project template."
+      }
+    },
+    "priority_tie_breakers": [
+      {
+        "id": "approval_before_generic_quality",
+        "artifact": "approval-record.md",
+        "risk_rank": 100,
+        "reason": "Approval boundaries outrank generic quality strategy when external write, payment, release or production data risk exists."
+      },
+      {
+        "id": "security_review_before_generic_quality",
+        "artifact": "security-risk-review.md",
+        "risk_rank": 90,
+        "reason": "Security-sensitive or payment work needs owner review before generic quality planning."
+      },
+      {
+        "id": "release_readiness_before_generic_quality",
+        "artifact": "release-readiness.md",
+        "risk_rank": 80,
+        "reason": "Publish, deploy and package release claims need release readiness evidence before generic quality planning."
+      },
+      {
+        "id": "quality_strategy_default",
+        "artifact": "quality-strategy.md",
+        "risk_rank": 10,
+        "reason": "Generic quality strategy remains visible but should not hide a specific high-risk owner action."
+      }
+    ],
+    "conflict_rules": [
+      {
+        "id": "frontend_fsd_requires_ui_runtime_evidence",
+        "exclusive_with": "backend_only_or_native_only",
+        "reason": "FSD-like backend folders are not sufficient evidence for frontend blockers."
+      },
+      {
+        "id": "ci_only_is_not_release_readiness",
+        "exclusive_with": "docs_only_or_tooling_only_release",
+        "reason": "CI or release files alone are present_unverified until publish, deploy, secret, external-write or user-impact evidence exists."
+      }
+    ],
+    "false_positive_rules": [
+      {
+        "id": "docs_only_lightweight",
+        "applies_to": [
+          "docs-only",
+          "formatting-only",
+          "typo-only"
+        ],
+        "blocked_domains": [
+          "frontend",
+          "backend",
+          "api_integrations",
+          "database_data",
+          "security_privacy_compliance",
+          "delivery_release_operations"
+        ]
+      },
+      {
+        "id": "backend_fsd_like_without_ui",
+        "applies_to": [
+          "app/features",
+          "app/entities",
+          "src/features",
+          "src/entities"
+        ],
+        "blocked_domains": [
+          "frontend"
+        ]
+      }
+    ],
+    "semantic_evidence_sufficiency": {
+      "owner_domain": "quality_testing_evals",
+      "consumer_domains": [
+        "security_privacy_compliance",
+        "delivery_release_operations",
+        "llm_ai_rag",
+        "api_integrations",
+        "database_data",
+        "solution_architecture",
+        "backend",
+        "frontend"
+      ],
+      "satisfied_by": [
+        "owner_reviewed_evidence_sufficient_for_real_project_risk",
+        "explicit_gap_accepted"
+      ],
+      "applies_when": [
+        "high-risk",
+        "production",
+        "release",
+        "security-sensitive",
+        "AI",
+        "public-contract"
+      ],
+      "accepted_gap_required_fields": [
+        "owner",
+        "reason",
+        "review_date",
+        "downstream_risk",
+        "follow_up_condition"
+      ]
+    },
+    "owner_question_dedupe": {
+      "canonical_questions": [
+        "Who owns the highest-priority missing methodology gate?",
+        "Which local command is the source of truth for verification?",
+        "Which detected surfaces are in scope for this slice?"
+      ],
+      "normalization": "lowercase, strip punctuation, collapse whitespace and normalize highest-priority hyphenation"
+    }
+  },
   "domains": [
     {
       "id": "business_product",

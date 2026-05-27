@@ -879,6 +879,43 @@
       "residual_risk": "Quality evidence can be stale or incomplete when test files, coverage or old CI logs are treated as proof."
     },
     {
+      "name": "cross-domain-semantic-evidence-sufficiency",
+      "input": {
+        "prompt": "Group methodology recommendations for a high-risk release and decide whether the evidence is enough.",
+        "workspace_fixture": "complex-web-api-integrations",
+        "control_plane_state": "quality_gate"
+      },
+      "expected": {
+        "route": "methodology_synthesis",
+        "minimum_artifacts": ["methodology_synthesis", "recommendation_groups", "RUNLOG.md"],
+        "required_fields": [
+          "semantic_evidence_sufficiency",
+          "owner_reviewed_evidence_sufficient_for_real_project_risk",
+          "high-risk",
+          "production",
+          "release",
+          "security-sensitive",
+          "AI",
+          "public-contract",
+          "owner",
+          "reason",
+          "review_date",
+          "downstream_risk",
+          "follow_up_condition",
+          "present_unverified",
+          "explicit_gap_accepted",
+          "approval_required"
+        ]
+      },
+      "forbidden": [
+        "file detection becomes present_verified",
+        "generic quality strategy hides security approval",
+        "release readiness claimed without owner-reviewed sufficiency",
+        "accepted gap without downstream risk"
+      ],
+      "residual_risk": "Cross-domain grouping can preserve all artifacts while still overstating readiness unless evidence sufficiency is owner-reviewed."
+    },
+    {
       "name": "no-placeholder-plan",
       "input": {
         "prompt": "Create the implementation plan.",

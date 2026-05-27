@@ -89,6 +89,95 @@ class MethodologyAuditContractTest(unittest.TestCase):
         for recommendation in result["recommendations"]:
             self.assertEqual(set(recommendation), required_keys)
 
+    def test_audit_exposes_grouped_synthesis_without_losing_existing_keys(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "package.json").write_text('{"scripts":{"test":"vitest"}}\n', encoding="utf-8")
+            (root / "openapi.yaml").write_text(
+                "openapi: 3.1.0\ninfo:\n  title: API\n  version: 1.0.0\npaths: {}\n",
+                encoding="utf-8",
+            )
+            result = build_methodology_audit(
+                root,
+                intent_hint="ship public API contract with generated client and external write",
+            )
+
+        for key in [
+            "status",
+            "write_policy",
+            "delivery_map",
+            "methodology_domains",
+            "recommendations",
+            "questions_for_owner",
+            "safe_next_action",
+        ]:
+            with self.subTest(key=key):
+                self.assertIn(key, result)
+        self.assertIn("methodology_synthesis", result)
+        self.assertIn("recommendation_groups", result)
+        self.assertEqual(result["recommendation_groups"], result["methodology_synthesis"]["recommendation_groups"])
+        self.assertEqual(result["safe_next_action"], result["methodology_synthesis"]["safe_next_action"])
+        self.assertEqual(
+            result["delivery_map"]["next_action_map"],
+            [group["safe_next_action"] for group in result["recommendation_groups"][:5]],
+        )
+        api_group = next(
+            group for group in result["recommendation_groups"] if group["artifact"] == "api-contract-review.md"
+        )
+        self.assertIn("api_integrations", api_group["source_domains"])
+        self.assertEqual(api_group["evidence_required"], list(dict.fromkeys(api_group["evidence_required"])))
+
+    def test_security_release_and_quality_safe_next_action_resolution(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "package.json").write_text('{"scripts":{"test":"vitest"}}\n', encoding="utf-8")
+            (root / "src" / "services").mkdir(parents=True)
+            (root / "src" / "services" / "payment.ts").write_text(
+                "export async function charge() { return fetch('https://payments.example', {method:'POST'}); }\n",
+                encoding="utf-8",
+            )
+            payment = build_methodology_audit(
+                root,
+                intent_hint="ship payment billing external write security-sensitive change",
+            )
+
+            release_root = Path(tmp) / "release"
+            release_root.mkdir()
+            (release_root / "package.json").write_text('{"name":"fixture","version":"1.0.0"}\n', encoding="utf-8")
+            (release_root / "CHANGELOG.md").write_text("# Changelog\n", encoding="utf-8")
+            release = build_methodology_audit(
+                release_root,
+                intent_hint="publish package release-ready package registry",
+            )
+
+            docs_root = Path(tmp) / "docs"
+            docs_root.mkdir()
+            (docs_root / "README.md").write_text("# Demo\n", encoding="utf-8")
+            (docs_root / "docs").mkdir()
+            (docs_root / "docs" / "release-notes.md").write_text("# Notes\n", encoding="utf-8")
+            docs_only = build_methodology_audit(docs_root, intent_hint="docs-only release notes cleanup")
+
+        payment_artifacts = [group["artifact"] for group in payment["recommendation_groups"][:3]]
+        self.assertTrue({"approval-record.md", "security-risk-review.md", "external-integration-approval.md"} & set(payment_artifacts))
+        self.assertIn("quality-strategy.md", [group["artifact"] for group in payment["recommendation_groups"]])
+
+        release_artifacts = [group["artifact"] for group in release["recommendation_groups"][:4]]
+        self.assertIn("release-readiness.md", release_artifacts)
+        self.assertIn("quality-strategy.md", [group["artifact"] for group in release["recommendation_groups"]])
+
+        hard_delivery = [
+            recommendation
+            for recommendation in docs_only["recommendations"]
+            if recommendation["domain"] == "delivery_release_operations"
+            and recommendation["priority"] in {"P0_blocker", "P1_high_risk"}
+        ]
+        self.assertEqual(hard_delivery, [])
+        self.assertIn("quality", docs_only["safe_next_action"].lower())
+
     def test_business_product_intent_routes_domain_and_product_hypothesis_priority(self):
         from product_agent_os.methodology_audit import build_methodology_audit
 

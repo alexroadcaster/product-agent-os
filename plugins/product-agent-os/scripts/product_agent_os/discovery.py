@@ -298,12 +298,19 @@ def _detect_frontend_signal(files: set[str]) -> bool:
         "inp",
         "cls",
     )
-    frontend_extensions = (".tsx", ".jsx", ".vue", ".svelte", ".css", ".scss")
+    component_or_style_extensions = (".tsx", ".jsx", ".vue", ".svelte", ".css", ".scss")
     return any(
         path in exact_files
-        or path.startswith(directory_prefixes)
         or any(fragment in path for fragment in fragments)
-        or path.endswith(frontend_extensions)
+        or path.endswith(component_or_style_extensions)
+        or (
+            path.startswith(directory_prefixes)
+            and (
+                path.endswith(component_or_style_extensions)
+                or "/ui/" in path
+                or path.startswith(("pages/", "routes/", "components/", "widgets/", "src/pages/", "src/routes/", "src/components/", "src/widgets/"))
+            )
+        )
         for path in lowered
     )
 
@@ -2238,8 +2245,21 @@ def _is_security_sbom_provenance_source(relative: str) -> bool:
 
 def _is_security_ci_permission_source(relative: str) -> bool:
     lowered = relative.lower()
-    return lowered.startswith(".github/workflows/") or any(
-        term in lowered for term in ("ci-permission", "ci_permission", "workflow-permission", "github-token")
+    return any(
+        term in lowered
+        for term in (
+            "ci-permission",
+            "ci_permission",
+            "workflow-permission",
+            "github-token",
+            ".github/workflows/deploy",
+            ".github/workflows/permission",
+            ".github/workflows/production",
+            ".github/workflows/publish",
+            ".github/workflows/release",
+            ".github/workflows/security",
+            ".github/workflows/secret",
+        )
     )
 
 
@@ -3156,6 +3176,7 @@ def _methodology_applicability(
     signals: dict[str, bool],
     methodology_gaps: list[str],
     docs_tooling_decision: dict[str, Any],
+    methodology_synthesis: dict[str, Any] | None = None,
 ) -> dict[str, dict[str, Any]]:
     docs_impact = docs_tooling_decision.get("docs_as_code_impact", {})
     docs_status = docs_impact.get("status", "not_applicable") if isinstance(docs_impact, dict) else "not_applicable"
@@ -3342,6 +3363,19 @@ def _methodology_applicability(
             "product-agent operator",
             "detection alone does not prove safe activation, owner approval or current verification",
         ),
+        "methodology_synthesis": _applicability_packet(
+            "present_unverified" if methodology_synthesis else "applicable_missing",
+            "methodology synthesis packet generated" if methodology_synthesis else "methodology synthesis packet missing",
+            _methodology_synthesis_evidence(methodology_synthesis),
+            [
+                "methodology_synthesis",
+                "recommendation_groups",
+                "source_artifact_ledger",
+                "owner_reviewed_evidence_sufficient_for_real_project_risk or accepted explicit gap",
+            ],
+            "product-agent operator",
+            "synthesis groups recommendations but does not prove owner-reviewed evidence sufficiency or readiness",
+        ),
     }
 
 
@@ -3387,6 +3421,17 @@ def _test_eval_evidence(signals: dict[str, bool], profile: dict[str, Any]) -> li
 
 def _signal_evidence(signals: dict[str, bool], *names: str) -> list[str]:
     return [name for name in names if signals.get(name)]
+
+
+def _methodology_synthesis_evidence(methodology_synthesis: dict[str, Any] | None) -> list[str]:
+    if not isinstance(methodology_synthesis, dict):
+        return []
+    evidence = ["methodology_synthesis"]
+    for key in ("recommendation_groups", "source_artifact_ledger", "semantic_evidence_sufficiency"):
+        value = methodology_synthesis.get(key)
+        if value:
+            evidence.append(key)
+    return evidence
 
 
 def _domain_model_status(signals: dict[str, bool], domain_model_needed: bool) -> str:
@@ -3545,6 +3590,7 @@ def analyze_workspace(root: str | Path, *, intent_hint: str = "") -> dict[str, A
         methodology_signals,
         methodology_gaps,
         docs_tooling_decision,
+        methodology_intelligence.get("methodology_synthesis") if isinstance(methodology_intelligence, dict) else None,
     )
     bug_reproduction_signals = _detect_bug_reproduction_signals(workspace, files)
     route_inputs = _behavioral_route_inputs(

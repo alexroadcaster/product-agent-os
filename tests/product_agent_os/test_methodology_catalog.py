@@ -70,6 +70,29 @@ class MethodologyCatalogContractTest(unittest.TestCase):
             with self.subTest(domain=domain["id"]):
                 self.assertTrue((repo_root / domain["source_file"]).is_file())
 
+    def test_synthesis_contract_validator_rejects_unknown_domains_and_artifacts(self):
+        from product_agent_os.methodology_catalog import load_methodology_catalog, validate_methodology_catalog
+
+        catalog = load_methodology_catalog()
+        broken_owner = dict(catalog)
+        broken_owner["synthesis"] = dict(catalog["synthesis"])
+        broken_owner["synthesis"]["shared_gates"] = dict(catalog["synthesis"]["shared_gates"])
+        broken_owner["synthesis"]["shared_gates"]["accepted_gap_recorded"] = dict(
+            catalog["synthesis"]["shared_gates"]["accepted_gap_recorded"]
+        )
+        broken_owner["synthesis"]["shared_gates"]["accepted_gap_recorded"]["owner_domain"] = "missing_domain"
+
+        broken_alias = dict(catalog)
+        broken_alias["synthesis"] = dict(catalog["synthesis"])
+        broken_alias["synthesis"]["artifact_aliases"] = dict(catalog["synthesis"]["artifact_aliases"])
+        broken_alias["synthesis"]["artifact_aliases"]["threat-model.md"] = dict(
+            catalog["synthesis"]["artifact_aliases"]["threat-model.md"]
+        )
+        broken_alias["synthesis"]["artifact_aliases"]["threat-model.md"]["target"] = "missing-template.md"
+
+        self.assertIn("unknown synthesis owner domain: missing_domain", validate_methodology_catalog(broken_owner))
+        self.assertIn("unknown synthesis artifact target: missing-template.md", validate_methodology_catalog(broken_alias))
+
     def test_each_domain_has_required_contract_fields(self):
         from product_agent_os.methodology_catalog import load_methodology_catalog
 

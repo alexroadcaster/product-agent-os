@@ -1,3 +1,4 @@
+import json
 import sys
 import tempfile
 import unittest
@@ -1500,6 +1501,7 @@ class DiscoveryTest(unittest.TestCase):
             "standards_trigger_policy",
             "codex_agentic_workflow",
             "llm_ai_rag_readiness",
+            "methodology_synthesis",
         }
         self.assertEqual(set(applicability), expected_keys)
         for gate, packet in applicability.items():
@@ -1538,6 +1540,10 @@ class DiscoveryTest(unittest.TestCase):
         self.assertEqual(applicability["database_data_readiness"]["status"], "not_applicable")
         self.assertEqual(applicability["security_privacy_compliance_readiness"]["status"], "not_applicable")
         self.assertEqual(applicability["llm_ai_rag_readiness"]["status"], "not_applicable")
+        self.assertEqual(applicability["methodology_synthesis"]["status"], "present_unverified")
+        self.assertIn("methodology_synthesis", result["methodology_intelligence"])
+        self.assertIn("recommendation_groups", result["methodology_intelligence"])
+        self.assertNotIn("present_verified", json.dumps(result["methodology_intelligence"], sort_keys=True))
 
     def test_methodology_applicability_reports_status_transitions(self):
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -1637,6 +1643,60 @@ class DiscoveryTest(unittest.TestCase):
                     "fsd_structure",
                     result["route_inputs"]["workspace_signals"]["methodology_signals"],
                 )
+
+    def test_backend_fsd_like_typescript_dirs_do_not_trigger_frontend_without_ui_runtime_evidence(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            workspace = Path(tmpdir)
+            self._write_files(
+                workspace,
+                {
+                    "pyproject.toml": "[project]\nname = 'api'\n",
+                    "src/features/payments/service.ts": "export const service = true;\n",
+                    "src/entities/order.ts": "export const order = true;\n",
+                    "src/shared/repository.ts": "export const repo = true;\n",
+                    "src/server/app.ts": "export const app = true;\n",
+                },
+            )
+
+            result = analyze_workspace(workspace, intent_hint="backend service refactor")
+
+        self.assertFalse(result["methodology_signals"]["frontend"])
+        self.assertEqual(result["methodology_applicability"]["frontend_methodology"]["status"], "not_applicable")
+        frontend_recommendations = [
+            recommendation
+            for recommendation in result["methodology_intelligence"]["recommendations"]
+            if recommendation["domain"] == "frontend"
+        ]
+        self.assertEqual(frontend_recommendations, [])
+
+    def test_ci_only_workflow_does_not_escalate_to_security_or_release_p0(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            workspace = Path(tmpdir)
+            self._write_files(
+                workspace,
+                {
+                    ".github/workflows/ci.yml": "name: ci\njobs: {}\n",
+                },
+            )
+
+            result = analyze_workspace(workspace, intent_hint="ci workflow cleanup only")
+
+        audit = result["methodology_intelligence"]
+        security_hard = [
+            recommendation
+            for recommendation in audit["recommendations"]
+            if recommendation["domain"] == "security_privacy_compliance"
+            and recommendation["priority"] in {"P0_blocker", "P1_high_risk"}
+        ]
+        release_p0 = [
+            recommendation
+            for recommendation in audit["recommendations"]
+            if recommendation["domain"] == "delivery_release_operations"
+            and recommendation["priority"] == "P0_blocker"
+        ]
+        self.assertEqual(security_hard, [])
+        self.assertEqual(release_p0, [])
+        self.assertNotIn("approval_required", audit["safe_next_action"].lower())
 
     def test_domain_model_gate_is_required_for_complex_domain_workspaces(self):
         with tempfile.TemporaryDirectory() as tmpdir:

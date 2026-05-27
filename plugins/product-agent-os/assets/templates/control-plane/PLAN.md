@@ -169,6 +169,11 @@ Generated at: {generated_at}
 - Owner:
 - Accepted gap:
 - Residual risk:
+- Cross-domain semantic evidence sufficiency (`semantic_evidence_sufficiency`):
+- Applies when: `high-risk | production | release | security-sensitive | AI | public-contract`
+- Owner-reviewed evidence sufficient for real project risk (`owner_reviewed_evidence_sufficient_for_real_project_risk`):
+- Accepted gap fields: `owner`, `reason`, `review_date`, `downstream_risk`, `follow_up_condition`
+- Status: `present_unverified | explicit_gap_accepted | approval_required`
 - Evidence-before-completion (`evidence_before_completion`):
 - Ready claim:
 - Completed claim:

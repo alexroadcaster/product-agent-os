@@ -19,7 +19,7 @@ class BehavioralWorkflowEvalTest(unittest.TestCase):
         report = validate_behavioral_eval_template(path)
 
         self.assertEqual(report["status"], "ok")
-        self.assertEqual(report["case_count"], 42)
+        self.assertEqual(report["case_count"], 43)
         self.assertEqual(report["missing_required_cases"], [])
         self.assertEqual(report["unsafe_cases"], [])
         self.assertTrue(report["codex_only"])
@@ -656,6 +656,32 @@ class BehavioralWorkflowEvalTest(unittest.TestCase):
             "release claim without approval evidence",
         ]:
             self.assertIn(forbidden, completion["forbidden"])
+
+        semantic = cases["cross-domain-semantic-evidence-sufficiency"]
+        self.assertEqual(semantic["expected"]["route"], "methodology_synthesis")
+        for expected in [
+            "semantic_evidence_sufficiency",
+            "owner_reviewed_evidence_sufficient_for_real_project_risk",
+            "high-risk",
+            "production",
+            "release",
+            "security-sensitive",
+            "AI",
+            "public-contract",
+            "owner",
+            "reason",
+            "review_date",
+            "downstream_risk",
+            "follow_up_condition",
+        ]:
+            self.assertIn(expected, semantic["expected"]["required_fields"])
+        for forbidden in [
+            "file detection becomes present_verified",
+            "generic quality strategy hides security approval",
+            "release readiness claimed without owner-reviewed sufficiency",
+            "accepted gap without downstream risk",
+        ]:
+            self.assertIn(forbidden, semantic["forbidden"])
 
         frontend = cases["frontend-evidence-before-completion"]
         self.assertEqual(frontend["expected"]["route"], "frontend methodology gates")

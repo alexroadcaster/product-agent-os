@@ -22,6 +22,7 @@
           "evidence_before_completion",
           "test_eval_first_evidence",
           "quality_testing_evals",
+          "semantic_evidence_sufficiency",
           "codex_agentic_workflow",
           "security_privacy_compliance",
           "delivery_release_operations",
@@ -197,6 +198,14 @@
             "required_evidence": ["quality-strategy.md", "test-eval-matrix.md", "ci-evidence-record.md", "flaky-test-policy.md", "manual-qa-evidence.md", "TEST.md", "EVALS.md", "RUNLOG.md", "coverage is a signal, not proof"],
             "owner": "test-eval-designer",
             "residual_risk": "Completion, readiness, release or quality claims can be made from stale evidence, coverage-only claims or file detection alone."
+          },
+          "semantic_evidence_sufficiency": {
+            "applies_when": "High-risk, production, release, security-sensitive, AI or public-contract work needs proof that recorded evidence is sufficient for the real project risk, not only present as files.",
+            "pass_condition": "Set present_verified only when owner_reviewed_evidence_sufficient_for_real_project_risk is recorded for current command/eval/runtime evidence; use present_unverified for detected evidence until owner review happens.",
+            "accepted_gap": "Use explicit_gap_accepted only with owner, reason, review_date, downstream_risk and follow_up_condition; use approval_required before external writes, production data, release publishing, security-sensitive mutation or other irreversible action.",
+            "required_evidence": ["current command/eval/runtime evidence", "owner_reviewed_evidence_sufficient_for_real_project_risk", "accepted gap owner", "accepted gap reason", "review_date", "downstream_risk", "follow_up_condition"],
+            "owner": "test-eval-designer",
+            "residual_risk": "A grouped methodology packet can preserve evidence while still overstating readiness if sufficiency is not owner-reviewed."
           },
           "codex_agentic_workflow": {
             "applies_when": "Product-Agent OS, Codex App, CLI, IDE extension, codex exec, GitHub Action, MCP, Agents SDK, automation, subagent, skill, plugin, hook, external write, approval boundary, memory or handoff work.",

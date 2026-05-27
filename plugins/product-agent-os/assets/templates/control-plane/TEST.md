@@ -113,6 +113,11 @@ Generated at: {generated_at}
 - Regression impact gate (`regression_impact_present`):
 - Coverage is a signal, not proof:
 - Quality status: `present_unverified | explicit_gap_accepted | approval_required`
+- Cross-domain semantic evidence sufficiency (`semantic_evidence_sufficiency`):
+- Applies to high-risk, production, release, security-sensitive, AI and public-contract work:
+- Owner-reviewed evidence sufficient for real project risk (`owner_reviewed_evidence_sufficient_for_real_project_risk`):
+- Accepted gap fields checked: `owner`, `reason`, `review_date`, `downstream_risk`, `follow_up_condition`
+- Status checked: `present_unverified | explicit_gap_accepted | approval_required`
 - FSD structure applicability (`fsd_structure`):
 - Feature-Sliced Design layer/slice/segment:
 - Public API:

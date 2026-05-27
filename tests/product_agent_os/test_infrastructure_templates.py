@@ -3692,6 +3692,7 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 "fresh-context-handoff",
                 "evidence-before-completion",
                 "quality-current-evidence-before-completion",
+                "cross-domain-semantic-evidence-sufficiency",
                 "frontend-evidence-before-completion",
                 "backend-evidence-before-completion",
                 "llm-ai-rag-evidence-before-completion",
@@ -4393,6 +4394,7 @@ class InfrastructureTemplateTest(unittest.TestCase):
             "standards_trigger_policy_when_architecture_api_release_or_governance_changes",
             "quality_testing_evals_when_non_trivial_change",
             "codex_agentic_workflow",
+            "semantic_evidence_sufficiency",
         }
         self.assertEqual(set(gates), required_gates)
         self.assertNotIn("db_docs_when_schema_changes", gates)
@@ -5118,6 +5120,58 @@ class InfrastructureTemplateTest(unittest.TestCase):
         ]:
             with self.subTest(readiness=term):
                 self.assertIn(term, readiness)
+
+    def test_cross_domain_semantic_evidence_sufficiency_contract_is_shared(self):
+        payloads = {
+            "PLAN.md": (TEMPLATE_ROOT / "control-plane" / "PLAN.md").read_text(encoding="utf-8"),
+            "TEST.md": (TEMPLATE_ROOT / "control-plane" / "TEST.md").read_text(encoding="utf-8"),
+            "EVALS.md": (TEMPLATE_ROOT / "control-plane" / "EVALS.md").read_text(encoding="utf-8"),
+            "RUNLOG.md": (TEMPLATE_ROOT / "control-plane" / "RUNLOG.md").read_text(encoding="utf-8"),
+            "project-readiness.json": (TEMPLATE_ROOT / "evals" / "project-readiness.json").read_text(
+                encoding="utf-8"
+            ),
+            "behavioral-workflows.json": (
+                TEMPLATE_ROOT / "evals" / "behavioral-workflows.json"
+            ).read_text(encoding="utf-8"),
+        }
+        joined = "\n".join(payloads.values()).lower()
+
+        for expected in [
+            "semantic_evidence_sufficiency",
+            "owner_reviewed_evidence_sufficient_for_real_project_risk",
+            "high-risk",
+            "production",
+            "release",
+            "security-sensitive",
+            "ai",
+            "public-contract",
+            "owner",
+            "reason",
+            "review_date",
+            "downstream_risk",
+            "follow_up_condition",
+            "present_unverified",
+            "explicit_gap_accepted",
+            "approval_required",
+        ]:
+            with self.subTest(expected=expected):
+                self.assertIn(expected, joined)
+
+        readiness = json.loads(payloads["project-readiness.json"])
+        gate = readiness["cases"][0]["expected"]["conditional_readiness_gates"]["semantic_evidence_sufficiency"]
+        self.assertIn("owner_reviewed_evidence_sufficient_for_real_project_risk", gate["pass_condition"])
+        self.assertEqual(
+            gate["required_evidence"],
+            [
+                "current command/eval/runtime evidence",
+                "owner_reviewed_evidence_sufficient_for_real_project_risk",
+                "accepted gap owner",
+                "accepted gap reason",
+                "review_date",
+                "downstream_risk",
+                "follow_up_condition",
+            ],
+        )
 
         generated = "\n".join(
             (TEMPLATE_ROOT / relative).read_text(encoding="utf-8").lower()

@@ -9,6 +9,7 @@ from typing import Any
 
 from product_agent_os.contracts import CONTROL_PLANE_FILES
 from product_agent_os.methodology_catalog import load_methodology_catalog
+from product_agent_os.methodology_synthesis import build_methodology_synthesis, dedupe_owner_questions
 
 
 PRIORITY_ORDER = {
@@ -881,6 +882,14 @@ def build_methodology_audit(workspace: Path, intent_hint: str = "") -> dict[str,
             complexity_profile["selected"],
         )
     )
+    questions_for_owner = dedupe_owner_questions(
+        _questions_for_owner(lowered_files, lowered_dirs, observed, recommendations)
+    )
+    methodology_synthesis = build_methodology_synthesis(
+        recommendations,
+        owner_questions=questions_for_owner,
+    )
+    recommendation_groups = methodology_synthesis["recommendation_groups"]
 
     return {
         "status": "ok",
@@ -890,12 +899,14 @@ def build_methodology_audit(workspace: Path, intent_hint: str = "") -> dict[str,
         "observed_signals": observed,
         "intent_signals": intent_signals,
         "unknowns": _unknowns(lowered_files, lowered_dirs, observed),
-        "questions_for_owner": _questions_for_owner(lowered_files, lowered_dirs, observed, recommendations),
+        "questions_for_owner": questions_for_owner,
         "provisional_assumptions": _provisional_assumptions(files, intent),
-        "delivery_map": _delivery_map(lowered_files, lowered_dirs, observed, methodology_domains, recommendations),
+        "delivery_map": _delivery_map(lowered_files, lowered_dirs, observed, methodology_domains, recommendation_groups),
         "methodology_domains": methodology_domains,
         "recommendations": recommendations,
-        "safe_next_action": _safe_next_action(recommendations),
+        "recommendation_groups": recommendation_groups,
+        "methodology_synthesis": methodology_synthesis,
+        "safe_next_action": methodology_synthesis["safe_next_action"],
     }
 
 
@@ -1073,14 +1084,21 @@ def _frontend_signal_evidence(files: set[str], directories: set[str]) -> list[st
         "inp",
         "cls",
     )
-    extensions = (".tsx", ".jsx", ".vue", ".svelte", ".css", ".scss")
+    component_or_style_extensions = (".tsx", ".jsx", ".vue", ".svelte", ".css", ".scss")
     evidence = [
         path
         for path in files
         if path in exact_files
-        or path.startswith(directory_prefixes)
         or any(fragment in path for fragment in fragments)
-        or path.endswith(extensions)
+        or path.endswith(component_or_style_extensions)
+        or (
+            path.startswith(directory_prefixes)
+            and (
+                path.endswith(component_or_style_extensions)
+                or "/ui/" in path
+                or path.startswith(("pages/", "routes/", "components/", "widgets/", "src/pages/", "src/routes/", "src/components/", "src/widgets/"))
+            )
+        )
     ]
     evidence.extend(directory for directory in directories if directory.startswith(("components", "pages", "routes", "src/components", "src/pages")))
     return evidence
@@ -1224,7 +1242,6 @@ def _codex_agentic_signal_evidence(files: set[str], directories: set[str]) -> li
 def _security_signal_evidence(files: set[str], directories: set[str]) -> list[str]:
     directory_prefixes = (
         ".codex/",
-        ".github/workflows/",
         "abuse/",
         "agents/",
         "audit/",
@@ -1269,6 +1286,7 @@ def _security_signal_evidence(files: set[str], directories: set[str]) -> list[st
         path
         for path in files
         if path.startswith(directory_prefixes)
+        or _is_security_relevant_workflow(path)
         or any(fragment in path for fragment in file_fragments)
         or path in {"security.md", "dependabot.yml", "package-lock.json", "pnpm-lock.yaml", "yarn.lock", "poetry.lock"}
     ]
@@ -1281,6 +1299,26 @@ def _security_signal_evidence(files: set[str], directories: set[str]) -> list[st
     if _security_evidence_is_docs_only_article(evidence):
         return []
     return evidence
+
+
+def _is_security_relevant_workflow(path: str) -> bool:
+    if not path.startswith(".github/workflows/"):
+        return False
+    return any(
+        term in path
+        for term in (
+            "deploy",
+            "environment",
+            "permission",
+            "policy",
+            "production",
+            "publish",
+            "release",
+            "secret",
+            "security",
+            "token",
+        )
+    )
 
 
 def _security_evidence_is_docs_only_article(evidence: list[str]) -> bool:
@@ -1620,7 +1658,34 @@ def _delivery_release_operations_applies(
 
 
 def _delivery_release_operations_not_applicable(intent: str) -> bool:
-    return any(phrase in intent for phrase in DELIVERY_NOT_APPLICABLE_PHRASES)
+    return any(phrase in intent for phrase in DELIVERY_NOT_APPLICABLE_PHRASES) or _docs_only_release_context(intent)
+
+
+def _docs_only_release_context(intent: str) -> bool:
+    if "docs-only" not in intent:
+        return False
+    if not _mentions_any(intent, {"release notes", "release note", "changelog", "release"}):
+        return False
+    return not _mentions_any(
+        intent,
+        {
+            "artifact upload",
+            "ci/cd",
+            "deploy",
+            "deployed",
+            "deployment",
+            "external action",
+            "package registry",
+            "production",
+            "publish",
+            "published",
+            "runtime",
+            "store",
+            "tag",
+            "user-impact",
+            "user impact",
+        },
+    )
 
 
 def _codex_agentic_workflow_applies(observed: list[dict[str, Any]], intent: str) -> bool:
@@ -4718,6 +4783,20 @@ def _delivery_release_operations_recommendations(
     )
     readiness_claim = _mentions_any(intent, DELIVERY_READINESS_CLAIMS)
     package_release_work = _has_signal(observed, "release_file") and "package.json" in files
+    ci_release_or_deploy_work = _has_ci_release_or_deploy_workflow(observed)
+    tooling_only_release_work = _mentions_any(
+        intent,
+        {
+            "manual monitoring",
+            "observability tooling",
+            "opentelemetry",
+            "pagerduty",
+            "release tooling",
+            "release-please",
+            "semantic-release",
+            "versioning tooling",
+        },
+    )
     operational_release = (
         high_risk_release
         or package_release_work
@@ -4752,7 +4831,8 @@ def _delivery_release_operations_recommendations(
                 "dora",
             },
         )
-        or _has_any_signal(observed, {"ci_configuration", "deployment_configuration"})
+        or _has_signal(observed, "deployment_configuration")
+        or ci_release_or_deploy_work
     )
 
     def add(
@@ -5258,7 +5338,7 @@ def _delivery_release_operations_recommendations(
             action="Stage incident-record.md and postmortem.md before closing incident or failed-release work.",
         )
 
-    if operational_release and _mentions_any(intent, {"opentelemetry", "prometheus", "grafana", "sentry", "datadog", "pagerduty", "opsgenie", "on-call", "oncall", "manual monitoring", "observability"}) and not _artifact_present(files, "observability-map.md"):
+    if (operational_release or tooling_only_release_work) and _mentions_any(intent, {"opentelemetry", "prometheus", "grafana", "sentry", "datadog", "pagerduty", "opsgenie", "on-call", "oncall", "manual monitoring", "observability"}) and not _artifact_present(files, "observability-map.md"):
         add(
             "observability_on_call_tooling_present",
             "observability-map.md",
@@ -5625,6 +5705,19 @@ def _has_signal(observed: list[dict[str, Any]], signal_id: str) -> bool:
 
 def _has_any_signal(observed: list[dict[str, Any]], signal_ids: set[str]) -> bool:
     return any(signal["id"] in signal_ids for signal in observed)
+
+
+def _has_ci_release_or_deploy_workflow(observed: list[dict[str, Any]]) -> bool:
+    for signal in observed:
+        if signal.get("id") != "ci_configuration":
+            continue
+        for path in signal.get("evidence", []):
+            if any(
+                term in str(path)
+                for term in ("deploy", "environment", "production", "publish", "release", "secret")
+            ):
+                return True
+    return False
 
 
 def _mentions_any(text: str, terms: set[str]) -> bool:

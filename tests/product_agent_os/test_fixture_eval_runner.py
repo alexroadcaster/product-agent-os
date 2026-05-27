@@ -109,6 +109,7 @@ class FixtureEvalRunnerTest(unittest.TestCase):
         self.assertTrue(results["python-app"]["expected_checks"]["transcript_session_eval_runner_contract_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["standards_trigger_contract_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["methodology_applicability_contract_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["semantic_evidence_sufficiency_contract_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["business_product_contract_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["requirements_domain_contract_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["solution_architecture_contract_present"])

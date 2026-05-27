@@ -708,12 +708,68 @@ Verification so far:
 - `docs/sources/registry.md` was checked for T9-D12 source impact; no new registry entry was added because this batch operationalizes the checked-in delivery methodology artifact and existing Product-Agent OS behavior rather than introducing new external source-backed platform claims.
 - Commit, push and PR actions remain deferred until explicitly requested.
 
+## Task 20 Cross-Domain Synthesis Baseline
+
+Status: `in_progress`
+
+Source audited: all files under `docs/methodologies/`
+
+Baseline duplicate gates before synthesis:
+
+- `accepted_gap_recorded`: `requirements_domain`, `solution_architecture`.
+- `automation_manual_stability_present`: `codex_agentic_workflow`, `delivery_release_operations`.
+- `bounded_context_architecture_boundary_trace`: `requirements_domain`, `solution_architecture`.
+- `external_write_approval_present`: `api_integrations`, `security_privacy_compliance`.
+
+Baseline duplicate artifacts before synthesis:
+
+- `approval-record.md`: `codex_agentic_workflow`, `security_privacy_compliance`, `delivery_release_operations`.
+- `security-risk-review.md`: `solution_architecture`, `backend`, `api_integrations`, `database_data`, `llm_ai_rag`, `security_privacy_compliance`.
+- `api-contract-review.md`: `solution_architecture`, `quality_testing_evals`, `frontend`, `backend`, `api_integrations`, `database_data`.
+- `test-eval-matrix.md`: `quality_testing_evals`, `frontend`, `backend`, `llm_ai_rag`.
+- `release-readiness.md`: `database_data`, `delivery_release_operations`.
+- `architecture-overview.md`: `solution_architecture`, `backend`.
+
+Baseline duplicate eval fields before synthesis:
+
+- `accepted_gap_contract_present`: `requirements_domain`, `solution_architecture`.
+- `api_security_review_contract_present`: `api_integrations`, `security_privacy_compliance`.
+- `automation_manual_stability_contract_present`: `codex_agentic_workflow`, `delivery_release_operations`.
+- `external_write_approval_contract_present`: `api_integrations`, `security_privacy_compliance`.
+- `post_release_measurement_contract_present`: `business_product`, `delivery_release_operations`.
+
+Current fixture symptoms to resolve during Task 20:
+
+- RAG ingestion can miss AI/RAG routing when no explicit `rag/` directory exists and the evidence is expressed through database ingestion or lineage terms.
+
+Symptoms resolved by batch `T9-S-M5..M9`:
+
+- backend FSD-like directories no longer trigger frontend recommendations without UI/runtime evidence.
+- security/payment and release risks can outrank generic quality strategy in `safe_next_action`.
+- CI-only workflows, docs-only release notes and tooling-only release files no longer prove security or release readiness without owner-reviewed evidence.
+
+Batch `T9-S-M0..M4` implemented:
+
+- Added RED synthesis tests and kept the expected RED failure evidence.
+- Added additive top-level `synthesis` catalog metadata without changing domain `gates`, `artifacts` or `eval_fields` list shapes.
+- Added shared gate owners, artifact owners, artifact aliases, source artifact decisions, priority tie-breakers, conflict rules, false-positive rule metadata, semantic evidence sufficiency and owner-question dedupe metadata.
+- Added source artifact compatibility coverage for methodology-source artifact names such as `context-map.md`, `agent-eval-case.md`, `skill-candidate.md`, `ui-flow-spec.md`, `visual-evidence-packet.md`, `threat-model.md`, `asvs-mapping.md`, `runbook.md`, `slo.md` and `CHANGELOG.md`.
+- Added pure `methodology_synthesis.py` helpers for grouped recommendations, source artifact classification, source artifact ledger and owner-question dedupe. Audit output integration is intentionally deferred to `T9-S-M5`.
+
+Batch `T9-S-M5..M9` implemented:
+
+- Integrated `methodology_synthesis` into `build_methodology_audit()` as additive top-level `recommendation_groups` and `methodology_synthesis` output while keeping existing recommendation keys compatible.
+- Made `safe_next_action` risk-aware so high-risk security, release, payment and public-contract blockers can outrank generic quality recommendations.
+- Added a discovery `methodology_synthesis` applicability packet with `present_unverified` status and evidence for recommendation groups, source artifact ledger and semantic evidence sufficiency.
+- Added shared `semantic_evidence_sufficiency` generated control-plane, readiness and behavioral eval contracts, including owner-reviewed accepted-gap fields.
+- Hardened false-positive routing for backend FSD-like TypeScript directories, CI-only workflows, docs-only release notes and tooling-only release artifacts.
+
 ## Cross-Domain Synthesis Backlog
 
 | Status | Item | Reason |
 | --- | --- | --- |
-| `planned` | Normalize repeated methodology gates across domains. | Avoid duplicate recommendations for owner questions, evidence, metrics, source status and approval boundaries. |
-| `planned` | Add cross-domain false-positive fixtures. | Ensure one methodology signal does not force unrelated heavy process on simple work. |
+| `in_progress` | Normalize repeated methodology gates across domains. | Avoid duplicate recommendations for owner questions, evidence, metrics, source status and approval boundaries. |
+| `in_progress` | Add cross-domain false-positive fixtures. | Ensure one methodology signal does not force unrelated heavy process on simple work. Batch `T9-S-M5..M9` added focused temp-workspace tests; packaged fixture expansion remains open. |
 | `planned` | Reuse decision horizon across requirements, architecture, release and operations domains. | Product formalism should scale by `discovery`, `MVP`, `beta`, `production` and `scale` rather than forcing production ceremony on early discovery. |
 | `planned` | Normalize outcome metric levels across product, quality, release and workflow automation domains. | Separate `business_outcome`, `product_outcome` and `feature_traction_metric` to reduce proxy metric risk. |
 | `planned` | Standardize no-production-telemetry fallback language. | Product, release and operations domains need the same rule: lack of telemetry is a gap, not success evidence. |
@@ -733,12 +789,12 @@ Verification so far:
 | `planned` | Share eval baseline/rerun evidence with LLM/AI/RAG. | T9-D4 defines eval evidence as a quality gate; T9-D10 will own AI behavior, retrieval, grounding, model and grader detail. |
 | `planned` | Share CI quality gate evidence with Delivery and Operations. | T9-D4 defines local/CI evidence and permission boundaries; T9-D12 will own release, rollout and operational gate depth. |
 | `planned` | Normalize current evidence before completion across all domains. | Completion/readiness claims must stay evidence-bound regardless of which methodology domain owns the slice. |
-| `planned` | Normalize semantic evidence sufficiency review across high-risk domains. | High-risk, production, release, security-sensitive, AI behavior and public-contract slices need explicit owner review that the recorded tests/evals/manual evidence are sufficient for the real project risk, or an accepted gap with owner, reason, review date, downstream risk and follow-up condition. |
+| `done` | Normalize semantic evidence sufficiency review across high-risk domains. | High-risk, production, release, security-sensitive, AI behavior and public-contract slices now share generated control-plane, readiness and behavioral eval contracts for owner-reviewed evidence sufficiency or an accepted gap with owner, reason, review date, downstream risk and follow-up condition. |
 | `planned` | Revisit deferred quality artifacts after stack-specific slices. | Mutation, property-based, flaky ledger, CI quality gates and eval run report may deserve standalone templates only after later domains prove separate ownership. |
 | `planned` | Reuse Codex runtime routing across AI, security and delivery domains. | T9-D5 defines Codex App/CLI/IDE/codex exec/GitHub Action/MCP/Agents SDK/automation boundaries before later domains add model, security and release-specific depth. |
 | `planned` | Normalize capability activation approvals across MCP, hooks, plugins, automations, CI and external systems. | T9-D5 keeps capability activation staged-first and approval-bound; Security and Delivery slices will own least-privilege and release-risk details. |
 | `planned` | Revisit deferred Codex workflow artifacts after AI and Operations slices. | Standalone memory, agent readiness, agent eval case, skill failure log and hook activation records may deserve separate templates only after later slices prove separate ownership. |
-| `planned` | Synthesize final `methodology-applicability.json` contract. | Give lifecycle skills a stable packet for route decisions and staged artifact suggestions. |
+| `in_progress` | Synthesize final `methodology-applicability.json` contract. | Batch `T9-S-M5..M9` added a `methodology_synthesis` applicability packet; final route/staged-artifact packet shape remains open. |
 | `planned` | Update operator docs after all domain slices. | Keep the public docs aligned with the implemented domain catalog. |
 
 ## Verification Evidence
@@ -750,6 +806,28 @@ Current foundation evidence is recorded in the branch commits for Tasks 1 throug
 - `$env:PYTHONPATH='C:\tmp\codex_docs_mkdocs'; $env:NO_MKDOCS_2_WARNING='1'; python -m mkdocs build --strict`
 
 Domain slices must also run the focused catalog/audit tests, fixture evals and any domain-specific docs checks added by that slice.
+
+`T9-S` Task 20 batch `M0..M4` evidence:
+
+- RED run: `python -m unittest tests.product_agent_os.test_methodology_synthesis -v` failed as expected before implementation on missing backlog baseline, `synthesis` catalog block, `SOURCE_ARTIFACT_TEMPLATE_ALIASES` and `methodology_synthesis.py`.
+- Focused suite: `python -m unittest tests.product_agent_os.test_methodology_synthesis tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_infrastructure_templates -v` ran 102 tests with `OK`.
+- Fixture runner CLI check: `python -m unittest tests.product_agent_os.test_fixture_eval_runner.FixtureEvalRunnerTest.test_cli_prints_json_and_exits_zero_when_all_fixtures_are_ok -v` ran 1 test with `OK`.
+- Full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` exited `0`.
+- Fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0`.
+- Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` exited `0`.
+- Docs check: `python tools\check_docs.py` passed.
+- Diff hygiene: `git diff --check` exited `0`.
+
+`T9-S` Task 20 batch `M5..M9` evidence:
+
+- RED checks failed as expected before implementation on risk-aware recommendation ordering, missing audit/discovery synthesis packets, missing semantic evidence sufficiency contract, backend FSD-like false-positive routing and CI-only release/security escalation.
+- Focused GREEN check: `python -m unittest tests.product_agent_os.test_methodology_synthesis.MethodologySynthesisContractTest.test_risk_aware_synthesis_prioritizes_security_and_release_over_generic_quality tests.product_agent_os.test_methodology_audit.MethodologyAuditContractTest.test_audit_exposes_grouped_synthesis_without_losing_existing_keys tests.product_agent_os.test_methodology_audit.MethodologyAuditContractTest.test_security_release_and_quality_safe_next_action_resolution tests.product_agent_os.test_discovery.DiscoveryTest.test_methodology_applicability_reports_status_packets tests.product_agent_os.test_discovery.DiscoveryTest.test_backend_fsd_like_typescript_dirs_do_not_trigger_frontend_without_ui_runtime_evidence tests.product_agent_os.test_discovery.DiscoveryTest.test_ci_only_workflow_does_not_escalate_to_security_or_release_p0 tests.product_agent_os.test_infrastructure_templates.InfrastructureTemplateTest.test_cross_domain_semantic_evidence_sufficiency_contract_is_shared tests.product_agent_os.test_behavioral_workflow_evals.BehavioralWorkflowEvalTest.test_behavioral_eval_template_validates_expected_contract tests.product_agent_os.test_behavioral_workflow_evals.BehavioralWorkflowEvalTest.test_behavioral_eval_cases_encode_forbidden_shortcuts tests.product_agent_os.test_fixture_eval_runner.FixtureEvalRunnerTest.test_fixture_eval_checks_expected_renderer_behavior_by_fixture -v` ran 10 tests with `OK`.
+- Full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 492 tests with `OK`.
+- Fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0` with all fixtures `ok: true`, renderer file count 186 and `semantic_evidence_sufficiency_contract_present: true`.
+- Transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 5 sessions and 0 failures.
+- Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
+- Docs check: `python tools\check_docs.py` passed.
+- Diff hygiene: `git diff --check` exited `0`.
 
 `T9-D1` evidence:
 
