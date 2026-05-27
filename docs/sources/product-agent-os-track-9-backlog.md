@@ -862,6 +862,47 @@ Domain slices must also run the focused catalog/audit tests, fixture evals and a
 - Diff hygiene: `git diff --check` exited `0`.
 - Commit, push and PR actions remain deferred until explicitly requested.
 
+`T9-R` Task 21 batch `M0..M6` evidence:
+
+- RED runtime tests failed as expected before implementation on missing compact methodology packet schema, route propagation, validation, finish options, recommendation-only no-write behavior and detection-only completion blocking.
+- Focused runtime suite: `python -m unittest tests.product_agent_os.test_codex_runtime_runner_contracts tests.product_agent_os.test_codex_runtime_runner_state_routes tests.product_agent_os.test_codex_runtime_runner_cli tests.product_agent_os.test_codex_runtime_runner_fixture_eval -v` ran 28 tests with `OK`.
+- Full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 502 tests with `OK`.
+- Fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0`.
+- Transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 5 sessions and 0 failures.
+- Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
+- Docs check: `python tools\check_docs.py` passed.
+- Diff hygiene: `git diff --check` exited `0`.
+
+`T9-R` Task 21 batch `M7..M13` evidence:
+
+- RED/focused run first failed as expected on missing high-risk methodology approval, automation maturity and fixture checks, then ran 36 tests with `OK`.
+- Guard suite: `python -m unittest tests.product_agent_os.test_codex_runtime_runner_guards -v` ran 6 tests with `OK`.
+- Full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 508 tests with `OK`.
+- Fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0`; compact summary reported 80 fixtures, 0 failures, 13 codex-runner fixtures and new runtime checks `runtime_methodology_packet_present`, `runtime_finish_options_approval_bound`, `runtime_detection_not_completion`, `runtime_external_write_blocked`, `runtime_automation_maturity_required`, `runtime_methodology_redaction_enforced`, `runtime_malformed_methodology_packet_blocked` all `true`.
+- Transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 5 sessions and 0 failures.
+- Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
+- Docs check: `python tools\check_docs.py` passed.
+- Diff hygiene: `git diff --check` exited `0`.
+
+`T9-R` Task 21 row `M14` evidence sync:
+
+- Backlog, RUNLOG, root control-plane/system files and the Track 9 plan next-action row now record current Task 21 evidence through `T9-R-M14`.
+- The plan/backlog next action was corrected from stale `Task 22` wording to the remaining Task 21 expansion `T9-R-M16..M25`; `T9-R-M15` commit/push remains explicit-only.
+- Source registry was not changed because this row records internal implementation evidence and checked-in methodology/runtime behavior, not new external source-backed claims.
+- Docs check: `python tools\check_docs.py` passed.
+- Diff hygiene: `git diff --check` exited `0`.
+
+## Runtime Runner And Finish Options Backlog
+
+| Status | Item | Reason |
+| --- | --- | --- |
+| `done` | Compact runtime methodology packet and finish options. | Runtime routes carry bounded methodology recommendations, groups, owner questions, source artifact ledger, semantic sufficiency and safe next action with ordered finish options. |
+| `done` | Recommendation-only no-write and detection-only no-completion guards. | Methodology detections and recommendations remain read-only evidence until approval, staging target and current verification evidence exist. |
+| `done` | High-risk action, external-write and automation maturity safety. | Synthetic runtime fixtures prove approval-bound external actions, automation manual stability/value requirements, redaction and malformed packet fallback. |
+| `done` | Evidence/backlog sync through `T9-R-M14`. | Current verification evidence, residual risks and next action are recorded in backlog, RUNLOG and root control-plane/system files. |
+| `planned` | Complete Task 21 expansion rows `T9-R-M16..M25`. | Remaining rows add CLI/validator JSON output tests, generated control-plane/eval/handoff support, schema-v1 compatibility, status-to-finish-options mapping, cross-domain runtime bridge checks, compact first-response fields, structured high-risk taxonomy and ownership/parallelism routing guards. |
+| `planned` | Start `Task 22` final Track 9 documentation sync. | `Task 22` should begin only after the Task 21 expansion rows are implemented or explicitly deferred. |
+
 `T9-D1` evidence:
 
 - `python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_fixture_eval_runner -v` ran 105 tests with `OK`.

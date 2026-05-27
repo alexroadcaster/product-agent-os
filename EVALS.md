@@ -35,7 +35,7 @@ Generated at: 2026-05-27
 - False-positive scenario fixture coverage: implemented in `T8-GX`.
 - Detailed discovery status depth: implemented in `T8-D`.
 - Track 9 methodology intelligence plan: authored in `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`.
-- Track 9 foundation, `T9-D1` Business/Product, `T9-D2` Requirements/Domain, `T9-D3` Solution Architecture, `T9-D4` Quality/Testing/Evals, `T9-D5` Codex/Agentic Workflow, `T9-D6` Frontend, `T9-D7` Backend, `T9-D8` API & Integrations, `T9-D9` Database & Data, `T9-D10` LLM / AI / RAG, `T9-D11` Security, Privacy & Compliance, `T9-D12` Delivery, Release & Operations and `T9-S` Task 20 Cross-Domain Synthesis: implemented.
+- Track 9 foundation, `T9-D1` Business/Product, `T9-D2` Requirements/Domain, `T9-D3` Solution Architecture, `T9-D4` Quality/Testing/Evals, `T9-D5` Codex/Agentic Workflow, `T9-D6` Frontend, `T9-D7` Backend, `T9-D8` API & Integrations, `T9-D9` Database & Data, `T9-D10` LLM / AI / RAG, `T9-D11` Security, Privacy & Compliance, `T9-D12` Delivery, Release & Operations, `T9-S` Task 20 Cross-Domain Synthesis and `T9-R` Task 21 Runtime Runner And Finish Options through `M14`: implemented.
 
 ## Track 9 Methodology Intelligence Evals
 
@@ -45,6 +45,15 @@ Generated at: 2026-05-27
 - Proportionality: DDD, FSD, docs portals, security/compliance, AI/RAG evals, database production gates and release governance must be conditional, with `not_applicable` or accepted gaps allowed when justified.
 - Evidence: section completion requires focused tests/evals plus full verification proportional to touched files.
 - Residual risk: semantic methodology quality still requires owner/domain/security/product review and cannot be proven by template presence alone.
+
+## Runtime Runner Finish Option Evals
+
+- `runtime_methodology_packet_present`: implemented through `T9-R-M14`.
+- Required evidence: compact `methodology_packet`, bounded list/type validation, runtime route propagation, ordered `finish_options`, owner questions, source artifact ledger, semantic evidence sufficiency, safe next action and read-only methodology write policy.
+- Approval boundary: recommendation-only packets cannot stage artifacts; high-risk methodology actions and external writes remain approval-required; automation promotion requires manual stability plus value/maturity evidence.
+- Completion boundary: `present_unverified` methodology detections, recommendation text and source artifact presence do not satisfy completed/readiness claims without current verification evidence.
+- Runtime safety checks: methodology route payloads are redacted, malformed packets return stable errors without traceback, and synthetic codex-runner fixtures cover approval, detection-only, external-write, automation maturity, redaction and malformed-packet paths.
+- Residual risk: current runtime checks cover synthetic methodology packets and free-text high-risk matching; remaining Task 21 rows must add CLI/validator depth, generated control-plane/eval/handoff contracts, schema-v1 compatibility, status-to-finish-options mapping, cross-domain runtime bridge checks, compact first-response fields, structured high-risk taxonomy and ownership/parallelism routing.
 
 ## Business Product Evals
 
