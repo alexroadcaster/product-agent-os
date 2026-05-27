@@ -1,6 +1,12 @@
 # Product-Agent OS behavioral evals
 
 Source status: `official + experiment`  
+
+## Task 22 eval closure
+
+Task 22 eval closure treats fixture eval limits as part of the contract. Fixture eval and docs tests prove structure, expected terms, forbidden terms and route safety; synthetic regression evidence does not prove real project readiness. Real projects still need current command evidence, runtime evidence, owner review or explicit accepted gaps.
+
+Runtime packet safety is covered by deterministic checks for `methodology_packet`, `finish_options`, approval-bound high-risk actions, redaction and malformed packet fallback. The explicit runtime packet safety guard is detection-not-completion plus approval-bound high-risk routing. transcript/session replay stays local and deterministic; it catches missing expected behavior, forbidden shortcuts and privacy/no-secrets issues, not nuanced semantic quality.
 Источники: [Codex use cases](https://developers.openai.com/codex/use-cases), [Codex workflows](https://developers.openai.com/codex/workflows), [OpenAI eval best practices](https://developers.openai.com/api/docs/guides/evaluation-best-practices), [Agent evals](https://developers.openai.com/api/docs/guides/agent-evals), [Product-Agent OS scenarios](scenarios.md).
 
 Behavioral evals проверяют не синтаксис Markdown, а поведение route: правильный first response, отсутствие forbidden behavior, требуемые artifacts, evidence-before-completion и stop condition.

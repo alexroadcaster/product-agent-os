@@ -2,6 +2,12 @@
 
 Source status: `local product design + experiment`
 
+## Task 22 final methodology contract
+
+Task 22 final methodology contract закрывает Track 9 как read-only methodology intelligence layer. The runtime route may carry `methodology_packet`, `finish_options`, `owner_questions`, `safe_next_action`, `methodology_synthesis` and `source_artifact_ledger`, but those packets are recommendation and routing evidence, not target-project mutation.
+
+The staged artifact boundary remains strict: methodology recommendations can produce a report, owner question or staged proposal, but approval_required actions such as release, deploy, publish, DB access, security scan, external write, hook activation or automation activation stay blocked until explicit owner approval and current evidence exist.
+
 Methodology Intelligence is the Track 9 layer of Product-Agent OS. It reads workspace evidence, maps it to the methodology atlas, and returns a read-only route packet before any staged artifact or target-project write is proposed.
 
 ## Inputs

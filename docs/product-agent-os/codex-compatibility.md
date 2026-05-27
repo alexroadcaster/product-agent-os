@@ -1,6 +1,12 @@
 # Product-Agent OS Codex compatibility
 
 Source status: `official + experiment`  
+
+## Task 22 canonical safety boundary
+
+Task 22 canonical safety boundary: no live model call, no separate OpenAI API key, no standalone Agents SDK activation, no global config mutation, no silent MCP/server/hook/automation activation, no unapproved external writes, no hosted docs or DB introspection require approval bypass, and no readiness claims from detection.
+
+Codex App, CLI, IDE extension, skills, MCP declarations and staged hooks are supported package surfaces. They are not permission to mutate target workspaces, GitHub, CI, package registries, production databases, hosted documentation, security systems or schedules without explicit approval and current verification evidence.
 Источники: [Codex App](https://developers.openai.com/codex/app), [Codex CLI](https://developers.openai.com/codex/cli), [Codex IDE extension](https://developers.openai.com/codex/ide), [Codex build plugins](https://developers.openai.com/codex/plugins/build), [Agent Skills](https://developers.openai.com/codex/skills), [Codex MCP](https://developers.openai.com/codex/mcp), [Codex hooks](https://developers.openai.com/codex/hooks), [Agent approvals and security](https://developers.openai.com/codex/agent-approvals-security).
 
 Product-Agent OS поддерживает Codex App, CLI и IDE extension как целевые surfaces. Compatibility здесь означает: package можно проверять как Codex plugin, без требования non-Codex adapters, без separate model runner и без silent external activation.

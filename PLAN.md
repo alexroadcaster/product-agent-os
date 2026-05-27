@@ -17,7 +17,8 @@ Generated at: 2026-05-27
 - Track 9 design is recorded in `docs/superpowers/specs/2026-05-25-track-9-methodology-intelligence-design.md`.
 - Track 9 implementation plan is recorded in `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`.
 - Track 10 implementation plan is staged in `docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md`.
-- Next implementation slice: `Task 22` final Track 9 documentation sync; after it closes, Track 10 starts with `Task 23: Guided Question Protocol And Project Status Dashboard`. `T9-R-M15` commit/push remains explicit-only.
+- Task 22 final Track 9 documentation sync is closed in docs, source registry, READMEs and root control-plane scope; final verification evidence is recorded in `TEST.md` and `RUNLOG.md`.
+- Next implementation slice after closure: Track 10 `Task 23: Guided Question Protocol And Project Status Dashboard`. `T9-R-M15` commit/push remains explicit-only.
 
 ## Architecture Boundary
 
@@ -49,12 +50,13 @@ Generated at: 2026-05-27
 | 14 | `T9-S` cross-domain synthesis | `done` | Deduplicated gates, merged artifacts, conflict rules and final baseline |
 | 15 | `Task 21` runtime runner and finish options through `T9-R-M14` | `done` | Runtime consumption of synthesis packets, finish-option behavior and evidence sync |
 | 16 | `Task 21` runtime runner expansion `T9-R-M16..M25` | `done` | CLI/validator, generated control-plane/eval/handoff, compatibility, status mapping, bridge, taxonomy and ownership guards |
-| 17 | `Task 22` final Track 9 documentation sync | `next` | Product-Agent OS docs, source registry/backlog closure and final Track 9 verification |
+| 17 | `Task 22` final Track 9 documentation sync | `done` | Product-Agent OS docs, source registry/backlog closure and final Track 9 verification |
 | 18 | Track 10 `Task 23` guided questions and status dashboard | `planned-after-task-22` | Typed question protocol, answer ledger, status snapshot and staged offline HTML dashboard |
 
 ## Track 10 Handoff
 
 - Start Track 10 only after Track 9 `Task 22` closes docs, source registry and backlog references for Track 1 through Track 9.
+- Track 10 `Task 23` starts only after Task 22 closure and uses the Track 10 plan at `docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md`.
 - During Task 22 closure, absorb the legacy Track 9 `Task 23: Final Verification Baseline` into Task 22 final verification evidence.
 - Track 10 `Task 23` must keep JSON/Markdown as source of truth; `status.html` is a generated review artifact, not an editable database or runtime authority.
 - Track 10 must preserve staged-first behavior: generated question ledgers, status snapshots and dashboard files are proposed under `.codex/product-agent-os/` and protected by existing approval/merge safety.

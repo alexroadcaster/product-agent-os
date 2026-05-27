@@ -914,7 +914,13 @@ Domain slices must also run the focused catalog/audit tests, fixture evals and a
 | `done` | High-risk action, external-write and automation maturity safety. | Synthetic runtime fixtures prove approval-bound external actions, automation manual stability/value requirements, redaction and malformed packet fallback. |
 | `done` | Evidence/backlog sync through `T9-R-M14`. | Current verification evidence, residual risks and next action are recorded in backlog, RUNLOG and root control-plane/system files. |
 | `done` | Complete Task 21 expansion rows `T9-R-M16..M25`. | Added CLI/validator JSON output tests, generated control-plane/eval/handoff support, schema-v1 compatibility, status-to-finish-options mapping, cross-domain runtime bridge checks, compact first-response fields, structured high-risk taxonomy and ownership/parallelism routing guards. |
-| `planned` | Start `Task 22` final Track 9 documentation sync. | `Task 22` should close Product-Agent OS docs, source registry/backlog state and final Track 9 verification after Task 21 runtime expansion. |
+| `done` | Complete `Task 22` final Track 9 documentation sync. | Product-Agent OS docs, source registry/backlog state, READMEs and root control-plane files now close Track 1-9 documentation. Legacy Track 9 `Task 23: Final Verification Baseline` is absorbed into Task 22 final verification evidence before Track 10 `Task 23` starts. |
+
+`Task 22` evidence:
+
+- RED docs run: `python -m unittest tests.product_agent_os.test_product_agent_os_docs -v` failed on missing Task 22 closure assertions before docs edits.
+- Docs synchronized: `docs/product-agent-os/index.md`, `technical.md`, `architecture.md`, `scenarios.md`, `behavioral-evals.md`, `codex-compatibility.md`, `development-standards.md`, `methodology-intelligence.md`, root `README.md`, plugin `README.md`, `docs/sources/registry.md`, root control-plane files and docs tests.
+- Final verification: focused docs tests ran 13 tests with `OK`; full unittest ran 520 tests with `OK`; fixture eval exited `0` with 80 fixtures, 0 failures and renderer file count 186; transcript eval exited `0` with 5 sessions and 0 failures; Codex compatibility returned `status: compatible`; `python tools\check_docs.py`, strict MkDocs with disposable `--site-dir .mkdocs_task22_site`, and `git diff --check` exited `0`.
 
 `T9-D1` evidence:
 

@@ -1,6 +1,12 @@
 # Диаграммы и принципы работы
 
 Source status: `official + experiment`  
+
+## Task 22 layer map
+
+Task 22 layer map закрепляет полный порядок слоев: Track 1 foundation дает plugin package, contracts and validators; Track 2 lifecycle skills задает reusable ownership handoffs; Track 3 staged generation создает proposals outside target workspace; Track 4 approved merge добавляет manifest, approval record and rollback; Track 5 Codex runtime дает deterministic route packet; Track 6 engineering standards добавляет hypothesis, architecture, test/eval and docs gates; Track 7 hardening переводит standards в concrete artifacts; Track 8 scenario workflows выбирают user-job route; Track 9 methodology intelligence добавляет read-only audit, Delivery Map, synthesis and runtime methodology packet.
+
+Этот порядок запрещает stale shortcut "Track 1 -> Track 8 -> Track 9": runtime, standards, hardening, scenarios and methodology synthesis are one stack, and every write still passes staged-first and approval boundaries.
 Источники: [Codex plugins](https://developers.openai.com/codex/plugins), [Agent Skills](https://developers.openai.com/codex/skills), [Subagents](https://developers.openai.com/codex/subagents), [AGENTS.md](https://developers.openai.com/codex/guides/agents-md), [Codex hooks](https://developers.openai.com/codex/hooks), [Agent approvals and security](https://developers.openai.com/codex/agent-approvals-security), [Codex workflows](https://developers.openai.com/codex/workflows), [Technical features](technical.md).
 
 Эта страница показывает не историю реализации, а рабочую модель Product-Agent OS plugin: как он выбирает следующий step, как stages changes, где требует approval и почему automation remains candidate-only.

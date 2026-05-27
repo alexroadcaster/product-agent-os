@@ -24,14 +24,14 @@ Track 10 must start only after Track 9 `Task 22` closes the current Product-Agen
 
 ## Numbering Note
 
-The current Track 9 plan still contains a legacy `Task 23: Final Verification Baseline`. During Task 22 closure, that verification baseline should be absorbed into Task 22 final verification evidence. Track 10 uses `Task 23` for the next product capability:
+The Track 9 plan now keeps the former `Task 23: Final Verification Baseline` only as a legacy checklist section under Task 22. Task 22 absorbs that verification baseline into `T22-U-M23`, so Track 10 uses `Task 23` for the next product capability:
 
 - typed guided questions;
 - answer ledger;
 - status snapshot;
 - offline `status.html` dashboard.
 
-Do not implement Track 10 while Track 9 docs still describe `Task 23` as the final baseline.
+Do not implement Track 10 unless Track 9 docs keep the legacy final baseline absorbed into Task 22 and current verification evidence exists.
 
 ## Product Outcome
 

@@ -1,6 +1,12 @@
 # Product-Agent OS plugin
 
 Source status: `official + experiment`  
+
+## Task 22 final documentation sync closure
+
+Task 22 final documentation sync closure фиксирует Product-Agent OS full stack как рабочий путь для реальных проектов: inspect workspace, отделить prompt intent от workspace evidence, stage infrastructure, получить approved merge, пройти Codex-only runtime routing, применить conditional methodology gates и потребовать evidence before completion.
+
+Tracks 1-9 are implementation provenance, а не основной пользовательский сценарий. Для оператора путь выглядит так: read-only audit -> staged proposal -> approval -> bounded implementation -> checks/evals -> review -> release or learning packet. История Track 1-9 объясняет, откуда появились package contracts, lifecycle skills, generated infrastructure, hardening, runtime runner, engineering standards, scenario workflows и methodology intelligence.
 Источники: [Codex plugins](https://developers.openai.com/codex/plugins), [Build plugins](https://developers.openai.com/codex/plugins/build), [Agent Skills](https://developers.openai.com/codex/skills), [Subagents](https://developers.openai.com/codex/subagents), [AGENTS.md](https://developers.openai.com/codex/guides/agents-md), [Codex hooks](https://developers.openai.com/codex/hooks), [Agent approvals and security](https://developers.openai.com/codex/agent-approvals-security), [Codex workflows](https://developers.openai.com/codex/workflows), [Product-Agent Workflows](../product-agent/overview.md).
 
 `product-agent-os` - локальный Codex plugin для проектов, где Codex App, CLI, IDE extension, subagents, skills, `AGENTS.md`, hooks, evals и automation candidates должны работать как управляемая система delivery, а не как набор разовых prompts.

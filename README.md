@@ -1,5 +1,11 @@
 # Product-Agent OS
 
+## Task 22 final documentation sync closure
+
+Task 22 final documentation sync closure описывает Product-Agent OS full stack after Track 1-9: package contracts, lifecycle skills, staged generation, approved merge, Codex-only runtime, engineering standards, scenario workflows and methodology intelligence. Track 1-9 history is provenance; the user-facing flow is read-only audit -> staged proposal -> approval -> implementation -> evidence -> review/release/learning.
+
+The system remains Codex-first: no standalone Agents SDK runtime, no separate OpenAI API key for local deterministic tooling, no silent hooks or automation, and no completion claim without current evidence.
+
 Product-Agent OS - локальный Codex plugin и методологическая система для тех, кто строит реальные продукты с Codex App, CLI, IDE extension, subagents, skills, `AGENTS.md`, memory, sandbox, approvals, MCP и AI-assisted development.
 
 Он превращает vibe-coding из хаотичного "попросил агента написать код" в управляемую product engineering delivery system: с требованиями, архитектурой, документацией, проверками, агентными командами, release evidence и понятным next action.

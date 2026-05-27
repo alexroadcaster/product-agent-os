@@ -36,16 +36,16 @@ Track 6 and Track 7 do not have dedicated checked-in `docs/superpowers/plans/*tr
 
 | Area | Source file |
 | --- | --- |
-| Workflow standards | [plugins/product-agent-os/assets/templates/workflows/development-standards.md](../../plugins/product-agent-os/assets/templates/workflows/development-standards.md) |
-| Documentation system workflow | [plugins/product-agent-os/assets/templates/workflows/documentation-system.md](../../plugins/product-agent-os/assets/templates/workflows/documentation-system.md) |
-| ADR template | [plugins/product-agent-os/assets/templates/artifact-templates/adr.md](../../plugins/product-agent-os/assets/templates/artifact-templates/adr.md) |
-| Architecture overview template | [plugins/product-agent-os/assets/templates/artifact-templates/architecture-overview.md](../../plugins/product-agent-os/assets/templates/artifact-templates/architecture-overview.md) |
-| Domain modeling template | [plugins/product-agent-os/assets/templates/artifact-templates/domain-modeling.md](../../plugins/product-agent-os/assets/templates/artifact-templates/domain-modeling.md) |
-| Metric spec template | [plugins/product-agent-os/assets/templates/artifact-templates/metric-spec.md](../../plugins/product-agent-os/assets/templates/artifact-templates/metric-spec.md) |
-| API contract review template | [plugins/product-agent-os/assets/templates/artifact-templates/api-contract-review.md](../../plugins/product-agent-os/assets/templates/artifact-templates/api-contract-review.md) |
-| Component card template | [plugins/product-agent-os/assets/templates/artifact-templates/component-card.md](../../plugins/product-agent-os/assets/templates/artifact-templates/component-card.md) |
-| Database dictionary template | [plugins/product-agent-os/assets/templates/artifact-templates/database-dictionary.md](../../plugins/product-agent-os/assets/templates/artifact-templates/database-dictionary.md) |
-| Docs tooling decision template | [plugins/product-agent-os/assets/templates/artifact-templates/docs-tooling-decision.md](../../plugins/product-agent-os/assets/templates/artifact-templates/docs-tooling-decision.md) |
+| Workflow standards | `plugins/product-agent-os/assets/templates/workflows/development-standards.md` |
+| Documentation system workflow | `plugins/product-agent-os/assets/templates/workflows/documentation-system.md` |
+| ADR template | `plugins/product-agent-os/assets/templates/artifact-templates/adr.md` |
+| Architecture overview template | `plugins/product-agent-os/assets/templates/artifact-templates/architecture-overview.md` |
+| Domain modeling template | `plugins/product-agent-os/assets/templates/artifact-templates/domain-modeling.md` |
+| Metric spec template | `plugins/product-agent-os/assets/templates/artifact-templates/metric-spec.md` |
+| API contract review template | `plugins/product-agent-os/assets/templates/artifact-templates/api-contract-review.md` |
+| Component card template | `plugins/product-agent-os/assets/templates/artifact-templates/component-card.md` |
+| Database dictionary template | `plugins/product-agent-os/assets/templates/artifact-templates/database-dictionary.md` |
+| Docs tooling decision template | `plugins/product-agent-os/assets/templates/artifact-templates/docs-tooling-decision.md` |
 
 ## Task 22 extraction contract
 
@@ -60,4 +60,3 @@ For each source file in the queue, produce a concise analysis packet before edit
 | `missing_task_22_sync` | What is not yet represented in Task 22 final docs sync, Track 8 bridge, Track 9 docs, eval docs, README, source registry or control-plane templates. |
 | `false_positive_or_overreach_risk` | Where docs could force too much process, resurrect rejected runtime paths, or claim unverified capability. |
 | `candidate_task_rows` | Concrete `T22-*` row candidates with acceptance criteria and verification commands. |
-

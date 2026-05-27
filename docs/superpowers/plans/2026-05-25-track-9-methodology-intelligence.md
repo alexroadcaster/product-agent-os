@@ -3660,6 +3660,9 @@ Expected: all commands exit `0`. Strict MkDocs is required only if navigation, M
 - Modify: `EVALS.md`
 - Modify: `RUNLOG.md`
 - Modify: `docs/sources/registry.md`
+- Modify: `docs/sources/product-agent-os-track-9-backlog.md`
+- Modify: `AGENTS.md`
+- Modify: `docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md`
 
 Task 22 consolidated implementation matrix (file/theme-based, preserving Track 1-9 traceability):
 
@@ -3687,11 +3690,11 @@ Task 22 consolidated implementation matrix (file/theme-based, preserving Track 1
 | `T22-U-M19` | Update technical commands, schemas and validators | `docs/product-agent-os/technical.md`, `plugins/product-agent-os/README.md` | Technical docs include real commands, JSON fields, schema v1 compatibility, validators, renderer output, runtime CLI, fixture eval checks, transcript eval and limitations without presenting implemented features as planned. | `F-M3`, `G-M2`, `C-M2`, `C-M3`, `M14`. |
 | `T22-U-M20` | Update README quickstart and value proposition for the full stack | `README.md`, `plugins/product-agent-os/README.md` | README text explains Product-Agent OS value across Track 1-9, not only Track 8/9: package, lifecycle, staged generation, approved merge, runtime routing, engineering standards, hardening, scenarios and methodology intelligence. | Resolves narrow `M19`; covers README parts of many former rows. |
 | `T22-U-M21` | Update source registry closure for Track 1-9 | `docs/sources/registry.md` | Registry includes Track 1-9 closure entries for inventory, design/backlog docs, implementation paths, docs pages, source policies, OpenAPI v3.2.0 freshness claim, eval/fixture/transcript evidence and current verification baseline. | Resolves narrow `M20`; covers `F-M5`, `G-M8`, `H-M6`, `H-M10`, `C-M10`, `E-M5`, `E-M10`, `Q-M9`, `Q-M12`, `M11`, `M20`. |
-| `T22-U-M22` | Update root control-plane closure state | `REQUIREMENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md`, `RUNLOG.md` | Root control plane records Task 22 consolidated scope, Track 1-9 acceptance, verification commands, eval rubrics, residual risks, source inventory links, focused evidence and next Task 23 baseline verification. | `F-M5`, `G-M8`, `H-M10`, `C-M10`, `E-M10`, `Q-M12`, `M21`. |
+| `T22-U-M22` | Update root control-plane closure state | `REQUIREMENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md`, `RUNLOG.md`, `docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md` | Root control plane records Task 22 consolidated scope, Track 1-9 acceptance, verification commands, eval rubrics, residual risks, source inventory links and focused evidence; legacy Track 9 Task 23 baseline verification is absorbed into Task 22 so Track 10 can use Task 23 for the guided question/status dashboard capability. | `F-M5`, `G-M8`, `H-M10`, `C-M10`, `E-M10`, `Q-M12`, `M21`. |
 | `T22-U-M23` | Run final docs verification and diff hygiene | docs tests, transcript eval, docs check, strict MkDocs, `git diff --check` | `python -m unittest tests.product_agent_os.test_product_agent_os_docs -v`, transcript eval, `python tools\check_docs.py`, strict MkDocs and `git diff --check` exit `0`; this absorbs the former verification expansion meta-task. | Resolves `M8`/`M23` duplication. |
 | `T22-U-M24` | Keep commit/push explicit-only | Git only after user approval | Do not run `git add`, `git commit`, push or PR creation unless the user explicitly asks; if approved, commit only after all verification evidence is current. This row is a release guard, not a docs implementation task. | Clarifies `M24`. |
 
-- [ ] **Step 1: Add docs RED tests**
+- [x] **Step 1: Add docs RED tests**
 
 Extend `tests/product_agent_os/test_product_agent_os_docs.py` with consolidated grouped assertions for:
 
@@ -3705,7 +3708,7 @@ Extend `tests/product_agent_os/test_product_agent_os_docs.py` with consolidated 
 - behavioral evals, fixture eval limits and transcript eval;
 - source registry closure and stale-claim rejection.
 
-- [ ] **Step 2: Run RED docs tests**
+- [x] **Step 2: Run RED docs tests**
 
 Run:
 
@@ -3715,7 +3718,7 @@ python -m unittest tests.product_agent_os.test_product_agent_os_docs -v
 
 Expected: fail until docs are updated.
 
-- [ ] **Step 3: Update user-facing docs**
+- [x] **Step 3: Update user-facing docs**
 
 Update Product-Agent OS docs by file/theme rather than by historical task row:
 
@@ -3728,7 +3731,7 @@ Update Product-Agent OS docs by file/theme rather than by historical task row:
 - `codex-compatibility.md`: canonical safety boundary for Codex App, CLI, IDE extension, skills, MCP, staged hooks, optional Agents SDK design-only path, approvals and no external activation;
 - `development-standards.md`: Track 6/7 standards, artifact catalog, source-backed claims, Red-Green-Refactor, readiness status vocabulary and no-forced-ceremony rules.
 
-- [ ] **Step 4: Update root control-plane files**
+- [x] **Step 4: Update root control-plane files**
 
 Update:
 
@@ -3738,7 +3741,7 @@ Update:
 - `EVALS.md`: docs/eval rubrics, readiness/evidence quality and residual risks.
 - `RUNLOG.md`: latest Task 22 evidence, source inventory links and open risks.
 
-- [ ] **Step 5: Update source registry**
+- [x] **Step 5: Update source registry**
 
 Add Track 1-9 implementation closure entries to `docs/sources/registry.md` referencing:
 
@@ -3749,7 +3752,7 @@ Add Track 1-9 implementation closure entries to `docs/sources/registry.md` refer
 - Track 6/7 methodology research, gap matrix and artifact templates;
 - fixture/transcript eval paths and current verification baseline.
 
-- [ ] **Step 6: Run docs verification**
+- [x] **Step 6: Run docs verification**
 
 Run:
 
@@ -3777,13 +3780,15 @@ Expected: commit succeeds.
 
 ---
 
-### Task 23: Final Verification Baseline
+### Legacy Track 9 Final Verification Baseline (absorbed into Task 22)
+
+Track 10 uses `Task 23` for Guided Question Protocol And Project Status Dashboard. The former Track 9 final verification baseline below is retained as historical checklist material only; its required evidence is now part of `T22-U-M23`.
 
 **Files:**
 - Read-only verification across repository.
 - Modify only `RUNLOG.md`, `TEST.md`, `EVALS.md` if evidence summaries need current command outputs.
 
-- [ ] **Step 1: Run full test suite**
+- [x] **Step 1: Run full test suite**
 
 Run:
 
@@ -3793,7 +3798,7 @@ python -m unittest discover -s tests -p "test_*.py" -v
 
 Expected: exit `0`; record total test count in `TEST.md` and `RUNLOG.md`.
 
-- [ ] **Step 2: Run fixture eval**
+- [x] **Step 2: Run fixture eval**
 
 Run:
 
@@ -3803,7 +3808,7 @@ python plugins\product-agent-os\scripts\run_fixture_eval.py
 
 Expected: exit `0`; record fixture count, failures and key Track 9 checks.
 
-- [ ] **Step 3: Run transcript eval**
+- [x] **Step 3: Run transcript eval**
 
 Run:
 
@@ -3813,7 +3818,7 @@ python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-a
 
 Expected: exit `0`; record session count and failures.
 
-- [ ] **Step 4: Run compatibility check**
+- [x] **Step 4: Run compatibility check**
 
 Run:
 
@@ -3823,7 +3828,7 @@ python plugins\product-agent-os\scripts\validate_codex_compatibility.py
 
 Expected: JSON output includes `"status": "compatible"`.
 
-- [ ] **Step 5: Run docs and MkDocs checks**
+- [x] **Step 5: Run docs and MkDocs checks**
 
 Run:
 
@@ -3834,7 +3839,7 @@ $env:PYTHONPATH='C:\tmp\codex_docs_mkdocs'; $env:NO_MKDOCS_2_WARNING='1'; python
 
 Expected: both commands exit `0`.
 
-- [ ] **Step 6: Update final evidence if counts changed**
+- [x] **Step 6: Update final evidence if counts changed**
 
 If test, fixture or MkDocs evidence counts changed, update:
 

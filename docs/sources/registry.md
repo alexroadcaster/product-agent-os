@@ -2740,3 +2740,15 @@ summary: "Candidate source for user reports and operational tricks. Individual c
 relevance: "Future user-insight harvesting."
 trust_level: "low"
 ```
+
+```yaml
+title: "Product-Agent OS Track 1-9 final documentation closure"
+url: "docs/sources/product-agent-os-pre-track-8-implementation-inventory.md; docs/superpowers/specs/2026-05-25-track-9-methodology-intelligence-design.md; docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md; docs/sources/product-agent-os-track-9-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/architecture.md; docs/product-agent-os/scenarios.md; docs/product-agent-os/behavioral-evals.md; docs/product-agent-os/codex-compatibility.md; docs/product-agent-os/development-standards.md; docs/product-agent-os/methodology-intelligence.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/methodology_catalog.py; plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py; plugins/product-agent-os/scripts/product_agent_os/methodology_report.py; plugins/product-agent-os/scripts/product_agent_os/discovery.py; plugins/product-agent-os/scripts/codex_runtime_runner/contracts.py; plugins/product-agent-os/scripts/run_methodology_audit.py; plugins/product-agent-os/scripts/run_fixture_eval.py; plugins/product-agent-os/scripts/run_transcript_eval.py; plugins/product-agent-os/scripts/validate_codex_compatibility.py; tests/product_agent_os/test_product_agent_os_docs.py"
+type: "internal documentation"
+status: "checked-in project source"
+checked_at: "2026-05-27"
+summary: "Task 22 final documentation sync closure for Product-Agent OS Track 1-9, covering pre-Track-8 implementation inventory, Track 9 methodology intelligence design and backlog, user-facing Product-Agent OS docs, READMEs, runtime runner, methodology audit/report/discovery paths, fixture/transcript evals, Codex compatibility validation and root control-plane closure."
+relevance: "Final Track 9 documentation/source-registry closure before Track 10 Task 23 starts; records that legacy Track 9 Task 23 baseline verification is absorbed into Task 22 final verification evidence."
+trust_level: "high"
+verification_status: "Backed by Task 22 RED/GREEN docs tests, transcript eval, docs check, strict MkDocs, full unittest, fixture eval and git diff hygiene in the current closure run. OpenAPI v3.2.0 freshness claim remains sourced by the checked official OpenAPI specification entry and Track 6/7 methodology registry evidence."
+```

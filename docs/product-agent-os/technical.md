@@ -1,6 +1,12 @@
 # Технические особенности и установка
 
 Source status: `official + experiment`  
+
+## Task 22 operator contract
+
+Task 22 operator contract различает base workspace audit profile и Track 9 methodology audit complexity. Первый слой читает stack, files, control-plane state and route inputs; второй слой классифицирует methodology risk, maturity, recommendations and owner questions. `--intent-hint` может помочь routing, но не переопределяет source policy, approvals, sandbox, write guards or external-action boundaries.
+
+Текущие machine-readable surfaces: renderer JSON includes `renderer_file_count`, stage manifest and status fields; runtime JSON includes `codex_runner_result`, `methodology_packet`, `finish_options`, compact first-response fields and schema v1 additive compatibility; audit/report tooling includes `run_methodology_audit.py`; behavioral evidence includes `run_transcript_eval.py` and fixture eval checks. Docs should describe implemented commands and fields, not planned features.
 Additional sources: [Codex MCP](https://developers.openai.com/codex/mcp), [Context7 MCP clients](https://context7.com/docs/resources/all-clients).  
 Источники: [Codex plugins](https://developers.openai.com/codex/plugins), [Build plugins](https://developers.openai.com/codex/plugins/build), [Agent Skills](https://developers.openai.com/codex/skills), [Subagents](https://developers.openai.com/codex/subagents), [Codex hooks](https://developers.openai.com/codex/hooks), [Agent approvals and security](https://developers.openai.com/codex/agent-approvals-security), [Codex automations](https://developers.openai.com/codex/app/automations), [Product-Agent OS plugin](index.md).
 

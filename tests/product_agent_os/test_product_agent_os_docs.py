@@ -10,6 +10,15 @@ CHECK_DOCS = ROOT / "tools" / "check_docs.py"
 SOURCE_REGISTRY = DOCS / "sources" / "registry.md"
 TRACK_BACKLOG = DOCS / "sources" / "product-agent-os-track-8-detailed-backlog.md"
 TRACK9_BACKLOG = DOCS / "sources" / "product-agent-os-track-9-backlog.md"
+TRACK9_PLAN = DOCS / "superpowers" / "plans" / "2026-05-25-track-9-methodology-intelligence.md"
+TRACK10_PLAN = DOCS / "superpowers" / "plans" / "2026-05-27-track-10-guided-questions-status-dashboard.md"
+ROOT_README = ROOT / "README.md"
+PLUGIN_README = ROOT / "plugins" / "product-agent-os" / "README.md"
+REQUIREMENTS = ROOT / "REQUIREMENTS.md"
+PLAN = ROOT / "PLAN.md"
+TEST = ROOT / "TEST.md"
+EVALS = ROOT / "EVALS.md"
+RUNLOG = ROOT / "RUNLOG.md"
 
 
 class ProductAgentOsDocsTest(unittest.TestCase):
@@ -529,6 +538,197 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         ]:
             with self.subTest(development_standards=expected):
                 self.assertIn(expected, development_standards)
+
+    def test_task22_final_docs_sync_user_facing_stack_is_closed(self):
+        documents = {
+            "index": (PRODUCT_AGENT_OS / "index.md").read_text(encoding="utf-8"),
+            "architecture": (PRODUCT_AGENT_OS / "architecture.md").read_text(encoding="utf-8"),
+            "technical": (PRODUCT_AGENT_OS / "technical.md").read_text(encoding="utf-8"),
+            "methodology": (PRODUCT_AGENT_OS / "methodology-intelligence.md").read_text(
+                encoding="utf-8"
+            ),
+            "scenarios": (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8"),
+            "behavioral_evals": (PRODUCT_AGENT_OS / "behavioral-evals.md").read_text(
+                encoding="utf-8"
+            ),
+            "codex_compatibility": (PRODUCT_AGENT_OS / "codex-compatibility.md").read_text(
+                encoding="utf-8"
+            ),
+            "development_standards": (PRODUCT_AGENT_OS / "development-standards.md").read_text(
+                encoding="utf-8"
+            ),
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+        }
+
+        expected_terms = {
+            "index": [
+                "Task 22 final documentation sync closure",
+                "Tracks 1-9 are implementation provenance",
+                "inspect workspace",
+                "stage infrastructure",
+                "approved merge",
+                "Codex-only runtime",
+                "conditional methodology gates",
+                "evidence before completion",
+            ],
+            "architecture": [
+                "Task 22 layer map",
+                "Track 1 foundation",
+                "Track 2 lifecycle skills",
+                "Track 3 staged generation",
+                "Track 4 approved merge",
+                "Track 5 Codex runtime",
+                "Track 6 engineering standards",
+                "Track 7 hardening",
+                "Track 8 scenario workflows",
+                "Track 9 methodology intelligence",
+            ],
+            "technical": [
+                "Task 22 operator contract",
+                "base workspace audit profile",
+                "Track 9 methodology audit complexity",
+                "schema v1 additive compatibility",
+                "codex_runner_result",
+                "renderer_file_count",
+                "run_methodology_audit.py",
+                "run_transcript_eval.py",
+            ],
+            "methodology": [
+                "Task 22 final methodology contract",
+                "methodology_packet",
+                "finish_options",
+                "owner_questions",
+                "safe_next_action",
+                "source_artifact_ledger",
+                "staged artifact boundary",
+            ],
+            "scenarios": [
+                "Task 22 scenario closure",
+                "finish_options",
+                "safe_next_action",
+                "bug_rescue",
+                "greenfield_idea",
+                "api_migration",
+                "ai_eval_regression",
+                "security_sensitive_change",
+                "release_packaging",
+            ],
+            "behavioral_evals": [
+                "Task 22 eval closure",
+                "fixture eval limits",
+                "runtime packet safety",
+                "transcript/session replay",
+                "synthetic regression evidence does not prove real project readiness",
+            ],
+            "codex_compatibility": [
+                "Task 22 canonical safety boundary",
+                "no live model call",
+                "no global config mutation",
+                "no readiness claims from detection",
+                "hosted docs or DB introspection require approval",
+            ],
+            "development_standards": [
+                "Task 22 standards closure",
+                "Track 7 artifact catalog",
+                "Red-Green-Refactor evidence",
+                "no-forced-ceremony",
+                "mechanical edits can be not_applicable",
+                "owner_reviewed_evidence_sufficient_for_real_project_risk",
+            ],
+            "root_readme": [
+                "Task 22 final documentation sync closure",
+                "Product-Agent OS full stack",
+                "Track 1-9",
+                "Codex-only runtime",
+                "methodology intelligence",
+            ],
+            "plugin_readme": [
+                "Task 22 final documentation sync closure",
+                "Product-Agent OS full stack",
+                "Track 1-9",
+                "schema v1 additive compatibility",
+                "staged artifact boundary",
+            ],
+        }
+
+        for document, terms in expected_terms.items():
+            for term in terms:
+                with self.subTest(document=document, term=term):
+                    self.assertIn(term, documents[document])
+
+    def test_task22_source_registry_and_control_plane_closure_are_documented(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "track9_plan": TRACK9_PLAN.read_text(encoding="utf-8"),
+            "track10_plan": TRACK10_PLAN.read_text(encoding="utf-8"),
+        }
+
+        for expected in [
+            "Product-Agent OS Track 1-9 final documentation closure",
+            "Task 22 final documentation sync closure",
+            "Product-Agent OS pre-Track 8 implemented plans and specs inventory",
+            "Product-Agent OS Track 9 methodology intelligence design and backlog",
+            "docs/product-agent-os/methodology-intelligence.md",
+            "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+            "plugins/product-agent-os/scripts/codex_runtime_runner/contracts.py",
+            "OpenAPI v3.2.0 freshness claim",
+            "verification_status:",
+        ]:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        expected_by_file = {
+            "requirements": [
+                "Task 22 final documentation sync closure",
+                "Track 1-9 acceptance",
+                "legacy Track 9 `Task 23: Final Verification Baseline` is absorbed into Task 22",
+            ],
+            "plan": [
+                "| 17 | `Task 22` final Track 9 documentation sync | `done` |",
+                "Track 10 `Task 23` starts only after Task 22 closure",
+            ],
+            "test": [
+                "Task 22 final documentation sync closure",
+                "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+                "python plugins\\product-agent-os\\scripts\\run_transcript_eval.py",
+                "git diff --check",
+            ],
+            "evals": [
+                "Task 22 final documentation sync closure",
+                "readiness/evidence quality",
+                "stale Track 1-9 claims",
+                "synthetic eval evidence limits",
+            ],
+            "runlog": [
+                "Task 22 final documentation sync closure",
+                "source inventory links",
+                "legacy Track 9 Task 23 baseline absorbed into Task 22",
+            ],
+            "track9_plan": [
+                "### Legacy Track 9 Final Verification Baseline (absorbed into Task 22)",
+                "`T22-U-M23`",
+            ],
+            "track10_plan": [
+                "Task 22 absorbs that verification baseline into `T22-U-M23`",
+                "Track 10 uses `Task 23` for the next product capability",
+            ],
+        }
+
+        for filename, terms in expected_by_file.items():
+            for term in terms:
+                with self.subTest(control_plane=filename, term=term):
+                    self.assertIn(term, control_plane[filename])
+
+        self.assertNotIn(
+            "The current Track 9 plan still contains a legacy `Task 23: Final Verification Baseline`",
+            control_plane["track10_plan"],
+        )
 
 
 if __name__ == "__main__":

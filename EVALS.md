@@ -265,6 +265,15 @@ Generated at: 2026-05-27
 - Fixture evidence: `methodology_applicability_contract_present` in `run_fixture_eval.py`.
 - Residual risk: discovery packets structure methodology/tooling applicability; owners still need to validate semantic quality and sufficiency of the evidence for the real project.
 
+## Task 22 final documentation sync closure
+
+- Eval target: Task 22 final documentation sync closure proves user-facing docs, READMEs, source registry and root control-plane files describe implemented Track 1-9 behavior instead of planned or stale claims.
+- readiness/evidence quality: docs must preserve `present_unverified` versus `present_verified`, approval_required boundaries, owner-reviewed evidence sufficiency and evidence-before-completion language.
+- stale Track 1-9 claims: docs must not reintroduce standalone Agents SDK runtime, live model/API calls, hidden MCP/hook/automation activation, direct target-workspace writes, or the obsolete Track 9 Task 23 final baseline as the next implementation task.
+- synthetic eval evidence limits: fixture evals, docs tests and transcript/session replay prove deterministic route and docs contracts, but they do not prove real project readiness without current command evidence, runtime evidence, owner evidence or explicit accepted gaps.
+- Current Task 22 eval evidence: focused docs tests ran 13 tests with `OK`; fixture eval exited `0` with 80 fixtures, 0 failures and renderer file count 186; transcript eval exited `0` with 5 sessions and 0 failures; full unittest ran 520 tests with `OK`; Codex compatibility returned `status: compatible`; docs, strict MkDocs and diff hygiene exited `0`.
+- Residual risk: Task 22 is documentation/source-registry closure; it does not add runtime behavior, dashboard behavior or Track 10 guided-question implementation.
+
 ## Unsupported Claims
 
 - Claim:

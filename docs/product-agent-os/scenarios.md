@@ -1,6 +1,12 @@
 # Product-Agent OS scenarios
 
 Source status: `official + experiment`  
+
+## Task 22 scenario closure
+
+Task 22 scenario closure связывает user-job routes with methodology packets and finish_options. Routes such as `bug_rescue`, `greenfield_idea`, `api_migration`, `ai_eval_regression`, `security_sensitive_change` and `release_packaging` must return a safe_next_action, minimum artifacts, approval boundary and evidence requirements without forcing unrelated methodology gates.
+
+Finish options are bounded by lifecycle status: read-only routes can ask for context, stage a proposal or stop for approval; they cannot claim completion, create external writes or start automation from detection alone.
 Источники: [Codex workflows](https://developers.openai.com/codex/workflows), [Codex use cases](https://developers.openai.com/codex/use-cases), [Agent approvals and security](https://developers.openai.com/codex/agent-approvals-security), [Product-Agent OS plugin](index.md), [Behavioral evals](behavioral-evals.md), [Codex compatibility](codex-compatibility.md).
 
 Эта страница отвечает на практический вопрос: какой route должен выбрать Product-Agent OS plugin, когда Codex App, CLI или IDE extension видит реальный workspace и пользователь просит не просто "написать код", а довести работу до проверяемого результата.

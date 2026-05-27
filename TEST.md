@@ -6,6 +6,12 @@ Generated at: 2026-05-27
 
 ## Current Baseline
 
+- Task 22 final documentation sync closure: focused docs tests `python -m unittest tests.product_agent_os.test_product_agent_os_docs -v` ran 13 tests with `OK`.
+- Task 22 full verification baseline: `python -m unittest discover -s tests -p "test_*.py" -v` ran 520 tests with `OK`.
+- Task 22 fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0` with 80 fixtures, 0 failures and renderer file count 186.
+- Task 22 transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 5 sessions and 0 failures.
+- Task 22 Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
+- Task 22 docs/build/diff hygiene: `python tools\check_docs.py` passed, strict MkDocs exited `0` with `PYTHONPATH=C:\tmp\codex_docs_mkdocs` and disposable `--site-dir .mkdocs_task22_site`, and `git diff --check` exited `0`.
 - T9-D6 RED checks: focused catalog/audit/discovery/template/lifecycle/behavioral/fixture checks failed as expected before implementation on missing `frontend` gates, audit recommendations, discovery signals, five Frontend templates, lifecycle skill routing, behavioral eval coverage and fixture eval check.
 - Focused T9-D6 suite: `python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_discovery tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_behavioral_workflow_evals tests.product_agent_os.test_fixture_eval_runner tests.product_agent_os.test_fixtures -v` ran 200 tests with `OK`.
 - Fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0`; renderer file count is 107 and `frontend_contract_present` is true.
@@ -361,6 +367,28 @@ python tools\check_docs.py
 - Confirmed generated `PLAN.md`, `TEST.md`, `EVALS.md`, `RUNLOG.md`, `project-readiness.json`, `behavioral-workflows.json` and `agent-task-packet.md` carry runtime methodology packet fields without dumping every gate or raw conversation history.
 - Confirmed fixture eval exposes `runtime_cross_domain_bridge_present` and `runtime_first_response_compact`; runtime bridge checks preserve cross-domain synthesis through routing.
 - Confirmed multiple owner domains or overlapping ownership reroute parallel builder work through `agent-team-designer` with fresh-context handoff before subagent work.
+
+## Task 22 final documentation sync closure
+
+- Added RED docs contract coverage with `python -m unittest tests.product_agent_os.test_product_agent_os_docs -v`; the RED run failed on missing Task 22 docs, README, source registry and control-plane closure terms before docs edits.
+- Required Task 22 verification commands:
+  - `python -m unittest tests.product_agent_os.test_product_agent_os_docs -v`
+  - `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json`
+  - `python tools\check_docs.py`
+  - `$env:PYTHONPATH='C:\tmp\codex_docs_mkdocs'; $env:NO_MKDOCS_2_WARNING='1'; python -m mkdocs build --strict`
+  - `python -m unittest discover -s tests -p "test_*.py" -v`
+  - `python plugins\product-agent-os\scripts\run_fixture_eval.py`
+  - `git diff --check`
+- Focused docs tests cover Product-Agent OS full-stack docs, Track 1-9 architecture, Codex-only runtime boundary, methodology packet behavior, readiness vocabulary, scenario finish options, eval limitations, source registry closure and root control-plane closure.
+- Final Task 22 verification results:
+  - `python -m unittest tests.product_agent_os.test_product_agent_os_docs -v` ran 13 tests with `OK`.
+  - `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 5 sessions and 0 failures.
+  - `python tools\check_docs.py` passed.
+  - `$env:PYTHONPATH='C:\tmp\codex_docs_mkdocs'; $env:NO_MKDOCS_2_WARNING='1'; python -m mkdocs build --strict --site-dir .mkdocs_task22_site` exited `0`.
+  - `python -m unittest discover -s tests -p "test_*.py" -v` ran 520 tests with `OK`.
+  - `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0` with 80 fixtures, 0 failures and renderer file count 186.
+  - `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
+  - `git diff --check` exited `0`.
 
 ## Evidence Format
 

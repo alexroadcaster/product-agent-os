@@ -14,9 +14,9 @@ Generated at: 2026-05-27
 - Last completed slice before this run: `T9-R-M14` Task 21 evidence/backlog/control-plane sync.
 - Active planning artifact: `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`.
 - Staged next-track artifact: `docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md`.
-- Current slice: Track 9 `Task 21: Update Runtime Runner And Finish Options` is implemented through `T9-R-M25`; `T9-R-M15` commit/push remains explicit-only and was not executed.
+- Current slice: Task 22 final documentation sync closure for Track 1-9 docs, source registry, READMEs and root control-plane files. Track 9 `Task 21: Update Runtime Runner And Finish Options` is implemented through `T9-R-M25`; `T9-R-M15` commit/push remains explicit-only and was not executed.
 - Current route: long-running plugin/skill/docs/evals work.
-- Scenario status: Track 9 foundation, all 12 methodology domains through `T9-D12`, Task 20 Cross-Domain Synthesis through `T9-S-M14`, and Task 21 runtime runner/finish-options through `T9-R-M25` are implemented. Track 9 continues with `Task 22` final documentation sync. Track 10 is planned next and starts with `Task 23: Guided Question Protocol And Project Status Dashboard` after Task 22 closes.
+- Scenario status: Track 9 foundation, all 12 methodology domains through `T9-D12`, Task 20 Cross-Domain Synthesis through `T9-S-M14`, Task 21 runtime runner/finish-options through `T9-R-M25`, and Task 22 final documentation sync closure are the Track 1-9 acceptance baseline. Track 10 is planned next and starts with `Task 23: Guided Question Protocol And Project Status Dashboard` after Task 22 closes.
 
 ## Scope
 
@@ -67,6 +67,7 @@ Generated at: 2026-05-27
 - Task 20 Cross-Domain Synthesis is complete with normalized shared gates, artifact ownership, evidence-before-completion concepts, semantic evidence sufficiency, cross-domain false positives, conflict rules, grouped report rendering, lifecycle skill routing and final fixture coverage.
 - Task 21 through `T9-R-M25` updates runtime runner and finish-option behavior so synthesized methodology packets can be consumed without forcing unrelated gates, scaffolding before approval or claiming verification from detection alone. The completed runtime contract now includes CLI/validator JSON output coverage, generated control-plane/eval/handoff support, schema-v1 backward compatibility, lifecycle-status finish-option mapping, cross-domain runtime bridge checks, compact first-response fields, structured high-risk taxonomy and ownership/parallelism routing guards.
 - Task 22 must close Product-Agent OS Track 9 documentation, source registry/backlog, generated docs references and final verification evidence, and absorb the legacy Track 9 `Task 23: Final Verification Baseline` into Task 22 closure.
+- Task 22 final documentation sync closure acceptance: Track 1-9 acceptance is documented across Product-Agent OS user-facing docs, root/plugin READMEs, `docs/sources/registry.md`, `REQUIREMENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md` and `RUNLOG.md`; the legacy Track 9 `Task 23: Final Verification Baseline` is absorbed into Task 22 final verification evidence.
 - Track 10 `Task 23` is planned, not implemented. Its acceptance target is a typed guided question protocol, answer ledger, status snapshot and single offline HTML dashboard artifact generated from JSON/Markdown sources of truth and staged before any target-project write.
 - `docs-maintainer` is now a packaged lifecycle skill for requirement IDs, source registry, glossary/ubiquitous-language and traceability docs after the requirements packet exists.
 
