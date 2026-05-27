@@ -8,6 +8,14 @@ ALLOWED_RUNNER_STATUSES = ["route_ready", "needs_context", "needs_approval", "bl
 ALLOWED_RUNTIME_SURFACES = ["Codex App", "CLI", "IDE extension", "codex exec", "subagent", "skill"]
 ALLOWED_WRITE_POLICIES = ["read_only", "staged_only", "approved_write", "blocked"]
 ALLOWED_APPROVAL_STATUSES = ["not_required", "required", "approved", "rejected", "stale"]
+ALLOWED_FINISH_OPTIONS = [
+    "read_only_audit",
+    "ask_owner",
+    "stage_proposal",
+    "request_approval",
+    "run_verification",
+    "stop_blocked",
+]
 ALLOWED_LIFECYCLE_STATES = [
     "uninitialized",
     "infrastructure_planned",
@@ -61,32 +69,62 @@ DETECTION_ONLY_METHODOLOGY_STATUSES = {
     "evidence_required",
     "present_unverified",
 }
-APPROVAL_BOUND_ACTION_PATTERNS = [
-    re.compile(pattern, re.IGNORECASE)
-    for pattern in [
-        r"\bpublish(?:ing)?\b",
-        r"\bdeploy(?:ing|ment)?\b",
-        r"\btag\b",
-        r"\brelease[_ -]?create\b",
-        r"\brelease creation\b",
-        r"\bcreate (?:a )?release\b",
-        r"\bpr/push\b",
-        r"\bpull request\b",
-        r"\bpush(?:ing)?\b",
-        r"\bpackage registry\b",
-        r"\bregistry mutation\b",
-        r"\bmarketplace\b",
-        r"\bstore submission\b",
-        r"\bsecurity scan\b",
-        r"\bproduction data\b",
-        r"\bproduction db\b",
-        r"\bdb migration\b",
-        r"\bdatabase migration\b",
-        r"\bexternal-system mutation\b",
-        r"\bexternal system mutation\b",
-        r"\bexternal write\b",
-    ]
+METHODOLOGY_HIGH_RISK_ACTIONS = [
+    "publish",
+    "deploy",
+    "tag",
+    "release_create",
+    "pr_or_push",
+    "package_registry_mutation",
+    "marketplace_submission",
+    "security_scan",
+    "production_data_access",
+    "db_migration",
+    "automation_activation",
+    "external_system_mutation",
 ]
+HIGH_RISK_ACTION_PATTERNS = {
+    "publish": [re.compile(r"\bpublish(?:ing)?\b", re.IGNORECASE)],
+    "deploy": [re.compile(r"\bdeploy(?:ing|ed)?\b", re.IGNORECASE)],
+    "tag": [re.compile(r"\btag\b", re.IGNORECASE)],
+    "release_create": [
+        re.compile(r"\brelease[_ -]?create\b", re.IGNORECASE),
+        re.compile(r"\brelease creation\b", re.IGNORECASE),
+        re.compile(r"\bcreate (?:a )?release\b", re.IGNORECASE),
+    ],
+    "pr_or_push": [
+        re.compile(r"\bpr/push\b", re.IGNORECASE),
+        re.compile(r"\bpull request\b", re.IGNORECASE),
+        re.compile(r"\bpush(?:ing)?\b", re.IGNORECASE),
+    ],
+    "package_registry_mutation": [
+        re.compile(r"\bpackage registry\b", re.IGNORECASE),
+        re.compile(r"\bregistry mutation\b", re.IGNORECASE),
+    ],
+    "marketplace_submission": [
+        re.compile(r"\bmarketplace\b", re.IGNORECASE),
+        re.compile(r"\bstore submission\b", re.IGNORECASE),
+    ],
+    "security_scan": [re.compile(r"\bsecurity scan\b", re.IGNORECASE)],
+    "production_data_access": [
+        re.compile(r"\bproduction data\b", re.IGNORECASE),
+        re.compile(r"\bproduction db\b", re.IGNORECASE),
+    ],
+    "db_migration": [
+        re.compile(r"\bdb migration\b", re.IGNORECASE),
+        re.compile(r"\bdatabase migration\b", re.IGNORECASE),
+    ],
+    "automation_activation": [
+        re.compile(r"\bactive automation\b", re.IGNORECASE),
+        re.compile(r"\bactivate automation\b", re.IGNORECASE),
+        re.compile(r"\bscheduled automation\b", re.IGNORECASE),
+    ],
+    "external_system_mutation": [
+        re.compile(r"\bexternal-system mutation\b", re.IGNORECASE),
+        re.compile(r"\bexternal system mutation\b", re.IGNORECASE),
+        re.compile(r"\bexternal write\b", re.IGNORECASE),
+    ],
+}
 AUTOMATION_ACTION_PATTERNS = [
     re.compile(pattern, re.IGNORECASE)
     for pattern in [
@@ -266,7 +304,16 @@ def validate_methodology_packet(packet: Any) -> list[str]:
 
 
 def methodology_requires_approval(packet: dict[str, Any]) -> bool:
-    return _matches_any(_methodology_action_text(packet), APPROVAL_BOUND_ACTION_PATTERNS)
+    return bool(classify_methodology_high_risk_actions(packet))
+
+
+def classify_methodology_high_risk_actions(packet: dict[str, Any]) -> list[str]:
+    text = _methodology_action_text(packet)
+    return [
+        action
+        for action in METHODOLOGY_HIGH_RISK_ACTIONS
+        if _matches_any(text, HIGH_RISK_ACTION_PATTERNS[action])
+    ]
 
 
 def methodology_requires_automation_maturity(packet: dict[str, Any]) -> bool:
@@ -294,6 +341,19 @@ def validate_runner_result(payload: dict[str, Any]) -> list[str]:
         route_packet = payload["route_packet"]
         if "methodology_packet" in route_packet:
             errors.extend(validate_methodology_packet(route_packet["methodology_packet"]))
+        if "finish_options" in route_packet:
+            errors.extend(_validate_finish_options(route_packet["finish_options"], "route_packet.finish_options"))
+        first_response = route_packet.get("first_response_contract")
+        if first_response is not None:
+            if not isinstance(first_response, dict):
+                errors.append("route_packet.first_response_contract:invalid")
+            elif "finish_options" in first_response:
+                errors.extend(
+                    _validate_finish_options(
+                        first_response["finish_options"],
+                        "route_packet.first_response_contract.finish_options",
+                    )
+                )
 
     for field in ["handoffs", "files_touched", "files_proposed", "verification_evidence", "errors", "warnings"]:
         if not isinstance(payload.get(field), list):
@@ -308,6 +368,30 @@ def validate_runner_result(payload: dict[str, Any]) -> list[str]:
         if isinstance(methodology_packet, dict) and methodology_packet.get("status") in DETECTION_ONLY_METHODOLOGY_STATUSES:
             errors.append("methodology_packet:detection_not_completion")
     return errors
+
+
+def methodology_owner_domains(packet: dict[str, Any]) -> list[str]:
+    owner_domains: list[str] = []
+    for group in packet.get("recommendation_groups", []):
+        if isinstance(group, dict) and _non_empty_string(group.get("owner_domain")):
+            owner_domains.append(str(group["owner_domain"]))
+    return owner_domains
+
+
+def methodology_has_ownership_conflict(packet: dict[str, Any]) -> bool:
+    owner_domains = {domain for domain in methodology_owner_domains(packet) if domain}
+    if len(owner_domains) > 1:
+        return True
+
+    artifact_owners: dict[str, set[str]] = {}
+    for group in packet.get("recommendation_groups", []):
+        if not isinstance(group, dict):
+            continue
+        artifact = str(group.get("artifact", "")).strip()
+        owner = str(group.get("owner_domain", "")).strip()
+        if artifact and owner:
+            artifact_owners.setdefault(artifact, set()).add(owner)
+    return any(len(owners) > 1 for owners in artifact_owners.values())
 
 
 def _bounded_list(value: Any, limit: int) -> list[Any]:
@@ -351,3 +435,13 @@ def _methodology_action_text(packet: dict[str, Any]) -> str:
 
 def _matches_any(text: str, patterns: list[re.Pattern[str]]) -> bool:
     return any(pattern.search(text) for pattern in patterns)
+
+
+def _validate_finish_options(value: Any, prefix: str) -> list[str]:
+    if not isinstance(value, list):
+        return [f"{prefix}:invalid"]
+    errors: list[str] = []
+    for item in value:
+        if item not in ALLOWED_FINISH_OPTIONS:
+            errors.append(f"{prefix}:unknown")
+    return errors

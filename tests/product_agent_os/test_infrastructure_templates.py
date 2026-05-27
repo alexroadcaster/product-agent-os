@@ -3699,6 +3699,7 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 "llm-ai-rag-evidence-before-completion",
                 "api-integrations-evidence-before-completion",
                 "finish-options",
+                "runtime-methodology-packet-safety",
                 "codex-only-compatibility",
                 "cost-model-budget",
                 "codex-agentic-workflow",
@@ -4295,6 +4296,77 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 for expected in shared_terms:
                     self.assertIn(expected, text)
 
+    def test_runtime_methodology_packet_templates_cover_control_plane_and_handoff(self):
+        control_plane = "\n".join(
+            (TEMPLATE_ROOT / "control-plane" / name).read_text(encoding="utf-8").lower()
+            for name in ["PLAN.md", "TEST.md", "EVALS.md", "RUNLOG.md"]
+        )
+        agent_task_packet = (TEMPLATE_ROOT / "artifact-templates" / "agent-task-packet.md").read_text(
+            encoding="utf-8"
+        ).lower()
+
+        control_plane_terms = [
+            "runtime methodology packet",
+            "methodology_packet",
+            "finish_options",
+            "owner questions",
+            "safe next action",
+            "evidence gaps",
+            "approval boundary",
+            "detection-only warning",
+            "methodology detection is not completion evidence",
+            "no staged artifact from recommendation-only packet",
+        ]
+        handoff_terms = [
+            "runtime methodology packet",
+            "methodology_packet",
+            "owner domain",
+            "consumer domains",
+            "finish_options",
+            "safe next action",
+            "approval requirements",
+            "stop conditions",
+            "no raw conversation history",
+        ]
+
+        for expected in control_plane_terms:
+            with self.subTest(control_plane=expected):
+                self.assertIn(expected, control_plane)
+        for expected in handoff_terms:
+            with self.subTest(agent_task_packet=expected):
+                self.assertIn(expected, agent_task_packet)
+
+    def test_runtime_methodology_packet_readiness_and_behavioral_eval_contracts_exist(self):
+        readiness = json.loads((TEMPLATE_ROOT / "evals" / "project-readiness.json").read_text(encoding="utf-8"))
+        behavioral = json.loads((TEMPLATE_ROOT / "evals" / "behavioral-workflows.json").read_text(encoding="utf-8"))
+        expected = readiness["cases"][0]["expected"]
+        gates = expected["conditional_readiness_gates"]
+        cases = {case["name"]: case for case in behavioral["cases"]}
+
+        self.assertIn("runtime_methodology_packet", expected["methodology_gates"])
+        self.assertIn("runtime_methodology_packet", expected["methodology_signals"])
+        self.assertIn("runtime_methodology_packet_safety", gates)
+        gate_payload = json.dumps(gates["runtime_methodology_packet_safety"], sort_keys=True).lower()
+        for expected_term in [
+            "methodology_packet",
+            "finish_options",
+            "methodology_detection_not_completion",
+            "approval boundary",
+            "no gate dump",
+            "no scaffold",
+            "external action",
+        ]:
+            self.assertIn(expected_term, gate_payload)
+
+        self.assertIn("runtime-methodology-packet-safety", cases)
+        runtime_case = cases["runtime-methodology-packet-safety"]
+        self.assertIn("methodology_packet", runtime_case["expected"]["required_fields"])
+        self.assertIn("finish_options", runtime_case["expected"]["required_fields"])
+        self.assertIn("methodology_detection_not_completion", runtime_case["expected"]["required_fields"])
+        self.assertIn("dump every methodology gate", runtime_case["forbidden"])
+        self.assertIn("scaffold before approval", runtime_case["forbidden"])
+        self.assertIn("external action from recommendation", runtime_case["forbidden"])
+
     def test_project_readiness_eval_checks_methodology_gates(self):
         data = json.loads((TEMPLATE_ROOT / "evals" / "project-readiness.json").read_text(encoding="utf-8"))
         expected = data["cases"][0]["expected"]
@@ -4396,6 +4468,7 @@ class InfrastructureTemplateTest(unittest.TestCase):
             "quality_testing_evals_when_non_trivial_change",
             "codex_agentic_workflow",
             "semantic_evidence_sufficiency",
+            "runtime_methodology_packet_safety",
         }
         self.assertEqual(set(gates), required_gates)
         self.assertNotIn("db_docs_when_schema_changes", gates)

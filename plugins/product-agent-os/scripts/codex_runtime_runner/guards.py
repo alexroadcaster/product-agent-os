@@ -4,6 +4,7 @@ import re
 from typing import Any
 
 from codex_runtime_runner.contracts import (
+    methodology_has_ownership_conflict,
     methodology_requires_approval,
     methodology_requires_automation_maturity,
     validate_methodology_packet,
@@ -23,13 +24,17 @@ def validate_route_packet(route: dict[str, Any]) -> list[str]:
 
     expected_skill, expected_subagent, expected_write_policy, _action = expected
     if route.get("write_policy") != expected_write_policy:
-        errors.append("route:unexpected_write_policy_for_state")
+        if not _ownership_parallelism_reroute(route):
+            errors.append("route:unexpected_write_policy_for_state")
     if expected_skill and route.get("recommended_skill") != expected_skill:
-        errors.append("route:unexpected_skill_for_state")
+        if not _ownership_parallelism_reroute(route):
+            errors.append("route:unexpected_skill_for_state")
     if expected_subagent and route.get("recommended_subagent_role") not in {expected_subagent, ""}:
         errors.append("route:unexpected_subagent_for_state")
     if "methodology_packet" in route:
         errors.extend(validate_methodology_packet(route["methodology_packet"]))
+        if route.get("ownership_parallelism_guard") and methodology_has_ownership_conflict(route["methodology_packet"]):
+            errors.append("ownership:parallelism_requires_handoff")
     if route.get("lifecycle_state") == "learning_ready" and isinstance(route.get("methodology_packet"), dict):
         if methodology_requires_automation_maturity(route["methodology_packet"]):
             errors.append("automation:maturity_evidence_required")
@@ -88,3 +93,13 @@ def validate_automation_boundary(text: str) -> list[str]:
     if ACTIVE_AUTOMATION_PATTERN.search(text):
         return ["automation:active_request_blocked"]
     return []
+
+
+def _ownership_parallelism_reroute(route: dict[str, Any]) -> bool:
+    return (
+        route.get("lifecycle_state") == "build_active"
+        and route.get("recommended_skill") == "agent-team-designer"
+        and route.get("recommended_subagent_role") == ""
+        and route.get("write_policy") == "staged_only"
+        and route.get("ownership_parallelism_guard") == "fresh_context_handoff_required"
+    )

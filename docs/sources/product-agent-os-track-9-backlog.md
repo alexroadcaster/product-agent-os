@@ -892,6 +892,19 @@ Domain slices must also run the focused catalog/audit tests, fixture evals and a
 - Docs check: `python tools\check_docs.py` passed.
 - Diff hygiene: `git diff --check` exited `0`.
 
+`T9-R` Task 21 batch `M16..M25` evidence:
+
+- RED/focused checks failed as expected before implementation on missing structured high-risk taxonomy, status-to-finish-options mapping, runtime packet template/eval/handoff fields and behavioral fixture coverage.
+- Focused runtime/template suite: `python -m unittest tests.product_agent_os.test_codex_runtime_runner_contracts tests.product_agent_os.test_codex_runtime_runner_state_routes tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_behavioral_workflow_evals -v` ran 109 tests with `OK`.
+- CLI suite: `python -m unittest tests.product_agent_os.test_codex_runtime_runner_cli -v` ran 10 tests with `OK`.
+- Runtime fixture suite: `python -m unittest tests.product_agent_os.test_codex_runtime_runner_fixture_eval -v` ran 6 tests with `OK`.
+- Full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 518 tests with `OK`.
+- Fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0` with 80 fixtures, 0 failures, renderer file count 186, 16 codex-runner fixtures and runtime bridge/compact first-response checks present.
+- Transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 5 sessions and 0 failures.
+- Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
+- Docs check: `python tools\check_docs.py` passed.
+- Diff hygiene: `git diff --check` exited `0`.
+
 ## Runtime Runner And Finish Options Backlog
 
 | Status | Item | Reason |
@@ -900,8 +913,8 @@ Domain slices must also run the focused catalog/audit tests, fixture evals and a
 | `done` | Recommendation-only no-write and detection-only no-completion guards. | Methodology detections and recommendations remain read-only evidence until approval, staging target and current verification evidence exist. |
 | `done` | High-risk action, external-write and automation maturity safety. | Synthetic runtime fixtures prove approval-bound external actions, automation manual stability/value requirements, redaction and malformed packet fallback. |
 | `done` | Evidence/backlog sync through `T9-R-M14`. | Current verification evidence, residual risks and next action are recorded in backlog, RUNLOG and root control-plane/system files. |
-| `planned` | Complete Task 21 expansion rows `T9-R-M16..M25`. | Remaining rows add CLI/validator JSON output tests, generated control-plane/eval/handoff support, schema-v1 compatibility, status-to-finish-options mapping, cross-domain runtime bridge checks, compact first-response fields, structured high-risk taxonomy and ownership/parallelism routing guards. |
-| `planned` | Start `Task 22` final Track 9 documentation sync. | `Task 22` should begin only after the Task 21 expansion rows are implemented or explicitly deferred. |
+| `done` | Complete Task 21 expansion rows `T9-R-M16..M25`. | Added CLI/validator JSON output tests, generated control-plane/eval/handoff support, schema-v1 compatibility, status-to-finish-options mapping, cross-domain runtime bridge checks, compact first-response fields, structured high-risk taxonomy and ownership/parallelism routing guards. |
+| `planned` | Start `Task 22` final Track 9 documentation sync. | `Task 22` should close Product-Agent OS docs, source registry/backlog state and final Track 9 verification after Task 21 runtime expansion. |
 
 `T9-D1` evidence:
 

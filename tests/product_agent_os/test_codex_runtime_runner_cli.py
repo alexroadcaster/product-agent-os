@@ -161,6 +161,54 @@ class CodexRuntimeRunnerCliTest(unittest.TestCase):
         self.assertEqual(validate_result.returncode, 0, validate_result.stdout + validate_result.stderr)
         self.assertIn('"ok": true', validate_result.stdout)
 
+    def test_cli_stdout_and_output_include_redacted_methodology_packet_and_finish_options(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "workspace"
+            workspace.mkdir()
+            self._write_control_plane(workspace, "lifecycle_state: quality_gate")
+            src = workspace / "src"
+            src.mkdir()
+            (src / "payment_api.py").write_text("def charge(): pass\n", encoding="utf-8")
+            output = Path(tmp) / "result.json"
+            run_result = subprocess.run(
+                [
+                    sys.executable,
+                    str(WRAPPER),
+                    str(workspace),
+                    "--contract",
+                    "--intent-hint",
+                    "security-sensitive payment release",
+                    "--output",
+                    str(output),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            validate_result = subprocess.run(
+                [sys.executable, str(VALIDATOR), str(output)],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            file_payload = json.loads(output.read_text(encoding="utf-8"))
+
+        stdout_payload = json.loads(run_result.stdout)
+        route = stdout_payload["route_packet"]
+
+        self.assertEqual(run_result.returncode, 1, run_result.stdout + run_result.stderr)
+        self.assertEqual(validate_result.returncode, 0, validate_result.stdout + validate_result.stderr)
+        self.assertEqual(stdout_payload, file_payload)
+        self.assertEqual(stdout_payload["schema_version"], 1)
+        self.assertEqual(stdout_payload["status"], "needs_approval")
+        self.assertIn("methodology_packet", route)
+        self.assertIn("finish_options", route)
+        self.assertIn("request_approval", route["finish_options"])
+        self.assertIn("first_response_contract", route)
+        self.assertIn("owner_questions", route["first_response_contract"])
+        self.assertIn("safe_next_action", route["first_response_contract"])
+        self.assertNotIn(str(workspace), run_result.stdout)
+
     def test_contract_run_redacts_methodology_route_payload_before_validation(self):
         with tempfile.TemporaryDirectory() as tmp:
             workspace = Path(tmp)

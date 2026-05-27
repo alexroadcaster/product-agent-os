@@ -15,6 +15,16 @@ Generated at: {generated_at}
 - Source grounding:
 - Route selection:
 - Shortcut resistance:
+- Runtime methodology packet:
+- `methodology_packet`:
+- `finish_options`:
+- Owner questions:
+- Safe next action:
+- Evidence gaps:
+- Approval boundary:
+- Detection-only warning:
+- Methodology detection is not completion evidence:
+- No staged artifact from recommendation-only packet:
 - Evidence-before-completion:
 - `evidence_before_completion`:
 - Ready claim:

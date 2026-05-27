@@ -24,6 +24,20 @@ Generated at: {generated_at}
 - First response contract:
 - Approval boundary:
 
+## Runtime Methodology Packet
+
+- Runtime methodology packet (`methodology_packet`):
+- `finish_options`:
+- Owner questions:
+- Safe next action:
+- Evidence gaps:
+- Approval boundary:
+- Detection-only warning:
+- Methodology detection is not completion evidence:
+- No staged artifact from recommendation-only packet:
+- Compact first response fields: owner questions, safe next action, evidence gaps, approval boundary, `finish_options`.
+- Do not dump every methodology gate into the first response.
+
 ## Implementation Slices
 
 - Slice:

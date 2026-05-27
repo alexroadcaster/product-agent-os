@@ -11,11 +11,11 @@ Generated at: 2026-05-27
 
 ## Current Slice
 
-- Last completed slice before this run: `T9-R-M7..M13` Task 21 runtime methodology safety, approval boundaries, automation maturity, redaction and malformed-packet fixtures.
+- Last completed slice before this run: `T9-R-M14` Task 21 evidence/backlog/control-plane sync.
 - Active planning artifact: `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`.
-- Current slice: Track 9 `Task 21: Update Runtime Runner And Finish Options` is implemented through `T9-R-M14`; next meaningful implementation is the Task 21 expansion `T9-R-M16..M25` (`T9-R-M15` remains commit/push explicit-only).
+- Current slice: Track 9 `Task 21: Update Runtime Runner And Finish Options` is implemented through `T9-R-M25`; `T9-R-M15` commit/push remains explicit-only and was not executed.
 - Current route: long-running plugin/skill/docs/evals work.
-- Scenario status: Track 9 foundation, all 12 methodology domains through `T9-D12`, Task 20 Cross-Domain Synthesis through `T9-S-M14`, and Task 21 runtime runner/finish-options through `T9-R-M14` are implemented. Track 9 continues with the remaining Task 21 runtime expansion rows before final documentation closure.
+- Scenario status: Track 9 foundation, all 12 methodology domains through `T9-D12`, Task 20 Cross-Domain Synthesis through `T9-S-M14`, and Task 21 runtime runner/finish-options through `T9-R-M25` are implemented. Track 9 continues with `Task 22` final documentation sync.
 
 ## Scope
 
@@ -62,8 +62,7 @@ Generated at: 2026-05-27
 - T9-D11 Security, Privacy & Compliance is complete with `security_privacy_compliance` catalog data, threat surface, ASVS/SSDF/SAMM mapping, authorization negative tests, secrets, data classification, privacy impact, supply chain, SBOM/provenance, CI permissions, audit logging, compliance overlay, vulnerability response, explicit Codex Security scan status and unsupported-claim rejection.
 - T9-D12 Delivery, Release & Operations is complete with `delivery_release_operations` catalog data, release scope, versioning, changelog/release notes, artifact manifest, release evidence, rollout, rollback, CI/CD governance, observability/SLO, runbooks, incidents, post-release learning, release mode, build-release-run, platform distribution, DORA, release integrity handoff, owner-reviewed evidence sufficiency and unsupported-claim rejection.
 - Task 20 Cross-Domain Synthesis is complete with normalized shared gates, artifact ownership, evidence-before-completion concepts, semantic evidence sufficiency, cross-domain false positives, conflict rules, grouped report rendering, lifecycle skill routing and final fixture coverage.
-- Task 21 through `T9-R-M14` updates runtime runner and finish-option behavior so synthesized methodology packets can be consumed without forcing unrelated gates, scaffolding before approval or claiming verification from detection alone.
-- Remaining Task 21 expansion must add CLI/validator JSON contract depth, generated control-plane/eval/handoff support, schema-v1 backward compatibility, lifecycle-status finish-option mapping, cross-domain runtime bridge checks, compact first-response fields, structured high-risk taxonomy and ownership/parallelism routing guards.
+- Task 21 through `T9-R-M25` updates runtime runner and finish-option behavior so synthesized methodology packets can be consumed without forcing unrelated gates, scaffolding before approval or claiming verification from detection alone. The completed runtime contract now includes CLI/validator JSON output coverage, generated control-plane/eval/handoff support, schema-v1 backward compatibility, lifecycle-status finish-option mapping, cross-domain runtime bridge checks, compact first-response fields, structured high-risk taxonomy and ownership/parallelism routing guards.
 - `docs-maintainer` is now a packaged lifecycle skill for requirement IDs, source registry, glossary/ubiquitous-language and traceability docs after the requirements packet exists.
 
 ## Assumptions

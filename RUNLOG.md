@@ -6,15 +6,15 @@ Generated at: 2026-05-27
 
 ## Current Lifecycle Marker
 
-`runtime_runner_methodology_sync_complete`
+`runtime_runner_methodology_expansion_complete`
 
 ## Latest Completed Slice
 
-`T9-R-M14` Task 21 Runtime Runner And Finish Options evidence/backlog/control-plane sync.
+`T9-R-M16..M25` Task 21 Runtime Runner And Finish Options expansion.
 
 ## Current Active Slice
 
-`Task 21: Update Runtime Runner And Finish Options` is implemented through `T9-R-M14`; next active work is the remaining Task 21 expansion `T9-R-M16..M25`. `T9-R-M15` commit/push remains explicit-only.
+`Task 21: Update Runtime Runner And Finish Options` is implemented through `T9-R-M25`; next active work is `Task 22` final Track 9 documentation sync. `T9-R-M15` commit/push remains explicit-only and was not executed.
 
 ## Latest Planning Artifact
 
@@ -53,6 +53,7 @@ Generated at: 2026-05-27
 - Implemented Task 21 Runtime Runner And Finish Options through `T9-R-M0..M6`: compact methodology packet schema, bounded validation, runtime route propagation, ordered finish options, recommendation-only no-write behavior and detection-only completion blocking.
 - Implemented Task 21 runtime safety through `T9-R-M7..M13`: approval-bound high-risk methodology actions, automation maturity blocking, methodology route payload redaction, malformed packet fallback validation and synthetic codex-runner fixture checks.
 - Synced Track 9 evidence/backlog/control-plane files for `T9-R-M14`: Track 9 backlog, RUNLOG, root control-plane/system files and the plan row now record RED/GREEN evidence, fixture count, runtime methodology checks, residual risks and next Task 21 expansion action.
+- Implemented Task 21 runtime expansion through `T9-R-M16..M25`: CLI/validator JSON output, generated control-plane/eval/handoff packet support, schema-v1 additive compatibility, lifecycle-status finish-option mapping, cross-domain runtime bridge checks, compact first-response fields, structured high-risk action taxonomy and ownership/parallelism routing guards.
 
 ### Verification Evidence
 
@@ -183,6 +184,16 @@ Generated at: 2026-05-27
 - T9-R M14 source registry decision: no source registry change; this row records internal runtime evidence and checked-in methodology behavior, not a new external source-backed claim.
 - T9-R M14 docs check: `python tools\check_docs.py` passed.
 - T9-R M14 diff hygiene: `git diff --check` exited `0`.
+- T9-R M16..M25 RED/focused checks failed as expected before implementation on missing structured high-risk taxonomy, status-to-finish-options mapping, runtime packet template/eval/handoff fields and behavioral fixture coverage.
+- T9-R M16..M25 focused runtime/template suite: `python -m unittest tests.product_agent_os.test_codex_runtime_runner_contracts tests.product_agent_os.test_codex_runtime_runner_state_routes tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_behavioral_workflow_evals -v` ran 109 tests with `OK`.
+- T9-R M16..M25 CLI suite: `python -m unittest tests.product_agent_os.test_codex_runtime_runner_cli -v` ran 10 tests with `OK`.
+- T9-R M16..M25 runtime fixture suite: `python -m unittest tests.product_agent_os.test_codex_runtime_runner_fixture_eval -v` ran 6 tests with `OK`.
+- T9-R M16..M25 full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 518 tests with `OK`.
+- T9-R M16..M25 fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0`; compact summary reported 80 fixtures, 0 failures, renderer file count 186, 16 codex-runner fixtures and runtime checks `runtime_methodology_packet_present`, `runtime_finish_options_approval_bound`, `runtime_detection_not_completion`, `runtime_external_write_blocked`, `runtime_automation_maturity_required`, `runtime_methodology_redaction_enforced`, `runtime_malformed_methodology_packet_blocked`, `runtime_cross_domain_bridge_present` and `runtime_first_response_compact` all `true`.
+- T9-R M16..M25 transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 5 sessions and 0 failures.
+- T9-R M16..M25 Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
+- T9-R M16..M25 docs check: `python tools\check_docs.py` passed.
+- T9-R M16..M25 diff hygiene: `git diff --check` exited `0`.
 
 ## Methodology Trace
 
@@ -217,6 +228,7 @@ Generated at: 2026-05-27
 - Runtime Runner methodology packet: implemented through `T9-R-M0..M6` with compact route-level `methodology_packet`, bounded methodology lists, runtime propagation from workspace discovery, finish options, read-only methodology write policy validation, no recommendation-only artifact staging on read-only routes and detection-only completion blocking.
 - Runtime Runner methodology safety: implemented through `T9-R-M7..M13` with approval-bound high-risk methodology actions, automation maturity blocking, methodology route payload redaction, malformed packet fallback validation and synthetic runtime methodology fixture checks.
 - Runtime Runner evidence sync: implemented through `T9-R-M14` with backlog/RUNLOG/root control-plane sync, stale next-action correction and explicit source-registry no-change decision.
+- Runtime Runner expansion: implemented through `T9-R-M16..M25` with CLI/validator JSON output, generated control-plane/eval/handoff compatibility, schema-v1 additive fields, status-specific finish options, cross-domain runtime bridge checks, compact first response, structured high-risk action taxonomy and ownership/parallelism guard routing.
 - Test-first or eval-first evidence: T9-D7 batch checks were implemented with failing-focused tests first, then focused GREEN.
 - Test-first or eval-first evidence: T9-D8 checks were implemented with failing-focused tests first, then focused GREEN.
 - Test-first or eval-first evidence: T9-D9 checks were implemented with failing-focused tests first, then focused GREEN.
@@ -225,12 +237,13 @@ Generated at: 2026-05-27
 - Test-first or eval-first evidence: T9-D12 checks were implemented in batches with failing-focused tests first, then focused GREEN.
 - Test-first or eval-first evidence: T9-S M5..M9 checks were implemented with failing-focused tests first, then focused GREEN.
 - Test-first or eval-first evidence: T9-S M10..M14 checks were implemented with failing-focused tests first, then focused GREEN.
-- Documentation impact: root control-plane files, Track 9 backlog and Track 9 plan are synchronized for `T9-R-M14`. Product-Agent OS docs and source registry were not changed because this slice recorded runtime evidence and next-action state rather than adding user-facing behavior guidance or new external source-backed claims.
-- Review outcome: Task 21 runtime runner checks are clean through `T9-R-M14`; the remaining Task 21 expansion rows still need CLI/validator, generated control-plane/eval/handoff, schema compatibility, status mapping, bridge, taxonomy and ownership/parallelism coverage.
+- Test-first or eval-first evidence: T9-R M16..M25 checks were implemented with failing-focused tests first, then focused GREEN.
+- Documentation impact: root control-plane files, Track 9 backlog and generated control-plane/eval/handoff templates are synchronized for `T9-R-M25`. Product-Agent OS user-facing docs and source registry are left for `Task 22` final documentation sync.
+- Review outcome: Task 21 runtime runner checks are clean through `T9-R-M25`; the remaining Track 9 work is final documentation/source-registry closure in `Task 22`.
 
 ## Next Action
 
-- Continue Track 9 Task 21 with `T9-R-M16..M25` expansion rows. `T9-R-M15` commit/push remains optional and explicit-only; `Task 22` starts only after Task 21 expansion/closure.
+- Continue Track 9 with `Task 22` final documentation sync. `T9-R-M15` commit/push remains optional and explicit-only.
 
 ## Residual Risks
 
@@ -260,6 +273,7 @@ Generated at: 2026-05-27
 - `T9-S-M5..M9` synthesis groups and prioritizes methodology recommendations, but it still does not prove real-project evidence sufficiency without owner-reviewed accepted gaps and follow-up conditions.
 - `T9-S-M10..M14` report/lifecycle/docs coverage proves synthesized packet shape and routing, not that every real project overlap has the right human owner or sufficient semantic evidence.
 - `T9-R-M0..M6` runtime propagation proves methodology packet shape, finish options and detection-only blocking, not the later high-risk action taxonomy, automation maturity routing, redaction-specific methodology fixture coverage or cross-domain runtime bridge checks.
-- `T9-R-M7..M14` runtime safety and evidence sync prove high-risk action approval binding, automation maturity blocking, redaction, malformed-packet fallback and current evidence/backlog alignment for synthetic runtime fixtures, not the later structured high-risk taxonomy, status-to-finish-options matrix, cross-domain runtime bridge, generated control-plane/eval/handoff contracts or ownership/parallelism routing guards.
+- `T9-R-M7..M14` runtime safety and evidence sync prove high-risk action approval binding, automation maturity blocking, redaction, malformed-packet fallback and current evidence/backlog alignment for synthetic runtime fixtures.
+- `T9-R-M16..M25` runtime expansion proves CLI/validator contract shape, generated control-plane/eval/handoff fields, schema-v1 additive compatibility, status-to-finish-options mapping, cross-domain bridge checks, compact first response, structured high-risk taxonomy and ownership/parallelism routing for synthetic fixtures; it does not prove real-project methodology evidence sufficiency without owner review or accepted gaps.
 - Root control-plane files are initialized manually for this repository; generated target-project assets still remain staged-first and approval-bound.
 <!-- product-agent-os:end runlog -->

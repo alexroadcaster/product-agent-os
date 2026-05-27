@@ -46,6 +46,20 @@ Use this as the fresh-context handoff for any subagent or parallel worker. The p
 - Rollback notes:
 - Handoff output schema:
 
+## Runtime Methodology Packet
+
+Carry only the compact runtime methodology packet. Do not include raw conversation history; no raw conversation history belongs in this handoff.
+
+- Runtime methodology packet:
+- `methodology_packet`:
+- Owner domain:
+- Consumer domains:
+- `finish_options`:
+- Safe next action:
+- Approval requirements:
+- Evidence gaps:
+- Stop conditions:
+
 ## AI/RAG Handoff Compatibility
 
 - Legacy alias: `agent-handoff-contract.md` maps to this agent task packet.

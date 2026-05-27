@@ -97,6 +97,27 @@ class CodexRuntimeRunnerFixtureEvalTest(unittest.TestCase):
             ]
         )
 
+    def test_cross_domain_runtime_bridge_fixtures_are_checked(self):
+        runner = load_runner()
+        results = {item["fixture"]: item for item in runner.evaluate_all()}
+
+        for fixture in [
+            "cross-domain-ai-rag-data-security",
+            "package-release-security-handoff",
+            "source-artifact-alias-mapping",
+        ]:
+            with self.subTest(fixture=fixture):
+                self.assertTrue(
+                    results[fixture]["codex_runtime_runner_checks"][
+                        "runtime_cross_domain_bridge_present"
+                    ]
+                )
+                self.assertTrue(
+                    results[fixture]["codex_runtime_runner_checks"][
+                        "runtime_first_response_compact"
+                    ]
+                )
+
 
 if __name__ == "__main__":
     unittest.main()

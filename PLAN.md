@@ -12,11 +12,11 @@ Generated at: 2026-05-27
 - `T9-D11` Security, Privacy & Compliance methodology integration is implemented; focused security checks and fixture eval evidence are recorded in `TEST.md`, `RUNLOG.md` and the Track 9 backlog.
 - `T9-D12` Delivery, Release & Operations methodology integration is implemented; final verification evidence is recorded in `TEST.md`, `RUNLOG.md` and the Track 9 backlog.
 - `T9-S` Task 20 Cross-Domain Synthesis is implemented through `M10..M14`; final fixture/report/lifecycle/docs handoff evidence is recorded in `TEST.md`, `RUNLOG.md` and the Track 9 backlog.
-- `T9-R` Task 21 Update Runtime Runner And Finish Options is implemented through `M14`; runtime methodology packet, finish options, safety guards, runtime fixtures and evidence/backlog sync are recorded in `TEST.md`, `RUNLOG.md` and the Track 9 backlog.
-- Verification baseline after the latest completed Track 9 batch: T9-R M7..M14 runtime checks pass; final full verification is recorded in `TEST.md`, `RUNLOG.md` and the Track 9 backlog.
+- `T9-R` Task 21 Update Runtime Runner And Finish Options is implemented through `M25`; runtime methodology packet, finish options, safety guards, CLI/validator output, generated control-plane/eval/handoff contracts, schema compatibility, status mapping, cross-domain bridge, compact first response, high-risk taxonomy, ownership/parallelism routing and evidence sync are recorded in `TEST.md`, `RUNLOG.md` and the Track 9 backlog.
+- Verification baseline after the latest completed Track 9 batch: T9-R M16..M25 runtime/template/fixture/full checks pass; final evidence is recorded in `TEST.md`, `RUNLOG.md` and the Track 9 backlog.
 - Track 9 design is recorded in `docs/superpowers/specs/2026-05-25-track-9-methodology-intelligence-design.md`.
 - Track 9 implementation plan is recorded in `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`.
-- Next implementation slice: `Task 21` expansion `T9-R-M16..M25`; `T9-R-M15` commit/push remains explicit-only.
+- Next implementation slice: `Task 22` final Track 9 documentation sync; `T9-R-M15` commit/push remains explicit-only.
 
 ## Architecture Boundary
 
@@ -46,7 +46,8 @@ Generated at: 2026-05-27
 | 13 | `T9-D12` Delivery, Release & Operations | `done` | Release readiness, artifact manifest, rollout, rollback and operations gates |
 | 14 | `T9-S` cross-domain synthesis | `done` | Deduplicated gates, merged artifacts, conflict rules and final baseline |
 | 15 | `Task 21` runtime runner and finish options through `T9-R-M14` | `done` | Runtime consumption of synthesis packets, finish-option behavior and evidence sync |
-| 16 | `Task 21` runtime runner expansion `T9-R-M16..M25` | `next` | CLI/validator, generated control-plane/eval/handoff, compatibility, status mapping, bridge, taxonomy and ownership guards |
+| 16 | `Task 21` runtime runner expansion `T9-R-M16..M25` | `done` | CLI/validator, generated control-plane/eval/handoff, compatibility, status mapping, bridge, taxonomy and ownership guards |
+| 17 | `Task 22` final Track 9 documentation sync | `next` | Product-Agent OS docs, source registry/backlog closure and final Track 9 verification |
 
 ## Track 9 Section Implementation Protocol
 
@@ -270,8 +271,8 @@ For each Track 9 section:
 - Rows `T9-R-M0..M6` added a compact route-level `methodology_packet`, bounded list/type validation, runtime propagation from workspace discovery, ordered finish options, recommendation-only no-write behavior and detection-only completion blocking.
 - Rows `T9-R-M7..M13` added approval-bound high-risk methodology action handling, automation maturity blocking, methodology route payload redaction, malformed packet fallback behavior, synthetic runtime methodology fixtures and named fixture eval checks.
 - Row `T9-R-M14` synchronized Track 9 evidence, residual risks and next action across the backlog, RUNLOG and root control-plane/system files.
-- Fixture eval covers 80 fixtures and 13 codex-runner fixtures, with runtime checks for methodology packet presence, approval-bound finish options, detection-not-completion, external-write blocking, automation maturity, redaction and malformed packet blocking.
-- Remaining Task 21 expansion rows `T9-R-M16..M25` cover CLI/validator JSON output, generated control-plane/eval/handoff contracts, schema-v1 backward compatibility, lifecycle-status finish options, cross-domain runtime bridge checks, compact first-response fields, structured high-risk taxonomy and ownership/parallelism routing.
+- Rows `T9-R-M16..M25` added CLI/validator JSON output coverage, generated control-plane/eval/handoff contracts, schema-v1 backward compatibility, lifecycle-status finish options, cross-domain runtime bridge checks, compact first-response fields, structured high-risk taxonomy and ownership/parallelism routing.
+- Fixture eval covers 80 fixtures and 16 codex-runner fixtures, with runtime checks for methodology packet presence, approval-bound finish options, detection-not-completion, external-write blocking, automation maturity, redaction, malformed packet blocking, cross-domain bridge and compact first response.
 
 ## T9-D4 Completed Slice
 

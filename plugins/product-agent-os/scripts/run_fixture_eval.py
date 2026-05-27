@@ -1473,6 +1473,7 @@ CONDITIONAL_READINESS_GATE_IDS = (
     "standards_trigger_policy_when_architecture_api_release_or_governance_changes",
     "quality_testing_evals_when_non_trivial_change",
     "semantic_evidence_sufficiency",
+    "runtime_methodology_packet_safety",
     "codex_agentic_workflow",
     "frontend_methodology",
     "llm_ai_rag_readiness_when_ai_behavior_changes",
@@ -3707,6 +3708,37 @@ def _failure_log_status(path: Path) -> tuple[str, dict[str, bool]]:
 
 
 def _codex_runtime_runner_eval(path: Path) -> tuple[str, dict[str, bool]]:
+    cross_domain_runtime_bridge_fixtures = {
+        "cross-domain-ai-rag-data-security",
+        "package-release-security-handoff",
+        "source-artifact-alias-mapping",
+    }
+    if path.name in cross_domain_runtime_bridge_fixtures:
+        methodology_audit = build_methodology_audit(path)
+        route = plan_route(
+            "quality_gate",
+            allow_subagents=False,
+            methodology_intelligence=methodology_audit,
+        )
+        packet = route.get("methodology_packet", {})
+        first_response = route.get("first_response_contract", {})
+        checks = {
+            "runtime_cross_domain_bridge_present": (
+                bool(packet.get("recommendation_groups"))
+                and bool(packet.get("source_artifact_ledger"))
+                and bool(packet.get("safe_next_action"))
+                and bool(route.get("finish_options"))
+            ),
+            "runtime_first_response_compact": (
+                isinstance(first_response, dict)
+                and bool(first_response.get("owner_questions"))
+                and bool(first_response.get("safe_next_action"))
+                and "methodology_domains" not in first_response
+                and "methodology_gates" not in first_response
+            ),
+        }
+        return "route_ready" if all(checks.values()) else "blocked", checks
+
     if not path.name.startswith("codex-runner-"):
         return "not_applicable", {}
 

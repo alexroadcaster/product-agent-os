@@ -25,6 +25,14 @@ Generated at: {generated_at}
 - Minimum artifacts:
 - Missing evidence, workflow, or template gap:
 - Approval boundary:
+- Runtime methodology packet (`methodology_packet`):
+- `finish_options`:
+- Owner questions:
+- Safe next action:
+- Evidence gaps:
+- Detection-only warning:
+- Methodology detection is not completion evidence:
+- No staged artifact from recommendation-only packet:
 
 ## Decisions
 

@@ -10,7 +10,7 @@ from codex_runtime_runner.context_loader import load_control_plane_context
 from codex_runtime_runner.contracts import build_result, validate_runner_result
 from codex_runtime_runner.guards import validate_approval_boundary, validate_route_packet
 from codex_runtime_runner.redaction import redact_payload, validate_redaction
-from codex_runtime_runner.routes import plan_route
+from codex_runtime_runner.routes import apply_runner_status_to_route, plan_route
 from codex_runtime_runner.state import infer_lifecycle_state
 from product_agent_os.discovery import analyze_workspace
 from product_agent_os.source_policy import validate_source_policy
@@ -56,6 +56,7 @@ def run_contract(
         warnings.extend(approval_errors)
 
     status = _status_for(context, route, errors, approval_errors)
+    route = apply_runner_status_to_route(route, status)
     result = build_result(
         status=status,
         workspace=str(workspace),

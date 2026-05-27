@@ -11,11 +11,13 @@ from codex_runtime_runner.contracts import (  # noqa: E402
     ALLOWED_RUNNER_STATUSES,
     ALLOWED_RUNTIME_SURFACES,
     ALLOWED_WRITE_POLICIES,
+    METHODOLOGY_HIGH_RISK_ACTIONS,
     METHODOLOGY_PACKET_LIMITS,
     REQUIRED_RESULT_FIELDS,
     REQUIRED_METHODOLOGY_PACKET_KEYS,
     build_methodology_packet,
     build_result,
+    classify_methodology_high_risk_actions,
     validate_methodology_packet,
     validate_runner_request,
     validate_runner_result,
@@ -154,6 +156,94 @@ class CodexRuntimeRunnerContractsTest(unittest.TestCase):
 
         self.assertIn("methodology_packet.safe_next_action:required", errors)
         self.assertIn("methodology_packet.write_policy:must_be_read_only", errors)
+
+    def test_old_schema_v1_result_without_methodology_packet_remains_valid(self):
+        result = build_result(
+            status="route_ready",
+            workspace="C:/workspace/synthetic",
+            lifecycle_state="quality_gate",
+            route_packet={"write_policy": "read_only"},
+            source_policy_status="ok",
+            approval_status="not_required",
+            next_action="Run risk-reviewer.",
+        )
+
+        self.assertEqual(result["schema_version"], 1)
+        self.assertEqual(validate_runner_result(result), [])
+
+    def test_additive_route_fields_stay_schema_v1_and_invalid_finish_options_fail_stably(self):
+        result = build_result(
+            status="route_ready",
+            workspace="C:/workspace/synthetic",
+            lifecycle_state="quality_gate",
+            route_packet={
+                "write_policy": "read_only",
+                "methodology_packet": self._valid_methodology_packet(),
+                "finish_options": ["read_only_audit", "ask_owner", "run_verification", "stop_blocked"],
+                "first_response_contract": {
+                    "owner_questions": ["Who owns the security review?"],
+                    "safe_next_action": "Stage security-risk-review.md before implementation.",
+                    "evidence_gaps": ["owner-reviewed evidence"],
+                    "approval_boundary": "read_only",
+                    "finish_options": ["read_only_audit", "ask_owner", "run_verification", "stop_blocked"],
+                },
+            },
+            source_policy_status="ok",
+            approval_status="not_required",
+            next_action="Run risk-reviewer.",
+        )
+        malformed = build_result(
+            status="route_ready",
+            workspace="C:/workspace/synthetic",
+            lifecycle_state="quality_gate",
+            route_packet={"write_policy": "read_only", "finish_options": "stage_proposal"},
+            source_policy_status="ok",
+            approval_status="not_required",
+            next_action="Run risk-reviewer.",
+        )
+
+        self.assertEqual(result["schema_version"], 1)
+        self.assertEqual(validate_runner_result(result), [])
+        self.assertIn("route_packet.finish_options:invalid", validate_runner_result(malformed))
+
+    def test_methodology_high_risk_action_taxonomy_is_structured_and_false_positive_safe(self):
+        packet = self._valid_methodology_packet()
+        packet["safe_next_action"] = (
+            "Create release, push branch, run security scan, access production data, "
+            "run DB migration and activate automation."
+        )
+        safe_packet = self._valid_methodology_packet()
+        safe_packet["safe_next_action"] = "Review deployment-plan.md as a read-only proposal."
+
+        self.assertEqual(
+            METHODOLOGY_HIGH_RISK_ACTIONS,
+            [
+                "publish",
+                "deploy",
+                "tag",
+                "release_create",
+                "pr_or_push",
+                "package_registry_mutation",
+                "marketplace_submission",
+                "security_scan",
+                "production_data_access",
+                "db_migration",
+                "automation_activation",
+                "external_system_mutation",
+            ],
+        )
+        self.assertEqual(
+            classify_methodology_high_risk_actions(packet),
+            [
+                "release_create",
+                "pr_or_push",
+                "security_scan",
+                "production_data_access",
+                "db_migration",
+                "automation_activation",
+            ],
+        )
+        self.assertEqual(classify_methodology_high_risk_actions(safe_packet), [])
 
     def _valid_request(self):
         return {

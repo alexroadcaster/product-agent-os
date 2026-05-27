@@ -25,6 +25,15 @@ Generated at: {generated_at}
 - Minimum artifacts present:
 - Partial or pending gap accepted:
 - Forbidden behavior checked:
+- Runtime methodology packet (`methodology_packet`):
+- `finish_options`:
+- Owner questions:
+- Safe next action:
+- Evidence gaps:
+- Approval boundary:
+- Detection-only warning:
+- Methodology detection is not completion evidence:
+- No staged artifact from recommendation-only packet:
 
 ## Manual Checks
 

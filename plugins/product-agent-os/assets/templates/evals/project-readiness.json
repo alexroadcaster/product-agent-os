@@ -23,6 +23,7 @@
           "test_eval_first_evidence",
           "quality_testing_evals",
           "semantic_evidence_sufficiency",
+          "runtime_methodology_packet",
           "codex_agentic_workflow",
           "security_privacy_compliance",
           "delivery_release_operations",
@@ -46,6 +47,7 @@
           "metric_spec",
           "completion_evidence",
           "quality_testing_evals",
+          "runtime_methodology_packet",
           "codex_agentic_workflow",
           "security_privacy_compliance",
           "security_sensitive_surface",
@@ -206,6 +208,14 @@
             "required_evidence": ["current command/eval/runtime evidence", "owner_reviewed_evidence_sufficient_for_real_project_risk", "accepted gap owner", "accepted gap reason", "review_date", "downstream_risk", "follow_up_condition"],
             "owner": "test-eval-designer",
             "residual_risk": "A grouped methodology packet can preserve evidence while still overstating readiness if sufficiency is not owner-reviewed."
+          },
+          "runtime_methodology_packet_safety": {
+            "applies_when": "Runtime runner consumes methodology_synthesis, recommendation groups, source artifact ledger, owner questions or finish_options.",
+            "pass_condition": "Set present_verified when methodology_packet, finish_options, owner_questions, safe_next_action, evidence_gaps and approval boundary are compact, redacted and schema-v1 compatible; methodology_detection_not_completion prevents readiness from detection alone.",
+            "accepted_gap": "Use explicit_gap_accepted only when the runtime route is read-only and owner accepts missing packet fields with follow-up; use approval_required before scaffold, workspace write, publish, deploy, automation activation, production data access or external action.",
+            "required_evidence": ["methodology_packet", "finish_options", "owner_questions", "safe_next_action", "evidence_gaps", "approval boundary", "methodology_detection_not_completion", "no gate dump", "no scaffold", "external action approval"],
+            "owner": "product-agent operator",
+            "residual_risk": "A runtime route can dump every methodology gate, scaffold before approval, or convert a recommendation into an external action if finish options and approval boundaries are not enforced."
           },
           "codex_agentic_workflow": {
             "applies_when": "Product-Agent OS, Codex App, CLI, IDE extension, codex exec, GitHub Action, MCP, Agents SDK, automation, subagent, skill, plugin, hook, external write, approval boundary, memory or handoff work.",
