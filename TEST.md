@@ -2,7 +2,7 @@
 
 <!-- product-agent-os:start test-plan -->
 Project: Codex Docs / Product-Agent OS
-Generated at: 2026-05-26
+Generated at: 2026-05-27
 
 ## Current Baseline
 
@@ -50,6 +50,13 @@ Generated at: 2026-05-26
 - Latest T9-D11 transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 5 sessions and 0 failures.
 - Latest T9-D11 Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
 - Latest T9-D11 docs/diff hygiene: `python tools\check_docs.py` passed and `git diff --check` exited `0`.
+- T9-D12 status: Delivery, Release & Operations methodology integration is implemented.
+- Latest T9-D12 final focused delivery suite: `python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_discovery tests.product_agent_os.test_methodology_report tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_behavioral_workflow_evals tests.product_agent_os.test_fixture_eval_runner tests.product_agent_os.test_fixtures tests.product_agent_os.test_product_agent_os_docs -v` ran 298 tests with `OK`.
+- Latest T9-D12 fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0` with 66 fixtures, 0 failures, renderer file count 186 and `delivery_release_operations_contract_present: true`.
+- Latest T9-D12 full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 478 tests with `OK`.
+- Latest T9-D12 transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 5 sessions and 0 failures.
+- Latest T9-D12 Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
+- Latest T9-D12 docs/diff hygiene: `python tools\check_docs.py` passed and `git diff --check` exited `0`.
 
 ## Required Checks After Docs Changes
 
@@ -270,6 +277,15 @@ python tools\check_docs.py
 - Confirmed source-policy checks block secret-like literals plus raw PII/private data/payment data markers in docs/templates/fixtures.
 - Confirmed synthetic security fixtures cover payment/billing high risk, docs-only security article false positive, unsupported compliance claims, CI permissions, SBOM/provenance and no raw secrets/private data.
 - Confirmed unsupported security claims are rejected: security review after coding, no-secrets-in-code means safe, ASVS/OWASP proves compliance, SBOM once is enough, Codex Security scan is implied, OAuth proves API security and privacy compliance is universal.
+
+## Completed Focused Checks For T9-D12
+
+- Added RED then GREEN tests for `delivery_release_operations` catalog fields, discovery signals, audit recommendations, template/eval terms, lifecycle skill routing, fixture eval coverage and Product-Agent OS docs sync.
+- Confirmed delivery release gates cover release scope, version impact, changelog/release notes, artifact manifest, release evidence before completion, rollout, rollback/recovery, environment approval, external release approval, CI/CD governance, observability/SLO, operations runbook, incident response, post-release review and automation manual stability.
+- Confirmed final release depth covers release mode policy, build-release-run boundary, platform distribution evidence, release communication, versioning tooling decision, GitHub environment controls, DORA measurement design, incident/postmortem learning, observability/on-call tooling, release integrity security handoff and owner-reviewed release evidence sufficiency.
+- Confirmed release/publish/deploy/package registry, marketplace/store, CI/CD environment mutation and active automation remain `approval_required` and are not performed by the methodology route.
+- Confirmed false-positive fixtures reject docs-only release notes, CI-only workflows, deployment manifests without execution, feature flags without owners, GitOps without approval path, mobile signing alone, DORA individual quota and tooling files without owner evidence.
+- Confirmed fixture eval exposes `delivery_release_operations_contract_present` with 66 fixtures, 0 failures and renderer file count 186.
 
 ## Evidence Format
 

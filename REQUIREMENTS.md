@@ -2,7 +2,7 @@
 
 <!-- product-agent-os:start requirements -->
 Project: Codex Docs / Product-Agent OS
-Generated at: 2026-05-26
+Generated at: 2026-05-27
 
 ## Goal
 
@@ -11,11 +11,11 @@ Generated at: 2026-05-26
 
 ## Current Slice
 
-- Last completed slice before this run: `T9-D8` API & Integrations methodology integration.
+- Last completed slice before this run: `T9-D12` Delivery, Release & Operations methodology integration.
 - Active planning artifact: `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`.
-- Current slice: `T9-D9` Database & Data methodology integration completed; next slice is `T9-D10` LLM / AI / RAG.
+- Current slice: Track 9 domain integration through `T9-D12` is complete; next slice is `Task 20: Cross-Domain Synthesis`.
 - Current route: long-running plugin/skill/docs/evals work.
-- Scenario status: Track 9 foundation through `T9-D9` are implemented. Track 9 continues domain-by-domain from `T9-D10`.
+- Scenario status: Track 9 foundation and all 12 methodology domains through `T9-D12` are implemented. Track 9 continues with cross-domain synthesis.
 
 ## Scope
 
@@ -58,6 +58,10 @@ Generated at: 2026-05-26
 - T9-D7 Backend is complete with `backend` catalog data, service boundary, runtime/failure/observability/security/rollback evidence, dependency/job/data/ops depth, CI/deployment discovery, severity policy and owner-reviewed evidence sufficiency routing.
 - T9-D8 API & Integrations is complete with `api_integrations` catalog data, contract source, consumer map, compatibility, security, errors, contract tests, events/webhooks, generated SDK manifest, external-write approval and unsupported-claim rejection.
 - T9-D9 Database & Data is complete with `database_data` catalog data, database inventory, dictionary, schema source, migration plan, expand-contract, transaction boundary, rollback/backup evidence, data classification, data quality, data contract, lineage, query performance, retention/deletion, synthetic fixture policy, production access approval and unsupported-claim rejection.
+- T9-D10 LLM / AI / RAG is complete with `llm_ai_rag` catalog data, AI behavior promise, baseline/current evals, prompt/model/tool/RAG/grounding evidence, trace evidence, guardrails, cost/latency, eval tooling, model migration, lifecycle/privacy, incident workflow and unsupported-claim rejection.
+- T9-D11 Security, Privacy & Compliance is complete with `security_privacy_compliance` catalog data, threat surface, ASVS/SSDF/SAMM mapping, authorization negative tests, secrets, data classification, privacy impact, supply chain, SBOM/provenance, CI permissions, audit logging, compliance overlay, vulnerability response, explicit Codex Security scan status and unsupported-claim rejection.
+- T9-D12 Delivery, Release & Operations is complete with `delivery_release_operations` catalog data, release scope, versioning, changelog/release notes, artifact manifest, release evidence, rollout, rollback, CI/CD governance, observability/SLO, runbooks, incidents, post-release learning, release mode, build-release-run, platform distribution, DORA, release integrity handoff, owner-reviewed evidence sufficiency and unsupported-claim rejection.
+- Task 20 Cross-Domain Synthesis must normalize shared gates, artifact ownership, evidence-before-completion concepts, semantic evidence sufficiency, cross-domain false positives and conflict rules before runtime finish-option work.
 - `docs-maintainer` is now a packaged lifecycle skill for requirement IDs, source registry, glossary/ubiquitous-language and traceability docs after the requirements packet exists.
 
 ## Assumptions

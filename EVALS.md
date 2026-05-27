@@ -2,7 +2,7 @@
 
 <!-- product-agent-os:start evals -->
 Project: Codex Docs / Product-Agent OS
-Generated at: 2026-05-26
+Generated at: 2026-05-27
 
 ## Rubrics
 
@@ -35,7 +35,7 @@ Generated at: 2026-05-26
 - False-positive scenario fixture coverage: implemented in `T8-GX`.
 - Detailed discovery status depth: implemented in `T8-D`.
 - Track 9 methodology intelligence plan: authored in `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`.
-- Track 9 foundation, `T9-D1` Business/Product, `T9-D2` Requirements/Domain, `T9-D3` Solution Architecture, `T9-D4` Quality/Testing/Evals, `T9-D5` Codex/Agentic Workflow, `T9-D6` Frontend, `T9-D7` Backend, `T9-D8` API & Integrations, `T9-D9` Database & Data, `T9-D10` LLM / AI / RAG and `T9-D11` Security, Privacy & Compliance: implemented.
+- Track 9 foundation, `T9-D1` Business/Product, `T9-D2` Requirements/Domain, `T9-D3` Solution Architecture, `T9-D4` Quality/Testing/Evals, `T9-D5` Codex/Agentic Workflow, `T9-D6` Frontend, `T9-D7` Backend, `T9-D8` API & Integrations, `T9-D9` Database & Data, `T9-D10` LLM / AI / RAG, `T9-D11` Security, Privacy & Compliance and `T9-D12` Delivery, Release & Operations: implemented.
 
 ## Track 9 Methodology Intelligence Evals
 
@@ -148,6 +148,15 @@ Generated at: 2026-05-26
 - Approval boundary: payment/billing, production data, secret rotation, policy changes, external security-system mutation, external writes, publish actions and Codex Security scans remain approval-bound or explicitly not requested.
 - Unsupported claims rejected: security review after coding, no-secrets-in-code means safe, ASVS/OWASP proves compliance, SBOM once is enough, Codex Security scan is implied, OAuth proves API security and privacy compliance is universal.
 - Residual risk: security/privacy/compliance artifacts prove evidence shape and route/gate coverage, not legal compliance, certification, or that a human security/privacy/compliance owner has accepted every residual risk for a real production system.
+
+## Delivery Release Operations Evals
+
+- `delivery_release_operations_contract_present`: implemented in `T9-D12`.
+- Required evidence: release scope, version impact, changelog/release notes, artifact manifest, release evidence before completion, rollout strategy, rollback/recovery, environment approval boundary, external release approval, CI/CD governance, observability/SLO, operations runbook, incident response, post-release review, automation manual stability, release mode policy, build-release-run boundary, platform distribution evidence, release communication, versioning tooling decision, GitHub environment controls, DORA measurement design, incident/postmortem learning, observability/on-call tooling, release integrity security handoff and owner-reviewed release evidence sufficiency.
+- False-positive protection: docs-only release notes, CI-only workflows, deployment manifests without execution, feature flags without owners, GitOps files without approval paths, mobile signing alone, DORA individual quota and release/observability tooling files without owner evidence stay insufficient for release-ready claims.
+- Approval boundary: publish, tag, GitHub Release creation, artifact upload, deploy, PR creation, branch push, package registry mutation, marketplace/store submission, CI/CD environment mutation and active automation remain `approval_required`.
+- Unsupported claims rejected: CI green means release ready, tests passed so release is ready, rollback is just revert, feature flags remove release risk, GitOps is automatically safe, generated changelog is enough for users, DORA metrics prove individual performance and repeatable automation is automatically safe.
+- Residual risk: delivery/release/operations artifacts prove evidence shape and route/gate coverage, not that a human release, operations, security or product owner has accepted every release risk for a real production system.
 
 ## Completion Evidence Evals
 

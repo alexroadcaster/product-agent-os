@@ -2,7 +2,7 @@
 
 <!-- product-agent-os:start plan -->
 Project: Codex Docs / Product-Agent OS
-Generated at: 2026-05-26
+Generated at: 2026-05-27
 
 ## Current State
 
@@ -10,10 +10,11 @@ Generated at: 2026-05-26
 - `T9-D9` Database & Data methodology integration is implemented; final verification evidence is recorded in `TEST.md`, `RUNLOG.md` and the Track 9 backlog.
 - `T9-D10` LLM / AI / RAG methodology integration is implemented through rows `M30..M36`; final batch verification is recorded in `TEST.md`, `RUNLOG.md` and the Track 9 backlog.
 - `T9-D11` Security, Privacy & Compliance methodology integration is implemented; focused security checks and fixture eval evidence are recorded in `TEST.md`, `RUNLOG.md` and the Track 9 backlog.
-- Verification baseline after the latest completed Track 9 batch: T9-D11 focused security catalog/audit/source-policy/fixture checks pass; final full verification is recorded in `TEST.md`, `RUNLOG.md` and the Track 9 backlog.
+- `T9-D12` Delivery, Release & Operations methodology integration is implemented; final verification evidence is recorded in `TEST.md`, `RUNLOG.md` and the Track 9 backlog.
+- Verification baseline after the latest completed Track 9 batch: T9-D12 focused delivery/release/operations checks pass; final full verification is recorded in `TEST.md`, `RUNLOG.md` and the Track 9 backlog.
 - Track 9 design is recorded in `docs/superpowers/specs/2026-05-25-track-9-methodology-intelligence-design.md`.
 - Track 9 implementation plan is recorded in `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`.
-- Next implementation slice after the `T9-D11` report: `T9-D12` Delivery, Release & Operations.
+- Next implementation slice after the `T9-D12` report: `Task 20` Cross-Domain Synthesis.
 
 ## Architecture Boundary
 
@@ -40,7 +41,7 @@ Generated at: 2026-05-26
 | 10 | `T9-D9` Database & Data | `done` | Schema, migration, data quality, lineage, privacy and production access gates |
 | 11 | `T9-D10` LLM / AI / RAG | `done` | AI behavior, prompt/model/tool/RAG eval and safety gates |
 | 12 | `T9-D11` Security, Privacy & Compliance | `done` | Threat, privacy, ASVS/SSDF, secrets, supply-chain and compliance gates |
-| 13 | `T9-D12` Delivery, Release & Operations | `planned` | Release readiness, artifact manifest, rollout, rollback and operations gates |
+| 13 | `T9-D12` Delivery, Release & Operations | `done` | Release readiness, artifact manifest, rollout, rollback and operations gates |
 | 14 | `T9-S` cross-domain synthesis | `planned` | Deduplicated gates, merged artifacts, conflict rules and final baseline |
 
 ## Track 9 Section Implementation Protocol
@@ -87,6 +88,8 @@ For each Track 9 section:
 - LLM / AI / RAG artifacts: `ai-behavior-spec.md`, `prompt-contract.md`, `model-decision-record.md`, `eval-run-report.md`, `ai-dataset-manifest.md`, `structured-output-schema.md`, `ai-tool-contract.md`, `rag-source-inventory.md`, `rag-retrieval-config.md`, `rag-eval-report.md`, `grounding-rubric.md`, `agent-task-packet.md`, `agent-workflow-map.md`, `guardrail-matrix.md`, `trace-evidence-packet.md`, `ai-cost-latency-budget.md`, plus existing `ai-eval-spec.md`, `PLAN.md`, `TEST.md`, `EVALS.md` and `RUNLOG.md`.
 - Security, Privacy & Compliance gate: `security_privacy_compliance` records security-sensitive classification, threat surface, security risk review, ASVS/SSDF/SAMM mapping, ASVS level selection, API security scheme, authorization negative tests, secrets policy, data classification, redaction lifecycle, privacy impact, external-write approval, abuse/rate-limit review, audit logging, supply chain, SBOM/provenance, CI permissions, AI security, compliance overlay taxonomy, vulnerability response workflow, explicit Codex Security scan status, evidence before completion and unsupported-claim rejection.
 - Security, Privacy & Compliance artifacts: `security-risk-review.md`, `threat-surface.md`, `asvs-ssdf-mapping.md`, `authz-negative-test-matrix.md`, `secrets-policy.md`, `data-classification-register.md`, `privacy-impact-record.md`, `api-security-review.md`, `abuse-rate-limit-plan.md`, `supply-chain-review.md`, `sbom-manifest.md`, `ci-permissions-review.md`, `audit-logging-review.md`, `ai-security-review.md`, `compliance-overlay.md`, `vulnerability-response-record.md` and `approval-record.md`.
+- Delivery, Release & Operations gate: `delivery_release_operations` records release scope, version impact, changelog/release notes, artifact manifest, release evidence before completion, rollout strategy, rollback/recovery, environment approval boundary, external release approval, CI/CD governance, observability/SLO, operations runbook, incident response, post-release review, automation manual stability, release mode policy, build-release-run boundary, platform distribution evidence, release communication, versioning tooling decision, GitHub environment controls, DORA measurement design, incident/postmortem learning, observability/on-call tooling, release integrity security handoff, owner-reviewed release evidence sufficiency and unsupported-claim rejection.
+- Delivery, Release & Operations artifacts: `versioning-policy.md`, `release-readiness.md`, `release-artifact-manifest.md`, `rollout-plan.md`, `rollback-recovery-plan.md`, `environment-matrix.md`, `deployment-plan.md`, `ci-cd-workflow-inventory.md`, `observability-map.md`, `slo-spec.md`, `operations-runbook.md`, `incident-record.md`, `postmortem.md`, `post-release-review.md`, `approval-record.md`, `automation-candidate.md`, plus cross-domain handoff to `supply-chain-review.md`, `sbom-manifest.md` and `vulnerability-response-record.md`.
 - Conditional readiness gate: `project-readiness.json` defines `readiness_statuses` and per-gate `applies_when`, pass condition, accepted gap, required evidence, owner and residual risk. Detection alone can only support `present_unverified`; `present_verified` requires current command, owner or artifact evidence.
 - Test gate: deterministic tests, contract checks, evals or accepted gaps are named before implementation.
 - Documentation gate: docs-as-code artifacts and source-of-truth updates are named.
@@ -239,6 +242,15 @@ For each Track 9 section:
 - Rows `T9-D11-M8..M13` strengthened the security artifact set, renderer registration, source/no-secrets policy, readiness and behavioral eval contracts, synthetic false-positive fixtures and lifecycle skill routing.
 - Rows `T9-D11-M16..M23` mapped the full source artifact set, ASVS/SSDF/SAMM policy, authorization negative-test depth, redaction lifecycle, SBOM/provenance policy, vulnerability response workflow, compliance overlay taxonomy and methodology report redaction.
 - The staged renderer now includes 16 new Security, Privacy & Compliance templates and the `python-app` renderer file count increased from 157 to 173.
+
+## T9-D12 Delivery, Release & Operations Completed Slice
+
+- Rows `T9-D12-M0..M9` added the `delivery_release_operations` catalog contract, template aliases, read-only discovery depth, methodology applicability packet and initial release scope/version/changelog/release evidence recommendations.
+- Rows `T9-D12-M10..M19` added artifact manifest, rollout, rollback/recovery, environment approval, external release approval, CI/CD governance, observability/SLO, operations runbook, incident response and post-release measurement gates.
+- Rows `T9-D12-M20..M29` added automation manual stability, renderer registration for 13 delivery templates, methodology report external-action status, generated control-plane/eval coverage, lifecycle skill routing and false-positive/approval fixtures.
+- Rows `T9-D12-M30..M40` added final release depth for release mode policy, build-release-run boundary, platform distribution, release communication, versioning tooling, GitHub environment controls, DORA measurement design, incident/postmortem learning, observability/on-call tooling, release integrity security handoff and owner-reviewed release evidence sufficiency.
+- The staged renderer keeps file count 186; fixture eval now covers 66 fixtures and exposes `delivery_release_operations_contract_present`.
+- Next Track 9 work is `Task 20: Cross-Domain Synthesis` to normalize duplicated gates, shared artifact ownership, semantic evidence sufficiency, false-positive routing and conflict rules across all methodology domains.
 
 ## T9-D4 Completed Slice
 
