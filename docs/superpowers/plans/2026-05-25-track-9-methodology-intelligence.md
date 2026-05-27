@@ -3309,11 +3309,103 @@ Result: focused tests ran 298 tests with `OK`; fixture eval exited `0` with 66 f
 
 **Files:**
 - Modify: `plugins/product-agent-os/assets/methodology/methodology-catalog.json`
+- Modify: `plugins/product-agent-os/scripts/product_agent_os/methodology_catalog.py`
 - Modify: `plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py`
+- Modify: `plugins/product-agent-os/scripts/product_agent_os/methodology_report.py`
+- Modify: `plugins/product-agent-os/scripts/product_agent_os/discovery.py`
+- Modify: `plugins/product-agent-os/scripts/product_agent_os/templates.py`
+- Create: `plugins/product-agent-os/scripts/product_agent_os/methodology_synthesis.py`
 - Modify: `plugins/product-agent-os/scripts/run_fixture_eval.py`
+- Modify: `plugins/product-agent-os/assets/templates/control-plane/REQUIREMENTS.md`
+- Modify: `plugins/product-agent-os/assets/templates/control-plane/PLAN.md`
+- Modify: `plugins/product-agent-os/assets/templates/control-plane/TEST.md`
+- Modify: `plugins/product-agent-os/assets/templates/control-plane/EVALS.md`
+- Modify: `plugins/product-agent-os/assets/templates/control-plane/RUNLOG.md`
+- Modify: `plugins/product-agent-os/assets/templates/evals/project-readiness.json`
+- Modify: `plugins/product-agent-os/assets/templates/evals/behavioral-workflows.json`
+- Modify: `plugins/product-agent-os/skills/workspace-discovery-auditor/SKILL.md`
+- Modify: `plugins/product-agent-os/skills/project-lifecycle-orchestrator/SKILL.md`
+- Modify: `plugins/product-agent-os/skills/requirements-author/SKILL.md`
+- Modify: `plugins/product-agent-os/skills/implementation-planner/SKILL.md`
+- Modify: `plugins/product-agent-os/skills/test-eval-designer/SKILL.md`
+- Modify: `plugins/product-agent-os/skills/risk-reviewer/SKILL.md`
+- Modify: `plugins/product-agent-os/skills/docs-maintainer/SKILL.md`
+- Modify: `plugins/product-agent-os/skills/pr-release-operator/SKILL.md`
+- Modify: `plugins/product-agent-os/skills/agent-team-designer/SKILL.md`
+- Modify: `plugins/product-agent-os/skills/learning-loop-maintainer/SKILL.md`
+- Modify: `plugins/product-agent-os/skills/automation-promoter/SKILL.md`
+- Modify: `tests/product_agent_os/test_methodology_catalog.py`
+- Modify: `tests/product_agent_os/test_methodology_audit.py`
+- Modify: `tests/product_agent_os/test_methodology_report.py`
+- Modify: `tests/product_agent_os/test_discovery.py`
+- Modify: `tests/product_agent_os/test_infrastructure_templates.py`
+- Modify: `tests/product_agent_os/test_lifecycle_skills.py`
+- Modify: `tests/product_agent_os/test_behavioral_workflow_evals.py`
+- Modify: `tests/product_agent_os/test_fixture_eval_runner.py`
+- Modify: `tests/product_agent_os/test_fixtures.py`
+- Modify: `tests/product_agent_os/test_product_agent_os_docs.py`
 - Modify: `docs/sources/product-agent-os-track-9-backlog.md`
 - Modify: `docs/product-agent-os/methodology-intelligence.md`
+- Modify: `docs/product-agent-os/behavioral-evals.md`
+- Modify: `docs/product-agent-os/development-standards.md`
 - Create: `tests/product_agent_os/test_methodology_synthesis.py`
+
+**Task matrix:**
+
+| Row | Slice | Files | Acceptance criteria | Verification |
+| --- | --- | --- | --- | --- |
+| `T9-S-M0` | Record current synthesis baseline | `docs/sources/product-agent-os-track-9-backlog.md`, `tests/product_agent_os/test_methodology_synthesis.py` | Backlog records the current duplicate gate, artifact and eval-field inventory before implementation: duplicate gates include `accepted_gap_recorded`, `automation_manual_stability_present`, `bounded_context_architecture_boundary_trace` and `external_write_approval_present`; duplicate artifacts include `approval-record.md`, `security-risk-review.md`, `api-contract-review.md`, `test-eval-matrix.md`, `release-readiness.md` and `architecture-overview.md`. Current fixture symptoms are recorded: backend FSD-like directories can trigger frontend P0s, security/payment can be ordered behind generic quality strategy, and RAG ingestion can miss AI/RAG routing when no explicit `rag/` directory exists. | RED synthesis tests assert the baseline gaps before implementation. |
+| `T9-S-M1` | Add RED synthesis contract tests | `tests/product_agent_os/test_methodology_synthesis.py` | Tests assert shared gate ownership, artifact ownership, priority tie-breakers, conflict rules, grouped recommendation shape, semantic evidence sufficiency ownership, false-positive routing and safe-next-action ordering. Tests cover docs-only, backend FSD-like folders, CI-only workflow, tooling-only release, security/payment, package release and AI/RAG data/security overlap fixtures. | `python -m unittest tests.product_agent_os.test_methodology_synthesis -v` fails on missing synthesis layer. |
+| `T9-S-M2` | Add machine-readable synthesis catalog contract | `plugins/product-agent-os/assets/methodology/methodology-catalog.json`, `plugins/product-agent-os/scripts/product_agent_os/methodology_catalog.py`, `tests/product_agent_os/test_methodology_catalog.py` | Catalog keeps existing domain `gates`, `artifacts` and `eval_fields` as string lists, and adds a top-level synthesis block with shared gate owners, consumer domains, artifact owners, artifact aliases, deferred-source artifact decisions, priority tie-breakers, conflict rules, false-positive rules, semantic evidence sufficiency rules, owner-question dedupe rules and supported output packet keys. Validator rejects missing owners, unknown domains, unknown priorities, unknown artifact ids and conflict rules that point to nonexistent gates. | Catalog tests assert schema compatibility and synthesis metadata. |
+| `T9-S-M3` | Normalize source artifact compatibility and renderer aliases | `plugins/product-agent-os/assets/methodology/methodology-catalog.json`, `plugins/product-agent-os/scripts/product_agent_os/templates.py`, `tests/product_agent_os/test_methodology_synthesis.py`, `tests/product_agent_os/test_infrastructure_templates.py` | Every source methodology artifact mention is classified as canonical template, alias, existing non-template project artifact, or deferred candidate with owner and reason. Source-era names such as `context-map.md`, `agent-eval-case.md`, `skill-candidate.md`, `ui-flow-spec.md`, `visual-evidence-packet.md`, `threat-model.md`, `asvs-mapping.md`, `runbook.md`, `slo.md` and `CHANGELOG.md` cannot appear as unexplained missing templates. Catalog aliases and `templates.py` renderer aliases stay consistent where renderer aliases exist. | Synthesis and infrastructure-template tests assert alias targets exist or are explicitly deferred. |
+| `T9-S-M4` | Implement synthesis module | `plugins/product-agent-os/scripts/product_agent_os/methodology_synthesis.py`, `tests/product_agent_os/test_methodology_synthesis.py` | New module exposes deterministic pure functions for loading synthesis metadata, validating shared ownership, grouping recommendations by artifact, merging evidence lists, preserving source domains/gates, resolving priority ties, deduping owner questions and returning a `methodology_synthesis` packet. No workspace writes, network calls, model calls, external approvals or renderer side effects are introduced. | Synthesis tests pass for pure functions with synthetic recommendation packets. |
+| `T9-S-M5` | Integrate recommendation resolver into audit output | `plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py`, `tests/product_agent_os/test_methodology_audit.py` | `build_methodology_audit()` preserves existing output keys and adds stable grouped output such as `recommendation_groups` and `methodology_synthesis` without breaking current fixture eval consumers. Highest priority per artifact is preserved, evidence is deduplicated, reasons and gates are not lost, `questions_for_owner` are deduped, and `delivery_map.next_action_map` uses resolved safe next actions. | Audit tests assert grouped output, stable existing keys, report/JSON alignment and priority ordering. |
+| `T9-S-M6` | Add risk-aware safe-next-action policy | `plugins/product-agent-os/scripts/product_agent_os/methodology_synthesis.py`, `plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py`, `tests/product_agent_os/test_methodology_synthesis.py`, `tests/product_agent_os/test_methodology_audit.py` | When several blockers exist, security, approval, release/external-write, production-data and destructive-change blockers outrank generic `quality-strategy.md` blockers for `safe_next_action`. Generic quality evidence remains visible in recommendation groups, but it does not hide a more specific high-risk owner action. | Tests assert security/payment chooses `approval-record.md` or `security-risk-review.md`, package release chooses release approval/readiness, and docs-only work keeps the smallest verification action. |
+| `T9-S-M7` | Normalize semantic evidence sufficiency | `plugins/product-agent-os/assets/methodology/methodology-catalog.json`, `plugins/product-agent-os/scripts/product_agent_os/methodology_synthesis.py`, `plugins/product-agent-os/assets/templates/control-plane/PLAN.md`, `plugins/product-agent-os/assets/templates/control-plane/TEST.md`, `plugins/product-agent-os/assets/templates/control-plane/EVALS.md`, `plugins/product-agent-os/assets/templates/control-plane/RUNLOG.md`, `plugins/product-agent-os/assets/templates/evals/project-readiness.json`, `plugins/product-agent-os/assets/templates/evals/behavioral-workflows.json`, `tests/product_agent_os/test_methodology_synthesis.py`, `tests/product_agent_os/test_infrastructure_templates.py`, `tests/product_agent_os/test_behavioral_workflow_evals.py` | A shared owner-review rule covers high-risk, production, release, security-sensitive, AI behavior and public-contract slices. Required evidence is owner review that recorded tests/evals/manual/runtime evidence are sufficient for real project risk, or `explicit_gap_accepted` with owner, reason, review date, downstream risk and follow-up condition. Domain-specific gates consume the shared rule without pretending a template proves semantic sufficiency. Generated control-plane and eval assets expose the shared rule consistently. | Synthesis, infrastructure-template and behavioral-eval tests assert accepted-gap shape and consumer domains. |
+| `T9-S-M8` | Align discovery, methodology applicability and audit synthesis packets | `plugins/product-agent-os/scripts/product_agent_os/discovery.py`, `plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py`, `tests/product_agent_os/test_discovery.py`, `tests/product_agent_os/test_methodology_audit.py` | Discovery output carries synthesized methodology fields without losing existing `methodology_applicability`, `methodology_intelligence`, `methodology_domains`, `methodology_map` or usage-mode routing. `present_unverified` remains distinct from readiness evidence, and detection-only signals cannot become `present_verified`. | Discovery tests assert packet shape, backward compatibility and no readiness upgrade from detection alone. |
+| `T9-S-M9` | Strengthen cross-domain false-positive routing | `plugins/product-agent-os/scripts/product_agent_os/discovery.py`, `plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py`, `plugins/product-agent-os/scripts/product_agent_os/methodology_synthesis.py`, `plugins/product-agent-os/assets/fixtures/*`, `tests/product_agent_os/test_discovery.py`, `tests/product_agent_os/test_fixture_eval_runner.py`, `tests/product_agent_os/test_fixtures.py` | Backend FSD-like folders do not trigger frontend blockers without UI/runtime evidence; CI-only workflow does not imply release/security P0 unless publish/deploy/secrets/external mutation evidence exists; docs-only release notes and tooling-only release files stay `present_unverified`; simple docs-only/internal CLI work receives no frontend/backend/API/database/security/release hard blockers. | Discovery, fixture and fixture-runner tests assert negative routing and no raw secrets/private data in new fixtures. |
+| `T9-S-M10` | Add overlap fixtures for mixed-risk projects | `plugins/product-agent-os/assets/fixtures/*`, `plugins/product-agent-os/scripts/run_fixture_eval.py`, `tests/product_agent_os/test_fixture_eval_runner.py`, `tests/product_agent_os/test_fixtures.py` | Fixtures cover: small app with PII but low code complexity, complex monorepo without production users, internal CLI with no UI/API/release hard blockers, AI/RAG project with database lineage and security/privacy overlap, package release with security handoff, source artifact alias/deferred mapping, and owner-question dedupe. Fixture eval exposes named checks for `cross_domain_synthesis_contract_present`, `semantic_evidence_sufficiency_contract_present`, `safe_next_action_risk_ordered`, `source_artifact_mapping_contract_present` and `cross_domain_false_positive_guards_present`. | Fixture runner tests pass and `python plugins\product-agent-os\scripts\run_fixture_eval.py` returns `ok: true`. |
+| `T9-S-M11` | Render grouped synthesis in methodology reports | `plugins/product-agent-os/scripts/product_agent_os/methodology_report.py`, `tests/product_agent_os/test_methodology_report.py` | Markdown reports include a Cross-Domain Synthesis section with grouped artifact recommendations, owner domain, consumer domains, merged gates, approval boundary, accepted-gap option, residual risk, source artifact alias/deferred decisions and safe next action. Reports still redact local paths, secrets, private customer data, raw PII and payment data, and still state that no external action is implied. | Report tests assert grouped output, redaction, report/JSON alignment and external-action boundary text. |
+| `T9-S-M12` | Route synthesized packets through lifecycle skills | `plugins/product-agent-os/skills/workspace-discovery-auditor/SKILL.md`, `plugins/product-agent-os/skills/project-lifecycle-orchestrator/SKILL.md`, `plugins/product-agent-os/skills/requirements-author/SKILL.md`, `plugins/product-agent-os/skills/implementation-planner/SKILL.md`, `plugins/product-agent-os/skills/test-eval-designer/SKILL.md`, `plugins/product-agent-os/skills/risk-reviewer/SKILL.md`, `plugins/product-agent-os/skills/docs-maintainer/SKILL.md`, `plugins/product-agent-os/skills/pr-release-operator/SKILL.md`, `plugins/product-agent-os/skills/agent-team-designer/SKILL.md`, `plugins/product-agent-os/skills/learning-loop-maintainer/SKILL.md`, `plugins/product-agent-os/skills/automation-promoter/SKILL.md`, `tests/product_agent_os/test_lifecycle_skills.py` | Lifecycle skills consume grouped recommendations, owner domains, consumer domains, semantic sufficiency status, alias/deferred artifact ledger and risk-aware safe next action. Skills must not dump every methodology gate, must not scaffold before approval and must not treat detection as verification. | Lifecycle skill tests assert wording and stop conditions. |
+| `T9-S-M13` | Sync docs and behavioral eval contracts | `docs/sources/product-agent-os-track-9-backlog.md`, `docs/product-agent-os/methodology-intelligence.md`, `docs/product-agent-os/behavioral-evals.md`, `docs/product-agent-os/development-standards.md`, `tests/product_agent_os/test_product_agent_os_docs.py` | Docs explain the synthesis layer, shared ownership, grouped recommendations, false-positive protection, source artifact compatibility, semantic evidence sufficiency and approval-bound behavior. Backlog records deduplicated gates, merged artifacts, known accepted overlaps, false-positive fixture coverage, alias/deferred decisions and residual risks. Source registry changes only if new external source-backed claims are added. | Product docs tests and `python tools\check_docs.py` pass. |
+| `T9-S-M14` | Final synthesis verification and handoff | `tests/product_agent_os/*`, `plugins/product-agent-os/scripts/run_fixture_eval.py`, `plugins/product-agent-os/scripts/run_transcript_eval.py`, `plugins/product-agent-os/scripts/validate_codex_compatibility.py`, `tools/check_docs.py`, `RUNLOG.md` | Focused synthesis suite, fixture eval, full unittest, transcript eval, compatibility, docs check and diff hygiene pass before any completion claim. Commit, push and PR actions remain deferred unless explicitly requested in the current branch. | Commands in Step 11 exit `0`; RUNLOG records evidence, unresolved semantic risks and next action `Task 21`. |
+
+**Task 20 execution policy:**
+
+- Keep synthesis implementation read-only: no staged artifacts, hooks, automations, external writes, CI mutations, package publishing, GitHub actions or source-of-truth updates outside checked-in docs.
+- Preserve existing audit output keys so Track 9 fixture eval and runtime runner checks do not regress before Task 21.
+- Prefer additive catalog metadata over changing all domain `gates`, `artifacts` and `eval_fields` from strings to objects.
+- Run RED before implementation and record expected failures in the backlog or RUNLOG.
+- Do not commit, push or open PR unless the user explicitly asks for that action.
+
+- [ ] **Step 0: Record current synthesis baseline**
+
+Before implementation, run a read-only inventory and record the result in `docs/sources/product-agent-os-track-9-backlog.md`.
+
+Run:
+
+```powershell
+@'
+import json
+from collections import defaultdict
+from pathlib import Path
+
+catalog = json.loads(Path("plugins/product-agent-os/assets/methodology/methodology-catalog.json").read_text(encoding="utf-8"))
+
+def duplicates(kind):
+    seen = defaultdict(list)
+    for domain in catalog["domains"]:
+        for item in domain[kind]:
+            seen[item].append(domain["id"])
+    return {key: value for key, value in seen.items() if len(value) > 1}
+
+print("duplicate_gates", duplicates("gates"))
+print("duplicate_artifacts", duplicates("artifacts"))
+print("duplicate_eval_fields", duplicates("eval_fields"))
+'@ | python -
+```
+
+Expected: output includes duplicate gate, artifact and eval-field inventories that match the current pre-synthesis state.
 
 - [ ] **Step 1: Add RED synthesis tests**
 
@@ -3325,7 +3417,11 @@ Create `tests/product_agent_os/test_methodology_synthesis.py` with tests that as
 - `evidence_before_completion` concepts are normalized under quality/Codex/delivery rules;
 - semantic evidence sufficiency review is normalized as a shared owner-review gate for high-risk, production, release, security-sensitive, AI behavior and public-contract slices; it can be satisfied by explicit owner review evidence or an accepted gap with owner, reason, review date, downstream risk and follow-up condition;
 - mutually exclusive recommendations cannot both be `P0_blocker` for the same workspace;
-- simple docs-only fixture receives no frontend/backend/API/database/security/release hard blockers.
+- simple docs-only fixture receives no frontend/backend/API/database/security/release hard blockers;
+- backend FSD-like folders do not trigger frontend P0/P1 recommendations without UI/runtime evidence;
+- CI-only workflow does not trigger release/security P0 without publish, deploy, secret, external-write or CI environment mutation evidence;
+- security/payment fixtures choose a security or approval safe next action before generic quality strategy;
+- AI/RAG plus data lineage fixtures route AI/RAG, database and security/privacy overlap as `present_unverified` rather than proof.
 
 - [ ] **Step 2: Run RED synthesis tests**
 
@@ -3337,20 +3433,27 @@ python -m unittest tests.product_agent_os.test_methodology_synthesis -v
 
 Expected: fail until synthesis rules exist.
 
-- [ ] **Step 3: Normalize overlaps**
+- [ ] **Step 3: Add synthesis catalog metadata, source artifact compatibility and validator coverage**
 
 Modify catalog:
 
 - add owner domain for shared gates;
 - add consumer domains for shared gates;
+- add artifact owner and consumer metadata;
+- add artifact alias metadata for plan-era names that map to canonical templates;
+- classify every methodology-source artifact mention as canonical template, alias, existing non-template project artifact, or deferred candidate with owner and reason;
 - add semantic evidence sufficiency owner-review rules for high-risk, production, release, security-sensitive, AI behavior and public-contract slices;
 - add conflict rules for mutually exclusive frameworks;
+- add safe-next-action tie-breakers for approval, security, release, production data and destructive changes;
+- add false-positive rules for docs-only, internal CLI, backend FSD-like directories, CI-only, release tooling-only and deployment manifest-only work;
+- add owner-question dedupe rules and supported output packet keys;
 - merge duplicate artifacts where one template can serve multiple domains;
-- keep domain-specific templates only when the evidence model differs.
+- keep domain-specific templates only when the evidence model differs;
+- keep catalog aliases consistent with `templates.py` renderer aliases where renderer aliases exist.
 
-- [ ] **Step 4: Add priority resolver**
+- [ ] **Step 4: Add synthesis module and recommendation resolver**
 
-Modify `methodology_audit.py` to sort and resolve recommendations:
+Create `plugins/product-agent-os/scripts/product_agent_os/methodology_synthesis.py` and modify `methodology_audit.py` to sort, group and resolve recommendations:
 
 1. `P0_blocker`;
 2. `P1_high_risk`;
@@ -3358,9 +3461,40 @@ Modify `methodology_audit.py` to sort and resolve recommendations:
 4. `P3_optional_maturity`;
 5. `not_applicable`.
 
-When two recommendations target the same artifact, keep the highest priority and merge evidence requirements without duplicating text.
+When two recommendations target the same artifact, keep the highest priority and merge evidence requirements without duplicating text. Preserve every source gate and domain in the grouped output. Expose enough metadata for reports and fixture evals to distinguish owner domain, consumer domains, approval boundary, accepted-gap option and residual risk.
 
-- [ ] **Step 5: Add cross-domain fixtures**
+- [ ] **Step 5: Add risk-aware safe-next-action policy**
+
+Safe next action must prefer the highest-risk specific action over generic quality strategy when both exist:
+
+- security/payment/external write -> `approval-record.md`, `security-risk-review.md` or another security owner artifact;
+- package release/deploy/publish -> release approval/readiness artifact;
+- production data/destructive migration -> database approval/rollback artifact;
+- AI tool side effects or model release -> AI/RAG approval/eval artifact;
+- docs-only/internal CLI -> smallest verification command or accepted gap.
+
+- [ ] **Step 6: Normalize semantic evidence sufficiency and generated eval assets**
+
+Update `PLAN.md`, `TEST.md`, `EVALS.md`, `RUNLOG.md`, `project-readiness.json` and `behavioral-workflows.json` so shared semantic sufficiency is represented consistently:
+
+- owner review confirms recorded tests, evals, manual checks and runtime evidence are sufficient for the actual project risk;
+- accepted gaps require owner, reason, review date, downstream risk and follow-up condition;
+- high-risk, production, release, security-sensitive, AI behavior and public-contract slices consume the shared rule;
+- generated assets must not imply that a template alone proves semantic sufficiency.
+
+- [ ] **Step 7: Align discovery, methodology applicability and false-positive routing**
+
+Modify `discovery.py`, `methodology_audit.py` and synthesis rules so:
+
+- `methodology_applicability`, `methodology_intelligence`, `methodology_domains`, `methodology_map`, `recommendation_groups` and `methodology_synthesis` remain backward-compatible packets;
+- `present_unverified` stays distinct from readiness evidence;
+- detection-only signals never become `present_verified`;
+- backend FSD-like folders do not trigger frontend blockers without UI/runtime evidence;
+- CI-only workflow does not imply release/security P0 without publish, deploy, secret, external-write or CI environment mutation evidence;
+- docs-only release notes, tooling-only release files and deployment manifests stay `present_unverified` unless stronger evidence exists;
+- simple docs-only/internal CLI work receives no frontend/backend/API/database/security/release hard blockers.
+
+- [ ] **Step 8: Add cross-domain fixtures**
 
 Add or extend fixtures for:
 
@@ -3368,20 +3502,26 @@ Add or extend fixtures for:
 - internal CLI with no frontend/API/release hard blockers;
 - small app with PII but low code complexity;
 - complex monorepo without production users;
-- AI/RAG project with data and security overlap.
+- AI/RAG project with data and security overlap;
+- package release with security handoff;
+- source artifact alias/deferred mapping;
+- owner-question dedupe.
 
-- [ ] **Step 6: Run synthesis verification**
+- [ ] **Step 9: Render synthesis in methodology reports and route lifecycle skills**
 
-Run:
+Modify `methodology_report.py` so reports show:
 
-```powershell
-python -m unittest tests.product_agent_os.test_methodology_synthesis tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_fixture_eval_runner -v
-python plugins\product-agent-os\scripts\run_fixture_eval.py
-```
+- grouped recommendations by artifact;
+- owner domain and consumer domains;
+- merged gates and evidence requirements;
+- approval boundary and accepted-gap option;
+- source artifact alias/deferred decisions;
+- safe next action selected after synthesis;
+- external action status remains read-only and approval-bound.
 
-Expected: all commands exit `0`.
+Update lifecycle skills so they consume grouped recommendations, owner domains, consumer domains, semantic sufficiency status, alias/deferred artifact ledger and risk-aware safe next action. Skills must not dump every methodology gate, scaffold before approval, or treat detection as verification.
 
-- [ ] **Step 7: Update Track 9 backlog**
+- [ ] **Step 10: Update Track 9 backlog and docs**
 
 Update `docs/sources/product-agent-os-track-9-backlog.md`:
 
@@ -3389,18 +3529,42 @@ Update `docs/sources/product-agent-os-track-9-backlog.md`:
 - record merged artifacts;
 - record known accepted overlaps;
 - record semantic evidence sufficiency review ownership, accepted-gap shape and consumer domains;
-- record final false-positive coverage.
+- record final false-positive coverage;
+- record source artifact alias/deferred decisions;
+- record safe-next-action tie-breakers and residual risks.
 
-- [ ] **Step 8: Commit synthesis**
+Update Product-Agent OS docs:
+
+- `docs/product-agent-os/methodology-intelligence.md`: explain synthesis output and grouped recommendations;
+- `docs/product-agent-os/behavioral-evals.md`: add synthesis fixture/eval contract;
+- `docs/product-agent-os/development-standards.md`: add shared semantic evidence sufficiency and false-positive routing rules.
+
+- [ ] **Step 11: Run synthesis verification**
 
 Run:
 
 ```powershell
-git add plugins\product-agent-os tests\product_agent_os docs\sources\product-agent-os-track-9-backlog.md docs\product-agent-os\methodology-intelligence.md
+python -m unittest tests.product_agent_os.test_methodology_synthesis tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_methodology_report tests.product_agent_os.test_discovery tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_behavioral_workflow_evals tests.product_agent_os.test_fixture_eval_runner tests.product_agent_os.test_fixtures tests.product_agent_os.test_product_agent_os_docs -v
+python plugins\product-agent-os\scripts\run_fixture_eval.py
+python -m unittest discover -s tests -p "test_*.py" -v
+python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json
+python plugins\product-agent-os\scripts\validate_codex_compatibility.py
+python tools\check_docs.py
+git diff --check
+```
+
+Expected: all commands exit `0`.
+
+- [ ] **Step 12: Prepare commit scope only if requested**
+
+If the user explicitly asks for a commit after verification, use this scope:
+
+```powershell
+git add plugins\product-agent-os tests\product_agent_os docs\sources\product-agent-os-track-9-backlog.md docs\product-agent-os\methodology-intelligence.md docs\product-agent-os\behavioral-evals.md docs\product-agent-os\development-standards.md RUNLOG.md
 git commit -m "feat: synthesize track 9 methodology domains"
 ```
 
-Expected: commit succeeds.
+Expected: commit succeeds only when explicitly requested; otherwise leave changes uncommitted and report verification evidence.
 
 ---
 
