@@ -165,6 +165,19 @@ REQUIRED_TARGETS = {
     ".codex/artifact-templates/approval-record.md",
     ".codex/artifact-templates/ci-stabilization-report.md",
     ".codex/artifact-templates/release-readiness.md",
+    ".codex/artifact-templates/versioning-policy.md",
+    ".codex/artifact-templates/release-artifact-manifest.md",
+    ".codex/artifact-templates/rollout-plan.md",
+    ".codex/artifact-templates/rollback-recovery-plan.md",
+    ".codex/artifact-templates/environment-matrix.md",
+    ".codex/artifact-templates/deployment-plan.md",
+    ".codex/artifact-templates/ci-cd-workflow-inventory.md",
+    ".codex/artifact-templates/observability-map.md",
+    ".codex/artifact-templates/slo-spec.md",
+    ".codex/artifact-templates/operations-runbook.md",
+    ".codex/artifact-templates/incident-record.md",
+    ".codex/artifact-templates/postmortem.md",
+    ".codex/artifact-templates/post-release-review.md",
     ".codex/artifact-templates/test-eval-matrix.md",
     ".codex/artifact-templates/quality-strategy.md",
     ".codex/artifact-templates/ci-evidence-record.md",
@@ -566,6 +579,182 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 for term in terms:
                     with self.subTest(template=name, term=term):
                         self.assertIn(term, text)
+
+    def test_delivery_release_templates_control_plane_and_eval_contracts(self):
+        targets = {item.target_path for item in required_templates()}
+        rendered_targets = {
+            ".codex/artifact-templates/versioning-policy.md",
+            ".codex/artifact-templates/release-artifact-manifest.md",
+            ".codex/artifact-templates/rollout-plan.md",
+            ".codex/artifact-templates/rollback-recovery-plan.md",
+            ".codex/artifact-templates/environment-matrix.md",
+            ".codex/artifact-templates/deployment-plan.md",
+            ".codex/artifact-templates/ci-cd-workflow-inventory.md",
+            ".codex/artifact-templates/observability-map.md",
+            ".codex/artifact-templates/slo-spec.md",
+            ".codex/artifact-templates/operations-runbook.md",
+            ".codex/artifact-templates/incident-record.md",
+            ".codex/artifact-templates/postmortem.md",
+            ".codex/artifact-templates/post-release-review.md",
+        }
+        self.assertTrue(rendered_targets.issubset(targets))
+
+        payloads = {
+            "control-plane": "\n".join(
+                (TEMPLATE_ROOT / "control-plane" / name).read_text(encoding="utf-8").lower()
+                for name in ["PLAN.md", "TEST.md", "EVALS.md", "RUNLOG.md"]
+            ),
+            "project-readiness.json": (TEMPLATE_ROOT / "evals" / "project-readiness.json").read_text(
+                encoding="utf-8"
+            ).lower(),
+            "behavioral-workflows.json": (
+                TEMPLATE_ROOT / "evals" / "behavioral-workflows.json"
+            ).read_text(encoding="utf-8").lower(),
+        }
+        shared_terms = [
+            "delivery_release_operations",
+            "release_scope_present",
+            "version_impact_present",
+            "artifact_manifest_present",
+            "rollout_strategy_present",
+            "rollback_recovery_present",
+            "ci_cd_governance_present",
+            "operations_runbook_present",
+            "incident_response_path_present",
+            "post_release_measurement_present",
+            "automation_manual_stability_present",
+            "automation-candidate.md",
+            "approval_required",
+            "explicit_gap_accepted",
+            "release-ready",
+            "feature flags remove release risk",
+            "gitops is automatically safe",
+            "automation is safer because it is repeatable",
+            "delivery_release_operations_readiness_when_release_or_operations_changes",
+            "publish without approval",
+            "tag without approval",
+            "deployment without approval",
+            "active automation without manual stability",
+        ]
+        for name, text in payloads.items():
+            with self.subTest(name=name):
+                for expected in shared_terms:
+                    self.assertIn(expected, text)
+
+    def test_delivery_release_final_batch_templates_cover_deep_release_operations(self):
+        expected_terms = {
+            "release-readiness.md": [
+                "release mode policy",
+                "release train",
+                "continuous deployment",
+                "manual approval",
+                "release candidate",
+                "draft release",
+                "cadence",
+                "promotion trigger",
+                "freeze/cutoff",
+                "platform distribution evidence",
+                "signing",
+                "notarization",
+                "app store review",
+                "installer/update path",
+                "crash reporting",
+                "platform owner evidence",
+                "release communication",
+                "audience",
+                "support contact",
+                "known issues",
+                "migration/deprecation note",
+                "release-notes ownership",
+                "release evidence sufficiency owner review",
+                "sufficient for the real release risk",
+                "stop condition",
+            ],
+            "deployment-plan.md": [
+                "build-release-run boundary",
+                "immutable artifact",
+                "release identifier",
+                "runtime configuration boundary",
+                "environment-specific config injection",
+                "accepted platform exception",
+            ],
+            "release-artifact-manifest.md": [
+                "release signing",
+                "license/notice",
+                "sbom/provenance",
+                "package/container integrity",
+                "security ownership",
+                "security handoff",
+            ],
+            "versioning-policy.md": [
+                "conventional commits",
+                "semantic-release",
+                "release-please",
+                "manual versioning",
+                "selected/rejected/deferred",
+                "no forced semver tooling",
+            ],
+            "environment-matrix.md": [
+                "required reviewers",
+                "wait timers",
+                "custom protection rules",
+                "environment secrets",
+                "deployment targets",
+                "approval_required mutation boundary",
+            ],
+            "post-release-review.md": [
+                "trend review",
+                "team-only interpretation",
+                "deployment rework rate",
+            ],
+            "metric-spec.md": [
+                "team-only interpretation",
+                "deployment rework rate",
+            ],
+            "incident-record.md": [
+                "severity",
+                "user-visible degradation",
+                "data loss",
+                "manual intervention",
+                "monitoring failure",
+                "customer/user impact",
+            ],
+            "postmortem.md": [
+                "blameless",
+                "owner/date",
+                "customer/user impact",
+            ],
+            "operations-runbook.md": [
+                "opentelemetry",
+                "pagerduty",
+                "opsgenie",
+                "manual monitoring",
+                "selected/rejected/deferred",
+            ],
+            "observability-map.md": [
+                "opentelemetry",
+                "prometheus",
+                "grafana",
+                "sentry",
+                "datadog",
+                "pagerduty",
+                "opsgenie",
+                "manual monitoring",
+                "accepted no-tooling gap",
+            ],
+            "slo-spec.md": [
+                "selected/rejected/deferred",
+                "accepted no-tooling gap",
+            ],
+        }
+
+        for name, terms in expected_terms.items():
+            path = TEMPLATE_ROOT / "artifact-templates" / name
+            self.assertTrue(path.is_file(), name)
+            text = path.read_text(encoding="utf-8").lower()
+            for term in terms:
+                with self.subTest(template=name, term=term):
+                    self.assertIn(term, text)
 
     def test_security_privacy_compliance_templates_cover_source_artifact_set(self):
         expected_terms = {
@@ -4192,6 +4381,7 @@ class InfrastructureTemplateTest(unittest.TestCase):
             "platform_runtime_check_when_native_or_desktop",
             "ci_failure_evidence_when_ci_stabilization",
             "release_readiness_when_distribution_changes",
+            "delivery_release_operations_readiness_when_release_or_operations_changes",
             "plugin_success_metric_for_major_workflow",
             "root_cause_before_bug_fix",
             "no_placeholder_plan_when_plan_ready",

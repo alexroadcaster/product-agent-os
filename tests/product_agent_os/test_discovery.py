@@ -1012,6 +1012,15 @@ class DiscoveryTest(unittest.TestCase):
                     "docs/observability-map.md": "# Observability\n",
                     "docs/incident-record.md": "# Incident\n",
                     "docs/postmortem.md": "# Postmortem\n",
+                    ".releaserc.json": "{}\n",
+                    "release-please-config.json": "{}\n",
+                    "observability/opentelemetry.yaml": "service.name: fixture\n",
+                    "observability/prometheus.yml": "scrape_configs: []\n",
+                    "observability/grafana-dashboard.json": "{}\n",
+                    "alerts/pagerduty.yml": "service: fixture\n",
+                    "alerts/opsgenie.yml": "service: fixture\n",
+                    "sentry.properties": "defaults.url=https://example.invalid\n",
+                    "datadog.yaml": "logs_enabled: false\n",
                     ".codex/automations/automation-candidate.md": "# Candidate\n",
                 },
             )
@@ -1042,8 +1051,14 @@ class DiscoveryTest(unittest.TestCase):
             "incident_status",
             "postmortem_status",
             "automation_promotion_status",
+            "versioning_tooling_status",
+            "observability_on_call_tooling_status",
         ]:
             self.assertEqual(signals[key], "present_unverified", key)
+        self.assertIn(".releaserc.json", signals["versioning_tooling_sources"])
+        self.assertIn("release-please-config.json", signals["versioning_tooling_sources"])
+        self.assertIn("observability/opentelemetry.yaml", signals["observability_on_call_tooling_sources"])
+        self.assertIn("alerts/pagerduty.yml", signals["observability_on_call_tooling_sources"])
         self.assertEqual(signals["verification_status"], "applicable_missing")
         self.assertIn("present_unverified until release scope", signals["note"])
         self.assertEqual(

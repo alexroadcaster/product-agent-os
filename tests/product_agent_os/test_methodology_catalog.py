@@ -1295,6 +1295,17 @@ class MethodologyCatalogContractTest(unittest.TestCase):
             "incident_response_contract_present",
             "post_release_measurement_contract_present",
             "automation_manual_stability_contract_present",
+            "release_mode_policy_contract_present",
+            "build_release_run_boundary_contract_present",
+            "platform_distribution_evidence_contract_present",
+            "release_communication_contract_present",
+            "versioning_tooling_decision_contract_present",
+            "github_environment_controls_contract_present",
+            "dora_measurement_design_contract_present",
+            "incident_postmortem_learning_contract_present",
+            "observability_on_call_tooling_contract_present",
+            "release_integrity_security_handoff_contract_present",
+            "release_evidence_sufficiency_owner_reviewed_contract_present",
             "unsupported_delivery_claims_rejected_contract_present",
         ]
 

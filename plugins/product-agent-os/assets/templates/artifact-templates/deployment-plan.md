@@ -23,6 +23,16 @@ Use this before deployment, environment promotion, GitOps reconciliation or prod
 - Rollback/revert:
 - Verification:
 
+## Build-Release-Run Boundary
+
+- Gate: `build_release_run_boundary_present`
+- Immutable artifact:
+- Release identifier:
+- Runtime configuration boundary:
+- Environment-specific config injection:
+- Accepted platform exception:
+- Rebuild-per-environment risk:
+
 ## GitOps / Desired State
 
 - Desired-state source:

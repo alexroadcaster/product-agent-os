@@ -14,15 +14,26 @@ Use this to record release targets, approval boundaries, secret boundaries and G
 
 ## Targets
 
-| Target | Owner | Approval path | Branch/tag rules | Secret boundaries | External write |
-| --- | --- | --- | --- | --- | --- |
-| Dev |  |  |  |  |  |
-| Stage |  |  |  |  |  |
-| Prod |  |  |  |  |  |
-| Local |  |  |  |  |  |
-| Mobile |  |  |  |  |  |
-| Store |  |  |  |  |  |
-| Registry |  |  |  |  |  |
+| Target | Owner | Approval path | Branch/tag rules | Secret boundaries | External write | Required reviewers | Wait timers | Custom protection rules | Environment secrets | Deployment targets |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Dev |  |  |  |  |  |  |  |  |  |  |
+| Stage |  |  |  |  |  |  |  |  |  |  |
+| Prod |  |  |  |  |  |  |  |  |  |  |
+| Local |  |  |  |  |  |  |  |  |  |  |
+| Mobile |  |  |  |  |  |  |  |  |  |  |
+| Store |  |  |  |  |  |  |  |  |  |  |
+| Registry |  |  |  |  |  |  |  |  |  |  |
+
+## GitHub Environment Controls
+
+- Gate: `github_environment_controls_present`
+- Required reviewers:
+- Wait timers:
+- Branch/tag restrictions:
+- Custom protection rules:
+- Environment secrets:
+- Deployment targets:
+- Approval_required mutation boundary:
 
 ## GitOps Desired State
 

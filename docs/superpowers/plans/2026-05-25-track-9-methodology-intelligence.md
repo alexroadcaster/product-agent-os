@@ -2951,7 +2951,7 @@ Create all AI/RAG templates listed in Files. Detect prompts, evals, RAG, vector,
 
 Extend transcript eval fixtures with one methodology-intelligence AI case that requires baseline eval terms and forbids "prompt inspection is enough".
 
-- [ ] **Step 6: Run verification without implicit commit**
+- [x] **Step 6: Run verification without implicit commit**
 
 Run:
 
@@ -3188,7 +3188,7 @@ This matrix maps the deep-audit findings to concrete implementation work. The nu
 | `T9-D12-M25` | Add fixture eval contract and checks | `plugins/product-agent-os/scripts/run_fixture_eval.py`, `tests/product_agent_os/test_fixture_eval_runner.py` | `python-app` exposes `delivery_release_operations_contract_present`; `package-release` exposes delivery recommendations, approval boundary, artifact manifest, release evidence before completion and rollout/rollback/operations terms. | Focused fixture eval tests pass and renderer file count is updated. |
 | `T9-D12-M26` | Add synthetic fixture coverage for false positives and approvals | `plugins/product-agent-os/assets/fixtures/*`, `tests/product_agent_os/test_fixtures.py`, `tests/product_agent_os/test_fixture_eval_runner.py` | Fixtures cover docs-only release note, CI-only workflow, deployment manifest without execution, feature flag without owner, GitOps without approval path, package release approval, and no raw secrets/private data. | Fixture tests and fixture eval assert false positives, approvals and synthetic/privacy safety. |
 | `T9-D12-M27` | Route delivery methodology through lifecycle skills | `plugins/product-agent-os/skills/workspace-discovery-auditor/SKILL.md`, `plugins/product-agent-os/skills/project-lifecycle-orchestrator/SKILL.md`, `plugins/product-agent-os/skills/requirements-author/SKILL.md`, `plugins/product-agent-os/skills/implementation-planner/SKILL.md`, `plugins/product-agent-os/skills/test-eval-designer/SKILL.md`, `plugins/product-agent-os/skills/risk-reviewer/SKILL.md`, `plugins/product-agent-os/skills/pr-release-operator/SKILL.md`, `plugins/product-agent-os/skills/learning-loop-maintainer/SKILL.md`, `plugins/product-agent-os/skills/automation-promoter/SKILL.md` | Skills require planning-first delivery classification, release scope, version impact, evidence, artifact manifest, rollout, rollback, CI/CD governance, operations, incident path, post-release learning, approval boundary and automation candidate-only behavior. | Lifecycle skill tests assert wording and stop conditions. |
-| `T9-D12-M28` | Sync Product-Agent OS docs and Track 9 backlog | `plugins/product-agent-os/README.md`, `docs/product-agent-os/methodology-intelligence.md`, `docs/product-agent-os/behavioral-evals.md`, `docs/product-agent-os/scenarios.md`, `docs/product-agent-os/development-standards.md`, `docs/sources/product-agent-os-track-9-backlog.md` | Current state records T9-D12 scope, artifacts, false-positive coverage, source-backed naming, approval boundaries, renderer file count delta, residual risks and next action Cross-Domain Synthesis. Source registry changes only if new source-backed claims are added. | Product docs tests and `python tools\check_docs.py` pass. |
+| `T9-D12-M28` | Sync Product-Agent OS docs and Track 9 backlog | `plugins/product-agent-os/README.md`, `docs/product-agent-os/methodology-intelligence.md`, `docs/product-agent-os/behavioral-evals.md`, `docs/product-agent-os/scenarios.md`, `docs/product-agent-os/development-standards.md`, `docs/sources/product-agent-os-track-9-backlog.md` | Current state records T9-D12 scope, artifacts, false-positive coverage, source-backed naming, approval boundaries, renderer file count delta, residual risks and next action `T9-D12-M30..M40`. Source registry changes only if new source-backed claims are added. | Product docs tests and `python tools\check_docs.py` pass. |
 | `T9-D12-M30` | Implement release mode policy gate | `plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py`, `plugins/product-agent-os/assets/templates/artifact-templates/release-readiness.md`, `plugins/product-agent-os/assets/templates/workflows/release-packet.md`, `tests/product_agent_os/test_methodology_audit.py`, `tests/product_agent_os/test_infrastructure_templates.py` | `release_mode_policy_present` records release train, continuous deployment, manual approval, release candidate, draft release or accepted non-release mode with cadence, owner, promotion trigger, freeze/cutoff and residual risk. | Focused audit/template tests assert mode-specific fields and that no mode is forced on docs-only/internal-only work. |
 | `T9-D12-M31` | Implement build-release-run separation gate | `plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py`, `plugins/product-agent-os/assets/templates/artifact-templates/deployment-plan.md`, `plugins/product-agent-os/assets/templates/artifact-templates/release-artifact-manifest.md`, `tests/product_agent_os/test_methodology_audit.py`, `tests/product_agent_os/test_infrastructure_templates.py` | `build_release_run_boundary_present` records immutable artifact, release identifier, runtime configuration boundary, environment-specific config injection and explicit exception when a stack cannot follow Twelve-Factor build-release-run separation. | Focused audit/template tests reject rebuild-per-environment readiness claims unless an accepted exception is recorded. |
 | `T9-D12-M32` | Add platform distribution evidence gate | `plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py`, `plugins/product-agent-os/assets/templates/artifact-templates/release-readiness.md`, `plugins/product-agent-os/assets/templates/workflows/release-packaging.md`, `plugins/product-agent-os/assets/templates/artifact-templates/environment-matrix.md`, `plugins/product-agent-os/assets/templates/artifact-templates/rollback-recovery-plan.md`, `tests/product_agent_os/test_methodology_audit.py`, `tests/product_agent_os/test_infrastructure_templates.py` | `platform_distribution_evidence_present` records desktop/mobile/native distribution needs: signing, notarization, app store review, installer/update path, rollback/yank path, phased rollout, crash reporting and platform owner evidence where applicable. | Focused audit/template tests assert platform-specific evidence and no desktop/mobile release-ready claim from generic package evidence alone. |
@@ -3204,12 +3204,12 @@ This matrix maps the deep-audit findings to concrete implementation work. The nu
 
 **T9-D12 execution batching policy:**
 
-- Execute T9-D12 rows in implementation batches: `M0..M9`, `M10..M19`, `M20..M28`, `M30..M40`, then `M29` final verification. `M29` remains the final verification row to preserve the already-published row id.
+- Execute T9-D12 rows in implementation batches: `M0..M9`, `M10..M19`, `M20..M29`, then `M30..M40`. All T9-D12 batches are complete; `M29` final verification was rerun after `M30..M40` before closure.
 - After each batch, stop broad implementation work and report to the user: rows completed, files changed, checks run, results, unresolved risks and the next batch.
 - Do not start the next T9-D12 batch until the previous batch report is written in the thread.
 - Commit, push and PR actions remain deferred until explicitly requested by the user.
 
-- [ ] **Step 1: Add RED test for delivery gates**
+- [x] **Step 1: Add RED test for delivery gates**
 
 Assert `delivery_release_operations` gates include:
 
@@ -3247,7 +3247,7 @@ Assert `delivery_release_operations` gates include:
 ]
 ```
 
-- [ ] **Step 2: Run RED test**
+- [x] **Step 2: Run RED test**
 
 Run:
 
@@ -3257,7 +3257,7 @@ python -m unittest tests.product_agent_os.test_methodology_catalog -v
 
 Expected: fail on missing delivery gates.
 
-- [ ] **Step 3: Add delivery catalog, release rules and false-positive guards**
+- [x] **Step 3: Add delivery catalog, release rules and false-positive guards**
 
 Rules:
 
@@ -3271,11 +3271,11 @@ Rules:
 - release integrity concerns such as signing, vulnerability response, license/NOTICE, SBOM and provenance hand off to T9-D11 Security instead of being silently waived;
 - CI config, Dockerfile, changelog, feature flag, GitOps files or generated release notes alone never prove readiness.
 
-- [ ] **Step 4: Add templates and detection**
+- [x] **Step 4: Add templates and detection**
 
 Create all delivery templates listed in Files. Detect package/version files, changelog, CI, deployment manifests, release notes, package registry config, Docker/Kubernetes, GitHub environments, GitOps, feature flags, observability, SLOs, incident/postmortem, automation promotion, release mode, release candidate/draft, Conventional Commits, semantic-release, release-please, signing/notarization/store review, crash reporting, environment protection, on-call tooling, SBOM/provenance/license/NOTICE and vulnerability-response signals.
 
-- [ ] **Step 5: Add fixture eval checks**
+- [x] **Step 5: Add fixture eval checks**
 
 Existing `package-release` fixture must expose:
 
@@ -3287,12 +3287,12 @@ Existing `package-release` fixture must expose:
 - release mode, build-release-run, platform distribution, DORA five-metric design, blameless postmortem, tooling selector, release integrity handoff and owner-reviewed evidence sufficiency terms;
 - false-positive fixtures for docs-only release notes, CI-only workflow, deployment manifests without execution, feature flag without owner, GitOps without approval path, generic mobile signing mention without platform evidence, DORA as individual quota, and tooling files without owner evidence.
 
-- [ ] **Step 6: Run verification without implicit commit**
+- [x] **Step 6: Run verification without implicit commit**
 
 Run:
 
 ```powershell
-python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_discovery tests.product_agent_os.test_methodology_report tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_behavioral_workflow_evals tests.product_agent_os.test_fixture_eval_runner tests.product_agent_os.test_fixtures -v
+python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_discovery tests.product_agent_os.test_methodology_report tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_behavioral_workflow_evals tests.product_agent_os.test_fixture_eval_runner tests.product_agent_os.test_fixtures tests.product_agent_os.test_product_agent_os_docs -v
 python plugins\product-agent-os\scripts\run_fixture_eval.py
 python -m unittest discover -s tests -p "test_*.py" -v
 python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json
@@ -3301,7 +3301,7 @@ python tools\check_docs.py
 git diff --check
 ```
 
-Expected: focused tests, fixture eval, full unittest, transcript eval, compatibility check, docs check and diff hygiene pass. Commit is intentionally deferred until explicitly requested in the current working branch.
+Result: focused tests ran 298 tests with `OK`; fixture eval exited `0` with 66 fixtures and renderer file count 186; full unittest ran 478 tests with `OK`; transcript eval passed 5 sessions; compatibility returned `status: compatible`; docs check passed; diff hygiene exited `0`. Commit is intentionally deferred until explicitly requested in the current working branch.
 
 ---
 

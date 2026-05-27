@@ -383,6 +383,95 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             with self.subTest(readme=expected):
                 self.assertIn(expected, readme)
 
+    def test_track9_delivery_release_operations_docs_and_backlog_are_synced(self):
+        backlog = TRACK9_BACKLOG.read_text(encoding="utf-8")
+        behavioral_evals = (PRODUCT_AGENT_OS / "behavioral-evals.md").read_text(encoding="utf-8")
+        scenarios = (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8")
+        methodology_intelligence = (PRODUCT_AGENT_OS / "methodology-intelligence.md").read_text(
+            encoding="utf-8"
+        )
+        development_standards = (PRODUCT_AGENT_OS / "development-standards.md").read_text(
+            encoding="utf-8"
+        )
+        readme = (ROOT / "plugins" / "product-agent-os" / "README.md").read_text(encoding="utf-8")
+
+        for expected in [
+            "T9-D12",
+            "Implemented scope in batch `M20..M29`",
+            "Implemented scope in batch `M30..M40`",
+            "delivery_release_operations_contract_present",
+            "renderer file count increased from 173 to 186",
+            "package-release-approval",
+            "release-mobile-signing-only",
+            "release-tooling-only",
+            "owner-reviewed release evidence sufficiency",
+            "active schedules remain out of scope",
+        ]:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        for expected in [
+            "Delivery, Release & Operations eval",
+            "delivery_release_operations_contract_present",
+            "automation_manual_stability_present",
+            "release mode policy",
+            "build-release-run boundary",
+            "DORA metrics prove individual performance",
+            "single observability tool is mandatory",
+            "owner-reviewed release evidence sufficiency",
+            "GitOps is automatically safe",
+            "repeatable automation is automatically safe",
+        ]:
+            with self.subTest(behavioral_evals=expected):
+                self.assertIn(expected, behavioral_evals)
+
+        for expected in [
+            "Delivery, Release & Operations methodology routing",
+            "release-artifact-manifest.md",
+            "rollback-recovery-plan.md",
+            "automation-candidate.md",
+            "release mode policy",
+            "platform distribution evidence",
+            "observability/on-call tooling",
+            "active automation remain approval_required",
+        ]:
+            with self.subTest(scenarios=expected):
+                self.assertIn(expected, scenarios)
+
+        for expected in [
+            "Delivery/Release/Operations",
+            "delivery_release_operations_contract_present",
+            "release-artifact-manifest.md",
+            "operations-runbook.md",
+            "post-release-review.md",
+            "release mode policy",
+            "owner-reviewed release evidence sufficiency",
+        ]:
+            with self.subTest(methodology_intelligence=expected):
+                self.assertIn(expected, methodology_intelligence)
+
+        for expected in [
+            "delivery_release_operations_readiness_when_release_or_operations_changes",
+            "Delivery/Release/Operations slices record `delivery_release_operations` evidence",
+            "automation_manual_stability_present",
+            "release_evidence_sufficiency_owner_reviewed",
+            "DORA metrics prove individual performance",
+        ]:
+            with self.subTest(development_standards=expected):
+                self.assertIn(expected, development_standards)
+
+        for expected in [
+            "Delivery, Release & Operations methodology",
+            "delivery_release_operations_contract_present",
+            "release-artifact-manifest.md",
+            "automation_manual_stability_present",
+            "release_mode_policy_present",
+            "release_evidence_sufficiency_owner_reviewed",
+            "approval_required",
+        ]:
+            with self.subTest(readme=expected):
+                self.assertIn(expected, readme)
+
 
 if __name__ == "__main__":
     unittest.main()

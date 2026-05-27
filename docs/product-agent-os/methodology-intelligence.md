@@ -62,10 +62,13 @@ Examples:
 | Database & Data | `database_data_contract_present` | `database-inventory.md`, `database-dictionary.md`, `database-migration-plan.md`, `database-data-contract.md`, `database-production-access-approval.md`. |
 | LLM / AI / RAG | `llm_ai_rag_contract_present` | `ai-behavior-spec.md`, `prompt-contract.md`, `model-decision-record.md`, `eval-run-report.md`, `rag-source-inventory.md`, `guardrail-matrix.md`. |
 | Security/Privacy/Compliance | `security_privacy_compliance_contract_present` | `security-risk-review.md`, `threat-surface.md`, `asvs-ssdf-mapping.md`, `authz-negative-test-matrix.md`, `secrets-policy.md`, `data-classification-register.md`, `privacy-impact-record.md`, `supply-chain-review.md`, `sbom-manifest.md`, `compliance-overlay.md`, `vulnerability-response-record.md`, `approval-record.md`. |
+| Delivery/Release/Operations | `delivery_release_operations_contract_present` | `versioning-policy.md`, `release-readiness.md`, `release-artifact-manifest.md`, `rollout-plan.md`, `rollback-recovery-plan.md`, `environment-matrix.md`, `deployment-plan.md`, `ci-cd-workflow-inventory.md`, `observability-map.md`, `slo-spec.md`, `operations-runbook.md`, `incident-record.md`, `postmortem.md`, `post-release-review.md`, `automation-candidate.md`. |
+
+Delivery/Release/Operations reports also preserve release mode policy, build-release-run boundary, platform distribution evidence, release communication, versioning tooling decision, GitHub environment controls, DORA measurement design, incident postmortem learning, observability/on-call tooling, release integrity security handoff and owner-reviewed release evidence sufficiency. Detection of those terms is not readiness evidence by itself.
 
 ## Approval Boundary
 
-Methodology Intelligence can recommend `staged_only` or `approval_required`, but it cannot silently move from advice to mutation. Hosted docs, production database access, remote CI mutation, package publishing, active automations, hook activation and external writes remain approval-bound.
+Methodology Intelligence can recommend `staged_only` or `approval_required`, but it cannot silently move from advice to mutation. Hosted docs, production database access, remote CI mutation, package publishing, release creation, tags, artifact upload, deploys, package registry mutation, active automations, hook activation and external writes remain approval-bound.
 
 Owner questions are part of the output, not a failure. They keep ambiguity visible: who owns a missing methodology gate, which requirement is source-backed, which system is production, which data is sensitive, and which risk is accepted rather than fixed in the current slice.
 

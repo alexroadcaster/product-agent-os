@@ -4717,8 +4717,10 @@ def _delivery_release_operations_recommendations(
         or _mentions_any(intent, {"publish", "published", "deploy", "deployed", "production", "store", "marketplace"})
     )
     readiness_claim = _mentions_any(intent, DELIVERY_READINESS_CLAIMS)
+    package_release_work = _has_signal(observed, "release_file") and "package.json" in files
     operational_release = (
         high_risk_release
+        or package_release_work
         or _mentions_any(
             intent,
             {
@@ -5104,8 +5106,247 @@ def _delivery_release_operations_recommendations(
             action="Stage post-release-review.md and metric-spec.md updates before closing release learning loop.",
         )
 
+    if operational_release and not _artifact_present(files, "release-readiness.md"):
+        add(
+            "release_mode_policy_present",
+            "release-readiness.md",
+            "Release work needs an explicit release mode policy before release-ready or deploy claims.",
+            [
+                "release train",
+                "continuous deployment",
+                "manual approval",
+                "release candidate",
+                "draft release",
+                "cadence",
+                "promotion trigger",
+                "freeze/cutoff",
+                "residual risk",
+            ],
+            residual_risk="A release can inherit the wrong cadence, approval path or promotion trigger when release mode is implicit.",
+            action="Record release mode policy in release-readiness.md before release planning closes.",
+        )
+
+    if operational_release and not _artifact_present(files, "deployment-plan.md"):
+        add(
+            "build_release_run_boundary_present",
+            "deployment-plan.md",
+            "Deployable release work needs build-release-run separation or an explicit platform exception.",
+            [
+                "immutable artifact",
+                "release identifier",
+                "runtime configuration boundary",
+                "environment-specific config injection",
+                "accepted platform exception",
+            ],
+            residual_risk="Rebuild-per-environment or unclear runtime configuration can hide what actually shipped.",
+            action="Stage deployment-plan.md with build-release-run boundary or accepted platform exception.",
+        )
+
+    if (_mentions_any(intent, {"desktop", "installer", "mobile", "app store", "store", "notarization", "signing", "crash reporting"}) or high_risk_release) and not _artifact_present(files, "release-readiness.md"):
+        add(
+            "platform_distribution_evidence_present",
+            "release-readiness.md",
+            "Desktop, mobile, store or platform release work needs platform-specific distribution evidence.",
+            [
+                "signing",
+                "notarization",
+                "app store review",
+                "installer/update path",
+                "rollback/yank path",
+                "phased rollout",
+                "crash reporting",
+                "platform owner evidence",
+            ],
+            residual_risk="Generic package evidence can miss signing, store review, installer/update, crash reporting or platform rollback risk.",
+            action="Record platform distribution evidence before desktop, mobile, store or installer release claims.",
+        )
+
+    if (high_risk_release or _mentions_any(intent, DELIVERY_CHANGELOG_TERMS | {"audience", "release communication"})) and not _artifact_present(files, "release-readiness.md"):
+        add(
+            "release_communication_present",
+            "release-readiness.md",
+            "Release communication needs audience, user impact and ownership beyond a generated changelog.",
+            [
+                "audience",
+                "user impact",
+                "support contact",
+                "known issues",
+                "migration/deprecation note",
+                "changelog link",
+                "release-notes ownership",
+            ],
+            residual_risk="Generated release notes can omit user impact, migration, known issues, support path or ownership.",
+            action="Record release communication evidence before publishing, announcing or store submission.",
+        )
+
+    if (package_release_work or _mentions_any(intent, DELIVERY_VERSION_TERMS | {"conventional commits", "semantic-release", "release-please", "manual versioning"})) and not _artifact_present(files, "versioning-policy.md"):
+        add(
+            "versioning_tooling_decision_present",
+            "versioning-policy.md",
+            "Versioning tooling must be selected, rejected or deferred instead of forced by package files.",
+            [
+                "Conventional Commits",
+                "semantic-release",
+                "release-please",
+                "manual versioning",
+                "non-package policy",
+                "selected/rejected/deferred",
+                "reason",
+                "owner",
+                "no forced SemVer tooling",
+            ],
+            residual_risk="A project can be forced into SemVer or release automation tooling that does not fit the release type.",
+            action="Record versioning tooling decision in versioning-policy.md.",
+        )
+
+    if operational_release and not _artifact_present(files, "environment-matrix.md"):
+        add(
+            "github_environment_controls_present",
+            "environment-matrix.md",
+            "GitHub deployment environments and release targets need explicit controls and mutation boundary.",
+            [
+                "required reviewers",
+                "wait timers",
+                "branch/tag restrictions",
+                "custom protection rules",
+                "environment secrets",
+                "deployment targets",
+                "approval_required mutation boundary",
+            ],
+            residual_risk="GitHub environment settings or release targets can change deployment approvals, secrets or blast radius without review.",
+            action="Record GitHub environment controls before CI/CD environment mutation or deployment.",
+        )
+
+    if (operational_release and _mentions_any(intent, {"dora", "change lead time", "deployment frequency", "change fail rate", "deployment rework"})) and not _artifact_present(files, "post-release-review.md"):
+        add(
+            "dora_measurement_design_present",
+            "post-release-review.md",
+            "DORA measurement needs all five metrics, source and team/process interpretation.",
+            [
+                "change lead time",
+                "deployment frequency",
+                "failed deployment recovery time",
+                "change fail rate",
+                "deployment rework rate",
+                "data source",
+                "trend review",
+                "anti-Goodhart",
+                "team-only interpretation",
+            ],
+            residual_risk="DORA metrics can become vanity dashboards or individual performance quotas without measurement design.",
+            action="Record DORA measurement design in post-release-review.md and metric-spec.md.",
+        )
+
+    if operational_release and _mentions_any(intent, {"incident", "postmortem", "severity", "customer impact", "manual intervention", "monitoring failure"}) and not _artifact_present(files, "postmortem.md"):
+        add(
+            "incident_postmortem_learning_present",
+            "postmortem.md",
+            "Failed releases and runtime incidents need severity, timeline and blameless postmortem learning.",
+            [
+                "severity",
+                "timeline",
+                "detection",
+                "mitigation",
+                "customer/user impact",
+                "root causes",
+                "contributing factors",
+                "action items",
+                "owner/date",
+                "blameless",
+            ],
+            residual_risk="A quick rollback or mitigation can skip learning, ownership and follow-up actions.",
+            action="Stage incident-record.md and postmortem.md before closing incident or failed-release work.",
+        )
+
+    if operational_release and _mentions_any(intent, {"opentelemetry", "prometheus", "grafana", "sentry", "datadog", "pagerduty", "opsgenie", "on-call", "oncall", "manual monitoring", "observability"}) and not _artifact_present(files, "observability-map.md"):
+        add(
+            "observability_on_call_tooling_present",
+            "observability-map.md",
+            "Observability and on-call tooling must be selected, rejected or deferred with owner and alert path.",
+            [
+                "OpenTelemetry",
+                "Prometheus",
+                "Grafana",
+                "Sentry",
+                "Datadog",
+                "PagerDuty",
+                "Opsgenie",
+                "manual monitoring",
+                "selected/rejected/deferred",
+                "owner",
+                "alert path",
+                "accepted no-tooling gap",
+            ],
+            residual_risk="A single tool name can be mistaken for complete observability or mandatory tooling.",
+            action="Record observability/on-call tooling decision and accepted gaps before runtime release claims.",
+        )
+
+    if operational_release and not _artifact_present(files, "release-artifact-manifest.md"):
+        add(
+            "release_integrity_security_handoff_present",
+            "release-artifact-manifest.md",
+            "Release integrity must be satisfied, not-applicable, accepted as a gap or handed off to security ownership.",
+            [
+                "release signing",
+                "vulnerability response",
+                "license/NOTICE",
+                "SBOM/provenance",
+                "package/container integrity",
+                "satisfied",
+                "not-applicable",
+                "accepted gap",
+                "security ownership",
+            ],
+            residual_risk="Release integrity can be duplicated, skipped or implied without security handoff evidence.",
+            action="Record release integrity handoff across release-artifact-manifest.md, supply-chain-review.md, sbom-manifest.md and vulnerability-response-record.md.",
+        )
+
+    if readiness_claim or high_risk_release or package_release_work:
+        add(
+            "release_evidence_sufficiency_owner_reviewed",
+            "release-readiness.md",
+            "Release-ready, deployed or published claims need owner-reviewed evidence sufficiency.",
+            [
+                "owner acceptance",
+                "sufficient for the real release risk",
+                "accepted gap",
+                "owner",
+                "reason",
+                "review date",
+                "residual risk",
+                "stop condition",
+            ],
+            priority="P0_blocker",
+            residual_risk="Recorded checks can still be insufficient for the actual release risk without owner review or an accepted gap.",
+            action="Record owner-reviewed release evidence sufficiency before release-ready, deployed or published claims.",
+        )
+
+    if operational_release and (
+        _artifact_present(files, "automation-candidate.md")
+        or _mentions_any(intent, {"automation", "automation promotion", "recurring", "schedule", "active schedule"})
+    ):
+        add(
+            "automation_manual_stability_present",
+            "automation-candidate.md",
+            "Release and operations automation promotion needs manual stability evidence before activation.",
+            [
+                "manual success evidence",
+                "stable inputs/outputs",
+                "owner",
+                "verification",
+                "approval requirements",
+                "value evidence",
+                "rollback/disable path",
+                "candidate-only",
+                "active schedules remain out of scope",
+            ],
+            priority="P1_high_risk",
+            residual_risk="Repeatable release or operations automation can repeat damage without owner-approved evidence and a disable path.",
+            action="Keep automation candidate-only until manual stability, approvals, verification and rollback/disable evidence exist.",
+        )
+
     has_release_evidence = _artifact_present(files, "release-readiness.md") and _artifact_present(files, "release-packet.md")
-    if (readiness_claim or high_risk_release) and not has_release_evidence:
+    if (readiness_claim or high_risk_release or package_release_work) and not has_release_evidence:
         add(
             "release_evidence_present",
             "release-readiness.md",
@@ -5126,7 +5367,7 @@ def _delivery_release_operations_recommendations(
             action="Record current release evidence or accepted gap before any release-ready/deployed/published claim.",
         )
 
-    if readiness_claim and not _artifact_present(files, "release-packet.md"):
+    if (readiness_claim or package_release_work) and not _artifact_present(files, "release-packet.md"):
         add(
             "release_evidence_before_completion",
             "release-packet.md",

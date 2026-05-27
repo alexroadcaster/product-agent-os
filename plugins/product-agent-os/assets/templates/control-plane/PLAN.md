@@ -182,6 +182,40 @@ Generated at: {generated_at}
 - Explicit test gap:
 - Unsupported completion claim:
 - Completion claim without current evidence:
+- Delivery, Release & Operations methodology (`delivery_release_operations`):
+- Delivery readiness gate: `delivery_release_operations_readiness_when_release_or_operations_changes`
+- Delivery artifacts: `release-readiness.md`, `versioning-policy.md`, `release-artifact-manifest.md`, `rollout-plan.md`, `rollback-recovery-plan.md`, `environment-matrix.md`, `deployment-plan.md`, `ci-cd-workflow-inventory.md`, `observability-map.md`, `slo-spec.md`, `operations-runbook.md`, `incident-record.md`, `postmortem.md`, `automation-candidate.md`, `post-release-review.md`
+- Delivery gates: `release_scope_present`, `version_impact_present`, `changelog_release_notes_present`, `release_evidence_present`, `release_evidence_before_completion`, `artifact_manifest_present`, `rollout_strategy_present`, `rollback_recovery_present`, `environment_approval_boundary_present`, `external_release_approval_present`, `ci_cd_governance_present`, `observability_release_evidence_present`, `slo_or_operational_gap_present`, `operations_runbook_present`, `incident_response_path_present`, `post_release_measurement_present`, `automation_manual_stability_present`
+- Planning-first delivery classification:
+- Release scope, target, owner and external boundary:
+- Version impact, SemVer/non-SemVer policy, compatibility, deprecation and migration guidance:
+- Release evidence status: `present_unverified | present_verified | explicit_gap_accepted | approval_required`
+- Release evidence before completion:
+- Current build/test/docs/eval/runtime/artifact evidence:
+- Artifact manifest:
+- Rollout strategy:
+- Rollback/recovery:
+- Environment approval boundary:
+- External release approval:
+- CI/CD governance:
+- Observability release evidence:
+- SLO or operational gap:
+- Operations runbook:
+- Incident path:
+- Post-release learning:
+- DORA/post-release measurement:
+- Automation manual stability evidence:
+- Stable inputs/outputs:
+- Approval requirements:
+- Value evidence:
+- Rollback/disable path:
+- Automation candidate-only behavior:
+- Active schedules remain out of scope:
+- Approval boundary:
+- Accepted gap (`explicit_gap_accepted`):
+- Residual risk:
+- Unsupported release claims rejected: release-ready without current evidence, local test result alone proves release readiness, feature flags remove release risk, GitOps is automatically safe, automation is safer because it is repeatable.
+- Forbidden external actions: publish without approval, tag without approval, deployment without approval, active automation without manual stability.
 
 ## Codex Agentic Workflow
 

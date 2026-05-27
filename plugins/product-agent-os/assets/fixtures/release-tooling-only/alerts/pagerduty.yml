@@ -1,0 +1,2 @@
+service: synthetic-release-tooling-only
+alert_path: unspecified

@@ -110,13 +110,17 @@ Use HEART metrics only when they fit the product question; not every category is
 
 ## DORA Process Metrics
 
+- DORA measurement design (`dora_measurement_design_present`):
 - DORA measurement source:
+- Data source:
 - Change lead time:
 - Deployment frequency:
 - Failed deployment recovery time:
 - Change fail rate:
 - Deployment rework rate:
+- Trend review:
 - Anti-Goodhart warning:
+- Team-only interpretation:
 - Individual performance quota prohibition:
 
 DORA metrics are process-learning signals. Do not use DORA metrics as an individual performance quota or personal productivity score.

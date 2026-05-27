@@ -29,6 +29,21 @@ Generated at: {generated_at}
 - Explicit test gap:
 - Unsupported completion claim:
 - Completion claim without current evidence:
+- Delivery, Release & Operations methodology:
+- `delivery_release_operations`:
+- `delivery_release_operations_contract_present`:
+- `delivery_release_operations_readiness_when_release_or_operations_changes`:
+- Delivery eval fields: `release_scope_contract_present`, `version_impact_contract_present`, `release_evidence_contract_present`, `release_evidence_before_completion_contract_present`, `artifact_manifest_contract_present`, `rollout_strategy_contract_present`, `rollback_recovery_contract_present`, `ci_cd_governance_contract_present`, `operations_runbook_contract_present`, `incident_response_contract_present`, `post_release_measurement_contract_present`, `automation_manual_stability_contract_present`, `unsupported_delivery_claims_rejected_contract_present`
+- Delivery artifacts: `release-readiness.md`, `versioning-policy.md`, `release-artifact-manifest.md`, `rollout-plan.md`, `rollback-recovery-plan.md`, `environment-matrix.md`, `deployment-plan.md`, `ci-cd-workflow-inventory.md`, `observability-map.md`, `slo-spec.md`, `operations-runbook.md`, `incident-record.md`, `postmortem.md`, `automation-candidate.md`, `post-release-review.md`
+- Planning-first delivery classification:
+- Required evidence: release scope, version impact, release evidence before completion, artifact manifest, rollout, rollback/recovery, environment approval boundary, CI/CD governance, operations runbook, incident path, post-release learning, DORA/post-release measurement and approval boundary:
+- External release approval:
+- Observability release evidence:
+- SLO or operational gap:
+- Automation manual stability: manual success evidence, stable inputs/outputs, owner, verification, approval requirements, value evidence, rollback/disable path, automation candidate-only, active schedules remain out of scope:
+- Statuses: `not_applicable | applicable_missing | present_unverified | present_verified | proposal_staged | explicit_gap_accepted | approval_required`
+- Forbidden shortcuts: release-ready without current evidence, feature flags remove release risk, GitOps is automatically safe, automation is safer because it is repeatable.
+- Forbidden external actions: publish without approval, tag without approval, deployment without approval, active automation without manual stability.
 - Architecture boundary:
 - FSD structure routing:
 - Bounded context traceability:

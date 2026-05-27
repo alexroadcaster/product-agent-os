@@ -117,6 +117,39 @@ Generated at: {generated_at}
 - AI behavior diff signal policy: limited to workspace and intent signals; no external branches; no network; filename changes alone are not certainty.
 - Accepted-gap handling:
 - Unsupported AI/RAG shortcuts rejected: prompt inspection is enough, ai quality claim without current eval evidence, citations alone prove grounding, model upgrade automatically improves quality.
+- Delivery, Release & Operations methodology (`delivery_release_operations`):
+- Delivery readiness gate: `delivery_release_operations_readiness_when_release_or_operations_changes`
+- Delivery artifacts: `release-readiness.md`, `versioning-policy.md`, `release-artifact-manifest.md`, `rollout-plan.md`, `rollback-recovery-plan.md`, `environment-matrix.md`, `deployment-plan.md`, `ci-cd-workflow-inventory.md`, `observability-map.md`, `slo-spec.md`, `operations-runbook.md`, `incident-record.md`, `postmortem.md`, `automation-candidate.md`, `post-release-review.md`
+- Delivery gates reviewed: `release_scope_present`, `version_impact_present`, `release_evidence_present`, `release_evidence_before_completion`, `artifact_manifest_present`, `rollout_strategy_present`, `rollback_recovery_present`, `ci_cd_governance_present`, `operations_runbook_present`, `incident_response_path_present`, `post_release_measurement_present`, `automation_manual_stability_present`
+- Planning-first delivery classification:
+- Release scope and version impact:
+- Release evidence before completion:
+- Current build/test/docs/eval/runtime/artifact evidence:
+- Artifact manifest:
+- Rollout strategy:
+- Rollback/recovery:
+- Environment approval boundary:
+- External release approval:
+- CI/CD governance:
+- Observability release evidence:
+- SLO or operational gap:
+- Operations runbook:
+- Incident path:
+- Post-release learning:
+- DORA/post-release measurement:
+- Approval boundary:
+- `approval_required` external actions:
+- Accepted gap (`explicit_gap_accepted`):
+- Residual risk:
+- Automation manual stability evidence:
+- Stable inputs/outputs:
+- Approval requirements:
+- Value evidence:
+- Rollback/disable path:
+- Automation candidate-only:
+- Active schedules remain out of scope:
+- Unsupported release claims rejected: release-ready without current evidence, feature flags remove release risk, GitOps is automatically safe, automation is safer because it is repeatable.
+- Forbidden external actions observed or avoided: publish without approval, tag without approval, deployment without approval, active automation without manual stability.
 - Database & Data methodology (`database_data`):
 - Database artifacts/gates reviewed:
 - Database `database_data_signals` status:

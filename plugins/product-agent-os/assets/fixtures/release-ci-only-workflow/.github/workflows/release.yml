@@ -1,0 +1,8 @@
+name: Synthetic CI-only workflow
+on:
+  workflow_dispatch:
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Synthetic workflow check only"

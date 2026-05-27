@@ -26,13 +26,17 @@ Use this after release, deploy, publish, automation candidate trial or productio
 
 ## DORA Learning
 
+- Gate: `dora_measurement_design_present`
 - DORA measurement source:
+- Data source:
 - Change lead time:
 - Deployment frequency:
 - Failed deployment recovery time:
 - Change fail rate:
 - Deployment rework rate:
+- Trend review:
 - Anti-Goodhart warning:
+- Team-only interpretation:
 
 DORA metrics are process-learning signals, not individual performance quotas. Do not use them as individual performance quota targets.
 

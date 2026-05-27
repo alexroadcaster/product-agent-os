@@ -36,7 +36,7 @@ Track 9 turns the methodology atlas in `docs/methodologies/` into read-only Prod
 | `done` | `T9-D9` | `database-data.md` | Database inventory, schema source, migrations, transactions, data quality, classification and production access. |
 | `done` | `T9-D10` | `llm-ai-rag.md` | AI behavior spec, eval baseline, prompts, models, tools, RAG sources, grounding, datasets, approvals, cost/latency, handoff, tooling, migration, lifecycle, diff policy and incidents. |
 | `done` | `T9-D11` | `security-privacy-compliance.md` | Threat surface, ASVS/SSDF, authorization tests, secrets, privacy impact, supply chain, audit logging and compliance overlays. |
-| `in_progress` | `T9-D12` | `delivery-release-operations.md` | Release readiness, versioning, changelog, artifact manifest, rollout, rollback, CI/CD governance, runbooks and operations. |
+| `done` | `T9-D12` | `delivery-release-operations.md` | Release readiness, versioning, changelog, artifact manifest, rollout, rollback, CI/CD governance, runbooks and operations. |
 
 ## Domain Deep-Audit Log
 
@@ -493,7 +493,7 @@ Verification:
 
 ### `T9-D10` LLM / AI / RAG Integration
 
-Status: `in_progress`
+Status: `done`
 
 Source audited: `docs/methodologies/llm-ai-rag.md`
 
@@ -614,7 +614,7 @@ Verification policy:
 - Final implementation check: `python plugins\product-agent-os\scripts\run_fixture_eval.py`; `python -m unittest discover -s tests -p "test_*.py" -v`; `python plugins\product-agent-os\scripts\validate_codex_compatibility.py`; `python tools\check_docs.py`; `git diff --check`.
 - Commit, push and PR actions remain deferred until explicitly requested.
 
-Verification so far:
+Verification:
 
 - RED catalog check failed as expected before implementation on missing `security_privacy_compliance` gates.
 - Focused security suite: `python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_source_policy tests.product_agent_os.test_fixture_eval_runner -v` ran 81 tests with `OK`.
@@ -658,6 +658,25 @@ Implemented scope in batch `M10..M19`:
 - Strengthened shared `approval-record.md`, `ci-permissions-review.md` and `metric-spec.md` for external release approvals, CI/CD governance and DORA/anti-Goodhart process measurement.
 - Kept renderer registration deferred to `T9-D12-M21`; the new delivery templates are source templates now, but not yet staged into generated `.codex/artifact-templates/` outputs.
 
+Implemented scope in batch `M20..M29`:
+
+- Added the Delivery/Release/Operations automation promotion gate `automation_manual_stability_present` so automation candidates require manual success evidence, stable inputs/outputs, owner, verification, approval requirements, value evidence and rollback/disable path before any promotion.
+- Registered and rendered 13 delivery templates under generated `.codex/artifact-templates/`: `versioning-policy.md`, `release-artifact-manifest.md`, `rollout-plan.md`, `rollback-recovery-plan.md`, `environment-matrix.md`, `deployment-plan.md`, `ci-cd-workflow-inventory.md`, `observability-map.md`, `slo-spec.md`, `operations-runbook.md`, `incident-record.md`, `postmortem.md` and `post-release-review.md`; renderer file count increased from 173 to 186.
+- Extended `methodology-audit-report.md` rendering with an External Action Status section so reports say that no external action is implied and recommendations remain staged/read-only until approval evidence exists.
+- Strengthened generated `PLAN.md`, `TEST.md`, `EVALS.md`, `RUNLOG.md`, `project-readiness.json` and `behavioral-workflows.json` with `delivery_release_operations_readiness_when_release_or_operations_changes`, release evidence, artifact manifest, rollout, rollback, CI/CD, SLO/observability, operations, incident, post-release review and automation candidate-only gates.
+- Added fixture eval contract `delivery_release_operations_contract_present` and package-release checks for delivery detection, approval requirements, artifact manifest, release evidence before completion, rollout/rollback and operations terms.
+- Added synthetic false-positive/approval fixtures: `release-docs-only-note`, `release-ci-only-workflow`, `release-deployment-manifest-only`, `release-feature-flag-no-owner`, `release-gitops-no-approval` and `package-release-approval`.
+- Updated lifecycle skills so release/deploy/publish/package/operations work routes to delivery planning first, keeps publish/tag/release/upload/deploy/package registry/marketplace/store/automation activation approval-bound, and states that candidate-only automation and active schedules remain out of scope until explicitly approved.
+
+Implemented scope in batch `M30..M40`:
+
+- Added final delivery gates for release mode policy, build-release-run boundary, platform distribution evidence, release communication, versioning tooling decision, GitHub environment controls, DORA measurement design, incident/postmortem learning, observability/on-call tooling, release integrity security handoff and owner-reviewed release evidence sufficiency.
+- Extended discovery with versioning tooling and observability/on-call tooling signals for `.releaserc`, release-please, semantic-release, Conventional Commits, OpenTelemetry, Prometheus, Grafana, Sentry, Datadog, PagerDuty and Opsgenie. These signals remain `present_unverified`.
+- Strengthened release, deployment, versioning, environment, post-release, metric, incident, postmortem, observability, SLO, operations, release-notes and release-packet templates with final evidence fields and accepted-gap language.
+- Expanded readiness and behavioral eval contracts so release completion cannot rely on rebuild-per-environment, generated changelog, single observability tool, DORA individual quota, mobile signing alone or release-ready claims without owner-reviewed evidence sufficiency.
+- Added fixture eval checks and synthetic false-positive fixtures: `release-mobile-signing-only`, `release-dora-individual-quota` and `release-tooling-only`.
+- Kept external release actions approval-bound and did not create schedules, publish artifacts, mutate CI/CD environments or perform external writes.
+
 Verification so far:
 
 - RED focused run failed as expected before implementation on missing `delivery_release_operations` catalog data, delivery aliases, discovery packet, audit recommendations and `versioning-policy.md`.
@@ -666,6 +685,27 @@ Verification so far:
 - Batch `M10..M19` focused suite: `python -m unittest tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_infrastructure_templates -v` ran 123 tests with `OK`.
 - Fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0`; renderer file count remained 173 because renderer registration is deferred to `T9-D12-M21`.
 - Full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 469 tests with `OK`.
+- Batch `M20..M29` RED run failed as expected before implementation on missing automation manual stability gate, report external-action status, renderer registration, readiness/behavioral eval contracts, package-release fixture checks, synthetic fixtures and lifecycle skill routing.
+- Focused infrastructure rerun after GREEN: `python -m unittest tests.product_agent_os.test_infrastructure_templates -v` ran 77 tests with `OK`.
+- Focused docs sync: `python -m unittest tests.product_agent_os.test_product_agent_os_docs -v` ran 10 tests with `OK`.
+- Focused delivery suite: `python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_discovery tests.product_agent_os.test_methodology_report tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_behavioral_workflow_evals tests.product_agent_os.test_fixture_eval_runner tests.product_agent_os.test_fixtures tests.product_agent_os.test_product_agent_os_docs -v` ran 296 tests with `OK`.
+- Fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0` with 63 fixtures, 0 failures, renderer file count 186 and `delivery_release_operations_contract_present: true`.
+- Full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 476 tests with `OK`.
+- Transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 5 sessions and 0 failures.
+- Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
+- Docs check: `python tools\check_docs.py` passed.
+- Diff hygiene: `git diff --check` exited `0`.
+- Batch `M30..M40` RED run failed as expected before implementation on missing final delivery eval fields, discovery statuses, audit recommendations, template/eval terms and fixture checks.
+- Batch `M30..M40` focused suite: `python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_discovery tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_behavioral_workflow_evals tests.product_agent_os.test_fixture_eval_runner -v` ran 216 tests with `OK`.
+- Focused fixture false-positive suite: `python -m unittest tests.product_agent_os.test_fixtures tests.product_agent_os.test_fixture_eval_runner -v` ran 36 tests with `OK`.
+- Final focused delivery suite after `M30..M40`: `python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_discovery tests.product_agent_os.test_methodology_report tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_behavioral_workflow_evals tests.product_agent_os.test_fixture_eval_runner tests.product_agent_os.test_fixtures tests.product_agent_os.test_product_agent_os_docs -v` ran 298 tests with `OK`.
+- Final fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0` with 66 fixtures, 0 failures, renderer file count 186 and `delivery_release_operations_contract_present: true`.
+- Final full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 478 tests with `OK`.
+- Final transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 5 sessions and 0 failures.
+- Final Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
+- Final docs check: `python tools\check_docs.py` passed.
+- Final diff hygiene: `git diff --check` exited `0`.
+- `docs/sources/registry.md` was checked for T9-D12 source impact; no new registry entry was added because this batch operationalizes the checked-in delivery methodology artifact and existing Product-Agent OS behavior rather than introducing new external source-backed platform claims.
 - Commit, push and PR actions remain deferred until explicitly requested.
 
 ## Cross-Domain Synthesis Backlog

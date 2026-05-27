@@ -11,6 +11,7 @@ Profile: {profile_name}
   - `changelog_release_notes_present`:
   - `release_evidence_present`:
   - `release_evidence_before_completion`:
+  - `release_evidence_sufficiency_owner_reviewed`:
 - Completed slice:
 - Review verdict:
 - Verification evidence:
@@ -102,6 +103,15 @@ Profile: {profile_name}
     - Security:
   - Governance proposal: `.codex/artifact-templates/governance-proposal.md`
   - No forced external activation:
+- Owner-reviewed release evidence sufficiency:
+  - Gate: `release_evidence_sufficiency_owner_reviewed`
+  - Owner acceptance:
+  - Evidence sufficient for the real release risk:
+  - Accepted gap owner:
+  - Accepted gap reason:
+  - Accepted gap review date:
+  - Residual risk:
+  - Stop condition:
 
 ## Verification
 
@@ -112,6 +122,9 @@ Profile: {profile_name}
   public changes, or `not_applicable` has a reason.
 - Ready, completed, fixed, works, and release claims cite current evidence, or
   the packet labels them `inspection-only` with an explicit test gap.
+- Release-ready, deployed, or published claims include owner-reviewed release
+  evidence sufficiency, or an accepted gap with owner, reason, review date,
+  residual risk, and stop condition.
 - There is no completion claim without current evidence.
 - Product impact claims are backed by metric hardening evidence, not a single
   proxy metric.

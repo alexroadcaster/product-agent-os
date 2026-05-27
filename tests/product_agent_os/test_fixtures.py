@@ -54,6 +54,15 @@ class FixtureCompletenessTest(unittest.TestCase):
             "security-ci-sbom",
             "ci-flaky-tests",
             "package-release",
+            "release-docs-only-note",
+            "release-ci-only-workflow",
+            "release-deployment-manifest-only",
+            "release-feature-flag-no-owner",
+            "release-gitops-no-approval",
+            "package-release-approval",
+            "release-mobile-signing-only",
+            "release-dora-individual-quota",
+            "release-tooling-only",
             "backend-no-fsd",
             "native-no-fsd",
             "simple-crud-no-ddd",
@@ -248,6 +257,36 @@ class FixtureCompletenessTest(unittest.TestCase):
                 lowered = text.lower()
                 self.assertNotIn("private customer", lowered)
                 self.assertNotIn("raw private chat", lowered)
+                self.assertNotIn("token=", lowered)
+                self.assertNotIn("api_key", lowered)
+                self.assertNotIn("sk-", lowered)
+
+    def test_delivery_release_operations_fixtures_are_synthetic_and_secret_free(self):
+        expected_terms = {
+            "release-docs-only-note": ["Synthetic", "docs-only", "release note"],
+            "release-ci-only-workflow": ["Synthetic", "CI-only", "workflow"],
+            "release-deployment-manifest-only": ["Synthetic", "deployment manifest", "without execution"],
+            "release-feature-flag-no-owner": ["Synthetic", "feature flag", "no owner"],
+            "release-gitops-no-approval": ["Synthetic", "GitOps", "no approval path"],
+            "package-release-approval": ["Synthetic", "package release", "approval_required"],
+            "release-mobile-signing-only": ["Synthetic", "mobile signing", "without platform owner evidence"],
+            "release-dora-individual-quota": ["Synthetic", "DORA", "individual quota"],
+            "release-tooling-only": ["Synthetic", "release tooling", "without owner evidence"],
+        }
+
+        for name, terms in expected_terms.items():
+            with self.subTest(name=name):
+                text = "\n".join(
+                    path.read_text(encoding="utf-8")
+                    for path in (FIXTURES / name).rglob("*")
+                    if path.is_file()
+                )
+                for expected in terms:
+                    self.assertIn(expected, text)
+                lowered = text.lower()
+                self.assertNotIn("private customer", lowered)
+                self.assertNotIn("raw private chat", lowered)
+                self.assertNotIn("raw pii", lowered)
                 self.assertNotIn("token=", lowered)
                 self.assertNotIn("api_key", lowered)
                 self.assertNotIn("sk-", lowered)

@@ -1,0 +1,4 @@
+service:
+  name: synthetic-release-tooling-only
+traces:
+  exporter: otlp

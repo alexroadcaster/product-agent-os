@@ -15,9 +15,15 @@ Use this for failed releases, user-visible degradation, data loss, rollback, man
 
 ## Record
 
+- Gate: `incident_postmortem_learning_present`
 - Incident criteria:
+- User-visible degradation:
+- Data loss:
+- Manual intervention:
+- Monitoring failure:
 - Timeline:
 - Impact:
+- Customer/user impact:
 - Detection:
 - Mitigation:
 - Communication path:

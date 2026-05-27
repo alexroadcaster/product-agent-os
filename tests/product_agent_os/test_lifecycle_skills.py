@@ -1504,6 +1504,56 @@ class LifecycleSkillsTest(unittest.TestCase):
             self.assertIn(expected, risk_reviewer)
             self.assertIn(expected, release_operator)
 
+    def test_lifecycle_skills_route_delivery_release_operations_methodology(self):
+        shared_terms = [
+            "delivery_release_operations",
+            "planning-first delivery classification",
+            "release_scope_present",
+            "version_impact_present",
+            "release_evidence_present",
+            "artifact_manifest_present",
+            "rollout_strategy_present",
+            "rollback_recovery_present",
+            "ci_cd_governance_present",
+            "operations_runbook_present",
+            "incident_response_path_present",
+            "post_release_measurement_present",
+            "automation_manual_stability_present",
+            "release-artifact-manifest.md",
+            "rollout-plan.md",
+            "rollback-recovery-plan.md",
+            "ci-cd-workflow-inventory.md",
+            "operations-runbook.md",
+            "incident-record.md",
+            "post-release-review.md",
+            "automation-candidate.md",
+            "artifact manifest",
+            "rollout",
+            "rollback",
+            "ci/cd governance",
+            "operations",
+            "incident path",
+            "post-release learning",
+            "approval boundary",
+            "automation candidate-only",
+        ]
+
+        for name in [
+            "workspace-discovery-auditor",
+            "project-lifecycle-orchestrator",
+            "requirements-author",
+            "implementation-planner",
+            "test-eval-designer",
+            "risk-reviewer",
+            "pr-release-operator",
+            "learning-loop-maintainer",
+            "automation-promoter",
+        ]:
+            text = self._skill_text(name).lower()
+            with self.subTest(name=name):
+                for expected in shared_terms:
+                    self.assertIn(expected, text)
+
     def test_implementation_planner_enforces_no_placeholder_plan_quality(self):
         planner = self._skill_text("implementation-planner").lower()
 

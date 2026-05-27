@@ -20,6 +20,14 @@ Source status: project policy artifact for `codex_agentic_workflow`.
 - Failure log:
 - Plugin boundary:
 - Automation manual stability threshold:
+- Delivery/operations automation gate (`automation_manual_stability_present`):
+- Manual success evidence:
+- Stable inputs/outputs:
+- Approval requirements:
+- Value evidence:
+- Rollback/disable path:
+- Candidate-only automation:
+- Active schedules remain out of scope:
 
 ## Accepted Gap
 

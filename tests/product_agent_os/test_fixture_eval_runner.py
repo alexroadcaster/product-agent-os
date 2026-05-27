@@ -122,7 +122,8 @@ class FixtureEvalRunnerTest(unittest.TestCase):
         self.assertTrue(results["python-app"]["expected_checks"]["database_data_contract_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["llm_ai_rag_contract_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["security_privacy_compliance_contract_present"])
-        self.assertEqual(results["python-app"]["renderer_file_count"], 173)
+        self.assertTrue(results["python-app"]["expected_checks"]["delivery_release_operations_contract_present"])
+        self.assertEqual(results["python-app"]["renderer_file_count"], 186)
         for check_name in [
             "methodology_catalog_contract_present",
             "methodology_intelligence_contract_present",
@@ -170,6 +171,27 @@ class FixtureEvalRunnerTest(unittest.TestCase):
         self.assertTrue(results["security-docs-only-mention"]["expected_checks"]["security_docs_only_not_forced"])
         self.assertTrue(results["security-compliance-claim"]["expected_checks"]["unsupported_security_claims_rejected"])
         self.assertTrue(results["security-ci-sbom"]["expected_checks"]["security_supply_chain_ci_sbom_present_unverified"])
+        self.assertTrue(results["package-release"]["expected_checks"]["delivery_release_operations_detected"])
+        self.assertTrue(results["package-release"]["expected_checks"]["release_approval_required"])
+        self.assertTrue(results["package-release"]["expected_checks"]["artifact_manifest_contract_present"])
+        self.assertTrue(results["package-release"]["expected_checks"]["release_evidence_before_completion_contract_present"])
+        self.assertTrue(results["package-release"]["expected_checks"]["rollout_rollback_operations_terms_present"])
+        self.assertTrue(results["package-release"]["expected_checks"]["final_delivery_depth_terms_present"])
+        self.assertTrue(
+            results["release-mobile-signing-only"]["expected_checks"][
+                "mobile_signing_only_requires_platform_owner_evidence"
+            ]
+        )
+        self.assertTrue(
+            results["release-dora-individual-quota"]["expected_checks"][
+                "dora_individual_quota_rejected"
+            ]
+        )
+        self.assertTrue(
+            results["release-tooling-only"]["expected_checks"][
+                "release_tooling_only_stays_present_unverified"
+            ]
+        )
         for fixture in [
             "rag-quality-regression",
             "ai-prompt-model-change",
@@ -330,6 +352,61 @@ class FixtureEvalRunnerTest(unittest.TestCase):
         ]:
             with self.subTest(expected=expected):
                 self.assertIn(expected, runner.DATABASE_DATA_TERMS)
+
+    def test_delivery_release_operations_contract_terms_include_release_ops_depth(self):
+        runner = load_runner()
+
+        for expected in [
+            "delivery_release_operations",
+            "release-readiness.md",
+            "versioning-policy.md",
+            "release-artifact-manifest.md",
+            "rollout-plan.md",
+            "rollback-recovery-plan.md",
+            "environment-matrix.md",
+            "deployment-plan.md",
+            "ci-cd-workflow-inventory.md",
+            "observability-map.md",
+            "slo-spec.md",
+            "operations-runbook.md",
+            "incident-record.md",
+            "postmortem.md",
+            "automation-candidate.md",
+            "post-release-review.md",
+            "release scope",
+            "version impact",
+            "artifact manifest",
+            "rollout strategy",
+            "rollback/recovery",
+            "ci/cd governance",
+            "operations runbook",
+            "incident response",
+            "post-release measurement",
+            "manual success evidence",
+            "stable inputs/outputs",
+            "approval requirements",
+            "rollback/disable path",
+            "candidate-only automation",
+            "active schedules remain out of scope",
+            "release mode policy",
+            "build-release-run boundary",
+            "platform distribution evidence",
+            "release communication",
+            "versioning tooling decision",
+            "github environment controls",
+            "dora measurement design",
+            "incident postmortem learning",
+            "observability on-call tooling",
+            "release integrity security handoff",
+            "owner-reviewed release evidence sufficiency",
+            "release evidence before completion",
+            "external release approval",
+            "feature flags remove release risk",
+            "gitops is automatically safe",
+            "automation is safer because it is repeatable",
+        ]:
+            with self.subTest(expected=expected):
+                self.assertIn(expected, runner.DELIVERY_RELEASE_OPERATIONS_TERMS)
 
     def test_fixture_eval_reports_applicable_methodology_domains_for_core_fixtures(self):
         runner = load_runner()

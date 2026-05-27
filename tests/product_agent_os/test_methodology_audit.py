@@ -2419,6 +2419,231 @@ class MethodologyAuditContractTest(unittest.TestCase):
             with self.subTest(unsupported_evidence=expected_term):
                 self.assertIn(expected_term, evidence)
 
+    def test_delivery_release_operations_recommends_automation_manual_stability_gate(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / ".codex" / "automation-candidates").mkdir(parents=True)
+            (root / ".codex" / "automation-candidates" / "automation-candidate.md").write_text(
+                "# Synthetic Automation Candidate\ncandidate_only: true\n",
+                encoding="utf-8",
+            )
+            result = build_methodology_audit(
+                root,
+                intent_hint=(
+                    "promote recurring release operations workflow to automation; repeatable means safe; "
+                    "manual success evidence stable inputs outputs owner verification approval requirements "
+                    "value evidence rollback disable path active schedule"
+                ),
+            )
+
+        recommendation = self._recommendation_by_domain_gate(
+            result,
+            "delivery_release_operations",
+            "automation_manual_stability_present",
+        )
+
+        self.assertEqual(recommendation["priority"], "P1_high_risk")
+        self.assertEqual(recommendation["artifact"], "automation-candidate.md")
+        evidence = " ".join(recommendation["evidence_required"]).lower()
+        for expected_term in [
+            "manual success evidence",
+            "stable inputs/outputs",
+            "owner",
+            "verification",
+            "approval requirements",
+            "value evidence",
+            "rollback/disable path",
+            "candidate-only",
+            "active schedules remain out of scope",
+        ]:
+            with self.subTest(automation_evidence=expected_term):
+                self.assertIn(expected_term, evidence)
+
+    def test_delivery_release_operations_recommends_final_release_depth_gates(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "package.json").write_text(
+                '{"name":"synthetic-final-release","version":"4.0.0","scripts":{"build":"vite build"}}\n',
+                encoding="utf-8",
+            )
+            (root / ".github" / "workflows").mkdir(parents=True)
+            (root / ".github" / "workflows" / "deploy.yml").write_text(
+                "name: Deploy\non:\n  push:\n    tags: ['v*']\n",
+                encoding="utf-8",
+            )
+            (root / ".github" / "environments").mkdir(parents=True)
+            (root / ".github" / "environments" / "production.md").write_text(
+                "# Production\n",
+                encoding="utf-8",
+            )
+            (root / ".releaserc.json").write_text("{}\n", encoding="utf-8")
+            (root / "release-please-config.json").write_text("{}\n", encoding="utf-8")
+            (root / "observability").mkdir()
+            (root / "observability" / "opentelemetry.yaml").write_text("service.name: fixture\n", encoding="utf-8")
+            (root / "alerts").mkdir()
+            (root / "alerts" / "pagerduty.yml").write_text("service: fixture\n", encoding="utf-8")
+            result = build_methodology_audit(
+                root,
+                intent_hint=(
+                    "production public release-ready deployed published release train continuous deployment "
+                    "manual approval release candidate draft release cadence promotion trigger freeze cutoff "
+                    "build release run immutable artifact release identifier runtime configuration boundary "
+                    "environment-specific config injection accepted platform exception desktop installer mobile app "
+                    "signing notarization app store review installer update path rollback yank phased rollout crash reporting "
+                    "platform owner audience user impact support contact known issues migration deprecation release notes owner "
+                    "conventional commits semantic-release release-please manual versioning selected rejected deferred "
+                    "github environments required reviewers wait timers branch tag restrictions custom protection rules "
+                    "environment secrets deployment targets dora change lead time deployment frequency failed deployment "
+                    "recovery time change fail rate deployment rework rate trend review anti-goodhart team-only interpretation "
+                    "incident severity timeline detection mitigation customer impact root causes contributing factors "
+                    "action items blameless owner date opentelemetry prometheus grafana sentry datadog pagerduty opsgenie "
+                    "manual monitoring no-tooling gap release signing vulnerability response license notice sbom provenance "
+                    "package container integrity owner-reviewed release evidence sufficiency accepted gap stop condition"
+                ),
+            )
+
+        expected = {
+            "release_mode_policy_present": ("P1_high_risk", "release-readiness.md"),
+            "build_release_run_boundary_present": ("P1_high_risk", "deployment-plan.md"),
+            "platform_distribution_evidence_present": ("P1_high_risk", "release-readiness.md"),
+            "release_communication_present": ("P1_high_risk", "release-readiness.md"),
+            "versioning_tooling_decision_present": ("P1_high_risk", "versioning-policy.md"),
+            "github_environment_controls_present": ("P1_high_risk", "environment-matrix.md"),
+            "dora_measurement_design_present": ("P1_high_risk", "post-release-review.md"),
+            "incident_postmortem_learning_present": ("P1_high_risk", "postmortem.md"),
+            "observability_on_call_tooling_present": ("P1_high_risk", "observability-map.md"),
+            "release_integrity_security_handoff_present": ("P1_high_risk", "release-artifact-manifest.md"),
+            "release_evidence_sufficiency_owner_reviewed": ("P0_blocker", "release-readiness.md"),
+        }
+        for gate, (priority, artifact) in expected.items():
+            with self.subTest(gate=gate):
+                recommendation = self._recommendation_by_domain_gate(result, "delivery_release_operations", gate)
+                self.assertEqual(recommendation["priority"], priority)
+                self.assertEqual(recommendation["artifact"], artifact)
+
+        evidence_terms = {
+            "release_mode_policy_present": [
+                "release train",
+                "continuous deployment",
+                "manual approval",
+                "release candidate",
+                "draft release",
+                "cadence",
+                "promotion trigger",
+                "freeze/cutoff",
+            ],
+            "build_release_run_boundary_present": [
+                "immutable artifact",
+                "release identifier",
+                "runtime configuration boundary",
+                "environment-specific config injection",
+                "accepted platform exception",
+            ],
+            "platform_distribution_evidence_present": [
+                "signing",
+                "notarization",
+                "app store review",
+                "installer/update path",
+                "rollback/yank path",
+                "phased rollout",
+                "crash reporting",
+                "platform owner evidence",
+            ],
+            "release_communication_present": [
+                "audience",
+                "user impact",
+                "support contact",
+                "known issues",
+                "migration/deprecation note",
+                "changelog link",
+                "release-notes ownership",
+            ],
+            "versioning_tooling_decision_present": [
+                "conventional commits",
+                "semantic-release",
+                "release-please",
+                "manual versioning",
+                "non-package policy",
+                "selected/rejected/deferred",
+                "no forced semver tooling",
+            ],
+            "github_environment_controls_present": [
+                "required reviewers",
+                "wait timers",
+                "branch/tag restrictions",
+                "custom protection rules",
+                "environment secrets",
+                "deployment targets",
+                "approval_required mutation boundary",
+            ],
+            "dora_measurement_design_present": [
+                "change lead time",
+                "deployment frequency",
+                "failed deployment recovery time",
+                "change fail rate",
+                "deployment rework rate",
+                "data source",
+                "trend review",
+                "anti-goodhart",
+                "team-only interpretation",
+            ],
+            "incident_postmortem_learning_present": [
+                "severity",
+                "timeline",
+                "detection",
+                "mitigation",
+                "customer/user impact",
+                "root causes",
+                "contributing factors",
+                "action items",
+                "owner/date",
+                "blameless",
+            ],
+            "observability_on_call_tooling_present": [
+                "opentelemetry",
+                "prometheus",
+                "grafana",
+                "sentry",
+                "datadog",
+                "pagerduty",
+                "opsgenie",
+                "manual monitoring",
+                "selected/rejected/deferred",
+                "accepted no-tooling gap",
+            ],
+            "release_integrity_security_handoff_present": [
+                "release signing",
+                "vulnerability response",
+                "license/notice",
+                "sbom/provenance",
+                "package/container integrity",
+                "satisfied",
+                "not-applicable",
+                "accepted gap",
+                "security ownership",
+            ],
+            "release_evidence_sufficiency_owner_reviewed": [
+                "owner acceptance",
+                "sufficient for the real release risk",
+                "accepted gap",
+                "owner",
+                "reason",
+                "review date",
+                "residual risk",
+                "stop condition",
+            ],
+        }
+        for gate, terms in evidence_terms.items():
+            recommendation = self._recommendation_by_domain_gate(result, "delivery_release_operations", gate)
+            evidence = " ".join(recommendation["evidence_required"]).lower()
+            for expected_term in terms:
+                with self.subTest(gate=gate, evidence=expected_term):
+                    self.assertIn(expected_term, evidence)
+
 
 if __name__ == "__main__":
     unittest.main()

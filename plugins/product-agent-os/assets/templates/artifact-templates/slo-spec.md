@@ -25,6 +25,8 @@ Use this for production runtime services or to record an explicit accepted opera
 ## Gap Handling
 
 - Accepted no-telemetry:
+- Accepted no-tooling gap:
+- Selected/rejected/deferred:
 - Not-yet-production gap:
 - Owner:
 - Reason:

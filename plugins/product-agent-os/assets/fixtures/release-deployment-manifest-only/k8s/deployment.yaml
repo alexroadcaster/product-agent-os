@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: synthetic-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: synthetic-service
+  template:
+    metadata:
+      labels:
+        app: synthetic-service
+    spec:
+      containers:
+        - name: app
+          image: example.invalid/synthetic-service:0.0.0

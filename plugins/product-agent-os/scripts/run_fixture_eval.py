@@ -16,7 +16,12 @@ from product_agent_os.automation_policy import validate_automation_candidate  # 
 from product_agent_os.infrastructure import InfrastructureError, render_infrastructure_plan, stage_infrastructure  # noqa: E402
 from product_agent_os.methodology_audit import build_methodology_audit  # noqa: E402
 from product_agent_os.methodology_catalog import load_methodology_catalog, validate_methodology_catalog  # noqa: E402
-from product_agent_os.templates import AI_RAG_TEMPLATE_ALIASES, SECURITY_TEMPLATE_ALIASES, required_templates  # noqa: E402
+from product_agent_os.templates import (  # noqa: E402
+    AI_RAG_TEMPLATE_ALIASES,
+    DELIVERY_TEMPLATE_ALIASES,
+    SECURITY_TEMPLATE_ALIASES,
+    required_templates,
+)
 from product_agent_os.merge_infrastructure import (  # noqa: E402
     ROLLBACK_MANIFEST_NAME,
     MergeInfrastructureError,
@@ -1144,6 +1149,158 @@ SECURITY_PRIVACY_COMPLIANCE_TERMS = (
     "oauth proves api security",
     "privacy compliance is universal",
 )
+DELIVERY_RELEASE_OPERATIONS_GATES = (
+    "release_scope_present",
+    "version_impact_present",
+    "changelog_release_notes_present",
+    "artifact_manifest_present",
+    "release_evidence_present",
+    "release_evidence_before_completion",
+    "rollout_strategy_present",
+    "rollback_recovery_present",
+    "environment_approval_boundary_present",
+    "external_release_approval_present",
+    "ci_cd_governance_present",
+    "slo_or_operational_gap_present",
+    "observability_release_evidence_present",
+    "operations_runbook_present",
+    "incident_response_path_present",
+    "post_release_measurement_present",
+    "automation_manual_stability_present",
+    "release_mode_policy_present",
+    "build_release_run_boundary_present",
+    "platform_distribution_evidence_present",
+    "release_communication_present",
+    "versioning_tooling_decision_present",
+    "github_environment_controls_present",
+    "dora_measurement_design_present",
+    "incident_postmortem_learning_present",
+    "observability_on_call_tooling_present",
+    "release_integrity_security_handoff_present",
+    "release_evidence_sufficiency_owner_reviewed",
+    "delivery_unsupported_claims_rejected",
+)
+DELIVERY_RELEASE_OPERATIONS_ARTIFACTS = (
+    "release-readiness.md",
+    "versioning-policy.md",
+    "release-artifact-manifest.md",
+    "rollout-plan.md",
+    "rollback-recovery-plan.md",
+    "environment-matrix.md",
+    "deployment-plan.md",
+    "ci-cd-workflow-inventory.md",
+    "observability-map.md",
+    "slo-spec.md",
+    "operations-runbook.md",
+    "incident-record.md",
+    "postmortem.md",
+    "automation-candidate.md",
+    "post-release-review.md",
+    "approval-record.md",
+    "metric-spec.md",
+    "supply-chain-review.md",
+    "sbom-manifest.md",
+    "vulnerability-response-record.md",
+)
+DELIVERY_RELEASE_OPERATIONS_EVAL_FIELDS = (
+    "delivery_release_operations_contract_present",
+    "release_scope_contract_present",
+    "version_impact_contract_present",
+    "changelog_release_notes_contract_present",
+    "release_evidence_contract_present",
+    "release_evidence_before_completion_contract_present",
+    "artifact_manifest_contract_present",
+    "rollout_strategy_contract_present",
+    "rollback_recovery_contract_present",
+    "ci_cd_governance_contract_present",
+    "operations_runbook_contract_present",
+    "incident_response_contract_present",
+    "post_release_measurement_contract_present",
+    "automation_manual_stability_contract_present",
+    "release_mode_policy_contract_present",
+    "build_release_run_boundary_contract_present",
+    "platform_distribution_evidence_contract_present",
+    "release_communication_contract_present",
+    "versioning_tooling_decision_contract_present",
+    "github_environment_controls_contract_present",
+    "dora_measurement_design_contract_present",
+    "incident_postmortem_learning_contract_present",
+    "observability_on_call_tooling_contract_present",
+    "release_integrity_security_handoff_contract_present",
+    "release_evidence_sufficiency_owner_reviewed_contract_present",
+    "unsupported_delivery_claims_rejected_contract_present",
+)
+DELIVERY_RELEASE_OPERATIONS_TERMS = (
+    "delivery_release_operations",
+    "delivery_release_operations_readiness_when_release_or_operations_changes",
+    "release-readiness.md",
+    "versioning-policy.md",
+    "release-artifact-manifest.md",
+    "rollout-plan.md",
+    "rollback-recovery-plan.md",
+    "environment-matrix.md",
+    "deployment-plan.md",
+    "ci-cd-workflow-inventory.md",
+    "observability-map.md",
+    "slo-spec.md",
+    "operations-runbook.md",
+    "incident-record.md",
+    "postmortem.md",
+    "automation-candidate.md",
+    "post-release-review.md",
+    "supply-chain-review.md",
+    "sbom-manifest.md",
+    "vulnerability-response-record.md",
+    "release scope",
+    "version impact",
+    "release evidence",
+    "release evidence before completion",
+    "artifact manifest",
+    "rollout strategy",
+    "rollback/recovery",
+    "environment approval boundary",
+    "external release approval",
+    "ci/cd governance",
+    "observability release evidence",
+    "slo or operational gap",
+    "operations runbook",
+    "incident response",
+    "post-release measurement",
+    "manual success evidence",
+    "stable inputs/outputs",
+    "approval requirements",
+    "value evidence",
+    "rollback/disable path",
+    "candidate-only automation",
+    "active schedules remain out of scope",
+    "release mode policy",
+    "build-release-run boundary",
+    "platform distribution evidence",
+    "release communication",
+    "versioning tooling decision",
+    "github environment controls",
+    "dora measurement design",
+    "incident postmortem learning",
+    "observability on-call tooling",
+    "release integrity security handoff",
+    "owner-reviewed release evidence sufficiency",
+    "release_evidence_sufficiency_owner_reviewed",
+    "immutable artifact",
+    "release identifier",
+    "runtime configuration boundary",
+    "environment-specific config injection",
+    "accepted platform exception",
+    "team-only interpretation",
+    "selected/rejected/deferred",
+    "accepted no-tooling gap",
+    "security ownership",
+    "approval_required",
+    "explicit_gap_accepted",
+    "release-ready",
+    "feature flags remove release risk",
+    "gitops is automatically safe",
+    "automation is safer because it is repeatable",
+)
 COMPLETION_EVIDENCE_TERMS = (
     "evidence_before_completion",
     "evidence-before-completion",
@@ -1274,6 +1431,7 @@ CONDITIONAL_READINESS_GATE_IDS = (
     "platform_runtime_check_when_native_or_desktop",
     "ci_failure_evidence_when_ci_stabilization",
     "release_readiness_when_distribution_changes",
+    "delivery_release_operations_readiness_when_release_or_operations_changes",
     "plugin_success_metric_for_major_workflow",
     "root_cause_before_bug_fix",
     "no_placeholder_plan_when_plan_ready",
@@ -1572,6 +1730,7 @@ def _expected_checks(
         checks["database_data_contract_present"] = _database_data_contract_present()
         checks["llm_ai_rag_contract_present"] = _llm_ai_rag_contract_present()
         checks["security_privacy_compliance_contract_present"] = _security_privacy_compliance_contract_present()
+        checks["delivery_release_operations_contract_present"] = _delivery_release_operations_contract_present()
         checks["methodology_applicability_contract_present"] = (
             _methodology_applicability_contract_present(audit)
         )
@@ -1773,6 +1932,99 @@ def _expected_checks(
             and security_signals.get("supply_chain", {}).get("status") == "present_unverified"
             and security_signals.get("sbom_provenance", {}).get("status") == "present_unverified"
             and security_signals.get("ci_permissions", {}).get("status") == "present_unverified"
+        )
+    if fixture == "package-release":
+        recommendations = methodology_audit.get("recommendations", [])
+        checks["delivery_release_operations_detected"] = (
+            "delivery_release_operations" in _applicable_methodology_domains(methodology_audit)
+            and _delivery_release_operations_contract_present()
+        )
+        checks["release_approval_required"] = any(
+            isinstance(item, dict)
+            and item.get("domain") == "delivery_release_operations"
+            and item.get("gate") == "external_release_approval_present"
+            and item.get("priority") == "P0_blocker"
+            and "approval_required" in str(item.get("approval_boundary", ""))
+            for item in recommendations
+        )
+        checks["artifact_manifest_contract_present"] = "release-artifact-manifest.md" in "\n".join(
+            str(item.get("artifact", ""))
+            for item in recommendations
+            if isinstance(item, dict) and item.get("domain") == "delivery_release_operations"
+        )
+        checks["release_evidence_before_completion_contract_present"] = any(
+            isinstance(item, dict)
+            and item.get("domain") == "delivery_release_operations"
+            and item.get("gate") == "release_evidence_before_completion"
+            for item in recommendations
+        )
+        checks["rollout_rollback_operations_terms_present"] = all(
+            term in DELIVERY_RELEASE_OPERATIONS_TERMS
+            for term in [
+                "rollout strategy",
+                "rollback/recovery",
+                "operations runbook",
+                "incident response",
+                "post-release measurement",
+            ]
+        )
+        checks["final_delivery_depth_terms_present"] = all(
+            term in DELIVERY_RELEASE_OPERATIONS_TERMS
+            for term in [
+                "release mode policy",
+                "build-release-run boundary",
+                "platform distribution evidence",
+                "release communication",
+                "versioning tooling decision",
+                "github environment controls",
+                "dora measurement design",
+                "incident postmortem learning",
+                "observability on-call tooling",
+                "release integrity security handoff",
+                "owner-reviewed release evidence sufficiency",
+            ]
+        )
+    if fixture == "release-mobile-signing-only":
+        intent_audit = build_methodology_audit(FIXTURES / fixture, intent_hint=_fixture_text(FIXTURES / fixture))
+        recommendations = intent_audit.get("recommendations", [])
+        checks["mobile_signing_only_requires_platform_owner_evidence"] = any(
+            isinstance(item, dict)
+            and item.get("domain") == "delivery_release_operations"
+            and item.get("gate") == "platform_distribution_evidence_present"
+            and "platform owner evidence" in "\n".join(
+                str(term) for term in item.get("evidence_required", [])
+            )
+            for item in recommendations
+        )
+    if fixture == "release-dora-individual-quota":
+        intent_audit = build_methodology_audit(FIXTURES / fixture, intent_hint=_fixture_text(FIXTURES / fixture))
+        checks["dora_individual_quota_rejected"] = any(
+            isinstance(item, dict)
+            and item.get("domain") == "delivery_release_operations"
+            and item.get("gate") == "delivery_unsupported_claims_rejected"
+            and item.get("priority") == "P1_high_risk"
+            for item in intent_audit.get("recommendations", [])
+        )
+    if fixture == "release-tooling-only":
+        delivery_signals = audit.get("delivery_release_operations_signals", {})
+        intent_audit = build_methodology_audit(FIXTURES / fixture, intent_hint=_fixture_text(FIXTURES / fixture))
+        recommendations = intent_audit.get("recommendations", [])
+        checks["release_tooling_only_stays_present_unverified"] = (
+            isinstance(delivery_signals, dict)
+            and delivery_signals.get("versioning_tooling_status") == "present_unverified"
+            and delivery_signals.get("observability_on_call_tooling_status") == "present_unverified"
+            and any(
+                isinstance(item, dict)
+                and item.get("domain") == "delivery_release_operations"
+                and item.get("gate") == "versioning_tooling_decision_present"
+                for item in recommendations
+            )
+            and any(
+                isinstance(item, dict)
+                and item.get("domain") == "delivery_release_operations"
+                and item.get("gate") == "observability_on_call_tooling_present"
+                for item in recommendations
+            )
         )
     if fixture in {
         "rag-quality-regression",
@@ -2552,6 +2804,88 @@ def _security_privacy_compliance_contract_present() -> bool:
         f"{path.name}\n{path.read_text(encoding='utf-8')}" for path in paths
     ).lower()
     return all(term.lower() in payload for term in SECURITY_PRIVACY_COMPLIANCE_TERMS)
+
+
+def _delivery_release_operations_contract_present() -> bool:
+    try:
+        catalog = load_methodology_catalog()
+    except (OSError, ValueError, json.JSONDecodeError):
+        return False
+    if validate_methodology_catalog(catalog):
+        return False
+    domains = {
+        str(domain.get("id")): domain
+        for domain in catalog.get("domains", [])
+        if isinstance(domain, dict) and domain.get("id")
+    }
+    delivery = domains.get("delivery_release_operations")
+    if not isinstance(delivery, dict):
+        return False
+    if not set(DELIVERY_RELEASE_OPERATIONS_GATES).issubset(set(delivery.get("gates", []))):
+        return False
+    if not set(DELIVERY_RELEASE_OPERATIONS_ARTIFACTS).issubset(set(delivery.get("artifacts", []))):
+        return False
+    if not set(DELIVERY_RELEASE_OPERATIONS_EVAL_FIELDS).issubset(set(delivery.get("eval_fields", []))):
+        return False
+
+    rendered_targets = {item.target_path for item in required_templates()}
+    artifact_targets = {
+        f".codex/artifact-templates/{name}"
+        for name in DELIVERY_RELEASE_OPERATIONS_ARTIFACTS
+        if name not in {"automation-candidate.md"}
+    }
+    if not artifact_targets.issubset(rendered_targets):
+        return False
+    if ".codex/automation-candidates/automation-candidate.md" not in rendered_targets:
+        return False
+    if any(
+        f".codex/artifact-templates/{source_name}" in rendered_targets
+        for source_name in DELIVERY_TEMPLATE_ALIASES
+    ):
+        return False
+    if DELIVERY_TEMPLATE_ALIASES != {
+        "release-scope.md": "release-readiness.md",
+        "version-impact-record.md": "versioning-policy.md",
+        "artifact-manifest.md": "release-artifact-manifest.md",
+        "rollout-strategy.md": "rollout-plan.md",
+        "ci-cd-governance.md": "ci-cd-workflow-inventory.md",
+        "incident-response-path.md": "incident-record.md",
+        "post-release-measurement.md": "post-release-review.md",
+    }:
+        return False
+
+    paths = [
+        PLUGIN_ROOT / "assets" / "methodology" / "methodology-catalog.json",
+        TEMPLATE_ROOT / "workflows" / "release-packet.md",
+        TEMPLATE_ROOT / "workflows" / "release-packaging.md",
+        TEMPLATE_ROOT / "evals" / "behavioral-workflows.json",
+        TEMPLATE_ROOT / "evals" / "project-readiness.json",
+        TEMPLATE_ROOT / "automations" / "automation-candidate.md",
+        PLUGIN_ROOT / "scripts" / "product_agent_os" / "discovery.py",
+        PLUGIN_ROOT / "scripts" / "product_agent_os" / "methodology_audit.py",
+        PLUGIN_ROOT / "scripts" / "product_agent_os" / "methodology_report.py",
+        PLUGIN_ROOT / "skills" / "workspace-discovery-auditor" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "project-lifecycle-orchestrator" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "requirements-author" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "implementation-planner" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "test-eval-designer" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "risk-reviewer" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "pr-release-operator" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "learning-loop-maintainer" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "automation-promoter" / "SKILL.md",
+    ]
+    paths.extend(TEMPLATE_ROOT / "control-plane" / name for name in ["PLAN.md", "TEST.md", "EVALS.md", "RUNLOG.md"])
+    paths.extend(
+        TEMPLATE_ROOT / "artifact-templates" / name
+        for name in DELIVERY_RELEASE_OPERATIONS_ARTIFACTS
+        if name != "automation-candidate.md"
+    )
+    if not all(path.exists() for path in paths):
+        return False
+    payload = "\n".join(
+        f"{path.name}\n{path.read_text(encoding='utf-8')}" for path in paths
+    ).lower()
+    return all(term.lower() in payload for term in DELIVERY_RELEASE_OPERATIONS_TERMS)
 
 
 def _fixture_text(path: Path) -> str:

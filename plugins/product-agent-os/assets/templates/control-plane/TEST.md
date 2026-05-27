@@ -69,6 +69,25 @@ Generated at: {generated_at}
 - Explicit test gap:
 - Unsupported completion claim:
 - Completion claim without current evidence:
+- Delivery, Release & Operations methodology (`delivery_release_operations`):
+- Delivery readiness gate: `delivery_release_operations_readiness_when_release_or_operations_changes`
+- Delivery artifacts: `release-readiness.md`, `versioning-policy.md`, `release-artifact-manifest.md`, `rollout-plan.md`, `rollback-recovery-plan.md`, `environment-matrix.md`, `deployment-plan.md`, `ci-cd-workflow-inventory.md`, `observability-map.md`, `slo-spec.md`, `operations-runbook.md`, `incident-record.md`, `postmortem.md`, `automation-candidate.md`, `post-release-review.md`
+- Delivery gates checked: `release_scope_present`, `version_impact_present`, `release_evidence_present`, `release_evidence_before_completion`, `artifact_manifest_present`, `rollout_strategy_present`, `rollback_recovery_present`, `ci_cd_governance_present`, `operations_runbook_present`, `incident_response_path_present`, `post_release_measurement_present`, `automation_manual_stability_present`
+- Planning-first delivery classification:
+- Release scope, version impact, release evidence before completion, artifact manifest, rollout, rollback/recovery, environment approval boundary, CI/CD governance, operations runbook, incident path and post-release measurement:
+- External release approval:
+- Observability release evidence:
+- SLO or operational gap:
+- Current build/test/docs/eval/runtime/artifact evidence:
+- Approval boundary:
+- `approval_required` before publish, tag, release creation, artifact upload, deployment, PR creation, branch push, package registry, marketplace, store submission or external CI/CD mutation:
+- Automation manual stability: manual success evidence, stable inputs/outputs, owner, verification, approval requirements, value evidence and rollback/disable path:
+- Automation candidate-only behavior:
+- Active schedules remain out of scope:
+- Accepted gap (`explicit_gap_accepted`):
+- Residual risk:
+- Unsupported release claims rejected: release-ready without current evidence, feature flags remove release risk, GitOps is automatically safe, automation is safer because it is repeatable.
+- Forbidden external actions checked: publish without approval, tag without approval, deployment without approval, active automation without manual stability.
 - Quality methodology (`quality_testing_evals`):
 - Quality strategy artifact: `quality-strategy.md`
 - Test/eval matrix artifact: `test-eval-matrix.md`

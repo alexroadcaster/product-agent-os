@@ -1079,6 +1079,19 @@ def _has_delivery_release_operations_signal(lowered_files: set[str], ci_present:
                 "incident",
                 "postmortem",
                 "dora",
+                "semantic-release",
+                "release-please",
+                "conventional-commit",
+                ".releaserc",
+                "opentelemetry",
+                "prometheus",
+                "grafana",
+                "sentry",
+                "datadog",
+                "pagerduty",
+                "opsgenie",
+                "on-call",
+                "oncall",
                 "automation-candidate",
             )
         )
@@ -1792,6 +1805,41 @@ def _delivery_release_operations_signals(files: set[str]) -> dict[str, Any]:
     incident_sources = sorted(path for path in files if "incident" in path.lower())
     postmortem_sources = sorted(path for path in files if "postmortem" in path.lower() or "post-mortem" in path.lower())
     dora_sources = sorted(path for path in files if "dora" in path.lower())
+    versioning_tooling_sources = sorted(
+        path
+        for path in files
+        if any(
+            term in path.lower()
+            for term in (
+                ".releaserc",
+                "release.config",
+                "release-please",
+                "semantic-release",
+                "conventional-commit",
+                "conventionalcommit",
+            )
+        )
+    )
+    observability_on_call_tooling_sources = sorted(
+        path
+        for path in files
+        if any(
+            term in path.lower()
+            for term in (
+                "opentelemetry",
+                "otel",
+                "prometheus",
+                "grafana",
+                "sentry",
+                "datadog",
+                "pagerduty",
+                "opsgenie",
+                "on-call",
+                "oncall",
+                "alerts/",
+            )
+        )
+    )
     automation_promotion_sources = sorted(
         path
         for path in files
@@ -1833,6 +1881,10 @@ def _delivery_release_operations_signals(files: set[str]) -> dict[str, Any]:
         "postmortem_status": status(postmortem_sources),
         "dora_sources": dora_sources[:20],
         "dora_status": status(dora_sources),
+        "versioning_tooling_sources": versioning_tooling_sources[:20],
+        "versioning_tooling_status": status(versioning_tooling_sources),
+        "observability_on_call_tooling_sources": observability_on_call_tooling_sources[:20],
+        "observability_on_call_tooling_status": status(observability_on_call_tooling_sources),
         "automation_promotion_sources": automation_promotion_sources[:20],
         "automation_promotion_status": status(automation_promotion_sources),
         "verification_status": "applicable_missing",

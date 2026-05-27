@@ -22,10 +22,19 @@ Use this before package publish, deploy, installer upload, store submission, art
 
 ## Integrity Applicability
 
+- Gate: `release_integrity_security_handoff_present`
 - Checksums:
 - Signatures:
 - SBOM:
 - Provenance:
+- Release signing:
+- Vulnerability response:
+- License/NOTICE:
+- SBOM/provenance:
+- Package/container integrity:
+- Security handoff:
+- Security ownership:
+- Integrity status: `satisfied | not-applicable | accepted gap | security ownership`
 - Verification command:
 - Docs-only/no build artifact fallback:
 - Integrity accepted gap:

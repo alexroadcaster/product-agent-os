@@ -24,6 +24,8 @@
           "quality_testing_evals",
           "codex_agentic_workflow",
           "security_privacy_compliance",
+          "delivery_release_operations",
+          "delivery_release_operations_readiness_when_release_or_operations_changes",
           "api_integrations",
           "llm_ai_rag_readiness_when_ai_behavior_changes",
           "docs_as_code_impact",
@@ -48,6 +50,7 @@
           "security_sensitive_surface",
           "sbom_provenance",
           "ci_permissions",
+          "delivery_release_operations",
           "llm_ai_rag",
           "api_contract_source",
           "api_consumer_map",
@@ -72,7 +75,7 @@
           "Applicable gates without required evidence are applicable_missing until a proposal, verified artifact, or explicit_gap_accepted is recorded.",
           "Use not_applicable only with an applicability reason.",
           "Use explicit_gap_accepted only with owner, reason, residual risk, and follow-up condition.",
-          "Use approval_required for external writes, hosted docs, production DB access, security-sensitive changes, release publishing, PR creation, hook activation, or other irreversible operations."
+          "Use approval_required for external writes, hosted docs, production DB access, security-sensitive changes, release publishing, PR creation, hook activation, deployment without approval, tag without approval, publish without approval, active automation without manual stability, or other irreversible operations."
         ],
         "docs_as_code_impact_statuses": [
           "not_applicable",
@@ -410,6 +413,14 @@
             "required_evidence": ["release-packet.md", "release-readiness.md", "rollback note", "approval boundary"],
             "owner": "pr-release-operator",
             "residual_risk": "Finish actions can imply external mutation without explicit approval."
+          },
+          "delivery_release_operations_readiness_when_release_or_operations_changes": {
+            "applies_when": "Release, deploy, publish, package, version, changelog, artifact, rollout, rollback, CI/CD governance, operations, incident, post-release, DORA, GitOps, feature flag, deployment, or automation promotion work is in scope.",
+            "pass_condition": "Set present_verified only when delivery_release_operations records release_scope_present, version_impact_present, release_evidence_present, release_evidence_before_completion, artifact_manifest_present, rollout_strategy_present, rollback_recovery_present, ci_cd_governance_present, operations_runbook_present, incident_response_path_present, post_release_measurement_present, automation_manual_stability_present, release_mode_policy_present, build_release_run_boundary_present, platform_distribution_evidence_present, release_communication_present, versioning_tooling_decision_present, github_environment_controls_present, dora_measurement_design_present, incident_postmortem_learning_present, observability_on_call_tooling_present, release_integrity_security_handoff_present, release_evidence_sufficiency_owner_reviewed, approval boundary, and unsupported delivery claim disposition.",
+            "accepted_gap": "Use explicit_gap_accepted only with owner, reason, review date, residual risk, follow-up condition and explicit release-ready limitation.",
+            "required_evidence": ["release-readiness.md", "versioning-policy.md", "release-artifact-manifest.md", "rollout-plan.md", "rollback-recovery-plan.md", "ci-cd-workflow-inventory.md", "operations-runbook.md", "incident-record.md", "post-release-review.md", "automation-candidate.md", "approval_required"],
+            "owner": "release operator",
+            "residual_risk": "Release-ready, feature flags remove release risk, GitOps is automatically safe, and automation is safer because it is repeatable can replace current release evidence; publish without approval, tag without approval, deployment without approval, and active automation without manual stability remain forbidden external actions."
           },
           "standards_trigger_policy_when_architecture_api_release_or_governance_changes": {
             "applies_when": "Architecture boundary, API contract, storage, auth/security, irreversible migration, automation activation, OpenAPI, AsyncAPI, SemVer, Keep a Changelog, CODEOWNERS, GitHub Actions, or governance changes are in scope.",

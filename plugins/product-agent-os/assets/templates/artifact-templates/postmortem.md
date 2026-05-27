@@ -15,7 +15,9 @@ Use this after a failed release, incident, rollback, monitoring failure or mater
 
 ## Analysis
 
+- Gate: `incident_postmortem_learning_present`
 - Impact:
+- Customer/user impact:
 - Detection:
 - Root causes:
 - Contributing factors:
@@ -24,6 +26,8 @@ Use this after a failed release, incident, rollback, monitoring failure or mater
 - Action items:
 - Owners:
 - Due dates:
+- Owner/date:
+- Blameless wording:
 
 Quick rollback does not skip learning. Keep the postmortem blameless and focused on system/process improvement.
 

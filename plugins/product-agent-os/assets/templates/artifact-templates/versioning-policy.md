@@ -15,6 +15,19 @@ Use this artifact when a release, package, plugin, SDK, public API, generated cl
 - Versioning tool:
 - Manual versioning rationale:
 
+## Versioning Tooling Decision
+
+- Gate: `versioning_tooling_decision_present`
+- Conventional Commits:
+- semantic-release:
+- release-please:
+- Manual versioning:
+- Non-package policy:
+- Selected/rejected/deferred:
+- Reason:
+- Owner:
+- No forced SemVer tooling:
+
 ## Compatibility
 
 - Public API compatibility impact:

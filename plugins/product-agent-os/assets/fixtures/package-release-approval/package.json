@@ -1,0 +1,8 @@
+{
+  "name": "synthetic-package-release-approval",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "echo synthetic build",
+    "test": "echo synthetic test"
+  }
+}

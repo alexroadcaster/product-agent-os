@@ -25,6 +25,22 @@ Use this before runtime release, production deployment or incident-prone operati
 - Correlation IDs:
 - Post-release signal:
 
+## Observability And On-Call Tooling
+
+- Gate: `observability_on_call_tooling_present`
+- OpenTelemetry:
+- Prometheus:
+- Grafana:
+- Sentry:
+- Datadog:
+- PagerDuty:
+- Opsgenie:
+- Manual monitoring:
+- Selected/rejected/deferred:
+- Owner:
+- Alert path:
+- Accepted no-tooling gap:
+
 Logs alone are not observability. Record metrics, traces, dashboards, alert owner, redaction and sampling where applicable, or record an accepted gap.
 
 Do not include raw secrets, credentials, access tokens, private keys, raw PII, raw private chats or private customer data.

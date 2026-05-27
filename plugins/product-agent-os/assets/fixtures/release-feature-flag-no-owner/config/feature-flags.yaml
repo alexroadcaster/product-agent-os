@@ -1,0 +1,5 @@
+new_checkout:
+  default: false
+  owner: ""
+  cleanup_date: ""
+  kill_switch: ""
