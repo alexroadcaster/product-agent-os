@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{title}}</title>
+  <style>
+{{css}}
+  </style>
+</head>
+<body>
+  <main class="dashboard-shell">
+    <header class="dashboard-header">
+      <p class="eyebrow">Product-Agent OS</p>
+      <h1>{{title}}</h1>
+      <p class="generated-at">Generated {{generated_at}}</p>
+    </header>
+{{banner}}
+    <div class="status-grid">
+{{sections}}
+    </div>
+  </main>
+  <script type="application/json" id="status-snapshot">{{snapshot_json}}</script>
+</body>
+</html>

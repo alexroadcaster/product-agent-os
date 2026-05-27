@@ -205,7 +205,12 @@ class CodexRuntimeRunnerCliTest(unittest.TestCase):
         self.assertIn("finish_options", route)
         self.assertIn("request_approval", route["finish_options"])
         self.assertIn("first_response_contract", route)
-        self.assertIn("owner_questions", route["first_response_contract"])
+        self.assertIn("question_queue", route)
+        self.assertIn("next_blocking_question", route["first_response_contract"])
+        self.assertIn("question_counts", route["first_response_contract"])
+        self.assertIn("question_summary", route["first_response_contract"])
+        self.assertNotIn("owner_questions", route["first_response_contract"])
+        self.assertNotIn("questions", route["first_response_contract"])
         self.assertIn("safe_next_action", route["first_response_contract"])
         self.assertNotIn(str(workspace), run_result.stdout)
 

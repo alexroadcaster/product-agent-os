@@ -3,6 +3,13 @@ from __future__ import annotations
 import re
 from typing import Any
 
+from product_agent_os.question_protocol import (
+    MAX_TOTAL_QUESTIONS,
+    QUESTION_ANSWER_TYPES,
+    QUESTION_CATEGORIES,
+    QUESTION_PRIORITIES,
+)
+
 
 ALLOWED_RUNNER_STATUSES = ["route_ready", "needs_context", "needs_approval", "blocked", "completed", "failed"]
 ALLOWED_RUNTIME_SURFACES = ["Codex App", "CLI", "IDE extension", "codex exec", "subagent", "skill"]
@@ -63,6 +70,9 @@ METHODOLOGY_PACKET_LIMITS = {
     "recommendation_groups": 8,
     "questions_for_owner": 8,
     "source_artifact_ledger": 12,
+}
+QUESTION_QUEUE_LIMITS = {
+    "questions": MAX_TOTAL_QUESTIONS,
 }
 DETECTION_ONLY_METHODOLOGY_STATUSES = {
     "applicable_missing",
@@ -343,6 +353,10 @@ def validate_runner_result(payload: dict[str, Any]) -> list[str]:
             errors.extend(validate_methodology_packet(route_packet["methodology_packet"]))
         if "finish_options" in route_packet:
             errors.extend(_validate_finish_options(route_packet["finish_options"], "route_packet.finish_options"))
+        if "question_queue" in route_packet:
+            errors.extend(validate_question_queue(route_packet["question_queue"], "route_packet.question_queue"))
+        if "status_snapshot_ref" in route_packet:
+            errors.extend(_validate_status_snapshot_ref(route_packet["status_snapshot_ref"]))
         first_response = route_packet.get("first_response_contract")
         if first_response is not None:
             if not isinstance(first_response, dict):
@@ -354,6 +368,13 @@ def validate_runner_result(payload: dict[str, Any]) -> list[str]:
                         "route_packet.first_response_contract.finish_options",
                     )
                 )
+            if isinstance(first_response, dict):
+                if "questions" in first_response:
+                    errors.append("route_packet.first_response_contract.questions:forbidden")
+                if "question_queue" in route_packet:
+                    for field in ["next_blocking_question", "question_counts", "question_summary"]:
+                        if field not in first_response:
+                            errors.append(f"route_packet.first_response_contract.{field}:required")
 
     for field in ["handoffs", "files_touched", "files_proposed", "verification_evidence", "errors", "warnings"]:
         if not isinstance(payload.get(field), list):
@@ -367,6 +388,45 @@ def validate_runner_result(payload: dict[str, Any]) -> list[str]:
         methodology_packet = route_packet.get("methodology_packet")
         if isinstance(methodology_packet, dict) and methodology_packet.get("status") in DETECTION_ONLY_METHODOLOGY_STATUSES:
             errors.append("methodology_packet:detection_not_completion")
+    return errors
+
+
+def validate_question_queue(packet: Any, prefix: str = "question_queue") -> list[str]:
+    if not isinstance(packet, dict):
+        return [f"{prefix}:invalid"]
+    errors: list[str] = []
+    if packet.get("schema_version") != 1:
+        errors.append(f"{prefix}.schema_version:must_be_1")
+    if packet.get("write_policy") != "read_only":
+        errors.append(f"{prefix}.write_policy:must_be_read_only")
+    questions = packet.get("questions")
+    if not isinstance(questions, list):
+        errors.append(f"{prefix}.questions:invalid")
+        questions = []
+    elif len(questions) > QUESTION_QUEUE_LIMITS["questions"]:
+        errors.append(f"{prefix}.questions:too_many")
+    for index, question in enumerate(questions):
+        if not isinstance(question, dict):
+            errors.append(f"{prefix}.questions[{index}]:invalid")
+            continue
+        if not _non_empty_string(question.get("id")):
+            errors.append(f"{prefix}.questions[{index}].id:required")
+        if not _non_empty_string(question.get("text")):
+            errors.append(f"{prefix}.questions[{index}].text:required")
+        if question.get("priority") not in QUESTION_PRIORITIES:
+            errors.append(f"{prefix}.questions[{index}].priority:unknown")
+        if question.get("category") not in QUESTION_CATEGORIES:
+            errors.append(f"{prefix}.questions[{index}].category:unknown")
+        if question.get("answer_type") not in QUESTION_ANSWER_TYPES:
+            errors.append(f"{prefix}.questions[{index}].answer_type:unknown")
+        source = question.get("source")
+        if not isinstance(source, dict) or not _non_empty_string(source.get("kind")) or not _non_empty_string(source.get("key")):
+            errors.append(f"{prefix}.questions[{index}].source:invalid")
+    next_blocking = packet.get("next_blocking_question")
+    if next_blocking is not None and not isinstance(next_blocking, dict):
+        errors.append(f"{prefix}.next_blocking_question:invalid")
+    if not isinstance(packet.get("summary"), dict):
+        errors.append(f"{prefix}.summary:invalid")
     return errors
 
 
@@ -444,4 +504,18 @@ def _validate_finish_options(value: Any, prefix: str) -> list[str]:
     for item in value:
         if item not in ALLOWED_FINISH_OPTIONS:
             errors.append(f"{prefix}:unknown")
+    return errors
+
+
+def _validate_status_snapshot_ref(value: Any) -> list[str]:
+    if not isinstance(value, dict):
+        return ["route_packet.status_snapshot_ref:invalid"]
+    errors: list[str] = []
+    if value.get("kind") not in {"staged_artifact", "external_ref", "not_available"}:
+        errors.append("route_packet.status_snapshot_ref.kind:unknown")
+    if value.get("kind") != "not_available" and not _non_empty_string(value.get("path")):
+        errors.append("route_packet.status_snapshot_ref.path:required")
+    digest = value.get("digest")
+    if digest not in ("", None) and not _non_empty_string(digest):
+        errors.append("route_packet.status_snapshot_ref.digest:invalid")
     return errors

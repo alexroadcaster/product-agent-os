@@ -22,6 +22,7 @@ from codex_runtime_runner.contracts import (  # noqa: E402
     validate_runner_request,
     validate_runner_result,
 )
+from product_agent_os.question_protocol import MAX_TOTAL_QUESTIONS  # noqa: E402
 
 
 class CodexRuntimeRunnerContractsTest(unittest.TestCase):
@@ -172,6 +173,7 @@ class CodexRuntimeRunnerContractsTest(unittest.TestCase):
         self.assertEqual(validate_runner_result(result), [])
 
     def test_additive_route_fields_stay_schema_v1_and_invalid_finish_options_fail_stably(self):
+        question_queue = self._valid_question_queue()
         result = build_result(
             status="route_ready",
             workspace="C:/workspace/synthetic",
@@ -179,9 +181,17 @@ class CodexRuntimeRunnerContractsTest(unittest.TestCase):
             route_packet={
                 "write_policy": "read_only",
                 "methodology_packet": self._valid_methodology_packet(),
+                "question_queue": question_queue,
+                "status_snapshot_ref": {
+                    "kind": "staged_artifact",
+                    "path": ".codex/product-agent-os/status.json",
+                    "digest": "sha256:synthetic",
+                },
                 "finish_options": ["read_only_audit", "ask_owner", "run_verification", "stop_blocked"],
                 "first_response_contract": {
-                    "owner_questions": ["Who owns the security review?"],
+                    "next_blocking_question": question_queue["next_blocking_question"],
+                    "question_counts": question_queue["summary"],
+                    "question_summary": ["1 blocking", "0 recommended", "0 optional"],
                     "safe_next_action": "Stage security-risk-review.md before implementation.",
                     "evidence_gaps": ["owner-reviewed evidence"],
                     "approval_boundary": "read_only",
@@ -204,7 +214,42 @@ class CodexRuntimeRunnerContractsTest(unittest.TestCase):
 
         self.assertEqual(result["schema_version"], 1)
         self.assertEqual(validate_runner_result(result), [])
+        self.assertNotIn("questions", result["route_packet"]["first_response_contract"])
         self.assertIn("route_packet.finish_options:invalid", validate_runner_result(malformed))
+
+    def test_route_packet_rejects_invalid_question_queue_without_relaxing_methodology_packet(self):
+        oversized = self._valid_question_queue()
+        oversized["questions"] = oversized["questions"] * (MAX_TOTAL_QUESTIONS + 1)
+        invalid_answer_type = self._valid_question_queue()
+        invalid_answer_type["questions"][0]["answer_type"] = "freeform_secret"
+        methodology_with_unknown = self._valid_methodology_packet()
+        methodology_with_unknown["question_queue"] = self._valid_question_queue()
+
+        oversized_result = build_result(
+            status="route_ready",
+            workspace="C:/workspace/synthetic",
+            lifecycle_state="quality_gate",
+            route_packet={"write_policy": "read_only", "question_queue": oversized},
+            source_policy_status="ok",
+            approval_status="not_required",
+            next_action="Run risk-reviewer.",
+        )
+        invalid_answer_type_result = build_result(
+            status="route_ready",
+            workspace="C:/workspace/synthetic",
+            lifecycle_state="quality_gate",
+            route_packet={"write_policy": "read_only", "question_queue": invalid_answer_type},
+            source_policy_status="ok",
+            approval_status="not_required",
+            next_action="Run risk-reviewer.",
+        )
+
+        self.assertIn("route_packet.question_queue.questions:too_many", validate_runner_result(oversized_result))
+        self.assertIn(
+            "route_packet.question_queue.questions[0].answer_type:unknown",
+            validate_runner_result(invalid_answer_type_result),
+        )
+        self.assertIn("methodology_packet.question_queue:unknown", validate_methodology_packet(methodology_with_unknown))
 
     def test_methodology_high_risk_action_taxonomy_is_structured_and_false_positive_safe(self):
         packet = self._valid_methodology_packet()
@@ -297,6 +342,62 @@ class CodexRuntimeRunnerContractsTest(unittest.TestCase):
             "source_artifact_ledger": [{"artifact": "security-risk-review.md", "decision": "canonical_template"}],
             "write_policy": "read_only",
             "status": "present_unverified",
+        }
+
+    def _valid_question_queue(self):
+        return {
+            "schema_version": 1,
+            "write_policy": "read_only",
+            "runtime_status": "route_ready",
+            "policy": {
+                "max_total_questions": 8,
+                "max_blocking_questions_in_first_response": 1,
+                "supported_priorities": ["blocking", "recommended", "optional"],
+                "supported_categories": ["scope", "product", "verification", "approval", "ownership", "risk", "release"],
+                "supported_answer_types": [
+                    "text",
+                    "single_choice",
+                    "single_choice_or_text",
+                    "multi_choice",
+                    "approval",
+                    "not_applicable_or_gap",
+                ],
+            },
+            "questions": [
+                {
+                    "id": "q_ownership_synthetic",
+                    "text": "Who owns the security review?",
+                    "priority": "blocking",
+                    "category": "ownership",
+                    "answer_type": "text",
+                    "artifact": "security-risk-review.md",
+                    "owner_domain": "security",
+                    "source": {
+                        "kind": "methodology_packet",
+                        "key": "methodology_gate_owner",
+                        "block": "questions_for_owner",
+                        "artifact": "security-risk-review.md",
+                    },
+                    "sequence": 1,
+                }
+            ],
+            "next_blocking_question": {
+                "id": "q_ownership_synthetic",
+                "text": "Who owns the security review?",
+                "priority": "blocking",
+                "category": "ownership",
+                "answer_type": "text",
+                "artifact": "security-risk-review.md",
+                "owner_domain": "security",
+                "source": {
+                    "kind": "methodology_packet",
+                    "key": "methodology_gate_owner",
+                    "block": "questions_for_owner",
+                    "artifact": "security-risk-review.md",
+                },
+                "sequence": 1,
+            },
+            "summary": {"total": 1, "blocking": 1, "recommended": 0, "optional": 0, "remaining": 0},
         }
 
     def _methodology_intelligence(self):

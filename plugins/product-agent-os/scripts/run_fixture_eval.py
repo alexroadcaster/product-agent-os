@@ -3722,6 +3722,7 @@ def _codex_runtime_runner_eval(path: Path) -> tuple[str, dict[str, bool]]:
         )
         packet = route.get("methodology_packet", {})
         first_response = route.get("first_response_contract", {})
+        question_queue = route.get("question_queue", {})
         checks = {
             "runtime_cross_domain_bridge_present": (
                 bool(packet.get("recommendation_groups"))
@@ -3731,8 +3732,14 @@ def _codex_runtime_runner_eval(path: Path) -> tuple[str, dict[str, bool]]:
             ),
             "runtime_first_response_compact": (
                 isinstance(first_response, dict)
-                and bool(first_response.get("owner_questions"))
+                and isinstance(question_queue, dict)
+                and bool(route.get("question_queue"))
+                and "next_blocking_question" in first_response
+                and isinstance(first_response.get("question_counts"), dict)
+                and isinstance(first_response.get("question_summary"), list)
                 and bool(first_response.get("safe_next_action"))
+                and "owner_questions" not in first_response
+                and "questions" not in first_response
                 and "methodology_domains" not in first_response
                 and "methodology_gates" not in first_response
             ),

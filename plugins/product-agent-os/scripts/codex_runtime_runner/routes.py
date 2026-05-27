@@ -9,6 +9,7 @@ from codex_runtime_runner.contracts import (
     methodology_requires_approval,
     methodology_requires_automation_maturity,
 )
+from product_agent_os.question_protocol import build_question_queue
 
 
 ROUTES = {
@@ -33,6 +34,8 @@ def plan_route(
     usage_mode: dict[str, Any] | None = None,
     behavioral_route_inputs: dict[str, Any] | None = None,
     methodology_intelligence: dict[str, Any] | None = None,
+    question_queue: dict[str, Any] | None = None,
+    status_snapshot_ref: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     skill, subagent, write_policy, action = ROUTES[lifecycle_state]
     if subagent and not allow_subagents:
@@ -41,6 +44,10 @@ def plan_route(
     approval_requirements = ["explicit approval record required before workspace writes"] if write_policy == "approved_write" else []
     usage_mode = usage_mode or _default_usage_mode()
     methodology_packet = build_methodology_packet(methodology_intelligence)
+    question_queue = question_queue or _question_queue_from_methodology(
+        methodology_intelligence,
+        usage_mode,
+    )
     methodology_approval_required = methodology_requires_approval(methodology_packet)
     automation_maturity_required = (
         lifecycle_state == "learning_ready"
@@ -97,13 +104,18 @@ def plan_route(
     route["usage_mode"] = usage_mode
     route["behavioral_route_inputs"] = behavioral_route_inputs or _default_behavioral_route_inputs()
     route["methodology_packet"] = methodology_packet
+    route["question_queue"] = question_queue
+    if status_snapshot_ref is not None:
+        route["status_snapshot_ref"] = status_snapshot_ref
     route["finish_options"] = finish_options
     evidence_gaps = _evidence_gaps(methodology_packet)
     route["first_response_contract"] = {
         "mode": usage_mode["primary"],
         "confidence": usage_mode["confidence"],
         "next_smallest_action": action,
-        "owner_questions": methodology_packet["questions_for_owner"],
+        "next_blocking_question": question_queue.get("next_blocking_question"),
+        "question_counts": question_queue.get("summary", {}),
+        "question_summary": _question_summary(question_queue),
         "safe_next_action": methodology_packet["safe_next_action"],
         "required_fields": usage_mode["first_response_contract"],
         "minimum_artifacts": usage_mode["minimum_artifacts"],
@@ -190,6 +202,47 @@ def _evidence_gaps(methodology_packet: dict[str, Any]) -> list[str]:
     if methodology_packet.get("status") == "present_unverified" and not gaps:
         gaps.append("current verification evidence")
     return gaps
+
+
+def _question_queue_from_methodology(
+    methodology_intelligence: dict[str, Any] | None,
+    usage_mode: dict[str, Any],
+) -> dict[str, Any]:
+    intelligence = methodology_intelligence if isinstance(methodology_intelligence, dict) else {}
+    synthesis = intelligence.get("methodology_synthesis")
+    if not isinstance(synthesis, dict):
+        synthesis = {}
+    owner_questions = intelligence.get("questions_for_owner")
+    if not isinstance(owner_questions, list):
+        owner_questions = synthesis.get("owner_questions", [])
+    recommendation_groups = intelligence.get("recommendation_groups")
+    if not isinstance(recommendation_groups, list):
+        recommendation_groups = synthesis.get("recommendation_groups", [])
+    unknowns = intelligence.get("unknowns")
+    if not isinstance(unknowns, list):
+        unknowns = []
+    return build_question_queue(
+        owner_questions=owner_questions,
+        unknowns=unknowns,
+        recommendation_groups=recommendation_groups if isinstance(recommendation_groups, list) else [],
+        usage_mode=usage_mode,
+        runtime_status="route_ready",
+    )
+
+
+def _question_summary(question_queue: dict[str, Any]) -> list[str]:
+    summary = question_queue.get("summary", {})
+    if not isinstance(summary, dict):
+        return []
+    labels = [
+        ("blocking", "blocking question"),
+        ("recommended", "recommended question"),
+        ("optional", "optional question"),
+    ]
+    return [
+        f"{int(summary.get(key, 0))} {label}{'' if int(summary.get(key, 0)) == 1 else 's'}"
+        for key, label in labels
+    ]
 
 
 def _default_usage_mode() -> dict[str, Any]:

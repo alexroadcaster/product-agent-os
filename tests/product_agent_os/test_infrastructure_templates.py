@@ -70,6 +70,7 @@ REQUIRED_TARGETS = {
     ".codex/workflows/ci-stabilization.md",
     ".codex/workflows/release-packaging.md",
     ".codex/artifact-templates/adr.md",
+    ".codex/artifact-templates/question-ledger.md",
     ".codex/artifact-templates/architecture-overview.md",
     ".codex/artifact-templates/architecture-review-record.md",
     ".codex/artifact-templates/architecture-fitness-functions.md",
@@ -3427,6 +3428,15 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 "owner evidence",
                 "explicit gap",
                 "residual risk",
+            ],
+            "question-ledger.md": [
+                "source status:",
+                "guided question answers",
+                "staged_only",
+                "private data status",
+                "redaction status",
+                "artifact updates",
+                "existing approval flow",
             ],
         }
         self.assertEqual(set(templates), set(expected_templates))

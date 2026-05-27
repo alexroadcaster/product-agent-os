@@ -13,6 +13,7 @@ from codex_runtime_runner.cli import run_contract  # noqa: E402
 from codex_runtime_runner.guards import validate_approval_boundary, validate_route_packet  # noqa: E402
 from codex_runtime_runner.routes import apply_runner_status_to_route, plan_route  # noqa: E402
 from codex_runtime_runner.state import infer_lifecycle_state  # noqa: E402
+from product_agent_os.question_protocol import MAX_TOTAL_QUESTIONS  # noqa: E402
 
 
 class CodexRuntimeRunnerStateRoutesTest(unittest.TestCase):
@@ -90,6 +91,10 @@ class CodexRuntimeRunnerStateRoutesTest(unittest.TestCase):
         self.assertTrue(packet["recommendation_groups"])
         self.assertTrue(packet["questions_for_owner"])
         self.assertEqual(route["finish_options"], ["read_only_audit", "ask_owner", "stage_proposal", "run_verification", "stop_blocked"])
+        self.assertIn("question_queue", route)
+        self.assertLessEqual(len(route["question_queue"]["questions"]), MAX_TOTAL_QUESTIONS)
+        self.assertEqual(route["first_response_contract"]["next_blocking_question"], route["question_queue"]["next_blocking_question"])
+        self.assertEqual(route["first_response_contract"]["question_counts"], route["question_queue"]["summary"])
         self.assertEqual(route["first_response_contract"]["safe_next_action"], packet["safe_next_action"])
         self.assertEqual(route["first_response_contract"]["finish_options"], route["finish_options"])
 
@@ -101,11 +106,15 @@ class CodexRuntimeRunnerStateRoutesTest(unittest.TestCase):
         )
         first_response = route["first_response_contract"]
 
-        self.assertEqual(first_response["owner_questions"], ["Who owns the security review?"])
+        self.assertEqual(first_response["next_blocking_question"]["text"], "Who owns the security review?")
+        self.assertEqual(first_response["question_counts"]["blocking"], 1)
+        self.assertEqual(first_response["question_summary"][0], "1 blocking question")
         self.assertEqual(first_response["safe_next_action"], "Stage security-risk-review.md before implementation.")
         self.assertIn("owner-reviewed evidence", first_response["evidence_gaps"])
         self.assertIn("finish_options", first_response)
         self.assertIn("approval_boundary", first_response)
+        self.assertNotIn("owner_questions", first_response)
+        self.assertNotIn("questions", first_response)
         self.assertNotIn("methodology_domains", first_response)
         self.assertNotIn("methodology_gates", first_response)
 

@@ -11,6 +11,9 @@ from typing import Any
 from product_agent_os.discovery import analyze_workspace
 from product_agent_os.merge_markdown import merge_section
 from product_agent_os.stage_manifest import build_stage_manifest, write_stage_manifest
+from product_agent_os.status_dashboard import StatusDashboardError
+from product_agent_os.status_dashboard import render_status_dashboard_plan as _render_status_dashboard_plan
+from product_agent_os.status_dashboard import stage_status_dashboard as _stage_status_dashboard
 from product_agent_os.templates import TemplateSpec, render_template, required_templates
 from product_agent_os.validators import validate_agent_file, validate_hook_file
 
@@ -73,6 +76,31 @@ def stage_infrastructure(workspace: str | Path, output_dir: str | Path) -> dict[
         return _build_result(workspace_path, audit, stage_root, write_files=True)
     except (OSError, ValueError) as exc:
         raise InfrastructureError(f"unable to write staged infrastructure: {exc}") from exc
+
+
+def render_status_dashboard_plan(workspace: str | Path, status_snapshot: dict[str, Any]) -> dict[str, Any]:
+    workspace_path = _workspace_path(workspace)
+    try:
+        return _render_status_dashboard_plan(workspace_path, status_snapshot)
+    except StatusDashboardError as exc:
+        raise InfrastructureError(f"unable to render status dashboard: {exc}") from exc
+
+
+def stage_status_dashboard(
+    workspace: str | Path,
+    output_dir: str | Path,
+    status_snapshot: dict[str, Any],
+) -> dict[str, Any]:
+    workspace_path = _workspace_path(workspace)
+    stage_root = Path(output_dir).resolve()
+    if stage_root == workspace_path or stage_root.is_relative_to(workspace_path):
+        raise InfrastructureError("stage output directory must be outside workspace")
+    if stage_root.exists() and not stage_root.is_dir():
+        raise InfrastructureError(f"stage output path is not a directory: {stage_root}")
+    try:
+        return _stage_status_dashboard(workspace_path, stage_root, status_snapshot)
+    except (OSError, ValueError, StatusDashboardError) as exc:
+        raise InfrastructureError(f"unable to write staged status dashboard: {exc}") from exc
 
 
 def _workspace_path(workspace: str | Path) -> Path:

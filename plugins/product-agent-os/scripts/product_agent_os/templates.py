@@ -284,6 +284,12 @@ _TEMPLATES: tuple[TemplateSpec, ...] = (
     ),
     _spec("artifact-adr", "artifact-templates", "artifact-templates/adr.md", ".codex/artifact-templates/adr.md"),
     _spec(
+        "artifact-question-ledger",
+        "artifact-templates",
+        "artifact-templates/question-ledger.md",
+        ".codex/artifact-templates/question-ledger.md",
+    ),
+    _spec(
         "artifact-architecture-overview",
         "artifact-templates",
         "artifact-templates/architecture-overview.md",

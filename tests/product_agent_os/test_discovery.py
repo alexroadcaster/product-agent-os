@@ -11,6 +11,7 @@ FIXTURES = ROOT / "plugins" / "product-agent-os" / "assets" / "fixtures"
 sys.path.insert(0, str(SCRIPTS))
 
 from product_agent_os.discovery import analyze_workspace, discover_workspace  # noqa: E402
+from product_agent_os.question_protocol import MAX_TOTAL_QUESTIONS  # noqa: E402
 
 
 class DiscoveryTest(unittest.TestCase):
@@ -33,6 +34,34 @@ class DiscoveryTest(unittest.TestCase):
         self.assertIn("delivery_map", packet)
         self.assertIn("recommendations", packet)
         self.assertEqual(packet["write_policy"], "read_only")
+
+    def test_discovery_includes_bounded_question_queue_without_route_input_coupling(self):
+        result = analyze_workspace(FIXTURES / "node-app")
+
+        self.assertIn("question_queue", result)
+        queue = result["question_queue"]
+        self.assertEqual(queue["schema_version"], 1)
+        self.assertEqual(queue["write_policy"], "read_only")
+        self.assertLessEqual(len(queue["questions"]), MAX_TOTAL_QUESTIONS)
+        self.assertIn("next_blocking_question", queue)
+        self.assertIn("route_inputs", result)
+        self.assertNotIn("question_queue", result["route_inputs"])
+        self.assertIn("methodology_intelligence", result)
+
+    def test_mature_existing_control_plane_can_have_zero_blocking_questions(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            workspace = Path(tmpdir)
+            for name in ["AGENTS.md", "REQUIREMENTS.md", "PLAN.md", "TEST.md", "EVALS.md", "RUNLOG.md"]:
+                (workspace / name).write_text(f"# {name}\n", encoding="utf-8")
+            (workspace / "package.json").write_text('{"scripts":{"test":"node --test"}}\n', encoding="utf-8")
+            (workspace / "test_app.test.js").write_text("test('synthetic', () => {});\n", encoding="utf-8")
+
+            result = analyze_workspace(workspace)
+
+        self.assertEqual(result["missing_control_plane"], [])
+        self.assertIn("question_queue", result)
+        self.assertEqual(result["question_queue"]["summary"]["blocking"], 0)
+        self.assertIsNone(result["question_queue"]["next_blocking_question"])
 
     def test_docs_repo_detection(self):
         result = analyze_workspace(FIXTURES / "docs-repo")

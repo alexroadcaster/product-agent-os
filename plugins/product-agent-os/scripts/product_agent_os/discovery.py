@@ -8,6 +8,7 @@ from typing import Any
 
 from product_agent_os.contracts import CONTROL_PLANE_FILES
 from product_agent_os.methodology_audit import build_methodology_audit
+from product_agent_os.question_protocol import build_question_queue
 
 
 FIRST_RESPONSE_CONTRACT = [
@@ -3567,6 +3568,63 @@ def _profile_for(files: set[str], stack: list[str]) -> dict[str, Any]:
     }
 
 
+def _build_discovery_question_queue(
+    methodology_intelligence: dict[str, Any],
+    usage_mode: dict[str, Any],
+    missing_control_plane: list[str],
+    existing_control_plane: list[str],
+    files: set[str],
+) -> dict[str, Any]:
+    if _mature_existing_control_plane(missing_control_plane, existing_control_plane, files):
+        return build_question_queue(usage_mode={"primary": "inspection_only"}, runtime_status="route_ready")
+
+    synthesis = methodology_intelligence.get("methodology_synthesis")
+    if not isinstance(synthesis, dict):
+        synthesis = {}
+    owner_questions = methodology_intelligence.get("questions_for_owner")
+    if not isinstance(owner_questions, list):
+        owner_questions = synthesis.get("owner_questions", [])
+    recommendation_groups = methodology_intelligence.get("recommendation_groups")
+    if not isinstance(recommendation_groups, list):
+        recommendation_groups = synthesis.get("recommendation_groups", [])
+    unknowns = methodology_intelligence.get("unknowns")
+    if not isinstance(unknowns, list):
+        unknowns = []
+    return build_question_queue(
+        owner_questions=owner_questions,
+        unknowns=unknowns,
+        recommendation_groups=recommendation_groups if isinstance(recommendation_groups, list) else [],
+        usage_mode=usage_mode,
+        runtime_gaps=_control_plane_question_gaps(missing_control_plane),
+        runtime_status="route_ready",
+    )
+
+
+def _mature_existing_control_plane(
+    missing_control_plane: list[str],
+    existing_control_plane: list[str],
+    files: set[str],
+) -> bool:
+    return (
+        not missing_control_plane
+        and set(CONTROL_PLANE_FILES).issubset(set(existing_control_plane))
+        and any("test" in path.lower() for path in files)
+    )
+
+
+def _control_plane_question_gaps(missing_control_plane: list[str]) -> list[dict[str, str]]:
+    return [
+        {
+            "category": "scope",
+            "question": f"Who owns filling or explicitly accepting the gap for {name}?",
+            "answer_type": "text",
+            "source_key": f"missing_control_plane_{name.lower().replace('.', '_')}",
+            "priority": "recommended",
+        }
+        for name in missing_control_plane[:6]
+    ]
+
+
 def analyze_workspace(root: str | Path, *, intent_hint: str = "") -> dict[str, Any]:
     workspace = Path(root).resolve()
     if not workspace.exists():
@@ -3613,6 +3671,13 @@ def analyze_workspace(root: str | Path, *, intent_hint: str = "") -> dict[str, A
         intent_hint,
         bug_reproduction_signals,
     )
+    question_queue = _build_discovery_question_queue(
+        methodology_intelligence,
+        usage_mode,
+        missing_control_plane,
+        existing_control_plane,
+        files,
+    )
     risks: list[str] = []
     if "AGENTS.md" not in files:
         risks.append("missing durable project instructions")
@@ -3652,6 +3717,7 @@ def analyze_workspace(root: str | Path, *, intent_hint: str = "") -> dict[str, A
         "delivery_release_operations_signals": _delivery_release_operations_signals(files),
         "route_inputs": route_inputs,
         "usage_mode": usage_mode,
+        "question_queue": question_queue,
         "risks": risks,
         "complexity_profile": profile,
     }
