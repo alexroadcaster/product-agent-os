@@ -178,6 +178,47 @@ class MethodologyAuditContractTest(unittest.TestCase):
         self.assertEqual(hard_delivery, [])
         self.assertIn("quality", docs_only["safe_next_action"].lower())
 
+    def test_agent_skill_metrics_loop_recommendation_only_for_real_agentic_surfaces(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / ".codex" / "agents").mkdir(parents=True)
+            (root / ".codex" / "agents" / "builder.toml").write_text("name = 'builder'\n", encoding="utf-8")
+            (root / "skills" / "review").mkdir(parents=True)
+            (root / "skills" / "review" / "SKILL.md").write_text("# Review skill\n", encoding="utf-8")
+            (root / "prompts").mkdir()
+            (root / "prompts" / "review-policy.md").write_text("# Prompt policy\n", encoding="utf-8")
+            result = build_methodology_audit(root, intent_hint="evaluate agent skill modernization readiness")
+
+            docs = root / "docs-only"
+            docs.mkdir()
+            (docs / "README.md").write_text(
+                "# Docs\nA prose-only note about agents, skills and automation.\n",
+                encoding="utf-8",
+            )
+            docs_result = build_methodology_audit(docs, intent_hint="docs-only wording cleanup")
+
+        recommendation = self._recommendation_by_domain_gate(
+            result,
+            "codex_agentic_workflow",
+            "agent_skill_metrics_loop_present",
+        )
+        self.assertEqual(recommendation["priority"], "P1_high_risk")
+        self.assertEqual(recommendation["artifact"], "agent-skill-scorecard-ledger.md")
+        self.assertIn("current metrics evidence", recommendation["evidence_required"])
+        self.assertIn("owner", " ".join(recommendation["evidence_required"]))
+        self.assertIn("cadence", " ".join(recommendation["evidence_required"]))
+        self.assertIn("approval boundary", " ".join(recommendation["evidence_required"]))
+        self.assertIn("present_unverified", recommendation["residual_risk"])
+
+        docs_recommendations = [
+            item
+            for item in docs_result["recommendations"]
+            if item["gate"] == "agent_skill_metrics_loop_present"
+        ]
+        self.assertEqual(docs_recommendations, [])
+
     def test_business_product_intent_routes_domain_and_product_hypothesis_priority(self):
         from product_agent_os.methodology_audit import build_methodology_audit
 

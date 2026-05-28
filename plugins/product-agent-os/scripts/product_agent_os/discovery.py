@@ -459,6 +459,7 @@ def _detect_methodology_signals(files: set[str], profile: dict[str, Any]) -> dic
         "security_privacy_compliance": _has_security_surface(lowered),
         "quality_testing_evals": _has_quality_testing_signal(lowered, profile),
         "codex_agentic_workflow": _has_codex_agentic_workflow_signal(lowered),
+        "agent_skill_metrics_loop": _has_agent_skill_metrics_loop_signal(lowered),
         "delivery_release_operations": _has_delivery_release_operations_signal(lowered, ci_present),
         "metrics": _has_any(files, ["metrics", "analytics", "telemetry", "observability"]),
     }
@@ -522,6 +523,63 @@ def _has_codex_agentic_workflow_signal(lowered_files: set[str]) -> bool:
         or path.endswith("/handoff-contract.md")
         or path.endswith("/worktree-ownership.md")
         or any(term in path for term in terms)
+        for path in lowered_files
+    )
+
+
+def _has_agent_skill_metrics_loop_signal(lowered_files: set[str]) -> bool:
+    exact_files = {
+        "agent-eval-workflow.md",
+        "skill-promotion-record.md",
+        "agent-skill-scorecard-ledger.md",
+        "agent-skill-update-candidate.md",
+        "agent-skill-daily-eval-report.md",
+        "agent-skill-weekly-verification.md",
+        "codex-harness.lock",
+        "harness.lock",
+    }
+    directory_prefixes = (
+        ".codex/agents/",
+        ".codex/automation-candidates/",
+        ".codex/eval-reports/",
+        ".codex/harness/",
+        ".agents/skills/",
+        "agents/",
+        "skills/",
+        "subagents/",
+        "prompts/",
+        "prompt-packs/",
+        "policies/",
+        "policy-packs/",
+        "guardrails/",
+        "tools/",
+    )
+    path_terms = (
+        "agent-skill-metrics",
+        "agent_skill_metrics",
+        "skill-metrics",
+        "metrics-loop",
+        "router-policy",
+        "routing-policy",
+        "tool-policy",
+        "tool_policy",
+        "tool-contract",
+        "prompt-policy",
+        "policy-pack",
+        "harness-version",
+        "codex-harness",
+    )
+    prose_only_prefixes = ("docs/", "docs\\")
+    return any(
+        not path.startswith(prose_only_prefixes)
+        and (
+            path in exact_files
+            or path.startswith(directory_prefixes)
+            or path.endswith("/skill.md")
+            or path.endswith("/agent-eval-workflow.md")
+            or path.endswith("/skill-promotion-record.md")
+            or any(term in path for term in path_terms)
+        )
         for path in lowered_files
     )
 
@@ -3363,6 +3421,22 @@ def _methodology_applicability(
             ["AGENTS.md, runtime routing, approval boundary, handoff, MCP/hook/automation review"],
             "product-agent operator",
             "detection alone does not prove safe activation, owner approval or current verification",
+        ),
+        "agent_skill_metrics_loop": _applicability_packet(
+            "present_unverified" if signals.get("agent_skill_metrics_loop") else "not_applicable",
+            "agentic surface signal exists" if signals.get("agent_skill_metrics_loop") else "no agent skill metrics loop surface",
+            _signal_evidence(signals, "agent_skill_metrics_loop"),
+            [
+                "agent-skill-scorecard-ledger.md",
+                "agent-skill-evaluation-report.html",
+                "current metrics evidence",
+                "owner review",
+                "cadence recommendation",
+                "approval boundary",
+                "rollback evidence for update candidates",
+            ],
+            "product-agent operator",
+            "detection alone does not prove metrics-loop readiness, owner approval, cadence sufficiency or modernization safety",
         ),
         "methodology_synthesis": _applicability_packet(
             "present_unverified" if methodology_synthesis else "applicable_missing",

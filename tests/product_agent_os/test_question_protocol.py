@@ -167,6 +167,33 @@ class QuestionProtocolTest(unittest.TestCase):
             [question["artifact"] for question in first["questions"]],
         )
 
+    def test_metrics_loop_questions_keep_one_blocker_and_optional_packet_questions(self):
+        packet = build_question_queue(
+            agent_skill_metrics_loop={
+                "status": "applicable_missing",
+                "missing": ["owner", "evidence source", "trace source", "cadence", "approval", "rollback"],
+                "update_candidate_summary": {"candidate_count": 1},
+            },
+            runtime_status="needs_context",
+        )
+
+        blocking = [question for question in packet["questions"] if question["priority"] == "blocking"]
+        optional_or_recommended = [
+            question
+            for question in packet["questions"]
+            if question["priority"] in {"recommended", "optional"}
+        ]
+        texts = " ".join(question["text"].lower() for question in packet["questions"])
+
+        self.assertEqual(len(blocking), 1)
+        self.assertEqual(packet["next_blocking_question"], blocking[0])
+        self.assertEqual(blocking[0]["source"]["kind"], "agent_skill_metrics_loop")
+        self.assertIn(blocking[0]["category"], {"ownership", "verification", "approval", "risk"})
+        self.assertTrue(optional_or_recommended)
+        for expected in ["owner", "evidence source", "trace source", "cadence", "approval", "rollback", "accepted gap"]:
+            self.assertIn(expected, texts)
+        self.assertLessEqual(len(packet["questions"]), MAX_TOTAL_QUESTIONS)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -192,6 +192,62 @@ class StatusSnapshotTest(unittest.TestCase):
         self.assertIn("private_data", snapshot["redaction_summary"]["categories"])
         self.assertIn("absolute_path", snapshot["redaction_summary"]["categories"])
 
+    def test_snapshot_includes_bounded_metrics_loop_summary_and_report_refs(self):
+        runtime_result = {
+            "status": "route_ready",
+            "workspace": "C:\\Users\\person\\metrics-loop",
+            "lifecycle_state": "quality_gate",
+            "route_packet": {
+                "usage_mode": {"primary": "maintenance", "confidence": "medium"},
+                "agent_skill_metrics_loop": {
+                    "status": "present_unverified",
+                    "summary": {
+                        "target_count": 12,
+                        "overall_status": "blocked_by_guardrail",
+                        "cadence_level": "L2",
+                    },
+                    "report_refs": [
+                        {
+                            "kind": "staged_artifact",
+                            "path": ".codex/eval-reports/agent-skill-evaluation-report.html",
+                            "digest": "sha256:" + "a" * 64,
+                        },
+                        {
+                            "kind": "external_ref",
+                            "path": "https://example.invalid/report.html",
+                        },
+                    ],
+                    "update_candidate_summary": {
+                        "candidate_count": 9,
+                        "top_candidates": [
+                            {"candidate_id": f"candidate-{index}", "requires_rollback": True}
+                            for index in range(8)
+                        ],
+                    },
+                    "unsafe_extra": "TOKEN=fixture-secret C:\\Users\\person\\metrics-loop",
+                },
+            },
+            "verification_evidence": [],
+        }
+
+        snapshot = build_status_snapshot(
+            runtime_result=runtime_result,
+            generated_at="2026-05-28T10:00:00+00:00",
+        )
+        serialized = json.dumps(snapshot, sort_keys=True)
+
+        summary = snapshot["agent_skill_metrics_loop"]
+        self.assertEqual(summary["status"], "present_unverified")
+        self.assertEqual(summary["summary"]["target_count"], 12)
+        self.assertEqual(summary["summary"]["cadence_level"], "L2")
+        self.assertEqual(summary["report_refs"][0]["path"], ".codex/eval-reports/agent-skill-evaluation-report.html")
+        self.assertEqual(len(summary["report_refs"]), 1)
+        self.assertEqual(len(summary["update_candidate_summary"]["top_candidates"]), 5)
+        self.assertEqual(summary["source_policy"], "generated summaries are not source of truth")
+        self.assertNotIn("fixture-secret", serialized)
+        self.assertNotIn("C:\\Users\\person", serialized)
+        self.assertNotIn("https://example.invalid", serialized)
+
     def _methodology_packet(self, *, status="present_unverified"):
         return {
             "safe_next_action": "Stage approval-record.md before external mutation.",

@@ -1,0 +1,6 @@
+{
+  "schema_version": 1,
+  "synthetic": true,
+  "missing_required_span": true,
+  "summary": "Synthetic trace report used to assert missing spans block readiness."
+}

@@ -24,6 +24,7 @@
           "quality_testing_evals",
           "semantic_evidence_sufficiency",
           "runtime_methodology_packet",
+          "agent_skill_metrics_loop",
           "codex_agentic_workflow",
           "security_privacy_compliance",
           "delivery_release_operations",
@@ -48,6 +49,7 @@
           "completion_evidence",
           "quality_testing_evals",
           "runtime_methodology_packet",
+          "agent_skill_metrics_loop",
           "codex_agentic_workflow",
           "security_privacy_compliance",
           "security_sensitive_surface",
@@ -216,6 +218,14 @@
             "required_evidence": ["methodology_packet", "finish_options", "owner_questions", "safe_next_action", "evidence_gaps", "approval boundary", "methodology_detection_not_completion", "no gate dump", "no scaffold", "external action approval"],
             "owner": "product-agent operator",
             "residual_risk": "A runtime route can dump every methodology gate, scaffold before approval, or convert a recommendation into an external action if finish options and approval boundaries are not enforced."
+          },
+          "agent_skill_metrics_loop": {
+            "applies_when": "Agents, skills, subagents, automation candidates, router/tool policies, prompt or policy packs, guardrails, harness versions or agent eval workflow surfaces are detected.",
+            "pass_condition": "Set present_verified only when agent-skill-scorecard-ledger.md, agent-skill-evaluation-report.html, current metrics evidence, owner review, cadence recommendation, update candidates, rollback evidence and approval boundary are recorded; use present_unverified for detected surfaces until current evidence exists.",
+            "accepted_gap": "Use explicit_gap_accepted only when owner names reason, residual risk, review date and follow-up condition; use approval_required before modernization writes, live eval/model calls, external systems or automation activation.",
+            "required_evidence": ["agent-skill-scorecard-ledger.md", "agent-skill-evaluation-report.html", "current metrics evidence", "owner review", "cadence", "update candidates", "rollback", "approval boundary"],
+            "owner": "product-agent operator",
+            "residual_risk": "Detection alone does not prove metrics-loop readiness, owner approval, cadence sufficiency, report truth, automation safety or modernization rollback safety."
           },
           "codex_agentic_workflow": {
             "applies_when": "Product-Agent OS, Codex App, CLI, IDE extension, codex exec, GitHub Action, MCP, Agents SDK, automation, subagent, skill, plugin, hook, external write, approval boundary, memory or handoff work.",

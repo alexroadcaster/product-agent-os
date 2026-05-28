@@ -1259,6 +1259,56 @@ class DiscoveryTest(unittest.TestCase):
         self.assertIn("Codex workflow signal exists", applicability["reason"])
         self.assertIn("detection alone does not prove safe activation", applicability["residual_risk"])
 
+    def test_agent_skill_metrics_loop_readiness_applies_only_to_real_agentic_surfaces(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            workspace = Path(tmpdir)
+            self._write_files(
+                workspace,
+                {
+                    "AGENTS.md": "# Agents\n",
+                    ".codex/agents/builder.toml": "name = 'builder'\n",
+                    "skills/review/SKILL.md": "# Review skill\n",
+                    ".codex/automation-candidates/nightly-agent-skill-metrics.md": "# Metrics candidate\n",
+                    "prompts/review-policy.md": "# Prompt policy\n",
+                    "tools/router-policy.md": "# Router tool policy\n",
+                    "codex-harness.lock": "version = '1.0.0'\n",
+                },
+            )
+
+            result = analyze_workspace(workspace)
+
+            docs_only = Path(tmpdir) / "docs-only"
+            docs_only.mkdir()
+            self._write_files(
+                docs_only,
+                {
+                    "README.md": "# Docs\nThis mentions agents, skills, prompt policies and automation as prose only.\n",
+                    "docs/agentic-notes.md": "# Agentic notes\nNo configured surfaces.\n",
+                },
+            )
+            docs_result = analyze_workspace(docs_only, intent_hint="docs-only wording cleanup")
+
+        signals = result["methodology_signals"]
+        self.assertTrue(signals["agent_skill_metrics_loop"])
+        self.assertIn(
+            "agent_skill_metrics_loop",
+            result["route_inputs"]["workspace_signals"]["methodology_signals"],
+        )
+        applicability = result["methodology_applicability"]["agent_skill_metrics_loop"]
+        self.assertEqual(applicability["status"], "present_unverified")
+        self.assertIn("agentic surface signal exists", applicability["reason"])
+        self.assertIn("agent-skill-scorecard-ledger.md", applicability["required_evidence"])
+        self.assertIn("detection alone does not prove metrics-loop readiness", applicability["residual_risk"])
+
+        docs_signals = docs_result["methodology_signals"]
+        self.assertFalse(docs_signals["agent_skill_metrics_loop"])
+        docs_applicability = docs_result["methodology_applicability"]["agent_skill_metrics_loop"]
+        self.assertEqual(docs_applicability["status"], "not_applicable")
+        self.assertNotIn(
+            "agent_skill_metrics_loop",
+            docs_result["route_inputs"]["workspace_signals"]["methodology_signals"],
+        )
+
     def test_frontend_methodology_signals_are_present_unverified(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             workspace = Path(tmpdir)
@@ -1529,6 +1579,7 @@ class DiscoveryTest(unittest.TestCase):
             "docs_tooling_decision",
             "standards_trigger_policy",
             "codex_agentic_workflow",
+            "agent_skill_metrics_loop",
             "llm_ai_rag_readiness",
             "methodology_synthesis",
         }

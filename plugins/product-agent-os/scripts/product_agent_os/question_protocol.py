@@ -39,6 +39,7 @@ def build_question_queue(
     recommendation_groups: list[dict[str, Any]] | None = None,
     usage_mode: dict[str, Any] | str | None = None,
     runtime_gaps: list[Any] | None = None,
+    agent_skill_metrics_loop: dict[str, Any] | None = None,
     runtime_status: str = "",
 ) -> dict[str, Any]:
     """Build a bounded typed question queue from existing audit/runtime packets."""
@@ -48,6 +49,7 @@ def build_question_queue(
     candidates.extend(_unknown_candidates(unknowns or []))
     candidates.extend(_recommendation_group_candidates(recommendation_groups or []))
     candidates.extend(_runtime_gap_candidates(runtime_gaps or []))
+    candidates.extend(_agent_skill_metrics_loop_candidates(agent_skill_metrics_loop))
     candidates.extend(_usage_mode_candidates(usage_mode))
 
     questions = _dedupe_questions(candidates)
@@ -212,6 +214,101 @@ def _usage_mode_candidates(usage_mode: dict[str, Any] | str | None) -> list[dict
             )
         ]
     return []
+
+
+def _agent_skill_metrics_loop_candidates(packet: dict[str, Any] | None) -> list[dict[str, Any]]:
+    if not isinstance(packet, dict):
+        return []
+    missing = packet.get("missing") if isinstance(packet.get("missing"), list) else []
+    if not missing and str(packet.get("status", "")) in {"", "not_applicable", "ready"}:
+        return []
+    requested = {str(item).strip().lower().replace("_", " ") for item in missing if str(item).strip()}
+    if not requested:
+        requested = {
+            "owner",
+            "evidence source",
+            "trace source",
+            "cadence",
+            "approval",
+            "rollback",
+            "accepted gap",
+        }
+    question_specs = [
+        (
+            "owner",
+            "Who owns the agent_skill_metrics_loop scorecard ledger and owner review?",
+            "blocking",
+            "ownership",
+            "text",
+            "metrics_loop_owner",
+        ),
+        (
+            "evidence source",
+            "Which evidence source artifact provides current metrics evidence for the agent_skill_metrics_loop?",
+            "recommended",
+            "verification",
+            "text",
+            "metrics_loop_evidence_source",
+        ),
+        (
+            "trace source",
+            "Which trace source is approved for metrics-loop scoring and redaction?",
+            "recommended",
+            "verification",
+            "text",
+            "metrics_loop_trace_source",
+        ),
+        (
+            "cadence",
+            "What cadence is accepted for the metrics loop, or what explicit gap applies?",
+            "recommended",
+            "verification",
+            "not_applicable_or_gap",
+            "metrics_loop_cadence",
+        ),
+        (
+            "approval",
+            "Who owns approval for any metrics-loop modernization candidate before changes or automation?",
+            "recommended",
+            "approval",
+            "approval",
+            "metrics_loop_approval",
+        ),
+        (
+            "rollback",
+            "What rollback evidence is required before a metrics-loop update candidate can be reviewed?",
+            "recommended",
+            "risk",
+            "text",
+            "metrics_loop_rollback",
+        ),
+        (
+            "accepted gap",
+            "Is there an accepted gap for missing metrics-loop evidence, with owner and residual risk?",
+            "optional",
+            "risk",
+            "not_applicable_or_gap",
+            "metrics_loop_accepted_gap",
+        ),
+    ]
+    candidates = []
+    for key, text, priority, category, answer_type, source_key in question_specs:
+        if key not in requested and key != "accepted gap":
+            continue
+        candidates.append(
+            _question(
+                text=text,
+                priority=priority,
+                category=category,
+                answer_type=answer_type,
+                source_kind="agent_skill_metrics_loop",
+                source_key=source_key,
+                block="metrics_loop_gaps",
+                artifact="agent-skill-scorecard-ledger.md",
+                owner_domain="codex_agentic_workflow",
+            )
+        )
+    return candidates
 
 
 def _question(

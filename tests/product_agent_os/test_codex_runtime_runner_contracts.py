@@ -8,6 +8,7 @@ SCRIPTS = ROOT / "plugins" / "product-agent-os" / "scripts"
 sys.path.insert(0, str(SCRIPTS))
 
 from codex_runtime_runner.contracts import (  # noqa: E402
+    AGENT_SKILL_METRICS_LOOP_LIMITS,
     ALLOWED_RUNNER_STATUSES,
     ALLOWED_RUNTIME_SURFACES,
     ALLOWED_WRITE_POLICIES,
@@ -18,6 +19,7 @@ from codex_runtime_runner.contracts import (  # noqa: E402
     build_methodology_packet,
     build_result,
     classify_methodology_high_risk_actions,
+    validate_agent_skill_metrics_loop_packet,
     validate_methodology_packet,
     validate_runner_request,
     validate_runner_result,
@@ -217,6 +219,78 @@ class CodexRuntimeRunnerContractsTest(unittest.TestCase):
         self.assertNotIn("questions", result["route_packet"]["first_response_contract"])
         self.assertIn("route_packet.finish_options:invalid", validate_runner_result(malformed))
 
+    def test_route_packet_accepts_bounded_agent_skill_metrics_loop_without_schema_break(self):
+        metrics_loop = self._valid_metrics_loop_packet()
+        result = build_result(
+            status="route_ready",
+            workspace="C:/workspace/synthetic",
+            lifecycle_state="quality_gate",
+            route_packet={
+                "write_policy": "read_only",
+                "agent_skill_metrics_loop": metrics_loop,
+                "finish_options": [
+                    "read_only_audit",
+                    "ask_owner",
+                    "stage_metrics_report",
+                    "request_owner_review",
+                    "block_automation_promotion",
+                    "investigate_regression",
+                    "run_verification",
+                    "stop_blocked",
+                ],
+                "first_response_contract": {
+                    "safe_next_action": "Stage metrics report for owner review.",
+                    "finish_options": [
+                        "read_only_audit",
+                        "ask_owner",
+                        "stage_metrics_report",
+                        "request_owner_review",
+                        "block_automation_promotion",
+                        "investigate_regression",
+                        "run_verification",
+                        "stop_blocked",
+                    ],
+                },
+            },
+            source_policy_status="ok",
+            approval_status="not_required",
+            next_action="Stage metrics report for owner review.",
+        )
+
+        self.assertEqual(result["schema_version"], 1)
+        self.assertEqual(validate_runner_result(result), [])
+        self.assertEqual(validate_agent_skill_metrics_loop_packet(metrics_loop), [])
+        self.assertLessEqual(
+            len(metrics_loop["report_refs"]),
+            AGENT_SKILL_METRICS_LOOP_LIMITS["report_refs"],
+        )
+
+    def test_metrics_loop_packet_validation_rejects_oversized_external_or_apply_actions(self):
+        oversized = self._valid_metrics_loop_packet()
+        oversized["report_refs"] = [
+            {"kind": "staged_artifact", "path": f".codex/eval-reports/report-{index}.html"}
+            for index in range(AGENT_SKILL_METRICS_LOOP_LIMITS["report_refs"] + 1)
+        ]
+        external = self._valid_metrics_loop_packet()
+        external["report_refs"] = [{"kind": "external_ref", "path": "https://example.invalid/report.html"}]
+        apply_action = self._valid_metrics_loop_packet()
+        apply_action["update_candidate_summary"]["top_candidates"] = [
+            {"candidate_id": "unsafe", "action": "apply_patch", "requires_rollback": True}
+        ]
+
+        self.assertIn(
+            "agent_skill_metrics_loop.report_refs:too_many",
+            validate_agent_skill_metrics_loop_packet(oversized),
+        )
+        self.assertIn(
+            "agent_skill_metrics_loop.report_refs[0].kind:forbidden_external_ref",
+            validate_agent_skill_metrics_loop_packet(external),
+        )
+        self.assertIn(
+            "agent_skill_metrics_loop.update_candidate_summary.top_candidates[0].action:apply_forbidden",
+            validate_agent_skill_metrics_loop_packet(apply_action),
+        )
+
     def test_route_packet_rejects_invalid_question_queue_without_relaxing_methodology_packet(self):
         oversized = self._valid_question_queue()
         oversized["questions"] = oversized["questions"] * (MAX_TOTAL_QUESTIONS + 1)
@@ -342,6 +416,38 @@ class CodexRuntimeRunnerContractsTest(unittest.TestCase):
             "source_artifact_ledger": [{"artifact": "security-risk-review.md", "decision": "canonical_template"}],
             "write_policy": "read_only",
             "status": "present_unverified",
+        }
+
+    def _valid_metrics_loop_packet(self):
+        return {
+            "schema_version": 1,
+            "write_policy": "read_only",
+            "status": "present_unverified",
+            "summary": {
+                "target_count": 2,
+                "overall_status": "blocked_by_guardrail",
+                "cadence_level": "L1",
+            },
+            "report_refs": [
+                {
+                    "kind": "staged_artifact",
+                    "path": ".codex/eval-reports/agent-skill-evaluation-report.html",
+                    "digest": "sha256:" + "a" * 64,
+                }
+            ],
+            "cadence": {"level": "L1", "recommended": ["weekly"]},
+            "update_candidate_summary": {
+                "candidate_count": 1,
+                "top_candidates": [
+                    {
+                        "candidate_id": "candidate-skill-review",
+                        "priority": "high",
+                        "requires_rollback": True,
+                    }
+                ],
+            },
+            "automation_policy": "candidate_only",
+            "source_policy": "generated summaries are not source of truth",
         }
 
     def _valid_question_queue(self):

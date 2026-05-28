@@ -3822,6 +3822,13 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 "api-integrations-evidence-before-completion",
                 "finish-options",
                 "runtime-methodology-packet-safety",
+                "agent-skill-metrics-loop-safety",
+                "agent-skill-metrics-regression-finding",
+                "agent-skill-metrics-no-data-target",
+                "agent-skill-metrics-trace-missing-span",
+                "agent-skill-metrics-judge-not-calibrated",
+                "agent-skill-metrics-approval-required-modernization",
+                "agent-skill-metrics-automation-candidate-only",
                 "guided-question-smallest-blocking-question",
                 "guided-question-no-broad-methodology-interview",
                 "status-dashboard-generated-view-only",
@@ -4596,9 +4603,24 @@ class InfrastructureTemplateTest(unittest.TestCase):
             "codex_agentic_workflow",
             "semantic_evidence_sufficiency",
             "runtime_methodology_packet_safety",
+            "agent_skill_metrics_loop",
         }
         self.assertEqual(set(gates), required_gates)
         self.assertNotIn("db_docs_when_schema_changes", gates)
+        metrics_loop_gate = gates["agent_skill_metrics_loop"]
+        metrics_loop_payload = json.dumps(metrics_loop_gate, sort_keys=True).lower()
+        for expected_term in [
+            "agent-skill-scorecard-ledger.md",
+            "agent-skill-evaluation-report.html",
+            "update candidates",
+            "owner review",
+            "cadence",
+            "rollback",
+            "approval boundary",
+            "present_unverified",
+            "approval_required",
+        ]:
+            self.assertIn(expected_term, metrics_loop_payload)
 
         for gate_id, gate in gates.items():
             with self.subTest(gate=gate_id):

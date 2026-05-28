@@ -183,6 +183,54 @@ class CodexRuntimeRunnerStateRoutesTest(unittest.TestCase):
         self.assertNotIn("stage_proposal", route["finish_options"])
         self.assertIn("automation:maturity_evidence_required", errors)
 
+    def test_metrics_loop_route_options_are_review_only_and_block_automation(self):
+        route = plan_route(
+            "quality_gate",
+            allow_subagents=False,
+            agent_skill_metrics_loop={
+                "schema_version": 1,
+                "write_policy": "read_only",
+                "status": "regression_detected",
+                "summary": {
+                    "target_count": 2,
+                    "overall_status": "blocked_by_guardrail",
+                    "cadence_level": "L2",
+                },
+                "report_refs": [
+                    {
+                        "kind": "staged_artifact",
+                        "path": ".codex/eval-reports/agent-skill-evaluation-report.html",
+                    }
+                ],
+                "cadence": {"level": "L2", "recommended": ["daily"]},
+                "update_candidate_summary": {
+                    "candidate_count": 1,
+                    "top_candidates": [
+                        {
+                            "candidate_id": "candidate-skill-review",
+                            "priority": "high",
+                            "requires_rollback": True,
+                        }
+                    ],
+                },
+                "automation_policy": "candidate_only",
+                "source_policy": "generated summaries are not source of truth",
+            },
+        )
+
+        self.assertIn("stage_metrics_report", route["finish_options"])
+        self.assertIn("request_owner_review", route["finish_options"])
+        self.assertIn("block_automation_promotion", route["finish_options"])
+        self.assertIn("investigate_regression", route["finish_options"])
+        self.assertNotIn("apply_update", route["finish_options"])
+        self.assertNotIn("activate_automation", route["finish_options"])
+        self.assertEqual(route["agent_skill_metrics_loop"]["automation_policy"], "candidate_only")
+        self.assertIn(
+            "metrics loop reports are staged evidence only",
+            route["stop_conditions"],
+        )
+        self.assertEqual(route["first_response_contract"]["finish_options"], route["finish_options"])
+
     def test_ownership_conflict_routes_parallel_builder_to_agent_team_designer(self):
         route = plan_route(
             "build_active",

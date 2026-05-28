@@ -11,6 +11,8 @@ from codex_runtime_runner.redaction import redact_payload
 
 DEFAULT_EVIDENCE_MAX_AGE_DAYS = 14
 _SUCCESS_WORDS = ("tests pass", "checks passed")
+MAX_METRICS_REPORT_REFS = 4
+MAX_METRICS_UPDATE_CANDIDATES = 5
 
 
 def build_status_snapshot(
@@ -60,6 +62,7 @@ def build_status_snapshot(
             if isinstance(methodology_packet.get("semantic_evidence_sufficiency"), dict)
             else {}
         ),
+        "agent_skill_metrics_loop": _agent_skill_metrics_loop_summary(route, discovery),
         "question_ledger_summary": (
             question_ledger.get("summary") if isinstance(question_ledger, dict) and isinstance(question_ledger.get("summary"), dict) else {}
         ),
@@ -165,6 +168,69 @@ def _next_safe_action(route: dict[str, Any], methodology_packet: dict[str, Any])
         or _string(route.get("next_action"))
         or "Review status snapshot and continue only from underlying artifacts."
     )
+
+
+def _agent_skill_metrics_loop_summary(route: dict[str, Any], discovery: dict[str, Any]) -> dict[str, Any]:
+    packet = route.get("agent_skill_metrics_loop")
+    if not isinstance(packet, dict):
+        packet = discovery.get("agent_skill_metrics_loop") if isinstance(discovery.get("agent_skill_metrics_loop"), dict) else {}
+    applicability = discovery.get("methodology_applicability") if isinstance(discovery.get("methodology_applicability"), dict) else {}
+    readiness = applicability.get("agent_skill_metrics_loop") if isinstance(applicability.get("agent_skill_metrics_loop"), dict) else {}
+    summary = packet.get("summary") if isinstance(packet.get("summary"), dict) else {}
+    update_summary = (
+        packet.get("update_candidate_summary")
+        if isinstance(packet.get("update_candidate_summary"), dict)
+        else {}
+    )
+    top_candidates = _safe_list(update_summary.get("top_candidates"))[:MAX_METRICS_UPDATE_CANDIDATES]
+    return {
+        "status": _string(packet.get("status") or readiness.get("status") or "not_available"),
+        "summary": {
+            "target_count": _int(summary.get("target_count")),
+            "overall_status": _string(summary.get("overall_status")),
+            "cadence_level": _string(summary.get("cadence_level") or _nested(packet, "cadence", "level")),
+        },
+        "report_refs": _safe_metrics_report_refs(packet.get("report_refs")),
+        "update_candidate_summary": {
+            "candidate_count": _int(update_summary.get("candidate_count")),
+            "top_candidates": top_candidates,
+        },
+        "source_policy": "generated summaries are not source of truth",
+        "approval_boundary": "owner review required before modernization or automation activation",
+        "readiness_reason": _string(readiness.get("reason")),
+    }
+
+
+def _safe_metrics_report_refs(value: Any) -> list[dict[str, str]]:
+    refs: list[dict[str, str]] = []
+    if not isinstance(value, list):
+        return refs
+    for item in value[:MAX_METRICS_REPORT_REFS]:
+        if not isinstance(item, dict):
+            continue
+        kind = _string(item.get("kind") or "staged_artifact")
+        path = _string(item.get("path"))
+        if kind == "external_ref" or path.startswith(("http://", "https://")):
+            continue
+        if not path:
+            continue
+        refs.append(
+            {
+                "kind": kind,
+                "path": path,
+                "digest": _string(item.get("digest")),
+            }
+        )
+    return refs
+
+
+def _nested(packet: dict[str, Any], *keys: str) -> Any:
+    current: Any = packet
+    for key in keys:
+        if not isinstance(current, dict):
+            return None
+        current = current.get(key)
+    return current
 
 
 def _renderer_file_count(renderer_result: dict[str, Any] | None) -> int:

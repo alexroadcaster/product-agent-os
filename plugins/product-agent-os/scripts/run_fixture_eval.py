@@ -1533,6 +1533,7 @@ CONDITIONAL_READINESS_GATE_IDS = (
     "quality_testing_evals_when_non_trivial_change",
     "semantic_evidence_sufficiency",
     "runtime_methodology_packet_safety",
+    "agent_skill_metrics_loop",
     "codex_agentic_workflow",
     "frontend_methodology",
     "llm_ai_rag_readiness_when_ai_behavior_changes",
@@ -1962,6 +1963,10 @@ def _expected_checks(
         checks["metrics_report_redacted"] = _metrics_report_redacted()
         checks["scorecard_ledger_contract_present"] = _scorecard_ledger_contract_present()
         checks["active_metrics_automation_blocked"] = _active_metrics_automation_blocked()
+        checks["metrics_loop_runtime_route_contract_present"] = _metrics_loop_runtime_route_contract_present()
+        checks["metrics_loop_lifecycle_contract_present"] = _metrics_loop_lifecycle_contract_present()
+        checks["update_candidate_rollback_required"] = _update_candidate_rollback_required()
+        checks["metrics_loop_false_positive_guards_present"] = _metrics_loop_false_positive_guards_present()
         checks["question_budget_false_positive_guard_present"] = (
             _question_budget_false_positive_guard_present()
         )
@@ -2091,6 +2096,16 @@ def _expected_checks(
         checks["swagger_ui_only_not_api_contract"] = (
             "api_contract_surface" not in audit.get("route_inputs", {}).get("workspace_signals", {}).get("active_surfaces", [])
         )
+    if fixture == "agent-metrics-docs-only":
+        checks["metrics_loop_not_forced_for_docs_only"] = _metrics_loop_not_forced(audit, methodology_audit)
+    if fixture == "agent-metrics-simple-maintenance":
+        checks["metrics_loop_not_forced_for_simple_maintenance"] = _metrics_loop_not_forced(audit, methodology_audit)
+    if fixture == "agent-metrics-private-data":
+        checks["metrics_loop_private_data_blocks_readiness"] = _metrics_loop_private_data_blocks_readiness()
+    if fixture == "agent-metrics-uncalibrated-judge":
+        checks["metrics_loop_uncalibrated_judge_blocks_candidate"] = _metrics_loop_uncalibrated_judge_blocks_candidate()
+    if fixture == "agent-metrics-trace-missing-span":
+        checks["metrics_loop_trace_missing_span_blocks_readiness"] = _metrics_loop_trace_missing_span_blocks_readiness()
     if fixture == "graphql-grpc-style-choice":
         recommendations = methodology_audit.get("recommendations", [])
         checks["api_style_choice_not_universal_default"] = any(
@@ -2488,6 +2503,7 @@ def _methodology_applicability_contract_present(audit: dict[str, Any]) -> bool:
         "llm_ai_rag_readiness",
         "security_privacy_compliance_readiness",
         "delivery_release_operations_readiness",
+        "agent_skill_metrics_loop",
         "methodology_synthesis",
     }
     allowed_statuses = {
@@ -3737,6 +3753,201 @@ def _active_metrics_automation_blocked() -> bool:
         and "active metrics automation is forbidden" in report.get("errors", [])
         and "external workflow creation is forbidden" in report.get("errors", [])
     )
+
+
+def _metrics_loop_runtime_route_contract_present() -> bool:
+    packet = _synthetic_metrics_loop_route_packet(status="regression_detected")
+    route = plan_route("quality_gate", allow_subagents=False, agent_skill_metrics_loop=packet)
+    result = build_result(
+        status="route_ready",
+        workspace="C:/workspace/synthetic",
+        lifecycle_state="quality_gate",
+        route_packet=route,
+        source_policy_status="ok",
+        approval_status="not_required",
+        next_action=route["next_action"],
+    )
+    return (
+        validate_runner_result(result) == []
+        and "stage_metrics_report" in route.get("finish_options", [])
+        and "request_owner_review" in route.get("finish_options", [])
+        and "block_automation_promotion" in route.get("finish_options", [])
+        and "investigate_regression" in route.get("finish_options", [])
+        and "apply_update" not in route.get("finish_options", [])
+        and "metrics loop reports are staged evidence only" in route.get("stop_conditions", [])
+    )
+
+
+def _metrics_loop_lifecycle_contract_present() -> bool:
+    paths = [
+        PLUGIN_ROOT / "skills" / name / "SKILL.md"
+        for name in [
+            "project-lifecycle-orchestrator",
+            "workspace-discovery-auditor",
+            "requirements-author",
+            "implementation-planner",
+            "agent-team-designer",
+            "test-eval-designer",
+            "risk-reviewer",
+            "docs-maintainer",
+            "pr-release-operator",
+            "learning-loop-maintainer",
+            "automation-promoter",
+        ]
+    ]
+    payload = "\n".join(path.read_text(encoding="utf-8").lower() for path in paths)
+    terms = [
+        "agent_skill_metrics_loop",
+        "self-verification metrics loop",
+        "staged evidence only",
+        "do not apply modernization candidates",
+        "do not activate schedules",
+        "do not call live eval services",
+        "dashboard or report is not proof",
+        "rollback evidence required",
+    ]
+    return all(term in payload for term in terms)
+
+
+def _update_candidate_rollback_required() -> bool:
+    route = plan_route(
+        "quality_gate",
+        allow_subagents=False,
+        agent_skill_metrics_loop=_synthetic_metrics_loop_route_packet(
+            top_candidates=[{"candidate_id": "unsafe-candidate", "action": "stage_patch"}]
+        ),
+    )
+    result = build_result(
+        status="route_ready",
+        workspace="C:/workspace/synthetic",
+        lifecycle_state="quality_gate",
+        route_packet=route,
+        source_policy_status="ok",
+        approval_status="not_required",
+        next_action=route["next_action"],
+    )
+    errors = validate_runner_result(result)
+    return "agent_skill_metrics_loop.update_candidate_summary.top_candidates[0].requires_rollback:required" in errors
+
+
+def _metrics_loop_false_positive_guards_present() -> bool:
+    payload = "\n".join(
+        path.read_text(encoding="utf-8").lower()
+        for path in [
+            TEMPLATE_ROOT / "evals" / "behavioral-workflows.json",
+            PLUGIN_ROOT.parents[1] / "tests" / "product_agent_os" / "test_behavioral_workflow_evals.py",
+            PLUGIN_ROOT.parents[1] / "tests" / "product_agent_os" / "test_transcript_session_evals.py",
+        ]
+    )
+    return all(
+        term in payload
+        for term in [
+            "headline metric only approval",
+            "self-applied update",
+            "active automation",
+            "live eval call",
+            "dashboard success claim",
+            "raw trace leakage",
+            "uncalibrated judge approval",
+            "update candidate without rollback",
+        ]
+    )
+
+
+def _metrics_loop_not_forced(audit: dict[str, Any], methodology_audit: dict[str, Any]) -> bool:
+    signals = audit.get("methodology_signals", {})
+    applicability = audit.get("methodology_applicability", {})
+    packet = applicability.get("agent_skill_metrics_loop", {}) if isinstance(applicability, dict) else {}
+    recommendations = methodology_audit.get("recommendations", []) if isinstance(methodology_audit, dict) else []
+    return (
+        isinstance(signals, dict)
+        and signals.get("agent_skill_metrics_loop") is False
+        and isinstance(packet, dict)
+        and packet.get("status") == "not_applicable"
+        and not any(
+            isinstance(item, dict) and item.get("gate") == "agent_skill_metrics_loop_present"
+            for item in recommendations
+        )
+    )
+
+
+def _metrics_loop_private_data_blocks_readiness() -> bool:
+    packet = {
+        "traces": [
+            {
+                "trace_id": "private-trace",
+                "trace_source_type": "agents_sdk",
+                "synthetic": False,
+                "contains_private_data": True,
+            }
+        ]
+    }
+    blocked = enforce_trace_data_classification_gate(packet)
+    return blocked.get("status") == "blocked" and "real_trace_requires_data_classification_or_gap" in blocked.get("blockers", [])
+
+
+def _metrics_loop_uncalibrated_judge_blocks_candidate() -> bool:
+    payload = _synthetic_metrics_loop_route_packet(status="judge_not_calibrated")
+    payload["summary"]["overall_status"] = "blocked_by_judge_calibration"
+    payload["update_candidate_summary"]["top_candidates"][0]["requires_rollback"] = True
+    route = plan_route("quality_gate", allow_subagents=False, agent_skill_metrics_loop=payload)
+    return "request_owner_review" in route.get("finish_options", []) and "stage_metrics_report" in route.get("finish_options", [])
+
+
+def _metrics_loop_trace_missing_span_blocks_readiness() -> bool:
+    payload = _synthetic_metrics_loop_route_packet(status="trace_missing_span")
+    payload["summary"]["overall_status"] = "blocked_missing_trace_span"
+    route = plan_route("quality_gate", allow_subagents=False, agent_skill_metrics_loop=payload)
+    snapshot = build_status_snapshot(
+        runtime_result={
+            "status": "route_ready",
+            "route_packet": route,
+            "verification_evidence": [],
+        },
+        generated_at="2026-05-28T00:00:00",
+    )
+    return (
+        snapshot.get("agent_skill_metrics_loop", {}).get("status") == "trace_missing_span"
+        and snapshot.get("readiness_summary", {}).get("success_claim") == "not_claimed"
+    )
+
+
+def _synthetic_metrics_loop_route_packet(
+    *,
+    status: str = "present_unverified",
+    top_candidates: list[dict[str, Any]] | None = None,
+) -> dict[str, Any]:
+    candidates = top_candidates or [
+        {
+            "candidate_id": "candidate-skill-review",
+            "priority": "high",
+            "requires_rollback": True,
+        }
+    ]
+    return {
+        "schema_version": 1,
+        "write_policy": "read_only",
+        "status": status,
+        "summary": {
+            "target_count": 2,
+            "overall_status": "blocked_by_guardrail",
+            "cadence_level": "L1",
+        },
+        "report_refs": [
+            {
+                "kind": "staged_artifact",
+                "path": ".codex/eval-reports/agent-skill-evaluation-report.html",
+                "digest": "sha256:fixture",
+            }
+        ],
+        "cadence": {"level": "L1", "recommended": ["weekly"]},
+        "update_candidate_summary": {
+            "candidate_count": len(candidates),
+            "top_candidates": candidates,
+        },
+        "automation_policy": "candidate_only",
+        "source_policy": "generated summaries are not source of truth",
+    }
 
 
 def _synthetic_metrics_report_packet() -> dict[str, Any]:

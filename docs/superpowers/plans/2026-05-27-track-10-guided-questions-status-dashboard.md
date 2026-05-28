@@ -454,6 +454,8 @@ Task 24 implementation batches:
 - **Batch 11: Runtime, Discovery, Lifecycle And Eval Coverage** (`T10-SV-M46..M57`)
 - **Batch 12: Docs, Control Plane And Full Verification** (`T10-SV-M58..M62`)
 
+Batch 11 status: implemented on 2026-05-28 with focused RED/GREEN coverage for status snapshots, discovery, methodology audit, runtime packets/routes, guided questions, lifecycle skills, fixture eval, behavioral eval and transcript sessions. Batch 12 remains the final docs/control-plane/full-verification closure slice.
+
 ## Execution Batches
 
 ### Batch 1: Question Protocol Foundation (`T10-Q-M-1..M4`)

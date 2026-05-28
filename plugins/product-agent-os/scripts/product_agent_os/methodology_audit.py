@@ -988,6 +988,7 @@ def _observed_signals(root: Path, files: set[str], directories: set[str]) -> lis
     add("release_file", [path for path in files if path in RELEASE_FILE_MARKERS or path.startswith(".changeset/")])
     add("docs_or_control_plane", [path for path in files if path in DOC_CONTROL_FILES] + ["docs" for item in directories if item == "docs"])
     add("codex_agentic_workflow", _codex_agentic_signal_evidence(files, directories))
+    add("agent_skill_metrics_loop", _agent_skill_metrics_loop_evidence(files, directories))
     add("frontend", _frontend_signal_evidence(files, directories))
     add("backend", _backend_signal_evidence(files, directories))
     add("security_sensitive_surface", _security_signal_evidence(files, directories))
@@ -1234,6 +1235,76 @@ def _codex_agentic_signal_evidence(files: set[str], directories: set[str]) -> li
         or path.endswith("/agent-task-packet.md")
         or path.endswith("/handoff-contract.md")
         or path.endswith("/worktree-ownership.md")
+    ]
+    evidence.extend(directory for directory in directories if directory in directory_names)
+    return evidence
+
+
+def _agent_skill_metrics_loop_evidence(files: set[str], directories: set[str]) -> list[str]:
+    exact_files = {
+        "agent-eval-workflow.md",
+        "skill-promotion-record.md",
+        "agent-skill-scorecard-ledger.md",
+        "agent-skill-update-candidate.md",
+        "agent-skill-daily-eval-report.md",
+        "agent-skill-weekly-verification.md",
+        "codex-harness.lock",
+        "harness.lock",
+    }
+    directory_prefixes = (
+        ".codex/agents/",
+        ".codex/automation-candidates/",
+        ".codex/eval-reports/",
+        ".codex/harness/",
+        ".agents/skills/",
+        "agents/",
+        "skills/",
+        "subagents/",
+        "prompts/",
+        "prompt-packs/",
+        "policies/",
+        "policy-packs/",
+        "guardrails/",
+        "tools/",
+    )
+    directory_names = {
+        "agents",
+        "skills",
+        "subagents",
+        "prompts",
+        "prompt-packs",
+        "policies",
+        "policy-packs",
+        "guardrails",
+        "tools",
+    }
+    path_terms = (
+        "agent-skill-metrics",
+        "agent_skill_metrics",
+        "skill-metrics",
+        "metrics-loop",
+        "router-policy",
+        "routing-policy",
+        "tool-policy",
+        "tool_policy",
+        "tool-contract",
+        "prompt-policy",
+        "policy-pack",
+        "harness-version",
+        "codex-harness",
+    )
+    evidence = [
+        path
+        for path in files
+        if not path.startswith("docs/")
+        and (
+            path in exact_files
+            or path.startswith(directory_prefixes)
+            or path.endswith("/skill.md")
+            or path.endswith("/agent-eval-workflow.md")
+            or path.endswith("/skill-promotion-record.md")
+            or any(term in path for term in path_terms)
+        )
     ]
     evidence.extend(directory for directory in directories if directory in directory_names)
     return evidence
@@ -2982,6 +3053,27 @@ def _codex_agentic_workflow_recommendations(
             "Agent behavior lacks an eval workflow.",
             ["baseline", "trace-derived dataset", "tool-call correctness", "handoff correctness", "threshold"],
             residual="Agent behavior can regress without replayable eval evidence.",
+        )
+    if _has_signal(observed, "agent_skill_metrics_loop"):
+        add(
+            "agent_skill_metrics_loop_present",
+            "P1_high_risk",
+            "agent-skill-scorecard-ledger.md",
+            "Agent, skill, subagent, prompt policy, tool routing or harness surfaces need a self-verification metrics loop before modernization readiness claims.",
+            [
+                "current metrics evidence",
+                "scorecard ledger",
+                "redacted metrics report",
+                "owner review",
+                "cadence recommendation",
+                "approval boundary",
+                "rollback evidence for update candidates",
+            ],
+            residual=(
+                "Detected agentic surfaces are present_unverified until current metrics evidence, "
+                "owner review, cadence and approval boundaries prove modernization safety."
+            ),
+            next_action="Stage agent-skill-scorecard-ledger.md and metrics report for owner review before modernization.",
         )
     if "memory" in intent:
         add(

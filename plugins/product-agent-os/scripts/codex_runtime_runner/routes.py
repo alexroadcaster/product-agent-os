@@ -36,6 +36,7 @@ def plan_route(
     methodology_intelligence: dict[str, Any] | None = None,
     question_queue: dict[str, Any] | None = None,
     status_snapshot_ref: dict[str, Any] | None = None,
+    agent_skill_metrics_loop: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     skill, subagent, write_policy, action = ROUTES[lifecycle_state]
     if subagent and not allow_subagents:
@@ -47,6 +48,7 @@ def plan_route(
     question_queue = question_queue or _question_queue_from_methodology(
         methodology_intelligence,
         usage_mode,
+        agent_skill_metrics_loop=agent_skill_metrics_loop,
     )
     methodology_approval_required = methodology_requires_approval(methodology_packet)
     automation_maturity_required = (
@@ -73,6 +75,7 @@ def plan_route(
         write_policy,
         methodology_approval_required=methodology_approval_required,
         automation_maturity_required=automation_maturity_required,
+        agent_skill_metrics_loop=agent_skill_metrics_loop,
     )
     route = {
         "lifecycle_state": lifecycle_state,
@@ -96,6 +99,7 @@ def plan_route(
             "methodology action requires explicit approval",
             "automation promotion requires maturity evidence",
             "parallel work requires fresh-context handoff and explicit ownership",
+            "metrics loop reports are staged evidence only",
         ],
     }
     if ownership_parallelism_required:
@@ -107,6 +111,12 @@ def plan_route(
     route["question_queue"] = question_queue
     if status_snapshot_ref is not None:
         route["status_snapshot_ref"] = status_snapshot_ref
+    if agent_skill_metrics_loop is not None:
+        route["agent_skill_metrics_loop"] = agent_skill_metrics_loop
+        route["expected_outputs"].append("staged metrics report")
+        route["approval_requirements"].append(
+            "owner review required before metrics-loop modernization, schedule activation or external eval calls"
+        )
     route["finish_options"] = finish_options
     evidence_gaps = _evidence_gaps(methodology_packet)
     route["first_response_contract"] = {
@@ -144,10 +154,21 @@ def _finish_options(
     *,
     methodology_approval_required: bool = False,
     automation_maturity_required: bool = False,
+    agent_skill_metrics_loop: dict[str, Any] | None = None,
 ) -> list[str]:
     options = ["read_only_audit", "ask_owner"]
     if write_policy == "staged_only" and not automation_maturity_required:
         options.append("stage_proposal")
+    if isinstance(agent_skill_metrics_loop, dict):
+        options.append("stage_metrics_report")
+        options.append("request_owner_review")
+        if str(agent_skill_metrics_loop.get("automation_policy", "")) == "candidate_only":
+            options.append("block_automation_promotion")
+        status = str(agent_skill_metrics_loop.get("status", ""))
+        if status in {"regression_detected", "blocked_by_guardrail", "present_unverified"}:
+            options.append("investigate_regression")
+        else:
+            options.append("keep_current")
     if write_policy == "approved_write" or methodology_approval_required:
         options.append("request_approval")
     options.append("run_verification")
@@ -183,6 +204,11 @@ def _finish_options_for_status(status: str, current_options: Any) -> list[str]:
         "read_only_audit",
         "ask_owner",
         "stage_proposal",
+        "stage_metrics_report",
+        "request_owner_review",
+        "block_automation_promotion",
+        "keep_current",
+        "investigate_regression",
         "request_approval",
         "run_verification",
         "stop_blocked",
@@ -207,6 +233,8 @@ def _evidence_gaps(methodology_packet: dict[str, Any]) -> list[str]:
 def _question_queue_from_methodology(
     methodology_intelligence: dict[str, Any] | None,
     usage_mode: dict[str, Any],
+    *,
+    agent_skill_metrics_loop: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     intelligence = methodology_intelligence if isinstance(methodology_intelligence, dict) else {}
     synthesis = intelligence.get("methodology_synthesis")
@@ -226,6 +254,7 @@ def _question_queue_from_methodology(
         unknowns=unknowns,
         recommendation_groups=recommendation_groups if isinstance(recommendation_groups, list) else [],
         usage_mode=usage_mode,
+        agent_skill_metrics_loop=agent_skill_metrics_loop,
         runtime_status="route_ready",
     )
 

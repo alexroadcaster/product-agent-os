@@ -149,10 +149,12 @@ if (-not [string]::IsNullOrEmpty($pathValue)) {
 - Track 10 Task 24 Batch 9 baseline was refreshed on 2026-05-28: RED failed first on missing Batch 9 imports, then `python -m unittest tests.product_agent_os.test_agent_skill_metrics -v` ran 17 tests with `OK`; adjacent checks ran 28, 87 and 21 tests with `OK`; full unittest ran 560 tests with `OK` using `timeout_ms: 900000` because the run took 809.106s; fixture eval, transcript eval, Codex compatibility, docs check and `git diff --check` exited `0`.
 - Track 10 Task 24 Batch 10 Ledger, Reports, Candidates And CLI is implemented through `T10-SV-M29..M45` plus guardrails `T10-SV-G4..G6`: shared offline artifact safety, trace data-classification gate, scorecard ledger, daily/weekly metrics packets, component prioritization, modernization candidates, offline metrics report renderer/CLI, opt-in report staging, metrics artifact templates, fixture eval coverage and metrics automation candidate blocking are implemented.
 - Track 10 Task 24 Batch 10 baseline was refreshed on 2026-05-28: RED failed first on missing Batch 10 imports/modules/templates and metrics automation blocking; focused GREEN ran 127 tests with `OK`; fixture runner suite ran 17 tests with `OK`; full unittest ran 575 tests with `OK` in 612.098s using `timeout_ms: 1200000`; fixture eval exited `0` with 80 fixtures and renderer file count 191; transcript eval exited `0` with 10 sessions and 0 failures; Codex compatibility returned `status: compatible`; docs check and `git diff --check` exited `0`.
+- Track 10 Task 24 Batch 11 Runtime, Discovery, Lifecycle And Eval Coverage is implemented through `T10-SV-M46..M57`: status snapshots include bounded metrics-loop summaries, discovery/methodology audit detect real agentic surfaces while rejecting docs-only/simple-maintenance false positives, runtime packets validate `agent_skill_metrics_loop`, route finish options stay review-only, guided questions stay one-blocking-question bounded, lifecycle skills treat metrics loop outputs as staged evidence only, and behavioral/transcript/fixture eval coverage is expanded.
+- Track 10 Task 24 Batch 11 baseline was refreshed on 2026-05-28: initial RED focused suite failed on missing status/discovery/audit/runtime/lifecycle/eval contracts; focused GREEN ran 306 tests with `OK`; full unittest ran 583 tests with `OK` in 636.067s using `timeout_ms: 1200000`; fixture eval exited `0` with 85 fixtures, 0 failures and renderer file count 191; transcript eval exited `0` with 17 sessions and 0 failures; Codex compatibility returned `status: compatible`; docs/source-policy slice ran 22 tests with `OK`; docs check and `git diff --check` exited `0`.
 - Track 9 methodology intelligence design is captured in `docs/superpowers/specs/2026-05-25-track-9-methodology-intelligence-design.md`.
 - Track 9 implementation plan is captured in `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`.
 - Track 10 implementation plan is captured in `docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md` and includes `Task 23: Guided Question Protocol And Project Status Dashboard` plus `Task 24: Self-Verification And Modernization Loop`.
-- Next Product-Agent OS action is Task 24 Batch 11 runtime, discovery, lifecycle and eval coverage, or request commit/push/PR for the current staged changes.
+- Next Product-Agent OS action is Task 24 Batch 12 docs, control-plane and final verification closure, or request commit/push/PR for the current staged changes.
 
 ## Source and insight policy
 
@@ -176,7 +178,7 @@ python -m unittest discover -s tests -p "test_*.py" -v
 python plugins\product-agent-os\scripts\run_fixture_eval.py
 ```
 
-When running the full unittest command from Codex App or another tool wrapper, set the command timeout to at least 15 minutes (`timeout_ms: 900000`). Do not run this full unittest command with a short default timeout or exact 10-minute timeout in a parallel verification batch; the suite took 809.106s in Track 10 Task 24 Batch 9 and shorter timeouts cause duplicate reruns.
+When running the full unittest command from Codex App or another tool wrapper, set the command timeout to at least 20 minutes (`timeout_ms: 1200000`). Do not run this full unittest command with a short default timeout or exact 10-minute timeout in a parallel verification batch; the suite took 809.106s in Track 10 Task 24 Batch 9 and shorter timeouts cause duplicate reruns.
 
 After changing navigation, Mermaid diagrams, Markdown extensions, or MkDocs configuration, also run:
 

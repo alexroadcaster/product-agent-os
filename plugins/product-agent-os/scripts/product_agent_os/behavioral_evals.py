@@ -8,6 +8,13 @@ from typing import Any
 REQUIRED_BEHAVIORAL_CASES = {
     "route-selection",
     "runtime-methodology-packet-safety",
+    "agent-skill-metrics-loop-safety",
+    "agent-skill-metrics-regression-finding",
+    "agent-skill-metrics-no-data-target",
+    "agent-skill-metrics-trace-missing-span",
+    "agent-skill-metrics-judge-not-calibrated",
+    "agent-skill-metrics-approval-required-modernization",
+    "agent-skill-metrics-automation-candidate-only",
     "guided-question-smallest-blocking-question",
     "guided-question-no-broad-methodology-interview",
     "status-dashboard-generated-view-only",

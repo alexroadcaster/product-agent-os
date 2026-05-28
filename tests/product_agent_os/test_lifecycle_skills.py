@@ -301,6 +301,23 @@ class LifecycleSkillsTest(unittest.TestCase):
                 for expected in shared_terms:
                     self.assertIn(expected, text)
 
+    def test_lifecycle_skills_route_metrics_loop_as_staged_evidence_only(self):
+        shared_terms = [
+            "agent_skill_metrics_loop",
+            "self-verification metrics loop",
+            "staged evidence only",
+            "do not apply modernization candidates",
+            "do not activate schedules",
+            "do not call live eval services",
+            "dashboard or report is not proof",
+            "rollback evidence required",
+        ]
+        for name in SKILL_NAMES:
+            text = self._skill_text(name).lower()
+            with self.subTest(name=name):
+                for expected in shared_terms:
+                    self.assertIn(expected, text)
+
     def test_scenario_handoff_wording_blocks_role_transition_without_packet(self):
         orchestrator = self._skill_text("project-lifecycle-orchestrator").lower()
         agent_team = self._skill_text("agent-team-designer").lower()

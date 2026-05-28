@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "synthetic": true,
+  "contains_private_data": true,
+  "summary": "Synthetic report used to assert private trace data blocks readiness."
+}
+

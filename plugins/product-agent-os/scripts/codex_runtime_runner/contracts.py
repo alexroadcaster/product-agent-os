@@ -19,6 +19,11 @@ ALLOWED_FINISH_OPTIONS = [
     "read_only_audit",
     "ask_owner",
     "stage_proposal",
+    "stage_metrics_report",
+    "request_owner_review",
+    "block_automation_promotion",
+    "keep_current",
+    "investigate_regression",
     "request_approval",
     "run_verification",
     "stop_blocked",
@@ -73,6 +78,10 @@ METHODOLOGY_PACKET_LIMITS = {
 }
 QUESTION_QUEUE_LIMITS = {
     "questions": MAX_TOTAL_QUESTIONS,
+}
+AGENT_SKILL_METRICS_LOOP_LIMITS = {
+    "report_refs": 4,
+    "top_candidates": 5,
 }
 DETECTION_ONLY_METHODOLOGY_STATUSES = {
     "applicable_missing",
@@ -357,6 +366,8 @@ def validate_runner_result(payload: dict[str, Any]) -> list[str]:
             errors.extend(validate_question_queue(route_packet["question_queue"], "route_packet.question_queue"))
         if "status_snapshot_ref" in route_packet:
             errors.extend(_validate_status_snapshot_ref(route_packet["status_snapshot_ref"]))
+        if "agent_skill_metrics_loop" in route_packet:
+            errors.extend(validate_agent_skill_metrics_loop_packet(route_packet["agent_skill_metrics_loop"]))
         first_response = route_packet.get("first_response_contract")
         if first_response is not None:
             if not isinstance(first_response, dict):
@@ -388,6 +399,67 @@ def validate_runner_result(payload: dict[str, Any]) -> list[str]:
         methodology_packet = route_packet.get("methodology_packet")
         if isinstance(methodology_packet, dict) and methodology_packet.get("status") in DETECTION_ONLY_METHODOLOGY_STATUSES:
             errors.append("methodology_packet:detection_not_completion")
+    return errors
+
+
+def validate_agent_skill_metrics_loop_packet(packet: Any) -> list[str]:
+    if not isinstance(packet, dict):
+        return ["agent_skill_metrics_loop:invalid"]
+    errors: list[str] = []
+    if packet.get("schema_version") != 1:
+        errors.append("agent_skill_metrics_loop.schema_version:must_be_1")
+    if packet.get("write_policy") != "read_only":
+        errors.append("agent_skill_metrics_loop.write_policy:must_be_read_only")
+    if not _non_empty_string(packet.get("status")):
+        errors.append("agent_skill_metrics_loop.status:required")
+
+    summary = packet.get("summary")
+    if not isinstance(summary, dict):
+        errors.append("agent_skill_metrics_loop.summary:invalid")
+    report_refs = packet.get("report_refs")
+    if not isinstance(report_refs, list):
+        errors.append("agent_skill_metrics_loop.report_refs:invalid")
+        report_refs = []
+    elif len(report_refs) > AGENT_SKILL_METRICS_LOOP_LIMITS["report_refs"]:
+        errors.append("agent_skill_metrics_loop.report_refs:too_many")
+    for index, ref in enumerate(report_refs):
+        if not isinstance(ref, dict):
+            errors.append(f"agent_skill_metrics_loop.report_refs[{index}]:invalid")
+            continue
+        if ref.get("kind") == "external_ref":
+            errors.append(f"agent_skill_metrics_loop.report_refs[{index}].kind:forbidden_external_ref")
+        if not _non_empty_string(ref.get("path")):
+            errors.append(f"agent_skill_metrics_loop.report_refs[{index}].path:required")
+        path = str(ref.get("path", ""))
+        if path.startswith(("http://", "https://")):
+            errors.append(f"agent_skill_metrics_loop.report_refs[{index}].path:external_url_forbidden")
+
+    candidate_summary = packet.get("update_candidate_summary")
+    if not isinstance(candidate_summary, dict):
+        errors.append("agent_skill_metrics_loop.update_candidate_summary:invalid")
+        candidate_summary = {}
+    top_candidates = candidate_summary.get("top_candidates")
+    if not isinstance(top_candidates, list):
+        top_candidates = []
+    elif len(top_candidates) > AGENT_SKILL_METRICS_LOOP_LIMITS["top_candidates"]:
+        errors.append("agent_skill_metrics_loop.update_candidate_summary.top_candidates:too_many")
+    for index, candidate in enumerate(top_candidates):
+        if not isinstance(candidate, dict):
+            errors.append(f"agent_skill_metrics_loop.update_candidate_summary.top_candidates[{index}]:invalid")
+            continue
+        action = str(candidate.get("action", "")).lower()
+        if action in {"apply", "apply_patch", "self_apply", "activate_automation"}:
+            errors.append(
+                f"agent_skill_metrics_loop.update_candidate_summary.top_candidates[{index}].action:apply_forbidden"
+            )
+        if candidate.get("requires_rollback") is not True:
+            errors.append(
+                f"agent_skill_metrics_loop.update_candidate_summary.top_candidates[{index}].requires_rollback:required"
+            )
+    if packet.get("automation_policy") not in {"candidate_only", "blocked", "not_applicable"}:
+        errors.append("agent_skill_metrics_loop.automation_policy:invalid")
+    if packet.get("source_policy") != "generated summaries are not source of truth":
+        errors.append("agent_skill_metrics_loop.source_policy:invalid")
     return errors
 
 
