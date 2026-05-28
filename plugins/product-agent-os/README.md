@@ -28,6 +28,8 @@ Track 8 operator docs are split into scenario routing, behavioral evals, and Cod
 
 Track 10 `Task 23` adds Guided question protocol and a status snapshot/dashboard view. Guided question protocol asks one blocking question maximum, keeps optional questions in the packet, and routes answers into artifacts or accepted gaps without treating questions as workspace evidence. The status snapshot feeds `.codex/product-agent-os/status.html` and `.codex/product-agent-os/status.json`; the dashboard is generated view only over underlying artifacts, has no external assets, and cannot support success claims from stale evidence.
 
+Task 24 Self-Verification And Modernization Loop adds a self-verification metrics loop for Product-Agent OS agents, skills, prompt/policy packs, router/tool policies and harness versions. The `agent_skill_metrics_loop` route emits staged evidence only: target registry, trace/dataset/grader summaries, scorecard ledger, report packet and modernization candidates. It performs no live eval/model/API calls, creates no active schedules, applies no candidates by itself and allows no self-applied updates.
+
 Official references:
 
 - [Codex plugins](https://developers.openai.com/codex/plugins)

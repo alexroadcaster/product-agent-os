@@ -14,9 +14,9 @@ Generated at: 2026-05-27
 - Last completed slice before this run: Track 10 Task 23 Batch 6 `T10-Q-M23..M25` full verification and explicit-only commit boundary.
 - Active planning artifact: `docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md`.
 - Staged next-track artifact: Track 10 `Task 24: Self-Verification And Modernization Loop` with matrix `T10-SV-M-1..M62`, guardrails `T10-SV-G1..G6` and batches 7-12.
-- Current slice: Task 24 Batch 11 runtime, discovery, lifecycle and eval coverage. Batch 11 covers status snapshot metrics summaries, discovery/applicability gates, methodology audit recommendations, runtime packet validation, review-only finish options, guided question routing, lifecycle skill wording, fixture false-positive coverage, behavioral eval cases and transcript sessions; commit/push/PR remains explicit-only and was not executed.
+- Current slice: Task 24 Batch 12 docs, control-plane and final verification closure is implemented and verified. Batch 12 covers Product-Agent OS docs, root/plugin READMEs, source registry, Track 10 backlog, root control-plane evidence and final verification for `T10-SV-M58..M62`; full unittest must use `timeout_ms: 1200000`; commit/push/PR remains explicit-only and was not executed.
 - Current route: long-running plugin/skill/docs/evals work.
-- Scenario status: Track 9 foundation, all 12 methodology domains through `T9-D12`, Task 20 Cross-Domain Synthesis through `T9-S-M14`, Task 21 runtime runner/finish-options through `T9-R-M25`, Task 22 final documentation sync closure, Track 10 Task 23 full verification and Task 24 Batch 11 verification are the current acceptance baseline.
+- Scenario status: Track 9 foundation, all 12 methodology domains through `T9-D12`, Task 20 Cross-Domain Synthesis through `T9-S-M14`, Task 21 runtime runner/finish-options through `T9-R-M25`, Task 22 final documentation sync closure, Track 10 Task 23 full verification and Task 24 Batch 12 docs/control-plane/final verification closure are the current acceptance baseline.
 
 ## Scope
 
@@ -78,6 +78,7 @@ Generated at: 2026-05-27
 - Task 24 Batch 9 metrics/scorecard/confidence/cadence acceptance is implemented with focused tests for sectioned metric schemas, repeatability and no lucky-run promotion, scorecard guardrails, Wilson lower bound/delta gates, cadence `L0..L3` recommendations and redacted run records.
 - Task 24 Batch 10 ledger/report/candidate/CLI acceptance is implemented with focused tests and fixture eval checks for trace data-classification, shared offline artifact safety, no baseline renderer pollution, scorecard ledger, daily/weekly metrics packets, component prioritization, modernization candidates, redacted offline report rendering, report CLI staging and metrics automation candidate-only blocking.
 - Task 24 Batch 11 runtime/discovery/lifecycle/eval acceptance is implemented with focused tests for bounded status snapshot summaries, discovery false-positive guards, methodology audit recommendations, runtime packet validation, review-only route options, one-blocking-question metrics-loop questions, lifecycle staged-evidence wording, fixture eval fields, behavioral cases and transcript sessions.
+- Task 24 Batch 12 docs/control-plane/final verification closure acceptance covers `T10-SV-M58..M62`: Product-Agent OS docs, root/plugin READMEs, source registry, Track 10 backlog and root control-plane files document `agent_skill_metrics_loop`, source-of-truth policy, staged evidence only, target registry, trace intake, dataset quality, grader/judge calibration, cadence recommendation, scorecard ledger, report safety, modernization candidates, approval boundary, `timeout_ms: 1200000` full unittest policy and explicit-only git boundary.
 - Task 24 must prove source-priority, metrics packet bounds, trace data-classification, shared offline artifact safety, no baseline renderer pollution, redacted report output, scorecard ledger, update-candidate rollback and active-automation blocking before any implementation closure claim.
 - `docs-maintainer` is now a packaged lifecycle skill for requirement IDs, source registry, glossary/ubiquitous-language and traceability docs after the requirements packet exists.
 
@@ -86,5 +87,5 @@ Generated at: 2026-05-27
 - Official OpenAI documentation remains source of truth for Codex App, CLI, IDE extension, subagents, skills, AGENTS.md, memory, sandbox, approvals and MCP.
 - Context7 may be used as retrieval layer, but official status depends on the underlying source.
 - Root control-plane files describe this repository's active Product-Agent OS implementation work, not generated target-project assets.
-- Task 24 Batch 11 evidence proves foundation, trace/redaction/dataset/grader/judge, metrics/scorecard/confidence/cadence, ledger/report/candidate/CLI and runtime/discovery/lifecycle/eval contracts. Final docs/control-plane closure still requires Batch 12 plus current focused tests/evals and full Product-Agent OS verification.
+- Task 24 Batch 12 records final docs/control-plane closure for `agent_skill_metrics_loop`, but real-project semantic metric sufficiency still requires owner review or accepted gaps. Commit/push/PR remains explicit-only and not part of acceptance without a separate user request.
 <!-- product-agent-os:end requirements -->

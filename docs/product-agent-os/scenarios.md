@@ -36,6 +36,14 @@ Guided question protocol uses typed `question_queue` packets so the first respon
 
 The status snapshot is the JSON source for a generated dashboard view. The dashboard stages `.codex/product-agent-os/status.html` and `.codex/product-agent-os/status.json` through the existing approval flow. `status.html` is generated view only: underlying artifacts remain the source material, the dashboard is not an editable database, and stale or inspection-only evidence cannot produce a success claim.
 
+## Task 24 Self-Verification And Modernization Loop
+
+Task 24 adds the `agent_skill_metrics_loop` route for agent, skill, prompt/policy pack, router/tool policy and harness-version review. This self-verification metrics loop starts from a read-only target registry, explicit run evidence, trace intake, dataset quality checks, local grader summaries and grader/judge calibration. It can stage `scorecard ledger` records, daily or weekly packets, `agent-skill-evaluation-report.html`, and modernization candidates, but every output is staged evidence only.
+
+The route uses source-of-truth policy: control-plane artifacts, run records, trace/eval packets and accepted gaps can support the metrics loop; dashboard HTML, report HTML, memory, raw chat logs and unsupported community claims cannot. The report is not source of truth and cannot turn stale or generated evidence into a completion claim.
+
+The approval boundary stays strict. Product-Agent OS records cadence recommendation values `L0`, `L1`, `L2` and `L3`, but it creates no active schedules. It performs no live eval/model/API calls, makes no external writes, applies no modernization candidates by itself, and allows no self-applied updates. Owner review, rollback target and explicit approval state are required before any proposed update moves beyond staged review.
+
 ## Scenario Matrix
 
 | usage_mode | When it applies | first response | minimum artifacts | approval boundary | verification gates |

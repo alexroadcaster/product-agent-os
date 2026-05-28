@@ -10,6 +10,7 @@ CHECK_DOCS = ROOT / "tools" / "check_docs.py"
 SOURCE_REGISTRY = DOCS / "sources" / "registry.md"
 TRACK_BACKLOG = DOCS / "sources" / "product-agent-os-track-8-detailed-backlog.md"
 TRACK9_BACKLOG = DOCS / "sources" / "product-agent-os-track-9-backlog.md"
+TRACK10_BACKLOG = DOCS / "sources" / "product-agent-os-track-10-backlog.md"
 TRACK9_PLAN = DOCS / "superpowers" / "plans" / "2026-05-25-track-9-methodology-intelligence.md"
 TRACK10_PLAN = DOCS / "superpowers" / "plans" / "2026-05-27-track-10-guided-questions-status-dashboard.md"
 ROOT_README = ROOT / "README.md"
@@ -162,6 +163,111 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             with self.subTest(control_plane=expected):
                 self.assertIn(expected, control_plane)
                 self.assertIn(expected, root_readme)
+
+    def test_track10_task24_self_verification_docs_and_control_plane_are_synced(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        documents = {
+            "index": (PRODUCT_AGENT_OS / "index.md").read_text(encoding="utf-8"),
+            "technical": (PRODUCT_AGENT_OS / "technical.md").read_text(encoding="utf-8"),
+            "scenarios": (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8"),
+            "behavioral_evals": (PRODUCT_AGENT_OS / "behavioral-evals.md").read_text(
+                encoding="utf-8"
+            ),
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+        }
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+        }
+
+        for expected in [
+            "Product-Agent OS Track 10 self-verification metrics-loop final closure",
+            "T10-SV-M58..M62",
+            "agent_skill_metrics_loop_contract_present",
+            "metrics_report_redacted",
+            "trace_normalization_contract_present",
+            "judge_calibration_gate_present",
+            "scorecard_ledger_contract_present",
+            "source_priority_contract_present",
+            "metrics_packet_bounds_present",
+            "trace_data_classification_gate_present",
+            "offline_artifact_safety_shared",
+            "no_baseline_renderer_pollution",
+            "active_metrics_automation_blocked",
+            "update_candidate_rollback_required",
+            "metrics_loop_runtime_route_contract_present",
+            "metrics_loop_lifecycle_contract_present",
+            "metrics_loop_false_positive_guards_present",
+            "verification_status:",
+        ]:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        docs_contract_terms = [
+            "agent_skill_metrics_loop",
+            "target registry",
+            "trace intake",
+            "dataset quality",
+            "grader/judge calibration",
+            "cadence recommendation",
+            "scorecard ledger",
+            "agent-skill-evaluation-report.html",
+            "modernization candidates",
+            "approval boundary",
+            "source-of-truth policy",
+            "staged evidence only",
+            "report is not source of truth",
+            "no live eval/model/API calls",
+            "no active schedules",
+            "no self-applied updates",
+            "L0",
+            "L1",
+            "L2",
+            "L3",
+        ]
+        for document in ["technical", "scenarios", "behavioral_evals"]:
+            for expected in docs_contract_terms:
+                with self.subTest(document=document, term=expected):
+                    self.assertIn(expected, documents[document])
+
+        overview_terms = [
+            "Task 24 Self-Verification And Modernization Loop",
+            "self-verification metrics loop",
+            "agent_skill_metrics_loop",
+            "staged evidence only",
+            "no live eval/model/API calls",
+            "no active schedules",
+            "no self-applied updates",
+        ]
+        for document in ["index", "root_readme", "plugin_readme"]:
+            for expected in overview_terms:
+                with self.subTest(document=document, term=expected):
+                    self.assertIn(expected, documents[document])
+
+        for expected in [
+            "| `done` | `T10-SV-M58..M62` final docs/control-plane verification closure |",
+            "Task 24 Batch 12",
+            "full unittest must use `timeout_ms: 1200000`",
+            "explicit-only git boundary",
+        ]:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        for filename, text in control_plane.items():
+            for expected in [
+                "Task 24 Batch 12",
+                "T10-SV-M58..M62",
+                "agent_skill_metrics_loop",
+                "timeout_ms: 1200000",
+                "explicit-only",
+            ]:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
 
     def test_t8h_and_t8gy_source_and_backlog_closure_are_documented(self):
         registry = SOURCE_REGISTRY.read_text(encoding="utf-8")

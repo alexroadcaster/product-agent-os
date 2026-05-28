@@ -50,6 +50,7 @@ Behavioral evals проверяют не синтаксис Markdown, а пов�
 | Codex compatibility eval | Plugin remains Codex-only and avoids non-Codex adapter requirements. | Implemented. | `python plugins\product-agent-os\scripts\validate_codex_compatibility.py`. |
 | transcript/session eval runner | Replay synthetic or redacted Codex session transcripts for multi-turn shortcut resistance, evidence quality and privacy/no-secrets checks. | Implemented in `T8-GY` as deterministic local replay. | `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json`. |
 | Guided question and status dashboard eval | Typed question packets, compact first response, generated dashboard boundaries and stale-evidence language. | Implemented in Track 10 Batch 5. | `question_queue_contract_present`, `status_snapshot_present`, `status_dashboard_present`, `dashboard_no_external_assets`, `dashboard_not_source_of_truth`, `stale_evidence_no_success_claim`. |
+| Self-verification metrics loop eval | `agent_skill_metrics_loop` target registry, trace intake, dataset quality, grader/judge calibration, cadence recommendation, scorecard ledger, report safety, staged modernization candidates and approval boundary. | Implemented through Track 10 Task 24 Batch 12. | `agent_skill_metrics_loop_contract_present`, `metrics_report_redacted`, `trace_normalization_contract_present`, `judge_calibration_gate_present`, `scorecard_ledger_contract_present`, `metrics_loop_runtime_route_contract_present`, `metrics_loop_lifecycle_contract_present`. |
 
 ## Track 10 Guided Questions And Dashboard
 
@@ -58,6 +59,14 @@ Track 10 adds behavioral cases for `guided-question-smallest-blocking-question`,
 Expected behavior: `guided question protocol` asks the smallest blocking question only, keeps `one blocking question maximum` in the first response, leaves optional questions in the packet, and routes answers into artifacts or accepted gaps. The status dashboard is a generated view only; the dashboard is a generated view over underlying artifacts, not a source of truth. Stale evidence produces no success claim from stale evidence.
 
 Forbidden behavior: no broad methodology interview, no "ask every methodology question" loop, no full queue dump in the first response, no dashboard-as-source-of-truth, and no success claim from stale or inspection-only evidence.
+
+## Track 10 Self-Verification Metrics Loop
+
+Task 24 behavioral evals cover `agent_skill_metrics_loop` as a staged self-verification metrics loop. Expected behavior starts with a read-only target registry, trace intake, dataset quality blockers, local grader outputs, grader/judge calibration, cadence recommendation levels `L0`, `L1`, `L2` and `L3`, a scorecard ledger, `agent-skill-evaluation-report.html`, and modernization candidates that include evidence, rollback and owner-review state.
+
+The source-of-truth policy is part of the eval contract: control-plane artifacts, run records, trace/eval packets and accepted gaps are allowed evidence; generated dashboard/report HTML, memory, raw chat logs and unsupported community claims are not. Every metrics report is staged evidence only, and the report is not source of truth.
+
+Forbidden behavior includes headline-metric-only approval, raw trace leakage, uncalibrated judge approval, no self-applied updates, no rollback target, no live eval/model/API calls, no active schedules, no report/dashboard success claim, and no modernization candidate that crosses the approval boundary without explicit owner review.
 
 ## Expected Behavior
 

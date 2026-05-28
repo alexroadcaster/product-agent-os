@@ -35,7 +35,7 @@ This backlog tracks deferred and follow-up work for Track 10 `Task 23: Guided Qu
 | `done` | Batch 10 focused and full verification evidence | Batch 10 RED failed on missing imports/modules/templates and metrics automation blocking, then focused tests ran 127 tests with `OK`; fixture runner unit suite ran 17 tests with `OK`; full unittest ran 575 tests with `OK` in 612.098s using `timeout_ms: 1200000`; fixture eval exited `0` with 80 fixtures and `renderer_file_count: 191`; transcript eval exited `0` with 10 sessions and 0 failures; Codex compatibility returned `status: compatible`; docs check and `git diff --check` exited `0`. |
 | `done` | Task 24 Batch 11 `T10-SV-M46..M57` | Added bounded status snapshot summaries, discovery/applicability and methodology audit routing, runtime packet validation, review-only finish options, guided question integration, lifecycle skill wording, fixture false-positive coverage, behavioral eval cases, transcript sessions and batch status sync. |
 | `done` | Batch 11 focused and broad verification evidence | Batch 11 RED failed on missing status/discovery/audit/runtime/lifecycle/eval contracts, then focused tests ran 306 tests with `OK`; full unittest ran 583 tests with `OK` in 636.067s using `timeout_ms: 1200000`; fixture eval exited `0` with 85 fixtures, 0 failures and `renderer_file_count: 191`; transcript eval exited `0` with 17 sessions and 0 failures; Codex compatibility returned `status: compatible`; docs/source-policy slice ran 22 tests with `OK`; docs check and `git diff --check` exited `0`. |
-| `queued` | Task 24 Batch 12 | Final Product-Agent OS docs, source registry, root control-plane evidence, docs checks and explicit-only git boundary remain next. |
+| `done` | `T10-SV-M58..M62` final docs/control-plane verification closure | Task 24 Batch 12 synchronized Product-Agent OS docs, root/plugin READMEs, source registry, Track 10 backlog and root control-plane evidence for `agent_skill_metrics_loop`; full unittest must use `timeout_ms: 1200000`; commit/push/PR remains an explicit-only git boundary. |
 
 ## Deferred
 
@@ -49,3 +49,5 @@ This backlog tracks deferred and follow-up work for Track 10 `Task 23: Guided Qu
 ## Verification
 
 Batch 5 focused verification and Batch 6 full verification are recorded in `TEST.md` and `RUNLOG.md`.
+
+Task 24 Batch 12 final verification is recorded in `TEST.md` and `RUNLOG.md`: focused docs/source-policy ran 23 tests with `OK`; full unittest ran 584 tests with `OK` in 551.714s, then reran after evidence notes and ran 584 tests with `OK` in 504.793s using `timeout_ms: 1200000`; fixture eval exited `0` for 85 fixture directories with `renderer_file_count: 191`; transcript eval exited `0` with 17 sessions and 0 failures; Codex compatibility returned `status: compatible`; docs check and `git diff --check` exited `0`. The full unittest must continue to use `timeout_ms: 1200000` to avoid false timeouts on the current suite size.

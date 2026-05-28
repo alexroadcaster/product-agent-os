@@ -2,6 +2,10 @@
 
 Source status: `official + experiment`  
 
+## Task 24 Self-Verification And Modernization Loop
+
+Task 24 Self-Verification And Modernization Loop adds a self-verification metrics loop for Product-Agent OS agents, skills, prompt/policy packs, router/tool policies and harness versions. The `agent_skill_metrics_loop` route produces staged evidence only: target registry, trace/dataset/grader summaries, scorecard ledger, report packet and modernization candidates. It performs no live eval/model/API calls, creates no active schedules, applies no candidates by itself and allows no self-applied updates.
+
 ## Task 22 final documentation sync closure
 
 Task 22 final documentation sync closure фиксирует Product-Agent OS full stack как рабочий путь для реальных проектов: inspect workspace, отделить prompt intent от workspace evidence, stage infrastructure, получить approved merge, пройти Codex-only runtime routing, применить conditional methodology gates и потребовать evidence before completion.
