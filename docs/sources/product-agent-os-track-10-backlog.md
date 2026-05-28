@@ -27,7 +27,9 @@ This backlog tracks deferred and follow-up work for Track 10 `Task 23: Guided Qu
 | `done` | `T10-SV-M-1..M4` foundation and registry | Added `agent_skill_metrics.py` with read-only source-priority policy, target registry collection, explicit evidence intake and bounded metrics packet helpers. |
 | `done` | `T10-SV-G1..G3` reuse/source/bounds guardrails | Reused runtime redaction, rejected dashboard/report HTML, memory, raw chat logs and unsupported community claims as source of truth, and trimmed oversized metrics packets deterministically with warnings. |
 | `done` | Batch 7 focused and full verification evidence | `test_agent_skill_metrics` failed before implementation on missing module and stale evidence support, then ran 5 tests with `OK`; adjacent status/dashboard/template/automation checks ran 103 tests with `OK`; full unittest ran 548 tests with `OK`; fixture eval, transcript eval, Codex compatibility, docs check and `git diff --check` exited `0`. |
-| `queued` | Task 24 Batch 8 | Trace intake, metrics redaction gate, dataset quality, grader runner contract and judge calibration remain next. |
+| `done` | Task 24 Batch 8 `T10-SV-M5..M16` | Added trace normalization, metrics redaction gate blocking, evidence dataset builder, dataset quality gates, local grader summary and judge calibration summary in `agent_skill_metrics.py`. |
+| `done` | Batch 8 focused and full verification evidence | Batch 8 RED failed on missing imports, then focused tests ran 11 tests with `OK`; adjacent status/dashboard, template/automation and slow fixture/transcript runner checks ran 22, 87 and 21 tests with `OK`; full unittest ran 554 tests with `OK`; fixture eval, transcript eval, Codex compatibility, docs check and `git diff --check` exited `0`. |
+| `queued` | Task 24 Batch 9 | Metrics, scorecards, confidence and cadence remain next. |
 
 ## Deferred
 

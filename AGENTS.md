@@ -143,10 +143,12 @@ if (-not [string]::IsNullOrEmpty($pathValue)) {
 - Track 10 Task 24 Self-Verification And Modernization Loop is staged in `docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md` with description, reuse-first guardrails `T10-SV-G1..G6`, matrix `T10-SV-M-1..M62` and batches 7-12.
 - Track 10 Task 24 Batch 7 Foundation And Registry is implemented through `T10-SV-M-1..M4` plus guardrails `T10-SV-G1..G3`: `agent_skill_metrics.py` now provides read-only source-priority policy, bounded target registry collection, explicit evidence intake and metrics packet bounds.
 - Track 10 Task 24 Batch 7 baseline was refreshed on 2026-05-28: RED checks failed first on missing `product_agent_os.agent_skill_metrics`, then `python -m unittest tests.product_agent_os.test_agent_skill_metrics -v` ran 5 tests with `OK`; reuse-first adjacent checks for status snapshot/dashboard, templates and automation policy ran 103 tests with `OK`; full unittest ran 548 tests with `OK`; fixture eval, transcript eval, Codex compatibility, docs check and `git diff --check` exited `0`.
+- Track 10 Task 24 Batch 8 Trace, Redaction, Dataset And Judge Contracts is implemented through `T10-SV-M5..M16`: `agent_skill_metrics.py` now provides portable trace normalization, metrics redaction blocking, evidence dataset building, dataset quality gates, local grader summaries and judge calibration blocking.
+- Track 10 Task 24 Batch 8 baseline was refreshed on 2026-05-28: RED failed first on missing Batch 8 imports, then `python -m unittest tests.product_agent_os.test_agent_skill_metrics -v` ran 11 tests with `OK`; adjacent checks ran 22, 87 and 21 tests with `OK`; full unittest ran 554 tests with `OK`; fixture eval, transcript eval, Codex compatibility, docs check and `git diff --check` exited `0`.
 - Track 9 methodology intelligence design is captured in `docs/superpowers/specs/2026-05-25-track-9-methodology-intelligence-design.md`.
 - Track 9 implementation plan is captured in `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`.
 - Track 10 implementation plan is captured in `docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md` and includes `Task 23: Guided Question Protocol And Project Status Dashboard` plus `Task 24: Self-Verification And Modernization Loop`.
-- Next Product-Agent OS action is Task 24 Batch 8 trace, redaction, dataset and judge contracts, or request commit/push/PR for the current staged changes.
+- Next Product-Agent OS action is Task 24 Batch 9 metrics, scorecards, confidence and cadence, or request commit/push/PR for the current staged changes.
 
 ## Source and insight policy
 

@@ -14,9 +14,9 @@ Generated at: 2026-05-27
 - Last completed slice before this run: Track 10 Task 23 Batch 6 `T10-Q-M23..M25` full verification and explicit-only commit boundary.
 - Active planning artifact: `docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md`.
 - Staged next-track artifact: Track 10 `Task 24: Self-Verification And Modernization Loop` with matrix `T10-SV-M-1..M62`, guardrails `T10-SV-G1..G6` and batches 7-12.
-- Current slice: Task 24 Batch 7 foundation and registry implementation. Batch 7 covers read-only target registry, explicit evidence intake, source-priority policy, metrics packet bounds and reuse-first guardrails; commit/push/PR remains explicit-only and was not executed.
+- Current slice: Task 24 Batch 8 trace, redaction, dataset and judge contracts. Batch 8 covers trace normalization, metrics redaction blocking, evidence dataset building, dataset quality gates, local grader summaries and judge calibration blocking; commit/push/PR remains explicit-only and was not executed.
 - Current route: long-running plugin/skill/docs/evals work.
-- Scenario status: Track 9 foundation, all 12 methodology domains through `T9-D12`, Task 20 Cross-Domain Synthesis through `T9-S-M14`, Task 21 runtime runner/finish-options through `T9-R-M25`, Task 22 final documentation sync closure, Track 10 Task 23 full verification and Task 24 Batch 7 foundation/registry focused verification are the current acceptance baseline.
+- Scenario status: Track 9 foundation, all 12 methodology domains through `T9-D12`, Task 20 Cross-Domain Synthesis through `T9-S-M14`, Task 21 runtime runner/finish-options through `T9-R-M25`, Task 22 final documentation sync closure, Track 10 Task 23 full verification and Task 24 Batch 8 focused verification are the current acceptance baseline.
 
 ## Scope
 
@@ -74,6 +74,7 @@ Generated at: 2026-05-27
 - Task 24 self-verification and modernization planning is staged with description, implementation surfaces, matrix `T10-SV-M-1..M62`, guardrails `T10-SV-G1..G6`, batches 7-12, verification expectations and explicit-only git boundary in the Track 10 plan.
 - Task 24 implementation acceptance is reuse-first: reuse existing redaction, guided question protocol, status snapshot/dashboard, automation policy, runtime contracts/routes, fixture eval runner, transcript eval runner and agentic workflow artifacts; new work is limited to metrics-loop domain logic, report rendering and CLI surfaces.
 - Task 24 Batch 7 foundation acceptance is implemented with focused tests for source-priority policy, target registry collection, explicit evidence intake, stale/failed/accepted-gap evidence markers, generated-view exclusions and deterministic metrics packet trimming.
+- Task 24 Batch 8 trace/redaction/dataset/judge acceptance is implemented with focused tests for supported trace normalization, unsupported and accepted-gap trace labels, redaction-gated downstream blocking, dataset split/leakage/duplicate handling, dataset quality blockers, local grader metadata and judge calibration blocking.
 - Task 24 must prove source-priority, metrics packet bounds, trace data-classification, shared offline artifact safety, no baseline renderer pollution, redacted report output, scorecard ledger, update-candidate rollback and active-automation blocking before any implementation closure claim.
 - `docs-maintainer` is now a packaged lifecycle skill for requirement IDs, source registry, glossary/ubiquitous-language and traceability docs after the requirements packet exists.
 
@@ -82,5 +83,5 @@ Generated at: 2026-05-27
 - Official OpenAI documentation remains source of truth for Codex App, CLI, IDE extension, subagents, skills, AGENTS.md, memory, sandbox, approvals and MCP.
 - Context7 may be used as retrieval layer, but official status depends on the underlying source.
 - Root control-plane files describe this repository's active Product-Agent OS implementation work, not generated target-project assets.
-- Task 24 Batch 7 focused evidence proves only the foundation/registry contract. Later trace/redaction/dataset/judge, metrics/scorecard, report/CLI, runtime/lifecycle/eval and docs/full-verification batches still require current focused tests/evals plus full Product-Agent OS verification proportional to touched files.
+- Task 24 Batch 8 focused evidence proves only trace/redaction/dataset/grader/judge contracts. Later metrics/scorecard, report/CLI, runtime/lifecycle/eval and docs/full-verification batches still require current focused tests/evals plus full Product-Agent OS verification proportional to touched files.
 <!-- product-agent-os:end requirements -->
