@@ -1,7 +1,7 @@
 {
   "name": "product-agent-os",
   "version": "0.1.0",
-  "description": "Production-ready Codex plugin for end-to-end product-agent project delivery.",
+  "description": "Production-ready Codex plugin for end-to-end product-agent delivery, methodology intelligence, status dashboards, and self-verification metrics loops.",
   "author": {
     "name": "OpenAI Codex Knowledge Base",
     "email": "codex-docs@example.invalid",
@@ -21,8 +21,8 @@
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "Product-Agent OS",
-    "shortDescription": "Guide projects from idea to PR or release with Codex.",
-    "longDescription": "Creates and maintains product-agent control-plane files, lifecycle skills, project-scoped agents, evidence logs, eval gates and automation candidates.",
+    "shortDescription": "Guide product-agent delivery with methodology, dashboards, and metrics loops.",
+    "longDescription": "Creates and maintains product-agent control-plane files, lifecycle skills, project-scoped agents, methodology intelligence, guided question/status dashboards, self-verification metrics loops, evidence logs, eval gates and automation candidates.",
     "developerName": "OpenAI Codex Knowledge Base",
     "category": "Productivity",
     "capabilities": [
