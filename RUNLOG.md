@@ -6,15 +6,15 @@ Generated at: 2026-05-27
 
 ## Current Lifecycle Marker
 
-`track10_task24_batch7_foundation_registry`
+`track10_task24_batch9_metrics_scorecards_confidence_cadence`
 
 ## Latest Completed Slice
 
-Track 10 Task 24 Batch 8 Trace, Redaction, Dataset And Judge Contracts is implemented through focused RED/GREEN checks for `T10-SV-M5..M16`. Commit/push/PR remains explicit-only and was not executed.
+Track 10 Task 24 Batch 9 Metrics, Scorecards, Confidence And Cadence is implemented through focused RED/GREEN checks for `T10-SV-M17..M28`. Commit/push/PR remains explicit-only and was not executed.
 
 ## Current Active Slice
 
-Current slice synchronizes Batch 8 evidence and runs Product-Agent OS verification proportional to the new plugin script/test changes. Commit/push/PR remains explicit-only.
+Current slice synchronizes Batch 9 evidence and runs Product-Agent OS verification proportional to the new plugin script/test changes. Commit/push/PR remains explicit-only.
 
 ## Latest Planning Artifact
 
@@ -71,6 +71,9 @@ Current slice synchronizes Batch 8 evidence and runs Product-Agent OS verificati
 - Implemented Task 24 Batch 8 trace/redaction/dataset/judge contracts in `plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py`.
 - Added focused tests in `tests/product_agent_os/test_agent_skill_metrics.py` for trace normalization, metrics redaction gate blocking, evidence dataset grouping/leakage, dataset quality blockers, local grader summaries and judge calibration blocking.
 - Preserved reuse-first boundaries: Batch 8 reuses runtime redaction helpers and existing trace/dataset/eval artifact contracts; it does not introduce live Agents SDK/MCP/network/eval calls, report rendering, CLI staging, runtime route fields, active automations or external writes.
+- Implemented Task 24 Batch 9 metrics/scorecard/confidence/cadence contracts in `plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py`.
+- Added focused tests in `tests/product_agent_os/test_agent_skill_metrics.py` for metric section schemas, repeatability/no lucky-run promotion, guarded scorecards, Wilson lower-bound decision gates, `L0..L3` cadence recommendation and redacted run record construction.
+- Preserved reuse-first boundaries: Batch 9 remains a pure read-only metrics contract layer; it does not add scorecard ledger templates, report rendering, CLI staging, runtime route fields, lifecycle wording, active automations, live eval/model/API calls or external writes.
 
 ### Verification Evidence
 
@@ -96,7 +99,7 @@ Current slice synchronizes Batch 8 evidence and runs Product-Agent OS verificati
 - Task 24 Batch 7 transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 10 sessions and 0 failures.
 - Task 24 Batch 7 Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible`.
 - Task 24 Batch 7 docs/diff hygiene: `python tools\check_docs.py` passed and `git diff --check` exited `0`.
-- Verification timeout policy update: full unittest command `python -m unittest discover -s tests -p "test_*.py" -v` must be run with at least 10 minutes of command wait time (`timeout_ms: 600000`) in Codex App/tool wrappers. This prevents false timeouts and duplicate reruns after the 548-test suite took about 8 minutes in Batch 7.
+- Verification timeout policy update: full unittest command `python -m unittest discover -s tests -p "test_*.py" -v` was first raised to at least 10 minutes in Batch 7, then superseded by the Batch 9 evidence requiring at least 15 minutes (`timeout_ms: 900000`) after the suite took 809.106s.
 - Task 24 Batch 8 initial RED check: `python -m unittest tests.product_agent_os.test_agent_skill_metrics -v` failed before implementation with `ImportError: cannot import name 'build_evidence_dataset'`.
 - Task 24 Batch 8 focused GREEN check: `python -m unittest tests.product_agent_os.test_agent_skill_metrics -v` ran 11 tests with `OK`.
 - Task 24 Batch 8 status/dashboard adjacent check: `python -m unittest tests.product_agent_os.test_agent_skill_metrics tests.product_agent_os.test_status_snapshot tests.product_agent_os.test_status_dashboard -v` ran 22 tests with `OK`.
@@ -107,6 +110,16 @@ Current slice synchronizes Batch 8 evidence and runs Product-Agent OS verificati
 - Task 24 Batch 8 transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 10 sessions and 0 failures.
 - Task 24 Batch 8 Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible`.
 - Task 24 Batch 8 docs/diff hygiene: `python tools\check_docs.py` passed and `git diff --check` exited `0`.
+- Task 24 Batch 9 initial RED check: `python -m unittest tests.product_agent_os.test_agent_skill_metrics -v` failed before implementation with `ImportError: cannot import name 'build_metric_aggregation'`.
+- Task 24 Batch 9 focused GREEN check: `python -m unittest tests.product_agent_os.test_agent_skill_metrics -v` ran 17 tests with `OK`.
+- Task 24 Batch 9 status/dashboard adjacent check: `python -m unittest tests.product_agent_os.test_agent_skill_metrics tests.product_agent_os.test_status_snapshot tests.product_agent_os.test_status_dashboard -v` ran 28 tests with `OK`.
+- Task 24 Batch 9 template/automation adjacent check: `python -m unittest tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_automation_policy -v` ran 87 tests with `OK`.
+- Task 24 Batch 9 slow fixture/transcript runner adjacent check: `python -m unittest tests.product_agent_os.test_fixture_eval_runner tests.product_agent_os.test_transcript_session_evals -v` ran 21 tests with `OK` in 406.441s using a long wrapper timeout.
+- Task 24 Batch 9 full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 560 tests with `OK` in 809.106s using `timeout_ms: 900000`; the previous exact 10-minute full unittest timeout is now insufficient for this suite.
+- Task 24 Batch 9 fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0` with `renderer_file_count: 187`.
+- Task 24 Batch 9 transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 10 sessions and 0 failures.
+- Task 24 Batch 9 Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible`.
+- Task 24 Batch 9 docs/diff hygiene: `python tools\check_docs.py` passed and `git diff --check` exited `0`.
 - RED checks: focused T9-D6 checks failed as expected before implementation on missing `frontend` gates, audit recommendations, discovery signals, five artifact templates, lifecycle skill routing, behavioral eval coverage and fixture eval check.
 - Focused T9-D6 suite: `python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_discovery tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_behavioral_workflow_evals tests.product_agent_os.test_fixture_eval_runner tests.product_agent_os.test_fixtures -v` ran 200 tests with `OK`.
 - Fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0`; renderer file count is 107 and `frontend_contract_present` is true.
@@ -295,6 +308,7 @@ Current slice synchronizes Batch 8 evidence and runs Product-Agent OS verificati
 - Documentation impact: root control-plane files, Track 9/10 backlogs and generated control-plane/eval/handoff templates are synchronized through Track 10 Task 23 Batch 6.
 - Task 24 Batch 7 impact: `agent_skill_metrics.py` provides the foundation/registry contract for source-priority policy, target registry collection, explicit evidence intake, stale/failed/accepted-gap markers, generated-view exclusions and metrics packet bounds without claiming full metrics-loop completion.
 - Task 24 Batch 8 impact: `agent_skill_metrics.py` now provides portable trace packets, redaction-gated metrics payloads, stratified evidence datasets, dataset quality blockers, local grader summaries and judge calibration summaries without claiming metric aggregation, scorecards, reports, candidates, runtime integration or automation readiness.
+- Task 24 Batch 9 impact: `agent_skill_metrics.py` now provides metric aggregation, repeatability metrics, guarded scorecards, confidence/decision gates, cadence recommendation and deterministic redacted run records without claiming scorecard ledger, report rendering, candidates, CLI, runtime integration or automation readiness.
 - Review outcome: Task 21 runtime runner, Task 22 final documentation sync and Track 10 Task 23 guided question/status dashboard checks are clean through current verification.
 - Task 22 final documentation sync closure: added RED docs tests, synchronized Product-Agent OS docs, root/plugin READMEs, source registry and root control-plane files for Track 1-9 closure. source inventory links: `docs/sources/product-agent-os-pre-track-8-implementation-inventory.md`, `docs/superpowers/specs/2026-05-25-track-9-methodology-intelligence-design.md`, `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`, `docs/sources/product-agent-os-track-9-backlog.md`, `docs/product-agent-os/`, `plugins/product-agent-os/scripts/`, `plugins/product-agent-os/README.md` and root control-plane files.
 - Task 22 final documentation sync closure: legacy Track 9 Task 23 baseline absorbed into Task 22 final verification evidence; Track 10 `Task 23` is now implemented and fully verified through Batch 6.
@@ -302,7 +316,7 @@ Current slice synchronizes Batch 8 evidence and runs Product-Agent OS verificati
 
 ## Next Action
 
-- Next actionable implementation slice is Track 10 Task 24 Batch 9 metrics, scorecards, confidence and cadence. Commit/push/PR remains explicit-only.
+- Next actionable implementation slice is Track 10 Task 24 Batch 10 ledger, reports, candidates and CLI. Commit/push/PR remains explicit-only.
 
 ## Residual Risks
 
@@ -335,6 +349,8 @@ Current slice synchronizes Batch 8 evidence and runs Product-Agent OS verificati
 - `T9-R-M7..M14` runtime safety and evidence sync prove high-risk action approval binding, automation maturity blocking, redaction, malformed-packet fallback and current evidence/backlog alignment for synthetic runtime fixtures.
 - `T9-R-M16..M25` runtime expansion proves CLI/validator contract shape, generated control-plane/eval/handoff fields, schema-v1 additive compatibility, status-to-finish-options mapping, cross-domain bridge checks, compact first response, structured high-risk taxonomy and ownership/parallelism routing for synthetic fixtures; it does not prove real-project methodology evidence sufficiency without owner review or accepted gaps.
 - Track 10 Task 23 guided questions and dashboard behavior is verified against local synthetic fixtures and transcript sessions; it still does not prove real-project product decisions, owner approvals or semantic evidence sufficiency without project-owner review.
+- Track 10 Task 24 Batch 9 metrics/scorecards/confidence/cadence behavior is verified against local unit contracts and existing eval runners; it still does not prove real-project metric semantic sufficiency, owner approval or modernization readiness without the Batch 10+ ledger/report/candidate/runtime/eval layers.
+- The full unittest suite exceeded the old exact 10-minute wrapper limit in Batch 9: 560 tests took 809.106s. Use `timeout_ms: 900000` for full unittest unless the suite is optimized or split.
 - Track 10 Task 24 Batch 8 proves only foundation plus trace/redaction/dataset/grader/judge contract shape. Metrics, scorecards, candidates, reports, CLI, runtime integration, lifecycle wording, fixture/transcript eval coverage and final docs/full verification still require later batches before full metrics-loop use.
 - Root control-plane files are initialized manually for this repository; generated target-project assets still remain staged-first and approval-bound.
 <!-- product-agent-os:end runlog -->

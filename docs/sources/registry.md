@@ -2788,3 +2788,15 @@ relevance: "Track 10 Task 24 Batch 8 implementation evidence before metric aggre
 trust_level: "high"
 verification_status: "Backed by focused RED/GREEN tests: Batch 8 imports failed before implementation, then `python -m unittest tests.product_agent_os.test_agent_skill_metrics -v` ran 11 tests with OK. Adjacent status/dashboard, template/automation and fixture/transcript runner suites ran 22, 87 and 21 tests with OK; full unittest ran 554 tests with OK using timeout_ms 600000; fixture eval, transcript eval, Codex compatibility, docs check and git diff hygiene exited 0."
 ```
+
+```yaml
+title: "Product-Agent OS Track 10 self-verification metrics-loop Batch 9 metrics scorecards confidence cadence contracts"
+url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py; tests/product_agent_os/test_agent_skill_metrics.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
+type: "internal documentation"
+status: "checked-in project source"
+checked_at: "2026-05-28"
+summary: "T10-SV-M17..M28 Batch 9 coverage for Task 24 Self-Verification And Modernization Loop, including metric aggregation sections, repeatability metrics, guarded scorecards, Wilson confidence gates, cadence recommendation and redacted run records."
+relevance: "Track 10 Task 24 Batch 9 implementation evidence before scorecard ledger, report/CLI, runtime integration, lifecycle/eval coverage and final documentation batches."
+trust_level: "high"
+verification_status: "Backed by focused RED/GREEN tests: Batch 9 imports failed before implementation, then `python -m unittest tests.product_agent_os.test_agent_skill_metrics -v` ran 17 tests with OK. Adjacent status/dashboard, template/automation and fixture/transcript runner suites ran 28, 87 and 21 tests with OK; full unittest ran 560 tests with OK in 809.106s using timeout_ms 900000; fixture eval, transcript eval, Codex compatibility, docs check and git diff hygiene exited 0."
+```

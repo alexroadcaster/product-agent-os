@@ -29,7 +29,9 @@ This backlog tracks deferred and follow-up work for Track 10 `Task 23: Guided Qu
 | `done` | Batch 7 focused and full verification evidence | `test_agent_skill_metrics` failed before implementation on missing module and stale evidence support, then ran 5 tests with `OK`; adjacent status/dashboard/template/automation checks ran 103 tests with `OK`; full unittest ran 548 tests with `OK`; fixture eval, transcript eval, Codex compatibility, docs check and `git diff --check` exited `0`. |
 | `done` | Task 24 Batch 8 `T10-SV-M5..M16` | Added trace normalization, metrics redaction gate blocking, evidence dataset builder, dataset quality gates, local grader summary and judge calibration summary in `agent_skill_metrics.py`. |
 | `done` | Batch 8 focused and full verification evidence | Batch 8 RED failed on missing imports, then focused tests ran 11 tests with `OK`; adjacent status/dashboard, template/automation and slow fixture/transcript runner checks ran 22, 87 and 21 tests with `OK`; full unittest ran 554 tests with `OK`; fixture eval, transcript eval, Codex compatibility, docs check and `git diff --check` exited `0`. |
-| `queued` | Task 24 Batch 9 | Metrics, scorecards, confidence and cadence remain next. |
+| `done` | Task 24 Batch 9 `T10-SV-M17..M28` | Added metric aggregation, repeatability metrics, guarded scorecards, confidence/decision gates, cadence recommendation and deterministic redacted run records in `agent_skill_metrics.py`. |
+| `done` | Batch 9 focused and full verification evidence | Batch 9 RED failed on missing imports, then focused tests ran 17 tests with `OK`; adjacent status/dashboard, template/automation and slow fixture/transcript runner checks ran 28, 87 and 21 tests with `OK`; full unittest ran 560 tests with `OK` in 809.106s using `timeout_ms: 900000`; fixture eval, transcript eval, Codex compatibility, docs check and `git diff --check` exited `0`. |
+| `queued` | Task 24 Batch 10 | Ledger, reports, candidates and CLI remain next. |
 
 ## Deferred
 

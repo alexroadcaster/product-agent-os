@@ -19,7 +19,7 @@ Generated at: 2026-05-27
 - Track 10 implementation plan is staged in `docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md`.
 - Task 22 final Track 9 documentation sync is closed in docs, source registry, READMEs and root control-plane scope; final verification evidence is recorded in `TEST.md` and `RUNLOG.md`.
 - Track 10 `Task 23: Guided Question Protocol And Project Status Dashboard` is implemented and fully verified through Batch 6 `T10-Q-M23..M25`: `question_queue_contract_present`, `status_snapshot_present`, `status_dashboard_present`, `dashboard_no_external_assets`, `question_budget_false_positive_guard_present`, `dashboard_not_source_of_truth`, and `stale_evidence_no_success_claim` are now the eval/docs/skills contract.
-- Track 10 `Task 24: Self-Verification And Modernization Loop` is staged in the Track 10 plan with description, reuse-first guardrails, matrix `T10-SV-M-1..M62` and batches 7-12. Batch 7 foundation/registry and Batch 8 trace/redaction/dataset/judge contracts are implemented with read-only `agent_skill_metrics.py` contracts and focused RED/GREEN tests.
+- Track 10 `Task 24: Self-Verification And Modernization Loop` is staged in the Track 10 plan with description, reuse-first guardrails, matrix `T10-SV-M-1..M62` and batches 7-12. Batch 7 foundation/registry, Batch 8 trace/redaction/dataset/judge contracts and Batch 9 metrics/scorecards/confidence/cadence contracts are implemented with read-only `agent_skill_metrics.py` contracts and focused RED/GREEN tests.
 - Commit/push/PR remains explicit-only after Batch 6; no `git add`, `git commit`, `git push` or PR creation was executed.
 
 ## Architecture Boundary
@@ -54,7 +54,7 @@ Generated at: 2026-05-27
 | 16 | `Task 21` runtime runner expansion `T9-R-M16..M25` | `done` | CLI/validator, generated control-plane/eval/handoff, compatibility, status mapping, bridge, taxonomy and ownership guards |
 | 17 | `Task 22` final Track 9 documentation sync | `done` | Product-Agent OS docs, source registry/backlog closure and final Track 9 verification |
 | 18 | Track 10 `Task 23` guided questions and status dashboard | `verified-no-commit` | Typed question protocol, answer ledger, status snapshot, staged offline HTML dashboard, behavioral/transcript evals, lifecycle skill wording, docs/source registry sync and full Batch 6 verification |
-| 19 | Track 10 `Task 24` self-verification and modernization loop | `batch8-focused-green` | Reuse-first metrics loop foundation, target registry, source-priority policy, evidence intake, packet bounds, trace normalization, redaction gates, dataset quality, local grader summaries and judge calibration are implemented; metrics, report/CLI, runtime/lifecycle/eval integration and full verification remain queued |
+| 19 | Track 10 `Task 24` self-verification and modernization loop | `batch9-verified-no-commit` | Reuse-first metrics loop foundation, trace/redaction/dataset/judge contracts, metric aggregation, repeatability, scorecards, confidence gates, cadence recommendations and redacted run records are implemented; ledger/report/candidate/CLI and runtime/lifecycle/eval integration remain queued |
 
 ## Track 10 Handoff
 
@@ -69,6 +69,7 @@ Generated at: 2026-05-27
 - Task 24 must modernize existing Product-Agent OS surfaces before adding new subsystems: reuse redaction, guided question protocol, status snapshot/dashboard, automation policy, runtime contracts/routes, fixture eval runner, transcript eval runner and agentic workflow artifacts.
 - Task 24 Batch 7 implements only foundation/registry surfaces: source-priority policy, target registry collection, explicit evidence intake, stale/failed/accepted-gap markers, generated-view exclusions and deterministic packet bounds. It does not add report rendering, CLI staging, runtime route fields, automation candidates or active schedules.
 - Task 24 Batch 8 implements only trace/redaction/dataset/grader/judge contract surfaces: portable trace normalization, metrics redaction blocking, stratified evidence datasets, dataset quality blockers, local grader summaries and judge calibration blocking. It does not add metric aggregation, scorecards, report rendering, CLI staging, runtime route fields, automation candidates or active schedules.
+- Task 24 Batch 9 implements only metrics/scorecard/confidence/cadence contract surfaces: sectioned metric aggregation, repeatability calculations, guarded scorecards, confidence and decision gates, cadence recommendation and deterministic redacted run records. It does not add scorecard ledger templates, report rendering, CLI staging, runtime route fields, lifecycle wording, fixture eval fields, active automations or external writes.
 - Task 24 non-goals remain: no autonomous mutation, no active schedules, no live eval/model/API calls, no external writes, no dashboard/report-as-source claims and no update candidate without rollback target, owner review and explicit approval state.
 - Task 24 closure requires current focused tests/evals for the metrics loop plus full Product-Agent OS verification; planning rows and matrix presence alone are not implementation evidence.
 

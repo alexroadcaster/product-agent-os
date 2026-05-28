@@ -11,15 +11,21 @@ sys.path.insert(0, str(SCRIPTS))
 
 from product_agent_os.agent_skill_metrics import (  # noqa: E402
     METRICS_PACKET_LIMITS,
+    build_metric_aggregation,
     build_evidence_packet,
     build_evidence_dataset,
     build_grader_run_summary,
     build_judge_calibration_summary,
     build_metrics_packet,
+    build_metrics_run_record,
     build_trace_packet,
+    calculate_repeatability_metrics,
+    calculate_scorecards,
     collect_target_registry,
     enforce_metrics_redaction_gate,
     evaluate_dataset_quality,
+    evaluate_confidence_and_decision_gates,
+    recommend_metrics_cadence,
     source_priority_policy,
 )
 
@@ -355,6 +361,323 @@ class AgentSkillMetricsTest(unittest.TestCase):
 
         self.assertEqual(calibrated["status"], "calibrated")
         self.assertFalse(calibrated["blocks_candidate_approval"])
+
+    def test_metric_aggregation_emits_required_sections_with_raw_counts(self):
+        metrics = build_metric_aggregation(
+            outcome_records=[
+                {
+                    "task_success": True,
+                    "regression_free": True,
+                    "final_state_correct": True,
+                    "false_pass": False,
+                    "false_fail": False,
+                },
+                {
+                    "task_success": False,
+                    "regression_free": False,
+                    "final_state_correct": False,
+                    "false_pass": True,
+                    "false_fail": False,
+                },
+            ],
+            trajectory_records=[
+                {
+                    "tool_selection_correct": True,
+                    "tool_argument_correct": True,
+                    "trace_complete": True,
+                    "replayable_trace": True,
+                },
+                {
+                    "tool_selection_correct": True,
+                    "tool_argument_correct": False,
+                    "trace_complete": False,
+                    "replayable_trace": False,
+                },
+            ],
+            reliability_records=[
+                {"flake": False, "replay_success": True, "repeated_run_instability": False},
+                {"flake": True, "replay_success": False, "repeated_run_instability": True},
+            ],
+            skill_records=[
+                {"skill_expected": True, "skill_triggered": True, "skill_adhered": True},
+                {"skill_expected": True, "skill_triggered": False, "skill_adhered": False},
+            ],
+            cost_latency_records=[
+                {"cost_usd": 0.20, "baseline_cost_usd": 0.25, "latency_ms": 800},
+                {"cost_usd": 0.30, "baseline_cost_usd": 0.20, "latency_ms": 1200},
+            ],
+            safety_records=[
+                {"instruction_violation": False, "approval_violation": False},
+                {"instruction_violation": True, "approval_violation": False},
+            ],
+        )
+
+        self.assertEqual(metrics["schema_version"], 1)
+        self.assertEqual(metrics["write_policy"], "read_only")
+        expected_sections = {
+            "outcome",
+            "trajectory",
+            "harness_reliability",
+            "harness_optimizer",
+            "skill",
+            "cost_latency",
+            "safety",
+        }
+        self.assertEqual(set(metrics["sections"]), expected_sections)
+        for section in metrics["sections"].values():
+            for metric in section["metrics"].values():
+                with self.subTest(metric=metric["metric_id"]):
+                    self.assertIn("numerator", metric)
+                    self.assertIn("denominator", metric)
+                    self.assertIn(metric["status"], {"ready", "insufficient_data"})
+        self.assertEqual(metrics["sections"]["outcome"]["metrics"]["task_success_rate"]["numerator"], 1)
+        self.assertEqual(metrics["sections"]["outcome"]["metrics"]["task_success_rate"]["denominator"], 2)
+        self.assertEqual(metrics["sections"]["trajectory"]["metrics"]["tool_argument_accuracy"]["numerator"], 1)
+        self.assertEqual(metrics["sections"]["trajectory"]["metrics"]["trace_completeness"]["value"], 0.5)
+        self.assertEqual(metrics["sections"]["harness_reliability"]["metrics"]["flake_rate"]["value"], 0.5)
+        self.assertEqual(metrics["sections"]["cost_latency"]["metrics"]["total_cost_usd"]["numerator"], 0.5)
+        self.assertEqual(metrics["sections"]["cost_latency"]["metrics"]["p95_latency_ms"]["value"], 1200.0)
+        self.assertEqual(metrics["sections"]["safety"]["metrics"]["instruction_violation_rate"]["numerator"], 1)
+
+    def test_repeatability_metrics_block_single_lucky_run_promotion(self):
+        repeatability = calculate_repeatability_metrics(
+            replay_cases=[
+                {
+                    "case_id": "stable-pass",
+                    "runs": [
+                        {"passed": True, "replay_success": True},
+                        {"passed": True, "replay_success": True},
+                        {"passed": True, "replay_success": True},
+                    ],
+                },
+                {
+                    "case_id": "unstable",
+                    "runs": [
+                        {"passed": True, "replay_success": True},
+                        {"passed": False, "replay_success": False},
+                        {"passed": True, "replay_success": True},
+                    ],
+                },
+            ],
+            k=3,
+        )
+
+        self.assertEqual(repeatability["status"], "ready")
+        self.assertEqual(repeatability["metrics"]["pass_at_k"]["numerator"], 2)
+        self.assertEqual(repeatability["metrics"]["pass_at_k"]["denominator"], 2)
+        self.assertEqual(repeatability["metrics"]["pass_power_k"]["numerator"], 1)
+        self.assertEqual(repeatability["metrics"]["pass_power_k"]["denominator"], 2)
+        self.assertEqual(repeatability["metrics"]["repeated_run_instability"]["value"], 0.5)
+        self.assertEqual(repeatability["promotion_policy"]["single_success_promotion"], "blocked")
+
+        lucky = calculate_repeatability_metrics(
+            replay_cases=[{"case_id": "lucky", "runs": [{"passed": True, "replay_success": True}]}],
+            k=3,
+        )
+
+        self.assertEqual(lucky["status"], "insufficient_replay_evidence")
+        self.assertIn("single_lucky_run", lucky["insufficient_reasons"])
+        self.assertEqual(lucky["promotion_policy"]["decision"], "blocked_single_lucky_run")
+
+    def test_scorecards_use_weights_and_do_not_hide_guardrail_regressions(self):
+        metrics = build_metric_aggregation(
+            outcome_records=[
+                {"task_success": True, "regression_free": True, "final_state_correct": True, "false_pass": False},
+                {"task_success": True, "regression_free": True, "final_state_correct": True, "false_pass": False},
+            ],
+            trajectory_records=[
+                {"tool_selection_correct": True, "tool_argument_correct": True, "trace_complete": True},
+                {"tool_selection_correct": True, "tool_argument_correct": True, "trace_complete": True},
+            ],
+            reliability_records=[
+                {"flake": False, "replay_success": True},
+                {"flake": False, "replay_success": True},
+            ],
+            skill_records=[
+                {"skill_expected": True, "skill_triggered": True, "skill_adhered": True},
+                {"skill_expected": True, "skill_triggered": True, "skill_adhered": True},
+            ],
+            cost_latency_records=[
+                {"cost_usd": 0.10, "baseline_cost_usd": 0.20, "latency_ms": 500},
+                {"cost_usd": 0.10, "baseline_cost_usd": 0.20, "latency_ms": 600},
+            ],
+            safety_records=[
+                {"instruction_violation": False, "approval_violation": False},
+                {"instruction_violation": True, "approval_violation": False},
+            ],
+        )
+
+        scorecards = calculate_scorecards(metric_packet=metrics)
+
+        self.assertEqual(scorecards["schema_version"], 1)
+        self.assertIn("harness_quality_score", scorecards["scorecards"])
+        self.assertIn("agentic_task_score", scorecards["scorecards"])
+        self.assertIn("harness_optimization_score", scorecards["scorecards"])
+        for scorecard in scorecards["scorecards"].values():
+            with self.subTest(scorecard=scorecard["scorecard_id"]):
+                self.assertIn("weights", scorecard)
+                self.assertGreaterEqual(scorecard["score"], 0.0)
+                self.assertLessEqual(scorecard["score"], 1.0)
+        self.assertEqual(scorecards["overall_status"], "blocked_by_guardrail")
+        self.assertIn("safety_violation", scorecards["guardrail_blockers"])
+        self.assertIn("instruction_violation_rate", scorecards["guardrail_metrics"])
+
+        missing = calculate_scorecards(metric_packet=build_metric_aggregation())
+        self.assertEqual(missing["overall_status"], "insufficient_data")
+        self.assertIn("missing_data", missing["scorecards"]["harness_quality_score"])
+
+    def test_confidence_and_decision_gates_require_statistical_and_safety_evidence(self):
+        current = build_metric_aggregation(
+            outcome_records=[
+                {
+                    "task_success": index < 48,
+                    "regression_free": True,
+                    "final_state_correct": index < 48,
+                    "false_pass": index == 49,
+                }
+                for index in range(50)
+            ],
+            trajectory_records=[
+                {
+                    "tool_selection_correct": True,
+                    "tool_argument_correct": True,
+                    "trace_complete": index < 49,
+                    "replayable_trace": True,
+                }
+                for index in range(50)
+            ],
+            reliability_records=[{"flake": index == 49, "replay_success": True} for index in range(50)],
+            cost_latency_records=[{"cost_usd": 0.10, "baseline_cost_usd": 0.11, "latency_ms": 500} for _ in range(50)],
+            safety_records=[{"instruction_violation": False, "approval_violation": False} for _ in range(50)],
+        )
+        baseline = build_metric_aggregation(
+            outcome_records=[{"task_success": index < 43, "regression_free": True} for index in range(50)],
+            trajectory_records=[{"trace_complete": True} for _ in range(50)],
+            reliability_records=[{"flake": False} for _ in range(50)],
+            cost_latency_records=[{"cost_usd": 0.11, "baseline_cost_usd": 0.11, "latency_ms": 500} for _ in range(50)],
+            safety_records=[{"instruction_violation": False, "approval_violation": False} for _ in range(50)],
+        )
+
+        decision = evaluate_confidence_and_decision_gates(
+            current_metric_packet=current,
+            baseline_metric_packet=baseline,
+            owner_review_status="owner_reviewed",
+        )
+
+        self.assertEqual(decision["decision_status"], "weekly_acceptance_ready")
+        self.assertGreater(decision["statistical_evidence"]["task_success_rate"]["wilson_lower_bound"], 0.85)
+        self.assertGreater(decision["statistical_evidence"]["task_success_rate"]["delta_vs_baseline"], 0)
+        self.assertEqual(decision["blockers"], [])
+
+        blocked = evaluate_confidence_and_decision_gates(
+            current_metric_packet=current,
+            baseline_metric_packet=baseline,
+            owner_review_status="missing",
+            critical_regressions=["approval-policy-regression"],
+            thresholds={"max_false_pass_rate": 0.0, "max_flake_rate": 0.0, "max_cost_regression_rate": 0.0},
+        )
+
+        self.assertEqual(blocked["decision_status"], "blocked_by_gate")
+        self.assertIn("critical_regression", blocked["blockers"])
+        self.assertIn("owner_review_or_gap_missing", blocked["blockers"])
+        self.assertIn("false_pass_threshold_exceeded", blocked["blockers"])
+        self.assertIn("flake_threshold_exceeded", blocked["blockers"])
+
+    def test_cadence_recommender_routes_levels_without_creating_active_schedules(self):
+        high_risk = recommend_metrics_cadence(
+            target={
+                "target_id": "automation_candidate:daily-metrics",
+                "risk_level": "high",
+                "usage_volume": "high",
+                "tool_permission_level": "approval_bound",
+                "production_impact": True,
+                "target_type": "automation_candidate",
+            },
+            metrics_summary={"flake_rate": 0.2, "trace_completeness": 0.5},
+        )
+
+        self.assertEqual(high_risk["cadence_level"], "L3")
+        self.assertEqual(high_risk["schedule_policy"], "suggested_only")
+        self.assertEqual(high_risk["active_schedule_status"], "approval_required")
+        self.assertIn("daily", high_risk["recommended_cadence"])
+        self.assertIn("incident_triggered", high_risk["recommended_cadence"])
+
+        low_risk = recommend_metrics_cadence(
+            target={
+                "target_id": "skill:docs-maintainer",
+                "risk_level": "low",
+                "usage_volume": "low",
+                "tool_permission_level": "read_only",
+                "production_impact": False,
+            },
+            metrics_summary={"flake_rate": 0.0, "trace_completeness": 1.0},
+        )
+        self.assertEqual(low_risk["cadence_level"], "L0")
+        self.assertEqual(low_risk["recommended_cadence"], ["on_change"])
+
+        override = recommend_metrics_cadence(target=low_risk["target"], metrics_summary={}, owner_override="L1")
+        self.assertEqual(override["cadence_level"], "L1")
+        self.assertIn("owner_override", override["reasons"])
+
+    def test_run_record_builder_redacts_evidence_and_rejects_dashboard_as_source(self):
+        kwargs = {
+            "run_id": "run-batch-9",
+            "generated_at": "2026-05-28T12:00:00Z",
+            "cadence": {"cadence_level": "L2", "recommended_cadence": ["weekly", "on_change"]},
+            "window": {"started_at": "2026-05-28T00:00:00Z", "ended_at": "2026-05-28T12:00:00Z"},
+            "dataset_split": "holdout",
+            "target": {"target_id": "skill:review-slice", "version": "1.2.0"},
+            "versions": {"plugin": "0.1.0", "harness": "2026.05.28"},
+            "model": "gpt-5",
+            "reasoning_effort": "medium",
+            "repo_sha": "",
+            "repo_sha_gap": {"owner": "Release", "reason": "workspace has no git remote in fixture"},
+            "environment": {"os": "Windows", "workspace": "C:\\Users\\person\\private-project"},
+            "trace_metadata": {"trace_id": "trace-1", "trace_source_type": "agents_sdk"},
+            "artifacts": [
+                {"artifact_id": "eval-report", "source_type": "eval_packet", "path": ".codex/eval-reports/eval.json"},
+                {"artifact_id": "dashboard", "source_type": "status_dashboard_html", "path": ".codex/status.html"},
+            ],
+            "scores": {"harness_quality_score": 0.91},
+            "statistical_evidence": {"task_success_rate": {"wilson_lower_bound": 0.88}},
+            "cost_latency": {"total_cost_usd": 0.5, "p95_latency_ms": 1200},
+            "update_decision": {"decision": "keep_current", "reason": "no approved candidate"},
+            "review": {"owner_review_status": "owner_reviewed", "reviewer": "Quality"},
+            "evidence": {"raw_prompt": "secret prompt TOKEN=abc123", "summary": "safe"},
+        }
+
+        first = build_metrics_run_record(**kwargs)
+        second = build_metrics_run_record(**kwargs)
+        serialized = json.dumps(first, sort_keys=True)
+
+        self.assertEqual(first, second)
+        self.assertEqual(first["schema_version"], 1)
+        self.assertEqual(first["write_policy"], "read_only")
+        self.assertEqual(first["repo"]["repo_sha_status"], "accepted_gap")
+        self.assertEqual(first["run_id"], "run-batch-9")
+        for key in [
+            "cadence",
+            "window",
+            "dataset_split",
+            "target",
+            "versions",
+            "model",
+            "reasoning_effort",
+            "environment",
+            "trace_metadata",
+            "artifacts",
+            "scores",
+            "statistical_evidence",
+            "cost_latency",
+            "update_decision",
+            "review",
+        ]:
+            self.assertIn(key, first)
+        self.assertEqual(first["artifact_policy"]["dashboard_as_source_claim"], "rejected")
+        self.assertEqual(first["excluded_artifacts"][0]["source_type"], "status_dashboard_html")
+        self.assertNotIn("C:\\Users\\person", serialized)
+        self.assertNotIn("TOKEN=abc123", serialized)
+        self.assertNotIn("secret prompt", serialized.lower())
 
     def _write(self, path: Path, text: str) -> None:
         path.parent.mkdir(parents=True, exist_ok=True)

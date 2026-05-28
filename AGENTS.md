@@ -145,10 +145,12 @@ if (-not [string]::IsNullOrEmpty($pathValue)) {
 - Track 10 Task 24 Batch 7 baseline was refreshed on 2026-05-28: RED checks failed first on missing `product_agent_os.agent_skill_metrics`, then `python -m unittest tests.product_agent_os.test_agent_skill_metrics -v` ran 5 tests with `OK`; reuse-first adjacent checks for status snapshot/dashboard, templates and automation policy ran 103 tests with `OK`; full unittest ran 548 tests with `OK`; fixture eval, transcript eval, Codex compatibility, docs check and `git diff --check` exited `0`.
 - Track 10 Task 24 Batch 8 Trace, Redaction, Dataset And Judge Contracts is implemented through `T10-SV-M5..M16`: `agent_skill_metrics.py` now provides portable trace normalization, metrics redaction blocking, evidence dataset building, dataset quality gates, local grader summaries and judge calibration blocking.
 - Track 10 Task 24 Batch 8 baseline was refreshed on 2026-05-28: RED failed first on missing Batch 8 imports, then `python -m unittest tests.product_agent_os.test_agent_skill_metrics -v` ran 11 tests with `OK`; adjacent checks ran 22, 87 and 21 tests with `OK`; full unittest ran 554 tests with `OK`; fixture eval, transcript eval, Codex compatibility, docs check and `git diff --check` exited `0`.
+- Track 10 Task 24 Batch 9 Metrics, Scorecards, Confidence And Cadence is implemented through `T10-SV-M17..M28`: `agent_skill_metrics.py` now provides metric aggregation, repeatability metrics, scorecards, confidence/decision gates, cadence recommendations and deterministic redacted run records.
+- Track 10 Task 24 Batch 9 baseline was refreshed on 2026-05-28: RED failed first on missing Batch 9 imports, then `python -m unittest tests.product_agent_os.test_agent_skill_metrics -v` ran 17 tests with `OK`; adjacent checks ran 28, 87 and 21 tests with `OK`; full unittest ran 560 tests with `OK` using `timeout_ms: 900000` because the run took 809.106s; fixture eval, transcript eval, Codex compatibility, docs check and `git diff --check` exited `0`.
 - Track 9 methodology intelligence design is captured in `docs/superpowers/specs/2026-05-25-track-9-methodology-intelligence-design.md`.
 - Track 9 implementation plan is captured in `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`.
 - Track 10 implementation plan is captured in `docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md` and includes `Task 23: Guided Question Protocol And Project Status Dashboard` plus `Task 24: Self-Verification And Modernization Loop`.
-- Next Product-Agent OS action is Task 24 Batch 9 metrics, scorecards, confidence and cadence, or request commit/push/PR for the current staged changes.
+- Next Product-Agent OS action is Task 24 Batch 10 ledger, reports, candidates and CLI, or request commit/push/PR for the current staged changes.
 
 ## Source and insight policy
 
@@ -172,7 +174,7 @@ python -m unittest discover -s tests -p "test_*.py" -v
 python plugins\product-agent-os\scripts\run_fixture_eval.py
 ```
 
-When running the full unittest command from Codex App or another tool wrapper, set the command timeout to at least 10 minutes (`timeout_ms: 600000`). Do not run this full unittest command with a short default timeout in a parallel verification batch; the suite currently takes about 8 minutes and short timeouts cause duplicate reruns.
+When running the full unittest command from Codex App or another tool wrapper, set the command timeout to at least 15 minutes (`timeout_ms: 900000`). Do not run this full unittest command with a short default timeout or exact 10-minute timeout in a parallel verification batch; the suite took 809.106s in Track 10 Task 24 Batch 9 and shorter timeouts cause duplicate reruns.
 
 After changing navigation, Mermaid diagrams, Markdown extensions, or MkDocs configuration, also run:
 

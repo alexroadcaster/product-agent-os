@@ -6,6 +6,12 @@ Generated at: 2026-05-27
 
 ## Current Baseline
 
+- Track 10 Task 24 Batch 9 status: `T10-SV-M17..M28` is implemented for metric aggregation, repeatability, scorecard, confidence/gate, cadence and run-record contract surfaces in `agent_skill_metrics.py`; later ledger/report/candidate/CLI, runtime/lifecycle/eval and final docs batches remain queued.
+- Track 10 Task 24 Batch 9 RED evidence: `python -m unittest tests.product_agent_os.test_agent_skill_metrics -v` failed before implementation with `ImportError: cannot import name 'build_metric_aggregation'`.
+- Track 10 Task 24 Batch 9 focused GREEN evidence: `python -m unittest tests.product_agent_os.test_agent_skill_metrics -v` ran 17 tests with `OK`.
+- Track 10 Task 24 Batch 9 reuse-first adjacent checks: `python -m unittest tests.product_agent_os.test_agent_skill_metrics tests.product_agent_os.test_status_snapshot tests.product_agent_os.test_status_dashboard -v` ran 28 tests with `OK`; `python -m unittest tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_automation_policy -v` ran 87 tests with `OK`; `python -m unittest tests.product_agent_os.test_fixture_eval_runner tests.product_agent_os.test_transcript_session_evals -v` ran 21 tests with `OK` using a long wrapper timeout.
+- Track 10 Task 24 Batch 9 full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 560 tests with `OK` in 809.106s using `timeout_ms: 900000`.
+- Track 10 Task 24 Batch 9 fixture/transcript/compatibility/docs/diff checks: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0` with `renderer_file_count: 187`; transcript eval exited `0` with 10 sessions and 0 failures; Codex compatibility returned `status: compatible`; `python tools\check_docs.py` passed; `git diff --check` exited `0`.
 - Track 10 Task 24 Batch 8 status: `T10-SV-M5..M16` is implemented for trace/redaction/dataset/grader/judge contract surfaces in `agent_skill_metrics.py`; later metrics, report/CLI, runtime/lifecycle/eval and docs/full-verification batches remain queued.
 - Track 10 Task 24 Batch 8 RED evidence: `python -m unittest tests.product_agent_os.test_agent_skill_metrics -v` failed before implementation with `ImportError: cannot import name 'build_evidence_dataset'`.
 - Track 10 Task 24 Batch 8 focused GREEN evidence: `python -m unittest tests.product_agent_os.test_agent_skill_metrics -v` ran 11 tests with `OK`.
@@ -136,7 +142,7 @@ python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-a
 python plugins\product-agent-os\scripts\validate_codex_compatibility.py
 ```
 
-Codex App/tool timeout: run the full unittest command with at least 10 minutes of command wait time (`timeout_ms: 600000`). The current full suite can take about 8 minutes, so shorter tool timeouts create false timeouts and duplicate reruns.
+Codex App/tool timeout: run the full unittest command with at least 15 minutes of command wait time (`timeout_ms: 900000`). The current full suite took 809.106s in Track 10 Task 24 Batch 9, so exact 10-minute or shorter tool timeouts create false timeouts and duplicate reruns.
 
 ## Required Checks For Track 10 Implementation
 
@@ -147,7 +153,8 @@ Before Track 10 `Task 23` or `Task 24` implementation:
 - For Batch 5, run focused checks covering fixture eval runner, lifecycle skills, Product-Agent OS docs and transcript/session evals before claiming closure.
 - For Task 24 Batch 7, focused RED/GREEN checks cover target registry, evidence intake, source priority, stale/failed/accepted-gap evidence, metrics packet bounds and reuse-first guardrails.
 - For Task 24 Batch 8, focused RED/GREEN checks cover trace normalization, metrics redaction gate, dataset split/leakage/quality, local grader summaries and judge calibration blocking.
-- For later Task 24 batches, run focused checks for metric aggregation, scorecards, confidence gates, cadence recommendations, scorecard ledger, offline HTML report, CLI staging, automation candidate blocking, runtime packets, lifecycle wording, fixture eval fields and transcript sessions before broad verification.
+- For Task 24 Batch 9, focused RED/GREEN checks cover metric aggregation, repeatability, scorecards, confidence gates, cadence recommendations and run-record redaction.
+- For later Task 24 batches, run focused checks for scorecard ledger, offline HTML report, CLI staging, automation candidate blocking, runtime packets, lifecycle wording, fixture eval fields and transcript sessions before broad verification.
 - Inspect current `discovery.py`, `methodology_audit.py`, `methodology_synthesis.py`, `codex_runtime_runner/contracts.py`, `codex_runtime_runner/routes.py`, `infrastructure.py`, `templates.py`, fixture eval runner, lifecycle skills and docs.
 - Inspect and reuse existing `question_protocol.py`, `status_snapshot.py`, `status_dashboard.py`, `automation_policy.py`, `codex_runtime_runner/redaction.py`, `agent-eval-workflow.md`, `skill-promotion-record.md`, `trace-evidence-packet.md`, `eval-run-report.md` and `automation-candidate.md` before adding Task 24 code.
 
@@ -162,7 +169,7 @@ python tools\check_docs.py
 git diff --check
 ```
 
-Use the same 10-minute minimum command timeout (`timeout_ms: 600000`) for the full unittest command here.
+Use the same 15-minute minimum command timeout (`timeout_ms: 900000`) for the full unittest command here.
 
 ## Track 9 Section Verification Protocol
 
@@ -187,7 +194,7 @@ python plugins\product-agent-os\scripts\validate_codex_compatibility.py
 python tools\check_docs.py
 ```
 
-Use the same 10-minute minimum command timeout (`timeout_ms: 600000`) for the full unittest command here.
+Use the same 15-minute minimum command timeout (`timeout_ms: 900000`) for the full unittest command here.
 
 ## Completed Focused Checks For T8-C
 
