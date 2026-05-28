@@ -37,6 +37,7 @@ Generated at: 2026-05-27
 - Track 9 methodology intelligence plan: authored in `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`.
 - Track 9 foundation, `T9-D1` Business/Product, `T9-D2` Requirements/Domain, `T9-D3` Solution Architecture, `T9-D4` Quality/Testing/Evals, `T9-D5` Codex/Agentic Workflow, `T9-D6` Frontend, `T9-D7` Backend, `T9-D8` API & Integrations, `T9-D9` Database & Data, `T9-D10` LLM / AI / RAG, `T9-D11` Security, Privacy & Compliance, `T9-D12` Delivery, Release & Operations, `T9-S` Task 20 Cross-Domain Synthesis and `T9-R` Task 21 Runtime Runner And Finish Options through `M25`: implemented.
 - Track 10 guided questions and status dashboard: Task 23 `T10-Q-M15..M22` is implemented for fixture eval, lifecycle skill, behavioral/transcript eval, docs, README, source registry and root control-plane coverage; Batch 6 `T10-Q-M23..M25` full verification is complete.
+- Track 10 self-verification and modernization loop: Task 24 is staged as planning/matrix only; implementation evals are required before any `agent_skill_metrics_loop` completion claim.
 
 ## Track 9 Methodology Intelligence Evals
 
@@ -68,6 +69,15 @@ Generated at: 2026-05-27
 - Current verification evidence: full unittest ran 543 tests with `OK`; fixture eval exited `0` with `renderer_file_count: 187`; transcript eval exited `0` with 10 sessions and 0 failures; Codex compatibility returned `status: compatible`; docs check, strict MkDocs and `git diff --check` exited `0`.
 - Approval boundary: question ledgers, snapshots and dashboards are staged artifacts; they must not silently mutate a target workspace, activate hooks/automation or become a database/source of truth.
 - Residual risk: guided questions and dashboards can structure progress, but they do not prove product decisions, implementation evidence or owner approvals are semantically sufficient for a real project.
+
+## Track 10 Self-Verification And Modernization Evals
+
+- Status: Task 24 is planned but not implemented. Matrix rows `T10-SV-M-1..M62` and guardrails `T10-SV-G1..G6` define the expected eval contract.
+- Required fixture fields: `agent_skill_metrics_loop_contract_present`, `metrics_report_redacted`, `trace_normalization_contract_present`, `judge_calibration_gate_present`, `scorecard_ledger_contract_present`, `source_priority_contract_present`, `metrics_packet_bounds_present`, `trace_data_classification_gate_present`, `offline_artifact_safety_shared`, `no_baseline_renderer_pollution`, `update_candidate_rollback_required`, `active_metrics_automation_blocked` and `metrics_loop_false_positive_guards_present`.
+- Required behavioral/transcript coverage: forbid headline-metric-only approval, self-applied updates, active automation, live eval calls, dashboard/report success claims, raw trace leakage, uncalibrated judge approval and update candidates without rollback.
+- Source boundary: explicit control-plane artifacts, run records, trace/eval packets and accepted gaps are evidence; dashboard/report HTML, memory, raw chat logs and unsupported community claims are not source of truth.
+- Approval boundary: self-verification can stage scorecards, reports and modernization candidates only; it cannot apply patches, mutate target workspaces, activate schedules, call live model/eval services or approve itself.
+- Residual risk: metrics and scorecards prove evidence shape and thresholds for local synthetic or recorded evidence, not semantic sufficiency of a real project without owner review.
 
 ## Business Product Evals
 

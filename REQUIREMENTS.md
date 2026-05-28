@@ -11,12 +11,12 @@ Generated at: 2026-05-27
 
 ## Current Slice
 
-- Last completed slice before this run: Track 10 Task 23 Batch 5 `T10-Q-M15..M22` guided question/status dashboard implementation.
+- Last completed slice before this run: Track 10 Task 23 Batch 6 `T10-Q-M23..M25` full verification and explicit-only commit boundary.
 - Active planning artifact: `docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md`.
-- Staged next-track artifact: none recorded yet.
-- Current slice: Track 10 Task 23 Batch 6 full verification `T10-Q-M23..M25`. Commit/push/PR remains explicit-only and was not executed.
+- Staged next-track artifact: Track 10 `Task 24: Self-Verification And Modernization Loop` with matrix `T10-SV-M-1..M62`, guardrails `T10-SV-G1..G6` and batches 7-12.
+- Current slice: Task 24 planning and root system-file sync. Task 24 implementation has not started; commit/push/PR remains explicit-only and was not executed.
 - Current route: long-running plugin/skill/docs/evals work.
-- Scenario status: Track 9 foundation, all 12 methodology domains through `T9-D12`, Task 20 Cross-Domain Synthesis through `T9-S-M14`, Task 21 runtime runner/finish-options through `T9-R-M25`, Task 22 final documentation sync closure, and Track 10 Task 23 full verification are the current acceptance baseline.
+- Scenario status: Track 9 foundation, all 12 methodology domains through `T9-D12`, Task 20 Cross-Domain Synthesis through `T9-S-M14`, Task 21 runtime runner/finish-options through `T9-R-M25`, Task 22 final documentation sync closure, Track 10 Task 23 full verification and staged Task 24 matrix/batch planning are the current acceptance baseline.
 
 ## Scope
 
@@ -35,6 +35,7 @@ Generated at: 2026-05-27
 - Do not force DDD/FSD/docs tooling where the workspace does not justify it.
 - Do not mutate target workspaces directly from Track 3 renderer; use dry-run/staged output and approval boundaries.
 - Do not treat Track 10 guided questions, answer ledger, status snapshot or HTML dashboard as workspace evidence, approval, automation, or source of truth. Task 23 implementation is verified, but generated artifacts remain staged-first and approval-bound.
+- Do not treat Task 24 scorecards, reports, eval packets, modernization candidates or automation candidates as approval to rewrite agents, skills, prompt/policy packs, router/tool policies, harness config, schedules or external workflows. Live eval calls, active schedules, Agents SDK apps and external writes remain out of scope without explicit approval.
 
 ## Acceptance Criteria
 
@@ -70,6 +71,9 @@ Generated at: 2026-05-27
 - Task 22 final documentation sync closure acceptance: Track 1-9 acceptance is documented across Product-Agent OS user-facing docs, root/plugin READMEs, `docs/sources/registry.md`, `REQUIREMENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md` and `RUNLOG.md`; the legacy Track 9 `Task 23: Final Verification Baseline` is absorbed into Task 22 final verification evidence.
 - Task 23 guided question protocol and status dashboard is implemented and fully verified through Batch 6 `T10-Q-M23..M25`. Acceptance includes `question_queue_contract_present`, `status_snapshot_present`, `status_dashboard_present`, `dashboard_no_external_assets`, `question_budget_false_positive_guard_present`, `dashboard_not_source_of_truth`, `stale_evidence_no_success_claim`, full unit/fixture/transcript/Codex compatibility/docs/MkDocs/diff hygiene and explicit-only commit boundary.
 - Track 10 dashboard acceptance keeps `.codex/product-agent-os/status.html` and `.codex/product-agent-os/status.json` as staged generated views over JSON/Markdown artifacts, not editable source of truth or success evidence.
+- Task 24 self-verification and modernization planning is staged with description, implementation surfaces, matrix `T10-SV-M-1..M62`, guardrails `T10-SV-G1..G6`, batches 7-12, verification expectations and explicit-only git boundary in the Track 10 plan.
+- Task 24 implementation acceptance is reuse-first: reuse existing redaction, guided question protocol, status snapshot/dashboard, automation policy, runtime contracts/routes, fixture eval runner, transcript eval runner and agentic workflow artifacts; new work is limited to metrics-loop domain logic, report rendering and CLI surfaces.
+- Task 24 must prove source-priority, metrics packet bounds, trace data-classification, shared offline artifact safety, no baseline renderer pollution, redacted report output, scorecard ledger, update-candidate rollback and active-automation blocking before any implementation closure claim.
 - `docs-maintainer` is now a packaged lifecycle skill for requirement IDs, source registry, glossary/ubiquitous-language and traceability docs after the requirements packet exists.
 
 ## Assumptions
@@ -77,4 +81,5 @@ Generated at: 2026-05-27
 - Official OpenAI documentation remains source of truth for Codex App, CLI, IDE extension, subagents, skills, AGENTS.md, memory, sandbox, approvals and MCP.
 - Context7 may be used as retrieval layer, but official status depends on the underlying source.
 - Root control-plane files describe this repository's active Product-Agent OS implementation work, not generated target-project assets.
+- Task 24 planning evidence is not implementation evidence; implementation closure requires current focused tests/evals plus full Product-Agent OS verification proportional to touched files.
 <!-- product-agent-os:end requirements -->

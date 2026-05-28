@@ -6,15 +6,15 @@ Generated at: 2026-05-27
 
 ## Current Lifecycle Marker
 
-`track10_task23_verified_no_commit`
+`track10_task24_planned_system_sync`
 
 ## Latest Completed Slice
 
-Track 10 Task 23 guided question protocol and status dashboard is implemented and fully verified through Batch 6 `T10-Q-M23..M25`. Commit/push/PR remains explicit-only and was not executed.
+Track 10 Task 23 guided question protocol and status dashboard is implemented and fully verified through Batch 6 `T10-Q-M23..M25`. Track 10 Task 24 self-verification and modernization loop is staged as planning/matrix only. Commit/push/PR remains explicit-only and was not executed.
 
 ## Current Active Slice
 
-No active implementation slice is open for Track 10 Task 23. Batch 6 completed full unit, fixture, transcript, Codex compatibility, docs, strict MkDocs and diff hygiene verification; commit/push/PR remains explicit-only.
+Current slice updates root system/control-plane files for Track 10 Task 24 planning. No Task 24 plugin implementation slice is open yet; commit/push/PR remains explicit-only.
 
 ## Latest Planning Artifact
 
@@ -63,6 +63,8 @@ No active implementation slice is open for Track 10 Task 23. Batch 6 completed f
 - Updated lifecycle skills to ask the smallest blocking question only, enforce one blocking question maximum, keep optional questions in the packet, route answers into artifacts or accepted gaps, and treat guided questions as not workspace evidence.
 - Synced Product-Agent OS docs, root README, plugin README, source registry and root control-plane files for Batch 5 dashboard generated-view-only and stale-evidence no-success-claim boundaries.
 - Completed Task 23 Batch 6 `T10-Q-M23..M25` full verification and preserved the explicit-only commit boundary. During verification, synchronized behavioral eval case-count/template tests and replaced unsafe success-claim literals in the dashboard stale-evidence behavioral case.
+- Staged Task 24 `Self-Verification And Modernization Loop` in the Track 10 plan with reuse-first guardrails, source-priority and metrics-packet bounds, trace data-classification, shared offline artifact safety, no baseline renderer pollution, matrix `T10-SV-M-1..M62` and batches 7-12.
+- Synced root system/control-plane files for Task 24 planning: `AGENTS.md`, `REQUIREMENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md` and `RUNLOG.md`. This records planning scope only and does not claim Task 24 implementation.
 
 ### Verification Evidence
 
@@ -76,6 +78,8 @@ No active implementation slice is open for Track 10 Task 23. Batch 6 completed f
 - Track 10 Batch 6 Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
 - Track 10 Batch 6 docs/build/diff hygiene: `python tools\check_docs.py` passed; `$env:PYTHONPATH='C:\tmp\codex_docs_mkdocs'; $env:NO_MKDOCS_2_WARNING='1'; python -m mkdocs build --strict --site-dir .mkdocs_task23_site` exited `0`; disposable `.mkdocs_task23_site` was removed after workspace-bound path verification; `git diff --check` exited `0`.
 - Track 10 Batch 6 explicit-only boundary: no `git add`, `git commit`, `git push` or PR creation was executed.
+- Track 10 Task 24 planning/system-file sync docs check: `python tools\check_docs.py` passed.
+- Track 10 Task 24 planning/system-file sync diff hygiene: `git diff --check` exited `0`.
 - RED checks: focused T9-D6 checks failed as expected before implementation on missing `frontend` gates, audit recommendations, discovery signals, five artifact templates, lifecycle skill routing, behavioral eval coverage and fixture eval check.
 - Focused T9-D6 suite: `python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_discovery tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_behavioral_workflow_evals tests.product_agent_os.test_fixture_eval_runner tests.product_agent_os.test_fixtures -v` ran 200 tests with `OK`.
 - Fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0`; renderer file count is 107 and `frontend_contract_present` is true.
@@ -262,6 +266,7 @@ No active implementation slice is open for Track 10 Task 23. Batch 6 completed f
 - Test-first or eval-first evidence: T9-S M10..M14 checks were implemented with failing-focused tests first, then focused GREEN.
 - Test-first or eval-first evidence: T9-R M16..M25 checks were implemented with failing-focused tests first, then focused GREEN.
 - Documentation impact: root control-plane files, Track 9/10 backlogs and generated control-plane/eval/handoff templates are synchronized through Track 10 Task 23 Batch 6.
+- Task 24 planning impact: the Track 10 plan and root control-plane files now describe the self-verification metrics loop, target registry, evidence/trace intake, dataset quality, grader calibration, scorecards, cadence, ledger, report, staged candidates, runtime/lifecycle/eval coverage and full verification expectations without marking implementation complete.
 - Review outcome: Task 21 runtime runner, Task 22 final documentation sync and Track 10 Task 23 guided question/status dashboard checks are clean through current verification.
 - Task 22 final documentation sync closure: added RED docs tests, synchronized Product-Agent OS docs, root/plugin READMEs, source registry and root control-plane files for Track 1-9 closure. source inventory links: `docs/sources/product-agent-os-pre-track-8-implementation-inventory.md`, `docs/superpowers/specs/2026-05-25-track-9-methodology-intelligence-design.md`, `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`, `docs/sources/product-agent-os-track-9-backlog.md`, `docs/product-agent-os/`, `plugins/product-agent-os/scripts/`, `plugins/product-agent-os/README.md` and root control-plane files.
 - Task 22 final documentation sync closure: legacy Track 9 Task 23 baseline absorbed into Task 22 final verification evidence; Track 10 `Task 23` is now implemented and fully verified through Batch 6.
@@ -269,7 +274,7 @@ No active implementation slice is open for Track 10 Task 23. Batch 6 completed f
 
 ## Next Action
 
-- Await an explicit user request for commit/push/PR or for the next Track 10 slice. Task 23 implementation and full verification are complete without git staging or commit.
+- Next actionable implementation slice is Track 10 Task 24 Batch 7 foundation and registry, starting with focused RED checks for target registry, evidence intake, source priority, metrics packet bounds and reuse-first guardrails. Commit/push/PR remains explicit-only.
 
 ## Residual Risks
 
@@ -302,5 +307,6 @@ No active implementation slice is open for Track 10 Task 23. Batch 6 completed f
 - `T9-R-M7..M14` runtime safety and evidence sync prove high-risk action approval binding, automation maturity blocking, redaction, malformed-packet fallback and current evidence/backlog alignment for synthetic runtime fixtures.
 - `T9-R-M16..M25` runtime expansion proves CLI/validator contract shape, generated control-plane/eval/handoff fields, schema-v1 additive compatibility, status-to-finish-options mapping, cross-domain bridge checks, compact first response, structured high-risk taxonomy and ownership/parallelism routing for synthetic fixtures; it does not prove real-project methodology evidence sufficiency without owner review or accepted gaps.
 - Track 10 Task 23 guided questions and dashboard behavior is verified against local synthetic fixtures and transcript sessions; it still does not prove real-project product decisions, owner approvals or semantic evidence sufficiency without project-owner review.
+- Track 10 Task 24 self-verification is currently a staged planning/matrix artifact only; metrics loop, reports, scorecards, candidates and runtime integration still require implementation, focused evals and full verification before use.
 - Root control-plane files are initialized manually for this repository; generated target-project assets still remain staged-first and approval-bound.
 <!-- product-agent-os:end runlog -->

@@ -19,6 +19,7 @@ Generated at: 2026-05-27
 - Track 10 implementation plan is staged in `docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md`.
 - Task 22 final Track 9 documentation sync is closed in docs, source registry, READMEs and root control-plane scope; final verification evidence is recorded in `TEST.md` and `RUNLOG.md`.
 - Track 10 `Task 23: Guided Question Protocol And Project Status Dashboard` is implemented and fully verified through Batch 6 `T10-Q-M23..M25`: `question_queue_contract_present`, `status_snapshot_present`, `status_dashboard_present`, `dashboard_no_external_assets`, `question_budget_false_positive_guard_present`, `dashboard_not_source_of_truth`, and `stale_evidence_no_success_claim` are now the eval/docs/skills contract.
+- Track 10 `Task 24: Self-Verification And Modernization Loop` is staged in the Track 10 plan with description, reuse-first guardrails, matrix `T10-SV-M-1..M62` and batches 7-12. No Task 24 plugin implementation has started yet.
 - Commit/push/PR remains explicit-only after Batch 6; no `git add`, `git commit`, `git push` or PR creation was executed.
 
 ## Architecture Boundary
@@ -53,6 +54,7 @@ Generated at: 2026-05-27
 | 16 | `Task 21` runtime runner expansion `T9-R-M16..M25` | `done` | CLI/validator, generated control-plane/eval/handoff, compatibility, status mapping, bridge, taxonomy and ownership guards |
 | 17 | `Task 22` final Track 9 documentation sync | `done` | Product-Agent OS docs, source registry/backlog closure and final Track 9 verification |
 | 18 | Track 10 `Task 23` guided questions and status dashboard | `verified-no-commit` | Typed question protocol, answer ledger, status snapshot, staged offline HTML dashboard, behavioral/transcript evals, lifecycle skill wording, docs/source registry sync and full Batch 6 verification |
+| 19 | Track 10 `Task 24` self-verification and modernization loop | `staged-plan` | Reuse-first metrics loop, target registry, evidence/trace intake, dataset quality, grader calibration, scorecards, cadence recommendations, ledger, offline report, staged update candidates, runtime/lifecycle/eval integration and full verification |
 
 ## Track 10 Handoff
 
@@ -63,6 +65,10 @@ Generated at: 2026-05-27
 - Track 10 must preserve staged-first behavior: generated question ledgers, status snapshots and dashboard files are proposed under `.codex/product-agent-os/` and protected by existing approval/merge safety.
 - Track 10 non-goals remain: no standalone server, no database, no live model/API calls, no external writes, no hook/automation activation and no browser-based file editing.
 - Batch 6 closure verifies Task 23 guided question protocol and status dashboard guarantees: compact first response, one blocking question maximum, no broad methodology interview, dashboard generated view only, `dashboard_not_source_of_truth`, `stale_evidence_no_success_claim`, full unit/fixture/transcript/Codex compatibility/docs/MkDocs/diff hygiene and explicit-only commit boundary.
+- Track 10 `Task 24` starts after Task 23 closure and uses the same Track 10 plan. Its batches are Batch 7 foundation/registry, Batch 8 trace/redaction/dataset/judge contracts, Batch 9 metrics/scorecards/confidence/cadence, Batch 10 ledger/reports/candidates/CLI, Batch 11 runtime/discovery/lifecycle/evals and Batch 12 docs/control-plane/full verification.
+- Task 24 must modernize existing Product-Agent OS surfaces before adding new subsystems: reuse redaction, guided question protocol, status snapshot/dashboard, automation policy, runtime contracts/routes, fixture eval runner, transcript eval runner and agentic workflow artifacts.
+- Task 24 non-goals remain: no autonomous mutation, no active schedules, no live eval/model/API calls, no external writes, no dashboard/report-as-source claims and no update candidate without rollback target, owner review and explicit approval state.
+- Task 24 closure requires current focused tests/evals for the metrics loop plus full Product-Agent OS verification; planning rows and matrix presence alone are not implementation evidence.
 
 ## Track 9 Section Implementation Protocol
 

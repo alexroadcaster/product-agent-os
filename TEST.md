@@ -6,6 +6,8 @@ Generated at: 2026-05-27
 
 ## Current Baseline
 
+- Track 10 Task 24 planning/matrix status: `Task 24: Self-Verification And Modernization Loop` is staged in the Track 10 plan with matrix `T10-SV-M-1..M62`, guardrails `T10-SV-G1..G6` and batches 7-12; no Task 24 plugin implementation evidence is claimed yet.
+- Track 10 Task 24 root system-file sync verification: `python tools\check_docs.py` passed and `git diff --check` exited `0` after Task 24 matrix/control-plane sync.
 - Track 10 Task 23 Batch 6 full verification: `python -m unittest discover -s tests -p "test_*.py" -v` ran 543 tests with `OK`.
 - Track 10 Task 23 fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0`; runner output kept `renderer_file_count: 187` and all emitted fixture records had `ok: true`.
 - Track 10 Task 23 transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 10 sessions and 0 failures.
@@ -100,7 +102,7 @@ Generated at: 2026-05-27
 - Task 23 Batch 5 focused GREEN evidence: `python -m unittest tests.product_agent_os.test_fixture_eval_runner tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_product_agent_os_docs tests.product_agent_os.test_transcript_session_evals -v` ran 83 tests with `OK`.
 - Task 23 Batch 5 transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 10 sessions and 0 failures.
 - Task 23 Batch 5 docs/diff hygiene: `python tools\check_docs.py` passed and `git diff --check` exited `0`.
-- Track 10 plan hygiene: `python tools\check_docs.py` passed and `git diff --check` exited `0` after creating the plan; root system-file sync requires the same docs/diff checks.
+- Track 10 plan hygiene: `python tools\check_docs.py` passed and `git diff --check` exited `0` after creating the plan; Task 24 matrix and root system-file sync require the same docs/diff checks.
 
 ## Required Checks After Docs Changes
 
@@ -125,12 +127,15 @@ python plugins\product-agent-os\scripts\validate_codex_compatibility.py
 
 ## Required Checks For Track 10 Implementation
 
-Before Track 10 `Task 23` implementation:
+Before Track 10 `Task 23` or `Task 24` implementation:
 
 - Confirm Track 9 `Task 22` is closed and the legacy Track 9 final verification baseline is recorded in Task 22 evidence.
 - Re-read `docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md`.
 - For Batch 5, run focused checks covering fixture eval runner, lifecycle skills, Product-Agent OS docs and transcript/session evals before claiming closure.
+- For Task 24 Batch 7, first run focused RED checks for target registry, evidence intake, source priority, metrics packet bounds and reuse-first guardrails before implementation.
+- For later Task 24 batches, run focused checks for trace normalization, redaction, dataset quality, grader calibration, metric aggregation, scorecards, confidence gates, cadence recommendations, scorecard ledger, offline HTML report, CLI staging, automation candidate blocking, runtime packets, lifecycle wording, fixture eval fields and transcript sessions before broad verification.
 - Inspect current `discovery.py`, `methodology_audit.py`, `methodology_synthesis.py`, `codex_runtime_runner/contracts.py`, `codex_runtime_runner/routes.py`, `infrastructure.py`, `templates.py`, fixture eval runner, lifecycle skills and docs.
+- Inspect and reuse existing `question_protocol.py`, `status_snapshot.py`, `status_dashboard.py`, `automation_policy.py`, `codex_runtime_runner/redaction.py`, `agent-eval-workflow.md`, `skill-promotion-record.md`, `trace-evidence-packet.md`, `eval-run-report.md` and `automation-candidate.md` before adding Task 24 code.
 
 For Track 10 code/template/test changes, run focused tests first, then:
 
