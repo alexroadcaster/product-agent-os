@@ -2764,3 +2764,15 @@ relevance: "Track 10 Task 23 eval, skill, docs, README, source registry, root co
 trust_level: "high"
 verification_status: "Backed by focused Batch 5 RED/GREEN tests and Batch 6 full verification in the current implementation run: 543-unit full suite OK, fixture eval exit 0 with renderer_file_count 187, transcript eval 10 sessions with 0 failures, Codex compatibility status compatible, docs check, strict MkDocs and git diff hygiene exit 0. Commit/push/PR remains explicit-only and was not executed."
 ```
+
+```yaml
+title: "Product-Agent OS Track 10 self-verification metrics-loop Batch 7 foundation"
+url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py; tests/product_agent_os/test_agent_skill_metrics.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
+type: "internal documentation"
+status: "checked-in project source"
+checked_at: "2026-05-28"
+summary: "T10-SV-M-1..M4 Batch 7 foundation and registry coverage for Task 24 Self-Verification And Modernization Loop, including read-only source-priority policy, target registry collection, explicit evidence intake, stale/failed/accepted-gap evidence markers, generated-view source rejection and bounded metrics packet trimming."
+relevance: "Track 10 Task 24 Batch 7 implementation evidence, source-priority contract, metrics packet bounds, target registry and explicit evidence intake before trace/dataset/judge, metrics, report/CLI and runtime integration batches."
+trust_level: "high"
+verification_status: "Backed by focused RED/GREEN tests: missing module and stale-evidence checks failed before implementation, `python -m unittest tests.product_agent_os.test_agent_skill_metrics -v` ran 5 tests with OK, and adjacent reuse-first suites for status snapshot/dashboard, templates and automation policy ran 103 tests with OK. Full Product-Agent OS verification for the current slice ran 548 unit tests with OK; fixture eval, transcript eval, Codex compatibility, docs check and git diff hygiene exited 0."
+```

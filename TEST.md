@@ -6,7 +6,12 @@ Generated at: 2026-05-27
 
 ## Current Baseline
 
-- Track 10 Task 24 planning/matrix status: `Task 24: Self-Verification And Modernization Loop` is staged in the Track 10 plan with matrix `T10-SV-M-1..M62`, guardrails `T10-SV-G1..G6` and batches 7-12; no Task 24 plugin implementation evidence is claimed yet.
+- Track 10 Task 24 Batch 7 status: `T10-SV-M-1..M4` plus guardrails `T10-SV-G1..G3` are implemented for foundation/registry surfaces in `agent_skill_metrics.py`; later trace/dataset/judge, metrics, report/CLI, runtime/lifecycle/eval and docs/full-verification batches remain queued.
+- Track 10 Task 24 Batch 7 RED evidence: `python -m unittest tests.product_agent_os.test_agent_skill_metrics -v` failed before implementation with `ModuleNotFoundError: No module named 'product_agent_os.agent_skill_metrics'`; stale-evidence RED then failed before stale marker support.
+- Track 10 Task 24 Batch 7 focused GREEN evidence: `python -m unittest tests.product_agent_os.test_agent_skill_metrics -v` ran 5 tests with `OK`.
+- Track 10 Task 24 Batch 7 reuse-first adjacent checks: `python -m unittest tests.product_agent_os.test_agent_skill_metrics tests.product_agent_os.test_status_snapshot tests.product_agent_os.test_status_dashboard -v` ran 16 tests with `OK`; `python -m unittest tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_automation_policy -v` ran 87 tests with `OK`.
+- Track 10 Task 24 Batch 7 full unittest: `python -m unittest discover -s tests -p "test_*.py" -v` ran 548 tests with `OK`.
+- Track 10 Task 24 Batch 7 fixture/transcript/compatibility/docs/diff checks: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0` with `renderer_file_count: 187`; transcript eval exited `0` with 10 sessions and 0 failures; Codex compatibility returned `status: compatible`; `python tools\check_docs.py` passed; `git diff --check` exited `0`.
 - Track 10 Task 24 root system-file sync verification: `python tools\check_docs.py` passed and `git diff --check` exited `0` after Task 24 matrix/control-plane sync.
 - Track 10 Task 23 Batch 6 full verification: `python -m unittest discover -s tests -p "test_*.py" -v` ran 543 tests with `OK`.
 - Track 10 Task 23 fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0`; runner output kept `renderer_file_count: 187` and all emitted fixture records had `ok: true`.
@@ -132,7 +137,7 @@ Before Track 10 `Task 23` or `Task 24` implementation:
 - Confirm Track 9 `Task 22` is closed and the legacy Track 9 final verification baseline is recorded in Task 22 evidence.
 - Re-read `docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md`.
 - For Batch 5, run focused checks covering fixture eval runner, lifecycle skills, Product-Agent OS docs and transcript/session evals before claiming closure.
-- For Task 24 Batch 7, first run focused RED checks for target registry, evidence intake, source priority, metrics packet bounds and reuse-first guardrails before implementation.
+- For Task 24 Batch 7, focused RED/GREEN checks cover target registry, evidence intake, source priority, stale/failed/accepted-gap evidence, metrics packet bounds and reuse-first guardrails.
 - For later Task 24 batches, run focused checks for trace normalization, redaction, dataset quality, grader calibration, metric aggregation, scorecards, confidence gates, cadence recommendations, scorecard ledger, offline HTML report, CLI staging, automation candidate blocking, runtime packets, lifecycle wording, fixture eval fields and transcript sessions before broad verification.
 - Inspect current `discovery.py`, `methodology_audit.py`, `methodology_synthesis.py`, `codex_runtime_runner/contracts.py`, `codex_runtime_runner/routes.py`, `infrastructure.py`, `templates.py`, fixture eval runner, lifecycle skills and docs.
 - Inspect and reuse existing `question_protocol.py`, `status_snapshot.py`, `status_dashboard.py`, `automation_policy.py`, `codex_runtime_runner/redaction.py`, `agent-eval-workflow.md`, `skill-promotion-record.md`, `trace-evidence-packet.md`, `eval-run-report.md` and `automation-candidate.md` before adding Task 24 code.

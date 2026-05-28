@@ -2,7 +2,7 @@
 
 Source status: `internal`
 
-This backlog tracks deferred and follow-up work for Track 10 `Task 23: Guided Question Protocol And Project Status Dashboard`.
+This backlog tracks deferred and follow-up work for Track 10 `Task 23: Guided Question Protocol And Project Status Dashboard` and `Task 24: Self-Verification And Modernization Loop`.
 
 ## Batch 5 Closure
 
@@ -19,6 +19,15 @@ This backlog tracks deferred and follow-up work for Track 10 `Task 23: Guided Qu
 | `done` | `T10-Q-M23` focused/full unit verification | Full unit discovery ran 543 tests with `OK` after focused behavioral-template contract fixes. |
 | `done` | `T10-Q-M24` full Product-Agent OS verification | Fixture eval exited `0` with `renderer_file_count: 187`; transcript eval exited `0` with 10 sessions and 0 failures; Codex compatibility returned `status: compatible`; docs check, strict MkDocs and `git diff --check` exited `0`. |
 | `done` | `T10-Q-M25` explicit-only git boundary | No `git add`, `git commit`, `git push` or PR creation was executed. |
+
+## Task 24 Batch 7 Closure
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `done` | `T10-SV-M-1..M4` foundation and registry | Added `agent_skill_metrics.py` with read-only source-priority policy, target registry collection, explicit evidence intake and bounded metrics packet helpers. |
+| `done` | `T10-SV-G1..G3` reuse/source/bounds guardrails | Reused runtime redaction, rejected dashboard/report HTML, memory, raw chat logs and unsupported community claims as source of truth, and trimmed oversized metrics packets deterministically with warnings. |
+| `done` | Batch 7 focused and full verification evidence | `test_agent_skill_metrics` failed before implementation on missing module and stale evidence support, then ran 5 tests with `OK`; adjacent status/dashboard/template/automation checks ran 103 tests with `OK`; full unittest ran 548 tests with `OK`; fixture eval, transcript eval, Codex compatibility, docs check and `git diff --check` exited `0`. |
+| `queued` | Task 24 Batch 8 | Trace intake, metrics redaction gate, dataset quality, grader runner contract and judge calibration remain next. |
 
 ## Deferred
 
