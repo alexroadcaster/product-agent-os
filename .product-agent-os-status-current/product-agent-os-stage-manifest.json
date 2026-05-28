@@ -1,0 +1,40 @@
+{
+  "files": [
+    {
+      "action": "create",
+      "digest": "sha256:87a1b9704e7ad1b771002c6bf0386e5725470a336552ef1ad9a1145663ed5b65",
+      "managed_section": "",
+      "staged_path": ".codex/product-agent-os/status.html",
+      "target_path": ".codex/product-agent-os/status.html",
+      "write_policy": "staged_only"
+    },
+    {
+      "action": "create",
+      "digest": "sha256:d5c709ac9d7d29a13e7af41543d01be767bcf3300de2ba872e3d8d5ddfc5bcba",
+      "managed_section": "",
+      "staged_path": ".codex/product-agent-os/status.json",
+      "target_path": ".codex/product-agent-os/status.json",
+      "write_policy": "staged_only"
+    }
+  ],
+  "generated_at": "2026-05-28T07:47:53+00:00",
+  "infrastructure_plan_digest": "sha256:923c8e1330d77ca09e57c84d159472a9b3f775f46ef61b970b5f5f91d36e5356",
+  "renderer": "product-agent-os",
+  "renderer_version": "0.1.0",
+  "schema_version": 1,
+  "validation": {
+    "checks": [
+      "offline html doctype present",
+      "viewport meta present",
+      "external urls absent",
+      "external scripts absent",
+      "embedded json escaped",
+      "snapshot redaction validated",
+      "status snapshot schema validates"
+    ],
+    "errors": [],
+    "ok": true
+  },
+  "workspace": "C:\\Users\\user\\Desktop\\project\\codex_docs\\plugins\\product-agent-os",
+  "workspace_audit_digest": "sha256:76894e766e415c60db51e8fe2225e888bc01e25ae3d2f99efcae9e6790e51bc7"
+}

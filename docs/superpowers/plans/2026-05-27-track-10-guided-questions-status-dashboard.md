@@ -4,9 +4,9 @@ Source status: `local implementation planning`
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Build Track 10 so Product-Agent OS can guide users with bounded, methodology-aware questions and maintain a single offline HTML status artifact for project progress.
+**Goal:** Build Track 10 so Product-Agent OS can guide users with bounded, methodology-aware questions, maintain a single offline HTML status artifact for project progress, and stage a self-verification loop for agents, skills and harness modernization decisions.
 
-**Architecture:** Extend the existing Track 8 usage-mode route and Track 9 methodology packet with a typed question protocol, answer ledger, status snapshot, and staged static dashboard renderer. JSON and Markdown remain the source of truth; the HTML artifact is a generated, reviewable view that is staged first and never silently mutates the target workspace.
+**Architecture:** Extend the existing Track 8 usage-mode route and Track 9 methodology packet with a typed question protocol, answer ledger, status snapshot, staged static dashboard renderer, and a local-first metrics loop for self-verification. JSON and Markdown remain the source of truth; HTML artifacts are generated, reviewable views that are staged first and never silently mutate the target workspace.
 
 **Tech Stack:** Python standard library, `unittest`, JSON contracts, Markdown control-plane artifacts, static HTML/CSS/vanilla JavaScript, existing `plugins/product-agent-os/scripts/product_agent_os/*` modules, existing Codex runtime runner, fixture eval runner, transcript eval runner, docs checks, MkDocs.
 
@@ -16,9 +16,10 @@ Source status: `local implementation planning`
 
 Track 10 is a new user-facing capability, not part of Track 9 final documentation sync.
 
-It includes one implementation task:
+It includes these implementation tasks:
 
 - `Task 23: Guided Question Protocol And Project Status Dashboard`
+- `Task 24: Self-Verification And Modernization Loop`
 
 Track 10 must start only after Track 9 `Task 22` closes the current Product-Agent OS documentation baseline. This prevents Task 22 from becoming a moving target while Track 10 changes runtime packets, renderer output, evals and docs.
 
@@ -30,6 +31,7 @@ The Track 9 plan now keeps the former `Task 23: Final Verification Baseline` onl
 - answer ledger;
 - status snapshot;
 - offline `status.html` dashboard.
+- agent/skill/harness self-verification and staged modernization candidates.
 
 Do not implement Track 10 unless Track 9 docs keep the legacy final baseline absorbed into Task 22 and current verification evidence exists.
 
@@ -42,6 +44,7 @@ After Track 10, a user should be able to enable Product-Agent OS in a real proje
 - why each question matters and what artifact it affects;
 - a stable status page showing current lifecycle state, usage mode, methodology readiness, evidence gaps, approvals, staged artifacts, open risks and next safe action;
 - stale/evidence warnings when the dashboard is generated from inspection-only or old command evidence.
+- staged self-verification reports for generated agents, skills, prompt or policy packs, router/tool policies and harness versions, with modernization candidates separated from approval.
 
 The plugin must keep forward momentum. It should ask only questions that block safe planning, approval, evidence or the next artifact.
 
@@ -54,6 +57,7 @@ The plugin must keep forward momentum. It should ask only questions that block s
 - Do not make HTML the source of truth.
 - Do not create browser-based editing of project files in this track.
 - Do not store secrets, credentials, private customer data, raw private chat logs, production screenshots or absolute user-specific paths.
+- Do not automatically apply self-modernization candidates, rewrite skills, enable recurring evaluation schedules or promote automation without explicit owner approval and rollback evidence.
 
 ## File Structure
 
@@ -333,6 +337,116 @@ Task 23 implementation matrix:
 | `T10-Q-M23` | Run focused verification | focused test commands | Question, runtime, dashboard, renderer, lifecycle and docs tests pass. |
 | `T10-Q-M24` | Run full Product-Agent OS verification | full tests/evals/docs commands | Full unit suite, fixture eval, transcript eval, Codex compatibility, docs check and diff hygiene pass. |
 | `T10-Q-M25` | Keep commit/push explicit-only | Git | Do not stage, commit, push or create PR unless the user explicitly asks after verification. |
+
+## Task 24: Self-Verification And Modernization Loop
+
+Task 24 adds a staged control-plane capability for Product-Agent OS to evaluate the agents, skills, prompt or policy packs, router/tool policies and harness versions that were created or used during real user work. The mechanism is not an autonomous mutation system. It reads implemented task evidence, optional redacted traces and synthetic regression cases; computes per-target scorecards; stages daily and weekly review packets; and generates modernization candidates only when evidence, rollback and approval state are explicit.
+
+Design input comes from the local `agentic_harness_metrics.md` research brief and from the implemented Track 9/Track 10 contracts. The implementation must reuse existing boundaries: `agent_eval_workflow_present`, `skill_promotion_evidence_present`, `automation_manual_stability_present`, redaction policy, staged renderer behavior, status snapshot, offline dashboard, fixture eval runner, transcript eval runner and explicit-only git boundary.
+
+Task 24 product outcome:
+
+- show a registry of evaluated targets with status `healthy`, `watch`, `regression`, `blocked` or `no_data`;
+- separate agent outcome metrics, trajectory metrics, harness reliability metrics and skill-specific metrics;
+- explain the recommended self-verification cadence with `L0`, `L1`, `L2` or `L3` maturity;
+- preserve an append-only scorecard ledger with raw counts, confidence evidence, baseline, current and candidate versions;
+- generate an offline HTML evaluation report as a review artifact, not an approval record or source of truth;
+- stage modernization candidates with reason, expected impact, risk, rollback target and approval state;
+- keep active schedules, external eval systems, live model calls, Agents SDK apps, GitHub Actions, MCP activation and write updates approval-bound.
+
+Task 24 implementation surfaces:
+
+- Create: `plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py`
+- Create: `plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics_report.py`
+- Create: `plugins/product-agent-os/scripts/render_agent_skill_metrics_report.py`
+- Create: `plugins/product-agent-os/assets/templates/artifact-templates/agent-skill-metrics-loop.md`
+- Create: `plugins/product-agent-os/assets/templates/artifact-templates/agent-skill-daily-eval-report.md`
+- Create: `plugins/product-agent-os/assets/templates/artifact-templates/agent-skill-weekly-verification.md`
+- Create: `plugins/product-agent-os/assets/templates/artifact-templates/agent-skill-scorecard-ledger.md`
+- Create: `plugins/product-agent-os/assets/templates/artifact-templates/agent-skill-update-candidate.md`
+- Create: `plugins/product-agent-os/assets/templates/reports/agent-skill-evaluation-report.html`
+- Create: `plugins/product-agent-os/assets/templates/automations/daily-agent-skill-eval.md`
+- Create: `plugins/product-agent-os/assets/templates/automations/weekly-agent-skill-verification.md`
+- Create: focused tests for registry, evidence intake, redaction, scorecard, report rendering, CLI, fixtures and lifecycle wording.
+- Modify: `discovery.py`, `methodology_audit.py`, `codex_runtime_runner/contracts.py`, `codex_runtime_runner/routes.py`, `templates.py`, `status_snapshot.py`, `status_dashboard.py`, `run_fixture_eval.py`, lifecycle skills, Product-Agent OS docs and root control-plane files.
+
+Task 24 implementation matrix:
+
+| ID | Task | Files | Acceptance |
+| --- | --- | --- | --- |
+| `T10-SV-M-1` | Run Task 24 baseline audit | existing source inventory, Task 23 evidence | Confirm Task 23 is closed, no `agent_skill_metrics_loop` implementation exists, and reusable surfaces are available: status snapshot, dashboard renderer, redaction, fixture eval, transcript eval, `agent-eval-workflow.md`, `skill-promotion-record.md`, `trace-evidence-packet.md`, `eval-run-report.md`, `automation-candidate.md`. |
+| `T10-SV-M0` | Add Task 24 planning closure | this plan, Track 10 backlog | Task 24 description, implementation surfaces, matrix, risks and verification expectations are documented before implementation. |
+| `T10-SV-M1` | Add target registry contract tests | `test_agent_skill_metrics.py` | Tests define `target_id`, target type, owner, version, risk level, expected artifacts, eval suite, source artifacts, maturity level, usage volume, tool permission level, production-impact flag and no-data status. |
+| `T10-SV-M2` | Implement target registry collector | `agent_skill_metrics.py` | Collector finds local agents, skills, prompt or policy packs, subagent teams, router/tool policy evidence, model/reasoning policy, sandbox/approval policy, automation candidates and harness versions from project artifacts without external calls or target workspace writes. |
+| `T10-SV-M3` | Add implemented-task evidence intake tests | `test_agent_skill_metrics.py`, synthetic fixtures | Tests cover `RUNLOG.md`, `TEST.md`, `EVALS.md`, fixture eval summaries, transcript eval summaries, generated artifacts, failed verification evidence, stale evidence, explicit accepted gaps and evidence source priority. |
+| `T10-SV-M4` | Implement evidence intake | `agent_skill_metrics.py` | Intake produces a bounded evidence packet from explicit project artifacts only; memory, raw chat logs and dashboard HTML are not treated as source of truth. |
+| `T10-SV-M5` | Add trace intake and normalization tests | `test_agent_skill_metrics.py`, trace fixtures | Tests cover OpenAI Agents SDK trace shape, OpenTelemetry GenAI span shape, tool-specific reports and accepted-gap traces with `trace_source_type`, required span types, missing span types, trace ids, group ids and replayability fields. |
+| `T10-SV-M6` | Implement trace intake normalizer | `agent_skill_metrics.py`, existing `trace-evidence-packet.md` | Normalizer maps supported trace evidence into a portable trace packet and labels unsupported or incomplete traces without live Agents SDK, MCP, network or external eval calls. |
+| `T10-SV-M7` | Add redaction gate tests | `test_agent_skill_metrics.py`, redaction fixtures | Secret-like text, raw private chat markers, local user paths, raw prompts, tool outputs and private customer data are blocked or redacted before dataset, ledger or report generation. |
+| `T10-SV-M8` | Implement metrics redaction gate | `agent_skill_metrics.py`, existing redaction helpers | Every metrics packet includes redaction summary; scoring, report rendering and update candidates are blocked when redaction fails. |
+| `T10-SV-M9` | Add evidence dataset builder tests | `test_agent_skill_metrics.py` | Builder creates stratified groups for implemented tasks, real-trace sample, prior failures, critical slices, edge/adversarial cases, holdout, synthetic regression cases and known flaky cases. |
+| `T10-SV-M10` | Implement evidence dataset builder | `agent_skill_metrics.py` | Dataset builder records source counts, split labels, duplicate/leakage status and avoids overfitting by keeping holdout and prior-failure labels separate. |
+| `T10-SV-M11` | Add dataset quality gate tests | `test_agent_skill_metrics.py` | Tests cover `dataset_coverage`, `dataset_duplicate_rate`, leakage check, missing expected splits, low real-trace coverage and insufficient sample statuses. |
+| `T10-SV-M12` | Implement dataset quality gates | `agent_skill_metrics.py` | Dataset gates block confident decisions when duplicates, leakage, missing holdout, insufficient sample or missing critical slices exceed thresholds. |
+| `T10-SV-M13` | Add grader runner contract tests | `test_agent_skill_metrics.py` | Tests define metric graders, trace graders, human audit sample and optional LLM-as-judge as metadata-only/local contract; live model calls are not introduced in Track 10. |
+| `T10-SV-M14` | Implement grader runner adapter | `agent_skill_metrics.py` | Adapter consumes existing local eval outputs and manual/human audit labels, records grader type, rubric id, sample size and unsupported live judge gaps without external calls. |
+| `T10-SV-M15` | Add judge calibration tests | `test_agent_skill_metrics.py` | Tests cover `judge_human_agreement`, `judge_precision`, `judge_recall`, `cohen_kappa`, calibration sample size and `judge_not_calibrated` blocking status. |
+| `T10-SV-M16` | Implement judge calibration summary | `agent_skill_metrics.py` | Calibration summary is required before judge-derived metrics can approve candidates; missing calibration remains a reportable gap. |
+| `T10-SV-M17` | Add metric schema tests | `test_agent_skill_metrics.py` | Tests require separate outcome, trajectory, harness reliability, harness optimizer, skill, cost/latency and safety sections with numerator and denominator fields. |
+| `T10-SV-M18` | Implement metric aggregation | `agent_skill_metrics.py` | Aggregator computes task success, regression-free success, final state accuracy, tool selection/argument accuracy, instruction violation, trace completeness, false-pass, false-fail, flake, replayable trace, cost, latency and skill trigger/adherence metrics when evidence exists. |
+| `T10-SV-M19` | Add repeatability metrics tests | `test_agent_skill_metrics.py` | Tests cover `pass@k`, `pass^k`, replay success, repeated-run instability and no lucky-run promotion from a single successful run. |
+| `T10-SV-M20` | Implement repeatability calculations | `agent_skill_metrics.py` | Repeatability metrics are calculated only when replay evidence exists and are surfaced as insufficient data otherwise. |
+| `T10-SV-M21` | Add scorecard formula tests | `test_agent_skill_metrics.py` | Tests cover Harness Quality Score, Agentic Task Score and Harness Optimization Score components, weights, missing-data behavior and safety guardrails. |
+| `T10-SV-M22` | Implement scorecard calculators | `agent_skill_metrics.py` | Scorecards compute bounded component scores and never hide blocking safety, false-pass, flake, trace or cost regressions behind a headline average. |
+| `T10-SV-M23` | Add confidence and gate tests | `test_agent_skill_metrics.py` | Tests cover Wilson lower bound, delta comparison, bootstrap CI if available, insufficient sample, critical regression, false-pass threshold, flake threshold, trace completeness threshold, cost regression and safety violation. |
+| `T10-SV-M24` | Implement confidence and decision gates | `agent_skill_metrics.py` | Weekly acceptance requires confidence evidence, zero critical regressions, bounded false-pass and flake rates, trace completeness, cost guardrail, no high-risk instruction/approval violation and owner review or explicit gap. |
+| `T10-SV-M25` | Add cadence recommendation tests | `test_agent_skill_metrics.py` | Tests cover `L0`, `L1`, `L2`, `L3` routing from usage volume, risk level, tool permissions, production impact, flakiness, trace coverage, automation candidates and owner override. |
+| `T10-SV-M26` | Implement cadence recommender | `agent_skill_metrics.py` | Recommender explains daily, weekly, on-change and incident-triggered cadence as suggested policy only; active schedules remain approval-bound. |
+| `T10-SV-M27` | Add run record schema tests | `test_agent_skill_metrics.py` | Tests require run id, timestamp, cadence, window, dataset split, target, versions, model, reasoning effort, repo sha or accepted gap, environment, trace metadata, artifacts, scores, statistical evidence, cost/latency, update decision and review fields. |
+| `T10-SV-M28` | Implement run record builder | `agent_skill_metrics.py` | Builder emits deterministic JSON-ready records with redacted evidence and no absolute user paths, secrets, private chat logs or dashboard-as-source claims. |
+| `T10-SV-M29` | Add scorecard ledger template tests | `test_infrastructure_templates.py`, `test_agent_skill_metrics.py` | Ledger template requires append-only policy, baseline/current/candidate versions, raw counts, confidence intervals, cost, latency, evidence links, redaction status, run record ids, report anchors and no-secrets policy. |
+| `T10-SV-M30` | Implement scorecard ledger renderer | `agent_skill_metrics.py`, `agent-skill-scorecard-ledger.md`, `templates.py` | Renderer emits deterministic JSON or Markdown-ready records and never overwrites existing target project evidence directly. |
+| `T10-SV-M31` | Add daily report tests | `test_agent_skill_metrics.py` | Daily packet reports per-target status and recommendations: no-op, investigate, block promotion, stage candidate for review or request human audit; it never auto-fixes from one noisy run. |
+| `T10-SV-M32` | Implement daily report builder | `agent_skill_metrics.py`, `agent-skill-daily-eval-report.md` | Daily report summarizes evidence window, deployed target inventory, trace source mix, changed versions, failure groups, evidence gaps, confidence status and next safe action. |
+| `T10-SV-M33` | Add weekly verifier tests | `test_agent_skill_metrics.py` | Weekly packet compares 7-day rolling window, baseline, previous week and holdout; audits false passes, replays flaky cases and separates regression findings from update candidates. |
+| `T10-SV-M34` | Implement weekly verifier | `agent_skill_metrics.py`, `agent-skill-weekly-verification.md` | Weekly verifier blocks update acceptance without rollback target, owner review, current evidence, holdout check, false-pass audit, flake replay and cost regression check. |
+| `T10-SV-M35` | Add component prioritization tests | `test_agent_skill_metrics.py` | Tests rank likely improvement components: prompt, skill, agent config, router, tool policy, memory policy, logging, dataset, grader, harness or approval policy. |
+| `T10-SV-M36` | Implement component prioritization | `agent_skill_metrics.py` | Prioritizer uses failure taxonomy, affected metrics and evidence sufficiency to explain why a component should be changed, deferred or left unchanged. |
+| `T10-SV-M37` | Add modernization candidate tests | `test_agent_skill_metrics.py` | Candidates require reason, metric deltas, affected targets, component priority, expected impact, risk, approval state, rollback target, no external write action and no headline-only improvement. |
+| `T10-SV-M38` | Implement modernization candidate generator | `agent_skill_metrics.py`, `agent-skill-update-candidate.md` | Generator emits staged candidates for skill, agent, prompt, router, tool policy, memory policy, dataset, grader or harness updates and cannot apply patches by itself. |
+| `T10-SV-M39` | Add report manifest and archive tests | `test_agent_skill_metrics_report.py` | Tests require `report_id`, generated_at, project id or redacted id, eval window, cadence, source datasets, trace sources, redaction status, current report path and optional timestamped archive policy. |
+| `T10-SV-M40` | Add unified HTML report tests | `test_agent_skill_metrics_report.py` | Tests assert one self-contained report under `.codex/eval-reports/agent-skill-evaluation-report.html`, embedded redacted JSON, anchors by target, no external URLs, no secrets, numerator/denominator for every metric, insufficient-data banners, previous/current/candidate comparisons and no approval claim. |
+| `T10-SV-M41` | Implement unified HTML report renderer | `agent_skill_metrics_report.py`, `reports/agent-skill-evaluation-report.html` | Renderer creates a reviewable offline report with manifest, executive verdict, target inventory, metrics, version comparison, improvements, regressions, skill analysis, trajectory analysis, trace evidence, update candidates and raw redacted appendix. |
+| `T10-SV-M42` | Add CLI dry-run and stage tests | `test_agent_skill_metrics_cli.py` | CLI supports `--dry-run`, `--stage <dir>`, `--window`, `--cadence`, JSON output, validation errors and no target workspace writes by default. |
+| `T10-SV-M43` | Implement CLI wrapper | `render_agent_skill_metrics_report.py` | CLI returns stable JSON and stages report artifacts only under the requested stage root, including current report and optional archive copy only inside stage root. |
+| `T10-SV-M44` | Register templates and stage artifacts | `templates.py`, infrastructure tests | Metrics loop templates, daily/weekly reports, scorecard ledger, update candidate, eval report template and candidate automation templates are registered with safe target paths under `.codex/artifact-templates/`, `.codex/eval-reports/` and `.codex/automation-candidates/`. |
+| `T10-SV-M45` | Add automation candidate validator updates | `automation_policy.py`, `test_automation_policy.py` | Daily/weekly metrics automation candidates validate as candidate-only, require manual stability evidence and never create active schedules, GitHub Actions, Codex App automations or external workflows. |
+| `T10-SV-M46` | Integrate status snapshot summary | `status_snapshot.py`, `status_dashboard.py`, tests | Status snapshot includes bounded metrics-loop summary and report references while preserving dashboard generated-view-only, stale-evidence and not-source-of-truth policies. |
+| `T10-SV-M47` | Add discovery readiness gate | `discovery.py`, `project-readiness.json`, tests | `agent_skill_metrics_loop` is applicable when agents, skills, subagents, automation candidates, router/tool policies, prompt/policy packs or harness versions are detected; docs-only and simple maintenance false positives remain not applicable. |
+| `T10-SV-M48` | Add methodology audit recommendations | `methodology_audit.py`, tests | Missing metrics loop produces a high-risk recommendation only for real agentic surfaces; detection alone remains `present_unverified` until current evidence, owner, cadence and approval boundary exist. |
+| `T10-SV-M49` | Add runtime packet validation | `codex_runtime_runner/contracts.py`, runtime tests | Route packet can carry bounded metrics-loop status, report reference, cadence recommendation, update candidate summary and finish options without breaking schema-v1 compatibility. |
+| `T10-SV-M50` | Add runtime route behavior | `codex_runtime_runner/routes.py`, runtime tests | Runtime can recommend stage metrics report, request owner review, block automation promotion, keep current or investigate regression; it cannot offer apply/update actions without approval. |
+| `T10-SV-M51` | Add guided question integration | `question_protocol.py`, question tests | Question queue asks at most one blocker about owner, evidence source, trace source, cadence, approval, rollback or accepted gap; optional metrics-loop questions stay in the packet. |
+| `T10-SV-M52` | Update lifecycle skills | lifecycle skills, `test_lifecycle_skills.py` | Skills route self-verification as staged evidence and reject autonomous mutation, active schedules, live eval calls, dashboard-as-proof claims and modernization without rollback. |
+| `T10-SV-M53` | Add fixture eval coverage | `run_fixture_eval.py`, fixture tests | Fixture eval exposes `agent_skill_metrics_loop_contract_present`, `metrics_report_redacted`, `trace_normalization_contract_present`, `judge_calibration_gate_present`, `scorecard_ledger_contract_present`, `update_candidate_rollback_required`, `active_metrics_automation_blocked` and `metrics_loop_false_positive_guards_present`. |
+| `T10-SV-M54` | Add false-positive and abuse fixtures | fixture directories | Docs-only work, simple maintenance, no deployed targets, stale evidence, headline-only improvement, private-data evidence, judge-not-calibrated evidence and trace-missing-span cases do not produce unsafe readiness or update claims. |
+| `T10-SV-M55` | Add behavioral eval contracts | `behavioral-workflows.json`, tests | Behavioral evals forbid headline-metric-only approval, self-applied updates, active automation, live eval calls, dashboard success claims, raw trace leakage, uncalibrated judge approval and update candidates without rollback. |
+| `T10-SV-M56` | Add transcript eval sessions | transcript fixtures, transcript tests | Synthetic sessions cover self-verification request, regression finding, no-data target, trace-missing-span target, judge-not-calibrated gap, approval-required modernization and automation-candidate-only flow. |
+| `T10-SV-M57` | Add Task 24 execution batches | this plan | Batch plan groups work into foundation, trace/dataset/judge, metrics/gates, reports/CLI/templates, runtime/lifecycle/evals and docs/full verification without mixing with completed Task 23 batches. |
+| `T10-SV-M58` | Update Product-Agent OS docs | docs, README, source registry | Docs explain metrics loop, target registry, trace intake, dataset quality, grader/judge calibration, cadence recommendation, scorecard ledger, report, update candidates, approval boundary and source-of-truth policy. |
+| `T10-SV-M59` | Update root control-plane evidence | `REQUIREMENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md`, `RUNLOG.md` | Root files record Task 24 scope, acceptance, verification evidence, residual risk and explicit-only git boundary. |
+| `T10-SV-M60` | Run focused verification | focused test commands | New registry, trace, dataset, grader, metrics, report, CLI, automation-policy, fixture, lifecycle, transcript and docs tests pass before broad verification. |
+| `T10-SV-M61` | Run full Product-Agent OS verification | full checks | Full unit suite, fixture eval, transcript eval, Codex compatibility, docs check, strict MkDocs when docs/nav-sensitive changes are made and diff hygiene pass. |
+| `T10-SV-M62` | Keep commit/push explicit-only | Git | Do not stage, commit, push or create PR unless the user explicitly asks after verification. |
+
+Task 24 implementation batches:
+
+- **Batch 7: Foundation And Registry** (`T10-SV-M-1..M4`)
+- **Batch 8: Trace, Redaction, Dataset And Judge Contracts** (`T10-SV-M5..M16`)
+- **Batch 9: Metrics, Scorecards, Confidence And Cadence** (`T10-SV-M17..M28`)
+- **Batch 10: Ledger, Reports, Candidates And CLI** (`T10-SV-M29..M45`)
+- **Batch 11: Runtime, Discovery, Lifecycle And Eval Coverage** (`T10-SV-M46..M57`)
+- **Batch 12: Docs, Control Plane And Full Verification** (`T10-SV-M58..M62`)
 
 ## Execution Batches
 
@@ -658,6 +772,11 @@ Expected: commit succeeds.
 | Existing project dashboard files are overwritten. | Preserve unmarked files as companion proposals and use staged-first merge flow. |
 | Question answers become hidden memory. | Store answers only in explicit ledger artifacts, never user-level memory. |
 | New runtime fields break schema-v1 compatibility. | Add fields only inside existing route packet surfaces and validate bounded shape. |
+| Self-verification is mistaken for approval to rewrite agents, skills or harness policy. | Stage scorecards and update candidates only; require owner approval, rollback target and current evidence before any later apply flow. |
+| Metrics overfit to recently implemented tasks and miss regressions. | Keep holdout, prior-failure, synthetic regression and flaky-case groups separate; require raw numerator/denominator counts and confidence evidence. |
+| Agent/skill evidence leaks private traces or local user paths. | Reuse redaction gates before dataset, ledger, report or dashboard generation and block scoring when redaction fails. |
+| Metrics-loop automation is activated before the manual workflow is stable. | Ship daily and weekly automation files as candidate templates only and require `automation_manual_stability_present` plus explicit approval before promotion. |
+| Docs-only or simple maintenance work triggers agentic modernization overhead. | Add discovery false-positive fixtures and keep `agent_skill_metrics_loop` applicable only when real agent, skill, subagent, router/tool policy, automation candidate or harness surfaces are detected. |
 
 ## Verification Summary
 
@@ -674,3 +793,14 @@ git diff --check
 ```
 
 Do not claim Track 10 works from code inspection only.
+
+Task 24 implementation must also add focused current-run evidence before full verification:
+
+```powershell
+python -m unittest tests.product_agent_os.test_agent_skill_metrics tests.product_agent_os.test_agent_skill_metrics_report tests.product_agent_os.test_agent_skill_metrics_cli -v
+python -m unittest tests.product_agent_os.test_automation_policy tests.product_agent_os.test_fixture_eval_runner tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_transcript_session_evals -v
+python plugins\product-agent-os\scripts\run_fixture_eval.py
+python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json
+python tools\check_docs.py
+git diff --check
+```

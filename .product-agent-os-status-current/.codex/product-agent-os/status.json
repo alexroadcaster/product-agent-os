@@ -1,0 +1,205 @@
+{
+  "approval_summary": {
+    "requirements": [
+      "explicit approval required before methodology-recommended external or irreversible action"
+    ],
+    "status": "not_required"
+  },
+  "dashboard_policy": {
+    "external_assets": "forbidden",
+    "source_of_truth": "underlying_artifacts",
+    "success_claim_policy": "never from dashboard alone",
+    "write_policy": "read_only"
+  },
+  "evidence_summary": {
+    "evidence_count": 0,
+    "freshness": "missing",
+    "max_age_days": 14,
+    "stale_count": 0
+  },
+  "generated_at": "2026-05-28T07:47:53+00:00",
+  "lifecycle_state": "uninitialized",
+  "manifest_digests": {
+    "file_count": 0,
+    "file_digests": [],
+    "infrastructure_plan_digest": "",
+    "workspace_audit_digest": ""
+  },
+  "next_safe_action": "Stage approval-record.md and stop before side-effecting sensitive actions.",
+  "question_ledger_artifact_updates": [],
+  "question_ledger_summary": {},
+  "question_summary": {
+    "blocking": 1,
+    "first_response_summary": [
+      "1 blocking question",
+      "7 recommended questions",
+      "0 optional questions"
+    ],
+    "next_blocking_question": {
+      "answer_type": "approval",
+      "artifact": "approval-record.md",
+      "category": "approval",
+      "id": "q_approval_2303ee3dd5",
+      "owner_domain": "security_privacy_compliance",
+      "priority": "blocking",
+      "sequence": 1,
+      "source": {
+        "artifact": "approval-record.md",
+        "block": "recommendation_groups",
+        "key": "external_write_approval_present",
+        "kind": "methodology_synthesis"
+      },
+      "text": "Who can approve or explicitly reject the gap for approval-record.md?"
+    },
+    "optional": 0,
+    "recommended": 7,
+    "remaining": 7,
+    "total": 8
+  },
+  "readiness_summary": {
+    "runtime_status": "needs_approval",
+    "status": "needs_approval",
+    "success_claim": "not_claimed",
+    "warnings": []
+  },
+  "redaction_summary": {
+    "categories": [],
+    "count": 0
+  },
+  "renderer_file_count": 0,
+  "schema_version": 1,
+  "semantic_evidence_sufficiency": {
+    "accepted_gap_required_fields": [
+      "owner",
+      "reason",
+      "review_date",
+      "downstream_risk",
+      "follow_up_condition"
+    ],
+    "applies_when": [
+      "high-risk",
+      "production",
+      "release",
+      "security-sensitive",
+      "AI",
+      "public-contract"
+    ],
+    "consumer_domains": [
+      "security_privacy_compliance",
+      "delivery_release_operations",
+      "llm_ai_rag",
+      "api_integrations",
+      "database_data",
+      "solution_architecture",
+      "backend",
+      "frontend"
+    ],
+    "owner_domain": "quality_testing_evals",
+    "satisfied_by": [
+      "owner_reviewed_evidence_sufficient_for_real_project_risk",
+      "explicit_gap_accepted"
+    ]
+  },
+  "source_artifact_ledger": [
+    {
+      "artifact": "CHANGELOG.md",
+      "decision": "existing_non_template",
+      "owner_domain": "delivery_release_operations",
+      "reason": "Changelog is usually a project artifact; Product-Agent OS packages release notes and release readiness templates instead.",
+      "target": ""
+    },
+    {
+      "artifact": "SKILL.md",
+      "decision": "existing_non_template",
+      "owner_domain": "codex_agentic_workflow",
+      "reason": "Skill manifests live inside checked-in skill directories rather than staged project artifact templates.",
+      "target": ""
+    },
+    {
+      "artifact": "accessibility-review.md",
+      "decision": "alias",
+      "owner_domain": "frontend",
+      "reason": "source-era name maps to canonical packaged artifact",
+      "target": "frontend-accessibility-review.md"
+    },
+    {
+      "artifact": "agent-eval-case.md",
+      "decision": "alias",
+      "owner_domain": "codex_agentic_workflow",
+      "reason": "source-era name maps to canonical packaged artifact",
+      "target": "agent-eval-workflow.md"
+    },
+    {
+      "artifact": "agent-handoff-contract.md",
+      "decision": "alias",
+      "owner_domain": "codex_agentic_workflow",
+      "reason": "source-era name maps to canonical packaged artifact",
+      "target": "agent-task-packet.md"
+    },
+    {
+      "artifact": "agentic-workflow-readiness.md",
+      "decision": "alias",
+      "owner_domain": "codex_agentic_workflow",
+      "reason": "source-era name maps to canonical packaged artifact",
+      "target": "project-readiness.json"
+    },
+    {
+      "artifact": "ai-model-decision-record.md",
+      "decision": "alias",
+      "owner_domain": "llm_ai_rag",
+      "reason": "source-era name maps to canonical packaged artifact",
+      "target": "model-decision-record.md"
+    },
+    {
+      "artifact": "ai-prompt-contract.md",
+      "decision": "alias",
+      "owner_domain": "llm_ai_rag",
+      "reason": "source-era name maps to canonical packaged artifact",
+      "target": "prompt-contract.md"
+    },
+    {
+      "artifact": "architecture-tradeoff-record.md",
+      "decision": "alias",
+      "owner_domain": "solution_architecture",
+      "reason": "source-era name maps to canonical packaged artifact",
+      "target": "adr.md"
+    },
+    {
+      "artifact": "architecture.md",
+      "decision": "alias",
+      "owner_domain": "solution_architecture",
+      "reason": "source-era name maps to canonical packaged artifact",
+      "target": "architecture-overview.md"
+    },
+    {
+      "artifact": "artifact-manifest.md",
+      "decision": "alias",
+      "owner_domain": "delivery_release_operations",
+      "reason": "source-era name maps to canonical packaged artifact",
+      "target": "release-artifact-manifest.md"
+    },
+    {
+      "artifact": "asvs-mapping.md",
+      "decision": "alias",
+      "owner_domain": "security_privacy_compliance",
+      "reason": "source-era name maps to canonical packaged artifact",
+      "target": "asvs-ssdf-mapping.md"
+    }
+  ],
+  "staged_artifacts": {
+    "mode": "not_available",
+    "targets": [],
+    "validation_ok": false
+  },
+  "usage_mode": {
+    "confidence": "high",
+    "inspection_only": false,
+    "minimum_artifacts": [
+      "bug rescue report",
+      "reproduction evidence"
+    ],
+    "primary": "bug_rescue"
+  },
+  "workspace": "plugins\\product-agent-os",
+  "write_policy": "read_only"
+}
