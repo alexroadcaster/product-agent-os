@@ -2800,3 +2800,15 @@ relevance: "Track 10 Task 24 Batch 9 implementation evidence before scorecard le
 trust_level: "high"
 verification_status: "Backed by focused RED/GREEN tests: Batch 9 imports failed before implementation, then `python -m unittest tests.product_agent_os.test_agent_skill_metrics -v` ran 17 tests with OK. Adjacent status/dashboard, template/automation and fixture/transcript runner suites ran 28, 87 and 21 tests with OK; full unittest ran 560 tests with OK in 809.106s using timeout_ms 900000; fixture eval, transcript eval, Codex compatibility, docs check and git diff hygiene exited 0."
 ```
+
+```yaml
+title: "Product-Agent OS Track 10 self-verification metrics-loop Batch 10 ledger reports candidates cli contracts"
+url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py; plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics_report.py; plugins/product-agent-os/scripts/product_agent_os/offline_artifact_safety.py; plugins/product-agent-os/scripts/render_agent_skill_metrics_report.py; tests/product_agent_os/test_agent_skill_metrics.py; tests/product_agent_os/test_agent_skill_metrics_report.py; tests/product_agent_os/test_agent_skill_metrics_cli.py; tests/product_agent_os/test_fixture_eval_runner.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
+type: "internal documentation"
+status: "checked-in project source"
+checked_at: "2026-05-28"
+summary: "T10-SV-M29..M45 Batch 10 coverage for Task 24 Self-Verification And Modernization Loop, including trace data-classification, shared offline artifact safety, scorecard ledger, daily/weekly metrics packets, component prioritization, modernization candidates, redacted offline report rendering, dry-run/stage CLI and metrics automation candidate-only blocking."
+relevance: "Track 10 Task 24 Batch 10 implementation evidence before runtime/discovery/lifecycle/eval integration and final documentation closure batches."
+trust_level: "high"
+verification_status: "Backed by focused RED/GREEN tests: Batch 10 imports/modules/templates and metrics automation blocking failed before implementation, then the focused suite ran 127 tests with OK. Fixture runner unit suite ran 17 tests with OK; full unittest ran 575 tests with OK in 612.098s using timeout_ms 1200000; fixture eval exited 0 with 80 fixtures and renderer_file_count 191; transcript eval exited 0 with 10 sessions and 0 failures; Codex compatibility returned status compatible; docs check and git diff hygiene exited 0."
+```

@@ -2,14 +2,19 @@
 
 from __future__ import annotations
 
-import html
 import json
-import re
 from datetime import UTC, datetime
 from pathlib import Path, PureWindowsPath
 from typing import Any
 
 from codex_runtime_runner.redaction import redact_payload, validate_redaction
+from product_agent_os.offline_artifact_safety import (
+    GENERATED_VIEW_ONLY_TEXT,
+    escape_html,
+    json_for_html_text,
+    prepare_offline_payload,
+    validate_offline_artifact,
+)
 from product_agent_os.stage_manifest import (
     MANIFEST_NAME,
     build_stage_manifest,
@@ -27,8 +32,6 @@ STATUS_JSON_TARGET = ".codex/product-agent-os/status.json"
 DASHBOARD_TARGETS = (STATUS_HTML_TARGET, STATUS_JSON_TARGET)
 DASHBOARD_MANIFEST_NAME = MANIFEST_NAME
 RENDERER_VERSION = "0.1.0"
-EXTERNAL_URL_PATTERN = re.compile(r"https?://", re.IGNORECASE)
-SCRIPT_SRC_PATTERN = re.compile(r"<script\s+[^>]*\bsrc\s*=", re.IGNORECASE)
 
 
 class StatusDashboardError(RuntimeError):
@@ -41,7 +44,9 @@ def render_status_dashboard(snapshot: dict[str, Any]) -> dict[str, Any]:
     if not isinstance(snapshot, dict):
         raise StatusDashboardError("status snapshot must be an object")
     safe_snapshot, redaction_summary = _redacted_snapshot(snapshot)
-    snapshot_json = _json_text(safe_snapshot)
+    prepared = prepare_offline_payload(safe_snapshot)
+    safe_snapshot = prepared["payload"]
+    snapshot_json = prepared["json"]
     html_text = _render_html(safe_snapshot)
     validation = _validate_dashboard_content(html_text, snapshot_json, safe_snapshot)
     return {
@@ -49,7 +54,7 @@ def render_status_dashboard(snapshot: dict[str, Any]) -> dict[str, Any]:
         "html": html_text,
         "json": snapshot_json,
         "snapshot": safe_snapshot,
-        "redaction_summary": redaction_summary,
+        "redaction_summary": _merge_redaction_summaries(redaction_summary, prepared["redaction_summary"]),
         "validation": validation,
     }
 
@@ -251,6 +256,7 @@ def _render_html(snapshot: dict[str, Any]) -> str:
     values = {
         "title": "Product-Agent OS Status",
         "generated_at": _text(snapshot.get("generated_at") or "not available"),
+        "generated_view_policy": _text(GENERATED_VIEW_ONLY_TEXT),
         "css": css.rstrip(),
         "banner": _status_banner(snapshot),
         "sections": _sections(snapshot),
@@ -411,9 +417,7 @@ def _next_question_text(value: Any) -> Any:
 
 
 def _text(value: Any) -> str:
-    text = str(value)
-    text = EXTERNAL_URL_PATTERN.sub("[EXTERNAL_URL_REDACTED]", text)
-    return html.escape(text, quote=True)
+    return escape_html(value)
 
 
 def _json_text(payload: Any) -> str:
@@ -422,26 +426,12 @@ def _json_text(payload: Any) -> str:
 
 def _json_for_html(payload: Any) -> str:
     text = _json_text(payload)
-    return (
-        text.replace("&", "\\u0026")
-        .replace("<", "\\u003c")
-        .replace(">", "\\u003e")
-        .replace("http://", "http:\\/\\/")
-        .replace("https://", "https:\\/\\/")
-    )
+    return json_for_html_text(text)
 
 
 def _validate_dashboard_content(html_text: str, snapshot_json: str, snapshot: dict[str, Any]) -> dict[str, Any]:
-    errors: list[str] = []
-    lower_html = html_text.lower()
-    if not lower_html.startswith("<!doctype html>"):
-        errors.append("html:doctype_missing")
-    if '<meta name="viewport"' not in lower_html:
-        errors.append("html:viewport_missing")
-    if EXTERNAL_URL_PATTERN.search(html_text):
-        errors.append("html:external_url_forbidden")
-    if SCRIPT_SRC_PATTERN.search(html_text):
-        errors.append("html:script_src_forbidden")
+    validation = validate_offline_artifact(html_text=html_text, embedded_json=snapshot_json, payload=snapshot)
+    errors: list[str] = list(validation["errors"])
     if snapshot.get("schema_version") != 1:
         errors.append("snapshot.schema_version:must_be_1")
     if snapshot.get("write_policy") != "read_only":
@@ -464,7 +454,17 @@ def _validation_checks() -> list[str]:
         "embedded json escaped",
         "snapshot redaction validated",
         "status snapshot schema validates",
+        "generated view policy present",
     ]
+
+
+def _merge_redaction_summaries(first: dict[str, Any], second: dict[str, Any]) -> dict[str, Any]:
+    categories = set(str(item) for item in first.get("categories", []))
+    categories.update(str(item) for item in second.get("categories", []))
+    return {
+        "count": int(first.get("count", 0)) + int(second.get("count", 0)),
+        "categories": sorted(categories),
+    }
 
 
 def _plan_dashboard_file(target: Path, target_path: str) -> tuple[str, str, list[str], list[str]]:

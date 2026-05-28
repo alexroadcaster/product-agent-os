@@ -11,6 +11,9 @@ sys.path.insert(0, str(SCRIPTS))
 
 from product_agent_os.agent_skill_metrics import (  # noqa: E402
     METRICS_PACKET_LIMITS,
+    build_daily_metrics_report,
+    build_scorecard_ledger_record,
+    build_weekly_verification_packet,
     build_metric_aggregation,
     build_evidence_packet,
     build_evidence_dataset,
@@ -23,9 +26,13 @@ from product_agent_os.agent_skill_metrics import (  # noqa: E402
     calculate_scorecards,
     collect_target_registry,
     enforce_metrics_redaction_gate,
+    enforce_trace_data_classification_gate,
     evaluate_dataset_quality,
     evaluate_confidence_and_decision_gates,
+    generate_modernization_candidates,
+    prioritize_improvement_components,
     recommend_metrics_cadence,
+    render_scorecard_ledger_markdown,
     source_priority_policy,
 )
 
@@ -678,6 +685,207 @@ class AgentSkillMetricsTest(unittest.TestCase):
         self.assertNotIn("C:\\Users\\person", serialized)
         self.assertNotIn("TOKEN=abc123", serialized)
         self.assertNotIn("secret prompt", serialized.lower())
+
+    def test_trace_data_classification_gate_blocks_real_trace_without_policy_or_gap(self):
+        blocked = enforce_trace_data_classification_gate(
+            {
+                "traces": [
+                    {
+                        "trace_id": "real-trace-1",
+                        "trace_source_type": "agents_sdk",
+                        "synthetic": False,
+                    },
+                    {
+                        "trace_id": "synthetic-trace-1",
+                        "trace_source_type": "tool_report",
+                        "synthetic": True,
+                    },
+                ]
+            },
+            data_classification_register_present=False,
+            secrets_policy_present=False,
+            accepted_gap=None,
+        )
+
+        self.assertEqual(blocked["status"], "blocked")
+        self.assertIn("real_trace_requires_data_classification_or_gap", blocked["blockers"])
+        self.assertEqual(blocked["blocked_trace_ids"], ["real-trace-1"])
+        self.assertEqual(blocked["allowed_trace_ids"], ["synthetic-trace-1"])
+        self.assertIn("data-classification-register.md", blocked["required_artifacts"])
+        self.assertIn("secrets-policy.md", blocked["required_artifacts"])
+
+        allowed = enforce_trace_data_classification_gate(
+            {"traces": [{"trace_id": "real-trace-1", "synthetic": False}]},
+            data_classification_register_present=False,
+            secrets_policy_present=False,
+            accepted_gap={"owner": "Security", "reason": "fixture trace has no customer data"},
+        )
+
+        self.assertEqual(allowed["status"], "accepted_gap")
+        self.assertEqual(allowed["blocked_trace_ids"], [])
+
+    def test_scorecard_ledger_record_and_markdown_are_append_only_and_source_backed(self):
+        record = build_scorecard_ledger_record(
+            ledger_id="ledger-skill-review",
+            generated_at="2026-05-28T10:00:00Z",
+            baseline_version={"skill:review": "1.0.0"},
+            current_version={"skill:review": "1.1.0"},
+            candidate_version={"skill:review": "1.2.0-candidate"},
+            run_record_ids=["run-2026-05-28"],
+            raw_counts={"task_success_rate": {"numerator": 48, "denominator": 50}},
+            confidence_intervals={"task_success_rate": {"lower": 0.86, "upper": 0.99}},
+            cost_latency={"total_cost_usd": 0.42, "p95_latency_ms": 1200},
+            evidence_links=[".codex/eval-reports/run-2026-05-28.json"],
+            redaction_status="ready",
+            report_anchors=["#target-skill-review"],
+        )
+        markdown = render_scorecard_ledger_markdown(record)
+        serialized = json.dumps(record, sort_keys=True)
+
+        self.assertEqual(record["schema_version"], 1)
+        self.assertEqual(record["write_policy"], "read_only")
+        self.assertEqual(record["ledger_policy"], "append_only")
+        self.assertEqual(record["run_record_ids"], ["run-2026-05-28"])
+        self.assertEqual(record["raw_counts"]["task_success_rate"]["denominator"], 50)
+        self.assertIn("confidence_intervals", record)
+        self.assertIn("report_anchors", record)
+        self.assertIn("Append-only policy", markdown)
+        self.assertIn("#target-skill-review", markdown)
+        self.assertNotIn("TOKEN=", serialized + markdown)
+
+    def test_daily_metrics_report_recommends_safe_next_actions_without_autofix(self):
+        report = build_daily_metrics_report(
+            generated_at="2026-05-28T10:00:00Z",
+            evidence_window={"started_at": "2026-05-28T00:00:00Z", "ended_at": "2026-05-28T10:00:00Z"},
+            target_reports=[
+                {
+                    "target": {"target_id": "skill:review-slice", "version": "1.1.0"},
+                    "decision_status": "blocked_by_gate",
+                    "blockers": ["false_pass_threshold_exceeded"],
+                    "confidence_status": "blocked",
+                },
+                {
+                    "target": {"target_id": "skill:planner", "version": "2.0.0"},
+                    "decision_status": "weekly_acceptance_ready",
+                    "update_candidates": [{"candidate_id": "candidate-skill-planner"}],
+                    "changed_version": "2.0.1-candidate",
+                },
+                {
+                    "target": {"target_id": "agent:docs-maintainer", "version": "1.0.0"},
+                    "decision_status": "insufficient_data",
+                    "evidence_gaps": ["missing_real_trace"],
+                },
+            ],
+            trace_source_mix={"agents_sdk": 2, "accepted_gap": 1},
+            changed_versions=["skill:planner@2.0.1-candidate"],
+            failure_groups=["false_pass_threshold_exceeded"],
+        )
+        actions = {item["target_id"]: item["recommendation"] for item in report["target_recommendations"]}
+
+        self.assertEqual(report["schema_version"], 1)
+        self.assertEqual(report["auto_fix_policy"], "never_from_one_noisy_run")
+        self.assertEqual(actions["skill:review-slice"], "block_promotion")
+        self.assertEqual(actions["skill:planner"], "stage_candidate_for_review")
+        self.assertEqual(actions["agent:docs-maintainer"], "request_human_audit")
+        self.assertIn("trace_source_mix", report)
+        self.assertIn("next_safe_action", report)
+
+    def test_weekly_verifier_blocks_without_owner_rollback_holdout_flake_and_cost_evidence(self):
+        blocked = build_weekly_verification_packet(
+            generated_at="2026-05-28T10:00:00Z",
+            rolling_window={"days": 7, "status": "present"},
+            baseline={"version": "1.0.0", "task_success_rate": 0.86},
+            previous_week={"version": "1.1.0", "task_success_rate": 0.88},
+            holdout={"status": "missing"},
+            regression_findings=[{"finding_id": "false-pass-1", "severity": "high"}],
+            update_candidates=[{"candidate_id": "skill-planner-2"}],
+            rollback_target="",
+            owner_review_status="missing",
+            false_pass_audit_status="missing",
+            flake_replay_status="missing",
+            cost_regression_check_status="missing",
+        )
+
+        self.assertEqual(blocked["status"], "blocked")
+        self.assertIn("rollback_target_missing", blocked["blockers"])
+        self.assertIn("owner_review_missing", blocked["blockers"])
+        self.assertIn("holdout_check_missing", blocked["blockers"])
+        self.assertIn("false_pass_audit_missing", blocked["blockers"])
+        self.assertIn("flake_replay_missing", blocked["blockers"])
+        self.assertIn("cost_regression_check_missing", blocked["blockers"])
+        self.assertEqual(blocked["regression_findings"][0]["finding_id"], "false-pass-1")
+        self.assertEqual(blocked["update_candidates"][0]["candidate_id"], "skill-planner-2")
+
+    def test_component_prioritization_uses_failure_taxonomy_and_evidence_sufficiency(self):
+        prioritized = prioritize_improvement_components(
+            failure_taxonomy=[
+                {
+                    "component": "prompt",
+                    "failure_modes": ["tool_argument_mismatch"],
+                    "affected_metrics": {"tool_argument_accuracy": -0.22},
+                    "evidence_status": "sufficient",
+                },
+                {
+                    "component": "dataset",
+                    "failure_modes": ["missing_holdout"],
+                    "affected_metrics": {"task_success_rate": -0.08},
+                    "evidence_status": "insufficient",
+                },
+                {
+                    "component": "approval_policy",
+                    "failure_modes": [],
+                    "affected_metrics": {},
+                    "evidence_status": "none",
+                },
+            ]
+        )
+        by_component = {item["component"]: item for item in prioritized["priorities"]}
+
+        self.assertEqual(prioritized["schema_version"], 1)
+        self.assertEqual(by_component["prompt"]["decision"], "change")
+        self.assertEqual(by_component["dataset"]["decision"], "defer")
+        self.assertEqual(by_component["approval_policy"]["decision"], "leave_unchanged")
+        self.assertLess(by_component["prompt"]["rank"], by_component["dataset"]["rank"])
+        self.assertIn("tool_argument_mismatch", by_component["prompt"]["reason"])
+
+    def test_modernization_candidate_generator_stages_only_source_backed_candidates(self):
+        packet = generate_modernization_candidates(
+            component_priorities=[
+                {
+                    "component": "skill",
+                    "decision": "change",
+                    "reason": "skill trigger recall regression",
+                    "affected_metrics": {"skill_trigger_recall": -0.18},
+                    "evidence_status": "sufficient",
+                    "target_id": "skill:review-slice",
+                    "expected_impact": "restore trigger recall",
+                    "risk": "medium",
+                    "approval_state": "not_requested",
+                    "rollback_target": "skill:review-slice@1.1.0",
+                },
+                {
+                    "component": "prompt",
+                    "decision": "change",
+                    "reason": "headline score improved",
+                    "affected_metrics": {},
+                    "evidence_status": "insufficient",
+                    "target_id": "prompt_pack:review",
+                    "expected_impact": "",
+                    "risk": "unknown",
+                    "approval_state": "not_requested",
+                    "rollback_target": "",
+                },
+            ]
+        )
+        by_component = {item["component"]: item for item in packet["candidates"]}
+
+        self.assertEqual(packet["schema_version"], 1)
+        self.assertEqual(by_component["skill"]["status"], "staged_for_review")
+        self.assertEqual(by_component["skill"]["external_write_action"], "none")
+        self.assertEqual(by_component["skill"]["rollback_target"], "skill:review-slice@1.1.0")
+        self.assertEqual(by_component["prompt"]["status"], "blocked")
+        self.assertIn("headline_only_or_insufficient_evidence", by_component["prompt"]["blockers"])
+        self.assertEqual(packet["apply_policy"], "cannot_apply_patches")
 
     def _write(self, path: Path, text: str) -> None:
         path.parent.mkdir(parents=True, exist_ok=True)

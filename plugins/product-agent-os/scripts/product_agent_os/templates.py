@@ -680,6 +680,30 @@ _TEMPLATES: tuple[TemplateSpec, ...] = (
         ".codex/artifact-templates/eval-run-report.md",
     ),
     _spec(
+        "artifact-agent-skill-scorecard-ledger",
+        "artifact-templates",
+        "artifact-templates/agent-skill-scorecard-ledger.md",
+        ".codex/artifact-templates/agent-skill-scorecard-ledger.md",
+    ),
+    _spec(
+        "artifact-agent-skill-daily-eval-report",
+        "artifact-templates",
+        "artifact-templates/agent-skill-daily-eval-report.md",
+        ".codex/artifact-templates/agent-skill-daily-eval-report.md",
+    ),
+    _spec(
+        "artifact-agent-skill-weekly-verification",
+        "artifact-templates",
+        "artifact-templates/agent-skill-weekly-verification.md",
+        ".codex/artifact-templates/agent-skill-weekly-verification.md",
+    ),
+    _spec(
+        "artifact-agent-skill-update-candidate",
+        "artifact-templates",
+        "artifact-templates/agent-skill-update-candidate.md",
+        ".codex/artifact-templates/agent-skill-update-candidate.md",
+    ),
+    _spec(
         "artifact-ai-dataset-manifest",
         "artifact-templates",
         "artifact-templates/ai-dataset-manifest.md",

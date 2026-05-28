@@ -132,10 +132,16 @@ class FixtureEvalRunnerTest(unittest.TestCase):
         self.assertTrue(results["python-app"]["expected_checks"]["status_snapshot_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["status_dashboard_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["dashboard_no_external_assets"])
+        self.assertTrue(results["python-app"]["expected_checks"]["trace_data_classification_gate_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["offline_artifact_safety_shared"])
+        self.assertTrue(results["python-app"]["expected_checks"]["no_baseline_renderer_pollution"])
+        self.assertTrue(results["python-app"]["expected_checks"]["metrics_report_redacted"])
+        self.assertTrue(results["python-app"]["expected_checks"]["scorecard_ledger_contract_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["active_metrics_automation_blocked"])
         self.assertTrue(results["python-app"]["expected_checks"]["question_budget_false_positive_guard_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["dashboard_not_source_of_truth"])
         self.assertTrue(results["python-app"]["expected_checks"]["stale_evidence_no_success_claim"])
-        self.assertEqual(results["python-app"]["renderer_file_count"], 187)
+        self.assertEqual(results["python-app"]["renderer_file_count"], 191)
         for check_name in [
             "methodology_catalog_contract_present",
             "methodology_intelligence_contract_present",

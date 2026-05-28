@@ -20,6 +20,7 @@ from product_agent_os.infrastructure import (  # noqa: E402
     stage_status_dashboard,
 )
 from product_agent_os.merge_infrastructure import build_merge_plan  # noqa: E402
+from product_agent_os.offline_artifact_safety import GENERATED_VIEW_ONLY_TEXT  # noqa: E402
 from product_agent_os.stage_manifest import MANIFEST_NAME  # noqa: E402
 from product_agent_os.status_dashboard import (  # noqa: E402
     STATUS_HTML_TARGET,
@@ -53,6 +54,8 @@ class StatusDashboardTest(unittest.TestCase):
         self.assertIn("@media", html)
         self.assertIn('<script type="application/json" id="status-snapshot">', html)
         self.assertNotIn("</script><script", html)
+        self.assertIn(GENERATED_VIEW_ONLY_TEXT, html)
+        self.assertIn("generated view policy present", result["validation"]["checks"])
         self.assertEqual(json.loads(snapshot_json)["schema_version"], 1)
         self.assertEqual(result["validation"]["errors"], [])
 

@@ -23,6 +23,9 @@ def validate_automation_candidate(candidate_file: str | Path) -> dict[str, Any]:
 
 def from_text(text: str, candidate_file: str) -> dict[str, Any]:
     manual_success_count = _manual_success_count(text)
+    metrics_automation_candidate = _is_metrics_automation_candidate(text, candidate_file)
+    active_schedule_present = _active_schedule_present(text)
+    external_workflow_present = _external_workflow_present(text)
     owner_present = "Accountable owner:" in text
     cadence_present = "## Cadence" in text and ("Trigger:" in text or "Frequency:" in text)
     stable_inputs_present = "## Stable Inputs" in text and "Inputs:" in text
@@ -45,6 +48,10 @@ def from_text(text: str, candidate_file: str) -> dict[str, Any]:
         errors.append("write policy is required")
     if any(is_forbidden_secret_assignment(line) for line in text.splitlines()):
         errors.append("secret-like literal is forbidden")
+    if metrics_automation_candidate and active_schedule_present:
+        errors.append("active metrics automation is forbidden")
+    if metrics_automation_candidate and external_workflow_present:
+        errors.append("external workflow creation is forbidden")
     if not stable_inputs_present:
         warnings.append("stable inputs are not documented")
     if not stable_outputs_present:
@@ -74,6 +81,8 @@ def from_text(text: str, candidate_file: str) -> dict[str, Any]:
     status = (
         "blocked"
         if errors
+        else "candidate_only"
+        if metrics_automation_candidate
         else "ready_for_manual_approval"
         if manual_success_count >= 2 and readiness_fields_present
         else "candidate_only"
@@ -91,6 +100,8 @@ def from_text(text: str, candidate_file: str) -> dict[str, Any]:
         rollback_or_disable_present=rollback_or_disable_present,
         write_policy_present=write_policy_present,
         explicit_approval_present=explicit_approval_present,
+        metrics_automation_candidate=metrics_automation_candidate,
+        active_schedule_status="detected" if active_schedule_present else "not_created",
         errors=errors,
         warnings=warnings,
     )
@@ -110,6 +121,8 @@ def _report(
     rollback_or_disable_present: bool = False,
     write_policy_present: bool = False,
     explicit_approval_present: bool = False,
+    metrics_automation_candidate: bool = False,
+    active_schedule_status: str = "not_applicable",
     errors: list[str] | None = None,
     warnings: list[str] | None = None,
 ) -> dict[str, Any]:
@@ -130,6 +143,8 @@ def _report(
         "rollback_or_disable_present": rollback_or_disable_present,
         "write_policy_present": write_policy_present,
         "explicit_approval_present": explicit_approval_present,
+        "metrics_automation_candidate": metrics_automation_candidate,
+        "active_schedule_status": active_schedule_status,
         "errors": errors,
         "warnings": warnings,
     }
@@ -144,6 +159,44 @@ def _manual_success_count(text: str) -> int:
     if match and "Failures observed: none" in text:
         return int(match.group(1))
     return 0
+
+
+def _is_metrics_automation_candidate(text: str, candidate_file: str) -> bool:
+    lowered = f"{candidate_file}\n{text}".lower()
+    return (
+        "metrics-loop" in lowered
+        or "agent skill metrics" in lowered
+        or "agent-skill-metrics" in lowered
+        or "daily-agent-skill-metrics" in lowered
+        or "weekly-agent-skill-metrics" in lowered
+    )
+
+
+def _active_schedule_present(text: str) -> bool:
+    lowered = text.lower()
+    if "## active schedule" in lowered:
+        return True
+    return any(
+        phrase in lowered
+        for phrase in [
+            "recurring schedule is active",
+            "cron:",
+            "rrule:",
+            "codex app automation: active",
+        ]
+    )
+
+
+def _external_workflow_present(text: str) -> bool:
+    lowered = text.lower()
+    return any(
+        phrase in lowered
+        for phrase in [
+            "github actions workflow: active",
+            "external workflow: active",
+            "codex app automation: active",
+        ]
+    )
 
 
 validate_automation_candidate.from_text = from_text

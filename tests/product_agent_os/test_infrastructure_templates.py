@@ -13,8 +13,10 @@ ROOT = Path(__file__).resolve().parents[2]
 SCRIPTS = ROOT / "plugins" / "product-agent-os" / "scripts"
 TEMPLATE_ROOT = ROOT / "plugins" / "product-agent-os" / "assets" / "templates"
 PLUGIN_ROOT = ROOT / "plugins" / "product-agent-os"
+FIXTURES = PLUGIN_ROOT / "assets" / "fixtures"
 sys.path.insert(0, str(SCRIPTS))
 
+from product_agent_os.infrastructure import render_infrastructure_plan  # noqa: E402
 from product_agent_os.templates import (  # noqa: E402
     AI_RAG_TEMPLATE_ALIASES,
     DELIVERY_TEMPLATE_ALIASES,
@@ -136,6 +138,10 @@ REQUIRED_TARGETS = {
     ".codex/artifact-templates/prompt-contract.md",
     ".codex/artifact-templates/model-decision-record.md",
     ".codex/artifact-templates/eval-run-report.md",
+    ".codex/artifact-templates/agent-skill-scorecard-ledger.md",
+    ".codex/artifact-templates/agent-skill-daily-eval-report.md",
+    ".codex/artifact-templates/agent-skill-weekly-verification.md",
+    ".codex/artifact-templates/agent-skill-update-candidate.md",
     ".codex/artifact-templates/ai-dataset-manifest.md",
     ".codex/artifact-templates/structured-output-schema.md",
     ".codex/artifact-templates/ai-tool-contract.md",
@@ -933,6 +939,80 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 text = templates[filename]
                 for term in terms:
                     self.assertIn(term, text)
+
+    def test_agent_skill_metrics_templates_cover_ledger_reports_and_candidates(self):
+        expected_terms = {
+            "agent-skill-scorecard-ledger.md": [
+                "append-only policy",
+                "baseline version",
+                "current version",
+                "candidate version",
+                "raw counts",
+                "confidence intervals",
+                "cost",
+                "latency",
+                "evidence links",
+                "redaction status",
+                "run record ids",
+                "report anchors",
+                "no-secrets policy",
+            ],
+            "agent-skill-daily-eval-report.md": [
+                "evidence window",
+                "target inventory",
+                "trace source mix",
+                "changed versions",
+                "failure groups",
+                "evidence gaps",
+                "confidence status",
+                "next safe action",
+                "never auto-fix from one noisy run",
+            ],
+            "agent-skill-weekly-verification.md": [
+                "7-day rolling window",
+                "baseline",
+                "previous week",
+                "holdout",
+                "false-pass audit",
+                "flake replay",
+                "rollback target",
+                "owner review",
+                "cost regression check",
+            ],
+            "agent-skill-update-candidate.md": [
+                "reason",
+                "metric deltas",
+                "affected targets",
+                "component priority",
+                "expected impact",
+                "risk",
+                "approval state",
+                "rollback target",
+                "external write action",
+                "headline-only improvement",
+            ],
+        }
+
+        targets = {item.target_path for item in required_templates()}
+        for filename, terms in expected_terms.items():
+            with self.subTest(filename=filename):
+                self.assertIn(f".codex/artifact-templates/{filename}", targets)
+                text = (TEMPLATE_ROOT / "artifact-templates" / filename).read_text(encoding="utf-8").lower()
+                for term in terms:
+                    self.assertIn(term, text)
+
+    def test_metrics_reports_and_daily_weekly_automation_candidates_are_opt_in_not_baseline(self):
+        forbidden_targets = {
+            ".codex/eval-reports/agent-skill-evaluation-report.html",
+            ".codex/automation-candidates/daily-agent-skill-metrics.md",
+            ".codex/automation-candidates/weekly-agent-skill-metrics.md",
+        }
+        template_targets = {item.target_path for item in required_templates()}
+        baseline = render_infrastructure_plan(FIXTURES / "empty-repo")
+        baseline_targets = {item["target_path"] for item in baseline["rendered_artifacts"]["files"]}
+
+        self.assertTrue(forbidden_targets.isdisjoint(template_targets))
+        self.assertTrue(forbidden_targets.isdisjoint(baseline_targets))
 
     def test_template_source_files_exist(self):
         for item in required_templates():
@@ -3437,6 +3517,38 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 "redaction status",
                 "artifact updates",
                 "existing approval flow",
+            ],
+            "agent-skill-scorecard-ledger.md": [
+                "source status:",
+                "append-only policy",
+                "baseline version",
+                "raw counts",
+                "redaction status",
+                "no-secrets policy",
+            ],
+            "agent-skill-daily-eval-report.md": [
+                "source status:",
+                "evidence window",
+                "target inventory",
+                "trace source mix",
+                "never auto-fix from one noisy run",
+                "next safe action",
+            ],
+            "agent-skill-weekly-verification.md": [
+                "source status:",
+                "7-day rolling window",
+                "holdout",
+                "false-pass audit",
+                "flake replay",
+                "rollback target",
+            ],
+            "agent-skill-update-candidate.md": [
+                "source status:",
+                "metric deltas",
+                "affected targets",
+                "component priority",
+                "approval state",
+                "headline-only improvement",
             ],
         }
         self.assertEqual(set(templates), set(expected_templates))

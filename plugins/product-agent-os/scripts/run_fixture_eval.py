@@ -12,6 +12,15 @@ from typing import Any
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from product_agent_os.discovery import analyze_workspace  # noqa: E402
+from product_agent_os.agent_skill_metrics import (  # noqa: E402
+    build_scorecard_ledger_record,
+    enforce_trace_data_classification_gate,
+    render_scorecard_ledger_markdown,
+)
+from product_agent_os.agent_skill_metrics_report import (  # noqa: E402
+    METRICS_REPORT_TARGET,
+    render_agent_skill_metrics_report,
+)
 from product_agent_os.automation_policy import validate_automation_candidate  # noqa: E402
 from product_agent_os.infrastructure import InfrastructureError, render_infrastructure_plan, stage_infrastructure  # noqa: E402
 from product_agent_os.methodology_audit import build_methodology_audit  # noqa: E402
@@ -1947,6 +1956,12 @@ def _expected_checks(
         checks["status_snapshot_present"] = _status_snapshot_present()
         checks["status_dashboard_present"] = _status_dashboard_present()
         checks["dashboard_no_external_assets"] = _dashboard_no_external_assets()
+        checks["trace_data_classification_gate_present"] = _trace_data_classification_gate_present()
+        checks["offline_artifact_safety_shared"] = _offline_artifact_safety_shared()
+        checks["no_baseline_renderer_pollution"] = _no_baseline_renderer_pollution(rendered)
+        checks["metrics_report_redacted"] = _metrics_report_redacted()
+        checks["scorecard_ledger_contract_present"] = _scorecard_ledger_contract_present()
+        checks["active_metrics_automation_blocked"] = _active_metrics_automation_blocked()
         checks["question_budget_false_positive_guard_present"] = (
             _question_budget_false_positive_guard_present()
         )
@@ -3575,6 +3590,184 @@ def _dashboard_no_external_assets() -> bool:
         and "external urls absent" in rendered.get("validation", {}).get("checks", [])
         and "external scripts absent" in rendered.get("validation", {}).get("checks", [])
     )
+
+
+def _trace_data_classification_gate_present() -> bool:
+    blocked = enforce_trace_data_classification_gate(
+        {
+            "traces": [
+                {"trace_id": "real-trace", "trace_source_type": "agents_sdk", "synthetic": False},
+                {"trace_id": "synthetic-trace", "trace_source_type": "tool_report", "synthetic": True},
+            ]
+        }
+    )
+    allowed = enforce_trace_data_classification_gate(
+        {"traces": [{"trace_id": "real-trace", "trace_source_type": "agents_sdk", "synthetic": False}]},
+        accepted_gap={"owner": "Security", "reason": "synthetic fixture gap"},
+    )
+    payload = "\n".join(
+        path.read_text(encoding="utf-8").lower()
+        for path in [
+            PLUGIN_ROOT / "scripts" / "product_agent_os" / "agent_skill_metrics.py",
+            TEMPLATE_ROOT / "artifact-templates" / "data-classification-register.md",
+            TEMPLATE_ROOT / "artifact-templates" / "secrets-policy.md",
+            PLUGIN_ROOT.parents[1] / "tests" / "product_agent_os" / "test_agent_skill_metrics.py",
+        ]
+    )
+    return (
+        blocked.get("status") == "blocked"
+        and "real_trace_requires_data_classification_or_gap" in blocked.get("blockers", [])
+        and allowed.get("status") == "accepted_gap"
+        and "data-classification-register.md" in payload
+        and "secrets-policy.md" in payload
+    )
+
+
+def _offline_artifact_safety_shared() -> bool:
+    dashboard = render_status_dashboard(
+        {
+            "schema_version": 1,
+            "write_policy": "read_only",
+            "generated_at": "2026-05-28T00:00:00",
+            "dashboard_policy": {"source_of_truth": "underlying_artifacts", "write_policy": "read_only"},
+            "readiness_summary": {"success_claim": "not_claimed", "warnings": []},
+            "evidence_summary": {"freshness": "current"},
+        }
+    )
+    report = render_agent_skill_metrics_report(_synthetic_metrics_report_packet())
+    payload = "\n".join(
+        path.read_text(encoding="utf-8").lower()
+        for path in [
+            PLUGIN_ROOT / "scripts" / "product_agent_os" / "offline_artifact_safety.py",
+            PLUGIN_ROOT / "scripts" / "product_agent_os" / "status_dashboard.py",
+            PLUGIN_ROOT / "scripts" / "product_agent_os" / "agent_skill_metrics_report.py",
+            PLUGIN_ROOT.parents[1] / "tests" / "product_agent_os" / "test_status_dashboard.py",
+            PLUGIN_ROOT.parents[1] / "tests" / "product_agent_os" / "test_agent_skill_metrics_report.py",
+        ]
+    )
+    return (
+        dashboard.get("validation", {}).get("ok") is True
+        and report.get("validation", {}).get("ok") is True
+        and "generated view policy present" in dashboard.get("validation", {}).get("checks", [])
+        and "generated view policy present" in report.get("validation", {}).get("checks", [])
+        and "prepare_offline_payload" in payload
+        and "offline_artifact_safety" in payload
+    )
+
+
+def _no_baseline_renderer_pollution(rendered: dict[str, Any]) -> bool:
+    forbidden_targets = {
+        METRICS_REPORT_TARGET,
+        ".codex/automation-candidates/daily-agent-skill-metrics.md",
+        ".codex/automation-candidates/weekly-agent-skill-metrics.md",
+    }
+    template_targets = {item.target_path for item in required_templates()}
+    rendered_targets = {
+        str(item.get("target_path"))
+        for item in rendered.get("rendered_artifacts", {}).get("files", [])
+        if isinstance(item, dict)
+    }
+    return forbidden_targets.isdisjoint(template_targets) and forbidden_targets.isdisjoint(rendered_targets)
+
+
+def _metrics_report_redacted() -> bool:
+    packet = _synthetic_metrics_report_packet()
+    packet["raw_appendix"] = {"tool_output": "TOKEN=abc123", "path": "C:\\Users\\person\\private-project"}
+    rendered = render_agent_skill_metrics_report(packet)
+    serialized = json.dumps(rendered, sort_keys=True)
+    return (
+        rendered.get("status") == "ready"
+        and rendered.get("validation", {}).get("ok") is True
+        and "TOKEN=abc123" not in serialized
+        and "C:\\Users\\person" not in serialized
+        and "http://" not in rendered.get("html", "").lower()
+        and "https://" not in rendered.get("html", "").lower()
+    )
+
+
+def _scorecard_ledger_contract_present() -> bool:
+    record = build_scorecard_ledger_record(
+        ledger_id="fixture-ledger",
+        generated_at="2026-05-28T00:00:00Z",
+        baseline_version={"skill:review": "1.0.0"},
+        current_version={"skill:review": "1.1.0"},
+        candidate_version={"skill:review": "1.2.0-candidate"},
+        run_record_ids=["run-fixture"],
+        raw_counts={"task_success_rate": {"numerator": 1, "denominator": 1}},
+        confidence_intervals={"task_success_rate": {"lower": 0.5, "upper": 1.0}},
+        cost_latency={"total_cost_usd": 0.1, "p95_latency_ms": 1000},
+        evidence_links=[".codex/eval-reports/run-fixture.json"],
+        redaction_status="ready",
+        report_anchors=["#target-skill-review"],
+    )
+    markdown = render_scorecard_ledger_markdown(record)
+    template = (TEMPLATE_ROOT / "artifact-templates" / "agent-skill-scorecard-ledger.md").read_text(
+        encoding="utf-8"
+    ).lower()
+    return (
+        record.get("ledger_policy") == "append_only"
+        and "Append-only policy" in markdown
+        and "confidence intervals" in template
+        and "run record ids" in template
+        and "TOKEN=" not in json.dumps(record, sort_keys=True) + markdown
+    )
+
+
+def _active_metrics_automation_blocked() -> bool:
+    text = (
+        "# Weekly Agent Skill Metrics Automation Candidate\n\n"
+        "Automation type: metrics-loop\n"
+        "## Owner\n\n"
+        "- Accountable owner: Quality\n\n"
+        "## Verification\n\n"
+        "- Deterministic checks: python -m unittest tests.product_agent_os.test_agent_skill_metrics -v\n"
+        "- Successful manual workflow runs: 2\n\n"
+        "## Rollback Or Disable Path\n\n"
+        "- Disable path: remove candidate packet\n\n"
+        "## Explicit Write Policy\n\n"
+        "- Allowed write targets: staged artifacts only\n\n"
+        "## Active Schedule\n\n"
+        "- Cron: 0 9 * * *\n"
+        "- GitHub Actions workflow: active\n"
+    )
+    report = validate_automation_candidate.from_text(text, "weekly-agent-skill-metrics.md")
+    return (
+        report.get("status") == "blocked"
+        and report.get("metrics_automation_candidate") is True
+        and "active metrics automation is forbidden" in report.get("errors", [])
+        and "external workflow creation is forbidden" in report.get("errors", [])
+    )
+
+
+def _synthetic_metrics_report_packet() -> dict[str, Any]:
+    return {
+        "report_id": "fixture-report",
+        "generated_at": "2026-05-28T00:00:00Z",
+        "project_id": "fixture",
+        "eval_window": {"started_at": "2026-05-28T00:00:00Z", "ended_at": "2026-05-28T01:00:00Z"},
+        "cadence": {"level": "L1", "recommended": ["weekly"]},
+        "target_inventory": [{"target_id": "skill:review", "target_type": "skill", "version": "1.0.0"}],
+        "metrics": {
+            "sections": {
+                "outcome": {
+                    "metrics": {
+                        "task_success_rate": {
+                            "metric_id": "task_success_rate",
+                            "numerator": 1,
+                            "denominator": 1,
+                            "value": 1.0,
+                            "status": "ready",
+                        }
+                    }
+                }
+            }
+        },
+        "version_comparison": {"current": {"skill:review": "1.0.0"}},
+        "trace_evidence": {"trace_sources": ["agents_sdk"]},
+        "update_candidates": [],
+        "source_datasets": [".codex/eval-reports/run-fixture.json"],
+        "redaction_status": "ready",
+    }
 
 
 def _question_budget_false_positive_guard_present() -> bool:

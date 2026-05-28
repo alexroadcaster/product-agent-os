@@ -836,6 +836,313 @@ def build_metrics_run_record(
     return _redacted_dict(packet)
 
 
+def enforce_trace_data_classification_gate(
+    trace_packet: dict[str, Any],
+    *,
+    data_classification_register_present: bool = False,
+    secrets_policy_present: bool = False,
+    accepted_gap: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Block real trace ingestion unless data classification, secrets policy or gap exists."""
+
+    traces = trace_packet.get("traces") if isinstance(trace_packet.get("traces"), list) else []
+    real_traces = [
+        trace
+        for trace in traces
+        if isinstance(trace, dict) and not bool(trace.get("synthetic")) and trace.get("trace_source_type") != "accepted_gap"
+    ]
+    policy_present = data_classification_register_present or secrets_policy_present
+    gap_present = isinstance(accepted_gap, dict) and bool(accepted_gap.get("owner")) and bool(accepted_gap.get("reason"))
+    blocked_trace_ids = [] if policy_present or gap_present else [_trace_id(trace) for trace in real_traces]
+    allowed_trace_ids = [
+        _trace_id(trace)
+        for trace in traces
+        if isinstance(trace, dict) and _trace_id(trace) not in set(blocked_trace_ids)
+    ]
+    blockers = ["real_trace_requires_data_classification_or_gap"] if blocked_trace_ids else []
+    status = "blocked" if blocked_trace_ids else "accepted_gap" if gap_present and real_traces else "ready"
+    packet = {
+        "schema_version": 1,
+        "write_policy": "read_only",
+        "status": status,
+        "blockers": blockers,
+        "blocked_trace_ids": blocked_trace_ids,
+        "allowed_trace_ids": allowed_trace_ids,
+        "required_artifacts": ["data-classification-register.md", "secrets-policy.md"],
+        "policy": {
+            "real_trace_requires_data_classification": True,
+            "synthetic_fixtures_allowed_when_marked": True,
+            "data_classification_register_present": bool(data_classification_register_present),
+            "secrets_policy_present": bool(secrets_policy_present),
+            "accepted_gap": _json_ready(accepted_gap or {}) if gap_present else {},
+        },
+    }
+    return _redacted_dict(packet)
+
+
+def build_scorecard_ledger_record(
+    *,
+    ledger_id: str,
+    generated_at: str,
+    baseline_version: dict[str, Any] | None = None,
+    current_version: dict[str, Any] | None = None,
+    candidate_version: dict[str, Any] | None = None,
+    run_record_ids: list[str] | None = None,
+    raw_counts: dict[str, Any] | None = None,
+    confidence_intervals: dict[str, Any] | None = None,
+    cost_latency: dict[str, Any] | None = None,
+    evidence_links: list[str] | None = None,
+    redaction_status: str = "unknown",
+    report_anchors: list[str] | None = None,
+) -> dict[str, Any]:
+    """Build a deterministic append-only scorecard ledger entry."""
+
+    packet = {
+        "schema_version": 1,
+        "write_policy": "read_only",
+        "ledger_id": str(ledger_id),
+        "generated_at": str(generated_at),
+        "ledger_policy": "append_only",
+        "baseline_version": _json_ready(baseline_version or {}),
+        "current_version": _json_ready(current_version or {}),
+        "candidate_version": _json_ready(candidate_version or {}),
+        "run_record_ids": sorted(str(item) for item in run_record_ids or []),
+        "raw_counts": _json_ready(raw_counts or {}),
+        "confidence_intervals": _json_ready(confidence_intervals or {}),
+        "cost_latency": _json_ready(cost_latency or {}),
+        "evidence_links": sorted(str(item) for item in evidence_links or []),
+        "redaction_status": str(redaction_status or "unknown"),
+        "report_anchors": sorted(str(item) for item in report_anchors or []),
+        "no_secrets_policy": "no raw secrets, private customer data, raw prompts, or raw tool outputs",
+    }
+    return _redacted_dict(packet)
+
+
+def render_scorecard_ledger_markdown(record: dict[str, Any]) -> str:
+    """Render a scorecard ledger entry as Markdown suitable for append-only storage."""
+
+    lines = [
+        f"# Agent Skill Scorecard Ledger: {record.get('ledger_id', 'ledger')}",
+        "",
+        "Append-only policy: append new records; do not rewrite prior evidence.",
+        f"Generated at: {record.get('generated_at', '')}",
+        f"Redaction status: {record.get('redaction_status', 'unknown')}",
+        "",
+        "## Versions",
+        f"- Baseline version: {_compact_json(record.get('baseline_version', {}))}",
+        f"- Current version: {_compact_json(record.get('current_version', {}))}",
+        f"- Candidate version: {_compact_json(record.get('candidate_version', {}))}",
+        "",
+        "## Evidence",
+        f"- Run record ids: {_join_or_none(record.get('run_record_ids', []))}",
+        f"- Evidence links: {_join_or_none(record.get('evidence_links', []))}",
+        f"- Report anchors: {_join_or_none(record.get('report_anchors', []))}",
+        "",
+        "## Metrics",
+        f"- Raw counts: {_compact_json(record.get('raw_counts', {}))}",
+        f"- Confidence intervals: {_compact_json(record.get('confidence_intervals', {}))}",
+        f"- Cost and latency: {_compact_json(record.get('cost_latency', {}))}",
+        "",
+        "No-secrets policy: no raw secrets, private customer data, raw prompts, or raw tool outputs.",
+    ]
+    return "\n".join(lines) + "\n"
+
+
+def build_daily_metrics_report(
+    *,
+    generated_at: str,
+    evidence_window: dict[str, Any],
+    target_reports: list[dict[str, Any]] | None = None,
+    trace_source_mix: dict[str, int] | None = None,
+    changed_versions: list[str] | None = None,
+    failure_groups: list[str] | None = None,
+    evidence_gaps: list[str] | None = None,
+) -> dict[str, Any]:
+    """Summarize daily metrics status and conservative next actions."""
+
+    reports = [_json_ready(item) for item in target_reports or []]
+    recommendations = [_daily_recommendation(item) for item in reports]
+    packet = {
+        "schema_version": 1,
+        "write_policy": "read_only",
+        "generated_at": str(generated_at),
+        "evidence_window": _json_ready(evidence_window),
+        "target_inventory": [item.get("target", {}) for item in reports],
+        "trace_source_mix": dict(sorted((trace_source_mix or {}).items())),
+        "changed_versions": sorted(str(item) for item in changed_versions or []),
+        "failure_groups": sorted(str(item) for item in failure_groups or []),
+        "evidence_gaps": sorted(set(str(item) for item in evidence_gaps or [])),
+        "confidence_status": _daily_confidence_status(reports),
+        "target_recommendations": recommendations,
+        "next_safe_action": _daily_next_safe_action(recommendations),
+        "auto_fix_policy": "never_from_one_noisy_run",
+    }
+    return _redacted_dict(packet)
+
+
+def build_weekly_verification_packet(
+    *,
+    generated_at: str,
+    rolling_window: dict[str, Any],
+    baseline: dict[str, Any],
+    previous_week: dict[str, Any],
+    holdout: dict[str, Any],
+    regression_findings: list[dict[str, Any]] | None = None,
+    update_candidates: list[dict[str, Any]] | None = None,
+    rollback_target: str = "",
+    owner_review_status: str = "",
+    false_pass_audit_status: str = "",
+    flake_replay_status: str = "",
+    cost_regression_check_status: str = "",
+) -> dict[str, Any]:
+    """Build a weekly verification packet that blocks unsafe update acceptance."""
+
+    blockers: list[str] = []
+    if not rollback_target:
+        blockers.append("rollback_target_missing")
+    if owner_review_status not in {"owner_reviewed", "accepted_gap"}:
+        blockers.append("owner_review_missing")
+    if str(holdout.get("status") or "") not in {"present", "passed", "checked"}:
+        blockers.append("holdout_check_missing")
+    if false_pass_audit_status not in {"passed", "reviewed", "accepted_gap"}:
+        blockers.append("false_pass_audit_missing")
+    if flake_replay_status not in {"passed", "reviewed", "accepted_gap"}:
+        blockers.append("flake_replay_missing")
+    if cost_regression_check_status not in {"passed", "reviewed", "accepted_gap"}:
+        blockers.append("cost_regression_check_missing")
+    packet = {
+        "schema_version": 1,
+        "write_policy": "read_only",
+        "generated_at": str(generated_at),
+        "status": "blocked" if blockers else "weekly_verification_ready",
+        "blockers": sorted(set(blockers)),
+        "rolling_window": _json_ready(rolling_window),
+        "baseline": _json_ready(baseline),
+        "previous_week": _json_ready(previous_week),
+        "holdout": _json_ready(holdout),
+        "false_pass_audit_status": false_pass_audit_status or "missing",
+        "flake_replay_status": flake_replay_status or "missing",
+        "cost_regression_check_status": cost_regression_check_status or "missing",
+        "rollback_target": rollback_target,
+        "owner_review_status": owner_review_status or "missing",
+        "regression_findings": [_json_ready(item) for item in regression_findings or []],
+        "update_candidates": [_json_ready(item) for item in update_candidates or []],
+        "acceptance_policy": "rollback_owner_holdout_false_pass_flake_and_cost_evidence_required",
+    }
+    return _redacted_dict(packet)
+
+
+def prioritize_improvement_components(
+    *,
+    failure_taxonomy: list[dict[str, Any]] | None = None,
+) -> dict[str, Any]:
+    """Rank improvement components by failure impact and evidence sufficiency."""
+
+    priorities: list[dict[str, Any]] = []
+    for item in failure_taxonomy or []:
+        component = str(item.get("component") or "unknown")
+        metrics = item.get("affected_metrics") if isinstance(item.get("affected_metrics"), dict) else {}
+        failure_modes = [str(value) for value in item.get("failure_modes", []) if value]
+        evidence_status = str(item.get("evidence_status") or "none")
+        impact = sum(abs(float(value or 0.0)) for value in metrics.values())
+        if evidence_status == "sufficient" and failure_modes and impact > 0:
+            decision = "change"
+        elif evidence_status in {"insufficient", "partial"} or (failure_modes and impact == 0):
+            decision = "defer"
+        else:
+            decision = "leave_unchanged"
+        priorities.append(
+            {
+                "component": component,
+                "decision": decision,
+                "impact_score": round(impact, 4),
+                "evidence_status": evidence_status,
+                "affected_metrics": _json_ready(metrics),
+                "failure_modes": failure_modes,
+                "reason": ", ".join(failure_modes) if failure_modes else "no source-backed failure mode",
+            }
+        )
+    sorted_items = sorted(
+        priorities,
+        key=lambda item: (
+            {"change": 0, "defer": 1, "leave_unchanged": 2}.get(item["decision"], 3),
+            -float(item["impact_score"]),
+            item["component"],
+        ),
+    )
+    for index, item in enumerate(sorted_items, start=1):
+        item["rank"] = index
+    return _redacted_dict(
+        {
+            "schema_version": 1,
+            "write_policy": "read_only",
+            "priorities": sorted_items,
+            "component_catalog": [
+                "prompt",
+                "skill",
+                "agent_config",
+                "router",
+                "tool_policy",
+                "memory_policy",
+                "logging",
+                "dataset",
+                "grader",
+                "harness",
+                "approval_policy",
+            ],
+        }
+    )
+
+
+def generate_modernization_candidates(
+    *,
+    component_priorities: list[dict[str, Any]] | None = None,
+) -> dict[str, Any]:
+    """Generate staged review candidates without applying patches or external writes."""
+
+    candidates: list[dict[str, Any]] = []
+    for item in component_priorities or []:
+        component = str(item.get("component") or "unknown")
+        metrics = item.get("affected_metrics") if isinstance(item.get("affected_metrics"), dict) else {}
+        blockers: list[str] = []
+        if item.get("decision") != "change":
+            blockers.append("component_not_selected_for_change")
+        if not metrics or item.get("evidence_status") != "sufficient":
+            blockers.append("headline_only_or_insufficient_evidence")
+        if not item.get("rollback_target"):
+            blockers.append("rollback_target_missing")
+        if not item.get("expected_impact"):
+            blockers.append("expected_impact_missing")
+        status = "blocked" if blockers else "staged_for_review"
+        candidates.append(
+            {
+                "candidate_id": _stable_id("candidate", component, str(item.get("target_id") or "target")),
+                "component": component,
+                "target_id": str(item.get("target_id") or "unassigned"),
+                "status": status,
+                "reason": str(item.get("reason") or "unspecified"),
+                "metric_deltas": _json_ready(metrics),
+                "affected_targets": [str(item.get("target_id") or "unassigned")],
+                "component_priority": str(item.get("decision") or "unknown"),
+                "expected_impact": str(item.get("expected_impact") or ""),
+                "risk": str(item.get("risk") or "unknown"),
+                "approval_state": str(item.get("approval_state") or "not_requested"),
+                "rollback_target": str(item.get("rollback_target") or ""),
+                "external_write_action": "none",
+                "blockers": sorted(set(blockers)),
+            }
+        )
+    return _redacted_dict(
+        {
+            "schema_version": 1,
+            "write_policy": "read_only",
+            "candidates": candidates,
+            "apply_policy": "cannot_apply_patches",
+            "external_write_policy": "none",
+        }
+    )
+
+
 def _metric_section(section_id: str, metrics: list[dict[str, Any]]) -> dict[str, Any]:
     return {
         "section_id": section_id,
@@ -1129,6 +1436,68 @@ def _partition_run_artifacts(artifacts: list[dict[str, Any]]) -> tuple[list[dict
         sorted(accepted, key=lambda item: str(item.get("artifact_id") or item.get("path") or "")),
         sorted(excluded, key=lambda item: str(item.get("artifact_id") or item.get("path") or "")),
     )
+
+
+def _trace_id(trace: dict[str, Any]) -> str:
+    return str(trace.get("trace_id") or trace.get("id") or trace.get("record_id") or "trace")
+
+
+def _compact_json(value: Any) -> str:
+    return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+
+
+def _join_or_none(values: Any) -> str:
+    if not isinstance(values, list) or not values:
+        return "none"
+    return ", ".join(str(item) for item in values)
+
+
+def _daily_recommendation(item: dict[str, Any]) -> dict[str, Any]:
+    target = item.get("target") if isinstance(item.get("target"), dict) else {}
+    target_id = str(target.get("target_id") or item.get("target_id") or "unassigned")
+    blockers = [str(value) for value in item.get("blockers", []) if value]
+    decision_status = str(item.get("decision_status") or "unknown")
+    evidence_gaps = [str(value) for value in item.get("evidence_gaps", []) if value]
+    update_candidates = item.get("update_candidates") if isinstance(item.get("update_candidates"), list) else []
+    if blockers or decision_status == "blocked_by_gate":
+        recommendation = "block_promotion"
+    elif update_candidates:
+        recommendation = "stage_candidate_for_review"
+    elif decision_status == "insufficient_data" or evidence_gaps:
+        recommendation = "request_human_audit"
+    elif decision_status in {"weekly_acceptance_ready", "ready"}:
+        recommendation = "no_op"
+    else:
+        recommendation = "investigate"
+    return {
+        "target_id": target_id,
+        "recommendation": recommendation,
+        "decision_status": decision_status,
+        "blockers": blockers,
+        "evidence_gaps": evidence_gaps,
+    }
+
+
+def _daily_confidence_status(reports: list[dict[str, Any]]) -> str:
+    statuses = {str(item.get("confidence_status") or item.get("decision_status") or "unknown") for item in reports}
+    if any(status in {"blocked", "blocked_by_gate"} for status in statuses):
+        return "blocked"
+    if any(status == "insufficient_data" for status in statuses):
+        return "insufficient_data"
+    return "ready" if reports else "no_data"
+
+
+def _daily_next_safe_action(recommendations: list[dict[str, Any]]) -> str:
+    actions = {item["recommendation"] for item in recommendations}
+    if "block_promotion" in actions:
+        return "review blockers before promotion"
+    if "stage_candidate_for_review" in actions:
+        return "stage candidate packet for owner review"
+    if "request_human_audit" in actions:
+        return "request human audit or accepted evidence gap"
+    if "investigate" in actions:
+        return "investigate changed evidence"
+    return "record no-op decision"
 
 
 def _repo_record(repo_sha: str, gap: dict[str, Any]) -> dict[str, Any]:
