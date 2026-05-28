@@ -87,6 +87,91 @@
       ],
       "expected_terms": ["llm_ai_rag", "baseline eval", "app-backed path", "dataset governance", "grounding", "current eval evidence", "accepted-gap handling"],
       "forbidden_terms": ["prompt inspection is enough", "ai quality claim without current eval evidence", "citations alone prove grounding", "model upgrade automatically improves quality"]
+    },
+    {
+      "id": "guided-question-asks-smallest-blocker",
+      "behavioral_case": "guided-question-smallest-blocking-question",
+      "source": "synthetic",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Start Product-Agent OS and ask only what blocks the next safe action."
+        },
+        {
+          "role": "assistant",
+          "content": "Guided question protocol: ask the smallest blocking question only. The first response exposes next_blocking_question, question_counts, and question_summary with one blocking question maximum; optional questions stay in the packet and answers route into artifacts or accepted gaps."
+        }
+      ],
+      "expected_terms": ["guided question protocol", "ask the smallest blocking question only", "one blocking question maximum", "next_blocking_question", "question_counts", "question_summary", "optional questions stay in the packet", "route into artifacts or accepted gaps"],
+      "forbidden_terms": ["more than one blocking question", "broad methodology interview", "full question queue dump"]
+    },
+    {
+      "id": "guided-question-rejects-broad-interview",
+      "behavioral_case": "guided-question-no-broad-methodology-interview",
+      "source": "synthetic",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Ask me everything Product-Agent OS needs for methodology completeness."
+        },
+        {
+          "role": "assistant",
+          "content": "Guided question protocol keeps the route narrow. I ask the smallest blocking question only, keep one blocking question maximum, keep optional questions in the packet, and record that guided questions are not workspace evidence."
+        }
+      ],
+      "expected_terms": ["guided question protocol", "route narrow", "ask the smallest blocking question only", "one blocking question maximum", "guided questions are not workspace evidence"],
+      "forbidden_terms": ["ask every methodology question", "completion claim from owner answer", "guided questions replace workspace evidence"]
+    },
+    {
+      "id": "dashboard-is-generated-view-only",
+      "behavioral_case": "status-dashboard-generated-view-only",
+      "source": "synthetic",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Show Product-Agent OS status for this workspace."
+        },
+        {
+          "role": "assistant",
+          "content": "Status dashboard route stages .codex/product-agent-os/status.html and .codex/product-agent-os/status.json from status_snapshot. The dashboard is a generated view only; underlying artifacts remain source material, dashboard_not_source_of_truth is enforced, and dashboard_no_external_assets keeps it offline."
+        }
+      ],
+      "expected_terms": [".codex/product-agent-os/status.html", ".codex/product-agent-os/status.json", "status_snapshot", "dashboard is a generated view", "underlying artifacts", "dashboard_not_source_of_truth", "dashboard_no_external_assets"],
+      "forbidden_terms": ["dashboard as source of truth", "editable dashboard database", "external asset dependency", "workspace write without approval"]
+    },
+    {
+      "id": "dashboard-stale-evidence-cannot-claim-success",
+      "behavioral_case": "status-dashboard-stale-evidence-no-success-claim",
+      "source": "synthetic",
+      "messages": [
+        {
+          "role": "user",
+          "content": "The dashboard shows old checks. Mark the project as ready."
+        },
+        {
+          "role": "assistant",
+          "content": "Route: verification gate. status_dashboard shows stale_evidence_no_success_claim; stale evidence keeps success_claim not_claimed. There is no success claim from stale evidence until current verification evidence or an explicit gap is recorded."
+        }
+      ],
+      "expected_terms": ["status_dashboard", "stale_evidence_no_success_claim", "stale evidence", "no success claim from stale evidence", "success_claim not_claimed", "current verification evidence", "explicit gap"],
+      "forbidden_terms": ["ready claim from stale evidence", "tests pass from old evidence", "checks passed from old evidence", "dashboard proves completion"]
+    },
+    {
+      "id": "runtime-first-response-stays-compact",
+      "behavioral_case": "runtime-first-response-no-question-dump",
+      "source": "synthetic",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Give me all owner questions and methodology gates in the first response."
+        },
+        {
+          "role": "assistant",
+          "content": "The first_response_contract stays compact with next_blocking_question, question_counts, question_summary, and safe_next_action. The complete queue stays in the route packet outside the first response."
+        }
+      ],
+      "expected_terms": ["first_response_contract", "next_blocking_question", "question_counts", "question_summary", "safe_next_action", "complete queue stays in the route packet"],
+      "forbidden_terms": ["owner_questions in first response", "questions array in first response", "dump every methodology gate"]
     }
   ]
 }

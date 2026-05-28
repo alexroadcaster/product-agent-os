@@ -285,6 +285,22 @@ class LifecycleSkillsTest(unittest.TestCase):
         ]:
             self.assertIn(expected, discovery)
 
+    def test_lifecycle_skills_enforce_guided_question_protocol(self):
+        shared_terms = [
+            "guided question protocol",
+            "ask the smallest blocking question only",
+            "one blocking question maximum",
+            "optional questions stay in the packet",
+            "route answers into artifacts or accepted gaps",
+            "guided questions are not workspace evidence",
+            "do not use guided questions as a substitute for workspace evidence",
+        ]
+        for name in SKILL_NAMES:
+            text = self._skill_text(name).lower()
+            with self.subTest(name=name):
+                for expected in shared_terms:
+                    self.assertIn(expected, text)
+
     def test_scenario_handoff_wording_blocks_role_transition_without_packet(self):
         orchestrator = self._skill_text("project-lifecycle-orchestrator").lower()
         agent_team = self._skill_text("agent-team-designer").lower()

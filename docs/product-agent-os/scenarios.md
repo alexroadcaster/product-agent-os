@@ -30,6 +30,12 @@ Finish options are bounded by lifecycle status: read-only routes can ask for con
 - verification gates: команды, evals, screenshots, logs, owner review или accepted gap;
 - residual risk, если route основан на detection, а не на verified evidence.
 
+## Guided Question Protocol And Status Dashboard
+
+Guided question protocol uses typed `question_queue` packets so the first response can show only `next_blocking_question`, `question_counts` and `question_summary`. It asks one blocking question maximum, keeps recommended and optional questions in the packet, and routes answers into artifacts or accepted gaps. Guided questions are not workspace evidence and do not replace read-only audit, current command evidence, runtime evidence, owner review or accepted gaps.
+
+The status snapshot is the JSON source for a generated dashboard view. The dashboard stages `.codex/product-agent-os/status.html` and `.codex/product-agent-os/status.json` through the existing approval flow. `status.html` is generated view only: underlying artifacts remain the source material, the dashboard is not an editable database, and stale or inspection-only evidence cannot produce a success claim.
+
 ## Scenario Matrix
 
 | usage_mode | When it applies | first response | minimum artifacts | approval boundary | verification gates |

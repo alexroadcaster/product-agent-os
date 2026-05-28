@@ -314,6 +314,8 @@ Product-Agent OS ships scenario workflows for common real-world project starts a
 
 Each scenario defines first response, minimum artifacts, approval boundary, forbidden shortcuts and verification gates.
 
+Task 23 guided question protocol and status dashboard is implemented as a staged Product-Agent OS capability. `question_queue_contract_present` keeps first responses compact with one blocking question maximum; `status_snapshot_present` and `status_dashboard_present` stage `.codex/product-agent-os/status.html` and `.codex/product-agent-os/status.json`; `dashboard_not_source_of_truth` and `stale_evidence_no_success_claim` preserve underlying artifacts as source material and block success claims from stale evidence.
+
 ## Example: What A User Sees
 
 User request:

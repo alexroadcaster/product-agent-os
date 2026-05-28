@@ -36,7 +36,7 @@ Generated at: 2026-05-27
 - Detailed discovery status depth: implemented in `T8-D`.
 - Track 9 methodology intelligence plan: authored in `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`.
 - Track 9 foundation, `T9-D1` Business/Product, `T9-D2` Requirements/Domain, `T9-D3` Solution Architecture, `T9-D4` Quality/Testing/Evals, `T9-D5` Codex/Agentic Workflow, `T9-D6` Frontend, `T9-D7` Backend, `T9-D8` API & Integrations, `T9-D9` Database & Data, `T9-D10` LLM / AI / RAG, `T9-D11` Security, Privacy & Compliance, `T9-D12` Delivery, Release & Operations, `T9-S` Task 20 Cross-Domain Synthesis and `T9-R` Task 21 Runtime Runner And Finish Options through `M25`: implemented.
-- Track 10 guided questions and status dashboard plan: authored in `docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md`; implementation is planned after Track 9 Task 22.
+- Track 10 guided questions and status dashboard: Task 23 `T10-Q-M15..M22` is implemented for fixture eval, lifecycle skill, behavioral/transcript eval, docs, README, source registry and root control-plane coverage; Batch 6 `T10-Q-M23..M25` full verification is complete.
 
 ## Track 9 Methodology Intelligence Evals
 
@@ -59,11 +59,13 @@ Generated at: 2026-05-27
 
 ## Track 10 Guided Questions And Dashboard Evals
 
-- Status: planned, not implemented.
-- Planned contract checks: typed `question_queue`, stable question IDs, one blocking question maximum in first response, bounded total question count, answer type validation, owner-question compatibility and no broad interview loops.
-- Planned evidence checks: `answer_ledger` schema, stale-answer policy, private-data status, no secret-like values, status snapshot redaction, readiness/evidence summary and next safe action.
-- Planned dashboard checks: offline `status.html`, no external URLs, safe embedded JSON, mobile-readable sections, stale evidence banner and generated-view-only source boundary.
-- Planned fixture evidence: `question_queue_contract_present`, `status_snapshot_present`, `status_dashboard_present` and a false-positive guard for simple docs/mechanical/inspection-only work.
+- Status: Task 23 guided question protocol and status dashboard is implemented and fully verified through Batch 6 `T10-Q-M23..M25`; commit/push remains explicit-only.
+- Contract checks: typed `question_queue`, stable question IDs, one blocking question maximum in first response, bounded total question count, answer type validation, owner-question compatibility and no broad interview loops.
+- Evidence checks: `answer_ledger` schema, stale-answer policy, private-data status, no secret-like values, status snapshot redaction, readiness/evidence summary and next safe action.
+- Dashboard checks: offline `status.html`, no external URLs, safe embedded JSON, mobile-readable sections, stale evidence banner and generated-view-only source boundary.
+- Fixture evidence: `question_queue_contract_present`, `status_snapshot_present`, `status_dashboard_present`, `dashboard_no_external_assets`, `question_budget_false_positive_guard_present`, `dashboard_not_source_of_truth`, and `stale_evidence_no_success_claim`.
+- Behavioral/transcript cases: `guided-question-smallest-blocking-question`, `guided-question-no-broad-methodology-interview`, `status-dashboard-generated-view-only`, `status-dashboard-stale-evidence-no-success-claim`, and `runtime-first-response-no-question-dump`.
+- Current verification evidence: full unittest ran 543 tests with `OK`; fixture eval exited `0` with `renderer_file_count: 187`; transcript eval exited `0` with 10 sessions and 0 failures; Codex compatibility returned `status: compatible`; docs check, strict MkDocs and `git diff --check` exited `0`.
 - Approval boundary: question ledgers, snapshots and dashboards are staged artifacts; they must not silently mutate a target workspace, activate hooks/automation or become a database/source of truth.
 - Residual risk: guided questions and dashboards can structure progress, but they do not prove product decisions, implementation evidence or owner approvals are semantically sufficient for a real project.
 

@@ -128,6 +128,13 @@ class FixtureEvalRunnerTest(unittest.TestCase):
         self.assertTrue(results["python-app"]["expected_checks"]["llm_ai_rag_contract_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["security_privacy_compliance_contract_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["delivery_release_operations_contract_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["question_queue_contract_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["status_snapshot_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["status_dashboard_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["dashboard_no_external_assets"])
+        self.assertTrue(results["python-app"]["expected_checks"]["question_budget_false_positive_guard_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["dashboard_not_source_of_truth"])
+        self.assertTrue(results["python-app"]["expected_checks"]["stale_evidence_no_success_claim"])
         self.assertEqual(results["python-app"]["renderer_file_count"], 187)
         for check_name in [
             "methodology_catalog_contract_present",

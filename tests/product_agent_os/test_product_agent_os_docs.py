@@ -100,6 +100,69 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         self.assertIn("methodology-intelligence.md", nav)
         self.assertIn('product-agent-os" / "methodology-intelligence.md', check_docs)
 
+    def test_track10_guided_question_status_dashboard_docs_are_synced(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        behavioral_evals = (PRODUCT_AGENT_OS / "behavioral-evals.md").read_text(encoding="utf-8")
+        scenarios = (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8")
+        root_readme = ROOT_README.read_text(encoding="utf-8")
+        plugin_readme = PLUGIN_README.read_text(encoding="utf-8")
+        control_plane = "\n".join(
+            path.read_text(encoding="utf-8")
+            for path in [REQUIREMENTS, PLAN, TEST, EVALS, RUNLOG]
+        )
+
+        for expected in [
+            "Product-Agent OS Track 10 guided question and status dashboard coverage",
+            "T10-Q-M15..M22",
+            "T10-Q-M23..M25",
+            "question_queue_contract_present",
+            "status_snapshot_present",
+            "status_dashboard_present",
+            "dashboard_no_external_assets",
+            "dashboard_not_source_of_truth",
+            "stale_evidence_no_success_claim",
+            "verification_status:",
+        ]:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        for expected in [
+            "guided-question-smallest-blocking-question",
+            "guided-question-no-broad-methodology-interview",
+            "status-dashboard-generated-view-only",
+            "status-dashboard-stale-evidence-no-success-claim",
+            "runtime-first-response-no-question-dump",
+            "one blocking question maximum",
+            "dashboard is a generated view",
+            "no success claim from stale evidence",
+        ]:
+            with self.subTest(behavioral_evals=expected):
+                self.assertIn(expected, behavioral_evals)
+
+        for expected in [
+            "Guided question protocol",
+            "status snapshot",
+            ".codex/product-agent-os/status.html",
+            ".codex/product-agent-os/status.json",
+            "generated view only",
+            "underlying artifacts",
+        ]:
+            with self.subTest(scenarios=expected):
+                self.assertIn(expected, scenarios)
+                self.assertIn(expected, plugin_readme)
+
+        for expected in [
+            "Task 23 guided question protocol and status dashboard",
+            "question_queue_contract_present",
+            "status_snapshot_present",
+            "status_dashboard_present",
+            "dashboard_not_source_of_truth",
+            "stale_evidence_no_success_claim",
+        ]:
+            with self.subTest(control_plane=expected):
+                self.assertIn(expected, control_plane)
+                self.assertIn(expected, root_readme)
+
     def test_t8h_and_t8gy_source_and_backlog_closure_are_documented(self):
         registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
         backlog = TRACK_BACKLOG.read_text(encoding="utf-8")

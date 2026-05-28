@@ -21,6 +21,13 @@ from product_agent_os.methodology_synthesis import (  # noqa: E402
     classify_source_artifact,
     dedupe_owner_questions,
 )
+from product_agent_os.question_protocol import (  # noqa: E402
+    MAX_FIRST_RESPONSE_BLOCKING,
+    MAX_TOTAL_QUESTIONS,
+    build_question_queue,
+)
+from product_agent_os.status_dashboard import render_status_dashboard  # noqa: E402
+from product_agent_os.status_snapshot import build_status_snapshot  # noqa: E402
 from product_agent_os.templates import (  # noqa: E402
     AI_RAG_TEMPLATE_ALIASES,
     DELIVERY_TEMPLATE_ALIASES,
@@ -1379,6 +1386,49 @@ TRANSCRIPT_SESSION_EVAL_TERMS = (
     "forbidden_terms_present",
     "privacy_errors",
 )
+QUESTION_QUEUE_TERMS = (
+    "question_queue",
+    "max_total_questions",
+    "max_first_response_blocking",
+    "max_blocking_questions_in_first_response",
+    "next_blocking_question",
+    "question_counts",
+    "question_summary",
+    "questions_for_owner",
+    "not_applicable_or_gap",
+)
+STATUS_SNAPSHOT_TERMS = (
+    "status snapshot",
+    "dashboard_policy",
+    "underlying_artifacts",
+    "success_claim_policy",
+    "never from dashboard alone",
+    "stale evidence",
+    "not_claimed",
+)
+STATUS_DASHBOARD_TERMS = (
+    "status_dashboard",
+    ".codex/product-agent-os/status.html",
+    ".codex/product-agent-os/status.json",
+    "offline html doctype present",
+    "external urls absent",
+    "external scripts absent",
+    "snapshot redaction validated",
+)
+GUIDED_QUESTION_BEHAVIOR_TERMS = (
+    "guided-question-smallest-blocking-question",
+    "guided-question-no-broad-methodology-interview",
+    "runtime-first-response-no-question-dump",
+    "one blocking question maximum",
+    "no broad methodology interview",
+    "no full question queue dump",
+)
+STATUS_DASHBOARD_BEHAVIOR_TERMS = (
+    "status-dashboard-generated-view-only",
+    "status-dashboard-stale-evidence-no-success-claim",
+    "dashboard is a generated view",
+    "no success claim from stale evidence",
+)
 STANDARDS_TRIGGER_TERMS = (
     "standards_trigger_policy",
     "adr trigger policy",
@@ -1893,6 +1943,15 @@ def _expected_checks(
         checks["llm_ai_rag_contract_present"] = _llm_ai_rag_contract_present()
         checks["security_privacy_compliance_contract_present"] = _security_privacy_compliance_contract_present()
         checks["delivery_release_operations_contract_present"] = _delivery_release_operations_contract_present()
+        checks["question_queue_contract_present"] = _question_queue_contract_present()
+        checks["status_snapshot_present"] = _status_snapshot_present()
+        checks["status_dashboard_present"] = _status_dashboard_present()
+        checks["dashboard_no_external_assets"] = _dashboard_no_external_assets()
+        checks["question_budget_false_positive_guard_present"] = (
+            _question_budget_false_positive_guard_present()
+        )
+        checks["dashboard_not_source_of_truth"] = _dashboard_not_source_of_truth()
+        checks["stale_evidence_no_success_claim"] = _stale_evidence_no_success_claim()
         checks["methodology_applicability_contract_present"] = (
             _methodology_applicability_contract_present(audit)
         )
@@ -3359,6 +3418,241 @@ def _transcript_session_eval_runner_contract_present() -> bool:
         TEMPLATE_ROOT / "evals" / "behavioral-workflows.json",
     )
     return bool(report.get("ok")) and all(term in payload for term in TRANSCRIPT_SESSION_EVAL_TERMS)
+
+
+def _question_queue_contract_present() -> bool:
+    queue = build_question_queue(
+        owner_questions=[
+            "Who owns the release decision?",
+            "Which command proves current verification evidence?",
+            "Who owns the security review?",
+        ],
+        unknowns=[
+            {
+                "question": "runtime evidence",
+                "category": "verification",
+                "priority": "recommended",
+            }
+        ],
+        usage_mode={"primary": "greenfield_idea"},
+        runtime_status="needs_context",
+    )
+    questions = queue.get("questions", [])
+    blocking = [item for item in questions if isinstance(item, dict) and item.get("priority") == "blocking"]
+    structural_checks = [
+        queue.get("schema_version") == 1,
+        queue.get("write_policy") == "read_only",
+        queue.get("policy", {}).get("max_total_questions") == MAX_TOTAL_QUESTIONS,
+        queue.get("policy", {}).get("max_blocking_questions_in_first_response") == MAX_FIRST_RESPONSE_BLOCKING,
+        isinstance(questions, list) and 0 < len(questions) <= MAX_TOTAL_QUESTIONS,
+        len(blocking) == MAX_FIRST_RESPONSE_BLOCKING,
+        queue.get("next_blocking_question") == blocking[0],
+        queue.get("summary", {}).get("blocking") == MAX_FIRST_RESPONSE_BLOCKING,
+        all(
+            isinstance(item, dict)
+            and item.get("id")
+            and item.get("text")
+            and item.get("answer_type")
+            and isinstance(item.get("source"), dict)
+            for item in questions
+        ),
+    ]
+    paths = [
+        PLUGIN_ROOT / "scripts" / "product_agent_os" / "question_protocol.py",
+        PLUGIN_ROOT / "scripts" / "codex_runtime_runner" / "contracts.py",
+        PLUGIN_ROOT / "scripts" / "codex_runtime_runner" / "routes.py",
+        PLUGIN_ROOT / "scripts" / "codex_runtime_runner" / "guards.py",
+        PLUGIN_ROOT.parents[1] / "tests" / "product_agent_os" / "test_question_protocol.py",
+        PLUGIN_ROOT.parents[1] / "tests" / "product_agent_os" / "test_codex_runtime_runner_state_routes.py",
+    ]
+    payload = "\n".join(path.read_text(encoding="utf-8") for path in paths).lower()
+    return all(structural_checks) and all(term in payload for term in QUESTION_QUEUE_TERMS)
+
+
+def _status_snapshot_present() -> bool:
+    snapshot = build_status_snapshot(
+        runtime_result={
+            "status": "completed",
+            "lifecycle_state": "quality_gate",
+            "verification_evidence": [
+                {"command": "python -m unittest", "recorded_at": "2026-05-01T00:00:00"}
+            ],
+            "route_packet": {
+                "question_queue": build_question_queue(
+                    owner_questions=["Which command proves current verification evidence?"],
+                    runtime_status="needs_context",
+                ),
+                "first_response_contract": {
+                    "safe_next_action": "Refresh current verification evidence.",
+                    "question_counts": {"total": 1, "blocking": 1, "recommended": 0, "optional": 0, "remaining": 0},
+                    "question_summary": ["1 blocking question"],
+                },
+            },
+        },
+        generated_at="2026-05-28T00:00:00",
+    )
+    structural_checks = [
+        snapshot.get("schema_version") == 1,
+        snapshot.get("write_policy") == "read_only",
+        snapshot.get("evidence_summary", {}).get("freshness") == "stale",
+        snapshot.get("readiness_summary", {}).get("success_claim") == "not_claimed",
+        "stale evidence" in snapshot.get("readiness_summary", {}).get("warnings", []),
+        snapshot.get("dashboard_policy", {}).get("source_of_truth") == "underlying_artifacts",
+        snapshot.get("dashboard_policy", {}).get("external_assets") == "forbidden",
+    ]
+    paths = [
+        PLUGIN_ROOT / "scripts" / "product_agent_os" / "status_snapshot.py",
+        PLUGIN_ROOT.parents[1] / "tests" / "product_agent_os" / "test_status_snapshot.py",
+    ]
+    payload = "\n".join(path.read_text(encoding="utf-8") for path in paths).lower()
+    return all(structural_checks) and all(term in payload for term in STATUS_SNAPSHOT_TERMS)
+
+
+def _status_dashboard_present() -> bool:
+    rendered = render_status_dashboard(
+        {
+            "schema_version": 1,
+            "write_policy": "read_only",
+            "generated_at": "2026-05-28T00:00:00",
+            "workspace": "synthetic",
+            "lifecycle_state": "quality_gate",
+            "usage_mode": {"primary": "inspection_only", "confidence": "high", "inspection_only": True},
+            "question_summary": {"total": 1, "blocking": 1, "recommended": 0, "optional": 0, "remaining": 0},
+            "readiness_summary": {
+                "status": "inspection_only",
+                "runtime_status": "completed",
+                "success_claim": "not_claimed",
+                "warnings": ["stale evidence", "inspection-only evidence cannot prove completion"],
+            },
+            "evidence_summary": {"freshness": "stale", "evidence_count": 1, "stale_count": 1, "max_age_days": 14},
+            "approval_summary": {"status": "not_available", "requirements": []},
+            "dashboard_policy": {
+                "write_policy": "read_only",
+                "source_of_truth": "underlying_artifacts",
+                "success_claim_policy": "never from dashboard alone",
+                "external_assets": "forbidden",
+            },
+            "next_safe_action": "Refresh current verification evidence.",
+            "staged_artifacts": {"mode": "dry-run", "targets": [], "validation_ok": True},
+            "manifest_digests": {"file_count": 0},
+        }
+    )
+    paths = [
+        PLUGIN_ROOT / "scripts" / "product_agent_os" / "status_dashboard.py",
+        PLUGIN_ROOT / "scripts" / "render_status_dashboard.py",
+        TEMPLATE_ROOT / "status-dashboard" / "status.html",
+        TEMPLATE_ROOT / "status-dashboard" / "status.css",
+        PLUGIN_ROOT.parents[1] / "tests" / "product_agent_os" / "test_status_dashboard.py",
+    ]
+    payload = "\n".join(path.read_text(encoding="utf-8") for path in paths).lower()
+    return (
+        rendered.get("status") == "ready"
+        and rendered.get("validation", {}).get("ok") is True
+        and ".codex/product-agent-os/status.html" in payload
+        and all(term in payload for term in STATUS_DASHBOARD_TERMS)
+    )
+
+
+def _dashboard_no_external_assets() -> bool:
+    html = (TEMPLATE_ROOT / "status-dashboard" / "status.html").read_text(encoding="utf-8")
+    css = (TEMPLATE_ROOT / "status-dashboard" / "status.css").read_text(encoding="utf-8")
+    rendered = render_status_dashboard(
+        {
+            "schema_version": 1,
+            "write_policy": "read_only",
+            "generated_at": "2026-05-28T00:00:00",
+            "dashboard_policy": {"source_of_truth": "underlying_artifacts", "write_policy": "read_only"},
+            "readiness_summary": {"success_claim": "not_claimed", "warnings": []},
+            "evidence_summary": {"freshness": "current"},
+        }
+    )
+    payload = f"{html}\n{css}\n{rendered.get('html', '')}"
+    return (
+        "http://" not in payload.lower()
+        and "https://" not in payload.lower()
+        and "<script src" not in payload.lower()
+        and rendered.get("validation", {}).get("ok") is True
+        and "external urls absent" in rendered.get("validation", {}).get("checks", [])
+        and "external scripts absent" in rendered.get("validation", {}).get("checks", [])
+    )
+
+
+def _question_budget_false_positive_guard_present() -> bool:
+    quiet_queue = build_question_queue(usage_mode={"primary": "docs_only"}, runtime_status="ready")
+    noisy_queue = build_question_queue(
+        owner_questions=["Who owns the highest-priority missing methodology gate?"],
+        unknowns=[
+            {
+                "question": f"missing evidence item {index}",
+                "category": "verification",
+                "priority": "recommended",
+                "source_key": f"missing_evidence_{index}",
+            }
+            for index in range(20)
+        ],
+        runtime_status="needs_context",
+    )
+    paths = [
+        PLUGIN_ROOT / "scripts" / "product_agent_os" / "question_protocol.py",
+        PLUGIN_ROOT.parents[1] / "tests" / "product_agent_os" / "test_question_protocol.py",
+        TEMPLATE_ROOT / "evals" / "behavioral-workflows.json",
+    ]
+    payload = "\n".join(path.read_text(encoding="utf-8") for path in paths).lower()
+    return (
+        quiet_queue.get("questions") == []
+        and len(noisy_queue.get("questions", [])) == MAX_TOTAL_QUESTIONS
+        and noisy_queue.get("summary", {}).get("blocking") == MAX_FIRST_RESPONSE_BLOCKING
+        and all(term in payload for term in GUIDED_QUESTION_BEHAVIOR_TERMS)
+    )
+
+
+def _dashboard_not_source_of_truth() -> bool:
+    snapshot = build_status_snapshot(
+        runtime_result={"status": "completed", "verification_evidence": []},
+        generated_at="2026-05-28T00:00:00",
+    )
+    paths = [
+        PLUGIN_ROOT / "scripts" / "product_agent_os" / "status_snapshot.py",
+        PLUGIN_ROOT / "scripts" / "product_agent_os" / "status_dashboard.py",
+        TEMPLATE_ROOT / "evals" / "behavioral-workflows.json",
+    ]
+    payload = "\n".join(path.read_text(encoding="utf-8") for path in paths).lower()
+    return (
+        snapshot.get("dashboard_policy", {}).get("source_of_truth") == "underlying_artifacts"
+        and snapshot.get("dashboard_policy", {}).get("success_claim_policy") == "never from dashboard alone"
+        and "source_of_truth\": \"status_snapshot\"" in payload
+        and all(term in payload for term in STATUS_DASHBOARD_BEHAVIOR_TERMS)
+    )
+
+
+def _stale_evidence_no_success_claim() -> bool:
+    snapshot = build_status_snapshot(
+        runtime_result={
+            "status": "completed",
+            "verification_evidence": [
+                {"command": "python -m unittest", "recorded_at": "2026-05-01T00:00:00"}
+            ],
+        },
+        generated_at="2026-05-28T00:00:00",
+    )
+    rendered = render_status_dashboard(snapshot)
+    serialized = json.dumps({"snapshot": snapshot, "dashboard": rendered}, sort_keys=True).lower()
+    paths = [
+        PLUGIN_ROOT / "scripts" / "product_agent_os" / "status_snapshot.py",
+        PLUGIN_ROOT / "scripts" / "product_agent_os" / "status_dashboard.py",
+        PLUGIN_ROOT.parents[1] / "tests" / "product_agent_os" / "test_status_snapshot.py",
+        PLUGIN_ROOT.parents[1] / "tests" / "product_agent_os" / "test_status_dashboard.py",
+        TEMPLATE_ROOT / "evals" / "behavioral-workflows.json",
+    ]
+    payload = "\n".join(path.read_text(encoding="utf-8") for path in paths).lower()
+    return (
+        snapshot.get("evidence_summary", {}).get("freshness") == "stale"
+        and snapshot.get("readiness_summary", {}).get("success_claim") == "not_claimed"
+        and "stale evidence" in snapshot.get("readiness_summary", {}).get("warnings", [])
+        and "tests pass" not in serialized
+        and "checks passed" not in serialized
+        and "no success claim from stale evidence" in payload
+    )
 
 
 def _standards_trigger_contract_present() -> bool:

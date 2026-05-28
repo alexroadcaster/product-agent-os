@@ -19,7 +19,7 @@ class BehavioralWorkflowEvalTest(unittest.TestCase):
         report = validate_behavioral_eval_template(path)
 
         self.assertEqual(report["status"], "ok")
-        self.assertEqual(report["case_count"], 45)
+        self.assertEqual(report["case_count"], 50)
         self.assertEqual(report["missing_required_cases"], [])
         self.assertEqual(report["unsafe_cases"], [])
         self.assertTrue(report["codex_only"])
@@ -74,6 +74,65 @@ class BehavioralWorkflowEvalTest(unittest.TestCase):
             "completion claim from detection",
         ]:
             self.assertIn(forbidden, runtime_methodology["forbidden"])
+
+        guided_question = cases["guided-question-smallest-blocking-question"]
+        for expected in [
+            "guided question protocol",
+            "one blocking question maximum",
+            "next_blocking_question",
+            "question_counts",
+            "question_summary",
+            "optional questions stay in the packet",
+            "route answers into artifacts or accepted gaps",
+        ]:
+            self.assertIn(expected, guided_question["expected"]["required_fields"])
+        for forbidden in [
+            "more than one blocking question",
+            "broad methodology interview",
+            "full question queue dump",
+        ]:
+            self.assertIn(forbidden, guided_question["forbidden"])
+
+        dashboard = cases["status-dashboard-generated-view-only"]
+        self.assertEqual(dashboard["expected"]["route"], "status_dashboard")
+        self.assertIn(".codex/product-agent-os/status.html", dashboard["expected"]["minimum_artifacts"])
+        self.assertIn(".codex/product-agent-os/status.json", dashboard["expected"]["minimum_artifacts"])
+        for expected in [
+            "status_snapshot",
+            "status_dashboard",
+            "dashboard is a generated view",
+            "underlying artifacts",
+            "dashboard_not_source_of_truth",
+            "dashboard_no_external_assets",
+            "generated view only",
+        ]:
+            self.assertIn(expected, dashboard["expected"]["required_fields"])
+        for forbidden in [
+            "dashboard as source of truth",
+            "editable dashboard database",
+            "external asset dependency",
+            "workspace write without approval",
+        ]:
+            self.assertIn(forbidden, dashboard["forbidden"])
+
+        stale_dashboard = cases["status-dashboard-stale-evidence-no-success-claim"]
+        for expected in [
+            "status_dashboard",
+            "stale_evidence_no_success_claim",
+            "stale evidence",
+            "no success claim from stale evidence",
+            "success_claim not_claimed",
+            "current verification evidence",
+            "explicit gap",
+        ]:
+            self.assertIn(expected, stale_dashboard["expected"]["required_fields"])
+        for forbidden in [
+            "ready claim from stale evidence",
+            "old test evidence presented as current proof",
+            "old check evidence presented as current proof",
+            "dashboard proves completion",
+        ]:
+            self.assertIn(forbidden, stale_dashboard["forbidden"])
 
         broad_rewrite = cases["bug-rescue-no-broad-rewrite"]
         self.assertEqual(broad_rewrite["expected"]["usage_mode"], "bug_rescue")

@@ -13,6 +13,8 @@ Use this skill when requirements are staged and need implementation slices, veri
 
 This is a Track 2 skill. Produce a staged implementation plan packet only.
 
+Guided question protocol: ask the smallest blocking question only; enforce one blocking question maximum; optional questions stay in the packet; route answers into artifacts or accepted gaps; guided questions are not workspace evidence. Do not use guided questions as a substitute for workspace evidence.
+
 Do not store secrets, tokens, credentials, private keys, private customer data, or raw private chat logs.
 Do not create active automation, recurring automation, hooks, workflow files, project templates, MCP servers, or an Agents SDK runner.
 Do not mutate global config. Do not modify config. Do not edit project config.

@@ -6,6 +6,12 @@ Generated at: 2026-05-27
 
 ## Current Baseline
 
+- Track 10 Task 23 Batch 6 full verification: `python -m unittest discover -s tests -p "test_*.py" -v` ran 543 tests with `OK`.
+- Track 10 Task 23 fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0`; runner output kept `renderer_file_count: 187` and all emitted fixture records had `ok: true`.
+- Track 10 Task 23 transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 10 sessions and 0 failures.
+- Track 10 Task 23 Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
+- Track 10 Task 23 docs/build/diff hygiene: `python tools\check_docs.py` passed, strict MkDocs exited `0` with `PYTHONPATH=C:\tmp\codex_docs_mkdocs` and disposable `--site-dir .mkdocs_task23_site`, the disposable site directory was removed, and `git diff --check` exited `0`.
+- Track 10 Task 23 commit boundary: no `git add`, `git commit`, `git push` or PR creation was executed; `T10-Q-M25` remains explicit-approval-only.
 - Task 22 final documentation sync closure: focused docs tests `python -m unittest tests.product_agent_os.test_product_agent_os_docs -v` ran 13 tests with `OK`.
 - Task 22 full verification baseline: `python -m unittest discover -s tests -p "test_*.py" -v` ran 520 tests with `OK`.
 - Task 22 fixture eval: `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0` with 80 fixtures, 0 failures and renderer file count 186.
@@ -88,7 +94,12 @@ Generated at: 2026-05-27
 - Latest T9-R M16..M25 transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 5 sessions and 0 failures.
 - Latest T9-R M16..M25 Codex compatibility: `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 11 bundled skills.
 - Latest T9-R M16..M25 docs/diff hygiene: `python tools\check_docs.py` passed and `git diff --check` exited `0`.
-- Track 10 plan status: `docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md` is staged as the next implementation plan after Track 9 Task 22; no Track 10 plugin code, templates, fixtures or tests have been implemented yet.
+- Track 10 Task 23 status: `T10-Q-M15..M22` adds fixture eval, behavioral eval, transcript eval, lifecycle skill and docs/source-registry coverage for Task 23 guided question protocol and status dashboard; `T10-Q-M23..M25` full verification is complete.
+- Track 10 Batch 5 contract targets: `question_queue_contract_present`, `status_snapshot_present`, `status_dashboard_present`, `dashboard_no_external_assets`, `question_budget_false_positive_guard_present`, `dashboard_not_source_of_truth`, and `stale_evidence_no_success_claim`.
+- Task 23 guided question protocol and status dashboard focused RED evidence: `python -m unittest tests.product_agent_os.test_fixture_eval_runner tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_product_agent_os_docs tests.product_agent_os.test_transcript_session_evals -v` failed before implementation on missing Batch 5 fixture checks, lifecycle wording, docs/source registry sync and transcript cases.
+- Task 23 Batch 5 focused GREEN evidence: `python -m unittest tests.product_agent_os.test_fixture_eval_runner tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_product_agent_os_docs tests.product_agent_os.test_transcript_session_evals -v` ran 83 tests with `OK`.
+- Task 23 Batch 5 transcript eval: `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json` exited `0` with 10 sessions and 0 failures.
+- Task 23 Batch 5 docs/diff hygiene: `python tools\check_docs.py` passed and `git diff --check` exited `0`.
 - Track 10 plan hygiene: `python tools\check_docs.py` passed and `git diff --check` exited `0` after creating the plan; root system-file sync requires the same docs/diff checks.
 
 ## Required Checks After Docs Changes
@@ -118,6 +129,7 @@ Before Track 10 `Task 23` implementation:
 
 - Confirm Track 9 `Task 22` is closed and the legacy Track 9 final verification baseline is recorded in Task 22 evidence.
 - Re-read `docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md`.
+- For Batch 5, run focused checks covering fixture eval runner, lifecycle skills, Product-Agent OS docs and transcript/session evals before claiming closure.
 - Inspect current `discovery.py`, `methodology_audit.py`, `methodology_synthesis.py`, `codex_runtime_runner/contracts.py`, `codex_runtime_runner/routes.py`, `infrastructure.py`, `templates.py`, fixture eval runner, lifecycle skills and docs.
 
 For Track 10 code/template/test changes, run focused tests first, then:

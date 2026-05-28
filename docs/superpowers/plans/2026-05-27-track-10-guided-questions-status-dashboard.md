@@ -531,7 +531,7 @@ Expected: pass.
 
 ### Batch 5: Evals, Skills And Docs (`T10-Q-M15..M22`)
 
-- [ ] **Step 1: Extend fixture eval**
+- [x] **Step 1: Extend fixture eval**
 
 Update `run_fixture_eval.py` and fixture eval tests with:
 
@@ -543,7 +543,7 @@ Update `run_fixture_eval.py` and fixture eval tests with:
 - `dashboard_not_source_of_truth`;
 - `stale_evidence_no_success_claim`.
 
-- [ ] **Step 2: Add behavioral and transcript coverage**
+- [x] **Step 2: Add behavioral and transcript coverage**
 
 Update behavioral eval JSON and synthetic transcript fixtures so they cover:
 
@@ -553,7 +553,7 @@ Update behavioral eval JSON and synthetic transcript fixtures so they cover:
 - no success claim from stale evidence;
 - no full question queue dump in first response.
 
-- [ ] **Step 3: Update lifecycle skills**
+- [x] **Step 3: Update lifecycle skills**
 
 Lifecycle skills must state:
 
@@ -562,11 +562,11 @@ Lifecycle skills must state:
 - route answers into artifacts or accepted gaps;
 - do not use guided questions as a substitute for workspace evidence.
 
-- [ ] **Step 4: Update docs and root control plane**
+- [x] **Step 4: Update docs and root control plane**
 
 Update Product-Agent OS docs, README and root control-plane files after implementation.
 
-- [ ] **Step 5: Run focused docs/eval checks**
+- [x] **Step 5: Run focused docs/eval checks**
 
 Run:
 
@@ -581,7 +581,7 @@ Expected: all commands exit `0`.
 
 ### Batch 6: Full Verification (`T10-Q-M23..M25`)
 
-- [ ] **Step 1: Run full unit suite**
+- [x] **Step 1: Run full unit suite**
 
 Run:
 
@@ -591,7 +591,9 @@ python -m unittest discover -s tests -p "test_*.py" -v
 
 Expected: exit `0`.
 
-- [ ] **Step 2: Run fixture eval**
+Current evidence: on 2026-05-28, the command ran 543 tests with `OK`.
+
+- [x] **Step 2: Run fixture eval**
 
 Run:
 
@@ -601,7 +603,9 @@ python plugins\product-agent-os\scripts\run_fixture_eval.py
 
 Expected: exit `0`, all fixtures `ok: true`.
 
-- [ ] **Step 3: Run transcript eval**
+Current evidence: on 2026-05-28, the command exited `0`; runner output kept `renderer_file_count: 187` and all emitted fixture records had `ok: true`.
+
+- [x] **Step 3: Run transcript eval**
 
 Run:
 
@@ -611,7 +615,9 @@ python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-a
 
 Expected: exit `0`.
 
-- [ ] **Step 4: Run compatibility and docs checks**
+Current evidence: on 2026-05-28, the command exited `0` with 10 sessions and 0 failures.
+
+- [x] **Step 4: Run compatibility and docs checks**
 
 Run:
 
@@ -624,9 +630,13 @@ git diff --check
 
 Expected: compatibility JSON includes `"status": "compatible"` and all commands exit `0`.
 
-- [ ] **Step 5: Commit explicit-only**
+Current evidence: on 2026-05-28, Codex compatibility returned `"status": "compatible"`, `python tools\check_docs.py` passed, strict MkDocs exited `0` with disposable `--site-dir .mkdocs_task23_site`, the disposable site directory was removed, and `git diff --check` exited `0`.
+
+- [x] **Step 5: Commit explicit-only boundary preserved**
 
 Do not run this step unless the user explicitly requests a commit.
+
+Current evidence: no `git add`, `git commit`, `git push` or PR creation was executed in Batch 6.
 
 If approved after all verification is current:
 

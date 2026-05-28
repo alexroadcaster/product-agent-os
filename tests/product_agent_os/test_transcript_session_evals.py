@@ -30,7 +30,7 @@ class TranscriptSessionEvalRunnerTest(unittest.TestCase):
 
         self.assertEqual(report["status"], "ok")
         self.assertTrue(report["ok"])
-        self.assertGreaterEqual(report["session_count"], 5)
+        self.assertGreaterEqual(report["session_count"], 9)
         self.assertEqual(report["summary"]["failed"], 0)
         cases = {item["behavioral_case"] for item in report["results"]}
         for case in [
@@ -39,6 +39,11 @@ class TranscriptSessionEvalRunnerTest(unittest.TestCase):
             "two-stage-review",
             "evidence-before-completion",
             "llm-ai-rag-evidence-before-completion",
+            "guided-question-smallest-blocking-question",
+            "guided-question-no-broad-methodology-interview",
+            "status-dashboard-generated-view-only",
+            "status-dashboard-stale-evidence-no-success-claim",
+            "runtime-first-response-no-question-dump",
         ]:
             self.assertIn(case, cases)
 

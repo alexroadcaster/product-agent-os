@@ -49,6 +49,15 @@ Behavioral evals проверяют не синтаксис Markdown, а пов�
 | Readiness contract eval | `project-readiness.json` has conditional gates, statuses, evidence owner and residual risk. | Implemented through T8-F. | `conditional_readiness_gates_contract_present`. |
 | Codex compatibility eval | Plugin remains Codex-only and avoids non-Codex adapter requirements. | Implemented. | `python plugins\product-agent-os\scripts\validate_codex_compatibility.py`. |
 | transcript/session eval runner | Replay synthetic or redacted Codex session transcripts for multi-turn shortcut resistance, evidence quality and privacy/no-secrets checks. | Implemented in `T8-GY` as deterministic local replay. | `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json`. |
+| Guided question and status dashboard eval | Typed question packets, compact first response, generated dashboard boundaries and stale-evidence language. | Implemented in Track 10 Batch 5. | `question_queue_contract_present`, `status_snapshot_present`, `status_dashboard_present`, `dashboard_no_external_assets`, `dashboard_not_source_of_truth`, `stale_evidence_no_success_claim`. |
+
+## Track 10 Guided Questions And Dashboard
+
+Track 10 adds behavioral cases for `guided-question-smallest-blocking-question`, `guided-question-no-broad-methodology-interview`, `status-dashboard-generated-view-only`, `status-dashboard-stale-evidence-no-success-claim`, and `runtime-first-response-no-question-dump`.
+
+Expected behavior: `guided question protocol` asks the smallest blocking question only, keeps `one blocking question maximum` in the first response, leaves optional questions in the packet, and routes answers into artifacts or accepted gaps. The status dashboard is a generated view only; the dashboard is a generated view over underlying artifacts, not a source of truth. Stale evidence produces no success claim from stale evidence.
+
+Forbidden behavior: no broad methodology interview, no "ask every methodology question" loop, no full queue dump in the first response, no dashboard-as-source-of-truth, and no success claim from stale or inspection-only evidence.
 
 ## Expected Behavior
 
@@ -75,6 +84,8 @@ Examples:
 - `security_privacy_compliance_contract_present`: Security, Privacy & Compliance gates require `security_sensitive_classification_present`, threat surface, security risk review, ASVS/SSDF/SAMM mapping, API security scheme, authorization negative tests, secrets policy, data classification, redaction lifecycle, privacy impact, external-write approval, abuse/rate-limit review, audit logging, supply-chain review, SBOM/provenance decision, CI permission review, AI security review, compliance overlay taxonomy, vulnerability response workflow, explicit Codex Security scan status and current evidence before completion. Docs-only security articles stay false positives; Codex Security scan is implied, OAuth proves API security and privacy compliance is universal are forbidden claims.
 - `delivery_release_operations_contract_present`: Delivery, Release & Operations gates require release scope, SemVer/versioning, changelog/release notes, artifact manifest, release evidence before completion, rollout strategy, rollback/recovery, environment approval boundary, external release approval, CI/CD governance, observability/SLO, operations runbook, incident response, post-release review, `automation_manual_stability_present`, release mode policy, build-release-run boundary, platform distribution evidence, release communication, versioning tooling decision, GitHub environment controls, DORA measurement design, incident postmortem learning, observability on-call tooling, release integrity security handoff and owner-reviewed release evidence sufficiency. CI green means release ready, tests passed so release is ready, rollback is just revert, feature flags remove risk, GitOps is automatically safe, generated changelog is enough for users, DORA metrics prove individual performance, single observability tool is mandatory, release-ready without owner-reviewed evidence sufficiency and repeatable automation is automatically safe are forbidden claims.
 - `cross_domain_synthesis_contract_present`: Cross-domain synthesis gates require `methodology_synthesis`, `recommendation_groups`, owner domains, consumer domains, `source_artifact_ledger`, semantic evidence sufficiency, risk-aware safe next action and source artifact alias/deferred decisions. Forbidden shortcuts include dumping every methodology gate, scaffolding before approval, detection becomes verification and generic quality strategy hides security approval.
+- `question_queue_contract_present`: guided question protocol exposes `next_blocking_question`, `question_counts` and `question_summary` while preserving the full typed packet outside the first response.
+- `status_dashboard_present`: status dashboard generation stages `.codex/product-agent-os/status.html` and `.codex/product-agent-os/status.json` from a `status_snapshot`; dashboard is a generated view and not the source of truth.
 - `false-positive fixtures`: backend/native work does not force FSD, simple CRUD `src/domain/*` does not force DDD, docs-light does not force a docs portal, hosted docs and DB introspection stay approval-required.
 
 ## Forbidden Behavior
@@ -99,6 +110,7 @@ Forbidden behavior is the part that catches shortcuts:
 - delivery/release/operations completion from CI green, local test evidence alone, generated changelog, feature flag file, GitOps file, deploy manifest or repeatable script without release evidence, artifact manifest, rollout, rollback, owner review, approval boundary and automation manual stability evidence where applicable;
 - source-backed OpenAI/Codex claim without Source status or registry support;
 - external write, remote CI mutation, publish, tag, upload or package-registry action without approval.
+- full question queue dump in first response, broad methodology interview, dashboard as source of truth, or ready/completed/success claim from stale evidence.
 
 ## Verification
 

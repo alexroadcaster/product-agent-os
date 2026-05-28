@@ -7,6 +7,12 @@ from typing import Any
 
 REQUIRED_BEHAVIORAL_CASES = {
     "route-selection",
+    "runtime-methodology-packet-safety",
+    "guided-question-smallest-blocking-question",
+    "guided-question-no-broad-methodology-interview",
+    "status-dashboard-generated-view-only",
+    "status-dashboard-stale-evidence-no-success-claim",
+    "runtime-first-response-no-question-dump",
     "first-run-response",
     "first-run-empty-greenfield",
     "first-run-broken-bug-rescue",

@@ -2752,3 +2752,15 @@ relevance: "Final Track 9 documentation/source-registry closure before Track 10 
 trust_level: "high"
 verification_status: "Backed by Task 22 RED/GREEN docs tests, transcript eval, docs check, strict MkDocs, full unittest, fixture eval and git diff hygiene in the current closure run. OpenAPI v3.2.0 freshness claim remains sourced by the checked official OpenAPI specification entry and Track 6/7 methodology registry evidence."
 ```
+
+```yaml
+title: "Product-Agent OS Track 10 guided question and status dashboard coverage"
+url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; docs/product-agent-os/scenarios.md; docs/product-agent-os/behavioral-evals.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/question_protocol.py; plugins/product-agent-os/scripts/product_agent_os/question_ledger.py; plugins/product-agent-os/scripts/product_agent_os/status_snapshot.py; plugins/product-agent-os/scripts/product_agent_os/status_dashboard.py; plugins/product-agent-os/scripts/run_fixture_eval.py; plugins/product-agent-os/assets/templates/evals/behavioral-workflows.json; plugins/product-agent-os/assets/eval-fixtures/transcripts/product-agent-os-synthetic-sessions.json; tests/product_agent_os/test_fixture_eval_runner.py; tests/product_agent_os/test_lifecycle_skills.py; tests/product_agent_os/test_product_agent_os_docs.py; tests/product_agent_os/test_transcript_session_evals.py"
+type: "internal documentation"
+status: "checked-in project source"
+checked_at: "2026-05-28"
+summary: "T10-Q-M15..M22 Batch 5 closure and T10-Q-M23..M25 Batch 6 closure for Task 23 guided question protocol and status dashboard coverage, including question_queue_contract_present, status_snapshot_present, status_dashboard_present, dashboard_no_external_assets, question_budget_false_positive_guard_present, dashboard_not_source_of_truth, stale_evidence_no_success_claim, lifecycle skill wording, behavioral eval cases, transcript sessions and full verification."
+relevance: "Track 10 Task 23 eval, skill, docs, README, source registry, root control-plane sync and Batch 6 verification for guided questions, answer ledger, status snapshot and generated offline dashboard behavior."
+trust_level: "high"
+verification_status: "Backed by focused Batch 5 RED/GREEN tests and Batch 6 full verification in the current implementation run: 543-unit full suite OK, fixture eval exit 0 with renderer_file_count 187, transcript eval 10 sessions with 0 failures, Codex compatibility status compatible, docs check, strict MkDocs and git diff hygiene exit 0. Commit/push/PR remains explicit-only and was not executed."
+```

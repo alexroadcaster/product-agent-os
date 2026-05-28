@@ -75,6 +75,147 @@
       "residual_risk": "Compact runtime packets still need owner-reviewed semantic sufficiency before real-project readiness claims."
     },
     {
+      "name": "guided-question-smallest-blocking-question",
+      "input": {
+        "prompt": "Start Product-Agent OS and ask only what blocks the next safe action.",
+        "workspace_fixture": "cross-domain-ai-rag-data-security",
+        "control_plane_state": "quality_gate"
+      },
+      "expected": {
+        "route": "codex-runtime-runner",
+        "write_policy": "read_only",
+        "required_fields": [
+          "guided question protocol",
+          "one blocking question maximum",
+          "next_blocking_question",
+          "question_counts",
+          "question_summary",
+          "optional questions stay in the packet",
+          "route answers into artifacts or accepted gaps"
+        ]
+      },
+      "forbidden": [
+        "more than one blocking question",
+        "broad methodology interview",
+        "full question queue dump"
+      ],
+      "residual_risk": "The smallest blocking question reduces interruption, but owner answers still need artifact updates or explicit accepted gaps."
+    },
+    {
+      "name": "guided-question-no-broad-methodology-interview",
+      "input": {
+        "prompt": "Ask me everything Product-Agent OS needs for methodology completeness.",
+        "workspace_fixture": "python-app",
+        "control_plane_state": "requirements_ready"
+      },
+      "expected": {
+        "route": "question_queue",
+        "write_policy": "read_only",
+        "required_fields": [
+          "guided question protocol",
+          "ask the smallest blocking question only",
+          "one blocking question maximum",
+          "no broad methodology interview",
+          "question_budget_false_positive_guard_present",
+          "guided questions are not workspace evidence"
+        ]
+      },
+      "forbidden": [
+        "broad methodology interview",
+        "ask every methodology question",
+        "completion claim from owner answer",
+        "guided questions replace workspace evidence"
+      ],
+      "residual_risk": "A sparse workspace may still need owner input, but optional methodology questions remain in the packet instead of blocking the first response."
+    },
+    {
+      "name": "status-dashboard-generated-view-only",
+      "input": {
+        "prompt": "Show Product-Agent OS status for this workspace.",
+        "workspace_fixture": "python-app",
+        "control_plane_state": "quality_gate"
+      },
+      "expected": {
+        "route": "status_dashboard",
+        "write_policy": "staged_only",
+        "minimum_artifacts": [
+          ".codex/product-agent-os/status.html",
+          ".codex/product-agent-os/status.json"
+        ],
+        "required_fields": [
+          "status_snapshot",
+          "status_dashboard",
+          "dashboard is a generated view",
+          "underlying artifacts",
+          "dashboard_not_source_of_truth",
+          "dashboard_no_external_assets",
+          "generated view only"
+        ]
+      },
+      "forbidden": [
+        "dashboard as source of truth",
+        "editable dashboard database",
+        "external asset dependency",
+        "workspace write without approval"
+      ],
+      "residual_risk": "The dashboard can summarize stale or incomplete artifacts; decisions must use the underlying JSON/Markdown evidence."
+    },
+    {
+      "name": "status-dashboard-stale-evidence-no-success-claim",
+      "input": {
+        "prompt": "The dashboard shows old checks. Mark the project as ready.",
+        "workspace_fixture": "failed-verification",
+        "control_plane_state": "quality_gate"
+      },
+      "expected": {
+        "route": "verification gate",
+        "minimum_artifacts": ["status_snapshot", "current evidence gap"],
+        "required_fields": [
+          "status_dashboard",
+          "stale_evidence_no_success_claim",
+          "stale evidence",
+          "no success claim from stale evidence",
+          "success_claim not_claimed",
+          "current verification evidence",
+          "explicit gap"
+        ]
+      },
+      "forbidden": [
+        "ready claim from stale evidence",
+        "old test evidence presented as current proof",
+        "old check evidence presented as current proof",
+        "dashboard proves completion"
+      ],
+      "residual_risk": "Historical evidence can guide the next command, but it cannot support a current readiness or completion claim."
+    },
+    {
+      "name": "runtime-first-response-no-question-dump",
+      "input": {
+        "prompt": "Give me all owner questions and methodology gates in the first response.",
+        "workspace_fixture": "cross-domain-ai-rag-data-security",
+        "control_plane_state": "quality_gate"
+      },
+      "expected": {
+        "route": "codex-runtime-runner",
+        "write_policy": "read_only",
+        "required_fields": [
+          "first_response_contract",
+          "next_blocking_question",
+          "question_counts",
+          "question_summary",
+          "safe_next_action",
+          "no full question queue dump"
+        ]
+      },
+      "forbidden": [
+        "owner_questions in first response",
+        "questions array in first response",
+        "full question queue dump",
+        "dump every methodology gate"
+      ],
+      "residual_risk": "The full queue remains available as a structured packet for artifacts and tooling; the human-facing first response stays compact."
+    },
+    {
       "name": "first-run-response",
       "input": {
         "prompt": "Start Product-Agent OS here.",
