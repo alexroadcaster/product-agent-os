@@ -170,6 +170,8 @@ python -m unittest discover -s tests -p "test_*.py" -v
 python plugins\product-agent-os\scripts\run_fixture_eval.py
 ```
 
+When running the full unittest command from Codex App or another tool wrapper, set the command timeout to at least 10 minutes (`timeout_ms: 600000`). Do not run this full unittest command with a short default timeout in a parallel verification batch; the suite currently takes about 8 minutes and short timeouts cause duplicate reruns.
+
 After changing navigation, Mermaid diagrams, Markdown extensions, or MkDocs configuration, also run:
 
 ```powershell

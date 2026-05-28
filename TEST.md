@@ -130,6 +130,8 @@ python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-a
 python plugins\product-agent-os\scripts\validate_codex_compatibility.py
 ```
 
+Codex App/tool timeout: run the full unittest command with at least 10 minutes of command wait time (`timeout_ms: 600000`). The current full suite can take about 8 minutes, so shorter tool timeouts create false timeouts and duplicate reruns.
+
 ## Required Checks For Track 10 Implementation
 
 Before Track 10 `Task 23` or `Task 24` implementation:
@@ -153,6 +155,8 @@ python tools\check_docs.py
 git diff --check
 ```
 
+Use the same 10-minute minimum command timeout (`timeout_ms: 600000`) for the full unittest command here.
+
 ## Track 9 Section Verification Protocol
 
 Before implementing a Track 9 section:
@@ -175,6 +179,8 @@ python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-a
 python plugins\product-agent-os\scripts\validate_codex_compatibility.py
 python tools\check_docs.py
 ```
+
+Use the same 10-minute minimum command timeout (`timeout_ms: 600000`) for the full unittest command here.
 
 ## Completed Focused Checks For T8-C
 
