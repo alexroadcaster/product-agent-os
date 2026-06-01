@@ -269,6 +269,83 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 with self.subTest(control_plane=filename, term=expected):
                     self.assertIn(expected, text)
 
+    def test_track10_task25_project_graph_batch16_docs_and_control_plane_are_synced(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        documents = {
+            "index": (PRODUCT_AGENT_OS / "index.md").read_text(encoding="utf-8"),
+            "technical": (PRODUCT_AGENT_OS / "technical.md").read_text(encoding="utf-8"),
+            "scenarios": (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8"),
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+        }
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+        }
+
+        registry_terms = [
+            "Product-Agent OS Track 10 project code graph Batch 16 cockpit visualization",
+            "T10-CG-V2-M19..M26",
+            "project_cockpit_model.py",
+            "project_graph_visual_model.py",
+            "project_graph_renderer.py",
+            "project-cockpit.html",
+            "Graphology-compatible static visual projection",
+            "verification_status:",
+        ]
+        for expected in registry_terms:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        backlog_terms = [
+            "| `done` | `T10-CG-V2-M19..M26` cockpit visualization |",
+            "Code Flow inside `Code Intelligence`",
+            "local Graphology/Sigma vendor boundary",
+            "full unittest must continue to use `timeout_ms: 1200000`",
+        ]
+        for expected in backlog_terms:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        docs_terms = [
+            "Task 25 Batch 13, Batch 14, Batch 15 and Batch 16",
+            ".codex/product-agent-os/project-cockpit.html",
+            ".codex/product-agent-os/project-cockpit.json",
+            "exactly eight top-level pages",
+            "Code Flow",
+            "Code Intelligence",
+            "Graphology-compatible static projection",
+            "local Graphology/Sigma",
+            "selected-node evidence",
+            "fallback",
+            "no external assets",
+            "not source of truth",
+        ]
+        for document, text in documents.items():
+            for expected in docs_terms:
+                with self.subTest(document=document, term=expected):
+                    self.assertIn(expected, text)
+
+        control_terms = [
+            "Task 25 Batch 16",
+            "T10-CG-V2-M19..M26",
+            "Code Flow inside `Code Intelligence`",
+            "Graphology-compatible static",
+            "local Graphology/Sigma",
+            "selected-node evidence",
+            "fallback static",
+            "timeout_ms: 1200000",
+            "explicit-only",
+        ]
+        for filename, text in control_plane.items():
+            for expected in control_terms:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
     def test_t8h_and_t8gy_source_and_backlog_closure_are_documented(self):
         registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
         backlog = TRACK_BACKLOG.read_text(encoding="utf-8")

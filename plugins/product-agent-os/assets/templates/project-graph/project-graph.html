@@ -1,0 +1,17 @@
+<div class="project-graph-panel">
+  {{filter_controls}}
+  <div class="graph-layout">
+    <div class="graph-visual">
+      {{graph_svg}}
+      <p class="graph-performance">{{performance_summary}}</p>
+    </div>
+    <aside class="graph-evidence">
+      <h4>Selected Node Evidence</h4>
+      <p>{{selected_summary}}</p>
+    </aside>
+  </div>
+  <div class="fallback-view">
+    <h4>Fallback Static View</h4>
+    {{fallback_table}}
+  </div>
+</div>

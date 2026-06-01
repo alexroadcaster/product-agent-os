@@ -168,9 +168,9 @@ The source-of-truth policy remains explicit: control-plane artifacts, run record
 
 Approval boundary: Product-Agent OS performs no live eval/model/API calls, creates no active schedules, makes no external writes, applies no modernization candidates, and allows no self-applied updates. A modernization candidate needs owner review, rollback target and explicit approval state before any target workspace, skill, prompt/policy pack, router/tool policy or harness configuration changes.
 
-## Task 25 project code graph foundation
+## Task 25 project code graph and cockpit
 
-Task 25 Batch 13, Batch 14 and Batch 15 add a local read-only graph foundation for project navigation. The scanner inventories files, emits stable file-level graph nodes and `contains` edges, adds Python AST package/module/class/function/method overlays, adds conservative import/call/test edges, builds structured overlays for parseable Markdown, OpenAPI/Swagger, AsyncAPI, DBML, SQL, JSON, YAML, Mermaid and PlantUML inputs, validates a controlled ontology, records manifest freshness/provenance, stores observation records with relative paths/spans/fingerprints and supports temporal edge invalidation/supersession helpers. Query mode reads existing JSON/JSONL graph artifacts to produce bounded `neighbors`, `path`, `trace`, `impact`, `affected_tests`, `changed_since`, `why_changed`, `read_order`, `hotspots`, `node`, `status` and `search` packets. It excludes raw source bodies by default and redacts local absolute paths or secret-like values from returned packets.
+Task 25 Batch 13, Batch 14, Batch 15 and Batch 16 add a local read-only graph foundation and generated cockpit for project navigation. The scanner inventories files, emits stable file-level graph nodes and `contains` edges, adds Python AST package/module/class/function/method overlays, adds conservative import/call/test edges, builds structured overlays for parseable Markdown, OpenAPI/Swagger, AsyncAPI, DBML, SQL, JSON, YAML, Mermaid and PlantUML inputs, validates a controlled ontology, records manifest freshness/provenance, stores observation records with relative paths/spans/fingerprints and supports temporal edge invalidation/supersession helpers. Query mode reads existing JSON/JSONL graph artifacts to produce bounded `neighbors`, `path`, `trace`, `impact`, `affected_tests`, `changed_since`, `why_changed`, `read_order`, `hotspots`, `node`, `status` and `search` packets. It excludes raw source bodies by default and redacts local absolute paths or secret-like values from returned packets.
 
 Main files and commands:
 
@@ -182,7 +182,11 @@ Main files and commands:
 - `plugins/product-agent-os/scripts/product_agent_os/project_graph_ontology.py` - controlled ontology and graph schema validation.
 - `plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py` - bounded graph-only query packets.
 - `plugins/product-agent-os/scripts/product_agent_os/project_graph_analysis.py` - source-free graph analysis report.
+- `plugins/product-agent-os/scripts/product_agent_os/project_cockpit_model.py` - eight-page cockpit information architecture and Code Flow section model.
+- `plugins/product-agent-os/scripts/product_agent_os/project_graph_visual_model.py` - Graphology-compatible static projection, large-graph bounds, selected evidence and local Graphology/Sigma vendor boundary.
+- `plugins/product-agent-os/scripts/product_agent_os/project_graph_renderer.py` - offline stage-only cockpit HTML/JSON renderer with no external assets.
 - `plugins/product-agent-os/scripts/scan_project_code_graph.py` - dry-run, stage-only scanner and graph query CLI.
+- `plugins/product-agent-os/assets/templates/project-graph/` - local cockpit, graph, Code Flow and CSS templates.
 
 ```powershell
 python plugins\product-agent-os\scripts\scan_project_code_graph.py <workspace> --dry-run
@@ -190,7 +194,9 @@ python plugins\product-agent-os\scripts\scan_project_code_graph.py <workspace> -
 python plugins\product-agent-os\scripts\scan_project_code_graph.py <workspace> --query neighbors --graph C:\tmp\product-agent-os-graph-stage\.codex\product-agent-os\project-code-graph.json --node-id function:app.main.main
 ```
 
-Stage mode must use an output directory outside the target workspace. Query mode reads an existing graph artifact and does not scan source text. Existing graph artifacts in the target workspace are not modified. Batch 15 remains conservative: dynamic dispatch, framework wiring, runtime routes and semantic/rationale extraction are not verified dependency proof. Runtime/status summaries and graph analysis reports are orientation evidence only. HTML cockpit rendering, Graphology/Sigma visualization, search-quality evals and visual QA remain later Task 25 batches.
+Stage mode must use an output directory outside the target workspace. Query mode reads an existing graph artifact and does not scan source text. Existing graph artifacts in the target workspace are not modified. Batch 15 remains conservative: dynamic dispatch, framework wiring, runtime routes and semantic/rationale extraction are not verified dependency proof. Runtime/status summaries and graph analysis reports are orientation evidence only.
+
+Batch 16 cockpit rendering uses `render_project_graph_cockpit_plan()` for dry-run plans and `stage_project_graph_cockpit()` for explicit stage directories outside the target workspace. It stages `.codex/product-agent-os/project-cockpit.html` and `.codex/product-agent-os/project-cockpit.json`. The staged HTML exposes exactly eight top-level pages, keeps Code Flow inside `Code Intelligence`, embeds safe JSON, uses static local CSS/JS, has filter/reset/copy/select commands, selected-node evidence, fallback static table, mobile layout and generated-view-only wording. Graphology and Sigma are recorded as local Graphology/Sigma vendor-only capabilities; no vendored assets are currently bundled, so the verified renderer uses the static fallback path with Graphology-compatible static projection data. Search-quality evals, fixture structural fields, future indexed-query/semantic gates and final Task 25 closure remain later batches.
 
 ## Codex installation boundary
 

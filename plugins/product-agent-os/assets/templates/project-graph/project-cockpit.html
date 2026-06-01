@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{title}}</title>
+  <style>
+{{css}}
+  </style>
+</head>
+<body>
+  <main class="cockpit-shell">
+    <header class="cockpit-header">
+      <p class="eyebrow">Product-Agent OS</p>
+      <h1>{{title}}</h1>
+      <p class="generated-at">Generated {{generated_at}}</p>
+      <p class="generated-view-policy">{{generated_view_policy}}</p>
+    </header>
+    <nav class="cockpit-nav" aria-label="Project cockpit pages">
+{{nav}}
+    </nav>
+    <div class="cockpit-pages">
+{{pages}}
+    </div>
+  </main>
+  <script type="application/json" id="project-cockpit-data">{{project_cockpit_json}}</script>
+  <script>
+  (function () {
+    const rows = Array.from(document.querySelectorAll('.node-row'));
+    const nodes = Array.from(document.querySelectorAll('.graph-node'));
+    const edges = Array.from(document.querySelectorAll('.graph-edge'));
+    const filters = Array.from(document.querySelectorAll('[data-filter]'));
+    const evidence = document.getElementById('selected-node-evidence');
+    let selectedNodeId = '';
+
+    function currentFilters() {
+      const values = {};
+      filters.forEach((control) => {
+        values[control.dataset.filter] = (control.value || '').toLowerCase();
+      });
+      return values;
+    }
+
+    function matches(element, values) {
+      const text = (element.dataset.text || '').toLowerCase();
+      if (values.text && !text.includes(values.text)) return false;
+      if (values.node_type && element.dataset.nodeType !== values.node_type) return false;
+      if (values.edge_type && element.dataset.edgeType !== values.edge_type) return false;
+      if (values.confidence && element.dataset.confidence !== values.confidence) return false;
+      if (values.language && element.dataset.language !== values.language) return false;
+      if (values.artifact && element.dataset.artifact !== values.artifact) return false;
+      if (values.partition && element.dataset.partition !== values.partition) return false;
+      if (values.stale && element.dataset.stale !== values.stale) return false;
+      return true;
+    }
+
+    function applyFilters() {
+      const values = currentFilters();
+      rows.forEach((row) => { row.hidden = !matches(row, values); });
+      nodes.forEach((node) => { node.style.display = matches(node, values) ? '' : 'none'; });
+      edges.forEach((edge) => { edge.style.display = matches(edge, values) ? '' : 'none'; });
+    }
+
+    filters.forEach((control) => control.addEventListener('input', applyFilters));
+    rows.forEach((row) => row.addEventListener('click', () => {
+      if (!evidence) return;
+      selectedNodeId = row.dataset.nodeId || '';
+      evidence.textContent = 'Selected ' + row.dataset.nodeId + '; read source before edits or completion claims.';
+    }));
+    document.querySelectorAll('[data-command]').forEach((button) => button.addEventListener('click', () => {
+      const command = button.dataset.command;
+      if (command === 'fit') {
+        rows.forEach((row) => { row.hidden = false; });
+        nodes.forEach((node) => { node.style.display = ''; });
+        edges.forEach((edge) => { edge.style.display = ''; });
+        if (evidence) evidence.textContent = 'Fit graph view; generated review output only.';
+      }
+      if (command === 'isolate' && evidence) {
+        if (!selectedNodeId) {
+          evidence.textContent = 'Select a node before using isolate.';
+        } else {
+          rows.forEach((row) => { row.hidden = row.dataset.nodeId !== selectedNodeId; });
+          nodes.forEach((node) => { node.style.display = node.dataset.nodeId === selectedNodeId ? '' : 'none'; });
+          evidence.textContent = 'Isolated ' + selectedNodeId + '; read source before acting.';
+        }
+      }
+      if (command === 'expand' && evidence) {
+        rows.forEach((row) => { row.hidden = false; });
+        nodes.forEach((node) => { node.style.display = ''; });
+        edges.forEach((edge) => { edge.style.display = ''; });
+        evidence.textContent = selectedNodeId ? 'Expanded visible neighborhood for ' + selectedNodeId + '.' : 'Expanded visible graph.';
+      }
+      if (command === 'reset') {
+        filters.forEach((control) => { control.value = ''; });
+        selectedNodeId = '';
+        applyFilters();
+      }
+      if (command === 'copy' && evidence && navigator.clipboard) {
+        navigator.clipboard.writeText(evidence.textContent || 'No node selected');
+      }
+    }));
+  }());
+  </script>
+</body>
+</html>
