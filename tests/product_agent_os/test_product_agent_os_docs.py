@@ -428,6 +428,59 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 with self.subTest(control_plane=filename, term=expected):
                     self.assertIn(expected, text)
 
+    def test_track10_task25_future_gated_extension_matrix_is_staged(self):
+        plan = TRACK10_PLAN.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        control_plane = "\n".join(
+            path.read_text(encoding="utf-8")
+            for path in [REQUIREMENTS, PLAN, EVALS, RUNLOG]
+        )
+
+        plan_terms = [
+            "Task 25 future-gated extension analysis",
+            "Task 25 future-gated extension matrix",
+            "T10-CG-V2-M33",
+            "T10-CG-V2-M62",
+            "Batch 19: Offline Static Search Index",
+            "Batch 20: Local Query Backend And Live Database/Server Gate",
+            "Batch 21: Semantic Retrieval, Embeddings And Cross-Encoder Eval",
+            "Batch 22: LLM Semantic Extraction And Rationale/Comment Proposals",
+            "Batch 23: Future Extension Verification, Rollback And Closure",
+            "approval_required",
+            "redaction boundary, cache policy, token budget, eval threshold, rollback/disable path",
+            "Planning matrix presence is not implementation evidence",
+        ]
+        for expected in plan_terms:
+            with self.subTest(plan=expected):
+                self.assertIn(expected, plan)
+
+        backlog_terms = [
+            "Task 25 Future-Gated Extension Matrix",
+            "| `pending` | `T10-CG-V2-M33..M38` offline static search index |",
+            "| `pending` | `T10-CG-V2-M39..M44` local query backend and live database/server gate |",
+            "| `pending` | `T10-CG-V2-M45..M51` semantic retrieval, embeddings and cross-encoder eval |",
+            "| `pending` | `T10-CG-V2-M52..M57` LLM semantic extraction and rationale/comment proposals |",
+            "| `pending` | `T10-CG-V2-M58..M62` future extension verification, rollback and closure |",
+            "Generated semantic nodes, rationale and comments are staged proposals, not canonical graph facts.",
+        ]
+        for expected in backlog_terms:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        control_terms = [
+            "future-gated extension matrix `T10-CG-V2-M33..M62`",
+            "Batch 19 offline static search index",
+            "Batch 20 local query backend/live database-server gate",
+            "Batch 21 semantic retrieval with embeddings/cross-encoder",
+            "Batch 22 LLM semantic extraction/rationale-comment proposals",
+            "Batch 23 extension",
+            "Planning matrix presence is not implementation evidence",
+            "explicit approval with redaction, cache, token budget, eval threshold and rollback path",
+        ]
+        for expected in control_terms:
+            with self.subTest(control_plane=expected):
+                self.assertIn(expected, control_plane)
+
     def test_t8h_and_t8gy_source_and_backlog_closure_are_documented(self):
         registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
         backlog = TRACK_BACKLOG.read_text(encoding="utf-8")

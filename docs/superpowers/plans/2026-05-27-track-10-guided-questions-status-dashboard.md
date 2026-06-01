@@ -458,7 +458,7 @@ Task 24 implementation batches:
 - **Batch 11: Runtime, Discovery, Lifecycle And Eval Coverage** (`T10-SV-M46..M57`)
 - **Batch 12: Docs, Control Plane And Full Verification** (`T10-SV-M58..M62`)
 
-Batch 11 status: implemented on 2026-05-28 with focused RED/GREEN coverage for status snapshots, discovery, methodology audit, runtime packets/routes, guided questions, lifecycle skills, fixture eval, behavioral eval and transcript sessions. Batch 12 is closed with docs/control-plane/full-verification evidence. Task 25 Batch 13 is implemented with file-level graph foundation, Task 25 Batch 14 is implemented with Python AST scanner overlays, conservative dependency edges, structured overlays, partition scopes, canonical aliases and bounded readiness metadata, Task 25 Batch 15 is implemented with graph query packets, query CLI mode, runtime/status/lifecycle graph summaries and bounded analysis reports, and Task 25 Batch 16 is implemented with generated cockpit visualization, Graphology-compatible static projection, local vendor boundary, selected evidence, fallback tables and mobile/no-external-assets rendering. Batch 17 is the next staged Task 25 slice.
+Batch 11 status: implemented on 2026-05-28 with focused RED/GREEN coverage for status snapshots, discovery, methodology audit, runtime packets/routes, guided questions, lifecycle skills, fixture eval, behavioral eval and transcript sessions. Batch 12 is closed with docs/control-plane/full-verification evidence. Task 25 Batch 13 is implemented with file-level graph foundation, Task 25 Batch 14 is implemented with Python AST scanner overlays, conservative dependency edges, structured overlays, partition scopes, canonical aliases and bounded readiness metadata, Task 25 Batch 15 is implemented with graph query packets, query CLI mode, runtime/status/lifecycle graph summaries and bounded analysis reports, Task 25 Batch 16 is implemented with generated cockpit visualization, Graphology-compatible static projection, local vendor boundary, selected evidence, fallback tables and mobile/no-external-assets rendering, and Task 25 Batch 17 is implemented with fixture structural fields, local search-quality evals and future backend/semantic gates. Batch 18 remains the next Task 25 baseline closure slice; Batch 19 through Batch 23 are future-gated extension batches that require explicit approval before implementation.
 
 ## Task 25: Project Code Graph And HTML Cockpit Visualization
 
@@ -480,6 +480,16 @@ Task 25 product outcome:
 - initialize a local Sigma-based interactive renderer when bundled assets are available, with selected-node evidence, filter state, graph navigation commands, mobile behavior and static fallback views;
 - keep graph visualization assets local. `graphology` and `sigma.js` may be used only when vendored or locally bundled; no CDN, network fetch or external runtime dependency is allowed.
 
+Task 25 future-gated extension analysis:
+
+- Product reason: the Batch 13-18 baseline is enough for safe navigation, source orientation and agent read-order. Static indexes, runtime backends and semantic extraction become useful only when users need repeated low-latency search over larger graphs, better natural-language retrieval or summarized rationale across code/docs. These are product accelerators, not baseline correctness requirements.
+- Product risk: each extension can make generated graph output look more authoritative than source. The UI and runtime must keep "generated orientation evidence" wording, stale/fresh labels, source-read safe next actions and owner-review gates visible.
+- Technical reason for sequencing: a static search index should come before any live database/server because it proves index schema, freshness, cache invalidation and search-quality thresholds without process lifecycle risk. A local backend should come before embeddings because it provides stable storage/query contracts and rollback controls. Embeddings and cross-encoder reranking should come before LLM extraction because they can be evaluated with deterministic retrieval metrics before introducing generative interpretation.
+- Technical risk: live server/database work adds process lifecycle, port, persistence, cleanup, concurrency, API contract and rollback risks. Embedding/cross-encoder/LLM work adds privacy, cost, latency, model drift, cache invalidation, dataset leakage, false-positive semantic links and unsupported completion-claim risks.
+- Approval gate: Batch 19 through Batch 23 are `approval_required` before implementation. Approval must name allowed surfaces, data classification, redaction boundary, cache policy, token budget, eval threshold, rollback/disable path, owner and accepted residual risks. Planning matrix presence is not implementation evidence.
+- Source boundary: future semantic artifacts may add generated semantic nodes, rationale snippets or comment summaries, but they are never source of truth. They must point back to graph observation IDs, source spans, redaction status and current-run eval evidence.
+- Stop condition: do not start live database/server, live model/API calls, embedding generation, cross-encoder reranking, semantic extraction or rationale/comment extraction from Task 25 baseline closure alone. Start only when the explicit approval packet exists and the RED tests for that future batch are written first.
+
 Task 25 implementation surfaces:
 
 - Create: `plugins/product-agent-os/scripts/product_agent_os/project_code_graph.py`
@@ -494,6 +504,10 @@ Task 25 implementation surfaces:
 - Create: `plugins/product-agent-os/scripts/product_agent_os/project_cockpit_model.py`
 - Create: `plugins/product-agent-os/scripts/product_agent_os/project_graph_renderer.py`
 - Create: `plugins/product-agent-os/scripts/product_agent_os/project_graph_visual_model.py`
+- Future-gated create: `plugins/product-agent-os/scripts/product_agent_os/project_graph_index.py`
+- Future-gated create: `plugins/product-agent-os/scripts/product_agent_os/project_graph_backend.py`
+- Future-gated create: `plugins/product-agent-os/scripts/product_agent_os/project_graph_semantic.py`
+- Future-gated create: `plugins/product-agent-os/scripts/product_agent_os/project_graph_llm_extraction.py`
 - Create: `plugins/product-agent-os/scripts/scan_project_code_graph.py`
 - Create: `plugins/product-agent-os/assets/templates/project-graph/project-cockpit.html`
 - Create: `plugins/product-agent-os/assets/templates/project-graph/project-graph.html`
@@ -539,6 +553,41 @@ Task 25 implementation matrix:
 | `T10-CG-V2-M31` | Focused verification | focused test commands | Scanner, schema, manifest, query, renderer, status/runtime, fixture eval and docs suites pass before broad verification. |
 | `T10-CG-V2-M32` | Full verification and explicit git boundary | full checks, Git | Full unit suite, fixture eval, transcript eval, Codex compatibility, docs check, strict MkDocs when docs/nav-sensitive changes are made and diff hygiene pass; full unittest wrappers use `timeout_ms: 1200000`; do not stage, commit, push or create PR unless explicitly requested. |
 
+Task 25 future-gated extension matrix:
+
+| ID | Task | Files | Acceptance |
+| --- | --- | --- | --- |
+| `T10-CG-V2-M33` | Static search index approval and design | approval packet, `project_graph_index.py`, docs tests | Implementation is blocked until explicit approval records data classification, redaction boundary, cache policy, token budget, eval threshold, rollback/disable path, owner and accepted residual risks. |
+| `T10-CG-V2-M34` | Offline index schema and builder | `project_graph_index.py`, index tests | Builds a deterministic local index from redacted graph JSON/JSONL only; stores node IDs, labels, aliases, partitions, confidence, stale status and observation IDs without raw source bodies or absolute local paths. |
+| `T10-CG-V2-M35` | Index freshness, cache and invalidation | `project_graph_index.py`, manifest tests | Index cache fingerprints graph artifacts, invalidates on graph manifest changes, records cache hit/miss evidence and never silently serves stale results as current. |
+| `T10-CG-V2-M36` | Indexed search query packets | `project_graph_queries.py`, `scan_project_code_graph.py`, CLI tests | `search` can optionally use the static index while preserving deterministic JSON shape, output budgets, filter safety, source-free payloads and graph-only fallback. |
+| `T10-CG-V2-M37` | Indexed search quality evals | `project_graph_search_quality.py`, fixture tests | Eval compares graph-only search and indexed search for symbol recall, top-k/MRR, affected-test precision, trace labels, false-positive rate and edge-density impact against explicit thresholds. |
+| `T10-CG-V2-M38` | Static index docs and control-plane sync | docs, source registry, control-plane files | Docs explain that the index is offline, generated, cache-bound and not source of truth; source registry/backlog/control-plane record evidence and rollback notes. |
+| `T10-CG-V2-M39` | Local query backend approval and architecture | approval packet, `project_graph_backend.py`, API contract tests | Implementation is blocked until approval names whether a local database/server is allowed, storage path, port policy, process lifecycle, auth boundary, cleanup, logging, eval threshold and rollback path. |
+| `T10-CG-V2-M40` | Local database schema and storage safety | `project_graph_backend.py`, storage tests | Stores graph/index artifacts in a local workspace-bound database or file store with schema version, migration guard, backup/restore plan, path safety, size caps and deletion/cleanup command. |
+| `T10-CG-V2-M41` | Server process lifecycle and no-active-default gate | backend CLI, runtime tests | Server mode is disabled by default, starts only through explicit command/approval, writes no global config, records PID/port/log paths, shuts down cleanly and has a deterministic disable path. |
+| `T10-CG-V2-M42` | Query API contract and security boundary | backend API tests, runtime contracts | API exposes read-only graph/index query endpoints with bounded payloads, request IDs, no browser edit/write controls, no external network dependency and stable JSON error responses without local path leaks. |
+| `T10-CG-V2-M43` | Backend performance, concurrency and rollback evals | backend tests, fixture eval | 1k/5k/10k graph queries meet approved latency/memory thresholds; concurrent reads stay deterministic; rollback clears server state and returns to graph-only query mode. |
+| `T10-CG-V2-M44` | Backend docs and operational evidence | docs, RUNLOG, TEST, EVALS | Docs and control-plane record approval, start/stop commands, cleanup, logs, rollback, residual risks and no-production-server/non-source-of-truth boundaries. |
+| `T10-CG-V2-M45` | Semantic retrieval approval and model decision | approval packet, `project_graph_semantic.py`, model decision record | Implementation is blocked until approval names embedding/cross-encoder providers or local models, data classification, redaction, token/cost budget, cache, eval threshold, failure handling and rollback. |
+| `T10-CG-V2-M46` | Semantic corpus and chunk policy | `project_graph_semantic.py`, chunking tests | Builds semantic corpus from redacted graph labels, structured chunks and approved snippets only; excludes raw private text, secrets, absolute paths and generated HTML as source. |
+| `T10-CG-V2-M47` | Embedding generation and cache artifacts | `project_graph_semantic.py`, cache tests | Generates or imports embeddings only for approved corpus records; caches vectors with model/version/hash metadata, source observation IDs, expiration policy and deterministic deletion path. |
+| `T10-CG-V2-M48` | Semantic search query packets | `project_graph_queries.py`, semantic tests | Adds optional semantic query packets with similarity scores, source observation IDs, confidence labels, top-k caps, fallback to lexical/indexed search and no completion claims from semantic matches alone. |
+| `T10-CG-V2-M49` | Cross-encoder reranking gate | `project_graph_semantic.py`, rerank tests | Optional reranking runs only after approval, records model/version/cost/latency evidence, improves or blocks based on thresholded evals and never rewrites canonical graph edges. |
+| `T10-CG-V2-M50` | Semantic retrieval eval suite | eval fixtures, `project_graph_search_quality.py` | Eval covers recall@k, MRR, nDCG where applicable, false-positive semantic links, privacy redaction, stale corpus behavior, cost/latency budget and regression thresholds. |
+| `T10-CG-V2-M51` | Semantic retrieval docs and lifecycle routing | docs, lifecycle skills, runtime contracts | Docs and lifecycle skills route semantic hits as `present_unverified` orientation evidence until source reads, owner review or accepted gaps exist. |
+| `T10-CG-V2-M52` | LLM extraction approval and schema | approval packet, `project_graph_llm_extraction.py`, schema tests | Implementation is blocked until approval defines extraction schema, prompt/model policy, redaction, token budget, eval threshold, incident path, owner and rollback/disable path. |
+| `T10-CG-V2-M53` | Prompt/model/tool contract for extraction | prompt contract, extraction tests | Prompts use approved redacted context only, forbid secrets/private data retention, record model/sampling/version, and produce structured JSON with provenance, uncertainty and unsupported-claim labels. |
+| `T10-CG-V2-M54` | Semantic node and edge proposal generation | `project_graph_llm_extraction.py`, graph proposal tests | Generated semantic nodes/edges are staged as proposals with confidence, source observation IDs, rationale, review status and no mutation of canonical graph until owner acceptance. |
+| `T10-CG-V2-M55` | Rationale and comment extraction | extraction tests, docs tests | Extracts rationale/comment summaries only from approved public or redacted source spans; labels inferred intent as unverified; blocks private comments, secrets, unsupported claims and source-of-truth wording. |
+| `T10-CG-V2-M56` | Human review, acceptance and incident workflow | review packet, EVALS, RUNLOG | Owner review can accept, reject or mark generated semantics as accepted gap; failed extraction, data leak or unsafe output routes to AI incident workflow and disables extraction until fixed. |
+| `T10-CG-V2-M57` | LLM extraction evals and docs sync | eval fixtures, docs, source registry | Eval covers extraction precision, hallucination/unsupported-claim rate, privacy, cost/latency, stale context, rollback and docs/source registry/control-plane evidence. |
+| `T10-CG-V2-M58` | Future extension focused verification | focused command set | Static index, backend, semantic retrieval and LLM extraction focused suites pass only for approved surfaces; unapproved surfaces remain skipped/blocked with explicit evidence. |
+| `T10-CG-V2-M59` | Future extension full verification | full checks | Full unit suite, fixture eval, transcript eval, Codex compatibility, docs check, strict MkDocs and diff hygiene pass with `timeout_ms: 1200000`; generated artifacts remain source-free and staged. |
+| `T10-CG-V2-M60` | Runtime and visual QA for approved extensions | backend/runtime/browser checks | Approved backend or semantic UI surfaces have runtime/browser evidence, no console errors, no external requests beyond approved model/provider calls and visible generated-view/source-boundary labels. |
+| `T10-CG-V2-M61` | Disable, rollback and data deletion proof | rollback tests, RUNLOG | Every approved extension can be disabled, cache/index/database/vector artifacts can be deleted, graph-only baseline still works and rollback evidence is recorded. |
+| `T10-CG-V2-M62` | Future extension docs/source/control-plane closure | docs, source registry, root control-plane files | Docs separate baseline, approved extension and deferred capabilities; source registry and root control-plane record evidence, unsupported claims, approval status and explicit-only git boundary. |
+
 Task 25 implementation batches:
 
 - **Batch 13: Graph Foundation, Schema And Staging** (`T10-CG-V2-M01..M07`)
@@ -547,8 +596,13 @@ Task 25 implementation batches:
 - **Batch 16: HTML Cockpit, Code Graph Visualization And Project Map** (`T10-CG-V2-M19..M26`)
 - **Batch 17: Evals, Docs, Control Plane And Future Gates** (`T10-CG-V2-M27..M30`)
 - **Batch 18: Focused, Full Verification And Closure** (`T10-CG-V2-M31..M32`)
+- **Batch 19: Offline Static Search Index** (`T10-CG-V2-M33..M38`, future-gated)
+- **Batch 20: Local Query Backend And Live Database/Server Gate** (`T10-CG-V2-M39..M44`, future-gated)
+- **Batch 21: Semantic Retrieval, Embeddings And Cross-Encoder Eval** (`T10-CG-V2-M45..M51`, future-gated)
+- **Batch 22: LLM Semantic Extraction And Rationale/Comment Proposals** (`T10-CG-V2-M52..M57`, future-gated)
+- **Batch 23: Future Extension Verification, Rollback And Closure** (`T10-CG-V2-M58..M62`, future-gated)
 
-Task 25 starts only after Task 24 final verification evidence remains current. It must preserve the Track 10 non-goals: no standalone web server, no database, no live model/API calls, no external writes, no hook/automation activation and no HTML-as-source-of-truth claim.
+Task 25 starts only after Task 24 final verification evidence remains current. The Batch 13-18 baseline must preserve the Track 10 non-goals: no standalone web server, no database, no live model/API calls, no external writes, no hook/automation activation and no HTML-as-source-of-truth claim. Batch 19-23 extensions may relax only the database/server/model-call non-goals for explicitly approved surfaces; all other boundaries remain staged-first, source-free where possible, rollbackable and evidence-bound.
 
 ## Execution Batches
 

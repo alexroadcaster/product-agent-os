@@ -48,6 +48,16 @@ This backlog tracks deferred and follow-up work for Track 10 `Task 23: Guided Qu
 | `done` | `T10-CG-V2-M27..M30` evals/docs/future gates | Added fixture structural fields, search-quality eval loop, explicit future backend and semantic gates, and docs/source registry/control-plane sync beyond Batch 16. The static search index, live database/server, LLM, embedding, cross-encoder, semantic extraction and rationale/comment extraction remain outside baseline without explicit approval defining redaction, cache, token budget, eval threshold and rollback path. |
 | `pending` | `T10-CG-V2-M31..M32` final verification and closure | Run Batch 18 focused/full verification, update final evidence and keep git staging/commit/push/PR explicit-only. |
 
+## Task 25 Future-Gated Extension Matrix
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `pending` | `T10-CG-V2-M33..M38` offline static search index | Batch 19 can start only after explicit approval defines data classification, redaction boundary, cache policy, token budget, eval threshold, rollback/disable path, owner and residual risks. It must build from redacted graph JSON/JSONL only and keep indexed search generated, cache-bound and not source of truth. |
+| `pending` | `T10-CG-V2-M39..M44` local query backend and live database/server gate | Batch 20 can start only if a local database/server is explicitly approved with storage path, port policy, process lifecycle, auth boundary, cleanup, logging, performance threshold and rollback path. Server mode must be disabled by default and graph-only mode must remain available. |
+| `pending` | `T10-CG-V2-M45..M51` semantic retrieval, embeddings and cross-encoder eval | Batch 21 can start only after approval names embedding/cross-encoder provider or local model, redaction, token/cost budget, cache, eval threshold and deletion path. Semantic hits remain `present_unverified` orientation evidence until source reads, owner review or accepted gaps exist. |
+| `pending` | `T10-CG-V2-M52..M57` LLM semantic extraction and rationale/comment proposals | Batch 22 can start only after approval defines extraction schema, prompt/model policy, redaction, token budget, eval threshold, incident path, owner and rollback/disable path. Generated semantic nodes, rationale and comments are staged proposals, not canonical graph facts. |
+| `pending` | `T10-CG-V2-M58..M62` future extension verification, rollback and closure | Batch 23 verifies only explicitly approved extension surfaces, proves disable/rollback/data deletion paths, reruns full verification with `timeout_ms: 1200000`, updates docs/source/control-plane and keeps git staging/commit/push/PR explicit-only. |
+
 ## Deferred
 
 | Status | Item | Reason |
@@ -57,8 +67,8 @@ This backlog tracks deferred and follow-up work for Track 10 `Task 23: Guided Qu
 | `deferred` | Live external telemetry widgets | External assets and external systems remain approval-bound and out of scope for the offline dashboard. |
 | `deferred` | LLM semantic judge for question quality | Current transcript eval is deterministic term replay; calibrated judge coverage needs its own eval design and privacy policy. |
 | `deferred` | Live Graphology/Sigma vendor bundle | Batch 16 records the local/vendor-only boundary and static fallback; adding vendored assets requires version, license, hash and visual QA evidence. |
-| `deferred` | Project graph indexed-query backend | Static search index, live database/server, local database/server or other indexed query backend remains outside the baseline until an approved design defines redaction, cache, token budget, eval threshold and rollback path. |
-| `deferred` | Project graph semantic extraction | LLM, embedding, cross-encoder, semantic extraction and rationale/comment extraction remain approval-gated future work, not implied by Batch 16 visual projection or Batch 17 search-quality evals, unless explicit approval defines redaction, cache, token budget, eval threshold and rollback path. |
+| `deferred` | Project graph indexed-query backend | Static search index, live database/server, local database/server or other indexed query backend remains outside the baseline and is now staged as pending future-gated Task 25 batches `T10-CG-V2-M33..M44`; it still requires an approved design with redaction, cache, token budget, eval threshold and rollback path before implementation. |
+| `deferred` | Project graph semantic extraction | LLM, embedding, cross-encoder, semantic extraction and rationale/comment extraction remain approval-gated future work, not implied by Batch 16 visual projection or Batch 17 search-quality evals, and are now staged as pending future-gated Task 25 batches `T10-CG-V2-M45..M62`; explicit approval must define redaction, cache, token budget, eval threshold and rollback path before implementation. |
 
 ## Verification
 
