@@ -45,6 +45,14 @@ from product_agent_os.project_graph_index import build_static_search_index, quer
 from product_agent_os.project_graph_queries import query_project_graph  # noqa: E402
 from product_agent_os.project_graph_renderer import render_project_graph_cockpit  # noqa: E402
 from product_agent_os.project_graph_search_quality import evaluate_project_graph_search_quality  # noqa: E402
+from product_agent_os.project_graph_semantic import (  # noqa: E402
+    SEMANTIC_RETRIEVAL_TARGET,
+    build_semantic_retrieval_index,
+    evaluate_semantic_retrieval_quality,
+    query_semantic_retrieval,
+    validate_semantic_retrieval_approval,
+    validate_semantic_retrieval_index,
+)
 from product_agent_os.question_protocol import (  # noqa: E402
     MAX_FIRST_RESPONSE_BLOCKING,
     MAX_TOTAL_QUESTIONS,
@@ -2022,6 +2030,15 @@ def _expected_checks(
         checks["project_graph_backend_no_production_or_source_truth_claims"] = (
             _project_graph_backend_no_production_or_source_truth_claims()
         )
+        checks["project_graph_semantic_retrieval_gate_present"] = (
+            _project_graph_semantic_retrieval_gate_present()
+        )
+        checks["project_graph_semantic_retrieval_eval_present"] = (
+            _project_graph_semantic_retrieval_eval_present()
+        )
+        checks["project_graph_semantic_present_unverified_routing_present"] = (
+            _project_graph_semantic_present_unverified_routing_present()
+        )
         checks["project_graph_future_backend_semantic_gates_present"] = (
             _project_graph_future_backend_semantic_gates_present()
         )
@@ -3808,6 +3825,138 @@ def _project_graph_backend_no_production_or_source_truth_claims() -> bool:
     return (
         store.get("generated_view_policy") == "local_backend_store_is_generated_cache_not_source_of_truth"
         and not any(term in payload for term in forbidden)
+    )
+
+
+def _project_graph_semantic_approval() -> dict[str, Any]:
+    return {
+        "explicit_approval": True,
+        "storage_path": SEMANTIC_RETRIEVAL_TARGET,
+        "embedding_provider": "local_deterministic",
+        "embedding_model": {
+            "name": "local-hash-embedding-v1",
+            "version": "1",
+            "dimension": 64,
+            "external_model_calls_allowed": False,
+        },
+        "cross_encoder": {
+            "provider": "local_deterministic",
+            "model": "local-lexical-cross-encoder-v1",
+            "enabled": True,
+            "external_model_calls_allowed": False,
+        },
+        "data_classification": {
+            "allowed_inputs": ["redacted_graph_labels", "static_index_terms", "observation_ids"],
+            "forbidden_inputs": ["raw_source_bodies", "secrets", "absolute_local_paths", "private_text"],
+        },
+        "redaction_policy": {
+            "raw_source_excluded": True,
+            "secrets_redacted": True,
+            "absolute_paths_redacted": True,
+        },
+        "cache_policy": {
+            "cache_status": "generated",
+            "fingerprint_scope": "canonical_redacted_graph_and_static_index",
+            "stale_policy": "block_if_graph_fingerprint_mismatch",
+            "ttl_days": 30,
+        },
+        "token_budget": {"max_query_tokens": 1200, "max_corpus_record_tokens": 120},
+        "eval_threshold": {
+            "min_recall_at_k": 1.0,
+            "min_mrr": 1.0,
+            "min_cross_encoder_mrr_delta": 0.0,
+            "max_false_positive_rate": 0.0,
+            "max_query_ms": 250,
+            "max_payload_tokens": 1200,
+        },
+        "failure_handling": {"on_stale_or_failed_eval": "block_and_fallback_to_lexical_or_graph"},
+        "rollback_path": f"delete {SEMANTIC_RETRIEVAL_TARGET}",
+    }
+
+
+def _project_graph_semantic_index() -> dict[str, Any]:
+    return build_semantic_retrieval_index(
+        _project_graph_sample(),
+        static_index=_project_graph_static_index(),
+        approval=_project_graph_semantic_approval(),
+    )
+
+
+def _project_graph_semantic_retrieval_gate_present() -> bool:
+    approval = _project_graph_semantic_approval()
+    semantic_index = _project_graph_semantic_index()
+    packet = query_semantic_retrieval(
+        semantic_index,
+        {"query": "search", "text": "worker run", "node_types": ["function"], "path_prefixes": ["app/"]},
+        graph=_project_graph_sample(),
+    )
+    payload = json.dumps([semantic_index, packet], sort_keys=True).lower()
+    return (
+        validate_semantic_retrieval_approval(approval).get("ok") is True
+        and validate_semantic_retrieval_index(semantic_index).get("ok") is True
+        and semantic_index.get("artifact_kind") == "project_graph_semantic_retrieval_index"
+        and semantic_index.get("approval_boundary") == "batch21_explicit_semantic_retrieval_gate"
+        and semantic_index.get("model_decision", {}).get("embedding_provider") == "local_deterministic"
+        and semantic_index.get("model_decision", {}).get("cross_encoder_provider") == "local_deterministic"
+        and semantic_index.get("model_decision", {}).get("external_model_calls_allowed") is False
+        and semantic_index.get("corpus_policy", {}).get("semantic_corpus_and_chunk_policy")
+        == "redacted_graph_labels_static_index_terms_observation_ids_only"
+        and semantic_index.get("embedding", {}).get("cache_kind") == "embeddings_cache_metadata"
+        and packet.get("search_backend") == "semantic_retrieval"
+        and packet.get("nodes", [{}])[0].get("id") == "function:app.worker.run"
+        and "return 'ok'" not in payload
+        and "c:\\users" not in payload
+    )
+
+
+def _project_graph_semantic_retrieval_eval_present() -> bool:
+    semantic_index = _project_graph_semantic_index()
+    packet = evaluate_semantic_retrieval_quality(
+        semantic_index,
+        graph=_project_graph_sample(),
+        cases=[
+            {
+                "id": "semantic-worker",
+                "text": "worker run",
+                "expected_node_ids": ["function:app.worker.run"],
+                "unexpected_node_ids": ["function:tests.test_worker.test_run"],
+                "top_k": 3,
+            }
+        ],
+        thresholds={
+            "min_recall_at_k": 1.0,
+            "min_mrr": 1.0,
+            "min_cross_encoder_mrr_delta": 0.0,
+            "max_false_positive_rate": 0.0,
+            "max_query_ms": 250,
+            "max_payload_tokens": 1200,
+        },
+    )
+    return (
+        packet.get("decision_status") == "passed"
+        and packet.get("search_backend") == "semantic_retrieval"
+        and packet.get("quality_metrics", {}).get("recall_at_k") == 1.0
+        and packet.get("quality_metrics", {}).get("mrr") == 1.0
+        and packet.get("quality_metrics", {}).get("false_positive_rate") == 0.0
+        and packet.get("failed_thresholds") == []
+    )
+
+
+def _project_graph_semantic_present_unverified_routing_present() -> bool:
+    semantic_index = _project_graph_semantic_index()
+    packet = query_project_graph(
+        _project_graph_sample(),
+        {"query": "search", "text": "worker run", "max_results": 3},
+        semantic_index=semantic_index,
+    )
+    payload = json.dumps([semantic_index, packet], sort_keys=True).lower()
+    return (
+        semantic_index.get("query_policy", {}).get("semantic_hits_confidence") == "present_unverified"
+        and semantic_index.get("cross_encoder", {}).get("canonical_graph_edge_rewrites") is False
+        and semantic_index.get("rollback", {}).get("disable_path") == f"delete {SEMANTIC_RETRIEVAL_TARGET}"
+        and packet.get("nodes", [{}])[0].get("confidence") == "present_unverified"
+        and "semantic matches alone" in packet.get("safe_next_action", "")
+        and "canonical graph edge rewrites" not in payload
     )
 
 

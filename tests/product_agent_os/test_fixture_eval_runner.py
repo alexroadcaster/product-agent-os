@@ -164,6 +164,9 @@ class FixtureEvalRunnerTest(unittest.TestCase):
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_backend_operational_controls_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_backend_graph_only_fallback_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_backend_no_production_or_source_truth_claims"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_semantic_retrieval_gate_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_semantic_retrieval_eval_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_semantic_present_unverified_routing_present"])
         self.assertEqual(results["python-app"]["renderer_file_count"], 191)
         for check_name in [
             "methodology_catalog_contract_present",

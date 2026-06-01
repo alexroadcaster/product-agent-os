@@ -20,6 +20,11 @@ from product_agent_os.project_graph_backend import (  # noqa: E402
 )
 from product_agent_os.project_graph_index import load_static_search_index, stage_project_graph_search_index  # noqa: E402
 from product_agent_os.project_graph_queries import load_graph_artifact, query_project_graph  # noqa: E402
+from product_agent_os.project_graph_semantic import (  # noqa: E402
+    disable_semantic_retrieval_index,
+    load_semantic_retrieval_index,
+    stage_semantic_retrieval_index,
+)
 
 
 SHRINK_GUARD_RATIO = 0.5
@@ -34,10 +39,14 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--build-index", action="store_true", help="Build or reuse an offline static search index from --graph.")
     parser.add_argument("--build-backend", action="store_true", help="Stage a disabled-by-default local query backend store from --graph.")
     parser.add_argument("--disable-backend", action="store_true", help="Delete the generated local query backend store from --stage.")
+    parser.add_argument("--build-semantic-index", action="store_true", help="Stage an approved semantic retrieval index from --graph.")
+    parser.add_argument("--disable-semantic-index", action="store_true", help="Delete the generated semantic retrieval index from --stage.")
     parser.add_argument("--graph", help="Path to project-code-graph.json or project-code-graph.jsonl for query mode.")
     parser.add_argument("--index", help="Optional project-code-graph-search-index.json for indexed search query mode.")
     parser.add_argument("--backend", help="Optional project-code-graph-backend.json for backend query mode.")
     parser.add_argument("--backend-approval", help="JSON approval packet for --build-backend.")
+    parser.add_argument("--semantic-index", help="Optional project-code-graph-semantic-index.json for semantic search query mode.")
+    parser.add_argument("--semantic-approval", help="JSON approval packet for --build-semantic-index.")
     parser.add_argument("--node-id", help="Source node id for graph query mode.")
     parser.add_argument("--target-id", help="Target node id for graph path/trace query mode.")
     parser.add_argument("--text", help="Search text for graph query mode.")
@@ -53,14 +62,27 @@ def main(argv: list[str] | None = None) -> int:
 
     mode_count = (
         int(bool(args.dry_run))
-        + int(bool(args.stage) and not args.build_index and not args.build_backend and not args.disable_backend)
+        + int(
+            bool(args.stage)
+            and not args.build_index
+            and not args.build_backend
+            and not args.disable_backend
+            and not args.build_semantic_index
+            and not args.disable_semantic_index
+        )
         + int(bool(args.query))
         + int(bool(args.build_index))
         + int(bool(args.build_backend))
         + int(bool(args.disable_backend))
+        + int(bool(args.build_semantic_index))
+        + int(bool(args.disable_semantic_index))
     )
     if mode_count != 1:
-        return _print_error("choose exactly one mode: --dry-run, --stage, --query, --build-index, --build-backend, or --disable-backend", exit_code=2)
+        return _print_error(
+            "choose exactly one mode: --dry-run, --stage, --query, --build-index, --build-backend, "
+            "--disable-backend, --build-semantic-index, or --disable-semantic-index",
+            exit_code=2,
+        )
 
     try:
         if args.query:
@@ -77,11 +99,13 @@ def main(argv: list[str] | None = None) -> int:
                 raise ProjectGraphCliError("query mode requires --graph")
             graph = load_graph_artifact(Path(args.graph))
             static_index = load_static_search_index(args.index) if args.index else None
+            semantic_index = load_semantic_retrieval_index(args.semantic_index) if args.semantic_index else None
             request = _query_request(args)
             packet = query_project_graph(
                 graph,
                 {key: value for key, value in request.items() if value not in (None, [], "")},
                 static_index=static_index,
+                semantic_index=semantic_index,
             )
             print(json.dumps(_redacted_payload(packet), indent=2, sort_keys=True))
             return 0 if packet.get("status") != "blocked" else 1
@@ -134,6 +158,43 @@ def main(argv: list[str] | None = None) -> int:
                 raise ProjectGraphCliError("workspace is not a directory")
             try:
                 result = disable_local_query_backend(Path(args.stage), workspace=workspace)
+            except ValueError as exc:
+                raise ProjectGraphCliError(str(exc)) from exc
+            print(json.dumps(_redacted_payload(result), indent=2, sort_keys=True))
+            return 0
+        if args.build_semantic_index:
+            if not args.graph:
+                raise ProjectGraphCliError("build-semantic-index mode requires --graph")
+            if not args.stage:
+                raise ProjectGraphCliError("build-semantic-index mode requires --stage")
+            workspace = Path(args.workspace).resolve()
+            if not workspace.exists():
+                raise ProjectGraphCliError("workspace does not exist")
+            if not workspace.is_dir():
+                raise ProjectGraphCliError("workspace is not a directory")
+            approval = _load_json_file(args.semantic_approval) if args.semantic_approval else None
+            try:
+                result = stage_semantic_retrieval_index(
+                    Path(args.graph),
+                    Path(args.stage),
+                    workspace=workspace,
+                    approval=approval,
+                    static_index_artifact=Path(args.index) if args.index else None,
+                )
+            except ValueError as exc:
+                raise ProjectGraphCliError(str(exc)) from exc
+            print(json.dumps(_redacted_payload(result), indent=2, sort_keys=True))
+            return 0 if result.get("rendered_artifacts", {}).get("status") == "ready" else 1
+        if args.disable_semantic_index:
+            if not args.stage:
+                raise ProjectGraphCliError("disable-semantic-index mode requires --stage")
+            workspace = Path(args.workspace).resolve()
+            if not workspace.exists():
+                raise ProjectGraphCliError("workspace does not exist")
+            if not workspace.is_dir():
+                raise ProjectGraphCliError("workspace is not a directory")
+            try:
+                result = disable_semantic_retrieval_index(Path(args.stage), workspace=workspace)
             except ValueError as exc:
                 raise ProjectGraphCliError(str(exc)) from exc
             print(json.dumps(_redacted_payload(result), indent=2, sort_keys=True))

@@ -81,6 +81,7 @@ def query_project_graph(
     request: dict[str, Any],
     *,
     static_index: dict[str, Any] | None = None,
+    semantic_index: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Run a deterministic query against graph JSON/JSONL content only."""
 
@@ -101,7 +102,7 @@ def query_project_graph(
     if kind == "status":
         return _status_packet(graph, request)
     if kind == "search":
-        return _search(graph, index, request, static_index=static_index)
+        return _search(graph, index, request, static_index=static_index, semantic_index=semantic_index)
     if kind == "hotspots":
         return _hotspots(graph, index, request)
     if kind == "read_order":
@@ -195,7 +196,12 @@ def _search(
     request: dict[str, Any],
     *,
     static_index: dict[str, Any] | None = None,
+    semantic_index: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
+    if semantic_index is not None:
+        from product_agent_os.project_graph_semantic import query_semantic_retrieval
+
+        return query_semantic_retrieval(semantic_index, request, graph=graph)
     if static_index is not None:
         validation = static_index.get("validation") if isinstance(static_index.get("validation"), dict) else validate_static_search_index(static_index)
         if validation.get("ok") is not True:

@@ -11,6 +11,7 @@ SCRIPT = ROOT / "plugins" / "product-agent-os" / "scripts" / "scan_project_code_
 FIXTURES = ROOT / "plugins" / "product-agent-os" / "assets" / "fixtures"
 PROJECT_GRAPH_TARGET = Path(".codex/product-agent-os/project-code-graph.json")
 STATIC_SEARCH_INDEX_TARGET = Path(".codex/product-agent-os/project-code-graph-search-index.json")
+SEMANTIC_RETRIEVAL_TARGET = Path(".codex/product-agent-os/project-code-graph-semantic-index.json")
 
 
 class ProjectGraphCliTest(unittest.TestCase):
@@ -568,6 +569,138 @@ class ProjectGraphCliTest(unittest.TestCase):
             self.assertEqual(payload["rendered_artifacts"]["fallback"], "graph_only_query_mode")
             self.assertFalse((stage_root / ".codex" / "product-agent-os" / "project-code-graph-backend.json").exists())
 
+    def test_build_semantic_cli_requires_approval_and_query_cli_uses_semantic_index(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "workspace"
+            stage_root = Path(tmp) / "stage"
+            approval_path = Path(tmp) / "semantic-approval.json"
+            (workspace / "app").mkdir(parents=True)
+            (workspace / "app" / "__init__.py").write_text("", encoding="utf-8")
+            (workspace / "app" / "worker.py").write_text("def run():\n    return 'ok'\n", encoding="utf-8")
+            approval_path.write_text(json.dumps(self._semantic_approval()), encoding="utf-8")
+
+            stage = subprocess.run(
+                [sys.executable, str(SCRIPT), str(workspace), "--stage", str(stage_root)],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            missing_approval = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--build-semantic-index",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--stage",
+                    str(stage_root),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            semantic = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--build-semantic-index",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--stage",
+                    str(stage_root),
+                    "--semantic-approval",
+                    str(approval_path),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            query = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--query",
+                    "search",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--semantic-index",
+                    str(stage_root / SEMANTIC_RETRIEVAL_TARGET),
+                    "--text",
+                    "worker run",
+                    "--max-results",
+                    "5",
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(stage.returncode, 0, stage.stdout + stage.stderr)
+            self.assertEqual(missing_approval.returncode, 1)
+            self.assertEqual(semantic.returncode, 0, semantic.stdout + semantic.stderr)
+            self.assertEqual(query.returncode, 0, query.stdout + query.stderr)
+            missing_payload = json.loads(missing_approval.stdout)
+            semantic_payload = json.loads(semantic.stdout)
+            query_payload = json.loads(query.stdout)
+            self.assertEqual(missing_payload["rendered_artifacts"]["status"], "approval_required")
+            self.assertEqual(semantic_payload["rendered_artifacts"]["mode"], "build-semantic-index")
+            self.assertEqual(semantic_payload["rendered_artifacts"]["cache_status"], "miss")
+            self.assertEqual(query_payload["search_backend"], "semantic_retrieval")
+            self.assertEqual(query_payload["nodes"][0]["id"], "function:app.worker.run")
+            self.assertEqual(query_payload["nodes"][0]["confidence"], "present_unverified")
+            self.assertNotIn(str(workspace), semantic.stdout + query.stdout)
+
+    def test_disable_semantic_cli_removes_generated_index_without_touching_workspace(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "workspace"
+            stage_root = Path(tmp) / "stage"
+            approval_path = Path(tmp) / "semantic-approval.json"
+            (workspace / "app").mkdir(parents=True)
+            (workspace / "app" / "__init__.py").write_text("", encoding="utf-8")
+            (workspace / "app" / "worker.py").write_text("def run():\n    return 'ok'\n", encoding="utf-8")
+            approval_path.write_text(json.dumps(self._semantic_approval()), encoding="utf-8")
+
+            stage = subprocess.run(
+                [sys.executable, str(SCRIPT), str(workspace), "--stage", str(stage_root)],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            semantic = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--build-semantic-index",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--stage",
+                    str(stage_root),
+                    "--semantic-approval",
+                    str(approval_path),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            disable = subprocess.run(
+                [sys.executable, str(SCRIPT), str(workspace), "--disable-semantic-index", "--stage", str(stage_root)],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(stage.returncode, 0, stage.stdout + stage.stderr)
+            self.assertEqual(semantic.returncode, 0, semantic.stdout + semantic.stderr)
+            self.assertEqual(disable.returncode, 0, disable.stdout + disable.stderr)
+            payload = json.loads(disable.stdout)
+            self.assertEqual(payload["rendered_artifacts"]["status"], "disabled")
+            self.assertEqual(payload["rendered_artifacts"]["fallback"], "lexical_or_graph_search")
+            self.assertFalse((stage_root / SEMANTIC_RETRIEVAL_TARGET).exists())
+
     def _backend_approval(self) -> dict:
         return {
             "explicit_approval": True,
@@ -586,6 +719,51 @@ class ProjectGraphCliTest(unittest.TestCase):
             },
             "performance_threshold": {"max_query_ms": 250, "max_payload_tokens": 4000},
             "rollback_path": "delete .codex/product-agent-os/project-code-graph-backend.json",
+        }
+
+    def _semantic_approval(self) -> dict:
+        return {
+            "explicit_approval": True,
+            "storage_path": ".codex/product-agent-os/project-code-graph-semantic-index.json",
+            "embedding_provider": "local_deterministic",
+            "embedding_model": {
+                "name": "local-hash-embedding-v1",
+                "version": "1",
+                "dimension": 64,
+                "external_model_calls_allowed": False,
+            },
+            "cross_encoder": {
+                "provider": "local_deterministic",
+                "model": "local-lexical-cross-encoder-v1",
+                "enabled": True,
+                "external_model_calls_allowed": False,
+            },
+            "data_classification": {
+                "allowed_inputs": ["redacted_graph_labels", "static_index_terms", "observation_ids"],
+                "forbidden_inputs": ["raw_source_bodies", "secrets", "absolute_local_paths", "private_text"],
+            },
+            "redaction_policy": {
+                "raw_source_excluded": True,
+                "secrets_redacted": True,
+                "absolute_paths_redacted": True,
+            },
+            "cache_policy": {
+                "cache_status": "generated",
+                "fingerprint_scope": "canonical_redacted_graph_and_static_index",
+                "stale_policy": "block_if_graph_fingerprint_mismatch",
+                "ttl_days": 30,
+            },
+            "token_budget": {"max_query_tokens": 1200, "max_corpus_record_tokens": 120},
+            "eval_threshold": {
+                "min_recall_at_k": 1.0,
+                "min_mrr": 1.0,
+                "min_cross_encoder_mrr_delta": 0.0,
+                "max_false_positive_rate": 0.0,
+                "max_query_ms": 250,
+                "max_payload_tokens": 1200,
+            },
+            "failure_handling": {"on_stale_or_failed_eval": "block_and_fallback_to_lexical_or_graph"},
+            "rollback_path": "delete .codex/product-agent-os/project-code-graph-semantic-index.json",
         }
 
 
