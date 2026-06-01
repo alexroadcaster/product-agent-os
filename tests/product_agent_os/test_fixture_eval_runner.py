@@ -145,6 +145,17 @@ class FixtureEvalRunnerTest(unittest.TestCase):
         self.assertTrue(results["python-app"]["expected_checks"]["question_budget_false_positive_guard_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["dashboard_not_source_of_truth"])
         self.assertTrue(results["python-app"]["expected_checks"]["stale_evidence_no_success_claim"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_contract_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_no_external_assets"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_redaction_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_scale_bounds_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_generated_view_only"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_eight_page_cockpit_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_section_preservation_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_cockpit_generated_view_boundary_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_search_quality_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_future_backend_semantic_gates_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_search_quality_thresholds_present"])
         self.assertEqual(results["python-app"]["renderer_file_count"], 191)
         for check_name in [
             "methodology_catalog_contract_present",
@@ -178,6 +189,14 @@ class FixtureEvalRunnerTest(unittest.TestCase):
             with self.subTest(fixture=fixture):
                 self.assertIn(fixture, results)
                 self.assertTrue(results[fixture]["expected_checks"][f"usage_mode_{mode}"])
+        for fixture in [
+            "project-code-graph-scale-1k",
+            "project-code-graph-scale-5k",
+            "project-code-graph-scale-10k",
+        ]:
+            with self.subTest(project_graph_scale_fixture=fixture):
+                self.assertTrue(results[fixture]["expected_checks"]["project_graph_scale_bounds_present"])
+                self.assertTrue(results[fixture]["expected_checks"]["project_graph_generated_view_only"])
         self.assertTrue(results["api-migration-repo"]["expected_checks"]["api_integrations_detected"])
         self.assertTrue(results["api-migration-repo"]["expected_checks"]["api_contract_source_present"])
         self.assertTrue(results["api-external-write-approval"]["expected_checks"]["external_write_approval_required"])

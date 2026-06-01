@@ -30,6 +30,12 @@ from product_agent_os.methodology_synthesis import (  # noqa: E402
     classify_source_artifact,
     dedupe_owner_questions,
 )
+from product_agent_os.project_code_graph import (  # noqa: E402
+    build_project_code_graph,
+    build_synthetic_project_graph_from_fixture,
+)
+from product_agent_os.project_graph_renderer import render_project_graph_cockpit  # noqa: E402
+from product_agent_os.project_graph_search_quality import evaluate_project_graph_search_quality  # noqa: E402
 from product_agent_os.question_protocol import (  # noqa: E402
     MAX_FIRST_RESPONSE_BLOCKING,
     MAX_TOTAL_QUESTIONS,
@@ -67,6 +73,9 @@ from codex_runtime_runner.routes import plan_route  # noqa: E402
 PLUGIN_ROOT = Path(__file__).resolve().parents[1]
 FIXTURES = PLUGIN_ROOT / "assets" / "fixtures"
 TEMPLATE_ROOT = PLUGIN_ROOT / "assets" / "templates"
+PROJECT_ROOT = PLUGIN_ROOT.parents[1]
+_PROJECT_GRAPH_SAMPLE_CACHE: dict[str, Any] | None = None
+_PROJECT_GRAPH_COCKPIT_CACHE: dict[str, Any] | None = None
 PLAN_QUALITY_TERMS = (
     "no-placeholder",
     "plan quality gate",
@@ -1972,6 +1981,23 @@ def _expected_checks(
         )
         checks["dashboard_not_source_of_truth"] = _dashboard_not_source_of_truth()
         checks["stale_evidence_no_success_claim"] = _stale_evidence_no_success_claim()
+        checks["project_graph_contract_present"] = _project_graph_contract_present()
+        checks["project_graph_no_external_assets"] = _project_graph_no_external_assets()
+        checks["project_graph_redaction_present"] = _project_graph_redaction_present()
+        checks["project_graph_scale_bounds_present"] = _project_graph_scale_bounds_present()
+        checks["project_graph_generated_view_only"] = _project_graph_generated_view_only()
+        checks["project_graph_eight_page_cockpit_present"] = _project_graph_eight_page_cockpit_present()
+        checks["project_graph_section_preservation_present"] = _project_graph_section_preservation_present()
+        checks["project_graph_cockpit_generated_view_boundary_present"] = (
+            _project_graph_cockpit_generated_view_boundary_present()
+        )
+        checks["project_graph_search_quality_present"] = _project_graph_search_quality_present()
+        checks["project_graph_search_quality_thresholds_present"] = (
+            _project_graph_search_quality_thresholds_present()
+        )
+        checks["project_graph_future_backend_semantic_gates_present"] = (
+            _project_graph_future_backend_semantic_gates_present()
+        )
         checks["methodology_applicability_contract_present"] = (
             _methodology_applicability_contract_present(audit)
         )
@@ -2023,6 +2049,17 @@ def _expected_checks(
     if fixture in expected_usage_modes:
         expected_mode = expected_usage_modes[fixture]
         checks[f"usage_mode_{expected_mode}"] = primary_mode == expected_mode
+    if fixture in {
+        "project-code-graph-scale-1k",
+        "project-code-graph-scale-5k",
+        "project-code-graph-scale-10k",
+    }:
+        checks["project_graph_scale_bounds_present"] = _project_graph_scale_bounds_present(
+            FIXTURES / fixture
+        )
+        checks["project_graph_generated_view_only"] = _project_graph_generated_view_only(
+            FIXTURES / fixture
+        )
     signals = audit.get("methodology_signals", {})
     methodology_gaps = audit.get("methodology_gaps", [])
     route_methodology_signals = _route_methodology_signals(audit)
@@ -3332,6 +3369,277 @@ def _ai_rag_fixture_privacy_safe(path: Path) -> bool:
         "raw private chat",
     )
     return "synthetic" in payload and not any(marker in lowered for marker in forbidden)
+
+
+def _project_graph_sample() -> dict[str, Any]:
+    global _PROJECT_GRAPH_SAMPLE_CACHE
+    if _PROJECT_GRAPH_SAMPLE_CACHE is None:
+        _PROJECT_GRAPH_SAMPLE_CACHE = build_project_code_graph(FIXTURES / "project-code-graph-minimal-python")
+    return _PROJECT_GRAPH_SAMPLE_CACHE
+
+
+def _project_graph_cockpit() -> dict[str, Any]:
+    global _PROJECT_GRAPH_COCKPIT_CACHE
+    if _PROJECT_GRAPH_COCKPIT_CACHE is None:
+        _PROJECT_GRAPH_COCKPIT_CACHE = render_project_graph_cockpit(_project_graph_sample())
+    return _PROJECT_GRAPH_COCKPIT_CACHE
+
+
+def _project_graph_contract_present() -> bool:
+    graph = _project_graph_sample()
+    cockpit = _project_graph_cockpit()
+    serialized = json.dumps(graph, sort_keys=True).lower()
+    return (
+        graph.get("schema_version") == 1
+        and graph.get("write_policy") == "read_only"
+        and graph.get("validation", {}).get("ok") is True
+        and graph.get("metadata", {}).get("source_boundary") == "raw_source_bodies_excluded"
+        and graph.get("metadata", {}).get("generated_view_policy") == "html_is_review_only"
+        and bool(graph.get("artifact_targets", {}).get("json"))
+        and bool(graph.get("artifact_targets", {}).get("jsonl"))
+        and '"raw_source":' not in serialized
+        and "return 'ok'" not in serialized
+        and cockpit.get("validation", {}).get("ok") is True
+    )
+
+
+def _project_graph_no_external_assets() -> bool:
+    html = str(_project_graph_cockpit().get("html") or "").lower()
+    forbidden = ["http://", "https://", "<script src", "fetch(", "xmlhttprequest", "sendbeacon"]
+    return bool(html) and all(marker not in html for marker in forbidden)
+
+
+def _project_graph_redaction_present() -> bool:
+    unsafe_graph = {
+        "schema_version": 1,
+        "write_policy": "read_only",
+        "metadata": {
+            "scan_id": "scan-unsafe",
+            "source_boundary": "raw_source_bodies_excluded",
+            "generated_view_policy": "html_is_review_only",
+            "node_count": 1,
+            "edge_count": 0,
+            "observation_count": 0,
+        },
+        "nodes": [
+            {
+                "id": "file:unsafe.py",
+                "type": "module",
+                "label": "TOKEN=fixture-secret C:\\Users\\person\\private.py",
+                "status": "current",
+                "language": "python",
+                "path": "C:\\Users\\person\\private.py",
+            }
+        ],
+        "edges": [],
+        "observations": [],
+    }
+    rendered = render_project_graph_cockpit(unsafe_graph)
+    payload = str(rendered.get("html") or "") + str(rendered.get("json") or "")
+    lowered = payload.lower()
+    return (
+        rendered.get("validation", {}).get("ok") is True
+        and "fixture-secret" not in lowered
+        and "c:\\users\\person" not in lowered
+        and "private.py" not in lowered
+    )
+
+
+def _project_graph_scale_bounds_present(fixture_path: Path | None = None) -> bool:
+    paths = (
+        [fixture_path]
+        if fixture_path is not None
+        else [
+            FIXTURES / "project-code-graph-scale-1k",
+            FIXTURES / "project-code-graph-scale-5k",
+            FIXTURES / "project-code-graph-scale-10k",
+        ]
+    )
+    for path in paths:
+        if path is None or not (path / "scale.json").exists():
+            return False
+        graph = build_synthetic_project_graph_from_fixture(path)
+        metadata = graph.get("metadata", {}) if isinstance(graph.get("metadata"), dict) else {}
+        if not (
+            graph.get("validation", {}).get("ok") is True
+            and len(graph.get("nodes", [])) <= 250
+            and metadata.get("scale_policy") == "large_graph_payload_is_bounded"
+            and int(metadata.get("omitted_node_count") or 0) >= 0
+        ):
+            return False
+    return True
+
+
+def _project_graph_generated_view_only(fixture_path: Path | None = None) -> bool:
+    if fixture_path is not None and (fixture_path / "scale.json").exists():
+        graph = build_synthetic_project_graph_from_fixture(fixture_path)
+        return graph.get("metadata", {}).get("generated_view_policy") == "html_is_review_only"
+    cockpit = _project_graph_cockpit()
+    payload = str(cockpit.get("html") or "").lower() + str(cockpit.get("json") or "").lower()
+    return (
+        "generated review view only" in payload
+        and "not source of truth" in payload
+        and "cannot approve, apply, or prove work complete" in payload
+    )
+
+
+def _project_graph_eight_page_cockpit_present() -> bool:
+    cockpit = _project_graph_cockpit().get("cockpit", {})
+    pages = cockpit.get("pages") if isinstance(cockpit, dict) else []
+    labels = [page.get("label") for page in pages if isinstance(page, dict)]
+    return labels == [
+        "Overview",
+        "Project Map",
+        "Docs & Sources",
+        "Code Intelligence",
+        "Contracts",
+        "Quality & Metrics",
+        "Operations & Risk",
+        "Proposal Ledger",
+    ]
+
+
+def _project_graph_section_preservation_present() -> bool:
+    cockpit = _project_graph_cockpit().get("cockpit", {})
+    pages = cockpit.get("pages") if isinstance(cockpit, dict) else []
+    section_ids = [
+        section.get("id")
+        for page in pages
+        if isinstance(page, dict)
+        for section in page.get("sections", [])
+        if isinstance(section, dict)
+    ]
+    code_intelligence = next(
+        (page for page in pages if isinstance(page, dict) and page.get("id") == "code-intelligence"),
+        {},
+    )
+    code_section_ids = [
+        section.get("id")
+        for section in code_intelligence.get("sections", [])
+        if isinstance(section, dict)
+    ]
+    return (
+        len(section_ids) == len(set(section_ids))
+        and "code-flow" in code_section_ids
+        and "visual-projection" in section_ids
+        and "selected-node-evidence" in section_ids
+    )
+
+
+def _project_graph_cockpit_generated_view_boundary_present() -> bool:
+    cockpit = _project_graph_cockpit()
+    payload = json.loads(str(cockpit.get("json") or "{}"))
+    return (
+        payload.get("write_policy") == "read_only"
+        and "review output only" in str(payload.get("source_policy") or "").lower()
+        and payload.get("generated_view_policy")
+        == "Generated review view only. It is not source of truth and cannot approve, apply, or prove work complete."
+    )
+
+
+def _project_graph_search_quality_packet() -> dict[str, Any]:
+    return evaluate_project_graph_search_quality(
+        _project_graph_sample(),
+        cases=[
+            {
+                "id": "symbol-worker",
+                "query": "search",
+                "text": "app.worker.run",
+                "expected_node_ids": ["function:app.worker.run"],
+                "top_k": 3,
+            },
+            {
+                "id": "trace-test-to-worker",
+                "query": "trace",
+                "source_id": "function:tests.test_worker.test_run",
+                "target_id": "function:app.worker.run",
+                "expected_status": "ok",
+            },
+            {
+                "id": "affected-tests-worker",
+                "query": "affected_tests",
+                "node_id": "function:app.worker.run",
+                "expected_test_ids": [
+                    "file:tests/test_worker.py",
+                    "function:tests.test_worker.test_run",
+                ],
+            },
+        ],
+        thresholds={
+            "min_symbol_recall": 1.0,
+            "min_top_k_mrr": 1.0,
+            "min_trace_success_rate": 1.0,
+            "min_affected_test_precision": 1.0,
+            "max_edge_density": 4.0,
+        },
+    )
+
+
+def _project_graph_search_quality_present() -> bool:
+    packet = _project_graph_search_quality_packet()
+    metrics = packet.get("quality_metrics", {}) if isinstance(packet.get("quality_metrics"), dict) else {}
+    return (
+        packet.get("schema_version") == 1
+        and packet.get("write_policy") == "read_only"
+        and packet.get("decision_status") == "passed"
+        and packet.get("approval_boundary") == "local_fixture_only_no_live_backend_or_model_calls"
+        and metrics.get("symbol_recall") == 1.0
+        and metrics.get("top_k_mrr") == 1.0
+        and metrics.get("trace_success_rate") == 1.0
+        and metrics.get("affected_test_precision") == 1.0
+        and float(metrics.get("edge_density") or 0) <= 4.0
+    )
+
+
+def _project_graph_search_quality_thresholds_present() -> bool:
+    packet = _project_graph_search_quality_packet()
+    thresholds = packet.get("thresholds", {}) if isinstance(packet.get("thresholds"), dict) else {}
+    return (
+        thresholds.get("explicit_thresholds_required_before_closure") is True
+        and "min_symbol_recall" in thresholds
+        and "min_top_k_mrr" in thresholds
+        and "min_trace_success_rate" in thresholds
+        and "min_affected_test_precision" in thresholds
+        and "max_edge_density" in thresholds
+        and packet.get("failed_thresholds") == []
+    )
+
+
+def _project_graph_future_backend_semantic_gates_present() -> bool:
+    paths = [
+        PROJECT_ROOT / "REQUIREMENTS.md",
+        PROJECT_ROOT / "PLAN.md",
+        PROJECT_ROOT / "TEST.md",
+        PROJECT_ROOT / "EVALS.md",
+        PROJECT_ROOT / "RUNLOG.md",
+        PROJECT_ROOT / "README.md",
+        PLUGIN_ROOT / "README.md",
+        PROJECT_ROOT / "docs" / "product-agent-os" / "index.md",
+        PROJECT_ROOT / "docs" / "product-agent-os" / "technical.md",
+        PROJECT_ROOT / "docs" / "product-agent-os" / "scenarios.md",
+        PROJECT_ROOT / "docs" / "sources" / "product-agent-os-track-10-backlog.md",
+    ]
+    if not all(path.exists() for path in paths):
+        return False
+    payload = "\n".join(path.read_text(encoding="utf-8") for path in paths).lower()
+    required_terms = [
+        "future backend and semantic gates",
+        "static search index",
+        "live database/server",
+        "llm, embedding, cross-encoder",
+        "semantic extraction and rationale/comment extraction",
+        "explicit approval",
+        "redaction, cache, token budget, eval threshold and rollback path",
+    ]
+    implemented_claims = [
+        "static search index is implemented",
+        "live database/server is implemented",
+        "semantic extraction is implemented",
+        "llm semantic extraction is implemented",
+    ]
+    return all(term in payload for term in required_terms) and not any(
+        claim in payload for claim in implemented_claims
+    )
 
 
 def _codex_agentic_workflow_contract_present() -> bool:
