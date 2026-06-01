@@ -8,9 +8,9 @@ Task 24 Self-Verification And Modernization Loop adds a self-verification metric
 
 ## Task 25 Project Code Graph Foundation
 
-Task 25 Batch 13 adds the first project code graph foundation. `scan_project_code_graph.py` is read-only and stage-only: dry-run emits redacted graph JSON, and stage mode writes `.codex/product-agent-os/project-code-graph.json` plus JSONL only under an explicit stage directory outside the target workspace. The graph currently records file-level nodes, controlled ontology/schema validation, manifest freshness/provenance, observation lineage, temporal edge delta helpers and synthetic scale fixtures.
+Task 25 Batch 13 and Batch 14 add the first project code graph foundation plus Python/structured overlay support. `scan_project_code_graph.py` is read-only and stage-only: dry-run emits redacted graph JSON, and stage mode writes `.codex/product-agent-os/project-code-graph.json` plus JSONL only under an explicit stage directory outside the target workspace. The graph currently records file-level nodes, Python AST package/module/class/function/method overlays, conservative import/call/test edges, structured docs/contracts/schema/diagram overlays, controlled ontology/schema validation, manifest freshness/provenance, observation lineage, temporal edge delta helpers, partition scopes, canonical aliases and synthetic scale fixtures.
 
-This is not a complete semantic code intelligence layer. Python AST symbol scanning, dependency query packets, analysis reports, structured chunking, Graphology/Sigma visualization and the eight-page HTML cockpit remain later Task 25 batches. Generated graph artifacts and future HTML views are review surfaces, not source of truth.
+This is not a complete semantic code intelligence layer. Dependency query packets, analysis reports, search-quality evals, Graphology/Sigma visualization and the eight-page HTML cockpit remain later Task 25 batches. Generated graph artifacts and future HTML views are review surfaces, not source of truth.
 
 ## Task 22 final documentation sync closure
 

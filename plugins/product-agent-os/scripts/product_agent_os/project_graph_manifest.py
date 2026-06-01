@@ -32,6 +32,12 @@ _LANGUAGE_BY_SUFFIX = {
     ".sql": "sql",
     ".dbml": "dbml",
     ".toml": "toml",
+    ".ts": "typescript",
+    ".tsx": "typescript",
+    ".js": "javascript",
+    ".jsx": "javascript",
+    ".plantuml": "plantuml",
+    ".puml": "plantuml",
 }
 
 

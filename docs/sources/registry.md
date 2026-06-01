@@ -2836,3 +2836,15 @@ relevance: "Track 10 Task 24 final user-facing source-backed documentation and c
 trust_level: "high"
 verification_status: "Backed by Batch 12 focused RED/GREEN docs checks, 23-test docs/source-policy slice, full unittest with timeout_ms 1200000 running 584 tests with OK in 551.714s and rerunning after evidence notes with 584 tests OK in 504.793s, fixture eval exit 0 for 85 fixture directories with renderer_file_count 191, transcript eval exit 0 with 17 sessions and 0 failures, Codex compatibility status compatible, docs check and git diff hygiene exit 0. Commit, push and PR actions remain explicit-only."
 ```
+
+```yaml
+title: "Product-Agent OS Track 10 project code graph Batch 13-14 foundation and overlays"
+url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; plugins/product-agent-os/scripts/product_agent_os/project_code_graph.py; plugins/product-agent-os/scripts/product_agent_os/project_graph_adapters.py; plugins/product-agent-os/scripts/product_agent_os/project_graph_chunking.py; plugins/product-agent-os/scripts/product_agent_os/project_graph_manifest.py; plugins/product-agent-os/scripts/product_agent_os/project_graph_observations.py; plugins/product-agent-os/scripts/product_agent_os/project_graph_ontology.py; plugins/product-agent-os/scripts/scan_project_code_graph.py; tests/product_agent_os/test_project_code_graph.py; tests/product_agent_os/test_project_graph_python_scanner.py; tests/product_agent_os/test_project_graph_overlays.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
+type: "internal documentation"
+status: "checked-in project source"
+checked_at: "2026-06-01"
+summary: "Track 10 Task 25 Batch 13-14 implementation evidence for the Product-Agent OS project code graph: read-only stage-only graph JSON/JSONL, controlled ontology/schema validation, manifest freshness/provenance, observation lineage, temporal edge delta helpers, Python AST package/module/class/function/method overlays, conservative import/call/test edges, unsupported-language adapter boundaries, structured Markdown/OpenAPI/AsyncAPI/DBML/SQL/JSON/YAML/Mermaid/PlantUML overlays, partition scopes, canonical aliases and bounded readiness metadata."
+relevance: "Task 25 project code graph scanner and overlay docs/control-plane closure before Batch 15 query/runtime/analysis work."
+trust_level: "high"
+verification_status: "Backed by focused scanner/overlay tests running 14 tests with OK, focused graph suite running 47 tests with OK, adjacent graph plus infrastructure renderer/CLI suite running 77 tests with OK, full unittest with timeout_ms 1200000 running 631 tests with OK in 554.103s, fixture eval exit 0 for 91 fixture directories with renderer_file_count 191, transcript eval exit 0 with 17 sessions and 0 failures, Codex compatibility status compatible, docs check, strict MkDocs and git diff hygiene exit 0. Commit, push and PR actions remain explicit-only."
+```

@@ -30,6 +30,8 @@ Track 10 `Task 23` adds Guided question protocol and a status snapshot/dashboard
 
 Task 24 Self-Verification And Modernization Loop adds a self-verification metrics loop for Product-Agent OS agents, skills, prompt/policy packs, router/tool policies and harness versions. The `agent_skill_metrics_loop` route emits staged evidence only: target registry, trace/dataset/grader summaries, scorecard ledger, report packet and modernization candidates. It performs no live eval/model/API calls, creates no active schedules, applies no candidates by itself and allows no self-applied updates.
 
+Task 25 Project Code Graph And HTML Cockpit Visualization now includes a read-only, stage-only graph scanner foundation through Batch 14. The scanner emits redacted graph JSON/JSONL with stable file nodes, Python AST package/module/class/function/method overlays, conservative import/call/test edges, structured Markdown/OpenAPI/AsyncAPI/DBML/SQL/JSON/YAML/Mermaid/PlantUML overlays, partition scopes, canonical aliases, manifest freshness/provenance and observation lineage. Query packets, graph analysis, visual projection and the HTML cockpit remain staged later batches; generated graph artifacts are review surfaces, not source of truth.
+
 Official references:
 
 - [Codex plugins](https://developers.openai.com/codex/plugins)

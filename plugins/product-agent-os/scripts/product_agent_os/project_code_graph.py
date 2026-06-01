@@ -7,6 +7,11 @@ import hashlib
 from pathlib import Path
 from typing import Any
 
+from product_agent_os.project_graph_adapters import build_language_overlays
+from product_agent_os.project_graph_chunking import (
+    build_partition_alias_readiness_metadata,
+    build_structured_overlays,
+)
 from product_agent_os.project_graph_manifest import build_project_graph_manifest, collect_project_files
 from product_agent_os.project_graph_observations import build_observation_record, diff_observation_lineage
 from product_agent_os.project_graph_ontology import validate_graph_schema
@@ -59,7 +64,7 @@ def build_project_code_graph(
 
     for item in manifest["files"]:
         node_id = "file:" + item["relative_path"]
-        status = "generated" if item["generated"] else "current"
+        status = _file_status(item)
         observation = build_observation_record(
             scan_id=scan_id,
             relative_path=item["relative_path"],
@@ -115,6 +120,44 @@ def build_project_code_graph(
             }
         )
 
+    language_overlay = build_language_overlays(root, manifest["files"], scan_id=scan_id, workspace_id=workspace_id)
+    structured_overlay = build_structured_overlays(root, manifest["files"], scan_id=scan_id)
+    nodes.extend(language_overlay["nodes"])
+    nodes.extend(structured_overlay["nodes"])
+    edges.extend(language_overlay["edges"])
+    edges.extend(structured_overlay["edges"])
+    observations.extend(language_overlay["observations"])
+    observations.extend(structured_overlay["observations"])
+    partition_metadata = build_partition_alias_readiness_metadata(manifest)
+    node_dedupe = _dedupe_by_id(nodes)
+    edge_dedupe = _dedupe_by_id(edges)
+    observation_dedupe = _dedupe_by_id(observations)
+    metadata = {
+        "scan_id": scan_id,
+        "source_boundary": "raw_source_bodies_excluded",
+        "generated_view_policy": "html_is_review_only",
+        "node_count": len(node_dedupe["items"]),
+        "edge_count": len(edge_dedupe["items"]),
+        "observation_count": len(observation_dedupe["items"]),
+        "dedupe_summary": {
+            "dropped_nodes": node_dedupe["dropped_count"],
+            "dropped_edges": edge_dedupe["dropped_count"],
+            "dropped_observations": observation_dedupe["dropped_count"],
+        },
+        "language_support_summary": _language_support_summary(manifest["files"]),
+        "adapter_summary": language_overlay["metadata"]["adapter_summary"],
+        "structured_overlay_summary": structured_overlay["metadata"]["structured_overlay_summary"],
+        "python_scanner": language_overlay["metadata"]["python_scanner"],
+        "line_count_policy": f"capped_at_{LINE_COUNT_LIMIT}",
+        "manifest": manifest,
+        "temporal_delta": (
+            diff_observation_lineage(previous_graph, {"edges": edge_dedupe["items"]}, scan_id=scan_id)
+            if isinstance(previous_graph, dict)
+            else {"schema_version": 1, "scan_id": scan_id, "status": "not_available"}
+        ),
+        **partition_metadata,
+    }
+
     graph = {
         "schema_version": 1,
         "write_policy": "read_only",
@@ -122,25 +165,10 @@ def build_project_code_graph(
             "json": PROJECT_GRAPH_TARGET,
             "jsonl": PROJECT_GRAPH_JSONL_TARGET,
         },
-        "metadata": {
-            "scan_id": scan_id,
-            "source_boundary": "raw_source_bodies_excluded",
-            "generated_view_policy": "html_is_review_only",
-            "node_count": len(nodes),
-            "edge_count": len(edges),
-            "observation_count": len(observations),
-            "language_support_summary": _language_support_summary(manifest["files"]),
-            "line_count_policy": f"capped_at_{LINE_COUNT_LIMIT}",
-            "manifest": manifest,
-            "temporal_delta": (
-                diff_observation_lineage(previous_graph, {"edges": edges}, scan_id=scan_id)
-                if isinstance(previous_graph, dict)
-                else {"schema_version": 1, "scan_id": scan_id, "status": "not_available"}
-            ),
-        },
-        "nodes": sorted(nodes, key=lambda item: item["id"]),
-        "edges": sorted(edges, key=lambda item: item["id"]),
-        "observations": sorted(observations, key=lambda item: item["id"]),
+        "metadata": metadata,
+        "nodes": sorted(node_dedupe["items"], key=lambda item: item["id"]),
+        "edges": sorted(edge_dedupe["items"], key=lambda item: item["id"]),
+        "observations": sorted(observation_dedupe["items"], key=lambda item: item["id"]),
     }
     graph["validation"] = validate_graph_schema(graph)
     return graph
@@ -228,6 +256,8 @@ def _node_type_for_file(relative_path: str, generated: bool) -> str:
         return "control_plane"
     if "/tests/" in f"/{lowered}" or path.name.startswith("test_"):
         return "test"
+    if "/fixtures/" in f"/{lowered}" or "/eval-fixtures/" in f"/{lowered}":
+        return "fixture"
     if lowered.endswith((".md", ".markdown")):
         return "markdown_page"
     if lowered.endswith((".yaml", ".yml", ".json")) and any(term in lowered for term in ["openapi", "swagger", "asyncapi"]):
@@ -235,6 +265,15 @@ def _node_type_for_file(relative_path: str, generated: bool) -> str:
     if lowered.endswith((".sql", ".dbml")):
         return "schema"
     return "module"
+
+
+def _file_status(item: dict[str, Any]) -> str:
+    if item["generated"]:
+        return "generated"
+    language = str(item.get("language") or "unknown")
+    if language in {"typescript", "javascript"}:
+        return "unsupported"
+    return "current"
 
 
 def _line_count(path: Path) -> int:
@@ -257,10 +296,24 @@ def _language_support_summary(files: list[dict[str, Any]]) -> dict[str, str]:
         if language == "python":
             summary[language] = "supported"
         elif language in {"markdown", "yaml", "json", "sql", "dbml"}:
-            summary[language] = "structured_overlay_pending"
+            summary[language] = "structured_overlay_supported"
+        elif language in {"typescript", "javascript"}:
+            summary[language] = "file_only"
         else:
             summary[language] = "file_only"
     return dict(sorted(summary.items()))
+
+
+def _dedupe_by_id(items: list[dict[str, Any]]) -> dict[str, Any]:
+    by_id: dict[str, dict[str, Any]] = {}
+    dropped_count = 0
+    for item in items:
+        item_id = item.get("id")
+        if isinstance(item_id, str) and item_id not in by_id:
+            by_id[item_id] = item
+        elif isinstance(item_id, str):
+            dropped_count += 1
+    return {"items": list(by_id.values()), "dropped_count": dropped_count}
 
 
 def _safe_id(value: str) -> str:

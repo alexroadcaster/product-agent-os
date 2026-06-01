@@ -109,7 +109,7 @@ class ProjectCodeGraphTest(unittest.TestCase):
         self.assertIn("docs/index.md", node_paths)
         self.assertIn("docs/architecture.md", node_paths)
         self.assertIn("mkdocs.yml", node_paths)
-        self.assertEqual(graph["metadata"]["language_support_summary"]["markdown"], "structured_overlay_pending")
+        self.assertEqual(graph["metadata"]["language_support_summary"]["markdown"], "structured_overlay_supported")
         self.assertTrue(graph["validation"]["ok"], graph["validation"])
 
     def test_synthetic_scale_graph_keeps_prompt_payload_bounded_for_1k_5k_10k_cases(self):

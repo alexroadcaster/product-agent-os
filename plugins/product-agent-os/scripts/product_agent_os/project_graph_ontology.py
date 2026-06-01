@@ -62,6 +62,9 @@ _LANGUAGE_SUPPORT = {
     "sql": "structured_overlay_pending",
     "dbml": "structured_overlay_pending",
     "toml": "file_only",
+    "typescript": "file_only",
+    "javascript": "file_only",
+    "plantuml": "structured_overlay_pending",
     "text": "file_only",
     "unknown": "file_only",
 }
