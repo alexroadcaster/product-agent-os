@@ -1,0 +1,43 @@
+<h2>Hybrid Source-of-Truth Model</h2>
+<p class="subtitle">HTML becomes the user's canonical project cockpit, while edits still flow through typed artifacts, proposals, and approval.</p>
+
+<div class="mockup">
+  <div class="mockup-header">Proposed Product-Agent OS source model</div>
+  <div class="mockup-body">
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;align-items:stretch">
+      <div class="placeholder" style="min-height:190px;text-align:left">
+        <div class="label">Layer 1</div>
+        <h3>Project Cockpit HTML</h3>
+        <p>Single user-facing source for navigation, project state, diagrams, document map, graph, stats, and pending decisions.</p>
+        <p><strong>Allowed:</strong> read, filter, inspect, select, create proposal.</p>
+        <p><strong>Forbidden:</strong> silent direct mutation.</p>
+      </div>
+      <div class="placeholder" style="min-height:190px;text-align:left">
+        <div class="label">Layer 2</div>
+        <h3>Typed Ledger / Patch Proposals</h3>
+        <p>Every dashboard action writes structured intent: update document, accept gap, add source, stage graph refresh, request approval.</p>
+        <p>Proposal records carry owner, target files, risk, rollback, and verification command.</p>
+      </div>
+      <div class="placeholder" style="min-height:190px;text-align:left">
+        <div class="label">Layer 3</div>
+        <h3>Durable Project Artifacts</h3>
+        <p>Markdown, JSON, Mermaid, OpenAPI, AsyncAPI, DBML, PlantUML, MkDocs and run evidence remain typed backing stores.</p>
+        <p>Approved proposals sync back here.</p>
+      </div>
+    </div>
+    <div style="margin-top:18px;padding:14px;border:1px solid #d8dee9;border-radius:8px">
+      <div class="label">Result</div>
+      <p style="margin:6px 0 0">The user lives in one panel, but the system keeps auditability, diffs, approvals, rollback and source policy.</p>
+    </div>
+  </div>
+</div>
+
+<div class="options">
+  <div class="option" data-choice="accept-hybrid" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Use this hybrid model</h3>
+      <p>Proceed with HTML as canonical cockpit plus proposal ledger as the write boundary.</p>
+    </div>
+  </div>
+</div>

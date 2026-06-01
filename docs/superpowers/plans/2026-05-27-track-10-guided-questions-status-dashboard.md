@@ -4,11 +4,11 @@ Source status: `local implementation planning`
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Build Track 10 so Product-Agent OS can guide users with bounded, methodology-aware questions, maintain a single offline HTML status artifact for project progress, and stage a self-verification loop for agents, skills and harness modernization decisions.
+**Goal:** Build Track 10 so Product-Agent OS can guide users with bounded, methodology-aware questions, maintain a single offline HTML status artifact for project progress, stage a self-verification loop for agents, skills and harness modernization decisions, and generate a read-only project code graph for dependency-aware navigation.
 
-**Architecture:** Extend the existing Track 8 usage-mode route and Track 9 methodology packet with a typed question protocol, answer ledger, status snapshot, staged static dashboard renderer, and a local-first metrics loop for self-verification. JSON and Markdown remain the source of truth; HTML artifacts are generated, reviewable views that are staged first and never silently mutate the target workspace.
+**Architecture:** Extend the existing Track 8 usage-mode route and Track 9 methodology packet with a typed question protocol, answer ledger, status snapshot, staged static dashboard renderer, local-first metrics loop for self-verification, and staged code-graph pipeline: read-only scanner, graph JSON/index artifacts, compact agent query packets and static HTML visualization. JSON, JSONL and Markdown remain the source of truth; HTML artifacts are generated, reviewable views that are staged first and never silently mutate the target workspace.
 
-**Tech Stack:** Python standard library, `unittest`, JSON contracts, Markdown control-plane artifacts, static HTML/CSS/vanilla JavaScript, existing `plugins/product-agent-os/scripts/product_agent_os/*` modules, existing Codex runtime runner, fixture eval runner, transcript eval runner, docs checks, MkDocs.
+**Tech Stack:** Python standard library, `ast`, `unittest`, JSON/JSONL contracts, Markdown control-plane artifacts, static HTML/CSS/vanilla JavaScript, optional locally bundled `graphology`/`sigma.js` for graph rendering, existing `plugins/product-agent-os/scripts/product_agent_os/*` modules, existing Codex runtime runner, fixture eval runner, transcript eval runner, docs checks, MkDocs.
 
 ---
 
@@ -20,6 +20,7 @@ It includes these implementation tasks:
 
 - `Task 23: Guided Question Protocol And Project Status Dashboard`
 - `Task 24: Self-Verification And Modernization Loop`
+- `Task 25: Project Code Graph And HTML Cockpit Visualization`
 
 Track 10 must start only after Track 9 `Task 22` closes the current Product-Agent OS documentation baseline. This prevents Task 22 from becoming a moving target while Track 10 changes runtime packets, renderer output, evals and docs.
 
@@ -32,6 +33,7 @@ The Track 9 plan now keeps the former `Task 23: Final Verification Baseline` onl
 - status snapshot;
 - offline `status.html` dashboard.
 - agent/skill/harness self-verification and staged modernization candidates.
+- project code graph scanner, compact graph packets and offline HTML cockpit visualization.
 
 Do not implement Track 10 unless Track 9 docs keep the legacy final baseline absorbed into Task 22 and current verification evidence exists.
 
@@ -45,6 +47,7 @@ After Track 10, a user should be able to enable Product-Agent OS in a real proje
 - a stable status page showing current lifecycle state, usage mode, methodology readiness, evidence gaps, approvals, staged artifacts, open risks and next safe action;
 - stale/evidence warnings when the dashboard is generated from inspection-only or old command evidence.
 - staged self-verification reports for generated agents, skills, prompt or policy packs, router/tool policies and harness versions, with modernization candidates separated from approval.
+- a project code graph that shows code, docs, templates, contracts and generated artifacts as dependency nodes with confidence-labelled edges and compact agent read-order hints.
 
 The plugin must keep forward momentum. It should ask only questions that block safe planning, approval, evidence or the next artifact.
 
@@ -56,6 +59,7 @@ The plugin must keep forward momentum. It should ask only questions that block s
 - Do not activate MCP servers, hooks, GitHub Actions, recurring automations or external writes.
 - Do not make HTML the source of truth.
 - Do not create browser-based editing of project files in this track.
+- Do not claim universal semantic code intelligence from file/path scans, unsupported language parsers or inferred dependency edges.
 - Do not store secrets, credentials, private customer data, raw private chat logs, production screenshots or absolute user-specific paths.
 - Do not automatically apply self-modernization candidates, rewrite skills, enable recurring evaluation schedules or promote automation without explicit owner approval and rollback evidence.
 
@@ -454,7 +458,164 @@ Task 24 implementation batches:
 - **Batch 11: Runtime, Discovery, Lifecycle And Eval Coverage** (`T10-SV-M46..M57`)
 - **Batch 12: Docs, Control Plane And Full Verification** (`T10-SV-M58..M62`)
 
-Batch 11 status: implemented on 2026-05-28 with focused RED/GREEN coverage for status snapshots, discovery, methodology audit, runtime packets/routes, guided questions, lifecycle skills, fixture eval, behavioral eval and transcript sessions. Batch 12 remains the final docs/control-plane/full-verification closure slice.
+Batch 11 status: implemented on 2026-05-28 with focused RED/GREEN coverage for status snapshots, discovery, methodology audit, runtime packets/routes, guided questions, lifecycle skills, fixture eval, behavioral eval and transcript sessions. Batch 12 is closed with docs/control-plane/full-verification evidence. Task 25 is the next staged Track 10 task and starts with Batch 13.
+
+## Task 25: Project Code Graph And HTML Cockpit Visualization
+
+Task 25 adds a staged, read-only mechanism for scanning a user project, building a graph of dependent code and documentation entities, and rendering that graph into the Product-Agent OS HTML cockpit. It closes the gap between the existing workspace discovery model, which is mostly file/path/marker based, and the user-visible need for a dependency map that helps both humans and coding agents find relevant code faster.
+
+The mechanism must not become a live IDE, database, autonomous editor or source-of-truth replacement. Source code, checked-in docs and generated JSON/JSONL graph artifacts remain the evidence layer. HTML is a generated review surface.
+
+Task 25 product outcome:
+
+- scan a workspace without mutating it and produce `.codex/product-agent-os/project-code-graph.json`;
+- represent project entities as stable nodes: workspace, package, module/file, class, function, method, test, fixture, template, generated artifact, Markdown page, MkDocs page, OpenAPI/Swagger or AsyncAPI contract, DBML or SQL schema, Mermaid/PlantUML diagram and control-plane artifact;
+- represent dependencies as confidence-labelled edges: `contains`, `imports`, `calls`, `exports`, `tests`, `verifies`, `documents`, `renders`, `generates`, `configures`, `owns`, `references` and `impacts`;
+- expose compact agent query packets for `neighbors`, `path`, `trace`, `impact`, `affected_tests`, `read_order`, `hotspots`, `node`, `status` and `search`;
+- expose graph freshness, workspace/worktree provenance, validation, analysis report and code-flow views so humans and agents can distinguish current evidence from stale, cross-worktree, unsupported or inferred topology;
+- expose observation lineage, scan-to-scan deltas and advisory temporal validity so removed or changed dependencies are invalidated/superseded in generated graph artifacts rather than silently erased;
+- render an offline HTML project cockpit graph with filters, clustering and level-of-detail so 1k, 5k and 10k node graphs stay navigable;
+- produce a Graphology-compatible visual projection with layout, size, color, community, label-priority and level-of-detail metadata derived from the canonical graph artifact, not from browser state;
+- initialize a local Sigma-based interactive renderer when bundled assets are available, with selected-node evidence, filter state, graph navigation commands, mobile behavior and static fallback views;
+- keep graph visualization assets local. `graphology` and `sigma.js` may be used only when vendored or locally bundled; no CDN, network fetch or external runtime dependency is allowed.
+
+Task 25 implementation surfaces:
+
+- Create: `plugins/product-agent-os/scripts/product_agent_os/project_code_graph.py`
+- Create: `plugins/product-agent-os/scripts/product_agent_os/project_graph_manifest.py`
+- Create: `plugins/product-agent-os/scripts/product_agent_os/project_graph_analysis.py`
+- Create: `plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py`
+- Create: `plugins/product-agent-os/scripts/product_agent_os/project_graph_search.py`
+- Create: `plugins/product-agent-os/scripts/product_agent_os/project_graph_adapters.py`
+- Create: `plugins/product-agent-os/scripts/product_agent_os/project_graph_observations.py`
+- Create: `plugins/product-agent-os/scripts/product_agent_os/project_graph_ontology.py`
+- Create: `plugins/product-agent-os/scripts/product_agent_os/project_graph_chunking.py`
+- Create: `plugins/product-agent-os/scripts/product_agent_os/project_graph_renderer.py`
+- Create: `plugins/product-agent-os/scripts/product_agent_os/project_graph_visual_model.py`
+- Create: `plugins/product-agent-os/scripts/scan_project_code_graph.py`
+- Create: `plugins/product-agent-os/assets/templates/project-graph/project-graph.html`
+- Create: `plugins/product-agent-os/assets/templates/project-graph/project-code-flow.html`
+- Create: `plugins/product-agent-os/assets/templates/project-graph/project-graph.css`
+- Optional create after local-bundle decision: `plugins/product-agent-os/assets/vendor/graphology/` and `plugins/product-agent-os/assets/vendor/sigma/`
+- Modify: `discovery.py`, `status_snapshot.py`, `status_dashboard.py`, `codex_runtime_runner/contracts.py`, `codex_runtime_runner/routes.py`, `run_fixture_eval.py`, lifecycle skills, Product-Agent OS docs and root control-plane files.
+
+Task 25 implementation matrix:
+
+| ID | Task | Files | Acceptance |
+| --- | --- | --- | --- |
+| `T10-CG-M-1` | Run code-graph baseline audit | existing discovery, status dashboard, ignored `.understand-anything` graph, Track 10 evidence | Confirm Product-Agent OS currently has file-based discovery but no supported dependency graph scanner, query API or HTML code graph renderer. |
+| `T10-CG-M0` | Add Task 25 planning closure | this plan, root control-plane files | Task 25 scope, matrix, batches, risks, verification expectations and non-goals are documented before implementation. |
+| `T10-CG-G1` | Enforce read-only staged-first boundary | scanner, CLI, renderer tests | Scanner never mutates the target workspace; dry-run prints JSON and stage writes only under explicit stage output. |
+| `T10-CG-G2` | Preserve source-of-truth boundary | graph docs, tests | HTML graph is a generated view only; code/docs plus graph JSON/JSONL artifacts remain evidence, not memory or browser state. |
+| `T10-CG-G3` | Enforce privacy and redaction | redaction tests, renderer tests | Graph artifacts exclude raw file contents by default, redact local absolute paths and block secret-like values. |
+| `T10-CG-G4` | Add scale and packet bounds | query tests, renderer tests | 1k, 5k and 10k node fixtures produce bounded summaries, chunked graph/index output and top-N subgraphs for agent prompts. |
+| `T10-CG-G5` | Add confidence labels | schema tests | Edges distinguish `ast`, `static`, `inferred`, `manual` and `unsupported` evidence so false precision is visible. |
+| `T10-CG-G6` | Gate visualization dependencies | asset-policy tests | `graphology`/`sigma.js` are allowed only as local bundled assets; fallback static rendering is required when vendor assets are absent. |
+| `T10-CG-G7` | Enforce graph freshness and overwrite safety | manifest/cache/shrink-guard tests | Manifest data distinguishes unchanged, changed, added and deleted files; stale graphs cannot be reported as fresh and suspicious graph shrink refuses silent overwrite. |
+| `T10-CG-G8` | Enforce graph artifact and HTML safety | schema/query/renderer safety tests | Graph artifacts enforce size/count/ID/label bounds, sanitize labels and metadata, escape embedded JSON safely and reject unsafe graph paths. |
+| `T10-CG-G9` | Enforce graph provenance safety | manifest/query tests | Graph artifacts record workspace root fingerprint, VCS branch/commit/worktree when available and graph build metadata; wrong-root or wrong-worktree graphs cannot be used as fresh context. |
+| `T10-CG-G10` | Enforce graph-as-aid fallback | lifecycle/query tests | Graph output is advisory: stale, ambiguous or unsupported graph results must route agents back to source reads or owner questions instead of blocking verification or claiming completeness. |
+| `T10-CG-M1` | Define graph schema | `project_code_graph.py`, tests | Node, edge, source span, artifact, confidence, language support and graph metadata schemas are deterministic JSON. |
+| `T10-CG-M2` | Add stable IDs and fingerprints | graph builder tests | Node IDs remain stable across runs when relative path and symbol identity are unchanged; file fingerprints detect staleness. |
+| `T10-CG-M3` | Add ignore and size policy | scanner tests | Scanner respects `.git`, virtualenvs, build output, generated site output, binary files, large files and project ignore rules. |
+| `T10-CG-M4` | Add graph CLI dry-run/stage | `scan_project_code_graph.py`, CLI tests | CLI supports `<workspace> --dry-run`, `<workspace> --stage <dir>` and emits clear JSON errors without traceback leakage. |
+| `T10-CG-M5` | Add synthetic fixture projects | fixture dirs, tests | Minimal Python, docs-heavy, mixed docs/contracts and large synthetic graph fixtures are available. |
+| `T10-CG-M6` | Add graph packet bounds | query tests | Graph summaries are trimmed deterministically with omitted-count warnings and no raw source dumps. |
+| `T10-CG-M7` | Scan Python package/module structure | scanner tests | Python package roots, modules and files become nodes with `contains` edges. |
+| `T10-CG-M8` | Extract Python classes/functions/methods | scanner tests | `ast` extraction creates class/function/method nodes with stable source spans and parent edges. |
+| `T10-CG-M9` | Extract Python imports | scanner tests | Absolute and relative imports produce `imports` edges with unresolved imports marked instead of guessed as verified. |
+| `T10-CG-M10` | Extract bounded Python calls | scanner tests | Direct intra-module and resolvable imported calls produce `calls` edges; ambiguous calls stay confidence-labelled. |
+| `T10-CG-M11` | Link tests and fixtures | scanner tests | Test files, fixture files and eval fixtures link to implementation targets when naming/import evidence is available. |
+| `T10-CG-M12` | Store spans without raw content | graph artifact tests | Artifacts include relative path, line range and hash/fingerprint, not source bodies. |
+| `T10-CG-M13` | Add incremental staleness metadata | scanner tests | Re-runs report unchanged, changed, added and removed node/file counts. |
+| `T10-CG-M14` | Smoke scan Product-Agent OS package | smoke test | Current plugin package produces a non-empty graph with modules, functions, imports and calls. |
+| `T10-CG-M15` | Overlay MkDocs and Markdown docs | docs scanner tests | `mkdocs.yml`, Markdown pages, navigation and links become docs nodes and `documents`/`references` edges. |
+| `T10-CG-M16` | Overlay API contracts | contract scanner tests | OpenAPI/Swagger and AsyncAPI files become contract nodes with operation/channel/schema edges where parseable. |
+| `T10-CG-M17` | Overlay database schema docs | schema scanner tests | DBML and SQL schema files become schema nodes with table/entity edges when parseable. |
+| `T10-CG-M18` | Overlay diagram artifacts | diagram scanner tests | Mermaid and PlantUML files become diagram nodes linked to referenced modules/docs when explicit references exist. |
+| `T10-CG-M19` | Overlay templates and control-plane docs | template scanner tests | Product-Agent OS templates, generated artifact templates and root control-plane files link to the workflows they configure. |
+| `T10-CG-M20` | Link generated artifact ownership | graph builder tests | Generated outputs point back to renderer/template/source artifacts and never become source-of-truth parents. |
+| `T10-CG-M21` | Add methodology/readiness overlays | discovery/status tests | Graph summary can expose methodology gates, accepted gaps and readiness status without duplicating the full packet. |
+| `T10-CG-M22` | Implement graph query engine | `project_graph_queries.py`, tests | `neighbors`, `path`, `impact`, `read_order`, `hotspots` and `search` work from the graph JSON without loading source text. |
+| `T10-CG-M23` | Add agent read-order ranking | query tests | Query output prioritizes files/symbols by dependency proximity, public contracts, tests, recent evidence and graph centrality. |
+| `T10-CG-M24` | Add impact analysis packets | query tests | Given changed files/nodes, output likely impacted tests, docs, contracts and templates with confidence labels. |
+| `T10-CG-M25` | Add compact runtime packet | runtime contract tests | Runtime route can carry bounded graph status, artifact references, top gaps and safe next action without schema-v1 breakage. |
+| `T10-CG-M26` | Add query CLI | CLI tests | CLI exposes graph queries for humans and agents with JSON output and deterministic ordering. |
+| `T10-CG-M27` | Integrate status snapshot | `status_snapshot.py`, tests | Status snapshot includes graph freshness, node/edge counts, unsupported languages and artifact paths. |
+| `T10-CG-M28` | Add unsupported-language behavior | scanner/query tests | Non-Python code is represented at file/module level until language parser support exists; no fake symbol precision. |
+| `T10-CG-M29` | Create project graph renderer | renderer tests | Static HTML/CSS renderer emits offline graph page and safe embedded or adjacent JSON. |
+| `T10-CG-M30` | Add local graphology/sigma decision | assets, renderer tests | If bundled, graphology/sigma assets are local and version-recorded; otherwise fallback renderer remains functional. |
+| `T10-CG-M31` | Add graph filters and search | HTML template tests | UI supports node type, edge type, confidence, language, artifact class and text search filters. |
+| `T10-CG-M32` | Add clustering and level-of-detail | renderer/query tests | Large graphs render clustered overview first and load bounded subgraphs for selected areas. |
+| `T10-CG-M33` | Add cockpit navigation panels | HTML template tests | Left navigation links Overview, Docs, Metrics, Project Graph and artifact paths without duplicating the overview block on every page. |
+| `T10-CG-M34` | Add no-external-asset checks | renderer tests | HTML contains no CDN URLs, external scripts, network fetches or browser edit/write controls. |
+| `T10-CG-M35` | Add visual/runtime verification path | docs, optional Playwright artifact | Verification instructions include screenshot/browser checks for graph visibility, filters and large-graph behavior. |
+| `T10-CG-M36` | Add fixture eval contract fields | `run_fixture_eval.py`, fixture tests | Fixture eval exposes `project_code_graph_contract_present`, `project_graph_no_external_assets`, `project_graph_redaction_present`, `project_graph_scale_bounds_present` and `project_graph_generated_view_only`. |
+| `T10-CG-M37` | Add scale fixtures | synthetic fixtures, tests | 1k, 5k and 10k node fixtures validate bounds without forcing all nodes into a prompt or first render. |
+| `T10-CG-M38` | Update Product-Agent OS docs | docs, README | Docs explain scanner inputs, graph artifacts, query packets, visualization, scale policy, unsupported languages and source-of-truth boundary. |
+| `T10-CG-M39` | Update root control-plane evidence | `REQUIREMENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md`, `RUNLOG.md`, `AGENTS.md` | Root files record Task 25 scope, planned batches, verification expectations, residual risk and explicit-only git boundary. |
+| `T10-CG-M40` | Update source registry if needed | `docs/sources/registry.md` | Any new external source-backed claim about graph libraries, standards or tooling is registered; internal implementation planning does not create external claims. |
+| `T10-CG-M41` | Run focused verification | focused test commands | Scanner, schema, query, renderer, status/runtime, fixture eval and docs tests pass before broad verification. |
+| `T10-CG-M42` | Run full Product-Agent OS verification | full checks | Full unit suite, fixture eval, transcript eval, Codex compatibility, docs check, strict MkDocs when docs/nav-sensitive changes are made and diff hygiene pass. Full unittest wrappers use `timeout_ms: 1200000`. |
+| `T10-CG-M43` | Keep commit/push explicit-only | Git | Do not stage, commit, push or create PR unless the user explicitly asks after verification. |
+| `T10-CG-M44` | Add manifest and cache split | `project_graph_manifest.py`, scanner tests | Manifest records `ast_hash`, `semantic_hash`, added/changed/unchanged/deleted file sets, cache metadata and graph freshness without treating stale artifacts as current evidence. |
+| `T10-CG-M45` | Add graph schema validator | `project_code_graph.py`, validator tests | Validator enforces required node/edge fields, dangling-edge policy, allowed confidence/status values, ID/label length bounds and graph node/edge count limits. |
+| `T10-CG-M46` | Add conservative symbol resolver | scanner/resolver tests | Import-guided edges are preferred; global inferred calls are emitted only on single-candidate matches; ambiguous calls are recorded as ambiguous rather than guessed. |
+| `T10-CG-M47` | Add graph analysis report | `project_graph_analysis.py`, report tests | Report surfaces god nodes, hotspots, surprising cross-module links, ambiguous edge inventory, unsupported-language summary and suggested agent questions. |
+| `T10-CG-M48` | Add token-budgeted query traversal | `project_graph_queries.py`, query tests | BFS/DFS subgraph queries apply token budgets, hub suppression, context filters, seed scoring, truncation metadata and deterministic ordering. |
+| `T10-CG-M49` | Add community quality controls | analysis/renderer tests | Large graph communities keep stable IDs, split oversized or low-cohesion clusters, reattach hub nodes safely and expose cohesion/coverage metrics. |
+| `T10-CG-M50` | Add shrink guard and safe backup | manifest/export tests | Graph export refuses silent overwrite when node/edge counts unexpectedly collapse and preserves prior generated graph artifacts inside the stage root. |
+| `T10-CG-M51` | Add Code Flow cockpit page | renderer/template tests | HTML cockpit includes a generated Code Flow view with module/call-flow summaries, key-file cards and safe links back to graph nodes without loading source bodies. |
+| `T10-CG-M52` | Add rationale extraction | scanner/docs tests | Docstrings, ADR references and explicit `WHY`/`NOTE`/`HACK`-style comments can attach bounded rationale metadata to nodes without leaking raw source content. |
+| `T10-CG-M53` | Add query-first lifecycle guidance | lifecycle/docs/eval tests | Product-Agent OS skills and docs prefer fresh graph queries before broad source reads when graph freshness is verified, while falling back to normal discovery when stale, missing or unsupported. |
+| `T10-CG-M54` | Add graph status and stale-query packets | `project_graph_manifest.py`, `project_graph_queries.py`, status tests | Query outputs expose `fresh`, `stale`, `partial`, pending changed-file summaries, graph build metadata and stale warnings; stale graphs cannot be reported as current evidence. |
+| `T10-CG-M55` | Add workspace/worktree provenance guard | manifest/query safety tests | Manifest records workspace root fingerprint plus branch, commit and worktree data when available; query packets reject or visibly downgrade graphs built for another root, branch or worktree. |
+| `T10-CG-M56` | Add first-class trace query | `project_graph_queries.py`, trace tests | `trace` query finds likely dependency/call paths, labels edge provenance and returns endpoint-neighbor failure packets when no path exists or dynamic dispatch is suspected. |
+| `T10-CG-M57` | Add generated and low-value file classifier | scanner/file-policy tests | Generated, vendor, asset, i18n, lock and cache files are indexed at safe granularity and downranked instead of silently erased unless ignore policy explicitly excludes them. |
+| `T10-CG-M58` | Add route and component adapter model | `project_graph_adapters.py`, scanner tests | Framework route/component nodes are optional adapters with confidence labels; explicit routes link to handlers without pretending unsupported frameworks are complete. |
+| `T10-CG-M59` | Add dynamic-dispatch heuristic registry | `project_graph_adapters.py`, resolver tests | Optional callback, event, observer and interface/override heuristics emit `heuristic` edges with confidence, fanout caps, provenance and false-positive fixtures. |
+| `T10-CG-M60` | Add adaptive answer-sized query payloads | `project_graph_queries.py`, runtime tests | Query packets choose output tiers by graph size and intent, include spans/signatures/outline mode, omitted counts and budget reasons while keeping raw source bodies off by default. |
+| `T10-CG-M61` | Add affected-tests query | `project_graph_queries.py`, CLI tests | Changed files or nodes produce likely impacted tests, evals, docs and contracts with confidence labels and deterministic JSON/stdin CLI support. |
+| `T10-CG-M62` | Add graph search-quality eval loop | `run_fixture_eval.py`, search/eval tests | Fixture eval records symbol recall, top-k/MRR, edge-density, trace success/failure labels, affected-test precision and quality thresholds before Task 25 closure. |
+| `T10-CG-M63` | Add stage-local lock and symlink safety | CLI/export safety tests | Stage-local graph writes validate paths inside the stage root, reject symlink escape, use safe overwrite/lock semantics and preserve prior artifacts on failure. |
+| `T10-CG-M64` | Evaluate optional indexed query backend | docs/tests decision artifact | Decide whether a future static search index is warranted for large graphs; Task 25 baseline remains JSON/JSONL and must not activate a live database or server without a later approved scope. |
+| `T10-CG-M65` | Add graph observation ledger | `project_graph_observations.py`, manifest tests | Each scan records deterministic observation records with scan ID, source artifact, relative path, span, fingerprint, extractor, confidence and redaction status so every node/edge can point to evidence without raw source bodies. |
+| `T10-CG-M66` | Add temporal edge validity and invalidation journal | `project_graph_observations.py`, graph delta tests | Edges record first-seen/last-seen scan IDs, superseded/invalidated status and replacement links when dependencies disappear or change; stale dependencies are invalidated in generated artifacts rather than silently deleted. |
+| `T10-CG-M67` | Add as-of and delta graph queries | `project_graph_queries.py`, query tests | Query engine supports `as_of_scan`, `changed_since`, `invalidated_edges`, `new_edges` and `why_changed` packets with bounded output and clear scan provenance. |
+| `T10-CG-M68` | Add controlled ontology registry | `project_graph_ontology.py`, schema tests | Node and edge types are registered with schema, owner, allowed confidence values, extractor source, false-positive policy and promotion rules; learned or semantic types cannot appear without explicit registry status. |
+| `T10-CG-M69` | Add partition-aware graph scopes | schema/query/runtime tests | Graph artifacts and queries support workspace, repository, worktree, package, service, docs site and artifact namespace scopes so unrelated partitions do not pollute agent context. |
+| `T10-CG-M70` | Add canonical alias ledger | `project_graph_ontology.py`, scanner/query tests | Deterministic aliases map documentation terms, file paths, symbols, routes, templates and generated artifact names to canonical graph nodes with source evidence and ambiguity labels. |
+| `T10-CG-M71` | Add structured chunking policy for docs and contracts | `project_graph_chunking.py`, docs/contract scanner tests | Markdown, MkDocs nav, OpenAPI/Swagger, AsyncAPI, DBML, SQL, JSON and YAML inputs are chunked on structural boundaries with stable chunk IDs, overlap metadata and spans while avoiding raw-content dumps by default. |
+| `T10-CG-M72` | Add graph operation budget and tracing packet | manifest/status/runtime tests | Scan/query outputs record duration, parsed/skipped file counts, node/edge counts, packet size, omitted counts, estimated prompt tokens, truncation reasons and failure phases without external telemetry activation. |
+| `T10-CG-M73` | Add graph query filter safety tests | `project_graph_queries.py`, CLI safety tests | Query filters validate node types, edge types, confidence labels, partitions, path roots, query lengths and output limits before CLI/runtime execution. |
+| `T10-CG-M74` | Add semantic extraction approval gate | docs/eval/runtime tests | Any future LLM, embedding, cross-encoder or semantic extraction path stays out of Task 25 baseline and requires explicit approval, redaction policy, cache policy, token budget, eval threshold and rollback/disable path. |
+| `T10-CG-M75` | Add visual projection artifact | `project_graph_visual_model.py`, `project_graph_renderer.py`, visual artifact tests | Canonical graph JSON/JSONL remains source evidence; a derived visual projection stores `x`, `y`, `size`, `color`, `community`, `lod_tier`, `label_priority` and renderer hints without raw source bodies. |
+| `T10-CG-M76` | Add graphology/sigma vendor manifest | `assets/vendor/graphology/`, `assets/vendor/sigma/`, asset-policy tests | Local graph assets are version-recorded, hash-checkable, license-recorded and blocked from CDN/network fetches. |
+| `T10-CG-M77` | Add Graphology-compatible export | `project_graph_visual_model.py`, renderer tests | Renderer emits `{nodes, edges}` payloads compatible with Graphology while preserving Product-Agent OS metadata in node/edge attributes. |
+| `T10-CG-M78` | Add Sigma renderer bootstrap | `project-graph.html`, `project-graph.css`, renderer tests | Offline cockpit initializes local Graphology/Sigma from safe embedded or adjacent JSON and renders a nonblank graph when vendor assets are present. |
+| `T10-CG-M79` | Add large-graph renderer modes | renderer/performance tests | 1k, 5k and 10k graphs choose overview modes with fast node/edge programs, hidden labels and edge events disabled by default where needed. |
+| `T10-CG-M80` | Add focused subgraph mode | `project_graph_queries.py`, HTML template tests | Selecting a node loads bounded neighborhood, trace or read-order subgraphs with richer labels and edge details. |
+| `T10-CG-M81` | Add cluster overview and drilldown | `project_graph_analysis.py`, renderer tests | Communities and clusters render as stable overview groups; oversized or low-cohesion clusters are split or visibly flagged. |
+| `T10-CG-M82` | Add visual filter state model | HTML template tests | Filters cover node type, edge type, confidence, language, artifact class, partition, stale/current status and text search with deterministic URL or local state. |
+| `T10-CG-M83` | Add selected-node evidence panel | HTML template tests | Click/tap shows node metadata, relative path, spans, confidence, observation IDs, inbound/outbound edges and related tests/docs/contracts without raw source bodies. |
+| `T10-CG-M84` | Add graph navigation commands | HTML template tests | UI exposes fit-to-project, fit-to-selection, isolate, expand neighbors, trace path, reset filters and copy node ID/path actions. |
+| `T10-CG-M85` | Add Code Flow visual page integration | `project-code-flow.html`, renderer tests | Code Flow page links module/call-flow summaries to Project Graph nodes and preserves generated-view/source-boundary wording. |
+| `T10-CG-M86` | Add visual performance budget packet | `project_graph_renderer.py`, status tests | HTML/report records node count, edge count, payload bytes, render mode, omitted counts and estimated browser risk. |
+| `T10-CG-M87` | Add fallback static graph view | renderer tests | If WebGL or vendor assets fail, cockpit still shows searchable tables, cluster list, selected-node details and query links. |
+| `T10-CG-M88` | Add visual QA checks | docs, optional Playwright tests | Verification checks nonblank canvas, no console errors, no external requests, working filters, selected panel behavior and large-fixture usability. |
+| `T10-CG-M89` | Add mobile cockpit graph behavior | CSS/template tests | Mobile uses graph-first layout, collapsible filters/details, tap/focus interactions instead of hover and no text overlap. |
+| `T10-CG-M90` | Add visualization docs and source boundary | docs, README, source registry if needed | Docs explain Graphology/Sigma roles as local generated visualization, not source of truth and not full-prompt agent context. |
+
+Task 25 implementation batches:
+
+- **Batch 13: Graph Foundation, Schema And Staging** (`T10-CG-M-1..M6`, `T10-CG-M44`, `T10-CG-M45`, `T10-CG-M50`, `T10-CG-M55`, `T10-CG-M57`, `T10-CG-M63`, `T10-CG-M65`, `T10-CG-M66`, `T10-CG-M68`, plus boundary/freshness/provenance guardrails `T10-CG-G1..G4` and `T10-CG-G7..G10`)
+- **Batch 14: Python AST Scanner And Dependency Edges** (`T10-CG-M7..M14`, `T10-CG-M46`, `T10-CG-M52`, `T10-CG-M58`, `T10-CG-M59`, `T10-CG-M69`, `T10-CG-M70`, plus confidence guardrail `T10-CG-G5`)
+- **Batch 15: Documentation, Contract And Artifact Overlays** (`T10-CG-M15..M21`, `T10-CG-M71`)
+- **Batch 16: Agent Query Packets And Runtime Integration** (`T10-CG-M22..M28`, `T10-CG-M48`, `T10-CG-M53`, `T10-CG-M54`, `T10-CG-M56`, `T10-CG-M60`, `T10-CG-M61`, `T10-CG-M67`, `T10-CG-M72`, `T10-CG-M73`)
+- **Batch 17: HTML Cockpit Graph Visualization** (`T10-CG-M29..M35`, `T10-CG-M49`, `T10-CG-M51`, `T10-CG-M75..M87`, `T10-CG-M89`, plus dependency guardrail `T10-CG-G6`)
+- **Batch 18: Evals, Docs, Control Plane And Full Verification** (`T10-CG-M36..M43`, `T10-CG-M47`, `T10-CG-M62`, `T10-CG-M64`, `T10-CG-M74`, `T10-CG-M88`, `T10-CG-M90`)
+
+Task 25 starts only after Task 24 final verification evidence remains current. It must preserve the Track 10 non-goals: no standalone web server, no database, no live model/API calls, no external writes, no hook/automation activation and no HTML-as-source-of-truth claim.
 
 ## Execution Batches
 
@@ -785,6 +946,15 @@ Expected: commit succeeds.
 | Agent/skill evidence leaks private traces or local user paths. | Reuse redaction gates before dataset, ledger, report or dashboard generation and block scoring when redaction fails. |
 | Metrics-loop automation is activated before the manual workflow is stable. | Ship daily and weekly automation files as candidate templates only and require `automation_manual_stability_present` plus explicit approval before promotion. |
 | Docs-only or simple maintenance work triggers agentic modernization overhead. | Add discovery false-positive fixtures and keep `agent_skill_metrics_loop` applicable only when real agent, skill, subagent, router/tool policy, automation candidate or harness surfaces are detected. |
+| Code graph overwhelms the browser or agent context on large projects. | Use graph summaries, chunked JSON/JSONL, clustering, top-N subgraphs, hidden labels and query packets for 1k, 5k and 10k node cases. |
+| Code graph implies false dependency precision. | Require confidence labels, unsupported-language statuses and tests that distinguish AST/static evidence from inferred edges. |
+| Static analysis invents cross-file call edges in ambiguous code. | Prefer import-guided resolution, emit inferred global calls only on single-candidate matches and record ambiguous calls as explicit uncertainty. |
+| Incremental cache reports stale topology as fresh. | Store manifest freshness with separate AST/semantic hashes, changed/unchanged/added/deleted file sets and graph freshness status. |
+| Failed scans silently replace a rich graph with a much smaller artifact. | Add shrink guard and stage-local backups before overwrite; require explicit acceptance for suspicious graph collapse. |
+| Agent graph queries expand through high-degree hub nodes and waste context. | Add token-budgeted BFS/DFS traversal, hub suppression, context filters, seed scoring and truncation metadata. |
+| Graph artifacts leak source code, secrets or local user paths. | Exclude raw file contents by default, keep line spans/hashes only, reuse redaction policy and block secret-like values in renderer/query output. |
+| HTML graph is treated as source of truth. | Keep code/docs plus graph JSON/JSONL as source/evidence layers; HTML remains generated cockpit review output. |
+| Graph visualization libraries introduce network or supply-chain risk. | Use `graphology`/`sigma.js` only as locally bundled, version-recorded assets with no CDN; keep a fallback renderer. |
 
 ## Verification Summary
 
@@ -808,6 +978,18 @@ Task 24 implementation must also add focused current-run evidence before full ve
 python -m unittest tests.product_agent_os.test_agent_skill_metrics tests.product_agent_os.test_agent_skill_metrics_report tests.product_agent_os.test_agent_skill_metrics_cli -v
 python -m unittest tests.product_agent_os.test_status_dashboard tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_automation_policy -v
 python -m unittest tests.product_agent_os.test_fixture_eval_runner tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_transcript_session_evals -v
+python plugins\product-agent-os\scripts\run_fixture_eval.py
+python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json
+python tools\check_docs.py
+git diff --check
+```
+
+Task 25 implementation must also add focused current-run evidence before full verification:
+
+```powershell
+python -m unittest tests.product_agent_os.test_project_code_graph tests.product_agent_os.test_project_graph_manifest tests.product_agent_os.test_project_graph_observations tests.product_agent_os.test_project_graph_ontology tests.product_agent_os.test_project_graph_chunking tests.product_agent_os.test_project_graph_analysis tests.product_agent_os.test_project_graph_queries tests.product_agent_os.test_project_graph_search tests.product_agent_os.test_project_graph_renderer tests.product_agent_os.test_project_graph_cli tests.product_agent_os.test_project_graph_safety -v
+python -m unittest tests.product_agent_os.test_status_snapshot tests.product_agent_os.test_status_dashboard tests.product_agent_os.test_codex_runtime_runner_contracts tests.product_agent_os.test_codex_runtime_runner_state_routes -v
+python -m unittest tests.product_agent_os.test_fixture_eval_runner tests.product_agent_os.test_lifecycle_skills tests.product_agent_os.test_product_agent_os_docs -v
 python plugins\product-agent-os\scripts\run_fixture_eval.py
 python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json
 python tools\check_docs.py
