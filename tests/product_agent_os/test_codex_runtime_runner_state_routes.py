@@ -231,6 +231,71 @@ class CodexRuntimeRunnerStateRoutesTest(unittest.TestCase):
         )
         self.assertEqual(route["first_response_contract"]["finish_options"], route["finish_options"])
 
+    def test_stale_or_unsupported_graph_routes_to_source_reads_or_owner_question(self):
+        route = plan_route(
+            "quality_gate",
+            allow_subagents=False,
+            project_graph_status={
+                "schema_version": 1,
+                "write_policy": "read_only",
+                "status": "stale",
+                "freshness": {"status": "stale", "scan_id": "scan-old"},
+                "counts": {"nodes": 25, "edges": 10, "observations": 40, "omitted_nodes": 0},
+                "unsupported_languages": [{"language": "typescript", "file_count": 20, "status": "file_only"}],
+                "artifact_refs": [
+                    {"kind": "staged_artifact", "path": ".codex/product-agent-os/project-code-graph.json"}
+                ],
+                "top_gaps": [
+                    {
+                        "id": "unsupported-typescript",
+                        "severity": "high",
+                        "safe_next_action": "Read source files before impact claims.",
+                    }
+                ],
+                "safe_next_action": "Read source files before acting on stale graph output.",
+                "source_policy": "generated graph is not source of truth",
+            },
+        )
+        errors = validate_route_packet(route)
+
+        self.assertEqual(errors, [])
+        self.assertEqual(route["write_policy"], "read_only")
+        self.assertNotIn("stage_proposal", route["finish_options"])
+        self.assertIn("Read source files", route["next_action"])
+        self.assertEqual(route["project_graph_status"]["status"], "stale")
+        self.assertEqual(route["first_response_contract"]["project_graph_summary"]["status"], "stale")
+        self.assertEqual(route["first_response_contract"]["project_graph_summary"]["top_gap_count"], 1)
+        self.assertNotIn("nodes", route["first_response_contract"]["project_graph_summary"])
+
+    def test_current_graph_with_low_severity_gap_does_not_override_route_action(self):
+        route = plan_route(
+            "quality_gate",
+            allow_subagents=False,
+            project_graph_status={
+                "schema_version": 1,
+                "write_policy": "read_only",
+                "status": "current",
+                "freshness": {"status": "current", "scan_id": "scan-current"},
+                "counts": {"nodes": 25, "edges": 10, "observations": 40, "omitted_nodes": 0},
+                "unsupported_languages": [],
+                "artifact_refs": [
+                    {"kind": "staged_artifact", "path": ".codex/product-agent-os/project-code-graph.json"}
+                ],
+                "top_gaps": [
+                    {
+                        "id": "small-generated-file-note",
+                        "severity": "low",
+                        "safe_next_action": "Read source files before edits.",
+                    }
+                ],
+                "safe_next_action": "Use graph as orientation only.",
+                "source_policy": "generated graph is not source of truth",
+            },
+        )
+
+        self.assertEqual(route["next_action"], "Review risks and verification evidence.")
+        self.assertEqual(route["first_response_contract"]["project_graph_summary"]["top_gap_count"], 1)
+
     def test_ownership_conflict_routes_parallel_builder_to_agent_team_designer(self):
         route = plan_route(
             "build_active",

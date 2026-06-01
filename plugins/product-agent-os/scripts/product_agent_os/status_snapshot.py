@@ -13,6 +13,9 @@ DEFAULT_EVIDENCE_MAX_AGE_DAYS = 14
 _SUCCESS_WORDS = ("tests pass", "checks passed")
 MAX_METRICS_REPORT_REFS = 4
 MAX_METRICS_UPDATE_CANDIDATES = 5
+MAX_PROJECT_GRAPH_REFS = 4
+MAX_PROJECT_GRAPH_GAPS = 5
+MAX_PROJECT_GRAPH_UNSUPPORTED_LANGUAGES = 8
 
 
 def build_status_snapshot(
@@ -33,8 +36,9 @@ def build_status_snapshot(
     usage_mode = _usage_mode(route, discovery)
     question_summary = _question_summary(route, discovery)
     methodology_packet = route.get("methodology_packet") if isinstance(route.get("methodology_packet"), dict) else {}
+    project_graph_status = route.get("project_graph_status") if isinstance(route.get("project_graph_status"), dict) else {}
     evidence_summary = _evidence_summary(runtime, generated_at, evidence_max_age_days)
-    readiness_summary = _readiness_summary(runtime, usage_mode, evidence_summary, methodology_packet)
+    readiness_summary = _readiness_summary(runtime, usage_mode, evidence_summary, methodology_packet, project_graph_status)
 
     snapshot = {
         "schema_version": 1,
@@ -62,6 +66,7 @@ def build_status_snapshot(
             if isinstance(methodology_packet.get("semantic_evidence_sufficiency"), dict)
             else {}
         ),
+        "project_graph_summary": _project_graph_summary(project_graph_status),
         "agent_skill_metrics_loop": _agent_skill_metrics_loop_summary(route, discovery),
         "question_ledger_summary": (
             question_ledger.get("summary") if isinstance(question_ledger, dict) and isinstance(question_ledger.get("summary"), dict) else {}
@@ -139,6 +144,7 @@ def _readiness_summary(
     usage_mode: dict[str, Any],
     evidence_summary: dict[str, Any],
     methodology_packet: dict[str, Any],
+    project_graph_status: dict[str, Any],
 ) -> dict[str, Any]:
     warnings: list[str] = []
     runtime_status = _string(runtime.get("status") or "unknown")
@@ -152,6 +158,9 @@ def _readiness_summary(
         warnings.append("completion status lacks current verification evidence")
     if methodology_packet.get("status") == "present_unverified":
         warnings.append("methodology evidence is present_unverified")
+    graph_status = _string(project_graph_status.get("status"))
+    if graph_status in {"stale", "ambiguous", "unsupported"}:
+        warnings.append(f"{graph_status} project graph")
     return {
         "status": status,
         "runtime_status": runtime_status,
@@ -199,6 +208,103 @@ def _agent_skill_metrics_loop_summary(route: dict[str, Any], discovery: dict[str
         "approval_boundary": "owner review required before modernization or automation activation",
         "readiness_reason": _string(readiness.get("reason")),
     }
+
+
+def _project_graph_summary(packet: dict[str, Any]) -> dict[str, Any]:
+    if not isinstance(packet, dict) or not packet:
+        return {
+            "status": "not_available",
+            "counts": {"nodes": 0, "edges": 0, "observations": 0, "omitted_nodes": 0},
+            "unsupported_languages": [],
+            "artifact_refs": [],
+            "top_gaps": [],
+            "source_policy": "generated graph is not source of truth",
+            "safe_next_action": "Read source files before graph-backed claims.",
+        }
+    counts = packet.get("counts") if isinstance(packet.get("counts"), dict) else {}
+    return {
+        "status": _string(packet.get("status") or "not_available"),
+        "freshness": packet.get("freshness") if isinstance(packet.get("freshness"), dict) else {},
+        "counts": {
+            "nodes": _int(counts.get("nodes")),
+            "edges": _int(counts.get("edges")),
+            "observations": _int(counts.get("observations")),
+            "omitted_nodes": _int(counts.get("omitted_nodes")),
+        },
+        "unsupported_languages": _safe_project_graph_unsupported_languages(packet.get("unsupported_languages")),
+        "artifact_refs": _safe_project_graph_refs(packet.get("artifact_refs")),
+        "top_gaps": _safe_project_graph_gaps(packet.get("top_gaps")),
+        "source_policy": "generated graph is not source of truth",
+        "safe_next_action": _string(packet.get("safe_next_action") or "Read source files before graph-backed claims."),
+    }
+
+
+def _safe_project_graph_refs(value: Any) -> list[dict[str, str]]:
+    refs: list[dict[str, str]] = []
+    if not isinstance(value, list):
+        return refs
+    for item in value[:MAX_PROJECT_GRAPH_REFS]:
+        if not isinstance(item, dict):
+            continue
+        kind = _string(item.get("kind") or "staged_artifact")
+        path = _string(item.get("path"))
+        if kind == "external_ref" or path.startswith(("http://", "https://")) or not _safe_project_graph_relative_path(path):
+            continue
+        if not path:
+            continue
+        refs.append(
+            {
+                "kind": kind,
+                "path": path,
+                "digest": _string(item.get("digest")),
+            }
+        )
+    return refs
+
+
+def _safe_project_graph_unsupported_languages(value: Any) -> list[dict[str, Any]]:
+    items: list[dict[str, Any]] = []
+    if not isinstance(value, list):
+        return items
+    for item in value[:MAX_PROJECT_GRAPH_UNSUPPORTED_LANGUAGES]:
+        if not isinstance(item, dict):
+            continue
+        items.append(
+            {
+                "language": _string(item.get("language")),
+                "file_count": _int(item.get("file_count")),
+                "status": _string(item.get("status")),
+            }
+        )
+    return items
+
+
+def _safe_project_graph_relative_path(path: str) -> bool:
+    normalized = path.replace("\\", "/")
+    if not normalized:
+        return False
+    if normalized.startswith(("/", "../", "~")):
+        return False
+    if ":/" in normalized:
+        return False
+    return ".." not in normalized.split("/")
+
+
+def _safe_project_graph_gaps(value: Any) -> list[dict[str, str]]:
+    gaps: list[dict[str, str]] = []
+    if not isinstance(value, list):
+        return gaps
+    for item in value[:MAX_PROJECT_GRAPH_GAPS]:
+        if not isinstance(item, dict):
+            continue
+        gaps.append(
+            {
+                "id": _string(item.get("id")),
+                "severity": _string(item.get("severity")),
+                "safe_next_action": _string(item.get("safe_next_action")),
+            }
+        )
+    return gaps
 
 
 def _safe_metrics_report_refs(value: Any) -> list[dict[str, str]]:

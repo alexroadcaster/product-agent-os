@@ -248,6 +248,76 @@ class StatusSnapshotTest(unittest.TestCase):
         self.assertNotIn("C:\\Users\\person", serialized)
         self.assertNotIn("https://example.invalid", serialized)
 
+    def test_snapshot_includes_bounded_project_graph_summary_and_never_claims_graph_as_truth(self):
+        runtime_result = {
+            "status": "route_ready",
+            "workspace": "C:\\Users\\person\\graph-project",
+            "lifecycle_state": "quality_gate",
+            "route_packet": {
+                "usage_mode": {"primary": "maintenance", "confidence": "medium"},
+                "project_graph_status": {
+                    "schema_version": 1,
+                    "write_policy": "read_only",
+                    "status": "stale",
+                    "freshness": {"status": "stale", "scan_id": "scan-old", "as_of": "2026-05-01T00:00:00+00:00"},
+                    "counts": {"nodes": 1000, "edges": 2000, "observations": 3000, "omitted_nodes": 750},
+                    "unsupported_languages": [
+                        {
+                            "language": "typescript",
+                            "file_count": 20,
+                            "status": "file_only",
+                            "raw_source": "def charge_card(): pass",
+                        }
+                    ],
+                    "artifact_refs": [
+                        {
+                            "kind": "staged_artifact",
+                            "path": ".codex/product-agent-os/project-code-graph.json",
+                            "digest": "sha256:" + "a" * 64,
+                        },
+                        {"kind": "external_ref", "path": "https://example.invalid/graph.json"},
+                        {"kind": "staged_artifact", "path": "D:/private/project/graph.json"},
+                    ],
+                    "top_gaps": [
+                        {
+                            "id": f"gap-{index}",
+                            "severity": "medium",
+                            "safe_next_action": "Read source files before acting.",
+                        }
+                        for index in range(10)
+                    ],
+                    "safe_next_action": "Use graph as orientation only; read source files before edits.",
+                    "source_policy": "generated graph is not source of truth",
+                    "nodes": [{"id": "file:C:\\Users\\person\\graph-project\\app.py"}],
+                    "edges": [{"source": "a", "target": "b"}],
+                },
+            },
+            "verification_evidence": [],
+        }
+
+        snapshot = build_status_snapshot(
+            runtime_result=runtime_result,
+            generated_at="2026-06-01T00:00:00+00:00",
+        )
+        serialized = json.dumps(snapshot, sort_keys=True)
+        graph_summary = snapshot["project_graph_summary"]
+
+        self.assertEqual(graph_summary["status"], "stale")
+        self.assertEqual(graph_summary["counts"]["nodes"], 1000)
+        self.assertEqual(graph_summary["unsupported_languages"][0]["language"], "typescript")
+        self.assertNotIn("raw_source", graph_summary["unsupported_languages"][0])
+        self.assertEqual(len(graph_summary["artifact_refs"]), 1)
+        self.assertEqual(len(graph_summary["top_gaps"]), 5)
+        self.assertEqual(graph_summary["source_policy"], "generated graph is not source of truth")
+        self.assertIn("stale project graph", snapshot["readiness_summary"]["warnings"])
+        self.assertNotIn("nodes", graph_summary)
+        self.assertNotIn("edges", graph_summary)
+        self.assertNotIn("https://example.invalid", serialized)
+        self.assertNotIn("D:/private", serialized)
+        self.assertNotIn("charge_card", serialized)
+        self.assertNotIn("C:\\Users\\person", serialized)
+        self.assertNotIn("graph-project", serialized)
+
     def _methodology_packet(self, *, status="present_unverified"):
         return {
             "safe_next_action": "Stage approval-record.md before external mutation.",

@@ -318,6 +318,21 @@ class LifecycleSkillsTest(unittest.TestCase):
                 for expected in shared_terms:
                     self.assertIn(expected, text)
 
+    def test_lifecycle_skills_route_project_graph_as_orientation_evidence_only(self):
+        shared_terms = [
+            "project code graph",
+            "generated graph is not source of truth",
+            "orientation evidence only",
+            "read source files before edits",
+            "stale or ambiguous graph blocks readiness claims",
+            "do not treat graph html as proof",
+        ]
+        for name in SKILL_NAMES:
+            text = self._skill_text(name).lower()
+            with self.subTest(name=name):
+                for expected in shared_terms:
+                    self.assertIn(expected, text)
+
     def test_scenario_handoff_wording_blocks_role_transition_without_packet(self):
         orchestrator = self._skill_text("project-lifecycle-orchestrator").lower()
         agent_team = self._skill_text("agent-team-designer").lower()

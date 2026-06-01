@@ -170,7 +170,7 @@ Approval boundary: Product-Agent OS performs no live eval/model/API calls, creat
 
 ## Task 25 project code graph foundation
 
-Task 25 Batch 13 and Batch 14 add a local read-only graph foundation for project navigation. The scanner inventories files, emits stable file-level graph nodes and `contains` edges, adds Python AST package/module/class/function/method overlays, adds conservative import/call/test edges, builds structured overlays for parseable Markdown, OpenAPI/Swagger, AsyncAPI, DBML, SQL, JSON, YAML, Mermaid and PlantUML inputs, validates a controlled ontology, records manifest freshness/provenance, stores observation records with relative paths/spans/fingerprints and supports temporal edge invalidation/supersession helpers. It excludes raw source bodies by default and redacts local absolute paths or secret-like values from returned packets.
+Task 25 Batch 13, Batch 14 and Batch 15 add a local read-only graph foundation for project navigation. The scanner inventories files, emits stable file-level graph nodes and `contains` edges, adds Python AST package/module/class/function/method overlays, adds conservative import/call/test edges, builds structured overlays for parseable Markdown, OpenAPI/Swagger, AsyncAPI, DBML, SQL, JSON, YAML, Mermaid and PlantUML inputs, validates a controlled ontology, records manifest freshness/provenance, stores observation records with relative paths/spans/fingerprints and supports temporal edge invalidation/supersession helpers. Query mode reads existing JSON/JSONL graph artifacts to produce bounded `neighbors`, `path`, `trace`, `impact`, `affected_tests`, `changed_since`, `why_changed`, `read_order`, `hotspots`, `node`, `status` and `search` packets. It excludes raw source bodies by default and redacts local absolute paths or secret-like values from returned packets.
 
 Main files and commands:
 
@@ -180,14 +180,17 @@ Main files and commands:
 - `plugins/product-agent-os/scripts/product_agent_os/project_graph_manifest.py` - file fingerprints, freshness and provenance.
 - `plugins/product-agent-os/scripts/product_agent_os/project_graph_observations.py` - observation records and edge delta lineage.
 - `plugins/product-agent-os/scripts/product_agent_os/project_graph_ontology.py` - controlled ontology and graph schema validation.
-- `plugins/product-agent-os/scripts/scan_project_code_graph.py` - dry-run or stage-only scanner CLI.
+- `plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py` - bounded graph-only query packets.
+- `plugins/product-agent-os/scripts/product_agent_os/project_graph_analysis.py` - source-free graph analysis report.
+- `plugins/product-agent-os/scripts/scan_project_code_graph.py` - dry-run, stage-only scanner and graph query CLI.
 
 ```powershell
 python plugins\product-agent-os\scripts\scan_project_code_graph.py <workspace> --dry-run
 python plugins\product-agent-os\scripts\scan_project_code_graph.py <workspace> --stage C:\tmp\product-agent-os-graph-stage
+python plugins\product-agent-os\scripts\scan_project_code_graph.py <workspace> --query neighbors --graph C:\tmp\product-agent-os-graph-stage\.codex\product-agent-os\project-code-graph.json --node-id function:app.main.main
 ```
 
-Stage mode must use an output directory outside the target workspace. Existing graph artifacts in the target workspace are not modified. Batch 14 remains conservative: dynamic dispatch, framework wiring, runtime routes and semantic/rationale extraction are not verified dependency proof. Query packets, runtime/status integration, graph analysis, HTML cockpit rendering, Graphology/Sigma visualization and visual QA remain later Task 25 batches.
+Stage mode must use an output directory outside the target workspace. Query mode reads an existing graph artifact and does not scan source text. Existing graph artifacts in the target workspace are not modified. Batch 15 remains conservative: dynamic dispatch, framework wiring, runtime routes and semantic/rationale extraction are not verified dependency proof. Runtime/status summaries and graph analysis reports are orientation evidence only. HTML cockpit rendering, Graphology/Sigma visualization, search-quality evals and visual QA remain later Task 25 batches.
 
 ## Codex installation boundary
 

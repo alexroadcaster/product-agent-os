@@ -37,6 +37,7 @@ def plan_route(
     question_queue: dict[str, Any] | None = None,
     status_snapshot_ref: dict[str, Any] | None = None,
     agent_skill_metrics_loop: dict[str, Any] | None = None,
+    project_graph_status: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     skill, subagent, write_policy, action = ROUTES[lifecycle_state]
     if subagent and not allow_subagents:
@@ -71,6 +72,9 @@ def plan_route(
         approval_requirements.append("manual stability and workflow value evidence required before automation promotion")
     if ownership_parallelism_required:
         approval_requirements.append("fresh-context handoff and explicit file/artifact ownership required before parallel work")
+    graph_blocks_readiness = _project_graph_blocks_readiness(project_graph_status)
+    if graph_blocks_readiness:
+        action = "Read source files before acting on stale, ambiguous, or unsupported project graph output."
     finish_options = _finish_options(
         write_policy,
         methodology_approval_required=methodology_approval_required,
@@ -100,6 +104,7 @@ def plan_route(
             "automation promotion requires maturity evidence",
             "parallel work requires fresh-context handoff and explicit ownership",
             "metrics loop reports are staged evidence only",
+            "project code graph is generated orientation evidence only",
         ],
     }
     if ownership_parallelism_required:
@@ -117,8 +122,15 @@ def plan_route(
         route["approval_requirements"].append(
             "owner review required before metrics-loop modernization, schedule activation or external eval calls"
         )
+    if project_graph_status is not None:
+        route["project_graph_status"] = project_graph_status
+        route["expected_outputs"].append("project graph status packet")
+        if graph_blocks_readiness:
+            route["approval_requirements"].append("source file confirmation required before graph-backed readiness or impact claims")
     route["finish_options"] = finish_options
     evidence_gaps = _evidence_gaps(methodology_packet)
+    if graph_blocks_readiness:
+        evidence_gaps.append("source file confirmation for stale or ambiguous project graph")
     route["first_response_contract"] = {
         "mode": usage_mode["primary"],
         "confidence": usage_mode["confidence"],
@@ -133,6 +145,8 @@ def plan_route(
         "approval_boundary": write_policy,
         "finish_options": finish_options,
     }
+    if project_graph_status is not None:
+        route["first_response_contract"]["project_graph_summary"] = _project_graph_summary(project_graph_status)
     return route
 
 
@@ -272,6 +286,45 @@ def _question_summary(question_queue: dict[str, Any]) -> list[str]:
         f"{int(summary.get(key, 0))} {label}{'' if int(summary.get(key, 0)) == 1 else 's'}"
         for key, label in labels
     ]
+
+
+def _project_graph_blocks_readiness(project_graph_status: dict[str, Any] | None) -> bool:
+    if not isinstance(project_graph_status, dict):
+        return False
+    if project_graph_status.get("status") in {"stale", "ambiguous", "unsupported"}:
+        return True
+    freshness = project_graph_status.get("freshness")
+    if isinstance(freshness, dict) and freshness.get("status") in {"stale", "ambiguous"}:
+        return True
+    top_gaps = project_graph_status.get("top_gaps")
+    if not isinstance(top_gaps, list):
+        return False
+    blocking_severities = {"high", "critical", "blocker", "blocking"}
+    return any(
+        isinstance(gap, dict) and str(gap.get("severity") or "").lower() in blocking_severities
+        for gap in top_gaps
+    )
+
+
+def _project_graph_summary(project_graph_status: dict[str, Any]) -> dict[str, Any]:
+    counts = project_graph_status.get("counts") if isinstance(project_graph_status.get("counts"), dict) else {}
+    top_gaps = project_graph_status.get("top_gaps") if isinstance(project_graph_status.get("top_gaps"), list) else []
+    return {
+        "status": str(project_graph_status.get("status") or "not_available"),
+        "counts": {
+            "nodes": _int(counts.get("nodes")),
+            "edges": _int(counts.get("edges")),
+        },
+        "top_gap_count": len(top_gaps),
+        "safe_next_action": str(project_graph_status.get("safe_next_action") or "Read source files before graph-backed claims."),
+    }
+
+
+def _int(value: Any) -> int:
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return 0
 
 
 def _default_usage_mode() -> dict[str, Any]:

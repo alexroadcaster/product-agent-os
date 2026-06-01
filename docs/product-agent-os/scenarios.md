@@ -46,9 +46,9 @@ The approval boundary stays strict. Product-Agent OS records cadence recommendat
 
 ## Task 25 Project Code Graph Foundation
 
-Task 25 Batch 13 and Batch 14 add a read-only project graph foundation for route orientation. It can produce staged graph JSON/JSONL with file-level nodes, Python AST package/module/class/function/method overlays, conservative import/call/test edges, structured Markdown/OpenAPI/AsyncAPI/DBML/SQL/JSON/YAML/Mermaid/PlantUML overlays, controlled ontology/schema validation, manifest freshness/provenance, observation lineage, temporal edge delta helpers, partition scopes and canonical aliases. This helps future routes point agents toward source files and stale graph gaps without treating generated artifacts as source of truth.
+Task 25 Batch 13, Batch 14 and Batch 15 add a read-only project graph foundation for route orientation. It can produce staged graph JSON/JSONL with file-level nodes, Python AST package/module/class/function/method overlays, conservative import/call/test edges, structured Markdown/OpenAPI/AsyncAPI/DBML/SQL/JSON/YAML/Mermaid/PlantUML overlays, controlled ontology/schema validation, manifest freshness/provenance, observation lineage, temporal edge delta helpers, partition scopes and canonical aliases. It can also query existing graph artifacts for bounded neighbors, paths, traces, impact, affected tests, deltas, read order, hotspots, status and search packets without reading source bodies. This helps routes point agents toward source files and stale graph gaps without treating generated artifacts as source of truth.
 
-The route boundary remains conservative: generated graph artifacts are review evidence only, the scanner does not mutate target workspaces, and no query packet, HTML cockpit, Graphology/Sigma visualization or complete semantic dependency claim is available until later Task 25 batches provide focused verification.
+The route boundary remains conservative: generated graph artifacts, runtime graph summaries and analysis reports are review evidence only, the scanner does not mutate target workspaces, and no HTML cockpit, Graphology/Sigma visualization or complete semantic dependency claim is available until later Task 25 batches provide focused verification.
 
 ## Scenario Matrix
 

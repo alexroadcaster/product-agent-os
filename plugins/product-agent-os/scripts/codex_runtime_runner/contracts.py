@@ -1,8 +1,10 @@
 from __future__ import annotations
 
+import json
 import re
 from typing import Any
 
+from codex_runtime_runner.redaction import validate_redaction
 from product_agent_os.question_protocol import (
     MAX_TOTAL_QUESTIONS,
     QUESTION_ANSWER_TYPES,
@@ -82,6 +84,11 @@ QUESTION_QUEUE_LIMITS = {
 AGENT_SKILL_METRICS_LOOP_LIMITS = {
     "report_refs": 4,
     "top_candidates": 5,
+}
+PROJECT_GRAPH_STATUS_LIMITS = {
+    "artifact_refs": 4,
+    "top_gaps": 5,
+    "unsupported_languages": 8,
 }
 DETECTION_ONLY_METHODOLOGY_STATUSES = {
     "applicable_missing",
@@ -368,6 +375,8 @@ def validate_runner_result(payload: dict[str, Any]) -> list[str]:
             errors.extend(_validate_status_snapshot_ref(route_packet["status_snapshot_ref"]))
         if "agent_skill_metrics_loop" in route_packet:
             errors.extend(validate_agent_skill_metrics_loop_packet(route_packet["agent_skill_metrics_loop"]))
+        if "project_graph_status" in route_packet:
+            errors.extend(validate_project_graph_status_packet(route_packet["project_graph_status"]))
         first_response = route_packet.get("first_response_contract")
         if first_response is not None:
             if not isinstance(first_response, dict):
@@ -399,6 +408,59 @@ def validate_runner_result(payload: dict[str, Any]) -> list[str]:
         methodology_packet = route_packet.get("methodology_packet")
         if isinstance(methodology_packet, dict) and methodology_packet.get("status") in DETECTION_ONLY_METHODOLOGY_STATUSES:
             errors.append("methodology_packet:detection_not_completion")
+    return errors
+
+
+def validate_project_graph_status_packet(packet: Any) -> list[str]:
+    if not isinstance(packet, dict):
+        return ["project_graph_status:invalid"]
+    errors: list[str] = []
+    if packet.get("schema_version") != 1:
+        errors.append("project_graph_status.schema_version:must_be_1")
+    if packet.get("write_policy") != "read_only":
+        errors.append("project_graph_status.write_policy:must_be_read_only")
+    if packet.get("status") not in {"current", "stale", "ambiguous", "unsupported", "not_available"}:
+        errors.append("project_graph_status.status:invalid")
+    if packet.get("source_policy") != "generated graph is not source of truth":
+        errors.append("project_graph_status.source_policy:invalid")
+    for field in ["freshness", "counts"]:
+        if not isinstance(packet.get(field), dict):
+            errors.append(f"project_graph_status.{field}:invalid")
+    if not _non_empty_string(packet.get("safe_next_action")):
+        errors.append("project_graph_status.safe_next_action:required")
+
+    artifact_refs = packet.get("artifact_refs")
+    if not isinstance(artifact_refs, list):
+        errors.append("project_graph_status.artifact_refs:invalid")
+        artifact_refs = []
+    elif len(artifact_refs) > PROJECT_GRAPH_STATUS_LIMITS["artifact_refs"]:
+        errors.append("project_graph_status.artifact_refs:too_many")
+    errors.extend(_validate_project_graph_refs(artifact_refs, "project_graph_status.artifact_refs"))
+
+    analysis_ref = packet.get("analysis_ref")
+    if analysis_ref not in (None, ""):
+        if not isinstance(analysis_ref, dict):
+            errors.append("project_graph_status.analysis_ref:invalid")
+        else:
+            errors.extend(_validate_project_graph_refs([analysis_ref], "project_graph_status.analysis_ref"))
+
+    unsupported_languages = packet.get("unsupported_languages")
+    if not isinstance(unsupported_languages, list):
+        errors.append("project_graph_status.unsupported_languages:invalid")
+    elif len(unsupported_languages) > PROJECT_GRAPH_STATUS_LIMITS["unsupported_languages"]:
+        errors.append("project_graph_status.unsupported_languages:too_many")
+    if isinstance(unsupported_languages, list):
+        errors.extend(_validate_project_graph_unsupported_languages(unsupported_languages))
+
+    top_gaps = packet.get("top_gaps")
+    if not isinstance(top_gaps, list):
+        errors.append("project_graph_status.top_gaps:invalid")
+    elif len(top_gaps) > PROJECT_GRAPH_STATUS_LIMITS["top_gaps"]:
+        errors.append("project_graph_status.top_gaps:too_many")
+
+    rendered = json.dumps(packet, sort_keys=True)
+    if validate_redaction(rendered) or re.search(r"[A-Za-z]:[/\\]Users[/\\]", rendered):
+        errors.append("project_graph_status:contains_local_path")
     return errors
 
 
@@ -461,6 +523,64 @@ def validate_agent_skill_metrics_loop_packet(packet: Any) -> list[str]:
     if packet.get("source_policy") != "generated summaries are not source of truth":
         errors.append("agent_skill_metrics_loop.source_policy:invalid")
     return errors
+
+
+def _validate_project_graph_refs(refs: list[Any], prefix: str) -> list[str]:
+    errors: list[str] = []
+    for index, ref in enumerate(refs):
+        item_prefix = f"{prefix}[{index}]" if prefix.endswith("refs") else prefix
+        if not isinstance(ref, dict):
+            errors.append(f"{item_prefix}:invalid")
+            continue
+        if ref.get("kind") == "external_ref":
+            errors.append(f"{item_prefix}.kind:forbidden_external_ref")
+        kind = ref.get("kind")
+        if kind not in {"staged_artifact", "not_available", "generated_artifact", "report"}:
+            errors.append(f"{item_prefix}.kind:unknown")
+        path = str(ref.get("path") or "")
+        if kind != "not_available" and not path:
+            errors.append(f"{item_prefix}.path:required")
+        if path.startswith(("http://", "https://")):
+            errors.append(f"{item_prefix}.path:external_url_forbidden")
+        if path and kind != "not_available" and not _safe_project_graph_relative_path(path):
+            errors.append(f"{item_prefix}.path:absolute_or_unsafe")
+    return errors
+
+
+def _validate_project_graph_unsupported_languages(items: list[Any]) -> list[str]:
+    errors: list[str] = []
+    allowed_keys = {"language", "file_count", "status"}
+    allowed_statuses = {"file_only", "unsupported", "structured_overlay_pending", "supported", "unknown"}
+    for index, item in enumerate(items):
+        prefix = f"project_graph_status.unsupported_languages[{index}]"
+        if not isinstance(item, dict):
+            errors.append(f"{prefix}:invalid")
+            continue
+        for key in sorted(set(item.keys()) - allowed_keys):
+            errors.append(f"{prefix}.{key}:unknown")
+        if not _non_empty_string(item.get("language")):
+            errors.append(f"{prefix}.language:required")
+        if item.get("status") not in allowed_statuses:
+            errors.append(f"{prefix}.status:invalid")
+        try:
+            file_count = int(item.get("file_count"))
+        except (TypeError, ValueError):
+            errors.append(f"{prefix}.file_count:invalid")
+        else:
+            if file_count < 0:
+                errors.append(f"{prefix}.file_count:invalid")
+    return errors
+
+
+def _safe_project_graph_relative_path(path: str) -> bool:
+    normalized = path.replace("\\", "/")
+    if not normalized:
+        return False
+    if normalized.startswith(("/", "../", "~")):
+        return False
+    if ":/" in normalized:
+        return False
+    return ".." not in normalized.split("/")
 
 
 def validate_question_queue(packet: Any, prefix: str = "question_queue") -> list[str]:

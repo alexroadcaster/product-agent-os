@@ -21,6 +21,7 @@ from codex_runtime_runner.contracts import (  # noqa: E402
     classify_methodology_high_risk_actions,
     validate_agent_skill_metrics_loop_packet,
     validate_methodology_packet,
+    validate_project_graph_status_packet,
     validate_runner_request,
     validate_runner_result,
 )
@@ -265,6 +266,65 @@ class CodexRuntimeRunnerContractsTest(unittest.TestCase):
             AGENT_SKILL_METRICS_LOOP_LIMITS["report_refs"],
         )
 
+    def test_route_packet_accepts_bounded_project_graph_status_without_schema_v1_break(self):
+        project_graph_status = self._valid_project_graph_status()
+        result = build_result(
+            status="route_ready",
+            workspace="C:/workspace/synthetic",
+            lifecycle_state="quality_gate",
+            route_packet={
+                "write_policy": "read_only",
+                "project_graph_status": project_graph_status,
+                "first_response_contract": {
+                    "safe_next_action": "Use graph as orientation only; read source files before edits.",
+                    "project_graph_summary": {
+                        "status": "current",
+                        "counts": {"nodes": 11, "edges": 10},
+                        "top_gap_count": 1,
+                        "safe_next_action": "Use graph as orientation only; read source files before edits.",
+                    },
+                },
+            },
+            source_policy_status="ok",
+            approval_status="not_required",
+            next_action="Use graph as orientation only; read source files before edits.",
+        )
+        methodology_packet = self._valid_methodology_packet()
+        methodology_packet["project_graph_status"] = project_graph_status
+
+        self.assertEqual(result["schema_version"], 1)
+        self.assertEqual(validate_project_graph_status_packet(project_graph_status), [])
+        self.assertEqual(validate_runner_result(result), [])
+        self.assertIn("methodology_packet.project_graph_status:unknown", validate_methodology_packet(methodology_packet))
+
+    def test_project_graph_status_rejects_external_refs_raw_paths_and_oversized_gaps(self):
+        packet = self._valid_project_graph_status()
+        packet["write_policy"] = "staged_only"
+        packet["source_policy"] = "graph is truth"
+        packet["artifact_refs"] = [
+            {"kind": "external_ref", "path": "https://example.invalid/graph.json"}
+            for _ in range(5)
+        ]
+        packet["analysis_ref"] = {"kind": "staged_artifact", "path": "D:/private/project/graph-analysis.md"}
+        packet["unsupported_languages"] = [
+            {"language": "python", "file_count": 1, "status": "supported", "raw_source": "def charge_card(): pass"}
+        ]
+        packet["top_gaps"] = [
+            {"id": f"gap-{index}", "severity": "medium", "safe_next_action": "Read C:/Users/person/project/app.py"}
+            for index in range(20)
+        ]
+
+        errors = validate_project_graph_status_packet(packet)
+
+        self.assertIn("project_graph_status.write_policy:must_be_read_only", errors)
+        self.assertIn("project_graph_status.source_policy:invalid", errors)
+        self.assertIn("project_graph_status.artifact_refs:too_many", errors)
+        self.assertIn("project_graph_status.artifact_refs[0].kind:forbidden_external_ref", errors)
+        self.assertIn("project_graph_status.analysis_ref.path:absolute_or_unsafe", errors)
+        self.assertIn("project_graph_status.unsupported_languages[0].raw_source:unknown", errors)
+        self.assertIn("project_graph_status.top_gaps:too_many", errors)
+        self.assertIn("project_graph_status:contains_local_path", errors)
+
     def test_metrics_loop_packet_validation_rejects_oversized_external_or_apply_actions(self):
         oversized = self._valid_metrics_loop_packet()
         oversized["report_refs"] = [
@@ -448,6 +508,49 @@ class CodexRuntimeRunnerContractsTest(unittest.TestCase):
             },
             "automation_policy": "candidate_only",
             "source_policy": "generated summaries are not source of truth",
+        }
+
+    def _valid_project_graph_status(self):
+        return {
+            "schema_version": 1,
+            "write_policy": "read_only",
+            "status": "current",
+            "freshness": {
+                "status": "current",
+                "scan_id": "scan-synthetic",
+                "previous_scan_id": "",
+                "as_of": "2026-06-01T00:00:00+00:00",
+            },
+            "counts": {
+                "nodes": 11,
+                "edges": 10,
+                "observations": 21,
+                "omitted_nodes": 0,
+            },
+            "unsupported_languages": [
+                {"language": "typescript", "file_count": 2, "status": "file_only"}
+            ],
+            "artifact_refs": [
+                {
+                    "kind": "staged_artifact",
+                    "path": ".codex/product-agent-os/project-code-graph.json",
+                    "digest": "sha256:" + "a" * 64,
+                }
+            ],
+            "analysis_ref": {
+                "kind": "staged_artifact",
+                "path": ".codex/product-agent-os/project-graph-analysis.md",
+                "digest": "sha256:" + "b" * 64,
+            },
+            "top_gaps": [
+                {
+                    "id": "unsupported-typescript",
+                    "severity": "medium",
+                    "safe_next_action": "Read TypeScript source files directly before impact claims.",
+                }
+            ],
+            "safe_next_action": "Use graph as orientation only; read source files before edits.",
+            "source_policy": "generated graph is not source of truth",
         }
 
     def _valid_question_queue(self):

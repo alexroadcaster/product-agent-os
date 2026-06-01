@@ -240,6 +240,77 @@ class ProjectGraphCliTest(unittest.TestCase):
             previous = json.loads(backup.read_text(encoding="utf-8"))
             self.assertIn("file:first.py", {node["id"] for node in previous["nodes"]})
 
+    def test_query_cli_reads_staged_graph_without_workspace_writes_or_source_leak(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "workspace"
+            stage_root = Path(tmp) / "stage"
+            (workspace / "app").mkdir(parents=True)
+            (workspace / "app" / "__init__.py").write_text("", encoding="utf-8")
+            (workspace / "app" / "worker.py").write_text("def run():\n    return 'ok'\n", encoding="utf-8")
+            (workspace / "app" / "main.py").write_text(
+                "from app.worker import run\n\n"
+                "def main():\n"
+                "    return run()\n",
+                encoding="utf-8",
+            )
+
+            stage = subprocess.run(
+                [sys.executable, str(SCRIPT), str(workspace), "--stage", str(stage_root)],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            before = sorted(path.relative_to(workspace).as_posix() for path in workspace.rglob("*"))
+            query = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--query",
+                    "neighbors",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--node-id",
+                    "function:app.main.main",
+                    "--max-results",
+                    "5",
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            after = sorted(path.relative_to(workspace).as_posix() for path in workspace.rglob("*"))
+
+            self.assertEqual(stage.returncode, 0, stage.stdout + stage.stderr)
+            self.assertEqual(query.returncode, 0, query.stdout + query.stderr)
+            self.assertEqual(query.stderr, "")
+            self.assertEqual(after, before)
+            payload = json.loads(query.stdout)
+            self.assertEqual(payload["result_kind"], "neighbors")
+            self.assertTrue(any(node["id"] == "function:app.worker.run" for node in payload["nodes"]))
+            self.assertNotIn("return 'ok'", query.stdout)
+            self.assertNotIn(str(workspace), query.stdout)
+
+    def test_query_cli_requires_graph_artifact_and_rejects_mixed_modes(self):
+        workspace = FIXTURES / "project-code-graph-minimal-python"
+        missing_graph = subprocess.run(
+            [sys.executable, str(SCRIPT), str(workspace), "--query", "status"],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        mixed = subprocess.run(
+            [sys.executable, str(SCRIPT), str(workspace), "--dry-run", "--query", "status", "--graph", "graph.json"],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+
+        self.assertEqual(missing_graph.returncode, 2)
+        self.assertEqual(json.loads(missing_graph.stdout)["error"], "query mode requires --graph")
+        self.assertEqual(mixed.returncode, 2)
+        self.assertIn("choose exactly one mode", json.loads(mixed.stdout)["error"])
+
 
 if __name__ == "__main__":
     unittest.main()

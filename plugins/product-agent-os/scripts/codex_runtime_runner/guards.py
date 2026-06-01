@@ -8,6 +8,7 @@ from codex_runtime_runner.contracts import (
     methodology_requires_approval,
     methodology_requires_automation_maturity,
     validate_methodology_packet,
+    validate_project_graph_status_packet,
     validate_question_queue,
 )
 from codex_runtime_runner.routes import ROUTES
@@ -38,6 +39,8 @@ def validate_route_packet(route: dict[str, Any]) -> list[str]:
             errors.append("ownership:parallelism_requires_handoff")
     if "question_queue" in route:
         errors.extend(validate_question_queue(route["question_queue"], "route.question_queue"))
+    if "project_graph_status" in route:
+        errors.extend(validate_project_graph_status_packet(route["project_graph_status"]))
     if route.get("lifecycle_state") == "learning_ready" and isinstance(route.get("methodology_packet"), dict):
         if methodology_requires_automation_maturity(route["methodology_packet"]):
             errors.append("automation:maturity_evidence_required")
