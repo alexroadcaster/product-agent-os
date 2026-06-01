@@ -2884,3 +2884,15 @@ relevance: "Task 25 project code graph Batch 17 docs/control-plane sync before B
 trust_level: "high"
 verification_status: "Backed by current-run RED/GREEN and broad verification: search-quality module was missing before implementation, fixture structural fields and docs/control-plane terms were absent before sync, focused graph/cockpit/search/docs suite ran 63 tests with OK, docs contract suite ran 17 tests with OK after restoring Batch 16 exact phrases, full unittest rerun ran 662 tests with OK in 671.629s using timeout_ms 1200000, fixture eval exited 0 for 91 fixture directories with renderer_file_count 191, transcript eval exited 0 with 17 sessions and 0 failures, Codex compatibility returned status compatible, docs check, strict MkDocs with disposable .mkdocs_task25_batch17_site and git diff hygiene exited 0. Batch 17 does not activate a static search index, live database/server, LLM, embedding, cross-encoder, semantic extraction or rationale/comment extraction. Commit, push and PR actions remain explicit-only."
 ```
+
+```yaml
+title: "Product-Agent OS Track 10 project code graph Batch 18 final verification closure"
+url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
+type: "internal documentation"
+status: "checked-in project source"
+checked_at: "2026-06-01"
+summary: "Track 10 Task 25 Batch 18 `T10-CG-V2-M31..M32` focused/full verification closure for the read-only Product-Agent OS project code graph and generated HTML cockpit baseline. Closure confirms scanner, schema, manifest, overlays, query packets, renderer, status/runtime integration, fixture eval, transcript eval, Codex compatibility, docs check, strict MkDocs, diff hygiene and explicit-only git boundary."
+relevance: "Final Task 25 baseline docs/control-plane closure before any future-gated Batch 19-23 static index, backend, semantic retrieval or LLM extraction work can be considered."
+trust_level: "high"
+verification_status: "Backed by Batch 18 focused/full verification: graph/cockpit/search suite ran 70 tests with OK, status/runtime suite ran 47 tests with OK, fixture/lifecycle/docs suite ran 86 tests with OK, full unittest ran 664 tests with OK using timeout_ms 1200000, fixture eval exited 0 for 91 fixture directories with renderer_file_count 191, transcript eval exited 0 with 17 sessions and 0 failures, Codex compatibility returned status compatible, docs check, strict MkDocs with disposable .mkdocs_task25_batch18_site and git diff hygiene exited 0. Batch 18 does not activate future-gated Batch 19-23 surfaces. Commit, push and PR actions remain explicit-only."
+```

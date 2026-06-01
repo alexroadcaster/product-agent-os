@@ -50,6 +50,8 @@ Task 25 Batch 13, Batch 14, Batch 15 and Batch 16 add a read-only project graph 
 
 The route boundary remains conservative: generated graph artifacts, runtime graph summaries, analysis reports and HTML cockpit views are review evidence only, the scanner and cockpit renderer do not mutate target workspaces, Graphology/Sigma assets must be local/vendor-only and the current Batch 16 renderer uses static fallback because no vendor bundle is packaged. Task 25 Batch 17 adds fixture structural fields, a search-quality eval loop for symbol recall, top-k/MRR, trace labels, affected-test precision and explicit thresholds, and future backend and semantic gates, but these local checks do not prove semantic dependency correctness. The static search index, live database/server, LLM, embedding, cross-encoder, semantic extraction and rationale/comment extraction remain outside the baseline unless explicit approval defines redaction, cache, token budget, eval threshold and rollback path.
 
+Task 25 Batch 18 `T10-CG-V2-M31..M32` closes this scenario baseline with focused/full verification. Batch 18 evidence records full unittest ran 664 tests with `OK`, fixture eval exited `0` for 91 fixture directories, transcript eval exited `0` with 17 sessions and 0 failures, Codex compatibility returned `status: compatible`, strict MkDocs and diff hygiene passed, and the explicit-only git boundary was preserved. Batch 19-23 capabilities remain future-gated and still require explicit approval before implementation.
+
 ## Scenario Matrix
 
 | usage_mode | When it applies | first response | minimum artifacts | approval boundary | verification gates |

@@ -16,6 +16,8 @@ Batch 16 adds `project_cockpit_model.py`, `project_graph_visual_model.py`, `proj
 
 Task 25 Batch 17 adds fixture structural fields and a search-quality eval loop for symbol recall, top-k/MRR, trace labels, affected-test precision, edge density and explicit thresholds. It also records future backend and semantic gates: the static search index, live database/server, LLM, embedding, cross-encoder, semantic extraction and rationale/comment extraction remain outside the baseline without explicit approval that defines redaction, cache, token budget, eval threshold and rollback path. This is not a complete semantic code intelligence layer. Generated graph artifacts, graph analysis reports and HTML cockpit views are review surfaces, not source of truth.
 
+Task 25 Batch 18 `T10-CG-V2-M31..M32` closes the project graph baseline with focused/full verification. Batch 18 evidence records that full unittest ran 664 tests with `OK`, fixture eval exited `0` for 91 fixture directories, transcript eval exited `0` with 17 sessions and 0 failures, Codex compatibility returned `status: compatible`, strict MkDocs and diff hygiene passed, and the explicit-only git boundary was preserved. Batch 19-23 remain future-gated and require explicit approval before static index, backend, semantic retrieval or LLM extraction work starts.
+
 ## Task 22 final documentation sync closure
 
 Task 22 final documentation sync closure фиксирует Product-Agent OS full stack как рабочий путь для реальных проектов: inspect workspace, отделить prompt intent от workspace evidence, stage infrastructure, получить approved merge, пройти Codex-only runtime routing, применить conditional methodology gates и потребовать evidence before completion.
