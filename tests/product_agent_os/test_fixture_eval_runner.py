@@ -158,6 +158,12 @@ class FixtureEvalRunnerTest(unittest.TestCase):
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_search_quality_thresholds_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_static_search_index_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_static_search_index_quality_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_local_backend_gate_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_backend_decision_packet_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_backend_disabled_by_default"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_backend_operational_controls_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_backend_graph_only_fallback_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_backend_no_production_or_source_truth_claims"])
         self.assertEqual(results["python-app"]["renderer_file_count"], 191)
         for check_name in [
             "methodology_catalog_contract_present",

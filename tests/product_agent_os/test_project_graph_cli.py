@@ -439,6 +439,155 @@ class ProjectGraphCliTest(unittest.TestCase):
             self.assertEqual(payload["status"], "blocked")
             self.assertIn("static_index:stale", payload["errors"])
 
+    def test_build_backend_cli_requires_approval_and_query_cli_uses_backend_store(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "workspace"
+            stage_root = Path(tmp) / "stage"
+            approval_path = Path(tmp) / "approval.json"
+            (workspace / "app").mkdir(parents=True)
+            (workspace / "app" / "__init__.py").write_text("", encoding="utf-8")
+            (workspace / "app" / "worker.py").write_text("def run():\n    return 'ok'\n", encoding="utf-8")
+            approval_path.write_text(json.dumps(self._backend_approval()), encoding="utf-8")
+
+            stage = subprocess.run(
+                [sys.executable, str(SCRIPT), str(workspace), "--stage", str(stage_root)],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            missing_approval = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--build-backend",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--stage",
+                    str(stage_root),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            backend = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--build-backend",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--stage",
+                    str(stage_root),
+                    "--backend-approval",
+                    str(approval_path),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            query = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--query",
+                    "search",
+                    "--backend",
+                    str(stage_root / ".codex" / "product-agent-os" / "project-code-graph-backend.json"),
+                    "--text",
+                    "worker run",
+                    "--max-results",
+                    "5",
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(stage.returncode, 0, stage.stdout + stage.stderr)
+            self.assertEqual(missing_approval.returncode, 1)
+            self.assertEqual(backend.returncode, 0, backend.stdout + backend.stderr)
+            self.assertEqual(query.returncode, 0, query.stdout + query.stderr)
+            missing_payload = json.loads(missing_approval.stdout)
+            backend_payload = json.loads(backend.stdout)
+            query_payload = json.loads(query.stdout)
+            self.assertEqual(missing_payload["rendered_artifacts"]["status"], "approval_required")
+            self.assertEqual(backend_payload["rendered_artifacts"]["mode"], "build-backend")
+            self.assertEqual(backend_payload["rendered_artifacts"]["server_status"], "disabled_by_default")
+            self.assertEqual(query_payload["query_backend"], "local_file_store")
+            self.assertEqual(query_payload["nodes"][0]["id"], "function:app.worker.run")
+            self.assertNotIn(str(workspace), backend.stdout + query.stdout)
+
+    def test_disable_backend_cli_removes_generated_store_without_touching_workspace(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "workspace"
+            stage_root = Path(tmp) / "stage"
+            approval_path = Path(tmp) / "approval.json"
+            (workspace / "app").mkdir(parents=True)
+            (workspace / "app" / "__init__.py").write_text("", encoding="utf-8")
+            (workspace / "app" / "worker.py").write_text("def run():\n    return 'ok'\n", encoding="utf-8")
+            approval_path.write_text(json.dumps(self._backend_approval()), encoding="utf-8")
+
+            stage = subprocess.run(
+                [sys.executable, str(SCRIPT), str(workspace), "--stage", str(stage_root)],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            backend = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--build-backend",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--stage",
+                    str(stage_root),
+                    "--backend-approval",
+                    str(approval_path),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            disable = subprocess.run(
+                [sys.executable, str(SCRIPT), str(workspace), "--disable-backend", "--stage", str(stage_root)],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(stage.returncode, 0, stage.stdout + stage.stderr)
+            self.assertEqual(backend.returncode, 0, backend.stdout + backend.stderr)
+            self.assertEqual(disable.returncode, 0, disable.stdout + disable.stderr)
+            payload = json.loads(disable.stdout)
+            self.assertEqual(payload["rendered_artifacts"]["status"], "disabled")
+            self.assertEqual(payload["rendered_artifacts"]["fallback"], "graph_only_query_mode")
+            self.assertFalse((stage_root / ".codex" / "product-agent-os" / "project-code-graph-backend.json").exists())
+
+    def _backend_approval(self) -> dict:
+        return {
+            "explicit_approval": True,
+            "storage_path": ".codex/product-agent-os/project-code-graph-backend.json",
+            "port_policy": {"host": "127.0.0.1", "port": 0, "mode": "disabled_by_default"},
+            "process_lifecycle": {
+                "server_enabled_by_default": False,
+                "start_requires_explicit_command": True,
+                "pid_path": ".codex/product-agent-os/project-code-graph-backend.pid",
+            },
+            "auth_boundary": {"local_only": True, "write_controls": False},
+            "cleanup": {"delete_generated_store": True},
+            "logging": {
+                "log_path": ".codex/product-agent-os/project-code-graph-backend.log",
+                "redacted": True,
+            },
+            "performance_threshold": {"max_query_ms": 250, "max_payload_tokens": 4000},
+            "rollback_path": "delete .codex/product-agent-os/project-code-graph-backend.json",
+        }
+
 
 if __name__ == "__main__":
     unittest.main()

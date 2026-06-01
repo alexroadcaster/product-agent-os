@@ -12,6 +12,12 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from codex_runtime_runner.redaction import redact_payload  # noqa: E402
 from product_agent_os.project_code_graph import PROJECT_GRAPH_TARGET, build_project_code_graph, graph_to_jsonl  # noqa: E402
+from product_agent_os.project_graph_backend import (  # noqa: E402
+    disable_local_query_backend,
+    handle_backend_api_request,
+    load_local_query_backend_store,
+    stage_local_query_backend,
+)
 from product_agent_os.project_graph_index import load_static_search_index, stage_project_graph_search_index  # noqa: E402
 from product_agent_os.project_graph_queries import load_graph_artifact, query_project_graph  # noqa: E402
 
@@ -26,8 +32,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--stage", help="Write graph artifacts to this explicit stage directory.")
     parser.add_argument("--query", help="Run a bounded query against an existing graph artifact.")
     parser.add_argument("--build-index", action="store_true", help="Build or reuse an offline static search index from --graph.")
+    parser.add_argument("--build-backend", action="store_true", help="Stage a disabled-by-default local query backend store from --graph.")
+    parser.add_argument("--disable-backend", action="store_true", help="Delete the generated local query backend store from --stage.")
     parser.add_argument("--graph", help="Path to project-code-graph.json or project-code-graph.jsonl for query mode.")
     parser.add_argument("--index", help="Optional project-code-graph-search-index.json for indexed search query mode.")
+    parser.add_argument("--backend", help="Optional project-code-graph-backend.json for backend query mode.")
+    parser.add_argument("--backend-approval", help="JSON approval packet for --build-backend.")
     parser.add_argument("--node-id", help="Source node id for graph query mode.")
     parser.add_argument("--target-id", help="Target node id for graph path/trace query mode.")
     parser.add_argument("--text", help="Search text for graph query mode.")
@@ -43,38 +53,31 @@ def main(argv: list[str] | None = None) -> int:
 
     mode_count = (
         int(bool(args.dry_run))
-        + int(bool(args.stage) and not args.build_index)
+        + int(bool(args.stage) and not args.build_index and not args.build_backend and not args.disable_backend)
         + int(bool(args.query))
         + int(bool(args.build_index))
+        + int(bool(args.build_backend))
+        + int(bool(args.disable_backend))
     )
     if mode_count != 1:
-        return _print_error("choose exactly one mode: --dry-run, --stage, or --query", exit_code=2)
+        return _print_error("choose exactly one mode: --dry-run, --stage, --query, --build-index, --build-backend, or --disable-backend", exit_code=2)
 
     try:
         if args.query:
+            if args.backend:
+                store = load_local_query_backend_store(args.backend)
+                request = _query_request(args)
+                packet = handle_backend_api_request(
+                    store,
+                    {"method": "POST", "path": "/query", "body": request},
+                )
+                print(json.dumps(_redacted_payload(packet), indent=2, sort_keys=True))
+                return 0 if packet.get("status") != "blocked" else 1
             if not args.graph:
                 raise ProjectGraphCliError("query mode requires --graph")
             graph = load_graph_artifact(Path(args.graph))
             static_index = load_static_search_index(args.index) if args.index else None
-            request = {
-                "query": args.query,
-                "node_id": args.node_id,
-                "target_id": args.target_id,
-                "text": args.text,
-                "max_results": args.max_results,
-                "max_depth": args.max_depth,
-                "max_tokens": args.max_tokens,
-            }
-            if args.hub_threshold is not None:
-                request["hub_threshold"] = args.hub_threshold
-            if args.node_type:
-                request["node_types"] = args.node_type
-            if args.edge_type:
-                request["edge_types"] = args.edge_type
-            if args.confidence:
-                request["confidence"] = args.confidence
-            if args.path_prefix:
-                request["path_prefixes"] = args.path_prefix
+            request = _query_request(args)
             packet = query_project_graph(
                 graph,
                 {key: value for key, value in request.items() if value not in (None, [], "")},
@@ -98,6 +101,43 @@ def main(argv: list[str] | None = None) -> int:
                 raise ProjectGraphCliError(str(exc)) from exc
             print(json.dumps(_redacted_payload(result), indent=2, sort_keys=True))
             return 0 if result.get("rendered_artifacts", {}).get("status") == "ready" else 1
+        if args.build_backend:
+            if not args.graph:
+                raise ProjectGraphCliError("build-backend mode requires --graph")
+            if not args.stage:
+                raise ProjectGraphCliError("build-backend mode requires --stage")
+            workspace = Path(args.workspace).resolve()
+            if not workspace.exists():
+                raise ProjectGraphCliError("workspace does not exist")
+            if not workspace.is_dir():
+                raise ProjectGraphCliError("workspace is not a directory")
+            approval = _load_json_file(args.backend_approval) if args.backend_approval else None
+            try:
+                result = stage_local_query_backend(
+                    Path(args.graph),
+                    Path(args.stage),
+                    workspace=workspace,
+                    approval=approval,
+                    static_index_artifact=Path(args.index) if args.index else None,
+                )
+            except ValueError as exc:
+                raise ProjectGraphCliError(str(exc)) from exc
+            print(json.dumps(_redacted_payload(result), indent=2, sort_keys=True))
+            return 0 if result.get("rendered_artifacts", {}).get("status") == "ready" else 1
+        if args.disable_backend:
+            if not args.stage:
+                raise ProjectGraphCliError("disable-backend mode requires --stage")
+            workspace = Path(args.workspace).resolve()
+            if not workspace.exists():
+                raise ProjectGraphCliError("workspace does not exist")
+            if not workspace.is_dir():
+                raise ProjectGraphCliError("workspace is not a directory")
+            try:
+                result = disable_local_query_backend(Path(args.stage), workspace=workspace)
+            except ValueError as exc:
+                raise ProjectGraphCliError(str(exc)) from exc
+            print(json.dumps(_redacted_payload(result), indent=2, sort_keys=True))
+            return 0
         if args.dry_run:
             workspace = Path(args.workspace).resolve()
             if not workspace.exists():
@@ -123,6 +163,36 @@ def main(argv: list[str] | None = None) -> int:
 
 class ProjectGraphCliError(RuntimeError):
     pass
+
+
+def _query_request(args: argparse.Namespace) -> dict[str, Any]:
+    request = {
+        "query": args.query,
+        "node_id": args.node_id,
+        "target_id": args.target_id,
+        "text": args.text,
+        "max_results": args.max_results,
+        "max_depth": args.max_depth,
+        "max_tokens": args.max_tokens,
+    }
+    if args.hub_threshold is not None:
+        request["hub_threshold"] = args.hub_threshold
+    if args.node_type:
+        request["node_types"] = args.node_type
+    if args.edge_type:
+        request["edge_types"] = args.edge_type
+    if args.confidence:
+        request["confidence"] = args.confidence
+    if args.path_prefix:
+        request["path_prefixes"] = args.path_prefix
+    return {key: value for key, value in request.items() if value not in (None, [], "")}
+
+
+def _load_json_file(path: str) -> dict[str, Any]:
+    payload = json.loads(Path(path).read_text(encoding="utf-8"))
+    if not isinstance(payload, dict):
+        raise ProjectGraphCliError("approval packet must be a JSON object")
+    return payload
 
 
 def stage_project_code_graph(workspace: Path, stage_root: Path) -> dict[str, Any]:

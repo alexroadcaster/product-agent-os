@@ -34,7 +34,15 @@ from product_agent_os.project_code_graph import (  # noqa: E402
     build_project_code_graph,
     build_synthetic_project_graph_from_fixture,
 )
+from product_agent_os.project_graph_backend import (  # noqa: E402
+    LOCAL_BACKEND_TARGET,
+    build_local_query_backend_store,
+    evaluate_backend_query_contract,
+    handle_backend_api_request,
+    validate_local_query_backend_store,
+)
 from product_agent_os.project_graph_index import build_static_search_index, query_static_search_index  # noqa: E402
+from product_agent_os.project_graph_queries import query_project_graph  # noqa: E402
 from product_agent_os.project_graph_renderer import render_project_graph_cockpit  # noqa: E402
 from product_agent_os.project_graph_search_quality import evaluate_project_graph_search_quality  # noqa: E402
 from product_agent_os.question_protocol import (  # noqa: E402
@@ -2000,6 +2008,20 @@ def _expected_checks(
         checks["project_graph_static_search_index_quality_present"] = (
             _project_graph_static_search_index_quality_present()
         )
+        checks["project_graph_local_backend_gate_present"] = _project_graph_local_backend_gate_present()
+        checks["project_graph_backend_decision_packet_present"] = (
+            _project_graph_backend_decision_packet_present()
+        )
+        checks["project_graph_backend_disabled_by_default"] = _project_graph_backend_disabled_by_default()
+        checks["project_graph_backend_operational_controls_present"] = (
+            _project_graph_backend_operational_controls_present()
+        )
+        checks["project_graph_backend_graph_only_fallback_present"] = (
+            _project_graph_backend_graph_only_fallback_present()
+        )
+        checks["project_graph_backend_no_production_or_source_truth_claims"] = (
+            _project_graph_backend_no_production_or_source_truth_claims()
+        )
         checks["project_graph_future_backend_semantic_gates_present"] = (
             _project_graph_future_backend_semantic_gates_present()
         )
@@ -3660,6 +3682,132 @@ def _project_graph_static_search_index_quality_present() -> bool:
         and comparison.get("false_positive_rate") == 0.0
         and comparison.get("edge_density_delta") == 0.0
         and packet.get("failed_thresholds") == []
+    )
+
+
+def _project_graph_backend_approval() -> dict[str, Any]:
+    return {
+        "explicit_approval": True,
+        "storage_path": LOCAL_BACKEND_TARGET,
+        "port_policy": {"host": "127.0.0.1", "port": 0, "mode": "disabled_by_default"},
+        "process_lifecycle": {
+            "server_enabled_by_default": False,
+            "start_requires_explicit_command": True,
+            "pid_path": ".codex/product-agent-os/project-code-graph-backend.pid",
+        },
+        "auth_boundary": {"local_only": True, "write_controls": False},
+        "cleanup": {"delete_generated_store": True},
+        "logging": {
+            "log_path": ".codex/product-agent-os/project-code-graph-backend.log",
+            "redacted": True,
+        },
+        "performance_threshold": {"max_query_ms": 250, "max_payload_tokens": 4000},
+        "rollback_path": f"delete {LOCAL_BACKEND_TARGET}",
+    }
+
+
+def _project_graph_backend_store() -> dict[str, Any]:
+    return build_local_query_backend_store(
+        _project_graph_sample(),
+        static_index=_project_graph_static_index(),
+        approval=_project_graph_backend_approval(),
+    )
+
+
+def _project_graph_local_backend_gate_present() -> bool:
+    store = _project_graph_backend_store()
+    query = handle_backend_api_request(
+        store,
+        {"method": "POST", "path": "/query", "body": {"query": "search", "text": "worker run", "max_results": 3}},
+    )
+    payload = json.dumps([store, query], sort_keys=True).lower()
+    return (
+        validate_local_query_backend_store(store).get("ok") is True
+        and store.get("artifact_kind") == "project_graph_local_query_backend"
+        and store.get("approval_boundary") == "batch20_explicit_local_backend_gate_no_active_server_default"
+        and store.get("source_boundary") == "graph_and_static_index_artifacts_only_raw_source_excluded"
+        and query.get("query_backend") == "local_file_store"
+        and query.get("status") == "ok"
+        and "return 'ok'" not in payload
+        and "c:\\users" not in payload
+    )
+
+
+def _project_graph_backend_decision_packet_present() -> bool:
+    store = _project_graph_backend_store()
+    approval = _project_graph_backend_approval()
+    required_approval_fields = {
+        "explicit_approval",
+        "storage_path",
+        "port_policy",
+        "process_lifecycle",
+        "auth_boundary",
+        "cleanup",
+        "logging",
+        "performance_threshold",
+        "rollback_path",
+    }
+    return (
+        required_approval_fields.issubset(approval)
+        and store.get("approval_boundary") == "batch20_explicit_local_backend_gate_no_active_server_default"
+        and store.get("storage", {}).get("storage_path") == LOCAL_BACKEND_TARGET
+        and store.get("performance_threshold", {}).get("max_query_ms") == 250
+    )
+
+
+def _project_graph_backend_disabled_by_default() -> bool:
+    lifecycle = _project_graph_backend_store().get("server_lifecycle", {})
+    return (
+        lifecycle.get("server_status") == "disabled_by_default"
+        and lifecycle.get("active_process") is False
+        and lifecycle.get("host") == "127.0.0.1"
+        and lifecycle.get("port") == 0
+        and lifecycle.get("start_requires_explicit_command") is True
+    )
+
+
+def _project_graph_backend_operational_controls_present() -> bool:
+    store = _project_graph_backend_store()
+    eval_packet = evaluate_backend_query_contract(
+        store,
+        [{"query": "search", "text": "worker", "max_results": 3}],
+        thresholds={"max_query_ms": 250, "max_payload_tokens": 4000},
+    )
+    return (
+        store.get("api_contract", {}).get("stable_json_errors") is True
+        and store.get("api_contract", {}).get("external_network_dependency") is False
+        and store.get("storage", {}).get("cleanup_command") == f"delete {LOCAL_BACKEND_TARGET}"
+        and store.get("server_lifecycle", {}).get("log_path") == ".codex/product-agent-os/project-code-graph-backend.log"
+        and eval_packet.get("status") == "ok"
+        and eval_packet.get("concurrency", {}).get("deterministic_read_results") is True
+    )
+
+
+def _project_graph_backend_graph_only_fallback_present() -> bool:
+    store = _project_graph_backend_store()
+    graph_packet = query_project_graph(_project_graph_sample(), {"query": "search", "text": "worker", "max_results": 3})
+    return (
+        store.get("rollback", {}).get("fallback") == "graph_only_query_mode"
+        and graph_packet.get("status") == "ok"
+        and graph_packet.get("result_kind") == "search"
+    )
+
+
+def _project_graph_backend_no_production_or_source_truth_claims() -> bool:
+    store = _project_graph_backend_store()
+    payload = json.dumps(store, sort_keys=True).lower()
+    forbidden = [
+        "production server",
+        "source of truth database",
+        "server_status\": \"running",
+        "active_process\": true",
+        "0.0.0.0",
+        "https://",
+        "http://",
+    ]
+    return (
+        store.get("generated_view_policy") == "local_backend_store_is_generated_cache_not_source_of_truth"
+        and not any(term in payload for term in forbidden)
     )
 
 

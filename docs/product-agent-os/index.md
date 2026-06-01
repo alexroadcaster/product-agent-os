@@ -2,7 +2,9 @@
 
 Source status: `official + experiment`  
 
-Task 25 Batch 19 `T10-CG-V2-M33..M38` implements the approved offline static search index at `.codex/product-agent-os/project-code-graph-search-index.json`. The index is generated, cache-bound and not source of truth; it builds from graph artifact only, supports optional indexed search, blocks stale indexes, records cache hit/miss/invalidation and has a rollback/disable path. Batch 19 uses no live database/server, LLM, embedding or cross-encoder. Batch 20-23 remain future-gated.
+Task 25 Batch 19 `T10-CG-V2-M33..M38` implements the approved offline static search index at `.codex/product-agent-os/project-code-graph-search-index.json`. The index is generated, cache-bound and not source of truth; it builds from graph artifact only, supports optional indexed search, blocks stale indexes, records cache hit/miss/invalidation and has a rollback/disable path. Batch 19 uses no live database/server, LLM, embedding or cross-encoder.
+
+Task 25 Batch 20 `T10-CG-V2-M39..M44` implements the approved local query backend gate in `project_graph_backend.py`. The gate creates a generated local file-store at `.codex/product-agent-os/project-code-graph-backend.json` only from graph and static-index artifacts, records `project_graph_local_backend_gate_present`, requires an approval decision packet with storage path, port policy, process lifecycle, auth boundary, cleanup, logging, performance threshold and rollback path, and keeps server mode disabled by default. The backend store is not source of truth, no production server is started, read-only API handling is contract-only, graph-only fallback remains available, and Batch 21-23 remain future-gated.
 
 ## Task 24 Self-Verification And Modernization Loop
 
@@ -18,7 +20,7 @@ Batch 16 adds `project_cockpit_model.py`, `project_graph_visual_model.py`, `proj
 
 Task 25 Batch 17 adds fixture structural fields and a search-quality eval loop for symbol recall, top-k/MRR, trace labels, affected-test precision, edge density and explicit thresholds. It also records future backend and semantic gates: the static search index, live database/server, LLM, embedding, cross-encoder, semantic extraction and rationale/comment extraction remain outside the baseline without explicit approval that defines redaction, cache, token budget, eval threshold and rollback path. This is not a complete semantic code intelligence layer. Generated graph artifacts, graph analysis reports and HTML cockpit views are review surfaces, not source of truth.
 
-Task 25 Batch 18 `T10-CG-V2-M31..M32` closes the project graph baseline with focused/full verification. Batch 18 evidence records that full unittest ran 664 tests with `OK`, fixture eval exited `0` for 91 fixture directories, transcript eval exited `0` with 17 sessions and 0 failures, Codex compatibility returned `status: compatible`, strict MkDocs and diff hygiene passed, and the explicit-only git boundary was preserved. Batch 19 implements the approved offline static search index; Batch 20-23 remain future-gated and require explicit approval before live backend, semantic retrieval or LLM extraction work starts.
+Task 25 Batch 18 `T10-CG-V2-M31..M32` closes the project graph baseline with focused/full verification. Batch 18 evidence records that full unittest ran 664 tests with `OK`, fixture eval exited `0` for 91 fixture directories, transcript eval exited `0` with 17 sessions and 0 failures, Codex compatibility returned `status: compatible`, strict MkDocs and diff hygiene passed, and the explicit-only git boundary was preserved. Batch 19 implements the approved offline static search index; Batch 20 implements the approved disabled-by-default local backend gate; Batch 21-23 remain future-gated and require explicit approval before semantic retrieval or LLM extraction work starts.
 
 ## Task 22 final documentation sync closure
 

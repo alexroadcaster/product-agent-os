@@ -456,7 +456,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         backlog_terms = [
             "Task 25 Future-Gated Extension Matrix",
             "| `done` | `T10-CG-V2-M33..M38` offline static search index |",
-            "| `pending` | `T10-CG-V2-M39..M44` local query backend and live database/server gate |",
+            "| `done` | `T10-CG-V2-M39..M44` local query backend and live database/server gate |",
             "| `pending` | `T10-CG-V2-M45..M51` semantic retrieval, embeddings and cross-encoder eval |",
             "| `pending` | `T10-CG-V2-M52..M57` LLM semantic extraction and rationale/comment proposals |",
             "| `pending` | `T10-CG-V2-M58..M62` future extension verification, rollback and closure |",
@@ -467,7 +467,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 self.assertIn(expected, backlog)
 
         control_terms = [
-            "future-gated extension matrix `T10-CG-V2-M39..M62`",
+            "extension matrix `T10-CG-V2-M39..M62`",
             "Batch 19 offline static search index",
             "approved offline static search index",
             "Batch 20 local query backend/live database-server gate",
@@ -480,6 +480,89 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         for expected in control_terms:
             with self.subTest(control_plane=expected):
                 self.assertIn(expected, control_plane)
+
+    def test_track10_task25_batch20_local_backend_gate_is_synced(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        documents = {
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+            "product_index": (PRODUCT_AGENT_OS / "index.md").read_text(encoding="utf-8"),
+            "technical": (PRODUCT_AGENT_OS / "technical.md").read_text(encoding="utf-8"),
+            "scenarios": (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8"),
+        }
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+        }
+
+        registry_terms = [
+            "Product-Agent OS Track 10 project code graph Batch 20 local query backend gate",
+            "T10-CG-V2-M39..M44",
+            "project_graph_backend.py",
+            "project_graph_local_backend_gate_present",
+            "disabled by default",
+            "graph-only fallback",
+            "verification_status:",
+        ]
+        for expected in registry_terms:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        backlog_terms = [
+            "| `done` | `T10-CG-V2-M39..M44` local query backend and live database/server gate |",
+            "Batch 20 explicit approval",
+            "generated local file-store",
+            "not source of truth",
+            "server mode is disabled by default",
+            "no production server",
+            "graph-only fallback",
+            "rollback/disable path is deleting `.codex/product-agent-os/project-code-graph-backend.json`",
+            "Batch 21-23 remain future-gated",
+        ]
+        for expected in backlog_terms:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        docs_terms = [
+            "Task 25 Batch 20",
+            "T10-CG-V2-M39..M44",
+            "project_graph_backend.py",
+            "project_graph_local_backend_gate_present",
+            "approval decision packet",
+            "storage path, port policy, process lifecycle, auth boundary, cleanup, logging, performance threshold and rollback path",
+            "disabled by default",
+            "generated local file-store",
+            "not source of truth",
+            "graph-only fallback",
+            "no production server",
+        ]
+        for document, text in documents.items():
+            for expected in docs_terms:
+                with self.subTest(document=document, term=expected):
+                    self.assertIn(expected, text)
+
+        control_terms = [
+            "Task 25 Batch 20",
+            "T10-CG-V2-M39..M44",
+            "project_graph_backend.py",
+            "project_graph_local_backend_gate_present",
+            "approval decision packet",
+            "storage path, port policy, process lifecycle, auth boundary, cleanup, logging, performance threshold and rollback path",
+            "disabled by default",
+            "generated local file-store",
+            "not source of truth",
+            "graph-only fallback",
+            "no production server",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for filename, text in control_plane.items():
+            for expected in control_terms:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
 
     def test_track10_task25_batch18_final_closure_is_synced(self):
         registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
