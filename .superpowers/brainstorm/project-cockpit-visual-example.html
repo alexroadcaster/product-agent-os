@@ -83,6 +83,44 @@
       background: rgba(37, 99, 235, 0.34);
       color: #ffffff;
     }
+    .section-nav {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin: -4px 0 16px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.62);
+    }
+    .section-nav[hidden] { display: none; }
+    .section-nav .label {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-right: 4px;
+    }
+    .section-nav button {
+      border: 1px solid var(--line-strong);
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: var(--surface);
+      color: var(--ink);
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .section-nav button:hover {
+      border-color: rgba(37, 99, 235, 0.55);
+      color: var(--blue);
+    }
+    .tab-page {
+      scroll-margin-top: 16px;
+    }
+    .tab-page:not([hidden]) + .tab-page:not([hidden]) {
+      margin-top: 16px;
+    }
     .sidebar-note {
       border: 1px solid rgba(229, 231, 235, 0.16);
       border-radius: 8px;
@@ -627,7 +665,8 @@
       .main { padding: 14px; }
       .topbar, .panel-head { flex-direction: column; align-items: flex-start; }
       .actions { justify-content: flex-start; }
-      .nav, .kpi-grid, .card-grid, .grid.three { grid-template-columns: 1fr; }
+      .nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .kpi-grid, .card-grid, .grid.three { grid-template-columns: 1fr; }
       .feedback-loop { grid-template-columns: 1fr; }
       .graph-panel { height: 430px; }
       .graph-panel.is-expanded { inset: 0; border-radius: 0; }
@@ -657,15 +696,15 @@
         <strong>Product-Agent OS Cockpit</strong>
         <span>Визуальный source-of-truth слой поверх фактического проекта Codex Docs.</span>
       </div>
-      <nav class="nav" aria-label="Cockpit tabs">
-        <button class="active" data-tab="overview">Overview</button>
-        <button data-tab="site">Docs / Site</button>
-        <button data-tab="pipeline">Docs Pipeline</button>
-        <button data-tab="architecture">Architecture</button>
-        <button data-tab="graph">Project Graph</button>
-        <button data-tab="contracts">Contracts</button>
-        <button data-tab="metrics">Metrics</button>
-        <button data-tab="ledger">Proposal Ledger</button>
+      <nav class="nav" aria-label="Cockpit pages">
+        <button class="active" data-page="overview">Overview</button>
+        <button data-page="map">Project Map</button>
+        <button data-page="docs">Docs &amp; Sources</button>
+        <button data-page="code">Code Intelligence</button>
+        <button data-page="contracts">Contracts</button>
+        <button data-page="quality">Quality &amp; Metrics</button>
+        <button data-page="ops">Operations &amp; Risk</button>
+        <button data-page="ledger">Proposal Ledger</button>
       </nav>
       <div class="sidebar-note">
         <div class="label">Current project</div>
@@ -690,7 +729,9 @@
         </div>
       </header>
 
-      <section id="tab-overview" class="tab-page">
+      <nav id="sectionNav" class="section-nav" aria-label="Page sections"></nav>
+
+      <section id="tab-overview" class="tab-page" data-page="overview" data-section-label="Overview">
         <section class="kpi-grid" aria-label="Project facts">
           <div class="kpi">
           <span class="label">Docs Markdown</span>
@@ -797,7 +838,7 @@
         </div>
       </section>
 
-      <section id="tab-site" class="tab-page" hidden>
+      <section id="tab-site" class="tab-page" data-page="docs" data-section-label="Docs / Site" hidden>
         <div class="grid two">
           <article class="panel">
             <div class="panel-head">
@@ -900,7 +941,7 @@
         </div>
       </section>
 
-      <section id="tab-pipeline" class="tab-page" hidden>
+      <section id="tab-pipeline" class="tab-page" data-page="docs" data-section-label="Docs Pipeline" hidden>
         <article class="panel">
           <div class="panel-head">
             <div>
@@ -1031,7 +1072,99 @@
         </div>
       </section>
 
-      <section id="tab-architecture" class="tab-page" hidden>
+      <section id="tab-flowmap" class="tab-page" data-page="map" data-section-label="Flow Map" hidden>
+        <div class="grid two">
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>End-To-End Project Flow</h2>
+                <p>Практическая карта Product-Agent OS: от первого чтения проекта до проверенного артефакта и proposal ledger записи.</p>
+              </div>
+              <span class="pill info">0 to verified change</span>
+            </div>
+            <table>
+              <thead><tr><th>Step</th><th>Primary source</th><th>Output packet</th><th>Agent action</th></tr></thead>
+              <tbody>
+                <tr><td>1. Workspace scan</td><td><code>discovery.py</code>, root docs, manifests</td><td>workspace profile, signals, risks</td><td>Read only, classify use-case and source boundaries.</td></tr>
+                <tr><td>2. Methodology fit</td><td><code>methodology_audit.py</code>, methodology catalog</td><td>applicability, gaps, owner questions</td><td>Route to requirements, plan, tests or stop condition.</td></tr>
+                <tr><td>3. Control-plane draft</td><td><code>REQUIREMENTS.md</code>, <code>PLAN.md</code>, <code>TEST.md</code>, <code>EVALS.md</code></td><td>task matrix and verification route</td><td>Keep scope, acceptance and rollback visible.</td></tr>
+                <tr><td>4. Focused slice</td><td>code graph seed, impacted files, tests</td><td>change packet and impact packet</td><td>Edit the smallest useful surface and preserve ownership.</td></tr>
+                <tr><td>5. Verification</td><td>focused tests, fixture eval, transcript eval, docs check</td><td>evidence record</td><td>Run the narrow gate first, then broad gates when blast radius requires it.</td></tr>
+                <tr><td>6. Documentation/site</td><td><code>docs/</code>, <code>mkdocs.yml</code>, <code>site/</code></td><td>docs registry, stale flags, source links</td><td>Update source docs, rebuild generated views only when needed.</td></tr>
+                <tr><td>7. Cockpit update</td><td>graph packet, source registry, runlog, evals</td><td>HTML navigation map</td><td>Show current state, source conflicts, next action and confidence.</td></tr>
+                <tr><td>8. Proposal ledger</td><td>approval boundary, changed targets, verification evidence</td><td>proposal or closure record</td><td>Never auto-apply browser actions; create reviewable proposals.</td></tr>
+              </tbody>
+            </table>
+          </article>
+
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Map Reading Path</h2>
+                <p>Что пользователь и агент должны увидеть в первые 30 секунд, не открывая десятки документов.</p>
+              </div>
+              <span class="pill ok">navigation first</span>
+            </div>
+            <div class="panel-body detail-list">
+              <div class="detail-box">
+                <h3>For the user</h3>
+                <p>Current project status, open risks, next safe action, what is source of truth, which generated views are stale and what changed recently.</p>
+              </div>
+              <div class="detail-box">
+                <h3>For the agent</h3>
+                <p>Use-case route, source priority, graph read order, impacted tests, approval gates and exact files that justify the current claim.</p>
+              </div>
+              <div class="detail-box">
+                <h3>For modernization</h3>
+                <p>Hotspots, high fan-in contracts, wide fan-out renderers, stale docs, weak eval coverage and proposed next slices.</p>
+              </div>
+              <div class="detail-box">
+                <h3>For safety</h3>
+                <p>Sandbox, approvals, external systems, generated-artifact boundary and no-secret/no-private-data rules stay visible beside the workflow.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="empty-space"></div>
+
+        <article class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Cockpit Flow Lanes</h2>
+              <p>Визуальная модель похожа на system flow из myPartners, но адаптирована под Codex project delivery.</p>
+            </div>
+          </div>
+          <div class="pipeline-flow">
+            <div class="pipeline-step">
+              <strong>Scan</strong>
+              <span>Read-only inventory, signals, roots, manifests.</span>
+            </div>
+            <div class="pipeline-step">
+              <strong>Decide</strong>
+              <span>Methodology gates, source conflicts, owner questions.</span>
+            </div>
+            <div class="pipeline-step">
+              <strong>Plan</strong>
+              <span>Task matrix, acceptance, rollback, verification.</span>
+            </div>
+            <div class="pipeline-step">
+              <strong>Build</strong>
+              <span>Focused slice, graph impact, ownership boundaries.</span>
+            </div>
+            <div class="pipeline-step">
+              <strong>Verify</strong>
+              <span>Focused checks, full suite, evals, browser QA.</span>
+            </div>
+            <div class="pipeline-step">
+              <strong>Map</strong>
+              <span>Docs/site registry, code graph, cockpit, ledger.</span>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section id="tab-architecture" class="tab-page" data-page="map" data-section-label="Architecture" hidden>
         <div class="grid two">
           <article class="panel">
             <div class="panel-head">
@@ -1082,7 +1215,7 @@
         </div>
       </section>
 
-      <section id="tab-graph" class="tab-page" hidden>
+      <section id="tab-graph" class="tab-page" data-page="code" data-section-label="Project Graph" hidden>
         <div class="grid main-detail">
           <article class="panel">
             <div class="panel-head">
@@ -1222,9 +1355,236 @@
             </div>
           </article>
         </div>
+        <div class="empty-space"></div>
+
+        <div class="grid two">
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Graph Scale Lenses</h2>
+                <p>Большой граф нельзя показывать как одну равноправную сеть. Cockpit должен переключать масштаб и сохранять один выбранный seed.</p>
+              </div>
+              <span class="pill info">1k / 5k / 10k nodes</span>
+            </div>
+            <table>
+              <thead><tr><th>Lens</th><th>Shows</th><th>Hidden by default</th><th>Best for</th></tr></thead>
+              <tbody>
+                <tr><td>Repository</td><td>packages, docs areas, tests, templates, generated artifacts</td><td>functions and low-degree files</td><td>Onboarding, project scale, modernization roadmap.</td></tr>
+                <tr><td>Module</td><td>imports, entrypoints, contracts, high fan-in tests</td><td>leaf helpers and repeated fixtures</td><td>Finding where to start reading for a task.</td></tr>
+                <tr><td>Symbol</td><td>classes, functions, CLI commands, public APIs</td><td>private helpers until selected</td><td>Impact analysis and targeted code review.</td></tr>
+                <tr><td>Evidence</td><td>tests, docs, eval fixtures, source registry records</td><td>unverified inferred edges</td><td>Proving whether a claim is supported.</td></tr>
+                <tr><td>Proposal</td><td>planned nodes, target files, risks, approvals, rollback</td><td>completed unrelated areas</td><td>Planning the next safe change.</td></tr>
+              </tbody>
+            </table>
+          </article>
+
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Large Graph Controls</h2>
+                <p>For 1000+ nodes, interaction must be query-first and cluster-first rather than hover-first.</p>
+              </div>
+              <span class="pill warn">planned</span>
+            </div>
+            <div class="panel-body detail-list">
+              <div class="detail-box">
+                <h3>Progressive disclosure</h3>
+                <p>Render clusters and hotspots first. Expand neighbors only after selection, with omitted counts and reason labels.</p>
+              </div>
+              <div class="detail-box">
+                <h3>Hub suppression</h3>
+                <p>Hide generic hubs such as test utilities, common constants and template registries until the user asks for them.</p>
+              </div>
+              <div class="detail-box">
+                <h3>Stable saved view</h3>
+                <p>URL/state packet stores selected node, lens, filters, zoom and stale graph manifest hash.</p>
+              </div>
+              <div class="detail-box">
+                <h3>Agent handoff</h3>
+                <p>Every visual selection can emit a compact packet: seed, neighbors, paths, affected tests, docs and exact source-read next step.</p>
+              </div>
+            </div>
+          </article>
+        </div>
       </section>
 
-      <section id="tab-contracts" class="tab-page" hidden>
+      <section id="tab-codeflow" class="tab-page" data-page="code" data-section-label="Code Flow" hidden>
+        <div class="grid two">
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Code Flow Read Orders</h2>
+                <p>Entry-point first reading paths for agents and humans. This page converts the graph into practical source-reading routes.</p>
+              </div>
+              <span class="pill info">read_order</span>
+            </div>
+            <table>
+              <thead><tr><th>Workflow</th><th>Start here</th><th>Then read</th><th>Stop condition</th></tr></thead>
+              <tbody>
+                <tr><td>Workspace discovery</td><td><code>discovery.py</code></td><td><code>methodology_audit.py</code>, <code>question_protocol.py</code>, <code>contracts.py</code></td><td>Discovery packet shape and owner questions are understood.</td></tr>
+                <tr><td>Methodology decision</td><td><code>methodology_audit.py</code></td><td><code>methodology_catalog.py</code>, <code>methodology_synthesis.py</code>, audit tests</td><td>Gate applicability, evidence and false-positive route are clear.</td></tr>
+                <tr><td>Generated infrastructure</td><td><code>infrastructure.py</code></td><td><code>templates.py</code>, <code>stage_manifest.py</code>, <code>merge_infrastructure.py</code></td><td>Staged-first write boundary and template ownership are clear.</td></tr>
+                <tr><td>Status dashboard</td><td><code>status_snapshot.py</code></td><td><code>status_dashboard.py</code>, <code>offline_artifact_safety.py</code></td><td>Generated-view-only and stale-evidence behavior are clear.</td></tr>
+                <tr><td>Metrics loop</td><td><code>agent_skill_metrics.py</code></td><td><code>agent_skill_metrics_report.py</code>, fixture eval checks, transcript cases</td><td>Scorecard, candidate and approval boundaries are clear.</td></tr>
+                <tr><td>Runtime runner</td><td><code>codex_runtime_runner/contracts.py</code></td><td><code>routes.py</code>, <code>guards.py</code>, <code>cli.py</code></td><td>Route packet, finish options and approval guards are clear.</td></tr>
+              </tbody>
+            </table>
+          </article>
+
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Agent Query Shortcuts</h2>
+                <p>The final cockpit should expose query packets that reduce broad file reads and keep raw source out of prompts by default.</p>
+              </div>
+              <span class="pill ok">token-saving</span>
+            </div>
+            <div class="panel-body detail-list">
+              <div class="detail-box">
+                <h3><code>read_order(seed)</code></h3>
+                <p>Returns the smallest useful sequence of files, symbols, tests and docs for a task. Example seed: <code>status_dashboard.py</code>.</p>
+              </div>
+              <div class="detail-box">
+                <h3><code>trace(source, target)</code></h3>
+                <p>Shows likely dependency or call path with confidence labels and failure packets when dynamic behavior is not statically provable.</p>
+              </div>
+              <div class="detail-box">
+                <h3><code>neighbors(node, depth)</code></h3>
+                <p>Lists imports, callers, tests, docs and generated artifacts near a selected node, bounded by packet size.</p>
+              </div>
+              <div class="detail-box">
+                <h3><code>hotspots()</code></h3>
+                <p>Ranks high fan-in, high fan-out, large, ambiguous or low-coverage areas for modernization and review planning.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="empty-space"></div>
+
+        <article class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Code Flow Examples</h2>
+              <p>How the final page should answer practical development questions without forcing a blind repository scan.</p>
+            </div>
+          </div>
+          <table>
+            <thead><tr><th>Question</th><th>Graph answer</th><th>Recommended next action</th><th>Risk</th></tr></thead>
+            <tbody>
+              <tr><td>Where do I add graph freshness?</td><td><code>stage_manifest.py</code> pattern, planned <code>project_graph_manifest.py</code>, status snapshot integration.</td><td>Implement Batch 13 manifest tests first.</td><td><span class="pill warn">stale evidence</span></td></tr>
+              <tr><td>Where do I add visual graph rendering?</td><td><code>status_dashboard.py</code> + <code>offline_artifact_safety.py</code> are renderer precedents; visual layer is planned in M75-M90.</td><td>Implement canonical graph before visual projection.</td><td><span class="pill risk">generated view boundary</span></td></tr>
+              <tr><td>What tests are likely affected by question routing?</td><td><code>test_question_protocol.py</code>, runtime runner route tests, transcript sessions.</td><td>Run focused tests before full unittest.</td><td><span class="pill info">bounded</span></td></tr>
+            </tbody>
+          </table>
+        </article>
+      </section>
+
+      <section id="tab-impact" class="tab-page" data-page="code" data-section-label="Change Impact" hidden>
+        <div class="grid two">
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Change Impact Explorer</h2>
+                <p>Impact view answers what a change is likely to touch: tests, docs, templates, runtime contracts and release evidence.</p>
+              </div>
+              <span class="pill warn">planned</span>
+            </div>
+            <table>
+              <thead><tr><th>Changed area</th><th>Likely impacted</th><th>Verification</th><th>Confidence</th></tr></thead>
+              <tbody>
+                <tr><td><code>methodology_audit.py</code></td><td>catalog tests, discovery tests, methodology report, lifecycle skills, fixture eval fields</td><td>focused audit/discovery/synthesis suite + fixture eval</td><td><span class="pill ok">static + tests</span></td></tr>
+                <tr><td><code>status_dashboard.py</code></td><td>offline artifact safety, status snapshot, dashboard no-external-assets checks</td><td>status dashboard tests + browser smoke</td><td><span class="pill ok">static</span></td></tr>
+                <tr><td><code>templates.py</code></td><td>infrastructure renderer, fixture renderer count, generated control-plane files</td><td>template/infrastructure tests + fixture eval</td><td><span class="pill warn">wide fan-out</span></td></tr>
+                <tr><td><code>codex_runtime_runner/routes.py</code></td><td>contracts, guards, CLI output, transcript first-response behavior</td><td>runtime route/contract/CLI tests + transcript eval</td><td><span class="pill ok">runtime contract</span></td></tr>
+                <tr><td><code>docs/product-agent-os/*.md</code></td><td>MkDocs site, source registry, docs tests, cockpit Docs/Site registry</td><td>docs test + <code>tools/check_docs.py</code> + MkDocs if nav-sensitive</td><td><span class="pill info">docs overlay</span></td></tr>
+              </tbody>
+            </table>
+          </article>
+
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Impact Packet</h2>
+                <p>Compact output intended for Codex context, PR review and proposal ledger records.</p>
+              </div>
+            </div>
+            <div class="panel-body detail-list">
+              <div class="detail-box">
+                <h3>Changed seeds</h3>
+                <p>Relative paths, graph node IDs, source spans and file fingerprints. No raw source bodies by default.</p>
+              </div>
+              <div class="detail-box">
+                <h3>Affected evidence</h3>
+                <p>Likely impacted tests, docs, contracts, templates, generated artifacts and runtime route packets with confidence labels.</p>
+              </div>
+              <div class="detail-box">
+                <h3>Omitted counts</h3>
+                <p>When the graph is large, show top-N results and explain what was omitted due to budget, hub suppression or stale graph status.</p>
+              </div>
+              <div class="detail-box">
+                <h3>Safe next action</h3>
+                <p>Focused verification command first; full verification only when shared contracts, runtime behavior or docs navigation changed.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="tab-sources" class="tab-page" data-page="docs" data-section-label="Source Conflicts" hidden>
+        <div class="grid two">
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Source Conflicts And Stale Claims</h2>
+                <p>Карта спорных мест: где cockpit должен предупреждать, что документ, HTML или generated view не совпадает с более сильным источником.</p>
+              </div>
+              <span class="pill warn">source priority</span>
+            </div>
+            <table>
+              <thead><tr><th>Claim area</th><th>Stronger source</th><th>Stale or weaker source</th><th>Next action</th></tr></thead>
+              <tbody>
+                <tr><td>Batch 12 closure</td><td><code>PLAN.md</code>, <code>TEST.md</code>, <code>EVALS.md</code>, source registry, top RUNLOG</td><td>old AGENTS/RUNLOG tail wording</td><td>Show resolved drift and link exact closure evidence.</td></tr>
+                <tr><td>Generated site freshness</td><td><code>docs/*.md</code>, <code>mkdocs.yml</code>, strict build evidence</td><td><code>site/*.html</code> when source mtime/hash is newer</td><td>Mark stale, suggest MkDocs rebuild, never claim source truth from site only.</td></tr>
+                <tr><td>Plugin scope</td><td><code>plugin.json</code>, Product-Agent OS docs, current manifest</td><td>old "idea to PR/release" wording</td><td>Show methodology intelligence, dashboard, metrics loop and graph roadmap.</td></tr>
+                <tr><td>Task 25 graph</td><td>Track 10 plan rows and future test evidence</td><td>visual mockup graph</td><td>Label current graph as simulated until scanner/query/render tests exist.</td></tr>
+                <tr><td>Verification baseline</td><td>latest RUNLOG/TEST command output</td><td>memory or older dashboard snapshot</td><td>Show date, command, timeout, result and whether full verification was current.</td></tr>
+                <tr><td>External tool readiness</td><td>approval records and local vendor manifest</td><td>CDN/demo references</td><td>Block success claims until local bundle/license/offline QA exists.</td></tr>
+              </tbody>
+            </table>
+          </article>
+
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Source Priority Rules</h2>
+                <p>Правило из myPartners переносим как cockpit invariant: пользователь видит не только статус, но и почему этому статусу можно верить.</p>
+              </div>
+              <span class="pill ok">trust model</span>
+            </div>
+            <div class="panel-body detail-list">
+              <div class="detail-box">
+                <h3>1. Code and tests</h3>
+                <p>Implementation modules, unit tests, fixture evals, transcript evals and browser QA are strongest for runtime behavior.</p>
+              </div>
+              <div class="detail-box">
+                <h3>2. Control plane</h3>
+                <p><code>AGENTS.md</code>, <code>PLAN.md</code>, <code>TEST.md</code>, <code>EVALS.md</code>, <code>RUNLOG.md</code> define durable rules, task state and verification evidence.</p>
+              </div>
+              <div class="detail-box">
+                <h3>3. Source registry and docs</h3>
+                <p>Source-backed claims, MkDocs pages, diagram atlas and Product-Agent OS docs explain behavior, but can lag code.</p>
+              </div>
+              <div class="detail-box">
+                <h3>4. Generated views</h3>
+                <p><code>site/</code>, dashboards, reports and this cockpit are navigation surfaces. They need manifest freshness to be trusted.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="tab-contracts" class="tab-page" data-page="contracts" data-section-label="Contracts" hidden>
         <div class="grid two">
           <article class="panel">
             <div class="panel-head">
@@ -1277,7 +1637,336 @@
         </div>
       </section>
 
-      <section id="tab-metrics" class="tab-page" hidden>
+      <section id="tab-atlas" class="tab-page" data-page="contracts" data-section-label="Contract Atlas" hidden>
+        <div class="grid two">
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Contract Atlas</h2>
+                <p>В Product-Agent OS аналог DB blueprint - это карта контрактов, пакетов и generated artifacts, которые связывают агента, документы и проверки.</p>
+              </div>
+              <span class="pill info">contracts as map</span>
+            </div>
+            <table>
+              <thead><tr><th>Contract</th><th>Source files</th><th>Consumers</th><th>Cockpit display</th></tr></thead>
+              <tbody>
+                <tr><td>Status snapshot</td><td><code>status_snapshot.py</code>, <code>status_dashboard.py</code></td><td>legacy dashboard, metrics page</td><td>latest baseline, stale status, verification age</td></tr>
+                <tr><td>Question protocol</td><td><code>question_protocol.py</code>, <code>question_ledger.py</code></td><td>runtime runner, owner-question flow</td><td>blocking questions, answer status, unresolved assumptions</td></tr>
+                <tr><td>Proposal ledger</td><td>planned module, Task 25 rows</td><td>cockpit UI, approval workflow, RUNLOG</td><td>proposal state, targets, approvals, rollback, evidence</td></tr>
+                <tr><td>Docs registry</td><td><code>mkdocs.yml</code>, <code>docs/</code>, source registry</td><td>Docs/Site page, stale scanner</td><td>title, source path, rendered path, source status, freshness</td></tr>
+                <tr><td>Code graph packet</td><td>planned scanner/schema/query modules</td><td>Project Graph, Code Flow, Impact</td><td>nodes, edges, confidence, read order, affected tests</td></tr>
+                <tr><td>Fixture eval records</td><td><code>run_fixture_eval.py</code>, fixture directories</td><td>Quality, Verification Gates</td><td>fixture count, renderer count, failed contracts, false-positive coverage</td></tr>
+              </tbody>
+            </table>
+          </article>
+
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Contract Health</h2>
+                <p>Каждый контракт должен иметь owner, schema, source freshness, verification and failure mode.</p>
+              </div>
+              <span class="pill warn">Task 25 target</span>
+            </div>
+            <div class="panel-body detail-list">
+              <div class="detail-box">
+                <h3>Schema first</h3>
+                <p>Graph packets, docs registries and proposal records need stable JSON fields before the HTML renderer becomes authoritative for navigation.</p>
+              </div>
+              <div class="detail-box">
+                <h3>Manifest freshness</h3>
+                <p>Every generated page should carry source hashes, generator version, build time and stale reason when source changed after render.</p>
+              </div>
+              <div class="detail-box">
+                <h3>Failure packet</h3>
+                <p>If scanner cannot parse a file, it emits partial status, skipped counts and recommended source read instead of silently hiding the area.</p>
+              </div>
+              <div class="detail-box">
+                <h3>Human-readable evidence</h3>
+                <p>Users need paths, descriptions and next action; agents need compact IDs, spans, confidence labels and verification commands.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="tab-quality" class="tab-page" data-page="quality" data-section-label="Quality / Evals" hidden>
+        <div class="grid two">
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Quality And Eval Evidence</h2>
+                <p>Evidence page separates real verification from inspection-only claims, stale reports and generated views.</p>
+              </div>
+              <span class="pill ok">latest baseline OK</span>
+            </div>
+            <table>
+              <thead><tr><th>Gate</th><th>Latest evidence</th><th>What it proves</th><th>Gap</th></tr></thead>
+              <tbody>
+                <tr><td>Full unittest</td><td>584 tests OK, 504-552s</td><td>Local unit/contract baseline passed.</td><td>Needs <code>timeout_ms: 1200000</code>.</td></tr>
+                <tr><td>Fixture eval</td><td>85 fixture directories, renderer count 191</td><td>Packaged behavior contracts and false-positive fixtures pass.</td><td>Real-project semantic sufficiency still owner-reviewed.</td></tr>
+                <tr><td>Transcript eval</td><td>17 sessions, 0 failures</td><td>Expected/forbidden term replay stays clean.</td><td>Does not replace calibrated human review.</td></tr>
+                <tr><td>Codex compatibility</td><td>11 bundled skills compatible</td><td>Plugin manifest and skill shape are acceptable.</td><td>No marketplace/publishing proof.</td></tr>
+                <tr><td>Docs check</td><td><code>tools/check_docs.py</code> OK</td><td>Documentation structure rules pass.</td><td>MkDocs strict needed after nav-sensitive edits.</td></tr>
+                <tr><td>Diff hygiene</td><td><code>git diff --check</code> OK</td><td>No trailing whitespace/conflict marker issues.</td><td>No behavioral proof.</td></tr>
+              </tbody>
+            </table>
+          </article>
+
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Coverage By Surface</h2>
+                <p>How the final cockpit should route a user to the right proof for each project area.</p>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div class="card-grid">
+                <div class="mini-card"><h3>Scanner</h3><p>Discovery, methodology audit and source policy tests cover read-only workspace analysis.</p><span class="meta">test_discovery.py, test_methodology_audit.py</span></div>
+                <div class="mini-card"><h3>Runtime</h3><p>Route contracts, guards and CLI tests cover finish options and approval boundaries.</p><span class="meta">test_codex_runtime_runner_*.py</span></div>
+                <div class="mini-card"><h3>Docs</h3><p>Docs tests and source policy checks cover Source status, nav and operator-facing pages.</p><span class="meta">test_product_agent_os_docs.py</span></div>
+                <div class="mini-card"><h3>Metrics</h3><p>Metrics loop tests cover scorecards, confidence gates, reports and candidate-only behavior.</p><span class="meta">test_agent_skill_metrics*.py</span></div>
+                <div class="mini-card"><h3>Future graph</h3><p>Task 25 still needs graph schema, scanner, query, renderer and visual QA tests.</p><span class="meta">planned: T10-CG-M1..M90</span></div>
+                <div class="mini-card"><h3>Browser UI</h3><p>Final visual graph requires nonblank canvas/SVG, no external requests and responsive checks.</p><span class="meta">planned: visual QA</span></div>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="empty-space"></div>
+
+        <article class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Recommended Verification Router</h2>
+              <p>The page should recommend focused checks first, then full verification when blast radius is broad.</p>
+            </div>
+          </div>
+          <table>
+            <thead><tr><th>Change type</th><th>Focused check</th><th>Broad check</th><th>When broad is required</th></tr></thead>
+            <tbody>
+              <tr><td>Docs-only</td><td><code>python tools\check_docs.py</code></td><td>Strict MkDocs build</td><td>Navigation, Markdown extensions or MkDocs config changed.</td></tr>
+              <tr><td>Runtime route</td><td>runtime contracts/routes/CLI tests</td><td>Full unittest + transcript eval</td><td>Finish options, approvals, route schema or first response changed.</td></tr>
+              <tr><td>Renderer</td><td>renderer tests + browser smoke</td><td>Fixture eval + docs check</td><td>Generated artifact count or source policy changed.</td></tr>
+              <tr><td>Graph scanner</td><td>graph schema/scanner/query tests</td><td>Full unittest + fixture eval</td><td>Shared graph packet or runtime integration changed.</td></tr>
+            </tbody>
+          </table>
+        </article>
+      </section>
+
+      <section id="tab-gates" class="tab-page" data-page="quality" data-section-label="Verification Gates" hidden>
+        <div class="grid two">
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Verification Gates</h2>
+                <p>Отдельная карта доверия: что именно доказывает каждая проверка и когда нельзя ограничиться inspection-only анализом.</p>
+              </div>
+              <span class="pill ok">evidence before completion</span>
+            </div>
+            <table>
+              <thead><tr><th>Level</th><th>Gate</th><th>Proves</th><th>Does not prove</th></tr></thead>
+              <tbody>
+                <tr><td>0</td><td>Read-only inventory</td><td>Sources, patterns, likely impact, risks</td><td>Feature works at runtime</td></tr>
+                <tr><td>1</td><td>Focused unit/contract tests</td><td>Targeted behavior and schema contracts</td><td>Whole repository health</td></tr>
+                <tr><td>2</td><td><code>python tools\check_docs.py</code></td><td>Docs structure and source-status rules</td><td>MkDocs visual output or runtime code</td></tr>
+                <tr><td>3</td><td>Fixture eval</td><td>Packaged workflow behavior and false-positive guards</td><td>Real-project semantic sufficiency</td></tr>
+                <tr><td>4</td><td>Transcript eval</td><td>Expected/forbidden term replay across sessions</td><td>Human quality judgement</td></tr>
+                <tr><td>5</td><td>Full unittest</td><td>Local repository test baseline</td><td>Browser UI, external systems, visual layout</td></tr>
+                <tr><td>6</td><td>Browser visual QA</td><td>Rendered tabs, graph nonblank, responsive state, console errors</td><td>Source contract correctness without tests</td></tr>
+                <tr><td>7</td><td>Strict MkDocs build</td><td>Docs site renders under current navigation</td><td>Generated site is source of truth</td></tr>
+              </tbody>
+            </table>
+          </article>
+
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Gate Router</h2>
+                <p>Cockpit should recommend the cheapest trustworthy gate, then escalate when contracts or shared surfaces changed.</p>
+              </div>
+              <span class="pill info">cost-aware</span>
+            </div>
+            <div class="panel-body detail-list">
+              <div class="detail-box">
+                <h3>Docs-only change</h3>
+                <p>Run docs check first. Add strict MkDocs only when navigation, generated site, diagrams or source registry links changed.</p>
+              </div>
+              <div class="detail-box">
+                <h3>Shared Python contract</h3>
+                <p>Run focused contract tests, then full unittest with <code>timeout_ms: 1200000</code> when shared modules or broad routes changed.</p>
+              </div>
+              <div class="detail-box">
+                <h3>Graph scanner</h3>
+                <p>Require schema/scanner/query tests, fixture eval fields, stale manifest checks and browser graph QA.</p>
+              </div>
+              <div class="detail-box">
+                <h3>Visual cockpit</h3>
+                <p>Require desktop and mobile Playwright checks: all tabs open, no JS errors, no external requests unless explicitly approved.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="tab-operations" class="tab-page" data-page="ops" data-section-label="Runtime / Ops" hidden>
+        <div class="grid two">
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Runtime And Operations</h2>
+                <p>Operational page tells a user how to run, verify and safely maintain the project without reading every doc first.</p>
+              </div>
+              <span class="pill info">local-first</span>
+            </div>
+            <table>
+              <thead><tr><th>Operation</th><th>Command or artifact</th><th>Boundary</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td>Docs structure check</td><td><code>python tools\check_docs.py</code></td><td>Local, read-only</td><td><span class="pill ok">safe</span></td></tr>
+                <tr><td>Full unittest</td><td><code>python -m unittest discover -s tests -p "test_*.py" -v</code></td><td>Use 20-minute wrapper timeout</td><td><span class="pill ok">known baseline</span></td></tr>
+                <tr><td>Fixture eval</td><td><code>plugins/product-agent-os/scripts/run_fixture_eval.py</code></td><td>Local fixtures only</td><td><span class="pill ok">safe</span></td></tr>
+                <tr><td>Transcript eval</td><td><code>run_transcript_eval.py ...synthetic-sessions.json</code></td><td>No private transcripts</td><td><span class="pill ok">safe</span></td></tr>
+                <tr><td>MkDocs strict build</td><td><code>python -m mkdocs build --strict</code></td><td>Generated site output</td><td><span class="pill warn">nav-sensitive</span></td></tr>
+                <tr><td>Git operations</td><td><code>git add/commit/push</code></td><td>Explicit user request only</td><td><span class="pill risk">approval</span></td></tr>
+              </tbody>
+            </table>
+          </article>
+
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Automation And External Systems</h2>
+                <p>Shows which actions are candidate-only and which require explicit owner approval.</p>
+              </div>
+            </div>
+            <div class="panel-body detail-list">
+              <div class="detail-box">
+                <h3>Inactive by default</h3>
+                <p>Hooks, schedules, GitHub Actions, Codex App automations and external workflows are not activated by templates or cockpit rendering.</p>
+              </div>
+              <div class="detail-box">
+                <h3>Staged-first renderer</h3>
+                <p>Infrastructure rendering can dry-run and stage proposals, but direct target workspace mutation remains outside baseline scope.</p>
+              </div>
+              <div class="detail-box">
+                <h3>Generated site</h3>
+                <p><code>site/</code> is rendered output. It can be rebuilt, but source docs and navigation remain the editable source layer.</p>
+              </div>
+              <div class="detail-box">
+                <h3>Runtime logs</h3>
+                <p>Final cockpit should show command evidence and timestamps, not raw private logs or unredacted traces.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="tab-risk" class="tab-page" data-page="ops" data-section-label="Security / Risk" hidden>
+        <div class="grid two">
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Security And Risk Map</h2>
+                <p>Risk page keeps unsafe shortcuts visible: secrets, external writes, stale evidence, browser-generated artifacts and approval boundaries.</p>
+              </div>
+              <span class="pill risk">do not auto-apply</span>
+            </div>
+            <table>
+              <thead><tr><th>Risk</th><th>Where it appears</th><th>Required control</th><th>State</th></tr></thead>
+              <tbody>
+                <tr><td>Secrets in artifacts</td><td>prompts, traces, examples, fixtures, templates</td><td>redaction and no-secret validators</td><td><span class="pill ok">guarded</span></td></tr>
+                <tr><td>HTML as source of truth</td><td>dashboard, reports, cockpit mockups</td><td>generated-view boundary and manifest provenance</td><td><span class="pill warn">must preserve</span></td></tr>
+                <tr><td>External writes</td><td>GitHub, schedules, automations, hosted docs</td><td>explicit approval and staged drafts</td><td><span class="pill risk">approval</span></td></tr>
+                <tr><td>Vendor JS assets</td><td>future Graphology/Sigma bundle</td><td>local bundle, version, license, no CDN</td><td><span class="pill warn">planned</span></td></tr>
+                <tr><td>Stale graph evidence</td><td>future project graph artifacts</td><td>manifest freshness and wrong-root/worktree guard</td><td><span class="pill warn">planned</span></td></tr>
+                <tr><td>Overconfident inferred edges</td><td>dynamic dispatch, docs-to-code links</td><td>confidence labels and source-read fallback</td><td><span class="pill warn">planned</span></td></tr>
+              </tbody>
+            </table>
+          </article>
+
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Approval Boundaries</h2>
+                <p>What the cockpit may recommend, and what it must never execute silently.</p>
+              </div>
+            </div>
+            <div class="panel-body detail-list">
+              <div class="detail-box">
+                <h3>Allowed without approval</h3>
+                <p>Read-only scans, local static rendering, summary packets, stale warnings and proposal creation under explicit stage paths.</p>
+              </div>
+              <div class="detail-box">
+                <h3>Requires approval</h3>
+                <p>Writing source files, activating hooks, enabling automations, changing GitHub Actions, publishing docs, external API calls and git operations.</p>
+              </div>
+              <div class="detail-box">
+                <h3>Always blocked as success evidence</h3>
+                <p>Memory recall, raw chat logs, dashboard/report HTML alone, unsupported community claims and stale graph packets.</p>
+              </div>
+              <div class="detail-box">
+                <h3>Final graph rule</h3>
+                <p>The graph is a navigation and impact aid. If stale, ambiguous or unsupported, it routes the user back to source reads or owner questions.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="tab-budget" class="tab-page" data-page="code" data-section-label="Scan Budget" hidden>
+        <div class="grid two">
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Scan And Token Budget</h2>
+                <p>Карта проекта должна снижать потребление контекста: сначала локальный scanner и compact packets, потом точечные source reads.</p>
+              </div>
+              <span class="pill ok">zero-token scan first</span>
+            </div>
+            <table>
+              <thead><tr><th>Operation</th><th>LLM tokens</th><th>Local cost</th><th>Output</th></tr></thead>
+              <tbody>
+                <tr><td>File inventory and manifest scan</td><td>0</td><td>filesystem walk, hashes, mtimes</td><td>root map, generated/stale flags, skipped paths</td></tr>
+                <tr><td>Python AST import/symbol scan</td><td>0</td><td>parse files, build module graph</td><td>nodes, imports, classes, functions, entrypoints</td></tr>
+                <tr><td>Docs/MkDocs registry</td><td>0</td><td>parse YAML/Markdown/search index</td><td>page registry, rendered routes, source status</td></tr>
+                <tr><td>Graph clustering and hotspots</td><td>0</td><td>graphology/graph algorithms</td><td>communities, fan-in/out, affected surfaces</td></tr>
+                <tr><td>Agent compact context</td><td>small</td><td>selected packet only</td><td>seed, neighbors, read order, tests, risks</td></tr>
+                <tr><td>Deep source explanation</td><td>bounded</td><td>selected files/spans</td><td>answer with citations to exact local paths</td></tr>
+              </tbody>
+            </table>
+          </article>
+
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Budget Controls For Large Repos</h2>
+                <p>When the graph grows to thousands of nodes, every page needs omission and sampling rules.</p>
+              </div>
+              <span class="pill warn">large graph policy</span>
+            </div>
+            <div class="panel-body detail-list">
+              <div class="detail-box">
+                <h3>Top-N with omitted counts</h3>
+                <p>Show top hotspots, top impacted tests and top docs. Always show how many nodes were hidden and why.</p>
+              </div>
+              <div class="detail-box">
+                <h3>Depth limit</h3>
+                <p>Default graph query depth is 1 or 2. Depth 3 requires explicit user intent or a query that needs multi-hop reasoning.</p>
+              </div>
+              <div class="detail-box">
+                <h3>Confidence filter</h3>
+                <p>AST and declared docs links are shown by default. Inferred edges need visible reason and can be excluded from agent context.</p>
+              </div>
+              <div class="detail-box">
+                <h3>Context handoff</h3>
+                <p>Instead of pasting the graph, cockpit emits a compact packet plus exact file paths for the next source read.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="tab-metrics" class="tab-page" data-page="quality" data-section-label="Metrics" hidden>
         <div class="grid two">
           <article class="panel">
             <div class="panel-head">
@@ -1459,7 +2148,7 @@
         </div>
       </section>
 
-      <section id="tab-ledger" class="tab-page" hidden>
+      <section id="tab-ledger" class="tab-page" data-page="ledger" data-section-label="Proposal Ledger" hidden>
         <div class="grid two">
           <article class="panel">
             <div class="panel-head">
@@ -1504,26 +2193,79 @@
             </table>
           </article>
         </div>
+
+        <div class="empty-space"></div>
+
+        <article class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Decision And ADR Ledger</h2>
+              <p>Proposal ledger should not stop at ideas. Final cockpit needs a decision trail from proposal to accepted contract, rejected option, rollback or follow-up task.</p>
+            </div>
+            <span class="pill info">decision trail</span>
+          </div>
+          <table>
+            <thead><tr><th>Decision record</th><th>Why it matters</th><th>Linked surfaces</th><th>Closure rule</th></tr></thead>
+            <tbody>
+              <tr><td>Cockpit source class</td><td>Defines whether HTML can be trusted as a navigation source, not editable truth.</td><td>source policy, docs registry, offline artifact safety</td><td>Schema, manifest freshness and tests accepted.</td></tr>
+              <tr><td>Graph scanner scope</td><td>Prevents file-tree-only maps and keeps dependency graph useful to agents.</td><td>AST scanner, graph packet, Project Graph, Code Flow</td><td>Imports/symbols/tests/docs edges verified on fixtures.</td></tr>
+              <tr><td>Sigma/Graphology vendor path</td><td>Controls offline use, license, bundle size and no-CDN guarantee.</td><td>visual renderer, browser QA, security/risk page</td><td>Local bundle/license manifest and visual fallback pass.</td></tr>
+              <tr><td>Large graph policy</td><td>Defines 1k/5k/10k node behavior and token budget boundaries.</td><td>Scan Budget, Project Graph, Impact Explorer</td><td>Top-N, omitted counts, depth limits and query tests pass.</td></tr>
+              <tr><td>Proposal action model</td><td>Ensures cockpit creates drafts/proposals, not direct project mutations.</td><td>Proposal Ledger, approval boundaries, RUNLOG</td><td>Explicit approval and rollback fields required for write actions.</td></tr>
+            </tbody>
+          </table>
+        </article>
       </section>
     </main>
   </div>
 
   <script>
-    const buttons = Array.from(document.querySelectorAll(".nav button[data-tab]"));
-    const pages = new Map(Array.from(document.querySelectorAll(".tab-page")).map((page) => [page.id.replace("tab-", ""), page]));
+    const pageButtons = Array.from(document.querySelectorAll(".nav button[data-page]"));
+    const contentSections = Array.from(document.querySelectorAll(".tab-page[data-page]"));
+    const sectionNav = document.getElementById("sectionNav");
 
-    function activateTab(tab) {
-      buttons.forEach((button) => button.classList.toggle("active", button.dataset.tab === tab));
-      pages.forEach((page, key) => {
-        page.hidden = key !== tab;
+    function renderSectionNav(pageKey) {
+      const visibleSections = contentSections.filter((section) => section.dataset.page === pageKey);
+      sectionNav.replaceChildren();
+      if (visibleSections.length <= 1) {
+        sectionNav.hidden = true;
+        return;
+      }
+      sectionNav.hidden = false;
+      const label = document.createElement("span");
+      label.className = "label";
+      label.textContent = "Sections";
+      sectionNav.appendChild(label);
+      visibleSections.forEach((section) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.textContent = section.dataset.sectionLabel || section.id.replace("tab-", "");
+        button.addEventListener("click", () => {
+          section.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+        sectionNav.appendChild(button);
       });
-      const title = buttons.find((button) => button.dataset.tab === tab)?.textContent || "Overview";
-      document.title = "Product-Agent OS Cockpit - " + title;
     }
 
-    buttons.forEach((button) => {
-      button.addEventListener("click", () => activateTab(button.dataset.tab));
+    function activatePage(pageKey, options = {}) {
+      const { scrollToTop = true } = options;
+      pageButtons.forEach((button) => button.classList.toggle("active", button.dataset.page === pageKey));
+      contentSections.forEach((section) => {
+        section.hidden = section.dataset.page !== pageKey;
+      });
+      renderSectionNav(pageKey);
+      const title = pageButtons.find((button) => button.dataset.page === pageKey)?.textContent || "Overview";
+      document.title = "Product-Agent OS Cockpit - " + title;
+      if (scrollToTop) {
+        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      }
+    }
+
+    pageButtons.forEach((button) => {
+      button.addEventListener("click", () => activatePage(button.dataset.page));
     });
+
+    activatePage("overview", { scrollToTop: false });
 
     const graphNodes = [
       { id: "discovery", label: "discovery.py", sub: "workspace scan", group: "scanner", x: 126, y: 326, size: 31, path: "plugins/product-agent-os/scripts/product_agent_os/discovery.py", bytes: "156KB", role: "Entry scanner for workspace signals; feeds methodology audit and question queue.", strategy: "Read this first for scan inputs and routing into audit/question packets.", evidence: "Imports contracts, methodology_audit and question_protocol; covered by test_discovery.py." },
