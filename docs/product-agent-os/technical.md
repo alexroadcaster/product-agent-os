@@ -168,6 +168,25 @@ The source-of-truth policy remains explicit: control-plane artifacts, run record
 
 Approval boundary: Product-Agent OS performs no live eval/model/API calls, creates no active schedules, makes no external writes, applies no modernization candidates, and allows no self-applied updates. A modernization candidate needs owner review, rollback target and explicit approval state before any target workspace, skill, prompt/policy pack, router/tool policy or harness configuration changes.
 
+## Task 25 project code graph foundation
+
+Task 25 Batch 13 adds a local read-only graph foundation for project navigation. The scanner inventories files, emits stable file-level graph nodes and `contains` edges, validates a controlled ontology, records manifest freshness/provenance, stores observation records with relative paths/spans/fingerprints and supports temporal edge invalidation/supersession helpers. It excludes raw source bodies by default and redacts local absolute paths or secret-like values from returned packets.
+
+Main files and commands:
+
+- `plugins/product-agent-os/scripts/product_agent_os/project_code_graph.py` - graph JSON/JSONL packet builder.
+- `plugins/product-agent-os/scripts/product_agent_os/project_graph_manifest.py` - file fingerprints, freshness and provenance.
+- `plugins/product-agent-os/scripts/product_agent_os/project_graph_observations.py` - observation records and edge delta lineage.
+- `plugins/product-agent-os/scripts/product_agent_os/project_graph_ontology.py` - controlled ontology and graph schema validation.
+- `plugins/product-agent-os/scripts/scan_project_code_graph.py` - dry-run or stage-only scanner CLI.
+
+```powershell
+python plugins\product-agent-os\scripts\scan_project_code_graph.py <workspace> --dry-run
+python plugins\product-agent-os\scripts\scan_project_code_graph.py <workspace> --stage C:\tmp\product-agent-os-graph-stage
+```
+
+Stage mode must use an output directory outside the target workspace. Existing graph artifacts in the target workspace are not modified. Batch 13 is file-level only: Python AST symbol scanning, query packets, runtime/status integration, graph analysis, HTML cockpit rendering and visual QA remain later Task 25 batches.
+
 ## Codex installation boundary
 
 Для Codex installation plugin должен быть доступен через plugin marketplace or curated plugin list, а package root должен содержать `.codex-plugin/plugin.json`. В этом репозитории package уже подготовлен локально under `plugins/product-agent-os/`; подключение к конкретной Codex App installation остается отдельным environment step and should follow current official Codex plugin docs.

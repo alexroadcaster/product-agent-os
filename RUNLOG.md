@@ -6,15 +6,15 @@ Generated at: 2026-06-01
 
 ## Current Lifecycle Marker
 
-`track10_task25_matrix_v2_control_plane_sync`
+`track10_task25_batch13_graph_foundation`
 
 ## Latest Completed Slice
 
-Track 10 Task 25 Matrix V2 Planning/Control-Plane Sync updates the Track 10 plan and root system files to V2 `T10-CG-V2-M01..M32` with batches 13-18. Task 25 implementation has not started. Commit/push/PR remains explicit-only and was not executed.
+Track 10 Task 25 Batch 13 `T10-CG-V2-M01..M07` implements the file-level read-only graph foundation, controlled ontology/schema validation, manifest freshness/provenance, stage-only CLI, privacy/source boundary, observation lineage, temporal edge delta helpers and synthetic scale fixtures. Commit/push/PR remains explicit-only and was not executed.
 
 ## Current Active Slice
 
-Current active slice is Track 10 Task 25 Batch 13 planning handoff. Task 25 Batch 13 implementation is queued but not started; the Task 25 matrix is now consolidated as V2 `T10-CG-V2-M01..M32` with batches 13-18 for graph foundation/staging, Python scanner/overlays, query/runtime/analysis, eight-page HTML cockpit/visualization, evals/docs/future gates and verification closure. Git staging/commit/PR remains explicit-only. Full unittest must use `timeout_ms: 1200000`.
+Current active slice is Track 10 Task 25 Batch 14 planning handoff. Task 25 Batch 13 is implemented and focused-verified; the remaining Task 25 matrix keeps Batch 14 Python scanner/overlays, Batch 15 query/runtime/analysis, Batch 16 eight-page HTML cockpit/visualization, Batch 17 evals/docs/future gates and Batch 18 verification closure. Git staging/commit/PR remains explicit-only. Full unittest must use `timeout_ms: 1200000`.
 
 ## Latest Planning Artifact
 
@@ -24,6 +24,15 @@ Current active slice is Track 10 Task 25 Batch 13 planning handoff. Task 25 Batc
 - Track 9 execution principle: read the relevant plan section, deeply audit the matching file under `docs/methodologies/`, update the plan or backlog if the audit finds missing nuance, then implement the focused section with tests/evals/docs sync.
 
 ### Changes
+
+- Implemented `project_code_graph.py`, `project_graph_manifest.py`, `project_graph_observations.py`, `project_graph_ontology.py` and `scan_project_code_graph.py` for Batch 13 graph foundation.
+- Added synthetic fixtures `project-code-graph-minimal-python`, `project-code-graph-docs-heavy` and `project-code-graph-mixed-docs-contracts`.
+- Added focused tests for ontology/schema validation, file-level graph artifact safety, manifest freshness, observation lineage, CLI staging/shrink guard and redaction/source-boundary behavior.
+- RED evidence: focused Batch 13 suite failed before implementation on missing project graph modules and missing scanner CLI.
+- GREEN evidence: focused Batch 13 suite ran 33 tests with `OK` after addressing spec/code review findings; adjacent graph plus infrastructure renderer/CLI suite ran 63 tests with `OK`.
+- Broad verification evidence: full unittest ran 617 tests with `OK` in 566.751s using `timeout_ms: 1200000`; fixture eval exited `0` for 91 fixture directories including six `project-code-graph-*` fixtures; transcript eval exited `0` with 17 sessions and 0 failures; Codex compatibility returned `status: compatible`; `python tools\check_docs.py`, strict MkDocs with disposable `.mkdocs_task25_batch13_site` and `git diff --check` exited `0`.
+- Agent review evidence: spec reviewer reported no remaining spec findings, and code-quality reviewer reported no remaining code-quality findings after generic filesystem CLI errors stopped echoing raw `OSError`/`ValueError` messages.
+- Remaining gaps: Batch 13 is file-level foundation only; Python AST symbol scanning, dependency query packets, structured chunking, analysis report, runtime/status integration, search-quality evals, Graphology/Sigma visualization, selected-node evidence panel, Code Flow and eight-page HTML cockpit remain for later batches.
 
 - Added `frontend` catalog data with gates, artifacts, eval fields, applicability and false-positive rules.
 - Added read-only methodology audit recommendations for user-flow acceptance, component docs/state, design-system governance, conditional FSD, API/data state alignment, accessibility, keyboard/focus, responsive/visual/runtime evidence, interaction tests, performance, browser support, content/i18n and unsupported frontend claims.

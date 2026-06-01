@@ -44,6 +44,12 @@ The route uses source-of-truth policy: control-plane artifacts, run records, tra
 
 The approval boundary stays strict. Product-Agent OS records cadence recommendation values `L0`, `L1`, `L2` and `L3`, but it creates no active schedules. It performs no live eval/model/API calls, makes no external writes, applies no modernization candidates by itself, and allows no self-applied updates. Owner review, rollback target and explicit approval state are required before any proposed update moves beyond staged review.
 
+## Task 25 Project Code Graph Foundation
+
+Task 25 Batch 13 adds a read-only project graph foundation for route orientation. It can produce staged graph JSON/JSONL with file-level nodes, controlled ontology/schema validation, manifest freshness/provenance, observation lineage and temporal edge delta helpers. This helps future routes point agents toward source files and stale graph gaps without treating generated artifacts as source of truth.
+
+The route boundary remains conservative: generated graph artifacts are review evidence only, the scanner does not mutate target workspaces, and no query packet, HTML cockpit, Graphology/Sigma visualization or semantic dependency claim is available until later Task 25 batches provide focused verification.
+
 ## Scenario Matrix
 
 | usage_mode | When it applies | first response | minimum artifacts | approval boundary | verification gates |

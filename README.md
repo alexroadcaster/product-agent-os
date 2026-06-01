@@ -8,6 +8,8 @@ The system remains Codex-first: no standalone Agents SDK runtime, no separate Op
 
 Task 24 Self-Verification And Modernization Loop adds a self-verification metrics loop for Product-Agent OS agents, skills, prompt/policy packs, router/tool policies and harness versions. The `agent_skill_metrics_loop` route emits staged evidence only: target registry, trace/dataset/grader summaries, scorecard ledger, report packet and modernization candidates. It performs no live eval/model/API calls, creates no active schedules, applies no candidates by itself and allows no self-applied updates.
 
+Task 25 Project Code Graph And HTML Cockpit Visualization now has Batch 13 graph foundation implemented. The current `scan_project_code_graph.py` path is read-only and stage-only: it can emit redacted file-level graph JSON/JSONL, manifest freshness/provenance, controlled ontology validation and observation lineage without treating HTML or generated graph artifacts as source of truth. Python AST symbol scanning, query packets, analysis reports and the HTML cockpit visualization remain later Task 25 batches.
+
 Product-Agent OS - локальный Codex plugin и методологическая система для тех, кто строит реальные продукты с Codex App, CLI, IDE extension, subagents, skills, `AGENTS.md`, memory, sandbox, approvals, MCP и AI-assisted development.
 
 Он превращает vibe-coding из хаотичного "попросил агента написать код" в управляемую product engineering delivery system: с требованиями, архитектурой, документацией, проверками, агентными командами, release evidence и понятным next action.
