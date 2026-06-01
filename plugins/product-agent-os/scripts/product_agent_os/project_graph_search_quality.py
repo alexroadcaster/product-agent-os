@@ -22,15 +22,22 @@ def evaluate_project_graph_search_quality(
     *,
     cases: list[dict[str, Any]],
     thresholds: dict[str, float] | None = None,
+    static_index: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Evaluate deterministic graph query quality without source reads or external calls."""
 
     applied_thresholds = {**DEFAULT_SEARCH_QUALITY_THRESHOLDS, **(thresholds or {})}
     evaluated_cases = [_evaluate_case(graph, case) for case in cases if isinstance(case, dict)]
+    indexed_cases = (
+        [_evaluate_case(graph, case, static_index=static_index) for case in cases if isinstance(case, dict)]
+        if static_index is not None
+        else []
+    )
     metrics = _quality_metrics(graph, evaluated_cases)
-    failed_thresholds = _failed_thresholds(metrics, applied_thresholds)
+    index_comparison = _index_comparison(graph, metrics, indexed_cases) if static_index is not None else None
+    failed_thresholds = _failed_thresholds(metrics, applied_thresholds, index_comparison=index_comparison)
     decision_status = "passed" if not failed_thresholds and evaluated_cases else "blocked"
-    return {
+    packet = {
         "schema_version": 1,
         "write_policy": "read_only",
         "decision_status": decision_status,
@@ -46,12 +53,20 @@ def evaluate_project_graph_search_quality(
         "cases": evaluated_cases,
         "safe_next_action": "Use search-quality evals as local structural evidence only; read source before edits or completion claims.",
     }
+    if index_comparison is not None:
+        packet["index_comparison"] = index_comparison
+    return packet
 
 
-def _evaluate_case(graph: dict[str, Any], case: dict[str, Any]) -> dict[str, Any]:
+def _evaluate_case(
+    graph: dict[str, Any],
+    case: dict[str, Any],
+    *,
+    static_index: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     query = str(case.get("query") or "")
     if query == "search":
-        return _evaluate_search_case(graph, case)
+        return _evaluate_search_case(graph, case, static_index=static_index)
     if query == "trace":
         return _evaluate_trace_case(graph, case)
     if query == "affected_tests":
@@ -64,7 +79,12 @@ def _evaluate_case(graph: dict[str, Any], case: dict[str, Any]) -> dict[str, Any
     }
 
 
-def _evaluate_search_case(graph: dict[str, Any], case: dict[str, Any]) -> dict[str, Any]:
+def _evaluate_search_case(
+    graph: dict[str, Any],
+    case: dict[str, Any],
+    *,
+    static_index: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     top_k = _positive_int(case.get("top_k"), 5)
     packet = query_project_graph(
         graph,
@@ -73,18 +93,24 @@ def _evaluate_search_case(graph: dict[str, Any], case: dict[str, Any]) -> dict[s
             "text": sanitize_graph_text(case.get("text") or ""),
             "max_results": max(top_k, 1),
         },
+        static_index=static_index,
     )
     result_ids = [str(node.get("id")) for node in packet.get("nodes", []) if isinstance(node, dict)]
     expected_ids = [str(item) for item in case.get("expected_node_ids", []) if item]
+    unexpected_ids = [str(item) for item in case.get("unexpected_node_ids", []) if item]
     hits = [item for item in expected_ids if item in result_ids[:top_k]]
+    false_hits = [item for item in unexpected_ids if item in result_ids[:top_k]]
     first_rank = _first_rank(result_ids, expected_ids)
     return {
         "id": _case_id(case),
         "query": "search",
         "status": "passed" if expected_ids and len(hits) == len(expected_ids) else "failed",
         "result_status": packet.get("status"),
+        "search_backend": packet.get("search_backend", "graph_scan"),
         "expected_node_count": len(expected_ids),
         "hit_count": len(hits),
+        "unexpected_node_count": len(unexpected_ids),
+        "false_positive_count": len(false_hits),
         "top_k": top_k,
         "first_relevant_rank": first_rank,
         "reciprocal_rank": 0.0 if first_rank == 0 else 1.0 / first_rank,
@@ -154,7 +180,35 @@ def _quality_metrics(graph: dict[str, Any], cases: list[dict[str, Any]]) -> dict
     }
 
 
-def _failed_thresholds(metrics: dict[str, float], thresholds: dict[str, float]) -> list[str]:
+def _index_comparison(
+    graph: dict[str, Any],
+    graph_only_metrics: dict[str, float],
+    indexed_cases: list[dict[str, Any]],
+) -> dict[str, Any]:
+    indexed_metrics = _quality_metrics(graph, indexed_cases)
+    search_cases = [case for case in indexed_cases if case.get("query") == "search"]
+    returned = sum(_positive_int(case.get("top_k"), 0) for case in search_cases)
+    false_hits = sum(_positive_int(case.get("false_positive_count"), 0) for case in search_cases)
+    false_positive_rate = 0.0 if returned <= 0 else round(false_hits / returned, 4)
+    return {
+        "search_backend": "static_index",
+        "graph_only_metrics": graph_only_metrics,
+        "indexed_metrics": indexed_metrics,
+        "false_positive_rate": false_positive_rate,
+        "edge_density_delta": round(
+            float(indexed_metrics.get("edge_density") or 0.0) - float(graph_only_metrics.get("edge_density") or 0.0),
+            4,
+        ),
+        "cases": indexed_cases,
+    }
+
+
+def _failed_thresholds(
+    metrics: dict[str, float],
+    thresholds: dict[str, float],
+    *,
+    index_comparison: dict[str, Any] | None = None,
+) -> list[str]:
     failures: list[str] = []
     minimums = {
         "symbol_recall": "min_symbol_recall",
@@ -167,6 +221,20 @@ def _failed_thresholds(metrics: dict[str, float], thresholds: dict[str, float]) 
             failures.append(f"{metric}_below_threshold")
     if float(metrics.get("edge_density") or 0.0) > float(thresholds.get("max_edge_density") or 0.0):
         failures.append("edge_density_above_threshold")
+    if index_comparison is not None:
+        indexed = index_comparison.get("indexed_metrics", {})
+        if float(indexed.get("symbol_recall") or 0.0) < float(thresholds.get("min_symbol_recall") or 0.0):
+            failures.append("indexed_symbol_recall_below_threshold")
+        if float(indexed.get("top_k_mrr") or 0.0) < float(thresholds.get("min_top_k_mrr") or 0.0):
+            failures.append("indexed_top_k_mrr_below_threshold")
+        if float(index_comparison.get("false_positive_rate") or 0.0) > float(
+            thresholds.get("max_index_false_positive_rate", 1.0)
+        ):
+            failures.append("indexed_false_positive_rate_above_threshold")
+        if float(index_comparison.get("edge_density_delta") or 0.0) > float(
+            thresholds.get("max_edge_density_delta", 0.0)
+        ):
+            failures.append("indexed_edge_density_delta_above_threshold")
     return failures
 
 

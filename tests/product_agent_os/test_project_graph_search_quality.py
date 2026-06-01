@@ -10,6 +10,7 @@ SCRIPTS = ROOT / "plugins" / "product-agent-os" / "scripts"
 sys.path.insert(0, str(SCRIPTS))
 
 from product_agent_os.project_code_graph import build_project_code_graph  # noqa: E402
+from product_agent_os.project_graph_index import build_static_search_index  # noqa: E402
 from product_agent_os.project_graph_search_quality import evaluate_project_graph_search_quality  # noqa: E402
 
 
@@ -93,6 +94,61 @@ class ProjectGraphSearchQualityTest(unittest.TestCase):
             self.assertIn("trace_success_rate_below_threshold", packet["failed_thresholds"])
             self.assertEqual(packet["cases"][0]["trace_label"], "not_found")
             self.assertEqual(packet["cases"][0]["status"], "failed")
+
+    def test_search_quality_compares_graph_only_and_static_index_thresholds(self):
+        with TemporaryDirectory() as tmp:
+            workspace = self._write_query_workspace(Path(tmp) / "workspace")
+            graph = build_project_code_graph(workspace)
+            static_index = build_static_search_index(graph)
+
+            packet = evaluate_project_graph_search_quality(
+                graph,
+                static_index=static_index,
+                cases=[
+                    {
+                        "id": "symbol-worker-indexed",
+                        "query": "search",
+                        "text": "worker run",
+                        "expected_node_ids": ["function:app.worker.run"],
+                        "unexpected_node_ids": ["function:tests.test_worker.test_run"],
+                        "top_k": 3,
+                    },
+                    {
+                        "id": "trace-test-to-worker",
+                        "query": "trace",
+                        "source_id": "function:tests.test_worker.test_run",
+                        "target_id": "function:app.worker.run",
+                        "expected_status": "ok",
+                    },
+                    {
+                        "id": "affected-tests-worker",
+                        "query": "affected_tests",
+                        "node_id": "function:app.worker.run",
+                        "expected_test_ids": [
+                            "file:tests/test_worker.py",
+                            "function:tests.test_worker.test_run",
+                        ],
+                    },
+                ],
+                thresholds={
+                    "min_symbol_recall": 1.0,
+                    "min_top_k_mrr": 1.0,
+                    "min_trace_success_rate": 1.0,
+                    "min_affected_test_precision": 1.0,
+                    "max_index_false_positive_rate": 0.0,
+                    "max_edge_density": 4.0,
+                    "max_edge_density_delta": 0.0,
+                },
+            )
+
+            self.assertEqual(packet["decision_status"], "passed")
+            self.assertEqual(packet["index_comparison"]["search_backend"], "static_index")
+            self.assertEqual(packet["index_comparison"]["graph_only_metrics"]["symbol_recall"], 1.0)
+            self.assertEqual(packet["index_comparison"]["indexed_metrics"]["symbol_recall"], 1.0)
+            self.assertEqual(packet["index_comparison"]["indexed_metrics"]["top_k_mrr"], 1.0)
+            self.assertEqual(packet["index_comparison"]["false_positive_rate"], 0.0)
+            self.assertEqual(packet["index_comparison"]["edge_density_delta"], 0.0)
+            self.assertEqual(packet["failed_thresholds"], [])
 
     def _write_query_workspace(self, workspace: Path) -> Path:
         (workspace / "app").mkdir(parents=True)

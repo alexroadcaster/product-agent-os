@@ -156,6 +156,8 @@ class FixtureEvalRunnerTest(unittest.TestCase):
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_search_quality_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_future_backend_semantic_gates_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_search_quality_thresholds_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_static_search_index_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_static_search_index_quality_present"])
         self.assertEqual(results["python-app"]["renderer_file_count"], 191)
         for check_name in [
             "methodology_catalog_contract_present",

@@ -10,6 +10,7 @@ SCRIPTS = ROOT / "plugins" / "product-agent-os" / "scripts"
 sys.path.insert(0, str(SCRIPTS))
 
 from product_agent_os.project_code_graph import build_project_code_graph  # noqa: E402
+from product_agent_os.project_graph_index import build_static_search_index  # noqa: E402
 from product_agent_os.project_graph_queries import load_graph_artifact, query_project_graph  # noqa: E402
 
 
@@ -189,6 +190,36 @@ class ProjectGraphQueriesTest(unittest.TestCase):
 
             self.assertEqual(load_graph_artifact(graph_path)["schema_version"], 1)
             self.assertEqual(load_graph_artifact(jsonl_path)["schema_version"], 1)
+
+    def test_search_can_use_static_index_and_blocks_stale_index(self):
+        with TemporaryDirectory() as tmp:
+            workspace = self._write_query_workspace(Path(tmp) / "workspace")
+            graph = build_project_code_graph(workspace)
+            static_index = build_static_search_index(graph)
+            indexed = query_project_graph(
+                graph,
+                {"query": "search", "text": "worker run", "max_results": 5},
+                static_index=static_index,
+            )
+            stale_graph = {
+                **graph,
+                "metadata": {
+                    **graph["metadata"],
+                    "scan_id": "scan-stale",
+                    "node_count": graph["metadata"]["node_count"] + 1,
+                },
+            }
+            stale = query_project_graph(
+                stale_graph,
+                {"query": "search", "text": "worker run", "max_results": 5},
+                static_index=static_index,
+            )
+
+            self.assertEqual(indexed["status"], "ok")
+            self.assertEqual(indexed["search_backend"], "static_index")
+            self.assertEqual(indexed["nodes"][0]["id"], "function:app.worker.run")
+            self.assertEqual(stale["status"], "blocked")
+            self.assertIn("static_index:stale", stale["errors"])
 
     def _write_query_workspace(self, workspace: Path) -> Path:
         (workspace / "app").mkdir(parents=True)

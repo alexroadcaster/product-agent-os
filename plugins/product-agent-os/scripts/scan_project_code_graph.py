@@ -12,6 +12,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from codex_runtime_runner.redaction import redact_payload  # noqa: E402
 from product_agent_os.project_code_graph import PROJECT_GRAPH_TARGET, build_project_code_graph, graph_to_jsonl  # noqa: E402
+from product_agent_os.project_graph_index import load_static_search_index, stage_project_graph_search_index  # noqa: E402
 from product_agent_os.project_graph_queries import load_graph_artifact, query_project_graph  # noqa: E402
 
 
@@ -24,7 +25,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--dry-run", action="store_true", help="Print graph JSON without writing files.")
     parser.add_argument("--stage", help="Write graph artifacts to this explicit stage directory.")
     parser.add_argument("--query", help="Run a bounded query against an existing graph artifact.")
+    parser.add_argument("--build-index", action="store_true", help="Build or reuse an offline static search index from --graph.")
     parser.add_argument("--graph", help="Path to project-code-graph.json or project-code-graph.jsonl for query mode.")
+    parser.add_argument("--index", help="Optional project-code-graph-search-index.json for indexed search query mode.")
     parser.add_argument("--node-id", help="Source node id for graph query mode.")
     parser.add_argument("--target-id", help="Target node id for graph path/trace query mode.")
     parser.add_argument("--text", help="Search text for graph query mode.")
@@ -38,7 +41,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--path-prefix", action="append", default=[], help="Relative path prefix filter for query mode.")
     args = parser.parse_args(argv)
 
-    mode_count = int(bool(args.dry_run)) + int(bool(args.stage)) + int(bool(args.query))
+    mode_count = (
+        int(bool(args.dry_run))
+        + int(bool(args.stage) and not args.build_index)
+        + int(bool(args.query))
+        + int(bool(args.build_index))
+    )
     if mode_count != 1:
         return _print_error("choose exactly one mode: --dry-run, --stage, or --query", exit_code=2)
 
@@ -47,6 +55,7 @@ def main(argv: list[str] | None = None) -> int:
             if not args.graph:
                 raise ProjectGraphCliError("query mode requires --graph")
             graph = load_graph_artifact(Path(args.graph))
+            static_index = load_static_search_index(args.index) if args.index else None
             request = {
                 "query": args.query,
                 "node_id": args.node_id,
@@ -66,9 +75,29 @@ def main(argv: list[str] | None = None) -> int:
                 request["confidence"] = args.confidence
             if args.path_prefix:
                 request["path_prefixes"] = args.path_prefix
-            packet = query_project_graph(graph, {key: value for key, value in request.items() if value not in (None, [], "")})
+            packet = query_project_graph(
+                graph,
+                {key: value for key, value in request.items() if value not in (None, [], "")},
+                static_index=static_index,
+            )
             print(json.dumps(_redacted_payload(packet), indent=2, sort_keys=True))
             return 0 if packet.get("status") != "blocked" else 1
+        if args.build_index:
+            if not args.graph:
+                raise ProjectGraphCliError("build-index mode requires --graph")
+            if not args.stage:
+                raise ProjectGraphCliError("build-index mode requires --stage")
+            workspace = Path(args.workspace).resolve()
+            if not workspace.exists():
+                raise ProjectGraphCliError("workspace does not exist")
+            if not workspace.is_dir():
+                raise ProjectGraphCliError("workspace is not a directory")
+            try:
+                result = stage_project_graph_search_index(Path(args.graph), Path(args.stage), workspace=workspace)
+            except ValueError as exc:
+                raise ProjectGraphCliError(str(exc)) from exc
+            print(json.dumps(_redacted_payload(result), indent=2, sort_keys=True))
+            return 0 if result.get("rendered_artifacts", {}).get("status") == "ready" else 1
         if args.dry_run:
             workspace = Path(args.workspace).resolve()
             if not workspace.exists():

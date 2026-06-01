@@ -4,10 +4,16 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 from collections import deque
 from pathlib import Path
 from typing import Any
 
+from product_agent_os.project_graph_index import (
+    graph_content_fingerprint,
+    query_static_search_index,
+    validate_static_search_index,
+)
 from product_agent_os.project_graph_ontology import default_ontology
 
 
@@ -70,7 +76,12 @@ def load_graph_artifact(path: str | Path) -> dict[str, Any]:
     return payload
 
 
-def query_project_graph(graph: dict[str, Any], request: dict[str, Any]) -> dict[str, Any]:
+def query_project_graph(
+    graph: dict[str, Any],
+    request: dict[str, Any],
+    *,
+    static_index: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     """Run a deterministic query against graph JSON/JSONL content only."""
 
     errors = _validate_request(request)
@@ -90,7 +101,7 @@ def query_project_graph(graph: dict[str, Any], request: dict[str, Any]) -> dict[
     if kind == "status":
         return _status_packet(graph, request)
     if kind == "search":
-        return _search(graph, index, request)
+        return _search(graph, index, request, static_index=static_index)
     if kind == "hotspots":
         return _hotspots(graph, index, request)
     if kind == "read_order":
@@ -178,16 +189,38 @@ def _path_packet(graph: dict[str, Any], index: dict[str, Any], request: dict[str
     return packet
 
 
-def _search(graph: dict[str, Any], index: dict[str, Any], request: dict[str, Any]) -> dict[str, Any]:
+def _search(
+    graph: dict[str, Any],
+    index: dict[str, Any],
+    request: dict[str, Any],
+    *,
+    static_index: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    if static_index is not None:
+        validation = static_index.get("validation") if isinstance(static_index.get("validation"), dict) else validate_static_search_index(static_index)
+        if validation.get("ok") is not True:
+            return _packet(graph, request, "search", status="blocked", errors=["static_index:invalid"])
+        if static_index.get("graph_fingerprint") != graph_content_fingerprint(graph):
+            return _packet(graph, request, "search", status="blocked", errors=["static_index:stale"])
+        return query_static_search_index(static_index, request)
     needle = str(request.get("text") or "").lower()
-    nodes = []
+    terms = _search_terms(needle)
+    scored_nodes = []
     for node in index["nodes"].values():
         haystack = " ".join(
             str(node.get(key) or "")
             for key in ["id", "label", "type", "language", "path", "status"]
         ).lower()
-        if needle in haystack and _node_matches_filters(node, request):
-            nodes.append(node)
+        score = _search_score(node, haystack, terms, needle)
+        if _node_matches_filters(node, request) and ((terms and score > 0) or (not terms and needle in haystack)):
+            scored_nodes.append((node, score))
+    nodes = [
+        node
+        for node, _score in sorted(
+            scored_nodes,
+            key=lambda item: (-item[1], str(item[0].get("id") or "")),
+        )
+    ]
     return _packet(graph, request, "search", nodes=nodes, status="ok")
 
 
@@ -533,3 +566,26 @@ def _safe_relative_path(value: str) -> bool:
     if ":/" in normalized:
         return False
     return ".." not in normalized.split("/")
+
+
+def _search_terms(value: str) -> list[str]:
+    return [term for term in re.split(r"[^a-z0-9]+", value.lower()) if term]
+
+
+def _search_score(node: dict[str, Any], haystack: str, terms: list[str], needle: str) -> int:
+    if not terms:
+        return 1 if needle in haystack else 0
+    score = 0
+    for term in terms:
+        if term in haystack:
+            score += 10
+    if str(node.get("type")) in {"function", "method", "class"}:
+        score += 4
+    path = str(node.get("path") or "")
+    if "/tests/" not in f"/{path}" and not path.startswith("tests/"):
+        score += 2
+    else:
+        score -= 15
+    if str(node.get("status") or "") == "current":
+        score += 1
+    return score

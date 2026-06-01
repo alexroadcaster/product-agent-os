@@ -10,6 +10,7 @@ ROOT = Path(__file__).resolve().parents[2]
 SCRIPT = ROOT / "plugins" / "product-agent-os" / "scripts" / "scan_project_code_graph.py"
 FIXTURES = ROOT / "plugins" / "product-agent-os" / "assets" / "fixtures"
 PROJECT_GRAPH_TARGET = Path(".codex/product-agent-os/project-code-graph.json")
+STATIC_SEARCH_INDEX_TARGET = Path(".codex/product-agent-os/project-code-graph-search-index.json")
 
 
 class ProjectGraphCliTest(unittest.TestCase):
@@ -310,6 +311,133 @@ class ProjectGraphCliTest(unittest.TestCase):
         self.assertEqual(json.loads(missing_graph.stdout)["error"], "query mode requires --graph")
         self.assertEqual(mixed.returncode, 2)
         self.assertIn("choose exactly one mode", json.loads(mixed.stdout)["error"])
+
+    def test_build_index_cli_writes_static_index_and_query_cli_uses_it(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "workspace"
+            stage_root = Path(tmp) / "stage"
+            (workspace / "app").mkdir(parents=True)
+            (workspace / "app" / "__init__.py").write_text("", encoding="utf-8")
+            (workspace / "app" / "worker.py").write_text("def run():\n    return 'ok'\n", encoding="utf-8")
+
+            stage = subprocess.run(
+                [sys.executable, str(SCRIPT), str(workspace), "--stage", str(stage_root)],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            index = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--build-index",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--stage",
+                    str(stage_root),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            query = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--query",
+                    "search",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--index",
+                    str(stage_root / STATIC_SEARCH_INDEX_TARGET),
+                    "--text",
+                    "worker run",
+                    "--max-results",
+                    "5",
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(stage.returncode, 0, stage.stdout + stage.stderr)
+            self.assertEqual(index.returncode, 0, index.stdout + index.stderr)
+            self.assertEqual(query.returncode, 0, query.stdout + query.stderr)
+            self.assertEqual(index.stderr, "")
+            self.assertEqual(query.stderr, "")
+            self.assertTrue((stage_root / STATIC_SEARCH_INDEX_TARGET).exists())
+            index_payload = json.loads(index.stdout)
+            query_payload = json.loads(query.stdout)
+            self.assertEqual(index_payload["rendered_artifacts"]["cache_status"], "miss")
+            self.assertEqual(query_payload["search_backend"], "static_index")
+            self.assertEqual(query_payload["nodes"][0]["id"], "function:app.worker.run")
+            self.assertNotIn("return 'ok'", query.stdout)
+            self.assertNotIn(str(workspace), index.stdout + query.stdout)
+
+    def test_query_cli_blocks_stale_static_index_without_serving_results(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "workspace"
+            stage_root = Path(tmp) / "stage"
+            (workspace / "app").mkdir(parents=True)
+            (workspace / "app" / "__init__.py").write_text("", encoding="utf-8")
+            (workspace / "app" / "worker.py").write_text("def run():\n    return 'ok'\n", encoding="utf-8")
+
+            first_stage = subprocess.run(
+                [sys.executable, str(SCRIPT), str(workspace), "--stage", str(stage_root)],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            index = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--build-index",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--stage",
+                    str(stage_root),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            (workspace / "app" / "extra.py").write_text("def extra():\n    return 'new'\n", encoding="utf-8")
+            second_stage = subprocess.run(
+                [sys.executable, str(SCRIPT), str(workspace), "--stage", str(stage_root)],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            query = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--query",
+                    "search",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--index",
+                    str(stage_root / STATIC_SEARCH_INDEX_TARGET),
+                    "--text",
+                    "worker",
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(first_stage.returncode, 0, first_stage.stdout + first_stage.stderr)
+            self.assertEqual(index.returncode, 0, index.stdout + index.stderr)
+            self.assertEqual(second_stage.returncode, 0, second_stage.stdout + second_stage.stderr)
+            self.assertEqual(query.returncode, 1)
+            payload = json.loads(query.stdout)
+            self.assertEqual(payload["status"], "blocked")
+            self.assertIn("static_index:stale", payload["errors"])
 
 
 if __name__ == "__main__":

@@ -2,6 +2,8 @@
 
 Source status: `official + experiment`  
 
+Task 25 Batch 19 `T10-CG-V2-M33..M38` implements the approved offline static search index at `.codex/product-agent-os/project-code-graph-search-index.json`. The index is generated, cache-bound and not source of truth; it builds from graph artifact only, supports optional indexed search, blocks stale indexes, records cache hit/miss/invalidation and has a rollback/disable path. Batch 19 uses no live database/server, LLM, embedding or cross-encoder. Batch 20-23 remain future-gated.
+
 ## Task 22 operator contract
 
 Task 22 operator contract различает base workspace audit profile и Track 9 methodology audit complexity. Первый слой читает stack, files, control-plane state and route inputs; второй слой классифицирует methodology risk, maturity, recommendations and owner questions. `--intent-hint` может помочь routing, но не переопределяет source policy, approvals, sandbox, write guards or external-action boundaries.

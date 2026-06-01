@@ -439,9 +439,8 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         plan_terms = [
             "Task 25 future-gated extension analysis",
             "Task 25 future-gated extension matrix",
-            "T10-CG-V2-M33",
+            "T10-CG-V2-M39",
             "T10-CG-V2-M62",
-            "Batch 19: Offline Static Search Index",
             "Batch 20: Local Query Backend And Live Database/Server Gate",
             "Batch 21: Semantic Retrieval, Embeddings And Cross-Encoder Eval",
             "Batch 22: LLM Semantic Extraction And Rationale/Comment Proposals",
@@ -456,7 +455,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
 
         backlog_terms = [
             "Task 25 Future-Gated Extension Matrix",
-            "| `pending` | `T10-CG-V2-M33..M38` offline static search index |",
+            "| `done` | `T10-CG-V2-M33..M38` offline static search index |",
             "| `pending` | `T10-CG-V2-M39..M44` local query backend and live database/server gate |",
             "| `pending` | `T10-CG-V2-M45..M51` semantic retrieval, embeddings and cross-encoder eval |",
             "| `pending` | `T10-CG-V2-M52..M57` LLM semantic extraction and rationale/comment proposals |",
@@ -468,8 +467,9 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 self.assertIn(expected, backlog)
 
         control_terms = [
-            "future-gated extension matrix `T10-CG-V2-M33..M62`",
+            "future-gated extension matrix `T10-CG-V2-M39..M62`",
             "Batch 19 offline static search index",
+            "approved offline static search index",
             "Batch 20 local query backend/live database-server gate",
             "Batch 21 semantic retrieval with embeddings/cross-encoder",
             "Batch 22 LLM semantic extraction/rationale-comment proposals",
@@ -544,6 +544,80 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "transcript eval exited `0` with 17 sessions and 0 failures",
             "Codex compatibility returned `status: compatible`",
             "strict MkDocs",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for filename, text in control_plane.items():
+            for expected in control_terms:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
+    def test_track10_task25_batch19_static_search_index_is_synced(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        documents = {
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+            "product_index": (PRODUCT_AGENT_OS / "index.md").read_text(encoding="utf-8"),
+            "technical": (PRODUCT_AGENT_OS / "technical.md").read_text(encoding="utf-8"),
+            "scenarios": (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8"),
+        }
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+        }
+
+        registry_terms = [
+            "Product-Agent OS Track 10 project code graph Batch 19 offline static search index",
+            "T10-CG-V2-M33..M38",
+            "project_graph_index.py",
+            "project_graph_static_search_index_present",
+            "offline static search index",
+            "explicit user approval",
+            "verification_status:",
+        ]
+        for expected in registry_terms:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        backlog_terms = [
+            "| `done` | `T10-CG-V2-M33..M38` offline static search index |",
+            "Batch 19 explicit approval",
+            "generated, cache-bound and not source of truth",
+            "no live database/server, LLM, embedding or cross-encoder",
+            "rollback/disable path is deleting `.codex/product-agent-os/project-code-graph-search-index.json`",
+        ]
+        for expected in backlog_terms:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        docs_terms = [
+            "Task 25 Batch 19",
+            "T10-CG-V2-M33..M38",
+            "offline static search index",
+            ".codex/product-agent-os/project-code-graph-search-index.json",
+            "generated, cache-bound and not source of truth",
+            "graph artifact only",
+            "no live database/server, LLM, embedding or cross-encoder",
+            "rollback/disable path",
+        ]
+        for document, text in documents.items():
+            for expected in docs_terms:
+                with self.subTest(document=document, term=expected):
+                    self.assertIn(expected, text)
+
+        control_terms = [
+            "Task 25 Batch 19",
+            "T10-CG-V2-M33..M38",
+            "explicit user approval",
+            "project_graph_index.py",
+            "project_graph_static_search_index_present",
+            "offline static search index",
+            "generated, cache-bound and not source of truth",
+            "graph artifact only",
+            "rollback/disable path",
             "git staging/commit/push/PR remains explicit-only",
         ]
         for filename, text in control_plane.items():

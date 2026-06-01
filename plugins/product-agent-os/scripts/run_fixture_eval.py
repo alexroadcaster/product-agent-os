@@ -34,6 +34,7 @@ from product_agent_os.project_code_graph import (  # noqa: E402
     build_project_code_graph,
     build_synthetic_project_graph_from_fixture,
 )
+from product_agent_os.project_graph_index import build_static_search_index, query_static_search_index  # noqa: E402
 from product_agent_os.project_graph_renderer import render_project_graph_cockpit  # noqa: E402
 from product_agent_os.project_graph_search_quality import evaluate_project_graph_search_quality  # noqa: E402
 from product_agent_os.question_protocol import (  # noqa: E402
@@ -1995,6 +1996,10 @@ def _expected_checks(
         checks["project_graph_search_quality_thresholds_present"] = (
             _project_graph_search_quality_thresholds_present()
         )
+        checks["project_graph_static_search_index_present"] = _project_graph_static_search_index_present()
+        checks["project_graph_static_search_index_quality_present"] = (
+            _project_graph_static_search_index_quality_present()
+        )
         checks["project_graph_future_backend_semantic_gates_present"] = (
             _project_graph_future_backend_semantic_gates_present()
         )
@@ -3575,6 +3580,89 @@ def _project_graph_search_quality_packet() -> dict[str, Any]:
     )
 
 
+def _project_graph_static_index() -> dict[str, Any]:
+    return build_static_search_index(_project_graph_sample())
+
+
+def _project_graph_static_search_index_present() -> bool:
+    index = _project_graph_static_index()
+    packet = query_static_search_index(
+        index,
+        {
+            "text": "worker run",
+            "node_types": ["function"],
+            "path_prefixes": ["app/"],
+            "max_results": 3,
+            "max_tokens": 800,
+        },
+    )
+    payload = json.dumps([index, packet], sort_keys=True).lower()
+    return (
+        index.get("validation", {}).get("ok") is True
+        and index.get("artifact_kind") == "project_graph_static_search_index"
+        and index.get("source_boundary") == "graph_artifact_only_raw_source_excluded"
+        and index.get("generated_view_policy") == "static_search_index_is_generated_cache_not_source_of_truth"
+        and index.get("approval_boundary") == "batch19_explicit_offline_static_index_no_live_backend_model_or_database"
+        and index.get("query_policy", {}).get("no_live_database_or_server") is True
+        and index.get("query_policy", {}).get("no_llm_embedding_or_cross_encoder") is True
+        and packet.get("search_backend") == "static_index"
+        and packet.get("status") == "ok"
+        and packet.get("nodes", [{}])[0].get("id") == "function:app.worker.run"
+        and "return 'ok'" not in payload
+        and "c:\\users" not in payload
+    )
+
+
+def _project_graph_static_search_index_quality_present() -> bool:
+    packet = evaluate_project_graph_search_quality(
+        _project_graph_sample(),
+        static_index=_project_graph_static_index(),
+        cases=[
+            {
+                "id": "symbol-worker-indexed",
+                "query": "search",
+                "text": "worker run",
+                "expected_node_ids": ["function:app.worker.run"],
+                "unexpected_node_ids": ["function:tests.test_worker.test_run"],
+                "top_k": 3,
+            },
+            {
+                "id": "trace-test-to-worker",
+                "query": "trace",
+                "source_id": "function:tests.test_worker.test_run",
+                "target_id": "function:app.worker.run",
+                "expected_status": "ok",
+            },
+            {
+                "id": "affected-tests-worker",
+                "query": "affected_tests",
+                "node_id": "function:app.worker.run",
+                "expected_test_ids": [
+                    "file:tests/test_worker.py",
+                    "function:tests.test_worker.test_run",
+                ],
+            },
+        ],
+        thresholds={
+            "min_symbol_recall": 1.0,
+            "min_top_k_mrr": 1.0,
+            "min_trace_success_rate": 1.0,
+            "min_affected_test_precision": 1.0,
+            "max_index_false_positive_rate": 0.0,
+            "max_edge_density": 4.0,
+            "max_edge_density_delta": 0.0,
+        },
+    )
+    comparison = packet.get("index_comparison", {}) if isinstance(packet.get("index_comparison"), dict) else {}
+    return (
+        packet.get("decision_status") == "passed"
+        and comparison.get("search_backend") == "static_index"
+        and comparison.get("false_positive_rate") == 0.0
+        and comparison.get("edge_density_delta") == 0.0
+        and packet.get("failed_thresholds") == []
+    )
+
+
 def _project_graph_search_quality_present() -> bool:
     packet = _project_graph_search_quality_packet()
     metrics = packet.get("quality_metrics", {}) if isinstance(packet.get("quality_metrics"), dict) else {}
@@ -3624,7 +3712,6 @@ def _project_graph_future_backend_semantic_gates_present() -> bool:
     payload = "\n".join(path.read_text(encoding="utf-8") for path in paths).lower()
     required_terms = [
         "future backend and semantic gates",
-        "static search index",
         "live database/server",
         "llm, embedding, cross-encoder",
         "semantic extraction and rationale/comment extraction",
@@ -3632,7 +3719,6 @@ def _project_graph_future_backend_semantic_gates_present() -> bool:
         "redaction, cache, token budget, eval threshold and rollback path",
     ]
     implemented_claims = [
-        "static search index is implemented",
         "live database/server is implemented",
         "semantic extraction is implemented",
         "llm semantic extraction is implemented",
