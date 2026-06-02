@@ -12,6 +12,7 @@ FIXTURES = ROOT / "plugins" / "product-agent-os" / "assets" / "fixtures"
 PROJECT_GRAPH_TARGET = Path(".codex/product-agent-os/project-code-graph.json")
 STATIC_SEARCH_INDEX_TARGET = Path(".codex/product-agent-os/project-code-graph-search-index.json")
 SEMANTIC_RETRIEVAL_TARGET = Path(".codex/product-agent-os/project-code-graph-semantic-index.json")
+LLM_EXTRACTION_TARGET = Path(".codex/product-agent-os/project-code-graph-llm-proposals.json")
 
 
 class ProjectGraphCliTest(unittest.TestCase):
@@ -701,6 +702,161 @@ class ProjectGraphCliTest(unittest.TestCase):
             self.assertEqual(payload["rendered_artifacts"]["fallback"], "lexical_or_graph_search")
             self.assertFalse((stage_root / SEMANTIC_RETRIEVAL_TARGET).exists())
 
+    def test_build_llm_proposals_cli_requires_approval_and_stages_proposals(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "workspace"
+            stage_root = Path(tmp) / "stage"
+            approval_path = Path(tmp) / "llm-approval.json"
+            semantic_approval_path = Path(tmp) / "semantic-approval.json"
+            (workspace / "app").mkdir(parents=True)
+            (workspace / "app" / "__init__.py").write_text("", encoding="utf-8")
+            (workspace / "app" / "worker.py").write_text("def run():\n    return 'ok'\n", encoding="utf-8")
+            approval_path.write_text(json.dumps(self._llm_approval()), encoding="utf-8")
+            semantic_approval_path.write_text(json.dumps(self._semantic_approval()), encoding="utf-8")
+
+            stage = subprocess.run(
+                [sys.executable, str(SCRIPT), str(workspace), "--stage", str(stage_root)],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            semantic = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--build-semantic-index",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--stage",
+                    str(stage_root),
+                    "--semantic-approval",
+                    str(semantic_approval_path),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            missing_approval = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--build-llm-proposals",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--stage",
+                    str(stage_root),
+                    "--semantic-index",
+                    str(stage_root / SEMANTIC_RETRIEVAL_TARGET),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            proposals = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--build-llm-proposals",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--stage",
+                    str(stage_root),
+                    "--semantic-index",
+                    str(stage_root / SEMANTIC_RETRIEVAL_TARGET),
+                    "--llm-approval",
+                    str(approval_path),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(stage.returncode, 0, stage.stdout + stage.stderr)
+            self.assertEqual(semantic.returncode, 0, semantic.stdout + semantic.stderr)
+            self.assertEqual(missing_approval.returncode, 1)
+            self.assertEqual(proposals.returncode, 0, proposals.stdout + proposals.stderr)
+            missing_payload = json.loads(missing_approval.stdout)
+            proposal_payload = json.loads(proposals.stdout)
+            self.assertEqual(missing_payload["rendered_artifacts"]["status"], "approval_required")
+            self.assertEqual(proposal_payload["rendered_artifacts"]["mode"], "build-llm-proposals")
+            self.assertEqual(proposal_payload["rendered_artifacts"]["cache_status"], "miss")
+            self.assertTrue((stage_root / LLM_EXTRACTION_TARGET).exists())
+            self.assertNotIn("return 'ok'", proposals.stdout)
+            self.assertNotIn(str(workspace), proposals.stdout)
+
+    def test_disable_llm_proposals_cli_removes_generated_proposals_without_touching_workspace(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "workspace"
+            stage_root = Path(tmp) / "stage"
+            approval_path = Path(tmp) / "llm-approval.json"
+            semantic_approval_path = Path(tmp) / "semantic-approval.json"
+            (workspace / "app").mkdir(parents=True)
+            (workspace / "app" / "__init__.py").write_text("", encoding="utf-8")
+            (workspace / "app" / "worker.py").write_text("def run():\n    return 'ok'\n", encoding="utf-8")
+            approval_path.write_text(json.dumps(self._llm_approval()), encoding="utf-8")
+            semantic_approval_path.write_text(json.dumps(self._semantic_approval()), encoding="utf-8")
+
+            stage = subprocess.run(
+                [sys.executable, str(SCRIPT), str(workspace), "--stage", str(stage_root)],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            semantic = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--build-semantic-index",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--stage",
+                    str(stage_root),
+                    "--semantic-approval",
+                    str(semantic_approval_path),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            proposals = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--build-llm-proposals",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--stage",
+                    str(stage_root),
+                    "--semantic-index",
+                    str(stage_root / SEMANTIC_RETRIEVAL_TARGET),
+                    "--llm-approval",
+                    str(approval_path),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            disable = subprocess.run(
+                [sys.executable, str(SCRIPT), str(workspace), "--disable-llm-proposals", "--stage", str(stage_root)],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(stage.returncode, 0, stage.stdout + stage.stderr)
+            self.assertEqual(semantic.returncode, 0, semantic.stdout + semantic.stderr)
+            self.assertEqual(proposals.returncode, 0, proposals.stdout + proposals.stderr)
+            self.assertEqual(disable.returncode, 0, disable.stdout + disable.stderr)
+            payload = json.loads(disable.stdout)
+            self.assertEqual(payload["rendered_artifacts"]["status"], "disabled")
+            self.assertEqual(payload["rendered_artifacts"]["fallback"], "semantic_retrieval_or_graph_only")
+            self.assertFalse((stage_root / LLM_EXTRACTION_TARGET).exists())
+
     def _backend_approval(self) -> dict:
         return {
             "explicit_approval": True,
@@ -764,6 +920,50 @@ class ProjectGraphCliTest(unittest.TestCase):
             },
             "failure_handling": {"on_stale_or_failed_eval": "block_and_fallback_to_lexical_or_graph"},
             "rollback_path": "delete .codex/product-agent-os/project-code-graph-semantic-index.json",
+        }
+
+    def _llm_approval(self) -> dict:
+        return {
+            "explicit_approval": True,
+            "storage_path": ".codex/product-agent-os/project-code-graph-llm-proposals.json",
+            "extraction_schema": {
+                "semantic_nodes": True,
+                "semantic_edges": True,
+                "rationale_comments": True,
+                "review_required": True,
+            },
+            "prompt_model_policy": {
+                "provider": "local_deterministic",
+                "model": "local-proposal-extractor-v1",
+                "version": "1",
+                "sampling": {"temperature": 0},
+                "external_model_calls_allowed": False,
+                "approved_context": ["redacted_graph_artifact", "semantic_retrieval_index"],
+                "output_format": "structured_json",
+            },
+            "redaction_policy": {
+                "raw_source_excluded": True,
+                "private_comments_excluded": True,
+                "secrets_redacted": True,
+                "absolute_paths_redacted": True,
+                "unsupported_claims_labelled": True,
+            },
+            "cache_policy": {
+                "cache_status": "generated",
+                "fingerprint_scope": "redacted_graph_semantic_index_prompt_policy",
+                "stale_policy": "block_if_graph_or_semantic_fingerprint_mismatch",
+                "ttl_days": 30,
+            },
+            "token_budget": {"max_prompt_tokens": 1500, "max_output_tokens": 1500, "max_cost_units": 0},
+            "eval_threshold": {
+                "min_precision": 1.0,
+                "max_unsupported_claim_rate": 0.0,
+                "max_privacy_violations": 0,
+                "max_latency_ms": 250,
+            },
+            "incident_path": "disable extraction and record AI incident workflow",
+            "owner": "product-agent-owner",
+            "rollback_path": "delete .codex/product-agent-os/project-code-graph-llm-proposals.json",
         }
 
 

@@ -42,6 +42,13 @@ from product_agent_os.project_graph_backend import (  # noqa: E402
     validate_local_query_backend_store,
 )
 from product_agent_os.project_graph_index import build_static_search_index, query_static_search_index  # noqa: E402
+from product_agent_os.project_graph_llm_extraction import (  # noqa: E402
+    LLM_EXTRACTION_TARGET,
+    build_llm_extraction_proposals,
+    evaluate_llm_extraction_proposals,
+    validate_llm_extraction_approval,
+    validate_llm_extraction_proposals,
+)
 from product_agent_os.project_graph_queries import query_project_graph  # noqa: E402
 from product_agent_os.project_graph_renderer import render_project_graph_cockpit  # noqa: E402
 from product_agent_os.project_graph_search_quality import evaluate_project_graph_search_quality  # noqa: E402
@@ -2039,6 +2046,12 @@ def _expected_checks(
         checks["project_graph_semantic_present_unverified_routing_present"] = (
             _project_graph_semantic_present_unverified_routing_present()
         )
+        checks["project_graph_llm_extraction_gate_present"] = _project_graph_llm_extraction_gate_present()
+        checks["project_graph_llm_proposal_schema_present"] = _project_graph_llm_proposal_schema_present()
+        checks["project_graph_rationale_comment_proposals_present"] = (
+            _project_graph_rationale_comment_proposals_present()
+        )
+        checks["project_graph_llm_extraction_eval_present"] = _project_graph_llm_extraction_eval_present()
         checks["project_graph_future_backend_semantic_gates_present"] = (
             _project_graph_future_backend_semantic_gates_present()
         )
@@ -3960,6 +3973,139 @@ def _project_graph_semantic_present_unverified_routing_present() -> bool:
     )
 
 
+def _project_graph_llm_extraction_approval() -> dict[str, Any]:
+    return {
+        "explicit_approval": True,
+        "storage_path": LLM_EXTRACTION_TARGET,
+        "extraction_schema": {
+            "semantic_nodes": True,
+            "semantic_edges": True,
+            "rationale_comments": True,
+            "review_required": True,
+        },
+        "prompt_model_policy": {
+            "provider": "local_deterministic",
+            "model": "local-proposal-extractor-v1",
+            "version": "1",
+            "sampling": {"temperature": 0},
+            "external_model_calls_allowed": False,
+            "approved_context": ["redacted_graph_artifact", "semantic_retrieval_index"],
+            "output_format": "structured_json",
+        },
+        "redaction_policy": {
+            "raw_source_excluded": True,
+            "private_comments_excluded": True,
+            "secrets_redacted": True,
+            "absolute_paths_redacted": True,
+            "unsupported_claims_labelled": True,
+        },
+        "cache_policy": {
+            "cache_status": "generated",
+            "fingerprint_scope": "redacted_graph_semantic_index_prompt_policy",
+            "stale_policy": "block_if_graph_or_semantic_fingerprint_mismatch",
+            "ttl_days": 30,
+        },
+        "token_budget": {"max_prompt_tokens": 1500, "max_output_tokens": 1500, "max_cost_units": 0},
+        "eval_threshold": {
+            "min_precision": 1.0,
+            "max_unsupported_claim_rate": 0.0,
+            "max_privacy_violations": 0,
+            "max_latency_ms": 250,
+        },
+        "incident_path": "disable extraction and record AI incident workflow",
+        "owner": "product-agent-owner",
+        "rollback_path": f"delete {LLM_EXTRACTION_TARGET}",
+    }
+
+
+def _project_graph_llm_extraction_proposals() -> dict[str, Any]:
+    return build_llm_extraction_proposals(
+        _project_graph_sample(),
+        semantic_index=_project_graph_semantic_index(),
+        approval=_project_graph_llm_extraction_approval(),
+    )
+
+
+def _project_graph_llm_extraction_gate_present() -> bool:
+    approval = _project_graph_llm_extraction_approval()
+    proposals = _project_graph_llm_extraction_proposals()
+    payload = json.dumps(proposals, sort_keys=True).lower()
+    return (
+        validate_llm_extraction_approval(approval).get("ok") is True
+        and validate_llm_extraction_proposals(proposals).get("ok") is True
+        and proposals.get("artifact_kind") == "project_graph_llm_extraction_proposals"
+        and proposals.get("approval_boundary") == "batch22_explicit_llm_semantic_extraction_gate"
+        and proposals.get("model_policy", {}).get("provider") == "local_deterministic"
+        and proposals.get("model_policy", {}).get("external_model_calls_allowed") is False
+        and proposals.get("canonical_graph_mutation") == "forbidden"
+        and "return 'ok'" not in payload
+        and "c:\\users" not in payload
+    )
+
+
+def _project_graph_llm_proposal_schema_present() -> bool:
+    proposals = _project_graph_llm_extraction_proposals()
+    node = proposals.get("semantic_node_proposals", [{}])[0]
+    edge = proposals.get("semantic_edge_proposals", [{}])[0]
+    return (
+        proposals.get("generated_view_policy") == "llm_extraction_proposals_are_generated_not_source_of_truth"
+        and proposals.get("prompt_contract", {}).get("output_format") == "structured_json"
+        and "unsupported_claim" in proposals.get("prompt_contract", {}).get("required_labels", [])
+        and node.get("proposal_kind") == "semantic_node"
+        and edge.get("proposal_kind") == "semantic_edge"
+        and node.get("review_status") == "proposed"
+        and edge.get("review_status") == "proposed"
+        and node.get("confidence") == "inferred_unverified"
+        and edge.get("confidence") == "inferred_unverified"
+        and bool(node.get("source_observation_ids"))
+        and bool(edge.get("source_observation_ids"))
+    )
+
+
+def _project_graph_rationale_comment_proposals_present() -> bool:
+    proposals = _project_graph_llm_extraction_proposals()
+    comment = proposals.get("rationale_comment_proposals", [{}])[0]
+    return (
+        comment.get("proposal_kind") == "rationale_comment"
+        and comment.get("source_boundary") == "approved_redacted_spans_only"
+        and comment.get("truth_status") == "unverified_inference"
+        and comment.get("review_status") == "proposed"
+        and proposals.get("review_policy", {}).get("human_review_required") is True
+        and proposals.get("incident_workflow", {}).get("disable_on_failed_eval_or_privacy_violation") is True
+        and proposals.get("rollback", {}).get("disable_path") == f"delete {LLM_EXTRACTION_TARGET}"
+    )
+
+
+def _project_graph_llm_extraction_eval_present() -> bool:
+    proposals = _project_graph_llm_extraction_proposals()
+    packet = evaluate_llm_extraction_proposals(
+        proposals,
+        cases=[
+            {
+                "id": "worker-proposal",
+                "expected_proposal_kinds": ["semantic_node", "semantic_edge", "rationale_comment"],
+                "expected_source_node_ids": ["function:app.worker.run"],
+            }
+        ],
+        thresholds={
+            "min_precision": 1.0,
+            "max_unsupported_claim_rate": 0.0,
+            "max_privacy_violations": 0,
+            "max_cost_units": 0,
+            "max_latency_ms": 250,
+        },
+    )
+    return (
+        packet.get("decision_status") == "passed"
+        and packet.get("approval_boundary") == "batch22_explicit_llm_semantic_extraction_gate"
+        and packet.get("quality_metrics", {}).get("precision") == 1.0
+        and packet.get("quality_metrics", {}).get("unsupported_claim_rate") == 0.0
+        and packet.get("quality_metrics", {}).get("privacy_violations") == 0
+        and packet.get("quality_metrics", {}).get("cost_units") == 0
+        and packet.get("failed_thresholds") == []
+    )
+
+
 def _project_graph_search_quality_present() -> bool:
     packet = _project_graph_search_quality_packet()
     metrics = packet.get("quality_metrics", {}) if isinstance(packet.get("quality_metrics"), dict) else {}
@@ -4017,8 +4163,9 @@ def _project_graph_future_backend_semantic_gates_present() -> bool:
     ]
     implemented_claims = [
         "live database/server is implemented",
-        "semantic extraction is implemented",
-        "llm semantic extraction is implemented",
+        "live external model/api extraction is implemented",
+        "canonical graph mutation by llm extraction is implemented",
+        "llm proposals are canonical graph facts",
     ]
     return all(term in payload for term in required_terms) and not any(
         claim in payload for claim in implemented_claims

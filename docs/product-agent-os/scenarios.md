@@ -58,6 +58,8 @@ Task 25 Batch 20 `T10-CG-V2-M39..M44` implements the approved local query backen
 
 Task 25 Batch 21 `T10-CG-V2-M45..M51` implements the approved semantic retrieval gate in `project_graph_semantic.py`. It records `project_graph_semantic_retrieval_gate_present`, a semantic corpus and chunk policy, embeddings cache metadata, semantic query packets and cross-encoder eval/reranking gate using local deterministic embeddings only. Semantic hits are `present_unverified` orientation evidence, there are no canonical graph edge rewrites, the rollback/disable path deletes `.codex/product-agent-os/project-code-graph-semantic-index.json`, and Batch 22-23 remain future-gated.
 
+Task 25 Batch 22 `T10-CG-V2-M52..M57` implements the approved local deterministic LLM semantic extraction proposal gate in `project_graph_llm_extraction.py`. It records `project_graph_llm_extraction_gate_present`, validates a Batch 22 explicit approval packet with prompt/model policy, emits structured JSON with provenance, uncertainty and unsupported-claim labels, stages semantic node and edge proposals plus rationale/comment proposals, and treats every output as staged proposals, not canonical graph facts. There is no canonical graph mutation, no live external model/API call and no source-of-truth claim; human review can accept, reject or mark `accepted_gap`, unsafe output routes to the AI incident workflow, the rollback/disable path deletes `.codex/product-agent-os/project-code-graph-llm-proposals.json`, and Batch 23 remains future-gated.
+
 ## Scenario Matrix
 
 | usage_mode | When it applies | first response | minimum artifacts | approval boundary | verification gates |

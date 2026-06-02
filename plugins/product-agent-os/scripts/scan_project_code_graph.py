@@ -20,6 +20,10 @@ from product_agent_os.project_graph_backend import (  # noqa: E402
 )
 from product_agent_os.project_graph_index import load_static_search_index, stage_project_graph_search_index  # noqa: E402
 from product_agent_os.project_graph_queries import load_graph_artifact, query_project_graph  # noqa: E402
+from product_agent_os.project_graph_llm_extraction import (  # noqa: E402
+    disable_llm_extraction_proposals,
+    stage_llm_extraction_proposals,
+)
 from product_agent_os.project_graph_semantic import (  # noqa: E402
     disable_semantic_retrieval_index,
     load_semantic_retrieval_index,
@@ -41,12 +45,15 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--disable-backend", action="store_true", help="Delete the generated local query backend store from --stage.")
     parser.add_argument("--build-semantic-index", action="store_true", help="Stage an approved semantic retrieval index from --graph.")
     parser.add_argument("--disable-semantic-index", action="store_true", help="Delete the generated semantic retrieval index from --stage.")
+    parser.add_argument("--build-llm-proposals", action="store_true", help="Stage approved LLM extraction proposal artifacts from --graph.")
+    parser.add_argument("--disable-llm-proposals", action="store_true", help="Delete generated LLM extraction proposal artifacts from --stage.")
     parser.add_argument("--graph", help="Path to project-code-graph.json or project-code-graph.jsonl for query mode.")
     parser.add_argument("--index", help="Optional project-code-graph-search-index.json for indexed search query mode.")
     parser.add_argument("--backend", help="Optional project-code-graph-backend.json for backend query mode.")
     parser.add_argument("--backend-approval", help="JSON approval packet for --build-backend.")
     parser.add_argument("--semantic-index", help="Optional project-code-graph-semantic-index.json for semantic search query mode.")
     parser.add_argument("--semantic-approval", help="JSON approval packet for --build-semantic-index.")
+    parser.add_argument("--llm-approval", help="JSON approval packet for --build-llm-proposals.")
     parser.add_argument("--node-id", help="Source node id for graph query mode.")
     parser.add_argument("--target-id", help="Target node id for graph path/trace query mode.")
     parser.add_argument("--text", help="Search text for graph query mode.")
@@ -69,6 +76,8 @@ def main(argv: list[str] | None = None) -> int:
             and not args.disable_backend
             and not args.build_semantic_index
             and not args.disable_semantic_index
+            and not args.build_llm_proposals
+            and not args.disable_llm_proposals
         )
         + int(bool(args.query))
         + int(bool(args.build_index))
@@ -76,11 +85,14 @@ def main(argv: list[str] | None = None) -> int:
         + int(bool(args.disable_backend))
         + int(bool(args.build_semantic_index))
         + int(bool(args.disable_semantic_index))
+        + int(bool(args.build_llm_proposals))
+        + int(bool(args.disable_llm_proposals))
     )
     if mode_count != 1:
         return _print_error(
             "choose exactly one mode: --dry-run, --stage, --query, --build-index, --build-backend, "
-            "--disable-backend, --build-semantic-index, or --disable-semantic-index",
+            "--disable-backend, --build-semantic-index, --disable-semantic-index, --build-llm-proposals, "
+            "or --disable-llm-proposals",
             exit_code=2,
         )
 
@@ -195,6 +207,43 @@ def main(argv: list[str] | None = None) -> int:
                 raise ProjectGraphCliError("workspace is not a directory")
             try:
                 result = disable_semantic_retrieval_index(Path(args.stage), workspace=workspace)
+            except ValueError as exc:
+                raise ProjectGraphCliError(str(exc)) from exc
+            print(json.dumps(_redacted_payload(result), indent=2, sort_keys=True))
+            return 0
+        if args.build_llm_proposals:
+            if not args.graph:
+                raise ProjectGraphCliError("build-llm-proposals mode requires --graph")
+            if not args.stage:
+                raise ProjectGraphCliError("build-llm-proposals mode requires --stage")
+            workspace = Path(args.workspace).resolve()
+            if not workspace.exists():
+                raise ProjectGraphCliError("workspace does not exist")
+            if not workspace.is_dir():
+                raise ProjectGraphCliError("workspace is not a directory")
+            approval = _load_json_file(args.llm_approval) if args.llm_approval else None
+            try:
+                result = stage_llm_extraction_proposals(
+                    Path(args.graph),
+                    Path(args.stage),
+                    workspace=workspace,
+                    approval=approval,
+                    semantic_index_artifact=Path(args.semantic_index) if args.semantic_index else None,
+                )
+            except ValueError as exc:
+                raise ProjectGraphCliError(str(exc)) from exc
+            print(json.dumps(_redacted_payload(result), indent=2, sort_keys=True))
+            return 0 if result.get("rendered_artifacts", {}).get("status") == "ready" else 1
+        if args.disable_llm_proposals:
+            if not args.stage:
+                raise ProjectGraphCliError("disable-llm-proposals mode requires --stage")
+            workspace = Path(args.workspace).resolve()
+            if not workspace.exists():
+                raise ProjectGraphCliError("workspace does not exist")
+            if not workspace.is_dir():
+                raise ProjectGraphCliError("workspace is not a directory")
+            try:
+                result = disable_llm_extraction_proposals(Path(args.stage), workspace=workspace)
             except ValueError as exc:
                 raise ProjectGraphCliError(str(exc)) from exc
             print(json.dumps(_redacted_payload(result), indent=2, sort_keys=True))
