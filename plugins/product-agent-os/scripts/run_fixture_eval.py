@@ -41,7 +41,17 @@ from product_agent_os.project_graph_backend import (  # noqa: E402
     handle_backend_api_request,
     validate_local_query_backend_store,
 )
-from product_agent_os.project_graph_index import build_static_search_index, query_static_search_index  # noqa: E402
+from product_agent_os.project_graph_extension_closure import (  # noqa: E402
+    EXTENSION_CLOSURE_TARGET,
+    build_future_extension_closure_packet,
+    disable_future_extensions,
+    validate_future_extension_closure_packet,
+)
+from product_agent_os.project_graph_index import (  # noqa: E402
+    STATIC_SEARCH_INDEX_TARGET,
+    build_static_search_index,
+    query_static_search_index,
+)
 from product_agent_os.project_graph_llm_extraction import (  # noqa: E402
     LLM_EXTRACTION_TARGET,
     build_llm_extraction_proposals,
@@ -2052,6 +2062,16 @@ def _expected_checks(
             _project_graph_rationale_comment_proposals_present()
         )
         checks["project_graph_llm_extraction_eval_present"] = _project_graph_llm_extraction_eval_present()
+        checks["project_graph_future_extension_closure_present"] = _project_graph_future_extension_closure_present()
+        checks["project_graph_extension_rollback_deletion_present"] = (
+            _project_graph_extension_rollback_deletion_present()
+        )
+        checks["project_graph_unapproved_surface_blocking_present"] = (
+            _project_graph_unapproved_surface_blocking_present()
+        )
+        checks["project_graph_extension_full_verification_contract_present"] = (
+            _project_graph_extension_full_verification_contract_present()
+        )
         checks["project_graph_future_backend_semantic_gates_present"] = (
             _project_graph_future_backend_semantic_gates_present()
         )
@@ -4103,6 +4123,141 @@ def _project_graph_llm_extraction_eval_present() -> bool:
         and packet.get("quality_metrics", {}).get("privacy_violations") == 0
         and packet.get("quality_metrics", {}).get("cost_units") == 0
         and packet.get("failed_thresholds") == []
+    )
+
+
+def _project_graph_extension_artifacts() -> dict[str, dict[str, Any]]:
+    static_index = _project_graph_static_index()
+    return {
+        "static_index": static_index,
+        "backend": build_local_query_backend_store(
+            _project_graph_sample(),
+            static_index=static_index,
+            approval=_project_graph_backend_approval(),
+        ),
+        "semantic": _project_graph_semantic_index(),
+        "llm_proposals": _project_graph_llm_extraction_proposals(),
+    }
+
+
+def _project_graph_extension_verification_evidence() -> dict[str, Any]:
+    return {
+        "focused_suites": {
+            "static_index": "passed",
+            "backend": "passed",
+            "semantic": "passed",
+            "llm_proposals": "passed",
+        },
+        "full_verification_required": True,
+        "timeout_ms": 1_200_000,
+        "docs_check_required": True,
+        "strict_mkdocs_required": True,
+        "diff_hygiene_required": True,
+    }
+
+
+def _project_graph_extension_closure_packet() -> dict[str, Any]:
+    with tempfile.TemporaryDirectory() as tmp:
+        return build_future_extension_closure_packet(
+            workspace=FIXTURES / "project-code-graph-minimal-python",
+            stage_root=Path(tmp) / "stage",
+            graph=_project_graph_sample(),
+            artifacts=_project_graph_extension_artifacts(),
+            verification_evidence=_project_graph_extension_verification_evidence(),
+        )
+
+
+def _project_graph_future_extension_closure_present() -> bool:
+    packet = _project_graph_extension_closure_packet()
+    payload = json.dumps(packet, sort_keys=True).lower()
+    return (
+        validate_future_extension_closure_packet(packet).get("ok") is True
+        and packet.get("artifact_kind") == "project_graph_future_extension_closure"
+        and packet.get("approval_boundary") == "batch23_future_extension_verification_rollback_closure"
+        and packet.get("status") == "ready"
+        and packet.get("runtime_visual_qa", {}).get("backend_server_status") == "disabled_by_default"
+        and packet.get("runtime_visual_qa", {}).get("external_requests_allowed") is False
+        and packet.get("deferred_surface_status", {}).get("live_external_llm_semantic_extraction")
+        == "blocked_without_new_explicit_approval"
+        and packet.get("graph_only_fallback", {}).get("status") == "ok"
+        and "c:\\users" not in payload
+        and "return 'ok'" not in payload
+    )
+
+
+def _project_graph_extension_rollback_deletion_present() -> bool:
+    with tempfile.TemporaryDirectory() as tmp:
+        stage_root = Path(tmp) / "stage"
+        for relative in [
+            STATIC_SEARCH_INDEX_TARGET,
+            ".codex/product-agent-os/project-code-graph-search-index.previous.json",
+            LOCAL_BACKEND_TARGET,
+            ".codex/product-agent-os/project-code-graph-backend.previous.json",
+            ".codex/product-agent-os/project-code-graph-backend.log",
+            ".codex/product-agent-os/project-code-graph-backend.pid",
+            SEMANTIC_RETRIEVAL_TARGET,
+            ".codex/product-agent-os/project-code-graph-semantic-index.previous.json",
+            LLM_EXTRACTION_TARGET,
+            ".codex/product-agent-os/project-code-graph-llm-proposals.previous.json",
+            EXTENSION_CLOSURE_TARGET,
+        ]:
+            target = stage_root / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text("generated\n", encoding="utf-8")
+        result = disable_future_extensions(
+            stage_root,
+            workspace=FIXTURES / "project-code-graph-minimal-python",
+            graph=_project_graph_sample(),
+        )
+        proof = result.get("rendered_artifacts", {}).get("deletion_proof", {})
+        return (
+            result.get("rendered_artifacts", {}).get("status") == "disabled"
+            and result.get("rendered_artifacts", {}).get("graph_only_fallback", {}).get("status") == "ok"
+            and proof.get("remaining") == []
+            and all(not (stage_root / relative).exists() for relative in proof.get("targets_checked", []))
+        )
+
+
+def _project_graph_unapproved_surface_blocking_present() -> bool:
+    artifacts = _project_graph_extension_artifacts()
+    artifacts["backend"]["server_lifecycle"]["active_process"] = True
+    artifacts["backend"]["server_lifecycle"]["server_status"] = "running"
+    artifacts["semantic"]["model_decision"]["external_model_calls_allowed"] = True
+    artifacts["llm_proposals"]["model_policy"]["external_model_calls_allowed"] = True
+    artifacts["llm_proposals"]["canonical_graph_mutation"] = "allowed"
+    with tempfile.TemporaryDirectory() as tmp:
+        packet = build_future_extension_closure_packet(
+            workspace=FIXTURES / "project-code-graph-minimal-python",
+            stage_root=Path(tmp) / "stage",
+            graph=_project_graph_sample(),
+            artifacts=artifacts,
+            verification_evidence=_project_graph_extension_verification_evidence(),
+        )
+    errors = set(packet.get("validation", {}).get("errors", []))
+    return (
+        packet.get("status") == "blocked"
+        and "backend:live_server_active" in errors
+        and "semantic:external_model_calls" in errors
+        and "llm_proposals:external_model_calls" in errors
+        and "llm_proposals:canonical_graph_mutation" in errors
+        and packet.get("deferred_surface_status", {}).get("canonical_graph_mutation_from_generated_proposals")
+        == "blocked_without_new_explicit_approval"
+    )
+
+
+def _project_graph_extension_full_verification_contract_present() -> bool:
+    packet = _project_graph_extension_closure_packet()
+    contract = packet.get("full_verification_contract", {})
+    commands = " ".join(contract.get("full_commands_required", []))
+    return (
+        contract.get("timeout_ms") == 1_200_000
+        and "python -m unittest discover" in commands
+        and "run_fixture_eval.py" in commands
+        and "run_transcript_eval.py" in commands
+        and "validate_codex_compatibility.py" in commands
+        and ("tools\\check_docs.py" in commands or "tools/check_docs.py" in commands)
+        and "git diff --check" in commands
+        and packet.get("git_boundary") == "explicit_only"
     )
 
 

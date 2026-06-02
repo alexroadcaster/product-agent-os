@@ -171,6 +171,10 @@ class FixtureEvalRunnerTest(unittest.TestCase):
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_llm_proposal_schema_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_rationale_comment_proposals_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_llm_extraction_eval_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_future_extension_closure_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_extension_rollback_deletion_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_unapproved_surface_blocking_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_extension_full_verification_contract_present"])
         self.assertEqual(results["python-app"]["renderer_file_count"], 191)
         for check_name in [
             "methodology_catalog_contract_present",

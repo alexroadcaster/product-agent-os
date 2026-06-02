@@ -459,7 +459,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "| `done` | `T10-CG-V2-M39..M44` local query backend and live database/server gate |",
             "| `done` | `T10-CG-V2-M45..M51` semantic retrieval, embeddings and cross-encoder eval |",
             "| `done` | `T10-CG-V2-M52..M57` LLM semantic extraction and rationale/comment proposals |",
-            "| `pending` | `T10-CG-V2-M58..M62` future extension verification, rollback and closure |",
+            "| `done` | `T10-CG-V2-M58..M62` future extension verification, rollback and closure |",
             "Generated semantic nodes, rationale and comments are staged proposals, not canonical graph facts.",
         ]
         for expected in backlog_terms:
@@ -474,6 +474,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "Batch 21 semantic retrieval with embeddings/cross-encoder",
             "Batch 22 LLM semantic extraction/rationale-comment proposals",
             "Batch 23 extension",
+            "project_graph_extension_closure.py",
             "Planning matrix presence is not implementation evidence",
             "explicit approval with redaction, cache, token budget, eval threshold and rollback path",
         ]
@@ -523,7 +524,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "human review can accept, reject or mark accepted_gap",
             "AI incident workflow",
             "rollback/disable path is deleting `.codex/product-agent-os/project-code-graph-llm-proposals.json`",
-            "Batch 23 remains future-gated",
+            "Batch 23 is closed separately as generated extension verification/rollback evidence",
         ]
         for expected in backlog_terms:
             with self.subTest(backlog=expected):
@@ -542,7 +543,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "no canonical graph mutation",
             "AI incident workflow",
             "rollback/disable path",
-            "Batch 23 remains future-gated",
+            "Batch 23",
         ]
         for document, text in documents.items():
             for expected in docs_terms:
@@ -561,7 +562,88 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "staged proposals, not canonical graph facts",
             "no canonical graph mutation",
             "AI incident workflow",
-            "Batch 23 remains future-gated",
+            "Batch 23",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for filename, text in control_plane.items():
+            for expected in control_terms:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
+    def test_track10_task25_batch23_future_extension_closure_is_synced(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        documents = {
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+            "product_index": (PRODUCT_AGENT_OS / "index.md").read_text(encoding="utf-8"),
+            "technical": (PRODUCT_AGENT_OS / "technical.md").read_text(encoding="utf-8"),
+            "scenarios": (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8"),
+        }
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+        }
+
+        registry_terms = [
+            "Product-Agent OS Track 10 project code graph Batch 23 future extension verification",
+            "T10-CG-V2-M58..M62",
+            "project_graph_extension_closure.py",
+            "project_graph_future_extension_closure_present",
+            "project_graph_extension_rollback_deletion_present",
+            "verification_status:",
+        ]
+        for expected in registry_terms:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        backlog_terms = [
+            "| `done` | `T10-CG-V2-M58..M62` future extension verification, rollback and closure |",
+            "Batch 23 explicit approval",
+            "project_graph_extension_closure.py",
+            "verify-extensions",
+            "disable-extensions",
+            "deletion proof",
+            "graph-only fallback",
+            "blocked_without_new_explicit_approval",
+            "full verification with `timeout_ms: 1200000`",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for expected in backlog_terms:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        docs_terms = [
+            "Task 25 Batch 23",
+            "T10-CG-V2-M58..M62",
+            "project_graph_extension_closure.py",
+            "verify-extensions",
+            "disable-extensions",
+            "rollback/data deletion proof",
+            "graph-only fallback",
+            "blocked_without_new_explicit_approval",
+            "no live external model/API calls",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for document, text in documents.items():
+            for expected in docs_terms:
+                with self.subTest(document=document, term=expected):
+                    self.assertIn(expected, text)
+
+        control_terms = [
+            "Task 25 Batch 23",
+            "T10-CG-V2-M58..M62",
+            "project_graph_extension_closure.py",
+            "project_graph_future_extension_closure_present",
+            "project_graph_extension_rollback_deletion_present",
+            "project_graph_unapproved_surface_blocking_present",
+            "project_graph_extension_full_verification_contract_present",
+            "rollback/data deletion proof",
+            "graph-only fallback",
+            "blocked_without_new_explicit_approval",
             "git staging/commit/push/PR remains explicit-only",
         ]
         for filename, text in control_plane.items():
@@ -609,7 +691,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "no production server",
             "graph-only fallback",
             "rollback/disable path is deleting `.codex/product-agent-os/project-code-graph-backend.json`",
-            "Batch 22-23 remain future-gated",
+            "Batch 21, Batch 22 and Batch 23 are now implemented separately as generated, approval-bound extension slices",
         ]
         for expected in backlog_terms:
             with self.subTest(backlog=expected):
@@ -694,7 +776,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "present_unverified orientation evidence",
             "no canonical graph edge rewrites",
             "rollback/disable path is deleting `.codex/product-agent-os/project-code-graph-semantic-index.json`",
-            "Batch 22-23 remain future-gated",
+            "Batch 22 and Batch 23 are now implemented separately as generated, approval-bound extension slices",
         ]
         for expected in backlog_terms:
             with self.subTest(backlog=expected):
@@ -712,7 +794,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "present_unverified",
             "no canonical graph edge rewrites",
             "rollback/disable path",
-            "Batch 22-23 remain future-gated",
+            "Batch 23",
         ]
         for document, text in documents.items():
             for expected in docs_terms:
@@ -730,7 +812,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "cross-encoder eval",
             "present_unverified orientation evidence",
             "no canonical graph edge rewrites",
-            "Batch 22-23 remain future-gated",
+            "Batch 23",
             "git staging/commit/push/PR remains explicit-only",
         ]
         for filename, text in control_plane.items():
@@ -785,7 +867,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "full unittest ran 664 tests with `OK`",
             "fixture eval exited `0` for 91 fixture directories",
             "explicit-only git boundary",
-            "future-gated",
+            "Batch 23",
         ]
         for document, text in documents.items():
             for expected in docs_terms:

@@ -11,8 +11,10 @@ SCRIPT = ROOT / "plugins" / "product-agent-os" / "scripts" / "scan_project_code_
 FIXTURES = ROOT / "plugins" / "product-agent-os" / "assets" / "fixtures"
 PROJECT_GRAPH_TARGET = Path(".codex/product-agent-os/project-code-graph.json")
 STATIC_SEARCH_INDEX_TARGET = Path(".codex/product-agent-os/project-code-graph-search-index.json")
+LOCAL_BACKEND_TARGET = Path(".codex/product-agent-os/project-code-graph-backend.json")
 SEMANTIC_RETRIEVAL_TARGET = Path(".codex/product-agent-os/project-code-graph-semantic-index.json")
 LLM_EXTRACTION_TARGET = Path(".codex/product-agent-os/project-code-graph-llm-proposals.json")
+EXTENSION_CLOSURE_TARGET = Path(".codex/product-agent-os/project-code-graph-extension-closure.json")
 
 
 class ProjectGraphCliTest(unittest.TestCase):
@@ -856,6 +858,170 @@ class ProjectGraphCliTest(unittest.TestCase):
             self.assertEqual(payload["rendered_artifacts"]["status"], "disabled")
             self.assertEqual(payload["rendered_artifacts"]["fallback"], "semantic_retrieval_or_graph_only")
             self.assertFalse((stage_root / LLM_EXTRACTION_TARGET).exists())
+
+    def test_verify_and_disable_extensions_cli_records_batch23_closure_and_deletion_proof(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "workspace"
+            stage_root = Path(tmp) / "stage"
+            backend_approval_path = Path(tmp) / "backend-approval.json"
+            semantic_approval_path = Path(tmp) / "semantic-approval.json"
+            llm_approval_path = Path(tmp) / "llm-approval.json"
+            evidence_path = Path(tmp) / "verification-evidence.json"
+            (workspace / "app").mkdir(parents=True)
+            (workspace / "app" / "__init__.py").write_text("", encoding="utf-8")
+            (workspace / "app" / "worker.py").write_text("def run():\n    return 'ok'\n", encoding="utf-8")
+            backend_approval_path.write_text(json.dumps(self._backend_approval()), encoding="utf-8")
+            semantic_approval_path.write_text(json.dumps(self._semantic_approval()), encoding="utf-8")
+            llm_approval_path.write_text(json.dumps(self._llm_approval()), encoding="utf-8")
+            evidence_path.write_text(
+                json.dumps(
+                    {
+                        "focused_suites": {
+                            "static_index": "passed",
+                            "backend": "passed",
+                            "semantic": "passed",
+                            "llm_proposals": "passed",
+                        },
+                        "full_verification_required": True,
+                        "timeout_ms": 1_200_000,
+                        "docs_check_required": True,
+                        "strict_mkdocs_required": True,
+                        "diff_hygiene_required": True,
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            stage = subprocess.run(
+                [sys.executable, str(SCRIPT), str(workspace), "--stage", str(stage_root)],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            index = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--build-index",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--stage",
+                    str(stage_root),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            backend = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--build-backend",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--stage",
+                    str(stage_root),
+                    "--index",
+                    str(stage_root / STATIC_SEARCH_INDEX_TARGET),
+                    "--backend-approval",
+                    str(backend_approval_path),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            semantic = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--build-semantic-index",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--stage",
+                    str(stage_root),
+                    "--index",
+                    str(stage_root / STATIC_SEARCH_INDEX_TARGET),
+                    "--semantic-approval",
+                    str(semantic_approval_path),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            proposals = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--build-llm-proposals",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--stage",
+                    str(stage_root),
+                    "--semantic-index",
+                    str(stage_root / SEMANTIC_RETRIEVAL_TARGET),
+                    "--llm-approval",
+                    str(llm_approval_path),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            verify = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--verify-extensions",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--stage",
+                    str(stage_root),
+                    "--verification-evidence",
+                    str(evidence_path),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            disable = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--disable-extensions",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--stage",
+                    str(stage_root),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            for result in [stage, index, backend, semantic, proposals, verify, disable]:
+                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+                self.assertEqual(result.stderr, "")
+                self.assertNotIn(str(workspace), result.stdout)
+            verify_payload = json.loads(verify.stdout)
+            disable_payload = json.loads(disable.stdout)
+            self.assertEqual(verify_payload["rendered_artifacts"]["mode"], "verify-extensions")
+            self.assertEqual(verify_payload["rendered_artifacts"]["status"], "ready")
+            self.assertEqual(verify_payload["rendered_artifacts"]["files"][0]["action"], "create")
+            self.assertEqual(disable_payload["rendered_artifacts"]["status"], "disabled")
+            self.assertEqual(disable_payload["rendered_artifacts"]["graph_only_fallback"]["status"], "ok")
+            for target in [
+                STATIC_SEARCH_INDEX_TARGET,
+                LOCAL_BACKEND_TARGET,
+                SEMANTIC_RETRIEVAL_TARGET,
+                LLM_EXTRACTION_TARGET,
+                EXTENSION_CLOSURE_TARGET,
+            ]:
+                self.assertFalse((stage_root / target).exists())
 
     def _backend_approval(self) -> dict:
         return {
