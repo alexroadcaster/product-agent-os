@@ -4,9 +4,9 @@ Source status: `local implementation planning`
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Build Track 10 so Product-Agent OS can guide users with bounded, methodology-aware questions, maintain a single offline HTML status artifact for project progress, stage a self-verification loop for agents, skills and harness modernization decisions, and generate a read-only project code graph for dependency-aware navigation.
+**Goal:** Build Track 10 so Product-Agent OS can guide users with bounded, methodology-aware questions, maintain a single offline HTML status artifact for project progress, stage a self-verification loop for agents, skills and harness modernization decisions, generate a project code graph for dependency-aware navigation, and close the remaining live runtime/provider/canonical-mutation gates in one final Task 26 before real project testing.
 
-**Architecture:** Extend the existing Track 8 usage-mode route and Track 9 methodology packet with a typed question protocol, answer ledger, status snapshot, staged static dashboard renderer, local-first metrics loop for self-verification, and staged code-graph pipeline: read-only scanner, graph JSON/index artifacts, compact agent query packets and static HTML visualization. JSON, JSONL and Markdown remain the source of truth; HTML artifacts are generated, reviewable views that are staged first and never silently mutate the target workspace.
+**Architecture:** Extend the existing Track 8 usage-mode route and Track 9 methodology packet with a typed question protocol, answer ledger, status snapshot, staged static dashboard renderer, local-first metrics loop for self-verification, staged code-graph pipeline, and final approval-gated live semantic runtime closure. JSON, JSONL and Markdown remain the source of truth; HTML artifacts are generated, reviewable views that are staged first and never silently mutate the target workspace. Task 26 is the final Track 10 umbrella for approved live local runtime, external provider adapters, human-reviewed canonical graph mutation, observability, rollback and real-testing readiness.
 
 **Tech Stack:** Python standard library, `ast`, `unittest`, JSON/JSONL contracts, Markdown control-plane artifacts, static HTML/CSS/vanilla JavaScript, optional locally bundled `graphology`/`sigma.js` for graph rendering, existing `plugins/product-agent-os/scripts/product_agent_os/*` modules, existing Codex runtime runner, fixture eval runner, transcript eval runner, docs checks, MkDocs.
 
@@ -21,6 +21,7 @@ It includes these implementation tasks:
 - `Task 23: Guided Question Protocol And Project Status Dashboard`
 - `Task 24: Self-Verification And Modernization Loop`
 - `Task 25: Project Code Graph And HTML Cockpit Visualization`
+- `Task 26: Final Live Semantic Runtime, Canonical Graph Governance And Real Testing Readiness`
 
 Track 10 must start only after Track 9 `Task 22` closes the current Product-Agent OS documentation baseline. This prevents Task 22 from becoming a moving target while Track 10 changes runtime packets, renderer output, evals and docs.
 
@@ -34,6 +35,9 @@ The Track 9 plan now keeps the former `Task 23: Final Verification Baseline` onl
 - offline `status.html` dashboard.
 - agent/skill/harness self-verification and staged modernization candidates.
 - project code graph scanner, compact graph packets and offline HTML cockpit visualization.
+- final approved live semantic runtime, external provider gates, canonical graph mutation governance and real-testing readiness.
+
+Task 26 absorbs all remaining Track 10 extension gates. There must be no `Task 27`, `Task 28` or later Track 10 task for leftover live runtime, provider, mutation, verification, packaging, docs or real-testing-readiness work. Any work after Task 26 is either the real testing phase itself or a separately approved new track with a new product goal, not a hidden continuation of Track 10.
 
 Do not implement Track 10 unless Track 9 docs keep the legacy final baseline absorbed into Task 22 and current verification evidence exists.
 
@@ -48,14 +52,17 @@ After Track 10, a user should be able to enable Product-Agent OS in a real proje
 - stale/evidence warnings when the dashboard is generated from inspection-only or old command evidence.
 - staged self-verification reports for generated agents, skills, prompt or policy packs, router/tool policies and harness versions, with modernization candidates separated from approval.
 - a project code graph that shows code, docs, templates, contracts and generated artifacts as dependency nodes with confidence-labelled edges and compact agent read-order hints.
+- a final readiness packet for real project testing that states which live/provider/mutation surfaces are enabled, disabled, rolled back, accepted as gaps or blocked.
 
 The plugin must keep forward momentum. It should ask only questions that block safe planning, approval, evidence or the next artifact.
 
 ## Non-Goals
 
-- Do not add a standalone web server.
-- Do not add a database.
-- Do not add a live model call, OpenAI API dependency, or Agents SDK app.
+These non-goals apply to Tasks 23-25 and to any Task 26 slice that has not received explicit approval. Task 26 may narrow only the specific live-runtime/provider/mutation boundaries named in its approval packet; production deployment, external writes and irreversible side effects remain outside scope unless separately approved.
+
+- Do not add a production web server, public network service or always-on daemon. A Task 26 local read-only runtime is allowed only as a disabled-by-default approved local server with lifecycle, auth, log cleanup and shutdown evidence.
+- Do not add a production database or make a database the source of truth. Task 26 may use bounded local stores, caches or query backends only when JSON, JSONL and Markdown source artifacts remain canonical unless accepted mutation governance explicitly applies a reviewed graph change.
+- Do not add a live model call, OpenAI API dependency, external embedding/reranker/LLM provider call or Agents SDK app outside the Task 26 approval packet. Approved provider calls must pass redaction, cache, budget, eval, rollback and audit gates before use.
 - Do not activate MCP servers, hooks, GitHub Actions, recurring automations or external writes.
 - Do not make HTML the source of truth.
 - Do not create browser-based editing of project files in this track.
@@ -458,7 +465,7 @@ Task 24 implementation batches:
 - **Batch 11: Runtime, Discovery, Lifecycle And Eval Coverage** (`T10-SV-M46..M57`)
 - **Batch 12: Docs, Control Plane And Full Verification** (`T10-SV-M58..M62`)
 
-Batch 11 status: implemented on 2026-05-28 with focused RED/GREEN coverage for status snapshots, discovery, methodology audit, runtime packets/routes, guided questions, lifecycle skills, fixture eval, behavioral eval and transcript sessions. Batch 12 is closed with docs/control-plane/full-verification evidence. Task 25 Batch 13 is implemented with file-level graph foundation, Task 25 Batch 14 is implemented with Python AST scanner overlays, conservative dependency edges, structured overlays, partition scopes, canonical aliases and bounded readiness metadata, Task 25 Batch 15 is implemented with graph query packets, query CLI mode, runtime/status/lifecycle graph summaries and bounded analysis reports, Task 25 Batch 16 is implemented with generated cockpit visualization, Graphology-compatible static projection, local vendor boundary, selected evidence, fallback tables and mobile/no-external-assets rendering, Task 25 Batch 17 is implemented with fixture structural fields, local search-quality evals and future backend/semantic gates, Task 25 Batch 18 is closed with `T10-CG-V2-M31..M32` focused/full verification, Task 25 Batch 19 is implemented with `T10-CG-V2-M33..M38` offline static search index after explicit user approval, Task 25 Batch 20 is implemented with `T10-CG-V2-M39..M44` local query backend gate after explicit user approval, Task 25 Batch 21 is implemented with `T10-CG-V2-M45..M51` semantic retrieval, embeddings cache metadata and cross-encoder eval after explicit user approval, Task 25 Batch 22 is implemented with `T10-CG-V2-M52..M57` local deterministic LLM semantic extraction/rationale-comment proposals after explicit user approval, and Task 25 Batch 23 is implemented with `T10-CG-V2-M58..M62` future extension verification, rollback and closure after explicit user approval.
+Batch 11 status: implemented on 2026-05-28 with focused RED/GREEN coverage for status snapshots, discovery, methodology audit, runtime packets/routes, guided questions, lifecycle skills, fixture eval, behavioral eval and transcript sessions. Batch 12 is closed with docs/control-plane/full-verification evidence. Task 25 Batch 13 is implemented with file-level graph foundation, Task 25 Batch 14 is implemented with Python AST scanner overlays, conservative dependency edges, structured overlays, partition scopes, canonical aliases and bounded readiness metadata, Task 25 Batch 15 is implemented with graph query packets, query CLI mode, runtime/status/lifecycle graph summaries and bounded analysis reports, Task 25 Batch 16 is implemented with generated cockpit visualization, Graphology-compatible static projection, local vendor boundary, selected evidence, fallback tables and mobile/no-external-assets rendering, Task 25 Batch 17 is implemented with fixture structural fields, local search-quality evals and future backend/semantic gates, Task 25 Batch 18 is closed with `T10-CG-V2-M31..M32` focused/full verification, Task 25 Batch 19 is implemented with `T10-CG-V2-M33..M38` offline static search index after explicit user approval, Task 25 Batch 20 is implemented with `T10-CG-V2-M39..M44` local query backend gate after explicit user approval, Task 25 Batch 21 is implemented with `T10-CG-V2-M45..M51` semantic retrieval, embeddings cache metadata and cross-encoder eval after explicit user approval, Task 25 Batch 22 is implemented with `T10-CG-V2-M52..M57` local deterministic LLM semantic extraction/rationale-comment proposals after explicit user approval, and Task 25 Batch 23 is implemented with `T10-CG-V2-M58..M62` future extension verification, rollback and closure after explicit user approval. Task 26 is staged as the final `approval_required` Track 10 umbrella matrix; it does not authorize live server startup, external provider calls, canonical graph mutation, external writes or git actions until the matching Task 26 approval and RED/eval/rollback gates are present.
 
 ## Task 25: Project Code Graph And HTML Cockpit Visualization
 
@@ -603,6 +610,97 @@ Task 25 implementation batches:
 - **Batch 23: Future Extension Verification, Rollback And Closure** (`T10-CG-V2-M58..M62`, approved and implemented)
 
 Task 25 starts only after Task 24 final verification evidence remains current. The Batch 13-18 baseline must preserve the Track 10 non-goals: no standalone web server, no database, no live model/API calls, no external writes, no hook/automation activation and no HTML-as-source-of-truth claim. Batch 19 adds only an offline generated static search index and does not relax database/server/model-call non-goals. Batch 20 adds only a generated local file-store backend gate with disabled-by-default server mode, no production server and graph-only fallback. Batch 21 adds only a generated semantic retrieval cache with local deterministic embeddings/cross-encoder eval, `present_unverified` routing and no canonical graph edge rewrites. Batch 22 adds only local deterministic LLM extraction-style proposals as staged proposals, not canonical graph facts, with no canonical graph mutation and no live external model/API calls. Batch 23 adds only generated future extension closure evidence, rollback/data deletion proof and graph-only fallback through `project_graph_extension_closure.py`; all other boundaries remain staged-first, source-free where possible, rollbackable and evidence-bound, and live/model/canonical-mutation surfaces stay `blocked_without_new_explicit_approval`.
+
+## Task 26: Final Live Semantic Runtime, Canonical Graph Governance And Real Testing Readiness
+
+Task 26 is the final Track 10 task. It absorbs all remaining `blocked_without_new_explicit_approval` surfaces left after Task 25 Batch 23: live local runtime, external embedding/cross-encoder/LLM provider calls, human-reviewed canonical graph mutation, live-action audit, security/privacy gates, observability, packaging smoke, docs/control-plane closure and the handoff into real project testing. This section is a planning matrix only until the user explicitly approves each implementation batch. It does not start a server, call a provider, mutate canonical graph facts or authorize git staging, commit, push or PR actions by itself.
+
+Task 26 closure analysis from previous tracks:
+
+- Tracks 1-2 created the Product-Agent OS plugin core, contracts and lifecycle skills. Product value: the system already knows how to route work through requirements, planning, testing, review, docs and release roles. Task 26 must reuse those skills instead of inventing another orchestration layer.
+- Tracks 3-4 established staged infrastructure, approval records, merge safety, rollback, hook/automation gates and source-policy validation. Product value: users can trust that generated artifacts are proposals until approved. Task 26 must keep live runtime and canonical mutation under the same staged-first and rollbackable model.
+- Track 5 added the Codex runtime runner with contract mode, route validation, redaction, approval and inactive-by-default boundaries. Product value: Product-Agent OS can participate in real Codex workflows without silent external side effects. Task 26 must remain additive, disabled by default and contract-visible.
+- Tracks 6-7 hardened engineering standards, architecture/doc/source/eval policies and false-positive guards. Product value: the plugin became useful across real project types, not just demo repos. Task 26 must prove live/provider/mutation behavior through standards-backed gates, not through optimistic model output.
+- Track 8 packaged use-case scenarios, acceptance/eval templates, two-stage review, fresh-context handoff, domain/context gates and scenario false-positive fixtures. Product value: real testing can be organized by user workflow archetype. Task 26 must produce the final pilot matrix and handoff packet that maps real testing to those archetypes.
+- Track 9 built methodology intelligence, cross-domain synthesis, route finish options and final docs/runtime closure. Product value: agents can surface methodology gaps without over-asking or over-claiming. Task 26 must keep LLM and semantic results as source-backed proposals until human review accepts them.
+- Track 10 Tasks 23-25 added bounded guided questions, status dashboard, self-verification, read-only project graph, cockpit visualization, offline search, local deterministic semantic retrieval, local deterministic proposal generation and future-extension rollback closure. Product value: the user now has the offline baseline and generated-view safety labels needed before live testing. Task 26 closes the remaining live/provider/mutation/pre-real-testing gap; no later Track 10 task should appear for that scope.
+
+Task 26 product outcome:
+
+- users can opt into a local live read-only project graph runtime when the approval packet, lifecycle controls and graph-only fallback are present;
+- semantic search can use approved external embeddings, hybrid retrieval and reranking only when redaction, cache, budget, provider metadata and eval thresholds are satisfied;
+- LLM output remains proposal-only until a human review ledger accepts it with source evidence;
+- canonical graph mutation is possible only through accepted proposals, dry-run mutation plans, append-only journals and verified rollback;
+- agents and skills get explicit handoff rules for live/provider/mutation work, so file ownership, stop conditions and evidence are visible;
+- security, privacy, observability, performance, packaging and docs closure are complete before the project moves to real testing;
+- the next post-Task-26 artifact is a real testing runbook and target-workspace evidence, not `Task 27`.
+
+Task 26 technical and product analysis:
+
+- Product value: live runtime and provider-backed retrieval reduce repeated manual graph/query work, improve natural-language discovery over large projects and make accepted graph improvements reusable. The user benefit is faster orientation, better search precision, fewer repeated context reads and controlled graph evolution.
+- Product risk: live outputs can appear authoritative even when they are generated, inferred or stale. Every live result must preserve source evidence, generated-view wording, confidence labels, owner review state and fallback path.
+- Technical value: approval schema, redaction, cache policy, provider adapters, eval thresholds, review ledger, mutation journal and rollback engine create a reversible path from local generated evidence to canonical graph updates.
+- Technical risk: local server work adds process lifecycle, port/auth/log/cleanup, concurrency and operational risk. External providers add privacy, cost, latency, model drift, cache invalidation and dataset leakage risk. Canonical mutation adds source-of-truth and rollback risk. Real testing adds reproducibility, target selection and user expectation risk.
+- Sequencing rule: governance first, read-only local runtime second, external retrieval third, LLM proposals fourth, human review and canonical mutation fifth, real-testing readiness last.
+- Approval gate: each Task 26 batch needs an explicit approval packet naming allowed surfaces, data classification, redaction boundary, provider/cache policy, token/cost/latency budget, eval thresholds, runtime controls, rollback path, owner signoff and accepted residual risks.
+- Stop condition: if approval is incomplete, redaction fails, eval threshold is missed, rollback proof is absent, provider budget is exceeded, a proposal lacks owner review, live runtime cannot cleanly shut down or real-testing targets are not approved, implementation must stop or degrade to graph-only mode.
+
+Task 26 task matrix:
+
+| ID | Task | Product value | Technical work | Artifact | Gate / Acceptance |
+| --- | --- | --- | --- | --- | --- |
+| `T10-LIVE-M01` | Approval packet schema | Clear owner control over live/runtime/provider/mutation risk | Define allowed surfaces, data class, owner, budget, rollback and residual-risk fields | `live-runtime-approval.json` | No complete approval packet means no live action. |
+| `T10-LIVE-M02` | Data classification policy | Prevent private or secret data from leaving safe boundaries | Classify graph fields as safe, redacted or blocked | `data-classification.md`, `data-classification.json` | Secrets, raw source bodies and absolute paths are blocked. |
+| `T10-LIVE-M03` | Redaction pipeline | Make provider calls safe by construction | Pre-send sanitizer, source/path/secret negative tests and redaction summary | `redaction_guard.py` | Provider call is impossible without sanitizer pass. |
+| `T10-LIVE-M04` | Provider credential boundary | Avoid storing or leaking secrets | Define environment-only credential lookup, no-secret fixtures and audit-safe errors | `provider-credentials-policy.md` | No key, token or credential is stored in docs, prompts, fixtures, caches or logs. |
+| `T10-LIVE-M05` | Cache and deletion policy | Control cost, freshness and removability | TTL, fingerprint invalidation, cache metadata and deletion proof | `cache-policy.md`, cache metadata | Cache can be deleted without graph loss. |
+| `T10-LIVE-M06` | Token, cost and latency budget | Keep runtime predictable | Hard limits per run, provider, query and mutation plan | `budget-policy.json` | Budget exceed routes to blocked or degraded mode. |
+| `T10-LIVE-M07` | Local read-only server contract | Interactive graph navigation without mutation risk | Read-only API routes, bounded payloads and stable errors | `project_graph_server_contract.py` | No write endpoints and no canonical mutation. |
+| `T10-LIVE-M08` | Server lifecycle controls | Safe local runtime operation | Port policy, auth, PID/log cleanup, health and shutdown | `server_lifecycle.py` | Starts only after approval; cleanup is verified. |
+| `T10-LIVE-M09` | Local auth and permission policy | Prevent accidental exposure on developer machines | Bind policy, local-only access, optional token and CORS/offline asset limits | `local-runtime-auth.md` | Runtime is not public by default and rejects unauthorized access. |
+| `T10-LIVE-M10` | Graph-only fallback | Preserve usable baseline after disabling live surfaces | Fallback from server/providers to graph query packets | fallback tests | Fallback works after disabling live layer. |
+| `T10-LIVE-M11` | External embedding adapter | Better semantic recall for large projects | Provider abstraction, batching, redaction, cache and budget checks | `embedding_provider.py` | No external call without approval/redaction/cache/budget. |
+| `T10-LIVE-M12` | Embedding eval baseline | Prove embeddings help before use | Recall@k, MRR and latency comparison against local deterministic baseline | `embedding-eval.json` | Must beat approved threshold or stay disabled. |
+| `T10-LIVE-M13` | Cross-encoder/reranker adapter | More precise top-k results | Rerank bounded candidates only with fallback | `reranker_provider.py` | Precision/MRR improves or fallback remains active. |
+| `T10-LIVE-M14` | Hybrid retrieval pipeline | Stronger search combining lexical and semantic signals | Static index, embeddings and rerank fusion with explanations | `hybrid_retrieval.py` | Results are source-backed, bounded and explainable. |
+| `T10-LIVE-M15` | Live LLM proposal adapter | Generate candidate graph improvements and rationale | Grounded prompt contract, JSON schema and unsupported-claim labels | `llm_proposal_provider.py` | Output is proposal-only, never canonical fact. |
+| `T10-LIVE-M16` | LLM safety and eval gate | Block hallucinated or unsafe proposals | Hallucination, privacy, grounding and stale-context tests | `llm-proposal-eval.json` | Unsafe output routes to incident path and cannot be accepted. |
+| `T10-LIVE-M17` | Human review ledger | Keep user control over truth claims | Accept, reject or accepted_gap decisions with evidence refs | `graph-review-ledger.json` | No accepted proposal without owner decision. |
+| `T10-LIVE-M18` | Proposal diff preview | Make graph changes inspectable before apply | Preview added/changed nodes, edges, rationale and comments | `proposal-diff.json`, optional generated HTML | Human can inspect before mutation. |
+| `T10-LIVE-M19` | Canonical mutation dry run | Prevent direct unsafe graph writes | Dry-run apply, conflict checks and graph digest comparison | `mutation_plan.json` | No mutation without dry-run plan. |
+| `T10-LIVE-M20` | Mutation journal | Make graph updates auditable and reversible | Append-only journal and inverse patch generation | `graph-mutation-journal.jsonl` | Every mutation has rollback patch. |
+| `T10-LIVE-M21` | Apply accepted mutations | Let accepted evidence improve canonical graph | Apply only accepted ledger items with versioned graph digest | `canonical_graph_mutation.py` | Only accepted proposals mutate graph. |
+| `T10-LIVE-M22` | Rollback engine | Recover from bad graph updates | Restore prior digest and delete generated caches | `graph_rollback.py` | Rollback restores previous graph digest. |
+| `T10-LIVE-M23` | Audit logging | Preserve accountability for live actions | Log provider calls, approvals, mutations and failures | `audit-log.jsonl` | Every live action emits an audit event. |
+| `T10-LIVE-M24` | Security and privacy test suite | Reduce data leak and prompt-injection risk | Negative tests for secrets, paths, raw source and prompt injection | tests | Unsafe cases are blocked. |
+| `T10-LIVE-M25` | Runtime observability | Make degraded mode and provider risk visible | Health, latency, provider errors and budget usage packets | status packet/dashboard fields | Degraded mode is visible to users and agents. |
+| `T10-LIVE-M26` | Agent and skill handoff routing | Keep live work owned and reviewable | Update lifecycle skill contracts, handoff packet fields and stop conditions | skill docs, handoff fixtures | Agents cannot run live/provider/mutation work without ownership and evidence. |
+| `T10-LIVE-M27` | Real testing readiness criteria | Define what must be true before real testing starts | Entry/exit criteria, accepted gaps, target classes and evidence requirements | `real-testing-readiness.md` | Real testing cannot start with hidden unresolved Track 10 gates. |
+| `T10-LIVE-M28` | Real project consent and target selection | Avoid accidental production or private-data testing | Select target workspace class, data policy, owner and allowed commands | `real-testing-targets.json` | No real project test without owner-approved target and data policy. |
+| `T10-LIVE-M29` | End-to-end pilot harness | Make real testing reproducible | Scripted dry run over scan, index, cockpit, live runtime, provider gates and fallback | pilot harness tests | Pilot can run without mutating target files unless approved. |
+| `T10-LIVE-M30` | Codex surface smoke plan | Verify workflows match real user surfaces | Codex App, CLI and IDE extension routing notes where available | `codex-surface-smoke.md` | Missing surface is recorded as accepted gap or blocked, not ignored. |
+| `T10-LIVE-M31` | Use-case archetype pilot matrix | Connect real testing to user workflows | Map pilots to Track 8 archetypes: web, backend, docs, PR/review, evals, automation and AI/RAG | `real-testing-pilot-matrix.md` | Each enabled surface has at least one matching pilot or accepted gap. |
+| `T10-LIVE-M32` | Runtime and browser QA | Prove live UI/runtime does not mislead users | Browser smoke, console/network checks, mobile overflow and source-boundary labels | QA evidence | No external requests beyond approved providers; generated-view labels are visible. |
+| `T10-LIVE-M33` | Performance and scale budget | Keep large-project behavior usable | Node/edge/search/provider latency caps and memory bounds | performance report | Budget breach disables live layer or records accepted gap. |
+| `T10-LIVE-M34` | Defect triage and stabilization loop | Prevent unresolved defects from becoming later tasks | Severity policy, fix-or-accepted-gap ledger and rerun plan | stabilization ledger | No open P0/P1; remaining issues have owner, risk and follow-up condition. |
+| `T10-LIVE-M35` | Packaging, docs and source closure | Make the final system understandable and installable | Product-Agent OS docs, root/plugin README, source registry, backlog and install smoke | docs/source/control-plane evidence | Docs checks, strict MkDocs and packaging/install smoke are current. |
+| `T10-LIVE-M36` | Final no-leftover closure and handoff | Close Track 10 without Task 27/28 | Full unittest, fixture eval, transcript eval, Codex compatibility, rollback proof, diff hygiene and real-testing handoff | `RUNLOG.md`, `EVALS.md`, registry/backlog | Every Task 26 row is implemented, disabled, rolled back, blocked with approval reason or accepted gap; next action is real testing, not another Track 10 task. |
+
+Task 26 implementation batches:
+
+- **Batch 24: Approval, Data Classification, Redaction, Credentials, Cache And Budget Governance** (`T10-LIVE-M01..M06`, `approval_required`)
+- **Batch 25: Live Local Read-Only Runtime, Auth And Fallback** (`T10-LIVE-M07..M10`, `approval_required`)
+- **Batch 26: External Embedding Provider Gate And Eval** (`T10-LIVE-M11..M12`, `approval_required`)
+- **Batch 27: Cross-Encoder Reranker And Hybrid Retrieval** (`T10-LIVE-M13..M14`, `approval_required`)
+- **Batch 28: Live LLM Proposal Adapter And Safety Eval** (`T10-LIVE-M15..M16`, `approval_required`)
+- **Batch 29: Human Review Ledger And Proposal Diff Preview** (`T10-LIVE-M17..M18`, `approval_required`)
+- **Batch 30: Canonical Graph Mutation, Journal And Rollback Engine** (`T10-LIVE-M19..M22`, `approval_required`)
+- **Batch 31: Audit Logging, Security/Privacy Tests, Observability And Agent/Skill Routing** (`T10-LIVE-M23..M26`, `approval_required`)
+- **Batch 32: Real Testing Readiness, Target Consent, Pilot Harness And Codex Surface Smoke** (`T10-LIVE-M27..M31`, `approval_required`)
+- **Batch 33: Runtime Browser QA, Performance And Stabilization** (`T10-LIVE-M32..M34`, `approval_required`)
+- **Batch 34: Packaging, Docs, Source Registry, Final Closure And Real Testing Handoff** (`T10-LIVE-M35..M36`, `approval_required`)
+
+Task 26 starts only after the verified Task 25 Batch 23 baseline remains current and the user gives explicit implementation approval for the next Task 26 batch. Planning matrix presence is not implementation evidence. The final acceptance gate is stricter than previous tasks: every Track 10 live/provider/mutation/real-testing-readiness row must be implemented and verified, explicitly disabled with rollback evidence, blocked by missing approval, or accepted as a documented owner gap. After Task 26 closure, the next action is the real testing phase with approved target workspaces and evidence capture, not `Task 27`, `Task 28` or another Track 10 implementation task.
 
 ## Execution Batches
 
