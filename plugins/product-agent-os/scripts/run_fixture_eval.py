@@ -59,6 +59,15 @@ from product_agent_os.project_graph_llm_extraction import (  # noqa: E402
     validate_llm_extraction_approval,
     validate_llm_extraction_proposals,
 )
+from product_agent_os.project_graph_live_governance import (  # noqa: E402
+    LIVE_CACHE_TARGET,
+    LIVE_GOVERNANCE_TARGET,
+    build_live_governance_packet,
+    disable_live_governance,
+    enforce_live_budget,
+    sanitize_live_provider_payload,
+    validate_live_runtime_approval,
+)
 from product_agent_os.project_graph_queries import query_project_graph  # noqa: E402
 from product_agent_os.project_graph_renderer import render_project_graph_cockpit  # noqa: E402
 from product_agent_os.project_graph_search_quality import evaluate_project_graph_search_quality  # noqa: E402
@@ -2071,6 +2080,21 @@ def _expected_checks(
         )
         checks["project_graph_extension_full_verification_contract_present"] = (
             _project_graph_extension_full_verification_contract_present()
+        )
+        checks["project_graph_live_approval_packet_present"] = _project_graph_live_approval_packet_present()
+        checks["project_graph_live_data_classification_policy_present"] = (
+            _project_graph_live_data_classification_policy_present()
+        )
+        checks["project_graph_live_redaction_guard_present"] = _project_graph_live_redaction_guard_present()
+        checks["project_graph_provider_credentials_boundary_present"] = (
+            _project_graph_provider_credentials_boundary_present()
+        )
+        checks["project_graph_live_cache_deletion_policy_present"] = (
+            _project_graph_live_cache_deletion_policy_present()
+        )
+        checks["project_graph_live_budget_guard_present"] = _project_graph_live_budget_guard_present()
+        checks["project_graph_live_governance_no_live_calls_present"] = (
+            _project_graph_live_governance_no_live_calls_present()
         )
         checks["project_graph_future_backend_semantic_gates_present"] = (
             _project_graph_future_backend_semantic_gates_present()
@@ -4258,6 +4282,189 @@ def _project_graph_extension_full_verification_contract_present() -> bool:
         and ("tools\\check_docs.py" in commands or "tools/check_docs.py" in commands)
         and "git diff --check" in commands
         and packet.get("git_boundary") == "explicit_only"
+    )
+
+
+def _project_graph_live_governance_approval() -> dict[str, Any]:
+    return {
+        "explicit_approval": True,
+        "owner": "Product-Agent OS Maintainer",
+        "allowed_surfaces": [
+            "approval_packet",
+            "data_classification",
+            "redaction_pipeline",
+            "credential_boundary",
+            "cache_policy",
+            "budget_policy",
+        ],
+        "data_classification": {
+            "allowed_fields": ["node_id", "label", "type", "observation_ids", "redacted_summary"],
+            "redacted_fields": ["relative_path", "source_span", "review_comment"],
+            "blocked_fields": ["absolute_local_paths", "raw_source_bodies", "secrets"],
+        },
+        "redaction_boundary": {
+            "raw_source_excluded": True,
+            "absolute_paths_redacted": True,
+            "secrets_redacted": True,
+            "provider_payload_validation_required": True,
+        },
+        "provider_policy": {
+            "external_provider_calls_allowed": False,
+            "approved_providers": ["external_embedding", "external_reranker", "external_llm"],
+            "requires_batch_specific_approval": True,
+        },
+        "credential_policy": {
+            "storage": "environment_only",
+            "secret_material_stored": False,
+            "providers": [
+                {
+                    "provider": "external_embedding",
+                    "credential_source": "environment",
+                    "env_var": "PRODUCT_AGENT_OS_EMBEDDING_API_KEY",
+                }
+            ],
+        },
+        "cache_policy": {
+            "storage_path": LIVE_CACHE_TARGET,
+            "ttl_days": 7,
+            "fingerprint_scope": "redacted_graph_and_live_governance_policy",
+            "stale_policy": "block_if_graph_or_policy_fingerprint_mismatch",
+            "deletion_proof_required": True,
+        },
+        "budget_policy": {
+            "max_run_tokens": 1500,
+            "max_query_tokens": 600,
+            "max_mutation_tokens": 0,
+            "max_cost_units": 0,
+            "max_latency_ms": 250,
+            "on_exceed": "blocked_or_degraded_graph_only",
+        },
+        "rollback_path": f"delete {LIVE_GOVERNANCE_TARGET}",
+        "residual_risks": ["provider drift remains blocked until later Task 26 batches"],
+    }
+
+
+def _project_graph_live_governance_packet() -> dict[str, Any]:
+    return build_live_governance_packet(_project_graph_live_governance_approval())
+
+
+def _project_graph_live_approval_packet_present() -> bool:
+    approval = _project_graph_live_governance_approval()
+    packet = _project_graph_live_governance_packet()
+    return (
+        validate_live_runtime_approval(approval).get("ok") is True
+        and packet.get("artifact_kind") == "project_graph_live_governance"
+        and packet.get("approval_boundary") == "batch24_live_governance_only_no_live_calls"
+        and packet.get("status") == "ready"
+        and set(packet.get("allowed_surfaces", []))
+        == {
+            "approval_packet",
+            "data_classification",
+            "redaction_pipeline",
+            "credential_boundary",
+            "cache_policy",
+            "budget_policy",
+        }
+    )
+
+
+def _project_graph_live_data_classification_policy_present() -> bool:
+    classification = _project_graph_live_governance_packet().get("data_classification", {})
+    return (
+        classification.get("blocked_fields") == ["absolute_local_paths", "raw_source_bodies", "secrets"]
+        and classification.get("raw_source_bodies") == "blocked"
+        and classification.get("absolute_local_paths") == "blocked"
+        and classification.get("secrets") == "blocked"
+    )
+
+
+def _project_graph_live_redaction_guard_present() -> bool:
+    result = sanitize_live_provider_payload(
+        {
+            "query": "find worker",
+            "path": r"C:\Users\user\Desktop\private\app.py",
+            "raw_source_body": "OPENAI_API_KEY=sk-test-secret",
+            "metadata": {"api_key": "sk-test-secret"},
+        },
+        approval=_project_graph_live_governance_approval(),
+    )
+    payload = json.dumps(result, sort_keys=True).lower()
+    errors = set(result.get("validation", {}).get("errors", []))
+    return (
+        result.get("status") == "blocked"
+        and result.get("provider_call_allowed") is False
+        and "blocked_input:absolute_local_paths" in errors
+        and "blocked_input:raw_source_bodies" in errors
+        and "blocked_input:secrets" in errors
+        and "sk-test-secret" not in payload
+        and "c:\\users" not in payload
+    )
+
+
+def _project_graph_provider_credentials_boundary_present() -> bool:
+    approval = _project_graph_live_governance_approval()
+    approval["credential_policy"]["providers"][0]["credential_value"] = "sk-test-secret"
+    packet = build_live_governance_packet(approval)
+    payload = json.dumps(packet, sort_keys=True).lower()
+    return (
+        packet.get("status") == "blocked"
+        and "credential_policy:stored_secret" in packet.get("validation", {}).get("errors", [])
+        and packet.get("credential_policy", {}).get("secret_material_stored") is False
+        and packet.get("credential_policy", {}).get("providers", [{}])[0].get("credential_source") == "environment"
+        and "sk-test-secret" not in payload
+    )
+
+
+def _project_graph_live_cache_deletion_policy_present() -> bool:
+    packet = _project_graph_live_governance_packet()
+    with tempfile.TemporaryDirectory() as tmp:
+        stage_root = Path(tmp) / "stage"
+        for relative in [LIVE_GOVERNANCE_TARGET, LIVE_CACHE_TARGET]:
+            target = stage_root / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text("generated\n", encoding="utf-8")
+        result = disable_live_governance(stage_root, workspace=FIXTURES / "project-code-graph-minimal-python")
+        proof = result.get("rendered_artifacts", {}).get("deletion_proof", {})
+        remaining = [relative for relative in proof.get("targets_checked", []) if (stage_root / relative).exists()]
+    return (
+        packet.get("cache_policy", {}).get("ttl_days") == 7
+        and packet.get("cache_policy", {}).get("deletion_proof_required") is True
+        and packet.get("cache_policy", {}).get("cache_can_be_deleted_without_graph_loss") is True
+        and result.get("rendered_artifacts", {}).get("status") == "disabled"
+        and remaining == []
+    )
+
+
+def _project_graph_live_budget_guard_present() -> bool:
+    budget = _project_graph_live_governance_packet().get("budget_policy", {})
+    result = enforce_live_budget(
+        {
+            "estimated_tokens": 1501,
+            "estimated_query_tokens": 601,
+            "estimated_cost_units": 1,
+            "estimated_latency_ms": 251,
+        },
+        budget,
+    )
+    return (
+        result.get("status") == "blocked"
+        and result.get("degraded_mode") == "graph_only"
+        and "budget:estimated_tokens" in result.get("errors", [])
+        and "budget:estimated_query_tokens" in result.get("errors", [])
+        and "budget:estimated_cost_units" in result.get("errors", [])
+        and "budget:estimated_latency_ms" in result.get("errors", [])
+    )
+
+
+def _project_graph_live_governance_no_live_calls_present() -> bool:
+    packet = _project_graph_live_governance_packet()
+    return (
+        packet.get("provider_policy", {}).get("external_provider_calls_allowed") is False
+        and "live_server_start" in packet.get("blocked_surfaces", [])
+        and "external_provider_call" in packet.get("blocked_surfaces", [])
+        and "canonical_graph_mutation" in packet.get("blocked_surfaces", [])
+        and packet.get("rollback", {}).get("fallback") == "graph_only_query_mode"
+        and packet.get("generated_view_policy") == "live_governance_packet_is_policy_evidence_not_source_of_truth"
     )
 
 

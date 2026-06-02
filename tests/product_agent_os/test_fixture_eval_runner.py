@@ -175,6 +175,13 @@ class FixtureEvalRunnerTest(unittest.TestCase):
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_extension_rollback_deletion_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_unapproved_surface_blocking_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_extension_full_verification_contract_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_live_approval_packet_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_live_data_classification_policy_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_live_redaction_guard_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_provider_credentials_boundary_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_live_cache_deletion_policy_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_live_budget_guard_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_live_governance_no_live_calls_present"])
         self.assertEqual(results["python-app"]["renderer_file_count"], 191)
         for check_name in [
             "methodology_catalog_contract_present",

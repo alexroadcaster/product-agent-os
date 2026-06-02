@@ -20,6 +20,7 @@ PLAN = ROOT / "PLAN.md"
 TEST = ROOT / "TEST.md"
 EVALS = ROOT / "EVALS.md"
 RUNLOG = ROOT / "RUNLOG.md"
+AGENTS = ROOT / "AGENTS.md"
 
 
 class ProductAgentOsDocsTest(unittest.TestCase):
@@ -644,6 +645,98 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "rollback/data deletion proof",
             "graph-only fallback",
             "blocked_without_new_explicit_approval",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for filename, text in control_plane.items():
+            for expected in control_terms:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
+    def test_track10_task26_batch24_live_governance_is_synced(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        documents = {
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+            "product_index": (PRODUCT_AGENT_OS / "index.md").read_text(encoding="utf-8"),
+            "technical": (PRODUCT_AGENT_OS / "technical.md").read_text(encoding="utf-8"),
+            "scenarios": (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8"),
+        }
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "agents": AGENTS.read_text(encoding="utf-8"),
+        }
+
+        registry_terms = [
+            "Product-Agent OS Track 10 Task 26 Batch 24 live governance",
+            "T10-LIVE-M01..M06",
+            "project_graph_live_governance.py",
+            "project_graph_live_approval_packet_present",
+            "project_graph_live_redaction_guard_present",
+            "verification_status:",
+        ]
+        for expected in registry_terms:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        backlog_terms = [
+            "Task 26 Batch 24 Closure",
+            "| `done` | `T10-LIVE-M01..M06` approval, data classification, redaction, credentials, cache and budget governance |",
+            "Batch 24 explicit approval",
+            "project_graph_live_governance.py",
+            "No complete approval packet means no live action",
+            "Secrets, raw source bodies and absolute paths are blocked",
+            "Provider call is impossible without sanitizer pass",
+            "Cache can be deleted without graph loss",
+            "Budget exceed routes to blocked or degraded mode",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for expected in backlog_terms:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        docs_terms = [
+            "Task 26 Batch 24",
+            "T10-LIVE-M01..M06",
+            "Approval, Data Classification, Redaction, Credentials, Cache And Budget Governance",
+            "project_graph_live_governance.py",
+            "project_graph_live_approval_packet_present",
+            "project_graph_live_data_classification_policy_present",
+            "project_graph_live_redaction_guard_present",
+            "project_graph_provider_credentials_boundary_present",
+            "project_graph_live_cache_deletion_policy_present",
+            "project_graph_live_budget_guard_present",
+            "project_graph_live_governance_no_live_calls_present",
+            "no live server",
+            "no provider calls",
+            "no canonical graph mutation",
+            "staged evidence only",
+            "not source of truth",
+        ]
+        for document, text in documents.items():
+            for expected in docs_terms:
+                with self.subTest(document=document, term=expected):
+                    self.assertIn(expected, text)
+
+        control_terms = [
+            "Task 26 Batch 24",
+            "T10-LIVE-M01..M06",
+            "project_graph_live_governance.py",
+            "project_graph_live_approval_packet_present",
+            "project_graph_live_data_classification_policy_present",
+            "project_graph_live_redaction_guard_present",
+            "project_graph_provider_credentials_boundary_present",
+            "project_graph_live_cache_deletion_policy_present",
+            "project_graph_live_budget_guard_present",
+            "project_graph_live_governance_no_live_calls_present",
+            "no live server",
+            "no provider calls",
+            "no live external model/API calls",
+            "no canonical graph mutation",
             "git staging/commit/push/PR remains explicit-only",
         ]
         for filename, text in control_plane.items():

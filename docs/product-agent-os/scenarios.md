@@ -62,6 +62,8 @@ Task 25 Batch 22 `T10-CG-V2-M52..M57` implements the approved local deterministi
 
 Task 25 Batch 23 `T10-CG-V2-M58..M62` implements future extension verification, rollback and closure through `project_graph_extension_closure.py`. It adds `verify-extensions` and `disable-extensions`, fixture fields `project_graph_future_extension_closure_present`, `project_graph_extension_rollback_deletion_present`, `project_graph_unapproved_surface_blocking_present` and `project_graph_extension_full_verification_contract_present`, records rollback/data deletion proof, verifies graph-only fallback, keeps unapproved surfaces as `blocked_without_new_explicit_approval`, starts no live server, performs no live external model/API calls, mutates no canonical graph facts and preserves that git staging/commit/push/PR remains explicit-only.
 
+Task 26 Batch 24 `T10-LIVE-M01..M06` implements Approval, Data Classification, Redaction, Credentials, Cache And Budget Governance through `project_graph_live_governance.py`. It records `project_graph_live_approval_packet_present`, `project_graph_live_data_classification_policy_present`, `project_graph_live_redaction_guard_present`, `project_graph_provider_credentials_boundary_present`, `project_graph_live_cache_deletion_policy_present`, `project_graph_live_budget_guard_present` and `project_graph_live_governance_no_live_calls_present`. Batch 24 is staged evidence only and not source of truth: no live server, no provider calls, no live external model/API calls, no canonical graph mutation, and git staging/commit/push/PR remains explicit-only.
+
 ## Scenario Matrix
 
 | usage_mode | When it applies | first response | minimum artifacts | approval boundary | verification gates |

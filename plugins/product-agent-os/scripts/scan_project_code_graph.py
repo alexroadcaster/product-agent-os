@@ -23,6 +23,10 @@ from product_agent_os.project_graph_extension_closure import (  # noqa: E402
     stage_future_extension_closure,
 )
 from product_agent_os.project_graph_index import load_static_search_index, stage_project_graph_search_index  # noqa: E402
+from product_agent_os.project_graph_live_governance import (  # noqa: E402
+    disable_live_governance,
+    stage_live_governance,
+)
 from product_agent_os.project_graph_queries import load_graph_artifact, query_project_graph  # noqa: E402
 from product_agent_os.project_graph_llm_extraction import (  # noqa: E402
     disable_llm_extraction_proposals,
@@ -53,6 +57,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--disable-llm-proposals", action="store_true", help="Delete generated LLM extraction proposal artifacts from --stage.")
     parser.add_argument("--verify-extensions", action="store_true", help="Stage Batch 23 extension verification and rollback closure report.")
     parser.add_argument("--disable-extensions", action="store_true", help="Delete generated Batch 19-23 extension artifacts from --stage.")
+    parser.add_argument("--validate-live-governance", action="store_true", help="Stage Task 26 Batch 24 live governance policy from --live-approval.")
+    parser.add_argument("--disable-live-governance", action="store_true", help="Delete generated Task 26 Batch 24 live governance artifacts from --stage.")
     parser.add_argument("--graph", help="Path to project-code-graph.json or project-code-graph.jsonl for query mode.")
     parser.add_argument("--index", help="Optional project-code-graph-search-index.json for indexed search query mode.")
     parser.add_argument("--backend", help="Optional project-code-graph-backend.json for backend query mode.")
@@ -60,6 +66,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--semantic-index", help="Optional project-code-graph-semantic-index.json for semantic search query mode.")
     parser.add_argument("--semantic-approval", help="JSON approval packet for --build-semantic-index.")
     parser.add_argument("--llm-approval", help="JSON approval packet for --build-llm-proposals.")
+    parser.add_argument("--live-approval", help="JSON approval packet for --validate-live-governance.")
     parser.add_argument("--verification-evidence", help="JSON evidence packet for --verify-extensions.")
     parser.add_argument("--node-id", help="Source node id for graph query mode.")
     parser.add_argument("--target-id", help="Target node id for graph path/trace query mode.")
@@ -87,6 +94,8 @@ def main(argv: list[str] | None = None) -> int:
             and not args.disable_llm_proposals
             and not args.verify_extensions
             and not args.disable_extensions
+            and not args.validate_live_governance
+            and not args.disable_live_governance
         )
         + int(bool(args.query))
         + int(bool(args.build_index))
@@ -98,12 +107,15 @@ def main(argv: list[str] | None = None) -> int:
         + int(bool(args.disable_llm_proposals))
         + int(bool(args.verify_extensions))
         + int(bool(args.disable_extensions))
+        + int(bool(args.validate_live_governance))
+        + int(bool(args.disable_live_governance))
     )
     if mode_count != 1:
         return _print_error(
             "choose exactly one mode: --dry-run, --stage, --query, --build-index, --build-backend, "
             "--disable-backend, --build-semantic-index, --disable-semantic-index, --build-llm-proposals, "
-            "--disable-llm-proposals, --verify-extensions, or --disable-extensions",
+            "--disable-llm-proposals, --verify-extensions, --disable-extensions, --validate-live-governance, "
+            "or --disable-live-governance",
             exit_code=2,
         )
 
@@ -292,6 +304,35 @@ def main(argv: list[str] | None = None) -> int:
             graph = load_graph_artifact(Path(args.graph)) if args.graph else None
             try:
                 result = disable_future_extensions(Path(args.stage), workspace=workspace, graph=graph)
+            except ValueError as exc:
+                raise ProjectGraphCliError(str(exc)) from exc
+            print(json.dumps(_redacted_payload(result), indent=2, sort_keys=True))
+            return 0 if result.get("rendered_artifacts", {}).get("status") == "disabled" else 1
+        if args.validate_live_governance:
+            if not args.stage:
+                raise ProjectGraphCliError("validate-live-governance mode requires --stage")
+            workspace = Path(args.workspace).resolve()
+            if not workspace.exists():
+                raise ProjectGraphCliError("workspace does not exist")
+            if not workspace.is_dir():
+                raise ProjectGraphCliError("workspace is not a directory")
+            approval = _load_json_file(args.live_approval) if args.live_approval else None
+            try:
+                result = stage_live_governance(Path(args.stage), workspace=workspace, approval=approval)
+            except ValueError as exc:
+                raise ProjectGraphCliError(str(exc)) from exc
+            print(json.dumps(_redacted_payload(result), indent=2, sort_keys=True))
+            return 0 if result.get("rendered_artifacts", {}).get("status") == "ready" else 1
+        if args.disable_live_governance:
+            if not args.stage:
+                raise ProjectGraphCliError("disable-live-governance mode requires --stage")
+            workspace = Path(args.workspace).resolve()
+            if not workspace.exists():
+                raise ProjectGraphCliError("workspace does not exist")
+            if not workspace.is_dir():
+                raise ProjectGraphCliError("workspace is not a directory")
+            try:
+                result = disable_live_governance(Path(args.stage), workspace=workspace)
             except ValueError as exc:
                 raise ProjectGraphCliError(str(exc)) from exc
             print(json.dumps(_redacted_payload(result), indent=2, sort_keys=True))
