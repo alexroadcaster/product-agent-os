@@ -182,6 +182,13 @@ class FixtureEvalRunnerTest(unittest.TestCase):
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_live_cache_deletion_policy_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_live_budget_guard_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_live_governance_no_live_calls_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_live_runtime_contract_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_live_runtime_governance_prerequisite_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_live_runtime_read_only_routes_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_live_runtime_lifecycle_controls_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_live_runtime_auth_policy_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_live_runtime_graph_only_fallback_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_live_runtime_no_public_or_mutation_surface_present"])
         self.assertEqual(results["python-app"]["renderer_file_count"], 191)
         for check_name in [
             "methodology_catalog_contract_present",

@@ -66,6 +66,12 @@ This backlog tracks deferred and follow-up work for Track 10 `Task 23: Guided Qu
 | --- | --- | --- |
 | `done` | `T10-LIVE-M01..M06` approval, data classification, redaction, credentials, cache and budget governance | Batch 24 explicit approval was the user request to execute Task 26 Batch 24 with agents and skills. It added `project_graph_live_governance.py`, CLI `--validate-live-governance`, CLI `--disable-live-governance`, fixture eval fields `project_graph_live_approval_packet_present`, `project_graph_live_data_classification_policy_present`, `project_graph_live_redaction_guard_present`, `project_graph_provider_credentials_boundary_present`, `project_graph_live_cache_deletion_policy_present`, `project_graph_live_budget_guard_present` and `project_graph_live_governance_no_live_calls_present`. No complete approval packet means no live action. Secrets, raw source bodies and absolute paths are blocked. Provider call is impossible without sanitizer pass. Cache can be deleted without graph loss. Budget exceed routes to blocked or degraded mode. Batch 24 stages policy evidence only, starts no live server, performs no provider calls, permits no live external model/API calls, performs no canonical graph mutation and git staging/commit/push/PR remains explicit-only. |
 
+## Task 26 Batch 25 Closure
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `done` | `T10-LIVE-M07..M10` live local read-only runtime, auth and fallback | Batch 25 explicit approval was the user request to execute Batch 25 with agents and skills. It adds `project_graph_live_runtime.py`, CLI `--validate-live-runtime`, CLI `--disable-live-runtime`, fixture eval fields `project_graph_live_runtime_contract_present`, `project_graph_live_runtime_governance_prerequisite_present`, `project_graph_live_runtime_read_only_routes_present`, `project_graph_live_runtime_lifecycle_controls_present`, `project_graph_live_runtime_auth_policy_present`, `project_graph_live_runtime_graph_only_fallback_present` and `project_graph_live_runtime_no_public_or_mutation_surface_present`. No write endpoints and no canonical mutation. Starts only after approval; cleanup is verified. Runtime is not public by default and rejects unauthorized access. Fallback works after disabling live layer. The contract remains `disabled_by_default_not_started`, local-only, staged evidence only, not source of truth, performs no provider calls, permits no live external model/API calls and git staging/commit/push/PR remains explicit-only. |
+
 ## Deferred
 
 | Status | Item | Reason |

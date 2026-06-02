@@ -744,6 +744,103 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 with self.subTest(control_plane=filename, term=expected):
                     self.assertIn(expected, text)
 
+    def test_track10_task26_batch25_live_runtime_is_synced(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        documents = {
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+            "product_index": (PRODUCT_AGENT_OS / "index.md").read_text(encoding="utf-8"),
+            "technical": (PRODUCT_AGENT_OS / "technical.md").read_text(encoding="utf-8"),
+            "scenarios": (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8"),
+        }
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "agents": AGENTS.read_text(encoding="utf-8"),
+        }
+
+        registry_terms = [
+            "Product-Agent OS Track 10 Task 26 Batch 25 live runtime",
+            "T10-LIVE-M07..M10",
+            "project_graph_live_runtime.py",
+            "project_graph_live_runtime_contract_present",
+            "project_graph_live_runtime_auth_policy_present",
+            "verification_status:",
+        ]
+        for expected in registry_terms:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        backlog_terms = [
+            "Task 26 Batch 25 Closure",
+            "| `done` | `T10-LIVE-M07..M10` live local read-only runtime, auth and fallback |",
+            "Batch 25 explicit approval",
+            "project_graph_live_runtime.py",
+            "No write endpoints and no canonical mutation",
+            "Starts only after approval; cleanup is verified",
+            "Runtime is not public by default and rejects unauthorized access",
+            "Fallback works after disabling live layer",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for expected in backlog_terms:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        docs_terms = [
+            "Task 26 Batch 25",
+            "T10-LIVE-M07..M10",
+            "Live Local Read-Only Runtime, Auth And Fallback",
+            "project_graph_live_runtime.py",
+            "project_graph_live_runtime_contract_present",
+            "project_graph_live_runtime_governance_prerequisite_present",
+            "project_graph_live_runtime_read_only_routes_present",
+            "project_graph_live_runtime_lifecycle_controls_present",
+            "project_graph_live_runtime_auth_policy_present",
+            "project_graph_live_runtime_graph_only_fallback_present",
+            "project_graph_live_runtime_no_public_or_mutation_surface_present",
+            "disabled_by_default_not_started",
+            "local-only access",
+            "rejects unauthorized access",
+            "no write endpoints",
+            "graph_only_query_mode",
+            "no canonical graph mutation",
+            "staged evidence only",
+            "not source of truth",
+        ]
+        for document, text in documents.items():
+            for expected in docs_terms:
+                with self.subTest(document=document, term=expected):
+                    self.assertIn(expected, text)
+
+        control_terms = [
+            "Task 26 Batch 25",
+            "T10-LIVE-M07..M10",
+            "project_graph_live_runtime.py",
+            "project_graph_live_runtime_contract_present",
+            "project_graph_live_runtime_governance_prerequisite_present",
+            "project_graph_live_runtime_read_only_routes_present",
+            "project_graph_live_runtime_lifecycle_controls_present",
+            "project_graph_live_runtime_auth_policy_present",
+            "project_graph_live_runtime_graph_only_fallback_present",
+            "project_graph_live_runtime_no_public_or_mutation_surface_present",
+            "disabled_by_default_not_started",
+            "no write endpoints",
+            "local-only access",
+            "rejects unauthorized access",
+            "no provider calls",
+            "no live external model/API calls",
+            "no canonical graph mutation",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for filename, text in control_plane.items():
+            for expected in control_terms:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
     def test_track10_task25_batch20_local_backend_gate_is_synced(self):
         registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
         backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")

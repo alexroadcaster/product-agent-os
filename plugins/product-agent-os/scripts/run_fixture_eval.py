@@ -68,6 +68,16 @@ from product_agent_os.project_graph_live_governance import (  # noqa: E402
     sanitize_live_provider_payload,
     validate_live_runtime_approval,
 )
+from product_agent_os.project_graph_live_runtime import (  # noqa: E402
+    LIVE_RUNTIME_LOG_TARGET,
+    LIVE_RUNTIME_PID_TARGET,
+    LIVE_RUNTIME_TARGET,
+    build_live_runtime_contract,
+    disable_live_runtime_contract,
+    handle_live_runtime_request,
+    validate_live_runtime_contract,
+    validate_live_runtime_contract_approval,
+)
 from product_agent_os.project_graph_queries import query_project_graph  # noqa: E402
 from product_agent_os.project_graph_renderer import render_project_graph_cockpit  # noqa: E402
 from product_agent_os.project_graph_search_quality import evaluate_project_graph_search_quality  # noqa: E402
@@ -2095,6 +2105,23 @@ def _expected_checks(
         checks["project_graph_live_budget_guard_present"] = _project_graph_live_budget_guard_present()
         checks["project_graph_live_governance_no_live_calls_present"] = (
             _project_graph_live_governance_no_live_calls_present()
+        )
+        checks["project_graph_live_runtime_contract_present"] = _project_graph_live_runtime_contract_present()
+        checks["project_graph_live_runtime_governance_prerequisite_present"] = (
+            _project_graph_live_runtime_governance_prerequisite_present()
+        )
+        checks["project_graph_live_runtime_read_only_routes_present"] = (
+            _project_graph_live_runtime_read_only_routes_present()
+        )
+        checks["project_graph_live_runtime_lifecycle_controls_present"] = (
+            _project_graph_live_runtime_lifecycle_controls_present()
+        )
+        checks["project_graph_live_runtime_auth_policy_present"] = _project_graph_live_runtime_auth_policy_present()
+        checks["project_graph_live_runtime_graph_only_fallback_present"] = (
+            _project_graph_live_runtime_graph_only_fallback_present()
+        )
+        checks["project_graph_live_runtime_no_public_or_mutation_surface_present"] = (
+            _project_graph_live_runtime_no_public_or_mutation_surface_present()
         )
         checks["project_graph_future_backend_semantic_gates_present"] = (
             _project_graph_future_backend_semantic_gates_present()
@@ -4465,6 +4492,204 @@ def _project_graph_live_governance_no_live_calls_present() -> bool:
         and "canonical_graph_mutation" in packet.get("blocked_surfaces", [])
         and packet.get("rollback", {}).get("fallback") == "graph_only_query_mode"
         and packet.get("generated_view_policy") == "live_governance_packet_is_policy_evidence_not_source_of_truth"
+    )
+
+
+def _project_graph_live_runtime_approval() -> dict[str, Any]:
+    return {
+        "explicit_approval": True,
+        "owner": "Product-Agent OS Maintainer",
+        "allowed_surfaces": [
+            "local_read_only_runtime",
+            "server_lifecycle",
+            "local_auth_policy",
+            "graph_only_fallback",
+        ],
+        "server_contract": {
+            "read_endpoints": ["GET /status", "POST /query"],
+            "write_endpoints": [],
+            "canonical_mutation_allowed": False,
+            "stable_json_errors": True,
+            "max_payload_tokens": 4000,
+        },
+        "lifecycle_controls": {
+            "server_enabled_by_default": False,
+            "start_requires_explicit_command": True,
+            "server_started_in_batch": False,
+            "pid_path": LIVE_RUNTIME_PID_TARGET,
+            "log_path": LIVE_RUNTIME_LOG_TARGET,
+            "cleanup_required": True,
+            "shutdown_required": True,
+        },
+        "auth_policy": {
+            "bind_host": "127.0.0.1",
+            "public_network": False,
+            "token_required": True,
+            "token_source": "environment",
+            "token_env_var": "PRODUCT_AGENT_OS_LOCAL_RUNTIME_TOKEN",
+            "cors_policy": "local_only",
+            "offline_assets_only": True,
+        },
+        "fallback_policy": {
+            "fallback": "graph_only_query_mode",
+            "disable_deletes_runtime_artifacts": True,
+        },
+        "rollback_path": f"delete {LIVE_RUNTIME_TARGET}",
+        "residual_risks": ["actual process startup remains outside Batch 25 contract tests"],
+    }
+
+
+def _project_graph_live_runtime_contract() -> dict[str, Any]:
+    return build_live_runtime_contract(
+        _project_graph_sample(),
+        approval=_project_graph_live_runtime_approval(),
+        governance_packet=_project_graph_live_governance_packet(),
+    )
+
+
+def _project_graph_live_runtime_contract_present() -> bool:
+    approval = _project_graph_live_runtime_approval()
+    contract = _project_graph_live_runtime_contract()
+    return (
+        validate_live_runtime_contract_approval(approval, _project_graph_live_governance_packet()).get("ok") is True
+        and contract.get("artifact_kind") == "project_graph_live_runtime_contract"
+        and contract.get("approval_boundary") == "batch25_local_read_only_runtime_auth_fallback"
+        and contract.get("runtime_status") == "disabled_by_default_not_started"
+        and contract.get("server_contract", {}).get("write_endpoints") == []
+        and contract.get("server_contract", {}).get("canonical_mutation_allowed") is False
+        and "canonical_graph_mutation" in contract.get("blocked_surfaces", [])
+        and validate_live_runtime_contract(contract).get("ok") is True
+    )
+
+
+def _project_graph_live_runtime_governance_prerequisite_present() -> bool:
+    contract = _project_graph_live_runtime_contract()
+    invalid_governance = dict(_project_graph_live_governance_packet())
+    invalid_governance["status"] = "blocked"
+    validation = validate_live_runtime_contract_approval(_project_graph_live_runtime_approval(), invalid_governance)
+    return (
+        contract.get("governance", {}).get("artifact_kind") == "project_graph_live_governance"
+        and contract.get("governance", {}).get("status") == "ready"
+        and contract.get("governance", {}).get("approval_boundary") == "batch24_live_governance_only_no_live_calls"
+        and validation.get("ok") is False
+        and "live_runtime_approval:governance_packet:not_ready" in validation.get("errors", [])
+    )
+
+
+def _project_graph_live_runtime_read_only_routes_present() -> bool:
+    contract = _project_graph_live_runtime_contract()
+    status = handle_live_runtime_request(
+        contract,
+        {"method": "GET", "path": "/status", "headers": {"authorization": "env-token"}},
+    )
+    query = handle_live_runtime_request(
+        contract,
+        {
+            "method": "POST",
+            "path": "/query",
+            "headers": {"authorization": "env-token"},
+            "body": {"query": "search", "text": "worker run", "max_results": 5},
+        },
+    )
+    return (
+        contract.get("server_contract", {}).get("read_endpoints") == ["GET /status", "POST /query"]
+        and contract.get("server_contract", {}).get("write_endpoints") == []
+        and contract.get("server_contract", {}).get("stable_json_errors") is True
+        and status.get("status") == "ok"
+        and query.get("status") == "ok"
+        and query.get("runtime_backend") == "local_read_only_contract"
+    )
+
+
+def _project_graph_live_runtime_lifecycle_controls_present() -> bool:
+    contract = _project_graph_live_runtime_contract()
+    lifecycle = contract.get("server_lifecycle", {})
+    with tempfile.TemporaryDirectory() as tmp:
+        stage_root = Path(tmp) / "stage"
+        for relative in [LIVE_RUNTIME_TARGET, LIVE_RUNTIME_PID_TARGET, LIVE_RUNTIME_LOG_TARGET]:
+            target = stage_root / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text("generated\n", encoding="utf-8")
+        result = disable_live_runtime_contract(stage_root, workspace=FIXTURES / "project-code-graph-minimal-python")
+        proof = result.get("rendered_artifacts", {}).get("deletion_proof", {})
+        remaining = [relative for relative in proof.get("targets_checked", []) if (stage_root / relative).exists()]
+    return (
+        lifecycle.get("server_enabled_by_default") is False
+        and lifecycle.get("start_requires_explicit_command") is True
+        and lifecycle.get("server_started") is False
+        and lifecycle.get("pid_path") == LIVE_RUNTIME_PID_TARGET
+        and lifecycle.get("log_path") == LIVE_RUNTIME_LOG_TARGET
+        and lifecycle.get("cleanup_required") is True
+        and result.get("rendered_artifacts", {}).get("status") == "disabled"
+        and remaining == []
+    )
+
+
+def _project_graph_live_runtime_auth_policy_present() -> bool:
+    contract = _project_graph_live_runtime_contract()
+    unauthorized = handle_live_runtime_request(contract, {"method": "GET", "path": "/status", "headers": {}})
+    public_host = handle_live_runtime_request(
+        contract,
+        {"method": "GET", "path": "/status", "host": "0.0.0.0", "headers": {"authorization": "env-token"}},
+    )
+    mutation = handle_live_runtime_request(
+        contract,
+        {"method": "POST", "path": "/mutate", "headers": {"authorization": "env-token"}, "body": {}},
+    )
+    return (
+        contract.get("auth_policy", {}).get("bind_host") == "127.0.0.1"
+        and contract.get("auth_policy", {}).get("public_network") is False
+        and contract.get("auth_policy", {}).get("token_source") == "environment"
+        and contract.get("auth_policy", {}).get("token_value_stored") is False
+        and unauthorized.get("status") == "blocked"
+        and "live_runtime_auth:unauthorized" in unauthorized.get("errors", [])
+        and public_host.get("status") == "blocked"
+        and "live_runtime_auth:public_bind" in public_host.get("errors", [])
+        and mutation.get("status") == "blocked"
+        and "live_runtime_contract:read_only" in mutation.get("errors", [])
+    )
+
+
+def _project_graph_live_runtime_graph_only_fallback_present() -> bool:
+    contract = _project_graph_live_runtime_contract()
+    query = handle_live_runtime_request(
+        contract,
+        {
+            "method": "POST",
+            "path": "/query",
+            "headers": {"authorization": "env-token"},
+            "body": {"query": "search", "text": "worker run", "max_results": 5},
+        },
+    )
+    return (
+        contract.get("fallback_policy", {}).get("fallback") == "graph_only_query_mode"
+        and contract.get("fallback_policy", {}).get("fallback_available_after_disable") is True
+        and query.get("status") == "ok"
+        and query.get("runtime_backend") == "local_read_only_contract"
+        and query.get("fallback") == "graph_only_query_mode"
+        and query.get("server_started") is False
+    )
+
+
+def _project_graph_live_runtime_no_public_or_mutation_surface_present() -> bool:
+    contract = _project_graph_live_runtime_contract()
+    public_host = handle_live_runtime_request(
+        contract,
+        {"method": "GET", "path": "/status", "host": "0.0.0.0", "headers": {"authorization": "env-token"}},
+    )
+    mutation = handle_live_runtime_request(
+        contract,
+        {"method": "POST", "path": "/mutate", "headers": {"authorization": "env-token"}, "body": {}},
+    )
+    return (
+        "public_network_bind" in contract.get("blocked_surfaces", [])
+        and "canonical_graph_mutation" in contract.get("blocked_surfaces", [])
+        and contract.get("server_contract", {}).get("external_network_dependency") is False
+        and contract.get("auth_policy", {}).get("public_network") is False
+        and public_host.get("status") == "blocked"
+        and "live_runtime_auth:public_bind" in public_host.get("errors", [])
+        and mutation.get("status") == "blocked"
+        and "live_runtime_contract:read_only" in mutation.get("errors", [])
     )
 
 
