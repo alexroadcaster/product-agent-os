@@ -3102,6 +3102,18 @@ verification_status: "Docs packet is project-authored and source-backed by repos
 ```
 
 ```yaml
+title: "Product-Agent OS Batch 34A public docs boundary and IA packet"
+url: "docs/sources/product-agent-os-batch34a-public-docs-boundary.md; docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; tools/check_docs.py; tests/product_agent_os/test_product_agent_os_docs.py"
+type: "internal documentation"
+source_status: "project-authored"
+checked_at: "2026-06-03"
+summary: "Batch 34A `B34-PROD-M16..M18` records the Product-Agent OS public documentation boundary, internal evidence inventory, proposed presentation IA, page ownership map, reader journey and public-docs forbidden-term policy."
+relevance: "This packet separates product-facing candidate pages from internal evidence/control-plane surfaces before Batch 34B rewrites public copy and Batch 34C adds RU/EN localization. It keeps `docs/sources/`, `docs/superpowers/`, registry, backlog and root control-plane provenance as internal evidence and marks current product-facing candidates as `cleanup_pending`, not `public_ready`."
+trust_level: "high"
+verification_status: "Docs/source-policy slice. The packet itself does not rewrite public pages or activate localization; focused docs tests, `python tools\\check_docs.py`, strict MkDocs and `git diff --check` are the required closure gates for Batch 34A. It starts no live server, runs no browser automation, performs no provider/live external model/API calls, performs no canonical graph mutation and performs no git stage/commit/push/PR."
+```
+
+```yaml
 title: "Product-Agent OS Batch 34 packaging/install smoke packet"
 url: "docs/sources/product-agent-os-batch34-packaging-install-smoke.md; plugins/product-agent-os/.codex-plugin/plugin.json; plugins/product-agent-os/skills/docs-maintainer/SKILL.md; plugins/product-agent-os/skills/pr-release-operator/SKILL.md; plugins/product-agent-os/scripts/validate_codex_compatibility.py; $CODEX_HOME\\plugins\\cache\\local-product-agent-plugins\\product-agent-os\\0.1.0"
 type: "internal documentation"

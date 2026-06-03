@@ -1,5 +1,6 @@
 import unittest
 from pathlib import Path
+import re
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -12,6 +13,9 @@ TRACK_BACKLOG = DOCS / "sources" / "product-agent-os-track-8-detailed-backlog.md
 TRACK9_BACKLOG = DOCS / "sources" / "product-agent-os-track-9-backlog.md"
 TRACK10_BACKLOG = DOCS / "sources" / "product-agent-os-track-10-backlog.md"
 BATCH34_PACKAGING_SMOKE = DOCS / "sources" / "product-agent-os-batch34-packaging-install-smoke.md"
+BATCH34A_PUBLIC_DOCS_BOUNDARY = (
+    DOCS / "sources" / "product-agent-os-batch34a-public-docs-boundary.md"
+)
 BATCH35_APPROVAL_DRAFT = DOCS / "sources" / "product-agent-os-batch35-approval-packet-draft.md"
 TRACK9_PLAN = DOCS / "superpowers" / "plans" / "2026-05-25-track-9-methodology-intelligence.md"
 TRACK10_PLAN = DOCS / "superpowers" / "plans" / "2026-05-27-track-10-guided-questions-status-dashboard.md"
@@ -2174,6 +2178,175 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         ]:
             with self.subTest(control_plane=expected):
                 self.assertIn(expected, control_plane)
+
+    def test_track10_task26_batch34a_product_docs_boundary_is_recorded(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        plan = TRACK10_PLAN.read_text(encoding="utf-8")
+        check_docs = CHECK_DOCS.read_text(encoding="utf-8")
+        boundary = BATCH34A_PUBLIC_DOCS_BOUNDARY.read_text(encoding="utf-8")
+
+        boundary_terms = [
+            "Source status: `internal`",
+            "B34-PROD-M16",
+            "B34-PROD-M17",
+            "B34-PROD-M18",
+            "public_product_candidates",
+            "internal_evidence",
+            "docs/sources/",
+            "docs/superpowers/",
+            "root control-plane",
+            "Product-Agent OS",
+            "Proposed public navigation shape",
+            "Reader journey map",
+            "Page ownership map",
+            "Product Docs Lead",
+            "Architect",
+            "Builder",
+            "Tester / Reviewer",
+            "public_forbidden_terms",
+            "public_ready_pages: []",
+            "cleanup_pending_public_candidates",
+            "test_policy",
+            "activation_condition",
+            "staged evidence only",
+            "not source of truth",
+            "no live server",
+            "no browser automation",
+            "no provider/API call",
+            "no canonical graph mutation",
+            "no git stage/commit/push/PR",
+        ]
+        for expected in boundary_terms:
+            with self.subTest(boundary=expected):
+                self.assertIn(expected, boundary)
+
+        public_candidate_paths = [
+            "docs/product-agent-os/index.md",
+            "docs/product-agent-os/project-code-graph.md",
+            "docs/product-agent-os/live-runtime-governance.md",
+            "docs/product-agent-os/approval-bound-real-testing.md",
+            "docs/product-agent-os/agent-skill-modernization-loop.md",
+            "docs/product-agent-os/cli-reference.md",
+            "docs/product-agent-os/artifact-contracts.md",
+            "docs/product-agent-os/packaging-and-closure.md",
+            "docs/product-agent/product-agent-os-plugin-spec.md",
+            "docs/diagrams/index.md",
+            "docs/runtime/overview.md",
+            "docs/agent-systems/subagents-skills.md",
+            "docs/playbooks/docs-update.md",
+        ]
+        for doc_path in public_candidate_paths:
+            with self.subTest(public_candidate=doc_path):
+                self.assertIn(doc_path, boundary)
+
+        registry_terms = [
+            "Product-Agent OS Batch 34A public docs boundary and IA packet",
+            "B34-PROD-M16..M18",
+            "public documentation boundary",
+            "internal evidence inventory",
+            "proposed presentation IA",
+            "public-docs forbidden-term policy",
+            "cleanup_pending",
+            "public_ready",
+            "verification_status:",
+        ]
+        for expected in registry_terms:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        backlog_terms = [
+            "`done_through_m18` | Batch 34A product documentation boundary and IA |",
+            "B34-PROD-M16..M18",
+            "public_product_candidates",
+            "internal_evidence",
+            "public_forbidden_terms",
+            "cleanup_pending",
+            "public_ready_pages",
+            "Batch 34B public copy rewrite",
+            "Batch 34C RU/EN localization",
+            "Batch 34D product docs QA and closure",
+        ]
+        for expected in backlog_terms:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        plan_terms = [
+            "Batch 34A: Product Documentation Boundary And IA",
+            "B34-PROD-M16",
+            "B34-PROD-M17",
+            "B34-PROD-M18",
+            "Product-facing pages are listed separately from evidence/control-plane pages",
+            "Public pages fail tests if they contain `Task`, `Track`, `Batch`, `T10-*`, `B34-*`",
+        ]
+        for expected in plan_terms:
+            with self.subTest(plan=expected):
+                self.assertIn(expected, plan)
+
+        self.assertIn(
+            'sources" / "product-agent-os-batch34a-public-docs-boundary.md',
+            check_docs,
+        )
+
+    def test_track10_task26_batch34a_forbidden_term_policy_is_staged(self):
+        boundary = BATCH34A_PUBLIC_DOCS_BOUNDARY.read_text(encoding="utf-8")
+
+        forbidden_pattern = re.compile(
+            r"\b(Task|Track|Batch)\b|T[0-9]+-[A-Z0-9-]+|B[0-9]+-[A-Z]+-M[0-9]+"
+        )
+
+        self.assertRegex("Task 26 Batch 34 T10-LIVE-M35 B34-PROD-M18", forbidden_pattern)
+        self.assertIsNone(forbidden_pattern.search("Product-Agent OS delivery lifecycle"))
+
+        for expected in [
+            'exact_words:',
+            '- "Task"',
+            '- "Track"',
+            '- "Batch"',
+            'ledger_patterns:',
+            '- "T[0-9]+-[A-Z0-9-]+"',
+            '- "B[0-9]+-[A-Z]+-M[0-9]+"',
+            "Allowed contexts:",
+            "internal evidence paths listed in `internal_evidence`",
+            "code identifiers, commands, filenames, JSON field names and literal artifact ids",
+            "official OpenAI terms",
+            "Codex App",
+            "CLI",
+            "IDE extension",
+            "subagents",
+            "skills",
+            "`AGENTS.md`",
+            "memory",
+            "sandbox",
+            "approvals",
+            "MCP",
+            "Agents SDK",
+        ]:
+            with self.subTest(policy=expected):
+                self.assertIn(expected, boundary)
+
+        cleanup_pending_pages = [
+            PRODUCT_AGENT_OS / "index.md",
+            PRODUCT_AGENT_OS / "project-code-graph.md",
+            PRODUCT_AGENT_OS / "live-runtime-governance.md",
+            PRODUCT_AGENT_OS / "approval-bound-real-testing.md",
+            PRODUCT_AGENT_OS / "agent-skill-modernization-loop.md",
+            PRODUCT_AGENT_OS / "cli-reference.md",
+            PRODUCT_AGENT_OS / "artifact-contracts.md",
+            PRODUCT_AGENT_OS / "packaging-and-closure.md",
+        ]
+        for path in cleanup_pending_pages:
+            with self.subTest(cleanup_pending_page=path.name):
+                self.assertTrue(path.exists(), path)
+                self.assertIn(f"docs/product-agent-os/{path.name}", boundary)
+                self.assertIn("cleanup_pending", boundary)
+
+        public_ready_pages = []
+        self.assertEqual(public_ready_pages, [])
+        for path in public_ready_pages:
+            text = path.read_text(encoding="utf-8")
+            with self.subTest(public_ready_page=path.name):
+                self.assertIsNone(forbidden_pattern.search(text), path)
 
     def test_track10_task26_batch35_real_testing_execution_matrix_is_planned(self):
         registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
