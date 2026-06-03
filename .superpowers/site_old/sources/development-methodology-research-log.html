@@ -1,0 +1,4023 @@
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+
+        <meta name="description" content="Russian knowledge base for advanced OpenAI Codex and agentic workflows.">
+
+
+
+
+
+
+
+
+
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+
+
+
+        <title>План исследования методологий разработки и документации - OpenAI Codex Knowledge Base</title>
+
+
+
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+
+
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+
+
+
+
+
+
+
+
+
+
+
+
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+
+
+
+      <link rel="stylesheet" href="../assets/stylesheets/extra.css">
+
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+
+
+
+
+
+  </head>
+
+
+
+
+
+
+
+
+
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="deep-orange">
+
+
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+
+
+        <a href="#_1" class="md-skip">
+          Перейти к содержанию
+        </a>
+
+    </div>
+    <div data-md-component="announce">
+
+    </div>
+
+
+
+
+
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href="../index.html" title="OpenAI Codex Knowledge Base" class="md-header__button md-logo" aria-label="OpenAI Codex Knowledge Base" data-md-component="logo">
+
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OpenAI Codex Knowledge Base
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+
+              План исследования методологий разработки и документации
+
+          </span>
+        </div>
+      </div>
+    </div>
+
+
+        <form class="md-header__option" data-md-component="palette">
+
+
+
+
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="deep-orange"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+
+
+</form>
+
+
+
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+
+
+
+
+
+        <label class="md-header__button md-icon" for="__search">
+
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Поиск" placeholder="Поиск" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Поиск">
+
+        <button type="reset" class="md-search__icon md-icon" title="Очистить" aria-label="Очистить" tabindex="-1">
+
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Инициализация поиска
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+  </nav>
+
+</header>
+
+    <div class="md-container" data-md-component="container">
+
+
+
+
+
+
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+
+
+
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="OpenAI Codex Knowledge Base" class="md-nav__button md-logo" aria-label="OpenAI Codex Knowledge Base" data-md-component="logo">
+
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    OpenAI Codex Knowledge Base
+  </label>
+
+  <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Главная
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="../diagrams/index.html" class="md-nav__link ">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Диаграммы
+
+
+
+  </span>
+
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Диаграммы
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/architecture.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Архитектура проекта
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/product-delivery-lifecycle.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Product-Agent Delivery Lifecycle
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/agent-team-and-skills.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Команда агентов и skills
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/runtime-decision-map.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Runtime decision map
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/skill-lifecycle.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Skill lifecycle
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/context-memory-verification.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Context, memory, verification
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+
+
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Источники
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Источники
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="registry.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Реестр источников
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="context7-research.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Анализ Context7
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="source-card-template.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Шаблон карточки источника
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+
+
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Codex
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Codex
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/overview.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Обзор
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/surfaces.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Поверхности работы
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/configuration.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Конфигурация и расширяемость
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/security.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Безопасность и approvals
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/workflows.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Рабочие процессы
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/use-cases-deep-analysis.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Deep analysis of use cases
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+
+
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Prompt & Context Engineering
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Prompt & Context Engineering
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../prompting/overview.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Обзор
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../prompting/question-design.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Проектирование вопросов
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../prompting/context-engineering.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Context engineering
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../prompting/anti-hallucination.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Контроль галлюцинаций
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+
+
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Product-Agent Workflows
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Product-Agent Workflows
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent/overview.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Обзор
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent/lifecycle.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Product lifecycle
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent/roles.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Роли агентной команды
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent/control-plane.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Control-plane files
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent/product-agent-os-plugin-spec.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Product-Agent OS plugin spec
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="../product-agent-os/index.html" class="md-nav__link ">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Product-Agent OS plugin
+
+
+
+  </span>
+
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_7" id="__nav_7_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Product-Agent OS plugin
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/project-code-graph.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Project Code Graph
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/live-runtime-governance.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Live Runtime Governance
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/approval-bound-real-testing.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Approval-Bound Real Testing
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/agent-skill-modernization-loop.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agent-Skill Modernization Loop
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/cli-reference.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    CLI Reference
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/artifact-contracts.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Artifact Contracts
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/packaging-and-closure.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Packaging And Closure
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/technical.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Технические особенности и установка
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/development-standards.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Engineering standards layer
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/methodology-intelligence.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Methodology intelligence
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/scenarios.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Сценарии и usage modes
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/behavioral-evals.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Behavioral evals
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/codex-compatibility.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Codex compatibility
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/architecture.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Диаграммы и принципы работы
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="../methodologies/index.html" class="md-nav__link ">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Methodologies for Large Projects
+
+
+
+  </span>
+
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Methodologies for Large Projects
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/business-product.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Business & Product
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/requirements-domain.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Requirements & Domain
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/solution-architecture.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Solution Architecture
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/frontend.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Frontend
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/backend.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Backend
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/api-integrations.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    API & Integrations
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/database-data.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Database & Data
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/llm-ai-rag.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    LLM / AI / RAG
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/quality-testing-evals.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Quality, Testing & Evals
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/security-privacy-compliance.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Security, Privacy & Compliance
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/delivery-release-operations.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Delivery, Release & Operations
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/codex-agentic-workflow.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Codex / Agentic Workflow
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_9" >
+
+
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Codex Automation & Runtime
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Codex Automation & Runtime
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../runtime/overview.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Обзор runtime
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../runtime/non-interactive-and-mcp.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Non-interactive и MCP
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../runtime/automations-github.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Automations и GitHub
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../runtime/worktrees-hooks-rules.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Worktrees, hooks, rules
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_10" >
+
+
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Агентные системы
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Агентные системы
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/overview.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Архитектура
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/memory.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Память
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/session-control.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Контроль сессий
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/subagents-skills.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Subagents, Skills, AGENTS.md
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/sdk-patterns.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agents SDK patterns
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/evals-observability.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Evals и observability
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/templates.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Шаблоны агентов
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_11" >
+
+
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Playbooks
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Playbooks
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/research-loop.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Research loop
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/context7-deep-research.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Context7 deep research
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/grounded-answering.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Grounded answering
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/build-full-feature.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Build full feature
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/workflow-to-skill.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Workflow to skill
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/use-case-to-plugin.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Use case to plugin
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/eval-driven-improvement.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Eval-driven improvement
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/product-ready-pr.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Product-ready PR
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/maintain-agent-operating-docs.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agent operating docs
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/workspace-readiness-audit.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Workspace readiness audit
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/docs-update.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Обновление документации
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/code-review.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Code review
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/ai-team-design.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    AI-native команда
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_12" >
+
+
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Templates
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Templates
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../artifact-templates/prompt-packet.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Prompt template
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../artifact-templates/control-plane-files.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Control-plane templates
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../artifact-templates/runlog.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    RUNLOG template
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../artifact-templates/product-skill.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Skill template
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../artifact-templates/plugin-blueprint.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Plugin blueprint
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_13" >
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="../insights/index.html" class="md-nav__link ">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Insights
+
+
+
+  </span>
+
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_13" id="__nav_13_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Insights
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../insights/insight-card-template.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Шаблон карточки insight
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../insights/seed-insights.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Начальный backlog
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+
+
+
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+
+
+
+
+
+
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Рабочий список задач
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Общий метод исследования
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Методологии разработки
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Инструменты документации и инженерных артефактов
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#initial-gaps-to-investigate-against-product-agent-os" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Initial gaps to investigate against Product-Agent OS
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#research-slice" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Следующий research slice
+
+    </span>
+  </a>
+
+</li>
+
+    </ul>
+
+</nav>
+                  </div>
+                </div>
+              </div>
+
+
+
+            <div class="md-content" data-md-component="content">
+
+              <article class="md-content__inner md-typeset">
+
+
+
+
+
+<h1 id="_1">План исследования методологий разработки и документации<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<p>Source status: <code>official + verified methodology + tool-assisted research in progress</code></p>
+<p>Дата старта: <strong>2026-05-23</strong>.<br />
+Назначение: зафиксировать управляемый research backlog для следующего усиления Product-Agent OS, чтобы plugin строил не только agentic-разработку, а воспроизводимый инженерный процесс для проектов web, desktop, mobile, backend, AI/evals, docs и operations.</p>
+<h2 id="_2">Рабочий список задач<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Статус</th>
+<th>Задача</th>
+<th>Результат</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>done</td>
+<td>Сверить текущую реализацию Track 6/7 и входные source-документы.</td>
+<td>Подтверждено: стандарты уже перенесены в workflow/templates/evals, но нужен отдельный research backlog для дальнейшего углубления.</td>
+</tr>
+<tr>
+<td>done</td>
+<td>Составить карту методологий и documentation tooling.</td>
+<td>Ниже зафиксированы methodology tracks, documentation/tool tracks и ожидаемые Product-Agent OS artifacts.</td>
+</tr>
+<tr>
+<td>done</td>
+<td>Начать проверку первоисточников.</td>
+<td>Проверены официальные/первичные источники OpenAI Codex, Agile Alliance, Feature-Sliced Design, C4, arc42, OpenAPI, AsyncAPI, Storybook, GitLab/GitHub docs, MkDocs, Docusaurus, Antora, Read the Docs и release/documentation tooling.</td>
+</tr>
+<tr>
+<td>done</td>
+<td>Сохранить Context7-срез.</td>
+<td>Context7 использован для Docusaurus, MkDocs и Storybook; выводы продублированы в <code>docs/sources/context7-research.md</code>.</td>
+</tr>
+<tr>
+<td>in_progress</td>
+<td>Добавить недостающие источники в registry.</td>
+<td>В registry добавляются новые источники для ATDD/BDD, DDD, metrics, ADR/MADR, Structurizr, diagram tools, code/API/DB docs, docs portals, lint/release policy.</td>
+</tr>
+<tr>
+<td>planned</td>
+<td>Для каждой методологии подготовить deep-dive карточку.</td>
+<td>Ожидаемый формат: источник, краткая суть, когда применять, когда не применять, артефакт plugin, eval/gate, риски.</td>
+</tr>
+<tr>
+<td>done</td>
+<td>Сопоставить research с уже реализованным plugin.</td>
+<td>Gap matrix сохранена в <a href="development-methodology-gap-matrix.html">development-methodology-gap-matrix.md</a>.</td>
+</tr>
+<tr>
+<td>done</td>
+<td>Детализировать Track 8 по методологиям, стандартам и инструментам.</td>
+<td>Execution backlog сохранен в <a href="product-agent-os-track-8-detailed-backlog.html">product-agent-os-track-8-detailed-backlog.md</a>.</td>
+</tr>
+<tr>
+<td>done</td>
+<td>Расширить Track 8 scenario workflows.</td>
+<td>Backlog дополнен режимами <code>bug_rescue</code>, <code>greenfield_idea</code>, <code>complex_system_acceleration</code>, usage mode classifier, integration catalog и scenario-specific readiness gates.</td>
+</tr>
+<tr>
+<td>done</td>
+<td>Провести финальный pre-development review.</td>
+<td>Критический анализ, 10 дополнительных сценариев и итоговые рекомендации сохранены в <a href="product-agent-os-final-predevelopment-review.html">product-agent-os-final-predevelopment-review.md</a>.</td>
+</tr>
+<tr>
+<td>done</td>
+<td>Финально расширить backlog перед разработкой.</td>
+<td>Backlog дополнен режимами <code>pr_review</code>, <code>legacy_onboarding</code>, <code>api_migration</code>, <code>ai_eval_regression</code>, <code>native_mobile_feature</code>, <code>desktop_local_first</code>, <code>data_migration</code>, <code>security_sensitive_change</code>, <code>ci_stabilization</code>, <code>release_packaging</code>, mode stack, fixture coverage and plugin success metrics.</td>
+</tr>
+<tr>
+<td>in_progress</td>
+<td>Реализовать Track 8.</td>
+<td>T8-S1..T8-S16, <code>T8-A13</code>, <code>T8-A14</code>, <code>T8-A15</code>, <code>T8-A3/T8-A4</code>, <code>T8-A5</code>, <code>T8-A6</code>, <code>T8-A7</code>, <code>T8-A8</code>, <code>T8-A9</code>, <code>T8-A16</code>, <code>T8-C</code>, <code>T8-F</code>, <code>T8-H</code> and <code>T8-GY</code> реализованы; следующий execution queue начинается с <code>T8-B</code> standards trigger hardening.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_3">Общий метод исследования<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>Для каждой методологии и инструмента применяется один и тот же протокол:</p>
+<ol>
+<li>Найти первичный или официальный источник.</li>
+<li>Снять 5-10 проверяемых утверждений без community-обобщений.</li>
+<li>Разделить статус утверждения: <code>official</code>, <code>methodology</code>, <code>tool convention</code>, <code>community</code>, <code>experiment</code>.</li>
+<li>Определить применимость: web/front-end, native/mobile, desktop, backend/API, data, AI/evals, docs, operations.</li>
+<li>Привязать к Product-Agent OS: template, workflow, skill, eval, discovery signal, docs page или staged CI proposal.</li>
+<li>Зафиксировать failure modes: где методология вредна, избыточна или требует человеческого решения.</li>
+<li>Добавить проверку: тест, eval gate, docs check, contract check, browser/runtime check или review checklist.</li>
+</ol>
+<h2 id="_4">Методологии разработки<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Методология</th>
+<th>Краткое описание</th>
+<th>Первичные источники</th>
+<th>Ключевая информация для plugin</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Agentic / AI-native development</td>
+<td>Организация SDLC, где Codex App, CLI, IDE extension, subagents и skills помогают планировать, строить, тестировать, ревьюить и документировать изменения, а человек сохраняет ownership архитектуры, продукта и качества.</td>
+<td><a href="https://developers.openai.com/codex/plugins/build">Codex build plugins</a>, <a href="https://developers.openai.com/codex/skills">Agent Skills</a>, <a href="https://developers.openai.com/codex/guides/build-ai-native-engineering-team">Building an AI-Native Engineering Team</a>, <a href="https://developers.openai.com/codex/use-cases/ai-app-evals">Codex AI app evals</a></td>
+<td>Не превращать agentic work в blind generation. Нужны scoped inputs, ownership, tests/evals, source policy, approval policy, run evidence и promotion path: manual workflow -&gt; skill -&gt; plugin -&gt; automation.</td>
+</tr>
+<tr>
+<td>Data-informed development</td>
+<td>Принятие продуктовых решений через goals, signals, metrics, guardrails и post-release learning.</td>
+<td><a href="https://research.google.com/pubs/pub36299.html?frame=0">Google HEART paper</a>, <a href="https://amplitude.com/north-star-hub">Amplitude North Star</a></td>
+<td>Использовать термин <code>data-informed product decisions</code>, чтобы не смешивать с Domain-Driven Design. В plugin нужны metric spec, guardrail metrics, privacy notes и защита от оптимизации одного proxy metric.</td>
+</tr>
+<tr>
+<td>Domain-Driven Design</td>
+<td>Проектирование сложной бизнес-логики вокруг domain model, ubiquitous language и bounded contexts.</td>
+<td><a href="https://martinfowler.com/bliki/DomainDrivenDesign.html">Martin Fowler: Domain-Driven Design</a>, <a href="https://martinfowler.com/bliki/BoundedContext.html">Bounded Context</a>, <a href="https://martinfowler.com/bliki/UbiquitousLanguage.html">Ubiquitous Language</a>, <a href="https://www.domainlanguage.com/">Domain Language</a></td>
+<td>DDD нужен для сложной предметной области, а не для каждого CRUD. Plugin должен требовать domain glossary, bounded contexts, aggregates/domain events only when justified, и explicit mapping к architecture boundary.</td>
+</tr>
+<tr>
+<td>TDD</td>
+<td>Red-Green-Refactor цикл: тест до реализации, минимальный код, refactor при зеленых тестах.</td>
+<td><a href="https://agilealliance.org/glossary/tdd/">Agile Alliance TDD</a></td>
+<td>Уже частично внедрено в Track 7. Следующий шаг: требовать evidence red -&gt; green -&gt; refactor в RUNLOG или gap, особенно для bugfix и shared behavior.</td>
+</tr>
+<tr>
+<td>ATDD</td>
+<td>Acceptance tests пишутся до реализации совместно с customer/product, development и testing perspectives.</td>
+<td><a href="https://agilealliance.org/glossary/atdd/">Agile Alliance ATDD</a></td>
+<td>Хороший мост между REQUIREMENTS.md и TEST.md. Plugin должен поддерживать acceptance scenarios до кода и traceability от requirement к test/eval.</td>
+</tr>
+<tr>
+<td>BDD</td>
+<td>Уточнение TDD/ATDD через behavior scenarios, business outcomes и общий язык для domain experts, testers и developers.</td>
+<td><a href="https://agilealliance.org/glossary/bdd/">Agile Alliance BDD</a></td>
+<td>Применять для пользовательского поведения и бизнес-правил. Не заменяет unit tests; дает acceptance language и сценарии для agent handoff.</td>
+</tr>
+<tr>
+<td>Feature-Sliced Design</td>
+<td>Frontend architecture methodology с layers, slices, segments, public API и import rules.</td>
+<td><a href="https://feature-sliced.github.io/documentation/">Feature-Sliced Design documentation</a></td>
+<td>Использовать как strong default для растущего UI, но не навязывать backend/native/MVP. Discovery должен видеть FSD structure, а planner должен фиксировать layer/slice boundary.</td>
+</tr>
+<tr>
+<td>Eval-driven AI development</td>
+<td>Повторяемые eval suites для prompt/model/tool/RAG/agent behavior до изменения production behavior.</td>
+<td><a href="https://developers.openai.com/codex/use-cases/ai-app-evals">Codex AI app evals</a>, <a href="https://developers.openai.com/api/docs/guides/evaluation-best-practices">OpenAI eval best practices</a></td>
+<td>Для AI/RAG нельзя ограничиться unit tests. Нужны baseline, app-path target, fixtures без secrets/customer data, assertions, run command и threshold.</td>
+</tr>
+<tr>
+<td>Docs-as-code</td>
+<td>Документация живет рядом с кодом, меняется через review, собирается и проверяется как часть engineering workflow.</td>
+<td><a href="https://docs.gitlab.com/development/documentation/site_architecture/">GitLab documentation architecture</a>, <a href="https://docs.github.com/en/actions/concepts/workflows-and-actions/workflows">GitHub Actions workflows</a>, <a href="https://docs.github.com/articles/about-required-reviews-for-pull-requests">GitHub protected branches</a></td>
+<td>Plugin должен stage proposals для docs CI/CODEOWNERS, но не включать external workflows без approval. Docs impact должен быть gate в PLAN/TEST/RUNLOG.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_5">Инструменты документации и инженерных артефактов<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Инструмент</th>
+<th>Краткое описание</th>
+<th>Источник</th>
+<th>Ключевая информация для plugin</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>C4 model</td>
+<td>Уровни software architecture diagrams: system context, container, component, code; не все уровни обязательны.</td>
+<td><a href="https://c4model.com/diagrams">C4 diagrams</a></td>
+<td>Default architecture overview должен требовать минимум context/container для значимых системных изменений.</td>
+</tr>
+<tr>
+<td>arc42</td>
+<td>Template для architecture communication: goals, constraints, context, solution strategy, building blocks, runtime, deployment, decisions, quality, risks.</td>
+<td><a href="https://arc42.org/overview">arc42 overview</a></td>
+<td>Полезен как структура architecture-overview template и review checklist.</td>
+</tr>
+<tr>
+<td>ADR / MADR</td>
+<td>Markdown decision records для фиксации контекста, решения, альтернатив и последствий.</td>
+<td><a href="https://adr.github.io/madr/">MADR</a></td>
+<td>Plugin уже генерирует ADR template; нужен next step: ADR trigger policy и ADR index/check.</td>
+</tr>
+<tr>
+<td>Structurizr DSL</td>
+<td>Text-based DSL для C4 architecture model, diagrams и Markdown/AsciiDoc docs as code.</td>
+<td><a href="https://docs.structurizr.com/dsl">Structurizr DSL</a>, <a href="https://docs.structurizr.com/as-code">Structurizr as code</a></td>
+<td>Optional advanced path для architecture-as-code; не должен быть default для маленьких repos.</td>
+</tr>
+<tr>
+<td>Mermaid</td>
+<td>Text syntax for diagrams embedded in Markdown/docs portals.</td>
+<td><a href="https://mermaid.js.org/intro/syntax-reference.html">Mermaid syntax</a></td>
+<td>Хороший default для repo-native diagrams, но нужен syntax/build check, потому что small syntax errors ломают rendering.</td>
+</tr>
+<tr>
+<td>PlantUML</td>
+<td>Text-to-diagram tooling, особенно для sequence/component/UML-style views.</td>
+<td><a href="https://plantuml.com/sequence-diagram">PlantUML sequence diagram</a></td>
+<td>Useful for teams already using UML/sequence diagrams; should remain optional.</td>
+</tr>
+<tr>
+<td>OpenAPI</td>
+<td>Machine-readable HTTP API contract.</td>
+<td><a href="https://spec.openapis.org/oas/latest">OpenAPI Specification latest</a></td>
+<td>API changes need contract update or explicit gap; core guidance should prefer latest spec reference while preserving compatibility notes.</td>
+</tr>
+<tr>
+<td>AsyncAPI</td>
+<td>Machine-readable event/message-driven API contract.</td>
+<td><a href="https://www.asyncapi.com/docs/reference/specification/v3.0.0">AsyncAPI v3.0.0</a></td>
+<td>Event-driven systems need channel/message ownership, producer/consumer roles and compatibility check.</td>
+</tr>
+<tr>
+<td>Storybook</td>
+<td>UI component workshop and docs/testing surface with Autodocs, MDX/Doc Blocks and a11y workflows.</td>
+<td><a href="https://storybook.js.org/docs/writing-docs/autodocs">Storybook Autodocs</a>, <a href="https://storybook.js.org/docs/writing-tests/accessibility-testing">Storybook a11y tests</a></td>
+<td>UI changes should declare component states and visual/a11y checks when Storybook exists or should be proposed.</td>
+</tr>
+<tr>
+<td>TypeDoc</td>
+<td>Generates HTML docs or JSON model from TypeScript source comments/exports.</td>
+<td><a href="https://typedoc.org/">TypeDoc</a></td>
+<td>Good for TS library/API packages; less useful for purely internal app code unless public interfaces exist.</td>
+</tr>
+<tr>
+<td>JSDoc</td>
+<td>Tag system for JavaScript documentation comments.</td>
+<td><a href="https://jsdoc.app/about-block-inline-tags">JSDoc tags</a></td>
+<td>Use for public JS interfaces and editor hints; avoid low-value comments on obvious internals.</td>
+</tr>
+<tr>
+<td>Sphinx autodoc</td>
+<td>Python doc generator can import modules and inspect docstrings.</td>
+<td><a href="https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html">Sphinx autodoc</a></td>
+<td>Good for Python package/reference docs; requires import-safe modules and documented public API.</td>
+</tr>
+<tr>
+<td>Javadoc</td>
+<td>Standard Java doc comments and API HTML generation.</td>
+<td><a href="https://docs.oracle.com/en/java/javase/22/docs/specs/javadoc/doc-comment-spec.html">Oracle Javadoc spec</a></td>
+<td>Applies to public Java APIs; first sentence summary and tags matter for generated docs.</td>
+</tr>
+<tr>
+<td>C# XML docs</td>
+<td>Structured comments compiled into XML API docs.</td>
+<td><a href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/xmldoc/">Microsoft C# XML docs</a></td>
+<td>Good for .NET public APIs and IntelliSense/reference docs.</td>
+</tr>
+<tr>
+<td>DBML / dbdocs</td>
+<td>Text DSL and hosted docs workflow for database schema documentation.</td>
+<td><a href="https://dbml.dbdiagram.io/docs/">DBML syntax</a>, <a href="https://docs.dbdocs.io/features/generate-dbml-from-db/">dbdocs DBML generation</a></td>
+<td>Database changes need schema dictionary, relation map and migration notes; DBML is a strong lightweight option.</td>
+</tr>
+<tr>
+<td>SchemaSpy</td>
+<td>Generates database schema documentation from metadata.</td>
+<td><a href="https://schemaspy.readthedocs.io/en/v6.2.0/index.html">SchemaSpy docs</a></td>
+<td>Useful for existing relational DBs; requires DB access and no secret leakage in generated artifacts.</td>
+</tr>
+<tr>
+<td>MkDocs</td>
+<td>Markdown + YAML static site generator with dev server and static HTML output.</td>
+<td><a href="https://www.mkdocs.org/">MkDocs</a></td>
+<td>Default docs portal for smaller repos and this project. Strict build should be docs quality gate.</td>
+</tr>
+<tr>
+<td>Docusaurus</td>
+<td>React/MDX documentation site generator with versioning, i18n, search and interactive pages.</td>
+<td><a href="https://docusaurus.io/docs">Docusaurus docs</a>, <a href="https://docusaurus.io/docs/versioning">Docusaurus versioning</a></td>
+<td>Strong for product docs with React/MDX and versioned public docs; versioning adds maintenance cost and should not be automatic.</td>
+</tr>
+<tr>
+<td>Antora</td>
+<td>Multi-repository, multi-version docs site generator for AsciiDoc.</td>
+<td><a href="https://antora.org/">Antora</a>, <a href="https://docs.antora.org/antora/latest/features/">Antora features</a></td>
+<td>Enterprise/multirepo option; heavier than MkDocs for small repos.</td>
+</tr>
+<tr>
+<td>Read the Docs</td>
+<td>Hosted docs platform that builds docs from VCS workflow and supports versions.</td>
+<td><a href="https://docs.readthedocs.com/">Read the Docs</a></td>
+<td>Good for public/open docs hosting; plugin should propose, not assume external hosting.</td>
+</tr>
+<tr>
+<td>CODEOWNERS</td>
+<td>GitHub ownership file for auto-requesting reviewers and optional code owner approval.</td>
+<td><a href="https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners">GitHub CODEOWNERS</a></td>
+<td>Useful governance signal; Product-Agent OS may stage CODEOWNERS proposals but not enforce without approval.</td>
+</tr>
+<tr>
+<td>GitHub Actions</td>
+<td>YAML-defined workflows in <code>.github/workflows</code> for build/test/deploy/docs checks.</td>
+<td><a href="https://docs.github.com/en/actions/concepts/workflows-and-actions/workflows">GitHub Actions workflows</a>, <a href="https://docs.github.com/actions/reference/workflows-and-actions/workflow-syntax">workflow syntax</a></td>
+<td>CI proposals should be staged and least-privilege. Required checks are a governance decision, not automatic plugin behavior.</td>
+</tr>
+<tr>
+<td>Vale</td>
+<td>Prose/style linter with configurable styles and spelling checks.</td>
+<td><a href="https://vale.sh/docs/styles">Vale styles</a></td>
+<td>Good optional docs quality gate for product docs; requires team style decisions.</td>
+</tr>
+<tr>
+<td>markdownlint</td>
+<td>Markdown rule set and linter for structural consistency.</td>
+<td><a href="https://github.com/markdownlint/markdownlint/blob/main/docs/RULES.md">markdownlint rules</a></td>
+<td>Lightweight docs quality gate; useful for CI proposal and local docs checks.</td>
+</tr>
+<tr>
+<td>Keep a Changelog</td>
+<td>Human-readable changelog convention with grouped change types and Unreleased section.</td>
+<td><a href="https://keepachangelog.com/en/1.1.0/">Keep a Changelog</a></td>
+<td>Release packet should capture user-visible changes, deprecations, removals and security notes, not raw git logs.</td>
+</tr>
+<tr>
+<td>SemVer</td>
+<td>Versioning contract around major/minor/patch and public API compatibility.</td>
+<td><a href="https://semver.org/">Semantic Versioning</a></td>
+<td>Relevant for plugins, packages, SDKs and public contracts; major changes require explicit migration notes.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="initial-gaps-to-investigate-against-product-agent-os">Initial gaps to investigate against Product-Agent OS<a class="headerlink" href="#initial-gaps-to-investigate-against-product-agent-os" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Gap</th>
+<th>Почему важно</th>
+<th>Research action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DDD conditional lifecycle gate закрыт в <code>T8-A5</code>, bounded context traceability закрыта в <code>T8-A6</code>, ubiquitous language traceability закрыта в <code>T8-A7</code>, conditional FSD structure routing закрыт в <code>T8-A8</code>, metric hardening закрыт в <code>T8-A9</code>, evidence-before-completion закрыт в <code>T8-A16</code>, docs tooling selector закрыт в <code>T8-C</code>, conditional readiness statuses закрыты в <code>T8-F</code>, dedicated scenario/eval/Codex compatibility docs закрыты в <code>T8-H</code>, transcript/session eval replay закрыт в <code>T8-GY</code>.</td>
+<td>Для сложной предметной области нужны не только bounded contexts, но и проверяемая связь domain terms с requirements, API/events, UI labels, code modules or owners; для растущего UI FSD должен быть route clue, а не forced ceremony; для product behavior metrics нужны counter-metric, guardrail, privacy and owner signoff; для completion claims нужны current command/eval/runtime evidence or inspection-only gap; для docs-as-code нужны stack-aware tooling decisions and approval statuses; для readiness нужны <code>not_applicable</code>, <code>applicable_missing</code>, <code>present_unverified</code>, <code>present_verified</code>, <code>proposal_staged</code>, <code>explicit_gap_accepted</code> and <code>approval_required</code>; для operator docs нужны scenario route, behavioral eval and compatibility boundaries; для transcripts нужен deterministic replay без raw private logs.</td>
+<td>Следить за human domain expert review, UI owner review, product owner metric review, docs owner review, evidence sufficiency, semantic transcript quality and standards trigger hardening; следующий Track 8 slice: <code>T8-B</code> standards trigger hardening.</td>
+</tr>
+<tr>
+<td>ATDD/BDD не выделены как отдельные tracks.</td>
+<td>Acceptance scenarios связывают product requirements и test/eval-first loop лучше, чем generic checklist.</td>
+<td>Implemented in <code>acceptance-scenarios.md</code>, control-plane templates, lifecycle skills, readiness eval and behavioral eval; residual risk is scenario quality review.</td>
+</tr>
+<tr>
+<td>Docs tooling decision matrix и <code>docs_as_code_impact</code> status contract закрыты в <code>T8-C</code>.</td>
+<td>Разным стекам нужны разные defaults: MkDocs, Docusaurus, Sphinx, Antora, Storybook, TypeDoc, OpenAPI, DBML, Mermaid, PlantUML and Structurizr; простым/internal-only проектам нужен <code>not_applicable</code> или lightweight docs path.</td>
+<td>Следить за качеством owner review, maintenance cost and real build evidence; selector records <code>present_unverified</code> until commands run.</td>
+</tr>
+<tr>
+<td>Metrics layer требует privacy and anti-Goodhart guardrails.</td>
+<td>Одна метрика может искажать поведение, а telemetry может нарушать privacy.</td>
+<td>Расширить metric-spec privacy/legal/security/guardrail fields.</td>
+</tr>
+<tr>
+<td>CI/CODEOWNERS/docs lint пока только staged proposals.</td>
+<td>Это правильно по approvals, но plugin должен ясно отличать recommendation от enforced gate.</td>
+<td>Добавить explicit <code>proposed_not_enabled</code> status в CI/governance templates.</td>
+</tr>
+<tr>
+<td>Architecture-as-code не классифицировано.</td>
+<td>Structurizr/Mermaid/PlantUML имеют разный вес и maintenance cost.</td>
+<td>Исследовать profile: small repo -&gt; Mermaid, large C4 -&gt; Structurizr, UML-heavy -&gt; PlantUML.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="research-slice">Следующий research slice<a class="headerlink" href="#research-slice" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Deep-dive карточки по DDD, ATDD/BDD, data-informed metrics, docs-as-code governance.</li>
+<li>Decision matrix для documentation stack selection.</li>
+<li>Gap matrix: source claim -&gt; plugin artifact -&gt; eval/check -&gt; residual risk - сохранена в <a href="development-methodology-gap-matrix.html">development-methodology-gap-matrix.md</a>.</li>
+<li>Track 8 detailed backlog: <a href="product-agent-os-track-8-detailed-backlog.html">product-agent-os-track-8-detailed-backlog.md</a>.</li>
+<li>Final pre-development review: <a href="product-agent-os-final-predevelopment-review.html">product-agent-os-final-predevelopment-review.md</a>.</li>
+<li>Track 8 implementation: tests first, then templates/evals/discovery updates, scenario fixture eval, docs and full verification.</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </article>
+            </div>
+
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  К началу
+</button>
+
+      </main>
+
+        <footer class="md-footer">
+
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+
+
+</div>
+
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+
+
+
+
+
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.expand", "navigation.indexes", "navigation.top", "search.highlight", "search.suggest", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
+
+
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+
+
+  </body>
+</html>

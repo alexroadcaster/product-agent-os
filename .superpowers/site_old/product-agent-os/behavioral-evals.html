@@ -1,0 +1,4143 @@
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+
+        <meta name="description" content="Russian knowledge base for advanced OpenAI Codex and agentic workflows.">
+
+
+
+
+        <link rel="prev" href="scenarios.html">
+
+
+        <link rel="next" href="codex-compatibility.html">
+
+
+
+
+
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+
+
+
+        <title>Behavioral evals - OpenAI Codex Knowledge Base</title>
+
+
+
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+
+
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+
+
+
+
+
+
+
+
+
+
+
+
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+
+
+
+      <link rel="stylesheet" href="../assets/stylesheets/extra.css">
+
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+
+
+
+
+
+  </head>
+
+
+
+
+
+
+
+
+
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="deep-orange">
+
+
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+
+
+        <a href="#product-agent-os-behavioral-evals" class="md-skip">
+          Перейти к содержанию
+        </a>
+
+    </div>
+    <div data-md-component="announce">
+
+    </div>
+
+
+
+
+
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href="../index.html" title="OpenAI Codex Knowledge Base" class="md-header__button md-logo" aria-label="OpenAI Codex Knowledge Base" data-md-component="logo">
+
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OpenAI Codex Knowledge Base
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+
+              Behavioral evals
+
+          </span>
+        </div>
+      </div>
+    </div>
+
+
+        <form class="md-header__option" data-md-component="palette">
+
+
+
+
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="deep-orange"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+
+
+</form>
+
+
+
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+
+
+
+
+
+        <label class="md-header__button md-icon" for="__search">
+
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Поиск" placeholder="Поиск" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Поиск">
+
+        <button type="reset" class="md-search__icon md-icon" title="Очистить" aria-label="Очистить" tabindex="-1">
+
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Инициализация поиска
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+  </nav>
+
+</header>
+
+    <div class="md-container" data-md-component="container">
+
+
+
+
+
+
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+
+
+
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="OpenAI Codex Knowledge Base" class="md-nav__button md-logo" aria-label="OpenAI Codex Knowledge Base" data-md-component="logo">
+
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    OpenAI Codex Knowledge Base
+  </label>
+
+  <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Главная
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="../diagrams/index.html" class="md-nav__link ">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Диаграммы
+
+
+
+  </span>
+
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Диаграммы
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/architecture.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Архитектура проекта
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/product-delivery-lifecycle.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Product-Agent Delivery Lifecycle
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/agent-team-and-skills.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Команда агентов и skills
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/runtime-decision-map.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Runtime decision map
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/skill-lifecycle.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Skill lifecycle
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/context-memory-verification.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Context, memory, verification
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+
+
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Источники
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Источники
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../sources/registry.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Реестр источников
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../sources/context7-research.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Анализ Context7
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../sources/source-card-template.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Шаблон карточки источника
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+
+
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Codex
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Codex
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/overview.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Обзор
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/surfaces.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Поверхности работы
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/configuration.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Конфигурация и расширяемость
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/security.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Безопасность и approvals
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/workflows.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Рабочие процессы
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/use-cases-deep-analysis.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Deep analysis of use cases
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+
+
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Prompt & Context Engineering
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Prompt & Context Engineering
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../prompting/overview.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Обзор
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../prompting/question-design.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Проектирование вопросов
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../prompting/context-engineering.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Context engineering
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../prompting/anti-hallucination.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Контроль галлюцинаций
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+
+
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Product-Agent Workflows
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Product-Agent Workflows
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent/overview.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Обзор
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent/lifecycle.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Product lifecycle
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent/roles.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Роли агентной команды
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent/control-plane.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Control-plane files
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent/product-agent-os-plugin-spec.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Product-Agent OS plugin spec
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+
+
+
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="index.html" class="md-nav__link ">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Product-Agent OS plugin
+
+
+
+  </span>
+
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_7" id="__nav_7_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Product-Agent OS plugin
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="project-code-graph.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Project Code Graph
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="live-runtime-governance.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Live Runtime Governance
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="approval-bound-real-testing.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Approval-Bound Real Testing
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="agent-skill-modernization-loop.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agent-Skill Modernization Loop
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="cli-reference.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    CLI Reference
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="artifact-contracts.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Artifact Contracts
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="packaging-and-closure.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Packaging And Closure
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="technical.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Технические особенности и установка
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="development-standards.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Engineering standards layer
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="methodology-intelligence.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Methodology intelligence
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="scenarios.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Сценарии и usage modes
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--active">
+
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+
+
+
+
+
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Behavioral evals
+
+
+
+  </span>
+
+
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+
+      <a href="behavioral-evals.html" class="md-nav__link md-nav__link--active">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Behavioral evals
+
+
+
+  </span>
+
+
+
+      </a>
+
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+
+
+
+
+
+
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+
+        <li class="md-nav__item">
+  <a href="#task-22-eval-closure" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Task 22 eval closure
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#task-2526-behavioral-coverage" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Task 25/26 behavioral coverage
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#inputs" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Inputs
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#outputs" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Outputs
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#eval-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Eval Layers
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#track-10-guided-questions-and-dashboard" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Track 10 Guided Questions And Dashboard
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#track-10-self-verification-metrics-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Track 10 Self-Verification Metrics Loop
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#expected-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Expected Behavior
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#forbidden-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Forbidden Behavior
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#verification" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Verification
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#risks" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Risks
+
+    </span>
+  </a>
+
+</li>
+
+    </ul>
+
+</nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="codex-compatibility.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Codex compatibility
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="architecture.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Диаграммы и принципы работы
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="../methodologies/index.html" class="md-nav__link ">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Methodologies for Large Projects
+
+
+
+  </span>
+
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Methodologies for Large Projects
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/business-product.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Business & Product
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/requirements-domain.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Requirements & Domain
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/solution-architecture.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Solution Architecture
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/frontend.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Frontend
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/backend.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Backend
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/api-integrations.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    API & Integrations
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/database-data.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Database & Data
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/llm-ai-rag.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    LLM / AI / RAG
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/quality-testing-evals.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Quality, Testing & Evals
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/security-privacy-compliance.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Security, Privacy & Compliance
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/delivery-release-operations.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Delivery, Release & Operations
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/codex-agentic-workflow.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Codex / Agentic Workflow
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_9" >
+
+
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Codex Automation & Runtime
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Codex Automation & Runtime
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../runtime/overview.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Обзор runtime
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../runtime/non-interactive-and-mcp.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Non-interactive и MCP
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../runtime/automations-github.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Automations и GitHub
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../runtime/worktrees-hooks-rules.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Worktrees, hooks, rules
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_10" >
+
+
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Агентные системы
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Агентные системы
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/overview.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Архитектура
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/memory.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Память
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/session-control.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Контроль сессий
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/subagents-skills.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Subagents, Skills, AGENTS.md
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/sdk-patterns.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agents SDK patterns
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/evals-observability.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Evals и observability
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/templates.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Шаблоны агентов
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_11" >
+
+
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Playbooks
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Playbooks
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/research-loop.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Research loop
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/context7-deep-research.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Context7 deep research
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/grounded-answering.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Grounded answering
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/build-full-feature.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Build full feature
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/workflow-to-skill.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Workflow to skill
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/use-case-to-plugin.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Use case to plugin
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/eval-driven-improvement.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Eval-driven improvement
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/product-ready-pr.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Product-ready PR
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/maintain-agent-operating-docs.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agent operating docs
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/workspace-readiness-audit.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Workspace readiness audit
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/docs-update.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Обновление документации
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/code-review.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Code review
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/ai-team-design.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    AI-native команда
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_12" >
+
+
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Templates
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Templates
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../artifact-templates/prompt-packet.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Prompt template
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../artifact-templates/control-plane-files.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Control-plane templates
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../artifact-templates/runlog.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    RUNLOG template
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../artifact-templates/product-skill.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Skill template
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../artifact-templates/plugin-blueprint.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Plugin blueprint
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_13" >
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="../insights/index.html" class="md-nav__link ">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Insights
+
+
+
+  </span>
+
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_13" id="__nav_13_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Insights
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../insights/insight-card-template.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Шаблон карточки insight
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../insights/seed-insights.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Начальный backlog
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+
+
+
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+
+
+
+
+
+
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+
+        <li class="md-nav__item">
+  <a href="#task-22-eval-closure" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Task 22 eval closure
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#task-2526-behavioral-coverage" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Task 25/26 behavioral coverage
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#inputs" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Inputs
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#outputs" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Outputs
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#eval-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Eval Layers
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#track-10-guided-questions-and-dashboard" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Track 10 Guided Questions And Dashboard
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#track-10-self-verification-metrics-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Track 10 Self-Verification Metrics Loop
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#expected-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Expected Behavior
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#forbidden-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Forbidden Behavior
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#verification" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Verification
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#risks" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Risks
+
+    </span>
+  </a>
+
+</li>
+
+    </ul>
+
+</nav>
+                  </div>
+                </div>
+              </div>
+
+
+
+            <div class="md-content" data-md-component="content">
+
+              <article class="md-content__inner md-typeset">
+
+
+
+
+
+<h1 id="product-agent-os-behavioral-evals">Product-Agent OS behavioral evals<a class="headerlink" href="#product-agent-os-behavioral-evals" title="Permanent link">&para;</a></h1>
+<p>Source status: <code>official + experiment</code>  </p>
+<h2 id="task-22-eval-closure">Task 22 eval closure<a class="headerlink" href="#task-22-eval-closure" title="Permanent link">&para;</a></h2>
+<p>Task 22 eval closure treats fixture eval limits as part of the contract. Fixture eval and docs tests prove structure, expected terms, forbidden terms and route safety; synthetic regression evidence does not prove real project readiness. Real projects still need current command evidence, runtime evidence, owner review or explicit accepted gaps.</p>
+<p>Runtime packet safety is covered by deterministic checks for <code>methodology_packet</code>, <code>finish_options</code>, approval-bound high-risk actions, redaction and malformed packet fallback. The explicit runtime packet safety guard is detection-not-completion plus approval-bound high-risk routing. transcript/session replay stays local and deterministic; it catches missing expected behavior, forbidden shortcuts and privacy/no-secrets issues, not nuanced semantic quality.
+Источники: <a href="https://developers.openai.com/codex/use-cases">Codex use cases</a>, <a href="https://developers.openai.com/codex/workflows">Codex workflows</a>, <a href="https://developers.openai.com/api/docs/guides/evaluation-best-practices">OpenAI eval best practices</a>, <a href="https://developers.openai.com/api/docs/guides/agent-evals">Agent evals</a>, <a href="scenarios.html">Product-Agent OS scenarios</a>.</p>
+<p>Behavioral evals проверяют не синтаксис Markdown, а поведение route: правильный first response, отсутствие forbidden behavior, требуемые artifacts, evidence-before-completion и stop condition.</p>
+<p>Главный шаблон сейчас: <code>plugins/product-agent-os/assets/templates/evals/behavioral-workflows.json</code>. Он дополняется fixture eval через <code>python plugins\product-agent-os\scripts\run_fixture_eval.py</code> и transcript/session replay через <code>python plugins\product-agent-os\scripts\run_transcript_eval.py</code>.</p>
+<h2 id="task-2526-behavioral-coverage">Task 25/26 behavioral coverage<a class="headerlink" href="#task-2526-behavioral-coverage" title="Permanent link">&para;</a></h2>
+<p>Task 25/26 eval coverage должна проверять route behavior, а не только наличие файлов. Generated graph, cockpit, local runtime contracts, provider gates, review ledgers, mutation plans, audit packets and real-testing readiness are evidence surfaces with explicit limits.</p>
+<table>
+<thead>
+<tr>
+<th>Route or gate</th>
+<th>Expected behavior</th>
+<th>Forbidden behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>code_graph_orientation</code></td>
+<td>Use graph/cockpit as source map, label stale or generated evidence, then read source files before implementation claims.</td>
+<td>Treat <code>project-code-graph.json</code>, cockpit HTML or generated labels as source of truth.</td>
+</tr>
+<tr>
+<td><code>live_runtime_read_only</code></td>
+<td>Require governance prerequisite, disabled-by-default lifecycle, local-only auth boundary and graph-only fallback.</td>
+<td>Start a live server, expose public routes, add write endpoints or claim runtime proof from contract inspection.</td>
+</tr>
+<tr>
+<td><code>provider_retrieval_eval</code></td>
+<td>Require redaction, credentials boundary, cache deletion, budget, baseline, threshold and fallback before provider consideration.</td>
+<td>Perform provider/live external model/API calls or claim quality from proposal-only evidence.</td>
+</tr>
+<tr>
+<td><code>canonical_graph_mutation_review</code></td>
+<td>Require accepted owner decision, diff preview, dry-run mutation plan, mutation journal and rollback proof.</td>
+<td>Mutate canonical graph from LLM proposal, semantic hit or accepted_gap.</td>
+</tr>
+<tr>
+<td><code>real_testing_approval</code></td>
+<td>Split Batch 35 into approved runtime launch, browser automation smoke, provider/API pilot, canonical mutation pilot and explicit git release/PR action.</td>
+<td>Bundle approvals, run browser automation, call providers, mutate graph or stage/commit/push without separate approval.</td>
+</tr>
+<tr>
+<td><code>agent_skill_handoff_routing</code></td>
+<td>Require ownership, fresh context, expected evidence, files owned/forbidden and stop conditions before subagent or skill work.</td>
+<td>Delegate with only a generated handoff packet and no task context.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="inputs">Inputs<a class="headerlink" href="#inputs" title="Permanent link">&para;</a></h2>
+<ul>
+<li>scenario или methodology gate, который нужно проверить;</li>
+<li>user prompt или synthetic route input;</li>
+<li>workspace fixture, если route зависит от файлов;</li>
+<li>expected behavior: mode, minimum artifacts, next action, approval boundary, evidence fields;</li>
+<li>forbidden behavior: scaffold before approval, broad rewrite, unsupported ready claim, external mutation, missing source status;</li>
+<li>residual risk и reason, если кейс остается only structural.</li>
+</ul>
+<h2 id="outputs">Outputs<a class="headerlink" href="#outputs" title="Permanent link">&para;</a></h2>
+<ul>
+<li>behavioral eval case с <code>id</code>, prompt/context, expected behavior, forbidden behavior и evidence requirements;</li>
+<li>fixture eval assertion, когда поведение можно проверить через synthetic workspace;</li>
+<li>failure note для <code>RUNLOG.md</code>, если route или lifecycle skill пропускает shortcut;</li>
+<li>transcript/session eval report with <code>behavioral_case</code>, <code>expected_terms</code>, <code>forbidden_terms</code>, <code>missing_expected_terms</code>, <code>forbidden_terms_present</code> and <code>privacy_errors</code>, если поведение зависит от многошаговой сессии.</li>
+</ul>
+<h2 id="eval-layers">Eval Layers<a class="headerlink" href="#eval-layers" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>What it checks</th>
+<th>Current status</th>
+<th>Verification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Template validation</td>
+<td>JSON shape, required fields and no placeholder behavior.</td>
+<td>Implemented.</td>
+<td><code>tests/product_agent_os/test_behavioral_workflow_evals.py</code>.</td>
+</tr>
+<tr>
+<td>Route and fixture eval</td>
+<td>Synthetic workspaces return expected <code>usage_mode</code>, artifacts and expected checks.</td>
+<td>Implemented for current scenarios and T8-GX false-positive fixtures.</td>
+<td><code>python plugins\product-agent-os\scripts\run_fixture_eval.py</code>.</td>
+</tr>
+<tr>
+<td>Methodology intelligence eval</td>
+<td>Read-only methodology audit returns catalog coverage, <code>maturity_level</code>, <code>complexity_profile</code>, prioritized recommendations and no target-workspace mutation.</td>
+<td>Implemented for Track 9 foundation.</td>
+<td><code>methodology-intelligence-read-only-first</code> and <code>methodology_intelligence_contract_present</code>.</td>
+</tr>
+<tr>
+<td>Solution architecture eval</td>
+<td>Catalog, audit, templates and lifecycle skills preserve conditional architecture gates and reject unsupported architecture claims.</td>
+<td>Implemented in <code>T9-D3</code>.</td>
+<td><code>solution_architecture_contract_present</code>.</td>
+</tr>
+<tr>
+<td>Codex agentic workflow eval</td>
+<td>Catalog, audit, templates and lifecycle skills preserve source-of-truth, approval, handoff, MCP, hook, skill, plugin, automation, model/reasoning, memory and agent eval gates without silent activation.</td>
+<td>Implemented in <code>T9-D5</code>.</td>
+<td><code>codex_agentic_workflow_contract_present</code>.</td>
+</tr>
+<tr>
+<td>Frontend eval</td>
+<td>Catalog, audit, templates, lifecycle skills and fixtures preserve user-flow, component-state, Storybook/FSD, visual, accessibility, runtime, interaction and performance gates without accepting code-inspection-only UI completion.</td>
+<td>Implemented in <code>T9-D6</code>.</td>
+<td><code>frontend_contract_present</code>.</td>
+</tr>
+<tr>
+<td>Backend eval</td>
+<td>Catalog, audit, templates, lifecycle skills and fixtures preserve service boundary, runtime/failure/observability/security/rollback evidence, dependency failure policy, CI/deployment discovery, severity policy and owner reviewed test/eval/runtime evidence sufficiency without accepting package-docs-only backend completion.</td>
+<td>Implemented in <code>T9-D7</code>.</td>
+<td><code>backend_contract_present</code>.</td>
+</tr>
+<tr>
+<td>API &amp; Integrations eval</td>
+<td>Catalog, audit, templates, lifecycle skills and fixtures preserve contract source, consumer, compatibility, security, error, event, SDK and external-write evidence without accepting rendered docs, OAuth-only notes or schema-only checks as completion proof.</td>
+<td>Implemented in <code>T9-D8</code>.</td>
+<td><code>api_integrations_contract_present</code>.</td>
+</tr>
+<tr>
+<td>Database &amp; Data eval</td>
+<td>Catalog, audit, templates, lifecycle skills and fixtures preserve database inventory, schema source, migration plan, expand-contract rollout, data contract, privacy, lineage, performance, retention and production approval evidence.</td>
+<td>Implemented in <code>T9-D9</code>.</td>
+<td><code>database_data_contract_present</code>.</td>
+</tr>
+<tr>
+<td>LLM / AI / RAG eval</td>
+<td>Catalog, audit, templates, lifecycle skills, fixtures and transcript replay preserve AI behavior, baseline/current eval, prompt/model/tool/RAG/grounding, guardrail, trace, handoff, tooling, migration, lifecycle and incident evidence without accepting prompt-inspection-only quality claims.</td>
+<td>Implemented through <code>T9-D10-M36</code>.</td>
+<td><code>llm_ai_rag_contract_present</code>.</td>
+</tr>
+<tr>
+<td>Security, Privacy &amp; Compliance eval</td>
+<td>Catalog, audit, templates, lifecycle skills and fixtures preserve security-sensitive classification, threat surface, ASVS/SSDF/SAMM mapping, authorization negative tests, secrets, privacy, supply chain, SBOM/provenance, audit logging, Codex Security scan status and compliance overlay evidence without accepting implied scan or certification claims.</td>
+<td>Implemented in <code>T9-D11</code>.</td>
+<td><code>security_privacy_compliance_contract_present</code>.</td>
+</tr>
+<tr>
+<td>Delivery, Release &amp; Operations eval</td>
+<td>Catalog, audit, templates, lifecycle skills and fixtures preserve release scope, versioning, changelog, artifact manifest, current evidence, rollout, rollback, environments, CI/CD governance, SLO/observability, operations, incidents, post-release review, automation promotion, release mode policy, build-release-run boundary, platform distribution evidence, release communication, tooling selectors, DORA measurement design, release integrity handoff and owner-reviewed release evidence sufficiency.</td>
+<td>Implemented through <code>T9-D12-M40</code>.</td>
+<td><code>delivery_release_operations_contract_present</code>.</td>
+</tr>
+<tr>
+<td>Cross-domain synthesis eval</td>
+<td>Catalog, audit, reports, lifecycle skills and fixtures preserve grouped recommendations, owner domains, consumer domains, source artifact compatibility, semantic evidence sufficiency, risk-aware safe next action and false-positive routing.</td>
+<td>Implemented through <code>T9-S-M10..M14</code>.</td>
+<td><code>cross_domain_synthesis_contract_present</code>, <code>safe_next_action_risk_ordered</code>, <code>source_artifact_mapping_contract_present</code>, <code>cross_domain_false_positive_guards_present</code>.</td>
+</tr>
+<tr>
+<td>Readiness contract eval</td>
+<td><code>project-readiness.json</code> has conditional gates, statuses, evidence owner and residual risk.</td>
+<td>Implemented through T8-F.</td>
+<td><code>conditional_readiness_gates_contract_present</code>.</td>
+</tr>
+<tr>
+<td>Codex compatibility eval</td>
+<td>Plugin remains Codex-only and avoids non-Codex adapter requirements.</td>
+<td>Implemented.</td>
+<td><code>python plugins\product-agent-os\scripts\validate_codex_compatibility.py</code>.</td>
+</tr>
+<tr>
+<td>transcript/session eval runner</td>
+<td>Replay synthetic or redacted Codex session transcripts for multi-turn shortcut resistance, evidence quality and privacy/no-secrets checks.</td>
+<td>Implemented in <code>T8-GY</code> as deterministic local replay.</td>
+<td><code>python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json</code>.</td>
+</tr>
+<tr>
+<td>Guided question and status dashboard eval</td>
+<td>Typed question packets, compact first response, generated dashboard boundaries and stale-evidence language.</td>
+<td>Implemented in Track 10 Batch 5.</td>
+<td><code>question_queue_contract_present</code>, <code>status_snapshot_present</code>, <code>status_dashboard_present</code>, <code>dashboard_no_external_assets</code>, <code>dashboard_not_source_of_truth</code>, <code>stale_evidence_no_success_claim</code>.</td>
+</tr>
+<tr>
+<td>Self-verification metrics loop eval</td>
+<td><code>agent_skill_metrics_loop</code> target registry, trace intake, dataset quality, grader/judge calibration, cadence recommendation, scorecard ledger, report safety, staged modernization candidates and approval boundary.</td>
+<td>Implemented through Track 10 Task 24 Batch 12.</td>
+<td><code>agent_skill_metrics_loop_contract_present</code>, <code>metrics_report_redacted</code>, <code>trace_normalization_contract_present</code>, <code>judge_calibration_gate_present</code>, <code>scorecard_ledger_contract_present</code>, <code>metrics_loop_runtime_route_contract_present</code>, <code>metrics_loop_lifecycle_contract_present</code>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="track-10-guided-questions-and-dashboard">Track 10 Guided Questions And Dashboard<a class="headerlink" href="#track-10-guided-questions-and-dashboard" title="Permanent link">&para;</a></h2>
+<p>Track 10 adds behavioral cases for <code>guided-question-smallest-blocking-question</code>, <code>guided-question-no-broad-methodology-interview</code>, <code>status-dashboard-generated-view-only</code>, <code>status-dashboard-stale-evidence-no-success-claim</code>, and <code>runtime-first-response-no-question-dump</code>.</p>
+<p>Expected behavior: <code>guided question protocol</code> asks the smallest blocking question only, keeps <code>one blocking question maximum</code> in the first response, leaves optional questions in the packet, and routes answers into artifacts or accepted gaps. The status dashboard is a generated view only; the dashboard is a generated view over underlying artifacts, not a source of truth. Stale evidence produces no success claim from stale evidence.</p>
+<p>Forbidden behavior: no broad methodology interview, no "ask every methodology question" loop, no full queue dump in the first response, no dashboard-as-source-of-truth, and no success claim from stale or inspection-only evidence.</p>
+<h2 id="track-10-self-verification-metrics-loop">Track 10 Self-Verification Metrics Loop<a class="headerlink" href="#track-10-self-verification-metrics-loop" title="Permanent link">&para;</a></h2>
+<p>Task 24 behavioral evals cover <code>agent_skill_metrics_loop</code> as a staged self-verification metrics loop. Expected behavior starts with a read-only target registry, trace intake, dataset quality blockers, local grader outputs, grader/judge calibration, cadence recommendation levels <code>L0</code>, <code>L1</code>, <code>L2</code> and <code>L3</code>, a scorecard ledger, <code>agent-skill-evaluation-report.html</code>, and modernization candidates that include evidence, rollback and owner-review state.</p>
+<p>The source-of-truth policy is part of the eval contract: control-plane artifacts, run records, trace/eval packets and accepted gaps are allowed evidence; generated dashboard/report HTML, memory, raw chat logs and unsupported community claims are not. Every metrics report is staged evidence only, and the report is not source of truth.</p>
+<p>Forbidden behavior includes headline-metric-only approval, raw trace leakage, uncalibrated judge approval, no self-applied updates, no rollback target, no live eval/model/API calls, no active schedules, no report/dashboard success claim, and no modernization candidate that crosses the approval boundary without explicit owner review.</p>
+<h2 id="expected-behavior">Expected Behavior<a class="headerlink" href="#expected-behavior" title="Permanent link">&para;</a></h2>
+<p>Each case should name the behavior that must appear, not only a file name.</p>
+<p>Examples:</p>
+<ul>
+<li><code>bug_rescue</code>: reproduce or isolate before fix; no fixed claim without current evidence.</li>
+<li><code>greenfield_idea</code>: select direction and first vertical slice before scaffold.</li>
+<li><code>complex_system_acceleration</code>: require integration catalog and ownership split before parallel work.</li>
+<li><code>pr_review</code>: read-only review with stage 1 spec compliance before stage 2 quality/risk.</li>
+<li><code>api_migration</code>: migration plan and contract compatibility before implementation or release.</li>
+<li><code>ai_eval_regression</code>: baseline and rerun command before prompt/model/retrieval/rubric changes.</li>
+<li><code>release_packaging</code>: release readiness before publish/tag/upload/package registry mutation.</li>
+<li><code>evidence-before-completion</code>: ready/completed/fixed/works/release claims need current evidence or explicit inspection-only gap.</li>
+<li><code>methodology-intelligence-read-only-first</code>: methodology audit must return a Delivery Map, prioritized recommendations and owner questions before any staged proposal.</li>
+<li><code>solution_architecture_contract_present</code>: architecture gates require scope, boundaries, owner, ADR/tradeoff, observability, rollback, render check and accepted-gap evidence without forcing C4 detail, architecture-as-code or Well-Architected review when not applicable.</li>
+<li><code>codex_agentic_workflow_contract_present</code>: Codex workflow gates require control plane, source of truth, read-only discovery, approval boundaries, model/reasoning policy, memory policy, fresh-context handoff, ownership split, subagent safety, MCP review, hook governance, skill promotion, plugin boundary, automation stability and agent eval workflow.</li>
+<li><code>frontend_contract_present</code>: frontend gates require user-flow acceptance, component state matrix, design-system boundary, Storybook/FSD routing, API/data state alignment, WCAG 2.2 AA target or accepted exception, browser/runtime evidence, console status, Playwright trace or accepted gap, visual evidence, interaction checks and performance budget where applicable.</li>
+<li><code>backend_contract_present</code>: backend gates require <code>backend-service-overview.md</code>, <code>backend-runtime-behavior.md</code>, runtime/failure/observability/security/rollback evidence, framework-agnostic backend policy, severity routing, CI/deployment discovery signals and owner reviewed test/eval/runtime evidence sufficiency for real project risk or an accepted gap.</li>
+<li><code>api_integrations_contract_present</code>: API gates require a source-of-truth contract, consumer map, compatibility review, security schemes, error contract, contract test matrix, event/webhook delivery evidence, generated SDK manifest, observability and <code>approval_required</code> handling for external writes. Swagger UI is not source of truth, and external writes are approval_required.</li>
+<li><code>database_data_contract_present</code>: Database &amp; Data gates require <code>database-inventory.md</code>, <code>database-dictionary.md</code>, <code>database-migration-plan.md</code>, <code>database-data-contract.md</code>, rollback/backup evidence, data classification, data quality, lineage, query performance, retention/deletion, synthetic fixtures and <code>database-production-access-approval.md</code> where applicable. A schema-only artifact is not safety proof, and production access approval_required remains explicit.</li>
+<li><code>llm_ai_rag_contract_present</code>: LLM / AI / RAG gates require AI behavior promise, baseline eval, eval rerun evidence, app-backed eval path, prompt contract, model decision record, structured output schema, tool/function/MCP contract, human approval boundary, RAG source inventory, retrieval config, grounding rubric, agent task packet, agent workflow trace, guardrail matrix, trace evidence packet, cost/latency budget, eval tooling selector, model migration policy, RAG lifecycle/privacy, AI incident workflow and reportable approval/gap/risk evidence. Prompt inspection is not enough, citations alone do not prove grounding, and live model calls or external eval systems remain approval_required.</li>
+<li><code>security_privacy_compliance_contract_present</code>: Security, Privacy &amp; Compliance gates require <code>security_sensitive_classification_present</code>, threat surface, security risk review, ASVS/SSDF/SAMM mapping, API security scheme, authorization negative tests, secrets policy, data classification, redaction lifecycle, privacy impact, external-write approval, abuse/rate-limit review, audit logging, supply-chain review, SBOM/provenance decision, CI permission review, AI security review, compliance overlay taxonomy, vulnerability response workflow, explicit Codex Security scan status and current evidence before completion. Docs-only security articles stay false positives; Codex Security scan is implied, OAuth proves API security and privacy compliance is universal are forbidden claims.</li>
+<li><code>delivery_release_operations_contract_present</code>: Delivery, Release &amp; Operations gates require release scope, SemVer/versioning, changelog/release notes, artifact manifest, release evidence before completion, rollout strategy, rollback/recovery, environment approval boundary, external release approval, CI/CD governance, observability/SLO, operations runbook, incident response, post-release review, <code>automation_manual_stability_present</code>, release mode policy, build-release-run boundary, platform distribution evidence, release communication, versioning tooling decision, GitHub environment controls, DORA measurement design, incident postmortem learning, observability on-call tooling, release integrity security handoff and owner-reviewed release evidence sufficiency. CI green means release ready, tests passed so release is ready, rollback is just revert, feature flags remove risk, GitOps is automatically safe, generated changelog is enough for users, DORA metrics prove individual performance, single observability tool is mandatory, release-ready without owner-reviewed evidence sufficiency and repeatable automation is automatically safe are forbidden claims.</li>
+<li><code>cross_domain_synthesis_contract_present</code>: Cross-domain synthesis gates require <code>methodology_synthesis</code>, <code>recommendation_groups</code>, owner domains, consumer domains, <code>source_artifact_ledger</code>, semantic evidence sufficiency, risk-aware safe next action and source artifact alias/deferred decisions. Forbidden shortcuts include dumping every methodology gate, scaffolding before approval, detection becomes verification and generic quality strategy hides security approval.</li>
+<li><code>question_queue_contract_present</code>: guided question protocol exposes <code>next_blocking_question</code>, <code>question_counts</code> and <code>question_summary</code> while preserving the full typed packet outside the first response.</li>
+<li><code>status_dashboard_present</code>: status dashboard generation stages <code>.codex/product-agent-os/status.html</code> and <code>.codex/product-agent-os/status.json</code> from a <code>status_snapshot</code>; dashboard is a generated view and not the source of truth.</li>
+<li><code>false-positive fixtures</code>: backend/native work does not force FSD, simple CRUD <code>src/domain/*</code> does not force DDD, docs-light does not force a docs portal, hosted docs and DB introspection stay approval-required.</li>
+</ul>
+<h2 id="forbidden-behavior">Forbidden Behavior<a class="headerlink" href="#forbidden-behavior" title="Permanent link">&para;</a></h2>
+<p>Forbidden behavior is the part that catches shortcuts:</p>
+<ul>
+<li>scaffold before approval;</li>
+<li>broad rewrite before root cause;</li>
+<li>parallel work without ownership split;</li>
+<li>review verdict without spec-compliance stage;</li>
+<li>compatibility claim without contract check evidence;</li>
+<li>quality claim for AI/RAG without baseline or rerun;</li>
+<li>CI health claim from stale logs;</li>
+<li>release claim without build/test/docs evidence;</li>
+<li>methodology recommendation that writes target files, enables hooks, creates automation or mutates external systems before approval;</li>
+<li>Codex workflow recommendation that treats memory as source of truth, subagents as automatically faster, MCP as safe by default, hooks as harmless, Agents SDK as the Codex runtime layer, or repeated workflows as immediately automation-ready;</li>
+<li>frontend completion from code inspection only, Storybook-only evidence, desktop-only screenshot, automated accessibility addon output alone, mandatory FSD claim, or lab Web Vitals as guaranteed production UX;</li>
+<li>API completion from Swagger UI/rendered docs, schema validation alone, OAuth-only security notes, universal GraphQL/gRPC/event defaults, or external writes without <code>approval_required</code>;</li>
+<li>database completion from schema-only files, ORM introspection, generated ERD/dbdocs, unapplied migration scripts, "down migration exists" rollback claims, backup-exists claims without restore evidence, unsafe production data access, destructive migration without owner approval, or treating runtime pipeline/RAG lineage as verified when it is only <code>present_unverified</code>;</li>
+<li>AI/RAG completion from prompt inspection, stale eval output, citations-only grounding, schema-only tool safety, automatic model-upgrade quality claims, or missing current baseline/current eval evidence;</li>
+<li>security/privacy/compliance completion from security review after coding, no-secrets-in-code, ASVS/OWASP name-dropping, one-time SBOM, implied Codex Security scan, OAuth-only security notes, universal privacy compliance, docs-only security article or compliance certification claim without legal/compliance owner;</li>
+<li>delivery/release/operations completion from CI green, local test evidence alone, generated changelog, feature flag file, GitOps file, deploy manifest or repeatable script without release evidence, artifact manifest, rollout, rollback, owner review, approval boundary and automation manual stability evidence where applicable;</li>
+<li>source-backed OpenAI/Codex claim without Source status or registry support;</li>
+<li>external write, remote CI mutation, publish, tag, upload or package-registry action without approval.</li>
+<li>full question queue dump in first response, broad methodology interview, dashboard as source of truth, or ready/completed/success claim from stale evidence.</li>
+</ul>
+<h2 id="verification">Verification<a class="headerlink" href="#verification" title="Permanent link">&para;</a></h2>
+<p>Run focused checks after changing behavioral cases:</p>
+<div class="highlight"><pre><span></span><code><span class="n">python</span> <span class="n">-m</span> <span class="n">unittest</span> <span class="n">tests</span><span class="p">.</span><span class="n">product_agent_os</span><span class="p">.</span><span class="n">test_behavioral_workflow_evals</span> <span class="n">tests</span><span class="p">.</span><span class="n">product_agent_os</span><span class="p">.</span><span class="n">test_fixture_eval_runner</span> <span class="n">-v</span>
+<span class="n">python</span> <span class="n">plugins</span><span class="p">\</span><span class="n">product-agent-os</span><span class="p">\</span><span class="n">scripts</span><span class="p">\</span><span class="n">run_fixture_eval</span><span class="p">.</span><span class="n">py</span>
+<span class="n">python</span> <span class="n">plugins</span><span class="p">\</span><span class="n">product-agent-os</span><span class="p">\</span><span class="n">scripts</span><span class="p">\</span><span class="n">run_transcript_eval</span><span class="p">.</span><span class="n">py</span> <span class="n">plugins</span><span class="p">\</span><span class="n">product-agent-os</span><span class="p">\</span><span class="n">assets</span><span class="p">\</span><span class="n">eval-fixtures</span><span class="p">\</span><span class="n">transcripts</span><span class="p">\</span><span class="n">product-agent-os-synthetic-sessions</span><span class="p">.</span><span class="n">json</span>
+</code></pre></div>
+<p>Run full checks after plugin templates, fixture eval or route logic changes:</p>
+<div class="highlight"><pre><span></span><code><span class="n">python</span> <span class="n">-m</span> <span class="n">unittest</span> <span class="n">discover</span> <span class="n">-s</span> <span class="n">tests</span> <span class="n">-p</span> <span class="s2">&quot;test_*.py&quot;</span> <span class="n">-v</span>
+<span class="n">python</span> <span class="n">plugins</span><span class="p">\</span><span class="n">product-agent-os</span><span class="p">\</span><span class="n">scripts</span><span class="p">\</span><span class="n">validate_codex_compatibility</span><span class="p">.</span><span class="n">py</span>
+<span class="n">python</span> <span class="n">tools</span><span class="p">\</span><span class="n">check_docs</span><span class="p">.</span><span class="n">py</span>
+</code></pre></div>
+<p>Use strict MkDocs when docs navigation, Mermaid, Markdown extensions or MkDocs config change.</p>
+<h2 id="risks">Risks<a class="headerlink" href="#risks" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Fixture eval proves expected structure and route outputs, not deep semantic quality of a real product decision.</li>
+<li>T8-GX false-positive fixtures cover selected synthetic layouts; unusual real project layouts still need owner review.</li>
+<li>Behavioral eval cases can become too broad; keep each case focused on one shortcut or route contract.</li>
+<li>transcript/session eval runner is deterministic and local; it catches missing terms, forbidden shortcuts and unsafe transcript content, but it is not an LLM semantic judge.</li>
+<li>LLM-as-judge evals need calibration and failure examples before they can be trusted for release claims.</li>
+</ul>
+<p>Next artifact: use <a href="scenarios.html">Scenarios</a> to choose the route and <a href="codex-compatibility.html">Codex compatibility</a> to confirm package scope.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </article>
+            </div>
+
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  К началу
+</button>
+
+      </main>
+
+        <footer class="md-footer">
+
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+
+
+</div>
+
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+
+
+
+
+
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.expand", "navigation.indexes", "navigation.top", "search.highlight", "search.suggest", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
+
+
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+
+
+  </body>
+</html>

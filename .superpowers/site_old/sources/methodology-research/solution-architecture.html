@@ -1,0 +1,4234 @@
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+
+        <meta name="description" content="Russian knowledge base for advanced OpenAI Codex and agentic workflows.">
+
+
+
+
+
+
+
+
+
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+
+
+
+        <title>Solution Architecture Methodology Research - OpenAI Codex Knowledge Base</title>
+
+
+
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+
+
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+
+
+
+
+
+
+
+
+
+
+
+
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+
+
+
+      <link rel="stylesheet" href="../../assets/stylesheets/extra.css">
+
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+
+
+
+
+
+  </head>
+
+
+
+
+
+
+
+
+
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="deep-orange">
+
+
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+
+
+        <a href="#solution-architecture-methodology-research" class="md-skip">
+          Перейти к содержанию
+        </a>
+
+    </div>
+    <div data-md-component="announce">
+
+    </div>
+
+
+
+
+
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href="../../index.html" title="OpenAI Codex Knowledge Base" class="md-header__button md-logo" aria-label="OpenAI Codex Knowledge Base" data-md-component="logo">
+
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OpenAI Codex Knowledge Base
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+
+              Solution Architecture Methodology Research
+
+          </span>
+        </div>
+      </div>
+    </div>
+
+
+        <form class="md-header__option" data-md-component="palette">
+
+
+
+
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="deep-orange"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+
+
+</form>
+
+
+
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+
+
+
+
+
+        <label class="md-header__button md-icon" for="__search">
+
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Поиск" placeholder="Поиск" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Поиск">
+
+        <button type="reset" class="md-search__icon md-icon" title="Очистить" aria-label="Очистить" tabindex="-1">
+
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Инициализация поиска
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+  </nav>
+
+</header>
+
+    <div class="md-container" data-md-component="container">
+
+
+
+
+
+
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+
+
+
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="OpenAI Codex Knowledge Base" class="md-nav__button md-logo" aria-label="OpenAI Codex Knowledge Base" data-md-component="logo">
+
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    OpenAI Codex Knowledge Base
+  </label>
+
+  <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../index.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Главная
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="../../diagrams/index.html" class="md-nav__link ">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Диаграммы
+
+
+
+  </span>
+
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Диаграммы
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../diagrams/architecture.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Архитектура проекта
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../diagrams/product-delivery-lifecycle.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Product-Agent Delivery Lifecycle
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../diagrams/agent-team-and-skills.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Команда агентов и skills
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../diagrams/runtime-decision-map.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Runtime decision map
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../diagrams/skill-lifecycle.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Skill lifecycle
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../diagrams/context-memory-verification.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Context, memory, verification
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+
+
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Источники
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Источники
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../registry.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Реестр источников
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../context7-research.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Анализ Context7
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../source-card-template.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Шаблон карточки источника
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+
+
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Codex
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Codex
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../codex/overview.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Обзор
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../codex/surfaces.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Поверхности работы
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../codex/configuration.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Конфигурация и расширяемость
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../codex/security.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Безопасность и approvals
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../codex/workflows.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Рабочие процессы
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../codex/use-cases-deep-analysis.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Deep analysis of use cases
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+
+
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Prompt & Context Engineering
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Prompt & Context Engineering
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../prompting/overview.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Обзор
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../prompting/question-design.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Проектирование вопросов
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../prompting/context-engineering.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Context engineering
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../prompting/anti-hallucination.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Контроль галлюцинаций
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+
+
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Product-Agent Workflows
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Product-Agent Workflows
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent/overview.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Обзор
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent/lifecycle.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Product lifecycle
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent/roles.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Роли агентной команды
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent/control-plane.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Control-plane files
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent/product-agent-os-plugin-spec.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Product-Agent OS plugin spec
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="../../product-agent-os/index.html" class="md-nav__link ">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Product-Agent OS plugin
+
+
+
+  </span>
+
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_7" id="__nav_7_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Product-Agent OS plugin
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/project-code-graph.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Project Code Graph
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/live-runtime-governance.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Live Runtime Governance
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/approval-bound-real-testing.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Approval-Bound Real Testing
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/agent-skill-modernization-loop.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agent-Skill Modernization Loop
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/cli-reference.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    CLI Reference
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/artifact-contracts.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Artifact Contracts
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/packaging-and-closure.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Packaging And Closure
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/technical.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Технические особенности и установка
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/development-standards.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Engineering standards layer
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/methodology-intelligence.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Methodology intelligence
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/scenarios.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Сценарии и usage modes
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/behavioral-evals.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Behavioral evals
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/codex-compatibility.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Codex compatibility
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/architecture.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Диаграммы и принципы работы
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="../../methodologies/index.html" class="md-nav__link ">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Methodologies for Large Projects
+
+
+
+  </span>
+
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Methodologies for Large Projects
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/business-product.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Business & Product
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/requirements-domain.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Requirements & Domain
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/solution-architecture.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Solution Architecture
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/frontend.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Frontend
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/backend.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Backend
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/api-integrations.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    API & Integrations
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/database-data.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Database & Data
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/llm-ai-rag.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    LLM / AI / RAG
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/quality-testing-evals.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Quality, Testing & Evals
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/security-privacy-compliance.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Security, Privacy & Compliance
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/delivery-release-operations.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Delivery, Release & Operations
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/codex-agentic-workflow.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Codex / Agentic Workflow
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_9" >
+
+
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Codex Automation & Runtime
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Codex Automation & Runtime
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../runtime/overview.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Обзор runtime
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../runtime/non-interactive-and-mcp.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Non-interactive и MCP
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../runtime/automations-github.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Automations и GitHub
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../runtime/worktrees-hooks-rules.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Worktrees, hooks, rules
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_10" >
+
+
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Агентные системы
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Агентные системы
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../agent-systems/overview.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Архитектура
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../agent-systems/memory.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Память
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../agent-systems/session-control.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Контроль сессий
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../agent-systems/subagents-skills.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Subagents, Skills, AGENTS.md
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../agent-systems/sdk-patterns.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agents SDK patterns
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../agent-systems/evals-observability.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Evals и observability
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../agent-systems/templates.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Шаблоны агентов
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_11" >
+
+
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Playbooks
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Playbooks
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/research-loop.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Research loop
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/context7-deep-research.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Context7 deep research
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/grounded-answering.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Grounded answering
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/build-full-feature.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Build full feature
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/workflow-to-skill.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Workflow to skill
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/use-case-to-plugin.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Use case to plugin
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/eval-driven-improvement.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Eval-driven improvement
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/product-ready-pr.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Product-ready PR
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/maintain-agent-operating-docs.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agent operating docs
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/workspace-readiness-audit.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Workspace readiness audit
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/docs-update.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Обновление документации
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/code-review.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Code review
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/ai-team-design.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    AI-native команда
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_12" >
+
+
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Templates
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Templates
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../artifact-templates/prompt-packet.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Prompt template
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../artifact-templates/control-plane-files.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Control-plane templates
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../artifact-templates/runlog.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    RUNLOG template
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../artifact-templates/product-skill.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Skill template
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../artifact-templates/plugin-blueprint.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Plugin blueprint
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_13" >
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="../../insights/index.html" class="md-nav__link ">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Insights
+
+
+
+  </span>
+
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_13" id="__nav_13_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Insights
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../insights/insight-card-template.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Шаблон карточки insight
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../insights/seed-insights.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Начальный backlog
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+
+
+
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+
+
+
+
+
+
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+
+        <li class="md-nav__item">
+  <a href="#scope" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Scope
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#supported-facts" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Supported facts
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#assumptions" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Assumptions
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#unsupported-claims-not-adopted" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Unsupported claims not adopted
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#methodologies" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Methodologies
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#documentation-artifacts-and-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Documentation artifacts and standards
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#project-application-instructions" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Project application instructions
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#product-agent-os-candidate-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Product-Agent OS candidate rules
+
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Product-Agent OS candidate rules">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#discovery-signals" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Discovery signals
+
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#readiness-gates" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Readiness gates
+
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#candidate-templates" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Candidate templates
+
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#candidate-eval-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Candidate eval fields
+
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#failure-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Failure modes
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#open-questions-for-future-research" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Open questions for future research
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#sources" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Sources
+
+    </span>
+  </a>
+
+</li>
+
+    </ul>
+
+</nav>
+                  </div>
+                </div>
+              </div>
+
+
+
+            <div class="md-content" data-md-component="content">
+
+              <article class="md-content__inner md-typeset">
+
+
+
+
+
+<h1 id="solution-architecture-methodology-research">Solution Architecture Methodology Research<a class="headerlink" href="#solution-architecture-methodology-research" title="Permanent link">&para;</a></h1>
+<p>Source status: <code>official + verified methodology + local implementation evidence + tool-assisted</code></p>
+<p>Research date: <code>2026-05-24</code></p>
+<p>Target methodology page: <a href="../../methodologies/solution-architecture.html">../../methodologies/solution-architecture.md</a></p>
+<p>Target Product-Agent OS behavior: make architecture a reviewable, source-backed and verifiable artifact that maps requirements, domain boundaries, quality attributes, public contracts, data ownership, security boundaries, runtime topology, decisions, risks and rollback before implementation changes system structure.</p>
+<h2 id="scope">Scope<a class="headerlink" href="#scope" title="Permanent link">&para;</a></h2>
+<p>This dossier covers solution architecture for large software projects: system context, containers/services, components, code-level detail when useful, quality attributes, tradeoffs, architecture decisions, contracts, data ownership, trust boundaries, runtime/deployment topology, observability, migration and architecture governance.</p>
+<p>It does not mandate enterprise architecture frameworks, a specific cloud provider, UML, C4, Structurizr, Mermaid, arc42, microservices, DDD or ADRs for every change. These practices are conditional and should scale with system complexity, public contract risk, data/security impact, team count, deployment risk and long-lived maintainability needs.</p>
+<h2 id="supported-facts">Supported facts<a class="headerlink" href="#supported-facts" title="Permanent link">&para;</a></h2>
+<ul>
+<li>The C4 model defines hierarchical abstractions for software architecture: software systems, containers, components and code. It also defines hierarchical diagrams: system context, container, component and code, plus supporting system landscape, dynamic and deployment diagrams.</li>
+<li>The C4 model is notation independent and tooling independent. This supports Mermaid, Structurizr DSL, PlantUML or other project-appropriate tools as long as the architecture view is understandable and maintained.</li>
+<li>C4 can be combined with arc42: system context aligns with Context and Scope, container with Building Block View level 1, component with level 2 and code with level 3.</li>
+<li>arc42 provides an open-source, pragmatic template for documenting and communicating software and system architectures. It is process-agnostic, technology-agnostic and suited to lean/agile approaches.</li>
+<li>ISO/IEC/IEEE 42010:2022 specifies requirements for the structure and expression of architecture descriptions. It distinguishes architecture from the architecture description that expresses it, covers frameworks/languages/viewpoints/model kinds, and does not prescribe a specific creation process, notation, tool or recording format.</li>
+<li>SEI's Architecture Tradeoff Analysis Method (ATAM) is a structured technique for understanding tradeoffs in software-intensive system architectures. It evaluates architecture fitness against competing quality attributes such as modifiability, security, performance and availability.</li>
+<li>SEI ATAM guidance explicitly notes that quality attributes interact and improving one can worsen another, so architecture decisions need tradeoff analysis rather than one-dimensional optimization.</li>
+<li>MADR defines an Architectural Decision as a justified software design choice that addresses an architecturally significant functional or non-functional requirement, and an ADR as the record that documents the decision and rationale.</li>
+<li>Structurizr DSL is a text-based domain-specific language for defining software architecture models based on the C4 model. The Structurizr documentation includes Markdown/AsciiDoc documentation and ADR support.</li>
+<li>Mermaid provides text-based diagram syntax for many diagram types and can live inside Markdown documentation. Its own documentation warns that syntax issues can break diagrams, so render/build checks are part of evidence.</li>
+<li>Thoughtworks describes architecture fitness functions as objective tests or metrics that measure whether architecture is aligned with architectural goals and can provide continuous feedback against architectural drift.</li>
+<li>AWS Well-Architected Framework defines six pillars: operational excellence, security, reliability, performance efficiency, cost optimization and sustainability. It also states that architecture tradeoffs are made based on business context.</li>
+<li>Azure Well-Architected Framework is a set of quality-driven tenets, architectural decision points and review tools for workloads, with pillars including reliability, security, cost optimization, operational excellence and performance efficiency.</li>
+<li>OpenTelemetry is a vendor-neutral observability framework for generating, collecting and exporting telemetry data such as traces, metrics and logs; this is useful as runtime evidence for architecture claims.</li>
+<li>The local Product-Agent OS implementation already has <code>architecture-overview.md</code>, <code>adr.md</code>, <code>architecture_boundary</code>, <code>bounded_context_architecture_boundary_trace</code>, docs-as-code routing and readiness statuses for architecture-related gates.</li>
+</ul>
+<h2 id="assumptions">Assumptions<a class="headerlink" href="#assumptions" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Solution architecture should be a decision and verification surface, not a decorative diagram pack.</li>
+<li>For large projects, the minimum useful architecture artifact is an <code>architecture-overview.md</code> that names system purpose, users, external systems, trust boundaries, containers/services, data stores, quality attributes, risks, owners and verification route.</li>
+<li>Context and container views are usually the default minimum for complex systems. Component and code views should be added only where they reduce delivery or review risk.</li>
+<li>Every implementation slice should name the architecture boundary it touches and what remains out of scope.</li>
+<li>Architecture decisions should be captured only when they are significant: public contract, boundary, data ownership, security model, runtime topology, migration, technology choice, quality attribute or rollback impact.</li>
+<li>Quality attributes should be expressed as scenarios or measurable expectations, not vague "scalable/secure/fast" labels.</li>
+<li>Architecture-as-code should be preferred when diagrams must survive review, diff, build and CI, but teams can record an accepted gap for docs-light or early prototype work.</li>
+<li>Cloud well-architected frameworks are useful quality checklists, not vendor-neutral architecture law. Use them conditionally when the target workload is cloud-hosted or when the pillars help structure review.</li>
+<li>AI-generated architecture should remain <code>present_unverified</code> until checked against repository evidence, primary sources and owner review.</li>
+</ul>
+<h2 id="unsupported-claims-not-adopted">Unsupported claims not adopted<a class="headerlink" href="#unsupported-claims-not-adopted" title="Permanent link">&para;</a></h2>
+<ul>
+<li>"Solution architecture is a role title." Product-Agent OS treats it as a reviewable artifact and decision workflow.</li>
+<li>"One diagram is enough for a large system." Large systems need views selected by stakeholder concerns and risk.</li>
+<li>"C4 code-level diagrams are always required." Code views are optional and only useful when they add value beyond source navigation.</li>
+<li>"arc42 is a process." arc42 is documentation and communication structure, not a required delivery process.</li>
+<li>"ADR for every small decision." ADRs should capture architecturally significant decisions, not noise.</li>
+<li>"A rendered diagram proves architecture correctness." Render proves syntax/display only; correctness needs source evidence, owner review, tests, contracts or runtime evidence.</li>
+<li>"Well-Architected pillars mean a cloud vendor must be adopted." Pillars are review heuristics and should not imply provider lock-in.</li>
+<li>"Architecture can be inferred from directory names." Directory structure is a clue, not verified architecture compliance.</li>
+<li>"Architecture fitness functions replace review." Fitness functions provide continuous signals; tradeoff review and owner judgment still matter.</li>
+</ul>
+<h2 id="methodologies">Methodologies<a class="headerlink" href="#methodologies" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Methodology</th>
+<th>When to apply</th>
+<th>Project-level behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ISO 42010-style architecture description</td>
+<td>Architecture must serve multiple stakeholders and concerns</td>
+<td>Identify stakeholders, concerns, viewpoints, model kinds and conformance evidence.</td>
+</tr>
+<tr>
+<td>C4 model</td>
+<td>Teams need shared architecture views at different levels</td>
+<td>System context, container, component and optional code views; supporting dynamic/deployment views when useful.</td>
+</tr>
+<tr>
+<td>arc42 architecture documentation</td>
+<td>Architecture needs structured communication</td>
+<td>Goals, constraints, context, solution strategy, building blocks, runtime, deployment, cross-cutting concepts, decisions, quality and risks.</td>
+</tr>
+<tr>
+<td>ADR / MADR</td>
+<td>Architecturally significant decision appears</td>
+<td>Record context, decision drivers, considered options, selected decision, consequences, verification and rollback.</td>
+</tr>
+<tr>
+<td>ATAM-style tradeoff analysis</td>
+<td>Quality attributes compete or risk is high</td>
+<td>Analyze business drivers, quality attributes, scenarios, risks, sensitivity points and tradeoffs.</td>
+</tr>
+<tr>
+<td>Quality attribute scenarios</td>
+<td>Non-functional needs affect architecture</td>
+<td>Convert performance, availability, security, privacy, maintainability, cost and operability into measurable scenarios.</td>
+</tr>
+<tr>
+<td>Architecture fitness functions</td>
+<td>Architecture drift can be measured</td>
+<td>Add automated or repeatable checks for dependency rules, contracts, observability, security, performance, cost or docs freshness.</td>
+</tr>
+<tr>
+<td>Architecture-as-code</td>
+<td>Diagrams must be reviewed and maintained</td>
+<td>Use Mermaid, Structurizr DSL, PlantUML or equivalent checked-in text formats with render/validate checks.</td>
+</tr>
+<tr>
+<td>Well-Architected review</td>
+<td>Cloud/workload production readiness matters</td>
+<td>Review reliability, security, cost, operations, performance and sustainability/provider-specific concerns as applicable.</td>
+</tr>
+<tr>
+<td>Dependency boundary governance</td>
+<td>Monorepo, modular app, services or parallel agents can erode boundaries</td>
+<td>Define allowed imports/calls, shared packages, ownership and forbidden dependencies.</td>
+</tr>
+<tr>
+<td>Public contract architecture</td>
+<td>APIs, events, SDKs or generated clients exist</td>
+<td>Map boundaries to OpenAPI/AsyncAPI/contracts, consumers, versioning and compatibility.</td>
+</tr>
+<tr>
+<td>Data ownership architecture</td>
+<td>Persistent data, events, analytics or PII exists</td>
+<td>Map data stores, owners, schemas, retention, deletion, migration and privacy classifications.</td>
+</tr>
+<tr>
+<td>Trust boundary architecture</td>
+<td>Sensitive data, auth, external writes or untrusted input exists</td>
+<td>Map actors, assets, trust boundaries, entry points, controls and residual security risk.</td>
+</tr>
+<tr>
+<td>Runtime/deployment architecture</td>
+<td>System has multiple deployable units or environments</td>
+<td>Map environments, deployment units, queues, storage, scaling, probes, observability and rollback.</td>
+</tr>
+<tr>
+<td>Evolutionary architecture</td>
+<td>Architecture must change incrementally</td>
+<td>Plan migration slices, compatibility windows, strangler paths, fitness checks and rollback/cleanup triggers.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="documentation-artifacts-and-standards">Documentation artifacts and standards<a class="headerlink" href="#documentation-artifacts-and-standards" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th>Purpose</th>
+<th>Candidate source/tool</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>architecture-overview.md</code></td>
+<td>System purpose, boundaries, dependencies, quality attributes, risks and verification.</td>
+<td>C4, arc42, Product-Agent OS template</td>
+</tr>
+<tr>
+<td>Architecture description index</td>
+<td>Entry point that links views, decisions, contracts, risks and owner map.</td>
+<td>ISO 42010-inspired docs index</td>
+</tr>
+<tr>
+<td>C4 System Context</td>
+<td>Users, external systems, external dependencies and trust boundaries.</td>
+<td>C4, Mermaid, Structurizr DSL</td>
+</tr>
+<tr>
+<td>C4 Container view</td>
+<td>UI, services, workers, storage, queues, integrations and deployable units.</td>
+<td>C4, Structurizr DSL</td>
+</tr>
+<tr>
+<td>C4 Component view</td>
+<td>Internal structure of a risky or non-obvious container.</td>
+<td>C4, Mermaid/PlantUML</td>
+</tr>
+<tr>
+<td>Dynamic / sequence view</td>
+<td>Important runtime flows, failure paths and integration sequences.</td>
+<td>C4 dynamic view, Mermaid sequence</td>
+</tr>
+<tr>
+<td>Deployment topology</td>
+<td>Environments, nodes, runtime units, network paths, secrets/config and rollback.</td>
+<td>arc42 deployment view, platform docs</td>
+</tr>
+<tr>
+<td>Boundary responsibility map</td>
+<td>Boundary, responsibility, owner, public contract, data ownership and mapped bounded context.</td>
+<td><code>architecture-overview.md</code></td>
+</tr>
+<tr>
+<td>Dependency rules</td>
+<td>Allowed imports/calls, forbidden dependencies, shared package policy and enforcement.</td>
+<td>lint rules, architecture tests</td>
+</tr>
+<tr>
+<td>Integration catalog</td>
+<td>External systems, owners, auth, data exchanged, retries, idempotency, observability and failure modes.</td>
+<td>API docs, backend methodology</td>
+</tr>
+<tr>
+<td>API/event contract map</td>
+<td>Boundary -&gt; OpenAPI/AsyncAPI operation/channel/schema/version/consumer.</td>
+<td>OpenAPI, AsyncAPI</td>
+</tr>
+<tr>
+<td>Data ownership map</td>
+<td>Boundary -&gt; data store/schema/table/event/PII/retention/migration owner.</td>
+<td>Database docs/catalog</td>
+</tr>
+<tr>
+<td>Trust boundary map</td>
+<td>Actors, assets, entry points, data flows, controls and residual risk.</td>
+<td>Threat model, C4, security review</td>
+</tr>
+<tr>
+<td>Quality attribute scenarios</td>
+<td>Stimulus, environment, response, response measure and owner.</td>
+<td>ATAM, arc42 quality requirements</td>
+</tr>
+<tr>
+<td>Tradeoff record</td>
+<td>Competing qualities, options, consequences, chosen compromise and evidence.</td>
+<td>ATAM-style review, ADR</td>
+</tr>
+<tr>
+<td>ADR / decision log</td>
+<td>Significant architecture decisions and consequences.</td>
+<td>MADR, local <code>adr.md</code></td>
+</tr>
+<tr>
+<td>Architecture fitness checks</td>
+<td>Automated/repeatable checks for drift and conformance.</td>
+<td>tests, CI, lint, contract checks, evals</td>
+</tr>
+<tr>
+<td>Observability architecture</td>
+<td>Traces, metrics, logs, dashboards, alert owners and sampling/redaction gaps.</td>
+<td>OpenTelemetry, runbook</td>
+</tr>
+<tr>
+<td>Migration/evolution plan</td>
+<td>Current state, target state, compatibility, rollout, rollback and cleanup trigger.</td>
+<td>ADR, migration plan</td>
+</tr>
+<tr>
+<td>Architecture review record</td>
+<td>Review owner, evidence, unresolved risks, accepted gaps and next action.</td>
+<td>RUNLOG, review checklist</td>
+</tr>
+<tr>
+<td>Docs tooling decision</td>
+<td>Selected/rejected diagram and docs tools, commands, owners and approval needs.</td>
+<td><code>docs-tooling-decision.md</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="project-application-instructions">Project application instructions<a class="headerlink" href="#project-application-instructions" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Classify architecture impact before implementation: new boundary, service split, public API/event, data ownership, runtime topology, security model, integration, dependency rule, migration, platform choice, AI/agent route or quality attribute.</li>
+<li>Start with stakeholders and concerns: users, product owner, domain owner, service owner, security/privacy, operations, support, data owner and release owner.</li>
+<li>Define the architecture question. Avoid generic diagrams; name the decision or risk the view must answer.</li>
+<li>Write or update <code>architecture-overview.md</code> for complex systems, public contracts, data/security sensitive work, multi-service work, multi-team work or unclear ownership.</li>
+<li>Start with C4 System Context: users, external systems, external APIs, trust boundaries and major data flows.</li>
+<li>Add C4 Container view for deployable/runtime boundaries: UI, services, workers, queues, storage, integration adapters and AI/LLM components.</li>
+<li>Add Component view only for containers whose internals are risky, non-obvious or owned by multiple agents/teams.</li>
+<li>Add Code view only when source navigation is insufficient and the diagram helps review a hard design decision.</li>
+<li>For every boundary, record responsibility, owner, public contract, data ownership, runtime evidence and mapped bounded context where applicable.</li>
+<li>For every slice, name architecture boundary, files in scope, files out of scope, contract impact, data impact, runtime impact and rollback path.</li>
+<li>Use ADR/MADR when a decision affects architecture boundary, public contract, persistent data, security/privacy, quality attributes, runtime topology, migration or irreversible cost.</li>
+<li>For each ADR, record considered options and consequences. A decision without alternatives is usually an assertion, not architecture reasoning.</li>
+<li>Convert vague quality attributes into scenarios or measurable targets: latency, throughput, availability, recovery, durability, consistency, security, privacy, accessibility, maintainability, observability and cost.</li>
+<li>When quality attributes conflict, record the tradeoff. Do not hide cost/reliability/performance/security compromises in implementation details.</li>
+<li>Use architecture-as-code where the diagram must be reviewed, diffed or built. Mermaid is enough for lightweight Markdown docs; Structurizr DSL is better when a single model must produce multiple C4 views.</li>
+<li>Validate diagram syntax or explicitly record the missing render check. A stale diagram is worse than an absent one.</li>
+<li>Map public contracts to architecture: OpenAPI operations, AsyncAPI channels, SDK interfaces, generated clients, event schemas and consumer/versioning impact.</li>
+<li>Map data ownership to architecture: source of truth, read replicas, derived data, analytics, retention, deletion, migration/backfill and privacy classification.</li>
+<li>Map runtime topology to evidence: environments, deployment units, config/secrets, health checks, observability, dashboards, alerts, rollback and runbook links.</li>
+<li>Use architecture fitness functions for repeated conformance risks: dependency direction, forbidden imports, public contract drift, missing observability, security gates, cost budgets, docs freshness or eval thresholds.</li>
+<li>Record accepted gaps explicitly with owner, reason, residual risk, review date and follow-up condition.</li>
+<li>Treat AI-generated architecture as draft. Verify against repository files, source-backed standards, runtime evidence and owner review before using it for implementation.</li>
+</ol>
+<h2 id="product-agent-os-candidate-rules">Product-Agent OS candidate rules<a class="headerlink" href="#product-agent-os-candidate-rules" title="Permanent link">&para;</a></h2>
+<h3 id="discovery-signals">Discovery signals<a class="headerlink" href="#discovery-signals" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Directories: <code>docs/architecture/</code>, <code>architecture/</code>, <code>docs/adr/</code>, <code>adr/</code>, <code>docs/diagrams/</code>, <code>openapi/</code>, <code>asyncapi/</code>, <code>contracts/</code>, <code>infra/</code>, <code>deploy/</code>, <code>ops/</code>, <code>runbooks/</code></li>
+<li>Files: <code>architecture-overview.md</code>, <code>architecture.md</code>, <code>context-map.md</code>, <code>*.dsl</code>, <code>workspace.dsl</code>, <code>*.puml</code>, <code>*.mmd</code>, <code>ADR*.md</code>, <code>adr.md</code>, <code>docs-tooling-decision.md</code>, <code>integration-catalog.md</code>, <code>api-contract-review.md</code>, <code>database-dictionary.md</code>, <code>migration-plan.md</code>, <code>security-risk-review.md</code></li>
+<li>Terms: solution architecture, architecture boundary, C4, context diagram, container diagram, component diagram, deployment view, runtime view, ADR, MADR, arc42, Structurizr, Mermaid, PlantUML, quality attribute, tradeoff, fitness function, dependency rule, public contract, data ownership, trust boundary, rollback, migration, observability</li>
+<li>Risk signals: public API, generated client, event contract, persistent data, PII, auth, payments, external write, migration, multi-service, multi-team, subagent parallelism, cloud architecture, queue, worker, storage, LLM/agent orchestration, security boundary, performance/SLO, release rollback</li>
+</ul>
+<h3 id="readiness-gates">Readiness gates<a class="headerlink" href="#readiness-gates" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>Trigger</th>
+<th>Block condition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>solution_architecture_scope_present</code></td>
+<td>Complex system, multi-service, public contract, data/security or unclear ownership</td>
+<td>System purpose, stakeholders, concerns, scope or non-goals are missing.</td>
+</tr>
+<tr>
+<td><code>architecture_context_view_present</code></td>
+<td>External users/systems/trust boundaries exist</td>
+<td>Context view or equivalent external boundary map is missing.</td>
+</tr>
+<tr>
+<td><code>architecture_container_boundary_present</code></td>
+<td>Multiple deployable/runtime units exist</td>
+<td>Container/service/storage/queue/worker boundaries are not named.</td>
+</tr>
+<tr>
+<td><code>architecture_boundary_per_slice</code></td>
+<td>Any non-trivial implementation slice</td>
+<td>Slice lacks boundary, in-scope files, out-of-scope files or owner.</td>
+</tr>
+<tr>
+<td><code>boundary_responsibility_owner_present</code></td>
+<td>Boundary is added or changed</td>
+<td>Responsibility, owner, public contract or data ownership is missing.</td>
+</tr>
+<tr>
+<td><code>domain_to_architecture_trace_present</code></td>
+<td>Domain model or bounded context exists</td>
+<td>Bounded context does not map to architecture boundary or accepted gap.</td>
+</tr>
+<tr>
+<td><code>public_contract_boundary_trace_present</code></td>
+<td>API/event/SDK/generated client changes</td>
+<td>Boundary is not linked to OpenAPI/AsyncAPI/contract, consumers or versioning.</td>
+</tr>
+<tr>
+<td><code>data_ownership_boundary_present</code></td>
+<td>Persistent data, analytics, PII or migration changes</td>
+<td>Data owner, source of truth, retention, deletion or migration ownership is missing.</td>
+</tr>
+<tr>
+<td><code>trust_boundary_security_review_present</code></td>
+<td>Auth, PII, payments, external writes or untrusted input</td>
+<td>Trust boundary, entry point, control or residual risk is missing.</td>
+</tr>
+<tr>
+<td><code>quality_attribute_scenarios_present</code></td>
+<td>Performance, availability, security, privacy, maintainability, cost or operability matter</td>
+<td>Quality attributes are vague labels without measurable scenario or owner.</td>
+</tr>
+<tr>
+<td><code>tradeoff_record_for_high_impact_decision</code></td>
+<td>Quality attributes conflict or irreversible decision exists</td>
+<td>Options, consequences, selected compromise or evidence are missing.</td>
+</tr>
+<tr>
+<td><code>adr_for_architecture_decision</code></td>
+<td>Significant architecture decision</td>
+<td>ADR or accepted gap is missing.</td>
+</tr>
+<tr>
+<td><code>runtime_deployment_topology_present</code></td>
+<td>Runtime/deployment changes</td>
+<td>Environments, deployment units, config/secrets, health checks, rollback or runbook are missing.</td>
+</tr>
+<tr>
+<td><code>observability_architecture_present</code></td>
+<td>Service/runtime behavior matters</td>
+<td>Traces, metrics, logs, dashboards, alert owner or explicit observability gap is missing.</td>
+</tr>
+<tr>
+<td><code>dependency_rules_present</code></td>
+<td>Monorepo/modules/services/shared packages exist</td>
+<td>Allowed/forbidden dependencies or enforcement path is missing.</td>
+</tr>
+<tr>
+<td><code>diagram_render_check_present</code></td>
+<td>Architecture diagram is added or changed</td>
+<td>Render/build/validate check or explicit gap is missing.</td>
+</tr>
+<tr>
+<td><code>architecture_fitness_function_present</code></td>
+<td>Boundary drift or conformance risk repeats</td>
+<td>No repeatable check, lint, test, contract check, eval or owner review exists.</td>
+</tr>
+<tr>
+<td><code>migration_rollback_path_present</code></td>
+<td>Architecture migration or service split</td>
+<td>Current/target state, compatibility window, rollout, rollback or cleanup trigger is missing.</td>
+</tr>
+<tr>
+<td><code>architecture_docs_as_code_present</code></td>
+<td>Docs-as-code impact exists</td>
+<td>Text-based artifact, selected tool, owner, command or accepted gap is missing.</td>
+</tr>
+<tr>
+<td><code>architecture_owner_review_present</code></td>
+<td>High-impact architecture change</td>
+<td>Architect/service owner/domain owner review or explicit risk acceptance is missing.</td>
+</tr>
+<tr>
+<td><code>accepted_gap_recorded</code></td>
+<td>Architecture gate intentionally skipped</td>
+<td>Owner, reason, residual risk, review date and follow-up condition are missing.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="candidate-templates">Candidate templates<a class="headerlink" href="#candidate-templates" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>architecture-overview.md</code></li>
+<li><code>adr.md</code></li>
+<li><code>architecture-review-record.md</code></li>
+<li><code>boundary-responsibility-map.md</code></li>
+<li><code>quality-attribute-scenarios.md</code></li>
+<li><code>architecture-tradeoff-record.md</code></li>
+<li><code>architecture-fitness-functions.md</code></li>
+<li><code>dependency-rules.md</code></li>
+<li><code>integration-catalog.md</code></li>
+<li><code>runtime-topology.md</code></li>
+<li><code>trust-boundary-map.md</code></li>
+<li><code>architecture-docs-tooling-decision.md</code></li>
+</ul>
+<h3 id="candidate-eval-fields">Candidate eval fields<a class="headerlink" href="#candidate-eval-fields" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>solution_architecture_scope_present</code></li>
+<li><code>architecture_context_view_present</code></li>
+<li><code>architecture_container_boundary_present</code></li>
+<li><code>architecture_boundary_per_slice</code></li>
+<li><code>boundary_responsibility_owner_present</code></li>
+<li><code>quality_attribute_scenarios_present</code></li>
+<li><code>tradeoff_record_for_high_impact_decision</code></li>
+<li><code>adr_for_architecture_decision</code></li>
+<li><code>public_contract_boundary_trace_present</code></li>
+<li><code>data_ownership_boundary_present</code></li>
+<li><code>trust_boundary_security_review_present</code></li>
+<li><code>runtime_deployment_topology_present</code></li>
+<li><code>observability_architecture_present</code></li>
+<li><code>dependency_rules_present</code></li>
+<li><code>diagram_render_check_present</code></li>
+<li><code>architecture_fitness_function_present</code></li>
+<li><code>migration_rollback_path_present</code></li>
+<li><code>architecture_owner_review_present</code></li>
+</ul>
+<h2 id="failure-modes">Failure modes<a class="headerlink" href="#failure-modes" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Architecture documentation describes the system after the fact and does not influence decisions.</li>
+<li>Diagrams are decorative and not tied to requirements, decisions, owners, contracts or verification.</li>
+<li>Context view omits external systems, trust boundaries or data flows.</li>
+<li>Container view hides queues, workers, storage, batch jobs or AI/LLM components.</li>
+<li>Component/code diagrams are overused and become stale faster than source navigation.</li>
+<li>ADRs record the chosen option but omit alternatives, consequences, verification and rollback.</li>
+<li>Quality attributes remain slogans: scalable, secure, reliable, maintainable.</li>
+<li>Architecture decisions optimize one quality attribute while silently damaging another.</li>
+<li>Public contracts, generated clients or event schemas change without architecture trace.</li>
+<li>Data ownership and privacy classification stay implicit until migration/release time.</li>
+<li>Runtime topology omits config/secrets, health checks, observability, rollback or runbook links.</li>
+<li>Architecture-as-code exists but render/validate checks are never run.</li>
+<li>AI-generated architecture is accepted without checking repository evidence and owner review.</li>
+</ul>
+<h2 id="open-questions-for-future-research">Open questions for future research<a class="headerlink" href="#open-questions-for-future-research" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Should Product-Agent OS add a standalone <code>quality-attribute-scenarios.md</code> template, or keep quality attributes inside <code>architecture-overview.md</code> and ADRs?</li>
+<li>Should architecture fitness functions become part of <code>TEST.md</code>, <code>EVALS.md</code>, or a separate <code>architecture-fitness-functions.md</code> artifact?</li>
+<li>Should solution architecture gates be hard for all public-contract/data/security changes, or conditional warnings until Track 8 readiness hardening is finished?</li>
+<li>How should agent-team ownership use architecture boundaries when boundaries overlap with domain contexts and frontend feature slices?</li>
+</ul>
+<h2 id="sources">Sources<a class="headerlink" href="#sources" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://c4model.com/">C4 model</a></li>
+<li><a href="https://arc42.org/">arc42</a></li>
+<li><a href="https://www.iso.org/standard/74393.html">ISO/IEC/IEEE 42010:2022</a></li>
+<li><a href="https://www.sei.cmu.edu/library/the-architecture-tradeoff-analysis-method/">SEI: Architecture Tradeoff Analysis Method</a></li>
+<li><a href="https://adr.github.io/madr/">MADR</a></li>
+<li><a href="https://docs.structurizr.com/dsl">Structurizr DSL</a></li>
+<li><a href="https://mermaid.js.org/intro/syntax-reference.html">Mermaid syntax reference</a></li>
+<li><a href="https://www.thoughtworks.com/en-us/insights/articles/fitness-function-driven-development">Thoughtworks: Fitness function-driven development</a></li>
+<li><a href="https://docs.aws.amazon.com/wellarchitected/latest/framework/definitions.html">AWS Well-Architected Framework</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/well-architected/">Azure Well-Architected Framework</a></li>
+<li><a href="https://opentelemetry.io/docs/">OpenTelemetry Documentation</a></li>
+<li><a href="https://spec.openapis.org/oas/v3.2.0.html">OpenAPI Specification v3.2.0</a></li>
+<li><a href="https://www.asyncapi.com/docs/reference/specification/v3.1.0">AsyncAPI Specification</a></li>
+<li><a href="../context7-research.html">Context7 research</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </article>
+            </div>
+
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  К началу
+</button>
+
+      </main>
+
+        <footer class="md-footer">
+
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+
+
+</div>
+
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+
+
+
+
+
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.indexes", "navigation.top", "search.highlight", "search.suggest", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
+
+
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+
+
+  </body>
+</html>
