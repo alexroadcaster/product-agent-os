@@ -1784,6 +1784,223 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 with self.subTest(control_plane=filename, term=expected):
                     self.assertIn(expected, text)
 
+    def test_track10_task26_batch34_docs_packaging_closure_matrix_is_planned(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        plan = TRACK10_PLAN.read_text(encoding="utf-8")
+        documents = {
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+            "product_index": (PRODUCT_AGENT_OS / "index.md").read_text(encoding="utf-8"),
+            "technical": (PRODUCT_AGENT_OS / "technical.md").read_text(encoding="utf-8"),
+            "scenarios": (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8"),
+        }
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "agents": AGENTS.read_text(encoding="utf-8"),
+        }
+
+        matrix_terms = [
+            "Task 26 Batch 34",
+            "T10-LIVE-M35..M36",
+            "Batch 34 Detailed Task Matrix",
+            "B34-DOC-M01",
+            "B34-DOC-M15",
+            "docs/product-agent-os/project-code-graph.md",
+            "docs/product-agent-os/live-runtime-governance.md",
+            "docs/product-agent-os/approval-bound-real-testing.md",
+            "docs/product-agent-os/agent-skill-modernization-loop.md",
+            "docs/product-agent-os/cli-reference.md",
+            "docs/product-agent-os/artifact-contracts.md",
+            "docs/product-agent-os/packaging-and-closure.md",
+            "project_graph_sanitization.py",
+            "docs/product-agent/product-agent-os-plugin-spec.md",
+            "python -m mkdocs build --strict",
+            "site/",
+            "docs-maintainer plugin-cache gap",
+            "Mermaid external asset gap",
+            "staged evidence only",
+            "not source of truth",
+            "no live server",
+            "no browser automation",
+            "no provider/live external model/API calls",
+            "no canonical graph mutation",
+            "no git stage/commit/push/PR",
+        ]
+        for expected in matrix_terms:
+            with self.subTest(plan=expected):
+                self.assertIn(expected, plan)
+
+        backlog_terms = [
+            "Task 26 Batch 34 Planned Matrix",
+            "| `approval_required` | `T10-LIVE-M35..M36` docs packaging source registry site closure and Batch 35 handoff |",
+            "Batch 34 implements the documentation and packaging closure plan",
+            "B34-DOC-M01..M15",
+            "source docs -> registry -> docs tests -> check_docs.py -> strict MkDocs -> optional full closure",
+            "site/ must be rebuilt with the regular MkDocs site_dir",
+        ]
+        for expected in backlog_terms:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        registry_terms = [
+            "Product-Agent OS Track 10 Task 26 Batch 34 docs packaging closure matrix",
+            "T10-LIVE-M35..M36",
+            "B34-DOC-M01..M15",
+            "project-authored docs pages",
+            "site rebuild",
+            "verification_status:",
+        ]
+        for expected in registry_terms:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        docs_terms = [
+            "Task 26 Batch 34",
+            "T10-LIVE-M35..M36",
+            "Packaging, Docs, Source Registry, Closure And Batch 35 Handoff",
+            "B34-DOC-M01..M15",
+            "project-code-graph.md",
+            "live-runtime-governance.md",
+            "approval-bound-real-testing.md",
+            "agent-skill-modernization-loop.md",
+            "cli-reference.md",
+            "artifact-contracts.md",
+            "packaging-and-closure.md",
+            "site/",
+            "planned, not implemented",
+        ]
+        for document, text in documents.items():
+            for expected in docs_terms:
+                with self.subTest(document=document, term=expected):
+                    self.assertIn(expected, text)
+
+        control_terms = [
+            "Task 26 Batch 34",
+            "T10-LIVE-M35..M36",
+            "Batch 34 Detailed Task Matrix",
+            "B34-DOC-M01..M15",
+            "source docs -> registry -> docs tests -> check_docs.py -> strict MkDocs -> optional full closure",
+            "site/ must be rebuilt",
+            "docs-maintainer plugin-cache gap",
+            "Mermaid external asset gap",
+            "staged evidence only",
+            "not source of truth",
+            "no live server",
+            "no browser automation",
+            "no provider/live external model/API calls",
+            "no canonical graph mutation",
+            "no git stage/commit/push/PR",
+        ]
+        for filename, text in control_plane.items():
+            for expected in control_terms:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
+    def test_track10_task26_batch35_real_testing_execution_matrix_is_planned(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        documents = {
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+            "product_index": (PRODUCT_AGENT_OS / "index.md").read_text(encoding="utf-8"),
+            "technical": (PRODUCT_AGENT_OS / "technical.md").read_text(encoding="utf-8"),
+            "scenarios": (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8"),
+        }
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "agents": AGENTS.read_text(encoding="utf-8"),
+        }
+
+        registry_terms = [
+            "Product-Agent OS Track 10 Task 26 Batch 35 approval-bound real testing execution matrix",
+            "T10-LIVE-M37..M41",
+            "batch35_approval_bound_real_testing_execution",
+            "approved_local_runtime_launch",
+            "actual_browser_automation_smoke",
+            "approved_provider_api_pilot",
+            "approved_canonical_mutation_pilot",
+            "explicit_git_release_pr_action",
+            "live-server-run-evidence.json",
+            "browser-automation-smoke.json",
+            "provider-call-evidence.json",
+            "canonical-mutation-run.json",
+            "git-release-pr-evidence.md",
+            "verification_status:",
+        ]
+        for expected in registry_terms:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        backlog_terms = [
+            "Task 26 Batch 35 Planned Matrix",
+            "| `approval_required` | `T10-LIVE-M37..M41` approval-bound real testing execution matrix |",
+            "approved_local_runtime_launch",
+            "actual_browser_automation_smoke",
+            "approved_provider_api_pilot",
+            "approved_canonical_mutation_pilot",
+            "explicit_git_release_pr_action",
+            "starts no live server",
+            "runs no browser automation",
+            "performs no provider/live external model/API calls",
+            "performs no canonical graph mutation",
+            "performs no git stage/commit/push/PR",
+        ]
+        for expected in backlog_terms:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        docs_terms = [
+            "Task 26 Batch 35",
+            "T10-LIVE-M37..M41",
+            "Approval-Bound Real Testing Execution Matrix",
+            "planned, not implemented",
+            "approved_local_runtime_launch",
+            "actual_browser_automation_smoke",
+            "approved_provider_api_pilot",
+            "approved_canonical_mutation_pilot",
+            "explicit_git_release_pr_action",
+            "batch35_approval_bound_real_testing_execution",
+            "no live server",
+            "no browser automation",
+            "no provider/live external model/API calls",
+            "no canonical graph mutation",
+            "no git stage/commit/push/PR",
+        ]
+        for document, text in documents.items():
+            for expected in docs_terms:
+                with self.subTest(document=document, term=expected):
+                    self.assertIn(expected, text)
+
+        control_terms = [
+            "Task 26 Batch 35",
+            "T10-LIVE-M37..M41",
+            "Approval-Bound Real Testing Execution Matrix",
+            "batch35_approval_bound_real_testing_execution",
+            "approved_local_runtime_launch",
+            "actual_browser_automation_smoke",
+            "approved_provider_api_pilot",
+            "approved_canonical_mutation_pilot",
+            "explicit_git_release_pr_action",
+            "no live server",
+            "no browser automation",
+            "no provider/live external model/API calls",
+            "no canonical graph mutation",
+            "no git stage/commit/push/PR",
+        ]
+        for filename, text in control_plane.items():
+            for expected in control_terms:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
     def test_track10_task25_batch20_local_backend_gate_is_synced(self):
         registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
         backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
