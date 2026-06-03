@@ -29,6 +29,21 @@ python tools/check_docs.py
 python -m mkdocs build --strict
 ```
 
+## Batch 34 closure order
+
+Для Product-Agent OS docs closure используйте порядок: source docs -> registry -> docs tests -> `check_docs.py` -> strict MkDocs -> optional full closure. Этот порядок нужен, чтобы source-backed claims, navigation, generated site и final package evidence не расходились.
+
+| Step | Что проверить |
+| --- | --- |
+| Source docs | Обновлены только затронутые pages, каждая non-index page имеет `Source status:`. |
+| Registry | Новые или измененные source-backed claims отражены в `docs/sources/registry.md`. |
+| Docs tests | Focused tests покрывают новые required pages, route terms or structure rules. |
+| `check_docs.py` | Structure checks pass before claiming documentation closure. |
+| Strict MkDocs | Run when nav, MkDocs config, Mermaid, Markdown extensions or generated site may change. |
+| Optional full closure | Full unittest/fixture/transcript/compatibility/diff checks only when plugin contracts or route logic changed. |
+
+Docs closure does not launch a live server, run browser automation, call providers, mutate canonical graph, or perform git stage/commit/push/PR. Rebuild `site/` only in the dedicated site/nav slice or when the user explicitly asks for generated HTML output.
+
 ## Prompt
 
 ```text
@@ -54,4 +69,3 @@ Verification:
 - что устарело;
 - что добавлено;
 - команды проверки и их результат.
-

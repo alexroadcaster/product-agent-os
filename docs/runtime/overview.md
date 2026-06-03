@@ -15,6 +15,16 @@ Source status: `official + experiment`
 | Codex MCP | Agents SDK orchestrates Codex as tool | Tool boundary and approval policy |
 | Automations | Stable recurring workflows | Automating before workflow is reliable |
 
+## Product-Agent OS runtime decision matrix
+
+| Surface | Использовать когда | Разрешенный режим | Approval boundary |
+| --- | --- | --- | --- |
+| Static graph/cockpit | Нужно ориентировать agent team, review или docs update по workspace topology. | Read-only scan, staged `.codex/product-agent-os/` artifacts, generated view labels. | Generated graph/cockpit are not source of truth and do not authorize implementation claims. |
+| Disabled local runtime | Нужно проверить API contract, auth boundary, lifecycle and graph-only fallback. | Contract validation only; runtime stays `disabled_by_default_not_started`. | Live server launch needs a separate approved runtime packet. |
+| Browser smoke | Нужно проверить generated view labels, console/network expectations or mobile overflow. | Planned/staged QA evidence unless owner approves live runtime and browser automation. | Actual browser automation is a separate approval surface. |
+| Provider calls | Нужно оценить embedding/reranker/LLM provider value. | Stage redaction/cache/budget/baseline/threshold fallback packet. | External provider/API/model calls require explicit approval and current eval policy. |
+| External systems and git | Нужно publish, tag, PR, CI mutation, hosted docs or package action. | Draft packet, release/readiness evidence and rollback plan. | External writes and git stage/commit/push/PR are explicit-only. |
+
 ## Rule of thumb
 
 - Use App/CLI while discovering the workflow.
@@ -34,4 +44,3 @@ Every runtime should leave evidence:
 - files changed;
 - checks/evals;
 - final decision or PR link.
-

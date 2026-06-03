@@ -53,6 +53,8 @@ markdown_extensions:
           format: !!python/name:pymdownx.superfences.fence_code_format
 
 extra_javascript:
+  # Batch 34 accepted gap: Mermaid loads from CDN in this docs site.
+  # Vendor/offline asset packaging remains a follow-up before offline-only publishing.
   - https://unpkg.com/mermaid@10/dist/mermaid.min.js
 
 nav:
@@ -86,8 +88,16 @@ nav:
       - Product lifecycle: product-agent/lifecycle.md
       - Роли агентной команды: product-agent/roles.md
       - Control-plane files: product-agent/control-plane.md
+      - Product-Agent OS plugin spec: product-agent/product-agent-os-plugin-spec.md
   - Product-Agent OS plugin:
       - Обзор: product-agent-os/index.md
+      - Project Code Graph: product-agent-os/project-code-graph.md
+      - Live Runtime Governance: product-agent-os/live-runtime-governance.md
+      - Approval-Bound Real Testing: product-agent-os/approval-bound-real-testing.md
+      - Agent-Skill Modernization Loop: product-agent-os/agent-skill-modernization-loop.md
+      - CLI Reference: product-agent-os/cli-reference.md
+      - Artifact Contracts: product-agent-os/artifact-contracts.md
+      - Packaging And Closure: product-agent-os/packaging-and-closure.md
       - Технические особенности и установка: product-agent-os/technical.md
       - Engineering standards layer: product-agent-os/development-standards.md
       - Methodology intelligence: product-agent-os/methodology-intelligence.md

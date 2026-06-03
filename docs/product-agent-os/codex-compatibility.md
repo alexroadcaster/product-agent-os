@@ -29,6 +29,18 @@ Product-Agent OS поддерживает Codex App, CLI и IDE extension как
 - empty list of required non-Codex adapters;
 - residual risk if docs or package boundaries change without rerunning validation.
 
+## Track 10 compatibility boundaries
+
+Compatibility means the package fits Codex surfaces. It does not approve live execution, external systems or git actions.
+
+| Boundary | Compatible staged work | Requires separate explicit approval |
+| --- | --- | --- |
+| Live server | Validate disabled local runtime contract, auth policy, lifecycle controls and graph-only fallback. | Launch server, keep process running, expose network route or collect live runtime evidence. |
+| Browser automation | Stage browser smoke expectations, generated-view labels, source-boundary labels and mobile overflow checks. | Run Playwright/browser automation against a live local runtime. |
+| Provider/API calls | Stage embedding, reranker and LLM provider gate/eval packets with redaction/cache/budget policy. | Call external model/API/provider, spend tokens or store provider cache from live data. |
+| Canonical mutation | Stage review ledger, proposal diff, mutation dry-run plan, journal and rollback proof. | Apply accepted mutation to canonical graph or source-controlled state. |
+| Git actions | Prepare release/PR packet and closure evidence. | `git add`, commit, push, PR creation, tag, release or package upload. |
+
 ## Compatibility Contract
 
 | Surface | Supported scope | Boundary |

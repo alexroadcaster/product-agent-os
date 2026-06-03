@@ -3,6 +3,8 @@
 Source status: `official + experiment`  
 Источники: [Codex plugins](https://developers.openai.com/codex/plugins), [Build plugins](https://developers.openai.com/codex/plugins/build), [Agent Skills](https://developers.openai.com/codex/skills), [Subagents](https://developers.openai.com/codex/subagents), [AGENTS.md](https://developers.openai.com/codex/guides/agents-md), [Codex hooks](https://developers.openai.com/codex/hooks), [Agent approvals and security](https://developers.openai.com/codex/agent-approvals-security), [Codex with Agents SDK](https://developers.openai.com/codex/guides/agents-sdk), [Codex use cases](https://developers.openai.com/codex/use-cases), [A practical guide to building agents](https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/).
 
+Эта страница остается product/spec view. Текущие operator docs для implemented Product-Agent OS package находятся в [Product-Agent OS plugin](../product-agent-os/index.md), [Project Code Graph](../product-agent-os/project-code-graph.md), [Live Runtime Governance](../product-agent-os/live-runtime-governance.md), [CLI Reference](../product-agent-os/cli-reference.md), [Artifact Contracts](../product-agent-os/artifact-contracts.md) и [Packaging And Closure](../product-agent-os/packaging-and-closure.md). MkDocs navigation sync for these pages belongs to the Batch 34 nav/check_docs slice.
+
 ## Назначение
 
 `product-agent-os` - это production-ready Codex plugin, который превращает текущий workspace пользователя в управляемую среду реализации проекта через Codex App, CLI, IDE extension, subagents, skills, `AGENTS.md`, hooks, evals и automation candidates.

@@ -31,7 +31,15 @@ REQUIRED_PATHS = [
     DOCS / "product-agent" / "lifecycle.md",
     DOCS / "product-agent" / "roles.md",
     DOCS / "product-agent" / "control-plane.md",
+    DOCS / "product-agent" / "product-agent-os-plugin-spec.md",
     DOCS / "product-agent-os" / "index.md",
+    DOCS / "product-agent-os" / "project-code-graph.md",
+    DOCS / "product-agent-os" / "live-runtime-governance.md",
+    DOCS / "product-agent-os" / "approval-bound-real-testing.md",
+    DOCS / "product-agent-os" / "agent-skill-modernization-loop.md",
+    DOCS / "product-agent-os" / "cli-reference.md",
+    DOCS / "product-agent-os" / "artifact-contracts.md",
+    DOCS / "product-agent-os" / "packaging-and-closure.md",
     DOCS / "product-agent-os" / "technical.md",
     DOCS / "product-agent-os" / "development-standards.md",
     DOCS / "product-agent-os" / "methodology-intelligence.md",
@@ -103,6 +111,20 @@ INSIGHT_FIELDS = [
 BAD_PLACEHOLDERS = ["TBD", "TODO", "fill in", "implement later"]
 LINK_RE = re.compile(r"\]\((?!https?://|mailto:|#)([^)]+)\)")
 
+REQUIRED_NAV_PATHS = [
+    "product-agent/product-agent-os-plugin-spec.md",
+    "product-agent-os/project-code-graph.md",
+    "product-agent-os/live-runtime-governance.md",
+    "product-agent-os/approval-bound-real-testing.md",
+    "product-agent-os/agent-skill-modernization-loop.md",
+    "product-agent-os/cli-reference.md",
+    "product-agent-os/artifact-contracts.md",
+    "product-agent-os/packaging-and-closure.md",
+]
+
+MERMAID_EXTERNAL_ASSET = "https://unpkg.com/mermaid@10/dist/mermaid.min.js"
+MERMAID_ACCEPTED_GAP = "Batch 34 accepted gap: Mermaid loads from CDN"
+
 
 def fail(message: str) -> None:
     print(f"FAIL: {message}")
@@ -135,6 +157,16 @@ def check_mermaid() -> None:
     count = sum(read(path).count("```mermaid") for path in DOCS.rglob("*.md"))
     if count < 2:
         fail("expected at least two Mermaid diagrams")
+
+
+def check_mkdocs_nav() -> None:
+    config = read(ROOT / "mkdocs.yml")
+    missing = [path for path in REQUIRED_NAV_PATHS if path not in config]
+    if missing:
+        fail("mkdocs nav missing required paths: " + ", ".join(missing))
+
+    if MERMAID_EXTERNAL_ASSET in config and MERMAID_ACCEPTED_GAP not in config:
+        fail("mkdocs Mermaid external asset needs accepted gap or vendor/offline follow-up")
 
 
 def check_placeholders() -> None:
@@ -178,6 +210,7 @@ def main() -> None:
     check_required_paths()
     check_templates()
     check_mermaid()
+    check_mkdocs_nav()
     check_placeholders()
     check_internal_links()
     check_source_status()

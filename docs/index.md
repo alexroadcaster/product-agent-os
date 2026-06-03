@@ -49,6 +49,8 @@ flowchart LR
     P --> H
 ```
 
-## Результат v1
+## Текущий результат
 
-V1 не реализует runnable multi-agent систему. Он создает основу: проверяемую документационную структуру, шаблоны агентных ролей, схемы памяти и playbooks, которые можно позже превратить в код, skills или Codex automations.
+База знаний теперь содержит не только документационную основу, но и описание локального Product-Agent OS plugin: packaged skills, staged infrastructure, CLI contracts, generated project graph/cockpit, behavioral evals, compatibility checks and closure workflow.
+
+Live server launch, browser automation, provider/live external model/API calls, canonical graph mutation and git stage/commit/push/PR remain approval-bound actions. Generated graph, dashboard, cockpit, reports and readiness packets are evidence surfaces, not source of truth.

@@ -21,6 +21,20 @@ Conditional readiness gates are now part of the route model: `project-readiness.
 
 For operator-facing details, use [Scenarios](scenarios.md) for route selection, [Behavioral evals](behavioral-evals.md) for expected/forbidden behavior, and [Codex compatibility](codex-compatibility.md) for package-surface boundaries.
 
+## Track 10 graph and live boundary
+
+Track 10 добавляет к lifecycle stack generated graph, cockpit, disabled local runtime contracts, provider gates, human review, mutation dry-run, audit/observability и real-testing readiness. Эти surfaces помогают ориентироваться и проверять proposals, но не заменяют source files, owner decisions или current runtime evidence.
+
+| Layer | Primary artifact/page | Architectural rule |
+| --- | --- | --- |
+| Static graph and cockpit | [Project Code Graph](project-code-graph.md) | Graph/cockpit are generated review surfaces; source files remain canonical. |
+| Live runtime governance | [Live Runtime Governance](live-runtime-governance.md) | Runtime remains disabled-by-default, local-only and read-only until separate approval. |
+| Provider gates | [Live Runtime Governance](live-runtime-governance.md) | Embedding, reranker and LLM proposal providers stay blocked until approval/redaction/cache/budget/eval threshold are current. |
+| Human review | [Artifact Contracts](artifact-contracts.md) | Review ledger decisions are `accepted`, `rejected` or `accepted_gap`; proposal evidence is not a canonical fact. |
+| Canonical mutation | [Artifact Contracts](artifact-contracts.md) | Mutation requires accepted proposal, dry-run plan, mutation journal and rollback proof before any pilot. |
+| Audit and observability | [Live Runtime Governance](live-runtime-governance.md) | Live/provider/mutation actions must emit redacted audit and runtime evidence; unsafe cases block the route. |
+| Real testing | [Approval-Bound Real Testing](approval-bound-real-testing.md) | Browser automation, provider/API pilot, canonical mutation pilot and git release/PR action are separate Batch 35 approvals. |
+
 ## Engineering standards route
 
 ```mermaid

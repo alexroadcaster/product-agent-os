@@ -2,6 +2,20 @@
 
 Source status: `official + experiment`  
 
+## Quick start
+
+Для оператора эта страница отвечает на вопрос "какие локальные surfaces есть у plugin и где искать команду". Если нужна полная карта flags и approval boundaries, используйте [CLI Reference](cli-reference.md); если нужно понять generated outputs, используйте [Artifact Contracts](artifact-contracts.md).
+
+| Задача | Стартовая команда или страница | Boundary |
+| --- | --- | --- |
+| Проверить staged infrastructure без writes | `render_infrastructure.py <workspace> --dry-run` | Read-only plan; target workspace не меняется. |
+| Сгенерировать proposal outside target workspace | `render_infrastructure.py <workspace> --stage <stage-dir>` | Stage directory должен быть явным. |
+| Построить static graph/cockpit | [Project Code Graph](project-code-graph.md) | Generated graph/cockpit are orientation evidence only. |
+| Проверить live/runtime/provider gates | [Live Runtime Governance](live-runtime-governance.md) | No live server, no provider calls, no canonical graph mutation. |
+| Подготовить Batch 34 closure | [Packaging And Closure](packaging-and-closure.md) | Source docs -> registry -> docs tests -> `check_docs.py` -> strict MkDocs -> optional full closure. |
+
+## Implementation status archive
+
 Task 26 Batch 32 `T10-LIVE-M27..M31` implements Real Testing Readiness, Target Consent, Pilot Harness And Codex Surface Smoke through `project_graph_real_testing.py`, covering `real-testing-readiness.json`, `real-testing-targets.json`, `pilot-harness.json`, `codex-surface-smoke.json` and `real-testing-pilot-matrix.json` artifact contracts. It stages `project_graph_real_testing_readiness`, `project_graph_real_testing_targets`, `project_graph_pilot_harness`, `project_graph_codex_surface_smoke` and `project_graph_real_testing_pilot_matrix` under approval boundary `batch32_real_testing_readiness_target_consent_pilot_harness_codex_surface_smoke`, with surfaces `real_testing_readiness`, `real_project_target_selection`, `pilot_harness`, `codex_surface_smoke` and `use_case_pilot_matrix`. Batch 32 is `approval_required`, staged evidence only and not source of truth: real testing cannot start with no hidden unresolved Track 10 gates; No real project test without owner-approved target and data policy; Pilot harness remains dry-run and stage-only; dry-run pilot harness evidence covers Codex App, CLI and IDE extension smoke; Track 8 archetypes web, backend, docs, pr_review, evals, automation and AI/RAG are mapped to pilots; `provider_call_allowed: false`, `external_call_performed: false`, no live server, no provider calls, no live external model/API calls, no canonical graph mutation, and git staging/commit/push/PR remains explicit-only.
 
 Task 26 Batch 33 `T10-LIVE-M32..M34` implements Runtime Browser QA, Performance And Stabilization through `project_graph_runtime_qa.py`, covering `project-code-graph-runtime-browser-qa.json`, `project-code-graph-performance-budget.json` and `project-code-graph-stabilization-ledger.json` artifact contracts. It stages `project_graph_runtime_browser_qa`, `project_graph_performance_budget` and `project_graph_stabilization_ledger` under approval boundary `batch33_runtime_browser_qa_performance_stabilization`, with surfaces `runtime_browser_qa`, `runtime_performance_budget` and `runtime_stabilization_loop`. Batch 33 is `approval_required`, staged evidence only and not source of truth: browser smoke, console/network checks, mobile overflow checks, generated-view labels and source-boundary labels are recorded as QA evidence; budget breach disables live layer or records accepted gap; No open P0/P1 can remain before closure; `provider_call_allowed: false`, `external_call_performed: false`, no live server, no provider calls, no live external model/API calls, no canonical graph mutation, and git staging/commit/push/PR remains explicit-only.

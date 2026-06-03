@@ -1,7 +1,7 @@
 # Subagents, Skills и AGENTS.md
 
-Source status: `official`  
-Источники: [Subagent concepts](https://developers.openai.com/codex/concepts/subagents), [Subagents configuration](https://developers.openai.com/codex/subagents), [Agent Skills](https://developers.openai.com/codex/skills), [AGENTS.md](https://developers.openai.com/codex/guides/agents-md).
+Source status: `official + experiment`
+Источники: [Subagent concepts](https://developers.openai.com/codex/concepts/subagents), [Subagents configuration](https://developers.openai.com/codex/subagents), [Agent Skills](https://developers.openai.com/codex/skills), [AGENTS.md](https://developers.openai.com/codex/guides/agents-md), [Product-Agent OS plugin](../product-agent-os/index.md).
 
 ## Когда что использовать
 
@@ -33,6 +33,20 @@ Wait for all agents, then synthesize without copying raw logs.
 ```
 
 Официальный review pattern масштабируется так же: один agent на security, один на code quality, один на bugs, один на race conditions, один на test flakiness, один на maintainability. Main thread должен дождаться всех результатов и сделать consolidated summary без дублирующих findings.
+
+## Batch 31 handoff contract
+
+Product-Agent OS Batch 31 добавляет практическое правило для subagents и skills: generated `agent-skill-handoff.json` помогает routing, но не заменяет task packet. Перед параллельной работой main thread должен выдать каждому worker свежий контекст, ownership и stop condition.
+
+| Поле handoff | Что должно быть явно |
+| --- | --- |
+| Ownership | Owned files/subsystems, forbidden files and expected handoff artifact. |
+| Fresh context | Current user request, relevant project rules, source files/docs used and assumptions. |
+| Verification evidence | Commands, docs checks, evals, screenshots, logs or accepted gap expected from this worker. |
+| Stop conditions | Approval boundary, missing source, overlapping ownership, failing check or stale context. |
+| Return packet | Sources used, files touched/proposed, verification result, open risks and recommended next role. |
+
+Если ownership пересекается или expected evidence невозможно получить, используйте sequential fallback вместо parallel subagents. Для source-sensitive docs work community claims remain intake material until trust level and verification status are explicit.
 
 ## Skills
 
