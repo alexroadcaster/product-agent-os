@@ -235,6 +235,23 @@ class FixtureEvalRunnerTest(unittest.TestCase):
             results["python-app"]["expected_checks"]["project_graph_proposal_diff_no_canonical_mutation_present"]
         )
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_human_review_ledger_no_live_calls_present"])
+        self.assertTrue(
+            results["python-app"]["expected_checks"]["project_graph_canonical_mutation_dry_run_plan_present"]
+        )
+        self.assertTrue(
+            results["python-app"]["expected_checks"]["project_graph_canonical_mutation_governance_prerequisite_present"]
+        )
+        self.assertTrue(
+            results["python-app"]["expected_checks"]["project_graph_canonical_mutation_conflict_checks_present"]
+        )
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_mutation_journal_append_only_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_mutation_journal_rollback_patch_present"])
+        self.assertTrue(
+            results["python-app"]["expected_checks"]["project_graph_canonical_mutation_only_accepted_proposals_present"]
+        )
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_canonical_mutation_apply_digest_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_rollback_previous_digest_restore_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_canonical_mutation_no_live_calls_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_hybrid_retrieval_pipeline_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_hybrid_retrieval_explainable_fusion_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_hybrid_retrieval_fallback_present"])

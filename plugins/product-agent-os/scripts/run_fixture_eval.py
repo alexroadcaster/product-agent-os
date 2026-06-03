@@ -78,6 +78,19 @@ from product_agent_os.project_graph_review_ledger import (  # noqa: E402
     validate_proposal_diff_preview,
     validate_review_ledger_approval,
 )
+from product_agent_os.project_graph_canonical_mutation import (  # noqa: E402
+    MUTATED_GRAPH_TARGET,
+    MUTATION_JOURNAL_TARGET,
+    MUTATION_PLAN_TARGET,
+    ROLLBACK_PROOF_TARGET,
+    apply_accepted_mutations_to_graph,
+    build_canonical_mutation_plan,
+    build_graph_rollback_proof,
+    disable_canonical_graph_mutation,
+    validate_canonical_mutation_approval,
+    validate_canonical_mutation_plan,
+    validate_graph_rollback_proof,
+)
 from product_agent_os.project_graph_live_governance import (  # noqa: E402
     LIVE_CACHE_TARGET,
     LIVE_GOVERNANCE_TARGET,
@@ -2255,6 +2268,33 @@ def _expected_checks(
         )
         checks["project_graph_human_review_ledger_no_live_calls_present"] = (
             _project_graph_human_review_ledger_no_live_calls_present()
+        )
+        checks["project_graph_canonical_mutation_dry_run_plan_present"] = (
+            _project_graph_canonical_mutation_dry_run_plan_present()
+        )
+        checks["project_graph_canonical_mutation_governance_prerequisite_present"] = (
+            _project_graph_canonical_mutation_governance_prerequisite_present()
+        )
+        checks["project_graph_canonical_mutation_conflict_checks_present"] = (
+            _project_graph_canonical_mutation_conflict_checks_present()
+        )
+        checks["project_graph_mutation_journal_append_only_present"] = (
+            _project_graph_mutation_journal_append_only_present()
+        )
+        checks["project_graph_mutation_journal_rollback_patch_present"] = (
+            _project_graph_mutation_journal_rollback_patch_present()
+        )
+        checks["project_graph_canonical_mutation_only_accepted_proposals_present"] = (
+            _project_graph_canonical_mutation_only_accepted_proposals_present()
+        )
+        checks["project_graph_canonical_mutation_apply_digest_present"] = (
+            _project_graph_canonical_mutation_apply_digest_present()
+        )
+        checks["project_graph_rollback_previous_digest_restore_present"] = (
+            _project_graph_rollback_previous_digest_restore_present()
+        )
+        checks["project_graph_canonical_mutation_no_live_calls_present"] = (
+            _project_graph_canonical_mutation_no_live_calls_present()
         )
         checks["project_graph_hybrid_retrieval_pipeline_present"] = (
             _project_graph_hybrid_retrieval_pipeline_present()
@@ -5955,6 +5995,224 @@ def _project_graph_human_review_ledger_no_live_calls_present() -> bool:
         and "external_call_performed\": true" not in payload
         and disabled.get("rendered_artifacts", {}).get("status") == "disabled"
         and proof.get("remaining") == []
+    )
+
+
+def _project_graph_canonical_mutation_approval() -> dict[str, Any]:
+    return {
+        "explicit_approval": True,
+        "owner": "Product-Agent OS Maintainer",
+        "allowed_surfaces": [
+            "canonical_mutation_dry_run",
+            "mutation_journal",
+            "accepted_mutation_apply",
+            "rollback_engine",
+        ],
+        "mutation_policy": {
+            "dry_run_required": True,
+            "conflict_check_required": True,
+            "graph_digest_check_required": True,
+            "accepted_only": True,
+            "stage_root_only": True,
+            "review_ledger_required": True,
+            "proposal_diff_required": True,
+        },
+        "journal_policy": {
+            "append_only": True,
+            "jsonl_required": True,
+            "inverse_patch_required": True,
+        },
+        "rollback_policy": {
+            "restore_prior_digest": True,
+            "delete_generated_caches": True,
+            "stage_root_only": True,
+            "rollback_proof_required": True,
+        },
+        "data_classification": {
+            "allowed_inputs": ["reviewed_proposal_ids", "source_node_ids", "observation_ids", "owner_decisions"],
+            "forbidden_inputs": ["raw_source_bodies", "secrets", "absolute_local_paths", "private_text"],
+        },
+        "rollback_path": "delete generated Batch 30 mutation artifacts under stage root",
+        "residual_risks": ["accepted proposals can still represent incorrect semantics until rollback proof is inspected"],
+    }
+
+
+def _project_graph_canonical_mutation_plan(
+    *,
+    proposal_diff: dict[str, Any] | None = None,
+    governance_packet: dict[str, Any] | None = None,
+    approval: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    return build_canonical_mutation_plan(
+        _project_graph_sample(),
+        review_ledger=_project_graph_human_review_ledger(),
+        proposal_diff=proposal_diff or _project_graph_proposal_diff_preview(),
+        approval=approval if approval is not None else _project_graph_canonical_mutation_approval(),
+        governance_packet=governance_packet if governance_packet is not None else _project_graph_live_governance_packet(),
+    )
+
+
+def _project_graph_canonical_mutation_result() -> dict[str, Any]:
+    return apply_accepted_mutations_to_graph(_project_graph_sample(), _project_graph_canonical_mutation_plan())
+
+
+def _project_graph_rollback_proof() -> dict[str, Any]:
+    result = _project_graph_canonical_mutation_result()
+    return build_graph_rollback_proof(
+        _project_graph_sample(),
+        result.get("mutated_graph", {}),
+        result.get("journal_entries", []),
+    )
+
+
+def _project_graph_canonical_mutation_dry_run_plan_present() -> bool:
+    plan = _project_graph_canonical_mutation_plan()
+    return (
+        validate_canonical_mutation_approval(
+            _project_graph_canonical_mutation_approval(),
+            _project_graph_live_governance_packet(),
+        ).get("ok")
+        is True
+        and plan.get("artifact_kind") == "project_graph_canonical_mutation_plan"
+        and plan.get("approval_boundary") == "batch30_canonical_graph_mutation_journal_and_rollback"
+        and plan.get("source_boundary") == "reviewed_redacted_proposal_diff_and_ledger_only_no_raw_source"
+        and plan.get("status") == "ready"
+        and plan.get("write_policy") == "dry_run_only"
+        and plan.get("no_mutation_without_dry_run_plan") is True
+        and plan.get("dry_run", {}).get("status") == "passed"
+        and validate_canonical_mutation_plan(plan).get("ok") is True
+    )
+
+
+def _project_graph_canonical_mutation_governance_prerequisite_present() -> bool:
+    missing = build_canonical_mutation_plan(
+        _project_graph_sample(),
+        review_ledger=_project_graph_human_review_ledger(),
+        proposal_diff=_project_graph_proposal_diff_preview(),
+        approval=_project_graph_canonical_mutation_approval(),
+        governance_packet=None,
+    )
+    invalid_governance = dict(_project_graph_live_governance_packet())
+    invalid_governance["status"] = "blocked"
+    invalid = validate_canonical_mutation_approval(
+        _project_graph_canonical_mutation_approval(),
+        invalid_governance,
+    )
+    return (
+        missing.get("status") == "approval_required"
+        and "canonical_mutation_approval:governance_packet:missing" in missing.get("validation", {}).get("errors", [])
+        and invalid.get("ok") is False
+        and "canonical_mutation_approval:governance_packet:not_ready" in invalid.get("errors", [])
+    )
+
+
+def _project_graph_canonical_mutation_conflict_checks_present() -> bool:
+    diff = json.loads(json.dumps(_project_graph_proposal_diff_preview()))
+    added_nodes = diff.get("diff", {}).get("added_nodes", [])
+    if not added_nodes:
+        return False
+    added_nodes.append(dict(added_nodes[0]))
+    blocked = _project_graph_canonical_mutation_plan(proposal_diff=diff)
+    return (
+        blocked.get("status") == "blocked"
+        and blocked.get("dry_run", {}).get("conflict_check_required") is True
+        and any("operation:duplicate" in error for error in blocked.get("validation", {}).get("errors", []))
+    )
+
+
+def _project_graph_mutation_journal_append_only_present() -> bool:
+    result = _project_graph_canonical_mutation_result()
+    entries = result.get("journal_entries", [])
+    return (
+        result.get("artifact_kind") == "project_graph_canonical_mutation_result"
+        and result.get("status") == "ready"
+        and result.get("journal_target") == MUTATION_JOURNAL_TARGET
+        and bool(entries)
+        and all(entry.get("artifact_kind") == "project_graph_mutation_journal" for entry in entries)
+        and all(entry.get("journal_format") == "jsonl" for entry in entries)
+        and all(entry.get("append_only") is True for entry in entries)
+    )
+
+
+def _project_graph_mutation_journal_rollback_patch_present() -> bool:
+    result = _project_graph_canonical_mutation_result()
+    entries = result.get("journal_entries", [])
+    return (
+        bool(entries)
+        and all(entry.get("rollback_patch_present") is True for entry in entries)
+        and all(isinstance(entry.get("inverse_patch"), dict) for entry in entries)
+        and all(str(entry.get("graph_digest_before") or "").startswith("sha256:") for entry in entries)
+        and all(str(entry.get("graph_digest_after") or "").startswith("sha256:") for entry in entries)
+    )
+
+
+def _project_graph_canonical_mutation_only_accepted_proposals_present() -> bool:
+    plan = _project_graph_canonical_mutation_plan()
+    skipped = plan.get("skipped_review_decisions", [])
+    return (
+        plan.get("only_accepted_proposals_mutate_graph") is True
+        and plan.get("accepted_gap_remains_non_mutating") is True
+        and all(operation.get("review_decision") == "accepted" for operation in plan.get("operations", []))
+        and any(item.get("reason") == "accepted_gap_not_mutation_eligible" for item in skipped)
+        and plan.get("mutation_policy", {}).get("accepted_only") is True
+    )
+
+
+def _project_graph_canonical_mutation_apply_digest_present() -> bool:
+    plan = _project_graph_canonical_mutation_plan()
+    result = _project_graph_canonical_mutation_result()
+    comparison = plan.get("graph_digest_comparison", {})
+    return (
+        result.get("status") == "ready"
+        and result.get("canonical_graph_mutation") == "stage_root_generated_graph_copy_only"
+        and result.get("mutation_plan_required_for_apply") is True
+        and result.get("accepted_for_canonical_graph") is True
+        and str(result.get("pre_graph_digest") or "").startswith("sha256:")
+        and str(result.get("post_graph_digest") or "").startswith("sha256:")
+        and result.get("pre_graph_digest") != result.get("post_graph_digest")
+        and str(result.get("versioned_graph_digest") or "").startswith("graph-v1@sha256:")
+        and comparison.get("digest_changed") is True
+    )
+
+
+def _project_graph_rollback_previous_digest_restore_present() -> bool:
+    proof = _project_graph_rollback_proof()
+    return (
+        proof.get("artifact_kind") == "project_graph_rollback_proof"
+        and proof.get("status") == "ready"
+        and proof.get("restore_prior_digest") is True
+        and proof.get("rollback_restores_previous_graph_digest") is True
+        and proof.get("pre_graph_digest") == proof.get("restored_graph_digest")
+        and proof.get("delete_generated_caches") is True
+        and validate_graph_rollback_proof(proof).get("ok") is True
+    )
+
+
+def _project_graph_canonical_mutation_no_live_calls_present() -> bool:
+    plan = _project_graph_canonical_mutation_plan()
+    result = _project_graph_canonical_mutation_result()
+    proof = _project_graph_rollback_proof()
+    payload = json.dumps([plan, result, proof], sort_keys=True).lower()
+    with tempfile.TemporaryDirectory() as tmp:
+        stage_root = Path(tmp) / "stage"
+        for relative in [MUTATION_PLAN_TARGET, MUTATED_GRAPH_TARGET, MUTATION_JOURNAL_TARGET, ROLLBACK_PROOF_TARGET]:
+            target = stage_root / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text("generated\n", encoding="utf-8")
+        disabled = disable_canonical_graph_mutation(stage_root, workspace=FIXTURES / "project-code-graph-minimal-python")
+    deletion = disabled.get("rendered_artifacts", {}).get("deletion_proof", {})
+    return (
+        plan.get("provider_call_allowed") is False
+        and plan.get("external_call_performed") is False
+        and result.get("provider_call_allowed") is False
+        and result.get("external_call_performed") is False
+        and proof.get("provider_call_allowed") is False
+        and proof.get("external_call_performed") is False
+        and "provider_call_allowed\": true" not in payload
+        and "external_call_performed\": true" not in payload
+        and disabled.get("rendered_artifacts", {}).get("status") == "disabled"
+        and deletion.get("delete_generated_caches") is True
+        and deletion.get("remaining") == []
     )
 
 

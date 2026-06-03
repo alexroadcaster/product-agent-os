@@ -54,6 +54,10 @@ from product_agent_os.project_graph_review_ledger import (  # noqa: E402
     disable_review_ledger,
     stage_review_ledger,
 )
+from product_agent_os.project_graph_canonical_mutation import (  # noqa: E402
+    disable_canonical_graph_mutation,
+    stage_canonical_graph_mutation,
+)
 from product_agent_os.project_graph_reranker_provider import (  # noqa: E402
     disable_reranker_provider_gate,
     stage_reranker_provider_gate,
@@ -97,6 +101,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--disable-llm-proposal-provider", action="store_true", help="Delete generated Task 26 Batch 28 LLM proposal provider artifacts from --stage.")
     parser.add_argument("--build-review-ledger", action="store_true", help="Stage Task 26 Batch 29 human review ledger and proposal diff preview.")
     parser.add_argument("--disable-review-ledger", action="store_true", help="Delete generated Task 26 Batch 29 review ledger and proposal diff artifacts from --stage.")
+    parser.add_argument("--build-canonical-mutation", action="store_true", help="Stage Task 26 Batch 30 canonical graph mutation dry-run, journal and rollback artifacts.")
+    parser.add_argument("--disable-canonical-mutation", action="store_true", help="Delete generated Task 26 Batch 30 mutation artifacts and graph-derived caches from --stage.")
     parser.add_argument("--graph", help="Path to project-code-graph.json or project-code-graph.jsonl for query mode.")
     parser.add_argument("--index", help="Optional project-code-graph-search-index.json for indexed search query mode.")
     parser.add_argument("--backend", help="Optional project-code-graph-backend.json for backend query mode.")
@@ -116,6 +122,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--llm-proposal-eval", help="Generated project-code-graph-llm-proposal-eval.json for Batch 29 review mode.")
     parser.add_argument("--review-ledger-approval", help="JSON approval packet for Batch 29 review ledger mode.")
     parser.add_argument("--review-decisions", help="JSON owner decision packet for Batch 29 review ledger mode.")
+    parser.add_argument("--canonical-mutation-approval", help="JSON approval packet for Batch 30 canonical mutation mode.")
+    parser.add_argument("--review-ledger", help="Generated project-code-graph-review-ledger.json for Batch 30 mutation mode.")
+    parser.add_argument("--proposal-diff", help="Generated project-code-graph-proposal-diff.json for Batch 30 mutation mode.")
     parser.add_argument("--reranker-provider", help="Generated project-code-graph-reranker-provider.json for hybrid mode.")
     parser.add_argument("--verification-evidence", help="JSON evidence packet for --verify-extensions.")
     parser.add_argument("--node-id", help="Source node id for graph query mode.")
@@ -158,6 +167,8 @@ def main(argv: list[str] | None = None) -> int:
             and not args.disable_llm_proposal_provider
             and not args.build_review_ledger
             and not args.disable_review_ledger
+            and not args.build_canonical_mutation
+            and not args.disable_canonical_mutation
         )
         + int(bool(args.query))
         + int(bool(args.build_index))
@@ -183,6 +194,8 @@ def main(argv: list[str] | None = None) -> int:
         + int(bool(args.disable_llm_proposal_provider))
         + int(bool(args.build_review_ledger))
         + int(bool(args.disable_review_ledger))
+        + int(bool(args.build_canonical_mutation))
+        + int(bool(args.disable_canonical_mutation))
     )
     if mode_count != 1:
         return _print_error(
@@ -193,7 +206,7 @@ def main(argv: list[str] | None = None) -> int:
             "--validate-embedding-provider, --disable-embedding-provider, --validate-reranker-provider, "
             "--disable-reranker-provider, --build-hybrid-retrieval, --disable-hybrid-retrieval, "
             "--validate-llm-proposal-provider, --disable-llm-proposal-provider, --build-review-ledger, "
-            "or --disable-review-ledger",
+            "--disable-review-ledger, --build-canonical-mutation, or --disable-canonical-mutation",
             exit_code=2,
         )
 
@@ -648,6 +661,55 @@ def main(argv: list[str] | None = None) -> int:
                 raise ProjectGraphCliError("workspace is not a directory")
             try:
                 result = disable_review_ledger(Path(args.stage), workspace=workspace)
+            except ValueError as exc:
+                raise ProjectGraphCliError(str(exc)) from exc
+            print(json.dumps(_redacted_payload(result), indent=2, sort_keys=True))
+            return 0 if result.get("rendered_artifacts", {}).get("status") == "disabled" else 1
+        if args.build_canonical_mutation:
+            if not args.graph:
+                raise ProjectGraphCliError("build-canonical-mutation mode requires --graph")
+            if not args.review_ledger:
+                raise ProjectGraphCliError("build-canonical-mutation mode requires --review-ledger")
+            if not args.proposal_diff:
+                raise ProjectGraphCliError("build-canonical-mutation mode requires --proposal-diff")
+            if not args.live_governance:
+                raise ProjectGraphCliError("build-canonical-mutation mode requires --live-governance")
+            if not args.stage:
+                raise ProjectGraphCliError("build-canonical-mutation mode requires --stage")
+            workspace = Path(args.workspace).resolve()
+            if not workspace.exists():
+                raise ProjectGraphCliError("workspace does not exist")
+            if not workspace.is_dir():
+                raise ProjectGraphCliError("workspace is not a directory")
+            approval = (
+                _load_json_file(args.canonical_mutation_approval)
+                if args.canonical_mutation_approval
+                else None
+            )
+            try:
+                result = stage_canonical_graph_mutation(
+                    Path(args.graph),
+                    Path(args.review_ledger),
+                    Path(args.proposal_diff),
+                    Path(args.stage),
+                    workspace=workspace,
+                    approval=approval,
+                    governance_artifact=Path(args.live_governance),
+                )
+            except ValueError as exc:
+                raise ProjectGraphCliError(str(exc)) from exc
+            print(json.dumps(_redacted_payload(result), indent=2, sort_keys=True))
+            return 0 if result.get("rendered_artifacts", {}).get("status") == "ready" else 1
+        if args.disable_canonical_mutation:
+            if not args.stage:
+                raise ProjectGraphCliError("disable-canonical-mutation mode requires --stage")
+            workspace = Path(args.workspace).resolve()
+            if not workspace.exists():
+                raise ProjectGraphCliError("workspace does not exist")
+            if not workspace.is_dir():
+                raise ProjectGraphCliError("workspace is not a directory")
+            try:
+                result = disable_canonical_graph_mutation(Path(args.stage), workspace=workspace)
             except ValueError as exc:
                 raise ProjectGraphCliError(str(exc)) from exc
             print(json.dumps(_redacted_payload(result), indent=2, sort_keys=True))

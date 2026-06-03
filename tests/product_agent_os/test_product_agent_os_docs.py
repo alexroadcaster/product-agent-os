@@ -1284,6 +1284,125 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 with self.subTest(control_plane=filename, term=expected):
                     self.assertIn(expected, text)
 
+    def test_track10_task26_batch30_canonical_mutation_journal_and_rollback_is_synced(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        documents = {
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+            "product_index": (PRODUCT_AGENT_OS / "index.md").read_text(encoding="utf-8"),
+            "technical": (PRODUCT_AGENT_OS / "technical.md").read_text(encoding="utf-8"),
+            "scenarios": (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8"),
+        }
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "agents": AGENTS.read_text(encoding="utf-8"),
+        }
+
+        registry_terms = [
+            "Product-Agent OS Track 10 Task 26 Batch 30 canonical graph mutation journal and rollback",
+            "T10-LIVE-M19..M22",
+            "project_graph_canonical_mutation.py",
+            "canonical_graph_mutation.py",
+            "graph_rollback.py",
+            "mutation_plan.json",
+            "graph-mutation-journal.jsonl",
+            "project_graph_canonical_mutation_dry_run_plan_present",
+            "project_graph_rollback_previous_digest_restore_present",
+            "verification_status:",
+        ]
+        for expected in registry_terms:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        backlog_terms = [
+            "Task 26 Batch 30 Closure",
+            "| `done` | `T10-LIVE-M19..M22` canonical graph mutation journal and rollback |",
+            "Batch 30 explicit approval",
+            "project_graph_canonical_mutation.py",
+            "mutation_plan.json",
+            "graph-mutation-journal.jsonl",
+            "No mutation without dry-run plan",
+            "Every mutation has rollback patch",
+            "Only accepted proposals mutate graph",
+            "Rollback restores previous graph digest",
+            "accepted_gap remains non-mutating",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for expected in backlog_terms:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        docs_terms = [
+            "Task 26 Batch 30",
+            "T10-LIVE-M19..M22",
+            "Canonical Graph Mutation, Journal And Rollback Engine",
+            "project_graph_canonical_mutation.py",
+            "canonical_graph_mutation.py",
+            "graph_rollback.py",
+            "mutation_plan.json",
+            "graph-mutation-journal.jsonl",
+            "project_graph_canonical_mutation_plan",
+            "project_graph_mutation_journal",
+            "project_graph_rollback_proof",
+            "batch30_canonical_graph_mutation_journal_and_rollback",
+            "canonical_mutation_dry_run",
+            "mutation_journal",
+            "accepted_mutation_apply",
+            "rollback_engine",
+            "No mutation without dry-run plan",
+            "Every mutation has rollback patch",
+            "Only accepted proposals mutate graph",
+            "Rollback restores previous graph digest",
+            "accepted_gap remains non-mutating",
+            "stage-root generated graph copy only",
+            "provider_call_allowed",
+            "external_call_performed",
+            "staged evidence only",
+            "not source of truth",
+            "no provider calls",
+            "no live external model/API calls",
+        ]
+        for document, text in documents.items():
+            for expected in docs_terms:
+                with self.subTest(document=document, term=expected):
+                    self.assertIn(expected, text)
+
+        control_terms = [
+            "Task 26 Batch 30",
+            "T10-LIVE-M19..M22",
+            "project_graph_canonical_mutation.py",
+            "mutation_plan.json",
+            "graph-mutation-journal.jsonl",
+            "project_graph_canonical_mutation_dry_run_plan_present",
+            "project_graph_canonical_mutation_governance_prerequisite_present",
+            "project_graph_canonical_mutation_conflict_checks_present",
+            "project_graph_mutation_journal_append_only_present",
+            "project_graph_mutation_journal_rollback_patch_present",
+            "project_graph_canonical_mutation_only_accepted_proposals_present",
+            "project_graph_canonical_mutation_apply_digest_present",
+            "project_graph_rollback_previous_digest_restore_present",
+            "project_graph_canonical_mutation_no_live_calls_present",
+            "No mutation without dry-run plan",
+            "Every mutation has rollback patch",
+            "Only accepted proposals mutate graph",
+            "Rollback restores previous graph digest",
+            "accepted_gap remains non-mutating",
+            "provider_call_allowed",
+            "external_call_performed",
+            "no provider calls",
+            "no live external model/API calls",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for filename, text in control_plane.items():
+            for expected in control_terms:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
     def test_track10_task25_batch20_local_backend_gate_is_synced(self):
         registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
         backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")

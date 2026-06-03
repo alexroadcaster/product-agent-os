@@ -22,6 +22,10 @@ LLM_PROPOSAL_PROVIDER_TARGET = Path(".codex/product-agent-os/project-code-graph-
 LLM_PROPOSAL_EVAL_TARGET = Path(".codex/product-agent-os/project-code-graph-llm-proposal-eval.json")
 REVIEW_LEDGER_TARGET = Path(".codex/product-agent-os/project-code-graph-review-ledger.json")
 PROPOSAL_DIFF_TARGET = Path(".codex/product-agent-os/project-code-graph-proposal-diff.json")
+MUTATION_PLAN_TARGET = Path(".codex/product-agent-os/project-code-graph-mutation-plan.json")
+MUTATED_GRAPH_TARGET = Path(".codex/product-agent-os/project-code-graph-canonical-mutated.json")
+MUTATION_JOURNAL_TARGET = Path(".codex/product-agent-os/project-code-graph-mutation-journal.jsonl")
+ROLLBACK_PROOF_TARGET = Path(".codex/product-agent-os/project-code-graph-rollback-proof.json")
 
 
 class ProjectGraphCliTest(unittest.TestCase):
@@ -1502,6 +1506,213 @@ class ProjectGraphCliTest(unittest.TestCase):
             self.assertFalse((stage_root / REVIEW_LEDGER_TARGET).exists())
             self.assertFalse((stage_root / PROPOSAL_DIFF_TARGET).exists())
 
+    def test_build_canonical_mutation_cli_stage_disable_with_journal_and_rollback(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "workspace"
+            stage_root = Path(tmp) / "stage"
+            llm_approval_path = Path(tmp) / "llm-approval.json"
+            semantic_approval_path = Path(tmp) / "semantic-approval.json"
+            live_approval_path = Path(tmp) / "live-approval.json"
+            provider_approval_path = Path(tmp) / "llm-provider-approval.json"
+            review_approval_path = Path(tmp) / "review-ledger-approval.json"
+            mutation_approval_path = Path(tmp) / "canonical-mutation-approval.json"
+            decisions_path = Path(tmp) / "review-decisions.json"
+            (workspace / "app").mkdir(parents=True)
+            (workspace / "app" / "__init__.py").write_text("", encoding="utf-8")
+            (workspace / "app" / "worker.py").write_text("def run():\n    return 'ok'\n", encoding="utf-8")
+            llm_approval_path.write_text(json.dumps(self._llm_approval()), encoding="utf-8")
+            semantic_approval_path.write_text(json.dumps(self._semantic_approval()), encoding="utf-8")
+            live_approval_path.write_text(json.dumps(self._live_governance_approval()), encoding="utf-8")
+            provider_approval_path.write_text(json.dumps(self._llm_proposal_provider_approval()), encoding="utf-8")
+            review_approval_path.write_text(json.dumps(self._review_ledger_approval()), encoding="utf-8")
+            mutation_approval_path.write_text(json.dumps(self._canonical_mutation_approval()), encoding="utf-8")
+
+            commands = [
+                [sys.executable, str(SCRIPT), str(workspace), "--stage", str(stage_root)],
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--build-semantic-index",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--stage",
+                    str(stage_root),
+                    "--semantic-approval",
+                    str(semantic_approval_path),
+                ],
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--build-llm-proposals",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--stage",
+                    str(stage_root),
+                    "--semantic-index",
+                    str(stage_root / SEMANTIC_RETRIEVAL_TARGET),
+                    "--llm-approval",
+                    str(llm_approval_path),
+                ],
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--validate-live-governance",
+                    "--live-approval",
+                    str(live_approval_path),
+                    "--stage",
+                    str(stage_root),
+                ],
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--validate-llm-proposal-provider",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--semantic-index",
+                    str(stage_root / SEMANTIC_RETRIEVAL_TARGET),
+                    "--llm-proposals",
+                    str(stage_root / LLM_EXTRACTION_TARGET),
+                    "--live-governance",
+                    str(stage_root / ".codex/product-agent-os/project-code-graph-live-governance.json"),
+                    "--llm-proposal-provider-approval",
+                    str(provider_approval_path),
+                    "--stage",
+                    str(stage_root),
+                ],
+            ]
+            results = [subprocess.run(command, check=False, capture_output=True, text=True) for command in commands]
+            for result in results:
+                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+                self.assertEqual(result.stderr, "")
+                self.assertNotIn(str(workspace), result.stdout)
+                self.assertNotIn("return 'ok'", result.stdout)
+
+            proposals = json.loads((stage_root / LLM_EXTRACTION_TARGET).read_text(encoding="utf-8"))
+            decisions_path.write_text(json.dumps(self._review_decisions(proposals)), encoding="utf-8")
+            review = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--build-review-ledger",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--llm-proposals",
+                    str(stage_root / LLM_EXTRACTION_TARGET),
+                    "--llm-proposal-provider",
+                    str(stage_root / LLM_PROPOSAL_PROVIDER_TARGET),
+                    "--llm-proposal-eval",
+                    str(stage_root / LLM_PROPOSAL_EVAL_TARGET),
+                    "--live-governance",
+                    str(stage_root / ".codex/product-agent-os/project-code-graph-live-governance.json"),
+                    "--review-ledger-approval",
+                    str(review_approval_path),
+                    "--review-decisions",
+                    str(decisions_path),
+                    "--stage",
+                    str(stage_root),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            self.assertEqual(review.returncode, 0, review.stdout + review.stderr)
+
+            missing_approval = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--build-canonical-mutation",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--review-ledger",
+                    str(stage_root / REVIEW_LEDGER_TARGET),
+                    "--proposal-diff",
+                    str(stage_root / PROPOSAL_DIFF_TARGET),
+                    "--live-governance",
+                    str(stage_root / ".codex/product-agent-os/project-code-graph-live-governance.json"),
+                    "--stage",
+                    str(stage_root),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            mutation = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--build-canonical-mutation",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--review-ledger",
+                    str(stage_root / REVIEW_LEDGER_TARGET),
+                    "--proposal-diff",
+                    str(stage_root / PROPOSAL_DIFF_TARGET),
+                    "--live-governance",
+                    str(stage_root / ".codex/product-agent-os/project-code-graph-live-governance.json"),
+                    "--canonical-mutation-approval",
+                    str(mutation_approval_path),
+                    "--stage",
+                    str(stage_root),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(missing_approval.returncode, 1)
+            self.assertEqual(mutation.returncode, 0, mutation.stdout + mutation.stderr)
+            payload = json.loads(mutation.stdout)
+            plan = json.loads((stage_root / MUTATION_PLAN_TARGET).read_text(encoding="utf-8"))
+            rollback = json.loads((stage_root / ROLLBACK_PROOF_TARGET).read_text(encoding="utf-8"))
+            journal_lines = (stage_root / MUTATION_JOURNAL_TARGET).read_text(encoding="utf-8").splitlines()
+            journal_entry = json.loads(journal_lines[0])
+            self.assertEqual(payload["rendered_artifacts"]["mode"], "build-canonical-mutation")
+            self.assertEqual(payload["rendered_artifacts"]["status"], "ready")
+            self.assertEqual(payload["rendered_artifacts"]["canonical_graph_mutation"], "stage_root_generated_graph_copy_only")
+            self.assertTrue(payload["rendered_artifacts"]["only_accepted_proposals_mutate_graph"])
+            self.assertTrue(payload["rendered_artifacts"]["accepted_gap_remains_non_mutating"])
+            self.assertTrue(payload["rendered_artifacts"]["rollback_restores_previous_graph_digest"])
+            self.assertEqual(plan["artifact_kind"], "project_graph_canonical_mutation_plan")
+            self.assertTrue(plan["no_mutation_without_dry_run_plan"])
+            self.assertEqual(plan["dry_run"]["status"], "passed")
+            self.assertEqual(len(plan["operations"]), 1)
+            self.assertEqual(journal_entry["artifact_kind"], "project_graph_mutation_journal")
+            self.assertTrue(journal_entry["append_only"])
+            self.assertTrue(journal_entry["inverse_patch"])
+            self.assertEqual(rollback["artifact_kind"], "project_graph_rollback_proof")
+            self.assertTrue(rollback["rollback_restores_previous_graph_digest"])
+            self.assertTrue((stage_root / MUTATED_GRAPH_TARGET).exists())
+            self.assertNotIn(str(workspace), mutation.stdout)
+            self.assertNotIn("return 'ok'", mutation.stdout)
+
+            disable = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--disable-canonical-mutation",
+                    "--stage",
+                    str(stage_root),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(disable.returncode, 0, disable.stdout + disable.stderr)
+            self.assertFalse((stage_root / MUTATION_PLAN_TARGET).exists())
+            self.assertFalse((stage_root / MUTATED_GRAPH_TARGET).exists())
+            self.assertFalse((stage_root / MUTATION_JOURNAL_TARGET).exists())
+            self.assertFalse((stage_root / ROLLBACK_PROOF_TARGET).exists())
+
     def test_disable_llm_proposals_cli_removes_generated_proposals_without_touching_workspace(self):
         with tempfile.TemporaryDirectory() as tmp:
             workspace = Path(tmp) / "workspace"
@@ -2049,6 +2260,44 @@ class ProjectGraphCliTest(unittest.TestCase):
             },
             "rollback_path": f"delete {REVIEW_LEDGER_TARGET.as_posix()}",
             "residual_risks": ["accepted proposals still require Batch 30 dry-run before mutation"],
+        }
+
+    def _canonical_mutation_approval(self) -> dict:
+        return {
+            "explicit_approval": True,
+            "owner": "Product-Agent OS Maintainer",
+            "allowed_surfaces": [
+                "canonical_mutation_dry_run",
+                "mutation_journal",
+                "accepted_mutation_apply",
+                "rollback_engine",
+            ],
+            "mutation_policy": {
+                "dry_run_required": True,
+                "conflict_check_required": True,
+                "graph_digest_check_required": True,
+                "accepted_only": True,
+                "stage_root_only": True,
+                "review_ledger_required": True,
+                "proposal_diff_required": True,
+            },
+            "journal_policy": {
+                "append_only": True,
+                "jsonl_required": True,
+                "inverse_patch_required": True,
+            },
+            "rollback_policy": {
+                "restore_prior_digest": True,
+                "delete_generated_caches": True,
+                "stage_root_only": True,
+                "rollback_proof_required": True,
+            },
+            "data_classification": {
+                "allowed_inputs": ["reviewed_proposal_ids", "source_node_ids", "observation_ids", "owner_decisions"],
+                "forbidden_inputs": ["raw_source_bodies", "secrets", "absolute_local_paths", "private_text"],
+            },
+            "rollback_path": "delete generated Batch 30 mutation artifacts under stage root",
+            "residual_risks": ["accepted proposals can still represent incorrect semantics until rollback proof is inspected"],
         }
 
     def _review_decisions(self, proposals: dict) -> dict:
