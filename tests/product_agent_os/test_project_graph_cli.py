@@ -16,6 +16,8 @@ SEMANTIC_RETRIEVAL_TARGET = Path(".codex/product-agent-os/project-code-graph-sem
 LLM_EXTRACTION_TARGET = Path(".codex/product-agent-os/project-code-graph-llm-proposals.json")
 EXTENSION_CLOSURE_TARGET = Path(".codex/product-agent-os/project-code-graph-extension-closure.json")
 EMBEDDING_PROVIDER_TARGET = Path(".codex/product-agent-os/project-code-graph-embedding-provider.json")
+RERANKER_PROVIDER_TARGET = Path(".codex/product-agent-os/project-code-graph-reranker-provider.json")
+HYBRID_RETRIEVAL_TARGET = Path(".codex/product-agent-os/project-code-graph-hybrid-retrieval.json")
 
 
 class ProjectGraphCliTest(unittest.TestCase):
@@ -830,6 +832,231 @@ class ProjectGraphCliTest(unittest.TestCase):
             self.assertFalse((stage_root / EMBEDDING_PROVIDER_TARGET).exists())
             self.assertNotIn(str(workspace), provider.stdout + disable.stdout)
 
+    def test_validate_reranker_and_hybrid_cli_stage_query_disable_without_provider_calls(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "workspace"
+            stage_root = Path(tmp) / "stage"
+            semantic_approval_path = Path(tmp) / "semantic-approval.json"
+            live_approval_path = Path(tmp) / "live-approval.json"
+            reranker_approval_path = Path(tmp) / "reranker-approval.json"
+            (workspace / "app").mkdir(parents=True)
+            (workspace / "app" / "__init__.py").write_text("", encoding="utf-8")
+            (workspace / "app" / "worker.py").write_text("def run():\n    return 'ok'\n", encoding="utf-8")
+            (workspace / "tests").mkdir()
+            (workspace / "tests" / "test_worker.py").write_text(
+                "from app.worker import run\n\n"
+                "def test_run():\n"
+                "    assert run() == 'ok'\n",
+                encoding="utf-8",
+            )
+            semantic_approval_path.write_text(json.dumps(self._semantic_approval()), encoding="utf-8")
+            live_approval_path.write_text(json.dumps(self._live_governance_approval()), encoding="utf-8")
+            reranker_approval_path.write_text(json.dumps(self._reranker_provider_approval()), encoding="utf-8")
+
+            stage = subprocess.run(
+                [sys.executable, str(SCRIPT), str(workspace), "--stage", str(stage_root)],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            index = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--build-index",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--stage",
+                    str(stage_root),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            semantic = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--build-semantic-index",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--index",
+                    str(stage_root / STATIC_SEARCH_INDEX_TARGET),
+                    "--stage",
+                    str(stage_root),
+                    "--semantic-approval",
+                    str(semantic_approval_path),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            governance = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--validate-live-governance",
+                    "--live-approval",
+                    str(live_approval_path),
+                    "--stage",
+                    str(stage_root),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            missing_approval = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--validate-reranker-provider",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--index",
+                    str(stage_root / STATIC_SEARCH_INDEX_TARGET),
+                    "--semantic-index",
+                    str(stage_root / SEMANTIC_RETRIEVAL_TARGET),
+                    "--live-governance",
+                    str(stage_root / ".codex/product-agent-os/project-code-graph-live-governance.json"),
+                    "--stage",
+                    str(stage_root),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            reranker = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--validate-reranker-provider",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--index",
+                    str(stage_root / STATIC_SEARCH_INDEX_TARGET),
+                    "--semantic-index",
+                    str(stage_root / SEMANTIC_RETRIEVAL_TARGET),
+                    "--live-governance",
+                    str(stage_root / ".codex/product-agent-os/project-code-graph-live-governance.json"),
+                    "--reranker-provider-approval",
+                    str(reranker_approval_path),
+                    "--stage",
+                    str(stage_root),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            hybrid = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--build-hybrid-retrieval",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--index",
+                    str(stage_root / STATIC_SEARCH_INDEX_TARGET),
+                    "--semantic-index",
+                    str(stage_root / SEMANTIC_RETRIEVAL_TARGET),
+                    "--reranker-provider",
+                    str(stage_root / RERANKER_PROVIDER_TARGET),
+                    "--reranker-provider-approval",
+                    str(reranker_approval_path),
+                    "--stage",
+                    str(stage_root),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            query = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--query",
+                    "search",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--index",
+                    str(stage_root / STATIC_SEARCH_INDEX_TARGET),
+                    "--semantic-index",
+                    str(stage_root / SEMANTIC_RETRIEVAL_TARGET),
+                    "--hybrid-retrieval",
+                    str(stage_root / HYBRID_RETRIEVAL_TARGET),
+                    "--text",
+                    "worker run",
+                    "--max-results",
+                    "5",
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            for result in [stage, index, semantic, governance, reranker, hybrid, query]:
+                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+                self.assertEqual(result.stderr, "")
+                self.assertNotIn(str(workspace), result.stdout)
+            self.assertEqual(missing_approval.returncode, 1)
+            missing_payload = json.loads(missing_approval.stdout)
+            reranker_payload = json.loads(reranker.stdout)
+            hybrid_payload = json.loads(hybrid.stdout)
+            query_payload = json.loads(query.stdout)
+            self.assertEqual(missing_payload["rendered_artifacts"]["status"], "approval_required")
+            self.assertEqual(reranker_payload["rendered_artifacts"]["mode"], "validate-reranker-provider")
+            self.assertFalse(reranker_payload["rendered_artifacts"]["provider_call_allowed"])
+            self.assertEqual(hybrid_payload["rendered_artifacts"]["mode"], "build-hybrid-retrieval")
+            self.assertFalse(hybrid_payload["rendered_artifacts"]["provider_call_allowed"])
+            self.assertEqual(query_payload["search_backend"], "hybrid_retrieval")
+            self.assertEqual(query_payload["nodes"][0]["id"], "function:app.worker.run")
+            self.assertEqual(query_payload["nodes"][0]["confidence"], "present_unverified")
+            self.assertIn("component_scores", query_payload["nodes"][0])
+            self.assertFalse(query_payload["provider_policy"]["provider_call_allowed"])
+            self.assertFalse(query_payload["provider_policy"]["external_call_performed"])
+            self.assertTrue((stage_root / RERANKER_PROVIDER_TARGET).exists())
+            self.assertTrue((stage_root / HYBRID_RETRIEVAL_TARGET).exists())
+
+            disable_hybrid = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--disable-hybrid-retrieval",
+                    "--stage",
+                    str(stage_root),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            disable_reranker = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--disable-reranker-provider",
+                    "--stage",
+                    str(stage_root),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(disable_hybrid.returncode, 0, disable_hybrid.stdout + disable_hybrid.stderr)
+            self.assertEqual(disable_reranker.returncode, 0, disable_reranker.stdout + disable_reranker.stderr)
+            self.assertEqual(json.loads(disable_hybrid.stdout)["rendered_artifacts"]["status"], "disabled")
+            self.assertEqual(json.loads(disable_reranker.stdout)["rendered_artifacts"]["status"], "disabled")
+            self.assertFalse((stage_root / HYBRID_RETRIEVAL_TARGET).exists())
+            self.assertFalse((stage_root / RERANKER_PROVIDER_TARGET).exists())
+
     def test_build_llm_proposals_cli_requires_approval_and_stages_proposals(self):
         with tempfile.TemporaryDirectory() as tmp:
             workspace = Path(tmp) / "workspace"
@@ -1325,6 +1552,61 @@ class ProjectGraphCliTest(unittest.TestCase):
             },
             "rollback_path": "delete .codex/product-agent-os/project-code-graph-embedding-provider.json",
             "residual_risks": ["provider drift requires fresh eval before enablement"],
+        }
+
+    def _reranker_provider_approval(self) -> dict:
+        return {
+            "explicit_approval": True,
+            "owner": "Product-Agent OS Maintainer",
+            "allowed_surfaces": ["external_reranker_adapter", "reranker_eval_baseline", "hybrid_retrieval_pipeline"],
+            "provider": {
+                "provider": "external_reranker",
+                "model": "approved-reranker-model-v1",
+                "credential_source": "environment",
+                "credential_env_var": "PRODUCT_AGENT_OS_RERANKER_API_KEY",
+                "external_calls_allowed": False,
+                "candidate_policy": {"max_candidates": 20, "max_candidate_tokens": 1200},
+            },
+            "data_classification": {
+                "allowed_inputs": ["redacted_query_text", "candidate_node_ids", "scores", "observation_counts"],
+                "forbidden_inputs": ["raw_source_bodies", "secrets", "absolute_local_paths", "private_text"],
+            },
+            "redaction_policy": {
+                "raw_source_excluded": True,
+                "secrets_redacted": True,
+                "absolute_paths_redacted": True,
+                "provider_payload_validation_required": True,
+            },
+            "cache_policy": {
+                "storage_path": ".codex/product-agent-os/project-code-graph-reranker-provider.json",
+                "cache_target": ".codex/product-agent-os/project-code-graph-reranker-provider-cache.json",
+                "fingerprint_scope": "redacted_graph_semantic_static_provider_policy",
+                "stale_policy": "block_if_graph_or_semantic_or_static_or_policy_fingerprint_mismatch",
+                "ttl_days": 7,
+                "deletion_proof_required": True,
+            },
+            "budget_policy": {
+                "max_query_tokens": 600,
+                "max_candidate_tokens": 1200,
+                "max_cost_units": 0,
+                "max_latency_ms": 250,
+                "on_exceed": "block_and_fallback_to_semantic_or_graph",
+            },
+            "eval_threshold": {
+                "min_precision_at_k": 1.0,
+                "min_mrr": 1.0,
+                "min_ndcg_at_k": 1.0,
+                "min_provider_mrr_delta": 0.0,
+                "max_false_positive_rate": 0.0,
+                "max_query_ms": 250,
+                "max_payload_tokens": 1200,
+            },
+            "failure_handling": {
+                "on_missing_provider_eval": "disabled_fallback_to_semantic_or_graph",
+                "on_failed_eval": "disabled_fallback_to_semantic_or_graph",
+            },
+            "rollback_path": "delete .codex/product-agent-os/project-code-graph-reranker-provider.json",
+            "residual_risks": ["reranker provider drift requires fresh eval before enablement"],
         }
 
     def _llm_approval(self) -> dict:

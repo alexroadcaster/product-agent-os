@@ -35,10 +35,20 @@ from product_agent_os.project_graph_embedding_provider import (  # noqa: E402
     disable_embedding_provider_gate,
     stage_embedding_provider_gate,
 )
+from product_agent_os.project_graph_hybrid_retrieval import (  # noqa: E402
+    disable_hybrid_retrieval_pipeline,
+    load_hybrid_retrieval_pipeline,
+    query_hybrid_retrieval,
+    stage_hybrid_retrieval_pipeline,
+)
 from product_agent_os.project_graph_queries import load_graph_artifact, query_project_graph  # noqa: E402
 from product_agent_os.project_graph_llm_extraction import (  # noqa: E402
     disable_llm_extraction_proposals,
     stage_llm_extraction_proposals,
+)
+from product_agent_os.project_graph_reranker_provider import (  # noqa: E402
+    disable_reranker_provider_gate,
+    stage_reranker_provider_gate,
 )
 from product_agent_os.project_graph_semantic import (  # noqa: E402
     disable_semantic_retrieval_index,
@@ -71,17 +81,24 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--disable-live-runtime", action="store_true", help="Delete generated Task 26 Batch 25 local runtime artifacts from --stage.")
     parser.add_argument("--validate-embedding-provider", action="store_true", help="Stage Task 26 Batch 26 external embedding provider gate.")
     parser.add_argument("--disable-embedding-provider", action="store_true", help="Delete generated Task 26 Batch 26 embedding provider artifacts from --stage.")
+    parser.add_argument("--validate-reranker-provider", action="store_true", help="Stage Task 26 Batch 27 external reranker provider gate.")
+    parser.add_argument("--disable-reranker-provider", action="store_true", help="Delete generated Task 26 Batch 27 reranker provider artifacts from --stage.")
+    parser.add_argument("--build-hybrid-retrieval", action="store_true", help="Stage Task 26 Batch 27 hybrid retrieval pipeline.")
+    parser.add_argument("--disable-hybrid-retrieval", action="store_true", help="Delete generated Task 26 Batch 27 hybrid retrieval pipeline from --stage.")
     parser.add_argument("--graph", help="Path to project-code-graph.json or project-code-graph.jsonl for query mode.")
     parser.add_argument("--index", help="Optional project-code-graph-search-index.json for indexed search query mode.")
     parser.add_argument("--backend", help="Optional project-code-graph-backend.json for backend query mode.")
     parser.add_argument("--backend-approval", help="JSON approval packet for --build-backend.")
     parser.add_argument("--semantic-index", help="Optional project-code-graph-semantic-index.json for semantic search query mode.")
+    parser.add_argument("--hybrid-retrieval", help="Optional project-code-graph-hybrid-retrieval.json for hybrid query mode.")
     parser.add_argument("--semantic-approval", help="JSON approval packet for --build-semantic-index.")
     parser.add_argument("--llm-approval", help="JSON approval packet for --build-llm-proposals.")
     parser.add_argument("--live-approval", help="JSON approval packet for --validate-live-governance.")
     parser.add_argument("--live-runtime-approval", help="JSON approval packet for --validate-live-runtime.")
     parser.add_argument("--live-governance", help="Generated live governance JSON packet for --validate-live-runtime.")
     parser.add_argument("--embedding-provider-approval", help="JSON approval packet for --validate-embedding-provider.")
+    parser.add_argument("--reranker-provider-approval", help="JSON approval packet for Batch 27 reranker and hybrid modes.")
+    parser.add_argument("--reranker-provider", help="Generated project-code-graph-reranker-provider.json for hybrid mode.")
     parser.add_argument("--verification-evidence", help="JSON evidence packet for --verify-extensions.")
     parser.add_argument("--node-id", help="Source node id for graph query mode.")
     parser.add_argument("--target-id", help="Target node id for graph path/trace query mode.")
@@ -115,6 +132,10 @@ def main(argv: list[str] | None = None) -> int:
             and not args.disable_live_runtime
             and not args.validate_embedding_provider
             and not args.disable_embedding_provider
+            and not args.validate_reranker_provider
+            and not args.disable_reranker_provider
+            and not args.build_hybrid_retrieval
+            and not args.disable_hybrid_retrieval
         )
         + int(bool(args.query))
         + int(bool(args.build_index))
@@ -132,6 +153,10 @@ def main(argv: list[str] | None = None) -> int:
         + int(bool(args.disable_live_runtime))
         + int(bool(args.validate_embedding_provider))
         + int(bool(args.disable_embedding_provider))
+        + int(bool(args.validate_reranker_provider))
+        + int(bool(args.disable_reranker_provider))
+        + int(bool(args.build_hybrid_retrieval))
+        + int(bool(args.disable_hybrid_retrieval))
     )
     if mode_count != 1:
         return _print_error(
@@ -139,7 +164,8 @@ def main(argv: list[str] | None = None) -> int:
             "--disable-backend, --build-semantic-index, --disable-semantic-index, --build-llm-proposals, "
             "--disable-llm-proposals, --verify-extensions, --disable-extensions, --validate-live-governance, "
             "--disable-live-governance, --validate-live-runtime, --disable-live-runtime, "
-            "--validate-embedding-provider, or --disable-embedding-provider",
+            "--validate-embedding-provider, --disable-embedding-provider, --validate-reranker-provider, "
+            "--disable-reranker-provider, --build-hybrid-retrieval, or --disable-hybrid-retrieval",
             exit_code=2,
         )
 
@@ -160,6 +186,21 @@ def main(argv: list[str] | None = None) -> int:
             static_index = load_static_search_index(args.index) if args.index else None
             semantic_index = load_semantic_retrieval_index(args.semantic_index) if args.semantic_index else None
             request = _query_request(args)
+            if args.hybrid_retrieval:
+                if static_index is None:
+                    raise ProjectGraphCliError("hybrid query mode requires --index")
+                if semantic_index is None:
+                    raise ProjectGraphCliError("hybrid query mode requires --semantic-index")
+                pipeline = load_hybrid_retrieval_pipeline(args.hybrid_retrieval)
+                packet = query_hybrid_retrieval(
+                    pipeline,
+                    {key: value for key, value in request.items() if value not in (None, [], "")},
+                    graph=graph,
+                    static_index=static_index,
+                    semantic_index=semantic_index,
+                )
+                print(json.dumps(_redacted_payload(packet), indent=2, sort_keys=True))
+                return 0 if packet.get("status") != "blocked" else 1
             packet = query_project_graph(
                 graph,
                 {key: value for key, value in request.items() if value not in (None, [], "")},
@@ -436,6 +477,96 @@ def main(argv: list[str] | None = None) -> int:
                 raise ProjectGraphCliError("workspace is not a directory")
             try:
                 result = disable_embedding_provider_gate(Path(args.stage), workspace=workspace)
+            except ValueError as exc:
+                raise ProjectGraphCliError(str(exc)) from exc
+            print(json.dumps(_redacted_payload(result), indent=2, sort_keys=True))
+            return 0 if result.get("rendered_artifacts", {}).get("status") == "disabled" else 1
+        if args.validate_reranker_provider:
+            if not args.graph:
+                raise ProjectGraphCliError("validate-reranker-provider mode requires --graph")
+            if not args.index:
+                raise ProjectGraphCliError("validate-reranker-provider mode requires --index")
+            if not args.semantic_index:
+                raise ProjectGraphCliError("validate-reranker-provider mode requires --semantic-index")
+            if not args.live_governance:
+                raise ProjectGraphCliError("validate-reranker-provider mode requires --live-governance")
+            if not args.stage:
+                raise ProjectGraphCliError("validate-reranker-provider mode requires --stage")
+            workspace = Path(args.workspace).resolve()
+            if not workspace.exists():
+                raise ProjectGraphCliError("workspace does not exist")
+            if not workspace.is_dir():
+                raise ProjectGraphCliError("workspace is not a directory")
+            approval = _load_json_file(args.reranker_provider_approval) if args.reranker_provider_approval else None
+            try:
+                result = stage_reranker_provider_gate(
+                    Path(args.graph),
+                    Path(args.index),
+                    Path(args.semantic_index),
+                    Path(args.stage),
+                    workspace=workspace,
+                    approval=approval,
+                    governance_artifact=Path(args.live_governance),
+                )
+            except ValueError as exc:
+                raise ProjectGraphCliError(str(exc)) from exc
+            print(json.dumps(_redacted_payload(result), indent=2, sort_keys=True))
+            return 0 if result.get("rendered_artifacts", {}).get("status") == "ready" else 1
+        if args.disable_reranker_provider:
+            if not args.stage:
+                raise ProjectGraphCliError("disable-reranker-provider mode requires --stage")
+            workspace = Path(args.workspace).resolve()
+            if not workspace.exists():
+                raise ProjectGraphCliError("workspace does not exist")
+            if not workspace.is_dir():
+                raise ProjectGraphCliError("workspace is not a directory")
+            try:
+                result = disable_reranker_provider_gate(Path(args.stage), workspace=workspace)
+            except ValueError as exc:
+                raise ProjectGraphCliError(str(exc)) from exc
+            print(json.dumps(_redacted_payload(result), indent=2, sort_keys=True))
+            return 0 if result.get("rendered_artifacts", {}).get("status") == "disabled" else 1
+        if args.build_hybrid_retrieval:
+            if not args.graph:
+                raise ProjectGraphCliError("build-hybrid-retrieval mode requires --graph")
+            if not args.index:
+                raise ProjectGraphCliError("build-hybrid-retrieval mode requires --index")
+            if not args.semantic_index:
+                raise ProjectGraphCliError("build-hybrid-retrieval mode requires --semantic-index")
+            if not args.reranker_provider:
+                raise ProjectGraphCliError("build-hybrid-retrieval mode requires --reranker-provider")
+            if not args.stage:
+                raise ProjectGraphCliError("build-hybrid-retrieval mode requires --stage")
+            workspace = Path(args.workspace).resolve()
+            if not workspace.exists():
+                raise ProjectGraphCliError("workspace does not exist")
+            if not workspace.is_dir():
+                raise ProjectGraphCliError("workspace is not a directory")
+            approval = _load_json_file(args.reranker_provider_approval) if args.reranker_provider_approval else None
+            try:
+                result = stage_hybrid_retrieval_pipeline(
+                    Path(args.graph),
+                    Path(args.index),
+                    Path(args.semantic_index),
+                    Path(args.stage),
+                    workspace=workspace,
+                    approval=approval,
+                    reranker_gate_artifact=Path(args.reranker_provider),
+                )
+            except ValueError as exc:
+                raise ProjectGraphCliError(str(exc)) from exc
+            print(json.dumps(_redacted_payload(result), indent=2, sort_keys=True))
+            return 0 if result.get("rendered_artifacts", {}).get("status") == "ready" else 1
+        if args.disable_hybrid_retrieval:
+            if not args.stage:
+                raise ProjectGraphCliError("disable-hybrid-retrieval mode requires --stage")
+            workspace = Path(args.workspace).resolve()
+            if not workspace.exists():
+                raise ProjectGraphCliError("workspace does not exist")
+            if not workspace.is_dir():
+                raise ProjectGraphCliError("workspace is not a directory")
+            try:
+                result = disable_hybrid_retrieval_pipeline(Path(args.stage), workspace=workspace)
             except ValueError as exc:
                 raise ProjectGraphCliError(str(exc)) from exc
             print(json.dumps(_redacted_payload(result), indent=2, sort_keys=True))

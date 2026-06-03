@@ -195,6 +195,16 @@ class FixtureEvalRunnerTest(unittest.TestCase):
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_external_embedding_eval_baseline_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_external_embedding_threshold_fallback_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_external_embedding_no_live_calls_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_external_reranker_provider_gate_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_external_reranker_governance_prerequisite_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_external_reranker_redaction_cache_budget_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_external_reranker_eval_baseline_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_external_reranker_threshold_fallback_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_external_reranker_no_live_calls_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_hybrid_retrieval_pipeline_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_hybrid_retrieval_explainable_fusion_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_hybrid_retrieval_fallback_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_hybrid_retrieval_no_canonical_mutation_present"])
         self.assertEqual(results["python-app"]["renderer_file_count"], 191)
         for check_name in [
             "methodology_catalog_contract_present",

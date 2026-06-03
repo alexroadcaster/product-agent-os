@@ -87,8 +87,25 @@ from product_agent_os.project_graph_embedding_provider import (  # noqa: E402
     validate_embedding_provider_approval,
     validate_embedding_provider_gate,
 )
+from product_agent_os.project_graph_hybrid_retrieval import (  # noqa: E402
+    HYBRID_RETRIEVAL_TARGET,
+    build_hybrid_retrieval_pipeline,
+    disable_hybrid_retrieval_pipeline,
+    evaluate_hybrid_retrieval_quality,
+    query_hybrid_retrieval,
+    validate_hybrid_retrieval_pipeline,
+)
 from product_agent_os.project_graph_queries import query_project_graph  # noqa: E402
 from product_agent_os.project_graph_renderer import render_project_graph_cockpit  # noqa: E402
+from product_agent_os.project_graph_reranker_provider import (  # noqa: E402
+    RERANKER_PROVIDER_CACHE_TARGET,
+    RERANKER_PROVIDER_TARGET,
+    build_reranker_provider_gate,
+    disable_reranker_provider_gate,
+    evaluate_reranker_provider_baseline,
+    validate_reranker_provider_approval,
+    validate_reranker_provider_gate,
+)
 from product_agent_os.project_graph_search_quality import evaluate_project_graph_search_quality  # noqa: E402
 from product_agent_os.project_graph_semantic import (  # noqa: E402
     SEMANTIC_RETRIEVAL_TARGET,
@@ -2149,6 +2166,36 @@ def _expected_checks(
         )
         checks["project_graph_external_embedding_no_live_calls_present"] = (
             _project_graph_external_embedding_no_live_calls_present()
+        )
+        checks["project_graph_external_reranker_provider_gate_present"] = (
+            _project_graph_external_reranker_provider_gate_present()
+        )
+        checks["project_graph_external_reranker_governance_prerequisite_present"] = (
+            _project_graph_external_reranker_governance_prerequisite_present()
+        )
+        checks["project_graph_external_reranker_redaction_cache_budget_present"] = (
+            _project_graph_external_reranker_redaction_cache_budget_present()
+        )
+        checks["project_graph_external_reranker_eval_baseline_present"] = (
+            _project_graph_external_reranker_eval_baseline_present()
+        )
+        checks["project_graph_external_reranker_threshold_fallback_present"] = (
+            _project_graph_external_reranker_threshold_fallback_present()
+        )
+        checks["project_graph_external_reranker_no_live_calls_present"] = (
+            _project_graph_external_reranker_no_live_calls_present()
+        )
+        checks["project_graph_hybrid_retrieval_pipeline_present"] = (
+            _project_graph_hybrid_retrieval_pipeline_present()
+        )
+        checks["project_graph_hybrid_retrieval_explainable_fusion_present"] = (
+            _project_graph_hybrid_retrieval_explainable_fusion_present()
+        )
+        checks["project_graph_hybrid_retrieval_fallback_present"] = (
+            _project_graph_hybrid_retrieval_fallback_present()
+        )
+        checks["project_graph_hybrid_retrieval_no_canonical_mutation_present"] = (
+            _project_graph_hybrid_retrieval_no_canonical_mutation_present()
         )
         checks["project_graph_future_backend_semantic_gates_present"] = (
             _project_graph_future_backend_semantic_gates_present()
@@ -4949,6 +4996,345 @@ def _project_graph_external_embedding_no_live_calls_present() -> bool:
         and "production_server" in gate.get("blocked_surfaces", [])
         and gate.get("fallback") == "semantic_retrieval_or_graph_only"
         and "server_started\": true" not in payload
+        and "external_call_performed\": true" not in payload
+        and "provider_call_allowed\": true" not in payload
+    )
+
+
+def _project_graph_external_reranker_provider_approval() -> dict[str, Any]:
+    return {
+        "explicit_approval": True,
+        "owner": "Product-Agent OS Maintainer",
+        "allowed_surfaces": ["external_reranker_adapter", "reranker_eval_baseline", "hybrid_retrieval_pipeline"],
+        "provider": {
+            "provider": "external_reranker",
+            "model": "approved-reranker-model-v1",
+            "credential_source": "environment",
+            "credential_env_var": "PRODUCT_AGENT_OS_RERANKER_API_KEY",
+            "external_calls_allowed": False,
+            "candidate_policy": {"max_candidates": 20, "max_candidate_tokens": 1200},
+        },
+        "data_classification": {
+            "allowed_inputs": ["redacted_query_text", "candidate_node_ids", "scores", "observation_counts"],
+            "forbidden_inputs": ["raw_source_bodies", "secrets", "absolute_local_paths", "private_text"],
+        },
+        "redaction_policy": {
+            "raw_source_excluded": True,
+            "secrets_redacted": True,
+            "absolute_paths_redacted": True,
+            "provider_payload_validation_required": True,
+        },
+        "cache_policy": {
+            "storage_path": RERANKER_PROVIDER_TARGET,
+            "cache_target": RERANKER_PROVIDER_CACHE_TARGET,
+            "fingerprint_scope": "redacted_graph_semantic_static_provider_policy",
+            "stale_policy": "block_if_graph_or_semantic_or_static_or_policy_fingerprint_mismatch",
+            "ttl_days": 7,
+            "deletion_proof_required": True,
+        },
+        "budget_policy": {
+            "max_query_tokens": 600,
+            "max_candidate_tokens": 1200,
+            "max_cost_units": 0,
+            "max_latency_ms": 250,
+            "on_exceed": "block_and_fallback_to_semantic_or_graph",
+        },
+        "eval_threshold": {
+            "min_precision_at_k": 1.0,
+            "min_mrr": 1.0,
+            "min_ndcg_at_k": 1.0,
+            "min_provider_mrr_delta": 0.0,
+            "max_false_positive_rate": 0.0,
+            "max_query_ms": 250,
+            "max_payload_tokens": 1200,
+        },
+        "failure_handling": {
+            "on_missing_provider_eval": "disabled_fallback_to_semantic_or_graph",
+            "on_failed_eval": "disabled_fallback_to_semantic_or_graph",
+        },
+        "rollback_path": f"delete {RERANKER_PROVIDER_TARGET}",
+        "residual_risks": ["reranker provider drift requires fresh eval before enablement"],
+    }
+
+
+def _project_graph_external_reranker_provider_gate() -> dict[str, Any]:
+    return build_reranker_provider_gate(
+        _project_graph_sample(),
+        static_index=_project_graph_static_index(),
+        semantic_index=_project_graph_semantic_index(),
+        approval=_project_graph_external_reranker_provider_approval(),
+        governance_packet=_project_graph_live_governance_packet(),
+    )
+
+
+def _project_graph_external_reranker_eval_cases() -> list[dict[str, Any]]:
+    return [
+        {
+            "id": "external-reranker-worker",
+            "text": "worker run",
+            "expected_node_ids": ["function:app.worker.run"],
+            "unexpected_node_ids": ["function:tests.test_worker.test_run"],
+            "top_k": 1,
+        }
+    ]
+
+
+def _project_graph_hybrid_pipeline() -> dict[str, Any]:
+    return build_hybrid_retrieval_pipeline(
+        _project_graph_sample(),
+        static_index=_project_graph_static_index(),
+        semantic_index=_project_graph_semantic_index(),
+        reranker_gate=_project_graph_external_reranker_provider_gate(),
+        approval=_project_graph_external_reranker_provider_approval(),
+    )
+
+
+def _project_graph_external_reranker_provider_gate_present() -> bool:
+    approval = _project_graph_external_reranker_provider_approval()
+    gate = _project_graph_external_reranker_provider_gate()
+    return (
+        validate_reranker_provider_approval(approval, _project_graph_live_governance_packet()).get("ok") is True
+        and gate.get("artifact_kind") == "project_graph_external_reranker_provider_gate"
+        and gate.get("approval_boundary") == "batch27_external_reranker_and_hybrid_retrieval"
+        and gate.get("source_boundary") == "redacted_query_candidate_ids_scores_only_no_raw_source"
+        and gate.get("generated_view_policy") == "reranker_provider_gate_is_generated_evidence_not_source_of_truth"
+        and gate.get("status") == "ready"
+        and gate.get("provider_policy", {}).get("provider") == "external_reranker"
+        and gate.get("provider_policy", {}).get("credential_source") == "environment"
+        and validate_reranker_provider_gate(gate).get("ok") is True
+    )
+
+
+def _project_graph_external_reranker_governance_prerequisite_present() -> bool:
+    invalid_governance = dict(_project_graph_live_governance_packet())
+    invalid_governance["status"] = "blocked"
+    missing = build_reranker_provider_gate(
+        _project_graph_sample(),
+        static_index=_project_graph_static_index(),
+        semantic_index=_project_graph_semantic_index(),
+        approval=_project_graph_external_reranker_provider_approval(),
+        governance_packet=None,
+    )
+    invalid = validate_reranker_provider_approval(
+        _project_graph_external_reranker_provider_approval(),
+        invalid_governance,
+    )
+    return (
+        missing.get("status") == "approval_required"
+        and "reranker_provider_approval:governance_packet:missing"
+        in missing.get("validation", {}).get("errors", [])
+        and invalid.get("ok") is False
+        and "reranker_provider_approval:governance_packet:not_ready" in invalid.get("errors", [])
+    )
+
+
+def _project_graph_external_reranker_redaction_cache_budget_present() -> bool:
+    graph = json.loads(json.dumps(_project_graph_sample()))
+    graph.setdefault("nodes", []).append(
+        {
+            "id": "file:unsafe.py",
+            "type": "module",
+            "label": r"TOKEN=sk-test-secret C:\Users\person\private.py",
+            "path": r"C:\Users\person\private.py",
+            "observation_ids": ["obs:unsafe"],
+        }
+    )
+    gate = build_reranker_provider_gate(
+        graph,
+        static_index=build_static_search_index(graph),
+        semantic_index=_project_graph_semantic_index(),
+        approval=_project_graph_external_reranker_provider_approval(),
+        governance_packet=_project_graph_live_governance_packet(),
+    )
+    payload = json.dumps(gate, sort_keys=True).lower()
+    with tempfile.TemporaryDirectory() as tmp:
+        stage_root = Path(tmp) / "stage"
+        for relative in [RERANKER_PROVIDER_TARGET, RERANKER_PROVIDER_CACHE_TARGET]:
+            target = stage_root / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text("generated\n", encoding="utf-8")
+        disabled = disable_reranker_provider_gate(stage_root, workspace=FIXTURES / "project-code-graph-minimal-python")
+    proof = disabled.get("rendered_artifacts", {}).get("deletion_proof", {})
+    return (
+        validate_reranker_provider_gate(gate).get("ok") is True
+        and gate.get("redaction_policy", {}).get("raw_source_excluded") is True
+        and gate.get("cache_policy", {}).get("stale_policy")
+        == "block_if_graph_or_semantic_or_static_or_policy_fingerprint_mismatch"
+        and gate.get("cache_policy", {}).get("cache_can_be_deleted_without_graph_loss") is True
+        and gate.get("budget_policy", {}).get("max_cost_units") == 0
+        and disabled.get("rendered_artifacts", {}).get("status") == "disabled"
+        and proof.get("remaining") == []
+        and "sk-test-secret" not in payload
+        and "c:\\users\\person" not in payload
+        and "return 'ok'" not in payload
+    )
+
+
+def _project_graph_external_reranker_eval_baseline_present() -> bool:
+    packet = evaluate_reranker_provider_baseline(
+        _project_graph_external_reranker_provider_gate(),
+        graph=_project_graph_sample(),
+        static_index=_project_graph_static_index(),
+        semantic_index=_project_graph_semantic_index(),
+        cases=_project_graph_external_reranker_eval_cases(),
+        reranker_results={
+            "external-reranker-worker": {
+                "result_node_ids": ["function:app.worker.run"],
+                "query_ms": 120,
+                "payload_tokens": 500,
+            }
+        },
+    )
+    return (
+        packet.get("decision_status") == "passed"
+        and packet.get("search_backend") == "external_reranker_provider_eval"
+        and packet.get("baseline_backend") == "hybrid_static_semantic_local_rerank"
+        and packet.get("provider_quality_metrics", {}).get("precision_at_k") == 1.0
+        and packet.get("provider_quality_metrics", {}).get("mrr") == 1.0
+        and packet.get("provider_quality_metrics", {}).get("ndcg_at_k") == 1.0
+        and packet.get("provider_enabled_by_default") is False
+        and packet.get("external_call_performed") is False
+        and packet.get("failed_thresholds") == []
+    )
+
+
+def _project_graph_external_reranker_threshold_fallback_present() -> bool:
+    gate = _project_graph_external_reranker_provider_gate()
+    missing = evaluate_reranker_provider_baseline(
+        gate,
+        graph=_project_graph_sample(),
+        static_index=_project_graph_static_index(),
+        semantic_index=_project_graph_semantic_index(),
+        cases=_project_graph_external_reranker_eval_cases(),
+        reranker_results=None,
+    )
+    failed = evaluate_reranker_provider_baseline(
+        gate,
+        graph=_project_graph_sample(),
+        static_index=_project_graph_static_index(),
+        semantic_index=_project_graph_semantic_index(),
+        cases=_project_graph_external_reranker_eval_cases(),
+        reranker_results={
+            "external-reranker-worker": {
+                "result_node_ids": ["function:tests.test_worker.test_run"],
+                "query_ms": 260,
+                "payload_tokens": 1300,
+            }
+        },
+    )
+    return (
+        missing.get("decision_status") == "disabled_fallback"
+        and missing.get("provider_enabled") is False
+        and "reranker_eval:missing" in missing.get("failed_thresholds", [])
+        and failed.get("decision_status") == "disabled_fallback"
+        and "reranker_precision_at_k_below_threshold" in failed.get("failed_thresholds", [])
+        and "reranker_mrr_below_threshold" in failed.get("failed_thresholds", [])
+        and failed.get("fallback") == "semantic_retrieval_or_graph_only"
+    )
+
+
+def _project_graph_external_reranker_no_live_calls_present() -> bool:
+    gate = _project_graph_external_reranker_provider_gate()
+    payload = json.dumps(gate, sort_keys=True).lower()
+    return (
+        gate.get("provider_policy", {}).get("provider_call_allowed") is False
+        and gate.get("provider_policy", {}).get("external_call_performed") is False
+        and gate.get("provider_enabled") is False
+        and gate.get("provider_enabled_by_default") is False
+        and "external_provider_call_without_runtime_invocation_approval" in gate.get("blocked_surfaces", [])
+        and "canonical_graph_mutation" in gate.get("blocked_surfaces", [])
+        and "production_server" in gate.get("blocked_surfaces", [])
+        and gate.get("fallback") == "semantic_retrieval_or_graph_only"
+        and "external_call_performed\": true" not in payload
+        and "provider_call_allowed\": true" not in payload
+    )
+
+
+def _project_graph_hybrid_retrieval_pipeline_present() -> bool:
+    pipeline = _project_graph_hybrid_pipeline()
+    return (
+        pipeline.get("artifact_kind") == "project_graph_hybrid_retrieval_pipeline"
+        and pipeline.get("approval_boundary") == "batch27_external_reranker_and_hybrid_retrieval"
+        and pipeline.get("source_boundary") == "graph_static_semantic_and_reranker_gate_redacted_only"
+        and pipeline.get("fusion_policy", {}).get("source_backed_results_required") is True
+        and pipeline.get("fusion_policy", {}).get("component_scores_required") is True
+        and pipeline.get("fusion_policy", {}).get("fusion_explanation_required") is True
+        and pipeline.get("provider_policy", {}).get("provider_call_allowed") is False
+        and validate_hybrid_retrieval_pipeline(pipeline).get("ok") is True
+    )
+
+
+def _project_graph_hybrid_retrieval_explainable_fusion_present() -> bool:
+    pipeline = _project_graph_hybrid_pipeline()
+    packet = query_hybrid_retrieval(
+        pipeline,
+        {"query": "search", "text": "worker run", "max_results": 5},
+        graph=_project_graph_sample(),
+        static_index=_project_graph_static_index(),
+        semantic_index=_project_graph_semantic_index(),
+    )
+    first = packet.get("nodes", [{}])[0] if packet.get("nodes") else {}
+    return (
+        packet.get("status") == "ok"
+        and packet.get("search_backend") == "hybrid_retrieval"
+        and first.get("id") == "function:app.worker.run"
+        and first.get("confidence") == "present_unverified"
+        and isinstance(first.get("component_scores"), dict)
+        and isinstance(first.get("fusion_explanation"), dict)
+        and first.get("fusion_explanation", {}).get("source_backed") is True
+        and isinstance(first.get("evidence_refs"), dict)
+    )
+
+
+def _project_graph_hybrid_retrieval_fallback_present() -> bool:
+    pipeline = _project_graph_hybrid_pipeline()
+    packet = query_hybrid_retrieval(
+        pipeline,
+        {"query": "search", "text": "worker run", "max_results": 5},
+        graph=_project_graph_sample(),
+        static_index=_project_graph_static_index(),
+        semantic_index=_project_graph_semantic_index(),
+    )
+    failed_quality = evaluate_hybrid_retrieval_quality(
+        pipeline,
+        graph=_project_graph_sample(),
+        static_index=_project_graph_static_index(),
+        semantic_index=_project_graph_semantic_index(),
+        cases=_project_graph_external_reranker_eval_cases(),
+        thresholds={"min_precision_at_k": 1.1},
+    )
+    with tempfile.TemporaryDirectory() as tmp:
+        stage_root = Path(tmp) / "stage"
+        target = stage_root / HYBRID_RETRIEVAL_TARGET
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text("generated\n", encoding="utf-8")
+        disabled = disable_hybrid_retrieval_pipeline(stage_root, workspace=FIXTURES / "project-code-graph-minimal-python")
+    return (
+        packet.get("fallback") == "semantic_retrieval_or_graph_only"
+        and failed_quality.get("decision_status") == "disabled_fallback"
+        and "hybrid_precision_at_k_below_threshold" in failed_quality.get("failed_thresholds", [])
+        and disabled.get("rendered_artifacts", {}).get("status") == "disabled"
+        and disabled.get("rendered_artifacts", {}).get("deletion_proof", {}).get("remaining") == []
+    )
+
+
+def _project_graph_hybrid_retrieval_no_canonical_mutation_present() -> bool:
+    pipeline = _project_graph_hybrid_pipeline()
+    packet = query_hybrid_retrieval(
+        pipeline,
+        {"query": "search", "text": "worker run", "max_results": 5},
+        graph=_project_graph_sample(),
+        static_index=_project_graph_static_index(),
+        semantic_index=_project_graph_semantic_index(),
+    )
+    payload = json.dumps({"pipeline": pipeline, "packet": packet}, sort_keys=True).lower()
+    return (
+        "canonical_graph_mutation" in pipeline.get("blocked_surfaces", [])
+        and pipeline.get("provider_policy", {}).get("external_call_performed") is False
+        and packet.get("provider_policy", {}).get("provider_call_allowed") is False
+        and packet.get("provider_policy", {}).get("external_call_performed") is False
+        and packet.get("edges") == []
+        and "canonical_graph_mutation\": true" not in payload
         and "external_call_performed\": true" not in payload
         and "provider_call_allowed\": true" not in payload
     )
