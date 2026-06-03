@@ -36,6 +36,9 @@ REAL_TESTING_TARGETS_TARGET = Path(".codex/product-agent-os/project-code-graph-r
 PILOT_HARNESS_TARGET = Path(".codex/product-agent-os/project-code-graph-pilot-harness.json")
 CODEX_SURFACE_SMOKE_TARGET = Path(".codex/product-agent-os/project-code-graph-codex-surface-smoke.json")
 PILOT_MATRIX_TARGET = Path(".codex/product-agent-os/project-code-graph-real-testing-pilot-matrix.json")
+RUNTIME_BROWSER_QA_TARGET = Path(".codex/product-agent-os/project-code-graph-runtime-browser-qa.json")
+PERFORMANCE_BUDGET_TARGET = Path(".codex/product-agent-os/project-code-graph-performance-budget.json")
+STABILIZATION_LEDGER_TARGET = Path(".codex/product-agent-os/project-code-graph-stabilization-ledger.json")
 
 
 class ProjectGraphCliTest(unittest.TestCase):
@@ -2066,6 +2069,237 @@ class ProjectGraphCliTest(unittest.TestCase):
             ]:
                 self.assertFalse((stage_root / target).exists(), target)
 
+    def test_build_runtime_qa_cli_stage_disable(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "workspace"
+            stage_root = Path(tmp) / "stage"
+            live_approval_path = Path(tmp) / "live-approval.json"
+            runtime_approval_path = Path(tmp) / "runtime-approval.json"
+            audit_approval_path = Path(tmp) / "live-audit-approval.json"
+            real_testing_approval_path = Path(tmp) / "real-testing-approval.json"
+            runtime_qa_approval_path = Path(tmp) / "runtime-qa-approval.json"
+            live_actions_path = Path(tmp) / "live-actions.json"
+            security_cases_path = Path(tmp) / "security-cases.json"
+            audit_operability_path = Path(tmp) / "audit-operability.json"
+            targets_path = Path(tmp) / "targets.json"
+            gates_path = Path(tmp) / "gates.json"
+            pilot_steps_path = Path(tmp) / "pilot-steps.json"
+            codex_surfaces_path = Path(tmp) / "codex-surfaces.json"
+            pilot_matrix_path = Path(tmp) / "pilot-matrix.json"
+            browser_checks_path = Path(tmp) / "browser-checks.json"
+            performance_measurements_path = Path(tmp) / "performance-measurements.json"
+            defects_path = Path(tmp) / "defects.json"
+            (workspace / "app").mkdir(parents=True)
+            (workspace / "app" / "__init__.py").write_text("", encoding="utf-8")
+            (workspace / "app" / "worker.py").write_text("def run():\n    return 'ok'\n", encoding="utf-8")
+            live_approval_path.write_text(json.dumps(self._live_governance_approval()), encoding="utf-8")
+            runtime_approval_path.write_text(json.dumps(self._live_runtime_approval()), encoding="utf-8")
+            audit_approval_path.write_text(json.dumps(self._live_audit_approval()), encoding="utf-8")
+            real_testing_approval_path.write_text(json.dumps(self._real_testing_approval()), encoding="utf-8")
+            runtime_qa_approval_path.write_text(json.dumps(self._runtime_qa_approval()), encoding="utf-8")
+            live_actions_path.write_text(json.dumps({"live_actions": self._live_actions()}), encoding="utf-8")
+            security_cases_path.write_text(json.dumps({"security_cases": self._security_cases()}), encoding="utf-8")
+            targets_path.write_text(json.dumps({"targets": self._real_testing_targets()}), encoding="utf-8")
+            gates_path.write_text(json.dumps({"gate_statuses": self._real_testing_gate_statuses()}), encoding="utf-8")
+            pilot_steps_path.write_text(json.dumps({"pilot_steps": self._pilot_steps()}), encoding="utf-8")
+            codex_surfaces_path.write_text(json.dumps({"surfaces": self._codex_surfaces()}), encoding="utf-8")
+            pilot_matrix_path.write_text(json.dumps({"pilots": self._pilot_matrix()}), encoding="utf-8")
+            browser_checks_path.write_text(json.dumps(self._browser_checks()), encoding="utf-8")
+            performance_measurements_path.write_text(
+                json.dumps({"measurements": self._performance_measurements()}),
+                encoding="utf-8",
+            )
+            defects_path.write_text(json.dumps({"defects": self._stabilization_defects()}), encoding="utf-8")
+
+            setup_commands = [
+                [sys.executable, str(SCRIPT), str(workspace), "--stage", str(stage_root)],
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--validate-live-governance",
+                    "--live-approval",
+                    str(live_approval_path),
+                    "--stage",
+                    str(stage_root),
+                ],
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--validate-live-runtime",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--live-governance",
+                    str(stage_root / ".codex/product-agent-os/project-code-graph-live-governance.json"),
+                    "--live-runtime-approval",
+                    str(runtime_approval_path),
+                    "--stage",
+                    str(stage_root),
+                ],
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--build-live-audit",
+                    "--live-governance",
+                    str(stage_root / ".codex/product-agent-os/project-code-graph-live-governance.json"),
+                    "--live-runtime",
+                    str(stage_root / LIVE_RUNTIME_TARGET),
+                    "--live-audit-approval",
+                    str(audit_approval_path),
+                    "--live-actions",
+                    str(live_actions_path),
+                    "--security-cases",
+                    str(security_cases_path),
+                    "--stage",
+                    str(stage_root),
+                ],
+            ]
+            for command in setup_commands:
+                result = subprocess.run(command, check=False, capture_output=True, text=True)
+                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+                self.assertEqual(result.stderr, "")
+                self.assertNotIn(str(workspace), result.stdout)
+                self.assertNotIn("return 'ok'", result.stdout)
+
+            self._write_audit_operability_packet(stage_root, audit_operability_path)
+            real_testing = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--build-real-testing-readiness",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--live-governance",
+                    str(stage_root / ".codex/product-agent-os/project-code-graph-live-governance.json"),
+                    "--live-runtime",
+                    str(stage_root / LIVE_RUNTIME_TARGET),
+                    "--real-testing-audit-operability",
+                    str(audit_operability_path),
+                    "--real-testing-approval",
+                    str(real_testing_approval_path),
+                    "--real-testing-targets",
+                    str(targets_path),
+                    "--real-testing-gates",
+                    str(gates_path),
+                    "--pilot-steps",
+                    str(pilot_steps_path),
+                    "--codex-surfaces",
+                    str(codex_surfaces_path),
+                    "--pilot-matrix",
+                    str(pilot_matrix_path),
+                    "--stage",
+                    str(stage_root),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            missing_approval = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--build-runtime-qa",
+                    "--real-testing-readiness",
+                    str(stage_root / REAL_TESTING_READINESS_TARGET),
+                    "--codex-surface-smoke",
+                    str(stage_root / CODEX_SURFACE_SMOKE_TARGET),
+                    "--live-runtime",
+                    str(stage_root / LIVE_RUNTIME_TARGET),
+                    "--browser-checks",
+                    str(browser_checks_path),
+                    "--performance-measurements",
+                    str(performance_measurements_path),
+                    "--stabilization-defects",
+                    str(defects_path),
+                    "--stage",
+                    str(stage_root),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            build = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--build-runtime-qa",
+                    "--real-testing-readiness",
+                    str(stage_root / REAL_TESTING_READINESS_TARGET),
+                    "--codex-surface-smoke",
+                    str(stage_root / CODEX_SURFACE_SMOKE_TARGET),
+                    "--live-runtime",
+                    str(stage_root / LIVE_RUNTIME_TARGET),
+                    "--runtime-qa-approval",
+                    str(runtime_qa_approval_path),
+                    "--browser-checks",
+                    str(browser_checks_path),
+                    "--performance-measurements",
+                    str(performance_measurements_path),
+                    "--stabilization-defects",
+                    str(defects_path),
+                    "--stage",
+                    str(stage_root),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(real_testing.returncode, 0, real_testing.stdout + real_testing.stderr)
+            self.assertEqual(missing_approval.returncode, 1)
+            self.assertEqual(build.returncode, 0, build.stdout + build.stderr)
+            self.assertEqual(build.stderr, "")
+            payload = json.loads(build.stdout)
+            self.assertEqual(payload["rendered_artifacts"]["mode"], "build-runtime-qa")
+            self.assertEqual(payload["rendered_artifacts"]["status"], "ready")
+            self.assertFalse(payload["rendered_artifacts"]["provider_call_allowed"])
+            self.assertFalse(payload["rendered_artifacts"]["external_call_performed"])
+            self.assertFalse(payload["rendered_artifacts"]["live_server_started"])
+            self.assertEqual(payload["rendered_artifacts"]["canonical_graph_mutation"], "not_performed")
+            for target in [RUNTIME_BROWSER_QA_TARGET, PERFORMANCE_BUDGET_TARGET, STABILIZATION_LEDGER_TARGET]:
+                self.assertTrue((stage_root / target).exists(), target)
+                self.assertFalse((workspace / target).exists(), target)
+            qa = json.loads((stage_root / RUNTIME_BROWSER_QA_TARGET).read_text(encoding="utf-8"))
+            performance = json.loads((stage_root / PERFORMANCE_BUDGET_TARGET).read_text(encoding="utf-8"))
+            stabilization = json.loads((stage_root / STABILIZATION_LEDGER_TARGET).read_text(encoding="utf-8"))
+            self.assertEqual(qa["artifact_kind"], "project_graph_runtime_browser_qa")
+            self.assertTrue(qa["console_network_checks_present"])
+            self.assertTrue(qa["mobile_overflow_check_present"])
+            self.assertTrue(qa["generated_view_labels_visible"])
+            self.assertTrue(qa["source_boundary_labels_visible"])
+            self.assertTrue(qa["no_external_requests_beyond_approved_providers"])
+            self.assertEqual(performance["breach_summary"]["breaches"], 1)
+            self.assertTrue(performance["budget_breach_disables_live_layer_or_records_accepted_gap"])
+            self.assertTrue(stabilization["no_open_p0_p1"])
+            self.assertTrue(stabilization["remaining_issues_have_owner_risk_follow_up"])
+            self.assertNotIn(str(workspace), build.stdout)
+            self.assertNotIn("return 'ok'", build.stdout)
+            self.assertNotIn("sk-runtime-secret", build.stdout)
+            self.assertNotIn("C:\\Users\\private\\target", build.stdout)
+
+            disable = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--disable-runtime-qa",
+                    "--stage",
+                    str(stage_root),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(disable.returncode, 0, disable.stdout + disable.stderr)
+            for target in [RUNTIME_BROWSER_QA_TARGET, PERFORMANCE_BUDGET_TARGET, STABILIZATION_LEDGER_TARGET]:
+                self.assertFalse((stage_root / target).exists(), target)
+
     def test_disable_llm_proposals_cli_removes_generated_proposals_without_touching_workspace(self):
         with tempfile.TemporaryDirectory() as tmp:
             workspace = Path(tmp) / "workspace"
@@ -2883,6 +3117,97 @@ class ProjectGraphCliTest(unittest.TestCase):
             {"archetype": "evals", "surface": "CLI", "pilot_id": "fixture-eval", "status": "planned"},
             {"archetype": "automation", "surface": "IDE extension", "pilot_id": "accepted-gap", "status": "accepted_gap"},
             {"archetype": "ai_rag", "surface": "CLI", "pilot_id": "semantic-gate", "status": "planned"},
+        ]
+
+    def _runtime_qa_approval(self) -> dict:
+        return {
+            "explicit_approval": True,
+            "owner": "Product-Agent OS Maintainer",
+            "allowed_surfaces": [
+                "runtime_browser_qa",
+                "runtime_performance_budget",
+                "runtime_stabilization_loop",
+            ],
+            "qa_policy": {
+                "browser_smoke_required": True,
+                "console_network_checks_required": True,
+                "mobile_overflow_check_required": True,
+                "generated_view_labels_required": True,
+                "source_boundary_labels_required": True,
+                "external_requests_require_approved_provider": True,
+            },
+            "performance_policy": {
+                "max_nodes": 10000,
+                "max_edges": 30000,
+                "max_search_latency_ms": 250,
+                "max_provider_latency_ms": 0,
+                "max_memory_mb": 512,
+                "breach_policy": "disable_live_layer_or_accepted_gap",
+            },
+            "stabilization_policy": {
+                "severity_policy_required": True,
+                "no_open_p0_p1": True,
+                "remaining_issue_owner_required": True,
+                "rerun_plan_required": True,
+            },
+            "rollback_path": "delete generated Batch 33 runtime QA, performance and stabilization artifacts under stage root",
+            "residual_risks": ["browser evidence remains staged until owner approves real testing execution"],
+        }
+
+    def _browser_checks(self) -> dict:
+        return {
+            "browser_smoke": {"status": "passed", "browser_automation_started": False},
+            "console": {"errors": []},
+            "network": {
+                "requests": [
+                    {"url": "local://project-cockpit", "external": False, "approved_provider": False},
+                ]
+            },
+            "mobile": [{"viewport": "390x844", "status": "passed", "horizontal_overflow": False}],
+            "labels": {
+                "generated_view_label_visible": True,
+                "source_boundary_label_visible": True,
+                "not_source_of_truth_label_visible": True,
+            },
+            "unsafe_fixture": "C:\\Users\\private\\target token=sk-runtime-secret def run():\n    return 'raw'",
+        }
+
+    def _performance_measurements(self) -> list[dict]:
+        return [
+            {
+                "scenario": "synthetic-large-graph",
+                "node_count": 9000,
+                "edge_count": 22000,
+                "search_latency_ms": 180,
+                "provider_latency_ms": 0,
+                "memory_mb": 420,
+                "breach_mitigation": "not_needed",
+            },
+            {
+                "scenario": "accepted-gap-provider-latency",
+                "node_count": 1000,
+                "edge_count": 1200,
+                "search_latency_ms": 80,
+                "provider_latency_ms": 50,
+                "memory_mb": 120,
+                "breach_mitigation": "accepted_gap",
+                "owner": "Product-Agent OS Maintainer",
+                "risk": "Provider path remains disabled until approved real testing.",
+                "follow_up_condition": "Separate provider approval must define latency budget before use.",
+            },
+        ]
+
+    def _stabilization_defects(self) -> list[dict]:
+        return [
+            {
+                "defect_id": "B33-P2-001",
+                "severity": "P2",
+                "status": "accepted_gap",
+                "owner": "Product-Agent OS Maintainer",
+                "risk": "IDE extension smoke unavailable in current workspace.",
+                "follow_up_condition": "Run IDE smoke when the surface is available.",
+                "rerun_plan": ["focused Batch 33 tests", "fixture eval"],
+            }
         ]
 
     def _review_decisions(self, proposals: dict) -> dict:

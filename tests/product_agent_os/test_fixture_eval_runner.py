@@ -292,6 +292,31 @@ class FixtureEvalRunnerTest(unittest.TestCase):
             results["python-app"]["expected_checks"]["project_graph_real_testing_no_unapproved_actions_present"]
         )
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_real_testing_stage_disable_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_runtime_browser_qa_present"])
+        self.assertTrue(
+            results["python-app"]["expected_checks"][
+                "project_graph_runtime_browser_qa_console_network_checks_present"
+            ]
+        )
+        self.assertTrue(
+            results["python-app"]["expected_checks"][
+                "project_graph_runtime_browser_qa_mobile_overflow_labels_present"
+            ]
+        )
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_performance_budget_present"])
+        self.assertTrue(
+            results["python-app"]["expected_checks"][
+                "project_graph_performance_budget_threshold_fallback_present"
+            ]
+        )
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_stabilization_ledger_present"])
+        self.assertTrue(
+            results["python-app"]["expected_checks"]["project_graph_stabilization_no_open_p0_p1_present"]
+        )
+        self.assertTrue(
+            results["python-app"]["expected_checks"]["project_graph_runtime_qa_no_unapproved_actions_present"]
+        )
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_runtime_qa_stage_disable_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_hybrid_retrieval_pipeline_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_hybrid_retrieval_explainable_fusion_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_hybrid_retrieval_fallback_present"])

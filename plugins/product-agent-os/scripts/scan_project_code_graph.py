@@ -39,6 +39,10 @@ from product_agent_os.project_graph_real_testing import (  # noqa: E402
     disable_real_testing_readiness,
     stage_real_testing_readiness,
 )
+from product_agent_os.project_graph_runtime_qa import (  # noqa: E402
+    disable_runtime_qa,
+    stage_runtime_qa,
+)
 from product_agent_os.project_graph_embedding_provider import (  # noqa: E402
     disable_embedding_provider_gate,
     stage_embedding_provider_gate,
@@ -115,6 +119,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--disable-live-audit", action="store_true", help="Delete generated Task 26 Batch 31 audit, security, observability and handoff artifacts from --stage.")
     parser.add_argument("--build-real-testing-readiness", action="store_true", help="Stage Task 26 Batch 32 real testing readiness, target consent and pilot artifacts.")
     parser.add_argument("--disable-real-testing-readiness", action="store_true", help="Delete generated Task 26 Batch 32 real testing readiness and pilot artifacts from --stage.")
+    parser.add_argument("--build-runtime-qa", action="store_true", help="Stage Task 26 Batch 33 runtime browser QA, performance budget and stabilization artifacts.")
+    parser.add_argument("--disable-runtime-qa", action="store_true", help="Delete generated Task 26 Batch 33 runtime QA artifacts from --stage.")
     parser.add_argument("--graph", help="Path to project-code-graph.json or project-code-graph.jsonl for query mode.")
     parser.add_argument("--index", help="Optional project-code-graph-search-index.json for indexed search query mode.")
     parser.add_argument("--backend", help="Optional project-code-graph-backend.json for backend query mode.")
@@ -148,6 +154,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--pilot-steps", help="JSON list or object with pilot_steps/steps for Batch 32.")
     parser.add_argument("--codex-surfaces", help="JSON list or object with surfaces/codex_surfaces for Batch 32.")
     parser.add_argument("--pilot-matrix", help="JSON list or object with pilots/pilot_matrix for Batch 32.")
+    parser.add_argument("--runtime-qa-approval", help="JSON approval packet for Batch 33 runtime QA mode.")
+    parser.add_argument("--real-testing-readiness", help="Generated project-code-graph-real-testing-readiness.json for Batch 33.")
+    parser.add_argument("--codex-surface-smoke", help="Generated project-code-graph-codex-surface-smoke.json for Batch 33.")
+    parser.add_argument("--browser-checks", help="JSON object with browser smoke, console/network, mobile and label checks for Batch 33.")
+    parser.add_argument("--performance-measurements", help="JSON list or object with measurements/performance_measurements for Batch 33.")
+    parser.add_argument("--stabilization-defects", help="JSON list or object with defects/stabilization_defects for Batch 33.")
     parser.add_argument("--reranker-provider", help="Generated project-code-graph-reranker-provider.json for hybrid mode.")
     parser.add_argument("--verification-evidence", help="JSON evidence packet for --verify-extensions.")
     parser.add_argument("--node-id", help="Source node id for graph query mode.")
@@ -196,6 +208,8 @@ def main(argv: list[str] | None = None) -> int:
             and not args.disable_live_audit
             and not args.build_real_testing_readiness
             and not args.disable_real_testing_readiness
+            and not args.build_runtime_qa
+            and not args.disable_runtime_qa
         )
         + int(bool(args.query))
         + int(bool(args.build_index))
@@ -227,6 +241,8 @@ def main(argv: list[str] | None = None) -> int:
         + int(bool(args.disable_live_audit))
         + int(bool(args.build_real_testing_readiness))
         + int(bool(args.disable_real_testing_readiness))
+        + int(bool(args.build_runtime_qa))
+        + int(bool(args.disable_runtime_qa))
     )
     if mode_count != 1:
         return _print_error(
@@ -239,7 +255,7 @@ def main(argv: list[str] | None = None) -> int:
             "--validate-llm-proposal-provider, --disable-llm-proposal-provider, --build-review-ledger, "
             "--disable-review-ledger, --build-canonical-mutation, --disable-canonical-mutation, "
             "--build-live-audit, --disable-live-audit, --build-real-testing-readiness, "
-            "or --disable-real-testing-readiness",
+            "--disable-real-testing-readiness, --build-runtime-qa, or --disable-runtime-qa",
             exit_code=2,
         )
 
@@ -839,6 +855,62 @@ def main(argv: list[str] | None = None) -> int:
                 raise ProjectGraphCliError("workspace is not a directory")
             try:
                 result = disable_real_testing_readiness(Path(args.stage), workspace=workspace)
+            except ValueError as exc:
+                raise ProjectGraphCliError(str(exc)) from exc
+            print(json.dumps(_redacted_payload(result), indent=2, sort_keys=True))
+            return 0 if result.get("rendered_artifacts", {}).get("status") == "disabled" else 1
+        if args.build_runtime_qa:
+            if not args.real_testing_readiness:
+                raise ProjectGraphCliError("build-runtime-qa mode requires --real-testing-readiness")
+            if not args.codex_surface_smoke:
+                raise ProjectGraphCliError("build-runtime-qa mode requires --codex-surface-smoke")
+            if not args.live_runtime:
+                raise ProjectGraphCliError("build-runtime-qa mode requires --live-runtime")
+            if not args.stage:
+                raise ProjectGraphCliError("build-runtime-qa mode requires --stage")
+            workspace = Path(args.workspace).resolve()
+            if not workspace.exists():
+                raise ProjectGraphCliError("workspace does not exist")
+            if not workspace.is_dir():
+                raise ProjectGraphCliError("workspace is not a directory")
+            approval = _load_json_file(args.runtime_qa_approval) if args.runtime_qa_approval else None
+            browser_checks = _load_json_file(args.browser_checks) if args.browser_checks else {}
+            performance_measurements = (
+                _load_json_list_file(args.performance_measurements, "measurements", "performance_measurements")
+                if args.performance_measurements
+                else []
+            )
+            defects = (
+                _load_json_list_file(args.stabilization_defects, "defects", "stabilization_defects")
+                if args.stabilization_defects
+                else []
+            )
+            try:
+                result = stage_runtime_qa(
+                    Path(args.stage),
+                    workspace=workspace,
+                    approval=approval,
+                    readiness_artifact=Path(args.real_testing_readiness),
+                    smoke_artifact=Path(args.codex_surface_smoke),
+                    runtime_artifact=Path(args.live_runtime),
+                    browser_checks=browser_checks,
+                    performance_measurements=performance_measurements,
+                    defects=defects,
+                )
+            except ValueError as exc:
+                raise ProjectGraphCliError(str(exc)) from exc
+            print(json.dumps(_redacted_payload(result), indent=2, sort_keys=True))
+            return 0 if result.get("rendered_artifacts", {}).get("status") == "ready" else 1
+        if args.disable_runtime_qa:
+            if not args.stage:
+                raise ProjectGraphCliError("disable-runtime-qa mode requires --stage")
+            workspace = Path(args.workspace).resolve()
+            if not workspace.exists():
+                raise ProjectGraphCliError("workspace does not exist")
+            if not workspace.is_dir():
+                raise ProjectGraphCliError("workspace is not a directory")
+            try:
+                result = disable_runtime_qa(Path(args.stage), workspace=workspace)
             except ValueError as exc:
                 raise ProjectGraphCliError(str(exc)) from exc
             print(json.dumps(_redacted_payload(result), indent=2, sort_keys=True))

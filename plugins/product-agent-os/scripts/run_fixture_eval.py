@@ -147,6 +147,20 @@ from product_agent_os.project_graph_real_testing import (  # noqa: E402
     validate_real_testing_readiness_packet,
     validate_use_case_pilot_matrix,
 )
+from product_agent_os.project_graph_runtime_qa import (  # noqa: E402
+    PERFORMANCE_BUDGET_TARGET,
+    RUNTIME_BROWSER_QA_TARGET,
+    STABILIZATION_LEDGER_TARGET,
+    build_performance_budget_packet,
+    build_runtime_browser_qa_packet,
+    build_stabilization_ledger_packet,
+    disable_runtime_qa,
+    stage_runtime_qa,
+    validate_performance_budget_packet,
+    validate_runtime_browser_qa_packet,
+    validate_runtime_qa_approval,
+    validate_stabilization_ledger_packet,
+)
 from product_agent_os.project_graph_embedding_provider import (  # noqa: E402
     EMBEDDING_PROVIDER_CACHE_TARGET,
     EMBEDDING_PROVIDER_TARGET,
@@ -2390,6 +2404,33 @@ def _expected_checks(
         )
         checks["project_graph_real_testing_stage_disable_present"] = (
             _project_graph_real_testing_stage_disable_present()
+        )
+        checks["project_graph_runtime_browser_qa_present"] = (
+            _project_graph_runtime_browser_qa_present()
+        )
+        checks["project_graph_runtime_browser_qa_console_network_checks_present"] = (
+            _project_graph_runtime_browser_qa_console_network_checks_present()
+        )
+        checks["project_graph_runtime_browser_qa_mobile_overflow_labels_present"] = (
+            _project_graph_runtime_browser_qa_mobile_overflow_labels_present()
+        )
+        checks["project_graph_performance_budget_present"] = (
+            _project_graph_performance_budget_present()
+        )
+        checks["project_graph_performance_budget_threshold_fallback_present"] = (
+            _project_graph_performance_budget_threshold_fallback_present()
+        )
+        checks["project_graph_stabilization_ledger_present"] = (
+            _project_graph_stabilization_ledger_present()
+        )
+        checks["project_graph_stabilization_no_open_p0_p1_present"] = (
+            _project_graph_stabilization_no_open_p0_p1_present()
+        )
+        checks["project_graph_runtime_qa_no_unapproved_actions_present"] = (
+            _project_graph_runtime_qa_no_unapproved_actions_present()
+        )
+        checks["project_graph_runtime_qa_stage_disable_present"] = (
+            _project_graph_runtime_qa_stage_disable_present()
         )
         checks["project_graph_hybrid_retrieval_pipeline_present"] = (
             _project_graph_hybrid_retrieval_pipeline_present()
@@ -6920,6 +6961,270 @@ def _project_graph_real_testing_stage_disable_present() -> bool:
         and files_exist
         and disabled.get("rendered_artifacts", {}).get("status") == "disabled"
         and deletion.get("delete_generated_real_testing_artifacts") is True
+        and files_removed
+    )
+
+
+def _project_graph_runtime_qa_approval() -> dict[str, Any]:
+    return {
+        "explicit_approval": True,
+        "owner": "Product-Agent OS Maintainer",
+        "allowed_surfaces": [
+            "runtime_browser_qa",
+            "runtime_performance_budget",
+            "runtime_stabilization_loop",
+        ],
+        "qa_policy": {
+            "browser_smoke_required": True,
+            "console_network_checks_required": True,
+            "mobile_overflow_check_required": True,
+            "generated_view_labels_required": True,
+            "source_boundary_labels_required": True,
+            "external_requests_require_approved_provider": True,
+        },
+        "performance_policy": {
+            "max_nodes": 10000,
+            "max_edges": 30000,
+            "max_search_latency_ms": 250,
+            "max_provider_latency_ms": 0,
+            "max_memory_mb": 512,
+            "breach_policy": "disable_live_layer_or_accepted_gap",
+        },
+        "stabilization_policy": {
+            "severity_policy_required": True,
+            "no_open_p0_p1": True,
+            "remaining_issue_owner_required": True,
+            "rerun_plan_required": True,
+        },
+        "rollback_path": "delete generated Batch 33 runtime QA, performance and stabilization artifacts under stage root",
+        "residual_risks": ["browser evidence remains staged until owner approves real testing execution"],
+    }
+
+
+def _project_graph_browser_checks() -> dict[str, Any]:
+    return {
+        "browser_smoke": {"status": "passed", "browser_automation_started": False},
+        "console": {"errors": []},
+        "network": {
+            "requests": [
+                {"url": "local://project-cockpit", "external": False, "approved_provider": False},
+            ]
+        },
+        "mobile": [{"viewport": "390x844", "status": "passed", "horizontal_overflow": False}],
+        "labels": {
+            "generated_view_label_visible": True,
+            "source_boundary_label_visible": True,
+            "not_source_of_truth_label_visible": True,
+        },
+        "unsafe_fixture": "C:\\Users\\private\\target token=sk-runtime-secret def run():\n    return 'raw'",
+    }
+
+
+def _project_graph_performance_measurements() -> list[dict[str, Any]]:
+    return [
+        {
+            "scenario": "synthetic-large-graph",
+            "node_count": 9000,
+            "edge_count": 22000,
+            "search_latency_ms": 180,
+            "provider_latency_ms": 0,
+            "memory_mb": 420,
+            "breach_mitigation": "not_needed",
+        },
+        {
+            "scenario": "accepted-gap-provider-latency",
+            "node_count": 1000,
+            "edge_count": 1200,
+            "search_latency_ms": 80,
+            "provider_latency_ms": 50,
+            "memory_mb": 120,
+            "breach_mitigation": "accepted_gap",
+            "owner": "Product-Agent OS Maintainer",
+            "risk": "Provider path remains disabled until approved real testing.",
+            "follow_up_condition": "Separate provider approval must define latency budget before use.",
+        },
+    ]
+
+
+def _project_graph_stabilization_defects() -> list[dict[str, Any]]:
+    return [
+        {
+            "defect_id": "B33-P2-001",
+            "severity": "P2",
+            "status": "accepted_gap",
+            "owner": "Product-Agent OS Maintainer",
+            "risk": "IDE extension smoke unavailable in current fixture.",
+            "follow_up_condition": "Run IDE smoke when the surface is available.",
+            "rerun_plan": ["focused Batch 33 tests", "fixture eval"],
+        }
+    ]
+
+
+def _project_graph_runtime_browser_qa() -> dict[str, Any]:
+    return build_runtime_browser_qa_packet(
+        readiness_packet=_project_graph_real_testing_readiness(),
+        smoke_plan=_project_graph_real_testing_smoke(),
+        runtime_contract=_project_graph_live_runtime_contract(),
+        approval=_project_graph_runtime_qa_approval(),
+        browser_checks=_project_graph_browser_checks(),
+    )
+
+
+def _project_graph_performance_budget() -> dict[str, Any]:
+    return build_performance_budget_packet(
+        readiness_packet=_project_graph_real_testing_readiness(),
+        runtime_contract=_project_graph_live_runtime_contract(),
+        approval=_project_graph_runtime_qa_approval(),
+        measurements=_project_graph_performance_measurements(),
+    )
+
+
+def _project_graph_stabilization_ledger() -> dict[str, Any]:
+    return build_stabilization_ledger_packet(
+        qa_packet=_project_graph_runtime_browser_qa(),
+        performance_packet=_project_graph_performance_budget(),
+        approval=_project_graph_runtime_qa_approval(),
+        defects=_project_graph_stabilization_defects(),
+    )
+
+
+def _project_graph_runtime_browser_qa_present() -> bool:
+    approval = _project_graph_runtime_qa_approval()
+    readiness = _project_graph_real_testing_readiness()
+    qa = _project_graph_runtime_browser_qa()
+    return (
+        validate_runtime_qa_approval(approval, readiness).get("ok") is True
+        and qa.get("artifact_kind") == "project_graph_runtime_browser_qa"
+        and qa.get("status") == "ready"
+        and qa.get("target") == RUNTIME_BROWSER_QA_TARGET
+        and qa.get("staged_evidence_only") is True
+        and qa.get("live_server_started") is False
+        and validate_runtime_browser_qa_packet(qa).get("ok") is True
+    )
+
+
+def _project_graph_runtime_browser_qa_console_network_checks_present() -> bool:
+    qa = _project_graph_runtime_browser_qa()
+    return (
+        qa.get("console_network_checks_present") is True
+        and qa.get("console_errors") == []
+        and qa.get("no_external_requests_beyond_approved_providers") is True
+        and all(request.get("external") is False for request in qa.get("network_requests", []))
+    )
+
+
+def _project_graph_runtime_browser_qa_mobile_overflow_labels_present() -> bool:
+    qa = _project_graph_runtime_browser_qa()
+    return (
+        qa.get("mobile_overflow_check_present") is True
+        and all(check.get("horizontal_overflow") is False for check in qa.get("mobile_checks", []))
+        and qa.get("generated_view_labels_visible") is True
+        and qa.get("source_boundary_labels_visible") is True
+        and qa.get("not_source_of_truth_label_visible") is True
+    )
+
+
+def _project_graph_performance_budget_present() -> bool:
+    budget = _project_graph_performance_budget()
+    return (
+        budget.get("artifact_kind") == "project_graph_performance_budget"
+        and budget.get("status") == "ready"
+        and budget.get("target") == PERFORMANCE_BUDGET_TARGET
+        and budget.get("node_edge_search_provider_latency_caps_present") is True
+        and budget.get("memory_bounds_present") is True
+        and validate_performance_budget_packet(budget).get("ok") is True
+    )
+
+
+def _project_graph_performance_budget_threshold_fallback_present() -> bool:
+    budget = _project_graph_performance_budget()
+    return (
+        budget.get("breach_summary", {}).get("breaches") == 1
+        and budget.get("breach_summary", {}).get("unmitigated_breaches") == 0
+        and budget.get("budget_breach_disables_live_layer_or_records_accepted_gap") is True
+        and budget.get("runtime_layer_state") == "disabled_or_accepted_gap"
+    )
+
+
+def _project_graph_stabilization_ledger_present() -> bool:
+    ledger = _project_graph_stabilization_ledger()
+    return (
+        ledger.get("artifact_kind") == "project_graph_stabilization_ledger"
+        and ledger.get("status") == "ready"
+        and ledger.get("target") == STABILIZATION_LEDGER_TARGET
+        and ledger.get("severity_policy_present") is True
+        and ledger.get("fix_or_accepted_gap_ledger_present") is True
+        and ledger.get("rerun_plan_present") is True
+        and validate_stabilization_ledger_packet(ledger).get("ok") is True
+    )
+
+
+def _project_graph_stabilization_no_open_p0_p1_present() -> bool:
+    ledger = _project_graph_stabilization_ledger()
+    return (
+        ledger.get("no_open_p0_p1") is True
+        and ledger.get("defect_summary", {}).get("open_p0_p1") == 0
+        and ledger.get("remaining_issues_have_owner_risk_follow_up") is True
+    )
+
+
+def _project_graph_runtime_qa_no_unapproved_actions_present() -> bool:
+    packets = [
+        _project_graph_runtime_browser_qa(),
+        _project_graph_performance_budget(),
+        _project_graph_stabilization_ledger(),
+    ]
+    payload = json.dumps(packets, sort_keys=True).lower()
+    return (
+        all(packet.get("provider_call_allowed") is False for packet in packets)
+        and all(packet.get("external_call_performed") is False for packet in packets)
+        and all(packet.get("live_server_started") is False for packet in packets)
+        and all(packet.get("canonical_graph_mutation") == "not_performed" for packet in packets)
+        and "provider_call_allowed\": true" not in payload
+        and "external_call_performed\": true" not in payload
+        and "live_server_started\": true" not in payload
+        and "canonical_graph_mutation\": true" not in payload
+        and "sk-runtime-secret" not in payload
+        and "return 'raw'" not in payload
+    )
+
+
+def _project_graph_runtime_qa_stage_disable_present() -> bool:
+    with tempfile.TemporaryDirectory() as tmp:
+        stage_root = Path(tmp) / "stage"
+        readiness_path = Path(tmp) / "readiness.json"
+        smoke_path = Path(tmp) / "smoke.json"
+        runtime_path = Path(tmp) / "runtime.json"
+        readiness_path.write_text(json.dumps(_project_graph_real_testing_readiness()), encoding="utf-8")
+        smoke_path.write_text(json.dumps(_project_graph_real_testing_smoke()), encoding="utf-8")
+        runtime_path.write_text(json.dumps(_project_graph_live_runtime_contract()), encoding="utf-8")
+        staged = stage_runtime_qa(
+            stage_root,
+            workspace=FIXTURES / "project-code-graph-minimal-python",
+            approval=_project_graph_runtime_qa_approval(),
+            readiness_artifact=readiness_path,
+            smoke_artifact=smoke_path,
+            runtime_artifact=runtime_path,
+            browser_checks=_project_graph_browser_checks(),
+            performance_measurements=_project_graph_performance_measurements(),
+            defects=_project_graph_stabilization_defects(),
+        )
+        files_exist = all(
+            (stage_root / relative).exists()
+            for relative in [RUNTIME_BROWSER_QA_TARGET, PERFORMANCE_BUDGET_TARGET, STABILIZATION_LEDGER_TARGET]
+        )
+        disabled = disable_runtime_qa(stage_root, workspace=FIXTURES / "project-code-graph-minimal-python")
+        files_removed = all(
+            not (stage_root / relative).exists()
+            for relative in [RUNTIME_BROWSER_QA_TARGET, PERFORMANCE_BUDGET_TARGET, STABILIZATION_LEDGER_TARGET]
+        )
+    deletion = disabled.get("rendered_artifacts", {}).get("deletion_proof", {})
+    return (
+        staged.get("rendered_artifacts", {}).get("mode") == "build-runtime-qa"
+        and staged.get("rendered_artifacts", {}).get("status") == "ready"
+        and files_exist
+        and disabled.get("rendered_artifacts", {}).get("status") == "disabled"
+        and deletion.get("delete_generated_runtime_qa_artifacts") is True
         and files_removed
     )
 

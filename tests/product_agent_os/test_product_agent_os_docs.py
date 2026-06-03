@@ -1661,6 +1661,129 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 with self.subTest(control_plane=filename, term=expected):
                     self.assertIn(expected, text)
 
+    def test_track10_task26_batch33_runtime_qa_performance_stabilization_is_synced(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        documents = {
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+            "product_index": (PRODUCT_AGENT_OS / "index.md").read_text(encoding="utf-8"),
+            "technical": (PRODUCT_AGENT_OS / "technical.md").read_text(encoding="utf-8"),
+            "scenarios": (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8"),
+        }
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "agents": AGENTS.read_text(encoding="utf-8"),
+        }
+
+        registry_terms = [
+            "Product-Agent OS Track 10 Task 26 Batch 33 runtime browser QA performance and stabilization",
+            "T10-LIVE-M32..M34",
+            "project_graph_runtime_qa.py",
+            "runtime-browser-qa.json",
+            "performance-budget.json",
+            "stabilization-ledger.json",
+            "project_graph_runtime_browser_qa_present",
+            "project_graph_performance_budget_threshold_fallback_present",
+            "project_graph_stabilization_no_open_p0_p1_present",
+            "project_graph_runtime_qa_stage_disable_present",
+            "verification_status:",
+        ]
+        for expected in registry_terms:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        backlog_terms = [
+            "Task 26 Batch 33 Closure",
+            "| `done` | `T10-LIVE-M32..M34` runtime browser QA performance and stabilization |",
+            "Batch 33 explicit approval",
+            "browser smoke",
+            "console/network checks",
+            "mobile overflow",
+            "generated-view labels",
+            "source-boundary labels",
+            "budget breach disables live layer or records accepted gap",
+            "No open P0/P1",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for expected in backlog_terms:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        docs_terms = [
+            "Task 26 Batch 33",
+            "T10-LIVE-M32..M34",
+            "Runtime Browser QA, Performance And Stabilization",
+            "project_graph_runtime_qa.py",
+            "project-code-graph-runtime-browser-qa.json",
+            "project-code-graph-performance-budget.json",
+            "project-code-graph-stabilization-ledger.json",
+            "project_graph_runtime_browser_qa",
+            "project_graph_performance_budget",
+            "project_graph_stabilization_ledger",
+            "batch33_runtime_browser_qa_performance_stabilization",
+            "runtime_browser_qa",
+            "runtime_performance_budget",
+            "runtime_stabilization_loop",
+            "browser smoke",
+            "console/network checks",
+            "mobile overflow",
+            "generated-view labels",
+            "source-boundary labels",
+            "budget breach disables live layer or records accepted gap",
+            "No open P0/P1",
+            "staged evidence only",
+            "not source of truth",
+            "no live server",
+            "no provider calls",
+            "no live external model/API calls",
+            "no canonical graph mutation",
+        ]
+        for document, text in documents.items():
+            for expected in docs_terms:
+                with self.subTest(document=document, term=expected):
+                    self.assertIn(expected, text)
+
+        control_terms = [
+            "Task 26 Batch 33",
+            "T10-LIVE-M32..M34",
+            "project_graph_runtime_qa.py",
+            "runtime-browser-qa.json",
+            "performance-budget.json",
+            "stabilization-ledger.json",
+            "project_graph_runtime_browser_qa_present",
+            "project_graph_runtime_browser_qa_console_network_checks_present",
+            "project_graph_runtime_browser_qa_mobile_overflow_labels_present",
+            "project_graph_performance_budget_present",
+            "project_graph_performance_budget_threshold_fallback_present",
+            "project_graph_stabilization_ledger_present",
+            "project_graph_stabilization_no_open_p0_p1_present",
+            "project_graph_runtime_qa_no_unapproved_actions_present",
+            "project_graph_runtime_qa_stage_disable_present",
+            "browser smoke",
+            "console/network checks",
+            "mobile overflow",
+            "generated-view labels",
+            "source-boundary labels",
+            "budget breach disables live layer or records accepted gap",
+            "No open P0/P1",
+            "provider_call_allowed",
+            "external_call_performed",
+            "no live server",
+            "no provider calls",
+            "no live external model/API calls",
+            "no canonical graph mutation",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for filename, text in control_plane.items():
+            for expected in control_terms:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
     def test_track10_task25_batch20_local_backend_gate_is_synced(self):
         registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
         backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
