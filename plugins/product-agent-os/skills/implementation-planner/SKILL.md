@@ -18,6 +18,8 @@ Guided question protocol: ask the smallest blocking question only; enforce one b
 Self-verification metrics loop (`agent_skill_metrics_loop`): route agent/skill metrics as staged evidence only. Dashboard or report is not proof. Do not apply modernization candidates, do not activate schedules, do not call live eval services, and do not treat a dashboard or report as proof. Rollback evidence required before any modernization candidate can be reviewed.
 Project code graph: generated graph is not source of truth; use it as orientation evidence only. Read source files before edits, impact claims, readiness claims, or completion claims. Stale or ambiguous graph blocks readiness claims. Do not treat graph HTML as proof.
 
+Project graph live/provider/mutation operability (`T10-LIVE-M23..M26`): route audit logging, security/privacy tests, runtime observability and agent/skill routing as staged evidence only. Do not plan live server startup, provider calls, live external model/API calls, canonical graph mutation, or agent parallelism unless a separate explicit approval packet names the surface, owner, rollback and verification evidence. Batch 31 plan slices must require redacted append-only audit events, unsafe secret/path/raw-source/prompt-injection blocking, visible degraded graph-only mode, ownership, verification evidence, fresh context and stop conditions.
+
 
 Do not store secrets, tokens, credentials, private keys, private customer data, or raw private chat logs.
 Do not create active automation, recurring automation, hooks, workflow files, project templates, MCP servers, or an Agents SDK runner.
@@ -73,6 +75,7 @@ Read shared references when needed: [Lifecycle states](../references/lifecycle-s
 30. Keep commands as proposed `commands_to_run` unless already run in the current session.
 31. Route to `agent-team-designer` if ownership overlaps, parallel work is needed, or handoff risk is high.
 32. Return `plan_ready` only when slices, verification gates, rollback notes, documentation impact, risks, conditional readiness gates, and `plan_quality_check` are staged.
+33. If a slice touches live/provider/mutation routing, require `project_graph_live_audit_log_present`, `project_graph_live_security_privacy_tests_present`, `project_graph_live_runtime_observability_present`, `project_graph_live_agent_skill_handoff_routing_present`, no-live-call evidence, and stop conditions for missing ownership, missing verification evidence and live/provider/mutation without approval before `plan_ready`.
 
 ## Outputs
 

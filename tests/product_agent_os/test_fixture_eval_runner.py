@@ -252,6 +252,34 @@ class FixtureEvalRunnerTest(unittest.TestCase):
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_canonical_mutation_apply_digest_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_rollback_previous_digest_restore_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_canonical_mutation_no_live_calls_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_live_audit_log_present"])
+        self.assertTrue(
+            results["python-app"]["expected_checks"]["project_graph_live_audit_governance_prerequisite_present"]
+        )
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_live_audit_event_coverage_present"])
+        self.assertTrue(
+            results["python-app"]["expected_checks"]["project_graph_live_audit_redaction_append_only_present"]
+        )
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_live_security_privacy_tests_present"])
+        self.assertTrue(
+            results["python-app"]["expected_checks"][
+                "project_graph_live_security_privacy_negative_cases_blocked_present"
+            ]
+        )
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_live_runtime_observability_present"])
+        self.assertTrue(
+            results["python-app"]["expected_checks"][
+                "project_graph_live_runtime_observability_degraded_mode_visible_present"
+            ]
+        )
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_live_agent_skill_handoff_routing_present"])
+        self.assertTrue(
+            results["python-app"]["expected_checks"]["project_graph_live_agent_skill_handoff_stop_conditions_present"]
+        )
+        self.assertTrue(
+            results["python-app"]["expected_checks"]["project_graph_live_audit_operability_stage_disable_present"]
+        )
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_live_audit_no_live_calls_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_hybrid_retrieval_pipeline_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_hybrid_retrieval_explainable_fusion_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_hybrid_retrieval_fallback_present"])

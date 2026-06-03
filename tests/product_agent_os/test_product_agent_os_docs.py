@@ -1403,6 +1403,136 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 with self.subTest(control_plane=filename, term=expected):
                     self.assertIn(expected, text)
 
+    def test_track10_task26_batch31_audit_security_observability_and_handoff_is_synced(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        documents = {
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+            "product_index": (PRODUCT_AGENT_OS / "index.md").read_text(encoding="utf-8"),
+            "technical": (PRODUCT_AGENT_OS / "technical.md").read_text(encoding="utf-8"),
+            "scenarios": (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8"),
+        }
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "agents": AGENTS.read_text(encoding="utf-8"),
+        }
+
+        registry_terms = [
+            "Product-Agent OS Track 10 Task 26 Batch 31 audit logging security privacy observability and agent skill routing",
+            "T10-LIVE-M23..M26",
+            "project_graph_live_audit.py",
+            "audit-log.jsonl",
+            "runtime-observability.json",
+            "agent-skill-handoff.json",
+            "project_graph_live_audit_log_present",
+            "project_graph_live_audit_no_live_calls_present",
+            "verification_status:",
+        ]
+        for expected in registry_terms:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        backlog_terms = [
+            "Task 26 Batch 31 Closure",
+            "| `done` | `T10-LIVE-M23..M26` audit logging security/privacy observability and agent/skill routing |",
+            "Batch 31 explicit approval",
+            "project_graph_live_audit.py",
+            "audit-log.jsonl",
+            "security-privacy.json",
+            "runtime-observability.json",
+            "agent-skill-handoff.json",
+            "redacted append-only audit evidence",
+            "Unsafe secret/path/raw-source/prompt-injection cases are blocked",
+            "Runtime health, latency, provider errors, budget usage and degraded graph-only mode",
+            "ownership, verification evidence, fresh context and stop conditions",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for expected in backlog_terms:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        docs_terms = [
+            "Task 26 Batch 31",
+            "T10-LIVE-M23..M26",
+            "Audit Logging, Security/Privacy Tests, Observability And Agent/Skill Routing",
+            "project_graph_live_audit.py",
+            "audit-log.jsonl",
+            "security-privacy.json",
+            "runtime-observability.json",
+            "agent-skill-handoff.json",
+            "project_graph_live_audit_log",
+            "project_graph_live_security_privacy_tests",
+            "project_graph_runtime_observability",
+            "project_graph_agent_skill_handoff_routing",
+            "batch31_audit_security_observability_agent_skill_routing",
+            "audit_logging",
+            "security_privacy_tests",
+            "runtime_observability",
+            "agent_skill_handoff_routing",
+            "redacted append-only audit event",
+            "unsafe secret/path/raw-source/prompt-injection cases are blocked",
+            "runtime health, latency, provider errors, budget usage and degraded graph-only mode",
+            "ownership, verification evidence, fresh context and stop conditions",
+            "provider_call_allowed",
+            "external_call_performed",
+            "staged evidence only",
+            "not source of truth",
+            "no live server",
+            "no provider calls",
+            "no live external model/API calls",
+            "no canonical graph mutation",
+        ]
+        for document, text in documents.items():
+            for expected in docs_terms:
+                with self.subTest(document=document, term=expected):
+                    self.assertIn(expected, text)
+
+        control_terms = [
+            "Task 26 Batch 31",
+            "T10-LIVE-M23..M26",
+            "project_graph_live_audit.py",
+            "audit-log.jsonl",
+            "security-privacy.json",
+            "runtime-observability.json",
+            "agent-skill-handoff.json",
+            "project_graph_live_audit_log_present",
+            "project_graph_live_audit_governance_prerequisite_present",
+            "project_graph_live_audit_event_coverage_present",
+            "project_graph_live_audit_redaction_append_only_present",
+            "project_graph_live_security_privacy_tests_present",
+            "project_graph_live_security_privacy_negative_cases_blocked_present",
+            "project_graph_live_runtime_observability_present",
+            "project_graph_live_runtime_observability_degraded_mode_visible_present",
+            "project_graph_live_agent_skill_handoff_routing_present",
+            "project_graph_live_agent_skill_handoff_stop_conditions_present",
+            "project_graph_live_audit_operability_stage_disable_present",
+            "project_graph_live_audit_no_live_calls_present",
+            "redacted append-only audit event",
+            "unsafe secret/path/raw-source/prompt-injection cases are blocked",
+            "runtime health, latency, provider errors, budget usage",
+            "degraded graph-only mode",
+            "ownership",
+            "verification evidence",
+            "fresh context",
+            "stop conditions",
+            "provider_call_allowed",
+            "external_call_performed",
+            "no live server",
+            "no provider calls",
+            "no live external model/API calls",
+            "no canonical graph mutation",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for filename, text in control_plane.items():
+            for expected in control_terms:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
     def test_track10_task25_batch20_local_backend_gate_is_synced(self):
         registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
         backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")

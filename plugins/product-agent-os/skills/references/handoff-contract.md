@@ -42,6 +42,19 @@ Fresh-context handoff fields for any subagent or parallel worker:
 - `stop_conditions`
 - `sequential_fallback`
 
+Live/provider/mutation handoff fields for Batch 31-style routing:
+
+- `project_graph_live_audit_log`
+- `project_graph_live_security_privacy_tests`
+- `project_graph_runtime_observability`
+- `project_graph_agent_skill_handoff_routing`
+- `ownership_required`
+- `verification_evidence_required`
+- `fresh_context_required`
+- `provider_call_allowed`
+- `external_call_performed`
+- `degraded_graph_only_mode_visible`
+
 Scenario handoff aliases used in workflow templates:
 
 - Sources/context used -> `allowed_sources` and `inputs_used`
@@ -71,3 +84,4 @@ Rules:
 - Require worktrees or explicit ownership for shared generated files, contracts, migrations, public APIs, schemas, release files, or rollback-sensitive work.
 - Read-only research can proceed without a worktree when no writes, external actions, MCP activation, hooks, or automation are requested.
 - Do not advance to parallel work when a missing handoff schema or missing expected evidence remains.
+- Do not advance live/provider/mutation work when audit evidence is missing, security/privacy negative cases are unverified, degraded graph-only mode is hidden, ownership or verification evidence is missing, or `provider_call_allowed` / `external_call_performed` would be true without explicit approval.

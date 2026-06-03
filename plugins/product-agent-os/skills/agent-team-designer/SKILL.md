@@ -18,6 +18,8 @@ Guided question protocol: ask the smallest blocking question only; enforce one b
 Self-verification metrics loop (`agent_skill_metrics_loop`): route agent/skill metrics as staged evidence only. Dashboard or report is not proof. Do not apply modernization candidates, do not activate schedules, do not call live eval services, and do not treat a dashboard or report as proof. Rollback evidence required before any modernization candidate can be reviewed.
 Project code graph: generated graph is not source of truth; use it as orientation evidence only. Read source files before edits, impact claims, readiness claims, or completion claims. Stale or ambiguous graph blocks readiness claims. Do not treat graph HTML as proof.
 
+Project graph live/provider/mutation handoff routing (`T10-LIVE-M23..M26`): `project_graph_live_audit.py` artifacts are staged evidence only. Any live/provider/mutation work, subagent split, or parallel worker must name ownership, verification evidence, fresh context and stop conditions before work starts. Require redacted append-only audit evidence, security/privacy negative-test status, runtime observability status, and `provider_call_allowed: false` / `external_call_performed: false` unless a separate explicit approval changes the boundary. Stop on missing ownership, missing verification evidence, missing fresh-context handoff, live provider or mutation without approval, security/privacy failure, or hidden degraded mode.
+
 
 Do not store secrets, tokens, credentials, private keys, private customer data, or raw private chat logs.
 Do not create active automation, recurring automation, hooks, workflow files, project templates, MCP servers, or an Agents SDK runner.
@@ -52,6 +54,7 @@ Read shared references when needed: [Lifecycle states](../references/lifecycle-s
 11. Use sequential fallback when ownership cannot be split, when source constraints are missing, or when expected evidence cannot be assigned per worker.
 12. Keep handoffs concise enough for the next role to act without reading raw conversation history.
 13. Return `team_ready` only when ownership, fresh-context handoffs, model guidance, escalation rules, methodology ownership, and stop conditions are staged.
+14. For Batch 31-style live/provider/mutation routing, include `project_graph_live_audit_log`, `project_graph_live_security_privacy_tests`, `project_graph_runtime_observability`, `project_graph_agent_skill_handoff_routing`, `ownership_required`, `verification_evidence_required`, `fresh_context_required`, and stop conditions for `missing_ownership`, `missing_verification_evidence`, and `live_provider_or_mutation_without_approval`.
 
 ## Outputs
 
@@ -117,6 +120,7 @@ Evidence-before-completion (`evidence_before_completion`): do not make a ready c
 
 Check that each role has a concrete ownership boundary, no planned agents share write scope without a handoff rule, every handoff includes verification evidence fields, every scenario handoff separates files touched from files proposed, and every proposed artifact remains staged. Do not claim without evidence.
 For fresh-context handoff, check that any subagent or parallel worker has complete task context, source constraints, allowed sources, inputs used, owned files, forbidden files, expected evidence, handoff output schema, stop conditions, and sequential fallback before work starts. Do not advance to parallel work when shared ownership ambiguity, missing handoff schema, missing expected evidence, raw conversation history dependency, or cross-agent file ownership remains.
+For live/provider/mutation handoff routing, check that audit, security/privacy, observability and handoff packets are staged and redacted; degraded graph-only mode is visible; and no worker is assigned live/provider/mutation work while `provider_call_allowed` or `external_call_performed` would be true without explicit approval.
 
 ## Failure Modes
 
