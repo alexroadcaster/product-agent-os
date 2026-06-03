@@ -78,6 +78,15 @@ from product_agent_os.project_graph_live_runtime import (  # noqa: E402
     validate_live_runtime_contract,
     validate_live_runtime_contract_approval,
 )
+from product_agent_os.project_graph_embedding_provider import (  # noqa: E402
+    EMBEDDING_PROVIDER_CACHE_TARGET,
+    EMBEDDING_PROVIDER_TARGET,
+    build_embedding_provider_gate,
+    disable_embedding_provider_gate,
+    evaluate_embedding_provider_baseline,
+    validate_embedding_provider_approval,
+    validate_embedding_provider_gate,
+)
 from product_agent_os.project_graph_queries import query_project_graph  # noqa: E402
 from product_agent_os.project_graph_renderer import render_project_graph_cockpit  # noqa: E402
 from product_agent_os.project_graph_search_quality import evaluate_project_graph_search_quality  # noqa: E402
@@ -2122,6 +2131,24 @@ def _expected_checks(
         )
         checks["project_graph_live_runtime_no_public_or_mutation_surface_present"] = (
             _project_graph_live_runtime_no_public_or_mutation_surface_present()
+        )
+        checks["project_graph_external_embedding_provider_gate_present"] = (
+            _project_graph_external_embedding_provider_gate_present()
+        )
+        checks["project_graph_external_embedding_governance_prerequisite_present"] = (
+            _project_graph_external_embedding_governance_prerequisite_present()
+        )
+        checks["project_graph_external_embedding_redaction_cache_budget_present"] = (
+            _project_graph_external_embedding_redaction_cache_budget_present()
+        )
+        checks["project_graph_external_embedding_eval_baseline_present"] = (
+            _project_graph_external_embedding_eval_baseline_present()
+        )
+        checks["project_graph_external_embedding_threshold_fallback_present"] = (
+            _project_graph_external_embedding_threshold_fallback_present()
+        )
+        checks["project_graph_external_embedding_no_live_calls_present"] = (
+            _project_graph_external_embedding_no_live_calls_present()
         )
         checks["project_graph_future_backend_semantic_gates_present"] = (
             _project_graph_future_backend_semantic_gates_present()
@@ -4690,6 +4717,240 @@ def _project_graph_live_runtime_no_public_or_mutation_surface_present() -> bool:
         and "live_runtime_auth:public_bind" in public_host.get("errors", [])
         and mutation.get("status") == "blocked"
         and "live_runtime_contract:read_only" in mutation.get("errors", [])
+    )
+
+
+def _project_graph_external_embedding_provider_approval() -> dict[str, Any]:
+    return {
+        "explicit_approval": True,
+        "owner": "Product-Agent OS Maintainer",
+        "allowed_surfaces": ["external_embedding_adapter", "embedding_eval_baseline"],
+        "provider": {
+            "provider": "external_embedding",
+            "model": "approved-embedding-model-v1",
+            "credential_source": "environment",
+            "credential_env_var": "PRODUCT_AGENT_OS_EMBEDDING_API_KEY",
+            "external_calls_allowed": False,
+            "batching": {"max_batch_size": 16, "max_batch_tokens": 1200},
+        },
+        "data_classification": {
+            "allowed_inputs": ["redacted_graph_labels", "semantic_record_terms", "observation_ids"],
+            "forbidden_inputs": ["raw_source_bodies", "secrets", "absolute_local_paths", "private_text"],
+        },
+        "redaction_policy": {
+            "raw_source_excluded": True,
+            "secrets_redacted": True,
+            "absolute_paths_redacted": True,
+            "provider_payload_validation_required": True,
+        },
+        "cache_policy": {
+            "storage_path": EMBEDDING_PROVIDER_TARGET,
+            "cache_target": EMBEDDING_PROVIDER_CACHE_TARGET,
+            "fingerprint_scope": "redacted_graph_semantic_index_provider_policy",
+            "stale_policy": "block_if_graph_or_semantic_or_policy_fingerprint_mismatch",
+            "ttl_days": 7,
+            "deletion_proof_required": True,
+        },
+        "budget_policy": {
+            "max_query_tokens": 600,
+            "max_batch_tokens": 1200,
+            "max_cost_units": 0,
+            "max_latency_ms": 250,
+            "on_exceed": "block_and_fallback_to_semantic_or_graph",
+        },
+        "eval_threshold": {
+            "min_recall_at_k": 1.0,
+            "min_mrr": 1.0,
+            "min_provider_recall_delta": 0.0,
+            "min_provider_mrr_delta": 0.0,
+            "max_false_positive_rate": 0.0,
+            "max_query_ms": 250,
+            "max_payload_tokens": 1200,
+        },
+        "failure_handling": {
+            "on_missing_provider_eval": "disabled_fallback_to_semantic_or_graph",
+            "on_failed_eval": "disabled_fallback_to_semantic_or_graph",
+        },
+        "rollback_path": f"delete {EMBEDDING_PROVIDER_TARGET}",
+        "residual_risks": ["provider drift requires fresh eval before enablement"],
+    }
+
+
+def _project_graph_external_embedding_provider_gate() -> dict[str, Any]:
+    return build_embedding_provider_gate(
+        _project_graph_sample(),
+        semantic_index=_project_graph_semantic_index(),
+        approval=_project_graph_external_embedding_provider_approval(),
+        governance_packet=_project_graph_live_governance_packet(),
+    )
+
+
+def _project_graph_external_embedding_eval_cases() -> list[dict[str, Any]]:
+    return [
+        {
+            "id": "external-embedding-worker",
+            "text": "worker run",
+            "expected_node_ids": ["function:app.worker.run"],
+            "unexpected_node_ids": ["function:tests.test_worker.test_run"],
+            "top_k": 3,
+        }
+    ]
+
+
+def _project_graph_external_embedding_provider_gate_present() -> bool:
+    approval = _project_graph_external_embedding_provider_approval()
+    gate = _project_graph_external_embedding_provider_gate()
+    return (
+        validate_embedding_provider_approval(approval, _project_graph_live_governance_packet()).get("ok") is True
+        and gate.get("artifact_kind") == "project_graph_external_embedding_provider_gate"
+        and gate.get("approval_boundary") == "batch26_external_embedding_provider_gate_and_eval"
+        and gate.get("source_boundary") == "redacted_graph_and_semantic_index_only_no_raw_source"
+        and gate.get("generated_view_policy") == "embedding_provider_gate_is_generated_evidence_not_source_of_truth"
+        and gate.get("status") == "ready"
+        and gate.get("provider_policy", {}).get("provider") == "external_embedding"
+        and gate.get("provider_policy", {}).get("credential_source") == "environment"
+        and validate_embedding_provider_gate(gate).get("ok") is True
+    )
+
+
+def _project_graph_external_embedding_governance_prerequisite_present() -> bool:
+    invalid_governance = dict(_project_graph_live_governance_packet())
+    invalid_governance["status"] = "blocked"
+    missing = build_embedding_provider_gate(
+        _project_graph_sample(),
+        semantic_index=_project_graph_semantic_index(),
+        approval=_project_graph_external_embedding_provider_approval(),
+        governance_packet=None,
+    )
+    invalid = validate_embedding_provider_approval(
+        _project_graph_external_embedding_provider_approval(),
+        invalid_governance,
+    )
+    return (
+        missing.get("status") == "approval_required"
+        and "embedding_provider_approval:governance_packet:missing"
+        in missing.get("validation", {}).get("errors", [])
+        and invalid.get("ok") is False
+        and "embedding_provider_approval:governance_packet:not_ready" in invalid.get("errors", [])
+    )
+
+
+def _project_graph_external_embedding_redaction_cache_budget_present() -> bool:
+    graph = json.loads(json.dumps(_project_graph_sample()))
+    graph.setdefault("nodes", []).append(
+        {
+            "id": "file:unsafe.py",
+            "type": "module",
+            "label": r"TOKEN=sk-test-secret C:\Users\person\private.py",
+            "path": r"C:\Users\person\private.py",
+            "observation_ids": ["obs:unsafe"],
+        }
+    )
+    gate = build_embedding_provider_gate(
+        graph,
+        semantic_index=_project_graph_semantic_index(),
+        approval=_project_graph_external_embedding_provider_approval(),
+        governance_packet=_project_graph_live_governance_packet(),
+    )
+    payload = json.dumps(gate, sort_keys=True).lower()
+    with tempfile.TemporaryDirectory() as tmp:
+        stage_root = Path(tmp) / "stage"
+        for relative in [EMBEDDING_PROVIDER_TARGET, EMBEDDING_PROVIDER_CACHE_TARGET]:
+            target = stage_root / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text("generated\n", encoding="utf-8")
+        disabled = disable_embedding_provider_gate(stage_root, workspace=FIXTURES / "project-code-graph-minimal-python")
+    proof = disabled.get("rendered_artifacts", {}).get("deletion_proof", {})
+    return (
+        validate_embedding_provider_gate(gate).get("ok") is True
+        and gate.get("redaction_policy", {}).get("raw_source_excluded") is True
+        and gate.get("cache_policy", {}).get("stale_policy")
+        == "block_if_graph_or_semantic_or_policy_fingerprint_mismatch"
+        and gate.get("cache_policy", {}).get("cache_can_be_deleted_without_graph_loss") is True
+        and gate.get("budget_policy", {}).get("max_cost_units") == 0
+        and disabled.get("rendered_artifacts", {}).get("status") == "disabled"
+        and proof.get("remaining") == []
+        and "sk-test-secret" not in payload
+        and "c:\\users\\person" not in payload
+        and "return 'ok'" not in payload
+    )
+
+
+def _project_graph_external_embedding_eval_baseline_present() -> bool:
+    packet = evaluate_embedding_provider_baseline(
+        _project_graph_external_embedding_provider_gate(),
+        semantic_index=_project_graph_semantic_index(),
+        graph=_project_graph_sample(),
+        cases=_project_graph_external_embedding_eval_cases(),
+        provider_results={
+            "external-embedding-worker": {
+                "result_node_ids": ["function:app.worker.run"],
+                "query_ms": 120,
+                "payload_tokens": 500,
+            }
+        },
+    )
+    return (
+        packet.get("decision_status") == "passed"
+        and packet.get("search_backend") == "external_embedding_provider_eval"
+        and packet.get("baseline_backend") == "semantic_retrieval"
+        and packet.get("provider_quality_metrics", {}).get("recall_at_k") == 1.0
+        and packet.get("provider_quality_metrics", {}).get("mrr") == 1.0
+        and packet.get("baseline_quality_metrics", {}).get("recall_at_k") == 1.0
+        and packet.get("provider_enabled_by_default") is False
+        and packet.get("external_call_performed") is False
+        and packet.get("failed_thresholds") == []
+    )
+
+
+def _project_graph_external_embedding_threshold_fallback_present() -> bool:
+    gate = _project_graph_external_embedding_provider_gate()
+    missing = evaluate_embedding_provider_baseline(
+        gate,
+        semantic_index=_project_graph_semantic_index(),
+        graph=_project_graph_sample(),
+        cases=_project_graph_external_embedding_eval_cases(),
+        provider_results=None,
+    )
+    failed = evaluate_embedding_provider_baseline(
+        gate,
+        semantic_index=_project_graph_semantic_index(),
+        graph=_project_graph_sample(),
+        cases=_project_graph_external_embedding_eval_cases(),
+        provider_results={
+            "external-embedding-worker": {
+                "result_node_ids": ["function:tests.test_worker.test_run"],
+                "query_ms": 260,
+                "payload_tokens": 1300,
+            }
+        },
+    )
+    return (
+        missing.get("decision_status") == "disabled_fallback"
+        and missing.get("provider_enabled") is False
+        and "provider_eval:missing" in missing.get("failed_thresholds", [])
+        and failed.get("decision_status") == "disabled_fallback"
+        and "provider_recall_at_k_below_threshold" in failed.get("failed_thresholds", [])
+        and "provider_mrr_below_threshold" in failed.get("failed_thresholds", [])
+        and failed.get("fallback") == "semantic_retrieval_or_graph_only"
+    )
+
+
+def _project_graph_external_embedding_no_live_calls_present() -> bool:
+    gate = _project_graph_external_embedding_provider_gate()
+    payload = json.dumps(gate, sort_keys=True).lower()
+    return (
+        gate.get("provider_policy", {}).get("provider_call_allowed") is False
+        and gate.get("provider_policy", {}).get("external_call_performed") is False
+        and gate.get("provider_enabled") is False
+        and gate.get("provider_enabled_by_default") is False
+        and "external_provider_call_without_runtime_invocation_approval" in gate.get("blocked_surfaces", [])
+        and "canonical_graph_mutation" in gate.get("blocked_surfaces", [])
+        and "production_server" in gate.get("blocked_surfaces", [])
+        and gate.get("fallback") == "semantic_retrieval_or_graph_only"
+        and "server_started\": true" not in payload
+        and "external_call_performed\": true" not in payload
+        and "provider_call_allowed\": true" not in payload
     )
 
 

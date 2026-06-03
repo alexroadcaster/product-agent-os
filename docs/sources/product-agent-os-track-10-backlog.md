@@ -72,6 +72,12 @@ This backlog tracks deferred and follow-up work for Track 10 `Task 23: Guided Qu
 | --- | --- | --- |
 | `done` | `T10-LIVE-M07..M10` live local read-only runtime, auth and fallback | Batch 25 explicit approval was the user request to execute Batch 25 with agents and skills. It adds `project_graph_live_runtime.py`, CLI `--validate-live-runtime`, CLI `--disable-live-runtime`, fixture eval fields `project_graph_live_runtime_contract_present`, `project_graph_live_runtime_governance_prerequisite_present`, `project_graph_live_runtime_read_only_routes_present`, `project_graph_live_runtime_lifecycle_controls_present`, `project_graph_live_runtime_auth_policy_present`, `project_graph_live_runtime_graph_only_fallback_present` and `project_graph_live_runtime_no_public_or_mutation_surface_present`. No write endpoints and no canonical mutation. Starts only after approval; cleanup is verified. Runtime is not public by default and rejects unauthorized access. Fallback works after disabling live layer. The contract remains `disabled_by_default_not_started`, local-only, staged evidence only, not source of truth, performs no provider calls, permits no live external model/API calls and git staging/commit/push/PR remains explicit-only. |
 
+## Task 26 Batch 26 Closure
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `done` | `T10-LIVE-M11..M12` external embedding provider gate and eval | Batch 26 explicit approval was the user request to execute Batch 26 with agents and skills. It adds `project_graph_embedding_provider.py`, CLI `--validate-embedding-provider`, CLI `--disable-embedding-provider`, fixture eval fields `project_graph_external_embedding_provider_gate_present`, `project_graph_external_embedding_governance_prerequisite_present`, `project_graph_external_embedding_redaction_cache_budget_present`, `project_graph_external_embedding_eval_baseline_present`, `project_graph_external_embedding_threshold_fallback_present` and `project_graph_external_embedding_no_live_calls_present`. No external call without approval/redaction/cache/budget. Must beat approved threshold or stay disabled. Fallback remains `semantic_retrieval_or_graph_only`. The contract is staged evidence only, not source of truth, performs no provider calls, permits no live external model/API calls, performs no canonical graph mutation and git staging/commit/push/PR remains explicit-only. |
+
 ## Deferred
 
 | Status | Item | Reason |

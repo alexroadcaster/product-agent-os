@@ -189,6 +189,12 @@ class FixtureEvalRunnerTest(unittest.TestCase):
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_live_runtime_auth_policy_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_live_runtime_graph_only_fallback_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_live_runtime_no_public_or_mutation_surface_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_external_embedding_provider_gate_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_external_embedding_governance_prerequisite_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_external_embedding_redaction_cache_budget_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_external_embedding_eval_baseline_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_external_embedding_threshold_fallback_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_external_embedding_no_live_calls_present"])
         self.assertEqual(results["python-app"]["renderer_file_count"], 191)
         for check_name in [
             "methodology_catalog_contract_present",

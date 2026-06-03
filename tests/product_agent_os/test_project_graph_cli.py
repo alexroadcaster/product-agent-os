@@ -15,6 +15,7 @@ LOCAL_BACKEND_TARGET = Path(".codex/product-agent-os/project-code-graph-backend.
 SEMANTIC_RETRIEVAL_TARGET = Path(".codex/product-agent-os/project-code-graph-semantic-index.json")
 LLM_EXTRACTION_TARGET = Path(".codex/product-agent-os/project-code-graph-llm-proposals.json")
 EXTENSION_CLOSURE_TARGET = Path(".codex/product-agent-os/project-code-graph-extension-closure.json")
+EMBEDDING_PROVIDER_TARGET = Path(".codex/product-agent-os/project-code-graph-embedding-provider.json")
 
 
 class ProjectGraphCliTest(unittest.TestCase):
@@ -704,6 +705,131 @@ class ProjectGraphCliTest(unittest.TestCase):
             self.assertEqual(payload["rendered_artifacts"]["fallback"], "lexical_or_graph_search")
             self.assertFalse((stage_root / SEMANTIC_RETRIEVAL_TARGET).exists())
 
+    def test_validate_embedding_provider_cli_requires_approval_and_stages_gate(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "workspace"
+            stage_root = Path(tmp) / "stage"
+            semantic_approval_path = Path(tmp) / "semantic-approval.json"
+            live_approval_path = Path(tmp) / "live-approval.json"
+            embedding_approval_path = Path(tmp) / "embedding-approval.json"
+            (workspace / "app").mkdir(parents=True)
+            (workspace / "app" / "__init__.py").write_text("", encoding="utf-8")
+            (workspace / "app" / "worker.py").write_text("def run():\n    return 'ok'\n", encoding="utf-8")
+            semantic_approval_path.write_text(json.dumps(self._semantic_approval()), encoding="utf-8")
+            live_approval_path.write_text(json.dumps(self._live_governance_approval()), encoding="utf-8")
+            embedding_approval_path.write_text(json.dumps(self._embedding_provider_approval()), encoding="utf-8")
+
+            stage = subprocess.run(
+                [sys.executable, str(SCRIPT), str(workspace), "--stage", str(stage_root)],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            semantic = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--build-semantic-index",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--stage",
+                    str(stage_root),
+                    "--semantic-approval",
+                    str(semantic_approval_path),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            governance = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--validate-live-governance",
+                    "--live-approval",
+                    str(live_approval_path),
+                    "--stage",
+                    str(stage_root),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            missing_approval = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--validate-embedding-provider",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--semantic-index",
+                    str(stage_root / SEMANTIC_RETRIEVAL_TARGET),
+                    "--live-governance",
+                    str(stage_root / ".codex/product-agent-os/project-code-graph-live-governance.json"),
+                    "--stage",
+                    str(stage_root),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            provider = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--validate-embedding-provider",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--semantic-index",
+                    str(stage_root / SEMANTIC_RETRIEVAL_TARGET),
+                    "--live-governance",
+                    str(stage_root / ".codex/product-agent-os/project-code-graph-live-governance.json"),
+                    "--embedding-provider-approval",
+                    str(embedding_approval_path),
+                    "--stage",
+                    str(stage_root),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(stage.returncode, 0, stage.stdout + stage.stderr)
+            self.assertEqual(semantic.returncode, 0, semantic.stdout + semantic.stderr)
+            self.assertEqual(governance.returncode, 0, governance.stdout + governance.stderr)
+            self.assertEqual(missing_approval.returncode, 1)
+            self.assertEqual(provider.returncode, 0, provider.stdout + provider.stderr)
+            missing_payload = json.loads(missing_approval.stdout)
+            provider_payload = json.loads(provider.stdout)
+            self.assertEqual(missing_payload["rendered_artifacts"]["status"], "approval_required")
+            self.assertEqual(provider_payload["rendered_artifacts"]["mode"], "validate-embedding-provider")
+            self.assertFalse(provider_payload["rendered_artifacts"]["provider_call_allowed"])
+            self.assertTrue((stage_root / EMBEDDING_PROVIDER_TARGET).exists())
+
+            disable = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--disable-embedding-provider",
+                    "--stage",
+                    str(stage_root),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            self.assertEqual(disable.returncode, 0, disable.stdout + disable.stderr)
+            disable_payload = json.loads(disable.stdout)
+            self.assertEqual(disable_payload["rendered_artifacts"]["status"], "disabled")
+            self.assertEqual(disable_payload["rendered_artifacts"]["fallback"], "semantic_retrieval_or_graph_only")
+            self.assertFalse((stage_root / EMBEDDING_PROVIDER_TARGET).exists())
+            self.assertNotIn(str(workspace), provider.stdout + disable.stdout)
+
     def test_build_llm_proposals_cli_requires_approval_and_stages_proposals(self):
         with tempfile.TemporaryDirectory() as tmp:
             workspace = Path(tmp) / "workspace"
@@ -1086,6 +1212,119 @@ class ProjectGraphCliTest(unittest.TestCase):
             },
             "failure_handling": {"on_stale_or_failed_eval": "block_and_fallback_to_lexical_or_graph"},
             "rollback_path": "delete .codex/product-agent-os/project-code-graph-semantic-index.json",
+        }
+
+    def _live_governance_approval(self) -> dict:
+        return {
+            "explicit_approval": True,
+            "owner": "Product-Agent OS Maintainer",
+            "allowed_surfaces": [
+                "approval_packet",
+                "data_classification",
+                "redaction_pipeline",
+                "credential_boundary",
+                "cache_policy",
+                "budget_policy",
+            ],
+            "data_classification": {
+                "allowed_fields": ["node_id", "label", "type", "observation_ids", "redacted_summary"],
+                "redacted_fields": ["relative_path", "source_span", "review_comment"],
+                "blocked_fields": ["absolute_local_paths", "raw_source_bodies", "secrets"],
+            },
+            "redaction_boundary": {
+                "raw_source_excluded": True,
+                "absolute_paths_redacted": True,
+                "secrets_redacted": True,
+                "provider_payload_validation_required": True,
+            },
+            "provider_policy": {
+                "external_provider_calls_allowed": False,
+                "approved_providers": ["external_embedding", "external_reranker", "external_llm"],
+                "requires_batch_specific_approval": True,
+            },
+            "credential_policy": {
+                "storage": "environment_only",
+                "secret_material_stored": False,
+                "providers": [
+                    {
+                        "provider": "external_embedding",
+                        "credential_source": "environment",
+                        "env_var": "PRODUCT_AGENT_OS_EMBEDDING_API_KEY",
+                    }
+                ],
+            },
+            "cache_policy": {
+                "storage_path": ".codex/product-agent-os/project-code-graph-live-cache.json",
+                "ttl_days": 7,
+                "fingerprint_scope": "redacted_graph_and_live_governance_policy",
+                "stale_policy": "block_if_graph_or_policy_fingerprint_mismatch",
+                "deletion_proof_required": True,
+            },
+            "budget_policy": {
+                "max_run_tokens": 1500,
+                "max_query_tokens": 600,
+                "max_mutation_tokens": 0,
+                "max_cost_units": 0,
+                "max_latency_ms": 250,
+                "on_exceed": "blocked_or_degraded_graph_only",
+            },
+            "rollback_path": "delete .codex/product-agent-os/project-code-graph-live-governance.json",
+            "residual_risks": ["provider drift remains blocked until provider gate eval passes"],
+        }
+
+    def _embedding_provider_approval(self) -> dict:
+        return {
+            "explicit_approval": True,
+            "owner": "Product-Agent OS Maintainer",
+            "allowed_surfaces": ["external_embedding_adapter", "embedding_eval_baseline"],
+            "provider": {
+                "provider": "external_embedding",
+                "model": "approved-embedding-model-v1",
+                "credential_source": "environment",
+                "credential_env_var": "PRODUCT_AGENT_OS_EMBEDDING_API_KEY",
+                "external_calls_allowed": False,
+                "batching": {"max_batch_size": 16, "max_batch_tokens": 1200},
+            },
+            "data_classification": {
+                "allowed_inputs": ["redacted_graph_labels", "semantic_record_terms", "observation_ids"],
+                "forbidden_inputs": ["raw_source_bodies", "secrets", "absolute_local_paths", "private_text"],
+            },
+            "redaction_policy": {
+                "raw_source_excluded": True,
+                "secrets_redacted": True,
+                "absolute_paths_redacted": True,
+                "provider_payload_validation_required": True,
+            },
+            "cache_policy": {
+                "storage_path": ".codex/product-agent-os/project-code-graph-embedding-provider.json",
+                "cache_target": ".codex/product-agent-os/project-code-graph-embedding-provider-cache.json",
+                "fingerprint_scope": "redacted_graph_semantic_index_provider_policy",
+                "stale_policy": "block_if_graph_or_semantic_or_policy_fingerprint_mismatch",
+                "ttl_days": 7,
+                "deletion_proof_required": True,
+            },
+            "budget_policy": {
+                "max_query_tokens": 600,
+                "max_batch_tokens": 1200,
+                "max_cost_units": 0,
+                "max_latency_ms": 250,
+                "on_exceed": "block_and_fallback_to_semantic_or_graph",
+            },
+            "eval_threshold": {
+                "min_recall_at_k": 1.0,
+                "min_mrr": 1.0,
+                "min_provider_recall_delta": 0.0,
+                "min_provider_mrr_delta": 0.0,
+                "max_false_positive_rate": 0.0,
+                "max_query_ms": 250,
+                "max_payload_tokens": 1200,
+            },
+            "failure_handling": {
+                "on_missing_provider_eval": "disabled_fallback_to_semantic_or_graph",
+                "on_failed_eval": "disabled_fallback_to_semantic_or_graph",
+            },
+            "rollback_path": "delete .codex/product-agent-os/project-code-graph-embedding-provider.json",
+            "residual_risks": ["provider drift requires fresh eval before enablement"],
         }
 
     def _llm_approval(self) -> dict:
