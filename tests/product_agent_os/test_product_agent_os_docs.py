@@ -1901,6 +1901,185 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 with self.subTest(control_plane=filename, term=expected):
                     self.assertIn(expected, text)
 
+    def test_track10_task26_batch34_docs_packet_is_implemented(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        nav = MKDOCS.read_text(encoding="utf-8")
+        check_docs = CHECK_DOCS.read_text(encoding="utf-8")
+        control_plane = "\n".join(
+            path.read_text(encoding="utf-8")
+            for path in [ROOT_README, PLUGIN_README, REQUIREMENTS, PLAN, TEST, EVALS, RUNLOG, AGENTS]
+        )
+
+        pages = {
+            "project-code-graph.md": [
+                "Generated graph artifacts are not source of truth",
+                "orientation evidence",
+                "provider/API calls",
+                "canonical graph mutation",
+                "git stage/commit/push/PR",
+            ],
+            "live-runtime-governance.md": [
+                "approval packet",
+                "data classification",
+                "redaction",
+                "generated artifacts are labeled as staged evidence and not source of truth",
+                "no live server launch in Batch 24-34",
+                "no browser automation in Batch 24-34",
+                "no canonical graph mutation",
+                "no git stage/commit/push/PR",
+            ],
+            "approval-bound-real-testing.md": [
+                "planned, not implemented",
+                "отдельного explicit owner approval",
+                "approved_local_runtime_launch",
+                "actual_browser_automation_smoke",
+                "approved_provider_api_pilot",
+                "approved_canonical_mutation_pilot",
+                "explicit_git_release_pr_action",
+                "approval_required",
+            ],
+            "agent-skill-modernization-loop.md": [
+                "agent_skill_metrics_loop",
+                "staged candidate-only pipeline",
+                "self-applied updates",
+                "active schedules",
+                "live eval/model/API calls",
+                "target registry",
+                "scorecards",
+                "modernization candidates",
+            ],
+            "cli-reference.md": [
+                "Generated outputs are not source of truth",
+                "render_infrastructure.py",
+                "scan_project_code_graph.py",
+                "--build-index",
+                "--build-backend",
+                "--build-semantic-index",
+                "--build-llm-proposals",
+                "--validate-live-governance",
+                "--build-live-audit",
+                "--build-real-testing-readiness",
+                "--build-runtime-qa",
+            ],
+            "artifact-contracts.md": [
+                "Generated artifacts are staged evidence only",
+                ".codex/product-agent-os/project-code-graph.json",
+                ".codex/product-agent-os/project-cockpit.html",
+                "project-code-graph-runtime-browser-qa.json",
+                "live-server-run-evidence.json",
+                "browser-automation-smoke.json",
+                "provider-call-evidence.json",
+                "canonical-mutation-run.json",
+                "git-release-pr-evidence.md",
+            ],
+            "packaging-and-closure.md": [
+                "Batch 34",
+                "python -m mkdocs build --strict",
+                "approved_local_runtime_launch",
+                "actual_browser_automation_smoke",
+                "approved_provider_api_pilot",
+                "approved_canonical_mutation_pilot",
+                "explicit_git_release_pr_action",
+                "Batch 34 does not perform these actions without a separate explicit owner approval",
+                "no live server launch",
+                "no browser automation",
+                "no provider calls",
+                "no live external model/API calls",
+                "no canonical graph mutation",
+                "no `git add`, commit, push or PR",
+            ],
+        }
+
+        for filename, terms in pages.items():
+            path = PRODUCT_AGENT_OS / filename
+            with self.subTest(page=filename, exists=True):
+                self.assertTrue(path.exists(), path)
+            text = path.read_text(encoding="utf-8")
+            with self.subTest(page=filename, source_status=True):
+                self.assertIn("Source status: `official + experiment`", text)
+            for required_heading in ["Verification", "Risks"]:
+                with self.subTest(page=filename, heading=required_heading):
+                    self.assertIn(required_heading, text)
+            for term in terms:
+                with self.subTest(page=filename, term=term):
+                    self.assertIn(term, text)
+
+            nav_path = f"product-agent-os/{filename}"
+            with self.subTest(nav=nav_path):
+                self.assertIn(nav_path, nav)
+            with self.subTest(check_docs=nav_path):
+                self.assertIn(nav_path.replace("/", '" / "'), check_docs)
+
+        for path in [
+            "product-agent/product-agent-os-plugin-spec.md",
+            "product-agent-os/project-code-graph.md",
+            "product-agent-os/live-runtime-governance.md",
+            "product-agent-os/approval-bound-real-testing.md",
+            "product-agent-os/agent-skill-modernization-loop.md",
+            "product-agent-os/cli-reference.md",
+            "product-agent-os/artifact-contracts.md",
+            "product-agent-os/packaging-and-closure.md",
+        ]:
+            with self.subTest(required_nav_path=path):
+                self.assertIn(path, nav)
+                self.assertIn(path, check_docs)
+
+        for expected in [
+            "Product-Agent OS Track 10 Task 26 Batch 34 docs packaging closure matrix",
+            "Product-Agent OS Batch 34 project-authored docs packet",
+            "docs/product-agent-os/project-code-graph.md",
+            "docs/product-agent-os/live-runtime-governance.md",
+            "docs/product-agent-os/approval-bound-real-testing.md",
+            "docs/product-agent-os/agent-skill-modernization-loop.md",
+            "docs/product-agent-os/cli-reference.md",
+            "docs/product-agent-os/artifact-contracts.md",
+            "docs/product-agent-os/packaging-and-closure.md",
+            "B34-DOC-M12",
+            "B34-DOC-M13..M15",
+            "Generated `site/` pages are review output and not source of truth",
+            "no live server",
+            "no browser automation",
+            "no provider/live external model/API calls",
+            "no canonical graph mutation",
+            "no git staging/commit/push/PR",
+            "verification_status:",
+        ]:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        for expected in [
+            "Task 26 Batch 34 Planned Matrix And Closure Status",
+            "`done_through_m12`",
+            "`pending` | `B34-DOC-M13..M15`",
+            "site/ must be rebuilt with the regular MkDocs site_dir",
+            "staged evidence only",
+            "not source of truth",
+            "no live server",
+            "no browser automation",
+            "no provider/live external model/API calls",
+            "no canonical graph mutation",
+            "no git stage/commit/push/PR",
+        ]:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        for expected in [
+            "B34-DOC-M12",
+            "B34-DOC-M13..M15",
+            "docs-maintainer plugin-cache gap",
+            "accepted Mermaid external asset gap",
+            "staged evidence only",
+            "not source of truth",
+            "no live server",
+            "no browser automation",
+            "no provider/live external model/API calls",
+            "no canonical graph mutation",
+            "no git stage/commit/push/PR",
+        ]:
+            with self.subTest(control_plane=expected):
+                self.assertIn(expected, control_plane)
+
     def test_track10_task26_batch35_real_testing_execution_matrix_is_planned(self):
         registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
         backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")

@@ -3670,10 +3670,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#task-26-batch-34-planned-matrix" class="md-nav__link">
+  <a href="#task-26-batch-34-planned-matrix-and-closure-status" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Task 26 Batch 34 Planned Matrix
+        Task 26 Batch 34 Planned Matrix And Closure Status
 
     </span>
   </a>
@@ -4118,7 +4118,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="task-26-batch-34-planned-matrix">Task 26 Batch 34 Planned Matrix<a class="headerlink" href="#task-26-batch-34-planned-matrix" title="Permanent link">&para;</a></h2>
+<h2 id="task-26-batch-34-planned-matrix-and-closure-status">Task 26 Batch 34 Planned Matrix And Closure Status<a class="headerlink" href="#task-26-batch-34-planned-matrix-and-closure-status" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
@@ -4131,7 +4131,17 @@
 <tr>
 <td><code>approval_required</code></td>
 <td><code>T10-LIVE-M35..M36</code> docs packaging source registry site closure and Batch 35 handoff</td>
-<td>Batch 34 implements the documentation and packaging closure plan for Task 24, Task 25 and Task 26 before approval-bound real testing. It decomposes the work into <code>B34-DOC-M01..M15</code>: IA/freshness inventory, <code>docs/product-agent-os/project-code-graph.md</code>, <code>docs/product-agent-os/live-runtime-governance.md</code>, <code>docs/product-agent-os/approval-bound-real-testing.md</code>, <code>docs/product-agent-os/agent-skill-modernization-loop.md</code>, <code>docs/product-agent-os/cli-reference.md</code>, <code>docs/product-agent-os/artifact-contracts.md</code>, <code>docs/product-agent-os/packaging-and-closure.md</code>, existing Product-Agent OS IA refactor, runtime/agent/playbook docs updates, MkDocs nav/check_docs/site rebuild, source registry/backlog/control-plane sync, focused docs tests, verification closure and packaging/install smoke handoff. The fixed workflow is source docs -&gt; registry -&gt; docs tests -&gt; check_docs.py -&gt; strict MkDocs -&gt; optional full closure. site/ must be rebuilt with the regular MkDocs site_dir via <code>python -m mkdocs build --strict</code>. Batch 34 must record <code>project_graph_sanitization.py</code>, <code>docs/product-agent/product-agent-os-plugin-spec.md</code>, docs-maintainer plugin-cache gap, Mermaid external asset gap and the distinction between Task 25 Batch 16 static Playwright cockpit smoke and Batch 33 no live browser automation. It remains staged evidence only, not source of truth, and starts no live server, runs no browser automation, performs no provider/live external model/API calls, performs no canonical graph mutation and performs no git stage/commit/push/PR.</td>
+<td>Batch 34 remains approval-bound for any action beyond docs/control-plane evidence. The Batch 34 Detailed Task Matrix is <code>B34-DOC-M01..M15</code>; current execution is <code>done_through_m12</code>, while <code>B34-DOC-M13..M15</code> remain pending.</td>
+</tr>
+<tr>
+<td><code>done_through_m12</code></td>
+<td><code>T10-LIVE-M35..M36</code> docs packaging source registry site closure and Batch 35 handoff</td>
+<td>Batch 34 implements the documentation and packaging closure plan for Task 24, Task 25 and Task 26 before approval-bound real testing. <code>B34-DOC-M01</code> completed IA/freshness inventory; <code>B34-DOC-M02..M08</code> added Product-Agent OS pages for project code graph, live runtime governance, approval-bound real testing, agent/skill modernization, CLI reference, artifact contracts and packaging/closure; <code>B34-DOC-M09..M10</code> synchronized existing Product-Agent OS IA, runtime, agent-system and playbook docs; <code>B34-DOC-M11</code> wired MkDocs navigation, <code>tools/check_docs.py</code> required paths, accepted the Mermaid external asset gap and rebuilt <code>site/</code>; <code>B34-DOC-M12</code> updates source registry, this backlog and control-plane artifacts.</td>
+</tr>
+<tr>
+<td><code>pending</code></td>
+<td><code>B34-DOC-M13..M15</code> docs contract tests verification closure and packaging/install smoke handoff</td>
+<td>Remaining closure must run focused docs contract tests, final verification, strict MkDocs after post-M12 docs changes, optional full closure and packaging/install smoke handoff for Batch 35. The fixed workflow remains source docs -&gt; registry -&gt; docs tests -&gt; check_docs.py -&gt; strict MkDocs -&gt; optional full closure. site/ must be rebuilt with the regular MkDocs site_dir via <code>python -m mkdocs build --strict</code> after M12/M13 source changes. Batch 34 records <code>project_graph_sanitization.py</code>, <code>docs/product-agent/product-agent-os-plugin-spec.md</code>, docs-maintainer plugin-cache gap, accepted Mermaid external asset gap and the distinction between Task 25 Batch 16 static Playwright cockpit smoke and Batch 33 no live browser automation. It remains staged evidence only, not source of truth, and starts no live server, runs no browser automation, performs no provider/live external model/API calls, performs no canonical graph mutation and performs no git stage/commit/push/PR.</td>
 </tr>
 </tbody>
 </table>
