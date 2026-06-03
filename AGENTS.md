@@ -42,6 +42,7 @@ This repository is a Russian knowledge base for researching OpenAI Codex, advanc
 - Promote project knowledge in this order: manual workflow, playbook, skill, automation, durable rule.
 - Use eval-driven loops for subjective or long-horizon tasks: baseline, one focused change, rerun eval, inspect artifacts, log result, stop only at threshold.
 - Promote reusable product workflows in this order: official use-case archetype, manual thread, playbook, skill, plugin, automation.
+- Task 26 Batch 32 control-plane sync terms: `T10-LIVE-M27..M31`, `project_graph_real_testing.py`, `real-testing-readiness.json`, `real-testing-targets.json`, `pilot-harness.json`, `codex-surface-smoke.json`, `real-testing-pilot-matrix.json`, `project_graph_real_testing_readiness_present`, `project_graph_real_testing_target_consent_present`, `project_graph_real_testing_pilot_harness_present`, `project_graph_real_testing_codex_surface_smoke_present`, `project_graph_real_testing_use_case_pilot_matrix_present`, `project_graph_real_testing_no_hidden_track10_gates_present`, `project_graph_real_testing_no_unapproved_actions_present`, `project_graph_real_testing_stage_disable_present`, no hidden unresolved Track 10 gates, owner-approved target and data policy, dry-run pilot harness, Codex App, CLI and IDE extension, Track 8 archetypes, `provider_call_allowed`, `external_call_performed`, no live server, no provider calls, no live external model/API calls, no canonical graph mutation, and git staging/commit/push/PR remains explicit-only.
 
 ## Windows Codex shell guard
 

@@ -280,6 +280,18 @@ class FixtureEvalRunnerTest(unittest.TestCase):
             results["python-app"]["expected_checks"]["project_graph_live_audit_operability_stage_disable_present"]
         )
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_live_audit_no_live_calls_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_real_testing_readiness_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_real_testing_target_consent_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_real_testing_pilot_harness_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_real_testing_codex_surface_smoke_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_real_testing_use_case_pilot_matrix_present"])
+        self.assertTrue(
+            results["python-app"]["expected_checks"]["project_graph_real_testing_no_hidden_track10_gates_present"]
+        )
+        self.assertTrue(
+            results["python-app"]["expected_checks"]["project_graph_real_testing_no_unapproved_actions_present"]
+        )
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_real_testing_stage_disable_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_hybrid_retrieval_pipeline_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_hybrid_retrieval_explainable_fusion_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_hybrid_retrieval_fallback_present"])

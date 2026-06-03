@@ -1533,6 +1533,134 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 with self.subTest(control_plane=filename, term=expected):
                     self.assertIn(expected, text)
 
+    def test_track10_task26_batch32_real_testing_readiness_and_pilot_is_synced(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        documents = {
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+            "product_index": (PRODUCT_AGENT_OS / "index.md").read_text(encoding="utf-8"),
+            "technical": (PRODUCT_AGENT_OS / "technical.md").read_text(encoding="utf-8"),
+            "scenarios": (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8"),
+        }
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "agents": AGENTS.read_text(encoding="utf-8"),
+        }
+
+        registry_terms = [
+            "Product-Agent OS Track 10 Task 26 Batch 32 real testing readiness target consent pilot harness and Codex surface smoke",
+            "T10-LIVE-M27..M31",
+            "project_graph_real_testing.py",
+            "real-testing-readiness.json",
+            "pilot-harness.json",
+            "codex-surface-smoke.json",
+            "real-testing-pilot-matrix.json",
+            "project_graph_real_testing_readiness_present",
+            "project_graph_real_testing_stage_disable_present",
+            "verification_status:",
+        ]
+        for expected in registry_terms:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        backlog_terms = [
+            "Task 26 Batch 32 Closure",
+            "| `done` | `T10-LIVE-M27..M31` real testing readiness target consent pilot harness and Codex surface smoke |",
+            "Batch 32 explicit approval",
+            "project_graph_real_testing.py",
+            "real-testing-readiness.json",
+            "real-testing-targets.json",
+            "pilot-harness.json",
+            "codex-surface-smoke.json",
+            "real-testing-pilot-matrix.json",
+            "No real project test without owner-approved target and data policy",
+            "Pilot harness remains dry-run and stage-only",
+            "Codex App, CLI and IDE extension smoke",
+            "Track 8 archetypes",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for expected in backlog_terms:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        docs_terms = [
+            "Task 26 Batch 32",
+            "T10-LIVE-M27..M31",
+            "Real Testing Readiness, Target Consent, Pilot Harness And Codex Surface Smoke",
+            "project_graph_real_testing.py",
+            "real-testing-readiness.json",
+            "real-testing-targets.json",
+            "pilot-harness.json",
+            "codex-surface-smoke.json",
+            "real-testing-pilot-matrix.json",
+            "project_graph_real_testing_readiness",
+            "project_graph_real_testing_targets",
+            "project_graph_pilot_harness",
+            "project_graph_codex_surface_smoke",
+            "project_graph_real_testing_pilot_matrix",
+            "batch32_real_testing_readiness_target_consent_pilot_harness_codex_surface_smoke",
+            "real_testing_readiness",
+            "real_project_target_selection",
+            "pilot_harness",
+            "codex_surface_smoke",
+            "use_case_pilot_matrix",
+            "no hidden unresolved Track 10 gates",
+            "owner-approved target and data policy",
+            "dry-run pilot harness",
+            "Codex App, CLI and IDE extension",
+            "Track 8 archetypes",
+            "staged evidence only",
+            "not source of truth",
+            "no live server",
+            "no provider calls",
+            "no live external model/API calls",
+            "no canonical graph mutation",
+        ]
+        for document, text in documents.items():
+            for expected in docs_terms:
+                with self.subTest(document=document, term=expected):
+                    self.assertIn(expected, text)
+
+        control_terms = [
+            "Task 26 Batch 32",
+            "T10-LIVE-M27..M31",
+            "project_graph_real_testing.py",
+            "real-testing-readiness.json",
+            "real-testing-targets.json",
+            "pilot-harness.json",
+            "codex-surface-smoke.json",
+            "real-testing-pilot-matrix.json",
+            "project_graph_real_testing_readiness_present",
+            "project_graph_real_testing_target_consent_present",
+            "project_graph_real_testing_pilot_harness_present",
+            "project_graph_real_testing_codex_surface_smoke_present",
+            "project_graph_real_testing_use_case_pilot_matrix_present",
+            "project_graph_real_testing_no_hidden_track10_gates_present",
+            "project_graph_real_testing_no_unapproved_actions_present",
+            "project_graph_real_testing_stage_disable_present",
+            "no hidden unresolved Track 10 gates",
+            "owner-approved target and data policy",
+            "dry-run pilot harness",
+            "Codex App, CLI and IDE extension",
+            "Track 8 archetypes",
+            "provider_call_allowed",
+            "external_call_performed",
+            "no live server",
+            "no provider calls",
+            "no live external model/API calls",
+            "no canonical graph mutation",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for filename, text in control_plane.items():
+            for expected in control_terms:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
     def test_track10_task25_batch20_local_backend_gate_is_synced(self):
         registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
         backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")

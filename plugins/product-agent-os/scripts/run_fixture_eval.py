@@ -127,6 +127,26 @@ from product_agent_os.project_graph_live_audit import (  # noqa: E402
     validate_runtime_observability_packet,
     validate_security_privacy_test_packet,
 )
+from product_agent_os.project_graph_real_testing import (  # noqa: E402
+    CODEX_SURFACE_SMOKE_TARGET,
+    PILOT_HARNESS_TARGET,
+    PILOT_MATRIX_TARGET,
+    REAL_TESTING_READINESS_TARGET,
+    REAL_TESTING_TARGETS_TARGET,
+    build_codex_surface_smoke_plan,
+    build_end_to_end_pilot_harness_packet,
+    build_real_project_target_selection_packet,
+    build_real_testing_readiness_packet,
+    build_use_case_pilot_matrix,
+    disable_real_testing_readiness,
+    stage_real_testing_readiness,
+    validate_codex_surface_smoke_plan,
+    validate_end_to_end_pilot_harness_packet,
+    validate_real_project_target_selection_packet,
+    validate_real_testing_approval,
+    validate_real_testing_readiness_packet,
+    validate_use_case_pilot_matrix,
+)
 from product_agent_os.project_graph_embedding_provider import (  # noqa: E402
     EMBEDDING_PROVIDER_CACHE_TARGET,
     EMBEDDING_PROVIDER_TARGET,
@@ -2346,6 +2366,30 @@ def _expected_checks(
         )
         checks["project_graph_live_audit_no_live_calls_present"] = (
             _project_graph_live_audit_no_live_calls_present()
+        )
+        checks["project_graph_real_testing_readiness_present"] = (
+            _project_graph_real_testing_readiness_present()
+        )
+        checks["project_graph_real_testing_target_consent_present"] = (
+            _project_graph_real_testing_target_consent_present()
+        )
+        checks["project_graph_real_testing_pilot_harness_present"] = (
+            _project_graph_real_testing_pilot_harness_present()
+        )
+        checks["project_graph_real_testing_codex_surface_smoke_present"] = (
+            _project_graph_real_testing_codex_surface_smoke_present()
+        )
+        checks["project_graph_real_testing_use_case_pilot_matrix_present"] = (
+            _project_graph_real_testing_use_case_pilot_matrix_present()
+        )
+        checks["project_graph_real_testing_no_hidden_track10_gates_present"] = (
+            _project_graph_real_testing_no_hidden_track10_gates_present()
+        )
+        checks["project_graph_real_testing_no_unapproved_actions_present"] = (
+            _project_graph_real_testing_no_unapproved_actions_present()
+        )
+        checks["project_graph_real_testing_stage_disable_present"] = (
+            _project_graph_real_testing_stage_disable_present()
         )
         checks["project_graph_hybrid_retrieval_pipeline_present"] = (
             _project_graph_hybrid_retrieval_pipeline_present()
@@ -6565,6 +6609,318 @@ def _project_graph_live_audit_no_live_calls_present() -> bool:
         and "canonical_graph_mutation\": true" not in payload
         and "git_action" in log
         and log.get("git_action") == "explicit_only_not_performed"
+    )
+
+
+def _project_graph_real_testing_approval() -> dict[str, Any]:
+    return {
+        "explicit_approval": True,
+        "owner": "Product-Agent OS Maintainer",
+        "allowed_surfaces": [
+            "real_testing_readiness",
+            "real_project_target_selection",
+            "pilot_harness",
+            "codex_surface_smoke",
+            "use_case_pilot_matrix",
+        ],
+        "readiness_policy": {
+            "entry_criteria_required": True,
+            "exit_criteria_required": True,
+            "accepted_gaps_allowed_with_owner": True,
+            "hidden_unresolved_gates_blocked": True,
+        },
+        "target_policy": {
+            "owner_approved_targets_only": True,
+            "data_policy_required": True,
+            "allowed_commands_required": True,
+            "production_targets_blocked_without_separate_approval": True,
+        },
+        "pilot_harness_policy": {
+            "dry_run_first": True,
+            "target_file_mutation_requires_explicit_target_approval": True,
+            "provider_calls_require_batch_approval": True,
+            "fallback_required": True,
+        },
+        "surface_smoke_policy": {
+            "codex_app_required": True,
+            "cli_required": True,
+            "ide_extension_required": True,
+            "missing_surface_recorded_as_gap_or_blocked": True,
+        },
+        "pilot_matrix_policy": {
+            "track8_archetypes_required": ["web", "backend", "docs", "pr_review", "evals", "automation", "ai_rag"],
+            "enabled_surface_requires_pilot_or_gap": True,
+        },
+        "rollback_path": "delete generated Batch 32 real testing readiness and pilot artifacts under stage root",
+        "residual_risks": ["real testing is readiness evidence until target owner approves execution"],
+    }
+
+
+def _project_graph_real_testing_gate_statuses() -> list[dict[str, Any]]:
+    return [
+        {"gate": "live_governance", "status": "implemented_verified"},
+        {"gate": "live_runtime", "status": "explicitly_disabled"},
+        {"gate": "external_embedding", "status": "blocked_by_missing_approval"},
+        {"gate": "external_reranker", "status": "blocked_by_missing_approval"},
+        {"gate": "external_llm", "status": "blocked_by_missing_approval"},
+        {"gate": "human_review_ledger", "status": "implemented_verified"},
+        {"gate": "canonical_graph_mutation", "status": "explicitly_disabled"},
+        {"gate": "audit_operability", "status": "implemented_verified"},
+    ]
+
+
+def _project_graph_real_testing_targets() -> list[dict[str, Any]]:
+    return [
+        {
+            "target_id": "python-app",
+            "workspace_class": "synthetic_fixture",
+            "owner": "Product-Agent OS Maintainer",
+            "owner_approved": True,
+            "data_policy": "synthetic_no_private_data",
+            "allowed_commands": ["scan_project_code_graph --dry-run", "run_fixture_eval"],
+            "production_data": False,
+            "target_file_mutation_allowed": False,
+        }
+    ]
+
+
+def _project_graph_real_testing_pilot_steps() -> list[dict[str, Any]]:
+    return [
+        {"step_id": "scan_project_code_graph_dry_run", "command_class": "read_only", "mutates_target": False},
+        {"step_id": "build_static_index_stage", "command_class": "stage_only", "mutates_target": False},
+        {"step_id": "cockpit_stage", "command_class": "stage_only", "mutates_target": False},
+        {"step_id": "live_runtime_contract", "command_class": "contract_only", "mutates_target": False},
+        {"step_id": "provider_gates_disabled", "command_class": "approval_gate", "mutates_target": False},
+        {"step_id": "graph_only_fallback", "command_class": "fallback", "mutates_target": False},
+    ]
+
+
+def _project_graph_real_testing_codex_surfaces() -> list[dict[str, Any]]:
+    return [
+        {"surface": "Codex App", "status": "planned_smoke", "evidence": "desktop thread runbook"},
+        {"surface": "CLI", "status": "planned_smoke", "evidence": "scripted commands"},
+        {"surface": "IDE extension", "status": "accepted_gap", "evidence": "surface unavailable in fixture"},
+    ]
+
+
+def _project_graph_real_testing_pilots() -> list[dict[str, Any]]:
+    return [
+        {"archetype": "web", "surface": "Codex App", "pilot_id": "web-orientation", "status": "planned"},
+        {"archetype": "backend", "surface": "CLI", "pilot_id": "backend-impact", "status": "planned"},
+        {"archetype": "docs", "surface": "CLI", "pilot_id": "docs-cockpit", "status": "planned"},
+        {"archetype": "pr_review", "surface": "Codex App", "pilot_id": "review-read-order", "status": "planned"},
+        {"archetype": "evals", "surface": "CLI", "pilot_id": "fixture-eval", "status": "planned"},
+        {"archetype": "automation", "surface": "IDE extension", "pilot_id": "accepted-gap", "status": "accepted_gap"},
+        {"archetype": "ai_rag", "surface": "CLI", "pilot_id": "semantic-gate", "status": "planned"},
+    ]
+
+
+def _project_graph_real_testing_audit_operability() -> dict[str, Any]:
+    return {
+        "audit_log": _project_graph_live_audit_log(),
+        "security_privacy": _project_graph_live_security_privacy_packet(),
+        "observability": _project_graph_live_observability_packet(),
+        "agent_skill_handoff": _project_graph_live_agent_skill_handoff_packet(),
+    }
+
+
+def _project_graph_real_testing_readiness() -> dict[str, Any]:
+    return build_real_testing_readiness_packet(
+        approval=_project_graph_real_testing_approval(),
+        governance_packet=_project_graph_live_governance_packet(),
+        runtime_contract=_project_graph_live_runtime_contract(),
+        audit_operability=_project_graph_real_testing_audit_operability(),
+        gate_statuses=_project_graph_real_testing_gate_statuses(),
+    )
+
+
+def _project_graph_real_testing_target_packet() -> dict[str, Any]:
+    return build_real_project_target_selection_packet(
+        targets=_project_graph_real_testing_targets(),
+        approval=_project_graph_real_testing_approval(),
+        governance_packet=_project_graph_live_governance_packet(),
+    )
+
+
+def _project_graph_real_testing_harness() -> dict[str, Any]:
+    return build_end_to_end_pilot_harness_packet(
+        readiness_packet=_project_graph_real_testing_readiness(),
+        target_packet=_project_graph_real_testing_target_packet(),
+        approval=_project_graph_real_testing_approval(),
+        pilot_steps=_project_graph_real_testing_pilot_steps(),
+    )
+
+
+def _project_graph_real_testing_smoke() -> dict[str, Any]:
+    return build_codex_surface_smoke_plan(
+        readiness_packet=_project_graph_real_testing_readiness(),
+        surfaces=_project_graph_real_testing_codex_surfaces(),
+        approval=_project_graph_real_testing_approval(),
+    )
+
+
+def _project_graph_real_testing_matrix() -> dict[str, Any]:
+    return build_use_case_pilot_matrix(
+        readiness_packet=_project_graph_real_testing_readiness(),
+        smoke_plan=_project_graph_real_testing_smoke(),
+        pilots=_project_graph_real_testing_pilots(),
+        approval=_project_graph_real_testing_approval(),
+    )
+
+
+def _project_graph_real_testing_readiness_present() -> bool:
+    approval = _project_graph_real_testing_approval()
+    readiness = _project_graph_real_testing_readiness()
+    return (
+        validate_real_testing_approval(approval, _project_graph_live_governance_packet()).get("ok") is True
+        and readiness.get("artifact_kind") == "project_graph_real_testing_readiness"
+        and readiness.get("status") == "ready"
+        and readiness.get("target") == REAL_TESTING_READINESS_TARGET
+        and readiness.get("real_testing_start_policy") == "approved_targets_only"
+        and readiness.get("no_hidden_unresolved_track10_gates") is True
+        and validate_real_testing_readiness_packet(readiness).get("ok") is True
+    )
+
+
+def _project_graph_real_testing_target_consent_present() -> bool:
+    targets = _project_graph_real_testing_target_packet()
+    return (
+        targets.get("artifact_kind") == "project_graph_real_testing_targets"
+        and targets.get("status") == "ready"
+        and targets.get("target") == REAL_TESTING_TARGETS_TARGET
+        and targets.get("owner_approved_target_and_data_policy_required") is True
+        and targets.get("production_targets_blocked_without_separate_approval") is True
+        and all(target.get("owner_approved") is True for target in targets.get("targets", []))
+        and validate_real_project_target_selection_packet(targets).get("ok") is True
+    )
+
+
+def _project_graph_real_testing_pilot_harness_present() -> bool:
+    harness = _project_graph_real_testing_harness()
+    return (
+        harness.get("artifact_kind") == "project_graph_pilot_harness"
+        and harness.get("status") == "ready"
+        and harness.get("target") == PILOT_HARNESS_TARGET
+        and harness.get("dry_run_only") is True
+        and harness.get("target_file_mutation_allowed_only_if_approved") is True
+        and "scan_project_code_graph_dry_run" in harness.get("pilot_steps", [])
+        and "graph_only_fallback" in harness.get("pilot_steps", [])
+        and validate_end_to_end_pilot_harness_packet(harness).get("ok") is True
+    )
+
+
+def _project_graph_real_testing_codex_surface_smoke_present() -> bool:
+    smoke = _project_graph_real_testing_smoke()
+    return (
+        smoke.get("artifact_kind") == "project_graph_codex_surface_smoke"
+        and smoke.get("status") == "ready"
+        and smoke.get("target") == CODEX_SURFACE_SMOKE_TARGET
+        and {surface.get("surface") for surface in smoke.get("surfaces", [])}
+        == {"Codex App", "CLI", "IDE extension"}
+        and smoke.get("missing_surface_recorded_as_gap_or_blocked") is True
+        and validate_codex_surface_smoke_plan(smoke).get("ok") is True
+    )
+
+
+def _project_graph_real_testing_use_case_pilot_matrix_present() -> bool:
+    matrix = _project_graph_real_testing_matrix()
+    return (
+        matrix.get("artifact_kind") == "project_graph_real_testing_pilot_matrix"
+        and matrix.get("status") == "ready"
+        and matrix.get("target") == PILOT_MATRIX_TARGET
+        and {"web", "backend", "docs", "pr_review", "evals", "automation", "ai_rag"}.issubset(
+            set(matrix.get("use_case_archetypes", []))
+        )
+        and matrix.get("each_enabled_surface_has_pilot_or_accepted_gap") is True
+        and validate_use_case_pilot_matrix(matrix).get("ok") is True
+    )
+
+
+def _project_graph_real_testing_no_hidden_track10_gates_present() -> bool:
+    readiness = _project_graph_real_testing_readiness()
+    statuses = {entry.get("status") for entry in readiness.get("gate_statuses", [])}
+    return (
+        readiness.get("no_hidden_unresolved_track10_gates") is True
+        and statuses <= {"implemented_verified", "explicitly_disabled", "blocked_by_missing_approval", "accepted_gap"}
+        and all(entry.get("status") != "unresolved" for entry in readiness.get("gate_statuses", []))
+    )
+
+
+def _project_graph_real_testing_no_unapproved_actions_present() -> bool:
+    packets = [
+        _project_graph_real_testing_readiness(),
+        _project_graph_real_testing_target_packet(),
+        _project_graph_real_testing_harness(),
+        _project_graph_real_testing_smoke(),
+        _project_graph_real_testing_matrix(),
+    ]
+    payload = json.dumps(packets, sort_keys=True).lower()
+    return (
+        all(packet.get("provider_call_allowed") is False for packet in packets)
+        and all(packet.get("external_call_performed") is False for packet in packets)
+        and all(packet.get("live_server_started") is False for packet in packets)
+        and all(packet.get("canonical_graph_mutation") == "not_performed" for packet in packets)
+        and "provider_call_allowed\": true" not in payload
+        and "external_call_performed\": true" not in payload
+        and "live_server_started\": true" not in payload
+        and "canonical_graph_mutation\": true" not in payload
+    )
+
+
+def _project_graph_real_testing_stage_disable_present() -> bool:
+    with tempfile.TemporaryDirectory() as tmp:
+        stage_root = Path(tmp) / "stage"
+        governance_path = Path(tmp) / "governance.json"
+        runtime_path = Path(tmp) / "runtime.json"
+        audit_path = Path(tmp) / "audit-operability.json"
+        governance_path.write_text(json.dumps(_project_graph_live_governance_packet()), encoding="utf-8")
+        runtime_path.write_text(json.dumps(_project_graph_live_runtime_contract()), encoding="utf-8")
+        audit_path.write_text(json.dumps(_project_graph_real_testing_audit_operability()), encoding="utf-8")
+        staged = stage_real_testing_readiness(
+            stage_root,
+            workspace=FIXTURES / "project-code-graph-minimal-python",
+            approval=_project_graph_real_testing_approval(),
+            governance_artifact=governance_path,
+            runtime_artifact=runtime_path,
+            audit_operability_artifact=audit_path,
+            targets=_project_graph_real_testing_targets(),
+            gate_statuses=_project_graph_real_testing_gate_statuses(),
+            pilot_steps=_project_graph_real_testing_pilot_steps(),
+            surfaces=_project_graph_real_testing_codex_surfaces(),
+            pilots=_project_graph_real_testing_pilots(),
+        )
+        files_exist = all(
+            (stage_root / relative).exists()
+            for relative in [
+                REAL_TESTING_READINESS_TARGET,
+                REAL_TESTING_TARGETS_TARGET,
+                PILOT_HARNESS_TARGET,
+                CODEX_SURFACE_SMOKE_TARGET,
+                PILOT_MATRIX_TARGET,
+            ]
+        )
+        disabled = disable_real_testing_readiness(
+            stage_root,
+            workspace=FIXTURES / "project-code-graph-minimal-python",
+        )
+        files_removed = all(
+            not (stage_root / relative).exists()
+            for relative in [
+                REAL_TESTING_READINESS_TARGET,
+                REAL_TESTING_TARGETS_TARGET,
+                PILOT_HARNESS_TARGET,
+                CODEX_SURFACE_SMOKE_TARGET,
+                PILOT_MATRIX_TARGET,
+            ]
+        )
+    deletion = disabled.get("rendered_artifacts", {}).get("deletion_proof", {})
+    return (
+        staged.get("rendered_artifacts", {}).get("mode") == "build-real-testing-readiness"
+        and staged.get("rendered_artifacts", {}).get("status") == "ready"
+        and files_exist
+        and disabled.get("rendered_artifacts", {}).get("status") == "disabled"
+        and deletion.get("delete_generated_real_testing_artifacts") is True
+        and files_removed
     )
 
 
