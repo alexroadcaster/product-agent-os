@@ -2,7 +2,7 @@
 
 Source status: `official + experiment`
 
-Эта страница перечисляет основные generated artifacts Product-Agent OS для modernization loop, project code graph, live/runtime governance и approval-bound handoff. Она не является schema spec в формате JSON Schema; это operator-facing contract map: что создается, зачем нужно, где source-of-truth boundary и какие approval gates действуют.
+Эта страница перечисляет основные generated artifacts Product-Agent OS для modernization loop, project code graph, live/runtime governance и approval-bound handoff. Это не JSON Schema spec, а operator-facing contract map: что создается, зачем нужно, где проходит source-of-truth boundary и какие approval gates действуют.
 
 ## Contract Boundary
 
@@ -72,7 +72,7 @@ Artifacts must not contain secrets, credentials, raw private chat logs, private 
 | `.codex/product-agent-os/project-code-graph-live-audit-log.jsonl` | `project_graph_live_audit.py`, `--build-live-audit` | Redacted append-only audit events. | No secrets, raw source or private data. |
 | `.codex/product-agent-os/project-code-graph-live-security-privacy.json` | `project_graph_live_audit.py` | Security/privacy negative cases and findings. | Evidence packet, not a full security certification. |
 | `.codex/product-agent-os/project-code-graph-live-observability.json` | `project_graph_live_audit.py` | Runtime health, latency, provider error and degraded-mode visibility. | Generated observability evidence. |
-| `.codex/product-agent-os/project-code-graph-agent-skill-handoff.json` | `project_graph_live_audit.py` | Agent/skill ownership, fresh context, verification and stop-condition routing. | Handoff guidance only; agents still need explicit task context. |
+| `.codex/product-agent-os/project-code-graph-agent-skill-handoff.json` | `project_graph_live_audit.py` | Agent/skill ownership, fresh context, verification and stop-condition routing. | Handoff guidance only; agents still need explicit work context. |
 
 ## Real Testing And Runtime QA Artifacts
 

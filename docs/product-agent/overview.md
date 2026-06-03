@@ -12,7 +12,7 @@ Source status: `official + experiment`
 - skills превращают повторяемые методы в reusable workflows;
 - subagents и Agents SDK помогают распределять bounded work;
 - eval loops и PR checks доказывают качество;
-- runtime tools запускают это в App, CLI, cloud, GitHub или automation.
+- runtime tools запускают это в Codex App, CLI, cloud, GitHub или automation.
 
 ## Главная идея
 
@@ -34,7 +34,7 @@ flowchart LR
 
 | Ситуация | Достаточный уровень |
 | --- | --- |
-| Разовая правка, понятный diff | Codex App / CLI |
+| Разовая правка с понятным diff | Codex App / CLI |
 | Повторяемая процедура | Skill |
 | Фоновая регулярная проверка | Automation |
 | Сложная фича с несколькими ролями | Product-Agent Workflow |
@@ -50,7 +50,7 @@ flowchart LR
 Перед запуском product-agent workflow должны быть:
 
 - понятная цель и non-goals;
-- выбранный runtime: App, CLI, cloud, `codex exec`, MCP или GitHub Action;
+- выбранный runtime: Codex App, CLI, cloud, `codex exec`, MCP или GitHub Action;
 - control-plane files;
 - test/eval commands;
 - ownership файлов или подсистем;

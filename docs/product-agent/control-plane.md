@@ -41,4 +41,3 @@ Source status: `official + experiment`
 ## Nested AGENTS.md
 
 Для monorepo используйте root `AGENTS.md` для общих правил и nested files для отдельных packages или services. Ближайшие инструкции должны уточнять, а не дублировать root policy.
-

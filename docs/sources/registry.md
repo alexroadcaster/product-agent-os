@@ -3126,6 +3126,18 @@ verification_status: "Docs/source-policy slice. Public-ready pages are checked b
 ```
 
 ```yaml
+title: "Product-Agent OS Batch 34C RU/EN I18N localization packet"
+url: "docs/sources/product-agent-os-batch34c-i18n-localization.md; docs/sources/product-agent-os-batch34b-public-copy-rewrite.md; docs/sources/product-agent-os-track-10-backlog.md; mkdocs.yml; requirements.txt; tools/check_docs.py; tests/product_agent_os/test_product_agent_os_docs.py"
+type: "internal documentation"
+source_status: "project-authored"
+checked_at: "2026-06-03"
+summary: "Batch 34C `B34-I18N-M24..M30` enables RU/EN localization for the Product-Agent OS public-ready documentation set. It records the `mkdocs-static-i18n` architecture, RU default at site root, EN under `/en/`, suffix file structure, Material language switcher, localized EN navigation, terminology allowlist and localized_page_parity requirements."
+relevance: "This packet follows Batch 34B public copy cleanup and makes the promoted product documentation usable as separate RU and EN experiences without copying RU fallback pages into the EN build. Internal evidence surfaces remain internal and out of the EN public navigation."
+trust_level: "high"
+verification_status: "Docs/config/source-policy slice. The B34C contract is checked by `test_track10_task26_batch34c_ru_en_i18n_localization_is_enabled`: the focused B34C test first failed on the missing B34C packet, then passed; EN Cyrillic scan, `.en.md` link scan and public forbidden-term scan returned no matches; EN sibling presence scan reported `missing: []` for 35 public-ready pages; `python -m unittest tests.product_agent_os.test_product_agent_os_docs -v` ran 42 tests with OK; `python tools\\check_docs.py` passed; strict MkDocs built RU root and EN `/en/` with workspace-local `.mkdocs_deps_b34c` dependencies into disposable `.mkdocs_task26_b34c_site` and exited 0; temporary dependency/site directories were removed. It starts no live server, runs no browser automation, performs no provider/live external model/API calls, performs no canonical graph mutation and performs no git stage/commit/push/PR."
+```
+
+```yaml
 title: "Product-Agent OS Batch 34 packaging/install smoke packet"
 url: "docs/sources/product-agent-os-batch34-packaging-install-smoke.md; plugins/product-agent-os/.codex-plugin/plugin.json; plugins/product-agent-os/skills/docs-maintainer/SKILL.md; plugins/product-agent-os/skills/pr-release-operator/SKILL.md; plugins/product-agent-os/scripts/validate_codex_compatibility.py; $CODEX_HOME\\plugins\\cache\\local-product-agent-plugins\\product-agent-os\\0.1.0"
 type: "internal documentation"

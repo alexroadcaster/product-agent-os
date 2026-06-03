@@ -1,5 +1,5 @@
-site_name: OpenAI Codex Knowledge Base
-site_description: Russian knowledge base for advanced OpenAI Codex and agentic workflows.
+site_name: Product-Agent OS
+site_description: Документация Product-Agent OS для рабочих процессов с агентами и skills.
 site_url: ""
 docs_dir: docs
 site_dir: site
@@ -24,11 +24,83 @@ theme:
 
 extra:
   generator: false
+  alternate:
+    - name: RU
+      link: /
+      lang: ru
+    - name: EN
+      link: /en/
+      lang: en
 
 extra_css:
   - assets/stylesheets/extra.css
 
 plugins:
+  # Provided by mkdocs-static-i18n.
+  - i18n:
+      docs_structure: suffix
+      fallback_to_default: false
+      reconfigure_material: true
+      reconfigure_search: true
+      languages:
+        - locale: ru
+          name: RU
+          default: true
+          build: true
+          link: /
+          site_name: Product-Agent OS
+          site_description: Документация Product-Agent OS для рабочих процессов с агентами и skills.
+          theme:
+            language: ru
+        - locale: en
+          name: EN
+          build: true
+          link: /en/
+          site_name: Product-Agent OS Documentation
+          site_description: Product documentation for Product-Agent OS.
+          theme:
+            language: en
+          nav:
+            - Home: index.md
+            - Product-Agent OS:
+                - Start Here: product-agent-os/index.md
+                - Project Code Graph: product-agent-os/project-code-graph.md
+                - Live Runtime Governance: product-agent-os/live-runtime-governance.md
+                - Approval-Bound Real Testing: product-agent-os/approval-bound-real-testing.md
+                - Agent-Skill Modernization Loop: product-agent-os/agent-skill-modernization-loop.md
+                - CLI Reference: product-agent-os/cli-reference.md
+                - Artifact Contracts: product-agent-os/artifact-contracts.md
+                - Packaging And Closure: product-agent-os/packaging-and-closure.md
+                - Technical Setup: product-agent-os/technical.md
+                - Development Standards: product-agent-os/development-standards.md
+                - Methodology Intelligence: product-agent-os/methodology-intelligence.md
+                - Scenarios: product-agent-os/scenarios.md
+                - Behavioral Evals: product-agent-os/behavioral-evals.md
+                - Codex Compatibility: product-agent-os/codex-compatibility.md
+                - Architecture: product-agent-os/architecture.md
+            - Product-Agent Workflows:
+                - Overview: product-agent/overview.md
+                - Lifecycle: product-agent/lifecycle.md
+                - Roles: product-agent/roles.md
+                - Control Plane: product-agent/control-plane.md
+                - Product-Agent OS Plugin Spec: product-agent/product-agent-os-plugin-spec.md
+            - Implementation Atlas:
+                - Diagram Atlas: diagrams/index.md
+                - Architecture: diagrams/architecture.md
+                - Delivery Lifecycle: diagrams/product-delivery-lifecycle.md
+                - Agent Team And Skills: diagrams/agent-team-and-skills.md
+                - Runtime Decision Map: diagrams/runtime-decision-map.md
+                - Skill Lifecycle: diagrams/skill-lifecycle.md
+                - Context, Memory, Verification: diagrams/context-memory-verification.md
+            - Runtime And Playbooks:
+                - Runtime Overview: runtime/overview.md
+                - Non-Interactive And MCP: runtime/non-interactive-and-mcp.md
+                - Automations And GitHub: runtime/automations-github.md
+                - Worktrees, Hooks, Rules: runtime/worktrees-hooks-rules.md
+                - Subagents, Skills, AGENTS.md: agent-systems/subagents-skills.md
+                - Docs Update: playbooks/docs-update.md
+                - Use Case To Plugin: playbooks/use-case-to-plugin.md
+                - Workspace Readiness Audit: playbooks/workspace-readiness-audit.md
   - search:
       lang:
         - ru

@@ -14,7 +14,7 @@ Source of truth:
 
 - checked-in Product-Agent OS source docs;
 - accepted implementation plan and docs closure scope;
-- source registry and control-plane artifacts after их отдельного owner-approved/docs-maintainer slice;
+- source registry and control-plane artifacts after their separate owner-approved/docs-maintainer slice;
 - current command evidence from docs tests, `tools/check_docs.py`, strict MkDocs, optional full closure and packaging/install smoke;
 - explicit owner approval packets for any later live/browser/provider/canonical/git action.
 

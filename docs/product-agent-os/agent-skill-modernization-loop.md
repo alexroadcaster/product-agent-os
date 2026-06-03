@@ -4,7 +4,7 @@ Source status: `official + experiment`
 
 ## Назначение
 
-Эта страница описывает `agent_skill_metrics_loop` для Product-Agent OS: локальный, read-only контур оценки agents, subagents, skills, prompt/policy packs, router/tool policies, memory policies, dataset/grader surfaces и harness versions после того, как реальная работа оставила проверяемые evidence records.
+Эта страница описывает `agent_skill_metrics_loop` для Product-Agent OS: локальный read-only контур оценки agents, subagents, skills, prompt/policy packs, router/tool policies, memory policies, dataset/grader surfaces и harness versions после того, как реальная работа оставила проверяемые evidence records.
 
 Цель контура - не autonomous auto-update. Цель - собрать source-backed evidence, показать scorecards, выявить modernization candidates и подготовить daily/weekly candidate packets для owner review. Это staged candidate-only pipeline без self-applied updates, active schedules и live eval/model/API calls.
 
@@ -25,7 +25,7 @@ Source of truth для метрик:
 - один noisy daily report;
 - modernization candidate без rollback target, owner review и approval state.
 
-Любой generated report является review view. Он не доказывает, что проект готов, skill качественный или обновление можно применять.
+Любой generated report является review view. Он не доказывает, что проект готов, skill качественный или update можно применять.
 
 ## Inputs
 

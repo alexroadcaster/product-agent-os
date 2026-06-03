@@ -19,6 +19,9 @@ BATCH34A_PUBLIC_DOCS_BOUNDARY = (
 BATCH34B_PUBLIC_COPY_REWRITE = (
     DOCS / "sources" / "product-agent-os-batch34b-public-copy-rewrite.md"
 )
+BATCH34C_I18N_LOCALIZATION = (
+    DOCS / "sources" / "product-agent-os-batch34c-i18n-localization.md"
+)
 BATCH35_APPROVAL_DRAFT = DOCS / "sources" / "product-agent-os-batch35-approval-packet-draft.md"
 TRACK9_PLAN = DOCS / "superpowers" / "plans" / "2026-05-25-track-9-methodology-intelligence.md"
 TRACK10_PLAN = DOCS / "superpowers" / "plans" / "2026-05-27-track-10-guided-questions-status-dashboard.md"
@@ -40,6 +43,45 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             if name in {"root_readme", "plugin_readme"}
         }
         return internal or documents
+
+    def _batch34_public_ready_pages(self):
+        return [
+            PRODUCT_AGENT_OS / "index.md",
+            PRODUCT_AGENT_OS / "project-code-graph.md",
+            PRODUCT_AGENT_OS / "live-runtime-governance.md",
+            PRODUCT_AGENT_OS / "approval-bound-real-testing.md",
+            PRODUCT_AGENT_OS / "agent-skill-modernization-loop.md",
+            PRODUCT_AGENT_OS / "cli-reference.md",
+            PRODUCT_AGENT_OS / "artifact-contracts.md",
+            PRODUCT_AGENT_OS / "packaging-and-closure.md",
+            PRODUCT_AGENT_OS / "technical.md",
+            PRODUCT_AGENT_OS / "development-standards.md",
+            PRODUCT_AGENT_OS / "methodology-intelligence.md",
+            PRODUCT_AGENT_OS / "scenarios.md",
+            PRODUCT_AGENT_OS / "behavioral-evals.md",
+            PRODUCT_AGENT_OS / "codex-compatibility.md",
+            PRODUCT_AGENT_OS / "architecture.md",
+            DOCS / "product-agent" / "overview.md",
+            DOCS / "product-agent" / "lifecycle.md",
+            DOCS / "product-agent" / "roles.md",
+            DOCS / "product-agent" / "control-plane.md",
+            DOCS / "product-agent" / "product-agent-os-plugin-spec.md",
+            DOCS / "diagrams" / "index.md",
+            DOCS / "diagrams" / "architecture.md",
+            DOCS / "diagrams" / "product-delivery-lifecycle.md",
+            DOCS / "diagrams" / "agent-team-and-skills.md",
+            DOCS / "diagrams" / "runtime-decision-map.md",
+            DOCS / "diagrams" / "skill-lifecycle.md",
+            DOCS / "diagrams" / "context-memory-verification.md",
+            DOCS / "runtime" / "overview.md",
+            DOCS / "runtime" / "non-interactive-and-mcp.md",
+            DOCS / "runtime" / "automations-github.md",
+            DOCS / "runtime" / "worktrees-hooks-rules.md",
+            DOCS / "agent-systems" / "subagents-skills.md",
+            DOCS / "playbooks" / "docs-update.md",
+            DOCS / "playbooks" / "use-case-to-plugin.md",
+            DOCS / "playbooks" / "workspace-readiness-audit.md",
+        ]
 
     def test_t8h_dedicated_docs_pages_exist_with_operating_contracts(self):
         expected_pages = {
@@ -2364,43 +2406,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         boundary = BATCH34A_PUBLIC_DOCS_BOUNDARY.read_text(encoding="utf-8")
         rewrite = BATCH34B_PUBLIC_COPY_REWRITE.read_text(encoding="utf-8")
 
-        public_ready_pages = [
-            PRODUCT_AGENT_OS / "index.md",
-            PRODUCT_AGENT_OS / "project-code-graph.md",
-            PRODUCT_AGENT_OS / "live-runtime-governance.md",
-            PRODUCT_AGENT_OS / "approval-bound-real-testing.md",
-            PRODUCT_AGENT_OS / "agent-skill-modernization-loop.md",
-            PRODUCT_AGENT_OS / "cli-reference.md",
-            PRODUCT_AGENT_OS / "artifact-contracts.md",
-            PRODUCT_AGENT_OS / "packaging-and-closure.md",
-            PRODUCT_AGENT_OS / "technical.md",
-            PRODUCT_AGENT_OS / "development-standards.md",
-            PRODUCT_AGENT_OS / "methodology-intelligence.md",
-            PRODUCT_AGENT_OS / "scenarios.md",
-            PRODUCT_AGENT_OS / "behavioral-evals.md",
-            PRODUCT_AGENT_OS / "codex-compatibility.md",
-            PRODUCT_AGENT_OS / "architecture.md",
-            DOCS / "product-agent" / "overview.md",
-            DOCS / "product-agent" / "lifecycle.md",
-            DOCS / "product-agent" / "roles.md",
-            DOCS / "product-agent" / "control-plane.md",
-            DOCS / "product-agent" / "product-agent-os-plugin-spec.md",
-            DOCS / "diagrams" / "index.md",
-            DOCS / "diagrams" / "architecture.md",
-            DOCS / "diagrams" / "product-delivery-lifecycle.md",
-            DOCS / "diagrams" / "agent-team-and-skills.md",
-            DOCS / "diagrams" / "runtime-decision-map.md",
-            DOCS / "diagrams" / "skill-lifecycle.md",
-            DOCS / "diagrams" / "context-memory-verification.md",
-            DOCS / "runtime" / "overview.md",
-            DOCS / "runtime" / "non-interactive-and-mcp.md",
-            DOCS / "runtime" / "automations-github.md",
-            DOCS / "runtime" / "worktrees-hooks-rules.md",
-            DOCS / "agent-systems" / "subagents-skills.md",
-            DOCS / "playbooks" / "docs-update.md",
-            DOCS / "playbooks" / "use-case-to-plugin.md",
-            DOCS / "playbooks" / "workspace-readiness-audit.md",
-        ]
+        public_ready_pages = self._batch34_public_ready_pages()
 
         forbidden_pattern = re.compile(
             r"\b(Task|Track|Batch)\b|T[0-9]+-[A-Z0-9-]+|B[0-9]+-[A-Z]+-M[0-9]+"
@@ -2468,6 +2474,160 @@ class ProductAgentOsDocsTest(unittest.TestCase):
 
         self.assertIn("public_ready_pages:", boundary)
         self.assertIn("cleanup_pending_public_candidates: []", boundary)
+
+    def test_track10_task26_batch34c_ru_en_i18n_localization_is_enabled(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        plan = TRACK10_PLAN.read_text(encoding="utf-8")
+        config = MKDOCS.read_text(encoding="utf-8")
+        check_docs = CHECK_DOCS.read_text(encoding="utf-8")
+        requirements = (ROOT / "requirements.txt").read_text(encoding="utf-8")
+        packet = BATCH34C_I18N_LOCALIZATION.read_text(encoding="utf-8")
+        control_plane = "\n".join(
+            path.read_text(encoding="utf-8")
+            for path in [REQUIREMENTS, PLAN, TEST, EVALS, RUNLOG, AGENTS]
+        )
+
+        for expected in [
+            "mkdocs-static-i18n",
+            "B34-I18N-M24",
+            "B34-I18N-M25",
+            "B34-I18N-M26",
+            "B34-I18N-M27",
+            "B34-I18N-M28",
+            "B34-I18N-M29",
+            "B34-I18N-M30",
+            "RU default at site root",
+            "EN under /en/",
+            "fallback_to_default: false",
+            "reconfigure_material: true",
+            "reconfigure_search: true",
+            "terminology_allowlist",
+            "localized_page_parity",
+            "no live server",
+            "no browser automation",
+            "no provider/live external model/API calls",
+            "no canonical graph mutation",
+            "no git stage/commit/push/PR",
+        ]:
+            with self.subTest(packet=expected):
+                self.assertIn(expected, packet)
+
+        for expected in [
+            "mkdocs-static-i18n",
+            "- i18n:",
+            "docs_structure: suffix",
+            "fallback_to_default: false",
+            "reconfigure_material: true",
+            "reconfigure_search: true",
+            "locale: ru",
+            "default: true",
+            "locale: en",
+            "link: /en/",
+            "theme:",
+            "language: en",
+            "site_name: Product-Agent OS Documentation",
+            "site_description: Product documentation for Product-Agent OS.",
+        ]:
+            with self.subTest(mkdocs=expected):
+                self.assertIn(expected, config)
+
+        self.assertIn("mkdocs-static-i18n", requirements)
+        self.assertIn('sources" / "product-agent-os-batch34c-i18n-localization.md', check_docs)
+
+        public_forbidden_pattern = re.compile(
+            r"\b(Task|Track|Batch)\b|T[0-9]+-[A-Z0-9-]+|B[0-9]+-[A-Z]+-M[0-9]+"
+        )
+        for path in self._batch34_public_ready_pages():
+            rel_path = path.relative_to(ROOT).as_posix()
+            text = path.read_text(encoding="utf-8")
+            en_path = path.with_name(path.stem + ".en" + path.suffix)
+            en_rel_path = en_path.relative_to(ROOT).as_posix()
+
+            with self.subTest(ru_source_status=rel_path):
+                self.assertIn("Source status:", text)
+            with self.subTest(en_exists=en_rel_path):
+                self.assertTrue(en_path.exists(), en_path)
+
+            en_text = en_path.read_text(encoding="utf-8")
+            with self.subTest(en_source_status=en_rel_path):
+                self.assertIn("Source status:", en_text)
+            with self.subTest(packet_lists_page=rel_path):
+                self.assertIn(rel_path, packet)
+                self.assertIn(en_rel_path, packet)
+            with self.subTest(en_is_english=en_rel_path):
+                self.assertIn("Source status:", en_text)
+                self.assertIn("Inputs", en_text)
+                self.assertIn("Outputs", en_text)
+                self.assertIn("Verification", en_text)
+                self.assertIn("Risks", en_text)
+                self.assertNotRegex(en_text, r"[А-Яа-яЁё]{4,}")
+            with self.subTest(public_forbidden_terms=rel_path):
+                self.assertIsNone(public_forbidden_pattern.search(text), rel_path)
+                self.assertIsNone(public_forbidden_pattern.search(en_text), en_rel_path)
+
+        for expected in [
+            "Approved terms that may remain English in RU pages:",
+            "Product-Agent OS",
+            "Codex App",
+            "CLI",
+            "IDE extension",
+            "subagents",
+            "skills",
+            "`AGENTS.md`",
+            "memory",
+            "sandbox",
+            "approvals",
+            "MCP",
+            "Agents SDK",
+            "Forbidden non-term English prose examples in RU pages:",
+        ]:
+            with self.subTest(terminology_policy=expected):
+                self.assertIn(expected, packet)
+
+        for expected in [
+            "Product-Agent OS Batch 34C RU/EN I18N localization packet",
+            "B34-I18N-M24..M30",
+            "mkdocs-static-i18n",
+            "localized_page_parity",
+            "verification_status:",
+        ]:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        for expected in [
+            "`done_through_m30` | Batch 34C RU/EN localization |",
+            "B34-I18N-M24..M30",
+            "RU default at site root",
+            "EN under `/en/`",
+            "localized_page_parity",
+            "Batch 34D product docs QA and closure",
+        ]:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        for expected in [
+            "Batch 34C: RU/EN I18N And L10N Enablement",
+            "B34-I18N-M24",
+            "B34-I18N-M30",
+            "Execution status through Batch 34C",
+        ]:
+            with self.subTest(plan=expected):
+                self.assertIn(expected, plan)
+
+        for expected in [
+            "Batch 34C RU/EN localization",
+            "B34-I18N-M24..M30",
+            "mkdocs-static-i18n",
+            "localized_page_parity",
+            "no live server",
+            "no browser automation",
+            "no provider/live external model/API calls",
+            "no canonical graph mutation",
+            "no git stage/commit/push/PR",
+        ]:
+            with self.subTest(control_plane=expected):
+                self.assertIn(expected, control_plane)
 
     def test_track10_task26_batch35_real_testing_execution_matrix_is_planned(self):
         registry = SOURCE_REGISTRY.read_text(encoding="utf-8")

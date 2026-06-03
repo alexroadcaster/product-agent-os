@@ -2,16 +2,16 @@
 
 Source status: `official + experiment`
 
-Эта страница описывает локальный Project Code Graph слой Product-Agent OS. Он помогает быстро ориентироваться в кодовой базе через сгенерированный граф, query packets, cockpit и локальные индексы, но не заменяет исходные файлы, checked-in документацию, тесты, approval records или решения owner.
+Эта страница описывает локальный слой Project Code Graph в Product-Agent OS. Он помогает ориентироваться в кодовой базе через сгенерированный graph, query packets, cockpit и локальные indexes, но не заменяет исходные файлы, checked-in документацию, tests, approval records или решения owner.
 
 ## Назначение
 
 Project Code Graph отвечает за offline-навигацию по проекту:
 
-- сканирует workspace и строит file-level graph с узлами файлов, `contains` edges, fingerprints, spans и observation records;
+- сканирует workspace и строит file-level graph с nodes файлов, `contains` edges, fingerprints, spans и observation records;
 - добавляет Python AST overlays для package/module/class/function/method, import/call/test edges и unresolved call summaries;
 - добавляет docs/contracts/schema overlays для Markdown, OpenAPI/Swagger, AsyncAPI, DBML, SQL, JSON, YAML, Mermaid и PlantUML;
-- выдает bounded query packets для чтения графа без повторного чтения raw source bodies;
+- выдает bounded query packets для чтения graph без повторного чтения raw source bodies;
 - рендерит static cockpit как generated view для обзорной навигации;
 - добавляет extension surface для search index, backend gate, semantic retrieval, deterministic LLM proposals и closure evidence.
 
@@ -19,7 +19,7 @@ Project Code Graph отвечает за offline-навигацию по про�
 
 Generated graph artifacts are not source of truth. Они являются orientation evidence и cache-bound generated views.
 
-Source of truth остается в исходных файлах проекта, checked-in документации, schema/contracts, тестах, approval packets, RUNLOG/TEST/EVALS evidence и явно принятых owner decisions. Граф, cockpit HTML/JSON, search/backend/semantic indexes, LLM proposal packets и extension closure reports не должны использоваться как самостоятельное доказательство архитектуры, runtime behavior, coverage, security posture или готовности релиза.
+Source of truth остается в исходных файлах проекта, checked-in документации, schema/contracts, tests, approval packets, RUNLOG/TEST/EVALS evidence и явно принятых owner decisions. Graph, cockpit HTML/JSON, search/backend/semantic indexes, LLM proposal packets и extension closure reports не должны использоваться как самостоятельное доказательство architecture, runtime behavior, coverage, security posture или release readiness.
 
 Без отдельного explicit approval запрещены live server, browser automation, provider/API calls, canonical graph mutation, git stage/commit/push/PR и любые external writes. Query и stage modes должны оставаться локальными, deterministic и generated-artifact-only.
 
@@ -32,11 +32,11 @@ Source of truth остается в исходных файлах проекта
 - existing `project-code-graph.json` или `project-code-graph.jsonl` для query mode;
 - approval packets только для approval-bound extension modes: backend, semantic index, LLM proposals и extension closure evidence.
 
-Scanner читает локальные файлы проекта, но graph/query packets исключают raw source bodies по умолчанию и редактируют absolute paths или secret-like values. Stage output должен быть явной директорией, предпочтительно вне target workspace.
+Scanner читает локальные файлы проекта, но graph/query packets по умолчанию исключают raw source bodies и редактируют absolute paths или secret-like values. Stage output должен быть явной директорией, предпочтительно вне target workspace.
 
 ## Outputs And Artifacts
 
-Базовые артефакты:
+Базовые artifacts:
 
 - `.codex/product-agent-os/project-code-graph.json` - основной graph JSON с `write_policy: read_only`, metadata, nodes, edges и observations.
 - `.codex/product-agent-os/project-code-graph.jsonl` - bounded JSONL serialization для agent consumption.

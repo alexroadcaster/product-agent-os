@@ -6,7 +6,7 @@ Source status: `official + experiment`
 
 Product-Agent OS plugin - локальный Codex plugin для проектов, где Codex App, CLI, IDE extension, subagents, skills, `AGENTS.md`, hooks, evals и automation candidates должны работать как управляемая delivery-система, а не как набор разовых prompts.
 
-Плагин помогает провести проект через полный lifecycle: read-only workspace audit, требования, план, ownership, staged infrastructure, проверку, review, release packet, learning loop и только затем automation candidate. Он не заменяет owner, не применяет автономные изменения сам по себе и не превращает generated evidence в source of truth.
+Плагин помогает провести проект через полный lifecycle: read-only workspace audit, требования, план, ownership, staged infrastructure, проверки, review, release packet, learning loop и только затем automation candidate. Он не заменяет owner, не применяет автономные изменения сам по себе и не превращает generated evidence в source of truth.
 
 | Нужно понять | Основная страница |
 | --- | --- |
@@ -47,13 +47,13 @@ Product-Agent OS plugin - локальный Codex plugin для проекто�
 | Боль | Что делает plugin |
 | --- | --- |
 | Длинная Codex-сессия теряет контекст | Выносит цель, план, проверки и решения в control-plane files |
-| Требования живут только в чате | Создает `REQUIREMENTS.md` с scope, non-goals и acceptance criteria |
+| Требования живут только в чате | Создает `REQUIREMENTS.md` со scope, non-goals и acceptance criteria |
 | Планирование смешивается с implementation | Требует `PLAN.md`, ownership, verification и rollback до build slice |
 | Subagents работают без границ | Проектирует роли через ownership, handoff artifacts и stop conditions |
 | Проверки называются задним числом | Разделяет deterministic checks в `TEST.md` и quality gates в `EVALS.md` |
 | Агент пишет код без инженерной методологии | Добавляет product hypothesis, architecture boundary, test/eval-first path, docs impact и measurement |
 | Проектные правила размазаны по memory | Переносит durable rules в `AGENTS.md`, а текущие решения в `RUNLOG.md` |
-| Hooks и automations включаются слишком рано | Ставит staged-first и candidate-only boundary до ручного approval |
+| Hooks и automations включаются слишком рано | Держит staged-first и candidate-only boundary до ручного approval |
 | Невозможно доказать, что работа verified | Требует evidence: команды, fixture evals, source policy и review findings |
 
 ## Кому подходит

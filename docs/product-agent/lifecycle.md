@@ -5,42 +5,42 @@ Source status: `official + experiment`
 
 ## End-to-end loop
 
-| Stage | Agent work | Artifact | Gate |
+| Stage | Работа агента | Артефакт | Gate |
 | --- | --- | --- | --- |
-| Idea | Clarify user value, hypothesis, metric and constraints | `REQUIREMENTS.md` | Scope and success metric are explicit |
-| Spec | Turn idea into behavior and acceptance criteria | `REQUIREMENTS.md` | User intent and source-of-truth docs are locked |
-| Plan | Decompose work, architecture boundary and ownership | `PLAN.md` | Tasks are independent enough |
-| Build | Implement one focused slice at a time | Diff | Test-first or eval-first path exists |
-| Eval | Score deterministic, subjective and AI quality | `TEST.md`, `EVALS.md`, reports | Threshold met or gap accepted |
-| Review | Find bugs, security risks, test gaps | Review findings | No unresolved blocker |
-| PR | Prepare branch, PR body, docs impact and release notes | PR / changelog | Verification evidence included |
-| Learn | Capture reusable method | `AGENTS.md`, skill, insight | Next run improves |
+| Idea | Уточнить пользовательскую ценность, гипотезу, метрику и ограничения | `REQUIREMENTS.md` | Scope и success metric явные |
+| Spec | Превратить идею в поведение и acceptance criteria | `REQUIREMENTS.md` | Намерение пользователя и source-of-truth docs зафиксированы |
+| Plan | Разложить работу, architecture boundary и ownership | `PLAN.md` | Рабочие единицы достаточно независимы |
+| Build | Реализовать один focused slice за раз | Diff | Есть test-first или eval-first путь |
+| Eval | Оценить deterministic, subjective и AI quality | `TEST.md`, `EVALS.md`, reports | Threshold достигнут или gap принят |
+| Review | Найти bugs, security risks и test gaps | Review findings | Нет unresolved blocker |
+| PR | Подготовить branch, PR body, docs impact и release notes | PR / changelog | Verification evidence включено |
+| Learn | Зафиксировать reusable method | `AGENTS.md`, skill, insight | Следующий запуск становится лучше |
 
 ## Ask Mode before Code Mode
 
-OpenAI's Codex guidance recommends starting large changes with a plan before implementation. In this project, that means:
+Рекомендации OpenAI Codex предлагают начинать крупные изменения с плана до реализации. В этом проекте это означает:
 
 ```text
-First produce PLAN.md from REQUIREMENTS.md.
-Do not edit product code until the plan names:
-- files or subsystems;
+Сначала создай PLAN.md из REQUIREMENTS.md.
+Не редактируй product code, пока план не называет:
+- файлы или подсистемы;
 - acceptance criteria;
 - verification commands;
 - risks and rollback;
-- what is out of scope.
+- что вне scope.
 ```
 
 ## Work granularity
 
-Good Codex tasks are scoped enough that a human could complete them in a focused block. If a task spans product, design, backend, frontend, tests, docs and release at once, split it into lifecycle stages and use control-plane files as the handoff.
+Хорошая работа для Codex достаточно ограничена, чтобы человек мог выполнить ее за один сфокусированный блок. Если запрос одновременно затрагивает product, design, backend, frontend, tests, docs и release, разделите его на lifecycle stages и используйте control-plane files как handoff.
 
 ## Learning loop
 
-Every finished product-agent workflow should answer:
+Каждый завершенный product-agent workflow должен ответить:
 
-- Which instructions should move into `AGENTS.md`?
-- Which repeated steps deserve a skill?
-- Which check should become an automation?
-- Which failure needs an eval?
-- Which source or architecture decision should be documented?
-- Which metric or user feedback should drive the next product iteration?
+- Какие инструкции стоит перенести в `AGENTS.md`?
+- Какие повторяемые шаги заслуживают skill?
+- Какая проверка должна стать automation?
+- Какой failure требует eval?
+- Какой source или architecture decision нужно задокументировать?
+- Какая metric или user feedback должна двигать следующую product iteration?
