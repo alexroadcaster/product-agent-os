@@ -77,7 +77,7 @@ Prompt packet должен ссылаться на официальный use ca
 ```text
 Use the workflow pattern from: <official use case URL>.
 
-Task:
+Work item:
 <specific job>
 
 Before editing:
@@ -199,4 +199,3 @@ Automation появляется только после того, как plugin 
 - Plugin не смешивает unrelated workflows.
 - Есть failure log и update loop.
 - Есть владелец, который обновляет sources и eval cases.
-

@@ -3,7 +3,7 @@
 Source status: `official + experiment`  
 Источники: [Codex plugins](https://developers.openai.com/codex/plugins), [Build plugins](https://developers.openai.com/codex/plugins/build), [Agent Skills](https://developers.openai.com/codex/skills), [Subagents](https://developers.openai.com/codex/subagents), [AGENTS.md](https://developers.openai.com/codex/guides/agents-md), [Codex hooks](https://developers.openai.com/codex/hooks), [Agent approvals and security](https://developers.openai.com/codex/agent-approvals-security), [Codex with Agents SDK](https://developers.openai.com/codex/guides/agents-sdk), [Codex use cases](https://developers.openai.com/codex/use-cases), [A practical guide to building agents](https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/).
 
-Эта страница остается product/spec view. Текущие operator docs для implemented Product-Agent OS package находятся в [Product-Agent OS plugin](../product-agent-os/index.md), [Project Code Graph](../product-agent-os/project-code-graph.md), [Live Runtime Governance](../product-agent-os/live-runtime-governance.md), [CLI Reference](../product-agent-os/cli-reference.md), [Artifact Contracts](../product-agent-os/artifact-contracts.md) и [Packaging And Closure](../product-agent-os/packaging-and-closure.md). MkDocs navigation sync for these pages belongs to the Batch 34 nav/check_docs slice.
+Эта страница остается product/spec view. Текущие operator docs для implemented Product-Agent OS package находятся в [Product-Agent OS plugin](../product-agent-os/index.md), [Project Code Graph](../product-agent-os/project-code-graph.md), [Live Runtime Governance](../product-agent-os/live-runtime-governance.md), [CLI Reference](../product-agent-os/cli-reference.md), [Artifact Contracts](../product-agent-os/artifact-contracts.md) и [Packaging And Closure](../product-agent-os/packaging-and-closure.md). Navigation and docs tooling sync for these pages belongs to the documentation closure workflow.
 
 ## Назначение
 
@@ -25,7 +25,7 @@ flowchart LR
     J --> K["Automation candidates"]
 ```
 
-Главная цель plugin - не создать набор файлов один раз, а поддерживать lifecycle проекта через проверяемые артефакты, gated changes, role ownership, handoff contracts и evidence. Track 6 расширяет это до engineering standards layer: product hypothesis, architecture boundary, test-first/eval-first verification, docs-as-code, human review, release measurement и learning loop.
+Главная цель plugin - не создать набор файлов один раз, а поддерживать lifecycle проекта через проверяемые артефакты, gated changes, role ownership, handoff contracts и evidence. Engineering standards layer расширяет это до product hypothesis, architecture boundary, test-first/eval-first verification, docs-as-code, human review, release measurement и learning loop.
 
 ## Не цели
 
@@ -246,7 +246,7 @@ questions:
 next_action: "approve_infrastructure_plan | answer_questions | run_read_only_audit_again"
 ```
 
-## Track 8 usage-mode implementation status
+## Usage-mode implementation status
 
 The plugin must not blur implemented workflows with partial or pending coverage.
 
@@ -331,7 +331,7 @@ Compaction rules:
 
 Each skill must define trigger, boundaries, inputs, outputs, failure modes and final response contract.
 
-Track 3 workflow templates cover task-packet jobs that are not packaged as `SKILL.md` bundles in the current implementation:
+Workflow templates cover work-packet jobs that are not packaged as `SKILL.md` bundles in the current implementation:
 
 - `source-context-pack.md` covers official-source and Context7 research packets.
 - `worktree-ownership.md` covers parallel ownership and worktree maps.
@@ -339,7 +339,7 @@ Track 3 workflow templates cover task-packet jobs that are not packaged as `SKIL
 - `development-standards.md` covers product hypothesis, architecture boundary, test-first/eval-first verification, bounded agent implementation, review and release measurement.
 - `documentation-system.md` covers docs-as-code source-of-truth artifacts for architecture, API, UI, code reference, database and release docs.
 
-Track 7 artifact templates cover methodology outputs that are too concrete to leave as prose-only workflow advice:
+Artifact templates cover methodology outputs that are too concrete to leave as prose-only workflow advice:
 
 - `adr.md` for architecture decision records with context, decision, consequences, verification and rollback.
 - `architecture-overview.md` for C4-style system/container notes, quality attributes and architecture risks.
@@ -349,7 +349,7 @@ Track 7 artifact templates cover methodology outputs that are too concrete to le
 - `component-card.md` for UI states, accessibility, public API and Storybook documentation.
 - `database-dictionary.md` for table meaning, sensitive fields, retention, migration history and schema verification.
 
-Track 8 completed workflow templates cover scenario-specific first actions:
+Completed workflow templates cover scenario-specific first actions:
 
 - `first-run-intake.md` keeps first launch small for empty, broken, existing control-plane and complex system starts: mode, confidence, next smallest action, minimum artifacts, approval boundary and evidence gaps.
 - `bug-rescue.md` and `bug-rescue-report.md` enforce reproduction and root-cause evidence before fixes.
@@ -517,7 +517,7 @@ Runtime choice is stored in `PLAN.md` or `RUNLOG.md`, not hidden in chat.
 
 ## Context7 and source policy
 
-The Track 3 `source-context-pack.md` workflow template records Context7 usage for library and official documentation retrieval when current docs are required.
+The `source-context-pack.md` workflow template records Context7 usage for library and official documentation retrieval when current docs are required.
 
 Rules:
 
@@ -633,13 +633,13 @@ Plugin is production-ready when:
 - It does not create active automations without stability evidence.
 - It documents residual risks and next action after every run.
 
-## Implementation handoff
+## Product capability areas
 
-Implementation should be split into four build tracks:
+The package is organized into four capability areas:
 
-1. **Plugin core and contracts** - manifest, schemas, detection scripts, validators, fixture harness.
+1. **Plugin core and contracts** - manifest, schemas, detection scripts, validators and fixture harness.
 2. **Lifecycle skills** - orchestrator and each lifecycle stage skill with concise `SKILL.md`, references and output contracts.
 3. **Generated project infrastructure** - control-plane templates, `.codex/agents/*.toml`, hooks, workflow packets and eval templates.
 4. **Production hardening** - fixture evals, safe merge behavior, source policy checks, automation promotion gates and optional Agents SDK runner.
 
-Each track must have deterministic validation before the plugin is used on real customer projects.
+Each area must have deterministic validation before the plugin is used on real customer projects.

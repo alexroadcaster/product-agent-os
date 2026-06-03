@@ -29,7 +29,7 @@ python tools/check_docs.py
 python -m mkdocs build --strict
 ```
 
-## Batch 34 closure order
+## Documentation closure order
 
 Для Product-Agent OS docs closure используйте порядок: source docs -> registry -> docs tests -> `check_docs.py` -> strict MkDocs -> optional full closure. Этот порядок нужен, чтобы source-backed claims, navigation, generated site и final package evidence не расходились.
 

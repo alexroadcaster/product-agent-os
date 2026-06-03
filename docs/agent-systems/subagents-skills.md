@@ -34,9 +34,9 @@ Wait for all agents, then synthesize without copying raw logs.
 
 Официальный review pattern масштабируется так же: один agent на security, один на code quality, один на bugs, один на race conditions, один на test flakiness, один на maintainability. Main thread должен дождаться всех результатов и сделать consolidated summary без дублирующих findings.
 
-## Batch 31 handoff contract
+## Fresh-context handoff contract
 
-Product-Agent OS Batch 31 добавляет практическое правило для subagents и skills: generated `agent-skill-handoff.json` помогает routing, но не заменяет task packet. Перед параллельной работой main thread должен выдать каждому worker свежий контекст, ownership и stop condition.
+Product-Agent OS использует практическое правило для subagents и skills: generated `agent-skill-handoff.json` помогает routing, но не заменяет task packet. Перед параллельной работой main thread должен выдать каждому worker свежий контекст, ownership и stop condition.
 
 | Поле handoff | Что должно быть явно |
 | --- | --- |

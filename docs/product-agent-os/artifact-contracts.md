@@ -2,7 +2,7 @@
 
 Source status: `official + experiment`
 
-Эта страница перечисляет основные generated artifacts Product-Agent OS для Task 24, Task 25, Task 26 и Batch 35 handoff. Она не является schema spec в формате JSON Schema; это operator-facing contract map: что создается, зачем нужно, где source-of-truth boundary и какие approval gates действуют.
+Эта страница перечисляет основные generated artifacts Product-Agent OS для modernization loop, project code graph, live/runtime governance и approval-bound handoff. Она не является schema spec в формате JSON Schema; это operator-facing contract map: что создается, зачем нужно, где source-of-truth boundary и какие approval gates действуют.
 
 ## Contract Boundary
 
@@ -30,15 +30,15 @@ Artifacts must not contain secrets, credentials, raw private chat logs, private 
 | `.codex/product-agent-os/project-code-graph-backend.json` | `project_graph_backend.py`, `--build-backend` | Disabled-by-default local query backend file-store. | Not an active production server; graph-only fallback must remain. |
 | `.codex/product-agent-os/project-code-graph-semantic-index.json` | `project_graph_semantic.py`, `--build-semantic-index` | Local deterministic semantic retrieval cache. | Semantic hits are `present_unverified`; no canonical edge rewrites. |
 | `.codex/product-agent-os/project-code-graph-llm-proposals.json` | `project_graph_llm_extraction.py`, `--build-llm-proposals` | Local deterministic semantic node/edge and rationale/comment proposals. | Proposal-only; never canonical graph fact. |
-| `.codex/product-agent-os/project-code-graph-extension-closure.json` | `project_graph_extension_closure.py`, `--verify-extensions` | Batch 23 extension verification, rollback/data deletion proof and graph-only fallback report. | Closure evidence only. |
+| `.codex/product-agent-os/project-code-graph-extension-closure.json` | `project_graph_extension_closure.py`, `--verify-extensions` | Extension verification, rollback/data deletion proof and graph-only fallback report. | Closure evidence only. |
 
 ## Live Governance And Runtime Artifacts
 
 | Artifact | Producer | Contract role | Boundary |
 | --- | --- | --- | --- |
-| `.codex/product-agent-os/project-code-graph-live-governance.json` | `project_graph_live_governance.py`, `--validate-live-governance` | Batch 24 approval, data classification, redaction, credential, cache and budget packet. | No live calls; validates gate only. |
+| `.codex/product-agent-os/project-code-graph-live-governance.json` | `project_graph_live_governance.py`, `--validate-live-governance` | Approval, data classification, redaction, credential, cache and budget packet. | No live calls; validates gate only. |
 | `.codex/product-agent-os/project-code-graph-live-cache.json` | `project_graph_live_governance.py` | Cache policy/deletion metadata. | Cache is generated evidence, not source truth. |
-| `.codex/product-agent-os/project-code-graph-live-runtime.json` | `project_graph_live_runtime.py`, `--validate-live-runtime` | Batch 25 local read-only runtime contract. | `disabled_by_default_not_started`; no launch in docs slices. |
+| `.codex/product-agent-os/project-code-graph-live-runtime.json` | `project_graph_live_runtime.py`, `--validate-live-runtime` | Local read-only runtime contract. | `disabled_by_default_not_started`; no launch in docs slices. |
 | `.codex/product-agent-os/project-code-graph-live-runtime.pid` | `project_graph_live_runtime.py` | Runtime lifecycle placeholder/evidence path. | Only meaningful after approved runtime execution. |
 | `.codex/product-agent-os/project-code-graph-live-runtime.log` | `project_graph_live_runtime.py` | Runtime log path/evidence path. | Must be redacted and local-only. |
 
@@ -46,12 +46,12 @@ Artifacts must not contain secrets, credentials, raw private chat logs, private 
 
 | Artifact | Producer | Contract role | Boundary |
 | --- | --- | --- | --- |
-| `.codex/product-agent-os/project-code-graph-embedding-provider.json` | `project_graph_embedding_provider.py`, `--validate-embedding-provider` | Batch 26 embedding provider gate and eval baseline. | Provider call remains blocked unless separately approved. |
+| `.codex/product-agent-os/project-code-graph-embedding-provider.json` | `project_graph_embedding_provider.py`, `--validate-embedding-provider` | Embedding provider gate and eval baseline. | Provider call remains blocked unless separately approved. |
 | `.codex/product-agent-os/project-code-graph-embedding-provider-cache.json` | `project_graph_embedding_provider.py` | Provider cache metadata. | Must preserve redaction/cache/budget policy. |
-| `.codex/product-agent-os/project-code-graph-reranker-provider.json` | `project_graph_reranker_provider.py`, `--validate-reranker-provider` | Batch 27 reranker provider gate. | No external reranker call by default. |
+| `.codex/product-agent-os/project-code-graph-reranker-provider.json` | `project_graph_reranker_provider.py`, `--validate-reranker-provider` | Reranker provider gate. | No external reranker call by default. |
 | `.codex/product-agent-os/project-code-graph-reranker-provider-cache.json` | `project_graph_reranker_provider.py` | Reranker cache metadata. | Generated cache only. |
 | `.codex/product-agent-os/project-code-graph-hybrid-retrieval.json` | `project_graph_hybrid_retrieval.py`, `--build-hybrid-retrieval` | Explainable fusion of graph/static/semantic/reranker signals. | No canonical mutation; fallback remains available. |
-| `.codex/product-agent-os/project-code-graph-llm-proposal-provider.json` | `project_graph_llm_proposal_provider.py`, `--validate-llm-proposal-provider` | Batch 28 external LLM proposal provider gate. | Proposal-only; provider output is not canonical. |
+| `.codex/product-agent-os/project-code-graph-llm-proposal-provider.json` | `project_graph_llm_proposal_provider.py`, `--validate-llm-proposal-provider` | External LLM proposal provider gate. | Proposal-only; provider output is not canonical. |
 | `.codex/product-agent-os/project-code-graph-llm-proposal-eval.json` | `project_graph_llm_proposal_provider.py` | Safety/grounding eval packet for proposal provider. | Unsafe output routes to incident/fallback. |
 
 ## Review And Mutation Artifacts
@@ -60,7 +60,7 @@ Artifacts must not contain secrets, credentials, raw private chat logs, private 
 | --- | --- | --- | --- |
 | `.codex/product-agent-os/project-code-graph-review-ledger.json` | `project_graph_review_ledger.py`, `--build-review-ledger` | Human review decisions: `accepted`, `rejected`, `accepted_gap`. | No accepted proposal without owner decision and evidence refs. |
 | `.codex/product-agent-os/project-code-graph-proposal-diff.json` | `project_graph_review_ledger.py` | Proposal diff preview. | Preview only until mutation dry-run. |
-| `.codex/product-agent-os/project-code-graph-mutation-plan.json` | `project_graph_canonical_mutation.py`, `--build-canonical-mutation` | Batch 30 mutation dry-run plan. | Staged plan only; not source mutation by itself. |
+| `.codex/product-agent-os/project-code-graph-mutation-plan.json` | `project_graph_canonical_mutation.py`, `--build-canonical-mutation` | Mutation dry-run plan. | Staged plan only; not source mutation by itself. |
 | `.codex/product-agent-os/project-code-graph-mutation-journal.jsonl` | `project_graph_canonical_mutation.py` | Append-only mutation journal. | Must cite accepted item and rollback path. |
 | `.codex/product-agent-os/project-code-graph-canonical-mutated.json` | `project_graph_canonical_mutation.py` | Staged mutated graph copy. | Generated copy only; canonical graph/source not silently changed. |
 | `.codex/product-agent-os/project-code-graph-rollback-proof.json` | `project_graph_canonical_mutation.py` | Rollback proof and digest comparison. | Required before mutation pilot completion claims. |
@@ -78,12 +78,12 @@ Artifacts must not contain secrets, credentials, raw private chat logs, private 
 
 | Artifact | Producer | Contract role | Boundary |
 | --- | --- | --- | --- |
-| `.codex/product-agent-os/project-code-graph-real-testing-readiness.json` | `project_graph_real_testing.py`, `--build-real-testing-readiness` | Batch 32 readiness and no-hidden-gates packet. | Real testing remains blocked without target/data approval. |
+| `.codex/product-agent-os/project-code-graph-real-testing-readiness.json` | `project_graph_real_testing.py`, `--build-real-testing-readiness` | Readiness and no-hidden-gates packet. | Real testing remains blocked without target/data approval. |
 | `.codex/product-agent-os/project-code-graph-real-testing-targets.json` | `project_graph_real_testing.py` | Owner-approved target/data-policy candidates. | Target consent evidence only. |
 | `.codex/product-agent-os/project-code-graph-pilot-harness.json` | `project_graph_real_testing.py` | Dry-run pilot harness. | Stage-only; no live execution. |
 | `.codex/product-agent-os/project-code-graph-codex-surface-smoke.json` | `project_graph_real_testing.py` | Codex App, CLI and IDE extension smoke planning/evidence. | Does not imply live browser automation. |
-| `.codex/product-agent-os/project-code-graph-real-testing-pilot-matrix.json` | `project_graph_real_testing.py` | Track 8 use-case pilot matrix. | Planning/readiness evidence. |
-| `.codex/product-agent-os/project-code-graph-runtime-browser-qa.json` | `project_graph_runtime_qa.py`, `--build-runtime-qa` | Batch 33 browser QA expectations/evidence. | No unapproved browser automation; labels and source boundary required. |
+| `.codex/product-agent-os/project-code-graph-real-testing-pilot-matrix.json` | `project_graph_real_testing.py` | Use-case pilot matrix. | Planning/readiness evidence. |
+| `.codex/product-agent-os/project-code-graph-runtime-browser-qa.json` | `project_graph_runtime_qa.py`, `--build-runtime-qa` | Browser QA expectations/evidence. | No unapproved browser automation; labels and source boundary required. |
 | `.codex/product-agent-os/project-code-graph-performance-budget.json` | `project_graph_runtime_qa.py` | Performance thresholds and fallback/accepted-gap handling. | Budget breach disables live layer or records owner gap. |
 | `.codex/product-agent-os/project-code-graph-stabilization-ledger.json` | `project_graph_runtime_qa.py` | Stabilization defects and P0/P1 closure status. | No open P0/P1 before closure. |
 
@@ -97,7 +97,7 @@ Artifacts must not contain secrets, credentials, raw private chat logs, private 
 | `.codex/artifact-templates/agent-skill-weekly-verification.md` | Template registry | Weekly owner-review packet. | Requires rollback/holdout/flake/cost evidence or accepted gaps. |
 | `.codex/artifact-templates/agent-skill-update-candidate.md` | Template registry | Modernization candidate packet. | No self-applied updates. |
 
-## Batch 35 Planned Evidence Files
+## Planned Execution Evidence Files
 
 | Planned artifact | Surface | Status before approval |
 | --- | --- | --- |
@@ -126,8 +126,8 @@ Artifact verification should check:
 - Provider artifacts can leak private data if redaction/cache/budget gates are skipped.
 - Review ledger decisions are invalid without owner and evidence refs.
 - Mutation artifacts are unsafe without rollback proof.
-- Batch 35 planned artifact names can be mistaken for executed evidence.
+- Planned artifact names can be mistaken for executed evidence.
 
 ## Next Action
 
-Use this contract map when writing docs tests, source registry entries and packaging/closure checks in later Batch 34 slices. Navigation and generated `site/` refresh are intentionally handled after the source docs packet is stable.
+Use this contract map when writing docs tests, source registry entries and packaging/closure checks. Navigation and generated `site/` refresh are intentionally handled after the source docs packet is stable.

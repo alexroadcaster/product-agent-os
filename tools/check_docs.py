@@ -18,6 +18,7 @@ REQUIRED_PATHS = [
     DOCS / "sources" / "context7-research.md",
     DOCS / "sources" / "source-card-template.md",
     DOCS / "sources" / "product-agent-os-batch34a-public-docs-boundary.md",
+    DOCS / "sources" / "product-agent-os-batch34b-public-copy-rewrite.md",
     DOCS / "codex" / "overview.md",
     DOCS / "codex" / "surfaces.md",
     DOCS / "codex" / "configuration.md",

@@ -1,114 +1,127 @@
-# Methodology Intelligence
+# Product-Agent OS methodology intelligence
 
 Source status: `local product design + experiment`
 
-## Task 22 final methodology contract
+Источники: [Product-Agent OS architecture](architecture.md), [Product-Agent OS scenarios](scenarios.md), [Behavioral evals](behavioral-evals.md), [Codex workflows](https://developers.openai.com/codex/workflows), [Agent approvals and security](https://developers.openai.com/codex/agent-approvals-security).
 
-Task 22 final methodology contract закрывает Track 9 как read-only methodology intelligence layer. The runtime route may carry `methodology_packet`, `finish_options`, `owner_questions`, `safe_next_action`, `methodology_synthesis` and `source_artifact_ledger`, but those packets are recommendation and routing evidence, not target-project mutation.
+Methodology intelligence is the read-only layer that turns workspace evidence into practical delivery guidance. It reads files, control-plane artifacts and route signals, then returns `methodology_packet`, `finish_options`, `owner_questions`, `safe_next_action`, `methodology_synthesis` and `source_artifact_ledger` when they are useful.
 
-The staged artifact boundary remains strict: methodology recommendations can produce a report, owner question or staged proposal, but approval_required actions such as release, deploy, publish, DB access, security scan, external write, hook activation or automation activation stay blocked until explicit owner approval and current evidence exist.
+Those packets are recommendation and routing evidence. They do not mutate target projects, enable hooks, activate automations, call providers or approve external writes.
 
-Methodology Intelligence is the Track 9 layer of Product-Agent OS. It reads workspace evidence, maps it to the methodology atlas, and returns a read-only route packet before any staged artifact or target-project write is proposed.
+## What It Solves
+
+Product-agent work often fails in two opposite ways: either it starts coding before the project contract is clear, or it forces heavy methodology onto simple work. Methodology intelligence gives Product-Agent OS a middle path:
+
+- read the existing workspace before prescribing process;
+- detect which engineering standards apply;
+- keep lightweight work lightweight;
+- require deeper evidence only for real risk;
+- return owner questions when evidence is missing;
+- stage recommendations instead of silently changing the target workspace.
 
 ## Inputs
 
-- Workspace files and lightweight signals such as stack markers, control-plane files, docs files, API specs, release files and deployment markers.
-- Product-Agent OS methodology catalog entries for business, requirements, architecture, quality, Codex / agentic workflow, frontend, backend, API, data, AI, security and delivery domains.
-- Current user request, when it changes applicability or risk classification.
-- Existing lifecycle artifacts such as `AGENTS.md`, `REQUIREMENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md` and `RUNLOG.md`.
+- user intent or route hint;
+- read-only workspace inventory;
+- `AGENTS.md`, `REQUIREMENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md`, `RUNLOG.md`;
+- architecture docs, ADRs, API contracts, database docs, Storybook/FSD signals, CI, evals, metrics, release artifacts and security/privacy evidence when present;
+- current source policy, sandbox, approvals and external-system boundaries;
+- accepted gaps and previous failure notes.
 
 ## Outputs
 
-- `methodology_applicability` packet with `maturity_level`, `complexity_profile`, applicable domains, missing gates, owner questions and residual risks.
-- Delivery Map that groups recommendations into immediate blockers, high-risk gaps, useful maturity improvements and non-applicable items.
-- Cross-Domain Synthesis packet with `methodology_synthesis`, `recommendation_groups`, `source_artifact_ledger` and risk-aware safe next action.
-- `methodology-audit-report.md` as a human-readable report template for current evidence and next actions.
-- `methodology-applicability.json` as the planned stable machine-readable packet for lifecycle skills.
-- Questions for owner when evidence is missing, ambiguous or approval-bound.
+| Output | Purpose |
+| --- | --- |
+| `methodology_applicability` | Records which domains apply, why, and what evidence is missing. |
+| `methodology_packet` | Route-ready evidence bundle for the next worker. |
+| `finish_options` | Safe options such as answer, stage proposal, request approval, run focused verification or stop on gap. |
+| `owner_questions` | Smallest blocking questions for decisions that cannot be inferred from source files. |
+| `safe_next_action` | The next move that respects source policy, sandbox, approvals and evidence. |
+| `source_artifact_ledger` | Mapping from recommendations to the source artifacts that support them. |
+| `methodology_synthesis` | Grouped recommendations across domains with risk-aware ordering. |
 
-## Read-Only First
+## Methodology Domains
 
-The audit is read-only by default. It can inspect the target workspace and generate reports, but it must not write into the target project, enable hooks, create automations, contact external systems or change GitHub/CI/package registries. If a recommendation needs files, the next step is a staged proposal with explicit owner approval.
-
-`maturity_level` describes how much Product-Agent OS evidence is present, from early/uninitialized workspaces to projects with current requirements, plan, tests, evals and runlog. `complexity_profile` records why a workspace looks simple, product-heavy, multi-service, data-sensitive, release-oriented, AI/RAG-heavy or governance-heavy.
-
-## Delivery Map
-
-Delivery Map turns methodology findings into an execution order:
-
-| Priority | Meaning | Required behavior |
+| Domain | When it applies | Minimum evidence |
 | --- | --- | --- |
-| `P0_blocker` | Missing evidence blocks responsible implementation or completion claims. | Stop at read-only report or staged proposal. |
-| `P1_high_risk` | Work can continue only with explicit risk handling, owner question or artifact gap. | Add the gate to plan, tests, evals or review packet before build/release. |
-| `P2_recommended` | Useful improvement for maturity, maintainability or observability. | Stage when it fits the current slice. |
-| `P3_optional_maturity` | Helpful for advanced teams, but not required for the immediate task. | Keep as backlog unless owner asks. |
-| `not_applicable` | Domain or gate does not fit the workspace or request. | Record reason; do not force process. |
+| Product hypothesis | Product behavior, acceptance criteria or outcome metrics change. | User/problem, non-goals, acceptance scenario, metric or explicit gap. |
+| Solution architecture | Boundaries, services, public contracts, runtime topology or irreversible design change. | Scope, boundary, decision, alternatives, rollback and owner evidence. |
+| Frontend | User-visible UI, interaction, accessibility, visual QA or performance change. | User flow, component states, browser/runtime evidence, visual/accessibility gap or proof. |
+| Backend | Service behavior, jobs, queues, auth, errors, observability or rollback paths. | Runtime behavior, failure mode, health/logging, tests and rollback evidence. |
+| API & Integrations | HTTP API, event contract, SDK, webhook, external provider or consumer contract. | Source-of-truth contract, consumer map, compatibility and external-write approval boundary. |
+| Database & Data | Schema, migration, lineage, retention, sensitive data or production data. | Inventory, dictionary, migration plan, rollback/backup, data classification and production access boundary. |
+| LLM / AI / RAG | Prompt/model/tool/RAG/eval behavior changes. | Baseline/current eval, prompt/model/tool contracts, grounding, traces, cost/latency and incident path. |
+| Security, Privacy & Compliance | Authn/authz, secrets, PII, payments, abuse, supply chain, audit or compliance overlay. | Threat surface, risk review, negative tests, secrets/data/privacy evidence, scan status and owner review. |
+| Delivery, Release & Operations | Publish, deploy, package, release, automation, incidents or operations readiness. | Release scope, versioning, changelog, artifact manifest, rollout, rollback, SLO/observability and approval evidence. |
+| Cross-domain synthesis | Multiple domains overlap or recommendations conflict. | Grouped recommendations, owner/consumer domains, semantic evidence sufficiency and safe next action. |
 
-## Methodology Recommendations
+Packet identifiers and exact contract phrases:
 
-Recommendations must name the domain, reason, evidence used, priority, suggested artifact and verification path. A good recommendation says what to inspect next and what artifact would make the gap measurable.
+- Security/Privacy/Compliance uses `security_privacy_compliance_contract_present`, `data-classification-register.md` and `vulnerability-response-record.md`.
+- Delivery/Release/Operations uses `delivery_release_operations_contract_present`, `release-artifact-manifest.md`, `operations-runbook.md`, `post-release-review.md`, release mode policy and owner-reviewed release evidence sufficiency.
+- Cross-Domain Synthesis uses `recommendation_groups`, owner domains, consumer domains, risk-aware safe next action and approval-bound behavior.
 
-Examples:
+## Read-Only Process
 
-- business/product work needs a hypothesis, success metric, counter-metric and measurement owner;
-- complex domain work needs domain model and bounded-context traceability;
-- solution architecture work needs scope, context/container boundaries, boundary owner, ADR/tradeoff evidence, public contract trace, data ownership, trust boundary review, observability, rollback and diagram render evidence when applicable;
-- AI/RAG work needs baseline eval, dataset policy, grounding evidence and cost/latency guardrails;
-- Security/Privacy/Compliance work needs threat surface, security-sensitive classification, data classification, authorization negative tests, privacy impact, supply-chain evidence, Codex Security scan status and compliance overlay ownership;
-- release or migration work needs rollback, compatibility and owner approval evidence.
-
-## Cross-Domain Synthesis
-
-Cross-Domain Synthesis groups repeated methodology recommendations into `recommendation_groups` so operators see the owner artifact first instead of a dump of every methodology gate. Each group keeps owner domains, consumer domains, merged gates, evidence requirements, residual risk and the selected risk-aware safe next action.
-
-The machine packet is `methodology_synthesis`. It includes `source_artifact_ledger` for source-era artifact names, source artifact alias/deferred decisions, semantic evidence sufficiency and a read-only write policy. Source artifacts such as `context-map.md`, `ui-flow-spec.md`, `threat-model.md`, `runbook.md`, `slo.md` and `CHANGELOG.md` are classified as canonical templates, aliases, existing non-template project artifacts or deferred candidates with an owner and reason.
-
-Risk-aware safe next action means approval, security, release, production-data and destructive-change blockers can outrank generic quality strategy. Generic quality evidence remains visible, but it must not hide a more specific owner action. Detection alone remains `present_unverified`; it is never upgraded to readiness evidence without owner-reviewed proof.
-
-Semantic evidence sufficiency is shared across high-risk, production, release, security-sensitive, AI behavior and public-contract slices. It requires `owner_reviewed_evidence_sufficient_for_real_project_risk` or `explicit_gap_accepted` with owner, reason, review date, downstream risk and follow-up condition. This keeps approval-bound behavior explicit while avoiding heavy-process false positives for docs-only, internal CLI, backend FSD-like folders, CI-only workflows and tooling-only release files.
-
-## Implemented Domain Contracts
-
-| Domain | Fixture eval check | Current artifact coverage |
-| --- | --- | --- |
-| Business/Product | `business_product_contract_present` | `product-brief.md`, `value-proposition.md`, `opportunity-tree.md`, `experiment-plan.md`, `tracking-plan.md`, `metric-spec.md`. |
-| Requirements/Domain | `requirements_domain_contract_present` | `requirement-registry.md`, `stakeholder-owner-map.md`, `story-slice-map.md`, `requirements-traceability-matrix.md`, `business-rules.md`, `example-map.md`, `domain-modeling.md`, `domain-review-record.md`. |
-| Solution Architecture | `solution_architecture_contract_present` | `architecture-overview.md`, `adr.md`, `architecture-review-record.md`, `architecture-fitness-functions.md`, `trust-boundary-map.md`, `architecture-docs-tooling-decision.md`. |
-| Backend | `backend_contract_present` | `backend-service-overview.md`, `backend-runtime-behavior.md`, `backend-dependency-failure-matrix.md`, `backend-observability-map.md`, `backend-operational-runbook.md`. |
-| API & Integrations | `api_integrations_contract_present` | `api-inventory.md`, `api-contract-review.md`, `api-consumer-map.md`, `api-contract-test-matrix.md`, `external-integration-approval.md`. |
-| Database & Data | `database_data_contract_present` | `database-inventory.md`, `database-dictionary.md`, `database-migration-plan.md`, `database-data-contract.md`, `database-production-access-approval.md`. |
-| LLM / AI / RAG | `llm_ai_rag_contract_present` | `ai-behavior-spec.md`, `prompt-contract.md`, `model-decision-record.md`, `eval-run-report.md`, `rag-source-inventory.md`, `guardrail-matrix.md`. |
-| Security/Privacy/Compliance | `security_privacy_compliance_contract_present` | `security-risk-review.md`, `threat-surface.md`, `asvs-ssdf-mapping.md`, `authz-negative-test-matrix.md`, `secrets-policy.md`, `data-classification-register.md`, `privacy-impact-record.md`, `supply-chain-review.md`, `sbom-manifest.md`, `compliance-overlay.md`, `vulnerability-response-record.md`, `approval-record.md`. |
-| Delivery/Release/Operations | `delivery_release_operations_contract_present` | `versioning-policy.md`, `release-readiness.md`, `release-artifact-manifest.md`, `rollout-plan.md`, `rollback-recovery-plan.md`, `environment-matrix.md`, `deployment-plan.md`, `ci-cd-workflow-inventory.md`, `observability-map.md`, `slo-spec.md`, `operations-runbook.md`, `incident-record.md`, `postmortem.md`, `post-release-review.md`, `automation-candidate.md`. |
-
-Delivery/Release/Operations reports also preserve release mode policy, build-release-run boundary, platform distribution evidence, release communication, versioning tooling decision, GitHub environment controls, DORA measurement design, incident postmortem learning, observability/on-call tooling, release integrity security handoff and owner-reviewed release evidence sufficiency. Detection of those terms is not readiness evidence by itself.
+```mermaid
+flowchart TD
+    A["Workspace evidence"] --> B["Applicability scan"]
+    B --> C["Risk and false-positive check"]
+    C --> D["Domain packets"]
+    D --> E["Synthesis"]
+    E --> F{"Evidence sufficient?"}
+    F -->|Yes| G["safe_next_action"]
+    F -->|No| H["owner_questions or accepted gap"]
+    G --> I{"Write required?"}
+    I -->|No| J["Report only"]
+    I -->|Yes| K["Staged proposal"]
+    K --> L["Explicit approval boundary"]
+```
 
 ## Approval Boundary
 
-Methodology Intelligence can recommend `staged_only` or `approval_required`, but it cannot silently move from advice to mutation. Hosted docs, production database access, remote CI mutation, package publishing, release creation, tags, artifact upload, deploys, package registry mutation, active automations, hook activation and external writes remain approval-bound.
+The staged artifact boundary is strict:
 
-Owner questions are part of the output, not a failure. They keep ambiguity visible: who owns a missing methodology gate, which requirement is source-backed, which system is production, which data is sensitive, and which risk is accepted rather than fixed in the current slice.
+- methodology recommendations can produce a report, owner question or staged proposal;
+- release, deploy, publish, DB access, security scan, external write, hook activation and automation activation stay blocked until explicit owner approval and current evidence exist;
+- generated reports and dashboards are evidence surfaces, not sources of truth;
+- detection alone creates `present_unverified`, not readiness;
+- high-risk, production, release, security-sensitive, AI behavior and public-contract work needs owner-reviewed evidence or explicit accepted gap.
+
+## False-Positive Control
+
+Methodology intelligence must avoid forced ceremony:
+
+- docs-only changes do not need a full product/architecture/release process unless they change public contracts or publishing;
+- simple CRUD does not force DDD;
+- backend/native work does not force FSD;
+- hosted docs, CI activation and DB introspection remain approval-required;
+- source-like words in file paths are not enough to infer security, release or data readiness;
+- a generated artifact is not safety proof until the relevant source or owner evidence is current.
 
 ## Verification
 
-For docs-only changes to this page, run:
+Use focused verification when methodology behavior changes:
 
 ```powershell
-python -m unittest tests.product_agent_os.test_product_agent_os_docs -v
+python -m unittest tests.product_agent_os.test_fixture_eval_runner -v
+python plugins\product-agent-os\scripts\run_fixture_eval.py
 python tools\check_docs.py
-$env:PYTHONPATH='C:\tmp\codex_docs_mkdocs'; $env:NO_MKDOCS_2_WARNING='1'; python -m mkdocs build --strict
 ```
 
-For implementation changes to methodology audit or catalog behavior, also run focused Product-Agent OS unit tests and fixture evals:
+Use broader verification when lifecycle skills, templates or routing logic change:
 
 ```powershell
-python -m unittest tests.product_agent_os.test_methodology_catalog tests.product_agent_os.test_methodology_audit tests.product_agent_os.test_fixture_eval_runner -v
-python plugins\product-agent-os\scripts\run_fixture_eval.py
+python -m unittest discover -s tests -p "test_*.py" -v
+python plugins\product-agent-os\scripts\validate_codex_compatibility.py
+python tools\check_docs.py
 ```
 
 ## Risks
 
-- Static workspace signals can miss product intent, hidden dependencies, regulatory context and production risk.
-- Over-eager methodology routing can force heavy process onto simple work; every domain recommendation needs applicability and false-positive handling.
-- Read-only reports can become stale quickly; completion or release claims still need fresh command, runtime, eval or owner evidence.
-- `methodology-applicability.json` is planned as a stable packet, but domain slices can refine its schema before Track 9 synthesis.
+- A read-only audit can still be wrong if workspace evidence is stale, incomplete or misleading.
+- Over-eager methodology routing can force heavy process onto simple work; every recommendation needs applicability and false-positive handling.
+- Generated reports can become stale quickly; completion or release claims still need fresh command, runtime, eval or owner evidence.
+- Domain packet schema can evolve as real projects expose missing fields; additive compatibility should be preserved.
+
+Next artifact: use [Scenarios](scenarios.md) to choose the operating route and [Behavioral evals](behavioral-evals.md) to validate shortcut resistance.

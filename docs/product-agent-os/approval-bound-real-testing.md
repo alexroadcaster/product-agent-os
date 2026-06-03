@@ -4,13 +4,13 @@ Source status: `official + experiment`
 
 ## Назначение
 
-Эта страница описывает Task 26 Batch 35 `T10-LIVE-M37..M41`: first real-testing execution matrix для Product-Agent OS. Batch 35 является planned, not implemented. Он не стартует local live server, не запускает browser automation, не выполняет provider/API calls, не мутирует canonical graph и не делает git stage/commit/push/PR без отдельного explicit owner approval для каждого действия.
+Эта страница описывает approval-bound real-testing execution matrix для Product-Agent OS. Matrix является planned, not implemented. Она не стартует local live server, не запускает browser automation, не выполняет provider/API calls, не мутирует canonical graph и не делает git stage/commit/push/PR без отдельного explicit owner approval для каждого действия.
 
-Batch 35 начинается только после актуальной closure evidence по Batch 24 governance, Batch 25 runtime contract, Batch 31 audit/observability, Batch 32 target consent, Batch 33 QA/performance/stabilization и Batch 34 packaging/docs closure.
+Real testing начинается только после актуальной closure evidence по governance, runtime contract, audit/observability, target consent, QA/performance/stabilization и packaging/docs closure.
 
 ## Approvals And Source-Of-Truth Boundary
 
-Каждый Batch 35 action имеет отдельный approval packet. Approval для live server pilot не разрешает browser automation. Approval для browser automation не разрешает provider/API calls. Approval для provider/API pilot не разрешает canonical mutation. Approval для canonical mutation не разрешает git release/PR action.
+Каждый real-testing action имеет отдельный approval packet. Approval для live server pilot не разрешает browser automation. Approval для browser automation не разрешает provider/API calls. Approval для provider/API pilot не разрешает canonical mutation. Approval для canonical mutation не разрешает git release/PR action.
 
 Source of truth:
 
@@ -29,9 +29,9 @@ Source of truth:
 
 ## Inputs
 
-Before any Batch 35 action, collect:
+Before any real-testing action, collect:
 
-- current Batch 24-34 evidence summary;
+- current governance and runtime evidence summary;
 - owner-approved target workspace class and data policy;
 - allowed commands and explicitly blocked commands;
 - data classification and redaction policy;
@@ -44,7 +44,7 @@ Inputs must be sanitized. Do not place secrets, tokens, credentials, private key
 
 ## Outputs And Artifacts
 
-Batch 35 planned artifacts:
+Planned artifacts:
 
 - `live-server-run-evidence.json` for `approved_local_runtime_launch`;
 - `browser-automation-smoke.json` and screenshots for `actual_browser_automation_smoke`;
@@ -56,8 +56,8 @@ These artifacts become evidence only after the separately approved action actual
 
 ## Workflow
 
-1. Freeze Batch 24-34 closure state and confirm no hidden unresolved Track 10 gates.
-2. Select exactly one Batch 35 action to request approval for.
+1. Freeze current closure state and confirm no hidden unresolved live-runtime gates.
+2. Select exactly one real-testing action to request approval for.
 3. Write an approval packet with owner, target, allowed commands, data policy, source boundary, rollback, budget, audit destination and stop conditions.
 4. If approval is missing or incomplete, stop at `approval_required`.
 5. If approved, run only the named action and collect only its evidence.
@@ -77,7 +77,7 @@ These artifacts become evidence only after the separately approved action actual
 
 ## Verification
 
-For Batch 35, a completion claim is valid only for the exact approved action and only after current-run evidence exists.
+For approval-bound real testing, a completion claim is valid only for the exact approved action and only after current-run evidence exists.
 
 Expected checks:
 
@@ -91,7 +91,7 @@ Docs-only preparation cannot claim these checks passed.
 
 ## Risks And Failure Modes
 
-- Treating Batch 35 as implemented because the matrix exists.
+- Treating the matrix as implemented because it exists.
 - Reusing approval from one action to authorize another action.
 - Starting a local runtime before target/data policy and shutdown evidence are explicit.
 - Running browser automation that makes unapproved external requests.
@@ -102,4 +102,4 @@ Docs-only preparation cannot claim these checks passed.
 
 ## Next Action
 
-The next safe step is owner selection of one Batch 35 action and a narrow approval packet for that action. Until that packet exists, Batch 35 remains planned/not implemented and all live server, browser automation, provider/API, canonical mutation and git actions remain blocked.
+The next safe step is owner selection of one real-testing action and a narrow approval packet for that action. Until that packet exists, real testing remains planned/not implemented and all live server, browser automation, provider/API, canonical mutation and git actions remain blocked.

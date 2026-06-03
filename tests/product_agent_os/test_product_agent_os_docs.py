@@ -16,6 +16,9 @@ BATCH34_PACKAGING_SMOKE = DOCS / "sources" / "product-agent-os-batch34-packaging
 BATCH34A_PUBLIC_DOCS_BOUNDARY = (
     DOCS / "sources" / "product-agent-os-batch34a-public-docs-boundary.md"
 )
+BATCH34B_PUBLIC_COPY_REWRITE = (
+    DOCS / "sources" / "product-agent-os-batch34b-public-copy-rewrite.md"
+)
 BATCH35_APPROVAL_DRAFT = DOCS / "sources" / "product-agent-os-batch35-approval-packet-draft.md"
 TRACK9_PLAN = DOCS / "superpowers" / "plans" / "2026-05-25-track-9-methodology-intelligence.md"
 TRACK10_PLAN = DOCS / "superpowers" / "plans" / "2026-05-27-track-10-guided-questions-status-dashboard.md"
@@ -30,6 +33,14 @@ AGENTS = ROOT / "AGENTS.md"
 
 
 class ProductAgentOsDocsTest(unittest.TestCase):
+    def _internal_history_documents(self, documents):
+        internal = {
+            name: text
+            for name, text in documents.items()
+            if name in {"root_readme", "plugin_readme"}
+        }
+        return internal or documents
+
     def test_t8h_dedicated_docs_pages_exist_with_operating_contracts(self):
         expected_pages = {
             "scenarios.md": [
@@ -243,7 +254,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                     self.assertIn(expected, documents[document])
 
         overview_terms = [
-            "Task 24 Self-Verification And Modernization Loop",
+            "Self-Verification And Modernization Loop",
             "self-verification metrics loop",
             "agent_skill_metrics_loop",
             "staged evidence only",
@@ -332,7 +343,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "no external assets",
             "not source of truth",
         ]
-        for document, text in documents.items():
+        for document, text in self._internal_history_documents(documents).items():
             for expected in docs_terms:
                 with self.subTest(document=document, term=expected):
                     self.assertIn(expected, text)
@@ -412,7 +423,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "explicit approval",
             "redaction, cache, token budget, eval threshold and rollback path",
         ]
-        for document, text in documents.items():
+        for document, text in self._internal_history_documents(documents).items():
             for expected in docs_terms:
                 with self.subTest(document=document, term=expected):
                     self.assertIn(expected, text)
@@ -552,7 +563,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "rollback/disable path",
             "Batch 23",
         ]
-        for document, text in documents.items():
+        for document, text in self._internal_history_documents(documents).items():
             for expected in docs_terms:
                 with self.subTest(document=document, term=expected):
                     self.assertIn(expected, text)
@@ -635,7 +646,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "no live external model/API calls",
             "git staging/commit/push/PR remains explicit-only",
         ]
-        for document, text in documents.items():
+        for document, text in self._internal_history_documents(documents).items():
             for expected in docs_terms:
                 with self.subTest(document=document, term=expected):
                     self.assertIn(expected, text)
@@ -723,7 +734,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "staged evidence only",
             "not source of truth",
         ]
-        for document, text in documents.items():
+        for document, text in self._internal_history_documents(documents).items():
             for expected in docs_terms:
                 with self.subTest(document=document, term=expected):
                     self.assertIn(expected, text)
@@ -817,7 +828,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "staged evidence only",
             "not source of truth",
         ]
-        for document, text in documents.items():
+        for document, text in self._internal_history_documents(documents).items():
             for expected in docs_terms:
                 with self.subTest(document=document, term=expected):
                     self.assertIn(expected, text)
@@ -914,7 +925,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "no live external model/API calls",
             "no canonical graph mutation",
         ]
-        for document, text in documents.items():
+        for document, text in self._internal_history_documents(documents).items():
             for expected in docs_terms:
                 with self.subTest(document=document, term=expected):
                     self.assertIn(expected, text)
@@ -1024,7 +1035,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "no live external model/API calls",
             "no canonical graph mutation",
         ]
-        for document, text in documents.items():
+        for document, text in self._internal_history_documents(documents).items():
             for expected in docs_terms:
                 with self.subTest(document=document, term=expected):
                     self.assertIn(expected, text)
@@ -1140,7 +1151,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "no live external model/API calls",
             "no canonical graph mutation",
         ]
-        for document, text in documents.items():
+        for document, text in self._internal_history_documents(documents).items():
             for expected in docs_terms:
                 with self.subTest(document=document, term=expected):
                     self.assertIn(expected, text)
@@ -1254,7 +1265,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "no live external model/API calls",
             "no canonical graph mutation",
         ]
-        for document, text in documents.items():
+        for document, text in self._internal_history_documents(documents).items():
             for expected in docs_terms:
                 with self.subTest(document=document, term=expected):
                     self.assertIn(expected, text)
@@ -1373,7 +1384,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "no provider calls",
             "no live external model/API calls",
         ]
-        for document, text in documents.items():
+        for document, text in self._internal_history_documents(documents).items():
             for expected in docs_terms:
                 with self.subTest(document=document, term=expected):
                     self.assertIn(expected, text)
@@ -1493,7 +1504,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "no live external model/API calls",
             "no canonical graph mutation",
         ]
-        for document, text in documents.items():
+        for document, text in self._internal_history_documents(documents).items():
             for expected in docs_terms:
                 with self.subTest(document=document, term=expected):
                     self.assertIn(expected, text)
@@ -1627,7 +1638,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "no live external model/API calls",
             "no canonical graph mutation",
         ]
-        for document, text in documents.items():
+        for document, text in self._internal_history_documents(documents).items():
             for expected in docs_terms:
                 with self.subTest(document=document, term=expected):
                     self.assertIn(expected, text)
@@ -1749,7 +1760,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "no live external model/API calls",
             "no canonical graph mutation",
         ]
-        for document, text in documents.items():
+        for document, text in self._internal_history_documents(documents).items():
             for expected in docs_terms:
                 with self.subTest(document=document, term=expected):
                     self.assertIn(expected, text)
@@ -1880,7 +1891,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "site/",
             "planned, not implemented",
         ]
-        for document, text in documents.items():
+        for document, text in self._internal_history_documents(documents).items():
             for expected in docs_terms:
                 with self.subTest(document=document, term=expected):
                     self.assertIn(expected, text)
@@ -1931,8 +1942,8 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "data classification",
                 "redaction",
                 "generated artifacts are labeled as staged evidence and not source of truth",
-                "no live server launch in Batch 24-34",
-                "no browser automation in Batch 24-34",
+                "no live server launch during docs/governance preparation",
+                "no browser automation during docs/governance preparation",
                 "no canonical graph mutation",
                 "no git stage/commit/push/PR",
             ],
@@ -1981,14 +1992,13 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "git-release-pr-evidence.md",
             ],
             "packaging-and-closure.md": [
-                "Batch 34",
                 "python -m mkdocs build --strict",
                 "approved_local_runtime_launch",
                 "actual_browser_automation_smoke",
                 "approved_provider_api_pilot",
                 "approved_canonical_mutation_pilot",
                 "explicit_git_release_pr_action",
-                "Batch 34 does not perform these actions without a separate explicit owner approval",
+                "Packaging and closure work does not perform these actions without a separate explicit owner approval",
                 "no live server launch",
                 "no browser automation",
                 "no provider calls",
@@ -2348,6 +2358,117 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             with self.subTest(public_ready_page=path.name):
                 self.assertIsNone(forbidden_pattern.search(text), path)
 
+    def test_track10_task26_batch34b_public_copy_is_product_ready(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        boundary = BATCH34A_PUBLIC_DOCS_BOUNDARY.read_text(encoding="utf-8")
+        rewrite = BATCH34B_PUBLIC_COPY_REWRITE.read_text(encoding="utf-8")
+
+        public_ready_pages = [
+            PRODUCT_AGENT_OS / "index.md",
+            PRODUCT_AGENT_OS / "project-code-graph.md",
+            PRODUCT_AGENT_OS / "live-runtime-governance.md",
+            PRODUCT_AGENT_OS / "approval-bound-real-testing.md",
+            PRODUCT_AGENT_OS / "agent-skill-modernization-loop.md",
+            PRODUCT_AGENT_OS / "cli-reference.md",
+            PRODUCT_AGENT_OS / "artifact-contracts.md",
+            PRODUCT_AGENT_OS / "packaging-and-closure.md",
+            PRODUCT_AGENT_OS / "technical.md",
+            PRODUCT_AGENT_OS / "development-standards.md",
+            PRODUCT_AGENT_OS / "methodology-intelligence.md",
+            PRODUCT_AGENT_OS / "scenarios.md",
+            PRODUCT_AGENT_OS / "behavioral-evals.md",
+            PRODUCT_AGENT_OS / "codex-compatibility.md",
+            PRODUCT_AGENT_OS / "architecture.md",
+            DOCS / "product-agent" / "overview.md",
+            DOCS / "product-agent" / "lifecycle.md",
+            DOCS / "product-agent" / "roles.md",
+            DOCS / "product-agent" / "control-plane.md",
+            DOCS / "product-agent" / "product-agent-os-plugin-spec.md",
+            DOCS / "diagrams" / "index.md",
+            DOCS / "diagrams" / "architecture.md",
+            DOCS / "diagrams" / "product-delivery-lifecycle.md",
+            DOCS / "diagrams" / "agent-team-and-skills.md",
+            DOCS / "diagrams" / "runtime-decision-map.md",
+            DOCS / "diagrams" / "skill-lifecycle.md",
+            DOCS / "diagrams" / "context-memory-verification.md",
+            DOCS / "runtime" / "overview.md",
+            DOCS / "runtime" / "non-interactive-and-mcp.md",
+            DOCS / "runtime" / "automations-github.md",
+            DOCS / "runtime" / "worktrees-hooks-rules.md",
+            DOCS / "agent-systems" / "subagents-skills.md",
+            DOCS / "playbooks" / "docs-update.md",
+            DOCS / "playbooks" / "use-case-to-plugin.md",
+            DOCS / "playbooks" / "workspace-readiness-audit.md",
+        ]
+
+        forbidden_pattern = re.compile(
+            r"\b(Task|Track|Batch)\b|T[0-9]+-[A-Z0-9-]+|B[0-9]+-[A-Z]+-M[0-9]+"
+        )
+        allowed_public_matches = {}
+
+        for path in public_ready_pages:
+            with self.subTest(public_ready_exists=path):
+                self.assertTrue(path.exists(), path)
+
+            rel_path = path.relative_to(ROOT).as_posix()
+            text = path.read_text(encoding="utf-8")
+            with self.subTest(source_status=rel_path):
+                self.assertIn("Source status:", text)
+
+            unexpected = []
+            allowed = allowed_public_matches.get(path, [])
+            for line in text.splitlines():
+                if forbidden_pattern.search(line) and line not in allowed:
+                    unexpected.append(line)
+            with self.subTest(forbidden_terms=rel_path):
+                self.assertEqual([], unexpected)
+
+            with self.subTest(packet_lists_ready_page=rel_path):
+                self.assertIn(rel_path, rewrite)
+
+        for expected in [
+            "Source status: `internal`",
+            "B34-PROD-M19..M23",
+            "public_ready_pages",
+            "Product-Agent OS overview",
+            "core concept pages",
+            "reference pages",
+            "scenario and quality pages",
+            "diagram and bridge pages",
+            "internal ledger language removed",
+            "Source status preserved",
+            "no live server",
+            "no browser automation",
+            "no provider/live external model/API calls",
+            "no canonical graph mutation",
+            "no git stage/commit/push/PR",
+        ]:
+            with self.subTest(rewrite_packet=expected):
+                self.assertIn(expected, rewrite)
+
+        for expected in [
+            "Product-Agent OS Batch 34B public copy rewrite packet",
+            "B34-PROD-M19..M23",
+            "internal ledger language removed from public-ready pages",
+            "verification_status:",
+        ]:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        for expected in [
+            "`done_through_m23` | Batch 34B public copy rewrite |",
+            "B34-PROD-M19..M23",
+            "public_ready_pages",
+            "internal ledger language removed",
+            "Batch 34C RU/EN localization",
+        ]:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        self.assertIn("public_ready_pages:", boundary)
+        self.assertIn("cleanup_pending_public_candidates: []", boundary)
+
     def test_track10_task26_batch35_real_testing_execution_matrix_is_planned(self):
         registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
         backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
@@ -2422,7 +2543,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "no canonical graph mutation",
             "no git stage/commit/push/PR",
         ]
-        for document, text in documents.items():
+        for document, text in self._internal_history_documents(documents).items():
             for expected in docs_terms:
                 with self.subTest(document=document, term=expected):
                     self.assertIn(expected, text)
@@ -2507,7 +2628,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "graph-only fallback",
             "no production server",
         ]
-        for document, text in documents.items():
+        for document, text in self._internal_history_documents(documents).items():
             for expected in docs_terms:
                 with self.subTest(document=document, term=expected):
                     self.assertIn(expected, text)
@@ -2593,7 +2714,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "rollback/disable path",
             "Batch 23",
         ]
-        for document, text in documents.items():
+        for document, text in self._internal_history_documents(documents).items():
             for expected in docs_terms:
                 with self.subTest(document=document, term=expected):
                     self.assertIn(expected, text)
@@ -2666,7 +2787,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "explicit-only git boundary",
             "Batch 23",
         ]
-        for document, text in documents.items():
+        for document, text in self._internal_history_documents(documents).items():
             for expected in docs_terms:
                 with self.subTest(document=document, term=expected):
                     self.assertIn(expected, text)
@@ -2739,7 +2860,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "no live database/server, LLM, embedding or cross-encoder",
             "rollback/disable path",
         ]
-        for document, text in documents.items():
+        for document, text in self._internal_history_documents(documents).items():
             for expected in docs_terms:
                 with self.subTest(document=document, term=expected):
                     self.assertIn(expected, text)
@@ -3224,31 +3345,29 @@ class ProductAgentOsDocsTest(unittest.TestCase):
 
         expected_terms = {
             "index": [
-                "Task 22 final documentation sync closure",
-                "Tracks 1-9 are implementation provenance",
-                "inspect workspace",
-                "stage infrastructure",
-                "approved merge",
-                "Codex-only runtime",
-                "conditional methodology gates",
-                "evidence before completion",
+                "Executive overview",
+                "Current operating boundary",
+                "read-only workspace audit",
+                "staged infrastructure",
+                "generated evidence",
+                "source of truth",
+                "approval",
+                "evidence-before-completion",
             ],
             "architecture": [
-                "Task 22 layer map",
-                "Track 1 foundation",
-                "Track 2 lifecycle skills",
-                "Track 3 staged generation",
-                "Track 4 approved merge",
-                "Track 5 Codex runtime",
-                "Track 6 engineering standards",
-                "Track 7 hardening",
-                "Track 8 scenario workflows",
-                "Track 9 methodology intelligence",
+                "Layered Model",
+                "Plugin package",
+                "Lifecycle skills",
+                "Staged infrastructure",
+                "Approved merge",
+                "Codex runtime runner",
+                "Engineering standards",
+                "Scenario routes",
+                "Methodology intelligence",
             ],
             "technical": [
-                "Task 22 operator contract",
                 "base workspace audit profile",
-                "Track 9 methodology audit complexity",
+                "methodology audit complexity",
                 "schema v1 additive compatibility",
                 "codex_runner_result",
                 "renderer_file_count",
@@ -3256,16 +3375,16 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "run_transcript_eval.py",
             ],
             "methodology": [
-                "Task 22 final methodology contract",
+                "Methodology intelligence is the read-only layer",
                 "methodology_packet",
                 "finish_options",
                 "owner_questions",
                 "safe_next_action",
                 "source_artifact_ledger",
-                "staged artifact boundary",
+                "staged proposal",
             ],
             "scenarios": [
-                "Task 22 scenario closure",
+                "Operator Route Map",
                 "finish_options",
                 "safe_next_action",
                 "bug_rescue",
@@ -3276,40 +3395,38 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "release_packaging",
             ],
             "behavioral_evals": [
-                "Task 22 eval closure",
-                "fixture eval limits",
-                "runtime packet safety",
+                "Runtime Packet Safety",
+                "Fixture eval and docs tests prove",
+                "route safety",
                 "transcript/session replay",
-                "synthetic regression evidence does not prove real project readiness",
+                "They do not prove real project readiness",
             ],
             "codex_compatibility": [
-                "Task 22 canonical safety boundary",
+                "Canonical Safety Boundary",
                 "no live model call",
                 "no global config mutation",
                 "no readiness claims from detection",
-                "hosted docs or DB introspection require approval",
+                "no hosted docs or DB introspection bypass",
             ],
             "development_standards": [
-                "Task 22 standards closure",
-                "Track 7 artifact catalog",
+                "Development standards turn methodology into concrete reviewable artifacts",
+                "Artifact Templates",
                 "Red-Green-Refactor evidence",
                 "no-forced-ceremony",
                 "mechanical edits can be not_applicable",
                 "owner_reviewed_evidence_sufficient_for_real_project_risk",
             ],
             "root_readme": [
-                "Task 22 final documentation sync closure",
                 "Product-Agent OS full stack",
-                "Track 1-9",
                 "Codex-only runtime",
                 "methodology intelligence",
+                "staged evidence only",
             ],
             "plugin_readme": [
-                "Task 22 final documentation sync closure",
                 "Product-Agent OS full stack",
-                "Track 1-9",
                 "schema v1 additive compatibility",
                 "staged artifact boundary",
+                "Codex App, CLI, and IDE extension",
             ],
         }
 

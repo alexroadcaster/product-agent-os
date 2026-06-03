@@ -13,7 +13,7 @@ CLI слой нужен для повторяемого локального evi
 - approval-bound merge или rollback только через отдельный approval record;
 - deterministic runtime contract для Codex App, CLI или IDE extension;
 - project graph generation, queries, generated cockpit, local indexes and provider/mutation governance packets;
-- docs/closure verification через отдельные Batch 34 tester slices.
+- docs/closure verification через отдельные docs-maintainer и tester slices.
 
 Generated outputs are not source of truth. Source of truth remains checked-in source files, project docs, source registry, control-plane artifacts, current command evidence and owner-approved records.
 
@@ -48,18 +48,18 @@ Runtime runner optional inputs include `--approval-status`, `--intent-hint` and 
 | `--build-backend` | Stage disabled-by-default local query backend store. | `--stage`, `--graph`, `--backend-approval`. | Generated file-store; no active server by default. |
 | `--build-semantic-index` | Stage local deterministic semantic retrieval index. | `--stage`, `--graph`, `--semantic-approval`. | Generated semantic cache; provider calls remain blocked unless separately approved. |
 | `--build-llm-proposals` | Stage local deterministic LLM-style proposal packets. | `--stage`, `--graph`, `--llm-approval`. | Proposals only, never canonical facts. |
-| `--verify-extensions` | Stage Batch 23 extension verification and rollback closure. | `--stage`, `--graph`, `--verification-evidence`. | Closure packet and rollback/data deletion proof. |
-| `--validate-live-governance` | Stage Batch 24 live governance packet. | `--stage`, `--live-approval`. | No live calls; validates approval/data/redaction/cache/budget boundary. |
-| `--validate-live-runtime` | Stage Batch 25 local read-only runtime contract. | `--stage`, `--live-runtime-approval`, `--live-governance`. | Disabled-by-default local runtime contract; no launch. |
-| `--validate-embedding-provider` | Stage Batch 26 embedding provider gate. | `--stage`, `--embedding-provider-approval`, graph/semantic inputs as required. | Provider gate/eval packet; no provider call unless approved in later execution. |
-| `--validate-reranker-provider` | Stage Batch 27 reranker provider gate. | `--stage`, `--reranker-provider-approval`. | Provider gate packet; no external call by default. |
-| `--build-hybrid-retrieval` | Stage Batch 27 hybrid retrieval pipeline. | `--stage`, graph/index/semantic/reranker inputs. | Generated explainable fusion packet; no canonical mutation. |
-| `--validate-llm-proposal-provider` | Stage Batch 28 LLM proposal provider gate. | `--stage`, `--llm-proposal-provider-approval`, proposal/eval inputs. | Provider gate and safety eval; proposal-only. |
-| `--build-review-ledger` | Stage Batch 29 human review ledger and proposal diff. | `--stage`, `--review-ledger-approval`, `--review-decisions`. | Owner decision ledger; still non-mutating. |
-| `--build-canonical-mutation` | Stage Batch 30 mutation dry-run, journal and rollback artifacts. | `--stage`, `--canonical-mutation-approval`, review ledger and proposal diff. | Staged mutated graph copy only; canonical source graph is not silently changed. |
-| `--build-live-audit` | Stage Batch 31 audit/security/observability/handoff packets. | `--stage`, `--live-audit-approval`, live runtime/actions/security inputs. | Redacted audit and operability evidence. |
-| `--build-real-testing-readiness` | Stage Batch 32 readiness, target consent and pilot artifacts. | `--stage`, `--real-testing-approval` and target/gate/pilot inputs. | Dry-run pilot/readiness evidence only. |
-| `--build-runtime-qa` | Stage Batch 33 runtime QA, performance and stabilization artifacts. | `--stage`, `--runtime-qa-approval` and QA/performance/stabilization inputs. | Staged QA evidence; no live browser automation in Batch 34 docs work. |
+| `--verify-extensions` | Stage extension verification and rollback closure. | `--stage`, `--graph`, `--verification-evidence`. | Closure packet and rollback/data deletion proof. |
+| `--validate-live-governance` | Stage live governance packet. | `--stage`, `--live-approval`. | No live calls; validates approval/data/redaction/cache/budget boundary. |
+| `--validate-live-runtime` | Stage local read-only runtime contract. | `--stage`, `--live-runtime-approval`, `--live-governance`. | Disabled-by-default local runtime contract; no launch. |
+| `--validate-embedding-provider` | Stage embedding provider gate. | `--stage`, `--embedding-provider-approval`, graph/semantic inputs as required. | Provider gate/eval packet; no provider call unless approved in later execution. |
+| `--validate-reranker-provider` | Stage reranker provider gate. | `--stage`, `--reranker-provider-approval`. | Provider gate packet; no external call by default. |
+| `--build-hybrid-retrieval` | Stage hybrid retrieval pipeline. | `--stage`, graph/index/semantic/reranker inputs. | Generated explainable fusion packet; no canonical mutation. |
+| `--validate-llm-proposal-provider` | Stage LLM proposal provider gate. | `--stage`, `--llm-proposal-provider-approval`, proposal/eval inputs. | Provider gate and safety eval; proposal-only. |
+| `--build-review-ledger` | Stage human review ledger and proposal diff. | `--stage`, `--review-ledger-approval`, `--review-decisions`. | Owner decision ledger; still non-mutating. |
+| `--build-canonical-mutation` | Stage mutation dry-run, journal and rollback artifacts. | `--stage`, `--canonical-mutation-approval`, review ledger and proposal diff. | Staged mutated graph copy only; canonical source graph is not silently changed. |
+| `--build-live-audit` | Stage audit/security/observability/handoff packets. | `--stage`, `--live-audit-approval`, live runtime/actions/security inputs. | Redacted audit and operability evidence. |
+| `--build-real-testing-readiness` | Stage readiness, target consent and pilot artifacts. | `--stage`, `--real-testing-approval` and target/gate/pilot inputs. | Dry-run pilot/readiness evidence only. |
+| `--build-runtime-qa` | Stage runtime QA, performance and stabilization artifacts. | `--stage`, `--runtime-qa-approval` and QA/performance/stabilization inputs. | Staged QA evidence; no live browser automation in docs work. |
 
 Disable modes delete generated artifacts under the stage root: `--disable-backend`, `--disable-semantic-index`, `--disable-llm-proposals`, `--disable-extensions`, `--disable-live-governance`, `--disable-live-runtime`, `--disable-embedding-provider`, `--disable-reranker-provider`, `--disable-hybrid-retrieval`, `--disable-llm-proposal-provider`, `--disable-review-ledger`, `--disable-canonical-mutation`, `--disable-live-audit`, `--disable-real-testing-readiness` and `--disable-runtime-qa`.
 
@@ -87,7 +87,7 @@ python -m mkdocs build --strict
 git diff --check
 ```
 
-Run the smallest relevant set for the current slice. Batch 34 requires the full source docs -> registry -> docs tests -> `check_docs.py` -> strict MkDocs -> optional full closure order before a closure claim.
+Run the smallest relevant set for the current slice. A closure claim requires the full source docs -> registry -> docs tests -> `check_docs.py` -> strict MkDocs -> optional full closure order.
 
 ## Risks And Failure Modes
 
@@ -100,4 +100,4 @@ Run the smallest relevant set for the current slice. Batch 34 requires the full 
 
 ## Next Action
 
-Use this page as the operator reference for local scripts. Navigation, source registry entries, docs tests and generated `site/` refresh belong to later Batch 34 slices.
+Use this page as the operator reference for local scripts. Navigation, source registry entries, docs tests and generated `site/` refresh belong to their owning docs-maintainer and tester slices.

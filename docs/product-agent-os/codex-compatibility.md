@@ -1,97 +1,106 @@
 # Product-Agent OS Codex compatibility
 
-Source status: `official + experiment`  
+Source status: `official + experiment`
 
-## Task 22 canonical safety boundary
+Источники: [Codex plugins](https://developers.openai.com/codex/plugins), [Build plugins](https://developers.openai.com/codex/plugins/build), [Agent Skills](https://developers.openai.com/codex/skills), [Subagents](https://developers.openai.com/codex/subagents), [AGENTS.md](https://developers.openai.com/codex/guides/agents-md), [Codex hooks](https://developers.openai.com/codex/hooks), [Agent approvals and security](https://developers.openai.com/codex/agent-approvals-security), [Codex with Agents SDK](https://developers.openai.com/codex/guides/agents-sdk), [Product-Agent OS architecture](architecture.md).
 
-Task 22 canonical safety boundary: no live model call, no separate OpenAI API key, no standalone Agents SDK activation, no global config mutation, no silent MCP/server/hook/automation activation, no unapproved external writes, no hosted docs or DB introspection require approval bypass, and no readiness claims from detection.
-
-Codex App, CLI, IDE extension, skills, MCP declarations and staged hooks are supported package surfaces. They are not permission to mutate target workspaces, GitHub, CI, package registries, production databases, hosted documentation, security systems or schedules without explicit approval and current verification evidence.
-Источники: [Codex App](https://developers.openai.com/codex/app), [Codex CLI](https://developers.openai.com/codex/cli), [Codex IDE extension](https://developers.openai.com/codex/ide), [Codex build plugins](https://developers.openai.com/codex/plugins/build), [Agent Skills](https://developers.openai.com/codex/skills), [Codex MCP](https://developers.openai.com/codex/mcp), [Codex hooks](https://developers.openai.com/codex/hooks), [Agent approvals and security](https://developers.openai.com/codex/agent-approvals-security).
-
-Product-Agent OS поддерживает Codex App, CLI и IDE extension как целевые surfaces. Compatibility здесь означает: package можно проверять как Codex plugin, без требования non-Codex adapters, без separate model runner и без silent external activation.
+Compatibility means the package fits Codex surfaces. It does not approve live execution, provider calls, external writes, hosted docs, database access, automation activation or git actions.
 
 ## Inputs
 
-- plugin root: `plugins/product-agent-os/`;
-- `.codex-plugin/plugin.json`;
-- bundled `skills/`;
-- bundled MCP config `.mcp.json`;
-- staged hooks under `assets/templates/hooks/`;
-- `README.md` and user-facing docs;
-- validation script `plugins/product-agent-os/scripts/validate_codex_compatibility.py`.
+- current `.codex-plugin/plugin.json` and packaged plugin metadata;
+- local skills, scripts, templates, MCP declarations and staged hooks;
+- Codex App, CLI and IDE extension workflow expectations;
+- current `AGENTS.md`, sandbox, approvals and source policy;
+- compatibility validator output and any accepted gaps.
 
 ## Outputs
 
-- compatibility report with supported surfaces: Codex App, CLI, IDE extension;
-- evidence that `.codex-plugin/plugin.json`, skills, MCP and staged hooks are present;
-- explicit result that the plugin requires no standalone Agents SDK app and no separate OpenAI API key;
-- empty list of required non-Codex adapters;
-- residual risk if docs or package boundaries change without rerunning validation.
+- package compatibility status;
+- supported Codex surfaces and non-goals;
+- approval boundary for live systems, provider calls, external writes, hosted docs, database access, active automation and git actions;
+- verification commands for package and docs closure;
+- residual risks when a compatibility claim depends on current official Codex behavior.
 
-## Track 10 compatibility boundaries
+## Canonical Safety Boundary
 
-Compatibility means the package fits Codex surfaces. It does not approve live execution, external systems or git actions.
+Product-Agent OS keeps a conservative Codex boundary:
 
-| Boundary | Compatible staged work | Requires separate explicit approval |
+- no live model call from compatibility checks;
+- no separate OpenAI API key requirement for the Codex runtime runner;
+- no standalone Agents SDK activation hidden behind the plugin;
+- no global config mutation;
+- no silent MCP/server/hook/automation activation;
+- no unapproved external writes;
+- no hosted docs or DB introspection bypass;
+- no readiness claims from detection.
+
+Codex App, CLI, IDE extension, skills, MCP declarations and staged hooks are supported package surfaces. They are not permission to mutate target workspaces, GitHub, CI, package registries, production databases, hosted documentation, security systems or schedules without explicit approval and current verification evidence.
+
+## Compatible Surfaces
+
+| Surface | Supported use | Boundary |
 | --- | --- | --- |
-| Live server | Validate disabled local runtime contract, auth policy, lifecycle controls and graph-only fallback. | Launch server, keep process running, expose network route or collect live runtime evidence. |
-| Browser automation | Stage browser smoke expectations, generated-view labels, source-boundary labels and mobile overflow checks. | Run Playwright/browser automation against a live local runtime. |
-| Provider/API calls | Stage embedding, reranker and LLM provider gate/eval packets with redaction/cache/budget policy. | Call external model/API/provider, spend tokens or store provider cache from live data. |
-| Canonical mutation | Stage review ledger, proposal diff, mutation dry-run plan, journal and rollback proof. | Apply accepted mutation to canonical graph or source-controlled state. |
-| Git actions | Prepare release/PR packet and closure evidence. | `git add`, commit, push, PR creation, tag, release or package upload. |
-
-## Compatibility Contract
-
-| Surface | Supported scope | Boundary |
-| --- | --- | --- |
-| Codex App | Interactive local product-agent threads, steering, artifacts, skills and automations when explicitly created. | Product-Agent OS does not create active automations from templates. |
-| CLI | Local read/edit/run workflows, fixture evals, staged renderer and validation commands. | Commands obey sandbox, approvals and local workspace policy. |
-| IDE extension | Editor-context implementation and review with project docs and `AGENTS.md`. | Plugin docs do not assume IDE-only APIs. |
-| `.codex-plugin/plugin.json` | Required manifest and packaged plugin metadata. | Manifest must not point to non-Codex runtime adapters. |
-| skills | Reusable lifecycle methods loaded by Codex through progressive disclosure. | Skills remain task-specific and do not silently mutate external systems. |
-| MCP | Context7 declared as bundled MCP config for Codex. | Credentials stay outside checked-in package; MCP is not a background service launched by Product-Agent OS scripts. |
-| staged hooks | Hook templates are packaged as examples and target-project assets. | staged hooks are inactive until explicit approval and target-project activation. |
+| `.codex-plugin/plugin.json` | Plugin manifest and packaged capability declaration. | Manifest presence is compatibility evidence, not publication approval. |
+| Codex App | Interactive steering, ambiguity resolution, review and local workspace work. | User approvals and sandbox still govern actions. |
+| CLI | Local deterministic checks, renderers, validators and staged artifact generation. | Commands must respect project policy and approval scope. |
+| IDE extension | Code navigation, review and implementation support. | IDE context is not source of truth by itself. |
+| skills | Repeatable methods with inputs, outputs, verification and failure modes. | A skill can recommend actions but cannot grant external permission. |
+| subagents | Parallel or specialized work when ownership is clear. | Handoff must include files, context, expected evidence and stop conditions. |
+| `AGENTS.md` | Durable project rules and operating constraints. | Local project rules cannot override stronger system/developer instructions. |
+| staged hooks | Hook templates and staged proposals. | Hooks are not silently activated. |
+| MCP | Declared tool context and integration boundaries. | MCP access is not automatically safe or approval-free. |
+| Agents SDK | Product/runtime app architecture when explicitly chosen. | It is not the hidden runtime layer for this plugin. |
 
 ## Non-Goals
 
-- no standalone Agents SDK runtime;
-- no separate OpenAI API key;
-- no Claude, Cursor, OpenCode, Gemini or other non-Codex adapter requirement;
-- no package manager publish, marketplace submission, active automation, hook activation, remote CI mutation or external write without explicit approval;
-- no hidden live service started by the plugin.
+Product-Agent OS compatibility checks do not:
+
+- publish plugins or docs;
+- create schedules, recurring automations or GitHub Actions;
+- start local servers for verification;
+- run browser automation;
+- call external providers or live model/API endpoints;
+- mutate canonical graph facts;
+- stage, commit, push or open PRs;
+- certify legal, security or compliance readiness.
+
+Those actions require explicit owner approval, current evidence and a rollback or stop condition.
 
 ## Verification
 
-Run the compatibility validator after manifest, README, skills, MCP, hooks or package-boundary docs change:
+Use these checks when package boundaries or docs change:
 
 ```powershell
 python plugins\product-agent-os\scripts\validate_codex_compatibility.py
-```
-
-Expected report shape:
-
-```json
-{
-  "status": "compatible",
-  "supported_surfaces": ["Codex App", "CLI", "IDE extension"],
-  "requires_non_codex_adapters": false
-}
-```
-
-Also run full plugin verification when package files change:
-
-```powershell
-python -m unittest discover -s tests -p "test_*.py" -v
-python plugins\product-agent-os\scripts\run_fixture_eval.py
 python tools\check_docs.py
 ```
 
+Use strict MkDocs when navigation, Mermaid, Markdown extensions or generated site output changes:
+
+```powershell
+python -m mkdocs build --strict
+```
+
+The compatibility validator should stay deterministic. If it needs live provider, browser, hosted docs or database evidence, that evidence belongs in a separate approval-bound route, not in baseline compatibility.
+
+## Live Execution Boundaries
+
+The live layer stays disabled until each action has its own owner-approved packet:
+
+- local runtime launch;
+- browser automation smoke;
+- external embedding/reranker/LLM provider pilot;
+- canonical graph mutation pilot;
+- git release, push, PR or publication action.
+
+Approvals are not bundled. Approval for one surface does not grant another.
+
 ## Risks
 
-- Official Codex plugin interfaces can change; package claims must stay tied to source registry checks.
-- A compatible package can still be misused if a target project activates hooks, MCP credentials, automations or external writes without review.
-- The compatibility check proves packaging scope, not product quality or scenario readiness.
-- Hosted docs, marketplace publishing and external integrations are outside this compatibility claim unless separately approved and verified.
+- A compatible package can still be operationally unsafe if a user activates hooks, MCP servers, automations or external systems without evidence.
+- Generated cockpit/dashboard/report outputs can look authoritative; the docs must keep source-boundary labels visible.
+- Agent handoff quality matters more than the number of subagents. Parallel work without ownership can increase risk.
+- Official Codex behavior can evolve; source-backed claims should be reviewed against current official docs when product surfaces change.
 
-Next artifact: use [Behavioral evals](behavioral-evals.md) to test route behavior and [Scenarios](scenarios.md) to select the correct workflow.
+Next artifact: use [Packaging And Closure](packaging-and-closure.md) for release evidence and [Approval-Bound Real Testing](approval-bound-real-testing.md) before any live execution.

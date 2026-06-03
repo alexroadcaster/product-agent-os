@@ -120,6 +120,50 @@ activation_condition: "Batch 34B rewrites a page and marks it public_ready; Batc
 
 Batch 34A therefore adds the policy and the future failure condition without falsely claiming that current product-facing candidates are already clean. Batch 34B must remove internal ledger language from the candidate pages before any of them move from `cleanup_pending` to `public_ready`.
 
+Current enforcement state after Batch 34B:
+
+```yaml
+public_ready_pages:
+  - docs/product-agent-os/index.md
+  - docs/product-agent-os/project-code-graph.md
+  - docs/product-agent-os/live-runtime-governance.md
+  - docs/product-agent-os/approval-bound-real-testing.md
+  - docs/product-agent-os/agent-skill-modernization-loop.md
+  - docs/product-agent-os/cli-reference.md
+  - docs/product-agent-os/artifact-contracts.md
+  - docs/product-agent-os/packaging-and-closure.md
+  - docs/product-agent-os/technical.md
+  - docs/product-agent-os/development-standards.md
+  - docs/product-agent-os/methodology-intelligence.md
+  - docs/product-agent-os/scenarios.md
+  - docs/product-agent-os/behavioral-evals.md
+  - docs/product-agent-os/codex-compatibility.md
+  - docs/product-agent-os/architecture.md
+  - docs/product-agent/overview.md
+  - docs/product-agent/lifecycle.md
+  - docs/product-agent/roles.md
+  - docs/product-agent/control-plane.md
+  - docs/product-agent/product-agent-os-plugin-spec.md
+  - docs/diagrams/index.md
+  - docs/diagrams/architecture.md
+  - docs/diagrams/product-delivery-lifecycle.md
+  - docs/diagrams/agent-team-and-skills.md
+  - docs/diagrams/runtime-decision-map.md
+  - docs/diagrams/skill-lifecycle.md
+  - docs/diagrams/context-memory-verification.md
+  - docs/runtime/overview.md
+  - docs/runtime/non-interactive-and-mcp.md
+  - docs/runtime/automations-github.md
+  - docs/runtime/worktrees-hooks-rules.md
+  - docs/agent-systems/subagents-skills.md
+  - docs/playbooks/docs-update.md
+  - docs/playbooks/use-case-to-plugin.md
+  - docs/playbooks/workspace-readiness-audit.md
+cleanup_pending_public_candidates: []
+```
+
+Batch 34A initial state intentionally keeps `public_ready_pages: []` above for provenance. Batch 34B records the current public-ready promotion in `docs/sources/product-agent-os-batch34b-public-copy-rewrite.md`; Batch 34C must use those public-ready pages as the RU/EN localization source.
+
 ## Acceptance
 
 - `B34-PROD-M16`: public product candidates and internal evidence/control-plane surfaces are listed separately.

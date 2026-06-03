@@ -4,7 +4,7 @@ Source status: `official + experiment`
 
 ## Назначение
 
-Эта страница описывает Task 24 `agent_skill_metrics_loop` для Product-Agent OS: локальный, read-only контур оценки agents, subagents, skills, prompt/policy packs, router/tool policies, memory policies, dataset/grader surfaces и harness versions после того, как реальная работа оставила проверяемые evidence records.
+Эта страница описывает `agent_skill_metrics_loop` для Product-Agent OS: локальный, read-only контур оценки agents, subagents, skills, prompt/policy packs, router/tool policies, memory policies, dataset/grader surfaces и harness versions после того, как реальная работа оставила проверяемые evidence records.
 
 Цель контура - не autonomous auto-update. Цель - собрать source-backed evidence, показать scorecards, выявить modernization candidates и подготовить daily/weekly candidate packets для owner review. Это staged candidate-only pipeline без self-applied updates, active schedules и live eval/model/API calls.
 
@@ -33,7 +33,7 @@ Source of truth для метрик:
 
 - target registry: agents, skills, prompt/policy packs, router/tool policies, automation candidates, config и harness targets;
 - trace intake: `agents_sdk`, `opentelemetry_genai`, `tool_report` или `accepted_gap` trace sources с model/tool/handoff/final_response spans;
-- evidence dataset: implemented tasks, real trace samples, prior failures, critical slices, edge/adversarial cases, holdout cases, synthetic regression cases и known flaky cases;
+- evidence dataset: implemented work items, real trace samples, prior failures, critical slices, edge/adversarial cases, holdout cases, synthetic regression cases и known flaky cases;
 - grader/judge calibration: human labels, judge labels, thresholds for precision, recall, Cohen kappa and sample size;
 - version context: baseline, current and candidate versions;
 - cost/latency/safety/reliability records when the target can affect production, external systems or user-visible quality.
@@ -106,9 +106,9 @@ python plugins\product-agent-os\scripts\render_agent_skill_metrics_report.py <wo
 - Uncalibrated LLM-as-judge output can produce false passes or false regressions.
 - A daily noisy run can trigger unnecessary changes if it is mistaken for weekly acceptance evidence.
 - Modernization candidates can become unsafe if they lack rollback target, owner review or cost/safety regression checks.
-- Running live eval/model/API calls would violate the Task 24 boundary unless a later explicit approval packet changes scope.
+- Running live eval/model/API calls would violate the read-only modernization boundary unless a later explicit approval packet changes scope.
 - Auto-applying candidate updates would turn the loop into autonomous auto-update, which is explicitly out of scope.
 
 ## Next Action
 
-Use this page when Task 24 evidence needs to be interpreted or packaged for owner review. The next safe artifact is a staged scorecard ledger, daily report, weekly verification packet or update candidate. Applying any update remains a separate owner-approved implementation slice.
+Use this page when agent/skill evidence needs to be interpreted or packaged for owner review. The next safe artifact is a staged scorecard ledger, daily report, weekly verification packet or update candidate. Applying any update remains a separate owner-approved implementation slice.

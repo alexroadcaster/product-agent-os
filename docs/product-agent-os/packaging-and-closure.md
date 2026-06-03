@@ -4,16 +4,16 @@ Source status: `official + experiment`
 
 ## Назначение
 
-Эта страница фиксирует Batch 34 `T10-LIVE-M35..M36`: Packaging, Docs, Source Registry, Closure And Batch 35 Handoff. Batch 34 делает систему понятной, проверяемой и готовой к owner handoff перед approval-bound real testing, но сам по себе не запускает Batch 35 и не является доказательством live execution.
+Эта страница фиксирует packaging, documentation closure и owner handoff для Product-Agent OS. Closure делает систему понятной, проверяемой и готовой к approval-bound real testing, но сам по себе не запускает live execution.
 
-Batch 34 закрывает docs updated packet, packaging/install smoke definition, required verification, generated `site/` rebuild rule и handoff packet для Batch 35.
+Closure packet описывает обновленные source docs, packaging/install smoke definition, required verification, generated `site/` rebuild rule и approval packet для следующего execution step.
 
 ## Source-of-truth boundary
 
 Source of truth:
 
 - checked-in Product-Agent OS source docs;
-- Track 10 plan and accepted Batch 34 matrix;
+- accepted implementation plan and docs closure scope;
 - source registry and control-plane artifacts after их отдельного owner-approved/docs-maintainer slice;
 - current command evidence from docs tests, `tools/check_docs.py`, strict MkDocs, optional full closure and packaging/install smoke;
 - explicit owner approval packets for any later live/browser/provider/canonical/git action.
@@ -28,26 +28,26 @@ Not source of truth:
 
 ## Inputs
 
-Batch 34 closure consumes:
+Closure consumes:
 
-- Task 24 modernization loop docs and metrics-report boundary;
-- Task 25 project code graph, cockpit, static search, backend gate, semantic retrieval, deterministic proposal and extension-closure docs;
-- Task 26 Batch 24-33 governance/runtime/provider/review/mutation/audit/real-testing-readiness/runtime-QA evidence;
-- Batch 34 Detailed Task Matrix `B34-DOC-M01..M15`;
+- modernization loop docs and metrics-report boundary;
+- project code graph, cockpit, static search, backend gate, semantic retrieval, deterministic proposal and extension-closure docs;
+- governance/runtime/provider/review/mutation/audit/real-testing-readiness/runtime-QA evidence;
+- accepted docs closure scope;
 - plugin README install and packaging guidance;
 - MkDocs navigation/docs-check requirements from the Builder/Tester slice;
 - known gaps: docs-maintainer plugin-cache gap and Mermaid external asset gap when still unresolved.
 
 ## Outputs And Artifacts
 
-Expected Batch 34 outputs:
+Expected closure outputs:
 
 - updated docs pages for Product-Agent OS source docs;
 - source registry/backlog/control-plane sync from the owning docs-maintainer slice;
 - updated docs contract tests and `tools/check_docs.py` from the owning Builder/Tester slice;
 - regenerated `site/` using the regular MkDocs `site_dir`;
 - packaging/install smoke evidence packet;
-- Batch 35 approval packet draft;
+- approval packet draft for real testing execution;
 - explicit list of actions not performed without approval.
 
 This worker page covers only the docs packet. It does not update navigation, tests, registry, README, `site/`, git state or plugin distribution.
@@ -64,11 +64,11 @@ Packaging/install smoke is evidence only. It should answer:
 - plugin hooks and automations remain inactive unless explicitly approved;
 - install smoke result records command, environment, output summary, gaps and residual risk.
 
-Install smoke does not publish the plugin, write to external systems, create a marketplace release, upload artifacts, activate hooks, create automations or approve Batch 35.
+Install smoke does not publish the plugin, write to external systems, create a marketplace release, upload artifacts, activate hooks, create automations or approve real testing execution.
 
 ## Workflow And Cadence
 
-Batch 34 verification order is fixed:
+Closure verification order is fixed:
 
 1. Source docs.
 2. Source registry.
@@ -77,7 +77,7 @@ Batch 34 verification order is fixed:
 5. Strict MkDocs build.
 6. Optional full closure.
 7. Packaging/install smoke.
-8. Batch 35 handoff packet.
+8. Approval-bound handoff packet.
 
 The generated documentation site must be rebuilt with the regular MkDocs `site_dir`:
 
@@ -85,18 +85,18 @@ The generated documentation site must be rebuilt with the regular MkDocs `site_d
 python -m mkdocs build --strict
 ```
 
-Using only a disposable `--site-dir` is not enough when Batch 34 explicitly requires `site/` refresh.
+Using only a disposable `--site-dir` is not enough when closure explicitly requires `site/` refresh.
 
 ## Required Verification
 
-Minimum Batch 34 closure evidence:
+Minimum closure evidence:
 
 - focused docs contract test result for new pages, required source status and safety boundaries;
 - `python tools\check_docs.py`;
 - strict MkDocs build into `site/`;
 - `git diff --check`;
 - packaging/install smoke packet;
-- explicit Batch 35 handoff packet.
+- explicit approval-bound handoff packet.
 
 Optional full closure when risk or scope requires:
 
@@ -106,11 +106,11 @@ Optional full closure when risk or scope requires:
 - Codex compatibility validation;
 - reviewer pass over generated `site/`, long-line IA and accepted gaps.
 
-Do not claim Batch 34 is complete unless the current run has matching command evidence or clearly states which verification was not run.
+Do not claim closure is complete unless the current run has matching command evidence or clearly states which verification was not run.
 
-## Batch 35 Handoff
+## Approval-Bound Handoff
 
-Batch 35 remains approval-bound real testing execution. The handoff packet should list separate approval surfaces:
+Real testing execution remains approval-bound. The handoff packet should list separate approval surfaces:
 
 - `approved_local_runtime_launch`;
 - `actual_browser_automation_smoke`;
@@ -120,11 +120,11 @@ Batch 35 remains approval-bound real testing execution. The handoff packet shoul
 
 Each surface needs owner, approved target, data policy, redaction/cache/budget boundary where relevant, rollback/disable path, expected evidence, residual risk and stop condition.
 
-Batch 35 can start only after Batch 24 governance, Batch 25 runtime contract, Batch 31 audit/observability, Batch 32 target consent, Batch 33 QA/performance/stabilization and Batch 34 packaging/docs closure are current.
+Real testing can start only after governance, runtime contract, audit/observability, target consent, QA/performance/stabilization and packaging/docs closure evidence are current.
 
 ## Actions Not Performed Without Approval
 
-Batch 34 does not perform these actions without a separate explicit owner approval:
+Packaging and closure work does not perform these actions without a separate explicit owner approval:
 
 - no live server launch;
 - no browser automation;
@@ -137,7 +137,7 @@ Batch 34 does not perform these actions without a separate explicit owner approv
 - no hook activation;
 - no active schedules, automations or GitHub Actions creation;
 - no `git add`, commit, push or PR;
-- no Batch 35 execution.
+- no real testing execution.
 
 ## Risks And Failure Modes
 
@@ -146,8 +146,8 @@ Batch 34 does not perform these actions without a separate explicit owner approv
 - Missing docs registry/control-plane sync can make source-backed claims drift.
 - Plugin-cache mismatch can hide missing checked-in skills, especially `docs-maintainer`.
 - Mermaid external asset dependency can break offline documentation expectations.
-- Batch 35 can accidentally start live execution if approval surfaces are bundled together instead of separated.
+- Real testing can accidentally start live execution if approval surfaces are bundled together instead of separated.
 
 ## Next Action
 
-After Batch 34 docs and packaging evidence are current, the next safe artifact is the Batch 35 approval packet draft. Real testing execution, provider/API calls, canonical mutation and git release/PR actions remain blocked until their separate approvals exist.
+After docs and packaging evidence are current, the next safe artifact is the approval packet draft. Real testing execution, provider/API calls, canonical mutation and git release/PR actions remain blocked until their separate approvals exist.

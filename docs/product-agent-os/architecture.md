@@ -1,45 +1,67 @@
-# Диаграммы и принципы работы
+# Product-Agent OS architecture
 
-Source status: `official + experiment`  
+Source status: `official + experiment`
 
-## Task 22 layer map
-
-Task 22 layer map закрепляет полный порядок слоев: Track 1 foundation дает plugin package, contracts and validators; Track 2 lifecycle skills задает reusable ownership handoffs; Track 3 staged generation создает proposals outside target workspace; Track 4 approved merge добавляет manifest, approval record and rollback; Track 5 Codex runtime дает deterministic route packet; Track 6 engineering standards добавляет hypothesis, architecture, test/eval and docs gates; Track 7 hardening переводит standards в concrete artifacts; Track 8 scenario workflows выбирают user-job route; Track 9 methodology intelligence добавляет read-only audit, Delivery Map, synthesis and runtime methodology packet.
-
-Этот порядок запрещает stale shortcut "Track 1 -> Track 8 -> Track 9": runtime, standards, hardening, scenarios and methodology synthesis are one stack, and every write still passes staged-first and approval boundaries.
 Источники: [Codex plugins](https://developers.openai.com/codex/plugins), [Agent Skills](https://developers.openai.com/codex/skills), [Subagents](https://developers.openai.com/codex/subagents), [AGENTS.md](https://developers.openai.com/codex/guides/agents-md), [Codex hooks](https://developers.openai.com/codex/hooks), [Agent approvals and security](https://developers.openai.com/codex/agent-approvals-security), [Codex workflows](https://developers.openai.com/codex/workflows), [Technical features](technical.md).
 
-Эта страница показывает не историю реализации, а рабочую модель Product-Agent OS plugin: как он выбирает следующий step, как stages changes, где требует approval и почему automation remains candidate-only.
+Product-Agent OS plugin строит управляемый lifecycle вокруг Codex App, CLI, IDE extension, subagents, skills, `AGENTS.md`, memory, sandbox, approvals, MCP и Agents SDK. Его архитектура не пытается "сразу сделать все": она сначала читает workspace, выбирает route, фиксирует ownership и evidence, затем stage-ит предложения или выполняет разрешенный slice.
 
-Engineering standards layer добавляет методические gates поверх lifecycle: product hypothesis, architecture boundary, test-first/eval-first path, docs-as-code impact, review и release measurement. Track 7 дополняет это discovery signals и concrete artifact templates, чтобы plugin видел существующую инженерную зрелость workspace и мог stage недостающие outputs. Эти gates не запускают внешние системы сами; они появляются в staged artifacts и должны быть подтверждены evidence.
+Главное правило: generated surfaces помогают ориентироваться, но source files, owner decisions и current verification evidence остаются сильнее любого dashboard, graph, report или chat memory.
 
-Track 8 добавляет `usage_mode` route перед методическими gates. Route выбирает first response и minimum artifacts, но не отменяет lifecycle, source policy, sandbox or approvals. First-run route теперь явно различает empty workspace, failed verification, existing control-plane и complex system starts, возвращая mode, confidence, next smallest action, minimum artifacts, evidence gaps и approval boundary. После нового audit plan plugin различает `done` сценарии, done methodology gates, partial methodology gates и base modes. API migration, AI/RAG eval regression, native/mobile feature work, desktop local-first work, data migration, security-sensitive change, CI stabilization и release packaging имеют packaged workflows, artifacts, behavioral eval coverage and current verification evidence. Done methodology gates now include no-placeholder planning, generalized two-stage review for risky public-contract/migration/security/data/release/parallel slices, fresh-context handoff for subagents or parallel workers, acceptance scenarios with ATDD/BDD traceability before behavior changes, conditional DDD domain modeling for complex backend/workflow/enterprise/data-heavy/multi-service/multi-context work, bounded-context-to-architecture traceability, ubiquitous language traceability, conditional FSD structure routing, metric hardening for product behavior changes, evidence-before-completion for ready/completed/fixed/works/release claims, docs tooling selection, conditional readiness statuses, and deterministic transcript/session eval replay.
+## Layered Model
 
-Docs tooling selector is part of the Track 8 methodology gate set: `docs_tooling_selector` records `docs_as_code_impact`, selected tools, rejected tools, evidence owner, maintenance owner, command evidence, accepted gaps and approval-required items. It keeps docs-light/internal-only projects lightweight and treats hosted docs, CI activation and DB introspection as explicit approval boundaries.
-
-Conditional readiness gates are now part of the route model: `project-readiness.json` defines `readiness_statuses` and per-gate applicability, pass condition, accepted gap, required evidence, owner and residual risk. Detection alone can only create `present_unverified`; verified readiness requires current command, owner or artifact evidence.
-
-For operator-facing details, use [Scenarios](scenarios.md) for route selection, [Behavioral evals](behavioral-evals.md) for expected/forbidden behavior, and [Codex compatibility](codex-compatibility.md) for package-surface boundaries.
-
-## Track 10 graph and live boundary
-
-Track 10 добавляет к lifecycle stack generated graph, cockpit, disabled local runtime contracts, provider gates, human review, mutation dry-run, audit/observability и real-testing readiness. Эти surfaces помогают ориентироваться и проверять proposals, но не заменяют source files, owner decisions или current runtime evidence.
-
-| Layer | Primary artifact/page | Architectural rule |
+| Layer | Purpose | Boundary |
 | --- | --- | --- |
-| Static graph and cockpit | [Project Code Graph](project-code-graph.md) | Graph/cockpit are generated review surfaces; source files remain canonical. |
-| Live runtime governance | [Live Runtime Governance](live-runtime-governance.md) | Runtime remains disabled-by-default, local-only and read-only until separate approval. |
-| Provider gates | [Live Runtime Governance](live-runtime-governance.md) | Embedding, reranker and LLM proposal providers stay blocked until approval/redaction/cache/budget/eval threshold are current. |
-| Human review | [Artifact Contracts](artifact-contracts.md) | Review ledger decisions are `accepted`, `rejected` or `accepted_gap`; proposal evidence is not a canonical fact. |
-| Canonical mutation | [Artifact Contracts](artifact-contracts.md) | Mutation requires accepted proposal, dry-run plan, mutation journal and rollback proof before any pilot. |
-| Audit and observability | [Live Runtime Governance](live-runtime-governance.md) | Live/provider/mutation actions must emit redacted audit and runtime evidence; unsafe cases block the route. |
-| Real testing | [Approval-Bound Real Testing](approval-bound-real-testing.md) | Browser automation, provider/API pilot, canonical mutation pilot and git release/PR action are separate Batch 35 approvals. |
+| Plugin package | Manifest, commands, packaged skills and validators. | Package compatibility does not activate external systems. |
+| Lifecycle skills | Requirements, planning, test/eval, implementation, review and release handoffs. | Every handoff names files, evidence, risks and stop conditions. |
+| Staged infrastructure | Templates for `AGENTS.md`, control-plane files, hooks, workflows and agent configs. | Existing user files are preserved; ambiguous writes become proposals. |
+| Approved merge | Manifest, approval record, rollback and scoped apply. | No direct target-workspace merge without explicit approval. |
+| Codex runtime runner | Deterministic route packet for Codex usage. | No separate live model call or hidden Agents SDK app. |
+| Engineering standards | Hypothesis, architecture, tests, evals, docs, review and release measurement. | Standards become evidence requirements, not ceremony by default. |
+| Scenario routes | `usage_mode` chooses first response and minimum artifacts. | Detection never equals readiness. |
+| Methodology intelligence | Read-only audit, applicability, owner questions and staged recommendations. | Recommendations do not mutate target projects. |
+| Graph and live governance | Generated graph, cockpit, runtime gates, provider gates, review, mutation dry-run and audit. | Live execution remains disabled until separate owner approval. |
 
-## Engineering standards route
+This order prevents stale shortcuts. Runtime, standards, scenarios, methodology synthesis and live governance are one stack; every write still passes staged-first and approval boundaries.
+
+## Operating Flow
 
 ```mermaid
 flowchart LR
-    S["Workspace methodology signals"] --> A["REQUIREMENTS.md hypothesis and metrics"]
+    A["Workspace context"] --> B["Read-only inventory"]
+    B --> C["Route selection"]
+    C --> D["Minimum artifacts"]
+    D --> E["Ownership and evidence"]
+    E --> F{"Write needed?"}
+    F -->|No| G["Read-only answer"]
+    F -->|Staged proposal| H["Staging directory"]
+    F -->|Approved write| I["Scoped implementation"]
+    H --> J["Review / accepted gap"]
+    I --> K["Verification evidence"]
+    J --> K
+```
+
+The route is derived from artifacts, not from chat memory. User intent can steer the next action, but source policy, sandbox, approvals and current evidence still decide what can run.
+
+## Graph And Live Boundary
+
+Generated graph and cockpit surfaces help readers understand topology, code flow and stale evidence. They do not become source of truth and they do not authorize live systems.
+
+| Surface | Primary page | Architectural rule |
+| --- | --- | --- |
+| Static graph and cockpit | [Project Code Graph](project-code-graph.md) | Graph/cockpit are generated review surfaces; source files remain canonical. |
+| Live runtime governance | [Live Runtime Governance](live-runtime-governance.md) | Runtime remains disabled-by-default, local-only and read-only until separate approval. |
+| Provider gates | [Live Runtime Governance](live-runtime-governance.md) | Embedding, reranker and LLM proposal providers stay blocked until approval, redaction, cache, budget and eval threshold are current. |
+| Human review | [Artifact Contracts](artifact-contracts.md) | Review ledger decisions are `accepted`, `rejected` or `accepted_gap`; proposal evidence is not a canonical fact. |
+| Canonical mutation | [Artifact Contracts](artifact-contracts.md) | Mutation requires accepted proposal, dry-run plan, mutation journal and rollback proof before any pilot. |
+| Audit and observability | [Live Runtime Governance](live-runtime-governance.md) | Live, provider and mutation actions must emit redacted audit and runtime evidence; unsafe cases block the route. |
+| Real testing | [Approval-Bound Real Testing](approval-bound-real-testing.md) | Runtime launch, browser automation, provider/API pilot, canonical mutation pilot and git release/PR action are separate approvals. |
+
+## Engineering Standards Route
+
+```mermaid
+flowchart LR
+    S["Workspace signals"] --> A["REQUIREMENTS.md hypothesis and metrics"]
     A --> B["PLAN.md architecture boundary"]
     B --> C["TEST.md test-first checks"]
     B --> D["EVALS.md quality gates"]
@@ -51,9 +73,9 @@ flowchart LR
     G --> H["RUNLOG.md measurement notes"]
 ```
 
-Принцип: Codex-agent work начинается только после того, как boundary, verification и documentation impact видны следующему worker. Если один из элементов невозможен, это фиксируется как gap, а не скрывается в chat.
+Product-agent work starts only after boundary, verification and documentation impact are visible to the next worker. If one element is unavailable, the route records an explicit gap instead of hiding it in chat.
 
-## Lifecycle routing
+## Lifecycle Routing
 
 ```mermaid
 flowchart TD
@@ -76,23 +98,6 @@ flowchart TD
     G -->|none| M["maintenance"]
 ```
 
-Принцип: route is derived from artifacts, not from chat memory. User request can override lifecycle state only when it matches the allowed state list and guardrails still pass.
-
-## Route packet
-
-```mermaid
-flowchart LR
-    S["Lifecycle state"] --> R["Route planner"]
-    U["usage_mode"] --> R
-    R --> K["Recommended skill"]
-    R --> A["Recommended subagent role"]
-    R --> W["Write policy"]
-    R --> V["Verification commands"]
-    W --> P{"approved_write?"}
-    P -->|No| O["read_only or staged_only"]
-    P -->|Yes| G["explicit approval record required"]
-```
-
 | State | Next worker | Write policy |
 | --- | --- | --- |
 | `uninitialized` | `workspace-discovery-auditor` | `read_only` |
@@ -107,7 +112,24 @@ flowchart LR
 | `learning_ready` | `automation-promoter` | `staged_only` |
 | `maintenance` | `project-lifecycle-orchestrator` | `read_only` |
 
-## Track 9 read-only methodology audit
+## Route Packet
+
+```mermaid
+flowchart LR
+    S["Lifecycle state"] --> R["Route planner"]
+    U["usage_mode"] --> R
+    R --> K["Recommended skill"]
+    R --> A["Recommended subagent role"]
+    R --> W["Write policy"]
+    R --> V["Verification commands"]
+    W --> P{"approved_write?"}
+    P -->|No| O["read_only or staged_only"]
+    P -->|Yes| G["explicit approval record required"]
+```
+
+The route packet carries `usage_mode`, confidence, routing reasons, minimum artifacts, approval boundary, expected evidence, residual risks and next safe action. It is a planning contract, not permission to mutate external systems.
+
+## Methodology Intelligence
 
 ```mermaid
 flowchart LR
@@ -124,16 +146,16 @@ flowchart LR
     G --> X["explicit approval boundary"]
 ```
 
-Track 9 adds methodology intelligence before lifecycle mutation. The audit can read the workspace and produce `methodology_applicability`, `methodology-audit-report.md`, Delivery Map priorities and owner questions. It does not write target-project files, enable hooks, activate automations or touch external systems. Any generated artifact after the report remains staged-only until explicit approval.
+Methodology intelligence runs before lifecycle mutation. It can read the workspace and produce `methodology_applicability`, `methodology-audit-report.md`, Delivery Map priorities and owner questions. It does not write target-project files, enable hooks, activate automations or touch external systems. Any generated artifact after the report remains staged-only until explicit approval.
 
-## Usage mode coverage
+## Usage Mode Coverage
 
 ```mermaid
 flowchart TD
     W["Workspace and prompt signals"] --> U["usage_mode classifier"]
-    U --> D["done workflow modes"]
-    U --> M["done methodology gates"]
-    U --> P["partial methodology gates"]
+    U --> D["scenario workflow modes"]
+    U --> M["methodology gates"]
+    U --> P["readiness overlays"]
     U --> B["base modes"]
     D --> A["stage workflow + artifact proposal"]
     M --> E["enforce gate fields before build"]
@@ -143,12 +165,12 @@ flowchart TD
 
 | Coverage | Modes | Required behavior |
 | --- | --- | --- |
-| `done` | first-run intake plus `bug_rescue`, `greenfield_idea`, `complex_system_acceleration`, `pr_review`, `legacy_onboarding`, `api_migration`, `ai_eval_regression`, `native_mobile_feature`, `desktop_local_first`, `data_migration`, `security_sensitive_change`, `ci_stabilization`, `release_packaging` | Stage existing workflow/artifact templates, keep first response small, and run behavior-level checks. |
-| `done methodology gate` | no-placeholder planning, generalized two-stage review, fresh-context handoff, acceptance scenarios, conditional DDD domain modeling, bounded-context-to-architecture traceability, ubiquitous language traceability, conditional FSD structure routing | Require exact files, owned/forbidden files, exact commands, expected outputs, rollback, evidence owner, placeholder scan, plan repair and `mechanical_change` reason before build; require spec compliance before quality/risk for risky PR/public-contract/migration/security/data/release/parallel slices; require complete task context, source constraints, ownership, expected evidence, handoff output schema, stop conditions and sequential fallback before subagent or parallel work; require `requirement -> scenario -> check -> evidence owner`, Given/When/Then or equivalent behavior format, business rule, edge case, non-goal and explicit gap before behavior changes; require `domain_model_when_complex_domain` only for complex backend/workflow/enterprise/data-heavy/multi-service/multi-context work, require `bounded_context_architecture_boundary_trace` from every bounded context to an architecture boundary or accepted gap, require `ubiquitous_language_traceability` from every domain term to requirement/source plus API/event/contract, UI label, code module or owner, and require `fsd_structure` only for applicable web UI/component work with Feature-Sliced Design layer, slice, segment, public API and import rule. |
-| `partial` | readiness eval overlays | Route safely, name required artifacts, record evidence gaps, and avoid completion claims without verification evidence. |
-| `base` | `standard_feature`, `docs_only`, `maintenance` | Use normal lifecycle route with minimum control-plane artifacts. |
+| Scenario workflows | first-run intake plus `bug_rescue`, `greenfield_idea`, `complex_system_acceleration`, `pr_review`, `legacy_onboarding`, `api_migration`, `ai_eval_regression`, `native_mobile_feature`, `desktop_local_first`, `data_migration`, `security_sensitive_change`, `ci_stabilization`, `release_packaging` | Stage existing workflow/artifact templates, keep first response small and run behavior-level checks. |
+| Methodology gates | no-placeholder planning, generalized two-stage review, fresh-context handoff, acceptance scenarios, conditional DDD domain modeling, bounded-context-to-architecture traceability, ubiquitous language traceability, conditional FSD structure routing | Require exact files, commands, expected outputs, rollback, evidence owner, accepted gaps and ownership before build or handoff. |
+| Readiness overlays | quality, release, security, AI/RAG, data and runtime readiness | Route safely, name required artifacts, record evidence gaps and avoid completion claims without verification evidence. |
+| Base modes | `standard_feature`, `docs_only`, `maintenance` | Use normal lifecycle route with minimum control-plane artifacts. |
 
-## Staged-first infrastructure
+## Staged-First Infrastructure
 
 ```mermaid
 flowchart TD
@@ -168,9 +190,9 @@ flowchart TD
     L --> M["Rollback manifest"]
 ```
 
-Принцип: renderer may inspect the workspace and write only to an explicit staging directory. Direct target writes happen only through merge tooling after approval.
+Renderer may inspect a workspace and write only to an explicit staging directory. Direct target writes happen only through merge tooling after approval.
 
-## Codex runtime runner
+## Codex Runtime Runner
 
 ```mermaid
 flowchart TD
@@ -189,9 +211,9 @@ flowchart TD
     J -->|Policy blocked| N["blocked"]
 ```
 
-Принцип: Track 5 is Codex-only. Runner does not call an external model, does not require a separate OpenAI API key, and does not become an Agents SDK app. It produces a deterministic contract packet that Codex can use to route the next action.
+The runner is Codex-only. It does not call an external model, does not require a separate OpenAI API key and does not become an Agents SDK app. It produces a deterministic contract packet that Codex can use to route the next action.
 
-## Automation promotion
+## Automation Promotion
 
 ```mermaid
 flowchart TD
@@ -207,16 +229,18 @@ flowchart TD
     G --> H["Manual approval required before active automation"]
 ```
 
-Принцип: plugin can stage an automation candidate, but it must not create active recurring automation until the workflow has stability evidence and explicit approval.
+Product-Agent OS can stage an automation candidate, but it must not create active recurring automation until the workflow has stability evidence and explicit approval.
 
-## Common failure modes
+## Common Failure Modes
 
 | Failure | Required behavior |
 | --- | --- |
-| Missing requirements | Route to requirements author, do not build |
-| Missing verification | Route to planning or test/eval designer |
-| Source-backed claim lacks source | Mark needs review or block through source policy |
-| Approved write route lacks approval | Return `needs_approval` |
-| Active automation requested too early | Block and keep candidate-only |
-| Secret-like content appears in output | Redact and report redaction category |
-| Existing file has ambiguous managed markers | Stop and report conflict |
+| Missing requirements | Route to requirements author, do not build. |
+| Missing verification | Route to planning or test/eval designer. |
+| Source-backed claim lacks source | Mark needs review or block through source policy. |
+| Approved write route lacks approval | Return `needs_approval`. |
+| Active automation requested too early | Block and keep candidate-only. |
+| Secret-like content appears in output | Redact and report redaction category. |
+| Existing file has ambiguous managed markers | Stop and report conflict. |
+
+Next artifact: use [Scenarios](scenarios.md) for route selection and [Behavioral evals](behavioral-evals.md) for expected/forbidden behavior.

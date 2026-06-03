@@ -1,149 +1,146 @@
-# Engineering standards layer
+# Product-Agent OS development standards
 
-Source status: `official + verified methodology + experiment`  
+Source status: `official + verified methodology + experiment`
 
-## Task 22 standards closure
+Источники: [Product-Agent OS architecture](architecture.md), [Product-Agent OS scenarios](scenarios.md), [Behavioral evals](behavioral-evals.md), [Agent approvals and security](https://developers.openai.com/codex/agent-approvals-security), [Codex workflows](https://developers.openai.com/codex/workflows).
 
-Task 22 standards closure defines the Track 7 artifact catalog as operational guidance: ADR, architecture-overview, domain-modeling, metric-spec, api-contract-review, component-card, database-dictionary and docs-tooling-decision templates must name owner, evidence, accepted gaps, residual risk, no-secrets expectations and verification path.
+Development standards turn methodology into concrete reviewable artifacts. They define how Product-Agent OS handles product hypothesis, architecture, tests, evals, docs, security, release and post-release learning without forcing heavy ceremony onto simple work.
 
-Red-Green-Refactor evidence is required where behavior or shared logic changes; docs-only and inspection-only work can record an explicit gap. The no-forced-ceremony rule remains active: mechanical edits can be not_applicable, docs-light work can avoid heavy portals, backend/native work does not force FSD, simple CRUD does not force DDD, and high-risk work needs `owner_reviewed_evidence_sufficient_for_real_project_risk` or `explicit_gap_accepted`.
-Источники: [Codex build plugins](https://developers.openai.com/codex/plugins/build), [Agent Skills](https://developers.openai.com/codex/skills), [Building an AI-Native Engineering Team](https://developers.openai.com/codex/guides/build-ai-native-engineering-team), [Codex: add evals to your AI application](https://developers.openai.com/codex/use-cases/ai-app-evals), [Codex: iterate on difficult problems](https://developers.openai.com/codex/use-cases/iterate-on-difficult-problems), [Codex: keep documentation up-to-date](https://developers.openai.com/codex/use-cases/update-documentation), [Agile Alliance TDD](https://agilealliance.org/glossary/tdd/), [Agile Alliance ATDD](https://agilealliance.org/glossary/atdd/), [Agile Alliance BDD](https://agilealliance.org/glossary/bdd/), [Feature-Sliced Design](https://feature-sliced.github.io/documentation/), [C4 model](https://c4model.com/), [arc42](https://arc42.org/overview), [OpenAPI Initiative](https://www.openapis.org/), [OpenAPI Specification v3.2.0](https://spec.openapis.org/oas/v3.2.0.html), [AsyncAPI](https://www.asyncapi.com/docs/reference/specification/v3.0.0), [Storybook Autodocs](https://storybook.js.org/docs/writing-docs/autodocs), [Storybook accessibility tests](https://storybook.js.org/docs/writing-tests/accessibility-testing), [GitLab Docs architecture](https://docs.gitlab.com/development/documentation/site_architecture/), [GitHub Actions workflows](https://docs.github.com/en/actions/concepts/workflows-and-actions/workflows), [GitHub protected branches](https://docs.github.com/articles/about-required-reviews-for-pull-requests), [Martin Fowler: Domain-Driven Design](https://martinfowler.com/bliki/DomainDrivenDesign.html).
+Red-Green-Refactor evidence is required where behavior or shared logic changes. Docs-only and inspection-only work can record an explicit gap. The no-forced-ceremony rule remains active: mechanical edits can be not_applicable, docs-light work can avoid heavy portals, backend/native work does not force FSD, simple CRUD does not force DDD, and high-risk work needs `owner_reviewed_evidence_sufficient_for_real_project_risk` or `explicit_gap_accepted`.
 
-Эта страница фиксирует расширение `product-agent-os`: plugin должен вести проект не только как агентную разработку, а как управляемую инженерную систему с продуктовой гипотезой, архитектурной границей, test-first/eval-first проверками, docs-as-code, review gates и измерением результата.
+## Core Contract
 
-## Что меняется
-
-Раньше Product-Agent OS в основном отвечал на вопрос: как Codex App, CLI, IDE extension, subagents, skills, `AGENTS.md`, hooks, evals и automation candidates проходят lifecycle без потери контекста.
-
-Новый слой добавляет вопрос: соответствует ли работа зрелой инженерной практике.
-
-```mermaid
-flowchart LR
-    A["Product hypothesis"] --> B["Architecture boundary"]
-    B --> C["Test-first or eval-first spec"]
-    C --> D["Bounded agentic implementation"]
-    D --> E["Docs-as-code update"]
-    E --> F["Human review and quality gate"]
-    F --> G["Release measurement"]
-    G --> H["Learning loop"]
-```
-
-## Проверенные выводы из источников
-
-| Область | Подтверждено источниками | Как использовать в plugin |
+| Standard | Required behavior | False-positive guard |
 | --- | --- | --- |
-| Codex plugin packaging | Plugin имеет `.codex-plugin/plugin.json` и может указывать bundled skills, hooks, MCP, apps и assets. | Новые стандарты добавляются как packaged templates и docs, а не как silent runtime behavior. |
-| Codex skills | Skills являются форматом reusable workflows, plugin - installable distribution unit. | Повторяемые методики остаются workflow templates до накопления manual success evidence. |
-| AI-native engineering | Роль senior-инженера смещается к spec, architecture, guardrails, review и доменной логике. | Product-Agent OS усиливает planning, review, standards и evidence вместо слепой генерации кода. |
-| TDD | Test-Driven Development связывает coding, testing и design/refactoring; тест пишется до реализации. | `TEST.md`, `build-slice.md` и builder instructions требуют test-first/eval-first path или явный gap. |
-| ATDD/BDD | Acceptance and behavior scenarios align product, development and testing perspectives before implementation. | `acceptance-scenarios.md`, `REQUIREMENTS.md`, `TEST.md` и `EVALS.md` теперь требуют `requirement -> scenario -> check -> evidence owner`, Given/When/Then или equivalent behavior format, business rule, edge case, non-goal и explicit gap до behavior changes. |
-| DDD | Domain-Driven Design нужен для сложной domain logic, где модель, bounded context и ubiquitous language снижают риск неверной архитектуры. | `domain-modeling.md`, `architecture-overview.md`, `project-readiness.json`, `implementation-planner` и discovery gap `missing domain model for complex domain` требуют `domain_model_when_complex_domain` только для complex backend/workflow/enterprise/data-heavy/multi-service/multi-context work, `bounded_context_architecture_boundary_trace` связывает каждый bounded context с architecture boundary или accepted gap, а `ubiquitous_language_traceability` связывает domain terms с requirement/source, API/event/contract, UI label, code module or owner. |
-| FSD | Feature-Sliced Design задает layers, slices, segments, public API и import rule. | Для применимого web UI plugin теперь обнаруживает optional `fsd_structure`, требует layer/slice/segment/public API/import rule в `component-card.md` или accepted gap, но не навязывает FSD backend, native, simple CRUD и simple MVP. |
-| Architecture docs | C4 дает уровни context/container/component/code; arc42 задает структуру architecture communication. | `documentation-system.md` требует architecture overview, ADR и диаграммы для изменений границ. |
-| API contracts | OpenAPI описывает HTTP APIs; AsyncAPI описывает message-driven APIs машинно-читаемо. | Backend/API changes должны обновлять source-of-truth contracts или фиксировать gap. |
-| UI docs | Storybook Autodocs превращает stories в документацию; a11y addon поддерживает accessibility checks. | UI changes должны иметь component states, docs, accessibility/visual checks где применимо. |
-| Docs-as-code | GitLab хранит docs source рядом с product code; GitHub Actions workflow - YAML process in repo; protected branches can require reviews/status checks. | Docs становятся частью `PLAN.md`, `TEST.md`, `RUNLOG.md`, а CI/CODEOWNERS остаются staged proposals. |
+| Product hypothesis | Name user/problem, acceptance scenario, metric or explicit gap. | Do not invent product outcomes from code structure alone. |
+| Architecture boundary | Name scope, ownership, alternatives, decision, rollback and observability when architecture changes. | Do not force heavyweight diagrams for small mechanical edits. |
+| Test/eval-first | Establish failing or baseline evidence before changing behavior. | Docs-only or formatting work can mark the gate not applicable with reason. |
+| Documentation-as-code | Update source-backed docs, `Source status:` and registry when claims change. | Do not treat generated `site/` output as source of truth. |
+| Review | Separate spec compliance from quality/risk review for risky changes. | Do not produce review verdicts without reading changed files. |
+| Release measurement | Record build/test/docs evidence, rollout, rollback, owner review and accepted gaps before release claims. | CI green alone is not release readiness. |
 
-## Context7 findings
+## Artifact Templates
 
-Context7 использовался как дополнительный retrieval layer, но official status присваивается только underlying source.
+These templates convert recommendations into concrete outputs that can be reviewed, tested and accepted or rejected:
 
-- Feature-Sliced Design: официальная документация подтверждает import rule - slice может импортировать только slices нижних layers; также подтверждает public API rule для slices.
-- Storybook: документация подтверждает `autodocs` tag, MDX/Doc Blocks и integration path для accessibility tests.
-- OpenAPI: спецификация подтверждает Security Scheme Object и типы security schemes, включая `apiKey`, `http`, `oauth2`, `openIdConnect`.
-- Direct web verification on 2026-05-23: latest published OpenAPI Specification is v3.2.0; v3.1.1 remains useful only as a compatibility reference.
-
-Эти findings не заменяют primary links в source registry.
-
-## Operating standard
-
-Для любой meaningful feature plugin должен требовать:
-
-1. Product hypothesis: что меняем, для кого, какая метрика покажет успех, какие privacy/security constraints.
-2. Architecture boundary: где живет код, какие dependency rules, какие public contracts нельзя ломать.
-3. Test-first or eval-first path: тест, contract check, fixture или eval до изменения поведения.
-4. Bounded agentic implementation: owned files, files out of scope, stop conditions, approvals.
-5. Documentation impact: architecture, API/event contracts, UI docs, database docs, release/user docs.
-6. Review gate: correctness, security, data handling, performance, rollback, source fidelity.
-7. Measurement: post-release metrics, support signals, defects, latency, cost, user feedback.
-
-## Что добавлено в plugin
-
-Generated control-plane files теперь содержат эти поля:
-
-| Artifact | Новые обязанности |
+| Template | Purpose |
 | --- | --- |
-| `AGENTS.md` | Engineering standards baseline: hypothesis, architecture boundary, test/eval-first, docs-as-code, bounded agent work, evidence-before-completion. |
-| `REQUIREMENTS.md` | Product hypothesis, success metrics, guardrail metrics, metric hardening, source-of-truth docs. |
-| `PLAN.md` | Methodology gates, architecture boundary, metric hardening, evidence-before-completion, documentation impact, contract/schema/docs/eval gates. |
-| `TEST.md` | Test-first cases, acceptance scenarios, metric hardening checks, evidence-before-completion checks, API/event/schema checks, docs checks, AI/subjective checks. |
-| `EVALS.md` | Architecture boundary, acceptance scenario evals, metric hardening evals, evidence-before-completion evals, documentation quality, AI answer quality, retrieval quality, latency/cost/grounding thresholds. |
-| `RUNLOG.md` | Methodology trace, metric hardening evidence, evidence-before-completion evidence and measurement notes. |
-| `.codex/workflows/development-standards.md` | Reusable workflow for product hypothesis -> architecture -> tests/evals -> implementation -> review -> measurement. |
-| `.codex/workflows/documentation-system.md` | Reusable docs-as-code workflow for architecture, API, UI, code reference, DB and release docs. |
-| `.codex/artifact-templates/*.md` | Concrete templates for ADR, architecture overview, domain modeling, bounded-context-to-architecture traceability, ubiquitous language traceability, metrics, API contracts, UI component cards and database dictionaries. |
-| `.codex/artifact-templates/acceptance-scenarios.md` | ATDD/BDD traceability from requirement to scenario, check and evidence owner before behavior changes. |
+| `.codex/artifact-templates/adr.md` | Architecture decision record with context, decision, consequences, verification and rollback. |
+| `.codex/artifact-templates/architecture-overview.md` | System boundary, runtime, dependencies, observability and operational risk. |
+| `.codex/artifact-templates/domain-modeling.md` | Domain terms, bounded contexts, ubiquitous language and business rules when complexity warrants it. |
+| `.codex/artifact-templates/metric-spec.md` | Product behavior metric, event source, owner, privacy and interpretation caveats. |
+| `.codex/artifact-templates/api-contract-review.md` | API source-of-truth, consumers, compatibility, error model, security and rollout. |
+| `.codex/artifact-templates/component-card.md` | UI component purpose, states, accessibility, visual evidence and interaction checks. |
+| `.codex/artifact-templates/database-dictionary.md` | Table meaning, sensitive fields, retention, migration history and schema verification. |
+| `.codex/artifact-templates/docs-tooling-decision.md` | Docs tooling selection, rejected tools, owner, command evidence and approval requirements. |
 | `.codex/artifact-templates/governance-proposal.md` | Staged governance proposal for CODEOWNERS status and GitHub Actions least privilege without external activation. |
 
-Track 7 hardening добавляет поведенческие проверки поверх prose:
+## Discovery Signals
 
-- `workspace-discovery-auditor` теперь может видеть methodology signals: architecture docs, ADR, OpenAPI, AsyncAPI, Storybook, optional `fsd_structure`, DB docs, CODEOWNERS, CI, evals и metrics.
-- `project-readiness.json` фиксирует methodology gates: product hypothesis, architecture boundary, optional `fsd_structure_when_ui_architecture_applies`, test/eval-first evidence, docs-as-code impact и release measurement.
-- Artifact templates переводят рекомендации из research-файлов в конкретные reviewable outputs.
+`workspace-discovery-auditor` can identify methodology signals without claiming readiness:
 
-Track 8 hardening добавляет scenario-first routing:
+- architecture docs, ADRs, C4/arc42-style files and runtime diagrams;
+- OpenAPI, AsyncAPI, GraphQL schema, SDK generation or webhook/event contracts;
+- Storybook, component libraries and optional FSD structure;
+- database docs, migrations, DBML/SQL, retention and backup/restore evidence;
+- CODEOWNERS, CI, release manifests, changelog and versioning files;
+- eval configs, datasets, prompt/model artifacts, traces and RAG source inventories;
+- security/privacy docs, secrets policies, SBOM/provenance, audit logging and compliance overlays;
+- metrics dashboards, product event specs and post-release learning notes.
 
-- `done` workflows now cover first-run intake, bug rescue, greenfield idea shaping, complex system acceleration, PR review readiness, legacy onboarding, API migration, AI/RAG eval regression, native/mobile feature work, desktop local-first work, data migration, security-sensitive change, CI stabilization and release packaging.
-- Dedicated scenario docs now describe `usage_mode`, first response, minimum artifacts, approval boundary and verification gates for plugin operators.
-- Dedicated behavioral eval docs now separate expected behavior, forbidden behavior, fixture eval coverage and deterministic transcript/session replay coverage.
-- Dedicated Codex compatibility docs now record Codex App, CLI, IDE extension, `.codex-plugin`, skills, MCP and staged hooks as the supported package boundary.
-- First-run intake keeps the first response small for empty, broken, existing control-plane and complex system starts: mode, confidence, next smallest action, minimum artifacts, evidence gaps and approval boundary.
-- Release packaging now has `release-packaging.md`, `release-readiness.md`, discovery signals, behavioral eval coverage, and publish/tag/upload/package-registry approval boundaries.
-- Acceptance scenario traceability now has `acceptance-scenarios.md`, lifecycle skill wording, readiness eval coverage and behavioral eval coverage before behavior changes.
-- Conditional DDD domain modeling now has `domain_model` discovery, `domain_model_when_complex_domain` readiness gate, `bounded_context_architecture_boundary_trace`, `ubiquitous_language_traceability`, implementation-planner stop condition, accepted-gap support and false-positive protection for plain `domain/` folders.
-- Conditional FSD structure routing now has `fsd_structure` discovery, `component-card.md` layer/slice/segment/public API/import rule fields, implementation-planner stop condition, accepted-gap support and false-positive protection for backend, native, simple CRUD and simple MVP work.
-- Metric hardening now has `metric_hardening_when_product_behavior_changes`, strengthened `metric-spec.md`, release packet checks, generated control-plane fields, lifecycle skill enforcement and fixture eval coverage for North Star or primary value metric, input metric, counter-metric, proxy metric risk, guardrail, qualitative review, privacy classification, retention period, data minimization, owner signoff and post-release review evidence.
-- Evidence-before-completion now has `evidence_before_completion`, release packet checks, development standards guidance, generated control-plane fields, lifecycle skill enforcement, behavioral eval coverage and fixture eval coverage for ready/completed/fixed/works/release claims.
-- Docs tooling selector now has `docs_tooling_selector`, `docs-tooling-decision.md`, `docs_as_code_impact` status vocabulary, discovery routing, generated control-plane fields, lifecycle skill enforcement and fixture eval coverage for stack-aware docs choices without forced installs or unapproved external activation.
-- Standards trigger policy now has `standards_trigger_policy`, `governance-proposal.md`, ADR trigger policy, C4/arc42 applicability, OpenAPI source of truth, AsyncAPI event contract fields, SemVer impact, Keep a Changelog categories, CODEOWNERS status, GitHub Actions least privilege fields and no forced external activation.
-- Conditional readiness gates now have `readiness_statuses`, structured per-gate applicability, pass condition, accepted gap, required evidence, owner and residual risk in `project-readiness.json`, generated control-plane templates, lifecycle skills and fixture eval coverage. Detection alone can only produce `present_unverified`, not readiness.
-- Detailed discovery status now has `methodology_applicability` packets in discovery output for architecture boundary, test/eval-first evidence, docs-as-code ownership, product measurement, complex-domain DDD, applicable FSD structure, docs tooling decision and standards trigger policy.
-- Readiness gates must distinguish “route detected” from verified readiness. Completion claims require current evidence or an explicit inspection-only gap.
+Signals create `present_unverified`. Verified readiness needs current command evidence, owner evidence, runtime/eval proof or accepted gap.
 
-Track 9 security methodology adds `security_privacy_compliance_when_sensitive_surface` as a conditional readiness gate for authn/authz, permissions, secrets, PII, sensitive data, payment/billing, abuse controls, audit logging, supply chain, SBOM/provenance, CI permissions, AI/tool security, external writes, production data, policy changes and compliance overlays. Security/Privacy/Compliance-sensitive slices record `security_privacy_compliance` evidence before completion claims: threat surface, security risk review, ASVS/SSDF/SAMM mapping, authorization negative tests, secrets policy, data classification, privacy impact, external-write approval, supply-chain/SBOM/CI evidence, audit logging, compliance overlay taxonomy, vulnerability response workflow, explicit Codex Security scan status or `not requested`, and approval boundaries.
+Detection alone remains `present_unverified`; detection alone remains `present_unverified`, and grouped methodology recommendations need source artifact compatibility, owner domains, consumer domains and approval-bound behavior before they become implementation work.
 
-Track 9 delivery methodology adds `delivery_release_operations_readiness_when_release_or_operations_changes` as a conditional readiness gate for release/deploy/publish/package/operations work. Delivery/Release/Operations slices record `delivery_release_operations` evidence before release, deploy, publish, operational-ready or automation-ready claims: release scope, versioning, changelog/release notes, artifact manifest, release evidence before completion, rollout, rollback/recovery, environment approval boundary, external release approval, CI/CD governance, SLO/observability, operations runbook, incident response, post-release review, `automation_manual_stability_present`, release mode policy, build-release-run boundary, platform distribution evidence, release communication, versioning tooling decision, GitHub environment controls, DORA measurement design, incident postmortem learning, observability/on-call tooling, release integrity security handoff and `release_evidence_sufficiency_owner_reviewed`.
+## Planning And Handoff Standards
 
-Track 9 cross-domain synthesis adds grouped methodology recommendations across domains. The shared packet keeps `methodology_synthesis`, `recommendation_groups`, owner domains, consumer domains, `source_artifact_ledger`, alias/deferred artifact decisions, semantic evidence sufficiency and risk-aware safe next action. detection alone remains `present_unverified`; grouped methodology recommendations do not prove readiness or semantic evidence sufficiency. High-risk, production, release, security-sensitive, AI behavior and public-contract slices need `owner_reviewed_evidence_sufficient_for_real_project_risk` or `explicit_gap_accepted` with owner, reason, review date, downstream risk and follow-up condition. This keeps approval-bound behavior visible while avoiding false positives for docs-only work, internal CLI work, backend FSD-like folders, CI-only workflows and tooling-only release files.
+Before build or review, Product-Agent OS expects:
 
-## Важные ограничения
+- exact files owned and forbidden;
+- exact commands and expected outputs;
+- source constraints and approval boundary;
+- rollback or disable path where relevant;
+- expected evidence and stop conditions;
+- fresh-context handoff when subagents or parallel workers are used;
+- placeholder scan or explicit reason it is not applicable;
+- spec-compliance review before quality/risk review for risky public-contract, migration, security, data, release or parallel work.
 
-- Data-Driven Development в source-файле не является тем же термином, что Domain-Driven Design. В core guidance используем формулировки `data-informed product decisions`, `product hypothesis` и `success metric`, чтобы не смешивать термины.
-- ATDD/BDD scenarios do not replace unit tests, integration tests, contract tests or evals; they are a traceability layer for behavior intent and evidence ownership.
-- Domain-Driven Design не навязывается простому CRUD или simple MVP. Product-Agent OS требует domain modeling, bounded-context-to-architecture traceability и ubiquitous language traceability только при complex backend/workflow/enterprise/data-heavy/multi-service/multi-context signals или при явном owner decision.
-- Feature-Sliced Design не навязывается backend, native, simple CRUD или маленьким MVP. Plugin требует architecture boundary, а FSD является сильным default только для растущего web UI или explicit owner decision.
-- Docs-as-code не означает автоматическое создание CI, CODEOWNERS, GitHub Actions или публикации. Product-Agent OS может stage proposals, но не активирует external workflows без explicit approval.
-- Docs tooling selection records selected tools, rejected tools, evidence owner, maintenance owner and approval boundaries; docs-light/internal-only work can be `not_applicable`.
-- AI/RAG quality нельзя закрывать только unit tests. Для retrieval, grounding, hallucination risk, latency и cost нужны evals или явно записанный gap.
-- `llm_ai_rag_readiness_when_ai_behavior_changes` нельзя закрывать prompt inspection, citations-only grounding, stale eval output или automatic model-upgrade quality claim; live model calls, external eval services, vector DB access и tool writes остаются approval-bound.
-- `security_privacy_compliance_when_sensitive_surface` нельзя закрывать docs-only security article, no-secrets-in-code claim, OAuth-only note, one-time SBOM, implied Codex Security scan или generic compliance/certification wording. Legal, contractual and internal-policy overlays need owner, evidence, non-goals, gaps and review cadence.
-- `delivery_release_operations_readiness_when_release_or_operations_changes` нельзя закрывать CI green, local test evidence alone, generated changelog, feature flag, GitOps, deployment manifest, rollback-is-revert, repeatable script или automation candidate wording. DORA metrics prove individual performance, mobile signing alone, single-tool observability and release-ready without owner-reviewed evidence sufficiency are also unsupported shortcuts. Publish, tag, release creation, artifact upload, deploy, package registry mutation, marketplace/store submission, CI/CD environment mutation and active automation stay approval-bound.
+Subagents are useful only when ownership is clear. A handoff without source context, files, expected evidence and stop condition is not enough.
 
-## Definition of done для Product-Agent OS slice
+## Domain-Specific Gates
 
-Slice можно считать готовым к review только если:
+| Domain | Gate |
+| --- | --- |
+| Frontend | User-flow acceptance, component states, design-system boundary, accessibility target or accepted exception, browser/runtime evidence, visual evidence and performance budget when applicable. |
+| Backend | Runtime behavior, failure modes, observability, security, rollback, CI/deployment discovery and owner-reviewed evidence sufficiency. |
+| API & Integrations | Source-of-truth contract, consumer map, compatibility, security, error model, events/webhooks, SDK generation and external-write approval. |
+| Database & Data | Inventory, dictionary, migration plan, expand-contract rollout, data classification, quality, lineage, performance, retention and production access boundary. |
+| LLM / AI / RAG | Baseline/current eval, prompt/model/tool/RAG contracts, grounding, trace evidence, guardrails, cost/latency, migration policy and AI incident path. |
+| Security, Privacy & Compliance | Threat surface, risk review, ASVS/SSDF/SAMM mapping, authorization negative tests, secrets, privacy, supply chain, audit logging, scan status and compliance overlay. |
+| Delivery, Release & Operations | Release scope, versioning, changelog, artifact manifest, rollout, rollback, CI/CD governance, SLO/observability, operations runbook, incident path, post-release review and release integrity handoff. |
+| Cross-domain synthesis | Grouped recommendations, owner domains, consumer domains, source artifact compatibility, semantic evidence sufficiency and risk-aware safe next action. |
 
-- product hypothesis и success metric ясны или помечены not applicable;
-- product behavior metrics have counter-metric, guardrail, qualitative review, privacy classification, retention period, data minimization, owner signoff and post-release review evidence, or an explicit not-applicable reason;
-- architecture boundary и ownership названы;
-- для complex backend/workflow/enterprise/data-heavy/multi-service/multi-context work есть domain-modeling artifact или accepted gap;
-- test-first/eval-first evidence есть или gap явно принят;
-- затронутые source-of-truth docs обновлены или gap записан;
-- docs tooling impact is recorded as `not_applicable`, `present_unverified`, `present_verified`, `proposal_staged`, `explicit_gap_accepted` or `approval_required`;
-- standards trigger impact is recorded through `standards_trigger_policy` when ADR/C4/arc42/OpenAPI/AsyncAPI/SemVer/Keep a Changelog/CODEOWNERS/GitHub Actions context applies;
-- conditional readiness gates record `not_applicable`, `applicable_missing`, `present_unverified`, `present_verified`, `proposal_staged`, `explicit_gap_accepted` or `approval_required` with applicability reason, owner and residual risk;
-- AI/RAG behavior changes record `llm_ai_rag` evidence: behavior promise, baseline/current eval, prompt/model/schema/tool/RAG/grounding/trace/guardrail/cost evidence, current-run evidence or an accepted gap;
-- Security/Privacy/Compliance-sensitive slices record `security_privacy_compliance` evidence: classification, threat surface, ASVS/SSDF/SAMM mapping, authz negative tests, secrets/data/privacy handling, supply-chain/SBOM/CI review, audit logging, compliance overlay, vulnerability response and explicit Codex Security scan status or accepted gap;
-- Delivery/Release/Operations slices record `delivery_release_operations` evidence: release scope, versioning, changelog, artifact manifest, rollout, rollback, environment approval, CI/CD governance, SLO/observability, operations, incident/postmortem, post-release review, approval boundary, release mode policy, build-release-run boundary, platform distribution evidence, tooling decisions, release integrity handoff, `release_evidence_sufficiency_owner_reviewed` and automation manual stability evidence when automation is proposed;
-- команды, exit codes, artifacts и residual risks записаны в `RUNLOG.md`;
-- approvals, security, privacy, migration и rollback risks не скрыты.
+Exact gate identifiers:
+
+- `llm_ai_rag_readiness_when_ai_behavior_changes`: AI/RAG behavior changes record `llm_ai_rag` evidence before quality claims.
+- `security_privacy_compliance_when_sensitive_surface`: Security/Privacy/Compliance-sensitive slices record `security_privacy_compliance` evidence before completion claims.
+- `delivery_release_operations_readiness_when_release_or_operations_changes`: Delivery/Release/Operations slices record `delivery_release_operations` evidence before release, deploy, publish, operational-ready or automation-ready claims.
+- `automation_manual_stability_present` and `release_evidence_sufficiency_owner_reviewed` are required when automation or release readiness claims depend on operational evidence.
+- False-positive guard: DORA metrics prove individual performance is not an acceptable release/operations claim.
+
+## Documentation Standard
+
+Every non-index documentation page needs `Source status:`. Source-backed claims must link to official or project-authored sources and update `docs/sources/registry.md` when claims are added or changed.
+
+Use this rule of thumb:
+
+- official OpenAI/Codex behavior needs official docs as source of truth;
+- project package behavior can cite repository artifacts, tests and source packets;
+- community claims stay under `docs/insights/` with trust and verification labels;
+- generated HTML, dashboards, memory and chat recall are not source of truth;
+- secrets, tokens, private keys, credentials, customer data and raw private chats are not allowed in docs, prompts, memory, examples, fixtures or templates.
+
+## Release And Operations Standard
+
+Release, deploy, publish, package and operations-ready claims require current evidence:
+
+- release scope and versioning;
+- changelog or release notes;
+- artifact manifest;
+- build/test/docs/eval evidence;
+- rollout and rollback/recovery;
+- environment approval boundary;
+- observability/SLO and operations runbook;
+- incident response and post-release review;
+- owner-reviewed evidence sufficiency or accepted gap.
+
+Automation candidates also need manual success evidence, stable inputs/outputs, owner, cadence, verification, failure modes, value evidence and rollback/disable path. Product-Agent OS can stage a candidate; it must not create active automation without explicit approval.
+
+## Verification
+
+Run focused checks after changing docs standards:
+
+```powershell
+python tools\check_docs.py
+python -m unittest tests.product_agent_os.test_product_agent_os_docs -v
+```
+
+Run broader checks after templates, lifecycle skills or fixture behavior change:
+
+```powershell
+python -m unittest discover -s tests -p "test_*.py" -v
+python plugins\product-agent-os\scripts\run_fixture_eval.py
+python plugins\product-agent-os\scripts\validate_codex_compatibility.py
+```
+
+Use strict MkDocs when documentation navigation, Mermaid or site-generation behavior changes.
+
+## Important Limits
+
+- Standards are evidence gates, not automatic work expansion.
+- Detection alone does not prove readiness.
+- Owner approval is required for external writes, publishing, production data, live provider calls, hosted docs, CI activation, security scans and active automation.
+- High-risk work needs explicit owner-reviewed evidence sufficiency or accepted gap.
+- Product-Agent OS must preserve staged-first behavior, source policy, sandbox and approvals even when a recommendation is confident.
+
+Next artifact: use [Methodology intelligence](methodology-intelligence.md) to decide which gates apply and [Behavioral evals](behavioral-evals.md) to check shortcut resistance.

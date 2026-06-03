@@ -746,8 +746,8 @@ Scope rule: user-facing Product-Agent OS documentation should not expose interna
 
 Batch grouping:
 
-- **Batch 34A: Product Documentation Boundary And IA** (`B34-PROD-M16..M18`, `approval_required`)
-- **Batch 34B: Product-Facing Copy Rewrite** (`B34-PROD-M19..M23`, `approval_required`)
+- **Batch 34A: Product Documentation Boundary And IA** (`B34-PROD-M16..M18`, `done_through_m18`)
+- **Batch 34B: Product-Facing Copy Rewrite** (`B34-PROD-M19..M23`, `done_through_m23`)
 - **Batch 34C: RU/EN I18N And L10N Enablement** (`B34-I18N-M24..M30`, `approval_required`)
 - **Batch 34D: Product Docs QA And Closure** (`B34-QA-M31..M33`, `approval_required`)
 
@@ -771,6 +771,8 @@ Batch grouping:
 | `B34-QA-M31` | 34D | Tester + Reviewer | Add product-docs quality gates. | Focused docs tests in `tests/product_agent_os/test_product_agent_os_docs.py` or companion docs-quality test. | Tests enforce public forbidden-term policy, RU/EN page parity, `Source status:` rules, localized nav coverage and no unapproved live/provider/git actions. |
 | `B34-QA-M32` | 34D | Tester | Verify RU/EN switcher and rendered site. | HTML assertion or approved browser smoke evidence, `site/` rebuild. | Language selector is visible in the Material header and points to equivalent RU/EN pages. If browser automation is not separately approved, verification remains static HTML inspection only. |
 | `B34-QA-M33` | 34D | Release Operator + Docs Maintainer | Close addendum evidence and handoff. | Source registry/backlog/control-plane sync, `TEST.md`, `EVALS.md`, `RUNLOG.md`, rebuilt `site/`. | Addendum evidence records product-docs cleanup and RU/EN localization closure. No live server, browser automation, provider/API calls, canonical graph mutation, plugin publication, external write or git stage/commit/push/PR is performed without explicit owner approval. |
+
+Execution status through Batch 34B: `docs/sources/product-agent-os-batch34a-public-docs-boundary.md` records the public/internal boundary and initial `public_ready_pages: []`; `docs/sources/product-agent-os-batch34b-public-copy-rewrite.md` records the public copy rewrite, promoted `public_ready_pages`, `cleanup_pending_public_candidates: []`, preserved `Source status` labels and public forbidden-term test coverage. Batch 34C RU/EN localization remains the next approval-required documentation slice.
 
 Task 26 starts only after the verified Task 25 Batch 23 baseline remains current and the user gives explicit implementation approval for the next Task 26 batch. Planning matrix presence is not implementation evidence. The final acceptance gate is stricter than previous tasks: every Track 10 live/provider/mutation/real-testing-readiness/real-testing-execution row must be implemented and verified, explicitly disabled with rollback evidence, blocked by missing approval, or accepted as a documented owner gap. Batch 35 is the approval-bound real testing phase inside Task 26: it may start a local live server, run browser automation, call approved providers, perform accepted canonical graph mutation or run git release/PR actions only when each action has a separate explicit approval packet. After Task 26 closure, the next action is owner handoff or release follow-through, not `Task 27`, `Task 28` or another Track 10 implementation task.
 

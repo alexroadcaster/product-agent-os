@@ -3114,6 +3114,18 @@ verification_status: "Docs/source-policy slice. The packet itself does not rewri
 ```
 
 ```yaml
+title: "Product-Agent OS Batch 34B public copy rewrite packet"
+url: "docs/sources/product-agent-os-batch34b-public-copy-rewrite.md; docs/sources/product-agent-os-batch34a-public-docs-boundary.md; docs/sources/product-agent-os-track-10-backlog.md; tools/check_docs.py; tests/product_agent_os/test_product_agent_os_docs.py"
+type: "internal documentation"
+source_status: "project-authored"
+checked_at: "2026-06-03"
+summary: "Batch 34B `B34-PROD-M19..M23` promotes Product-Agent OS product-facing candidate pages to `public_ready` after the public copy rewrite."
+relevance: "The packet records that internal ledger language removed from public-ready pages, `Source status:` labels were preserved, public-ready pages are listed for the next RU/EN localization slice, and source/control-plane provenance remains internal evidence."
+trust_level: "high"
+verification_status: "Docs/source-policy slice. Public-ready pages are checked by `test_track10_task26_batch34b_public_copy_is_product_ready`; focused docs tests, `python tools\\check_docs.py`, strict MkDocs and `git diff --check` are the required closure gates for Batch 34B. It starts no live server, runs no browser automation, performs no provider/live external model/API calls, performs no canonical graph mutation and performs no git stage/commit/push/PR."
+```
+
+```yaml
 title: "Product-Agent OS Batch 34 packaging/install smoke packet"
 url: "docs/sources/product-agent-os-batch34-packaging-install-smoke.md; plugins/product-agent-os/.codex-plugin/plugin.json; plugins/product-agent-os/skills/docs-maintainer/SKILL.md; plugins/product-agent-os/skills/pr-release-operator/SKILL.md; plugins/product-agent-os/scripts/validate_codex_compatibility.py; $CODEX_HOME\\plugins\\cache\\local-product-agent-plugins\\product-agent-os\\0.1.0"
 type: "internal documentation"

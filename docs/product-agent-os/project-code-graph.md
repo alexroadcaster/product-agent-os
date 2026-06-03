@@ -2,7 +2,7 @@
 
 Source status: `official + experiment`
 
-Эта страница фиксирует локальный Project Code Graph слой Product-Agent OS для Task 25 Batch 13-23. Он помогает быстро ориентироваться в кодовой базе через сгенерированный граф, query packets, cockpit и локальные индексы, но не заменяет исходные файлы, checked-in документацию, тесты, approval records или решения owner.
+Эта страница описывает локальный Project Code Graph слой Product-Agent OS. Он помогает быстро ориентироваться в кодовой базе через сгенерированный граф, query packets, cockpit и локальные индексы, но не заменяет исходные файлы, checked-in документацию, тесты, approval records или решения owner.
 
 ## Назначение
 
@@ -30,13 +30,13 @@ Source of truth остается в исходных файлах проекта
 - `<workspace>` для `scan_project_code_graph.py`;
 - optional previous manifest/graph для freshness, provenance и temporal edge invalidation/supersession;
 - existing `project-code-graph.json` или `project-code-graph.jsonl` для query mode;
-- approval packets только для approval-bound extension modes: backend, semantic index, LLM proposals и Batch 23 closure evidence.
+- approval packets только для approval-bound extension modes: backend, semantic index, LLM proposals и extension closure evidence.
 
 Scanner читает локальные файлы проекта, но graph/query packets исключают raw source bodies по умолчанию и редактируют absolute paths или secret-like values. Stage output должен быть явной директорией, предпочтительно вне target workspace.
 
 ## Outputs And Artifacts
 
-Базовые артефакты Batch 13-18:
+Базовые артефакты:
 
 - `.codex/product-agent-os/project-code-graph.json` - основной graph JSON с `write_policy: read_only`, metadata, nodes, edges и observations.
 - `.codex/product-agent-os/project-code-graph.jsonl` - bounded JSONL serialization для agent consumption.
@@ -45,13 +45,13 @@ Scanner читает локальные файлы проекта, но graph/qu
 - Graph analysis report из `project_graph_analysis.py` - source-free orientation report, не доказательство completeness.
 - Status/runtime summaries из query packets и cockpit model - compact health/orientation summaries.
 
-Extension artifacts Batch 19-23:
+Extension artifacts:
 
 - `.codex/product-agent-os/project-code-graph-search-index.json` - offline static search index with stale-index blocking and rollback path.
 - `.codex/product-agent-os/project-code-graph-backend.json` - disabled-by-default local query backend store; no active server by default.
 - `.codex/product-agent-os/project-code-graph-semantic-index.json` - local deterministic semantic retrieval cache; external embedding/cross-encoder providers remain approval-bound.
 - `.codex/product-agent-os/project-code-graph-llm-proposals.json` - staged local deterministic semantic extraction proposals with provenance, uncertainty and unsupported-claim labels.
-- `.codex/product-agent-os/project-code-graph-extension-closure.json` - Batch 23 verification, rollback/data deletion proof and graph-only fallback report.
+- `.codex/product-agent-os/project-code-graph-extension-closure.json` - extension verification, rollback/data deletion proof and graph-only fallback report.
 
 ## Operating Modes And Commands
 
@@ -95,7 +95,7 @@ Disable modes remove generated extension artifacts under the stage root: `--disa
 - search-quality evals: symbol recall, top-k/MRR, trace labels, affected-test precision, edge density and thresholds;
 - extension validation: stale index blocking, disabled backend lifecycle, local deterministic semantic retrieval, proposal labels, rollback/data deletion proof and graph-only fallback.
 
-Batch 18 recorded focused/full closure for graph/cockpit/search/status/runtime, fixture/lifecycle/docs suites, full unittest, fixture eval, transcript eval, Codex compatibility, strict MkDocs and diff hygiene. For new changes, rerun only the smallest relevant checks unless ownership expands.
+Prior closure evidence recorded focused/full checks for graph/cockpit/search/status/runtime, fixture/lifecycle/docs suites, full unittest, fixture eval, transcript eval, Codex compatibility, strict MkDocs and diff hygiene. For new changes, rerun only the smallest relevant checks unless ownership expands.
 
 ## Risks And Failure Modes
 
@@ -109,9 +109,9 @@ Batch 18 recorded focused/full closure for graph/cockpit/search/status/runtime, 
 
 ## Related Pages And Next Action
 
-- `docs/product-agent-os/technical.md` - current technical summary for Task 25 and surrounding Product-Agent OS implementation status.
-- `docs/product-agent-os/live-runtime-governance.md` - Task 26 live/runtime/provider governance boundary when available.
+- `docs/product-agent-os/technical.md` - current technical summary for Product-Agent OS implementation status.
+- `docs/product-agent-os/live-runtime-governance.md` - live/runtime/provider governance boundary.
 - `docs/product-agent-os/artifact-contracts.md` - expected artifact schema reference when available.
 - `docs/product-agent-os/cli-reference.md` - script/mode reference when available.
 
-Next action for a maintainer: use this page as the reader-facing Task 25 guide, then link it from MkDocs navigation and source registry in the separate Batch 34 ownership slices.
+Next action for a maintainer: use this page as the reader-facing Project Code Graph guide, then link it from MkDocs navigation and source registry when the public docs map changes.
