@@ -18,6 +18,8 @@ EXTENSION_CLOSURE_TARGET = Path(".codex/product-agent-os/project-code-graph-exte
 EMBEDDING_PROVIDER_TARGET = Path(".codex/product-agent-os/project-code-graph-embedding-provider.json")
 RERANKER_PROVIDER_TARGET = Path(".codex/product-agent-os/project-code-graph-reranker-provider.json")
 HYBRID_RETRIEVAL_TARGET = Path(".codex/product-agent-os/project-code-graph-hybrid-retrieval.json")
+LLM_PROPOSAL_PROVIDER_TARGET = Path(".codex/product-agent-os/project-code-graph-llm-proposal-provider.json")
+LLM_PROPOSAL_EVAL_TARGET = Path(".codex/product-agent-os/project-code-graph-llm-proposal-eval.json")
 
 
 class ProjectGraphCliTest(unittest.TestCase):
@@ -1142,6 +1144,176 @@ class ProjectGraphCliTest(unittest.TestCase):
             self.assertNotIn("return 'ok'", proposals.stdout)
             self.assertNotIn(str(workspace), proposals.stdout)
 
+    def test_validate_llm_proposal_provider_cli_stage_disable_without_provider_calls(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "workspace"
+            stage_root = Path(tmp) / "stage"
+            llm_approval_path = Path(tmp) / "llm-approval.json"
+            semantic_approval_path = Path(tmp) / "semantic-approval.json"
+            live_approval_path = Path(tmp) / "live-approval.json"
+            provider_approval_path = Path(tmp) / "llm-provider-approval.json"
+            (workspace / "app").mkdir(parents=True)
+            (workspace / "app" / "__init__.py").write_text("", encoding="utf-8")
+            (workspace / "app" / "worker.py").write_text("def run():\n    return 'ok'\n", encoding="utf-8")
+            llm_approval_path.write_text(json.dumps(self._llm_approval()), encoding="utf-8")
+            semantic_approval_path.write_text(json.dumps(self._semantic_approval()), encoding="utf-8")
+            live_approval_path.write_text(json.dumps(self._live_governance_approval()), encoding="utf-8")
+            provider_approval_path.write_text(json.dumps(self._llm_proposal_provider_approval()), encoding="utf-8")
+
+            stage = subprocess.run(
+                [sys.executable, str(SCRIPT), str(workspace), "--stage", str(stage_root)],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            semantic = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--build-semantic-index",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--stage",
+                    str(stage_root),
+                    "--semantic-approval",
+                    str(semantic_approval_path),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            proposals = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--build-llm-proposals",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--stage",
+                    str(stage_root),
+                    "--semantic-index",
+                    str(stage_root / SEMANTIC_RETRIEVAL_TARGET),
+                    "--llm-approval",
+                    str(llm_approval_path),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            governance = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--validate-live-governance",
+                    "--live-approval",
+                    str(live_approval_path),
+                    "--stage",
+                    str(stage_root),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            missing_approval = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--validate-llm-proposal-provider",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--semantic-index",
+                    str(stage_root / SEMANTIC_RETRIEVAL_TARGET),
+                    "--llm-proposals",
+                    str(stage_root / LLM_EXTRACTION_TARGET),
+                    "--live-governance",
+                    str(stage_root / ".codex/product-agent-os/project-code-graph-live-governance.json"),
+                    "--stage",
+                    str(stage_root),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            provider = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--validate-llm-proposal-provider",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--semantic-index",
+                    str(stage_root / SEMANTIC_RETRIEVAL_TARGET),
+                    "--llm-proposals",
+                    str(stage_root / LLM_EXTRACTION_TARGET),
+                    "--live-governance",
+                    str(stage_root / ".codex/product-agent-os/project-code-graph-live-governance.json"),
+                    "--llm-proposal-provider-approval",
+                    str(provider_approval_path),
+                    "--stage",
+                    str(stage_root),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            for result in [stage, semantic, proposals, governance, provider]:
+                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+                self.assertEqual(result.stderr, "")
+                self.assertNotIn(str(workspace), result.stdout)
+                self.assertNotIn("return 'ok'", result.stdout)
+            self.assertEqual(missing_approval.returncode, 1)
+            missing_payload = json.loads(missing_approval.stdout)
+            provider_payload = json.loads(provider.stdout)
+            provider_gate = json.loads((stage_root / LLM_PROPOSAL_PROVIDER_TARGET).read_text(encoding="utf-8"))
+            safety_eval = json.loads((stage_root / LLM_PROPOSAL_EVAL_TARGET).read_text(encoding="utf-8"))
+            self.assertEqual(missing_payload["rendered_artifacts"]["status"], "approval_required")
+            self.assertEqual(provider_payload["rendered_artifacts"]["mode"], "validate-llm-proposal-provider")
+            self.assertFalse(provider_payload["rendered_artifacts"]["provider_call_allowed"])
+            self.assertFalse(provider_payload["rendered_artifacts"]["provider_enabled_by_default"])
+            self.assertFalse(provider_payload["rendered_artifacts"]["accepted_for_canonical_graph"])
+            self.assertEqual(provider_gate["provider_policy"]["provider"], "external_llm")
+            self.assertFalse(provider_gate["provider_policy"]["provider_call_allowed"])
+            self.assertFalse(provider_gate["provider_policy"]["external_call_performed"])
+            self.assertEqual(provider_gate["prompt_contract"]["output_format"], "structured_json")
+            self.assertTrue(provider_gate["prompt_contract"]["proposal_only"])
+            self.assertEqual(provider_gate["canonical_graph_mutation"], "forbidden")
+            self.assertEqual(safety_eval["decision_status"], "disabled_fallback")
+            self.assertIn("llm_proposal_eval:missing", safety_eval["failed_thresholds"])
+            self.assertFalse(safety_eval["external_call_performed"])
+            self.assertFalse(safety_eval["accepted_for_canonical_graph"])
+            self.assertTrue((stage_root / LLM_PROPOSAL_PROVIDER_TARGET).exists())
+            self.assertTrue((stage_root / LLM_PROPOSAL_EVAL_TARGET).exists())
+
+            disable = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--disable-llm-proposal-provider",
+                    "--stage",
+                    str(stage_root),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(disable.returncode, 0, disable.stdout + disable.stderr)
+            disable_payload = json.loads(disable.stdout)
+            self.assertEqual(disable_payload["rendered_artifacts"]["status"], "disabled")
+            self.assertEqual(
+                disable_payload["rendered_artifacts"]["fallback"],
+                "local_llm_proposals_or_semantic_retrieval_or_graph_only",
+            )
+            self.assertFalse((stage_root / LLM_PROPOSAL_PROVIDER_TARGET).exists())
+            self.assertFalse((stage_root / LLM_PROPOSAL_EVAL_TARGET).exists())
+
     def test_disable_llm_proposals_cli_removes_generated_proposals_without_touching_workspace(self):
         with tempfile.TemporaryDirectory() as tmp:
             workspace = Path(tmp) / "workspace"
@@ -1607,6 +1779,63 @@ class ProjectGraphCliTest(unittest.TestCase):
             },
             "rollback_path": "delete .codex/product-agent-os/project-code-graph-reranker-provider.json",
             "residual_risks": ["reranker provider drift requires fresh eval before enablement"],
+        }
+
+    def _llm_proposal_provider_approval(self) -> dict:
+        return {
+            "explicit_approval": True,
+            "owner": "Product-Agent OS Maintainer",
+            "allowed_surfaces": ["external_llm_proposal_adapter", "llm_proposal_safety_eval"],
+            "provider": {
+                "provider": "external_llm",
+                "model": "approved-proposal-model-v1",
+                "credential_source": "environment",
+                "credential_env_var": "PRODUCT_AGENT_OS_LLM_API_KEY",
+                "external_calls_allowed": False,
+                "prompt_policy": {"max_prompt_tokens": 1200, "max_output_tokens": 1200},
+            },
+            "data_classification": {
+                "allowed_inputs": ["redacted_graph_labels", "source_node_ids", "observation_ids", "schema"],
+                "forbidden_inputs": ["raw_source_bodies", "secrets", "absolute_local_paths", "private_text"],
+            },
+            "redaction_policy": {
+                "raw_source_excluded": True,
+                "private_comments_excluded": True,
+                "secrets_redacted": True,
+                "absolute_paths_redacted": True,
+                "unsupported_claims_labelled": True,
+                "provider_payload_validation_required": True,
+            },
+            "cache_policy": {
+                "storage_path": ".codex/product-agent-os/project-code-graph-llm-proposal-provider.json",
+                "cache_target": ".codex/product-agent-os/project-code-graph-llm-proposal-eval.json",
+                "fingerprint_scope": "redacted_graph_semantic_local_proposals_prompt_policy",
+                "stale_policy": "block_if_graph_or_semantic_or_local_proposal_or_policy_fingerprint_mismatch",
+                "ttl_days": 7,
+                "deletion_proof_required": True,
+            },
+            "budget_policy": {
+                "max_prompt_tokens": 1200,
+                "max_output_tokens": 1200,
+                "max_cost_units": 0,
+                "max_latency_ms": 250,
+                "on_exceed": "block_and_fallback_to_local_proposals_or_graph",
+            },
+            "eval_threshold": {
+                "min_grounded_proposal_rate": 1.0,
+                "max_unsupported_claim_rate": 0.0,
+                "max_privacy_violations": 0,
+                "max_stale_context_results": 0,
+                "max_query_ms": 250,
+                "max_payload_tokens": 1200,
+            },
+            "failure_handling": {
+                "on_missing_provider_eval": "disabled_fallback_to_local_proposals_or_graph",
+                "on_failed_eval": "incident_blocked_and_fallback",
+            },
+            "rollback_path": "delete .codex/product-agent-os/project-code-graph-llm-proposal-provider.json",
+            "incident_path": "disable provider and record AI incident workflow",
+            "residual_risks": ["provider hallucination remains blocked until owner review"],
         }
 
     def _llm_approval(self) -> dict:

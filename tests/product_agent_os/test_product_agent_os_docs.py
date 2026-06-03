@@ -1056,6 +1056,121 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 with self.subTest(control_plane=filename, term=expected):
                     self.assertIn(expected, text)
 
+    def test_track10_task26_batch28_llm_proposal_adapter_and_safety_eval_is_synced(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        documents = {
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+            "product_index": (PRODUCT_AGENT_OS / "index.md").read_text(encoding="utf-8"),
+            "technical": (PRODUCT_AGENT_OS / "technical.md").read_text(encoding="utf-8"),
+            "scenarios": (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8"),
+        }
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "agents": AGENTS.read_text(encoding="utf-8"),
+        }
+
+        registry_terms = [
+            "Product-Agent OS Track 10 Task 26 Batch 28 live LLM proposal adapter and safety eval",
+            "T10-LIVE-M15..M16",
+            "project_graph_llm_proposal_provider.py",
+            "llm_proposal_provider.py",
+            "llm-proposal-eval.json",
+            "project_graph_live_llm_proposal_provider_gate_present",
+            "project_graph_live_llm_proposal_safety_eval_present",
+            "verification_status:",
+        ]
+        for expected in registry_terms:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        backlog_terms = [
+            "Task 26 Batch 28 Closure",
+            "| `done` | `T10-LIVE-M15..M16` live LLM proposal adapter and safety eval |",
+            "Batch 28 explicit approval",
+            "project_graph_llm_proposal_provider.py",
+            "llm_proposal_provider.py",
+            "llm-proposal-eval.json",
+            "proposal-only, never canonical fact",
+            "hallucination, privacy, grounding and stale-context tests",
+            "incident_blocked",
+            "local_llm_proposals_or_semantic_retrieval_or_graph_only",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for expected in backlog_terms:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        docs_terms = [
+            "Task 26 Batch 28",
+            "T10-LIVE-M15..M16",
+            "Live LLM Proposal Adapter And Safety Eval",
+            "project_graph_llm_proposal_provider.py",
+            "llm_proposal_provider.py",
+            "llm-proposal-eval.json",
+            "project_graph_live_llm_proposal_provider_gate",
+            "batch28_live_llm_proposal_adapter_and_safety_eval",
+            "external_llm",
+            "external_llm_proposal_adapter",
+            "llm_proposal_safety_eval",
+            "structured_json",
+            "unsupported_claim",
+            "proposal-only, never canonical fact",
+            "hallucination, privacy, grounding and stale-context tests",
+            "incident_blocked",
+            "AI incident workflow",
+            "local_llm_proposals_or_semantic_retrieval_or_graph_only",
+            "provider_call_allowed",
+            "external_call_performed",
+            "staged evidence only",
+            "not source of truth",
+            "No live provider calls",
+            "no provider calls",
+            "no live external model/API calls",
+            "no canonical graph mutation",
+        ]
+        for document, text in documents.items():
+            for expected in docs_terms:
+                with self.subTest(document=document, term=expected):
+                    self.assertIn(expected, text)
+
+        control_terms = [
+            "Task 26 Batch 28",
+            "T10-LIVE-M15..M16",
+            "project_graph_llm_proposal_provider.py",
+            "llm_proposal_provider.py",
+            "llm-proposal-eval.json",
+            "project_graph_live_llm_proposal_provider_gate_present",
+            "project_graph_live_llm_proposal_governance_prerequisite_present",
+            "project_graph_live_llm_proposal_prompt_schema_present",
+            "project_graph_live_llm_proposal_redaction_cache_budget_present",
+            "project_graph_live_llm_proposal_safety_eval_present",
+            "project_graph_live_llm_proposal_threshold_fallback_present",
+            "project_graph_live_llm_proposal_incident_path_present",
+            "project_graph_live_llm_proposal_no_live_calls_present",
+            "project_graph_live_llm_proposal_no_canonical_mutation_present",
+            "proposal-only, never canonical fact",
+            "hallucination, privacy, grounding and stale-context tests",
+            "incident_blocked",
+            "local_llm_proposals_or_semantic_retrieval_or_graph_only",
+            "provider_call_allowed",
+            "external_call_performed",
+            "No live provider calls",
+            "no provider calls",
+            "no live external model/API calls",
+            "no canonical graph mutation",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for filename, text in control_plane.items():
+            for expected in control_terms:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
     def test_track10_task25_batch20_local_backend_gate_is_synced(self):
         registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
         backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")

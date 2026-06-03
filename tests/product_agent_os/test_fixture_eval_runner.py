@@ -201,6 +201,23 @@ class FixtureEvalRunnerTest(unittest.TestCase):
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_external_reranker_eval_baseline_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_external_reranker_threshold_fallback_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_external_reranker_no_live_calls_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_live_llm_proposal_provider_gate_present"])
+        self.assertTrue(
+            results["python-app"]["expected_checks"]["project_graph_live_llm_proposal_governance_prerequisite_present"]
+        )
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_live_llm_proposal_prompt_schema_present"])
+        self.assertTrue(
+            results["python-app"]["expected_checks"]["project_graph_live_llm_proposal_redaction_cache_budget_present"]
+        )
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_live_llm_proposal_safety_eval_present"])
+        self.assertTrue(
+            results["python-app"]["expected_checks"]["project_graph_live_llm_proposal_threshold_fallback_present"]
+        )
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_live_llm_proposal_incident_path_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_live_llm_proposal_no_live_calls_present"])
+        self.assertTrue(
+            results["python-app"]["expected_checks"]["project_graph_live_llm_proposal_no_canonical_mutation_present"]
+        )
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_hybrid_retrieval_pipeline_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_hybrid_retrieval_explainable_fusion_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_hybrid_retrieval_fallback_present"])

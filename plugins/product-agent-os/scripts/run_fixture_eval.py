@@ -59,6 +59,15 @@ from product_agent_os.project_graph_llm_extraction import (  # noqa: E402
     validate_llm_extraction_approval,
     validate_llm_extraction_proposals,
 )
+from product_agent_os.project_graph_llm_proposal_provider import (  # noqa: E402
+    LLM_PROPOSAL_EVAL_TARGET,
+    LLM_PROPOSAL_PROVIDER_TARGET,
+    build_llm_proposal_provider_gate,
+    disable_llm_proposal_provider_gate,
+    evaluate_llm_proposal_safety,
+    validate_llm_proposal_provider_approval,
+    validate_llm_proposal_provider_gate,
+)
 from product_agent_os.project_graph_live_governance import (  # noqa: E402
     LIVE_CACHE_TARGET,
     LIVE_GOVERNANCE_TARGET,
@@ -2184,6 +2193,33 @@ def _expected_checks(
         )
         checks["project_graph_external_reranker_no_live_calls_present"] = (
             _project_graph_external_reranker_no_live_calls_present()
+        )
+        checks["project_graph_live_llm_proposal_provider_gate_present"] = (
+            _project_graph_live_llm_proposal_provider_gate_present()
+        )
+        checks["project_graph_live_llm_proposal_governance_prerequisite_present"] = (
+            _project_graph_live_llm_proposal_governance_prerequisite_present()
+        )
+        checks["project_graph_live_llm_proposal_prompt_schema_present"] = (
+            _project_graph_live_llm_proposal_prompt_schema_present()
+        )
+        checks["project_graph_live_llm_proposal_redaction_cache_budget_present"] = (
+            _project_graph_live_llm_proposal_redaction_cache_budget_present()
+        )
+        checks["project_graph_live_llm_proposal_safety_eval_present"] = (
+            _project_graph_live_llm_proposal_safety_eval_present()
+        )
+        checks["project_graph_live_llm_proposal_threshold_fallback_present"] = (
+            _project_graph_live_llm_proposal_threshold_fallback_present()
+        )
+        checks["project_graph_live_llm_proposal_incident_path_present"] = (
+            _project_graph_live_llm_proposal_incident_path_present()
+        )
+        checks["project_graph_live_llm_proposal_no_live_calls_present"] = (
+            _project_graph_live_llm_proposal_no_live_calls_present()
+        )
+        checks["project_graph_live_llm_proposal_no_canonical_mutation_present"] = (
+            _project_graph_live_llm_proposal_no_canonical_mutation_present()
         )
         checks["project_graph_hybrid_retrieval_pipeline_present"] = (
             _project_graph_hybrid_retrieval_pipeline_present()
@@ -5247,6 +5283,371 @@ def _project_graph_external_reranker_no_live_calls_present() -> bool:
         and gate.get("fallback") == "semantic_retrieval_or_graph_only"
         and "external_call_performed\": true" not in payload
         and "provider_call_allowed\": true" not in payload
+    )
+
+
+def _project_graph_live_llm_proposal_provider_approval() -> dict[str, Any]:
+    return {
+        "explicit_approval": True,
+        "owner": "Product-Agent OS Maintainer",
+        "allowed_surfaces": ["external_llm_proposal_adapter", "llm_proposal_safety_eval"],
+        "provider": {
+            "provider": "external_llm",
+            "model": "approved-proposal-model-v1",
+            "credential_source": "environment",
+            "credential_env_var": "PRODUCT_AGENT_OS_LLM_API_KEY",
+            "external_calls_allowed": False,
+            "prompt_policy": {"max_prompt_tokens": 1200, "max_output_tokens": 1200},
+        },
+        "data_classification": {
+            "allowed_inputs": ["redacted_graph_labels", "source_node_ids", "observation_ids", "schema"],
+            "forbidden_inputs": ["raw_source_bodies", "secrets", "absolute_local_paths", "private_text"],
+        },
+        "redaction_policy": {
+            "raw_source_excluded": True,
+            "private_comments_excluded": True,
+            "secrets_redacted": True,
+            "absolute_paths_redacted": True,
+            "unsupported_claims_labelled": True,
+            "provider_payload_validation_required": True,
+        },
+        "cache_policy": {
+            "storage_path": LLM_PROPOSAL_PROVIDER_TARGET,
+            "cache_target": LLM_PROPOSAL_EVAL_TARGET,
+            "fingerprint_scope": "redacted_graph_semantic_local_proposals_prompt_policy",
+            "stale_policy": "block_if_graph_or_semantic_or_local_proposal_or_policy_fingerprint_mismatch",
+            "ttl_days": 7,
+            "deletion_proof_required": True,
+        },
+        "budget_policy": {
+            "max_prompt_tokens": 1200,
+            "max_output_tokens": 1200,
+            "max_cost_units": 0,
+            "max_latency_ms": 250,
+            "on_exceed": "block_and_fallback_to_local_proposals_or_graph",
+        },
+        "eval_threshold": {
+            "min_grounded_proposal_rate": 1.0,
+            "max_unsupported_claim_rate": 0.0,
+            "max_privacy_violations": 0,
+            "max_stale_context_results": 0,
+            "max_query_ms": 250,
+            "max_payload_tokens": 1200,
+        },
+        "failure_handling": {
+            "on_missing_provider_eval": "disabled_fallback_to_local_proposals_or_graph",
+            "on_failed_eval": "incident_blocked_and_fallback",
+        },
+        "rollback_path": f"delete {LLM_PROPOSAL_PROVIDER_TARGET}",
+        "incident_path": "disable provider and record AI incident workflow",
+        "residual_risks": ["provider hallucination remains blocked until owner review"],
+    }
+
+
+def _project_graph_live_llm_proposal_provider_gate() -> dict[str, Any]:
+    return build_llm_proposal_provider_gate(
+        _project_graph_sample(),
+        semantic_index=_project_graph_semantic_index(),
+        local_proposals=_project_graph_llm_extraction_proposals(),
+        approval=_project_graph_live_llm_proposal_provider_approval(),
+        governance_packet=_project_graph_live_governance_packet(),
+    )
+
+
+def _project_graph_live_llm_proposal_eval_cases() -> list[dict[str, Any]]:
+    return [
+        {
+            "id": "worker-proposal",
+            "expected_proposal_kinds": ["semantic_node", "rationale_comment"],
+            "expected_source_node_ids": ["function:app.worker.run"],
+            "top_k": 2,
+        }
+    ]
+
+
+def _project_graph_live_llm_safe_provider_results(gate: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    return {
+        "worker-proposal": {
+            "graph_fingerprint": gate.get("graph_fingerprint"),
+            "proposals": [
+                {
+                    "proposal_id": "provider-semantic-node-worker",
+                    "proposal_kind": "semantic_node",
+                    "source_node_id": "function:app.worker.run",
+                    "source_observation_ids": ["obs:function:app.worker.run"],
+                    "rationale": "Generated proposal from approved redacted graph evidence.",
+                    "unsupported_claim_labels": [],
+                    "review_status": "proposed",
+                    "confidence": "inferred_unverified",
+                    "canonical_graph_mutation": "forbidden",
+                },
+                {
+                    "proposal_id": "provider-rationale-worker",
+                    "proposal_kind": "rationale_comment",
+                    "source_node_id": "function:app.worker.run",
+                    "source_observation_ids": ["obs:function:app.worker.run"],
+                    "rationale": "Rationale is tied to approved source evidence id.",
+                    "unsupported_claim_labels": [],
+                    "review_status": "proposed",
+                    "confidence": "inferred_unverified",
+                    "canonical_graph_mutation": "forbidden",
+                },
+            ],
+            "query_ms": 100,
+            "payload_tokens": 400,
+        }
+    }
+
+
+def _project_graph_live_llm_unsafe_provider_results() -> dict[str, dict[str, Any]]:
+    return {
+        "worker-proposal": {
+            "graph_fingerprint": "stale",
+            "proposals": [
+                {
+                    "proposal_id": "unsafe",
+                    "proposal_kind": "semantic_node",
+                    "source_node_id": "function:not.real",
+                    "source_observation_ids": [],
+                    "rationale": r"Use sk-test-secret from C:\Users\person\private.py",
+                    "unsupported_claim_labels": [],
+                    "canonical_graph_mutation": "allowed",
+                }
+            ],
+            "query_ms": 300,
+            "payload_tokens": 1500,
+        }
+    }
+
+
+def _project_graph_live_llm_proposal_provider_gate_present() -> bool:
+    approval = _project_graph_live_llm_proposal_provider_approval()
+    gate = _project_graph_live_llm_proposal_provider_gate()
+    return (
+        validate_llm_proposal_provider_approval(approval, _project_graph_live_governance_packet()).get("ok") is True
+        and gate.get("artifact_kind") == "project_graph_live_llm_proposal_provider_gate"
+        and gate.get("approval_boundary") == "batch28_live_llm_proposal_adapter_and_safety_eval"
+        and gate.get("source_boundary") == "redacted_prompt_schema_and_evidence_ids_only_no_raw_source"
+        and gate.get("generated_view_policy") == "llm_proposal_provider_gate_is_generated_evidence_not_source_of_truth"
+        and gate.get("status") == "ready"
+        and gate.get("provider_policy", {}).get("provider") == "external_llm"
+        and gate.get("provider_policy", {}).get("credential_source") == "environment"
+        and validate_llm_proposal_provider_gate(gate).get("ok") is True
+    )
+
+
+def _project_graph_live_llm_proposal_governance_prerequisite_present() -> bool:
+    invalid_governance = dict(_project_graph_live_governance_packet())
+    invalid_governance["status"] = "blocked"
+    missing = build_llm_proposal_provider_gate(
+        _project_graph_sample(),
+        semantic_index=_project_graph_semantic_index(),
+        local_proposals=_project_graph_llm_extraction_proposals(),
+        approval=_project_graph_live_llm_proposal_provider_approval(),
+        governance_packet=None,
+    )
+    invalid = validate_llm_proposal_provider_approval(
+        _project_graph_live_llm_proposal_provider_approval(),
+        invalid_governance,
+    )
+    return (
+        missing.get("status") == "approval_required"
+        and "llm_proposal_provider_approval:governance_packet:missing"
+        in missing.get("validation", {}).get("errors", [])
+        and invalid.get("ok") is False
+        and "llm_proposal_provider_approval:governance_packet:not_ready" in invalid.get("errors", [])
+    )
+
+
+def _project_graph_live_llm_proposal_prompt_schema_present() -> bool:
+    gate = _project_graph_live_llm_proposal_provider_gate()
+    prompt = gate.get("prompt_contract", {})
+    payload_contract = gate.get("provider_payload_contract", {})
+    return (
+        prompt.get("output_format") == "structured_json"
+        and prompt.get("proposal_only") is True
+        and prompt.get("provenance_required") is True
+        and prompt.get("uncertainty_required") is True
+        and "unsupported_claim" in prompt.get("required_labels", [])
+        and "semantic_node" in prompt.get("required_schema", [])
+        and "semantic_edge" in prompt.get("required_schema", [])
+        and "rationale_comment" in prompt.get("required_schema", [])
+        and payload_contract.get("payload_shape") == "redacted_prompt_schema_evidence_ids_only"
+        and payload_contract.get("schema_validation_required_before_acceptance") is True
+    )
+
+
+def _project_graph_live_llm_proposal_redaction_cache_budget_present() -> bool:
+    graph = json.loads(json.dumps(_project_graph_sample()))
+    graph.setdefault("nodes", []).append(
+        {
+            "id": "file:unsafe.py",
+            "type": "module",
+            "label": r"TOKEN=sk-test-secret C:\Users\person\private.py",
+            "path": r"C:\Users\person\private.py",
+            "observation_ids": ["obs:unsafe"],
+        }
+    )
+    semantic_index = build_semantic_retrieval_index(
+        graph,
+        static_index=build_static_search_index(graph),
+        approval=_project_graph_semantic_approval(),
+    )
+    local_proposals = build_llm_extraction_proposals(
+        graph,
+        semantic_index=semantic_index,
+        approval=_project_graph_llm_extraction_approval(),
+    )
+    gate = build_llm_proposal_provider_gate(
+        graph,
+        semantic_index=semantic_index,
+        local_proposals=local_proposals,
+        approval=_project_graph_live_llm_proposal_provider_approval(),
+        governance_packet=_project_graph_live_governance_packet(),
+    )
+    payload = json.dumps(gate, sort_keys=True).lower()
+    with tempfile.TemporaryDirectory() as tmp:
+        stage_root = Path(tmp) / "stage"
+        for relative in [LLM_PROPOSAL_PROVIDER_TARGET, LLM_PROPOSAL_EVAL_TARGET]:
+            target = stage_root / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text("generated\n", encoding="utf-8")
+        disabled = disable_llm_proposal_provider_gate(
+            stage_root,
+            workspace=FIXTURES / "project-code-graph-minimal-python",
+        )
+    proof = disabled.get("rendered_artifacts", {}).get("deletion_proof", {})
+    return (
+        validate_llm_proposal_provider_gate(gate).get("ok") is True
+        and gate.get("redaction_policy", {}).get("raw_source_excluded") is True
+        and gate.get("redaction_policy", {}).get("private_comments_excluded") is True
+        and gate.get("redaction_policy", {}).get("provider_payload_validation_required") is True
+        and gate.get("provider_payload_contract", {}).get("raw_source_bodies_included") is False
+        and gate.get("provider_payload_contract", {}).get("absolute_local_paths_included") is False
+        and gate.get("provider_payload_contract", {}).get("secrets_included") is False
+        and gate.get("cache_policy", {}).get("storage_path") == LLM_PROPOSAL_PROVIDER_TARGET
+        and gate.get("cache_policy", {}).get("cache_target") == LLM_PROPOSAL_EVAL_TARGET
+        and gate.get("cache_policy", {}).get("stale_policy")
+        == "block_if_graph_or_semantic_or_local_proposal_or_policy_fingerprint_mismatch"
+        and gate.get("budget_policy", {}).get("max_cost_units") == 0
+        and disabled.get("rendered_artifacts", {}).get("status") == "disabled"
+        and proof.get("remaining") == []
+        and "sk-test-secret" not in payload
+        and "c:\\users\\person" not in payload
+        and "return 'ok'" not in payload
+    )
+
+
+def _project_graph_live_llm_proposal_safety_eval_present() -> bool:
+    gate = _project_graph_live_llm_proposal_provider_gate()
+    packet = evaluate_llm_proposal_safety(
+        gate,
+        graph=_project_graph_sample(),
+        semantic_index=_project_graph_semantic_index(),
+        cases=_project_graph_live_llm_proposal_eval_cases(),
+        provider_results=_project_graph_live_llm_safe_provider_results(gate),
+    )
+    return (
+        packet.get("artifact_kind") == "project_graph_llm_proposal_safety_eval"
+        and packet.get("decision_status") == "passed"
+        and packet.get("provider_enabled_by_default") is False
+        and packet.get("external_call_performed") is False
+        and packet.get("accepted_for_canonical_graph") is False
+        and packet.get("quality_metrics", {}).get("grounded_proposal_rate") == 1.0
+        and packet.get("failed_thresholds") == []
+    )
+
+
+def _project_graph_live_llm_proposal_threshold_fallback_present() -> bool:
+    gate = _project_graph_live_llm_proposal_provider_gate()
+    missing = evaluate_llm_proposal_safety(
+        gate,
+        graph=_project_graph_sample(),
+        semantic_index=_project_graph_semantic_index(),
+        cases=_project_graph_live_llm_proposal_eval_cases(),
+        provider_results=None,
+    )
+    failed = evaluate_llm_proposal_safety(
+        gate,
+        graph=_project_graph_sample(),
+        semantic_index=_project_graph_semantic_index(),
+        cases=_project_graph_live_llm_proposal_eval_cases(),
+        provider_results=_project_graph_live_llm_unsafe_provider_results(),
+    )
+    return (
+        missing.get("decision_status") == "disabled_fallback"
+        and "llm_proposal_eval:missing" in missing.get("failed_thresholds", [])
+        and missing.get("fallback") == "local_llm_proposals_or_semantic_retrieval_or_graph_only"
+        and failed.get("decision_status") == "incident_blocked"
+        and "hallucinated_or_ungrounded_proposal" in failed.get("failed_thresholds", [])
+        and "privacy_violation" in failed.get("failed_thresholds", [])
+        and "stale_context" in failed.get("failed_thresholds", [])
+        and "canonical_graph_mutation_attempt" in failed.get("failed_thresholds", [])
+        and failed.get("fallback") == "local_llm_proposals_or_semantic_retrieval_or_graph_only"
+    )
+
+
+def _project_graph_live_llm_proposal_incident_path_present() -> bool:
+    gate = _project_graph_live_llm_proposal_provider_gate()
+    failed = evaluate_llm_proposal_safety(
+        gate,
+        graph=_project_graph_sample(),
+        semantic_index=_project_graph_semantic_index(),
+        cases=_project_graph_live_llm_proposal_eval_cases(),
+        provider_results=_project_graph_live_llm_unsafe_provider_results(),
+    )
+    return (
+        gate.get("incident_workflow", {}).get("status") == "armed"
+        and "AI incident workflow" in gate.get("incident_workflow", {}).get("incident_path", "")
+        and failed.get("decision_status") == "incident_blocked"
+        and failed.get("incident_workflow", {}).get("status") == "active"
+        and failed.get("accepted_for_canonical_graph") is False
+    )
+
+
+def _project_graph_live_llm_proposal_no_live_calls_present() -> bool:
+    gate = _project_graph_live_llm_proposal_provider_gate()
+    packet = evaluate_llm_proposal_safety(
+        gate,
+        graph=_project_graph_sample(),
+        semantic_index=_project_graph_semantic_index(),
+        cases=_project_graph_live_llm_proposal_eval_cases(),
+        provider_results=None,
+    )
+    payload = json.dumps([gate, packet], sort_keys=True).lower()
+    return (
+        gate.get("provider_policy", {}).get("provider_call_allowed") is False
+        and gate.get("provider_policy", {}).get("external_call_performed") is False
+        and gate.get("provider_policy", {}).get("provider_enabled_by_default") is False
+        and packet.get("external_call_performed") is False
+        and packet.get("provider_enabled_by_default") is False
+        and "external_provider_call_without_runtime_invocation_approval" in gate.get("blocked_surfaces", [])
+        and "production_server" in gate.get("blocked_surfaces", [])
+        and "external_call_performed\": true" not in payload
+        and "provider_call_allowed\": true" not in payload
+        and "provider_enabled_by_default\": true" not in payload
+    )
+
+
+def _project_graph_live_llm_proposal_no_canonical_mutation_present() -> bool:
+    gate = _project_graph_live_llm_proposal_provider_gate()
+    packet = evaluate_llm_proposal_safety(
+        gate,
+        graph=_project_graph_sample(),
+        semantic_index=_project_graph_semantic_index(),
+        cases=_project_graph_live_llm_proposal_eval_cases(),
+        provider_results=_project_graph_live_llm_safe_provider_results(gate),
+    )
+    return (
+        gate.get("canonical_graph_mutation") == "forbidden"
+        and gate.get("accepted_for_canonical_graph") is False
+        and "canonical_graph_mutation" in gate.get("blocked_surfaces", [])
+        and gate.get("prompt_contract", {}).get("proposal_only") is True
+        and packet.get("canonical_graph_mutation") == "forbidden"
+        and packet.get("accepted_for_canonical_graph") is False
+        and packet.get("safe_next_action") == (
+            "Stage proposals for human review; never treat provider output as canonical fact."
+        )
     )
 
 
