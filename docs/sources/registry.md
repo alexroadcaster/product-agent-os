@@ -3079,14 +3079,14 @@ verification_status: "Backed by current-run RED/GREEN and broad verification evi
 
 ```yaml
 title: "Product-Agent OS Track 10 Task 26 Batch 34 docs packaging closure matrix"
-url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; docs/product-agent-os/project-code-graph.md; docs/product-agent-os/live-runtime-governance.md; docs/product-agent-os/approval-bound-real-testing.md; docs/product-agent-os/agent-skill-modernization-loop.md; docs/product-agent-os/cli-reference.md; docs/product-agent-os/artifact-contracts.md; docs/product-agent-os/packaging-and-closure.md; docs/product-agent/product-agent-os-plugin-spec.md; mkdocs.yml; tools/check_docs.py; README.md; plugins/product-agent-os/README.md; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
+url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; docs/sources/product-agent-os-batch34-packaging-install-smoke.md; docs/sources/product-agent-os-batch35-approval-packet-draft.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; docs/product-agent-os/project-code-graph.md; docs/product-agent-os/live-runtime-governance.md; docs/product-agent-os/approval-bound-real-testing.md; docs/product-agent-os/agent-skill-modernization-loop.md; docs/product-agent-os/cli-reference.md; docs/product-agent-os/artifact-contracts.md; docs/product-agent-os/packaging-and-closure.md; docs/product-agent/product-agent-os-plugin-spec.md; mkdocs.yml; tools/check_docs.py; README.md; plugins/product-agent-os/README.md; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
 type: "internal documentation"
 source_status: "project-authored"
 checked_at: "2026-06-03"
-summary: "Track 10 Task 26 Batch 34 `T10-LIVE-M35..M36` docs packaging source registry site closure and Batch 35 handoff is executed through `B34-DOC-M12` in the Batch 34 Detailed Task Matrix `B34-DOC-M01..M15`. It records IA/freshness inventory, project-authored docs pages, existing docs IA updates, MkDocs navigation, `tools/check_docs.py` required paths, generated `site/` rebuild evidence from `B34-DOC-M11`, source registry/backlog/control-plane sync, and remaining `B34-DOC-M13..M15` closure gates."
-relevance: "Batch 34 is the required documentation and packaging closure between Batch 33 runtime QA/performance/stabilization and Batch 35 approval-bound real testing. It records executed pages `docs/product-agent-os/project-code-graph.md`, `docs/product-agent-os/live-runtime-governance.md`, `docs/product-agent-os/approval-bound-real-testing.md`, `docs/product-agent-os/agent-skill-modernization-loop.md`, `docs/product-agent-os/cli-reference.md`, `docs/product-agent-os/artifact-contracts.md` and `docs/product-agent-os/packaging-and-closure.md`, plus `project_graph_sanitization.py`, `docs/product-agent/product-agent-os-plugin-spec.md`, the docs-maintainer plugin-cache gap, accepted Mermaid external asset gap, MkDocs navigation coverage, site rebuild evidence and the post-M12 site refresh requirement for final closure."
+summary: "Track 10 Task 26 Batch 34 `T10-LIVE-M35..M36` docs packaging source registry site closure and Batch 35 handoff is executed through `B34-DOC-M15` in the Batch 34 Detailed Task Matrix `B34-DOC-M01..M15`. It records IA/freshness inventory, project-authored docs pages, existing docs IA updates, MkDocs navigation, `tools/check_docs.py` required paths, generated `site/` rebuild evidence, source registry/backlog/control-plane sync, focused docs contract tests, verification gates, packaging/install smoke and Batch 35 approval packet draft."
+relevance: "Batch 34 is the required documentation and packaging closure between Batch 33 runtime QA/performance/stabilization and Batch 35 approval-bound real testing. It records executed pages `docs/product-agent-os/project-code-graph.md`, `docs/product-agent-os/live-runtime-governance.md`, `docs/product-agent-os/approval-bound-real-testing.md`, `docs/product-agent-os/agent-skill-modernization-loop.md`, `docs/product-agent-os/cli-reference.md`, `docs/product-agent-os/artifact-contracts.md` and `docs/product-agent-os/packaging-and-closure.md`, plus `project_graph_sanitization.py`, `docs/product-agent/product-agent-os-plugin-spec.md`, the docs-maintainer plugin-cache gap, accepted Mermaid external asset gap, MkDocs navigation coverage, `site/` rebuild evidence, packaging/install smoke and the Batch 35 approval handoff draft."
 trust_level: "high"
-verification_status: "`B34-DOC-M01..M12` are docs/control-plane updates only. `B34-DOC-M11` recorded `python tools\\check_docs.py`, focused docs tests, strict MkDocs build with `PYTHONPATH=C:\\tmp\\codex_docs_mkdocs`, generated `site/` rebuild and `git diff --check`; `B34-DOC-M12` refreshes registry/backlog/control-plane artifacts before docs contract tests, verification closure and packaging/install smoke. This registry entry does not start a live server, does not run browser automation, does not call providers/live external model/API endpoints, does not mutate the canonical graph and does not perform git stage/commit/push/PR."
+verification_status: "`B34-DOC-M01..M15` are docs/control-plane/packaging-smoke updates only. `B34-DOC-M14` recorded focused docs tests, `python tools\\check_docs.py`, strict MkDocs build with `PYTHONPATH=C:\\tmp\\codex_docs_mkdocs`, regular `site/` rebuild and `git diff --check`; `B34-DOC-M15` records compatibility smoke `status: compatible`, checked-in `docs-maintainer` present and installed cache `docs-maintainer` missing as the plugin-cache gap, plus a Batch 35 approval packet draft. M15 focused docs tests ran 38 tests with `OK`; `python tools\\check_docs.py` passed; strict MkDocs rebuilt regular `site/` with exit `0`; `git diff --check` passed after mechanical cleanup of 123 generated HTML files. This registry entry does not start a live server, does not run browser automation, does not call providers/live external model/API endpoints, does not mutate the canonical graph and does not perform git stage/commit/push/PR."
 ```
 
 ```yaml
@@ -3102,8 +3102,32 @@ verification_status: "Docs packet is project-authored and source-backed by repos
 ```
 
 ```yaml
+title: "Product-Agent OS Batch 34 packaging/install smoke packet"
+url: "docs/sources/product-agent-os-batch34-packaging-install-smoke.md; plugins/product-agent-os/.codex-plugin/plugin.json; plugins/product-agent-os/skills/docs-maintainer/SKILL.md; plugins/product-agent-os/skills/pr-release-operator/SKILL.md; plugins/product-agent-os/scripts/validate_codex_compatibility.py; $CODEX_HOME\\plugins\\cache\\local-product-agent-plugins\\product-agent-os\\0.1.0"
+type: "internal documentation"
+source_status: "project-authored"
+checked_at: "2026-06-03"
+summary: "Batch 34 `B34-DOC-M15` packaging/install smoke evidence packet. It records compatibility validator status, manifest/cache inspection, checked-in skill count, installed cache skill count, checked-in `docs-maintainer` presence and installed-cache `docs-maintainer` absence."
+relevance: "Closes the packaging/install smoke requirement for `T10-LIVE-M35..M36` while preserving the docs-maintainer plugin-cache gap and explicit no-publication/no-external-write/no-git boundary."
+trust_level: "high"
+verification_status: "Current-run smoke evidence only. `validate_codex_compatibility.py` returned `status: compatible`; manifest/cache probe found checked-in `.codex-plugin/plugin.json`, cache manifest, checked-in `docs-maintainer`, missing cache `docs-maintainer`, checked-in `pr-release-operator`, cache `pr-release-operator`, 12 checked-in skill dirs and 11 cache skill dirs. No plugin publication, external write, hook activation, automation, live server, browser automation, provider/API call, canonical mutation or git action was performed."
+```
+
+```yaml
+title: "Product-Agent OS Batch 35 approval packet draft"
+url: "docs/sources/product-agent-os-batch35-approval-packet-draft.md; docs/product-agent-os/approval-bound-real-testing.md; docs/product-agent-os/packaging-and-closure.md; docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; RUNLOG.md; EVALS.md; TEST.md"
+type: "internal documentation"
+source_status: "project-authored"
+checked_at: "2026-06-03"
+summary: "Batch 35 approval packet draft for `T10-LIVE-M37..M41`. It separates `approved_local_runtime_launch`, `actual_browser_automation_smoke`, `approved_provider_api_pilot`, `approved_canonical_mutation_pilot` and `explicit_git_release_pr_action` into independent approval surfaces."
+relevance: "Provides the Batch 34 handoff artifact for approval-bound real testing without granting approval or executing any Batch 35 action."
+trust_level: "high"
+verification_status: "Draft-only handoff artifact. It keeps `approval_status: approval_required`, names exact evidence files and stop conditions, and does not start a live server, run browser automation, call providers/live external model/API endpoints, mutate the canonical graph or perform git stage/commit/push/PR."
+```
+
+```yaml
 title: "Product-Agent OS Track 10 Task 26 Batch 35 approval-bound real testing execution matrix"
-url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
+url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; docs/sources/product-agent-os-batch35-approval-packet-draft.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
 type: "internal documentation"
 source_status: "project-authored"
 checked_at: "2026-06-03"

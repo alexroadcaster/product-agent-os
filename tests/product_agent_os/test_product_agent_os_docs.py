@@ -11,6 +11,8 @@ SOURCE_REGISTRY = DOCS / "sources" / "registry.md"
 TRACK_BACKLOG = DOCS / "sources" / "product-agent-os-track-8-detailed-backlog.md"
 TRACK9_BACKLOG = DOCS / "sources" / "product-agent-os-track-9-backlog.md"
 TRACK10_BACKLOG = DOCS / "sources" / "product-agent-os-track-10-backlog.md"
+BATCH34_PACKAGING_SMOKE = DOCS / "sources" / "product-agent-os-batch34-packaging-install-smoke.md"
+BATCH35_APPROVAL_DRAFT = DOCS / "sources" / "product-agent-os-batch35-approval-packet-draft.md"
 TRACK9_PLAN = DOCS / "superpowers" / "plans" / "2026-05-25-track-9-methodology-intelligence.md"
 TRACK10_PLAN = DOCS / "superpowers" / "plans" / "2026-05-27-track-10-guided-questions-status-dashboard.md"
 ROOT_README = ROOT / "README.md"
@@ -1852,7 +1854,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "T10-LIVE-M35..M36",
             "B34-DOC-M01..M15",
             "project-authored docs pages",
-            "site rebuild",
+            "`site/` rebuild",
             "verification_status:",
         ]
         for expected in registry_terms:
@@ -1885,9 +1887,10 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "Batch 34 Detailed Task Matrix",
             "B34-DOC-M01..M15",
             "source docs -> registry -> docs tests -> check_docs.py -> strict MkDocs -> optional full closure",
-            "site/ must be rebuilt",
             "docs-maintainer plugin-cache gap",
             "Mermaid external asset gap",
+            "packaging/install smoke",
+            "Batch 35 approval packet draft",
             "staged evidence only",
             "not source of truth",
             "no live server",
@@ -2035,8 +2038,9 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "docs/product-agent-os/cli-reference.md",
             "docs/product-agent-os/artifact-contracts.md",
             "docs/product-agent-os/packaging-and-closure.md",
-            "B34-DOC-M12",
-            "B34-DOC-M13..M15",
+            "Product-Agent OS Batch 34 packaging/install smoke packet",
+            "Product-Agent OS Batch 35 approval packet draft",
+            "B34-DOC-M15",
             "Generated `site/` pages are review output and not source of truth",
             "no live server",
             "no browser automation",
@@ -2050,8 +2054,10 @@ class ProductAgentOsDocsTest(unittest.TestCase):
 
         for expected in [
             "Task 26 Batch 34 Planned Matrix And Closure Status",
-            "`done_through_m12`",
-            "`pending` | `B34-DOC-M13..M15`",
+            "`done_through_m15`",
+            "`blocked_without_approval` | Batch 35 execution from Batch 34 handoff",
+            "B34-DOC-M15",
+            "Batch 35 approval packet draft",
             "site/ must be rebuilt with the regular MkDocs site_dir",
             "staged evidence only",
             "not source of truth",
@@ -2065,12 +2071,101 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 self.assertIn(expected, backlog)
 
         for expected in [
-            "B34-DOC-M12",
-            "B34-DOC-M13..M15",
+            "B34-DOC-M15",
+            "packaging/install smoke",
+            "Batch 35 approval packet draft",
             "docs-maintainer plugin-cache gap",
             "accepted Mermaid external asset gap",
             "staged evidence only",
             "not source of truth",
+            "no live server",
+            "no browser automation",
+            "no provider/live external model/API calls",
+            "no canonical graph mutation",
+            "no git stage/commit/push/PR",
+        ]:
+            with self.subTest(control_plane=expected):
+                self.assertIn(expected, control_plane)
+
+    def test_track10_task26_batch34_packaging_handoff_is_recorded(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        smoke = BATCH34_PACKAGING_SMOKE.read_text(encoding="utf-8")
+        approval = BATCH35_APPROVAL_DRAFT.read_text(encoding="utf-8")
+        control_plane = "\n".join(
+            path.read_text(encoding="utf-8")
+            for path in [ROOT_README, PLUGIN_README, REQUIREMENTS, PLAN, TEST, EVALS, RUNLOG, AGENTS]
+        )
+
+        smoke_terms = [
+            "Source status: `internal`",
+            "B34-DOC-M15",
+            "validate_codex_compatibility.py",
+            "status: compatible",
+            "checked_docs_maintainer_present: true",
+            "cache_docs_maintainer_present: false",
+            "checked_skill_count: 12",
+            "cache_skill_count: 11",
+            "docs-maintainer plugin-cache gap",
+            "plugin publication",
+            "external writes",
+            "hook activation",
+            "active schedules or automations",
+            "live server launch",
+            "browser automation",
+            "provider/live external model/API calls",
+            "canonical graph mutation",
+            "git stage/commit/push/PR",
+        ]
+        for expected in smoke_terms:
+            with self.subTest(packaging_smoke=expected):
+                self.assertIn(expected, smoke)
+
+        approval_terms = [
+            "Source status: `internal`",
+            "T10-LIVE-M37..M41",
+            "approval_status: approval_required",
+            "approved_local_runtime_launch",
+            "actual_browser_automation_smoke",
+            "approved_provider_api_pilot",
+            "approved_canonical_mutation_pilot",
+            "explicit_git_release_pr_action",
+            "No local live server launch",
+            "No browser automation",
+            "No provider/live external model/API calls",
+            "No canonical graph mutation",
+            "No git stage/commit/push/PR",
+        ]
+        for expected in approval_terms:
+            with self.subTest(batch35_approval=expected):
+                self.assertIn(expected, approval)
+
+        registry_terms = [
+            "Product-Agent OS Batch 34 packaging/install smoke packet",
+            "Product-Agent OS Batch 35 approval packet draft",
+            "checked-in `docs-maintainer` presence",
+            "installed-cache `docs-maintainer` absence",
+            "Batch 35 approval packet draft for `T10-LIVE-M37..M41`",
+        ]
+        for expected in registry_terms:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        for expected in [
+            "done_through_m15",
+            "B34-DOC-M15",
+            "packaging/install smoke",
+            "Batch 35 approval packet draft",
+            "blocked_without_approval",
+        ]:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        for expected in [
+            "B34-DOC-M15",
+            "packaging/install smoke",
+            "docs-maintainer plugin-cache gap",
+            "Batch 35 approval packet draft",
             "no live server",
             "no browser automation",
             "no provider/live external model/API calls",
