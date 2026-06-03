@@ -20,6 +20,8 @@ RERANKER_PROVIDER_TARGET = Path(".codex/product-agent-os/project-code-graph-rera
 HYBRID_RETRIEVAL_TARGET = Path(".codex/product-agent-os/project-code-graph-hybrid-retrieval.json")
 LLM_PROPOSAL_PROVIDER_TARGET = Path(".codex/product-agent-os/project-code-graph-llm-proposal-provider.json")
 LLM_PROPOSAL_EVAL_TARGET = Path(".codex/product-agent-os/project-code-graph-llm-proposal-eval.json")
+REVIEW_LEDGER_TARGET = Path(".codex/product-agent-os/project-code-graph-review-ledger.json")
+PROPOSAL_DIFF_TARGET = Path(".codex/product-agent-os/project-code-graph-proposal-diff.json")
 
 
 class ProjectGraphCliTest(unittest.TestCase):
@@ -1314,6 +1316,192 @@ class ProjectGraphCliTest(unittest.TestCase):
             self.assertFalse((stage_root / LLM_PROPOSAL_PROVIDER_TARGET).exists())
             self.assertFalse((stage_root / LLM_PROPOSAL_EVAL_TARGET).exists())
 
+    def test_build_review_ledger_cli_stage_disable_without_canonical_mutation(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "workspace"
+            stage_root = Path(tmp) / "stage"
+            llm_approval_path = Path(tmp) / "llm-approval.json"
+            semantic_approval_path = Path(tmp) / "semantic-approval.json"
+            live_approval_path = Path(tmp) / "live-approval.json"
+            provider_approval_path = Path(tmp) / "llm-provider-approval.json"
+            review_approval_path = Path(tmp) / "review-ledger-approval.json"
+            decisions_path = Path(tmp) / "review-decisions.json"
+            (workspace / "app").mkdir(parents=True)
+            (workspace / "app" / "__init__.py").write_text("", encoding="utf-8")
+            (workspace / "app" / "worker.py").write_text("def run():\n    return 'ok'\n", encoding="utf-8")
+            llm_approval_path.write_text(json.dumps(self._llm_approval()), encoding="utf-8")
+            semantic_approval_path.write_text(json.dumps(self._semantic_approval()), encoding="utf-8")
+            live_approval_path.write_text(json.dumps(self._live_governance_approval()), encoding="utf-8")
+            provider_approval_path.write_text(json.dumps(self._llm_proposal_provider_approval()), encoding="utf-8")
+            review_approval_path.write_text(json.dumps(self._review_ledger_approval()), encoding="utf-8")
+
+            commands = [
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--stage",
+                    str(stage_root),
+                ],
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--build-semantic-index",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--stage",
+                    str(stage_root),
+                    "--semantic-approval",
+                    str(semantic_approval_path),
+                ],
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--build-llm-proposals",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--stage",
+                    str(stage_root),
+                    "--semantic-index",
+                    str(stage_root / SEMANTIC_RETRIEVAL_TARGET),
+                    "--llm-approval",
+                    str(llm_approval_path),
+                ],
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--validate-live-governance",
+                    "--live-approval",
+                    str(live_approval_path),
+                    "--stage",
+                    str(stage_root),
+                ],
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--validate-llm-proposal-provider",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--semantic-index",
+                    str(stage_root / SEMANTIC_RETRIEVAL_TARGET),
+                    "--llm-proposals",
+                    str(stage_root / LLM_EXTRACTION_TARGET),
+                    "--live-governance",
+                    str(stage_root / ".codex/product-agent-os/project-code-graph-live-governance.json"),
+                    "--llm-proposal-provider-approval",
+                    str(provider_approval_path),
+                    "--stage",
+                    str(stage_root),
+                ],
+            ]
+            results = [
+                subprocess.run(command, check=False, capture_output=True, text=True)
+                for command in commands
+            ]
+            for result in results:
+                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+                self.assertEqual(result.stderr, "")
+                self.assertNotIn(str(workspace), result.stdout)
+                self.assertNotIn("return 'ok'", result.stdout)
+
+            proposals = json.loads((stage_root / LLM_EXTRACTION_TARGET).read_text(encoding="utf-8"))
+            decisions_path.write_text(json.dumps(self._review_decisions(proposals)), encoding="utf-8")
+
+            missing_approval = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--build-review-ledger",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--llm-proposals",
+                    str(stage_root / LLM_EXTRACTION_TARGET),
+                    "--llm-proposal-provider",
+                    str(stage_root / LLM_PROPOSAL_PROVIDER_TARGET),
+                    "--llm-proposal-eval",
+                    str(stage_root / LLM_PROPOSAL_EVAL_TARGET),
+                    "--live-governance",
+                    str(stage_root / ".codex/product-agent-os/project-code-graph-live-governance.json"),
+                    "--review-decisions",
+                    str(decisions_path),
+                    "--stage",
+                    str(stage_root),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            review = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--build-review-ledger",
+                    "--graph",
+                    str(stage_root / PROJECT_GRAPH_TARGET),
+                    "--llm-proposals",
+                    str(stage_root / LLM_EXTRACTION_TARGET),
+                    "--llm-proposal-provider",
+                    str(stage_root / LLM_PROPOSAL_PROVIDER_TARGET),
+                    "--llm-proposal-eval",
+                    str(stage_root / LLM_PROPOSAL_EVAL_TARGET),
+                    "--live-governance",
+                    str(stage_root / ".codex/product-agent-os/project-code-graph-live-governance.json"),
+                    "--review-ledger-approval",
+                    str(review_approval_path),
+                    "--review-decisions",
+                    str(decisions_path),
+                    "--stage",
+                    str(stage_root),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(missing_approval.returncode, 1)
+            self.assertEqual(review.returncode, 0, review.stdout + review.stderr)
+            payload = json.loads(review.stdout)
+            ledger = json.loads((stage_root / REVIEW_LEDGER_TARGET).read_text(encoding="utf-8"))
+            diff = json.loads((stage_root / PROPOSAL_DIFF_TARGET).read_text(encoding="utf-8"))
+            self.assertEqual(payload["rendered_artifacts"]["mode"], "build-review-ledger")
+            self.assertFalse(payload["rendered_artifacts"]["accepted_for_canonical_graph"])
+            self.assertEqual(payload["rendered_artifacts"]["canonical_graph_mutation"], "forbidden")
+            self.assertFalse(payload["rendered_artifacts"]["provider_call_allowed"])
+            self.assertFalse(payload["rendered_artifacts"]["external_call_performed"])
+            self.assertEqual(ledger["artifact_kind"], "project_graph_human_review_ledger")
+            self.assertEqual(ledger["decision_summary"]["accepted"], 1)
+            self.assertFalse(ledger["accepted_for_canonical_graph"])
+            self.assertEqual(diff["artifact_kind"], "project_graph_proposal_diff_preview")
+            self.assertTrue(diff["human_can_inspect_before_mutation"])
+            self.assertTrue(diff["mutation_plan_required_for_apply"])
+            self.assertFalse(diff["mutated_canonical_graph"])
+            self.assertNotIn(str(workspace), review.stdout)
+            self.assertNotIn("return 'ok'", review.stdout)
+
+            disable = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    str(workspace),
+                    "--disable-review-ledger",
+                    "--stage",
+                    str(stage_root),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(disable.returncode, 0, disable.stdout + disable.stderr)
+            self.assertFalse((stage_root / REVIEW_LEDGER_TARGET).exists())
+            self.assertFalse((stage_root / PROPOSAL_DIFF_TARGET).exists())
+
     def test_disable_llm_proposals_cli_removes_generated_proposals_without_touching_workspace(self):
         with tempfile.TemporaryDirectory() as tmp:
             workspace = Path(tmp) / "workspace"
@@ -1837,6 +2025,64 @@ class ProjectGraphCliTest(unittest.TestCase):
             "incident_path": "disable provider and record AI incident workflow",
             "residual_risks": ["provider hallucination remains blocked until owner review"],
         }
+
+    def _review_ledger_approval(self) -> dict:
+        return {
+            "explicit_approval": True,
+            "owner": "Product-Agent OS Maintainer",
+            "allowed_surfaces": ["human_review_ledger", "proposal_diff_preview"],
+            "review_policy": {
+                "owner_decision_required": True,
+                "evidence_refs_required": True,
+                "allowed_decisions": ["accepted", "rejected", "accepted_gap"],
+                "accepted_gap_requires_risk": True,
+                "safety_eval_required": True,
+            },
+            "diff_policy": {
+                "preview_nodes_edges_rationale_comments": True,
+                "canonical_mutation_allowed": False,
+                "batch30_dry_run_required": True,
+            },
+            "data_classification": {
+                "allowed_inputs": ["proposal_ids", "source_node_ids", "observation_ids", "owner_decisions"],
+                "forbidden_inputs": ["raw_source_bodies", "secrets", "absolute_local_paths", "private_text"],
+            },
+            "rollback_path": f"delete {REVIEW_LEDGER_TARGET.as_posix()}",
+            "residual_risks": ["accepted proposals still require Batch 30 dry-run before mutation"],
+        }
+
+    def _review_decisions(self, proposals: dict) -> dict:
+        decisions = []
+        for proposal, decision in [
+            (self._proposal_by_kind(proposals, "semantic_node", index=0), "accepted"),
+            (self._proposal_by_kind(proposals, "semantic_edge", index=0), "accepted_gap"),
+            (self._proposal_by_kind(proposals, "rationale_comment", index=0), "accepted_gap"),
+            (self._proposal_by_kind(proposals, "semantic_node", index=1), "rejected"),
+        ]:
+            record = {
+                "proposal_id": proposal["proposal_id"],
+                "decision": decision,
+                "decision_by": "Product-Agent OS Maintainer",
+                "evidence_refs": proposal["source_observation_ids"],
+                "rationale": f"Owner reviewed {proposal['proposal_kind']} proposal.",
+            }
+            if decision == "accepted_gap":
+                record["accepted_gap_risk"] = "Accepted as a bounded gap pending Batch 30 dry-run proof."
+                record["follow_up_condition"] = "Batch 30 mutation dry run must preserve graph digest expectations."
+            decisions.append(record)
+        return {"schema_version": 1, "owner": "Product-Agent OS Maintainer", "decisions": decisions}
+
+    def _proposal_by_kind(self, proposals: dict, kind: str, *, index: int = 0) -> dict:
+        matches = []
+        for key in ["semantic_node_proposals", "semantic_edge_proposals", "rationale_comment_proposals"]:
+            for proposal in proposals.get(key, []):
+                if proposal.get("proposal_kind") == kind:
+                    matches.append(proposal)
+        if len(matches) > index:
+            return matches[index]
+        if matches:
+            return matches[0]
+        self.fail(f"missing proposal kind {kind}")
 
     def _llm_approval(self) -> dict:
         return {

@@ -218,6 +218,23 @@ class FixtureEvalRunnerTest(unittest.TestCase):
         self.assertTrue(
             results["python-app"]["expected_checks"]["project_graph_live_llm_proposal_no_canonical_mutation_present"]
         )
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_human_review_ledger_present"])
+        self.assertTrue(
+            results["python-app"]["expected_checks"]["project_graph_human_review_ledger_governance_prerequisite_present"]
+        )
+        self.assertTrue(
+            results["python-app"]["expected_checks"]["project_graph_human_review_ledger_owner_decision_required_present"]
+        )
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_human_review_ledger_evidence_refs_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_human_review_accepted_gap_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_proposal_diff_preview_present"])
+        self.assertTrue(
+            results["python-app"]["expected_checks"]["project_graph_proposal_diff_inspectable_changes_present"]
+        )
+        self.assertTrue(
+            results["python-app"]["expected_checks"]["project_graph_proposal_diff_no_canonical_mutation_present"]
+        )
+        self.assertTrue(results["python-app"]["expected_checks"]["project_graph_human_review_ledger_no_live_calls_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_hybrid_retrieval_pipeline_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_hybrid_retrieval_explainable_fusion_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_hybrid_retrieval_fallback_present"])

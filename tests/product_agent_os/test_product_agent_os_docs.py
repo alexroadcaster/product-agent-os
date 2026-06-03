@@ -1171,6 +1171,119 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 with self.subTest(control_plane=filename, term=expected):
                     self.assertIn(expected, text)
 
+    def test_track10_task26_batch29_human_review_ledger_and_diff_preview_is_synced(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        documents = {
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+            "product_index": (PRODUCT_AGENT_OS / "index.md").read_text(encoding="utf-8"),
+            "technical": (PRODUCT_AGENT_OS / "technical.md").read_text(encoding="utf-8"),
+            "scenarios": (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8"),
+        }
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "agents": AGENTS.read_text(encoding="utf-8"),
+        }
+
+        registry_terms = [
+            "Product-Agent OS Track 10 Task 26 Batch 29 human review ledger and proposal diff preview",
+            "T10-LIVE-M17..M18",
+            "project_graph_review_ledger.py",
+            "graph-review-ledger.json",
+            "proposal-diff.json",
+            "project_graph_human_review_ledger_present",
+            "project_graph_proposal_diff_preview_present",
+            "verification_status:",
+        ]
+        for expected in registry_terms:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        backlog_terms = [
+            "Task 26 Batch 29 Closure",
+            "| `done` | `T10-LIVE-M17..M18` human review ledger and proposal diff preview |",
+            "Batch 29 explicit approval",
+            "project_graph_review_ledger.py",
+            "graph-review-ledger.json",
+            "proposal-diff.json",
+            "No accepted proposal without owner decision",
+            "Accept, reject or accepted_gap decisions with evidence refs",
+            "Human can inspect before mutation",
+            "proposal-only until Batch 30 dry-run mutation",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for expected in backlog_terms:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        docs_terms = [
+            "Task 26 Batch 29",
+            "T10-LIVE-M17..M18",
+            "Human Review Ledger And Proposal Diff Preview",
+            "project_graph_review_ledger.py",
+            "graph-review-ledger.json",
+            "proposal-diff.json",
+            "project_graph_human_review_ledger",
+            "project_graph_proposal_diff_preview",
+            "batch29_human_review_ledger_and_proposal_diff_preview",
+            "human_review_ledger",
+            "proposal_diff_preview",
+            "accepted",
+            "rejected",
+            "accepted_gap",
+            "No accepted proposal without owner decision",
+            "Accept, reject or accepted_gap decisions with evidence refs",
+            "Human can inspect before mutation",
+            "proposal-only until Batch 30 dry-run mutation",
+            "provider_call_allowed",
+            "external_call_performed",
+            "staged evidence only",
+            "not source of truth",
+            "no provider calls",
+            "no live external model/API calls",
+            "no canonical graph mutation",
+        ]
+        for document, text in documents.items():
+            for expected in docs_terms:
+                with self.subTest(document=document, term=expected):
+                    self.assertIn(expected, text)
+
+        control_terms = [
+            "Task 26 Batch 29",
+            "T10-LIVE-M17..M18",
+            "project_graph_review_ledger.py",
+            "graph-review-ledger.json",
+            "proposal-diff.json",
+            "project_graph_human_review_ledger_present",
+            "project_graph_human_review_ledger_governance_prerequisite_present",
+            "project_graph_human_review_ledger_owner_decision_required_present",
+            "project_graph_human_review_ledger_evidence_refs_present",
+            "project_graph_human_review_accepted_gap_present",
+            "project_graph_proposal_diff_preview_present",
+            "project_graph_proposal_diff_inspectable_changes_present",
+            "project_graph_proposal_diff_no_canonical_mutation_present",
+            "project_graph_human_review_ledger_no_live_calls_present",
+            "No accepted proposal without owner decision",
+            "Accept, reject or accepted_gap decisions with evidence refs",
+            "Human can inspect before mutation",
+            "proposal-only until Batch 30 dry-run mutation",
+            "provider_call_allowed",
+            "external_call_performed",
+            "no provider calls",
+            "no live external model/API calls",
+            "no canonical graph mutation",
+            "git staging/commit/push/PR remains explicit-only",
+        ]
+        for filename, text in control_plane.items():
+            for expected in control_terms:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
     def test_track10_task25_batch20_local_backend_gate_is_synced(self):
         registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
         backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")

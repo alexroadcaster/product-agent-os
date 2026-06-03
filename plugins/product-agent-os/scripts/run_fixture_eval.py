@@ -68,6 +68,16 @@ from product_agent_os.project_graph_llm_proposal_provider import (  # noqa: E402
     validate_llm_proposal_provider_approval,
     validate_llm_proposal_provider_gate,
 )
+from product_agent_os.project_graph_review_ledger import (  # noqa: E402
+    PROPOSAL_DIFF_TARGET,
+    REVIEW_LEDGER_TARGET,
+    build_human_review_ledger,
+    build_proposal_diff_preview,
+    disable_review_ledger,
+    validate_human_review_ledger,
+    validate_proposal_diff_preview,
+    validate_review_ledger_approval,
+)
 from product_agent_os.project_graph_live_governance import (  # noqa: E402
     LIVE_CACHE_TARGET,
     LIVE_GOVERNANCE_TARGET,
@@ -2220,6 +2230,31 @@ def _expected_checks(
         )
         checks["project_graph_live_llm_proposal_no_canonical_mutation_present"] = (
             _project_graph_live_llm_proposal_no_canonical_mutation_present()
+        )
+        checks["project_graph_human_review_ledger_present"] = _project_graph_human_review_ledger_present()
+        checks["project_graph_human_review_ledger_governance_prerequisite_present"] = (
+            _project_graph_human_review_ledger_governance_prerequisite_present()
+        )
+        checks["project_graph_human_review_ledger_owner_decision_required_present"] = (
+            _project_graph_human_review_ledger_owner_decision_required_present()
+        )
+        checks["project_graph_human_review_ledger_evidence_refs_present"] = (
+            _project_graph_human_review_ledger_evidence_refs_present()
+        )
+        checks["project_graph_human_review_accepted_gap_present"] = (
+            _project_graph_human_review_accepted_gap_present()
+        )
+        checks["project_graph_proposal_diff_preview_present"] = (
+            _project_graph_proposal_diff_preview_present()
+        )
+        checks["project_graph_proposal_diff_inspectable_changes_present"] = (
+            _project_graph_proposal_diff_inspectable_changes_present()
+        )
+        checks["project_graph_proposal_diff_no_canonical_mutation_present"] = (
+            _project_graph_proposal_diff_no_canonical_mutation_present()
+        )
+        checks["project_graph_human_review_ledger_no_live_calls_present"] = (
+            _project_graph_human_review_ledger_no_live_calls_present()
         )
         checks["project_graph_hybrid_retrieval_pipeline_present"] = (
             _project_graph_hybrid_retrieval_pipeline_present()
@@ -5648,6 +5683,278 @@ def _project_graph_live_llm_proposal_no_canonical_mutation_present() -> bool:
         and packet.get("safe_next_action") == (
             "Stage proposals for human review; never treat provider output as canonical fact."
         )
+    )
+
+
+def _project_graph_human_review_approval() -> dict[str, Any]:
+    return {
+        "explicit_approval": True,
+        "owner": "Product-Agent OS Maintainer",
+        "allowed_surfaces": ["human_review_ledger", "proposal_diff_preview"],
+        "review_policy": {
+            "owner_decision_required": True,
+            "evidence_refs_required": True,
+            "allowed_decisions": ["accepted", "rejected", "accepted_gap"],
+            "accepted_gap_requires_risk": True,
+            "safety_eval_required": True,
+        },
+        "diff_policy": {
+            "preview_nodes_edges_rationale_comments": True,
+            "canonical_mutation_allowed": False,
+            "batch30_dry_run_required": True,
+        },
+        "data_classification": {
+            "allowed_inputs": ["proposal_ids", "source_node_ids", "observation_ids", "owner_decisions"],
+            "forbidden_inputs": ["raw_source_bodies", "secrets", "absolute_local_paths", "private_text"],
+        },
+        "rollback_path": f"delete {REVIEW_LEDGER_TARGET}",
+        "residual_risks": ["accepted proposals still require Batch 30 dry-run before mutation"],
+    }
+
+
+def _project_graph_human_review_decisions(proposals: dict[str, Any] | None = None) -> dict[str, Any]:
+    proposals = proposals or _project_graph_llm_extraction_proposals()
+    decisions = []
+    for proposal, decision in [
+        (_project_graph_proposal_by_kind(proposals, "semantic_node", index=0), "accepted"),
+        (_project_graph_proposal_by_kind(proposals, "semantic_edge", index=0), "accepted_gap"),
+        (_project_graph_proposal_by_kind(proposals, "rationale_comment", index=0), "accepted_gap"),
+        (_project_graph_proposal_by_kind(proposals, "semantic_node", index=1), "rejected"),
+    ]:
+        record = {
+            "proposal_id": proposal["proposal_id"],
+            "decision": decision,
+            "decision_by": "Product-Agent OS Maintainer",
+            "evidence_refs": proposal["source_observation_ids"],
+            "rationale": f"Owner reviewed {proposal['proposal_kind']} proposal.",
+        }
+        if decision == "accepted_gap":
+            record["accepted_gap_risk"] = "Accepted as a bounded gap pending Batch 30 dry-run proof."
+            record["follow_up_condition"] = "Batch 30 mutation dry run must preserve graph digest expectations."
+        decisions.append(record)
+    return {"schema_version": 1, "owner": "Product-Agent OS Maintainer", "decisions": decisions}
+
+
+def _project_graph_proposal_by_kind(proposals: dict[str, Any], kind: str, *, index: int) -> dict[str, Any]:
+    matches = []
+    for key in ["semantic_node_proposals", "semantic_edge_proposals", "rationale_comment_proposals"]:
+        matches.extend(
+            proposal
+            for proposal in proposals.get(key, [])
+            if isinstance(proposal, dict) and proposal.get("proposal_kind") == kind
+        )
+    if len(matches) > index:
+        return matches[index]
+    return matches[0] if matches else {}
+
+
+def _project_graph_human_review_ledger() -> dict[str, Any]:
+    graph = _project_graph_sample()
+    proposals = _project_graph_llm_extraction_proposals()
+    gate = _project_graph_live_llm_proposal_provider_gate()
+    safety_eval = evaluate_llm_proposal_safety(
+        gate,
+        graph=graph,
+        semantic_index=_project_graph_semantic_index(),
+        cases=[],
+        provider_results=None,
+    )
+    return build_human_review_ledger(
+        graph,
+        local_proposals=proposals,
+        provider_gate=gate,
+        safety_eval=safety_eval,
+        approval=_project_graph_human_review_approval(),
+        governance_packet=_project_graph_live_governance_packet(),
+        review_decisions=_project_graph_human_review_decisions(proposals),
+    )
+
+
+def _project_graph_proposal_diff_preview() -> dict[str, Any]:
+    return build_proposal_diff_preview(
+        _project_graph_sample(),
+        local_proposals=_project_graph_llm_extraction_proposals(),
+        review_ledger=_project_graph_human_review_ledger(),
+    )
+
+
+def _project_graph_human_review_ledger_present() -> bool:
+    approval = _project_graph_human_review_approval()
+    ledger = _project_graph_human_review_ledger()
+    summary = ledger.get("decision_summary", {})
+    return (
+        validate_review_ledger_approval(approval, _project_graph_live_governance_packet()).get("ok") is True
+        and ledger.get("artifact_kind") == "project_graph_human_review_ledger"
+        and ledger.get("approval_boundary") == "batch29_human_review_ledger_and_proposal_diff_preview"
+        and ledger.get("source_boundary") == "redacted_proposal_ids_and_evidence_refs_only_no_raw_source"
+        and ledger.get("status") == "ready"
+        and summary.get("accepted", 0) >= 1
+        and summary.get("rejected", 0) >= 1
+        and summary.get("accepted_gap", 0) >= 1
+        and validate_human_review_ledger(ledger).get("ok") is True
+    )
+
+
+def _project_graph_human_review_ledger_governance_prerequisite_present() -> bool:
+    proposals = _project_graph_llm_extraction_proposals()
+    missing = build_human_review_ledger(
+        _project_graph_sample(),
+        local_proposals=proposals,
+        provider_gate=_project_graph_live_llm_proposal_provider_gate(),
+        safety_eval=evaluate_llm_proposal_safety(
+            _project_graph_live_llm_proposal_provider_gate(),
+            graph=_project_graph_sample(),
+            semantic_index=_project_graph_semantic_index(),
+            cases=[],
+            provider_results=None,
+        ),
+        approval=_project_graph_human_review_approval(),
+        governance_packet=None,
+        review_decisions=_project_graph_human_review_decisions(proposals),
+    )
+    invalid_governance = dict(_project_graph_live_governance_packet())
+    invalid_governance["status"] = "blocked"
+    invalid = validate_review_ledger_approval(_project_graph_human_review_approval(), invalid_governance)
+    return (
+        missing.get("status") == "approval_required"
+        and "review_ledger_approval:governance_packet:missing" in missing.get("validation", {}).get("errors", [])
+        and invalid.get("ok") is False
+        and "review_ledger_approval:governance_packet:not_ready" in invalid.get("errors", [])
+    )
+
+
+def _project_graph_human_review_ledger_owner_decision_required_present() -> bool:
+    proposals = _project_graph_llm_extraction_proposals()
+    decisions = _project_graph_human_review_decisions(proposals)
+    decisions["decisions"][0]["decision_by"] = ""
+    ledger = build_human_review_ledger(
+        _project_graph_sample(),
+        local_proposals=proposals,
+        provider_gate=_project_graph_live_llm_proposal_provider_gate(),
+        safety_eval=evaluate_llm_proposal_safety(
+            _project_graph_live_llm_proposal_provider_gate(),
+            graph=_project_graph_sample(),
+            semantic_index=_project_graph_semantic_index(),
+            cases=[],
+            provider_results=None,
+        ),
+        approval=_project_graph_human_review_approval(),
+        governance_packet=_project_graph_live_governance_packet(),
+        review_decisions=decisions,
+    )
+    return (
+        ledger.get("status") == "blocked"
+        and "review_decision:accepted:owner_decision" in ledger.get("validation", {}).get("errors", [])
+        and ledger.get("decision_summary", {}).get("accepted", 0) >= 1
+        and ledger.get("accepted_for_canonical_graph") is False
+    )
+
+
+def _project_graph_human_review_ledger_evidence_refs_present() -> bool:
+    proposals = _project_graph_llm_extraction_proposals()
+    decisions = _project_graph_human_review_decisions(proposals)
+    decisions["decisions"][0]["evidence_refs"] = ["obs:not-present"]
+    invalid = build_human_review_ledger(
+        _project_graph_sample(),
+        local_proposals=proposals,
+        provider_gate=_project_graph_live_llm_proposal_provider_gate(),
+        safety_eval=evaluate_llm_proposal_safety(
+            _project_graph_live_llm_proposal_provider_gate(),
+            graph=_project_graph_sample(),
+            semantic_index=_project_graph_semantic_index(),
+            cases=[],
+            provider_results=None,
+        ),
+        approval=_project_graph_human_review_approval(),
+        governance_packet=_project_graph_live_governance_packet(),
+        review_decisions=decisions,
+    )
+    ledger = _project_graph_human_review_ledger()
+    return (
+        invalid.get("status") == "blocked"
+        and "review_decision:accepted:evidence_refs" in invalid.get("validation", {}).get("errors", [])
+        and all(entry.get("evidence_refs") for entry in ledger.get("review_entries", []))
+    )
+
+
+def _project_graph_human_review_accepted_gap_present() -> bool:
+    ledger = _project_graph_human_review_ledger()
+    gaps = [
+        entry
+        for entry in ledger.get("review_entries", [])
+        if isinstance(entry, dict) and entry.get("decision") == "accepted_gap"
+    ]
+    return (
+        ledger.get("decision_summary", {}).get("accepted_gap", 0) >= 1
+        and bool(gaps)
+        and all(entry.get("accepted_gap_risk") for entry in gaps)
+        and all(entry.get("follow_up_condition") for entry in gaps)
+        and all(entry.get("eligible_for_canonical_mutation") is False for entry in gaps)
+        and all(entry.get("requires_batch30_dry_run") is True for entry in gaps)
+    )
+
+
+def _project_graph_proposal_diff_preview_present() -> bool:
+    diff = _project_graph_proposal_diff_preview()
+    return (
+        diff.get("artifact_kind") == "project_graph_proposal_diff_preview"
+        and diff.get("status") == "preview_ready"
+        and diff.get("human_can_inspect_before_mutation") is True
+        and diff.get("mutation_plan_required_for_apply") is True
+        and validate_proposal_diff_preview(diff, _project_graph_human_review_ledger()).get("ok") is True
+    )
+
+
+def _project_graph_proposal_diff_inspectable_changes_present() -> bool:
+    diff = _project_graph_proposal_diff_preview()
+    changes = diff.get("diff", {})
+    return (
+        len(changes.get("added_nodes", [])) >= 1
+        and len(changes.get("added_edges", [])) >= 1
+        and len(changes.get("rationale_comments", [])) >= 1
+        and changes.get("changed_nodes") == []
+        and diff.get("summary", {}).get("added_nodes", 0) >= 1
+        and diff.get("generated_view_policy") == "proposal_diff_preview_is_generated_evidence_not_source_of_truth"
+    )
+
+
+def _project_graph_proposal_diff_no_canonical_mutation_present() -> bool:
+    ledger = _project_graph_human_review_ledger()
+    diff = _project_graph_proposal_diff_preview()
+    payload = json.dumps([ledger, diff], sort_keys=True).lower()
+    return (
+        ledger.get("canonical_graph_mutation") == "forbidden"
+        and diff.get("canonical_graph_mutation") == "forbidden"
+        and ledger.get("accepted_for_canonical_graph") is False
+        and diff.get("accepted_for_canonical_graph") is False
+        and diff.get("mutated_canonical_graph") is False
+        and diff.get("safe_next_action") == "Review this preview; Batch 30 owns dry-run mutation, journal and rollback."
+        and "mutated_canonical_graph\": true" not in payload
+        and "canonical_graph_mutation\": \"allowed" not in payload
+    )
+
+
+def _project_graph_human_review_ledger_no_live_calls_present() -> bool:
+    ledger = _project_graph_human_review_ledger()
+    diff = _project_graph_proposal_diff_preview()
+    payload = json.dumps([ledger, diff], sort_keys=True).lower()
+    with tempfile.TemporaryDirectory() as tmp:
+        stage_root = Path(tmp) / "stage"
+        for relative in [REVIEW_LEDGER_TARGET, PROPOSAL_DIFF_TARGET]:
+            target = stage_root / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text("generated\n", encoding="utf-8")
+        disabled = disable_review_ledger(stage_root, workspace=FIXTURES / "project-code-graph-minimal-python")
+    proof = disabled.get("rendered_artifacts", {}).get("deletion_proof", {})
+    return (
+        ledger.get("provider_call_allowed") is False
+        and ledger.get("external_call_performed") is False
+        and diff.get("provider_call_allowed") is False
+        and diff.get("external_call_performed") is False
+        and "provider_call_allowed\": true" not in payload
+        and "external_call_performed\": true" not in payload
+        and disabled.get("rendered_artifacts", {}).get("status") == "disabled"
+        and proof.get("remaining") == []
     )
 
 
