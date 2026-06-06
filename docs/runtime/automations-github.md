@@ -1,4 +1,4 @@
-# Automations и GitHub
+﻿# Automations и GitHub
 
 Source status: `official + experiment`  
 Источники: [Codex automations](https://developers.openai.com/codex/app/automations), [Codex best practices](https://developers.openai.com/codex/learn/best-practices), [Codex GitHub integration](https://developers.openai.com/codex/integrations/github), [Codex GitHub Action](https://developers.openai.com/codex/automation/github-action).
@@ -11,11 +11,11 @@ Codex best practices формулируют практическое прави�
 
 - summarize recent commits;
 - scan likely bugs;
-- draft release notes;
+- draft заметки к release;
 - check CI failures;
 - produce standup summaries;
-- run scheduled documentation freshness audit;
-- run recurring security/threat-model review.
+- запуск scheduled documentation freshness audit;
+- запуск recurring security/threat-model review.
 
 ## GitHub delivery loop
 
@@ -32,11 +32,11 @@ flowchart LR
 
 ## Permission baseline
 
-For CI/PR automation:
+Для CI/PR automation:
 
-- prefer read-only analysis for review jobs;
-- use least-privilege repository tokens;
-- separate comment/review jobs from write jobs;
-- require explicit branch or PR scope;
-- store final evidence in PR body or check summary.
+- prefer read-only analysis для review jobs;
+- использовать least-privilege repository tokens;
+- separate comment/review jobs из писать jobs;
+- требуют explicit branch или PR scope;
+- сохраняйте final evidence в PR body или check summary.
 

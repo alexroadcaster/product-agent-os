@@ -1,4 +1,4 @@
-# Архитектура проекта
+﻿# Архитектура проекта
 
 Source status: `experiment`
 
@@ -27,21 +27,21 @@ flowchart TD
 
 ```mermaid
 sequenceDiagram
-    participant U as User
-    participant M as Main orchestrator
-    participant R as Research agent
-    participant V as Verification agent
-    participant S as Synthesis agent
-    participant KB as Knowledge base
+    participant U как User
+    participant M как Main orchestrator
+    participant R как Research agent
+    participant V как Verification agent
+    participant S как Synthesis agent
+    participant KB как Knowledge base
 
     U->>M: Goal + constraints
     M->>R: Source discovery task
     R-->>M: Source cards + claims
     M->>V: Verify claims
     V-->>M: Verified / unsupported / conflicts
-    M->>S: Write learning material
+    M->>S: Создайте learning material
     S-->>M: Draft + source notes
-    M->>KB: Apply approved docs changes
+    M->>KB: Применить approved docs changes
     M-->>U: Summary + verification evidence
 ```
 
@@ -49,15 +49,15 @@ sequenceDiagram
 
 ```mermaid
 flowchart TD
-    C["Codex App / CLI / IDE"] --> P["Playbooks and AGENTS.md"]
+    C["Codex App / CLI / IDE"] --> P["Playbooks и AGENTS.md"]
     P --> S["Skills"]
     S --> SA["Subagents"]
     SA --> ASDK["Agents SDK"]
     ASDK --> RAPI["Responses API"]
     ASDK --> MCP["Codex MCP"]
-    RAPI --> TOOLS["Tools and structured outputs"]
+    RAPI --> TOOLS["Tools и structured outputs"]
     MCP --> WS["Workspace execution"]
-    ASDK --> TR["Tracing and evals"]
+    ASDK --> TR["Tracing и evals"]
 ```
 
 ## Hallucination control loop

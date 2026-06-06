@@ -1,4 +1,4 @@
-# Diagram atlas
+﻿# Diagram atlas
 
 Source status: `official + experiment`
 
@@ -35,7 +35,7 @@ flowchart LR
     C --> D["Runtime decision"]
     D --> E["Implementation loop"]
     E --> F["Skill lifecycle"]
-    E --> G["Context and verification"]
+    E --> G["Context и verification"]
     F --> H["Reusable project methods"]
     G --> I["Product-ready output"]
 ```

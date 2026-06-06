@@ -1562,7 +1562,7 @@ type: "methodology"
 status: "official"
 checked_at: "2026-05-24"
 summary: "ATDD frames acceptance tests before implementation through customer, development, and testing perspectives."
-relevance: "Acceptance criteria traceability from REQUIREMENTS.md to TEST.md and eval gates."
+relevance: "Критерии приемки traceability from REQUIREMENTS.md to TEST.md and eval gates."
 trust_level: "high"
 ```
 
@@ -3135,6 +3135,114 @@ summary: "Batch 34C `B34-I18N-M24..M30` enables RU/EN localization for the Produ
 relevance: "This packet follows Batch 34B public copy cleanup and makes the promoted product documentation usable as separate RU and EN experiences without copying RU fallback pages into the EN build. Internal evidence surfaces remain internal and out of the EN public navigation."
 trust_level: "high"
 verification_status: "Docs/config/source-policy slice. The B34C contract is checked by `test_track10_task26_batch34c_ru_en_i18n_localization_is_enabled`: the focused B34C test first failed on the missing B34C packet, then passed; EN Cyrillic scan, `.en.md` link scan and public forbidden-term scan returned no matches; EN sibling presence scan reported `missing: []` for 35 public-ready pages; `python -m unittest tests.product_agent_os.test_product_agent_os_docs -v` ran 42 tests with OK; `python tools\\check_docs.py` passed; strict MkDocs built RU root and EN `/en/` with workspace-local `.mkdocs_deps_b34c` dependencies into disposable `.mkdocs_task26_b34c_site` and exited 0; temporary dependency/site directories were removed. It starts no live server, runs no browser automation, performs no provider/live external model/API calls, performs no canonical graph mutation and performs no git stage/commit/push/PR."
+```
+
+```yaml
+title: "Product-Agent OS Batch 34D product docs QA and closure packet"
+url: "docs/sources/product-agent-os-batch34d-product-docs-qa-closure.md; docs/sources/product-agent-os-batch34c-i18n-localization.md; docs/sources/product-agent-os-track-10-backlog.md; mkdocs.yml; tools/check_docs.py; tests/product_agent_os/test_product_agent_os_docs.py; site/index.html; site/en/index.html"
+type: "internal documentation"
+source_status: "project-authored"
+checked_at: "2026-06-03"
+summary: "Batch 34D `B34-QA-M31..M33` closes Product-Agent OS product docs QA after Batch 34B public copy cleanup and Batch 34C RU/EN localization. It records product-docs quality gates, `public_forbidden_terms`, `localized_page_parity`, `Source status` rules, `localized_nav_coverage`, `static_html_language_switcher_evidence` and regular site/ rebuild evidence."
+relevance: "This packet is the final Batch 34 addendum closure before the separate Batch 35 approval-bound execution decision. It verifies the public-ready RU/EN documentation set through focused docs tests and static rendered HTML inspection, without live server or browser automation."
+trust_level: "high"
+verification_status: "Docs/source-policy/rendered-site slice. The B34D contract is checked by `test_track10_task26_batch34d_product_docs_qa_and_closure_is_recorded`: the focused B34D test first failed on the missing B34D packet, then failed on missing EN `site/` output before rebuild, then passed after regular strict MkDocs rebuilt `site/`. `python -m unittest tests.product_agent_os.test_product_agent_os_docs -v` ran 43 tests with OK; `python tools\\check_docs.py` passed; static HTML inspection found `md-select`, `hreflang=\"ru\"`, `hreflang=\"en\"` and `/en/` routes in RU/EN home and Product-Agent OS pages; post-evidence strict MkDocs exited 0; `git diff --check` passed after mechanical normalization of 163 generated HTML files. Batch 34D starts no live server, runs no browser automation, performs no provider/live external model/API calls, performs no canonical graph mutation and performs no git stage/commit/push/PR."
+```
+
+```yaml
+title: "Product-Agent OS Batch 34E full-site i18n parity corrective matrix"
+url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md; README.md; plugins/product-agent-os/README.md; tests/product_agent_os/test_product_agent_os_docs.py"
+type: "internal documentation"
+source_status: "project-authored"
+checked_at: "2026-06-06"
+summary: "Batch 34E `B34E-I18N-M34..M49` is a corrective full-site i18n parity matrix. It records that Batch 34C covered the promoted public-ready page set only, while full-site bilingual documentation requires every buildable RU Markdown page to have a matching `.en.md` sibling."
+relevance: "This matrix records when the documentation site can be described as fully bilingual: all generated pages have RU/EN parity, EN navigation/search/sitemap coverage, language-switcher parity and full-site content scans."
+trust_level: "high"
+verification_status: "Planning/control-plane update plus M38-M49 source-level EN sibling, EN editorial, RU quality, generated-site language-switcher, search/sitemap and final closure execution. Initial planning inventory recorded `docs_ru_pages_total: 126`, `existing_en_siblings: 36` and `missing_en_siblings: 90`; current M49 inventory records `docs_ru_pages_total: 127`, `existing_en_siblings: 127`, `missing_en_siblings: 0`, `full_site_en_siblings_created`, `full_site_en_editorial_quality_sweep`, `full_site_ru_quality_sweep`, `full_site_language_switcher_parity`, `full_site_search_sitemap_parity`, `full_site_i18n_closure`, `full_site_i18n_final_evidence`, `ru_source_forbidden_english_phrase_hits: 0`, `static_language_switcher_pairs_checked: 127`, `language_switcher_pair_failures: 0`, `file_url_escape_failures: 0`, `search_index_ru_pages_present: 127`, `search_index_en_pages_present: 127`, `sitemap_ru_pages_present: 127`, `sitemap_en_pages_present: 127`, `search_index_ru_fallback_pollution: 0`, `sitemap_ru_fallback_pollution: 0` and no remaining Batch 34E gates. No live server, browser automation, provider/live external model/API call, canonical graph mutation, plugin publication, external write or git stage/commit/push/PR is performed by this slice."
+```
+
+```yaml
+title: "Product-Agent OS Batch 34E M34-M37 full-site i18n inventory and nav gate"
+url: "docs/sources/product-agent-os-batch34e-full-site-i18n-inventory.md; docs/sources/product-agent-os-track-10-backlog.md; docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; mkdocs.yml; tools/check_docs.py; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
+type: "internal documentation"
+source_status: "project-authored"
+checked_at: "2026-06-06"
+summary: "Batch 34E `B34E-I18N-M34..M37` executes the corrective scope reset, full-site i18n inventory, RED parity gate and EN navigation metadata expansion. It records `full_site_i18n_inventory`, `full_site_i18n_red_gate`, `full_site_en_nav_configured`, initial `docs_ru_pages_total: 127`, `initial_m35_existing_en_siblings: 37`, `initial_m35_missing_en_siblings: 90`, and current `existing_en_siblings: 127`, `missing_en_siblings: 0`."
+relevance: "This packet makes the full-site bilingual gap explicit before translation execution. It keeps the parity gate visible as `expected_red_full_site_i18n_parity` while M38-M43 create the missing EN siblings and M47 rebuilds/searches the site."
+trust_level: "high"
+verification_status: "Docs/source/config/test slice. Focused M34-M37 test first failed on the missing inventory packet, then passed after the packet, registry/backlog/control-plane and EN nav sync. `full_site_i18n_red_gate` ran as `expectedFailure`, confirming the current 90 missing EN siblings. `python -m unittest tests.product_agent_os.test_product_agent_os_docs -v` ran 48 tests with OK and 1 expected failure; `python tools\\check_docs.py` passed; strict MkDocs failed with 50 warnings because EN nav now references untranslated pages with no `.en.md` siblings and `fallback_to_default: false`, which is the expected M37 pre-translation blocker for M38-M43. `git diff --check` exited 0 with existing generated-site CRLF warnings. It does not translate missing pages, rebuild site/, start a live server, run browser automation, call providers/live external model/API endpoints, mutate the canonical graph, publish the plugin or perform git stage/commit/push/PR."
+```
+
+```yaml
+title: "Product-Agent OS Batch 34E M38-M43 EN sibling translation pass"
+url: "docs/sources/product-agent-os-batch34e-full-site-i18n-inventory.md; docs/codex/overview.en.md; docs/prompting/overview.en.md; docs/agent-systems/overview.en.md; docs/artifact-templates/prompt-packet.en.md; docs/insights/index.en.md; docs/playbooks/research-loop.en.md; docs/methodologies/index.en.md; docs/sources/registry.en.md; docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.en.md; tests/product_agent_os/test_product_agent_os_docs.py"
+type: "internal documentation"
+source_status: "project-authored"
+checked_at: "2026-06-06"
+summary: "Batch 34E `B34E-I18N-M38..M43` creates EN siblings for the 90 pages missing after M37 and updates source inventory to `docs_ru_pages_total: 127`, `existing_en_siblings: 127` and `missing_en_siblings: 0`."
+relevance: "Closes source-level EN sibling parity before M44-M49 quality, generated-site, search/sitemap and language-switcher closure gates."
+trust_level: "high"
+verification_status: "Source-level translation slice. Focused M38-M43 test first failed on 90 missing EN siblings, then the source inventory scan reported `ru 127 paired 127 missing 0`, EN Cyrillic scan reported `cyr_hits 0`, and every EN sibling retained `Source status:`. This slice does not rebuild generated `site/`, does not start a live server, run browser automation, call providers/live external model/API endpoints, mutate the canonical graph, publish the plugin or perform git stage/commit/push/PR."
+```
+
+```yaml
+title: "Product-Agent OS Batch 34E M44 EN editorial quality sweep"
+url: "docs/sources/product-agent-os-batch34e-full-site-i18n-inventory.md; docs/sources/product-agent-os-track-10-backlog.md; docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; tests/product_agent_os/test_product_agent_os_docs.py"
+type: "internal documentation"
+source_status: "project-authored"
+checked_at: "2026-06-06"
+summary: "Batch 34E `B34E-I18N-M44` records `full_site_en_editorial_quality_sweep` for the full `.en.md` source corpus."
+relevance: "Closes the source-level EN editorial quality gate before M45-M49 RU quality, generated-site, search/sitemap, language-switcher and final closure gates."
+trust_level: "high"
+verification_status: "Source-level editorial slice. The M44 test gate first failed on missing `done_through_m44` evidence markers before the editorial/control-plane sync. Closure requires zero EN Cyrillic, mojibake, Latinized Russian/machine-transliteration markers and unresolved internal Markdown links outside fenced code examples. This slice does not rebuild generated `site/`, does not start a live server, run browser automation, call providers/live external model/API endpoints, mutate the canonical graph, publish the plugin or perform git stage/commit/push/PR."
+```
+
+```yaml
+title: "Product-Agent OS Batch 34E M45 RU quality sweep"
+url: "docs/sources/product-agent-os-batch34e-full-site-i18n-inventory.md; docs/sources/product-agent-os-track-10-backlog.md; docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; tests/product_agent_os/test_product_agent_os_docs.py"
+type: "internal documentation"
+source_status: "project-authored"
+checked_at: "2026-06-06"
+summary: "Batch 34E `B34E-I18N-M45` records `full_site_ru_quality_sweep` for the full RU `.md` source corpus with `.en.md` siblings."
+relevance: "Closes the source-level RU quality gate before M46-M49 generated-site, search/sitemap, language-switcher and final closure gates."
+trust_level: "high"
+verification_status: "Source-level RU quality slice. The M45 test gate first failed on missing `done_through_m45` evidence markers before the RU cleanup/control-plane sync. Closure requires `ru_source_forbidden_english_phrase_hits: 0` for non-term English explanatory headings and table labels outside official terms, commands, URLs, source titles, paths, IDs and code examples. This slice does not rebuild generated `site/`, does not start a live server, run browser automation, call providers/live external model/API endpoints, mutate the canonical graph, publish the plugin or perform git stage/commit/push/PR."
+```
+
+```yaml
+title: "Product-Agent OS Batch 34E M46 language switcher parity"
+url: "docs/sources/product-agent-os-batch34e-full-site-i18n-inventory.md; docs/sources/product-agent-os-track-10-backlog.md; docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; site/; tests/product_agent_os/test_product_agent_os_docs.py"
+type: "internal documentation"
+source_status: "project-authored"
+checked_at: "2026-06-06"
+summary: "Batch 34E `B34E-I18N-M46` records `full_site_language_switcher_parity` for generated regular `site/` output."
+relevance: "Closes generated-site RU/EN language-switcher parity before M47-M49 search/sitemap, strict build closure and final evidence gates."
+trust_level: "high"
+verification_status: "Generated-site static inspection slice. The M46 test gate first failed on missing `done_through_m46` evidence markers before source/control-plane sync. Regular strict MkDocs rebuilt `site/`; static generated HTML inspection checked 127 RU/EN page pairs, confirmed `language_switcher_pair_failures: 0` and `file_url_escape_failures: 0`, and stayed inside `site/` for `file://` resolution. This slice does not start a live server, run browser automation, call providers/live external model/API endpoints, mutate the canonical graph, publish the plugin or perform git stage/commit/push/PR."
+```
+
+```yaml
+title: "Product-Agent OS Batch 34E M47 search sitemap and strict build parity"
+url: "docs/sources/product-agent-os-batch34e-full-site-i18n-inventory.md; docs/sources/product-agent-os-track-10-backlog.md; docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; mkdocs.yml; site/search/search_index.json; site/sitemap.xml; tests/product_agent_os/test_product_agent_os_docs.py"
+type: "internal documentation"
+source_status: "project-authored"
+checked_at: "2026-06-06"
+summary: "Batch 34E `B34E-I18N-M47` records `full_site_search_sitemap_parity` for generated regular `site/` output."
+relevance: "Closes generated-site RU/EN search and sitemap parity before M48-M49 strict-build closure evidence and final full-site evidence gates."
+trust_level: "high"
+verification_status: "Generated-site search/sitemap inspection slice. The M47 test gate first failed on missing `done_through_m47` evidence markers and exposed that `reconfigure_search: true` removed 9 real EN sibling pages from search as duplicate entries. M47 keeps `fallback_to_default: false` and changes `reconfigure_search: false`; strict MkDocs rebuilt `site/` with exit 0, and static search/sitemap inspection confirmed `search_index_ru_pages_present: 127`, `search_index_en_pages_present: 127`, `sitemap_ru_pages_present: 127`, `sitemap_en_pages_present: 127`, `search_index_ru_fallback_pollution: 0` and `sitemap_ru_fallback_pollution: 0`. This slice does not start a live server, run browser automation, call providers/live external model/API endpoints, mutate the canonical graph, publish the plugin or perform git stage/commit/push/PR."
+```
+
+```yaml
+title: "Product-Agent OS Batch 34E M48-M49 final full-site i18n closure"
+url: "docs/sources/product-agent-os-batch34e-full-site-i18n-inventory.md; docs/sources/product-agent-os-track-10-backlog.md; docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; site/; site/search/search_index.json; site/sitemap.xml; tests/product_agent_os/test_product_agent_os_docs.py; tools/check_docs.py"
+type: "internal documentation"
+source_status: "project-authored"
+checked_at: "2026-06-06"
+summary: "Batch 34E `B34E-I18N-M48..M49` records `done_through_m48`, `done_through_m49`, `full_site_i18n_closure` and `full_site_i18n_final_evidence` for final full-site RU/EN documentation parity."
+relevance: "Closes the corrective full-site i18n work after M47 by requiring source/control-plane sync, strict MkDocs closure evidence, static file-safe language-switcher checks, search/sitemap parity and RU/EN content scans."
+trust_level: "high"
+verification_status: "Final closure slice. The focused M48-M49 test first failed on missing final closure markers and the old planned backlog row. Final evidence records `strict_mkdocs_final_closure_exit_code: 0`, `docs_ru_pages_total: 127`, `existing_en_siblings: 127`, `missing_en_siblings: 0`, `rendered_ru_pages_checked: 127`, `rendered_en_pages_checked: 127`, `static_language_switcher_pairs_checked: 127`, `language_switcher_pair_failures: 0`, `file_url_escape_failures: 0`, `search_index_ru_pages_present: 127`, `search_index_en_pages_present: 127`, `sitemap_ru_pages_present: 127`, `sitemap_en_pages_present: 127`, `en_source_cyrillic_hits: 0`, `ru_source_forbidden_english_phrase_hits: 0` and no remaining Batch 34E gates. This slice does not start a live server, run browser automation, call providers/live external model/API endpoints, mutate the canonical graph, publish the plugin or perform git stage/commit/push/PR."
 ```
 
 ```yaml

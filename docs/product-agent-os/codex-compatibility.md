@@ -4,103 +4,103 @@ Source status: `official + experiment`
 
 Источники: [Codex plugins](https://developers.openai.com/codex/plugins), [Build plugins](https://developers.openai.com/codex/plugins/build), [Agent Skills](https://developers.openai.com/codex/skills), [Subagents](https://developers.openai.com/codex/subagents), [AGENTS.md](https://developers.openai.com/codex/guides/agents-md), [Codex hooks](https://developers.openai.com/codex/hooks), [Agent approvals and security](https://developers.openai.com/codex/agent-approvals-security), [Codex with Agents SDK](https://developers.openai.com/codex/guides/agents-sdk), [Product-Agent OS architecture](architecture.md).
 
-Compatibility means the package fits Codex surfaces. It does not approve live execution, provider calls, external writes, hosted docs, database access, automation activation or git actions.
+Compatibility означает, что package подходит для Codex surfaces. Это не approval на live execution, provider calls, external writes, hosted docs, database access, automation activation или git actions.
 
-## Inputs
+## Входы
 
-- current `.codex-plugin/plugin.json` and packaged plugin metadata;
-- local skills, scripts, templates, MCP declarations and staged hooks;
-- Codex App, CLI and IDE extension workflow expectations;
-- current `AGENTS.md`, sandbox, approvals and source policy;
-- compatibility validator output and any accepted gaps.
+- текущий `.codex-plugin/plugin.json` и packaged plugin metadata;
+- local skills, scripts, templates, MCP declarations и staged hooks;
+- Codex App, CLI и IDE extension workflow expectations;
+- текущий `AGENTS.md`, sandbox, approvals и политика источников;
+- compatibility validator output и any accepted gaps.
 
-## Outputs
+## Выходы
 
 - package compatibility status;
-- supported Codex surfaces and non-goals;
-- approval boundary for live systems, provider calls, external writes, hosted docs, database access, active automation and git actions;
-- verification commands for package and docs closure;
-- residual risks when a compatibility claim depends on current official Codex behavior.
+- supported Codex surfaces и non-goals;
+- approval boundary для live systems, provider calls, external writes, hosted docs, database access, active automation и git actions;
+- verification commands для package и docs closure;
+- residual risks когда compatibility claim depends на текущий official Codex behavior.
 
 ## Canonical Safety Boundary
 
-Product-Agent OS keeps a conservative Codex boundary:
+Product-Agent OS keeps conservative Codex boundary:
 
-- no live model call from compatibility checks;
-- no separate OpenAI API key requirement for the Codex runtime runner;
-- no standalone Agents SDK activation hidden behind the plugin;
-- no global config mutation;
-- no silent MCP/server/hook/automation activation;
-- no unapproved external writes;
-- no hosted docs or DB introspection bypass;
-- no readiness claims from detection.
+- нет live model call из compatibility checks;
+- нет separate OpenAI API key requirement для Codex runtime runner;
+- нет standalone Agents SDK activation hidden behind plugin;
+- нет global config mutation;
+- нет silent MCP/server/hook/automation activation;
+- нет unapproved external writes;
+- нет hosted docs или DB introspection bypass;
+- нет readiness claims из detection.
 
-Codex App, CLI, IDE extension, skills, MCP declarations and staged hooks are supported package surfaces. They are not permission to mutate target workspaces, GitHub, CI, package registries, production databases, hosted documentation, security systems or schedules without explicit approval and current verification evidence.
+Codex App, CLI, IDE extension, skills, MCP declarations и staged hooks являются supported package surfaces. Они являются не permission к mutate target workspaces, GitHub, CI, package registries, production databases, hosted documentation, security systems или schedules без explicit approval и текущий verification evidence.
 
 ## Compatible Surfaces
 
-| Surface | Supported use | Boundary |
+| Surface | Supported использовать | Boundary |
 | --- | --- | --- |
-| `.codex-plugin/plugin.json` | Plugin manifest and packaged capability declaration. | Manifest presence is compatibility evidence, not publication approval. |
-| Codex App | Interactive steering, ambiguity resolution, review and local workspace work. | User approvals and sandbox still govern actions. |
-| CLI | Local deterministic checks, renderers, validators and staged artifact generation. | Commands must respect project policy and approval scope. |
-| IDE extension | Code navigation, review and implementation support. | IDE context is not source of truth by itself. |
-| skills | Repeatable methods with inputs, outputs, verification and failure modes. | A skill can recommend actions but cannot grant external permission. |
-| subagents | Parallel or specialized work when ownership is clear. | Handoff must include files, context, expected evidence and stop conditions. |
-| `AGENTS.md` | Durable project rules and operating constraints. | Local project rules cannot override stronger system/developer instructions. |
-| staged hooks | Hook templates and staged proposals. | Hooks are not silently activated. |
-| MCP | Declared tool context and integration boundaries. | MCP access is not automatically safe or approval-free. |
-| Agents SDK | Product/runtime app architecture when explicitly chosen. | It is not the hidden runtime layer for this plugin. |
+| `.codex-plugin/plugin.json` | Plugin manifest и packaged capability declaration. | Manifest presence является compatibility evidence, не publication approval. |
+| Codex App | Interactive steering, ambiguity resolution, review и local workspace work. | User approvals и sandbox still govern actions. |
+| CLI | Local deterministic checks, renderers, validators и staged artifact generation. | Commands должен respect project policy и approval scope. |
+| IDE extension | Code navigation, review и implementation support. | IDE context является не является каноническим источником через itself. |
+| skills | Repeatable methods с inputs, outputs, verification и failure modes. | A skill может recommend actions но не может grant external permission. |
+| subagents | Parallel или specialized work когда ownership является clear. | Handoff должен включают files, context, ожидаемые доказательства и stop conditions. |
+| `AGENTS.md` | Durable project rules и operating constraints. | Local project rules не может override stronger system/developer instructions. |
+| staged hooks | Hook templates и staged proposals. | Hooks являются не silently activated. |
+| MCP | Declared tool context и integration boundaries. | MCP access является не automatically safe или approval-free. |
+| Agents SDK | Product/runtime app architecture когда explicitly chosen. | Это является не hidden runtime layer для эта plugin. |
 
 ## Non-Goals
 
-Product-Agent OS compatibility checks do not:
+Product-Agent OS compatibility checks не выполняют:
 
-- publish plugins or docs;
-- create schedules, recurring automations or GitHub Actions;
-- start local servers for verification;
-- run browser automation;
-- call external providers or live model/API endpoints;
+- publish plugins или docs;
+- create schedules, recurring automations или GitHub Actions;
+- старт local servers для verification;
+- запуск browser automation;
+- call external providers или live model/API endpoints;
 - mutate canonical graph facts;
-- stage, commit, push or open PRs;
-- certify legal, security or compliance readiness.
+- stage, commit, push или open PRs;
+- certify legal, security или compliance readiness.
 
-Those actions require explicit owner approval, current evidence and a rollback or stop condition.
+Those actions требуют explicit owner approval, текущий evidence и rollback или stop condition.
 
-## Verification
+## Проверка
 
-Use these checks when package boundaries or docs change:
+Используйте these checks когда package boundaries или docs change:
 
 ```powershell
 python plugins\product-agent-os\scripts\validate_codex_compatibility.py
 python tools\check_docs.py
 ```
 
-Use strict MkDocs when navigation, Mermaid, Markdown extensions or generated site output changes:
+Используйте strict MkDocs когда navigation, Mermaid, Markdown extensions или generated site output changes:
 
 ```powershell
 python -m mkdocs build --strict
 ```
 
-The compatibility validator should stay deterministic. If it needs live provider, browser, hosted docs or database evidence, that evidence belongs in a separate approval-bound route, not in baseline compatibility.
+Этот compatibility validator следует stay deterministic. Если это требует live provider, browser, hosted docs или database evidence, который evidence belongs в separate approval-bound route, не в baseline compatibility.
 
 ## Live Execution Boundaries
 
-The live layer stays disabled until each action has its own owner-approved packet:
+Этот live layer stays disabled пока каждый action имеет его own owner-approved packet:
 
 - local runtime launch;
 - browser automation smoke;
 - external embedding/reranker/LLM provider pilot;
 - canonical graph mutation pilot;
-- git release, push, PR or publication action.
+- git release, push, PR или publication action.
 
-Approvals are not bundled. Approval for one surface does not grant another.
+Approvals являются не bundled. Approval для один surface не grant another.
 
-## Risks
+## Риски
 
-- A compatible package can still be operationally unsafe if a user activates hooks, MCP servers, automations or external systems without evidence.
-- Generated cockpit/dashboard/report outputs can look authoritative; the docs must keep source-boundary labels visible.
-- Agent handoff quality matters more than the number of subagents. Parallel work without ownership can increase risk.
-- Official Codex behavior can evolve; source-backed claims should be reviewed against current official docs when product surfaces change.
+- A compatible package может still быть operationally unsafe если пользователь activates hooks, MCP servers, automations или external systems без evidence.
+- Generated cockpit/dashboard/report outputs может look authoritative; docs должен keep source-boundary labels visible.
+- Agent handoff quality matters more than number из subagents. Parallel work без ownership может increase risk.
+- Official Codex behavior может evolve; source-backed claims следует быть reviewed against текущий official docs когда product surfaces change.
 
-Next artifact: use [Packaging And Closure](packaging-and-closure.md) for release evidence and [Approval-Bound Real Testing](approval-bound-real-testing.md) before any live execution.
+Следующий artifact: используйте [Packaging And Closure](packaging-and-closure.md) для release evidence и [Approval-Bound Real Testing](approval-bound-real-testing.md) до any live execution.

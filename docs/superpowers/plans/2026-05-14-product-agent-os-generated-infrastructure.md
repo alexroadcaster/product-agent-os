@@ -945,7 +945,7 @@ Every handoff must include sources, assumptions, files touched or proposed, comm
 
 Create the other control-plane templates with the same marker pattern and these required headings:
 
-- `REQUIREMENTS.md`: `Goal`, `Users`, `Scope`, `Non-Goals`, `Constraints`, `Acceptance Criteria`, `Assumptions`, `Open Questions`.
+- `REQUIREMENTS.md`: `Goal`, `Users`, `Scope`, `Non-Goals`, `Constraints`, `Критерии приемки`, `Assumptions`, `Open Questions`.
 - `PLAN.md`: `Lifecycle State`, `Implementation Slices`, `Ownership`, `Dependencies`, `Risks`, `Rollback`, `Verification Gates`, `Approval Needs`.
 - `TEST.md`: `Deterministic Checks`, `Manual Checks`, `Runtime Or Visual Checks`, `Known Gaps`, `Evidence Format`.
 - `EVALS.md`: `Rubrics`, `Thresholds`, `Artifacts`, `Regression Notes`, `Unsupported Claims`.

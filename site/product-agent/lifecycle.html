@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
 
-        <meta name="description" content="Russian knowledge base for advanced OpenAI Codex and agentic workflows.">
+        <meta name="description" content="Документация Product-Agent OS для рабочих процессов с агентами и skills.">
 
 
 
@@ -18,6 +18,10 @@
 
 
 
+          <link rel="alternate" href="lifecycle.html" hreflang="ru">
+
+          <link rel="alternate" href="../en/product-agent/lifecycle.html" hreflang="en">
+
 
 
       <link rel="icon" href="../assets/images/favicon.png">
@@ -25,7 +29,7 @@
 
 
 
-        <title>Product lifecycle - OpenAI Codex Knowledge Base</title>
+        <title>Product lifecycle - Product-Agent OS</title>
 
 
 
@@ -94,7 +98,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
-    <a href="../index.html" title="OpenAI Codex Knowledge Base" class="md-header__button md-logo" aria-label="OpenAI Codex Knowledge Base" data-md-component="logo">
+    <a href="../index.html" title="Product-Agent OS" class="md-header__button md-logo" aria-label="Product-Agent OS" data-md-component="logo">
 
 
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -108,7 +112,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            OpenAI Codex Knowledge Base
+            Product-Agent OS
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -136,6 +140,32 @@
 
       <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
 
+
+      <div class="md-header__option">
+  <div class="md-select">
+
+    <button class="md-header__button md-icon" aria-label="Выберите язык">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+
+          <li class="md-select__item">
+            <a href="lifecycle.html" hreflang="ru" class="md-select__link">
+              RU
+            </a>
+          </li>
+
+          <li class="md-select__item">
+            <a href="../en/product-agent/lifecycle.html" hreflang="en" class="md-select__link">
+              EN
+            </a>
+          </li>
+
+      </ul>
+    </div>
+  </div>
+</div>
 
 
 
@@ -206,13 +236,13 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../index.html" title="OpenAI Codex Knowledge Base" class="md-nav__button md-logo" aria-label="OpenAI Codex Knowledge Base" data-md-component="logo">
+    <a href="../index.html" title="Product-Agent OS" class="md-nav__button md-logo" aria-label="Product-Agent OS" data-md-component="logo">
 
 
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
-    OpenAI Codex Knowledge Base
+    Product-Agent OS
   </label>
 
   <ul class="md-nav__list" data-md-scrollfix>
@@ -1251,10 +1281,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#ask-mode-before-code-mode" class="md-nav__link">
+  <a href="#ask-mode-code-mode" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Ask Mode before Code Mode
+        Ask Mode до Code Mode
 
     </span>
   </a>
@@ -3611,10 +3641,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#ask-mode-before-code-mode" class="md-nav__link">
+  <a href="#ask-mode-code-mode" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Ask Mode before Code Mode
+        Ask Mode до Code Mode
 
     </span>
   </a>
@@ -3662,89 +3692,89 @@
 
 <h1 id="product-lifecycle">Product lifecycle<a class="headerlink" href="#product-lifecycle" title="Permanent link">&para;</a></h1>
 <p>Source status: <code>official + experiment</code><br />
-Источники: <a href="https://openai.com/business/guides-and-resources/how-openai-uses-codex/">How OpenAI uses Codex</a>, <a href="https://developers.openai.com/codex/learn/best-practices">Codex best practices</a>, <a href="https://developers.openai.com/codex/use-cases/iterate-on-difficult-problems">Iterate on difficult problems</a>, <a href="https://developers.openai.com/codex/workflows">Codex workflows</a>.</p>
+Источники: <a href="https://openai.com/business/guides-and-resources/how-openai-uses-codex/">How OpenAI uses Codex</a>, <a href="https://developers.openai.com/codex/learn/best-practices">Codex best practices</a>, <a href="https://developers.openai.com/codex/use-cases/iterate-on-difficult-problems">Iterate на difficult problems</a>, <a href="https://developers.openai.com/codex/workflows">Codex workflows</a>.</p>
 <h2 id="end-to-end-loop">End-to-end loop<a class="headerlink" href="#end-to-end-loop" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
 <th>Stage</th>
-<th>Agent work</th>
-<th>Artifact</th>
+<th>Работа агента</th>
+<th>Артефакт</th>
 <th>Gate</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Idea</td>
-<td>Clarify user value, hypothesis, metric and constraints</td>
+<td>Уточнить пользовательскую ценность, гипотезу, метрику и ограничения</td>
 <td><code>REQUIREMENTS.md</code></td>
-<td>Scope and success metric are explicit</td>
+<td>Scope и success metric явные</td>
 </tr>
 <tr>
 <td>Spec</td>
-<td>Turn idea into behavior and acceptance criteria</td>
+<td>Превратить идею в поведение и acceptance criteria</td>
 <td><code>REQUIREMENTS.md</code></td>
-<td>User intent and source-of-truth docs are locked</td>
+<td>Намерение пользователя и source-of-truth docs зафиксированы</td>
 </tr>
 <tr>
 <td>Plan</td>
-<td>Decompose work, architecture boundary and ownership</td>
+<td>Разложить работу, architecture boundary и ownership</td>
 <td><code>PLAN.md</code></td>
-<td>Tasks are independent enough</td>
+<td>Рабочие единицы достаточно независимы</td>
 </tr>
 <tr>
 <td>Build</td>
-<td>Implement one focused slice at a time</td>
+<td>Реализовать один focused slice за раз</td>
 <td>Diff</td>
-<td>Test-first or eval-first path exists</td>
+<td>Есть test-first или eval-first путь</td>
 </tr>
 <tr>
 <td>Eval</td>
-<td>Score deterministic, subjective and AI quality</td>
+<td>Оценить deterministic, subjective и AI quality</td>
 <td><code>TEST.md</code>, <code>EVALS.md</code>, reports</td>
-<td>Threshold met or gap accepted</td>
+<td>Threshold достигнут или gap принят</td>
 </tr>
 <tr>
 <td>Review</td>
-<td>Find bugs, security risks, test gaps</td>
+<td>Найти bugs, security risks и test gaps</td>
 <td>Review findings</td>
-<td>No unresolved blocker</td>
+<td>Нет unresolved blocker</td>
 </tr>
 <tr>
 <td>PR</td>
-<td>Prepare branch, PR body, docs impact and release notes</td>
+<td>Подготовить branch, PR body, влияние на docs и заметки к release</td>
 <td>PR / changelog</td>
-<td>Verification evidence included</td>
+<td>Доказательства проверки включено</td>
 </tr>
 <tr>
 <td>Learn</td>
-<td>Capture reusable method</td>
+<td>Зафиксировать reusable method</td>
 <td><code>AGENTS.md</code>, skill, insight</td>
-<td>Next run improves</td>
+<td>Следующий запуск становится лучше</td>
 </tr>
 </tbody>
 </table>
-<h2 id="ask-mode-before-code-mode">Ask Mode before Code Mode<a class="headerlink" href="#ask-mode-before-code-mode" title="Permanent link">&para;</a></h2>
-<p>OpenAI's Codex guidance recommends starting large changes with a plan before implementation. In this project, that means:</p>
-<div class="highlight"><pre><span></span><code>First produce PLAN.md from REQUIREMENTS.md.
-Do not edit product code until the plan names:
-- files or subsystems;
+<h2 id="ask-mode-code-mode">Ask Mode до Code Mode<a class="headerlink" href="#ask-mode-code-mode" title="Permanent link">&para;</a></h2>
+<p>Рекомендации OpenAI Codex предлагают начинать крупные изменения с плана до реализации. В этом проекте это означает:</p>
+<div class="highlight"><pre><span></span><code>Сначала создай PLAN.md из REQUIREMENTS.md.
+Не редактируй product code, пока план не называет:
+- файлы или подсистемы;
 - acceptance criteria;
 - verification commands;
-- risks and rollback;
-- what is out of scope.
+- risks и rollback;
+- что вне scope.
 </code></pre></div>
 <h2 id="work-granularity">Work granularity<a class="headerlink" href="#work-granularity" title="Permanent link">&para;</a></h2>
-<p>Good Codex tasks are scoped enough that a human could complete them in a focused block. If a task spans product, design, backend, frontend, tests, docs and release at once, split it into lifecycle stages and use control-plane files as the handoff.</p>
+<p>Хорошая работа для Codex достаточно ограничена, чтобы человек мог выполнить ее за один сфокусированный блок. Если запрос одновременно затрагивает product, design, backend, frontend, tests, docs и release, разделите его на lifecycle stages и используйте control-plane files как handoff.</p>
 <h2 id="learning-loop">Learning loop<a class="headerlink" href="#learning-loop" title="Permanent link">&para;</a></h2>
-<p>Every finished product-agent workflow should answer:</p>
+<p>Каждый завершенный product-agent workflow должен ответить:</p>
 <ul>
-<li>Which instructions should move into <code>AGENTS.md</code>?</li>
-<li>Which repeated steps deserve a skill?</li>
-<li>Which check should become an automation?</li>
-<li>Which failure needs an eval?</li>
-<li>Which source or architecture decision should be documented?</li>
-<li>Which metric or user feedback should drive the next product iteration?</li>
+<li>Какие инструкции стоит перенести в <code>AGENTS.md</code>?</li>
+<li>Какие повторяемые шаги заслуживают skill?</li>
+<li>Какая проверка должна стать automation?</li>
+<li>Какой failure требует eval?</li>
+<li>Какой source или architecture decision нужно задокументировать?</li>
+<li>Какая metric или пользователь feedback должна двигать следующую product iteration?</li>
 </ul>
 
 
@@ -3800,6 +3830,8 @@ Do not edit product code until the plan names:
 
 
       <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+
+        <script src="../assets/javascripts/local-file-i18n.js"></script>
 
         <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
 

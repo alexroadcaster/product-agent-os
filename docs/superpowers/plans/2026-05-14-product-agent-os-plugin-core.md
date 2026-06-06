@@ -1476,7 +1476,7 @@ If not, record verification results and changed files in the implementation run 
 
 Spec coverage:
 
-- Plugin package and manifest are covered by Task 1.
+- Пакет plugin and manifest are covered by Task 1.
 - Core lifecycle state, complexity profile names and handoff validation are covered by Task 2.
 - Fixture projects required by production hardening are started in Task 3.
 - Workspace audit and profile inference are covered by Task 4.

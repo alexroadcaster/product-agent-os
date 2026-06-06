@@ -178,7 +178,7 @@ Delivery, Release & Operations слой описывает how the system ships,
 - External publish/tag/deploy/upload/PR/push/store actions remain approval-bound.
 - Automation candidate remains candidate-only until manual stability evidence exists.
 
-## Failure modes
+## Типовые сбои
 
 - Release readiness is claimed from code inspection or passing local tests only.
 - Release notes summarize commits but omit user impact and migration guidance.

@@ -351,7 +351,7 @@ python plugins\product-agent-os\scripts\render_infrastructure.py <workspace> --d
 python plugins\product-agent-os\scripts\render_infrastructure.py <workspace> --stage <output-dir>
 ```
 
-Expected behavior:
+Ожидаемое поведение:
 
 - dry-run exits `0` with JSON when a plan can be produced;
 - invalid workspace exits non-zero with a clear error;
@@ -395,7 +395,7 @@ Track 3 tests should be deterministic `unittest` tests:
 - renderer handles invalid workspace paths without traceback;
 - full fixture eval still passes.
 
-## Acceptance Criteria
+## Критерии приемки
 
 Track 3 is complete when:
 

@@ -177,7 +177,7 @@ Security, Privacy & Compliance слой определяет gates для authn,
 - Rollback/mitigation path is explicit.
 - Codex Security scan status is explicit: run with evidence, not requested, or blocked.
 
-## Failure modes
+## Типовые сбои
 
 - Security review is only a checklist after coding.
 - Threat model omits actors, trust boundaries or abuse cases.

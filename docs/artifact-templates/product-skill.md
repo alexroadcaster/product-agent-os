@@ -36,7 +36,7 @@ Run:
 <command>
 ```
 
-## Failure modes
+## Типовые сбои
 
 - Missing input:
 - Conflicting source:

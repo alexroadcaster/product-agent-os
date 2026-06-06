@@ -1,0 +1,4472 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+
+        <meta name="description" content="Product documentation for Product-Agent OS.">
+
+
+
+
+        <link rel="prev" href="security-privacy-compliance.html">
+
+
+        <link rel="next" href="codex-agentic-workflow.html">
+
+
+
+          <link rel="alternate" href="../../methodologies/delivery-release-operations.html" hreflang="ru">
+
+          <link rel="alternate" href="delivery-release-operations.html" hreflang="en">
+
+
+
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+
+
+
+        <title>Delivery, Release And Operations - Product-Agent OS Documentation</title>
+
+
+
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+
+
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+
+
+
+
+
+
+
+
+
+
+
+
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+
+
+
+      <link rel="stylesheet" href="../../assets/stylesheets/extra.css">
+
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+
+
+
+
+
+  </head>
+
+
+
+
+
+
+
+
+
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="deep-orange">
+
+
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+
+
+        <a href="#delivery-release-operations" class="md-skip">
+          Skip to content
+        </a>
+
+    </div>
+    <div data-md-component="announce">
+
+    </div>
+
+
+
+
+
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="Product-Agent OS Documentation" class="md-header__button md-logo" aria-label="Product-Agent OS Documentation" data-md-component="logo">
+
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Product-Agent OS Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+
+              Delivery, Release And Operations
+
+          </span>
+        </div>
+      </div>
+    </div>
+
+
+        <form class="md-header__option" data-md-component="palette">
+
+
+
+
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="deep-orange"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+
+
+</form>
+
+
+
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+
+
+      <div class="md-header__option">
+  <div class="md-select">
+
+    <button class="md-header__button md-icon" aria-label="Select language">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+
+          <li class="md-select__item">
+            <a href="../../methodologies/delivery-release-operations.html" hreflang="ru" class="md-select__link">
+              RU
+            </a>
+          </li>
+
+          <li class="md-select__item">
+            <a href="delivery-release-operations.html" hreflang="en" class="md-select__link">
+              EN
+            </a>
+          </li>
+
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+
+
+        <label class="md-header__button md-icon" for="__search">
+
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+  </nav>
+
+</header>
+
+    <div class="md-container" data-md-component="container">
+
+
+
+
+
+
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+
+
+
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="Product-Agent OS Documentation" class="md-nav__button md-logo" aria-label="Product-Agent OS Documentation" data-md-component="logo">
+
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Product-Agent OS Documentation
+  </label>
+
+  <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Home
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="../diagrams/index.html" class="md-nav__link ">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Diagrams
+
+
+
+  </span>
+
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Diagrams
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/architecture.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Architecture
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/product-delivery-lifecycle.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Delivery Lifecycle
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/agent-team-and-skills.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agent Team And Skills
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/runtime-decision-map.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Runtime Decision Map
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/skill-lifecycle.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Skill Lifecycle
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/context-memory-verification.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Context, Memory, Verification
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+
+
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Sources
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Sources
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../sources/registry.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Source Registry
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../sources/context7-research.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Context7 Analysis
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../sources/source-card-template.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Source Card Template
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+
+
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Codex
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Codex
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/overview.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Overview
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/surfaces.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Work Surfaces
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/configuration.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Configuration And Extensibility
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/security.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Security And Approvals
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/workflows.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Workflows
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/use-cases-deep-analysis.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Deep Use-Case Analysis
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+
+
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Prompt And Context Engineering
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Prompt And Context Engineering
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../prompting/overview.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Overview
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../prompting/question-design.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Question Design
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../prompting/context-engineering.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Context Engineering
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../prompting/anti-hallucination.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Anti-Hallucination Controls
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+
+
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Product-Agent Workflows
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Product-Agent Workflows
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent/overview.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Overview
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent/lifecycle.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Product Lifecycle
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent/roles.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agent Team Roles
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent/control-plane.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Control-Plane Files
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent/product-agent-os-plugin-spec.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Product-Agent OS Plugin Spec
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="../product-agent-os/index.html" class="md-nav__link ">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Product-Agent OS Plugin
+
+
+
+  </span>
+
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_7" id="__nav_7_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Product-Agent OS Plugin
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/project-code-graph.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Project Code Graph
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/live-runtime-governance.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Live Runtime Governance
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/approval-bound-real-testing.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Approval-Bound Real Testing
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/agent-skill-modernization-loop.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agent-Skill Modernization Loop
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/cli-reference.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    CLI Reference
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/artifact-contracts.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Artifact Contracts
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/packaging-and-closure.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Packaging And Closure
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/technical.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Technical Setup
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/development-standards.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Engineering Standards Layer
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/methodology-intelligence.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Methodology Intelligence
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/scenarios.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Scenarios And Usage Modes
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/behavioral-evals.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Behavioral Evals
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/codex-compatibility.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Codex Compatibility
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/architecture.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Diagrams And Operating Principles
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+
+
+
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" checked>
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="index.html" class="md-nav__link ">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Methodologies For Large Projects
+
+
+
+  </span>
+
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Methodologies For Large Projects
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="business-product.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Business And Product
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="requirements-domain.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Requirements And Domain
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="solution-architecture.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Solution Architecture
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="frontend.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Frontend
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="backend.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Backend
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="api-integrations.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    API And Integrations
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="database-data.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Database And Data
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="llm-ai-rag.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    LLM / AI / RAG
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="quality-testing-evals.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Quality, Testing And Evals
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="security-privacy-compliance.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Security, Privacy And Compliance
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--active">
+
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+
+
+
+
+
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Delivery, Release And Operations
+
+
+
+  </span>
+
+
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+
+      <a href="delivery-release-operations.html" class="md-nav__link md-nav__link--active">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Delivery, Release And Operations
+
+
+
+  </span>
+
+
+
+      </a>
+
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+
+
+
+
+
+
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+
+        <li class="md-nav__item">
+  <a href="#scope" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Scope
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#supported-facts" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Supported facts
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#assumptions" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Assumptions
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#unsupported-claims-not-adopted" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Unsupported claims not adopted
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#methodologies" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Methodologies
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#documentation-artifacts-and-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Documentation artifacts and standards
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#project-application-instructions" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Project application instructions
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#product-agent-os-candidate-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Product-Agent OS candidate rules
+
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Product-Agent OS candidate rules">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#discovery-signals" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Discovery signals
+
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#readiness-gates" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Readiness gates
+
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#candidate-eval-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Candidate eval fields
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#tooling-candidates" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Tooling candidates
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#failure-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Failure modes
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#open-questions-for-deeper-research" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Open questions for deeper research
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#sources" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Sources
+
+    </span>
+  </a>
+
+</li>
+
+    </ul>
+
+</nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="codex-agentic-workflow.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Codex / Agentic Workflow
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_9" >
+
+
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Codex Automation And Runtime
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Codex Automation And Runtime
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../runtime/overview.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Runtime Overview
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../runtime/non-interactive-and-mcp.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Non-Interactive And MCP
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../runtime/automations-github.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Automations And GitHub
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../runtime/worktrees-hooks-rules.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Worktrees, Hooks, Rules
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_10" >
+
+
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agent Systems
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Agent Systems
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/overview.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Architecture
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/memory.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Memory
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/session-control.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Session Control
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/subagents-skills.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Subagents, Skills, AGENTS.md
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/sdk-patterns.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agents SDK Patterns
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/evals-observability.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Evals And Observability
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/templates.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agent Templates
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_11" >
+
+
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Playbooks
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Playbooks
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/research-loop.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Research Loop
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/context7-deep-research.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Context7 Deep Research
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/grounded-answering.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Grounded Answering
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/build-full-feature.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Build Full Feature
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/workflow-to-skill.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Workflow To Skill
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/use-case-to-plugin.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Use Case To Plugin
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/eval-driven-improvement.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Eval-Driven Improvement
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/product-ready-pr.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Product-Ready PR
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/maintain-agent-operating-docs.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agent Operating Docs
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/docs-update.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Docs Update
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/workspace-readiness-audit.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Workspace Readiness Audit
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/code-review.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Code Review
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/ai-team-design.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    AI-Native Team
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_12" >
+
+
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Templates
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Templates
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../artifact-templates/prompt-packet.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Prompt Template
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../artifact-templates/control-plane-files.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Control-Plane Templates
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../artifact-templates/runlog.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    RUNLOG Template
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../artifact-templates/product-skill.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Skill Template
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../artifact-templates/plugin-blueprint.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Plugin Blueprint
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_13" >
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="../insights/index.html" class="md-nav__link ">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Insights
+
+
+
+  </span>
+
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_13" id="__nav_13_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Insights
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../insights/insight-card-template.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Insight Card Template
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../insights/seed-insights.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Initial Backlog
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+
+
+
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+
+
+
+
+
+
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+
+        <li class="md-nav__item">
+  <a href="#scope" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Scope
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#supported-facts" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Supported facts
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#assumptions" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Assumptions
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#unsupported-claims-not-adopted" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Unsupported claims not adopted
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#methodologies" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Methodologies
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#documentation-artifacts-and-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Documentation artifacts and standards
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#project-application-instructions" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Project application instructions
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#product-agent-os-candidate-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Product-Agent OS candidate rules
+
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Product-Agent OS candidate rules">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#discovery-signals" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Discovery signals
+
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#readiness-gates" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Readiness gates
+
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#candidate-eval-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Candidate eval fields
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#tooling-candidates" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Tooling candidates
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#failure-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Failure modes
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#open-questions-for-deeper-research" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Open questions for deeper research
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#sources" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Sources
+
+    </span>
+  </a>
+
+</li>
+
+    </ul>
+
+</nav>
+                  </div>
+                </div>
+              </div>
+
+
+
+            <div class="md-content" data-md-component="content">
+
+              <article class="md-content__inner md-typeset">
+
+
+
+
+
+<h1 id="delivery-release-operations">Delivery, Release &amp; Operations<a class="headerlink" href="#delivery-release-operations" title="Permanent link">&para;</a></h1>
+<p>Source status: <code>official + verified methodology + vendor documentation + tool-assisted</code></p>
+<p>Research date: <code>2026-05-24</code></p>
+<p>Product-Agent OS behavior: detect release, deployment and operations work early; keep external release actions approval-bound; require current evidence before readiness claims; connect release scope, version impact, artifacts, rollout, rollback, observability, incident response and post-release learning into one auditable release packet.</p>
+<h2 id="scope">Scope<a class="headerlink" href="#scope" title="Permanent link">&para;</a></h2>
+<p>This dossier covers release engineering, continuous delivery, CI/CD workflow governance, deployment environments, release notes, changelog and versioning, progressive delivery, feature flags, rollout and rollback, observability, SLOs, runbooks, incident response, postmortems, GitOps-style desired-state operations, automation promotion and post-release measurement.</p>
+<p>It does not prescribe one deployment platform, force Kubernetes or GitOps onto all projects, replace security/compliance review, or permit publishing, tagging, deploying, uploading artifacts, opening PRs, changing external systems or enabling automations without explicit approval.</p>
+<h2 id="supported-facts">Supported facts<a class="headerlink" href="#supported-facts" title="Permanent link">&para;</a></h2>
+<ul>
+<li>DORA currently describes five software delivery performance metrics: change lead time, deployment frequency, failed deployment recovery time, change fail rate and deployment rework rate.</li>
+<li>DORA metrics should be treated as team/system improvement signals. They are not individual performance targets and can be gamed if used as quotas.</li>
+<li>Google SRE guidance uses SLIs, SLOs and SLAs to describe user-relevant service behavior and how teams react when targets are missed.</li>
+<li>Google SRE release engineering guidance treats reliable release processes as a prerequisite for reliable services and emphasizes reproducible, automated, intentional release processes.</li>
+<li>Google SRE postmortem guidance treats postmortems as written records of incident impact, mitigation, root causes and follow-up actions; blameless review and explicit criteria matter.</li>
+<li>OpenTelemetry defines a vendor-neutral observability framework for traces, metrics and logs; its semantic conventions are useful vocabulary for runtime evidence and runbooks.</li>
+<li>Twelve-Factor App includes build-release-run separation, config in environment, disposability, dev/prod parity, logs as event streams and one-off admin processes.</li>
+<li>GitHub Actions workflows are repository-defined automated processes. GitHub deployment environments can require reviewers, wait timers, branch/tag restrictions, custom protection rules and environment-scoped secrets.</li>
+<li>GitHub Releases bundle and deliver project iterations to users with tags, release notes and optional binary assets; draft releases can stage assets before publishing.</li>
+<li>Keep a Changelog provides human-oriented changelog categories and an <code>Unreleased</code> section; SemVer provides public API compatibility versioning vocabulary.</li>
+<li>Conventional Commits defines a machine-readable commit message convention that can support changelog generation and SemVer bump decisions, but it is optional and team-dependent.</li>
+<li>CNCF GitOps describes desired state stored in a source of truth and continuously reconciled with actual state, supporting traceability, rollback and reduced configuration drift.</li>
+<li>Argo Rollouts provides Kubernetes progressive delivery primitives such as blue-green, canary, weighted traffic shifting, analysis, manual judgement and automated rollback.</li>
+<li>OpenFeature provides a vendor-agnostic feature flag API with evaluation context, providers, hooks and events; this supports rollout documentation independent of a specific flag vendor.</li>
+<li>OpenAI Codex verified operations guidance describes repeatable operations with structured inputs, explicit approvals, bounded retries, logs, artifacts and audit-ready output.</li>
+</ul>
+<h2 id="assumptions">Assumptions<a class="headerlink" href="#assumptions" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Product-Agent OS should treat release readiness as an evidence packet, not as a status inferred from code inspection.</li>
+<li>Release and deployment actions should remain staged until the owner approves publish, tag, deployment, artifact upload, marketplace submission, store submission, package registry mutation, external workflow mutation or production operation.</li>
+<li>Teams can start with lightweight release packets and only add SLO, GitOps, progressive delivery or incident management depth when the product has runtime risk.</li>
+<li>DORA and SLO metrics are most useful as trend and learning inputs, not as hard gates for every small documentation-only change.</li>
+<li>Progressive delivery can be implemented through feature flags, environment targeting, traffic splitting or release train practices; Argo Rollouts is a concrete Kubernetes example, not a universal requirement.</li>
+</ul>
+<h2 id="unsupported-claims-not-adopted">Unsupported claims not adopted<a class="headerlink" href="#unsupported-claims-not-adopted" title="Permanent link">&para;</a></h2>
+<ul>
+<li>"CI is green, therefore the release is ready." Release readiness also needs scope, owner, version impact, docs, artifacts, security/license notes, rollout, rollback and residual risk.</li>
+<li>"A rollback plan exists if we can revert the commit." Revert is only one rollback mechanism and may not recover data, external systems, package registries, mobile/desktop distribution, user state or migrations.</li>
+<li>"DORA metrics prove team quality." DORA metrics describe delivery system performance and can be distorted if used as individual targets.</li>
+<li>"Feature flags remove release risk." Flags add runtime control but need ownership, cleanup, default behavior, observability and failure handling.</li>
+<li>"GitOps automatically makes operations safe." Desired-state reconciliation still requires approvals, secrets policy, drift handling, rollback and incident response.</li>
+<li>"A changelog generated from commits is sufficient for users." User-facing release notes must explain impact, compatibility and action required.</li>
+<li>"Postmortem equals blame." The SRE source treats blameless postmortems as system learning records.</li>
+</ul>
+<h2 id="methodologies">Methodologies<a class="headerlink" href="#methodologies" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Methodology</th>
+<th>When to apply</th>
+<th>Project-level behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Release engineering</td>
+<td>Packages, apps, services, plugins, SDKs, installers or docs releases</td>
+<td>Release scope, reproducible build, artifacts, version impact, owner, approvals and release process are explicit.</td>
+</tr>
+<tr>
+<td>Continuous delivery discipline</td>
+<td>Frequent changes, shared branches or deployment pipeline</td>
+<td>Small batches, automated checks, release candidates, environment promotion and rollback/recovery path.</td>
+</tr>
+<tr>
+<td>DORA measurement</td>
+<td>Team wants delivery performance trend</td>
+<td>Track change lead time, deployment frequency, failed deployment recovery time, change fail rate and deployment rework rate with anti-Goodhart notes.</td>
+</tr>
+<tr>
+<td>SRE / SLO-driven operations</td>
+<td>Runtime service has users, latency, availability or support expectations</td>
+<td>SLIs/SLOs, error-budget thinking, alerts, runbooks and incident response connect release to reliability.</td>
+</tr>
+<tr>
+<td>Observability-driven release</td>
+<td>Runtime behavior must be diagnosable</td>
+<td>Traces, metrics, logs, dashboards, alert owners and redaction policy are release evidence.</td>
+</tr>
+<tr>
+<td>Progressive delivery</td>
+<td>Blast radius must be controlled</td>
+<td>Feature flags, staged rollout, canary, blue-green, traffic shifting, manual judgement and automated rollback where applicable.</td>
+</tr>
+<tr>
+<td>GitOps / desired-state operations</td>
+<td>Declarative infra/app state is managed via source control</td>
+<td>Desired state, reconciliation mechanism, drift handling, approval and rollback are documented.</td>
+</tr>
+<tr>
+<td>CI/CD governance</td>
+<td>Workflow changes can publish, deploy, access secrets or mutate environments</td>
+<td>Triggers, permissions, environments, reviewers, branch/tag rules, artifacts and external action policy are explicit.</td>
+</tr>
+<tr>
+<td>Versioning and changelog discipline</td>
+<td>Public API, package, SDK, plugin, app or docs release</td>
+<td>SemVer impact, compatibility/deprecation notes, changelog categories and user-facing release notes.</td>
+</tr>
+<tr>
+<td>Incident response and postmortem learning</td>
+<td>Production incident, failed deployment or user-impacting regression</td>
+<td>Incident record, timeline, mitigation, root causes, action items, owner and follow-up review.</td>
+</tr>
+<tr>
+<td>Automation promotion</td>
+<td>Repeated operations might become automation</td>
+<td>Manual success evidence, stable inputs/outputs, owner, verification, approval and rollback/disable path before automation.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="documentation-artifacts-and-standards">Documentation artifacts and standards<a class="headerlink" href="#documentation-artifacts-and-standards" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th>Purpose</th>
+<th>Candidate source/tool</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Release readiness</td>
+<td>Scope, owner, version, SemVer impact, evidence, artifacts, approval, rollback and residual risk.</td>
+<td><code>release-readiness.md</code></td>
+</tr>
+<tr>
+<td>Release packet</td>
+<td>PR/release summary, user impact, checks, risks, docs changes and finish options.</td>
+<td><code>release-packet.md</code></td>
+</tr>
+<tr>
+<td>Deployment plan</td>
+<td>Target environment, release candidate, deploy command, approval, rollout window and stop criteria.</td>
+<td>CI/CD tool, GitHub environments</td>
+</tr>
+<tr>
+<td>Rollout plan</td>
+<td>Feature flag, canary, blue-green, staged percentage, cohort, traffic split, promotion/abort rules.</td>
+<td>OpenFeature, Argo Rollouts</td>
+</tr>
+<tr>
+<td>Rollback/recovery plan</td>
+<td>Revert, disable flag, rollback deployment, unpublish, restore, data compensation or incident mitigation.</td>
+<td>Runbook/release packet</td>
+</tr>
+<tr>
+<td>Environment matrix</td>
+<td>dev/stage/prod/local/mobile/store/registry targets, secrets, branch/tag rules and owner.</td>
+<td>GitHub environments, platform docs</td>
+</tr>
+<tr>
+<td>CI/CD workflow inventory</td>
+<td>Jobs, triggers, permissions, secrets, artifacts, caches, concurrency and external actions.</td>
+<td>GitHub Actions</td>
+</tr>
+<tr>
+<td>Versioning policy</td>
+<td>SemVer, calendar versioning, prerelease, deprecation, compatibility and support window.</td>
+<td>SemVer, Conventional Commits</td>
+</tr>
+<tr>
+<td>Changelog</td>
+<td>Human-readable Added, Changed, Deprecated, Removed, Fixed, Security sections.</td>
+<td>Keep a Changelog</td>
+</tr>
+<tr>
+<td>Release notes</td>
+<td>User-facing impact, migration steps, compatibility, known issues and support contact.</td>
+<td>Product docs</td>
+</tr>
+<tr>
+<td>Artifact manifest</td>
+<td>Build outputs, hashes/signatures, SBOM/provenance notes, storage and retention.</td>
+<td>Security/supply-chain workflow</td>
+</tr>
+<tr>
+<td>Observability map</td>
+<td>Dashboards, traces, logs, metrics, alert owners, redaction and sampling notes.</td>
+<td>OpenTelemetry</td>
+</tr>
+<tr>
+<td>SLO spec</td>
+<td>User journey, SLI, SLO, measurement source, alert policy and accepted gap.</td>
+<td>Google SRE</td>
+</tr>
+<tr>
+<td>Operations runbook</td>
+<td>Deploy, rollback, first response, escalation, common failures and diagnostics.</td>
+<td>SRE/runbook practice</td>
+</tr>
+<tr>
+<td>Incident record</td>
+<td>Timeline, impact, mitigation, communications, owner and follow-up tasks.</td>
+<td>SRE incident management</td>
+</tr>
+<tr>
+<td>Postmortem</td>
+<td>Impact, detection, root causes, contributing factors, action items and review status.</td>
+<td>Google SRE postmortem</td>
+</tr>
+<tr>
+<td>Automation candidate</td>
+<td>Manual stability evidence, trigger/cadence, write policy, verification and disable path.</td>
+<td>Product-Agent OS automation-promoter</td>
+</tr>
+<tr>
+<td>Post-release review</td>
+<td>Actual metrics, defects, support signals, latency/cost, feedback and next decision.</td>
+<td>Business/product metrics, DORA</td>
+</tr>
+</tbody>
+</table>
+<h2 id="project-application-instructions">Project application instructions<a class="headerlink" href="#project-application-instructions" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Classify release work before implementation. Release triggers include package publishing, tags, GitHub Releases, app store/marketplace submission, artifact upload, deployment, CI workflow mutation, production config, release notes, public API change, plugin release, SDK release, installer build, migration release or automation promotion.</li>
+<li>Keep external release actions read-only/staged until release scope, owner, target environment, approval boundary, version impact, evidence, rollback and residual risk are explicit.</li>
+<li>Determine release type: internal deploy, public package, SDK, plugin, app, desktop installer, mobile build, docs release, model/prompt release, database migration, infrastructure change or automation candidate.</li>
+<li>Record versioning policy and compatibility impact. For public API/package/plugin/SDK, include SemVer impact or an explicit non-SemVer policy.</li>
+<li>Maintain changelog and release notes separately when needed: changelog captures notable changes; release notes explain user impact, migration and operational instructions.</li>
+<li>Require current build/test/docs/eval/runtime evidence before release readiness claims. Inspection-only release readiness is blocked.</li>
+<li>Require artifact evidence for release outputs: filenames, versions, checksums/signatures where used, storage location, retention and recreation command.</li>
+<li>For deployable services, separate build, release and run stages unless the platform intentionally combines them and the risk is accepted.</li>
+<li>For production services, define SLIs/SLOs or an explicit accepted gap before claiming operational readiness.</li>
+<li>Define observability evidence: logs, metrics, traces, dashboard links, alert owner, data redaction and expected post-release signals.</li>
+<li>Define rollout strategy: immediate release, release train, staged rollout, feature flag, canary, blue-green, shadow traffic or manual promotion.</li>
+<li>Define stop criteria and rollback/recovery path before release. Rollback can be revert, redeploy previous artifact, disable flag, unpublish, restore backup, compensate data or activate incident mitigation.</li>
+<li>For GitHub Actions or CI/CD changes, document triggers, permissions, environments, required reviewers, branch/tag restrictions, secrets, artifacts, concurrency and external action pinning.</li>
+<li>For GitHub deployment environments, treat required reviewers, wait timers, branch/tag restrictions, custom protection rules and environment secrets as release controls.</li>
+<li>For GitOps-style workflows, document desired state source, reconciliation controller, drift behavior, approval path and rollback/revert behavior.</li>
+<li>For progressive delivery, document cohorts, traffic weights, health checks, analysis metrics, manual judgement points, promotion/abort rules and blast radius.</li>
+<li>For feature flags, document default value, owner, targeting rules, cleanup date, observability, kill-switch behavior and failure mode.</li>
+<li>For incidents and failed releases, create an incident record and postmortem when impact criteria are met; do not hide failed deploys from learning records.</li>
+<li>For DORA metrics, record definitions and measurement source. Use trends for process improvement, not individual performance.</li>
+<li>Promote recurring release/ops workflows only after manual success evidence, stable inputs/outputs, owner, approval requirements, verification and rollback/disable path exist.</li>
+</ol>
+<h2 id="product-agent-os-candidate-rules">Product-Agent OS candidate rules<a class="headerlink" href="#product-agent-os-candidate-rules" title="Permanent link">&para;</a></h2>
+<h3 id="discovery-signals">Discovery signals<a class="headerlink" href="#discovery-signals" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Directories: <code>.github/workflows/</code>, <code>.github/actions/</code>, <code>.github/dependabot.yml</code>, <code>deploy/</code>, <code>deployment/</code>, <code>release/</code>, <code>releases/</code>, <code>ops/</code>, <code>runbooks/</code>, <code>infra/</code>, <code>charts/</code>, <code>k8s/</code>, <code>helm/</code>, <code>terraform/</code>, <code>argocd/</code>, <code>flux/</code>, <code>observability/</code>, <code>monitoring/</code>, <code>alerts/</code>, <code>packages/</code>, <code>dist/</code></li>
+<li>Files: <code>CHANGELOG.md</code>, <code>RELEASE.md</code>, <code>SECURITY.md</code>, <code>CODEOWNERS</code>, <code>package.json</code>, <code>pyproject.toml</code>, <code>Cargo.toml</code>, <code>go.mod</code>, <code>Dockerfile</code>, <code>docker-compose.*</code>, <code>mkdocs.yml</code>, <code>openapi.*</code>, <code>release-readiness.md</code>, <code>release-packet.md</code>, <code>runbook.md</code>, <code>slo.md</code>, <code>postmortem.md</code>, <code>sbom.*</code>, <code>cyclonedx.*</code>, <code>spdx.*</code></li>
+<li>Terms: release, deploy, publish, tag, version, SemVer, changelog, release notes, artifact, rollback, rollout, canary, blue-green, feature flag, SLO, SLI, incident, postmortem, runbook, DORA, CI, CD, GitHub Actions, environment, approval, registry, package, marketplace, app store, notarization</li>
+<li>Dependency/tool signals: GitHub Actions, GitHub Releases, GitHub environments, npm/PyPI/crates.io/package registries, Docker/OCI registries, OpenTelemetry, Prometheus, Grafana, Argo Rollouts, Argo CD, Flux, OpenFeature, LaunchDarkly, Sentry, Datadog, PagerDuty, Opsgenie, semantic-release, release-please</li>
+</ul>
+<h3 id="readiness-gates">Readiness gates<a class="headerlink" href="#readiness-gates" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>Trigger</th>
+<th>Block condition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>release_scope_present</code></td>
+<td>Any release/deployment/publish request</td>
+<td>Release type, target, owner or external boundary is missing.</td>
+</tr>
+<tr>
+<td><code>release_evidence_present</code></td>
+<td>Release readiness claim</td>
+<td>Current build, test, docs, eval, runtime or artifact evidence is missing.</td>
+</tr>
+<tr>
+<td><code>version_impact_present</code></td>
+<td>Public API, package, SDK, plugin, app or docs release</td>
+<td>SemVer/non-SemVer policy, compatibility impact or deprecation notes are missing.</td>
+</tr>
+<tr>
+<td><code>changelog_release_notes_present</code></td>
+<td>User-visible or public release</td>
+<td>Changelog/release notes omit user impact, migration, compatibility or known issues.</td>
+</tr>
+<tr>
+<td><code>artifact_manifest_present</code></td>
+<td>Artifact, package, installer, image, binary or docs build</td>
+<td>Artifact names, versions, creation command, storage or integrity notes are missing.</td>
+</tr>
+<tr>
+<td><code>rollout_strategy_present</code></td>
+<td>Runtime deployment or staged launch</td>
+<td>Strategy, cohorts/traffic, promotion, abort criteria or blast radius is missing.</td>
+</tr>
+<tr>
+<td><code>rollback_recovery_present</code></td>
+<td>Any release with user/runtime/external impact</td>
+<td>Revert, redeploy, flag disable, unpublish, restore, compensation or mitigation path is missing.</td>
+</tr>
+<tr>
+<td><code>environment_approval_boundary_present</code></td>
+<td>CI/CD environment, production, registry, marketplace or store</td>
+<td>Required approval, branch/tag rule, secret boundary or external-write policy is missing.</td>
+</tr>
+<tr>
+<td><code>ci_cd_governance_present</code></td>
+<td>Workflow/action/pipeline change</td>
+<td>Triggers, permissions, secrets, artifacts, caches, concurrency or external action policy is missing.</td>
+</tr>
+<tr>
+<td><code>observability_release_evidence_present</code></td>
+<td>Production service, job, API, AI agent or user-facing runtime</td>
+<td>Logs, metrics, traces, dashboard, alert owner or redaction notes are missing.</td>
+</tr>
+<tr>
+<td><code>slo_or_operational_gap_present</code></td>
+<td>Production service with reliability expectations</td>
+<td>SLIs/SLOs or explicit accepted gap is missing.</td>
+</tr>
+<tr>
+<td><code>operations_runbook_present</code></td>
+<td>Production deploy, incident-prone path or on-call service</td>
+<td>Deploy, rollback, first response, escalation and diagnostics are missing.</td>
+</tr>
+<tr>
+<td><code>incident_response_path_present</code></td>
+<td>Production/runtime release</td>
+<td>Incident criteria, owner, communication path and postmortem trigger are missing.</td>
+</tr>
+<tr>
+<td><code>post_release_measurement_present</code></td>
+<td>Product-facing or operationally risky release</td>
+<td>Metrics, support signals, defects, latency/cost or review date are missing.</td>
+</tr>
+<tr>
+<td><code>external_release_approval_present</code></td>
+<td>Tag, publish, release creation, artifact upload, deployment, PR, push, package registry, marketplace or store action</td>
+<td>Explicit approval and rollback/unpublish path are missing.</td>
+</tr>
+<tr>
+<td><code>automation_manual_stability_present</code></td>
+<td>Release/ops workflow promotion to automation</td>
+<td>Manual success evidence, stable inputs/outputs, owner, verification or disable path is missing.</td>
+</tr>
+<tr>
+<td><code>release_evidence_before_completion</code></td>
+<td>Any release-ready/works/deployed/published claim</td>
+<td>Current evidence or explicit gap is missing.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="candidate-eval-fields">Candidate eval fields<a class="headerlink" href="#candidate-eval-fields" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Release scope, target, owner and external boundary are explicit.</li>
+<li>Release readiness claim cites current build/test/docs/eval/runtime/artifact evidence or an explicit gap.</li>
+<li>Version impact and compatibility/deprecation notes are documented.</li>
+<li>Changelog/release notes are user-facing and not just commit log summaries.</li>
+<li>Artifact manifest includes version, location and recreation/integrity notes.</li>
+<li>Rollout strategy includes promotion, abort and blast-radius control.</li>
+<li>Rollback/recovery path is executable for the release type.</li>
+<li>GitHub Actions or CI/CD change includes triggers, permissions, secrets, environments, approvals and artifacts.</li>
+<li>Observability evidence includes traces, metrics, logs, dashboards, alert owner and redaction notes where applicable.</li>
+<li>SLO or operational gap is explicit for production services.</li>
+<li>Incident and postmortem criteria are defined for runtime releases.</li>
+<li>Post-release measurement links actual signals back to product/reliability hypothesis.</li>
+<li>External publish/tag/deploy/upload/PR/push/store actions remain approval-bound.</li>
+<li>Automation candidate remains candidate-only until manual stability evidence exists.</li>
+</ul>
+<h2 id="tooling-candidates">Tooling candidates<a class="headerlink" href="#tooling-candidates" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Tooling area</th>
+<th>Candidate</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Delivery metrics</td>
+<td>DORA metrics, internal deployment data</td>
+<td>Define measurement source and avoid individual performance targeting.</td>
+</tr>
+<tr>
+<td>Release readiness</td>
+<td><code>release-readiness.md</code>, <code>release-packet.md</code></td>
+<td>Evidence packet before tag/publish/deploy/readiness claim.</td>
+</tr>
+<tr>
+<td>Versioning</td>
+<td>SemVer, Conventional Commits, release-please/semantic-release candidates</td>
+<td>Use when public compatibility matters; do not force on private apps.</td>
+</tr>
+<tr>
+<td>Changelog/release notes</td>
+<td>Keep a Changelog, GitHub Releases</td>
+<td>Human-readable user impact and migration notes.</td>
+</tr>
+<tr>
+<td>CI/CD</td>
+<td>GitHub Actions, environments, protected branches, required reviewers</td>
+<td>Treat workflow changes and deployment environments as controlled release surfaces.</td>
+</tr>
+<tr>
+<td>Progressive delivery</td>
+<td>OpenFeature, Argo Rollouts, feature flag provider, traffic router</td>
+<td>Pick by stack; document owner, cleanup and abort path.</td>
+</tr>
+<tr>
+<td>GitOps</td>
+<td>CNCF GitOps, Argo CD, Flux</td>
+<td>Useful for declarative infra/app state, not mandatory for every project.</td>
+</tr>
+<tr>
+<td>Observability</td>
+<td>OpenTelemetry, Prometheus/Grafana, vendor dashboards</td>
+<td>Runtime evidence for release and incident response.</td>
+</tr>
+<tr>
+<td>Reliability</td>
+<td>SLO docs, runbooks, incident records, postmortems</td>
+<td>Needed when users depend on runtime behavior.</td>
+</tr>
+<tr>
+<td>Automation</td>
+<td>Product-Agent OS automation candidate packet</td>
+<td>Manual success before active automation.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="failure-modes">Failure modes<a class="headerlink" href="#failure-modes" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Release readiness is claimed from code inspection or passing local tests only.</li>
+<li>Release notes are commit summaries with no user impact or migration guidance.</li>
+<li>SemVer bump ignores public API, generated client, plugin or data compatibility.</li>
+<li>Rollback is named but cannot recover the actual release target.</li>
+<li>Package publish, tag, release creation, artifact upload, deployment or store submission happens without explicit approval.</li>
+<li>CI workflow change silently expands permissions, secrets access or deployment triggers.</li>
+<li>Feature flag ships without owner, cleanup date or kill-switch behavior.</li>
+<li>Progressive delivery relies on health checks that do not represent user/business outcomes.</li>
+<li>Observability is added after release, so no runtime evidence exists during incident response.</li>
+<li>DORA metrics become quotas or individual performance metrics.</li>
+<li>Postmortem is skipped because the release was rolled back quickly.</li>
+<li>Automation is activated before manual workflow stability is proven.</li>
+</ul>
+<h2 id="open-questions-for-deeper-research">Open questions for deeper research<a class="headerlink" href="#open-questions-for-deeper-research" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Should Product-Agent OS generate a universal <code>release-readiness.md</code> for every release-mode workflow and keep <code>release-packet.md</code> for PR/user-facing summary?</li>
+<li>Which release types require artifact integrity metadata: docs site, plugin package, SDK, desktop installer, mobile build, container image?</li>
+<li>Should <code>rollout_strategy_present</code> be required for all production services or only user-impacting behavior changes?</li>
+<li>How should Product-Agent OS distinguish release train, continuous deployment and manual approval workflows during discovery?</li>
+<li>Should DORA metrics live in this section or in Business &amp; Product measurement when they are used for organizational improvement?</li>
+<li>Which operations evidence should be mandatory for local-first desktop and mobile releases: signing, notarization, app store review, installer rollback, crash reporting?</li>
+<li>How should Codex automations connect to release operations without becoming an unapproved production scheduler?</li>
+</ul>
+<h2 id="sources">Sources<a class="headerlink" href="#sources" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://dora.dev/guides/dora-metrics/">DORA software delivery performance metrics</a></li>
+<li><a href="https://sre.google/sre-book/service-level-objectives/">Google SRE: Service Level Objectives</a></li>
+<li><a href="https://sre.google/sre-book/release-engineering/">Google SRE: Release Engineering</a></li>
+<li><a href="https://sre.google/sre-book/postmortem-culture/">Google SRE: Postmortem Culture</a></li>
+<li><a href="https://opentelemetry.io/docs/">OpenTelemetry Documentation</a></li>
+<li><a href="https://www.12factor.net/">The Twelve-Factor App</a></li>
+<li><a href="https://docs.github.com/en/actions/concepts/workflows-and-actions/workflows">GitHub Actions workflows</a></li>
+<li><a href="https://docs.github.com/en/actions/reference/workflows-and-actions/deployments-and-environments">GitHub deployments and environments</a></li>
+<li><a href="https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository">GitHub Releases</a></li>
+<li><a href="https://keepachangelog.com/en/1.1.0/">Keep a Changelog</a></li>
+<li><a href="https://semver.org/">Semantic Versioning 2.0.0</a></li>
+<li><a href="https://www.conventionalcommits.org/en/v1.0.0/">Conventional Commits 1.0.0</a></li>
+<li><a href="https://glossary.cncf.io/gitops/">CNCF GitOps glossary</a></li>
+<li><a href="https://argo-rollouts.readthedocs.io/en/latest/">Argo Rollouts</a></li>
+<li><a href="https://openfeature.dev/docs/reference/intro/">OpenFeature introduction</a></li>
+<li><a href="https://developers.openai.com/codex/use-cases/verified-operations-workflows">Codex: Run verified operations</a></li>
+<li><a href="../sources/context7-research.html">Context7 research</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </article>
+            </div>
+
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+
+      </main>
+
+        <footer class="md-footer">
+
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+
+
+</div>
+
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+
+
+
+
+
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.indexes", "navigation.top", "search.highlight", "search.suggest", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+
+
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+
+        <script src="../../assets/javascripts/local-file-i18n.js"></script>
+
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+
+
+  </body>
+</html>

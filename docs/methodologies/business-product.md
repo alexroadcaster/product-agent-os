@@ -124,7 +124,7 @@ Business & Product слой отвечает на вопрос: зачем бо�
 - AI behavior claims cite eval baseline/current results, not only prompt inspection.
 - Completion claims cite current evidence; planned measurement alone is not product success.
 
-## Failure modes
+## Типовые сбои
 
 - Feature idea masquerades as opportunity, so discovery starts from solution bias.
 - One metric becomes the goal and damages product quality, trust, support load or privacy.

@@ -15,13 +15,13 @@ Source status: `official + experiment`
 | --- | --- | --- |
 | <Codex use case title> | <https://developers.openai.com/codex/use-cases/...> | <mapping> |
 
-## Target users
+## Целевые пользователи
 
 - team: <Design / Engineering / Finance / Operations / Product / QA>
 - category: <Engineering / Evaluation / Front-end / Quality / Automation / Data / Integrations / Knowledge Work / Native>
 - task_type: <Analysis / Code / Design / Testing / Workflow>
 
-## Supported surfaces
+## Поддерживаемые рабочие поверхности
 
 | Surface | Supported | Notes |
 | --- | --- | --- |
@@ -100,7 +100,7 @@ final_response_must_include:
 
 ## Eval cases
 
-| Case | Input fixture | Expected behavior | Verification |
+| Case | Input fixture | Ожидаемое поведение | Verification |
 | --- | --- | --- | --- |
 | Happy path | <fixture> | <expected artifact> | <check> |
 | Missing source | <fixture> | names inaccessible source | <check> |

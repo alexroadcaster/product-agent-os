@@ -160,7 +160,7 @@ Frontend слой фиксирует, как строить UI behavior, route/p
 - Browser console has no relevant runtime errors where preview/dev server is available.
 - Performance budget covers LCP/INP/CLS for user-facing routes or explains non-applicability.
 
-## Failure modes
+## Типовые сбои
 
 - UI work starts from component hierarchy while user flow and acceptance scenario are vague.
 - Folder structure imitates FSD but imports violate layer or public API rules.

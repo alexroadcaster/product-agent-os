@@ -15,7 +15,7 @@ Source status: `official + experiment`
 
 ## Out of scope
 
-## Acceptance criteria
+## Критерии приемки
 
 ## Constraints
 

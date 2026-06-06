@@ -1,7 +1,7 @@
-# Control-plane files
+﻿# Control-plane files
 
 Source status: `official + experiment`  
-Источники: [Codex best practices](https://developers.openai.com/codex/learn/best-practices), [AGENTS.md docs](https://developers.openai.com/codex/guides/agents-md), [AGENTS.md open format](https://agents.md/), [Iterate on difficult problems](https://developers.openai.com/codex/use-cases/iterate-on-difficult-problems).
+Источники: [Codex best practices](https://developers.openai.com/codex/learn/best-practices), [AGENTS.md docs](https://developers.openai.com/codex/guides/agents-md), [AGENTS.md open format](https://agents.md/), [Iterate на difficult problems](https://developers.openai.com/codex/use-cases/iterate-on-difficult-problems).
 
 ## Почему нужны control-plane files
 
@@ -16,7 +16,7 @@ Source status: `official + experiment`
 | `PLAN.md` | Decomposition, ownership, sequence | До implementation |
 | `TEST.md` | Deterministic checks, manual QA, visual QA | До review |
 | `EVALS.md` | LLM-as-judge, score thresholds, artifacts | Для subjective/long-horizon задач |
-| `RUNLOG.md` | Iterations, scores, decisions, current best | Во время длинного цикла |
+| `RUNLOG.md` | Iterations, scores, decisions, текущий best | Во время длинного цикла |
 
 ## Что идет в AGENTS.md
 
@@ -28,7 +28,7 @@ Source status: `official + experiment`
 - security constraints;
 - architecture map;
 - PR/release rules;
-- rules that every agent run must know.
+- rules который every agent запуск должен know.
 
 Не подходит:
 
@@ -36,7 +36,7 @@ Source status: `official + experiment`
 - transient task details;
 - raw logs;
 - secrets;
-- policy that belongs in sandbox/approval config.
+- policy, которая должна жить в sandbox/approval config.
 
 ## Nested AGENTS.md
 

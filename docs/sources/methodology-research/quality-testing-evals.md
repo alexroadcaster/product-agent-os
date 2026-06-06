@@ -181,7 +181,7 @@ It does not mandate one test runner, 100 percent coverage, universal TDD, univer
 | CI | GitHub Actions, GitLab CI, Buildkite, Azure Pipelines | Keep permissions scoped and evidence artifacts accessible. |
 | Reports | JUnit XML, HTML reports, Allure, Playwright report | Store enough evidence to debug failures without rerunning immediately. |
 
-## Failure modes
+## Типовые сбои
 
 - A plan lists tests after implementation but never proves failure or behavior.
 - Unit tests mock away the real risk while integration/contract behavior is untested.

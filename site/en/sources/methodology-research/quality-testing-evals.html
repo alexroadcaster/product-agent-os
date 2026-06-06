@@ -1,0 +1,4301 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+
+        <meta name="description" content="Product documentation for Product-Agent OS.">
+
+
+
+
+
+
+
+          <link rel="alternate" href="../../../sources/methodology-research/quality-testing-evals.html" hreflang="ru">
+
+          <link rel="alternate" href="quality-testing-evals.html" hreflang="en">
+
+
+
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+
+
+
+        <title>Quality, Testing & Evals Methodology Research - Product-Agent OS Documentation</title>
+
+
+
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+
+
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+
+
+
+
+
+
+
+
+
+
+
+
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+
+
+
+      <link rel="stylesheet" href="../../../assets/stylesheets/extra.css">
+
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+
+
+
+
+
+  </head>
+
+
+
+
+
+
+
+
+
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="deep-orange">
+
+
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+
+
+        <a href="#quality-testing-evals-methodology-research" class="md-skip">
+          Skip to content
+        </a>
+
+    </div>
+    <div data-md-component="announce">
+
+    </div>
+
+
+
+
+
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Product-Agent OS Documentation" class="md-header__button md-logo" aria-label="Product-Agent OS Documentation" data-md-component="logo">
+
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Product-Agent OS Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+
+              Quality, Testing &amp; Evals Methodology Research
+
+          </span>
+        </div>
+      </div>
+    </div>
+
+
+        <form class="md-header__option" data-md-component="palette">
+
+
+
+
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="deep-orange"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+
+
+</form>
+
+
+
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+
+
+      <div class="md-header__option">
+  <div class="md-select">
+
+    <button class="md-header__button md-icon" aria-label="Select language">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+
+          <li class="md-select__item">
+            <a href="../../../sources/methodology-research/quality-testing-evals.html" hreflang="ru" class="md-select__link">
+              RU
+            </a>
+          </li>
+
+          <li class="md-select__item">
+            <a href="quality-testing-evals.html" hreflang="en" class="md-select__link">
+              EN
+            </a>
+          </li>
+
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+
+
+        <label class="md-header__button md-icon" for="__search">
+
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+  </nav>
+
+</header>
+
+    <div class="md-container" data-md-component="container">
+
+
+
+
+
+
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+
+
+
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Product-Agent OS Documentation" class="md-nav__button md-logo" aria-label="Product-Agent OS Documentation" data-md-component="logo">
+
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Product-Agent OS Documentation
+  </label>
+
+  <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../index.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Home
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="../../diagrams/index.html" class="md-nav__link ">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Diagrams
+
+
+
+  </span>
+
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Diagrams
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../diagrams/architecture.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Architecture
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../diagrams/product-delivery-lifecycle.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Delivery Lifecycle
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../diagrams/agent-team-and-skills.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agent Team And Skills
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../diagrams/runtime-decision-map.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Runtime Decision Map
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../diagrams/skill-lifecycle.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Skill Lifecycle
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../diagrams/context-memory-verification.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Context, Memory, Verification
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+
+
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Sources
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Sources
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../registry.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Source Registry
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../context7-research.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Context7 Analysis
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../source-card-template.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Source Card Template
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+
+
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Codex
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Codex
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../codex/overview.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Overview
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../codex/surfaces.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Work Surfaces
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../codex/configuration.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Configuration And Extensibility
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../codex/security.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Security And Approvals
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../codex/workflows.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Workflows
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../codex/use-cases-deep-analysis.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Deep Use-Case Analysis
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+
+
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Prompt And Context Engineering
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Prompt And Context Engineering
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../prompting/overview.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Overview
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../prompting/question-design.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Question Design
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../prompting/context-engineering.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Context Engineering
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../prompting/anti-hallucination.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Anti-Hallucination Controls
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+
+
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Product-Agent Workflows
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Product-Agent Workflows
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent/overview.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Overview
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent/lifecycle.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Product Lifecycle
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent/roles.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agent Team Roles
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent/control-plane.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Control-Plane Files
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent/product-agent-os-plugin-spec.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Product-Agent OS Plugin Spec
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="../../product-agent-os/index.html" class="md-nav__link ">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Product-Agent OS Plugin
+
+
+
+  </span>
+
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_7" id="__nav_7_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Product-Agent OS Plugin
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/project-code-graph.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Project Code Graph
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/live-runtime-governance.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Live Runtime Governance
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/approval-bound-real-testing.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Approval-Bound Real Testing
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/agent-skill-modernization-loop.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agent-Skill Modernization Loop
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/cli-reference.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    CLI Reference
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/artifact-contracts.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Artifact Contracts
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/packaging-and-closure.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Packaging And Closure
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/technical.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Technical Setup
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/development-standards.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Engineering Standards Layer
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/methodology-intelligence.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Methodology Intelligence
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/scenarios.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Scenarios And Usage Modes
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/behavioral-evals.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Behavioral Evals
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/codex-compatibility.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Codex Compatibility
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/architecture.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Diagrams And Operating Principles
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="../../methodologies/index.html" class="md-nav__link ">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Methodologies For Large Projects
+
+
+
+  </span>
+
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Methodologies For Large Projects
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/business-product.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Business And Product
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/requirements-domain.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Requirements And Domain
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/solution-architecture.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Solution Architecture
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/frontend.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Frontend
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/backend.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Backend
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/api-integrations.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    API And Integrations
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/database-data.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Database And Data
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/llm-ai-rag.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    LLM / AI / RAG
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/quality-testing-evals.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Quality, Testing And Evals
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/security-privacy-compliance.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Security, Privacy And Compliance
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/delivery-release-operations.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Delivery, Release And Operations
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/codex-agentic-workflow.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Codex / Agentic Workflow
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_9" >
+
+
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Codex Automation And Runtime
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Codex Automation And Runtime
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../runtime/overview.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Runtime Overview
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../runtime/non-interactive-and-mcp.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Non-Interactive And MCP
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../runtime/automations-github.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Automations And GitHub
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../runtime/worktrees-hooks-rules.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Worktrees, Hooks, Rules
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_10" >
+
+
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agent Systems
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Agent Systems
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../agent-systems/overview.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Architecture
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../agent-systems/memory.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Memory
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../agent-systems/session-control.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Session Control
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../agent-systems/subagents-skills.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Subagents, Skills, AGENTS.md
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../agent-systems/sdk-patterns.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agents SDK Patterns
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../agent-systems/evals-observability.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Evals And Observability
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../agent-systems/templates.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agent Templates
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_11" >
+
+
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Playbooks
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Playbooks
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/research-loop.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Research Loop
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/context7-deep-research.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Context7 Deep Research
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/grounded-answering.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Grounded Answering
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/build-full-feature.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Build Full Feature
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/workflow-to-skill.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Workflow To Skill
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/use-case-to-plugin.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Use Case To Plugin
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/eval-driven-improvement.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Eval-Driven Improvement
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/product-ready-pr.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Product-Ready PR
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/maintain-agent-operating-docs.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agent Operating Docs
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/docs-update.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Docs Update
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/workspace-readiness-audit.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Workspace Readiness Audit
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/code-review.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Code Review
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/ai-team-design.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    AI-Native Team
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_12" >
+
+
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Templates
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Templates
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../artifact-templates/prompt-packet.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Prompt Template
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../artifact-templates/control-plane-files.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Control-Plane Templates
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../artifact-templates/runlog.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    RUNLOG Template
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../artifact-templates/product-skill.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Skill Template
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../artifact-templates/plugin-blueprint.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Plugin Blueprint
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_13" >
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="../../insights/index.html" class="md-nav__link ">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Insights
+
+
+
+  </span>
+
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_13" id="__nav_13_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Insights
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../insights/insight-card-template.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Insight Card Template
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../insights/seed-insights.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Initial Backlog
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+
+
+
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+
+
+
+
+
+
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+
+        <li class="md-nav__item">
+  <a href="#scope" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Scope
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#supported-facts" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Supported facts
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#assumptions" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Assumptions
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#unsupported-claims-not-adopted" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Unsupported claims not adopted
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#methodologies" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Methodologies
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#documentation-artifacts-and-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Documentation artifacts and standards
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#project-application-instructions" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Project application instructions
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#product-agent-os-candidate-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Product-Agent OS candidate rules
+
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Product-Agent OS candidate rules">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#discovery-signals" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Discovery signals
+
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#readiness-gates" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Readiness gates
+
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#candidate-eval-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Candidate eval fields
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#tooling-candidates" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Tooling candidates
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#failure-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Failure modes
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#open-questions-for-deeper-research" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Open questions for deeper research
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#sources" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Sources
+
+    </span>
+  </a>
+
+</li>
+
+    </ul>
+
+</nav>
+                  </div>
+                </div>
+              </div>
+
+
+
+            <div class="md-content" data-md-component="content">
+
+              <article class="md-content__inner md-typeset">
+
+
+
+
+
+<h1 id="quality-testing-evals-methodology-research">Quality, Testing &amp; Evals Methodology Research<a class="headerlink" href="#quality-testing-evals-methodology-research" title="Permanent link">&para;</a></h1>
+<p>Source status: <code>official + expert reference + vendor documentation + tool-assisted</code></p>
+<p>Research date: <code>2026-05-24</code></p>
+<p>Target methodology page: <a href="../../methodologies/quality-testing-evals.html">../../methodologies/quality-testing-evals.md</a></p>
+<p>Target Product-Agent OS behavior: route every meaningful change through the smallest useful verification path, require current evidence before completion claims, separate deterministic tests from subjective evals, and block risky work when traceability, runtime evidence, contract checks or residual-risk records are missing.</p>
+<h2 id="scope">Scope<a class="headerlink" href="#scope" title="Permanent link">&para;</a></h2>
+<p>This dossier covers deterministic tests, acceptance scenarios, contract tests, integration/runtime tests, browser/mobile/native evidence, documentation checks, AI and subjective evals, CI quality gates, flaky test management, coverage, mutation/property-based testing, manual QA evidence and evidence-before-completion.</p>
+<p>It does not mandate one test runner, 100 percent coverage, universal TDD, universal E2E testing or mandatory AI evals for every project. The method selects checks by product risk, architecture surface, user-visible behavior, data sensitivity and release impact.</p>
+<h2 id="supported-facts">Supported facts<a class="headerlink" href="#supported-facts" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Agile Alliance defines Test-Driven Development (TDD) as a cycle where tests are written before programming and coding, unit testing and refactoring are intertwined.</li>
+<li>Agile Alliance defines Acceptance Test-Driven Development (ATDD) as expressing acceptance tests before implementation through customer, developer and tester perspectives.</li>
+<li>Agile Alliance describes Behavior-Driven Development (BDD) as using executable scenarios and shared behavior language to improve communication across business, testing and development.</li>
+<li>The practical Test Pyramid guidance emphasizes a balanced portfolio with tests at different granularity, many fast lower-level tests and fewer high-level tests.</li>
+<li>Modern frontend guidance such as the Testing Trophy emphasizes static checks and integration tests for browser-oriented applications, but it is an expert heuristic, not a universal standard.</li>
+<li>ISTQB Foundation Level guidance separates confirmation testing from regression testing, recommends impact analysis for regression scope and treats automated regression tests as a good fit for CI.</li>
+<li>pytest documentation states that pytest supports small readable tests, assertion introspection, auto-discovery, modular fixtures, parametrization, CI guidance and flaky-test guidance.</li>
+<li>Vitest documentation describes watch mode for development, run mode in CI, projects, snapshots, coverage through V8 or Istanbul, browser mode and isolation tradeoffs.</li>
+<li>Playwright Test supports retries, classifies tests as passed, flaky or failed, and can capture traces on retry. Trace Viewer, screenshots and visual comparisons provide browser runtime evidence.</li>
+<li>Playwright visual comparison guidance requires stable environments for reliable screenshot baselines.</li>
+<li>Pact documents consumer-driven contract testing and provider verification for HTTP and message integrations.</li>
+<li>Stryker mutation testing changes code under test and checks whether the test suite detects the mutants; mutation score is a signal about test effectiveness, not product correctness by itself.</li>
+<li>Hypothesis is a property-based testing library for Python that generates examples from stated properties and can reveal edge cases missed by example-based tests.</li>
+<li>GitHub Actions workflow syntax defines CI jobs, events, permissions, environments, matrix runs and reusable workflow structures. <code>GITHUB_TOKEN</code> permissions should be scoped deliberately.</li>
+<li>Code coverage measures executed code, but coverage alone does not prove requirements, critical paths, contracts or user-visible behavior.</li>
+<li>OpenAI evaluation guidance treats evals as systematic tests for AI applications and agent workflows, with datasets, graders, thresholds and regression loops.</li>
+<li>Codex AI app eval guidance recommends adding a runnable eval suite before prompt, model, retrieval or agent changes merge.</li>
+<li>Promptfoo provides declarative LLM app evaluation and red-team workflows with assertions, CI usage and metrics.</li>
+<li>Ragas documents RAG and agent metrics such as faithfulness, answer relevancy, context precision/recall and tool call accuracy.</li>
+</ul>
+<h2 id="assumptions">Assumptions<a class="headerlink" href="#assumptions" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Product-Agent OS should generate framework-neutral quality artifacts first, then specialize to pytest, Vitest, Playwright, JUnit, Promptfoo, Ragas or other stack tools when detected.</li>
+<li>Completion evidence should live in <code>RUNLOG.md</code> or a slice-specific evidence packet, while durable strategy belongs in <code>TEST.md</code> and <code>EVALS.md</code>.</li>
+<li>CI is a verification surface, not an approval surface. Creating or changing external CI workflows should remain staged until explicitly approved.</li>
+<li>Coverage thresholds are useful only when paired with requirement, critical-path and regression coverage.</li>
+</ul>
+<h2 id="unsupported-claims-not-adopted">Unsupported claims not adopted<a class="headerlink" href="#unsupported-claims-not-adopted" title="Permanent link">&para;</a></h2>
+<ul>
+<li>"More tests always means better quality." The useful signal is risk coverage, fast feedback and failure usefulness.</li>
+<li>"100 percent line coverage proves correctness." It does not prove assertions, behavior, contracts or user outcomes.</li>
+<li>"E2E tests are the most realistic, so they should dominate." High-level tests are valuable but slower and more brittle.</li>
+<li>"Manual QA is not evidence." Manual QA can be evidence when it has a charter, criteria, environment and captured result.</li>
+<li>"AI evals are optional for AI behavior changes." For AI-facing behavior, prompt/model/retrieval/tool changes need baseline or explicit baseline gap.</li>
+</ul>
+<h2 id="methodologies">Methodologies<a class="headerlink" href="#methodologies" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Methodology</th>
+<th>When to apply</th>
+<th>Project-level behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TDD / Red-Green-Refactor</td>
+<td>Deterministic logic, bugfixes, parser/validator/business rules</td>
+<td>Write failing test, run failure, implement minimal fix, rerun pass, refactor with tests green.</td>
+</tr>
+<tr>
+<td>ATDD / BDD</td>
+<td>Product behavior, workflow, business rules</td>
+<td>Acceptance scenario maps requirement to executable check or explicit manual/eval evidence.</td>
+</tr>
+<tr>
+<td>Test portfolio design</td>
+<td>Any non-trivial project</td>
+<td>Select static, unit, integration, contract, E2E, manual and eval checks by risk and feedback speed.</td>
+</tr>
+<tr>
+<td>Risk-based testing</td>
+<td>Time, CI budget or risk is constrained</td>
+<td>Prioritize checks by user impact, change risk, data/security exposure and historical failure rate.</td>
+</tr>
+<tr>
+<td>Confirmation and regression testing</td>
+<td>Bugfixes, migrations, refactors, dependency changes</td>
+<td>Reproduce original failure, prove fix, then check impacted unchanged behavior.</td>
+</tr>
+<tr>
+<td>Contract testing</td>
+<td>APIs, events, generated clients, external consumers</td>
+<td>Validate provider/consumer expectations and compatibility before integration or release claims.</td>
+</tr>
+<tr>
+<td>Integration testing</td>
+<td>Behavior depends on database, filesystem, queue, network or service boundary</td>
+<td>Exercise real or high-fidelity dependencies with reset strategy and failure evidence.</td>
+</tr>
+<tr>
+<td>E2E/runtime testing</td>
+<td>User-visible workflow or platform-specific behavior</td>
+<td>Browser/simulator/API/runtime path evidence with logs, screenshots, traces or reports.</td>
+</tr>
+<tr>
+<td>Visual and accessibility testing</td>
+<td>UI layout, design system or custom widget behavior</td>
+<td>Stable screenshots, component states, keyboard/focus/a11y checks and accepted diffs.</td>
+</tr>
+<tr>
+<td>Property-based testing</td>
+<td>Invariants, parsers, serializers, permissions, math, state transitions</td>
+<td>Generate many inputs from declared properties and keep shrinking/failing examples.</td>
+</tr>
+<tr>
+<td>Mutation testing</td>
+<td>Tests pass but assertion quality is uncertain</td>
+<td>Mutate source behavior and inspect surviving mutants for weak assertions or missing cases.</td>
+</tr>
+<tr>
+<td>Flaky test management</td>
+<td>Intermittent failures, timing, network, parallelism, browser tests</td>
+<td>Classify source, isolate, quarantine only with owner and expiry, keep flaky evidence visible.</td>
+</tr>
+<tr>
+<td>CI quality gates</td>
+<td>Shared branches, PRs, releases, packages</td>
+<td>Run deterministic checks with scoped permissions, artifacts, exact commands and exit codes.</td>
+</tr>
+<tr>
+<td>Eval-driven quality</td>
+<td>AI, docs, UX, search relevance, subjective outputs</td>
+<td>Dataset, rubric, grader, threshold, baseline/current run and failure review.</td>
+</tr>
+<tr>
+<td>Exploratory testing</td>
+<td>New workflows, unknown risk, usability, edge discovery</td>
+<td>Time-boxed charter, environment, notes, findings and follow-up checks.</td>
+</tr>
+<tr>
+<td>Evidence-before-completion</td>
+<td>Every meaningful slice</td>
+<td>Current command/eval/runtime/manual evidence or explicit inspection-only gap before success claims.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="documentation-artifacts-and-standards">Documentation artifacts and standards<a class="headerlink" href="#documentation-artifacts-and-standards" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th>Purpose</th>
+<th>Candidate location</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Test strategy</td>
+<td>Quality model, test portfolio, risk tiers, ownership and CI gates.</td>
+<td><code>TEST.md</code></td>
+</tr>
+<tr>
+<td>Test/eval matrix</td>
+<td>Requirement to scenario to check to evidence owner mapping.</td>
+<td><code>test-eval-matrix.md</code></td>
+</tr>
+<tr>
+<td>Acceptance scenarios</td>
+<td>Business/user behavior expressed as examples with expected and forbidden outcomes.</td>
+<td><code>acceptance-scenarios.md</code></td>
+</tr>
+<tr>
+<td>Red-Green-Refactor log</td>
+<td>Bug or deterministic behavior proof with failing and passing command evidence.</td>
+<td><code>RUNLOG.md</code>, <code>red-green-refactor-log.md</code></td>
+</tr>
+<tr>
+<td>Bug reproduction record</td>
+<td>Original failure, reproduction steps, environment, fixture and fixed evidence.</td>
+<td><code>bug-reproduction.md</code></td>
+</tr>
+<tr>
+<td>Risk-based test plan</td>
+<td>Risk areas, impact, likelihood, selected checks and accepted gaps.</td>
+<td><code>risk-based-test-plan.md</code></td>
+</tr>
+<tr>
+<td>Regression impact map</td>
+<td>Changed files/contracts/data and impacted behavior to rerun.</td>
+<td><code>regression-impact-map.md</code></td>
+</tr>
+<tr>
+<td>Contract test map</td>
+<td>API/event/schema contracts, consumers, providers and verification command.</td>
+<td><code>contract-test-map.md</code></td>
+</tr>
+<tr>
+<td>Runtime evidence packet</td>
+<td>Browser/API/native/desktop/server command, environment, logs, screenshots and traces.</td>
+<td><code>runtime-evidence.md</code></td>
+</tr>
+<tr>
+<td>Visual/a11y evidence packet</td>
+<td>Viewports, component states, screenshots, accepted diffs, keyboard/focus/a11y result.</td>
+<td><code>visual-a11y-evidence.md</code></td>
+</tr>
+<tr>
+<td>Coverage policy</td>
+<td>Coverage type, threshold, excluded files, critical-path mapping and non-goals.</td>
+<td><code>coverage-policy.md</code></td>
+</tr>
+<tr>
+<td>Mutation test report</td>
+<td>Scope, mutation score, surviving mutants, ignored mutants and follow-up tests.</td>
+<td><code>mutation-test-report.md</code></td>
+</tr>
+<tr>
+<td>Property test spec</td>
+<td>Invariants, input generators, shrink/failure examples and seed handling.</td>
+<td><code>property-test-spec.md</code></td>
+</tr>
+<tr>
+<td>Flaky test ledger</td>
+<td>Test, symptom, suspected source, owner, quarantine expiry and rerun evidence.</td>
+<td><code>flaky-test-ledger.md</code></td>
+</tr>
+<tr>
+<td>CI quality gate proposal</td>
+<td>Jobs, permissions, triggers, artifacts, cache, matrix and rollback.</td>
+<td><code>ci-quality-gates.md</code></td>
+</tr>
+<tr>
+<td>Eval spec</td>
+<td>Objective, dataset, grader, rubric, threshold, command and owner.</td>
+<td><code>EVALS.md</code>, <code>ai-eval-spec.md</code></td>
+</tr>
+<tr>
+<td>Eval run report</td>
+<td>Baseline/current score, passing/failing cases, regressions and residual risk.</td>
+<td><code>eval-run-report.md</code></td>
+</tr>
+<tr>
+<td>Manual QA charter</td>
+<td>Scope, environment, checklist, notes, findings and reviewer.</td>
+<td><code>manual-qa-charter.md</code></td>
+</tr>
+<tr>
+<td>Completion evidence packet</td>
+<td>Commands run, exit codes, outputs, artifacts, accepted gaps and residual risks.</td>
+<td><code>RUNLOG.md</code>, <code>evidence-packet.md</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="project-application-instructions">Project application instructions<a class="headerlink" href="#project-application-instructions" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Start each slice by naming the user-visible behavior or technical contract that needs evidence.</li>
+<li>Choose the smallest useful verification path. A pure parser may need unit/property tests; a checkout flow may need integration/E2E; an AI answer may need evals.</li>
+<li>Map every acceptance criterion to a deterministic check, contract check, runtime check, eval, manual charter or explicit gap.</li>
+<li>For bugfixes, capture reproduction evidence first when feasible. If reproduction is impossible, record the gap and risk before changing code.</li>
+<li>Use TDD when behavior is deterministic and the failure can be expressed cheaply. Do not force TDD for exploratory UI, visual design or ambiguous product discovery.</li>
+<li>Keep test layers purposeful. Unit tests check local rules, integration tests check collaboration, contract tests check compatibility, E2E tests check user/runtime path.</li>
+<li>For API or event changes, require contract source and consumer/provider verification or an explicit compatibility gap.</li>
+<li>For UI changes, capture runtime evidence for layout, responsive states, interaction, keyboard/focus and accessibility when relevant.</li>
+<li>For native/mobile/desktop changes, use platform build/run/log/screenshot evidence rather than code inspection only.</li>
+<li>For AI, search, ranking, docs quality or subjective behavior, use eval datasets, rubrics, graders and thresholds.</li>
+<li>Use coverage as a gap-finding tool, not as the only quality target. Pair coverage with requirement and critical-path coverage.</li>
+<li>Use mutation/property-based testing when ordinary examples are likely to miss edge cases or weak assertions.</li>
+<li>Treat flaky tests as product-quality debt. Retries may collect evidence, but they do not remove the need to classify and fix the cause.</li>
+<li>CI changes should specify triggers, permissions, artifacts, cache, matrix, failure behavior and rollback. External CI mutation requires explicit approval.</li>
+<li>Manual QA must name charter, environment, evidence and reviewer. "Manual review" alone is not enough.</li>
+<li>Do not claim "works", "tested", "verified", "ready" or "quality improved" without current evidence from this run or an explicit inspection-only gap.</li>
+<li>Record residual risk in <code>RUNLOG.md</code>, <code>EVALS.md</code> or release packet so the next role does not inherit hidden assumptions.</li>
+</ol>
+<h2 id="product-agent-os-candidate-rules">Product-Agent OS candidate rules<a class="headerlink" href="#product-agent-os-candidate-rules" title="Permanent link">&para;</a></h2>
+<h3 id="discovery-signals">Discovery signals<a class="headerlink" href="#discovery-signals" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Directories: <code>tests/</code>, <code>test/</code>, <code>spec/</code>, <code>e2e/</code>, <code>playwright/</code>, <code>cypress/</code>, <code>coverage/</code>, <code>evals/</code>, <code>.github/workflows/</code>, <code>fixtures/</code>, <code>__tests__/</code>, <code>snapshots/</code></li>
+<li>Files: <code>TEST.md</code>, <code>EVALS.md</code>, <code>RUNLOG.md</code>, <code>pytest.ini</code>, <code>tox.ini</code>, <code>vitest.config.*</code>, <code>jest.config.*</code>, <code>playwright.config.*</code>, <code>coverage.*</code>, <code>promptfoo.yaml</code>, <code>promptfooconfig.yaml</code>, <code>pact.*</code>, <code>openapi.*</code>, <code>asyncapi.*</code></li>
+<li>Terms: failing test, red-green-refactor, acceptance scenario, test matrix, coverage, mutation, property-based, flaky, retry, trace, screenshot, contract test, eval rubric, threshold, grader, manual QA, current evidence</li>
+<li>Dependency signals: pytest, unittest, JUnit, Jest, Vitest, Playwright, Testing Library, Storybook, Pact, Stryker, Hypothesis, Promptfoo, Ragas, Codecov, GitHub Actions</li>
+</ul>
+<h3 id="readiness-gates">Readiness gates<a class="headerlink" href="#readiness-gates" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>Trigger</th>
+<th>Block condition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>quality_strategy_present</code></td>
+<td>New project, major feature, shared subsystem</td>
+<td>No test/eval portfolio, risk tier or evidence owner.</td>
+</tr>
+<tr>
+<td><code>acceptance_traceability_present</code></td>
+<td>User-visible behavior change</td>
+<td>Acceptance criterion is not mapped to check, eval, manual charter or explicit gap.</td>
+</tr>
+<tr>
+<td><code>bug_reproduction_evidence_present</code></td>
+<td>Bugfix</td>
+<td>No reproduction command, failing test, logs, screenshot or explicit reproduction gap.</td>
+</tr>
+<tr>
+<td><code>test_first_or_gap_present</code></td>
+<td>Deterministic bugfix or business rule</td>
+<td>No failing test first and no reason why test-first was not feasible.</td>
+</tr>
+<tr>
+<td><code>contract_check_present</code></td>
+<td>API/event/schema/public package change</td>
+<td>Contract source or compatibility check is missing.</td>
+</tr>
+<tr>
+<td><code>risk_based_scope_present</code></td>
+<td>Risky, broad or constrained slice</td>
+<td>No impact/risk-based test scope and no accepted gaps.</td>
+</tr>
+<tr>
+<td><code>regression_impact_present</code></td>
+<td>Refactor, migration, dependency or shared-code change</td>
+<td>Impacted behavior and regression checks are missing.</td>
+</tr>
+<tr>
+<td><code>runtime_evidence_present</code></td>
+<td>UI/native/desktop/backend runtime behavior claim</td>
+<td>No current runtime command, logs, screenshot, trace or API evidence.</td>
+</tr>
+<tr>
+<td><code>visual_a11y_evidence_present</code></td>
+<td>UI layout, design system or accessibility-sensitive change</td>
+<td>No visual, responsive, keyboard/focus or accessibility evidence where relevant.</td>
+</tr>
+<tr>
+<td><code>eval_spec_present</code></td>
+<td>AI, docs, UX, search, ranking or subjective quality change</td>
+<td>No dataset/rubric/grader/threshold or explicit eval gap.</td>
+</tr>
+<tr>
+<td><code>eval_rerun_evidence_present</code></td>
+<td>Eval-governed change</td>
+<td>No current baseline/current result, failed cases or rerun command.</td>
+</tr>
+<tr>
+<td><code>coverage_policy_present</code></td>
+<td>Coverage threshold or coverage claim</td>
+<td>No coverage type, threshold, exclusions and critical-path mapping.</td>
+</tr>
+<tr>
+<td><code>flaky_test_policy_present</code></td>
+<td>Retries, intermittent failures or quarantined tests</td>
+<td>No classification, owner, expiry and follow-up evidence.</td>
+</tr>
+<tr>
+<td><code>ci_quality_gate_present</code></td>
+<td>Shared branch/release/PR quality claim</td>
+<td>No CI command/job, trigger, artifact or permission policy.</td>
+</tr>
+<tr>
+<td><code>manual_qa_evidence_present</code></td>
+<td>Manual QA is used as evidence</td>
+<td>No charter, environment, reviewer, notes and result.</td>
+</tr>
+<tr>
+<td><code>current_evidence_before_completion</code></td>
+<td>Completion or readiness claim</td>
+<td>No current command/eval/runtime/manual evidence and no explicit inspection-only gap.</td>
+</tr>
+<tr>
+<td><code>test_data_privacy_present</code></td>
+<td>Tests/evals use fixtures, user data, logs or traces</td>
+<td>Secrets/private data classification, sanitization or owner is missing.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="candidate-eval-fields">Candidate eval fields<a class="headerlink" href="#candidate-eval-fields" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Every acceptance criterion maps to a check, eval, manual charter or accepted gap.</li>
+<li>Bugfix includes reproduction evidence or explicit reproduction gap.</li>
+<li>Deterministic behavior change uses Red-Green-Refactor where feasible.</li>
+<li>Contract changes include source contract and compatibility verification.</li>
+<li>Regression scope follows impact analysis.</li>
+<li>Runtime claims include current runtime evidence.</li>
+<li>UI claims include visual/a11y evidence where relevant.</li>
+<li>AI or subjective quality claims include eval spec and rerun evidence.</li>
+<li>Coverage threshold is paired with critical-path coverage.</li>
+<li>Flaky tests are classified and not hidden by retries.</li>
+<li>CI gates list commands, triggers, artifacts and permissions.</li>
+<li>Manual QA evidence includes charter, environment, reviewer and findings.</li>
+<li>Test fixtures, eval datasets, traces and screenshots are free of secrets/private data.</li>
+<li>Final claims include current command/eval/runtime/manual evidence or explicit gap.</li>
+</ul>
+<h2 id="tooling-candidates">Tooling candidates<a class="headerlink" href="#tooling-candidates" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Tooling area</th>
+<th>Candidate</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Python tests</td>
+<td>pytest, unittest, coverage.py, tox/nox</td>
+<td>pytest is a strong default when already present; preserve existing runner.</td>
+</tr>
+<tr>
+<td>Java/Kotlin tests</td>
+<td>JUnit, Gradle/Maven test tasks</td>
+<td>Use project build tool as source of truth.</td>
+</tr>
+<tr>
+<td>JS/TS tests</td>
+<td>Vitest, Jest, Node test runner</td>
+<td>Choose by existing stack; Vitest fits Vite-native projects.</td>
+</tr>
+<tr>
+<td>Browser/runtime tests</td>
+<td>Playwright, Cypress, WebdriverIO</td>
+<td>Playwright gives traces, screenshots, retries and cross-browser evidence.</td>
+</tr>
+<tr>
+<td>Component tests</td>
+<td>Storybook, Testing Library, Vitest Browser Mode</td>
+<td>Prefer user-observable behavior and documented component states.</td>
+</tr>
+<tr>
+<td>API contracts</td>
+<td>OpenAPI, AsyncAPI, Pact, schema validators</td>
+<td>Contracts should be source-of-truth, generated docs are derived.</td>
+</tr>
+<tr>
+<td>Property-based tests</td>
+<td>Hypothesis, fast-check, jqwik</td>
+<td>Use for invariants, parsers, serializers, permissions and state machines.</td>
+</tr>
+<tr>
+<td>Mutation testing</td>
+<td>Stryker, mutmut, PIT</td>
+<td>Use selectively on critical logic to reveal weak assertions.</td>
+</tr>
+<tr>
+<td>Coverage reporting</td>
+<td>coverage.py, Istanbul/V8, Codecov</td>
+<td>Coverage is a signal, not proof of behavior.</td>
+</tr>
+<tr>
+<td>AI evals</td>
+<td>OpenAI Evals, Promptfoo, Ragas, custom app-backed evals</td>
+<td>Choose by privacy, CI fit, rubric type and stack.</td>
+</tr>
+<tr>
+<td>CI</td>
+<td>GitHub Actions, GitLab CI, Buildkite, Azure Pipelines</td>
+<td>Keep permissions scoped and evidence artifacts accessible.</td>
+</tr>
+<tr>
+<td>Reports</td>
+<td>JUnit XML, HTML reports, Allure, Playwright report</td>
+<td>Store enough evidence to debug failures without rerunning immediately.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="failure-modes">Failure modes<a class="headerlink" href="#failure-modes" title="Permanent link">&para;</a></h2>
+<ul>
+<li>A plan lists tests after implementation but never proves failure or behavior.</li>
+<li>Unit tests mock away the real risk while integration/contract behavior is untested.</li>
+<li>E2E tests dominate the suite and become slow, flaky and ignored.</li>
+<li>Coverage threshold becomes the goal and weak assertions still pass.</li>
+<li>Contract compatibility is inferred from generated clients without provider/consumer checks.</li>
+<li>Regression scope is selected by habit, not impact analysis.</li>
+<li>Browser visual tests run in unstable environments and produce noisy diffs.</li>
+<li>Retries hide intermittent failures without owner, classification or expiry.</li>
+<li>CI is treated as green based on an old run.</li>
+<li>Manual QA has no charter, criteria, environment or reviewer.</li>
+<li>AI evals have no baseline, threshold, rerun command or failed-case analysis.</li>
+<li>Test fixtures, traces or eval datasets contain secrets or private customer data.</li>
+<li>Final response claims "works" from inspection only while runtime verification was available.</li>
+</ul>
+<h2 id="open-questions-for-deeper-research">Open questions for deeper research<a class="headerlink" href="#open-questions-for-deeper-research" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Should Product-Agent OS generate a framework-neutral <code>test-eval-matrix.md</code> first, then stack-specific runner files later?</li>
+<li>Which changes should require Red-Green-Refactor as a blocker rather than a recommendation?</li>
+<li>Should mutation/property-based testing be a conditional gate only for critical deterministic logic?</li>
+<li>How should flaky test quarantine be represented in generated <code>TEST.md</code> and <code>RUNLOG.md</code>?</li>
+<li>What minimum AI eval threshold policy should apply before model/prompt/retrieval migrations?</li>
+<li>Should CI workflow proposals include least-privilege permissions by default, even when the target repo already has broader permissions?</li>
+<li>How should manual QA evidence be normalized across web, desktop, native, backend and docs workflows?</li>
+</ul>
+<h2 id="sources">Sources<a class="headerlink" href="#sources" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://agilealliance.org/glossary/tdd/">Agile Alliance: Test-Driven Development</a></li>
+<li><a href="https://agilealliance.org/glossary/atdd/">Agile Alliance: Acceptance Test-Driven Development</a></li>
+<li><a href="https://agilealliance.org/glossary/bdd/">Agile Alliance: Behavior-Driven Development</a></li>
+<li><a href="https://martinfowler.com/articles/practical-test-pyramid.html">Martin Fowler: The Practical Test Pyramid</a></li>
+<li><a href="https://kentcdodds.com/blog/the-testing-trophy-and-testing-classification">Kent C. Dodds: The Testing Trophy and Testing Classifications</a></li>
+<li><a href="https://istqb.org/wp-content/uploads/2024/11/ISTQB_CTFL_Syllabus_v4.0.1.pdf">ISTQB Certified Tester Foundation Level Syllabus v4.0.1</a></li>
+<li><a href="https://docs.pytest.org/en/stable/">pytest documentation</a></li>
+<li><a href="https://docs.pytest.org/en/stable/how-to/fixtures.html">pytest fixtures</a></li>
+<li><a href="https://docs.pytest.org/en/stable/example/parametrize.html">pytest parametrizing tests</a></li>
+<li><a href="https://vitest.dev/guide/features.html">Vitest features</a></li>
+<li><a href="https://vitest.dev/guide/coverage.html">Vitest coverage</a></li>
+<li><a href="https://jestjs.io/docs/snapshot-testing">Jest snapshot testing</a></li>
+<li><a href="https://playwright.dev/docs/test-retries">Playwright retries</a></li>
+<li><a href="https://playwright.dev/docs/trace-viewer-intro">Playwright Trace Viewer</a></li>
+<li><a href="https://playwright.dev/docs/test-snapshots">Playwright visual comparisons</a></li>
+<li><a href="https://docs.pact.io/">Pact documentation</a></li>
+<li><a href="https://stryker-mutator.io/docs/">Stryker mutation testing</a></li>
+<li><a href="https://stryker-mutator.io/docs/mutation-testing-elements/mutant-states-and-metrics/">Stryker mutation states and metrics</a></li>
+<li><a href="https://hypothesis.readthedocs.io/en/latest/">Hypothesis documentation</a></li>
+<li><a href="https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax">GitHub Actions workflow syntax</a></li>
+<li><a href="https://docs.github.com/en/actions/tutorials/authenticate-with-github_token">GitHub Actions GITHUB_TOKEN permissions</a></li>
+<li><a href="https://docs.codecov.com/docs/about-code-coverage">Codecov: About Code Coverage</a></li>
+<li><a href="https://developers.openai.com/api/docs/guides/evaluation-best-practices">OpenAI: Evaluation best practices</a></li>
+<li><a href="https://developers.openai.com/codex/use-cases/ai-app-evals">Codex: Add evals to your AI application</a></li>
+<li><a href="https://www.promptfoo.dev/docs/intro/">Promptfoo intro</a></li>
+<li><a href="https://www.promptfoo.dev/docs/configuration/expected-outputs/">Promptfoo assertions and metrics</a></li>
+<li><a href="https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/">Ragas available metrics</a></li>
+<li><a href="../context7-research.html">Context7 research</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </article>
+            </div>
+
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+
+      </main>
+
+        <footer class="md-footer">
+
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+
+
+</div>
+
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+
+
+
+
+
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.sections", "navigation.expand", "navigation.indexes", "navigation.top", "search.highlight", "search.suggest", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+
+
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+
+        <script src="../../../assets/javascripts/local-file-i18n.js"></script>
+
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+
+
+  </body>
+</html>

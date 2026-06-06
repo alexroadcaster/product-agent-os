@@ -191,11 +191,11 @@ It does not force formal DDD, Gherkin, EventStorming, BABOK or ISO processes ont
 - `accepted_gap_recorded`
 - `requirement_change_impact_review_present`
 
-## Failure modes
+## Типовые сбои
 
 - Implementation starts from file/folder structure without confirmed business behavior.
 - A user story title is treated as complete requirements.
-- Acceptance criteria describe implementation tasks instead of observable outcomes.
+- Критерии приемки describe implementation tasks instead of observable outcomes.
 - Gherkin files duplicate test code and become unreadable to domain experts.
 - Example Mapping creates questions but no owner or next action.
 - DDD is forced on simple CRUD and slows delivery without reducing risk.

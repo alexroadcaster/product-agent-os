@@ -6,13 +6,17 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
 
-        <meta name="description" content="Russian knowledge base for advanced OpenAI Codex and agentic workflows.">
+        <meta name="description" content="Документация Product-Agent OS для рабочих процессов с агентами и skills.">
 
 
 
 
 
 
+
+          <link rel="alternate" href="2026-05-15-product-agent-os-codex-runtime-runner.html" hreflang="ru">
+
+          <link rel="alternate" href="../../en/superpowers/plans/2026-05-15-product-agent-os-codex-runtime-runner.html" hreflang="en">
 
 
 
@@ -21,7 +25,7 @@
 
 
 
-        <title>Product-Agent OS Codex Runtime Runner Implementation Plan - OpenAI Codex Knowledge Base</title>
+        <title>Product-Agent OS Codex Runtime Runner Implementation Plan - Product-Agent OS</title>
 
 
 
@@ -90,7 +94,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
-    <a href="../../index.html" title="OpenAI Codex Knowledge Base" class="md-header__button md-logo" aria-label="OpenAI Codex Knowledge Base" data-md-component="logo">
+    <a href="../../index.html" title="Product-Agent OS" class="md-header__button md-logo" aria-label="Product-Agent OS" data-md-component="logo">
 
 
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -104,7 +108,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            OpenAI Codex Knowledge Base
+            Product-Agent OS
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -132,6 +136,32 @@
 
       <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
 
+
+      <div class="md-header__option">
+  <div class="md-select">
+
+    <button class="md-header__button md-icon" aria-label="Выберите язык">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+
+          <li class="md-select__item">
+            <a href="2026-05-15-product-agent-os-codex-runtime-runner.html" hreflang="ru" class="md-select__link">
+              RU
+            </a>
+          </li>
+
+          <li class="md-select__item">
+            <a href="../../en/superpowers/plans/2026-05-15-product-agent-os-codex-runtime-runner.html" hreflang="en" class="md-select__link">
+              EN
+            </a>
+          </li>
+
+      </ul>
+    </div>
+  </div>
+</div>
 
 
 
@@ -202,13 +232,13 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../index.html" title="OpenAI Codex Knowledge Base" class="md-nav__button md-logo" aria-label="OpenAI Codex Knowledge Base" data-md-component="logo">
+    <a href="../../index.html" title="Product-Agent OS" class="md-nav__button md-logo" aria-label="Product-Agent OS" data-md-component="logo">
 
 
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
-    OpenAI Codex Knowledge Base
+    Product-Agent OS
   </label>
 
   <ul class="md-nav__list" data-md-scrollfix>
@@ -3890,7 +3920,7 @@
 </ol>
 <p>Required marker strings are intentionally simple and synthetic-friendly:</p>
 <ul>
-<li>acceptance criteria: <code>Acceptance Criteria</code>;</li>
+<li>acceptance criteria: <code>Критерии приемки</code>;</li>
 <li>verification strategy: <code>Verification</code>;</li>
 <li>build active: <code>lifecycle_state: build_active</code>;</li>
 <li>quality gate: <code>lifecycle_state: quality_gate</code>;</li>
@@ -4258,7 +4288,7 @@
         <span class="n">omit</span> <span class="o">=</span> <span class="n">omit</span> <span class="ow">or</span> <span class="nb">set</span><span class="p">()</span>
         <span class="n">content</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;AGENTS.md&quot;</span><span class="p">:</span> <span class="s2">&quot;# Rules</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;REQUIREMENTS.md&quot;</span><span class="p">:</span> <span class="s2">&quot;# Requirements</span><span class="se">\n\n</span><span class="s2">## Acceptance Criteria</span><span class="se">\n\n</span><span class="s2">- Synthetic acceptance.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;REQUIREMENTS.md&quot;</span><span class="p">:</span> <span class="s2">&quot;# Requirements</span><span class="se">\n\n</span><span class="s2">## Критерии приемки</span><span class="se">\n\n</span><span class="s2">- Synthetic acceptance.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
             <span class="s2">&quot;PLAN.md&quot;</span><span class="p">:</span> <span class="s2">&quot;# Plan</span><span class="se">\n\n</span><span class="s2">## Verification</span><span class="se">\n\n</span><span class="s2">- Run unit tests.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
             <span class="s2">&quot;TEST.md&quot;</span><span class="p">:</span> <span class="s2">&quot;# Test</span><span class="se">\n\n</span><span class="s2">Quality gates: unit tests.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
             <span class="s2">&quot;EVALS.md&quot;</span><span class="p">:</span> <span class="s2">&quot;# Evals</span><span class="se">\n\n</span><span class="s2">Quality gates: fixture eval.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
@@ -4337,7 +4367,7 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="n">files</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AGENTS.md&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;exists&quot;</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">&quot;uninitialized&quot;</span>
     <span class="n">requirements</span> <span class="o">=</span> <span class="n">files</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;REQUIREMENTS.md&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">requirements</span> <span class="ow">or</span> <span class="s2">&quot;Acceptance Criteria&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">requirements</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">requirements</span> <span class="ow">or</span> <span class="s2">&quot;Критерии приемки&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">requirements</span><span class="p">:</span>
         <span class="k">return</span> <span class="s2">&quot;infrastructure_planned&quot;</span>
     <span class="n">plan</span> <span class="o">=</span> <span class="n">files</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;PLAN.md&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">plan</span> <span class="ow">or</span> <span class="s2">&quot;Verification&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">plan</span><span class="p">:</span>
@@ -4767,7 +4797,7 @@
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_write_control_plane</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">workspace</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">runlog_marker</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="p">(</span><span class="n">workspace</span> <span class="o">/</span> <span class="s2">&quot;AGENTS.md&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="s2">&quot;# Rules</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
-        <span class="p">(</span><span class="n">workspace</span> <span class="o">/</span> <span class="s2">&quot;REQUIREMENTS.md&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="s2">&quot;# Requirements</span><span class="se">\n\n</span><span class="s2">## Acceptance Criteria</span><span class="se">\n\n</span><span class="s2">- Synthetic.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">workspace</span> <span class="o">/</span> <span class="s2">&quot;REQUIREMENTS.md&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="s2">&quot;# Requirements</span><span class="se">\n\n</span><span class="s2">## Критерии приемки</span><span class="se">\n\n</span><span class="s2">- Synthetic.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
         <span class="p">(</span><span class="n">workspace</span> <span class="o">/</span> <span class="s2">&quot;PLAN.md&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="s2">&quot;# Plan</span><span class="se">\n\n</span><span class="s2">## Verification</span><span class="se">\n\n</span><span class="s2">- Run tests.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
         <span class="p">(</span><span class="n">workspace</span> <span class="o">/</span> <span class="s2">&quot;TEST.md&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="s2">&quot;# Test</span><span class="se">\n\n</span><span class="s2">Quality gates: unit tests.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
         <span class="p">(</span><span class="n">workspace</span> <span class="o">/</span> <span class="s2">&quot;EVALS.md&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="s2">&quot;# Evals</span><span class="se">\n\n</span><span class="s2">Quality gates: fixture eval.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
@@ -4998,7 +5028,7 @@ Synthetic fixture only.
 <p><code>REQUIREMENTS.md</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="gh"># Synthetic Requirements</span>
 
-<span class="gu">## Acceptance Criteria</span>
+<span class="gu">## Критерии приемки</span>
 
 <span class="k">-</span><span class="w"> </span>Synthetic route can reach quality gate.
 </code></pre></div>
@@ -5030,7 +5060,7 @@ lifecycle_state: quality_gate
 <ul>
 <li>[ ] <strong>Step 4: Create missing context fixture</strong></li>
 </ul>
-<p>Create <code>plugins/product-agent-os/assets/fixtures/codex-runner-missing-context/</code> with <code>AGENTS.md</code>, <code>REQUIREMENTS.md</code>, <code>TEST.md</code>, <code>EVALS.md</code>, <code>RUNLOG.md</code>, but intentionally omit <code>PLAN.md</code>. Use synthetic text and include <code>## Acceptance Criteria</code> in <code>REQUIREMENTS.md</code>.</p>
+<p>Create <code>plugins/product-agent-os/assets/fixtures/codex-runner-missing-context/</code> with <code>AGENTS.md</code>, <code>REQUIREMENTS.md</code>, <code>TEST.md</code>, <code>EVALS.md</code>, <code>RUNLOG.md</code>, but intentionally omit <code>PLAN.md</code>. Use synthetic text and include <code>## Критерии приемки</code> in <code>REQUIREMENTS.md</code>.</p>
 <ul>
 <li>[ ] <strong>Step 5: Create approval-required fixture</strong></li>
 </ul>
@@ -5425,6 +5455,8 @@ Synthetic redaction input contains token-like text and a local user path.
 
 
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+
+        <script src="../../assets/javascripts/local-file-i18n.js"></script>
 
         <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
 

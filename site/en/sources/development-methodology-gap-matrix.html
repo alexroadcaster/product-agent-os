@@ -1,0 +1,4079 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+
+        <meta name="description" content="Product documentation for Product-Agent OS.">
+
+
+
+
+
+
+
+          <link rel="alternate" href="../../sources/development-methodology-gap-matrix.html" hreflang="ru">
+
+          <link rel="alternate" href="development-methodology-gap-matrix.html" hreflang="en">
+
+
+
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+
+
+
+        <title>Gap Matrix: Source Claim -> Plugin Artifact -> Eval/Check -> Residual Risk - Product-Agent OS Documentation</title>
+
+
+
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+
+
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+
+
+
+
+
+
+
+
+
+
+
+
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+
+
+
+      <link rel="stylesheet" href="../../assets/stylesheets/extra.css">
+
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+
+
+
+
+
+  </head>
+
+
+
+
+
+
+
+
+
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="deep-orange">
+
+
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+
+
+        <a href="#gap-matrix-source-claim-plugin-artifact-evalcheck-residual-risk" class="md-skip">
+          Skip to content
+        </a>
+
+    </div>
+    <div data-md-component="announce">
+
+    </div>
+
+
+
+
+
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="Product-Agent OS Documentation" class="md-header__button md-logo" aria-label="Product-Agent OS Documentation" data-md-component="logo">
+
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Product-Agent OS Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+
+              Gap Matrix: Source Claim -&gt; Plugin Artifact -&gt; Eval/Check -&gt; Residual Risk
+
+          </span>
+        </div>
+      </div>
+    </div>
+
+
+        <form class="md-header__option" data-md-component="palette">
+
+
+
+
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="deep-orange"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+
+
+</form>
+
+
+
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+
+
+      <div class="md-header__option">
+  <div class="md-select">
+
+    <button class="md-header__button md-icon" aria-label="Select language">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+
+          <li class="md-select__item">
+            <a href="../../sources/development-methodology-gap-matrix.html" hreflang="ru" class="md-select__link">
+              RU
+            </a>
+          </li>
+
+          <li class="md-select__item">
+            <a href="development-methodology-gap-matrix.html" hreflang="en" class="md-select__link">
+              EN
+            </a>
+          </li>
+
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+
+
+        <label class="md-header__button md-icon" for="__search">
+
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+  </nav>
+
+</header>
+
+    <div class="md-container" data-md-component="container">
+
+
+
+
+
+
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+
+
+
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="Product-Agent OS Documentation" class="md-nav__button md-logo" aria-label="Product-Agent OS Documentation" data-md-component="logo">
+
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Product-Agent OS Documentation
+  </label>
+
+  <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Home
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="../diagrams/index.html" class="md-nav__link ">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Diagrams
+
+
+
+  </span>
+
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Diagrams
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/architecture.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Architecture
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/product-delivery-lifecycle.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Delivery Lifecycle
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/agent-team-and-skills.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agent Team And Skills
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/runtime-decision-map.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Runtime Decision Map
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/skill-lifecycle.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Skill Lifecycle
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/context-memory-verification.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Context, Memory, Verification
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+
+
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Sources
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Sources
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="registry.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Source Registry
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="context7-research.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Context7 Analysis
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="source-card-template.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Source Card Template
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+
+
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Codex
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Codex
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/overview.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Overview
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/surfaces.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Work Surfaces
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/configuration.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Configuration And Extensibility
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/security.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Security And Approvals
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/workflows.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Workflows
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/use-cases-deep-analysis.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Deep Use-Case Analysis
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+
+
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Prompt And Context Engineering
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Prompt And Context Engineering
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../prompting/overview.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Overview
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../prompting/question-design.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Question Design
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../prompting/context-engineering.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Context Engineering
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../prompting/anti-hallucination.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Anti-Hallucination Controls
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+
+
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Product-Agent Workflows
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Product-Agent Workflows
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent/overview.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Overview
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent/lifecycle.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Product Lifecycle
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent/roles.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agent Team Roles
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent/control-plane.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Control-Plane Files
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent/product-agent-os-plugin-spec.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Product-Agent OS Plugin Spec
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="../product-agent-os/index.html" class="md-nav__link ">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Product-Agent OS Plugin
+
+
+
+  </span>
+
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_7" id="__nav_7_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Product-Agent OS Plugin
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/project-code-graph.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Project Code Graph
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/live-runtime-governance.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Live Runtime Governance
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/approval-bound-real-testing.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Approval-Bound Real Testing
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/agent-skill-modernization-loop.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agent-Skill Modernization Loop
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/cli-reference.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    CLI Reference
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/artifact-contracts.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Artifact Contracts
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/packaging-and-closure.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Packaging And Closure
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/technical.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Technical Setup
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/development-standards.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Engineering Standards Layer
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/methodology-intelligence.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Methodology Intelligence
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/scenarios.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Scenarios And Usage Modes
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/behavioral-evals.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Behavioral Evals
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/codex-compatibility.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Codex Compatibility
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/architecture.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Diagrams And Operating Principles
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="../methodologies/index.html" class="md-nav__link ">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Methodologies For Large Projects
+
+
+
+  </span>
+
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Methodologies For Large Projects
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/business-product.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Business And Product
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/requirements-domain.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Requirements And Domain
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/solution-architecture.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Solution Architecture
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/frontend.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Frontend
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/backend.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Backend
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/api-integrations.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    API And Integrations
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/database-data.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Database And Data
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/llm-ai-rag.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    LLM / AI / RAG
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/quality-testing-evals.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Quality, Testing And Evals
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/security-privacy-compliance.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Security, Privacy And Compliance
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/delivery-release-operations.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Delivery, Release And Operations
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/codex-agentic-workflow.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Codex / Agentic Workflow
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_9" >
+
+
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Codex Automation And Runtime
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Codex Automation And Runtime
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../runtime/overview.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Runtime Overview
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../runtime/non-interactive-and-mcp.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Non-Interactive And MCP
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../runtime/automations-github.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Automations And GitHub
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../runtime/worktrees-hooks-rules.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Worktrees, Hooks, Rules
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_10" >
+
+
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agent Systems
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Agent Systems
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/overview.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Architecture
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/memory.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Memory
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/session-control.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Session Control
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/subagents-skills.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Subagents, Skills, AGENTS.md
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/sdk-patterns.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agents SDK Patterns
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/evals-observability.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Evals And Observability
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/templates.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agent Templates
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_11" >
+
+
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Playbooks
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Playbooks
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/research-loop.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Research Loop
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/context7-deep-research.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Context7 Deep Research
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/grounded-answering.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Grounded Answering
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/build-full-feature.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Build Full Feature
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/workflow-to-skill.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Workflow To Skill
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/use-case-to-plugin.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Use Case To Plugin
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/eval-driven-improvement.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Eval-Driven Improvement
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/product-ready-pr.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Product-Ready PR
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/maintain-agent-operating-docs.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agent Operating Docs
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/docs-update.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Docs Update
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/workspace-readiness-audit.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Workspace Readiness Audit
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/code-review.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Code Review
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/ai-team-design.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    AI-Native Team
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_12" >
+
+
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Templates
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Templates
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../artifact-templates/prompt-packet.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Prompt Template
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../artifact-templates/control-plane-files.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Control-Plane Templates
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../artifact-templates/runlog.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    RUNLOG Template
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../artifact-templates/product-skill.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Skill Template
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../artifact-templates/plugin-blueprint.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Plugin Blueprint
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_13" >
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="../insights/index.html" class="md-nav__link ">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Insights
+
+
+
+  </span>
+
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_13" id="__nav_13_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Insights
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../insights/insight-card-template.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Insight Card Template
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../insights/seed-insights.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Initial Backlog
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+
+
+
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+
+
+
+
+
+
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+
+        <li class="md-nav__item">
+  <a href="#how-to-read-this-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        How To Read This Matrix
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#development-methodology-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Development Methodology Matrix
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#documentation-and-artifact-tooling-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Documentation And Artifact Tooling Matrix
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#track-8-candidate-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Track 8 Candidate Changes
+
+    </span>
+  </a>
+
+</li>
+
+    </ul>
+
+</nav>
+                  </div>
+                </div>
+              </div>
+
+
+
+            <div class="md-content" data-md-component="content">
+
+              <article class="md-content__inner md-typeset">
+
+
+
+
+
+<h1 id="gap-matrix-source-claim-plugin-artifact-evalcheck-residual-risk">Gap Matrix: Source Claim -&gt; Plugin Artifact -&gt; Eval/Check -&gt; Residual Risk<a class="headerlink" href="#gap-matrix-source-claim-plugin-artifact-evalcheck-residual-risk" title="Permanent link">&para;</a></h1>
+<p>Source status: <code>official + verified methodology + implementation audit</code></p>
+<p>Analysis date: <strong>2026-05-23</strong>.<br />
+Scope: Product-Agent OS after Track 7, including <code>.codex/workflows/development-standards.md</code>, <code>.codex/workflows/documentation-system.md</code>, <code>.codex/artifact-templates/*.md</code>, <code>project-readiness.json</code>, workspace discovery signals and lifecycle skills.</p>
+<h2 id="how-to-read-this-matrix">How To Read This Matrix<a class="headerlink" href="#how-to-read-this-matrix" title="Permanent link">&para;</a></h2>
+<p><code>Covered</code> means the claim already has a Product-Agent OS artifact and a verification surface.<br />
+<code>Partial</code> means the claim exists in prose or a template but lacks a strong gate, discovery signal or fixture coverage.<br />
+<code>Missing</code> means the claim is part of research but has not yet become plugin behavior.</p>
+<h2 id="development-methodology-matrix">Development Methodology Matrix<a class="headerlink" href="#development-methodology-matrix" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Coverage</th>
+<th>Source Claim</th>
+<th>Current Plugin Artifact</th>
+<th>Current Eval/Check</th>
+<th>Residual Risk / Next Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Covered</td>
+<td><a href="https://developers.openai.com/codex/plugins/build">OpenAI Codex plugins</a>: a plugin should be a packaged unit with manifest and bundled assets, not a hidden runtime side effect.</td>
+<td><code>.codex-plugin/plugin.json</code>, <code>plugins/product-agent-os/assets/templates/</code>, <code>templates.py</code>, staged renderer.</td>
+<td><code>tests/product_agent_os/test_plugin_structure.py</code>, full unittest, fixture eval renderer file count.</td>
+<td>Low risk. Keep the rule that new standards are added as templates/evals/docs, not silent behavior.</td>
+</tr>
+<tr>
+<td>Covered</td>
+<td><a href="https://developers.openai.com/codex/skills">Agent Skills</a>: repeatable workflows should be skill-level methods with inputs, outputs, verification and failure modes.</td>
+<td><code>plugins/product-agent-os/skills/*/SKILL.md</code>, lifecycle skills, workflow templates.</td>
+<td>Skill structure tests, fixture eval, docs check.</td>
+<td>Medium risk: methodology coverage is partly in workflow templates, not every repeatable method is a standalone skill.</td>
+</tr>
+<tr>
+<td>Covered</td>
+<td><a href="https://developers.openai.com/codex/guides/build-ai-native-engineering-team">AI-native engineering team</a>: humans keep ownership of architecture, quality, safety and release decisions.</td>
+<td><code>AGENTS.md</code>, role templates, approval/staged merge rules, <code>development-standards.md</code>, <code>review-slice.md</code>.</td>
+<td>Project readiness eval, merge approval tests, fixture eval.</td>
+<td>Low risk. Preserve staged-first boundaries for external writes, hooks, CI and automation.</td>
+</tr>
+<tr>
+<td>Partial</td>
+<td><a href="https://developers.openai.com/codex/use-cases/ai-app-evals">Codex AI app evals</a> and <a href="https://developers.openai.com/api/docs/guides/evaluation-best-practices">OpenAI eval best practices</a>: AI behavior needs baselines, eval cases, thresholds and rerun loops.</td>
+<td><code>EVALS.md</code>, <code>TEST.md</code>, <code>.codex/workflows/development-standards.md</code>, <code>.codex/workflows/documentation-system.md</code>.</td>
+<td>Readiness gate <code>test_eval_first_evidence</code>, fixture eval validates generated assets.</td>
+<td>Add or maintain AI/RAG dataset schema and no-secrets fixture policy.</td>
+</tr>
+<tr>
+<td>Covered</td>
+<td><a href="https://agilealliance.org/glossary/tdd/">Agile Alliance TDD</a>: tests precede programming and drive design/refactoring.</td>
+<td><code>TEST.md</code>, <code>build-slice.md</code>, <code>development-standards.md</code> with Red-Green-Refactor proof.</td>
+<td>Template tests assert Red-Green-Refactor guidance; readiness gate checks <code>test_eval_first_evidence</code>.</td>
+<td>Medium risk: guidance presence is not always runtime proof. Prefer RUNLOG red -&gt; green evidence when feasible.</td>
+</tr>
+<tr>
+<td>Covered</td>
+<td><a href="https://agilealliance.org/glossary/atdd/">Agile Alliance ATDD</a>: acceptance tests are formed before implementation through product/customer, development and testing perspectives.</td>
+<td><code>acceptance-scenarios.md</code>, generated <code>REQUIREMENTS/TEST/EVALS</code>, <code>development-standards.md</code>, lifecycle skills, readiness eval and behavioral eval.</td>
+<td>Template registry tests, acceptance scenario template tests, fixture eval <code>acceptance_scenarios_contract_present</code>.</td>
+<td>Scenario quality can still be weak; product/development/testing review remains required.</td>
+</tr>
+<tr>
+<td>Covered</td>
+<td><a href="https://agilealliance.org/glossary/bdd/">Agile Alliance BDD</a>: behavior scenarios create shared language for business, testing and development.</td>
+<td><code>acceptance-scenarios.md</code> supports Given/When/Then or equivalent behavior format.</td>
+<td>Template tests and <code>acceptance-scenarios-traceability</code> behavioral case.</td>
+<td>BDD scenarios must not replace unit, integration, contract tests or evals.</td>
+</tr>
+<tr>
+<td>Covered</td>
+<td><a href="https://martinfowler.com/bliki/DomainDrivenDesign.html">Martin Fowler DDD</a>: complex domain logic should be designed around a domain model.</td>
+<td><code>.codex/artifact-templates/domain-modeling.md</code>, <code>project-readiness.json</code>, <code>implementation-planner</code>, complex-domain discovery gap.</td>
+<td>Focused T8-A5 tests, false-positive protection, fixture eval <code>domain_model_gate_contract_present</code>.</td>
+<td>Artifact presence does not prove model quality. T8-A7 adds traceability, but human domain review still matters.</td>
+</tr>
+<tr>
+<td>Covered</td>
+<td><a href="https://martinfowler.com/bliki/BoundedContext.html">Bounded Context</a>: a domain model applies consistently only inside a boundary.</td>
+<td><code>domain-modeling.md</code>, <code>architecture-overview.md</code>, <code>PLAN.md</code> architecture boundary, <code>domain_model</code> discovery signal.</td>
+<td>Focused T8-A6 tests and fixture eval <code>bounded_context_trace_contract_present</code>.</td>
+<td>Human architecture/domain review must validate whether each split is conceptually right.</td>
+</tr>
+<tr>
+<td>Covered</td>
+<td><a href="https://martinfowler.com/bliki/UbiquitousLanguage.html">Ubiquitous Language</a>: domain vocabulary should be shared by domain experts and developers.</td>
+<td><code>domain-modeling.md</code>, generated <code>PLAN/TEST/EVALS/RUNLOG</code>, <code>project-readiness.json</code>, <code>implementation-planner</code>.</td>
+<td>Focused T8-A7 tests and fixture eval <code>ubiquitous_language_traceability_contract_present</code>.</td>
+<td>Artifact presence does not prove terms are conceptually correct.</td>
+</tr>
+<tr>
+<td>Covered</td>
+<td><a href="https://feature-sliced.github.io/documentation/">Feature-Sliced Design</a>: UI architecture should use layers/slices/segments/public API/import rules where appropriate.</td>
+<td><code>development-standards.md</code>, <code>component-card.md</code>, <code>project-readiness.json</code>, discovery and planning signals.</td>
+<td>Focused T8-A8 tests and fixture checks for backend/native/simple CRUD false positives.</td>
+<td>Directory detection does not prove architecture quality.</td>
+</tr>
+<tr>
+<td>Covered</td>
+<td><a href="https://research.google.com/pubs/pub36299.htmlyaframe=0">Google HEART</a>: product metrics connect user-experience goals to signals and metrics.</td>
+<td><code>metric-spec.md</code>, <code>REQUIREMENTS.md</code>, <code>development-standards.md</code>, <code>release-packet.md</code>, <code>project-readiness.json</code>, lifecycle skills.</td>
+<td>Focused T8-A9 tests and fixture eval <code>metric_hardening_contract_present</code>.</td>
+<td>The template cannot prove the chosen metric is strategically correct.</td>
+</tr>
+<tr>
+<td>Covered</td>
+<td><a href="https://amplitude.com/north-star-hub">Amplitude North Star</a>: one primary value metric needs input metrics and guardrails.</td>
+<td><code>metric-spec.md</code> requires primary value metric, input metric, counter-metric, proxy risk, guardrail, qualitative review and owner signoff.</td>
+<td>Focused T8-A9 tests and fixture eval.</td>
+<td>Teams can still choose a poor metric; owner review remains required.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="documentation-and-artifact-tooling-matrix">Documentation And Artifact Tooling Matrix<a class="headerlink" href="#documentation-and-artifact-tooling-matrix" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Coverage</th>
+<th>Source Claim</th>
+<th>Current Plugin Artifact</th>
+<th>Current Eval/Check</th>
+<th>Residual Risk / Next Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Covered</td>
+<td><a href="https://c4model.com/diagrams">C4 model</a>: architecture views communicate context, containers, components and code only where useful.</td>
+<td><code>architecture-overview.md</code>, <code>documentation-system.md</code>, docs architecture page.</td>
+<td>Template presence and docs check; readiness signal <code>architecture_docs</code>.</td>
+<td>Add diagram render checks when target tooling exists.</td>
+</tr>
+<tr>
+<td>Covered</td>
+<td><a href="https://arc42.org/overview">arc42</a>: architecture docs cover goals, constraints, context, decisions, quality and risks.</td>
+<td><code>architecture-overview.md</code>, <code>adr.md</code>, <code>documentation-system.md</code>.</td>
+<td>Template tests and docs check.</td>
+<td>Add an architecture quality rubric to <code>EVALS.md</code> when subjective review is needed.</td>
+</tr>
+<tr>
+<td>Partial</td>
+<td><a href="https://adr.github.io/madr/">MADR</a>: ADR captures context, decision drivers, options, decision and consequences.</td>
+<td><code>adr.md</code> template.</td>
+<td>Artifact template generated and tested for existence.</td>
+<td>Add ADR trigger policy for architecture/API/storage/security/automation/migration changes.</td>
+</tr>
+<tr>
+<td>Covered</td>
+<td><a href="https://docs.structurizr.com/dsl">Structurizr DSL</a>: C4 models can be maintained as text with views, docs and ADRs.</td>
+<td><code>documentation-system.md</code>, <code>docs-tooling-decision.md</code>, <code>docs_tooling_decision</code> detection.</td>
+<td>Focused T8-C discovery test covers Structurizr DSL diagram tooling.</td>
+<td>Optional advanced path; validation remains <code>present_unverified</code> until command evidence exists.</td>
+</tr>
+<tr>
+<td>Covered</td>
+<td><a href="https://mermaid.js.org/intro/syntax-reference.html">Mermaid syntax</a>: text diagrams can live in Markdown and render in docs portals.</td>
+<td>Existing docs atlas uses Mermaid; <code>documentation-system.md</code> allows Mermaid.</td>
+<td><code>tools/check_docs.py</code>; strict MkDocs build catches some link/config issues.</td>
+<td>Target workspaces may still need diagram lint proposals.</td>
+</tr>
+<tr>
+<td>Covered</td>
+<td><a href="https://plantuml.com/sequence-diagram">PlantUML</a>: text-based UML/sequence diagrams help teams already using UML.</td>
+<td><code>documentation-system.md</code>, <code>docs-tooling-decision.md</code>.</td>
+<td>Focused T8-C discovery test covers PlantUML diagram tooling.</td>
+<td>Keep optional; no forced install or CI activation.</td>
+</tr>
+<tr>
+<td>Covered</td>
+<td><a href="https://spec.openapis.org/oas/latest">OpenAPI latest</a>: HTTP APIs should have machine-readable contracts.</td>
+<td><code>api-contract-review.md</code>, <code>documentation-system.md</code>, discovery signal <code>openapi</code>.</td>
+<td>Discovery tests and readiness signal for API changes.</td>
+<td>Add optional lint command slots and compatibility policy.</td>
+</tr>
+<tr>
+<td>Covered</td>
+<td><a href="https://www.asyncapi.com/docs/reference/specification/v3.0.0">AsyncAPI v3.0.0</a>: message-driven APIs need channel/message/payload contracts.</td>
+<td><code>api-contract-review.md</code>, <code>documentation-system.md</code>, discovery signal <code>asyncapi</code>.</td>
+<td>Discovery tests and readiness signal coverage.</td>
+<td>Add producer/consumer compatibility fields.</td>
+</tr>
+<tr>
+<td>Covered</td>
+<td><a href="https://storybook.js.org/docs/writing-docs/autodocs">Storybook Autodocs</a>: stories can generate UI component documentation.</td>
+<td><code>component-card.md</code>, <code>documentation-system.md</code>, discovery signal <code>storybook</code>.</td>
+<td>Discovery detects <code>.storybook/</code> and <code>.stories.*</code>.</td>
+<td>Capture detected package scripts and propose <code>storybook build</code> when present.</td>
+</tr>
+<tr>
+<td>Partial</td>
+<td><a href="https://storybook.js.org/docs/writing-tests/accessibility-testing">Storybook accessibility tests</a>: a11y checks can run in UI and CI-oriented workflows.</td>
+<td><code>component-card.md</code> accessibility and visual/a11y fields.</td>
+<td>Template presence only.</td>
+<td>Add optional a11y/visual check command slot.</td>
+</tr>
+<tr>
+<td>Covered</td>
+<td><a href="https://typedoc.org/">TypeDoc</a>: TypeScript source can generate API/reference documentation.</td>
+<td><code>documentation-system.md</code>, <code>docs-tooling-decision.md</code>.</td>
+<td>Focused T8-C discovery tests and fixture eval selector coverage.</td>
+<td>Public API relevance still needs owner review.</td>
+</tr>
+<tr>
+<td>Partial</td>
+<td><a href="https://jsdoc.app/about-block-inline-tags">JSDoc tags</a>: JS comments can document public interfaces.</td>
+<td><code>documentation-system.md</code> code reference layer.</td>
+<td>No JS-specific check.</td>
+<td>Require only for public interfaces/SDKs, not obvious internals.</td>
+</tr>
+<tr>
+<td>Covered</td>
+<td><a href="https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html">Sphinx autodoc</a>: Python docs can be generated from importable modules/docstrings.</td>
+<td><code>documentation-system.md</code>, <code>docs-tooling-decision.md</code>.</td>
+<td>Focused T8-C tests cover import-safety warning.</td>
+<td><code>sphinx-build</code> remains <code>present_unverified</code> until run.</td>
+</tr>
+<tr>
+<td>Partial</td>
+<td><a href="https://docs.oracle.com/en/java/javase/22/docs/specs/javadoc/doc-comment-spec.html">Oracle Javadoc spec</a>: Java API docs need structured comments.</td>
+<td><code>documentation-system.md</code>.</td>
+<td>No Java-specific check.</td>
+<td>Add only when Java/Kotlin stack and public APIs are detected.</td>
+</tr>
+<tr>
+<td>Partial</td>
+<td><a href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/xmldoc/">C# XML docs</a>: .NET API docs can be generated from XML comments.</td>
+<td><code>documentation-system.md</code>.</td>
+<td>No .NET-specific check.</td>
+<td>Add only when C# stack and public APIs are detected.</td>
+</tr>
+<tr>
+<td>Covered</td>
+<td><a href="https://dbml.dbdiagram.io/docs/">DBML</a> and <a href="https://docs.dbdocs.io/features/generate-dbml-from-db/">dbdocs</a>: schema docs can be text-based or generated from DB metadata.</td>
+<td><code>database-dictionary.md</code>, <code>documentation-system.md</code>, discovery signal <code>database_docs</code>.</td>
+<td>Discovery detects <code>.dbml</code>, schema docs and migration paths.</td>
+<td>Generated-from-DB workflows need explicit no-secrets/connection-string rules.</td>
+</tr>
+<tr>
+<td>Covered</td>
+<td><a href="https://schemaspy.readthedocs.io/en/v6.2.0/index.html">SchemaSpy</a>: DB schema docs can be generated by introspection.</td>
+<td><code>documentation-system.md</code>, <code>database-dictionary.md</code>, <code>docs-tooling-decision.md</code>.</td>
+<td>Focused T8-C tests require DB introspection to be <code>approval_required</code>.</td>
+<td>No DB access is performed; generated docs remain approval-bound.</td>
+</tr>
+<tr>
+<td>Covered</td>
+<td><a href="https://www.mkdocs.org/">MkDocs</a>: Markdown + YAML static docs build is a simple project docs portal.</td>
+<td>This repository uses MkDocs.</td>
+<td><code>python tools/check_docs.py</code>; strict MkDocs build when nav/config changes.</td>
+<td>Target workspaces need stack-specific docs build detection.</td>
+</tr>
+<tr>
+<td>Covered</td>
+<td><a href="https://docusaurus.io/docs">Docusaurus</a>: React/MDX docs portal supports versioning, i18n and interactive docs.</td>
+<td><code>documentation-system.md</code>, <code>docs-tooling-decision.md</code>.</td>
+<td>Focused T8-C tests cover selector behavior and no forced install.</td>
+<td>Versioning/i18n remain project decisions.</td>
+</tr>
+<tr>
+<td>Partial</td>
+<td><a href="https://docs.antora.org/antora/latest/">Antora</a>: multirepo/multiversion AsciiDoc docs portal.</td>
+<td><code>documentation-system.md</code>; discovery detects <code>antora-playbook.yml</code>.</td>
+<td>Discovery signal only.</td>
+<td>Recommend only for enterprise/multirepo documentation.</td>
+</tr>
+<tr>
+<td>Covered</td>
+<td><a href="https://docs.readthedocs.com/">Read the Docs</a>: hosted VCS-based docs builds and versions.</td>
+<td><code>documentation-system.md</code>, <code>docs-tooling-decision.md</code>.</td>
+<td>Focused T8-C tests require hosted docs to be <code>approval_required</code>.</td>
+<td>External hosting remains explicit-approval only.</td>
+</tr>
+<tr>
+<td>Covered</td>
+<td><a href="https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners">GitHub CODEOWNERS</a>: ownership file can request reviewers.</td>
+<td><code>documentation-system.md</code> CODEOWNERS proposal rule, discovery signal <code>codeowners</code>.</td>
+<td>Discovery gap detects missing docs-as-code ownership or CI signals.</td>
+<td>Plugin does not enable CODEOWNERS silently.</td>
+</tr>
+<tr>
+<td>Covered</td>
+<td><a href="https://docs.github.com/en/actions/concepts/workflows-and-actions/workflows">GitHub Actions workflows</a>: CI workflows are repo YAML processes.</td>
+<td>CI proposal boundary in docs; discovery signal <code>ci</code>.</td>
+<td>Discovery detects <code>.github/workflows/</code>.</td>
+<td>External workflow activation remains approval-bound.</td>
+</tr>
+<tr>
+<td>Covered</td>
+<td><a href="https://vale.sh/docs/styles">Vale styles</a>: prose linting can enforce terminology/style.</td>
+<td><code>docs-tooling-decision.md</code>, <code>documentation-system.md</code>.</td>
+<td>T8-C selector contract covers optional docs lint.</td>
+<td>Style rules and terminology ownership remain team decisions.</td>
+</tr>
+<tr>
+<td>Covered</td>
+<td><a href="https://github.com/markdownlint/markdownlint/blob/main/docs/RULES.md">markdownlint rules</a>: Markdown structural linting can be automated.</td>
+<td><code>docs-tooling-decision.md</code>, <code>documentation-system.md</code>.</td>
+<td>T8-C selector contract covers optional docs lint.</td>
+<td>Current repo uses <code>tools/check_docs.py</code>; markdownlint remains optional.</td>
+</tr>
+<tr>
+<td>Partial</td>
+<td><a href="https://keepachangelog.com/en/1.1.0/">Keep a Changelog</a>: changelog should be human-readable and release-oriented.</td>
+<td><code>release-packet.md</code>, <code>documentation-system.md</code>.</td>
+<td>Release operator skill only.</td>
+<td>Add grouped Added/Changed/Deprecated/Removed/Fixed/Security fields when relevant.</td>
+</tr>
+<tr>
+<td>Partial</td>
+<td><a href="https://semver.org/">Semantic Versioning</a>: public API compatibility maps to major/minor/patch versioning.</td>
+<td>Plugin packaging and release docs mention release packet.</td>
+<td>No check.</td>
+<td>Add version-impact field for plugin/package/SDK/API releases.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="track-8-candidate-changes">Track 8 Candidate Changes<a class="headerlink" href="#track-8-candidate-changes" title="Permanent link">&para;</a></h2>
+<p>After T8-D, the scenario layer is implemented for first-run intake, bug rescue, greenfield work, complex acceleration, PR review, legacy onboarding, API migration, AI eval regression, native/mobile, desktop local-first, data migration, security-sensitive change, CI stabilization and release packaging. Additional hardening now covers no-placeholder planning, two-stage review, fresh-context handoff, acceptance scenarios, conditional DDD, bounded-context traceability, ubiquitous language traceability, optional FSD routing, metric hardening, evidence-before-completion, docs tooling selector, readiness statuses, standards triggers, scenario/eval/Codex compatibility docs, transcript replay, false-positive fixtures and detailed discovery status packets.</p>
+<table>
+<thead>
+<tr>
+<th>Priority</th>
+<th>Change</th>
+<th>Why This Is Useful</th>
+<th>Verification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Done</td>
+<td>Harden no-placeholder implementation planning (<code>T8-A13</code>).</td>
+<td>Requires exact files, owned/forbidden files, exact commands, expected outputs, rollback, evidence owner, placeholder scan and plan repair.</td>
+<td>Focused T8-A13 tests, full unittest, fixture eval and plan-quality behavioral eval.</td>
+</tr>
+<tr>
+<td>Done</td>
+<td>Generalize two-stage review (<code>T8-A14</code>).</td>
+<td>Requires spec compliance before quality/risk for risky slices.</td>
+<td>Focused T8-A14 tests, full unittest and risky-slice behavioral eval.</td>
+</tr>
+<tr>
+<td>Done</td>
+<td>Harden fresh-context subagent handoff (<code>T8-A15</code>).</td>
+<td>Requires complete context, ownership, expected evidence, handoff output schema and stop conditions.</td>
+<td>Focused T8-A15 tests, full unittest, fixture eval and handoff behavioral eval.</td>
+</tr>
+<tr>
+<td>Done</td>
+<td>Add <code>acceptance-scenarios.md</code> (<code>T8-A3/T8-A4</code>).</td>
+<td>Gives agents a behavior contract before implementation.</td>
+<td>Template registry test, fixture eval, readiness eval and behavioral eval.</td>
+</tr>
+<tr>
+<td>Done</td>
+<td>Add conditional DDD domain model gate (<code>T8-A5</code>).</td>
+<td>Makes DDD observable and conditional instead of prose-only.</td>
+<td>Focused T8-A5 tests, full unittest and fixture eval.</td>
+</tr>
+<tr>
+<td>Done</td>
+<td>Add bounded context architecture traceability (<code>T8-A6</code>).</td>
+<td>Maps every bounded context to architecture boundary or accepted gap.</td>
+<td>Focused T8-A6 tests, full unittest and fixture eval.</td>
+</tr>
+<tr>
+<td>Done</td>
+<td>Add ubiquitous language traceability (<code>T8-A7</code>).</td>
+<td>Links terms to requirements, contracts, UI labels, code modules or owners.</td>
+<td>Focused T8-A7 tests, full unittest and fixture eval.</td>
+</tr>
+<tr>
+<td>Done</td>
+<td>Add optional <code>fsd_structure</code> discovery (<code>T8-A8</code>).</td>
+<td>Makes FSD stack-aware and avoids backend/native false positives.</td>
+<td>Focused T8-A8 tests, full unittest and fixture eval.</td>
+</tr>
+<tr>
+<td>Done</td>
+<td>Strengthen metrics (<code>T8-A9</code>).</td>
+<td>Adds counter-metric, qualitative review, privacy classification and owner signoff.</td>
+<td>Focused T8-A9 tests, full unittest and fixture eval.</td>
+</tr>
+<tr>
+<td>Done</td>
+<td>Generalize evidence-before-completion (<code>T8-A16</code>).</td>
+<td>Requires current evidence or explicit inspection-only gap for completion claims.</td>
+<td>Focused T8-A16 tests, full unittest and fixture eval.</td>
+</tr>
+<tr>
+<td>Done</td>
+<td>Add docs tooling selector (<code>T8-C</code>).</td>
+<td>Makes docs tooling stack-aware and conditional.</td>
+<td>Focused T8-C tests, full unittest, fixture eval and compatibility checks.</td>
+</tr>
+<tr>
+<td>Done</td>
+<td>Extend conditional readiness gates (<code>T8-F</code>).</td>
+<td>Converts applicability into explicit statuses.</td>
+<td>Focused T8-F tests, full unittest and fixture eval.</td>
+</tr>
+<tr>
+<td>Done</td>
+<td>Publish scenario and eval docs (<code>T8-H</code>).</td>
+<td>Exposes operator-facing scenario, eval and Codex compatibility contracts.</td>
+<td>Focused T8-H docs tests and full verification.</td>
+</tr>
+<tr>
+<td>Done</td>
+<td>Add transcript/session eval runner (<code>T8-GY</code>).</td>
+<td>Replays synthetic or redacted sessions without external systems.</td>
+<td>Focused transcript tests, CLI exit-code tests and fixture eval.</td>
+</tr>
+<tr>
+<td>Done</td>
+<td>Add detailed discovery status packets (<code>T8-D</code>).</td>
+<td>Returns methodology applicability packets for core readiness signals.</td>
+<td>Focused discovery status tests and fixture eval.</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </article>
+            </div>
+
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+
+      </main>
+
+        <footer class="md-footer">
+
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+
+
+</div>
+
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+
+
+
+
+
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.indexes", "navigation.top", "search.highlight", "search.suggest", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+
+
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+
+        <script src="../../assets/javascripts/local-file-i18n.js"></script>
+
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+
+
+  </body>
+</html>

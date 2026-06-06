@@ -198,7 +198,7 @@ It does not mandate enterprise architecture frameworks, a specific cloud provide
 - `migration_rollback_path_present`
 - `architecture_owner_review_present`
 
-## Failure modes
+## Типовые сбои
 
 - Architecture documentation describes the system after the fact and does not influence decisions.
 - Diagrams are decorative and not tied to requirements, decisions, owners, contracts or verification.

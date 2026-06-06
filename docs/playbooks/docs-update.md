@@ -35,14 +35,14 @@ python -m mkdocs build --strict
 
 | Step | Что проверить |
 | --- | --- |
-| Source docs | Обновлены только затронутые pages, каждая non-index page имеет `Source status:`. |
+| Исходные docs | Обновлены только затронутые страницы, каждая non-index page имеет `Source status:`. |
 | Registry | Новые или измененные source-backed claims отражены в `docs/sources/registry.md`. |
-| Docs tests | Focused tests покрывают новые required pages, route terms or structure rules. |
-| `check_docs.py` | Structure checks pass before claiming documentation closure. |
-| Strict MkDocs | Run when nav, MkDocs config, Mermaid, Markdown extensions or generated site may change. |
-| Optional full closure | Full unittest/fixture/transcript/compatibility/diff checks only when plugin contracts or route logic changed. |
+| Тесты docs | Сфокусированные проверки покрывают новые required pages, route terms или правила структуры. |
+| `check_docs.py` | Structure checks pass до claiming documentation closure. |
+| Strict MkDocs | Запускается, когда могут измениться nav, MkDocs config, Mermaid, Markdown extensions или generated site. |
+| Опциональная полная closure | Full unittest/fixture/transcript/compatibility/diff checks нужны только при изменении plugin contracts или route logic. |
 
-Docs closure does not launch a live server, run browser automation, call providers, mutate canonical graph, or perform git stage/commit/push/PR. Rebuild `site/` only in the dedicated site/nav slice or when the user explicitly asks for generated HTML output.
+Docs closure не запускает live server, browser automation, provider calls, canonical graph mutation или git stage/commit/push/PR. Пересобирайте `site/` только в dedicated site/nav slice или когда пользователь явно просит для generated HTML output.
 
 ## Prompt
 
@@ -50,17 +50,17 @@ Docs closure does not launch a live server, run browser automation, call provide
 Обнови раздел "{section}" по официальным источникам.
 
 Constraints:
-- Official docs are source of truth.
-- Update source registry checked_at values for touched sources.
-- Put community claims into docs/insights/.
-- Keep Russian prose and English OpenAI terms.
+- Official docs являются source of truth.
+- Update source registry checked_at values для touched sources.
+- Put community claims в docs/insights/.
+- Keep Russian prose и English OpenAI terms.
 
 Verification:
-- Run python tools/check_docs.py.
-- Run python -m mkdocs build --strict.
+- Запустите python tools/check_docs.py.
+- Запустите python -m mkdocs build --strict.
 ```
 
-## Output
+## Выход
 
 Итоговый отчет должен содержать:
 

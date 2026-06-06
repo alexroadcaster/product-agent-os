@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
 
-        <meta name="description" content="Russian knowledge base for advanced OpenAI Codex and agentic workflows.">
+        <meta name="description" content="Документация Product-Agent OS для рабочих процессов с агентами и skills.">
 
 
 
@@ -18,6 +18,10 @@
 
 
 
+          <link rel="alternate" href="overview.html" hreflang="ru">
+
+          <link rel="alternate" href="../en/runtime/overview.html" hreflang="en">
+
 
 
       <link rel="icon" href="../assets/images/favicon.png">
@@ -25,7 +29,7 @@
 
 
 
-        <title>Обзор runtime - OpenAI Codex Knowledge Base</title>
+        <title>Обзор runtime - Product-Agent OS</title>
 
 
 
@@ -94,7 +98,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
-    <a href="../index.html" title="OpenAI Codex Knowledge Base" class="md-header__button md-logo" aria-label="OpenAI Codex Knowledge Base" data-md-component="logo">
+    <a href="../index.html" title="Product-Agent OS" class="md-header__button md-logo" aria-label="Product-Agent OS" data-md-component="logo">
 
 
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -108,7 +112,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            OpenAI Codex Knowledge Base
+            Product-Agent OS
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -136,6 +140,32 @@
 
       <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
 
+
+      <div class="md-header__option">
+  <div class="md-select">
+
+    <button class="md-header__button md-icon" aria-label="Выберите язык">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+
+          <li class="md-select__item">
+            <a href="overview.html" hreflang="ru" class="md-select__link">
+              RU
+            </a>
+          </li>
+
+          <li class="md-select__item">
+            <a href="../en/runtime/overview.html" hreflang="en" class="md-select__link">
+              EN
+            </a>
+          </li>
+
+      </ul>
+    </div>
+  </div>
+</div>
 
 
 
@@ -206,13 +236,13 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../index.html" title="OpenAI Codex Knowledge Base" class="md-nav__button md-logo" aria-label="OpenAI Codex Knowledge Base" data-md-component="logo">
+    <a href="../index.html" title="Product-Agent OS" class="md-nav__button md-logo" aria-label="Product-Agent OS" data-md-component="logo">
 
 
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
-    OpenAI Codex Knowledge Base
+    Product-Agent OS
   </label>
 
   <ul class="md-nav__list" data-md-scrollfix>
@@ -2377,10 +2407,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#rule-of-thumb" class="md-nav__link">
+  <a href="#rule-thumb" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Rule of thumb
+        Rule из thumb
 
     </span>
   </a>
@@ -3622,10 +3652,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#rule-of-thumb" class="md-nav__link">
+  <a href="#rule-thumb" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Rule of thumb
+        Rule из thumb
 
     </span>
   </a>
@@ -3676,17 +3706,17 @@
 <tr>
 <td>Codex App</td>
 <td>Parallel threads, worktrees, artifacts, automations</td>
-<td>Too many long threads without task boundaries</td>
+<td>Too many long threads без task boundaries</td>
 </tr>
 <tr>
 <td>CLI interactive</td>
-<td>Local exploratory or implementation session</td>
+<td>Local exploratory или implementation session</td>
 <td>Context bloat</td>
 </tr>
 <tr>
 <td><code>codex exec</code></td>
 <td>Non-interactive scripted task</td>
-<td>Weak prompt or missing environment setup</td>
+<td>Weak prompt или missing environment setup</td>
 </tr>
 <tr>
 <td>Cloud/Web</td>
@@ -3700,13 +3730,13 @@
 </tr>
 <tr>
 <td>Codex MCP</td>
-<td>Agents SDK orchestrates Codex as tool</td>
-<td>Tool boundary and approval policy</td>
+<td>Agents SDK orchestrates Codex как tool</td>
+<td>Tool boundary и approval policy</td>
 </tr>
 <tr>
 <td>Automations</td>
 <td>Stable recurring workflows</td>
-<td>Automating before workflow is reliable</td>
+<td>Automation до надежности workflow</td>
 </tr>
 </tbody>
 </table>
@@ -3725,52 +3755,52 @@
 <td>Static graph/cockpit</td>
 <td>Нужно ориентировать agent team, review или docs update по workspace topology.</td>
 <td>Read-only scan, staged <code>.codex/product-agent-os/</code> artifacts, generated view labels.</td>
-<td>Generated graph/cockpit are not source of truth and do not authorize implementation claims.</td>
+<td>Generated graph/cockpit являются не является каноническим источником и не authorize implementation claims.</td>
 </tr>
 <tr>
 <td>Disabled local runtime</td>
-<td>Нужно проверить API contract, auth boundary, lifecycle and graph-only fallback.</td>
+<td>Нужно проверить API contract, auth boundary, lifecycle и graph-only fallback.</td>
 <td>Contract validation only; runtime stays <code>disabled_by_default_not_started</code>.</td>
-<td>Live server launch needs a separate approved runtime packet.</td>
+<td>Live server launch требует separate approved runtime packet.</td>
 </tr>
 <tr>
 <td>Browser smoke</td>
-<td>Нужно проверить generated view labels, console/network expectations or mobile overflow.</td>
-<td>Planned/staged QA evidence unless owner approves live runtime and browser automation.</td>
-<td>Actual browser automation is a separate approval surface.</td>
+<td>Нужно проверить generated view labels, console/network expectations или mobile overflow.</td>
+<td>Planned/staged QA evidence пока owner approves live runtime и browser automation.</td>
+<td>Actual browser automation является separate approval surface.</td>
 </tr>
 <tr>
 <td>Provider calls</td>
 <td>Нужно оценить embedding/reranker/LLM provider value.</td>
 <td>Stage redaction/cache/budget/baseline/threshold fallback packet.</td>
-<td>External provider/API/model calls require explicit approval and current eval policy.</td>
+<td>External provider/API/model calls требуют explicit approval и текущий eval policy.</td>
 </tr>
 <tr>
-<td>External systems and git</td>
-<td>Нужно publish, tag, PR, CI mutation, hosted docs or package action.</td>
-<td>Draft packet, release/readiness evidence and rollback plan.</td>
-<td>External writes and git stage/commit/push/PR are explicit-only.</td>
+<td>External systems и git</td>
+<td>Нужно publish, tag, PR, CI mutation, hosted docs или package action.</td>
+<td>Draft packet, release/readiness evidence и rollback plan.</td>
+<td>External пишет и git stage/commit/push/PR являются explicit-only.</td>
 </tr>
 </tbody>
 </table>
-<h2 id="rule-of-thumb">Rule of thumb<a class="headerlink" href="#rule-of-thumb" title="Permanent link">&para;</a></h2>
+<h2 id="rule-thumb">Rule из thumb<a class="headerlink" href="#rule-thumb" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Use App/CLI while discovering the workflow.</li>
-<li>Turn repeated method into a skill.</li>
-<li>Turn stable recurring work into automation.</li>
-<li>Use <code>codex exec</code> for scripted one-shot jobs.</li>
-<li>Use Codex MCP when a higher-level agent orchestrator needs workspace execution.</li>
-<li>Use GitHub Action when the trigger belongs to CI/PR events.</li>
+<li>Используйте App/CLI while discovering workflow.</li>
+<li>Turn repeated method в skill.</li>
+<li>Turn stable recurring work в automation.</li>
+<li>Используйте <code>codex exec</code> для scripted one-shot jobs.</li>
+<li>Используйте Codex MCP когда higher-level agent orchestrator требует workspace execution.</li>
+<li>Используйте GitHub Action когда trigger belongs к CI/PR events.</li>
 </ul>
 <h2 id="runtime-artifacts">Runtime artifacts<a class="headerlink" href="#runtime-artifacts" title="Permanent link">&para;</a></h2>
-<p>Every runtime should leave evidence:</p>
+<p>Every runtime следует leave evidence:</p>
 <ul>
-<li>prompt or task packet;</li>
+<li>prompt или task packet;</li>
 <li>loaded instruction sources;</li>
 <li>commands run;</li>
 <li>files changed;</li>
 <li>checks/evals;</li>
-<li>final decision or PR link.</li>
+<li>final decision или PR link.</li>
 </ul>
 
 
@@ -3826,6 +3856,8 @@
 
 
       <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+
+        <script src="../assets/javascripts/local-file-i18n.js"></script>
 
         <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
 

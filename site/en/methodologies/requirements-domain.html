@@ -1,0 +1,4482 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+
+        <meta name="description" content="Product documentation for Product-Agent OS.">
+
+
+
+
+        <link rel="prev" href="business-product.html">
+
+
+        <link rel="next" href="solution-architecture.html">
+
+
+
+          <link rel="alternate" href="../../methodologies/requirements-domain.html" hreflang="ru">
+
+          <link rel="alternate" href="requirements-domain.html" hreflang="en">
+
+
+
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+
+
+
+        <title>Requirements And Domain - Product-Agent OS Documentation</title>
+
+
+
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+
+
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+
+
+
+
+
+
+
+
+
+
+
+
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+
+
+
+      <link rel="stylesheet" href="../../assets/stylesheets/extra.css">
+
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+
+
+
+
+
+  </head>
+
+
+
+
+
+
+
+
+
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="deep-orange">
+
+
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+
+
+        <a href="#requirements-domain" class="md-skip">
+          Skip to content
+        </a>
+
+    </div>
+    <div data-md-component="announce">
+
+    </div>
+
+
+
+
+
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="Product-Agent OS Documentation" class="md-header__button md-logo" aria-label="Product-Agent OS Documentation" data-md-component="logo">
+
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Product-Agent OS Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+
+              Requirements And Domain
+
+          </span>
+        </div>
+      </div>
+    </div>
+
+
+        <form class="md-header__option" data-md-component="palette">
+
+
+
+
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="deep-orange"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+
+
+</form>
+
+
+
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+
+
+      <div class="md-header__option">
+  <div class="md-select">
+
+    <button class="md-header__button md-icon" aria-label="Select language">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+
+          <li class="md-select__item">
+            <a href="../../methodologies/requirements-domain.html" hreflang="ru" class="md-select__link">
+              RU
+            </a>
+          </li>
+
+          <li class="md-select__item">
+            <a href="requirements-domain.html" hreflang="en" class="md-select__link">
+              EN
+            </a>
+          </li>
+
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+
+
+        <label class="md-header__button md-icon" for="__search">
+
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+  </nav>
+
+</header>
+
+    <div class="md-container" data-md-component="container">
+
+
+
+
+
+
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+
+
+
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="Product-Agent OS Documentation" class="md-nav__button md-logo" aria-label="Product-Agent OS Documentation" data-md-component="logo">
+
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Product-Agent OS Documentation
+  </label>
+
+  <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Home
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="../diagrams/index.html" class="md-nav__link ">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Diagrams
+
+
+
+  </span>
+
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Diagrams
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/architecture.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Architecture
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/product-delivery-lifecycle.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Delivery Lifecycle
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/agent-team-and-skills.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agent Team And Skills
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/runtime-decision-map.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Runtime Decision Map
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/skill-lifecycle.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Skill Lifecycle
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/context-memory-verification.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Context, Memory, Verification
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+
+
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Sources
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Sources
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../sources/registry.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Source Registry
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../sources/context7-research.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Context7 Analysis
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../sources/source-card-template.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Source Card Template
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+
+
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Codex
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Codex
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/overview.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Overview
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/surfaces.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Work Surfaces
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/configuration.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Configuration And Extensibility
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/security.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Security And Approvals
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/workflows.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Workflows
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/use-cases-deep-analysis.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Deep Use-Case Analysis
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+
+
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Prompt And Context Engineering
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Prompt And Context Engineering
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../prompting/overview.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Overview
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../prompting/question-design.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Question Design
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../prompting/context-engineering.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Context Engineering
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../prompting/anti-hallucination.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Anti-Hallucination Controls
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+
+
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Product-Agent Workflows
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Product-Agent Workflows
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent/overview.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Overview
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent/lifecycle.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Product Lifecycle
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent/roles.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agent Team Roles
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent/control-plane.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Control-Plane Files
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent/product-agent-os-plugin-spec.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Product-Agent OS Plugin Spec
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="../product-agent-os/index.html" class="md-nav__link ">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Product-Agent OS Plugin
+
+
+
+  </span>
+
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_7" id="__nav_7_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Product-Agent OS Plugin
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/project-code-graph.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Project Code Graph
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/live-runtime-governance.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Live Runtime Governance
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/approval-bound-real-testing.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Approval-Bound Real Testing
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/agent-skill-modernization-loop.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agent-Skill Modernization Loop
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/cli-reference.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    CLI Reference
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/artifact-contracts.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Artifact Contracts
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/packaging-and-closure.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Packaging And Closure
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/technical.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Technical Setup
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/development-standards.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Engineering Standards Layer
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/methodology-intelligence.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Methodology Intelligence
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/scenarios.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Scenarios And Usage Modes
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/behavioral-evals.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Behavioral Evals
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/codex-compatibility.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Codex Compatibility
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/architecture.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Diagrams And Operating Principles
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+
+
+
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" checked>
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="index.html" class="md-nav__link ">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Methodologies For Large Projects
+
+
+
+  </span>
+
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Methodologies For Large Projects
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="business-product.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Business And Product
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--active">
+
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+
+
+
+
+
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Requirements And Domain
+
+
+
+  </span>
+
+
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+
+      <a href="requirements-domain.html" class="md-nav__link md-nav__link--active">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Requirements And Domain
+
+
+
+  </span>
+
+
+
+      </a>
+
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+
+
+
+
+
+
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+
+        <li class="md-nav__item">
+  <a href="#scope" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Scope
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#supported-facts" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Supported facts
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#assumptions" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Assumptions
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#unsupported-claims-not-adopted" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Unsupported claims not adopted
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#methodologies" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Methodologies
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#documentation-artifacts-and-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Documentation artifacts and standards
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#project-application-instructions" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Project application instructions
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#product-agent-os-candidate-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Product-Agent OS candidate rules
+
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Product-Agent OS candidate rules">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#discovery-signals" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Discovery signals
+
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#readiness-gates" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Readiness gates
+
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#candidate-templates" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Candidate templates
+
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#candidate-eval-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Candidate eval fields
+
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#failure-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Failure modes
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#open-questions-for-future-research" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Open questions for future research
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#sources" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Sources
+
+    </span>
+  </a>
+
+</li>
+
+    </ul>
+
+</nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="solution-architecture.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Solution Architecture
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="frontend.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Frontend
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="backend.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Backend
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="api-integrations.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    API And Integrations
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="database-data.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Database And Data
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="llm-ai-rag.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    LLM / AI / RAG
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="quality-testing-evals.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Quality, Testing And Evals
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="security-privacy-compliance.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Security, Privacy And Compliance
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="delivery-release-operations.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Delivery, Release And Operations
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="codex-agentic-workflow.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Codex / Agentic Workflow
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_9" >
+
+
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Codex Automation And Runtime
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Codex Automation And Runtime
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../runtime/overview.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Runtime Overview
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../runtime/non-interactive-and-mcp.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Non-Interactive And MCP
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../runtime/automations-github.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Automations And GitHub
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../runtime/worktrees-hooks-rules.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Worktrees, Hooks, Rules
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_10" >
+
+
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agent Systems
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Agent Systems
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/overview.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Architecture
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/memory.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Memory
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/session-control.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Session Control
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/subagents-skills.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Subagents, Skills, AGENTS.md
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/sdk-patterns.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agents SDK Patterns
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/evals-observability.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Evals And Observability
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/templates.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agent Templates
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_11" >
+
+
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Playbooks
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Playbooks
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/research-loop.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Research Loop
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/context7-deep-research.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Context7 Deep Research
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/grounded-answering.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Grounded Answering
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/build-full-feature.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Build Full Feature
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/workflow-to-skill.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Workflow To Skill
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/use-case-to-plugin.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Use Case To Plugin
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/eval-driven-improvement.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Eval-Driven Improvement
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/product-ready-pr.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Product-Ready PR
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/maintain-agent-operating-docs.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agent Operating Docs
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/docs-update.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Docs Update
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/workspace-readiness-audit.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Workspace Readiness Audit
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/code-review.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Code Review
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/ai-team-design.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    AI-Native Team
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_12" >
+
+
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Templates
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Templates
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../artifact-templates/prompt-packet.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Prompt Template
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../artifact-templates/control-plane-files.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Control-Plane Templates
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../artifact-templates/runlog.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    RUNLOG Template
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../artifact-templates/product-skill.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Skill Template
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../artifact-templates/plugin-blueprint.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Plugin Blueprint
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_13" >
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="../insights/index.html" class="md-nav__link ">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Insights
+
+
+
+  </span>
+
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_13" id="__nav_13_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Insights
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../insights/insight-card-template.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Insight Card Template
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../insights/seed-insights.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Initial Backlog
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+
+
+
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+
+
+
+
+
+
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+
+        <li class="md-nav__item">
+  <a href="#scope" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Scope
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#supported-facts" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Supported facts
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#assumptions" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Assumptions
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#unsupported-claims-not-adopted" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Unsupported claims not adopted
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#methodologies" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Methodologies
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#documentation-artifacts-and-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Documentation artifacts and standards
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#project-application-instructions" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Project application instructions
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#product-agent-os-candidate-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Product-Agent OS candidate rules
+
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Product-Agent OS candidate rules">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#discovery-signals" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Discovery signals
+
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#readiness-gates" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Readiness gates
+
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#candidate-templates" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Candidate templates
+
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#candidate-eval-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Candidate eval fields
+
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#failure-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Failure modes
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#open-questions-for-future-research" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Open questions for future research
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#sources" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Sources
+
+    </span>
+  </a>
+
+</li>
+
+    </ul>
+
+</nav>
+                  </div>
+                </div>
+              </div>
+
+
+
+            <div class="md-content" data-md-component="content">
+
+              <article class="md-content__inner md-typeset">
+
+
+
+
+
+<h1 id="requirements-domain">Requirements &amp; Domain<a class="headerlink" href="#requirements-domain" title="Permanent link">&para;</a></h1>
+<p>Source status: <code>official + verified methodology + local implementation evidence + tool-assisted</code></p>
+<p>Research date: <code>2026-05-24</code></p>
+<p>Product-Agent OS behavior: convert business intent into testable behavior contracts, domain language, domain boundaries and traceable implementation evidence before agents or engineers start building behavior-changing slices.</p>
+<h2 id="scope">Scope<a class="headerlink" href="#scope" title="Permanent link">&para;</a></h2>
+<p>This dossier covers requirements engineering, business analysis, user stories, ATDD, BDD, Gherkin, Example Mapping, Domain-Driven Design, EventStorming, Domain Storytelling, bounded contexts, ubiquitous language, domain invariants, domain events, context maps and traceability into architecture, API, UI, database, tests, evals and release evidence.</p>
+<p>It does not force formal DDD, Gherkin, EventStorming, BABOK or ISO processes onto every project. These practices are conditional: they become required when domain complexity, stakeholder risk, compliance, team count, service count, user-facing behavior or AI/agent ambiguity makes informal requirements unsafe.</p>
+<h2 id="supported-facts">Supported facts<a class="headerlink" href="#supported-facts" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Agile Alliance describes ATDD as a collaboration between customer, development and testing perspectives to write acceptance tests before implementing the corresponding functionality.</li>
+<li>Agile Alliance describes BDD as a refinement of TDD and ATDD that connects proposed user stories to business outcomes, works outside-in and describes behavior in a notation accessible to domain experts, testers and developers.</li>
+<li>Agile Alliance also warns that BDD is a conceptual approach and should not be reduced to a specific tool or programming language.</li>
+<li>Agile Alliance user-story guidance treats user stories as user-goal-oriented work items whose acceptance criteria should be expressible in terms usable for automated acceptance tests.</li>
+<li>Cucumber Gherkin reference defines executable specification structure with <code>Feature</code>, <code>Rule</code>, <code>Scenario</code>/<code>Example</code>, <code>Given</code>, <code>When</code>, <code>Then</code>, <code>And</code>, <code>But</code>, <code>Background</code>, <code>Scenario Outline</code> and <code>Examples</code>.</li>
+<li>Cucumber guidance says <code>Given</code> describes initial context, <code>When</code> describes an event or action and <code>Then</code> describes an expected observable outcome.</li>
+<li>Cucumber guidance says implementation details should be hidden in step definitions and expected outcomes should be observable to the user or external system instead of deeply buried implementation state.</li>
+<li>Cucumber Example Mapping uses story, rules, examples and questions to clarify acceptance criteria before a story is pulled into development.</li>
+<li>ISO/IEC/IEEE 29148:2018 is a requirements engineering standard for systems and software life-cycle processes and can be used regardless of project scope, product, methodology, size or complexity.</li>
+<li>IEEE's public description of ISO/IEC/IEEE 29148 says it covers requirements engineering processes and products, defines the construct of a good requirement, gives attributes and characteristics of requirements and discusses iterative requirements processes.</li>
+<li>IIBA describes BABOK as a globally recognized standard for business analysis practice, covering skills, deliverables and techniques across six knowledge areas.</li>
+<li>Martin Fowler describes Domain-Driven Design as software development centered on a domain model with rich understanding of domain processes and rules, especially suited to complex domains.</li>
+<li>Fowler describes Bounded Context as a central DDD strategic design pattern that divides large models and teams into explicit model boundaries with explicit relationships.</li>
+<li>Fowler describes Ubiquitous Language as a rigorous shared language between developers and users, based on the domain model and evolved as understanding grows.</li>
+<li>Domain Language is Eric Evans' DDD site and primary background source for DDD resources and terminology.</li>
+<li>EventStorming describes itself as a collaborative workshop format for exploring complex business domains, cross-discipline conversations, service dynamics and event-driven software behavior.</li>
+<li>Domain Storytelling positions domain stories as a way to learn domain language, reach shared understanding and derive requirements or backlog items from domain stories.</li>
+<li>The C4 model defines architecture diagrams through hierarchical abstractions: software systems, containers, components and code, with system context, container, component and code diagrams plus supporting views.</li>
+<li>OpenAPI 3.2.0 defines API operation and reusable component structures that can become downstream traceability artifacts for requirements, acceptance scenarios, domain terms and public contracts.</li>
+<li>The local Product-Agent OS implementation already includes <code>acceptance-scenarios.md</code>, <code>domain-modeling.md</code>, <code>domain_model_when_complex_domain</code>, <code>bounded_context_architecture_boundary_trace</code> and <code>ubiquitous_language_traceability</code> gates.</li>
+</ul>
+<h2 id="assumptions">Assumptions<a class="headerlink" href="#assumptions" title="Permanent link">&para;</a></h2>
+<ul>
+<li>For Product-Agent OS, a behavior-changing slice should not start from folder structure or implementation tasks. It should start from requirement, owner, acceptance scenario, non-goals and observable evidence.</li>
+<li>User stories are useful planning artifacts, but a story title alone is not a sufficient requirement. It needs acceptance criteria, business rules, examples, edge cases and open questions.</li>
+<li>Gherkin is one acceptable scenario format, but not the only acceptable format. Product-Agent OS should accept equivalent behavior formats when they preserve actor, context, trigger, observable outcome and evidence mapping.</li>
+<li>DDD should be conditional. It is required for complex domains, workflow-heavy systems, multi-service boundaries, enterprise vocabulary conflicts, data-heavy workflows and AI/agent systems that make domain decisions. It should not be forced onto trivial CRUD unless a human owner asks for it.</li>
+<li>Ubiquitous language should be more than a glossary. A project term should trace to requirement, API/event/schema, UI label, code module or domain owner.</li>
+<li>A bounded context should map to an architecture boundary or carry an accepted gap. Otherwise it remains a workshop artifact rather than an implementation control.</li>
+<li>Domain expert review is required when requirements contain business rules, policy, financial/legal/compliance meaning or AI-generated domain claims.</li>
+<li>Accepted gaps are valid only when explicit: owner, reason, scope, expiry/review date and downstream risk must be recorded.</li>
+</ul>
+<h2 id="unsupported-claims-not-adopted">Unsupported claims not adopted<a class="headerlink" href="#unsupported-claims-not-adopted" title="Permanent link">&para;</a></h2>
+<ul>
+<li>"BDD replaces testing." BDD clarifies behavior and can generate executable scenarios, but it does not replace unit, integration, contract, exploratory, performance, security or eval checks.</li>
+<li>"Gherkin is mandatory for BDD." BDD is a conceptual practice; Gherkin is one useful executable notation.</li>
+<li>"A user story template is a complete requirement." A template without acceptance criteria, examples, business rules, constraints and evidence owner is incomplete.</li>
+<li>"A glossary is ubiquitous language." Ubiquitous language must be used in conversations, models, code/API/UI and owner review.</li>
+<li>"DDD is the right default for every project." DDD has coordination and modeling cost and is most useful for complex domains.</li>
+<li>"Bounded Context equals folder or microservice." A bounded context is a model boundary; implementation boundaries should be traced, not assumed.</li>
+<li>"OpenAPI is the requirements source of truth." OpenAPI is a contract artifact. It can trace requirements, but it does not replace business intent and acceptance scenarios.</li>
+<li>"AI can infer domain rules from chat memory." Domain rules need source, owner confirmation or explicit accepted-gap status.</li>
+</ul>
+<h2 id="methodologies">Methodologies<a class="headerlink" href="#methodologies" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Methodology</th>
+<th>When to apply</th>
+<th>Project-level behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Requirements engineering</td>
+<td>Any non-trivial product/system work</td>
+<td>Capture need, stakeholder, scope, constraints, quality attributes, acceptance criteria, traceability and change impact.</td>
+</tr>
+<tr>
+<td>BABOK-style business analysis</td>
+<td>Business process, stakeholder, policy or enterprise value ambiguity</td>
+<td>Elicit needs, analyze options, define solution value, manage stakeholder collaboration and document deliverables.</td>
+</tr>
+<tr>
+<td>User stories and story slicing</td>
+<td>Agile/product backlog work</td>
+<td>Keep user-goal language, split by value/risk, add acceptance criteria, examples, non-goals and owner.</td>
+</tr>
+<tr>
+<td>ATDD</td>
+<td>Behavior must be agreed before implementation</td>
+<td>Customer/product, development and testing perspectives define acceptance tests/scenarios first.</td>
+</tr>
+<tr>
+<td>BDD / Specification by Example</td>
+<td>Domain behavior and examples must be shared</td>
+<td>Outside-in behavior language, rules and examples become executable or reviewable specifications.</td>
+</tr>
+<tr>
+<td>Gherkin</td>
+<td>Scenarios benefit from executable plain-text structure</td>
+<td>Use <code>Given/When/Then</code> or equivalent behavior format, hide implementation details and assert observable outcomes.</td>
+</tr>
+<tr>
+<td>Example Mapping</td>
+<td>User story acceptance criteria are unclear</td>
+<td>Map story -&gt; rules -&gt; examples -&gt; questions before pulling work into development.</td>
+</tr>
+<tr>
+<td>EventStorming</td>
+<td>Complex process, event flow or cross-silo understanding is missing</td>
+<td>Explore domain events, commands, policies, actors, external systems, hotspots and candidate boundaries.</td>
+</tr>
+<tr>
+<td>Domain Storytelling</td>
+<td>Actors/process language is unclear</td>
+<td>Use visual domain stories to learn language, shared understanding and candidate requirements/backlog items.</td>
+</tr>
+<tr>
+<td>Conditional DDD</td>
+<td>Complex domain, workflow, enterprise, data-heavy, multi-service or multi-context work</td>
+<td>Model entities/value objects/aggregates/services/events/invariants and evolve model with domain experts.</td>
+</tr>
+<tr>
+<td>Bounded Context / context mapping</td>
+<td>Terms or rules differ across teams/services</td>
+<td>Define model boundaries, relationships, integration language and architecture trace.</td>
+</tr>
+<tr>
+<td>Ubiquitous language traceability</td>
+<td>Domain terms drive implementation/API/UI/tests</td>
+<td>Map term -&gt; source requirement -&gt; code/API/event/schema/UI label -&gt; owner/review.</td>
+</tr>
+<tr>
+<td>Invariant and business-rule modeling</td>
+<td>Incorrect state transitions are costly</td>
+<td>Record invariant, allowed transition, enforcement layer, test/eval evidence and exception behavior.</td>
+</tr>
+<tr>
+<td>Domain event modeling</td>
+<td>Workflow/event-driven behavior exists</td>
+<td>Record event name, meaning, producer, consumer, schema, ordering/idempotency assumptions and privacy rules.</td>
+</tr>
+<tr>
+<td>C4 boundary mapping</td>
+<td>Requirements/domain concepts need architecture translation</td>
+<td>Map actors, systems, containers, components and code-level ownership only as far as useful.</td>
+</tr>
+<tr>
+<td>Requirements traceability matrix</td>
+<td>Regulated, risky, multi-team or long-lived work</td>
+<td>Trace requirement -&gt; scenario -&gt; implementation -&gt; test/eval -&gt; evidence owner -&gt; release note.</td>
+</tr>
+<tr>
+<td>Change impact analysis</td>
+<td>Requirement/domain rule changes after implementation starts</td>
+<td>Identify affected tests, API, database, UI, docs, evals, rollout and migration/rollback needs.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="documentation-artifacts-and-standards">Documentation artifacts and standards<a class="headerlink" href="#documentation-artifacts-and-standards" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th>Purpose</th>
+<th>Candidate source/tool</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>REQUIREMENTS.md</code></td>
+<td>Users, goals, non-goals, constraints, business rules, acceptance criteria and source constraints.</td>
+<td>Product-Agent OS control plane, ISO 29148/BABOK-inspired structure</td>
+</tr>
+<tr>
+<td>Requirement registry</td>
+<td>Stable requirement IDs, status, owner, source and linked artifacts.</td>
+<td>Markdown table, issue tracker, requirements tool</td>
+</tr>
+<tr>
+<td>Stakeholder/owner map</td>
+<td>Business/domain owner, reviewer, decision authority and escalation path.</td>
+<td>BABOK-style stakeholder collaboration</td>
+</tr>
+<tr>
+<td>User-story map/backlog</td>
+<td>Value slices, journey order, MVP boundary and deferred stories.</td>
+<td>User Story Mapping, issue tracker</td>
+</tr>
+<tr>
+<td><code>acceptance-scenarios.md</code></td>
+<td>Requirement -&gt; scenario -&gt; check -&gt; evidence owner before behavior changes.</td>
+<td>ATDD/BDD/Gherkin or equivalent behavior format</td>
+</tr>
+<tr>
+<td>Example map</td>
+<td>Story, rules, concrete examples, open questions and out-of-scope slices.</td>
+<td>Cucumber Example Mapping</td>
+</tr>
+<tr>
+<td>Business rules catalog</td>
+<td>Rule, rationale/source, owner, enforcement layer, exceptions and tests.</td>
+<td>Decision table, requirements docs</td>
+</tr>
+<tr>
+<td>Non-goals and constraints</td>
+<td>Explicit boundaries that prevent silent scope growth.</td>
+<td><code>REQUIREMENTS.md</code>, ADR</td>
+</tr>
+<tr>
+<td><code>domain-modeling.md</code></td>
+<td>Bounded contexts, ubiquitous terms, invariants, aggregates/events and domain review.</td>
+<td>Product-Agent OS template, DDD</td>
+</tr>
+<tr>
+<td>Ubiquitous language map</td>
+<td>Term -&gt; definition -&gt; source -&gt; artifact links -&gt; owner -&gt; review status.</td>
+<td>DDD glossary plus traceability</td>
+</tr>
+<tr>
+<td>Context map</td>
+<td>Bounded contexts, model relationships, upstream/downstream dependencies and integration language.</td>
+<td>DDD strategic design, Mermaid/C4</td>
+</tr>
+<tr>
+<td>Event catalog</td>
+<td>Domain events, producers, consumers, schema links, ordering/idempotency and privacy flags.</td>
+<td>AsyncAPI, event docs</td>
+</tr>
+<tr>
+<td>Invariant catalog</td>
+<td>State rules, validation/enforcement location, failure behavior and test evidence.</td>
+<td>Domain model/test docs</td>
+</tr>
+<tr>
+<td>C4 system/context/container diagrams</td>
+<td>Translate domain boundaries into architecture ownership and dependencies.</td>
+<td>C4 model, Structurizr/Mermaid</td>
+</tr>
+<tr>
+<td>API contract trace</td>
+<td>Requirement/domain term -&gt; OpenAPI operation/schema/error/security/deprecation.</td>
+<td>OpenAPI 3.2.0</td>
+</tr>
+<tr>
+<td>UI language trace</td>
+<td>Domain term -&gt; screen/label/copy/error message/accessibility name.</td>
+<td>UI flow spec, Storybook</td>
+</tr>
+<tr>
+<td>Data dictionary/schema trace</td>
+<td>Domain term -&gt; table/field/event/schema/index/privacy classification.</td>
+<td>Database docs/catalog</td>
+</tr>
+<tr>
+<td>Decision log / ADR</td>
+<td>Boundary, term, rule or requirement decisions with consequences.</td>
+<td>MADR/ADR</td>
+</tr>
+<tr>
+<td>Domain review record</td>
+<td>Human owner review, unresolved conflicts, accepted gaps and expiry.</td>
+<td>Review checklist/RUNLOG</td>
+</tr>
+<tr>
+<td>Change impact record</td>
+<td>Requirement change impact across code, tests, API, DB, UI, docs, evals and release.</td>
+<td>RUNLOG/PLAN</td>
+</tr>
+</tbody>
+</table>
+<h2 id="project-application-instructions">Project application instructions<a class="headerlink" href="#project-application-instructions" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Classify the work before implementation: new requirement, behavior change, bug, refactor with behavior risk, domain model change, API contract change, data model change, UI copy/flow change or AI/agent behavior change.</li>
+<li>Start with business intent: user/stakeholder, problem, expected outcome, value signal, scope and non-goals.</li>
+<li>Assign a requirement ID and owner for any behavior-changing work. Owner can be product, domain expert, technical owner or explicitly marked <code>accepted gap</code>.</li>
+<li>Capture constraints early: compliance, privacy, security, operational, performance, platform, accessibility, data retention, localization, cost and rollout.</li>
+<li>Write acceptance scenarios before implementation. Minimum trace is <code>requirement -&gt; scenario -&gt; check -&gt; evidence owner</code>.</li>
+<li>Prefer concrete examples over abstract prose. Each rule should have at least one happy path and at least one edge/negative path when risk justifies it.</li>
+<li>Use Gherkin only when it improves collaboration or executable specification. Equivalent behavior tables are acceptable when easier for the team.</li>
+<li>Keep scenarios declarative. Hide UI selectors, database internals, implementation function names and test harness setup outside the behavior statement.</li>
+<li>For each user story, record acceptance criteria, business rules, open questions, deferred slices and non-goals. A story title alone is not ready.</li>
+<li>Use Example Mapping when a story is large, unclear or disputed. Stop when rules, examples and questions are explicit enough for development or when open questions block the slice.</li>
+<li>Use EventStorming or Domain Storytelling when the team lacks shared process/language understanding, especially before event-driven, workflow-heavy or cross-silo changes.</li>
+<li>Apply DDD only when domain complexity justifies it. For simple CRUD/MVP, record <code>domain_model_not_required</code> with owner and reason instead of creating ceremonial models.</li>
+<li>When DDD applies, define bounded contexts, key aggregates/entities/value objects, domain services, invariants, domain events and integration relationships.</li>
+<li>Every bounded context must map to an architecture boundary, team/agent ownership boundary or explicit accepted gap.</li>
+<li>Build ubiquitous language as traceability, not a static glossary. Map important terms to requirement, API/event/schema, UI label, code module/test and owner.</li>
+<li>Record unresolved term conflicts as decisions or open questions. Do not let one term silently mean different things across API, UI, code and data.</li>
+<li>Trace domain events to contracts. If an event crosses a boundary, document meaning, producer, consumers, schema, idempotency/ordering assumptions and privacy classification.</li>
+<li>Trace requirements downstream before completion: tests/evals, API contract, database changes, UI states/copy, documentation and release/rollback notes.</li>
+<li>When a requirement changes after planning, run change impact review and update affected scenarios, contracts, data model, UI states, tests/evals, docs and rollout plan.</li>
+<li>Require domain expert or owner review for business rules, compliance-sensitive claims, financial/legal meaning, AI-generated domain interpretations and accepted gaps.</li>
+</ol>
+<h2 id="product-agent-os-candidate-rules">Product-Agent OS candidate rules<a class="headerlink" href="#product-agent-os-candidate-rules" title="Permanent link">&para;</a></h2>
+<h3 id="discovery-signals">Discovery signals<a class="headerlink" href="#discovery-signals" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Directories: <code>docs/requirements/</code>, <code>docs/domain/</code>, <code>docs/architecture/</code>, <code>features/</code>, <code>specs/</code>, <code>use-cases/</code>, <code>domain/</code>, <code>contexts/</code>, <code>events/</code>, <code>contracts/</code></li>
+<li>Files: <code>REQUIREMENTS.md</code>, <code>acceptance-scenarios.md</code>, <code>domain-modeling.md</code>, <code>architecture-overview.md</code>, <code>business-rules.md</code>, <code>context-map.md</code>, <code>glossary.md</code>, <code>ubiquitous-language.md</code>, <code>event-catalog.md</code>, <code>openapi.yaml</code>, <code>asyncapi.yaml</code>, <code>*.feature</code>, <code>ADR*.md</code></li>
+<li>Terms: requirement, acceptance criteria, acceptance scenario, Given/When/Then, Gherkin, BDD, ATDD, Example Mapping, user story, domain model, DDD, bounded context, ubiquitous language, aggregate, entity, value object, invariant, domain event, context map, business rule, stakeholder, non-goal, open question, accepted gap</li>
+<li>Risk signals: complex domain, multi-service, workflow, policy, compliance, financial, legal, privacy, AI-generated business logic, event-driven architecture, shared vocabulary conflict, data model change, public API change, multi-team ownership, release migration</li>
+</ul>
+<h3 id="readiness-gates">Readiness gates<a class="headerlink" href="#readiness-gates" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>Trigger</th>
+<th>Block condition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>requirements_scope_present</code></td>
+<td>Any non-trivial product/system work</td>
+<td>Goal, user/stakeholder, scope or non-goals are missing.</td>
+</tr>
+<tr>
+<td><code>requirements_owner_present</code></td>
+<td>Behavior-changing work</td>
+<td>No product/domain/technical owner or accepted-gap owner is named.</td>
+</tr>
+<tr>
+<td><code>requirement_ids_present</code></td>
+<td>Multi-slice, regulated or long-lived work</td>
+<td>Requirements cannot be referenced from tests, contracts, docs or release evidence.</td>
+</tr>
+<tr>
+<td><code>acceptance_scenarios_when_behavior_changes</code></td>
+<td>Any behavior change</td>
+<td>Scenario, observable outcome, check or evidence owner is missing.</td>
+</tr>
+<tr>
+<td><code>requirements_traceability_present</code></td>
+<td>Behavior crosses code/API/UI/data/tests</td>
+<td>No <code>requirement -&gt; scenario -&gt; implementation -&gt; check -&gt; evidence owner</code> chain.</td>
+</tr>
+<tr>
+<td><code>business_rules_present</code></td>
+<td>Domain policy or process rule exists</td>
+<td>Rule, source, owner, exception behavior or enforcement layer is missing.</td>
+</tr>
+<tr>
+<td><code>non_goals_constraints_present</code></td>
+<td>Ambiguous feature or stakeholder scope</td>
+<td>Non-goals, constraints or excluded behavior are not explicit.</td>
+</tr>
+<tr>
+<td><code>open_questions_recorded</code></td>
+<td>Requirement uncertainty exists</td>
+<td>Questions are hidden in chat or inferred instead of captured with owner/next action.</td>
+</tr>
+<tr>
+<td><code>example_mapping_when_unclear_story</code></td>
+<td>Story is unclear, large or disputed</td>
+<td>Rules, examples, questions and deferred slices are not explicit.</td>
+</tr>
+<tr>
+<td><code>domain_discovery_workshop_when_complex_process</code></td>
+<td>Complex workflow/cross-silo process</td>
+<td>Event/process/story discovery evidence or accepted gap is missing.</td>
+</tr>
+<tr>
+<td><code>domain_model_when_complex_domain</code></td>
+<td>Complex backend/workflow/enterprise/data-heavy/multi-service/multi-context work</td>
+<td>Domain model, context map or accepted gap is missing.</td>
+</tr>
+<tr>
+<td><code>bounded_context_architecture_boundary_trace</code></td>
+<td>Bounded context or DDD term appears</td>
+<td>Context has no architecture/team/API/data boundary or accepted gap.</td>
+</tr>
+<tr>
+<td><code>ubiquitous_language_traceability</code></td>
+<td>Domain terms drive behavior/API/UI/data</td>
+<td>Important terms lack source, artifact links, owner or review status.</td>
+</tr>
+<tr>
+<td><code>invariants_and_failure_modes_present</code></td>
+<td>Domain state transitions matter</td>
+<td>Invariants, invalid transitions, enforcement layer or tests are missing.</td>
+</tr>
+<tr>
+<td><code>domain_event_contracts_present</code></td>
+<td>Domain events cross boundaries</td>
+<td>Meaning, schema, producer/consumer, idempotency/ordering or privacy notes are missing.</td>
+</tr>
+<tr>
+<td><code>api_ui_data_traceability_present</code></td>
+<td>Requirement touches API, UI or database</td>
+<td>Contract/schema/screen/state mapping is missing.</td>
+</tr>
+<tr>
+<td><code>domain_expert_review_present</code></td>
+<td>Business-critical, compliance, finance/legal or AI-generated domain claim</td>
+<td>Human owner review or explicit risk acceptance is missing.</td>
+</tr>
+<tr>
+<td><code>requirement_change_impact_review_present</code></td>
+<td>Requirement/domain rule changes after planning</td>
+<td>Affected tests, API, DB, UI, docs, evals, rollout or rollback are not reviewed.</td>
+</tr>
+<tr>
+<td><code>accepted_gap_recorded</code></td>
+<td>Methodology gate is intentionally skipped</td>
+<td>Owner, reason, scope, review date and risk are missing.</td>
+</tr>
+<tr>
+<td><code>requirements_evidence_before_implementation</code></td>
+<td>Agent/engineer starts implementation</td>
+<td>Requirements/scenarios/domain gates are absent and no accepted gap exists.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="candidate-templates">Candidate templates<a class="headerlink" href="#candidate-templates" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>REQUIREMENTS.md</code></li>
+<li><code>acceptance-scenarios.md</code></li>
+<li><code>domain-modeling.md</code></li>
+<li><code>business-rules.md</code></li>
+<li><code>context-map.md</code></li>
+<li><code>ubiquitous-language.md</code></li>
+<li><code>event-catalog.md</code></li>
+<li><code>domain-review-record.md</code></li>
+<li><code>requirements-traceability-matrix.md</code></li>
+<li><code>requirement-change-impact.md</code></li>
+</ul>
+<h3 id="candidate-eval-fields">Candidate eval fields<a class="headerlink" href="#candidate-eval-fields" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>requirements_scope_present</code></li>
+<li><code>requirements_owner_present</code></li>
+<li><code>acceptance_scenarios_when_behavior_changes</code></li>
+<li><code>requirements_traceability_present</code></li>
+<li><code>business_rules_present</code></li>
+<li><code>non_goals_constraints_present</code></li>
+<li><code>domain_model_when_complex_domain</code></li>
+<li><code>bounded_context_architecture_boundary_trace</code></li>
+<li><code>ubiquitous_language_traceability</code></li>
+<li><code>domain_expert_review_present</code></li>
+<li><code>accepted_gap_recorded</code></li>
+<li><code>requirement_change_impact_review_present</code></li>
+</ul>
+<h2 id="failure-modes">Failure modes<a class="headerlink" href="#failure-modes" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Implementation starts from file/folder structure without confirmed business behavior.</li>
+<li>A user story title is treated as complete requirements.</li>
+<li>Acceptance criteria describe implementation tasks instead of observable outcomes.</li>
+<li>Gherkin files duplicate test code and become unreadable to domain experts.</li>
+<li>Example Mapping creates questions but no owner or next action.</li>
+<li>DDD is forced on simple CRUD and slows delivery without reducing risk.</li>
+<li>DDD is skipped for complex workflows because no one wants to own the model.</li>
+<li>Bounded contexts are named but do not map to architecture, teams, APIs or data ownership.</li>
+<li>Glossary terms are written once but code, API, UI and documentation drift into different vocabulary.</li>
+<li>Domain events are named as technical messages with no business meaning, producer/consumer contract or privacy classification.</li>
+<li>AI-generated domain assumptions are accepted without source or domain owner review.</li>
+<li>Requirement changes do not update tests, contracts, data model, UI, docs, evals or release notes.</li>
+</ul>
+<h2 id="open-questions-for-future-research">Open questions for future research<a class="headerlink" href="#open-questions-for-future-research" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Should Product-Agent OS ship a generic <code>requirements-traceability-matrix.md</code> template or derive traceability from <code>REQUIREMENTS.md</code>, <code>TEST.md</code>, <code>EVALS.md</code> and contract docs?</li>
+<li>Should <code>domain_expert_review_present</code> be a hard gate only for complex/risky domains, or a warning for all behavior-changing work?</li>
+<li>Should EventStorming and Domain Storytelling become separate optional artifact templates or remain discovery guidance inside <code>domain-modeling.md</code>?</li>
+<li>How should requirements-domain gates integrate with AI/RAG eval datasets where acceptance criteria are probabilistic or judge-based?</li>
+</ul>
+<h2 id="sources">Sources<a class="headerlink" href="#sources" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://agilealliance.org/glossary/atdd/">Agile Alliance: Acceptance Test Driven Development</a></li>
+<li><a href="https://agilealliance.org/glossary/bdd/">Agile Alliance: Behavior Driven Development</a></li>
+<li><a href="https://agilealliance.org/glossary/user-stories/">Agile Alliance: User Stories</a></li>
+<li><a href="https://cucumber.io/docs/gherkin/reference/">Cucumber Gherkin Reference</a></li>
+<li><a href="https://cucumber.io/docs/bdd/example-mapping/">Cucumber Example Mapping</a></li>
+<li><a href="https://www.iso.org/standard/72089.html">ISO/IEC/IEEE 29148:2018</a></li>
+<li><a href="https://standards.ieee.org/ieee/29148/6937/">IEEE/ISO/IEC 29148-2018</a></li>
+<li><a href="https://www.iiba.org/career-resources/a-business-analysis-professionals-foundation-for-success/babok/">IIBA BABOK</a></li>
+<li><a href="https://martinfowler.com/bliki/DomainDrivenDesign.html">Martin Fowler: Domain-Driven Design</a></li>
+<li><a href="https://martinfowler.com/bliki/BoundedContext.html">Martin Fowler: Bounded Context</a></li>
+<li><a href="https://martinfowler.com/bliki/UbiquitousLanguage.html">Martin Fowler: Ubiquitous Language</a></li>
+<li><a href="https://www.domainlanguage.com/">Domain Language</a></li>
+<li><a href="https://www.eventstorming.com/">EventStorming</a></li>
+<li><a href="https://domainstorytelling.org/requirements">Domain Storytelling: Requirements</a></li>
+<li><a href="https://c4model.com/">C4 model</a></li>
+<li><a href="https://spec.openapis.org/oas/v3.2.0.html">OpenAPI Specification v3.2.0</a></li>
+<li><a href="../sources/context7-research.html">Context7 research</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </article>
+            </div>
+
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+
+      </main>
+
+        <footer class="md-footer">
+
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+
+
+</div>
+
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+
+
+
+
+
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.indexes", "navigation.top", "search.highlight", "search.suggest", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+
+
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+
+        <script src="../../assets/javascripts/local-file-i18n.js"></script>
+
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+
+
+  </body>
+</html>

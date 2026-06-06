@@ -159,7 +159,7 @@ It does not mandate PostgreSQL, Liquibase, Flyway, dbt, Great Expectations or Op
 | Privacy governance | NIST Privacy Framework | Useful vocabulary for privacy profiles, SDLC alignment and data processing ecosystem roles. |
 | Query performance | `EXPLAIN`, DB-native tooling | Attach evidence; avoid running side-effecting analysis without transaction safety. |
 
-## Failure modes
+## Типовые сбои
 
 - Running a migration manually in production with no committed migration artifact.
 - Treating ORM model changes as sufficient schema documentation while DB constraints differ.

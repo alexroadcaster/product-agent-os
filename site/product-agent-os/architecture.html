@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
 
-        <meta name="description" content="Russian knowledge base for advanced OpenAI Codex and agentic workflows.">
+        <meta name="description" content="Документация Product-Agent OS для рабочих процессов с агентами и skills.">
 
 
 
@@ -18,6 +18,10 @@
 
 
 
+          <link rel="alternate" href="architecture.html" hreflang="ru">
+
+          <link rel="alternate" href="../en/product-agent-os/architecture.html" hreflang="en">
+
 
 
       <link rel="icon" href="../assets/images/favicon.png">
@@ -25,7 +29,7 @@
 
 
 
-        <title>Диаграммы и принципы работы - OpenAI Codex Knowledge Base</title>
+        <title>Диаграммы и принципы работы - Product-Agent OS</title>
 
 
 
@@ -78,7 +82,7 @@
     <div data-md-component="skip">
 
 
-        <a href="#_1" class="md-skip">
+        <a href="#product-agent-os-architecture" class="md-skip">
           Перейти к содержанию
         </a>
 
@@ -94,7 +98,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
-    <a href="../index.html" title="OpenAI Codex Knowledge Base" class="md-header__button md-logo" aria-label="OpenAI Codex Knowledge Base" data-md-component="logo">
+    <a href="../index.html" title="Product-Agent OS" class="md-header__button md-logo" aria-label="Product-Agent OS" data-md-component="logo">
 
 
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -108,7 +112,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            OpenAI Codex Knowledge Base
+            Product-Agent OS
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -136,6 +140,32 @@
 
       <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
 
+
+      <div class="md-header__option">
+  <div class="md-select">
+
+    <button class="md-header__button md-icon" aria-label="Выберите язык">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+
+          <li class="md-select__item">
+            <a href="architecture.html" hreflang="ru" class="md-select__link">
+              RU
+            </a>
+          </li>
+
+          <li class="md-select__item">
+            <a href="../en/product-agent-os/architecture.html" hreflang="en" class="md-select__link">
+              EN
+            </a>
+          </li>
+
+      </ul>
+    </div>
+  </div>
+</div>
 
 
 
@@ -206,13 +236,13 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../index.html" title="OpenAI Codex Knowledge Base" class="md-nav__button md-logo" aria-label="OpenAI Codex Knowledge Base" data-md-component="logo">
+    <a href="../index.html" title="Product-Agent OS" class="md-nav__button md-logo" aria-label="Product-Agent OS" data-md-component="logo">
 
 
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
-    OpenAI Codex Knowledge Base
+    Product-Agent OS
   </label>
 
   <ul class="md-nav__list" data-md-scrollfix>
@@ -1820,10 +1850,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
 
         <li class="md-nav__item">
-  <a href="#task-22-layer-map" class="md-nav__link">
+  <a href="#layered-model" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Task 22 layer map
+        Layered Model
 
     </span>
   </a>
@@ -1831,10 +1861,21 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#track-10-graph-and-live-boundary" class="md-nav__link">
+  <a href="#operating-flow" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Track 10 graph and live boundary
+        Operating Flow
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#graph-and-live-boundary" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Graph And Live Boundary
 
     </span>
   </a>
@@ -1845,7 +1886,7 @@
   <a href="#engineering-standards-route" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Engineering standards route
+        Engineering Standards Route
 
     </span>
   </a>
@@ -1856,7 +1897,7 @@
   <a href="#lifecycle-routing" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Lifecycle routing
+        Lifecycle Routing
 
     </span>
   </a>
@@ -1867,7 +1908,7 @@
   <a href="#route-packet" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Route packet
+        Route Packet
 
     </span>
   </a>
@@ -1875,10 +1916,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#track-9-read-only-methodology-audit" class="md-nav__link">
+  <a href="#methodology-intelligence" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Track 9 read-only methodology audit
+        Methodology Intelligence
 
     </span>
   </a>
@@ -1889,7 +1930,7 @@
   <a href="#usage-mode-coverage" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Usage mode coverage
+        Usage Mode Coverage
 
     </span>
   </a>
@@ -1900,7 +1941,7 @@
   <a href="#staged-first-infrastructure" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Staged-first infrastructure
+        Staged-First Infrastructure
 
     </span>
   </a>
@@ -1911,7 +1952,7 @@
   <a href="#codex-runtime-runner" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Codex runtime runner
+        Codex Runtime Runner
 
     </span>
   </a>
@@ -1922,7 +1963,7 @@
   <a href="#automation-promotion" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Automation promotion
+        Automation Promotion
 
     </span>
   </a>
@@ -1933,7 +1974,7 @@
   <a href="#common-failure-modes" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Common failure modes
+        Common Failure Modes
 
     </span>
   </a>
@@ -3677,10 +3718,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
 
         <li class="md-nav__item">
-  <a href="#task-22-layer-map" class="md-nav__link">
+  <a href="#layered-model" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Task 22 layer map
+        Layered Model
 
     </span>
   </a>
@@ -3688,10 +3729,21 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#track-10-graph-and-live-boundary" class="md-nav__link">
+  <a href="#operating-flow" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Track 10 graph and live boundary
+        Operating Flow
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#graph-and-live-boundary" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Graph And Live Boundary
 
     </span>
   </a>
@@ -3702,7 +3754,7 @@
   <a href="#engineering-standards-route" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Engineering standards route
+        Engineering Standards Route
 
     </span>
   </a>
@@ -3713,7 +3765,7 @@
   <a href="#lifecycle-routing" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Lifecycle routing
+        Lifecycle Routing
 
     </span>
   </a>
@@ -3724,7 +3776,7 @@
   <a href="#route-packet" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Route packet
+        Route Packet
 
     </span>
   </a>
@@ -3732,10 +3784,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#track-9-read-only-methodology-audit" class="md-nav__link">
+  <a href="#methodology-intelligence" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Track 9 read-only methodology audit
+        Methodology Intelligence
 
     </span>
   </a>
@@ -3746,7 +3798,7 @@
   <a href="#usage-mode-coverage" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Usage mode coverage
+        Usage Mode Coverage
 
     </span>
   </a>
@@ -3757,7 +3809,7 @@
   <a href="#staged-first-infrastructure" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Staged-first infrastructure
+        Staged-First Infrastructure
 
     </span>
   </a>
@@ -3768,7 +3820,7 @@
   <a href="#codex-runtime-runner" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Codex runtime runner
+        Codex Runtime Runner
 
     </span>
   </a>
@@ -3779,7 +3831,7 @@
   <a href="#automation-promotion" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Automation promotion
+        Automation Promotion
 
     </span>
   </a>
@@ -3790,7 +3842,7 @@
   <a href="#common-failure-modes" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Common failure modes
+        Common Failure Modes
 
     </span>
   </a>
@@ -3814,69 +3866,134 @@
 
 
 
-<h1 id="_1">Диаграммы и принципы работы<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
-<p>Source status: <code>official + experiment</code>  </p>
-<h2 id="task-22-layer-map">Task 22 layer map<a class="headerlink" href="#task-22-layer-map" title="Permanent link">&para;</a></h2>
-<p>Task 22 layer map закрепляет полный порядок слоев: Track 1 foundation дает plugin package, contracts and validators; Track 2 lifecycle skills задает reusable ownership handoffs; Track 3 staged generation создает proposals outside target workspace; Track 4 approved merge добавляет manifest, approval record and rollback; Track 5 Codex runtime дает deterministic route packet; Track 6 engineering standards добавляет hypothesis, architecture, test/eval and docs gates; Track 7 hardening переводит standards в concrete artifacts; Track 8 scenario workflows выбирают user-job route; Track 9 methodology intelligence добавляет read-only audit, Delivery Map, synthesis and runtime methodology packet.</p>
-<p>Этот порядок запрещает stale shortcut "Track 1 -&gt; Track 8 -&gt; Track 9": runtime, standards, hardening, scenarios and methodology synthesis are one stack, and every write still passes staged-first and approval boundaries.
-Источники: <a href="https://developers.openai.com/codex/plugins">Codex plugins</a>, <a href="https://developers.openai.com/codex/skills">Agent Skills</a>, <a href="https://developers.openai.com/codex/subagents">Subagents</a>, <a href="https://developers.openai.com/codex/guides/agents-md">AGENTS.md</a>, <a href="https://developers.openai.com/codex/hooks">Codex hooks</a>, <a href="https://developers.openai.com/codex/agent-approvals-security">Agent approvals and security</a>, <a href="https://developers.openai.com/codex/workflows">Codex workflows</a>, <a href="technical.html">Technical features</a>.</p>
-<p>Эта страница показывает не историю реализации, а рабочую модель Product-Agent OS plugin: как он выбирает следующий step, как stages changes, где требует approval и почему automation remains candidate-only.</p>
-<p>Engineering standards layer добавляет методические gates поверх lifecycle: product hypothesis, architecture boundary, test-first/eval-first path, docs-as-code impact, review и release measurement. Track 7 дополняет это discovery signals и concrete artifact templates, чтобы plugin видел существующую инженерную зрелость workspace и мог stage недостающие outputs. Эти gates не запускают внешние системы сами; они появляются в staged artifacts и должны быть подтверждены evidence.</p>
-<p>Track 8 добавляет <code>usage_mode</code> route перед методическими gates. Route выбирает first response и minimum artifacts, но не отменяет lifecycle, source policy, sandbox or approvals. First-run route теперь явно различает empty workspace, failed verification, existing control-plane и complex system starts, возвращая mode, confidence, next smallest action, minimum artifacts, evidence gaps и approval boundary. После нового audit plan plugin различает <code>done</code> сценарии, done methodology gates, partial methodology gates и base modes. API migration, AI/RAG eval regression, native/mobile feature work, desktop local-first work, data migration, security-sensitive change, CI stabilization и release packaging имеют packaged workflows, artifacts, behavioral eval coverage and current verification evidence. Done methodology gates now include no-placeholder planning, generalized two-stage review for risky public-contract/migration/security/data/release/parallel slices, fresh-context handoff for subagents or parallel workers, acceptance scenarios with ATDD/BDD traceability before behavior changes, conditional DDD domain modeling for complex backend/workflow/enterprise/data-heavy/multi-service/multi-context work, bounded-context-to-architecture traceability, ubiquitous language traceability, conditional FSD structure routing, metric hardening for product behavior changes, evidence-before-completion for ready/completed/fixed/works/release claims, docs tooling selection, conditional readiness statuses, and deterministic transcript/session eval replay.</p>
-<p>Docs tooling selector is part of the Track 8 methodology gate set: <code>docs_tooling_selector</code> records <code>docs_as_code_impact</code>, selected tools, rejected tools, evidence owner, maintenance owner, command evidence, accepted gaps and approval-required items. It keeps docs-light/internal-only projects lightweight and treats hosted docs, CI activation and DB introspection as explicit approval boundaries.</p>
-<p>Conditional readiness gates are now part of the route model: <code>project-readiness.json</code> defines <code>readiness_statuses</code> and per-gate applicability, pass condition, accepted gap, required evidence, owner and residual risk. Detection alone can only create <code>present_unverified</code>; verified readiness requires current command, owner or artifact evidence.</p>
-<p>For operator-facing details, use <a href="scenarios.html">Scenarios</a> for route selection, <a href="behavioral-evals.html">Behavioral evals</a> for expected/forbidden behavior, and <a href="codex-compatibility.html">Codex compatibility</a> for package-surface boundaries.</p>
-<h2 id="track-10-graph-and-live-boundary">Track 10 graph and live boundary<a class="headerlink" href="#track-10-graph-and-live-boundary" title="Permanent link">&para;</a></h2>
-<p>Track 10 добавляет к lifecycle stack generated graph, cockpit, disabled local runtime contracts, provider gates, human review, mutation dry-run, audit/observability и real-testing readiness. Эти surfaces помогают ориентироваться и проверять proposals, но не заменяют source files, owner decisions или current runtime evidence.</p>
+<h1 id="product-agent-os-architecture">Product-Agent OS architecture<a class="headerlink" href="#product-agent-os-architecture" title="Permanent link">&para;</a></h1>
+<p>Source status: <code>official + experiment</code></p>
+<p>Источники: <a href="https://developers.openai.com/codex/plugins">Codex plugins</a>, <a href="https://developers.openai.com/codex/skills">Agent Skills</a>, <a href="https://developers.openai.com/codex/subagents">Subagents</a>, <a href="https://developers.openai.com/codex/guides/agents-md">AGENTS.md</a>, <a href="https://developers.openai.com/codex/hooks">Codex hooks</a>, <a href="https://developers.openai.com/codex/agent-approvals-security">Agent approvals and security</a>, <a href="https://developers.openai.com/codex/workflows">Codex workflows</a>, <a href="technical.html">Technical features</a>.</p>
+<p>Product-Agent OS plugin строит управляемый lifecycle вокруг Codex App, CLI, IDE extension, subagents, skills, <code>AGENTS.md</code>, memory, sandbox, approvals, MCP и Agents SDK. Его архитектура не пытается "сразу сделать все": она сначала читает workspace, выбирает route, фиксирует ownership и evidence, затем stage-ит предложения или выполняет разрешенный slice.</p>
+<p>Главное правило: generated surfaces помогают ориентироваться, но source files, owner decisions и текущий verification evidence остаются сильнее любого dashboard, graph, report или chat memory.</p>
+<h2 id="layered-model">Layered Model<a class="headerlink" href="#layered-model" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
 <th>Layer</th>
-<th>Primary artifact/page</th>
+<th>Purpose</th>
+<th>Boundary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Пакет plugin</td>
+<td>Manifest, commands, packaged skills и validators.</td>
+<td>Package compatibility не активирует external systems.</td>
+</tr>
+<tr>
+<td>Lifecycle skills</td>
+<td>Requirements, planning, test/eval, implementation, review и release handoffs.</td>
+<td>Every handoff names files, evidence, risks и stop conditions.</td>
+</tr>
+<tr>
+<td>Staged infrastructure</td>
+<td>Templates для <code>AGENTS.md</code>, control-plane files, hooks, workflows и agent configs.</td>
+<td>Existing пользователь files являются preserved; ambiguous пишет become proposals.</td>
+</tr>
+<tr>
+<td>Approved merge</td>
+<td>Manifest, approval record, rollback и scoped apply.</td>
+<td>Нет direct target-workspace merge без explicit approval.</td>
+</tr>
+<tr>
+<td>Codex runtime runner</td>
+<td>Deterministic route packet для Codex usage.</td>
+<td>Нет separate live model call или hidden Agents SDK app.</td>
+</tr>
+<tr>
+<td>Engineering standards</td>
+<td>Hypothesis, architecture, tests, evals, docs, review и release measurement.</td>
+<td>Standards become evidence requirements, не ceremony через default.</td>
+</tr>
+<tr>
+<td>Scenario routes</td>
+<td><code>usage_mode</code> chooses first response и minimum artifacts.</td>
+<td>Detection never equals readiness.</td>
+</tr>
+<tr>
+<td>Methodology intelligence</td>
+<td>Read-only audit, applicability, owner questions и staged recommendations.</td>
+<td>Recommendations не mutate target projects.</td>
+</tr>
+<tr>
+<td>Graph и live governance</td>
+<td>Generated graph, cockpit, runtime gates, provider gates, review, mutation dry-run и audit.</td>
+<td>Live execution остается disabled пока separate owner approval.</td>
+</tr>
+</tbody>
+</table>
+<p>Этот порядок prevents stale shortcuts. Runtime, standards, scenarios, methodology synthesis и live governance являются один stack; every писать still passes staged-first и approval boundaries.</p>
+<h2 id="operating-flow">Operating Flow<a class="headerlink" href="#operating-flow" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>flowchart LR
+    A["Workspace context"] --&gt; B["Read-only inventory"]
+    B --&gt; C["Route selection"]
+    C --&gt; D["Minimum artifacts"]
+    D --&gt; E["Ownership и evidence"]
+    E --&gt; F{"Нужно создать?"}
+    F --&gt;|No| G["Read-only answer"]
+    F --&gt;|Staged proposal| H["Staging directory"]
+    F --&gt;|Approved write| I["Scoped implementation"]
+    H --&gt; J["Review / accepted gap"]
+    I --&gt; K["Доказательства проверки"]
+    J --&gt; K</code></pre>
+<p>Этот route является derived из artifacts, не из chat memory. User intent может steer следующий action, но политика источников, sandbox, approvals и текущий evidence по-прежнему определяют, что можно запускать.</p>
+<h2 id="graph-and-live-boundary">Graph And Live Boundary<a class="headerlink" href="#graph-and-live-boundary" title="Permanent link">&para;</a></h2>
+<p>Generated graph и cockpit surfaces help readers understand topology, code flow и stale evidence. Они не become source of truth и they не authorize live systems.</p>
+<table>
+<thead>
+<tr>
+<th>Surface</th>
+<th>Primary page</th>
 <th>Architectural rule</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Static graph and cockpit</td>
+<td>Static graph и cockpit</td>
 <td><a href="project-code-graph.html">Project Code Graph</a></td>
-<td>Graph/cockpit are generated review surfaces; source files remain canonical.</td>
+<td>Graph/cockpit являются generated review surfaces; source files остаются canonical.</td>
 </tr>
 <tr>
 <td>Live runtime governance</td>
 <td><a href="live-runtime-governance.html">Live Runtime Governance</a></td>
-<td>Runtime remains disabled-by-default, local-only and read-only until separate approval.</td>
+<td>Runtime остается disabled-by-default, local-only и read-only пока separate approval.</td>
 </tr>
 <tr>
 <td>Provider gates</td>
 <td><a href="live-runtime-governance.html">Live Runtime Governance</a></td>
-<td>Embedding, reranker and LLM proposal providers stay blocked until approval/redaction/cache/budget/eval threshold are current.</td>
+<td>Embedding, reranker и LLM proposal providers stay blocked пока approval, redaction, cache, budget и eval threshold являются current.</td>
 </tr>
 <tr>
 <td>Human review</td>
 <td><a href="artifact-contracts.html">Artifact Contracts</a></td>
-<td>Review ledger decisions are <code>accepted</code>, <code>rejected</code> or <code>accepted_gap</code>; proposal evidence is not a canonical fact.</td>
+<td>Review ledger decisions являются <code>accepted</code>, <code>rejected</code> или <code>accepted_gap</code>; proposal evidence является не canonical fact.</td>
 </tr>
 <tr>
 <td>Canonical mutation</td>
 <td><a href="artifact-contracts.html">Artifact Contracts</a></td>
-<td>Mutation requires accepted proposal, dry-run plan, mutation journal and rollback proof before any pilot.</td>
+<td>Mutation требует accepted proposal, dry-run plan, mutation journal и rollback proof до any pilot.</td>
 </tr>
 <tr>
-<td>Audit and observability</td>
+<td>Audit и observability</td>
 <td><a href="live-runtime-governance.html">Live Runtime Governance</a></td>
-<td>Live/provider/mutation actions must emit redacted audit and runtime evidence; unsafe cases block the route.</td>
+<td>Live, provider и mutation actions должен emit redacted audit и runtime evidence; unsafe cases block route.</td>
 </tr>
 <tr>
 <td>Real testing</td>
 <td><a href="approval-bound-real-testing.html">Approval-Bound Real Testing</a></td>
-<td>Browser automation, provider/API pilot, canonical mutation pilot and git release/PR action are separate Batch 35 approvals.</td>
+<td>Runtime launch, browser automation, provider/API pilot, canonical mutation pilot и git release/PR action являются separate approvals.</td>
 </tr>
 </tbody>
 </table>
-<h2 id="engineering-standards-route">Engineering standards route<a class="headerlink" href="#engineering-standards-route" title="Permanent link">&para;</a></h2>
+<h2 id="engineering-standards-route">Engineering Standards Route<a class="headerlink" href="#engineering-standards-route" title="Permanent link">&para;</a></h2>
 <pre class="mermaid"><code>flowchart LR
-    S["Workspace methodology signals"] --&gt; A["REQUIREMENTS.md hypothesis and metrics"]
+    S["Workspace signals"] --&gt; A["REQUIREMENTS.md hypothesis и metrics"]
     A --&gt; B["PLAN.md architecture boundary"]
     B --&gt; C["TEST.md test-first checks"]
     B --&gt; D["EVALS.md quality gates"]
@@ -3886,18 +4003,18 @@
     F --&gt; T["Artifact templates"]
     T --&gt; G["Risk review"]
     G --&gt; H["RUNLOG.md measurement notes"]</code></pre>
-<p>Принцип: Codex-agent work начинается только после того, как boundary, verification и documentation impact видны следующему worker. Если один из элементов невозможен, это фиксируется как gap, а не скрывается в chat.</p>
-<h2 id="lifecycle-routing">Lifecycle routing<a class="headerlink" href="#lifecycle-routing" title="Permanent link">&para;</a></h2>
+<p>Product-agent work начинается только после того, как boundary, verification и documentation impact видны следующему worker. Если один element является unavailable, route records explicit gap instead из hiding это в chat.</p>
+<h2 id="lifecycle-routing">Lifecycle Routing<a class="headerlink" href="#lifecycle-routing" title="Permanent link">&para;</a></h2>
 <pre class="mermaid"><code>flowchart TD
     A["Workspace context"] --&gt; B{"AGENTS.md exists?"}
     B --&gt;|No| U["uninitialized"]
-    B --&gt;|Yes| C{"REQUIREMENTS.md has acceptance criteria?"}
+    B --&gt;|Yes| C{"REQUIREMENTS.md имеет acceptance criteria?"}
     C --&gt;|No| IP["infrastructure_planned"]
-    C --&gt;|Yes| D{"PLAN.md has verification?"}
+    C --&gt;|Yes| D{"PLAN.md имеет verification?"}
     D --&gt;|No| RR["requirements_ready"]
     D --&gt;|Yes| E{".codex/agents/builder.toml exists?"}
     E --&gt;|No| PR["plan_ready"]
-    E --&gt;|Yes| F{"TEST.md and EVALS.md have quality gates?"}
+    E --&gt;|Yes| F{"TEST.md и EVALS.md имеют quality gates?"}
     F --&gt;|No| TR["team_ready"]
     F --&gt;|Yes| G{"RUNLOG.md lifecycle marker?"}
     G --&gt;|build_active| BA["build_active"]
@@ -3906,24 +4023,12 @@
     G --&gt;|release_ready| RL["release_ready"]
     G --&gt;|learning_ready| LN["learning_ready"]
     G --&gt;|none| M["maintenance"]</code></pre>
-<p>Принцип: route is derived from artifacts, not from chat memory. User request can override lifecycle state only when it matches the allowed state list and guardrails still pass.</p>
-<h2 id="route-packet">Route packet<a class="headerlink" href="#route-packet" title="Permanent link">&para;</a></h2>
-<pre class="mermaid"><code>flowchart LR
-    S["Lifecycle state"] --&gt; R["Route planner"]
-    U["usage_mode"] --&gt; R
-    R --&gt; K["Recommended skill"]
-    R --&gt; A["Recommended subagent role"]
-    R --&gt; W["Write policy"]
-    R --&gt; V["Verification commands"]
-    W --&gt; P{"approved_write?"}
-    P --&gt;|No| O["read_only or staged_only"]
-    P --&gt;|Yes| G["explicit approval record required"]</code></pre>
 <table>
 <thead>
 <tr>
 <th>State</th>
 <th>Next worker</th>
-<th>Write policy</th>
+<th>Создайте policy</th>
 </tr>
 </thead>
 <tbody>
@@ -3954,7 +4059,7 @@
 </tr>
 <tr>
 <td><code>build_active</code></td>
-<td><code>builder</code> subagent when allowed</td>
+<td><code>builder</code> subagent когда allowed</td>
 <td><code>approved_write</code></td>
 </tr>
 <tr>
@@ -3984,7 +4089,19 @@
 </tr>
 </tbody>
 </table>
-<h2 id="track-9-read-only-methodology-audit">Track 9 read-only methodology audit<a class="headerlink" href="#track-9-read-only-methodology-audit" title="Permanent link">&para;</a></h2>
+<h2 id="route-packet">Route Packet<a class="headerlink" href="#route-packet" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>flowchart LR
+    S["Lifecycle state"] --&gt; R["Route planner"]
+    U["usage_mode"] --&gt; R
+    R --&gt; K["Recommended skill"]
+    R --&gt; A["Recommended subagent role"]
+    R --&gt; W["Создайте policy"]
+    R --&gt; V["Verification commands"]
+    W --&gt; P{"approved_write?"}
+    P --&gt;|No| O["read_only или staged_only"]
+    P --&gt;|Yes| G["explicit approval record required"]</code></pre>
+<p>Этот route packet carries <code>usage_mode</code>, confidence, routing reasons, minimum artifacts, approval boundary, ожидаемые доказательства, residual risks и next safe action. Это является planning contract, не permission к mutate external systems.</p>
+<h2 id="methodology-intelligence">Methodology Intelligence<a class="headerlink" href="#methodology-intelligence" title="Permanent link">&para;</a></h2>
 <pre class="mermaid"><code>flowchart LR
     W["Workspace signals"] --&gt; C["Methodology catalog"]
     C --&gt; A["Read-only audit"]
@@ -3993,20 +4110,20 @@
     A --&gt; R["Prioritized recommendations"]
     R --&gt; Q["Owner questions"]
     R --&gt; D["Delivery Map"]
-    D --&gt; S{"Write needed?"}
-    S --&gt;|No| O["Report only"]
+    D --&gt; S{"Нужно создать?"}
+    S --&gt;|No| O["Только report"]
     S --&gt;|Yes| G["staged_only proposal"]
     G --&gt; X["explicit approval boundary"]</code></pre>
-<p>Track 9 adds methodology intelligence before lifecycle mutation. The audit can read the workspace and produce <code>methodology_applicability</code>, <code>methodology-audit-report.md</code>, Delivery Map priorities and owner questions. It does not write target-project files, enable hooks, activate automations or touch external systems. Any generated artifact after the report remains staged-only until explicit approval.</p>
-<h2 id="usage-mode-coverage">Usage mode coverage<a class="headerlink" href="#usage-mode-coverage" title="Permanent link">&para;</a></h2>
+<p>Methodology intelligence запускается до lifecycle mutation. Он может read workspace и produce <code>methodology_applicability</code>, <code>methodology-audit-report.md</code>, Delivery Map priorities и owner questions. Он не пишет target-project files, не включает hooks, не активирует automations и не touch external systems. Any generated artifact после report остается staged-only пока explicit approval.</p>
+<h2 id="usage-mode-coverage">Usage Mode Coverage<a class="headerlink" href="#usage-mode-coverage" title="Permanent link">&para;</a></h2>
 <pre class="mermaid"><code>flowchart TD
-    W["Workspace and prompt signals"] --&gt; U["usage_mode classifier"]
-    U --&gt; D["done workflow modes"]
-    U --&gt; M["done methodology gates"]
-    U --&gt; P["partial methodology gates"]
+    W["Workspace и prompt signals"] --&gt; U["usage_mode classifier"]
+    U --&gt; D["scenario workflow modes"]
+    U --&gt; M["methodology gates"]
+    U --&gt; P["readiness overlays"]
     U --&gt; B["base modes"]
     D --&gt; A["stage workflow + artifact proposal"]
-    M --&gt; E["enforce gate fields before build"]
+    M --&gt; E["enforce gate fields до build"]
     P --&gt; G["name minimum artifacts + explicit evidence gaps"]
     B --&gt; R["standard lifecycle route"]</code></pre>
 <table>
@@ -4019,32 +4136,32 @@
 </thead>
 <tbody>
 <tr>
-<td><code>done</code></td>
+<td>Scenario workflows</td>
 <td>first-run intake plus <code>bug_rescue</code>, <code>greenfield_idea</code>, <code>complex_system_acceleration</code>, <code>pr_review</code>, <code>legacy_onboarding</code>, <code>api_migration</code>, <code>ai_eval_regression</code>, <code>native_mobile_feature</code>, <code>desktop_local_first</code>, <code>data_migration</code>, <code>security_sensitive_change</code>, <code>ci_stabilization</code>, <code>release_packaging</code></td>
-<td>Stage existing workflow/artifact templates, keep first response small, and run behavior-level checks.</td>
+<td>Stage existing workflow/artifact templates, keep first response small и запуск behavior-level checks.</td>
 </tr>
 <tr>
-<td><code>done methodology gate</code></td>
+<td>Methodology gates</td>
 <td>no-placeholder planning, generalized two-stage review, fresh-context handoff, acceptance scenarios, conditional DDD domain modeling, bounded-context-to-architecture traceability, ubiquitous language traceability, conditional FSD structure routing</td>
-<td>Require exact files, owned/forbidden files, exact commands, expected outputs, rollback, evidence owner, placeholder scan, plan repair and <code>mechanical_change</code> reason before build; require spec compliance before quality/risk for risky PR/public-contract/migration/security/data/release/parallel slices; require complete task context, source constraints, ownership, expected evidence, handoff output schema, stop conditions and sequential fallback before subagent or parallel work; require <code>requirement -&gt; scenario -&gt; check -&gt; evidence owner</code>, Given/When/Then or equivalent behavior format, business rule, edge case, non-goal and explicit gap before behavior changes; require <code>domain_model_when_complex_domain</code> only for complex backend/workflow/enterprise/data-heavy/multi-service/multi-context work, require <code>bounded_context_architecture_boundary_trace</code> from every bounded context to an architecture boundary or accepted gap, require <code>ubiquitous_language_traceability</code> from every domain term to requirement/source plus API/event/contract, UI label, code module or owner, and require <code>fsd_structure</code> only for applicable web UI/component work with Feature-Sliced Design layer, slice, segment, public API and import rule.</td>
+<td>Require exact files, commands, expected outputs, rollback, evidence owner, accepted gaps и ownership до build или handoff.</td>
 </tr>
 <tr>
-<td><code>partial</code></td>
-<td>readiness eval overlays</td>
-<td>Route safely, name required artifacts, record evidence gaps, and avoid completion claims without verification evidence.</td>
+<td>Readiness overlays</td>
+<td>quality, release, security, AI/RAG, data и runtime readiness</td>
+<td>Route safely, name required artifacts, record evidence gaps и avoid completion claims без verification evidence.</td>
 </tr>
 <tr>
-<td><code>base</code></td>
+<td>Base modes</td>
 <td><code>standard_feature</code>, <code>docs_only</code>, <code>maintenance</code></td>
-<td>Use normal lifecycle route with minimum control-plane artifacts.</td>
+<td>Используйте normal lifecycle route с minimum control-plane artifacts.</td>
 </tr>
 </tbody>
 </table>
-<h2 id="staged-first-infrastructure">Staged-first infrastructure<a class="headerlink" href="#staged-first-infrastructure" title="Permanent link">&para;</a></h2>
+<h2 id="staged-first-infrastructure">Staged-First Infrastructure<a class="headerlink" href="#staged-first-infrastructure" title="Permanent link">&para;</a></h2>
 <pre class="mermaid"><code>flowchart TD
     A["Target workspace"] --&gt; B["Read-only audit"]
     B --&gt; C["Template render"]
-    C --&gt; D{"Existing user file?"}
+    C --&gt; D{"Existing пользователь file?"}
     D --&gt;|No| E["Stage create"]
     D --&gt;|Managed markers| F["Stage managed-section update"]
     D --&gt;|Unmarked file| G["Stage companion proposal"]
@@ -4053,40 +4170,40 @@
     G --&gt; H
     H --&gt; I["Read-only merge plan"]
     I --&gt; J{"Explicit approval record?"}
-    J --&gt;|No| K["Stop at needs_approval"]
-    J --&gt;|Yes| L["Apply scoped decisions"]
+    J --&gt;|No| K["Остановиться at needs_approval"]
+    J --&gt;|Yes| L["Применить scoped decisions"]
     L --&gt; M["Rollback manifest"]</code></pre>
-<p>Принцип: renderer may inspect the workspace and write only to an explicit staging directory. Direct target writes happen only through merge tooling after approval.</p>
-<h2 id="codex-runtime-runner">Codex runtime runner<a class="headerlink" href="#codex-runtime-runner" title="Permanent link">&para;</a></h2>
+<p>Renderer может inspect workspace и писать только в explicit staging directory. Direct target пишет выполняются только через merge tooling после approval.</p>
+<h2 id="codex-runtime-runner">Codex Runtime Runner<a class="headerlink" href="#codex-runtime-runner" title="Permanent link">&para;</a></h2>
 <pre class="mermaid"><code>flowchart TD
     A["run_codex_runtime_runner.py --contract"] --&gt; B["Load control-plane files"]
     B --&gt; C["Infer lifecycle state"]
     C --&gt; D["Plan route"]
-    D --&gt; E["Validate source policy"]
+    D --&gt; E["Validate политика источников"]
     E --&gt; F["Validate approval boundary"]
     F --&gt; G["Validate route packet"]
     G --&gt; H["Build result contract"]
-    H --&gt; I["Redact secrets and local paths"]
+    H --&gt; I["Redact secrets и local paths"]
     I --&gt; J{"Errors?"}
     J --&gt;|No| K["route_ready"]
     J --&gt;|Approval missing| L["needs_approval"]
     J --&gt;|Context missing| M["needs_context"]
     J --&gt;|Policy blocked| N["blocked"]</code></pre>
-<p>Принцип: Track 5 is Codex-only. Runner does not call an external model, does not require a separate OpenAI API key, and does not become an Agents SDK app. It produces a deterministic contract packet that Codex can use to route the next action.</p>
-<h2 id="automation-promotion">Automation promotion<a class="headerlink" href="#automation-promotion" title="Permanent link">&para;</a></h2>
+<p>Этот runner является Codex-only. Это не call external model, не требуют separate OpenAI API key и не become Agents SDK app. Это produces deterministic contract packet который Codex может использовать к route следующий action.</p>
+<h2 id="automation-promotion">Automation Promotion<a class="headerlink" href="#automation-promotion" title="Permanent link">&para;</a></h2>
 <pre class="mermaid"><code>flowchart TD
     A["Repeated workflow"] --&gt; B{"Manual success evidence?"}
     B --&gt;|No| C["Keep manual workflow"]
-    B --&gt;|Yes| D{"Stable inputs and outputs?"}
+    B --&gt;|Yes| D{"Stable inputs и outputs?"}
     D --&gt;|No| C
-    D --&gt;|Yes| E{"Verification and failure modes named?"}
+    D --&gt;|Yes| E{"Verification и failure modes named?"}
     E --&gt;|No| C
-    E --&gt;|Yes| F{"Owner, cadence and rollback named?"}
+    E --&gt;|Yes| F{"Owner, cadence и rollback named?"}
     F --&gt;|No| C
     F --&gt;|Yes| G["Automation candidate packet"]
-    G --&gt; H["Manual approval required before active automation"]</code></pre>
-<p>Принцип: plugin can stage an automation candidate, but it must not create active recurring automation until the workflow has stability evidence and explicit approval.</p>
-<h2 id="common-failure-modes">Common failure modes<a class="headerlink" href="#common-failure-modes" title="Permanent link">&para;</a></h2>
+    G --&gt; H["Manual approval required до active automation"]</code></pre>
+<p>Product-Agent OS может stage automation candidate, но это должен не create active recurring automation пока workflow имеет stability evidence и explicit approval.</p>
+<h2 id="common-failure-modes">Common Failure Modes<a class="headerlink" href="#common-failure-modes" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
@@ -4097,34 +4214,35 @@
 <tbody>
 <tr>
 <td>Missing requirements</td>
-<td>Route to requirements author, do not build</td>
+<td>Route к requirements author, не build.</td>
 </tr>
 <tr>
 <td>Missing verification</td>
-<td>Route to planning or test/eval designer</td>
+<td>Route к planning или test/eval designer.</td>
 </tr>
 <tr>
 <td>Source-backed claim lacks source</td>
-<td>Mark needs review or block through source policy</td>
+<td>Mark требует review или block через политика источников.</td>
 </tr>
 <tr>
-<td>Approved write route lacks approval</td>
-<td>Return <code>needs_approval</code></td>
+<td>Approved писать route lacks approval</td>
+<td>Return <code>needs_approval</code>.</td>
 </tr>
 <tr>
 <td>Active automation requested too early</td>
-<td>Block and keep candidate-only</td>
+<td>Block и keep candidate-only.</td>
 </tr>
 <tr>
-<td>Secret-like content appears in output</td>
-<td>Redact and report redaction category</td>
+<td>Secret-like content appears в output</td>
+<td>Redact и report redaction category.</td>
 </tr>
 <tr>
-<td>Existing file has ambiguous managed markers</td>
-<td>Stop and report conflict</td>
+<td>Existing file имеет ambiguous managed markers</td>
+<td>Остановиться и report conflict.</td>
 </tr>
 </tbody>
 </table>
+<p>Следующий artifact: используйте <a href="scenarios.html">Scenarios</a> для route selection и <a href="behavioral-evals.html">Behavioral evals</a> для expected/forbidden behavior.</p>
 
 
 
@@ -4179,6 +4297,8 @@
 
 
       <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+
+        <script src="../assets/javascripts/local-file-i18n.js"></script>
 
         <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
 

@@ -184,7 +184,7 @@ Codex / Agentic Workflow слой описывает, как большой пр
 - Memory is not used as source of mandatory project truth.
 - Final claims cite current evidence.
 
-## Failure modes
+## Типовые сбои
 
 - Chat contains real requirements while project artifacts stay stale.
 - `AGENTS.md` becomes vague, obsolete or filled with one-off instructions.

@@ -17,13 +17,13 @@ Project Code Graph отвечает за offline-навигацию по про�
 
 ## Source-of-truth boundary
 
-Generated graph artifacts are not source of truth. Они являются orientation evidence и cache-bound generated views.
+Generated graph artifacts не являются источником истины. Это orientation evidence и cache-bound generated views.
 
-Source of truth остается в исходных файлах проекта, checked-in документации, schema/contracts, tests, approval packets, RUNLOG/TEST/EVALS evidence и явно принятых owner decisions. Graph, cockpit HTML/JSON, search/backend/semantic indexes, LLM proposal packets и extension closure reports не должны использоваться как самостоятельное доказательство architecture, runtime behavior, coverage, security posture или release readiness.
+source of truth остается в исходных файлах проекта, checked-in документации, schema/contracts, tests, approval packets, RUNLOG/TEST/EVALS evidence и явно принятых owner decisions. Graph, cockpit HTML/JSON, search/backend/semantic indexes, LLM proposal packets и extension closure reports не должны использоваться как самостоятельное доказательство architecture, runtime behavior, coverage, security posture или release readiness.
 
 Без отдельного explicit approval запрещены live server, browser automation, provider/API calls, canonical graph mutation, git stage/commit/push/PR и любые external writes. Query и stage modes должны оставаться локальными, deterministic и generated-artifact-only.
 
-## Inputs
+## Входы
 
 Основной вход:
 
@@ -34,24 +34,24 @@ Source of truth остается в исходных файлах проекта
 
 Scanner читает локальные файлы проекта, но graph/query packets по умолчанию исключают raw source bodies и редактируют absolute paths или secret-like values. Stage output должен быть явной директорией, предпочтительно вне target workspace.
 
-## Outputs And Artifacts
+## Выходы и артефакты
 
 Базовые artifacts:
 
 - `.codex/product-agent-os/project-code-graph.json` - основной graph JSON с `write_policy: read_only`, metadata, nodes, edges и observations.
 - `.codex/product-agent-os/project-code-graph.jsonl` - bounded JSONL serialization для agent consumption.
 - `.codex/product-agent-os/project-cockpit.html` - offline generated cockpit, review-only.
-- `.codex/product-agent-os/project-cockpit.json` - structured cockpit model and projection.
+- `.codex/product-agent-os/project-cockpit.json` - structured cockpit model и projection.
 - Graph analysis report из `project_graph_analysis.py` - source-free orientation report, не доказательство completeness.
 - Status/runtime summaries из query packets и cockpit model - compact health/orientation summaries.
 
 Extension artifacts:
 
-- `.codex/product-agent-os/project-code-graph-search-index.json` - offline static search index with stale-index blocking and rollback path.
-- `.codex/product-agent-os/project-code-graph-backend.json` - disabled-by-default local query backend store; no active server by default.
-- `.codex/product-agent-os/project-code-graph-semantic-index.json` - local deterministic semantic retrieval cache; external embedding/cross-encoder providers remain approval-bound.
-- `.codex/product-agent-os/project-code-graph-llm-proposals.json` - staged local deterministic semantic extraction proposals with provenance, uncertainty and unsupported-claim labels.
-- `.codex/product-agent-os/project-code-graph-extension-closure.json` - extension verification, rollback/data deletion proof and graph-only fallback report.
+- `.codex/product-agent-os/project-code-graph-search-index.json` - offline static search index с stale-index blocking и rollback path.
+- `.codex/product-agent-os/project-code-graph-backend.json` - disabled-by-default local query backend store; нет active server через default.
+- `.codex/product-agent-os/project-code-graph-semantic-index.json` - local deterministic semantic retrieval cache; external embedding/cross-encoder providers остаются approval-bound.
+- `.codex/product-agent-os/project-code-graph-llm-proposals.json` - staged local deterministic semantic extraction proposals с provenance, uncertainty и unsupported-claim labels.
+- `.codex/product-agent-os/project-code-graph-extension-closure.json` - extension verification, rollback/data deletion proof и graph-only fallback report.
 
 ## Operating Modes And Commands
 
@@ -70,7 +70,7 @@ python plugins\product-agent-os\scripts\scan_project_code_graph.py <workspace> -
 python plugins\product-agent-os\scripts\scan_project_code_graph.py <workspace> --query search --graph C:\tmp\product-agent-os-graph-stage\.codex\product-agent-os\project-code-graph.json --text "runtime"
 ```
 
-Supported query kinds include `neighbors`, `path`, `trace`, `impact`, `affected_tests`, `changed_since`, `why_changed`, `read_order`, `hotspots`, `node`, `status` and `search`. Query packets are bounded by `--max-results`, `--max-depth`, `--max-tokens`, filters and hub suppression.
+Supported query kinds включают `neighbors`, `path`, `trace`, `impact`, `affected_tests`, `changed_since`, `why_changed`, `read_order`, `hotspots`, `node`, `status` и `search`. Query packets являются bounded через `--max-results`, `--max-depth`, `--max-tokens`, filters и hub suppression.
 
 Extension modes:
 
@@ -82,36 +82,36 @@ python plugins\product-agent-os\scripts\scan_project_code_graph.py <workspace> -
 python plugins\product-agent-os\scripts\scan_project_code_graph.py <workspace> --verify-extensions --stage C:\tmp\product-agent-os-graph-stage --graph C:\tmp\product-agent-os-graph-stage\.codex\product-agent-os\project-code-graph.json --verification-evidence evidence.json
 ```
 
-Disable modes remove generated extension artifacts under the stage root: `--disable-backend`, `--disable-semantic-index`, `--disable-llm-proposals` and `--disable-extensions`.
+Disable modes remove generated extension artifacts в рамках stage root: `--disable-backend`, `--disable-semantic-index`, `--disable-llm-proposals` и `--disable-extensions`.
 
-## Verification
+## Проверка
 
 Минимальная verification evidence для изменения этого слоя:
 
 - graph schema validation через `project_graph_ontology.py`;
-- redaction checks: no raw source bodies, no absolute local paths, no secret-like values in returned packets;
-- query packet checks for supported query kinds and bounded payloads;
-- cockpit validation: eight-page structure, generated-view wording, no external assets, static fallback path;
-- search-quality evals: symbol recall, top-k/MRR, trace labels, affected-test precision, edge density and thresholds;
-- extension validation: stale index blocking, disabled backend lifecycle, local deterministic semantic retrieval, proposal labels, rollback/data deletion proof and graph-only fallback.
+- redaction checks: нет raw source bodies, нет absolute local paths, нет secret-like values в returned packets;
+- query packet checks для supported query kinds и bounded payloads;
+- cockpit validation: eight-page structure, generated-view wording, нет external assets, static fallback path;
+- search-quality evals: symbol recall, top-k/MRR, trace labels, affected-test precision, edge density и thresholds;
+- extension validation: stale index blocking, disabled backend lifecycle, local deterministic semantic retrieval, proposal labels, rollback/data deletion proof и graph-only fallback.
 
-Prior closure evidence recorded focused/full checks for graph/cockpit/search/status/runtime, fixture/lifecycle/docs suites, full unittest, fixture eval, transcript eval, Codex compatibility, strict MkDocs and diff hygiene. For new changes, rerun only the smallest relevant checks unless ownership expands.
+Prior closure evidence recorded focused/full checks для graph/cockpit/search/status/runtime, fixture/lifecycle/docs suites, full unittest, fixture eval, transcript eval, Codex compatibility, strict MkDocs и diff hygiene. Для new changes, rerun только smallest relevant checks пока ownership expands.
 
-## Risks And Failure Modes
+## Риски And Failure Modes
 
-- Dynamic dispatch, framework wiring, runtime routes and actual execution behavior are not fully proven by static graph edges.
-- Semantic hits and LLM proposals are orientation evidence; unsupported or uncertain claims must stay labeled and reviewable.
-- Stale graph/index artifacts can mislead readers if source files changed after generation.
-- Local backend store is a generated file-store and remains disabled by default; it is not a production server.
-- Cockpit is static generated output; visual completeness does not prove source correctness.
-- Stage directories inside a target workspace can blur source/generated boundaries unless explicitly approved.
-- Future provider-backed retrieval, live runtime, canonical mutation and release actions require separate approval packets and rollback plans.
+- Dynamic dispatch, framework wiring, runtime routes и actual execution behavior являются не fully proven через static graph edges.
+- Semantic hits и LLM proposals являются orientation evidence; unsupported или uncertain claims должен stay labeled и reviewable.
+- Stale graph/index artifacts может mislead readers если source files changed после generation.
+- Local backend store является generated file-store и остается disabled через default; это является не production server.
+- Cockpit является static generated output; visual completeness не prove source correctness.
+- Stage directories inside target workspace может blur source/generated boundaries пока explicitly approved.
+- Future provider-backed retrieval, live runtime, canonical mutation и release actions требуют separate approval packets и rollback plans.
 
-## Related Pages And Next Action
+## Связанные страницы и следующий шаг
 
-- `docs/product-agent-os/technical.md` - current technical summary for Product-Agent OS implementation status.
+- `docs/product-agent-os/technical.md` - текущий technical summary для Product-Agent OS implementation status.
 - `docs/product-agent-os/live-runtime-governance.md` - live/runtime/provider governance boundary.
-- `docs/product-agent-os/artifact-contracts.md` - expected artifact schema reference when available.
-- `docs/product-agent-os/cli-reference.md` - script/mode reference when available.
+- `docs/product-agent-os/artifact-contracts.md` - expected artifact schema reference когда available.
+- `docs/product-agent-os/cli-reference.md` - script/mode reference когда available.
 
-Next action for a maintainer: use this page as the reader-facing Project Code Graph guide, then link it from MkDocs navigation and source registry when the public docs map changes.
+Следующий action для maintainer: использовать эта page как reader-facing Project Code Graph guide, затем link это из MkDocs navigation и source registry когда public docs map changes.

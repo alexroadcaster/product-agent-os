@@ -186,7 +186,7 @@ Architecture artifact должен отвечать на практически�
 - Quality attributes have measurable scenarios or explicit owner-approved gap.
 - Architecture claims cite current tests, contract checks, runtime evidence, diagram build, owner review or explicit gaps.
 
-## Failure modes
+## Типовые сбои
 
 - Architecture page becomes decorative and not tied to decisions.
 - Diagrams are stale because no owner or build/render check exists.

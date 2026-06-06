@@ -152,7 +152,7 @@ Lifecycle inference order:
 
 Required marker strings are intentionally simple and synthetic-friendly:
 
-- acceptance criteria: `Acceptance Criteria`;
+- acceptance criteria: `Критерии приемки`;
 - verification strategy: `Verification`;
 - build active: `lifecycle_state: build_active`;
 - quality gate: `lifecycle_state: quality_gate`;
@@ -531,7 +531,7 @@ class CodexRuntimeRunnerStateRoutesTest(unittest.TestCase):
         omit = omit or set()
         content = {
             "AGENTS.md": "# Rules\n",
-            "REQUIREMENTS.md": "# Requirements\n\n## Acceptance Criteria\n\n- Synthetic acceptance.\n",
+            "REQUIREMENTS.md": "# Requirements\n\n## Критерии приемки\n\n- Synthetic acceptance.\n",
             "PLAN.md": "# Plan\n\n## Verification\n\n- Run unit tests.\n",
             "TEST.md": "# Test\n\nQuality gates: unit tests.\n",
             "EVALS.md": "# Evals\n\nQuality gates: fixture eval.\n",
@@ -617,7 +617,7 @@ def infer_lifecycle_state(context: dict[str, Any], request: dict[str, Any]) -> s
     if not files.get("AGENTS.md", {}).get("exists"):
         return "uninitialized"
     requirements = files.get("REQUIREMENTS.md", {}).get("text", "")
-    if not requirements or "Acceptance Criteria" not in requirements:
+    if not requirements or "Критерии приемки" not in requirements:
         return "infrastructure_planned"
     plan = files.get("PLAN.md", {}).get("text", "")
     if not plan or "Verification" not in plan:
@@ -1066,7 +1066,7 @@ class CodexRuntimeRunnerCliTest(unittest.TestCase):
 
     def _write_control_plane(self, workspace: Path, runlog_marker: str) -> None:
         (workspace / "AGENTS.md").write_text("# Rules\n", encoding="utf-8")
-        (workspace / "REQUIREMENTS.md").write_text("# Requirements\n\n## Acceptance Criteria\n\n- Synthetic.\n", encoding="utf-8")
+        (workspace / "REQUIREMENTS.md").write_text("# Requirements\n\n## Критерии приемки\n\n- Synthetic.\n", encoding="utf-8")
         (workspace / "PLAN.md").write_text("# Plan\n\n## Verification\n\n- Run tests.\n", encoding="utf-8")
         (workspace / "TEST.md").write_text("# Test\n\nQuality gates: unit tests.\n", encoding="utf-8")
         (workspace / "EVALS.md").write_text("# Evals\n\nQuality gates: fixture eval.\n", encoding="utf-8")
@@ -1322,7 +1322,7 @@ Synthetic fixture only.
 ```markdown
 # Synthetic Requirements
 
-## Acceptance Criteria
+## Критерии приемки
 
 - Synthetic route can reach quality gate.
 ```
@@ -1369,7 +1369,7 @@ name = "builder"
 
 - [ ] **Step 4: Create missing context fixture**
 
-Create `plugins/product-agent-os/assets/fixtures/codex-runner-missing-context/` with `AGENTS.md`, `REQUIREMENTS.md`, `TEST.md`, `EVALS.md`, `RUNLOG.md`, but intentionally omit `PLAN.md`. Use synthetic text and include `## Acceptance Criteria` in `REQUIREMENTS.md`.
+Create `plugins/product-agent-os/assets/fixtures/codex-runner-missing-context/` with `AGENTS.md`, `REQUIREMENTS.md`, `TEST.md`, `EVALS.md`, `RUNLOG.md`, but intentionally omit `PLAN.md`. Use synthetic text and include `## Критерии приемки` in `REQUIREMENTS.md`.
 
 - [ ] **Step 5: Create approval-required fixture**
 

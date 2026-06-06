@@ -688,7 +688,7 @@ python tools\check_docs.py
 $env:PYTHONPATH='C:\tmp\codex_docs_mkdocs'; python -m mkdocs build --strict
 ```
 
-## Acceptance Criteria
+## Критерии приемки
 
 Track 4 is complete when:
 

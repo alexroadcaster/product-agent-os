@@ -7,29 +7,29 @@ Source status: `official + experiment`
 
 | Механизм | Использовать когда | Пример |
 | --- | --- | --- |
-| `AGENTS.md` | Нужно постоянное правило для проекта | Как запускать тесты, стиль документации, source policy |
+| `AGENTS.md` | Нужно постоянное правило для проекта | Как запускать тесты, стиль документации, политика источников |
 | Skill | Повторяется workflow с явными шагами | "Собери источник, сделай карточку, проверь claims" |
 | Subagent | Работа независима и параллелится | Один агент ищет docs, второй проверяет links, третий анализирует insights |
 | Plugin | Нужно упаковать skills, MCP и agents для команды | Внутренний пакет документационных workflows |
 
 ## Subagents
 
-Официальная модель: Codex не должен запускать subagents автоматически. Нужно явно просить "spawn agents", "delegate in parallel" или "use one agent per point".
+Официальная модель: Codex не должен запускать subagents автоматически. Нужно явно просить о параллельной делегации, например `spawn agents`, `delegate в parallel` или `use один agent per point`.
 
 Хороший subagent prompt:
 
 ```text
-Spawn one agent for each source family:
+Spawn один agent для каждый source family:
 1. Codex official docs
 2. Agents SDK memory docs
 3. Community insight backlog
 
-Each agent must return:
+Каждая agent должен return:
 - sources used;
 - verified claims;
 - uncertain claims;
 - suggested doc updates.
-Wait for all agents, then synthesize without copying raw logs.
+Wait для all agents, затем synthesize без copying raw logs.
 ```
 
 Официальный review pattern масштабируется так же: один agent на security, один на code quality, один на bugs, один на race conditions, один на test flakiness, один на maintainability. Main thread должен дождаться всех результатов и сделать consolidated summary без дублирующих findings.
@@ -40,13 +40,13 @@ Product-Agent OS использует практическое правило д
 
 | Поле handoff | Что должно быть явно |
 | --- | --- |
-| Ownership | Owned files/subsystems, forbidden files and expected handoff artifact. |
-| Fresh context | Current user request, relevant project rules, source files/docs used and assumptions. |
-| Verification evidence | Commands, docs checks, evals, screenshots, logs or accepted gap expected from this worker. |
-| Stop conditions | Approval boundary, missing source, overlapping ownership, failing check or stale context. |
-| Return packet | Sources used, files touched/proposed, verification result, open risks and recommended next role. |
+| Ownership | Owned files/subsystems, forbidden files и expected handoff artifact. |
+| Свежий контекст | Текущий запрос пользователя, релевантные правила проекта, использованные source files/docs и допущения. |
+| Доказательства проверки | Команды, docs checks, evals, screenshots, logs или accepted gap, ожидаемые от исполнителя. |
+| Условия остановки | Граница approval, отсутствующий source, пересечение ownership, падающая проверка или устаревший контекст. |
+| Пакет возврата | Использованные sources, затронутые или предложенные файлы, результат проверки, открытые риски и рекомендуемая следующая роль. |
 
-Если ownership пересекается или expected evidence невозможно получить, используйте sequential fallback вместо parallel subagents. Для source-sensitive docs work community claims remain intake material until trust level and verification status are explicit.
+Если ownership пересекается или ожидаемые доказательства невозможно получить, используйте последовательный fallback вместо параллельных subagents. Для source-sensitive docs work community claims остаются intake material, пока trust level и verification status не записаны явно.
 
 ## Skills
 
@@ -58,11 +58,11 @@ Skill должен быть узким и проверяемым. Официал
 | --- | --- |
 | One job | Skill решает один повторяемый workflow |
 | Trigger words | `description` явно говорит, когда использовать и когда не использовать |
-| Inputs | Required inputs перечислены |
-| Outputs | Формат результата фиксирован |
+| Входы | Обязательные входы перечислены |
+| Выходы | Формат результата фиксирован |
 | Progressive disclosure | `SKILL.md` краткий, references/scripts/assets подгружаются по необходимости |
 | Determinism | Scripts используются только для воспроизводимого поведения или external tooling |
-| Eval cases | Есть примеры should trigger и should not trigger |
+| Eval cases | Есть примеры следует trigger и следует не trigger |
 
 Кандидаты skills для этого проекта:
 
@@ -73,11 +73,11 @@ Skill должен быть узким и проверяемым. Официал
 - `product-spec-writer` - превращает идею в requirements packet.
 - `implementation-planner` - строит PLAN.md из REQUIREMENTS.md.
 - `test-gap-finder` - ищет gaps между diff и TEST.md.
-- `release-note-writer` - готовит release notes из PR diff and RUNLOG.
+- `release-note-writer` - готовит заметки к release из PR diff и RUNLOG.
 - `eval-loop-runner` - ведет scored improvement loop.
 - `ui-visual-reviewer` - проверяет визуальные artifacts against rubric.
 
-Дополнительная metadata может жить в `agents/openai.yaml`: display name, short description, icons, default prompt, invocation policy и tool dependencies. Для source-sensitive skills в этом проекте implicit invocation лучше отключать, чтобы сбор источников и перенос claims происходили явно.
+Дополнительная metadata может храниться в `agents/openai.yaml`: `display name`, `short description`, `icons`, `default prompt`, `invocation policy` и зависимости tools. Для source-sensitive skills в этом проекте implicit invocation лучше отключать, чтобы сбор источников и перенос claims происходили явно.
 
 ## AGENTS.md
 
@@ -88,9 +88,9 @@ Skill должен быть узким и проверяемым. Официал
 
 ## Documentation rules
 
-- Write Russian documentation, but keep official OpenAI terms in English on first mention.
-- Treat official OpenAI docs as source of truth.
-- Put community tricks under docs/insights/ with trust and verification status.
-- Run python tools/check_docs.py after editing docs.
-- Run python -m mkdocs build --strict before claiming the site builds.
+- Создайте Russian documentation, но keep official OpenAI terms в English на first mention.
+- Treat official OpenAI docs как source of truth.
+- Put community tricks в рамках docs/insights/ с trust и verification status.
+- Запустите python tools/check_docs.py после editing docs.
+- Запустите python -m mkdocs build --strict до claiming site builds.
 ```

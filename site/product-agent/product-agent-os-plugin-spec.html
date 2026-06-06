@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
 
-        <meta name="description" content="Russian knowledge base for advanced OpenAI Codex and agentic workflows.">
+        <meta name="description" content="Документация Product-Agent OS для рабочих процессов с агентами и skills.">
 
 
 
@@ -18,6 +18,10 @@
 
 
 
+          <link rel="alternate" href="product-agent-os-plugin-spec.html" hreflang="ru">
+
+          <link rel="alternate" href="../en/product-agent/product-agent-os-plugin-spec.html" hreflang="en">
+
 
 
       <link rel="icon" href="../assets/images/favicon.png">
@@ -25,7 +29,7 @@
 
 
 
-        <title>Product-Agent OS plugin spec - OpenAI Codex Knowledge Base</title>
+        <title>Product-Agent OS plugin spec - Product-Agent OS</title>
 
 
 
@@ -78,7 +82,7 @@
     <div data-md-component="skip">
 
 
-        <a href="#specification-product-agent-os-plugin" class="md-skip">
+        <a href="#product-agent-os-plugin" class="md-skip">
           Перейти к содержанию
         </a>
 
@@ -94,7 +98,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
-    <a href="../index.html" title="OpenAI Codex Knowledge Base" class="md-header__button md-logo" aria-label="OpenAI Codex Knowledge Base" data-md-component="logo">
+    <a href="../index.html" title="Product-Agent OS" class="md-header__button md-logo" aria-label="Product-Agent OS" data-md-component="logo">
 
 
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -108,7 +112,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            OpenAI Codex Knowledge Base
+            Product-Agent OS
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -136,6 +140,32 @@
 
       <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
 
+
+      <div class="md-header__option">
+  <div class="md-select">
+
+    <button class="md-header__button md-icon" aria-label="Выберите язык">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+
+          <li class="md-select__item">
+            <a href="product-agent-os-plugin-spec.html" hreflang="ru" class="md-select__link">
+              RU
+            </a>
+          </li>
+
+          <li class="md-select__item">
+            <a href="../en/product-agent/product-agent-os-plugin-spec.html" hreflang="en" class="md-select__link">
+              EN
+            </a>
+          </li>
+
+      </ul>
+    </div>
+  </div>
+</div>
 
 
 
@@ -206,13 +236,13 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../index.html" title="OpenAI Codex Knowledge Base" class="md-nav__button md-logo" aria-label="OpenAI Codex Knowledge Base" data-md-component="logo">
+    <a href="../index.html" title="Product-Agent OS" class="md-nav__button md-logo" aria-label="Product-Agent OS" data-md-component="logo">
 
 
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
-    OpenAI Codex Knowledge Base
+    Product-Agent OS
   </label>
 
   <ul class="md-nav__list" data-md-scrollfix>
@@ -1338,7 +1368,7 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Не цели
+        Не входит в назначение
 
     </span>
   </a>
@@ -1346,10 +1376,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#target-users" class="md-nav__link">
+  <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Target users
+        Целевые пользователи
 
     </span>
   </a>
@@ -1357,10 +1387,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#supported-surfaces" class="md-nav__link">
+  <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Supported surfaces
+        Поддерживаемые поверхности
 
     </span>
   </a>
@@ -1368,10 +1398,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#plugin-package" class="md-nav__link">
+  <a href="#plugin" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Plugin package
+        Пакет plugin
 
     </span>
   </a>
@@ -1379,10 +1409,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#lifecycle-state-machine" class="md-nav__link">
+  <a href="#lifecycle" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Lifecycle state machine
+        Машина состояний lifecycle
 
     </span>
   </a>
@@ -1390,10 +1420,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#complexity-profiles" class="md-nav__link">
+  <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Complexity profiles
+        Профили сложности
 
     </span>
   </a>
@@ -1401,10 +1431,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#initialization-behavior" class="md-nav__link">
+  <a href="#initialization" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Initialization behavior
+        Поведение при initialization
 
     </span>
   </a>
@@ -1412,10 +1442,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#track-8-usage-mode-implementation-status" class="md-nav__link">
+  <a href="#usage-modes" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Track 8 usage-mode implementation status
+        Статус usage modes
 
     </span>
   </a>
@@ -1423,10 +1453,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#generated-project-files" class="md-nav__link">
+  <a href="#_6" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Generated project files
+        Генерируемые файлы проекта
 
     </span>
   </a>
@@ -1434,10 +1464,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#system-file-update-policy" class="md-nav__link">
+  <a href="#_7" class="md-nav__link">
     <span class="md-ellipsis">
 
-        System file update policy
+        Политика обновления системных файлов
 
     </span>
   </a>
@@ -1445,10 +1475,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#context-and-information-overflow-policy" class="md-nav__link">
+  <a href="#context-information-overflow" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Context and information overflow policy
+        Политика context и information overflow
 
     </span>
   </a>
@@ -1489,10 +1519,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#safety-and-approvals" class="md-nav__link">
+  <a href="#safety-approvals" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Safety and approvals
+        Safety и approvals
 
     </span>
   </a>
@@ -1500,10 +1530,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#hooks-and-rules" class="md-nav__link">
+  <a href="#hooks" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Hooks and rules
+        Hooks и правила
 
     </span>
   </a>
@@ -1511,10 +1541,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#runtime-selection" class="md-nav__link">
+  <a href="#runtime" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Runtime selection
+        Выбор runtime
 
     </span>
   </a>
@@ -1522,10 +1552,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#context7-and-source-policy" class="md-nav__link">
+  <a href="#context7" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Context7 and source policy
+        Context7 и политика источников
 
     </span>
   </a>
@@ -1533,10 +1563,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#evals-and-verification" class="md-nav__link">
+  <a href="#evals-verification" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Evals and verification
+        Evals и verification
 
     </span>
   </a>
@@ -1544,10 +1574,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#automation-promotion" class="md-nav__link">
+  <a href="#automation" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Automation promotion
+        Продвижение automation
 
     </span>
   </a>
@@ -1555,10 +1585,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#optional-agents-sdk-runner" class="md-nav__link">
+  <a href="#agents-sdk-runner" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Optional Agents SDK runner
+        Опциональный Agents SDK runner
 
     </span>
   </a>
@@ -1566,10 +1596,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#failure-modes" class="md-nav__link">
+  <a href="#_8" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Failure modes
+        Режимы отказа
 
     </span>
   </a>
@@ -1577,10 +1607,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#acceptance-criteria" class="md-nav__link">
+  <a href="#_9" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Acceptance criteria
+        Критерии приемки
 
     </span>
   </a>
@@ -1588,10 +1618,54 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#implementation-handoff" class="md-nav__link">
+  <a href="#product-capability-areas" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Implementation handoff
+        Product capability areas
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Входы
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Выходы
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Проверка
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Риски
 
     </span>
   </a>
@@ -3845,7 +3919,7 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Не цели
+        Не входит в назначение
 
     </span>
   </a>
@@ -3853,10 +3927,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#target-users" class="md-nav__link">
+  <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Target users
+        Целевые пользователи
 
     </span>
   </a>
@@ -3864,10 +3938,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#supported-surfaces" class="md-nav__link">
+  <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Supported surfaces
+        Поддерживаемые поверхности
 
     </span>
   </a>
@@ -3875,10 +3949,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#plugin-package" class="md-nav__link">
+  <a href="#plugin" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Plugin package
+        Пакет plugin
 
     </span>
   </a>
@@ -3886,10 +3960,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#lifecycle-state-machine" class="md-nav__link">
+  <a href="#lifecycle" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Lifecycle state machine
+        Машина состояний lifecycle
 
     </span>
   </a>
@@ -3897,10 +3971,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#complexity-profiles" class="md-nav__link">
+  <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Complexity profiles
+        Профили сложности
 
     </span>
   </a>
@@ -3908,10 +3982,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#initialization-behavior" class="md-nav__link">
+  <a href="#initialization" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Initialization behavior
+        Поведение при initialization
 
     </span>
   </a>
@@ -3919,10 +3993,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#track-8-usage-mode-implementation-status" class="md-nav__link">
+  <a href="#usage-modes" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Track 8 usage-mode implementation status
+        Статус usage modes
 
     </span>
   </a>
@@ -3930,10 +4004,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#generated-project-files" class="md-nav__link">
+  <a href="#_6" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Generated project files
+        Генерируемые файлы проекта
 
     </span>
   </a>
@@ -3941,10 +4015,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#system-file-update-policy" class="md-nav__link">
+  <a href="#_7" class="md-nav__link">
     <span class="md-ellipsis">
 
-        System file update policy
+        Политика обновления системных файлов
 
     </span>
   </a>
@@ -3952,10 +4026,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#context-and-information-overflow-policy" class="md-nav__link">
+  <a href="#context-information-overflow" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Context and information overflow policy
+        Политика context и information overflow
 
     </span>
   </a>
@@ -3996,10 +4070,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#safety-and-approvals" class="md-nav__link">
+  <a href="#safety-approvals" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Safety and approvals
+        Safety и approvals
 
     </span>
   </a>
@@ -4007,10 +4081,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#hooks-and-rules" class="md-nav__link">
+  <a href="#hooks" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Hooks and rules
+        Hooks и правила
 
     </span>
   </a>
@@ -4018,10 +4092,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#runtime-selection" class="md-nav__link">
+  <a href="#runtime" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Runtime selection
+        Выбор runtime
 
     </span>
   </a>
@@ -4029,10 +4103,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#context7-and-source-policy" class="md-nav__link">
+  <a href="#context7" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Context7 and source policy
+        Context7 и политика источников
 
     </span>
   </a>
@@ -4040,10 +4114,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#evals-and-verification" class="md-nav__link">
+  <a href="#evals-verification" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Evals and verification
+        Evals и verification
 
     </span>
   </a>
@@ -4051,10 +4125,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#automation-promotion" class="md-nav__link">
+  <a href="#automation" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Automation promotion
+        Продвижение automation
 
     </span>
   </a>
@@ -4062,10 +4136,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#optional-agents-sdk-runner" class="md-nav__link">
+  <a href="#agents-sdk-runner" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Optional Agents SDK runner
+        Опциональный Agents SDK runner
 
     </span>
   </a>
@@ -4073,10 +4147,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#failure-modes" class="md-nav__link">
+  <a href="#_8" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Failure modes
+        Режимы отказа
 
     </span>
   </a>
@@ -4084,10 +4158,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#acceptance-criteria" class="md-nav__link">
+  <a href="#_9" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Acceptance criteria
+        Критерии приемки
 
     </span>
   </a>
@@ -4095,10 +4169,54 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#implementation-handoff" class="md-nav__link">
+  <a href="#product-capability-areas" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Implementation handoff
+        Product capability areas
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Входы
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Выходы
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Проверка
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Риски
 
     </span>
   </a>
@@ -4122,1107 +4240,250 @@
 
 
 
-<h1 id="specification-product-agent-os-plugin">Specification: Product-Agent OS plugin<a class="headerlink" href="#specification-product-agent-os-plugin" title="Permanent link">&para;</a></h1>
+<h1 id="product-agent-os-plugin">Спецификация: Product-Agent OS plugin<a class="headerlink" href="#product-agent-os-plugin" title="Permanent link">&para;</a></h1>
 <p>Source status: <code>official + experiment</code><br />
-Источники: <a href="https://developers.openai.com/codex/plugins">Codex plugins</a>, <a href="https://developers.openai.com/codex/plugins/build">Build plugins</a>, <a href="https://developers.openai.com/codex/skills">Agent Skills</a>, <a href="https://developers.openai.com/codex/subagents">Subagents</a>, <a href="https://developers.openai.com/codex/guides/agents-md">AGENTS.md</a>, <a href="https://developers.openai.com/codex/hooks">Codex hooks</a>, <a href="https://developers.openai.com/codex/agent-approvals-security">Agent approvals and security</a>, <a href="https://developers.openai.com/codex/guides/agents-sdk">Codex with Agents SDK</a>, <a href="https://developers.openai.com/codex/use-cases">Codex use cases</a>, <a href="https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/">A practical guide to building agents</a>.</p>
-<p>Эта страница остается product/spec view. Текущие operator docs для implemented Product-Agent OS package находятся в <a href="../product-agent-os/index.html">Product-Agent OS plugin</a>, <a href="../product-agent-os/project-code-graph.html">Project Code Graph</a>, <a href="../product-agent-os/live-runtime-governance.html">Live Runtime Governance</a>, <a href="../product-agent-os/cli-reference.html">CLI Reference</a>, <a href="../product-agent-os/artifact-contracts.html">Artifact Contracts</a> и <a href="../product-agent-os/packaging-and-closure.html">Packaging And Closure</a>. MkDocs navigation sync for these pages belongs to the Batch 34 nav/check_docs slice.</p>
+Источники: <a href="https://developers.openai.com/codex/plugins">Codex plugins</a>, <a href="https://developers.openai.com/codex/plugins/build">Build plugins</a>, <a href="https://developers.openai.com/codex/skills">Agent Skills</a>, <a href="https://developers.openai.com/codex/subagents">Subagents</a>, <a href="https://developers.openai.com/codex/mcp">Codex MCP</a>, <a href="https://developers.openai.com/codex/hooks">Codex hooks</a>, <a href="https://developers.openai.com/codex/guides/agents-md">AGENTS.md</a>, <a href="https://developers.openai.com/codex/guides/agents-sdk">Codex with Agents SDK</a>, <a href="overview.html">Product-Agent workflows</a>, <a href="../product-agent-os/index.html">Product-Agent OS</a>.</p>
 <h2 id="_1">Назначение<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
-<p><code>product-agent-os</code> - это production-ready Codex plugin, который превращает текущий workspace пользователя в управляемую среду реализации проекта через Codex App, CLI, IDE extension, subagents, skills, <code>AGENTS.md</code>, hooks, evals и automation candidates.</p>
-<p>Plugin должен вести проект от идеи до production-ready результата:</p>
-<pre class="mermaid"><code>flowchart LR
-    A["Idea"] --&gt; B["Discovery"]
-    B --&gt; C["Requirements"]
-    C --&gt; D["Plan"]
-    D --&gt; E["Agent team"]
-    E --&gt; F["Build slices"]
-    F --&gt; G["Tests and evals"]
-    G --&gt; H["Review"]
-    H --&gt; I["PR or release packet"]
-    I --&gt; J["Learning loop"]
-    J --&gt; K["Automation candidates"]</code></pre>
-<p>Главная цель plugin - не создать набор файлов один раз, а поддерживать lifecycle проекта через проверяемые артефакты, gated changes, role ownership, handoff contracts и evidence. Track 6 расширяет это до engineering standards layer: product hypothesis, architecture boundary, test-first/eval-first verification, docs-as-code, human review, release measurement и learning loop.</p>
-<h2 id="_2">Не цели<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>Product-Agent OS - это переносимый Codex plugin, который упаковывает операционную модель продуктовой разработки: control-plane artifacts, lifecycle skills, staged infrastructure templates, methodology routing, evals и compatibility checks. Он помогает Codex worker перейти от пользовательского намерения к проверяемому продукту без скрытых approvals, live actions или размытых source boundaries.</p>
+<h2 id="_2">Не входит в назначение<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>Plugin не публикует себя, не устанавливает dependencies, не запускает live servers, не активирует hooks, не создает schedules, не вызывает providers, не меняет production data, не меняет hosted docs, не выполняет stage/commit/push/open PR и не сертифицирует legal, security или compliance готовность. Эти действия требуют явного owner approval и текущих evidence.</p>
+<h2 id="_3">Целевые пользователи<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Не заменять human product owner: спорные цели, рискованные approvals и irreversible actions остаются за пользователем.</li>
-<li>Не менять global <code>~/.codex/config.toml</code>, глобальные credentials или user-level memory без явного запроса.</li>
-<li>Не запускать все skills подряд. Orchestrator выбирает маршрут по профилю проекта и текущему lifecycle state.</li>
-<li>Не сохранять secrets, tokens, private customer data, raw credentials, private chat logs или PII в generated files, memory, docs, fixtures, examples или run logs.</li>
-<li>Не создавать automation до ручной стабилизации workflow и появления failure log.</li>
+<li>Product engineers, которые используют Codex App, CLI или IDE extension для реальных проектов.</li>
+<li>Команды, которым нужны повторяемые product-agent workflows и handoff artifacts.</li>
+<li>Docs и release maintainers, которым нужны source-backed claims и verification evidence.</li>
+<li>Operators, которые хотят staged proposals перед включением live systems или automations.</li>
 </ul>
-<h2 id="target-users">Target users<a class="headerlink" href="#target-users" title="Permanent link">&para;</a></h2>
+<h2 id="_4">Поддерживаемые поверхности<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
-<th>Пользователь</th>
-<th>Задача</th>
-<th>Основной режим</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Solo developer</td>
-<td>Быстро структурировать проект и довести feature до PR</td>
-<td><code>guided-small</code></td>
-</tr>
-<tr>
-<td>Product engineer</td>
-<td>Вести full feature с требованиями, планом, тестами, review и release notes</td>
-<td><code>standard-product</code></td>
-</tr>
-<tr>
-<td>Engineering team</td>
-<td>Разделить работу между агентами, worktrees и review gates</td>
-<td><code>production-team</code></td>
-</tr>
-<tr>
-<td>AI product team</td>
-<td>Добавить eval-driven loop, prompt/context policy и regression checks</td>
-<td><code>ai-product</code></td>
-</tr>
-<tr>
-<td>Enterprise team</td>
-<td>Ужесточить approvals, hooks, audit trail и automation promotion</td>
-<td><code>enterprise-governed</code></td>
-</tr>
-</tbody>
-</table>
-<h2 id="supported-surfaces">Supported surfaces<a class="headerlink" href="#supported-surfaces" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Surface</th>
-<th>Поддержка</th>
+<th>Поверхность</th>
 <th>Использование</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Codex App</td>
-<td>primary</td>
-<td>Инициализация, long-running project threads, worktrees, artifacts, automations</td>
+<td>Разбор неоднозначности, steering, review и локальная работа в workspace.</td>
 </tr>
 <tr>
-<td>Codex CLI</td>
-<td>primary</td>
-<td>Local implementation, <code>codex exec</code>, project <code>.codex/config.toml</code></td>
+<td>CLI</td>
+<td>Детерминированные checks, renderers, validators и staged artifact generation.</td>
 </tr>
 <tr>
 <td>IDE extension</td>
-<td>assisted</td>
-<td>Scoped edits and review from editor context</td>
+<td>Навигация, поддержка реализации и review context.</td>
 </tr>
 <tr>
-<td>Cloud task</td>
-<td>optional</td>
-<td>Background repo work after setup commands and environment are known</td>
+<td>skills</td>
+<td>Повторяемые методы с inputs, outputs, verification и failure modes.</td>
 </tr>
 <tr>
-<td>GitHub</td>
-<td>optional</td>
-<td>PR packet, review, CI failure triage, release notes</td>
+<td>subagents</td>
+<td>Специализированная или параллельная работа при явном ownership.</td>
 </tr>
 <tr>
 <td>MCP</td>
-<td>optional</td>
-<td>Context7 docs, Codex MCP, GitHub, Figma, Sentry, Linear, Slack when available</td>
+<td>Объявленный integration context с approval boundaries.</td>
 </tr>
 <tr>
 <td>Agents SDK</td>
-<td>advanced</td>
-<td>Programmable Manager pattern with Codex MCP for teams that need orchestration runtime</td>
-</tr>
-<tr>
-<td>Automation</td>
-<td>gated</td>
-<td>Only stable recurring workflows with audit artifact and failure log</td>
+<td>Опциональная product/runtime architecture, когда она явно выбрана.</td>
 </tr>
 </tbody>
 </table>
-<h2 id="plugin-package">Plugin package<a class="headerlink" href="#plugin-package" title="Permanent link">&para;</a></h2>
-<p>Production package layout:</p>
-<div class="highlight"><pre><span></span><code>product-agent-os/
-  .codex-plugin/
-    plugin.json
-  skills/
-    project-lifecycle-orchestrator/
-    workspace-discovery-auditor/
-    requirements-author/
-    implementation-planner/
-    agent-team-designer/
-    test-eval-designer/
-    risk-reviewer/
-    pr-release-operator/
-    learning-loop-maintainer/
-    automation-promoter/
-  scripts/
-    detect_project.py
-    merge_markdown.py
-    validate_control_plane.py
-    validate_agents.py
-    validate_hooks.py
-    run_fixture_eval.py
-  assets/
-    templates/
-      control-plane/
-      agents/
-      hooks/
-      workflows/
-        source-context-pack.md
-        worktree-ownership.md
-        build-slice.md
-        development-standards.md
-        documentation-system.md
-        first-run-intake.md
-        bug-rescue.md
-        greenfield-idea-to-plan.md
-        complex-system-acceleration.md
-        pr-review-readiness.md
-        legacy-onboarding.md
-        api-migration.md
-        ai-eval-regression.md
-        native-mobile-feature.md
-        desktop-local-first.md
-        data-migration.md
-        security-sensitive-change.md
-        ci-stabilization.md
-      artifact-templates/
-        adr.md
-        architecture-overview.md
-        domain-modeling.md
-        metric-spec.md
-        api-contract-review.md
-        component-card.md
-        database-dictionary.md
-        bug-rescue-report.md
-        greenfield-idea-brief.md
-        integration-catalog.md
-        pr-risk-review.md
-        onboarding-map.md
-        migration-plan.md
-        ai-eval-spec.md
-        security-risk-review.md
-        ci-stabilization-report.md
-        agent-task-packet.md
-        behavioral-eval-case.md
-        plan-quality-check.md
-        codex-compatibility-report.md
-      evals/
-      pr/
-      automations/
-    fixtures/
-      empty-repo/
-      node-app/
-      python-app/
-      monorepo/
-      docs-repo/
-      existing-codex-config/
-  hooks/
-    pre_tool_use_policy.py
-    permission_request_summary.py
-    post_tool_use_evidence.py
-    stop_runlog_reminder.py
-  .mcp.json
-</code></pre></div>
-<p><code>plugin.json</code> должен указывать packaged skills, optional MCP config, interface metadata, capabilities и default prompts. Skills используют <code>agents/openai.yaml</code> для display metadata, invocation policy и tool dependencies. Для source-sensitive skills default policy: <code>allow_implicit_invocation: false</code>.</p>
-<h2 id="lifecycle-state-machine">Lifecycle state machine<a class="headerlink" href="#lifecycle-state-machine" title="Permanent link">&para;</a></h2>
-<p><code>project-lifecycle-orchestrator</code> является entrypoint. Он определяет текущее состояние проекта и выбирает следующий skill.</p>
-<table>
-<thead>
-<tr>
-<th>State</th>
-<th>Trigger</th>
-<th>Required artifact</th>
-<th>Gate before next state</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>uninitialized</code></td>
-<td>Plugin впервые применен к workspace</td>
-<td><code>PROJECT_AUDIT.md</code> или audit section in <code>RUNLOG.md</code></td>
-<td>Discovery complete, no write yet</td>
-</tr>
-<tr>
-<td><code>infrastructure_planned</code></td>
-<td>Audit completed</td>
-<td><code>INFRASTRUCTURE_PLAN.md</code> or staged plan section</td>
-<td>User approves write scope</td>
-</tr>
-<tr>
-<td><code>requirements_ready</code></td>
-<td>Goal and constraints clear</td>
-<td><code>REQUIREMENTS.md</code></td>
-<td>Acceptance criteria explicit</td>
-</tr>
-<tr>
-<td><code>plan_ready</code></td>
-<td>Requirements stable</td>
-<td><code>PLAN.md</code></td>
-<td>Ownership and verification named</td>
-</tr>
-<tr>
-<td><code>team_ready</code></td>
-<td>Work needs roles or parallelism</td>
-<td><code>.codex/agents/*.toml</code></td>
-<td>Write scopes do not overlap</td>
-</tr>
-<tr>
-<td><code>build_active</code></td>
-<td>Approved implementation slice</td>
-<td>Diff + <code>RUNLOG.md</code> entry</td>
-<td>Slice verification run</td>
-</tr>
-<tr>
-<td><code>quality_gate</code></td>
-<td>Build slice completed</td>
-<td><code>TEST.md</code>, <code>EVALS.md</code>, reports</td>
-<td>No blocking failure</td>
-</tr>
-<tr>
-<td><code>review_ready</code></td>
-<td>Checks pass or failures documented</td>
-<td>Review findings</td>
-<td>No unresolved blocker</td>
-</tr>
-<tr>
-<td><code>release_ready</code></td>
-<td>Review complete</td>
-<td>PR packet or release packet</td>
-<td>Verification evidence included</td>
-</tr>
-<tr>
-<td><code>learning_ready</code></td>
-<td>Delivery complete</td>
-<td>Updated <code>RUNLOG.md</code>, skill candidates, automation candidates</td>
-<td>Reusable lessons classified</td>
-</tr>
-<tr>
-<td><code>maintenance</code></td>
-<td>Stable recurring workflow exists</td>
-<td>Automation candidate packet</td>
-<td>Manual workflow stable</td>
-</tr>
-</tbody>
-</table>
-<p>The orchestrator must never skip from <code>uninitialized</code> to <code>build_active</code>.</p>
-<h2 id="complexity-profiles">Complexity profiles<a class="headerlink" href="#complexity-profiles" title="Permanent link">&para;</a></h2>
-<p>Plugin computes a <code>ComplexityProfile</code> during discovery.</p>
-<div class="highlight"><pre><span></span><code><span class="nt">profile</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;guided-small</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">standard-product</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">production-team</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">ai-product</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">enterprise-governed</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">autonomous-maintenance&quot;</span>
-<span class="w">  </span><span class="nt">confidence</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;high</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">medium</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">low&quot;</span>
-<span class="w">  </span><span class="nt">drivers</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">repo_size</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;small</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">medium</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">large&quot;</span>
-<span class="w">    </span><span class="nt">stack_count</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">    </span><span class="nt">service_count</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">    </span><span class="nt">test_maturity</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;none</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">partial</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">strong&quot;</span>
-<span class="w">    </span><span class="nt">ci_present</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">    </span><span class="nt">external_integrations</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
-<span class="w">    </span><span class="nt">risk_level</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;low</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">medium</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">high&quot;</span>
-<span class="w">    </span><span class="nt">team_mode</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;solo</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">team</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">enterprise&quot;</span>
-<span class="w">    </span><span class="nt">autonomy_target</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;supervised</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">assisted</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">recurring&quot;</span>
-<span class="w">    </span><span class="nt">change_surface</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;docs</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">code</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">production_ops</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">external_systems&quot;</span>
-<span class="w">  </span><span class="nt">recommended_route</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;workspace-discovery-auditor&quot;</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;requirements-author&quot;</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;implementation-planner&quot;</span>
-</code></pre></div>
-<p>Profile decisions:</p>
-<table>
-<thead>
-<tr>
-<th>Profile</th>
-<th>Creates</th>
-<th>Skips by default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>guided-small</code></td>
-<td><code>AGENTS.md</code>, <code>REQUIREMENTS.md</code>, <code>PLAN.md</code>, <code>TEST.md</code>, <code>RUNLOG.md</code></td>
-<td>Custom agents beyond planner/reviewer, automations</td>
-</tr>
-<tr>
-<td><code>standard-product</code></td>
-<td>Control-plane files, role cards, basic hooks, eval skeleton</td>
-<td>Enterprise rules, programmable runner</td>
-</tr>
-<tr>
-<td><code>production-team</code></td>
-<td>Worktree strategy, full agent team, strict handoff, PR packet</td>
-<td>Autonomous recurring tasks until stable</td>
-</tr>
-<tr>
-<td><code>ai-product</code></td>
-<td>Prompt/context policy, eval suite, LLM-as-judge rubric, regression logs</td>
-<td>External writes without approval</td>
-</tr>
-<tr>
-<td><code>enterprise-governed</code></td>
-<td>Strict approval policy, forbidden paths, audit evidence, staged config</td>
-<td>Global config mutation</td>
-</tr>
-<tr>
-<td><code>autonomous-maintenance</code></td>
-<td>Automation candidates, recurring run prompts, failure log</td>
-<td>New automations without manual success history</td>
-</tr>
-</tbody>
-</table>
-<h2 id="initialization-behavior">Initialization behavior<a class="headerlink" href="#initialization-behavior" title="Permanent link">&para;</a></h2>
-<p>After user invokes the plugin:</p>
-<ol>
-<li>Read <code>AGENTS.md</code>, README, package files, CI config, test config, <code>.codex/</code>, <code>docs/</code>, git state and current working tree status.</li>
-<li>Produce read-only <code>WorkspaceAudit</code>.</li>
-<li>Infer complexity profile and <code>usage_mode</code>.</li>
-<li>Return <code>usage_mode.primary</code>, <code>secondary</code>, <code>confidence</code>, route reasons, fallback, minimum artifacts, behavioral eval cases and first-response contract.</li>
-<li>Ask only blocking clarifying questions. Examples: product goal absent, destructive rewrite requested, ambiguous ownership, missing test command for production profile, or route confidence is low.</li>
-<li>Propose an <code>InfrastructurePlan</code>.</li>
-<li>Present staged changes with file list and write policy.</li>
-<li>Wait for explicit approval before writing.</li>
-</ol>
-<p>Expected first response shape:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">workspace_audit</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">status</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ready_for_plan</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">blocked</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">needs_user_input&quot;</span>
-<span class="w">  </span><span class="nt">detected_stack</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
-<span class="w">  </span><span class="nt">existing_control_plane</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
-<span class="w">  </span><span class="nt">missing_control_plane</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
-<span class="w">  </span><span class="nt">risks</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
-<span class="nt">complexity_profile</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
-<span class="w">  </span><span class="nt">confidence</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
-<span class="nt">infrastructure_plan</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">create</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
-<span class="w">  </span><span class="nt">update</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
-<span class="w">  </span><span class="nt">leave_unchanged</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
-<span class="w">  </span><span class="nt">requires_approval</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
-<span class="nt">usage_mode</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">primary</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
-<span class="w">  </span><span class="nt">secondary</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
-<span class="w">  </span><span class="nt">confidence</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
-<span class="w">  </span><span class="nt">minimum_artifacts</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
-<span class="w">  </span><span class="nt">behavioral_eval_cases</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
-<span class="nt">questions</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&quot;</span>
-<span class="nt">next_action</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;approve_infrastructure_plan</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">answer_questions</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">run_read_only_audit_again&quot;</span>
-</code></pre></div>
-<h2 id="track-8-usage-mode-implementation-status">Track 8 usage-mode implementation status<a class="headerlink" href="#track-8-usage-mode-implementation-status" title="Permanent link">&para;</a></h2>
-<p>The plugin must not blur implemented workflows with partial or pending coverage.</p>
-<table>
-<thead>
-<tr>
-<th>Status</th>
-<th>Meaning</th>
-<th>Modes</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>done</code></td>
-<td>Route, workflow template, artifact template or explicit artifact, behavioral eval coverage and verification evidence exist.</td>
-<td><code>first-run-intake</code>, <code>bug_rescue</code>, <code>greenfield_idea</code>, <code>complex_system_acceleration</code>, <code>pr_review</code>, <code>legacy_onboarding</code>, <code>api_migration</code>, <code>ai_eval_regression</code>, <code>native_mobile_feature</code>, <code>desktop_local_first</code>, <code>data_migration</code>, <code>security_sensitive_change</code>, <code>ci_stabilization</code>, <code>release_packaging</code>.</td>
-</tr>
-<tr>
-<td><code>done methodology gate</code></td>
-<td>Reusable behavior exists with template, skill, behavioral eval and fixture coverage.</td>
-<td>no-placeholder planning, generalized two-stage review, fresh-context handoff, acceptance scenarios, conditional DDD domain modeling, bounded-context-to-architecture traceability, ubiquitous language traceability, conditional FSD structure routing, metric hardening, evidence-before-completion, docs tooling selector with <code>docs_as_code_impact</code> statuses, conditional readiness gates with <code>readiness_statuses</code>.</td>
-</tr>
-<tr>
-<td><code>done documentation</code></td>
-<td>Operator-facing docs exist for route selection, eval behavior and Codex-only packaging scope.</td>
-<td><code>docs/product-agent-os/scenarios.md</code>, <code>behavioral-evals.md</code>, <code>codex-compatibility.md</code>.</td>
-</tr>
-<tr>
-<td><code>done eval runner</code></td>
-<td>Deterministic transcript/session replay exists for synthetic or redacted sessions without external model calls.</td>
-<td><code>run_transcript_eval.py</code>, <code>product_agent_os/transcript_evals.py</code>, <code>product-agent-os-synthetic-sessions.json</code>.</td>
-</tr>
-<tr>
-<td><code>partial</code></td>
-<td>Some reusable behavior exists, but the full planned contract is not complete.</td>
-<td>lifecycle trigger hardening.</td>
-</tr>
-</tbody>
-</table>
-<h2 id="generated-project-files">Generated project files<a class="headerlink" href="#generated-project-files" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>File</th>
-<th>Owner</th>
-<th>Purpose</th>
-<th>Update rule</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>AGENTS.md</code></td>
-<td>Orchestrator + user approval</td>
-<td>Durable project rules</td>
-<td>Only stable rules that apply across future tasks</td>
-</tr>
-<tr>
-<td><code>REQUIREMENTS.md</code></td>
-<td>Product Manager role</td>
-<td>Goal, users, scope, non-goals, acceptance criteria</td>
-<td>When product intent changes</td>
-</tr>
-<tr>
-<td><code>PLAN.md</code></td>
-<td>Architect role</td>
-<td>Decomposition, ownership, sequence, no-placeholder plan quality, risks, rollback</td>
-<td>Before implementation and when plan changes</td>
-</tr>
-<tr>
-<td><code>TEST.md</code></td>
-<td>Tester role</td>
-<td>Deterministic checks, manual QA, visual QA</td>
-<td>Before quality gate</td>
-</tr>
-<tr>
-<td><code>EVALS.md</code></td>
-<td>Eval designer role</td>
-<td>Subjective checks, LLM-as-judge rubric, thresholds</td>
-<td>For AI, UX, docs, long-horizon or subjective outputs</td>
-</tr>
-<tr>
-<td><code>RUNLOG.md</code></td>
-<td>Orchestrator</td>
-<td>Iterations, scores, decisions, evidence, handoff summary</td>
-<td>Every meaningful lifecycle step</td>
-</tr>
-<tr>
-<td><code>.codex/config.toml</code></td>
-<td>Orchestrator + user approval</td>
-<td>Project-scoped Codex defaults</td>
-<td>Staged; never overwrite blindly</td>
-</tr>
-<tr>
-<td><code>.codex/agents/*.toml</code></td>
-<td>Agent team designer</td>
-<td>Project-scoped custom agents</td>
-<td>Generated from role cards and profile</td>
-</tr>
-<tr>
-<td><code>.codex/hooks/*</code></td>
-<td>Hook author</td>
-<td>Deterministic guardrails and evidence capture</td>
-<td>Enabled only after validation</td>
-</tr>
-<tr>
-<td><code>.codex/workflows/*.md</code></td>
-<td>Workflow builder</td>
-<td>Reusable task packets</td>
-<td>Created from stable routes</td>
-</tr>
-<tr>
-<td><code>.codex/evals/*.json</code></td>
-<td>Eval designer</td>
-<td>Fixture evals and expected behaviors</td>
-<td>Updated from failure log</td>
-</tr>
-</tbody>
-</table>
-<h2 id="system-file-update-policy">System file update policy<a class="headerlink" href="#system-file-update-policy" title="Permanent link">&para;</a></h2>
-<p>Plugin updates system files through merge-safe sections.</p>
-<p>Generated sections use stable markers:</p>
-<div class="highlight"><pre><span></span><code>&lt;!-- product-agent-os:start &lt;section-id&gt; --&gt;
-...
-&lt;!-- product-agent-os:end &lt;section-id&gt; --&gt;
-</code></pre></div>
-<p>Rules:</p>
+<h2 id="plugin">Пакет plugin<a class="headerlink" href="#plugin" title="Permanent link">&para;</a></h2>
+<p>Пакет plugin должен включать:</p>
 <ul>
-<li>User-authored content outside managed sections is preserved.</li>
-<li>Existing managed sections are updated only after a new plan is shown.</li>
-<li>If a file exists without markers, plugin proposes an append or separate companion file.</li>
-<li>If merge is ambiguous, plugin stops and returns a conflict report.</li>
-<li>Source-backed claims require official source or <code>experiment</code> label.</li>
+<li><code>.codex-plugin/plugin.json</code>;</li>
+<li>lifecycle skills;</li>
+<li>artifact templates;</li>
+<li>staged infrastructure renderer;</li>
+<li>eval fixtures и transcript sessions;</li>
+<li>validation scripts;</li>
+<li>documentation и source-boundary notes;</li>
+<li>compatibility checks для Codex surfaces.</li>
 </ul>
-<h2 id="context-and-information-overflow-policy">Context and information overflow policy<a class="headerlink" href="#context-and-information-overflow-policy" title="Permanent link">&para;</a></h2>
-<p>Plugin uses layered context.</p>
+<p>Manifest описывает capabilities. Он не является publication approval, external-system access или доказательством безопасности runtime actions.</p>
+<h2 id="lifecycle">Машина состояний lifecycle<a class="headerlink" href="#lifecycle" title="Permanent link">&para;</a></h2>
+<p>Product-Agent OS использует консервативный lifecycle:</p>
+<pre class="mermaid"><code>stateDiagram-v2
+    [*] --&gt; Intake
+    Intake --&gt; Requirements
+    Requirements --&gt; Plan
+    Plan --&gt; Build
+    Build --&gt; Verify
+    Verify --&gt; Review
+    Review --&gt; ReleaseReadiness
+    ReleaseReadiness --&gt; Learn
+    Learn --&gt; [*]
+    Verify --&gt; Gap
+    Review --&gt; Gap
+    Gap --&gt; Requirements</code></pre>
+<p>Каждый transition требует source context, expected evidence, approval boundary, stop condition и текущую verification либо явно принятый gap.</p>
+<h2 id="_5">Профили сложности<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
-<th>Layer</th>
-<th>Contents</th>
-<th>Loaded when</th>
+<th>Профиль</th>
+<th>Когда применять</th>
+<th>Ожидаемый путь</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Hot</td>
-<td><code>AGENTS.md</code>, active <code>REQUIREMENTS.md</code>, active <code>PLAN.md</code>, current task packet</td>
-<td>Every lifecycle step</td>
+<td>Lightweight</td>
+<td>Механическая, docs-only или низкорисковая работа.</td>
+<td>Сфокусированная правка, source labels, docs check или явно записанный inspection-only gap.</td>
 </tr>
 <tr>
-<td>Warm</td>
-<td><code>TEST.md</code>, <code>EVALS.md</code>, latest <code>RUNLOG.md</code> summary, active role cards</td>
-<td>Planning, build, review, eval</td>
+<td>Standard</td>
+<td>Ограниченная feature или review с понятным ownership.</td>
+<td>Requirements, plan, implementation, focused verification и handoff.</td>
 </tr>
 <tr>
-<td>Cold</td>
-<td>Archived runlogs, historical eval reports, old decisions, source cards</td>
-<td>Only when referenced</td>
+<td>High-risk</td>
+<td>Public contracts, data, security, release, AI behavior, migrations или production systems.</td>
+<td>Domain packet, owner review, усиленная verification, rollback и approval gates.</td>
 </tr>
 <tr>
-<td>External</td>
-<td>Official docs, Context7, MCP sources</td>
-<td>When freshness or library detail matters</td>
+<td>Cross-domain</td>
+<td>Несколько domains пересекаются или рекомендации конфликтуют.</td>
+<td>Methodology synthesis, owner/consumer domains и risk-ordered safe следующий action.</td>
 </tr>
 </tbody>
 </table>
-<p>Compaction rules:</p>
-<ul>
-<li><code>RUNLOG.md</code> keeps current best, latest iterations and handoff summary.</li>
-<li>Older iterations move to <code>docs/runlogs/archive/YYYY-MM-DD-&lt;topic&gt;.md</code> or <code>.codex/runlogs/archive/</code> depending on project convention.</li>
-<li>Raw subagent logs are summarized into evidence, decisions and risks.</li>
-<li><code>AGENTS.md</code> stays concise; long guidance moves to docs or <code>.codex/workflows/</code>.</li>
-<li>Skill bodies stay short; long details live in <code>references/</code>.</li>
-<li>Memory is never used as citation source; important facts are retrieved or read from checked-in docs.</li>
-</ul>
+<h2 id="initialization">Поведение при initialization<a class="headerlink" href="#initialization" title="Permanent link">&para;</a></h2>
+<p>Initialization должна read-only проверить workspace, обнаружить существующие control-plane files и source constraints, а затем stage missing artifacts только по запросу или approval. Она сохраняет user-authored files и избегает широкого scaffolding до принятия route.</p>
+<h2 id="usage-modes">Статус usage modes<a class="headerlink" href="#usage-modes" title="Permanent link">&para;</a></h2>
+<p>Plugin поддерживает route decisions для first-run intake, bug rescue, greenfield idea, complex system acceleration, PR review, legacy onboarding, API migration, AI/RAG eval regression, native/mobile work, desktop local-first work, data migration, security-sensitive change, CI stabilization, release packaging, docs-only work, standard feature work и maintenance.</p>
+<h2 id="_6">Генерируемые файлы проекта<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
+<p>Generated files являются proposals или managed artifacts. Типичные outputs: <code>REQUIREMENTS.md</code>, <code>PLAN.md</code>, <code>TEST.md</code>, <code>EVALS.md</code>, <code>RUNLOG.md</code>, ADRs, architecture overview, component cards, API contract reviews, database dictionaries, release readiness notes, operations runbooks, eval reports и approval records.</p>
+<h2 id="_7">Политика обновления системных файлов<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
+<p><code>AGENTS.md</code>, <code>.codex/config.toml</code>, hooks, workflows и automation files являются чувствительными. Существующие unmarked files считаются user-authored content. Plugin должен stage companion proposals, если нет managed section и approved merge path.</p>
+<h2 id="context-information-overflow">Политика context и information overflow<a class="headerlink" href="#context-information-overflow" title="Permanent link">&para;</a></h2>
+<p>Context должен быть source-backed и bounded. Используйте summaries, route packets и handoffs вместо полного переноса истории. Memory и chat recall полезны как context, но не как source of truth. Raw private chats, secrets, credentials и customer data нельзя сохранять в prompts, docs, fixtures или templates.</p>
 <h2 id="skills">Skills<a class="headerlink" href="#skills" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Skill</th>
-<th>Job</th>
-<th>Required inputs</th>
-<th>Output</th>
-<th>Verification</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>project-lifecycle-orchestrator</code></td>
-<td>Route the lifecycle and enforce gates</td>
-<td>User goal, workspace audit, current state</td>
-<td>Next action packet</td>
-<td>State transition is valid</td>
-</tr>
-<tr>
-<td><code>workspace-discovery-auditor</code></td>
-<td>Read-only project audit</td>
-<td>Workspace path</td>
-<td><code>WorkspaceAudit</code></td>
-<td>No writes; detected files exist</td>
-</tr>
-<tr>
-<td><code>requirements-author</code></td>
-<td>Create/update requirements</td>
-<td>Goal, users, constraints</td>
-<td><code>REQUIREMENTS.md</code></td>
-<td>Acceptance criteria present</td>
-</tr>
-<tr>
-<td><code>implementation-planner</code></td>
-<td>Produce executable plan</td>
-<td>Requirements, audit</td>
-<td><code>PLAN.md</code></td>
-<td>Ownership, tests, rollback named</td>
-</tr>
-<tr>
-<td><code>agent-team-designer</code></td>
-<td>Generate roles and custom agents</td>
-<td>Plan, complexity profile</td>
-<td><code>.codex/agents/*.toml</code></td>
-<td>TOML validates</td>
-</tr>
-<tr>
-<td><code>test-eval-designer</code></td>
-<td>Define tests and evals</td>
-<td>Requirements, plan, stack</td>
-<td><code>TEST.md</code>, <code>EVALS.md</code></td>
-<td>Thresholds and artifacts explicit</td>
-</tr>
-<tr>
-<td><code>risk-reviewer</code></td>
-<td>Review diff and project risk</td>
-<td>Diff, plan, tests</td>
-<td>Findings by severity</td>
-<td>No unsupported claims</td>
-</tr>
-<tr>
-<td><code>pr-release-operator</code></td>
-<td>Prepare PR/release packet</td>
-<td>Diff, checks, runlog</td>
-<td>PR body, release notes, rollback</td>
-<td>Evidence included</td>
-</tr>
-<tr>
-<td><code>learning-loop-maintainer</code></td>
-<td>Capture reusable lessons</td>
-<td>Final result, failures</td>
-<td><code>AGENTS.md</code> suggestions, skill candidates</td>
-<td>Lessons classified</td>
-</tr>
-<tr>
-<td><code>automation-promoter</code></td>
-<td>Propose recurring runs</td>
-<td>Stable workflow, failure log</td>
-<td>Automation candidate packet</td>
-<td>Manual success history exists</td>
-</tr>
-</tbody>
-</table>
-<p>Each skill must define trigger, boundaries, inputs, outputs, failure modes and final response contract.</p>
-<p>Track 3 workflow templates cover task-packet jobs that are not packaged as <code>SKILL.md</code> bundles in the current implementation:</p>
+<p>Каждый skill должен выполнять одну работу. Product-Agent OS skill требует:</p>
 <ul>
-<li><code>source-context-pack.md</code> covers official-source and Context7 research packets.</li>
-<li><code>worktree-ownership.md</code> covers parallel ownership and worktree maps.</li>
-<li><code>build-slice.md</code> covers one approved implementation slice with verification evidence.</li>
-<li><code>development-standards.md</code> covers product hypothesis, architecture boundary, test-first/eval-first verification, bounded agent implementation, review and release measurement.</li>
-<li><code>documentation-system.md</code> covers docs-as-code source-of-truth artifacts for architecture, API, UI, code reference, database and release docs.</li>
+<li>trigger;</li>
+<li>inputs;</li>
+<li>outputs;</li>
+<li>source constraints;</li>
+<li>approval boundary;</li>
+<li>verification commands;</li>
+<li>failure modes;</li>
+<li>stop conditions.</li>
 </ul>
-<p>Track 7 artifact templates cover methodology outputs that are too concrete to leave as prose-only workflow advice:</p>
-<ul>
-<li><code>adr.md</code> for architecture decision records with context, decision, consequences, verification and rollback.</li>
-<li><code>architecture-overview.md</code> for C4-style system/container notes, quality attributes and architecture risks.</li>
-<li><code>domain-modeling.md</code> for bounded context, ubiquitous language traceability, aggregates, invariants, domain events, context maps and bounded-context-to-architecture traceability.</li>
-<li><code>metric-spec.md</code> for product hypothesis, baseline, North Star or primary value metric, input metric, counter-metric, guardrail metrics, proxy metric risk, privacy classification, retention period, data minimization, owner signoff, Goodhart checks and post-release review.</li>
-<li><code>api-contract-review.md</code> for OpenAPI, AsyncAPI, auth, errors, examples, compatibility and generated docs checks.</li>
-<li><code>component-card.md</code> for UI states, accessibility, public API and Storybook documentation.</li>
-<li><code>database-dictionary.md</code> for table meaning, sensitive fields, retention, migration history and schema verification.</li>
-</ul>
-<p>Track 8 completed workflow templates cover scenario-specific first actions:</p>
-<ul>
-<li><code>first-run-intake.md</code> keeps first launch small for empty, broken, existing control-plane and complex system starts: mode, confidence, next smallest action, minimum artifacts, approval boundary and evidence gaps.</li>
-<li><code>bug-rescue.md</code> and <code>bug-rescue-report.md</code> enforce reproduction and root-cause evidence before fixes.</li>
-<li><code>greenfield-idea-to-plan.md</code> and <code>greenfield-idea-brief.md</code> block scaffold before selected direction and approval.</li>
-<li><code>complex-system-acceleration.md</code> and <code>integration-catalog.md</code> force ownership split, release gates and integration risk mapping before parallel work.</li>
-<li><code>pr-review-readiness.md</code> and <code>pr-risk-review.md</code> provide read-only changed-file review with spec compliance before quality/risk verdict.</li>
-<li><code>review-slice.md</code>, <code>RUNLOG.md</code>, <code>pr-risk-review.md</code> and <code>risk-reviewer</code> generalize that two-stage review to risky public-contract, migration, security-sensitive, data migration, release packaging and parallel slices.</li>
-<li><code>agent-team-designer</code>, <code>handoff-contract.md</code>, <code>agent-task-packet.md</code> and <code>worktree-ownership.md</code> require fresh-context handoff before subagent or parallel worker execution.</li>
-<li><code>acceptance-scenarios.md</code>, generated <code>REQUIREMENTS/TEST/EVALS</code>, <code>development-standards.md</code>, <code>requirements-author</code>, <code>implementation-planner</code>, <code>test-eval-designer</code>, <code>project-readiness.json</code> and <code>behavioral-workflows.json</code> require ATDD/BDD traceability before behavior changes: <code>requirement -&gt; scenario -&gt; check -&gt; evidence owner</code>, Given/When/Then or equivalent behavior format, business rule, edge case, non-goal, explicit gap and evidence owner.</li>
-<li><code>domain-modeling.md</code>, <code>architecture-overview.md</code>, <code>project-readiness.json</code>, <code>discovery.py</code>, <code>implementation-planner</code> and fixture eval require conditional DDD domain modeling for complex backend/workflow/enterprise/data-heavy/multi-service/multi-context work, plus <code>bounded_context_architecture_boundary_trace</code> from every bounded context to an architecture boundary or accepted gap and <code>ubiquitous_language_traceability</code> from each domain term to requirement/source plus API/event/contract, UI label, code module or owner; simple CRUD or simple MVP work can mark DDD as not applicable or accepted gap.</li>
-<li><code>component-card.md</code>, <code>development-standards.md</code>, <code>project-readiness.json</code>, <code>discovery.py</code>, <code>workspace-discovery-auditor</code> and <code>implementation-planner</code> support optional <code>fsd_structure</code> for applicable web UI/component work; backend, native, simple CRUD and simple MVP work can mark Feature-Sliced Design as not applicable or accepted gap.</li>
-<li><code>metric-spec.md</code>, <code>release-packet.md</code>, generated <code>REQUIREMENTS/PLAN/TEST/EVALS/RUNLOG</code>, <code>project-readiness.json</code>, lifecycle skills and fixture eval require <code>metric_hardening_when_product_behavior_changes</code> for product behavior changes; product success claims need counter-metric, guardrail, qualitative review and post-release review evidence, not a single proxy metric.</li>
-<li><code>docs-tooling-decision.md</code>, <code>documentation-system.md</code>, generated <code>PLAN/TEST/EVALS/RUNLOG</code>, <code>project-readiness.json</code>, lifecycle skills, <code>discovery.py</code> and fixture eval require <code>docs_tooling_selector</code> and <code>docs_as_code_impact</code> statuses for stack-aware docs tooling without forced installs or unapproved external activation.</li>
-<li><code>project-readiness.json</code>, generated <code>AGENTS/PLAN/TEST/EVALS/RUNLOG</code>, lifecycle skills and fixture eval require conditional readiness gates with <code>readiness_statuses</code>, applicability, required evidence, owner and residual risk; detection alone can only support <code>present_unverified</code>.</li>
-<li><code>legacy-onboarding.md</code> and <code>onboarding-map.md</code> keep old or undocumented repos in read-only orientation with <code>present_unverified</code> claims before refactor.</li>
-<li><code>api-migration.md</code> and <code>migration-plan.md</code> route HTTP API and event contract changes through OpenAPI/AsyncAPI, consumers, generated clients, backwards compatibility, deprecation, rollout, release impact and owner review gates before implementation or release.</li>
-<li><code>ai-eval-regression.md</code> and <code>ai-eval-spec.md</code> route AI/RAG quality regressions through baseline, no-secrets dataset policy, prompt/context, retrieval metrics, judge rubric, threshold, latency, cost, grounding, one-factor-at-a-time change, rerun command, failure examples and residual risk before model, prompt, retrieval, dataset, rubric, or threshold changes.</li>
-<li><code>native-mobile-feature.md</code> routes iOS/Android/native mobile changes through platform assumptions, permissions, offline state, simulator/emulator, device, logs, screenshots, build command, runtime evidence, manual device gap and approval before permission, signing, store or runtime behavior claims.</li>
-<li><code>desktop-local-first.md</code> routes desktop/local-first changes through desktop platform assumptions, filesystem permissions, local data, local DB, indexing, background jobs, privacy, app logs, runtime log check, build command, recovery path, rollback, runtime evidence, manual OS gap and approval before filesystem access, local data, packaging, signing, distribution or runtime behavior claims.</li>
-<li><code>data-migration.md</code> routes schema, backfill, retention and sensitive-data changes through a migration plan, database dictionary, data quality, PII, sensitive fields, rollback, validation, dry run, backup, owner review, production DB boundary and approval before production data access, production DB access or migration execution.</li>
-<li><code>security-sensitive-change.md</code> and <code>security-risk-review.md</code> route authn, authz, permissions, payment, billing, secrets, PII, sensitive data, abuse controls, rate limit, audit logging, tests, rollback, owner review, approval and explicit Codex Security boundaries before implementation or release.</li>
-<li><code>ci-stabilization.md</code> and <code>ci-stabilization-report.md</code> route failing or flaky CI through failing job, command, logs, environment, deterministic/flaky classification, failure evidence, isolation plan, local reproduction, rerun evidence, remote CI/GitHub Actions boundary, approval and residual risk before implementation, remote CI mutation, or CI health claims.</li>
-<li><code>release-packaging.md</code> and <code>release-readiness.md</code> route package, SDK, plugin, app, desktop, mobile, or open-source release prep through release scope, package metadata, version/SemVer, changelog, build evidence, test evidence, docs evidence, security notes, license notes, artifacts, package registry, owner review, publish approval, tag boundary, rollback and residual risk before publishing, tagging, release creation, artifact upload, or package registry mutation.</li>
-</ul>
-<p>These workflow templates may be promoted to skills later only after manual success evidence and failure logs justify that promotion.</p>
+<p>Skills могут рекомендовать или stage actions. Они не выдают external permission и не переопределяют более сильные instructions.</p>
 <h2 id="agent-team">Agent team<a class="headerlink" href="#agent-team" title="Permanent link">&para;</a></h2>
-<p>Generated custom agents are project-scoped in <code>.codex/agents/</code>.</p>
-<table>
-<thead>
-<tr>
-<th>Agent</th>
-<th>Purpose</th>
-<th>Default reasoning</th>
-<th>Default sandbox</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>product-manager</code></td>
-<td>Requirements, scope, acceptance criteria</td>
-<td><code>medium</code> / <code>high</code></td>
-<td><code>read-only</code></td>
-</tr>
-<tr>
-<td><code>architect</code></td>
-<td>Decomposition, ownership, risks, rollback</td>
-<td><code>high</code> / <code>xhigh</code></td>
-<td><code>read-only</code></td>
-</tr>
-<tr>
-<td><code>explorer</code></td>
-<td>Read-heavy codebase and docs mapping</td>
-<td><code>low</code> / <code>medium</code></td>
-<td><code>read-only</code></td>
-</tr>
-<tr>
-<td><code>builder</code></td>
-<td>Scoped implementation</td>
-<td><code>medium</code> / <code>high</code></td>
-<td><code>workspace-write</code></td>
-</tr>
-<tr>
-<td><code>tester</code></td>
-<td>Test gaps, verification commands, eval reports</td>
-<td><code>medium</code> / <code>high</code></td>
-<td><code>workspace-write</code></td>
-</tr>
-<tr>
-<td><code>reviewer</code></td>
-<td>Correctness, security, regressions, missing tests</td>
-<td><code>high</code> / <code>xhigh</code></td>
-<td><code>read-only</code></td>
-</tr>
-<tr>
-<td><code>docs-maintainer</code></td>
-<td>Docs, changelog, release notes</td>
-<td><code>low</code> / <code>medium</code></td>
-<td><code>workspace-write</code></td>
-</tr>
-<tr>
-<td><code>release-operator</code></td>
-<td>PR packet, rollout notes, automation candidates</td>
-<td><code>medium</code> / <code>high</code></td>
-<td><code>read-only</code> by default</td>
-</tr>
-</tbody>
-</table>
-<p>Every role card includes:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
-<span class="nt">owns</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
-<span class="nt">does_not_do</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
-<span class="nt">inputs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
-<span class="nt">outputs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
-<span class="nt">model_policy</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">default_model</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;project-default&quot;</span>
-<span class="w">  </span><span class="nt">reasoning_effort</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;low</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">medium</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">high</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">xhigh&quot;</span>
-<span class="w">  </span><span class="nt">escalate_when</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
-<span class="w">  </span><span class="nt">downgrade_when</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
-<span class="nt">handoff</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">next_roles</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
-<span class="w">  </span><span class="nt">required_fields</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;sources_used&quot;</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;assumptions&quot;</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;files_touched_or_proposed&quot;</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;verification_evidence&quot;</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;open_risks&quot;</span>
-<span class="nt">stop_conditions</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
-</code></pre></div>
+<p>Agent teams проектируются вокруг ownership, handoff artifacts, verification и stop conditions. Роли Product Manager, Architect, Builder, Tester, Reviewer, Docs Maintainer и Release Operator полезны только тогда, когда их file/subsystem boundaries и expected evidence явные.</p>
+<p>Subagents подходят для независимой работы. Parallel work без ownership split повышает риск и должна возвращаться к sequential execution.</p>
 <h2 id="handoff-contracts">Handoff contracts<a class="headerlink" href="#handoff-contracts" title="Permanent link">&para;</a></h2>
-<p>All agent and skill handoffs use structured payloads.</p>
-<div class="highlight"><pre><span></span><code><span class="nt">handoff</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">lifecycle_state</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
-<span class="w">  </span><span class="nt">goal</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
-<span class="w">  </span><span class="nt">constraints</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
-<span class="w">  </span><span class="nt">allowed_sources</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
-<span class="w">  </span><span class="nt">inputs_used</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
-<span class="w">  </span><span class="nt">verified_claims</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
-<span class="w">  </span><span class="nt">unsupported_claims</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
-<span class="w">  </span><span class="nt">files_touched</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
-<span class="w">  </span><span class="nt">files_proposed</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
-<span class="w">  </span><span class="nt">commands_run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
-<span class="w">  </span><span class="nt">verification_evidence</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
-<span class="w">  </span><span class="nt">risks</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
-<span class="w">  </span><span class="nt">next_agent_task</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
-<span class="w">  </span><span class="nt">stop_reason</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<p>Каждый handoff должен включать:</p>
+<ul>
+<li>sources/context used;</li>
+<li>assumptions;</li>
+<li>files touched или proposed;</li>
+<li>ownership и forbidden files;</li>
+<li>verification evidence;</li>
+<li>open risks;</li>
+<li>recommended next role или stop reason.</li>
+</ul>
+<p>Fresh-context handoffs обязательны, когда новый worker или subagent начинает из packet, а не из полной thread history.</p>
+<h2 id="safety-approvals">Safety и approvals<a class="headerlink" href="#safety-approvals" title="Permanent link">&para;</a></h2>
+<p>Approval boundary строгий:</p>
+<ul>
+<li>external пишет требуют approval;</li>
+<li>live provider/model/API calls требуют approval;</li>
+<li>browser automation и local runtime launch требуют approval, если текущий route их запрещает;</li>
+<li>hosted docs, production DB/data access и security-system mutations требуют approval;</li>
+<li>hooks и automations остаются staged/inactive до approval;</li>
+<li>git staging, commit, push и PR creation остаются явными действиями.</li>
+</ul>
+<p>Approvals конкретны. Approval для одной поверхности не открывает другую.</p>
+<h2 id="hooks">Hooks и правила<a class="headerlink" href="#hooks" title="Permanent link">&para;</a></h2>
+<p>Packaged hooks являются examples или staged target-project assets. Plugin не должен активировать hooks в plugin root или target project без explicit approval. Durable rules хранятся в <code>AGENTS.md</code>; transient запуск details хранятся в <code>RUNLOG.md</code>.</p>
+<h2 id="runtime">Выбор runtime<a class="headerlink" href="#runtime" title="Permanent link">&para;</a></h2>
+<p>Выбирайте runtime по задаче:</p>
+<ul>
+<li>Codex App или IDE extension для ambiguous work, steering и review;</li>
+<li>CLI для локальных deterministic checks и renderers;</li>
+<li><code>codex exec</code> для stable non-interactive jobs;</li>
+<li>GitHub Action для PR/CI workflows после approval;</li>
+<li>MCP или Agents SDK для programmable orchestration, когда contract ясен;</li>
+<li>automation только после stable manual workflow или skill.</li>
+</ul>
+<h2 id="context7">Context7 и политика источников<a class="headerlink" href="#context7" title="Permanent link">&para;</a></h2>
+<p>Official OpenAI и Codex documentation являются источником истины для поведения OpenAI. Project-authored behavior может ссылаться на repository artifacts, tests и source packets. Community claims остаются в <code>docs/insights/</code> с trust и verification labels до проверки.</p>
+<h2 id="evals-verification">Evals и verification<a class="headerlink" href="#evals-verification" title="Permanent link">&para;</a></h2>
+<p>Plugin должен держать deterministic verification рядом с изменяемым behavior:</p>
+<div class="highlight"><pre><span></span><code><span class="n">python</span> <span class="n">tools</span><span class="p">\</span><span class="n">check_docs</span><span class="p">.</span><span class="n">py</span>
+<span class="n">python</span> <span class="n">plugins</span><span class="p">\</span><span class="n">product-agent-os</span><span class="p">\</span><span class="n">scripts</span><span class="p">\</span><span class="n">run_fixture_eval</span><span class="p">.</span><span class="n">py</span>
+<span class="n">python</span> <span class="n">plugins</span><span class="p">\</span><span class="n">product-agent-os</span><span class="p">\</span><span class="n">scripts</span><span class="p">\</span><span class="n">validate_codex_compatibility</span><span class="p">.</span><span class="n">py</span>
 </code></pre></div>
-<p>If a handoff lacks <code>goal</code>, <code>constraints</code>, <code>files_touched/files_proposed</code>, or <code>verification_evidence</code>, the orchestrator rejects it and asks for a corrected handoff.</p>
-<h2 id="safety-and-approvals">Safety and approvals<a class="headerlink" href="#safety-and-approvals" title="Permanent link">&para;</a></h2>
-<p>Default project config proposal:</p>
-<div class="highlight"><pre><span></span><code><span class="n">approval_policy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;on-request&quot;</span>
-<span class="n">sandbox_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;workspace-write&quot;</span>
-<span class="n">allow_login_shell</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
+<p>Используйте полный unit suite, когда меняются scripts, templates, fixtures или lifecycle behavior:</p>
+<div class="highlight"><pre><span></span><code><span class="n">python</span> <span class="n">-m</span> <span class="n">unittest</span> <span class="n">discover</span> <span class="n">-s</span> <span class="n">tests</span> <span class="n">-p</span> <span class="s2">&quot;test_*.py&quot;</span> <span class="n">-v</span>
 </code></pre></div>
-<p>For read-only planning and review:</p>
-<div class="highlight"><pre><span></span><code><span class="n">approval_policy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;untrusted&quot;</span>
-<span class="n">sandbox_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;read-only&quot;</span>
-<span class="n">allow_login_shell</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
-</code></pre></div>
-<p>Granular approval policy proposal for governed projects:</p>
-<div class="highlight"><pre><span></span><code><span class="n">approval_policy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">granular</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="n">sandbox_approval</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<span class="w">  </span><span class="n">rules</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<span class="w">  </span><span class="n">mcp_elicitations</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<span class="w">  </span><span class="n">request_permissions</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
-<span class="w">  </span><span class="n">skill_approval</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kc">true</span>
-<span class="p">}</span><span class="w"> </span><span class="p">}</span>
-</code></pre></div>
-<p>Approval required for:</p>
+<p>Transcript evals применяются для проверки multi-turn shortcut resistance и privacy/no-secrets behavior.</p>
+<h2 id="automation">Продвижение automation<a class="headerlink" href="#automation" title="Permanent link">&para;</a></h2>
+<p>Порядок продвижения: manual workflow, playbook, skill, plugin, automation. Automation candidates требуют manual success evidence, stable inputs/outputs, owner, cadence, verification, failure modes, value evidence и rollback/disable path. Product-Agent OS может stage automation candidate, но не должен создавать active automation без explicit approval.</p>
+<h2 id="agents-sdk-runner">Опциональный Agents SDK runner<a class="headerlink" href="#agents-sdk-runner" title="Permanent link">&para;</a></h2>
+<p>Agents SDK можно использовать для product/runtime app architecture, если она явно выбрана. Он не является hidden runtime layer для plugin и не должен обходить Codex sandbox, approvals, source policy или package compatibility boundaries.</p>
+<h2 id="_8">Режимы отказа<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h2>
 <ul>
-<li>external writes;</li>
-<li>destructive commands;</li>
-<li>permission changes;</li>
-<li>global config changes;</li>
-<li>credential, deployment, billing, database, auth, migration, production operation or source-of-truth update;</li>
-<li>starting automation;</li>
-<li>enabling broad network access.</li>
+<li>Generated dashboards или graph views принимаются за source of truth.</li>
+<li>Skill расширяет работу вместо сохранения route boundary.</li>
+<li>Subagents получают неполный context или пересекающийся ownership.</li>
+<li>Compatibility checks трактуются как live readiness.</li>
+<li>Automation создается до manual stability evidence.</li>
+<li>Source-backed claim добавляется без <code>Source status:</code> и registry support.</li>
+<li>Live или external action включается в unrelated approval.</li>
 </ul>
-<p>Forbidden by default:</p>
+<h2 id="_9">Критерии приемки<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h2>
+<p>Product-Agent OS приемлем, когда:</p>
 <ul>
-<li>storing secrets in docs, prompts, memory, fixtures or examples;</li>
-<li>editing generated/vendor/build artifacts unless explicitly allowed;</li>
-<li>changing global Codex config;</li>
-<li>creating recurring automation without manual stability evidence;</li>
-<li>claiming checks passed without running them in the current lifecycle step.</li>
+<li>package metadata валидны для Codex;</li>
+<li>skills имеют ясные triggers, inputs, outputs, verification и failure modes;</li>
+<li>generated infrastructure остается staged-first;</li>
+<li>control-plane files сохраняют source boundaries и evidence;</li>
+<li>evals ловят shortcut behavior и false-positive routing;</li>
+<li>docs включают <code>Source status:</code>;</li>
+<li>compatibility checks не требуют provider calls или hidden external runtimes;</li>
+<li>approval-bound actions остаются выключенными до explicit approval.</li>
 </ul>
-<h2 id="hooks-and-rules">Hooks and rules<a class="headerlink" href="#hooks-and-rules" title="Permanent link">&para;</a></h2>
-<p>Plugin provides hook templates, not silent enforcement.</p>
-<table>
-<thead>
-<tr>
-<th>Hook</th>
-<th>Event</th>
-<th>Purpose</th>
-<th>Blocking</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>session_start_context.py</code></td>
-<td><code>SessionStart</code></td>
-<td>Summarize active control-plane state</td>
-<td>no</td>
-</tr>
-<tr>
-<td><code>pre_tool_use_policy.py</code></td>
-<td><code>PreToolUse</code></td>
-<td>Detect destructive commands and forbidden paths</td>
-<td>yes for high-risk matches</td>
-</tr>
-<tr>
-<td><code>permission_request_summary.py</code></td>
-<td><code>PermissionRequest</code></td>
-<td>Explain why approval is requested</td>
-<td>no</td>
-</tr>
-<tr>
-<td><code>post_tool_use_evidence.py</code></td>
-<td><code>PostToolUse</code></td>
-<td>Append command evidence to active runlog buffer</td>
-<td>no</td>
-</tr>
-<tr>
-<td><code>stop_runlog_reminder.py</code></td>
-<td><code>Stop</code></td>
-<td>Remind to update <code>RUNLOG.md</code> when evidence exists</td>
-<td>no by default</td>
-</tr>
-</tbody>
-</table>
-<p>Rules must be narrow, auditable and aligned with sandbox/approvals. Hooks must not store secrets.</p>
-<h2 id="runtime-selection">Runtime selection<a class="headerlink" href="#runtime-selection" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Project need</th>
-<th>Runtime decision</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>First-time project setup</td>
-<td>Codex App or CLI interactive</td>
-</tr>
-<tr>
-<td>One prepared task packet</td>
-<td><code>codex exec</code></td>
-</tr>
-<tr>
-<td>Large feature</td>
-<td>App/CLI with worktree per coherent unit</td>
-</tr>
-<tr>
-<td>PR review</td>
-<td>GitHub integration or Codex review flow</td>
-</tr>
-<tr>
-<td>Recurring stable check</td>
-<td>Codex automation or GitHub Action</td>
-</tr>
-<tr>
-<td>Programmable multi-agent workflow</td>
-<td>Agents SDK + Codex MCP</td>
-</tr>
-<tr>
-<td>GUI-only task</td>
-<td>Computer Use only when no dedicated tool exists</td>
-</tr>
-</tbody>
-</table>
-<p>Runtime choice is stored in <code>PLAN.md</code> or <code>RUNLOG.md</code>, not hidden in chat.</p>
-<h2 id="context7-and-source-policy">Context7 and source policy<a class="headerlink" href="#context7-and-source-policy" title="Permanent link">&para;</a></h2>
-<p>The Track 3 <code>source-context-pack.md</code> workflow template records Context7 usage for library and official documentation retrieval when current docs are required.</p>
-<p>Rules:</p>
+<h2 id="product-capability-areas">Product capability areas<a class="headerlink" href="#product-capability-areas" title="Permanent link">&para;</a></h2>
+<p>Основные capability areas продукта:</p>
 <ul>
-<li>Official status applies only when underlying source is official.</li>
-<li>Context7 results from community repositories are intake material until verified.</li>
-<li>OpenAI product claims prefer official OpenAI docs.</li>
-<li>Source-backed claims update source registry or project source notes.</li>
-<li>Community tricks are stored as insights with <code>trust_level</code> and <code>verification_status</code>.</li>
+<li>lifecycle routing и control-plane artifacts;</li>
+<li>staged infrastructure и safe merge planning;</li>
+<li>methodology intelligence и engineering standards;</li>
+<li>behavioral и transcript evals;</li>
+<li>Codex compatibility checks;</li>
+<li>graph/cockpit orientation;</li>
+<li>release, packaging и closure evidence;</li>
+<li>approval-bound real testing;</li>
+<li>skill, plugin и automation promotion.</li>
 </ul>
-<h2 id="evals-and-verification">Evals and verification<a class="headerlink" href="#evals-and-verification" title="Permanent link">&para;</a></h2>
-<p>Plugin has its own eval suite and creates project evals.</p>
-<p>Plugin fixture evals:</p>
-<table>
-<thead>
-<tr>
-<th>Case</th>
-<th>Fixture</th>
-<th>Expected behavior</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Happy path</td>
-<td><code>node-app</code></td>
-<td>Creates control plane, agents, test plan, runlog, no unsafe write</td>
-</tr>
-<tr>
-<td>Existing files</td>
-<td><code>existing-codex-config</code></td>
-<td>Preserves user content and proposes managed sections</td>
-</tr>
-<tr>
-<td>Missing tests</td>
-<td><code>empty-repo</code></td>
-<td>Names test gap and does not invent passing checks</td>
-</tr>
-<tr>
-<td>Unsafe write</td>
-<td>Any fixture</td>
-<td>Stages draft and requests approval</td>
-</tr>
-<tr>
-<td>Monorepo</td>
-<td><code>monorepo</code></td>
-<td>Creates nested ownership and avoids overlapping write scopes</td>
-</tr>
-<tr>
-<td>Source conflict</td>
-<td><code>docs-repo</code></td>
-<td>Marks conflict and requests verification</td>
-</tr>
-<tr>
-<td>Failed verification</td>
-<td><code>python-app</code></td>
-<td>Reports failure evidence and does not claim completion</td>
-</tr>
-</tbody>
-</table>
-<p>Project evals:</p>
+<p>Следующий artifact: используйте <a href="../product-agent-os/architecture.html">Product-Agent OS architecture</a> для system model и <a href="../product-agent-os/technical.html">Technical features и installation</a> для operator commands.</p>
+<h2 id="_10">Входы<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h2>
 <ul>
-<li>deterministic checks: tests, lint, build, docs checks, schema validation;</li>
-<li>LLM-as-judge checks: usefulness, clarity, source fidelity, handoff completeness;</li>
-<li>artifact inspection: screenshots, generated reports, deployment previews, PR body;</li>
-<li>regression checks: previous passing scenarios remain passing.</li>
+<li>Codex plugin package metadata, skills, templates, eval fixtures и docs.</li>
+<li>Owner approval records и текущий verification evidence для risky surfaces.</li>
 </ul>
-<p>Stopping rule example:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">quality_gate</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">deterministic_checks_required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">  </span><span class="nt">no_blocking_review_findings</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">  </span><span class="nt">llm_judge_average_min</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.90</span>
-<span class="w">  </span><span class="nt">no_unresolved_source_conflicts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">  </span><span class="nt">rollback_note_required_for_risky_change</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-</code></pre></div>
-<h2 id="automation-promotion">Automation promotion<a class="headerlink" href="#automation-promotion" title="Permanent link">&para;</a></h2>
-<p><code>automation-promoter</code> can only produce an automation candidate when all conditions are true:</p>
+<h2 id="_11">Выходы<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h2>
 <ul>
-<li>workflow ran manually at least twice or has equivalent fixture evidence;</li>
-<li>inputs and outputs are stable;</li>
-<li>failure modes are known;</li>
-<li>write policy is explicit;</li>
-<li>verification is runnable;</li>
-<li>owner and cadence are named;</li>
-<li>external writes are staged or approval-gated.</li>
+<li>Portable Product-Agent OS plugin contract с lifecycle routing, staged artifacts и compatibility checks.</li>
+<li>Reviewable boundaries для skills, subagents, MCP, hooks, automation и опционального Agents SDK use.</li>
 </ul>
-<p>Automation candidate packet:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">automation_candidate</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
-<span class="w">  </span><span class="nt">purpose</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
-<span class="w">  </span><span class="nt">trigger_or_cadence</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
-<span class="w">  </span><span class="nt">required_inputs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
-<span class="w">  </span><span class="nt">write_policy</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;read_only</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">draft_only</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">approved_write&quot;</span>
-<span class="w">  </span><span class="nt">verification</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
-<span class="w">  </span><span class="nt">failure_modes</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
-<span class="w">  </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
-<span class="w">  </span><span class="nt">rollback_or_disable</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
-</code></pre></div>
-<h2 id="optional-agents-sdk-runner">Optional Agents SDK runner<a class="headerlink" href="#optional-agents-sdk-runner" title="Permanent link">&para;</a></h2>
-<p>For advanced teams, plugin may include a companion runner design under <code>scripts/agents_sdk_runner/</code>.</p>
-<p>Architecture:</p>
+<h2 id="_12">Проверка<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h2>
+<p>Перед release claims проверьте plugin metadata, docs structure, fixture evals и Codex compatibility.</p>
+<h2 id="_13">Риски<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Manager Agent owns lifecycle state and final output.</li>
-<li>Specialist agents are tools or handoff targets.</li>
-<li>Codex MCP performs workspace work with explicit sandbox and approval policy.</li>
-<li>Guardrails validate handoff completeness, tool boundary, source fidelity and no secret retention.</li>
-<li>Sessions preserve conversation continuity.</li>
-<li>Tracing records tools, handoffs, latency and failures.</li>
+<li>Compatibility checks не являются publication approval.</li>
+<li>Включение live actions в plugin contract может обойти explicit approval model.</li>
 </ul>
-<p>This runner is optional because many projects need Codex plugin + skills + <code>.codex/</code> config before they need a programmable agent app.</p>
-<h2 id="failure-modes">Failure modes<a class="headerlink" href="#failure-modes" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Failure</th>
-<th>Detection</th>
-<th>Required behavior</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Scope too broad</td>
-<td>Requirements span unrelated systems</td>
-<td>Split into phases and ask for priority</td>
-</tr>
-<tr>
-<td>Existing project rules conflict</td>
-<td><code>AGENTS.md</code> and proposed config disagree</td>
-<td>Stop and show conflict</td>
-</tr>
-<tr>
-<td>Context overflow</td>
-<td>Runlog or docs too large</td>
-<td>Build context pack and archive old details</td>
-</tr>
-<tr>
-<td>Agent edits outside ownership</td>
-<td>Diff touches unassigned files</td>
-<td>Stop or request approval</td>
-</tr>
-<tr>
-<td>Verification missing</td>
-<td>No test/eval command known</td>
-<td>Create test gap and avoid success claim</td>
-</tr>
-<tr>
-<td>Hook false positive</td>
-<td>Valid command blocked</td>
-<td>Log rule, propose narrower rule</td>
-</tr>
-<tr>
-<td>Automation too early</td>
-<td>No manual success history</td>
-<td>Keep as candidate, not active automation</td>
-</tr>
-<tr>
-<td>Source drift</td>
-<td>Official docs changed</td>
-<td>Mark freshness risk and refresh source</td>
-</tr>
-<tr>
-<td>Secret risk</td>
-<td>Potential credential detected</td>
-<td>Stop, redact, do not store</td>
-</tr>
-</tbody>
-</table>
-<h2 id="acceptance-criteria">Acceptance criteria<a class="headerlink" href="#acceptance-criteria" title="Permanent link">&para;</a></h2>
-<p>Plugin is production-ready when:</p>
-<ul>
-<li>It can initialize existing and greenfield projects without overwriting user content.</li>
-<li>It produces a clear infrastructure plan before writing.</li>
-<li>It routes skills by lifecycle state and complexity profile.</li>
-<li>It creates valid control-plane files and project-scoped <code>.codex/</code> assets.</li>
-<li>It supports full project lifecycle from idea to PR/release packet.</li>
-<li>It logs evidence and decisions in <code>RUNLOG.md</code>.</li>
-<li>It handles context overflow through hot/warm/cold context layers and archive policy.</li>
-<li>It enforces approval gates for risky writes.</li>
-<li>It has fixture evals for happy path, existing config, missing tests, unsafe write, monorepo, source conflict and failed verification.</li>
-<li>It does not create active automations without stability evidence.</li>
-<li>It documents residual risks and next action after every run.</li>
-</ul>
-<h2 id="implementation-handoff">Implementation handoff<a class="headerlink" href="#implementation-handoff" title="Permanent link">&para;</a></h2>
-<p>Implementation should be split into four build tracks:</p>
-<ol>
-<li><strong>Plugin core and contracts</strong> - manifest, schemas, detection scripts, validators, fixture harness.</li>
-<li><strong>Lifecycle skills</strong> - orchestrator and each lifecycle stage skill with concise <code>SKILL.md</code>, references and output contracts.</li>
-<li><strong>Generated project infrastructure</strong> - control-plane templates, <code>.codex/agents/*.toml</code>, hooks, workflow packets and eval templates.</li>
-<li><strong>Production hardening</strong> - fixture evals, safe merge behavior, source policy checks, automation promotion gates and optional Agents SDK runner.</li>
-</ol>
-<p>Each track must have deterministic validation before the plugin is used on real customer projects.</p>
 
 
 
@@ -5277,6 +4538,8 @@
 
 
       <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+
+        <script src="../assets/javascripts/local-file-i18n.js"></script>
 
         <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
 

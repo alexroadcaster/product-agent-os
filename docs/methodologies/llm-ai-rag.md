@@ -164,7 +164,7 @@ LLM / AI / RAG слой описывает, как проектировать, �
 - Safety/red-team cases cover prompt injection, private data and risky actions.
 - Cost/latency budget is measured or explicitly marked as unavailable.
 
-## Failure modes
+## Типовые сбои
 
 - Manual spot checks are treated as eval evidence.
 - Prompt, model and retrieval are changed together without migration framing.

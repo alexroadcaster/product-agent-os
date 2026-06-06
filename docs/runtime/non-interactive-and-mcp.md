@@ -1,4 +1,4 @@
-# Non-interactive Codex and MCP
+﻿# Non-interactive Codex и MCP
 
 Source status: `official + experiment`  
 Источники: [Codex CLI features](https://developers.openai.com/codex/cli/features), [Codex with Agents SDK](https://developers.openai.com/codex/guides/agents-sdk), [OpenAI Agents SDK Python](https://github.com/openai/openai-agents-python).
@@ -13,7 +13,7 @@ Source status: `official + experiment`
 Read AGENTS.md.
 Goal: ...
 Allowed changes: ...
-Out of scope: ...
+Out из scope: ...
 Verification: ...
 Output: changed files, commands run, result, risks.
 ```
@@ -21,27 +21,27 @@ Output: changed files, commands run, result, risks.
 Используйте для:
 
 - fixing known CI failures;
-- generating release notes;
+- generating заметки к release;
 - running docs audits;
 - checking dependency update impact;
-- applying a prepared plan.
+- applying prepared plan.
 
 Не используйте для:
 
 - vague product design;
-- work requiring frequent user judgment;
-- first run of an untested workflow;
-- tasks with broad filesystem or network permissions.
+- work requiring frequent пользователь judgment;
+- первый запуск untested workflow;
+- задачи с broad filesystem или network permissions.
 
 ## Codex MCP
 
 Codex MCP делает Codex execution backend для Agents SDK. Полезный pattern:
 
-- Project Manager agent owns goal and source of truth docs.
+- Project Manager agent владеет goal и source-of-truth docs.
 - Specialist agents read control-plane files.
-- Codex MCP performs workspace work with explicit sandbox/approval policy.
-- Tester/Reviewer returns results to Manager.
+- Codex MCP выполняет workspace work с явной sandbox/approval policy.
+- Tester/Reviewer returns results к Manager.
 
-## App server and remote TUI
+## App server и remote TUI
 
-Remote app-server mode полезен, когда код и credentials живут на удаленной машине, а оператор хочет локальный terminal UI. Если listener выходит за localhost, нужны authentication and TLS controls.
+Remote app-server mode полезен, когда код и credentials живут на удаленной машине, а оператор хочет локальный terminal UI. Если listener выходит за localhost, нужны authentication и TLS controls.

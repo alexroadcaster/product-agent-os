@@ -146,7 +146,7 @@ It does not mandate microservices, Kubernetes, a cloud provider or a specific fr
 | Distributed workflow | Saga/compensation docs | Use only when local transaction/outbox is not enough. |
 | Security | SSDF, ASVS, secret scanning, SAST/DAST where applicable | Select by stack and risk profile. |
 
-## Failure modes
+## Типовые сбои
 
 - Backend docs describe package structure but omit runtime behavior.
 - A retry is added without timeout, backoff, max attempts and idempotency.

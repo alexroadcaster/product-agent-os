@@ -194,11 +194,11 @@ Requirements & Domain слой переводит business intent в прове�
 - Requirement changes trigger impact review across tests/evals, API, DB, UI, docs and rollout.
 - Business-critical, compliance, finance/legal and AI-generated domain claims have owner review.
 
-## Failure modes
+## Типовые сбои
 
 - Implementation starts from folders or framework choices, not behavior.
 - User story title is treated as complete requirements.
-- Acceptance criteria describe implementation details instead of observable outcomes.
+- Критерии приемки describe implementation details instead of observable outcomes.
 - BDD/Gherkin becomes test automation boilerplate unreadable to domain experts.
 - Example Mapping creates questions without owner or next action.
 - DDD is forced onto simple CRUD and slows delivery.

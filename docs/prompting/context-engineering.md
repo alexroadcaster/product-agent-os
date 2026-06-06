@@ -25,7 +25,7 @@ flowchart TD
 2. Официальные OpenAI docs и GitHub репозитории OpenAI.
 3. Context7 retrieval, если source URL указывает на официальный источник.
 4. Community sources как candidate insights.
-5. Memory как recall layer, но не source of truth.
+5. Memory как recall layer, но not source of truth.
 
 ## Context packing
 

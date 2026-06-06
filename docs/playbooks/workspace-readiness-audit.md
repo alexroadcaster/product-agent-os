@@ -1,4 +1,4 @@
-# Playbook: workspace readiness audit
+﻿# Playbook: workspace readiness audit
 
 Source status: `official + experiment`  
 Источники: [Codex best practices](https://developers.openai.com/codex/learn/best-practices), [AGENTS.md docs](https://developers.openai.com/codex/guides/agents-md), [Agent approvals and security](https://developers.openai.com/codex/agent-approvals-security), [Codex automations](https://developers.openai.com/codex/app/automations).
@@ -11,23 +11,23 @@ Source status: `official + experiment`
 
 | Area | Pass condition |
 | --- | --- |
-| Instructions | `AGENTS.md` exists and names setup/test commands |
-| Source policy | Official/community/experiment rules are explicit |
+| Instructions | `AGENTS.md` exists и names setup/test commands |
+| Политика источников | Правила official/community/experiment явно записаны |
 | Build | Build command documented |
 | Tests | Test command documented |
-| Evals | Subjective outputs have eval or review rubric |
-| Sandbox | Approval and network rules are known |
+| Evals | Для subjective outputs есть eval или review rubric |
+| Sandbox | Правила approval и network известны |
 | Worktrees | Parallel work strategy exists |
-| Skills | Repeated workflows have skill candidates |
-| Automation | Only stable workflows are scheduled |
-| Runtime evidence | `RUNLOG.md` or equivalent exists for long runs |
+| Skills | Повторяемые workflows имеют skill candidates |
+| Automation | Только stable workflows получают schedule |
+| Runtime evidence | `RUNLOG.md` или аналог существует для long запускается |
 
 ## Prompt
 
 ```text
-Audit this workspace for Codex product-agent readiness.
+Audit эта workspace для Codex product-agent readiness.
 
-Do not edit files.
+Не edit files.
 Check:
 - AGENTS.md;
 - setup/build/test commands;
@@ -40,7 +40,7 @@ Check:
 Return:
 - readiness score 0-100;
 - blockers;
-- recommended docs or skill additions;
-- first workflow to automate.
+- recommended docs или skill additions;
+- first workflow к automate.
 ```
 

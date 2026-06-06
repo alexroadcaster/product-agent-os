@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
 
-        <meta name="description" content="Russian knowledge base for advanced OpenAI Codex and agentic workflows.">
+        <meta name="description" content="Документация Product-Agent OS для рабочих процессов с агентами и skills.">
 
 
 
@@ -18,6 +18,10 @@
 
 
 
+          <link rel="alternate" href="subagents-skills.html" hreflang="ru">
+
+          <link rel="alternate" href="../en/agent-systems/subagents-skills.html" hreflang="en">
+
 
 
       <link rel="icon" href="../assets/images/favicon.png">
@@ -25,7 +29,7 @@
 
 
 
-        <title>Subagents, Skills, AGENTS.md - OpenAI Codex Knowledge Base</title>
+        <title>Subagents, Skills, AGENTS.md - Product-Agent OS</title>
 
 
 
@@ -94,7 +98,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
-    <a href="../index.html" title="OpenAI Codex Knowledge Base" class="md-header__button md-logo" aria-label="OpenAI Codex Knowledge Base" data-md-component="logo">
+    <a href="../index.html" title="Product-Agent OS" class="md-header__button md-logo" aria-label="Product-Agent OS" data-md-component="logo">
 
 
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -108,7 +112,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            OpenAI Codex Knowledge Base
+            Product-Agent OS
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -136,6 +140,32 @@
 
       <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
 
+
+      <div class="md-header__option">
+  <div class="md-select">
+
+    <button class="md-header__button md-icon" aria-label="Выберите язык">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+
+          <li class="md-select__item">
+            <a href="subagents-skills.html" hreflang="ru" class="md-select__link">
+              RU
+            </a>
+          </li>
+
+          <li class="md-select__item">
+            <a href="../en/agent-systems/subagents-skills.html" hreflang="en" class="md-select__link">
+              EN
+            </a>
+          </li>
+
+      </ul>
+    </div>
+  </div>
+</div>
 
 
 
@@ -206,13 +236,13 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../index.html" title="OpenAI Codex Knowledge Base" class="md-nav__button md-logo" aria-label="OpenAI Codex Knowledge Base" data-md-component="logo">
+    <a href="../index.html" title="Product-Agent OS" class="md-nav__button md-logo" aria-label="Product-Agent OS" data-md-component="logo">
 
 
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
-    OpenAI Codex Knowledge Base
+    Product-Agent OS
   </label>
 
   <ul class="md-nav__list" data-md-scrollfix>
@@ -2650,10 +2680,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#batch-31-handoff-contract" class="md-nav__link">
+  <a href="#fresh-context-handoff-contract" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Batch 31 handoff contract
+        Fresh-context handoff contract
 
     </span>
   </a>
@@ -3644,10 +3674,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#batch-31-handoff-contract" class="md-nav__link">
+  <a href="#fresh-context-handoff-contract" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Batch 31 handoff contract
+        Fresh-context handoff contract
 
     </span>
   </a>
@@ -3720,7 +3750,7 @@
 <tr>
 <td><code>AGENTS.md</code></td>
 <td>Нужно постоянное правило для проекта</td>
-<td>Как запускать тесты, стиль документации, source policy</td>
+<td>Как запускать тесты, стиль документации, политика источников</td>
 </tr>
 <tr>
 <td>Skill</td>
@@ -3740,23 +3770,23 @@
 </tbody>
 </table>
 <h2 id="subagents">Subagents<a class="headerlink" href="#subagents" title="Permanent link">&para;</a></h2>
-<p>Официальная модель: Codex не должен запускать subagents автоматически. Нужно явно просить "spawn agents", "delegate in parallel" или "use one agent per point".</p>
+<p>Официальная модель: Codex не должен запускать subagents автоматически. Нужно явно просить о параллельной делегации, например <code>spawn agents</code>, <code>delegate в parallel</code> или <code>use один agent per point</code>.</p>
 <p>Хороший subagent prompt:</p>
-<div class="highlight"><pre><span></span><code>Spawn one agent for each source family:
+<div class="highlight"><pre><span></span><code>Spawn один agent для каждый source family:
 1. Codex official docs
 2. Agents SDK memory docs
 3. Community insight backlog
 
-Each agent must return:
+Каждая agent должен return:
 - sources used;
 - verified claims;
 - uncertain claims;
 - suggested doc updates.
-Wait for all agents, then synthesize without copying raw logs.
+Wait для all agents, затем synthesize без copying raw logs.
 </code></pre></div>
 <p>Официальный review pattern масштабируется так же: один agent на security, один на code quality, один на bugs, один на race conditions, один на test flakiness, один на maintainability. Main thread должен дождаться всех результатов и сделать consolidated summary без дублирующих findings.</p>
-<h2 id="batch-31-handoff-contract">Batch 31 handoff contract<a class="headerlink" href="#batch-31-handoff-contract" title="Permanent link">&para;</a></h2>
-<p>Product-Agent OS Batch 31 добавляет практическое правило для subagents и skills: generated <code>agent-skill-handoff.json</code> помогает routing, но не заменяет task packet. Перед параллельной работой main thread должен выдать каждому worker свежий контекст, ownership и stop condition.</p>
+<h2 id="fresh-context-handoff-contract">Fresh-context handoff contract<a class="headerlink" href="#fresh-context-handoff-contract" title="Permanent link">&para;</a></h2>
+<p>Product-Agent OS использует практическое правило для subagents и skills: generated <code>agent-skill-handoff.json</code> помогает routing, но не заменяет task packet. Перед параллельной работой main thread должен выдать каждому worker свежий контекст, ownership и stop condition.</p>
 <table>
 <thead>
 <tr>
@@ -3767,27 +3797,27 @@ Wait for all agents, then synthesize without copying raw logs.
 <tbody>
 <tr>
 <td>Ownership</td>
-<td>Owned files/subsystems, forbidden files and expected handoff artifact.</td>
+<td>Owned files/subsystems, forbidden files и expected handoff artifact.</td>
 </tr>
 <tr>
-<td>Fresh context</td>
-<td>Current user request, relevant project rules, source files/docs used and assumptions.</td>
+<td>Свежий контекст</td>
+<td>Текущий запрос пользователя, релевантные правила проекта, использованные source files/docs и допущения.</td>
 </tr>
 <tr>
-<td>Verification evidence</td>
-<td>Commands, docs checks, evals, screenshots, logs or accepted gap expected from this worker.</td>
+<td>Доказательства проверки</td>
+<td>Команды, docs checks, evals, screenshots, logs или accepted gap, ожидаемые от исполнителя.</td>
 </tr>
 <tr>
-<td>Stop conditions</td>
-<td>Approval boundary, missing source, overlapping ownership, failing check or stale context.</td>
+<td>Условия остановки</td>
+<td>Граница approval, отсутствующий source, пересечение ownership, падающая проверка или устаревший контекст.</td>
 </tr>
 <tr>
-<td>Return packet</td>
-<td>Sources used, files touched/proposed, verification result, open risks and recommended next role.</td>
+<td>Пакет возврата</td>
+<td>Использованные sources, затронутые или предложенные файлы, результат проверки, открытые риски и рекомендуемая следующая роль.</td>
 </tr>
 </tbody>
 </table>
-<p>Если ownership пересекается или expected evidence невозможно получить, используйте sequential fallback вместо parallel subagents. Для source-sensitive docs work community claims remain intake material until trust level and verification status are explicit.</p>
+<p>Если ownership пересекается или ожидаемые доказательства невозможно получить, используйте последовательный fallback вместо параллельных subagents. Для source-sensitive docs work community claims остаются intake material, пока trust level и verification status не записаны явно.</p>
 <h2 id="skills">Skills<a class="headerlink" href="#skills" title="Permanent link">&para;</a></h2>
 <p>Skill должен быть узким и проверяемым. Официальная рекомендация для skills: фокус на одной задаче, явные inputs/outputs, инструкции важнее scripts, scripts нужны только для deterministic behavior или external tooling.</p>
 <h2 id="skill-design-rubric">Skill design rubric<a class="headerlink" href="#skill-design-rubric" title="Permanent link">&para;</a></h2>
@@ -3808,11 +3838,11 @@ Wait for all agents, then synthesize without copying raw logs.
 <td><code>description</code> явно говорит, когда использовать и когда не использовать</td>
 </tr>
 <tr>
-<td>Inputs</td>
-<td>Required inputs перечислены</td>
+<td>Входы</td>
+<td>Обязательные входы перечислены</td>
 </tr>
 <tr>
-<td>Outputs</td>
+<td>Выходы</td>
 <td>Формат результата фиксирован</td>
 </tr>
 <tr>
@@ -3825,7 +3855,7 @@ Wait for all agents, then synthesize without copying raw logs.
 </tr>
 <tr>
 <td>Eval cases</td>
-<td>Есть примеры should trigger и should not trigger</td>
+<td>Есть примеры следует trigger и следует не trigger</td>
 </tr>
 </tbody>
 </table>
@@ -3838,22 +3868,22 @@ Wait for all agents, then synthesize without copying raw logs.
 <li><code>product-spec-writer</code> - превращает идею в requirements packet.</li>
 <li><code>implementation-planner</code> - строит PLAN.md из REQUIREMENTS.md.</li>
 <li><code>test-gap-finder</code> - ищет gaps между diff и TEST.md.</li>
-<li><code>release-note-writer</code> - готовит release notes из PR diff and RUNLOG.</li>
+<li><code>release-note-writer</code> - готовит заметки к release из PR diff и RUNLOG.</li>
 <li><code>eval-loop-runner</code> - ведет scored improvement loop.</li>
 <li><code>ui-visual-reviewer</code> - проверяет визуальные artifacts against rubric.</li>
 </ul>
-<p>Дополнительная metadata может жить в <code>agents/openai.yaml</code>: display name, short description, icons, default prompt, invocation policy и tool dependencies. Для source-sensitive skills в этом проекте implicit invocation лучше отключать, чтобы сбор источников и перенос claims происходили явно.</p>
+<p>Дополнительная metadata может храниться в <code>agents/openai.yaml</code>: <code>display name</code>, <code>short description</code>, <code>icons</code>, <code>default prompt</code>, <code>invocation policy</code> и зависимости tools. Для source-sensitive skills в этом проекте implicit invocation лучше отключать, чтобы сбор источников и перенос claims происходили явно.</p>
 <h2 id="agentsmd">AGENTS.md<a class="headerlink" href="#agentsmd" title="Permanent link">&para;</a></h2>
 <p><code>AGENTS.md</code> должен содержать только правила, которые агент обязан соблюдать при каждом запуске проекта:</p>
 <div class="highlight"><pre><span></span><code><span class="gh"># AGENTS.md</span>
 
 <span class="gu">## Documentation rules</span>
 
-<span class="k">-</span><span class="w"> </span>Write Russian documentation, but keep official OpenAI terms in English on first mention.
-<span class="k">-</span><span class="w"> </span>Treat official OpenAI docs as source of truth.
-<span class="k">-</span><span class="w"> </span>Put community tricks under docs/insights/ with trust and verification status.
-<span class="k">-</span><span class="w"> </span>Run python tools/check_docs.py after editing docs.
-<span class="k">-</span><span class="w"> </span>Run python -m mkdocs build --strict before claiming the site builds.
+<span class="k">-</span><span class="w"> </span>Создайте Russian documentation, но keep official OpenAI terms в English на first mention.
+<span class="k">-</span><span class="w"> </span>Treat official OpenAI docs как source of truth.
+<span class="k">-</span><span class="w"> </span>Put community tricks в рамках docs/insights/ с trust и verification status.
+<span class="k">-</span><span class="w"> </span>Запустите python tools/check_docs.py после editing docs.
+<span class="k">-</span><span class="w"> </span>Запустите python -m mkdocs build --strict до claiming site builds.
 </code></pre></div>
 
 
@@ -3909,6 +3939,8 @@ Wait for all agents, then synthesize without copying raw logs.
 
 
       <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+
+        <script src="../assets/javascripts/local-file-i18n.js"></script>
 
         <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
 

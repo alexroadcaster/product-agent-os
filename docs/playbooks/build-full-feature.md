@@ -47,7 +47,7 @@ Final output:
 - lessons for AGENTS.md or skills.
 ```
 
-## Acceptance criteria
+## Критерии приемки
 
 - Requirements, plan, tests and run log are explicit.
 - No agent edits outside its ownership without approval.

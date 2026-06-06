@@ -47,7 +47,7 @@ Source status: `official + verified methodology + tool-assisted`
 8. `Ownership`: кто owner артефакта, кто reviewer, кто evidence owner.
 9. `Risks`: security, privacy, cost, performance, migration, compliance, operational risk.
 10. `Codex routing`: какой skill, subagent или workflow запускается и где approval boundary.
-11. `Failure modes`: как раздел превращается в бюрократию, stale docs или false confidence.
+11. `Типовые сбои`: как раздел превращается в бюрократию, stale docs или false confidence.
 12. `Promotion path`: когда manual workflow становится playbook, skill, plugin или automation.
 
 ## Принцип применения

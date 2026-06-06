@@ -1,0 +1,4612 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+
+        <meta name="description" content="Product documentation for Product-Agent OS.">
+
+
+
+
+        <link rel="prev" href="workflows.html">
+
+
+        <link rel="next" href="../prompting/overview.html">
+
+
+
+          <link rel="alternate" href="../../codex/use-cases-deep-analysis.html" hreflang="ru">
+
+          <link rel="alternate" href="use-cases-deep-analysis.html" hreflang="en">
+
+
+
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+
+
+
+        <title>Deep Use-Case Analysis - Product-Agent OS Documentation</title>
+
+
+
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+
+
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+
+
+
+
+
+
+
+
+
+
+
+
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+
+
+
+      <link rel="stylesheet" href="../../assets/stylesheets/extra.css">
+
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+
+
+
+
+
+  </head>
+
+
+
+
+
+
+
+
+
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="deep-orange">
+
+
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+
+
+        <a href="#deep-analysis-of-codex-use-cases" class="md-skip">
+          Skip to content
+        </a>
+
+    </div>
+    <div data-md-component="announce">
+
+    </div>
+
+
+
+
+
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="Product-Agent OS Documentation" class="md-header__button md-logo" aria-label="Product-Agent OS Documentation" data-md-component="logo">
+
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Product-Agent OS Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+
+              Deep Use-Case Analysis
+
+          </span>
+        </div>
+      </div>
+    </div>
+
+
+        <form class="md-header__option" data-md-component="palette">
+
+
+
+
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="deep-orange"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+
+
+</form>
+
+
+
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+
+
+      <div class="md-header__option">
+  <div class="md-select">
+
+    <button class="md-header__button md-icon" aria-label="Select language">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+
+          <li class="md-select__item">
+            <a href="../../codex/use-cases-deep-analysis.html" hreflang="ru" class="md-select__link">
+              RU
+            </a>
+          </li>
+
+          <li class="md-select__item">
+            <a href="use-cases-deep-analysis.html" hreflang="en" class="md-select__link">
+              EN
+            </a>
+          </li>
+
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+
+
+        <label class="md-header__button md-icon" for="__search">
+
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+  </nav>
+
+</header>
+
+    <div class="md-container" data-md-component="container">
+
+
+
+
+
+
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+
+
+
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="Product-Agent OS Documentation" class="md-nav__button md-logo" aria-label="Product-Agent OS Documentation" data-md-component="logo">
+
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Product-Agent OS Documentation
+  </label>
+
+  <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Home
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="../diagrams/index.html" class="md-nav__link ">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Diagrams
+
+
+
+  </span>
+
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Diagrams
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/architecture.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Architecture
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/product-delivery-lifecycle.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Delivery Lifecycle
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/agent-team-and-skills.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agent Team And Skills
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/runtime-decision-map.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Runtime Decision Map
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/skill-lifecycle.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Skill Lifecycle
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/context-memory-verification.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Context, Memory, Verification
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+
+
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Sources
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Sources
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../sources/registry.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Source Registry
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../sources/context7-research.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Context7 Analysis
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../sources/source-card-template.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Source Card Template
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+
+
+
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+
+
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Codex
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Codex
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="overview.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Overview
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="surfaces.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Work Surfaces
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="configuration.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Configuration And Extensibility
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="security.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Security And Approvals
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="workflows.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Workflows
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--active">
+
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+
+
+
+
+
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Deep Use-Case Analysis
+
+
+
+  </span>
+
+
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+
+      <a href="use-cases-deep-analysis.html" class="md-nav__link md-nav__link--active">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Deep Use-Case Analysis
+
+
+
+  </span>
+
+
+
+      </a>
+
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+
+
+
+
+
+
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+
+        <li class="md-nav__item">
+  <a href="#why-this-layer-is-needed" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Why this layer is needed
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#taxonomy-of-the-official-catalog" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Taxonomy of the official catalog
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#collections-as-product-areas" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Collections as product areas
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#anatomy-of-a-plugin-ready-use-case" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Anatomy of a plugin-ready use case
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#general-workflow-from-use-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        General workflow from use cases
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#repeated-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Repeated concepts
+
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Repeated concepts">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#inspect-before-edit" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Inspect before edit
+
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#smallest-useful-slice" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Smallest useful slice
+
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#evidence-over-assertion" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Evidence over assertion
+
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#app-path-over-raw-model-path" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        App path over raw model path
+
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#staged-drafts-before-external-writes" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Staged drafts before external writes
+
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#runtime-follows-the-task" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Runtime follows the task
+
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#skills-preserve-working-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Skills preserve working behavior
+
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#goal-for-long-running-work" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        /goal for long-running work
+
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#use-case-map-to-reusable-assets" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Use case map to reusable assets
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#detailed-pattern-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Detailed pattern matrix
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#plugin-readiness-rubric" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Plugin-readiness rubric
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#what-to-add-to-our-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        What to add to our documentation
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#minimal-extraction-process" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Minimal extraction process
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#critical-gaps-after-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Critical gaps after analysis
+
+    </span>
+  </a>
+
+</li>
+
+    </ul>
+
+</nav>
+
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+
+
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Prompt And Context Engineering
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Prompt And Context Engineering
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../prompting/overview.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Overview
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../prompting/question-design.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Question Design
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../prompting/context-engineering.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Context Engineering
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../prompting/anti-hallucination.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Anti-Hallucination Controls
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+
+
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Product-Agent Workflows
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Product-Agent Workflows
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent/overview.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Overview
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent/lifecycle.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Product Lifecycle
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent/roles.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agent Team Roles
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent/control-plane.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Control-Plane Files
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent/product-agent-os-plugin-spec.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Product-Agent OS Plugin Spec
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="../product-agent-os/index.html" class="md-nav__link ">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Product-Agent OS Plugin
+
+
+
+  </span>
+
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_7" id="__nav_7_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Product-Agent OS Plugin
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/project-code-graph.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Project Code Graph
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/live-runtime-governance.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Live Runtime Governance
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/approval-bound-real-testing.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Approval-Bound Real Testing
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/agent-skill-modernization-loop.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agent-Skill Modernization Loop
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/cli-reference.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    CLI Reference
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/artifact-contracts.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Artifact Contracts
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/packaging-and-closure.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Packaging And Closure
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/technical.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Technical Setup
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/development-standards.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Engineering Standards Layer
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/methodology-intelligence.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Methodology Intelligence
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/scenarios.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Scenarios And Usage Modes
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/behavioral-evals.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Behavioral Evals
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/codex-compatibility.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Codex Compatibility
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/architecture.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Diagrams And Operating Principles
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="../methodologies/index.html" class="md-nav__link ">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Methodologies For Large Projects
+
+
+
+  </span>
+
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Methodologies For Large Projects
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/business-product.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Business And Product
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/requirements-domain.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Requirements And Domain
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/solution-architecture.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Solution Architecture
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/frontend.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Frontend
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/backend.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Backend
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/api-integrations.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    API And Integrations
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/database-data.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Database And Data
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/llm-ai-rag.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    LLM / AI / RAG
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/quality-testing-evals.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Quality, Testing And Evals
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/security-privacy-compliance.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Security, Privacy And Compliance
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/delivery-release-operations.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Delivery, Release And Operations
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/codex-agentic-workflow.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Codex / Agentic Workflow
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_9" >
+
+
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Codex Automation And Runtime
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Codex Automation And Runtime
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../runtime/overview.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Runtime Overview
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../runtime/non-interactive-and-mcp.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Non-Interactive And MCP
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../runtime/automations-github.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Automations And GitHub
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../runtime/worktrees-hooks-rules.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Worktrees, Hooks, Rules
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_10" >
+
+
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agent Systems
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Agent Systems
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/overview.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Architecture
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/memory.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Memory
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/session-control.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Session Control
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/subagents-skills.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Subagents, Skills, AGENTS.md
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/sdk-patterns.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agents SDK Patterns
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/evals-observability.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Evals And Observability
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/templates.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agent Templates
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_11" >
+
+
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Playbooks
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Playbooks
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/research-loop.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Research Loop
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/context7-deep-research.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Context7 Deep Research
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/grounded-answering.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Grounded Answering
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/build-full-feature.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Build Full Feature
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/workflow-to-skill.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Workflow To Skill
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/use-case-to-plugin.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Use Case To Plugin
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/eval-driven-improvement.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Eval-Driven Improvement
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/product-ready-pr.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Product-Ready PR
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/maintain-agent-operating-docs.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Agent Operating Docs
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/docs-update.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Docs Update
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/workspace-readiness-audit.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Workspace Readiness Audit
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/code-review.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Code Review
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/ai-team-design.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    AI-Native Team
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_12" >
+
+
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Templates
+
+
+
+  </span>
+
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Templates
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../artifact-templates/prompt-packet.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Prompt Template
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../artifact-templates/control-plane-files.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Control-Plane Templates
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../artifact-templates/runlog.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    RUNLOG Template
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../artifact-templates/product-skill.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Skill Template
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../artifact-templates/plugin-blueprint.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Plugin Blueprint
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_13" >
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="../insights/index.html" class="md-nav__link ">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Insights
+
+
+
+  </span>
+
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_13" id="__nav_13_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13">
+            <span class="md-nav__icon md-icon"></span>
+
+
+    Insights
+
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../insights/insight-card-template.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Insight Card Template
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../insights/seed-insights.html" class="md-nav__link">
+
+
+
+  <span class="md-ellipsis">
+
+
+    Initial Backlog
+
+
+
+  </span>
+
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+
+
+
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+
+
+
+
+
+
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+
+        <li class="md-nav__item">
+  <a href="#why-this-layer-is-needed" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Why this layer is needed
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#taxonomy-of-the-official-catalog" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Taxonomy of the official catalog
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#collections-as-product-areas" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Collections as product areas
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#anatomy-of-a-plugin-ready-use-case" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Anatomy of a plugin-ready use case
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#general-workflow-from-use-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        General workflow from use cases
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#repeated-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Repeated concepts
+
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Repeated concepts">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#inspect-before-edit" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Inspect before edit
+
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#smallest-useful-slice" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Smallest useful slice
+
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#evidence-over-assertion" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Evidence over assertion
+
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#app-path-over-raw-model-path" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        App path over raw model path
+
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#staged-drafts-before-external-writes" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Staged drafts before external writes
+
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#runtime-follows-the-task" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Runtime follows the task
+
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#skills-preserve-working-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Skills preserve working behavior
+
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#goal-for-long-running-work" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        /goal for long-running work
+
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#use-case-map-to-reusable-assets" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Use case map to reusable assets
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#detailed-pattern-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Detailed pattern matrix
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#plugin-readiness-rubric" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Plugin-readiness rubric
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#what-to-add-to-our-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        What to add to our documentation
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#minimal-extraction-process" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Minimal extraction process
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#critical-gaps-after-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Critical gaps after analysis
+
+    </span>
+  </a>
+
+</li>
+
+    </ul>
+
+</nav>
+                  </div>
+                </div>
+              </div>
+
+
+
+            <div class="md-content" data-md-component="content">
+
+              <article class="md-content__inner md-typeset">
+
+
+
+
+
+<h1 id="deep-analysis-of-codex-use-cases">Deep analysis of Codex use cases<a class="headerlink" href="#deep-analysis-of-codex-use-cases" title="Permanent link">&para;</a></h1>
+<p>Source status: <code>official + tool-assisted</code><br />
+Sources: <a href="https://developers.openai.com/codex/use-cases">Codex use cases</a>, <a href="https://developers.openai.com/codex/workflows">Codex workflows</a>, <a href="https://developers.openai.com/codex/skills">Agent skills</a>, <a href="https://developers.openai.com/codex/plugins">Codex plugins</a>, <a href="https://developers.openai.com/codex/plugins/build">Build plugins</a>, <a href="https://developers.openai.com/codex/guides/agents-md">AGENTS.md</a>.</p>
+<p>Analysis date: <strong>2026-05-14</strong>.</p>
+<h2 id="why-this-layer-is-needed">Why this layer is needed<a class="headerlink" href="#why-this-layer-is-needed" title="Permanent link">&para;</a></h2>
+<p>The official Codex use cases section is useful not only as a list of examples. It can be read as a catalog of product workflows from which real agent teams, skills and plugins are assembled. Each use case card usually contains:</p>
+<ul>
+<li>a concrete outcome;</li>
+<li>difficulty and time horizon;</li>
+<li>who the workflow fits;</li>
+<li>recommended skills/plugins;</li>
+<li>starter prompt;</li>
+<li>constraints before changes;</li>
+<li>expected output;</li>
+<li>verification loop;</li>
+<li>related use cases.</li>
+</ul>
+<p>For our project, this means a use case should be turned not into a note, but into an operational template. If the template repeats at least several times, it becomes a skill. If the skill is needed by several projects or teams, or requires a bundle of skills, MCP, app integrations and settings, it becomes a plugin.</p>
+<h2 id="taxonomy-of-the-official-catalog">Taxonomy of the official catalog<a class="headerlink" href="#taxonomy-of-the-official-catalog" title="Permanent link">&para;</a></h2>
+<p>The filters on the use cases page define the baseline ontology for plugin design.</p>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Official values</th>
+<th>How to use in documentation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Category</td>
+<td>Engineering, Evaluation, Front-end, Quality</td>
+<td>Defines the main result type: code, eval, UI, QA.</td>
+</tr>
+<tr>
+<td>Native</td>
+<td>iOS, Mobile, macOS</td>
+<td>Indicates platform runtimes and checks: simulator, XcodeBuildMCP, SwiftUI, Expo, macOS logs.</td>
+</tr>
+<tr>
+<td>Workflows</td>
+<td>Automation, Data, Integrations, Knowledge Work</td>
+<td>Shows that Codex works not only with code, but also with sources, tables, messages, documents and operations.</td>
+</tr>
+<tr>
+<td>Team</td>
+<td>Design, Engineering, Finance, Operations, Product, QA</td>
+<td>Helps design agent roles and tone/output for different users.</td>
+</tr>
+<tr>
+<td>Task type</td>
+<td>Analysis, Code, Design, Testing, Workflow</td>
+<td>Helps choose the mode: read-only analysis, code change, design implementation, test/eval loop, repeatable workflow.</td>
+</tr>
+</tbody>
+</table>
+<p>Main conclusion: a plugin must declare not only "what it can do", but also which category, team, task type, runtime and verification loop it is intended for.</p>
+<h2 id="collections-as-product-areas">Collections as product areas<a class="headerlink" href="#collections-as-product-areas" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Collection</th>
+<th>Meaning</th>
+<th>What to add to our docs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Production systems</td>
+<td>Controlled changes, production quality, repeatable work.</td>
+<td>More attention to review gates, evals, PR evidence, rollback, scoped diffs.</td>
+</tr>
+<tr>
+<td>Productivity and collaboration</td>
+<td>Data, source material, apps, services, action from insights.</td>
+<td>Templates for connector work: read-only first, staged drafts, no source-of-truth writes without approval.</td>
+</tr>
+<tr>
+<td>Web development</td>
+<td>Design inputs, responsive UI, frontend reviews.</td>
+<td>Visual QA loop: screenshots, Playwright, responsive viewports, existing design system.</td>
+</tr>
+<tr>
+<td>Native development</td>
+<td>iOS/macOS build, refactor, app actions, validation loop.</td>
+<td>CLI-first native loops, simulator evidence, <code>Logger</code>/<code>OSLog</code>, platform-specific plugins.</td>
+</tr>
+<tr>
+<td>Game development</td>
+<td>First playable loop to production quality.</td>
+<td>Long-running <code>/goal</code>, <code>PLAN.md</code>, visual assets, <code>.logs</code>, Playwright gameplay checks.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="anatomy-of-a-plugin-ready-use-case">Anatomy of a plugin-ready use case<a class="headerlink" href="#anatomy-of-a-plugin-ready-use-case" title="Permanent link">&para;</a></h2>
+<p>Every official use case can be decomposed into the same fields. This is the minimal structure of a future plugin blueprint.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>What to extract</th>
+<th>Where we store it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Outcome</td>
+<td>What the user gets at the end.</td>
+<td><code>docs/playbooks/*</code> and <code>docs/artifact-templates/plugin-blueprint.md</code>.</td>
+</tr>
+<tr>
+<td>User/team</td>
+<td>Who launches the workflow.</td>
+<td><code>docs/product-agent/roles.md</code>.</td>
+</tr>
+<tr>
+<td>Inputs</td>
+<td>Repo, screenshots, Figma node, Slack thread, CSV, logs, issue, PR, docs.</td>
+<td>Prompt packet and skill inputs.</td>
+</tr>
+<tr>
+<td>Read-only phase</td>
+<td>What Codex must inventory first.</td>
+<td>Workflow steps and safety rules.</td>
+</tr>
+<tr>
+<td>Plan</td>
+<td>The smallest useful plan before edits.</td>
+<td><code>PLAN.md</code> or playbook section.</td>
+</tr>
+<tr>
+<td>Skills/plugins</td>
+<td>Which capabilities are needed: Playwright, Figma, GitHub, Slack, Sentry, Spreadsheet, OpenAI Docs.</td>
+<td>Skill dependency list and plugin manifest notes.</td>
+</tr>
+<tr>
+<td>Runtime</td>
+<td>App, CLI, Cloud, GitHub, Slack, Computer Use, MCP, automation.</td>
+<td><code>docs/runtime/overview.md</code>.</td>
+</tr>
+<tr>
+<td>Verification</td>
+<td>Build, tests, evals, screenshots, simulator logs, LLM-as-judge, manual review.</td>
+<td><code>TEST.md</code>, <code>EVALS.md</code>, <code>RUNLOG.md</code>.</td>
+</tr>
+<tr>
+<td>Promotion path</td>
+<td>Manual thread -&gt; playbook -&gt; skill -&gt; plugin -&gt; automation.</td>
+<td><code>docs/playbooks/use-case-to-plugin.md</code>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="general-workflow-from-use-cases">General workflow from use cases<a class="headerlink" href="#general-workflow-from-use-cases" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>flowchart TD
+    A["Select official use case archetype"] --&gt; B["Map category, team, task type"]
+    B --&gt; C["Write task packet with inputs, constraints, done state"]
+    C --&gt; D["Read-only inventory before edits"]
+    D --&gt; E["Smallest useful plan"]
+    E --&gt; F{"Needs implementation?"}
+    F --&gt;|No| G["Reviewable analysis artifact"]
+    F --&gt;|Yes| H["Scoped code, data, UI, or ops change"]
+    H --&gt; I["Run verification loop"]
+    G --&gt; J["Evidence summary"]
+    I --&gt; J
+    J --&gt; K{"Repeated workflow?"}
+    K --&gt;|No| L["Keep as playbook/runlog"]
+    K --&gt;|Yes| M["Create skill"]
+    M --&gt; N{"Shared across projects?"}
+    N --&gt;|No| O["Repo or user skill"]
+    N --&gt;|Yes| P["Package plugin"]
+    P --&gt; Q{"Stable and scheduled?"}
+    Q --&gt;|Yes| R["Automation"]
+    Q --&gt;|No| S["Manual plugin workflow"]</code></pre>
+<h2 id="repeated-concepts">Repeated concepts<a class="headerlink" href="#repeated-concepts" title="Permanent link">&para;</a></h2>
+<h3 id="inspect-before-edit">Inspect before edit<a class="headerlink" href="#inspect-before-edit" title="Permanent link">&para;</a></h3>
+<p>In many starter prompts, Codex must first read the project, sources or current state. This repeats in evals, API migrations, data analysis, Figma-to-code, iOS simulator debugging, bug triage and deploy workflows.</p>
+<p>Document as a rule: any plugin that writes files or changes an external system must have a read-only phase.</p>
+<h3 id="smallest-useful-slice">Smallest useful slice<a class="headerlink" href="#smallest-useful-slice" title="Permanent link">&para;</a></h3>
+<p>Use cases rarely suggest "redo everything". They constrain the work to one behavior, one UI adjustment, one feature slice, one eval target or one migration checkpoint.</p>
+<p>Document as a rule: a skill must have one job. A large plugin can contain several skills, but each skill remains narrow.</p>
+<h3 id="evidence-over-assertion">Evidence over assertion<a class="headerlink" href="#evidence-over-assertion" title="Permanent link">&para;</a></h3>
+<p>Official use cases constantly require proof: eval command, Playwright check, simulator screenshot, <code>log stream</code>, build output, PR review comment, staged rows, deployment URL, source inventory.</p>
+<p>Document as a rule: the agent's final answer must include changed files, checks run, evidence, unresolved risk and next action.</p>
+<h3 id="app-path-over-raw-model-path">App path over raw model path<a class="headerlink" href="#app-path-over-raw-model-path" title="Permanent link">&para;</a></h3>
+<p>In AI app evals, an important idea is to test the path the user takes whenever possible, not only the raw prompt. This transfers to product agents: test the real endpoint, UI flow, CLI command, simulator path or connector read, not an isolated model guess.</p>
+<h3 id="staged-drafts-before-external-writes">Staged drafts before external writes<a class="headerlink" href="#staged-drafts-before-external-writes" title="Permanent link">&para;</a></h3>
+<p>Operational workflows such as onboarding, bug triage, inbox, Slack actions and verified operations separate draft/stage from actual write. The agent first prepares a reviewable artifact and explicitly forbids sending messages, creating tickets, changing sharing, inviting people or editing source-of-truth without approval.</p>
+<p>Document as a rule: all plugins with external systems must have <code>write_policy</code>: <code>read_only</code>, <code>draft_only</code>, <code>approved_write</code>.</p>
+<h3 id="runtime-follows-the-task">Runtime follows the task<a class="headerlink" href="#runtime-follows-the-task" title="Permanent link">&para;</a></h3>
+<p>Use cases show surface selection:</p>
+<ul>
+<li>GitHub review for PR review;</li>
+<li>Slack integration for async kickoff;</li>
+<li>CLI for local loops and <code>/goal</code>;</li>
+<li>App/Computer Use for actions through GUI;</li>
+<li>MCP/plugins for access to specialized tools;</li>
+<li>automations only after manual workflow stabilization.</li>
+</ul>
+<p>Document as a rule: a plugin blueprint must record supported surfaces and forbidden surfaces.</p>
+<h3 id="skills-preserve-working-behavior">Skills preserve working behavior<a class="headerlink" href="#skills-preserve-working-behavior" title="Permanent link">&para;</a></h3>
+<p>The Save workflows as skills page shows the right packaging moment: there is a working thread, review rules, test commands, release checklist, writing examples or repo scripts. A skill should not be born from an abstract idea without a successful example.</p>
+<p>Document as a rule: a skill candidate requires a working example, source material, commands/scripts, good output and a failure log.</p>
+<h3 id="goal-for-long-running-work"><code>/goal</code> for long-running work<a class="headerlink" href="#goal-for-long-running-work" title="Permanent link">&para;</a></h3>
+<p>Follow a goal adds a separate contract: the objective must be durable, the stopping condition must be verifiable, progress must move through checkpoints, and status must stay compact. This fits migrations, large refactors, prototypes, games, prompt optimization and eval loops.</p>
+<p>Document as a rule: a long-running plugin workflow must have an explicit stop condition, checkpoint cadence, max-risk boundary and pause conditions.</p>
+<h2 id="use-case-map-to-reusable-assets">Use case map to reusable assets<a class="headerlink" href="#use-case-map-to-reusable-assets" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Group</th>
+<th>Official use cases</th>
+<th>Reusable asset for our plugin</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AI quality</td>
+<td>Add evals to your AI application, Iterate on difficult problems, Upgrade your API integration</td>
+<td><code>eval-suite-writer</code>, <code>eval-loop-runner</code>, <code>api-migration-auditor</code>.</td>
+</tr>
+<tr>
+<td>PR and production review</td>
+<td>Codex code review for GitHub pull requests, Refactor your codebase, Run code migrations, Keep documentation up-to-date</td>
+<td><code>pr-risk-reviewer</code>, <code>migration-checkpointer</code>, <code>docs-drift-finder</code>.</td>
+</tr>
+<tr>
+<td>Front-end and design</td>
+<td>Build responsive front-end designs, Turn Figma designs into code, Make granular UI changes, Get from idea to proof of concept, Deploy an app or website</td>
+<td><code>ui-visual-reviewer</code>, <code>figma-to-code-planner</code>, <code>preview-deployer</code>.</td>
+</tr>
+<tr>
+<td>Native/mobile</td>
+<td>Build for iOS, Build for macOS, Add iOS app intents, Adopt liquid glass, Debug in iOS simulator, Add Mac telemetry, Refactor SwiftUI screens, Build React Native apps with Expo</td>
+<td><code>native-build-loop</code>, <code>simulator-debugger</code>, <code>swiftui-refactorer</code>, <code>telemetry-verifier</code>.</td>
+</tr>
+<tr>
+<td>Tooling</td>
+<td>Create a CLI Codex can use, Save workflows as skills, Bring your app to ChatGPT</td>
+<td><code>agent-cli-designer</code>, <code>skill-packager</code>, <code>chatgpt-app-planner</code>.</td>
+</tr>
+<tr>
+<td>Data and finance</td>
+<td>Analyze datasets and ship reports, Clean and prepare messy data, Query tabular data, Forecast cash flow, Model a DCF valuation, Review budget vs. actuals</td>
+<td><code>data-inventory-analyst</code>, <code>spreadsheet-model-reviewer</code>, <code>finance-workbook-checker</code>.</td>
+</tr>
+<tr>
+<td>Operations and collaboration</td>
+<td>Automate bug triage, Run verified operations, Kick off coding tasks from Slack, Complete tasks from messages, Manage your inbox, Prioritize Slack action items, Coordinate new-hire onboarding, Set up a teammate</td>
+<td><code>bug-triage-sweeper</code>, <code>verified-ops-runner</code>, <code>inbox-action-drafter</code>, <code>teammate-monitor</code>.</td>
+</tr>
+<tr>
+<td>Knowledge and product</td>
+<td>Draft PRDs from internal context, Learn a new concept, Turn feedback into actions, Turn user stories into UI mocks, Understand large codebases</td>
+<td><code>prd-synthesizer</code>, <code>learning-report-writer</code>, <code>feedback-action-synthesizer</code>, <code>codebase-cartographer</code>.</td>
+</tr>
+<tr>
+<td>Long-running creation</td>
+<td>Follow a goal, Create browser-based games</td>
+<td><code>goal-runner</code>, <code>prototype-builder</code>, <code>game-plan-builder</code>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="detailed-pattern-matrix">Detailed pattern matrix<a class="headerlink" href="#detailed-pattern-matrix" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Use case</th>
+<th>Main idea</th>
+<th>Artifact</th>
+<th>Verification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Add evals to your AI application</td>
+<td>Turn expected AI app behavior into a runnable eval suite before changing prompt/model/retrieval/agent.</td>
+<td>Eval config, seed cases, target adapter, eval command.</td>
+<td>Baseline run, passing/failing cases, next evals.</td>
+</tr>
+<tr>
+<td>Codex code review for GitHub pull requests</td>
+<td>Add review signal before human merge approval.</td>
+<td>PR comment, findings, AGENTS.md review rules.</td>
+<td>GitHub review thread, severity, affected files.</td>
+</tr>
+<tr>
+<td>Create a CLI Codex can use</td>
+<td>Make a composable command for API/log/export/script and a companion skill.</td>
+<td>CLI, command surface, auth/setup checks, skill.</td>
+<td>CLI runs from another folder, JSON output, draft-before-write behavior.</td>
+</tr>
+<tr>
+<td>Save workflows as skills</td>
+<td>Save a working Codex thread or runbook as a reusable skill.</td>
+<td><code>SKILL.md</code>, references, scripts, assets.</td>
+<td>Trigger tests, real task run, failure log update.</td>
+</tr>
+<tr>
+<td>Build responsive front-end designs</td>
+<td>Turn screenshots/design brief into responsive UI using the design system.</td>
+<td>Route/components/styles.</td>
+<td>Playwright visual check on desktop and mobile.</td>
+</tr>
+<tr>
+<td>Turn Figma designs into code</td>
+<td>Use structured Figma context, assets and variants.</td>
+<td>UI implementation aligned to repo patterns.</td>
+<td>Figma screenshot comparison through Playwright.</td>
+</tr>
+<tr>
+<td>Make granular UI changes</td>
+<td>One small UI adjustment at a time.</td>
+<td>Minimal UI patch.</td>
+<td>Browser inspection, file summary, stop after one change.</td>
+</tr>
+<tr>
+<td>Deploy an app or website</td>
+<td>Build/update web app and deploy preview.</td>
+<td>Working preview URL.</td>
+<td>Local build and deployment readiness check.</td>
+</tr>
+<tr>
+<td>Bring your app to ChatGPT</td>
+<td>Plan one narrow ChatGPT app outcome.</td>
+<td>MCP server plan, tool metadata, optional widget, golden prompts.</td>
+<td>Local HTTPS test and ChatGPT developer-mode verification.</td>
+</tr>
+<tr>
+<td>Build for iOS</td>
+<td>CLI-first SwiftUI scaffold/build/debug loop.</td>
+<td>App scaffold or feature slice, build-and-launch script.</td>
+<td><code>xcodebuild</code>/simulator validation.</td>
+</tr>
+<tr>
+<td>Debug in iOS simulator</td>
+<td>Reproduce, inspect UI, logs, screenshots, stack traces, patch, rerun.</td>
+<td>Repro steps, fix, evidence.</td>
+<td>Same simulator flow proves bug is gone.</td>
+</tr>
+<tr>
+<td>Build for macOS</td>
+<td>Desktop-native SwiftUI shell with explicit scene model.</td>
+<td>App shell, build/run script, desktop follow-ups.</td>
+<td><code>xcodebuild</code>, <code>swift build</code>, logs, signing checks when needed.</td>
+</tr>
+<tr>
+<td>Add Mac telemetry</td>
+<td>Add <code>Logger</code>/<code>OSLog</code> instrumentation to prove runtime actions.</td>
+<td>Structured log events.</td>
+<td>Console or <code>log stream</code> evidence.</td>
+</tr>
+<tr>
+<td>Automate bug triage</td>
+<td>Sweep alerts/issues/logs/chat and rank bugs.</td>
+<td>P0-P3 list with evidence and next action.</td>
+<td>Inaccessible sources named; no external writes.</td>
+</tr>
+<tr>
+<td>Run verified operations</td>
+<td>Normalize inputs, run approved scripts/APIs, retry bounded failures, audit result.</td>
+<td>Operation log and result artifact.</td>
+<td>Explicit approvals, bounded retries, audit trail.</td>
+</tr>
+<tr>
+<td>Coordinate new-hire onboarding</td>
+<td>Stage tracker, summaries, welcome-space plan from approved sources.</td>
+<td>Reviewable onboarding packet.</td>
+<td>No identity-bearing actions until approved.</td>
+</tr>
+<tr>
+<td>Use your computer with Codex</td>
+<td>GUI handoff across Mac apps when no plugin exists.</td>
+<td>Completed local app action or draft.</td>
+<td>Human approval for access; avoid parallel runs in same app.</td>
+</tr>
+<tr>
+<td>Follow a goal</td>
+<td>Durable objective across turns with verifiable stop condition.</td>
+<td>Active goal, checkpoint log, final evidence.</td>
+<td><code>/goal</code> status, stop condition, pause/resume/clear.</td>
+</tr>
+<tr>
+<td>Create browser-based games</td>
+<td>PLAN.md-driven long build with assets and live browser iteration.</td>
+<td>Game plan, implementation, assets, logs.</td>
+<td>Build/test, Playwright gameplay checks, asset prompt log.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="plugin-readiness-rubric">Plugin-readiness rubric<a class="headerlink" href="#plugin-readiness-rubric" title="Permanent link">&para;</a></h2>
+<p>A use case can be turned into a plugin if these conditions hold:</p>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Repetition</td>
+<td>The workflow repeats across several projects or teams.</td>
+</tr>
+<tr>
+<td>Stable input contract</td>
+<td>Required inputs and allowed formats are clear.</td>
+</tr>
+<tr>
+<td>Stable output contract</td>
+<td>The final artifact and evidence format are clear.</td>
+</tr>
+<tr>
+<td>Capability bundle</td>
+<td>Several skills, app integrations, MCP servers or scripts are needed.</td>
+</tr>
+<tr>
+<td>Safety policy</td>
+<td>There is a read/write policy, approval gates and forbidden actions.</td>
+</tr>
+<tr>
+<td>Verification</td>
+<td>There are deterministic checks, visual checks, evals or a manual review checklist.</td>
+</tr>
+<tr>
+<td>Failure log</td>
+<td>Common errors and correction methods are known.</td>
+</tr>
+<tr>
+<td>Ownership</td>
+<td>It is clear who maintains the plugin and updates sources.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="what-to-add-to-our-documentation">What to add to our documentation<a class="headerlink" href="#what-to-add-to-our-documentation" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Use cases should become a separate navigation section inside Codex, not only a source registry link.</li>
+<li>Each product-agent playbook should state its official use case archetype.</li>
+<li>The skill template should require: trigger, inputs, outputs, source material, verification, failure log, write policy.</li>
+<li>The plugin template should require: target teams, categories, task types, runtime surfaces, permissions, skills, MCP/connectors, evals, packaging, update loop.</li>
+<li>AGENTS.md should explicitly say: repeated workflows are promoted along the chain manual thread -&gt; playbook -&gt; skill -&gt; plugin -&gt; automation.</li>
+<li>For operations with external systems, staged draft policy must always be documented.</li>
+<li>For long-running work, <code>/goal</code> or an equivalent run loop with a verifiable stop condition is needed.</li>
+<li>UI/native/game workflows need visual/runtime verification, not only a code diff.</li>
+</ol>
+<h2 id="minimal-extraction-process">Minimal extraction process<a class="headerlink" href="#minimal-extraction-process" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Select an official use case or group of use cases.</li>
+<li>Write down outcome, inputs, skills/plugins, starter prompt, verification and risks.</li>
+<li>Formulate one repeatable job.</li>
+<li>Create a playbook with a manual workflow.</li>
+<li>Run the workflow manually in one project and save the runlog.</li>
+<li>Create a skill from the successful runlog.</li>
+<li>Run the skill on two different fixture projects.</li>
+<li>If the skill requires external integrations or is needed by several teams, create a plugin blueprint.</li>
+<li>Add eval cases: should trigger, should not trigger, unsafe write, missing source, verification failure.</li>
+<li>Only after a stable plugin workflow should automation be considered.</li>
+</ol>
+<h2 id="critical-gaps-after-analysis">Critical gaps after analysis<a class="headerlink" href="#critical-gaps-after-analysis" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Gap</th>
+<th>Why it matters</th>
+<th>What to do</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plugin blueprint was missing</td>
+<td>Without it, docs teach skills but do not explain packaging a reusable operating system.</td>
+<td>Add <code>docs/artifact-templates/plugin-blueprint.md</code>.</td>
+</tr>
+<tr>
+<td>Use case taxonomy was not reflected in docs</td>
+<td>The connection "team/category/task type -&gt; agent role -&gt; artifact" was lost.</td>
+<td>Add this page and link to it from playbooks.</td>
+</tr>
+<tr>
+<td>External-write safety was scattered</td>
+<td>Operational plugins are dangerous without staged drafts and approvals.</td>
+<td>Introduce <code>write_policy</code> into the plugin template.</td>
+</tr>
+<tr>
+<td><code>/goal</code> was described narrowly</td>
+<td>Long-running workflows require a durable objective and stop condition.</td>
+<td>Connect <code>/goal</code> with migrations, prototypes, eval loops and games.</td>
+</tr>
+<tr>
+<td>Visual/runtime evidence was not a general rule</td>
+<td>UI/native/game workflows cannot be validated only by reading the diff.</td>
+<td>Add evidence requirements to playbooks and the plugin template.</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </article>
+            </div>
+
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+
+      </main>
+
+        <footer class="md-footer">
+
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+
+
+</div>
+
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+
+
+
+
+
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.indexes", "navigation.top", "search.highlight", "search.suggest", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+
+
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+
+        <script src="../../assets/javascripts/local-file-i18n.js"></script>
+
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+
+
+  </body>
+</html>

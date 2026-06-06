@@ -31,10 +31,10 @@ i18n_architecture:
   en_under: /en/
   fallback_to_default: false
   reconfigure_material: true
-  reconfigure_search: true
+  reconfigure_search: false
 ```
 
-Status terms for verification: RU default at site root, EN under /en/, fallback_to_default: false, reconfigure_material: true, reconfigure_search: true.
+Status terms for verification after the full-site B34E M47 correction: RU default at site root, EN under /en/, fallback_to_default: false, reconfigure_material: true, reconfigure_search: false.
 
 ## B34-I18N-M25 Build And Switcher
 
@@ -45,7 +45,7 @@ Status terms for verification: RU default at site root, EN under /en/, fallback_
 - Material language switcher links for `RU` and `EN`;
 - localized EN navigation over the public-ready page set;
 - localized `site_name` and `site_description` values;
-- search configuration with duplicate fallback protection through `reconfigure_search: true`.
+- search configuration with fallback protection through `fallback_to_default: false` and full-site page parity through `reconfigure_search: false`.
 
 The language switcher is a documentation UI affordance only. It is not runtime automation and does not imply publication.
 
@@ -109,7 +109,7 @@ Navigation policy:
 Search policy:
 
 - `fallback_to_default: false` blocks RU fallback pages in EN search;
-- `reconfigure_search: true` allows the i18n plugin to reduce duplicated search entries;
+- `reconfigure_search: false` keeps real EN sibling entries in search even when their internal evidence text matches the RU page;
 - RU/EN search configuration remains static and local to MkDocs.
 
 Metadata policy:

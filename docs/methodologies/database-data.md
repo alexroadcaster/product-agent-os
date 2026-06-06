@@ -159,7 +159,7 @@ Database & Data слой описывает schema ownership, migrations, constr
 - Data quality checks are executable or tooling gap is recorded.
 - Production data access has approval and audit evidence.
 
-## Failure modes
+## Типовые сбои
 
 - Manual production SQL is the only record of a change.
 - ORM schema and real database constraints drift silently.

@@ -1,6 +1,8 @@
 import unittest
+import json
 from pathlib import Path
 import re
+from urllib.parse import unquote
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -8,6 +10,8 @@ DOCS = ROOT / "docs"
 PRODUCT_AGENT_OS = DOCS / "product-agent-os"
 MKDOCS = ROOT / "mkdocs.yml"
 CHECK_DOCS = ROOT / "tools" / "check_docs.py"
+SITE = ROOT / "site"
+LOCAL_FILE_I18N_JS = DOCS / "assets" / "javascripts" / "local-file-i18n.js"
 SOURCE_REGISTRY = DOCS / "sources" / "registry.md"
 TRACK_BACKLOG = DOCS / "sources" / "product-agent-os-track-8-detailed-backlog.md"
 TRACK9_BACKLOG = DOCS / "sources" / "product-agent-os-track-9-backlog.md"
@@ -21,6 +25,12 @@ BATCH34B_PUBLIC_COPY_REWRITE = (
 )
 BATCH34C_I18N_LOCALIZATION = (
     DOCS / "sources" / "product-agent-os-batch34c-i18n-localization.md"
+)
+BATCH34D_QA_CLOSURE = (
+    DOCS / "sources" / "product-agent-os-batch34d-product-docs-qa-closure.md"
+)
+BATCH34E_FULL_SITE_INVENTORY = (
+    DOCS / "sources" / "product-agent-os-batch34e-full-site-i18n-inventory.md"
 )
 BATCH35_APPROVAL_DRAFT = DOCS / "sources" / "product-agent-os-batch35-approval-packet-draft.md"
 TRACK9_PLAN = DOCS / "superpowers" / "plans" / "2026-05-25-track-9-methodology-intelligence.md"
@@ -43,6 +53,13 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             if name in {"root_readme", "plugin_readme"}
         }
         return internal or documents
+
+    def _localized_contract_text(self, path):
+        text = path.read_text(encoding="utf-8-sig")
+        en_path = path.with_name(path.stem + ".en" + path.suffix)
+        if en_path.exists():
+            text += "\n" + en_path.read_text(encoding="utf-8-sig")
+        return text
 
     def _batch34_public_ready_pages(self):
         return [
@@ -82,6 +99,34 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             DOCS / "playbooks" / "use-case-to-plugin.md",
             DOCS / "playbooks" / "workspace-readiness-audit.md",
         ]
+
+    def _rendered_site_path_for_source(self, source_path, locale=None):
+        rendered = source_path.relative_to(DOCS).with_suffix(".html")
+        if locale == "en":
+            return SITE / "en" / rendered
+        return SITE / rendered
+
+    def _language_switcher_hrefs(self, html):
+        links = {}
+        for match in re.finditer(r"<a\b[^>]*>", html):
+            tag = match.group(0)
+            if "md-select__link" not in tag:
+                continue
+            hreflang = re.search(r'\bhreflang="([^"]+)"', tag)
+            href = re.search(r'\bhref="([^"]+)"', tag)
+            if hreflang and href:
+                links.setdefault(hreflang.group(1), []).append(href.group(1))
+        return links
+
+    def _resolve_site_href(self, html_path, href):
+        target = href.split("#", 1)[0].split("?", 1)[0]
+        if not target:
+            return html_path.resolve()
+        if target.startswith("/") or target.startswith("//"):
+            return None
+        if re.match(r"^[a-zA-Z][a-zA-Z0-9+.-]*:", target):
+            return None
+        return (html_path.parent / unquote(target)).resolve()
 
     def test_t8h_dedicated_docs_pages_exist_with_operating_contracts(self):
         expected_pages = {
@@ -123,7 +168,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             with self.subTest(filename=filename):
                 path = PRODUCT_AGENT_OS / filename
                 self.assertTrue(path.exists(), path)
-                text = path.read_text(encoding="utf-8")
+                text = self._localized_contract_text(path)
                 self.assertIn("Source status:", text)
                 self.assertIn("Inputs", text)
                 self.assertIn("Outputs", text)
@@ -149,7 +194,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         path = PRODUCT_AGENT_OS / "methodology-intelligence.md"
         self.assertTrue(path.exists(), path)
 
-        text = path.read_text(encoding="utf-8")
+        text = self._localized_contract_text(path)
         self.assertIn("Source status:", text)
         self.assertIn("Inputs", text)
         self.assertIn("Outputs", text)
@@ -163,8 +208,8 @@ class ProductAgentOsDocsTest(unittest.TestCase):
 
     def test_track10_guided_question_status_dashboard_docs_are_synced(self):
         registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
-        behavioral_evals = (PRODUCT_AGENT_OS / "behavioral-evals.md").read_text(encoding="utf-8")
-        scenarios = (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8")
+        behavioral_evals = self._localized_contract_text(PRODUCT_AGENT_OS / "behavioral-evals.md")
+        scenarios = self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md")
         root_readme = ROOT_README.read_text(encoding="utf-8")
         plugin_readme = PLUGIN_README.read_text(encoding="utf-8")
         control_plane = "\n".join(
@@ -228,12 +273,10 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
         backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
         documents = {
-            "index": (PRODUCT_AGENT_OS / "index.md").read_text(encoding="utf-8"),
-            "technical": (PRODUCT_AGENT_OS / "technical.md").read_text(encoding="utf-8"),
-            "scenarios": (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8"),
-            "behavioral_evals": (PRODUCT_AGENT_OS / "behavioral-evals.md").read_text(
-                encoding="utf-8"
-            ),
+            "index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
+            "behavioral_evals": self._localized_contract_text(PRODUCT_AGENT_OS / "behavioral-evals.md"),
             "root_readme": ROOT_README.read_text(encoding="utf-8"),
             "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
         }
@@ -279,12 +322,12 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "agent-skill-evaluation-report.html",
             "modernization candidates",
             "approval boundary",
-            "source-of-truth policy",
-            "staged evidence only",
-            "report is not source of truth",
-            "no live eval/model/API calls",
-            "no active schedules",
-            "no self-applied updates",
+            "control-plane artifacts",
+            "staged evidence",
+            "report",
+            "live eval/model/API calls",
+            "active schedules",
+            "self-applied updates",
             "L0",
             "L1",
             "L2",
@@ -333,9 +376,9 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
         backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
         documents = {
-            "index": (PRODUCT_AGENT_OS / "index.md").read_text(encoding="utf-8"),
-            "technical": (PRODUCT_AGENT_OS / "technical.md").read_text(encoding="utf-8"),
-            "scenarios": (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8"),
+            "index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
             "root_readme": ROOT_README.read_text(encoding="utf-8"),
             "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
         }
@@ -412,9 +455,9 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         documents = {
             "root_readme": ROOT_README.read_text(encoding="utf-8"),
             "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
-            "product_index": (PRODUCT_AGENT_OS / "index.md").read_text(encoding="utf-8"),
-            "technical": (PRODUCT_AGENT_OS / "technical.md").read_text(encoding="utf-8"),
-            "scenarios": (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8"),
+            "product_index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
         }
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
@@ -548,9 +591,9 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         documents = {
             "root_readme": ROOT_README.read_text(encoding="utf-8"),
             "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
-            "product_index": (PRODUCT_AGENT_OS / "index.md").read_text(encoding="utf-8"),
-            "technical": (PRODUCT_AGENT_OS / "technical.md").read_text(encoding="utf-8"),
-            "scenarios": (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8"),
+            "product_index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
         }
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
@@ -636,9 +679,9 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         documents = {
             "root_readme": ROOT_README.read_text(encoding="utf-8"),
             "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
-            "product_index": (PRODUCT_AGENT_OS / "index.md").read_text(encoding="utf-8"),
-            "technical": (PRODUCT_AGENT_OS / "technical.md").read_text(encoding="utf-8"),
-            "scenarios": (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8"),
+            "product_index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
         }
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
@@ -717,9 +760,9 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         documents = {
             "root_readme": ROOT_README.read_text(encoding="utf-8"),
             "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
-            "product_index": (PRODUCT_AGENT_OS / "index.md").read_text(encoding="utf-8"),
-            "technical": (PRODUCT_AGENT_OS / "technical.md").read_text(encoding="utf-8"),
-            "scenarios": (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8"),
+            "product_index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
         }
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
@@ -809,9 +852,9 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         documents = {
             "root_readme": ROOT_README.read_text(encoding="utf-8"),
             "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
-            "product_index": (PRODUCT_AGENT_OS / "index.md").read_text(encoding="utf-8"),
-            "technical": (PRODUCT_AGENT_OS / "technical.md").read_text(encoding="utf-8"),
-            "scenarios": (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8"),
+            "product_index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
         }
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
@@ -906,9 +949,9 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         documents = {
             "root_readme": ROOT_README.read_text(encoding="utf-8"),
             "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
-            "product_index": (PRODUCT_AGENT_OS / "index.md").read_text(encoding="utf-8"),
-            "technical": (PRODUCT_AGENT_OS / "technical.md").read_text(encoding="utf-8"),
-            "scenarios": (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8"),
+            "product_index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
         }
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
@@ -1003,9 +1046,9 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         documents = {
             "root_readme": ROOT_README.read_text(encoding="utf-8"),
             "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
-            "product_index": (PRODUCT_AGENT_OS / "index.md").read_text(encoding="utf-8"),
-            "technical": (PRODUCT_AGENT_OS / "technical.md").read_text(encoding="utf-8"),
-            "scenarios": (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8"),
+            "product_index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
         }
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
@@ -1121,9 +1164,9 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         documents = {
             "root_readme": ROOT_README.read_text(encoding="utf-8"),
             "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
-            "product_index": (PRODUCT_AGENT_OS / "index.md").read_text(encoding="utf-8"),
-            "technical": (PRODUCT_AGENT_OS / "technical.md").read_text(encoding="utf-8"),
-            "scenarios": (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8"),
+            "product_index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
         }
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
@@ -1236,9 +1279,9 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         documents = {
             "root_readme": ROOT_README.read_text(encoding="utf-8"),
             "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
-            "product_index": (PRODUCT_AGENT_OS / "index.md").read_text(encoding="utf-8"),
-            "technical": (PRODUCT_AGENT_OS / "technical.md").read_text(encoding="utf-8"),
-            "scenarios": (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8"),
+            "product_index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
         }
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
@@ -1349,9 +1392,9 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         documents = {
             "root_readme": ROOT_README.read_text(encoding="utf-8"),
             "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
-            "product_index": (PRODUCT_AGENT_OS / "index.md").read_text(encoding="utf-8"),
-            "technical": (PRODUCT_AGENT_OS / "technical.md").read_text(encoding="utf-8"),
-            "scenarios": (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8"),
+            "product_index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
         }
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
@@ -1468,9 +1511,9 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         documents = {
             "root_readme": ROOT_README.read_text(encoding="utf-8"),
             "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
-            "product_index": (PRODUCT_AGENT_OS / "index.md").read_text(encoding="utf-8"),
-            "technical": (PRODUCT_AGENT_OS / "technical.md").read_text(encoding="utf-8"),
-            "scenarios": (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8"),
+            "product_index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
         }
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
@@ -1598,9 +1641,9 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         documents = {
             "root_readme": ROOT_README.read_text(encoding="utf-8"),
             "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
-            "product_index": (PRODUCT_AGENT_OS / "index.md").read_text(encoding="utf-8"),
-            "technical": (PRODUCT_AGENT_OS / "technical.md").read_text(encoding="utf-8"),
-            "scenarios": (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8"),
+            "product_index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
         }
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
@@ -1726,9 +1769,9 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         documents = {
             "root_readme": ROOT_README.read_text(encoding="utf-8"),
             "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
-            "product_index": (PRODUCT_AGENT_OS / "index.md").read_text(encoding="utf-8"),
-            "technical": (PRODUCT_AGENT_OS / "technical.md").read_text(encoding="utf-8"),
-            "scenarios": (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8"),
+            "product_index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
         }
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
@@ -1850,9 +1893,9 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         documents = {
             "root_readme": ROOT_README.read_text(encoding="utf-8"),
             "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
-            "product_index": (PRODUCT_AGENT_OS / "index.md").read_text(encoding="utf-8"),
-            "technical": (PRODUCT_AGENT_OS / "technical.md").read_text(encoding="utf-8"),
-            "scenarios": (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8"),
+            "product_index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
         }
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
@@ -2054,7 +2097,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             path = PRODUCT_AGENT_OS / filename
             with self.subTest(page=filename, exists=True):
                 self.assertTrue(path.exists(), path)
-            text = path.read_text(encoding="utf-8")
+            text = self._localized_contract_text(path)
             with self.subTest(page=filename, source_status=True):
                 self.assertIn("Source status: `official + experiment`", text)
             for required_heading in ["Verification", "Risks"]:
@@ -2501,7 +2544,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "EN under /en/",
             "fallback_to_default: false",
             "reconfigure_material: true",
-            "reconfigure_search: true",
+            "reconfigure_search: false",
             "terminology_allowlist",
             "localized_page_parity",
             "no live server",
@@ -2519,7 +2562,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "docs_structure: suffix",
             "fallback_to_default: false",
             "reconfigure_material: true",
-            "reconfigure_search: true",
+            "reconfigure_search: false",
             "locale: ru",
             "default: true",
             "locale: en",
@@ -2629,15 +2672,1480 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             with self.subTest(control_plane=expected):
                 self.assertIn(expected, control_plane)
 
+    def test_track10_task26_batch34d_product_docs_qa_and_closure_is_recorded(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        plan = TRACK10_PLAN.read_text(encoding="utf-8")
+        config = MKDOCS.read_text(encoding="utf-8")
+        check_docs = CHECK_DOCS.read_text(encoding="utf-8")
+        packet = BATCH34D_QA_CLOSURE.read_text(encoding="utf-8")
+        control_plane = "\n".join(
+            path.read_text(encoding="utf-8")
+            for path in [REQUIREMENTS, PLAN, TEST, EVALS, RUNLOG, AGENTS]
+        )
+
+        for expected in [
+            "B34-QA-M31",
+            "B34-QA-M32",
+            "B34-QA-M33",
+            "public_forbidden_terms",
+            "localized_page_parity",
+            "Source status",
+            "localized_nav_coverage",
+            "static_html_language_switcher_evidence",
+            "regular site/ rebuild evidence",
+            "no live server",
+            "no browser automation",
+            "no provider/live external model/API calls",
+            "no canonical graph mutation",
+            "no git stage/commit/push/PR",
+        ]:
+            with self.subTest(packet=expected):
+                self.assertIn(expected, packet)
+
+        public_forbidden_pattern = re.compile(
+            r"\b(Task|Track|Batch)\b|T[0-9]+-[A-Z0-9-]+|B[0-9]+-[A-Z]+-M[0-9]+"
+        )
+        for path in self._batch34_public_ready_pages():
+            rel_path = path.relative_to(ROOT).as_posix()
+            en_path = path.with_name(path.stem + ".en" + path.suffix)
+            en_rel_path = en_path.relative_to(ROOT).as_posix()
+            text = path.read_text(encoding="utf-8")
+            en_text = en_path.read_text(encoding="utf-8")
+
+            with self.subTest(source_status=rel_path):
+                self.assertIn("Source status:", text)
+                self.assertIn("Source status:", en_text)
+            with self.subTest(public_forbidden_terms=rel_path):
+                self.assertIsNone(public_forbidden_pattern.search(text), rel_path)
+                self.assertIsNone(public_forbidden_pattern.search(en_text), en_rel_path)
+            with self.subTest(localized_page_parity=rel_path):
+                self.assertTrue(en_path.exists(), en_path)
+                self.assertIn(rel_path, packet)
+                self.assertIn(en_rel_path, packet)
+            with self.subTest(en_has_no_cyrillic=en_rel_path):
+                self.assertIsNone(re.search(r"[\u0400-\u04FF]", en_text), en_rel_path)
+
+        for expected in [
+            "plugins:",
+            "- i18n:",
+            "docs_structure: suffix",
+            "fallback_to_default: false",
+            "reconfigure_material: true",
+            "reconfigure_search: false",
+            "locale: ru",
+            "locale: en",
+            "link: /en/",
+            "name: RU",
+            "name: EN",
+        ]:
+            with self.subTest(localized_nav_coverage=expected):
+                self.assertIn(expected, config)
+
+        for expected in [
+            SITE / "index.html",
+            SITE / "en" / "index.html",
+            SITE / "product-agent-os" / "index.html",
+            SITE / "en" / "product-agent-os" / "index.html",
+        ]:
+            with self.subTest(rendered_site=expected):
+                self.assertTrue(expected.exists(), expected)
+
+        rendered_html = "\n".join(
+            path.read_text(encoding="utf-8")
+            for path in [
+                SITE / "index.html",
+                SITE / "en" / "index.html",
+                SITE / "product-agent-os" / "index.html",
+                SITE / "en" / "product-agent-os" / "index.html",
+            ]
+        )
+        for expected in [
+            "md-select",
+            'hreflang="ru"',
+            'hreflang="en"',
+            "/en/",
+        ]:
+            with self.subTest(static_html_language_switcher_evidence=expected):
+                self.assertIn(expected, rendered_html)
+
+        self.assertIn('sources" / "product-agent-os-batch34d-product-docs-qa-closure.md', check_docs)
+
+        for expected in [
+            "Product-Agent OS Batch 34D product docs QA and closure packet",
+            "B34-QA-M31..M33",
+            "static_html_language_switcher_evidence",
+            "regular site/ rebuild evidence",
+            "verification_status:",
+        ]:
+            with self.subTest(source_registry=expected):
+                self.assertIn(expected, registry)
+
+        for expected in [
+            "`done_through_m33` | Batch 34D product docs QA and closure |",
+            "B34-QA-M31..M33",
+            "public_forbidden_terms",
+            "localized_page_parity",
+            "static_html_language_switcher_evidence",
+            "regular site/ rebuild evidence",
+            "Batch 35 execution remains separate and approval-required",
+        ]:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        for expected in [
+            "Batch 34D: Product Docs QA And Closure",
+            "B34-QA-M31",
+            "B34-QA-M33",
+            "done_through_m33",
+            "Execution status through Batch 34D",
+        ]:
+            with self.subTest(plan=expected):
+                self.assertIn(expected, plan)
+
+        for expected in [
+            "Batch 34D product docs QA and closure",
+            "B34-QA-M31..M33",
+            "public_forbidden_terms",
+            "localized_page_parity",
+            "static_html_language_switcher_evidence",
+            "regular site/ rebuild evidence",
+            "no live server",
+            "no browser automation",
+            "no provider/live external model/API calls",
+            "no canonical graph mutation",
+            "no git stage/commit/push/PR",
+        ]:
+            with self.subTest(control_plane=expected):
+                self.assertIn(expected, control_plane)
+
+    def test_track10_task26_local_file_language_switcher_is_file_safe(self):
+        config = MKDOCS.read_text(encoding="utf-8")
+        script = LOCAL_FILE_I18N_JS.read_text(encoding="utf-8")
+
+        self.assertIn("assets/javascripts/local-file-i18n.js", config)
+        for expected in [
+            'window.location.protocol !== "file:"',
+            'a[href="/en/"], link[href="/en/"]',
+            'a[href="/"], link[href="/"]',
+            "assets/javascripts/local-file-i18n.js",
+            "en/index.html",
+        ]:
+            with self.subTest(local_file_i18n_guard=expected):
+                self.assertIn(expected, script)
+
+        pages_with_absolute_en = []
+        for path in SITE.rglob("*.html"):
+            html = path.read_text(encoding="utf-8")
+            if 'href="/en/"' in html:
+                pages_with_absolute_en.append(path)
+                with self.subTest(local_file_guard_loaded=path.relative_to(ROOT).as_posix()):
+                    self.assertIn("assets/javascripts/local-file-i18n.js", html)
+
+        self.assertEqual(
+            [],
+            [path.relative_to(SITE).as_posix() for path in pages_with_absolute_en],
+            "full-site i18n parity should not leave RU pages with absolute /en/ fallback links",
+        )
+        self.assertTrue((SITE / "en" / "index.html").exists())
+
+    def test_track10_task26_ru_localized_pages_do_not_use_english_explanatory_copy(self):
+        localized_ru_pages = sorted(
+            path
+            for path in self._batch34_public_ready_pages()
+            if path.exists()
+            and path.with_name(path.stem + ".en" + path.suffix).exists()
+        )
+        self.assertGreaterEqual(len(localized_ru_pages), 35)
+
+        english_markers = {
+            "a",
+            "an",
+            "and",
+            "are",
+            "as",
+            "at",
+            "be",
+            "before",
+            "by",
+            "can",
+            "default",
+            "do",
+            "does",
+            "each",
+            "for",
+            "from",
+            "has",
+            "have",
+            "in",
+            "into",
+            "is",
+            "it",
+            "its",
+            "no",
+            "not",
+            "of",
+            "on",
+            "only",
+            "or",
+            "over",
+            "path",
+            "remain",
+            "remains",
+            "run",
+            "runs",
+            "start",
+            "starts",
+            "support",
+            "supports",
+            "that",
+            "the",
+            "this",
+            "through",
+            "to",
+            "under",
+            "use",
+            "used",
+            "uses",
+            "validate",
+            "validates",
+            "when",
+            "where",
+            "with",
+            "without",
+            "write",
+            "writes",
+        }
+        forbidden_phrases = [
+            "Target users",
+            "Supported surfaces",
+            "Plugin package",
+            "Lifecycle state machine",
+            "Generated project files",
+            "System file update policy",
+            "Failure modes",
+            "Acceptance criteria",
+            "Definition of ready",
+            "Current operating boundary",
+            "Inputs",
+            "Outputs",
+            "Verification",
+            "Risks",
+            "Expected behavior",
+            "Forbidden behavior",
+            "Source of truth",
+            "Not source of truth",
+            "Generated artifacts are",
+            "This page",
+            "This order",
+            "The loop",
+            "Expected artifacts",
+            "Navigation and docs tooling",
+        ]
+        allowed_line_prefixes = ("Source status:", "Источники:")
+        word_pattern = re.compile(r"[A-Za-z][A-Za-z0-9_./-]*")
+
+        unexpected = {}
+        for path in localized_ru_pages:
+            in_code = False
+            page_hits = []
+            for line_no, line in enumerate(path.read_text(encoding="utf-8-sig").splitlines(), 1):
+                stripped = line.strip().lstrip("\ufeff")
+                if stripped.startswith("```"):
+                    in_code = not in_code
+                    continue
+                if in_code or not stripped or stripped.startswith("| ---"):
+                    continue
+                if stripped.startswith(allowed_line_prefixes):
+                    continue
+
+                cleaned = re.sub(r"https?://\S+", " ", stripped)
+                cleaned = re.sub(r"`[^`]*`", " ", cleaned)
+                cleaned = re.sub(r"\buse cases?\b", " ", cleaned, flags=re.I)
+                words = word_pattern.findall(cleaned)
+                marker_count = sum(
+                    1 for word in words if word.lower().strip("./-") in english_markers
+                )
+                phrase_hit = next(
+                    (phrase for phrase in forbidden_phrases if phrase in cleaned), None
+                )
+                if marker_count >= 2 or phrase_hit:
+                    page_hits.append(f"{line_no}: {stripped}")
+
+            if page_hits:
+                unexpected[path.relative_to(ROOT).as_posix()] = page_hits[:10]
+
+        self.assertEqual({}, unexpected)
+
+    def test_track10_task26_batch34e_m45_full_site_ru_quality_red_gate(self):
+        packet = BATCH34E_FULL_SITE_INVENTORY.read_text(encoding="utf-8")
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        plan = TRACK10_PLAN.read_text(encoding="utf-8")
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "agents": AGENTS.read_text(encoding="utf-8"),
+        }
+
+        for expected in [
+            "B34E-I18N-M45",
+            "done_through_m45",
+            "full_site_ru_quality_sweep",
+            "ru_source_forbidden_english_phrase_hits: 0",
+        ]:
+            with self.subTest(packet=expected):
+                self.assertIn(expected, packet)
+
+        for expected in [
+            "| `done_through_m45` | Batch 34E M45 RU quality sweep |",
+            "full_site_ru_quality_sweep",
+            "B34E-I18N-M46..M49",
+        ]:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        for expected in [
+            "Product-Agent OS Batch 34E M45 RU quality sweep",
+            "full_site_ru_quality_sweep",
+            "verification_status:",
+        ]:
+            with self.subTest(registry=expected):
+                self.assertIn(expected, registry)
+
+        self.assertIn("Execution status through Batch 34E M45", plan)
+
+        for filename, text in control_plane.items():
+            for expected in [
+                "B34E-I18N-M45",
+                "done_through_m45",
+                "full_site_ru_quality_sweep",
+                "B34E-I18N-M46..M49",
+                "no live server",
+                "no browser automation",
+                "no provider/live external model/API calls",
+                "no canonical graph mutation",
+                "no git stage/commit/push/PR",
+            ]:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
+        localized_ru_pages = sorted(
+            path
+            for path in DOCS.rglob("*.md")
+            if not path.name.endswith(".en.md")
+            and path.with_name(path.stem + ".en" + path.suffix).exists()
+        )
+        self.assertEqual(127, len(localized_ru_pages))
+
+        forbidden_phrases = [
+            "Target users",
+            "Supported surfaces",
+            "Plugin package",
+            "Lifecycle state machine",
+            "Generated project files",
+            "System file update policy",
+            "Failure modes",
+            "Acceptance criteria",
+            "Definition of ready",
+            "Current operating boundary",
+            "Expected behavior",
+            "Forbidden behavior",
+            "Source of truth",
+            "Not source of truth",
+            "Generated artifacts are",
+            "This page",
+            "This order",
+            "The loop",
+            "Expected artifacts",
+            "Navigation and docs tooling",
+        ]
+        unexpected = {}
+        for path in localized_ru_pages:
+            hits = []
+            in_code = False
+            for line_no, line in enumerate(path.read_text(encoding="utf-8-sig").splitlines(), 1):
+                stripped = line.strip().lstrip("\ufeff")
+                if stripped.startswith("```"):
+                    in_code = not in_code
+                    continue
+                if in_code or not stripped:
+                    continue
+                cleaned = re.sub(r"https?://\S+", " ", stripped)
+                cleaned = re.sub(r"`[^`]*`", " ", cleaned)
+                phrase_hit = next(
+                    (phrase for phrase in forbidden_phrases if phrase in cleaned), None
+                )
+                if phrase_hit:
+                    hits.append(f"{line_no}: {stripped}")
+            if hits:
+                unexpected[path.relative_to(ROOT).as_posix()] = hits[:10]
+
+        self.assertEqual({}, unexpected)
+
+    def test_track10_task26_batch34e_m46_language_switcher_parity_is_recorded(self):
+        packet = BATCH34E_FULL_SITE_INVENTORY.read_text(encoding="utf-8")
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        plan = TRACK10_PLAN.read_text(encoding="utf-8")
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "agents": AGENTS.read_text(encoding="utf-8"),
+        }
+
+        for expected in [
+            "B34E-I18N-M46",
+            "done_through_m46",
+            "full_site_language_switcher_parity",
+            "static_language_switcher_pairs_checked: 127",
+            "language_switcher_pair_failures: 0",
+            "file_url_escape_failures: 0",
+        ]:
+            with self.subTest(packet=expected):
+                self.assertIn(expected, packet)
+
+        for expected in [
+            "| `done_through_m46` | Batch 34E M46 full-site language switcher parity |",
+            "full_site_language_switcher_parity",
+            "B34E-I18N-M47..M49",
+        ]:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        for expected in [
+            "Product-Agent OS Batch 34E M46 language switcher parity",
+            "full_site_language_switcher_parity",
+            "verification_status:",
+        ]:
+            with self.subTest(registry=expected):
+                self.assertIn(expected, registry)
+
+        self.assertIn("Execution status through Batch 34E M46", plan)
+
+        for filename, text in control_plane.items():
+            for expected in [
+                "B34E-I18N-M46",
+                "done_through_m46",
+                "full_site_language_switcher_parity",
+                "B34E-I18N-M47..M49",
+                "no live server",
+                "no browser automation",
+                "no provider/live external model/API calls",
+                "no canonical graph mutation",
+                "no git stage/commit/push/PR",
+            ]:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
+        source_pages = sorted(
+            path
+            for path in DOCS.rglob("*.md")
+            if not path.name.endswith(".en.md")
+            and path.with_name(path.stem + ".en" + path.suffix).exists()
+        )
+        self.assertEqual(127, len(source_pages))
+
+        missing_rendered = []
+        pair_failures = []
+        file_escape_failures = []
+        site_root = SITE.resolve()
+        for source_path in source_pages:
+            ru_html = self._rendered_site_path_for_source(source_path)
+            en_html = self._rendered_site_path_for_source(source_path, locale="en")
+            expected = {
+                "ru": ru_html.resolve(),
+                "en": en_html.resolve(),
+            }
+
+            for rendered in [ru_html, en_html]:
+                if not rendered.exists():
+                    missing_rendered.append(rendered.relative_to(SITE).as_posix())
+
+            if missing_rendered:
+                continue
+
+            pages = {
+                "ru": (ru_html, self._language_switcher_hrefs(ru_html.read_text(encoding="utf-8"))),
+                "en": (en_html, self._language_switcher_hrefs(en_html.read_text(encoding="utf-8"))),
+            }
+            for page_locale, (html_path, links) in pages.items():
+                for target_locale, expected_path in expected.items():
+                    hrefs = links.get(target_locale, [])
+                    if not hrefs:
+                        pair_failures.append(
+                            f"{html_path.relative_to(SITE).as_posix()}: missing {target_locale}"
+                        )
+                        continue
+
+                    resolved_hrefs = []
+                    for href in hrefs:
+                        resolved = self._resolve_site_href(html_path, href)
+                        if resolved is None:
+                            file_escape_failures.append(
+                                f"{html_path.relative_to(SITE).as_posix()}: {target_locale} -> {href}"
+                            )
+                            continue
+                        try:
+                            resolved.relative_to(site_root)
+                        except ValueError:
+                            file_escape_failures.append(
+                                f"{html_path.relative_to(SITE).as_posix()}: {target_locale} -> {href}"
+                            )
+                            continue
+                        resolved_hrefs.append(resolved)
+
+                    if expected_path not in resolved_hrefs:
+                        pair_failures.append(
+                            f"{html_path.relative_to(SITE).as_posix()}: "
+                            f"{page_locale}->{target_locale} expected "
+                            f"{expected_path.relative_to(SITE).as_posix()}"
+                        )
+
+        self.assertEqual([], missing_rendered[:20])
+        self.assertEqual([], pair_failures[:20])
+        self.assertEqual([], file_escape_failures[:20])
+
+    def test_track10_task26_batch34e_m47_search_sitemap_parity_is_recorded(self):
+        packet = BATCH34E_FULL_SITE_INVENTORY.read_text(encoding="utf-8")
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        plan = TRACK10_PLAN.read_text(encoding="utf-8")
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "agents": AGENTS.read_text(encoding="utf-8"),
+        }
+
+        for expected in [
+            "B34E-I18N-M47",
+            "done_through_m47",
+            "full_site_search_sitemap_parity",
+            "strict_mkdocs_build_exit_code: 0",
+            "search_index_ru_pages_present: 127",
+            "search_index_en_pages_present: 127",
+            "sitemap_ru_pages_present: 127",
+            "sitemap_en_pages_present: 127",
+            "search_index_ru_fallback_pollution: 0",
+            "sitemap_ru_fallback_pollution: 0",
+        ]:
+            with self.subTest(packet=expected):
+                self.assertIn(expected, packet)
+
+        for expected in [
+            "| `done_through_m47` | Batch 34E M47 search, sitemap and strict build parity |",
+            "full_site_search_sitemap_parity",
+            "B34E-I18N-M48..M49",
+        ]:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        for expected in [
+            "Product-Agent OS Batch 34E M47 search sitemap and strict build parity",
+            "full_site_search_sitemap_parity",
+            "verification_status:",
+        ]:
+            with self.subTest(registry=expected):
+                self.assertIn(expected, registry)
+
+        self.assertIn("Execution status through Batch 34E M47", plan)
+
+        for filename, text in control_plane.items():
+            for expected in [
+                "B34E-I18N-M47",
+                "done_through_m47",
+                "full_site_search_sitemap_parity",
+                "B34E-I18N-M48..M49",
+                "no live server",
+                "no browser automation",
+                "no provider/live external model/API calls",
+                "no canonical graph mutation",
+                "no git stage/commit/push/PR",
+            ]:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
+        source_pages = sorted(
+            path
+            for path in DOCS.rglob("*.md")
+            if not path.name.endswith(".en.md")
+            and path.with_name(path.stem + ".en" + path.suffix).exists()
+        )
+        self.assertEqual(127, len(source_pages))
+
+        expected_ru = {
+            source_path.relative_to(DOCS).with_suffix(".html").as_posix()
+            for source_path in source_pages
+        }
+        expected_en = {
+            "en/" + source_path.relative_to(DOCS).with_suffix(".html").as_posix()
+            for source_path in source_pages
+        }
+
+        search_index = SITE / "search" / "search_index.json"
+        sitemap = SITE / "sitemap.xml"
+        self.assertTrue(search_index.exists())
+        self.assertTrue(sitemap.exists())
+
+        search_locations = {
+            doc.get("location", "").split("#", 1)[0]
+            for doc in json.loads(search_index.read_text(encoding="utf-8")).get("docs", [])
+        }
+        sitemap_locations = set(
+            match.split("#", 1)[0]
+            for match in re.findall(
+                r"<loc>(.*?)</loc>",
+                sitemap.read_text(encoding="utf-8"),
+            )
+        )
+
+        missing_search_ru = sorted(expected_ru - search_locations)
+        missing_search_en = sorted(expected_en - search_locations)
+        missing_sitemap_ru = sorted(expected_ru - sitemap_locations)
+        missing_sitemap_en = sorted(expected_en - sitemap_locations)
+
+        self.assertEqual([], missing_search_ru[:20])
+        self.assertEqual([], missing_search_en[:20])
+        self.assertEqual([], missing_sitemap_ru[:20])
+        self.assertEqual([], missing_sitemap_en[:20])
+        self.assertEqual(127, len(expected_ru & search_locations))
+        self.assertEqual(127, len(expected_en & search_locations))
+        self.assertEqual(127, len(expected_ru & sitemap_locations))
+        self.assertEqual(127, len(expected_en & sitemap_locations))
+
+    def test_track10_task26_batch34e_m48_m49_final_closure_is_recorded(self):
+        packet = BATCH34E_FULL_SITE_INVENTORY.read_text(encoding="utf-8")
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        plan = TRACK10_PLAN.read_text(encoding="utf-8")
+        documents = {
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+        }
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "agents": AGENTS.read_text(encoding="utf-8"),
+        }
+
+        for expected in [
+            "B34E-I18N-M48",
+            "B34E-I18N-M49",
+            "done_through_m48",
+            "done_through_m49",
+            "full_site_i18n_closure",
+            "full_site_i18n_final_evidence",
+            "strict_mkdocs_final_closure_exit_code: 0",
+            "docs_ru_pages_total: 127",
+            "existing_en_siblings: 127",
+            "missing_en_siblings: 0",
+            "rendered_ru_pages_checked: 127",
+            "rendered_en_pages_checked: 127",
+            "static_language_switcher_pairs_checked: 127",
+            "language_switcher_pair_failures: 0",
+            "file_url_escape_failures: 0",
+            "search_index_ru_pages_present: 127",
+            "search_index_en_pages_present: 127",
+            "sitemap_ru_pages_present: 127",
+            "sitemap_en_pages_present: 127",
+            "en_source_cyrillic_hits: 0",
+            "ru_source_forbidden_english_phrase_hits: 0",
+        ]:
+            with self.subTest(packet=expected):
+                self.assertIn(expected, packet)
+
+        for expected in [
+            "| `done_through_m49` | Batch 34E M48-M49 final full-site i18n closure |",
+            "full_site_i18n_closure",
+            "full_site_i18n_final_evidence",
+            "B34E-I18N-M48..M49",
+        ]:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+        self.assertNotIn("| `planned` | Batch 34E remaining build and closure gates |", backlog)
+
+        for expected in [
+            "Product-Agent OS Batch 34E M48-M49 final full-site i18n closure",
+            "full_site_i18n_closure",
+            "full_site_i18n_final_evidence",
+            "verification_status:",
+        ]:
+            with self.subTest(registry=expected):
+                self.assertIn(expected, registry)
+
+        self.assertIn("Execution status through Batch 34E M49", plan)
+
+        for document, text in documents.items():
+            for expected in [
+                "Batch 34E full-site i18n parity",
+                "B34E-I18N-M48..M49",
+                "done_through_m49",
+                "full_site_i18n_closure",
+                "full_site_i18n_final_evidence",
+                "no remaining Batch 34E gates",
+                "Batch 35",
+            ]:
+                with self.subTest(document=document, term=expected):
+                    self.assertIn(expected, text)
+
+        for filename, text in control_plane.items():
+            for expected in [
+                "B34E-I18N-M48..M49",
+                "done_through_m49",
+                "full_site_i18n_closure",
+                "full_site_i18n_final_evidence",
+                "strict_mkdocs_final_closure_exit_code: 0",
+                "no remaining Batch 34E gates",
+                "Batch 35",
+                "no live server",
+                "no browser automation",
+                "no provider/live external model/API calls",
+                "no canonical graph mutation",
+                "no git stage/commit/push/PR",
+            ]:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
+        source_pages = sorted(
+            path
+            for path in DOCS.rglob("*.md")
+            if not path.name.endswith(".en.md")
+        )
+        paired_pages = [
+            path
+            for path in source_pages
+            if path.with_name(path.stem + ".en" + path.suffix).exists()
+        ]
+        missing_pages = [
+            path
+            for path in source_pages
+            if not path.with_name(path.stem + ".en" + path.suffix).exists()
+        ]
+        self.assertEqual(127, len(source_pages))
+        self.assertEqual(127, len(paired_pages))
+        self.assertEqual([], [path.relative_to(DOCS).as_posix() for path in missing_pages])
+
+        expected_ru = {
+            source_path.relative_to(DOCS).with_suffix(".html").as_posix()
+            for source_path in source_pages
+        }
+        expected_en = {
+            "en/" + source_path.relative_to(DOCS).with_suffix(".html").as_posix()
+            for source_path in source_pages
+        }
+        rendered_missing = []
+        for source_path in source_pages:
+            for locale in (None, "en"):
+                rendered = self._rendered_site_path_for_source(source_path, locale)
+                if not rendered.exists():
+                    rendered_missing.append(rendered.relative_to(SITE).as_posix())
+        self.assertEqual([], rendered_missing[:20])
+
+        pair_failures = []
+        file_escape_failures = []
+        site_root = SITE.resolve()
+        for source_path in source_pages:
+            ru_html = self._rendered_site_path_for_source(source_path)
+            en_html = self._rendered_site_path_for_source(source_path, "en")
+            pages = {
+                "ru": (ru_html, self._language_switcher_hrefs(ru_html.read_text(encoding="utf-8"))),
+                "en": (en_html, self._language_switcher_hrefs(en_html.read_text(encoding="utf-8"))),
+            }
+            expected_paths = {"ru": ru_html.resolve(), "en": en_html.resolve()}
+            for page_locale, (html_path, hrefs_by_locale) in pages.items():
+                target_locale = "en" if page_locale == "ru" else "ru"
+                hrefs = hrefs_by_locale.get(target_locale, [])
+                if not hrefs:
+                    pair_failures.append(
+                        f"{html_path.relative_to(SITE).as_posix()}: missing {target_locale}"
+                    )
+                    continue
+                resolved_hrefs = []
+                for href in hrefs:
+                    resolved = self._resolve_site_href(html_path, href)
+                    if resolved is None:
+                        file_escape_failures.append(
+                            f"{html_path.relative_to(SITE).as_posix()}: {target_locale} -> {href}"
+                        )
+                        continue
+                    try:
+                        resolved.relative_to(site_root)
+                    except ValueError:
+                        file_escape_failures.append(
+                            f"{html_path.relative_to(SITE).as_posix()}: {target_locale} -> {href}"
+                        )
+                        continue
+                    resolved_hrefs.append(resolved)
+                if expected_paths[target_locale] not in resolved_hrefs:
+                    pair_failures.append(
+                        f"{html_path.relative_to(SITE).as_posix()}: "
+                        f"{page_locale}->{target_locale} expected "
+                        f"{expected_paths[target_locale].relative_to(SITE).as_posix()}"
+                    )
+        self.assertEqual([], pair_failures[:20])
+        self.assertEqual([], file_escape_failures[:20])
+
+        search_index = SITE / "search" / "search_index.json"
+        sitemap = SITE / "sitemap.xml"
+        self.assertTrue(search_index.exists())
+        self.assertTrue(sitemap.exists())
+        search_locations = {
+            doc.get("location", "").split("#", 1)[0]
+            for doc in json.loads(search_index.read_text(encoding="utf-8")).get("docs", [])
+        }
+        sitemap_locations = set(
+            match.split("#", 1)[0]
+            for match in re.findall(
+                r"<loc>(.*?)</loc>",
+                sitemap.read_text(encoding="utf-8"),
+            )
+        )
+        self.assertEqual([], sorted(expected_ru - search_locations)[:20])
+        self.assertEqual([], sorted(expected_en - search_locations)[:20])
+        self.assertEqual([], sorted(expected_ru - sitemap_locations)[:20])
+        self.assertEqual([], sorted(expected_en - sitemap_locations)[:20])
+        self.assertEqual(127, len(expected_ru & search_locations))
+        self.assertEqual(127, len(expected_en & search_locations))
+        self.assertEqual(127, len(expected_ru & sitemap_locations))
+        self.assertEqual(127, len(expected_en & sitemap_locations))
+
+        en_cyrillic = [
+            path.relative_to(DOCS).as_posix()
+            for path in DOCS.rglob("*.en.md")
+            if re.search(r"[\u0400-\u04FF]", path.read_text(encoding="utf-8-sig"))
+        ]
+        self.assertEqual([], en_cyrillic[:20])
+
+    def test_track10_task26_batch34e_full_site_i18n_parity_is_planned(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        plan = TRACK10_PLAN.read_text(encoding="utf-8")
+        documents = {
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+        }
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "agents": AGENTS.read_text(encoding="utf-8"),
+        }
+
+        ru_pages = sorted(
+            path
+            for path in DOCS.rglob("*.md")
+            if not path.name.endswith(".en.md")
+        )
+        paired_pages = [
+            path
+            for path in ru_pages
+            if path.with_name(path.stem + ".en" + path.suffix).exists()
+        ]
+        missing_pages = [
+            path
+            for path in ru_pages
+            if not path.with_name(path.stem + ".en" + path.suffix).exists()
+        ]
+
+        self.assertEqual(127, len(ru_pages))
+        self.assertEqual(127, len(paired_pages))
+        self.assertEqual(0, len(missing_pages))
+
+        for expected in [
+            "Batch 34E: Full-Site I18N Parity Corrective Plan",
+            "B34E-I18N-M34..M49",
+            "docs_ru_pages_total: 127",
+            "existing_en_siblings: 127",
+            "missing_en_siblings: 0",
+            "every RU Markdown page that MkDocs can build has a `.en.md` sibling",
+            "full EN navigation/search/sitemap coverage",
+            "no missing-page language-switcher fallback",
+            "Batch 34C remains valid only for the promoted public-ready page set",
+        ]:
+            with self.subTest(plan=expected):
+                self.assertIn(expected, plan)
+
+        for marker in [f"B34E-I18N-M{number:02d}" for number in range(34, 50)]:
+            with self.subTest(matrix_id=marker):
+                self.assertIn(marker, plan)
+
+        for expected in [
+            "| `done_through_m37` | Batch 34E M34-M37 full-site i18n inventory and nav gate |",
+            "| `done_through_m43` | Batch 34E M38-M43 EN sibling translation pass |",
+            "| `done_through_m44` | Batch 34E M44 EN editorial quality sweep |",
+            "| `done_through_m45` | Batch 34E M45 RU quality sweep |",
+            "| `done_through_m46` | Batch 34E M46 full-site language switcher parity |",
+            "| `done_through_m47` | Batch 34E M47 search, sitemap and strict build parity |",
+            "| `done_through_m49` | Batch 34E M48-M49 final full-site i18n closure |",
+            "B34E-I18N-M34..M37",
+            "B34E-I18N-M38..M43",
+            "B34E-I18N-M44",
+            "B34E-I18N-M45",
+            "B34E-I18N-M46",
+            "B34E-I18N-M47",
+            "B34E-I18N-M48..M49",
+            "done_through_m49",
+            "B34E-I18N-M45..M49",
+            "B34E-I18N-M46..M49",
+            "B34E-I18N-M47..M49",
+            "docs_ru_pages_total: 127",
+            "existing_en_siblings: 127",
+            "missing_en_siblings: 0",
+            "full_site_en_nav_configured",
+            "full_site_en_siblings_created",
+            "full_site_en_editorial_quality_sweep",
+            "full_site_ru_quality_sweep",
+            "full_site_language_switcher_parity",
+            "full_site_search_sitemap_parity",
+            "full_site_i18n_closure",
+            "full_site_i18n_final_evidence",
+            "no remaining Batch 34E gates",
+        ]:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        self.assertNotIn("| `planned` | Batch 34E remaining build and closure gates |", backlog)
+
+        for expected in [
+            "Product-Agent OS Batch 34E full-site i18n parity corrective matrix",
+            "Product-Agent OS Batch 34E M48-M49 final full-site i18n closure",
+            "B34E-I18N-M34..M49",
+            "full-site bilingual documentation",
+            "docs_ru_pages_total: 127",
+            "existing_en_siblings: 127",
+            "missing_en_siblings: 0",
+            "full_site_en_siblings_created",
+            "full_site_search_sitemap_parity",
+            "full_site_i18n_closure",
+            "full_site_i18n_final_evidence",
+            "verification_status:",
+        ]:
+            with self.subTest(registry=expected):
+                self.assertIn(expected, registry)
+
+        for document, text in documents.items():
+            for expected in [
+                "Batch 34E full-site i18n parity",
+                "B34E-I18N-M34..M37",
+                "B34E-I18N-M38..M43",
+                "B34E-I18N-M44",
+                "B34E-I18N-M45",
+                "B34E-I18N-M47",
+                "B34E-I18N-M48..M49",
+                "done_through_m49",
+                "B34E-I18N-M47..M49",
+                "Batch 34C localized the public-ready set only",
+                "docs_ru_pages_total: 127",
+                "existing_en_siblings: 127",
+                "missing_en_siblings: 0",
+                "full_site_i18n_closure",
+                "full_site_i18n_final_evidence",
+                "no remaining Batch 34E gates",
+                "complete through",
+            ]:
+                with self.subTest(document=document, term=expected):
+                    self.assertIn(expected, text)
+
+        for filename, text in control_plane.items():
+            for expected in [
+                "B34E-I18N-M34..M37",
+                "B34E-I18N-M38..M43",
+                "B34E-I18N-M44",
+                "B34E-I18N-M45",
+                "B34E-I18N-M45..M49",
+                "B34E-I18N-M46..M49",
+                "B34E-I18N-M47",
+                "B34E-I18N-M47..M49",
+                "B34E-I18N-M48..M49",
+                "done_through_m49",
+                "full_site_search_sitemap_parity",
+                "full_site_i18n_closure",
+                "full_site_i18n_final_evidence",
+                "full-site i18n parity",
+                "docs_ru_pages_total: 127",
+                "existing_en_siblings: 127",
+                "missing_en_siblings: 0",
+                "full_site_en_siblings_created",
+                "full_site_en_editorial_quality_sweep",
+                "full_site_ru_quality_sweep",
+                "no remaining Batch 34E gates",
+                "no live server",
+                "no browser automation",
+                "no provider/live external model/API calls",
+                "no canonical graph mutation",
+                "no git stage/commit/push/PR",
+            ]:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
+    def test_track10_task26_batch34e_m34_m37_inventory_and_nav_are_recorded(self):
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        plan = TRACK10_PLAN.read_text(encoding="utf-8")
+        check_docs = CHECK_DOCS.read_text(encoding="utf-8")
+        config = MKDOCS.read_text(encoding="utf-8")
+        self.assertTrue(BATCH34E_FULL_SITE_INVENTORY.exists(), BATCH34E_FULL_SITE_INVENTORY)
+        packet = BATCH34E_FULL_SITE_INVENTORY.read_text(encoding="utf-8")
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "agents": AGENTS.read_text(encoding="utf-8"),
+        }
+
+        ru_pages = sorted(
+            path
+            for path in DOCS.rglob("*.md")
+            if not path.name.endswith(".en.md")
+        )
+        paired_pages = [
+            path
+            for path in ru_pages
+            if path.with_name(path.stem + ".en" + path.suffix).exists()
+        ]
+        missing_pages = [
+            path
+            for path in ru_pages
+            if not path.with_name(path.stem + ".en" + path.suffix).exists()
+        ]
+
+        self.assertEqual(127, len(ru_pages))
+        self.assertEqual(127, len(paired_pages))
+        self.assertEqual(0, len(missing_pages))
+
+        for expected in [
+            "Source status:",
+            "B34E-I18N-M34..M37",
+            "full_site_i18n_inventory",
+            "full_site_i18n_red_gate",
+            "full_site_en_nav_configured",
+            "full_site_en_siblings_created",
+            "docs_ru_pages_total: 127",
+            "existing_en_siblings: 127",
+            "missing_en_siblings: 0",
+            "initial_m35_existing_en_siblings: 37",
+            "initial_m35_missing_en_siblings: 90",
+            "expected_red_full_site_i18n_parity",
+            "fallback_to_default: false",
+            "no missing-page language-switcher fallback",
+        ]:
+            with self.subTest(packet=expected):
+                self.assertIn(expected, packet)
+
+        for path in missing_pages:
+            rel_path = path.relative_to(DOCS).as_posix()
+            with self.subTest(missing_page_inventory=rel_path):
+                self.assertIn(rel_path, packet)
+
+        for expected in [
+            'sources" / "product-agent-os-batch34e-full-site-i18n-inventory.md',
+            "Product-Agent OS Batch 34E M34-M37 full-site i18n inventory and nav gate",
+            "`done_through_m37` | Batch 34E M34-M37 full-site i18n inventory and nav gate |",
+            "`done_through_m43` | Batch 34E M38-M43 EN sibling translation pass |",
+            "Execution status through Batch 34E M34-M37",
+            "Execution status through Batch 34E M38-M43",
+        ]:
+            with self.subTest(sync_term=expected):
+                self.assertTrue(
+                    expected in check_docs
+                    or expected in registry
+                    or expected in backlog
+                    or expected in plan,
+                    expected,
+                )
+
+        for expected in [
+            "- Sources:",
+            "- Codex:",
+            "- Prompt And Context Engineering:",
+            "- Product-Agent Workflows:",
+            "- Product-Agent OS Plugin:",
+            "- Methodologies For Large Projects:",
+            "- Agent Systems:",
+            "- Playbooks:",
+            "- Templates:",
+            "- Insights:",
+            "sources/registry.md",
+            "codex/overview.md",
+            "prompting/overview.md",
+            "product-agent-os/index.md",
+            "methodologies/index.md",
+            "agent-systems/overview.md",
+            "playbooks/research-loop.md",
+            "artifact-templates/prompt-packet.md",
+            "insights/index.md",
+        ]:
+            with self.subTest(full_en_nav=expected):
+                self.assertIn(expected, config)
+
+        for filename, text in control_plane.items():
+            for expected in [
+                "B34E-I18N-M34..M37",
+                "full_site_i18n_inventory",
+                "full_site_i18n_red_gate",
+                "full_site_en_nav_configured",
+                "full_site_en_siblings_created",
+                "expected_red_full_site_i18n_parity",
+                "done_through_m44",
+                "no live server",
+                "no browser automation",
+                "no provider/live external model/API calls",
+                "no canonical graph mutation",
+                "no git stage/commit/push/PR",
+            ]:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
+    def test_track10_task26_batch34e_m38_m43_en_translations_exist(self):
+        expected_pages = [
+            "agent-systems/evals-observability.md",
+            "agent-systems/memory.md",
+            "agent-systems/overview.md",
+            "agent-systems/sdk-patterns.md",
+            "agent-systems/session-control.md",
+            "agent-systems/templates.md",
+            "artifact-templates/control-plane-files.md",
+            "artifact-templates/plugin-blueprint.md",
+            "artifact-templates/product-skill.md",
+            "artifact-templates/prompt-packet.md",
+            "artifact-templates/runlog.md",
+            "codex/configuration.md",
+            "codex/overview.md",
+            "codex/security.md",
+            "codex/surfaces.md",
+            "codex/use-cases-deep-analysis.md",
+            "codex/workflows.md",
+            "insights/index.md",
+            "insights/insight-card-template.md",
+            "insights/seed-insights.md",
+            "methodologies/api-integrations.md",
+            "methodologies/backend.md",
+            "methodologies/business-product.md",
+            "methodologies/codex-agentic-workflow.md",
+            "methodologies/database-data.md",
+            "methodologies/delivery-release-operations.md",
+            "methodologies/frontend.md",
+            "methodologies/index.md",
+            "methodologies/llm-ai-rag.md",
+            "methodologies/quality-testing-evals.md",
+            "methodologies/requirements-domain.md",
+            "methodologies/security-privacy-compliance.md",
+            "methodologies/solution-architecture.md",
+            "playbooks/ai-team-design.md",
+            "playbooks/build-full-feature.md",
+            "playbooks/code-review.md",
+            "playbooks/context7-deep-research.md",
+            "playbooks/eval-driven-improvement.md",
+            "playbooks/grounded-answering.md",
+            "playbooks/maintain-agent-operating-docs.md",
+            "playbooks/product-ready-pr.md",
+            "playbooks/research-loop.md",
+            "playbooks/workflow-to-skill.md",
+            "prompting/anti-hallucination.md",
+            "prompting/context-engineering.md",
+            "prompting/overview.md",
+            "prompting/question-design.md",
+            "sources/add-ddd-tdd-fsd-llm-development.md",
+            "sources/context7-research.md",
+            "sources/deep-research-report.md",
+            "sources/development-methodology-gap-matrix.md",
+            "sources/development-methodology-research-log.md",
+            "sources/methodology-research/api-integrations.md",
+            "sources/methodology-research/backend.md",
+            "sources/methodology-research/business-product.md",
+            "sources/methodology-research/codex-agentic-workflow.md",
+            "sources/methodology-research/database-data.md",
+            "sources/methodology-research/delivery-release-operations.md",
+            "sources/methodology-research/frontend.md",
+            "sources/methodology-research/llm-ai-rag.md",
+            "sources/methodology-research/quality-testing-evals.md",
+            "sources/methodology-research/requirements-domain.md",
+            "sources/methodology-research/security-privacy-compliance.md",
+            "sources/methodology-research/solution-architecture.md",
+            "sources/product-agent-os-batch34-packaging-install-smoke.md",
+            "sources/product-agent-os-batch34a-public-docs-boundary.md",
+            "sources/product-agent-os-batch34b-public-copy-rewrite.md",
+            "sources/product-agent-os-batch34c-i18n-localization.md",
+            "sources/product-agent-os-batch34d-product-docs-qa-closure.md",
+            "sources/product-agent-os-batch35-approval-packet-draft.md",
+            "sources/product-agent-os-final-predevelopment-review.md",
+            "sources/product-agent-os-pre-track-8-implementation-inventory.md",
+            "sources/product-agent-os-track-10-backlog.md",
+            "sources/product-agent-os-track-8-detailed-backlog.md",
+            "sources/product-agent-os-track-9-backlog.md",
+            "sources/registry.md",
+            "sources/source-card-template.md",
+            "superpowers/plans/2026-05-14-product-agent-os-generated-infrastructure.md",
+            "superpowers/plans/2026-05-14-product-agent-os-lifecycle-skills.md",
+            "superpowers/plans/2026-05-14-product-agent-os-plugin-core.md",
+            "superpowers/plans/2026-05-14-product-agent-os-production-hardening.md",
+            "superpowers/plans/2026-05-15-product-agent-os-codex-runtime-runner.md",
+            "superpowers/plans/2026-05-25-track-9-methodology-intelligence.md",
+            "superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md",
+            "superpowers/specs/2026-05-14-product-agent-os-agents-sdk-runner-design.md",
+            "superpowers/specs/2026-05-14-product-agent-os-generated-infrastructure-design.md",
+            "superpowers/specs/2026-05-14-product-agent-os-lifecycle-skills-design.md",
+            "superpowers/specs/2026-05-14-product-agent-os-production-hardening-design.md",
+            "superpowers/specs/2026-05-15-product-agent-os-codex-runtime-runner-design.md",
+            "superpowers/specs/2026-05-25-track-9-methodology-intelligence-design.md",
+        ]
+
+        missing = []
+        cyrillic_hits = []
+        for rel_path in expected_pages:
+            source = DOCS / rel_path
+            en_path = source.with_name(source.stem + ".en" + source.suffix)
+            if not en_path.exists():
+                missing.append(en_path.relative_to(DOCS).as_posix())
+                continue
+
+            text = en_path.read_text(encoding="utf-8-sig")
+            if "Source status:" not in text:
+                cyrillic_hits.append(f"{en_path.relative_to(DOCS).as_posix()}: missing Source status")
+            if re.search(r"[\u0400-\u04FF]", text):
+                cyrillic_hits.append(en_path.relative_to(DOCS).as_posix())
+
+        self.assertEqual([], missing)
+        self.assertEqual([], cyrillic_hits)
+
+    def test_track10_task26_batch34e_m44_en_editorial_quality_sweep_is_recorded(self):
+        packet = BATCH34E_FULL_SITE_INVENTORY.read_text(encoding="utf-8")
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        plan = TRACK10_PLAN.read_text(encoding="utf-8")
+        control_plane = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "agents": AGENTS.read_text(encoding="utf-8"),
+        }
+
+        for expected in [
+            "B34E-I18N-M44",
+            "done_through_m44",
+            "full_site_en_editorial_quality_sweep",
+            "en_source_cyrillic_hits: 0",
+            "en_source_mojibake_hits: 0",
+            "en_source_transliteration_hits: 0",
+            "en_internal_link_failures: 0",
+        ]:
+            with self.subTest(packet=expected):
+                self.assertIn(expected, packet)
+
+        for expected in [
+            "| `done_through_m44` | Batch 34E M44 EN editorial quality sweep |",
+            "full_site_en_editorial_quality_sweep",
+            "B34E-I18N-M45..M49",
+        ]:
+            with self.subTest(backlog=expected):
+                self.assertIn(expected, backlog)
+
+        for expected in [
+            "Product-Agent OS Batch 34E M44 EN editorial quality sweep",
+            "full_site_en_editorial_quality_sweep",
+            "verification_status:",
+        ]:
+            with self.subTest(registry=expected):
+                self.assertIn(expected, registry)
+
+        self.assertIn("Execution status through Batch 34E M44", plan)
+
+        for filename, text in control_plane.items():
+            for expected in [
+                "B34E-I18N-M44",
+                "done_through_m44",
+                "full_site_en_editorial_quality_sweep",
+                "B34E-I18N-M45..M49",
+                "no live server",
+                "no browser automation",
+                "no provider/live external model/API calls",
+                "no canonical graph mutation",
+                "no git stage/commit/push/PR",
+            ]:
+                with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
+        transliteration_terms = [
+            "sdelat",
+            "dolzhen",
+            "dolzhna",
+            "dolzhny",
+            "dokumentats",
+            "istochnik",
+            "istochniki",
+            "istochnikov",
+            "razrabot",
+            "metodologiya",
+            "metodologiy",
+            "ispolz",
+            "vyvod",
+            "gotov",
+            "tolko",
+            "posle",
+            "rasshireniya",
+            "stsenar",
+            "matrits",
+            "proekta",
+            "proveryat",
+            "proverki",
+            "proverku",
+            "proveryaetsya",
+            "proveryaemuyu",
+            "proveryaet",
+            "artefakt",
+            "trebuet",
+            "chelovechesk",
+            "ponyat",
+            "vazhny",
+            "sobstvennyy",
+            "kazhdaya",
+            "statusov",
+            "sokhranen",
+            "zafiksirovat",
+            "primenyaetsya",
+            "izbytochna",
+            "poka",
+            "sredniy",
+            "nizhe",
+            "issledovaniya",
+            "sostavit",
+            "opisanie",
+            "pervichnye",
+            "ozhidaemyy",
+            "kogda",
+            "primenyat",
+            "nuzh",
+            "mozhno",
+            "nelzya",
+            "esli",
+            "dlya",
+            "kakie",
+            "kakikh",
+            "chto",
+            "zhivut",
+            "stranits",
+            "bazovyy",
+            "luchshe",
+            "vybrat",
+            "universalnyy",
+        ]
+        transliteration_re = re.compile(
+            r"\b(?:"
+            + "|".join(re.escape(term) for term in transliteration_terms)
+            + r")\w*\b",
+            re.IGNORECASE,
+        )
+        link_re = re.compile(
+            r"!\[[^\]]*\]\(([^)]+)\)|(?<!!)\[[^\]]+\]\(([^)]+)\)"
+        )
+
+        content_issues = []
+        link_issues = []
+        for path in sorted(DOCS.rglob("*.en.md")):
+            text = path.read_text(encoding="utf-8-sig")
+            rel_path = path.relative_to(DOCS).as_posix()
+            if re.search(r"[\u0400-\u04FF]", text):
+                content_issues.append(f"{rel_path}: cyrillic")
+            if any(marker in text for marker in ["\ufffd", "\u00d0", "\u00d1"]):
+                content_issues.append(f"{rel_path}: mojibake")
+            if transliteration_re.search(text):
+                content_issues.append(f"{rel_path}: transliteration")
+            lowered = text.lower()
+            if "???" in text or "translation pending" in lowered:
+                content_issues.append(f"{rel_path}: placeholder")
+
+            link_scan_text = re.sub(r"(?ms)^```.*?^```", "", text)
+            for match in link_re.finditer(link_scan_text):
+                raw_link = (match.group(1) or match.group(2) or "").strip()
+                if not raw_link or raw_link.startswith("#"):
+                    continue
+                if re.match(r"^[a-zA-Z][a-zA-Z0-9+.-]*:", raw_link):
+                    continue
+
+                target = raw_link.split("#", 1)[0].split("?", 1)[0].strip()
+                target = target.strip("<>")
+                if not target:
+                    continue
+
+                resolved = (path.parent / unquote(target)).resolve()
+                if target.endswith("/"):
+                    candidates = [resolved / "index.md", resolved / "index.en.md"]
+                elif resolved.suffix:
+                    candidates = [resolved]
+                    if resolved.suffix == ".md" and not resolved.name.endswith(".en.md"):
+                        candidates.append(
+                            resolved.with_name(resolved.stem + ".en" + resolved.suffix)
+                        )
+                else:
+                    candidates = [
+                        resolved,
+                        resolved.with_suffix(".md"),
+                        resolved.with_name(resolved.name + ".en.md"),
+                    ]
+
+                if not any(candidate.exists() for candidate in candidates):
+                    link_issues.append(f"{rel_path}: {raw_link}")
+
+        self.assertEqual([], content_issues)
+        self.assertEqual([], link_issues)
+
+    def test_track10_task26_batch34e_full_site_parity_red_gate(self):
+        ru_pages = sorted(
+            path
+            for path in DOCS.rglob("*.md")
+            if not path.name.endswith(".en.md")
+        )
+        missing_siblings = [
+            path.relative_to(DOCS).as_posix()
+            for path in ru_pages
+            if not path.with_name(path.stem + ".en" + path.suffix).exists()
+        ]
+        self.assertEqual([], missing_siblings)
+
+        cyrillic_en_pages = []
+        for path in DOCS.rglob("*.en.md"):
+            text = path.read_text(encoding="utf-8-sig")
+            if re.search(r"[\u0400-\u04FF]", text):
+                cyrillic_en_pages.append(path.relative_to(DOCS).as_posix())
+        self.assertEqual([], cyrillic_en_pages)
+
+        missing_rendered_en = []
+        for path in ru_pages:
+            rel = path.relative_to(DOCS).with_suffix(".html")
+            rendered = SITE / "en" / rel
+            if rel.name == "index.html":
+                rendered = SITE / "en" / rel.parent / "index.html"
+            if not rendered.exists():
+                missing_rendered_en.append(rendered.relative_to(SITE).as_posix())
+        self.assertEqual([], missing_rendered_en)
+
     def test_track10_task26_batch35_real_testing_execution_matrix_is_planned(self):
         registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
         backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
         documents = {
             "root_readme": ROOT_README.read_text(encoding="utf-8"),
             "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
-            "product_index": (PRODUCT_AGENT_OS / "index.md").read_text(encoding="utf-8"),
-            "technical": (PRODUCT_AGENT_OS / "technical.md").read_text(encoding="utf-8"),
-            "scenarios": (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8"),
+            "product_index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
         }
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
@@ -2735,9 +4243,9 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         documents = {
             "root_readme": ROOT_README.read_text(encoding="utf-8"),
             "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
-            "product_index": (PRODUCT_AGENT_OS / "index.md").read_text(encoding="utf-8"),
-            "technical": (PRODUCT_AGENT_OS / "technical.md").read_text(encoding="utf-8"),
-            "scenarios": (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8"),
+            "product_index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
         }
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
@@ -2818,9 +4326,9 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         documents = {
             "root_readme": ROOT_README.read_text(encoding="utf-8"),
             "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
-            "product_index": (PRODUCT_AGENT_OS / "index.md").read_text(encoding="utf-8"),
-            "technical": (PRODUCT_AGENT_OS / "technical.md").read_text(encoding="utf-8"),
-            "scenarios": (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8"),
+            "product_index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
         }
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
@@ -2904,9 +4412,9 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         documents = {
             "root_readme": ROOT_README.read_text(encoding="utf-8"),
             "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
-            "product_index": (PRODUCT_AGENT_OS / "index.md").read_text(encoding="utf-8"),
-            "technical": (PRODUCT_AGENT_OS / "technical.md").read_text(encoding="utf-8"),
-            "scenarios": (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8"),
+            "product_index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
         }
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
@@ -2974,9 +4482,9 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         documents = {
             "root_readme": ROOT_README.read_text(encoding="utf-8"),
             "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
-            "product_index": (PRODUCT_AGENT_OS / "index.md").read_text(encoding="utf-8"),
-            "technical": (PRODUCT_AGENT_OS / "technical.md").read_text(encoding="utf-8"),
-            "scenarios": (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8"),
+            "product_index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
         }
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
@@ -3065,8 +4573,8 @@ class ProductAgentOsDocsTest(unittest.TestCase):
     def test_track9_backend_docs_and_source_registry_are_synced(self):
         registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
         backlog = TRACK9_BACKLOG.read_text(encoding="utf-8")
-        behavioral_evals = (PRODUCT_AGENT_OS / "behavioral-evals.md").read_text(encoding="utf-8")
-        scenarios = (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8")
+        behavioral_evals = self._localized_contract_text(PRODUCT_AGENT_OS / "behavioral-evals.md")
+        scenarios = self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md")
         readme = (ROOT / "plugins" / "product-agent-os" / "README.md").read_text(encoding="utf-8")
 
         for expected in [
@@ -3114,8 +4622,8 @@ class ProductAgentOsDocsTest(unittest.TestCase):
     def test_track9_api_integrations_docs_and_source_registry_are_synced(self):
         registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
         backlog = TRACK9_BACKLOG.read_text(encoding="utf-8")
-        behavioral_evals = (PRODUCT_AGENT_OS / "behavioral-evals.md").read_text(encoding="utf-8")
-        scenarios = (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8")
+        behavioral_evals = self._localized_contract_text(PRODUCT_AGENT_OS / "behavioral-evals.md")
+        scenarios = self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md")
         readme = (ROOT / "plugins" / "product-agent-os" / "README.md").read_text(encoding="utf-8")
 
         for expected in [
@@ -3163,8 +4671,8 @@ class ProductAgentOsDocsTest(unittest.TestCase):
     def test_track9_database_data_docs_and_source_registry_are_synced(self):
         registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
         backlog = TRACK9_BACKLOG.read_text(encoding="utf-8")
-        behavioral_evals = (PRODUCT_AGENT_OS / "behavioral-evals.md").read_text(encoding="utf-8")
-        scenarios = (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8")
+        behavioral_evals = self._localized_contract_text(PRODUCT_AGENT_OS / "behavioral-evals.md")
+        scenarios = self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md")
         readme = (ROOT / "plugins" / "product-agent-os" / "README.md").read_text(encoding="utf-8")
 
         for expected in [
@@ -3211,11 +4719,9 @@ class ProductAgentOsDocsTest(unittest.TestCase):
 
     def test_track9_llm_ai_rag_docs_and_backlog_are_synced_through_m36(self):
         backlog = TRACK9_BACKLOG.read_text(encoding="utf-8")
-        behavioral_evals = (PRODUCT_AGENT_OS / "behavioral-evals.md").read_text(encoding="utf-8")
-        scenarios = (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8")
-        development_standards = (PRODUCT_AGENT_OS / "development-standards.md").read_text(
-            encoding="utf-8"
-        )
+        behavioral_evals = self._localized_contract_text(PRODUCT_AGENT_OS / "behavioral-evals.md")
+        scenarios = self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md")
+        development_standards = self._localized_contract_text(PRODUCT_AGENT_OS / "development-standards.md")
         readme = (ROOT / "plugins" / "product-agent-os" / "README.md").read_text(encoding="utf-8")
 
         for expected in [
@@ -3267,14 +4773,10 @@ class ProductAgentOsDocsTest(unittest.TestCase):
 
     def test_track9_security_privacy_compliance_docs_and_backlog_are_synced(self):
         backlog = TRACK9_BACKLOG.read_text(encoding="utf-8")
-        behavioral_evals = (PRODUCT_AGENT_OS / "behavioral-evals.md").read_text(encoding="utf-8")
-        scenarios = (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8")
-        methodology_intelligence = (PRODUCT_AGENT_OS / "methodology-intelligence.md").read_text(
-            encoding="utf-8"
-        )
-        development_standards = (PRODUCT_AGENT_OS / "development-standards.md").read_text(
-            encoding="utf-8"
-        )
+        behavioral_evals = self._localized_contract_text(PRODUCT_AGENT_OS / "behavioral-evals.md")
+        scenarios = self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md")
+        methodology_intelligence = self._localized_contract_text(PRODUCT_AGENT_OS / "methodology-intelligence.md")
+        development_standards = self._localized_contract_text(PRODUCT_AGENT_OS / "development-standards.md")
         readme = (ROOT / "plugins" / "product-agent-os" / "README.md").read_text(encoding="utf-8")
 
         for expected in [
@@ -3336,14 +4838,10 @@ class ProductAgentOsDocsTest(unittest.TestCase):
 
     def test_track9_delivery_release_operations_docs_and_backlog_are_synced(self):
         backlog = TRACK9_BACKLOG.read_text(encoding="utf-8")
-        behavioral_evals = (PRODUCT_AGENT_OS / "behavioral-evals.md").read_text(encoding="utf-8")
-        scenarios = (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8")
-        methodology_intelligence = (PRODUCT_AGENT_OS / "methodology-intelligence.md").read_text(
-            encoding="utf-8"
-        )
-        development_standards = (PRODUCT_AGENT_OS / "development-standards.md").read_text(
-            encoding="utf-8"
-        )
+        behavioral_evals = self._localized_contract_text(PRODUCT_AGENT_OS / "behavioral-evals.md")
+        scenarios = self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md")
+        methodology_intelligence = self._localized_contract_text(PRODUCT_AGENT_OS / "methodology-intelligence.md")
+        development_standards = self._localized_contract_text(PRODUCT_AGENT_OS / "development-standards.md")
         readme = (ROOT / "plugins" / "product-agent-os" / "README.md").read_text(encoding="utf-8")
 
         for expected in [
@@ -3384,7 +4882,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "release mode policy",
             "platform distribution evidence",
             "observability/on-call tooling",
-            "active automation remain approval_required",
+            "active automation are not automatic actions",
         ]:
             with self.subTest(scenarios=expected):
                 self.assertIn(expected, scenarios)
@@ -3425,13 +4923,9 @@ class ProductAgentOsDocsTest(unittest.TestCase):
 
     def test_track9_cross_domain_synthesis_docs_and_backlog_are_synced(self):
         backlog = TRACK9_BACKLOG.read_text(encoding="utf-8")
-        behavioral_evals = (PRODUCT_AGENT_OS / "behavioral-evals.md").read_text(encoding="utf-8")
-        methodology_intelligence = (PRODUCT_AGENT_OS / "methodology-intelligence.md").read_text(
-            encoding="utf-8"
-        )
-        development_standards = (PRODUCT_AGENT_OS / "development-standards.md").read_text(
-            encoding="utf-8"
-        )
+        behavioral_evals = self._localized_contract_text(PRODUCT_AGENT_OS / "behavioral-evals.md")
+        methodology_intelligence = self._localized_contract_text(PRODUCT_AGENT_OS / "methodology-intelligence.md")
+        development_standards = self._localized_contract_text(PRODUCT_AGENT_OS / "development-standards.md")
 
         for expected in [
             "T9-S-M10..M14",
@@ -3474,7 +4968,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "semantic evidence sufficiency",
             "owner_reviewed_evidence_sufficient_for_real_project_risk",
             "explicit_gap_accepted",
-            "detection alone remains `present_unverified`",
+            "Detection alone остается `present_unverified`",
             "grouped methodology recommendations",
             "approval-bound behavior",
         ]:
@@ -3483,22 +4977,14 @@ class ProductAgentOsDocsTest(unittest.TestCase):
 
     def test_task22_final_docs_sync_user_facing_stack_is_closed(self):
         documents = {
-            "index": (PRODUCT_AGENT_OS / "index.md").read_text(encoding="utf-8"),
-            "architecture": (PRODUCT_AGENT_OS / "architecture.md").read_text(encoding="utf-8"),
-            "technical": (PRODUCT_AGENT_OS / "technical.md").read_text(encoding="utf-8"),
-            "methodology": (PRODUCT_AGENT_OS / "methodology-intelligence.md").read_text(
-                encoding="utf-8"
-            ),
-            "scenarios": (PRODUCT_AGENT_OS / "scenarios.md").read_text(encoding="utf-8"),
-            "behavioral_evals": (PRODUCT_AGENT_OS / "behavioral-evals.md").read_text(
-                encoding="utf-8"
-            ),
-            "codex_compatibility": (PRODUCT_AGENT_OS / "codex-compatibility.md").read_text(
-                encoding="utf-8"
-            ),
-            "development_standards": (PRODUCT_AGENT_OS / "development-standards.md").read_text(
-                encoding="utf-8"
-            ),
+            "index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "architecture": self._localized_contract_text(PRODUCT_AGENT_OS / "architecture.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "methodology": self._localized_contract_text(PRODUCT_AGENT_OS / "methodology-intelligence.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
+            "behavioral_evals": self._localized_contract_text(PRODUCT_AGENT_OS / "behavioral-evals.md"),
+            "codex_compatibility": self._localized_contract_text(PRODUCT_AGENT_OS / "codex-compatibility.md"),
+            "development_standards": self._localized_contract_text(PRODUCT_AGENT_OS / "development-standards.md"),
             "root_readme": ROOT_README.read_text(encoding="utf-8"),
             "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
         }
@@ -3556,10 +5042,10 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             ],
             "behavioral_evals": [
                 "Runtime Packet Safety",
-                "Fixture eval and docs tests prove",
+                "Fixture eval proves expected structure",
                 "route safety",
                 "transcript/session replay",
-                "They do not prove real project readiness",
+                "not deep semantic quality of a real product decision",
             ],
             "codex_compatibility": [
                 "Canonical Safety Boundary",

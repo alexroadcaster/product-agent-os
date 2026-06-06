@@ -1,4 +1,4 @@
-# Skill Lifecycle
+﻿# Skill Lifecycle
 
 Source status: `official + experiment`
 
@@ -12,13 +12,13 @@ stateDiagram-v2
     PlaybookStep --> ManualRuns: repeated need
     ManualRuns --> FailureLog: failures observed
     FailureLog --> SkillDraft: method stabilizes
-    SkillDraft --> EvalCases: define examples and rubric
+    SkillDraft --> EvalCases: define examples и rubric
     EvalCases --> ManualRuns: eval fails
     EvalCases --> PackagedSkill: eval passes
-    PackagedSkill --> ProjectUse: used by agents
-    ProjectUse --> Maintenance: failures or docs change
+    PackagedSkill --> ProjectUse: использовался через agents
+    ProjectИспользуйте --> Maintenance: failures или docs change
     Maintenance --> SkillDraft: update instructions
-    ProjectUse --> AutomationCandidate: stable cadence
+    ProjectИспользуйте --> AutomationCandidate: stable cadence
     AutomationCandidate --> [*]
 ```
 
@@ -40,9 +40,9 @@ stateDiagram-v2
 | --- | --- | --- |
 | Scope | Одна работа | Несколько несвязанных работ |
 | Trigger | Понятные слова запуска | “Используй когда полезно” |
-| Inputs | Явно перечислены | Модель угадывает |
-| Outputs | Формат результата задан | Ответ произвольный |
-| Verification | Есть eval cases | Проверка отсутствует |
+| Входы | Явно перечислены | Модель угадывает |
+| Выходы | Формат результата задан | Ответ произвольный |
+| Проверка | Есть eval cases | Проверка отсутствует |
 | Scripts | Только deterministic behavior | Скрипты скрывают reasoning |
 
 ## Примеры product skills
@@ -52,14 +52,14 @@ stateDiagram-v2
 - `test-gap-finder` — ищет несоответствие между изменениями и тестами.
 - `eval-loop-runner` — запускает focused improvement loop и обновляет score history.
 - `ui-visual-reviewer` — проверяет layout, screenshots, overlap, responsive states.
-- `release-note-writer` — пишет release notes на основе diff, PR и user-facing changes.
+- `release-note-writer` — пишет заметки к release на основе diff, PR и user-facing changes.
 
-## Stop conditions
+## Условия остановки
 
 Остановите упаковку skill, если:
 
 - workflow не воспроизводится вручную;
 - нет eval examples;
-- source policy неясна;
+- политика источников неясна;
 - skill требует secrets;
 - результат нельзя проверить человеком или deterministic checks.

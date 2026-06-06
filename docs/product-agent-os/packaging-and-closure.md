@@ -1,4 +1,4 @@
-# Packaging and closure
+# Packaging и closure
 
 Source status: `official + experiment`
 
@@ -10,107 +10,107 @@ Closure packet описывает обновленные source docs, packaging/
 
 ## Source-of-truth boundary
 
-Source of truth:
+канонический источник:
 
 - checked-in Product-Agent OS source docs;
-- accepted implementation plan and docs closure scope;
-- source registry and control-plane artifacts after their separate owner-approved/docs-maintainer slice;
-- current command evidence from docs tests, `tools/check_docs.py`, strict MkDocs, optional full closure and packaging/install smoke;
-- explicit owner approval packets for any later live/browser/provider/canonical/git action.
+- accepted implementation plan и docs closure scope;
+- source registry и control-plane artifacts после their separate owner-approved/docs-maintainer slice;
+- текущий command evidence из docs tests, `tools/check_docs.py`, strict MkDocs, optional full closure и packaging/install smoke;
+- explicit owner approval packets для any later live/browser/provider/canonical/git action.
 
-Not source of truth:
+не является каноническим источником:
 
-- generated `site/` pages by themselves;
-- packaging/install smoke as a release or publish approval;
-- plugin-cache contents without checked-in source comparison;
-- staged evidence without owner review;
-- planning matrix presence without implementation and verification evidence.
+- generated `site/` pages через themselves;
+- packaging/install smoke как release или publish approval;
+- plugin-cache contents без checked-in source comparison;
+- staged evidence без owner review;
+- planning matrix presence без implementation и verification evidence.
 
-## Inputs
+## Входы
 
 Closure consumes:
 
-- modernization loop docs and metrics-report boundary;
-- project code graph, cockpit, static search, backend gate, semantic retrieval, deterministic proposal and extension-closure docs;
+- modernization loop docs и metrics-report boundary;
+- project code graph, cockpit, static search, backend gate, semantic retrieval, deterministic proposal и extension-closure docs;
 - governance/runtime/provider/review/mutation/audit/real-testing-readiness/runtime-QA evidence;
 - accepted docs closure scope;
-- plugin README install and packaging guidance;
-- MkDocs navigation/docs-check requirements from the Builder/Tester slice;
-- known gaps: docs-maintainer plugin-cache gap and Mermaid external asset gap when still unresolved.
+- plugin README install и packaging guidance;
+- MkDocs navigation/docs-check requirements из Builder/Tester slice;
+- known gaps: docs-maintainer plugin-cache gap и Mermaid external asset gap когда still unresolved.
 
-## Outputs And Artifacts
+## Выходы и артефакты
 
 Expected closure outputs:
 
-- updated docs pages for Product-Agent OS source docs;
-- source registry/backlog/control-plane sync from the owning docs-maintainer slice;
-- updated docs contract tests and `tools/check_docs.py` from the owning Builder/Tester slice;
-- regenerated `site/` using the regular MkDocs `site_dir`;
+- обновленные docs pages для Product-Agent OS source docs;
+- source registry/backlog/control-plane sync из owning docs-maintainer slice;
+- updated docs contract tests и `tools/check_docs.py` из owning Builder/Tester slice;
+- regenerated `site/` using regular MkDocs `site_dir`;
 - packaging/install smoke evidence packet;
-- approval packet draft for real testing execution;
-- explicit list of actions not performed without approval.
+- approval packet draft для real testing execution;
+- explicit list из actions не performed без approval.
 
-This worker page covers only the docs packet. It does not update navigation, tests, registry, README, `site/`, git state or plugin distribution.
+Эта worker page covers только docs packet. Она не обновляет navigation, tests, registry, README, `site/`, git state или plugin distribution.
 
 ## Packaging And Install Smoke
 
-Packaging/install smoke is evidence only. It should answer:
+Packaging/install smoke является только evidence. Это следует answer:
 
-- plugin manifest exists and points to the expected bundled skills/MCP metadata;
-- checked-in `docs-maintainer` guidance is available, or the docs-maintainer plugin-cache gap is recorded;
-- local install path or marketplace candidate can be inspected without publishing;
-- staged templates and scripts remain package-readable;
-- no secrets, credentials or private data are bundled;
-- plugin hooks and automations remain inactive unless explicitly approved;
-- install smoke result records command, environment, output summary, gaps and residual risk.
+- plugin manifest exists и points к expected bundled skills/MCP metadata;
+- checked-in `docs-maintainer` guidance является available, или docs-maintainer plugin-cache gap является recorded;
+- local install path или marketplace candidate может быть inspected без publishing;
+- staged templates и scripts остаются package-readable;
+- нет secrets, credentials или private data являются bundled;
+- plugin hooks и automations остаются inactive пока explicitly approved;
+- install smoke result records command, environment, output summary, gaps и residual risk.
 
-Install smoke does not publish the plugin, write to external systems, create a marketplace release, upload artifacts, activate hooks, create automations or approve real testing execution.
+Install smoke не публикует plugin, писать к external systems, create marketplace release, upload artifacts, activate hooks, create automations или approve real testing execution.
 
-## Workflow And Cadence
+## Workflow и cadence
 
-Closure verification order is fixed:
+Closure verification order является fixed:
 
-1. Source docs.
+1. Исходные docs.
 2. Source registry.
 3. Docs contract tests.
 4. `python tools\check_docs.py`.
 5. Strict MkDocs build.
-6. Optional full closure.
+6. Опциональная полная closure.
 7. Packaging/install smoke.
 8. Approval-bound handoff packet.
 
-The generated documentation site must be rebuilt with the regular MkDocs `site_dir`:
+Этот generated documentation site должен быть rebuilt с regular MkDocs `site_dir`:
 
 ```powershell
 python -m mkdocs build --strict
 ```
 
-Using only a disposable `--site-dir` is not enough when closure explicitly requires `site/` refresh.
+Using только disposable `--site-dir` является не enough когда closure explicitly требует `site/` refresh.
 
-## Required Verification
+## Обязательная проверка
 
 Minimum closure evidence:
 
-- focused docs contract test result for new pages, required source status and safety boundaries;
+- focused docs contract test result для new pages, required source status и safety boundaries;
 - `python tools\check_docs.py`;
-- strict MkDocs build into `site/`;
+- strict MkDocs build в `site/`;
 - `git diff --check`;
 - packaging/install smoke packet;
 - explicit approval-bound handoff packet.
 
-Optional full closure when risk or scope requires:
+Опциональная полная closure когда risk или scope requires:
 
-- full unittest with long timeout;
+- full unittest с long timeout;
 - fixture eval;
 - transcript eval;
 - Codex compatibility validation;
-- reviewer pass over generated `site/`, long-line IA and accepted gaps.
+- reviewer pass поверх generated `site/`, long-line IA и accepted gaps.
 
-Do not claim closure is complete unless the current run has matching command evidence or clearly states which verification was not run.
+Не заявляйте, что closure complete, пока текущий запуск не имеет matching command evidence или явно не фиксирует, какая verification не запускалась.
 
 ## Approval-Bound Handoff
 
-Real testing execution remains approval-bound. The handoff packet should list separate approval surfaces:
+Real testing execution остается approval-bound. Этот handoff packet следует list separate approval surfaces:
 
 - `approved_local_runtime_launch`;
 - `actual_browser_automation_smoke`;
@@ -118,36 +118,36 @@ Real testing execution remains approval-bound. The handoff packet should list se
 - `approved_canonical_mutation_pilot`;
 - `explicit_git_release_pr_action`.
 
-Each surface needs owner, approved target, data policy, redaction/cache/budget boundary where relevant, rollback/disable path, expected evidence, residual risk and stop condition.
+Каждая surface требует owner, approved target, data policy, redaction/cache/budget boundary где relevant, rollback/disable path, ожидаемые доказательства, residual risk и stop condition.
 
-Real testing can start only after governance, runtime contract, audit/observability, target consent, QA/performance/stabilization and packaging/docs closure evidence are current.
+Real testing может старт только после governance, runtime contract, audit/observability, target consent, QA/performance/stabilization и packaging/docs closure evidence являются current.
 
-## Actions Not Performed Without Approval
+## Действия без approval не выполняются
 
-Packaging and closure work does not perform these actions without a separate explicit owner approval:
+Packaging и closure work не perform these actions без separate explicit owner approval:
 
-- no live server launch;
-- no browser automation;
-- no provider calls;
-- no live external model/API calls;
-- no canonical graph mutation;
-- no plugin publication;
-- no external write;
-- no package registry or marketplace upload;
-- no hook activation;
-- no active schedules, automations or GitHub Actions creation;
-- no `git add`, commit, push or PR;
-- no real testing execution.
+- нет live server launch;
+- нет browser automation;
+- нет provider calls;
+- нет live external model/API calls;
+- нет canonical graph mutation;
+- нет plugin publication;
+- нет external write;
+- нет package registry или marketplace upload;
+- нет hook activation;
+- нет active schedules, automations или GitHub Actions creation;
+- нет `git add`, commit, push или PR;
+- нет real testing execution.
 
-## Risks And Failure Modes
+## Риски And Failure Modes
 
-- Treating packaging smoke as publish approval can create an unauthorized release.
-- Rebuilding a disposable site but not `site/` leaves stale generated docs.
-- Missing docs registry/control-plane sync can make source-backed claims drift.
-- Plugin-cache mismatch can hide missing checked-in skills, especially `docs-maintainer`.
-- Mermaid external asset dependency can break offline documentation expectations.
-- Real testing can accidentally start live execution if approval surfaces are bundled together instead of separated.
+- Трактовка packaging smoke как publish approval может create unauthorized release.
+- Rebuilding disposable site но не `site/` leaves stale generated docs.
+- Missing docs registry/control-plane sync может make source-backed claims drift.
+- Plugin-cache mismatch может hide missing checked-in skills, especially `docs-maintainer`.
+- Mermaid external asset dependency может break offline documentation expectations.
+- Real testing может accidentally старт live execution если approval surfaces являются bundled together instead из separated.
 
 ## Next Action
 
-After docs and packaging evidence are current, the next safe artifact is the approval packet draft. Real testing execution, provider/API calls, canonical mutation and git release/PR actions remain blocked until their separate approvals exist.
+After docs и packaging evidence являются current, next safe artifact является approval packet draft. Real testing execution, provider/API calls, canonical mutation и git release/PR actions остаются blocked пока their separate approvals exist.

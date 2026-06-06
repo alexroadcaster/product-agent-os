@@ -1,4 +1,4 @@
-﻿# Документирование проекта и кода для начинающей команды разработки
+# Документирование проекта и кода для начинающей команды разработки
 
 Source status: `mixed source-backed draft`  
 Статус: входной deep-research отчет. Claims пригодны для проектирования Product-Agent OS только после сверки с первоисточниками и записи устойчивых источников в `docs/sources/registry.md`.
@@ -113,7 +113,7 @@ C4 model особенно хорош для начинающей команды,
 
 ## Последствия
 ### Плюсы
-- единый источник истины для endpoints и schemas
+- единый source of truth для endpoints и schemas
 - можно генерировать документацию и проверки
 
 ### Минусы
@@ -469,7 +469,7 @@ flowchart LR
 | Frontend-doc agent | Изменения компонентов и экранов | Storybook stories/docs, component cards, props notes | Storybook build, a11y, visual tests |
 | Backend/API agent | Service changes, handlers, schemas | OpenAPI/AsyncAPI, examples, error catalogs, code comments | OpenAPI/AsyncAPI lint, generated docs build |
 | Database-doc agent | Миграции, schema changes | DBML/Schema docs, data dictionary, migration notes | Liquibase/Flyway validate, SchemaSpy/dbdocs build |
-| QA-doc agent | Acceptance criteria, regression scope | test scenarios, release notes, docs gap report | CI aggregation, broken-link report |
+| QA-doc agent | Критерии приемки, regression scope | test scenarios, release notes, docs gap report | CI aggregation, broken-link report |
 | Release agent | Merged changes | version bump, changelog, docs publication | SemVer/Conventional Commits/changelog checks |
 
 Эта схема особенно сильна, когда артефакты машиночитаемы: Structurizr DSL для архитектуры, OpenAPI/AsyncAPI для контрактов, TypeDoc JSON или Sphinx reference для кода, DBML для схемы, Conventional Commits + changelog + SemVer для релизного цикла. Некоторые из этих инструментов прямо ориентированы на machine-friendly generation: TypeDoc генерирует JSON model, AsyncAPI generator умеет генерировать documentation/code/configs, Structurizr DSL можно валидировать и экспортировать во внешние форматы.

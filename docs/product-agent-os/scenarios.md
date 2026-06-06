@@ -10,148 +10,148 @@ Scenario не заменяет lifecycle. Он выбирает первый м�
 
 ## Operator Route Map
 
-Scenarios are route decisions, not permission to run live systems. Each route must name source context, expected evidence, approval boundary and stop condition before it hands work to a subagent, skill or implementation slice.
+Scenarios являются route decisions, а не permission на запуск live systems. Каждый route должен назвать source context, ожидаемые доказательства, approval boundary и stop condition до передачи work в subagent, skill или implementation slice.
 
-| Route | Когда выбирать | Minimum evidence | Stop condition |
+| Route | Когда выбирать | Minimum evidence | Остановиться condition |
 | --- | --- | --- | --- |
-| `code_graph_orientation` | Нужно понять code/docs topology before build or review. | Existing source files plus generated graph/cockpit packet labeled as orientation evidence. | Do not claim source truth from generated graph; read source before implementation claims. |
-| `live_runtime_read_only` | Нужно проверить local runtime contract or graph-only API fallback. | Governance packet and disabled runtime contract. | Stop before live server launch unless separate approval packet exists. |
-| `provider_retrieval_eval` | Нужно оценить embedding/reranker/LLM provider benefit. | Redaction, cache, budget, baseline and threshold fallback packet. | Stop before any provider/live external model/API call without explicit approval. |
-| `canonical_graph_mutation_review` | Нужно проверить proposal acceptance and mutation readiness. | Human review ledger, proposal diff, mutation dry-run plan and rollback proof. | Stop before canonical graph mutation unless owner accepted the proposal and rollback evidence is current. |
-| `real_testing_approval` | Нужно перейти от staged evidence к controlled real testing. | Target/data owner approval, runtime/browser/provider/mutation/git action packet and rollback plan. | Stop unless the specific action is approved; approvals are not bundled. |
+| `code_graph_orientation` | Нужно понять code/docs topology до build или review. | Existing source files plus generated graph/cockpit packet labeled как orientation evidence. | Не claim source truth из generated graph; read source до implementation claims. |
+| `live_runtime_read_only` | Нужно проверить local runtime contract или graph-only API fallback. | Governance packet и disabled runtime contract. | Остановиться до live server launch пока separate approval packet exists. |
+| `provider_retrieval_eval` | Нужно оценить embedding/reranker/LLM provider benefit. | Redaction, cache, budget, baseline и threshold fallback packet. | Остановиться до any provider/live external model/API call без explicit approval. |
+| `canonical_graph_mutation_review` | Нужно проверить proposal acceptance и mutation readiness. | Human review ledger, proposal diff, mutation dry-run plan и rollback proof. | Остановиться до canonical graph mutation пока owner accepted proposal и rollback evidence является current. |
+| `real_testing_approval` | Нужно перейти от staged evidence к controlled real testing. | Target/data owner approval, runtime/browser/provider/mutation/git action packet и rollback plan. | Остановиться пока specific action является approved; approvals являются не bundled. |
 
-## Inputs
+## Входы
 
 - цель пользователя или `intent_hint`, если он передан в Codex runtime runner;
-- read-only workspace audit: files, stack, test/build commands, docs, CI, contracts and control-plane files;
+- read-only workspace audit: files, stack, test/build commands, docs, CI, contracts и control-plane files;
 - текущие `AGENTS.md`, `REQUIREMENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md`, `RUNLOG.md`;
-- source policy, sandbox, approvals and known external-system boundaries;
-- previous failure notes, if already recorded in `RUNLOG.md`.
+- политика источников, sandbox, approvals и known external-system boundaries;
+- previous failure notes, если already recorded в `RUNLOG.md`.
 
-Key routing fields include `finish_options` and `safe_next_action`; they tell the next worker whether to answer, stage a proposal, request approval, run focused verification or stop on an evidence gap.
+Key routing fields включают `finish_options` и `safe_next_action`; they tell next worker следует ли к answer, stage proposal, request approval, запуск focused verification или stop на evidence gap.
 
-## Outputs
+## Выходы
 
-- `usage_mode.primary`, secondary mode, confidence and routing reasons;
-- first response: один ближайший полезный шаг без широкого scaffold, rewrite or external mutation;
-- minimum artifacts: concrete files or packets needed before build/review/release;
-- approval boundary: what is read-only, staged-only or approval-required;
-- verification gates: commands, evals, screenshots, logs, owner review or accepted gap;
-- residual risk when route is based on detection rather than verified evidence.
+- `usage_mode.primary`, secondary mode, confidence и routing reasons;
+- first response: один ближайший полезный шаг без широкого scaffold, rewrite или external mutation;
+- minimum artifacts: concrete files или packets needed до build/review/release;
+- approval boundary: what является read-only, staged-only или approval-required;
+- verification gates: commands, evals, screenshots, logs, owner review или accepted gap;
+- residual risk когда route является based на detection rather than verified evidence.
 
 ## Guided Question Protocol And Status Dashboard
 
-Guided question protocol uses typed `question_queue` packets so the first response can show only `next_blocking_question`, `question_counts` and `question_summary`. It asks one blocking question maximum, keeps recommended and optional questions in the packet, and routes answers into artifacts or accepted gaps. Guided questions are not workspace evidence and do not replace read-only audit, current command evidence, runtime evidence, owner review or accepted gaps.
+Guided question protocol использует typed `question_queue` packets so first response может show только `next_blocking_question`, `question_counts` и `question_summary`. Это asks один blocking question maximum, keeps recommended и optional questions в packet, и routes answers в artifacts или accepted gaps. Guided questions являются не workspace evidence и не replace read-only audit, текущий command evidence, runtime evidence, owner review или accepted gaps.
 
-The status snapshot is the JSON source for a generated dashboard view. The dashboard stages `.codex/product-agent-os/status.html` and `.codex/product-agent-os/status.json` through the existing approval flow. `status.html` is generated view only: underlying artifacts remain the source material, the dashboard is not an editable database, and stale or inspection-only evidence cannot produce a success claim.
+Этот status snapshot является JSON source для generated dashboard view. Этот dashboard stages `.codex/product-agent-os/status.html` и `.codex/product-agent-os/status.json` через existing approval flow. `status.html` является generated view only: underlying artifacts остаются source material, dashboard является не editable database, и stale или inspection-only evidence не может produce success claim.
 
-## Self-Verification And Modernization Loop
+## Self-verification и modernization loop
 
-The `agent_skill_metrics_loop` route reviews agents, skills, prompt/policy packs, router/tool policy and harness-version behavior. It starts from a read-only target registry, explicit run evidence, trace intake, dataset quality checks, local grader summaries and grader/judge calibration. It can stage scorecard ledger records, daily or weekly packets, `agent-skill-evaluation-report.html` and modernization candidates, but every output is staged evidence only.
+`agent_skill_metrics_loop` route reviews agents, skills, prompt/policy packs, router/tool policy и harness-version behavior. Он начинается с read-only target registry, explicit запуск evidence, trace intake, dataset quality checks, local grader summaries и grader/judge calibration. Это может stage scorecard ledger records, daily или weekly packets, `agent-skill-evaluation-report.html` и modernization candidates, но every output является staged evidence only.
 
-The route uses source-of-truth policy: control-plane artifacts, run records, trace/eval packets and accepted gaps can support the metrics loop; dashboard HTML, report HTML, memory, raw chat logs and unsupported community claims cannot. The report is not source of truth and cannot turn stale or generated evidence into a completion claim.
+Этот route использует политика канонического источника: control-plane artifacts, запуск records, trace/eval packets и accepted gaps может support metrics loop; dashboard HTML, report HTML, memory, raw chat logs и unsupported community claims не могут. Этот report является не является каноническим источником и не может turn stale или generated evidence в completion claim.
 
-The approval boundary stays strict. Product-Agent OS records cadence recommendation values `L0`, `L1`, `L2` and `L3`, but it creates no active schedules. It performs no live eval/model/API calls, makes no external writes, applies no modernization candidates by itself and allows no self-applied updates. Owner review, rollback target and explicit approval state are required before any proposed update moves beyond staged review.
+Этот approval boundary stays strict. Product-Agent OS records cadence recommendation values `L0`, `L1`, `L2` и `L3`, но это creates нет active schedules. Это performs нет live eval/model/API calls, makes нет external writes, applies нет modernization candidates через itself и allows нет self-applied updates. Owner review, rollback target и explicit approval state являются required до any proposed update moves beyond staged review.
 
 ## Project Code Graph And Cockpit
 
-The graph route provides a read-only project graph foundation and generated cockpit for route orientation. It can produce staged graph JSON/JSONL with file-level nodes, Python AST overlays, conservative import/call/test edges, structured Markdown/OpenAPI/AsyncAPI/DBML/SQL/JSON/YAML/Mermaid/PlantUML overlays, controlled ontology/schema validation, manifest freshness/provenance, observation lineage, temporal edge helpers, partition scopes and canonical aliases.
+Этот graph route provides read-only project graph foundation и generated cockpit для route orientation. Это может produce staged graph JSON/JSONL с file-level nodes, Python AST overlays, conservative import/call/test edges, structured Markdown/OpenAPI/AsyncAPI/DBML/SQL/JSON/YAML/Mermaid/PlantUML overlays, controlled ontology/schema validation, manifest freshness/provenance, observation lineage, temporal edge helpers, partition scopes и canonical aliases.
 
-The cockpit renderer can stage offline `.codex/product-agent-os/project-cockpit.html` and `.codex/product-agent-os/project-cockpit.json` review surfaces with top-level pages, Code Flow, static projection, local vendor boundary, graph filters, focused subgraphs, selected-node evidence, fallback tables, mobile layout and no external assets. This helps routes point agents toward source files and stale graph gaps without treating generated artifacts as source of truth.
+Этот cockpit renderer может stage offline `.codex/product-agent-os/project-cockpit.html` и `.codex/product-agent-os/project-cockpit.json` review surfaces с top-level pages, Code Flow, static projection, local vendor boundary, graph filters, focused subgraphs, selected-node evidence, fallback tables, mobile layout и нет external assets. Эта helps routes point agents toward source files и stale graph gaps без treating generated artifacts как канонический источник.
 
-The boundary remains conservative: generated graph artifacts, runtime graph summaries, analysis reports and HTML cockpit views are review evidence only. The scanner and cockpit renderer do not mutate target workspaces. Live database/server, live external model/API embedding or cross-encoder providers, LLM semantic extraction, rationale/comment extraction and canonical graph mutation remain approval-bound future actions unless explicit approval defines redaction, cache, token budget, eval threshold and rollback path.
+Этот boundary остается conservative: generated graph artifacts, runtime graph summaries, analysis reports и HTML cockpit views являются только review evidence. Scanner и cockpit renderer не мутируют target workspaces. Live database/server, live external model/API embedding или cross-encoder providers, LLM semantic extraction, rationale/comment extraction и canonical graph mutation остаются approval-bound future actions, пока explicit approval не задаст redaction, cache, token budget, eval threshold и rollback path.
 
 ## Scenario Matrix
 
-| usage_mode | When it applies | first response | minimum artifacts | approval boundary | verification gates |
+| usage_mode | Когда применять | first response | minimum artifacts | approval boundary | verification gates |
 | --- | --- | --- | --- | --- | --- |
-| `first-run-intake` | Empty workspace, broken verification, existing control-plane or complex first launch. | Name mode, confidence, next smallest action and evidence gaps. | Intake summary, current lifecycle state, next action. | No scaffold, broad fix or parallel work before route is accepted. | Read-only audit, control-plane check, source policy. |
-| `bug_rescue` | User reports broken behavior, failing tests or regression. | Reproduce or isolate before changing code. | `bug-rescue-report.md`, failure evidence, root-cause hypothesis. | No fix claim without reproduction evidence. | Failing command/log, focused regression check, current evidence. |
-| `greenfield_idea` | Idea-stage or empty product direction. | Shape one vertical slice before scaffold. | `greenfield-idea-brief.md`, selected direction, non-goals. | Scaffold requires explicit approval. | Acceptance scenarios, first slice plan, lightweight-mode decision. |
-| `complex_system_acceleration` | Existing multi-surface app, integrations, multiple services or unclear ownership. | Build map before parallelization. | `integration-catalog.md`, ownership split, release gates. | No parallel work with overlapping files or unclear external-system owners. | Integration inventory, ownership review, release risk gates. |
-| `pr_review` | Review or merge-readiness request. | Stay read-only and review changed files. | PR review readiness, changed-files map, `pr-risk-review.md`. | No push, PR creation, merge or external comment without approval. | Two-stage review: spec compliance before quality/risk. |
-| `legacy_onboarding` | Old, undocumented or unknown repository. | Orient before refactor. | `onboarding-map.md`, entry points, run commands, docs debt. | No cleanup/refactor until map and verification status are explicit. | Present-unverified labels, source map, run command evidence. |
-| `api_migration` | HTTP API, event contract, generated client or consumer change. | Plan compatibility before implementation. | `migration-plan.md`, `api-contract-review.md`, consumers, rollout. | Release or breaking change needs owner review and approval. | Contract check, backward compatibility, deprecation and rollout evidence. |
-| `ai_eval_regression` | AI/RAG quality, prompt, model, retrieval, dataset or judge changes. | Baseline first. | `ai-eval-spec.md`, dataset policy, rubric, thresholds. | No quality claim from inspection-only evidence. | Baseline, rerun command, latency/cost/grounding and failure examples. |
-| `native_mobile_feature` | iOS, Android or native mobile behavior. | Record platform assumptions before implementation. | Platform runtime check, permissions, offline/device plan. | Permission, signing or store changes require approval. | Build command, simulator/emulator or device logs, screenshots, manual gap. |
-| `desktop_local_first` | Desktop app, filesystem, local DB, indexing or packaging. | Map local data and OS assumptions first. | Local data risk note, runtime log check, recovery path. | Filesystem access, packaging, signing and distribution require approval. | App logs, build/run command, privacy and rollback evidence. |
-| `data_migration` | Schema, backfill, sensitive data, retention or production data risk. | Plan migration and rollback before execution. | `migration-plan.md`, `database-dictionary.md`, data quality checks. | Production DB/data access and migration execution require approval. | Dry run, backup, validation, owner review, rollback evidence. |
-| `security_sensitive_change` | Authn/authz, payment, billing, secrets, PII, abuse controls or permissions. | Threat surface and owner review before build. | `security-risk-review.md`, approval boundary, rollback plan. | Security scans or external security mutations only when explicitly requested. | Tests, audit logging, rate limit, privacy and owner review evidence. |
-| `ci_stabilization` | Failing, flaky or unstable CI. | Gather failure evidence before changing code. | `ci-stabilization-report.md`, failing job, local reproduction. | Remote CI reruns, settings and branch rules require approval. | Logs, deterministic/flaky classification, isolation plan, rerun evidence. |
-| `release_packaging` | Package, SDK, plugin, app, mobile, desktop or open-source release. | Build release readiness before publish. | `release-readiness.md`, package metadata, changelog, artifacts. | Publishing, tagging, release creation, upload or package registry mutation require approval. | Build/test/docs evidence, security/license notes, rollback and owner review. |
-| `docs_only` | Documentation update without behavior change. | Update source-backed docs and run docs checks. | Source status, affected docs, registry entry when source-backed claims changed. | Hosted docs, CI activation and sharing changes require approval. | `python tools\check_docs.py`, strict MkDocs when nav/build-sensitive. |
-| `standard_feature` | Bounded feature work without special scenario risk. | Use normal lifecycle route. | Requirements, plan, test/eval evidence. | Writes follow sandbox and project approval policy. | Unit/integration/contract checks, docs impact, review. |
-| `maintenance` | Small upkeep, formatting or status sync. | Keep scope mechanical and evidence explicit. | RUNLOG note or control-plane sync. | No unrelated refactor. | Focused command or explicit inspection-only gap. |
+| `first-run-intake` | Empty workspace, broken verification, existing control-plane или complex first launch. | Name mode, confidence, next smallest action и evidence gaps. | Intake summary, текущий lifecycle state, следующий action. | Нет scaffold, broad fix или parallel work до route является accepted. | Read-only audit, control-plane check, политика источников. |
+| `bug_rescue` | User reports broken behavior, failing tests или regression. | Reproduce или isolate до changing code. | `bug-rescue-report.md`, failure evidence, root-cause hypothesis. | Нет fix claim без reproduction evidence. | Failing command/log, focused regression check, текущий evidence. |
+| `greenfield_idea` | Idea-stage или empty product direction. | Shape один vertical slice до scaffold. | `greenfield-idea-brief.md`, selected direction, non-goals. | Scaffold требует explicit approval. | Acceptance scenarios, first slice plan, lightweight-mode decision. |
+| `complex_system_acceleration` | Existing multi-surface app, integrations, multiple services или unclear ownership. | Build map до parallelization. | `integration-catalog.md`, ownership split, release gates. | Нет parallel work с overlapping files или unclear external-system owners. | Integration inventory, ownership review, release risk gates. |
+| `pr_review` | Review или merge-readiness request. | Stay read-only и review changed files. | PR review readiness, changed-files map, `pr-risk-review.md`. | Нет push, PR creation, merge или external comment без approval. | Two-stage review: spec compliance до quality/risk. |
+| `legacy_onboarding` | Old, undocumented или unknown repository. | Orient до refactor. | `onboarding-map.md`, entry points, запуск commands, docs debt. | Нет cleanup/refactor пока map и verification status являются explicit. | Present-unverified labels, source map, запуск command evidence. |
+| `api_migration` | HTTP API, event contract, generated client или consumer change. | Plan compatibility до implementation. | `migration-plan.md`, `api-contract-review.md`, consumers, rollout. | Release или breaking change требует owner review и approval. | Contract check, backward compatibility, deprecation и rollout evidence. |
+| `ai_eval_regression` | AI/RAG quality, prompt, model, retrieval, dataset или judge changes. | Baseline first. | `ai-eval-spec.md`, dataset policy, rubric, thresholds. | Нет quality claim из inspection-only evidence. | Baseline, rerun command, latency/cost/grounding и failure examples. |
+| `native_mobile_feature` | iOS, Android или native mobile behavior. | Record platform assumptions до implementation. | Platform runtime check, permissions, offline/device plan. | Permission, signing или store changes требуют approval. | Build command, simulator/emulator или device logs, screenshots, manual gap. |
+| `desktop_local_first` | Desktop app, filesystem, local DB, indexing или packaging. | Map local data и OS assumptions first. | Local data risk note, runtime log check, recovery path. | Filesystem access, packaging, signing и distribution требуют approval. | App logs, build/run command, privacy и rollback evidence. |
+| `data_migration` | Schema, backfill, sensitive data, retention или production data risk. | Plan migration и rollback до execution. | `migration-plan.md`, `database-dictionary.md`, data quality checks. | Production DB/data access и migration execution требуют approval. | Dry run, backup, validation, owner review, rollback evidence. |
+| `security_sensitive_change` | Authn/authz, payment, billing, secrets, PII, abuse controls или permissions. | Threat surface и owner review до build. | `security-risk-review.md`, approval boundary, rollback plan. | Security scans или external security mutations только когда explicitly requested. | Tests, audit logging, rate limit, privacy и owner review evidence. |
+| `ci_stabilization` | Failing, flaky или unstable CI. | Gather failure evidence до changing code. | `ci-stabilization-report.md`, failing job, local reproduction. | Remote CI reruns, settings и branch rules требуют approval. | Logs, deterministic/flaky classification, isolation plan, rerun evidence. |
+| `release_packaging` | Package, SDK, plugin, app, mobile, desktop или open-source release. | Build release readiness до publish. | `release-readiness.md`, package metadata, changelog, artifacts. | Publishing, tagging, release creation, upload или package registry mutation требуют approval. | Build/test/docs evidence, security/license notes, rollback и owner review. |
+| `docs_only` | Documentation update без behavior change. | Update source-backed docs и запуск docs checks. | Source status, affected docs, registry entry когда source-backed claims changed. | Hosted docs, CI activation и sharing changes требуют approval. | `python tools\check_docs.py`, strict MkDocs когда nav/build-sensitive. |
+| `standard_feature` | Bounded feature work без special scenario risk. | Используйте normal lifecycle route. | Requirements, plan, test/eval evidence. | Writes follow sandbox и project approval policy. | Unit/integration/contract checks, влияние на docs, review. |
+| `maintenance` | Small upkeep, formatting или status sync. | Keep scope mechanical и evidence explicit. | RUNLOG note или control-plane sync. | Нет unrelated refactor. | Focused command или explicit inspection-only gap. |
 
 ## Database & Data Methodology Routing
 
-Database/data work keeps `data_migration` as the route name and adds a dedicated Database & Data methodology packet when schema, migration, ORM, warehouse, data quality, lineage, retention, backup/restore or production-data signals appear.
+Database/data work keeps `data_migration` как route name и adds dedicated Database & Data methodology packet когда schema, migration, ORM, warehouse, data quality, lineage, retention, backup/restore или production-data signals appear.
 
-Minimum staged artifacts include `database-inventory.md`, `database-dictionary.md`, `database-migration-plan.md`, `database-data-contract.md`, `database-backup-restore-evidence.md`, `database-lineage-map.md`, `database-query-performance-review.md`, `database-retention-deletion-policy.md`, `database-synthetic-fixtures-policy.md` and `database-production-access-approval.md` when production data, production DB access, backup restore or destructive migration is involved.
+Minimum staged artifacts включают `database-inventory.md`, `database-dictionary.md`, `database-migration-plan.md`, `database-data-contract.md`, `database-backup-restore-evidence.md`, `database-lineage-map.md`, `database-query-performance-review.md`, `database-retention-deletion-policy.md`, `database-synthetic-fixtures-policy.md` и `database-production-access-approval.md` когда production data, production DB access, backup restore или destructive migration является involved.
 
-Approval boundary stays explicit: DB introspection, production DB access, production data access, migration execution, destructive cleanup, backup restore and retention mutation are not automatic actions.
+Approval boundary stays explicit: DB introspection, production DB access, production data access, migration execution, destructive cleanup, backup restore и retention mutation являются не automatic actions.
 
 ## Backend Methodology Routing
 
-Backend methodology routing applies when service behavior, background jobs, queues, auth, error handling, observability, deployment or rollback behavior changes. Minimum staged artifacts include `backend-service-overview.md`, `backend-runtime-behavior.md`, runtime/failure evidence, observability evidence, security evidence and rollback evidence.
+Backend methodology routing applies когда service behavior, background jobs, queues, auth, error handling, observability, deployment или rollback behavior changes. Minimum staged artifacts включают `backend-service-overview.md`, `backend-runtime-behavior.md`, runtime/failure evidence, observability evidence, security evidence и rollback evidence.
 
 ## LLM / AI / RAG Methodology Routing
 
-AI/RAG work keeps `ai_eval_regression` as the route name and adds a dedicated LLM / AI / RAG methodology packet when prompts, models, eval configs, structured outputs, tool/function/MCP calls, RAG corpora, retrieval, vector stores, embeddings, grounding, agent traces, guardrails or latency/cost signals appear.
+AI/RAG work keeps `ai_eval_regression` как route name и adds dedicated LLM / AI / RAG methodology packet когда prompts, models, eval configs, structured outputs, tool/function/MCP calls, RAG corpora, retrieval, vector stores, embeddings, grounding, agent traces, guardrails или latency/cost signals appear.
 
-Minimum staged artifacts include `ai-behavior-spec.md`, `prompt-contract.md`, `model-decision-record.md`, `eval-run-report.md`, `ai-dataset-manifest.md`, `structured-output-schema.md`, `ai-tool-contract.md`, `rag-source-inventory.md`, `rag-retrieval-config.md`, `rag-eval-report.md`, `grounding-rubric.md`, `agent-task-packet.md`, `agent-workflow-map.md`, `guardrail-matrix.md`, `trace-evidence-packet.md`, `ai-cost-latency-budget.md` and the existing `ai-eval-spec.md` when user-visible AI behavior changes. `agent-handoff-contract.md` is a legacy/source alias to `agent-task-packet.md`, not a duplicate generated contract.
+Minimum staged artifacts включают `ai-behavior-spec.md`, `prompt-contract.md`, `model-decision-record.md`, `eval-run-report.md`, `ai-dataset-manifest.md`, `structured-output-schema.md`, `ai-tool-contract.md`, `rag-source-inventory.md`, `rag-retrieval-config.md`, `rag-eval-report.md`, `grounding-rubric.md`, `agent-task-packet.md`, `agent-workflow-map.md`, `guardrail-matrix.md`, `trace-evidence-packet.md`, `ai-cost-latency-budget.md` и existing `ai-eval-spec.md` когда user-visible AI behavior changes. `agent-handoff-contract.md` является legacy/source alias к `agent-task-packet.md`, не duplicate generated contract.
 
-Eval tooling remains conditional: Promptfoo, OpenAI Evals, pytest/Jest app-backed evals, Ragas and LangSmith are recorded as selected, rejected or deferred choices based on stack/privacy/CI fit. Model migration records snapshot or approved alias, prompt migration impact, compatibility checks, rollback, minimum threshold and sampling parameter rationale. RAG evidence records deletion path, retention, source exclusion, stale-source pruning, privacy owner, vector store lifecycle and deletion propagation. Failed evals, hallucination reports, unsafe outputs, tool misuse or data exposure route to an AI incident workflow with severity, mitigation, follow-up eval and Security/Privacy handoff.
+Eval tooling остается conditional: Promptfoo, OpenAI Evals, pytest/Jest app-backed evals, Ragas и LangSmith являются recorded как selected, rejected или deferred choices based на stack/privacy/CI fit. Model migration records snapshot или approved alias, prompt migration impact, compatibility checks, rollback, minimum threshold и sampling parameter rationale. RAG evidence records deletion path, retention, source exclusion, stale-source pruning, privacy owner, vector store lifecycle и deletion propagation. Failed evals, hallucination reports, unsafe outputs, tool misuse или data exposure route к AI incident workflow с severity, mitigation, follow-up eval и Security/Privacy handoff.
 
-AI/RAG route evidence must reject filename-only diffs as quality proof.
+AI/RAG route evidence должен reject filename-only diffs как quality proof.
 
-Approval boundary stays explicit: live model calls, external eval services, vector DB access, raw prompts/traces/customer text, tool writes, shell/money/data exposure and irreversible side effects are not automatic actions.
+Approval boundary stays explicit: live model calls, external eval services, vector DB access, raw prompts/traces/customer text, tool writes, shell/money/data exposure и irreversible side effects являются не automatic actions.
 
 ## API & Integrations Methodology Routing
 
-API & Integrations methodology routing applies when HTTP APIs, event contracts, webhooks, generated SDKs or external providers change. Minimum staged artifacts include `api-inventory.md`, `api-contract-review.md`, `api-consumer-map.md`, `api-contract-test-matrix.md`, `external-integration-approval.md` and compatibility/security/error/event/SDK evidence.
+API & Integrations methodology routing applies когда HTTP APIs, event contracts, webhooks, generated SDKs или external providers change. Minimum staged artifacts включают `api-inventory.md`, `api-contract-review.md`, `api-consumer-map.md`, `api-contract-test-matrix.md`, `external-integration-approval.md` и compatibility/security/error/event/SDK evidence.
 
-External writes are not automatic actions; they require an explicit approval boundary.
+External пишет являются не automatic actions; they требуют explicit approval boundary.
 
 ## Security, Privacy & Compliance Methodology Routing
 
-Security-sensitive work keeps `security_sensitive_change` as the route name and adds a dedicated Security, Privacy & Compliance methodology packet when authn/authz, permissions, secrets, PII, sensitive data, payment/billing, abuse controls, audit logging, supply chain, SBOM/provenance, CI permissions, AI/tool security, external writes, production data, policy changes or compliance overlays appear.
+Security-sensitive work keeps `security_sensitive_change` как route name и adds dedicated Security, Privacy & Compliance methodology packet когда authn/authz, permissions, secrets, PII, sensitive data, payment/billing, abuse controls, audit logging, supply chain, SBOM/provenance, CI permissions, AI/tool security, external writes, production data, policy changes или compliance overlays appear.
 
-Minimum staged artifacts include `security-risk-review.md`, `threat-surface.md`, `asvs-ssdf-mapping.md`, `authz-negative-test-matrix.md`, `secrets-policy.md`, `data-classification-register.md`, `privacy-impact-record.md`, `api-security-review.md`, `abuse-rate-limit-plan.md`, `supply-chain-review.md`, `sbom-manifest.md`, `ci-permissions-review.md`, `audit-logging-review.md`, `ai-security-review.md`, `compliance-overlay.md`, `vulnerability-response-record.md` and `approval-record.md` when the corresponding risk applies. Source-era names such as `threat-model.md`, `asvs-mapping.md`, `secrets-inventory.md`, `authz-matrix.md`, `audit-log-policy.md` and `compliance-applicability-matrix.md` are aliases, not duplicate generated contracts.
+Minimum staged artifacts включают `security-risk-review.md`, `threat-surface.md`, `asvs-ssdf-mapping.md`, `authz-negative-test-matrix.md`, `secrets-policy.md`, `data-classification-register.md`, `privacy-impact-record.md`, `api-security-review.md`, `abuse-rate-limit-plan.md`, `supply-chain-review.md`, `sbom-manifest.md`, `ci-permissions-review.md`, `audit-logging-review.md`, `ai-security-review.md`, `compliance-overlay.md`, `vulnerability-response-record.md` и `approval-record.md` когда corresponding risk applies. Source-era names such как `threat-model.md`, `asvs-mapping.md`, `secrets-inventory.md`, `authz-matrix.md`, `audit-log-policy.md` и `compliance-applicability-matrix.md` являются aliases, не duplicate generated contracts.
 
-Codex Security scans remain explicit opt-in: the route may recommend a scan or record `not requested`, but it must not imply that a scan ran from security terminology alone. Compliance overlays record applicability, owner, evidence, non-goals, gaps and review cadence without claiming legal compliance or certification.
+Codex Security scans остаются explicit opt-in: route may recommend scan или record `not requested`, но это должен не imply который scan ran из security terminology alone. Compliance overlays record applicability, owner, evidence, non-goals, gaps и review cadence без claiming legal compliance или certification.
 
-Approval boundary stays explicit: payment/billing, production data, secret rotation, policy changes, external security-system mutations, external writes, publish actions and Codex Security scans are not automatic actions.
+Approval boundary stays explicit: payment/billing, production data, secret rotation, policy changes, external security-system mutations, external writes, publish actions и Codex Security scans являются не automatic actions.
 
 ## Delivery, Release & Operations Methodology Routing
 
-Release packaging keeps `release_packaging` as the route name and adds a dedicated Delivery, Release & Operations methodology packet when release, deploy, publish, package, versioning, changelog, artifact, rollout, rollback, CI/CD environment, release mode policy, build-release-run boundary, platform distribution evidence, release communication, versioning tooling, GitHub environment controls, SLO/observability, observability/on-call tooling, runbook, incident, postmortem, DORA, release integrity or automation promotion signals appear.
+Release packaging keeps `release_packaging` как route name и adds dedicated Delivery, Release & Operations methodology packet когда release, deploy, publish, package, versioning, changelog, artifact, rollout, rollback, CI/CD environment, release mode policy, build-release-run boundary, platform distribution evidence, release communication, versioning tooling, GitHub environment controls, SLO/observability, observability/on-call tooling, runbook, incident, postmortem, DORA, release integrity или automation promotion signals appear.
 
-Minimum staged artifacts include `versioning-policy.md`, `release-readiness.md`, `release-artifact-manifest.md`, `rollout-plan.md`, `rollback-recovery-plan.md`, `environment-matrix.md`, `deployment-plan.md`, `ci-cd-workflow-inventory.md`, `observability-map.md`, `slo-spec.md`, `operations-runbook.md`, `incident-record.md`, `postmortem.md`, `post-release-review.md`, `approval-record.md` and `automation-candidate.md` when automation promotion is proposed.
+Minimum staged artifacts включают `versioning-policy.md`, `release-readiness.md`, `release-artifact-manifest.md`, `rollout-plan.md`, `rollback-recovery-plan.md`, `environment-matrix.md`, `deployment-plan.md`, `ci-cd-workflow-inventory.md`, `observability-map.md`, `slo-spec.md`, `operations-runbook.md`, `incident-record.md`, `postmortem.md`, `post-release-review.md`, `approval-record.md` и `automation-candidate.md` когда automation promotion является proposed.
 
-Approval boundary stays explicit: publish, tag, release creation, artifact upload, deploy, package registry mutation, marketplace/store submission, CI/CD environment mutation and active automation remain approval_required. Automation candidates require manual success evidence, stable inputs/outputs, owner, verification, approval requirements, value evidence and rollback/disable path.
+Approval boundary stays explicit: publish, tag, release creation, artifact upload, deploy, package registry mutation, marketplace/store submission, CI/CD environment mutation и active automation остаются approval_required. Automation candidates требуют manual success evidence, stable inputs/outputs, owner, verification, approval requirements, value evidence и rollback/disable path.
 
-Final release/operations depth also requires owner-reviewed release evidence sufficiency for the real risk. Mobile signing, DORA dashboard notes, release tooling config, generated release notes or a single observability tool remain `present_unverified` until platform owner evidence, team/process measurement design, selected/rejected/deferred tooling decisions, alert path and accepted gaps are recorded.
+Final release/operations depth also требует owner-reviewed release evidence sufficiency для real risk. Mobile signing, DORA dashboard notes, release tooling config, generated заметки к release или single observability tool остаются `present_unverified` пока platform owner evidence, team/process measurement design, selected/rejected/deferred tooling decisions, alert path и accepted gaps являются recorded.
 
-## Verification
+## Проверка
 
-- Route selection is covered by discovery tests, `usage_mode` fixture checks and false-positive fixtures for selected methodology/tooling gates.
-- Scenario behavior is covered by `behavioral-workflows.json` and `run_fixture_eval.py`.
-- Frontend methodology routing is covered by `frontend_contract_present` and the synthetic `frontend-ui-app` fixture.
-- Backend methodology routing is covered by `backend_contract_present` and the synthetic `backend-service-app` fixture.
-- API & Integrations methodology routing is covered by `api_integrations_contract_present` and synthetic API fixtures.
-- Database & Data methodology routing is covered by `database_data_contract_present` and synthetic database fixtures.
-- LLM / AI / RAG methodology routing is covered by `llm_ai_rag_contract_present` and synthetic AI/RAG fixtures.
-- Security, Privacy & Compliance methodology routing is covered by `security_privacy_compliance_contract_present` and synthetic security fixtures.
-- Delivery, Release & Operations methodology routing is covered by `delivery_release_operations_contract_present` and synthetic release fixtures.
-- Docs and source claims are checked by `tools/check_docs.py`, source policy and strict MkDocs when navigation changes.
-- Completion language must pass evidence-before-completion: current command evidence, current eval evidence, current runtime evidence, owner evidence or explicit inspection-only gap.
+- Route selection является covered через discovery tests, `usage_mode` fixture checks и false-positive fixtures для selected methodology/tooling gates.
+- Scenario behavior является covered через `behavioral-workflows.json` и `run_fixture_eval.py`.
+- Frontend methodology routing является covered через `frontend_contract_present` и synthetic `frontend-ui-app` fixture.
+- Backend methodology routing является covered через `backend_contract_present` и synthetic `backend-service-app` fixture.
+- API & Integrations methodology routing является covered через `api_integrations_contract_present` и synthetic API fixtures.
+- Database & Data methodology routing является covered через `database_data_contract_present` и synthetic database fixtures.
+- LLM / AI / RAG methodology routing является covered через `llm_ai_rag_contract_present` и synthetic AI/RAG fixtures.
+- Security, Privacy & Compliance methodology routing является covered через `security_privacy_compliance_contract_present` и synthetic security fixtures.
+- Delivery, Release & Operations methodology routing является covered через `delivery_release_operations_contract_present` и synthetic release fixtures.
+- Docs и source claims являются checked через `tools/check_docs.py`, политика источников и strict MkDocs когда navigation changes.
+- Completion language должен pass evidence-before-completion: текущий command evidence, текущий eval evidence, текущий runtime evidence, owner evidence или explicit inspection-only gap.
 
-## Risks
+## Риски
 
-- Workspace signals can identify a likely scenario but cannot prove readiness by themselves.
-- A scenario may be correct while the selected minimum artifacts are low quality; owner review still matters.
-- Approval boundaries are project-specific. Product-Agent OS can mark them, but the user or workspace policy decides whether to proceed.
-- Transcript/session eval runner replays synthetic or redacted session fixtures with deterministic expected/forbidden term checks and privacy/no-secrets guards; semantic judgment still needs reviewer or future calibrated judge coverage.
+- Workspace signals может identify likely scenario но не может prove readiness через themselves.
+- A scenario may быть correct while selected minimum artifacts являются low quality; owner review still matters.
+- Approval boundaries являются project-specific. Product-Agent OS может mark them, но пользователь или workspace policy decides следует ли к proceed.
+- Transcript/session eval runner replays synthetic или redacted session fixtures с deterministic expected/forbidden term checks и privacy/no-secrets guards; semantic judgment still требует reviewer или future calibrated judge coverage.
 
-Next artifact: use [Behavioral evals](behavioral-evals.md) to validate that the scenario route resists shortcuts and produces the expected evidence.
+Следующий artifact: используйте [Behavioral evals](behavioral-evals.md), чтобы проверить, что scenario route resists shortcuts и produces ожидаемые доказательства.

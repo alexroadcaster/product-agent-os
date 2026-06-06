@@ -149,7 +149,7 @@ It does not choose a universal API style for every project. The project should s
 | RPC | gRPC/protobuf | Useful for low-latency, typed, polyglot service-to-service APIs. |
 | Query API | GraphQL | Useful for client-shaped reads and schema-driven product APIs; requires governance for complexity, authorization and deprecation. |
 
-## Failure modes
+## Типовые сбои
 
 - Treating rendered API docs as the source of truth instead of the machine-readable contract.
 - Shipping event payload changes without consumer compatibility review.

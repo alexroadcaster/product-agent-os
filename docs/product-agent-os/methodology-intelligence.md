@@ -1,107 +1,107 @@
-# Product-Agent OS methodology intelligence
+﻿# Product-Agent OS methodology intelligence
 
 Source status: `local product design + experiment`
 
 Источники: [Product-Agent OS architecture](architecture.md), [Product-Agent OS scenarios](scenarios.md), [Behavioral evals](behavioral-evals.md), [Codex workflows](https://developers.openai.com/codex/workflows), [Agent approvals and security](https://developers.openai.com/codex/agent-approvals-security).
 
-Methodology intelligence is the read-only layer that turns workspace evidence into practical delivery guidance. It reads files, control-plane artifacts and route signals, then returns `methodology_packet`, `finish_options`, `owner_questions`, `safe_next_action`, `methodology_synthesis` and `source_artifact_ledger` when they are useful.
+Methodology intelligence является read-only layer который turns workspace evidence в practical delivery guidance. Это reads files, control-plane artifacts и route signals, затем returns `methodology_packet`, `finish_options`, `owner_questions`, `safe_next_action`, `methodology_synthesis` и `source_artifact_ledger` когда they являются useful.
 
-Those packets are recommendation and routing evidence. They do not mutate target projects, enable hooks, activate automations, call providers or approve external writes.
+Эти packets являются recommendation и routing evidence. Они не изменяют target projects, не включают hooks, не активируют automations, не вызывают providers и не approve external writes.
 
-## What It Solves
+## What Это Solves
 
-Product-agent work often fails in two opposite ways: either it starts coding before the project contract is clear, or it forces heavy methodology onto simple work. Methodology intelligence gives Product-Agent OS a middle path:
+Product-agent work часто ломается двумя способами: либо coding начинается до ясного project contract, либо heavy methodology навязывается simple work. Methodology intelligence дает Product-Agent OS средний путь:
 
-- read the existing workspace before prescribing process;
-- detect which engineering standards apply;
+- read existing workspace до prescribing process;
+- detect который engineering standards apply;
 - keep lightweight work lightweight;
-- require deeper evidence only for real risk;
-- return owner questions when evidence is missing;
-- stage recommendations instead of silently changing the target workspace.
+- требуют deeper evidence только для real risk;
+- return owner questions когда evidence является missing;
+- stage recommendations instead из silently changing target workspace.
 
-## Inputs
+## Входы
 
-- user intent or route hint;
+- пользователь intent или route hint;
 - read-only workspace inventory;
 - `AGENTS.md`, `REQUIREMENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md`, `RUNLOG.md`;
-- architecture docs, ADRs, API contracts, database docs, Storybook/FSD signals, CI, evals, metrics, release artifacts and security/privacy evidence when present;
-- current source policy, sandbox, approvals and external-system boundaries;
-- accepted gaps and previous failure notes.
+- architecture docs, ADRs, API contracts, database docs, Storybook/FSD signals, CI, evals, metrics, release artifacts и security/privacy evidence когда present;
+- текущий политика источников, sandbox, approvals и external-system boundaries;
+- accepted gaps и previous failure notes.
 
-## Outputs
+## Выходы
 
 | Output | Purpose |
 | --- | --- |
-| `methodology_applicability` | Records which domains apply, why, and what evidence is missing. |
-| `methodology_packet` | Route-ready evidence bundle for the next worker. |
-| `finish_options` | Safe options such as answer, stage proposal, request approval, run focused verification or stop on gap. |
-| `owner_questions` | Smallest blocking questions for decisions that cannot be inferred from source files. |
-| `safe_next_action` | The next move that respects source policy, sandbox, approvals and evidence. |
-| `source_artifact_ledger` | Mapping from recommendations to the source artifacts that support them. |
-| `methodology_synthesis` | Grouped recommendations across domains with risk-aware ordering. |
+| `methodology_applicability` | Records который domains apply, why, и what evidence является missing. |
+| `methodology_packet` | Route-ready evidence bundle для next worker. |
+| `finish_options` | Safe options such как answer, stage proposal, request approval, запуск focused verification или stop на gap. |
+| `owner_questions` | Smallest blocking questions для decisions который не может быть inferred из source files. |
+| `safe_next_action` | Этот next move который respects политика источников, sandbox, approvals и evidence. |
+| `source_artifact_ledger` | Mapping из recommendations к source artifacts который support them. |
+| `methodology_synthesis` | Grouped recommendations across domains с risk-aware ordering. |
 
 ## Methodology Domains
 
-| Domain | When it applies | Minimum evidence |
+| Domain | Когда применять | Minimum evidence |
 | --- | --- | --- |
-| Product hypothesis | Product behavior, acceptance criteria or outcome metrics change. | User/problem, non-goals, acceptance scenario, metric or explicit gap. |
-| Solution architecture | Boundaries, services, public contracts, runtime topology or irreversible design change. | Scope, boundary, decision, alternatives, rollback and owner evidence. |
-| Frontend | User-visible UI, interaction, accessibility, visual QA or performance change. | User flow, component states, browser/runtime evidence, visual/accessibility gap or proof. |
-| Backend | Service behavior, jobs, queues, auth, errors, observability or rollback paths. | Runtime behavior, failure mode, health/logging, tests and rollback evidence. |
-| API & Integrations | HTTP API, event contract, SDK, webhook, external provider or consumer contract. | Source-of-truth contract, consumer map, compatibility and external-write approval boundary. |
-| Database & Data | Schema, migration, lineage, retention, sensitive data or production data. | Inventory, dictionary, migration plan, rollback/backup, data classification and production access boundary. |
-| LLM / AI / RAG | Prompt/model/tool/RAG/eval behavior changes. | Baseline/current eval, prompt/model/tool contracts, grounding, traces, cost/latency and incident path. |
-| Security, Privacy & Compliance | Authn/authz, secrets, PII, payments, abuse, supply chain, audit or compliance overlay. | Threat surface, risk review, negative tests, secrets/data/privacy evidence, scan status and owner review. |
-| Delivery, Release & Operations | Publish, deploy, package, release, automation, incidents or operations readiness. | Release scope, versioning, changelog, artifact manifest, rollout, rollback, SLO/observability and approval evidence. |
-| Cross-domain synthesis | Multiple domains overlap or recommendations conflict. | Grouped recommendations, owner/consumer domains, semantic evidence sufficiency and safe next action. |
+| Product hypothesis | Product behavior, acceptance criteria или outcome metrics change. | User/problem, non-goals, acceptance scenario, metric или explicit gap. |
+| Solution architecture | Boundaries, services, public contracts, runtime topology или irreversible design change. | Scope, boundary, decision, alternatives, rollback и owner evidence. |
+| Frontend | User-visible UI, interaction, accessibility, visual QA или performance change. | User flow, component states, browser/runtime evidence, visual/accessibility gap или proof. |
+| Backend | Service behavior, jobs, queues, auth, errors, observability или rollback paths. | Runtime behavior, failure mode, health/logging, tests и rollback evidence. |
+| API & Integrations | HTTP API, event contract, SDK, webhook, external provider или consumer contract. | Source-of-truth contract, consumer map, compatibility и external-write approval boundary. |
+| Database & Data | Schema, migration, lineage, retention, sensitive data или production data. | Inventory, dictionary, migration plan, rollback/backup, data classification и production access boundary. |
+| LLM / AI / RAG | Prompt/model/tool/RAG/eval behavior changes. | Baseline/current eval, prompt/model/tool contracts, grounding, traces, cost/latency и incident path. |
+| Security, Privacy & Compliance | Authn/authz, secrets, PII, payments, abuse, supply chain, audit или compliance overlay. | Threat surface, risk review, negative tests, secrets/data/privacy evidence, scan status и owner review. |
+| Delivery, Release & Operations | Publish, deploy, package, release, automation, incidents или operations readiness. | Release scope, versioning, changelog, artifact manifest, rollout, rollback, SLO/observability и approval evidence. |
+| Cross-domain synthesis | Multiple domains overlap или recommendations conflict. | Grouped recommendations, owner/consumer domains, semantic evidence sufficiency и safe следующий action. |
 
-Packet identifiers and exact contract phrases:
+Packet identifiers и exact contract phrases:
 
-- Security/Privacy/Compliance uses `security_privacy_compliance_contract_present`, `data-classification-register.md` and `vulnerability-response-record.md`.
-- Delivery/Release/Operations uses `delivery_release_operations_contract_present`, `release-artifact-manifest.md`, `operations-runbook.md`, `post-release-review.md`, release mode policy and owner-reviewed release evidence sufficiency.
-- Cross-Domain Synthesis uses `recommendation_groups`, owner domains, consumer domains, risk-aware safe next action and approval-bound behavior.
+- Security/Privacy/Compliance использует `security_privacy_compliance_contract_present`, `data-classification-register.md` и `vulnerability-response-record.md`.
+- Delivery/Release/Operations использует `delivery_release_operations_contract_present`, `release-artifact-manifest.md`, `operations-runbook.md`, `post-release-review.md`, release mode policy и owner-reviewed release evidence sufficiency.
+- Cross-Domain Synthesis использует `recommendation_groups`, owner domains, consumer domains, risk-aware safe следующий action и approval-bound behavior.
 
 ## Read-Only Process
 
 ```mermaid
 flowchart TD
     A["Workspace evidence"] --> B["Applicability scan"]
-    B --> C["Risk and false-positive check"]
+    B --> C["Risk и false-positive check"]
     C --> D["Domain packets"]
     D --> E["Synthesis"]
     E --> F{"Evidence sufficient?"}
     F -->|Yes| G["safe_next_action"]
-    F -->|No| H["owner_questions or accepted gap"]
-    G --> I{"Write required?"}
-    I -->|No| J["Report only"]
+    F -->|No| H["owner_questions или accepted gap"]
+    G --> I{"Создайте required?"}
+    I -->|No| J["Только report"]
     I -->|Yes| K["Staged proposal"]
     K --> L["Explicit approval boundary"]
 ```
 
 ## Approval Boundary
 
-The staged artifact boundary is strict:
+Этот staged artifact boundary является strict:
 
-- methodology recommendations can produce a report, owner question or staged proposal;
-- release, deploy, publish, DB access, security scan, external write, hook activation and automation activation stay blocked until explicit owner approval and current evidence exist;
-- generated reports and dashboards are evidence surfaces, not sources of truth;
-- detection alone creates `present_unverified`, not readiness;
-- high-risk, production, release, security-sensitive, AI behavior and public-contract work needs owner-reviewed evidence or explicit accepted gap.
+- methodology recommendations может produce report, owner question или staged proposal;
+- release, deploy, publish, DB access, security scan, external write, hook activation и automation activation stay blocked пока explicit owner approval и текущий evidence exist;
+- generated reports и dashboards являются evidence surfaces, не sources из truth;
+- detection alone creates `present_unverified`, не readiness;
+- high-risk, production, release, security-sensitive, AI behavior и public-contract work требует owner-reviewed evidence или explicit accepted gap.
 
 ## False-Positive Control
 
-Methodology intelligence must avoid forced ceremony:
+Methodology intelligence должен avoid forced ceremony:
 
-- docs-only changes do not need a full product/architecture/release process unless they change public contracts or publishing;
-- simple CRUD does not force DDD;
-- backend/native work does not force FSD;
-- hosted docs, CI activation and DB introspection remain approval-required;
-- source-like words in file paths are not enough to infer security, release or data readiness;
-- a generated artifact is not safety proof until the relevant source or owner evidence is current.
+- docs-only changes не нужны full product/architecture/release process пока they change public contracts или publishing;
+- simple CRUD не force DDD;
+- backend/native work не force FSD;
+- hosted docs, CI activation и DB introspection остаются approval-required;
+- source-like words в file paths являются не enough к infer security, release или data readiness;
+- generated artifact является не safety proof пока relevant source или owner evidence является current.
 
-## Verification
+## Проверка
 
-Use focused verification when methodology behavior changes:
+Используйте focused verification когда methodology behavior changes:
 
 ```powershell
 python -m unittest tests.product_agent_os.test_fixture_eval_runner -v
@@ -109,7 +109,7 @@ python plugins\product-agent-os\scripts\run_fixture_eval.py
 python tools\check_docs.py
 ```
 
-Use broader verification when lifecycle skills, templates or routing logic change:
+Используйте broader verification когда lifecycle skills, templates или routing logic change:
 
 ```powershell
 python -m unittest discover -s tests -p "test_*.py" -v
@@ -117,11 +117,11 @@ python plugins\product-agent-os\scripts\validate_codex_compatibility.py
 python tools\check_docs.py
 ```
 
-## Risks
+## Риски
 
-- A read-only audit can still be wrong if workspace evidence is stale, incomplete or misleading.
-- Over-eager methodology routing can force heavy process onto simple work; every recommendation needs applicability and false-positive handling.
-- Generated reports can become stale quickly; completion or release claims still need fresh command, runtime, eval or owner evidence.
-- Domain packet schema can evolve as real projects expose missing fields; additive compatibility should be preserved.
+- A read-only audit может still быть wrong если workspace evidence является stale, incomplete или misleading.
+- Over-eager methodology routing может force heavy process onto simple work; every recommendation требует applicability и false-positive handling.
+- Generated reports может become stale quickly; completion или release claims still нужны fresh command, runtime, eval или owner evidence.
+- Domain packet schema может evolve как real projects expose missing fields; additive compatibility следует быть preserved.
 
-Next artifact: use [Scenarios](scenarios.md) to choose the operating route and [Behavioral evals](behavioral-evals.md) to validate shortcut resistance.
+Следующий artifact: используйте [Scenarios](scenarios.md) для выбора operating route и [Behavioral evals](behavioral-evals.md) для проверки shortcut resistance.

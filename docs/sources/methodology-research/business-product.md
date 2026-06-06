@@ -122,7 +122,7 @@ It does not mandate heavyweight product management for every code change, one un
 - `post_release_measurement_contract_present`
 - `workflow_promotion_value_evidence_present`
 
-## Failure modes
+## Типовые сбои
 
 - **Solution bias:** plan starts from implementation tasks and backfills product intent later.
 - **Vanity metric:** metric is easy to move but weakly connected to customer or business value.

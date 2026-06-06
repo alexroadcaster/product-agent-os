@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
 
-        <meta name="description" content="Russian knowledge base for advanced OpenAI Codex and agentic workflows.">
+        <meta name="description" content="Документация Product-Agent OS для рабочих процессов с агентами и skills.">
 
 
 
@@ -18,6 +18,10 @@
 
 
 
+          <link rel="alternate" href="agent-team-and-skills.html" hreflang="ru">
+
+          <link rel="alternate" href="../en/diagrams/agent-team-and-skills.html" hreflang="en">
+
 
 
       <link rel="icon" href="../assets/images/favicon.png">
@@ -25,7 +29,7 @@
 
 
 
-        <title>Команда агентов и skills - OpenAI Codex Knowledge Base</title>
+        <title>Команда агентов и skills - Product-Agent OS</title>
 
 
 
@@ -94,7 +98,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
-    <a href="../index.html" title="OpenAI Codex Knowledge Base" class="md-header__button md-logo" aria-label="OpenAI Codex Knowledge Base" data-md-component="logo">
+    <a href="../index.html" title="Product-Agent OS" class="md-header__button md-logo" aria-label="Product-Agent OS" data-md-component="logo">
 
 
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -108,7 +112,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            OpenAI Codex Knowledge Base
+            Product-Agent OS
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -136,6 +140,32 @@
 
       <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
 
+
+      <div class="md-header__option">
+  <div class="md-select">
+
+    <button class="md-header__button md-icon" aria-label="Выберите язык">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+
+          <li class="md-select__item">
+            <a href="agent-team-and-skills.html" hreflang="ru" class="md-select__link">
+              RU
+            </a>
+          </li>
+
+          <li class="md-select__item">
+            <a href="../en/diagrams/agent-team-and-skills.html" hreflang="en" class="md-select__link">
+              EN
+            </a>
+          </li>
+
+      </ul>
+    </div>
+  </div>
+</div>
 
 
 
@@ -206,13 +236,13 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../index.html" title="OpenAI Codex Knowledge Base" class="md-nav__button md-logo" aria-label="OpenAI Codex Knowledge Base" data-md-component="logo">
+    <a href="../index.html" title="Product-Agent OS" class="md-nav__button md-logo" aria-label="Product-Agent OS" data-md-component="logo">
 
 
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
-    OpenAI Codex Knowledge Base
+    Product-Agent OS
   </label>
 
   <ul class="md-nav__list" data-md-scrollfix>
@@ -504,10 +534,10 @@
 </li>
 
           <li class="md-nav__item">
-  <a href="#4-model-and-reasoning-policy" class="md-nav__link">
+  <a href="#4-model-reasoning" class="md-nav__link">
     <span class="md-ellipsis">
 
-        4. Задайте model and reasoning policy
+        4. Задайте политику model и reasoning
 
     </span>
   </a>
@@ -3728,10 +3758,10 @@
 </li>
 
           <li class="md-nav__item">
-  <a href="#4-model-and-reasoning-policy" class="md-nav__link">
+  <a href="#4-model-reasoning" class="md-nav__link">
     <span class="md-ellipsis">
 
-        4. Задайте model and reasoning policy
+        4. Задайте политику model и reasoning
 
     </span>
   </a>
@@ -3812,25 +3842,25 @@
 <pre class="mermaid"><code>flowchart TD
     A["Project goal"] --&gt; B["Classify project type"]
     B --&gt; C["Define control-plane files"]
-    C --&gt; D["Split work by ownership"]
+    C --&gt; D["Split work через ownership"]
     D --&gt; E["Create agent role cards"]
-    E --&gt; MP["Set model and reasoning policy"]
+    E --&gt; MP["Set политику model и reasoning"]
     MP --&gt; F["Define handoff artifacts"]
-    F --&gt; G["Run first manual workflow"]
+    F --&gt; G["Запустите first manual workflow"]
     G --&gt; H{"Repeated method?"}
-    H --&gt;|No| I["Keep as playbook step"]
+    H --&gt;|No| I["Keep как playbook step"]
     H --&gt;|Yes| J["Draft candidate skill"]
     J --&gt; K["Add trigger words"]
-    K --&gt; L["Define inputs and outputs"]
-    L --&gt; M["Add deterministic scripts only when useful"]
-    M --&gt; N["Run eval cases"]
+    K --&gt; L["Define inputs и outputs"]
+    L --&gt; M["Add deterministic scripts только когда useful"]
+    M --&gt; N["Запустите eval cases"]
     N --&gt; O{"Reliable enough?"}
-    O --&gt;|No| P["Update failure log and rubric"]
+    O --&gt;|No| P["Update failure log и rubric"]
     P --&gt; G
-    O --&gt;|Yes| Q["Package as reusable skill"]
-    Q --&gt; R["Use in project workflow"]
+    O --&gt;|Yes| Q["Package как reusable skill"]
+    Q --&gt; R["Используйте в project workflow"]
     R --&gt; S{"Stable cadence?"}
-    S --&gt;|No| T["Manual or assisted runs"]
+    S --&gt;|No| T["Manual или assisted runs"]
     S --&gt;|Yes| U["Automation candidate"]</code></pre>
 <h2 id="_2">Инструкция по созданию команды<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
 <h3 id="1">1. Определите тип проекта<a class="headerlink" href="#1" title="Permanent link">&para;</a></h3>
@@ -3844,7 +3874,7 @@
 </thead>
 <tbody>
 <tr>
-<td>Product feature</td>
+<td>Продуктовая функция</td>
 <td>Product Manager, Architect, Builder, Tester, Reviewer</td>
 </tr>
 <tr>
@@ -3873,14 +3903,14 @@
 <li><code>PLAN.md</code> — исполнимые шаги, ownership, файлы, проверки.</li>
 <li><code>TEST.md</code> — deterministic checks: unit, integration, build, lint, link checks.</li>
 <li><code>EVALS.md</code> — quality checks: rubric, examples, LLM-as-judge, visual QA.</li>
-<li><code>RUNLOG.md</code> — решения, failures, retries, score history, links to artifacts.</li>
+<li><code>RUNLOG.md</code> — решения, failures, retries, score history, links к artifacts.</li>
 </ul>
 <h3 id="3-ownership">3. Проектируйте роли через ownership<a class="headerlink" href="#3-ownership" title="Permanent link">&para;</a></h3>
 <p>Хорошая role card содержит:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Reviewer&quot;</span>
 <span class="nt">owns</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Correctness,</span><span class="nv"> </span><span class="s">regressions,</span><span class="nv"> </span><span class="s">unsupported</span><span class="nv"> </span><span class="s">claims&quot;</span>
 <span class="nt">inputs</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;PLAN.md,</span><span class="nv"> </span><span class="s">diff,</span><span class="nv"> </span><span class="s">TEST.md,</span><span class="nv"> </span><span class="s">EVALS.md&quot;</span>
-<span class="nt">outputs</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Findings</span><span class="nv"> </span><span class="s">with</span><span class="nv"> </span><span class="s">severity,</span><span class="nv"> </span><span class="s">required</span><span class="nv"> </span><span class="s">fixes,</span><span class="nv"> </span><span class="s">residual</span><span class="nv"> </span><span class="s">risk&quot;</span>
+<span class="nt">outputs</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Findings</span><span class="nv"> </span><span class="s">с</span><span class="nv"> </span><span class="s">severity,</span><span class="nv"> </span><span class="s">required</span><span class="nv"> </span><span class="s">fixes,</span><span class="nv"> </span><span class="s">residual</span><span class="nv"> </span><span class="s">risk&quot;</span>
 <span class="nt">may_edit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 <span class="nt">model_policy</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;project-default</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">gpt-5.5</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">gpt-5.4</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">gpt-5.4-mini&quot;</span>
@@ -3895,21 +3925,21 @@
 <span class="w">  </span><span class="nt">escalate_when</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;Security,</span><span class="nv"> </span><span class="s">data</span><span class="nv"> </span><span class="s">loss,</span><span class="nv"> </span><span class="s">migration,</span><span class="nv"> </span><span class="s">architecture,</span><span class="nv"> </span><span class="s">eval</span><span class="nv"> </span><span class="s">failure&quot;</span>
 <span class="w">  </span><span class="nt">cost_latency_budget</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;fast</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">balanced</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">quality-first&quot;</span>
-<span class="nt">handoff_to</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Builder</span><span class="nv"> </span><span class="s">or</span><span class="nv"> </span><span class="s">Release</span><span class="nv"> </span><span class="s">Operator&quot;</span>
+<span class="nt">handoff_to</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Builder</span><span class="nv"> </span><span class="s">или</span><span class="nv"> </span><span class="s">Release</span><span class="nv"> </span><span class="s">Operator&quot;</span>
 <span class="nt">stop_conditions</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;Missing</span><span class="nv"> </span><span class="s">source</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">factual</span><span class="nv"> </span><span class="s">claim&quot;</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;Tests</span><span class="nv"> </span><span class="s">cannot</span><span class="nv"> </span><span class="s">be</span><span class="nv"> </span><span class="s">run&quot;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;Missing</span><span class="nv"> </span><span class="s">source</span><span class="nv"> </span><span class="s">для</span><span class="nv"> </span><span class="s">factual</span><span class="nv"> </span><span class="s">claim&quot;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;Tests</span><span class="nv"> </span><span class="s">не</span><span class="nv"> </span><span class="s">может</span><span class="nv"> </span><span class="s">быть</span><span class="nv"> </span><span class="s">run&quot;</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;Scope</span><span class="nv"> </span><span class="s">changed&quot;</span>
 </code></pre></div>
 <p>Не создавайте роли вроде “умный помощник” или “универсальный агент”. Они не дают модели четких границ и плохо проверяются.</p>
-<h3 id="4-model-and-reasoning-policy">4. Задайте model and reasoning policy<a class="headerlink" href="#4-model-and-reasoning-policy" title="Permanent link">&para;</a></h3>
+<h3 id="4-model-reasoning">4. Задайте политику model и reasoning<a class="headerlink" href="#4-model-reasoning" title="Permanent link">&para;</a></h3>
 <p>Модель и уровень reasoning должны быть частью role card, а не устной договоренностью. Официальная документация Codex указывает, что для большинства задач в Codex стоит начинать с <code>gpt-5.5</code>, а <code>gpt-5.4-mini</code> использовать для более быстрых и дешевых легких задач или subagents. Для Codex CLI/IDE модель задается в <code>config.toml</code>, временно меняется через <code>/model</code> или <code>--model</code>, а для Codex cloud tasks текущую default model изменить нельзя.</p>
 <p>Agents SDK рекомендует в production выбирать модель явно: на уровне agent, run-level default или process fallback через <code>OPENAI_DEFAULT_MODEL</code>. В Codex custom agents официальный schema поддерживает <code>model</code> и <code>model_reasoning_effort</code>; если они не указаны, значения наследуются от parent session.</p>
 <table>
 <thead>
 <tr>
 <th>Роль</th>
-<th>Default model policy</th>
+<th>Политика модели по умолчанию</th>
 <th>Reasoning</th>
 <th>Почему</th>
 </tr>
@@ -3917,9 +3947,9 @@
 <tbody>
 <tr>
 <td>Product Manager</td>
-<td><code>gpt-5.5</code> или project default</td>
+<td><code>gpt-5.5</code> или настройка проекта по умолчанию</td>
 <td><code>medium</code> / <code>high</code></td>
-<td>Требуются tradeoffs, scope и acceptance criteria</td>
+<td>Требуются компромиссы, scope и acceptance criteria</td>
 </tr>
 <tr>
 <td>Architect</td>
@@ -3929,15 +3959,15 @@
 </tr>
 <tr>
 <td>Builder</td>
-<td>project default; <code>gpt-5.4-mini</code> для малых правок</td>
+<td>настройка проекта по умолчанию; <code>gpt-5.4-mini</code> для малых правок</td>
 <td><code>medium</code> / <code>high</code></td>
 <td>Баланс скорости и качества реализации</td>
 </tr>
 <tr>
 <td>Explorer / Researcher</td>
-<td><code>gpt-5.4-mini</code> или project default</td>
+<td><code>gpt-5.4-mini</code> или настройка проекта по умолчанию</td>
 <td><code>low</code> / <code>medium</code></td>
-<td>Read-heavy поиск и сбор фактов</td>
+<td>Поиск с большим объёмом чтения и сбор фактов</td>
 </tr>
 <tr>
 <td>Reviewer</td>
@@ -3953,31 +3983,31 @@
 </tr>
 <tr>
 <td>Docs Maintainer</td>
-<td>project default</td>
+<td>настройка проекта по умолчанию</td>
 <td><code>low</code> / <code>medium</code></td>
-<td>Обычно важнее sources и structure, чем максимальный reasoning</td>
+<td>Обычно важнее источники и структуру, чем максимальный reasoning</td>
 </tr>
 <tr>
 <td>Release Operator</td>
-<td>project default</td>
+<td>настройка проекта по умолчанию</td>
 <td><code>medium</code></td>
-<td>Нужны аккуратность, approvals и audit trail</td>
+<td>Нужны аккуратность, approvals и аудиторский след</td>
 </tr>
 </tbody>
 </table>
 <p>Не ставьте всем агентам максимальную модель и <code>xhigh</code> по умолчанию. Официальные best practices рекомендуют выбирать reasoning level по сложности задачи: <code>low</code> для быстрых scoped tasks, <code>medium</code>/<code>high</code> для сложных изменений и debugging, <code>xhigh</code> для долгих agentic reasoning-heavy задач.</p>
 <p>Правило escalation:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">escalate_reasoning_if</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;task</span><span class="nv"> </span><span class="s">spans</span><span class="nv"> </span><span class="s">multiple</span><span class="nv"> </span><span class="s">systems</span><span class="nv"> </span><span class="s">or</span><span class="nv"> </span><span class="s">files&quot;</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;requirements</span><span class="nv"> </span><span class="s">are</span><span class="nv"> </span><span class="s">ambiguous&quot;</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;security,</span><span class="nv"> </span><span class="s">privacy,</span><span class="nv"> </span><span class="s">data</span><span class="nv"> </span><span class="s">loss,</span><span class="nv"> </span><span class="s">or</span><span class="nv"> </span><span class="s">irreversible</span><span class="nv"> </span><span class="s">action</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">possible&quot;</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;eval</span><span class="nv"> </span><span class="s">score</span><span class="nv"> </span><span class="s">regressed</span><span class="nv"> </span><span class="s">or</span><span class="nv"> </span><span class="s">failure</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">hard</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">localize&quot;</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;agent</span><span class="nv"> </span><span class="s">must</span><span class="nv"> </span><span class="s">choose</span><span class="nv"> </span><span class="s">strategy,</span><span class="nv"> </span><span class="s">not</span><span class="nv"> </span><span class="s">just</span><span class="nv"> </span><span class="s">execute&quot;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;task</span><span class="nv"> </span><span class="s">spans</span><span class="nv"> </span><span class="s">multiple</span><span class="nv"> </span><span class="s">systems</span><span class="nv"> </span><span class="s">или</span><span class="nv"> </span><span class="s">files&quot;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;requirements</span><span class="nv"> </span><span class="s">являются</span><span class="nv"> </span><span class="s">ambiguous&quot;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;security,</span><span class="nv"> </span><span class="s">privacy,</span><span class="nv"> </span><span class="s">data</span><span class="nv"> </span><span class="s">loss,</span><span class="nv"> </span><span class="s">или</span><span class="nv"> </span><span class="s">irreversible</span><span class="nv"> </span><span class="s">action</span><span class="nv"> </span><span class="s">является</span><span class="nv"> </span><span class="s">possible&quot;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;eval</span><span class="nv"> </span><span class="s">score</span><span class="nv"> </span><span class="s">regressed</span><span class="nv"> </span><span class="s">или</span><span class="nv"> </span><span class="s">failure</span><span class="nv"> </span><span class="s">является</span><span class="nv"> </span><span class="s">hard</span><span class="nv"> </span><span class="s">к</span><span class="nv"> </span><span class="s">localize&quot;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;agent</span><span class="nv"> </span><span class="s">должен</span><span class="nv"> </span><span class="s">choose</span><span class="nv"> </span><span class="s">strategy,</span><span class="nv"> </span><span class="s">не</span><span class="nv"> </span><span class="s">just</span><span class="nv"> </span><span class="s">execute&quot;</span>
 <span class="nt">downgrade_reasoning_if</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;task</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">read-only</span><span class="nv"> </span><span class="s">collection&quot;</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;output</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">mechanical</span><span class="nv"> </span><span class="s">or</span><span class="nv"> </span><span class="s">template-based&quot;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;task</span><span class="nv"> </span><span class="s">является</span><span class="nv"> </span><span class="s">read-only</span><span class="nv"> </span><span class="s">collection&quot;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;output</span><span class="nv"> </span><span class="s">является</span><span class="nv"> </span><span class="s">mechanical</span><span class="nv"> </span><span class="s">или</span><span class="nv"> </span><span class="s">template-based&quot;</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;deterministic</span><span class="nv"> </span><span class="s">tool</span><span class="nv"> </span><span class="s">decides</span><span class="nv"> </span><span class="s">correctness&quot;</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;latency</span><span class="nv"> </span><span class="s">or</span><span class="nv"> </span><span class="s">cost</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">main</span><span class="nv"> </span><span class="s">constraint&quot;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;latency</span><span class="nv"> </span><span class="s">или</span><span class="nv"> </span><span class="s">cost</span><span class="nv"> </span><span class="s">является</span><span class="nv"> </span><span class="s">main</span><span class="nv"> </span><span class="s">constraint&quot;</span>
 </code></pre></div>
 <h3 id="5-agent-skill">5. Отделите agent от skill<a class="headerlink" href="#5-agent-skill" title="Permanent link">&para;</a></h3>
 <table>
@@ -4099,6 +4129,8 @@
 
 
       <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+
+        <script src="../assets/javascripts/local-file-i18n.js"></script>
 
         <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
 

@@ -20,6 +20,8 @@ REQUIRED_PATHS = [
     DOCS / "sources" / "product-agent-os-batch34a-public-docs-boundary.md",
     DOCS / "sources" / "product-agent-os-batch34b-public-copy-rewrite.md",
     DOCS / "sources" / "product-agent-os-batch34c-i18n-localization.md",
+    DOCS / "sources" / "product-agent-os-batch34d-product-docs-qa-closure.md",
+    DOCS / "sources" / "product-agent-os-batch34e-full-site-i18n-inventory.md",
     DOCS / "codex" / "overview.md",
     DOCS / "codex" / "surfaces.md",
     DOCS / "codex" / "configuration.md",

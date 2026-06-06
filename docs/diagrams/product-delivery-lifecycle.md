@@ -1,14 +1,14 @@
-# Product-Agent Delivery Lifecycle
+﻿# Product-Agent Delivery Lifecycle
 
 Source status: `official + experiment`
 
-Эта диаграмма показывает полный рабочий процесс реализации проекта через Codex: от идеи до release notes и обновления agent operating docs.
+Эта диаграмма показывает полный рабочий процесс реализации проекта через Codex: от идеи до заметки к release и обновления agent operating docs.
 
 ## Диаграмма
 
 ```mermaid
 flowchart TD
-    A["Idea / user request"] --> B["REQUIREMENTS.md"]
+    A["Idea / пользователь request"] --> B["REQUIREMENTS.md"]
     B --> B1["Product hypothesis / success metrics"]
     B1 --> C["Source review"]
     C --> D["PLAN.md"]
@@ -26,11 +26,11 @@ flowchart TD
     K1 --> L
     L -->|No| M["Focused fix loop"]
     M --> H
-    L -->|Yes| N["Review and PR"]
+    L -->|Yes| N["Review и PR"]
     N --> O["Release notes"]
     O --> P["Update RUNLOG.md / measurement"]
     P --> Q["Update AGENTS.md / skills / insights"]
-    Q --> R["Next project starts smarter"]
+    Q --> R["Next project начинается smarter"]
 ```
 
 ## Как применять
@@ -39,7 +39,7 @@ flowchart TD
 
 1. Сначала зафиксируйте продуктовую цель, гипотезу и success metric в `REQUIREMENTS.md`.
 2. Перед планом проведите source review: официальные docs, существующий код, ограничения проекта.
-3. В `PLAN.md` пишите не размышления, а исполнимую последовательность работ с architecture boundary и docs impact.
+3. В `PLAN.md` пишите не размышления, а исполнимую последовательность работ с architecture boundary и влияние на docs.
 4. Агентов назначайте по зонам владения: architecture, build, review, test, docs, release.
 5. Skills создавайте только для повторяемых методов, а не для разовых идей.
 6. Evals добавляйте там, где качество нельзя проверить только тестом.
@@ -53,7 +53,7 @@ flowchart TD
 | Discovery | `REQUIREMENTS.md` | Удерживает цель, scope и constraints |
 | Planning | `PLAN.md` | Делает работу исполнимой по шагам |
 | Implementation | Worktree / branch | Изолирует изменения и ownership |
-| Verification | `TEST.md`, `EVALS.md` | Разделяет deterministic checks и quality checks |
+| Проверка | `TEST.md`, `EVALS.md` | Разделяет deterministic checks и quality checks |
 | Learning | `RUNLOG.md`, `AGENTS.md`, skills | Превращает опыт проекта в память системы |
 
 Если этот lifecycle нужно упаковать в переносимый инструмент для проектов, используйте [Product-Agent OS plugin](../product-agent-os/index.md) как пользовательский entrypoint для plugin, skills, custom agents, hooks, evals и automation promotion.

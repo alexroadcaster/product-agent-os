@@ -1070,7 +1070,7 @@ The case must require:
 - no target workspace writes;
 - staged artifacts only after approval.
 
-Forbidden behavior:
+Запрещенное поведение:
 
 - generating docs without recommendation;
 - claiming readiness from file detection alone;
@@ -1905,7 +1905,7 @@ Repeat-review additions to preserve during implementation:
 
 #### T9-D3 Task Matrix
 
-| ID | Task | Primary files | Acceptance criteria | Verification |
+| ID | Task | Primary files | Критерии приемки | Verification |
 | --- | --- | --- | --- | --- |
 | `T9-D3-M0` | Refresh plan/backlog before implementation | `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`, `docs/sources/product-agent-os-track-9-backlog.md` | Full source audit deltas are recorded: four additional gates, unsupported claims, template scope, deferred candidate artifacts, false-positive risks, exact eval fields, recommendation artifact mapping, and verification commands. | `python tools\check_docs.py` |
 | `T9-D3-M1` | Add RED catalog contract for `solution_architecture` | `tests/product_agent_os/test_methodology_catalog.py` | Test asserts full gate set, artifact list, explicit eval field names from repeat-review additions, applicability, false-positive routing, maturity/complexity impact and overlaps. | `python -m unittest tests.product_agent_os.test_methodology_catalog -v` fails before catalog implementation on missing architecture gates or eval fields. |
@@ -2080,7 +2080,7 @@ Deep-audit update from `docs/methodologies/quality-testing-evals.md` and `docs/s
 
 #### T9-D4 Task Matrix
 
-| ID | Task | Primary files | Acceptance criteria | Verification |
+| ID | Task | Primary files | Критерии приемки | Verification |
 | --- | --- | --- | --- | --- |
 | `T9-D4-M0` | Refresh plan/backlog before implementation | `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`, `docs/sources/product-agent-os-track-9-backlog.md` | Deep-audit deltas are recorded: current evidence, risk-based portfolio, regression impact, contract/runtime/manual/visual/eval evidence, CI permissions, flaky ownership, coverage-as-signal, test data privacy, unsupported claims, template scope and deferred artifact mapping. | `python tools\check_docs.py` |
 | `T9-D4-M1` | Add RED catalog contract for `quality_testing_evals` | `tests/product_agent_os/test_methodology_catalog.py` | Test asserts full gate set, five new artifacts, explicit eval field names, applies/not-applicable rules, maturity/complexity impact, Track 8 scenarios, overlaps and unsupported-claim rejection contract. | `python -m unittest tests.product_agent_os.test_methodology_catalog -v` fails before catalog implementation on missing quality gates, artifacts or eval fields. |
@@ -2219,7 +2219,7 @@ Deep-audit update from `docs/methodologies/codex-agentic-workflow.md` and `docs/
 
 #### T9-D5 Task Matrix
 
-| ID | Task | Primary files | Acceptance criteria | Verification |
+| ID | Task | Primary files | Критерии приемки | Verification |
 | --- | --- | --- | --- | --- |
 | `T9-D5-M0` | Refresh plan/backlog before implementation | `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`, `docs/sources/product-agent-os-track-9-backlog.md` | Deep-audit deltas are recorded: full gate set, reused artifacts, five-template scope, candidate artifact mapping/defer list, discovery signals, false-positive rules, unsupported claims, runtime routing and verification scope. | `python tools\check_docs.py` |
 | `T9-D5-M1` | Add RED catalog contract for `codex_agentic_workflow` | `tests/product_agent_os/test_methodology_catalog.py` | Test asserts full gate set, applies/not-applicable rules, maturity/complexity impact, Track 8 scenarios, artifact list, eval field list and overlaps for quality, delivery, security, AI, plugin, automation and ownership domains. | `python -m unittest tests.product_agent_os.test_methodology_catalog -v` fails before catalog implementation on missing Codex workflow gates, artifacts or eval fields. |
@@ -2357,7 +2357,7 @@ Deep-audit update from `docs/methodologies/frontend.md` and `docs/sources/method
 
 #### T9-D6 Task Matrix
 
-| ID | Task | Primary files | Acceptance criteria | Verification |
+| ID | Task | Primary files | Критерии приемки | Verification |
 | --- | --- | --- | --- | --- |
 | `T9-D6-M0` | Refresh plan/backlog before implementation | `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`, `docs/sources/product-agent-os-track-9-backlog.md` | Deep-audit deltas are recorded: full gate set, reused artifacts, five-template scope, candidate artifact mapping/defer list, discovery signals, false-positive rules, unsupported claims, Storybook/FSD/a11y/visual/performance policies and verification scope. | `python tools\check_docs.py` |
 | `T9-D6-M1` | Add RED catalog contract for `frontend` | `tests/product_agent_os/test_methodology_catalog.py` | Test asserts full gate set, applies/not-applicable rules, maturity/complexity impact, Track 8 scenarios, artifact list, eval field list and overlaps with requirements, quality, API, accessibility, performance, release and agent workflow domains. | `python -m unittest tests.product_agent_os.test_methodology_catalog -v` fails before catalog implementation on missing frontend gates, artifacts or eval fields. |
@@ -2505,7 +2505,7 @@ Deep-audit update from `docs/methodologies/backend.md` and `docs/sources/methodo
 
 #### T9-D7 Task Matrix
 
-| ID | Task | Primary files | Acceptance criteria | Verification |
+| ID | Task | Primary files | Критерии приемки | Verification |
 | --- | --- | --- | --- | --- |
 | `T9-D7-M0` | Refresh plan/backlog before implementation | `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`, `docs/sources/product-agent-os-track-9-backlog.md` | Deep-audit deltas are recorded: full gate set, eleven-template scope, artifact alias mapping/defer list, discovery signals, false-positive rules, unsupported claims, backend unit classification, modular-monolith policy, runtime/failure evidence and verification scope. | `python tools\check_docs.py` |
 | `T9-D7-M1` | Add RED catalog contract for `backend` | `tests/product_agent_os/test_methodology_catalog.py` | Test asserts full backend gate set, applies/not-applicable rules, maturity/complexity impact, Track 8 scenarios, artifact list, eval field list and overlaps with requirements, architecture, quality, API, data, security, delivery, operations and agent workflow domains. | `python -m unittest tests.product_agent_os.test_methodology_catalog -v` fails before catalog implementation on missing backend gates, artifacts or eval fields. |
@@ -2651,7 +2651,7 @@ Deep-audit update from `docs/methodologies/api-integrations.md` and `docs/source
 
 #### T9-D8 Task Matrix
 
-| ID | Task | Primary files | Acceptance criteria | Verification |
+| ID | Task | Primary files | Критерии приемки | Verification |
 | --- | --- | --- | --- | --- |
 | `T9-D8-M0` | Refresh plan and backlog before implementation | `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`, `docs/sources/product-agent-os-track-9-backlog.md` | Deep-audit deltas are recorded: derived contract-test matrix gate, API-only/backend false-positive risk, no universal API style, Swagger UI not source of truth, external write approval boundary, unsupported claims and verification without implicit commit. | `python tools\check_docs.py` passes after documentation edits. |
 | `T9-D8-M1` | Add RED catalog contract for `api_integrations` | `tests/product_agent_os/test_methodology_catalog.py` | Test asserts API gates, artifact list, explicit eval fields, applies/not-applicable rules, maturity/complexity impact, Track 8 scenarios and overlaps with quality, security, backend, delivery and data. | `python -m unittest tests.product_agent_os.test_methodology_catalog -v` fails before catalog implementation on missing API gates or eval fields. |
@@ -2781,7 +2781,7 @@ Deep-audit update from `docs/methodologies/database-data.md` and `docs/sources/m
 
 #### T9-D9 Task Matrix
 
-| ID | Task | Files | Acceptance Criteria | Verification |
+| ID | Task | Files | Критерии приемки | Verification |
 | --- | --- | --- | --- | --- |
 | `T9-D9-M0` | Refresh plan and backlog before implementation | `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`, `docs/sources/product-agent-os-track-9-backlog.md` | Deep-audit deltas are recorded: database domain is not a workflow-only gate; production data never enters prompts/docs/templates/fixtures; DB introspection and production access are approval-bound; tooling defaults are deferred; destructive detection is conservative; unsupported claims are named. | `python tools\check_docs.py` passes after documentation edits. |
 | `T9-D9-M1` | Add RED catalog contract for `database_data` | `tests/product_agent_os/test_methodology_catalog.py` | Test asserts applies/not-applicable rules, maturity/complexity impact, Track 8 scenarios, decision horizons, overlaps, artifacts, eval fields and database gates for inventory, dictionary, schema source, migration plan, expand/contract, transactions, rollback, backup/restore, classification, data quality, lineage, performance, retention/deletion, synthetic fixtures, production access and unsupported-claim rejection. | `python -m unittest tests.product_agent_os.test_methodology_catalog -v` fails before catalog implementation on missing database gates or fields. |
@@ -2844,7 +2844,7 @@ Expected: focused tests, fixture eval, full unittest, transcript eval, compatibi
 
 This matrix maps the `docs/methodologies/llm-ai-rag.md` deep-audit findings to concrete implementation rows. The step checklist below remains the short execution outline; this table is the traceability layer for tests, implementation, templates, docs sync and verification.
 
-| ID | Task | Files | Acceptance Criteria | Verification |
+| ID | Task | Files | Критерии приемки | Verification |
 | --- | --- | --- | --- | --- |
 | `T9-D10-M0` | Refresh plan and backlog before implementation | `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`, `docs/sources/product-agent-os-track-9-backlog.md` | Deep-audit deltas are recorded: source artifact template gaps, naming compatibility, eval/report/trace/guardrail depth, false-positive risks, unsupported claims, deferred tooling decisions and no implicit commit. | `python tools\check_docs.py` passes after documentation edits. |
 | `T9-D10-M1` | Add RED catalog contract for `llm_ai_rag` | `tests/product_agent_os/test_methodology_catalog.py` | Test asserts applies/not-applicable rules, maturity/complexity impact, Track 8 scenarios, decision horizons, overlaps, artifacts, gates and eval fields for AI behavior, evals, prompts, models, structured outputs, tools, RAG, grounding, datasets, safety, traces and cost/latency. | `python -m unittest tests.product_agent_os.test_methodology_catalog -v` fails before catalog implementation on missing AI/RAG gates or fields. |
@@ -3352,7 +3352,7 @@ Result: focused tests ran 298 tests with `OK`; fixture eval exited `0` with 66 f
 
 **Task matrix:**
 
-| Row | Slice | Files | Acceptance criteria | Verification |
+| Row | Slice | Files | Критерии приемки | Verification |
 | --- | --- | --- | --- | --- |
 | `T9-S-M0` | Record current synthesis baseline | `docs/sources/product-agent-os-track-9-backlog.md`, `tests/product_agent_os/test_methodology_synthesis.py` | Backlog records the current duplicate gate, artifact and eval-field inventory before implementation: duplicate gates include `accepted_gap_recorded`, `automation_manual_stability_present`, `bounded_context_architecture_boundary_trace` and `external_write_approval_present`; duplicate artifacts include `approval-record.md`, `security-risk-review.md`, `api-contract-review.md`, `test-eval-matrix.md`, `release-readiness.md` and `architecture-overview.md`. Current fixture symptoms are recorded: backend FSD-like directories can trigger frontend P0s, security/payment can be ordered behind generic quality strategy, and RAG ingestion can miss AI/RAG routing when no explicit `rag/` directory exists. | RED synthesis tests assert the baseline gaps before implementation. |
 | `T9-S-M1` | Add RED synthesis contract tests | `tests/product_agent_os/test_methodology_synthesis.py` | Tests assert shared gate ownership, artifact ownership, priority tie-breakers, conflict rules, grouped recommendation shape, semantic evidence sufficiency ownership, false-positive routing and safe-next-action ordering. Tests cover docs-only, backend FSD-like folders, CI-only workflow, tooling-only release, security/payment, package release and AI/RAG data/security overlap fixtures. | `python -m unittest tests.product_agent_os.test_methodology_synthesis -v` fails on missing synthesis layer. |

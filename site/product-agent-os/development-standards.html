@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
 
-        <meta name="description" content="Russian knowledge base for advanced OpenAI Codex and agentic workflows.">
+        <meta name="description" content="Документация Product-Agent OS для рабочих процессов с агентами и skills.">
 
 
 
@@ -18,6 +18,10 @@
 
 
 
+          <link rel="alternate" href="development-standards.html" hreflang="ru">
+
+          <link rel="alternate" href="../en/product-agent-os/development-standards.html" hreflang="en">
+
 
 
       <link rel="icon" href="../assets/images/favicon.png">
@@ -25,7 +29,7 @@
 
 
 
-        <title>Engineering standards layer - OpenAI Codex Knowledge Base</title>
+        <title>Engineering standards layer - Product-Agent OS</title>
 
 
 
@@ -78,7 +82,7 @@
     <div data-md-component="skip">
 
 
-        <a href="#engineering-standards-layer" class="md-skip">
+        <a href="#product-agent-os-development-standards" class="md-skip">
           Перейти к содержанию
         </a>
 
@@ -94,7 +98,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
-    <a href="../index.html" title="OpenAI Codex Knowledge Base" class="md-header__button md-logo" aria-label="OpenAI Codex Knowledge Base" data-md-component="logo">
+    <a href="../index.html" title="Product-Agent OS" class="md-header__button md-logo" aria-label="Product-Agent OS" data-md-component="logo">
 
 
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -108,7 +112,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            OpenAI Codex Knowledge Base
+            Product-Agent OS
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -136,6 +140,32 @@
 
       <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
 
+
+      <div class="md-header__option">
+  <div class="md-select">
+
+    <button class="md-header__button md-icon" aria-label="Выберите язык">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+
+          <li class="md-select__item">
+            <a href="development-standards.html" hreflang="ru" class="md-select__link">
+              RU
+            </a>
+          </li>
+
+          <li class="md-select__item">
+            <a href="../en/product-agent-os/development-standards.html" hreflang="en" class="md-select__link">
+              EN
+            </a>
+          </li>
+
+      </ul>
+    </div>
+  </div>
+</div>
 
 
 
@@ -206,13 +236,13 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../index.html" title="OpenAI Codex Knowledge Base" class="md-nav__button md-logo" aria-label="OpenAI Codex Knowledge Base" data-md-component="logo">
+    <a href="../index.html" title="Product-Agent OS" class="md-nav__button md-logo" aria-label="Product-Agent OS" data-md-component="logo">
 
 
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
-    OpenAI Codex Knowledge Base
+    Product-Agent OS
   </label>
 
   <ul class="md-nav__list" data-md-scrollfix>
@@ -1680,10 +1710,76 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
 
         <li class="md-nav__item">
-  <a href="#task-22-standards-closure" class="md-nav__link">
+  <a href="#core-contract" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Task 22 standards closure
+        Core Contract
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#artifact-templates" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Artifact Templates
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#discovery-signals" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Discovery Signals
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#planning-and-handoff-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Planning And Handoff Standards
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#domain-specific-gates" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Domain-Specific Gates
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#documentation-standard" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Documentation Standard
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#release-and-operations-standard" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Release And Operations Standard
 
     </span>
   </a>
@@ -1694,7 +1790,7 @@
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Что меняется
+        Проверка
 
     </span>
   </a>
@@ -1702,65 +1798,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
+  <a href="#important-limits" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Проверенные выводы из источников
-
-    </span>
-  </a>
-
-</li>
-
-        <li class="md-nav__item">
-  <a href="#context7-findings" class="md-nav__link">
-    <span class="md-ellipsis">
-
-        Context7 findings
-
-    </span>
-  </a>
-
-</li>
-
-        <li class="md-nav__item">
-  <a href="#operating-standard" class="md-nav__link">
-    <span class="md-ellipsis">
-
-        Operating standard
-
-    </span>
-  </a>
-
-</li>
-
-        <li class="md-nav__item">
-  <a href="#plugin" class="md-nav__link">
-    <span class="md-ellipsis">
-
-        Что добавлено в plugin
-
-    </span>
-  </a>
-
-</li>
-
-        <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    <span class="md-ellipsis">
-
-        Важные ограничения
-
-    </span>
-  </a>
-
-</li>
-
-        <li class="md-nav__item">
-  <a href="#definition-of-done-product-agent-os-slice" class="md-nav__link">
-    <span class="md-ellipsis">
-
-        Definition of done для Product-Agent OS slice
+        Important Limits
 
     </span>
   </a>
@@ -3644,10 +3685,76 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
 
         <li class="md-nav__item">
-  <a href="#task-22-standards-closure" class="md-nav__link">
+  <a href="#core-contract" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Task 22 standards closure
+        Core Contract
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#artifact-templates" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Artifact Templates
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#discovery-signals" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Discovery Signals
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#planning-and-handoff-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Planning And Handoff Standards
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#domain-specific-gates" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Domain-Specific Gates
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#documentation-standard" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Documentation Standard
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#release-and-operations-standard" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Release And Operations Standard
 
     </span>
   </a>
@@ -3658,7 +3765,7 @@
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Что меняется
+        Проверка
 
     </span>
   </a>
@@ -3666,65 +3773,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
+  <a href="#important-limits" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Проверенные выводы из источников
-
-    </span>
-  </a>
-
-</li>
-
-        <li class="md-nav__item">
-  <a href="#context7-findings" class="md-nav__link">
-    <span class="md-ellipsis">
-
-        Context7 findings
-
-    </span>
-  </a>
-
-</li>
-
-        <li class="md-nav__item">
-  <a href="#operating-standard" class="md-nav__link">
-    <span class="md-ellipsis">
-
-        Operating standard
-
-    </span>
-  </a>
-
-</li>
-
-        <li class="md-nav__item">
-  <a href="#plugin" class="md-nav__link">
-    <span class="md-ellipsis">
-
-        Что добавлено в plugin
-
-    </span>
-  </a>
-
-</li>
-
-        <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    <span class="md-ellipsis">
-
-        Важные ограничения
-
-    </span>
-  </a>
-
-</li>
-
-        <li class="md-nav__item">
-  <a href="#definition-of-done-product-agent-os-slice" class="md-nav__link">
-    <span class="md-ellipsis">
-
-        Definition of done для Product-Agent OS slice
+        Important Limits
 
     </span>
   </a>
@@ -3748,226 +3800,223 @@
 
 
 
-<h1 id="engineering-standards-layer">Engineering standards layer<a class="headerlink" href="#engineering-standards-layer" title="Permanent link">&para;</a></h1>
-<p>Source status: <code>official + verified methodology + experiment</code>  </p>
-<h2 id="task-22-standards-closure">Task 22 standards closure<a class="headerlink" href="#task-22-standards-closure" title="Permanent link">&para;</a></h2>
-<p>Task 22 standards closure defines the Track 7 artifact catalog as operational guidance: ADR, architecture-overview, domain-modeling, metric-spec, api-contract-review, component-card, database-dictionary and docs-tooling-decision templates must name owner, evidence, accepted gaps, residual risk, no-secrets expectations and verification path.</p>
-<p>Red-Green-Refactor evidence is required where behavior or shared logic changes; docs-only and inspection-only work can record an explicit gap. The no-forced-ceremony rule remains active: mechanical edits can be not_applicable, docs-light work can avoid heavy portals, backend/native work does not force FSD, simple CRUD does not force DDD, and high-risk work needs <code>owner_reviewed_evidence_sufficient_for_real_project_risk</code> or <code>explicit_gap_accepted</code>.
-Источники: <a href="https://developers.openai.com/codex/plugins/build">Codex build plugins</a>, <a href="https://developers.openai.com/codex/skills">Agent Skills</a>, <a href="https://developers.openai.com/codex/guides/build-ai-native-engineering-team">Building an AI-Native Engineering Team</a>, <a href="https://developers.openai.com/codex/use-cases/ai-app-evals">Codex: add evals to your AI application</a>, <a href="https://developers.openai.com/codex/use-cases/iterate-on-difficult-problems">Codex: iterate on difficult problems</a>, <a href="https://developers.openai.com/codex/use-cases/update-documentation">Codex: keep documentation up-to-date</a>, <a href="https://agilealliance.org/glossary/tdd/">Agile Alliance TDD</a>, <a href="https://agilealliance.org/glossary/atdd/">Agile Alliance ATDD</a>, <a href="https://agilealliance.org/glossary/bdd/">Agile Alliance BDD</a>, <a href="https://feature-sliced.github.io/documentation/">Feature-Sliced Design</a>, <a href="https://c4model.com/">C4 model</a>, <a href="https://arc42.org/overview">arc42</a>, <a href="https://www.openapis.org/">OpenAPI Initiative</a>, <a href="https://spec.openapis.org/oas/v3.2.0.html">OpenAPI Specification v3.2.0</a>, <a href="https://www.asyncapi.com/docs/reference/specification/v3.0.0">AsyncAPI</a>, <a href="https://storybook.js.org/docs/writing-docs/autodocs">Storybook Autodocs</a>, <a href="https://storybook.js.org/docs/writing-tests/accessibility-testing">Storybook accessibility tests</a>, <a href="https://docs.gitlab.com/development/documentation/site_architecture/">GitLab Docs architecture</a>, <a href="https://docs.github.com/en/actions/concepts/workflows-and-actions/workflows">GitHub Actions workflows</a>, <a href="https://docs.github.com/articles/about-required-reviews-for-pull-requests">GitHub protected branches</a>, <a href="https://martinfowler.com/bliki/DomainDrivenDesign.html">Martin Fowler: Domain-Driven Design</a>.</p>
-<p>Эта страница фиксирует расширение <code>product-agent-os</code>: plugin должен вести проект не только как агентную разработку, а как управляемую инженерную систему с продуктовой гипотезой, архитектурной границей, test-first/eval-first проверками, docs-as-code, review gates и измерением результата.</p>
-<h2 id="_1">Что меняется<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
-<p>Раньше Product-Agent OS в основном отвечал на вопрос: как Codex App, CLI, IDE extension, subagents, skills, <code>AGENTS.md</code>, hooks, evals и automation candidates проходят lifecycle без потери контекста.</p>
-<p>Новый слой добавляет вопрос: соответствует ли работа зрелой инженерной практике.</p>
-<pre class="mermaid"><code>flowchart LR
-    A["Product hypothesis"] --&gt; B["Architecture boundary"]
-    B --&gt; C["Test-first or eval-first spec"]
-    C --&gt; D["Bounded agentic implementation"]
-    D --&gt; E["Docs-as-code update"]
-    E --&gt; F["Human review and quality gate"]
-    F --&gt; G["Release measurement"]
-    G --&gt; H["Learning loop"]</code></pre>
-<h2 id="_2">Проверенные выводы из источников<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<h1 id="product-agent-os-development-standards">Product-Agent OS development standards<a class="headerlink" href="#product-agent-os-development-standards" title="Permanent link">&para;</a></h1>
+<p>Source status: <code>official + verified methodology + experiment</code></p>
+<p>Источники: <a href="architecture.html">Product-Agent OS architecture</a>, <a href="scenarios.html">Product-Agent OS scenarios</a>, <a href="behavioral-evals.html">Behavioral evals</a>, <a href="https://developers.openai.com/codex/agent-approvals-security">Agent approvals and security</a>, <a href="https://developers.openai.com/codex/workflows">Codex workflows</a>.</p>
+<p>Development standards turn methodology в concrete reviewable artifacts. Они define how Product-Agent OS handles product hypothesis, architecture, tests, evals, docs, security, release и post-release learning без forcing heavy ceremony onto simple work.</p>
+<p>Red-Green-Refactor evidence является required где behavior или shared logic changes. Docs-only и inspection-only work может record explicit gap. Этот no-forced-ceremony rule остается active: mechanical edits может быть not_applicable, docs-light work может avoid heavy portals, backend/native work не force FSD, simple CRUD не force DDD, и high-risk work требует <code>owner_reviewed_evidence_sufficient_for_real_project_risk</code> или <code>explicit_gap_accepted</code>.</p>
+<h2 id="core-contract">Core Contract<a class="headerlink" href="#core-contract" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
-<th>Область</th>
-<th>Подтверждено источниками</th>
-<th>Как использовать в plugin</th>
+<th>Standard</th>
+<th>Required behavior</th>
+<th>False-positive guard</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Codex plugin packaging</td>
-<td>Plugin имеет <code>.codex-plugin/plugin.json</code> и может указывать bundled skills, hooks, MCP, apps и assets.</td>
-<td>Новые стандарты добавляются как packaged templates и docs, а не как silent runtime behavior.</td>
+<td>Product hypothesis</td>
+<td>Name user/problem, acceptance scenario, metric или explicit gap.</td>
+<td>Не invent product outcomes из code structure alone.</td>
 </tr>
 <tr>
-<td>Codex skills</td>
-<td>Skills являются форматом reusable workflows, plugin - installable distribution unit.</td>
-<td>Повторяемые методики остаются workflow templates до накопления manual success evidence.</td>
+<td>Architecture boundary</td>
+<td>Name scope, ownership, alternatives, decision, rollback и observability когда architecture changes.</td>
+<td>Не force heavyweight diagrams для small mechanical edits.</td>
 </tr>
 <tr>
-<td>AI-native engineering</td>
-<td>Роль senior-инженера смещается к spec, architecture, guardrails, review и доменной логике.</td>
-<td>Product-Agent OS усиливает planning, review, standards и evidence вместо слепой генерации кода.</td>
+<td>Test/eval-first</td>
+<td>Establish failing или baseline evidence до changing behavior.</td>
+<td>Docs-only или formatting work может mark gate не applicable с reason.</td>
 </tr>
 <tr>
-<td>TDD</td>
-<td>Test-Driven Development связывает coding, testing и design/refactoring; тест пишется до реализации.</td>
-<td><code>TEST.md</code>, <code>build-slice.md</code> и builder instructions требуют test-first/eval-first path или явный gap.</td>
+<td>Documentation-as-code</td>
+<td>Update source-backed docs, <code>Source status:</code> и registry когда claims change.</td>
+<td>Не treat generated <code>site/</code> output как канонический источник.</td>
 </tr>
 <tr>
-<td>ATDD/BDD</td>
-<td>Acceptance and behavior scenarios align product, development and testing perspectives before implementation.</td>
-<td><code>acceptance-scenarios.md</code>, <code>REQUIREMENTS.md</code>, <code>TEST.md</code> и <code>EVALS.md</code> теперь требуют <code>requirement -&gt; scenario -&gt; check -&gt; evidence owner</code>, Given/When/Then или equivalent behavior format, business rule, edge case, non-goal и explicit gap до behavior changes.</td>
+<td>Review</td>
+<td>Separate spec compliance из quality/risk review для risky changes.</td>
+<td>Не produce review verdicts без reading changed files.</td>
 </tr>
 <tr>
-<td>DDD</td>
-<td>Domain-Driven Design нужен для сложной domain logic, где модель, bounded context и ubiquitous language снижают риск неверной архитектуры.</td>
-<td><code>domain-modeling.md</code>, <code>architecture-overview.md</code>, <code>project-readiness.json</code>, <code>implementation-planner</code> и discovery gap <code>missing domain model for complex domain</code> требуют <code>domain_model_when_complex_domain</code> только для complex backend/workflow/enterprise/data-heavy/multi-service/multi-context work, <code>bounded_context_architecture_boundary_trace</code> связывает каждый bounded context с architecture boundary или accepted gap, а <code>ubiquitous_language_traceability</code> связывает domain terms с requirement/source, API/event/contract, UI label, code module or owner.</td>
-</tr>
-<tr>
-<td>FSD</td>
-<td>Feature-Sliced Design задает layers, slices, segments, public API и import rule.</td>
-<td>Для применимого web UI plugin теперь обнаруживает optional <code>fsd_structure</code>, требует layer/slice/segment/public API/import rule в <code>component-card.md</code> или accepted gap, но не навязывает FSD backend, native, simple CRUD и simple MVP.</td>
-</tr>
-<tr>
-<td>Architecture docs</td>
-<td>C4 дает уровни context/container/component/code; arc42 задает структуру architecture communication.</td>
-<td><code>documentation-system.md</code> требует architecture overview, ADR и диаграммы для изменений границ.</td>
-</tr>
-<tr>
-<td>API contracts</td>
-<td>OpenAPI описывает HTTP APIs; AsyncAPI описывает message-driven APIs машинно-читаемо.</td>
-<td>Backend/API changes должны обновлять source-of-truth contracts или фиксировать gap.</td>
-</tr>
-<tr>
-<td>UI docs</td>
-<td>Storybook Autodocs превращает stories в документацию; a11y addon поддерживает accessibility checks.</td>
-<td>UI changes должны иметь component states, docs, accessibility/visual checks где применимо.</td>
-</tr>
-<tr>
-<td>Docs-as-code</td>
-<td>GitLab хранит docs source рядом с product code; GitHub Actions workflow - YAML process in repo; protected branches can require reviews/status checks.</td>
-<td>Docs становятся частью <code>PLAN.md</code>, <code>TEST.md</code>, <code>RUNLOG.md</code>, а CI/CODEOWNERS остаются staged proposals.</td>
+<td>Release measurement</td>
+<td>Record build/test/docs evidence, rollout, rollback, owner review и accepted gaps до release claims.</td>
+<td>CI green alone является не release readiness.</td>
 </tr>
 </tbody>
 </table>
-<h2 id="context7-findings">Context7 findings<a class="headerlink" href="#context7-findings" title="Permanent link">&para;</a></h2>
-<p>Context7 использовался как дополнительный retrieval layer, но official status присваивается только underlying source.</p>
-<ul>
-<li>Feature-Sliced Design: официальная документация подтверждает import rule - slice может импортировать только slices нижних layers; также подтверждает public API rule для slices.</li>
-<li>Storybook: документация подтверждает <code>autodocs</code> tag, MDX/Doc Blocks и integration path для accessibility tests.</li>
-<li>OpenAPI: спецификация подтверждает Security Scheme Object и типы security schemes, включая <code>apiKey</code>, <code>http</code>, <code>oauth2</code>, <code>openIdConnect</code>.</li>
-<li>Direct web verification on 2026-05-23: latest published OpenAPI Specification is v3.2.0; v3.1.1 remains useful only as a compatibility reference.</li>
-</ul>
-<p>Эти findings не заменяют primary links в source registry.</p>
-<h2 id="operating-standard">Operating standard<a class="headerlink" href="#operating-standard" title="Permanent link">&para;</a></h2>
-<p>Для любой meaningful feature plugin должен требовать:</p>
-<ol>
-<li>Product hypothesis: что меняем, для кого, какая метрика покажет успех, какие privacy/security constraints.</li>
-<li>Architecture boundary: где живет код, какие dependency rules, какие public contracts нельзя ломать.</li>
-<li>Test-first or eval-first path: тест, contract check, fixture или eval до изменения поведения.</li>
-<li>Bounded agentic implementation: owned files, files out of scope, stop conditions, approvals.</li>
-<li>Documentation impact: architecture, API/event contracts, UI docs, database docs, release/user docs.</li>
-<li>Review gate: correctness, security, data handling, performance, rollback, source fidelity.</li>
-<li>Measurement: post-release metrics, support signals, defects, latency, cost, user feedback.</li>
-</ol>
-<h2 id="plugin">Что добавлено в plugin<a class="headerlink" href="#plugin" title="Permanent link">&para;</a></h2>
-<p>Generated control-plane files теперь содержат эти поля:</p>
+<h2 id="artifact-templates">Artifact Templates<a class="headerlink" href="#artifact-templates" title="Permanent link">&para;</a></h2>
+<p>These templates convert recommendations в concrete outputs который может быть reviewed, tested и accepted или rejected:</p>
 <table>
 <thead>
 <tr>
-<th>Artifact</th>
-<th>Новые обязанности</th>
+<th>Template</th>
+<th>Purpose</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>AGENTS.md</code></td>
-<td>Engineering standards baseline: hypothesis, architecture boundary, test/eval-first, docs-as-code, bounded agent work, evidence-before-completion.</td>
+<td><code>.codex/artifact-templates/adr.md</code></td>
+<td>Architecture decision record с context, decision, consequences, verification и rollback.</td>
 </tr>
 <tr>
-<td><code>REQUIREMENTS.md</code></td>
-<td>Product hypothesis, success metrics, guardrail metrics, metric hardening, source-of-truth docs.</td>
+<td><code>.codex/artifact-templates/architecture-overview.md</code></td>
+<td>System boundary, runtime, dependencies, observability и operational risk.</td>
 </tr>
 <tr>
-<td><code>PLAN.md</code></td>
-<td>Methodology gates, architecture boundary, metric hardening, evidence-before-completion, documentation impact, contract/schema/docs/eval gates.</td>
+<td><code>.codex/artifact-templates/domain-modeling.md</code></td>
+<td>Domain terms, bounded contexts, ubiquitous language и business rules когда complexity warrants it.</td>
 </tr>
 <tr>
-<td><code>TEST.md</code></td>
-<td>Test-first cases, acceptance scenarios, metric hardening checks, evidence-before-completion checks, API/event/schema checks, docs checks, AI/subjective checks.</td>
+<td><code>.codex/artifact-templates/metric-spec.md</code></td>
+<td>Product behavior metric, event source, owner, privacy и interpretation caveats.</td>
 </tr>
 <tr>
-<td><code>EVALS.md</code></td>
-<td>Architecture boundary, acceptance scenario evals, metric hardening evals, evidence-before-completion evals, documentation quality, AI answer quality, retrieval quality, latency/cost/grounding thresholds.</td>
+<td><code>.codex/artifact-templates/api-contract-review.md</code></td>
+<td>API source-of-truth, consumers, compatibility, error model, security и rollout.</td>
 </tr>
 <tr>
-<td><code>RUNLOG.md</code></td>
-<td>Methodology trace, metric hardening evidence, evidence-before-completion evidence and measurement notes.</td>
+<td><code>.codex/artifact-templates/component-card.md</code></td>
+<td>UI component purpose, states, accessibility, visual evidence и interaction checks.</td>
 </tr>
 <tr>
-<td><code>.codex/workflows/development-standards.md</code></td>
-<td>Reusable workflow for product hypothesis -&gt; architecture -&gt; tests/evals -&gt; implementation -&gt; review -&gt; measurement.</td>
+<td><code>.codex/artifact-templates/database-dictionary.md</code></td>
+<td>Table meaning, sensitive fields, retention, migration history и schema verification.</td>
 </tr>
 <tr>
-<td><code>.codex/workflows/documentation-system.md</code></td>
-<td>Reusable docs-as-code workflow for architecture, API, UI, code reference, DB and release docs.</td>
-</tr>
-<tr>
-<td><code>.codex/artifact-templates/*.md</code></td>
-<td>Concrete templates for ADR, architecture overview, domain modeling, bounded-context-to-architecture traceability, ubiquitous language traceability, metrics, API contracts, UI component cards and database dictionaries.</td>
-</tr>
-<tr>
-<td><code>.codex/artifact-templates/acceptance-scenarios.md</code></td>
-<td>ATDD/BDD traceability from requirement to scenario, check and evidence owner before behavior changes.</td>
+<td><code>.codex/artifact-templates/docs-tooling-decision.md</code></td>
+<td>Docs tooling selection, rejected tools, owner, command evidence и approval requirements.</td>
 </tr>
 <tr>
 <td><code>.codex/artifact-templates/governance-proposal.md</code></td>
-<td>Staged governance proposal for CODEOWNERS status and GitHub Actions least privilege without external activation.</td>
+<td>Staged governance proposal для CODEOWNERS status и GitHub Actions least privilege без external activation.</td>
 </tr>
 </tbody>
 </table>
-<p>Track 7 hardening добавляет поведенческие проверки поверх prose:</p>
+<h2 id="discovery-signals">Discovery Signals<a class="headerlink" href="#discovery-signals" title="Permanent link">&para;</a></h2>
+<p><code>workspace-discovery-auditor</code> может identify methodology signals без claiming readiness:</p>
 <ul>
-<li><code>workspace-discovery-auditor</code> теперь может видеть methodology signals: architecture docs, ADR, OpenAPI, AsyncAPI, Storybook, optional <code>fsd_structure</code>, DB docs, CODEOWNERS, CI, evals и metrics.</li>
-<li><code>project-readiness.json</code> фиксирует methodology gates: product hypothesis, architecture boundary, optional <code>fsd_structure_when_ui_architecture_applies</code>, test/eval-first evidence, docs-as-code impact и release measurement.</li>
-<li>Artifact templates переводят рекомендации из research-файлов в конкретные reviewable outputs.</li>
+<li>architecture docs, ADRs, C4/arc42-style files и runtime diagrams;</li>
+<li>OpenAPI, AsyncAPI, GraphQL schema, SDK generation или webhook/event contracts;</li>
+<li>Storybook, component libraries и optional FSD structure;</li>
+<li>database docs, migrations, DBML/SQL, retention и backup/restore evidence;</li>
+<li>CODEOWNERS, CI, release manifests, changelog и versioning files;</li>
+<li>eval configs, datasets, prompt/model artifacts, traces и RAG source inventories;</li>
+<li>security/privacy docs, secrets policies, SBOM/provenance, audit logging и compliance overlays;</li>
+<li>metrics dashboards, product event specs и post-release learning notes.</li>
 </ul>
-<p>Track 8 hardening добавляет scenario-first routing:</p>
+<p>Signals create <code>present_unverified</code>. Verified readiness требует текущий command evidence, owner evidence, runtime/eval proof или accepted gap.</p>
+<p>Detection alone остается <code>present_unverified</code>; detection alone остается <code>present_unverified</code>, и grouped methodology recommendations нужны source artifact compatibility, owner domains, consumer domains и approval-bound behavior до they become implementation work.</p>
+<h2 id="planning-and-handoff-standards">Planning And Handoff Standards<a class="headerlink" href="#planning-and-handoff-standards" title="Permanent link">&para;</a></h2>
+<p>Before build или review, Product-Agent OS expects:</p>
 <ul>
-<li><code>done</code> workflows now cover first-run intake, bug rescue, greenfield idea shaping, complex system acceleration, PR review readiness, legacy onboarding, API migration, AI/RAG eval regression, native/mobile feature work, desktop local-first work, data migration, security-sensitive change, CI stabilization and release packaging.</li>
-<li>Dedicated scenario docs now describe <code>usage_mode</code>, first response, minimum artifacts, approval boundary and verification gates for plugin operators.</li>
-<li>Dedicated behavioral eval docs now separate expected behavior, forbidden behavior, fixture eval coverage and deterministic transcript/session replay coverage.</li>
-<li>Dedicated Codex compatibility docs now record Codex App, CLI, IDE extension, <code>.codex-plugin</code>, skills, MCP and staged hooks as the supported package boundary.</li>
-<li>First-run intake keeps the first response small for empty, broken, existing control-plane and complex system starts: mode, confidence, next smallest action, minimum artifacts, evidence gaps and approval boundary.</li>
-<li>Release packaging now has <code>release-packaging.md</code>, <code>release-readiness.md</code>, discovery signals, behavioral eval coverage, and publish/tag/upload/package-registry approval boundaries.</li>
-<li>Acceptance scenario traceability now has <code>acceptance-scenarios.md</code>, lifecycle skill wording, readiness eval coverage and behavioral eval coverage before behavior changes.</li>
-<li>Conditional DDD domain modeling now has <code>domain_model</code> discovery, <code>domain_model_when_complex_domain</code> readiness gate, <code>bounded_context_architecture_boundary_trace</code>, <code>ubiquitous_language_traceability</code>, implementation-planner stop condition, accepted-gap support and false-positive protection for plain <code>domain/</code> folders.</li>
-<li>Conditional FSD structure routing now has <code>fsd_structure</code> discovery, <code>component-card.md</code> layer/slice/segment/public API/import rule fields, implementation-planner stop condition, accepted-gap support and false-positive protection for backend, native, simple CRUD and simple MVP work.</li>
-<li>Metric hardening now has <code>metric_hardening_when_product_behavior_changes</code>, strengthened <code>metric-spec.md</code>, release packet checks, generated control-plane fields, lifecycle skill enforcement and fixture eval coverage for North Star or primary value metric, input metric, counter-metric, proxy metric risk, guardrail, qualitative review, privacy classification, retention period, data minimization, owner signoff and post-release review evidence.</li>
-<li>Evidence-before-completion now has <code>evidence_before_completion</code>, release packet checks, development standards guidance, generated control-plane fields, lifecycle skill enforcement, behavioral eval coverage and fixture eval coverage for ready/completed/fixed/works/release claims.</li>
-<li>Docs tooling selector now has <code>docs_tooling_selector</code>, <code>docs-tooling-decision.md</code>, <code>docs_as_code_impact</code> status vocabulary, discovery routing, generated control-plane fields, lifecycle skill enforcement and fixture eval coverage for stack-aware docs choices without forced installs or unapproved external activation.</li>
-<li>Standards trigger policy now has <code>standards_trigger_policy</code>, <code>governance-proposal.md</code>, ADR trigger policy, C4/arc42 applicability, OpenAPI source of truth, AsyncAPI event contract fields, SemVer impact, Keep a Changelog categories, CODEOWNERS status, GitHub Actions least privilege fields and no forced external activation.</li>
-<li>Conditional readiness gates now have <code>readiness_statuses</code>, structured per-gate applicability, pass condition, accepted gap, required evidence, owner and residual risk in <code>project-readiness.json</code>, generated control-plane templates, lifecycle skills and fixture eval coverage. Detection alone can only produce <code>present_unverified</code>, not readiness.</li>
-<li>Detailed discovery status now has <code>methodology_applicability</code> packets in discovery output for architecture boundary, test/eval-first evidence, docs-as-code ownership, product measurement, complex-domain DDD, applicable FSD structure, docs tooling decision and standards trigger policy.</li>
-<li>Readiness gates must distinguish “route detected” from verified readiness. Completion claims require current evidence or an explicit inspection-only gap.</li>
+<li>exact files owned и forbidden;</li>
+<li>exact commands и expected outputs;</li>
+<li>source constraints и approval boundary;</li>
+<li>rollback или disable path где relevant;</li>
+<li>ожидаемые доказательства и stop conditions;</li>
+<li>fresh-context handoff когда subagents или parallel workers являются used;</li>
+<li>placeholder scan или explicit reason это является не applicable;</li>
+<li>spec-compliance review до quality/risk review для risky public-contract, migration, security, data, release или parallel work.</li>
 </ul>
-<p>Track 9 security methodology adds <code>security_privacy_compliance_when_sensitive_surface</code> as a conditional readiness gate for authn/authz, permissions, secrets, PII, sensitive data, payment/billing, abuse controls, audit logging, supply chain, SBOM/provenance, CI permissions, AI/tool security, external writes, production data, policy changes and compliance overlays. Security/Privacy/Compliance-sensitive slices record <code>security_privacy_compliance</code> evidence before completion claims: threat surface, security risk review, ASVS/SSDF/SAMM mapping, authorization negative tests, secrets policy, data classification, privacy impact, external-write approval, supply-chain/SBOM/CI evidence, audit logging, compliance overlay taxonomy, vulnerability response workflow, explicit Codex Security scan status or <code>not requested</code>, and approval boundaries.</p>
-<p>Track 9 delivery methodology adds <code>delivery_release_operations_readiness_when_release_or_operations_changes</code> as a conditional readiness gate for release/deploy/publish/package/operations work. Delivery/Release/Operations slices record <code>delivery_release_operations</code> evidence before release, deploy, publish, operational-ready or automation-ready claims: release scope, versioning, changelog/release notes, artifact manifest, release evidence before completion, rollout, rollback/recovery, environment approval boundary, external release approval, CI/CD governance, SLO/observability, operations runbook, incident response, post-release review, <code>automation_manual_stability_present</code>, release mode policy, build-release-run boundary, platform distribution evidence, release communication, versioning tooling decision, GitHub environment controls, DORA measurement design, incident postmortem learning, observability/on-call tooling, release integrity security handoff and <code>release_evidence_sufficiency_owner_reviewed</code>.</p>
-<p>Track 9 cross-domain synthesis adds grouped methodology recommendations across domains. The shared packet keeps <code>methodology_synthesis</code>, <code>recommendation_groups</code>, owner domains, consumer domains, <code>source_artifact_ledger</code>, alias/deferred artifact decisions, semantic evidence sufficiency and risk-aware safe next action. detection alone remains <code>present_unverified</code>; grouped methodology recommendations do not prove readiness or semantic evidence sufficiency. High-risk, production, release, security-sensitive, AI behavior and public-contract slices need <code>owner_reviewed_evidence_sufficient_for_real_project_risk</code> or <code>explicit_gap_accepted</code> with owner, reason, review date, downstream risk and follow-up condition. This keeps approval-bound behavior visible while avoiding false positives for docs-only work, internal CLI work, backend FSD-like folders, CI-only workflows and tooling-only release files.</p>
-<h2 id="_3">Важные ограничения<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>Subagents являются useful только когда ownership является clear. A handoff без source context, files, ожидаемые доказательства и stop condition является не enough.</p>
+<h2 id="domain-specific-gates">Domain-Specific Gates<a class="headerlink" href="#domain-specific-gates" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Domain</th>
+<th>Gate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Frontend</td>
+<td>User-flow acceptance, component states, design-system boundary, accessibility target или accepted exception, browser/runtime evidence, visual evidence и performance budget когда applicable.</td>
+</tr>
+<tr>
+<td>Backend</td>
+<td>Runtime behavior, failure modes, observability, security, rollback, CI/deployment discovery и owner-reviewed evidence sufficiency.</td>
+</tr>
+<tr>
+<td>API &amp; Integrations</td>
+<td>Source-of-truth contract, consumer map, compatibility, security, error model, events/webhooks, SDK generation и external-write approval.</td>
+</tr>
+<tr>
+<td>Database &amp; Data</td>
+<td>Inventory, dictionary, migration plan, expand-contract rollout, data classification, quality, lineage, performance, retention и production access boundary.</td>
+</tr>
+<tr>
+<td>LLM / AI / RAG</td>
+<td>Baseline/current eval, prompt/model/tool/RAG contracts, grounding, trace evidence, guardrails, cost/latency, migration policy и AI incident path.</td>
+</tr>
+<tr>
+<td>Security, Privacy &amp; Compliance</td>
+<td>Threat surface, risk review, ASVS/SSDF/SAMM mapping, authorization negative tests, secrets, privacy, supply chain, audit logging, scan status и compliance overlay.</td>
+</tr>
+<tr>
+<td>Delivery, Release &amp; Operations</td>
+<td>Release scope, versioning, changelog, artifact manifest, rollout, rollback, CI/CD governance, SLO/observability, operations runbook, incident path, post-release review и release integrity handoff.</td>
+</tr>
+<tr>
+<td>Cross-domain synthesis</td>
+<td>Grouped recommendations, owner domains, consumer domains, source artifact compatibility, semantic evidence sufficiency и risk-aware safe следующий action.</td>
+</tr>
+</tbody>
+</table>
+<p>Exact gate identifiers:</p>
 <ul>
-<li>Data-Driven Development в source-файле не является тем же термином, что Domain-Driven Design. В core guidance используем формулировки <code>data-informed product decisions</code>, <code>product hypothesis</code> и <code>success metric</code>, чтобы не смешивать термины.</li>
-<li>ATDD/BDD scenarios do not replace unit tests, integration tests, contract tests or evals; they are a traceability layer for behavior intent and evidence ownership.</li>
-<li>Domain-Driven Design не навязывается простому CRUD или simple MVP. Product-Agent OS требует domain modeling, bounded-context-to-architecture traceability и ubiquitous language traceability только при complex backend/workflow/enterprise/data-heavy/multi-service/multi-context signals или при явном owner decision.</li>
-<li>Feature-Sliced Design не навязывается backend, native, simple CRUD или маленьким MVP. Plugin требует architecture boundary, а FSD является сильным default только для растущего web UI или explicit owner decision.</li>
-<li>Docs-as-code не означает автоматическое создание CI, CODEOWNERS, GitHub Actions или публикации. Product-Agent OS может stage proposals, но не активирует external workflows без explicit approval.</li>
-<li>Docs tooling selection records selected tools, rejected tools, evidence owner, maintenance owner and approval boundaries; docs-light/internal-only work can be <code>not_applicable</code>.</li>
-<li>AI/RAG quality нельзя закрывать только unit tests. Для retrieval, grounding, hallucination risk, latency и cost нужны evals или явно записанный gap.</li>
-<li><code>llm_ai_rag_readiness_when_ai_behavior_changes</code> нельзя закрывать prompt inspection, citations-only grounding, stale eval output или automatic model-upgrade quality claim; live model calls, external eval services, vector DB access и tool writes остаются approval-bound.</li>
-<li><code>security_privacy_compliance_when_sensitive_surface</code> нельзя закрывать docs-only security article, no-secrets-in-code claim, OAuth-only note, one-time SBOM, implied Codex Security scan или generic compliance/certification wording. Legal, contractual and internal-policy overlays need owner, evidence, non-goals, gaps and review cadence.</li>
-<li><code>delivery_release_operations_readiness_when_release_or_operations_changes</code> нельзя закрывать CI green, local test evidence alone, generated changelog, feature flag, GitOps, deployment manifest, rollback-is-revert, repeatable script или automation candidate wording. DORA metrics prove individual performance, mobile signing alone, single-tool observability and release-ready without owner-reviewed evidence sufficiency are also unsupported shortcuts. Publish, tag, release creation, artifact upload, deploy, package registry mutation, marketplace/store submission, CI/CD environment mutation and active automation stay approval-bound.</li>
+<li><code>llm_ai_rag_readiness_when_ai_behavior_changes</code>: AI/RAG behavior changes record <code>llm_ai_rag</code> evidence до quality claims.</li>
+<li><code>security_privacy_compliance_when_sensitive_surface</code>: Security/Privacy/Compliance-sensitive slices record <code>security_privacy_compliance</code> evidence до completion claims.</li>
+<li><code>delivery_release_operations_readiness_when_release_or_operations_changes</code>: Delivery/Release/Operations slices record <code>delivery_release_operations</code> evidence до release, deploy, publish, operational-ready или automation-ready claims.</li>
+<li><code>automation_manual_stability_present</code> и <code>release_evidence_sufficiency_owner_reviewed</code> являются required когда automation или release readiness claims depend на operational evidence.</li>
+<li>False-positive guard: DORA metrics prove individual performance является не acceptable release/operations claim.</li>
 </ul>
-<h2 id="definition-of-done-product-agent-os-slice">Definition of done для Product-Agent OS slice<a class="headerlink" href="#definition-of-done-product-agent-os-slice" title="Permanent link">&para;</a></h2>
-<p>Slice можно считать готовым к review только если:</p>
+<h2 id="documentation-standard">Documentation Standard<a class="headerlink" href="#documentation-standard" title="Permanent link">&para;</a></h2>
+<p>Every non-index documentation page требует <code>Source status:</code>. Source-backed claims должен link к official или project-authored sources и update <code>docs/sources/registry.md</code> когда claims являются added или changed.</p>
+<p>Используйте эта rule из thumb:</p>
 <ul>
-<li>product hypothesis и success metric ясны или помечены not applicable;</li>
-<li>product behavior metrics have counter-metric, guardrail, qualitative review, privacy classification, retention period, data minimization, owner signoff and post-release review evidence, or an explicit not-applicable reason;</li>
-<li>architecture boundary и ownership названы;</li>
-<li>для complex backend/workflow/enterprise/data-heavy/multi-service/multi-context work есть domain-modeling artifact или accepted gap;</li>
-<li>test-first/eval-first evidence есть или gap явно принят;</li>
-<li>затронутые source-of-truth docs обновлены или gap записан;</li>
-<li>docs tooling impact is recorded as <code>not_applicable</code>, <code>present_unverified</code>, <code>present_verified</code>, <code>proposal_staged</code>, <code>explicit_gap_accepted</code> or <code>approval_required</code>;</li>
-<li>standards trigger impact is recorded through <code>standards_trigger_policy</code> when ADR/C4/arc42/OpenAPI/AsyncAPI/SemVer/Keep a Changelog/CODEOWNERS/GitHub Actions context applies;</li>
-<li>conditional readiness gates record <code>not_applicable</code>, <code>applicable_missing</code>, <code>present_unverified</code>, <code>present_verified</code>, <code>proposal_staged</code>, <code>explicit_gap_accepted</code> or <code>approval_required</code> with applicability reason, owner and residual risk;</li>
-<li>AI/RAG behavior changes record <code>llm_ai_rag</code> evidence: behavior promise, baseline/current eval, prompt/model/schema/tool/RAG/grounding/trace/guardrail/cost evidence, current-run evidence or an accepted gap;</li>
-<li>Security/Privacy/Compliance-sensitive slices record <code>security_privacy_compliance</code> evidence: classification, threat surface, ASVS/SSDF/SAMM mapping, authz negative tests, secrets/data/privacy handling, supply-chain/SBOM/CI review, audit logging, compliance overlay, vulnerability response and explicit Codex Security scan status or accepted gap;</li>
-<li>Delivery/Release/Operations slices record <code>delivery_release_operations</code> evidence: release scope, versioning, changelog, artifact manifest, rollout, rollback, environment approval, CI/CD governance, SLO/observability, operations, incident/postmortem, post-release review, approval boundary, release mode policy, build-release-run boundary, platform distribution evidence, tooling decisions, release integrity handoff, <code>release_evidence_sufficiency_owner_reviewed</code> and automation manual stability evidence when automation is proposed;</li>
-<li>команды, exit codes, artifacts и residual risks записаны в <code>RUNLOG.md</code>;</li>
-<li>approvals, security, privacy, migration и rollback risks не скрыты.</li>
+<li>official OpenAI/Codex behavior требует official docs как канонический источник;</li>
+<li>project package behavior может cite repository artifacts, tests и source packets;</li>
+<li>community claims stay в рамках <code>docs/insights/</code> с trust и verification labels;</li>
+<li>generated HTML, dashboards, memory и chat recall являются не является каноническим источником;</li>
+<li>secrets, tokens, private keys, credentials, customer data и raw private chats являются не allowed в docs, prompts, memory, examples, fixtures или templates.</li>
 </ul>
+<h2 id="release-and-operations-standard">Release And Operations Standard<a class="headerlink" href="#release-and-operations-standard" title="Permanent link">&para;</a></h2>
+<p>Release, deploy, publish, package и operations-ready claims требуют текущий evidence:</p>
+<ul>
+<li>release scope и versioning;</li>
+<li>changelog или заметки к release;</li>
+<li>artifact manifest;</li>
+<li>build/test/docs/eval evidence;</li>
+<li>rollout и rollback/recovery;</li>
+<li>environment approval boundary;</li>
+<li>observability/SLO и operations runbook;</li>
+<li>incident response и post-release review;</li>
+<li>owner-reviewed evidence sufficiency или accepted gap.</li>
+</ul>
+<p>Automation candidates also нужны manual success evidence, stable inputs/outputs, owner, cadence, verification, failure modes, value evidence и rollback/disable path. Product-Agent OS может stage candidate; это должен не create active automation без explicit approval.</p>
+<h2 id="_1">Проверка<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>Запустите focused checks после changing docs standards:</p>
+<div class="highlight"><pre><span></span><code><span class="n">python</span> <span class="n">tools</span><span class="p">\</span><span class="n">check_docs</span><span class="p">.</span><span class="n">py</span>
+<span class="n">python</span> <span class="n">-m</span> <span class="n">unittest</span> <span class="n">tests</span><span class="p">.</span><span class="n">product_agent_os</span><span class="p">.</span><span class="n">test_product_agent_os_docs</span> <span class="n">-v</span>
+</code></pre></div>
+<p>Запустите broader checks после templates, lifecycle skills или fixture behavior change:</p>
+<div class="highlight"><pre><span></span><code><span class="n">python</span> <span class="n">-m</span> <span class="n">unittest</span> <span class="n">discover</span> <span class="n">-s</span> <span class="n">tests</span> <span class="n">-p</span> <span class="s2">&quot;test_*.py&quot;</span> <span class="n">-v</span>
+<span class="n">python</span> <span class="n">plugins</span><span class="p">\</span><span class="n">product-agent-os</span><span class="p">\</span><span class="n">scripts</span><span class="p">\</span><span class="n">run_fixture_eval</span><span class="p">.</span><span class="n">py</span>
+<span class="n">python</span> <span class="n">plugins</span><span class="p">\</span><span class="n">product-agent-os</span><span class="p">\</span><span class="n">scripts</span><span class="p">\</span><span class="n">validate_codex_compatibility</span><span class="p">.</span><span class="n">py</span>
+</code></pre></div>
+<p>Используйте strict MkDocs когда documentation navigation, Mermaid или site-generation behavior changes.</p>
+<h2 id="important-limits">Important Limits<a class="headerlink" href="#important-limits" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Standards являются evidence gates, не automatic work expansion.</li>
+<li>Detection alone не prove readiness.</li>
+<li>Owner approval является required для external writes, publishing, production data, live provider calls, hosted docs, CI activation, security scans и active automation.</li>
+<li>High-risk work требует explicit owner-reviewed evidence sufficiency или accepted gap.</li>
+<li>Product-Agent OS должен preserve staged-first behavior, политика источников, sandbox и approvals even когда recommendation является confident.</li>
+</ul>
+<p>Следующий artifact: используйте <a href="methodology-intelligence.html">Methodology intelligence</a> к decide который gates apply и <a href="behavioral-evals.html">Behavioral evals</a> к check shortcut resistance.</p>
 
 
 
@@ -4022,6 +4071,8 @@
 
 
       <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+
+        <script src="../assets/javascripts/local-file-i18n.js"></script>
 
         <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
 

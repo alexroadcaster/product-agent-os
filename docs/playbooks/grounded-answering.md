@@ -61,7 +61,7 @@ For each factual claim:
 Return verdict: pass | fail | needs_more_context.
 ```
 
-## Acceptance criteria
+## Критерии приемки
 
 - Нет factual claims без citation.
 - Нет invented source IDs.

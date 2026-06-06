@@ -188,7 +188,7 @@ It does not create active hooks, MCP servers, automations, schedules, GitHub Act
 | Programmable orchestration | Agents SDK | Use for application-owned agent workflows, not as default replacement for Codex App/CLI/IDE. |
 | Evidence | Tests, builds, logs, screenshots, traces, evals, run logs | Evidence must match the claim being made. |
 
-## Failure modes
+## Типовые сбои
 
 - Chat contains the real requirements while project artifacts remain stale.
 - `AGENTS.md` accumulates vague preferences, obsolete rules or one-off instructions.

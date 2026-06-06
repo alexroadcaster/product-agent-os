@@ -92,7 +92,7 @@ TDD + evaluation-driven testing + FSD + controlled ADD + DDD metrics
 
 ```txt
 1. Goal / Intent
-2. Specification / Acceptance Criteria
+2. Specification / Критерии приемки
 3. Agent Planning
 4. Implementation Loop
 5. Test Run
@@ -113,7 +113,7 @@ TDD + evaluation-driven testing + FSD + controlled ADD + DDD metrics
 Переписать модуль индексации.
 ```
 
-### 2. Specification / Acceptance Criteria
+### 2. Specification / Критерии приемки
 
 Задаются требования:
 

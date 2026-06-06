@@ -176,7 +176,7 @@ It does not provide legal advice, replace security engineering review, replace p
 | Agent runtime controls | Codex sandbox, approvals, MCP allow/deny, staged drafts | Treat approvals and sandbox as security controls. |
 | Evidence | `security-risk-review.md`, `RUNLOG.md`, release packet, audit log policy | Current evidence required before readiness claims. |
 
-## Failure modes
+## Типовые сбои
 
 - Security review happens as a checklist after implementation.
 - Threat model omits actors, trust boundaries or abuse cases.

@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
 
-        <meta name="description" content="Russian knowledge base for advanced OpenAI Codex and agentic workflows.">
+        <meta name="description" content="Документация Product-Agent OS для рабочих процессов с агентами и skills.">
 
 
 
@@ -18,6 +18,10 @@
 
 
 
+          <link rel="alternate" href="scenarios.html" hreflang="ru">
+
+          <link rel="alternate" href="../en/product-agent-os/scenarios.html" hreflang="en">
+
 
 
       <link rel="icon" href="../assets/images/favicon.png">
@@ -25,7 +29,7 @@
 
 
 
-        <title>Сценарии и usage modes - OpenAI Codex Knowledge Base</title>
+        <title>Сценарии и usage modes - Product-Agent OS</title>
 
 
 
@@ -94,7 +98,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
-    <a href="../index.html" title="OpenAI Codex Knowledge Base" class="md-header__button md-logo" aria-label="OpenAI Codex Knowledge Base" data-md-component="logo">
+    <a href="../index.html" title="Product-Agent OS" class="md-header__button md-logo" aria-label="Product-Agent OS" data-md-component="logo">
 
 
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -108,7 +112,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            OpenAI Codex Knowledge Base
+            Product-Agent OS
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -136,6 +140,32 @@
 
       <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
 
+
+      <div class="md-header__option">
+  <div class="md-select">
+
+    <button class="md-header__button md-icon" aria-label="Выберите язык">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+
+          <li class="md-select__item">
+            <a href="scenarios.html" hreflang="ru" class="md-select__link">
+              RU
+            </a>
+          </li>
+
+          <li class="md-select__item">
+            <a href="../en/product-agent-os/scenarios.html" hreflang="en" class="md-select__link">
+              EN
+            </a>
+          </li>
+
+      </ul>
+    </div>
+  </div>
+</div>
 
 
 
@@ -206,13 +236,13 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../index.html" title="OpenAI Codex Knowledge Base" class="md-nav__button md-logo" aria-label="OpenAI Codex Knowledge Base" data-md-component="logo">
+    <a href="../index.html" title="Product-Agent OS" class="md-nav__button md-logo" aria-label="Product-Agent OS" data-md-component="logo">
 
 
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
-    OpenAI Codex Knowledge Base
+    Product-Agent OS
   </label>
 
   <ul class="md-nav__list" data-md-scrollfix>
@@ -1739,7 +1769,7 @@
   <a href="#operator-route-map" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Operator route map
+        Operator Route Map
 
     </span>
   </a>
@@ -1747,10 +1777,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#implementation-status-archive" class="md-nav__link">
+  <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Implementation status archive
+        Входы
 
     </span>
   </a>
@@ -1758,32 +1788,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#task-22-scenario-closure" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Task 22 scenario closure
-
-    </span>
-  </a>
-
-</li>
-
-        <li class="md-nav__item">
-  <a href="#inputs" class="md-nav__link">
-    <span class="md-ellipsis">
-
-        Inputs
-
-    </span>
-  </a>
-
-</li>
-
-        <li class="md-nav__item">
-  <a href="#outputs" class="md-nav__link">
-    <span class="md-ellipsis">
-
-        Outputs
+        Выходы
 
     </span>
   </a>
@@ -1802,10 +1810,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#task-24-self-verification-and-modernization-loop" class="md-nav__link">
+  <a href="#self-verification-modernization-loop" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Task 24 Self-Verification And Modernization Loop
+        Self-verification и modernization loop
 
     </span>
   </a>
@@ -1813,10 +1821,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#task-25-project-code-graph-and-cockpit" class="md-nav__link">
+  <a href="#project-code-graph-and-cockpit" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Task 25 Project Code Graph And Cockpit
+        Project Code Graph And Cockpit
 
     </span>
   </a>
@@ -1838,7 +1846,18 @@
   <a href="#database-data-methodology-routing" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Database &amp; Data methodology routing
+        Database &amp; Data Methodology Routing
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#backend-methodology-routing" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Backend Methodology Routing
 
     </span>
   </a>
@@ -1849,7 +1868,18 @@
   <a href="#llm-ai-rag-methodology-routing" class="md-nav__link">
     <span class="md-ellipsis">
 
-        LLM / AI / RAG methodology routing
+        LLM / AI / RAG Methodology Routing
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#api-integrations-methodology-routing" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        API &amp; Integrations Methodology Routing
 
     </span>
   </a>
@@ -1860,7 +1890,7 @@
   <a href="#security-privacy-compliance-methodology-routing" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Security, Privacy &amp; Compliance methodology routing
+        Security, Privacy &amp; Compliance Methodology Routing
 
     </span>
   </a>
@@ -1871,7 +1901,7 @@
   <a href="#delivery-release-operations-methodology-routing" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Delivery, Release &amp; Operations methodology routing
+        Delivery, Release &amp; Operations Methodology Routing
 
     </span>
   </a>
@@ -1879,10 +1909,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#verification" class="md-nav__link">
+  <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Verification
+        Проверка
 
     </span>
   </a>
@@ -1890,10 +1920,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#risks" class="md-nav__link">
+  <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Risks
+        Риски
 
     </span>
   </a>
@@ -3724,7 +3754,7 @@
   <a href="#operator-route-map" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Operator route map
+        Operator Route Map
 
     </span>
   </a>
@@ -3732,10 +3762,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#implementation-status-archive" class="md-nav__link">
+  <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Implementation status archive
+        Входы
 
     </span>
   </a>
@@ -3743,32 +3773,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#task-22-scenario-closure" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Task 22 scenario closure
-
-    </span>
-  </a>
-
-</li>
-
-        <li class="md-nav__item">
-  <a href="#inputs" class="md-nav__link">
-    <span class="md-ellipsis">
-
-        Inputs
-
-    </span>
-  </a>
-
-</li>
-
-        <li class="md-nav__item">
-  <a href="#outputs" class="md-nav__link">
-    <span class="md-ellipsis">
-
-        Outputs
+        Выходы
 
     </span>
   </a>
@@ -3787,10 +3795,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#task-24-self-verification-and-modernization-loop" class="md-nav__link">
+  <a href="#self-verification-modernization-loop" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Task 24 Self-Verification And Modernization Loop
+        Self-verification и modernization loop
 
     </span>
   </a>
@@ -3798,10 +3806,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#task-25-project-code-graph-and-cockpit" class="md-nav__link">
+  <a href="#project-code-graph-and-cockpit" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Task 25 Project Code Graph And Cockpit
+        Project Code Graph And Cockpit
 
     </span>
   </a>
@@ -3823,7 +3831,18 @@
   <a href="#database-data-methodology-routing" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Database &amp; Data methodology routing
+        Database &amp; Data Methodology Routing
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#backend-methodology-routing" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        Backend Methodology Routing
 
     </span>
   </a>
@@ -3834,7 +3853,18 @@
   <a href="#llm-ai-rag-methodology-routing" class="md-nav__link">
     <span class="md-ellipsis">
 
-        LLM / AI / RAG methodology routing
+        LLM / AI / RAG Methodology Routing
+
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#api-integrations-methodology-routing" class="md-nav__link">
+    <span class="md-ellipsis">
+
+        API &amp; Integrations Methodology Routing
 
     </span>
   </a>
@@ -3845,7 +3875,7 @@
   <a href="#security-privacy-compliance-methodology-routing" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Security, Privacy &amp; Compliance methodology routing
+        Security, Privacy &amp; Compliance Methodology Routing
 
     </span>
   </a>
@@ -3856,7 +3886,7 @@
   <a href="#delivery-release-operations-methodology-routing" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Delivery, Release &amp; Operations methodology routing
+        Delivery, Release &amp; Operations Methodology Routing
 
     </span>
   </a>
@@ -3864,10 +3894,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#verification" class="md-nav__link">
+  <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Verification
+        Проверка
 
     </span>
   </a>
@@ -3875,10 +3905,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#risks" class="md-nav__link">
+  <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Risks
+        Риски
 
     </span>
   </a>
@@ -3903,109 +3933,89 @@
 
 
 <h1 id="product-agent-os-scenarios">Product-Agent OS scenarios<a class="headerlink" href="#product-agent-os-scenarios" title="Permanent link">&para;</a></h1>
-<p>Source status: <code>official + experiment</code>  </p>
-<h2 id="operator-route-map">Operator route map<a class="headerlink" href="#operator-route-map" title="Permanent link">&para;</a></h2>
-<p>Track 10 scenarios are route decisions, not permission to run live systems. Each route must name source context, expected evidence, approval boundary and stop condition before it hands work to a subagent, skill or implementation slice.</p>
+<p>Source status: <code>official + experiment</code></p>
+<p>Источники: <a href="https://developers.openai.com/codex/workflows">Codex workflows</a>, <a href="https://developers.openai.com/codex/use-cases">Codex use cases</a>, <a href="https://developers.openai.com/codex/agent-approvals-security">Agent approvals and security</a>, <a href="index.html">Product-Agent OS plugin</a>, <a href="behavioral-evals.html">Behavioral evals</a>, <a href="codex-compatibility.html">Codex compatibility</a>.</p>
+<p>Эта страница отвечает на практический вопрос: какой route должен выбрать Product-Agent OS plugin, когда Codex App, CLI или IDE extension видит реальный workspace и пользователь просит не просто "написать код", а довести работу до проверяемого результата.</p>
+<p>Scenario не заменяет lifecycle. Он выбирает первый малый шаг, minimum artifacts, approval boundary и verification gates. Если evidence нет, route должен вернуть gap, а не готовность.</p>
+<h2 id="operator-route-map">Operator Route Map<a class="headerlink" href="#operator-route-map" title="Permanent link">&para;</a></h2>
+<p>Scenarios являются route decisions, а не permission на запуск live systems. Каждый route должен назвать source context, ожидаемые доказательства, approval boundary и stop condition до передачи work в subagent, skill или implementation slice.</p>
 <table>
 <thead>
 <tr>
 <th>Route</th>
 <th>Когда выбирать</th>
 <th>Minimum evidence</th>
-<th>Stop condition</th>
+<th>Остановиться condition</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>code_graph_orientation</code></td>
-<td>Нужно понять code/docs topology before build or review.</td>
-<td>Existing source files plus generated graph/cockpit packet labeled as orientation evidence.</td>
-<td>Do not claim source truth from generated graph; read source before implementation claims.</td>
+<td>Нужно понять code/docs topology до build или review.</td>
+<td>Existing source files plus generated graph/cockpit packet labeled как orientation evidence.</td>
+<td>Не claim source truth из generated graph; read source до implementation claims.</td>
 </tr>
 <tr>
 <td><code>live_runtime_read_only</code></td>
-<td>Нужно проверить local runtime contract or graph-only API fallback.</td>
-<td>Batch 24 governance and Batch 25 disabled runtime contract.</td>
-<td>Stop before live server launch unless separate approval packet exists.</td>
+<td>Нужно проверить local runtime contract или graph-only API fallback.</td>
+<td>Governance packet и disabled runtime contract.</td>
+<td>Остановиться до live server launch пока separate approval packet exists.</td>
 </tr>
 <tr>
 <td><code>provider_retrieval_eval</code></td>
 <td>Нужно оценить embedding/reranker/LLM provider benefit.</td>
-<td>Redaction, cache, budget, baseline and threshold fallback packet.</td>
-<td>Stop before any provider/live external model/API call without explicit approval.</td>
+<td>Redaction, cache, budget, baseline и threshold fallback packet.</td>
+<td>Остановиться до any provider/live external model/API call без explicit approval.</td>
 </tr>
 <tr>
 <td><code>canonical_graph_mutation_review</code></td>
-<td>Нужно проверить proposal acceptance and mutation readiness.</td>
-<td>Human review ledger, proposal diff, mutation dry-run plan and rollback proof.</td>
-<td>Stop before canonical graph mutation unless owner accepted the proposal and rollback evidence is current.</td>
+<td>Нужно проверить proposal acceptance и mutation readiness.</td>
+<td>Human review ledger, proposal diff, mutation dry-run plan и rollback proof.</td>
+<td>Остановиться до canonical graph mutation пока owner accepted proposal и rollback evidence является current.</td>
 </tr>
 <tr>
 <td><code>real_testing_approval</code></td>
-<td>Нужно перейти от staged evidence к Batch 35 real testing.</td>
-<td>Target/data owner approval, runtime/browser/provider/mutation/git action packet and rollback plan.</td>
-<td>Stop unless the specific action is approved; approvals are not bundled.</td>
+<td>Нужно перейти от staged evidence к controlled real testing.</td>
+<td>Target/data owner approval, runtime/browser/provider/mutation/git action packet и rollback plan.</td>
+<td>Остановиться пока specific action является approved; approvals являются не bundled.</td>
 </tr>
 </tbody>
 </table>
-<h2 id="implementation-status-archive">Implementation status archive<a class="headerlink" href="#implementation-status-archive" title="Permanent link">&para;</a></h2>
-<p>Task 26 Batch 32 <code>T10-LIVE-M27..M31</code> implements Real Testing Readiness, Target Consent, Pilot Harness And Codex Surface Smoke through <code>project_graph_real_testing.py</code>, covering <code>real-testing-readiness.json</code>, <code>real-testing-targets.json</code>, <code>pilot-harness.json</code>, <code>codex-surface-smoke.json</code> and <code>real-testing-pilot-matrix.json</code> artifact contracts. It stages <code>project_graph_real_testing_readiness</code>, <code>project_graph_real_testing_targets</code>, <code>project_graph_pilot_harness</code>, <code>project_graph_codex_surface_smoke</code> and <code>project_graph_real_testing_pilot_matrix</code> under approval boundary <code>batch32_real_testing_readiness_target_consent_pilot_harness_codex_surface_smoke</code>, with surfaces <code>real_testing_readiness</code>, <code>real_project_target_selection</code>, <code>pilot_harness</code>, <code>codex_surface_smoke</code> and <code>use_case_pilot_matrix</code>. Batch 32 is <code>approval_required</code>, staged evidence only and not source of truth: real testing cannot start with no hidden unresolved Track 10 gates; No real project test without owner-approved target and data policy; Pilot harness remains dry-run and stage-only; dry-run pilot harness evidence covers Codex App, CLI and IDE extension smoke; Track 8 archetypes web, backend, docs, pr_review, evals, automation and AI/RAG are mapped to pilots; <code>provider_call_allowed: false</code>, <code>external_call_performed: false</code>, no live server, no provider calls, no live external model/API calls, no canonical graph mutation, and git staging/commit/push/PR remains explicit-only.</p>
-<p>Task 26 Batch 33 <code>T10-LIVE-M32..M34</code> implements Runtime Browser QA, Performance And Stabilization through <code>project_graph_runtime_qa.py</code>, covering <code>project-code-graph-runtime-browser-qa.json</code>, <code>project-code-graph-performance-budget.json</code> and <code>project-code-graph-stabilization-ledger.json</code> artifact contracts. It stages <code>project_graph_runtime_browser_qa</code>, <code>project_graph_performance_budget</code> and <code>project_graph_stabilization_ledger</code> under approval boundary <code>batch33_runtime_browser_qa_performance_stabilization</code>, with surfaces <code>runtime_browser_qa</code>, <code>runtime_performance_budget</code> and <code>runtime_stabilization_loop</code>. Batch 33 is <code>approval_required</code>, staged evidence only and not source of truth: browser smoke, console/network checks, mobile overflow checks, generated-view labels and source-boundary labels are recorded as QA evidence; budget breach disables live layer or records accepted gap; No open P0/P1 can remain before closure; <code>provider_call_allowed: false</code>, <code>external_call_performed: false</code>, no live server, no provider calls, no live external model/API calls, no canonical graph mutation, and git staging/commit/push/PR remains explicit-only.</p>
-<p>Task 26 Batch 34 <code>T10-LIVE-M35..M36</code> is planned as Packaging, Docs, Source Registry, Closure And Batch 35 Handoff. The Batch 34 Detailed Task Matrix <code>B34-DOC-M01..M15</code> covers planned, not implemented updates for <code>project-code-graph.md</code>, <code>live-runtime-governance.md</code>, <code>approval-bound-real-testing.md</code>, <code>agent-skill-modernization-loop.md</code>, <code>cli-reference.md</code>, <code>artifact-contracts.md</code>, <code>packaging-and-closure.md</code>, existing docs IA, MkDocs nav, <code>tools/check_docs.py</code>, source registry, focused docs tests and regenerated <code>site/</code>. It preserves staged evidence only, not source of truth, no live server, no browser automation, no provider/live external model/API calls, no canonical graph mutation and no git stage/commit/push/PR.</p>
-<p>Task 26 Batch 35 <code>T10-LIVE-M37..M41</code> is added as an Approval-Bound Real Testing Execution Matrix. It is planned, not implemented: <code>approved_local_runtime_launch</code>, <code>actual_browser_automation_smoke</code>, <code>approved_provider_api_pilot</code>, <code>approved_canonical_mutation_pilot</code> and <code>explicit_git_release_pr_action</code> are separate surfaces under approval boundary <code>batch35_approval_bound_real_testing_execution</code>. Batch 35 can run only after Batch 24 governance, Batch 25 runtime contract, Batch 31 audit/observability, Batch 32 target consent, Batch 33 QA/performance/stabilization and Batch 34 packaging/docs closure are current. Until separate explicit owner approval exists for each action, it starts no live server, runs no browser automation, performs no provider/live external model/API calls, performs no canonical graph mutation and performs no git stage/commit/push/PR.</p>
-<h2 id="task-22-scenario-closure">Task 22 scenario closure<a class="headerlink" href="#task-22-scenario-closure" title="Permanent link">&para;</a></h2>
-<p>Task 22 scenario closure связывает user-job routes with methodology packets and finish_options. Routes such as <code>bug_rescue</code>, <code>greenfield_idea</code>, <code>api_migration</code>, <code>ai_eval_regression</code>, <code>security_sensitive_change</code> and <code>release_packaging</code> must return a safe_next_action, minimum artifacts, approval boundary and evidence requirements without forcing unrelated methodology gates.</p>
-<p>Finish options are bounded by lifecycle status: read-only routes can ask for context, stage a proposal or stop for approval; they cannot claim completion, create external writes or start automation from detection alone.
-Источники: <a href="https://developers.openai.com/codex/workflows">Codex workflows</a>, <a href="https://developers.openai.com/codex/use-cases">Codex use cases</a>, <a href="https://developers.openai.com/codex/agent-approvals-security">Agent approvals and security</a>, <a href="index.html">Product-Agent OS plugin</a>, <a href="behavioral-evals.html">Behavioral evals</a>, <a href="codex-compatibility.html">Codex compatibility</a>.</p>
-<p>Эта страница отвечает на практический вопрос: какой route должен выбрать Product-Agent OS plugin, когда Codex App, CLI или IDE extension видит реальный workspace и пользователь просит не просто "написать код", а довести работу до проверяемого результата.</p>
-<p>Сценарий не заменяет lifecycle. Он выбирает первый малый шаг, minimum artifacts, approval boundary и verification gates. Если evidence нет, route должен вернуть gap, а не готовность.</p>
-<h2 id="inputs">Inputs<a class="headerlink" href="#inputs" title="Permanent link">&para;</a></h2>
+<h2 id="_1">Входы<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <ul>
 <li>цель пользователя или <code>intent_hint</code>, если он передан в Codex runtime runner;</li>
-<li>read-only workspace audit: файлы, stack, test/build commands, docs, CI, contracts, control-plane files;</li>
+<li>read-only workspace audit: files, stack, test/build commands, docs, CI, contracts и control-plane files;</li>
 <li>текущие <code>AGENTS.md</code>, <code>REQUIREMENTS.md</code>, <code>PLAN.md</code>, <code>TEST.md</code>, <code>EVALS.md</code>, <code>RUNLOG.md</code>;</li>
-<li>source policy, sandbox, approvals и known external-system boundaries;</li>
-<li>предыдущие failure notes, если они уже записаны в <code>RUNLOG.md</code>.</li>
+<li>политика источников, sandbox, approvals и known external-system boundaries;</li>
+<li>previous failure notes, если already recorded в <code>RUNLOG.md</code>.</li>
 </ul>
-<h2 id="outputs">Outputs<a class="headerlink" href="#outputs" title="Permanent link">&para;</a></h2>
+<p>Key routing fields включают <code>finish_options</code> и <code>safe_next_action</code>; they tell next worker следует ли к answer, stage proposal, request approval, запуск focused verification или stop на evidence gap.</p>
+<h2 id="_2">Выходы<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
 <ul>
-<li><code>usage_mode.primary</code>, <code>secondary</code>, confidence и routing reasons;</li>
+<li><code>usage_mode.primary</code>, secondary mode, confidence и routing reasons;</li>
 <li>first response: один ближайший полезный шаг без широкого scaffold, rewrite или external mutation;</li>
-<li>minimum artifacts: конкретные файлы или packets, которые нужны до build/review/release;</li>
-<li>approval boundary: что можно делать read-only или staged-only, а что требует explicit approval;</li>
-<li>verification gates: команды, evals, screenshots, logs, owner review или accepted gap;</li>
-<li>residual risk, если route основан на detection, а не на verified evidence.</li>
+<li>minimum artifacts: concrete files или packets needed до build/review/release;</li>
+<li>approval boundary: what является read-only, staged-only или approval-required;</li>
+<li>verification gates: commands, evals, screenshots, logs, owner review или accepted gap;</li>
+<li>residual risk когда route является based на detection rather than verified evidence.</li>
 </ul>
 <h2 id="guided-question-protocol-and-status-dashboard">Guided Question Protocol And Status Dashboard<a class="headerlink" href="#guided-question-protocol-and-status-dashboard" title="Permanent link">&para;</a></h2>
-<p>Guided question protocol uses typed <code>question_queue</code> packets so the first response can show only <code>next_blocking_question</code>, <code>question_counts</code> and <code>question_summary</code>. It asks one blocking question maximum, keeps recommended and optional questions in the packet, and routes answers into artifacts or accepted gaps. Guided questions are not workspace evidence and do not replace read-only audit, current command evidence, runtime evidence, owner review or accepted gaps.</p>
-<p>The status snapshot is the JSON source for a generated dashboard view. The dashboard stages <code>.codex/product-agent-os/status.html</code> and <code>.codex/product-agent-os/status.json</code> through the existing approval flow. <code>status.html</code> is generated view only: underlying artifacts remain the source material, the dashboard is not an editable database, and stale or inspection-only evidence cannot produce a success claim.</p>
-<h2 id="task-24-self-verification-and-modernization-loop">Task 24 Self-Verification And Modernization Loop<a class="headerlink" href="#task-24-self-verification-and-modernization-loop" title="Permanent link">&para;</a></h2>
-<p>Task 24 adds the <code>agent_skill_metrics_loop</code> route for agent, skill, prompt/policy pack, router/tool policy and harness-version review. This self-verification metrics loop starts from a read-only target registry, explicit run evidence, trace intake, dataset quality checks, local grader summaries and grader/judge calibration. It can stage <code>scorecard ledger</code> records, daily or weekly packets, <code>agent-skill-evaluation-report.html</code>, and modernization candidates, but every output is staged evidence only.</p>
-<p>The route uses source-of-truth policy: control-plane artifacts, run records, trace/eval packets and accepted gaps can support the metrics loop; dashboard HTML, report HTML, memory, raw chat logs and unsupported community claims cannot. The report is not source of truth and cannot turn stale or generated evidence into a completion claim.</p>
-<p>The approval boundary stays strict. Product-Agent OS records cadence recommendation values <code>L0</code>, <code>L1</code>, <code>L2</code> and <code>L3</code>, but it creates no active schedules. It performs no live eval/model/API calls, makes no external writes, applies no modernization candidates by itself, and allows no self-applied updates. Owner review, rollback target and explicit approval state are required before any proposed update moves beyond staged review.</p>
-<h2 id="task-25-project-code-graph-and-cockpit">Task 25 Project Code Graph And Cockpit<a class="headerlink" href="#task-25-project-code-graph-and-cockpit" title="Permanent link">&para;</a></h2>
-<p>Task 25 Batch 13, Batch 14, Batch 15 and Batch 16 add a read-only project graph foundation and generated cockpit for route orientation. It can produce staged graph JSON/JSONL with file-level nodes, Python AST package/module/class/function/method overlays, conservative import/call/test edges, structured Markdown/OpenAPI/AsyncAPI/DBML/SQL/JSON/YAML/Mermaid/PlantUML overlays, controlled ontology/schema validation, manifest freshness/provenance, observation lineage, temporal edge delta helpers, partition scopes and canonical aliases. It can also query existing graph artifacts for bounded neighbors, paths, traces, impact, affected tests, deltas, read order, hotspots, status and search packets without reading source bodies. The cockpit renderer can stage offline <code>.codex/product-agent-os/project-cockpit.html</code> and <code>.codex/product-agent-os/project-cockpit.json</code> review surfaces with exactly eight top-level pages, Code Flow inside <code>Code Intelligence</code>, Graphology-compatible static projection, local Graphology/Sigma vendor boundary, graph filters, focused subgraphs, selected-node evidence, fallback tables, mobile layout and no external assets. This helps routes point agents toward source files and stale graph gaps without treating generated artifacts as source of truth.</p>
-<p>The route boundary remains conservative: generated graph artifacts, runtime graph summaries, analysis reports and HTML cockpit views are review evidence only, the scanner and cockpit renderer do not mutate target workspaces, Graphology/Sigma assets must be local/vendor-only and the current Batch 16 renderer uses static fallback because no vendor bundle is packaged. Task 25 Batch 17 adds fixture structural fields, a search-quality eval loop for symbol recall, top-k/MRR, trace labels, affected-test precision and explicit thresholds, and future backend and semantic gates, but these local checks do not prove semantic dependency correctness. Batch 19, Batch 20 and Batch 21 later implement the approved static index, local backend gate and local deterministic semantic retrieval gate; live database/server, live external model/API embedding or cross-encoder providers, LLM semantic extraction and rationale/comment extraction remain outside the approved surface unless explicit approval defines redaction, cache, token budget, eval threshold and rollback path.</p>
-<p>Task 25 Batch 18 <code>T10-CG-V2-M31..M32</code> closes this scenario baseline with focused/full verification. Batch 18 evidence records full unittest ran 664 tests with <code>OK</code>, fixture eval exited <code>0</code> for 91 fixture directories, transcript eval exited <code>0</code> with 17 sessions and 0 failures, Codex compatibility returned <code>status: compatible</code>, strict MkDocs and diff hygiene passed, and the explicit-only git boundary was preserved.</p>
-<p>Task 25 Batch 19 <code>T10-CG-V2-M33..M38</code> implements the approved offline static search index at <code>.codex/product-agent-os/project-code-graph-search-index.json</code>. The index is generated, cache-bound and not source of truth; it builds from graph artifact only, supports optional indexed search, blocks stale indexes, records cache hit/miss/invalidation and has a rollback/disable path. Batch 19 uses no live database/server, LLM, embedding or cross-encoder.</p>
-<p>Task 25 Batch 20 <code>T10-CG-V2-M39..M44</code> implements the approved local query backend gate in <code>project_graph_backend.py</code>. The gate creates a generated local file-store at <code>.codex/product-agent-os/project-code-graph-backend.json</code> only from graph and static-index artifacts, records <code>project_graph_local_backend_gate_present</code>, requires an approval decision packet with storage path, port policy, process lifecycle, auth boundary, cleanup, logging, performance threshold and rollback path, and keeps server mode disabled by default. The backend store is not source of truth, no production server is started, read-only API handling is contract-only and graph-only fallback remains available.</p>
-<p>Task 25 Batch 21 <code>T10-CG-V2-M45..M51</code> implements the approved semantic retrieval gate in <code>project_graph_semantic.py</code>. It records <code>project_graph_semantic_retrieval_gate_present</code>, a semantic corpus and chunk policy, embeddings cache metadata, semantic query packets and cross-encoder eval/reranking gate using local deterministic embeddings only. Semantic hits are <code>present_unverified</code> orientation evidence, there are no canonical graph edge rewrites, the rollback/disable path deletes <code>.codex/product-agent-os/project-code-graph-semantic-index.json</code>, and later Batch 22/23 closure work stays generated, approval-bound and non-source-of-truth.</p>
-<p>Task 25 Batch 22 <code>T10-CG-V2-M52..M57</code> implements the approved local deterministic LLM semantic extraction proposal gate in <code>project_graph_llm_extraction.py</code>. It records <code>project_graph_llm_extraction_gate_present</code>, validates a Batch 22 explicit approval packet with prompt/model policy, emits structured JSON with provenance, uncertainty and unsupported-claim labels, stages semantic node and edge proposals plus rationale/comment proposals, and treats every output as staged proposals, not canonical graph facts. There is no canonical graph mutation, no live external model/API call and no source-of-truth claim; human review can accept, reject or mark <code>accepted_gap</code>, unsafe output routes to the AI incident workflow, and the rollback/disable path deletes <code>.codex/product-agent-os/project-code-graph-llm-proposals.json</code>.</p>
-<p>Task 25 Batch 23 <code>T10-CG-V2-M58..M62</code> implements future extension verification, rollback and closure through <code>project_graph_extension_closure.py</code>. It adds <code>verify-extensions</code> and <code>disable-extensions</code>, fixture fields <code>project_graph_future_extension_closure_present</code>, <code>project_graph_extension_rollback_deletion_present</code>, <code>project_graph_unapproved_surface_blocking_present</code> and <code>project_graph_extension_full_verification_contract_present</code>, records rollback/data deletion proof, verifies graph-only fallback, keeps unapproved surfaces as <code>blocked_without_new_explicit_approval</code>, starts no live server, performs no live external model/API calls, mutates no canonical graph facts and preserves that git staging/commit/push/PR remains explicit-only.</p>
-<p>Task 26 Batch 24 <code>T10-LIVE-M01..M06</code> implements Approval, Data Classification, Redaction, Credentials, Cache And Budget Governance through <code>project_graph_live_governance.py</code>. It records <code>project_graph_live_approval_packet_present</code>, <code>project_graph_live_data_classification_policy_present</code>, <code>project_graph_live_redaction_guard_present</code>, <code>project_graph_provider_credentials_boundary_present</code>, <code>project_graph_live_cache_deletion_policy_present</code>, <code>project_graph_live_budget_guard_present</code> and <code>project_graph_live_governance_no_live_calls_present</code>. Batch 24 is staged evidence only and not source of truth: no live server, no provider calls, no live external model/API calls, no canonical graph mutation, and git staging/commit/push/PR remains explicit-only.</p>
-<p>Task 26 Batch 25 <code>T10-LIVE-M07..M10</code> implements Live Local Read-Only Runtime, Auth And Fallback through <code>project_graph_live_runtime.py</code>. It records <code>project_graph_live_runtime_contract_present</code>, <code>project_graph_live_runtime_governance_prerequisite_present</code>, <code>project_graph_live_runtime_read_only_routes_present</code>, <code>project_graph_live_runtime_lifecycle_controls_present</code>, <code>project_graph_live_runtime_auth_policy_present</code>, <code>project_graph_live_runtime_graph_only_fallback_present</code> and <code>project_graph_live_runtime_no_public_or_mutation_surface_present</code>. Batch 25 is staged evidence only and not source of truth: <code>disabled_by_default_not_started</code>, local-only access, rejects unauthorized access, no write endpoints, <code>graph_only_query_mode</code>, no provider calls, no live external model/API calls, no canonical graph mutation, and git staging/commit/push/PR remains explicit-only.</p>
-<p>Task 26 Batch 26 <code>T10-LIVE-M11..M12</code> implements External Embedding Provider Gate And Eval through <code>project_graph_embedding_provider.py</code>. It records <code>project_graph_external_embedding_provider_gate_present</code>, <code>project_graph_external_embedding_governance_prerequisite_present</code>, <code>project_graph_external_embedding_redaction_cache_budget_present</code>, <code>project_graph_external_embedding_eval_baseline_present</code>, <code>project_graph_external_embedding_threshold_fallback_present</code> and <code>project_graph_external_embedding_no_live_calls_present</code>. Batch 26 is staged evidence only and not source of truth: No external call without approval/redaction/cache/budget, Must beat approved threshold or stay disabled, <code>semantic_retrieval_or_graph_only</code>, <code>provider_call_allowed: false</code>, <code>external_call_performed: false</code>, no provider calls, no live external model/API calls, no canonical graph mutation, and git staging/commit/push/PR remains explicit-only.</p>
-<p>Task 26 Batch 27 <code>T10-LIVE-M13..M14</code> implements Cross-Encoder Reranker And Hybrid Retrieval through <code>project_graph_reranker_provider.py</code> (<code>reranker_provider.py</code> artifact contract) and <code>project_graph_hybrid_retrieval.py</code> (<code>hybrid_retrieval.py</code> artifact contract). It records <code>project_graph_external_reranker_provider_gate_present</code>, <code>project_graph_external_reranker_governance_prerequisite_present</code>, <code>project_graph_external_reranker_redaction_cache_budget_present</code>, <code>project_graph_external_reranker_eval_baseline_present</code>, <code>project_graph_external_reranker_threshold_fallback_present</code>, <code>project_graph_external_reranker_no_live_calls_present</code>, <code>project_graph_hybrid_retrieval_pipeline_present</code>, <code>project_graph_hybrid_retrieval_explainable_fusion_present</code>, <code>project_graph_hybrid_retrieval_fallback_present</code> and <code>project_graph_hybrid_retrieval_no_canonical_mutation_present</code>. Batch 27 is <code>approval_required</code>, staged evidence only and not source of truth: Precision/MRR improves or fallback remains active, results are source-backed, bounded and explainable, fallback remains <code>semantic_retrieval_or_graph_only</code>, <code>provider_call_allowed: false</code>, <code>external_call_performed: false</code>, No live provider calls, no provider calls, no live external model/API calls, no canonical graph mutation, and git staging/commit/push/PR remains explicit-only.</p>
-<p>Task 26 Batch 28 <code>T10-LIVE-M15..M16</code> implements Live LLM Proposal Adapter And Safety Eval through <code>project_graph_llm_proposal_provider.py</code> (<code>llm_proposal_provider.py</code> artifact contract) and <code>llm-proposal-eval.json</code>. It records <code>project_graph_live_llm_proposal_provider_gate</code>, <code>project_graph_live_llm_proposal_provider_gate_present</code>, <code>project_graph_live_llm_proposal_governance_prerequisite_present</code>, <code>project_graph_live_llm_proposal_prompt_schema_present</code>, <code>project_graph_live_llm_proposal_redaction_cache_budget_present</code>, <code>project_graph_live_llm_proposal_safety_eval_present</code>, <code>project_graph_live_llm_proposal_threshold_fallback_present</code>, <code>project_graph_live_llm_proposal_incident_path_present</code>, <code>project_graph_live_llm_proposal_no_live_calls_present</code> and <code>project_graph_live_llm_proposal_no_canonical_mutation_present</code>. Batch 28 is <code>approval_required</code>, staged evidence only and not source of truth: provider <code>external_llm</code>, surfaces <code>external_llm_proposal_adapter</code> and <code>llm_proposal_safety_eval</code>, approval boundary <code>batch28_live_llm_proposal_adapter_and_safety_eval</code>, output format <code>structured_json</code>, label <code>unsupported_claim</code>, proposal-only, never canonical fact, hallucination, privacy, grounding and stale-context tests, unsafe evidence routes to <code>incident_blocked</code> and AI incident workflow, fallback remains <code>local_llm_proposals_or_semantic_retrieval_or_graph_only</code>, <code>provider_call_allowed: false</code>, <code>external_call_performed: false</code>, No live provider calls, no provider calls, no live external model/API calls, no canonical graph mutation, and git staging/commit/push/PR remains explicit-only.</p>
-<p>Task 26 Batch 29 <code>T10-LIVE-M17..M18</code> implements Human Review Ledger And Proposal Diff Preview through <code>project_graph_review_ledger.py</code> with <code>graph-review-ledger.json</code> and <code>proposal-diff.json</code> artifact contracts. It stages <code>project_graph_human_review_ledger</code> and <code>project_graph_proposal_diff_preview</code> under approval boundary <code>batch29_human_review_ledger_and_proposal_diff_preview</code>, with surfaces <code>human_review_ledger</code> and <code>proposal_diff_preview</code>. Batch 29 is <code>approval_required</code>, staged evidence only and not source of truth: decisions are <code>accepted</code>, <code>rejected</code> or <code>accepted_gap</code>; No accepted proposal without owner decision; Accept, reject or accepted_gap decisions with evidence refs; Human can inspect before mutation; proposal-only until Batch 30 dry-run mutation; <code>provider_call_allowed: false</code>, <code>external_call_performed: false</code>, no provider calls, no live external model/API calls, no canonical graph mutation, and git staging/commit/push/PR remains explicit-only.</p>
-<p>Task 26 Batch 30 <code>T10-LIVE-M19..M22</code> implements Canonical Graph Mutation, Journal And Rollback Engine through <code>project_graph_canonical_mutation.py</code>, covering the planned <code>canonical_graph_mutation.py</code> and <code>graph_rollback.py</code> surfaces with <code>mutation_plan.json</code>, <code>graph-mutation-journal.jsonl</code>, a staged mutated graph copy and rollback proof. It stages <code>project_graph_canonical_mutation_plan</code>, <code>project_graph_mutation_journal</code> and <code>project_graph_rollback_proof</code> under approval boundary <code>batch30_canonical_graph_mutation_journal_and_rollback</code>, with surfaces <code>canonical_mutation_dry_run</code>, <code>mutation_journal</code>, <code>accepted_mutation_apply</code> and <code>rollback_engine</code>. Batch 30 is <code>approval_required</code>, staged evidence only and not source of truth: No mutation without dry-run plan; Every mutation has rollback patch; Only accepted proposals mutate graph; Rollback restores previous graph digest; accepted_gap remains non-mutating; stage-root generated graph copy only; <code>provider_call_allowed: false</code>, <code>external_call_performed: false</code>, no provider calls, no live external model/API calls, and git staging/commit/push/PR remains explicit-only.</p>
-<p>Task 26 Batch 31 <code>T10-LIVE-M23..M26</code> implements Audit Logging, Security/Privacy Tests, Observability And Agent/Skill Routing through <code>project_graph_live_audit.py</code>, covering <code>audit-log.jsonl</code>, <code>security-privacy.json</code>, <code>runtime-observability.json</code> and <code>agent-skill-handoff.json</code> artifact contracts. It stages <code>project_graph_live_audit_log</code>, <code>project_graph_live_security_privacy_tests</code>, <code>project_graph_runtime_observability</code> and <code>project_graph_agent_skill_handoff_routing</code> under approval boundary <code>batch31_audit_security_observability_agent_skill_routing</code>, with surfaces <code>audit_logging</code>, <code>security_privacy_tests</code>, <code>runtime_observability</code> and <code>agent_skill_handoff_routing</code>. Batch 31 is <code>approval_required</code>, staged evidence only and not source of truth: every live/provider/mutation action emits a redacted append-only audit event; unsafe secret/path/raw-source/prompt-injection cases are blocked; runtime health, latency, provider errors, budget usage and degraded graph-only mode are visible; agent/skill handoffs require ownership, verification evidence, fresh context and stop conditions; <code>provider_call_allowed: false</code>, <code>external_call_performed: false</code>, no live server, no provider calls, no live external model/API calls, no canonical graph mutation, and git staging/commit/push/PR remains explicit-only.</p>
+<p>Guided question protocol использует typed <code>question_queue</code> packets so first response может show только <code>next_blocking_question</code>, <code>question_counts</code> и <code>question_summary</code>. Это asks один blocking question maximum, keeps recommended и optional questions в packet, и routes answers в artifacts или accepted gaps. Guided questions являются не workspace evidence и не replace read-only audit, текущий command evidence, runtime evidence, owner review или accepted gaps.</p>
+<p>Этот status snapshot является JSON source для generated dashboard view. Этот dashboard stages <code>.codex/product-agent-os/status.html</code> и <code>.codex/product-agent-os/status.json</code> через existing approval flow. <code>status.html</code> является generated view only: underlying artifacts остаются source material, dashboard является не editable database, и stale или inspection-only evidence не может produce success claim.</p>
+<h2 id="self-verification-modernization-loop">Self-verification и modernization loop<a class="headerlink" href="#self-verification-modernization-loop" title="Permanent link">&para;</a></h2>
+<p><code>agent_skill_metrics_loop</code> route reviews agents, skills, prompt/policy packs, router/tool policy и harness-version behavior. Он начинается с read-only target registry, explicit запуск evidence, trace intake, dataset quality checks, local grader summaries и grader/judge calibration. Это может stage scorecard ledger records, daily или weekly packets, <code>agent-skill-evaluation-report.html</code> и modernization candidates, но every output является staged evidence only.</p>
+<p>Этот route использует политика канонического источника: control-plane artifacts, запуск records, trace/eval packets и accepted gaps может support metrics loop; dashboard HTML, report HTML, memory, raw chat logs и unsupported community claims не могут. Этот report является не является каноническим источником и не может turn stale или generated evidence в completion claim.</p>
+<p>Этот approval boundary stays strict. Product-Agent OS records cadence recommendation values <code>L0</code>, <code>L1</code>, <code>L2</code> и <code>L3</code>, но это creates нет active schedules. Это performs нет live eval/model/API calls, makes нет external writes, applies нет modernization candidates через itself и allows нет self-applied updates. Owner review, rollback target и explicit approval state являются required до any proposed update moves beyond staged review.</p>
+<h2 id="project-code-graph-and-cockpit">Project Code Graph And Cockpit<a class="headerlink" href="#project-code-graph-and-cockpit" title="Permanent link">&para;</a></h2>
+<p>Этот graph route provides read-only project graph foundation и generated cockpit для route orientation. Это может produce staged graph JSON/JSONL с file-level nodes, Python AST overlays, conservative import/call/test edges, structured Markdown/OpenAPI/AsyncAPI/DBML/SQL/JSON/YAML/Mermaid/PlantUML overlays, controlled ontology/schema validation, manifest freshness/provenance, observation lineage, temporal edge helpers, partition scopes и canonical aliases.</p>
+<p>Этот cockpit renderer может stage offline <code>.codex/product-agent-os/project-cockpit.html</code> и <code>.codex/product-agent-os/project-cockpit.json</code> review surfaces с top-level pages, Code Flow, static projection, local vendor boundary, graph filters, focused subgraphs, selected-node evidence, fallback tables, mobile layout и нет external assets. Эта helps routes point agents toward source files и stale graph gaps без treating generated artifacts как канонический источник.</p>
+<p>Этот boundary остается conservative: generated graph artifacts, runtime graph summaries, analysis reports и HTML cockpit views являются только review evidence. Scanner и cockpit renderer не мутируют target workspaces. Live database/server, live external model/API embedding или cross-encoder providers, LLM semantic extraction, rationale/comment extraction и canonical graph mutation остаются approval-bound future actions, пока explicit approval не задаст redaction, cache, token budget, eval threshold и rollback path.</p>
 <h2 id="scenario-matrix">Scenario Matrix<a class="headerlink" href="#scenario-matrix" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
 <th>usage_mode</th>
-<th>When it applies</th>
+<th>Когда применять</th>
 <th>first response</th>
 <th>minimum artifacts</th>
 <th>approval boundary</th>
@@ -4015,183 +4025,189 @@
 <tbody>
 <tr>
 <td><code>first-run-intake</code></td>
-<td>Empty workspace, broken verification, existing control-plane or complex first launch.</td>
-<td>Name mode, confidence, next smallest action and evidence gaps.</td>
-<td>Intake summary, current lifecycle state, next action.</td>
-<td>No scaffold, broad fix or parallel work before route is accepted.</td>
-<td>Read-only audit, control-plane check, source policy.</td>
+<td>Empty workspace, broken verification, existing control-plane или complex first launch.</td>
+<td>Name mode, confidence, next smallest action и evidence gaps.</td>
+<td>Intake summary, текущий lifecycle state, следующий action.</td>
+<td>Нет scaffold, broad fix или parallel work до route является accepted.</td>
+<td>Read-only audit, control-plane check, политика источников.</td>
 </tr>
 <tr>
 <td><code>bug_rescue</code></td>
-<td>User reports broken behavior, failing tests or regression.</td>
-<td>Reproduce or isolate before changing code.</td>
+<td>User reports broken behavior, failing tests или regression.</td>
+<td>Reproduce или isolate до changing code.</td>
 <td><code>bug-rescue-report.md</code>, failure evidence, root-cause hypothesis.</td>
-<td>No fix claim without reproduction evidence.</td>
-<td>Failing command/log, focused regression check, current evidence.</td>
+<td>Нет fix claim без reproduction evidence.</td>
+<td>Failing command/log, focused regression check, текущий evidence.</td>
 </tr>
 <tr>
 <td><code>greenfield_idea</code></td>
-<td>Idea-stage or empty product direction.</td>
-<td>Shape one vertical slice before scaffold.</td>
+<td>Idea-stage или empty product direction.</td>
+<td>Shape один vertical slice до scaffold.</td>
 <td><code>greenfield-idea-brief.md</code>, selected direction, non-goals.</td>
-<td>Scaffold requires explicit approval.</td>
+<td>Scaffold требует explicit approval.</td>
 <td>Acceptance scenarios, first slice plan, lightweight-mode decision.</td>
 </tr>
 <tr>
 <td><code>complex_system_acceleration</code></td>
-<td>Existing multi-surface app, integrations, multiple services or unclear ownership.</td>
-<td>Build map before parallelization.</td>
+<td>Existing multi-surface app, integrations, multiple services или unclear ownership.</td>
+<td>Build map до parallelization.</td>
 <td><code>integration-catalog.md</code>, ownership split, release gates.</td>
-<td>No parallel work with overlapping files or unclear external-system owners.</td>
+<td>Нет parallel work с overlapping files или unclear external-system owners.</td>
 <td>Integration inventory, ownership review, release risk gates.</td>
 </tr>
 <tr>
 <td><code>pr_review</code></td>
-<td>Review or merge-readiness request.</td>
-<td>Stay read-only and review changed files.</td>
+<td>Review или merge-readiness request.</td>
+<td>Stay read-only и review changed files.</td>
 <td>PR review readiness, changed-files map, <code>pr-risk-review.md</code>.</td>
-<td>No push, PR creation, merge or external comment without approval.</td>
-<td>Two-stage review: spec compliance before quality/risk.</td>
+<td>Нет push, PR creation, merge или external comment без approval.</td>
+<td>Two-stage review: spec compliance до quality/risk.</td>
 </tr>
 <tr>
 <td><code>legacy_onboarding</code></td>
-<td>Old, undocumented or unknown repository.</td>
-<td>Orient before refactor.</td>
-<td><code>onboarding-map.md</code>, entry points, run commands, docs debt.</td>
-<td>No cleanup/refactor until map and verification status are explicit.</td>
-<td>Present-unverified labels, source map, run command evidence.</td>
+<td>Old, undocumented или unknown repository.</td>
+<td>Orient до refactor.</td>
+<td><code>onboarding-map.md</code>, entry points, запуск commands, docs debt.</td>
+<td>Нет cleanup/refactor пока map и verification status являются explicit.</td>
+<td>Present-unverified labels, source map, запуск command evidence.</td>
 </tr>
 <tr>
 <td><code>api_migration</code></td>
-<td>HTTP API, event contract, generated client or consumer change.</td>
-<td>Plan compatibility before implementation.</td>
+<td>HTTP API, event contract, generated client или consumer change.</td>
+<td>Plan compatibility до implementation.</td>
 <td><code>migration-plan.md</code>, <code>api-contract-review.md</code>, consumers, rollout.</td>
-<td>Release or breaking change needs owner review and approval.</td>
-<td>Contract check, backward compatibility, deprecation and rollout evidence.</td>
+<td>Release или breaking change требует owner review и approval.</td>
+<td>Contract check, backward compatibility, deprecation и rollout evidence.</td>
 </tr>
 <tr>
 <td><code>ai_eval_regression</code></td>
-<td>AI/RAG quality, prompt, model, retrieval, dataset or judge changes.</td>
+<td>AI/RAG quality, prompt, model, retrieval, dataset или judge changes.</td>
 <td>Baseline first.</td>
 <td><code>ai-eval-spec.md</code>, dataset policy, rubric, thresholds.</td>
-<td>No quality claim from inspection-only evidence.</td>
-<td>Baseline, rerun command, latency/cost/grounding and failure examples.</td>
+<td>Нет quality claim из inspection-only evidence.</td>
+<td>Baseline, rerun command, latency/cost/grounding и failure examples.</td>
 </tr>
 <tr>
 <td><code>native_mobile_feature</code></td>
-<td>iOS, Android or native mobile behavior.</td>
-<td>Record platform assumptions before implementation.</td>
+<td>iOS, Android или native mobile behavior.</td>
+<td>Record platform assumptions до implementation.</td>
 <td>Platform runtime check, permissions, offline/device plan.</td>
-<td>Permission, signing or store changes require approval.</td>
-<td>Build command, simulator/emulator or device logs, screenshots, manual gap.</td>
+<td>Permission, signing или store changes требуют approval.</td>
+<td>Build command, simulator/emulator или device logs, screenshots, manual gap.</td>
 </tr>
 <tr>
 <td><code>desktop_local_first</code></td>
-<td>Desktop app, filesystem, local DB, indexing or packaging.</td>
-<td>Map local data and OS assumptions first.</td>
+<td>Desktop app, filesystem, local DB, indexing или packaging.</td>
+<td>Map local data и OS assumptions first.</td>
 <td>Local data risk note, runtime log check, recovery path.</td>
-<td>Filesystem access, packaging, signing and distribution require approval.</td>
-<td>App logs, build/run command, privacy and rollback evidence.</td>
+<td>Filesystem access, packaging, signing и distribution требуют approval.</td>
+<td>App logs, build/run command, privacy и rollback evidence.</td>
 </tr>
 <tr>
 <td><code>data_migration</code></td>
-<td>Schema, backfill, sensitive data, retention or production data risk.</td>
-<td>Plan migration and rollback before execution.</td>
+<td>Schema, backfill, sensitive data, retention или production data risk.</td>
+<td>Plan migration и rollback до execution.</td>
 <td><code>migration-plan.md</code>, <code>database-dictionary.md</code>, data quality checks.</td>
-<td>Production DB/data access and migration execution require approval.</td>
+<td>Production DB/data access и migration execution требуют approval.</td>
 <td>Dry run, backup, validation, owner review, rollback evidence.</td>
 </tr>
 <tr>
 <td><code>security_sensitive_change</code></td>
-<td>Authn/authz, payment, billing, secrets, PII, abuse controls or permissions.</td>
-<td>Threat surface and owner review before build.</td>
+<td>Authn/authz, payment, billing, secrets, PII, abuse controls или permissions.</td>
+<td>Threat surface и owner review до build.</td>
 <td><code>security-risk-review.md</code>, approval boundary, rollback plan.</td>
-<td>Security scans or external security mutations only when explicitly requested.</td>
-<td>Tests, audit logging, rate limit, privacy and owner review evidence.</td>
+<td>Security scans или external security mutations только когда explicitly requested.</td>
+<td>Tests, audit logging, rate limit, privacy и owner review evidence.</td>
 </tr>
 <tr>
 <td><code>ci_stabilization</code></td>
-<td>Failing, flaky or unstable CI.</td>
-<td>Gather failure evidence before changing code.</td>
+<td>Failing, flaky или unstable CI.</td>
+<td>Gather failure evidence до changing code.</td>
 <td><code>ci-stabilization-report.md</code>, failing job, local reproduction.</td>
-<td>Remote CI reruns, settings and branch rules require approval.</td>
+<td>Remote CI reruns, settings и branch rules требуют approval.</td>
 <td>Logs, deterministic/flaky classification, isolation plan, rerun evidence.</td>
 </tr>
 <tr>
 <td><code>release_packaging</code></td>
-<td>Package, SDK, plugin, app, mobile, desktop or open-source release.</td>
-<td>Build release readiness before publish.</td>
+<td>Package, SDK, plugin, app, mobile, desktop или open-source release.</td>
+<td>Build release readiness до publish.</td>
 <td><code>release-readiness.md</code>, package metadata, changelog, artifacts.</td>
-<td>Publishing, tagging, release creation, upload or package registry mutation require approval.</td>
-<td>Build/test/docs evidence, security/license notes, rollback and owner review.</td>
+<td>Publishing, tagging, release creation, upload или package registry mutation требуют approval.</td>
+<td>Build/test/docs evidence, security/license notes, rollback и owner review.</td>
 </tr>
 <tr>
 <td><code>docs_only</code></td>
-<td>Documentation update without behavior change.</td>
-<td>Update source-backed docs and run docs checks.</td>
-<td>Source status, affected docs, registry entry when source-backed claims changed.</td>
-<td>Hosted docs, CI activation and sharing changes require approval.</td>
-<td><code>python tools\check_docs.py</code>, strict MkDocs when nav/build-sensitive.</td>
+<td>Documentation update без behavior change.</td>
+<td>Update source-backed docs и запуск docs checks.</td>
+<td>Source status, affected docs, registry entry когда source-backed claims changed.</td>
+<td>Hosted docs, CI activation и sharing changes требуют approval.</td>
+<td><code>python tools\check_docs.py</code>, strict MkDocs когда nav/build-sensitive.</td>
 </tr>
 <tr>
 <td><code>standard_feature</code></td>
-<td>Bounded feature work without special scenario risk.</td>
-<td>Use normal lifecycle route.</td>
+<td>Bounded feature work без special scenario risk.</td>
+<td>Используйте normal lifecycle route.</td>
 <td>Requirements, plan, test/eval evidence.</td>
-<td>Writes follow sandbox and project approval policy.</td>
-<td>Unit/integration/contract checks, docs impact, review.</td>
+<td>Writes follow sandbox и project approval policy.</td>
+<td>Unit/integration/contract checks, влияние на docs, review.</td>
 </tr>
 <tr>
 <td><code>maintenance</code></td>
-<td>Small upkeep, formatting or status sync.</td>
-<td>Keep scope mechanical and evidence explicit.</td>
-<td>RUNLOG note or control-plane sync.</td>
-<td>No unrelated refactor.</td>
-<td>Focused command or explicit inspection-only gap.</td>
+<td>Small upkeep, formatting или status sync.</td>
+<td>Keep scope mechanical и evidence explicit.</td>
+<td>RUNLOG note или control-plane sync.</td>
+<td>Нет unrelated refactor.</td>
+<td>Focused command или explicit inspection-only gap.</td>
 </tr>
 </tbody>
 </table>
-<h2 id="database-data-methodology-routing">Database &amp; Data methodology routing<a class="headerlink" href="#database-data-methodology-routing" title="Permanent link">&para;</a></h2>
-<p>Database/data work keeps the Track 8 <code>data_migration</code> route for compatibility, but Track 9 also adds a dedicated Database &amp; Data methodology packet. When schema, migration, ORM, warehouse, data quality, lineage, retention, backup/restore or production-data signals appear, the route should stage or request database-specific evidence before implementation or execution.</p>
-<p>Minimum staged artifacts include <code>database-inventory.md</code>, <code>database-dictionary.md</code>, <code>database-migration-plan.md</code>, <code>database-data-contract.md</code>, <code>database-backup-restore-evidence.md</code>, <code>database-lineage-map.md</code>, <code>database-query-performance-review.md</code>, <code>database-retention-deletion-policy.md</code>, <code>database-synthetic-fixtures-policy.md</code> and <code>database-production-access-approval.md</code> when production data, production DB access, backup restore or destructive migration is involved.</p>
-<p>Approval boundary stays explicit: DB introspection, production DB access, production data access, migration execution, destructive cleanup, backup restore and retention mutation are not automatic actions.</p>
-<h2 id="llm-ai-rag-methodology-routing">LLM / AI / RAG methodology routing<a class="headerlink" href="#llm-ai-rag-methodology-routing" title="Permanent link">&para;</a></h2>
-<p>AI/RAG work keeps the Track 8 <code>ai_eval_regression</code> route for compatibility, but Track 9 also adds a dedicated LLM / AI / RAG methodology packet. When prompts, models, eval configs, structured outputs, tool/function/MCP calls, RAG corpora, retrieval, vector stores, embeddings, grounding, agent traces, guardrails or latency/cost signals appear, the route should stage or request AI/RAG-specific evidence before implementation or quality claims.</p>
-<p>Minimum staged artifacts include <code>ai-behavior-spec.md</code>, <code>prompt-contract.md</code>, <code>model-decision-record.md</code>, <code>eval-run-report.md</code>, <code>ai-dataset-manifest.md</code>, <code>structured-output-schema.md</code>, <code>ai-tool-contract.md</code>, <code>rag-source-inventory.md</code>, <code>rag-retrieval-config.md</code>, <code>rag-eval-report.md</code>, <code>grounding-rubric.md</code>, <code>agent-task-packet.md</code>, <code>agent-workflow-map.md</code>, <code>guardrail-matrix.md</code>, <code>trace-evidence-packet.md</code>, <code>ai-cost-latency-budget.md</code> and the existing <code>ai-eval-spec.md</code> when user-visible AI behavior changes. <code>agent-handoff-contract.md</code> is a legacy/source alias to <code>agent-task-packet.md</code>, not a duplicate generated contract.</p>
-<p>Eval tooling remains conditional: Promptfoo, OpenAI Evals, pytest/Jest app-backed evals, Ragas and LangSmith are recorded as selected, rejected or deferred choices based on stack/privacy/CI fit. Model migration records snapshot or approved alias, prompt migration impact, compatibility checks, rollback, minimum threshold and sampling parameter rationale. RAG evidence records deletion path, retention, source exclusion, stale-source pruning, privacy owner, vector store lifecycle and deletion propagation. Failed evals, hallucination reports, unsafe outputs, tool misuse or data exposure route to an AI incident workflow with severity, mitigation, follow-up eval and Security/Privacy handoff.</p>
-<p>Approval boundary stays explicit: live model calls, external eval services, vector DB access, raw prompts/traces/customer text, tool writes, shell/money/data exposure and irreversible side effects are not automatic actions.</p>
-<h2 id="security-privacy-compliance-methodology-routing">Security, Privacy &amp; Compliance methodology routing<a class="headerlink" href="#security-privacy-compliance-methodology-routing" title="Permanent link">&para;</a></h2>
-<p>Security-sensitive work keeps the Track 8 <code>security_sensitive_change</code> route for compatibility, but Track 9 also adds a dedicated Security, Privacy &amp; Compliance methodology packet. When authn/authz, permissions, secrets, PII, sensitive data, payment/billing, abuse controls, audit logging, supply chain, SBOM/provenance, CI permissions, AI/tool security, external writes, production data, policy changes or compliance overlays appear, the route should stage or request security-specific evidence before implementation or completion claims.</p>
-<p>Minimum staged artifacts include <code>security-risk-review.md</code>, <code>threat-surface.md</code>, <code>asvs-ssdf-mapping.md</code>, <code>authz-negative-test-matrix.md</code>, <code>secrets-policy.md</code>, <code>data-classification-register.md</code>, <code>privacy-impact-record.md</code>, <code>api-security-review.md</code>, <code>abuse-rate-limit-plan.md</code>, <code>supply-chain-review.md</code>, <code>sbom-manifest.md</code>, <code>ci-permissions-review.md</code>, <code>audit-logging-review.md</code>, <code>ai-security-review.md</code>, <code>compliance-overlay.md</code>, <code>vulnerability-response-record.md</code> and <code>approval-record.md</code> when the corresponding risk applies. Source-era names such as <code>threat-model.md</code>, <code>asvs-mapping.md</code>, <code>secrets-inventory.md</code>, <code>authz-matrix.md</code>, <code>audit-log-policy.md</code> and <code>compliance-applicability-matrix.md</code> are aliases, not duplicate generated contracts.</p>
-<p>Codex Security scans remain explicit opt-in: the route may recommend a scan or record <code>not requested</code>, but it must not imply that a scan ran from security terminology alone. Compliance overlays record applicability, owner, evidence, non-goals, gaps and review cadence without claiming legal compliance or certification.</p>
-<p>Approval boundary stays explicit: payment/billing, production data, secret rotation, policy changes, external security-system mutations, external writes, publish actions and Codex Security scans are not automatic actions.</p>
-<h2 id="delivery-release-operations-methodology-routing">Delivery, Release &amp; Operations methodology routing<a class="headerlink" href="#delivery-release-operations-methodology-routing" title="Permanent link">&para;</a></h2>
-<p>Release packaging keeps the Track 8 <code>release_packaging</code> route for compatibility, but Track 9 also adds a dedicated Delivery, Release &amp; Operations methodology packet. When release, deploy, publish, package, versioning, changelog, artifact, rollout, rollback, CI/CD environment, release mode policy, build-release-run boundary, platform distribution evidence, release communication, versioning tooling, GitHub environment controls, SLO/observability, observability/on-call tooling, runbook, incident, postmortem, DORA, release integrity or automation promotion signals appear, the route should stage or request delivery-specific evidence before any release readiness, deployment, publishing or automation claim.</p>
-<p>Minimum staged artifacts include <code>versioning-policy.md</code>, <code>release-readiness.md</code>, <code>release-artifact-manifest.md</code>, <code>rollout-plan.md</code>, <code>rollback-recovery-plan.md</code>, <code>environment-matrix.md</code>, <code>deployment-plan.md</code>, <code>ci-cd-workflow-inventory.md</code>, <code>observability-map.md</code>, <code>slo-spec.md</code>, <code>operations-runbook.md</code>, <code>incident-record.md</code>, <code>postmortem.md</code>, <code>post-release-review.md</code>, <code>approval-record.md</code> and <code>automation-candidate.md</code> when automation promotion is proposed.</p>
-<p>Approval boundary stays explicit: publish, tag, release creation, artifact upload, deploy, package registry mutation, marketplace/store submission, CI/CD environment mutation and active automation remain approval_required. Automation candidates require manual success evidence, stable inputs/outputs, owner, verification, approval requirements, value evidence and rollback/disable path; active automation is still not created by the route.</p>
-<p>Final release/operations depth also requires owner-reviewed release evidence sufficiency for the real risk. Mobile signing, DORA dashboard notes, release tooling config, generated release notes or a single observability tool remain <code>present_unverified</code> until platform owner evidence, team/process measurement design, selected/rejected/deferred tooling decisions, alert path and accepted gaps are recorded.</p>
-<h2 id="verification">Verification<a class="headerlink" href="#verification" title="Permanent link">&para;</a></h2>
+<h2 id="database-data-methodology-routing">Database &amp; Data Methodology Routing<a class="headerlink" href="#database-data-methodology-routing" title="Permanent link">&para;</a></h2>
+<p>Database/data work keeps <code>data_migration</code> как route name и adds dedicated Database &amp; Data methodology packet когда schema, migration, ORM, warehouse, data quality, lineage, retention, backup/restore или production-data signals appear.</p>
+<p>Minimum staged artifacts включают <code>database-inventory.md</code>, <code>database-dictionary.md</code>, <code>database-migration-plan.md</code>, <code>database-data-contract.md</code>, <code>database-backup-restore-evidence.md</code>, <code>database-lineage-map.md</code>, <code>database-query-performance-review.md</code>, <code>database-retention-deletion-policy.md</code>, <code>database-synthetic-fixtures-policy.md</code> и <code>database-production-access-approval.md</code> когда production data, production DB access, backup restore или destructive migration является involved.</p>
+<p>Approval boundary stays explicit: DB introspection, production DB access, production data access, migration execution, destructive cleanup, backup restore и retention mutation являются не automatic actions.</p>
+<h2 id="backend-methodology-routing">Backend Methodology Routing<a class="headerlink" href="#backend-methodology-routing" title="Permanent link">&para;</a></h2>
+<p>Backend methodology routing applies когда service behavior, background jobs, queues, auth, error handling, observability, deployment или rollback behavior changes. Minimum staged artifacts включают <code>backend-service-overview.md</code>, <code>backend-runtime-behavior.md</code>, runtime/failure evidence, observability evidence, security evidence и rollback evidence.</p>
+<h2 id="llm-ai-rag-methodology-routing">LLM / AI / RAG Methodology Routing<a class="headerlink" href="#llm-ai-rag-methodology-routing" title="Permanent link">&para;</a></h2>
+<p>AI/RAG work keeps <code>ai_eval_regression</code> как route name и adds dedicated LLM / AI / RAG methodology packet когда prompts, models, eval configs, structured outputs, tool/function/MCP calls, RAG corpora, retrieval, vector stores, embeddings, grounding, agent traces, guardrails или latency/cost signals appear.</p>
+<p>Minimum staged artifacts включают <code>ai-behavior-spec.md</code>, <code>prompt-contract.md</code>, <code>model-decision-record.md</code>, <code>eval-run-report.md</code>, <code>ai-dataset-manifest.md</code>, <code>structured-output-schema.md</code>, <code>ai-tool-contract.md</code>, <code>rag-source-inventory.md</code>, <code>rag-retrieval-config.md</code>, <code>rag-eval-report.md</code>, <code>grounding-rubric.md</code>, <code>agent-task-packet.md</code>, <code>agent-workflow-map.md</code>, <code>guardrail-matrix.md</code>, <code>trace-evidence-packet.md</code>, <code>ai-cost-latency-budget.md</code> и existing <code>ai-eval-spec.md</code> когда user-visible AI behavior changes. <code>agent-handoff-contract.md</code> является legacy/source alias к <code>agent-task-packet.md</code>, не duplicate generated contract.</p>
+<p>Eval tooling остается conditional: Promptfoo, OpenAI Evals, pytest/Jest app-backed evals, Ragas и LangSmith являются recorded как selected, rejected или deferred choices based на stack/privacy/CI fit. Model migration records snapshot или approved alias, prompt migration impact, compatibility checks, rollback, minimum threshold и sampling parameter rationale. RAG evidence records deletion path, retention, source exclusion, stale-source pruning, privacy owner, vector store lifecycle и deletion propagation. Failed evals, hallucination reports, unsafe outputs, tool misuse или data exposure route к AI incident workflow с severity, mitigation, follow-up eval и Security/Privacy handoff.</p>
+<p>AI/RAG route evidence должен reject filename-only diffs как quality proof.</p>
+<p>Approval boundary stays explicit: live model calls, external eval services, vector DB access, raw prompts/traces/customer text, tool writes, shell/money/data exposure и irreversible side effects являются не automatic actions.</p>
+<h2 id="api-integrations-methodology-routing">API &amp; Integrations Methodology Routing<a class="headerlink" href="#api-integrations-methodology-routing" title="Permanent link">&para;</a></h2>
+<p>API &amp; Integrations methodology routing applies когда HTTP APIs, event contracts, webhooks, generated SDKs или external providers change. Minimum staged artifacts включают <code>api-inventory.md</code>, <code>api-contract-review.md</code>, <code>api-consumer-map.md</code>, <code>api-contract-test-matrix.md</code>, <code>external-integration-approval.md</code> и compatibility/security/error/event/SDK evidence.</p>
+<p>External пишет являются не automatic actions; they требуют explicit approval boundary.</p>
+<h2 id="security-privacy-compliance-methodology-routing">Security, Privacy &amp; Compliance Methodology Routing<a class="headerlink" href="#security-privacy-compliance-methodology-routing" title="Permanent link">&para;</a></h2>
+<p>Security-sensitive work keeps <code>security_sensitive_change</code> как route name и adds dedicated Security, Privacy &amp; Compliance methodology packet когда authn/authz, permissions, secrets, PII, sensitive data, payment/billing, abuse controls, audit logging, supply chain, SBOM/provenance, CI permissions, AI/tool security, external writes, production data, policy changes или compliance overlays appear.</p>
+<p>Minimum staged artifacts включают <code>security-risk-review.md</code>, <code>threat-surface.md</code>, <code>asvs-ssdf-mapping.md</code>, <code>authz-negative-test-matrix.md</code>, <code>secrets-policy.md</code>, <code>data-classification-register.md</code>, <code>privacy-impact-record.md</code>, <code>api-security-review.md</code>, <code>abuse-rate-limit-plan.md</code>, <code>supply-chain-review.md</code>, <code>sbom-manifest.md</code>, <code>ci-permissions-review.md</code>, <code>audit-logging-review.md</code>, <code>ai-security-review.md</code>, <code>compliance-overlay.md</code>, <code>vulnerability-response-record.md</code> и <code>approval-record.md</code> когда corresponding risk applies. Source-era names such как <code>threat-model.md</code>, <code>asvs-mapping.md</code>, <code>secrets-inventory.md</code>, <code>authz-matrix.md</code>, <code>audit-log-policy.md</code> и <code>compliance-applicability-matrix.md</code> являются aliases, не duplicate generated contracts.</p>
+<p>Codex Security scans остаются explicit opt-in: route may recommend scan или record <code>not requested</code>, но это должен не imply который scan ran из security terminology alone. Compliance overlays record applicability, owner, evidence, non-goals, gaps и review cadence без claiming legal compliance или certification.</p>
+<p>Approval boundary stays explicit: payment/billing, production data, secret rotation, policy changes, external security-system mutations, external writes, publish actions и Codex Security scans являются не automatic actions.</p>
+<h2 id="delivery-release-operations-methodology-routing">Delivery, Release &amp; Operations Methodology Routing<a class="headerlink" href="#delivery-release-operations-methodology-routing" title="Permanent link">&para;</a></h2>
+<p>Release packaging keeps <code>release_packaging</code> как route name и adds dedicated Delivery, Release &amp; Operations methodology packet когда release, deploy, publish, package, versioning, changelog, artifact, rollout, rollback, CI/CD environment, release mode policy, build-release-run boundary, platform distribution evidence, release communication, versioning tooling, GitHub environment controls, SLO/observability, observability/on-call tooling, runbook, incident, postmortem, DORA, release integrity или automation promotion signals appear.</p>
+<p>Minimum staged artifacts включают <code>versioning-policy.md</code>, <code>release-readiness.md</code>, <code>release-artifact-manifest.md</code>, <code>rollout-plan.md</code>, <code>rollback-recovery-plan.md</code>, <code>environment-matrix.md</code>, <code>deployment-plan.md</code>, <code>ci-cd-workflow-inventory.md</code>, <code>observability-map.md</code>, <code>slo-spec.md</code>, <code>operations-runbook.md</code>, <code>incident-record.md</code>, <code>postmortem.md</code>, <code>post-release-review.md</code>, <code>approval-record.md</code> и <code>automation-candidate.md</code> когда automation promotion является proposed.</p>
+<p>Approval boundary stays explicit: publish, tag, release creation, artifact upload, deploy, package registry mutation, marketplace/store submission, CI/CD environment mutation и active automation остаются approval_required. Automation candidates требуют manual success evidence, stable inputs/outputs, owner, verification, approval requirements, value evidence и rollback/disable path.</p>
+<p>Final release/operations depth also требует owner-reviewed release evidence sufficiency для real risk. Mobile signing, DORA dashboard notes, release tooling config, generated заметки к release или single observability tool остаются <code>present_unverified</code> пока platform owner evidence, team/process measurement design, selected/rejected/deferred tooling decisions, alert path и accepted gaps являются recorded.</p>
+<h2 id="_3">Проверка<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Route selection is covered by discovery tests, <code>usage_mode</code> fixture checks, and T8-GX false-positive fixtures for selected methodology/tooling gates.</li>
-<li>Scenario behavior is covered by <code>behavioral-workflows.json</code> and <code>run_fixture_eval.py</code>.</li>
-<li>Frontend methodology routing is covered by <code>frontend_contract_present</code> and the synthetic <code>frontend-ui-app</code> fixture: UI completion requires user-flow, component state, visual/accessibility/runtime/interaction evidence or an accepted gap, not Storybook-only or inspection-only evidence.</li>
-<li>Backend methodology routing is covered by <code>backend_contract_present</code> and the synthetic <code>backend-service-app</code> fixture: backend completion requires <code>backend-service-overview.md</code>, <code>backend-runtime-behavior.md</code>, runtime/failure evidence, observability/SLO/health evidence, security/rollback evidence and owner reviewed sufficiency or accepted gap, not package docs or logs-only evidence.</li>
-<li>API &amp; Integrations methodology routing is covered by <code>api_integrations_contract_present</code> and synthetic API fixtures: API completion requires <code>api-inventory.md</code>, <code>api-contract-review.md</code>, <code>api-consumer-map.md</code>, <code>api-contract-test-matrix.md</code>, <code>external-integration-approval.md</code> and related compatibility/security/error/event/SDK evidence, not Swagger UI or schema-only evidence.</li>
-<li>Database &amp; Data methodology routing is covered by <code>database_data_contract_present</code> and synthetic database fixtures: database completion requires inventory, dictionary, schema source, migration plan, expand-contract, data contract, rollback/backup, classification, data quality, lineage, performance, retention, synthetic fixtures and production access approval evidence where applicable.</li>
-<li>LLM / AI / RAG methodology routing is covered by <code>llm_ai_rag_contract_present</code> and synthetic AI/RAG fixtures: AI/RAG completion requires baseline/current eval, prompt/model/schema/tool/RAG/grounding/trace/guardrail/cost evidence, handoff/tooling/migration/lifecycle/incident evidence and current-run evidence, not prompt inspection, stale eval output, citations-only grounding, filename-only diffs or automatic model-upgrade quality claims.</li>
-<li>Security, Privacy &amp; Compliance methodology routing is covered by <code>security_privacy_compliance_contract_present</code> and synthetic security fixtures: security completion requires security-sensitive classification, threat surface, ASVS/SSDF/SAMM mapping, authz negative tests, secrets/data/privacy evidence, supply-chain/SBOM/CI evidence, audit logging, compliance overlay taxonomy, vulnerability response workflow, explicit Codex Security scan status and owner/approval evidence, not docs-only security articles or implied scan/compliance claims.</li>
-<li>Delivery, Release &amp; Operations methodology routing is covered by <code>delivery_release_operations_contract_present</code> and synthetic release fixtures: release/deploy/publish/package/operations completion requires release scope, versioning, changelog, artifact manifest, release evidence, rollout, rollback, CI/CD governance, SLO/observability, operations, incident, post-release review, release mode policy, build-release-run boundary, platform distribution evidence, release communication, DORA team/process measurement, release integrity security handoff, owner-reviewed release evidence sufficiency and approval evidence, not docs-only release notes, CI files, deployment manifests, feature flags, GitOps files, mobile signing alone, DORA individual quota, tooling files without owner evidence or repeatable automation scripts alone.</li>
-<li>Docs and source claims are checked by <code>tools/check_docs.py</code>, source policy and strict MkDocs when navigation changes.</li>
-<li>Completion language must pass evidence-before-completion: current command evidence, current eval evidence, current runtime evidence, owner evidence or explicit inspection-only gap.</li>
+<li>Route selection является covered через discovery tests, <code>usage_mode</code> fixture checks и false-positive fixtures для selected methodology/tooling gates.</li>
+<li>Scenario behavior является covered через <code>behavioral-workflows.json</code> и <code>run_fixture_eval.py</code>.</li>
+<li>Frontend methodology routing является covered через <code>frontend_contract_present</code> и synthetic <code>frontend-ui-app</code> fixture.</li>
+<li>Backend methodology routing является covered через <code>backend_contract_present</code> и synthetic <code>backend-service-app</code> fixture.</li>
+<li>API &amp; Integrations methodology routing является covered через <code>api_integrations_contract_present</code> и synthetic API fixtures.</li>
+<li>Database &amp; Data methodology routing является covered через <code>database_data_contract_present</code> и synthetic database fixtures.</li>
+<li>LLM / AI / RAG methodology routing является covered через <code>llm_ai_rag_contract_present</code> и synthetic AI/RAG fixtures.</li>
+<li>Security, Privacy &amp; Compliance methodology routing является covered через <code>security_privacy_compliance_contract_present</code> и synthetic security fixtures.</li>
+<li>Delivery, Release &amp; Operations methodology routing является covered через <code>delivery_release_operations_contract_present</code> и synthetic release fixtures.</li>
+<li>Docs и source claims являются checked через <code>tools/check_docs.py</code>, политика источников и strict MkDocs когда navigation changes.</li>
+<li>Completion language должен pass evidence-before-completion: текущий command evidence, текущий eval evidence, текущий runtime evidence, owner evidence или explicit inspection-only gap.</li>
 </ul>
-<h2 id="risks">Risks<a class="headerlink" href="#risks" title="Permanent link">&para;</a></h2>
+<h2 id="_4">Риски<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Workspace signals can identify a likely scenario but cannot prove readiness by themselves.</li>
-<li>A scenario may be correct while the selected minimum artifacts are low quality; owner review still matters.</li>
-<li>Approval boundaries are project-specific. Product-Agent OS can mark them, but the user or workspace policy decides whether to proceed.</li>
-<li>Transcript/session eval runner now replays synthetic or redacted session fixtures with deterministic expected/forbidden term checks and privacy/no-secrets guards; semantic judgment still needs reviewer or future calibrated judge coverage.</li>
+<li>Workspace signals может identify likely scenario но не может prove readiness через themselves.</li>
+<li>A scenario may быть correct while selected minimum artifacts являются low quality; owner review still matters.</li>
+<li>Approval boundaries являются project-specific. Product-Agent OS может mark them, но пользователь или workspace policy decides следует ли к proceed.</li>
+<li>Transcript/session eval runner replays synthetic или redacted session fixtures с deterministic expected/forbidden term checks и privacy/no-secrets guards; semantic judgment still требует reviewer или future calibrated judge coverage.</li>
 </ul>
-<p>Next artifact: use <a href="behavioral-evals.html">Behavioral evals</a> to validate that the scenario route resists shortcuts and produces the expected evidence.</p>
+<p>Следующий artifact: используйте <a href="behavioral-evals.html">Behavioral evals</a>, чтобы проверить, что scenario route resists shortcuts и produces ожидаемые доказательства.</p>
 
 
 
@@ -4246,6 +4262,8 @@
 
 
       <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+
+        <script src="../assets/javascripts/local-file-i18n.js"></script>
 
         <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
 

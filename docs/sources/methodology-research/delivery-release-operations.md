@@ -175,7 +175,7 @@ It does not prescribe one deployment platform, force Kubernetes or GitOps onto a
 | Reliability | SLO docs, runbooks, incident records, postmortems | Needed when users depend on runtime behavior. |
 | Automation | Product-Agent OS automation candidate packet | Manual success before active automation. |
 
-## Failure modes
+## Типовые сбои
 
 - Release readiness is claimed from code inspection or passing local tests only.
 - Release notes are commit summaries with no user impact or migration guidance.

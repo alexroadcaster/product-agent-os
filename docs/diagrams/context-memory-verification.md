@@ -1,4 +1,4 @@
-# Context, Memory & Verification Loop
+﻿# Цикл context, memory и verification
 
 Source status: `official + experiment`
 
@@ -17,18 +17,18 @@ flowchart TD
     G -->|No| H["insights layer only"]
     D --> I["Prompt contract"]
     I --> J["Agent / model output"]
-    J --> K["Structured answer or diff"]
+    J --> K["Structured answer или diff"]
     K --> L["Verifier"]
     L --> M{"Result"}
-    M -->|Supported| N["Accept and cite"]
-    M -->|Missing context| O["Retrieve more or ask"]
+    M -->|Supported| N["Accept и cite"]
+    M -->|Missing context| O["Retrieve more или ask"]
     M -->|Conflict| P["Escalate source conflict"]
-    M -->|Unsupported| Q["Reject or mark needs_source"]
+    M -->|Unsupported| Q["Reject или mark needs_source"]
     N --> R["Update RUNLOG.md"]
     O --> R
     P --> R
     Q --> R
-    R --> S["Update AGENTS.md or skill only if durable"]
+    R --> S["Update AGENTS.md или skill только если durable"]
 ```
 
 ## Как применять

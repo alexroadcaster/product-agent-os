@@ -4,7 +4,7 @@ Source status: `official + verified methodology + implementation planning`
 
 Дата: **2026-05-23**.  
 Основано на [development methodology research log](development-methodology-research-log.md), [gap matrix](development-methodology-gap-matrix.md) и текущем состоянии Product-Agent OS после Track 7.
-Дополнено сравнительным анализом [`obra/superpowers`](https://github.com/obra/superpowers) как community/opensource intake source для behavioral workflow design; этот источник не является source of truth для Codex и используется только для идей, которые проходят через Product-Agent OS safety, source и eval gates.
+Дополнено сравнительным анализом [`obra/superpowers`](https://github.com/obra/superpowers) как community/opensource intake source для behavioral workflow design; этот источник is not source of truth для Codex и используется только для идей, которые проходят через Product-Agent OS safety, source и eval gates.
 
 ## Цель Track 8
 
@@ -979,7 +979,7 @@ Track 8 borrows the idea of explicit runtime compatibility checks, but scopes it
 
 Structural template tests prove files exist. Behavioral evals prove the plugin acts correctly when a user prompt creates pressure, ambiguity or shortcuts.
 
-| Eval | Purpose | Inputs | Expected behavior | Forbidden behavior |
+| Eval | Purpose | Inputs | Ожидаемое поведение | Запрещенное поведение |
 | --- | --- | --- | --- | --- |
 | Route selection prompt eval | Check first route before work starts. | Prompt, optional workspace fixture, control-plane state. | Returns `usage_mode`, confidence, reasons, fallback and next skill. | Start editing before route/safety decision. |
 | First-run response eval | Check first launch UX. | Empty, broken, mature and complex repo prompts. | Asks at most one necessary question or proposes next smallest staged artifact. | Dump full methodology matrix or scaffold without approval. |

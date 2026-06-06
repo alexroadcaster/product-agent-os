@@ -166,7 +166,7 @@ It does not mandate React, Next.js, Storybook, Feature-Sliced Design or Playwrig
 | Performance | web.dev Core Web Vitals, Lighthouse, WebPageTest, RUM | Use LCP/INP/CLS budget or explicit gap for user-facing routes. |
 | Design tokens | Style Dictionary, platform-native token pipeline, CSS variables | Select by existing design system, not by default novelty. |
 
-## Failure modes
+## Типовые сбои
 
 - UI work starts from component hierarchy while user flow and acceptance scenario remain vague.
 - Storybook exists but only documents the happy path.

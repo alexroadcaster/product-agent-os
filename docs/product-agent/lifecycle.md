@@ -1,7 +1,7 @@
-# Product lifecycle
+﻿# Product lifecycle
 
 Source status: `official + experiment`  
-Источники: [How OpenAI uses Codex](https://openai.com/business/guides-and-resources/how-openai-uses-codex/), [Codex best practices](https://developers.openai.com/codex/learn/best-practices), [Iterate on difficult problems](https://developers.openai.com/codex/use-cases/iterate-on-difficult-problems), [Codex workflows](https://developers.openai.com/codex/workflows).
+Источники: [How OpenAI uses Codex](https://openai.com/business/guides-and-resources/how-openai-uses-codex/), [Codex best practices](https://developers.openai.com/codex/learn/best-practices), [Iterate на difficult problems](https://developers.openai.com/codex/use-cases/iterate-on-difficult-problems), [Codex workflows](https://developers.openai.com/codex/workflows).
 
 ## End-to-end loop
 
@@ -13,10 +13,10 @@ Source status: `official + experiment`
 | Build | Реализовать один focused slice за раз | Diff | Есть test-first или eval-first путь |
 | Eval | Оценить deterministic, subjective и AI quality | `TEST.md`, `EVALS.md`, reports | Threshold достигнут или gap принят |
 | Review | Найти bugs, security risks и test gaps | Review findings | Нет unresolved blocker |
-| PR | Подготовить branch, PR body, docs impact и release notes | PR / changelog | Verification evidence включено |
+| PR | Подготовить branch, PR body, влияние на docs и заметки к release | PR / changelog | Доказательства проверки включено |
 | Learn | Зафиксировать reusable method | `AGENTS.md`, skill, insight | Следующий запуск становится лучше |
 
-## Ask Mode before Code Mode
+## Ask Mode до Code Mode
 
 Рекомендации OpenAI Codex предлагают начинать крупные изменения с плана до реализации. В этом проекте это означает:
 
@@ -26,7 +26,7 @@ Source status: `official + experiment`
 - файлы или подсистемы;
 - acceptance criteria;
 - verification commands;
-- risks and rollback;
+- risks и rollback;
 - что вне scope.
 ```
 
@@ -43,4 +43,4 @@ Source status: `official + experiment`
 - Какая проверка должна стать automation?
 - Какой failure требует eval?
 - Какой source или architecture decision нужно задокументировать?
-- Какая metric или user feedback должна двигать следующую product iteration?
+- Какая metric или пользователь feedback должна двигать следующую product iteration?

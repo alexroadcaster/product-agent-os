@@ -149,7 +149,7 @@ API & Integrations слой защищает public contracts, event contracts, 
 - External write operations are staged and approval-bound.
 - Release notes mention SDK, consumer, deprecation and rollback impact when relevant.
 
-## Failure modes
+## Типовые сбои
 
 - Swagger UI or rendered docs are treated as source of truth instead of OpenAPI/contract files.
 - Internal API is assumed to have no consumers.

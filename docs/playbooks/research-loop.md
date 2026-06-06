@@ -42,7 +42,7 @@ Each agent returns verified claims, uncertain claims, and source cards.
 Wait for all agents. Then synthesize one update plan and do not include raw logs.
 ```
 
-## Acceptance criteria
+## Критерии приемки
 
 - Новые official claims имеют source cards.
 - Community claims лежат только в `docs/insights/`.

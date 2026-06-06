@@ -1,4 +1,4 @@
-# Product-Agent Workflows
+﻿# Product-Agent Workflows
 
 Source status: `official + experiment`  
 Источники: [How OpenAI uses Codex](https://openai.com/business/guides-and-resources/how-openai-uses-codex/), [Codex best practices](https://developers.openai.com/codex/learn/best-practices), [A practical guide to building agents](https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/), [Agent Skills](https://developers.openai.com/codex/skills#create-a-skill), [AGENTS.md](https://developers.openai.com/codex/guides/agents-md).
@@ -8,7 +8,7 @@ Source status: `official + experiment`
 Предыдущие разделы объясняют Codex, prompts, context, memory и agents. Product-Agent Workflows соединяет их в операционную систему разработки продукта:
 
 - `AGENTS.md` задает постоянные правила репозитория;
-- control-plane files фиксируют требования, план, проверки и run log;
+- control-plane files фиксируют требования, план, проверки и запуск log;
 - skills превращают повторяемые методы в reusable workflows;
 - subagents и Agents SDK помогают распределять bounded work;
 - eval loops и PR checks доказывают качество;
@@ -23,11 +23,11 @@ flowchart LR
     I["Idea"] --> S["Spec"]
     S --> P["Plan"]
     P --> B["Build"]
-    B --> T["Tests and evals"]
+    B --> T["Tests и evals"]
     T --> R["Review"]
     R --> PR["PR"]
     PR --> REL["Release notes"]
-    REL --> L["Lessons to AGENTS.md / skills"]
+    REL --> L["Lessons к AGENTS.md / skills"]
 ```
 
 ## Когда достаточно Codex, а когда нужны agents и skills
@@ -45,7 +45,7 @@ flowchart LR
 
 Для упаковки этого operating model в переносимый Codex plugin используйте [Product-Agent OS plugin](../product-agent-os/index.md). Новый раздел описывает назначение плагина, текущие capabilities, installation boundary, Codex-only runtime runner, guardrails и diagram-level принципы работы.
 
-## Definition of ready
+## Критерии готовности
 
 Перед запуском product-agent workflow должны быть:
 

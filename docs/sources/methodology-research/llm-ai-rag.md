@@ -175,7 +175,7 @@ It does not mandate OpenAI-only architecture, RAG for every feature, multi-agent
 | Safety | Moderation API, guardrails, red-team suites, human review | Select by domain risk and side-effect surface. |
 | Cost/latency | Prompt caching, batching/background mode, model fallback | Treat as product constraints and release gates. |
 
-## Failure modes
+## Типовые сбои
 
 - Prompt/model/retrieval/tool changes ship without baseline eval.
 - Manual spot checks are described as eval evidence.

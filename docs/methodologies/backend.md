@@ -66,7 +66,7 @@ Backend слой описывает service responsibilities, domain logic, jobs
 | Resilience pattern design | Remote dependencies, queues, load spikes, transient faults | Timeouts, retry, backoff, circuit breaker, load leveling, backpressure and fallback. |
 | Secure SDLC | Auth, secrets, sensitive data, money or privileged operations | Security notes, abuse cases, audit logging and no-secrets evidence are required. |
 | Saga / compensating workflow | Distributed transaction cannot use single ACID transaction | Workflow state, idempotency, compensation, monitoring and recovery path. |
-| Runbook-driven operations | Production service, worker or scheduled job | Failure modes, dashboards, logs, restart/replay steps and escalation path. |
+| Runbook-driven operations | Production service, worker or scheduled job | Типовые сбои, dashboards, logs, restart/replay steps and escalation path. |
 
 ## Инструменты, артефакты и стандарты документирования
 
@@ -148,7 +148,7 @@ Backend слой описывает service responsibilities, domain logic, jobs
 - Config and secrets boundary is documented without exposing secrets.
 - Runtime verification exists for deployable services where environment is available.
 
-## Failure modes
+## Типовые сбои
 
 - Backend docs describe packages but omit runtime behavior.
 - Retry logic is added without timeout, backoff, max attempts and idempotency.

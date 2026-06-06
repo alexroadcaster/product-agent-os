@@ -184,7 +184,7 @@ Quality, Testing & Evals слой определяет, как проект до
 - Test/eval data contains no secrets or private customer data.
 - Final response carries current evidence, accepted gaps and residual risks.
 
-## Failure modes
+## Типовые сбои
 
 - Tests are listed after implementation without proving behavior.
 - Unit tests mock away the real risk while integration/contract behavior is untested.

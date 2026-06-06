@@ -39,7 +39,7 @@ flowchart TD
 - Subagents нужны для независимой read-heavy работы: поиск источников, аудит, анализ логов, проверка ссылок.
 - Write-heavy работу делите по непересекающимся файлам.
 - Main thread должен хранить decisions, constraints и итог, а не сырые логи.
-- Если результат subagent нельзя проверить, он остается suggestion, а не source of truth.
+- Если результат subagent нельзя проверить, он остается suggestion, а not source of truth.
 
 ## От ручного Codex к programmable agents
 

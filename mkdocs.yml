@@ -41,7 +41,7 @@ plugins:
       docs_structure: suffix
       fallback_to_default: false
       reconfigure_material: true
-      reconfigure_search: true
+      reconfigure_search: false
       languages:
         - locale: ru
           name: RU
@@ -62,8 +62,38 @@ plugins:
             language: en
           nav:
             - Home: index.md
-            - Product-Agent OS:
-                - Start Here: product-agent-os/index.md
+            - Diagrams:
+                - Diagram Atlas: diagrams/index.md
+                - Architecture: diagrams/architecture.md
+                - Delivery Lifecycle: diagrams/product-delivery-lifecycle.md
+                - Agent Team And Skills: diagrams/agent-team-and-skills.md
+                - Runtime Decision Map: diagrams/runtime-decision-map.md
+                - Skill Lifecycle: diagrams/skill-lifecycle.md
+                - Context, Memory, Verification: diagrams/context-memory-verification.md
+            - Sources:
+                - Source Registry: sources/registry.md
+                - Context7 Analysis: sources/context7-research.md
+                - Source Card Template: sources/source-card-template.md
+            - Codex:
+                - Overview: codex/overview.md
+                - Work Surfaces: codex/surfaces.md
+                - Configuration And Extensibility: codex/configuration.md
+                - Security And Approvals: codex/security.md
+                - Workflows: codex/workflows.md
+                - Deep Use-Case Analysis: codex/use-cases-deep-analysis.md
+            - Prompt And Context Engineering:
+                - Overview: prompting/overview.md
+                - Question Design: prompting/question-design.md
+                - Context Engineering: prompting/context-engineering.md
+                - Anti-Hallucination Controls: prompting/anti-hallucination.md
+            - Product-Agent Workflows:
+                - Overview: product-agent/overview.md
+                - Product Lifecycle: product-agent/lifecycle.md
+                - Agent Team Roles: product-agent/roles.md
+                - Control-Plane Files: product-agent/control-plane.md
+                - Product-Agent OS Plugin Spec: product-agent/product-agent-os-plugin-spec.md
+            - Product-Agent OS Plugin:
+                - Overview: product-agent-os/index.md
                 - Project Code Graph: product-agent-os/project-code-graph.md
                 - Live Runtime Governance: product-agent-os/live-runtime-governance.md
                 - Approval-Bound Real Testing: product-agent-os/approval-bound-real-testing.md
@@ -72,35 +102,63 @@ plugins:
                 - Artifact Contracts: product-agent-os/artifact-contracts.md
                 - Packaging And Closure: product-agent-os/packaging-and-closure.md
                 - Technical Setup: product-agent-os/technical.md
-                - Development Standards: product-agent-os/development-standards.md
+                - Engineering Standards Layer: product-agent-os/development-standards.md
                 - Methodology Intelligence: product-agent-os/methodology-intelligence.md
-                - Scenarios: product-agent-os/scenarios.md
+                - Scenarios And Usage Modes: product-agent-os/scenarios.md
                 - Behavioral Evals: product-agent-os/behavioral-evals.md
                 - Codex Compatibility: product-agent-os/codex-compatibility.md
-                - Architecture: product-agent-os/architecture.md
-            - Product-Agent Workflows:
-                - Overview: product-agent/overview.md
-                - Lifecycle: product-agent/lifecycle.md
-                - Roles: product-agent/roles.md
-                - Control Plane: product-agent/control-plane.md
-                - Product-Agent OS Plugin Spec: product-agent/product-agent-os-plugin-spec.md
-            - Implementation Atlas:
-                - Diagram Atlas: diagrams/index.md
-                - Architecture: diagrams/architecture.md
-                - Delivery Lifecycle: diagrams/product-delivery-lifecycle.md
-                - Agent Team And Skills: diagrams/agent-team-and-skills.md
-                - Runtime Decision Map: diagrams/runtime-decision-map.md
-                - Skill Lifecycle: diagrams/skill-lifecycle.md
-                - Context, Memory, Verification: diagrams/context-memory-verification.md
-            - Runtime And Playbooks:
+                - Diagrams And Operating Principles: product-agent-os/architecture.md
+            - Methodologies For Large Projects:
+                - Overview: methodologies/index.md
+                - Business And Product: methodologies/business-product.md
+                - Requirements And Domain: methodologies/requirements-domain.md
+                - Solution Architecture: methodologies/solution-architecture.md
+                - Frontend: methodologies/frontend.md
+                - Backend: methodologies/backend.md
+                - API And Integrations: methodologies/api-integrations.md
+                - Database And Data: methodologies/database-data.md
+                - LLM / AI / RAG: methodologies/llm-ai-rag.md
+                - Quality, Testing And Evals: methodologies/quality-testing-evals.md
+                - Security, Privacy And Compliance: methodologies/security-privacy-compliance.md
+                - Delivery, Release And Operations: methodologies/delivery-release-operations.md
+                - Codex / Agentic Workflow: methodologies/codex-agentic-workflow.md
+            - Codex Automation And Runtime:
                 - Runtime Overview: runtime/overview.md
                 - Non-Interactive And MCP: runtime/non-interactive-and-mcp.md
                 - Automations And GitHub: runtime/automations-github.md
                 - Worktrees, Hooks, Rules: runtime/worktrees-hooks-rules.md
+            - Agent Systems:
+                - Architecture: agent-systems/overview.md
+                - Memory: agent-systems/memory.md
+                - Session Control: agent-systems/session-control.md
                 - Subagents, Skills, AGENTS.md: agent-systems/subagents-skills.md
-                - Docs Update: playbooks/docs-update.md
+                - Agents SDK Patterns: agent-systems/sdk-patterns.md
+                - Evals And Observability: agent-systems/evals-observability.md
+                - Agent Templates: agent-systems/templates.md
+            - Playbooks:
+                - Research Loop: playbooks/research-loop.md
+                - Context7 Deep Research: playbooks/context7-deep-research.md
+                - Grounded Answering: playbooks/grounded-answering.md
+                - Build Full Feature: playbooks/build-full-feature.md
+                - Workflow To Skill: playbooks/workflow-to-skill.md
                 - Use Case To Plugin: playbooks/use-case-to-plugin.md
+                - Eval-Driven Improvement: playbooks/eval-driven-improvement.md
+                - Product-Ready PR: playbooks/product-ready-pr.md
+                - Agent Operating Docs: playbooks/maintain-agent-operating-docs.md
+                - Docs Update: playbooks/docs-update.md
                 - Workspace Readiness Audit: playbooks/workspace-readiness-audit.md
+                - Code Review: playbooks/code-review.md
+                - AI-Native Team: playbooks/ai-team-design.md
+            - Templates:
+                - Prompt Template: artifact-templates/prompt-packet.md
+                - Control-Plane Templates: artifact-templates/control-plane-files.md
+                - RUNLOG Template: artifact-templates/runlog.md
+                - Skill Template: artifact-templates/product-skill.md
+                - Plugin Blueprint: artifact-templates/plugin-blueprint.md
+            - Insights:
+                - Insight Layer Rules: insights/index.md
+                - Insight Card Template: insights/insight-card-template.md
+                - Initial Backlog: insights/seed-insights.md
   - search:
       lang:
         - ru
@@ -125,6 +183,7 @@ markdown_extensions:
           format: !!python/name:pymdownx.superfences.fence_code_format
 
 extra_javascript:
+  - assets/javascripts/local-file-i18n.js
   # Batch 34 accepted gap: Mermaid loads from CDN in this docs site.
   # Vendor/offline asset packaging remains a follow-up before offline-only publishing.
   - https://unpkg.com/mermaid@10/dist/mermaid.min.js

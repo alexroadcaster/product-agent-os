@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
 
-        <meta name="description" content="Russian knowledge base for advanced OpenAI Codex and agentic workflows.">
+        <meta name="description" content="Документация Product-Agent OS для рабочих процессов с агентами и skills.">
 
 
 
@@ -18,6 +18,10 @@
 
 
 
+          <link rel="alternate" href="cli-reference.html" hreflang="ru">
+
+          <link rel="alternate" href="../en/product-agent-os/cli-reference.html" hreflang="en">
+
 
 
       <link rel="icon" href="../assets/images/favicon.png">
@@ -25,7 +29,7 @@
 
 
 
-        <title>CLI Reference - OpenAI Codex Knowledge Base</title>
+        <title>CLI Reference - Product-Agent OS</title>
 
 
 
@@ -94,7 +98,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
-    <a href="../index.html" title="OpenAI Codex Knowledge Base" class="md-header__button md-logo" aria-label="OpenAI Codex Knowledge Base" data-md-component="logo">
+    <a href="../index.html" title="Product-Agent OS" class="md-header__button md-logo" aria-label="Product-Agent OS" data-md-component="logo">
 
 
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -108,7 +112,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            OpenAI Codex Knowledge Base
+            Product-Agent OS
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -136,6 +140,32 @@
 
       <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
 
+
+      <div class="md-header__option">
+  <div class="md-select">
+
+    <button class="md-header__button md-icon" aria-label="Выберите язык">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+
+          <li class="md-select__item">
+            <a href="cli-reference.html" hreflang="ru" class="md-select__link">
+              RU
+            </a>
+          </li>
+
+          <li class="md-select__item">
+            <a href="../en/product-agent-os/cli-reference.html" hreflang="en" class="md-select__link">
+              EN
+            </a>
+          </li>
+
+      </ul>
+    </div>
+  </div>
+</div>
 
 
 
@@ -206,13 +236,13 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../index.html" title="OpenAI Codex Knowledge Base" class="md-nav__button md-logo" aria-label="OpenAI Codex Knowledge Base" data-md-component="logo">
+    <a href="../index.html" title="Product-Agent OS" class="md-nav__button md-logo" aria-label="Product-Agent OS" data-md-component="logo">
 
 
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
-    OpenAI Codex Knowledge Base
+    Product-Agent OS
   </label>
 
   <ul class="md-nav__list" data-md-scrollfix>
@@ -1601,10 +1631,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#query-inputs" class="md-nav__link">
+  <a href="#query" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Query Inputs
+        Входы query
 
     </span>
   </a>
@@ -1612,10 +1642,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#verification-commands" class="md-nav__link">
+  <a href="#commands" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Verification Commands
+        Проверка Commands
 
     </span>
   </a>
@@ -1623,10 +1653,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#risks-and-failure-modes" class="md-nav__link">
+  <a href="#and-failure-modes" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Risks And Failure Modes
+        Риски And Failure Modes
 
     </span>
   </a>
@@ -3666,10 +3696,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#query-inputs" class="md-nav__link">
+  <a href="#query" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Query Inputs
+        Входы query
 
     </span>
   </a>
@@ -3677,10 +3707,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#verification-commands" class="md-nav__link">
+  <a href="#commands" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Verification Commands
+        Проверка Commands
 
     </span>
   </a>
@@ -3688,10 +3718,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#risks-and-failure-modes" class="md-nav__link">
+  <a href="#and-failure-modes" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Risks And Failure Modes
+        Риски And Failure Modes
 
     </span>
   </a>
@@ -3736,137 +3766,137 @@
 <li>stage-only generation в явный output directory;</li>
 <li>approval-bound merge или rollback только через отдельный approval record;</li>
 <li>deterministic runtime contract для Codex App, CLI или IDE extension;</li>
-<li>project graph generation, queries, generated cockpit, local indexes and provider/mutation governance packets;</li>
-<li>docs/closure verification через отдельные Batch 34 tester slices.</li>
+<li>project graph generation, queries, generated cockpit, local indexes и provider/mutation governance packets;</li>
+<li>docs/closure verification через отдельные docs-maintainer и tester slices.</li>
 </ul>
-<p>Generated outputs are not source of truth. Source of truth remains checked-in source files, project docs, source registry, control-plane artifacts, current command evidence and owner-approved records.</p>
+<p>Сгенерированные выходы не являются источником истины. Источником истины остаются checked-in source files, project docs, source registry, control-plane artifacts, текущий command evidence и owner-approved records.</p>
 <h2 id="core-commands">Core Commands<a class="headerlink" href="#core-commands" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
 <th>Command</th>
 <th>Purpose</th>
-<th>Required inputs</th>
+<th>Обязательные входы</th>
 <th>Output / boundary</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>python plugins\product-agent-os\scripts\render_infrastructure.py &lt;workspace&gt; --dry-run</code></td>
-<td>Print an infrastructure render plan.</td>
+<td>Print infrastructure render plan.</td>
 <td>Target workspace path.</td>
-<td>Read-only JSON/text plan; no staged files.</td>
+<td>Read-only JSON/text plan; нет staged files.</td>
 </tr>
 <tr>
 <td><code>python plugins\product-agent-os\scripts\render_infrastructure.py &lt;workspace&gt; --stage &lt;stage-dir&gt;</code></td>
 <td>Stage generated control-plane/templates.</td>
-<td>Workspace and explicit stage directory.</td>
-<td>Writes only under <code>&lt;stage-dir&gt;</code>; direct target merge remains separate.</td>
+<td>Workspace и explicit stage directory.</td>
+<td>Writes только в рамках <code>&lt;stage-dir&gt;</code>; direct target merge остается separate.</td>
 </tr>
 <tr>
 <td><code>python plugins\product-agent-os\scripts\merge_infrastructure.py &lt;workspace&gt; &lt;stage-dir&gt; --plan</code></td>
-<td>Build a read-only merge plan.</td>
-<td>Workspace and stage directory.</td>
-<td>No writes to target workspace.</td>
+<td>Build read-only merge plan.</td>
+<td>Workspace и stage directory.</td>
+<td>Нет пишет к target workspace.</td>
 </tr>
 <tr>
 <td><code>python plugins\product-agent-os\scripts\merge_infrastructure.py &lt;workspace&gt; &lt;stage-dir&gt; --apply --approval-file &lt;approval.json&gt;</code></td>
-<td>Apply approved merge decisions.</td>
-<td>Approval file matching the plan.</td>
-<td>Approved target writes only; rollback manifest can be produced by merge tooling.</td>
+<td>Применить approved merge decisions.</td>
+<td>Approval file matching plan.</td>
+<td>Approved target пишет only; rollback manifest может быть produced через merge tooling.</td>
 </tr>
 <tr>
 <td><code>python plugins\product-agent-os\scripts\merge_infrastructure.py &lt;workspace&gt; &lt;stage-dir&gt; --rollback &lt;rollback.json&gt;</code></td>
-<td>Roll back a prior approved merge.</td>
+<td>Roll back prior approved merge.</td>
 <td>Rollback manifest.</td>
-<td>Restores scoped files from recorded rollback data.</td>
+<td>Restores scoped files из recorded rollback data.</td>
 </tr>
 <tr>
 <td><code>python plugins\product-agent-os\scripts\run_codex_runtime_runner.py &lt;workspace&gt; --contract</code></td>
 <td>Produce deterministic Codex runtime route packet.</td>
 <td>Workspace.</td>
-<td>Offline contract; no external model call.</td>
+<td>Offline contract; нет external model call.</td>
 </tr>
 <tr>
 <td><code>python plugins\product-agent-os\scripts\run_codex_runtime_runner.py &lt;workspace&gt; --contract --allow-subagents</code></td>
-<td>Allow route recommendations that mention subagents.</td>
-<td>Workspace and explicit subagent permission in the current workflow.</td>
-<td>Recommendation only; does not create agents by itself.</td>
+<td>Allow route recommendations который mention subagents.</td>
+<td>Workspace и explicit subagent permission в текущий workflow.</td>
+<td>Recommendation only; не create agents через itself.</td>
 </tr>
 <tr>
 <td><code>python plugins\product-agent-os\scripts\render_status_dashboard.py &lt;workspace&gt; --dry-run</code></td>
 <td>Print status dashboard plan.</td>
 <td>Workspace.</td>
-<td>No write.</td>
+<td>Нет write.</td>
 </tr>
 <tr>
 <td><code>python plugins\product-agent-os\scripts\render_status_dashboard.py &lt;workspace&gt; --stage &lt;stage-dir&gt;</code></td>
 <td>Stage generated status dashboard HTML/JSON.</td>
-<td>Workspace and explicit stage directory.</td>
-<td>Generated view only, not source of truth.</td>
+<td>Workspace и explicit stage directory.</td>
+<td>Generated view only, не является каноническим источником.</td>
 </tr>
 <tr>
 <td><code>python plugins\product-agent-os\scripts\render_agent_skill_metrics_report.py &lt;workspace&gt; --dry-run</code></td>
 <td>Print metrics report plan.</td>
 <td>Workspace.</td>
-<td>No write.</td>
+<td>Нет write.</td>
 </tr>
 <tr>
 <td><code>python plugins\product-agent-os\scripts\render_agent_skill_metrics_report.py &lt;workspace&gt; --stage &lt;stage-dir&gt;</code></td>
 <td>Stage agent/skill metrics report.</td>
-<td>Workspace and explicit stage directory.</td>
-<td>Candidate-only report; no modernization is applied.</td>
+<td>Workspace и explicit stage directory.</td>
+<td>Candidate-only report; нет modernization является applied.</td>
 </tr>
 </tbody>
 </table>
-<p>Runtime runner optional inputs include <code>--approval-status</code>, <code>--intent-hint</code> and <code>--output</code>. They change the emitted route packet or save JSON; they do not bypass source policy, sandbox, approvals or external-action boundaries.</p>
+<p>Runtime runner optional inputs включают <code>--approval-status</code>, <code>--intent-hint</code> и <code>--output</code>. Они change emitted route packet или save JSON; they не bypass политика источников, sandbox, approvals или external-action boundaries.</p>
 <h2 id="project-graph-cli">Project Graph CLI<a class="headerlink" href="#project-graph-cli" title="Permanent link">&para;</a></h2>
-<p><code>scan_project_code_graph.py</code> has exactly-one-mode semantics. Choose one mode per invocation.</p>
+<p><code>scan_project_code_graph.py</code> имеет exactly-one-mode semantics. Choose один mode per invocation.</p>
 <table>
 <thead>
 <tr>
 <th>Mode</th>
 <th>Purpose</th>
-<th>Required inputs</th>
+<th>Обязательные входы</th>
 <th>Output / boundary</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>--dry-run</code></td>
-<td>Build graph packet without writing files.</td>
+<td>Build graph packet без writing files.</td>
 <td><code>&lt;workspace&gt;</code>.</td>
-<td>Prints graph JSON; no write.</td>
+<td>Prints graph JSON; нет write.</td>
 </tr>
 <tr>
 <td><code>--stage &lt;stage-dir&gt;</code></td>
-<td>Stage graph and cockpit artifacts.</td>
+<td>Stage graph и cockpit artifacts.</td>
 <td><code>&lt;workspace&gt;</code>, explicit stage directory.</td>
-<td>Writes generated graph/cockpit files under stage root.</td>
+<td>Writes generated graph/cockpit files в рамках stage root.</td>
 </tr>
 <tr>
 <td><code>--query &lt;kind&gt;</code></td>
-<td>Read bounded query packet from existing graph.</td>
+<td>Read bounded query packet из existing graph.</td>
 <td><code>--graph &lt;project-code-graph.json&gt;</code> plus query args.</td>
-<td>Reads existing graph artifact; does not rescan source.</td>
+<td>Reads existing graph artifact; не rescan source.</td>
 </tr>
 <tr>
 <td><code>--build-index</code></td>
 <td>Build offline static search index.</td>
 <td><code>--stage</code>, <code>--graph</code>.</td>
-<td>Generated index cache; not source of truth.</td>
+<td>Generated index cache; не является каноническим источником.</td>
 </tr>
 <tr>
 <td><code>--build-backend</code></td>
 <td>Stage disabled-by-default local query backend store.</td>
 <td><code>--stage</code>, <code>--graph</code>, <code>--backend-approval</code>.</td>
-<td>Generated file-store; no active server by default.</td>
+<td>Generated file-store; нет active server через default.</td>
 </tr>
 <tr>
 <td><code>--build-semantic-index</code></td>
 <td>Stage local deterministic semantic retrieval index.</td>
 <td><code>--stage</code>, <code>--graph</code>, <code>--semantic-approval</code>.</td>
-<td>Generated semantic cache; provider calls remain blocked unless separately approved.</td>
+<td>Generated semantic cache; provider calls остаются blocked пока separately approved.</td>
 </tr>
 <tr>
 <td><code>--build-llm-proposals</code></td>
@@ -3876,89 +3906,89 @@
 </tr>
 <tr>
 <td><code>--verify-extensions</code></td>
-<td>Stage Batch 23 extension verification and rollback closure.</td>
+<td>Stage extension verification и rollback closure.</td>
 <td><code>--stage</code>, <code>--graph</code>, <code>--verification-evidence</code>.</td>
-<td>Closure packet and rollback/data deletion proof.</td>
+<td>Closure packet и rollback/data deletion proof.</td>
 </tr>
 <tr>
 <td><code>--validate-live-governance</code></td>
-<td>Stage Batch 24 live governance packet.</td>
+<td>Stage live governance packet.</td>
 <td><code>--stage</code>, <code>--live-approval</code>.</td>
-<td>No live calls; validates approval/data/redaction/cache/budget boundary.</td>
+<td>Нет live calls; проверяет approval/data/redaction/cache/budget boundary.</td>
 </tr>
 <tr>
 <td><code>--validate-live-runtime</code></td>
-<td>Stage Batch 25 local read-only runtime contract.</td>
+<td>Stage local read-only runtime contract.</td>
 <td><code>--stage</code>, <code>--live-runtime-approval</code>, <code>--live-governance</code>.</td>
-<td>Disabled-by-default local runtime contract; no launch.</td>
+<td>Disabled-by-default local runtime contract; нет launch.</td>
 </tr>
 <tr>
 <td><code>--validate-embedding-provider</code></td>
-<td>Stage Batch 26 embedding provider gate.</td>
-<td><code>--stage</code>, <code>--embedding-provider-approval</code>, graph/semantic inputs as required.</td>
-<td>Provider gate/eval packet; no provider call unless approved in later execution.</td>
+<td>Stage embedding provider gate.</td>
+<td><code>--stage</code>, <code>--embedding-provider-approval</code>, graph/semantic inputs как required.</td>
+<td>Provider gate/eval packet; нет provider call пока approved в later execution.</td>
 </tr>
 <tr>
 <td><code>--validate-reranker-provider</code></td>
-<td>Stage Batch 27 reranker provider gate.</td>
+<td>Stage reranker provider gate.</td>
 <td><code>--stage</code>, <code>--reranker-provider-approval</code>.</td>
-<td>Provider gate packet; no external call by default.</td>
+<td>Provider gate packet; нет external call через default.</td>
 </tr>
 <tr>
 <td><code>--build-hybrid-retrieval</code></td>
-<td>Stage Batch 27 hybrid retrieval pipeline.</td>
+<td>Stage hybrid retrieval pipeline.</td>
 <td><code>--stage</code>, graph/index/semantic/reranker inputs.</td>
-<td>Generated explainable fusion packet; no canonical mutation.</td>
+<td>Generated explainable fusion packet; нет canonical mutation.</td>
 </tr>
 <tr>
 <td><code>--validate-llm-proposal-provider</code></td>
-<td>Stage Batch 28 LLM proposal provider gate.</td>
+<td>Stage LLM proposal provider gate.</td>
 <td><code>--stage</code>, <code>--llm-proposal-provider-approval</code>, proposal/eval inputs.</td>
-<td>Provider gate and safety eval; proposal-only.</td>
+<td>Provider gate и safety eval; proposal-only.</td>
 </tr>
 <tr>
 <td><code>--build-review-ledger</code></td>
-<td>Stage Batch 29 human review ledger and proposal diff.</td>
+<td>Stage human review ledger и proposal diff.</td>
 <td><code>--stage</code>, <code>--review-ledger-approval</code>, <code>--review-decisions</code>.</td>
 <td>Owner decision ledger; still non-mutating.</td>
 </tr>
 <tr>
 <td><code>--build-canonical-mutation</code></td>
-<td>Stage Batch 30 mutation dry-run, journal and rollback artifacts.</td>
-<td><code>--stage</code>, <code>--canonical-mutation-approval</code>, review ledger and proposal diff.</td>
-<td>Staged mutated graph copy only; canonical source graph is not silently changed.</td>
+<td>Stage mutation dry-run, journal и rollback artifacts.</td>
+<td><code>--stage</code>, <code>--canonical-mutation-approval</code>, review ledger и proposal diff.</td>
+<td>Staged mutated graph copy only; canonical source graph является не silently changed.</td>
 </tr>
 <tr>
 <td><code>--build-live-audit</code></td>
-<td>Stage Batch 31 audit/security/observability/handoff packets.</td>
+<td>Stage audit/security/observability/handoff packets.</td>
 <td><code>--stage</code>, <code>--live-audit-approval</code>, live runtime/actions/security inputs.</td>
-<td>Redacted audit and operability evidence.</td>
+<td>Redacted audit и operability evidence.</td>
 </tr>
 <tr>
 <td><code>--build-real-testing-readiness</code></td>
-<td>Stage Batch 32 readiness, target consent and pilot artifacts.</td>
-<td><code>--stage</code>, <code>--real-testing-approval</code> and target/gate/pilot inputs.</td>
+<td>Stage readiness, target consent и pilot artifacts.</td>
+<td><code>--stage</code>, <code>--real-testing-approval</code> и target/gate/pilot inputs.</td>
 <td>Dry-run pilot/readiness evidence only.</td>
 </tr>
 <tr>
 <td><code>--build-runtime-qa</code></td>
-<td>Stage Batch 33 runtime QA, performance and stabilization artifacts.</td>
-<td><code>--stage</code>, <code>--runtime-qa-approval</code> and QA/performance/stabilization inputs.</td>
-<td>Staged QA evidence; no live browser automation in Batch 34 docs work.</td>
+<td>Stage runtime QA, performance и stabilization artifacts.</td>
+<td><code>--stage</code>, <code>--runtime-qa-approval</code> и QA/performance/stabilization inputs.</td>
+<td>Staged QA evidence; нет live browser automation в docs work.</td>
 </tr>
 </tbody>
 </table>
-<p>Disable modes delete generated artifacts under the stage root: <code>--disable-backend</code>, <code>--disable-semantic-index</code>, <code>--disable-llm-proposals</code>, <code>--disable-extensions</code>, <code>--disable-live-governance</code>, <code>--disable-live-runtime</code>, <code>--disable-embedding-provider</code>, <code>--disable-reranker-provider</code>, <code>--disable-hybrid-retrieval</code>, <code>--disable-llm-proposal-provider</code>, <code>--disable-review-ledger</code>, <code>--disable-canonical-mutation</code>, <code>--disable-live-audit</code>, <code>--disable-real-testing-readiness</code> and <code>--disable-runtime-qa</code>.</p>
-<h2 id="query-inputs">Query Inputs<a class="headerlink" href="#query-inputs" title="Permanent link">&para;</a></h2>
+<p>Disable modes delete generated artifacts в рамках stage root: <code>--disable-backend</code>, <code>--disable-semantic-index</code>, <code>--disable-llm-proposals</code>, <code>--disable-extensions</code>, <code>--disable-live-governance</code>, <code>--disable-live-runtime</code>, <code>--disable-embedding-provider</code>, <code>--disable-reranker-provider</code>, <code>--disable-hybrid-retrieval</code>, <code>--disable-llm-proposal-provider</code>, <code>--disable-review-ledger</code>, <code>--disable-canonical-mutation</code>, <code>--disable-live-audit</code>, <code>--disable-real-testing-readiness</code> и <code>--disable-runtime-qa</code>.</p>
+<h2 id="query">Входы query<a class="headerlink" href="#query" title="Permanent link">&para;</a></h2>
 <p>Graph query mode accepts:</p>
 <ul>
-<li><code>--graph</code> for <code>project-code-graph.json</code> or <code>project-code-graph.jsonl</code>;</li>
-<li>optional <code>--index</code>, <code>--backend</code>, <code>--semantic-index</code>, <code>--hybrid-retrieval</code> and <code>--reranker-provider</code>;</li>
-<li><code>--node-id</code>, <code>--target-id</code> and <code>--text</code> for query-specific selectors;</li>
-<li><code>--max-results</code>, <code>--max-depth</code>, <code>--max-tokens</code>, <code>--hub-threshold</code>, <code>--node-type</code>, <code>--edge-type</code>, <code>--confidence</code> and <code>--path-prefix</code> for bounded output.</li>
+<li><code>--graph</code> для <code>project-code-graph.json</code> или <code>project-code-graph.jsonl</code>;</li>
+<li>optional <code>--index</code>, <code>--backend</code>, <code>--semantic-index</code>, <code>--hybrid-retrieval</code> и <code>--reranker-provider</code>;</li>
+<li><code>--node-id</code>, <code>--target-id</code> и <code>--text</code> для query-specific selectors;</li>
+<li><code>--max-results</code>, <code>--max-depth</code>, <code>--max-tokens</code>, <code>--hub-threshold</code>, <code>--node-type</code>, <code>--edge-type</code>, <code>--confidence</code> и <code>--path-prefix</code> для bounded output.</li>
 </ul>
-<p>Supported query kinds include <code>neighbors</code>, <code>path</code>, <code>trace</code>, <code>impact</code>, <code>affected_tests</code>, <code>changed_since</code>, <code>why_changed</code>, <code>read_order</code>, <code>hotspots</code>, <code>node</code>, <code>status</code> and <code>search</code>.</p>
-<h2 id="verification-commands">Verification Commands<a class="headerlink" href="#verification-commands" title="Permanent link">&para;</a></h2>
+<p>Supported query kinds включают <code>neighbors</code>, <code>path</code>, <code>trace</code>, <code>impact</code>, <code>affected_tests</code>, <code>changed_since</code>, <code>why_changed</code>, <code>read_order</code>, <code>hotspots</code>, <code>node</code>, <code>status</code> и <code>search</code>.</p>
+<h2 id="commands">Проверка Commands<a class="headerlink" href="#commands" title="Permanent link">&para;</a></h2>
 <p>Common local verification commands:</p>
 <div class="highlight"><pre><span></span><code><span class="n">python</span> <span class="n">plugins</span><span class="p">\</span><span class="n">product-agent-os</span><span class="p">\</span><span class="n">scripts</span><span class="p">\</span><span class="n">run_fixture_eval</span><span class="p">.</span><span class="n">py</span>
 <span class="n">python</span> <span class="n">plugins</span><span class="p">\</span><span class="n">product-agent-os</span><span class="p">\</span><span class="n">scripts</span><span class="p">\</span><span class="n">run_transcript_eval</span><span class="p">.</span><span class="n">py</span> <span class="n">plugins</span><span class="p">\</span><span class="n">product-agent-os</span><span class="p">\</span><span class="n">assets</span><span class="p">\</span><span class="n">eval-fixtures</span><span class="p">\</span><span class="n">transcripts</span><span class="p">\</span><span class="n">product-agent-os-synthetic-sessions</span><span class="p">.</span><span class="n">json</span>
@@ -3967,18 +3997,18 @@
 <span class="n">python</span> <span class="n">-m</span> <span class="n">mkdocs</span> <span class="n">build</span> <span class="p">-</span><span class="n">-strict</span>
 <span class="n">git</span> <span class="nb">diff </span><span class="p">-</span><span class="n">-check</span>
 </code></pre></div>
-<p>Run the smallest relevant set for the current slice. Batch 34 requires the full source docs -&gt; registry -&gt; docs tests -&gt; <code>check_docs.py</code> -&gt; strict MkDocs -&gt; optional full closure order before a closure claim.</p>
-<h2 id="risks-and-failure-modes">Risks And Failure Modes<a class="headerlink" href="#risks-and-failure-modes" title="Permanent link">&para;</a></h2>
+<p>Запустите smallest relevant set для текущий slice. A closure claim требует full source docs -&gt; registry -&gt; docs tests -&gt; <code>check_docs.py</code> -&gt; strict MkDocs -&gt; optional full closure order.</p>
+<h2 id="and-failure-modes">Риски And Failure Modes<a class="headerlink" href="#and-failure-modes" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Running a stage command inside a target workspace can blur generated and source-of-truth boundaries.</li>
-<li>Supplying approval JSON is not enough if the owner, allowed surfaces, data policy, rollback and verification evidence are missing.</li>
-<li>Query packets can be stale if graph fingerprints no longer match current source.</li>
-<li>Provider gate commands are not permission to call providers.</li>
-<li>Canonical mutation dry-run is not permission to mutate checked-in source or graph facts.</li>
-<li>Git commands remain explicit-only and are outside these CLI reference commands.</li>
+<li>Running stage command inside target workspace может blur generated и source-of-truth boundaries.</li>
+<li>Supplying approval JSON является не enough если owner, allowed surfaces, data policy, rollback и verification evidence являются missing.</li>
+<li>Query packets может быть stale если graph fingerprints нет longer match текущий source.</li>
+<li>Provider gate commands являются не permission к call providers.</li>
+<li>Canonical mutation dry-run является не permission к mutate checked-in source или graph facts.</li>
+<li>Git commands остаются explicit-only и являются outside these CLI reference commands.</li>
 </ul>
 <h2 id="next-action">Next Action<a class="headerlink" href="#next-action" title="Permanent link">&para;</a></h2>
-<p>Use this page as the operator reference for local scripts. Navigation, source registry entries, docs tests and generated <code>site/</code> refresh belong to later Batch 34 slices.</p>
+<p>Используйте эта page как operator reference для local scripts. Navigation, source registry entries, docs tests и generated <code>site/</code> refresh belong к their owning docs-maintainer и tester slices.</p>
 
 
 
@@ -4033,6 +4063,8 @@
 
 
       <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+
+        <script src="../assets/javascripts/local-file-i18n.js"></script>
 
         <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
 

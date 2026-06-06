@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
 
-        <meta name="description" content="Russian knowledge base for advanced OpenAI Codex and agentic workflows.">
+        <meta name="description" content="Документация Product-Agent OS для рабочих процессов с агентами и skills.">
 
 
 
@@ -18,6 +18,10 @@
 
 
 
+          <link rel="alternate" href="technical.html" hreflang="ru">
+
+          <link rel="alternate" href="../en/product-agent-os/technical.html" hreflang="en">
+
 
 
       <link rel="icon" href="../assets/images/favicon.png">
@@ -25,7 +29,7 @@
 
 
 
-        <title>Технические особенности и установка - OpenAI Codex Knowledge Base</title>
+        <title>Технические особенности и установка - Product-Agent OS</title>
 
 
 
@@ -94,7 +98,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
-    <a href="../index.html" title="OpenAI Codex Knowledge Base" class="md-header__button md-logo" aria-label="OpenAI Codex Knowledge Base" data-md-component="logo">
+    <a href="../index.html" title="Product-Agent OS" class="md-header__button md-logo" aria-label="Product-Agent OS" data-md-component="logo">
 
 
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -108,7 +112,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            OpenAI Codex Knowledge Base
+            Product-Agent OS
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -136,6 +140,32 @@
 
       <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
 
+
+      <div class="md-header__option">
+  <div class="md-select">
+
+    <button class="md-header__button md-icon" aria-label="Выберите язык">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+
+          <li class="md-select__item">
+            <a href="technical.html" hreflang="ru" class="md-select__link">
+              RU
+            </a>
+          </li>
+
+          <li class="md-select__item">
+            <a href="../en/product-agent-os/technical.html" hreflang="en" class="md-select__link">
+              EN
+            </a>
+          </li>
+
+      </ul>
+    </div>
+  </div>
+</div>
 
 
 
@@ -206,13 +236,13 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../index.html" title="OpenAI Codex Knowledge Base" class="md-nav__button md-logo" aria-label="OpenAI Codex Knowledge Base" data-md-component="logo">
+    <a href="../index.html" title="Product-Agent OS" class="md-nav__button md-logo" aria-label="Product-Agent OS" data-md-component="logo">
 
 
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
-    OpenAI Codex Knowledge Base
+    Product-Agent OS
   </label>
 
   <ul class="md-nav__list" data-md-scrollfix>
@@ -1663,10 +1693,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#implementation-status-archive" class="md-nav__link">
+  <a href="#capability-status" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Implementation status archive
+        Capability status
 
     </span>
   </a>
@@ -1674,10 +1704,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#task-22-operator-contract" class="md-nav__link">
+  <a href="#operator-contract" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Task 22 operator contract
+        Operator contract
 
     </span>
   </a>
@@ -1740,10 +1770,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#task-24-self-verification-metrics-loop" class="md-nav__link">
+  <a href="#self-verification-metrics-loop" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Task 24 self-verification metrics loop
+        Self-verification metrics loop
 
     </span>
   </a>
@@ -1751,10 +1781,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#task-25-project-code-graph-and-cockpit" class="md-nav__link">
+  <a href="#project-code-graph-cockpit" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Task 25 project code graph and cockpit
+        Project code graph и cockpit
 
     </span>
   </a>
@@ -1784,10 +1814,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#verification-commands-for-this-repo" class="md-nav__link">
+  <a href="#commands-repo" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Verification commands for this repo
+        Проверка commands для эта repo
 
     </span>
   </a>
@@ -3710,10 +3740,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#implementation-status-archive" class="md-nav__link">
+  <a href="#capability-status" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Implementation status archive
+        Capability status
 
     </span>
   </a>
@@ -3721,10 +3751,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#task-22-operator-contract" class="md-nav__link">
+  <a href="#operator-contract" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Task 22 operator contract
+        Operator contract
 
     </span>
   </a>
@@ -3787,10 +3817,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#task-24-self-verification-metrics-loop" class="md-nav__link">
+  <a href="#self-verification-metrics-loop" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Task 24 self-verification metrics loop
+        Self-verification metrics loop
 
     </span>
   </a>
@@ -3798,10 +3828,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#task-25-project-code-graph-and-cockpit" class="md-nav__link">
+  <a href="#project-code-graph-cockpit" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Task 25 project code graph and cockpit
+        Project code graph и cockpit
 
     </span>
   </a>
@@ -3831,10 +3861,10 @@
 </li>
 
         <li class="md-nav__item">
-  <a href="#verification-commands-for-this-repo" class="md-nav__link">
+  <a href="#commands-repo" class="md-nav__link">
     <span class="md-ellipsis">
 
-        Verification commands for this repo
+        Проверка commands для эта repo
 
     </span>
   </a>
@@ -3872,7 +3902,7 @@
 </thead>
 <tbody>
 <tr>
-<td>Проверить staged infrastructure без writes</td>
+<td>Проверить staged infrastructure без пишет</td>
 <td><code>render_infrastructure.py &lt;workspace&gt; --dry-run</code></td>
 <td>Read-only plan; target workspace не меняется.</td>
 </tr>
@@ -3884,41 +3914,49 @@
 <tr>
 <td>Построить static graph/cockpit</td>
 <td><a href="project-code-graph.html">Project Code Graph</a></td>
-<td>Generated graph/cockpit are orientation evidence only.</td>
+<td>Generated graph/cockpit являются orientation evidence only.</td>
 </tr>
 <tr>
 <td>Проверить live/runtime/provider gates</td>
 <td><a href="live-runtime-governance.html">Live Runtime Governance</a></td>
-<td>No live server, no provider calls, no canonical graph mutation.</td>
+<td>Нет live server, provider calls или canonical graph mutation.</td>
 </tr>
 <tr>
-<td>Подготовить Batch 34 closure</td>
+<td>Подготовить docs и packaging closure</td>
 <td><a href="packaging-and-closure.html">Packaging And Closure</a></td>
-<td>Source docs -&gt; registry -&gt; docs tests -&gt; <code>check_docs.py</code> -&gt; strict MkDocs -&gt; optional full closure.</td>
+<td>Исходные docs -&gt; registry -&gt; docs tests -&gt; <code>check_docs.py</code> -&gt; strict MkDocs -&gt; optional full closure.</td>
 </tr>
 </tbody>
 </table>
-<h2 id="implementation-status-archive">Implementation status archive<a class="headerlink" href="#implementation-status-archive" title="Permanent link">&para;</a></h2>
-<p>Task 26 Batch 32 <code>T10-LIVE-M27..M31</code> implements Real Testing Readiness, Target Consent, Pilot Harness And Codex Surface Smoke through <code>project_graph_real_testing.py</code>, covering <code>real-testing-readiness.json</code>, <code>real-testing-targets.json</code>, <code>pilot-harness.json</code>, <code>codex-surface-smoke.json</code> and <code>real-testing-pilot-matrix.json</code> artifact contracts. It stages <code>project_graph_real_testing_readiness</code>, <code>project_graph_real_testing_targets</code>, <code>project_graph_pilot_harness</code>, <code>project_graph_codex_surface_smoke</code> and <code>project_graph_real_testing_pilot_matrix</code> under approval boundary <code>batch32_real_testing_readiness_target_consent_pilot_harness_codex_surface_smoke</code>, with surfaces <code>real_testing_readiness</code>, <code>real_project_target_selection</code>, <code>pilot_harness</code>, <code>codex_surface_smoke</code> and <code>use_case_pilot_matrix</code>. Batch 32 is <code>approval_required</code>, staged evidence only and not source of truth: real testing cannot start with no hidden unresolved Track 10 gates; No real project test without owner-approved target and data policy; Pilot harness remains dry-run and stage-only; dry-run pilot harness evidence covers Codex App, CLI and IDE extension smoke; Track 8 archetypes web, backend, docs, pr_review, evals, automation and AI/RAG are mapped to pilots; <code>provider_call_allowed: false</code>, <code>external_call_performed: false</code>, no live server, no provider calls, no live external model/API calls, no canonical graph mutation, and git staging/commit/push/PR remains explicit-only.</p>
-<p>Task 26 Batch 33 <code>T10-LIVE-M32..M34</code> implements Runtime Browser QA, Performance And Stabilization through <code>project_graph_runtime_qa.py</code>, covering <code>project-code-graph-runtime-browser-qa.json</code>, <code>project-code-graph-performance-budget.json</code> and <code>project-code-graph-stabilization-ledger.json</code> artifact contracts. It stages <code>project_graph_runtime_browser_qa</code>, <code>project_graph_performance_budget</code> and <code>project_graph_stabilization_ledger</code> under approval boundary <code>batch33_runtime_browser_qa_performance_stabilization</code>, with surfaces <code>runtime_browser_qa</code>, <code>runtime_performance_budget</code> and <code>runtime_stabilization_loop</code>. Batch 33 is <code>approval_required</code>, staged evidence only and not source of truth: browser smoke, console/network checks, mobile overflow checks, generated-view labels and source-boundary labels are recorded as QA evidence; budget breach disables live layer or records accepted gap; No open P0/P1 can remain before closure; <code>provider_call_allowed: false</code>, <code>external_call_performed: false</code>, no live server, no provider calls, no live external model/API calls, no canonical graph mutation, and git staging/commit/push/PR remains explicit-only.</p>
-<p>Task 26 Batch 34 <code>T10-LIVE-M35..M36</code> is planned as Packaging, Docs, Source Registry, Closure And Batch 35 Handoff. The Batch 34 Detailed Task Matrix <code>B34-DOC-M01..M15</code> covers planned, not implemented updates for <code>project-code-graph.md</code>, <code>live-runtime-governance.md</code>, <code>approval-bound-real-testing.md</code>, <code>agent-skill-modernization-loop.md</code>, <code>cli-reference.md</code>, <code>artifact-contracts.md</code>, <code>packaging-and-closure.md</code>, existing docs IA, MkDocs nav, <code>tools/check_docs.py</code>, source registry, focused docs tests and regenerated <code>site/</code>. It preserves staged evidence only, not source of truth, no live server, no browser automation, no provider/live external model/API calls, no canonical graph mutation and no git stage/commit/push/PR.</p>
-<p>Task 26 Batch 35 <code>T10-LIVE-M37..M41</code> is added as an Approval-Bound Real Testing Execution Matrix. It is planned, not implemented: <code>approved_local_runtime_launch</code>, <code>actual_browser_automation_smoke</code>, <code>approved_provider_api_pilot</code>, <code>approved_canonical_mutation_pilot</code> and <code>explicit_git_release_pr_action</code> are separate surfaces under approval boundary <code>batch35_approval_bound_real_testing_execution</code>. Batch 35 can run only after Batch 24 governance, Batch 25 runtime contract, Batch 31 audit/observability, Batch 32 target consent, Batch 33 QA/performance/stabilization and Batch 34 packaging/docs closure are current. Until separate explicit owner approval exists for each action, it starts no live server, runs no browser automation, performs no provider/live external model/API calls, performs no canonical graph mutation and performs no git stage/commit/push/PR.</p>
-<p>Task 25 Batch 19 <code>T10-CG-V2-M33..M38</code> implements the approved offline static search index at <code>.codex/product-agent-os/project-code-graph-search-index.json</code>. The index is generated, cache-bound and not source of truth; it builds from graph artifact only, supports optional indexed search, blocks stale indexes, records cache hit/miss/invalidation and has a rollback/disable path. Batch 19 uses no live database/server, LLM, embedding or cross-encoder.</p>
-<p>Task 25 Batch 20 <code>T10-CG-V2-M39..M44</code> implements the approved local query backend gate in <code>project_graph_backend.py</code>. The gate creates a generated local file-store at <code>.codex/product-agent-os/project-code-graph-backend.json</code> only from graph and static-index artifacts, records <code>project_graph_local_backend_gate_present</code>, requires an approval decision packet with storage path, port policy, process lifecycle, auth boundary, cleanup, logging, performance threshold and rollback path, and keeps server mode disabled by default. The backend store is not source of truth, no production server is started, read-only API handling is contract-only and graph-only fallback remains available.</p>
-<p>Task 25 Batch 21 <code>T10-CG-V2-M45..M51</code> implements the approved semantic retrieval gate in <code>project_graph_semantic.py</code>. It records <code>project_graph_semantic_retrieval_gate_present</code>, a semantic corpus and chunk policy, embeddings cache metadata, semantic query packets and cross-encoder eval/reranking gate using local deterministic embeddings only. Semantic hits are <code>present_unverified</code> orientation evidence, there are no canonical graph edge rewrites, the rollback/disable path deletes <code>.codex/product-agent-os/project-code-graph-semantic-index.json</code>, and later Batch 22/23 closure work stays generated, approval-bound and non-source-of-truth.</p>
-<p>Task 25 Batch 22 <code>T10-CG-V2-M52..M57</code> implements the approved local deterministic LLM semantic extraction proposal gate in <code>project_graph_llm_extraction.py</code>. It records <code>project_graph_llm_extraction_gate_present</code>, validates a Batch 22 explicit approval packet with prompt/model policy, emits structured JSON with provenance, uncertainty and unsupported-claim labels, stages semantic node and edge proposals plus rationale/comment proposals, and treats every output as staged proposals, not canonical graph facts. There is no canonical graph mutation, no live external model/API call and no source-of-truth claim; human review can accept, reject or mark <code>accepted_gap</code>, unsafe output routes to the AI incident workflow, and the rollback/disable path deletes <code>.codex/product-agent-os/project-code-graph-llm-proposals.json</code>.</p>
-<p>Task 25 Batch 23 <code>T10-CG-V2-M58..M62</code> implements future extension verification, rollback and closure through <code>project_graph_extension_closure.py</code>. It adds <code>verify-extensions</code> and <code>disable-extensions</code>, fixture fields <code>project_graph_future_extension_closure_present</code>, <code>project_graph_extension_rollback_deletion_present</code>, <code>project_graph_unapproved_surface_blocking_present</code> and <code>project_graph_extension_full_verification_contract_present</code>, records rollback/data deletion proof, verifies graph-only fallback, keeps unapproved surfaces as <code>blocked_without_new_explicit_approval</code>, starts no live server, performs no live external model/API calls, mutates no canonical graph facts and preserves that git staging/commit/push/PR remains explicit-only.</p>
-<p>Task 26 Batch 24 <code>T10-LIVE-M01..M06</code> implements Approval, Data Classification, Redaction, Credentials, Cache And Budget Governance through <code>project_graph_live_governance.py</code>. It records <code>project_graph_live_approval_packet_present</code>, <code>project_graph_live_data_classification_policy_present</code>, <code>project_graph_live_redaction_guard_present</code>, <code>project_graph_provider_credentials_boundary_present</code>, <code>project_graph_live_cache_deletion_policy_present</code>, <code>project_graph_live_budget_guard_present</code> and <code>project_graph_live_governance_no_live_calls_present</code>. Batch 24 is staged evidence only and not source of truth: no live server, no provider calls, no live external model/API calls, no canonical graph mutation, and git staging/commit/push/PR remains explicit-only.</p>
-<p>Task 26 Batch 25 <code>T10-LIVE-M07..M10</code> implements Live Local Read-Only Runtime, Auth And Fallback through <code>project_graph_live_runtime.py</code>. It records <code>project_graph_live_runtime_contract_present</code>, <code>project_graph_live_runtime_governance_prerequisite_present</code>, <code>project_graph_live_runtime_read_only_routes_present</code>, <code>project_graph_live_runtime_lifecycle_controls_present</code>, <code>project_graph_live_runtime_auth_policy_present</code>, <code>project_graph_live_runtime_graph_only_fallback_present</code> and <code>project_graph_live_runtime_no_public_or_mutation_surface_present</code>. Batch 25 is staged evidence only and not source of truth: <code>disabled_by_default_not_started</code>, local-only access, rejects unauthorized access, no write endpoints, <code>graph_only_query_mode</code>, no provider calls, no live external model/API calls, no canonical graph mutation, and git staging/commit/push/PR remains explicit-only.</p>
-<p>Task 26 Batch 26 <code>T10-LIVE-M11..M12</code> implements External Embedding Provider Gate And Eval through <code>project_graph_embedding_provider.py</code>. It records <code>project_graph_external_embedding_provider_gate_present</code>, <code>project_graph_external_embedding_governance_prerequisite_present</code>, <code>project_graph_external_embedding_redaction_cache_budget_present</code>, <code>project_graph_external_embedding_eval_baseline_present</code>, <code>project_graph_external_embedding_threshold_fallback_present</code> and <code>project_graph_external_embedding_no_live_calls_present</code>. Batch 26 is staged evidence only and not source of truth: No external call without approval/redaction/cache/budget, Must beat approved threshold or stay disabled, <code>semantic_retrieval_or_graph_only</code>, <code>provider_call_allowed: false</code>, <code>external_call_performed: false</code>, no provider calls, no live external model/API calls, no canonical graph mutation, and git staging/commit/push/PR remains explicit-only.</p>
-<p>Task 26 Batch 27 <code>T10-LIVE-M13..M14</code> implements Cross-Encoder Reranker And Hybrid Retrieval through <code>project_graph_reranker_provider.py</code> (<code>reranker_provider.py</code> artifact contract) and <code>project_graph_hybrid_retrieval.py</code> (<code>hybrid_retrieval.py</code> artifact contract). It records <code>project_graph_external_reranker_provider_gate_present</code>, <code>project_graph_external_reranker_governance_prerequisite_present</code>, <code>project_graph_external_reranker_redaction_cache_budget_present</code>, <code>project_graph_external_reranker_eval_baseline_present</code>, <code>project_graph_external_reranker_threshold_fallback_present</code>, <code>project_graph_external_reranker_no_live_calls_present</code>, <code>project_graph_hybrid_retrieval_pipeline_present</code>, <code>project_graph_hybrid_retrieval_explainable_fusion_present</code>, <code>project_graph_hybrid_retrieval_fallback_present</code> and <code>project_graph_hybrid_retrieval_no_canonical_mutation_present</code>. Batch 27 is <code>approval_required</code>, staged evidence only and not source of truth: Precision/MRR improves or fallback remains active, results are source-backed, bounded and explainable, fallback remains <code>semantic_retrieval_or_graph_only</code>, <code>provider_call_allowed: false</code>, <code>external_call_performed: false</code>, No live provider calls, no provider calls, no live external model/API calls, no canonical graph mutation, and git staging/commit/push/PR remains explicit-only.</p>
-<p>Task 26 Batch 28 <code>T10-LIVE-M15..M16</code> implements Live LLM Proposal Adapter And Safety Eval through <code>project_graph_llm_proposal_provider.py</code> (<code>llm_proposal_provider.py</code> artifact contract) and <code>llm-proposal-eval.json</code>. It records <code>project_graph_live_llm_proposal_provider_gate</code>, <code>project_graph_live_llm_proposal_provider_gate_present</code>, <code>project_graph_live_llm_proposal_governance_prerequisite_present</code>, <code>project_graph_live_llm_proposal_prompt_schema_present</code>, <code>project_graph_live_llm_proposal_redaction_cache_budget_present</code>, <code>project_graph_live_llm_proposal_safety_eval_present</code>, <code>project_graph_live_llm_proposal_threshold_fallback_present</code>, <code>project_graph_live_llm_proposal_incident_path_present</code>, <code>project_graph_live_llm_proposal_no_live_calls_present</code> and <code>project_graph_live_llm_proposal_no_canonical_mutation_present</code>. Batch 28 is <code>approval_required</code>, staged evidence only and not source of truth: provider <code>external_llm</code>, surfaces <code>external_llm_proposal_adapter</code> and <code>llm_proposal_safety_eval</code>, approval boundary <code>batch28_live_llm_proposal_adapter_and_safety_eval</code>, output format <code>structured_json</code>, label <code>unsupported_claim</code>, proposal-only, never canonical fact, hallucination, privacy, grounding and stale-context tests, unsafe evidence routes to <code>incident_blocked</code> and AI incident workflow, fallback remains <code>local_llm_proposals_or_semantic_retrieval_or_graph_only</code>, <code>provider_call_allowed: false</code>, <code>external_call_performed: false</code>, No live provider calls, no provider calls, no live external model/API calls, no canonical graph mutation, and git staging/commit/push/PR remains explicit-only.</p>
-<p>Task 26 Batch 29 <code>T10-LIVE-M17..M18</code> implements Human Review Ledger And Proposal Diff Preview through <code>project_graph_review_ledger.py</code> with <code>graph-review-ledger.json</code> and <code>proposal-diff.json</code> artifact contracts. It stages <code>project_graph_human_review_ledger</code> and <code>project_graph_proposal_diff_preview</code> under approval boundary <code>batch29_human_review_ledger_and_proposal_diff_preview</code>, with surfaces <code>human_review_ledger</code> and <code>proposal_diff_preview</code>. Batch 29 is <code>approval_required</code>, staged evidence only and not source of truth: decisions are <code>accepted</code>, <code>rejected</code> or <code>accepted_gap</code>; No accepted proposal without owner decision; Accept, reject or accepted_gap decisions with evidence refs; Human can inspect before mutation; proposal-only until Batch 30 dry-run mutation; <code>provider_call_allowed: false</code>, <code>external_call_performed: false</code>, no provider calls, no live external model/API calls, no canonical graph mutation, and git staging/commit/push/PR remains explicit-only.</p>
-<p>Task 26 Batch 30 <code>T10-LIVE-M19..M22</code> implements Canonical Graph Mutation, Journal And Rollback Engine through <code>project_graph_canonical_mutation.py</code>, covering the planned <code>canonical_graph_mutation.py</code> and <code>graph_rollback.py</code> surfaces with <code>mutation_plan.json</code>, <code>graph-mutation-journal.jsonl</code>, a staged mutated graph copy and rollback proof. It stages <code>project_graph_canonical_mutation_plan</code>, <code>project_graph_mutation_journal</code> and <code>project_graph_rollback_proof</code> under approval boundary <code>batch30_canonical_graph_mutation_journal_and_rollback</code>, with surfaces <code>canonical_mutation_dry_run</code>, <code>mutation_journal</code>, <code>accepted_mutation_apply</code> and <code>rollback_engine</code>. Batch 30 is <code>approval_required</code>, staged evidence only and not source of truth: No mutation without dry-run plan; Every mutation has rollback patch; Only accepted proposals mutate graph; Rollback restores previous graph digest; accepted_gap remains non-mutating; stage-root generated graph copy only; <code>provider_call_allowed: false</code>, <code>external_call_performed: false</code>, no provider calls, no live external model/API calls, and git staging/commit/push/PR remains explicit-only.</p>
-<p>Task 26 Batch 31 <code>T10-LIVE-M23..M26</code> implements Audit Logging, Security/Privacy Tests, Observability And Agent/Skill Routing through <code>project_graph_live_audit.py</code>, covering <code>audit-log.jsonl</code>, <code>security-privacy.json</code>, <code>runtime-observability.json</code> and <code>agent-skill-handoff.json</code> artifact contracts. It stages <code>project_graph_live_audit_log</code>, <code>project_graph_live_security_privacy_tests</code>, <code>project_graph_runtime_observability</code> and <code>project_graph_agent_skill_handoff_routing</code> under approval boundary <code>batch31_audit_security_observability_agent_skill_routing</code>, with surfaces <code>audit_logging</code>, <code>security_privacy_tests</code>, <code>runtime_observability</code> and <code>agent_skill_handoff_routing</code>. Batch 31 is <code>approval_required</code>, staged evidence only and not source of truth: every live/provider/mutation action emits a redacted append-only audit event; unsafe secret/path/raw-source/prompt-injection cases are blocked; runtime health, latency, provider errors, budget usage and degraded graph-only mode are visible; agent/skill handoffs require ownership, verification evidence, fresh context and stop conditions; <code>provider_call_allowed: false</code>, <code>external_call_performed: false</code>, no live server, no provider calls, no live external model/API calls, no canonical graph mutation, and git staging/commit/push/PR remains explicit-only.</p>
-<h2 id="task-22-operator-contract">Task 22 operator contract<a class="headerlink" href="#task-22-operator-contract" title="Permanent link">&para;</a></h2>
-<p>Task 22 operator contract различает base workspace audit profile и Track 9 methodology audit complexity. Первый слой читает stack, files, control-plane state and route inputs; второй слой классифицирует methodology risk, maturity, recommendations and owner questions. <code>--intent-hint</code> может помочь routing, но не переопределяет source policy, approvals, sandbox, write guards or external-action boundaries.</p>
-<p>Текущие machine-readable surfaces: renderer JSON includes <code>renderer_file_count</code>, stage manifest and status fields; runtime JSON includes <code>codex_runner_result</code>, <code>methodology_packet</code>, <code>finish_options</code>, compact first-response fields and schema v1 additive compatibility; audit/report tooling includes <code>run_methodology_audit.py</code>; behavioral evidence includes <code>run_transcript_eval.py</code> and fixture eval checks. Docs should describe implemented commands and fields, not planned features.
+<h2 id="capability-status">Capability status<a class="headerlink" href="#capability-status" title="Permanent link">&para;</a></h2>
+<p>Product-Agent OS ships local, approval-bound capabilities для staged infrastructure, lifecycle routing, project code graph navigation, generated cockpit views, offline search, runtime governance, provider gates, review ledgers, mutation dry-runs, audit packets, real-testing readiness, runtime QA и packaging closure.</p>
+<p>Default contract консервативен:</p>
+<ul>
+<li>generated outputs являются staged evidence только и не является каноническим источником;</li>
+<li>real project testing требует owner-approved target и data policy;</li>
+<li>Codex App, CLI и IDE extension smoke является recorded как planning или evidence, не live browser automation через itself;</li>
+<li>provider surfaces keep <code>provider_call_allowed: false</code> и <code>external_call_performed: false</code> пока separate approval packet enables specific call;</li>
+<li>canonical graph mutation требует accepted review evidence, dry-run plan, journal и rollback proof;</li>
+<li>live server launch, browser automation, provider/live external model/API calls, canonical graph mutation и git stage/commit/push/PR остаются explicit-only.</li>
+</ul>
+<p>Implemented graph и runtime surfaces include:</p>
+<ul>
+<li>offline static search index at <code>.codex/product-agent-os/project-code-graph-search-index.json</code>;</li>
+<li>disabled-by-default local query backend store at <code>.codex/product-agent-os/project-code-graph-backend.json</code>;</li>
+<li>local deterministic semantic retrieval cache at <code>.codex/product-agent-os/project-code-graph-semantic-index.json</code>;</li>
+<li>deterministic LLM-style proposal packets at <code>.codex/product-agent-os/project-code-graph-llm-proposals.json</code>;</li>
+<li>extension verification и rollback/data deletion proof через <code>project_graph_extension_closure.py</code>;</li>
+<li>approval, data classification, redaction, credentials, cache и budget governance через <code>project_graph_live_governance.py</code>;</li>
+<li>local read-only runtime contract через <code>project_graph_live_runtime.py</code>;</li>
+<li>embedding, reranker и LLM proposal provider gates через their provider-specific scripts;</li>
+<li>human review ledger, proposal diff preview, mutation dry-run, mutation journal и rollback proof;</li>
+<li>redacted audit log, security/privacy packet, observability packet и agent/skill handoff routing;</li>
+<li>real-testing readiness, target consent, dry-run pilot harness, Codex surface smoke и use-case pilot matrix;</li>
+<li>runtime browser QA expectations, performance budget и stabilization ledger.</li>
+</ul>
+<h2 id="operator-contract">Operator contract<a class="headerlink" href="#operator-contract" title="Permanent link">&para;</a></h2>
+<p>Этот operator contract separates base workspace audit profile и methodology audit complexity. Первый слой читает stack, files, control-plane state и route inputs; второй слой классифицирует methodology risk, maturity, recommendations и owner questions. <code>--intent-hint</code> может помочь routing, но не переопределяет политика источников, approvals, sandbox, писать guards или external-action boundaries.</p>
+<p>Текущие machine-readable surfaces: renderer JSON включает <code>renderer_file_count</code>, stage manifest и status fields; runtime JSON включает <code>codex_runner_result</code>, <code>methodology_packet</code>, <code>finish_options</code>, compact first-response fields и schema v1 additive compatibility; audit/report tooling включает <code>run_methodology_audit.py</code>; behavioral evidence включает <code>run_transcript_eval.py</code> и fixture eval checks. Docs следует describe implemented commands и fields, не planned features.
 Additional sources: <a href="https://developers.openai.com/codex/mcp">Codex MCP</a>, <a href="https://context7.com/docs/resources/all-clients">Context7 MCP clients</a>.<br />
 Источники: <a href="https://developers.openai.com/codex/plugins">Codex plugins</a>, <a href="https://developers.openai.com/codex/plugins/build">Build plugins</a>, <a href="https://developers.openai.com/codex/skills">Agent Skills</a>, <a href="https://developers.openai.com/codex/subagents">Subagents</a>, <a href="https://developers.openai.com/codex/hooks">Codex hooks</a>, <a href="https://developers.openai.com/codex/agent-approvals-security">Agent approvals and security</a>, <a href="https://developers.openai.com/codex/app/automations">Codex automations</a>, <a href="index.html">Product-Agent OS plugin</a>.</p>
 <h2 id="package-layout">Package layout<a class="headerlink" href="#package-layout" title="Permanent link">&para;</a></h2>
@@ -3931,9 +3969,9 @@ Additional sources: <a href="https://developers.openai.com/codex/mcp">Codex MCP<
     templates/
     fixtures/
 </code></pre></div>
-<p>Официальный contract Codex plugin требует <code>.codex-plugin/plugin.json</code>; остальные bundled components лежат в plugin root. В текущем package manifest указывает на bundled <code>skills</code> и <code>.mcp.json</code>, а пользовательская логика lives in local scripts and templates.</p>
+<p>Официальный contract Codex plugin требует <code>.codex-plugin/plugin.json</code>; остальные bundled components лежат в plugin root. В текущем package manifest указывает на bundled <code>skills</code> и <code>.mcp.json</code>, а пользовательская логика lives в local scripts и templates.</p>
 <h2 id="bundled-mcp">Bundled MCP<a class="headerlink" href="#bundled-mcp" title="Permanent link">&para;</a></h2>
-<p><code>.mcp.json</code> registers Context7 as a bundled MCP server:</p>
+<p><code>.mcp.json</code> registers Context7 как bundled MCP server:</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">  </span><span class="nt">&quot;context7&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;command&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;npx&quot;</span><span class="p">,</span>
@@ -3942,7 +3980,7 @@ Additional sources: <a href="https://developers.openai.com/codex/mcp">Codex MCP<
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>This keeps the plugin package free of API keys and follows the Codex MCP Context7 example. Projects that need higher Context7 limits or private sources should provide credentials through their own trusted Codex MCP configuration, not through this repository.</p>
+<p>Эта keeps plugin package free из API keys и follows Codex MCP Context7 example. Projects который нужны higher Context7 limits или private sources следует provide credentials через their own trusted Codex MCP configuration, не через эта repository.</p>
 <h2 id="packaged-skills">Packaged skills<a class="headerlink" href="#packaged-skills" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -3970,19 +4008,19 @@ Additional sources: <a href="https://developers.openai.com/codex/mcp">Codex MCP<
 </tr>
 <tr>
 <td><code>agent-team-designer</code></td>
-<td>Проектирует project-scoped roles and handoffs</td>
+<td>Проектирует project-scoped roles и handoffs</td>
 </tr>
 <tr>
 <td><code>test-eval-designer</code></td>
-<td>Определяет deterministic checks and quality gates</td>
+<td>Определяет deterministic checks и quality gates</td>
 </tr>
 <tr>
 <td><code>risk-reviewer</code></td>
-<td>Проверяет diff, risks, source fidelity and missing tests</td>
+<td>Проверяет diff, risks, source fidelity и missing tests</td>
 </tr>
 <tr>
 <td><code>pr-release-operator</code></td>
-<td>Готовит PR or release packet</td>
+<td>Готовит PR или release packet</td>
 </tr>
 <tr>
 <td><code>learning-loop-maintainer</code></td>
@@ -3994,7 +4032,7 @@ Additional sources: <a href="https://developers.openai.com/codex/mcp">Codex MCP<
 </tr>
 </tbody>
 </table>
-<p>Каждый skill задает trigger, inputs, outputs, failure modes and final response contract. Source-sensitive skills не должны превращать community claims в project rules без verification status.</p>
+<p>Каждый skill задает trigger, inputs, outputs, failure modes и final response contract. Source-sensitive skills не должны превращать community claims в project rules без verification status.</p>
 <h2 id="generated-infrastructure">Generated infrastructure<a class="headerlink" href="#generated-infrastructure" title="Permanent link">&para;</a></h2>
 <p>Renderer может создать или предложить:</p>
 <ul>
@@ -4008,12 +4046,12 @@ Additional sources: <a href="https://developers.openai.com/codex/mcp">Codex MCP<
 <li><code>.codex/pr/*</code>;</li>
 <li><code>.codex/automation-candidates/automation-candidate.md</code>.</li>
 </ul>
-<p>В Track 6 workflow inventory расширен двумя методическими packets:</p>
+<p>Workflow inventory включает two methodology packets:</p>
 <ul>
-<li><code>.codex/workflows/development-standards.md</code> - product hypothesis, architecture boundary, test-first/eval-first path, bounded agentic implementation, review and measurement.</li>
-<li><code>.codex/workflows/documentation-system.md</code> - docs-as-code routing for architecture docs, API contracts, UI component docs, database docs, code reference and release docs.</li>
+<li><code>.codex/workflows/development-standards.md</code> - product hypothesis, architecture boundary, test-first/eval-first path, bounded agentic implementation, review и measurement.</li>
+<li><code>.codex/workflows/documentation-system.md</code> - docs-as-code routing для architecture docs, API contracts, UI component docs, database docs, code reference и release docs.</li>
 </ul>
-<p>Track 7 добавляет concrete artifact templates, чтобы методологии не оставались только checklist:</p>
+<p>Concrete artifact templates keep methodology guidance actionable:</p>
 <ul>
 <li><code>.codex/artifact-templates/adr.md</code>;</li>
 <li><code>.codex/artifact-templates/architecture-overview.md</code>;</li>
@@ -4024,12 +4062,12 @@ Additional sources: <a href="https://developers.openai.com/codex/mcp">Codex MCP<
 <li><code>.codex/artifact-templates/database-dictionary.md</code>;</li>
 <li><code>.codex/artifact-templates/docs-tooling-decision.md</code>.</li>
 </ul>
-<p>Track 8 добавляет scenario routing and workflow coverage:</p>
+<p>Scenario routing adds workflow coverage:</p>
 <table>
 <thead>
 <tr>
 <th>Status</th>
-<th>Generated or routed surface</th>
+<th>Generated или routed surface</th>
 </tr>
 </thead>
 <tbody>
@@ -4043,85 +4081,85 @@ Additional sources: <a href="https://developers.openai.com/codex/mcp">Codex MCP<
 </tr>
 <tr>
 <td><code>done methodology gate</code></td>
-<td><code>acceptance-scenarios.md</code>, <code>domain-modeling.md</code>, <code>architecture-overview.md</code>, <code>component-card.md</code>, <code>metric-spec.md</code>, <code>release-packet.md</code>, <code>docs-tooling-decision.md</code>, <code>plan-quality-check.md</code>, <code>agent-task-packet.md</code>, <code>project-readiness.json</code> and <code>behavioral-workflows.json</code> cover ATDD/BDD traceability, conditional DDD domain modeling, bounded-context-to-architecture traceability, ubiquitous language traceability, optional <code>fsd_structure</code>, metric hardening, evidence-before-completion, docs tooling selection, conditional readiness statuses, no-placeholder planning, two-stage review and fresh-context handoff.</td>
+<td><code>acceptance-scenarios.md</code>, <code>domain-modeling.md</code>, <code>architecture-overview.md</code>, <code>component-card.md</code>, <code>metric-spec.md</code>, <code>release-packet.md</code>, <code>docs-tooling-decision.md</code>, <code>plan-quality-check.md</code>, <code>agent-task-packet.md</code>, <code>project-readiness.json</code> и <code>behavioral-workflows.json</code> cover ATDD/BDD traceability, conditional DDD domain modeling, bounded-context-to-architecture traceability, ubiquitous language traceability, optional <code>fsd_structure</code>, metric hardening, evidence-before-completion, docs tooling selection, conditional readiness statuses, no-placeholder planning, two-stage review и fresh-context handoff.</td>
 </tr>
 </tbody>
 </table>
-<p>First-run intake is visible in the runtime route packet, lifecycle skills and behavioral evals for empty, broken, existing control-plane and complex system starts. Release packaging is visible in <code>usage_mode</code>, fixture evals, renderer output, lifecycle skills, and the packaged <code>release-packaging.md</code> / <code>release-readiness.md</code> templates. Dedicated operator docs now live in <a href="scenarios.html">scenarios</a>, <a href="behavioral-evals.html">behavioral evals</a> and <a href="codex-compatibility.html">Codex compatibility</a>.</p>
-<p>Generation is staged-first. Existing user-authored files are preserved outside managed sections:</p>
+<p>First-run intake является visible в runtime route packet, lifecycle skills и behavioral evals для empty, broken, existing control-plane и complex system starts. Release packaging является visible в <code>usage_mode</code>, fixture evals, renderer output, lifecycle skills, и packaged <code>release-packaging.md</code> / <code>release-readiness.md</code> templates. Dedicated operator docs now live в <a href="scenarios.html">scenarios</a>, <a href="behavioral-evals.html">behavioral evals</a> и <a href="codex-compatibility.html">Codex compatibility</a>.</p>
+<p>Generation является staged-first. Existing user-authored files являются preserved outside managed sections:</p>
 <div class="highlight"><pre><span></span><code>&lt;!-- product-agent-os:start section-id --&gt;
 ...
 &lt;!-- product-agent-os:end section-id --&gt;
 </code></pre></div>
-<p>Если existing file не имеет managed markers, plugin stages a companion proposal instead of overwriting it.</p>
+<p>Если existing file не имеет managed markers, plugin stages companion proposal instead из overwriting it.</p>
 <h2 id="local-commands">Local commands<a class="headerlink" href="#local-commands" title="Permanent link">&para;</a></h2>
 <p>Read-only infrastructure plan:</p>
 <div class="highlight"><pre><span></span><code><span class="n">python</span> <span class="n">plugins</span><span class="p">\</span><span class="n">product-agent-os</span><span class="p">\</span><span class="n">scripts</span><span class="p">\</span><span class="n">render_infrastructure</span><span class="p">.</span><span class="n">py</span> <span class="p">&lt;</span><span class="n">workspace</span><span class="p">&gt;</span> <span class="p">-</span><span class="n">-dry-run</span>
 </code></pre></div>
-<p>Stage generated artifacts outside the target workspace:</p>
+<p>Stage generated artifacts outside target workspace:</p>
 <div class="highlight"><pre><span></span><code><span class="n">python</span> <span class="n">plugins</span><span class="p">\</span><span class="n">product-agent-os</span><span class="p">\</span><span class="n">scripts</span><span class="p">\</span><span class="n">render_infrastructure</span><span class="p">.</span><span class="n">py</span> <span class="p">&lt;</span><span class="n">workspace</span><span class="p">&gt;</span> <span class="p">-</span><span class="n">-stage</span> <span class="p">&lt;</span><span class="n">stage-dir</span><span class="p">&gt;</span>
 </code></pre></div>
-<p>Plan merge from staged artifacts:</p>
+<p>Plan merge из staged artifacts:</p>
 <div class="highlight"><pre><span></span><code><span class="n">python</span> <span class="n">plugins</span><span class="p">\</span><span class="n">product-agent-os</span><span class="p">\</span><span class="n">scripts</span><span class="p">\</span><span class="n">merge_infrastructure</span><span class="p">.</span><span class="n">py</span> <span class="p">&lt;</span><span class="n">workspace</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="n">stage-dir</span><span class="p">&gt;</span> <span class="p">-</span><span class="n">-plan</span>
 </code></pre></div>
-<p>Apply requires an approval record:</p>
+<p>Применить требует approval record:</p>
 <div class="highlight"><pre><span></span><code><span class="n">python</span> <span class="n">plugins</span><span class="p">\</span><span class="n">product-agent-os</span><span class="p">\</span><span class="n">scripts</span><span class="p">\</span><span class="n">merge_infrastructure</span><span class="p">.</span><span class="n">py</span> <span class="p">&lt;</span><span class="n">workspace</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="n">stage-dir</span><span class="p">&gt;</span> <span class="p">-</span><span class="n">-apply</span> <span class="p">-</span><span class="n">-approval</span><span class="o">-file</span> <span class="p">&lt;</span><span class="n">approval</span><span class="p">.</span><span class="n">json</span><span class="p">&gt;</span>
 </code></pre></div>
-<p>Run Codex-only runtime contract mode:</p>
+<p>Запустите Codex-only runtime contract mode:</p>
 <div class="highlight"><pre><span></span><code><span class="n">python</span> <span class="n">plugins</span><span class="p">\</span><span class="n">product-agent-os</span><span class="p">\</span><span class="n">scripts</span><span class="p">\</span><span class="n">run_codex_runtime_runner</span><span class="p">.</span><span class="n">py</span> <span class="p">&lt;</span><span class="n">workspace</span><span class="p">&gt;</span> <span class="p">-</span><span class="n">-contract</span>
 </code></pre></div>
-<p>Allow route recommendation to a Codex subagent when the current Codex thread explicitly permits it:</p>
+<p>Allow route recommendation к Codex subagent когда текущий Codex thread explicitly permits it:</p>
 <div class="highlight"><pre><span></span><code><span class="n">python</span> <span class="n">plugins</span><span class="p">\</span><span class="n">product-agent-os</span><span class="p">\</span><span class="n">scripts</span><span class="p">\</span><span class="n">run_codex_runtime_runner</span><span class="p">.</span><span class="n">py</span> <span class="p">&lt;</span><span class="n">workspace</span><span class="p">&gt;</span> <span class="p">-</span><span class="n">-contract</span> <span class="p">-</span><span class="n">-allow-subagents</span>
 </code></pre></div>
-<p>Run plugin fixture evals:</p>
+<p>Запустите plugin fixture evals:</p>
 <div class="highlight"><pre><span></span><code><span class="n">python</span> <span class="n">plugins</span><span class="p">\</span><span class="n">product-agent-os</span><span class="p">\</span><span class="n">scripts</span><span class="p">\</span><span class="n">run_fixture_eval</span><span class="p">.</span><span class="n">py</span>
 </code></pre></div>
-<h2 id="task-24-self-verification-metrics-loop">Task 24 self-verification metrics loop<a class="headerlink" href="#task-24-self-verification-metrics-loop" title="Permanent link">&para;</a></h2>
-<p>Task 24 adds a local, read-only <code>agent_skill_metrics_loop</code> contract for reviewing agents, skills, prompt/policy packs, router/tool policies and harness versions after real work leaves evidence. The loop collects a target registry, validates trace intake, checks dataset quality, records local grader summaries, blocks uncalibrated grader/judge calibration, builds cadence recommendation values <code>L0</code>, <code>L1</code>, <code>L2</code> and <code>L3</code>, and writes staged scorecard ledger or report packets.</p>
-<p>Main files and commands:</p>
+<h2 id="self-verification-metrics-loop">Self-verification metrics loop<a class="headerlink" href="#self-verification-metrics-loop" title="Permanent link">&para;</a></h2>
+<p>Product-Agent OS включает local, read-only <code>agent_skill_metrics_loop</code> contract для reviewing agents, skills, prompt/policy packs, router/tool policies и harness versions после real work leaves evidence. Цикл collects target registry, проверяет trace intake, checks dataset quality, records local grader summaries, blocks uncalibrated grader/judge calibration, builds cadence recommendation values <code>L0</code>, <code>L1</code>, <code>L2</code> и <code>L3</code>, и пишет staged scorecard ledger или report packets.</p>
+<p>Main files и commands:</p>
 <ul>
-<li><code>plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py</code> - source priority, target registry, trace intake, dataset quality, grader/judge calibration, metrics, scorecards, cadence recommendation and run-record contracts.</li>
-<li><code>plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics_report.py</code> - redacted offline report rendering for <code>agent-skill-evaluation-report.html</code>.</li>
-<li><code>plugins/product-agent-os/scripts/render_agent_skill_metrics_report.py</code> - dry-run or stage-only report CLI.</li>
-<li><code>.codex/artifact-templates/agent-skill-scorecard-ledger.md</code>, <code>.codex/artifact-templates/agent-skill-metrics-daily.md</code>, <code>.codex/artifact-templates/agent-skill-metrics-weekly.md</code> and <code>.codex/artifact-templates/agent-skill-update-candidate.md</code> - generated review artifacts.</li>
+<li><code>plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py</code> - source priority, target registry, trace intake, dataset quality, grader/judge calibration, metrics, scorecards, cadence recommendation и run-record contracts.</li>
+<li><code>plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics_report.py</code> - redacted offline report rendering для <code>agent-skill-evaluation-report.html</code>.</li>
+<li><code>plugins/product-agent-os/scripts/render_agent_skill_metrics_report.py</code> - dry-run или stage-only report CLI.</li>
+<li><code>.codex/artifact-templates/agent-skill-scorecard-ledger.md</code>, <code>.codex/artifact-templates/agent-skill-metrics-daily.md</code>, <code>.codex/artifact-templates/agent-skill-metrics-weekly.md</code> и <code>.codex/artifact-templates/agent-skill-update-candidate.md</code> - generated review artifacts.</li>
 </ul>
-<p>The source-of-truth policy remains explicit: control-plane artifacts, run records, trace/eval packets and accepted gaps can support metrics; generated dashboard/report HTML, memory, raw chat logs and unsupported community claims cannot. A report is not source of truth. All metrics outputs are staged evidence only, not proof that a real project is semantically ready.</p>
-<p>Approval boundary: Product-Agent OS performs no live eval/model/API calls, creates no active schedules, makes no external writes, applies no modernization candidates, and allows no self-applied updates. A modernization candidate needs owner review, rollback target and explicit approval state before any target workspace, skill, prompt/policy pack, router/tool policy or harness configuration changes.</p>
-<h2 id="task-25-project-code-graph-and-cockpit">Task 25 project code graph and cockpit<a class="headerlink" href="#task-25-project-code-graph-and-cockpit" title="Permanent link">&para;</a></h2>
-<p>Task 25 Batch 13, Batch 14, Batch 15 and Batch 16 add a local read-only graph foundation and generated cockpit for project navigation. The scanner inventories files, emits stable file-level graph nodes and <code>contains</code> edges, adds Python AST package/module/class/function/method overlays, adds conservative import/call/test edges, builds structured overlays for parseable Markdown, OpenAPI/Swagger, AsyncAPI, DBML, SQL, JSON, YAML, Mermaid and PlantUML inputs, validates a controlled ontology, records manifest freshness/provenance, stores observation records with relative paths/spans/fingerprints and supports temporal edge invalidation/supersession helpers. Query mode reads existing JSON/JSONL graph artifacts to produce bounded <code>neighbors</code>, <code>path</code>, <code>trace</code>, <code>impact</code>, <code>affected_tests</code>, <code>changed_since</code>, <code>why_changed</code>, <code>read_order</code>, <code>hotspots</code>, <code>node</code>, <code>status</code> and <code>search</code> packets. It excludes raw source bodies by default and redacts local absolute paths or secret-like values from returned packets.</p>
-<p>Main files and commands:</p>
+<p>Политика канонического источника остается explicit: control-plane artifacts, <code>run records</code>, trace/eval packets и accepted gaps могут поддерживать metrics; generated dashboard/report HTML, memory, raw chat logs и unsupported community claims не могут. Report не является источником истины. Все metrics outputs являются только staged evidence, а не proof того, что real project является semantically ready.</p>
+<p>Approval boundary: Product-Agent OS не выполняет live eval/model/API calls, не создает active schedules, не делает external writes, не applies modernization candidates и не allows self-applied updates. Modernization candidate требует owner review, rollback target и explicit approval state до изменений target workspace, skill, prompt/policy pack, router/tool policy или harness configuration.</p>
+<h2 id="project-code-graph-cockpit">Project code graph и cockpit<a class="headerlink" href="#project-code-graph-cockpit" title="Permanent link">&para;</a></h2>
+<p>Local read-only graph foundation и generated cockpit поддерживают project navigation. Scanner inventories files, emits stable file-level graph nodes и <code>contains</code> edges, adds Python AST package/module/class/function/method overlays, adds conservative import/call/test edges, builds structured overlays для parseable Markdown, OpenAPI/Swagger, AsyncAPI, DBML, SQL, JSON, YAML, Mermaid и PlantUML inputs, проверяет controlled ontology, records manifest freshness/provenance, stores observation records с relative paths/spans/fingerprints и поддерживает temporal edge invalidation/supersession helpers. Query mode читает existing JSON/JSONL graph artifacts и produce bounded <code>neighbors</code>, <code>path</code>, <code>trace</code>, <code>impact</code>, <code>affected_tests</code>, <code>changed_since</code>, <code>why_changed</code>, <code>read_order</code>, <code>hotspots</code>, <code>node</code>, <code>status</code> и <code>search</code> packets. Это исключает raw source bodies через default и redacts local absolute paths или secret-like values из returned packets.</p>
+<p>Main files и commands:</p>
 <ul>
 <li><code>plugins/product-agent-os/scripts/product_agent_os/project_code_graph.py</code> - graph JSON/JSONL packet builder.</li>
-<li><code>plugins/product-agent-os/scripts/product_agent_os/project_graph_adapters.py</code> - Python AST scanner and unsupported-language adapter boundary.</li>
-<li><code>plugins/product-agent-os/scripts/product_agent_os/project_graph_chunking.py</code> - structured docs/contracts/schema/diagram overlays, partitions, aliases and readiness summaries.</li>
-<li><code>plugins/product-agent-os/scripts/product_agent_os/project_graph_manifest.py</code> - file fingerprints, freshness and provenance.</li>
-<li><code>plugins/product-agent-os/scripts/product_agent_os/project_graph_observations.py</code> - observation records and edge delta lineage.</li>
-<li><code>plugins/product-agent-os/scripts/product_agent_os/project_graph_ontology.py</code> - controlled ontology and graph schema validation.</li>
+<li><code>plugins/product-agent-os/scripts/product_agent_os/project_graph_adapters.py</code> - Python AST scanner и unsupported-language adapter boundary.</li>
+<li><code>plugins/product-agent-os/scripts/product_agent_os/project_graph_chunking.py</code> - structured docs/contracts/schema/diagram overlays, partitions, aliases и readiness summaries.</li>
+<li><code>plugins/product-agent-os/scripts/product_agent_os/project_graph_manifest.py</code> - file fingerprints, freshness и provenance.</li>
+<li><code>plugins/product-agent-os/scripts/product_agent_os/project_graph_observations.py</code> - observation records и edge delta lineage.</li>
+<li><code>plugins/product-agent-os/scripts/product_agent_os/project_graph_ontology.py</code> - controlled ontology и graph schema validation.</li>
 <li><code>plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py</code> - bounded graph-only query packets.</li>
 <li><code>plugins/product-agent-os/scripts/product_agent_os/project_graph_analysis.py</code> - source-free graph analysis report.</li>
-<li><code>plugins/product-agent-os/scripts/product_agent_os/project_cockpit_model.py</code> - eight-page cockpit information architecture and Code Flow section model.</li>
-<li><code>plugins/product-agent-os/scripts/product_agent_os/project_graph_visual_model.py</code> - Graphology-compatible static projection, large-graph bounds, selected evidence and local Graphology/Sigma vendor boundary.</li>
-<li><code>plugins/product-agent-os/scripts/product_agent_os/project_graph_renderer.py</code> - offline stage-only cockpit HTML/JSON renderer with no external assets.</li>
-<li><code>plugins/product-agent-os/scripts/scan_project_code_graph.py</code> - dry-run, stage-only scanner and graph query CLI.</li>
-<li><code>plugins/product-agent-os/assets/templates/project-graph/</code> - local cockpit, graph, Code Flow and CSS templates.</li>
+<li><code>plugins/product-agent-os/scripts/product_agent_os/project_cockpit_model.py</code> - eight-page cockpit information architecture и Code Flow section model.</li>
+<li><code>plugins/product-agent-os/scripts/product_agent_os/project_graph_visual_model.py</code> - Graphology-compatible static projection, large-graph bounds, selected evidence и local Graphology/Sigma vendor boundary.</li>
+<li><code>plugins/product-agent-os/scripts/product_agent_os/project_graph_renderer.py</code> - offline stage-only cockpit HTML/JSON renderer с нет external assets.</li>
+<li><code>plugins/product-agent-os/scripts/scan_project_code_graph.py</code> - dry-run, stage-only scanner и graph query CLI.</li>
+<li><code>plugins/product-agent-os/assets/templates/project-graph/</code> - local cockpit, graph, Code Flow и CSS templates.</li>
 </ul>
 <div class="highlight"><pre><span></span><code><span class="n">python</span> <span class="n">plugins</span><span class="p">\</span><span class="n">product-agent-os</span><span class="p">\</span><span class="n">scripts</span><span class="p">\</span><span class="n">scan_project_code_graph</span><span class="p">.</span><span class="n">py</span> <span class="p">&lt;</span><span class="n">workspace</span><span class="p">&gt;</span> <span class="p">-</span><span class="n">-dry-run</span>
 <span class="n">python</span> <span class="n">plugins</span><span class="p">\</span><span class="n">product-agent-os</span><span class="p">\</span><span class="n">scripts</span><span class="p">\</span><span class="n">scan_project_code_graph</span><span class="p">.</span><span class="n">py</span> <span class="p">&lt;</span><span class="n">workspace</span><span class="p">&gt;</span> <span class="p">-</span><span class="n">-stage</span> <span class="n">C</span><span class="p">:\</span><span class="n">tmp</span><span class="p">\</span><span class="n">product-agent-os-graph-stage</span>
 <span class="n">python</span> <span class="n">plugins</span><span class="p">\</span><span class="n">product-agent-os</span><span class="p">\</span><span class="n">scripts</span><span class="p">\</span><span class="n">scan_project_code_graph</span><span class="p">.</span><span class="n">py</span> <span class="p">&lt;</span><span class="n">workspace</span><span class="p">&gt;</span> <span class="p">-</span><span class="n">-query</span> <span class="n">neighbors</span> <span class="p">-</span><span class="n">-graph</span> <span class="n">C</span><span class="p">:\</span><span class="n">tmp</span><span class="p">\</span><span class="n">product-agent-os-graph-stage</span><span class="p">\.</span><span class="n">codex</span><span class="p">\</span><span class="n">product-agent-os</span><span class="p">\</span><span class="n">project-code-graph</span><span class="p">.</span><span class="n">json</span> <span class="p">-</span><span class="n">-node-id</span> <span class="k">function</span><span class="p">:</span><span class="n">app</span><span class="p">.</span><span class="n">main</span><span class="p">.</span><span class="n">main</span>
 </code></pre></div>
-<p>Stage mode must use an output directory outside the target workspace. Query mode reads an existing graph artifact and does not scan source text. Existing graph artifacts in the target workspace are not modified. Batch 15 remains conservative: dynamic dispatch, framework wiring, runtime routes and semantic/rationale extraction are not verified dependency proof. Runtime/status summaries and graph analysis reports are orientation evidence only.</p>
-<p>Batch 16 cockpit rendering uses <code>render_project_graph_cockpit_plan()</code> for dry-run plans and <code>stage_project_graph_cockpit()</code> for explicit stage directories outside the target workspace. It stages <code>.codex/product-agent-os/project-cockpit.html</code> and <code>.codex/product-agent-os/project-cockpit.json</code>. The staged HTML exposes exactly eight top-level pages, keeps Code Flow inside <code>Code Intelligence</code>, embeds safe JSON, uses static local CSS/JS, has filter/reset/copy/select commands, selected-node evidence, fallback static table, mobile layout and generated-view-only wording. Graphology and Sigma are recorded as local Graphology/Sigma vendor-only capabilities; no vendored assets are currently bundled, so the verified renderer uses the static fallback path with Graphology-compatible static projection data.</p>
-<p>Task 25 Batch 17 adds fixture structural fields, a search-quality eval loop and future backend and semantic gates. Fixture eval records graph contract, no external assets, redaction, scale bounds, generated-view-only, eight-page cockpit structure, section preservation, cockpit generated-view boundary, <code>project_graph_search_quality_present</code> and <code>project_graph_future_backend_semantic_gates_present</code>. Search-quality evals are local and deterministic: they record symbol recall, top-k/MRR, trace success or failure labels, affected-test precision, edge density and explicit thresholds. Batch 19, Batch 20 and Batch 21 later implement the approved static index, local backend gate and local deterministic semantic retrieval gate; live database/server, live external model/API embedding or cross-encoder providers, LLM semantic extraction and rationale/comment extraction stay outside the approved surface unless explicit approval defines redaction, cache, token budget, eval threshold and rollback path.</p>
-<p>Task 25 Batch 18 <code>T10-CG-V2-M31..M32</code> is the focused/full verification closure for the same baseline. Batch 18 evidence records graph/cockpit/search, status/runtime and fixture/lifecycle/docs focused suites, then full unittest ran 664 tests with <code>OK</code>; fixture eval exited <code>0</code> for 91 fixture directories; transcript eval exited <code>0</code> with 17 sessions and 0 failures; Codex compatibility returned <code>status: compatible</code>; strict MkDocs and diff hygiene passed. The explicit-only git boundary remains in force. Batch 19, Batch 20, Batch 21, Batch 22 and Batch 23 are approved implemented extensions; Batch 22 is limited to staged proposals, not canonical graph facts, and Batch 23 is limited to generated extension closure evidence, rollback/data deletion proof and graph-only fallback. Live production server, live external model/API extraction and canonical graph mutation still require separate explicit approval.</p>
+<p>Stage mode должен использовать output directory outside target workspace. Query mode reads existing graph artifact и не scan source text. Existing graph artifacts в target workspace являются не modified. Этот graph остается conservative: dynamic dispatch, framework wiring, runtime routes и semantic/rationale extraction являются не verified dependency proof. Runtime/status summaries и graph analysis reports являются orientation evidence only.</p>
+<p>Cockpit rendering использует <code>render_project_graph_cockpit_plan()</code> для dry-run plans и <code>stage_project_graph_cockpit()</code> для explicit stage directories outside target workspace. Это stages <code>.codex/product-agent-os/project-cockpit.html</code> и <code>.codex/product-agent-os/project-cockpit.json</code>. Этот staged HTML exposes exactly eight top-level pages, keeps Code Flow inside <code>Code Intelligence</code>, embeds safe JSON, использует static local CSS/JS, имеет filter/reset/copy/select commands, selected-node evidence, fallback static table, mobile layout и generated-view-only wording. Graphology и Sigma являются recorded как local Graphology/Sigma vendor-only capabilities; нет vendored assets являются currently bundled, so verified renderer использует static fallback path с Graphology-compatible static projection data.</p>
+<p>Fixture structural fields, search-quality evals, local backend gates и semantic gates keep graph features bounded. Fixture eval records graph contract, нет external assets, redaction, scale bounds, generated-view-only, eight-page cockpit structure, section preservation, cockpit generated-view boundary, <code>project_graph_search_quality_present</code> и <code>project_graph_future_backend_semantic_gates_present</code>. Search-quality evals являются local и deterministic: they record symbol recall, top-k/MRR, trace success или failure labels, affected-test precision, edge density и explicit thresholds. Этот approved static index, local backend gate и local deterministic semantic retrieval gate являются implemented; live database/server, live external model/API embedding или cross-encoder providers, LLM semantic extraction и rationale/comment extraction stay outside approved surface пока explicit approval defines redaction, cache, token budget, eval threshold и rollback path.</p>
+<p>Focused и full verification следует cover graph/cockpit/search, status/runtime и fixture/lifecycle/docs suites до claiming readiness. Этот explicit-only git boundary остается в force. Approved extensions являются limited к staged proposals, generated extension closure evidence, rollback/data deletion proof и graph-only fallback. Live production server, live external model/API extraction и canonical graph mutation still требуют separate explicit approval.</p>
 <h2 id="codex-installation-boundary">Codex installation boundary<a class="headerlink" href="#codex-installation-boundary" title="Permanent link">&para;</a></h2>
-<p>Для Codex installation plugin должен быть доступен через plugin marketplace or curated plugin list, а package root должен содержать <code>.codex-plugin/plugin.json</code>. В этом репозитории package уже подготовлен локально under <code>plugins/product-agent-os/</code>; подключение к конкретной Codex App installation остается отдельным environment step and should follow current official Codex plugin docs.</p>
+<p>Для Codex installation plugin должен быть доступен через plugin marketplace или curated plugin list, а package root должен содержать <code>.codex-plugin/plugin.json</code>. В этом репозитории package уже подготовлен локально в рамках <code>plugins/product-agent-os/</code>; подключение к конкретной Codex App installation остается отдельным environment step и следует follow текущий official Codex plugin docs.</p>
 <p>Этот project intentionally keeps runtime code Codex-only:</p>
 <ul>
-<li>no separate OpenAI API key;</li>
-<li>no standalone Agents SDK application;</li>
-<li>no background MCP server started by plugin scripts; Context7 is declared as a bundled Codex MCP server and starts only when Codex enables that MCP configuration;</li>
-<li>no active automation created from templates;</li>
-<li>no plugin-root hook activation without explicit approval.</li>
+<li>нет separate OpenAI API key;</li>
+<li>нет standalone Agents SDK application;</li>
+<li>нет background MCP server started через plugin scripts; Context7 является declared как bundled Codex MCP server и начинается только когда Codex enables который MCP configuration;</li>
+<li>нет active automation created из templates;</li>
+<li>нет plugin-root hook activation без explicit approval.</li>
 </ul>
 <h2 id="guardrails">Guardrails<a class="headerlink" href="#guardrails" title="Permanent link">&para;</a></h2>
 <table>
@@ -4133,57 +4171,57 @@ Additional sources: <a href="https://developers.openai.com/codex/mcp">Codex MCP<
 </thead>
 <tbody>
 <tr>
-<td>Source policy</td>
-<td><code>validate_source_policy.py</code> blocks unsupported OpenAI/Codex claims and secret-like content</td>
+<td>Политика источников</td>
+<td><code>validate_source_policy.py</code> blocks unsupported OpenAI/Codex claims и secret-like content</td>
 </tr>
 <tr>
 <td>Automation policy</td>
-<td><code>validate_automation_candidate.py</code> requires manual success evidence, owner, cadence, verification, rollback and approval</td>
+<td><code>validate_automation_candidate.py</code> требует manual success evidence, owner, cadence, verification, rollback и approval</td>
 </tr>
 <tr>
 <td>Staged manifest</td>
-<td>stage paths must stay inside stage root and target paths inside workspace</td>
+<td>stage paths должен stay inside stage root и target paths inside workspace</td>
 </tr>
 <tr>
 <td>Approval record</td>
-<td>approved writes require explicit decisions and matching plan digest</td>
+<td>approved пишет требуют explicit decisions и matching plan digest</td>
 </tr>
 <tr>
 <td>Rollback</td>
-<td>apply can produce rollback manifest for later rollback</td>
+<td>apply может produce rollback manifest для later rollback</td>
 </tr>
 <tr>
 <td>Runtime runner</td>
-<td>validates lifecycle route, approval boundary, source policy, handoff shape and redaction</td>
+<td>проверяет lifecycle route, approval boundary, политика источников, handoff shape и redaction</td>
 </tr>
 <tr>
 <td>Transcript/session eval runner</td>
-<td><code>run_transcript_eval.py</code> replays synthetic or redacted sessions against <code>behavioral-workflows.json</code> without external model calls</td>
+<td><code>run_transcript_eval.py</code> replays synthetic или redacted sessions against <code>behavioral-workflows.json</code> без external model calls</td>
 </tr>
 <tr>
 <td>Redaction</td>
-<td>secret assignments, local absolute paths and private data markers are redacted from runner result</td>
+<td>secret assignments, local absolute paths и private data markers являются redacted из runner result</td>
 </tr>
 <tr>
 <td>Engineering standards</td>
-<td>templates require product metrics, architecture boundary, test/eval gates, docs impact and measurement notes</td>
+<td>templates требуют product metrics, architecture boundary, test/eval gates, влияние на docs и measurement notes</td>
 </tr>
 <tr>
 <td>Methodology discovery</td>
-<td>workspace audit reports architecture docs, ADR, domain model, architecture context maps, optional <code>fsd_structure</code>, OpenAPI, AsyncAPI, Storybook, DB docs, CODEOWNERS, CI, evals and metrics signals</td>
+<td>workspace audit reports architecture docs, ADR, domain model, architecture context maps, optional <code>fsd_structure</code>, OpenAPI, AsyncAPI, Storybook, DB docs, CODEOWNERS, CI, evals и metrics signals</td>
 </tr>
 <tr>
 <td>Scenario routing</td>
-<td><code>usage_mode</code> distinguishes completed workflows, partial methodology gates, and base modes; it returns minimum artifacts plus evidence gaps</td>
+<td><code>usage_mode</code> distinguishes completed workflows, partial methodology gates, и base modes; это returns minimum artifacts plus evidence gaps</td>
 </tr>
 </tbody>
 </table>
-<h2 id="verification-commands-for-this-repo">Verification commands for this repo<a class="headerlink" href="#verification-commands-for-this-repo" title="Permanent link">&para;</a></h2>
-<p>After docs or nav changes:</p>
+<h2 id="commands-repo">Проверка commands для эта repo<a class="headerlink" href="#commands-repo" title="Permanent link">&para;</a></h2>
+<p>After docs или nav changes:</p>
 <div class="highlight"><pre><span></span><code><span class="n">python</span> <span class="n">tools</span><span class="p">\</span><span class="n">check_docs</span><span class="p">.</span><span class="n">py</span>
 <span class="nv">$env:PYTHONPATH</span><span class="p">=</span><span class="s1">&#39;C:\tmp\codex_docs_mkdocs&#39;</span><span class="p">;</span> <span class="n">python</span> <span class="n">-m</span> <span class="n">mkdocs</span> <span class="n">build</span> <span class="p">-</span><span class="n">-strict</span>
 </code></pre></div>
-<p>After plugin scripts, templates, fixtures or tests change:</p>
+<p>After plugin scripts, templates, fixtures или tests change:</p>
 <div class="highlight"><pre><span></span><code><span class="n">python</span> <span class="n">-m</span> <span class="n">unittest</span> <span class="n">discover</span> <span class="n">-s</span> <span class="n">tests</span> <span class="n">-p</span> <span class="s2">&quot;test_*.py&quot;</span> <span class="n">-v</span>
 <span class="n">python</span> <span class="n">plugins</span><span class="p">\</span><span class="n">product-agent-os</span><span class="p">\</span><span class="n">scripts</span><span class="p">\</span><span class="n">run_fixture_eval</span><span class="p">.</span><span class="n">py</span>
 </code></pre></div>
@@ -4241,6 +4279,8 @@ Additional sources: <a href="https://developers.openai.com/codex/mcp">Codex MCP<
 
 
       <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+
+        <script src="../assets/javascripts/local-file-i18n.js"></script>
 
         <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
 
