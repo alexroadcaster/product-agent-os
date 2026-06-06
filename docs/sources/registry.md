@@ -3262,11 +3262,11 @@ title: "Product-Agent OS Batch 35 approval packet draft"
 url: "docs/sources/product-agent-os-batch35-approval-packet-draft.md; docs/product-agent-os/approval-bound-real-testing.md; docs/product-agent-os/packaging-and-closure.md; docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; RUNLOG.md; EVALS.md; TEST.md"
 type: "internal documentation"
 source_status: "project-authored"
-checked_at: "2026-06-03"
-summary: "Batch 35 approval packet draft for `T10-LIVE-M37..M41`. It separates `approved_local_runtime_launch`, `actual_browser_automation_smoke`, `approved_provider_api_pilot`, `approved_canonical_mutation_pilot` and `explicit_git_release_pr_action` into independent approval surfaces."
-relevance: "Provides the Batch 34 handoff artifact for approval-bound real testing without granting approval or executing any Batch 35 action."
+checked_at: "2026-06-06"
+summary: "Batch 35 approval packet draft for `T10-LIVE-M37..M41`. It separates `approved_local_runtime_launch`, `actual_browser_automation_smoke`, `approved_provider_api_pilot`, `approved_canonical_mutation_pilot` and `explicit_git_release_pr_action` into independent approval surfaces, and now records M37, M38, M39 and M40 current-run addenda plus M41 preflight evidence."
+relevance: "Provides the Batch 34 handoff artifact for approval-bound real testing and the source packet where selected Batch 35 action evidence is summarized without granting bundled approval."
 trust_level: "high"
-verification_status: "Draft-only handoff artifact. It keeps `approval_status: approval_required`, names exact evidence files and stop conditions, and does not start a live server, run browser automation, call providers/live external model/API endpoints, mutate the canonical graph or perform git stage/commit/push/PR."
+verification_status: "Packet plus current-run addenda. M37 records `live-server-run-evidence.json`; M38 records `browser-automation-smoke.json`, Playwright Chromium, `desktop.png`, `mobile.png`, `console_errors: 0`, `network_failures: 0`, `mobile_overflow: false`, generated-view labels, source-boundary labels and `server_shutdown_complete: true`; M39 records `provider-call-evidence.json`, `provider-eval-report.json`, `codex_user_session`, `OPENAI_API_KEY used: false`, direct API call from workspace shell: false and `provider_secret_stored: false`; M40 records `canonical-mutation-run.json`, `graph-mutation-journal.jsonl`, `rollback-proof.json`, `stage_root_only`, `canonical_graph_source_mutated: false`, `operation_count: 1`, `journal_entry_count: 1` and `rollback_restores_previous_graph_digest: true`; M41 records `git-release-pr-evidence.md` preflight with `blocked_pending_explicit_git_release_fields`, `missing_required_fields` and `git_stage_commit_push_pr_performed: false`."
 ```
 
 ```yaml
@@ -3274,9 +3274,69 @@ title: "Product-Agent OS Track 10 Task 26 Batch 35 approval-bound real testing e
 url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; docs/sources/product-agent-os-batch35-approval-packet-draft.md; docs/product-agent-os/index.md; docs/product-agent-os/technical.md; docs/product-agent-os/scenarios.md; README.md; plugins/product-agent-os/README.md; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
 type: "internal documentation"
 source_status: "project-authored"
-checked_at: "2026-06-03"
-summary: "Track 10 Task 26 Batch 35 `T10-LIVE-M37..M41` planning update for the Approval-Bound Real Testing Execution Matrix. It adds planned surfaces `approved_local_runtime_launch`, `actual_browser_automation_smoke`, `approved_provider_api_pilot`, `approved_canonical_mutation_pilot` and `explicit_git_release_pr_action` under approval boundary `batch35_approval_bound_real_testing_execution`."
-relevance: "Batch 35 maps the residual Batch 33 risks into future approval-bound execution rows after Batch 24 governance, Batch 25 runtime contract, Batch 31 audit/observability, Batch 32 target consent, Batch 33 QA/performance/stabilization and Batch 34 packaging/docs closure are current."
+checked_at: "2026-06-06"
+summary: "Track 10 Task 26 Batch 35 `T10-LIVE-M37..M41` approval-bound real testing execution matrix. `T10-LIVE-M37` is executed through `approved_local_runtime_launch` with `live-server-run-evidence.json`; `T10-LIVE-M38` is executed through `actual_browser_automation_smoke` with `browser-automation-smoke.json`; `T10-LIVE-M39` is executed through `approved_provider_api_pilot` with `provider-call-evidence.json` and `provider-eval-report.json`; `T10-LIVE-M40` is executed through `approved_canonical_mutation_pilot` with `canonical-mutation-run.json`, `graph-mutation-journal.jsonl` and `rollback-proof.json`; `T10-LIVE-M41` is blocked at git release/PR preflight with `git-release-pr-evidence.md`."
+relevance: "Batch 35 maps residual Batch 33 risks into approval-bound execution rows after Batch 24 governance, Batch 25 runtime contract, Batch 31 audit/observability, Batch 32 target consent, Batch 33 QA/performance/stabilization and Batch 34 packaging/docs closure are current."
 trust_level: "high"
-verification_status: "Planning/control-plane update only. It adds matrix rows for `live-server-run-evidence.json`, `browser-automation-smoke.json`, `provider-call-evidence.json`, `canonical-mutation-run.json` and `git-release-pr-evidence.md`; it does not start a live server, run browser automation, call providers/live external model/API endpoints, mutate the canonical graph or perform git stage/commit/push/PR. Verification is limited to docs/control-plane sync checks for this planning slice."
+verification_status: "M37 current-run execution evidence records `live-server-run-evidence.json` with `status: passed`, short-lived local server bound to `127.0.0.1`, health/query/auth/public-bind/write-block checks, `server_shutdown_complete: true` and `redaction.ok: true`. M38 current-run execution evidence records `browser-automation-smoke.json` with `status: passed`, Playwright Chromium, `desktop.png`, `mobile.png`, `console_errors: 0`, `network_failures: 0`, `mobile_overflow: false`, generated-view labels, source-boundary labels, local-only network and `server_shutdown_complete: true`. M39 current-run execution evidence records `provider-call-evidence.json` and `provider-eval-report.json` with `status: passed`, provider surface `codex_user_session`, `OPENAI_API_KEY used: false`, direct API call from workspace shell: false, `provider_secret_stored: false`, no canonical mutation and no git action. M40 current-run execution evidence records `canonical-mutation-run.json` with `status: passed`, target scope `plugins/product-agent-os/scripts`, `stage_root_only`, `canonical_graph_source_mutated: false`, `operation_count: 1`, `journal_entry_count: 1`, `rollback_restores_previous_graph_digest: true`, no provider/live external model/API calls and no git action. M41 preflight records `blocked_pending_explicit_git_release_fields`, `git-release-pr-evidence.md`, `missing_required_fields` and no git stage/commit/push/PR."
+```
+
+```yaml
+title: "Product-Agent OS Batch 35 M37 approved local runtime launch evidence"
+url: "docs/sources/product-agent-os-batch35-approval-packet-draft.md; tmp/batch35-m37/.codex/product-agent-os/live-server-run-evidence.json; tmp/batch35-m37/.codex/product-agent-os/batch35-m37-approval.json; RUNLOG.md; TEST.md; EVALS.md; PLAN.md"
+type: "internal run evidence"
+source_status: "project-authored"
+checked_at: "2026-06-06"
+summary: "Task 26 Batch 35 `T10-LIVE-M37` executed `approved_local_runtime_launch` under `batch35_approval_bound_real_testing_execution`."
+relevance: "Provides the first Batch 35 real-testing execution row after owner selection of exactly one action. It records local-only runtime launch evidence while preserving the remaining approval boundaries."
+trust_level: "high"
+verification_status: "`live-server-run-evidence.json` records `status: passed`, a short-lived local server bound to `127.0.0.1`, health/query/auth/public-bind/write-block checks, `server_shutdown_complete: true`, `redaction.ok: true`, graph summary `node_count: 11608` and `edge_count: 16949`. Verification also ran `python tools\\check_docs.py`, prerequisite marker scan, `python -m unittest tests.product_agent_os.test_project_graph_live_runtime -v` with 4 tests and OK, `git diff --check` and `git status --short`. This M37 action did not run browser automation, did not call providers/live external model/API endpoints, did not mutate the canonical graph and did not perform git stage/commit/push/PR."
+```
+
+```yaml
+title: "Product-Agent OS Batch 35 M38 actual browser automation smoke evidence"
+url: "docs/sources/product-agent-os-batch35-approval-packet-draft.md; tmp/batch35-m38/.codex/product-agent-os/browser-automation-smoke.json; tmp/batch35-m38/.codex/product-agent-os/batch35-m38-approval.json; tmp/batch35-m38/.codex/product-agent-os/screenshots/desktop.png; tmp/batch35-m38/.codex/product-agent-os/screenshots/mobile.png; RUNLOG.md; TEST.md; EVALS.md; PLAN.md"
+type: "internal run evidence"
+source_status: "project-authored"
+checked_at: "2026-06-06"
+summary: "Task 26 Batch 35 `T10-LIVE-M38` executed `actual_browser_automation_smoke` under `batch35_approval_bound_real_testing_execution`."
+relevance: "Provides the second Batch 35 real-testing execution row after owner selection of exactly one action. It records browser automation evidence while preserving the remaining provider/API, canonical mutation and git approval boundaries."
+trust_level: "high"
+verification_status: "`browser-automation-smoke.json` records `status: passed`, Playwright Chromium, short-lived local server bound to `127.0.0.1`, desktop/mobile screenshots `desktop.png` and `mobile.png`, `console_errors: 0`, `page_errors: 0`, `network_failures: 0`, `bad_responses: 0`, local-only network, `mobile_overflow: false`, generated-view labels, source-boundary labels, `server_shutdown_complete: true`, graph summary `node_count: 11666` and `edge_count: 17013`. This M38 action did not call providers/live external model/API endpoints, did not mutate the canonical graph and did not perform git stage/commit/push/PR."
+```
+
+```yaml
+title: "Product-Agent OS Batch 35 M39 Codex session provider pilot evidence"
+url: "docs/sources/product-agent-os-batch35-approval-packet-draft.md; tmp/batch35-m39/.codex/product-agent-os/provider-call-evidence.json; tmp/batch35-m39/.codex/product-agent-os/provider-eval-report.json; tmp/batch35-m39/.codex/product-agent-os/batch35-m39-approval.json; RUNLOG.md; TEST.md; EVALS.md; PLAN.md"
+type: "internal run evidence"
+source_status: "project-authored"
+checked_at: "2026-06-06"
+summary: "Task 26 Batch 35 `T10-LIVE-M39` executed `approved_provider_api_pilot` through the current Codex App session boundary rather than `OPENAI_API_KEY`."
+relevance: "Provides the third Batch 35 real-testing execution row after owner selection of exactly one action. It records the user-session provider credential boundary while preserving canonical mutation and git approval boundaries."
+trust_level: "high"
+verification_status: "`provider-call-evidence.json` and `provider-eval-report.json` record `status: passed`, provider surface `codex_user_session`, `OPENAI_API_KEY used: false`, direct API call from workspace shell: false, `provider_secret_stored: false`, env-file write false, no canonical graph mutation and no git stage/commit/push/PR. The first harness run failed because the eval aggregator treated expected false values as failures; the harness was corrected to explicit expected-value matching and reran with passed status."
+```
+
+```yaml
+title: "Product-Agent OS Batch 35 M40 canonical mutation pilot evidence"
+url: "docs/sources/product-agent-os-batch35-approval-packet-draft.md; tmp/batch35-m40/.codex/product-agent-os/canonical-mutation-run.json; tmp/batch35-m40/.codex/product-agent-os/graph-mutation-journal.jsonl; tmp/batch35-m40/.codex/product-agent-os/rollback-proof.json; RUNLOG.md; TEST.md; EVALS.md; PLAN.md"
+type: "internal run evidence"
+source_status: "project-authored"
+checked_at: "2026-06-06"
+summary: "Task 26 Batch 35 `T10-LIVE-M40` executed `approved_canonical_mutation_pilot` under `batch35_approval_bound_real_testing_execution` as a staged-only canonical mutation pilot."
+relevance: "Provides the fourth Batch 35 real-testing execution row after owner selected Batch `T10-LIVE-M40..M41`, while preserving that canonical graph source promotion and git release/PR remain separate boundaries."
+trust_level: "high"
+verification_status: "`canonical-mutation-run.json` records `status: passed`, target scope `plugins/product-agent-os/scripts`, `stage_root_only`, `canonical_graph_source_mutated: false`, staged mutated graph copy created, `operation_count: 1`, `journal_entry_count: 1`, `graph-mutation-journal.jsonl` with inverse patch evidence, `rollback-proof.json` with `rollback_restores_previous_graph_digest: true`, `provider_call_allowed: false`, `external_call_performed: false` and `git_stage_commit_push_pr_performed: false`."
+```
+
+```yaml
+title: "Product-Agent OS Batch 35 M41 git release/PR preflight evidence"
+url: "docs/sources/product-agent-os-batch35-approval-packet-draft.md; tmp/batch35-m41/.codex/product-agent-os/git-release-pr-evidence.md; tmp/batch35-m41/.codex/product-agent-os/git-release-pr-packet.json; RUNLOG.md; TEST.md; EVALS.md; PLAN.md"
+type: "internal preflight evidence"
+source_status: "project-authored"
+checked_at: "2026-06-06"
+summary: "Task 26 Batch 35 `T10-LIVE-M41` reached git release/PR preflight and remained blocked because exact release branch, commit message, PR target and branch/write approval fields were not provided."
+relevance: "Documents why the final Batch 35 git action was not performed despite the owner selecting Batch `T10-LIVE-M40..M41`; prevents silent branch creation, current-branch push or PR creation."
+trust_level: "high"
+verification_status: "`git-release-pr-evidence.md` and `git-release-pr-packet.json` record `status: blocked_pending_explicit_git_release_fields`, current branch `main`, `dirty_file_count: 15`, `missing_required_fields`, `git_stage_commit_push_pr_performed: false`, `branch_created: false`, `commit_created: false`, `push_performed: false` and `pull_request_created: false`."
 ```
