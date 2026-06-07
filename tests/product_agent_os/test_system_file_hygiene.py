@@ -1,4 +1,6 @@
 import json
+from datetime import UTC, datetime
+import os
 import subprocess
 import sys
 import tempfile
@@ -113,6 +115,74 @@ class SystemFileHygieneTest(unittest.TestCase):
         invalid_packet = packet.copy()
         invalid_packet.pop("summary")
         self.assertIn("summary:required", validate_system_file_hygiene_audit(invalid_packet))
+
+    def test_batch36e_file_status_projection_is_bounded_secret_free_and_relative(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            _write_minimal_control_plane(root)
+            plan = root / "PLAN.md"
+            plan_text = "# PLAN.md\n\nOPENAI_API_KEY = \"sk-test\"\n"
+            plan.write_text(plan_text, encoding="utf-8")
+            written_plan_text = plan.read_bytes().decode("utf-8")
+            fixed_mtime = datetime(2026, 6, 5, 12, 0, 0, tzinfo=UTC).timestamp()
+            os.utime(plan, (fixed_mtime, fixed_mtime))
+            packet = build_system_file_hygiene_audit(
+                root,
+                audit_trigger="soft_size_review",
+                audit_started_at="2026-06-07T12:00:00+00:00",
+            )
+
+        statuses = {item["path"]: item for item in packet["file_statuses"]}
+        serialized = json.dumps(packet, sort_keys=True)
+        plan_status = statuses["PLAN.md"]
+
+        self.assertEqual(packet["last_audit_at"], "2026-06-07T12:00:00+00:00")
+        self.assertEqual(plan_status["path"], "PLAN.md")
+        self.assertEqual(plan_status["class"], "root_control_plane")
+        self.assertEqual(plan_status["owner"], "project root")
+        self.assertEqual(plan_status["state"], "blocked")
+        self.assertEqual(plan_status["severity"], "error")
+        self.assertEqual(plan_status["finding_count"], 1)
+        self.assertEqual(plan_status["size"], len(written_plan_text))
+        self.assertEqual(plan_status["line_count"], written_plan_text.count("\n") + 1)
+        self.assertEqual(plan_status["mtime_utc"], "2026-06-05T12:00:00+00:00")
+        self.assertEqual(plan_status["age_days"], 2)
+        self.assertRegex(plan_status["content_digest"], r"^sha256:[0-9a-f]{64}$")
+        self.assertEqual(plan_status["last_audit_at"], "2026-06-07T12:00:00+00:00")
+        self.assertNotIn(str(root), serialized)
+        self.assertNotIn("sk-test", serialized)
+        self.assertNotIn("OPENAI_API_KEY =", serialized)
+        self.assertEqual(validate_system_file_hygiene_audit(packet), [])
+
+        invalid_packet = json.loads(json.dumps(packet))
+        invalid_packet["file_statuses"][0]["path"] = str(root / "PLAN.md")
+        self.assertIn("file_statuses:invalid", validate_system_file_hygiene_audit(invalid_packet))
+
+    def test_batch36f_file_status_projection_includes_missing_and_unreadable_dashboard_states(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            _write_minimal_control_plane(root, omit={"EVALS.md"})
+            broken_skill = root / ".codex" / "skills" / "broken" / "SKILL.md"
+            broken_skill.parent.mkdir(parents=True)
+            broken_skill.write_bytes(b"\xff\xfe\x00")
+
+            packet = build_system_file_hygiene_audit(
+                root,
+                audit_trigger="status_dashboard_projection",
+                audit_started_at="2026-06-07T12:00:00+00:00",
+            )
+
+        statuses = {item["path"]: item for item in packet["file_statuses"]}
+
+        self.assertEqual(statuses["EVALS.md"]["state"], "missing")
+        self.assertEqual(statuses["EVALS.md"]["severity"], "warning")
+        self.assertEqual(statuses["EVALS.md"]["class"], "root_control_plane")
+        self.assertEqual(statuses["EVALS.md"]["top_finding"], "missing_control_plane_file")
+        self.assertEqual(statuses[".codex/skills/broken/SKILL.md"]["state"], "unreadable")
+        self.assertEqual(statuses[".codex/skills/broken/SKILL.md"]["severity"], "error")
+        self.assertEqual(statuses[".codex/skills/broken/SKILL.md"]["class"], "codex_skills")
+        self.assertEqual(statuses[".codex/skills/broken/SKILL.md"]["top_finding"], "unreadable_utf8")
+        self.assertEqual(validate_system_file_hygiene_audit(packet), [])
 
     def test_batch36b_validator_detects_required_safety_findings_with_report_metadata(self):
         with tempfile.TemporaryDirectory() as tmp:

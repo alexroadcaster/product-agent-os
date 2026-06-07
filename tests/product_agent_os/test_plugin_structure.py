@@ -55,21 +55,29 @@ class PluginStructureTest(unittest.TestCase):
 
         self.assertTrue(template.is_file())
 
-    def test_main_spec_classifies_track_three_workflow_templates_explicitly(self):
+    def test_main_spec_uses_product_facing_public_contract_without_track_terms(self):
         text = SPEC.read_text(encoding="utf-8")
 
         self.assertNotIn("    source-context-researcher/", text)
         self.assertNotIn("    worktree-ownership-planner/", text)
         self.assertNotIn("    build-slice-runner/", text)
-        self.assertIn("Track 3 workflow templates", text)
-        self.assertIn("source-context-pack.md", text)
-        self.assertIn("worktree-ownership.md", text)
-        self.assertIn("build-slice.md", text)
-        self.assertIn("development-standards.md", text)
-        self.assertIn("documentation-system.md", text)
+        self.assertNotRegex(text, r"\b(Task|Track|Batch)\b|T[0-9]+-|B[0-9]+-")
+        self.assertIn("Source status:", text)
+        self.assertIn("Product capability areas", text)
+        self.assertIn("lifecycle routing", text)
+        self.assertIn("control-plane artifacts", text)
+        self.assertIn("staged infrastructure", text)
+        self.assertIn("methodology routing", text)
+        self.assertIn("behavioral и transcript evals", text)
+        self.assertIn("Codex compatibility checks", text)
+        self.assertIn("approval-bound real testing", text)
         self.assertIn("artifact templates", text)
-        self.assertIn("domain-modeling.md", text)
-        self.assertIn("metric-spec.md", text)
+        self.assertIn("Generated files являются proposals или managed artifacts", text)
+        self.assertIn("REQUIREMENTS.md", text)
+        self.assertIn("PLAN.md", text)
+        self.assertIn("TEST.md", text)
+        self.assertIn("EVALS.md", text)
+        self.assertIn("RUNLOG.md", text)
 
     def test_optional_agents_sdk_runner_design_is_documented_but_not_activated(self):
         runner_design = (

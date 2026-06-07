@@ -16,6 +16,7 @@ MAX_METRICS_UPDATE_CANDIDATES = 5
 MAX_PROJECT_GRAPH_REFS = 4
 MAX_PROJECT_GRAPH_GAPS = 5
 MAX_PROJECT_GRAPH_UNSUPPORTED_LANGUAGES = 8
+MAX_SYSTEM_FILE_STATUSES = 50
 
 
 def build_status_snapshot(
@@ -25,6 +26,7 @@ def build_status_snapshot(
     renderer_result: dict[str, Any] | None = None,
     stage_manifest: dict[str, Any] | None = None,
     question_ledger: dict[str, Any] | None = None,
+    system_file_hygiene_audit: dict[str, Any] | None = None,
     generated_at: str,
     evidence_max_age_days: int = DEFAULT_EVIDENCE_MAX_AGE_DAYS,
 ) -> dict[str, Any]:
@@ -68,6 +70,7 @@ def build_status_snapshot(
         ),
         "project_graph_summary": _project_graph_summary(project_graph_status),
         "agent_skill_metrics_loop": _agent_skill_metrics_loop_summary(route, discovery),
+        "system_file_hygiene": _system_file_hygiene_summary(system_file_hygiene_audit),
         "question_ledger_summary": (
             question_ledger.get("summary") if isinstance(question_ledger, dict) and isinstance(question_ledger.get("summary"), dict) else {}
         ),
@@ -237,6 +240,66 @@ def _project_graph_summary(packet: dict[str, Any]) -> dict[str, Any]:
         "source_policy": "generated graph is not source of truth",
         "safe_next_action": _string(packet.get("safe_next_action") or "Read source files before graph-backed claims."),
     }
+
+
+def _system_file_hygiene_summary(packet: dict[str, Any] | None) -> dict[str, Any]:
+    if not isinstance(packet, dict) or not packet:
+        return {
+            "status": "not_available",
+            "audit_trigger": "",
+            "last_audit_at": "",
+            "summary": {"files_scanned": 0, "warnings": 0, "errors": 0, "active_schedule_markers": 0},
+            "file_statuses": [],
+            "source_policy": "system file hygiene projection is generated status evidence, not source of truth",
+            "approval_boundary": "owner_approval_required_for_writes",
+        }
+    summary = packet.get("summary") if isinstance(packet.get("summary"), dict) else {}
+    return {
+        "status": _string(packet.get("status") or "not_available"),
+        "audit_trigger": _string(packet.get("audit_trigger")),
+        "last_audit_at": _string(packet.get("last_audit_at")),
+        "write_policy": _string(packet.get("write_policy") or "read_only"),
+        "schedule_status": _string(packet.get("schedule_status") or "not_created"),
+        "summary": {
+            "files_scanned": _int(summary.get("files_scanned")),
+            "warnings": _int(summary.get("warnings")),
+            "errors": _int(summary.get("errors")),
+            "active_schedule_markers": _int(summary.get("active_schedule_markers")),
+        },
+        "file_statuses": _safe_system_file_statuses(packet.get("file_statuses")),
+        "source_policy": "system file hygiene projection is generated status evidence, not source of truth",
+        "approval_boundary": _string(summary.get("approval_boundary") or "owner_approval_required_for_writes"),
+    }
+
+
+def _safe_system_file_statuses(value: Any) -> list[dict[str, Any]]:
+    statuses: list[dict[str, Any]] = []
+    if not isinstance(value, list):
+        return statuses
+    for item in value[:MAX_SYSTEM_FILE_STATUSES]:
+        if not isinstance(item, dict):
+            continue
+        path = _string(item.get("path"))
+        if not _safe_project_graph_relative_path(path):
+            continue
+        statuses.append(
+            {
+                "path": path,
+                "class": _string(item.get("class")),
+                "owner": _string(item.get("owner")),
+                "state": _string(item.get("state")),
+                "severity": _string(item.get("severity")),
+                "finding_count": _int(item.get("finding_count")),
+                "size": _int(item.get("size")),
+                "line_count": _int(item.get("line_count")),
+                "mtime_utc": _string(item.get("mtime_utc")),
+                "age_days": _int(item.get("age_days")),
+                "content_digest": _string(item.get("content_digest")),
+                "last_audit_at": _string(item.get("last_audit_at")),
+                "top_finding": _string(item.get("top_finding") or "none"),
+            }
+        )
+    return statuses
 
 
 def _safe_project_graph_refs(value: Any) -> list[dict[str, str]]:

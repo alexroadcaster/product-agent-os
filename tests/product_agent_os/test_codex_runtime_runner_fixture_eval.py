@@ -6,6 +6,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 RUNNER_PATH = ROOT / "plugins" / "product-agent-os" / "scripts" / "run_fixture_eval.py"
 FIXTURES = ROOT / "plugins" / "product-agent-os" / "assets" / "fixtures"
+_EVALUATE_ALL_CACHE = None
 
 
 def load_runner():
@@ -14,6 +15,13 @@ def load_runner():
     assert spec.loader is not None
     spec.loader.exec_module(module)
     return module
+
+
+def evaluate_all_cached(runner):
+    global _EVALUATE_ALL_CACHE
+    if _EVALUATE_ALL_CACHE is None:
+        _EVALUATE_ALL_CACHE = runner.evaluate_all()
+    return _EVALUATE_ALL_CACHE
 
 
 class CodexRuntimeRunnerFixtureEvalTest(unittest.TestCase):
@@ -45,7 +53,7 @@ class CodexRuntimeRunnerFixtureEvalTest(unittest.TestCase):
 
     def test_guard_fixtures_are_checked(self):
         runner = load_runner()
-        results = {item["fixture"]: item for item in runner.evaluate_all()}
+        results = {item["fixture"]: item for item in evaluate_all_cached(runner)}
 
         self.assertTrue(
             results["codex-runner-handoff-incomplete"]["codex_runtime_runner_checks"]["handoff_incomplete_blocked"]
@@ -59,7 +67,7 @@ class CodexRuntimeRunnerFixtureEvalTest(unittest.TestCase):
 
     def test_runtime_methodology_fixtures_are_checked(self):
         runner = load_runner()
-        results = {item["fixture"]: item for item in runner.evaluate_all()}
+        results = {item["fixture"]: item for item in evaluate_all_cached(runner)}
 
         self.assertTrue(
             results["codex-runner-methodology-ready"]["codex_runtime_runner_checks"][
@@ -99,7 +107,7 @@ class CodexRuntimeRunnerFixtureEvalTest(unittest.TestCase):
 
     def test_cross_domain_runtime_bridge_fixtures_are_checked(self):
         runner = load_runner()
-        results = {item["fixture"]: item for item in runner.evaluate_all()}
+        results = {item["fixture"]: item for item in evaluate_all_cached(runner)}
 
         for fixture in [
             "cross-domain-ai-rag-data-security",

@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from datetime import UTC, datetime
 import re
 from pathlib import Path
 from typing import Any
 
 from product_agent_os.contracts import CONTROL_PLANE_FILES
+from product_agent_os.stage_manifest import content_digest
 from product_agent_os.validators import is_forbidden_secret_assignment
 
 
@@ -307,20 +309,38 @@ ACTIVE_SCHEDULE_PATTERN = re.compile(
     r"(?im)(recurring schedule is active|codex app automation:\s*active|github actions workflow:\s*active|^\s*-?\s*(cron|rrule|schedule):|^\s*-?\s*hook activation:\s*active\b|^\s*-?\s*external writes?:\s*active\b)"
 )
 SYSTEM_FILE_CLASS_BY_KEY = {item.key: item for item in SYSTEM_FILE_CLASSES}
+MAX_FILE_STATUSES = 200
+SYSTEM_FILE_STALE_AFTER_DAYS = 30
+SYSTEM_FILE_STATUS_STATES = {
+    "ok",
+    "review_required",
+    "blocked",
+    "missing",
+    "unreadable",
+    "stale",
+    "owner_unknown",
+}
+SHA256_DIGEST_PATTERN = re.compile(r"^sha256:[0-9a-f]{64}$")
 
 
-def build_system_file_hygiene_audit(root: str | Path, audit_trigger: str = "manual_owner_requested") -> dict[str, Any]:
+def build_system_file_hygiene_audit(
+    root: str | Path,
+    audit_trigger: str = "manual_owner_requested",
+    audit_started_at: str | None = None,
+) -> dict[str, Any]:
     workspace = Path(root)
     inventory: list[dict[str, Any]] = []
     findings: list[dict[str, Any]] = []
     trigger = audit_trigger.strip() if isinstance(audit_trigger, str) and audit_trigger.strip() else "manual_owner_requested"
+    audit_dt = _audit_datetime(audit_started_at)
+    last_audit_at = audit_dt.isoformat()
 
     if not workspace.exists() or not workspace.is_dir():
         workspace_findings = [
             _finding(
                 "error",
                 "workspace_not_found",
-                str(workspace),
+                _workspace_ref(workspace),
                 "workspace must be an existing directory",
                 None,
             )
@@ -329,7 +349,8 @@ def build_system_file_hygiene_audit(root: str | Path, audit_trigger: str = "manu
             "artifact_kind": "system_file_hygiene_audit",
             "schema_version": 1,
             "audit_trigger": trigger,
-            "workspace": str(workspace),
+            "last_audit_at": last_audit_at,
+            "workspace": _workspace_ref(workspace),
             "write_policy": "read_only",
             "schedule_status": "not_created",
             "status": "blocked",
@@ -337,6 +358,7 @@ def build_system_file_hygiene_audit(root: str | Path, audit_trigger: str = "manu
             "system_file_classes": system_file_class_records(),
             "inventory": [],
             "findings": workspace_findings,
+            "file_statuses": [],
             "summary": _summary("blocked", [], workspace_findings, trigger),
         }
 
@@ -372,7 +394,8 @@ def build_system_file_hygiene_audit(root: str | Path, audit_trigger: str = "manu
         "artifact_kind": "system_file_hygiene_audit",
         "schema_version": 1,
         "audit_trigger": trigger,
-        "workspace": str(workspace),
+        "last_audit_at": last_audit_at,
+        "workspace": _workspace_ref(workspace),
         "write_policy": "read_only",
         "schedule_status": "not_created",
         "status": status,
@@ -380,6 +403,7 @@ def build_system_file_hygiene_audit(root: str | Path, audit_trigger: str = "manu
         "system_file_classes": system_file_class_records(),
         "inventory": sorted(inventory, key=lambda item: item["path"]),
         "findings": sorted(findings, key=lambda item: (item["severity"], item["path"], item["code"])),
+        "file_statuses": _file_statuses(inventory, findings, audit_dt, last_audit_at),
         "summary": _summary(status, warnings, errors, trigger, files_scanned=len(inventory)),
     }
 
@@ -433,6 +457,11 @@ def validate_system_file_hygiene_audit(packet: dict[str, Any]) -> list[str]:
         errors.append("findings:required")
     elif not all(_valid_finding_record(item) for item in findings):
         errors.append("findings:invalid")
+    file_statuses = packet.get("file_statuses")
+    if not isinstance(file_statuses, list):
+        errors.append("file_statuses:required")
+    elif len(file_statuses) > MAX_FILE_STATUSES or not all(_valid_file_status_record(item) for item in file_statuses):
+        errors.append("file_statuses:invalid")
     summary = packet.get("summary")
     if not isinstance(summary, dict):
         errors.append("summary:required")
@@ -528,6 +557,32 @@ def _valid_finding_record(record: Any) -> bool:
     )
 
 
+def _valid_file_status_record(record: Any) -> bool:
+    if not isinstance(record, dict):
+        return False
+    if any(key in record for key in ("raw_body", "raw_content", "content", "text", "excerpt")):
+        return False
+    if not _safe_relative_path(str(record.get("path", ""))):
+        return False
+    if record.get("state") not in SYSTEM_FILE_STATUS_STATES:
+        return False
+    if record.get("severity") not in {"none", "warning", "error"}:
+        return False
+    if "top_finding" in record and not isinstance(record["top_finding"], str):
+        return False
+    required_strings = ("class", "owner", "mtime_utc", "content_digest", "last_audit_at")
+    if any(not isinstance(record.get(key), str) or not record[key].strip() for key in required_strings):
+        return False
+    if _parse_datetime(record["mtime_utc"]) is None or _parse_datetime(record["last_audit_at"]) is None:
+        return False
+    if not SHA256_DIGEST_PATTERN.match(record["content_digest"]):
+        return False
+    return all(
+        isinstance(record.get(key), int) and record[key] >= 0
+        for key in ("finding_count", "size", "line_count", "age_days")
+    )
+
+
 def _iter_matching_files(root: Path, file_class: SystemFileClass) -> list[Path]:
     matches: list[Path] = []
     for pattern in file_class.patterns:
@@ -544,9 +599,12 @@ def _is_excluded(relative_path: Path) -> bool:
 def _inspect_system_file(root: Path, path: Path, file_class: SystemFileClass) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     relative = path.relative_to(root).as_posix()
     findings: list[dict[str, Any]] = []
+    raw = b""
     try:
-        text = path.read_text(encoding="utf-8")
+        raw = path.read_bytes()
+        text = raw.decode("utf-8")
     except (OSError, UnicodeDecodeError) as exc:
+        metadata = _file_metadata(path, raw)
         return (
             {
                 "path": relative,
@@ -557,6 +615,7 @@ def _inspect_system_file(root: Path, path: Path, file_class: SystemFileClass) ->
                 "owner": file_class.owner,
                 "soft_limit_chars": file_class.soft_limit_chars,
                 "hard_limit_chars": file_class.hard_limit_chars,
+                **metadata,
             },
             [
                 _finding(
@@ -580,6 +639,7 @@ def _inspect_system_file(root: Path, path: Path, file_class: SystemFileClass) ->
         "owner": file_class.owner,
         "soft_limit_chars": file_class.soft_limit_chars,
         "hard_limit_chars": file_class.hard_limit_chars,
+        **_file_metadata(path, raw),
     }
     if chars >= file_class.hard_limit_chars:
         findings.append(_finding("error", "hard_size_limit_exceeded", relative, f"{chars} chars >= {file_class.hard_limit_chars}", file_class))
@@ -625,6 +685,199 @@ def _inspect_system_file(root: Path, path: Path, file_class: SystemFileClass) ->
             )
         )
     return record, findings
+
+
+def _file_metadata(path: Path, raw: bytes) -> dict[str, Any]:
+    try:
+        stat = path.stat()
+        mtime = datetime.fromtimestamp(stat.st_mtime, UTC).replace(microsecond=0).isoformat()
+    except OSError:
+        mtime = datetime.fromtimestamp(0, UTC).isoformat()
+    return {
+        "mtime_utc": mtime,
+        "content_digest": content_digest(raw),
+    }
+
+
+def _file_statuses(
+    inventory: list[dict[str, Any]],
+    findings: list[dict[str, Any]],
+    audit_dt: datetime,
+    last_audit_at: str,
+) -> list[dict[str, Any]]:
+    findings_by_path: dict[str, list[dict[str, Any]]] = {}
+    for finding in findings:
+        path = str(finding.get("path", ""))
+        findings_by_path.setdefault(path, []).append(finding)
+    records: list[dict[str, Any]] = []
+    inventory_paths: set[str] = set()
+    for item in sorted(inventory, key=lambda record: record["path"]):
+        path = str(item.get("path", ""))
+        if not _safe_relative_path(path):
+            continue
+        inventory_paths.add(path)
+        file_findings = findings_by_path.get(path, [])
+        severity = _status_severity(file_findings)
+        age_days = _age_days(str(item.get("mtime_utc", "")), audit_dt)
+        state = _status_state(file_findings, severity, str(item.get("owner", "")), age_days)
+        records.append(
+            {
+                "path": path,
+                "class": str(item.get("class", "")),
+                "owner": str(item.get("owner", "")),
+                "state": state,
+                "severity": severity,
+                "finding_count": len(file_findings),
+                "size": int(item.get("chars", 0)),
+                "line_count": int(item.get("lines", 0)),
+                "mtime_utc": str(item.get("mtime_utc", "")),
+                "age_days": age_days,
+                "content_digest": str(item.get("content_digest", "")),
+                "last_audit_at": last_audit_at,
+                "top_finding": _top_finding(file_findings, state),
+            }
+        )
+    for path, file_findings in sorted(findings_by_path.items()):
+        if path in inventory_paths or not _safe_relative_path(path):
+            continue
+        severity = _status_severity(file_findings)
+        owner = _finding_owner(file_findings)
+        state = _status_state(file_findings, severity, owner, 0)
+        records.append(
+            {
+                "path": path,
+                "class": _finding_class(file_findings),
+                "owner": owner,
+                "state": state,
+                "severity": severity,
+                "finding_count": len(file_findings),
+                "size": 0,
+                "line_count": 0,
+                "mtime_utc": datetime.fromtimestamp(0, UTC).isoformat(),
+                "age_days": 0,
+                "content_digest": content_digest(b""),
+                "last_audit_at": last_audit_at,
+                "top_finding": _top_finding(file_findings, state),
+            }
+        )
+    return sorted(records, key=_file_status_sort_key)[:MAX_FILE_STATUSES]
+
+
+def _status_severity(findings: list[dict[str, Any]]) -> str:
+    if any(finding.get("severity") == "error" for finding in findings):
+        return "error"
+    if any(finding.get("severity") == "warning" for finding in findings):
+        return "warning"
+    return "none"
+
+
+def _status_state(findings: list[dict[str, Any]], severity: str, owner: str, age_days: int) -> str:
+    codes = {str(finding.get("code", "")) for finding in findings}
+    finding_types = {str(finding.get("finding_type", "")) for finding in findings}
+    if "missing_control_plane_file" in codes or "missing_required_file" in finding_types:
+        return "missing"
+    if "unreadable_utf8" in codes or "readability" in finding_types:
+        return "unreadable"
+    normalized_owner = owner.strip().lower()
+    if not normalized_owner or normalized_owner in {"unknown", "owner_unknown", "not_available"}:
+        return "owner_unknown"
+    if severity == "error":
+        return "blocked"
+    if severity == "warning":
+        return "review_required"
+    if age_days >= SYSTEM_FILE_STALE_AFTER_DAYS:
+        return "stale"
+    return "ok"
+
+
+def _top_finding(findings: list[dict[str, Any]], state: str) -> str:
+    if findings:
+        ordered = sorted(
+            findings,
+            key=lambda finding: (
+                0 if finding.get("severity") == "error" else 1,
+                str(finding.get("code", "")),
+            ),
+        )
+        return str(ordered[0].get("code") or "system_file_hygiene")
+    if state == "stale":
+        return f"mtime_older_than_{SYSTEM_FILE_STALE_AFTER_DAYS}_days"
+    if state == "owner_unknown":
+        return "owner_unknown"
+    return "none"
+
+
+def _finding_class(findings: list[dict[str, Any]]) -> str:
+    for finding in findings:
+        value = str(finding.get("class", "")).strip()
+        if value:
+            return value
+    return "workspace"
+
+
+def _finding_owner(findings: list[dict[str, Any]]) -> str:
+    for finding in findings:
+        value = str(finding.get("owner", "")).strip()
+        if value:
+            return value
+    return "project operator"
+
+
+def _file_status_sort_key(record: dict[str, Any]) -> tuple[int, str, str]:
+    state_rank = {
+        "blocked": 0,
+        "unreadable": 1,
+        "missing": 2,
+        "review_required": 3,
+        "owner_unknown": 4,
+        "stale": 5,
+        "ok": 6,
+    }
+    return (
+        state_rank.get(str(record.get("state", "")), 9),
+        str(record.get("class", "")),
+        str(record.get("path", "")),
+    )
+
+
+def _age_days(mtime_utc: str, audit_dt: datetime) -> int:
+    parsed = _parse_datetime(mtime_utc)
+    if parsed is None:
+        return 0
+    return max(0, (audit_dt - parsed).days)
+
+
+def _audit_datetime(value: str | None) -> datetime:
+    parsed = _parse_datetime(value or "")
+    if parsed is not None:
+        return parsed.replace(microsecond=0)
+    return datetime.now(UTC).replace(microsecond=0)
+
+
+def _parse_datetime(value: str) -> datetime | None:
+    if not value:
+        return None
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=UTC)
+    return parsed.astimezone(UTC).replace(microsecond=0)
+
+
+def _safe_relative_path(path: str) -> bool:
+    normalized = path.replace("\\", "/")
+    if not normalized or normalized.startswith(("/", "../", "~")):
+        return False
+    if ":/" in normalized or re.match(r"^[A-Za-z]:", normalized):
+        return False
+    return ".." not in normalized.split("/")
+
+
+def _workspace_ref(workspace: Path) -> str:
+    name = workspace.name.strip()
+    return name or "."
 
 
 def _duplicate_headings(text: str) -> list[str]:

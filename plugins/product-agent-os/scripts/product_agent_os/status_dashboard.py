@@ -45,7 +45,6 @@ def render_status_dashboard(snapshot: dict[str, Any]) -> dict[str, Any]:
         raise StatusDashboardError("status snapshot must be an object")
     safe_snapshot, redaction_summary = _redacted_snapshot(snapshot)
     prepared = prepare_offline_payload(safe_snapshot)
-    safe_snapshot = prepared["payload"]
     snapshot_json = prepared["json"]
     html_text = _render_html(safe_snapshot)
     validation = _validate_dashboard_content(html_text, snapshot_json, safe_snapshot)
@@ -277,6 +276,7 @@ def _sections(snapshot: dict[str, Any]) -> str:
     dashboard_policy = _dict(snapshot.get("dashboard_policy"))
     staged = _dict(snapshot.get("staged_artifacts"))
     manifest = _dict(snapshot.get("manifest_digests"))
+    hygiene = _dict(snapshot.get("system_file_hygiene"))
 
     sections = [
         _section(
@@ -322,6 +322,7 @@ def _sections(snapshot: dict[str, Any]) -> str:
                 ("Warnings", readiness.get("warnings")),
             ],
         ),
+        _system_hygiene_section(hygiene),
         _section(
             "section-evidence",
             "Evidence",
@@ -371,6 +372,241 @@ def _section(section_id: str, title: str, rows: list[tuple[str, Any]]) -> str:
         "        </table>\n"
         "      </section>"
     )
+
+
+SYSTEM_HYGIENE_STATE_LABELS = {
+    "ok": "OK",
+    "review_required": "Review Required",
+    "blocked": "Blocked",
+    "missing": "Missing",
+    "unreadable": "Unreadable",
+    "stale": "Stale",
+    "owner_unknown": "Owner Unknown",
+}
+SYSTEM_HYGIENE_STATE_ORDER = tuple(SYSTEM_HYGIENE_STATE_LABELS)
+SYSTEM_HYGIENE_GROUP_LABELS = {
+    "root_control_plane": "Root Control Plane",
+    "project_entrypoint": "Root Control Plane",
+    "nested_agents_md": "Agents",
+    "codex_config": "Root Control Plane",
+    "codex_agents": "Agents",
+    "codex_skills": "Skills",
+    "codex_workflows": "Workflows",
+    "artifact_templates": "Artifact Templates",
+    "automation_candidates": "Automation Candidates",
+    "hooks": "Hooks",
+    "evals": "Evals",
+    "pr_release_packets": "PR And Release Packets",
+    "docs_source_control": "Docs Source Control",
+    "external_automation_policy": "External Automation Policy",
+    "plugin_package_control": "Plugin Control Files",
+}
+SYSTEM_HYGIENE_GROUP_ORDER = {
+    "Root Control Plane": 0,
+    "Agents": 1,
+    "Skills": 2,
+    "Workflows": 3,
+    "Automation Candidates": 4,
+    "Hooks": 5,
+    "Evals": 6,
+    "Docs Source Control": 7,
+    "Plugin Control Files": 8,
+}
+SYSTEM_HYGIENE_ROW_STATE_ORDER = {
+    "blocked": 0,
+    "unreadable": 1,
+    "missing": 2,
+    "review_required": 3,
+    "owner_unknown": 4,
+    "stale": 5,
+    "ok": 6,
+}
+
+
+def _system_hygiene_section(packet: dict[str, Any]) -> str:
+    summary = _dict(packet.get("summary"))
+    statuses = _safe_system_hygiene_statuses(packet.get("file_statuses"))
+    counts = _system_hygiene_counts(statuses)
+    summary_rows = _system_hygiene_summary_rows(packet, summary, statuses)
+    count_chips = "\n".join(
+        "          "
+        f"<span class=\"status-count status-count-{_css_token(state)}\">"
+        f"<span>{_text(label)}</span><strong>{counts[state]}</strong></span>"
+        for state, label in SYSTEM_HYGIENE_STATE_LABELS.items()
+    )
+    groups = _system_hygiene_groups(statuses)
+    group_html = "\n".join(_system_hygiene_group_table(label, rows) for label, rows in groups)
+    if not group_html:
+        group_html = "        <p class=\"muted\">No system file status rows are available.</p>"
+    source_policy = packet.get("source_policy") or "system file hygiene projection is generated status evidence, not source of truth"
+    return (
+        "      <section class=\"status-section status-section-wide system-hygiene\" id=\"system-file-hygiene\">\n"
+        "        <div class=\"section-heading-row\">\n"
+        "          <h2>System Hygiene</h2>\n"
+        "          <span class=\"status-label status-label-generated\">Generated View</span>\n"
+        "        </div>\n"
+        f"        <p class=\"source-note\">{_text(source_policy)}</p>\n"
+        "        <table class=\"status-table system-hygiene-summary\">\n"
+        "          <tbody>\n"
+        f"{summary_rows}\n"
+        "          </tbody>\n"
+        "        </table>\n"
+        "        <div class=\"status-counts\" aria-label=\"System file status counts\">\n"
+        f"{count_chips}\n"
+        "        </div>\n"
+        f"{group_html}\n"
+        "      </section>"
+    )
+
+
+def _system_hygiene_summary_rows(
+    packet: dict[str, Any],
+    summary: dict[str, Any],
+    statuses: list[dict[str, Any]],
+) -> str:
+    rows = [
+        ("Status", packet.get("status")),
+        ("Audit trigger", packet.get("audit_trigger")),
+        ("Last audit", _date_text(packet.get("last_audit_at"))),
+        ("Files scanned", summary.get("files_scanned")),
+        ("Displayed rows", len(statuses)),
+        ("Warnings", summary.get("warnings")),
+        ("Errors", summary.get("errors")),
+        ("Active schedule markers", summary.get("active_schedule_markers")),
+        ("Write policy", packet.get("write_policy")),
+        ("Schedule status", packet.get("schedule_status")),
+        ("Approval boundary", packet.get("approval_boundary")),
+    ]
+    return "\n".join(
+        f"          <tr><th scope=\"row\">{_text(label)}</th><td>{_value(value)}</td></tr>"
+        for label, value in rows
+    )
+
+
+def _safe_system_hygiene_statuses(value: Any) -> list[dict[str, Any]]:
+    if not isinstance(value, list):
+        return []
+    statuses: list[dict[str, Any]] = []
+    for item in value:
+        if not isinstance(item, dict):
+            continue
+        path = str(item.get("path", ""))
+        if not path.strip():
+            continue
+        state = str(item.get("state") or "ok")
+        statuses.append(
+            {
+                "path": path,
+                "class": str(item.get("class", "")),
+                "owner": str(item.get("owner", "")),
+                "state": state if state in SYSTEM_HYGIENE_STATE_LABELS else "review_required",
+                "severity": str(item.get("severity") or "none"),
+                "finding_count": _int(item.get("finding_count")),
+                "mtime_utc": str(item.get("mtime_utc", "")),
+                "age_days": _int(item.get("age_days")),
+                "top_finding": str(item.get("top_finding") or "none"),
+            }
+        )
+    return sorted(statuses, key=_system_hygiene_status_sort_key)
+
+
+def _system_hygiene_counts(statuses: list[dict[str, Any]]) -> dict[str, int]:
+    counts = {state: 0 for state in SYSTEM_HYGIENE_STATE_ORDER}
+    for status in statuses:
+        state = str(status.get("state", ""))
+        if state in counts:
+            counts[state] += 1
+    return counts
+
+
+def _system_hygiene_groups(statuses: list[dict[str, Any]]) -> list[tuple[str, list[dict[str, Any]]]]:
+    groups: dict[str, list[dict[str, Any]]] = {}
+    for status in statuses:
+        label = SYSTEM_HYGIENE_GROUP_LABELS.get(str(status.get("class", "")), _title_from_key(status.get("class")))
+        groups.setdefault(label, []).append(status)
+    return sorted(
+        groups.items(),
+        key=lambda item: (SYSTEM_HYGIENE_GROUP_ORDER.get(item[0], 50), item[0]),
+    )
+
+
+def _system_hygiene_group_table(label: str, rows: list[dict[str, Any]]) -> str:
+    table_rows = "\n".join(_system_hygiene_row(row) for row in rows)
+    return (
+        "        <div class=\"system-hygiene-group\">\n"
+        f"          <h3>{_text(label)}</h3>\n"
+        "          <div class=\"table-scroll\">\n"
+        "            <table class=\"status-table system-hygiene-table\">\n"
+        "              <thead>\n"
+        "                <tr><th scope=\"col\">File</th><th scope=\"col\">Owner</th><th scope=\"col\">State</th>"
+        "<th scope=\"col\">Last updated</th><th scope=\"col\">Age</th><th scope=\"col\">Top finding</th></tr>\n"
+        "              </thead>\n"
+        "              <tbody>\n"
+        f"{table_rows}\n"
+        "              </tbody>\n"
+        "            </table>\n"
+        "          </div>\n"
+        "        </div>"
+    )
+
+
+def _system_hygiene_row(row: dict[str, Any]) -> str:
+    state = str(row.get("state", "review_required"))
+    label = SYSTEM_HYGIENE_STATE_LABELS.get(state, "Review Required")
+    return (
+        "                <tr>"
+        f"<td><code>{_text(row.get('path'))}</code></td>"
+        f"<td>{_value(row.get('owner'))}</td>"
+        f"<td><span class=\"status-label status-label-{_css_token(state)}\">{_text(label)}</span></td>"
+        f"<td>{_value(_last_updated_text(row))}</td>"
+        f"<td>{_value(_age_text(row.get('age_days')))}</td>"
+        f"<td><code>{_text(row.get('top_finding') or 'none')}</code></td>"
+        "</tr>"
+    )
+
+
+def _system_hygiene_status_sort_key(row: dict[str, Any]) -> tuple[int, int, str]:
+    label = SYSTEM_HYGIENE_GROUP_LABELS.get(str(row.get("class", "")), _title_from_key(row.get("class")))
+    state = str(row.get("state", ""))
+    return (
+        SYSTEM_HYGIENE_GROUP_ORDER.get(label, 50),
+        SYSTEM_HYGIENE_ROW_STATE_ORDER.get(state, 9),
+        str(row.get("path", "")),
+    )
+
+
+def _last_updated_text(row: dict[str, Any]) -> str:
+    state = str(row.get("state", ""))
+    mtime = str(row.get("mtime_utc", ""))
+    if state == "missing" and mtime.startswith("1970-01-01"):
+        return ""
+    return _date_text(mtime)
+
+
+def _date_text(value: Any) -> str:
+    text = str(value or "").strip()
+    if not text:
+        return ""
+    parsed = _parse_datetime(text)
+    if parsed is None:
+        return text
+    return parsed.date().isoformat()
+
+
+def _age_text(value: Any) -> str:
+    days = _int(value)
+    if days == 1:
+        return "1 day"
+    return f"{days} days"
+
+
+def _title_from_key(value: Any) -> str:
+    text = str(value or "Other").replace("_", " ").strip()
+    return text.title() if text else "Other"
+
+
+def _css_token(value: str) -> str:
+    return "".join(char if char.isalnum() else "-" for char in value.lower()).strip("-") or "unknown"
 
 
 def _status_banner(snapshot: dict[str, Any]) -> str:
@@ -455,6 +691,7 @@ def _validation_checks() -> list[str]:
         "snapshot redaction validated",
         "status snapshot schema validates",
         "generated view policy present",
+        "system hygiene dashboard present",
     ]
 
 
@@ -534,6 +771,26 @@ def _renderer_version() -> str:
 
 def _dict(value: Any) -> dict[str, Any]:
     return value if isinstance(value, dict) else {}
+
+
+def _int(value: Any) -> int:
+    try:
+        number = int(value)
+    except (TypeError, ValueError):
+        return 0
+    return max(0, number)
+
+
+def _parse_datetime(value: str) -> datetime | None:
+    if not value:
+        return None
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=UTC)
+    return parsed.astimezone(UTC).replace(microsecond=0)
 
 
 def _unique(items: list[str]) -> list[str]:

@@ -318,6 +318,83 @@ class StatusSnapshotTest(unittest.TestCase):
         self.assertNotIn("C:\\Users\\person", serialized)
         self.assertNotIn("graph-project", serialized)
 
+    def test_snapshot_includes_bounded_system_file_hygiene_projection_without_raw_content(self):
+        audit_packet = {
+            "artifact_kind": "system_file_hygiene_audit",
+            "schema_version": 1,
+            "write_policy": "read_only",
+            "schedule_status": "not_created",
+            "status": "blocked",
+            "audit_trigger": "soft_size_review",
+            "last_audit_at": "2026-06-07T12:00:00+00:00",
+            "summary": {
+                "files_scanned": 2,
+                "warnings": 1,
+                "errors": 1,
+                "active_schedule_markers": 0,
+                "approval_boundary": "owner_approval_required_for_writes",
+            },
+            "file_statuses": [
+                {
+                    "path": "PLAN.md",
+                    "class": "root_control_plane",
+                    "owner": "project root",
+                    "state": "blocked",
+                    "severity": "error",
+                    "finding_count": 1,
+                    "size": 128,
+                    "line_count": 8,
+                    "mtime_utc": "2026-06-05T12:00:00+00:00",
+                    "age_days": 2,
+                    "content_digest": "sha256:" + "a" * 64,
+                    "last_audit_at": "2026-06-07T12:00:00+00:00",
+                    "top_finding": "secret_like_literal",
+                    "raw_body": "OPENAI_API_KEY = \"sk-test\"",
+                },
+                {
+                    "path": "C:\\Users\\person\\private\\AGENTS.md",
+                    "class": "root_control_plane",
+                    "owner": "project root",
+                    "state": "ok",
+                    "severity": "none",
+                    "finding_count": 0,
+                    "size": 10,
+                    "line_count": 1,
+                    "mtime_utc": "2026-06-07T12:00:00+00:00",
+                    "age_days": 0,
+                    "content_digest": "sha256:" + "b" * 64,
+                    "last_audit_at": "2026-06-07T12:00:00+00:00",
+                },
+            ],
+        }
+
+        snapshot = build_status_snapshot(
+            runtime_result={"status": "route_ready", "workspace": "C:\\Users\\person\\project"},
+            system_file_hygiene_audit=audit_packet,
+            generated_at="2026-06-07T12:00:00+00:00",
+        )
+        serialized = json.dumps(snapshot, sort_keys=True)
+        hygiene = snapshot["system_file_hygiene"]
+
+        self.assertEqual(hygiene["status"], "blocked")
+        self.assertEqual(hygiene["audit_trigger"], "soft_size_review")
+        self.assertEqual(hygiene["last_audit_at"], "2026-06-07T12:00:00+00:00")
+        self.assertEqual(hygiene["summary"]["files_scanned"], 2)
+        self.assertEqual(len(hygiene["file_statuses"]), 1)
+        self.assertEqual(hygiene["file_statuses"][0]["path"], "PLAN.md")
+        self.assertEqual(hygiene["file_statuses"][0]["content_digest"], "sha256:" + "a" * 64)
+        self.assertEqual(hygiene["file_statuses"][0]["top_finding"], "secret_like_literal")
+        self.assertNotIn("raw_body", hygiene["file_statuses"][0])
+        self.assertEqual(
+            hygiene["source_policy"],
+            "system file hygiene projection is generated status evidence, not source of truth",
+        )
+        self.assertEqual(hygiene["approval_boundary"], "owner_approval_required_for_writes")
+        self.assertNotIn("sk-test", serialized)
+        self.assertNotIn("OPENAI_API_KEY", serialized)
+        self.assertNotIn("C:\\Users\\person", serialized)
+        self.assertNotIn("private", serialized)
+
     def _methodology_packet(self, *, status="present_unverified"):
         return {
             "safe_next_action": "Stage approval-record.md before external mutation.",

@@ -47,6 +47,7 @@ class StatusDashboardTest(unittest.TestCase):
         self.assertIn('id="section-usage-mode"', html)
         self.assertIn('id="section-questions"', html)
         self.assertIn('id="section-readiness"', html)
+        self.assertIn('id="system-file-hygiene"', html)
         self.assertIn('id="section-evidence"', html)
         self.assertIn('id="section-approvals"', html)
         self.assertIn('id="section-next-action"', html)
@@ -56,7 +57,71 @@ class StatusDashboardTest(unittest.TestCase):
         self.assertNotIn("</script><script", html)
         self.assertIn(GENERATED_VIEW_ONLY_TEXT, html)
         self.assertIn("generated view policy present", result["validation"]["checks"])
+        self.assertIn("system hygiene dashboard present", result["validation"]["checks"])
         self.assertEqual(json.loads(snapshot_json)["schema_version"], 1)
+        self.assertEqual(result["validation"]["errors"], [])
+
+    def test_renderer_outputs_system_file_hygiene_section_with_grouped_status_tables(self):
+        snapshot = _snapshot()
+        snapshot["system_file_hygiene"] = _system_file_hygiene_snapshot()
+
+        result = render_status_dashboard(snapshot)
+        html = result["html"]
+
+        self.assertIn('id="system-file-hygiene"', html)
+        self.assertIn("System Hygiene", html)
+        self.assertIn("system file hygiene projection is generated status evidence, not source of truth", html)
+        for expected in [
+            "OK",
+            "Review Required",
+            "Blocked",
+            "Missing",
+            "Unreadable",
+            "Stale",
+            "Owner Unknown",
+            "Root Control Plane",
+            "Agents",
+            "Skills",
+            "Workflows",
+            "Automation Candidates",
+            "Hooks",
+            "Evals",
+            "Docs Source Control",
+            "Plugin Control Files",
+            "Top finding",
+            "PLAN.md",
+            ".codex/agents/reviewer.toml",
+            ".codex/skills/review/SKILL.md",
+            ".codex/workflows/release.md",
+            ".codex/automation-candidates/system-file-hygiene-audit.md",
+            ".codex/hooks/pre-tool-use.md",
+            ".codex/evals/workflow.json",
+            "docs/sources/registry.md",
+            "plugins/product-agent-os/README.md",
+            "2026-06-05",
+            "2 days",
+            "missing_control_plane_file",
+            "unreadable_utf8",
+        ]:
+            with self.subTest(expected=expected):
+                self.assertIn(expected, html)
+
+        self.assertNotIn("C:\\Users\\person", html)
+        self.assertEqual(result["validation"]["errors"], [])
+
+    def test_renderer_keeps_system_hygiene_html_when_embedded_json_is_trimmed(self):
+        snapshot = _snapshot()
+        snapshot["system_file_hygiene"] = _system_file_hygiene_snapshot()
+        snapshot["large_generated_notes"] = ["x" * 1000 for _ in range(20)]
+
+        result = render_status_dashboard(snapshot)
+        embedded_json = json.loads(result["json"])
+
+        self.assertEqual(embedded_json["status"], "trimmed")
+        self.assertTrue(embedded_json["trimmed"])
+        self.assertIn('id="system-file-hygiene"', result["html"])
+        self.assertIn("System Hygiene", result["html"])
+        self.assertIn(".codex/skills/review/SKILL.md", result["html"])
         self.assertEqual(result["validation"]["errors"], [])
 
     def test_renderer_redacts_secret_private_and_local_path_values(self):
@@ -195,6 +260,14 @@ class StatusDashboardTest(unittest.TestCase):
             self.assertEqual(staged.stderr, "")
             self.assertEqual(dry_payload["rendered_artifacts"]["mode"], "dry-run")
             self.assertEqual(staged_payload["rendered_artifacts"]["mode"], "stage")
+            status_json_entry = next(
+                item
+                for item in dry_payload["rendered_artifacts"]["files"]
+                if item["target_path"] == STATUS_JSON_TARGET
+            )
+            status_snapshot = json.loads(status_json_entry["content"])
+            self.assertNotEqual(status_snapshot["system_file_hygiene"]["status"], "not_available")
+            self.assertGreaterEqual(len(status_snapshot["system_file_hygiene"]["file_statuses"]), 1)
             self.assertFalse((workspace / STATUS_HTML_TARGET).exists())
             self.assertFalse((workspace / STATUS_JSON_TARGET).exists())
             self.assertTrue((stage_root / STATUS_HTML_TARGET).exists())
@@ -304,6 +377,61 @@ def _write_control_plane(workspace: Path) -> None:
     (workspace / "TEST.md").write_text("# Test\n\nQuality gates: unit tests.\n", encoding="utf-8")
     (workspace / "EVALS.md").write_text("# Evals\n\nQuality gates: fixture eval.\n", encoding="utf-8")
     (workspace / "RUNLOG.md").write_text("# Runlog\n\nlifecycle_state: quality_gate\n", encoding="utf-8")
+
+
+def _system_file_hygiene_snapshot():
+    digest = "sha256:" + "a" * 64
+    records = [
+        ("PLAN.md", "root_control_plane", "project root", "blocked", "error", "hard_size_limit_exceeded"),
+        (".codex/agents/reviewer.toml", "codex_agents", "agent-team designer", "ok", "none", "none"),
+        (".codex/skills/review/SKILL.md", "codex_skills", "skill owner", "unreadable", "error", "unreadable_utf8"),
+        (".codex/workflows/release.md", "codex_workflows", "workflow owner", "review_required", "warning", "duplicate_markdown_headings"),
+        (
+            ".codex/automation-candidates/system-file-hygiene-audit.md",
+            "automation_candidates",
+            "automation owner",
+            "missing",
+            "warning",
+            "missing_control_plane_file",
+        ),
+        (".codex/hooks/pre-tool-use.md", "hooks", "project operator", "stale", "none", "none"),
+        (".codex/evals/workflow.json", "evals", "test/eval owner", "owner_unknown", "warning", "owner_unknown"),
+        ("docs/sources/registry.md", "docs_source_control", "docs maintainer", "ok", "none", "none"),
+        ("plugins/product-agent-os/README.md", "plugin_package_control", "plugin maintainer", "ok", "none", "none"),
+    ]
+    return {
+        "status": "blocked",
+        "audit_trigger": "status_dashboard_projection",
+        "last_audit_at": "2026-06-07T12:00:00+00:00",
+        "write_policy": "read_only",
+        "schedule_status": "not_created",
+        "summary": {
+            "files_scanned": len(records),
+            "warnings": 3,
+            "errors": 2,
+            "active_schedule_markers": 0,
+        },
+        "file_statuses": [
+            {
+                "path": path,
+                "class": class_key,
+                "owner": owner,
+                "state": state,
+                "severity": severity,
+                "finding_count": 0 if top_finding == "none" else 1,
+                "size": 128,
+                "line_count": 8,
+                "mtime_utc": "2026-06-05T12:00:00+00:00",
+                "age_days": 2,
+                "content_digest": digest,
+                "last_audit_at": "2026-06-07T12:00:00+00:00",
+                "top_finding": top_finding,
+            }
+            for path, class_key, owner, state, severity, top_finding in records
+        ],
+        "source_policy": "system file hygiene projection is generated status evidence, not source of truth",
+        "approval_boundary": "owner_approval_required_for_writes",
+    }
 
 
 if __name__ == "__main__":

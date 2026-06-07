@@ -93,6 +93,23 @@ h2 {
   min-width: 0;
 }
 
+.status-section-wide {
+  grid-column: 1 / -1;
+}
+
+.section-heading-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.source-note {
+  margin: -4px 0 12px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
 .status-table {
   width: 100%;
   border-collapse: collapse;
@@ -120,6 +137,103 @@ h2 {
 
 .status-list li + li {
   margin-top: 6px;
+}
+
+.status-counts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(128px, 1fr));
+  gap: 8px;
+  margin: 14px 0 16px;
+}
+
+.status-count {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 42px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 10px;
+  background: #fbfcfd;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.status-count strong {
+  color: var(--text);
+  font-size: 18px;
+}
+
+.status-label {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 2px 8px;
+  background: #f3f6f8;
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.status-label-generated {
+  color: var(--accent);
+}
+
+.status-label-blocked,
+.status-label-unreadable {
+  border-color: #d9a399;
+  background: #fff0ee;
+  color: var(--danger);
+}
+
+.status-label-missing,
+.status-label-review-required,
+.status-label-owner-unknown,
+.status-label-stale {
+  border-color: var(--warning-border);
+  background: var(--warning-bg);
+  color: #7a5a12;
+}
+
+.status-label-ok {
+  border-color: #9ac8be;
+  background: #edf8f5;
+  color: var(--accent);
+}
+
+.system-hygiene-summary {
+  max-width: 720px;
+}
+
+.system-hygiene-group {
+  margin-top: 16px;
+}
+
+.system-hygiene-group h3 {
+  margin: 0 0 8px;
+  font-size: 15px;
+  line-height: 1.25;
+  letter-spacing: 0;
+}
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+.system-hygiene-table {
+  min-width: 840px;
+}
+
+.system-hygiene-table th {
+  width: auto;
+}
+
+.system-hygiene-table td,
+.system-hygiene-table th {
+  padding-right: 14px;
 }
 
 code {
@@ -154,5 +268,17 @@ code {
 
   .status-table td {
     padding-top: 0;
+  }
+
+  .section-heading-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .system-hygiene-table th,
+  .system-hygiene-table td {
+    display: table-cell;
+    width: auto;
+    padding-top: 8px;
   }
 }

@@ -19,6 +19,7 @@ from product_agent_os.infrastructure import (  # noqa: E402
     stage_status_dashboard,
 )
 from product_agent_os.status_snapshot import build_status_snapshot  # noqa: E402
+from product_agent_os.system_file_hygiene import build_system_file_hygiene_audit  # noqa: E402
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -57,9 +58,15 @@ def _snapshot_for_workspace(workspace: str | Path) -> dict[str, Any]:
     runtime_result = run_contract(workspace_path)
     discovery_result = analyze_workspace(workspace_path)
     generated_at = datetime.now(UTC).replace(microsecond=0).isoformat()
+    system_file_hygiene_audit = build_system_file_hygiene_audit(
+        workspace_path,
+        audit_trigger="status_dashboard_projection",
+        audit_started_at=generated_at,
+    )
     return build_status_snapshot(
         runtime_result=runtime_result,
         discovery_result=discovery_result,
+        system_file_hygiene_audit=system_file_hygiene_audit,
         generated_at=generated_at,
     )
 

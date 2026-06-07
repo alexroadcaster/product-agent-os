@@ -12,6 +12,7 @@ from tempfile import TemporaryDirectory
 ROOT = Path(__file__).resolve().parents[2]
 RUNNER_PATH = ROOT / "plugins" / "product-agent-os" / "scripts" / "run_fixture_eval.py"
 FIXTURES = ROOT / "plugins" / "product-agent-os" / "assets" / "fixtures"
+FIXTURE_EVAL_CLI_TIMEOUT_SECONDS = 420
 _EVALUATE_ALL_CACHE = None
 
 
@@ -747,6 +748,7 @@ class FixtureEvalRunnerTest(unittest.TestCase):
             check=False,
             capture_output=True,
             text=True,
+            timeout=FIXTURE_EVAL_CLI_TIMEOUT_SECONDS,
         )
 
         payload = json.loads(result.stdout)
