@@ -16,7 +16,31 @@ trust_level: "high"
 verification_status: "Backed by the Product-Agent OS architecture section, diagram atlas route link, source registry card and the current maintenance verification run."
 ```
 
+```yaml
+title: "Product-Agent OS Batch 37 S1 task-matrix planning contract"
+url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; PLAN.md; TEST.md; RUNLOG.md"
+type: "internal implementation planning evidence"
+source_status: "project-authored"
+checked_at: "2026-06-07"
+summary: "B37-S1 implements `T10-PLAN-M01..M03` and `T10-PLAN-M18` for the task-matrix contract, lifecycle/timestamp policy, plan-file placement policy and lightweight exception policy."
+relevance: "Defines `task_matrix_plan_v1`, allowed statuses, evidence-before-completion requirements, detailed task block validator target, summary-table boundary, staged `task-matrix-plan.md` placement and proportional trigger policy before later template, renderer, validator and skill-routing slices."
+trust_level: "high"
+verification_status: "Current run uses a dedicated Product-Agent OS docs test plus docs structure and diff hygiene checks. B37-S1 does not create templates, register renderer output, add a deterministic validator, activate automation, call providers/live external model/API endpoints, mutate canonical graph sources or perform git stage/commit/push/PR."
+```
+
 ## Official sources
+
+```yaml
+title: "Product-Agent OS Batch 37 S2 task-matrix template and renderer registration"
+url: "plugins/product-agent-os/assets/templates/artifact-templates/task-matrix-plan.md; plugins/product-agent-os/scripts/product_agent_os/templates.py; plugins/product-agent-os/README.md; docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; PLAN.md; TEST.md; RUNLOG.md"
+type: "internal implementation planning evidence"
+source_status: "project-authored"
+checked_at: "2026-06-07"
+summary: "B37-S2 implements `T10-PLAN-M04..M05` and `T10-PLAN-M17` for the checked-in `task-matrix-plan.md` artifact template, renderer registration and packaging-surface evidence."
+relevance: "Registers `artifact-task-matrix-plan`, stages `.codex/artifact-templates/task-matrix-plan.md`, records `renderer_file_count: 195` and explains that packaged plugin source is distinct from currently callable session skills and installed plugin cache freshness."
+trust_level: "high"
+verification_status: "Backed by current-run verification: focused template tests 85 tests OK, renderer tests 26 tests OK, fixture runner tests 17 tests OK, Product-Agent OS docs tests 64 tests OK, fixture eval exit 0 with renderer_file_count 195, full unittest 821 tests OK, transcript eval 17 sessions with 0 failures, Codex compatibility status compatible, docs check and git diff hygiene exit 0. B37-S2 does not add the deterministic validator, publish the plugin cache, mutate `.codex-plugin/plugin.json`, activate automation, call providers/live external model/API endpoints, mutate canonical graph sources or perform git stage/commit/push/PR."
+```
 
 ```yaml
 title: "Codex web / cloud"

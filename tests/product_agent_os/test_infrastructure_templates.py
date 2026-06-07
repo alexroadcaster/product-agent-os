@@ -116,6 +116,7 @@ REQUIRED_TARGETS = {
     ".codex/artifact-templates/agent-task-packet.md",
     ".codex/artifact-templates/behavioral-eval-case.md",
     ".codex/artifact-templates/plan-quality-check.md",
+    ".codex/artifact-templates/task-matrix-plan.md",
     ".codex/artifact-templates/codex-compatibility-report.md",
     ".codex/artifact-templates/bug-rescue-report.md",
     ".codex/artifact-templates/greenfield-idea-brief.md",
@@ -256,6 +257,64 @@ class InfrastructureTemplateTest(unittest.TestCase):
 
         self.assertEqual(set(targets), REQUIRED_TARGETS)
         self.assertEqual(len(targets), len(set(targets)))
+
+    def test_task_matrix_plan_template_is_registered_and_enforces_s1_contract(self):
+        target = ".codex/artifact-templates/task-matrix-plan.md"
+        templates = required_templates()
+        by_target = {item.target_path: item for item in templates}
+
+        self.assertIn(target, by_target)
+        item = by_target[target]
+        self.assertEqual(item.key, "artifact-task-matrix-plan")
+        self.assertEqual(item.category, "artifact-templates")
+        self.assertEqual(item.source_path.name, "task-matrix-plan.md")
+
+        rendered = render_template(
+            item,
+            {
+                "project_name": "Synthetic Project",
+                "workspace_path": "C:/work/synthetic",
+                "profile_name": "python-app",
+                "detected_stack": ["python"],
+                "detected_stack_text": "python",
+                "existing_control_plane": ["AGENTS.md"],
+                "missing_control_plane": [],
+                "existing_codex_assets": [],
+                "risk_text": "docs/control-plane only",
+                "generated_at": "2026-06-07T19:41:00+03:00",
+            },
+        )
+        expected_terms = [
+            "task_matrix_plan_v1",
+            "B37-S2",
+            "Allowed task statuses",
+            "`planned`",
+            "`in_progress`",
+            "`implemented`",
+            "`blocked`",
+            "`accepted_gap`",
+            "pending_execution_timestamp",
+            "DD-MM-YYYY HH:mm",
+            "Europe/Moscow",
+            "Validator target: detailed task blocks",
+            "Summary tables are planning indexes only",
+            "Lightweight exception fields",
+            "`reason`",
+            "`reduced_evidence_path`",
+            "`residual_risk`",
+            "Completion Report",
+            "what was done",
+            "files touched / work locations",
+            "verification evidence",
+            "No secrets",
+            "not source of truth",
+            "no live automation",
+            "no provider/live external model/API calls",
+            "no git stage/commit/push/PR",
+        ]
+        for expected in expected_terms:
+            with self.subTest(expected=expected):
+                self.assertIn(expected, rendered)
 
     def test_ai_rag_template_names_are_canonical_and_legacy_names_are_mapped(self):
         canonical_names = {
@@ -3566,6 +3625,16 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 "active schedule markers",
                 "compaction decision",
                 "no secrets",
+            ],
+            "task-matrix-plan.md": [
+                "source status:",
+                "task_matrix_plan_v1",
+                "allowed task statuses",
+                "validator target: detailed task blocks",
+                "summary tables are planning indexes only",
+                "completion report",
+                "no secrets",
+                "no git stage/commit/push/pr",
             ],
         }
         self.assertEqual(set(templates), set(expected_templates))

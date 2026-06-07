@@ -28,24 +28,29 @@ Evidence ownership is distributed as follows:
 - Track 9 methodology intelligence, Track 10 Task 23, Task 24, Task 25 and Task 26 through `done_through_m40` are implemented or closed as recorded in the source registry and Track 9/10 backlogs.
 - Task 26 Batch 35 is complete through `T10-LIVE-M40` under `batch35_approval_bound_real_testing_execution`.
 - `T10-LIVE-M41` reached `explicit_git_release_pr_action` preflight and remains `blocked_pending_explicit_git_release_fields`.
+- Separately approved maintenance: B37-S1 implements `T10-PLAN-M01..M03` and `T10-PLAN-M18` for the Product-Agent OS task-matrix contract, lifecycle/timestamp policy, `task-matrix-plan.md` placement policy and lightweight exception rule. B37-S2 implements `T10-PLAN-M04..M05` and `T10-PLAN-M17` for the checked-in `task-matrix-plan.md` template, renderer registration and packaging-surface evidence with `renderer_file_count: 195`.
 - Root `AGENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md` and `RUNLOG.md` follow the compact-control-plane model: current routing and safety boundaries stay in root files, detailed history stays in source-owned backlogs and registry entries.
 - Existing dirty `README.md` is unrelated to this planning maintenance unless the owner explicitly scopes it in.
 
 ## Current Planning Contract
 
-- Next executable product action: none until the owner supplies the missing `T10-LIVE-M41` git release/PR fields or explicitly defers M41.
+- Next executable product action: none until the owner supplies the missing `T10-LIVE-M41` git release/PR fields or explicitly defers M41. The approved B37-S1/B37-S2 planning maintenance is not a live/runtime/git action and does not close M41.
 - Required fields for M41: release branch or push target, commit message, PR base branch, PR title and intent, and explicit branch creation/current-branch push policy.
 - Do not create or switch branches, stage files, commit, push or open a PR without explicit approval.
 - Do not start Task 27/28 planning from Batch 35 while M41 is unresolved or explicitly deferred.
 - Do not launch live servers, run browser automation, call providers/live external model/API endpoints or mutate canonical graph sources without the exact approved action packet.
+- B37-S1 task-matrix contract boundaries: `planned` uses `pending_execution_timestamp`; `implemented` requires actual `DD-MM-YYYY HH:mm`, touched files/work locations and current verification evidence; detailed task blocks are the future validator target and summary tables are indexes only; lightweight exceptions require `reason`, `reduced_evidence_path` and `residual_risk`.
+- B37-S2 template/renderer boundaries: checked-in source is `plugins/product-agent-os/assets/templates/artifact-templates/task-matrix-plan.md`; staged target is `.codex/artifact-templates/task-matrix-plan.md`; renderer key is `artifact-task-matrix-plan`; plugin cache remains stale until an explicit publication/cache refresh action is approved; no plugin publication, `.codex-plugin/plugin.json` mutation, live automation, provider/live external model/API call or git stage/commit/push/PR is authorized.
 
 ## Next Implementation Queue
 
 | Order | Item | Status | Owner action required |
 | --- | --- | --- | --- |
-| 1 | `T10-LIVE-M41` explicit git release/PR action | `blocked_pending_explicit_git_release_fields` | Provide release branch or push target, commit message, PR base/title/body intent and explicit write approval. |
-| 2 | Batch 35 closure decision | blocked by M41 | Either approve M41 details or explicitly defer M41 with residual risk. |
-| 3 | Future Task 27/28 planning | not started | Start only after Batch 35 is closed or deliberately deferred. |
+| 1 | B37-S1 `T10-PLAN-M01..M03`, `T10-PLAN-M18` task-matrix contract | implemented in current maintenance slice | No owner action. |
+| 2 | B37-S2 `T10-PLAN-M04..M05`, `T10-PLAN-M17` template, renderer and packaging surface | implemented in current maintenance slice | No owner action unless the owner wants B37-S3 validator/eval work. |
+| 3 | `T10-LIVE-M41` explicit git release/PR action | `blocked_pending_explicit_git_release_fields` | Provide release branch or push target, commit message, PR base/title/body intent and explicit write approval. |
+| 4 | Batch 35 closure decision | blocked by M41 | Either approve M41 details or explicitly defer M41 with residual risk. |
+| 5 | Future Task 27/28 planning | not started | Start only after Batch 35 is closed or deliberately deferred. |
 
 ## Source Planning Artifacts
 

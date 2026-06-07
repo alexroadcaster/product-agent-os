@@ -165,6 +165,41 @@ class InfrastructureRendererTest(unittest.TestCase):
             self.assertNotIn("codex app automation: active", combined_text.lower())
             self.assertNotIn("github actions workflow: active", combined_text.lower())
 
+    def test_task_matrix_plan_template_is_staged_as_artifact(self):
+        target = ".codex/artifact-templates/task-matrix-plan.md"
+
+        with tempfile.TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "workspace"
+            stage_root = Path(tmp) / "stage"
+            shutil.copytree(FIXTURES / "empty-repo", workspace)
+
+            dry_run = render_infrastructure_plan(workspace)
+            staged = stage_infrastructure(workspace, stage_root)
+
+            dry_run_by_target = {
+                item["target_path"]: item
+                for item in dry_run["rendered_artifacts"]["files"]
+                if item["target_path"] == target
+            }
+            staged_by_target = {
+                item["target_path"]: Path(item["staged_path"])
+                for item in staged["rendered_artifacts"]["files"]
+                if item["target_path"] == target
+            }
+            manifest = json.loads(Path(staged["rendered_artifacts"]["manifest_path"]).read_text(encoding="utf-8"))
+            manifest_targets = {item["target_path"] for item in manifest["files"]}
+
+            self.assertIn(target, dry_run_by_target)
+            self.assertIn(target, staged_by_target)
+            self.assertIn(target, manifest_targets)
+            self.assertEqual(dry_run_by_target[target]["action"], "create")
+            staged_path = staged_by_target[target]
+            self.assertTrue(staged_path.resolve().is_relative_to(stage_root.resolve()), staged_path)
+            rendered = staged_path.read_text(encoding="utf-8")
+            self.assertIn("task_matrix_plan_v1", rendered)
+            self.assertIn("Validator target: detailed task blocks", rendered)
+            self.assertIn("no git stage/commit/push/PR", rendered)
+
     def test_existing_agents_file_without_marker_is_preserved(self):
         with tempfile.TemporaryDirectory() as tmp:
             workspace = Path(tmp) / "workspace"

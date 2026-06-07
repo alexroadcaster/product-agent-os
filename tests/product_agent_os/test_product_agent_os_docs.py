@@ -262,6 +262,102 @@ class ProductAgentOsDocsTest(unittest.TestCase):
 
         self.assertNotIn("## Completed Focused Checks For T9-D12", test_plan)
 
+    def test_track10_batch37_s1_task_matrix_contract_is_recorded(self):
+        track10_plan = TRACK10_PLAN.read_text(encoding="utf-8")
+        plan = PLAN.read_text(encoding="utf-8")
+        test_plan = TEST.read_text(encoding="utf-8")
+        runlog = RUNLOG.read_text(encoding="utf-8")
+
+        track10_terms = [
+            "Batch 37 S1 implementation contract",
+            "B37-S1 implemented scope: `T10-PLAN-M01..M03`, `T10-PLAN-M18`",
+            "Allowed task statuses: `planned`, `in_progress`, `implemented`, `blocked`, `accepted_gap`",
+            "Plan-file placement policy:",
+            "docs/superpowers/plans/YYYY-MM-DD-<scope>-task-matrix.md",
+            "Lightweight exception fields: `reason`, `reduced_evidence_path`, `residual_risk`",
+            "Validator target: detailed task blocks with one explicit field per line",
+            "Summary tables are planning indexes only",
+            "| `T10-PLAN-M01` | 37 |",
+            "| `T10-PLAN-M02` | 37 |",
+            "| `T10-PLAN-M03` | 37 |",
+            "| `T10-PLAN-M18` | 37 |",
+            "what was done:",
+            "actual implementation date and time:",
+            "B37-S1 completion evidence",
+        ]
+        for expected in track10_terms:
+            with self.subTest(track10_plan=expected):
+                self.assertIn(expected, track10_plan)
+
+        for expected in [
+            "B37-S1",
+            "T10-PLAN-M01..M03",
+            "T10-PLAN-M18",
+            "task-matrix contract",
+            "task-matrix-plan.md",
+        ]:
+            with self.subTest(control_plane=expected):
+                self.assertIn(expected, plan)
+                self.assertIn(expected, test_plan)
+                self.assertIn(expected, runlog)
+
+    def test_track10_batch37_s2_task_matrix_template_and_renderer_are_recorded(self):
+        track10_plan = TRACK10_PLAN.read_text(encoding="utf-8")
+        plan = PLAN.read_text(encoding="utf-8")
+        test_plan = TEST.read_text(encoding="utf-8")
+        runlog = RUNLOG.read_text(encoding="utf-8")
+        readme = (ROOT / "plugins" / "product-agent-os" / "README.md").read_text(encoding="utf-8")
+        backlog = (ROOT / "docs" / "sources" / "product-agent-os-track-10-backlog.md").read_text(
+            encoding="utf-8"
+        )
+        registry = (ROOT / "docs" / "sources" / "registry.md").read_text(encoding="utf-8")
+
+        track10_terms = [
+            "B37-S2 implementation evidence",
+            "B37-S2 implemented scope: `T10-PLAN-M04..M05`, `T10-PLAN-M17`",
+            "plugins/product-agent-os/assets/templates/artifact-templates/task-matrix-plan.md",
+            ".codex/artifact-templates/task-matrix-plan.md",
+            "artifact-task-matrix-plan",
+            "renderer_file_count: 195",
+            "Template source is packaged in the checked-in plugin source tree",
+            "does not publish the plugin cache",
+            "does not mutate `.codex-plugin/plugin.json`",
+            "does not perform live automation",
+            "does not call providers/live external model/API endpoints",
+            "does not perform git stage/commit/push/PR",
+            "| `T10-PLAN-M04` | 37 |",
+            "| `T10-PLAN-M05` | 37 |",
+            "| `T10-PLAN-M17` | 37 |",
+        ]
+        for expected in track10_terms:
+            with self.subTest(track10_plan=expected):
+                self.assertIn(expected, track10_plan)
+
+        for expected in [
+            "B37-S2",
+            "T10-PLAN-M04..M05",
+            "T10-PLAN-M17",
+            "task-matrix-plan.md",
+            "renderer_file_count: 195",
+            "plugin cache remains stale until an explicit publication/cache refresh action is approved",
+        ]:
+            with self.subTest(control_plane=expected):
+                self.assertIn(expected, plan)
+                self.assertIn(expected, test_plan)
+                self.assertIn(expected, runlog)
+
+        for expected in [
+            "Task Matrix Plan template",
+            "artifact-task-matrix-plan",
+            ".codex/artifact-templates/task-matrix-plan.md",
+            "current session skills are loaded separately from the packaged plugin source",
+        ]:
+            with self.subTest(readme=expected):
+                self.assertIn(expected, readme)
+
+        self.assertIn("done_through_s2", backlog)
+        self.assertIn("Product-Agent OS Batch 37 S2 task-matrix template and renderer registration", registry)
+
     def test_root_agents_is_compact_durable_rule_contract(self):
         agents = AGENTS.read_text(encoding="utf-8")
 

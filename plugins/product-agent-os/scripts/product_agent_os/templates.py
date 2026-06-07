@@ -548,6 +548,12 @@ _TEMPLATES: tuple[TemplateSpec, ...] = (
         ".codex/artifact-templates/plan-quality-check.md",
     ),
     _spec(
+        "artifact-task-matrix-plan",
+        "artifact-templates",
+        "artifact-templates/task-matrix-plan.md",
+        ".codex/artifact-templates/task-matrix-plan.md",
+    ),
+    _spec(
         "artifact-codex-compatibility-report",
         "artifact-templates",
         "artifact-templates/codex-compatibility-report.md",

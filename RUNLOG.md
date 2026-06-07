@@ -31,7 +31,26 @@ Task 26 Batch 35 `T10-LIVE-M41` reached `explicit_git_release_pr_action` preflig
 
 Required owner inputs before any git write: release branch or push target, commit message, PR base branch, PR title and intent, and explicit branch creation/current-branch push policy. Until then: no git stage/commit/push/PR.
 
+Separately approved current maintenance: B37-S1 implements `T10-PLAN-M01..M03` and `T10-PLAN-M18` for the task-matrix contract, lifecycle/timestamp policy, `task-matrix-plan.md` placement policy and lightweight exception rule. B37-S2 implements `T10-PLAN-M04..M05` and `T10-PLAN-M17` for the checked-in `task-matrix-plan.md` template, renderer registration and packaging-surface evidence with `renderer_file_count: 195`. This planning maintenance does not close `T10-LIVE-M41` and performs no live server, browser automation, provider/live external model/API call, canonical graph mutation or git stage/commit/push/PR.
+
 ## Latest Completed Slice
+
+Batch 37 S2 template and renderer work is complete through `T10-PLAN-M04..M05` and `T10-PLAN-M17` under `B37-S2`.
+
+- Template: checked-in source `plugins/product-agent-os/assets/templates/artifact-templates/task-matrix-plan.md` defines `task_matrix_plan_v1`, allowed statuses, timestamp policy, detailed task blocks, summary-table boundary, lightweight exceptions and Completion Report fields.
+- Renderer: `artifact-task-matrix-plan` stages `.codex/artifact-templates/task-matrix-plan.md`; fixture expectations now use `renderer_file_count: 195`.
+- Packaging: plugin README records that the template is packaged in the checked-in source tree and that current-session callable skills are separate from packaged plugin cache availability.
+- Verification: focused template/renderer/docs suites, fixture runner, fixture eval, full unittest, transcript eval, Codex compatibility, docs structure and diff hygiene passed in the current run; detailed command evidence is in `TEST.md`.
+- Residual risks: plugin cache remains stale until an explicit publication/cache refresh action is approved; deterministic validator, discovery routing, behavioral eval coverage, projection and lifecycle cleanup remain future Batch 37 slices.
+- Safety: no `.codex-plugin/plugin.json` mutation, plugin publication, cache mutation, live automation, provider/live external model/API call, canonical graph mutation or git stage/commit/push/PR was performed.
+
+Batch 37 S1 task-matrix planning contract is complete through `T10-PLAN-M01..M03` and `T10-PLAN-M18` under `B37-S1`.
+
+- Contract: `task_matrix_plan_v1`, detailed task blocks as validator target, summary tables as indexes only, allowed statuses `planned`, `in_progress`, `implemented`, `blocked`, `accepted_gap`.
+- Lifecycle: `planned` uses `pending_execution_timestamp`; `implemented` requires factual `DD-MM-YYYY HH:mm`, touched files/work locations and current verification evidence.
+- Placement: staged future template target `.codex/artifact-templates/task-matrix-plan.md`; concrete source-owned task matrices use owner-approved names such as `docs/superpowers/plans/YYYY-MM-DD-<scope>-task-matrix.md`; root `PLAN.md` keeps compact pointers.
+- Trigger: task matrix required for methodology-heavy, risky, multi-slice, cross-agent handoff, specs/ADRs, evidence-heavy QA, release/approval or factual completion-reporting work; lightweight exceptions require `reason`, `reduced_evidence_path` and `residual_risk`.
+- Residual risks: template/renderer registration, deterministic validator, behavioral eval coverage and skill routing remain future B37 slices.
 
 Task 26 Batch 35 is complete through `done_through_m40` under `batch35_approval_bound_real_testing_execution`.
 
