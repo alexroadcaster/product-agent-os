@@ -220,6 +220,7 @@ from product_agent_os.merge_infrastructure import (  # noqa: E402
 from product_agent_os.source_policy import validate_source_policy  # noqa: E402
 from product_agent_os.stage_manifest import MANIFEST_NAME, content_digest, workspace_audit_digest  # noqa: E402
 from product_agent_os.transcript_evals import evaluate_transcript_sessions  # noqa: E402
+from product_agent_os.validators import validate_task_matrix_text  # noqa: E402
 from codex_runtime_runner.cli import run_contract  # noqa: E402
 from codex_runtime_runner.contracts import build_result, validate_runner_result  # noqa: E402
 from codex_runtime_runner.guards import (  # noqa: E402
@@ -2102,6 +2103,18 @@ def _expected_checks(
         )
         checks["metric_hardening_contract_present"] = _metric_hardening_contract_present()
         checks["completion_evidence_contract_present"] = _completion_evidence_contract_present()
+        checks["task_matrix_validator_contract_present"] = _task_matrix_validator_contract_present()
+        checks["task_matrix_behavioral_eval_present"] = _task_matrix_behavioral_eval_present()
+        checks["task_matrix_completion_report_guard_present"] = (
+            _task_matrix_completion_report_guard_present()
+        )
+        checks["task_matrix_invalid_implemented_rows_blocked"] = (
+            _task_matrix_invalid_implemented_rows_blocked()
+        )
+        checks["task_matrix_detection_not_completion"] = _task_matrix_detection_not_completion()
+        checks["task_matrix_summary_table_not_validator_target"] = (
+            _task_matrix_summary_table_not_validator_target()
+        )
         checks["docs_tooling_selector_contract_present"] = _docs_tooling_selector_contract_present()
         checks["conditional_readiness_gates_contract_present"] = (
             _conditional_readiness_gates_contract_present()
@@ -7469,6 +7482,213 @@ def _completion_evidence_contract_present() -> bool:
     ]
     payload = "\n".join(path.read_text(encoding="utf-8") for path in paths).lower()
     return all(term in payload for term in COMPLETION_EVIDENCE_TERMS)
+
+
+def _valid_task_matrix_fixture_text() -> str:
+    return """# Task Matrix
+
+Source status: local implementation planning
+
+### Task `T10-PLAN-M10`
+
+- Task: T10-PLAN-M10
+- Status: planned
+- Schema version: task_matrix_plan_v1
+- Timezone: Europe/Moscow
+- Plan trigger: methodology-heavy eval guard
+- Validator target: detailed task blocks
+- Date and time of task implementation: pending_execution_timestamp
+- Depends on: T10-PLAN-M06
+- Blocks: T10-PLAN-M13
+- Source: Batch 37 task matrix
+- Short description: Add behavioral and fixture coverage.
+- Technical value: Regression coverage for task-matrix behavior.
+- Product value: Users can trust task reports are evidence-bound.
+- Scope: Behavioral eval, fixture eval, transcript eval.
+- Non-goals: No live model/API eval.
+- Expected result: Synthetic evals cover task matrix behavior.
+- Acceptance criteria: Detection-only is not completion evidence.
+- Verification gates: python -m unittest tests.product_agent_os.test_behavioral_workflow_evals -v
+- Risks / approval gates: Synthetic-only coverage.
+- Complexity: medium
+- Estimated execution time: 1h
+- Agents: Tester
+- Skills: test-driven-development, verification-before-completion
+- Output artifacts: behavioral-workflows.json
+- Next step: implement validator
+
+#### Completion Report
+
+- status: planned
+- what was done: pending
+- files touched / work locations: pending
+- technical value delivered: pending
+- product value delivered: pending
+- actual implementation date and time: pending_execution_timestamp
+- verification evidence: pending
+- residual risks: pending
+- follow-up: pending
+
+### Task `T10-PLAN-M06`
+
+- Task: T10-PLAN-M06
+- Status: implemented
+- Schema version: task_matrix_plan_v1
+- Timezone: Europe/Moscow
+- Plan trigger: methodology-heavy validator guard
+- Validator target: detailed task blocks
+- Date and time of task implementation: 07-06-2026 21:14
+- Depends on: T10-PLAN-M01, T10-PLAN-M02
+- Blocks: T10-PLAN-M10, T10-PLAN-M13
+- Source: Batch 37 task matrix
+- Short description: Add deterministic task-matrix validator.
+- Technical value: Enforce evidence-before-completion.
+- Product value: Users get factual task reports.
+- Scope: Validator and CLI.
+- Non-goals: No discovery routing.
+- Expected result: Invalid implemented rows fail.
+- Acceptance criteria: Validator rejects fake completion.
+- Verification gates: python -m unittest tests.product_agent_os.test_validators -v
+- Risks / approval gates: Markdown parsing stays conservative.
+- Complexity: medium
+- Estimated execution time: 2h
+- Agents: Builder, Tester
+- Skills: test-driven-development, verification-before-completion
+- Output artifacts: validate_task_matrix.py
+- Next step: add eval guard
+
+#### Completion Report
+
+- status: implemented
+- what was done: implemented deterministic validator
+- files touched / work locations: plugins/product-agent-os/scripts/product_agent_os/validators.py
+- technical value delivered: validator rejects fake completion
+- product value delivered: task reports become reviewable
+- actual implementation date and time: 07-06-2026 21:14
+- verification evidence: python -m unittest tests.product_agent_os.test_validators -v
+- residual risks: validator is conservative for Markdown
+- follow-up: add behavioral eval guard
+"""
+
+
+def _task_matrix_validator_contract_present() -> bool:
+    paths = [
+        PLUGIN_ROOT / "scripts" / "product_agent_os" / "validators.py",
+        PLUGIN_ROOT / "scripts" / "validate_task_matrix.py",
+        TEMPLATE_ROOT / "artifact-templates" / "task-matrix-plan.md",
+        PROJECT_ROOT / "tests" / "product_agent_os" / "test_validators.py",
+    ]
+    payload = "\n".join(path.read_text(encoding="utf-8") for path in paths).lower()
+    terms = (
+        "task_matrix_schema_version",
+        "task_matrix_completion_fields",
+        "validate_task_matrix_file",
+        "validate_task_matrix_text",
+        "main_task_matrix",
+        "task_matrix_plan_v1",
+        "pending_execution_timestamp",
+        "no detailed task blocks found",
+        "inspection-only",
+        "completion report",
+    )
+    return validate_task_matrix_text(_valid_task_matrix_fixture_text()) == [] and all(
+        term in payload for term in terms
+    )
+
+
+def _task_matrix_behavioral_eval_present() -> bool:
+    behavioral = json.loads(
+        (TEMPLATE_ROOT / "evals" / "behavioral-workflows.json").read_text(encoding="utf-8")
+    )
+    transcript = json.loads(TRANSCRIPT_FIXTURE.read_text(encoding="utf-8"))
+    case = next(
+        (
+            item
+            for item in behavioral.get("cases", [])
+            if item.get("name") == "task-matrix-validator-and-completion-report"
+        ),
+        None,
+    )
+    session = next(
+        (
+            item
+            for item in transcript.get("sessions", [])
+            if item.get("behavioral_case") == "task-matrix-validator-and-completion-report"
+        ),
+        None,
+    )
+    if not isinstance(case, dict) or not isinstance(session, dict):
+        return False
+    expected = case.get("expected", {})
+    required_fields = expected.get("required_fields", []) if isinstance(expected, dict) else []
+    required_terms = {
+        "task_matrix_plan_v1",
+        "detailed task blocks",
+        "Completion Report",
+        "DD-MM-YYYY HH:mm",
+        "files touched / work locations",
+        "verification evidence",
+        "planned rows are not implementation evidence",
+        "summary tables are planning indexes only",
+        "detection-only is not completion evidence",
+    }
+    return (
+        expected.get("route") == "task_matrix_validator"
+        and expected.get("write_policy") == "read_only"
+        and required_terms.issubset(set(required_fields))
+        and "task_matrix_validator" in session.get("expected_terms", [])
+    )
+
+
+def _task_matrix_completion_report_guard_present() -> bool:
+    invalid = _valid_task_matrix_fixture_text().replace(
+        "- verification evidence: python -m unittest tests.product_agent_os.test_validators -v",
+        "- verification evidence: inspection-only",
+    ).replace(
+        "- files touched / work locations: plugins/product-agent-os/scripts/product_agent_os/validators.py",
+        "- files touched / work locations: pending",
+    )
+    errors = " ".join(validate_task_matrix_text(invalid)).lower()
+    return (
+        "implemented requires files touched / work locations" in errors
+        and "implemented cannot use inspection-only verification evidence" in errors
+    )
+
+
+def _task_matrix_invalid_implemented_rows_blocked() -> bool:
+    invalid = _valid_task_matrix_fixture_text().replace(
+        "- Date and time of task implementation: 07-06-2026 21:14",
+        "- Date and time of task implementation: pending_execution_timestamp",
+    ).replace(
+        "- actual implementation date and time: 07-06-2026 21:14",
+        "- actual implementation date and time: pending_execution_timestamp",
+    )
+    errors = " ".join(validate_task_matrix_text(invalid)).lower()
+    return (
+        "implemented requires actual dd-mm-yyyy hh:mm timestamp" in errors
+        and "implemented completion report requires actual dd-mm-yyyy hh:mm timestamp" in errors
+    )
+
+
+def _task_matrix_detection_not_completion() -> bool:
+    behavioral_text = (TEMPLATE_ROOT / "evals" / "behavioral-workflows.json").read_text(
+        encoding="utf-8"
+    ).lower()
+    return (
+        "detection-only is not completion evidence" in behavioral_text
+        and "completion claim from detection" in behavioral_text
+        and "inspection-only completion claim" in behavioral_text
+    )
+
+
+def _task_matrix_summary_table_not_validator_target() -> bool:
+    summary_only = """# Matrix
+
+| Task | Status |
+| --- | --- |
+| T10-PLAN-M06 | implemented |
+"""
+    return validate_task_matrix_text(summary_only) == ["no detailed task blocks found"]
 
 
 def _docs_tooling_selector_contract_present() -> bool:

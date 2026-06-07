@@ -72,6 +72,23 @@
       "forbidden_terms": ["completion claim without current evidence", "ready claim without evidence", "completed claim without evidence", "fixed claim without reproduction", "works claim from inspection only"]
     },
     {
+      "id": "task-matrix-invalid-completion-blocked",
+      "behavioral_case": "task-matrix-validator-and-completion-report",
+      "source": "synthetic",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Validate this task matrix and mark implemented rows complete."
+        },
+        {
+          "role": "assistant",
+          "content": "Route: task_matrix_validator. The matrix must use task_matrix_plan_v1 detailed task blocks, explicit Depends on and Blocks, Completion Report fields, DD-MM-YYYY HH:mm actual implementation date and time, files touched / work locations, and verification evidence. planned rows are not implementation evidence; detection-only is not completion evidence; summary tables are planning indexes only."
+        }
+      ],
+      "expected_terms": ["task_matrix_validator", "task_matrix_plan_v1", "detailed task blocks", "Depends on", "Blocks", "Completion Report", "DD-MM-YYYY HH:mm", "files touched / work locations", "verification evidence", "planned rows are not implementation evidence", "detection-only is not completion evidence", "summary tables are planning indexes only"],
+      "forbidden_terms": ["implemented with pending_execution_timestamp", "completion claim from detection", "summary table as validator target", "inspection-only completion claim"]
+    },
+    {
       "id": "ai-rag-quality-claim-stays-eval-bound",
       "behavioral_case": "llm-ai-rag-evidence-before-completion",
       "source": "synthetic",

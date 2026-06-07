@@ -1410,6 +1410,39 @@
       "residual_risk": "Inspection-only answers can still be useful, but they must not be promoted into completion claims."
     },
     {
+      "name": "task-matrix-validator-and-completion-report",
+      "input": {
+        "prompt": "Validate this task matrix plan before claiming implementation completion.",
+        "workspace_fixture": "python-app",
+        "control_plane_state": "quality_gate"
+      },
+      "expected": {
+        "route": "task_matrix_validator",
+        "write_policy": "read_only",
+        "minimum_artifacts": [".codex/artifact-templates/task-matrix-plan.md"],
+        "required_fields": [
+          "task_matrix_plan_v1",
+          "detailed task blocks",
+          "Completion Report",
+          "DD-MM-YYYY HH:mm",
+          "files touched / work locations",
+          "verification evidence",
+          "planned rows are not implementation evidence",
+          "summary tables are planning indexes only",
+          "detection-only is not completion evidence"
+        ]
+      },
+      "forbidden": [
+        "implemented with pending_execution_timestamp",
+        "completion claim from detection",
+        "summary table as validator target",
+        "implemented without files touched",
+        "implemented without verification evidence",
+        "inspection-only completion claim"
+      ],
+      "residual_risk": "Synthetic eval coverage does not replace deterministic task-matrix validator tests."
+    },
+    {
       "name": "frontend-evidence-before-completion",
       "input": {
         "prompt": "Ship this frontend UI as complete from code inspection, Storybook and one desktop screenshot.",

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 from typing import Any
 
@@ -56,17 +57,20 @@ REQUIRED_BEHAVIORAL_CASES = {
     "two-stage-review",
     "fresh-context-handoff",
     "evidence-before-completion",
+    "task-matrix-validator-and-completion-report",
     "finish-options",
     "codex-only-compatibility",
     "cost-model-budget",
 }
 
 SECRET_MARKERS = (
-    "sk-",
     "BEGIN PRIVATE KEY",
     "PASSWORD=",
     "API_KEY=",
     "TOKEN=",
+)
+SECRET_VALUE_PATTERN = re.compile(
+    r"(?i)\b(?:sk|rk|sess|ghp|github_pat|xox[baprs]?)-[A-Za-z0-9][A-Za-z0-9._-]{5,}"
 )
 
 
@@ -111,4 +115,4 @@ def _case_is_safe(case: object) -> bool:
     if not isinstance(forbidden, list) or not forbidden:
         return False
     payload = json.dumps(case, sort_keys=True)
-    return not any(marker in payload for marker in SECRET_MARKERS)
+    return not any(marker in payload for marker in SECRET_MARKERS) and not SECRET_VALUE_PATTERN.search(payload)

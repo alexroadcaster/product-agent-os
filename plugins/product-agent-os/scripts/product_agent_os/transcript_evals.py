@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from pathlib import Path
 from typing import Any
 
@@ -18,7 +19,10 @@ DEFAULT_TRANSCRIPT_FIXTURE = (
     / "transcripts"
     / "product-agent-os-synthetic-sessions.json"
 )
-EXTRA_SECRET_MARKERS = ("sk-", "BEGIN PRIVATE KEY")
+EXTRA_SECRET_MARKERS = ("BEGIN PRIVATE KEY",)
+EXTRA_SECRET_VALUE_PATTERN = re.compile(
+    r"(?i)\b(?:sk|rk|sess|ghp|github_pat|xox[baprs]?)-[A-Za-z0-9][A-Za-z0-9._-]{5,}"
+)
 
 
 def evaluate_transcript_sessions(
@@ -196,7 +200,7 @@ def _dedupe(items: list[str]) -> list[str]:
 
 def _privacy_errors(text: str) -> list[str]:
     errors = validate_redaction(text)
-    if any(marker in text for marker in EXTRA_SECRET_MARKERS):
+    if any(marker in text for marker in EXTRA_SECRET_MARKERS) or EXTRA_SECRET_VALUE_PATTERN.search(text):
         errors.append("redaction:secret_marker_retained")
     return sorted(set(errors))
 

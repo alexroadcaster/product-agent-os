@@ -43,6 +43,18 @@ verification_status: "Backed by current-run verification: focused template tests
 ```
 
 ```yaml
+title: "Product-Agent OS Batch 37 S3 task-matrix validator, eval and completion-report guard"
+url: "plugins/product-agent-os/scripts/product_agent_os/validators.py; plugins/product-agent-os/scripts/validate_task_matrix.py; plugins/product-agent-os/assets/templates/evals/behavioral-workflows.json; plugins/product-agent-os/assets/eval-fixtures/transcripts/product-agent-os-synthetic-sessions.json; plugins/product-agent-os/scripts/run_fixture_eval.py; docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; PLAN.md; TEST.md; RUNLOG.md"
+type: "internal implementation planning evidence"
+source_status: "project-authored"
+checked_at: "2026-06-07"
+summary: "B37-S3 implements `T10-PLAN-M06`, `T10-PLAN-M10` and `T10-PLAN-M13` for deterministic task-matrix validation, behavioral/transcript/fixture eval coverage and factual Completion Report enforcement."
+relevance: "Adds `validate_task_matrix_text`, `validate_task_matrix_file`, `validate_task_matrix.py`, `task-matrix-validator-and-completion-report`, fixture checks for invalid implemented rows and source-backed evidence that planned rows, detection-only results and summary tables cannot become implementation-completion evidence."
+trust_level: "high"
+verification_status: "Backed by current-run verification: validator tests 22 tests OK, behavioral/transcript tests 6 tests OK, fixture runner tests 17 tests OK, infrastructure template tests 85 tests OK, Product-Agent OS docs tests 65 tests OK, full unittest 828 tests OK, fixture eval exit 0 with renderer_file_count 195, transcript eval 18 sessions with 0 failures, Codex compatibility status compatible, docs check and git diff hygiene exit 0. B37-S3 does not add discovery routing, dashboard/status projection, plugin publication, installed-cache mutation, live automation, provider/live external model/API endpoints, canonical graph mutation or git stage/commit/push/PR."
+```
+
+```yaml
 title: "Codex web / cloud"
 url: "https://developers.openai.com/codex/cloud"
 type: "documentation"

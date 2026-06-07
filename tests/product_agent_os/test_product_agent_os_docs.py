@@ -358,6 +358,51 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         self.assertIn("done_through_s2", backlog)
         self.assertIn("Product-Agent OS Batch 37 S2 task-matrix template and renderer registration", registry)
 
+    def test_track10_batch37_s3_task_matrix_validator_eval_and_completion_report_are_recorded(self):
+        track10_plan = TRACK10_PLAN.read_text(encoding="utf-8")
+        plan = PLAN.read_text(encoding="utf-8")
+        test_plan = TEST.read_text(encoding="utf-8")
+        runlog = RUNLOG.read_text(encoding="utf-8")
+        backlog = (ROOT / "docs" / "sources" / "product-agent-os-track-10-backlog.md").read_text(
+            encoding="utf-8"
+        )
+        registry = (ROOT / "docs" / "sources" / "registry.md").read_text(encoding="utf-8")
+
+        track10_terms = [
+            "B37-S3 implementation evidence",
+            "B37-S3 implemented scope: `T10-PLAN-M06`, `T10-PLAN-M10`, `T10-PLAN-M13`",
+            "validate_task_matrix.py",
+            "validate_task_matrix_text",
+            "task-matrix-validator-and-completion-report",
+            "task_matrix_validator_contract_present",
+            "task_matrix_completion_report_guard_present",
+            "implemented with `pending_execution_timestamp` is invalid",
+            "planned rows are not implementation evidence",
+            "summary tables are planning indexes only",
+            "| `T10-PLAN-M06` | 37 |",
+            "| `T10-PLAN-M10` | 37 |",
+            "| `T10-PLAN-M13` | 37 |",
+        ]
+        for expected in track10_terms:
+            with self.subTest(track10_plan=expected):
+                self.assertIn(expected, track10_plan)
+
+        for expected in [
+            "B37-S3",
+            "T10-PLAN-M06",
+            "T10-PLAN-M10",
+            "T10-PLAN-M13",
+            "validate_task_matrix.py",
+            "task_matrix_validator_contract_present",
+        ]:
+            with self.subTest(control_plane=expected):
+                self.assertIn(expected, plan)
+                self.assertIn(expected, test_plan)
+                self.assertIn(expected, runlog)
+
+        self.assertIn("done_through_s3", backlog)
+        self.assertIn("Product-Agent OS Batch 37 S3 task-matrix validator, eval and completion-report guard", registry)
+
     def test_root_agents_is_compact_durable_rule_contract(self):
         agents = AGENTS.read_text(encoding="utf-8")
 

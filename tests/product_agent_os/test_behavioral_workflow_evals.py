@@ -19,7 +19,7 @@ class BehavioralWorkflowEvalTest(unittest.TestCase):
         report = validate_behavioral_eval_template(path)
 
         self.assertEqual(report["status"], "ok")
-        self.assertEqual(report["case_count"], 57)
+        self.assertEqual(report["case_count"], 58)
         self.assertEqual(report["missing_required_cases"], [])
         self.assertEqual(report["unsafe_cases"], [])
         self.assertTrue(report["codex_only"])
@@ -168,6 +168,31 @@ class BehavioralWorkflowEvalTest(unittest.TestCase):
             "dashboard proves completion",
         ]:
             self.assertIn(forbidden, stale_dashboard["forbidden"])
+
+        task_matrix = cases["task-matrix-validator-and-completion-report"]
+        self.assertEqual(task_matrix["expected"]["route"], "task_matrix_validator")
+        self.assertIn(".codex/artifact-templates/task-matrix-plan.md", task_matrix["expected"]["minimum_artifacts"])
+        for expected in [
+            "task_matrix_plan_v1",
+            "detailed task blocks",
+            "Completion Report",
+            "DD-MM-YYYY HH:mm",
+            "files touched / work locations",
+            "verification evidence",
+            "planned rows are not implementation evidence",
+            "summary tables are planning indexes only",
+            "detection-only is not completion evidence",
+        ]:
+            self.assertIn(expected, task_matrix["expected"]["required_fields"])
+        for forbidden in [
+            "implemented with pending_execution_timestamp",
+            "completion claim from detection",
+            "summary table as validator target",
+            "implemented without files touched",
+            "implemented without verification evidence",
+            "inspection-only completion claim",
+        ]:
+            self.assertIn(forbidden, task_matrix["forbidden"])
 
         broad_rewrite = cases["bug-rescue-no-broad-rewrite"]
         self.assertEqual(broad_rewrite["expected"]["usage_mode"], "bug_rescue")

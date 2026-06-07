@@ -326,6 +326,12 @@ class FixtureEvalRunnerTest(unittest.TestCase):
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_hybrid_retrieval_explainable_fusion_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_hybrid_retrieval_fallback_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_hybrid_retrieval_no_canonical_mutation_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["task_matrix_validator_contract_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["task_matrix_behavioral_eval_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["task_matrix_completion_report_guard_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["task_matrix_invalid_implemented_rows_blocked"])
+        self.assertTrue(results["python-app"]["expected_checks"]["task_matrix_detection_not_completion"])
+        self.assertTrue(results["python-app"]["expected_checks"]["task_matrix_summary_table_not_validator_target"])
         self.assertEqual(results["python-app"]["renderer_file_count"], 195)
         for check_name in [
             "methodology_catalog_contract_present",

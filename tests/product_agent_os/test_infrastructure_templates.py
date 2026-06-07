@@ -226,7 +226,6 @@ REQUIRED_TARGETS = {
 }
 
 FORBIDDEN_TEXT = [
-    "sk-",
     "BEGIN PRIVATE KEY",
     "PASSWORD=",
     "API_KEY=",
@@ -236,6 +235,9 @@ FORBIDDEN_TEXT = [
     "tests pass",
     "global ~/.codex/config.toml",
 ]
+SECRET_VALUE_PATTERN = re.compile(
+    r"(?i)\b(?:sk|rk|sess|ghp|github_pat|xox[baprs]?)-[A-Za-z0-9][A-Za-z0-9._-]{5,}"
+)
 
 SCENARIO_HANDOFF_TERMS = [
     "scenario handoff",
@@ -1908,6 +1910,7 @@ class InfrastructureTemplateTest(unittest.TestCase):
             with self.subTest(key=item.key):
                 for forbidden in FORBIDDEN_TEXT:
                     self.assertNotIn(forbidden, text)
+                self.assertNotRegex(text, SECRET_VALUE_PATTERN)
                 self.assertNotRegex(text, re.compile(r"(?i)secret-value|private-customer|raw chat log"))
 
     def test_rendered_templates_have_no_unresolved_substitutions(self):
@@ -3899,6 +3902,7 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 "two-stage-review",
                 "fresh-context-handoff",
                 "evidence-before-completion",
+                "task-matrix-validator-and-completion-report",
                 "quality-current-evidence-before-completion",
                 "cross-domain-semantic-evidence-sufficiency",
                 "cross-domain-synthesis-mixed-surface-routing",

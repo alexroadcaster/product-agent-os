@@ -31,9 +31,18 @@ Task 26 Batch 35 `T10-LIVE-M41` reached `explicit_git_release_pr_action` preflig
 
 Required owner inputs before any git write: release branch or push target, commit message, PR base branch, PR title and intent, and explicit branch creation/current-branch push policy. Until then: no git stage/commit/push/PR.
 
-Separately approved current maintenance: B37-S1 implements `T10-PLAN-M01..M03` and `T10-PLAN-M18` for the task-matrix contract, lifecycle/timestamp policy, `task-matrix-plan.md` placement policy and lightweight exception rule. B37-S2 implements `T10-PLAN-M04..M05` and `T10-PLAN-M17` for the checked-in `task-matrix-plan.md` template, renderer registration and packaging-surface evidence with `renderer_file_count: 195`. This planning maintenance does not close `T10-LIVE-M41` and performs no live server, browser automation, provider/live external model/API call, canonical graph mutation or git stage/commit/push/PR.
+Separately approved current maintenance: B37-S1 implements `T10-PLAN-M01..M03` and `T10-PLAN-M18` for the task-matrix contract, lifecycle/timestamp policy, `task-matrix-plan.md` placement policy and lightweight exception rule. B37-S2 implements `T10-PLAN-M04..M05` and `T10-PLAN-M17` for the checked-in `task-matrix-plan.md` template, renderer registration and packaging-surface evidence with `renderer_file_count: 195`. B37-S3 implements `T10-PLAN-M06`, `T10-PLAN-M10` and `T10-PLAN-M13` for `validate_task_matrix.py`, validator functions, eval/transcript/fixture coverage and Completion Report guards including `task_matrix_validator_contract_present`. This planning maintenance does not close `T10-LIVE-M41` and performs no live server, browser automation, provider/live external model/API call, canonical graph mutation or git stage/commit/push/PR.
 
 ## Latest Completed Slice
+
+Batch 37 S3 validator, eval and Completion Report guard work is complete through `T10-PLAN-M06`, `T10-PLAN-M10` and `T10-PLAN-M13` under `B37-S3`.
+
+- Validator: `plugins/product-agent-os/scripts/product_agent_os/validators.py` exposes `validate_task_matrix_text` and `validate_task_matrix_file`; `plugins/product-agent-os/scripts/validate_task_matrix.py` returns JSON and non-zero invalid results without traceback.
+- Eval guard: `task-matrix-validator-and-completion-report` is added to behavioral evals, synthetic transcript replay and fixture checks.
+- Fixture evidence: `task_matrix_validator_contract_present`, `task_matrix_behavioral_eval_present`, `task_matrix_completion_report_guard_present`, `task_matrix_invalid_implemented_rows_blocked`, `task_matrix_detection_not_completion` and `task_matrix_summary_table_not_validator_target` are current fixture gates.
+- Completion boundary: planned rows are not implementation evidence; implemented rows with `pending_execution_timestamp`, missing files/work locations, missing verification evidence or inspection-only evidence are invalid; summary tables are planning indexes only.
+- Verification: focused validator/eval/fixture runner tests, infrastructure template tests, full unittest, fixture eval, transcript eval and Codex compatibility passed in the current run; detailed command evidence is routed through `TEST.md`.
+- Residual risks: discovery routing, planner/agent handoff routing, status/dashboard projection, lifecycle cleanup and Batch 37 final closure remain future slices; no plugin publication, live action, provider/live external model/API call, canonical graph mutation or git stage/commit/push/PR was performed.
 
 Batch 37 S2 template and renderer work is complete through `T10-PLAN-M04..M05` and `T10-PLAN-M17` under `B37-S2`.
 
