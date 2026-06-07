@@ -7,15 +7,17 @@ This section turns the knowledge base into an implementation map for building pr
 ## Route
 
 1. Start with [Product-Agent Delivery Lifecycle](product-delivery-lifecycle.md) to see the full path from idea to release.
-2. Use [Agent Team And Skills](agent-team-and-skills.md) to split roles, ownership and reusable methods.
-3. Use [Runtime Decision Map](runtime-decision-map.md) to choose Codex App, CLI, Cloud, `codex exec`, MCP, GitHub Action or automation.
-4. Check [Skill Lifecycle](skill-lifecycle.md) before turning a playbook into a skill.
-5. Finish with [Context, Memory, Verification](context-memory-verification.md) to reduce unsupported claims and keep useful knowledge.
+2. Use [planning matrix architecture](../product-agent-os/architecture.md#task-and-plan-architecture) when work needs a task matrix, staged delivery or completion report.
+3. Use [Agent Team And Skills](agent-team-and-skills.md) to split roles, ownership and reusable methods.
+4. Use [Runtime Decision Map](runtime-decision-map.md) to choose Codex App, CLI, Cloud, `codex exec`, MCP, GitHub Action or automation.
+5. Check [Skill Lifecycle](skill-lifecycle.md) before turning a playbook into a skill.
+6. Finish with [Context, Memory, Verification](context-memory-verification.md) to reduce unsupported claims and keep useful knowledge.
 
 ```mermaid
 flowchart LR
     A["Project idea"] --> B["Delivery lifecycle"]
-    B --> C["Agent team and skills"]
+    B --> B1["Planning matrix architecture"]
+    B1 --> C["Agent team and skills"]
     C --> D["Runtime decision"]
     D --> E["Implementation loop"]
     E --> F["Skill lifecycle"]
@@ -32,7 +34,7 @@ flowchart LR
 ## Outputs
 
 - A practical route through the Product-Agent OS operating model.
-- Links to the next artifact for delivery, team design, runtime selection, skill promotion and verification.
+- Links to the next artifact for delivery, planning matrix architecture, team design, runtime selection, skill promotion and verification.
 
 ## Verification
 

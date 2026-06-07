@@ -2,6 +2,20 @@
 
 This registry records the sources used for v1 of the knowledge base. The `checked_at` field records the date of manual verification.
 
+## Project-authored architecture sources
+
+```yaml
+title: "Product-Agent OS task-plan architecture section"
+url: "docs/product-agent-os/architecture.md; docs/product-agent-os/architecture.en.md; docs/diagrams/index.md; docs/diagrams/index.en.md; docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md"
+type: "internal architecture documentation"
+source_status: "project-authored"
+checked_at: "2026-06-07"
+summary: "The current Product-Agent OS architecture for plan files, task matrices, task lifecycle transitions, cleanup, methodology mapping, trigger rules, noise controls and post-implementation user-facing reports is preserved inside the Product-Agent OS architecture page."
+relevance: "Gives the current planning matrix and future planning templates a stable reference for where task-matrix plan files are created, how they transition through validation and focused slices, which artifacts own evidence, and how plans avoid becoming historical ledgers."
+trust_level: "high"
+verification_status: "Backed by the Product-Agent OS architecture section, diagram atlas route link, source registry card and the current maintenance verification run."
+```
+
 ## Official sources
 
 ```yaml

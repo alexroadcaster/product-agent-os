@@ -54,6 +54,52 @@ Lifecycle routing chooses the smallest useful next move:
 
 Routes must include source context, assumptions, files owned, expected evidence, approval boundary and stop condition before delegating work to a skill or subagent.
 
+## task and plan architecture
+
+This architecture records how Product-Agent OS creates plan files, manages a task matrix, cleans accumulated history and returns a user-facing completion report after implementation. It applies when work includes development methodology, related work items, architecture decisions, agent roles, `skills`, `subagents`, approval boundaries or staged delivery.
+
+```mermaid
+flowchart TD
+    A["User request or methodology-heavy work"] --> B["Read-only inventory and methodology audit"]
+    B --> C{"task matrix trigger?"}
+    C -->|No| D["Lightweight exception: reason, reduced evidence, residual risk"]
+    C -->|Yes| E["implementation-planner creates plan-file proposal"]
+
+    E --> F["task-matrix-plan.md template"]
+    F --> G["Staged artifact in .codex/artifact-templates"]
+    G --> H["Owner-approved concrete plan file"]
+
+    H --> I["Validator: fields, status, timestamp, dependencies, evidence"]
+    I --> J{"Valid?"}
+    J -->|No| K["Repair plan before implementation"]
+    J -->|Yes| L["Execute focused slice"]
+
+    L --> M["Update row: status, files, checks, actual time"]
+    M --> N["RUNLOG.md concise current-cycle evidence"]
+    M --> O["agent-task-packet.md for subagent handoff"]
+    M --> P["Docs, registry or backlog for source-backed claims"]
+    M --> Q["Read-only status projection when useful"]
+
+    P --> R["Package closure: accepted gaps, residual risks, next slice"]
+    N --> R
+    O --> R
+    Q --> R
+```
+
+A plan file is created when work requires staged delivery, architecture capture, multiple roles, multiple verification gates, rollback, evals or a user-facing completion report. A small mechanical edit can use a lightweight exception, but the reason, reduced evidence and residual risk must be stated in the response or `RUNLOG.md`.
+
+Plans are cleaned by moving detail to the correct owning artifact, not by losing useful history: current sequencing stays in `PLAN.md` or a batch-specific plan file, concise decisions and failures go to `RUNLOG.md`, source-backed history goes to `docs/sources/registry.md` or a backlog, and repeated workflows move through manual workflow, playbook, skill, plugin and automation candidate.
+
+| Element | Controls | Noise control |
+| --- | --- | --- |
+| task matrix | Source, scope, non-goals, expected result, acceptance criteria, verification, risks, agents, skills and dependencies | Each row bounds scope and owner |
+| Completion report | What was done, files touched, technical value, product value, actual date and time | Filled after implementation, not in advance |
+| `RUNLOG.md` | Current-cycle decisions, latest evidence and failures | Does not store the full historical ledger |
+| `docs/sources/registry.md` | Source-backed claims and historical evidence pointers | Does not accept unsupported claims |
+| Status projection | Read-only operational status | Does not replace the plan file, tests or source registry |
+
+The methodology connection stays practical: Scrum and Kanban provide sequencing and WIP discipline, ADR records architecture decisions and non-goals, test-driven development defines verification gates, docs-as-code requires output artifacts and registry updates, and eval-driven AI work adds baseline, rubric, threshold and residual quality risk.
+
 ## Route Packet
 
 A route packet should include:

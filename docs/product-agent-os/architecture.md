@@ -43,6 +43,52 @@ flowchart LR
 
 Этот route является derived из artifacts, не из chat memory. User intent может steer следующий action, но политика источников, sandbox, approvals и текущий evidence по-прежнему определяют, что можно запускать.
 
+## Архитектура планов и задач
+
+Эта схема фиксирует, как Product-Agent OS создает файлы-планы, ведет матрицу задач, очищает накопленную историю и возвращает пользователю отчет после реализации. Она применяется для работы, где есть методология разработки, несколько связанных задач, архитектурные решения, роли агентов, `skills`, `subagents`, approval boundaries или поэтапная поставка.
+
+```mermaid
+flowchart TD
+    A["Запрос пользователя или методологическая работа"] --> B["Read-only inventory и аудит методологии"]
+    B --> C{"Нужна матрица задач?"}
+    C -->|Нет| D["Lightweight exception: причина, сокращенная проверка, residual risk"]
+    C -->|Да| E["implementation-planner готовит plan-file proposal"]
+
+    E --> F["Шаблон task-matrix-plan.md"]
+    F --> G["Staged artifact в .codex/artifact-templates"]
+    G --> H["Утвержденный concrete plan file"]
+
+    H --> I["Validator: поля, статус, время, зависимости, evidence"]
+    I --> J{"Валидно?"}
+    J -->|Нет| K["Исправить план до implementation"]
+    J -->|Да| L["Выполнить focused slice"]
+
+    L --> M["Обновить строку: статус, файлы, проверки, фактическое время"]
+    M --> N["RUNLOG.md: краткое current-cycle evidence"]
+    M --> O["agent-task-packet.md для handoff в subagents"]
+    M --> P["Docs, registry или backlog для source-backed claims"]
+    M --> Q["Read-only status projection при необходимости"]
+
+    P --> R["Закрытие пакета: accepted gaps, residual risks, next slice"]
+    N --> R
+    O --> R
+    Q --> R
+```
+
+Plan file создается, когда работа требует staged delivery, архитектурной фиксации, нескольких ролей, нескольких verification gates, rollback, eval или user-facing completion report. Для маленькой механической правки допустимо исключение, но причина, сниженный набор evidence и residual risk должны быть названы в ответе или `RUNLOG.md`.
+
+План очищается переносом detail в owning artifact, а не удалением полезной истории: текущая последовательность остается в `PLAN.md` или batch-specific plan file, краткие решения и failures идут в `RUNLOG.md`, source-backed история идет в `docs/sources/registry.md` или backlog, а повторяемые workflow продвигаются по цепочке manual workflow, playbook, skill, plugin, automation candidate.
+
+| Элемент | Что контролирует | Защита от засорения |
+| --- | --- | --- |
+| Матрица задач | Source, scope, non-goals, expected result, acceptance criteria, verification, risks, agents, skills и dependencies | Каждая строка ограничивает scope и owner |
+| Completion report | Что сделано, какие файлы затронуты, technical value, product value, фактическая дата и время | Заполняется после реализации, не заранее |
+| `RUNLOG.md` | Current-cycle decisions, latest evidence и failures | Не хранит полный historical ledger |
+| `docs/sources/registry.md` | Source-backed claims и historical evidence pointers | Не принимает unsupported claims |
+| Status projection | Read-only operational status | Не заменяет plan file, tests или source registry |
+
+Связь с методологиями остается практической: Scrum и Kanban дают sequencing и WIP discipline, ADR фиксирует architecture decisions и non-goals, test-driven development задает verification gates, docs-as-code требует обновления output artifacts и registry, eval-driven AI work добавляет baseline, rubric, threshold и residual quality risk.
+
 ## Graph And Live Boundary
 
 Generated graph и cockpit surfaces help readers understand topology, code flow и stale evidence. Они не become source of truth и they не authorize live systems.
