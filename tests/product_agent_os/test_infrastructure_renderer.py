@@ -107,6 +107,64 @@ class InfrastructureRendererTest(unittest.TestCase):
             self.assertFalse((workspace / "AGENTS.md").exists())
             self.assertFalse((workspace / ".codex").exists())
 
+    def test_system_file_hygiene_templates_are_staged_without_active_schedule(self):
+        expected_targets = {
+            ".codex/workflows/system-file-hygiene-audit.md",
+            ".codex/artifact-templates/system-file-hygiene-report.md",
+            ".codex/automation-candidates/system-file-hygiene-audit.md",
+        }
+        active_schedule_prefixes = ("cron:", "- cron:", "rrule:", "- rrule:")
+
+        with tempfile.TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "workspace"
+            stage_root = Path(tmp) / "stage"
+            shutil.copytree(FIXTURES / "empty-repo", workspace)
+
+            dry_run = render_infrastructure_plan(workspace)
+            staged = stage_infrastructure(workspace, stage_root)
+
+            dry_run_targets = {
+                item["target_path"]
+                for item in dry_run["rendered_artifacts"]["files"]
+                if item["target_path"] in expected_targets
+            }
+            dry_run_by_target = {
+                item["target_path"]: item
+                for item in dry_run["rendered_artifacts"]["files"]
+                if item["target_path"] in expected_targets
+            }
+            staged_by_target = {
+                item["target_path"]: Path(item["staged_path"])
+                for item in staged["rendered_artifacts"]["files"]
+                if item["target_path"] in expected_targets
+            }
+            manifest = json.loads(Path(staged["rendered_artifacts"]["manifest_path"]).read_text(encoding="utf-8"))
+            manifest_targets = {
+                item["target_path"]
+                for item in manifest["files"]
+                if item["target_path"] in expected_targets
+            }
+
+            self.assertEqual(dry_run_targets, expected_targets)
+            self.assertEqual(set(staged_by_target), expected_targets)
+            self.assertEqual(manifest_targets, expected_targets)
+            for item in dry_run_by_target.values():
+                self.assertEqual(item["action"], "create")
+            for path in staged_by_target.values():
+                self.assertTrue(path.resolve().is_relative_to(stage_root.resolve()), path)
+                self.assertTrue(path.exists(), path)
+
+            automation_text = staged_by_target[
+                ".codex/automation-candidates/system-file-hygiene-audit.md"
+            ].read_text(encoding="utf-8")
+            self.assertIn("candidate_only", automation_text)
+
+            combined_text = "\n".join(path.read_text(encoding="utf-8") for path in staged_by_target.values())
+            lowered_lines = [line.strip().lower() for line in combined_text.splitlines()]
+            self.assertFalse(any(line.startswith(active_schedule_prefixes) for line in lowered_lines))
+            self.assertNotIn("codex app automation: active", combined_text.lower())
+            self.assertNotIn("github actions workflow: active", combined_text.lower())
+
     def test_existing_agents_file_without_marker_is_preserved(self):
         with tempfile.TemporaryDirectory() as tmp:
             workspace = Path(tmp) / "workspace"

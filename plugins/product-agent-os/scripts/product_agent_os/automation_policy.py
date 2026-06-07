@@ -26,6 +26,10 @@ def from_text(text: str, candidate_file: str) -> dict[str, Any]:
     metrics_automation_candidate = _is_metrics_automation_candidate(text, candidate_file)
     active_schedule_present = _active_schedule_present(text)
     external_workflow_present = _external_workflow_present(text)
+    github_actions_active = _github_actions_active(text)
+    codex_app_automation_active = _codex_app_automation_active(text)
+    hook_activation_active = _hook_activation_active(text)
+    external_write_active = _external_write_active(text)
     owner_present = "Accountable owner:" in text
     cadence_present = "## Cadence" in text and ("Trigger:" in text or "Frequency:" in text)
     stable_inputs_present = "## Stable Inputs" in text and "Inputs:" in text
@@ -35,6 +39,8 @@ def from_text(text: str, candidate_file: str) -> dict[str, Any]:
     rollback_or_disable_present = "## Rollback Or Disable Path" in text and "Disable path:" in text
     write_policy_present = "## Explicit Write Policy" in text and "Allowed write targets:" in text
     explicit_approval_present = "## Explicit Approval" in text
+    owner_approval_present = _owner_approval_present(text)
+    accepted_residual_risks_present = _accepted_residual_risks_present(text)
 
     errors: list[str] = []
     warnings: list[str] = []
@@ -52,6 +58,10 @@ def from_text(text: str, candidate_file: str) -> dict[str, Any]:
         errors.append("active automation is forbidden")
     if external_workflow_present:
         errors.append("external workflow creation is forbidden")
+    if hook_activation_active:
+        errors.append("hook activation is forbidden")
+    if external_write_active:
+        errors.append("external write is forbidden")
     if metrics_automation_candidate and active_schedule_present:
         errors.append("active metrics automation is forbidden")
     if not stable_inputs_present:
@@ -80,6 +90,25 @@ def from_text(text: str, candidate_file: str) -> dict[str, Any]:
             explicit_approval_present,
         ]
     )
+    manual_stability_present = manual_success_count >= 2
+    activation_gate = _activation_gate(
+        manual_stability_present=manual_stability_present,
+        deterministic_command_evidence_present=verification_present,
+        owner_approval_present=owner_approval_present,
+        rollback_or_disable_present=rollback_or_disable_present,
+        accepted_residual_risks_present=accepted_residual_risks_present,
+        active_schedule_present=active_schedule_present,
+        external_workflow_present=external_workflow_present,
+        github_actions_active=github_actions_active,
+        codex_app_automation_active=codex_app_automation_active,
+        hook_activation_active=hook_activation_active,
+        external_write_active=external_write_active,
+    )
+    if manual_stability_present and readiness_fields_present:
+        if not owner_approval_present:
+            warnings.append("owner approval is required before activation")
+        if not accepted_residual_risks_present:
+            warnings.append("accepted residual risks are required before activation")
     status = (
         "blocked"
         if errors
@@ -102,8 +131,15 @@ def from_text(text: str, candidate_file: str) -> dict[str, Any]:
         rollback_or_disable_present=rollback_or_disable_present,
         write_policy_present=write_policy_present,
         explicit_approval_present=explicit_approval_present,
+        owner_approval_present=owner_approval_present,
+        accepted_residual_risks_present=accepted_residual_risks_present,
         metrics_automation_candidate=metrics_automation_candidate,
         active_schedule_status="detected" if active_schedule_present else "not_created",
+        github_actions_active=github_actions_active,
+        codex_app_automation_active=codex_app_automation_active,
+        hook_activation_active=hook_activation_active,
+        external_write_active=external_write_active,
+        activation_gate=activation_gate,
         errors=errors,
         warnings=warnings,
     )
@@ -123,8 +159,15 @@ def _report(
     rollback_or_disable_present: bool = False,
     write_policy_present: bool = False,
     explicit_approval_present: bool = False,
+    owner_approval_present: bool = False,
+    accepted_residual_risks_present: bool = False,
     metrics_automation_candidate: bool = False,
     active_schedule_status: str = "not_applicable",
+    github_actions_active: bool = False,
+    codex_app_automation_active: bool = False,
+    hook_activation_active: bool = False,
+    external_write_active: bool = False,
+    activation_gate: dict[str, Any] | None = None,
     errors: list[str] | None = None,
     warnings: list[str] | None = None,
 ) -> dict[str, Any]:
@@ -145,8 +188,16 @@ def _report(
         "rollback_or_disable_present": rollback_or_disable_present,
         "write_policy_present": write_policy_present,
         "explicit_approval_present": explicit_approval_present,
+        "owner_approval_present": owner_approval_present,
+        "accepted_residual_risks_present": accepted_residual_risks_present,
         "metrics_automation_candidate": metrics_automation_candidate,
         "active_schedule_status": active_schedule_status,
+        "github_actions_active": github_actions_active,
+        "codex_app_automation_active": codex_app_automation_active,
+        "hook_activation_active": hook_activation_active,
+        "external_write_active": external_write_active,
+        "future_activation_handoff_required": True,
+        "activation_gate": activation_gate or _activation_gate(),
         "errors": errors,
         "warnings": warnings,
     }
@@ -178,6 +229,8 @@ def _active_schedule_present(text: str) -> bool:
     lowered = text.lower()
     if "## active schedule" in lowered:
         return True
+    if re.search(r"(?im)^\s*-?\s*(cron|rrule|schedule):", text):
+        return True
     return any(
         phrase in lowered
         for phrase in [
@@ -199,6 +252,103 @@ def _external_workflow_present(text: str) -> bool:
             "codex app automation: active",
         ]
     )
+
+
+def _github_actions_active(text: str) -> bool:
+    return "github actions workflow: active" in text.lower()
+
+
+def _codex_app_automation_active(text: str) -> bool:
+    return "codex app automation: active" in text.lower()
+
+
+def _hook_activation_active(text: str) -> bool:
+    return bool(re.search(r"(?im)^\s*-?\s*hook activation:\s*active\b", text))
+
+
+def _external_write_active(text: str) -> bool:
+    return bool(re.search(r"(?im)^\s*-?\s*external writes?:\s*active\b", text))
+
+
+def _owner_approval_present(text: str) -> bool:
+    match = re.search(r"(?im)^\s*-?\s*approval status:\s*(.+)$", text)
+    if not match:
+        return False
+    status = match.group(1).strip().lower()
+    if any(blocked in status for blocked in ["not requested", "not approved", "pending", "required", "ready for"]):
+        return False
+    return "approved" in status or "owner" in status
+
+
+def _accepted_residual_risks_present(text: str) -> bool:
+    match = re.search(r"(?im)^\s*-?\s*accepted residual risks:\s*(.+)$", text)
+    if not match:
+        return False
+    value = match.group(1).strip().lower()
+    return bool(value) and value not in {"none", "n/a", "na", "tbd", "todo"}
+
+
+def _activation_gate(
+    *,
+    manual_stability_present: bool = False,
+    deterministic_command_evidence_present: bool = False,
+    owner_approval_present: bool = False,
+    rollback_or_disable_present: bool = False,
+    accepted_residual_risks_present: bool = False,
+    active_schedule_present: bool = False,
+    external_workflow_present: bool = False,
+    github_actions_active: bool = False,
+    codex_app_automation_active: bool = False,
+    hook_activation_active: bool = False,
+    external_write_active: bool = False,
+) -> dict[str, Any]:
+    runtime_marker_detected = (
+        active_schedule_present
+        or external_workflow_present
+        or hook_activation_active
+        or external_write_active
+    )
+    activation_requirements_met = all(
+        [
+            manual_stability_present,
+            deterministic_command_evidence_present,
+            owner_approval_present,
+            rollback_or_disable_present,
+            accepted_residual_risks_present,
+            not runtime_marker_detected,
+        ]
+    )
+    if runtime_marker_detected:
+        status = "blocked_active_runtime_marker_detected"
+    elif activation_requirements_met:
+        status = "ready_for_separate_activation_slice"
+    elif not owner_approval_present:
+        status = "blocked_without_owner_approval"
+    elif not accepted_residual_risks_present:
+        status = "blocked_without_accepted_residual_risks"
+    elif not manual_stability_present:
+        status = "candidate_only_missing_manual_stability"
+    else:
+        status = "candidate_only_missing_activation_evidence"
+    return {
+        "status": status,
+        "activation_requirements_met": activation_requirements_met,
+        "manual_stability_present": manual_stability_present,
+        "deterministic_command_evidence_present": deterministic_command_evidence_present,
+        "owner_approval_present": owner_approval_present,
+        "rollback_or_disable_present": rollback_or_disable_present,
+        "accepted_residual_risks_present": accepted_residual_risks_present,
+        "future_activation_handoff_required": True,
+        "schedule_status": "not_created" if not active_schedule_present else "detected",
+        "github_actions_active": github_actions_active,
+        "codex_app_automation_active": codex_app_automation_active,
+        "hook_activation_active": hook_activation_active,
+        "external_write_active": external_write_active,
+        "handoff_boundary": (
+            "future activation is a separate approved slice; no GitHub Actions, Codex App automation, "
+            "hook activation or external write is performed by candidate validation"
+        ),
+    }
 
 
 validate_automation_candidate.from_text = from_text

@@ -129,6 +129,7 @@ Generated at: {generated_at}
 - Delivery readiness gate: `delivery_release_operations_readiness_when_release_or_operations_changes`
 - Delivery artifacts: `release-readiness.md`, `versioning-policy.md`, `release-artifact-manifest.md`, `rollout-plan.md`, `rollback-recovery-plan.md`, `environment-matrix.md`, `deployment-plan.md`, `ci-cd-workflow-inventory.md`, `observability-map.md`, `slo-spec.md`, `operations-runbook.md`, `incident-record.md`, `postmortem.md`, `automation-candidate.md`, `post-release-review.md`
 - Delivery gates reviewed: `release_scope_present`, `version_impact_present`, `release_evidence_present`, `release_evidence_before_completion`, `artifact_manifest_present`, `rollout_strategy_present`, `rollback_recovery_present`, `ci_cd_governance_present`, `operations_runbook_present`, `incident_response_path_present`, `post_release_measurement_present`, `automation_manual_stability_present`
+- Automation activation gate reviewed: `activation_gate`, owner approval, accepted residual risks, `future_activation_handoff_required`, `schedule_status: not_created`, and no GitHub Actions, Codex App automation, hook activation or external write:
 - Planning-first delivery classification:
 - Release scope and version impact:
 - Release evidence before completion:

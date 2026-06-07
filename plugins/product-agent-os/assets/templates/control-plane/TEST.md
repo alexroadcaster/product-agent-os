@@ -93,6 +93,7 @@ Generated at: {generated_at}
 - Automation manual stability: manual success evidence, stable inputs/outputs, owner, verification, approval requirements, value evidence and rollback/disable path:
 - Automation candidate-only behavior:
 - Active schedules remain out of scope:
+- Automation activation gate: `activation_gate`, two successful manual runs, deterministic command evidence, owner approval, accepted residual risks, rollback/disable plan, `future_activation_handoff_required`, `schedule_status: not_created`, and no GitHub Actions, Codex App automation, hook activation or external write:
 - Accepted gap (`explicit_gap_accepted`):
 - Residual risk:
 - Unsupported release claims rejected: release-ready without current evidence, feature flags remove release risk, GitOps is automatically safe, automation is safer because it is repeatable.

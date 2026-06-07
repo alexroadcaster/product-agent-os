@@ -27,6 +27,8 @@ Readiness: candidate_only
 
 - Deterministic checks: python plugins\product-agent-os\scripts\validate_system_file_hygiene.py <workspace>
 - Successful manual workflow runs: 0
+- Owner approval:
+- Accepted residual risks:
 
 ## Failure Modes
 
@@ -48,6 +50,16 @@ Readiness: candidate_only
 
 - Approval status: not requested
 - Active schedules remain out of scope until explicit approval, stable inputs, expected outputs, monitoring, rollback or disable path and write policy are recorded.
+- Activation also requires at least two successful manual runs, deterministic command evidence, owner approval, accepted residual risks and a separate approval packet.
+
+## Future Activation Handoff
+
+activation_gate:
+
+- activation requirements: two successful manual runs, deterministic command evidence, owner approval, rollback or disable plan, accepted residual risks and no active runtime markers.
+- future_activation_handoff_required: true
+- schedule_status remains not_created until a separate owner-approved activation slice records otherwise.
+- no GitHub Actions, Codex App automation, hook activation or external write is performed by this candidate packet.
 
 ## Readiness
 

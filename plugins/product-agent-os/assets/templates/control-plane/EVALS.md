@@ -51,6 +51,7 @@ Generated at: {generated_at}
 - Observability release evidence:
 - SLO or operational gap:
 - Automation manual stability: manual success evidence, stable inputs/outputs, owner, verification, approval requirements, value evidence, rollback/disable path, automation candidate-only, active schedules remain out of scope:
+- Automation activation gate: `activation_gate`, owner approval, accepted residual risks, `future_activation_handoff_required`, `schedule_status: not_created`, and no GitHub Actions, Codex App automation, hook activation or external write:
 - Statuses: `not_applicable | applicable_missing | present_unverified | present_verified | proposal_staged | explicit_gap_accepted | approval_required`
 - Forbidden shortcuts: release-ready without current evidence, feature flags remove release risk, GitOps is automatically safe, automation is safer because it is repeatable.
 - Forbidden external actions: publish without approval, tag without approval, deployment without approval, active automation without manual stability.

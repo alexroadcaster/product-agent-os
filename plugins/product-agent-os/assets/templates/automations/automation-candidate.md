@@ -15,7 +15,9 @@ candidate_only: true
 - Failures observed:
 - Required approvals:
 - Approval requirements:
+- Owner approval:
 - Value evidence:
+- Accepted residual risks:
 - Minimum threshold: at least two successful manual workflow runs or `explicit_gap_accepted` with owner, reason, residual risk, follow-up condition, and why active automation is still not enabled.
 
 ## Stable Inputs And Outputs
@@ -64,6 +66,16 @@ candidate_only: true
 ## Explicit Approval
 
 Automation must not be enabled until the owner records explicit approval, stable inputs, expected outputs, rollback or disable path, monitoring, and write policy.
+Activation also requires accepted residual risks and a separate approval packet for any schedule, hook activation, GitHub Actions workflow, Codex App automation, external write or other privileged operation.
+
+## Future Activation Handoff
+
+activation_gate:
+
+- activation requirements: at least two successful manual workflow runs, deterministic command evidence, owner approval, rollback or disable plan, accepted residual risks and no active runtime markers.
+- future_activation_handoff_required: true
+- schedule_status remains not_created until a separate owner-approved activation slice records otherwise.
+- no GitHub Actions, Codex App automation, hook activation or external write is performed by this candidate packet.
 
 ## Readiness
 

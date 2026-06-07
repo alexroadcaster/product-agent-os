@@ -1948,6 +1948,9 @@ class InfrastructureTemplateTest(unittest.TestCase):
         self.assertIn("at least two successful manual workflow runs", text)
         self.assertIn("explicit_gap_accepted", text)
         self.assertIn("explicit approval", text)
+        self.assertIn("Accepted residual risks", text)
+        self.assertIn("Future Activation Handoff", text)
+        self.assertIn("activation_gate", text)
         self.assertNotIn("RRULE", text)
         self.assertNotIn("schedule:", text)
 
@@ -5161,6 +5164,8 @@ class InfrastructureTemplateTest(unittest.TestCase):
             "plugins/*/skills/**/skill.md",
             "candidate_only",
             "active schedules remain out of scope",
+            "accepted residual risks",
+            "future activation handoff",
             "validate_system_file_hygiene.py",
         ]:
             with self.subTest(expected=expected):

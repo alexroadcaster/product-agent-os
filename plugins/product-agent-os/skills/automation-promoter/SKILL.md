@@ -35,7 +35,7 @@ Read shared references when needed: [Lifecycle states](../references/lifecycle-s
 - Verification method, known failure modes, rollback or disable path, and recovery notes.
 - Business/Product methodology evidence for internal workflow promotion when automation is justified by product or operating value: `product_hypothesis_present`, `value_proposition_evidence_present`, `analytics_tracking_plan_present`, `qualitative_feedback_loop_present`, `release_measurement_evidence_present`, `decision_horizon_present`, `outcome_metric_level_separated`, `metric_scope_classified`, `.codex/artifact-templates/tracking-plan.md`, engineering time saved, owner acceptance, and residual risk.
 - Write policy preference: `read_only`, `draft_only`, or `approved_write`.
-- Approval requirements, scope boundaries, source status, and unsupported claims.
+- Approval requirements, owner approval status, accepted residual risks, scope boundaries, source status, and unsupported claims.
 
 ## Process
 
@@ -48,8 +48,9 @@ Read shared references when needed: [Lifecycle states](../references/lifecycle-s
 7. For internal workflow promotion, require product or operating value evidence such as engineering time saved, cycle-time reduction, quality improvement, or reduced manual error; map it to `value_proposition_evidence_present`, `outcome_metric_level_separated`, and `metric_scope_classified`.
 8. If the automation depends on product analytics, telemetry, usage data, or dashboards, require `analytics_tracking_plan_present` and `.codex/artifact-templates/tracking-plan.md` or block promotion with an accepted gap requirement.
 9. Keep `product_hypothesis_present`, `qualitative_feedback_loop_present`, `release_measurement_evidence_present`, and `decision_horizon_present` explicit when the automation candidate is promoted as a product or workflow improvement.
-10. Block promotion when manual stability evidence, owner, stable inputs, stable outputs, verification, rollback_or_disable, value evidence, or residual risk is missing.
-11. Return next lifecycle state `maintenance` only when candidate readiness and blockers are explicit.
+10. Block active promotion when manual stability evidence, deterministic command evidence, owner approval, rollback_or_disable, value evidence, or accepted residual risks are missing.
+11. Produce a future activation handoff only as a staged approval packet. Current state remains `schedule_status: not_created`; GitHub Actions, Codex App automation, hook activation and external writes stay forbidden until a separate approved activation slice.
+12. Return next lifecycle state `maintenance` only when candidate readiness and blockers are explicit.
 
 ## Outputs
 
@@ -67,6 +68,14 @@ automation_candidate:
   failure_modes: []
   owner: ""
   rollback_or_disable: ""
+  activation_gate:
+    manual_stability_present: false
+    deterministic_command_evidence_present: false
+    owner_approval_present: false
+    accepted_residual_risks_present: false
+    future_activation_handoff_required: true
+    schedule_status: "not_created"
+    boundary: "separate approved activation slice; no GitHub Actions, Codex App automation, hook activation or external write"
   business_product_value:
     gates:
       - "product_hypothesis_present"
@@ -81,6 +90,7 @@ automation_candidate:
     engineering_time_saved: ""
     residual_risk: ""
   approval_required: []
+  accepted_residual_risks: []
   readiness: "candidate_only"
   next_lifecycle_state: "maintenance"
 ```
@@ -101,13 +111,13 @@ Use `delivery_release_operations` for planning-first delivery classification whe
 
 Track `release_scope_present`, `version_impact_present`, `release_evidence_present`, `release_evidence_before_completion`, `artifact_manifest_present`, `rollout_strategy_present`, `rollback_recovery_present`, `ci_cd_governance_present`, `operations_runbook_present`, `incident_response_path_present`, `post_release_measurement_present`, and `automation_manual_stability_present`. Stage or request `release-artifact-manifest.md`, `rollout-plan.md`, `rollback-recovery-plan.md`, `ci-cd-workflow-inventory.md`, `operations-runbook.md`, `incident-record.md`, `post-release-review.md`, and `automation-candidate.md` when applicable.
 
-Require release scope, version impact, current evidence, artifact manifest, rollout, rollback, CI/CD governance, operations, incident path, post-release learning, approval boundary, and automation candidate-only behavior. For automation promotion, require manual success evidence, stable inputs/outputs, owner, verification, approval requirements, value evidence, rollback/disable path, candidate-only automation, and keep active schedules remain out of scope.
+Require release scope, version impact, current evidence, artifact manifest, rollout, rollback, CI/CD governance, operations, incident path, post-release learning, approval boundary, and automation candidate-only behavior. For automation promotion, require manual success evidence, stable inputs/outputs, owner, deterministic command evidence, owner approval, accepted residual risks, approval requirements, value evidence, rollback/disable path, candidate-only automation, and keep active schedules remain out of scope.
 
 Do not publish, tag, deploy, upload artifacts, mutate package registries, create releases, or activate automation without explicit approval and rollback/recovery evidence.
 
 ## Verification
 
-Check that manual stability evidence is present, owner is named, required inputs and stable outputs are explicit, write policy is one allowed value, rollback_or_disable is actionable, approval requirements are listed, and readiness remains `candidate_only`. For internal workflow promotion, check engineering time saved or another value signal before using `value_proposition_evidence_present`, and keep `product_hypothesis_present`, `analytics_tracking_plan_present`, `qualitative_feedback_loop_present`, `release_measurement_evidence_present`, `decision_horizon_present`, `outcome_metric_level_separated`, `metric_scope_classified`, and `.codex/artifact-templates/tracking-plan.md` explicit when applicable. Do not claim without evidence.
+Check that manual stability evidence is present, owner is named, required inputs and stable outputs are explicit, write policy is one allowed value, rollback_or_disable is actionable, approval requirements are listed, accepted residual risks are recorded, `future_activation_handoff_required` is true, `schedule_status` remains `not_created`, and readiness remains `candidate_only`. For internal workflow promotion, check engineering time saved or another value signal before using `value_proposition_evidence_present`, and keep `product_hypothesis_present`, `analytics_tracking_plan_present`, `qualitative_feedback_loop_present`, `release_measurement_evidence_present`, `decision_horizon_present`, `outcome_metric_level_separated`, `metric_scope_classified`, and `.codex/artifact-templates/tracking-plan.md` explicit when applicable. Do not claim without evidence.
 
 ## Failure Modes
 
@@ -116,6 +126,8 @@ Check that manual stability evidence is present, owner is named, required inputs
 - If stable inputs or stable outputs are missing, stop and request a clearer workflow contract.
 - If verification or failure modes are missing, stop and request evidence from manual runs.
 - If rollback_or_disable is missing, stop and request an operational disable path.
+- If owner approval or accepted residual risks are missing, keep readiness `candidate_only` and block active promotion.
+- If a candidate contains `cron`, `RRULE`, `Schedule:`, active Codex App automation, active GitHub Actions workflow, hook activation or external write markers, block promotion.
 - If engineering time saved or another value signal is missing for internal workflow promotion, keep readiness `candidate_only` with blockers.
 - If product analytics evidence is required but `analytics_tracking_plan_present` or `.codex/artifact-templates/tracking-plan.md` is missing, keep readiness `candidate_only` with blockers.
 - If approval is needed, stop before writes, schedules, external actions, or runtime execution.

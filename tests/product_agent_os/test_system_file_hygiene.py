@@ -320,6 +320,32 @@ class SystemFileHygieneTest(unittest.TestCase):
         self.assertEqual(cli.returncode, 1)
         self.assertIn('"status": "blocked"', cli.stdout)
 
+    def test_batch36d_blocks_schedule_text_hook_activation_and_external_write_in_candidates(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            _write_minimal_control_plane(root)
+            (root / "README.md").write_text("# Project\n\nOperator entrypoint.\n", encoding="utf-8")
+            candidate_dir = root / ".codex" / "automation-candidates"
+            candidate_dir.mkdir(parents=True)
+            (candidate_dir / "docs-maintenance.md").write_text(
+                "# Candidate\n\n"
+                "## Owner\n\n- Accountable owner: Ops\n\n"
+                "## Cadence\n\n- Trigger: manual\n\n"
+                "## Verification\n\n- Deterministic checks: python tools/check_docs.py\n\n"
+                "Schedule: weekly\n"
+                "Hook activation: active\n"
+                "External write: active\n",
+                encoding="utf-8",
+            )
+
+            packet = build_system_file_hygiene_audit(root)
+
+        findings = [finding for finding in packet["findings"] if finding["code"] == "active_schedule_in_candidate"]
+        self.assertEqual(packet["status"], "blocked")
+        self.assertEqual(packet["summary"]["active_schedule_markers"], 1)
+        self.assertEqual(len(findings), 1)
+        self.assertIn("active schedule", findings[0]["message"])
+
 
 def _write_minimal_control_plane(root: Path, omit: set[str] | None = None) -> None:
     omitted = omit or set()

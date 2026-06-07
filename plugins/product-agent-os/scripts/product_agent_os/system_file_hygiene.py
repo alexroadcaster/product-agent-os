@@ -304,7 +304,7 @@ HISTORICAL_LEDGER_PATTERN = re.compile(
     r"\b(Task|Track|Batch)\b|T[0-9]+-[A-Z0-9-]+|B[0-9]+-[A-Z]+-M[0-9]+|done_through"
 )
 ACTIVE_SCHEDULE_PATTERN = re.compile(
-    r"(?im)(recurring schedule is active|codex app automation:\s*active|github actions workflow:\s*active|^\s*-?\s*cron:|^\s*rrule:)"
+    r"(?im)(recurring schedule is active|codex app automation:\s*active|github actions workflow:\s*active|^\s*-?\s*(cron|rrule|schedule):|^\s*-?\s*hook activation:\s*active\b|^\s*-?\s*external writes?:\s*active\b)"
 )
 SYSTEM_FILE_CLASS_BY_KEY = {item.key: item for item in SYSTEM_FILE_CLASSES}
 
