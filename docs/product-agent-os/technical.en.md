@@ -89,7 +89,7 @@ python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-a
 Run the read-only system file hygiene audit:
 
 ```powershell
-python plugins\product-agent-os\scripts\validate_system_file_hygiene.py <workspace>
+python plugins\product-agent-os\scripts\validate_system_file_hygiene.py <workspace> --trigger soft_size_review
 ```
 
 Use the full unit suite when scripts, templates, fixtures or lifecycle behavior change:
@@ -115,6 +115,8 @@ Product-Agent OS includes a read-only `system_file_hygiene_audit` contract for k
 Maintained surfaces include root control-plane files, `README.md`, nested `AGENTS.md`, `.codex/config.toml`, MCP config, `.codex/agents`, `.codex/skills`, `.codex/workflows`, `.codex/artifact-templates`, `.codex/automation-candidates`, `.codex/hooks`, `.codex/evals`, `.codex/pr`, docs source-control files, `.github/workflows`, `CODEOWNERS`, `SECURITY.md`, and checked-in plugin package control files. The audit reports size limits, duplicate headings, mojibake/BOM markers, secret-like literals, historical ledger leakage and active schedule markers inside automation candidates.
 
 The audit does not compact files by itself and does not create a schedule. It emits JSON plus a staged `system-file-hygiene-report.md`; any edit, hook activation, GitHub workflow, Codex App automation, MCP change or external write remains a separate owner-approved slice.
+
+The JSON packet contains `audit_trigger`, `finding_type`, `compaction_decision`, `approval_boundary`, `no_secrets_status` and `active_schedule_markers`. The CLI `--trigger` records the run reason, prints JSON, returns `0` for `ok` or `review_required`, and returns `1` only for `blocked`; the workspace remains read-only.
 
 ## Project code graph and cockpit
 

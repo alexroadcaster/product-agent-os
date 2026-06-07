@@ -43,6 +43,18 @@ TEST = ROOT / "TEST.md"
 EVALS = ROOT / "EVALS.md"
 RUNLOG = ROOT / "RUNLOG.md"
 AGENTS = ROOT / "AGENTS.md"
+ENGLISH_ORIGINAL_SUPERPOWERS_PLAN_PAGES = {
+    DOCS / "superpowers" / "plans" / "2026-05-14-product-agent-os-generated-infrastructure.md",
+    DOCS / "superpowers" / "plans" / "2026-05-14-product-agent-os-lifecycle-skills.md",
+    DOCS / "superpowers" / "plans" / "2026-05-14-product-agent-os-plugin-core.md",
+    DOCS / "superpowers" / "plans" / "2026-05-14-product-agent-os-production-hardening.md",
+    DOCS / "superpowers" / "plans" / "2026-05-15-product-agent-os-codex-runtime-runner.md",
+    DOCS / "superpowers" / "plans" / "2026-05-25-track-9-methodology-intelligence.md",
+    DOCS / "superpowers" / "plans" / "2026-05-27-track-10-guided-questions-status-dashboard.md",
+}
+BUILDABLE_MARKDOWN_PAGE_COUNT = 127
+LOCALIZED_MARKDOWN_PAGE_COUNT = 120
+ENGLISH_ORIGINAL_MARKDOWN_PAGE_COUNT = 7
 
 
 class ProductAgentOsDocsTest(unittest.TestCase):
@@ -98,6 +110,34 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             DOCS / "playbooks" / "docs-update.md",
             DOCS / "playbooks" / "use-case-to-plugin.md",
             DOCS / "playbooks" / "workspace-readiness-audit.md",
+        ]
+
+    def _base_markdown_pages(self):
+        return sorted(
+            path
+            for path in DOCS.rglob("*.md")
+            if not path.name.endswith(".en.md")
+        )
+
+    def _localized_markdown_pages(self):
+        english_original = set(ENGLISH_ORIGINAL_SUPERPOWERS_PLAN_PAGES)
+        return [
+            path
+            for path in self._base_markdown_pages()
+            if path not in english_original
+        ]
+
+    def _english_original_markdown_pages(self):
+        return sorted(ENGLISH_ORIGINAL_SUPERPOWERS_PLAN_PAGES)
+
+    def _en_sibling_for(self, path):
+        return path.with_name(path.stem + ".en" + path.suffix)
+
+    def _missing_localized_en_siblings(self):
+        return [
+            path
+            for path in self._localized_markdown_pages()
+            if not self._en_sibling_for(path).exists()
         ]
 
     def _rendered_site_path_for_source(self, source_path, locale=None):
@@ -344,6 +384,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "artifact_contracts_en": (PRODUCT_AGENT_OS / "artifact-contracts.en.md").read_text(encoding="utf-8"),
             "runtime_automations": (DOCS / "runtime" / "automations-github.md").read_text(encoding="utf-8"),
             "runtime_automations_en": (DOCS / "runtime" / "automations-github.en.md").read_text(encoding="utf-8"),
+            "track10_plan": TRACK10_PLAN.read_text(encoding="utf-8"),
             "track10_backlog": TRACK10_BACKLOG.read_text(encoding="utf-8"),
             "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
         }
@@ -373,6 +414,16 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "docs source-control files",
             ".github/workflows",
             "plugin package control files",
+            "done_through_m06",
+            "T10-HYG-M04..M06",
+            "audit_trigger",
+            "no_secrets_status",
+            "active_schedule_markers",
+            "finding_type",
+            "compaction_decision",
+            "approval_boundary",
+            "--trigger",
+            "owner-approved slice",
         ]:
             with self.subTest(system_file_hygiene_contract=expected):
                 self.assertIn(expected, combined)
@@ -3212,13 +3263,9 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 with self.subTest(control_plane=filename, term=expected):
                     self.assertIn(expected, text)
 
-        localized_ru_pages = sorted(
-            path
-            for path in DOCS.rglob("*.md")
-            if not path.name.endswith(".en.md")
-            and path.with_name(path.stem + ".en" + path.suffix).exists()
-        )
-        self.assertEqual(127, len(localized_ru_pages))
+        localized_ru_pages = self._localized_markdown_pages()
+        self.assertEqual(LOCALIZED_MARKDOWN_PAGE_COUNT, len(localized_ru_pages))
+        self.assertEqual([], self._missing_localized_en_siblings())
 
         forbidden_phrases = [
             "Target users",
@@ -3278,7 +3325,8 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "B34E-I18N-M46",
             "done_through_m46",
             "full_site_language_switcher_parity",
-            "static_language_switcher_pairs_checked: 127",
+            "static_language_switcher_pairs_checked: 120",
+            "english_original_pages_total: 7",
             "language_switcher_pair_failures: 0",
             "file_url_escape_failures: 0",
         ]:
@@ -3318,13 +3366,9 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 with self.subTest(control_plane=filename, term=expected):
                     self.assertIn(expected, text)
 
-        source_pages = sorted(
-            path
-            for path in DOCS.rglob("*.md")
-            if not path.name.endswith(".en.md")
-            and path.with_name(path.stem + ".en" + path.suffix).exists()
-        )
-        self.assertEqual(127, len(source_pages))
+        source_pages = self._localized_markdown_pages()
+        self.assertEqual(LOCALIZED_MARKDOWN_PAGE_COUNT, len(source_pages))
+        self.assertEqual([], self._missing_localized_en_siblings())
 
         missing_rendered = []
         pair_failures = []
@@ -3400,10 +3444,11 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "done_through_m47",
             "full_site_search_sitemap_parity",
             "strict_mkdocs_build_exit_code: 0",
-            "search_index_ru_pages_present: 127",
-            "search_index_en_pages_present: 127",
-            "sitemap_ru_pages_present: 127",
-            "sitemap_en_pages_present: 127",
+            "search_index_ru_pages_present: 120",
+            "search_index_en_pages_present: 120",
+            "sitemap_ru_pages_present: 120",
+            "sitemap_en_pages_present: 120",
+            "english_original_pages_total: 7",
             "search_index_ru_fallback_pollution: 0",
             "sitemap_ru_fallback_pollution: 0",
         ]:
@@ -3443,13 +3488,9 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 with self.subTest(control_plane=filename, term=expected):
                     self.assertIn(expected, text)
 
-        source_pages = sorted(
-            path
-            for path in DOCS.rglob("*.md")
-            if not path.name.endswith(".en.md")
-            and path.with_name(path.stem + ".en" + path.suffix).exists()
-        )
-        self.assertEqual(127, len(source_pages))
+        source_pages = self._localized_markdown_pages()
+        self.assertEqual(LOCALIZED_MARKDOWN_PAGE_COUNT, len(source_pages))
+        self.assertEqual([], self._missing_localized_en_siblings())
 
         expected_ru = {
             source_path.relative_to(DOCS).with_suffix(".html").as_posix()
@@ -3486,10 +3527,10 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         self.assertEqual([], missing_search_en[:20])
         self.assertEqual([], missing_sitemap_ru[:20])
         self.assertEqual([], missing_sitemap_en[:20])
-        self.assertEqual(127, len(expected_ru & search_locations))
-        self.assertEqual(127, len(expected_en & search_locations))
-        self.assertEqual(127, len(expected_ru & sitemap_locations))
-        self.assertEqual(127, len(expected_en & sitemap_locations))
+        self.assertEqual(LOCALIZED_MARKDOWN_PAGE_COUNT, len(expected_ru & search_locations))
+        self.assertEqual(LOCALIZED_MARKDOWN_PAGE_COUNT, len(expected_en & search_locations))
+        self.assertEqual(LOCALIZED_MARKDOWN_PAGE_COUNT, len(expected_ru & sitemap_locations))
+        self.assertEqual(LOCALIZED_MARKDOWN_PAGE_COUNT, len(expected_en & sitemap_locations))
 
     def test_track10_task26_batch34e_m48_m49_final_closure_is_recorded(self):
         packet = BATCH34E_FULL_SITE_INVENTORY.read_text(encoding="utf-8")
@@ -3513,17 +3554,19 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "full_site_i18n_final_evidence",
             "strict_mkdocs_final_closure_exit_code: 0",
             "docs_ru_pages_total: 127",
-            "existing_en_siblings: 127",
-            "missing_en_siblings: 0",
-            "rendered_ru_pages_checked: 127",
-            "rendered_en_pages_checked: 127",
-            "static_language_switcher_pairs_checked: 127",
+            "english_original_pages_total: 7",
+            "localized_ru_pages_total: 120",
+            "existing_en_siblings: 120",
+            "missing_localized_en_siblings: 0",
+            "rendered_ru_pages_checked: 120",
+            "rendered_en_pages_checked: 120",
+            "static_language_switcher_pairs_checked: 120",
             "language_switcher_pair_failures: 0",
             "file_url_escape_failures: 0",
-            "search_index_ru_pages_present: 127",
-            "search_index_en_pages_present: 127",
-            "sitemap_ru_pages_present: 127",
-            "sitemap_en_pages_present: 127",
+            "search_index_ru_pages_present: 120",
+            "search_index_en_pages_present: 120",
+            "sitemap_ru_pages_present: 120",
+            "sitemap_en_pages_present: 120",
             "en_source_cyrillic_hits: 0",
             "ru_source_forbidden_english_phrase_hits: 0",
         ]:
@@ -3582,24 +3625,28 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 with self.subTest(control_plane=filename, term=expected):
                     self.assertIn(expected, text)
 
-        source_pages = sorted(
-            path
-            for path in DOCS.rglob("*.md")
-            if not path.name.endswith(".en.md")
-        )
+        base_pages = self._base_markdown_pages()
+        source_pages = self._localized_markdown_pages()
+        english_original_pages = self._english_original_markdown_pages()
         paired_pages = [
             path
             for path in source_pages
-            if path.with_name(path.stem + ".en" + path.suffix).exists()
+            if self._en_sibling_for(path).exists()
         ]
-        missing_pages = [
-            path
-            for path in source_pages
-            if not path.with_name(path.stem + ".en" + path.suffix).exists()
-        ]
-        self.assertEqual(127, len(source_pages))
-        self.assertEqual(127, len(paired_pages))
+        missing_pages = self._missing_localized_en_siblings()
+        self.assertEqual(BUILDABLE_MARKDOWN_PAGE_COUNT, len(base_pages))
+        self.assertEqual(LOCALIZED_MARKDOWN_PAGE_COUNT, len(source_pages))
+        self.assertEqual(LOCALIZED_MARKDOWN_PAGE_COUNT, len(paired_pages))
+        self.assertEqual(ENGLISH_ORIGINAL_MARKDOWN_PAGE_COUNT, len(english_original_pages))
         self.assertEqual([], [path.relative_to(DOCS).as_posix() for path in missing_pages])
+        self.assertEqual(
+            [],
+            [
+                self._en_sibling_for(path).relative_to(DOCS).as_posix()
+                for path in english_original_pages
+                if self._en_sibling_for(path).exists()
+            ],
+        )
 
         expected_ru = {
             source_path.relative_to(DOCS).with_suffix(".html").as_posix()
@@ -3680,10 +3727,10 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         self.assertEqual([], sorted(expected_en - search_locations)[:20])
         self.assertEqual([], sorted(expected_ru - sitemap_locations)[:20])
         self.assertEqual([], sorted(expected_en - sitemap_locations)[:20])
-        self.assertEqual(127, len(expected_ru & search_locations))
-        self.assertEqual(127, len(expected_en & search_locations))
-        self.assertEqual(127, len(expected_ru & sitemap_locations))
-        self.assertEqual(127, len(expected_en & sitemap_locations))
+        self.assertEqual(LOCALIZED_MARKDOWN_PAGE_COUNT, len(expected_ru & search_locations))
+        self.assertEqual(LOCALIZED_MARKDOWN_PAGE_COUNT, len(expected_en & search_locations))
+        self.assertEqual(LOCALIZED_MARKDOWN_PAGE_COUNT, len(expected_ru & sitemap_locations))
+        self.assertEqual(LOCALIZED_MARKDOWN_PAGE_COUNT, len(expected_en & sitemap_locations))
 
         en_cyrillic = [
             path.relative_to(DOCS).as_posix()
@@ -3704,33 +3751,31 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
         }
 
-        ru_pages = sorted(
-            path
-            for path in DOCS.rglob("*.md")
-            if not path.name.endswith(".en.md")
-        )
+        ru_pages = self._base_markdown_pages()
+        localized_pages = self._localized_markdown_pages()
+        english_original_pages = self._english_original_markdown_pages()
         paired_pages = [
             path
-            for path in ru_pages
-            if path.with_name(path.stem + ".en" + path.suffix).exists()
+            for path in localized_pages
+            if self._en_sibling_for(path).exists()
         ]
-        missing_pages = [
-            path
-            for path in ru_pages
-            if not path.with_name(path.stem + ".en" + path.suffix).exists()
-        ]
+        missing_pages = self._missing_localized_en_siblings()
 
-        self.assertEqual(127, len(ru_pages))
-        self.assertEqual(127, len(paired_pages))
+        self.assertEqual(BUILDABLE_MARKDOWN_PAGE_COUNT, len(ru_pages))
+        self.assertEqual(LOCALIZED_MARKDOWN_PAGE_COUNT, len(localized_pages))
+        self.assertEqual(LOCALIZED_MARKDOWN_PAGE_COUNT, len(paired_pages))
+        self.assertEqual(ENGLISH_ORIGINAL_MARKDOWN_PAGE_COUNT, len(english_original_pages))
         self.assertEqual(0, len(missing_pages))
 
         for expected in [
             "Batch 34E: Full-Site I18N Parity Corrective Plan",
             "B34E-I18N-M34..M49",
             "docs_ru_pages_total: 127",
-            "existing_en_siblings: 127",
-            "missing_en_siblings: 0",
-            "every RU Markdown page that MkDocs can build has a `.en.md` sibling",
+            "english_original_pages_total: 7",
+            "localized_ru_pages_total: 120",
+            "existing_en_siblings: 120",
+            "missing_localized_en_siblings: 0",
+            "every localized RU Markdown page has a `.en.md` sibling",
             "full EN navigation/search/sitemap coverage",
             "no missing-page language-switcher fallback",
             "Batch 34C remains valid only for the promoted public-ready page set",
@@ -3762,8 +3807,10 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "B34E-I18N-M46..M49",
             "B34E-I18N-M47..M49",
             "docs_ru_pages_total: 127",
-            "existing_en_siblings: 127",
-            "missing_en_siblings: 0",
+            "english_original_pages_total: 7",
+            "localized_ru_pages_total: 120",
+            "existing_en_siblings: 120",
+            "missing_localized_en_siblings: 0",
             "full_site_en_nav_configured",
             "full_site_en_siblings_created",
             "full_site_en_editorial_quality_sweep",
@@ -3785,8 +3832,10 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "B34E-I18N-M34..M49",
             "full-site bilingual documentation",
             "docs_ru_pages_total: 127",
-            "existing_en_siblings: 127",
-            "missing_en_siblings: 0",
+            "english_original_pages_total: 7",
+            "localized_ru_pages_total: 120",
+            "existing_en_siblings: 120",
+            "missing_localized_en_siblings: 0",
             "full_site_en_siblings_created",
             "full_site_search_sitemap_parity",
             "full_site_i18n_closure",
@@ -3809,8 +3858,10 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "B34E-I18N-M47..M49",
                 "Batch 34C localized the public-ready set only",
                 "docs_ru_pages_total: 127",
-                "existing_en_siblings: 127",
-                "missing_en_siblings: 0",
+                "english_original_pages_total: 7",
+                "localized_ru_pages_total: 120",
+                "existing_en_siblings: 120",
+                "missing_localized_en_siblings: 0",
                 "full_site_i18n_closure",
                 "full_site_i18n_final_evidence",
                 "no remaining Batch 34E gates",
@@ -3836,8 +3887,10 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "full_site_i18n_final_evidence",
                 "full-site i18n parity",
                 "docs_ru_pages_total: 127",
-                "existing_en_siblings: 127",
-                "missing_en_siblings: 0",
+                "english_original_pages_total: 7",
+                "localized_ru_pages_total: 120",
+                "existing_en_siblings: 120",
+                "missing_localized_en_siblings: 0",
                 "full_site_en_siblings_created",
                 "full_site_en_editorial_quality_sweep",
                 "full_site_ru_quality_sweep",
@@ -3863,24 +3916,20 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
         }
 
-        ru_pages = sorted(
-            path
-            for path in DOCS.rglob("*.md")
-            if not path.name.endswith(".en.md")
-        )
+        ru_pages = self._base_markdown_pages()
+        localized_pages = self._localized_markdown_pages()
+        english_original_pages = self._english_original_markdown_pages()
         paired_pages = [
             path
-            for path in ru_pages
-            if path.with_name(path.stem + ".en" + path.suffix).exists()
+            for path in localized_pages
+            if self._en_sibling_for(path).exists()
         ]
-        missing_pages = [
-            path
-            for path in ru_pages
-            if not path.with_name(path.stem + ".en" + path.suffix).exists()
-        ]
+        missing_pages = self._missing_localized_en_siblings()
 
-        self.assertEqual(127, len(ru_pages))
-        self.assertEqual(127, len(paired_pages))
+        self.assertEqual(BUILDABLE_MARKDOWN_PAGE_COUNT, len(ru_pages))
+        self.assertEqual(LOCALIZED_MARKDOWN_PAGE_COUNT, len(localized_pages))
+        self.assertEqual(LOCALIZED_MARKDOWN_PAGE_COUNT, len(paired_pages))
+        self.assertEqual(ENGLISH_ORIGINAL_MARKDOWN_PAGE_COUNT, len(english_original_pages))
         self.assertEqual(0, len(missing_pages))
 
         for expected in [
@@ -3891,8 +3940,10 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "full_site_en_nav_configured",
             "full_site_en_siblings_created",
             "docs_ru_pages_total: 127",
-            "existing_en_siblings: 127",
-            "missing_en_siblings: 0",
+            "english_original_pages_total: 7",
+            "localized_ru_pages_total: 120",
+            "existing_en_siblings: 120",
+            "missing_localized_en_siblings: 0",
             "initial_m35_existing_en_siblings: 37",
             "initial_m35_missing_en_siblings: 90",
             "expected_red_full_site_i18n_parity",
@@ -3964,6 +4015,56 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "no git stage/commit/push/PR",
             ]:
                 with self.subTest(control_plane=filename, term=expected):
+                    self.assertIn(expected, text)
+
+    def test_track10_task26_batch34e_english_original_plan_files_are_not_translation_gaps(self):
+        packet = BATCH34E_FULL_SITE_INVENTORY.read_text(encoding="utf-8")
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        plan = TRACK10_PLAN.read_text(encoding="utf-8")
+        english_original_pages = [
+            DOCS / "superpowers" / "plans" / "2026-05-14-product-agent-os-generated-infrastructure.md",
+            DOCS / "superpowers" / "plans" / "2026-05-14-product-agent-os-lifecycle-skills.md",
+            DOCS / "superpowers" / "plans" / "2026-05-14-product-agent-os-plugin-core.md",
+            DOCS / "superpowers" / "plans" / "2026-05-14-product-agent-os-production-hardening.md",
+            DOCS / "superpowers" / "plans" / "2026-05-15-product-agent-os-codex-runtime-runner.md",
+            DOCS / "superpowers" / "plans" / "2026-05-25-track-9-methodology-intelligence.md",
+            DOCS / "superpowers" / "plans" / "2026-05-27-track-10-guided-questions-status-dashboard.md",
+        ]
+        base_pages = sorted(
+            path
+            for path in DOCS.rglob("*.md")
+            if not path.name.endswith(".en.md")
+        )
+        localized_pages = [
+            path for path in base_pages if path not in set(english_original_pages)
+        ]
+        missing_localized_siblings = [
+            path.relative_to(DOCS).as_posix()
+            for path in localized_pages
+            if not path.with_name(path.stem + ".en" + path.suffix).exists()
+        ]
+
+        self.assertEqual(127, len(base_pages))
+        self.assertEqual(7, len(english_original_pages))
+        self.assertEqual(120, len(localized_pages))
+        self.assertEqual([], missing_localized_siblings)
+        self.assertTrue(
+            all(
+                page.exists()
+                and not page.with_name(page.stem + ".en" + page.suffix).exists()
+                for page in english_original_pages
+            )
+        )
+
+        for text in [packet, registry, backlog, plan]:
+            for expected in [
+                "english_original_pages_total: 7",
+                "localized_ru_pages_total: 120",
+                "existing_en_siblings: 120",
+                "missing_localized_en_siblings: 0",
+            ]:
+                with self.subTest(expected=expected):
                     self.assertIn(expected, text)
 
     def test_track10_task26_batch34e_m38_m43_en_translations_exist(self):
@@ -4045,13 +4146,6 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "sources/product-agent-os-track-9-backlog.md",
             "sources/registry.md",
             "sources/source-card-template.md",
-            "superpowers/plans/2026-05-14-product-agent-os-generated-infrastructure.md",
-            "superpowers/plans/2026-05-14-product-agent-os-lifecycle-skills.md",
-            "superpowers/plans/2026-05-14-product-agent-os-plugin-core.md",
-            "superpowers/plans/2026-05-14-product-agent-os-production-hardening.md",
-            "superpowers/plans/2026-05-15-product-agent-os-codex-runtime-runner.md",
-            "superpowers/plans/2026-05-25-track-9-methodology-intelligence.md",
-            "superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md",
             "superpowers/specs/2026-05-14-product-agent-os-agents-sdk-runner-design.md",
             "superpowers/specs/2026-05-14-product-agent-os-generated-infrastructure-design.md",
             "superpowers/specs/2026-05-14-product-agent-os-lifecycle-skills-design.md",
@@ -4077,6 +4171,13 @@ class ProductAgentOsDocsTest(unittest.TestCase):
 
         self.assertEqual([], missing)
         self.assertEqual([], cyrillic_hits)
+
+        packet = BATCH34E_FULL_SITE_INVENTORY.read_text(encoding="utf-8")
+        for path in self._english_original_markdown_pages():
+            rel_path = path.relative_to(DOCS).as_posix()
+            with self.subTest(english_original_plan=rel_path):
+                self.assertIn(rel_path, packet)
+                self.assertFalse(self._en_sibling_for(path).exists())
 
     def test_track10_task26_batch34e_m44_en_editorial_quality_sweep_is_recorded(self):
         packet = BATCH34E_FULL_SITE_INVENTORY.read_text(encoding="utf-8")
@@ -4257,17 +4358,22 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         self.assertEqual([], link_issues)
 
     def test_track10_task26_batch34e_full_site_parity_red_gate(self):
-        ru_pages = sorted(
-            path
-            for path in DOCS.rglob("*.md")
-            if not path.name.endswith(".en.md")
-        )
+        ru_pages = self._localized_markdown_pages()
         missing_siblings = [
             path.relative_to(DOCS).as_posix()
             for path in ru_pages
-            if not path.with_name(path.stem + ".en" + path.suffix).exists()
+            if not self._en_sibling_for(path).exists()
         ]
         self.assertEqual([], missing_siblings)
+        self.assertEqual(LOCALIZED_MARKDOWN_PAGE_COUNT, len(ru_pages))
+        self.assertEqual(
+            [],
+            [
+                self._en_sibling_for(path).relative_to(DOCS).as_posix()
+                for path in self._english_original_markdown_pages()
+                if self._en_sibling_for(path).exists()
+            ],
+        )
 
         cyrillic_en_pages = []
         for path in DOCS.rglob("*.en.md"):

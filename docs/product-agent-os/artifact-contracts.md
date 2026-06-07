@@ -106,6 +106,10 @@ Artifacts должен не contain secrets, credentials, raw private chat logs,
 | `.codex/artifact-templates/system-file-hygiene-report.md` | Template registry | Staged report для size, duplication, mojibake/BOM, secret, historical-ledger и ownership findings. | Только review artifact; compaction остается отдельным slice. |
 | `.codex/automation-candidates/system-file-hygiene-audit.md` | Template registry | Candidate-only automation packet для будущих scheduled hygiene checks. | Active schedules остаются out of scope до explicit approval и rollback/disable evidence. |
 
+JSON-валидатор `system_file_hygiene_audit` проверяет вложенную форму trigger records, class records, inventory, findings и `summary.status`; malformed packet блокируется до compaction или automation promotion.
+
+Поля JSON для `system_file_hygiene_audit`: `audit_trigger`, `finding_type`, `compaction_decision`, `approval_boundary`, `no_secrets_status` и `active_schedule_markers`. CLI `--trigger` записывает причину запуска без записи в рабочую область. Шаблон `system-file-hygiene-report.md` фиксирует audit trigger, класс системного файла, тип finding, владельца, решение о compaction, active schedule markers, no-secrets status и границу отдельного approved slice.
+
 ## Planned Execution Evidence Files
 
 | Planned artifact | Surface | Status до approval |

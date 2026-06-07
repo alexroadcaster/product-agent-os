@@ -9,7 +9,7 @@ Source status: template; report requires current read-only audit evidence.
 - Audit trigger:
 - Schedule status: not_created
 - Write policy: read_only
-- No secrets: required
+- No secrets / no-secrets status: passed | blocked
 
 ## Summary
 
@@ -17,6 +17,7 @@ Source status: template; report requires current read-only audit evidence.
 - Warnings:
 - Errors:
 - Status: ok | review_required | blocked
+- Approval boundary: owner_approval_required_for_writes
 
 ## Trigger Evidence
 
@@ -47,9 +48,9 @@ Source status: template; report requires current read-only audit evidence.
 
 ## Findings
 
-| Severity | System file class | File | Finding type | Finding | Recommended owner |
-| --- | --- | --- | --- | --- | --- |
-|  |  |  |  |  |  |
+| Severity | System file class | File | Finding type | Finding | Owner | Recommended owner | Compaction decision |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|  |  |  |  |  |  |  |  |
 
 ## Staged Actions
 

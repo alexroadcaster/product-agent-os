@@ -17,29 +17,90 @@ TRIGGER_POLICY: dict[str, Any] = {
             "id": "weekly_full_system_file_hygiene",
             "cadence": "weekly",
             "scope": "all maintained system file classes",
+            "write_policy": "read_only",
             "action": "emit report and staged compaction candidates only",
+            "stop_conditions": [
+                "secrets or unreadable system files are detected",
+                "hard-size violations lack an owner routing destination",
+                "active schedule markers appear in automation candidates",
+            ],
         },
         {
             "id": "monthly_deep_ownership_review",
             "cadence": "monthly",
             "scope": "ownership, source-of-truth routing, duplicate guidance and stale evidence",
+            "write_policy": "read_only",
             "action": "emit owner review packet only",
+            "stop_conditions": [
+                "ownership or source-of-truth routing is ambiguous",
+                "historical ledger content has no destination artifact",
+            ],
         },
     ],
     "event_triggers": [
-        "after changes to AGENTS.md, REQUIREMENTS.md, PLAN.md, TEST.md, EVALS.md, RUNLOG.md or README.md",
-        "after changes to .codex/agents, .codex/skills, .codex/workflows, .codex/hooks, .codex/evals or .codex/automation-candidates",
-        "before release, PR creation, plugin packaging or enabling any automation schedule",
-        "after failed verification, repeated manual compaction or stale evidence discovery",
+        {
+            "id": "root_control_plane_change",
+            "when": "after changes to AGENTS.md, REQUIREMENTS.md, PLAN.md, TEST.md, EVALS.md, RUNLOG.md or README.md",
+            "scope": "changed root control-plane file plus adjacent source owner",
+            "write_policy": "read_only",
+            "action": "emit report and owner routing recommendation only",
+            "stop_conditions": [
+                "duplicate durable rules, secrets, stale success claims or hard-size violations are introduced",
+            ],
+        },
+        {
+            "id": "agent_skill_or_workflow_change",
+            "when": "after changes to .codex/agents, .codex/skills, .codex/workflows, .codex/hooks, .codex/evals or .codex/automation-candidates",
+            "scope": "changed Codex agent, skill, workflow, hook, eval or automation candidate file",
+            "write_policy": "read_only",
+            "action": "emit focused agent/skill/workflow hygiene finding only",
+            "stop_conditions": [
+                "role ownership, trigger, verification, failure mode or disable path is missing",
+                "active schedule markers appear before explicit approval",
+            ],
+        },
+        {
+            "id": "release_or_automation_approval_review",
+            "when": "before release, PR creation, plugin packaging or enabling any automation schedule",
+            "scope": "system files, automation candidates, approval records and rollback evidence",
+            "write_policy": "read_only",
+            "action": "emit approval readiness findings only",
+            "stop_conditions": [
+                "manual stability evidence, explicit approval or rollback/disable evidence is missing",
+                "GitHub Actions, Codex App automation, hook activation or external write is implied without approval",
+            ],
+        },
+        {
+            "id": "failed_verification_or_repeated_compaction",
+            "when": "after failed verification, repeated manual compaction or stale evidence discovery",
+            "scope": "files implicated by the failed check plus their owning source packets",
+            "write_policy": "read_only",
+            "action": "emit stale-evidence and routing findings only",
+            "stop_conditions": [
+                "evidence cannot be traced to a current source owner",
+                "a generated view is treated as source of truth",
+            ],
+        },
     ],
     "size_triggers": [
         {
             "id": "soft_size_review",
+            "scope": "file that crossed its soft limit plus likely destination artifacts",
+            "write_policy": "read_only",
             "action": "review ownership and duplicate content",
+            "stop_conditions": [
+                "continued edits would add implementation history to the wrong owner file",
+            ],
         },
         {
             "id": "hard_size_compaction_required",
+            "scope": "file that crossed its hard limit plus required owner routing",
+            "write_policy": "read_only",
             "action": "stage compaction proposal before adding more history",
+            "stop_conditions": [
+                "hard-size violation has no owner routing plan",
+                "compaction would delete unique source-backed information",
+            ],
         },
     ],
 }
@@ -227,24 +288,47 @@ EXCLUDED_PARTS = {
     ".product-agent-os-status-current",
     "fixtures",
 }
-MOJIBAKE_MARKERS = ("Рќ", "Рџ", "Р°", "Рё", "Р»", "СЃ", "С‚", "СЊ")
+MOJIBAKE_MARKERS = (
+    "\u0420\u045c",
+    "\u0420\u045f",
+    "\u0420\u00b0",
+    "\u0420\u0451",
+    "\u0420\u00bb",
+    "\u0421\u0403",
+    "\u0421\u201a",
+    "\u0421\u040a",
+    "\u0420\u00a0\u0421\u045a",
+    "\u0420\u00a0\u0421\u045f",
+)
 HISTORICAL_LEDGER_PATTERN = re.compile(
     r"\b(Task|Track|Batch)\b|T[0-9]+-[A-Z0-9-]+|B[0-9]+-[A-Z]+-M[0-9]+|done_through"
 )
 ACTIVE_SCHEDULE_PATTERN = re.compile(
-    r"(?im)(recurring schedule is active|codex app automation:\s*active|github actions workflow:\s*active|^cron:|^rrule:)"
+    r"(?im)(recurring schedule is active|codex app automation:\s*active|github actions workflow:\s*active|^\s*-?\s*cron:|^\s*rrule:)"
 )
+SYSTEM_FILE_CLASS_BY_KEY = {item.key: item for item in SYSTEM_FILE_CLASSES}
 
 
-def build_system_file_hygiene_audit(root: str | Path) -> dict[str, Any]:
+def build_system_file_hygiene_audit(root: str | Path, audit_trigger: str = "manual_owner_requested") -> dict[str, Any]:
     workspace = Path(root)
     inventory: list[dict[str, Any]] = []
     findings: list[dict[str, Any]] = []
+    trigger = audit_trigger.strip() if isinstance(audit_trigger, str) and audit_trigger.strip() else "manual_owner_requested"
 
     if not workspace.exists() or not workspace.is_dir():
+        workspace_findings = [
+            _finding(
+                "error",
+                "workspace_not_found",
+                str(workspace),
+                "workspace must be an existing directory",
+                None,
+            )
+        ]
         return {
             "artifact_kind": "system_file_hygiene_audit",
             "schema_version": 1,
+            "audit_trigger": trigger,
             "workspace": str(workspace),
             "write_policy": "read_only",
             "schedule_status": "not_created",
@@ -252,15 +336,8 @@ def build_system_file_hygiene_audit(root: str | Path) -> dict[str, Any]:
             "triggers": TRIGGER_POLICY,
             "system_file_classes": system_file_class_records(),
             "inventory": [],
-            "findings": [
-                {
-                    "severity": "error",
-                    "code": "workspace_not_found",
-                    "path": str(workspace),
-                    "message": "workspace must be an existing directory",
-                }
-            ],
-            "summary": {"files_scanned": 0, "warnings": 0, "errors": 1},
+            "findings": workspace_findings,
+            "summary": _summary("blocked", [], workspace_findings, trigger),
         }
 
     seen: set[Path] = set()
@@ -279,12 +356,13 @@ def build_system_file_hygiene_audit(root: str | Path) -> dict[str, Any]:
     ]
     for name in missing_control_plane:
         findings.append(
-            {
-                "severity": "warning",
-                "code": "missing_control_plane_file",
-                "path": name,
-                "message": "Product-Agent OS control-plane file is missing",
-            }
+            _finding(
+                "warning",
+                "missing_control_plane_file",
+                name,
+                "Product-Agent OS control-plane file is missing",
+                SYSTEM_FILE_CLASS_BY_KEY["root_control_plane"],
+            )
         )
 
     errors = [finding for finding in findings if finding["severity"] == "error"]
@@ -293,6 +371,7 @@ def build_system_file_hygiene_audit(root: str | Path) -> dict[str, Any]:
     return {
         "artifact_kind": "system_file_hygiene_audit",
         "schema_version": 1,
+        "audit_trigger": trigger,
         "workspace": str(workspace),
         "write_policy": "read_only",
         "schedule_status": "not_created",
@@ -301,11 +380,7 @@ def build_system_file_hygiene_audit(root: str | Path) -> dict[str, Any]:
         "system_file_classes": system_file_class_records(),
         "inventory": sorted(inventory, key=lambda item: item["path"]),
         "findings": sorted(findings, key=lambda item: (item["severity"], item["path"], item["code"])),
-        "summary": {
-            "files_scanned": len(inventory),
-            "warnings": len(warnings),
-            "errors": len(errors),
-        },
+        "summary": _summary(status, warnings, errors, trigger, files_scanned=len(inventory)),
     }
 
 
@@ -330,21 +405,127 @@ def validate_system_file_hygiene_audit(packet: dict[str, Any]) -> list[str]:
         errors.append("artifact_kind:invalid")
     if packet.get("schema_version") != 1:
         errors.append("schema_version:unsupported")
+    if not isinstance(packet.get("audit_trigger"), str) or not packet["audit_trigger"].strip():
+        errors.append("audit_trigger:required")
     if packet.get("write_policy") != "read_only":
         errors.append("write_policy:must_be_read_only")
     if packet.get("schedule_status") != "not_created":
         errors.append("schedule_status:must_be_not_created")
     if packet.get("status") not in {"ok", "review_required", "blocked"}:
         errors.append("status:invalid")
-    if not isinstance(packet.get("triggers"), dict):
+    triggers = packet.get("triggers")
+    if not isinstance(triggers, dict):
         errors.append("triggers:required")
-    if not isinstance(packet.get("system_file_classes"), list) or not packet.get("system_file_classes"):
+    elif not _valid_trigger_policy(triggers):
+        errors.append("triggers:invalid")
+    system_file_classes = packet.get("system_file_classes")
+    if not isinstance(system_file_classes, list) or not system_file_classes:
         errors.append("system_file_classes:required")
-    if not isinstance(packet.get("inventory"), list):
+    elif not all(_valid_system_file_class_record(item) for item in system_file_classes):
+        errors.append("system_file_classes:invalid")
+    inventory = packet.get("inventory")
+    if not isinstance(inventory, list):
         errors.append("inventory:required")
-    if not isinstance(packet.get("findings"), list):
+    elif not all(_valid_inventory_record(item) for item in inventory):
+        errors.append("inventory:invalid")
+    findings = packet.get("findings")
+    if not isinstance(findings, list):
         errors.append("findings:required")
+    elif not all(_valid_finding_record(item) for item in findings):
+        errors.append("findings:invalid")
+    summary = packet.get("summary")
+    if not isinstance(summary, dict):
+        errors.append("summary:required")
+    elif summary.get("status") not in {"ok", "review_required", "blocked"}:
+        errors.append("summary:status_required")
+    elif summary["status"] != packet.get("status"):
+        errors.append("summary:status_mismatch")
+    elif not all(isinstance(summary.get(key), int) and summary[key] >= 0 for key in ("files_scanned", "warnings", "errors")):
+        errors.append("summary:invalid")
+    elif summary.get("audit_trigger") != packet.get("audit_trigger"):
+        errors.append("summary:audit_trigger_mismatch")
+    elif summary.get("no_secrets_status") not in {"passed", "blocked"}:
+        errors.append("summary:no_secrets_status_required")
+    elif not isinstance(summary.get("active_schedule_markers"), int) or summary["active_schedule_markers"] < 0:
+        errors.append("summary:invalid")
+    elif summary.get("approval_boundary") != "owner_approval_required_for_writes":
+        errors.append("summary:invalid")
     return errors
+
+
+def _valid_trigger_policy(triggers: dict[str, Any]) -> bool:
+    if triggers.get("write_policy") != "read_only" or triggers.get("schedule_status") != "not_created":
+        return False
+    for group in ("periodic_triggers", "event_triggers", "size_triggers"):
+        records = triggers.get(group)
+        if not isinstance(records, list) or not records:
+            return False
+        if not all(_valid_trigger_record(item) for item in records):
+            return False
+    return True
+
+
+def _valid_trigger_record(record: Any) -> bool:
+    if not isinstance(record, dict):
+        return False
+    required_strings = ("id", "scope", "action")
+    if any(not isinstance(record.get(key), str) or not record[key].strip() for key in required_strings):
+        return False
+    if record.get("write_policy") != "read_only":
+        return False
+    stop_conditions = record.get("stop_conditions")
+    return isinstance(stop_conditions, list) and bool(stop_conditions) and all(
+        isinstance(item, str) and item.strip() for item in stop_conditions
+    )
+
+
+def _valid_system_file_class_record(record: Any) -> bool:
+    if not isinstance(record, dict):
+        return False
+    required_strings = ("key", "label", "owner", "maintenance_focus")
+    if any(not isinstance(record.get(key), str) or not record[key].strip() for key in required_strings):
+        return False
+    patterns = record.get("patterns")
+    if not isinstance(patterns, list) or not patterns or not all(isinstance(item, str) and item.strip() for item in patterns):
+        return False
+    soft_limit = record.get("soft_limit_chars")
+    hard_limit = record.get("hard_limit_chars")
+    return isinstance(soft_limit, int) and isinstance(hard_limit, int) and 0 < soft_limit <= hard_limit
+
+
+def _valid_inventory_record(record: Any) -> bool:
+    if not isinstance(record, dict):
+        return False
+    required_strings = ("path", "class", "owner")
+    if any(not isinstance(record.get(key), str) or not record[key].strip() for key in required_strings):
+        return False
+    if not isinstance(record.get("readable"), bool):
+        return False
+    return all(
+        isinstance(record.get(key), int) and record[key] >= 0
+        for key in ("chars", "lines", "soft_limit_chars", "hard_limit_chars")
+    )
+
+
+def _valid_finding_record(record: Any) -> bool:
+    if not isinstance(record, dict):
+        return False
+    if record.get("severity") not in {"warning", "error"}:
+        return False
+    if record.get("approval_boundary") != "owner_approval_required_for_writes":
+        return False
+    return all(
+        isinstance(record.get(key), str) and record[key].strip()
+        for key in (
+            "code",
+            "path",
+            "message",
+            "class",
+            "owner",
+            "finding_type",
+            "compaction_decision",
+        )
+    )
 
 
 def _iter_matching_files(root: Path, file_class: SystemFileClass) -> list[Path]:
@@ -373,16 +554,18 @@ def _inspect_system_file(root: Path, path: Path, file_class: SystemFileClass) ->
                 "chars": 0,
                 "lines": 0,
                 "readable": False,
+                "owner": file_class.owner,
                 "soft_limit_chars": file_class.soft_limit_chars,
                 "hard_limit_chars": file_class.hard_limit_chars,
             },
             [
-                {
-                    "severity": "error",
-                    "code": "unreadable_utf8",
-                    "path": relative,
-                    "message": f"unable to read as utf-8: {exc}",
-                }
+                _finding(
+                    "error",
+                    "unreadable_utf8",
+                    relative,
+                    f"unable to read as utf-8: {exc}",
+                    file_class,
+                )
             ],
         )
 
@@ -394,19 +577,20 @@ def _inspect_system_file(root: Path, path: Path, file_class: SystemFileClass) ->
         "chars": chars,
         "lines": lines,
         "readable": True,
+        "owner": file_class.owner,
         "soft_limit_chars": file_class.soft_limit_chars,
         "hard_limit_chars": file_class.hard_limit_chars,
     }
     if chars >= file_class.hard_limit_chars:
-        findings.append(_finding("error", "hard_size_limit_exceeded", relative, f"{chars} chars >= {file_class.hard_limit_chars}"))
+        findings.append(_finding("error", "hard_size_limit_exceeded", relative, f"{chars} chars >= {file_class.hard_limit_chars}", file_class))
     elif chars >= file_class.soft_limit_chars:
-        findings.append(_finding("warning", "soft_size_limit_exceeded", relative, f"{chars} chars >= {file_class.soft_limit_chars}"))
+        findings.append(_finding("warning", "soft_size_limit_exceeded", relative, f"{chars} chars >= {file_class.soft_limit_chars}", file_class))
     if text.startswith("\ufeff"):
-        findings.append(_finding("warning", "utf8_bom_present", relative, "UTF-8 BOM should be removed from system files"))
+        findings.append(_finding("warning", "utf8_bom_present", relative, "UTF-8 BOM should be removed from system files", file_class))
     if any(marker in text for marker in MOJIBAKE_MARKERS):
-        findings.append(_finding("warning", "mojibake_marker_present", relative, "possible mojibake marker found"))
+        findings.append(_finding("warning", "mojibake_marker_present", relative, "possible mojibake marker found", file_class))
     if any(is_forbidden_secret_assignment(line) for line in text.splitlines()):
-        findings.append(_finding("error", "secret_like_literal", relative, "secret-like assignment is forbidden in system files"))
+        findings.append(_finding("error", "secret_like_literal", relative, "secret-like assignment is forbidden in system files", file_class))
     if path.suffix.lower() == ".md":
         duplicate_headings = _duplicate_headings(text)
         if duplicate_headings:
@@ -416,6 +600,7 @@ def _inspect_system_file(root: Path, path: Path, file_class: SystemFileClass) ->
                     "duplicate_markdown_headings",
                     relative,
                     "duplicate headings: " + ", ".join(duplicate_headings[:5]),
+                    file_class,
                 )
             )
     ledger_count = len(HISTORICAL_LEDGER_PATTERN.findall(text))
@@ -426,15 +611,17 @@ def _inspect_system_file(root: Path, path: Path, file_class: SystemFileClass) ->
                 "historical_ledger_density",
                 relative,
                 f"{ledger_count} historical ledger markers require ownership review",
+                file_class,
             )
         )
-    if file_class.key == "automation_candidates" and ACTIVE_SCHEDULE_PATTERN.search(text):
+    if ACTIVE_SCHEDULE_PATTERN.search(text):
         findings.append(
             _finding(
                 "error",
                 "active_schedule_in_candidate",
                 relative,
-                "automation candidate must not contain an active schedule",
+                "system file must not contain an active schedule before explicit approval",
+                file_class,
             )
         )
     return record, findings
@@ -465,5 +652,84 @@ def _needs_ledger_density_warning(relative: str, class_key: str, marker_count: i
     return False
 
 
-def _finding(severity: str, code: str, path: str, message: str) -> dict[str, str]:
-    return {"severity": severity, "code": code, "path": path, "message": message}
+def _summary(
+    status: str,
+    warnings: list[dict[str, Any]],
+    errors: list[dict[str, Any]],
+    audit_trigger: str,
+    files_scanned: int = 0,
+) -> dict[str, Any]:
+    findings = [*warnings, *errors]
+    secret_like_findings = sum(1 for finding in findings if finding["code"] == "secret_like_literal")
+    secret_scan_unverifiable_findings = sum(
+        1 for finding in findings if finding["code"] in {"unreadable_utf8", "workspace_not_found"}
+    )
+    active_schedule_markers = sum(1 for finding in findings if finding["finding_type"] == "active_schedule")
+    return {
+        "status": status,
+        "files_scanned": files_scanned,
+        "warnings": len(warnings),
+        "errors": len(errors),
+        "audit_trigger": audit_trigger,
+        "no_secrets_status": "blocked" if secret_like_findings or secret_scan_unverifiable_findings else "passed",
+        "secret_like_findings": secret_like_findings,
+        "secret_scan_unverifiable_findings": secret_scan_unverifiable_findings,
+        "active_schedule_markers": active_schedule_markers,
+        "approval_boundary": "owner_approval_required_for_writes",
+    }
+
+
+def _finding(
+    severity: str,
+    code: str,
+    path: str,
+    message: str,
+    file_class: SystemFileClass | None,
+) -> dict[str, str]:
+    class_key = file_class.key if file_class else "workspace"
+    owner = file_class.owner if file_class else "project operator"
+    return {
+        "severity": severity,
+        "code": code,
+        "path": path,
+        "message": message,
+        "class": class_key,
+        "owner": owner,
+        "finding_type": _finding_type(code),
+        "compaction_decision": _compaction_decision(code),
+        "approval_boundary": "owner_approval_required_for_writes",
+    }
+
+
+def _finding_type(code: str) -> str:
+    if code == "missing_control_plane_file":
+        return "missing_required_file"
+    if code in {"workspace_not_found", "unreadable_utf8"}:
+        return "readability"
+    if code in {"utf8_bom_present", "mojibake_marker_present"}:
+        return "encoding"
+    if code == "secret_like_literal":
+        return "secret"
+    if code == "duplicate_markdown_headings":
+        return "structure"
+    if code in {"soft_size_limit_exceeded", "hard_size_limit_exceeded"}:
+        return "size"
+    if code == "historical_ledger_density":
+        return "historical_ledger"
+    if code == "active_schedule_in_candidate":
+        return "active_schedule"
+    return "system_file_hygiene"
+
+
+def _compaction_decision(code: str) -> str:
+    if code in {"workspace_not_found", "unreadable_utf8", "secret_like_literal", "active_schedule_in_candidate"}:
+        return "blocked_until_owner_review"
+    if code == "missing_control_plane_file":
+        return "restore_or_record_accepted_gap"
+    if code in {"utf8_bom_present", "mojibake_marker_present"}:
+        return "repair_encoding_before_compaction"
+    if code == "soft_size_limit_exceeded":
+        return "review_before_more_edits"
+    if code in {"hard_size_limit_exceeded", "historical_ledger_density", "duplicate_markdown_headings"}:
+        return "route_to_owner_before_compaction"
+    return "owner_review"

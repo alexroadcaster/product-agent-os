@@ -106,6 +106,10 @@ Artifacts must not contain secrets, credentials, raw private chat logs, private 
 | `.codex/artifact-templates/system-file-hygiene-report.md` | Template registry | Staged report for size, duplication, mojibake/BOM, secret, historical-ledger and ownership findings. | Review artifact only; compaction remains a separate slice. |
 | `.codex/automation-candidates/system-file-hygiene-audit.md` | Template registry | Candidate-only automation packet for future scheduled hygiene checks. | active schedules remain out of scope until explicit approval and rollback/disable evidence exist. |
 
+The `system_file_hygiene_audit` JSON validator checks nested trigger records, class records, inventory, findings and `summary.status`; malformed packets are blocked before compaction or automation promotion.
+
+System hygiene JSON fields: `audit_trigger`, `finding_type`, `compaction_decision`, `approval_boundary`, `no_secrets_status` and `active_schedule_markers`. CLI `--trigger` records the run reason without workspace writes. Staged `system-file-hygiene-report.md` captures audit trigger, system file class, finding type, owner, compaction decision, active schedule markers, no-secrets status and owner-approved slice boundary.
+
 ## Planned Execution Evidence Files
 
 | Planned artifact | Surface | Status before approval |

@@ -199,7 +199,7 @@ python plugins\product-agent-os\scripts\run_fixture_eval.py
 Read-only audit системных файлов:
 
 ```powershell
-python plugins\product-agent-os\scripts\validate_system_file_hygiene.py <workspace>
+python plugins\product-agent-os\scripts\validate_system_file_hygiene.py <workspace> --trigger soft_size_review
 ```
 
 ## Self-verification metrics loop
@@ -224,6 +224,8 @@ Product-Agent OS включает read-only контракт `system_file_hygien
 Поддерживаемые поверхности: root control-plane files, `README.md`, nested `AGENTS.md`, `.codex/config.toml`, MCP config, `.codex/agents`, `.codex/skills`, `.codex/workflows`, `.codex/artifact-templates`, `.codex/automation-candidates`, `.codex/hooks`, `.codex/evals`, `.codex/pr`, docs source-control files, `.github/workflows`, `CODEOWNERS`, `SECURITY.md` и checked-in plugin package control files. Audit reports покрывает size limits, duplicate headings, mojibake/BOM markers, secret-like literals, historical ledger leakage и active schedule markers внутри automation candidates.
 
 Audit не сокращает файлы самостоятельно и не создает schedule. Результат: JSON плюс staged `system-file-hygiene-report.md`; любая правка, hook activation, GitHub workflow, Codex App automation, MCP change или external write остается отдельным owner-approved slice.
+
+JSON пакет содержит `audit_trigger`, `finding_type`, `compaction_decision`, `approval_boundary`, `no_secrets_status` и `active_schedule_markers`. CLI `--trigger` записывает причину запуска, печатает JSON, возвращает `0` для `ok` или `review_required` и возвращает `1` только для `blocked`; workspace остается read-only.
 
 ## Project code graph и cockpit
 

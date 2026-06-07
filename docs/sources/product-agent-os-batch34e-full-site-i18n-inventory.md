@@ -21,7 +21,7 @@ Status: `done_through_m34`.
 Корректирующий scope:
 
 - Batch 34C остается валидным только для promoted public-ready page set.
-- Full-site parity покрывает каждую buildable RU Markdown page в `docs/`.
+- Full-site parity покрывает каждую localized RU Markdown page в `docs/`; seven English-original superpowers plan files remain base English sources and are excluded from the `.en.md` sibling requirement.
 - Full-site parity не считается закрытой до M49, пока source pages, generated EN site, language switcher, search/sitemap и RU/EN content scans не пройдут closure gates.
 - Acceptance gates: `full EN navigation/search/sitemap coverage`, `no missing-page language-switcher fallback`, `full_site_en_siblings_created`, EN quality sweep и RU quality sweep.
 
@@ -35,6 +35,8 @@ Initial M35 inventory keys:
 docs_ru_pages_total: 127
 initial_m35_existing_en_siblings: 37
 initial_m35_missing_en_siblings: 90
+english_original_pages_total: 7
+localized_ru_pages_total: 120
 ```
 
 Inventory был собран из `docs/**/*.md`; существующие `*.en.md` pages исключены из RU count.
@@ -47,11 +49,12 @@ Focused test suite содержит `full_site_i18n_red_gate` как `expected_r
 
 RED gate проверяет будущий closure condition:
 
-- каждая buildable RU Markdown page имеет `.en.md` sibling;
+- каждая localized RU Markdown page имеет `.en.md` sibling;
+- English-original plan files in `docs/superpowers/plans/` are listed separately and do not require duplicate `.en.md` siblings;
 - каждый EN sibling не содержит unapproved Cyrillic;
 - generated `site/en/` содержит matching HTML page.
 
-После M38-M43 source-level sibling gap закрыт. После M46 generated `site/en/` существует для всех 127 страниц, а M47 фиксирует search/sitemap parity для того же регулярного `site/`.
+После M38-M43 source-level localized sibling gap закрыт. После M46 generated `site/en/` существует для всех 120 localized page pairs, а M47 фиксирует search/sitemap parity для того же регулярного `site/`.
 
 ## B34E-I18N-M37 EN Navigation Metadata
 
@@ -83,8 +86,10 @@ Current source inventory after M43:
 
 ```yaml
 docs_ru_pages_total: 127
-existing_en_siblings: 127
-missing_en_siblings: 0
+english_original_pages_total: 7
+localized_ru_pages_total: 120
+existing_en_siblings: 120
+missing_localized_en_siblings: 0
 full_site_en_siblings_created: true
 en_source_cyrillic_hits: 0
 ```
@@ -96,11 +101,21 @@ Translation pass created EN siblings for:
 - `B34E-I18N-M40`: `docs/playbooks/*.en.md`;
 - `B34E-I18N-M41`: `docs/methodologies/*.en.md`;
 - `B34E-I18N-M42`: `docs/sources/*.en.md` and `docs/sources/methodology-research/*.en.md`;
-- `B34E-I18N-M43`: `docs/superpowers/plans/*.en.md` and `docs/superpowers/specs/*.en.md`.
+- `B34E-I18N-M43`: `docs/superpowers/specs/*.en.md`; `docs/superpowers/plans/*.md` files are English-original source plans and no longer require duplicated `.en.md` siblings.
 
 M38-M43 preserves official OpenAI terms, source links, commands, IDs, code fences, paths, status keys, schema keys and verification vocabulary.
 
 Methodology EN pages use the checked-in English methodology research dossiers as their source-backed basis. Large historical source/superpowers documents are source-level parity artifacts and were included in the M44 editorial quality sweep before final product-quality closure.
+
+English-original plan files excluded from localized sibling parity:
+
+- `superpowers/plans/2026-05-14-product-agent-os-generated-infrastructure.md`
+- `superpowers/plans/2026-05-14-product-agent-os-lifecycle-skills.md`
+- `superpowers/plans/2026-05-14-product-agent-os-plugin-core.md`
+- `superpowers/plans/2026-05-14-product-agent-os-production-hardening.md`
+- `superpowers/plans/2026-05-15-product-agent-os-codex-runtime-runner.md`
+- `superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`
+- `superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md`
 
 ## B34E-I18N-M44 EN Editorial Quality Sweep
 
@@ -137,14 +152,16 @@ M45 is a source quality gate only. It does not rebuild regular `site/`, does not
 
 Status: `done_through_m46`.
 
-M46 records `full_site_language_switcher_parity` for the generated regular `site/` output after a strict MkDocs rebuild. The static check covers every RU Markdown page with an `.en.md` sibling and verifies that Material header language-switcher links route RU pages to the matching EN page, EN pages back to the matching RU page, and `file://` resolution stays inside `site/`.
+M46 records `full_site_language_switcher_parity` for the generated regular `site/` output after a strict MkDocs rebuild. The static check covers every localized RU Markdown page with an `.en.md` sibling and verifies that Material header language-switcher links route RU pages to the matching EN page, EN pages back to the matching RU page, and `file://` resolution stays inside `site/`.
 
 Current generated-site language-switcher report after M46:
 
 ```yaml
-static_language_switcher_pairs_checked: 127
-rendered_ru_pages_checked: 127
-rendered_en_pages_checked: 127
+english_original_pages_total: 7
+localized_ru_pages_total: 120
+static_language_switcher_pairs_checked: 120
+rendered_ru_pages_checked: 120
+rendered_en_pages_checked: 120
 language_switcher_pair_failures: 0
 file_url_escape_failures: 0
 ```
@@ -155,7 +172,7 @@ M46 does not claim search/sitemap parity or final closure. Search/sitemap parity
 
 Status: `done_through_m47`.
 
-M47 records `full_site_search_sitemap_parity` for the generated regular `site/` output after a strict MkDocs rebuild. The static check compares every RU Markdown page with an `.en.md` sibling against page-level entries in `site/search/search_index.json` and `site/sitemap.xml`.
+M47 records `full_site_search_sitemap_parity` for the generated regular `site/` output after a strict MkDocs rebuild. The static check compares every localized RU Markdown page with an `.en.md` sibling against page-level entries in `site/search/search_index.json` and `site/sitemap.xml`.
 
 M47 also updates the search policy to `reconfigure_search: false` while keeping `fallback_to_default: false`. This preserves real EN sibling entries that `mkdocs-static-i18n` duplicate reduction removes when internal evidence text matches the RU page. Because fallback remains disabled, the EN search entries are real translated pages, not RU fallback pollution.
 
@@ -163,10 +180,12 @@ Current generated-site search/sitemap report after M47:
 
 ```yaml
 strict_mkdocs_build_exit_code: 0
-search_index_ru_pages_present: 127
-search_index_en_pages_present: 127
-sitemap_ru_pages_present: 127
-sitemap_en_pages_present: 127
+english_original_pages_total: 7
+localized_ru_pages_total: 120
+search_index_ru_pages_present: 120
+search_index_en_pages_present: 120
+sitemap_ru_pages_present: 120
+sitemap_en_pages_present: 120
 search_index_missing_ru_pages: 0
 search_index_missing_en_pages: 0
 sitemap_missing_ru_pages: 0
@@ -212,17 +231,19 @@ full_site_i18n_closure: true
 full_site_i18n_final_evidence: true
 strict_mkdocs_final_closure_exit_code: 0
 docs_ru_pages_total: 127
-existing_en_siblings: 127
-missing_en_siblings: 0
-rendered_ru_pages_checked: 127
-rendered_en_pages_checked: 127
-static_language_switcher_pairs_checked: 127
+english_original_pages_total: 7
+localized_ru_pages_total: 120
+existing_en_siblings: 120
+missing_localized_en_siblings: 0
+rendered_ru_pages_checked: 120
+rendered_en_pages_checked: 120
+static_language_switcher_pairs_checked: 120
 language_switcher_pair_failures: 0
 file_url_escape_failures: 0
-search_index_ru_pages_present: 127
-search_index_en_pages_present: 127
-sitemap_ru_pages_present: 127
-sitemap_en_pages_present: 127
+search_index_ru_pages_present: 120
+search_index_en_pages_present: 120
+sitemap_ru_pages_present: 120
+sitemap_en_pages_present: 120
 search_index_missing_ru_pages: 0
 search_index_missing_en_pages: 0
 sitemap_missing_ru_pages: 0
