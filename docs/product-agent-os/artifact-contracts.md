@@ -110,6 +110,8 @@ JSON-валидатор `system_file_hygiene_audit` проверяет влож�
 
 Поля JSON для `system_file_hygiene_audit`: `audit_trigger`, `finding_type`, `compaction_decision`, `approval_boundary`, `no_secrets_status` и `active_schedule_markers`. CLI `--trigger` записывает причину запуска без записи в рабочую область. Шаблон `system-file-hygiene-report.md` фиксирует audit trigger, класс системного файла, тип finding, владельца, решение о compaction, active schedule markers, no-secrets status и границу отдельного approved slice.
 
+HTML/JSON status dashboard projection использует только bounded `file_statuses`: relative path, class, owner, state, severity, finding count, `mtime_utc`, `age_days`, `content_digest` и `top_finding`. Даты берутся из filesystem metadata и являются подсказками свежести, а не семантическим доказательством корректности содержимого, source ownership или completion readiness.
+
 ## Planned Execution Evidence Files
 
 | Planned artifact | Surface | Status до approval |

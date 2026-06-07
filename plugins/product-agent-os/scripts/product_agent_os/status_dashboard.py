@@ -11,7 +11,6 @@ from codex_runtime_runner.redaction import redact_payload, validate_redaction
 from product_agent_os.offline_artifact_safety import (
     GENERATED_VIEW_ONLY_TEXT,
     escape_html,
-    json_for_html_text,
     prepare_offline_payload,
     validate_offline_artifact,
 )
@@ -46,7 +45,7 @@ def render_status_dashboard(snapshot: dict[str, Any]) -> dict[str, Any]:
     safe_snapshot, redaction_summary = _redacted_snapshot(snapshot)
     prepared = prepare_offline_payload(safe_snapshot)
     snapshot_json = prepared["json"]
-    html_text = _render_html(safe_snapshot)
+    html_text = _render_html(safe_snapshot, prepared["json_for_html"])
     validation = _validate_dashboard_content(html_text, snapshot_json, safe_snapshot)
     return {
         "status": "ready" if validation["ok"] else "blocked",
@@ -181,7 +180,8 @@ def _dashboard_renderer_result(
         "status_dashboard": {
             "status": status,
             "write_policy": "staged_only",
-            "source_of_truth": "status_snapshot",
+            "source_of_truth": "underlying_artifacts",
+            "input_packet": "status_snapshot",
             "targets": list(DASHBOARD_TARGETS),
             "warnings": _unique(warnings),
             "blocked": _unique(blocked),
@@ -249,7 +249,7 @@ def _redacted_snapshot(snapshot: dict[str, Any]) -> tuple[dict[str, Any], dict[s
     return redacted, summary
 
 
-def _render_html(snapshot: dict[str, Any]) -> str:
+def _render_html(snapshot: dict[str, Any], snapshot_json_for_html: str) -> str:
     template = (TEMPLATE_ROOT / "status.html").read_text(encoding="utf-8")
     css = (TEMPLATE_ROOT / "status.css").read_text(encoding="utf-8")
     values = {
@@ -259,7 +259,7 @@ def _render_html(snapshot: dict[str, Any]) -> str:
         "css": css.rstrip(),
         "banner": _status_banner(snapshot),
         "sections": _sections(snapshot),
-        "snapshot_json": _json_for_html(snapshot),
+        "snapshot_json": snapshot_json_for_html,
     }
     html_text = template
     for key, value in values.items():
@@ -421,6 +421,11 @@ SYSTEM_HYGIENE_ROW_STATE_ORDER = {
     "stale": 5,
     "ok": 6,
 }
+SYSTEM_HYGIENE_SEVERITY_ORDER = {
+    "error": 0,
+    "warning": 1,
+    "none": 2,
+}
 
 
 def _system_hygiene_section(packet: dict[str, Any]) -> str:
@@ -565,12 +570,13 @@ def _system_hygiene_row(row: dict[str, Any]) -> str:
     )
 
 
-def _system_hygiene_status_sort_key(row: dict[str, Any]) -> tuple[int, int, str]:
-    label = SYSTEM_HYGIENE_GROUP_LABELS.get(str(row.get("class", "")), _title_from_key(row.get("class")))
-    state = str(row.get("state", ""))
+def _system_hygiene_status_sort_key(row: dict[str, Any]) -> tuple[int, int, str, str]:
+    class_key = str(row.get("class", ""))
+    severity = str(row.get("severity", "none"))
     return (
-        SYSTEM_HYGIENE_GROUP_ORDER.get(label, 50),
-        SYSTEM_HYGIENE_ROW_STATE_ORDER.get(state, 9),
+        SYSTEM_HYGIENE_SEVERITY_ORDER.get(severity, 9),
+        SYSTEM_HYGIENE_GROUP_ORDER.get(SYSTEM_HYGIENE_GROUP_LABELS.get(class_key, _title_from_key(class_key)), 50),
+        class_key,
         str(row.get("path", "")),
     )
 
@@ -619,6 +625,7 @@ def _status_banner(snapshot: dict[str, Any]) -> str:
         or evidence.get("freshness") == "stale"
         or "stale evidence" in warnings
         or "inspection-only evidence cannot prove completion" in warnings
+        or _system_hygiene_has_stale_rows(snapshot)
     )
     if not needs_review:
         return ""
@@ -628,6 +635,14 @@ def _status_banner(snapshot: dict[str, Any]) -> str:
         "      <p>Inspection-only or stale evidence cannot prove completion; use underlying artifacts before claiming work is done.</p>\n"
         "    </section>"
     )
+
+
+def _system_hygiene_has_stale_rows(snapshot: dict[str, Any]) -> bool:
+    hygiene = _dict(snapshot.get("system_file_hygiene"))
+    statuses = hygiene.get("file_statuses")
+    if not isinstance(statuses, list):
+        return False
+    return any(isinstance(item, dict) and item.get("state") == "stale" for item in statuses)
 
 
 def _value(value: Any) -> str:
@@ -654,15 +669,6 @@ def _next_question_text(value: Any) -> Any:
 
 def _text(value: Any) -> str:
     return escape_html(value)
-
-
-def _json_text(payload: Any) -> str:
-    return json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True)
-
-
-def _json_for_html(payload: Any) -> str:
-    text = _json_text(payload)
-    return json_for_html_text(text)
 
 
 def _validate_dashboard_content(html_text: str, snapshot_json: str, snapshot: dict[str, Any]) -> dict[str, Any]:

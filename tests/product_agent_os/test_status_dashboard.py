@@ -124,16 +124,122 @@ class StatusDashboardTest(unittest.TestCase):
         self.assertIn(".codex/skills/review/SKILL.md", result["html"])
         self.assertEqual(result["validation"]["errors"], [])
 
+    def test_system_hygiene_html_safety_and_severity_class_path_sorting(self):
+        snapshot = _snapshot()
+        snapshot["workspace"] = "C:\\Users\\person\\private-project"
+        snapshot["system_file_hygiene"] = _system_file_hygiene_snapshot()
+        snapshot["system_file_hygiene"]["file_statuses"] = [
+            {
+                "path": "Z-review.md",
+                "class": "root_control_plane",
+                "owner": "project root",
+                "state": "review_required",
+                "severity": "warning",
+                "finding_count": 1,
+                "mtime_utc": "2026-06-05T12:00:00+00:00",
+                "age_days": 2,
+                "content_digest": "sha256:" + "b" * 64,
+                "last_audit_at": "2026-06-07T12:00:00+00:00",
+                "top_finding": "duplicate_markdown_headings",
+                "raw_body": "OPENAI_API_KEY = \"sk-test\"",
+            },
+            {
+                "path": "A-owner.md",
+                "class": "root_control_plane",
+                "owner": "unknown",
+                "state": "owner_unknown",
+                "severity": "warning",
+                "finding_count": 1,
+                "mtime_utc": "2026-06-04T12:00:00+00:00",
+                "age_days": 3,
+                "content_digest": "sha256:" + "c" * 64,
+                "last_audit_at": "2026-06-07T12:00:00+00:00",
+                "top_finding": "owner_unknown",
+            },
+            {
+                "path": "C:\\Users\\person\\private-project\\PLAN.md",
+                "class": "root_control_plane",
+                "owner": "TOKEN=fixture-secret",
+                "state": "blocked",
+                "severity": "error",
+                "finding_count": 1,
+                "mtime_utc": "2026-06-03T12:00:00+00:00",
+                "age_days": 4,
+                "content_digest": "sha256:" + "d" * 64,
+                "last_audit_at": "2026-06-07T12:00:00+00:00",
+                "top_finding": "secret_like_literal",
+            },
+        ]
+        snapshot["large_generated_notes"] = ["x" * 1000 for _ in range(20)]
+
+        result = render_status_dashboard(snapshot)
+        rendered = result["html"] + result["json"]
+
+        self.assertIn("Evidence requires review", result["html"])
+        self.assertIn(GENERATED_VIEW_ONLY_TEXT, result["html"])
+        self.assertLessEqual(len(result["json"].encode("utf-8")), 12000)
+        self.assertLess(result["html"].index("A-owner.md"), result["html"].index("Z-review.md"))
+        self.assertNotIn("C:\\Users\\person", rendered)
+        self.assertNotIn("private-project", rendered)
+        self.assertNotIn("fixture-secret", rendered)
+        self.assertNotIn("OPENAI_API_KEY", rendered)
+        self.assertNotIn("raw_body", rendered)
+        self.assertNotIn("https://", rendered.lower())
+        self.assertEqual(result["validation"]["errors"], [])
+
+    def test_system_hygiene_stale_row_triggers_review_banner(self):
+        snapshot = _snapshot()
+        snapshot["usage_mode"]["primary"] = "standard_feature"
+        snapshot["usage_mode"]["inspection_only"] = False
+        snapshot["readiness_summary"]["warnings"] = []
+        snapshot["evidence_summary"]["freshness"] = "current"
+        snapshot["system_file_hygiene"] = _system_file_hygiene_snapshot()
+        snapshot["system_file_hygiene"]["file_statuses"] = [
+            {
+                "path": "PLAN.md",
+                "class": "root_control_plane",
+                "owner": "project root",
+                "state": "stale",
+                "severity": "none",
+                "finding_count": 0,
+                "mtime_utc": "2026-05-01T12:00:00+00:00",
+                "age_days": 37,
+                "content_digest": "sha256:" + "e" * 64,
+                "last_audit_at": "2026-06-07T12:00:00+00:00",
+                "top_finding": "mtime_older_than_30_days",
+            }
+        ]
+
+        result = render_status_dashboard(snapshot)
+
+        self.assertIn("Evidence requires review", result["html"])
+        self.assertEqual(result["validation"]["errors"], [])
+
     def test_renderer_redacts_secret_private_and_local_path_values(self):
         snapshot = _snapshot()
         snapshot["workspace"] = "C:\\Users\\person\\private-project"
-        snapshot["next_safe_action"] = "TOKEN=fixture-secret\nInspect raw private chat log in C:\\Users\\person\\private-project"
+        snapshot["next_safe_action"] = "\n".join(
+            [
+                "TOKEN=fixture-secret",
+                "Inspect raw private chat log in C:\\Users\\person\\private-project",
+                "Inspect D:\\work\\private-project\\PLAN.md",
+                "Inspect \\\\server\\share\\private-project\\AGENTS.md",
+                "Inspect /Users/person/private-project/RUNLOG.md",
+                "Inspect /home/person/private-project/TEST.md",
+                "Synthetic token sk-test-secret must not render.",
+            ]
+        )
 
         result = render_status_dashboard(snapshot)
         rendered = result["html"] + result["json"]
 
         self.assertNotIn("fixture-secret", rendered)
         self.assertNotIn("C:\\Users\\person", rendered)
+        self.assertNotIn("D:\\work", rendered)
+        self.assertNotIn("\\\\server\\share", rendered)
+        self.assertNotIn("/Users/person", rendered)
+        self.assertNotIn("/home/person", rendered)
+        self.assertNotIn("sk-test-secret", rendered)
         self.assertNotIn("raw private chat log", rendered)
         self.assertIn("secret", result["redaction_summary"]["categories"])
         self.assertIn("absolute_path", result["redaction_summary"]["categories"])

@@ -118,6 +118,8 @@ The audit does not compact files by itself and does not create a schedule. It em
 
 The JSON packet contains `audit_trigger`, `finding_type`, `compaction_decision`, `approval_boundary`, `no_secrets_status` and `active_schedule_markers`. The CLI `--trigger` records the run reason, prints JSON, returns `0` for `ok` or `review_required`, and returns `1` only for `blocked`; the workspace remains read-only.
 
+The status dashboard projection shows `file_statuses`, `mtime_utc`, `age_days`, `content_digest` and `top_finding` as generated review evidence. Dates come from filesystem metadata: they are freshness hints for review, not semantic proof that file content is correct or current enough to claim completion.
+
 ## Project code graph and cockpit
 
 The project code graph and cockpit provide orientation evidence. They can stage graph JSON/JSONL and offline HTML/JSON review surfaces under `.codex/product-agent-os/`. They help readers find source files, edges and stale assumptions, but generated views are not source of truth and cannot justify completion claims by themselves.

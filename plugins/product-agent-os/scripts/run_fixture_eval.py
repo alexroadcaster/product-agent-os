@@ -2128,6 +2128,10 @@ def _expected_checks(
         checks["status_snapshot_present"] = _status_snapshot_present()
         checks["status_dashboard_present"] = _status_dashboard_present()
         checks["dashboard_no_external_assets"] = _dashboard_no_external_assets()
+        checks["system_file_hygiene_dashboard_present"] = _system_file_hygiene_dashboard_present()
+        checks["system_file_status_dates_present"] = _system_file_status_dates_present()
+        checks["agent_skill_file_status_present"] = _agent_skill_file_status_present()
+        checks["system_hygiene_dashboard_not_source_of_truth"] = _system_hygiene_dashboard_not_source_of_truth()
         checks["trace_data_classification_gate_present"] = _trace_data_classification_gate_present()
         checks["offline_artifact_safety_shared"] = _offline_artifact_safety_shared()
         checks["no_baseline_renderer_pollution"] = _no_baseline_renderer_pollution(rendered)
@@ -7659,6 +7663,136 @@ def _dashboard_no_external_assets() -> bool:
     )
 
 
+def _system_file_hygiene_dashboard_present() -> bool:
+    rendered = render_status_dashboard(_synthetic_system_hygiene_dashboard_snapshot())
+    html = str(rendered.get("html", ""))
+    return (
+        rendered.get("validation", {}).get("ok") is True
+        and 'id="system-file-hygiene"' in html
+        and "System Hygiene" in html
+        and "system hygiene dashboard present" in rendered.get("validation", {}).get("checks", [])
+    )
+
+
+def _system_file_status_dates_present() -> bool:
+    rendered = render_status_dashboard(_synthetic_system_hygiene_dashboard_snapshot())
+    html = str(rendered.get("html", ""))
+    docs = _system_hygiene_docs_payload()
+    return (
+        "2026-06-05" in html
+        and "2 days" in html
+        and "mtime_utc" in docs
+        and "filesystem metadata" in docs
+        and "freshness hints" in docs
+        and "not semantic proof" in docs
+    )
+
+
+def _agent_skill_file_status_present() -> bool:
+    rendered = render_status_dashboard(_synthetic_system_hygiene_dashboard_snapshot())
+    html = str(rendered.get("html", ""))
+    return (
+        "Agents" in html
+        and "Skills" in html
+        and ".codex/agents/reviewer.toml" in html
+        and ".codex/skills/review/SKILL.md" in html
+    )
+
+
+def _system_hygiene_dashboard_not_source_of_truth() -> bool:
+    snapshot = _synthetic_system_hygiene_dashboard_snapshot()
+    rendered = render_status_dashboard(snapshot)
+    serialized = json.dumps({"snapshot": snapshot, "dashboard": rendered}, sort_keys=True)
+    return (
+        snapshot.get("dashboard_policy", {}).get("source_of_truth") == "underlying_artifacts"
+        and snapshot.get("dashboard_policy", {}).get("success_claim_policy") == "never from dashboard alone"
+        and "system file hygiene projection is generated status evidence, not source of truth" in serialized
+        and "Generated review view only" in serialized
+        and "source_of_truth\": \"underlying_artifacts\"" in serialized
+        and "source_of_truth\": \"status_snapshot\"" not in serialized
+    )
+
+
+def _synthetic_system_hygiene_dashboard_snapshot() -> dict[str, Any]:
+    digest = "sha256:" + "a" * 64
+    records = [
+        ("PLAN.md", "root_control_plane", "project root", "blocked", "error", "hard_size_limit_exceeded"),
+        (".codex/agents/reviewer.toml", "codex_agents", "agent-team designer", "ok", "none", "none"),
+        (".codex/skills/review/SKILL.md", "codex_skills", "skill owner", "review_required", "warning", "duplicate_markdown_headings"),
+    ]
+    return {
+        "schema_version": 1,
+        "write_policy": "read_only",
+        "generated_at": "2026-06-07T12:00:00+00:00",
+        "workspace": "synthetic",
+        "lifecycle_state": "quality_gate",
+        "usage_mode": {"primary": "inspection_only", "confidence": "high", "inspection_only": True},
+        "question_summary": {"total": 0, "blocking": 0, "recommended": 0, "optional": 0, "remaining": 0},
+        "readiness_summary": {
+            "status": "inspection_only",
+            "runtime_status": "completed",
+            "success_claim": "not_claimed",
+            "warnings": ["stale evidence", "inspection-only evidence cannot prove completion"],
+        },
+        "evidence_summary": {"freshness": "stale", "evidence_count": 1, "stale_count": 1, "max_age_days": 14},
+        "approval_summary": {"status": "not_available", "requirements": []},
+        "dashboard_policy": {
+            "write_policy": "read_only",
+            "source_of_truth": "underlying_artifacts",
+            "success_claim_policy": "never from dashboard alone",
+            "external_assets": "forbidden",
+        },
+        "next_safe_action": "Refresh current verification evidence.",
+        "staged_artifacts": {"mode": "dry-run", "targets": [], "validation_ok": True},
+        "manifest_digests": {"file_count": 0},
+        "system_file_hygiene": {
+            "status": "blocked",
+            "audit_trigger": "status_dashboard_projection",
+            "last_audit_at": "2026-06-07T12:00:00+00:00",
+            "write_policy": "read_only",
+            "schedule_status": "not_created",
+            "summary": {
+                "files_scanned": len(records),
+                "warnings": 1,
+                "errors": 1,
+                "active_schedule_markers": 0,
+            },
+            "file_statuses": [
+                {
+                    "path": path,
+                    "class": class_key,
+                    "owner": owner,
+                    "state": state,
+                    "severity": severity,
+                    "finding_count": 0 if top_finding == "none" else 1,
+                    "size": 128,
+                    "line_count": 8,
+                    "mtime_utc": "2026-06-05T12:00:00+00:00",
+                    "age_days": 2,
+                    "content_digest": digest,
+                    "last_audit_at": "2026-06-07T12:00:00+00:00",
+                    "top_finding": top_finding,
+                }
+                for path, class_key, owner, state, severity, top_finding in records
+            ],
+            "source_policy": "system file hygiene projection is generated status evidence, not source of truth",
+            "approval_boundary": "owner_approval_required_for_writes",
+        },
+    }
+
+
+def _system_hygiene_docs_payload() -> str:
+    paths = [
+        PROJECT_ROOT / "docs" / "product-agent-os" / "technical.md",
+        PROJECT_ROOT / "docs" / "product-agent-os" / "technical.en.md",
+        PROJECT_ROOT / "docs" / "product-agent-os" / "artifact-contracts.md",
+        PROJECT_ROOT / "docs" / "product-agent-os" / "artifact-contracts.en.md",
+        PROJECT_ROOT / "docs" / "sources" / "product-agent-os-track-10-backlog.md",
+        PROJECT_ROOT / "docs" / "sources" / "product-agent-os-track-10-backlog.en.md",
+    ]
+    return "\n".join(path.read_text(encoding="utf-8") for path in paths).lower()
+
+
 def _trace_data_classification_gate_present() -> bool:
     blocked = enforce_trace_data_classification_gate(
         {
@@ -8075,7 +8209,8 @@ def _dashboard_not_source_of_truth() -> bool:
     return (
         snapshot.get("dashboard_policy", {}).get("source_of_truth") == "underlying_artifacts"
         and snapshot.get("dashboard_policy", {}).get("success_claim_policy") == "never from dashboard alone"
-        and "source_of_truth\": \"status_snapshot\"" in payload
+        and "source_of_truth\": \"underlying_artifacts\"" in payload
+        and "input_packet\": \"status_snapshot\"" in payload
         and all(term in payload for term in STATUS_DASHBOARD_BEHAVIOR_TERMS)
     )
 

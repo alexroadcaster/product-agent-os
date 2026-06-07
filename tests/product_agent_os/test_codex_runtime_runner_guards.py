@@ -82,6 +82,28 @@ class CodexRuntimeRunnerGuardsTest(unittest.TestCase):
         self.assertIn("absolute_path", report["categories"])
         self.assertEqual(validate_redaction(redacted), [])
 
+    def test_redaction_covers_common_local_path_and_secret_value_forms(self):
+        text = "\n".join(
+            [
+                "Inspect D:\\work\\repo\\AGENTS.md",
+                "Open \\\\server\\share\\repo\\PLAN.md",
+                "Review /Users/person/private-project/RUNLOG.md",
+                "Review /home/person/private-project/TEST.md",
+                "Use sk-test-secret only as a synthetic fixture.",
+            ]
+        )
+
+        redacted, report = redact_text(text)
+
+        self.assertNotIn("D:\\work", redacted)
+        self.assertNotIn("\\\\server\\share", redacted)
+        self.assertNotIn("/Users/person", redacted)
+        self.assertNotIn("/home/person", redacted)
+        self.assertNotIn("sk-test-secret", redacted)
+        self.assertIn("secret", report["categories"])
+        self.assertIn("absolute_path", report["categories"])
+        self.assertEqual(validate_redaction(redacted), [])
+
 
 if __name__ == "__main__":
     unittest.main()

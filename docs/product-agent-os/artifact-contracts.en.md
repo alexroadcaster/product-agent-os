@@ -110,6 +110,8 @@ The `system_file_hygiene_audit` JSON validator checks nested trigger records, cl
 
 System hygiene JSON fields: `audit_trigger`, `finding_type`, `compaction_decision`, `approval_boundary`, `no_secrets_status` and `active_schedule_markers`. CLI `--trigger` records the run reason without workspace writes. Staged `system-file-hygiene-report.md` captures audit trigger, system file class, finding type, owner, compaction decision, active schedule markers, no-secrets status and owner-approved slice boundary.
 
+The HTML/JSON status dashboard projection uses only bounded `file_statuses`: relative path, class, owner, state, severity, finding count, `mtime_utc`, `age_days`, `content_digest` and `top_finding`. Dates come from filesystem metadata and are freshness hints, not semantic proof of content correctness, source ownership or completion readiness.
+
 ## Planned Execution Evidence Files
 
 | Planned artifact | Surface | Status before approval |

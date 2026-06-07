@@ -227,6 +227,8 @@ Audit не сокращает файлы самостоятельно и не с
 
 JSON пакет содержит `audit_trigger`, `finding_type`, `compaction_decision`, `approval_boundary`, `no_secrets_status` и `active_schedule_markers`. CLI `--trigger` записывает причину запуска, печатает JSON, возвращает `0` для `ok` или `review_required` и возвращает `1` только для `blocked`; workspace остается read-only.
 
+Status dashboard projection показывает `file_statuses`, `mtime_utc`, `age_days`, `content_digest` и `top_finding` как generated review evidence. Даты берутся из filesystem metadata: это подсказки свежести для review, а не семантическое доказательство, что содержимое файла корректно или достаточно актуально для completion claim.
+
 ## Project code graph и cockpit
 
 Local read-only graph foundation и generated cockpit поддерживают project navigation. Scanner inventories files, emits stable file-level graph nodes и `contains` edges, adds Python AST package/module/class/function/method overlays, adds conservative import/call/test edges, builds structured overlays для parseable Markdown, OpenAPI/Swagger, AsyncAPI, DBML, SQL, JSON, YAML, Mermaid и PlantUML inputs, проверяет controlled ontology, records manifest freshness/provenance, stores observation records с relative paths/spans/fingerprints и поддерживает temporal edge invalidation/supersession helpers. Query mode читает existing JSON/JSONL graph artifacts и produce bounded `neighbors`, `path`, `trace`, `impact`, `affected_tests`, `changed_since`, `why_changed`, `read_order`, `hotspots`, `node`, `status` и `search` packets. Это исключает raw source bodies через default и redacts local absolute paths или secret-like values из returned packets.
