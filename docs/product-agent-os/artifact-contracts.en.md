@@ -97,6 +97,15 @@ Artifacts must not contain secrets, credentials, raw private chat logs, private 
 | `.codex/artifact-templates/agent-skill-weekly-verification.md` | Template registry | Weekly owner-review packet. | Requires rollback/holdout/flake/cost evidence or accepted gaps. |
 | `.codex/artifact-templates/agent-skill-update-candidate.md` | Template registry | Modernization candidate packet. | No self-applied updates. |
 
+## System File Hygiene Artifacts
+
+| Artifact | Producer | Contract role | Boundary |
+| --- | --- | --- | --- |
+| JSON output from `validate_system_file_hygiene.py` | `system_file_hygiene.py` | Read-only inventory and findings for maintained system file classes. | `schedule_status: not_created`; no edits, schedules, hooks or external writes. |
+| `.codex/workflows/system-file-hygiene-audit.md` | Template registry | Operator workflow for hybrid periodic, on-change, size and release/automation triggers. | Recommendation only until owner approval enables a real schedule. |
+| `.codex/artifact-templates/system-file-hygiene-report.md` | Template registry | Staged report for size, duplication, mojibake/BOM, secret, historical-ledger and ownership findings. | Review artifact only; compaction remains a separate slice. |
+| `.codex/automation-candidates/system-file-hygiene-audit.md` | Template registry | Candidate-only automation packet for future scheduled hygiene checks. | active schedules remain out of scope until explicit approval and rollback/disable evidence exist. |
+
 ## Planned Execution Evidence Files
 
 | Planned artifact | Surface | Status before approval |
@@ -117,6 +126,7 @@ Artifact verification should check:
 - generated-view or staged-evidence label;
 - source-boundary label when screenshots, cockpit, dashboard or runtime QA evidence is present;
 - fallback path when live/provider/runtime layers are disabled;
+- `schedule_status: not_created` for system file hygiene outputs unless a later approved automation slice records otherwise;
 - current command evidence before readiness, works, complete or release claims.
 
 ## Inputs

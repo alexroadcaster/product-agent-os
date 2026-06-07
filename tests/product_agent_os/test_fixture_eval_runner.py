@@ -321,7 +321,7 @@ class FixtureEvalRunnerTest(unittest.TestCase):
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_hybrid_retrieval_explainable_fusion_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_hybrid_retrieval_fallback_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["project_graph_hybrid_retrieval_no_canonical_mutation_present"])
-        self.assertEqual(results["python-app"]["renderer_file_count"], 191)
+        self.assertEqual(results["python-app"]["renderer_file_count"], 194)
         for check_name in [
             "methodology_catalog_contract_present",
             "methodology_intelligence_contract_present",

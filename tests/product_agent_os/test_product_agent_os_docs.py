@@ -50,7 +50,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         internal = {
             name: text
             for name, text in documents.items()
-            if name in {"root_readme", "plugin_readme"}
+            if name in {"plugin_readme"}
         }
         return internal or documents
 
@@ -127,6 +127,255 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         if re.match(r"^[a-zA-Z][a-zA-Z0-9+.-]*:", target):
             return None
         return (html_path.parent / unquote(target)).resolve()
+
+    def test_root_runlog_is_compact_current_handoff_and_distribution_map(self):
+        runlog = RUNLOG.read_text(encoding="utf-8")
+
+        self.assertLess(len(runlog), 50000)
+        self.assertIn("track10_task26_batch35_done_through_m40_m41_blocked_pending_explicit_git_release_fields", runlog)
+        self.assertIn("Task 26 Batch 35 `T10-LIVE-M41`", runlog)
+        self.assertIn("blocked_pending_explicit_git_release_fields", runlog)
+        self.assertIn("done_through_m40", runlog)
+        self.assertIn("RUNLOG.md` is now the compact handoff layer", runlog)
+
+        for expected in [
+            "REQUIREMENTS.md",
+            "PLAN.md",
+            "TEST.md",
+            "EVALS.md",
+            "AGENTS.md",
+            "docs/sources/registry.md",
+            "docs/sources/product-agent-os-track-8-detailed-backlog.md",
+            "docs/sources/product-agent-os-track-9-backlog.md",
+            "docs/sources/product-agent-os-track-10-backlog.md",
+            "docs/sources/product-agent-os-batch35-approval-packet-draft.md",
+            "Control-Plane Marker Bank",
+        ]:
+            with self.subTest(runlog_distribution=expected):
+                self.assertIn(expected, runlog)
+
+        self.assertIn("Product-Agent OS Track 10 Task 26 Batch 35 approval-bound real testing execution matrix", runlog)
+        self.assertIn("no git stage/commit/push/PR", runlog)
+
+    def test_root_plan_is_compact_current_sequencing_contract(self):
+        plan = PLAN.read_text(encoding="utf-8")
+
+        self.assertLess(len(plan), 50000)
+        self.assertIn("PLAN.md` is the compact sequencing and rollback layer", plan)
+        self.assertIn("Current Planning Contract", plan)
+        self.assertIn("Next Implementation Queue", plan)
+        self.assertIn("Source Planning Artifacts", plan)
+        self.assertIn("Evidence ownership", plan)
+        self.assertIn("T10-LIVE-M41", plan)
+        self.assertIn("blocked_pending_explicit_git_release_fields", plan)
+        self.assertIn("done_through_m40", plan)
+
+        for expected in [
+            "REQUIREMENTS.md",
+            "TEST.md",
+            "EVALS.md",
+            "RUNLOG.md",
+            "AGENTS.md",
+            "docs/sources/product-agent-os-track-8-detailed-backlog.md",
+            "docs/sources/product-agent-os-track-9-backlog.md",
+            "docs/sources/product-agent-os-track-10-backlog.md",
+            "docs/sources/registry.md",
+            "docs/sources/product-agent-os-batch35-approval-packet-draft.md",
+            "git diff --check",
+        ]:
+            with self.subTest(plan_distribution=expected):
+                self.assertIn(expected, plan)
+
+        self.assertNotIn("## T9-D12 Delivery, Release & Operations Completed Slice", plan)
+
+    def test_root_test_is_compact_current_verification_contract(self):
+        test_plan = TEST.read_text(encoding="utf-8")
+
+        self.assertLess(len(test_plan), 50000)
+        self.assertIn("TEST.md` is the compact verification routing layer", test_plan)
+        self.assertIn("Current Verification State", test_plan)
+        self.assertIn("Required Checks After Docs Or Control-Plane Changes", test_plan)
+        self.assertIn("Required Checks After Plugin Or Runtime Changes", test_plan)
+        self.assertIn("Runtime And External-Action Verification Boundaries", test_plan)
+        self.assertIn("Historical Evidence Owners", test_plan)
+        self.assertIn("T10-LIVE-M41", test_plan)
+        self.assertIn("blocked_pending_explicit_git_release_fields", test_plan)
+        self.assertIn("done_through_m40", test_plan)
+
+        for expected in [
+            "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+            "python tools\\check_docs.py",
+            "git diff --check",
+            "python -m unittest discover -s tests -p \"test_*.py\" -v",
+            "python plugins\\product-agent-os\\scripts\\run_fixture_eval.py",
+            "python plugins\\product-agent-os\\scripts\\run_transcript_eval.py",
+            "python plugins\\product-agent-os\\scripts\\validate_codex_compatibility.py",
+            "timeout_ms: 1200000",
+            "docs/sources/product-agent-os-track-8-detailed-backlog.md",
+            "docs/sources/product-agent-os-track-9-backlog.md",
+            "docs/sources/product-agent-os-track-10-backlog.md",
+            "docs/sources/registry.md",
+            "docs/sources/product-agent-os-batch35-approval-packet-draft.md",
+        ]:
+            with self.subTest(test_distribution=expected):
+                self.assertIn(expected, test_plan)
+
+        self.assertNotIn("## Completed Focused Checks For T9-D12", test_plan)
+
+    def test_root_agents_is_compact_durable_rule_contract(self):
+        agents = AGENTS.read_text(encoding="utf-8")
+
+        self.assertLess(len(agents), 50000)
+        self.assertIn("AGENTS.md` is the durable project instruction layer", agents)
+        self.assertIn("Control-Plane Role", agents)
+        self.assertIn("Documentation Rules", agents)
+        self.assertIn("Diagram Atlas Rules", agents)
+        self.assertIn("Product-Agent Operating Model", agents)
+        self.assertIn("Windows Codex Shell Guard", agents)
+        self.assertIn("Product-Agent OS Plugin Rules", agents)
+        self.assertIn("Source And Insight Policy", agents)
+        self.assertIn("Verification", agents)
+        self.assertIn("T10-LIVE-M41", agents)
+        self.assertIn("blocked_pending_explicit_git_release_fields", agents)
+        self.assertIn("done_through_m40", agents)
+
+        for expected in [
+            "REQUIREMENTS.md",
+            "PLAN.md",
+            "TEST.md",
+            "EVALS.md",
+            "RUNLOG.md",
+            "docs/sources/registry.md",
+            "docs/sources/product-agent-os-track-8-detailed-backlog.md",
+            "docs/sources/product-agent-os-track-9-backlog.md",
+            "docs/sources/product-agent-os-track-10-backlog.md",
+            "docs/sources/product-agent-os-batch35-approval-packet-draft.md",
+            "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+            "python tools\\check_docs.py",
+            "git diff --check",
+        ]:
+            with self.subTest(agents_distribution=expected):
+                self.assertIn(expected, agents)
+
+        self.assertNotIn("Product-Agent OS implementation status", agents)
+        self.assertNotIn("Track 8 T8-A16 baseline was refreshed", agents)
+        self.assertNotIn("Task 26 Batch 34E corrective control-plane sync terms", agents)
+
+    def test_root_evals_is_compact_current_eval_contract(self):
+        evals = EVALS.read_text(encoding="utf-8")
+
+        self.assertLess(len(evals), 50000)
+        self.assertIn("EVALS.md` is the compact evaluation routing layer", evals)
+        self.assertIn("Rubrics", evals)
+        self.assertIn("Thresholds", evals)
+        self.assertIn("Current Evaluation State", evals)
+        self.assertIn("Active Eval Routes", evals)
+        self.assertIn("Methodology Eval Map", evals)
+        self.assertIn("Unsupported Claims", evals)
+        self.assertIn("Historical Eval Evidence Owners", evals)
+        self.assertIn("T10-LIVE-M41", evals)
+        self.assertIn("blocked_pending_explicit_git_release_fields", evals)
+        self.assertIn("done_through_m40", evals)
+
+        for expected in [
+            "evidence_before_completion",
+            "quality_testing_evals_contract_present",
+            "llm_ai_rag_contract_present",
+            "security_privacy_compliance_contract_present",
+            "delivery_release_operations_contract_present",
+            "cross_domain_synthesis_contract_present",
+            "T10-Q-M15..M25",
+            "T10-SV-M58..M62",
+            "T10-CG-V2-M01..M62",
+            "T10-LIVE-M01..M41",
+            "B34E-I18N-M34..M49",
+            "docs/sources/product-agent-os-track-8-detailed-backlog.md",
+            "docs/sources/product-agent-os-track-9-backlog.md",
+            "docs/sources/product-agent-os-track-10-backlog.md",
+            "docs/sources/registry.md",
+            "docs/sources/product-agent-os-batch35-approval-packet-draft.md",
+            "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+            "python tools\\check_docs.py",
+            "git diff --check",
+        ]:
+            with self.subTest(evals_distribution=expected):
+                self.assertIn(expected, evals)
+
+        self.assertNotIn("Current Task 22 eval evidence", evals)
+        self.assertNotIn("Batch 21 focused and broad evidence", evals)
+        self.assertNotIn("Batch 34E M44 sync", evals)
+
+    def test_root_readme_is_compact_product_entrypoint_without_history_ledger(self):
+        readme = ROOT_README.read_text(encoding="utf-8")
+
+        self.assertLess(len(readme), 50000)
+        for expected in [
+            "Product-Agent OS - локальный Codex plugin",
+            "Product-Agent OS full stack",
+            "Operating Loop",
+            "Capability Map",
+            "Core Capabilities",
+            "Use-Case Routing",
+            "Documentation And Evidence",
+            "Guided Questions And Status",
+            "Project Code Graph",
+            "Self-Verification And Modernization Loop",
+            "Repository Layout",
+            "Quick Commands",
+            "Где Живёт История",
+            "docs/sources/registry.md",
+            "plugins/product-agent-os/README.md",
+        ]:
+            with self.subTest(readme_product_contract=expected):
+                self.assertIn(expected, readme)
+
+        forbidden_history = re.compile(
+            r"\b(Task|Track|Batch)\b|T[0-9]+-|B[0-9]+-|done_through|Implementation Evidence Archive"
+        )
+        self.assertIsNone(forbidden_history.search(readme))
+
+    def test_system_file_hygiene_audit_contract_is_documented_and_source_owned(self):
+        documents = {
+            "root_readme": ROOT_README.read_text(encoding="utf-8"),
+            "plugin_readme": PLUGIN_README.read_text(encoding="utf-8"),
+            "technical": (PRODUCT_AGENT_OS / "technical.md").read_text(encoding="utf-8"),
+            "technical_en": (PRODUCT_AGENT_OS / "technical.en.md").read_text(encoding="utf-8"),
+            "artifact_contracts": (PRODUCT_AGENT_OS / "artifact-contracts.md").read_text(encoding="utf-8"),
+            "artifact_contracts_en": (PRODUCT_AGENT_OS / "artifact-contracts.en.md").read_text(encoding="utf-8"),
+            "runtime_automations": (DOCS / "runtime" / "automations-github.md").read_text(encoding="utf-8"),
+            "runtime_automations_en": (DOCS / "runtime" / "automations-github.en.md").read_text(encoding="utf-8"),
+            "track10_backlog": TRACK10_BACKLOG.read_text(encoding="utf-8"),
+            "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
+        }
+        combined = "\n".join(documents.values())
+
+        for expected in [
+            "system_file_hygiene_audit",
+            "validate_system_file_hygiene.py",
+            "system-file-hygiene-audit.md",
+            "system-file-hygiene-report.md",
+            ".codex/automation-candidates/system-file-hygiene-audit.md",
+            "weekly full",
+            "monthly deep ownership review",
+            "on-change",
+            "size",
+            "release/automation",
+            "schedule_status: not_created",
+            "read_only",
+            "active schedules remain out of scope",
+            "root control-plane files",
+            "nested `AGENTS.md`",
+            ".codex/agents",
+            ".codex/skills",
+            ".codex/workflows",
+            ".codex/hooks",
+            ".codex/evals",
+            "docs source-control files",
+            ".github/workflows",
+            "plugin package control files",
+        ]:
+            with self.subTest(system_file_hygiene_contract=expected):
+                self.assertIn(expected, combined)
 
     def test_t8h_dedicated_docs_pages_exist_with_operating_contracts(self):
         expected_pages = {
@@ -214,7 +463,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         plugin_readme = PLUGIN_README.read_text(encoding="utf-8")
         control_plane = "\n".join(
             path.read_text(encoding="utf-8")
-            for path in [REQUIREMENTS, PLAN, TEST, EVALS, RUNLOG]
+            for path in [REQUIREMENTS]
         )
 
         for expected in [
@@ -267,6 +516,16 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         ]:
             with self.subTest(control_plane=expected):
                 self.assertIn(expected, control_plane)
+
+        for expected in [
+            "Guided question protocol",
+            "one blocking question maximum",
+            ".codex/product-agent-os/status.html",
+            ".codex/product-agent-os/status.json",
+            "dashboard is a generated view",
+            "no success claim from stale evidence",
+        ]:
+            with self.subTest(root_readme=expected):
                 self.assertIn(expected, root_readme)
 
     def test_track10_task24_self_verification_docs_and_control_plane_are_synced(self):
@@ -282,10 +541,6 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         }
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
-            "plan": PLAN.read_text(encoding="utf-8"),
-            "test": TEST.read_text(encoding="utf-8"),
-            "evals": EVALS.read_text(encoding="utf-8"),
-            "runlog": RUNLOG.read_text(encoding="utf-8"),
         }
 
         for expected in [
@@ -384,10 +639,6 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         }
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
-            "plan": PLAN.read_text(encoding="utf-8"),
-            "test": TEST.read_text(encoding="utf-8"),
-            "evals": EVALS.read_text(encoding="utf-8"),
-            "runlog": RUNLOG.read_text(encoding="utf-8"),
         }
 
         registry_terms = [
@@ -461,10 +712,6 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         }
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
-            "plan": PLAN.read_text(encoding="utf-8"),
-            "test": TEST.read_text(encoding="utf-8"),
-            "evals": EVALS.read_text(encoding="utf-8"),
-            "runlog": RUNLOG.read_text(encoding="utf-8"),
         }
 
         registry_terms = [
@@ -536,7 +783,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         backlog = TRACK10_BACKLOG.read_text(encoding="utf-8")
         control_plane = "\n".join(
             path.read_text(encoding="utf-8")
-            for path in [REQUIREMENTS, PLAN, EVALS, RUNLOG]
+            for path in [REQUIREMENTS]
         )
 
         plan_terms = [
@@ -573,12 +820,12 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "extension matrix `T10-CG-V2-M39..M62`",
             "Batch 19 offline static search index",
             "approved offline static search index",
-            "Batch 20 local query backend/live database-server gate",
-            "Batch 21 semantic retrieval with embeddings/cross-encoder",
-            "Batch 22 LLM semantic extraction/rationale-comment proposals",
+            "Batch 20 local backend gate",
+            "Batch 21 semantic retrieval gate",
+            "Batch 22 local deterministic LLM proposal gate",
             "Batch 23 extension",
             "project_graph_extension_closure.py",
-            "Planning matrix presence is not implementation evidence",
+            "planning matrix presence remains not implementation evidence",
             "explicit approval with redaction, cache, token budget, eval threshold and rollback path",
         ]
         for expected in control_terms:
@@ -597,10 +844,6 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         }
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
-            "plan": PLAN.read_text(encoding="utf-8"),
-            "test": TEST.read_text(encoding="utf-8"),
-            "evals": EVALS.read_text(encoding="utf-8"),
-            "runlog": RUNLOG.read_text(encoding="utf-8"),
         }
 
         registry_terms = [
@@ -685,10 +928,6 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         }
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
-            "plan": PLAN.read_text(encoding="utf-8"),
-            "test": TEST.read_text(encoding="utf-8"),
-            "evals": EVALS.read_text(encoding="utf-8"),
-            "runlog": RUNLOG.read_text(encoding="utf-8"),
         }
 
         registry_terms = [
@@ -766,11 +1005,6 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         }
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
-            "plan": PLAN.read_text(encoding="utf-8"),
-            "test": TEST.read_text(encoding="utf-8"),
-            "evals": EVALS.read_text(encoding="utf-8"),
-            "runlog": RUNLOG.read_text(encoding="utf-8"),
-            "agents": AGENTS.read_text(encoding="utf-8"),
         }
 
         registry_terms = [
@@ -858,11 +1092,6 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         }
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
-            "plan": PLAN.read_text(encoding="utf-8"),
-            "test": TEST.read_text(encoding="utf-8"),
-            "evals": EVALS.read_text(encoding="utf-8"),
-            "runlog": RUNLOG.read_text(encoding="utf-8"),
-            "agents": AGENTS.read_text(encoding="utf-8"),
         }
 
         registry_terms = [
@@ -955,11 +1184,6 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         }
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
-            "plan": PLAN.read_text(encoding="utf-8"),
-            "test": TEST.read_text(encoding="utf-8"),
-            "evals": EVALS.read_text(encoding="utf-8"),
-            "runlog": RUNLOG.read_text(encoding="utf-8"),
-            "agents": AGENTS.read_text(encoding="utf-8"),
         }
 
         registry_terms = [
@@ -1052,11 +1276,6 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         }
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
-            "plan": PLAN.read_text(encoding="utf-8"),
-            "test": TEST.read_text(encoding="utf-8"),
-            "evals": EVALS.read_text(encoding="utf-8"),
-            "runlog": RUNLOG.read_text(encoding="utf-8"),
-            "agents": AGENTS.read_text(encoding="utf-8"),
         }
 
         registry_terms = [
@@ -1170,11 +1389,6 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         }
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
-            "plan": PLAN.read_text(encoding="utf-8"),
-            "test": TEST.read_text(encoding="utf-8"),
-            "evals": EVALS.read_text(encoding="utf-8"),
-            "runlog": RUNLOG.read_text(encoding="utf-8"),
-            "agents": AGENTS.read_text(encoding="utf-8"),
         }
 
         registry_terms = [
@@ -1285,11 +1499,6 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         }
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
-            "plan": PLAN.read_text(encoding="utf-8"),
-            "test": TEST.read_text(encoding="utf-8"),
-            "evals": EVALS.read_text(encoding="utf-8"),
-            "runlog": RUNLOG.read_text(encoding="utf-8"),
-            "agents": AGENTS.read_text(encoding="utf-8"),
         }
 
         registry_terms = [
@@ -1398,11 +1607,6 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         }
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
-            "plan": PLAN.read_text(encoding="utf-8"),
-            "test": TEST.read_text(encoding="utf-8"),
-            "evals": EVALS.read_text(encoding="utf-8"),
-            "runlog": RUNLOG.read_text(encoding="utf-8"),
-            "agents": AGENTS.read_text(encoding="utf-8"),
         }
 
         registry_terms = [
@@ -1517,11 +1721,6 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         }
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
-            "plan": PLAN.read_text(encoding="utf-8"),
-            "test": TEST.read_text(encoding="utf-8"),
-            "evals": EVALS.read_text(encoding="utf-8"),
-            "runlog": RUNLOG.read_text(encoding="utf-8"),
-            "agents": AGENTS.read_text(encoding="utf-8"),
         }
 
         registry_terms = [
@@ -1647,11 +1846,6 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         }
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
-            "plan": PLAN.read_text(encoding="utf-8"),
-            "test": TEST.read_text(encoding="utf-8"),
-            "evals": EVALS.read_text(encoding="utf-8"),
-            "runlog": RUNLOG.read_text(encoding="utf-8"),
-            "agents": AGENTS.read_text(encoding="utf-8"),
         }
 
         registry_terms = [
@@ -1775,11 +1969,6 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         }
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
-            "plan": PLAN.read_text(encoding="utf-8"),
-            "test": TEST.read_text(encoding="utf-8"),
-            "evals": EVALS.read_text(encoding="utf-8"),
-            "runlog": RUNLOG.read_text(encoding="utf-8"),
-            "agents": AGENTS.read_text(encoding="utf-8"),
         }
 
         registry_terms = [
@@ -1899,11 +2088,6 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         }
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
-            "plan": PLAN.read_text(encoding="utf-8"),
-            "test": TEST.read_text(encoding="utf-8"),
-            "evals": EVALS.read_text(encoding="utf-8"),
-            "runlog": RUNLOG.read_text(encoding="utf-8"),
-            "agents": AGENTS.read_text(encoding="utf-8"),
         }
 
         matrix_terms = [
@@ -2011,7 +2195,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         check_docs = CHECK_DOCS.read_text(encoding="utf-8")
         control_plane = "\n".join(
             path.read_text(encoding="utf-8")
-            for path in [ROOT_README, PLUGIN_README, REQUIREMENTS, PLAN, TEST, EVALS, RUNLOG, AGENTS]
+            for path in [ROOT_README, PLUGIN_README, REQUIREMENTS]
         )
 
         pages = {
@@ -2193,7 +2377,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         approval = BATCH35_APPROVAL_DRAFT.read_text(encoding="utf-8")
         control_plane = "\n".join(
             path.read_text(encoding="utf-8")
-            for path in [ROOT_README, PLUGIN_README, REQUIREMENTS, PLAN, TEST, EVALS, RUNLOG, AGENTS]
+            for path in [ROOT_README, PLUGIN_README, REQUIREMENTS]
         )
 
         smoke_terms = [
@@ -2528,7 +2712,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         packet = BATCH34C_I18N_LOCALIZATION.read_text(encoding="utf-8")
         control_plane = "\n".join(
             path.read_text(encoding="utf-8")
-            for path in [REQUIREMENTS, PLAN, TEST, EVALS, RUNLOG, AGENTS]
+            for path in [REQUIREMENTS]
         )
 
         for expected in [
@@ -2681,7 +2865,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         packet = BATCH34D_QA_CLOSURE.read_text(encoding="utf-8")
         control_plane = "\n".join(
             path.read_text(encoding="utf-8")
-            for path in [REQUIREMENTS, PLAN, TEST, EVALS, RUNLOG, AGENTS]
+            for path in [REQUIREMENTS]
         )
 
         for expected in [
@@ -2984,11 +3168,6 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         plan = TRACK10_PLAN.read_text(encoding="utf-8")
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
-            "plan": PLAN.read_text(encoding="utf-8"),
-            "test": TEST.read_text(encoding="utf-8"),
-            "evals": EVALS.read_text(encoding="utf-8"),
-            "runlog": RUNLOG.read_text(encoding="utf-8"),
-            "agents": AGENTS.read_text(encoding="utf-8"),
         }
 
         for expected in [
@@ -3093,11 +3272,6 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         plan = TRACK10_PLAN.read_text(encoding="utf-8")
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
-            "plan": PLAN.read_text(encoding="utf-8"),
-            "test": TEST.read_text(encoding="utf-8"),
-            "evals": EVALS.read_text(encoding="utf-8"),
-            "runlog": RUNLOG.read_text(encoding="utf-8"),
-            "agents": AGENTS.read_text(encoding="utf-8"),
         }
 
         for expected in [
@@ -3219,11 +3393,6 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         plan = TRACK10_PLAN.read_text(encoding="utf-8")
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
-            "plan": PLAN.read_text(encoding="utf-8"),
-            "test": TEST.read_text(encoding="utf-8"),
-            "evals": EVALS.read_text(encoding="utf-8"),
-            "runlog": RUNLOG.read_text(encoding="utf-8"),
-            "agents": AGENTS.read_text(encoding="utf-8"),
         }
 
         for expected in [
@@ -3333,11 +3502,6 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         }
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
-            "plan": PLAN.read_text(encoding="utf-8"),
-            "test": TEST.read_text(encoding="utf-8"),
-            "evals": EVALS.read_text(encoding="utf-8"),
-            "runlog": RUNLOG.read_text(encoding="utf-8"),
-            "agents": AGENTS.read_text(encoding="utf-8"),
         }
 
         for expected in [
@@ -3387,7 +3551,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
 
         self.assertIn("Execution status through Batch 34E M49", plan)
 
-        for document, text in documents.items():
+        for document, text in self._internal_history_documents(documents).items():
             for expected in [
                 "Batch 34E full-site i18n parity",
                 "B34E-I18N-M48..M49",
@@ -3538,11 +3702,6 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         }
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
-            "plan": PLAN.read_text(encoding="utf-8"),
-            "test": TEST.read_text(encoding="utf-8"),
-            "evals": EVALS.read_text(encoding="utf-8"),
-            "runlog": RUNLOG.read_text(encoding="utf-8"),
-            "agents": AGENTS.read_text(encoding="utf-8"),
         }
 
         ru_pages = sorted(
@@ -3637,7 +3796,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             with self.subTest(registry=expected):
                 self.assertIn(expected, registry)
 
-        for document, text in documents.items():
+        for document, text in self._internal_history_documents(documents).items():
             for expected in [
                 "Batch 34E full-site i18n parity",
                 "B34E-I18N-M34..M37",
@@ -3702,11 +3861,6 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         packet = BATCH34E_FULL_SITE_INVENTORY.read_text(encoding="utf-8")
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
-            "plan": PLAN.read_text(encoding="utf-8"),
-            "test": TEST.read_text(encoding="utf-8"),
-            "evals": EVALS.read_text(encoding="utf-8"),
-            "runlog": RUNLOG.read_text(encoding="utf-8"),
-            "agents": AGENTS.read_text(encoding="utf-8"),
         }
 
         ru_pages = sorted(
@@ -3931,11 +4085,6 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         plan = TRACK10_PLAN.read_text(encoding="utf-8")
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
-            "plan": PLAN.read_text(encoding="utf-8"),
-            "test": TEST.read_text(encoding="utf-8"),
-            "evals": EVALS.read_text(encoding="utf-8"),
-            "runlog": RUNLOG.read_text(encoding="utf-8"),
-            "agents": AGENTS.read_text(encoding="utf-8"),
         }
 
         for expected in [
@@ -4150,11 +4299,6 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         }
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
-            "plan": PLAN.read_text(encoding="utf-8"),
-            "test": TEST.read_text(encoding="utf-8"),
-            "evals": EVALS.read_text(encoding="utf-8"),
-            "runlog": RUNLOG.read_text(encoding="utf-8"),
-            "agents": AGENTS.read_text(encoding="utf-8"),
         }
 
         registry_terms = [
@@ -4376,10 +4520,6 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         }
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
-            "plan": PLAN.read_text(encoding="utf-8"),
-            "test": TEST.read_text(encoding="utf-8"),
-            "evals": EVALS.read_text(encoding="utf-8"),
-            "runlog": RUNLOG.read_text(encoding="utf-8"),
         }
 
         registry_terms = [
@@ -4459,10 +4599,6 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         }
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
-            "plan": PLAN.read_text(encoding="utf-8"),
-            "test": TEST.read_text(encoding="utf-8"),
-            "evals": EVALS.read_text(encoding="utf-8"),
-            "runlog": RUNLOG.read_text(encoding="utf-8"),
         }
 
         registry_terms = [
@@ -4545,10 +4681,6 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         }
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
-            "plan": PLAN.read_text(encoding="utf-8"),
-            "test": TEST.read_text(encoding="utf-8"),
-            "evals": EVALS.read_text(encoding="utf-8"),
-            "runlog": RUNLOG.read_text(encoding="utf-8"),
         }
 
         registry_terms = [
@@ -4615,10 +4747,6 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         }
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
-            "plan": PLAN.read_text(encoding="utf-8"),
-            "test": TEST.read_text(encoding="utf-8"),
-            "evals": EVALS.read_text(encoding="utf-8"),
-            "runlog": RUNLOG.read_text(encoding="utf-8"),
         }
 
         registry_terms = [
@@ -5212,10 +5340,6 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
         control_plane = {
             "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
-            "plan": PLAN.read_text(encoding="utf-8"),
-            "test": TEST.read_text(encoding="utf-8"),
-            "evals": EVALS.read_text(encoding="utf-8"),
-            "runlog": RUNLOG.read_text(encoding="utf-8"),
             "track9_plan": TRACK9_PLAN.read_text(encoding="utf-8"),
             "track10_plan": TRACK10_PLAN.read_text(encoding="utf-8"),
         }
@@ -5239,27 +5363,6 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "Task 22 final documentation sync closure",
                 "Track 1-9 acceptance",
                 "legacy Track 9 `Task 23: Final Verification Baseline` is absorbed into Task 22",
-            ],
-            "plan": [
-                "| 17 | `Task 22` final Track 9 documentation sync | `done` |",
-                "Track 10 `Task 23` starts only after Task 22 closure",
-            ],
-            "test": [
-                "Task 22 final documentation sync closure",
-                "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
-                "python plugins\\product-agent-os\\scripts\\run_transcript_eval.py",
-                "git diff --check",
-            ],
-            "evals": [
-                "Task 22 final documentation sync closure",
-                "readiness/evidence quality",
-                "stale Track 1-9 claims",
-                "synthetic eval evidence limits",
-            ],
-            "runlog": [
-                "Task 22 final documentation sync closure",
-                "source inventory links",
-                "legacy Track 9 Task 23 baseline absorbed into Task 22",
             ],
             "track9_plan": [
                 "### Legacy Track 9 Final Verification Baseline (absorbed into Task 22)",

@@ -69,6 +69,12 @@ The renderer must preserve user-authored files outside managed sections. Existin
 
 Packaged hooks and automations are examples or candidates. They must not be activated silently.
 
+Generated infrastructure also includes the system file hygiene surfaces:
+
+- `.codex/workflows/system-file-hygiene-audit.md`;
+- `.codex/artifact-templates/system-file-hygiene-report.md`;
+- `.codex/automation-candidates/system-file-hygiene-audit.md`.
+
 ## Local commands
 
 Common local checks:
@@ -78,6 +84,12 @@ python tools\check_docs.py
 python plugins\product-agent-os\scripts\validate_codex_compatibility.py
 python plugins\product-agent-os\scripts\run_fixture_eval.py
 python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json
+```
+
+Run the read-only system file hygiene audit:
+
+```powershell
+python plugins\product-agent-os\scripts\validate_system_file_hygiene.py <workspace>
 ```
 
 Use the full unit suite when scripts, templates, fixtures or lifecycle behavior change:
@@ -95,6 +107,14 @@ python -m mkdocs build --strict
 ## Self-verification metrics loop
 
 The metrics loop evaluates agents, skills, prompt/policy packs, router/tool policy and harness-version behavior from read-only evidence. It can stage scorecard records, reports and modernization candidates. It must not self-apply updates, create active schedules, leak raw traces or call live providers without explicit approval.
+
+## System file hygiene audit
+
+Product-Agent OS includes a read-only `system_file_hygiene_audit` contract for keeping project system files compact and source-owned. The audit uses hybrid triggers: weekly full review, monthly deep ownership review, on-change review after system-file edits, size-threshold review, and release or automation approval review.
+
+Maintained surfaces include root control-plane files, `README.md`, nested `AGENTS.md`, `.codex/config.toml`, MCP config, `.codex/agents`, `.codex/skills`, `.codex/workflows`, `.codex/artifact-templates`, `.codex/automation-candidates`, `.codex/hooks`, `.codex/evals`, `.codex/pr`, docs source-control files, `.github/workflows`, `CODEOWNERS`, `SECURITY.md`, and checked-in plugin package control files. The audit reports size limits, duplicate headings, mojibake/BOM markers, secret-like literals, historical ledger leakage and active schedule markers inside automation candidates.
+
+The audit does not compact files by itself and does not create a schedule. It emits JSON plus a staged `system-file-hygiene-report.md`; any edit, hook activation, GitHub workflow, Codex App automation, MCP change or external write remains a separate owner-approved slice.
 
 ## Project code graph and cockpit
 

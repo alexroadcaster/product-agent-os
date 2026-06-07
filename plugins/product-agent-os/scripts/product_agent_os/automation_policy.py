@@ -48,10 +48,12 @@ def from_text(text: str, candidate_file: str) -> dict[str, Any]:
         errors.append("write policy is required")
     if any(is_forbidden_secret_assignment(line) for line in text.splitlines()):
         errors.append("secret-like literal is forbidden")
+    if active_schedule_present:
+        errors.append("active automation is forbidden")
+    if external_workflow_present:
+        errors.append("external workflow creation is forbidden")
     if metrics_automation_candidate and active_schedule_present:
         errors.append("active metrics automation is forbidden")
-    if metrics_automation_candidate and external_workflow_present:
-        errors.append("external workflow creation is forbidden")
     if not stable_inputs_present:
         warnings.append("stable inputs are not documented")
     if not stable_outputs_present:

@@ -142,8 +142,45 @@ class AutomationPolicyTest(unittest.TestCase):
 
         self.assertEqual(report["status"], "blocked")
         self.assertTrue(report["metrics_automation_candidate"])
+        self.assertIn("active automation is forbidden", report["errors"])
         self.assertIn("active metrics automation is forbidden", report["errors"])
         self.assertIn("external workflow creation is forbidden", report["errors"])
+
+    def test_system_file_hygiene_candidate_remains_candidate_only_and_blocks_active_schedule(self):
+        text = (
+            "# System File Hygiene Audit Automation Candidate\n\n"
+            "Automation type: system-file-hygiene\n"
+            "Readiness: candidate_only\n\n"
+            "## Owner\n\n"
+            "- Accountable owner: Project operator\n\n"
+            "## Cadence\n\n"
+            "- Trigger: manual only until explicit approval\n"
+            "- Frequency: weekly candidate packet\n\n"
+            "## Stable Inputs\n\n"
+            "- Inputs: AGENTS.md, REQUIREMENTS.md, PLAN.md, TEST.md, EVALS.md, RUNLOG.md, .codex/agents, .codex/skills\n\n"
+            "## Stable Outputs\n\n"
+            "- Outputs: staged system-file-hygiene-report.md\n\n"
+            "## Verification\n\n"
+            "- Deterministic checks: python plugins\\product-agent-os\\scripts\\validate_system_file_hygiene.py <workspace>\n"
+            "- Successful manual workflow runs: 0\n\n"
+            "## Failure Modes\n\n"
+            "- Known failure: hard size limit crossed\n\n"
+            "## Rollback Or Disable Path\n\n"
+            "- Disable path: remove candidate packet\n\n"
+            "## Explicit Write Policy\n\n"
+            "- Allowed write targets: staged artifacts only\n\n"
+            "## Explicit Approval\n\n"
+            "- Approval status: not requested\n"
+        )
+        active = text + "\nCron: 0 9 * * *\n"
+
+        report = validate_automation_candidate.from_text(text, "system-file-hygiene-audit.md")
+        active_report = validate_automation_candidate.from_text(active, "system-file-hygiene-audit.md")
+
+        self.assertEqual(report["status"], "candidate_only")
+        self.assertIn("manual success count is below 2", report["warnings"])
+        self.assertEqual(active_report["status"], "blocked")
+        self.assertIn("active automation is forbidden", active_report["errors"])
 
     def test_cli_exits_zero_for_candidate_only_and_one_for_blocked(self):
         candidate = (

@@ -187,6 +187,12 @@ _TEMPLATES: tuple[TemplateSpec, ...] = (
     _spec("workflow-release-packet", "workflows", "workflows/release-packet.md", ".codex/workflows/release-packet.md"),
     _spec("workflow-runlog-compaction", "workflows", "workflows/runlog-compaction.md", ".codex/workflows/runlog-compaction.md"),
     _spec(
+        "workflow-system-file-hygiene-audit",
+        "workflows",
+        "workflows/system-file-hygiene-audit.md",
+        ".codex/workflows/system-file-hygiene-audit.md",
+    ),
+    _spec(
         "workflow-development-standards",
         "workflows",
         "workflows/development-standards.md",
@@ -704,6 +710,12 @@ _TEMPLATES: tuple[TemplateSpec, ...] = (
         ".codex/artifact-templates/agent-skill-update-candidate.md",
     ),
     _spec(
+        "artifact-system-file-hygiene-report",
+        "artifact-templates",
+        "artifact-templates/system-file-hygiene-report.md",
+        ".codex/artifact-templates/system-file-hygiene-report.md",
+    ),
+    _spec(
         "artifact-ai-dataset-manifest",
         "artifact-templates",
         "artifact-templates/ai-dataset-manifest.md",
@@ -1123,6 +1135,12 @@ _TEMPLATES: tuple[TemplateSpec, ...] = (
     _spec("eval-renderer-fixtures", "evals", "evals/renderer-fixtures.json", ".codex/evals/renderer-fixtures.json", "eval_json"),
     _spec("eval-behavioral-workflows", "evals", "evals/behavioral-workflows.json", ".codex/evals/behavioral-workflows.json", "eval_json"),
     _spec("automation-candidate", "automations", "automations/automation-candidate.md", ".codex/automation-candidates/automation-candidate.md"),
+    _spec(
+        "automation-system-file-hygiene-audit",
+        "automations",
+        "automations/system-file-hygiene-audit.md",
+        ".codex/automation-candidates/system-file-hygiene-audit.md",
+    ),
     _spec("pr-body", "pr", "pr/pr-body.md", ".codex/pr/pr-body.md"),
     _spec("release-notes", "pr", "pr/release-notes.md", ".codex/pr/release-notes.md"),
 )

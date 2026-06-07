@@ -15,6 +15,7 @@ Codex best practices формулируют практическое прави�
 - check CI failures;
 - produce standup summaries;
 - запуск scheduled documentation freshness audit;
+- запуск system file hygiene audit для `AGENTS.md`, control-plane files, subagents, skills, workflows, hooks, evals и automation candidates;
 - запуск recurring security/threat-model review.
 
 ## GitHub delivery loop
@@ -40,3 +41,8 @@ flowchart LR
 - требуют explicit branch или PR scope;
 - сохраняйте final evidence в PR body или check summary.
 
+System file hygiene automation должна начинаться как `.codex/automation-candidates/system-file-hygiene-audit.md`: weekly/monthly cadence, on-change trigger и size trigger остаются proposal, а не active schedule. До approval используйте только read-only команду:
+
+```powershell
+python plugins\product-agent-os\scripts\validate_system_file_hygiene.py <workspace>
+```

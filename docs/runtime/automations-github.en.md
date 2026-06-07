@@ -15,9 +15,17 @@ Automation should come after a stable manual workflow or skill. GitHub workflows
 - Automation candidate, GitHub workflow proposal or approved recurring check.
 - Audit-ready evidence for what ran, where it wrote and how to disable it.
 
+Good automation candidates include scheduled documentation freshness audit, system file hygiene audit for `AGENTS.md`, control-plane files, subagents, skills, workflows, hooks, evals and automation candidates, recurring security review, CI failure triage and release-note drafting.
+
 ## Verification
 
 Before activating automation, verify manual success evidence, input stability, output expectations and rollback/disable path.
+
+System file hygiene automation should start as `.codex/automation-candidates/system-file-hygiene-audit.md`: weekly/monthly cadence, on-change trigger and size trigger are proposals, not an active schedule. Before approval, use only the read-only command:
+
+```powershell
+python plugins\product-agent-os\scripts\validate_system_file_hygiene.py <workspace>
+```
 
 ## Risks
 

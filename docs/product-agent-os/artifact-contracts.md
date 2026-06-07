@@ -97,6 +97,15 @@ Artifacts должен не contain secrets, credentials, raw private chat logs,
 | `.codex/artifact-templates/agent-skill-weekly-verification.md` | Template registry | Weekly owner-review packet. | Requires rollback/holdout/flake/cost evidence или accepted gaps. |
 | `.codex/artifact-templates/agent-skill-update-candidate.md` | Template registry | Modernization candidate packet. | Нет self-applied updates. |
 
+## System File Hygiene Artifacts
+
+| Artifact | Producer | Contract role | Boundary |
+| --- | --- | --- | --- |
+| JSON-вывод `validate_system_file_hygiene.py` | `system_file_hygiene.py` | Read-only inventory и findings по поддерживаемым классам системных файлов. | `schedule_status: not_created`; без edits, schedules, hooks и external-write. |
+| `.codex/workflows/system-file-hygiene-audit.md` | Template registry | Operator workflow для hybrid periodic, on-change, size и release/automation triggers. | Только recommendation до owner approval на реальный schedule. |
+| `.codex/artifact-templates/system-file-hygiene-report.md` | Template registry | Staged report для size, duplication, mojibake/BOM, secret, historical-ledger и ownership findings. | Только review artifact; compaction остается отдельным slice. |
+| `.codex/automation-candidates/system-file-hygiene-audit.md` | Template registry | Candidate-only automation packet для будущих scheduled hygiene checks. | Active schedules остаются out of scope до explicit approval и rollback/disable evidence. |
+
 ## Planned Execution Evidence Files
 
 | Planned artifact | Surface | Status до approval |
@@ -117,6 +126,7 @@ Artifact verification следует check:
 - generated-view или staged-evidence label;
 - source-boundary label когда screenshots, cockpit, dashboard или runtime QA evidence является present;
 - fallback path когда live/provider/runtime layers являются disabled;
+- `schedule_status: not_created` для system file hygiene outputs, пока approved automation slice не зафиксировал другое;
 - текущий command evidence до readiness, works, complete или release claims.
 
 ## Риски And Failure Modes

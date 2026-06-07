@@ -705,6 +705,7 @@ Task 26 implementation batches:
 - **Batch 33: Runtime Browser QA, Performance And Stabilization** (`T10-LIVE-M32..M34`, `approval_required`)
 - **Batch 34: Packaging, Docs, Source Registry, Closure And Batch 35 Handoff** (`T10-LIVE-M35..M36`, `approval_required`)
 - **Batch 35: Approval-Bound Real Testing Execution Matrix** (`T10-LIVE-M37..M41`, `approval_required`)
+- **Batch 36: System File Hygiene Audit, HTML Report Page And Candidate Automation Maintenance** (`T10-HYG-M01..M17`, `read_only`, `candidate_only_until_approved`)
 
 #### Batch 34 Detailed Task Matrix
 
@@ -817,6 +818,95 @@ Execution status through Batch 34E M46: `B34E-I18N-M46` is complete for full-sit
 Execution status through Batch 34E M47: `B34E-I18N-M47` is complete for search, sitemap and strict build parity on generated regular `site/` output. Current generated-site search/sitemap inventory is `full_site_search_sitemap_parity`, `strict_mkdocs_build_exit_code: 0`, `search_index_ru_pages_present: 127`, `search_index_en_pages_present: 127`, `sitemap_ru_pages_present: 127`, `sitemap_en_pages_present: 127`, `search_index_ru_fallback_pollution: 0` and `sitemap_ru_fallback_pollution: 0`. M47 keeps `fallback_to_default: false` and changes search dedup to `reconfigure_search: false` so real EN sibling pages are not removed as duplicates. Remaining Batch 34E closure work is `B34E-I18N-M48..M49`: strict-build closure after source/control-plane sync and final full-site evidence. Historical remaining range before M47 was `B34E-I18N-M47..M49`.
 
 Execution status through Batch 34E M49: `B34E-I18N-M48..M49` is complete for source/control-plane sync and final full-site i18n closure. Current final closure inventory is `done_through_m49`, `full_site_i18n_closure`, `full_site_i18n_final_evidence`, `strict_mkdocs_final_closure_exit_code: 0`, `docs_ru_pages_total: 127`, `existing_en_siblings: 127`, `missing_en_siblings: 0`, `rendered_ru_pages_checked: 127`, `rendered_en_pages_checked: 127`, `static_language_switcher_pairs_checked: 127`, `language_switcher_pair_failures: 0`, `file_url_escape_failures: 0`, `search_index_ru_pages_present: 127`, `search_index_en_pages_present: 127`, `sitemap_ru_pages_present: 127`, `sitemap_en_pages_present: 127`, `en_source_cyrillic_hits: 0` and `ru_source_forbidden_english_phrase_hits: 0`. There are no remaining Batch 34E gates; Batch 35 remains separate and approval-bound.
+
+#### Batch 36: System File Hygiene Audit And Candidate Automation Maintenance
+
+Batch 36 is an owner-requested maintenance addendum for preventing Product-Agent OS system files from accumulating stale implementation ledgers, duplicated rules, unsafe automation text or confusing agent instructions. It is not `Task 27`, does not reopen live/runtime/provider/canonical-mutation scope and does not authorize active automation. The default execution mode is `read_only`; any recurring schedule remains `candidate_only_until_approved` and must record `schedule_status: not_created` until a later explicit owner approval includes rollback/disable evidence.
+
+Product outcome:
+
+- agents can detect oversized or polluted system files before they become confusing context;
+- users can see which project-maintenance surface owns each piece of information;
+- compaction candidates route to the right artifact instead of being deleted or duplicated;
+- future automation can be promoted only after manual stability evidence and explicit approval;
+- the offline HTML status artifact can show system-file, agent and skill state, last update dates and audit status without becoming an evidence source by itself.
+
+Trigger policy:
+
+| Trigger | When it fires | Audit scope | Gate / stop condition |
+| --- | --- | --- | --- |
+| Weekly full hygiene audit | Once per week when the project is active. | Full maintained system-file inventory. | Read-only report only; no schedule exists until approved. |
+| Monthly deep ownership review | Once per month or before major plugin release work. | Ownership, source-of-truth routing and stale historical ledgers. | Any compaction remains a separate focused slice. |
+| On-change audit | After edits to `AGENTS.md`, control-plane files, subagents, skills, workflows, hooks, evals, docs source-control files or plugin package control files. | Changed system files plus adjacent owners. | Stop if a change creates duplicate rules, active schedule text, secrets or hard-size violations. |
+| Size-threshold audit | When soft or hard byte/line thresholds are exceeded. | Oversized file plus likely destination artifacts. | Soft limit creates `review_required`; hard limit creates `blocked` until owner routing exists. |
+| Release/automation approval audit | Before plugin packaging, release packets, active schedule promotion, GitHub workflow activation or Codex App automation creation. | System files, automation candidates, approval records and rollback/disable evidence. | No active automation without two successful manual runs, explicit approval and disable path. |
+
+Maintained system-file classes:
+
+| Class | File patterns | Primary owner | Maintenance rule |
+| --- | --- | --- | --- |
+| Root control plane | `AGENTS.md`, `REQUIREMENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md`, `RUNLOG.md` | Product Manager, Architect, Tester, Docs Maintainer | Keep current rules, requirements, plan, verification, evals and run handoff compact; move history to source packets/backlogs/registry. |
+| Project entrypoint | `README.md` | Product Docs Lead | Keep product/onboarding copy and route implementation history to internal evidence files. |
+| Nested instructions | `**/AGENTS.md` | Area owner | Keep durable local rules only; avoid batch logs, stale command evidence and duplicated global policy. |
+| Codex config and MCP | `.codex/config.toml`, `.codex/settings.json`, `.mcp.json`, `.codex/*.mcp.json` | Architect + Release Operator | Detect unsafe config drift, secrets, active external surfaces and undocumented MCP changes. |
+| Subagents | `.codex/agents/*.toml` | Agent Team Designer | Keep role, ownership, model/reasoning policy and stop conditions current. |
+| Skills | `.codex/skills/**/SKILL.md`, `skills/**/SKILL.md` | Skill Maintainer | Keep trigger, inputs, outputs, verification and failure modes focused; route broad methods to playbooks/plugins. |
+| Workflows | `.codex/workflows/*.md` | Product Manager + Builder | Keep repeatable manual workflows executable, source-bound and approval-aware. |
+| Artifact templates | `.codex/artifact-templates/*.md` | Docs Maintainer + Tester | Keep templates structured, secret-free and mapped to source/evidence owners. |
+| Automation candidates | `.codex/automation-candidates/*.md` | Release Operator | Keep candidate-only state; block cron, RRULE or active schedule markers before approval. |
+| Hooks | `.codex/hooks/*` | Release Operator + Security Reviewer | Treat hooks as inactive templates unless explicitly approved; verify no destructive default behavior. |
+| Evals | `.codex/evals/*.json`, `evals/*.json` | Tester + Eval Owner | Keep eval schemas current, deterministic and tied to acceptance criteria. |
+| PR/release packets | `.codex/pr/*.md`, `.github/PULL_REQUEST_TEMPLATE*.md` | Reviewer + Release Operator | Keep release, review and PR evidence routes explicit and approval-bound. |
+| Docs source-control files | `docs/sources/*`, `docs/insights/*`, `docs/playbooks/*`, `docs/product-agent*/*`, `docs/runtime/*`, `docs/artifact-templates/*`, `mkdocs.yml`, `tools/check_docs.py` | Docs Maintainer | Preserve source status, registry coverage, public/internal boundary and docs checks. |
+| External automation policy | `.github/workflows/*`, `CODEOWNERS`, `SECURITY.md`, `.github/dependabot.yml` | Release Operator + Security Reviewer | Detect external writes, permission drift and unapproved activation. |
+| Plugin control files | `plugins/*/.codex-plugin/plugin.json`, `plugins/*/README.md`, `plugins/*/.mcp.json`, `plugins/*/skills/**/SKILL.md`, `plugins/*/assets/templates/**/*.md`, `plugins/*/assets/templates/**/*.json` | Plugin Owner | Keep packaged plugin contracts, skills, MCP config and generated templates compatible with Codex App, CLI and IDE extension. |
+
+Batch grouping:
+
+- **Batch 36A: Scope, Trigger And Packet Contract** (`T10-HYG-M01..M03`, `read_only`)
+- **Batch 36B: Validator, Findings And Report Output** (`T10-HYG-M04..M06`, `read_only`)
+- **Batch 36C: Templates, Docs, Source Registry And Tests** (`T10-HYG-M07..M09`, `read_only`)
+- **Batch 36D: Candidate Automation Promotion Gate** (`T10-HYG-M10..M12`, `candidate_only_until_approved`)
+- **Batch 36E: HTML System Hygiene Report Page** (`T10-HYG-M13..M17`, `read_only`)
+
+| ID | Batch | Owner / skill route | Work | Files/artifacts | Acceptance |
+| --- | --- | --- | --- | --- | --- |
+| `T10-HYG-M01` | 36A | Product Manager + Architect / `implementation-planner` | Define system-file class inventory and ownership map. | `system_file_hygiene.py`, Track 10 plan, source backlog. | Inventory covers root control plane, `README.md`, nested `AGENTS.md`, Codex config/MCP, subagents, skills, workflows, artifact templates, automation candidates, hooks, evals, PR/release packets, docs source-control files, external automation policy and plugin package control files. |
+| `T10-HYG-M02` | 36A | Product Manager + Release Operator / `automation-promoter` | Define hybrid trigger policy. | Trigger policy table, automation candidate notes. | Weekly, monthly, on-change, size-threshold and release/automation approval triggers are explicit; each trigger states read-only behavior and stop conditions. |
+| `T10-HYG-M03` | 36A | Architect + Tester | Define JSON packet contract. | `system_file_hygiene_audit` schema. | Packet includes `artifact_kind`, `schema_version`, `write_policy: read_only`, `schedule_status: not_created`, trigger metadata, class inventory, findings and summary status. |
+| `T10-HYG-M04` | 36B | Builder + Tester / `test-driven-development` | Implement file inventory and safety findings. | `plugins/product-agent-os/scripts/product_agent_os/system_file_hygiene.py`, tests. | Validator detects missing required files, UTF-8 read errors, BOM/mojibake markers, secret-like literals, duplicate headings, size thresholds, historical ledger leakage and active schedule markers. |
+| `T10-HYG-M05` | 36B | Builder | Add CLI wrapper and exit-code policy. | `plugins/product-agent-os/scripts/validate_system_file_hygiene.py`. | CLI prints JSON; exits `0` for `ok` or `review_required`, exits `1` only for `blocked`. No target workspace writes happen. |
+| `T10-HYG-M06` | 36B | Docs Maintainer + Tester | Add staged report artifact. | `.codex/artifact-templates/system-file-hygiene-report.md`. | Report captures audit trigger, class, finding type, owner, compaction decision, active schedule markers, no-secrets status and approval boundary. |
+| `T10-HYG-M07` | 36C | Builder + Docs Maintainer | Register workflow, report and automation-candidate templates. | Template registry and `assets/templates/*/system-file-hygiene-*`. | Renderer stages `.codex/workflows/system-file-hygiene-audit.md`, `.codex/artifact-templates/system-file-hygiene-report.md` and `.codex/automation-candidates/system-file-hygiene-audit.md`; no active schedule is generated. |
+| `T10-HYG-M08` | 36C | Docs Maintainer | Sync public/internal docs and source ownership. | Product-Agent OS technical docs, artifact contracts, runtime automation docs, plugin README, root README, source registry/backlog. | Docs describe triggers, maintained file classes, read-only boundary, candidate-only automation and activation approval requirements. |
+| `T10-HYG-M09` | 36C | Tester / `verification-before-completion` | Add focused contract tests and renderer fixture coverage. | `tests/product_agent_os/test_system_file_hygiene.py`, automation/template/docs tests. | Tests cover trigger policy, class inventory, clean workspace status, size/schedule blocking, template registration, docs contract and updated renderer file count. |
+| `T10-HYG-M10` | 36D | Release Operator + Security Reviewer | Harden automation candidate policy. | `automation_policy.py`, automation tests. | Any active schedule marker inside an automation candidate is blocked, including cron/RRULE/schedule text for non-metrics candidates. |
+| `T10-HYG-M11` | 36D | Release Operator / `automation-promoter` | Define manual stability evidence before activation. | Candidate packet fields and approval checklist. | Activation requires at least two successful manual runs, deterministic command evidence, owner approval, rollback/disable plan and accepted residual risks. |
+| `T10-HYG-M12` | 36D | Reviewer + Release Operator | Define future active schedule handoff without activating it. | Approval packet draft, RUNLOG/TEST/EVALS routing notes. | Current state remains `schedule_status: not_created`; future activation is a separate approved slice and no GitHub Actions, Codex App automation, hook activation or external write is performed by this batch. |
+| `T10-HYG-M13` | 36E | Architect + Builder | Add status projection for HTML reporting. | `system_file_hygiene.py`, `status_snapshot.py`, tests. | Audit output exposes bounded `file_statuses` with relative path, class, owner, state, severity, finding count, size, line count, `mtime_utc`, `age_days`, content digest and last audit timestamp; no absolute paths, raw file bodies or secrets are embedded. |
+| `T10-HYG-M14` | 36E | Product Manager + Docs Maintainer | Define HTML information architecture for system files, agents and skills. | `status-dashboard/status.html`, optional `project_cockpit_model.py` section mapping. | `status.html` gets a System Hygiene page or top-level section; project cockpit, if touched, keeps exactly eight top-level pages and places the report under `Operations & Risk` with anchor `system-file-hygiene`. |
+| `T10-HYG-M15` | 36E | Builder + Frontend Reviewer | Render file status tables and summaries. | `status_dashboard.py`, `status.css`, optional cockpit renderer tests. | HTML shows counts by `ok`, `review_required`, `blocked`, `missing`, `unreadable`, `stale` and `owner_unknown`; tables are grouped by root control plane, agents, skills, workflows, automation candidates, hooks, evals, docs source-control and plugin control files; rows show file, owner, state, last updated date, age and top finding. |
+| `T10-HYG-M16` | 36E | Tester + Security Reviewer | Add offline HTML safety and freshness tests. | `tests/product_agent_os/test_status_dashboard.py`, optional `test_project_graph_renderer.py`. | Tests prove no external URLs, no raw absolute local paths, no secret-like values, bounded embedded JSON, generated-view-only wording, visible stale evidence banner and deterministic sorting by severity then file class then path. |
+| `T10-HYG-M17` | 36E | Tester + Docs Maintainer / `verification-before-completion` | Sync fixture eval, docs and report guidance. | `run_fixture_eval.py`, Product-Agent OS docs, source registry/backlog. | Fixture eval records `system_file_hygiene_dashboard_present`, `system_file_status_dates_present`, `agent_skill_file_status_present` and `system_hygiene_dashboard_not_source_of_truth`; docs explain that update dates come from filesystem metadata and are freshness hints, not semantic proof that content is correct. |
+
+Batch 36 verification gates:
+
+```powershell
+python -m unittest tests.product_agent_os.test_system_file_hygiene tests.product_agent_os.test_status_dashboard tests.product_agent_os.test_automation_policy tests.product_agent_os.test_infrastructure_templates -v
+python -m unittest tests.product_agent_os.test_product_agent_os_docs -v
+python plugins\product-agent-os\scripts\run_fixture_eval.py
+python plugins\product-agent-os\scripts\validate_codex_compatibility.py
+python tools\check_docs.py
+git diff --check
+```
+
+Run strict MkDocs when the local environment has MkDocs installed:
+
+```powershell
+$env:NO_MKDOCS_2_WARNING='1'; python -m mkdocs build --strict
+```
+
+Batch 36 stop conditions: stop before writes if the audit finds secrets, unreadable system files, active schedule markers, hard-size violations without routing, missing rollback/disable evidence for automation, docs/source registry gaps that make the owner of information unclear, or HTML output contains raw absolute paths, unbounded JSON, stale success claims or missing generated-view-only labels.
 
 Task 26 starts only after the verified Task 25 Batch 23 baseline remains current and the user gives explicit implementation approval for the next Task 26 batch. Planning matrix presence is not implementation evidence. The final acceptance gate is stricter than previous tasks: every Track 10 live/provider/mutation/real-testing-readiness/real-testing-execution row must be implemented and verified, explicitly disabled with rollback evidence, blocked by missing approval, or accepted as a documented owner gap. Batch 35 is the approval-bound real testing phase inside Task 26: it may start a local live server, run browser automation, call approved providers, perform accepted canonical graph mutation or run git release/PR actions only when each action has a separate explicit approval packet. After Task 26 closure, the next action is owner handoff or release follow-through, not `Task 27`, `Task 28` or another Track 10 implementation task.
 

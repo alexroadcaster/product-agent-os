@@ -3340,3 +3340,87 @@ relevance: "Documents why the final Batch 35 git action was not performed despit
 trust_level: "high"
 verification_status: "`git-release-pr-evidence.md` and `git-release-pr-packet.json` record `status: blocked_pending_explicit_git_release_fields`, current branch `main`, `dirty_file_count: 15`, `missing_required_fields`, `git_stage_commit_push_pr_performed: false`, `branch_created: false`, `commit_created: false`, `push_performed: false` and `pull_request_created: false`."
 ```
+
+```yaml
+title: "Product-Agent OS root RUNLOG compaction and evidence ownership"
+url: "RUNLOG.md; docs/sources/product-agent-os-track-10-backlog.md; docs/sources/product-agent-os-batch35-approval-packet-draft.md; tests/product_agent_os/test_product_agent_os_docs.py; TEST.md; PLAN.md; EVALS.md; REQUIREMENTS.md; AGENTS.md"
+type: "internal control-plane maintenance"
+source_status: "project-authored"
+checked_at: "2026-06-07"
+summary: "Root `RUNLOG.md` was compacted from a historical evidence dump into a current handoff, distribution map and test-visible marker bank. Historical implementation and verification detail is now owned by Track 8/9/10 backlogs, the source registry, dedicated source packets and compact root control-plane routing files."
+relevance: "Prevents `RUNLOG.md` from becoming the storage location for every historical batch while preserving resumable current-cycle handoff for `T10-LIVE-M41` and explicit evidence routing."
+trust_level: "high"
+verification_status: "Backed by `test_root_runlog_is_compact_current_handoff_and_distribution_map`, the focused Product-Agent OS docs suite, `python tools\\check_docs.py` and `git diff --check` in the current maintenance run."
+```
+
+```yaml
+title: "Product-Agent OS root PLAN compaction and sequencing ownership"
+url: "PLAN.md; docs/sources/product-agent-os-track-10-backlog.md; docs/sources/product-agent-os-track-9-backlog.md; docs/sources/product-agent-os-batch35-approval-packet-draft.md; tests/product_agent_os/test_product_agent_os_docs.py; REQUIREMENTS.md; TEST.md; EVALS.md; RUNLOG.md; AGENTS.md"
+type: "internal control-plane maintenance"
+source_status: "project-authored"
+checked_at: "2026-06-07"
+summary: "Root `PLAN.md` was compacted from a historical completed-slice ledger into current sequencing, next queue, source planning pointers, architecture boundary, planning rules and rollback. Historical planning/evidence details are now owned by Track 8/9/10 backlogs, source registry, `REQUIREMENTS.md`, compact root control-plane routing files and the Batch 35 approval packet, while `TEST.md` keeps current verification routing and `EVALS.md` keeps current eval routing."
+relevance: "Keeps `PLAN.md` usable as the active planning surface while preserving source-backed history and test-visible planning contracts in their owning files."
+trust_level: "high"
+verification_status: "Backed by `test_root_plan_is_compact_current_sequencing_contract`, the focused Product-Agent OS docs suite, `python tools\\check_docs.py` and `git diff --check` in the current maintenance run."
+```
+
+```yaml
+title: "Product-Agent OS root TEST compaction and verification ownership"
+url: "TEST.md; PLAN.md; RUNLOG.md; docs/sources/product-agent-os-track-8-detailed-backlog.md; docs/sources/product-agent-os-track-9-backlog.md; docs/sources/product-agent-os-track-10-backlog.md; docs/sources/product-agent-os-batch35-approval-packet-draft.md; docs/sources/registry.md; tests/product_agent_os/test_product_agent_os_docs.py; REQUIREMENTS.md; EVALS.md; AGENTS.md"
+type: "internal control-plane maintenance"
+source_status: "project-authored"
+checked_at: "2026-06-07"
+summary: "Root `TEST.md` was compacted from a historical command ledger into current verification routing, required command sets, timeout policy, approval-bound runtime/external-action boundaries, historical evidence owner pointers and a current maintenance verification checklist."
+relevance: "Keeps `TEST.md` usable as the active verification contract while preserving Track 8/9/10 command history in detailed source backlogs, registry entries and dedicated source packets."
+trust_level: "high"
+verification_status: "Backed by `test_root_test_is_compact_current_verification_contract`, the focused Product-Agent OS docs suite, `python tools\\check_docs.py` and `git diff --check` in the current maintenance run."
+```
+
+```yaml
+title: "Product-Agent OS root AGENTS compaction and durable-rule ownership"
+url: "AGENTS.md; PLAN.md; RUNLOG.md; TEST.md; docs/sources/product-agent-os-track-8-detailed-backlog.md; docs/sources/product-agent-os-track-9-backlog.md; docs/sources/product-agent-os-track-10-backlog.md; docs/sources/product-agent-os-batch35-approval-packet-draft.md; docs/sources/registry.md; tests/product_agent_os/test_product_agent_os_docs.py; REQUIREMENTS.md; EVALS.md"
+type: "internal control-plane maintenance"
+source_status: "project-authored"
+checked_at: "2026-06-07"
+summary: "Root `AGENTS.md` was compacted from a mixed durable-rules plus implementation-history ledger into durable project rules, compact current operating status, source-policy boundaries, Windows shell guard, Product-Agent OS plugin rules and verification routing."
+relevance: "Keeps `AGENTS.md` usable as the instruction layer while preserving Track 8/9/10 implementation status, baseline command evidence and batch marker banks in detailed source backlogs, registry entries and dedicated source packets."
+trust_level: "high"
+verification_status: "Backed by `test_root_agents_is_compact_durable_rule_contract`, the focused Product-Agent OS docs suite, `python tools\\check_docs.py` and `git diff --check` in the current maintenance run."
+```
+
+```yaml
+title: "Product-Agent OS root EVALS compaction and eval ownership"
+url: "EVALS.md; PLAN.md; RUNLOG.md; TEST.md; AGENTS.md; docs/sources/product-agent-os-track-8-detailed-backlog.md; docs/sources/product-agent-os-track-9-backlog.md; docs/sources/product-agent-os-track-10-backlog.md; docs/sources/product-agent-os-batch35-approval-packet-draft.md; docs/sources/registry.md; tests/product_agent_os/test_product_agent_os_docs.py; REQUIREMENTS.md"
+type: "internal control-plane maintenance"
+source_status: "project-authored"
+checked_at: "2026-06-07"
+summary: "Root `EVALS.md` was compacted from a mixed eval-rubric plus historical verification ledger into current rubrics, thresholds, active eval routes, methodology eval map, unsupported-claim policy, historical evidence owner pointers and the current `T10-LIVE-M41` blocked boundary."
+relevance: "Keeps `EVALS.md` usable as the evaluation routing layer while preserving Track 8/9/10 eval evidence, full verification logs and batch marker banks in detailed source backlogs, registry entries and dedicated source packets."
+trust_level: "high"
+verification_status: "Backed by `test_root_evals_is_compact_current_eval_contract`, the focused Product-Agent OS docs suite, `python tools\\check_docs.py` and `git diff --check` in the current maintenance run."
+```
+
+```yaml
+title: "Product-Agent OS root README compaction and product-entrypoint ownership"
+url: "README.md; plugins/product-agent-os/README.md; docs/sources/product-agent-os-track-10-backlog.md; docs/sources/registry.md; tests/product_agent_os/test_product_agent_os_docs.py; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
+type: "internal documentation maintenance"
+source_status: "project-authored"
+checked_at: "2026-06-07"
+summary: "Root `README.md` was compacted from a mixed product overview plus historical task/batch/track implementation ledger into a product and operator entrypoint. Duplicate product sections were consolidated, and long implementation evidence was routed back to source registry entries, detailed backlogs, dedicated source packets, plugin README where package/install history is still tested, and compact root control-plane files."
+relevance: "Keeps root `README.md` useful for first readers while preserving source-backed history and test-visible historical contracts in their owning files."
+trust_level: "high"
+verification_status: "Backed by `test_root_readme_is_compact_product_entrypoint_without_history_ledger`, the focused Product-Agent OS docs suite, `python tools\\check_docs.py` and `git diff --check` in the current maintenance run."
+```
+
+```yaml
+title: "Product-Agent OS system file hygiene audit"
+url: "plugins/product-agent-os/scripts/product_agent_os/system_file_hygiene.py; plugins/product-agent-os/scripts/validate_system_file_hygiene.py; plugins/product-agent-os/assets/templates/workflows/system-file-hygiene-audit.md; plugins/product-agent-os/assets/templates/artifact-templates/system-file-hygiene-report.md; plugins/product-agent-os/assets/templates/automations/system-file-hygiene-audit.md; docs/product-agent-os/technical.md; docs/product-agent-os/artifact-contracts.md; docs/runtime/automations-github.md; docs/sources/product-agent-os-track-10-backlog.md; tests/product_agent_os/test_system_file_hygiene.py; tests/product_agent_os/test_automation_policy.py; tests/product_agent_os/test_infrastructure_templates.py"
+type: "internal control-plane maintenance"
+source_status: "project-authored"
+checked_at: "2026-06-07"
+summary: "Product-Agent OS now has a read-only `system_file_hygiene_audit` contract and CLI for scanning maintained system file classes with hybrid periodic, on-change, size and release/automation triggers."
+relevance: "Prevents root control-plane files, nested instruction layers, subagents, skills, workflows, hooks, evals, automation candidates, docs source-control files and plugin package files from becoming confusing or unsafe for agents."
+trust_level: "high"
+verification_status: "Backed by `test_system_file_hygiene`, focused automation policy tests, template registry tests, Product-Agent OS docs tests, `python tools\\check_docs.py` and `git diff --check` in the current maintenance run. The contract records `write_policy: read_only` and `schedule_status: not_created`; active schedules remain approval-bound."
+```

@@ -111,7 +111,10 @@ Renderer может создать или предложить:
 - `.codex/artifact-templates/*.md`;
 - `.codex/evals/*.json`;
 - `.codex/pr/*`;
-- `.codex/automation-candidates/automation-candidate.md`.
+- `.codex/automation-candidates/automation-candidate.md`;
+- `.codex/workflows/system-file-hygiene-audit.md`;
+- `.codex/artifact-templates/system-file-hygiene-report.md`;
+- `.codex/automation-candidates/system-file-hygiene-audit.md`.
 
 Workflow inventory включает two methodology packets:
 
@@ -193,6 +196,12 @@ python plugins\product-agent-os\scripts\run_codex_runtime_runner.py <workspace> 
 python plugins\product-agent-os\scripts\run_fixture_eval.py
 ```
 
+Read-only audit системных файлов:
+
+```powershell
+python plugins\product-agent-os\scripts\validate_system_file_hygiene.py <workspace>
+```
+
 ## Self-verification metrics loop
 
 Product-Agent OS включает local, read-only `agent_skill_metrics_loop` contract для reviewing agents, skills, prompt/policy packs, router/tool policies и harness versions после real work leaves evidence. Цикл collects target registry, проверяет trace intake, checks dataset quality, records local grader summaries, blocks uncalibrated grader/judge calibration, builds cadence recommendation values `L0`, `L1`, `L2` и `L3`, и пишет staged scorecard ledger или report packets.
@@ -207,6 +216,14 @@ Main files и commands:
 Политика канонического источника остается explicit: control-plane artifacts, `run records`, trace/eval packets и accepted gaps могут поддерживать metrics; generated dashboard/report HTML, memory, raw chat logs и unsupported community claims не могут. Report не является источником истины. Все metrics outputs являются только staged evidence, а не proof того, что real project является semantically ready.
 
 Approval boundary: Product-Agent OS не выполняет live eval/model/API calls, не создает active schedules, не делает external writes, не applies modernization candidates и не allows self-applied updates. Modernization candidate требует owner review, rollback target и explicit approval state до изменений target workspace, skill, prompt/policy pack, router/tool policy или harness configuration.
+
+## System file hygiene audit
+
+Product-Agent OS включает read-only контракт `system_file_hygiene_audit`, чтобы системные файлы проекта оставались компактными и source-owned. Проверка использует hybrid triggers: weekly full review, monthly deep ownership review, on-change review после правок системных файлов, size-threshold review и release/automation approval review.
+
+Поддерживаемые поверхности: root control-plane files, `README.md`, nested `AGENTS.md`, `.codex/config.toml`, MCP config, `.codex/agents`, `.codex/skills`, `.codex/workflows`, `.codex/artifact-templates`, `.codex/automation-candidates`, `.codex/hooks`, `.codex/evals`, `.codex/pr`, docs source-control files, `.github/workflows`, `CODEOWNERS`, `SECURITY.md` и checked-in plugin package control files. Audit reports покрывает size limits, duplicate headings, mojibake/BOM markers, secret-like literals, historical ledger leakage и active schedule markers внутри automation candidates.
+
+Audit не сокращает файлы самостоятельно и не создает schedule. Результат: JSON плюс staged `system-file-hygiene-report.md`; любая правка, hook activation, GitHub workflow, Codex App automation, MCP change или external write остается отдельным owner-approved slice.
 
 ## Project code graph и cockpit
 

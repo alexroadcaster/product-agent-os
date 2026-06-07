@@ -55,6 +55,7 @@ REQUIRED_TARGETS = {
     ".codex/workflows/review-slice.md",
     ".codex/workflows/release-packet.md",
     ".codex/workflows/runlog-compaction.md",
+    ".codex/workflows/system-file-hygiene-audit.md",
     ".codex/workflows/development-standards.md",
     ".codex/workflows/documentation-system.md",
     ".codex/workflows/first-run-intake.md",
@@ -142,6 +143,7 @@ REQUIRED_TARGETS = {
     ".codex/artifact-templates/agent-skill-daily-eval-report.md",
     ".codex/artifact-templates/agent-skill-weekly-verification.md",
     ".codex/artifact-templates/agent-skill-update-candidate.md",
+    ".codex/artifact-templates/system-file-hygiene-report.md",
     ".codex/artifact-templates/ai-dataset-manifest.md",
     ".codex/artifact-templates/structured-output-schema.md",
     ".codex/artifact-templates/ai-tool-contract.md",
@@ -217,6 +219,7 @@ REQUIRED_TARGETS = {
     ".codex/evals/renderer-fixtures.json",
     ".codex/evals/behavioral-workflows.json",
     ".codex/automation-candidates/automation-candidate.md",
+    ".codex/automation-candidates/system-file-hygiene-audit.md",
     ".codex/pr/pr-body.md",
     ".codex/pr/release-notes.md",
 }
@@ -1976,6 +1979,7 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 "security-sensitive-change.md",
                 "ci-stabilization.md",
                 "release-packaging.md",
+                "system-file-hygiene-audit.md",
             },
         )
 
@@ -3550,6 +3554,16 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 "approval state",
                 "headline-only improvement",
             ],
+            "system-file-hygiene-report.md": [
+                "source status:",
+                "audit trigger",
+                "system file class",
+                "finding type",
+                "recommended owner",
+                "active schedule markers",
+                "compaction decision",
+                "no secrets",
+            ],
         }
         self.assertEqual(set(templates), set(expected_templates))
         for name, required_terms in expected_templates.items():
@@ -5111,6 +5125,46 @@ class InfrastructureTemplateTest(unittest.TestCase):
         self.assertIn("preserve evidence", text.lower())
         self.assertIn("do not store raw private chat logs", text.lower())
         self.assertIn("explicit approval", text.lower())
+
+    def test_system_file_hygiene_templates_cover_triggers_scope_and_candidate_boundary(self):
+        payloads = {
+            item.target_path: item.source_path.read_text(encoding="utf-8").lower()
+            for item in required_templates()
+            if item.target_path
+            in {
+                ".codex/workflows/system-file-hygiene-audit.md",
+                ".codex/artifact-templates/system-file-hygiene-report.md",
+                ".codex/automation-candidates/system-file-hygiene-audit.md",
+            }
+        }
+
+        self.assertEqual(
+            set(payloads),
+            {
+                ".codex/workflows/system-file-hygiene-audit.md",
+                ".codex/artifact-templates/system-file-hygiene-report.md",
+                ".codex/automation-candidates/system-file-hygiene-audit.md",
+            },
+        )
+        combined = "\n".join(payloads.values())
+        for expected in [
+            "weekly full audit",
+            "monthly deep ownership review",
+            "size-triggered audit",
+            "agents.md",
+            ".codex/agents",
+            ".codex/skills",
+            ".codex/workflows",
+            ".codex/artifact-templates",
+            ".codex/automation-candidates",
+            ".github/workflows",
+            "plugins/*/skills/**/skill.md",
+            "candidate_only",
+            "active schedules remain out of scope",
+            "validate_system_file_hygiene.py",
+        ]:
+            with self.subTest(expected=expected):
+                self.assertIn(expected, combined)
 
     def test_hook_pre_tool_use_blocks_destructive_command_and_observes_safe_command(self):
         hook = TEMPLATE_ROOT / "hooks" / "pre_tool_use_policy.py"

@@ -185,9 +185,11 @@ RUNLOG.md
 .codex/agents/*.toml
 .codex/hooks/*
 .codex/workflows/*.md
+.codex/artifact-templates/system-file-hygiene-report.md
 .codex/evals/*.json
 .codex/pr/*
 .codex/automation-candidates/automation-candidate.md
+.codex/automation-candidates/system-file-hygiene-audit.md
 ```
 
 The workflow inventory includes:
@@ -208,6 +210,7 @@ The workflow inventory includes:
 - `security-sensitive-change.md` for authn, authz, permissions, payment, billing, secrets, PII, sensitive data, abuse controls, rate limit, audit logging, rollback, approval, and explicit Codex Security boundaries.
 - `ci-stabilization.md` for failing or flaky CI before remote CI reruns, CI settings changes, broad fixes, or CI health claims.
 - `release-packaging.md` for package, SDK, plugin, app, mobile, desktop, or open-source release readiness before publishing, tagging, release creation, artifact upload, or package registry mutation.
+- `system-file-hygiene-audit.md` for read-only weekly/monthly, on-change, size-triggered and release/automation-triggered review of root control-plane files, nested `AGENTS.md`, subagents, skills, workflows, hooks, evals, automation candidates, docs source-control files and plugin package control files.
 - `.codex/artifact-templates/*.md` for ADR, architecture overview, domain modeling, docs tooling decisions, metric specs, API contract review, API inventory, API consumer maps, API compatibility records, API contract test matrices, generated SDK manifests, webhook/event contracts, external integration approvals, migration plans, AI eval specs, component cards, database inventories, database dictionaries, database migration plans, database data contracts, database production access approvals, integration catalogs, onboarding maps, PR risk reviews, security risk reviews, threat surfaces, ASVS/SSDF mappings, authorization negative tests, secrets policies, data classification registers, privacy impact records, supply-chain reviews, SBOM manifests, CI permissions reviews, audit logging reviews, AI security reviews, compliance overlays, vulnerability response records, approval records, CI stabilization reports, release readiness, acceptance scenarios, behavioral eval cases, task packets with scenario handoffs, plan quality checks, greenfield idea briefs, bug rescue reports, model/reasoning policies, MCP permission reviews, hook governance records, skill promotion records, agent eval workflows, and Codex compatibility reports.
 - `.codex/artifact-templates/governance-proposal.md` for CODEOWNERS status, GitHub Actions least privilege proposals, workflow names, commands, permissions, triggers, owners and no forced external activation.
 
@@ -572,11 +575,12 @@ From the repository root:
 
 ```powershell
 python -m unittest discover -s tests -p "test_*.py" -v
+python plugins\product-agent-os\scripts\validate_system_file_hygiene.py <workspace>
 python plugins\product-agent-os\scripts\run_fixture_eval.py
 python tools\check_docs.py
 ```
 
-The fixture eval suite covers greenfield setup, existing files, source-policy conflicts, failed verification logs, unsafe writes, safe merge behavior, rollback, automation candidate readiness, Codex runtime runner guardrails, scenario usage modes, and false-positive methodology/tooling gates.
+The fixture eval suite covers greenfield setup, existing files, source-policy conflicts, failed verification logs, unsafe writes, safe merge behavior, rollback, automation candidate readiness, Codex runtime runner guardrails, scenario usage modes, system file hygiene templates, and false-positive methodology/tooling gates.
 
 ## Development Notes
 
