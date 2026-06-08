@@ -13,6 +13,7 @@ CHECK_DOCS = ROOT / "tools" / "check_docs.py"
 SITE = ROOT / "site"
 LOCAL_FILE_I18N_JS = DOCS / "assets" / "javascripts" / "local-file-i18n.js"
 SOURCE_REGISTRY = DOCS / "sources" / "registry.md"
+SOURCE_REGISTRY_EN = DOCS / "sources" / "registry.en.md"
 TRACK_BACKLOG = DOCS / "sources" / "product-agent-os-track-8-detailed-backlog.md"
 TRACK9_BACKLOG = DOCS / "sources" / "product-agent-os-track-9-backlog.md"
 TRACK10_BACKLOG = DOCS / "sources" / "product-agent-os-track-10-backlog.md"
@@ -625,6 +626,10 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "Repository Layout",
             "Quick Commands",
             "Where History Lives",
+            "docs/product-agent-os/index.md",
+            "artifact-gallery.md",
+            "methodology-intelligence.md",
+            "approval-bound-real-testing.md",
             "docs/sources/registry.md",
             "plugins/product-agent-os/README.md",
             "TDD / Red-Green-Refactor",
@@ -818,6 +823,86 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         ]:
             with self.subTest(plan=expected):
                 self.assertIn(expected, plan)
+
+    def test_batch38_p2_readme_registry_and_control_plane_sync_are_current(self):
+        readme = ROOT_README.read_text(encoding="utf-8")
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        registry_en = SOURCE_REGISTRY_EN.read_text(encoding="utf-8")
+        plan = PLAN.read_text(encoding="utf-8")
+
+        for expected in [
+            "docs/product-agent-os/index.md",
+            "artifact-gallery.md",
+            "methodology-intelligence.md",
+            "approval-bound-real-testing.md",
+            "not a ledger",
+            "route first run, outputs, methods, approvals",
+        ]:
+            with self.subTest(readme_route=expected):
+                self.assertIn(expected, readme)
+
+        self.assertLess(len(readme), 50000)
+        public_forbidden_pattern = re.compile(
+            r"\b(Task|Track|Batch)\b|T[0-9]+-|B[0-9]+-|done_through|Implementation Evidence Archive"
+        )
+        self.assertIsNone(public_forbidden_pattern.search(readme))
+
+        for expected in [
+            "Product-Agent OS Batch 38 public docs, README and registry sync",
+            "B38-DOC-M04..M10",
+            "artifact/output gallery",
+            "public/internal documentation boundary",
+            "compact README routing",
+            "RU/EN parity confirmation",
+            "final docs verification",
+            "generated `site/` refresh decision",
+            "read-only agent audits for README/i18n/registry/site scope",
+            "site/` was refreshed intentionally",
+            "root RUNLOG/TEST/EVALS remain compact",
+            'trust_level: "high"',
+            'verification_status: "Backed by the Batch 38 docs contract',
+        ]:
+            with self.subTest(registry=expected):
+                self.assertIn(expected, registry)
+                self.assertIn(expected, registry_en)
+
+        for expected in [
+            "`B38-DOC-M07` | P1 | Compact README sync after source docs are corrected.",
+            "`B38-DOC-M08` | P2 | Keep RU/EN parity for every changed user-facing page.",
+            "`B38-DOC-M09` | P2 | Update source registry and control-plane pointers only where source-backed claims change.",
+            "`B38-DOC-M10` | P2 | Final docs verification and generated `site/` refresh decision.",
+            "| `B38-DOC-M07` | P1 |",
+            "| `B38-DOC-M08` | P2 |",
+            "| `B38-DOC-M09` | P2 |",
+            "| `B38-DOC-M10` | P2 |",
+            "`B38-DOC-M01..M10` implemented",
+        ]:
+            with self.subTest(plan=expected):
+                self.assertIn(expected, plan)
+
+        m10_rows = [
+            line for line in plan.splitlines() if line.startswith("| `B38-DOC-M10` |")
+        ]
+        self.assertEqual(1, len(m10_rows))
+        self.assertIn("`implemented`", m10_rows[0])
+        self.assertNotIn("`planned`; `pending_execution_timestamp`", m10_rows[0])
+        self.assertNotIn("`B38-DOC-M10` remains planned", plan)
+
+        rendered_registry = "\n".join(
+            [
+                (SITE / "sources" / "registry.html").read_text(encoding="utf-8"),
+                (SITE / "en" / "sources" / "registry.html").read_text(encoding="utf-8"),
+                (SITE / "search" / "search_index.json").read_text(encoding="utf-8"),
+            ]
+        )
+        for expected in [
+            "B38-DOC-M04..M10",
+            "final docs verification",
+            "generated",
+            "refresh decision",
+        ]:
+            with self.subTest(rendered_site=expected):
+                self.assertIn(expected, rendered_registry)
 
     def test_system_file_hygiene_audit_contract_is_documented_and_source_owned(self):
         documents = {

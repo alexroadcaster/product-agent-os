@@ -426,12 +426,11 @@ The renderer also packages artifact templates for API contracts, integration cat
 
 Documentation in Product-Agent OS is not a separate Markdown folder; it is part of the delivery loop.
 
-- `docs-maintainer` links claims to sources, owners, acceptance scenarios and evidence.
-- `Source status:` separates official docs, local evidence, community claims and experiments.
-- `docs/sources/registry.md` stores the source-backed claim index.
-- Generated graph, dashboard, status and cockpit artifacts are orientation evidence, not source of truth.
-- README gives the product entrypoint and commands, but it does not store the historical execution ledger.
-- Proof for claims means current command, eval, runtime or owner evidence, not the existence of a file or dashboard.
+- `docs-maintainer` links claims to sources/evidence; `Source status:` separates official/local/community/experiment evidence.
+- `docs/sources/registry.md` stores source-backed claims.
+- Generated graph/dashboard/status/cockpit artifacts are orientation evidence, not source of truth.
+- README is entrypoint/commands, not a ledger; `docs/product-agent-os/index.md`, `artifact-gallery.md`, `methodology-intelligence.md`, `approval-bound-real-testing.md` route first run, outputs, methods, approvals.
+- Proof requires current command/eval/runtime/owner evidence, not files/dashboards.
 
 ## Guided Questions And Status
 

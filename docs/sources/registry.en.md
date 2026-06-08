@@ -79,6 +79,18 @@ verification_status: "Backed by current-run verification: RED docs contract firs
 ```
 
 ```yaml
+title: "Product-Agent OS Batch 38 public docs, README and registry sync"
+url: "PLAN.md; README.md; docs/index.md; docs/index.en.md; docs/product-agent-os/index.md; docs/product-agent-os/index.en.md; docs/product-agent-os/artifact-gallery.md; docs/product-agent-os/artifact-gallery.en.md; docs/product-agent-os/methodology-intelligence.md; docs/product-agent-os/methodology-intelligence.en.md; docs/product-agent-os/approval-bound-real-testing.md; docs/product-agent-os/approval-bound-real-testing.en.md; docs/sources/registry.md; docs/sources/registry.en.md; mkdocs.yml; tools/check_docs.py; tests/product_agent_os/test_product_agent_os_docs.py; site/"
+type: "internal documentation maintenance"
+source_status: "project-authored"
+checked_at: "2026-06-08"
+summary: "Batch 38 `B38-DOC-M04..M10` updates the public first-run Product-Agent OS route, artifact/output gallery, public/internal documentation boundary, compact README routing, RU/EN parity confirmation, source registry ownership, final docs verification and generated `site/` refresh decision after source docs were corrected."
+relevance: "Keeps public Product-Agent OS copy focused on user route, outputs, boundaries and next action while preserving internal source/history evidence in registry, source packets, backlogs and control-plane planning records."
+trust_level: "high"
+verification_status: "Backed by the Batch 38 docs contract, read-only agent audits for README/i18n/registry/site scope, Product-Agent OS docs tests, `python tools\\check_docs.py`, workspace-local `.venv\\Scripts\\python.exe -m mkdocs build --strict`, generated-site language-switcher cleanup, generated-site trailing-whitespace cleanup and `git diff --check`. `site/` was refreshed intentionally for rendered registry/search parity after registry source changes. Public pages and README avoid internal Task/Track/Batch ledger IDs; root RUNLOG/TEST/EVALS remain compact because no new evidence routing was required there."
+```
+
+```yaml
 title: "Codex web / cloud"
 url: "https://developers.openai.com/codex/cloud"
 type: "documentation"
