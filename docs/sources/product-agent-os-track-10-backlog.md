@@ -205,14 +205,15 @@ B38-S1 Release gate and package metadata covers `B38-PROD-M01..M03` as the pre-i
 - ignored_cache_exclusions: `__pycache__ only`.
 - install source path: `plugins/product-agent-os`.
 - manifest path: `plugins/product-agent-os/.codex-plugin/plugin.json`.
-- metadata_release_candidate_status: `local_only_exception_recorded`.
-- example.invalid trust fields remain blocked for public or team release: author email, repository, privacy policy URL and terms of service URL.
+- metadata_release_candidate_status: `owner_confirmed_local_only_internal_r_and_d`.
+- metadata_decision_status: `owner_confirmed_local_only_internal_r_and_d`.
+- example.invalid trust fields intentionally remain for local-only/internal R&D and remain blocked for public or team release: author email, repository, privacy policy URL and terms of service URL.
 - Codex compatibility status: `compatible`.
 - No plugin install, plugin-cache mutation, live runtime, browser automation, provider call, canonical graph mutation or git write was performed.
 
 | Status | Item | Notes |
 | --- | --- | --- |
-| `b38_s1_release_gate_package_metadata` | B38-S1 `B38-PROD-M01..M03` | M01 is owner-closed as no-op after historical missing release fields; future git write requires fresh preflight and exact approval. M02 freezes the checked-in package source with 586 tracked plugin files, 11 bundled skills and package digest `7d5a7634d1223f72ccdd1edcd24fddeb8bbdcc38d36d73ab1d002f352b06dcbb`; M03 records a local-only metadata exception because `example.invalid` trust fields remain in `plugin.json`, so public/team release metadata is not finalized. Verification evidence: `git status --short` was clean before edits, `git ls-files plugins/product-agent-os`, ignored-cache check showing only `__pycache__`, digest calculation, manifest review, `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returning `status: compatible`, focused docs contract 71 tests `OK`, docs structure check `OK` and diff hygiene `0`. |
+| `b38_s1_release_gate_package_metadata` | B38-S1 `B38-PROD-M01..M03` | M01 is owner-closed as no-op after historical missing release fields; future git write requires fresh preflight and exact approval. M02 freezes the checked-in package source with 586 tracked plugin files, 11 bundled skills and package digest `7d5a7634d1223f72ccdd1edcd24fddeb8bbdcc38d36d73ab1d002f352b06dcbb`; M03 records the owner decision to keep Product-Agent OS local-only/internal R&D for now, so `example.invalid` trust fields remain intentionally in `plugin.json` and public/team release metadata is not finalized. Verification evidence: `git status --short` was clean before edits, `git ls-files plugins/product-agent-os`, ignored-cache check showing only `__pycache__`, digest calculation, manifest review, `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returning `status: compatible`, focused docs contract 71 tests `OK`, docs structure check `OK` and diff hygiene `0`. |
 
 ## Batch 38 S2 Verification And Install Smoke Addendum
 
@@ -313,6 +314,56 @@ agent_team_design_packet_present:
 | `implemented` | `B38-PROD-M09` pilot harness and evidence ledger | The harness is a dry-run plan with read-only pilot commands, staged output locations, runlog/evidence schema, screenshot/log redaction policy, cleanup steps and approval checks. It does not create active automation, live server launchers, provider gateways, browser runners, canonical graph writers, external writers or git release tools. |
 
 Current B38-S3 verification evidence: focused B38-S3 docs contract passed; strict MkDocs through workspace-local ignored `tmp\mkdocs_venv_b38s3` exited `0`; generated `site/` was rebuilt for the RU/EN pilot page, search/sitemap exposure and file-safe English-original fallback links, then mechanically normalized for trailing whitespace; final Product-Agent OS docs contract ran 74 tests with `OK`; `python tools\check_docs.py` returned `OK`; `git diff --check` exited `0`. The pilot remains `design_only_not_run` and no real project execution, target workspace mutation, plugin-cache mutation, live server, browser automation, provider/API call, canonical graph mutation, external write or git stage/commit/push/PR was performed.
+
+## Batch 38 S4 Safety And Rollback Addendum
+
+B38-S4 Safety and rollback covers `B38-PROD-M10..M11` as the final pre-pilot safety slice before any target-specific real-project execution. It records read-only security/privacy/supply-chain gaps and documents rollback/remove/cache recovery, but it does not certify release security readiness or perform cache/global config mutation.
+
+- batch_status: `b38_s4_safety_and_rollback`.
+- B38-PROD-M10 status: `reviewed_gap_recorded`.
+- B38-PROD-M11 status: `implemented`.
+- source_policy_status: `ok`.
+- system_file_hygiene_status: `blocked`.
+- system_file_hygiene_trigger: `B38-S4-M10-security-privacy-supply-chain-readiness`.
+- system_file_hygiene_errors: 9.
+- system_file_hygiene_warnings: 21.
+- system_file_hygiene_secret_like_findings: 6.
+- no_secrets_status: `blocked`.
+- active_schedule_markers: 0.
+- schedule_status: `not_created`.
+- hygiene_known_findings_accepted_gap: policy/field false positives, synthetic redaction fixture markers and existing size debt require follow-up before a security-certified release claim.
+- mcp_boundary: `approval_required_unpinned_npx_context7`.
+- fixture_dependency_boundary: `synthetic_non_install_fixtures_unpinned_dependencies`.
+- local_only_metadata_exception_remains: true.
+- release_readiness_claim: false.
+- security_certification_claim: false.
+- plugin_rollback_remove_procedure_present.
+- pre_rollback_read_only_inspection_required.
+- rollback_evidence_preservation_required.
+- installed_plugin_remove_path_documented.
+- stale_cache_restore_path_documented.
+- cache_clear_recovery_path_documented.
+- cache_global_config_mutation_requires_explicit_approval.
+- cache_backup_restore_verification_required.
+- hooks_disable_path_documented_if_ever_approved.
+- automations_disable_path_documented_if_ever_approved.
+- no_destructive_cache_delete_without_exact_approval.
+- no_cache_global_config_mutation_performed.
+- no_live_server_browser_provider_canonical_external_write.
+- no_git_stage_commit_push_pr_performed.
+- production_pilot_blocked_until_target_specific_approval.
+- agent_read_only_audits_completed.
+
+agent_team_design_packet_present:
+
+- roles_have_disjoint_ownership: Security/Data Owner and Reviewer own `B38-PROD-M10` safety review; Release Operator and Architect own `B38-PROD-M11` rollback/cache recovery procedure; Docs Maintainer owns public operator docs and source/registry sync.
+- handoff_packet_fields_present: sources/context used, assumptions, files proposed, verification evidence, open risks, stop reason and recommended next role.
+- agent_skill_stop_conditions_present: stop on missing approval, unresolved cache path, missing backup, digest/count mismatch, destructive delete request, active automation without owner, secret/customer data in evidence, external write request, provider/API call, live server/browser request, canonical mutation or git stage/commit/push/PR request.
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `reviewed_gap_recorded` | `B38-PROD-M10` security/privacy/supply-chain readiness audit | Read-only local audit completed for checked-in Product-Agent OS package source, docs, templates, fixtures, README, plugin manifest and MCP declaration. Current evidence: `git status --short` was clean before edits; tracked plugin source count `586`; `python plugins\product-agent-os\scripts\validate_source_policy.py plugins\product-agent-os` returned `status: ok`; `python plugins\product-agent-os\scripts\validate_system_file_hygiene.py . --trigger B38-S4-M10-security-privacy-supply-chain-readiness` returned `status: blocked`, `secret_like_findings: 6`, `no_secrets_status: blocked`, `active_schedule_markers: 0` and `schedule_status: not_created`; `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible`. Manual review records the secret-like hits as policy/field false positives or synthetic redaction fixture markers, not raw secret values, but M10 remains not security-certified until those findings are fixed or explicitly accepted. Supply-chain review records approval-bound unpinned `npx -y @upstash/context7-mcp` and synthetic non-install fixture dependencies as accepted gaps for local-only use, not public release closure. |
+| `implemented` | `B38-PROD-M11` rollback, removal and cache-recovery procedure | `docs/product-agent-os/real-project-pilot.md` and `.en.md` document `pre_rollback_read_only_inspection`, `rollback_evidence_preservation`, `installed_plugin_remove_path`, `stale_cache_restore_path`, `cache_clear_recovery_path`, `disable_hooks_automations_if_ever_approved`, `post_restore_verification` and stop conditions. The procedure is documented before production pilots, but no cache clear, cache restore, destructive delete, global config mutation, hook/automation activation or disable, external write, provider/API call, live server/browser action, canonical mutation or git action was performed. |
 
 ## Deferred
 

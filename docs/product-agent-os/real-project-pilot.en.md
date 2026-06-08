@@ -82,6 +82,22 @@ Required ledger fields:
 
 The harness must not become active automation, a live server launcher, a provider gateway, a browser runner, a canonical graph writer, an external writer or a git release tool. It may propose those actions only as separate approval packets.
 
+## Rollback And Cache Recovery Procedure
+
+Before a production pilot, the operator needs a clear rollback/remove path for the plugin and local cache. This procedure does not approve deletion, cache mutation, global config mutation, hook activation/deactivation, automation, publication or git actions. It names what must be confirmed before a separate owner approval.
+
+| Step | Required boundary |
+| --- | --- |
+| `pre_rollback_read_only_inspection` | Inspect the installed plugin cache path, package name/version, expected file count, skill count, manifest, `.mcp.json`, backup path, staged source digest and active hook/automation status. |
+| `rollback_evidence_preservation` | Preserve approval text, inspected paths, before/after counts, command transcript, backup pointer, moved-aside path and residual risks in the staged evidence destination. |
+| `installed_plugin_remove_path` | Any remove action uses move-aside/quarantine for the exact approved version path only; silent delete is not allowed. |
+| `stale_cache_restore_path` | Restore only from a named backup tied to evidence; after restore, verify file count, skill count and manifest status. |
+| `cache_clear_recovery_path` | Cache clear/replace is allowed only for the exact cache root and version id; the path must be resolved and checked before any write. |
+| `disable_hooks_automations_if_ever_approved` | If hooks or automations were ever activated, the disable path must name the exact surface, owner, command boundary, evidence target and rollback owner. |
+| `post_restore_verification` | After an approved mutation, run cache inspection, Codex compatibility smoke, docs/test checks when docs changed, diff hygiene and record residual risks. |
+
+Stop immediately on missing owner approval, unresolved path outside the approved cache root, missing backup, digest/count mismatch, destructive delete request, active automation without owner, secret/customer data in evidence, external write request, provider/API call, live server/browser request, canonical mutation or git stage/commit/push/PR request.
+
 ## What Not To Expect
 
 - No automatic installation, publication or plugin-cache refresh.

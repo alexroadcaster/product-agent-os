@@ -175,7 +175,10 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         runlog = RUNLOG.read_text(encoding="utf-8")
 
         self.assertLess(len(runlog), 50000)
-        self.assertIn("track10_task26_batch35_closed_through_m41_owner_closed_no_op_git_release_pr_b38_s2_m05_cache_refresh_completed_b38_s3_m09_design_only_no_real_project_execution", runlog)
+        self.assertIn(
+            "track10_task26_batch35_closed_through_m41_owner_closed_no_op_git_release_pr_b38_s2_m05_cache_refresh_completed_b38_s3_m09_design_only_no_real_project_execution_b38_s4_m11_safety_rollback_gap_recorded",
+            runlog,
+        )
         self.assertIn("Task 26 Batch 35 `T10-LIVE-M41`", runlog)
         self.assertIn("owner_closed_no_op_git_release_pr", runlog)
         self.assertIn("blocked_pending_explicit_cache_mutation_approval", runlog)
@@ -934,8 +937,9 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "fixture_file_count: 266",
             "package_source_digest_sha256: `7d5a7634d1223f72ccdd1edcd24fddeb8bbdcc38d36d73ab1d002f352b06dcbb`",
             "ignored_cache_exclusions: `__pycache__ only`",
-            "metadata_release_candidate_status: `local_only_exception_recorded`",
-            "example.invalid trust fields remain blocked for public or team release",
+            "metadata_release_candidate_status: `owner_confirmed_local_only_internal_r_and_d`",
+            "metadata_decision_status: `owner_confirmed_local_only_internal_r_and_d`",
+            "example.invalid trust fields intentionally remain for local-only/internal R&D",
             "Codex compatibility status: `compatible`",
             "No plugin install, plugin-cache mutation, live runtime, browser automation, provider call, canonical graph mutation or git write was performed.",
         ]:
@@ -980,7 +984,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "Product-Agent OS Batch 38 S1 release gate and package metadata",
             "B38-S1 `B38-PROD-M01..M03`",
             "package_source_digest_sha256",
-            "local-only exception",
+            "local-only/internal R&D distribution",
             'trust_level: "high"',
             'verification_status: "Backed by the B38-S1 source packet',
         ]:
@@ -992,7 +996,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "`b38_s1_release_gate_package_metadata`",
             "M01 is owner-closed as no-op after historical missing release fields",
             "M02 freezes the checked-in package source",
-            "M03 records a local-only metadata exception",
+            "M03 records the owner decision to keep Product-Agent OS local-only/internal R&D",
         ]:
             with self.subTest(track10=expected):
                 self.assertIn(expected, track10)
@@ -1010,7 +1014,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "Batch 38 S1 release gate/package metadata",
             "M01 is owner-closed as `owner_closed_no_op_git_release_pr`",
             "package source digest `7d5a7634d1223f72ccdd1edcd24fddeb8bbdcc38d36d73ab1d002f352b06dcbb`",
-            "local-only metadata exception",
+            "M03 is owner-confirmed as `local-only/internal R&D` distribution",
         ]:
             with self.subTest(runlog=expected):
                 self.assertIn(expected, runlog)
@@ -1377,6 +1381,130 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 self.assertIn("B38-S3", document)
                 self.assertIn("B38-PROD-M06..M09", document)
                 self.assertIn("no_real_project_execution_performed", document)
+
+    def test_batch38_s4_safety_and_rollback_is_source_owned(self):
+        plan = PLAN.read_text(encoding="utf-8")
+        runlog = RUNLOG.read_text(encoding="utf-8")
+        test_plan = TEST.read_text(encoding="utf-8")
+        evals = EVALS.read_text(encoding="utf-8")
+        requirements = REQUIREMENTS.read_text(encoding="utf-8")
+        agents = AGENTS.read_text(encoding="utf-8")
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        registry_en = SOURCE_REGISTRY_EN.read_text(encoding="utf-8")
+        track10 = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        track10_en = TRACK10_BACKLOG_EN.read_text(encoding="utf-8")
+        track10_plan = TRACK10_PLAN.read_text(encoding="utf-8")
+        pilot = (PRODUCT_AGENT_OS / "real-project-pilot.md").read_text(encoding="utf-8")
+        pilot_en = (PRODUCT_AGENT_OS / "real-project-pilot.en.md").read_text(
+            encoding="utf-8"
+        )
+        pilot_pair = pilot + "\n" + pilot_en
+
+        for expected in [
+            "Rollback And Cache Recovery Procedure",
+            "pre_rollback_read_only_inspection",
+            "rollback_evidence_preservation",
+            "installed_plugin_remove_path",
+            "stale_cache_restore_path",
+            "cache_clear_recovery_path",
+            "disable_hooks_automations_if_ever_approved",
+            "post_restore_verification",
+            "destructive delete request",
+            "git stage/commit/push/PR request",
+        ]:
+            with self.subTest(pilot_page=expected):
+                self.assertIn(expected, pilot_pair)
+
+        for expected in [
+            "Batch 38 S4 Safety And Rollback Addendum",
+            "B38-S4 Safety and rollback",
+            "B38-PROD-M10",
+            "B38-PROD-M11",
+            "b38_s4_safety_and_rollback",
+            "B38-PROD-M10 status: `reviewed_gap_recorded`",
+            "B38-PROD-M11 status: `implemented`",
+            "source_policy_status: `ok`",
+            "system_file_hygiene_status: `blocked`",
+            "system_file_hygiene_secret_like_findings: 6",
+            "no_secrets_status: `blocked`",
+            "active_schedule_markers: 0",
+            "schedule_status: `not_created`",
+            "hygiene_known_findings_accepted_gap",
+            "mcp_boundary: `approval_required_unpinned_npx_context7`",
+            "fixture_dependency_boundary: `synthetic_non_install_fixtures_unpinned_dependencies`",
+            "release_readiness_claim: false",
+            "security_certification_claim: false",
+            "plugin_rollback_remove_procedure_present",
+            "cache_global_config_mutation_requires_explicit_approval",
+            "no_destructive_cache_delete_without_exact_approval",
+            "no_cache_global_config_mutation_performed",
+            "production_pilot_blocked_until_target_specific_approval",
+            "agent_read_only_audits_completed",
+        ]:
+            with self.subTest(track10=expected):
+                self.assertIn(expected, track10)
+                self.assertIn(expected, track10_en)
+
+        for expected in [
+            "`B38-PROD-M10` | P1 | Reconfirm security, privacy and supply-chain readiness.",
+            "`B38-PROD-M11` | P2 | Define rollback, removal and cache-recovery procedure.",
+            "B38-S4 `B38-PROD-M10..M11`",
+            "M10 `reviewed_gap_recorded`",
+            "M11 `implemented`",
+            "source_policy_status ok",
+            "system_file_hygiene_status blocked",
+            "fixture_dependency_boundary synthetic_non_install_fixtures_unpinned_dependencies",
+        ]:
+            with self.subTest(plan=expected):
+                self.assertIn(expected, plan)
+
+        for task_id, status in [
+            ("M10", "`reviewed_gap_recorded`"),
+            ("M11", "`implemented`"),
+        ]:
+            rows = [
+                line for line in plan.splitlines() if line.startswith(f"| `B38-PROD-{task_id}` |")
+            ]
+            self.assertEqual(1, len(rows), task_id)
+            self.assertIn(status, rows[0])
+            self.assertNotIn("`planned`; `pending_execution_timestamp`", rows[0])
+
+        for expected in [
+            "Product-Agent OS Batch 38 S4 safety and rollback",
+            "B38-S4 `B38-PROD-M10..M11`",
+            "reviewed_gap_recorded",
+            "rollback/remove/cache recovery",
+            "trust_level: \"high\"",
+            "No release security certification",
+        ]:
+            with self.subTest(registry=expected):
+                self.assertIn(expected, registry)
+                self.assertIn(expected, registry_en)
+
+        for expected in [
+            "B38-S4 safety and rollback run",
+            "validate_source_policy.py",
+            "validate_system_file_hygiene.py",
+            "secret_like_findings: 6",
+            "validate_codex_compatibility.py",
+            "not a security certification",
+            "No cache/global config mutation",
+        ]:
+            with self.subTest(test_plan=expected):
+                self.assertIn(expected, test_plan)
+
+        for document_name, document in [
+            ("runlog", runlog),
+            ("evals", evals),
+            ("requirements", requirements),
+            ("agents", agents),
+            ("track10_plan", track10_plan),
+        ]:
+            with self.subTest(document=document_name):
+                self.assertIn("B38-S4", document)
+                self.assertIn("B38-PROD-M10..M11", document)
+                self.assertIn("reviewed_gap_recorded", document)
+                self.assertIn("rollback", document)
 
     def test_system_file_hygiene_audit_contract_is_documented_and_source_owned(self):
         documents = {
