@@ -28,6 +28,21 @@ Product-agent work часто ломается двумя способами: л
 - текущий политика источников, sandbox, approvals и external-system boundaries;
 - accepted gaps и previous failure notes.
 
+## Project Scanning Principle
+
+Scan является evidence-first и non-mutating. Product-Agent OS читает workspace пользователя, совмещает repository signals с user intent, определяет maturity/complexity и включает только methodology gates, которые снижают real project risk. Scan не пишет target files, не вызывает providers, не включает hooks, не создает automations, не меняет canonical graph sources и не считает generated dashboards доказательством.
+
+| Слой сканирования | Примеры сигналов | Как Product-Agent OS использует это |
+| --- | --- | --- |
+| Workspace inventory | Манифесты, source folders, tests, docs, CI, release и config files. | Classifies simple, standard, complex или high-risk work; для маленьких задач не включает лишний process. |
+| Stack and surface detection | Frontend, backend, native/mobile, desktop, API, database, AI/RAG, docs, automation, release surfaces. | Routes work в релевантные product, architecture, quality, data, AI, security и operations domains. |
+| Contract evidence | OpenAPI, AsyncAPI, GraphQL, gRPC, JSON Schema, Pact, generated SDKs, webhooks. | Activates API contract-first, compatibility, error/auth и contract-test gates. |
+| Data evidence | Schemas, migrations, ORM models, DB docs, data contracts, backfills, production-data hints. | Activates migration planning, data dictionary, rollback, backup/restore, classification и access approval gates. |
+| AI/RAG evidence | Prompts, evals, model decisions, tools, retrieval config, vector data, datasets, agent traces. | Activates baseline evals, prompt/model/tool contracts, grounding, dataset governance и cost/latency checks. |
+| Security and privacy evidence | Auth, secrets, PII, payments, permissions, compliance, SBOM, audit, security review. | Activates threat surface, ASVS/SSDF/SAMM, authz negative tests, privacy и supply-chain review. |
+| Codex control-plane evidence | `AGENTS.md`, requirements/plan/test/eval/runlog files, subagents, skills, MCP, hooks, automation candidates. | Activates model/reasoning policy, handoffs, ownership, approvals, memory policy и automation maturity checks. |
+| User intent | Feature, bug, release, migration, AI behavior, PR review, production readiness, regulated risk. | Добавляет intent-only risk, если repo evidence неполный, и возвращает owner questions вместо догадки. |
+
 ## Выходы
 
 | Output | Purpose |
@@ -44,8 +59,11 @@ Product-agent work часто ломается двумя способами: л
 
 | Domain | Когда применять | Minimum evidence |
 | --- | --- | --- |
-| Product hypothesis | Product behavior, acceptance criteria или outcome metrics change. | User/problem, non-goals, acceptance scenario, metric или explicit gap. |
+| Business & Product | Product behavior, MVP, launch, pricing, onboarding, growth или value claims change. | User/problem, non-goals, acceptance scenario, metric, guardrail или explicit gap. |
+| Requirements & Domain | Behavior, workflow, rules, public contract, domain language или multi-slice scope is unclear. | Requirement registry, acceptance scenarios, owner questions, business rules, domain model или accepted gap. |
 | Solution architecture | Boundaries, services, public contracts, runtime topology или irreversible design change. | Scope, boundary, decision, alternatives, rollback и owner evidence. |
+| Quality, Testing & Evals | Ready/done/fixed/works/release claims, behavior changes, regressions, evals или runtime quality matter. | Test/eval matrix, risk-based scope, current evidence, manual QA evidence или explicit test gap. |
+| Codex / Agentic Workflow | Codex App, CLI, IDE extension, subagents, skills, MCP, hooks, plugins, memory, automation или long-running agent work applies. | Control plane, source-of-truth boundary, model/reasoning policy, handoff contract, approval boundary и automation maturity evidence. |
 | Frontend | User-visible UI, interaction, accessibility, visual QA или performance change. | User flow, component states, browser/runtime evidence, visual/accessibility gap или proof. |
 | Backend | Service behavior, jobs, queues, auth, errors, observability или rollback paths. | Runtime behavior, failure mode, health/logging, tests и rollback evidence. |
 | API & Integrations | HTTP API, event contract, SDK, webhook, external provider или consumer contract. | Source-of-truth contract, consumer map, compatibility и external-write approval boundary. |
@@ -53,7 +71,27 @@ Product-agent work часто ломается двумя способами: л
 | LLM / AI / RAG | Prompt/model/tool/RAG/eval behavior changes. | Baseline/current eval, prompt/model/tool contracts, grounding, traces, cost/latency и incident path. |
 | Security, Privacy & Compliance | Authn/authz, secrets, PII, payments, abuse, supply chain, audit или compliance overlay. | Threat surface, risk review, negative tests, secrets/data/privacy evidence, scan status и owner review. |
 | Delivery, Release & Operations | Publish, deploy, package, release, automation, incidents или operations readiness. | Release scope, versioning, changelog, artifact manifest, rollout, rollback, SLO/observability и approval evidence. |
-| Cross-domain synthesis | Multiple domains overlap или recommendations conflict. | Grouped recommendations, owner/consumer domains, semantic evidence sufficiency и safe следующий action. |
+
+Эти 12 methodology domains являются catalog inputs. Cross-domain synthesis является output layer: группирует overlapping recommendations, resolves conflicts, records owner/consumer domains, checks semantic evidence sufficiency и returns risk-aware `safe_next_action`.
+
+Readiness statuses являются explicit: `not_applicable`, `applicable_missing`, `present_unverified`, `present_verified`, `proposal_staged`, `explicit_gap_accepted` и `approval_required`. Detection alone может create только `present_unverified`; readiness требует current evidence, owner review или accepted gap.
+
+## Methodology Examples
+
+| Methodology or practice | Когда включается | Пример применения в Product-Agent OS |
+| --- | --- | --- |
+| Product discovery and metric design | Product value, launch, growth, onboarding или monetization claims change. | Product hypothesis, value proposition, metric spec, guardrails и owner signoff. |
+| Requirements engineering | Behavior, workflow, rules, public contract или multi-slice scope is unclear. | Requirement registry, non-goals, acceptance scenarios, owner questions и traceability. |
+| ATDD / BDD acceptance scenarios | User-visible behavior или domain correctness needs shared examples. | Example scenarios linked to tests, evals, manual QA evidence или explicit gaps. |
+| DDD | Domain language, bounded contexts, business rules, events, workflows или multi-team ownership matter. | Domain model, ubiquitous language, context map, invariants и domain-to-architecture traceability; simple CRUD не force DDD. |
+| Architecture-driven design and ADRs | Quality attributes, runtime topology, contracts, persistence, deployment или trust boundaries change. | Architecture scope, context/container boundaries, tradeoffs, fitness checks, decision records и rollback assumptions. |
+| C4 / arc42-style architecture views | Context, container, component, deployment или runtime views are needed. | Architecture overview, trust-boundary map, diagrams и architecture review record. |
+| TDD / Red-Green-Refactor | Планируются behavior-changing code, shared logic, bug fixes, migrations, API/schema/UI logic или risky refactors. | Test-first evidence где practical, explicit gap где не подходит, regression evidence привязана к slice. |
+| Risk-based testing and QA | Ready/done/fixed/works/release claims требуют evidence. | Unit, integration, contract, runtime, visual, manual QA, CI и flaky-test evidence по blast radius. |
+| FSD and frontend boundary discipline | Web UI structure, features, widgets, pages, shared components или frontend ownership boundaries exist. | Feature boundary review, state matrix, visual QA, accessibility, responsive checks и performance budget. |
+| API contract-first delivery | OpenAPI, AsyncAPI, GraphQL, gRPC, webhooks, generated clients или external consumers are involved. | API inventory, consumer map, error catalog, auth matrix, compatibility record и contract tests. |
+| Eval-driven AI / RAG development | Prompts, models, tools, retrieval, grounding, AI behavior, datasets или safety claims change. | AI behavior spec, baseline eval, prompt contract, model decision, RAG source inventory, rerun evidence и residual risk. |
+| Security engineering and release operations | Sensitive data, auth, compliance, deploy, publish, CI/CD, production data или external systems входят в scope. | Threat surface, risk review, privacy impact, release readiness, artifact manifest, rollout, rollback и runbook evidence. |
 
 Packet identifiers и exact contract phrases:
 

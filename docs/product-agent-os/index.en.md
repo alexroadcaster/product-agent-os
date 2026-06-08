@@ -15,6 +15,7 @@ The plugin helps move a project through a full lifecycle: read-only workspace au
 | Know when real testing can start | [Approval-Bound Real Testing](approval-bound-real-testing.md) |
 | Evaluate and modernize agents/skills | [Agent-Skill Modernization Loop](agent-skill-modernization-loop.md) |
 | Find local plugin commands | [CLI Reference](cli-reference.md) |
+| See user-facing outputs | [Artifact Gallery](artifact-gallery.md) |
 | Understand JSON/HTML/ledger evidence artifacts | [Artifact Contracts](artifact-contracts.md) |
 | Prepare release packet and handoff | [Packaging And Closure](packaging-and-closure.md) |
 
@@ -29,6 +30,25 @@ Sources: [Codex plugins](https://developers.openai.com/codex/plugins), [Build pl
 | Provider retrieval | Stage provider gate/eval contracts and threshold fallback. | Perform live external model/API calls or provider calls. |
 | Human review and mutation | Stage review ledger, diff preview and dry-run mutation plan. | Mutate canonical graph without accepted owner decision and rollback proof. |
 | Audit and real testing | Stage audit/security/observability/readiness packets. | Run browser automation, provider pilots, canonical mutation pilots or git release actions. |
+
+## First-Run Walkthrough
+
+The first run should produce a route, not scaffolding. A useful starting prompt:
+
+```text
+Use Product-Agent OS for this project: start with a read-only workspace audit, identify lifecycle state, usage_mode, methodology gaps, staged artifacts, verification route, approval boundary and safe_next_action.
+```
+
+| Step | What the plugin does | What the user gets |
+| --- | --- | --- |
+| Read-only workspace audit | Reads project rules, docs, tests, runtime hints and current diff without changing files. | A context map, risk map, source boundaries and evidence gaps. |
+| Lifecycle state | Classifies the project as intake, requirements, planning, build, review, release or learning. | A reasoned explanation for the next step. |
+| Methodology selection | Maps project risks to DDD, TDD, ADD, FSD, eval-driven gates and related practices. | Relevant methods become checks and artifacts instead of dogma. |
+| Staged artifacts | Proposes `REQUIREMENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md`, `RUNLOG.md` or domain packets only when needed. | Outputs can be reviewed before any target workspace write. |
+| Verification route | Names commands, evals, runtime checks, owners and rollback path. | Readiness has a concrete evidence path. |
+| Approval boundary | Separates read/staged proposals from live server launch, browser automation, provider/API calls, canonical mutation and git actions. | `safe_next_action` does not cross approvals. |
+
+Generated views are not source of truth: graph, cockpit, dashboard and reports help review, but they do not replace source files, command evidence and owner decisions. The default stop line is: no live server launch, no browser automation, no provider/API calls, no canonical graph mutation and no git stage/commit/push/PR without separate explicit approval.
 
 ## Core capabilities
 
@@ -104,9 +124,16 @@ The plugin keeps the lifecycle sequential. It should not jump from `uninitialize
 - Automation artifacts are candidate-only until manual workflow is stable and explicitly approved.
 - Secrets, private customer data, raw private chat logs and local absolute paths must not enter docs, fixtures, prompts, memory or templates.
 
+## Public/Internal Documentation Boundary
+
+Public product pages explain capabilities, user route, outputs, boundaries and next action. Internal evidence pages under `docs/sources/` store source/history material, acceptance history and verification packets; they should not be the first route for a new user. Generated `site/` output is a rendered copy of source docs and review output, not source of truth.
+
+If a public page references a graph, dashboard, cockpit, scorecard or report, it must say that the artifact is an orientation surface. If a claim affects readiness, release, security or approval, it must route to an owning source: source file, source registry, command/eval/runtime evidence, owner decision or accepted gap.
+
 ## Where To Go Next
 
 - [Technical details and installation](technical.md) - real files, commands, capabilities and install boundary.
+- [Artifact Gallery](artifact-gallery.md) - user-facing outputs and their trust boundary.
 - [Engineering standards layer](development-standards.md) - how the plugin applies DDD/FSD/TDD/ADD, docs-as-code and eval-driven quality without turning them into dogma.
 - [Methodology intelligence](methodology-intelligence.md) - read-only audit, Delivery Map, recommendations, owner questions and staged artifact boundary.
 - [Scenarios and usage modes](scenarios.md) - first response, minimum artifacts, approval boundary and verification gates for product scenarios.

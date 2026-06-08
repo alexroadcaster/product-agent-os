@@ -28,6 +28,21 @@ Product-agent work often fails in two opposite ways: it starts coding before the
 - current source policy, sandbox, approvals and external-system boundaries;
 - accepted gaps and previous failure notes.
 
+## Project Scanning Principle
+
+The scan is evidence-first and non-mutating. Product-Agent OS reads the user's workspace, combines repository signals with user intent, classifies maturity/complexity and activates only the methodology gates that reduce real project risk. The scan does not write target files, call providers, activate hooks, create automations, mutate canonical graph sources or treat generated dashboards as proof.
+
+| Scan layer | Examples of signals | How Product-Agent OS uses it |
+| --- | --- | --- |
+| Workspace inventory | Manifests, source folders, tests, docs, CI, release and config files. | Classifies simple, standard, complex or high-risk work and avoids heavy process for tiny tasks. |
+| Stack and surface detection | Frontend, backend, native/mobile, desktop, API, database, AI/RAG, docs, automation and release surfaces. | Routes work to the relevant product, architecture, quality, data, AI, security and operations domains. |
+| Contract evidence | OpenAPI, AsyncAPI, GraphQL, gRPC, JSON Schema, Pact, generated SDKs and webhooks. | Activates API contract-first, compatibility, error/auth and contract-test gates. |
+| Data evidence | Schemas, migrations, ORM models, DB docs, data contracts, backfills and production-data hints. | Activates migration planning, data dictionary, rollback, backup/restore, classification and access approval gates. |
+| AI/RAG evidence | Prompts, evals, model decisions, tools, retrieval config, vector data, datasets and agent traces. | Activates baseline evals, prompt/model/tool contracts, grounding, dataset governance and cost/latency checks. |
+| Security and privacy evidence | Auth, secrets, PII, payments, permissions, compliance, SBOM, audit and security review. | Activates threat surface, ASVS/SSDF/SAMM, authz negative tests, privacy and supply-chain review. |
+| Codex control-plane evidence | `AGENTS.md`, requirements/plan/test/eval/runlog files, subagents, skills, MCP, hooks and automation candidates. | Activates model/reasoning policy, handoffs, ownership, approvals, memory policy and automation maturity checks. |
+| User intent | Feature, bug, release, migration, AI behavior, PR review, production readiness or regulated risk. | Adds intent-only risk when repo evidence is incomplete and asks owner questions instead of guessing. |
+
 ## Outputs
 
 | Output | Purpose |
@@ -44,8 +59,11 @@ Product-agent work often fails in two opposite ways: it starts coding before the
 
 | Domain | When it applies | Minimum evidence |
 | --- | --- | --- |
-| Product hypothesis | Product behavior, acceptance criteria or outcome metrics change. | User/problem, non-goals, acceptance scenario, metric or explicit gap. |
+| Business & Product | Product behavior, MVP, launch, pricing, onboarding, growth or value claims change. | User/problem, non-goals, acceptance scenario, metric, guardrail or explicit gap. |
+| Requirements & Domain | Behavior, workflow, rules, public contract, domain language or multi-slice scope is unclear. | Requirement registry, acceptance scenarios, owner questions, business rules, domain model or accepted gap. |
 | Solution architecture | Boundaries, services, public contracts, runtime topology or irreversible design change. | Scope, boundary, decision, alternatives, rollback and owner evidence. |
+| Quality, Testing & Evals | Ready/done/fixed/works/release claims, behavior changes, regressions, evals or runtime quality matter. | Test/eval matrix, risk-based scope, current evidence, manual QA evidence or explicit test gap. |
+| Codex / Agentic Workflow | Codex App, CLI, IDE extension, subagents, skills, MCP, hooks, plugins, memory, automation or long-running agent work applies. | Control plane, source-of-truth boundary, model/reasoning policy, handoff contract, approval boundary and automation maturity evidence. |
 | Frontend | User-visible UI, interaction, accessibility, visual QA or performance change. | User flow, component states, browser/runtime evidence, visual/accessibility gap or proof. |
 | Backend | Service behavior, jobs, queues, auth, errors, observability or rollback paths. | Runtime behavior, failure mode, health/logging, tests and rollback evidence. |
 | API & Integrations | HTTP API, event contract, SDK, webhook, external provider or consumer contract. | Source-of-truth contract, consumer map, compatibility and external-write approval boundary. |
@@ -53,7 +71,27 @@ Product-agent work often fails in two opposite ways: it starts coding before the
 | LLM / AI / RAG | Prompt/model/tool/RAG/eval behavior changes. | Baseline/current eval, prompt/model/tool contracts, grounding, traces, cost/latency and incident path. |
 | Security, Privacy & Compliance | Authn/authz, secrets, PII, payments, abuse, supply chain, audit or compliance overlay. | Threat surface, risk review, negative tests, secrets/data/privacy evidence, scan status and owner review. |
 | Delivery, Release & Operations | Publish, deploy, package, release, automation, incidents or operations readiness. | Release scope, versioning, changelog, artifact manifest, rollout, rollback, SLO/observability and approval evidence. |
-| Cross-domain synthesis | Multiple domains overlap or recommendations conflict. | Grouped recommendations, owner/consumer domains, semantic evidence sufficiency and safe next action. |
+
+These 12 methodology domains are the catalog inputs. Cross-domain synthesis is the output layer that groups overlapping recommendations, resolves conflicts, records owner/consumer domains, checks semantic evidence sufficiency and returns a risk-aware `safe_next_action`.
+
+Readiness statuses are explicit: `not_applicable`, `applicable_missing`, `present_unverified`, `present_verified`, `proposal_staged`, `explicit_gap_accepted` and `approval_required`. Detection alone can only create `present_unverified`; readiness needs current evidence, owner review or an accepted gap.
+
+## Methodology Examples
+
+| Methodology or practice | When it activates | Example application in Product-Agent OS |
+| --- | --- | --- |
+| Product discovery and metric design | Product value, launch, growth, onboarding or monetization claims change. | Product hypothesis, value proposition, metric spec, guardrails and owner signoff. |
+| Requirements engineering | Behavior, workflow, rules, public contract or multi-slice scope is unclear. | Requirement registry, non-goals, acceptance scenarios, owner questions and traceability. |
+| ATDD / BDD acceptance scenarios | User-visible behavior or domain correctness needs shared examples. | Example scenarios linked to tests, evals, manual QA evidence or explicit gaps. |
+| DDD | Domain language, bounded contexts, business rules, events, workflows or multi-team ownership matter. | Domain model, ubiquitous language, context map, invariants and domain-to-architecture traceability; simple CRUD does not force DDD. |
+| Architecture-driven design and ADRs | Quality attributes, runtime topology, contracts, persistence, deployment or trust boundaries change. | Architecture scope, context/container boundaries, tradeoffs, fitness checks, decision records and rollback assumptions. |
+| C4 / arc42-style architecture views | Context, container, component, deployment or runtime views are needed. | Architecture overview, trust-boundary map, diagrams and architecture review record. |
+| TDD / Red-Green-Refactor | Behavior-changing code, shared logic, bug fixes, migrations, API/schema/UI logic or risky refactors are planned. | Test-first evidence where practical, explicit gap where not, and regression evidence linked to the slice. |
+| Risk-based testing and QA | Ready, done, fixed, works or release claims need evidence. | Unit, integration, contract, runtime, visual, manual QA, CI and flaky-test evidence by blast radius. |
+| FSD and frontend boundary discipline | Web UI structure, features, widgets, pages, shared components or frontend ownership boundaries exist. | Feature boundary review, state matrix, visual QA, accessibility, responsive checks and performance budget. |
+| API contract-first delivery | OpenAPI, AsyncAPI, GraphQL, gRPC, webhooks, generated clients or external consumers are involved. | API inventory, consumer map, error catalog, auth matrix, compatibility record and contract tests. |
+| Eval-driven AI / RAG development | Prompts, models, tools, retrieval, grounding, AI behavior, datasets or safety claims change. | AI behavior spec, baseline eval, prompt contract, model decision, RAG source inventory, rerun evidence and residual risk. |
+| Security engineering and release operations | Sensitive data, auth, compliance, deploy, publish, CI/CD, production data or external systems are involved. | Threat surface, risk review, privacy impact, release readiness, artifact manifest, rollout, rollback and runbook evidence. |
 
 Packet identifiers and exact contract phrases:
 

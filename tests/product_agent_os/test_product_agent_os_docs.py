@@ -52,8 +52,8 @@ ENGLISH_ORIGINAL_SUPERPOWERS_PLAN_PAGES = {
     DOCS / "superpowers" / "plans" / "2026-05-25-track-9-methodology-intelligence.md",
     DOCS / "superpowers" / "plans" / "2026-05-27-track-10-guided-questions-status-dashboard.md",
 }
-BUILDABLE_MARKDOWN_PAGE_COUNT = 127
-LOCALIZED_MARKDOWN_PAGE_COUNT = 120
+BUILDABLE_MARKDOWN_PAGE_COUNT = 128
+LOCALIZED_MARKDOWN_PAGE_COUNT = 121
 ENGLISH_ORIGINAL_MARKDOWN_PAGE_COUNT = 7
 
 
@@ -640,6 +640,184 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             r"\b(Task|Track|Batch)\b|T[0-9]+-|B[0-9]+-|done_through|Implementation Evidence Archive"
         )
         self.assertIsNone(forbidden_history.search(readme))
+
+    def test_batch38_p0_product_docs_are_current(self):
+        approval_page = self._localized_contract_text(
+            PRODUCT_AGENT_OS / "approval-bound-real-testing.md"
+        )
+        methodology_page = self._localized_contract_text(
+            PRODUCT_AGENT_OS / "methodology-intelligence.md"
+        )
+        source_draft = "\n".join(
+            [
+                (DOCS / "sources" / "add-ddd-tdd-fsd-llm-development.md").read_text(
+                    encoding="utf-8"
+                ),
+                (DOCS / "sources" / "add-ddd-tdd-fsd-llm-development.en.md").read_text(
+                    encoding="utf-8"
+                ),
+            ]
+        )
+
+        for expected in [
+            "M37-M40",
+            "M37",
+            "M38",
+            "M39",
+            "M40",
+            "M41",
+            "blocked_pending_explicit_git_release_fields",
+            "server_shutdown_complete: true",
+            "Playwright Chromium",
+            "codex_user_session",
+            "canonical_graph_source_mutated: false",
+            "no git stage/commit/push/PR",
+        ]:
+            with self.subTest(approval_page=expected):
+                self.assertIn(expected, approval_page)
+
+        for expected in [
+            "Project Scanning Principle",
+            "Business & Product",
+            "Requirements & Domain",
+            "Solution architecture",
+            "Quality, Testing & Evals",
+            "Codex / Agentic Workflow",
+            "Frontend",
+            "Backend",
+            "API & Integrations",
+            "Database & Data",
+            "LLM / AI / RAG",
+            "Security, Privacy & Compliance",
+            "Delivery, Release & Operations",
+            "These 12 methodology domains",
+            "Readiness statuses",
+            "not_applicable",
+            "applicable_missing",
+            "present_unverified",
+            "present_verified",
+            "proposal_staged",
+            "explicit_gap_accepted",
+            "approval_required",
+            "Methodology Examples",
+            "Product discovery and metric design",
+            "ATDD / BDD acceptance scenarios",
+            "DDD",
+            "Architecture-driven design and ADRs",
+            "C4 / arc42-style architecture views",
+            "TDD / Red-Green-Refactor",
+            "FSD and frontend boundary discipline",
+            "API contract-first delivery",
+            "Eval-driven AI / RAG development",
+        ]:
+            with self.subTest(methodology_page=expected):
+                self.assertIn(expected, methodology_page)
+
+        for expected in [
+            "Terminology boundary",
+            "Product-Agent OS core methodology reserves `DDD` for Domain-Driven Design",
+            "Product-Agent OS core `DDD` means Domain-Driven Design",
+            "Data-Driven Development as product/metric discipline",
+            "DDD (draft term here)",
+        ]:
+            with self.subTest(source_draft=expected):
+                self.assertIn(expected, source_draft)
+
+    def test_batch38_p1_product_docs_route_outputs_and_boundary_are_current(self):
+        first_run = self._localized_contract_text(PRODUCT_AGENT_OS / "index.md")
+        gallery = self._localized_contract_text(PRODUCT_AGENT_OS / "artifact-gallery.md")
+        root_index = "\n".join(
+            [
+                (DOCS / "index.md").read_text(encoding="utf-8"),
+                (DOCS / "index.en.md").read_text(encoding="utf-8"),
+            ]
+        )
+        nav = MKDOCS.read_text(encoding="utf-8")
+        check_docs = CHECK_DOCS.read_text(encoding="utf-8")
+        plan = PLAN.read_text(encoding="utf-8")
+
+        for expected in [
+            "Первый запуск: маршрут пользователя",
+            "First-Run Walkthrough",
+            "read-only workspace audit",
+            "lifecycle state",
+            "usage_mode",
+            "methodology gaps",
+            "Methodology selection",
+            "staged artifacts",
+            "verification route",
+            "approval boundary",
+            "evidence gaps",
+            "safe_next_action",
+            "Generated views are not source of truth",
+            "no live server launch",
+            "no browser automation",
+            "no provider/API calls",
+            "no canonical graph mutation",
+            "no git stage/commit/push/PR",
+        ]:
+            with self.subTest(first_run=expected):
+                self.assertIn(expected, first_run)
+
+        for expected in [
+            "Витрина результатов Product-Agent OS",
+            "Product-Agent OS Artifact Gallery",
+            "Control plane",
+            "First-run route",
+            "Methodology packet",
+            "Status dashboard",
+            "Graph and cockpit",
+            "Real-testing evidence",
+            "Scorecards",
+            "Release and closure",
+            "Source of truth remains in project source files",
+            "Generated views help navigation, but canonical files remain authoritative",
+            "One approval never authorizes another action",
+            "Historical evidence and public product copy must stay separate",
+        ]:
+            with self.subTest(gallery=expected):
+                self.assertIn(expected, gallery)
+
+        for expected in [
+            "Граница public/internal документации",
+            "Public/Internal Documentation Boundary",
+            "Public product pages explain capabilities, user route, outputs, boundaries and next action",
+            "Internal evidence pages under `docs/sources/` store source/history material",
+            "Generated `site/` output is a rendered copy of source docs and review output, not source of truth",
+            "source registry, packets, backlogs and verification records",
+            "Source of truth remains in Markdown source files",
+        ]:
+            with self.subTest(boundary=expected):
+                self.assertTrue(expected in first_run or expected in root_index)
+
+        for expected in [
+            "product-agent-os/artifact-gallery.md",
+            'DOCS / "product-agent-os" / "artifact-gallery.md"',
+        ]:
+            with self.subTest(nav_or_check_docs=expected):
+                self.assertTrue(expected in nav or expected in check_docs)
+
+        public_forbidden_pattern = re.compile(
+            r"\b(Task|Track|Batch)\b|T[0-9]+-[A-Z0-9-]+|B[0-9]+-[A-Z]+-M[0-9]+"
+        )
+        for path in [
+            PRODUCT_AGENT_OS / "artifact-gallery.md",
+            PRODUCT_AGENT_OS / "artifact-gallery.en.md",
+        ]:
+            text = path.read_text(encoding="utf-8")
+            with self.subTest(public_forbidden_terms=path.name):
+                self.assertIsNone(public_forbidden_pattern.search(text), path)
+
+        for expected in [
+            "`B38-DOC-M04` | P1 | Add end-user first-run walkthrough.",
+            "`B38-DOC-M05` | P1 | Add artifact/output gallery for user-facing value.",
+            "`B38-DOC-M06` | P1 | Define public vs internal documentation IA boundary for `site/`.",
+            "| `B38-DOC-M04` | P1 |",
+            "| `B38-DOC-M05` | P1 |",
+            "| `B38-DOC-M06` | P1 |",
+        ]:
+            with self.subTest(plan=expected):
+                self.assertIn(expected, plan)
 
     def test_system_file_hygiene_audit_contract_is_documented_and_source_owned(self):
         documents = {
@@ -2592,8 +2770,9 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "no git stage/commit/push/PR",
             ],
             "approval-bound-real-testing.md": [
-                "planned, not implemented",
-                "отдельного explicit owner approval",
+                "M37-M40",
+                "blocked_pending_explicit_git_release_fields",
+                "separately scoped",
                 "approved_local_runtime_launch",
                 "actual_browser_automation_smoke",
                 "approved_provider_api_pilot",
@@ -4369,9 +4548,9 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             if not path.with_name(path.stem + ".en" + path.suffix).exists()
         ]
 
-        self.assertEqual(127, len(base_pages))
+        self.assertEqual(BUILDABLE_MARKDOWN_PAGE_COUNT, len(base_pages))
         self.assertEqual(7, len(english_original_pages))
-        self.assertEqual(120, len(localized_pages))
+        self.assertEqual(LOCALIZED_MARKDOWN_PAGE_COUNT, len(localized_pages))
         self.assertEqual([], missing_localized_siblings)
         self.assertTrue(
             all(

@@ -3,12 +3,14 @@
 Source status: `mixed source-backed draft`  
 Статус: входной исследовательский документ. Перед переносом claims в core guidance проверять первоисточники и явно отделять Data-Driven Development от Domain-Driven Design.
 
+Terminology boundary: этот draft использует `DDD` как incoming shorthand для Data-Driven Development. Product-Agent OS core methodology reserves `DDD` for Domain-Driven Design: domain language, bounded contexts, ubiquitous language, business rules, invariants и domain-to-architecture traceability. Когда этот draft referenced из Product-Agent OS docs или search results, treat Data-Driven Development как product/metric discipline и spell it out unless local team explicitly defines abbreviation.
+
 ## Оглавление
 
 1. Краткое резюме
 2. Уточнение терминов
 3. ADD — Agentic-Driven Development
-4. DDD — Data-Driven Development
+4. DDD — Data-Driven Development (draft term; Product-Agent OS core DDD = Domain-Driven Design)
 5. TDD — Test-Driven Development
 6. FSD — Feature-Sliced Design / Development
 7. Ключевые отличия
@@ -28,7 +30,7 @@ Source status: `mixed source-backed draft`
 Эти четыре подхода не являются прямыми конкурентами. Они отвечают на разные вопросы разработки:
 
 ```txt
-DDD → что строить и почему это важно пользователю
+Data-driven development → что строить и почему это важно пользователю
 FSD → где размещать код и как структурировать приложение
 TDD → как доказать, что код работает правильно
 ADD → как быстрее реализовывать задачи с помощью LLM-агентов
@@ -58,7 +60,7 @@ TDD + evaluation-driven testing + FSD + controlled ADD + DDD metrics
 | Сокращение | Расшифровка | Смысл |
 |---|---|---|
 | **ADD** | Agentic-Driven Development / Agentic Coding Driven Development | Разработка, где LLM-агенты помогают планировать, писать, тестировать, исправлять и документировать код. |
-| **DDD** | Data-Driven Development | Разработка, где продуктовые и инженерные решения принимаются на основе данных, метрик и обратной связи. Не путать с Domain-Driven Design. |
+| **DDD (draft term here)** | Data-Driven Development | Product and engineering decisions use data, metrics and feedback. Product-Agent OS core `DDD` means Domain-Driven Design; spell out Data-Driven Development in public guidance unless the local team explicitly defines abbreviation. |
 | **TDD** | Test-Driven Development | Подход, где сначала пишется тест, затем минимальная реализация, затем рефакторинг. |
 | **FSD** | Feature-Sliced Design / Feature-Sliced Development | Архитектурная методология организации frontend/UI-кода по слоям, фичам и бизнес-сущностям. |
 
@@ -196,9 +198,11 @@ ADD — мощный ускоритель разработки, но тольк�
 
 ---
 
-# DDD — Data-Driven Development
+# DDD — Data-Driven Development (Draft Term)
 
 ## Суть
+
+In this draft, DDD means Data-Driven Development. Product-Agent OS core guidance should not use that abbreviation without disambiguation because its canonical `DDD` is Domain-Driven Design.
 
 **Data-Driven Development** — это подход, при котором решения о продукте, функциях, UX, качестве и приоритетах принимаются на основе данных.
 

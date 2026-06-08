@@ -4,9 +4,11 @@ Source status: `official + experiment`
 
 ## Назначение
 
-Эта страница описывает approval-bound real-testing execution matrix для Product-Agent OS. Matrix является planned, не implemented. Она не стартует local live server, не запускает browser automation, не выполняет provider/API calls, не мутирует canonical graph и не делает git stage/commit/push/PR без отдельного explicit owner approval для каждого действия.
+Эта страница описывает approval-bound real-testing execution matrix для Product-Agent OS. Matrix не является bundled approval: каждое live/runtime/browser/provider/canonical/git действие остается отдельно scoped, отдельно approved и отдельно evidenced.
 
 Real testing начинается только после актуальной closure evidence по governance, runtime contract, audit/observability, target consent, QA/performance/stabilization и packaging/docs closure.
+
+Текущий source-backed статус: M37-M40 имеют execution evidence для approved local runtime, browser smoke, Codex-session provider pilot и staged canonical mutation pilot. M41 остается `blocked_pending_explicit_git_release_fields`, и git stage/commit/push/PR не выполнялись.
 
 ## Approvals And Source-Of-Truth Boundary
 
@@ -44,15 +46,17 @@ Before any real-testing action, collect:
 
 ## Выходы и артефакты
 
-Planned artifacts:
+Action artifacts and current evidence:
 
-- `live-server-run-evidence.json` для `approved_local_runtime_launch`;
-- `browser-automation-smoke.json` и screenshots для `actual_browser_automation_smoke`;
-- `provider-call-evidence.json`, `provider-eval-report.json` и cache metadata для `approved_provider_api_pilot`;
-- `canonical-mutation-run.json`, `graph-mutation-journal.jsonl` и `rollback-proof.json` для `approved_canonical_mutation_pilot`;
-- `git-release-pr-evidence.md` и PR packet для `explicit_git_release_pr_action`.
+| Action | Evidence artifact | Current status |
+| --- | --- | --- |
+| `approved_local_runtime_launch` | `live-server-run-evidence.json` | M37 пройдено; короткий локальный server bound to `127.0.0.1`, проверки `health/query/auth/public-bind/write-block`, `server_shutdown_complete: true` и `redaction.ok: true`. |
+| `actual_browser_automation_smoke` | `browser-automation-smoke.json`, `desktop.png`, `mobile.png` | M38 пройдено; Playwright Chromium, `console_errors: 0`, `network_failures: 0`, `mobile_overflow: false`, generated-view labels, source-boundary labels и clean shutdown. |
+| `approved_provider_api_pilot` | `provider-call-evidence.json`, `provider-eval-report.json` | M39 пройдено; provider surface `codex_user_session`, `OPENAI_API_KEY used: false`, direct API call из workspace shell: false и `provider_secret_stored: false`. |
+| `approved_canonical_mutation_pilot` | `canonical-mutation-run.json`, `graph-mutation-journal.jsonl`, `rollback-proof.json` | M40 пройдено как `stage_root_only`; `canonical_graph_source_mutated: false`, `operation_count: 1`, `journal_entry_count: 1` и `rollback_restores_previous_graph_digest: true`. |
+| `explicit_git_release_pr_action` | `git-release-pr-evidence.md`, PR packet | M41 заблокирован со статусом `blocked_pending_explicit_git_release_fields`; git stage/commit/push/PR не выполнялись. |
 
-These artifacts become evidence только после separately approved action actually runs. Until затем they являются planned contract names, не implementation proof.
+Эти artifacts являются evidence только для exact approved action, который действительно был выполнен. Они не approve any other action, а generated evidence остается staged/source-boundary evidence пока checked-in source docs или owner-reviewed packets не cite it.
 
 ## Workflow
 
@@ -75,6 +79,16 @@ These artifacts become evidence только после separately approved acti
 | `approved_canonical_mutation_pilot` | Применить и rollback owner-accepted graph change. | accepted ledger item, dry-run plan, conflict checks, journal path, digest comparison, rollback proof. | Нет mutation без accepted item и dry-run; `accepted_gap` остается non-mutating. |
 | `explicit_git_release_pr_action` | Publish только verified owner-approved change set. | exact files, verification summary, unrelated-change check, commit/push/PR intent. | Нет `git add`, `git commit`, `git push` или PR без explicit пользователь command. |
 
+## Current Execution Status
+
+| Step | Action | Status | Evidence boundary |
+| --- | --- | --- | --- |
+| M37 | `approved_local_runtime_launch` | `passed` | Local-only runtime evidence; no browser automation, provider/API call, canonical graph mutation или git action из этого approval. |
+| M38 | `actual_browser_automation_smoke` | `passed` | Только browser evidence; provider/API call, canonical graph mutation и git action не разрешались этим approval. |
+| M39 | `approved_provider_api_pilot` | `passed` | Только Codex-session provider pilot evidence; canonical graph mutation и git action не разрешались этим approval. |
+| M40 | `approved_canonical_mutation_pilot` | `passed` | Только staged canonical mutation/rollback proof; `canonical_graph_source_mutated: false`, git action не выполнялся. |
+| M41 | `explicit_git_release_pr_action` | `blocked_pending_explicit_git_release_fields` | Требует release branch или push target, commit message, PR base branch, PR title/intent и explicit branch/write policy до any git write. |
+
 ## Проверка
 
 Для approval-bound real testing completion claim валиден только для exact approved action и только при наличии evidence текущего run.
@@ -87,10 +101,11 @@ Expected checks:
 - canonical mutation pilot: accepted ledger item, dry-run plan, previous/new digest, append-only journal, rollback proof;
 - git action: текущий diff hygiene, explicit requested files, verification summary и нет unrelated staging.
 
-Docs-only preparation не может claim these checks passed.
+A docs-only update не может create new passed evidence. Он может только cite current-run evidence из source packet и должен keep new live/browser/provider/canonical/git actions approval-bound.
 
 ## Риски And Failure Modes
 
+- Трактовка all real testing как complete because M37-M40 passed; M41 и any new live/browser/provider/canonical/git action остаются separate approvals.
 - Трактовка matrix как implemented because это exists.
 - Reusing approval из один action к authorize another action.
 - Starting local runtime до target/data policy и shutdown evidence являются explicit.
@@ -102,4 +117,4 @@ Docs-only preparation не может claim these checks passed.
 
 ## Next Action
 
-Этот next safe step является owner selection из один real-testing action и narrow approval packet для который action. Until который packet exists, real testing остается planned/not implemented и all live server, browser automation, provider/API, canonical mutation и git actions остаются blocked.
+Следующий safe step: documentation/source closure для текущей real-testing evidence или owner-provided M41 git release fields. Until эти fields supplied, git release/PR остается blocked. Any new live server, browser automation, provider/API, canonical mutation или git action все еще требует own narrow approval packet.

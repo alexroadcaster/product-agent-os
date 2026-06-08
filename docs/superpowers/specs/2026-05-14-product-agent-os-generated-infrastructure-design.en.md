@@ -4,7 +4,7 @@ Source status: `official + experiment`
 
 Sources: [Codex build plugins](https://developers.openai.com/codex/plugins/build), [Codex hooks](https://developers.openai.com/codex/hooks), [Subagents](https://developers.openai.com/codex/subagents), [AGENTS.md](https://developers.openai.com/codex/guides/agents-md).
 
-This design defines Track 3 for the [Product-Agent OS plugin spec](../../product-agent/product-agent-os-plugin-spec.md). It builds on the completed [Track 1 core plan](../plans/2026-05-14-product-agent-os-plugin-core.md) and [Track 2 lifecycle skills design](2026-05-14-product-agent-os-lifecycle-skills-design.md).
+This design defines Track 3 for the [Product-Agent OS plugin spec](../../product-agent/product-agent-os-plugin-spec.md). It builds on the completed Track 1 core plan (`docs/superpowers/plans/2026-05-14-product-agent-os-plugin-core.md`) and [Track 2 lifecycle skills design](2026-05-14-product-agent-os-lifecycle-skills-design.md).
 
 ## Goal
 

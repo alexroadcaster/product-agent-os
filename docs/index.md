@@ -27,6 +27,14 @@
 - `community` - внешний пользовательский источник.
 - `experiment` - рабочая гипотеза, которую нужно проверить в локальном проекте.
 
+## Граница public/internal документации
+
+Публичный маршрут этой базы знаний начинается с обзоров, diagram atlas, Product-Agent Workflows и [Product-Agent OS plugin](product-agent-os/index.md). Эти страницы объясняют продуктовую ценность, возможности, границы, результаты и ближайшее действие.
+
+`docs/sources/` является внутренним evidence/history layer. Он хранит source registry, packets, backlogs и verification records, но не заменяет публичные страницы и не должен быть первым маршрутом для нового пользователя.
+
+Сгенерированный `site/`, dashboard, graph, cockpit, reports и smoke evidence являются поверхностями проверки. Они помогают review, search и handoff, но источником истины остаются исходные Markdown-файлы, registry, current command/eval/runtime evidence, owner decisions и accepted gaps.
+
 ## Карта проекта
 
 ```mermaid

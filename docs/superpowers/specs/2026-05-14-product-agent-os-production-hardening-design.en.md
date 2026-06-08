@@ -2,7 +2,7 @@
 
 Source status: `official + experiment`
 
-Sources: [Product-Agent OS plugin spec](../../product-agent/product-agent-os-plugin-spec.md), [Track 1 core plan](../plans/2026-05-14-product-agent-os-plugin-core.md), [Track 2 lifecycle skills design](2026-05-14-product-agent-os-lifecycle-skills-design.md), [Track 3 generated infrastructure design](2026-05-14-product-agent-os-generated-infrastructure-design.md), [Track 3 implementation plan](../plans/2026-05-14-product-agent-os-generated-infrastructure.md), [source registry](../../sources/registry.md).
+Sources: [Product-Agent OS plugin spec](../../product-agent/product-agent-os-plugin-spec.md), Track 1 core plan (`docs/superpowers/plans/2026-05-14-product-agent-os-plugin-core.md`), [Track 2 lifecycle skills design](2026-05-14-product-agent-os-lifecycle-skills-design.md), [Track 3 generated infrastructure design](2026-05-14-product-agent-os-generated-infrastructure-design.md), Track 3 implementation plan (`docs/superpowers/plans/2026-05-14-product-agent-os-generated-infrastructure.md`), [source registry](../../sources/registry.md).
 
 This design defines Track 4 for the `product-agent-os` plugin. It starts from the completed Track 3 baseline: deterministic staged infrastructure rendering, dry-run JSON output, staged artifact generation, fixture eval coverage, generated templates, validators, and clean verification on 2026-05-14.
 

@@ -94,6 +94,7 @@ plugins:
                 - Product-Agent OS Plugin Spec: product-agent/product-agent-os-plugin-spec.md
             - Product-Agent OS Plugin:
                 - Overview: product-agent-os/index.md
+                - Artifact Gallery: product-agent-os/artifact-gallery.md
                 - Project Code Graph: product-agent-os/project-code-graph.md
                 - Live Runtime Governance: product-agent-os/live-runtime-governance.md
                 - Approval-Bound Real Testing: product-agent-os/approval-bound-real-testing.md
@@ -222,6 +223,7 @@ nav:
       - Product-Agent OS plugin spec: product-agent/product-agent-os-plugin-spec.md
   - Product-Agent OS plugin:
       - Обзор: product-agent-os/index.md
+      - Витрина результатов: product-agent-os/artifact-gallery.md
       - Project Code Graph: product-agent-os/project-code-graph.md
       - Live Runtime Governance: product-agent-os/live-runtime-governance.md
       - Approval-Bound Real Testing: product-agent-os/approval-bound-real-testing.md

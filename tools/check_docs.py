@@ -38,6 +38,7 @@ REQUIRED_PATHS = [
     DOCS / "product-agent" / "control-plane.md",
     DOCS / "product-agent" / "product-agent-os-plugin-spec.md",
     DOCS / "product-agent-os" / "index.md",
+    DOCS / "product-agent-os" / "artifact-gallery.md",
     DOCS / "product-agent-os" / "project-code-graph.md",
     DOCS / "product-agent-os" / "live-runtime-governance.md",
     DOCS / "product-agent-os" / "approval-bound-real-testing.md",
@@ -118,6 +119,7 @@ LINK_RE = re.compile(r"\]\((?!https?://|mailto:|#)([^)]+)\)")
 
 REQUIRED_NAV_PATHS = [
     "product-agent/product-agent-os-plugin-spec.md",
+    "product-agent-os/artifact-gallery.md",
     "product-agent-os/project-code-graph.md",
     "product-agent-os/live-runtime-governance.md",
     "product-agent-os/approval-bound-real-testing.md",

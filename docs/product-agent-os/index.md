@@ -15,6 +15,7 @@ Product-Agent OS plugin - локальный Codex plugin для проекто�
 | Когда можно переходить к реальному testing | [Approval-Bound Real Testing](approval-bound-real-testing.md) |
 | Как проверять и модернизировать agents/skills | [Agent-Skill Modernization Loop](agent-skill-modernization-loop.md) |
 | Какие локальные команды есть у plugin | [CLI Reference](cli-reference.md) |
+| Какие результаты получает пользователь | [Витрина результатов](artifact-gallery.md) |
 | Какие JSON/HTML/ledger artifacts считаются evidence | [Artifact Contracts](artifact-contracts.md) |
 | Как готовить release packet и handoff | [Packaging And Closure](packaging-and-closure.md) |
 
@@ -29,6 +30,25 @@ Product-Agent OS plugin - локальный Codex plugin для проекто�
 | Provider retrieval | Stage provider gate/eval contracts и threshold fallback. | Perform live external model/API calls или provider calls. |
 | Human review и mutation | Stage review ledger, diff preview и dry-run mutation plan. | Mutate canonical graph без accepted owner decision и rollback proof. |
 | Audit и real testing | Stage audit/security/observability/readiness packets. | Запустите browser automation, provider pilots, canonical mutation pilots или git release actions. |
+
+## Первый запуск: маршрут пользователя
+
+Первый запуск должен дать не scaffolding, а понятный маршрут. Хороший стартовый prompt:
+
+```text
+Use Product-Agent OS for this project: start with a read-only workspace audit, identify lifecycle state, usage_mode, methodology gaps, staged artifacts, verification route, approval boundary and safe_next_action.
+```
+
+| Шаг | Что делает plugin | Что получает пользователь |
+| --- | --- | --- |
+| Read-only audit | Читает project rules, docs, tests, runtime hints и текущий diff без изменений. | Карта контекста, рисков, source boundaries и gaps. |
+| Lifecycle state | Определяет, проект в intake, requirements, planning, build, review, release или learning. | Понимание, почему следующий шаг именно такой. |
+| Methodology selection | Сопоставляет риски проекта с DDD, TDD, ADD, FSD, eval-driven gates и другими practices. | Нужные методологии включаются как checks и artifacts, а не как догма. |
+| Staged artifacts | Предлагает `REQUIREMENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md`, `RUNLOG.md` или domain packets только когда они нужны. | Можно проверить output до записи в целевой workspace. |
+| Маршрут проверки | Называет команды, evals, runtime-проверки, владельцев и путь отката. | Понятно, чем будет доказана готовность. |
+| Approval boundary | Отделяет чтение и staged proposals от live server, browser automation, provider/API calls, canonical mutation и git actions. | `safe_next_action` не перескакивает через approvals. |
+
+Сгенерированные graph, cockpit, dashboard и reports помогают review, но не заменяют исходные файлы, результаты команд и решения владельца. Стоп-линия по умолчанию: нет live server launch, browser automation, provider/API calls, canonical graph mutation или git stage/commit/push/PR без отдельного explicit approval.
 
 ## Core capabilities
 
@@ -104,9 +124,16 @@ Plugin держит lifecycle последовательным. Он не дол
 - Automation artifacts являются candidate-only пока manual workflow является stable и explicitly approved.
 - Secrets, private customer data, raw private chat logs и local absolute paths должен не попадать в docs, fixtures, prompts, memory или templates.
 
+## Граница public/internal документации
+
+Публичные страницы объясняют возможности, маршрут пользователя, результаты, границы и ближайшее действие. `docs/sources/` хранит внутренние source/history materials, acceptance history и verification packets; этот раздел не должен быть первым маршрутом для нового пользователя. Сгенерированный `site/` является HTML-копией исходных Markdown-документов и поверхностью review, а не источником истины.
+
+Если публичная страница ссылается на graph, dashboard, cockpit, scorecard или report, она должна явно говорить, что это обзорная поверхность. Если claim влияет на readiness, release, security или approval, он должен вести к owning source: исходному файлу, source registry, command/eval/runtime evidence, owner decision или accepted gap.
+
 ## Куда идти дальше
 
 - [Технические особенности и установка](technical.md) - реальные файлы, команды, capabilities и install boundary.
+- [Витрина результатов](artifact-gallery.md) - какие outputs получает пользователь и где проходит trust boundary.
 - [Engineering standards layer](development-standards.md) - как plugin внедряет DDD/FSD/TDD/ADD, docs-as-code и eval-driven quality без превращения их в dogma.
 - [Methodology intelligence](methodology-intelligence.md) - read-only audit, Delivery Map, recommendations, owner questions и staged artifact boundary.
 - [Scenarios и usage modes](scenarios.md) - first response, minimum artifacts, approval boundary и verification gates для product scenarios.
