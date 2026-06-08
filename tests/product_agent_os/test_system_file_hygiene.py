@@ -79,6 +79,52 @@ class SystemFileHygieneTest(unittest.TestCase):
         self.assertIn(".codex/skills/**/SKILL.md", classes["codex_skills"]["patterns"])
         self.assertIn("plugins/*/skills/**/SKILL.md", classes["plugin_package_control"]["patterns"])
         self.assertIn(".github/workflows/*", classes["external_automation_policy"]["patterns"])
+        self.assertIn(".codex/artifact-templates/*.md", classes["artifact_templates"]["patterns"])
+        self.assertIn("docs/superpowers/plans/*task-matrix*.md", classes["docs_source_control"]["patterns"])
+
+    def test_task_matrix_hygiene_uses_existing_template_and_docs_source_ownership_without_writes(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            _write_minimal_control_plane(root)
+            template_path = root / ".codex" / "artifact-templates" / "task-matrix-plan.md"
+            docs_plan_path = root / "docs" / "superpowers" / "plans" / "2026-06-08-task-matrix-plan.md"
+            template_path.parent.mkdir(parents=True)
+            docs_plan_path.parent.mkdir(parents=True)
+            template_path.write_text(
+                "# Task Matrix Template\n\nSchema version: task_matrix_plan_v1\n",
+                encoding="utf-8",
+            )
+            docs_plan_path.write_text(
+                "# Task Matrix Plan\n\nSource status: generated planning evidence, not completion evidence.\n",
+                encoding="utf-8",
+            )
+            fixed_mtime = datetime(2026, 5, 1, 12, 0, 0, tzinfo=UTC).timestamp()
+            os.utime(docs_plan_path, (fixed_mtime, fixed_mtime))
+            before = _workspace_files(root)
+
+            packet = build_system_file_hygiene_audit(
+                root,
+                audit_trigger="soft_size_review",
+                audit_started_at="2026-06-08T12:00:00+00:00",
+            )
+            after = _workspace_files(root)
+
+        statuses = {item["path"]: item for item in packet["file_statuses"]}
+        findings = json.dumps(packet["findings"], sort_keys=True)
+
+        self.assertEqual(before, after)
+        self.assertEqual(statuses[".codex/artifact-templates/task-matrix-plan.md"]["class"], "artifact_templates")
+        self.assertEqual(statuses[".codex/artifact-templates/task-matrix-plan.md"]["owner"], "docs maintainer")
+        self.assertEqual(statuses["docs/superpowers/plans/2026-06-08-task-matrix-plan.md"]["class"], "docs_source_control")
+        self.assertEqual(statuses["docs/superpowers/plans/2026-06-08-task-matrix-plan.md"]["owner"], "docs maintainer")
+        self.assertEqual(statuses["docs/superpowers/plans/2026-06-08-task-matrix-plan.md"]["state"], "stale")
+        self.assertEqual(
+            statuses["docs/superpowers/plans/2026-06-08-task-matrix-plan.md"]["top_finding"],
+            "mtime_older_than_30_days",
+        )
+        self.assertEqual(packet["summary"]["no_secrets_status"], "passed")
+        self.assertNotIn("secret_like_literal", findings)
+        self.assertEqual(validate_system_file_hygiene_audit(packet), [])
 
     def test_clean_minimal_workspace_returns_ok_packet(self):
         with tempfile.TemporaryDirectory() as tmp:

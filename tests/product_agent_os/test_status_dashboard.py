@@ -109,6 +109,30 @@ class StatusDashboardTest(unittest.TestCase):
         self.assertNotIn("C:\\Users\\person", html)
         self.assertEqual(result["validation"]["errors"], [])
 
+    def test_renderer_displays_task_matrix_projection_deferred_decision_without_state_rows(self):
+        snapshot = _snapshot()
+        snapshot["projection_decisions"] = {
+            "task_matrix_state": {
+                "status": "deferred_in_b37",
+                "state_projection": "not_projected",
+                "source_policy": "task matrix state is not projected into status snapshot/dashboard in B37",
+                "future_projection_policy": (
+                    "future projection must be bounded read-only generated orientation evidence, "
+                    "never source of truth or completion evidence"
+                ),
+            }
+        }
+
+        result = render_status_dashboard(snapshot)
+        rendered = result["html"] + result["json"]
+
+        self.assertIn("Task matrix state projection", result["html"])
+        self.assertIn("deferred_in_b37", rendered)
+        self.assertIn("not_projected", rendered)
+        self.assertIn("bounded read-only generated orientation evidence", rendered)
+        self.assertNotIn("task-matrix row", result["html"].lower())
+        self.assertEqual(result["validation"]["errors"], [])
+
     def test_renderer_keeps_system_hygiene_html_when_embedded_json_is_trimmed(self):
         snapshot = _snapshot()
         snapshot["system_file_hygiene"] = _system_file_hygiene_snapshot()

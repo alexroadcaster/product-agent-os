@@ -39,6 +39,24 @@ Allowed task statuses:
 
 Validator target: detailed task blocks with one explicit field per line. Summary tables are planning indexes only and cannot replace the detailed task blocks.
 
+## Compatibility Policy
+
+- Old matrices remain historical evidence.
+- task_matrix_plan_v1 applies to new concrete task-plan files and optional backfilled rows only.
+- Validator should not retroactively fail historical summary tables unless explicitly targeted.
+- Summary tables remain planning indexes; detailed task blocks remain the validator target for new concrete task-plan files.
+
+## Plan Lifecycle Policy
+
+- Active concrete task files remain active while they drive current execution, unresolved acceptance criteria, open verification gates or owner handoff decisions.
+- Evidence moves to RUNLOG.md when a current slice records command output, failed checks, handoff status, residual risk or completion evidence.
+- History moves to docs/sources/*backlog*.md when a cycle closes and the detail is no longer needed in the active concrete task file.
+- Source-backed claims enter docs/sources/registry*.md when documentation adds or changes source-backed factual claims.
+- No secrets, raw chat, customer data, credentials, tokens or private keys belong in task plans, evidence packets or examples.
+- Avoid root PLAN.md bloat; keep durable sequencing compact and move detailed history to the owning evidence artifact.
+- No automatic deletion of task files, evidence rows or historical records.
+- No destructive cleanup without explicit owner approval and rollback notes.
+
 ## Detailed Task Block Template
 
 ### Task `<task_id>`

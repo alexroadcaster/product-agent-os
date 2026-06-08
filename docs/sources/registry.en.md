@@ -67,6 +67,18 @@ verification_status: "Backed by current-run verification: lifecycle/discovery/au
 ```
 
 ```yaml
+title: "Product-Agent OS Batch 37 S5 docs, projection, hygiene, lifecycle and closure"
+url: "docs/product-agent-os/architecture.md; docs/product-agent-os/architecture.en.md; plugins/product-agent-os/README.md; docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; PLAN.md; TEST.md; RUNLOG.md"
+type: "internal implementation planning evidence"
+source_status: "project-authored"
+checked_at: "2026-06-08"
+summary: "B37-S5 implements `T10-PLAN-M11..M12`, `T10-PLAN-M14..M16` and `T10-PLAN-M19` for docs/source closure, compatibility policy, status/dashboard projection deferral, hygiene ownership, lifecycle cleanup and Batch 37 closure."
+relevance: "Records that `task-matrix-plan.md` is a staged planning artifact, not source truth, execution evidence, readiness evidence or release approval; keeps historical matrices readable; defers dashboard projection unless separately implemented; and routes lifecycle evidence to RUNLOG, Track 10 backlog and source registry instead of root PLAN bloat."
+trust_level: "high"
+verification_status: "Backed by current-run verification: RED docs contract first failed on missing S5 markers; focused integration tests ran 174 tests with OK; full unittest ran 841 tests with OK; fixture eval exited 0 with renderer_file_count 195 and task_matrix_projection_deferred_in_b37 true; transcript eval exited 0 with 19 sessions and 0 failures; Codex compatibility returned status compatible; docs check passed; git diff hygiene exited 0. Strict MkDocs was not run because S5 did not change MkDocs navigation, Mermaid diagrams, Markdown extensions, MkDocs config, localized nav, search, sitemap or generated site evidence. B37-S5 does not activate hooks, recurring automation, MCP, Agents SDK runner, live server/browser automation, provider/live external model/API endpoints, canonical graph mutation or git stage/commit/push/PR."
+```
+
+```yaml
 title: "Codex web / cloud"
 url: "https://developers.openai.com/codex/cloud"
 type: "documentation"

@@ -17,6 +17,15 @@ MAX_PROJECT_GRAPH_REFS = 4
 MAX_PROJECT_GRAPH_GAPS = 5
 MAX_PROJECT_GRAPH_UNSUPPORTED_LANGUAGES = 8
 MAX_SYSTEM_FILE_STATUSES = 50
+TASK_MATRIX_PROJECTION_DECISION = {
+    "status": "deferred_in_b37",
+    "state_projection": "not_projected",
+    "source_policy": "task matrix state is not projected into status snapshot/dashboard in B37",
+    "future_projection_policy": (
+        "future projection must be bounded read-only generated orientation evidence, "
+        "never source of truth or completion evidence"
+    ),
+}
 
 
 def build_status_snapshot(
@@ -71,6 +80,9 @@ def build_status_snapshot(
         "project_graph_summary": _project_graph_summary(project_graph_status),
         "agent_skill_metrics_loop": _agent_skill_metrics_loop_summary(route, discovery),
         "system_file_hygiene": _system_file_hygiene_summary(system_file_hygiene_audit),
+        "projection_decisions": {
+            "task_matrix_state": dict(TASK_MATRIX_PROJECTION_DECISION),
+        },
         "question_ledger_summary": (
             question_ledger.get("summary") if isinstance(question_ledger, dict) and isinstance(question_ledger.get("summary"), dict) else {}
         ),

@@ -60,6 +60,20 @@ Planning control governance fields:
 - `no_agents_sdk_runner`
 - `no_external_writes`
 
+Compatibility and plan lifecycle fields:
+
+- `compatibility_policy`
+- `old_matrices_remain_historical_evidence`
+- `task_matrix_plan_v1_scope`
+- `historical_summary_table_validator_target`
+- `plan_lifecycle_policy`
+- `active_concrete_task_file_status`
+- `runlog_evidence_destination`
+- `source_backlog_history_destination`
+- `source_registry_claim_destination`
+- `no_automatic_deletion`
+- `no_destructive_cleanup`
+
 Live/provider/mutation handoff fields for Batch 31-style routing:
 
 - `project_graph_live_audit_log`
@@ -109,3 +123,5 @@ Rules:
 - Do not advance live/provider/mutation work when audit evidence is missing, security/privacy negative cases are unverified, degraded graph-only mode is hidden, ownership or verification evidence is missing, or `provider_call_allowed` / `external_call_performed` would be true without explicit approval.
 - Planning control governance: hard gates live in validator/tests/skills, hooks are reminder-only unless approved, agents own file/subsystem boundaries, docs update path assigned, and closure cannot claim readiness from hook reminders alone.
 - Record no hook activation, no automation activation, no MCP activation, no Agents SDK runner, and no external writes unless an explicit approval packet changes the boundary.
+- Compatibility policy: old matrices remain historical evidence. task_matrix_plan_v1 applies to new concrete task-plan files and optional backfilled rows only. Validator should not retroactively fail historical summary tables unless explicitly targeted.
+- Plan lifecycle policy: active concrete task files remain active while they drive current execution, unresolved acceptance criteria, open verification gates or owner handoff decisions. Evidence moves to RUNLOG.md; history moves to docs/sources/*backlog*.md; source-backed claims enter docs/sources/registry*.md. No secrets, raw chat, customer data, credentials, tokens or private keys belong in handoff packets, task rows or examples. Avoid root PLAN.md bloat by keeping detailed history in the owning evidence artifact. No automatic deletion of task files, evidence rows or historical records. No destructive cleanup without explicit owner approval and rollback notes.

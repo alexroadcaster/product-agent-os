@@ -2127,6 +2127,7 @@ def _expected_checks(
         checks["task_matrix_planning_control_governance_present"] = (
             _task_matrix_planning_control_governance_present()
         )
+        checks["task_matrix_projection_deferred_in_b37"] = _task_matrix_projection_deferred_in_b37()
         checks["docs_tooling_selector_contract_present"] = _docs_tooling_selector_contract_present()
         checks["conditional_readiness_gates_contract_present"] = (
             _conditional_readiness_gates_contract_present()
@@ -7791,6 +7792,42 @@ def _task_matrix_planning_control_governance_present() -> bool:
         "no external writes",
     }
     return terms.issubset(set(_present_terms(payload, terms)))
+
+
+def _task_matrix_projection_deferred_in_b37() -> bool:
+    snapshot = build_status_snapshot(
+        runtime_result={
+            "status": "route_ready",
+            "route_packet": {
+                "task_matrix_state": {
+                    "tasks": [
+                        {
+                            "id": "T10-PLAN-M15",
+                            "status": "matrix-projected-status",
+                            "completion_evidence": "matrix-completion-evidence",
+                        }
+                    ]
+                }
+            },
+        },
+        discovery_result={"task_matrix_state": {"raw": "matrix-discovery-state"}},
+        generated_at="2026-06-08T00:00:00+00:00",
+    )
+    rendered = render_status_dashboard(snapshot)
+    decision = snapshot.get("projection_decisions", {}).get("task_matrix_state", {})
+    serialized = json.dumps({"snapshot": snapshot, "dashboard": rendered}, sort_keys=True)
+    return (
+        decision.get("status") == "deferred_in_b37"
+        and decision.get("state_projection") == "not_projected"
+        and "not projected into status snapshot/dashboard in B37" in decision.get("source_policy", "")
+        and "bounded read-only generated orientation evidence" in decision.get("future_projection_policy", "")
+        and rendered.get("validation", {}).get("ok") is True
+        and "Task matrix state projection" in rendered.get("html", "")
+        and "T10-PLAN-M15" not in serialized
+        and "matrix-projected-status" not in serialized
+        and "matrix-completion-evidence" not in serialized
+        and "matrix-discovery-state" not in serialized
+    )
 
 
 def _present_terms(payload: str, terms: set[str]) -> list[str]:

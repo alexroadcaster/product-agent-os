@@ -98,6 +98,8 @@ Plans are cleaned by moving detail to the correct owning artifact, not by losing
 | `docs/sources/registry.md` | Source-backed claims and historical evidence pointers | Does not accept unsupported claims |
 | Status projection | Read-only operational status | Does not replace the plan file, tests or source registry |
 
+`task-matrix-plan.md` is a staged planning artifact. Its presence can guide planning, handoffs and validation, but it is not source truth, execution evidence, verification evidence, dashboard readiness or release approval by itself.
+
 The methodology connection stays practical: Scrum and Kanban provide sequencing and WIP discipline, ADR records architecture decisions and non-goals, test-driven development defines verification gates, docs-as-code requires output artifacts and registry updates, and eval-driven AI work adds baseline, rubric, threshold and residual quality risk.
 
 ## Route Packet

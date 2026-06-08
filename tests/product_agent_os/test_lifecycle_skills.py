@@ -7,6 +7,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 SCRIPTS = ROOT / "plugins" / "product-agent-os" / "scripts"
 SKILLS = ROOT / "plugins" / "product-agent-os" / "skills"
+ARTIFACT_TEMPLATES = (
+    ROOT / "plugins" / "product-agent-os" / "assets" / "templates" / "artifact-templates"
+)
 sys.path.insert(0, str(SCRIPTS))
 
 from product_agent_os.contracts import LIFECYCLE_STATES  # noqa: E402
@@ -409,6 +412,63 @@ class LifecycleSkillsTest(unittest.TestCase):
             "small mechanical work",
         ]:
             self.assertIn(expected, planner)
+
+    def test_task_matrix_plan_compatibility_policy_preserves_historical_evidence(self):
+        planner = self._skill_text("implementation-planner").lower()
+        handoff_contract = (SKILLS / "references" / "handoff-contract.md").read_text(
+            encoding="utf-8"
+        ).lower()
+        template = (ARTIFACT_TEMPLATES / "task-matrix-plan.md").read_text(
+            encoding="utf-8"
+        ).lower()
+
+        shared_terms = [
+            "compatibility policy",
+            "old matrices remain historical evidence",
+            "task_matrix_plan_v1 applies to new concrete task-plan files",
+            "optional backfilled rows",
+            "validator should not retroactively fail historical summary tables",
+            "unless explicitly targeted",
+        ]
+
+        for name, text in {
+            "implementation-planner": planner,
+            "handoff-contract": handoff_contract,
+            "task-matrix-plan": template,
+        }.items():
+            with self.subTest(name=name):
+                for expected in shared_terms:
+                    self.assertIn(expected, text)
+
+    def test_plan_lifecycle_policy_routes_active_evidence_history_and_registry(self):
+        planner = self._skill_text("implementation-planner").lower()
+        handoff_contract = (SKILLS / "references" / "handoff-contract.md").read_text(
+            encoding="utf-8"
+        ).lower()
+        template = (ARTIFACT_TEMPLATES / "task-matrix-plan.md").read_text(
+            encoding="utf-8"
+        ).lower()
+
+        shared_terms = [
+            "plan lifecycle policy",
+            "active concrete task files remain active",
+            "evidence moves to runlog.md",
+            "history moves to docs/sources/*backlog*.md",
+            "source-backed claims enter docs/sources/registry*.md",
+            "no secrets, raw chat, customer data",
+            "root plan.md bloat",
+            "no automatic deletion",
+            "no destructive cleanup",
+        ]
+
+        for name, text in {
+            "implementation-planner": planner,
+            "handoff-contract": handoff_contract,
+            "task-matrix-plan": template,
+        }.items():
+            with self.subTest(name=name):
+                for expected in shared_terms:
+                    self.assertIn(expected, text)
 
     def test_agent_team_designer_maps_task_rows_to_fresh_context_packets(self):
         agent_team = self._skill_text("agent-team-designer").lower()

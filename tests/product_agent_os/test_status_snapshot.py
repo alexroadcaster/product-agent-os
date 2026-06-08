@@ -395,6 +395,46 @@ class StatusSnapshotTest(unittest.TestCase):
         self.assertNotIn("C:\\Users\\person", serialized)
         self.assertNotIn("private", serialized)
 
+    def test_snapshot_records_task_matrix_projection_deferred_decision_without_projecting_state(self):
+        runtime_result = {
+            "status": "route_ready",
+            "workspace": "C:\\Users\\person\\task-matrix-project",
+            "route_packet": {
+                "task_matrix_state": {
+                    "tasks": [
+                        {
+                            "id": "T10-PLAN-M15",
+                            "status": "matrix-projected-status",
+                            "completion_evidence": "matrix-completion-evidence",
+                        }
+                    ]
+                }
+            },
+        }
+
+        snapshot = build_status_snapshot(
+            runtime_result=runtime_result,
+            discovery_result={"task_matrix_state": {"raw": "matrix-discovery-state"}},
+            generated_at="2026-06-08T00:00:00+00:00",
+        )
+        serialized = json.dumps(snapshot, sort_keys=True)
+        decision = snapshot["projection_decisions"]["task_matrix_state"]
+
+        self.assertEqual(decision["status"], "deferred_in_b37")
+        self.assertEqual(decision["state_projection"], "not_projected")
+        self.assertEqual(
+            decision["source_policy"],
+            "task matrix state is not projected into status snapshot/dashboard in B37",
+        )
+        self.assertEqual(
+            decision["future_projection_policy"],
+            "future projection must be bounded read-only generated orientation evidence, never source of truth or completion evidence",
+        )
+        self.assertNotIn("T10-PLAN-M15", serialized)
+        self.assertNotIn("matrix-projected-status", serialized)
+        self.assertNotIn("matrix-completion-evidence", serialized)
+        self.assertNotIn("matrix-discovery-state", serialized)
+
     def _methodology_packet(self, *, status="present_unverified"):
         return {
             "safe_next_action": "Stage approval-record.md before external mutation.",

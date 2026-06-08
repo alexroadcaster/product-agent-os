@@ -237,6 +237,7 @@ SYSTEM_FILE_CLASSES: tuple[SystemFileClass, ...] = (
             "docs/sources/*approval*.md",
             "docs/sources/*evidence*.md",
             "docs/insights/*.md",
+            "docs/superpowers/plans/*task-matrix*.md",
             "docs/playbooks/*.md",
             "docs/product-agent/**/*.md",
             "docs/product-agent-os/**/*.md",

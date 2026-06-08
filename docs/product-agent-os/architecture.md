@@ -89,6 +89,8 @@ Plan file создается, когда работа требует staged deli
 
 Связь с методологиями остается практической: Scrum и Kanban дают sequencing и WIP discipline, ADR фиксирует architecture decisions и non-goals, test-driven development задает verification gates, docs-as-code требует обновления output artifacts и registry, eval-driven AI work добавляет baseline, rubric, threshold и residual quality risk.
 
+`task-matrix-plan.md` -- staged artifact для планирования. Его наличие помогает вести planning, handoff и validation, но само по себе не является source of truth, execution evidence, verification evidence, dashboard readiness или release approval.
+
 ## Graph And Live Boundary
 
 Generated graph и cockpit surfaces help readers understand topology, code flow и stale evidence. Они не become source of truth и they не authorize live systems.

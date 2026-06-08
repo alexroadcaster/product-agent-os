@@ -22,6 +22,10 @@ Project graph live/provider/mutation operability (`T10-LIVE-M23..M26`): route au
 
 Planning control governance: hard gates live in validator/tests/skills. Hooks are reminder-only unless approved, and closure cannot claim readiness from hook reminders alone. Require agents to own file/subsystem boundaries, keep docs update path assigned, and record no hook activation, no automation activation, no MCP activation, no Agents SDK runner, and no external writes unless a separate explicit approval packet changes the boundary.
 
+Compatibility policy: old matrices remain historical evidence. task_matrix_plan_v1 applies to new concrete task-plan files and optional backfilled rows only. Validator should not retroactively fail historical summary tables unless explicitly targeted.
+
+Plan lifecycle policy: active concrete task files remain active while they drive current execution, unresolved acceptance criteria, open verification gates or owner handoff decisions. Evidence moves to RUNLOG.md for current slice outcomes, command output, failed checks, handoff status, residual risk or completion evidence. History moves to docs/sources/*backlog*.md after cycle closure when detail is no longer active. Source-backed claims enter docs/sources/registry*.md when documentation adds or changes source-backed factual claims. No secrets, raw chat, customer data, credentials, tokens or private keys belong in plans, evidence packets or examples. Avoid root PLAN.md bloat; keep durable sequencing compact and move detailed history to the owning evidence artifact. No automatic deletion of task files, evidence rows or historical records. No destructive cleanup without explicit owner approval and rollback notes.
+
 
 Do not store secrets, tokens, credentials, private keys, private customer data, or raw private chat logs.
 Do not create active automation, recurring automation, hooks, workflow files, project templates, MCP servers, or an Agents SDK runner.
@@ -82,6 +86,8 @@ Read shared references when needed: [Lifecycle states](../references/lifecycle-s
 34. Use `task-matrix-plan.md` when specs/ADRs/standards/handoffs/risky multi-slice work applies; map methodology gates into task fields and map methodology gates into artifacts so every task row names owner, files, dependency status, expected evidence, docs update path, stop conditions, and readiness gate status.
 35. Plans remain staged: propose `task-matrix-plan.md`, `PLAN.md`, `TEST.md`, and related artifacts as files proposed unless the user explicitly approves writes to those artifacts.
 36. Allow an explicit lightweight exception only for small mechanical work when the reduced task still names exact files, exact commands or an explicit command gap, rollback, evidence owner, docs impact, and why the full task matrix is not useful.
+37. Apply the compatibility policy before validator routing: old matrices remain historical evidence, task_matrix_plan_v1 applies to new concrete task-plan files and optional backfilled rows only, and validator should not retroactively fail historical summary tables unless explicitly targeted.
+38. Apply the plan lifecycle policy before completion claims: active concrete task files remain active until their execution, acceptance, verification and handoff decisions close; evidence moves to RUNLOG.md; history moves to docs/sources/*backlog*.md; source-backed claims enter docs/sources/registry*.md; no secrets, raw chat, customer data, root PLAN.md bloat, automatic deletion or destructive cleanup.
 
 ## Outputs
 

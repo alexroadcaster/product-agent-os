@@ -277,6 +277,8 @@ def _sections(snapshot: dict[str, Any]) -> str:
     staged = _dict(snapshot.get("staged_artifacts"))
     manifest = _dict(snapshot.get("manifest_digests"))
     hygiene = _dict(snapshot.get("system_file_hygiene"))
+    projection_decisions = _dict(snapshot.get("projection_decisions"))
+    task_matrix_projection = _dict(projection_decisions.get("task_matrix_state"))
 
     sections = [
         _section(
@@ -351,6 +353,8 @@ def _sections(snapshot: dict[str, Any]) -> str:
                 ("Dashboard source", dashboard_policy.get("source_of_truth")),
                 ("Dashboard write policy", dashboard_policy.get("write_policy")),
                 ("Success claim policy", dashboard_policy.get("success_claim_policy")),
+                ("Task matrix state projection", task_matrix_projection.get("status")),
+                ("Task matrix projection policy", task_matrix_projection.get("future_projection_policy")),
             ],
         ),
     ]

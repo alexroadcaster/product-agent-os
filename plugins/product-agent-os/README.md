@@ -107,7 +107,7 @@ Codex can implement large tasks, but real product work fails when the operating 
 
 The checked-in plugin source now includes the Task Matrix Plan template under `assets/templates/artifact-templates/task-matrix-plan.md`. The renderer registers it as `artifact-task-matrix-plan` and stages it for target projects at `.codex/artifact-templates/task-matrix-plan.md`.
 
-This is a packaged staged artifact, not an active workflow. The current session skills are loaded separately from the packaged plugin source, so a Codex App session can have callable skills before a refreshed plugin cache exposes the newly checked-in template to installed-plugin consumers.
+This is a packaged staged artifact, not source truth, execution evidence or an active workflow. The presence of `task-matrix-plan.md` can route planning and handoff work, but it cannot prove implementation completion, readiness, verification success, dashboard status or release approval by itself. The current session skills are loaded separately from the packaged plugin source, so a Codex App session can have callable skills before a refreshed plugin cache exposes the newly checked-in template to installed-plugin consumers.
 
 ### Lifecycle Skills
 
