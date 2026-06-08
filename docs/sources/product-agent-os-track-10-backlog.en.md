@@ -147,7 +147,7 @@ This backlog tracks deferred and follow-up work for Track 10 `Task 23: Guided Qu
 | `done_through_m38` | `T10-LIVE-M38` actual browser automation smoke | The owner selected `T10-LIVE-M38`, mapped to `actual_browser_automation_smoke`. Current run evidence records `browser-automation-smoke.json` with `status: passed`, Playwright Chromium, a short-lived local server bound to `127.0.0.1`, desktop/mobile screenshots, `desktop.png`, `mobile.png`, `console_errors: 0`, `network_failures: 0`, `mobile_overflow: false`, generated-view labels, source-boundary labels, local-only network and `server_shutdown_complete: true`. It performs no provider/live external model/API calls, performs no canonical graph mutation and performs no git stage/commit/push/PR. |
 | `done_through_m39` | `T10-LIVE-M39` Codex session provider pilot | The owner selected `T10-LIVE-M39`, mapped to `approved_provider_api_pilot`, and clarified that the pilot must use the current Codex App session rather than `OPENAI_API_KEY`. Current run evidence records `provider-call-evidence.json` and `provider-eval-report.json` with `status: passed`, provider surface `codex_user_session`, `OPENAI_API_KEY used: false`, direct API call from workspace shell: false, `provider_secret_stored: false`, env-file write false, no canonical graph mutation and no git stage/commit/push/PR. |
 | `done_through_m40` | `T10-LIVE-M40` canonical mutation pilot | The owner selected Batch `T10-LIVE-M40..M41`; M40 mapped to `approved_canonical_mutation_pilot`. Current run evidence records `canonical-mutation-run.json`, `graph-mutation-journal.jsonl` and `rollback-proof.json` with `status: passed`, target scope `plugins/product-agent-os/scripts`, `stage_root_only`, `canonical_graph_source_mutated: false`, `operation_count: 1`, `journal_entry_count: 1`, `rollback_restores_previous_graph_digest: true`, no provider/live external model/API calls and no git stage/commit/push/PR. It performs no canonical graph source mutation and performs no git stage/commit/push/PR. |
-| `owner_closed_no_op_git_release_pr` | `T10-LIVE-M41` git release/PR action | M41 mapped to `explicit_git_release_pr_action`, but the owner later selected no git release/PR execution and closed M41 as no-op. Preflight evidence remains historical: `git-release-pr-evidence.md` and `git-release-pr-packet.json` record `git_stage_commit_push_pr_performed: false`, current branch `main`, `dirty_file_count: 15` and `missing_required_fields` as a `historical_preflight_snapshot`. T10-LIVE-M41 post-B38 audit records that `dirty_file_count: 15 is historical Batch 35 evidence, not current release readiness`; B37/B38/B38-S1 do not close M41, while the owner decision does. `future_git_write_requires_fresh_preflight: true`; no branch, stage, commit, push or PR was performed. |
+| `owner_closed_no_op_git_release_pr` | `T10-LIVE-M41` git release/PR action | M41 mapped to `explicit_git_release_pr_action`, but the owner later selected no git release/PR execution and closed M41 as no-op. Preflight evidence remains historical: `git-release-pr-evidence.md` and `git-release-pr-packet.json` record `git_stage_commit_push_pr_performed: false`, current branch `main`, `dirty_file_count: 15` and `missing_required_fields` as a `historical_preflight_snapshot`. T10-LIVE-M41 post-B38 audit records that `dirty_file_count: 15 is historical Batch 35 evidence, not current release readiness`; B37/B38/B38-S1 did not themselves close M41, while the later owner decision did. `future_git_write_requires_fresh_preflight: true`; no branch, stage, commit, push or PR was performed. |
 
 ## RUNLOG Compaction And Evidence Ownership
 
@@ -189,10 +189,11 @@ This backlog tracks deferred and follow-up work for Track 10 `Task 23: Guided Qu
 
 B38-S1 Release gate and package metadata covers `B38-PROD-M01..M03` as the pre-install gate before any plugin install, cache refresh, real-project pilot, release, PR or publication action.
 
-- T10-LIVE-M41 status: `blocked_pending_explicit_git_release_fields`.
-- release_fields_deferral_status: `not_deferred_without_owner_fields`.
+- T10-LIVE-M41 status: `owner_closed_no_op_git_release_pr`.
+- historical_preflight_status: `blocked_pending_explicit_git_release_fields`.
+- release_fields_deferral_status: `not_required_after_owner_no_op_closure`.
 - missing release fields remain: release branch or push target, commit message, PR base branch, PR title and intent, and explicit branch creation/current-branch push policy.
-- T10-LIVE-M41 post-B38 audit: `dirty_file_count: 15 is historical Batch 35 evidence, not current release readiness`; it is a `historical_preflight_snapshot`. B37/B38/B38-S1 do not close M41, and a fresh preflight is required before any git write.
+- T10-LIVE-M41 post-B38 audit: `dirty_file_count: 15 is historical Batch 35 evidence, not current release readiness`; it is a `historical_preflight_snapshot`. B37/B38/B38-S1 did not themselves close M41; the later owner decision closed it as no-op, and a fresh preflight is required before any git write.
 - git_stage_commit_push_pr_performed: false.
 - tracked_plugin_file_count: 586.
 - skill_count: 11.
@@ -211,7 +212,7 @@ B38-S1 Release gate and package metadata covers `B38-PROD-M01..M03` as the pre-i
 
 | Status | Item | Notes |
 | --- | --- | --- |
-| `b38_s1_release_gate_package_metadata` | B38-S1 `B38-PROD-M01..M03` | M01 stays blocked without release fields because the owner did not supply git release/PR fields and did not explicitly defer M41; M02 freezes the checked-in package source with 586 tracked plugin files, 11 bundled skills and package digest `7d5a7634d1223f72ccdd1edcd24fddeb8bbdcc38d36d73ab1d002f352b06dcbb`; M03 records a local-only metadata exception because `example.invalid` trust fields remain in `plugin.json`, so public/team release metadata is not finalized. Verification evidence: `git status --short` was clean before edits, `git ls-files plugins/product-agent-os`, ignored-cache check showing only `__pycache__`, digest calculation, manifest review, `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returning `status: compatible`, focused docs contract 71 tests `OK`, docs structure check `OK` and diff hygiene `0`. |
+| `b38_s1_release_gate_package_metadata` | B38-S1 `B38-PROD-M01..M03` | M01 is owner-closed as no-op after historical missing release fields; future git write requires fresh preflight and exact approval. M02 freezes the checked-in package source with 586 tracked plugin files, 11 bundled skills and package digest `7d5a7634d1223f72ccdd1edcd24fddeb8bbdcc38d36d73ab1d002f352b06dcbb`; M03 records a local-only metadata exception because `example.invalid` trust fields remain in `plugin.json`, so public/team release metadata is not finalized. Verification evidence: `git status --short` was clean before edits, `git ls-files plugins/product-agent-os`, ignored-cache check showing only `__pycache__`, digest calculation, manifest review, `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returning `status: compatible`, focused docs contract 71 tests `OK`, docs structure check `OK` and diff hygiene `0`. |
 
 ## Batch 38 S2 Verification And Install Smoke Addendum
 
@@ -221,19 +222,19 @@ B38-S2 Verification and install smoke covers `B38-PROD-M04..M05` after the owner
 - git_stage_commit_push_pr_performed: false.
 - future_git_write_requires_fresh_preflight: true.
 - no_git_stage_commit_push_pr.
-- no_plugin_cache_mutation_performed.
+- plugin_cache_refresh_completed_from_prepared_stage.
 - no external publication, live runtime, browser automation, provider/live external model/API call or canonical graph mutation was performed.
 
 agent_team_design_packet_present:
 
 - roles_have_disjoint_ownership: Tester owns `B38-PROD-M04` verification evidence; Release Operator owns `B38-PROD-M05` install/cache boundary; Reviewer owns stale-cache risk review; Docs Maintainer owns source/control-plane sync.
 - handoff_packet_fields_present: sources/context used, assumptions, files proposed, verification evidence, open risks, stop reason and recommended next role.
-- agent_skill_stop_conditions_present: stop on failed verification, stale cache mismatch, missing cache mutation approval, plugin-cache write outside approved target, external publication request or git write request.
+- agent_skill_stop_conditions_present: stop on failed verification, cache refresh mismatch, missing cache mutation approval, plugin-cache write outside approved target, external publication request or git write request.
 
 | Status | Item | Notes |
 | --- | --- | --- |
 | `implemented` | `B38-PROD-M04` full pre-install verification | Current run evidence: `full_unittest_count: 846`, full unittest `OK`, `fixture_eval_exit_code: 0`, `transcript_eval_session_count: 19`, `transcript_eval_failure_count: 0`, `codex_compatibility_status: compatible`, `docs_check_status: ok`, `diff_hygiene_exit_code: 0`. Strict MkDocs was not routed because no MkDocs navigation, Mermaid, Markdown extension, localized nav, search/sitemap or generated `site/` evidence changed before verification. |
-| `blocked_stale_plugin_cache_pending_refresh_approval` | `B38-PROD-M05` read-only install/cache smoke | `plugin_install_smoke_status: read_only_inspection_completed_stale_cache_detected`; `plugin_cache_refresh_status: blocked_pending_explicit_cache_mutation_approval`; installed cache scope `local-product-agent-plugins/product-agent-os/0.1.0`; manifest name/version match `product-agent-os` / `0.1.0`; `.mcp.json` is visible; `visible_cache_skill_count: 10` vs `checked_in_skill_count: 11`; `missing_cache_skill: docs-maintainer`; `visible_cache_script_file_count: 32` vs `checked_in_script_file_count: 84`; `visible_cache_template_file_count: 34` vs `checked_in_template_file_count: 202`; checked-in package source remains 586 tracked files, 11 bundled skills and package digest `7d5a7634d1223f72ccdd1edcd24fddeb8bbdcc38d36d73ab1d002f352b06dcbb`. Cache refresh or install mutation requires explicit target, rollback/cleanup path and cache mutation approval. |
+| `implemented` | `B38-PROD-M05` read-only install/cache smoke, sandbox-blocked attempt and owner-run local refresh | `plugin_install_smoke_status: read_only_inspection_completed_stale_cache_detected`; initial `plugin_cache_refresh_status: blocked_pending_explicit_cache_mutation_approval`; installed cache scope `local-product-agent-plugins/product-agent-os/0.1.0`; manifest name/version match `product-agent-os` / `0.1.0`; `.mcp.json` is visible; historical stale inspection found `visible_cache_skill_count: 10` vs `checked_in_skill_count: 11`, `missing_cache_skill: docs-maintainer`, `visible_cache_script_file_count: 32` vs `checked_in_script_file_count: 84` and `visible_cache_template_file_count: 34` vs `checked_in_template_file_count: 202`; checked-in package source remains 586 tracked files, 11 bundled skills and package digest `7d5a7634d1223f72ccdd1edcd24fddeb8bbdcc38d36d73ab1d002f352b06dcbb`. `cache_refresh_approval_received: true`; `cache_backup_path: tmp/product-agent-os-cache-backup-20260608-162108`; `cache_stage_path: tmp/product-agent-os-cache-stage-20260608-162108`; `stage_tracked_source_file_count: 586`; target cache write failed inside the Codex sandbox with `plugin_cache_refresh_attempt_status: blocked_sandbox_cache_write_denied_after_backup_stage`; owner local PowerShell refresh returned `local_cache_refresh_result: REFRESH_OK`; `local_cache_backup_path: tmp/product-agent-os-cache-backup-local-20260608-180210`; `local_cache_moved_aside_target: local-product-agent-plugins/product-agent-os/0.1.0.pre-refresh-20260608-180210`; `plugin_cache_refresh_final_status: completed_local_cache_refresh_from_prepared_stage`; `target_cache_files_after_refresh: 586`; `target_cache_skill_count_after_refresh: 11`; `target_cache_docs_maintainer_present_after_refresh: true`; `target_cache_still_stale: false`; `plugin_cache_refresh_completed`. |
 
 ## Batch 38 S3 Pilot Design Addendum
 
@@ -290,7 +291,7 @@ B38-S3 Pilot design covers `B38-PROD-M06..M09` as a real-project pilot design sl
 - live_server_started: false.
 - canonical_graph_mutation: not_performed.
 - git_stage_commit_push_pr_performed: false.
-- no_plugin_cache_mutation_performed.
+- no_plugin_cache_mutation_performed_during_b38_s3_design_run.
 - no_active_automation_live_server_provider_gateway_external_writer.
 - cleanup_scope: stage_root_generated_b38_s3_pilot_artifacts_only.
 - pilot_execution_status: design_only_not_run.

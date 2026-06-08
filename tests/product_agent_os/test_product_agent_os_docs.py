@@ -175,7 +175,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         runlog = RUNLOG.read_text(encoding="utf-8")
 
         self.assertLess(len(runlog), 50000)
-        self.assertIn("track10_task26_batch35_closed_through_m41_owner_closed_no_op_git_release_pr_b38_s2_m05_blocked_stale_cache_b38_s3_m09_design_only_no_real_project_execution", runlog)
+        self.assertIn("track10_task26_batch35_closed_through_m41_owner_closed_no_op_git_release_pr_b38_s2_m05_cache_refresh_completed_b38_s3_m09_design_only_no_real_project_execution", runlog)
         self.assertIn("Task 26 Batch 35 `T10-LIVE-M41`", runlog)
         self.assertIn("owner_closed_no_op_git_release_pr", runlog)
         self.assertIn("blocked_pending_explicit_cache_mutation_approval", runlog)
@@ -923,8 +923,9 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         for expected in [
             "B38-S1 Release gate and package metadata",
             "B38-PROD-M01..M03",
-            "T10-LIVE-M41 status: `blocked_pending_explicit_git_release_fields`",
-            "release_fields_deferral_status: `not_deferred_without_owner_fields`",
+            "T10-LIVE-M41 status: `owner_closed_no_op_git_release_pr`",
+            "historical_preflight_status: `blocked_pending_explicit_git_release_fields`",
+            "release_fields_deferral_status: `not_required_after_owner_no_op_closure`",
             "git_stage_commit_push_pr_performed: false",
             "tracked_plugin_file_count: 586",
             "skill_count: 11",
@@ -989,7 +990,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
 
         for expected in [
             "`b38_s1_release_gate_package_metadata`",
-            "M01 stays blocked without release fields",
+            "M01 is owner-closed as no-op after historical missing release fields",
             "M02 freezes the checked-in package source",
             "M03 records a local-only metadata exception",
         ]:
@@ -1007,7 +1008,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
 
         for expected in [
             "Batch 38 S1 release gate/package metadata",
-            "M01 remains blocked pending explicit git release fields",
+            "M01 is owner-closed as `owner_closed_no_op_git_release_pr`",
             "package source digest `7d5a7634d1223f72ccdd1edcd24fddeb8bbdcc38d36d73ab1d002f352b06dcbb`",
             "local-only metadata exception",
         ]:
@@ -1029,7 +1030,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "T10-LIVE-M41 post-B38 audit",
             "historical_preflight_snapshot",
             "dirty_file_count: 15 is historical Batch 35 evidence, not current release readiness",
-            "B37/B38/B38-S1 do not close M41",
+            "B37/B38/B38-S1 did not themselves close M41",
             "fresh preflight is required before any git write",
         ]:
             with self.subTest(source_packet=expected):
@@ -1051,7 +1052,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "M41 post-B38 audit",
             "historical_preflight_snapshot",
             "fresh git status/unrelated-change preflight",
-            "B37/B38/B38-S1 do not close M41",
+            "B37/B38/B38-S1 did not themselves close M41",
         ]:
             with self.subTest(control_plane=expected):
                 self.assertIn(expected, runlog)
@@ -1103,7 +1104,21 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "checked_in_script_file_count: 84",
             "visible_cache_template_file_count: 34",
             "checked_in_template_file_count: 202",
-            "no_plugin_cache_mutation_performed",
+            "cache_refresh_approval_received",
+            "plugin_cache_refresh_attempt_status: blocked_sandbox_cache_write_denied_after_backup_stage",
+            "cache_backup_path",
+            "cache_stage_path",
+            "stage_tracked_source_file_count: 586",
+            "local_cache_refresh_result: REFRESH_OK",
+            "local_cache_backup_path: tmp/product-agent-os-cache-backup-local-20260608-180210",
+            "local_cache_moved_aside_target: local-product-agent-plugins/product-agent-os/0.1.0.pre-refresh-20260608-180210",
+            "plugin_cache_refresh_final_status: completed_local_cache_refresh_from_prepared_stage",
+            "target_cache_files_after_refresh: 586",
+            "target_cache_skill_count_after_refresh: 11",
+            "target_cache_docs_maintainer_present_after_refresh: true",
+            "target_cache_still_stale: false",
+            "plugin_cache_refresh_completed",
+            "plugin_cache_refresh_completed_from_prepared_stage",
             "no_git_stage_commit_push_pr",
             "agent_team_design_packet_present",
             "roles_have_disjoint_ownership",
@@ -1118,9 +1133,11 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "`B38-PROD-M04` | P0 | Run full pre-install verification.",
             "`B38-PROD-M05` | P0 | Refresh or install the new plugin version and prove no stale plugin cache is used.",
             "M04 `implemented`",
-            "M05 `blocked_stale_plugin_cache_pending_refresh_approval`",
+            "M05 `implemented`",
+            "blocked_sandbox_cache_write_denied_after_backup_stage",
+            "plugin_cache_refresh_final_status: completed_local_cache_refresh_from_prepared_stage",
             "B38-S2 `B38-PROD-M04..M05`",
-            "Next release/install/cache action: none until plugin-cache refresh target, rollback path and mutation approval are explicit.",
+            "Next release/install/cache action: no remaining M05 cache refresh action is required",
         ]:
             with self.subTest(plan=expected):
                 self.assertIn(expected, plan)
@@ -1134,7 +1151,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         self.assertEqual(1, len(m04_rows))
         self.assertEqual(1, len(m05_rows))
         self.assertIn("`implemented`", m04_rows[0])
-        self.assertIn("`blocked`", m05_rows[0])
+        self.assertIn("`implemented`", m05_rows[0])
         self.assertNotIn("`planned`; `pending_execution_timestamp`", m04_rows[0])
         self.assertNotIn("`planned`; `pending_execution_timestamp`", m05_rows[0])
 
@@ -1142,6 +1159,8 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "Product-Agent OS T10-LIVE-M41 owner no-op closure and B38-S2 verification/install smoke",
             "B38-S2 `B38-PROD-M04..M05`",
             "blocked_pending_explicit_cache_mutation_approval",
+            "blocked_sandbox_cache_write_denied_after_backup_stage",
+            "plugin_cache_refresh_final_status: completed_local_cache_refresh_from_prepared_stage",
             "trust_level: \"high\"",
         ]:
             with self.subTest(registry=expected):
@@ -1154,6 +1173,9 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "fixture eval exited `0`",
             "transcript eval exited `0` with 19 sessions and 0 failures",
             "plugin cache inspection found stale installed cache",
+            "plugin_cache_refresh_attempt_status: blocked_sandbox_cache_write_denied_after_backup_stage",
+            "local_cache_refresh_result: REFRESH_OK",
+            "target_cache_still_stale: false",
         ]:
             with self.subTest(test_plan=expected):
                 self.assertIn(expected, test_plan)
@@ -1168,7 +1190,11 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             with self.subTest(document=document_name):
                 self.assertIn("owner_closed_no_op_git_release_pr", document)
                 self.assertIn("B38-S2", document)
-                self.assertIn("blocked_pending_explicit_cache_mutation_approval", document)
+                self.assertIn("blocked_sandbox_cache_write_denied_after_backup_stage", document)
+                self.assertIn(
+                    "plugin_cache_refresh_final_status: completed_local_cache_refresh_from_prepared_stage",
+                    document,
+                )
 
     def test_batch38_s3_real_project_pilot_design_is_source_owned(self):
         plan = PLAN.read_text(encoding="utf-8")
