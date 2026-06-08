@@ -91,6 +91,18 @@ verification_status: "Backed by the Batch 38 docs contract, read-only agent audi
 ```
 
 ```yaml
+title: "Product-Agent OS Batch 38 S1 release gate and package metadata"
+url: "docs/sources/product-agent-os-track-10-backlog.md; docs/sources/product-agent-os-track-10-backlog.en.md; docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; PLAN.md; TEST.md; RUNLOG.md; plugins/product-agent-os/.codex-plugin/plugin.json"
+type: "internal release-gate and package-surface evidence"
+source_status: "project-authored"
+checked_at: "2026-06-08"
+summary: "B38-S1 `B38-PROD-M01..M03` records that `T10-LIVE-M41` remains blocked without release/PR fields, freezes the checked-in Product-Agent OS package source and records a local-only metadata exception for current `example.invalid` trust fields."
+relevance: "Separates package-source evidence from release approval. The package source digest is recorded as package_source_digest_sha256, ignored caches are excluded, Codex compatibility is current, the local-only exception is explicit, and public/team release metadata remains blocked until owner-approved trust fields replace local placeholders."
+trust_level: "high"
+verification_status: "Backed by the B38-S1 source packet in the Track 10 backlog, current `git status --short`, `git ls-files plugins/product-agent-os`, ignored-cache check, deterministic package digest, `.codex-plugin/plugin.json` review, `python plugins\\product-agent-os\\scripts\\validate_codex_compatibility.py`, focused docs contract 71 tests OK, docs structure check OK and diff hygiene exit 0. No plugin install, plugin-cache mutation, live runtime, browser automation, provider/live external model/API call, canonical graph mutation, git stage/commit/push/PR or external publication was performed."
+```
+
+```yaml
 title: "Codex web / cloud"
 url: "https://developers.openai.com/codex/cloud"
 type: "documentation"

@@ -904,6 +904,109 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             with self.subTest(rendered_site=expected):
                 self.assertIn(expected, rendered_registry)
 
+    def test_batch38_s1_release_gate_package_metadata_packet_is_source_owned(self):
+        packet = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        plan = PLAN.read_text(encoding="utf-8")
+        track10 = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        registry_en = SOURCE_REGISTRY_EN.read_text(encoding="utf-8")
+        test_plan = TEST.read_text(encoding="utf-8")
+        runlog = RUNLOG.read_text(encoding="utf-8")
+
+        for expected in [
+            "B38-S1 Release gate and package metadata",
+            "B38-PROD-M01..M03",
+            "T10-LIVE-M41 status: `blocked_pending_explicit_git_release_fields`",
+            "release_fields_deferral_status: `not_deferred_without_owner_fields`",
+            "git_stage_commit_push_pr_performed: false",
+            "tracked_plugin_file_count: 586",
+            "skill_count: 11",
+            "template_file_count: 202",
+            "script_file_count: 84",
+            "fixture_file_count: 266",
+            "package_source_digest_sha256: `7d5a7634d1223f72ccdd1edcd24fddeb8bbdcc38d36d73ab1d002f352b06dcbb`",
+            "ignored_cache_exclusions: `__pycache__ only`",
+            "metadata_release_candidate_status: `local_only_exception_recorded`",
+            "example.invalid trust fields remain blocked for public or team release",
+            "Codex compatibility status: `compatible`",
+            "No plugin install, plugin-cache mutation, live runtime, browser automation, provider call, canonical graph mutation or git write was performed.",
+        ]:
+            with self.subTest(packet=expected):
+                self.assertIn(expected, packet)
+
+        for expected in [
+            "`B38-PROD-M01` | P0 | Resolve or explicitly defer `T10-LIVE-M41` git release/PR gate.",
+            "`B38-PROD-M02` | P0 | Freeze install source and package surface.",
+            "`B38-PROD-M03` | P0 | Finalize public and organization-facing plugin metadata.",
+            "| `B38-PROD-M01` | P0 |",
+            "| `B38-PROD-M02` | P0 |",
+            "| `B38-PROD-M03` | P0 |",
+            "B38-S1 `B38-PROD-M01..M03`",
+            "M01 `blocked_pending_explicit_git_release_fields`",
+            "M02 `implemented`",
+            "M03 `accepted_gap`",
+        ]:
+            with self.subTest(plan=expected):
+                self.assertIn(expected, plan)
+
+        m01_rows = [
+            line for line in plan.splitlines() if line.startswith("| `B38-PROD-M01` |")
+        ]
+        m02_rows = [
+            line for line in plan.splitlines() if line.startswith("| `B38-PROD-M02` |")
+        ]
+        m03_rows = [
+            line for line in plan.splitlines() if line.startswith("| `B38-PROD-M03` |")
+        ]
+        self.assertEqual(1, len(m01_rows))
+        self.assertEqual(1, len(m02_rows))
+        self.assertEqual(1, len(m03_rows))
+        self.assertIn("`blocked`", m01_rows[0])
+        self.assertIn("`implemented`", m02_rows[0])
+        self.assertIn("`accepted_gap`", m03_rows[0])
+        self.assertNotIn("`planned`; `pending_execution_timestamp`", m01_rows[0])
+        self.assertNotIn("`planned`; `pending_execution_timestamp`", m02_rows[0])
+        self.assertNotIn("`planned`; `pending_execution_timestamp`", m03_rows[0])
+
+        for expected in [
+            "Product-Agent OS Batch 38 S1 release gate and package metadata",
+            "B38-S1 `B38-PROD-M01..M03`",
+            "package_source_digest_sha256",
+            "local-only exception",
+            'trust_level: "high"',
+            'verification_status: "Backed by the B38-S1 source packet',
+        ]:
+            with self.subTest(registry=expected):
+                self.assertIn(expected, registry)
+                self.assertIn(expected, registry_en)
+
+        for expected in [
+            "`b38_s1_release_gate_package_metadata`",
+            "M01 stays blocked without release fields",
+            "M02 freezes the checked-in package source",
+            "M03 records a local-only metadata exception",
+        ]:
+            with self.subTest(track10=expected):
+                self.assertIn(expected, track10)
+
+        for expected in [
+            "B38-S1 release gate/package metadata run",
+            "focused docs contract",
+            "Codex compatibility returned `status: compatible`",
+            "strict MkDocs was not run",
+        ]:
+            with self.subTest(test_plan=expected):
+                self.assertIn(expected, test_plan)
+
+        for expected in [
+            "Batch 38 S1 release gate/package metadata",
+            "M01 remains blocked pending explicit git release fields",
+            "package source digest `7d5a7634d1223f72ccdd1edcd24fddeb8bbdcc38d36d73ab1d002f352b06dcbb`",
+            "local-only metadata exception",
+        ]:
+            with self.subTest(runlog=expected):
+                self.assertIn(expected, runlog)
+
     def test_system_file_hygiene_audit_contract_is_documented_and_source_owned(self):
         documents = {
             "root_readme": ROOT_README.read_text(encoding="utf-8"),

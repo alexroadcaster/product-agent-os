@@ -185,6 +185,33 @@ This backlog tracks deferred and follow-up work for Track 10 `Task 23: Guided Qu
 | `done_through_s4` | B37-S4 `T10-PLAN-M07..M09`, `T10-PLAN-M20` skill routing, discovery signal and planning control | The owner approved executing B37-S4 with agents and skills. Worker agents implemented disjoint lifecycle/handoff/control-governance and discovery/audit/synthesis scopes. `implementation-planner` now routes specs/ADRs/standards/handoffs/risky multi-slice work to staged `task-matrix-plan.md` with methodology gate-to-task-field and gate-to-artifact mapping. `agent-team-designer`, `handoff-contract.md` and `agent-task-packet.md` map task rows to fresh-context handoffs with task row id, complete task context, owned/forbidden files, dependency status, expected evidence, docs update path, stop conditions, output schema and sequential fallback. Discovery/audit/synthesis treat `task-matrix-plan.md` as Codex-agentic planning evidence, classify `.codex/artifact-templates/task-matrix-plan.md` as `canonical_template`, keep detection `present_unverified`, and avoid completion/readiness claims from matrix presence alone. Behavioral evals, synthetic transcripts and fixture checks now include `task-matrix-agent-handoff-and-planning-control`, `task_matrix_planner_routing_contract_present`, `task_matrix_agent_handoff_contract_present`, `task_matrix_discovery_signal_contract_present` and `task_matrix_planning_control_governance_present`. Verification passed lifecycle/discovery/audit/synthesis tests with 176 tests `OK`, behavioral/transcript/fixture tests with 23 tests `OK`, full unittest with 835 tests `OK`, fixture eval exit `0` with `renderer_file_count: 195`, transcript eval with 19 sessions and 0 failures, Codex compatibility `status: compatible`, docs check and diff hygiene. B37-S4 does not activate hooks, recurring automation, MCP, Agents SDK runner, provider/live external model/API calls, canonical graph mutation, live server/browser automation or git stage/commit/push/PR. |
 | `done_through_s5` | B37-S5 `T10-PLAN-M11..M12`, `T10-PLAN-M14..M16`, `T10-PLAN-M19` docs/source closure, compatibility, projection, hygiene and lifecycle handoff | The owner scoped S5 to docs/source closure, compatibility policy, status/dashboard projection deferral, system-file hygiene ownership, lifecycle cleanup and final Batch 37 closure with agents and skills. Product-Agent OS docs, README, Track 10 backlog, registry and compact control-plane artifacts now record that `task-matrix-plan.md` is a staged planning artifact, not source truth, not execution evidence and not a completion/readiness signal by itself. Compatibility policy keeps historical Batch 34/35/36 matrices readable and applies the `task_matrix_plan_v1` validator only to new or explicitly targeted plan files. Status snapshot/dashboard record `deferred_in_b37` / `not_projected` decision metadata and do not project task rows or completion evidence. `.codex/artifact-templates/task-matrix-plan.md` stays under staged artifact-template ownership; concrete owner-approved task matrices are docs/source-owned artifacts. Lifecycle cleanup routes current-cycle decisions to `RUNLOG.md`, historical source-backed evidence to this backlog and claims to `docs/sources/registry.md`, without bloating root `PLAN.md`. Current-run verification passed focused integration tests with 174 tests `OK`, full unittest with 841 tests `OK`, fixture eval exit `0` with `renderer_file_count: 195` and `task_matrix_projection_deferred_in_b37`, transcript eval with 19 sessions and 0 failures, Codex compatibility `status: compatible`, docs check and diff hygiene. B37-S5 does not activate hooks, recurring automation, MCP, Agents SDK runner, live server/browser automation, provider/live external model/API calls, canonical graph mutation or git stage/commit/push/PR. |
 
+## Batch 38 Production Readiness Addendum
+
+B38-S1 Release gate and package metadata covers `B38-PROD-M01..M03` as the pre-install gate before any plugin install, cache refresh, real-project pilot, release, PR or publication action.
+
+- T10-LIVE-M41 status: `blocked_pending_explicit_git_release_fields`.
+- release_fields_deferral_status: `not_deferred_without_owner_fields`.
+- missing release fields remain: release branch or push target, commit message, PR base branch, PR title and intent, and explicit branch creation/current-branch push policy.
+- git_stage_commit_push_pr_performed: false.
+- tracked_plugin_file_count: 586.
+- skill_count: 11.
+- template_file_count: 202.
+- script_file_count: 84.
+- fixture_file_count: 266.
+- package_source_digest_sha256: `7d5a7634d1223f72ccdd1edcd24fddeb8bbdcc38d36d73ab1d002f352b06dcbb`.
+- digest input: sorted `git ls-files plugins/product-agent-os` paths with each file SHA-256.
+- ignored_cache_exclusions: `__pycache__ only`.
+- install source path: `plugins/product-agent-os`.
+- manifest path: `plugins/product-agent-os/.codex-plugin/plugin.json`.
+- metadata_release_candidate_status: `local_only_exception_recorded`.
+- example.invalid trust fields remain blocked for public or team release: author email, repository, privacy policy URL and terms of service URL.
+- Codex compatibility status: `compatible`.
+- No plugin install, plugin-cache mutation, live runtime, browser automation, provider call, canonical graph mutation or git write was performed.
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `b38_s1_release_gate_package_metadata` | B38-S1 `B38-PROD-M01..M03` | M01 stays blocked without release fields because the owner did not supply git release/PR fields and did not explicitly defer M41; M02 freezes the checked-in package source with 586 tracked plugin files, 11 bundled skills and package digest `7d5a7634d1223f72ccdd1edcd24fddeb8bbdcc38d36d73ab1d002f352b06dcbb`; M03 records a local-only metadata exception because `example.invalid` trust fields remain in `plugin.json`, so public/team release metadata is not finalized. Verification evidence: `git status --short` was clean before edits, `git ls-files plugins/product-agent-os`, ignored-cache check showing only `__pycache__`, digest calculation, manifest review, `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returning `status: compatible`, focused docs contract 71 tests `OK`, docs structure check `OK` and diff hygiene `0`. |
+
 ## Deferred
 
 | Status | Item | Reason |
