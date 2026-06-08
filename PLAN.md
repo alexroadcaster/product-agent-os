@@ -36,7 +36,7 @@ Evidence ownership is distributed as follows:
 
 ## Current Planning Contract
 
-- Next executable product action: none until the owner supplies the missing `T10-LIVE-M41` git release/PR fields or explicitly defers M41. The approved B37-S1/B37-S2/B37-S3/B37-S4/B37-S5 planning maintenance is not a live/runtime/git action and does not close M41.
+- Next release/install/git-path action: none until the owner supplies the missing `T10-LIVE-M41` git release/PR fields or explicitly defers M41 with residual risk. The separately scoped read-only/docs/package audit maintenance, including B37/B38/B38-S1, can continue when approved, but it does not close M41, does not authorize B38-S2 install/cache/release smoke and does not grant git write approval.
 - Required fields for M41: release branch or push target, commit message, PR base branch, PR title and intent, and explicit branch creation/current-branch push policy.
 - Do not create or switch branches, stage files, commit, push or open a PR without explicit approval.
 - Do not start Task 27/28 planning from Batch 35 while M41 is unresolved or explicitly deferred.
@@ -60,8 +60,8 @@ Evidence ownership is distributed as follows:
 | 4 | B37-S4 `T10-PLAN-M07..M09`, `T10-PLAN-M20` skill routing, discovery signal and planning control | implemented in current maintenance slice | No owner action unless the owner wants B37-S5 docs/projection/lifecycle closure work. |
 | 5 | B37-S5 `T10-PLAN-M11..M12`, `T10-PLAN-M14..M16`, `T10-PLAN-M19` docs/projection/hygiene/lifecycle closure | implemented in current maintenance slice after full Product-Agent OS verification | No owner action unless the owner wants future bounded dashboard projection implementation. |
 | 6 | Batch 38 documentation update matrix | `B38-DOC-M01..M10` implemented | No owner action unless another generated-site refresh or public docs follow-up is requested. |
-| 7 | B38-S1 `B38-PROD-M01..M03` release gate and package metadata | M01 `blocked_pending_explicit_git_release_fields`; M02 `implemented`; M03 `accepted_gap` | Provide missing release/PR fields or explicitly defer M41 before B38-S2 release verification/install smoke. |
-| 8 | `T10-LIVE-M41` explicit git release/PR action | `blocked_pending_explicit_git_release_fields` | Provide release branch or push target, commit message, PR base/title/body intent and explicit write approval. |
+| 7 | B38-S1 `B38-PROD-M01..M03` release gate and package metadata | M01 `blocked_pending_explicit_git_release_fields`; M02 `implemented`; M03 `accepted_gap` | Provide missing release/PR fields or explicitly defer M41 before B38-S2 release verification/install smoke. A fresh M41 preflight is required before any git write. |
+| 8 | `T10-LIVE-M41` explicit git release/PR action | `blocked_pending_explicit_git_release_fields` | Provide release branch or push target, commit message, PR base/title/body intent and explicit write approval; rerun current git status/unrelated-change preflight before any write. |
 | 9 | Batch 35 closure decision | blocked by M41 | Either approve M41 details or explicitly defer M41 with residual risk. |
 | 10 | Future Task 27/28 planning | not started | Start only after Batch 35 is closed or deliberately deferred. |
 

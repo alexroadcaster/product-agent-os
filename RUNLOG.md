@@ -35,6 +35,8 @@ Separately approved current maintenance: B37-S1 implements `T10-PLAN-M01..M03` a
 
 Owner-requested Batch 38 S1 release gate/package metadata covers `B38-PROD-M01..M03`. M01 remains blocked pending explicit git release fields because no release branch/push target, commit message, PR base branch, PR title/intent or branch/current-branch write policy was supplied or explicitly deferred. M02 records the checked-in `plugins/product-agent-os` package freeze with 586 tracked files, 11 skills and package source digest `7d5a7634d1223f72ccdd1edcd24fddeb8bbdcc38d36d73ab1d002f352b06dcbb`. M03 records a local-only metadata exception because `.codex-plugin/plugin.json` still contains `example.invalid` trust fields for author email, repository, privacy policy and terms. B38-S1 does not install or refresh the plugin, start live/runtime/browser/provider work, mutate canonical graph sources, stage/commit/push/open a PR or publish externally.
 
+M41 post-B38 audit: the Batch 35 `dirty_file_count: 15` is a `historical_preflight_snapshot`, not current release readiness. B37/B38/B38-S1 do not close M41; before any git write, rerun fresh git status/unrelated-change preflight with exact release fields.
+
 ## Latest Completed Slice
 
 Batch 38 S1 release gate/package metadata is the latest current handoff, but it is not a release-ready slice.

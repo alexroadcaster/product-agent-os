@@ -275,13 +275,15 @@ missing_required_fields:
 
 M41 did not run `git add`, commit, push or PR creation. The git action remains blocked because the Batch 35 action matrix requires exact files, unrelated-change check, verification summary, commit message, push target, PR intent and release boundary, and project rules forbid creating or switching branches without explicit approval.
 
+T10-LIVE-M41 post-B38 audit: `dirty_file_count: 15 is historical Batch 35 evidence, not current release readiness`. This value is a `historical_preflight_snapshot`; B37/B38/B38-S1 do not close M41 and do not refresh the git release packet. A fresh preflight is required before any git write: current `git status --short`, unrelated-change check, exact file list, verification summary, release branch or push target, commit message, PR base/title/intent and explicit branch/current-branch policy.
+
 ## Residual Risks
 
 - A draft approval packet can be mistaken for approval. Keep `approval_status: approval_required` until the owner explicitly approves one action.
 - Reusing approval across action ids can silently expand scope.
 - Screenshots, provider output and generated graph artifacts are not source of truth without source-boundary evidence and owner review.
 - Git release/PR action is separate from docs closure and remains explicit-only.
-- After `done_through_m40`, `T10-LIVE-M41` remains blocked until exact git release/PR fields are supplied.
+- After `done_through_m40`, `T10-LIVE-M41` remains blocked until exact git release/PR fields are supplied; B37/B38/B38-S1 do not close M41.
 
 ## Next Action
 

@@ -46,6 +46,7 @@ Evaluation ownership is distributed as follows:
 
 - Task 26 Batch 35 is complete through `done_through_m40` under `batch35_approval_bound_real_testing_execution`.
 - `T10-LIVE-M41` remains `blocked_pending_explicit_git_release_fields`; no git stage/commit/push/PR is allowed until the owner supplies exact release branch or push target, commit message, PR base branch, PR title and intent, and explicit branch/current-branch write approval.
+- M41 post-B38 audit: Batch 35 `dirty_file_count: 15` is historical preflight evidence only; B37/B38/B38-S1 do not close M41, and fresh preflight is required before any git write.
 - Root `AGENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md` and `RUNLOG.md` are compact control-plane files. They preserve current routing and safety boundaries, not every historical batch result.
 - Historical Batch 34E full-site i18n parity and Batch 35 real-testing evidence is source-owned by Track 10 backlog, source registry and dedicated source packets.
 

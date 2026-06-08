@@ -103,6 +103,18 @@ verification_status: "Backed by the B38-S1 source packet in the Track 10 backlog
 ```
 
 ```yaml
+title: "Product-Agent OS T10-LIVE-M41 post-B38 audit"
+url: "docs/sources/product-agent-os-batch35-approval-packet-draft.md; docs/sources/product-agent-os-batch35-approval-packet-draft.en.md; docs/sources/product-agent-os-track-10-backlog.md; docs/sources/product-agent-os-track-10-backlog.en.md; AGENTS.md; PLAN.md; TEST.md; RUNLOG.md"
+type: "internal release-gate audit"
+source_status: "project-authored"
+checked_at: "2026-06-08"
+summary: "T10-LIVE-M41 post-B38 audit clarifies that M41 remains `blocked_pending_explicit_git_release_fields`; the Batch 35 `dirty_file_count: 15` is a `historical_preflight_snapshot`, B37/B38/B38-S1 do not close M41 and fresh preflight is required before any git write."
+relevance: "Prevents stale preflight evidence from being read as current release readiness after later docs and package-audit slices. Release, install, cache refresh, branch, commit, push and PR work still require exact owner-approved fields and fresh current-state evidence."
+trust_level: "high"
+verification_status: "Backed by source packet/backlog/control-plane sync and the focused docs contract for the M41 post-B38 boundary. No plugin install, plugin-cache mutation, live runtime, browser automation, provider/live external model/API call, canonical graph mutation, git stage/commit/push/PR or external publication was performed."
+```
+
+```yaml
 title: "Codex web / cloud"
 url: "https://developers.openai.com/codex/cloud"
 type: "documentation"

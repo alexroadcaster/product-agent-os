@@ -17,6 +17,7 @@ SOURCE_REGISTRY_EN = DOCS / "sources" / "registry.en.md"
 TRACK_BACKLOG = DOCS / "sources" / "product-agent-os-track-8-detailed-backlog.md"
 TRACK9_BACKLOG = DOCS / "sources" / "product-agent-os-track-9-backlog.md"
 TRACK10_BACKLOG = DOCS / "sources" / "product-agent-os-track-10-backlog.md"
+TRACK10_BACKLOG_EN = DOCS / "sources" / "product-agent-os-track-10-backlog.en.md"
 BATCH34_PACKAGING_SMOKE = DOCS / "sources" / "product-agent-os-batch34-packaging-install-smoke.md"
 BATCH34A_PUBLIC_DOCS_BOUNDARY = (
     DOCS / "sources" / "product-agent-os-batch34a-public-docs-boundary.md"
@@ -34,6 +35,7 @@ BATCH34E_FULL_SITE_INVENTORY = (
     DOCS / "sources" / "product-agent-os-batch34e-full-site-i18n-inventory.md"
 )
 BATCH35_APPROVAL_DRAFT = DOCS / "sources" / "product-agent-os-batch35-approval-packet-draft.md"
+BATCH35_APPROVAL_DRAFT_EN = DOCS / "sources" / "product-agent-os-batch35-approval-packet-draft.en.md"
 TRACK9_PLAN = DOCS / "superpowers" / "plans" / "2026-05-25-track-9-methodology-intelligence.md"
 TRACK10_PLAN = DOCS / "superpowers" / "plans" / "2026-05-27-track-10-guided-questions-status-dashboard.md"
 ROOT_README = ROOT / "README.md"
@@ -1006,6 +1008,59 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         ]:
             with self.subTest(runlog=expected):
                 self.assertIn(expected, runlog)
+
+    def test_t10_live_m41_post_b38_audit_boundary_is_source_owned(self):
+        plan = PLAN.read_text(encoding="utf-8")
+        runlog = RUNLOG.read_text(encoding="utf-8")
+        test_plan = TEST.read_text(encoding="utf-8")
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        registry_en = SOURCE_REGISTRY_EN.read_text(encoding="utf-8")
+        track10 = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        track10_en = TRACK10_BACKLOG_EN.read_text(encoding="utf-8")
+        batch35 = BATCH35_APPROVAL_DRAFT.read_text(encoding="utf-8")
+        batch35_en = BATCH35_APPROVAL_DRAFT_EN.read_text(encoding="utf-8")
+
+        for expected in [
+            "T10-LIVE-M41 post-B38 audit",
+            "historical_preflight_snapshot",
+            "dirty_file_count: 15 is historical Batch 35 evidence, not current release readiness",
+            "B37/B38/B38-S1 do not close M41",
+            "fresh preflight is required before any git write",
+        ]:
+            with self.subTest(source_packet=expected):
+                self.assertIn(expected, batch35)
+                self.assertIn(expected, batch35_en)
+                self.assertIn(expected, track10)
+                self.assertIn(expected, track10_en)
+
+        for expected in [
+            "Next release/install/git-path action",
+            "separately scoped read-only/docs/package audit maintenance",
+            "does not close M41",
+            "does not authorize B38-S2 install/cache/release smoke",
+        ]:
+            with self.subTest(plan=expected):
+                self.assertIn(expected, plan)
+        self.assertNotIn("Next executable product action: none", plan)
+
+        for expected in [
+            "M41 post-B38 audit",
+            "historical_preflight_snapshot",
+            "fresh git status/unrelated-change preflight",
+            "B37/B38/B38-S1 do not close M41",
+        ]:
+            with self.subTest(control_plane=expected):
+                self.assertIn(expected, runlog)
+                self.assertIn(expected, test_plan)
+
+        for expected in [
+            "Product-Agent OS T10-LIVE-M41 post-B38 audit",
+            "historical_preflight_snapshot",
+            "fresh preflight is required before any git write",
+        ]:
+            with self.subTest(registry=expected):
+                self.assertIn(expected, registry)
+                self.assertIn(expected, registry_en)
 
     def test_system_file_hygiene_audit_contract_is_documented_and_source_owned(self):
         documents = {
