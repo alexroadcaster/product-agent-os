@@ -13,6 +13,7 @@ The plugin helps move a project through a full lifecycle: read-only workspace au
 | Read the generated graph and cockpit | [Project Code Graph](project-code-graph.md) |
 | Understand the live runtime/provider/mutation boundary | [Live Runtime Governance](live-runtime-governance.md) |
 | Know when real testing can start | [Approval-Bound Real Testing](approval-bound-real-testing.md) |
+| Plan the first real-project pilot | [Real-Project Pilot](real-project-pilot.md) |
 | Evaluate and modernize agents/skills | [Agent-Skill Modernization Loop](agent-skill-modernization-loop.md) |
 | Find local plugin commands | [CLI Reference](cli-reference.md) |
 | See user-facing outputs | [Artifact Gallery](artifact-gallery.md) |
@@ -134,6 +135,7 @@ If a public page references a graph, dashboard, cockpit, scorecard or report, it
 
 - [Technical details and installation](technical.md) - real files, commands, capabilities and install boundary.
 - [Artifact Gallery](artifact-gallery.md) - user-facing outputs and their trust boundary.
+- [Real-Project Pilot](real-project-pilot.md) - first-run operator packet, target consent matrix, success metrics and evidence ledger for a safe real-project pilot.
 - [Engineering standards layer](development-standards.md) - how the plugin applies DDD/FSD/TDD/ADD, docs-as-code and eval-driven quality without turning them into dogma.
 - [Methodology intelligence](methodology-intelligence.md) - read-only audit, Delivery Map, recommendations, owner questions and staged artifact boundary.
 - [Scenarios and usage modes](scenarios.md) - first response, minimum artifacts, approval boundary and verification gates for product scenarios.

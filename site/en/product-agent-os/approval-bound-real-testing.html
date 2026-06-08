@@ -14,7 +14,7 @@
         <link rel="prev" href="live-runtime-governance.html">
 
 
-        <link rel="next" href="agent-skill-modernization-loop.html">
+        <link rel="next" href="real-project-pilot.html">
 
 
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -1132,6 +1132,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
 
 
@@ -1376,6 +1378,27 @@
 
 </nav>
 
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="real-project-pilot.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Real-Project Pilot
+  </span>
+
+
+      </a>
     </li>
 
 
@@ -3078,7 +3101,7 @@
 <h2 id="purpose">Purpose<a class="headerlink" href="#purpose" title="Permanent link">&para;</a></h2>
 <p>This page describes the approval-bound real-testing execution matrix for Product-Agent OS. The matrix is not a bundled approval: each live/runtime/browser/provider/canonical/git action remains separately scoped, separately approved and separately evidenced.</p>
 <p>Real testing starts only after current closure evidence exists for governance, runtime contract, audit/observability, target consent, QA/performance/stabilization and packaging/docs closure.</p>
-<p>Current source-backed status: M37-M40 have execution evidence for approved local runtime, browser smoke, Codex-session provider pilot and staged canonical mutation pilot. M41 remains <code>blocked_pending_explicit_git_release_fields</code>, and no git stage/commit/push/PR has been performed.</p>
+<p>Current source-backed status: M37-M41 have execution evidence or owner closure: M37-M40 passed for approved local runtime, browser smoke, Codex-session provider pilot and staged canonical mutation pilot. M41 is closed as <code>owner_closed_no_op_git_release_pr</code>, and no git stage/commit/push/PR has been performed.</p>
 <h2 id="approvals-and-source-of-truth-boundary">Approvals And Source-Of-Truth Boundary<a class="headerlink" href="#approvals-and-source-of-truth-boundary" title="Permanent link">&para;</a></h2>
 <p>Each real-testing action has a separate approval packet. Approval for a live server pilot does not allow browser automation. Approval for browser automation does not allow provider/API calls. Approval for a provider/API pilot does not allow canonical mutation. Approval for canonical mutation does not allow git release/PR action.</p>
 <p>Source of truth:</p>
@@ -3143,7 +3166,7 @@
 <tr>
 <td><code>explicit_git_release_pr_action</code></td>
 <td><code>git-release-pr-evidence.md</code>, PR packet</td>
-<td>Blocked in M41 with <code>blocked_pending_explicit_git_release_fields</code>; no git stage/commit/push/PR.</td>
+<td>Closed in M41 by owner decision as <code>owner_closed_no_op_git_release_pr</code>; no git stage/commit/push/PR.</td>
 </tr>
 </tbody>
 </table>
@@ -3240,8 +3263,8 @@
 <tr>
 <td>M41</td>
 <td><code>explicit_git_release_pr_action</code></td>
-<td><code>blocked_pending_explicit_git_release_fields</code></td>
-<td>Requires release branch or push target, commit message, PR base branch, PR title/intent and explicit branch/write policy before any git write.</td>
+<td><code>owner_closed_no_op_git_release_pr</code></td>
+<td>Git release/PR did not run; future git write requires fresh preflight, release branch or push target, commit message, PR base branch, PR title/intent and explicit branch/write policy.</td>
 </tr>
 </tbody>
 </table>

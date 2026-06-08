@@ -235,6 +235,84 @@ agent_team_design_packet_present:
 | `implemented` | `B38-PROD-M04` full pre-install verification | Current run evidence: `full_unittest_count: 846`, full unittest `OK`, `fixture_eval_exit_code: 0`, `transcript_eval_session_count: 19`, `transcript_eval_failure_count: 0`, `codex_compatibility_status: compatible`, `docs_check_status: ok`, `diff_hygiene_exit_code: 0`. Strict MkDocs was not routed because no MkDocs navigation, Mermaid, Markdown extension, localized nav, search/sitemap or generated `site/` evidence changed before verification. |
 | `blocked_stale_plugin_cache_pending_refresh_approval` | `B38-PROD-M05` read-only install/cache smoke | `plugin_install_smoke_status: read_only_inspection_completed_stale_cache_detected`; `plugin_cache_refresh_status: blocked_pending_explicit_cache_mutation_approval`; installed cache scope `local-product-agent-plugins/product-agent-os/0.1.0`; manifest name/version match `product-agent-os` / `0.1.0`; `.mcp.json` is visible; `visible_cache_skill_count: 10` vs `checked_in_skill_count: 11`; `missing_cache_skill: docs-maintainer`; `visible_cache_script_file_count: 32` vs `checked_in_script_file_count: 84`; `visible_cache_template_file_count: 34` vs `checked_in_template_file_count: 202`; checked-in package source remains 586 tracked files, 11 bundled skills and package digest `7d5a7634d1223f72ccdd1edcd24fddeb8bbdcc38d36d73ab1d002f352b06dcbb`. Cache refresh or install mutation requires explicit target, rollback/cleanup path and cache mutation approval. |
 
+## Batch 38 S3 Pilot Design Addendum
+
+B38-S3 Pilot design covers `B38-PROD-M06..M09` as a real-project pilot design slice. It creates public operator guidance and source-owned pilot design evidence, but it does not execute a real project pilot.
+
+- batch_status: `b38_s3_real_project_pilot_design`.
+- first_run_operator_packet_present.
+- expected_first_response_fields_present.
+- staged_artifact_route_defined.
+- approval_boundary_defined.
+- rollback_remove_path_defined.
+- what_not_to_expect_section_present.
+- b38_s3_real_project_pilot_target_consent_matrix.
+- pilot_target_count: 7.
+- pilot_archetypes_covered: web_frontend, backend_api, docs_only, ai_rag, data_migration, pr_review, automation_release.
+- owner_consent_required_per_target: true.
+- target_repo_class_required_per_target: true.
+- data_policy_required_per_target: true.
+- allowed_commands_required_per_target: true.
+- blocked_commands_required_per_target: true.
+- evidence_destination_required_per_target: true.
+- stop_condition_required_per_target: true.
+- evidence_destination_policy: approved_stage_root_outside_target_workspace.
+- production_data_access_allowed: false.
+- external_writes_allowed: false.
+- live_provider_calls_allowed: false.
+- browser_automation_allowed_without_target_specific_approval: false.
+- runtime_launch_allowed_without_target_specific_approval: false.
+- target_workspace_mutation_allowed: false.
+- pilot_success_metrics_defined.
+- pilot_metric_spec_present.
+- time_to_first_route_metric_present.
+- route_accuracy_metric_present.
+- artifact_usefulness_metric_present.
+- methodology_selection_precision_metric_present.
+- owner_question_usefulness_metric_present.
+- pilot_false_positive_rate_metric_present.
+- evidence_sufficiency_metric_present.
+- pilot_counter_metrics_present.
+- accepted_gap_rules_present.
+- accepted_gap_required_fields: owner, reason, evidence_owner, downstream_risk, follow_up_condition.
+- no_success_claim_without_current_pilot_evidence.
+- pilot_harness_evidence_ledger_present.
+- pilot_harness_read_only_status: prepared.
+- read_only_pilot_commands_present.
+- stage_output_root_outside_workspace_present.
+- pilot_evidence_ledger_schema_present.
+- runlog_evidence_schema_present.
+- screenshot_log_redaction_policy_present.
+- cleanup_disable_steps_present.
+- harness_active_automation_status: not_created.
+- provider_call_allowed: false.
+- external_call_performed: false.
+- live_server_started: false.
+- canonical_graph_mutation: not_performed.
+- git_stage_commit_push_pr_performed: false.
+- no_plugin_cache_mutation_performed.
+- no_active_automation_live_server_provider_gateway_external_writer.
+- cleanup_scope: stage_root_generated_b38_s3_pilot_artifacts_only.
+- pilot_execution_status: design_only_not_run.
+- no_real_project_execution_performed.
+- no_live_server_browser_provider_canonical_git.
+- agent_read_only_audits_completed.
+
+agent_team_design_packet_present:
+
+- roles_have_disjoint_ownership: Product Manager owns `B38-PROD-M06` first-run operator packet; Product Manager and Security/Data Owner own `B38-PROD-M07` consent matrix; Tester owns `B38-PROD-M08` success metrics; Architect and Tester own `B38-PROD-M09` dry-run harness and evidence ledger; Docs Maintainer owns public docs and source registry sync.
+- handoff_packet_fields_present: sources/context used, assumptions, files proposed, verification evidence, open risks, stop reason and recommended next role.
+- agent_skill_stop_conditions_present: stop on missing owner consent, missing data policy, requested production data access, target workspace mutation, live server/browser/provider/canonical/git action request, plugin-cache mutation request or success claim without current pilot evidence.
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `implemented` | `B38-PROD-M06` first-run operator packet | `docs/product-agent-os/real-project-pilot.md` and `.en.md` define the starting prompt, expected first response fields (`lifecycle_state`, `usage_mode`, `source_boundary`, `staged_artifact_route`, `verification_route`, `approval_boundary`, `rollback_remove_path`, `safe_next_action`), staged artifact route, approval boundary, rollback/remove path and what-not-to-expect section. |
+| `implemented` | `B38-PROD-M07` target consent matrix | The matrix covers seven pilot archetypes: web/frontend, backend/API, docs-only, AI/RAG, data/migration, PR/review and automation/release. Every target row requires owner, target class, data policy, allowed commands, blocked commands, evidence destination and stop condition. Listing a target does not approve execution. |
+| `implemented` | `B38-PROD-M08` success criteria and product metrics | The pilot rubric defines `time_to_first_route`, `route_accuracy`, `artifact_usefulness`, `methodology_selection_precision`, `owner_question_usefulness`, `false_positive_rate`, `evidence_sufficiency`, counter-metrics and accepted-gap rules. No pilot-success claim is allowed without current pilot evidence. |
+| `implemented` | `B38-PROD-M09` pilot harness and evidence ledger | The harness is a dry-run plan with read-only pilot commands, staged output locations, runlog/evidence schema, screenshot/log redaction policy, cleanup steps and approval checks. It does not create active automation, live server launchers, provider gateways, browser runners, canonical graph writers, external writers or git release tools. |
+
+Current B38-S3 verification evidence: focused B38-S3 docs contract passed; strict MkDocs through workspace-local ignored `tmp\mkdocs_venv_b38s3` exited `0`; generated `site/` was rebuilt for the RU/EN pilot page, search/sitemap exposure and file-safe English-original fallback links, then mechanically normalized for trailing whitespace; final Product-Agent OS docs contract ran 74 tests with `OK`; `python tools\check_docs.py` returned `OK`; `git diff --check` exited `0`. The pilot remains `design_only_not_run` and no real project execution, target workspace mutation, plugin-cache mutation, live server, browser automation, provider/API call, canonical graph mutation, external write or git stage/commit/push/PR was performed.
+
 ## Deferred
 
 | Status | Item | Reason |

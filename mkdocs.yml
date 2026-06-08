@@ -98,6 +98,7 @@ plugins:
                 - Project Code Graph: product-agent-os/project-code-graph.md
                 - Live Runtime Governance: product-agent-os/live-runtime-governance.md
                 - Approval-Bound Real Testing: product-agent-os/approval-bound-real-testing.md
+                - Real-Project Pilot: product-agent-os/real-project-pilot.md
                 - Agent-Skill Modernization Loop: product-agent-os/agent-skill-modernization-loop.md
                 - CLI Reference: product-agent-os/cli-reference.md
                 - Artifact Contracts: product-agent-os/artifact-contracts.md
@@ -227,6 +228,7 @@ nav:
       - Project Code Graph: product-agent-os/project-code-graph.md
       - Live Runtime Governance: product-agent-os/live-runtime-governance.md
       - Approval-Bound Real Testing: product-agent-os/approval-bound-real-testing.md
+      - Real-Project Pilot: product-agent-os/real-project-pilot.md
       - Agent-Skill Modernization Loop: product-agent-os/agent-skill-modernization-loop.md
       - CLI Reference: product-agent-os/cli-reference.md
       - Artifact Contracts: product-agent-os/artifact-contracts.md

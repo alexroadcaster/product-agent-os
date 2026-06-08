@@ -1126,6 +1126,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -1238,6 +1240,27 @@
 
   <span class="md-ellipsis">
     Approval-Bound Real Testing
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent-os/real-project-pilot.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Real-Project Pilot
   </span>
 
 
@@ -3015,6 +3038,33 @@
 </li>
 
         <li class="md-nav__item">
+  <a href="#batch-38-production-readiness-addendum" class="md-nav__link">
+    <span class="md-ellipsis">
+      Batch 38 Production Readiness Addendum
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#batch-38-s2-verification-and-install-smoke-addendum" class="md-nav__link">
+    <span class="md-ellipsis">
+      Batch 38 S2 Verification And Install Smoke Addendum
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#batch-38-s3-pilot-design-addendum" class="md-nav__link">
+    <span class="md-ellipsis">
+      Batch 38 S3 Pilot Design Addendum
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#deferred" class="md-nav__link">
     <span class="md-ellipsis">
       Deferred
@@ -3548,9 +3598,9 @@
 <td>The owner selected Batch <code>T10-LIVE-M40..M41</code>; M40 mapped to <code>approved_canonical_mutation_pilot</code>. Current run evidence records <code>canonical-mutation-run.json</code>, <code>graph-mutation-journal.jsonl</code> and <code>rollback-proof.json</code> with <code>status: passed</code>, target scope <code>plugins/product-agent-os/scripts</code>, <code>stage_root_only</code>, <code>canonical_graph_source_mutated: false</code>, <code>operation_count: 1</code>, <code>journal_entry_count: 1</code>, <code>rollback_restores_previous_graph_digest: true</code>, no provider/live external model/API calls and no git stage/commit/push/PR. It performs no canonical graph source mutation and performs no git stage/commit/push/PR.</td>
 </tr>
 <tr>
-<td><code>blocked_pending_explicit_git_release_fields</code></td>
+<td><code>owner_closed_no_op_git_release_pr</code></td>
 <td><code>T10-LIVE-M41</code> git release/PR action</td>
-<td>M41 mapped to <code>explicit_git_release_pr_action</code>, but preflight evidence records <code>git-release-pr-evidence.md</code> and <code>git-release-pr-packet.json</code> with <code>git_stage_commit_push_pr_performed: false</code>, current branch <code>main</code>, <code>dirty_file_count: 15</code> and <code>missing_required_fields</code>. Required missing fields are release branch or push target, commit message, PR base branch, PR title and intent, and explicit branch creation/current-branch push policy.</td>
+<td>M41 mapped to <code>explicit_git_release_pr_action</code>, but the owner later selected no git release/PR execution and closed M41 as no-op. Preflight evidence remains historical: <code>git-release-pr-evidence.md</code> and <code>git-release-pr-packet.json</code> record <code>git_stage_commit_push_pr_performed: false</code>, current branch <code>main</code>, <code>dirty_file_count: 15</code> and <code>missing_required_fields</code> as a <code>historical_preflight_snapshot</code>. T10-LIVE-M41 post-B38 audit records that <code>dirty_file_count: 15 is historical Batch 35 evidence, not current release readiness</code>; B37/B38/B38-S1 do not close M41, while the owner decision does. <code>future_git_write_requires_fresh_preflight: true</code>; no branch, stage, commit, push or PR was performed.</td>
 </tr>
 </tbody>
 </table>
@@ -3695,6 +3745,182 @@
 </tr>
 </tbody>
 </table>
+<h2 id="batch-38-production-readiness-addendum">Batch 38 Production Readiness Addendum<a class="headerlink" href="#batch-38-production-readiness-addendum" title="Permanent link">&para;</a></h2>
+<p>B38-S1 Release gate and package metadata covers <code>B38-PROD-M01..M03</code> as the pre-install gate before any plugin install, cache refresh, real-project pilot, release, PR or publication action.</p>
+<ul>
+<li>T10-LIVE-M41 status: <code>blocked_pending_explicit_git_release_fields</code>.</li>
+<li>release_fields_deferral_status: <code>not_deferred_without_owner_fields</code>.</li>
+<li>missing release fields remain: release branch or push target, commit message, PR base branch, PR title and intent, and explicit branch creation/current-branch push policy.</li>
+<li>T10-LIVE-M41 post-B38 audit: <code>dirty_file_count: 15 is historical Batch 35 evidence, not current release readiness</code>; it is a <code>historical_preflight_snapshot</code>. B37/B38/B38-S1 do not close M41, and a fresh preflight is required before any git write.</li>
+<li>git_stage_commit_push_pr_performed: false.</li>
+<li>tracked_plugin_file_count: 586.</li>
+<li>skill_count: 11.</li>
+<li>template_file_count: 202.</li>
+<li>script_file_count: 84.</li>
+<li>fixture_file_count: 266.</li>
+<li>package_source_digest_sha256: <code>7d5a7634d1223f72ccdd1edcd24fddeb8bbdcc38d36d73ab1d002f352b06dcbb</code>.</li>
+<li>digest input: sorted <code>git ls-files plugins/product-agent-os</code> paths with each file SHA-256.</li>
+<li>ignored_cache_exclusions: <code>__pycache__ only</code>.</li>
+<li>install source path: <code>plugins/product-agent-os</code>.</li>
+<li>manifest path: <code>plugins/product-agent-os/.codex-plugin/plugin.json</code>.</li>
+<li>metadata_release_candidate_status: <code>local_only_exception_recorded</code>.</li>
+<li>example.invalid trust fields remain blocked for public or team release: author email, repository, privacy policy URL and terms of service URL.</li>
+<li>Codex compatibility status: <code>compatible</code>.</li>
+<li>No plugin install, plugin-cache mutation, live runtime, browser automation, provider call, canonical graph mutation or git write was performed.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Item</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>b38_s1_release_gate_package_metadata</code></td>
+<td>B38-S1 <code>B38-PROD-M01..M03</code></td>
+<td>M01 stays blocked without release fields because the owner did not supply git release/PR fields and did not explicitly defer M41; M02 freezes the checked-in package source with 586 tracked plugin files, 11 bundled skills and package digest <code>7d5a7634d1223f72ccdd1edcd24fddeb8bbdcc38d36d73ab1d002f352b06dcbb</code>; M03 records a local-only metadata exception because <code>example.invalid</code> trust fields remain in <code>plugin.json</code>, so public/team release metadata is not finalized. Verification evidence: <code>git status --short</code> was clean before edits, <code>git ls-files plugins/product-agent-os</code>, ignored-cache check showing only <code>__pycache__</code>, digest calculation, manifest review, <code>python plugins\product-agent-os\scripts\validate_codex_compatibility.py</code> returning <code>status: compatible</code>, focused docs contract 71 tests <code>OK</code>, docs structure check <code>OK</code> and diff hygiene <code>0</code>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="batch-38-s2-verification-and-install-smoke-addendum">Batch 38 S2 Verification And Install Smoke Addendum<a class="headerlink" href="#batch-38-s2-verification-and-install-smoke-addendum" title="Permanent link">&para;</a></h2>
+<p>B38-S2 Verification and install smoke covers <code>B38-PROD-M04..M05</code> after the owner closed <code>T10-LIVE-M41</code> as <code>owner_closed_no_op_git_release_pr</code>.</p>
+<ul>
+<li>batch_status: <code>b38_s2_verification_install_cache_smoke</code>.</li>
+<li>git_stage_commit_push_pr_performed: false.</li>
+<li>future_git_write_requires_fresh_preflight: true.</li>
+<li>no_git_stage_commit_push_pr.</li>
+<li>no_plugin_cache_mutation_performed.</li>
+<li>no external publication, live runtime, browser automation, provider/live external model/API call or canonical graph mutation was performed.</li>
+</ul>
+<p>agent_team_design_packet_present:</p>
+<ul>
+<li>roles_have_disjoint_ownership: Tester owns <code>B38-PROD-M04</code> verification evidence; Release Operator owns <code>B38-PROD-M05</code> install/cache boundary; Reviewer owns stale-cache risk review; Docs Maintainer owns source/control-plane sync.</li>
+<li>handoff_packet_fields_present: sources/context used, assumptions, files proposed, verification evidence, open risks, stop reason and recommended next role.</li>
+<li>agent_skill_stop_conditions_present: stop on failed verification, stale cache mismatch, missing cache mutation approval, plugin-cache write outside approved target, external publication request or git write request.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Item</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>implemented</code></td>
+<td><code>B38-PROD-M04</code> full pre-install verification</td>
+<td>Current run evidence: <code>full_unittest_count: 846</code>, full unittest <code>OK</code>, <code>fixture_eval_exit_code: 0</code>, <code>transcript_eval_session_count: 19</code>, <code>transcript_eval_failure_count: 0</code>, <code>codex_compatibility_status: compatible</code>, <code>docs_check_status: ok</code>, <code>diff_hygiene_exit_code: 0</code>. Strict MkDocs was not routed because no MkDocs navigation, Mermaid, Markdown extension, localized nav, search/sitemap or generated <code>site/</code> evidence changed before verification.</td>
+</tr>
+<tr>
+<td><code>blocked_stale_plugin_cache_pending_refresh_approval</code></td>
+<td><code>B38-PROD-M05</code> read-only install/cache smoke</td>
+<td><code>plugin_install_smoke_status: read_only_inspection_completed_stale_cache_detected</code>; <code>plugin_cache_refresh_status: blocked_pending_explicit_cache_mutation_approval</code>; installed cache scope <code>local-product-agent-plugins/product-agent-os/0.1.0</code>; manifest name/version match <code>product-agent-os</code> / <code>0.1.0</code>; <code>.mcp.json</code> is visible; <code>visible_cache_skill_count: 10</code> vs <code>checked_in_skill_count: 11</code>; <code>missing_cache_skill: docs-maintainer</code>; <code>visible_cache_script_file_count: 32</code> vs <code>checked_in_script_file_count: 84</code>; <code>visible_cache_template_file_count: 34</code> vs <code>checked_in_template_file_count: 202</code>; checked-in package source remains 586 tracked files, 11 bundled skills and package digest <code>7d5a7634d1223f72ccdd1edcd24fddeb8bbdcc38d36d73ab1d002f352b06dcbb</code>. Cache refresh or install mutation requires explicit target, rollback/cleanup path and cache mutation approval.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="batch-38-s3-pilot-design-addendum">Batch 38 S3 Pilot Design Addendum<a class="headerlink" href="#batch-38-s3-pilot-design-addendum" title="Permanent link">&para;</a></h2>
+<p>B38-S3 Pilot design covers <code>B38-PROD-M06..M09</code> as a real-project pilot design slice. It creates public operator guidance and source-owned pilot design evidence, but it does not execute a real project pilot.</p>
+<ul>
+<li>batch_status: <code>b38_s3_real_project_pilot_design</code>.</li>
+<li>first_run_operator_packet_present.</li>
+<li>expected_first_response_fields_present.</li>
+<li>staged_artifact_route_defined.</li>
+<li>approval_boundary_defined.</li>
+<li>rollback_remove_path_defined.</li>
+<li>what_not_to_expect_section_present.</li>
+<li>b38_s3_real_project_pilot_target_consent_matrix.</li>
+<li>pilot_target_count: 7.</li>
+<li>pilot_archetypes_covered: web_frontend, backend_api, docs_only, ai_rag, data_migration, pr_review, automation_release.</li>
+<li>owner_consent_required_per_target: true.</li>
+<li>target_repo_class_required_per_target: true.</li>
+<li>data_policy_required_per_target: true.</li>
+<li>allowed_commands_required_per_target: true.</li>
+<li>blocked_commands_required_per_target: true.</li>
+<li>evidence_destination_required_per_target: true.</li>
+<li>stop_condition_required_per_target: true.</li>
+<li>evidence_destination_policy: approved_stage_root_outside_target_workspace.</li>
+<li>production_data_access_allowed: false.</li>
+<li>external_writes_allowed: false.</li>
+<li>live_provider_calls_allowed: false.</li>
+<li>browser_automation_allowed_without_target_specific_approval: false.</li>
+<li>runtime_launch_allowed_without_target_specific_approval: false.</li>
+<li>target_workspace_mutation_allowed: false.</li>
+<li>pilot_success_metrics_defined.</li>
+<li>pilot_metric_spec_present.</li>
+<li>time_to_first_route_metric_present.</li>
+<li>route_accuracy_metric_present.</li>
+<li>artifact_usefulness_metric_present.</li>
+<li>methodology_selection_precision_metric_present.</li>
+<li>owner_question_usefulness_metric_present.</li>
+<li>pilot_false_positive_rate_metric_present.</li>
+<li>evidence_sufficiency_metric_present.</li>
+<li>pilot_counter_metrics_present.</li>
+<li>accepted_gap_rules_present.</li>
+<li>accepted_gap_required_fields: owner, reason, evidence_owner, downstream_risk, follow_up_condition.</li>
+<li>no_success_claim_without_current_pilot_evidence.</li>
+<li>pilot_harness_evidence_ledger_present.</li>
+<li>pilot_harness_read_only_status: prepared.</li>
+<li>read_only_pilot_commands_present.</li>
+<li>stage_output_root_outside_workspace_present.</li>
+<li>pilot_evidence_ledger_schema_present.</li>
+<li>runlog_evidence_schema_present.</li>
+<li>screenshot_log_redaction_policy_present.</li>
+<li>cleanup_disable_steps_present.</li>
+<li>harness_active_automation_status: not_created.</li>
+<li>provider_call_allowed: false.</li>
+<li>external_call_performed: false.</li>
+<li>live_server_started: false.</li>
+<li>canonical_graph_mutation: not_performed.</li>
+<li>git_stage_commit_push_pr_performed: false.</li>
+<li>no_plugin_cache_mutation_performed.</li>
+<li>no_active_automation_live_server_provider_gateway_external_writer.</li>
+<li>cleanup_scope: stage_root_generated_b38_s3_pilot_artifacts_only.</li>
+<li>pilot_execution_status: design_only_not_run.</li>
+<li>no_real_project_execution_performed.</li>
+<li>no_live_server_browser_provider_canonical_git.</li>
+<li>agent_read_only_audits_completed.</li>
+</ul>
+<p>agent_team_design_packet_present:</p>
+<ul>
+<li>roles_have_disjoint_ownership: Product Manager owns <code>B38-PROD-M06</code> first-run operator packet; Product Manager and Security/Data Owner own <code>B38-PROD-M07</code> consent matrix; Tester owns <code>B38-PROD-M08</code> success metrics; Architect and Tester own <code>B38-PROD-M09</code> dry-run harness and evidence ledger; Docs Maintainer owns public docs and source registry sync.</li>
+<li>handoff_packet_fields_present: sources/context used, assumptions, files proposed, verification evidence, open risks, stop reason and recommended next role.</li>
+<li>agent_skill_stop_conditions_present: stop on missing owner consent, missing data policy, requested production data access, target workspace mutation, live server/browser/provider/canonical/git action request, plugin-cache mutation request or success claim without current pilot evidence.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Item</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>implemented</code></td>
+<td><code>B38-PROD-M06</code> first-run operator packet</td>
+<td><code>docs/product-agent-os/real-project-pilot.md</code> and <code>.en.md</code> define the starting prompt, expected first response fields (<code>lifecycle_state</code>, <code>usage_mode</code>, <code>source_boundary</code>, <code>staged_artifact_route</code>, <code>verification_route</code>, <code>approval_boundary</code>, <code>rollback_remove_path</code>, <code>safe_next_action</code>), staged artifact route, approval boundary, rollback/remove path and what-not-to-expect section.</td>
+</tr>
+<tr>
+<td><code>implemented</code></td>
+<td><code>B38-PROD-M07</code> target consent matrix</td>
+<td>The matrix covers seven pilot archetypes: web/frontend, backend/API, docs-only, AI/RAG, data/migration, PR/review and automation/release. Every target row requires owner, target class, data policy, allowed commands, blocked commands, evidence destination and stop condition. Listing a target does not approve execution.</td>
+</tr>
+<tr>
+<td><code>implemented</code></td>
+<td><code>B38-PROD-M08</code> success criteria and product metrics</td>
+<td>The pilot rubric defines <code>time_to_first_route</code>, <code>route_accuracy</code>, <code>artifact_usefulness</code>, <code>methodology_selection_precision</code>, <code>owner_question_usefulness</code>, <code>false_positive_rate</code>, <code>evidence_sufficiency</code>, counter-metrics and accepted-gap rules. No pilot-success claim is allowed without current pilot evidence.</td>
+</tr>
+<tr>
+<td><code>implemented</code></td>
+<td><code>B38-PROD-M09</code> pilot harness and evidence ledger</td>
+<td>The harness is a dry-run plan with read-only pilot commands, staged output locations, runlog/evidence schema, screenshot/log redaction policy, cleanup steps and approval checks. It does not create active automation, live server launchers, provider gateways, browser runners, canonical graph writers, external writers or git release tools.</td>
+</tr>
+</tbody>
+</table>
+<p>Current B38-S3 verification evidence: focused B38-S3 docs contract passed; strict MkDocs through workspace-local ignored <code>tmp\mkdocs_venv_b38s3</code> exited <code>0</code>; generated <code>site/</code> was rebuilt for the RU/EN pilot page, search/sitemap exposure and file-safe English-original fallback links, then mechanically normalized for trailing whitespace; final Product-Agent OS docs contract ran 74 tests with <code>OK</code>; <code>python tools\check_docs.py</code> returned <code>OK</code>; <code>git diff --check</code> exited <code>0</code>. The pilot remains <code>design_only_not_run</code> and no real project execution, target workspace mutation, plugin-cache mutation, live server, browser automation, provider/API call, canonical graph mutation, external write or git stage/commit/push/PR was performed.</p>
 <h2 id="deferred">Deferred<a class="headerlink" href="#deferred" title="Permanent link">&para;</a></h2>
 <table>
 <thead>

@@ -13,6 +13,7 @@ Product-Agent OS plugin - локальный Codex plugin для проекто�
 | Как читать generated graph и cockpit | [Project Code Graph](project-code-graph.md) |
 | Где проходит live runtime/provider/mutation boundary | [Live Runtime Governance](live-runtime-governance.md) |
 | Когда можно переходить к реальному testing | [Approval-Bound Real Testing](approval-bound-real-testing.md) |
+| Как спланировать первый pilot на real project | [Real-project pilot](real-project-pilot.md) |
 | Как проверять и модернизировать agents/skills | [Agent-Skill Modernization Loop](agent-skill-modernization-loop.md) |
 | Какие локальные команды есть у plugin | [CLI Reference](cli-reference.md) |
 | Какие результаты получает пользователь | [Витрина результатов](artifact-gallery.md) |
@@ -134,6 +135,7 @@ Plugin держит lifecycle последовательным. Он не дол
 
 - [Технические особенности и установка](technical.md) - реальные файлы, команды, capabilities и install boundary.
 - [Витрина результатов](artifact-gallery.md) - какие outputs получает пользователь и где проходит trust boundary.
+- [Real-project pilot](real-project-pilot.md) - пакет первого запуска, матрица согласия по целям, метрики успеха и evidence ledger для безопасного pilot на реальном проекте.
 - [Engineering standards layer](development-standards.md) - как plugin внедряет DDD/FSD/TDD/ADD, docs-as-code и eval-driven quality без превращения их в dogma.
 - [Methodology intelligence](methodology-intelligence.md) - read-only audit, Delivery Map, recommendations, owner questions и staged artifact boundary.
 - [Scenarios и usage modes](scenarios.md) - first response, minimum artifacts, approval boundary и verification gates для product scenarios.

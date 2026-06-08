@@ -48,6 +48,7 @@ Evaluation ownership is distributed as follows:
 - `T10-LIVE-M41` performed no git stage/commit/push/PR; future git write requires exact release branch or push target, commit message, PR base branch, PR title and intent, explicit branch/current-branch write approval and fresh preflight.
 - M41 post-B38 audit: Batch 35 `dirty_file_count: 15` is historical preflight evidence only; B37/B38/B38-S1 do not close M41, while the owner no-op closure does.
 - B38-S2: M04 full verification is implemented; M05 read-only install/cache smoke found stale visible plugin cache and remains `blocked_pending_explicit_cache_mutation_approval`.
+- B38-S3: `B38-PROD-M06..M09` real-project pilot design is implemented as operator packet, target consent matrix, success metrics and dry-run evidence ledger. `no_real_project_execution_performed`; no pilot-success claim is valid without current pilot evidence.
 - Root `AGENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md` and `RUNLOG.md` are compact control-plane files. They preserve current routing and safety boundaries, not every historical batch result.
 - Historical Batch 34E full-site i18n parity and Batch 35 real-testing evidence is source-owned by Track 10 backlog, source registry and dedicated source packets.
 

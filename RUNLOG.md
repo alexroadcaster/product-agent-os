@@ -6,7 +6,7 @@ Generated at: 2026-06-07
 
 ## Current Lifecycle Marker
 
-`track10_task26_batch35_closed_through_m41_owner_closed_no_op_git_release_pr_b38_s2_m05_blocked_stale_cache`
+`track10_task26_batch35_closed_through_m41_owner_closed_no_op_git_release_pr_b38_s2_m05_blocked_stale_cache_b38_s3_m09_design_only_no_real_project_execution`
 
 ## Purpose
 
@@ -39,14 +39,17 @@ M41 post-B38 audit: the Batch 35 `dirty_file_count: 15` is a `historical_preflig
 
 B38-S2 verification/install smoke run: `B38-PROD-M04` full pre-install verification is implemented and `B38-PROD-M05` is `blocked_stale_plugin_cache_pending_refresh_approval`. M04 evidence: full unittest ran 846 tests with `OK`; fixture eval exited `0`; transcript eval exited `0` with 19 sessions and 0 failures; Codex compatibility returned `status: compatible`; docs check returned `OK`; diff hygiene exited `0`. M05 evidence: read-only plugin cache inspection found stale installed cache (`plugin_install_smoke_status: read_only_inspection_completed_stale_cache_detected`), with 10 visible cache skills vs 11 checked-in skills, missing `docs-maintainer`, 32 visible cache script files vs 84 checked-in script files and 34 visible cache template files vs 202 checked-in template files. `plugin_cache_refresh_status: blocked_pending_explicit_cache_mutation_approval`; no plugin install/cache mutation, live runtime, browser automation, provider call, canonical graph mutation or git write was performed.
 
+B38-S3 real-project pilot design run: `B38-PROD-M06..M09` is implemented as design-only evidence. M06 defines the first-run operator packet; M07 defines the seven-archetype target consent matrix; M08 defines pilot success criteria, counter-metrics and accepted-gap rules; M09 defines the read-only pilot harness and evidence ledger. Verification evidence: focused B38-S3 docs contract passed; strict MkDocs exited `0` through `tmp\mkdocs_venv_b38s3`; generated `site/` was rebuilt and normalized for file-safe English-original fallback links plus trailing whitespace; final docs contract ran 74 tests with `OK`; `python tools\check_docs.py` returned `OK`; `git diff --check` exited `0`. `no_real_project_execution_performed`; no target workspace mutation, plugin-cache mutation, live server, browser automation, provider/API call, canonical graph mutation, external write or git action was performed.
+
 ## Latest Completed Slice
 
-Batch 38 S2 verification/install smoke is the latest current handoff, but it is not release-ready because the visible installed plugin cache is stale.
+Batch 38 S3 real-project pilot design is the latest current handoff, but it is not release-ready and not pilot-executed because the visible installed plugin cache is stale and no target-specific pilot execution approval exists.
 
 - M01 is owner-closed as `owner_closed_no_op_git_release_pr`; future git write requires fresh preflight and exact approval.
 - M02 package source digest `7d5a7634d1223f72ccdd1edcd24fddeb8bbdcc38d36d73ab1d002f352b06dcbb` covers sorted tracked plugin files with per-file SHA-256 input.
 - M03 local-only metadata exception keeps public/team release metadata blocked until owner-approved trust fields replace `example.invalid` values.
-- Verification evidence: `git status --short` before edits was clean; `git ls-files plugins/product-agent-os` counted 586 tracked files; ignored-cache check found only `__pycache__`; `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible`; focused docs contract ran 71 tests with `OK`; `python tools\check_docs.py` returned `OK`; `git diff --check` exited `0`.
+- M06-M09 define first-run operator packet, target consent matrix, success metrics and dry-run evidence ledger for future real-project pilots; `no_real_project_execution_performed`.
+- Verification evidence: focused B38-S3 docs contract passed; strict MkDocs rebuilt regular `site/` with exit `0` through `tmp\mkdocs_venv_b38s3`; generated `site/` was normalized for file-safe English-original fallback links plus trailing whitespace; final `python -m unittest tests.product_agent_os.test_product_agent_os_docs -v` ran 74 tests with `OK`; `python tools\check_docs.py` returned `OK`; `git diff --check` exited `0`.
 - Residual boundary: plugin-cache refresh/install alignment waits for explicit cache mutation approval with target and rollback path; no plugin install/cache mutation, live runtime, browser automation, provider call, canonical graph mutation or git write was performed.
 
 Batch 37 S5 docs/source closure work is complete through `T10-PLAN-M11..M12`, `T10-PLAN-M14..M16` and `T10-PLAN-M19` under `B37-S5`.

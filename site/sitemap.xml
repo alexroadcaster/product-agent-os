@@ -519,6 +519,13 @@
         <xhtml:link rel="alternate" hreflang="en" href="en/product-agent-os/project-code-graph.html"/>
     </url>
     <url>
+        <loc>product-agent-os/real-project-pilot.html</loc>
+        <lastmod>2026-06-08</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ru" href="product-agent-os/real-project-pilot.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="en/product-agent-os/real-project-pilot.html"/>
+    </url>
+    <url>
         <loc>product-agent-os/scenarios.html</loc>
         <lastmod>2026-06-08</lastmod>
         <changefreq>daily</changefreq>
@@ -1406,6 +1413,13 @@
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="en/product-agent-os/project-code-graph.html"/>
         <xhtml:link rel="alternate" hreflang="ru" href="product-agent-os/project-code-graph.html"/>
+    </url>
+    <url>
+        <loc>en/product-agent-os/real-project-pilot.html</loc>
+        <lastmod>2026-06-08</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="en/product-agent-os/real-project-pilot.html"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="product-agent-os/real-project-pilot.html"/>
     </url>
     <url>
         <loc>en/product-agent-os/scenarios.html</loc>

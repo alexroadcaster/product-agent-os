@@ -127,6 +127,18 @@ verification_status: "Backed by full unittest 846 tests OK, fixture eval exit 0,
 ```
 
 ```yaml
+title: "Product-Agent OS Batch 38 S3 real-project pilot design"
+url: "docs/product-agent-os/real-project-pilot.md; docs/product-agent-os/real-project-pilot.en.md; docs/product-agent-os/index.md; docs/product-agent-os/index.en.md; docs/sources/product-agent-os-track-10-backlog.md; docs/sources/product-agent-os-track-10-backlog.en.md; docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md; mkdocs.yml; tools/check_docs.py; tests/product_agent_os/test_product_agent_os_docs.py"
+type: "internal pilot-design evidence"
+source_status: "project-authored"
+checked_at: "2026-06-08"
+summary: "B38-S3 `B38-PROD-M06..M09` implements the real-project pilot design packet: first-run operator packet, seven-target consent matrix, success metrics and dry-run pilot harness/evidence ledger."
+relevance: "Moves Product-Agent OS from package/cache readiness into a target-specific pilot design without running a pilot. The design records `pilot_target_count: 7`, `design_only_not_run`, `no_real_project_execution_performed` and approval boundaries for production data, external writes, live server, browser automation, providers, canonical mutation, plugin-cache mutation and git actions."
+trust_level: "high"
+verification_status: "Backed by the B38-S3 source packet in the Track 10 backlog, public RU/EN `real-project-pilot` docs, MkDocs nav/check-docs registration, focused docs contract, strict MkDocs rebuild, generated-site file-safe fallback cleanup, full Product-Agent OS docs contract, docs structure check and diff hygiene. Current run evidence: focused B38-S3 docs contract passed; strict MkDocs through workspace-local ignored `tmp\\mkdocs_venv_b38s3` exited 0; final `python -m unittest tests.product_agent_os.test_product_agent_os_docs -v` ran 74 tests with OK; `python tools\\check_docs.py` returned OK; `git diff --check` exited 0. The page defines first-run operator packet fields, target consent matrix, success metrics, counter-metrics, accepted-gap rules, read-only harness and evidence ledger. No real project execution, target workspace mutation, plugin install/cache mutation, live runtime, browser automation, provider/live external model/API call, canonical graph mutation, git stage/commit/push/PR or external publication was performed."
+```
+
+```yaml
 title: "Codex web / cloud"
 url: "https://developers.openai.com/codex/cloud"
 type: "documentation"

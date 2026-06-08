@@ -55,8 +55,8 @@ ENGLISH_ORIGINAL_SUPERPOWERS_PLAN_PAGES = {
     DOCS / "superpowers" / "plans" / "2026-05-25-track-9-methodology-intelligence.md",
     DOCS / "superpowers" / "plans" / "2026-05-27-track-10-guided-questions-status-dashboard.md",
 }
-BUILDABLE_MARKDOWN_PAGE_COUNT = 128
-LOCALIZED_MARKDOWN_PAGE_COUNT = 121
+BUILDABLE_MARKDOWN_PAGE_COUNT = 129
+LOCALIZED_MARKDOWN_PAGE_COUNT = 122
 ENGLISH_ORIGINAL_MARKDOWN_PAGE_COUNT = 7
 
 
@@ -175,7 +175,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         runlog = RUNLOG.read_text(encoding="utf-8")
 
         self.assertLess(len(runlog), 50000)
-        self.assertIn("track10_task26_batch35_closed_through_m41_owner_closed_no_op_git_release_pr_b38_s2_m05_blocked_stale_cache", runlog)
+        self.assertIn("track10_task26_batch35_closed_through_m41_owner_closed_no_op_git_release_pr_b38_s2_m05_blocked_stale_cache_b38_s3_m09_design_only_no_real_project_execution", runlog)
         self.assertIn("Task 26 Batch 35 `T10-LIVE-M41`", runlog)
         self.assertIn("owner_closed_no_op_git_release_pr", runlog)
         self.assertIn("blocked_pending_explicit_cache_mutation_approval", runlog)
@@ -1169,6 +1169,188 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 self.assertIn("owner_closed_no_op_git_release_pr", document)
                 self.assertIn("B38-S2", document)
                 self.assertIn("blocked_pending_explicit_cache_mutation_approval", document)
+
+    def test_batch38_s3_real_project_pilot_design_is_source_owned(self):
+        plan = PLAN.read_text(encoding="utf-8")
+        runlog = RUNLOG.read_text(encoding="utf-8")
+        test_plan = TEST.read_text(encoding="utf-8")
+        evals = EVALS.read_text(encoding="utf-8")
+        requirements = REQUIREMENTS.read_text(encoding="utf-8")
+        agents = AGENTS.read_text(encoding="utf-8")
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        registry_en = SOURCE_REGISTRY_EN.read_text(encoding="utf-8")
+        track10 = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        track10_en = TRACK10_BACKLOG_EN.read_text(encoding="utf-8")
+        track10_plan = TRACK10_PLAN.read_text(encoding="utf-8")
+        nav = MKDOCS.read_text(encoding="utf-8")
+        check_docs = CHECK_DOCS.read_text(encoding="utf-8")
+        pilot = (PRODUCT_AGENT_OS / "real-project-pilot.md").read_text(encoding="utf-8")
+        pilot_en = (PRODUCT_AGENT_OS / "real-project-pilot.en.md").read_text(encoding="utf-8")
+        pilot_pair = pilot + "\n" + pilot_en
+        index_pair = "\n".join(
+            [
+                (PRODUCT_AGENT_OS / "index.md").read_text(encoding="utf-8"),
+                (PRODUCT_AGENT_OS / "index.en.md").read_text(encoding="utf-8"),
+            ]
+        )
+
+        for expected in [
+            "First-Run Operator Packet",
+            "Target Consent Matrix",
+            "Success Criteria And Metrics",
+            "Pilot Harness And Evidence Ledger",
+            "What Not To Expect",
+            "lifecycle_state",
+            "usage_mode",
+            "source_boundary",
+            "staged_artifact_route",
+            "verification_route",
+            "approval_boundary",
+            "rollback_remove_path",
+            "safe_next_action",
+            "web/frontend",
+            "backend/API",
+            "docs-only",
+            "AI/RAG",
+            "data/migration",
+            "PR/review",
+            "automation/release",
+            "time_to_first_route",
+            "route_accuracy",
+            "artifact_usefulness",
+            "methodology_selection_precision",
+            "owner_question_usefulness",
+            "false_positive_rate",
+            "evidence_sufficiency",
+            "read_only_pilot_commands",
+            "staged_output_locations",
+            "runlog_evidence_schema",
+            "screenshot_log_redaction",
+            "cleanup_steps",
+            "approval_checks",
+            "No live server launch",
+            "No browser automation",
+            "No provider/API calls",
+            "No canonical graph mutation",
+            "No git stage/commit/push/PR",
+        ]:
+            with self.subTest(pilot_page=expected):
+                self.assertIn(expected, pilot_pair)
+
+        public_forbidden_pattern = re.compile(
+            r"\b(Task|Track|Batch)\b|T[0-9]+-[A-Z0-9-]+|B[0-9]+-[A-Z]+-M[0-9]+"
+        )
+        for path in [
+            PRODUCT_AGENT_OS / "real-project-pilot.md",
+            PRODUCT_AGENT_OS / "real-project-pilot.en.md",
+        ]:
+            text = path.read_text(encoding="utf-8")
+            with self.subTest(public_forbidden_terms=path.name):
+                self.assertIsNone(public_forbidden_pattern.search(text), path)
+
+        for expected in [
+            "product-agent-os/real-project-pilot.md",
+            "Real-Project Pilot",
+        ]:
+            with self.subTest(nav_or_check_docs=expected):
+                self.assertTrue(expected in nav or expected in check_docs or expected in index_pair)
+
+        for expected in [
+            "Batch 38 S3 Pilot Design Addendum",
+            "B38-S3 Pilot design",
+            "B38-PROD-M06",
+            "B38-PROD-M07",
+            "B38-PROD-M08",
+            "B38-PROD-M09",
+            "b38_s3_real_project_pilot_design",
+            "first_run_operator_packet_present",
+            "expected_first_response_fields_present",
+            "staged_artifact_route_defined",
+            "approval_boundary_defined",
+            "rollback_remove_path_defined",
+            "what_not_to_expect_section_present",
+            "b38_s3_real_project_pilot_target_consent_matrix",
+            "pilot_target_count: 7",
+            "pilot_archetypes_covered: web_frontend, backend_api, docs_only, ai_rag, data_migration, pr_review, automation_release",
+            "owner_consent_required_per_target: true",
+            "target_repo_class_required_per_target: true",
+            "data_policy_required_per_target: true",
+            "allowed_commands_required_per_target: true",
+            "blocked_commands_required_per_target: true",
+            "evidence_destination_required_per_target: true",
+            "stop_condition_required_per_target: true",
+            "evidence_destination_policy: approved_stage_root_outside_target_workspace",
+            "production_data_access_allowed: false",
+            "external_writes_allowed: false",
+            "live_provider_calls_allowed: false",
+            "browser_automation_allowed_without_target_specific_approval: false",
+            "runtime_launch_allowed_without_target_specific_approval: false",
+            "target_workspace_mutation_allowed: false",
+            "pilot_success_metrics_defined",
+            "accepted_gap_rules_present",
+            "pilot_harness_evidence_ledger_present",
+            "pilot_execution_status: design_only_not_run",
+            "no_real_project_execution_performed",
+            "no_live_server_browser_provider_canonical_git",
+            "agent_read_only_audits_completed",
+        ]:
+            with self.subTest(track10=expected):
+                self.assertIn(expected, track10)
+                self.assertIn(expected, track10_en)
+
+        for expected in [
+            "`B38-PROD-M06` | P1 | Create first-run operator packet for real users.",
+            "`B38-PROD-M07` | P1 | Build real-project pilot target and consent matrix.",
+            "`B38-PROD-M08` | P1 | Define pilot success criteria and product metrics.",
+            "`B38-PROD-M09` | P1 | Prepare pilot harness and evidence ledger.",
+            "B38-S3 `B38-PROD-M06..M09`",
+            "M06 `implemented`",
+            "M07 `implemented`",
+            "M08 `implemented`",
+            "M09 `implemented`",
+        ]:
+            with self.subTest(plan=expected):
+                self.assertIn(expected, plan)
+
+        for task_id in ["M06", "M07", "M08", "M09"]:
+            rows = [
+                line for line in plan.splitlines() if line.startswith(f"| `B38-PROD-{task_id}` |")
+            ]
+            self.assertEqual(1, len(rows), task_id)
+            self.assertIn("`implemented`", rows[0])
+            self.assertNotIn("`planned`; `pending_execution_timestamp`", rows[0])
+
+        for expected in [
+            "Product-Agent OS Batch 38 S3 real-project pilot design",
+            "B38-S3 `B38-PROD-M06..M09`",
+            "pilot_target_count: 7",
+            "design_only_not_run",
+            "trust_level: \"high\"",
+        ]:
+            with self.subTest(registry=expected):
+                self.assertIn(expected, registry)
+                self.assertIn(expected, registry_en)
+
+        for expected in [
+            "B38-S3 real-project pilot design run",
+            "docs contract",
+            "strict MkDocs",
+            "real project pilot execution was not run",
+        ]:
+            with self.subTest(test_plan=expected):
+                self.assertIn(expected, test_plan)
+
+        for document_name, document in [
+            ("runlog", runlog),
+            ("evals", evals),
+            ("requirements", requirements),
+            ("agents", agents),
+            ("track10_plan", track10_plan),
+        ]:
+            with self.subTest(document=document_name):
+                self.assertIn("B38-S3", document)
+                self.assertIn("B38-PROD-M06..M09", document)
+                self.assertIn("no_real_project_execution_performed", document)
 
     def test_system_file_hygiene_audit_contract_is_documented_and_source_owned(self):
         documents = {
