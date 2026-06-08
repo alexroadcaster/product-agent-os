@@ -1506,6 +1506,128 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 self.assertIn("reviewed_gap_recorded", document)
                 self.assertIn("rollback", document)
 
+    def test_batch38_neural_flow_target_pilot_is_source_owned(self):
+        plan = PLAN.read_text(encoding="utf-8")
+        test_plan = TEST.read_text(encoding="utf-8")
+        runlog = RUNLOG.read_text(encoding="utf-8")
+        evals = EVALS.read_text(encoding="utf-8")
+        requirements = REQUIREMENTS.read_text(encoding="utf-8")
+        agents = AGENTS.read_text(encoding="utf-8")
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        registry_en = SOURCE_REGISTRY_EN.read_text(encoding="utf-8")
+        track10 = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        track10_en = TRACK10_BACKLOG_EN.read_text(encoding="utf-8")
+        track10_plan = TRACK10_PLAN.read_text(encoding="utf-8")
+        pilot = (PRODUCT_AGENT_OS / "real-project-pilot.md").read_text(encoding="utf-8")
+        pilot_en = (PRODUCT_AGENT_OS / "real-project-pilot.en.md").read_text(
+            encoding="utf-8"
+        )
+        pilot_pair = pilot + "\n" + pilot_en
+
+        for expected in [
+            "B38-PILOT-NF01",
+            "Neural_Flow",
+            "Target-Specific Pilot Evidence",
+            "source_policy_status",
+            "blocked",
+            "target_workspace_mutation_performed",
+            "false",
+            "target_apply_status",
+            "staged_evidence_root",
+            "tmp/neural-flow-product-agent-os-pilot-20260608-191510",
+        ]:
+            with self.subTest(pilot_page=expected):
+                self.assertIn(expected, pilot_pair)
+
+        for expected in [
+            "Batch 38 Target-Specific Neural_Flow Pilot Execution Addendum",
+            "b38_pilot_nf01_read_only_pilot_executed_blocked_on_target_source_policy",
+            "target_file_count: 13",
+            "target_control_plane_status: `applicable_missing`",
+            "runtime_usage_mode: `legacy_onboarding`",
+            "initial_runtime_usage_mode: `pr_review`",
+            "route_quality_note: `clean_docs_only_intent_routes_legacy_onboarding`",
+            "methodology_recommendation_p0: `quality-strategy.md`",
+            "methodology_recommendation_p1: `architecture-overview.md`",
+            "runtime_clean_hint_status: `blocked`",
+            "source_policy_status: `blocked`",
+            "status_dashboard_stage_validated: true",
+            "status_dashboard_aggregation_status: `incomplete`",
+            "project_graph_stage_validated: true",
+            "project_graph_node_count: 481",
+            "project_graph_edge_count: 480",
+            "project_graph_observation_count: 961",
+            "staged_control_plane_template_status: `blank_template_review_required`",
+            "staged_hooks_activation_boundary: `exact_owner_approval_required_before_apply`",
+            "system_file_hygiene_secret_like_findings: 0",
+            "citation_registry_rows: 277",
+            "target_apply_blocked_until_source_policy_cleanup: true",
+            "target_workspace_mutation_performed: false",
+            "live_server_browser_provider_canonical_git_performed: false",
+        ]:
+            with self.subTest(track10=expected):
+                self.assertIn(expected, track10)
+                self.assertIn(expected, track10_en)
+
+        for expected in [
+            "Product-Agent OS B38-PILOT-NF01 Neural_Flow target-specific pilot",
+            "internal target-specific pilot evidence",
+            "usage_mode: legacy_onboarding",
+            "source_policy_status: blocked",
+            "false `pr_review` route",
+            "dashboard aggregation is incomplete",
+            "staged hooks require exact owner approval",
+            "No target workspace mutation",
+            "trust_level: \"high\"",
+        ]:
+            with self.subTest(registry=expected):
+                self.assertIn(expected, registry)
+                self.assertIn(expected, registry_en)
+
+        for expected in [
+            "B38-PILOT-NF01 `Neural_Flow` target pilot run",
+            "detect_project.py",
+            "run_methodology_audit.py",
+            "run_codex_runtime_runner.py",
+            "render_infrastructure.py --stage",
+            "scan_project_code_graph.py --stage",
+            "validate_source_policy.py",
+            "source_policy_status: blocked",
+            "false `pr_review` route",
+            "481 nodes",
+            "Dashboard aggregation remains incomplete",
+            "staged hooks require exact approval",
+            "secret_like_findings: 0",
+            "No target mutation",
+        ]:
+            with self.subTest(test_plan=expected):
+                self.assertIn(expected, test_plan)
+
+        for expected in [
+            "B38-PILOT-NF01",
+            "read_only_pilot_executed_blocked_on_target_source_policy",
+            "usage_mode: legacy_onboarding",
+            "source_policy_status: blocked",
+            "staged outputs validated",
+            "target_workspace_mutation false",
+        ]:
+            with self.subTest(track10_plan=expected):
+                self.assertIn(expected, track10_plan)
+
+        for document_name, document in [
+            ("plan", plan),
+            ("runlog", runlog),
+            ("evals", evals),
+            ("requirements", requirements),
+            ("agents", agents),
+        ]:
+            with self.subTest(document=document_name):
+                self.assertIn("B38-PILOT-NF01", document)
+                self.assertIn("Neural_Flow", document)
+                self.assertIn("source_policy_status", document)
+                self.assertIn("blocked", document)
+                self.assertNotIn("production-ready target pilot", document)
+
     def test_system_file_hygiene_audit_contract_is_documented_and_source_owned(self):
         documents = {
             "root_readme": ROOT_README.read_text(encoding="utf-8"),

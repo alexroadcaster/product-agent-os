@@ -109,6 +109,23 @@ Stop immediately on missing owner approval, unresolved path outside the approved
 - No external writes or active automation.
 - No git stage/commit/push/PR.
 
+## Target-Specific Pilot Evidence
+
+Первый owner-approved docs-only pilot addendum `B38-PILOT-NF01` выполнен read-only на target label `Neural_Flow`. Durable docs не сохраняют absolute user-specific target path; evidence хранится как workspace-local staged output.
+
+| Field | Evidence |
+| --- | --- |
+| `target_class` | docs-only / legacy onboarding |
+| `staged_evidence_root` | `tmp/neural-flow-product-agent-os-pilot-20260608-191510` |
+| `usage_mode` | `legacy_onboarding` после clean docs-only intent |
+| `complexity_profile` | `guided-small` |
+| `source_policy_status` | `blocked` |
+| `staged_outputs` | infrastructure, status dashboard and project graph validated outside the target |
+| `target_apply_status` | blocked until target source-policy/control-plane cleanup |
+| `target_workspace_mutation_performed` | false |
+
+Что это доказывает: Product-Agent OS после local cache refresh способен выполнить read-only discovery, methodology audit, runtime routing, staged artifact rendering and static content checks на реальном docs-only target. Что это не доказывает: production readiness, public/team release readiness, target apply safety или product success. Следующий безопасный target step: добавить или принять gaps для `Source status`, source registry/control-plane ownership и smallest local verification contract в самом target.
+
 ## Verification
 
 For docs-only pilot design changes, use docs contract tests, documentation structure checks, strict MkDocs when navigation/search/sitemap changes and diff hygiene. For any future real pilot execution, add target-specific command evidence, owner approval, rollback proof and redaction review before claiming readiness.

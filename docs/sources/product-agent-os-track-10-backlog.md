@@ -365,6 +365,63 @@ agent_team_design_packet_present:
 | `reviewed_gap_recorded` | `B38-PROD-M10` security/privacy/supply-chain readiness audit | Read-only local audit completed for checked-in Product-Agent OS package source, docs, templates, fixtures, README, plugin manifest and MCP declaration. Current evidence: `git status --short` was clean before edits; tracked plugin source count `586`; `python plugins\product-agent-os\scripts\validate_source_policy.py plugins\product-agent-os` returned `status: ok`; `python plugins\product-agent-os\scripts\validate_system_file_hygiene.py . --trigger B38-S4-M10-security-privacy-supply-chain-readiness` returned `status: blocked`, `secret_like_findings: 6`, `no_secrets_status: blocked`, `active_schedule_markers: 0` and `schedule_status: not_created`; `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible`. Manual review records the secret-like hits as policy/field false positives or synthetic redaction fixture markers, not raw secret values, but M10 remains not security-certified until those findings are fixed or explicitly accepted. Supply-chain review records approval-bound unpinned `npx -y @upstash/context7-mcp` and synthetic non-install fixture dependencies as accepted gaps for local-only use, not public release closure. |
 | `implemented` | `B38-PROD-M11` rollback, removal and cache-recovery procedure | `docs/product-agent-os/real-project-pilot.md` and `.en.md` document `pre_rollback_read_only_inspection`, `rollback_evidence_preservation`, `installed_plugin_remove_path`, `stale_cache_restore_path`, `cache_clear_recovery_path`, `disable_hooks_automations_if_ever_approved`, `post_restore_verification` and stop conditions. The procedure is documented before production pilots, but no cache clear, cache restore, destructive delete, global config mutation, hook/automation activation or disable, external write, provider/API call, live server/browser action, canonical mutation or git action was performed. |
 
+## Batch 38 Target-Specific Neural_Flow Pilot Execution Addendum
+
+`B38-PILOT-NF01` records the first owner-approved, read-only Product-Agent OS pilot on a real docs-only target. The target label is `Neural_Flow`; durable source docs intentionally avoid absolute user-specific target paths.
+
+- batch_status: `b38_pilot_nf01_read_only_pilot_executed_blocked_on_target_source_policy`.
+- target_label: `Neural_Flow`.
+- target_class: `docs_only`.
+- target_git_present: false.
+- target_file_count: 13.
+- target_control_plane_status: `applicable_missing`.
+- target_agents_md_present: false.
+- complexity_profile: `guided-small`.
+- runtime_usage_mode: `legacy_onboarding`.
+- initial_runtime_usage_mode: `pr_review`.
+- route_quality_note: `clean_docs_only_intent_routes_legacy_onboarding`; initial pilot wording created a false `pr_review` route without a diff source.
+- methodology_maturity_selected: `team`.
+- methodology_complexity_selected: `standard`.
+- methodology_recommendation_p0: `quality-strategy.md`.
+- methodology_recommendation_p1: `architecture-overview.md`.
+- runtime_clean_hint_status: `blocked`.
+- source_policy_status: `blocked`.
+- approval_status: `approved`.
+- runtime_files_touched: [].
+- runtime_files_proposed: [].
+- staged_evidence_root: `tmp/neural-flow-product-agent-os-pilot-20260608-191510`.
+- infrastructure_stage_status: `needs_approval`.
+- status_dashboard_stage_validated: true.
+- status_dashboard_aggregation_status: `incomplete`; adjacent infrastructure and project-graph manifests were not consolidated into the dashboard snapshot.
+- project_graph_stage_validated: true.
+- project_graph_node_count: 481.
+- project_graph_edge_count: 480.
+- project_graph_observation_count: 961.
+- staged_control_plane_template_status: `blank_template_review_required`.
+- staged_hooks_activation_boundary: `exact_owner_approval_required_before_apply`.
+- system_file_hygiene_status: `review_required`.
+- system_file_hygiene_errors: 0.
+- system_file_hygiene_secret_like_findings: 0.
+- static_heading_jumps: 0.
+- citation_registry_rows: 277.
+- architecture_v2_citation_missing_definitions: 0.
+- architecture_v2_unverified_markers: 0.
+- issues_section_2_checked: `19/19`.
+- issues_section_6_checked: `4/4`.
+- target_apply_blocked_until_source_policy_cleanup: true.
+- target_workspace_mutation_performed: false.
+- live_server_browser_provider_canonical_git_performed: false.
+
+agent_team_design_packet_present:
+
+- roles_have_disjoint_ownership: Product Manager owns pilot value/next decision; Architect owns route and staged artifact interpretation; Tester owns command evidence and content checks; Docs Maintainer owns target source-policy cleanup proposal.
+- handoff_packet_fields_present: sources/context used, assumptions, verification evidence, files proposed, open risks, stop reason and recommended next role.
+- stop_conditions_present: stop on source-policy blocked, missing target control plane, request to apply generated files to target, live/browser/provider/canonical/git/external action request, target secrets/private data in evidence or unsupported readiness claim.
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `read_only_pilot_executed_blocked_on_target_source_policy` | `B38-PILOT-NF01` target-specific docs-only pilot | `detect_project.py` found a docs/research target with no git repository, no `AGENTS.md`, 13 files, `complexity_profile: guided-small` and `usage_mode.primary: legacy_onboarding`. `run_methodology_audit.py --json` returned `status: ok` and recommended P0 `quality-strategy.md` plus P1 `architecture-overview.md`. The initial runtime hint routed as `pr_review`; the clean docs-only intent routed correctly to `legacy_onboarding` with high confidence but exited blocked on `source_policy:blocked`. Staged infrastructure, status dashboard and project graph outputs validated outside the target, but dashboard aggregation is incomplete, staged root control-plane docs are blank templates that require review, and staged hooks remain activation-capable unless exact owner approval is given. Target source policy is blocked by missing `Source status`/registry metadata in target plan/spec docs and missing control-plane artifacts. No target workspace mutation, `.codex` target write, live server, browser automation, provider/API call, canonical graph mutation, external publication or git action was performed. |
+
 ## Deferred
 
 | Status | Item | Reason |

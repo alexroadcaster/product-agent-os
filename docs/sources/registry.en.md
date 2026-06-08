@@ -151,6 +151,18 @@ verification_status: "Backed by two read-only subagent audits, source-policy val
 ```
 
 ```yaml
+title: "Product-Agent OS B38-PILOT-NF01 Neural_Flow target-specific pilot"
+url: "docs/product-agent-os/real-project-pilot.md; docs/product-agent-os/real-project-pilot.en.md; docs/sources/product-agent-os-track-10-backlog.md; docs/sources/product-agent-os-track-10-backlog.en.md; docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md; tmp/neural-flow-product-agent-os-pilot-20260608-191510"
+type: "internal target-specific pilot evidence"
+source_status: "project-authored"
+checked_at: "2026-06-08"
+summary: "B38-PILOT-NF01 records the first owner-approved read-only Product-Agent OS pilot on the docs-only `Neural_Flow` target."
+relevance: "Separates actual target-pilot evidence from the B38-S3 design-only packet. The pilot validates route accuracy and staged-output generation on a real docs-only target while preserving target apply, live/browser/provider/canonical/external/git actions as blocked."
+trust_level: "high"
+verification_status: "Backed by current-run target inventory, Product-Agent OS discovery, methodology audit, runtime runner, staged infrastructure/status-dashboard/project-graph rendering, target source-policy check, system-file hygiene check, sidecar agent evidence review and static content checks. Evidence root is `tmp/neural-flow-product-agent-os-pilot-20260608-191510`. Current findings: target has 13 files, no git repo, no AGENTS.md, `complexity_profile: guided-small`, `usage_mode: legacy_onboarding` after clean docs-only intent, initial runtime wording produced a false `pr_review` route, staged outputs validated outside the target, project graph reports 481 nodes, 480 edges and 961 observations, `source_policy_status: blocked`, dashboard aggregation is incomplete, staged root control-plane docs are blank templates, staged hooks require exact owner approval before apply, system hygiene `review_required` with `secret_like_findings: 0`, citation registry rows 277, no heading jumps, no missing used citation definitions and no unverified markers. No target workspace mutation, target `.codex` write, live server, browser automation, provider/live external model/API call, canonical graph mutation, external publication or git action was performed."
+```
+
+```yaml
 title: "Codex web / cloud"
 url: "https://developers.openai.com/codex/cloud"
 type: "documentation"
