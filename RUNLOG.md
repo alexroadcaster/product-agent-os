@@ -6,7 +6,7 @@ Generated at: 2026-06-07
 
 ## Current Lifecycle Marker
 
-`track10_task26_batch35_closed_through_m41_owner_closed_no_op_git_release_pr_b38_s2_m05_cache_refresh_completed_b38_s3_m09_design_only_no_real_project_execution_b38_s4_m11_safety_rollback_gap_recorded`
+`track10_task26_batch35_closed_through_m41_owner_closed_no_op_git_release_pr_b38_s2_m05_cache_refresh_completed_b38_s3_m09_design_only_no_real_project_execution_b38_s4_m11_safety_rollback_gap_recorded_b39_planned_before_b38_m12`
 
 ## Purpose
 
@@ -45,9 +45,11 @@ B38-S4 safety and rollback run: `B38-PROD-M10..M11` is current. M10 is `reviewed
 
 B38-PILOT-NF01 target-specific pilot run: owner approval selected `Neural_Flow` as a docs-only/internal R&D target. The pilot performed read-only inventory and Product-Agent OS staged-output commands only: discovery found 13 target files, no git repo, no `AGENTS.md`, `complexity_profile: guided-small` and `usage_mode.primary: legacy_onboarding`; methodology audit selected team/standard and recommended P0 `quality-strategy.md` plus P1 `architecture-overview.md`; clean-hint runtime runner routed `legacy_onboarding` with high confidence but blocked on `source_policy:blocked`; the initial wording misrouted as `pr_review` without a diff source. Staged infrastructure, status dashboard and project-code-graph outputs validated under `tmp/neural-flow-product-agent-os-pilot-20260608-191510`, with project graph 481 nodes, 480 edges and 961 observations. Residual evidence-quality risks: dashboard aggregation is incomplete, staged root control-plane docs are blank templates, staged hooks require exact owner approval before apply and local absolute path material must not enter durable target docs. Target source policy remains blocked by missing `Source status`/registry metadata in target plan/spec docs and owner/control-plane gaps. Static content checks found no heading jumps, all used `architecture-v2.md` citation ids defined, 277 citation registry rows, 0 `[?]`/unverified markers, `issues.md` section 2 at 19/19 checked and section 6 at 4/4 checked. No target workspace mutation, `.codex` target write, live server, browser automation, provider/API call, canonical graph mutation, external publication or git action was performed.
 
+Batch 39 planning sync: the Track 10 plan now contains `B39-TEST-M01..M36` plus slices `B39-S1..B39-S4` for Product-Agent OS functional pilot testing and automatic result collection before `B38-PROD-M12`. The planned work covers source/cache/session inventory, pilot manifest schema, command-result collector, mutation proof, redaction, refreshed-session visibility, rollup, dashboard aggregation, failure taxonomy, scorecard gates, target archetypes, functional regression, repeatability, source-owned closure and no-unapproved-actions proof. This is planning evidence only; no Batch 39 implementation, target mutation, live/browser/provider/canonical/external/git action was performed.
+
 ## Latest Completed Slice
 
-B38-PILOT-NF01 target-specific docs-only pilot is the latest current handoff. It is a read-only execution addendum, not a production-readiness or target-apply claim.
+Batch 39 planning sync is the latest current handoff. B38-PILOT-NF01 remains the latest executed target pilot and is a read-only execution addendum, not a production-readiness or target-apply claim.
 
 - M01 is owner-closed as `owner_closed_no_op_git_release_pr`; future git write requires fresh preflight and exact approval.
 - M02 package source digest `7d5a7634d1223f72ccdd1edcd24fddeb8bbdcc38d36d73ab1d002f352b06dcbb` covers sorted tracked plugin files with per-file SHA-256 input.
@@ -57,8 +59,9 @@ B38-PILOT-NF01 target-specific docs-only pilot is the latest current handoff. It
 - M10 records `reviewed_gap_recorded`: source policy OK, system-file hygiene blocked with known findings, MCP/synthetic fixture supply-chain gaps accepted for local-only use, and no release security certification claim.
 - M11 documents rollback/remove/cache recovery before production pilots; no cache/global config mutation was performed.
 - B38-PILOT-NF01 executed read-only against `Neural_Flow`; staged evidence exists under `tmp/neural-flow-product-agent-os-pilot-20260608-191510`; target apply remains blocked by `source_policy_status: blocked`.
+- Batch 39 is planned as `B39-TEST-M01..M36` with slices `B39-S1..S4`; next executable slice is `B39-S1` result collection foundation.
 - Verification evidence: B38-S4 read-only agent audits completed; `validate_source_policy.py` returned `status: ok`; `validate_system_file_hygiene.py` returned `status: blocked`; `validate_codex_compatibility.py` returned `status: compatible`; B38-PILOT-NF01 discovery/methodology/runtime/stage/static checks ran as recorded in `TEST.md`.
-- Residual boundary: no remaining M05 cache-refresh blocker; target source-policy/control-plane cleanup is the next safe pilot follow-up; release/publication, live runtime, browser automation, provider call, canonical graph mutation, cache/global config mutation, target apply and git write still require exact approval.
+- Residual boundary: no remaining M05 cache-refresh blocker; Batch 39 is planned but not executed; target source-policy/control-plane cleanup remains optional; release/publication, live runtime, browser automation, provider call, canonical graph mutation, cache/global config mutation, target apply and git write still require exact approval.
 
 Batch 37 S5 docs/source closure work is complete through `T10-PLAN-M11..M12`, `T10-PLAN-M14..M16` and `T10-PLAN-M19` under `B37-S5`.
 
