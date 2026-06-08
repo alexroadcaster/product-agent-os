@@ -403,6 +403,53 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         self.assertIn("done_through_s3", backlog)
         self.assertIn("Product-Agent OS Batch 37 S3 task-matrix validator, eval and completion-report guard", registry)
 
+    def test_track10_batch37_s4_skill_routing_discovery_and_control_are_recorded(self):
+        track10_plan = TRACK10_PLAN.read_text(encoding="utf-8")
+        plan = PLAN.read_text(encoding="utf-8")
+        test_plan = TEST.read_text(encoding="utf-8")
+        runlog = RUNLOG.read_text(encoding="utf-8")
+        backlog = (ROOT / "docs" / "sources" / "product-agent-os-track-10-backlog.md").read_text(
+            encoding="utf-8"
+        )
+        registry = (ROOT / "docs" / "sources" / "registry.md").read_text(encoding="utf-8")
+
+        track10_terms = [
+            "B37-S4 implementation evidence",
+            "B37-S4 implemented scope: `T10-PLAN-M07..M09`, `T10-PLAN-M20`",
+            "task_matrix_planner_routing_contract_present",
+            "task_matrix_agent_handoff_contract_present",
+            "task_matrix_discovery_signal_contract_present",
+            "task_matrix_planning_control_governance_present",
+            "task-matrix-plan.md",
+            "present_unverified",
+            "reminder-only hooks",
+            "hard gates live in validator/tests/skills",
+            "| `T10-PLAN-M07` | 37 |",
+            "| `T10-PLAN-M08` | 37 |",
+            "| `T10-PLAN-M09` | 37 |",
+            "| `T10-PLAN-M20` | 37 |",
+        ]
+        for expected in track10_terms:
+            with self.subTest(track10_plan=expected):
+                self.assertIn(expected, track10_plan)
+
+        for expected in [
+            "B37-S4",
+            "T10-PLAN-M07..M09",
+            "T10-PLAN-M20",
+            "task_matrix_planner_routing_contract_present",
+            "task_matrix_agent_handoff_contract_present",
+            "task_matrix_discovery_signal_contract_present",
+            "task_matrix_planning_control_governance_present",
+        ]:
+            with self.subTest(control_plane=expected):
+                self.assertIn(expected, plan)
+                self.assertIn(expected, test_plan)
+                self.assertIn(expected, runlog)
+
+        self.assertIn("done_through_s4", backlog)
+        self.assertIn("Product-Agent OS Batch 37 S4 skill routing, discovery and planning control", registry)
+
     def test_root_agents_is_compact_durable_rule_contract(self):
         agents = AGENTS.read_text(encoding="utf-8")
 

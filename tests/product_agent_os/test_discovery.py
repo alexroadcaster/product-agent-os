@@ -1259,6 +1259,31 @@ class DiscoveryTest(unittest.TestCase):
         self.assertIn("Codex workflow signal exists", applicability["reason"])
         self.assertIn("detection alone does not prove safe activation", applicability["residual_risk"])
 
+    def test_task_matrix_plan_is_codex_agentic_planning_signal_not_completion_evidence(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            workspace = Path(tmpdir)
+            self._write_files(
+                workspace,
+                {
+                    ".codex/artifact-templates/task-matrix-plan.md": "# Task matrix plan\n",
+                },
+            )
+
+            result = analyze_workspace(workspace)
+
+        signals = result["methodology_signals"]
+        self.assertTrue(signals["codex_agentic_workflow"])
+        self.assertIn(
+            "codex_agentic_workflow",
+            result["route_inputs"]["workspace_signals"]["methodology_signals"],
+        )
+        applicability = result["methodology_applicability"]["codex_agentic_workflow"]
+        self.assertEqual(applicability["status"], "present_unverified")
+        self.assertNotEqual(applicability["status"], "present_verified")
+        self.assertIn("task-matrix-plan.md", applicability["evidence"])
+        self.assertIn("task-matrix-plan.md", applicability["required_evidence"])
+        self.assertIn("does not prove completion", applicability["residual_risk"])
+
     def test_agent_skill_metrics_loop_readiness_applies_only_to_real_agentic_surfaces(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             workspace = Path(tmpdir)

@@ -643,6 +643,31 @@ class MethodologyAuditContractTest(unittest.TestCase):
                 self.assertEqual(recommendation["artifact"], artifact)
                 self.assertIn("approval", recommendation["approval_boundary"].lower())
 
+    def test_task_matrix_plan_is_present_unverified_codex_planning_evidence(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / ".codex" / "artifact-templates").mkdir(parents=True)
+            (root / ".codex" / "artifact-templates" / "task-matrix-plan.md").write_text(
+                "# Task matrix plan\n",
+                encoding="utf-8",
+            )
+            result = build_methodology_audit(
+                root,
+                intent_hint="Codex agentic multi-slice task matrix planning with completion report",
+            )
+
+        self.assertNotEqual(self._domain_status(result, "codex_agentic_workflow"), "not_applicable")
+        recommendation = self._recommendation_by_gate(result, "task_matrix_planning_evidence_present")
+        self.assertEqual(recommendation["priority"], "P1_high_risk")
+        self.assertEqual(recommendation["artifact"], "task-matrix-plan.md")
+        self.assertIn("present_unverified", recommendation["residual_risk"])
+        self.assertIn("does not prove completion", recommendation["residual_risk"])
+        self.assertIn("source/evidence checks", recommendation["safe_next_action"])
+        self.assertNotIn("ready", recommendation["safe_next_action"].lower())
+        self.assertNotIn("present_verified", str(result))
+
     def test_codex_agentic_workflow_false_positive_intents_are_not_applicable(self):
         from product_agent_os.methodology_audit import build_methodology_audit
 

@@ -58,6 +58,7 @@ REQUIRED_BEHAVIORAL_CASES = {
     "fresh-context-handoff",
     "evidence-before-completion",
     "task-matrix-validator-and-completion-report",
+    "task-matrix-agent-handoff-and-planning-control",
     "finish-options",
     "codex-only-compatibility",
     "cost-model-budget",

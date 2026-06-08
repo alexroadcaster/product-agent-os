@@ -709,6 +709,8 @@ CODEX_AGENTIC_INTENT_TERMS = {
     "plugin",
     "skill",
     "subagent",
+    "task matrix",
+    "task-matrix",
     "task packet",
     "tool call",
     "worktree",
@@ -1201,6 +1203,7 @@ def _codex_agentic_signal_evidence(files: set[str], directories: set[str]) -> li
         "hook-governance.md",
         "skill-promotion-record.md",
         "agent-eval-workflow.md",
+        "task-matrix-plan.md",
     }
     directory_prefixes = (
         ".agents/",
@@ -1233,6 +1236,7 @@ def _codex_agentic_signal_evidence(files: set[str], directories: set[str]) -> li
         or path.endswith("/hooks.json")
         or path.endswith("/config.toml")
         or path.endswith("/agent-task-packet.md")
+        or path.endswith("/task-matrix-plan.md")
         or path.endswith("/handoff-contract.md")
         or path.endswith("/worktree-ownership.md")
     ]
@@ -2949,6 +2953,22 @@ def _codex_agentic_workflow_recommendations(
             "Read-only discovery evidence is missing before Codex workflow decisions.",
             ["files inspected", "signals observed", "assumptions", "unknowns", "safe next action"],
             residual="Implementation can start from stale or incomplete repository context.",
+        )
+    if _artifact_present(files, "task-matrix-plan.md") or _mentions_any(intent, {"task matrix", "task-matrix"}):
+        add(
+            "task_matrix_planning_evidence_present",
+            "P1_high_risk",
+            "task-matrix-plan.md",
+            "Task matrix planning evidence is visible for Codex-agentic work.",
+            ["task scope", "dependencies", "acceptance criteria", "verification evidence", "completion report"],
+            residual=(
+                "task-matrix-plan.md is present_unverified planning evidence; detection alone "
+                "does not prove completion or implementation evidence."
+            ),
+            next_action=(
+                "Use task-matrix-plan.md as planning context only, then run source/evidence checks "
+                "before completion claims."
+            ),
         )
     if _mentions_any(intent, {"model", "reasoning", "agents sdk", "codex app", "cli", "ide extension"}):
         add(

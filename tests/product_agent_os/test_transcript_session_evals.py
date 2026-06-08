@@ -30,7 +30,7 @@ class TranscriptSessionEvalRunnerTest(unittest.TestCase):
 
         self.assertEqual(report["status"], "ok")
         self.assertTrue(report["ok"])
-        self.assertGreaterEqual(report["session_count"], 18)
+        self.assertGreaterEqual(report["session_count"], 19)
         self.assertEqual(report["summary"]["failed"], 0)
         cases = {item["behavioral_case"] for item in report["results"]}
         for case in [
@@ -52,6 +52,7 @@ class TranscriptSessionEvalRunnerTest(unittest.TestCase):
             "agent-skill-metrics-approval-required-modernization",
             "agent-skill-metrics-automation-candidate-only",
             "task-matrix-validator-and-completion-report",
+            "task-matrix-agent-handoff-and-planning-control",
         ]:
             self.assertIn(case, cases)
 

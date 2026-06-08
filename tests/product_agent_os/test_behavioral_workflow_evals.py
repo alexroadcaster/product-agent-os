@@ -19,7 +19,7 @@ class BehavioralWorkflowEvalTest(unittest.TestCase):
         report = validate_behavioral_eval_template(path)
 
         self.assertEqual(report["status"], "ok")
-        self.assertEqual(report["case_count"], 58)
+        self.assertEqual(report["case_count"], 59)
         self.assertEqual(report["missing_required_cases"], [])
         self.assertEqual(report["unsafe_cases"], [])
         self.assertTrue(report["codex_only"])
@@ -193,6 +193,37 @@ class BehavioralWorkflowEvalTest(unittest.TestCase):
             "inspection-only completion claim",
         ]:
             self.assertIn(forbidden, task_matrix["forbidden"])
+
+        task_matrix_handoff = cases["task-matrix-agent-handoff-and-planning-control"]
+        self.assertEqual(task_matrix_handoff["expected"]["route"], "agent-team-designer")
+        self.assertIn("task-matrix-plan.md", task_matrix_handoff["expected"]["minimum_artifacts"])
+        self.assertIn("agent-task-packet.md", task_matrix_handoff["expected"]["minimum_artifacts"])
+        for expected in [
+            "task rows",
+            "fresh-context handoff",
+            "complete task context",
+            "owned files",
+            "forbidden files",
+            "dependency status",
+            "expected evidence",
+            "task_matrix_planner_routing_contract_present",
+            "task_matrix_agent_handoff_contract_present",
+            "task_matrix_discovery_signal_contract_present",
+            "task_matrix_planning_control_governance_present",
+            "present_unverified",
+            "hard gates live in validator/tests/skills",
+            "reminder-only hooks",
+        ]:
+            self.assertIn(expected, task_matrix_handoff["expected"]["required_fields"])
+        for forbidden in [
+            "auto subagent dispatch",
+            "parallel work with overlapping ownership",
+            "raw chat history as context",
+            "hook reminder proves readiness",
+            "completion claim from task-matrix detection",
+            "active automation without approval",
+        ]:
+            self.assertIn(forbidden, task_matrix_handoff["forbidden"])
 
         broad_rewrite = cases["bug-rescue-no-broad-rewrite"]
         self.assertEqual(broad_rewrite["expected"]["usage_mode"], "bug_rescue")

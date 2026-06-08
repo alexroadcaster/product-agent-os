@@ -55,6 +55,18 @@ verification_status: "Backed by current-run verification: validator tests 22 tes
 ```
 
 ```yaml
+title: "Product-Agent OS Batch 37 S4 skill routing, discovery and planning control"
+url: "plugins/product-agent-os/skills/implementation-planner/SKILL.md; plugins/product-agent-os/skills/agent-team-designer/SKILL.md; plugins/product-agent-os/skills/references/handoff-contract.md; plugins/product-agent-os/assets/templates/artifact-templates/agent-task-packet.md; plugins/product-agent-os/scripts/product_agent_os/discovery.py; plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py; plugins/product-agent-os/scripts/product_agent_os/methodology_synthesis.py; plugins/product-agent-os/assets/templates/evals/behavioral-workflows.json; plugins/product-agent-os/assets/eval-fixtures/transcripts/product-agent-os-synthetic-sessions.json; plugins/product-agent-os/scripts/run_fixture_eval.py; docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; PLAN.md; TEST.md; RUNLOG.md"
+type: "internal implementation planning evidence"
+source_status: "project-authored"
+checked_at: "2026-06-08"
+summary: "B37-S4 implements `T10-PLAN-M07..M09` and `T10-PLAN-M20` for task-matrix planner routing, task-row-to-handoff mapping, discovery/audit/synthesis planning signals and planning control governance."
+relevance: "Makes `task-matrix-plan.md` a staged planner output and Codex-agentic planning signal while preserving the boundary that detection remains `present_unverified`, hard gates live in validator/tests/skills, hooks are reminder-only unless approved and no completion/readiness claim can come from hook reminders or matrix detection alone."
+trust_level: "high"
+verification_status: "Backed by current-run verification: lifecycle/discovery/audit/synthesis focused tests ran 176 tests with OK; behavioral/transcript/fixture focused tests ran 23 tests with OK; full unittest ran 835 tests with OK; fixture eval exited 0 with renderer_file_count 195 and the S4 task_matrix_* checks true; transcript eval exited 0 with 19 sessions and 0 failures; Codex compatibility returned status compatible; docs check passed; git diff hygiene exited 0. B37-S4 does not activate hooks, recurring automation, MCP, Agents SDK runner, live server/browser automation, provider/live external model/API endpoints, canonical graph mutation or git stage/commit/push/PR."
+```
+
+```yaml
 title: "Codex web / cloud"
 url: "https://developers.openai.com/codex/cloud"
 type: "documentation"

@@ -332,6 +332,10 @@ class FixtureEvalRunnerTest(unittest.TestCase):
         self.assertTrue(results["python-app"]["expected_checks"]["task_matrix_invalid_implemented_rows_blocked"])
         self.assertTrue(results["python-app"]["expected_checks"]["task_matrix_detection_not_completion"])
         self.assertTrue(results["python-app"]["expected_checks"]["task_matrix_summary_table_not_validator_target"])
+        self.assertTrue(results["python-app"]["expected_checks"]["task_matrix_planner_routing_contract_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["task_matrix_agent_handoff_contract_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["task_matrix_discovery_signal_contract_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["task_matrix_planning_control_governance_present"])
         self.assertEqual(results["python-app"]["renderer_file_count"], 195)
         for check_name in [
             "methodology_catalog_contract_present",

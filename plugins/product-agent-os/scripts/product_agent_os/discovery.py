@@ -484,6 +484,7 @@ def _has_codex_agentic_workflow_signal(lowered_files: set[str]) -> bool:
         "hook-governance.md",
         "skill-promotion-record.md",
         "agent-eval-workflow.md",
+        "task-matrix-plan.md",
     }
     directory_prefixes = (
         ".agents/",
@@ -511,6 +512,8 @@ def _has_codex_agentic_workflow_signal(lowered_files: set[str]) -> bool:
         "worktree",
         "handoff",
         "task packet",
+        "task matrix",
+        "task-matrix",
     )
     return any(
         path in exact_files
@@ -520,6 +523,7 @@ def _has_codex_agentic_workflow_signal(lowered_files: set[str]) -> bool:
         or path.endswith("/hooks.json")
         or path.endswith("/config.toml")
         or path.endswith("/agent-task-packet.md")
+        or path.endswith("/task-matrix-plan.md")
         or path.endswith("/handoff-contract.md")
         or path.endswith("/worktree-ownership.md")
         or any(term in path for term in terms)
@@ -3417,10 +3421,16 @@ def _methodology_applicability(
         "codex_agentic_workflow": _applicability_packet(
             "present_unverified" if signals.get("codex_agentic_workflow") else "not_applicable",
             "Codex workflow signal exists" if signals.get("codex_agentic_workflow") else "no Codex workflow signal",
-            _signal_evidence(signals, "codex_agentic_workflow"),
-            ["AGENTS.md, runtime routing, approval boundary, handoff, MCP/hook/automation review"],
+            _signal_evidence(signals, "codex_agentic_workflow") + _task_matrix_plan_evidence(files),
+            [
+                "AGENTS.md, runtime routing, approval boundary, handoff, MCP/hook/automation review",
+                "task-matrix-plan.md",
+            ],
             "product-agent operator",
-            "detection alone does not prove safe activation, owner approval or current verification",
+            (
+                "detection alone does not prove safe activation, owner approval or current verification; "
+                "detection alone does not prove completion"
+            ),
         ),
         "agent_skill_metrics_loop": _applicability_packet(
             "present_unverified" if signals.get("agent_skill_metrics_loop") else "not_applicable",
@@ -3492,6 +3502,13 @@ def _test_eval_evidence(signals: dict[str, bool], profile: dict[str, Any]) -> li
     if signals.get("quality_testing_evals"):
         evidence.append("quality_testing_evals")
     return evidence
+
+
+def _task_matrix_plan_evidence(files: set[str]) -> list[str]:
+    lowered = {path.lower().replace("\\", "/") for path in files}
+    if any(path == "task-matrix-plan.md" or path.endswith("/task-matrix-plan.md") for path in lowered):
+        return ["task-matrix-plan.md"]
+    return []
 
 
 def _signal_evidence(signals: dict[str, bool], *names: str) -> list[str]:

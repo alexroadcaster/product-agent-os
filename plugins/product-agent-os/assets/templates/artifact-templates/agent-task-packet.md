@@ -7,8 +7,10 @@ Use this as the fresh-context handoff for any subagent or parallel worker. The p
 - Goal:
 - Lifecycle state:
 - Usage mode:
+- Task row id:
 - Owner:
 - Recommended role:
+- Dependency status:
 
 ## Full Context
 
@@ -28,6 +30,7 @@ Use this as the fresh-context handoff for any subagent or parallel worker. The p
 - Owned files:
 - Files out of scope:
 - Forbidden files:
+- Owned/forbidden files:
 - Shared resources:
 - Cross-agent file ownership:
 - Conflict notes:
@@ -43,8 +46,21 @@ Use this as the fresh-context handoff for any subagent or parallel worker. The p
 - Expected evidence:
 - Accepted gaps:
 - Documentation impact:
+- Docs update path assigned:
 - Rollback notes:
 - Handoff output schema:
+
+## Planning Control Governance
+
+Hard gates live in validator/tests/skills. Hooks are reminder-only unless approved, and closure cannot claim readiness from hook reminders alone.
+
+- Planning control governance:
+- File/subsystem boundaries:
+- No hook activation:
+- No automation activation:
+- No MCP activation:
+- No Agents SDK runner:
+- No external writes:
 
 ## Runtime Methodology Packet
 
@@ -83,6 +99,9 @@ Carry only the compact runtime methodology packet. Do not include raw conversati
 - Verification command cannot run and no accepted gap exists.
 - Secret-bearing or customer data is needed.
 - Parallel work is requested without this agent task packet.
+- Auto subagent dispatch is requested.
+- Overlapping ownership parallelism is unresolved.
+- Raw chat history is needed.
 - Do not advance to parallel work until the packet is complete.
 
 ## Sequential Fallback

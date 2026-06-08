@@ -111,6 +111,17 @@ class MethodologySynthesisContractTest(unittest.TestCase):
                 self.assertIn(source_name, aliases)
                 self.assertEqual(aliases[source_name]["target"], canonical)
 
+    def test_task_matrix_plan_template_path_is_canonical_owned_template(self):
+        from product_agent_os.methodology_synthesis import classify_source_artifact
+
+        decision = classify_source_artifact(".codex/artifact-templates/task-matrix-plan.md")
+
+        self.assertEqual(decision["decision"], "canonical_template")
+        self.assertEqual(decision["target"], "task-matrix-plan.md")
+        self.assertEqual(decision["owner_domain"], "codex_agentic_workflow")
+        self.assertIn("packaged templates", decision["reason"])
+        self.assertNotEqual(decision["decision"], "deferred")
+
     def test_group_recommendations_merges_artifacts_and_preserves_source_domains(self):
         from product_agent_os.methodology_synthesis import build_methodology_synthesis
 

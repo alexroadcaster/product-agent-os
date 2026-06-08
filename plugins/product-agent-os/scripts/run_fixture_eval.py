@@ -2115,6 +2115,18 @@ def _expected_checks(
         checks["task_matrix_summary_table_not_validator_target"] = (
             _task_matrix_summary_table_not_validator_target()
         )
+        checks["task_matrix_planner_routing_contract_present"] = (
+            _task_matrix_planner_routing_contract_present()
+        )
+        checks["task_matrix_agent_handoff_contract_present"] = (
+            _task_matrix_agent_handoff_contract_present()
+        )
+        checks["task_matrix_discovery_signal_contract_present"] = (
+            _task_matrix_discovery_signal_contract_present()
+        )
+        checks["task_matrix_planning_control_governance_present"] = (
+            _task_matrix_planning_control_governance_present()
+        )
         checks["docs_tooling_selector_contract_present"] = _docs_tooling_selector_contract_present()
         checks["conditional_readiness_gates_contract_present"] = (
             _conditional_readiness_gates_contract_present()
@@ -7689,6 +7701,100 @@ def _task_matrix_summary_table_not_validator_target() -> bool:
 | T10-PLAN-M06 | implemented |
 """
     return validate_task_matrix_text(summary_only) == ["no detailed task blocks found"]
+
+
+def _task_matrix_planner_routing_contract_present() -> bool:
+    paths = [
+        PLUGIN_ROOT / "skills" / "implementation-planner" / "SKILL.md",
+        PROJECT_ROOT / "tests" / "product_agent_os" / "test_lifecycle_skills.py",
+    ]
+    payload = "\n".join(path.read_text(encoding="utf-8") for path in paths).lower()
+    terms = {
+        "task-matrix-plan.md",
+        "specs/adrs/standards/handoffs/risky multi-slice work",
+        "map methodology gates into task fields",
+        "map methodology gates into artifacts",
+        "plans remain staged",
+        "explicit lightweight exception",
+        "small mechanical work",
+    }
+    return terms.issubset(set(_present_terms(payload, terms)))
+
+
+def _task_matrix_agent_handoff_contract_present() -> bool:
+    paths = [
+        PLUGIN_ROOT / "skills" / "agent-team-designer" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "references" / "handoff-contract.md",
+        TEMPLATE_ROOT / "artifact-templates" / "agent-task-packet.md",
+        PROJECT_ROOT / "tests" / "product_agent_os" / "test_lifecycle_skills.py",
+    ]
+    payload = "\n".join(path.read_text(encoding="utf-8") for path in paths).lower()
+    terms = {
+        "task rows",
+        "task row id",
+        "fresh-context handoff",
+        "complete task context",
+        "owned/forbidden files",
+        "dependency status",
+        "expected evidence",
+        "do not auto-dispatch subagents",
+        "overlapping ownership parallelism",
+        "raw chat history",
+        "sequential fallback",
+    }
+    return terms.issubset(set(_present_terms(payload, terms)))
+
+
+def _task_matrix_discovery_signal_contract_present() -> bool:
+    paths = [
+        PLUGIN_ROOT / "scripts" / "product_agent_os" / "discovery.py",
+        PLUGIN_ROOT / "scripts" / "product_agent_os" / "methodology_audit.py",
+        PLUGIN_ROOT / "scripts" / "product_agent_os" / "methodology_synthesis.py",
+        PROJECT_ROOT / "tests" / "product_agent_os" / "test_discovery.py",
+        PROJECT_ROOT / "tests" / "product_agent_os" / "test_methodology_audit.py",
+        PROJECT_ROOT / "tests" / "product_agent_os" / "test_methodology_synthesis.py",
+    ]
+    payload = "\n".join(path.read_text(encoding="utf-8") for path in paths).lower()
+    terms = {
+        "task-matrix-plan.md",
+        "codex_agentic_workflow",
+        "task_matrix_planning_evidence_present",
+        "present_unverified",
+        "does not prove completion",
+        "source/evidence checks",
+        "canonical_template",
+        "deferred",
+    }
+    return terms.issubset(set(_present_terms(payload, terms)))
+
+
+def _task_matrix_planning_control_governance_present() -> bool:
+    paths = [
+        PLUGIN_ROOT / "skills" / "implementation-planner" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "agent-team-designer" / "SKILL.md",
+        PLUGIN_ROOT / "skills" / "references" / "handoff-contract.md",
+        TEMPLATE_ROOT / "artifact-templates" / "agent-task-packet.md",
+        TEMPLATE_ROOT / "evals" / "behavioral-workflows.json",
+        TRANSCRIPT_FIXTURE,
+    ]
+    payload = "\n".join(path.read_text(encoding="utf-8") for path in paths).lower()
+    terms = {
+        "planning control governance",
+        "hard gates live in validator/tests/skills",
+        "reminder-only hooks",
+        "docs update path assigned",
+        "closure cannot claim readiness from hook reminders alone",
+        "no hook activation",
+        "no automation activation",
+        "no mcp activation",
+        "no agents sdk runner",
+        "no external writes",
+    }
+    return terms.issubset(set(_present_terms(payload, terms)))
+
+
+def _present_terms(payload: str, terms: set[str]) -> list[str]:
+    return [term for term in terms if term in payload]
 
 
 def _docs_tooling_selector_contract_present() -> bool:

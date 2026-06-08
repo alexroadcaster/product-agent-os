@@ -17,6 +17,10 @@ PRIORITY_ORDER = {
     "not_applicable": 4,
 }
 
+CANONICAL_TEMPLATE_OWNERS = {
+    "task-matrix-plan.md": "codex_agentic_workflow",
+}
+
 
 def build_methodology_synthesis(
     recommendations: list[dict[str, Any]],
@@ -78,6 +82,7 @@ def classify_source_artifact(
 
     active_catalog = catalog if catalog is not None else load_methodology_catalog()
     synthesis = active_catalog["synthesis"]
+    canonical_artifact = _canonical_artifact_name(artifact)
     aliases = synthesis["artifact_aliases"]
     if artifact in aliases:
         record = aliases[artifact]
@@ -98,12 +103,12 @@ def classify_source_artifact(
             "owner_domain": record["owner_domain"],
             "reason": record["reason"],
         }
-    if artifact in _canonical_artifacts(active_catalog):
+    if canonical_artifact in _canonical_artifacts(active_catalog):
         return {
             "artifact": artifact,
             "decision": "canonical_template",
-            "target": artifact,
-            "owner_domain": _artifact_owner(artifact, synthesis),
+            "target": canonical_artifact,
+            "owner_domain": _artifact_owner(canonical_artifact, synthesis),
             "reason": "artifact is already represented by the catalog or packaged templates",
         }
     return {
@@ -180,7 +185,11 @@ def _group_sort_key(group: dict[str, Any]) -> tuple[int, int, int, str]:
 
 def _artifact_owner(artifact: str, synthesis: dict[str, Any]) -> str:
     record = synthesis.get("artifact_owners", {}).get(artifact, {})
-    return str(record.get("owner_domain", ""))
+    return str(record.get("owner_domain", "") or CANONICAL_TEMPLATE_OWNERS.get(artifact, ""))
+
+
+def _canonical_artifact_name(artifact: str) -> str:
+    return artifact.replace("\\", "/").rsplit("/", 1)[-1]
 
 
 def _canonical_artifacts(catalog: dict[str, Any]) -> set[str]:

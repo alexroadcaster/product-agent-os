@@ -396,6 +396,72 @@ class LifecycleSkillsTest(unittest.TestCase):
         ]:
             self.assertIn(expected, handoff_contract)
 
+    def test_implementation_planner_routes_risky_work_to_task_matrix_plan(self):
+        planner = self._skill_text("implementation-planner").lower()
+
+        for expected in [
+            "task-matrix-plan.md",
+            "specs/adrs/standards/handoffs/risky multi-slice work",
+            "map methodology gates into task fields",
+            "map methodology gates into artifacts",
+            "plans remain staged",
+            "explicit lightweight exception",
+            "small mechanical work",
+        ]:
+            self.assertIn(expected, planner)
+
+    def test_agent_team_designer_maps_task_rows_to_fresh_context_packets(self):
+        agent_team = self._skill_text("agent-team-designer").lower()
+        handoff_contract = (SKILLS / "references" / "handoff-contract.md").read_text(encoding="utf-8").lower()
+
+        for expected in [
+            "task rows",
+            "task row id",
+            "dependency status",
+            "owned/forbidden files",
+            "do not auto-dispatch subagents",
+            "overlapping ownership parallelism",
+            "raw chat history",
+            "sequential fallback",
+        ]:
+            self.assertIn(expected, agent_team)
+
+        for expected in [
+            "task row id",
+            "dependency status",
+            "owned/forbidden files",
+            "do not auto-dispatch subagents",
+            "raw chat history",
+        ]:
+            self.assertIn(expected, handoff_contract)
+
+    def test_lifecycle_planning_control_governance_is_hard_gate_not_hook_claim(self):
+        planner = self._skill_text("implementation-planner").lower()
+        agent_team = self._skill_text("agent-team-designer").lower()
+        handoff_contract = (SKILLS / "references" / "handoff-contract.md").read_text(encoding="utf-8").lower()
+
+        shared_terms = [
+            "planning control governance",
+            "hard gates live in validator/tests/skills",
+            "hooks are reminder-only unless approved",
+            "file/subsystem boundaries",
+            "docs update path assigned",
+            "closure cannot claim readiness from hook reminders alone",
+            "no hook activation",
+            "no automation activation",
+            "no mcp activation",
+            "no agents sdk runner",
+            "no external writes",
+        ]
+        for name, text in {
+            "implementation-planner": planner,
+            "agent-team-designer": agent_team,
+            "handoff-contract": handoff_contract,
+        }.items():
+            with self.subTest(name=name):
+                for expected in shared_terms:
+                    self.assertIn(expected, text)
+
     def test_pr_review_lifecycle_wording_routes_to_two_stage_read_only_review(self):
         orchestrator = self._skill_text("project-lifecycle-orchestrator").lower()
         risk_reviewer = self._skill_text("risk-reviewer").lower()

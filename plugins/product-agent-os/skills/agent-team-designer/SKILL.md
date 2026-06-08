@@ -20,6 +20,8 @@ Project code graph: generated graph is not source of truth; use it as orientatio
 
 Project graph live/provider/mutation handoff routing (`T10-LIVE-M23..M26`): `project_graph_live_audit.py` artifacts are staged evidence only. Any live/provider/mutation work, subagent split, or parallel worker must name ownership, verification evidence, fresh context and stop conditions before work starts. Require redacted append-only audit evidence, security/privacy negative-test status, runtime observability status, and `provider_call_allowed: false` / `external_call_performed: false` unless a separate explicit approval changes the boundary. Stop on missing ownership, missing verification evidence, missing fresh-context handoff, live provider or mutation without approval, security/privacy failure, or hidden degraded mode.
 
+Planning control governance: hard gates live in validator/tests/skills. Hooks are reminder-only unless approved, and closure cannot claim readiness from hook reminders alone. Agents own file/subsystem boundaries, docs update path assigned, and handoffs must record no hook activation, no automation activation, no MCP activation, no Agents SDK runner, and no external writes unless a separate explicit approval packet changes the boundary.
+
 
 Do not store secrets, tokens, credentials, private keys, private customer data, or raw private chat logs.
 Do not create active automation, recurring automation, hooks, workflow files, project templates, MCP servers, or an Agents SDK runner.
@@ -38,6 +40,7 @@ Read shared references when needed: [Lifecycle states](../references/lifecycle-s
 - Known file or subsystem ownership requirements from the user or project docs.
 - Scenario handoff packet when a scenario workflow produced context, proposed files, or stop reasons.
 - Fresh-context handoff inputs when any subagent or parallel worker is proposed: `agent-task-packet.md`, `handoff-contract.md`, `worktree-ownership.md`, complete task context, source constraints, allowed sources, inputs used, owned files, forbidden files, expected evidence, stop conditions, handoff output schema, shared ownership ambiguity, and missing handoff schema.
+- Task rows from `task-matrix-plan.md` when present, including task row id, complete task context, owned/forbidden files, dependency status, expected evidence, docs update path, stop conditions, and output schema.
 
 ## Process
 
@@ -55,6 +58,10 @@ Read shared references when needed: [Lifecycle states](../references/lifecycle-s
 12. Keep handoffs concise enough for the next role to act without reading raw conversation history.
 13. Return `team_ready` only when ownership, fresh-context handoffs, model guidance, escalation rules, methodology ownership, and stop conditions are staged.
 14. For Batch 31-style live/provider/mutation routing, include `project_graph_live_audit_log`, `project_graph_live_security_privacy_tests`, `project_graph_runtime_observability`, `project_graph_agent_skill_handoff_routing`, `ownership_required`, `verification_evidence_required`, `fresh_context_required`, and stop conditions for `missing_ownership`, `missing_verification_evidence`, and `live_provider_or_mutation_without_approval`.
+15. Map each task row to one fresh-context handoff packet; preserve the task row id, complete task context, owned/forbidden files, dependency status, expected evidence, stop conditions, handoff output schema, and docs update path.
+16. Do not auto-dispatch subagents. Return staged handoff packets and wait for the user or approved runner to start work.
+17. Block overlapping ownership parallelism. If two workers need the same file, subsystem, public contract, generated artifact, or release surface, mark the overlap and use sequential fallback.
+18. Reject raw chat history and raw conversation history as worker context; use complete task context in the packet instead.
 
 ## Outputs
 
@@ -67,15 +74,19 @@ agent_team_design_packet:
   methodology_ownership: []
   handoff_packets: []
   fresh_context_handoff:
+    task_row_id: ""
     complete_task_context: []
     source_constraints: []
     allowed_sources: []
     inputs_used: []
     owned_files: []
     forbidden_files: []
+    owned_forbidden_files: []
+    dependency_status: ""
     expected_evidence: []
     handoff_output_schema: []
     stop_conditions: []
+    docs_update_path_assigned: ""
     sequential_fallback: ""
   scenario_handoff:
     sources_context_used: []
@@ -121,6 +132,7 @@ Evidence-before-completion (`evidence_before_completion`): do not make a ready c
 Check that each role has a concrete ownership boundary, no planned agents share write scope without a handoff rule, every handoff includes verification evidence fields, every scenario handoff separates files touched from files proposed, and every proposed artifact remains staged. Do not claim without evidence.
 For fresh-context handoff, check that any subagent or parallel worker has complete task context, source constraints, allowed sources, inputs used, owned files, forbidden files, expected evidence, handoff output schema, stop conditions, and sequential fallback before work starts. Do not advance to parallel work when shared ownership ambiguity, missing handoff schema, missing expected evidence, raw conversation history dependency, or cross-agent file ownership remains.
 For live/provider/mutation handoff routing, check that audit, security/privacy, observability and handoff packets are staged and redacted; degraded graph-only mode is visible; and no worker is assigned live/provider/mutation work while `provider_call_allowed` or `external_call_performed` would be true without explicit approval.
+For planning control governance, check hard gates in validator/tests/skills rather than hook reminders; ensure every role owns file/subsystem boundaries, each task row has docs update path assigned, and no readiness closure depends on hook reminders alone.
 
 ## Failure Modes
 
@@ -130,6 +142,8 @@ For live/provider/mutation handoff routing, check that audit, security/privacy, 
 - If scenario handoff context is missing for complex acceleration, do not advance to parallel work.
 - If ownership cannot be split safely, use sequential fallback rather than parallel work.
 - If the task packet depends on raw conversation history instead of complete task context, stop and request a proper handoff packet.
+- If the task packet depends on raw chat history instead of complete task context, stop and request a proper handoff packet.
+- If auto subagent dispatch, overlapping ownership parallelism, hook activation, automation activation, MCP activation, Agents SDK runner execution, or external writes are requested without explicit approval, stop and return a staged packet.
 - If required verification gates are absent, stop and request planning updates.
 - If model or reasoning guidance would override project rules, keep it as a proposal and flag the conflict.
 - If approval is needed, stop before writes or external actions.

@@ -3903,6 +3903,7 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 "fresh-context-handoff",
                 "evidence-before-completion",
                 "task-matrix-validator-and-completion-report",
+                "task-matrix-agent-handoff-and-planning-control",
                 "quality-current-evidence-before-completion",
                 "cross-domain-semantic-evidence-sufficiency",
                 "cross-domain-synthesis-mixed-surface-routing",

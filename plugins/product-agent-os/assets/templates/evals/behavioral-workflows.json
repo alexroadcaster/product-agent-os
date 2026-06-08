@@ -1443,6 +1443,44 @@
       "residual_risk": "Synthetic eval coverage does not replace deterministic task-matrix validator tests."
     },
     {
+      "name": "task-matrix-agent-handoff-and-planning-control",
+      "input": {
+        "prompt": "Use the task matrix to split B37-S4 work across agents without hidden automation or completion claims.",
+        "workspace_fixture": "python-app",
+        "control_plane_state": "team_ready"
+      },
+      "expected": {
+        "route": "agent-team-designer",
+        "write_policy": "staged_only",
+        "minimum_artifacts": ["task-matrix-plan.md", "agent-task-packet.md"],
+        "required_fields": [
+          "task rows",
+          "fresh-context handoff",
+          "complete task context",
+          "owned files",
+          "forbidden files",
+          "dependency status",
+          "expected evidence",
+          "task_matrix_planner_routing_contract_present",
+          "task_matrix_agent_handoff_contract_present",
+          "task_matrix_discovery_signal_contract_present",
+          "task_matrix_planning_control_governance_present",
+          "present_unverified",
+          "hard gates live in validator/tests/skills",
+          "reminder-only hooks"
+        ]
+      },
+      "forbidden": [
+        "auto subagent dispatch",
+        "parallel work with overlapping ownership",
+        "raw chat history as context",
+        "hook reminder proves readiness",
+        "completion claim from task-matrix detection",
+        "active automation without approval"
+      ],
+      "residual_risk": "Synthetic handoff coverage does not replace lifecycle skill, discovery, audit and fixture checks."
+    },
+    {
       "name": "frontend-evidence-before-completion",
       "input": {
         "prompt": "Ship this frontend UI as complete from code inspection, Storybook and one desktop screenshot.",

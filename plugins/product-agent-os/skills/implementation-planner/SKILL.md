@@ -20,6 +20,8 @@ Project code graph: generated graph is not source of truth; use it as orientatio
 
 Project graph live/provider/mutation operability (`T10-LIVE-M23..M26`): route audit logging, security/privacy tests, runtime observability and agent/skill routing as staged evidence only. Do not plan live server startup, provider calls, live external model/API calls, canonical graph mutation, or agent parallelism unless a separate explicit approval packet names the surface, owner, rollback and verification evidence. Batch 31 plan slices must require redacted append-only audit events, unsafe secret/path/raw-source/prompt-injection blocking, visible degraded graph-only mode, ownership, verification evidence, fresh context and stop conditions.
 
+Planning control governance: hard gates live in validator/tests/skills. Hooks are reminder-only unless approved, and closure cannot claim readiness from hook reminders alone. Require agents to own file/subsystem boundaries, keep docs update path assigned, and record no hook activation, no automation activation, no MCP activation, no Agents SDK runner, and no external writes unless a separate explicit approval packet changes the boundary.
+
 
 Do not store secrets, tokens, credentials, private keys, private customer data, or raw private chat logs.
 Do not create active automation, recurring automation, hooks, workflow files, project templates, MCP servers, or an Agents SDK runner.
@@ -40,6 +42,7 @@ Read shared references when needed: [Lifecycle states](../references/lifecycle-s
 - Business/Product methodology packet when product, MVP, user value, analytics, release measurement, or workflow promotion claims are present: `product_hypothesis_present`, `value_proposition_evidence_present`, `analytics_tracking_plan_present`, `qualitative_feedback_loop_present`, `release_measurement_evidence_present`, `decision_horizon_present`, `outcome_metric_level_separated`, `metric_scope_classified`, `.codex/artifact-templates/product-brief.md`, `.codex/artifact-templates/value-proposition.md`, `.codex/artifact-templates/opportunity-tree.md`, `.codex/artifact-templates/experiment-plan.md`, `.codex/artifact-templates/tracking-plan.md`, and accepted gap status.
 - Domain modeling input when `domain_model_when_complex_domain` applies: `.codex/artifact-templates/domain-modeling.md`, `.codex/artifact-templates/architecture-overview.md`, complex backend, workflow, enterprise, data-heavy, bounded context, ubiquitous language, invariant, accepted gap, `bounded_context_architecture_boundary_trace`, `context-to-boundary traceability`, `ubiquitous_language_traceability`, term-to-requirement, requirement or source, API/event/contract, UI label, code module or owner, domain expert review, and `missing domain model for complex domain`.
 - UI architecture input when `fsd_structure` applies: `.codex/artifact-templates/component-card.md`, Feature-Sliced Design, layer, slice, segment, public API, import rule, `not applicable` reason, accepted gap, backend, native, simple CRUD, simple MVP, and `missing fsd structure boundary`.
+- Task matrix input when specs/ADRs/standards/handoffs/risky multi-slice work applies: `task-matrix-plan.md`, task rows, methodology gates, task fields, artifacts, owners, dependencies, docs update path, expected evidence, stop conditions, and explicit lightweight exception status for small mechanical work.
 
 ## Process
 
@@ -76,6 +79,9 @@ Read shared references when needed: [Lifecycle states](../references/lifecycle-s
 31. Route to `agent-team-designer` if ownership overlaps, parallel work is needed, or handoff risk is high.
 32. Return `plan_ready` only when slices, verification gates, rollback notes, documentation impact, risks, conditional readiness gates, and `plan_quality_check` are staged.
 33. If a slice touches live/provider/mutation routing, require `project_graph_live_audit_log_present`, `project_graph_live_security_privacy_tests_present`, `project_graph_live_runtime_observability_present`, `project_graph_live_agent_skill_handoff_routing_present`, no-live-call evidence, and stop conditions for missing ownership, missing verification evidence and live/provider/mutation without approval before `plan_ready`.
+34. Use `task-matrix-plan.md` when specs/ADRs/standards/handoffs/risky multi-slice work applies; map methodology gates into task fields and map methodology gates into artifacts so every task row names owner, files, dependency status, expected evidence, docs update path, stop conditions, and readiness gate status.
+35. Plans remain staged: propose `task-matrix-plan.md`, `PLAN.md`, `TEST.md`, and related artifacts as files proposed unless the user explicitly approves writes to those artifacts.
+36. Allow an explicit lightweight exception only for small mechanical work when the reduced task still names exact files, exact commands or an explicit command gap, rollback, evidence owner, docs impact, and why the full task matrix is not useful.
 
 ## Outputs
 
@@ -174,6 +180,15 @@ implementation_plan_packet:
     placeholder_scan: ""
     mechanical_change_reason: ""
     blocking_gaps: []
+  task_matrix_plan:
+    artifact: "task-matrix-plan.md"
+    applies_when: "specs/ADRs/standards/handoffs/risky multi-slice work"
+    task_rows: []
+    methodology_gate_to_task_field_map: []
+    methodology_gate_to_artifact_map: []
+    docs_update_path_assigned: ""
+    staged_only: true
+    explicit_lightweight_exception: ""
   dependencies: []
   commands_to_run: []
   verification_gates: []
