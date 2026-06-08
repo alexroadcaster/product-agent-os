@@ -8,7 +8,7 @@ Source status: `official + experiment`
 
 Real testing начинается только после актуальной closure evidence по governance, runtime contract, audit/observability, target consent, QA/performance/stabilization и packaging/docs closure.
 
-Текущий source-backed статус: M37-M40 имеют execution evidence для approved local runtime, browser smoke, Codex-session provider pilot и staged canonical mutation pilot. M41 остается `blocked_pending_explicit_git_release_fields`, и git stage/commit/push/PR не выполнялись.
+Текущий source-backed статус: M37-M41 имеют execution evidence или owner closure: M37-M40 пройдены для approved local runtime, browser smoke, Codex-session provider pilot и staged canonical mutation pilot. M41 закрыт как `owner_closed_no_op_git_release_pr`, и git stage/commit/push/PR не выполнялись.
 
 ## Approvals And Source-Of-Truth Boundary
 
@@ -54,7 +54,7 @@ Action artifacts and current evidence:
 | `actual_browser_automation_smoke` | `browser-automation-smoke.json`, `desktop.png`, `mobile.png` | M38 пройдено; Playwright Chromium, `console_errors: 0`, `network_failures: 0`, `mobile_overflow: false`, generated-view labels, source-boundary labels и clean shutdown. |
 | `approved_provider_api_pilot` | `provider-call-evidence.json`, `provider-eval-report.json` | M39 пройдено; provider surface `codex_user_session`, `OPENAI_API_KEY used: false`, direct API call из workspace shell: false и `provider_secret_stored: false`. |
 | `approved_canonical_mutation_pilot` | `canonical-mutation-run.json`, `graph-mutation-journal.jsonl`, `rollback-proof.json` | M40 пройдено как `stage_root_only`; `canonical_graph_source_mutated: false`, `operation_count: 1`, `journal_entry_count: 1` и `rollback_restores_previous_graph_digest: true`. |
-| `explicit_git_release_pr_action` | `git-release-pr-evidence.md`, PR packet | M41 заблокирован со статусом `blocked_pending_explicit_git_release_fields`; git stage/commit/push/PR не выполнялись. |
+| `explicit_git_release_pr_action` | `git-release-pr-evidence.md`, PR packet | M41 закрыт owner decision как `owner_closed_no_op_git_release_pr`; git stage/commit/push/PR не выполнялись. |
 
 Эти artifacts являются evidence только для exact approved action, который действительно был выполнен. Они не approve any other action, а generated evidence остается staged/source-boundary evidence пока checked-in source docs или owner-reviewed packets не cite it.
 
@@ -87,7 +87,7 @@ Action artifacts and current evidence:
 | M38 | `actual_browser_automation_smoke` | `passed` | Только browser evidence; provider/API call, canonical graph mutation и git action не разрешались этим approval. |
 | M39 | `approved_provider_api_pilot` | `passed` | Только Codex-session provider pilot evidence; canonical graph mutation и git action не разрешались этим approval. |
 | M40 | `approved_canonical_mutation_pilot` | `passed` | Только staged canonical mutation/rollback proof; `canonical_graph_source_mutated: false`, git action не выполнялся. |
-| M41 | `explicit_git_release_pr_action` | `blocked_pending_explicit_git_release_fields` | Требует release branch или push target, commit message, PR base branch, PR title/intent и explicit branch/write policy до any git write. |
+| M41 | `explicit_git_release_pr_action` | `owner_closed_no_op_git_release_pr` | Git release/PR не выполнялся; future git write требует fresh preflight, release branch или push target, commit message, PR base branch, PR title/intent и explicit branch/write policy. |
 
 ## Проверка
 

@@ -108,10 +108,22 @@ url: "docs/sources/product-agent-os-batch35-approval-packet-draft.md; docs/sourc
 type: "internal release-gate audit"
 source_status: "project-authored"
 checked_at: "2026-06-08"
-summary: "T10-LIVE-M41 post-B38 audit clarifies that M41 remains `blocked_pending_explicit_git_release_fields`; the Batch 35 `dirty_file_count: 15` is a `historical_preflight_snapshot`, B37/B38/B38-S1 do not close M41 and fresh preflight is required before any git write."
+summary: "T10-LIVE-M41 post-B38 audit clarified the historical blocked state before owner closure; the Batch 35 `dirty_file_count: 15` is a `historical_preflight_snapshot`, B37/B38/B38-S1 do not close M41 and fresh preflight is required before any git write."
 relevance: "Prevents stale preflight evidence from being read as current release readiness after later docs and package-audit slices. Release, install, cache refresh, branch, commit, push and PR work still require exact owner-approved fields and fresh current-state evidence."
 trust_level: "high"
 verification_status: "Backed by source packet/backlog/control-plane sync and the focused docs contract for the M41 post-B38 boundary. No plugin install, plugin-cache mutation, live runtime, browser automation, provider/live external model/API call, canonical graph mutation, git stage/commit/push/PR or external publication was performed."
+```
+
+```yaml
+title: "Product-Agent OS T10-LIVE-M41 owner no-op closure and B38-S2 verification/install smoke"
+url: "docs/sources/product-agent-os-batch35-approval-packet-draft.md; docs/sources/product-agent-os-batch35-approval-packet-draft.en.md; docs/sources/product-agent-os-track-10-backlog.md; docs/sources/product-agent-os-track-10-backlog.en.md; docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/product-agent-os/approval-bound-real-testing.md; docs/product-agent-os/approval-bound-real-testing.en.md; AGENTS.md; REQUIREMENTS.md; PLAN.md; TEST.md; EVALS.md; RUNLOG.md"
+type: "internal release-readiness verification and cache-smoke evidence"
+source_status: "project-authored"
+checked_at: "2026-06-08"
+summary: "The owner closed `T10-LIVE-M41` as `owner_closed_no_op_git_release_pr` with no git write. B38-S2 `B38-PROD-M04..M05` records full pre-install verification as implemented and install/cache smoke as blocked because read-only inspection found a stale visible plugin cache."
+relevance: "Separates verified checked-in source readiness from installed-cache visibility. M04 evidence is current, while M05 prevents a false release-ready claim until plugin-cache refresh target, rollback path and mutation approval are explicit."
+trust_level: "high"
+verification_status: "Backed by full unittest 846 tests OK, fixture eval exit 0, transcript eval exit 0 with 19 sessions and 0 failures, Codex compatibility status compatible, docs structure check OK, diff hygiene exit 0, read-only installed-cache inspection and focused docs contract. `blocked_pending_explicit_cache_mutation_approval` remains because the cache shows 10 visible skills versus 11 checked-in skills, 32 visible script files versus 84 checked-in script files and 34 visible template files versus 202 checked-in template files. No plugin install/cache mutation, live runtime, browser automation, provider/live external model/API call, canonical graph mutation, git stage/commit/push/PR or external publication was performed."
 ```
 
 ```yaml

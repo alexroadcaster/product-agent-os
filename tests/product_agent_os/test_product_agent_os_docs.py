@@ -175,9 +175,10 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         runlog = RUNLOG.read_text(encoding="utf-8")
 
         self.assertLess(len(runlog), 50000)
-        self.assertIn("track10_task26_batch35_done_through_m40_m41_blocked_pending_explicit_git_release_fields", runlog)
+        self.assertIn("track10_task26_batch35_closed_through_m41_owner_closed_no_op_git_release_pr_b38_s2_m05_blocked_stale_cache", runlog)
         self.assertIn("Task 26 Batch 35 `T10-LIVE-M41`", runlog)
-        self.assertIn("blocked_pending_explicit_git_release_fields", runlog)
+        self.assertIn("owner_closed_no_op_git_release_pr", runlog)
+        self.assertIn("blocked_pending_explicit_cache_mutation_approval", runlog)
         self.assertIn("done_through_m40", runlog)
         self.assertIn("RUNLOG.md` is now the compact handoff layer", runlog)
 
@@ -210,8 +211,9 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         self.assertIn("Source Planning Artifacts", plan)
         self.assertIn("Evidence ownership", plan)
         self.assertIn("T10-LIVE-M41", plan)
-        self.assertIn("blocked_pending_explicit_git_release_fields", plan)
-        self.assertIn("done_through_m40", plan)
+        self.assertIn("owner_closed_no_op_git_release_pr", plan)
+        self.assertIn("blocked_pending_explicit_cache_mutation_approval", plan)
+        self.assertIn("B38-S2", plan)
 
         for expected in [
             "REQUIREMENTS.md",
@@ -242,8 +244,9 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         self.assertIn("Runtime And External-Action Verification Boundaries", test_plan)
         self.assertIn("Historical Evidence Owners", test_plan)
         self.assertIn("T10-LIVE-M41", test_plan)
-        self.assertIn("blocked_pending_explicit_git_release_fields", test_plan)
-        self.assertIn("done_through_m40", test_plan)
+        self.assertIn("owner_closed_no_op_git_release_pr", test_plan)
+        self.assertIn("blocked_pending_explicit_cache_mutation_approval", test_plan)
+        self.assertIn("B38-S2", test_plan)
 
         for expected in [
             "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
@@ -524,8 +527,9 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         self.assertIn("Source And Insight Policy", agents)
         self.assertIn("Verification", agents)
         self.assertIn("T10-LIVE-M41", agents)
-        self.assertIn("blocked_pending_explicit_git_release_fields", agents)
-        self.assertIn("done_through_m40", agents)
+        self.assertIn("owner_closed_no_op_git_release_pr", agents)
+        self.assertIn("blocked_pending_explicit_cache_mutation_approval", agents)
+        self.assertIn("B38-S2", agents)
 
         for expected in [
             "REQUIREMENTS.md",
@@ -562,8 +566,9 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         self.assertIn("Unsupported Claims", evals)
         self.assertIn("Historical Eval Evidence Owners", evals)
         self.assertIn("T10-LIVE-M41", evals)
-        self.assertIn("blocked_pending_explicit_git_release_fields", evals)
-        self.assertIn("done_through_m40", evals)
+        self.assertIn("owner_closed_no_op_git_release_pr", evals)
+        self.assertIn("blocked_pending_explicit_cache_mutation_approval", evals)
+        self.assertIn("B38-S2", evals)
 
         for expected in [
             "evidence_before_completion",
@@ -667,13 +672,13 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         )
 
         for expected in [
-            "M37-M40",
+            "M37-M41",
             "M37",
             "M38",
             "M39",
             "M40",
             "M41",
-            "blocked_pending_explicit_git_release_fields",
+            "owner_closed_no_op_git_release_pr",
             "server_shutdown_complete: true",
             "Playwright Chromium",
             "codex_user_session",
@@ -944,7 +949,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "| `B38-PROD-M02` | P0 |",
             "| `B38-PROD-M03` | P0 |",
             "B38-S1 `B38-PROD-M01..M03`",
-            "M01 `blocked_pending_explicit_git_release_fields`",
+            "M01 `owner_closed_no_op_git_release_pr`",
             "M02 `implemented`",
             "M03 `accepted_gap`",
         ]:
@@ -963,7 +968,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         self.assertEqual(1, len(m01_rows))
         self.assertEqual(1, len(m02_rows))
         self.assertEqual(1, len(m03_rows))
-        self.assertIn("`blocked`", m01_rows[0])
+        self.assertIn("`owner_closed_no_op`", m01_rows[0])
         self.assertIn("`implemented`", m02_rows[0])
         self.assertIn("`accepted_gap`", m03_rows[0])
         self.assertNotIn("`planned`; `pending_execution_timestamp`", m01_rows[0])
@@ -1034,10 +1039,9 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 self.assertIn(expected, track10_en)
 
         for expected in [
-            "Next release/install/git-path action",
-            "separately scoped read-only/docs/package audit maintenance",
-            "does not close M41",
-            "does not authorize B38-S2 install/cache/release smoke",
+            "Next release/install/cache action",
+            "future git write",
+            "owner_closed_no_op_git_release_pr",
         ]:
             with self.subTest(plan=expected):
                 self.assertIn(expected, plan)
@@ -1061,6 +1065,110 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             with self.subTest(registry=expected):
                 self.assertIn(expected, registry)
                 self.assertIn(expected, registry_en)
+
+    def test_batch38_s2_verification_install_cache_smoke_is_source_owned(self):
+        plan = PLAN.read_text(encoding="utf-8")
+        runlog = RUNLOG.read_text(encoding="utf-8")
+        test_plan = TEST.read_text(encoding="utf-8")
+        evals = EVALS.read_text(encoding="utf-8")
+        requirements = REQUIREMENTS.read_text(encoding="utf-8")
+        agents = AGENTS.read_text(encoding="utf-8")
+        registry = SOURCE_REGISTRY.read_text(encoding="utf-8")
+        registry_en = SOURCE_REGISTRY_EN.read_text(encoding="utf-8")
+        track10 = TRACK10_BACKLOG.read_text(encoding="utf-8")
+        track10_en = TRACK10_BACKLOG_EN.read_text(encoding="utf-8")
+        track10_plan = TRACK10_PLAN.read_text(encoding="utf-8")
+
+        for expected in [
+            "owner_closed_no_op_git_release_pr",
+            "git_stage_commit_push_pr_performed: false",
+            "future_git_write_requires_fresh_preflight: true",
+            "B38-S2 Verification and install smoke",
+            "B38-PROD-M04",
+            "B38-PROD-M05",
+            "b38_s2_verification_install_cache_smoke",
+            "full_unittest_count: 846",
+            "fixture_eval_exit_code: 0",
+            "transcript_eval_session_count: 19",
+            "transcript_eval_failure_count: 0",
+            "codex_compatibility_status: compatible",
+            "docs_check_status: ok",
+            "diff_hygiene_exit_code: 0",
+            "plugin_install_smoke_status: read_only_inspection_completed_stale_cache_detected",
+            "plugin_cache_refresh_status: blocked_pending_explicit_cache_mutation_approval",
+            "visible_cache_skill_count: 10",
+            "checked_in_skill_count: 11",
+            "missing_cache_skill: docs-maintainer",
+            "visible_cache_script_file_count: 32",
+            "checked_in_script_file_count: 84",
+            "visible_cache_template_file_count: 34",
+            "checked_in_template_file_count: 202",
+            "no_plugin_cache_mutation_performed",
+            "no_git_stage_commit_push_pr",
+            "agent_team_design_packet_present",
+            "roles_have_disjoint_ownership",
+            "handoff_packet_fields_present",
+            "agent_skill_stop_conditions_present",
+        ]:
+            with self.subTest(track10=expected):
+                self.assertIn(expected, track10)
+                self.assertIn(expected, track10_en)
+
+        for expected in [
+            "`B38-PROD-M04` | P0 | Run full pre-install verification.",
+            "`B38-PROD-M05` | P0 | Refresh or install the new plugin version and prove no stale plugin cache is used.",
+            "M04 `implemented`",
+            "M05 `blocked_stale_plugin_cache_pending_refresh_approval`",
+            "B38-S2 `B38-PROD-M04..M05`",
+            "Next release/install/cache action: none until plugin-cache refresh target, rollback path and mutation approval are explicit.",
+        ]:
+            with self.subTest(plan=expected):
+                self.assertIn(expected, plan)
+
+        m04_rows = [
+            line for line in plan.splitlines() if line.startswith("| `B38-PROD-M04` |")
+        ]
+        m05_rows = [
+            line for line in plan.splitlines() if line.startswith("| `B38-PROD-M05` |")
+        ]
+        self.assertEqual(1, len(m04_rows))
+        self.assertEqual(1, len(m05_rows))
+        self.assertIn("`implemented`", m04_rows[0])
+        self.assertIn("`blocked`", m05_rows[0])
+        self.assertNotIn("`planned`; `pending_execution_timestamp`", m04_rows[0])
+        self.assertNotIn("`planned`; `pending_execution_timestamp`", m05_rows[0])
+
+        for expected in [
+            "Product-Agent OS T10-LIVE-M41 owner no-op closure and B38-S2 verification/install smoke",
+            "B38-S2 `B38-PROD-M04..M05`",
+            "blocked_pending_explicit_cache_mutation_approval",
+            "trust_level: \"high\"",
+        ]:
+            with self.subTest(registry=expected):
+                self.assertIn(expected, registry)
+                self.assertIn(expected, registry_en)
+
+        for expected in [
+            "B38-S2 verification/install smoke run",
+            "full unittest ran 846 tests with `OK`",
+            "fixture eval exited `0`",
+            "transcript eval exited `0` with 19 sessions and 0 failures",
+            "plugin cache inspection found stale installed cache",
+        ]:
+            with self.subTest(test_plan=expected):
+                self.assertIn(expected, test_plan)
+
+        for document_name, document in [
+            ("runlog", runlog),
+            ("evals", evals),
+            ("requirements", requirements),
+            ("agents", agents),
+            ("track10_plan", track10_plan),
+        ]:
+            with self.subTest(document=document_name):
+                self.assertIn("owner_closed_no_op_git_release_pr", document)
+                self.assertIn("B38-S2", document)
+                self.assertIn("blocked_pending_explicit_cache_mutation_approval", document)
 
     def test_system_file_hygiene_audit_contract_is_documented_and_source_owned(self):
         documents = {
@@ -3013,8 +3121,8 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "no git stage/commit/push/PR",
             ],
             "approval-bound-real-testing.md": [
-                "M37-M40",
-                "blocked_pending_explicit_git_release_fields",
+                "M37-M41",
+                "owner_closed_no_op_git_release_pr",
                 "separately scoped",
                 "approved_local_runtime_launch",
                 "actual_browser_automation_smoke",
@@ -5180,7 +5288,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "graph-mutation-journal.jsonl",
             "rollback-proof.json",
             "git-release-pr-evidence.md",
-            "blocked_pending_explicit_git_release_fields",
+            "owner_closed_no_op_git_release_pr",
             "Playwright Chromium",
             "codex_user_session",
             "desktop.png",
@@ -5197,7 +5305,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "| `done_through_m38` | `T10-LIVE-M38` actual browser automation smoke |",
             "| `done_through_m39` | `T10-LIVE-M39` Codex session provider pilot |",
             "| `done_through_m40` | `T10-LIVE-M40` canonical mutation pilot |",
-            "| `blocked_pending_explicit_git_release_fields` | `T10-LIVE-M41` git release/PR action |",
+            "| `owner_closed_no_op_git_release_pr` | `T10-LIVE-M41` git release/PR action |",
             "approved_local_runtime_launch",
             "actual_browser_automation_smoke",
             "approved_provider_api_pilot",
@@ -5257,7 +5365,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "graph-mutation-journal.jsonl",
             "rollback-proof.json",
             "stage_root_only",
-            "blocked_pending_explicit_git_release_fields",
+            "owner_closed_no_op_git_release_pr",
             "explicit_git_release_pr_action",
             "batch35_approval_bound_real_testing_execution",
             "no canonical graph mutation",
@@ -5294,7 +5402,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "graph-mutation-journal.jsonl",
             "rollback-proof.json",
             "stage_root_only",
-            "blocked_pending_explicit_git_release_fields",
+            "owner_closed_no_op_git_release_pr",
             "explicit_git_release_pr_action",
             "no canonical graph mutation",
             "no git stage/commit/push/PR",

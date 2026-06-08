@@ -8,7 +8,7 @@ This page describes the approval-bound real-testing execution matrix for Product
 
 Real testing starts only after current closure evidence exists for governance, runtime contract, audit/observability, target consent, QA/performance/stabilization and packaging/docs closure.
 
-Current source-backed status: M37-M40 have execution evidence for approved local runtime, browser smoke, Codex-session provider pilot and staged canonical mutation pilot. M41 remains `blocked_pending_explicit_git_release_fields`, and no git stage/commit/push/PR has been performed.
+Current source-backed status: M37-M41 have execution evidence or owner closure: M37-M40 passed for approved local runtime, browser smoke, Codex-session provider pilot and staged canonical mutation pilot. M41 is closed as `owner_closed_no_op_git_release_pr`, and no git stage/commit/push/PR has been performed.
 
 ## Approvals And Source-Of-Truth Boundary
 
@@ -54,7 +54,7 @@ Action artifacts and current evidence:
 | `actual_browser_automation_smoke` | `browser-automation-smoke.json`, `desktop.png`, `mobile.png` | Passed in M38; Playwright Chromium, `console_errors: 0`, `network_failures: 0`, `mobile_overflow: false`, generated-view labels, source-boundary labels and clean shutdown. |
 | `approved_provider_api_pilot` | `provider-call-evidence.json`, `provider-eval-report.json` | Passed in M39; provider surface `codex_user_session`, `OPENAI_API_KEY used: false`, direct API call from workspace shell: false and `provider_secret_stored: false`. |
 | `approved_canonical_mutation_pilot` | `canonical-mutation-run.json`, `graph-mutation-journal.jsonl`, `rollback-proof.json` | Passed in M40 as `stage_root_only`; `canonical_graph_source_mutated: false`, `operation_count: 1`, `journal_entry_count: 1` and `rollback_restores_previous_graph_digest: true`. |
-| `explicit_git_release_pr_action` | `git-release-pr-evidence.md`, PR packet | Blocked in M41 with `blocked_pending_explicit_git_release_fields`; no git stage/commit/push/PR. |
+| `explicit_git_release_pr_action` | `git-release-pr-evidence.md`, PR packet | Closed in M41 by owner decision as `owner_closed_no_op_git_release_pr`; no git stage/commit/push/PR. |
 
 These artifacts are evidence only for the exact approved action that actually ran. They do not approve any other action, and generated evidence remains staged/source-boundary evidence until checked-in source docs or owner-reviewed packets cite it.
 
@@ -87,7 +87,7 @@ These artifacts are evidence only for the exact approved action that actually ra
 | M38 | `actual_browser_automation_smoke` | `passed` | Browser evidence only; no provider/API call, canonical graph mutation or git action from this approval. |
 | M39 | `approved_provider_api_pilot` | `passed` | Codex-session provider pilot evidence only; no canonical graph mutation or git action from this approval. |
 | M40 | `approved_canonical_mutation_pilot` | `passed` | Staged canonical mutation/rollback proof only; `canonical_graph_source_mutated: false` and no git action. |
-| M41 | `explicit_git_release_pr_action` | `blocked_pending_explicit_git_release_fields` | Requires release branch or push target, commit message, PR base branch, PR title/intent and explicit branch/write policy before any git write. |
+| M41 | `explicit_git_release_pr_action` | `owner_closed_no_op_git_release_pr` | Git release/PR did not run; future git write requires fresh preflight, release branch or push target, commit message, PR base branch, PR title/intent and explicit branch/write policy. |
 
 ## Verification
 

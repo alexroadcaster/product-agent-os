@@ -277,14 +277,16 @@ M41 did not run `git add`, commit, push or PR creation. The git action remains b
 
 T10-LIVE-M41 post-B38 audit: `dirty_file_count: 15 is historical Batch 35 evidence, not current release readiness`. This value is a `historical_preflight_snapshot`; B37/B38/B38-S1 do not close M41 and do not refresh the git release packet. A fresh preflight is required before any git write: current `git status --short`, unrelated-change check, exact file list, verification summary, release branch or push target, commit message, PR base/title/intent and explicit branch/current-branch policy.
 
+T10-LIVE-M41 owner closure addendum: the owner explicitly selected no git release/PR execution and closed M41 as `owner_closed_no_op_git_release_pr`. `git_stage_commit_push_pr_performed: false`, `branch_created: false`, `commit_created: false`, `push_performed: false`, `pull_request_created: false` and `future_git_write_requires_fresh_preflight: true` remain the release boundary.
+
 ## Residual Risks
 
 - A draft approval packet can be mistaken for approval. Keep `approval_status: approval_required` until the owner explicitly approves one action.
 - Reusing approval across action ids can silently expand scope.
 - Screenshots, provider output and generated graph artifacts are not source of truth without source-boundary evidence and owner review.
 - Git release/PR action is separate from docs closure and remains explicit-only.
-- After `done_through_m40`, `T10-LIVE-M41` remains blocked until exact git release/PR fields are supplied; B37/B38/B38-S1 do not close M41.
+- `T10-LIVE-M41` is owner-closed as no-op without git release/PR execution; any future git write still requires exact git release/PR fields and fresh preflight.
 
 ## Next Action
 
-Owner provides release branch name, commit message, PR base/title/body intent and explicit permission to create/switch branch, stage files, commit, push and open a PR, or leaves `T10-LIVE-M41` blocked. No Task 27/28 planning should start from this packet.
+Owner may start the next approved production-readiness slice. Future git release/PR work requires a new explicit packet with release branch name, commit message, PR base/title/body intent and explicit permission to create/switch branch, stage files, commit, push and open a PR.

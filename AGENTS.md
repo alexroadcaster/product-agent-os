@@ -57,8 +57,8 @@ This repository is a Russian knowledge base for researching OpenAI Codex, advanc
 - Use stronger reasoning for planning, architecture, review, debugging, eval judging, security and ambiguous multi-step work; use lower reasoning for bounded collection, mechanical edits and deterministic checks.
 - For Python implementation work, use `python-design-patterns` and `python-code-style` as advisory guidance while preserving existing project patterns.
 - Use eval-driven loops for subjective or long-horizon tasks: baseline, one focused change, rerun eval, inspect artifacts and stop only at threshold.
-- Current Product-Agent OS status: Tracks 1-8, Track 9 and Track 10 history is source-owned by the detailed backlogs and registry. Task 26 Batch 35 is complete through `done_through_m40`; `T10-LIVE-M41` remains `blocked_pending_explicit_git_release_fields`. B38-S1 records package-source freeze and metadata-audit evidence without closing M41: M01 blocked, M02 implemented, M03 accepted as a local-only metadata gap. M41 Batch 35 git preflight counts are historical evidence only; rerun fresh preflight before any git write.
-- Current M41 missing fields: release branch or push target, commit message, PR base branch, PR title and intent, plus explicit branch creation/current-branch push policy.
+- Current Product-Agent OS status: Tracks 1-8, Track 9 and Track 10 history is source-owned by the detailed backlogs and registry. Task 26 Batch 35 is closed through `T10-LIVE-M41` as `owner_closed_no_op_git_release_pr`: no branch, stage, commit, push or PR was performed, and future git writes require fresh preflight and exact approval. B38-S1 records package-source freeze and metadata-audit evidence: M01 owner-closed no-op, M02 implemented, M03 accepted as a local-only metadata gap. B38-S2 records M04 full verification as implemented and M05 as `blocked_pending_explicit_cache_mutation_approval` after stale installed-cache inspection.
+- Future M41 git-write fields: release branch or push target, commit message, PR base branch, PR title and intent, plus explicit branch creation/current-branch push policy.
 
 ## Windows Codex Shell Guard
 
