@@ -450,6 +450,25 @@ B40-S1 covers `B40-DVL-M01..M04`, `B40-DVL-M25`, `B40-DVL-M28`, `B40-DVL-M31` an
 | --- | --- | --- |
 | `implemented_contract_only` | B40-S1 architecture and contract | The owner asked to start the first Batch 40 slice with agents and skills. `implementation-planner` and `agent-team-designer` were used as planning/team-design skills, while explorer subagents supplied read-only docs/source and runtime/contract audits. The Track 10 plan now records the product promise "check evidence before claiming done", non-goals, packet schema, bounded statuses, claim/artifact/severity/confidence/freshness taxonomy, explicit and implicit triggers, skip/manual-only rules, Worker/Skeptic/Reviser contracts, revision budget, escalation ladder, UX/cost budget, route compatibility boundary and no-unapproved-actions proof. B40-S1 is not a runtime implementation and does not prove usefulness, validator enforcement, route behavior, transcript quality or promotion readiness. No plugin/runtime code, skill, template, validator, route code, eval fixture, generated site, live server, browser automation, provider/API call, canonical graph mutation, hook, automation, MCP/Agents SDK runner or git stage/commit/push/PR was performed. |
 
+## Task 26 Batch 40 Doubt / Verifier Loop S2 Plugin Foundation Addendum
+
+B40-S2 covers `B40-DVL-M05..M10`, `B40-DVL-M26`, `B40-DVL-M27`, `B40-DVL-M30`, `B40-DVL-M35` and `B40-DVL-M36` as the plugin implementation foundation.
+
+- batch_status: `b40_s2_implemented_plugin_foundation`.
+- implementation_timestamp: `09-06-2026 18:32` `Europe/Moscow`.
+- implemented_rows: `B40-DVL-M05`, `B40-DVL-M06`, `B40-DVL-M07`, `B40-DVL-M08`, `B40-DVL-M09`, `B40-DVL-M10`, `B40-DVL-M26`, `B40-DVL-M27`, `B40-DVL-M30`, `B40-DVL-M35`, `B40-DVL-M36`.
+- plugin_surfaces_added: `doubt-verification-packet.md` artifact template, `completion-skeptic` skill package, `validate_doubt_verification_packet.py` CLI, additive `route_packet.completion_skeptic_recommendation`, status snapshot/dashboard projection and candidate-only `completion-skeptic-stop-reminder.md`.
+- evidence_routing_added: bounded evidence provider policy, generated-view-only blocking, pass-without-current-evidence blocking, provenance/freshness/redaction checks and handoff projection into existing Product-Agent OS fields.
+- route_compatibility: `completion_skeptic_recommendation` is additive inside `route_packet`; primary lifecycle route semantics stay intact.
+- candidate_only_boundary: no hook, schedule, automation, MCP server, Agents SDK runner, browser automation, provider call, live server, target mutation or git action was activated.
+- current_run_verification: focused post-source-sync suite ran 313 tests with `OK`; full unittest `python -m unittest discover -s tests -p "test_*.py" -v` ran 864 tests with `OK`; `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0` with `renderer_file_count: 197`; transcript eval exited `0` with 19 sessions and 0 failures; `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 12 bundled skills; `python tools\check_docs.py` returned `OK`; `git diff --check` exited `0`.
+- future_rows_still_planned: `B40-DVL-M11..M24`, `B40-DVL-M29`, `B40-DVL-M33..M34`, `B40-DVL-M37..M38`.
+- residual_risks: transcript quality, false-pass/false-rewrite negative evals, adversarial fake-evidence cases, public docs/site, manual pilots, scorecard calibration and final go/no-go remain future slices.
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `implemented_plugin_foundation` | B40-S2 plugin foundation | The owner asked to start the second Batch 40 slice with agents and skills. B40-S2 adds the packet template, `completion-skeptic` skill, validator/CLI, runtime route recommendation, contract/guard validation, provider policy, status projection, handoff/task-matrix guidance and candidate-only stop reminder. The slice preserves the local-only/no-unapproved-actions boundary and does not claim Batch 40 usefulness or promotion readiness before B40-S3 through B40-S5 evals, docs/site, pilots, scorecards and closure. |
+
 ## Deferred
 
 | Status | Item | Reason |

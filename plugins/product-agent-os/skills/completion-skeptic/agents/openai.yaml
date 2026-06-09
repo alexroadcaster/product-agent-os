@@ -1,0 +1,6 @@
+interface:
+  display_name: "Completion Skeptic"
+  short_description: "Re-checks completion claims against evidence, accepted gaps, approvals, and handoff mapping."
+  default_prompt: "Use $completion-skeptic to re-check this completion claim before final handoff."
+policy:
+  allow_implicit_invocation: false

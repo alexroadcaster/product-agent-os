@@ -11,6 +11,7 @@ from codex_runtime_runner.contracts import (
     validate_project_graph_status_packet,
     validate_question_queue,
 )
+from product_agent_os.doubt_verification import validate_completion_skeptic_recommendation_packet
 from codex_runtime_runner.routes import ROUTES
 
 
@@ -41,6 +42,8 @@ def validate_route_packet(route: dict[str, Any]) -> list[str]:
         errors.extend(validate_question_queue(route["question_queue"], "route.question_queue"))
     if "project_graph_status" in route:
         errors.extend(validate_project_graph_status_packet(route["project_graph_status"]))
+    if "completion_skeptic_recommendation" in route:
+        errors.extend(validate_completion_skeptic_recommendation_packet(route["completion_skeptic_recommendation"]))
     if route.get("lifecycle_state") == "learning_ready" and isinstance(route.get("methodology_packet"), dict):
         if methodology_requires_automation_maturity(route["methodology_packet"]):
             errors.append("automation:maturity_evidence_required")

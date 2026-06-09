@@ -14,6 +14,7 @@ sys.path.insert(0, str(SCRIPTS))
 from product_agent_os.validators import (  # noqa: E402
     validate_agent_file,
     validate_control_plane,
+    validate_doubt_verification_packet_file,
     validate_hook_file,
     validate_task_matrix_file,
     validate_task_matrix_text,
@@ -181,6 +182,32 @@ class ValidatorsTest(unittest.TestCase):
         self.assertEqual(result.stderr, "")
         self.assertFalse(payload["ok"])
         self.assertEqual(payload["errors"], ["no detailed task blocks found"])
+
+    def test_doubt_verification_file_and_cli_return_json_without_traceback(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            valid_path = Path(tmp) / "doubt-packet.json"
+            invalid_path = Path(tmp) / "invalid-doubt-packet.json"
+            valid_path.write_text(json.dumps(VALID_DOUBT_PACKET), encoding="utf-8")
+            invalid_path.write_text(json.dumps({"schema_version": "doubt_verification_packet_v1"}), encoding="utf-8")
+
+            self.assertEqual(validate_doubt_verification_packet_file(valid_path), [])
+
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPTS / "validate_doubt_verification_packet.py"),
+                    str(invalid_path),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+        payload = json.loads(result.stdout)
+        self.assertEqual(result.returncode, 1)
+        self.assertEqual(result.stderr, "")
+        self.assertFalse(payload["ok"])
+        self.assertIn("verdict:required", payload["errors"])
 
     def test_agent_file_reports_invalid_toml(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -420,6 +447,65 @@ Source status: local implementation planning
 - residual risks: validator is conservative for Markdown
 - follow-up: add behavioral eval guard
 """
+
+VALID_DOUBT_PACKET = {
+    "schema_version": "doubt_verification_packet_v1",
+    "verdict": "pass",
+    "artifact_under_review": {
+        "kind": "task_row",
+        "path": "docs/sources/product-agent-os-track-10-backlog.md",
+        "label": "B40-S2",
+    },
+    "claim_ledger": [
+        {
+            "claim_id": "claim-current-evidence",
+            "claim": "Focused validator tests ran in the current run.",
+            "status": "supported",
+            "provenance": {
+                "kind": "command",
+                "ref": "python -m unittest tests.product_agent_os.test_validators -v",
+                "checked_at": "2026-06-09T12:00:00+03:00",
+            },
+        }
+    ],
+    "requirement_ledger": [
+        {
+            "requirement_id": "req-generated-view-boundary",
+            "requirement": "Generated dashboards cannot be completion proof.",
+            "status": "covered",
+            "provenance": {
+                "kind": "source",
+                "ref": "AGENTS.md generated dashboard policy",
+                "checked_at": "2026-06-09T12:00:00+03:00",
+            },
+        }
+    ],
+    "evidence_ledger": [
+        {
+            "evidence_id": "ev-current-unittest",
+            "evidence_provider": "command",
+            "evidence_role": "proof",
+            "status": "available",
+            "evidence_ref": "python -m unittest tests.product_agent_os.test_validators -v",
+            "provenance": {
+                "kind": "command",
+                "ref": "focused unit test",
+                "checked_at": "2026-06-09T12:00:00+03:00",
+            },
+        }
+    ],
+    "approval_boundary": {"status": "not_required", "hits": []},
+    "gap_ledger": [],
+    "handoff": {
+        "verified_claims": ["claim-current-evidence"],
+        "unsupported_claims": [],
+        "verification_evidence": ["ev-current-unittest"],
+        "stop_reason": "doubt_verification_passed",
+        "recommended_next_role": "risk-reviewer",
+    },
+    "source_policy": "doubt verification packet is evidence ledger, not generated dashboard proof",
+    "redaction_status": {"status": "clean", "categories": []},
+}
 
 
 if __name__ == "__main__":

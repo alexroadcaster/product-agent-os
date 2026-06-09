@@ -8,6 +8,12 @@ from typing import Any
 import tomllib
 
 from product_agent_os.contracts import CONTROL_PLANE_FILES
+from product_agent_os.doubt_verification import (
+    DOUBT_VERIFICATION_PACKET_SCHEMA_VERSION,
+    main_doubt_verification,
+    validate_doubt_verification_packet,
+    validate_doubt_verification_packet_file,
+)
 
 
 AGENT_REQUIRED_FIELDS = [

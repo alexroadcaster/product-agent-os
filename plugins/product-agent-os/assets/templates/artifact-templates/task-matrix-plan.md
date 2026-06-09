@@ -39,6 +39,8 @@ Allowed task statuses:
 
 Validator target: detailed task blocks with one explicit field per line. Summary tables are planning indexes only and cannot replace the detailed task blocks.
 
+Completion-skeptic evidence: when a task claims completion, readiness, release, fixed, verified, or implemented status, the completion report should link a `doubt_verification_packet` or explicitly record why the packet is not required. The report must name supported claims, unsupported claims, accepted gaps, current verification evidence, no-unapproved-actions proof, residual risks, and next action. Generated dashboards, generated sites, reports, and project graphs are orientation evidence only and cannot replace current command/source evidence or accepted gaps.
+
 ## Compatibility Policy
 
 - Old matrices remain historical evidence.

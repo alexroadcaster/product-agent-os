@@ -277,6 +277,7 @@ def _sections(snapshot: dict[str, Any]) -> str:
     staged = _dict(snapshot.get("staged_artifacts"))
     manifest = _dict(snapshot.get("manifest_digests"))
     hygiene = _dict(snapshot.get("system_file_hygiene"))
+    completion_skeptic = _dict(snapshot.get("completion_skeptic"))
     projection_decisions = _dict(snapshot.get("projection_decisions"))
     task_matrix_projection = _dict(projection_decisions.get("task_matrix_state"))
 
@@ -324,6 +325,7 @@ def _sections(snapshot: dict[str, Any]) -> str:
                 ("Warnings", readiness.get("warnings")),
             ],
         ),
+        _completion_skeptic_section(completion_skeptic),
         _system_hygiene_section(hygiene),
         _section(
             "section-evidence",
@@ -359,6 +361,31 @@ def _sections(snapshot: dict[str, Any]) -> str:
         ),
     ]
     return "\n".join(sections)
+
+
+def _completion_skeptic_section(packet: dict[str, Any]) -> str:
+    evidence = _dict(packet.get("evidence_summary"))
+    approval = _dict(packet.get("approval_boundary"))
+    return _section(
+        "section-completion-skeptic",
+        "Completion Skeptic",
+        [
+            ("Status", packet.get("status")),
+            ("Trigger level", packet.get("trigger_level")),
+            ("Recommended skill", packet.get("recommended_skill")),
+            ("Top reason", packet.get("top_reason")),
+            ("Trigger sources", packet.get("trigger_sources")),
+            ("Risk classes", packet.get("risk_classes")),
+            ("Required evidence", packet.get("required_evidence")),
+            ("Missing evidence", evidence.get("missing")),
+            ("Accepted gaps", evidence.get("accepted_gap")),
+            ("Approval status", approval.get("status")),
+            ("Approval hits", approval.get("hits")),
+            ("Packet ref", packet.get("packet_ref")),
+            ("Next action", packet.get("safe_next_action")),
+            ("Source policy", packet.get("source_policy")),
+        ],
+    )
 
 
 def _section(section_id: str, title: str, rows: list[tuple[str, Any]]) -> str:
@@ -702,6 +729,7 @@ def _validation_checks() -> list[str]:
         "status snapshot schema validates",
         "generated view policy present",
         "system hygiene dashboard present",
+        "completion skeptic dashboard present",
     ]
 
 

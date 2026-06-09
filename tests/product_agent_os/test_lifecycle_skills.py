@@ -57,6 +57,10 @@ REFERENCE_TERMS = {
         "verification_evidence",
         "unsupported_claims",
         "stop_reason",
+        "doubt_verification_packet",
+        "claim_ledger",
+        "accepted_gap",
+        "Generated dashboards are not completion proof",
     ],
     "source-policy.md": [
         "Official OpenAI documentation",
@@ -335,6 +339,37 @@ class LifecycleSkillsTest(unittest.TestCase):
             with self.subTest(name=name):
                 for expected in shared_terms:
                     self.assertIn(expected, text)
+
+    def test_completion_skeptic_skill_package_exists_and_uses_handoff_contract(self):
+        name = "completion-skeptic"
+        text = self._skill_text(name)
+        metadata = self._metadata_text(name)
+        lower = text.lower()
+
+        self._assert_frontmatter_has_only_name_and_description(name, text)
+        self.assertIn("Use $completion-skeptic", metadata)
+        self.assertIn("allow_implicit_invocation: false", metadata)
+        for heading in REQUIRED_HEADINGS:
+            self.assertIn(heading, text)
+        for link in REQUIRED_SKILL_LINKS:
+            self.assertIn(link, text)
+        for expected in [
+            "completion skeptic",
+            "doubt_verification_packet",
+            "claim_ledger",
+            "requirement_ledger",
+            "evidence_ledger",
+            "supported claims",
+            "unsupported claims",
+            "accepted gaps",
+            "handoff mapping",
+            "generated dashboards are not completion proof",
+            "do not create active automation",
+            "do not use network access",
+            "do not claim completion",
+        ]:
+            with self.subTest(expected=expected):
+                self.assertIn(expected, lower)
 
     def test_scenario_handoff_wording_blocks_role_transition_without_packet(self):
         orchestrator = self._skill_text("project-lifecycle-orchestrator").lower()

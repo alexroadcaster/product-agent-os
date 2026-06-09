@@ -175,6 +175,18 @@ verification_status: "B40-S1 is contract-only: no `completion-skeptic` skill, pa
 ```
 
 ```yaml
+title: "Product-Agent OS Batch 40 S2 Doubt verifier loop plugin foundation"
+url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; docs/sources/product-agent-os-track-10-backlog.en.md; plugins/product-agent-os/scripts/product_agent_os/doubt_verification.py; plugins/product-agent-os/skills/completion-skeptic/SKILL.md; plugins/product-agent-os/assets/templates/artifact-templates/doubt-verification-packet.md"
+type: "internal implementation evidence"
+source_status: "project-authored"
+checked_at: "2026-06-09"
+summary: "B40-S2 implements the plugin foundation for the Doubt / verifier loop: packet template, `completion-skeptic` skill, validator/CLI, additive runtime route recommendation, evidence provider policy, handoff mapping, status projection and candidate-only stop reminder."
+relevance: "Turns the B40-S1 architecture contract into local Product-Agent OS plugin surfaces while preserving the no-unapproved-actions boundary and keeping evals, docs/site, pilots and promotion closure in later slices."
+trust_level: "high"
+verification_status: "Backed by current-run verification: focused post-source-sync suite ran 313 tests with OK; full unittest ran 864 tests with OK; fixture eval exited 0 with `renderer_file_count: 197`; transcript eval exited 0 with 19 sessions and 0 failures; Codex compatibility returned `status: compatible` with 12 bundled skills; docs check returned OK; `git diff --check` exited 0. No target workspace mutation, live server, browser automation, provider/live external model/API call, canonical graph mutation, active hook/automation/MCP/Agents SDK runner, external publication or git action was performed. Full Batch 40 usefulness, negative evals, public docs/site, pilot evidence and release readiness remain future work."
+```
+
+```yaml
 title: "Codex web / cloud"
 url: "https://developers.openai.com/codex/cloud"
 type: "documentation"

@@ -17,6 +17,7 @@ MAX_PROJECT_GRAPH_REFS = 4
 MAX_PROJECT_GRAPH_GAPS = 5
 MAX_PROJECT_GRAPH_UNSUPPORTED_LANGUAGES = 8
 MAX_SYSTEM_FILE_STATUSES = 50
+MAX_COMPLETION_SKEPTIC_ITEMS = 8
 TASK_MATRIX_PROJECTION_DECISION = {
     "status": "deferred_in_b37",
     "state_projection": "not_projected",
@@ -79,6 +80,7 @@ def build_status_snapshot(
         ),
         "project_graph_summary": _project_graph_summary(project_graph_status),
         "agent_skill_metrics_loop": _agent_skill_metrics_loop_summary(route, discovery),
+        "completion_skeptic": _completion_skeptic_summary(route),
         "system_file_hygiene": _system_file_hygiene_summary(system_file_hygiene_audit),
         "projection_decisions": {
             "task_matrix_state": dict(TASK_MATRIX_PROJECTION_DECISION),
@@ -252,6 +254,72 @@ def _project_graph_summary(packet: dict[str, Any]) -> dict[str, Any]:
         "source_policy": "generated graph is not source of truth",
         "safe_next_action": _string(packet.get("safe_next_action") or "Read source files before graph-backed claims."),
     }
+
+
+def _completion_skeptic_summary(route: dict[str, Any]) -> dict[str, Any]:
+    packet = route.get("completion_skeptic_recommendation")
+    if not isinstance(packet, dict) or not packet:
+        return {
+            "status": "not_available",
+            "trigger_level": "not_available",
+            "recommended_skill": "completion-skeptic",
+            "top_reason": "",
+            "trigger_sources": [],
+            "risk_classes": [],
+            "required_evidence": [],
+            "evidence_summary": {
+                "required": 0,
+                "available": 0,
+                "missing": 0,
+                "stale": 0,
+                "approval_required": 0,
+                "accepted_gap": 0,
+            },
+            "approval_boundary": {"status": "not_required", "hits": []},
+            "packet_ref": {"kind": "not_available", "path": "", "digest": ""},
+            "safe_next_action": "Run normal verification before any completion claim.",
+            "source_policy": "completion skeptic recommendation is generated routing guidance, not source of truth",
+        }
+    reasons = _safe_string_list(packet.get("reasons"))[:MAX_COMPLETION_SKEPTIC_ITEMS]
+    evidence = packet.get("evidence_summary") if isinstance(packet.get("evidence_summary"), dict) else {}
+    approval = packet.get("approval_boundary") if isinstance(packet.get("approval_boundary"), dict) else {}
+    packet_ref = packet.get("packet_ref") if isinstance(packet.get("packet_ref"), dict) else {}
+    return {
+        "status": _string(packet.get("status") or "not_available"),
+        "trigger_level": _string(packet.get("trigger_level") or packet.get("status") or "not_available"),
+        "recommended_skill": _string(packet.get("recommended_skill") or "completion-skeptic"),
+        "top_reason": reasons[0] if reasons else "",
+        "trigger_sources": _safe_string_list(packet.get("trigger_sources"))[:MAX_COMPLETION_SKEPTIC_ITEMS],
+        "risk_classes": _safe_string_list(packet.get("risk_classes"))[:MAX_COMPLETION_SKEPTIC_ITEMS],
+        "required_evidence": _safe_string_list(packet.get("required_evidence"))[:MAX_COMPLETION_SKEPTIC_ITEMS],
+        "evidence_summary": {
+            "required": _int(evidence.get("required")),
+            "available": _int(evidence.get("available")),
+            "missing": _int(evidence.get("missing")),
+            "stale": _int(evidence.get("stale")),
+            "approval_required": _int(evidence.get("approval_required")),
+            "accepted_gap": _int(evidence.get("accepted_gap")),
+        },
+        "approval_boundary": {
+            "status": _string(approval.get("status") or "not_required"),
+            "hits": _safe_string_list(approval.get("hits"))[:MAX_COMPLETION_SKEPTIC_ITEMS],
+        },
+        "packet_ref": _safe_ref(packet_ref),
+        "safe_next_action": _string(packet.get("safe_next_action") or "Run normal verification before any completion claim."),
+        "source_policy": "completion skeptic recommendation is generated routing guidance, not source of truth",
+    }
+
+
+def _safe_ref(value: dict[str, Any]) -> dict[str, str]:
+    kind = _string(value.get("kind") or "not_available")
+    path = _string(value.get("path"))
+    if path and (
+        path.startswith(("http://", "https://"))
+        or not _safe_project_graph_relative_path(path)
+    ):
+        path = ""
+        kind = "not_available"
+    return {"kind": kind, "path": path, "digest": _string(value.get("digest"))}
 
 
 def _system_file_hygiene_summary(packet: dict[str, Any] | None) -> dict[str, Any]:
@@ -531,6 +599,12 @@ def _parse_datetime(value: str) -> datetime | None:
 
 def _safe_list(value: Any) -> list[Any]:
     return value if isinstance(value, list) else []
+
+
+def _safe_string_list(value: Any) -> list[str]:
+    if not isinstance(value, list):
+        return []
+    return [_string(item) for item in value if _string(item)]
 
 
 def _string(value: Any) -> str:

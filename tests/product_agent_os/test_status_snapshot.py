@@ -248,6 +248,75 @@ class StatusSnapshotTest(unittest.TestCase):
         self.assertNotIn("C:\\Users\\person", serialized)
         self.assertNotIn("https://example.invalid", serialized)
 
+    def test_snapshot_includes_completion_skeptic_projection_without_raw_ledgers(self):
+        runtime_result = {
+            "status": "route_ready",
+            "workspace": "C:\\Users\\person\\doubt-project",
+            "lifecycle_state": "quality_gate",
+            "route_packet": {
+                "usage_mode": {"primary": "maintenance", "confidence": "medium"},
+                "completion_skeptic_recommendation": {
+                    "schema_version": 1,
+                    "write_policy": "read_only",
+                    "status": "recommended",
+                    "recommended_skill": "completion-skeptic",
+                    "trigger_level": "recommended",
+                    "trigger_sources": ["completion_claim"],
+                    "risk_classes": ["verification_gap"],
+                    "reasons": ["completion claim needs a second-pass evidence check"],
+                    "skip_reasons": [],
+                    "artifact_under_review": {
+                        "kind": "runtime_result",
+                        "path": ".codex/product-agent-os/status.json",
+                        "label": "status snapshot",
+                    },
+                    "artifact_type": "plugin_skill",
+                    "required_evidence": ["current command evidence", "source artifact ledger", "accepted gaps"],
+                    "evidence_summary": {
+                        "required": 3,
+                        "available": 1,
+                        "missing": 1,
+                        "stale": 0,
+                        "approval_required": 0,
+                        "accepted_gap": 1,
+                    },
+                    "approval_boundary": {"status": "not_required", "hits": []},
+                    "packet_ref": {
+                        "kind": "staged_artifact",
+                        "path": ".codex/product-agent-os/doubt-verification-packet.json",
+                        "digest": "sha256:" + "a" * 64,
+                    },
+                    "safe_next_action": "Run completion-skeptic before claiming completion.",
+                    "source_policy": "completion skeptic recommendation is generated routing guidance, not source of truth",
+                    "redaction_status": {"status": "clean", "categories": []},
+                    "claim_ledger": [{"raw": "must not project"}],
+                    "unsafe_extra": "TOKEN=fixture-secret C:\\Users\\person\\doubt-project",
+                },
+            },
+            "verification_evidence": [],
+        }
+
+        snapshot = build_status_snapshot(
+            runtime_result=runtime_result,
+            generated_at="2026-06-09T12:00:00+03:00",
+        )
+        serialized = json.dumps(snapshot, sort_keys=True)
+        summary = snapshot["completion_skeptic"]
+
+        self.assertEqual(summary["status"], "recommended")
+        self.assertEqual(summary["trigger_level"], "recommended")
+        self.assertEqual(summary["recommended_skill"], "completion-skeptic")
+        self.assertEqual(summary["evidence_summary"]["missing"], 1)
+        self.assertEqual(summary["evidence_summary"]["accepted_gap"], 1)
+        self.assertEqual(summary["packet_ref"]["path"], ".codex/product-agent-os/doubt-verification-packet.json")
+        self.assertEqual(
+            summary["source_policy"],
+            "completion skeptic recommendation is generated routing guidance, not source of truth",
+        )
+        self.assertNotIn("claim_ledger", summary)
+        self.assertNotIn("fixture-secret", serialized)
+        self.assertNotIn("C:\\Users\\person", serialized)
+
     def test_snapshot_includes_bounded_project_graph_summary_and_never_claims_graph_as_truth(self):
         runtime_result = {
             "status": "route_ready",

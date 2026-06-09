@@ -47,6 +47,7 @@ class StatusDashboardTest(unittest.TestCase):
         self.assertIn('id="section-usage-mode"', html)
         self.assertIn('id="section-questions"', html)
         self.assertIn('id="section-readiness"', html)
+        self.assertIn('id="section-completion-skeptic"', html)
         self.assertIn('id="system-file-hygiene"', html)
         self.assertIn('id="section-evidence"', html)
         self.assertIn('id="section-approvals"', html)
@@ -58,7 +59,43 @@ class StatusDashboardTest(unittest.TestCase):
         self.assertIn(GENERATED_VIEW_ONLY_TEXT, html)
         self.assertIn("generated view policy present", result["validation"]["checks"])
         self.assertIn("system hygiene dashboard present", result["validation"]["checks"])
+        self.assertIn("completion skeptic dashboard present", result["validation"]["checks"])
         self.assertEqual(json.loads(snapshot_json)["schema_version"], 1)
+        self.assertEqual(result["validation"]["errors"], [])
+
+    def test_renderer_outputs_completion_skeptic_section_as_generated_guidance_only(self):
+        snapshot = _snapshot()
+        snapshot["completion_skeptic"] = {
+            "status": "recommended",
+            "trigger_level": "recommended",
+            "recommended_skill": "completion-skeptic",
+            "top_reason": "completion claim needs a second-pass evidence check",
+            "trigger_sources": ["completion_claim"],
+            "risk_classes": ["verification_gap"],
+            "required_evidence": ["current command evidence"],
+            "evidence_summary": {
+                "required": 1,
+                "available": 0,
+                "missing": 1,
+                "stale": 0,
+                "approval_required": 0,
+                "accepted_gap": 0,
+            },
+            "approval_boundary": {"status": "not_required", "hits": []},
+            "packet_ref": {"kind": "not_available", "path": "", "digest": ""},
+            "safe_next_action": "Run completion-skeptic before claiming completion.",
+            "source_policy": "completion skeptic recommendation is generated routing guidance, not source of truth",
+        }
+
+        result = render_status_dashboard(snapshot)
+        html = result["html"]
+
+        self.assertIn('id="section-completion-skeptic"', html)
+        self.assertIn("Completion Skeptic", html)
+        self.assertIn("completion-skeptic", html)
+        self.assertIn("generated routing guidance, not source of truth", html)
+        self.assertIn("Run completion-skeptic before claiming completion.", html)
+        self.assertNotIn("claim_ledger", html)
         self.assertEqual(result["validation"]["errors"], [])
 
     def test_renderer_outputs_system_file_hygiene_section_with_grouped_status_tables(self):

@@ -554,6 +554,12 @@ _TEMPLATES: tuple[TemplateSpec, ...] = (
         ".codex/artifact-templates/task-matrix-plan.md",
     ),
     _spec(
+        "artifact-doubt-verification-packet",
+        "artifact-templates",
+        "artifact-templates/doubt-verification-packet.md",
+        ".codex/artifact-templates/doubt-verification-packet.md",
+    ),
+    _spec(
         "artifact-codex-compatibility-report",
         "artifact-templates",
         "artifact-templates/codex-compatibility-report.md",
@@ -1146,6 +1152,12 @@ _TEMPLATES: tuple[TemplateSpec, ...] = (
         "automations",
         "automations/system-file-hygiene-audit.md",
         ".codex/automation-candidates/system-file-hygiene-audit.md",
+    ),
+    _spec(
+        "automation-completion-skeptic-stop-reminder",
+        "automations",
+        "automations/completion-skeptic-stop-reminder.md",
+        ".codex/automation-candidates/completion-skeptic-stop-reminder.md",
     ),
     _spec("pr-body", "pr", "pr/pr-body.md", ".codex/pr/pr-body.md"),
     _spec("release-notes", "pr", "pr/release-notes.md", ".codex/pr/release-notes.md"),

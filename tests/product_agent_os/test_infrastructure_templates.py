@@ -117,6 +117,7 @@ REQUIRED_TARGETS = {
     ".codex/artifact-templates/behavioral-eval-case.md",
     ".codex/artifact-templates/plan-quality-check.md",
     ".codex/artifact-templates/task-matrix-plan.md",
+    ".codex/artifact-templates/doubt-verification-packet.md",
     ".codex/artifact-templates/codex-compatibility-report.md",
     ".codex/artifact-templates/bug-rescue-report.md",
     ".codex/artifact-templates/greenfield-idea-brief.md",
@@ -221,6 +222,7 @@ REQUIRED_TARGETS = {
     ".codex/evals/behavioral-workflows.json",
     ".codex/automation-candidates/automation-candidate.md",
     ".codex/automation-candidates/system-file-hygiene-audit.md",
+    ".codex/automation-candidates/completion-skeptic-stop-reminder.md",
     ".codex/pr/pr-body.md",
     ".codex/pr/release-notes.md",
 }
@@ -317,6 +319,45 @@ class InfrastructureTemplateTest(unittest.TestCase):
         for expected in expected_terms:
             with self.subTest(expected=expected):
                 self.assertIn(expected, rendered)
+
+    def test_doubt_verification_template_and_stop_reminder_are_candidate_only(self):
+        templates = required_templates()
+        by_target = {item.target_path: item for item in templates}
+
+        packet_target = ".codex/artifact-templates/doubt-verification-packet.md"
+        reminder_target = ".codex/automation-candidates/completion-skeptic-stop-reminder.md"
+        self.assertIn(packet_target, by_target)
+        self.assertIn(reminder_target, by_target)
+        self.assertEqual(by_target[packet_target].key, "artifact-doubt-verification-packet")
+        self.assertEqual(by_target[reminder_target].key, "automation-completion-skeptic-stop-reminder")
+
+        packet = render_template(by_target[packet_target], self._context())
+        reminder = render_template(by_target[reminder_target], self._context())
+        for expected in [
+            "doubt_verification_packet_v1",
+            "claim_ledger",
+            "requirement_ledger",
+            "evidence_ledger",
+            "completion skeptic recommendation",
+            "generated dashboards are not completion proof",
+            "accepted gaps",
+            "provenance",
+            "handoff mapping",
+            "No secrets",
+        ]:
+            with self.subTest(expected=expected):
+                self.assertIn(expected, packet)
+        for expected in [
+            "candidate-only",
+            "manual pilot",
+            "no active schedule",
+            "no hook activation",
+            "no automation activation",
+            "explicit owner approval",
+            "disable path",
+        ]:
+            with self.subTest(expected=expected):
+                self.assertIn(expected, reminder)
 
     def test_ai_rag_template_names_are_canonical_and_legacy_names_are_mapped(self):
         canonical_names = {
@@ -3635,9 +3676,24 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 "allowed task statuses",
                 "validator target: detailed task blocks",
                 "summary tables are planning indexes only",
+                "doubt_verification_packet",
+                "unsupported claims",
+                "accepted gaps",
+                "no-unapproved-actions proof",
                 "completion report",
                 "no secrets",
                 "no git stage/commit/push/pr",
+            ],
+            "doubt-verification-packet.md": [
+                "source status:",
+                "doubt_verification_packet_v1",
+                "claim_ledger",
+                "requirement_ledger",
+                "evidence_ledger",
+                "generated dashboards are not completion proof",
+                "handoff mapping",
+                "accepted gaps",
+                "no secrets",
             ],
         }
         self.assertEqual(set(templates), set(expected_templates))

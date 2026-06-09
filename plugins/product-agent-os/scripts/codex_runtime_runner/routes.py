@@ -10,6 +10,10 @@ from codex_runtime_runner.contracts import (
     methodology_requires_automation_maturity,
 )
 from product_agent_os.question_protocol import build_question_queue
+from product_agent_os.doubt_verification import (
+    build_completion_skeptic_recommendation,
+    completion_skeptic_first_response_summary,
+)
 
 
 ROUTES = {
@@ -38,6 +42,7 @@ def plan_route(
     status_snapshot_ref: dict[str, Any] | None = None,
     agent_skill_metrics_loop: dict[str, Any] | None = None,
     project_graph_status: dict[str, Any] | None = None,
+    completion_skeptic_recommendation: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     skill, subagent, write_policy, action = ROUTES[lifecycle_state]
     if subagent and not allow_subagents:
@@ -127,6 +132,18 @@ def plan_route(
         route["expected_outputs"].append("project graph status packet")
         if graph_blocks_readiness:
             route["approval_requirements"].append("source file confirmation required before graph-backed readiness or impact claims")
+    if completion_skeptic_recommendation is None:
+        completion_skeptic_recommendation = build_completion_skeptic_recommendation(
+            lifecycle_state=lifecycle_state,
+            write_policy=write_policy,
+            usage_mode=usage_mode,
+            methodology_packet=methodology_packet,
+            project_graph_status=project_graph_status,
+            agent_skill_metrics_loop=agent_skill_metrics_loop,
+        )
+    route["completion_skeptic_recommendation"] = completion_skeptic_recommendation
+    route["expected_outputs"].append("doubt_verification_packet")
+    route["stop_conditions"].append("completion skeptic pass requires current evidence or accepted gaps")
     route["finish_options"] = finish_options
     evidence_gaps = _evidence_gaps(methodology_packet)
     if graph_blocks_readiness:
@@ -147,6 +164,9 @@ def plan_route(
     }
     if project_graph_status is not None:
         route["first_response_contract"]["project_graph_summary"] = _project_graph_summary(project_graph_status)
+    route["first_response_contract"]["completion_skeptic_summary"] = completion_skeptic_first_response_summary(
+        completion_skeptic_recommendation
+    )
     return route
 
 

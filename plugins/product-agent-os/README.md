@@ -109,6 +109,8 @@ The checked-in plugin source now includes the Task Matrix Plan template under `a
 
 This is a packaged staged artifact, not source truth, execution evidence or an active workflow. The presence of `task-matrix-plan.md` can route planning and handoff work, but it cannot prove implementation completion, readiness, verification success, dashboard status or release approval by itself. The current session skills are loaded separately from the packaged plugin source, so a Codex App session can have callable skills before a refreshed plugin cache exposes the newly checked-in template to installed-plugin consumers.
 
+Batch 40 adds the `doubt-verification-packet.md` staged artifact template and the candidate-only `completion-skeptic-stop-reminder.md` automation note. They support the manual completion-skeptic gate; they do not activate hooks, schedules, MCP, Agents SDK runners, browser automation, provider calls, live servers, target mutations, or git actions.
+
 ### Lifecycle Skills
 
 The plugin bundles these skills under `skills/`:
@@ -126,6 +128,7 @@ The plugin bundles these skills under `skills/`:
 | `pr-release-operator` | Prepare PR or release packets |
 | `learning-loop-maintainer` | Capture lessons, failures, and durable rules |
 | `automation-promoter` | Produce candidate-only automation readiness packets |
+| `completion-skeptic` | Re-check completion claims with a doubt verification packet |
 
 Codex loads skills through progressive disclosure: it sees each skill's name and description first, then loads the full `SKILL.md` only when the task matches or the user invokes it.
 

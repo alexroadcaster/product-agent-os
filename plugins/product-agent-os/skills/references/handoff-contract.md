@@ -98,6 +98,18 @@ Scenario handoff aliases used in workflow templates:
 - Recommended next role -> `next_agent_task`
 - Stop reason -> `stop_reason`
 
+Doubt verification handoff mapping:
+
+- `doubt_verification_packet` remains the detailed companion artifact for completion-skeptic evidence.
+- `claim_ledger` supported entries map to `verified_claims`.
+- `claim_ledger` unsupported, contradicted, stale, missing, or assumption entries map to `unsupported_claims`.
+- `evidence_ledger` command and source records map to `commands_run` and `verification_evidence`.
+- `requirement_ledger` missing, partial, approval-required, or accepted-gap entries map to `risks` until resolved or explicitly accepted.
+- `approval_boundary` hits map to `stop_reason` and `next_agent_task` when the next safe action is approval, owner review, or a different lifecycle role.
+- `accepted_gap` entries must preserve owner, reason, residual risk, and follow-up; they do not become supported claims.
+- Generated dashboards are not completion proof; generated status, site, report, or graph views can be orientation evidence only.
+- The completion skeptic owns the completion-claim gate; `risk-reviewer`, `test-eval-designer`, and `docs-maintainer` consume confirmed gaps through this mapping rather than re-litigating the whole packet.
+
 Rules:
 
 - `goal`, `constraints`, and `verification_evidence` must not be empty when a skill claims readiness.

@@ -41,6 +41,40 @@ class CodexRuntimeRunnerGuardsTest(unittest.TestCase):
 
         self.assertIn("route:unexpected_skill_for_state", errors)
 
+    def test_route_packet_validates_completion_skeptic_nested_recommendation(self):
+        route = {
+            "lifecycle_state": "quality_gate",
+            "recommended_skill": "risk-reviewer",
+            "recommended_subagent_role": "",
+            "write_policy": "read_only",
+            "completion_skeptic_recommendation": {
+                "schema_version": 1,
+                "write_policy": "staged_only",
+                "status": "forced",
+                "recommended_skill": "completion-skeptic",
+                "trigger_level": "forced",
+                "trigger_sources": [],
+                "risk_classes": [],
+                "reasons": [],
+                "skip_reasons": [],
+                "artifact_under_review": {"kind": "runtime_result", "path": "https://example.invalid/status.json", "label": ""},
+                "artifact_type": "plugin_skill",
+                "required_evidence": [],
+                "evidence_summary": {"required": 0, "available": 0, "missing": 0, "stale": 0, "approval_required": 0, "accepted_gap": 0},
+                "approval_boundary": {"status": "not_required", "hits": []},
+                "packet_ref": {"kind": "not_available", "path": "", "digest": ""},
+                "safe_next_action": "",
+                "source_policy": "completion skeptic recommendation is generated routing guidance, not source of truth",
+                "redaction_status": {"status": "clean", "categories": []},
+            },
+        }
+
+        errors = validate_route_packet(route)
+
+        self.assertIn("completion_skeptic_recommendation.write_policy:must_be_read_only", errors)
+        self.assertIn("completion_skeptic_recommendation.status:invalid", errors)
+        self.assertIn("completion_skeptic_recommendation.artifact_under_review.path:external_url_forbidden", errors)
+
     def test_handoff_requires_constraints_and_evidence(self):
         handoff = {
             "lifecycle_state": "quality_gate",

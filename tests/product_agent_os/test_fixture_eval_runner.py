@@ -337,7 +337,7 @@ class FixtureEvalRunnerTest(unittest.TestCase):
         self.assertTrue(results["python-app"]["expected_checks"]["task_matrix_discovery_signal_contract_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["task_matrix_planning_control_governance_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["task_matrix_projection_deferred_in_b37"])
-        self.assertEqual(results["python-app"]["renderer_file_count"], 195)
+        self.assertEqual(results["python-app"]["renderer_file_count"], 197)
         for check_name in [
             "methodology_catalog_contract_present",
             "methodology_intelligence_contract_present",

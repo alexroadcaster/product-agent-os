@@ -296,6 +296,31 @@ class CodexRuntimeRunnerStateRoutesTest(unittest.TestCase):
         self.assertEqual(route["next_action"], "Review risks and verification evidence.")
         self.assertEqual(route["first_response_contract"]["project_graph_summary"]["top_gap_count"], 1)
 
+    def test_quality_gate_route_adds_nested_completion_skeptic_without_replacing_lifecycle_skill(self):
+        route = plan_route(
+            "quality_gate",
+            allow_subagents=False,
+            methodology_intelligence=self._methodology_intelligence(),
+        )
+        errors = validate_route_packet(route)
+
+        recommendation = route["completion_skeptic_recommendation"]
+        first_response = route["first_response_contract"]
+
+        self.assertEqual(errors, [])
+        self.assertEqual(route["recommended_skill"], "risk-reviewer")
+        self.assertEqual(recommendation["recommended_skill"], "completion-skeptic")
+        self.assertEqual(recommendation["write_policy"], "read_only")
+        self.assertIn(recommendation["status"], {"recommended", "required", "approval_blocked"})
+        self.assertIn("doubt_verification_packet", route["expected_outputs"])
+        self.assertIn("completion skeptic pass requires current evidence or accepted gaps", route["stop_conditions"])
+        self.assertEqual(
+            first_response["completion_skeptic_summary"]["safe_next_action"],
+            recommendation["safe_next_action"],
+        )
+        self.assertNotIn("claim_ledger", first_response["completion_skeptic_summary"])
+        self.assertNotIn("evidence_ledger", first_response["completion_skeptic_summary"])
+
     def test_ownership_conflict_routes_parallel_builder_to_agent_team_designer(self):
         route = plan_route(
             "build_active",

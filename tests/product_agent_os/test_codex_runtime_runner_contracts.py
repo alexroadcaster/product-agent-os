@@ -20,6 +20,7 @@ from codex_runtime_runner.contracts import (  # noqa: E402
     build_result,
     classify_methodology_high_risk_actions,
     validate_agent_skill_metrics_loop_packet,
+    validate_completion_skeptic_recommendation_packet,
     validate_methodology_packet,
     validate_project_graph_status_packet,
     validate_runner_request,
@@ -297,6 +298,60 @@ class CodexRuntimeRunnerContractsTest(unittest.TestCase):
         self.assertEqual(validate_runner_result(result), [])
         self.assertIn("methodology_packet.project_graph_status:unknown", validate_methodology_packet(methodology_packet))
 
+    def test_route_packet_accepts_completion_skeptic_recommendation_without_schema_v1_break(self):
+        recommendation = self._valid_completion_skeptic_recommendation()
+        result = build_result(
+            status="route_ready",
+            workspace="C:/workspace/synthetic",
+            lifecycle_state="quality_gate",
+            route_packet={
+                "write_policy": "read_only",
+                "completion_skeptic_recommendation": recommendation,
+                "first_response_contract": {
+                    "safe_next_action": "Run completion-skeptic before claiming completion.",
+                    "completion_skeptic_summary": {
+                        "status": "recommended",
+                        "trigger_level": "recommended",
+                        "top_reason": "completion claim needs a second-pass evidence check",
+                        "missing_evidence_count": 1,
+                        "approval_required_count": 0,
+                        "safe_next_action": "Run completion-skeptic before claiming completion.",
+                    },
+                },
+            },
+            source_policy_status="ok",
+            approval_status="not_required",
+            next_action="Run completion-skeptic before claiming completion.",
+        )
+        methodology_packet = self._valid_methodology_packet()
+        methodology_packet["completion_skeptic_recommendation"] = recommendation
+
+        self.assertEqual(result["schema_version"], 1)
+        self.assertEqual(validate_completion_skeptic_recommendation_packet(recommendation), [])
+        self.assertEqual(validate_runner_result(result), [])
+        self.assertIn(
+            "methodology_packet.completion_skeptic_recommendation:unknown",
+            validate_methodology_packet(methodology_packet),
+        )
+
+    def test_completion_skeptic_recommendation_rejects_invalid_or_unbounded_route_data(self):
+        recommendation = self._valid_completion_skeptic_recommendation()
+        recommendation["write_policy"] = "staged_only"
+        recommendation["status"] = "forced"
+        recommendation["trigger_level"] = "forced"
+        recommendation["artifact_under_review"]["path"] = "https://example.invalid/status.html"
+        recommendation["packet_ref"] = {"kind": "staged_artifact", "path": "D:/private/doubt.json"}
+        recommendation["safe_next_action"] = ""
+
+        errors = validate_completion_skeptic_recommendation_packet(recommendation)
+
+        self.assertIn("completion_skeptic_recommendation.write_policy:must_be_read_only", errors)
+        self.assertIn("completion_skeptic_recommendation.status:invalid", errors)
+        self.assertIn("completion_skeptic_recommendation.trigger_level:invalid", errors)
+        self.assertIn("completion_skeptic_recommendation.artifact_under_review.path:external_url_forbidden", errors)
+        self.assertIn("completion_skeptic_recommendation.packet_ref.path:absolute_or_unsafe", errors)
+        self.assertIn("completion_skeptic_recommendation.safe_next_action:required", errors)
+
     def test_project_graph_status_rejects_external_refs_raw_paths_and_oversized_gaps(self):
         packet = self._valid_project_graph_status()
         packet["write_policy"] = "staged_only"
@@ -551,6 +606,39 @@ class CodexRuntimeRunnerContractsTest(unittest.TestCase):
             ],
             "safe_next_action": "Use graph as orientation only; read source files before edits.",
             "source_policy": "generated graph is not source of truth",
+        }
+
+    def _valid_completion_skeptic_recommendation(self):
+        return {
+            "schema_version": 1,
+            "write_policy": "read_only",
+            "status": "recommended",
+            "recommended_skill": "completion-skeptic",
+            "trigger_level": "recommended",
+            "trigger_sources": ["completion_claim"],
+            "risk_classes": ["verification_gap"],
+            "reasons": ["completion claim needs a second-pass evidence check"],
+            "skip_reasons": [],
+            "artifact_under_review": {
+                "kind": "runtime_result",
+                "path": ".codex/product-agent-os/status.json",
+                "label": "status snapshot",
+            },
+            "artifact_type": "plugin_skill",
+            "required_evidence": ["current command evidence", "source artifact ledger", "accepted gaps"],
+            "evidence_summary": {
+                "required": 3,
+                "available": 1,
+                "missing": 1,
+                "stale": 0,
+                "approval_required": 0,
+                "accepted_gap": 1,
+            },
+            "approval_boundary": {"status": "not_required", "hits": []},
+            "packet_ref": {"kind": "not_available", "path": "", "digest": ""},
+            "safe_next_action": "Run completion-skeptic before claiming completion.",
+            "source_policy": "completion skeptic recommendation is generated routing guidance, not source of truth",
+            "redaction_status": {"status": "clean", "categories": []},
         }
 
     def _valid_question_queue(self):

@@ -11,6 +11,7 @@ from product_agent_os.question_protocol import (
     QUESTION_CATEGORIES,
     QUESTION_PRIORITIES,
 )
+from product_agent_os.doubt_verification import validate_completion_skeptic_recommendation_packet
 
 
 ALLOWED_RUNNER_STATUSES = ["route_ready", "needs_context", "needs_approval", "blocked", "completed", "failed"]
@@ -377,6 +378,12 @@ def validate_runner_result(payload: dict[str, Any]) -> list[str]:
             errors.extend(validate_agent_skill_metrics_loop_packet(route_packet["agent_skill_metrics_loop"]))
         if "project_graph_status" in route_packet:
             errors.extend(validate_project_graph_status_packet(route_packet["project_graph_status"]))
+        if "completion_skeptic_recommendation" in route_packet:
+            errors.extend(
+                validate_completion_skeptic_recommendation_packet(
+                    route_packet["completion_skeptic_recommendation"]
+                )
+            )
         first_response = route_packet.get("first_response_contract")
         if first_response is not None:
             if not isinstance(first_response, dict):
