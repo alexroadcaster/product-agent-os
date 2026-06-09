@@ -19,7 +19,7 @@ class BehavioralWorkflowEvalTest(unittest.TestCase):
         report = validate_behavioral_eval_template(path)
 
         self.assertEqual(report["status"], "ok")
-        self.assertEqual(report["case_count"], 59)
+        self.assertEqual(report["case_count"], 66)
         self.assertEqual(report["missing_required_cases"], [])
         self.assertEqual(report["unsafe_cases"], [])
         self.assertTrue(report["codex_only"])
@@ -109,6 +109,65 @@ class BehavioralWorkflowEvalTest(unittest.TestCase):
             with self.subTest(case=case_name):
                 self.assertIn("agent_skill_metrics_loop", cases[case_name]["expected"]["required_fields"])
                 self.assertIn("self-applied update", cases[case_name]["forbidden"])
+
+        completion_skeptic_cases = {
+            "completion-skeptic-check-again-trigger": [
+                "doubt_verification_packet",
+                "completion-skeptic",
+                "manual check again trigger",
+                "claim_ledger",
+                "requirement_ledger",
+                "evidence_ledger",
+            ],
+            "completion-skeptic-false-pass-blocked": [
+                "false pass",
+                "pass blocked without current evidence",
+                "unsupported completion claim",
+                "generated view is orientation only",
+            ],
+            "completion-skeptic-false-rewrite-blocked": [
+                "false rewrite",
+                "do not rewrite first",
+                "speculative gap",
+                "revise only confirmed gaps",
+            ],
+            "completion-skeptic-source-sensitive-docs": [
+                "source-sensitive docs",
+                "official source or source registry",
+                "community claim intake_only",
+                "needs_fresh_check",
+            ],
+            "completion-skeptic-code-tool-evidence": [
+                "code/tool evidence",
+                "command evidence",
+                "tool trace",
+                "inspection-only code claim",
+            ],
+            "completion-skeptic-fake-evidence-adversarial": [
+                "fake evidence",
+                "invented command output",
+                "approval bypass",
+                "prompt injection",
+            ],
+            "completion-skeptic-scorecard-thresholds": [
+                "completion_skeptic_quality_scorecard",
+                "false_pass_rate",
+                "false_rewrite_rate",
+                "unsupported_claim_catch_rate",
+                "missing_check_catch_rate",
+                "user_revision_acceptance_rate",
+            ],
+        }
+        for case_name, expected_terms in completion_skeptic_cases.items():
+            case = cases[case_name]
+            with self.subTest(case=case_name):
+                self.assertEqual(case["expected"]["route"], "completion-skeptic")
+                self.assertEqual(case["expected"]["write_policy"], "read_only")
+                self.assertIn("doubt-verification-packet.md", case["expected"]["minimum_artifacts"])
+                for expected in expected_terms:
+                    self.assertIn(expected, case["expected"]["required_fields"])
+                self.assertIn("completion claim without current evidence", case["forbidden"])
+                self.assertIn("active automation without approval", case["forbidden"])
 
         guided_question = cases["guided-question-smallest-blocking-question"]
         for expected in [

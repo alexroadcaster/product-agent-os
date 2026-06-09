@@ -337,6 +337,9 @@ class FixtureEvalRunnerTest(unittest.TestCase):
         self.assertTrue(results["python-app"]["expected_checks"]["task_matrix_discovery_signal_contract_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["task_matrix_planning_control_governance_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["task_matrix_projection_deferred_in_b37"])
+        self.assertTrue(results["python-app"]["expected_checks"]["completion_skeptic_eval_hardening_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["completion_skeptic_scorecard_thresholds_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["completion_skeptic_fake_evidence_guards_present"])
         self.assertEqual(results["python-app"]["renderer_file_count"], 197)
         for check_name in [
             "methodology_catalog_contract_present",

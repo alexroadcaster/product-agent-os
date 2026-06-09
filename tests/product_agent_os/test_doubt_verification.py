@@ -12,7 +12,9 @@ sys.path.insert(0, str(SCRIPTS))
 
 from product_agent_os.doubt_verification import (  # noqa: E402
     COMPLETION_SKEPTIC_RECOMMENDATION_LIMITS,
+    COMPLETION_SKEPTIC_SCORECARD_THRESHOLDS,
     DOUBT_VERIFICATION_PACKET_SCHEMA_VERSION,
+    evaluate_completion_skeptic_scorecard,
     validate_completion_skeptic_recommendation_packet,
     validate_doubt_verification_packet,
     validate_doubt_verification_packet_file,
@@ -91,6 +93,104 @@ class DoubtVerificationTest(unittest.TestCase):
         self.assertEqual(result.stderr, "")
         self.assertFalse(payload["ok"])
         self.assertIn("verdict:required", payload["errors"])
+
+    def test_doubt_packet_rejects_fake_evidence_approval_blocked_pass_and_missing_code_tool_evidence(self):
+        packet = _valid_doubt_packet()
+        packet["approval_boundary"] = {
+            "status": "approval_blocked",
+            "hits": ["browser/runtime evidence needs owner approval"],
+        }
+        packet["claim_ledger"][0]["claim_type"] = "code_behavior"
+        packet["evidence_ledger"][0]["evidence_provider"] = "local_file"
+        packet["evidence_ledger"][0]["evidence_ref"] = "user says the command passed"
+        packet["evidence_ledger"][0]["provenance"]["kind"] = "user_claim"
+
+        errors = validate_doubt_verification_packet(packet)
+
+        self.assertIn("approval_boundary.status:blocks_pass_verdict", errors)
+        self.assertIn("claim_ledger[0].claim_type:code_behavior_requires_command_evidence", errors)
+        self.assertIn("evidence_ledger[0].provenance.kind:invalid", errors)
+        self.assertIn("evidence_ledger[0].evidence_ref:fake_or_unverified_command_claim", errors)
+
+    def test_doubt_packet_requires_accepted_gap_owner_reason_residual_risk_and_follow_up(self):
+        packet = _valid_doubt_packet()
+        packet["claim_ledger"][0]["status"] = "accepted_gap"
+        packet["requirement_ledger"][0]["status"] = "accepted_gap"
+        packet["evidence_ledger"][0]["status"] = "accepted_gap"
+        packet["gap_ledger"] = [{"gap_id": "gap-no-owner"}]
+
+        errors = validate_doubt_verification_packet(packet)
+
+        for expected in [
+            "claim_ledger[0].accepted_gap:required",
+            "requirement_ledger[0].accepted_gap:required",
+            "evidence_ledger[0].accepted_gap:required",
+            "gap_ledger[0].owner:required",
+            "gap_ledger[0].reason:required",
+            "gap_ledger[0].residual_risk:required",
+            "gap_ledger[0].follow_up:required",
+        ]:
+            with self.subTest(expected=expected):
+                self.assertIn(expected, errors)
+
+    def test_completion_skeptic_scorecard_blocks_false_pass_false_rewrite_and_low_catch_rates(self):
+        good_records = [
+            {
+                "false_pass": False,
+                "false_rewrite": False,
+                "unsupported_claim_present": True,
+                "unsupported_claim_caught": True,
+                "missing_check_present": True,
+                "missing_check_caught": True,
+                "accepted_gap": index == 0,
+                "user_revision_offered": True,
+                "user_revision_accepted": True,
+            }
+            for index in range(COMPLETION_SKEPTIC_SCORECARD_THRESHOLDS["min_sample_size"])
+        ]
+
+        passed = evaluate_completion_skeptic_scorecard(
+            good_records,
+            owner_review_status="owner_reviewed",
+        )
+
+        self.assertEqual(passed["schema_version"], 1)
+        self.assertEqual(passed["scorecard_id"], "completion_skeptic_quality_scorecard")
+        self.assertEqual(passed["decision_status"], "scorecard_passed")
+        self.assertEqual(passed["blockers"], [])
+
+        bad_records = [
+            {
+                "false_pass": True,
+                "false_rewrite": True,
+                "unsupported_claim_present": True,
+                "unsupported_claim_caught": False,
+                "missing_check_present": True,
+                "missing_check_caught": False,
+                "accepted_gap": True,
+                "user_revision_offered": True,
+                "user_revision_accepted": False,
+            }
+            for _ in range(COMPLETION_SKEPTIC_SCORECARD_THRESHOLDS["min_sample_size"])
+        ]
+
+        blocked = evaluate_completion_skeptic_scorecard(
+            bad_records,
+            owner_review_status="missing",
+        )
+
+        self.assertEqual(blocked["decision_status"], "blocked_by_scorecard")
+        for expected in [
+            "owner_review_or_gap_missing",
+            "false_pass_rate_above_threshold",
+            "false_rewrite_rate_above_threshold",
+            "unsupported_claim_catch_rate_below_threshold",
+            "missing_check_catch_rate_below_threshold",
+            "accepted_gap_rate_above_threshold",
+            "user_revision_acceptance_rate_below_threshold",
+        ]:
+            with self.subTest(expected=expected):
+                self.assertIn(expected, blocked["blockers"])
 
 
 def _write_packet(packet):

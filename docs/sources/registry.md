@@ -187,6 +187,18 @@ verification_status: "Backed by current-run verification: focused post-source-sy
 ```
 
 ```yaml
+title: "Product-Agent OS Batch 40 S3 Doubt verifier loop eval hardening"
+url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; docs/sources/product-agent-os-track-10-backlog.en.md; plugins/product-agent-os/scripts/product_agent_os/doubt_verification.py; plugins/product-agent-os/scripts/run_fixture_eval.py; plugins/product-agent-os/assets/templates/evals/behavioral-workflows.json; plugins/product-agent-os/assets/eval-fixtures/transcripts/product-agent-os-synthetic-sessions.json"
+type: "internal implementation evidence"
+source_status: "project-authored"
+checked_at: "2026-06-09"
+summary: "B40-S3 hardens the Doubt / verifier loop with validator, behavioral, transcript, fixture and scorecard coverage for manual check-again prompts, false pass, false rewrite, source-sensitive docs, code/tool evidence, fake evidence and promotion thresholds."
+relevance: "Moves the completion-skeptic gate beyond implementation surfaces into regression-resistant eval contracts while preserving local-only/no-unapproved-actions boundaries. Public docs/site examples, pilots, semantic usefulness and release readiness remain later slices."
+trust_level: "high"
+verification_status: "Backed by current-run RED/GREEN and full-route verification: the focused B40-S3 suite first failed on missing scorecard import, absent behavioral cases, absent transcript sessions and absent fixture checks; after implementation, focused B40-S3 suite ran 31 tests with OK. Full unittest first caught stale infrastructure-template exact-set and unsafe-literal contracts; after repairing those contracts, focused B40 + infrastructure suite ran 117 tests with OK, full unittest ran 867 tests with OK, fixture eval returned 91 records all OK with `renderer_file_count: 197` and all three `completion_skeptic_*` checks true, transcript eval returned 26 sessions and 0 failures, Codex compatibility returned `status: compatible`, docs check returned OK and `git diff --check` exited 0. No target workspace mutation, live server, browser automation, provider/live external model/API call, canonical graph mutation, active hook/automation/MCP/Agents SDK runner, external publication or git action was performed."
+```
+
+```yaml
 title: "Codex web / cloud"
 url: "https://developers.openai.com/codex/cloud"
 type: "documentation"

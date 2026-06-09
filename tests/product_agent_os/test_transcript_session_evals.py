@@ -53,6 +53,13 @@ class TranscriptSessionEvalRunnerTest(unittest.TestCase):
             "agent-skill-metrics-automation-candidate-only",
             "task-matrix-validator-and-completion-report",
             "task-matrix-agent-handoff-and-planning-control",
+            "completion-skeptic-check-again-trigger",
+            "completion-skeptic-false-pass-blocked",
+            "completion-skeptic-false-rewrite-blocked",
+            "completion-skeptic-source-sensitive-docs",
+            "completion-skeptic-code-tool-evidence",
+            "completion-skeptic-fake-evidence-adversarial",
+            "completion-skeptic-scorecard-thresholds",
         ]:
             self.assertIn(case, cases)
 

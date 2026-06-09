@@ -12,6 +12,13 @@ from typing import Any
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from product_agent_os.discovery import analyze_workspace  # noqa: E402
+from product_agent_os.doubt_verification import (  # noqa: E402
+    COMPLETION_SKEPTIC_SCORECARD_THRESHOLDS,
+    DOUBT_SOURCE_POLICY,
+    DOUBT_VERIFICATION_PACKET_SCHEMA_VERSION,
+    evaluate_completion_skeptic_scorecard,
+    validate_doubt_verification_packet,
+)
 from product_agent_os.agent_skill_metrics import (  # noqa: E402
     build_scorecard_ledger_record,
     enforce_trace_data_classification_gate,
@@ -1669,6 +1676,15 @@ TRANSCRIPT_FIXTURE = (
     / "transcripts"
     / "product-agent-os-synthetic-sessions.json"
 )
+COMPLETION_SKEPTIC_EVAL_CASES = (
+    "completion-skeptic-check-again-trigger",
+    "completion-skeptic-false-pass-blocked",
+    "completion-skeptic-false-rewrite-blocked",
+    "completion-skeptic-source-sensitive-docs",
+    "completion-skeptic-code-tool-evidence",
+    "completion-skeptic-fake-evidence-adversarial",
+    "completion-skeptic-scorecard-thresholds",
+)
 CONDITIONAL_READINESS_GATE_IDS = (
     "acceptance_scenarios_when_behavior_changes",
     "domain_model_when_complex_domain",
@@ -2168,6 +2184,15 @@ def _expected_checks(
         checks["metrics_loop_lifecycle_contract_present"] = _metrics_loop_lifecycle_contract_present()
         checks["update_candidate_rollback_required"] = _update_candidate_rollback_required()
         checks["metrics_loop_false_positive_guards_present"] = _metrics_loop_false_positive_guards_present()
+        checks["completion_skeptic_eval_hardening_present"] = (
+            _completion_skeptic_eval_hardening_present()
+        )
+        checks["completion_skeptic_scorecard_thresholds_present"] = (
+            _completion_skeptic_scorecard_thresholds_present()
+        )
+        checks["completion_skeptic_fake_evidence_guards_present"] = (
+            _completion_skeptic_fake_evidence_guards_present()
+        )
         checks["question_budget_false_positive_guard_present"] = (
             _question_budget_false_positive_guard_present()
         )
@@ -7867,6 +7892,214 @@ def _transcript_session_eval_runner_contract_present() -> bool:
         TEMPLATE_ROOT / "evals" / "behavioral-workflows.json",
     )
     return bool(report.get("ok")) and all(term in payload for term in TRANSCRIPT_SESSION_EVAL_TERMS)
+
+
+def _completion_skeptic_eval_hardening_present() -> bool:
+    behavioral = json.loads(
+        (TEMPLATE_ROOT / "evals" / "behavioral-workflows.json").read_text(encoding="utf-8")
+    )
+    transcript = json.loads(TRANSCRIPT_FIXTURE.read_text(encoding="utf-8"))
+    cases = {
+        str(item.get("name")): item
+        for item in behavioral.get("cases", [])
+        if isinstance(item, dict) and item.get("name") in COMPLETION_SKEPTIC_EVAL_CASES
+    }
+    transcript_cases = {
+        str(item.get("behavioral_case"))
+        for item in transcript.get("sessions", [])
+        if isinstance(item, dict)
+    }
+    report = evaluate_transcript_sessions(
+        TRANSCRIPT_FIXTURE,
+        TEMPLATE_ROOT / "evals" / "behavioral-workflows.json",
+    )
+    required_case_checks: list[bool] = []
+    for case_name in COMPLETION_SKEPTIC_EVAL_CASES:
+        case = cases.get(case_name)
+        expected = case.get("expected", {}) if isinstance(case, dict) else {}
+        required_fields = set(expected.get("required_fields", [])) if isinstance(expected, dict) else set()
+        minimum_artifacts = set(expected.get("minimum_artifacts", [])) if isinstance(expected, dict) else set()
+        forbidden = set(case.get("forbidden", [])) if isinstance(case, dict) else set()
+        required_case_checks.append(
+            isinstance(case, dict)
+            and expected.get("route") == "completion-skeptic"
+            and expected.get("write_policy") == "read_only"
+            and "doubt-verification-packet.md" in minimum_artifacts
+            and "completion claim without current evidence" in forbidden
+            and "active automation without approval" in forbidden
+            and required_fields
+        )
+    return (
+        bool(report.get("ok"))
+        and set(COMPLETION_SKEPTIC_EVAL_CASES).issubset(cases)
+        and set(COMPLETION_SKEPTIC_EVAL_CASES).issubset(transcript_cases)
+        and all(required_case_checks)
+    )
+
+
+def _completion_skeptic_scorecard_thresholds_present() -> bool:
+    sample_size = int(COMPLETION_SKEPTIC_SCORECARD_THRESHOLDS["min_sample_size"])
+    good_records = [
+        {
+            "false_pass": False,
+            "false_rewrite": False,
+            "unsupported_claim_present": True,
+            "unsupported_claim_caught": True,
+            "missing_check_present": True,
+            "missing_check_caught": True,
+            "accepted_gap": index == 0,
+            "user_revision_offered": True,
+            "user_revision_accepted": True,
+        }
+        for index in range(sample_size)
+    ]
+    bad_records = [
+        {
+            "false_pass": True,
+            "false_rewrite": True,
+            "unsupported_claim_present": True,
+            "unsupported_claim_caught": False,
+            "missing_check_present": True,
+            "missing_check_caught": False,
+            "accepted_gap": True,
+            "user_revision_offered": True,
+            "user_revision_accepted": False,
+        }
+        for _ in range(sample_size)
+    ]
+    passed = evaluate_completion_skeptic_scorecard(good_records, owner_review_status="owner_reviewed")
+    blocked = evaluate_completion_skeptic_scorecard(bad_records, owner_review_status="missing")
+    paths = [
+        PLUGIN_ROOT / "scripts" / "product_agent_os" / "doubt_verification.py",
+        PROJECT_ROOT / "tests" / "product_agent_os" / "test_doubt_verification.py",
+        TEMPLATE_ROOT / "evals" / "behavioral-workflows.json",
+    ]
+    payload = "\n".join(path.read_text(encoding="utf-8") for path in paths).lower()
+    terms = {
+        "completion_skeptic_quality_scorecard",
+        "evaluate_completion_skeptic_scorecard",
+        "false_pass_rate",
+        "false_rewrite_rate",
+        "unsupported_claim_catch_rate",
+        "missing_check_catch_rate",
+        "accepted_gap_rate",
+        "user_revision_acceptance_rate",
+        "manual_only_until_scorecard_and_owner_review_pass",
+        "owner_review_or_gap_missing",
+    }
+    required_blockers = {
+        "owner_review_or_gap_missing",
+        "false_pass_rate_above_threshold",
+        "false_rewrite_rate_above_threshold",
+        "unsupported_claim_catch_rate_below_threshold",
+        "missing_check_catch_rate_below_threshold",
+        "accepted_gap_rate_above_threshold",
+        "user_revision_acceptance_rate_below_threshold",
+    }
+    return (
+        passed.get("decision_status") == "scorecard_passed"
+        and blocked.get("decision_status") == "blocked_by_scorecard"
+        and required_blockers.issubset(set(blocked.get("blockers", [])))
+        and terms.issubset(set(_present_terms(payload, terms)))
+    )
+
+
+def _completion_skeptic_fake_evidence_guards_present() -> bool:
+    packet = _completion_skeptic_valid_doubt_packet()
+    packet["approval_boundary"] = {
+        "status": "approval_blocked",
+        "hits": ["browser/runtime evidence needs owner approval"],
+    }
+    packet["claim_ledger"][0]["claim_type"] = "code_behavior"
+    packet["evidence_ledger"][0]["evidence_provider"] = "local_file"
+    packet["evidence_ledger"][0]["evidence_ref"] = "user says the command passed"
+    packet["evidence_ledger"][0]["provenance"]["kind"] = "user_claim"
+    errors = set(validate_doubt_verification_packet(packet))
+    paths = [
+        PLUGIN_ROOT / "scripts" / "product_agent_os" / "doubt_verification.py",
+        PROJECT_ROOT / "tests" / "product_agent_os" / "test_doubt_verification.py",
+        TEMPLATE_ROOT / "evals" / "behavioral-workflows.json",
+    ]
+    payload = "\n".join(path.read_text(encoding="utf-8") for path in paths).lower()
+    expected_errors = {
+        "approval_boundary.status:blocks_pass_verdict",
+        "claim_ledger[0].claim_type:code_behavior_requires_command_evidence",
+        "evidence_ledger[0].provenance.kind:invalid",
+        "evidence_ledger[0].evidence_ref:fake_or_unverified_command_claim",
+    }
+    terms = {
+        "fake evidence",
+        "invented command output",
+        "approval bypass",
+        "prompt injection",
+        "fake_or_unverified_command_claim",
+        "code_behavior_requires_command_evidence",
+        "approval_boundary.status:blocks_pass_verdict",
+        "accepted_gap:required",
+        "completion-skeptic-fake-evidence-adversarial",
+    }
+    return expected_errors.issubset(errors) and terms.issubset(set(_present_terms(payload, terms)))
+
+
+def _completion_skeptic_valid_doubt_packet() -> dict[str, Any]:
+    return {
+        "schema_version": DOUBT_VERIFICATION_PACKET_SCHEMA_VERSION,
+        "verdict": "pass",
+        "artifact_under_review": {
+            "kind": "task_row",
+            "path": "docs/sources/product-agent-os-track-10-backlog.md",
+            "label": "B40-S3",
+        },
+        "claim_ledger": [
+            {
+                "claim_id": "claim-current-evidence",
+                "claim": "Focused validator tests ran in the current run.",
+                "status": "supported",
+                "provenance": {
+                    "kind": "command",
+                    "ref": "python -m unittest tests.product_agent_os.test_doubt_verification -v",
+                    "checked_at": "2026-06-09T12:00:00+03:00",
+                },
+            }
+        ],
+        "requirement_ledger": [
+            {
+                "requirement_id": "req-no-generated-proof",
+                "requirement": "Generated dashboards cannot be completion proof.",
+                "status": "covered",
+                "provenance": {
+                    "kind": "source",
+                    "ref": "AGENTS.md generated dashboard policy",
+                    "checked_at": "2026-06-09T12:00:00+03:00",
+                },
+            }
+        ],
+        "evidence_ledger": [
+            {
+                "evidence_id": "ev-current-unittest",
+                "evidence_provider": "command",
+                "evidence_role": "proof",
+                "status": "available",
+                "evidence_ref": "python -m unittest tests.product_agent_os.test_doubt_verification -v",
+                "provenance": {
+                    "kind": "command",
+                    "ref": "focused unit test",
+                    "checked_at": "2026-06-09T12:00:00+03:00",
+                },
+            }
+        ],
+        "approval_boundary": {"status": "not_required", "hits": []},
+        "gap_ledger": [],
+        "handoff": {
+            "verified_claims": ["claim-current-evidence"],
+            "unsupported_claims": [],
+            "verification_evidence": ["ev-current-unittest"],
+            "stop_reason": "doubt_verification_passed",
+            "recommended_next_role": "risk-reviewer",
+        },
+        "source_policy": DOUBT_SOURCE_POLICY,
+        "redaction_status": {"status": "clean", "categories": []},
+    }
 
 
 def _question_queue_contract_present() -> bool:

@@ -30,6 +30,21 @@ CLAIM_STATUSES = {
     "assumption",
     "accepted_gap",
 }
+CLAIM_TYPES = {
+    "factual",
+    "temporal",
+    "code_behavior",
+    "architecture",
+    "product",
+    "security",
+    "release",
+    "eval_quality",
+    "approval",
+    "completion_claim",
+    "ux_frontend",
+    "data_privacy",
+    "source_policy",
+}
 REQUIREMENT_STATUSES = {
     "covered",
     "partial",
@@ -48,6 +63,7 @@ EVIDENCE_STATUSES = {
 EVIDENCE_PROVIDERS = {
     "command",
     "source_registry",
+    "official_source",
     "local_file",
     "fixture_eval",
     "transcript_eval",
@@ -90,6 +106,21 @@ ARTIFACT_TYPES = {
 REF_KINDS = {"not_available", "staged_artifact", "generated_artifact"}
 APPROVAL_STATUSES = {"not_required", "required", "approval_blocked"}
 REDACTION_STATUSES = {"clean", "redacted", "blocked"}
+PROVENANCE_KINDS = {
+    "command",
+    "source",
+    "official_source",
+    "source_registry",
+    "local_file",
+    "fixture_eval",
+    "transcript_eval",
+    "codex_compatibility",
+    "owner_evidence",
+    "accepted_gap",
+}
+FAKE_EVIDENCE_REF_PATTERN = re.compile(
+    r"(?i)\b(?:user says|pretend|fake|invented|trust me|assume .*passed|just say .*passed)\b"
+)
 COMPLETION_SKEPTIC_RECOMMENDATION_LIMITS = {
     "trigger_sources": 8,
     "risk_classes": 8,
@@ -104,6 +135,15 @@ DOUBT_PACKET_LIMITS = {
     "evidence_ledger": 20,
     "gap_ledger": 20,
     "approval_hits": 10,
+}
+COMPLETION_SKEPTIC_SCORECARD_THRESHOLDS = {
+    "min_sample_size": 5,
+    "max_false_pass_rate": 0.0,
+    "max_false_rewrite_rate": 0.0,
+    "min_unsupported_claim_catch_rate": 0.95,
+    "min_missing_check_catch_rate": 0.90,
+    "max_accepted_gap_rate": 0.30,
+    "min_user_revision_acceptance_rate": 0.75,
 }
 LOCAL_PATH_PATTERN = re.compile(r"(?:[A-Za-z]:[/\\]|[/\\]Users[/\\]|[/\\]home[/\\]|\\\\)")
 
@@ -310,16 +350,14 @@ def validate_doubt_verification_packet(packet: Any) -> list[str]:
     else:
         if approval.get("status") not in APPROVAL_STATUSES:
             errors.append("approval_boundary.status:invalid")
+        if verdict == "pass" and approval.get("status") in {"required", "approval_blocked"}:
+            errors.append("approval_boundary.status:blocks_pass_verdict")
         hits = approval.get("hits")
         if not isinstance(hits, list):
             errors.append("approval_boundary.hits:invalid")
         elif len(hits) > DOUBT_PACKET_LIMITS["approval_hits"]:
             errors.append("approval_boundary.hits:too_many")
-    gap_ledger = packet.get("gap_ledger")
-    if not isinstance(gap_ledger, list):
-        errors.append("gap_ledger:invalid")
-    elif len(gap_ledger) > DOUBT_PACKET_LIMITS["gap_ledger"]:
-        errors.append("gap_ledger:too_many")
+    errors.extend(_validate_gap_ledger(packet.get("gap_ledger")))
     handoff = packet.get("handoff")
     if not isinstance(handoff, dict):
         errors.append("handoff:invalid")
@@ -333,9 +371,75 @@ def validate_doubt_verification_packet(packet: Any) -> list[str]:
     if packet.get("source_policy") != DOUBT_SOURCE_POLICY:
         errors.append("source_policy:invalid")
     errors.extend(_validate_redaction_status(packet.get("redaction_status"), "redaction_status"))
+    errors.extend(_validate_cross_ledger_policy(packet, verdict))
     if _contains_unsafe_text(packet):
         errors.append("doubt_verification_packet:contains_local_path")
     return errors
+
+
+def evaluate_completion_skeptic_scorecard(
+    records: list[dict[str, Any]] | None,
+    *,
+    thresholds: dict[str, float] | None = None,
+    owner_review_status: str = "missing",
+) -> dict[str, Any]:
+    active_thresholds = {**COMPLETION_SKEPTIC_SCORECARD_THRESHOLDS, **(thresholds or {})}
+    rows = [record for record in records or [] if isinstance(record, dict)]
+    sample_size = len(rows)
+    unsupported_total = sum(1 for row in rows if _truthy(row.get("unsupported_claim_present")))
+    unsupported_caught = sum(
+        1
+        for row in rows
+        if _truthy(row.get("unsupported_claim_present")) and _truthy(row.get("unsupported_claim_caught"))
+    )
+    missing_total = sum(1 for row in rows if _truthy(row.get("missing_check_present")))
+    missing_caught = sum(
+        1
+        for row in rows
+        if _truthy(row.get("missing_check_present")) and _truthy(row.get("missing_check_caught"))
+    )
+    revision_total = sum(1 for row in rows if _truthy(row.get("user_revision_offered")))
+    revision_accepted = sum(
+        1
+        for row in rows
+        if _truthy(row.get("user_revision_offered")) and _truthy(row.get("user_revision_accepted"))
+    )
+    metrics = {
+        "false_pass_rate": _rate(sum(1 for row in rows if _truthy(row.get("false_pass"))), sample_size),
+        "false_rewrite_rate": _rate(sum(1 for row in rows if _truthy(row.get("false_rewrite"))), sample_size),
+        "unsupported_claim_catch_rate": _rate(unsupported_caught, unsupported_total),
+        "missing_check_catch_rate": _rate(missing_caught, missing_total),
+        "accepted_gap_rate": _rate(sum(1 for row in rows if _truthy(row.get("accepted_gap"))), sample_size),
+        "user_revision_acceptance_rate": _rate(revision_accepted, revision_total),
+    }
+    blockers: list[str] = []
+    if sample_size < int(active_thresholds["min_sample_size"]):
+        blockers.append("sample_size_below_threshold")
+    if owner_review_status not in {"owner_reviewed", "accepted_gap"}:
+        blockers.append("owner_review_or_gap_missing")
+    if metrics["false_pass_rate"] > float(active_thresholds["max_false_pass_rate"]):
+        blockers.append("false_pass_rate_above_threshold")
+    if metrics["false_rewrite_rate"] > float(active_thresholds["max_false_rewrite_rate"]):
+        blockers.append("false_rewrite_rate_above_threshold")
+    if metrics["unsupported_claim_catch_rate"] < float(active_thresholds["min_unsupported_claim_catch_rate"]):
+        blockers.append("unsupported_claim_catch_rate_below_threshold")
+    if metrics["missing_check_catch_rate"] < float(active_thresholds["min_missing_check_catch_rate"]):
+        blockers.append("missing_check_catch_rate_below_threshold")
+    if metrics["accepted_gap_rate"] > float(active_thresholds["max_accepted_gap_rate"]):
+        blockers.append("accepted_gap_rate_above_threshold")
+    if metrics["user_revision_acceptance_rate"] < float(active_thresholds["min_user_revision_acceptance_rate"]):
+        blockers.append("user_revision_acceptance_rate_below_threshold")
+    return {
+        "schema_version": 1,
+        "scorecard_id": "completion_skeptic_quality_scorecard",
+        "decision_status": "blocked_by_scorecard" if blockers else "scorecard_passed",
+        "sample_size": sample_size,
+        "thresholds": active_thresholds,
+        "metrics": metrics,
+        "blockers": blockers,
+        "owner_review_status": owner_review_status,
+        "promotion_policy": "manual_only_until_scorecard_and_owner_review_pass",
+    }
 
 
 def main_doubt_verification(argv: list[str]) -> int:
@@ -383,8 +487,13 @@ def _validate_claim_ledger(value: Any, verdict: Any) -> list[str]:
         status = item.get("status")
         if status not in CLAIM_STATUSES:
             errors.append(f"{prefix}.status:invalid")
+        claim_type = item.get("claim_type")
+        if claim_type not in (None, "") and claim_type not in CLAIM_TYPES:
+            errors.append(f"{prefix}.claim_type:invalid")
         if verdict == "pass" and status in {"unsupported", "contradicted", "needs_fresh_check"}:
             errors.append(f"{prefix}.status:blocks_pass_verdict")
+        if status == "accepted_gap":
+            errors.extend(_validate_accepted_gap(item.get("accepted_gap"), f"{prefix}.accepted_gap"))
         errors.extend(_validate_provenance(item.get("provenance"), f"{prefix}.provenance"))
     return errors
 
@@ -406,6 +515,8 @@ def _validate_requirement_ledger(value: Any, verdict: Any) -> list[str]:
             errors.append(f"{prefix}.status:invalid")
         if verdict == "pass" and item.get("status") in {"partial", "missing"}:
             errors.append(f"{prefix}.status:blocks_pass_verdict")
+        if item.get("status") == "accepted_gap":
+            errors.extend(_validate_accepted_gap(item.get("accepted_gap"), f"{prefix}.accepted_gap"))
         errors.extend(_validate_provenance(item.get("provenance"), f"{prefix}.provenance"))
     return errors
 
@@ -431,10 +542,14 @@ def _validate_evidence_ledger(value: Any, verdict: Any) -> list[str]:
             errors.append(f"{prefix}.status:invalid")
         if status == "available" and not _non_empty_string(item.get("evidence_ref")):
             errors.append(f"{prefix}.evidence_ref:required")
+        if status == "available" and FAKE_EVIDENCE_REF_PATTERN.search(_string(item.get("evidence_ref"))):
+            errors.append(f"{prefix}.evidence_ref:fake_or_unverified_command_claim")
         if provider in GENERATED_VIEW_PROVIDERS and item.get("evidence_role") != "orientation":
             errors.append(f"{prefix}.provider:generated_view_not_completion_proof")
         if verdict == "pass" and status in {"missing", "stale", "approval_required"}:
             errors.append(f"{prefix}.status:blocks_pass_verdict")
+        if status == "accepted_gap":
+            errors.extend(_validate_accepted_gap(item.get("accepted_gap"), f"{prefix}.accepted_gap"))
         errors.extend(_validate_provenance(item.get("provenance"), f"{prefix}.provenance"))
     return errors
 
@@ -446,6 +561,54 @@ def _validate_provenance(value: Any, prefix: str) -> list[str]:
     for field in ["kind", "ref", "checked_at"]:
         if not _non_empty_string(value.get(field)):
             errors.append(f"{prefix}.{field}:required")
+    if _non_empty_string(value.get("kind")) and value.get("kind") not in PROVENANCE_KINDS:
+        errors.append(f"{prefix}.kind:invalid")
+    return errors
+
+
+def _validate_gap_ledger(value: Any) -> list[str]:
+    errors: list[str] = []
+    if not isinstance(value, list):
+        return ["gap_ledger:invalid"]
+    if len(value) > DOUBT_PACKET_LIMITS["gap_ledger"]:
+        errors.append("gap_ledger:too_many")
+    for index, item in enumerate(value):
+        prefix = f"gap_ledger[{index}]"
+        if not isinstance(item, dict):
+            errors.append(f"{prefix}:invalid")
+            continue
+        for field in ["owner", "reason", "residual_risk", "follow_up"]:
+            if not _non_empty_string(item.get(field)):
+                errors.append(f"{prefix}.{field}:required")
+    return errors
+
+
+def _validate_accepted_gap(value: Any, prefix: str) -> list[str]:
+    if not isinstance(value, dict):
+        return [f"{prefix}:required"]
+    errors: list[str] = []
+    for field in ["owner", "reason", "residual_risk", "follow_up"]:
+        if not _non_empty_string(value.get(field)):
+            errors.append(f"{prefix}.{field}:required")
+    return errors
+
+
+def _validate_cross_ledger_policy(packet: dict[str, Any], verdict: Any) -> list[str]:
+    if verdict != "pass":
+        return []
+    evidence = packet.get("evidence_ledger") if isinstance(packet.get("evidence_ledger"), list) else []
+    available_providers = {
+        item.get("evidence_provider")
+        for item in evidence
+        if isinstance(item, dict) and item.get("status") == "available"
+    }
+    errors: list[str] = []
+    claims = packet.get("claim_ledger") if isinstance(packet.get("claim_ledger"), list) else []
+    for index, item in enumerate(claims):
+        if not isinstance(item, dict):
+            continue
+        if item.get("claim_type") == "code_behavior" and "command" not in available_providers:
+            errors.append(f"claim_ledger[{index}].claim_type:code_behavior_requires_command_evidence")
     return errors
 
 
@@ -549,6 +712,16 @@ def _int(value: Any) -> int:
         return int(value)
     except (TypeError, ValueError):
         return 0
+
+
+def _truthy(value: Any) -> bool:
+    return value is True or str(value).lower() in {"true", "1", "yes"}
+
+
+def _rate(numerator: int, denominator: int) -> float:
+    if denominator <= 0:
+        return 0.0
+    return round(float(numerator) / float(denominator), 4)
 
 
 def _unique(values: list[str]) -> list[str]:

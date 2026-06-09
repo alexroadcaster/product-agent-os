@@ -462,12 +462,37 @@ B40-S2 covers `B40-DVL-M05..M10`, `B40-DVL-M26`, `B40-DVL-M27`, `B40-DVL-M30`, `
 - route_compatibility: `completion_skeptic_recommendation` is additive inside `route_packet`; primary lifecycle route semantics stay intact.
 - candidate_only_boundary: no hook, schedule, automation, MCP server, Agents SDK runner, browser automation, provider call, live server, target mutation or git action was activated.
 - current_run_verification: focused post-source-sync suite ran 313 tests with `OK`; full unittest `python -m unittest discover -s tests -p "test_*.py" -v` ran 864 tests with `OK`; `python plugins\product-agent-os\scripts\run_fixture_eval.py` exited `0` with `renderer_file_count: 197`; transcript eval exited `0` with 19 sessions and 0 failures; `python plugins\product-agent-os\scripts\validate_codex_compatibility.py` returned `status: compatible` with 12 bundled skills; `python tools\check_docs.py` returned `OK`; `git diff --check` exited `0`.
-- future_rows_still_planned: `B40-DVL-M11..M24`, `B40-DVL-M29`, `B40-DVL-M33..M34`, `B40-DVL-M37..M38`.
+- future_rows_still_planned_after_s2: `B40-DVL-M11..M24`, `B40-DVL-M29`, `B40-DVL-M33..M34`, `B40-DVL-M37..M38`.
 - residual_risks: transcript quality, false-pass/false-rewrite negative evals, adversarial fake-evidence cases, public docs/site, manual pilots, scorecard calibration and final go/no-go remain future slices.
 
 | Status | Item | Notes |
 | --- | --- | --- |
 | `implemented_plugin_foundation` | B40-S2 plugin foundation | The owner asked to start the second Batch 40 slice with agents and skills. B40-S2 adds the packet template, `completion-skeptic` skill, validator/CLI, runtime route recommendation, contract/guard validation, provider policy, status projection, handoff/task-matrix guidance and candidate-only stop reminder. The slice preserves the local-only/no-unapproved-actions boundary and does not claim Batch 40 usefulness or promotion readiness before B40-S3 through B40-S5 evals, docs/site, pilots, scorecards and closure. |
+
+## Task 26 Batch 40 Doubt / Verifier Loop S3 Eval Hardening Addendum
+
+B40-S3 covers `B40-DVL-M11..M15`, `B40-DVL-M33` and `B40-DVL-M34` as the eval, validator and scorecard hardening slice.
+
+- batch_status: `b40_s3_implemented_eval_hardening`.
+- implementation_timestamp: `09-06-2026 19:18` `Europe/Moscow`.
+- implemented_rows: `B40-DVL-M11`, `B40-DVL-M12`, `B40-DVL-M13`, `B40-DVL-M14`, `B40-DVL-M15`, `B40-DVL-M33`, `B40-DVL-M34`.
+- eval_cases_added: `completion-skeptic-check-again-trigger`, `completion-skeptic-false-pass-blocked`, `completion-skeptic-false-rewrite-blocked`, `completion-skeptic-source-sensitive-docs`, `completion-skeptic-code-tool-evidence`, `completion-skeptic-fake-evidence-adversarial`, `completion-skeptic-scorecard-thresholds`.
+- transcript_sessions_added: same seven `completion-skeptic-*` cases in `product-agent-os-synthetic-sessions.json`.
+- validator_hardening_added: fake/unverified command evidence rejection, pass verdict blocked by approval boundary, invalid `user_claim` provenance rejection, code-behavior pass claims requiring command evidence and accepted-gap owner/reason/residual-risk/follow-up requirements.
+- scorecard_added: `COMPLETION_SKEPTIC_SCORECARD_THRESHOLDS` and `evaluate_completion_skeptic_scorecard` with false-pass, false-rewrite, unsupported-claim catch, missing-check catch, accepted-gap and user-revision acceptance metrics.
+- fixture_checks_added: `completion_skeptic_eval_hardening_present`, `completion_skeptic_scorecard_thresholds_present`, `completion_skeptic_fake_evidence_guards_present`.
+- sidecar_agent_audits_completed: Euclid completed read-only transcript/behavioral audit; Averroes completed read-only scorecard/fixture audit.
+- current_run_verification: RED focused suite first failed on missing scorecard import, absent behavioral cases, absent transcript sessions and absent fixture checks; after implementation, focused B40-S3 suite ran 31 tests with `OK`. Full unittest first caught stale infrastructure-template exact-set and unsafe-literal contracts; after repairing those contracts, focused B40 + infrastructure suite ran 117 tests with `OK`, full unittest ran 867 tests with `OK`, fixture eval returned 91 records all OK with `renderer_file_count: 197` and all three `completion_skeptic_*` checks true, transcript eval returned 26 sessions and 0 failures, Codex compatibility returned `status: compatible`, docs check returned `OK` and `git diff --check` exited `0`.
+- future_rows_still_planned: `B40-DVL-M16..M24`, `B40-DVL-M29`, `B40-DVL-M37..M38`.
+- docs_site_generated: false.
+- real_manual_pilot_executed: false.
+- active_hook_automation_mcp_agents_sdk_runner_created: false.
+- live_server_browser_provider_canonical_git_performed: false.
+- residual_risks: deterministic keyword/term evals do not prove semantic usefulness; public docs/site examples, architecture diagrams, manual pilots, real scorecard calibration and final go/no-go remain B40-S4/S5.
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `implemented_eval_hardening` | B40-S3 eval hardening | The owner asked to start the third Batch 40 slice with agents and skills. B40-S3 adds RED/GREEN coverage for the `completion-skeptic` packet validator, manual check-again trigger, false-pass and false-rewrite negatives, source-sensitive docs/research, code/tool evidence, fake-evidence adversarial prompts and scorecard thresholds. The slice preserves local-only/no-unapproved-actions boundaries and still does not claim public docs/site readiness, manual pilot value, promotion readiness or release readiness before B40-S4/S5. |
 
 ## Deferred
 
