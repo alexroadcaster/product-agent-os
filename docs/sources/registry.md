@@ -163,6 +163,18 @@ verification_status: "Backed by current-run target inventory, Product-Agent OS d
 ```
 
 ```yaml
+title: "Product-Agent OS Batch 40 S1 Doubt verifier loop architecture contract"
+url: "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md; docs/sources/product-agent-os-track-10-backlog.md; docs/sources/product-agent-os-track-10-backlog.en.md; output/doubt-technique-comparative-report.md; output/doubt-verifier-loop-batch-task-matrix.md"
+type: "internal implementation planning evidence"
+source_status: "project-authored"
+checked_at: "2026-06-09"
+summary: "B40-S1 implements the architecture and contract slice for the Doubt / verifier loop: requirements, non-goals, `doubt_verification_packet_v1`, taxonomy, triggers, Worker/Skeptic/Reviser contracts, escalation ladder and UX/cost budget."
+relevance: "Defines the evidence-before-completion contract before any plugin/runtime implementation. It keeps future route support additive under `route_packet`, maps packet fields to existing handoff evidence fields, and preserves local-only/no-unapproved-actions boundaries."
+trust_level: "high"
+verification_status: "B40-S1 is contract-only: no `completion-skeptic` skill, packet template, validator CLI, runtime route code, eval fixture, generated site, hook, automation, MCP/Agents SDK runner, live server, browser automation, provider/API call, canonical graph mutation or git action was performed. Backed by current-run verification: `python -m unittest tests.product_agent_os.test_product_agent_os_docs -v` ran 76 tests with OK, `python tools\\check_docs.py` returned OK and `git diff --check` exited 0."
+```
+
+```yaml
 title: "Codex web / cloud"
 url: "https://developers.openai.com/codex/cloud"
 type: "documentation"

@@ -422,6 +422,34 @@ agent_team_design_packet_present:
 | --- | --- | --- |
 | `read_only_pilot_executed_blocked_on_target_source_policy` | `B38-PILOT-NF01` target-specific docs-only pilot | `detect_project.py` found a docs/research target with no git repository, no `AGENTS.md`, 13 files, `complexity_profile: guided-small` and `usage_mode.primary: legacy_onboarding`. `run_methodology_audit.py --json` returned `status: ok` and recommended P0 `quality-strategy.md` plus P1 `architecture-overview.md`. The initial runtime hint routed as `pr_review`; the clean docs-only intent routed correctly to `legacy_onboarding` with high confidence but exited blocked on `source_policy:blocked`. Staged infrastructure, status dashboard and project graph outputs validated outside the target, but dashboard aggregation is incomplete, staged root control-plane docs are blank templates that require review, and staged hooks remain activation-capable unless exact owner approval is given. Target source policy is blocked by missing `Source status`/registry metadata in target plan/spec docs and missing control-plane artifacts. No target workspace mutation, `.codex` target write, live server, browser automation, provider/API call, canonical graph mutation, external publication or git action was performed. |
 
+## Task 26 Batch 40 Doubt / Verifier Loop S1 Contract Addendum
+
+B40-S1 covers `B40-DVL-M01..M04`, `B40-DVL-M25`, `B40-DVL-M28`, `B40-DVL-M31` and `B40-DVL-M32` as an architecture and contract slice only.
+
+- batch_status: `b40_s1_implemented_contract_only`.
+- implementation_timestamp: `09-06-2026 17:42` `Europe/Moscow`.
+- contract_scope: requirements, non-goals, `doubt_verification_packet_v1`, claim/requirement/evidence taxonomy, trigger matrix, Worker/Skeptic/Reviser prompt contracts, escalation ladder, revision budget, UX/cost budget, route compatibility boundary and no-unapproved-actions proof.
+- agent_team_design_packet_present: true.
+- roles_have_disjoint_ownership: Product Manager owns promise, non-goals and UX budget; Architect owns schema, taxonomy, trigger levels and route boundaries; Tester owns future gate/eval acceptance; Reviewer owns false-pass, false-rewrite, fake-evidence and approval-risk checks; Docs Maintainer owns source/backlog/registry transfer; Release Operator owns no-unapproved-actions closure.
+- sidecar_agent_audits_completed: Archimedes completed docs/source/task-matrix audit; Turing completed runtime/contract/code-surface audit.
+- completion_skeptic_recommendation_boundary: future route support must be additive inside `route_packet`, not a new top-level `build_result` field and not an unknown `methodology_packet` key.
+- implemented_rows: `B40-DVL-M01`, `B40-DVL-M02`, `B40-DVL-M03`, `B40-DVL-M04`, `B40-DVL-M25`, `B40-DVL-M28`, `B40-DVL-M31`, `B40-DVL-M32`.
+- future_rows_still_planned: `B40-DVL-M05..M24`, `B40-DVL-M26..M27`, `B40-DVL-M29..M30`, `B40-DVL-M33..M38`.
+- no_runtime_code_changed: true.
+- completion_skeptic_skill_created: false.
+- packet_template_created: false.
+- validator_cli_created: false.
+- route_code_changed: false.
+- transcript_or_fixture_evals_added: false.
+- docs_site_generated: false.
+- active_hook_automation_mcp_agents_sdk_runner_created: false.
+- live_server_browser_provider_canonical_git_performed: false.
+- current_run_verification: `python -m unittest tests.product_agent_os.test_product_agent_os_docs -v` ran 76 tests with `OK`; `python tools\check_docs.py` returned `OK: documentation structure checks passed`; `git diff --check` exited `0`.
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `implemented_contract_only` | B40-S1 architecture and contract | The owner asked to start the first Batch 40 slice with agents and skills. `implementation-planner` and `agent-team-designer` were used as planning/team-design skills, while explorer subagents supplied read-only docs/source and runtime/contract audits. The Track 10 plan now records the product promise "check evidence before claiming done", non-goals, packet schema, bounded statuses, claim/artifact/severity/confidence/freshness taxonomy, explicit and implicit triggers, skip/manual-only rules, Worker/Skeptic/Reviser contracts, revision budget, escalation ladder, UX/cost budget, route compatibility boundary and no-unapproved-actions proof. B40-S1 is not a runtime implementation and does not prove usefulness, validator enforcement, route behavior, transcript quality or promotion readiness. No plugin/runtime code, skill, template, validator, route code, eval fixture, generated site, live server, browser automation, provider/API call, canonical graph mutation, hook, automation, MCP/Agents SDK runner or git stage/commit/push/PR was performed. |
+
 ## Deferred
 
 | Status | Item | Reason |
