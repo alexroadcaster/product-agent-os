@@ -105,6 +105,30 @@ Generated graph и cockpit surfaces help readers understand topology, code flow 
 | Audit и observability | [Live Runtime Governance](live-runtime-governance.md) | Live, provider и mutation actions должен emit redacted audit и runtime evidence; unsafe cases block route. |
 | Real testing | [Approval-Bound Real Testing](approval-bound-real-testing.md) | Runtime launch, browser automation, provider/API pilot, canonical mutation pilot и git release/PR action являются separate approvals. |
 
+## Completion-skeptic route
+
+```mermaid
+flowchart LR
+    W["worker_output"] --> P["doubt_verification_packet"]
+    P --> C["completion-skeptic"]
+    C --> V{"verdict"}
+    V -->|pass| A["final answer with evidence"]
+    V -->|revise| R["reviser changes only confirmed gaps"]
+    V -->|needs_more_context| Q["ask or record missing_context"]
+    V -->|blocked_by_approval| B["stop at approval boundary"]
+    V -->|accepted_risk| G["accepted_gap with owner and follow-up"]
+```
+
+Packet содержит `claim ledger`, `requirement ledger` и `evidence ledger`. `claim ledger` фиксирует `supported`, `unsupported`, `contradicted` и `needs_fresh_check`; `requirement ledger` держит видимыми user requirements, non-goals и approval constraints; `evidence ledger` указывает на source registry, local files, current commands, evals, owner decisions или explicit missing checks.
+
+Completion-skeptic route - ручной и локальный gate Product-Agent OS, а не live runtime proof.
+
+Reviser changes only confirmed gaps. Если verifier находит только speculative concerns, route возвращает residual risk вместо rewrite корректного content.
+
+### Agents SDK output guardrail candidate
+
+Это design-only направление. Тот же packet позже может стать Agents SDK output guardrail candidate с `tripwire` для fake evidence, pass without evidence, approval-blocked pass, missing source status или unsafe private data. Текущая граница: docs/site work не создает Agents SDK runner, MCP server, tracing export, provider call или live guardrail.
+
 ## Engineering Standards Route
 
 ```mermaid

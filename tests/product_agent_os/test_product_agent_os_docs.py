@@ -55,8 +55,8 @@ ENGLISH_ORIGINAL_SUPERPOWERS_PLAN_PAGES = {
     DOCS / "superpowers" / "plans" / "2026-05-25-track-9-methodology-intelligence.md",
     DOCS / "superpowers" / "plans" / "2026-05-27-track-10-guided-questions-status-dashboard.md",
 }
-BUILDABLE_MARKDOWN_PAGE_COUNT = 129
-LOCALIZED_MARKDOWN_PAGE_COUNT = 122
+BUILDABLE_MARKDOWN_PAGE_COUNT = 131
+LOCALIZED_MARKDOWN_PAGE_COUNT = 124
 ENGLISH_ORIGINAL_MARKDOWN_PAGE_COUNT = 7
 
 
@@ -6801,6 +6801,192 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "The current Track 9 plan still contains a legacy `Task 23: Final Verification Baseline`",
             control_plane["track10_plan"],
         )
+
+    def test_batch40_s4_doubt_verifier_docs_site_and_source_transfer_are_synced(self):
+        playbook = DOCS / "playbooks" / "doubt-verification-loop.md"
+        source_transfer = (
+            DOCS
+            / "sources"
+            / "product-agent-os-batch40-doubt-verifier-source-transfer.md"
+        )
+
+        for path in [playbook, self._en_sibling_for(playbook), source_transfer, self._en_sibling_for(source_transfer)]:
+            with self.subTest(required_path=path.relative_to(ROOT).as_posix()):
+                self.assertTrue(path.exists())
+
+        documents = {
+            "playbook": self._localized_contract_text(playbook),
+            "source_transfer": self._localized_contract_text(source_transfer),
+            "architecture": self._localized_contract_text(PRODUCT_AGENT_OS / "architecture.md"),
+            "artifact_contracts": self._localized_contract_text(PRODUCT_AGENT_OS / "artifact-contracts.md"),
+            "artifact_gallery": self._localized_contract_text(PRODUCT_AGENT_OS / "artifact-gallery.md"),
+            "behavioral_evals": self._localized_contract_text(PRODUCT_AGENT_OS / "behavioral-evals.md"),
+            "anti_hallucination": self._localized_contract_text(DOCS / "prompting" / "anti-hallucination.md"),
+            "context_engineering": self._localized_contract_text(DOCS / "prompting" / "context-engineering.md"),
+            "subagents_skills": self._localized_contract_text(DOCS / "agent-systems" / "subagents-skills.md"),
+            "workflow_to_skill": self._localized_contract_text(DOCS / "playbooks" / "workflow-to-skill.md"),
+            "product_index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "mkdocs": MKDOCS.read_text(encoding="utf-8"),
+            "check_docs": CHECK_DOCS.read_text(encoding="utf-8"),
+            "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
+            "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
+            "track10_backlog": TRACK10_BACKLOG.read_text(encoding="utf-8"),
+            "track10_backlog_en": TRACK10_BACKLOG_EN.read_text(encoding="utf-8"),
+            "track10_plan": TRACK10_PLAN.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "test_plan": TEST.read_text(encoding="utf-8"),
+            "agents": AGENTS.read_text(encoding="utf-8"),
+        }
+
+        expected_terms = {
+            "playbook": [
+                "Source status:",
+                "completion-skeptic",
+                "doubt_verification_packet",
+                "worker_output -> doubt_verification_packet -> completion-skeptic -> revise_or_pass",
+                "do not rewrite first",
+                "pass | revise | needs_more_context | blocked_by_approval | accepted_risk",
+                "accepted_gap",
+                "No active hook, automation, MCP server, Agents SDK runner or provider call",
+            ],
+            "source_transfer": [
+                "B40-S4 source-transfer packet",
+                "Chain-of-Verification",
+                "CRITIC",
+                "Self-Refine",
+                "intrinsic self-correction limitations",
+                "OpenAI Agents SDK guardrails",
+                "trust_level:",
+                "verification_status:",
+                "transfer_target:",
+            ],
+            "architecture": [
+                "Completion-skeptic route",
+                "claim ledger",
+                "requirement ledger",
+                "evidence ledger",
+                "reviser changes only confirmed gaps",
+                "Agents SDK output guardrail candidate",
+                "does not create an Agents SDK runner",
+                "tripwire",
+            ],
+            "artifact_contracts": [
+                ".codex/artifact-templates/doubt-verification-packet.md",
+                "doubt_verification_packet_v1",
+                "generated-view boundary",
+                "pass without evidence",
+                "accepted_gap",
+            ],
+            "artifact_gallery": [
+                "completion-skeptic examples",
+                "docs_research_example",
+                "code_check_example",
+                "architecture_review_example",
+                "product_planning_example",
+                "security_release_example",
+                "ai_eval_example",
+            ],
+            "behavioral_evals": [
+                "completion-skeptic-check-again-trigger",
+                "completion-skeptic-false-pass-blocked",
+                "completion-skeptic-fake-evidence-adversarial",
+                "Scorecard thresholds remain manual-only",
+            ],
+            "anti_hallucination": [
+                "doubt_verification_packet",
+                "claim ledger",
+                "supported | unsupported | contradicted | needs_fresh_check",
+                "Verifier must not repair before evidence",
+            ],
+            "context_engineering": [
+                "claim ledger",
+                "requirement ledger",
+                "evidence ledger",
+                "missing_context",
+                "accepted_gap",
+            ],
+            "subagents_skills": [
+                "manual -> playbook -> skill -> plugin -> automation candidate",
+                "completion-skeptic",
+                "owner review",
+                "rollback",
+                "candidate-only",
+            ],
+            "workflow_to_skill": [
+                "manual -> playbook -> skill -> plugin -> automation candidate",
+                "failure log",
+                "eval cases",
+                "automation blockers",
+            ],
+            "product_index": [
+                "Doubt / verifier loop",
+                "completion-skeptic",
+                "doubt-verification-loop.md",
+            ],
+            "mkdocs": [
+                "playbooks/doubt-verification-loop.md",
+                "sources/product-agent-os-batch40-doubt-verifier-source-transfer.md",
+            ],
+            "check_docs": [
+                "playbooks\" / \"doubt-verification-loop.md",
+                "sources\" / \"product-agent-os-batch40-doubt-verifier-source-transfer.md",
+            ],
+            "registry": [
+                "Product-Agent OS Batch 40 S4 Doubt verifier loop docs and site",
+                "Product-Agent OS Batch 40 S4 source-transfer packet",
+                "docs/playbooks/doubt-verification-loop.md",
+                "docs/sources/product-agent-os-batch40-doubt-verifier-source-transfer.md",
+                "strict MkDocs",
+                "generated `site/` is not source of truth",
+            ],
+            "registry_en": [
+                "Product-Agent OS Batch 40 S4 Doubt verifier loop docs and site",
+                "Product-Agent OS Batch 40 S4 source-transfer packet",
+                "docs/playbooks/doubt-verification-loop.md",
+                "docs/sources/product-agent-os-batch40-doubt-verifier-source-transfer.md",
+                "strict MkDocs",
+                "generated `site/` is not source of truth",
+            ],
+            "track10_backlog": [
+                "Task 26 Batch 40 Doubt / Verifier Loop S4 Docs and Site Addendum",
+                "implemented_docs_site_source_transfer",
+                "B40-DVL-M16",
+                "B40-DVL-M21",
+                "B40-DVL-M38",
+                "future_rows_still_planned_after_s4: `B40-DVL-M22..M24`",
+            ],
+            "track10_backlog_en": [
+                "Task 26 Batch 40 Doubt / Verifier Loop S4 Docs and Site Addendum",
+                "implemented_docs_site_source_transfer",
+                "B40-DVL-M16",
+                "B40-DVL-M21",
+                "B40-DVL-M38",
+                "future_rows_still_planned_after_s4: `B40-DVL-M22..M24`",
+            ],
+            "track10_plan": [
+                "B40-S4 implementation contract",
+                "implemented_docs_site_source_transfer",
+                "`B40-DVL-M16`: status `implemented`",
+                "`B40-DVL-M38`: status `implemented`",
+            ],
+            "runlog": [
+                "B40-S4 docs/site/source-transfer run",
+                "implemented_docs_site_source_transfer",
+            ],
+            "test_plan": [
+                "B40-S4 implements Doubt / verifier loop docs/site/source-transfer",
+                "strict MkDocs",
+            ],
+            "agents": [
+                "B40-S2/S3/S4 implement",
+                "B40-S5 still owns pilots",
+            ],
+        }
+
+        for document, terms in expected_terms.items():
+            for term in terms:
+                with self.subTest(document=document, term=term):
+                    self.assertIn(term, documents[document])
 
 
 if __name__ == "__main__":

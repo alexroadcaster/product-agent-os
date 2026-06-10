@@ -52,6 +52,14 @@ Product-Agent OS использует практическое правило д
 
 Skill должен быть узким и проверяемым. Официальная рекомендация для skills: фокус на одной задаче, явные inputs/outputs, инструкции важнее scripts, scripts нужны только для deterministic behavior или external tooling.
 
+### Completion-skeptic promotion path
+
+`completion-skeptic` идет по той же promotion chain, что и другие repeatable methods: manual -> playbook -> skill -> plugin -> automation candidate. До promotion нужны owner review, rollback notes, failure log, eval cases и candidate-only status. Generated handoff или dashboard недостаточны.
+
+Для documentation и scorecards явный approval checkpoint - owner review.
+
+Automation blockers остаются явными: active hook, schedule, MCP server, Agents SDK runner, provider call или external write не создаются, пока нет manual evidence, scorecard review и отдельного approval packet.
+
 ## Skill design rubric
 
 | Критерий | Проверка |

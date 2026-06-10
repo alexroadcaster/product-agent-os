@@ -4,6 +4,14 @@ Source status: `official + experiment`
 
 Subagents handle bounded work with fresh context. Skills encode repeated methods. `AGENTS.md` stores durable project rules. Product-Agent OS keeps these separate so agents do not use memory or generated views as source truth.
 
+## Completion-skeptic Promotion Path
+
+`completion-skeptic` follows the normal repeatable-method chain: manual -> playbook -> skill -> plugin -> automation candidate. Owner review, rollback notes, failure log, eval cases and candidate-only status are required before promotion. A generated handoff or dashboard is not enough.
+
+For documentation and scorecards, owner review is the explicit approval checkpoint.
+
+Automation blockers remain explicit: no active hook, schedule, MCP server, Agents SDK runner, provider call or external write is created until manual evidence, scorecard review and a separate approval packet exist.
+
 ## Inputs
 
 - Current user request, project rules, source files and ownership map.

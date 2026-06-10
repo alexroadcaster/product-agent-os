@@ -75,6 +75,12 @@ Output:
 - verdict: pass | fail | needs_more_context
 ```
 
+## Doubt Verification Packet
+
+Для Product-Agent OS verifier должен возвращать не свободный совет, а `doubt_verification_packet`. Packet содержит claim ledger, requirement ledger, evidence ledger, missing_context, accepted_gap и финальный verdict.
+
+Статусы claims: `supported | unsupported | contradicted | needs_fresh_check`. Verifier must not repair before evidence: он сначала фиксирует gap, источник и риск, а reviser меняет только confirmed gaps. Если evidence недоступен, финальный ответ должен назвать missing check или approval boundary вместо completion claim.
+
 ## Hallucination score
 
 Cookbook-подход можно адаптировать в простую шкалу:
@@ -97,4 +103,3 @@ Cookbook-подход можно адаптировать в простую шк
 - источники противоречат друг другу;
 - user просит точные версии, цены, даты или legal/medical/financial advice без fresh verification;
 - schema forcing заставляет модель выбирать из ложных вариантов.
-

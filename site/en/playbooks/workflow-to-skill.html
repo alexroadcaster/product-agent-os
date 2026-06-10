@@ -1,4 +1,4 @@
-
+﻿
 <!doctype html>
 <html lang="en" class="no-js">
   <head>
@@ -484,6 +484,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -565,6 +567,27 @@
 
   <span class="md-ellipsis">
     Source Card Template
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../sources/product-agent-os-batch40-doubt-verifier-source-transfer.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Batch 40 Doubt Verifier Source Transfer
   </span>
 
 
@@ -2253,6 +2276,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
 
 
@@ -2332,6 +2357,27 @@
 
   <span class="md-ellipsis">
     Grounded Answering
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="doubt-verification-loop.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Doubt Verification Loop
   </span>
 
 
@@ -3068,6 +3114,9 @@ Sources: <a href="https://developers.openai.com/codex/skills#create-a-skill">Age
     F --&gt; R["Refine"]
     R --&gt; P["Package as plugin"]
     P --&gt; A["Automation candidate"]</code></pre>
+<p>For <code>completion-skeptic</code>, the same path is mandatory: manual -&gt; playbook -&gt; skill -&gt; plugin -&gt; automation candidate. The failure log must capture false pass, false rewrite, fake evidence, missing checks, accepted gaps and owner review. Eval cases must cover trigger and non-trigger behavior before any automation candidate is promoted.</p>
+<p>Automation blockers: no schedule, hook, MCP server, Agents SDK runner, provider call or external write is allowed without separate approval, rollback/disable path and scorecard evidence.</p>
+<p>Use lowercase contract labels in handoffs when needed: eval cases and automation blockers.</p>
 <h2 id="candidate-product-skills">Candidate product skills<a class="headerlink" href="#candidate-product-skills" title="Permanent link">&para;</a></h2>
 <ul>
 <li><code>product-spec-writer</code></li>

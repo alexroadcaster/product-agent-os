@@ -1,4 +1,4 @@
-
+﻿
 <!doctype html>
 <html lang="en" class="no-js">
   <head>
@@ -484,6 +484,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -565,6 +567,27 @@
 
   <span class="md-ellipsis">
     Source Card Template
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../sources/product-agent-os-batch40-doubt-verifier-source-transfer.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Batch 40 Doubt Verifier Source Transfer
   </span>
 
 
@@ -938,6 +961,15 @@
   <a href="#context-packing" class="md-nav__link">
     <span class="md-ellipsis">
       Context packing
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#doubt-loop-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Doubt Loop Context
     </span>
   </a>
 
@@ -2345,6 +2377,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2426,6 +2460,27 @@
 
   <span class="md-ellipsis">
     Grounded Answering
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/doubt-verification-loop.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Doubt Verification Loop
   </span>
 
 
@@ -2983,6 +3038,15 @@
 </li>
 
         <li class="md-nav__item">
+  <a href="#doubt-loop-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Doubt Loop Context
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#what-not-to-put-in-context" class="md-nav__link">
     <span class="md-ellipsis">
       What not to put in context
@@ -3064,6 +3128,9 @@ Sources: <a href="https://developers.openai.com/api/docs/guides/prompting">Promp
 <li>place fresh or priority facts closer to the task;</li>
 <li>explicitly mark missing context.</li>
 </ul>
+<h2 id="doubt-loop-context">Doubt Loop Context<a class="headerlink" href="#doubt-loop-context" title="Permanent link">&para;</a></h2>
+<p><code>doubt_verification_packet</code> is a context artifact, not memory. It keeps the claim ledger, requirement ledger, evidence ledger, missing_context and accepted_gap separate so a later worker can see what was checked, what was unsupported and what still needs owner approval.</p>
+<p>When packing context for <code>completion-skeptic</code>, include the artifact under review, source IDs, current command/eval evidence, user requirements and known non-goals. Do not include raw private chat logs, secrets, local absolute paths or community claims without trust level and verification status.</p>
 <h2 id="what-not-to-put-in-context">What not to put in context<a class="headerlink" href="#what-not-to-put-in-context" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Secrets, tokens, private keys.</li>

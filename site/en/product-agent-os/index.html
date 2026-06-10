@@ -1,4 +1,4 @@
-
+﻿
 <!doctype html>
 <html lang="en" class="no-js">
   <head>
@@ -484,6 +484,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -565,6 +567,27 @@
 
   <span class="md-ellipsis">
     Source Card Template
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../sources/product-agent-os-batch40-doubt-verifier-source-transfer.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Batch 40 Doubt Verifier Source Transfer
   </span>
 
 
@@ -2251,6 +2274,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2332,6 +2357,27 @@
 
   <span class="md-ellipsis">
     Grounded Answering
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/doubt-verification-loop.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Doubt Verification Loop
   </span>
 
 
@@ -2961,6 +3007,15 @@
 </li>
 
         <li class="md-nav__item">
+  <a href="#doubt-verifier-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      Doubt / verifier loop
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#inputs" class="md-nav__link">
     <span class="md-ellipsis">
       Inputs
@@ -3302,6 +3357,7 @@
 <ul>
 <li><a href="technical.html">Technical details and installation</a> - real files, commands, capabilities and install boundary.</li>
 <li><a href="artifact-gallery.html">Artifact Gallery</a> - user-facing outputs and their trust boundary.</li>
+<li><a href="../playbooks/doubt-verification-loop.html">Doubt / verifier loop</a> - how <code>completion-skeptic</code> uses a <code>doubt_verification_packet</code> before final completion claims.</li>
 <li><a href="real-project-pilot.html">Real-Project Pilot</a> - first-run operator packet, target consent matrix, success metrics and evidence ledger for a safe real-project pilot.</li>
 <li><a href="development-standards.html">Engineering standards layer</a> - how the plugin applies DDD/FSD/TDD/ADD, docs-as-code and eval-driven quality without turning them into dogma.</li>
 <li><a href="methodology-intelligence.html">Methodology intelligence</a> - read-only audit, Delivery Map, recommendations, owner questions and staged artifact boundary.</li>
@@ -3311,6 +3367,9 @@
 <li><a href="architecture.html">Diagrams and operating principles</a> - state routing, staged-first merge, approval gates and runtime runner flow.</li>
 <li><a href="../product-agent/overview.html">Product-Agent Workflows</a> - general operating model without coupling to the plugin package.</li>
 </ul>
+<h2 id="doubt-verifier-loop">Doubt / verifier loop<a class="headerlink" href="#doubt-verifier-loop" title="Permanent link">&para;</a></h2>
+<p>Doubt / verifier loop is the manual and local-plugin completion gate for "check again" work. The user-facing route is <a href="../playbooks/doubt-verification-loop.html">doubt-verification-loop.md</a>: <code>completion-skeptic</code> reads a <code>doubt_verification_packet</code>, checks claims, requirements, evidence and accepted gaps, then returns pass, revise, needs_more_context, blocked_by_approval or accepted_risk.</p>
+<p>This page only points to the gate. The documentation records the generated <code>site</code> view; manual pilots, scorecard calibration and any promotion beyond internal/manual use remain a separate stage.</p>
 <h2 id="inputs">Inputs<a class="headerlink" href="#inputs" title="Permanent link">&para;</a></h2>
 <ul>
 <li>A real project workspace, source documentation and current project rules.</li>

@@ -1,4 +1,4 @@
-
+﻿
 <!doctype html>
 <html lang="ru" class="no-js">
   <head>
@@ -484,6 +484,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -565,6 +567,27 @@
 
   <span class="md-ellipsis">
     Шаблон карточки источника
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../sources/product-agent-os-batch40-doubt-verifier-source-transfer.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Batch 40 Doubt verifier source transfer
   </span>
 
 
@@ -2251,6 +2274,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2332,6 +2357,27 @@
 
   <span class="md-ellipsis">
     Grounded answering
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/doubt-verification-loop.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Doubt verification loop
   </span>
 
 
@@ -2952,6 +2998,15 @@
 </li>
 
         <li class="md-nav__item">
+  <a href="#doubt-verifier-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      Doubt / verifier loop
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#_6" class="md-nav__link">
     <span class="md-ellipsis">
       Куда идти дальше
@@ -3271,6 +3326,9 @@
 <h2 id="publicinternal">Граница public/internal документации<a class="headerlink" href="#publicinternal" title="Permanent link">&para;</a></h2>
 <p>Публичные страницы объясняют возможности, маршрут пользователя, результаты, границы и ближайшее действие. <code>docs/sources/</code> хранит внутренние source/history materials, acceptance history и verification packets; этот раздел не должен быть первым маршрутом для нового пользователя. Сгенерированный <code>site/</code> является HTML-копией исходных Markdown-документов и поверхностью review, а не источником истины.</p>
 <p>Если публичная страница ссылается на graph, dashboard, cockpit, scorecard или report, она должна явно говорить, что это обзорная поверхность. Если claim влияет на readiness, release, security или approval, он должен вести к owning source: исходному файлу, source registry, command/eval/runtime evidence, owner decision или accepted gap.</p>
+<h2 id="doubt-verifier-loop">Doubt / verifier loop<a class="headerlink" href="#doubt-verifier-loop" title="Permanent link">&para;</a></h2>
+<p>Doubt / verifier loop - ручной и локальный gate завершения для запросов "проверь еще раз". Пользовательский маршрут описан в <a href="../playbooks/doubt-verification-loop.html">doubt-verification-loop.md</a>: <code>completion-skeptic</code> читает <code>doubt_verification_packet</code>, сверяет claims, requirements, evidence и accepted gaps, затем возвращает <code>pass</code>, <code>revise</code>, <code>needs_more_context</code>, <code>blocked_by_approval</code> или <code>accepted_risk</code>.</p>
+<p>Эта страница только указывает на gate. Документация фиксирует generated <code>site</code> view, а ручные pilots, scorecard calibration и любое продвижение за пределы internal/manual use остаются отдельным этапом.</p>
 <h2 id="_6">Куда идти дальше<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="technical.html">Технические особенности и установка</a> - реальные файлы, команды, capabilities и install boundary.</li>

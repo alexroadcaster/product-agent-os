@@ -1,4 +1,4 @@
-
+﻿
 <!doctype html>
 <html lang="en" class="no-js">
   <head>
@@ -484,6 +484,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -565,6 +567,27 @@
 
   <span class="md-ellipsis">
     Source Card Template
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../sources/product-agent-os-batch40-doubt-verifier-source-transfer.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Batch 40 Doubt Verifier Source Transfer
   </span>
 
 
@@ -2170,6 +2193,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
 
         <li class="md-nav__item">
+  <a href="#completion-skeptic-promotion-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      Completion-skeptic Promotion Path
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#inputs" class="md-nav__link">
     <span class="md-ellipsis">
       Inputs
@@ -2327,6 +2359,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2408,6 +2442,27 @@
 
   <span class="md-ellipsis">
     Grounded Answering
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/doubt-verification-loop.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Doubt Verification Loop
   </span>
 
 
@@ -2938,6 +2993,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
 
         <li class="md-nav__item">
+  <a href="#completion-skeptic-promotion-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      Completion-skeptic Promotion Path
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#inputs" class="md-nav__link">
     <span class="md-ellipsis">
       Inputs
@@ -2991,6 +3055,10 @@
 <h1 id="subagents-skills-and-agentsmd">Subagents, skills and AGENTS.md<a class="headerlink" href="#subagents-skills-and-agentsmd" title="Permanent link">&para;</a></h1>
 <p>Source status: <code>official + experiment</code></p>
 <p>Subagents handle bounded work with fresh context. Skills encode repeated methods. <code>AGENTS.md</code> stores durable project rules. Product-Agent OS keeps these separate so agents do not use memory or generated views as source truth.</p>
+<h2 id="completion-skeptic-promotion-path">Completion-skeptic Promotion Path<a class="headerlink" href="#completion-skeptic-promotion-path" title="Permanent link">&para;</a></h2>
+<p><code>completion-skeptic</code> follows the normal repeatable-method chain: manual -&gt; playbook -&gt; skill -&gt; plugin -&gt; automation candidate. Owner review, rollback notes, failure log, eval cases and candidate-only status are required before promotion. A generated handoff or dashboard is not enough.</p>
+<p>For documentation and scorecards, owner review is the explicit approval checkpoint.</p>
+<p>Automation blockers remain explicit: no active hook, schedule, MCP server, Agents SDK runner, provider call or external write is created until manual evidence, scorecard review and a separate approval packet exist.</p>
 <h2 id="inputs">Inputs<a class="headerlink" href="#inputs" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Current user request, project rules, source files and ownership map.</li>

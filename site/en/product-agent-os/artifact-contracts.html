@@ -1,4 +1,4 @@
-
+﻿
 <!doctype html>
 <html lang="en" class="no-js">
   <head>
@@ -484,6 +484,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -565,6 +567,27 @@
 
   <span class="md-ellipsis">
     Source Card Template
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../sources/product-agent-os-batch40-doubt-verifier-source-transfer.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Batch 40 Doubt Verifier Source Transfer
   </span>
 
 
@@ -1435,6 +1458,15 @@
   <a href="#agentskill-metrics-artifacts" class="md-nav__link">
     <span class="md-ellipsis">
       Agent/Skill Metrics Artifacts
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#doubt-verification-artifacts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Doubt Verification Artifacts
     </span>
   </a>
 
@@ -2426,6 +2458,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2507,6 +2541,27 @@
 
   <span class="md-ellipsis">
     Grounded Answering
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/doubt-verification-loop.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Doubt Verification Loop
   </span>
 
 
@@ -3109,6 +3164,15 @@
 </li>
 
         <li class="md-nav__item">
+  <a href="#doubt-verification-artifacts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Doubt Verification Artifacts
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#system-file-hygiene-artifacts" class="md-nav__link">
     <span class="md-ellipsis">
       System File Hygiene Artifacts
@@ -3552,6 +3616,37 @@
 <td>Template registry</td>
 <td>Modernization candidate packet.</td>
 <td>No self-applied updates.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="doubt-verification-artifacts">Doubt Verification Artifacts<a class="headerlink" href="#doubt-verification-artifacts" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th>Producer</th>
+<th>Contract role</th>
+<th>Boundary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.codex/artifact-templates/doubt-verification-packet.md</code></td>
+<td>Template registry / <code>completion-skeptic</code></td>
+<td>Human-readable <code>doubt_verification_packet_v1</code> with claim ledger, requirement ledger, evidence ledger, verdict, accepted gaps and residual risks.</td>
+<td>Staged/generated-view boundary; the packet organizes evidence but does not become source truth by itself.</td>
+</tr>
+<tr>
+<td><code>doubt_verification_packet_v1</code> JSON/YAML packet</td>
+<td><code>validate_doubt_verification_packet.py</code> and <code>doubt_verification.py</code></td>
+<td>Contract-checked evidence packet for <code>pass</code>, <code>revise</code>, <code>needs_more_context</code>, <code>blocked_by_approval</code> and <code>accepted_risk</code>.</td>
+<td>Reject pass without evidence, fake command evidence, approval-blocked pass and <code>accepted_gap</code> without owner/reason/residual risk/follow-up.</td>
+</tr>
+<tr>
+<td><code>completion_skeptic_recommendation</code> route field</td>
+<td>Codex runtime runner</td>
+<td>Additive route recommendation for manual completion-skeptic review.</td>
+<td>Recommendation only; it does not authorize tools, providers, browser automation, Agents SDK runner or workspace mutation.</td>
 </tr>
 </tbody>
 </table>

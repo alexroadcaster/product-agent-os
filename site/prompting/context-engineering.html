@@ -1,4 +1,4 @@
-
+﻿
 <!doctype html>
 <html lang="ru" class="no-js">
   <head>
@@ -484,6 +484,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -565,6 +567,27 @@
 
   <span class="md-ellipsis">
     Шаблон карточки источника
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../sources/product-agent-os-batch40-doubt-verifier-source-transfer.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Batch 40 Doubt verifier source transfer
   </span>
 
 
@@ -947,6 +970,15 @@
   <a href="#context" class="md-nav__link">
     <span class="md-ellipsis">
       Что не класть в context
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#doubt-loop-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Doubt Loop Context
     </span>
   </a>
 
@@ -2345,6 +2377,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2426,6 +2460,27 @@
 
   <span class="md-ellipsis">
     Grounded answering
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/doubt-verification-loop.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Doubt verification loop
   </span>
 
 
@@ -2992,6 +3047,15 @@
 </li>
 
         <li class="md-nav__item">
+  <a href="#doubt-loop-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Doubt Loop Context
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#session-vs-memory-vs-retrieved-context" class="md-nav__link">
     <span class="md-ellipsis">
       Session vs memory vs retrieved context
@@ -3072,6 +3136,9 @@
 <li>Community advice без trust marker.</li>
 <li>Сырые логи subagents, если достаточно summary with sources.</li>
 </ul>
+<h2 id="doubt-loop-context">Doubt Loop Context<a class="headerlink" href="#doubt-loop-context" title="Permanent link">&para;</a></h2>
+<p><code>doubt_verification_packet</code> - context artifact, а не memory. Он разделяет claim ledger, requirement ledger, evidence ledger, missing_context и accepted_gap, чтобы следующий worker видел, что проверено, что unsupported и где еще нужен owner approval.</p>
+<p>При упаковке context для <code>completion-skeptic</code> включайте artifact under review, source IDs, current command/eval evidence, user requirements и known non-goals. Не включайте raw private chat logs, secrets, local absolute paths или community claims без trust level и verification status.</p>
 <h2 id="session-vs-memory-vs-retrieved-context">Session vs memory vs retrieved context<a class="headerlink" href="#session-vs-memory-vs-retrieved-context" title="Permanent link">&para;</a></h2>
 <table>
 <thead>

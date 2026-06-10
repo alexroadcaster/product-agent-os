@@ -1,4 +1,4 @@
-
+﻿
 <!doctype html>
 <html lang="en" class="no-js">
   <head>
@@ -484,6 +484,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -565,6 +567,27 @@
 
   <span class="md-ellipsis">
     Source Card Template
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../sources/product-agent-os-batch40-doubt-verifier-source-transfer.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Batch 40 Doubt Verifier Source Transfer
   </span>
 
 
@@ -977,6 +1000,15 @@
   <a href="#verifier-agent" class="md-nav__link">
     <span class="md-ellipsis">
       Verifier agent
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#doubt-verification-packet" class="md-nav__link">
+    <span class="md-ellipsis">
+      Doubt Verification Packet
     </span>
   </a>
 
@@ -2354,6 +2386,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2435,6 +2469,27 @@
 
   <span class="md-ellipsis">
     Grounded Answering
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/doubt-verification-loop.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Doubt Verification Loop
   </span>
 
 
@@ -3010,6 +3065,15 @@
 </li>
 
         <li class="md-nav__item">
+  <a href="#doubt-verification-packet" class="md-nav__link">
+    <span class="md-ellipsis">
+      Doubt Verification Packet
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#hallucination-score" class="md-nav__link">
     <span class="md-ellipsis">
       Hallucination score
@@ -3131,6 +3195,9 @@ Output:
 - missing_context
 - verdict: pass | fail | needs_more_context
 </code></pre></div>
+<h2 id="doubt-verification-packet">Doubt Verification Packet<a class="headerlink" href="#doubt-verification-packet" title="Permanent link">&para;</a></h2>
+<p>For Product-Agent OS, a verifier should return a <code>doubt_verification_packet</code>, not free-form advice. The packet contains a claim ledger, requirement ledger, evidence ledger, missing_context, accepted_gap and final verdict.</p>
+<p>Claim statuses are <code>supported | unsupported | contradicted | needs_fresh_check</code>. Verifier must not repair before evidence: it first records the gap, source and risk, then the reviser changes only confirmed gaps. If evidence is unavailable, the final answer should name the missing check or approval boundary instead of a completion claim.</p>
 <h2 id="hallucination-score">Hallucination score<a class="headerlink" href="#hallucination-score" title="Permanent link">&para;</a></h2>
 <p>The Cookbook approach can be adapted into a simple scale:</p>
 <table>

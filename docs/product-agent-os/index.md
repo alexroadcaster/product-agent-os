@@ -131,6 +131,12 @@ Plugin держит lifecycle последовательным. Он не дол
 
 Если публичная страница ссылается на graph, dashboard, cockpit, scorecard или report, она должна явно говорить, что это обзорная поверхность. Если claim влияет на readiness, release, security или approval, он должен вести к owning source: исходному файлу, source registry, command/eval/runtime evidence, owner decision или accepted gap.
 
+## Doubt / verifier loop
+
+Doubt / verifier loop - ручной и локальный gate завершения для запросов "проверь еще раз". Пользовательский маршрут описан в [doubt-verification-loop.md](../playbooks/doubt-verification-loop.md): `completion-skeptic` читает `doubt_verification_packet`, сверяет claims, requirements, evidence и accepted gaps, затем возвращает `pass`, `revise`, `needs_more_context`, `blocked_by_approval` или `accepted_risk`.
+
+Эта страница только указывает на gate. Документация фиксирует generated `site` view, а ручные pilots, scorecard calibration и любое продвижение за пределы internal/manual use остаются отдельным этапом.
+
 ## Куда идти дальше
 
 - [Технические особенности и установка](technical.md) - реальные файлы, команды, capabilities и install boundary.

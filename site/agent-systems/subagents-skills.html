@@ -1,4 +1,4 @@
-
+﻿
 <!doctype html>
 <html lang="ru" class="no-js">
   <head>
@@ -484,6 +484,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -565,6 +567,27 @@
 
   <span class="md-ellipsis">
     Шаблон карточки источника
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../sources/product-agent-os-batch40-doubt-verifier-source-transfer.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Batch 40 Doubt verifier source transfer
   </span>
 
 
@@ -2203,6 +2226,21 @@
     </span>
   </a>
 
+    <nav class="md-nav" aria-label="Skills">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#completion-skeptic-promotion-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      Completion-skeptic promotion path
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
 </li>
 
         <li class="md-nav__item">
@@ -2345,6 +2383,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2426,6 +2466,27 @@
 
   <span class="md-ellipsis">
     Grounded answering
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/doubt-verification-loop.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Doubt verification loop
   </span>
 
 
@@ -2989,6 +3050,21 @@
     </span>
   </a>
 
+    <nav class="md-nav" aria-label="Skills">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#completion-skeptic-promotion-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      Completion-skeptic promotion path
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
 </li>
 
         <li class="md-nav__item">
@@ -3110,6 +3186,10 @@ Wait для all agents, затем synthesize без copying raw logs.
 <p>Если ownership пересекается или ожидаемые доказательства невозможно получить, используйте последовательный fallback вместо параллельных subagents. Для source-sensitive docs work community claims остаются intake material, пока trust level и verification status не записаны явно.</p>
 <h2 id="skills">Skills<a class="headerlink" href="#skills" title="Permanent link">&para;</a></h2>
 <p>Skill должен быть узким и проверяемым. Официальная рекомендация для skills: фокус на одной задаче, явные inputs/outputs, инструкции важнее scripts, scripts нужны только для deterministic behavior или external tooling.</p>
+<h3 id="completion-skeptic-promotion-path">Completion-skeptic promotion path<a class="headerlink" href="#completion-skeptic-promotion-path" title="Permanent link">&para;</a></h3>
+<p><code>completion-skeptic</code> идет по той же promotion chain, что и другие repeatable methods: manual -&gt; playbook -&gt; skill -&gt; plugin -&gt; automation candidate. До promotion нужны owner review, rollback notes, failure log, eval cases и candidate-only status. Generated handoff или dashboard недостаточны.</p>
+<p>Для documentation и scorecards явный approval checkpoint - owner review.</p>
+<p>Automation blockers остаются явными: active hook, schedule, MCP server, Agents SDK runner, provider call или external write не создаются, пока нет manual evidence, scorecard review и отдельного approval packet.</p>
 <h2 id="skill-design-rubric">Skill design rubric<a class="headerlink" href="#skill-design-rubric" title="Permanent link">&para;</a></h2>
 <table>
 <thead>

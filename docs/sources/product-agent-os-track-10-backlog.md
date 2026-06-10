@@ -494,6 +494,27 @@ B40-S3 covers `B40-DVL-M11..M15`, `B40-DVL-M33` and `B40-DVL-M34` as the eval, v
 | --- | --- | --- |
 | `implemented_eval_hardening` | B40-S3 eval hardening | The owner asked to start the third Batch 40 slice with agents and skills. B40-S3 adds RED/GREEN coverage for the `completion-skeptic` packet validator, manual check-again trigger, false-pass and false-rewrite negatives, source-sensitive docs/research, code/tool evidence, fake-evidence adversarial prompts and scorecard thresholds. The slice preserves local-only/no-unapproved-actions boundaries and still does not claim public docs/site readiness, manual pilot value, promotion readiness or release readiness before B40-S4/S5. |
 
+## Task 26 Batch 40 Doubt / Verifier Loop S4 Docs and Site Addendum
+
+B40-S4 covers `B40-DVL-M16..M21`, `B40-DVL-M29`, `B40-DVL-M37` and `B40-DVL-M38` as the public docs, generated-site and source-transfer slice.
+
+- batch_status: `b40_s4_implemented_docs_site_source_transfer`.
+- implementation_timestamp: `10-06-2026 07:30` `Europe/Moscow`.
+- implemented_rows: `B40-DVL-M16`, `B40-DVL-M17`, `B40-DVL-M18`, `B40-DVL-M19`, `B40-DVL-M20`, `B40-DVL-M21`, `B40-DVL-M29`, `B40-DVL-M37`, `B40-DVL-M38`.
+- docs_surfaces_added_or_updated: `docs/playbooks/doubt-verification-loop.md`, `docs/playbooks/doubt-verification-loop.en.md`, `docs/sources/product-agent-os-batch40-doubt-verifier-source-transfer.md`, `docs/sources/product-agent-os-batch40-doubt-verifier-source-transfer.en.md`, Product-Agent OS architecture, artifact contracts, artifact gallery, behavioral evals, prompting/context pages, agent-systems skills guidance, workflow-to-skill guidance, MkDocs navigation and docs checker registration.
+- docs_site_generated: true after strict MkDocs build; generated `site/` is not source of truth.
+- current_run_verification: focused B40-S4 RED docs contract first failed on missing RU/EN playbook and source-transfer pages; focused B40-S4 GREEN docs contract passed; strict MkDocs rebuilt regular `site/` with ignored workspace-local `tmp\mkdocs_deps_b40s4` dependencies and exit `0`; generated-site language-switcher cleanup removed absolute `/en/` fallback links from English-original plan pages; final `python -m unittest tests.product_agent_os.test_product_agent_os_docs -v` ran 77 tests with `OK`; `python tools\check_docs.py` returned `OK`; `git diff --check` exited `0`.
+- source_transfer_added: Chain-of-Verification, CRITIC, Self-Refine, intrinsic self-correction limitations, OpenAI Agents SDK guardrails and community "check again" prompt observations are mapped with trust level, verification status and transfer target.
+- future_rows_still_planned_after_s4: `B40-DVL-M22..M24`.
+- real_manual_pilot_executed: false.
+- active_hook_automation_mcp_agents_sdk_runner_created: false.
+- live_server_browser_provider_canonical_git_performed: false.
+- residual_risks: S4 documents the implemented local/manual gate but does not prove real usefulness, scorecard calibration, release readiness, active guardrail behavior, automation readiness or go/no-go closure; those remain B40-S5.
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `implemented_docs_site_source_transfer` | B40-S4 docs/site/source-transfer | The owner asked to start the fourth Batch 40 slice with agents and skills. B40-S4 adds RU/EN public playbook documentation, architecture diagrams, source-transfer packet, artifact examples, prompting/context/skill promotion guidance, source registry/backlog sync, MkDocs navigation, generated-site refresh and docs/site verification routing. The slice preserves local-only/no-unapproved-actions boundaries and still does not claim manual pilot value, promotion readiness, automation readiness, Agents SDK runtime readiness or release readiness before B40-S5. |
+
 ## Deferred
 
 | Status | Item | Reason |

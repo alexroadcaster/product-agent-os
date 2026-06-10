@@ -1,4 +1,4 @@
-
+﻿
 <!doctype html>
 <html lang="en" class="no-js">
   <head>
@@ -480,6 +480,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -561,6 +563,27 @@
 
   <span class="md-ellipsis">
     Source Card Template
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="product-agent-os-batch40-doubt-verifier-source-transfer.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Batch 40 Doubt Verifier Source Transfer
   </span>
 
 
@@ -2247,6 +2270,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2328,6 +2353,27 @@
 
   <span class="md-ellipsis">
     Grounded Answering
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/doubt-verification-loop.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Doubt Verification Loop
   </span>
 
 
@@ -3065,6 +3111,60 @@
 </li>
 
         <li class="md-nav__item">
+  <a href="#batch-38-s4-safety-and-rollback-addendum" class="md-nav__link">
+    <span class="md-ellipsis">
+      Batch 38 S4 Safety And Rollback Addendum
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#batch-38-target-specific-neural_flow-pilot-execution-addendum" class="md-nav__link">
+    <span class="md-ellipsis">
+      Batch 38 Target-Specific Neural_Flow Pilot Execution Addendum
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#task-26-batch-40-doubt-verifier-loop-s1-contract-addendum" class="md-nav__link">
+    <span class="md-ellipsis">
+      Task 26 Batch 40 Doubt / Verifier Loop S1 Contract Addendum
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#task-26-batch-40-doubt-verifier-loop-s2-plugin-foundation-addendum" class="md-nav__link">
+    <span class="md-ellipsis">
+      Task 26 Batch 40 Doubt / Verifier Loop S2 Plugin Foundation Addendum
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#task-26-batch-40-doubt-verifier-loop-s3-eval-hardening-addendum" class="md-nav__link">
+    <span class="md-ellipsis">
+      Task 26 Batch 40 Doubt / Verifier Loop S3 Eval Hardening Addendum
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#task-26-batch-40-doubt-verifier-loop-s4-docs-and-site-addendum" class="md-nav__link">
+    <span class="md-ellipsis">
+      Task 26 Batch 40 Doubt / Verifier Loop S4 Docs and Site Addendum
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#deferred" class="md-nav__link">
     <span class="md-ellipsis">
       Deferred
@@ -3600,7 +3700,7 @@
 <tr>
 <td><code>owner_closed_no_op_git_release_pr</code></td>
 <td><code>T10-LIVE-M41</code> git release/PR action</td>
-<td>M41 mapped to <code>explicit_git_release_pr_action</code>, but the owner later selected no git release/PR execution and closed M41 as no-op. Preflight evidence remains historical: <code>git-release-pr-evidence.md</code> and <code>git-release-pr-packet.json</code> record <code>git_stage_commit_push_pr_performed: false</code>, current branch <code>main</code>, <code>dirty_file_count: 15</code> and <code>missing_required_fields</code> as a <code>historical_preflight_snapshot</code>. T10-LIVE-M41 post-B38 audit records that <code>dirty_file_count: 15 is historical Batch 35 evidence, not current release readiness</code>; B37/B38/B38-S1 do not close M41, while the owner decision does. <code>future_git_write_requires_fresh_preflight: true</code>; no branch, stage, commit, push or PR was performed.</td>
+<td>M41 mapped to <code>explicit_git_release_pr_action</code>, but the owner later selected no git release/PR execution and closed M41 as no-op. Preflight evidence remains historical: <code>git-release-pr-evidence.md</code> and <code>git-release-pr-packet.json</code> record <code>git_stage_commit_push_pr_performed: false</code>, current branch <code>main</code>, <code>dirty_file_count: 15</code> and <code>missing_required_fields</code> as a <code>historical_preflight_snapshot</code>. T10-LIVE-M41 post-B38 audit records that <code>dirty_file_count: 15 is historical Batch 35 evidence, not current release readiness</code>; B37/B38/B38-S1 did not themselves close M41, while the later owner decision did. <code>future_git_write_requires_fresh_preflight: true</code>; no branch, stage, commit, push or PR was performed.</td>
 </tr>
 </tbody>
 </table>
@@ -3748,10 +3848,11 @@
 <h2 id="batch-38-production-readiness-addendum">Batch 38 Production Readiness Addendum<a class="headerlink" href="#batch-38-production-readiness-addendum" title="Permanent link">&para;</a></h2>
 <p>B38-S1 Release gate and package metadata covers <code>B38-PROD-M01..M03</code> as the pre-install gate before any plugin install, cache refresh, real-project pilot, release, PR or publication action.</p>
 <ul>
-<li>T10-LIVE-M41 status: <code>blocked_pending_explicit_git_release_fields</code>.</li>
-<li>release_fields_deferral_status: <code>not_deferred_without_owner_fields</code>.</li>
+<li>T10-LIVE-M41 status: <code>owner_closed_no_op_git_release_pr</code>.</li>
+<li>historical_preflight_status: <code>blocked_pending_explicit_git_release_fields</code>.</li>
+<li>release_fields_deferral_status: <code>not_required_after_owner_no_op_closure</code>.</li>
 <li>missing release fields remain: release branch or push target, commit message, PR base branch, PR title and intent, and explicit branch creation/current-branch push policy.</li>
-<li>T10-LIVE-M41 post-B38 audit: <code>dirty_file_count: 15 is historical Batch 35 evidence, not current release readiness</code>; it is a <code>historical_preflight_snapshot</code>. B37/B38/B38-S1 do not close M41, and a fresh preflight is required before any git write.</li>
+<li>T10-LIVE-M41 post-B38 audit: <code>dirty_file_count: 15 is historical Batch 35 evidence, not current release readiness</code>; it is a <code>historical_preflight_snapshot</code>. B37/B38/B38-S1 did not themselves close M41; the later owner decision closed it as no-op, and a fresh preflight is required before any git write.</li>
 <li>git_stage_commit_push_pr_performed: false.</li>
 <li>tracked_plugin_file_count: 586.</li>
 <li>skill_count: 11.</li>
@@ -3763,8 +3864,9 @@
 <li>ignored_cache_exclusions: <code>__pycache__ only</code>.</li>
 <li>install source path: <code>plugins/product-agent-os</code>.</li>
 <li>manifest path: <code>plugins/product-agent-os/.codex-plugin/plugin.json</code>.</li>
-<li>metadata_release_candidate_status: <code>local_only_exception_recorded</code>.</li>
-<li>example.invalid trust fields remain blocked for public or team release: author email, repository, privacy policy URL and terms of service URL.</li>
+<li>metadata_release_candidate_status: <code>owner_confirmed_local_only_internal_r_and_d</code>.</li>
+<li>metadata_decision_status: <code>owner_confirmed_local_only_internal_r_and_d</code>.</li>
+<li>example.invalid trust fields intentionally remain for local-only/internal R&amp;D and remain blocked for public or team release: author email, repository, privacy policy URL and terms of service URL.</li>
 <li>Codex compatibility status: <code>compatible</code>.</li>
 <li>No plugin install, plugin-cache mutation, live runtime, browser automation, provider call, canonical graph mutation or git write was performed.</li>
 </ul>
@@ -3780,7 +3882,7 @@
 <tr>
 <td><code>b38_s1_release_gate_package_metadata</code></td>
 <td>B38-S1 <code>B38-PROD-M01..M03</code></td>
-<td>M01 stays blocked without release fields because the owner did not supply git release/PR fields and did not explicitly defer M41; M02 freezes the checked-in package source with 586 tracked plugin files, 11 bundled skills and package digest <code>7d5a7634d1223f72ccdd1edcd24fddeb8bbdcc38d36d73ab1d002f352b06dcbb</code>; M03 records a local-only metadata exception because <code>example.invalid</code> trust fields remain in <code>plugin.json</code>, so public/team release metadata is not finalized. Verification evidence: <code>git status --short</code> was clean before edits, <code>git ls-files plugins/product-agent-os</code>, ignored-cache check showing only <code>__pycache__</code>, digest calculation, manifest review, <code>python plugins\product-agent-os\scripts\validate_codex_compatibility.py</code> returning <code>status: compatible</code>, focused docs contract 71 tests <code>OK</code>, docs structure check <code>OK</code> and diff hygiene <code>0</code>.</td>
+<td>M01 is owner-closed as no-op after historical missing release fields; future git write requires fresh preflight and exact approval. M02 freezes the checked-in package source with 586 tracked plugin files, 11 bundled skills and package digest <code>7d5a7634d1223f72ccdd1edcd24fddeb8bbdcc38d36d73ab1d002f352b06dcbb</code>; M03 records the owner decision to keep Product-Agent OS local-only/internal R&amp;D for now, so <code>example.invalid</code> trust fields remain intentionally in <code>plugin.json</code> and public/team release metadata is not finalized. Verification evidence: <code>git status --short</code> was clean before edits, <code>git ls-files plugins/product-agent-os</code>, ignored-cache check showing only <code>__pycache__</code>, digest calculation, manifest review, <code>python plugins\product-agent-os\scripts\validate_codex_compatibility.py</code> returning <code>status: compatible</code>, focused docs contract 71 tests <code>OK</code>, docs structure check <code>OK</code> and diff hygiene <code>0</code>.</td>
 </tr>
 </tbody>
 </table>
@@ -3791,14 +3893,14 @@
 <li>git_stage_commit_push_pr_performed: false.</li>
 <li>future_git_write_requires_fresh_preflight: true.</li>
 <li>no_git_stage_commit_push_pr.</li>
-<li>no_plugin_cache_mutation_performed.</li>
+<li>plugin_cache_refresh_completed_from_prepared_stage.</li>
 <li>no external publication, live runtime, browser automation, provider/live external model/API call or canonical graph mutation was performed.</li>
 </ul>
 <p>agent_team_design_packet_present:</p>
 <ul>
 <li>roles_have_disjoint_ownership: Tester owns <code>B38-PROD-M04</code> verification evidence; Release Operator owns <code>B38-PROD-M05</code> install/cache boundary; Reviewer owns stale-cache risk review; Docs Maintainer owns source/control-plane sync.</li>
 <li>handoff_packet_fields_present: sources/context used, assumptions, files proposed, verification evidence, open risks, stop reason and recommended next role.</li>
-<li>agent_skill_stop_conditions_present: stop on failed verification, stale cache mismatch, missing cache mutation approval, plugin-cache write outside approved target, external publication request or git write request.</li>
+<li>agent_skill_stop_conditions_present: stop on failed verification, cache refresh mismatch, missing cache mutation approval, plugin-cache write outside approved target, external publication request or git write request.</li>
 </ul>
 <table>
 <thead>
@@ -3815,9 +3917,9 @@
 <td>Current run evidence: <code>full_unittest_count: 846</code>, full unittest <code>OK</code>, <code>fixture_eval_exit_code: 0</code>, <code>transcript_eval_session_count: 19</code>, <code>transcript_eval_failure_count: 0</code>, <code>codex_compatibility_status: compatible</code>, <code>docs_check_status: ok</code>, <code>diff_hygiene_exit_code: 0</code>. Strict MkDocs was not routed because no MkDocs navigation, Mermaid, Markdown extension, localized nav, search/sitemap or generated <code>site/</code> evidence changed before verification.</td>
 </tr>
 <tr>
-<td><code>blocked_stale_plugin_cache_pending_refresh_approval</code></td>
-<td><code>B38-PROD-M05</code> read-only install/cache smoke</td>
-<td><code>plugin_install_smoke_status: read_only_inspection_completed_stale_cache_detected</code>; <code>plugin_cache_refresh_status: blocked_pending_explicit_cache_mutation_approval</code>; installed cache scope <code>local-product-agent-plugins/product-agent-os/0.1.0</code>; manifest name/version match <code>product-agent-os</code> / <code>0.1.0</code>; <code>.mcp.json</code> is visible; <code>visible_cache_skill_count: 10</code> vs <code>checked_in_skill_count: 11</code>; <code>missing_cache_skill: docs-maintainer</code>; <code>visible_cache_script_file_count: 32</code> vs <code>checked_in_script_file_count: 84</code>; <code>visible_cache_template_file_count: 34</code> vs <code>checked_in_template_file_count: 202</code>; checked-in package source remains 586 tracked files, 11 bundled skills and package digest <code>7d5a7634d1223f72ccdd1edcd24fddeb8bbdcc38d36d73ab1d002f352b06dcbb</code>. Cache refresh or install mutation requires explicit target, rollback/cleanup path and cache mutation approval.</td>
+<td><code>implemented</code></td>
+<td><code>B38-PROD-M05</code> read-only install/cache smoke, sandbox-blocked attempt and owner-run local refresh</td>
+<td><code>plugin_install_smoke_status: read_only_inspection_completed_stale_cache_detected</code>; initial <code>plugin_cache_refresh_status: blocked_pending_explicit_cache_mutation_approval</code>; installed cache scope <code>local-product-agent-plugins/product-agent-os/0.1.0</code>; manifest name/version match <code>product-agent-os</code> / <code>0.1.0</code>; <code>.mcp.json</code> is visible; historical stale inspection found <code>visible_cache_skill_count: 10</code> vs <code>checked_in_skill_count: 11</code>, <code>missing_cache_skill: docs-maintainer</code>, <code>visible_cache_script_file_count: 32</code> vs <code>checked_in_script_file_count: 84</code> and <code>visible_cache_template_file_count: 34</code> vs <code>checked_in_template_file_count: 202</code>; checked-in package source remains 586 tracked files, 11 bundled skills and package digest <code>7d5a7634d1223f72ccdd1edcd24fddeb8bbdcc38d36d73ab1d002f352b06dcbb</code>. <code>cache_refresh_approval_received: true</code>; <code>cache_backup_path: tmp/product-agent-os-cache-backup-20260608-162108</code>; <code>cache_stage_path: tmp/product-agent-os-cache-stage-20260608-162108</code>; <code>stage_tracked_source_file_count: 586</code>; target cache write failed inside the Codex sandbox with <code>plugin_cache_refresh_attempt_status: blocked_sandbox_cache_write_denied_after_backup_stage</code>; owner local PowerShell refresh returned <code>local_cache_refresh_result: REFRESH_OK</code>; <code>local_cache_backup_path: tmp/product-agent-os-cache-backup-local-20260608-180210</code>; <code>local_cache_moved_aside_target: local-product-agent-plugins/product-agent-os/0.1.0.pre-refresh-20260608-180210</code>; <code>plugin_cache_refresh_final_status: completed_local_cache_refresh_from_prepared_stage</code>; <code>target_cache_files_after_refresh: 586</code>; <code>target_cache_skill_count_after_refresh: 11</code>; <code>target_cache_docs_maintainer_present_after_refresh: true</code>; <code>target_cache_still_stale: false</code>; <code>plugin_cache_refresh_completed</code>.</td>
 </tr>
 </tbody>
 </table>
@@ -3875,7 +3977,7 @@
 <li>live_server_started: false.</li>
 <li>canonical_graph_mutation: not_performed.</li>
 <li>git_stage_commit_push_pr_performed: false.</li>
-<li>no_plugin_cache_mutation_performed.</li>
+<li>no_plugin_cache_mutation_performed_during_b38_s3_design_run.</li>
 <li>no_active_automation_live_server_provider_gateway_external_writer.</li>
 <li>cleanup_scope: stage_root_generated_b38_s3_pilot_artifacts_only.</li>
 <li>pilot_execution_status: design_only_not_run.</li>
@@ -3921,6 +4023,276 @@
 </tbody>
 </table>
 <p>Current B38-S3 verification evidence: focused B38-S3 docs contract passed; strict MkDocs through workspace-local ignored <code>tmp\mkdocs_venv_b38s3</code> exited <code>0</code>; generated <code>site/</code> was rebuilt for the RU/EN pilot page, search/sitemap exposure and file-safe English-original fallback links, then mechanically normalized for trailing whitespace; final Product-Agent OS docs contract ran 74 tests with <code>OK</code>; <code>python tools\check_docs.py</code> returned <code>OK</code>; <code>git diff --check</code> exited <code>0</code>. The pilot remains <code>design_only_not_run</code> and no real project execution, target workspace mutation, plugin-cache mutation, live server, browser automation, provider/API call, canonical graph mutation, external write or git stage/commit/push/PR was performed.</p>
+<h2 id="batch-38-s4-safety-and-rollback-addendum">Batch 38 S4 Safety And Rollback Addendum<a class="headerlink" href="#batch-38-s4-safety-and-rollback-addendum" title="Permanent link">&para;</a></h2>
+<p>B38-S4 Safety and rollback covers <code>B38-PROD-M10..M11</code> as the final pre-pilot safety slice before any target-specific real-project execution. It records read-only security/privacy/supply-chain gaps and documents rollback/remove/cache recovery, but it does not certify release security readiness or perform cache/global config mutation.</p>
+<ul>
+<li>batch_status: <code>b38_s4_safety_and_rollback</code>.</li>
+<li>B38-PROD-M10 status: <code>reviewed_gap_recorded</code>.</li>
+<li>B38-PROD-M11 status: <code>implemented</code>.</li>
+<li>source_policy_status: <code>ok</code>.</li>
+<li>system_file_hygiene_status: <code>blocked</code>.</li>
+<li>system_file_hygiene_trigger: <code>B38-S4-M10-security-privacy-supply-chain-readiness</code>.</li>
+<li>system_file_hygiene_errors: 9.</li>
+<li>system_file_hygiene_warnings: 21.</li>
+<li>system_file_hygiene_secret_like_findings: 6.</li>
+<li>no_secrets_status: <code>blocked</code>.</li>
+<li>active_schedule_markers: 0.</li>
+<li>schedule_status: <code>not_created</code>.</li>
+<li>hygiene_known_findings_accepted_gap: policy/field false positives, synthetic redaction fixture markers and existing size debt require follow-up before a security-certified release claim.</li>
+<li>mcp_boundary: <code>approval_required_unpinned_npx_context7</code>.</li>
+<li>fixture_dependency_boundary: <code>synthetic_non_install_fixtures_unpinned_dependencies</code>.</li>
+<li>local_only_metadata_exception_remains: true.</li>
+<li>release_readiness_claim: false.</li>
+<li>security_certification_claim: false.</li>
+<li>plugin_rollback_remove_procedure_present.</li>
+<li>pre_rollback_read_only_inspection_required.</li>
+<li>rollback_evidence_preservation_required.</li>
+<li>installed_plugin_remove_path_documented.</li>
+<li>stale_cache_restore_path_documented.</li>
+<li>cache_clear_recovery_path_documented.</li>
+<li>cache_global_config_mutation_requires_explicit_approval.</li>
+<li>cache_backup_restore_verification_required.</li>
+<li>hooks_disable_path_documented_if_ever_approved.</li>
+<li>automations_disable_path_documented_if_ever_approved.</li>
+<li>no_destructive_cache_delete_without_exact_approval.</li>
+<li>no_cache_global_config_mutation_performed.</li>
+<li>no_live_server_browser_provider_canonical_external_write.</li>
+<li>no_git_stage_commit_push_pr_performed.</li>
+<li>production_pilot_blocked_until_target_specific_approval.</li>
+<li>agent_read_only_audits_completed.</li>
+</ul>
+<p>agent_team_design_packet_present:</p>
+<ul>
+<li>roles_have_disjoint_ownership: Security/Data Owner and Reviewer own <code>B38-PROD-M10</code> safety review; Release Operator and Architect own <code>B38-PROD-M11</code> rollback/cache recovery procedure; Docs Maintainer owns public operator docs and source/registry sync.</li>
+<li>handoff_packet_fields_present: sources/context used, assumptions, files proposed, verification evidence, open risks, stop reason and recommended next role.</li>
+<li>agent_skill_stop_conditions_present: stop on missing approval, unresolved cache path, missing backup, digest/count mismatch, destructive delete request, active automation without owner, secret/customer data in evidence, external write request, provider/API call, live server/browser request, canonical mutation or git stage/commit/push/PR request.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Item</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>reviewed_gap_recorded</code></td>
+<td><code>B38-PROD-M10</code> security/privacy/supply-chain readiness audit</td>
+<td>Read-only local audit completed for checked-in Product-Agent OS package source, docs, templates, fixtures, README, plugin manifest and MCP declaration. Current evidence: <code>git status --short</code> was clean before edits; tracked plugin source count <code>586</code>; <code>python plugins\product-agent-os\scripts\validate_source_policy.py plugins\product-agent-os</code> returned <code>status: ok</code>; <code>python plugins\product-agent-os\scripts\validate_system_file_hygiene.py . --trigger B38-S4-M10-security-privacy-supply-chain-readiness</code> returned <code>status: blocked</code>, <code>secret_like_findings: 6</code>, <code>no_secrets_status: blocked</code>, <code>active_schedule_markers: 0</code> and <code>schedule_status: not_created</code>; <code>python plugins\product-agent-os\scripts\validate_codex_compatibility.py</code> returned <code>status: compatible</code>. Manual review records the secret-like hits as policy/field false positives or synthetic redaction fixture markers, not raw secret values, but M10 remains not security-certified until those findings are fixed or explicitly accepted. Supply-chain review records approval-bound unpinned <code>npx -y @upstash/context7-mcp</code> and synthetic non-install fixture dependencies as accepted gaps for local-only use, not public release closure.</td>
+</tr>
+<tr>
+<td><code>implemented</code></td>
+<td><code>B38-PROD-M11</code> rollback, removal and cache-recovery procedure</td>
+<td><code>docs/product-agent-os/real-project-pilot.md</code> and <code>.en.md</code> document <code>pre_rollback_read_only_inspection</code>, <code>rollback_evidence_preservation</code>, <code>installed_plugin_remove_path</code>, <code>stale_cache_restore_path</code>, <code>cache_clear_recovery_path</code>, <code>disable_hooks_automations_if_ever_approved</code>, <code>post_restore_verification</code> and stop conditions. The procedure is documented before production pilots, but no cache clear, cache restore, destructive delete, global config mutation, hook/automation activation or disable, external write, provider/API call, live server/browser action, canonical mutation or git action was performed.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="batch-38-target-specific-neural_flow-pilot-execution-addendum">Batch 38 Target-Specific Neural_Flow Pilot Execution Addendum<a class="headerlink" href="#batch-38-target-specific-neural_flow-pilot-execution-addendum" title="Permanent link">&para;</a></h2>
+<p><code>B38-PILOT-NF01</code> records the first owner-approved, read-only Product-Agent OS pilot on a real docs-only target. The target label is <code>Neural_Flow</code>; durable source docs intentionally avoid absolute user-specific target paths.</p>
+<ul>
+<li>batch_status: <code>b38_pilot_nf01_read_only_pilot_executed_blocked_on_target_source_policy</code>.</li>
+<li>target_label: <code>Neural_Flow</code>.</li>
+<li>target_class: <code>docs_only</code>.</li>
+<li>target_git_present: false.</li>
+<li>target_file_count: 13.</li>
+<li>target_control_plane_status: <code>applicable_missing</code>.</li>
+<li>target_agents_md_present: false.</li>
+<li>complexity_profile: <code>guided-small</code>.</li>
+<li>runtime_usage_mode: <code>legacy_onboarding</code>.</li>
+<li>initial_runtime_usage_mode: <code>pr_review</code>.</li>
+<li>route_quality_note: <code>clean_docs_only_intent_routes_legacy_onboarding</code>; initial pilot wording created a false <code>pr_review</code> route without a diff source.</li>
+<li>methodology_maturity_selected: <code>team</code>.</li>
+<li>methodology_complexity_selected: <code>standard</code>.</li>
+<li>methodology_recommendation_p0: <code>quality-strategy.md</code>.</li>
+<li>methodology_recommendation_p1: <code>architecture-overview.md</code>.</li>
+<li>runtime_clean_hint_status: <code>blocked</code>.</li>
+<li>source_policy_status: <code>blocked</code>.</li>
+<li>approval_status: <code>approved</code>.</li>
+<li>runtime_files_touched: [].</li>
+<li>runtime_files_proposed: [].</li>
+<li>staged_evidence_root: <code>tmp/neural-flow-product-agent-os-pilot-20260608-191510</code>.</li>
+<li>infrastructure_stage_status: <code>needs_approval</code>.</li>
+<li>status_dashboard_stage_validated: true.</li>
+<li>status_dashboard_aggregation_status: <code>incomplete</code>; adjacent infrastructure and project-graph manifests were not consolidated into the dashboard snapshot.</li>
+<li>project_graph_stage_validated: true.</li>
+<li>project_graph_node_count: 481.</li>
+<li>project_graph_edge_count: 480.</li>
+<li>project_graph_observation_count: 961.</li>
+<li>staged_control_plane_template_status: <code>blank_template_review_required</code>.</li>
+<li>staged_hooks_activation_boundary: <code>exact_owner_approval_required_before_apply</code>.</li>
+<li>system_file_hygiene_status: <code>review_required</code>.</li>
+<li>system_file_hygiene_errors: 0.</li>
+<li>system_file_hygiene_secret_like_findings: 0.</li>
+<li>static_heading_jumps: 0.</li>
+<li>citation_registry_rows: 277.</li>
+<li>architecture_v2_citation_missing_definitions: 0.</li>
+<li>architecture_v2_unverified_markers: 0.</li>
+<li>issues_section_2_checked: <code>19/19</code>.</li>
+<li>issues_section_6_checked: <code>4/4</code>.</li>
+<li>target_apply_blocked_until_source_policy_cleanup: true.</li>
+<li>target_workspace_mutation_performed: false.</li>
+<li>live_server_browser_provider_canonical_git_performed: false.</li>
+</ul>
+<p>agent_team_design_packet_present:</p>
+<ul>
+<li>roles_have_disjoint_ownership: Product Manager owns pilot value/next decision; Architect owns route and staged artifact interpretation; Tester owns command evidence and content checks; Docs Maintainer owns target source-policy cleanup proposal.</li>
+<li>handoff_packet_fields_present: sources/context used, assumptions, verification evidence, files proposed, open risks, stop reason and recommended next role.</li>
+<li>stop_conditions_present: stop on source-policy blocked, missing target control plane, request to apply generated files to target, live/browser/provider/canonical/git/external action request, target secrets/private data in evidence or unsupported readiness claim.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Item</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>read_only_pilot_executed_blocked_on_target_source_policy</code></td>
+<td><code>B38-PILOT-NF01</code> target-specific docs-only pilot</td>
+<td><code>detect_project.py</code> found a docs/research target with no git repository, no <code>AGENTS.md</code>, 13 files, <code>complexity_profile: guided-small</code> and <code>usage_mode.primary: legacy_onboarding</code>. <code>run_methodology_audit.py --json</code> returned <code>status: ok</code> and recommended P0 <code>quality-strategy.md</code> plus P1 <code>architecture-overview.md</code>. The initial runtime hint routed as <code>pr_review</code>; the clean docs-only intent routed correctly to <code>legacy_onboarding</code> with high confidence but exited blocked on <code>source_policy:blocked</code>. Staged infrastructure, status dashboard and project graph outputs validated outside the target, but dashboard aggregation is incomplete, staged root control-plane docs are blank templates that require review, and staged hooks remain activation-capable unless exact owner approval is given. Target source policy is blocked by missing <code>Source status</code>/registry metadata in target plan/spec docs and missing control-plane artifacts. No target workspace mutation, <code>.codex</code> target write, live server, browser automation, provider/API call, canonical graph mutation, external publication or git action was performed.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="task-26-batch-40-doubt-verifier-loop-s1-contract-addendum">Task 26 Batch 40 Doubt / Verifier Loop S1 Contract Addendum<a class="headerlink" href="#task-26-batch-40-doubt-verifier-loop-s1-contract-addendum" title="Permanent link">&para;</a></h2>
+<p>B40-S1 covers <code>B40-DVL-M01..M04</code>, <code>B40-DVL-M25</code>, <code>B40-DVL-M28</code>, <code>B40-DVL-M31</code> and <code>B40-DVL-M32</code> as an architecture and contract slice only.</p>
+<ul>
+<li>batch_status: <code>b40_s1_implemented_contract_only</code>.</li>
+<li>implementation_timestamp: <code>09-06-2026 17:42</code> <code>Europe/Moscow</code>.</li>
+<li>contract_scope: requirements, non-goals, <code>doubt_verification_packet_v1</code>, claim/requirement/evidence taxonomy, trigger matrix, Worker/Skeptic/Reviser prompt contracts, escalation ladder, revision budget, UX/cost budget, route compatibility boundary and no-unapproved-actions proof.</li>
+<li>agent_team_design_packet_present: true.</li>
+<li>roles_have_disjoint_ownership: Product Manager owns promise, non-goals and UX budget; Architect owns schema, taxonomy, trigger levels and route boundaries; Tester owns future gate/eval acceptance; Reviewer owns false-pass, false-rewrite, fake-evidence and approval-risk checks; Docs Maintainer owns source/backlog/registry transfer; Release Operator owns no-unapproved-actions closure.</li>
+<li>sidecar_agent_audits_completed: Archimedes completed docs/source/task-matrix audit; Turing completed runtime/contract/code-surface audit.</li>
+<li>completion_skeptic_recommendation_boundary: future route support must be additive inside <code>route_packet</code>, not a new top-level <code>build_result</code> field and not an unknown <code>methodology_packet</code> key.</li>
+<li>implemented_rows: <code>B40-DVL-M01</code>, <code>B40-DVL-M02</code>, <code>B40-DVL-M03</code>, <code>B40-DVL-M04</code>, <code>B40-DVL-M25</code>, <code>B40-DVL-M28</code>, <code>B40-DVL-M31</code>, <code>B40-DVL-M32</code>.</li>
+<li>future_rows_still_planned: <code>B40-DVL-M05..M24</code>, <code>B40-DVL-M26..M27</code>, <code>B40-DVL-M29..M30</code>, <code>B40-DVL-M33..M38</code>.</li>
+<li>no_runtime_code_changed: true.</li>
+<li>completion_skeptic_skill_created: false.</li>
+<li>packet_template_created: false.</li>
+<li>validator_cli_created: false.</li>
+<li>route_code_changed: false.</li>
+<li>transcript_or_fixture_evals_added: false.</li>
+<li>docs_site_generated: false.</li>
+<li>active_hook_automation_mcp_agents_sdk_runner_created: false.</li>
+<li>live_server_browser_provider_canonical_git_performed: false.</li>
+<li>current_run_verification: <code>python -m unittest tests.product_agent_os.test_product_agent_os_docs -v</code> ran 76 tests with <code>OK</code>; <code>python tools\check_docs.py</code> returned <code>OK: documentation structure checks passed</code>; <code>git diff --check</code> exited <code>0</code>.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Item</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>implemented_contract_only</code></td>
+<td>B40-S1 architecture and contract</td>
+<td>The owner asked to start the first Batch 40 slice with agents and skills. <code>implementation-planner</code> and <code>agent-team-designer</code> were used as planning/team-design skills, while explorer subagents supplied read-only docs/source and runtime/contract audits. The Track 10 plan now records the product promise "check evidence before claiming done", non-goals, packet schema, bounded statuses, claim/artifact/severity/confidence/freshness taxonomy, explicit and implicit triggers, skip/manual-only rules, Worker/Skeptic/Reviser contracts, revision budget, escalation ladder, UX/cost budget, route compatibility boundary and no-unapproved-actions proof. B40-S1 is not a runtime implementation and does not prove usefulness, validator enforcement, route behavior, transcript quality or promotion readiness. No plugin/runtime code, skill, template, validator, route code, eval fixture, generated site, live server, browser automation, provider/API call, canonical graph mutation, hook, automation, MCP/Agents SDK runner or git stage/commit/push/PR was performed.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="task-26-batch-40-doubt-verifier-loop-s2-plugin-foundation-addendum">Task 26 Batch 40 Doubt / Verifier Loop S2 Plugin Foundation Addendum<a class="headerlink" href="#task-26-batch-40-doubt-verifier-loop-s2-plugin-foundation-addendum" title="Permanent link">&para;</a></h2>
+<p>B40-S2 covers <code>B40-DVL-M05..M10</code>, <code>B40-DVL-M26</code>, <code>B40-DVL-M27</code>, <code>B40-DVL-M30</code>, <code>B40-DVL-M35</code> and <code>B40-DVL-M36</code> as the plugin implementation foundation.</p>
+<ul>
+<li>batch_status: <code>b40_s2_implemented_plugin_foundation</code>.</li>
+<li>implementation_timestamp: <code>09-06-2026 18:32</code> <code>Europe/Moscow</code>.</li>
+<li>implemented_rows: <code>B40-DVL-M05</code>, <code>B40-DVL-M06</code>, <code>B40-DVL-M07</code>, <code>B40-DVL-M08</code>, <code>B40-DVL-M09</code>, <code>B40-DVL-M10</code>, <code>B40-DVL-M26</code>, <code>B40-DVL-M27</code>, <code>B40-DVL-M30</code>, <code>B40-DVL-M35</code>, <code>B40-DVL-M36</code>.</li>
+<li>plugin_surfaces_added: <code>doubt-verification-packet.md</code> artifact template, <code>completion-skeptic</code> skill package, <code>validate_doubt_verification_packet.py</code> CLI, additive <code>route_packet.completion_skeptic_recommendation</code>, status snapshot/dashboard projection and candidate-only <code>completion-skeptic-stop-reminder.md</code>.</li>
+<li>evidence_routing_added: bounded evidence provider policy, generated-view-only blocking, pass-without-current-evidence blocking, provenance/freshness/redaction checks and handoff projection into existing Product-Agent OS fields.</li>
+<li>route_compatibility: <code>completion_skeptic_recommendation</code> is additive inside <code>route_packet</code>; primary lifecycle route semantics stay intact.</li>
+<li>candidate_only_boundary: no hook, schedule, automation, MCP server, Agents SDK runner, browser automation, provider call, live server, target mutation or git action was activated.</li>
+<li>current_run_verification: focused post-source-sync suite ran 313 tests with <code>OK</code>; full unittest <code>python -m unittest discover -s tests -p "test_*.py" -v</code> ran 864 tests with <code>OK</code>; <code>python plugins\product-agent-os\scripts\run_fixture_eval.py</code> exited <code>0</code> with <code>renderer_file_count: 197</code>; transcript eval exited <code>0</code> with 19 sessions and 0 failures; <code>python plugins\product-agent-os\scripts\validate_codex_compatibility.py</code> returned <code>status: compatible</code> with 12 bundled skills; <code>python tools\check_docs.py</code> returned <code>OK</code>; <code>git diff --check</code> exited <code>0</code>.</li>
+<li>future_rows_still_planned_after_s2: <code>B40-DVL-M11..M24</code>, <code>B40-DVL-M29</code>, <code>B40-DVL-M33..M34</code>, <code>B40-DVL-M37..M38</code>.</li>
+<li>residual_risks: transcript quality, false-pass/false-rewrite negative evals, adversarial fake-evidence cases, public docs/site, manual pilots, scorecard calibration and final go/no-go remain future slices.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Item</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>implemented_plugin_foundation</code></td>
+<td>B40-S2 plugin foundation</td>
+<td>The owner asked to start the second Batch 40 slice with agents and skills. B40-S2 adds the packet template, <code>completion-skeptic</code> skill, validator/CLI, runtime route recommendation, contract/guard validation, provider policy, status projection, handoff/task-matrix guidance and candidate-only stop reminder. The slice preserves the local-only/no-unapproved-actions boundary and does not claim Batch 40 usefulness or promotion readiness before B40-S3 through B40-S5 evals, docs/site, pilots, scorecards and closure.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="task-26-batch-40-doubt-verifier-loop-s3-eval-hardening-addendum">Task 26 Batch 40 Doubt / Verifier Loop S3 Eval Hardening Addendum<a class="headerlink" href="#task-26-batch-40-doubt-verifier-loop-s3-eval-hardening-addendum" title="Permanent link">&para;</a></h2>
+<p>B40-S3 covers <code>B40-DVL-M11..M15</code>, <code>B40-DVL-M33</code> and <code>B40-DVL-M34</code> as the eval, validator and scorecard hardening slice.</p>
+<ul>
+<li>batch_status: <code>b40_s3_implemented_eval_hardening</code>.</li>
+<li>implementation_timestamp: <code>09-06-2026 19:18</code> <code>Europe/Moscow</code>.</li>
+<li>implemented_rows: <code>B40-DVL-M11</code>, <code>B40-DVL-M12</code>, <code>B40-DVL-M13</code>, <code>B40-DVL-M14</code>, <code>B40-DVL-M15</code>, <code>B40-DVL-M33</code>, <code>B40-DVL-M34</code>.</li>
+<li>eval_cases_added: <code>completion-skeptic-check-again-trigger</code>, <code>completion-skeptic-false-pass-blocked</code>, <code>completion-skeptic-false-rewrite-blocked</code>, <code>completion-skeptic-source-sensitive-docs</code>, <code>completion-skeptic-code-tool-evidence</code>, <code>completion-skeptic-fake-evidence-adversarial</code>, <code>completion-skeptic-scorecard-thresholds</code>.</li>
+<li>transcript_sessions_added: same seven <code>completion-skeptic-*</code> cases in <code>product-agent-os-synthetic-sessions.json</code>.</li>
+<li>validator_hardening_added: fake/unverified command evidence rejection, pass verdict blocked by approval boundary, invalid <code>user_claim</code> provenance rejection, code-behavior pass claims requiring command evidence and accepted-gap owner/reason/residual-risk/follow-up requirements.</li>
+<li>scorecard_added: <code>COMPLETION_SKEPTIC_SCORECARD_THRESHOLDS</code> and <code>evaluate_completion_skeptic_scorecard</code> with false-pass, false-rewrite, unsupported-claim catch, missing-check catch, accepted-gap and user-revision acceptance metrics.</li>
+<li>fixture_checks_added: <code>completion_skeptic_eval_hardening_present</code>, <code>completion_skeptic_scorecard_thresholds_present</code>, <code>completion_skeptic_fake_evidence_guards_present</code>.</li>
+<li>sidecar_agent_audits_completed: Euclid completed read-only transcript/behavioral audit; Averroes completed read-only scorecard/fixture audit.</li>
+<li>current_run_verification: RED focused suite first failed on missing scorecard import, absent behavioral cases, absent transcript sessions and absent fixture checks; after implementation, focused B40-S3 suite ran 31 tests with <code>OK</code>. Full unittest first caught stale infrastructure-template exact-set and unsafe-literal contracts; after repairing those contracts, focused B40 + infrastructure suite ran 117 tests with <code>OK</code>, full unittest ran 867 tests with <code>OK</code>, fixture eval returned 91 records all OK with <code>renderer_file_count: 197</code> and all three <code>completion_skeptic_*</code> checks true, transcript eval returned 26 sessions and 0 failures, Codex compatibility returned <code>status: compatible</code>, docs check returned <code>OK</code> and <code>git diff --check</code> exited <code>0</code>.</li>
+<li>future_rows_still_planned: <code>B40-DVL-M16..M24</code>, <code>B40-DVL-M29</code>, <code>B40-DVL-M37..M38</code>.</li>
+<li>docs_site_generated: false.</li>
+<li>real_manual_pilot_executed: false.</li>
+<li>active_hook_automation_mcp_agents_sdk_runner_created: false.</li>
+<li>live_server_browser_provider_canonical_git_performed: false.</li>
+<li>residual_risks: deterministic keyword/term evals do not prove semantic usefulness; public docs/site examples, architecture diagrams, manual pilots, real scorecard calibration and final go/no-go remain B40-S4/S5.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Item</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>implemented_eval_hardening</code></td>
+<td>B40-S3 eval hardening</td>
+<td>The owner asked to start the third Batch 40 slice with agents and skills. B40-S3 adds RED/GREEN coverage for the <code>completion-skeptic</code> packet validator, manual check-again trigger, false-pass and false-rewrite negatives, source-sensitive docs/research, code/tool evidence, fake-evidence adversarial prompts and scorecard thresholds. The slice preserves local-only/no-unapproved-actions boundaries and still does not claim public docs/site readiness, manual pilot value, promotion readiness or release readiness before B40-S4/S5.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="task-26-batch-40-doubt-verifier-loop-s4-docs-and-site-addendum">Task 26 Batch 40 Doubt / Verifier Loop S4 Docs and Site Addendum<a class="headerlink" href="#task-26-batch-40-doubt-verifier-loop-s4-docs-and-site-addendum" title="Permanent link">&para;</a></h2>
+<p>B40-S4 covers <code>B40-DVL-M16..M21</code>, <code>B40-DVL-M29</code>, <code>B40-DVL-M37</code> and <code>B40-DVL-M38</code> as the public docs, generated-site and source-transfer slice.</p>
+<ul>
+<li>batch_status: <code>b40_s4_implemented_docs_site_source_transfer</code>.</li>
+<li>implementation_timestamp: <code>10-06-2026 07:30</code> <code>Europe/Moscow</code>.</li>
+<li>implemented_rows: <code>B40-DVL-M16</code>, <code>B40-DVL-M17</code>, <code>B40-DVL-M18</code>, <code>B40-DVL-M19</code>, <code>B40-DVL-M20</code>, <code>B40-DVL-M21</code>, <code>B40-DVL-M29</code>, <code>B40-DVL-M37</code>, <code>B40-DVL-M38</code>.</li>
+<li>docs_surfaces_added_or_updated: <code>docs/playbooks/doubt-verification-loop.md</code>, <code>docs/playbooks/doubt-verification-loop.en.md</code>, <code>docs/sources/product-agent-os-batch40-doubt-verifier-source-transfer.md</code>, <code>docs/sources/product-agent-os-batch40-doubt-verifier-source-transfer.en.md</code>, Product-Agent OS architecture, artifact contracts, artifact gallery, behavioral evals, prompting/context pages, agent-systems skills guidance, workflow-to-skill guidance, MkDocs navigation and docs checker registration.</li>
+<li>docs_site_generated: true after strict MkDocs build; generated <code>site/</code> is not source of truth.</li>
+<li>current_run_verification: focused B40-S4 RED docs contract first failed on missing RU/EN playbook and source-transfer pages; focused B40-S4 GREEN docs contract passed; strict MkDocs rebuilt regular <code>site/</code> with ignored workspace-local <code>tmp\mkdocs_deps_b40s4</code> dependencies and exit <code>0</code>; generated-site language-switcher cleanup removed absolute <code>/en/</code> fallback links from English-original plan pages; final <code>python -m unittest tests.product_agent_os.test_product_agent_os_docs -v</code> ran 77 tests with <code>OK</code>; <code>python tools\check_docs.py</code> returned <code>OK</code>; <code>git diff --check</code> exited <code>0</code>.</li>
+<li>source_transfer_added: Chain-of-Verification, CRITIC, Self-Refine, intrinsic self-correction limitations, OpenAI Agents SDK guardrails and community "check again" prompt observations are mapped with trust level, verification status and transfer target.</li>
+<li>future_rows_still_planned_after_s4: <code>B40-DVL-M22..M24</code>.</li>
+<li>real_manual_pilot_executed: false.</li>
+<li>active_hook_automation_mcp_agents_sdk_runner_created: false.</li>
+<li>live_server_browser_provider_canonical_git_performed: false.</li>
+<li>residual_risks: S4 documents the implemented local/manual gate but does not prove real usefulness, scorecard calibration, release readiness, active guardrail behavior, automation readiness or go/no-go closure; those remain B40-S5.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Item</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>implemented_docs_site_source_transfer</code></td>
+<td>B40-S4 docs/site/source-transfer</td>
+<td>The owner asked to start the fourth Batch 40 slice with agents and skills. B40-S4 adds RU/EN public playbook documentation, architecture diagrams, source-transfer packet, artifact examples, prompting/context/skill promotion guidance, source registry/backlog sync, MkDocs navigation, generated-site refresh and docs/site verification routing. The slice preserves local-only/no-unapproved-actions boundaries and still does not claim manual pilot value, promotion readiness, automation readiness, Agents SDK runtime readiness or release readiness before B40-S5.</td>
+</tr>
+</tbody>
+</table>
 <h2 id="deferred">Deferred<a class="headerlink" href="#deferred" title="Permanent link">&para;</a></h2>
 <table>
 <thead>

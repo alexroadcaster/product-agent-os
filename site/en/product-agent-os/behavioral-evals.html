@@ -1,4 +1,4 @@
-
+﻿
 <!doctype html>
 <html lang="en" class="no-js">
   <head>
@@ -484,6 +484,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -565,6 +567,27 @@
 
   <span class="md-ellipsis">
     Source Card Template
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../sources/product-agent-os-batch40-doubt-verifier-source-transfer.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Batch 40 Doubt Verifier Source Transfer
   </span>
 
 
@@ -1549,6 +1572,15 @@
 </li>
 
         <li class="md-nav__item">
+  <a href="#completion-skeptic-eval-coverage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Completion-skeptic Eval Coverage
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#self-verification-metrics-loop" class="md-nav__link">
     <span class="md-ellipsis">
       Self-Verification Metrics Loop
@@ -2399,6 +2431,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2480,6 +2514,27 @@
 
   <span class="md-ellipsis">
     Grounded Answering
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/doubt-verification-loop.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Doubt Verification Loop
   </span>
 
 
@@ -3064,6 +3119,15 @@
 </li>
 
         <li class="md-nav__item">
+  <a href="#completion-skeptic-eval-coverage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Completion-skeptic Eval Coverage
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#self-verification-metrics-loop" class="md-nav__link">
     <span class="md-ellipsis">
       Self-Verification Metrics Loop
@@ -3280,6 +3344,9 @@
 <h2 id="guided-questions-and-dashboard">Guided Questions And Dashboard<a class="headerlink" href="#guided-questions-and-dashboard" title="Permanent link">&para;</a></h2>
 <p>Guided question protocol uses typed <code>question_queue</code> packets. The first response shows only <code>next_blocking_question</code>, <code>question_counts</code> and <code>question_summary</code>; optional questions stay in the packet and answers route into artifacts or accepted gaps.</p>
 <p>Expected behavior: one blocking question maximum, no broad methodology interview, no full queue dump in first response, no dashboard-as-source-of-truth and no success claim from stale evidence.</p>
+<h2 id="completion-skeptic-eval-coverage">Completion-skeptic Eval Coverage<a class="headerlink" href="#completion-skeptic-eval-coverage" title="Permanent link">&para;</a></h2>
+<p>The local eval suite adds deterministic coverage for the manual "check again" route. Current cases include <code>completion-skeptic-check-again-trigger</code>, <code>completion-skeptic-false-pass-blocked</code>, <code>completion-skeptic-false-rewrite-blocked</code>, <code>completion-skeptic-source-sensitive-docs</code>, <code>completion-skeptic-code-tool-evidence</code>, <code>completion-skeptic-fake-evidence-adversarial</code> and <code>completion-skeptic-scorecard-thresholds</code>.</p>
+<p>These cases require a <code>doubt_verification_packet</code>, no-rewrite-first behavior, source/evidence ledgers and fake-evidence resistance. The scorecard thresholds remain manual-only until pilot denominators, user-revision acceptance and owner review are recorded.</p>
 <h2 id="self-verification-metrics-loop">Self-Verification Metrics Loop<a class="headerlink" href="#self-verification-metrics-loop" title="Permanent link">&para;</a></h2>
 <p><code>agent_skill_metrics_loop</code> is a staged self-verification metrics loop for agents, skills, prompt/policy packs, router/tool policy and harness-version review. Expected behavior starts with a read-only target registry, trace intake, dataset quality blockers, local grader outputs, grader/judge calibration, cadence recommendation levels <code>L0</code>, <code>L1</code>, <code>L2</code> and <code>L3</code>, scorecard ledger, <code>agent-skill-evaluation-report.html</code> and modernization candidates with evidence, rollback and owner-review state.</p>
 <p>Forbidden behavior includes headline-metric-only approval, raw trace leakage, uncalibrated judge approval, self-applied updates, missing rollback target, live eval/model/API calls, active schedules and modernization candidates that cross approval boundary without explicit owner review.</p>

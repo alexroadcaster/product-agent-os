@@ -97,6 +97,14 @@ Artifacts must not contain secrets, credentials, raw private chat logs, private 
 | `.codex/artifact-templates/agent-skill-weekly-verification.md` | Template registry | Weekly owner-review packet. | Requires rollback/holdout/flake/cost evidence or accepted gaps. |
 | `.codex/artifact-templates/agent-skill-update-candidate.md` | Template registry | Modernization candidate packet. | No self-applied updates. |
 
+## Doubt Verification Artifacts
+
+| Artifact | Producer | Contract role | Boundary |
+| --- | --- | --- | --- |
+| `.codex/artifact-templates/doubt-verification-packet.md` | Template registry / `completion-skeptic` | Human-readable `doubt_verification_packet_v1` with claim ledger, requirement ledger, evidence ledger, verdict, accepted gaps and residual risks. | Staged/generated-view boundary; the packet organizes evidence but does not become source truth by itself. |
+| `doubt_verification_packet_v1` JSON/YAML packet | `validate_doubt_verification_packet.py` and `doubt_verification.py` | Contract-checked evidence packet for `pass`, `revise`, `needs_more_context`, `blocked_by_approval` and `accepted_risk`. | Reject pass without evidence, fake command evidence, approval-blocked pass and `accepted_gap` without owner/reason/residual risk/follow-up. |
+| `completion_skeptic_recommendation` route field | Codex runtime runner | Additive route recommendation for manual completion-skeptic review. | Recommendation only; it does not authorize tools, providers, browser automation, Agents SDK runner or workspace mutation. |
+
 ## System File Hygiene Artifacts
 
 | Artifact | Producer | Contract role | Boundary |

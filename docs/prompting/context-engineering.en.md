@@ -50,6 +50,12 @@ Rules:
 - place fresh or priority facts closer to the task;
 - explicitly mark missing context.
 
+## Doubt Loop Context
+
+`doubt_verification_packet` is a context artifact, not memory. It keeps the claim ledger, requirement ledger, evidence ledger, missing_context and accepted_gap separate so a later worker can see what was checked, what was unsupported and what still needs owner approval.
+
+When packing context for `completion-skeptic`, include the artifact under review, source IDs, current command/eval evidence, user requirements and known non-goals. Do not include raw private chat logs, secrets, local absolute paths or community claims without trust level and verification status.
+
 ## What not to put in context
 
 - Secrets, tokens, private keys.
@@ -84,4 +90,3 @@ Do not preserve:
 - rhetorical reasoning;
 - duplicate quotes;
 - unsupported conclusions as facts.
-

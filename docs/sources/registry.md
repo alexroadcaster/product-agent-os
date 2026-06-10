@@ -199,6 +199,30 @@ verification_status: "Backed by current-run RED/GREEN and full-route verificatio
 ```
 
 ```yaml
+title: "Product-Agent OS Batch 40 S4 Doubt verifier loop docs and site"
+url: "docs/playbooks/doubt-verification-loop.md; docs/playbooks/doubt-verification-loop.en.md; docs/sources/product-agent-os-batch40-doubt-verifier-source-transfer.md; docs/sources/product-agent-os-batch40-doubt-verifier-source-transfer.en.md; docs/product-agent-os/architecture.md; docs/product-agent-os/artifact-contracts.md; docs/product-agent-os/artifact-gallery.md; docs/product-agent-os/behavioral-evals.md; mkdocs.yml; tools/check_docs.py"
+type: "internal documentation and generated-site evidence"
+source_status: "project-authored"
+checked_at: "2026-06-10"
+summary: "B40-S4 documents the Doubt / verifier loop in public RU/EN docs, adds architecture diagrams, packet and example guidance, source-transfer evidence, MkDocs navigation and generated-site routing for `completion-skeptic`."
+relevance: "Closes the docs/site/source-transfer slice for the local manual completion-skeptic gate while keeping pilots, scorecard calibration, promotion readiness and go/no-go closure in B40-S5."
+trust_level: "high"
+verification_status: "Current-run docs/site verification: focused RED docs contract first failed on missing RU/EN playbook and source-transfer pages, focused B40-S4 docs contract passed after implementation, strict MkDocs rebuilt regular `site/` with ignored workspace-local `tmp\\mkdocs_deps_b40s4` dependencies and exit 0, generated-site language-switcher cleanup removed absolute `/en/` fallback links from English-original plan pages, `python -m unittest tests.product_agent_os.test_product_agent_os_docs -v` ran 77 tests with OK, `python tools\\check_docs.py` returned OK and `git diff --check` exited 0. generated `site/` is not source of truth. No live server, browser automation, provider/API call, canonical graph mutation, Agents SDK runner, MCP server, active hook/automation, external publication or git action is authorized by this evidence."
+```
+
+```yaml
+title: "Product-Agent OS Batch 40 S4 source-transfer packet"
+url: "docs/sources/product-agent-os-batch40-doubt-verifier-source-transfer.md; docs/sources/product-agent-os-batch40-doubt-verifier-source-transfer.en.md; output/doubt-technique-comparative-report.md; output/doubt-verifier-loop-batch-task-matrix.md"
+type: "internal source-transfer evidence"
+source_status: "project-authored"
+checked_at: "2026-06-10"
+summary: "The B40-S4 source-transfer packet maps Chain-of-Verification, CRITIC, Self-Refine, intrinsic self-correction limitations, OpenAI Agents SDK guardrails and community check-again reports into docs with trust level, verification status and transfer target."
+relevance: "Prevents research and community observations from becoming durable Product-Agent OS rules without source status, trust level and verification boundaries."
+trust_level: "high for transfer bookkeeping; mixed per source family"
+verification_status: "The packet is documentation/source-transfer evidence only. It does not prove product usefulness, pilot outcomes, scorecard calibration, release readiness, active guardrail behavior, provider execution or automation readiness. Generated `site/` is not source of truth."
+```
+
+```yaml
 title: "Codex web / cloud"
 url: "https://developers.openai.com/codex/cloud"
 type: "documentation"

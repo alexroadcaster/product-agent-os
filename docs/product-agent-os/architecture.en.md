@@ -38,6 +38,30 @@ flowchart TD
 
 Generated project graphs, cockpit views, runtime summaries and analysis reports are orientation evidence. They help a worker find source files, stale assumptions and review targets, but they are not sources of truth. Any live runtime launch, browser automation, provider call, canonical graph mutation or git/release action needs a separate approval packet, current evidence and rollback or stop condition.
 
+## Completion-skeptic Route
+
+```mermaid
+flowchart LR
+    W["worker_output"] --> P["doubt_verification_packet"]
+    P --> C["completion-skeptic"]
+    C --> V{"verdict"}
+    V -->|pass| A["final answer with evidence"]
+    V -->|revise| R["reviser changes only confirmed gaps"]
+    V -->|needs_more_context| Q["ask or record missing_context"]
+    V -->|blocked_by_approval| B["stop at approval boundary"]
+    V -->|accepted_risk| G["accepted_gap with owner and follow-up"]
+```
+
+The packet has a claim ledger, requirement ledger and evidence ledger. The claim ledger records supported, unsupported, contradicted and needs_fresh_check items. The requirement ledger keeps user requirements, non-goals and approval constraints visible. The evidence ledger records source registry, local files, current commands, evals, owner decisions or explicit missing checks.
+
+Completion-skeptic route is a manual/local Product-Agent OS gate, not a live runtime proof.
+
+The reviser changes only confirmed gaps. If the verifier finds only speculative concerns, the route returns residual risk instead of rewriting correct content.
+
+### Agents SDK Output Guardrail Candidate
+
+This is a design-only direction. The same packet can later become an Agents SDK output guardrail candidate with a tripwire for fake evidence, pass without evidence, approval-blocked pass, missing source status or unsafe private data. The current boundary: docs/site work does not create an Agents SDK runner, MCP server, tracing export, provider call or live guardrail.
+
 ## Engineering Standards Route
 
 The engineering standards route maps workspace evidence to product, architecture, frontend, backend, API, data, AI/RAG, security, release and cross-domain gates. Detection creates `present_unverified`; readiness requires command evidence, runtime/eval proof, owner-reviewed evidence or an accepted gap.

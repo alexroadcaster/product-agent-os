@@ -58,6 +58,12 @@ flowchart TD
 - Community advice без trust marker.
 - Сырые логи subagents, если достаточно summary with sources.
 
+## Doubt Loop Context
+
+`doubt_verification_packet` - context artifact, а не memory. Он разделяет claim ledger, requirement ledger, evidence ledger, missing_context и accepted_gap, чтобы следующий worker видел, что проверено, что unsupported и где еще нужен owner approval.
+
+При упаковке context для `completion-skeptic` включайте artifact under review, source IDs, current command/eval evidence, user requirements и known non-goals. Не включайте raw private chat logs, secrets, local absolute paths или community claims без trust level и verification status.
+
 ## Session vs memory vs retrieved context
 
 | Слой | Назначение | Риск |
@@ -84,4 +90,3 @@ flowchart TD
 - риторические рассуждения;
 - дублирующие цитаты;
 - неподтвержденные выводы как facts.
-

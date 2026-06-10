@@ -1,4 +1,4 @@
-
+﻿
 <!doctype html>
 <html lang="ru" class="no-js">
   <head>
@@ -484,6 +484,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -565,6 +567,27 @@
 
   <span class="md-ellipsis">
     Шаблон карточки источника
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../sources/product-agent-os-batch40-doubt-verifier-source-transfer.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Batch 40 Doubt verifier source transfer
   </span>
 
 
@@ -2253,6 +2276,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
 
 
@@ -2332,6 +2357,27 @@
 
   <span class="md-ellipsis">
     Grounded answering
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="doubt-verification-loop.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Doubt verification loop
   </span>
 
 
@@ -3068,6 +3114,9 @@
     F --&gt; R["Refine"]
     R --&gt; P["Package as plugin"]
     P --&gt; A["Automation candidate"]</code></pre>
+<p>Для <code>completion-skeptic</code> обязателен тот же путь: manual -&gt; playbook -&gt; skill -&gt; plugin -&gt; automation candidate. Failure log должен фиксировать false pass, false rewrite, fake evidence, missing checks, accepted gaps и owner review. Eval cases должны покрывать trigger и non-trigger behavior до promotion любого automation candidate.</p>
+<p>Automation blockers: schedule, hook, MCP server, Agents SDK runner, provider call или external write недопустимы без отдельного approval, rollback/disable path и scorecard evidence.</p>
+<p>Use lowercase contract labels in handoffs when needed: eval cases and automation blockers.</p>
 <h2 id="candidate-product-skills">Candidate product skills<a class="headerlink" href="#candidate-product-skills" title="Permanent link">&para;</a></h2>
 <ul>
 <li><code>product-spec-writer</code></li>

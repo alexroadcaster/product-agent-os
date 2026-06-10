@@ -1,4 +1,4 @@
-
+﻿
 <!doctype html>
 <html lang="ru" class="no-js">
   <head>
@@ -480,6 +480,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -561,6 +563,27 @@
 
   <span class="md-ellipsis">
     Шаблон карточки источника
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../sources/product-agent-os-batch40-doubt-verifier-source-transfer.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Batch 40 Doubt verifier source transfer
   </span>
 
 
@@ -2247,6 +2270,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2328,6 +2353,27 @@
 
   <span class="md-ellipsis">
     Grounded answering
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/doubt-verification-loop.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Doubt verification loop
   </span>
 
 
@@ -3081,6 +3127,24 @@
   <a href="#batch-38-pre-install-and-real-project-production-pilot-readiness" class="md-nav__link">
     <span class="md-ellipsis">
       Batch 38: Pre-Install And Real Project Production Pilot Readiness
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#batch-39-product-agent-os-functional-pilot-test-matrix-and-automatic-result-collection" class="md-nav__link">
+    <span class="md-ellipsis">
+      Batch 39: Product-Agent OS Functional Pilot Test Matrix And Automatic Result Collection
+    </span>
+  </a>
+
+</li>
+
+          <li class="md-nav__item">
+  <a href="#batch-40-doubt-verifier-loop-completion-skeptic-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      Batch 40: Doubt / Verifier Loop Completion-Skeptic Gate
     </span>
   </a>
 
@@ -6225,10 +6289,10 @@
 <td>Finalize public and organization-facing plugin metadata.</td>
 <td>Product Manager + Docs Maintainer + Release Operator / <code>docs-maintainer</code>, <code>risk-reviewer</code></td>
 <td>Review <code>.codex-plugin/plugin.json</code> display name, version, repository, homepage, privacy policy, terms, author and support fields.</td>
-<td>No <code>example.invalid</code> trust fields remain in a release candidate intended for team/public installation, or the local-only exception is recorded.</td>
+<td>No <code>example.invalid</code> trust fields remain in a release candidate intended for team/public installation, or the local-only/internal R&amp;D decision is recorded.</td>
 <td>Manifest schema/structure test, Codex compatibility validation, docs/source registry sync if claims change.</td>
 <td>Metadata changes affect user trust and may require legal/product owner review.</td>
-<td><code>accepted_gap</code>; <code>08-06-2026 14:00</code> <code>Europe/Moscow</code>; local-only exception recorded for <code>example.invalid</code> trust fields; Codex compatibility <code>status: compatible</code>; public/team release metadata remains blocked</td>
+<td><code>accepted_gap</code>; <code>08-06-2026 19:01</code> <code>Europe/Moscow</code>; metadata_decision_status <code>owner_confirmed_local_only_internal_r_and_d</code>; local-only/internal R&amp;D distribution only; Codex compatibility <code>status: compatible</code>; public/team release metadata remains blocked</td>
 </tr>
 <tr>
 <td><code>B38-PROD-M04</code></td>
@@ -6248,9 +6312,9 @@
 <td>Release Operator + Tester / <code>pr-release-operator</code>, <code>test-eval-designer</code></td>
 <td>Install or refresh Product-Agent OS in the intended Codex environment and inspect the visible plugin package.</td>
 <td>Codex sees the intended version, 11 lifecycle skills, <code>.mcp.json</code>, scripts/templates/docs, and no stale cache mismatch against checked-in source.</td>
-<td>Plugin install/cache inspection, Codex compatibility smoke, skill visibility check across approved surfaces.</td>
-<td>Requires explicit approval for local/global plugin-cache mutation or any install action outside workspace.</td>
-<td><code>blocked</code>; <code>08-06-2026 15:10</code> <code>Europe/Moscow</code>; plugin_install_smoke_status: read_only_inspection_completed_stale_cache_detected; plugin_cache_refresh_status: blocked_pending_explicit_cache_mutation_approval; visible_cache_skill_count: 10; checked_in_skill_count: 11; missing_cache_skill: docs-maintainer; visible_cache_script_file_count: 32; checked_in_script_file_count: 84; visible_cache_template_file_count: 34; checked_in_template_file_count: 202; no_plugin_cache_mutation_performed</td>
+<td>Plugin install/cache inspection, owner-approved local cache refresh evidence, Codex compatibility smoke and skill visibility check across approved surfaces.</td>
+<td>Requires explicit approval for local/global plugin-cache mutation or any install action outside workspace; later release, publication, pilot execution or git writes still require separate approval.</td>
+<td><code>implemented</code>; <code>08-06-2026 18:02</code> <code>Europe/Moscow</code>; plugin_install_smoke_status: read_only_inspection_completed_stale_cache_detected; plugin_cache_refresh_status: blocked_pending_explicit_cache_mutation_approval before owner approval; cache_refresh_approval_received: true; cache_backup_path: tmp/product-agent-os-cache-backup-20260608-162108; cache_stage_path: tmp/product-agent-os-cache-stage-20260608-162108; stage_tracked_source_file_count: 586; plugin_cache_refresh_attempt_status: blocked_sandbox_cache_write_denied_after_backup_stage; visible_cache_skill_count: 10; checked_in_skill_count: 11; missing_cache_skill: docs-maintainer; local_cache_refresh_result: REFRESH_OK; local_cache_backup_path: tmp/product-agent-os-cache-backup-local-20260608-180210; local_cache_moved_aside_target: local-product-agent-plugins/product-agent-os/0.1.0.pre-refresh-20260608-180210; plugin_cache_refresh_final_status: completed_local_cache_refresh_from_prepared_stage; target_cache_files_after_refresh: 586; target_cache_skill_count_after_refresh: 11; target_cache_docs_maintainer_present_after_refresh: true; target_cache_still_stale: false; plugin_cache_refresh_completed</td>
 </tr>
 <tr>
 <td><code>B38-PROD-M06</code></td>
@@ -6305,7 +6369,7 @@
 <td>No release candidate includes secrets/private data; MCP and provider boundaries remain explicit; supply-chain/license notes are recorded or accepted as gaps.</td>
 <td><code>validate_source_policy.py</code> where applicable, system file hygiene audit, manifest/package review, compatibility check.</td>
 <td>Security review may require separate owner approval; do not turn inspection into a security-certified claim.</td>
-<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+<td><code>reviewed_gap_recorded</code>; <code>08-06-2026 18:40</code> <code>Europe/Moscow</code>; source_policy_status ok; system_file_hygiene_status blocked; secret_like_findings 6; hygiene_known_findings_accepted_gap; mcp_boundary approval_required_unpinned_npx_context7; fixture_dependency_boundary synthetic_non_install_fixtures_unpinned_dependencies; release_readiness_claim false; no external action</td>
 </tr>
 <tr>
 <td><code>B38-PROD-M11</code></td>
@@ -6316,7 +6380,18 @@
 <td>Rollback path is documented before production pilots, with owner, command boundary, evidence target and stop condition.</td>
 <td>Dry-run rollback plan review; no destructive deletion without resolved path check and explicit approval.</td>
 <td>Cache/global config mutations are external-state changes and require explicit approval.</td>
-<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+<td><code>implemented</code>; <code>08-06-2026 18:40</code> <code>Europe/Moscow</code>; plugin_rollback_remove_procedure_present; installed_plugin_remove_path_documented; stale_cache_restore_path_documented; cache_clear_recovery_path_documented; rollback_evidence_preservation_required; no_destructive_cache_delete_without_exact_approval; no cache/global config mutation</td>
+</tr>
+<tr>
+<td><code>B38-PILOT-NF01</code></td>
+<td>P1</td>
+<td>Run the first target-specific docs-only pilot execution addendum.</td>
+<td>Product Manager + Architect + Tester + Docs Maintainer / <code>implementation-planner</code>, <code>agent-team-designer</code></td>
+<td>Run read-only discovery, methodology audit, runtime routing, staged infrastructure/status/project-graph outputs and static content checks on an owner-approved docs-only target.</td>
+<td>Pilot evidence separates pass, blocked and unsupported claims; staged outputs validate outside the target; target apply remains blocked if source-policy/control-plane gaps remain.</td>
+<td><code>detect_project.py</code>; <code>run_methodology_audit.py</code>; <code>run_codex_runtime_runner.py</code>; <code>render_infrastructure.py --stage</code>; <code>render_status_dashboard.py --stage</code>; <code>scan_project_code_graph.py --stage</code>; source-policy/hygiene/static checks.</td>
+<td>Do not apply generated files to the target, start live/browser/provider work, mutate canonical sources, publish externally or use git from pilot evidence alone.</td>
+<td><code>read_only_pilot_executed_blocked_on_target_source_policy</code>; <code>08-06-2026 19:15</code> <code>Europe/Moscow</code>; target_label Neural_Flow; usage_mode legacy_onboarding; staged_evidence_root tmp/neural-flow-product-agent-os-pilot-20260608-191510; source_policy_status blocked; staged_outputs_validated true; target_workspace_mutation false</td>
 </tr>
 <tr>
 <td><code>B38-PROD-M12</code></td>
@@ -6331,7 +6406,7 @@
 </tr>
 </tbody>
 </table>
-<p>Execution status through B38-S3: <code>B38-PROD-M01..M09</code> has current package, metadata, verification, install/cache inspection and real-project pilot design evidence, but the slice is not release-ready and no real project pilot was executed. M01 is <code>owner_closed_no_op_git_release_pr</code>; Batch 35 <code>dirty_file_count: 15</code> is historical preflight evidence only, so a fresh preflight is required before any future git write. M02 is implemented as checked-in package-source freeze; M03 is <code>accepted_gap</code> with a local-only metadata exception; M04 is implemented after full verification; M05 is <code>blocked_stale_plugin_cache_pending_refresh_approval</code> because read-only inspection found a stale visible plugin cache; M06-M09 are implemented as design-only pilot artifacts. B38-S3 records <code>no_real_project_execution_performed</code> and performs no plugin install, plugin-cache mutation, live runtime, browser automation, provider call, canonical graph mutation, target workspace mutation, git stage/commit/push/PR or external publication.</p>
+<p>Execution status through B38-S4 plus the later M05 local refresh closure and B38-PILOT-NF01 addendum: <code>B38-PROD-M01..M11</code> has current package, metadata, verification, installed-cache, real-project pilot design, safety-gap and rollback-procedure evidence, and the first target-specific docs-only pilot has read-only staged evidence. The slice is not release-ready and target apply remains blocked. M01 is <code>owner_closed_no_op_git_release_pr</code>; Batch 35 <code>dirty_file_count: 15</code> is historical preflight evidence only, so a fresh preflight is required before any future git write. M02 is implemented as checked-in package-source freeze; M03 is <code>accepted_gap</code> with owner-confirmed local-only/internal R&amp;D distribution and public/team trust fields out of current scope; M04 is implemented after full verification; M05 is implemented after historical stale-cache detection, explicit owner approval, sandbox-blocked refresh attempt and owner-run local PowerShell refresh. Current M05 evidence: <code>plugin_cache_refresh_final_status: completed_local_cache_refresh_from_prepared_stage</code>, <code>target_cache_files_after_refresh: 586</code>, <code>target_cache_skill_count_after_refresh: 11</code>, <code>target_cache_docs_maintainer_present_after_refresh: true</code> and <code>target_cache_still_stale: false</code>. M06-M09 are implemented as pilot design artifacts. M10 is <code>reviewed_gap_recorded</code> with system-file hygiene blocked and supply-chain gaps recorded; M11 documents rollback/remove/cache recovery. B38-PILOT-NF01 records <code>usage_mode: legacy_onboarding</code>, staged outputs validated, <code>source_policy_status: blocked</code> and no target mutation. No live runtime, browser automation, provider call, canonical graph mutation, target workspace mutation, git stage/commit/push/PR or external publication was performed.</p>
 <p>Recommended Batch 38 production-readiness execution slices:</p>
 <table>
 <thead>
@@ -6373,6 +6448,13 @@
 <td>Stop when no-secrets/package-boundary review and rollback/remove procedure are approved or blocked with owner-visible risk.</td>
 </tr>
 <tr>
+<td><code>B38 target-specific docs-only pilot</code></td>
+<td><code>B38-PILOT-NF01</code></td>
+<td>Read-only target execution with sidecar review</td>
+<td>A docs-only target can prove route accuracy, staged artifact usefulness and blocker quality without target mutation.</td>
+<td>Stop when staged evidence is recorded and source-policy/control-plane gaps are either resolved, accepted or handed off.</td>
+</tr>
+<tr>
 <td><code>B38-S5 Pilot review and release decision</code></td>
 <td><code>B38-PROD-M12</code></td>
 <td>Sequential after pilots</td>
@@ -6381,6 +6463,1472 @@
 </tr>
 </tbody>
 </table>
+<h4 id="batch-39-product-agent-os-functional-pilot-test-matrix-and-automatic-result-collection">Batch 39: Product-Agent OS Functional Pilot Test Matrix And Automatic Result Collection<a class="headerlink" href="#batch-39-product-agent-os-functional-pilot-test-matrix-and-automatic-result-collection" title="Permanent link">&para;</a></h4>
+<p>Batch 39 is the measurement and reproducibility layer before a meaningful <code>B38-PROD-M12</code> post-pilot learning and release decision. Batch 38 proved the package source, local cache refresh, pilot design, safety/rollback procedure and one read-only docs-only target pilot. Batch 39 must convert that evidence into comparable pilot runs across Product-Agent OS capabilities and target archetypes, with automatic result collection, redaction, no-mutation proof, dashboard aggregation and a go/no-go packet.</p>
+<p>Batch 39 is local-only/internal R&amp;D unless the owner gives a separate public/team release decision. The default execution mode is read-only and staged-first. It does not mutate target workspaces, start live servers, run browser automation, call providers/live external model/API endpoints, mutate canonical graph sources, activate hooks/automations, publish externally or perform git stage/commit/push/PR without a separate exact approval packet.</p>
+<p>Batch 39 matrix rows use the Batch 37 task-matrix contract: <code>planned</code> rows keep <code>pending_execution_timestamp</code>; implementation evidence must be added only after the exact slice runs with current command evidence, touched files or work locations, residual risks and follow-up.</p>
+<p>Before any <code>B39-S1..B39-S5</code> execution starts, the root <code>prod_test.md</code> ledger must exist and be updated for every test attempt. Each <code>B39-TEST-*</code> row needs attempt count, latest status, evidence refs, failure classification, Product-Agent OS change refs and retest status. If a test fails, the failure must be logged before Product-Agent OS is changed; any fix must name changed files and must remain <code>fixed_pending_retest</code> until the failed gate passes in a later attempt.</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Priority</th>
+<th>Task</th>
+<th>Agents / skills</th>
+<th>Scope</th>
+<th>Technical value for project</th>
+<th>Product value for user</th>
+<th>Acceptance criteria</th>
+<th>Verification gates</th>
+<th>Risks / approval gates</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>B39-TEST-M01</code></td>
+<td>P0</td>
+<td>Normalize Product-Agent OS source, cache, package-integrity and session inventory.</td>
+<td>Architect + Tester / <code>workspace-discovery-auditor</code>, <code>test-eval-designer</code></td>
+<td>Compare checked-in package source, installed local cache and currently visible Codex session skills/scripts/templates, including plugin manifest, <code>.mcp.json</code>, skill YAML, script/template/fixture checksums and source-cache-session parity.</td>
+<td>Removes ambiguity between source files, cache files, package integrity and session-visible plugin capabilities.</td>
+<td>User knows whether Codex is testing the actual refreshed plugin rather than stale cached behavior or an incomplete package.</td>
+<td>Inventory packet records source file count, installed cache file count, real skill count by <code>*/SKILL.md</code>, <code>references</code> directory exclusion, <code>.mcp.json</code>, templates, fixtures, CLI scripts, checksums and session-visible skill root.</td>
+<td><code>git ls-files plugins/product-agent-os</code>; cache read-only inspection; Codex compatibility smoke; skill directory count by <code>SKILL.md</code>; package manifest and checksum inventory.</td>
+<td>Cache/global mutation requires separate approval; current-session skill root may remain stale until a new Codex session is opened.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M02</code></td>
+<td>P0</td>
+<td>Define <code>pilot-run-manifest.json</code> schema.</td>
+<td>Architect + Tester / <code>implementation-planner</code>, <code>test-eval-designer</code></td>
+<td>Create a stable schema for each pilot run: target metadata, approvals, command plan, artifacts, scores, blockers and no-action proof.</td>
+<td>Gives every pilot a comparable contract instead of ad hoc logs.</td>
+<td>User can inspect one manifest and understand what was tested, what was blocked and why.</td>
+<td>Schema includes <code>batch_id</code>, <code>pilot_id</code>, <code>target_class</code>, <code>data_policy</code>, <code>allowed_commands</code>, <code>blocked_actions</code>, <code>commands</code>, <code>artifacts</code>, <code>scores</code>, <code>blockers</code>, <code>redaction</code>, <code>mutation_proof</code> and <code>safe_next_action</code>.</td>
+<td>Focused schema tests; fixture validation; JSON round-trip test.</td>
+<td>Manifest is evidence container only, not approval or source of truth.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M03</code></td>
+<td>P0</td>
+<td>Build command result collector.</td>
+<td>Builder + Tester / <code>test-eval-designer</code></td>
+<td>Capture command exit code, duration, stdout/stderr digest, parsed JSON, redaction summary and artifact refs for each read-only command.</td>
+<td>Converts separate Product-Agent OS commands into a reproducible evidence stream.</td>
+<td>User no longer needs to manually reconstruct pilot results from scattered terminal output.</td>
+<td>Collector writes <code>command-results.jsonl</code> under a stage root, redacts unsafe fields, records non-zero exits as expected or unexpected blockers and never writes into the target workspace.</td>
+<td>Unit tests with pass, expected-blocked and failed command fixtures; redaction tests; stage-root path tests.</td>
+<td>Running arbitrary commands is not allowed; command allowlist and target-specific approval still govern execution.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M04</code></td>
+<td>P0</td>
+<td>Add pre/post target mutation proof.</td>
+<td>Reviewer + Tester / <code>risk-reviewer</code>, <code>test-eval-designer</code></td>
+<td>Fingerprint target files before and after read-only pilot execution.</td>
+<td>Proves read-only pilot behavior instead of relying on trust.</td>
+<td>User can safely run pilots on internal R&amp;D projects and see that files were not changed.</td>
+<td><code>target-mutation-proof.json</code> records file count, digests or bounded fingerprints, changed/added/deleted counts and <code>target_workspace_mutation_performed: false</code> for read-only runs.</td>
+<td>Temporary fixture target test; post-run fingerprint comparison; path redaction check.</td>
+<td>Fingerprint output must not include raw private source bodies or secrets.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M05</code></td>
+<td>P0</td>
+<td>Standardize pilot redaction and local-path scrub.</td>
+<td>Security/Data Owner + Tester / <code>risk-reviewer</code>, <code>test-eval-designer</code></td>
+<td>Apply one redaction policy to manifests, command output, dashboard JSON, graph summaries and rollups.</td>
+<td>Prevents evidence packages from leaking secrets, raw prompts, private paths or raw source.</td>
+<td>User can share pilot summaries internally without exposing private workspace details.</td>
+<td><code>redaction-report.json</code> records categories and counts; result package contains no secret-like values, raw private prompts, raw source bodies or absolute user-specific paths.</td>
+<td>Redaction fixture tests; <code>validate_system_file_hygiene.py</code> scoped to staged evidence; JSON text scan.</td>
+<td>Redaction false positives must be classified, not silently suppressed.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M06</code></td>
+<td>P0</td>
+<td>Verify install/update/uninstall and refreshed plugin visibility in new Codex sessions.</td>
+<td>Release Operator + Tester / <code>pr-release-operator</code>, <code>test-eval-designer</code></td>
+<td>Prove a new session sees the intended installed plugin cache after the owner-run local refresh and record install, update, uninstall or stale-session handling across Codex App, CLI and IDE extension surfaces where evidence is available.</td>
+<td>Separates filesystem cache parity from actual runtime plugin availability and lifecycle behavior.</td>
+<td>User avoids running pilots against stale session state and knows how package updates or removal behave.</td>
+<td>Evidence records current cache path, session-visible Product-Agent OS skill paths, <code>docs-maintainer</code> visibility, script/template counts, install/update/uninstall smoke status and stale-session detection.</td>
+<td>New-session smoke checklist; read-only skill visibility inventory; compatibility validator; package lifecycle smoke where approved.</td>
+<td>Starting a new thread/session is an operator action; cache writes, uninstall, update or IDE/App state changes require exact approval.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M07</code></td>
+<td>P0</td>
+<td>Build Batch 39 rollup aggregator.</td>
+<td>Builder + Docs Maintainer / <code>learning-loop-maintainer</code>, <code>docs-maintainer</code></td>
+<td>Aggregate multiple pilot manifests into <code>batch39-rollup.json</code> and <code>batch39-rollup.md</code>.</td>
+<td>Turns per-target evidence into a go/no-go data set.</td>
+<td>User gets one concise decision surface instead of many separate artifacts.</td>
+<td>Rollup groups pilots by target class, status, blockers, scores, regressions, accepted gaps and next actions.</td>
+<td>Aggregator unit tests; multi-pilot fixture; deterministic sort and digest checks.</td>
+<td>Rollup is generated orientation evidence; underlying manifests remain source evidence.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M08</code></td>
+<td>P0</td>
+<td>Fix status dashboard aggregation for pilot evidence.</td>
+<td>Builder + Tester / <code>test-eval-designer</code></td>
+<td>Ensure dashboard snapshot consumes staged infrastructure manifest, project graph counts, command results, evidence count and pilot scorecard.</td>
+<td>Closes the B38-PILOT-NF01 dashboard gap where adjacent stage outputs were not reflected.</td>
+<td>User can open one dashboard and see the actual pilot state instead of partial <code>not_available</code> sections.</td>
+<td>Dashboard shows renderer file count, staged artifact summary, graph nodes/edges/observations, evidence count, source-policy status and blockers.</td>
+<td><code>test_status_snapshot</code>, <code>test_status_dashboard</code>, staged pilot fixture tests.</td>
+<td>Dashboard must not become source of truth or imply success from generated views alone.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M09</code></td>
+<td>P0</td>
+<td>Define pilot failure taxonomy.</td>
+<td>Reviewer + Tester / <code>risk-reviewer</code>, <code>test-eval-designer</code></td>
+<td>Normalize statuses: <code>passed</code>, <code>blocked_expected</code>, <code>blocked_unexpected</code>, <code>warning</code>, <code>approval_required</code>, <code>unsupported_claim</code>, <code>failed</code>.</td>
+<td>Makes pilot results comparable and prevents expected safety blocks from looking like regressions.</td>
+<td>User can distinguish a good block from a broken tool.</td>
+<td>Every command and pilot summary maps to the taxonomy with reason, owner, follow-up and acceptance rule.</td>
+<td>Taxonomy unit tests; Neural_Flow expected-block replay; unsupported-claim fixture.</td>
+<td>Taxonomy cannot hide real failures under accepted gaps without owner, reason and residual risk.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M10</code></td>
+<td>P0</td>
+<td>Define pilot and product-usability scorecard gates.</td>
+<td>Product Manager + Tester / <code>test-eval-designer</code>, <code>learning-loop-maintainer</code></td>
+<td>Score route accuracy, artifact usefulness, evidence sufficiency, safety, repeatability, owner-question usefulness, dashboard completeness, first-run clarity, error actionability, onboarding time and <code>safe_next_action</code> usefulness.</td>
+<td>Connects technical evidence to product decision quality and operator usability.</td>
+<td>User sees whether the plugin actually helps run a project and whether a non-author can operate it.</td>
+<td><code>pilot-scorecard.json</code> has weighted gates, raw counts, blocker handling, product-usability dimensions and no single proxy metric.</td>
+<td>Scorecard fixture tests; repeated-run metric tests; manual owner review slot; first-run/onboarding fixture.</td>
+<td>A scorecard is not release approval; owner decision remains required.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M11</code></td>
+<td>P1</td>
+<td>Prepare synthetic target fixture pack.</td>
+<td>Builder + Tester / <code>workspace-discovery-auditor</code>, <code>test-eval-designer</code></td>
+<td>Create privacy-safe fixture targets for docs-only, web/frontend, backend/API, AI/RAG, data/migration, PR/review, automation/release, desktop/local-first and plugin/skill.</td>
+<td>Gives repeatable coverage without relying only on private real projects.</td>
+<td>User can test behavior quickly before risking a real workspace.</td>
+<td>Fixture targets contain no secrets/private data and each includes expected route, blockers and minimum artifacts.</td>
+<td>Fixture eval; source-policy scan; redaction scan; route expectation tests.</td>
+<td>Synthetic success cannot replace real pilot evidence; it is regression coverage.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M12</code></td>
+<td>P1</td>
+<td>Run docs-only happy-path pilot.</td>
+<td>Product Manager + Docs Maintainer + Tester / <code>docs-maintainer</code>, <code>test-eval-designer</code></td>
+<td>Use a source-policy-clean docs-only target to prove the positive path missing from <code>Neural_Flow</code>.</td>
+<td>Establishes baseline for clean legacy-onboarding/docs behavior.</td>
+<td>User sees what a successful first Product-Agent OS pilot should produce.</td>
+<td>Route is docs-only or legacy-onboarding, source policy OK, staged artifacts useful, dashboard complete and no target mutation.</td>
+<td>Pilot runner; source-policy validator; dashboard/graph/stage validation; mutation proof.</td>
+<td>Target apply remains separate; no external publishing.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M13</code></td>
+<td>P1</td>
+<td>Replay <code>Neural_Flow</code> as expected-block negative baseline.</td>
+<td>Reviewer + Tester / <code>risk-reviewer</code>, <code>test-eval-designer</code></td>
+<td>Re-run or replay the B38 docs-only target evidence as a known source-policy-blocked case.</td>
+<td>Protects blocker quality and route correctness after runner changes.</td>
+<td>User gets a clear explanation of what must be fixed before target apply.</td>
+<td>Pilot summary preserves <code>usage_mode: legacy_onboarding</code>, <code>source_policy_status: blocked</code>, no mutation and precise next action.</td>
+<td>Replay fixture or read-only rerun with approval; source-policy validator; mutation proof.</td>
+<td>Any target write or cleanup needs separate target-specific approval.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M14</code></td>
+<td>P1</td>
+<td>Run web/frontend archetype pilot.</td>
+<td>Product Manager + Architect + Tester / <code>workspace-discovery-auditor</code>, <code>test-eval-designer</code></td>
+<td>Detect frontend stack, UI verification route, design/runtime/browser approval boundaries and staged artifacts.</td>
+<td>Validates frontend routing without confusing inspection with browser proof.</td>
+<td>User sees what checks would prove UI behavior and which actions need approval.</td>
+<td>Route identifies frontend signals, proposes build/test/lint/browser checks, blocks live server/browser automation unless approved and stages relevant artifacts.</td>
+<td>Synthetic target pilot; optional real target approval packet; no-browser default proof.</td>
+<td>Browser automation and live server are approval-bound.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M15</code></td>
+<td>P1</td>
+<td>Run backend/API archetype pilot.</td>
+<td>Architect + Security/Data Owner + Tester / <code>risk-reviewer</code>, <code>test-eval-designer</code></td>
+<td>Detect backend/API tests, contracts, auth/config risks, migrations and observability needs.</td>
+<td>Validates backend readiness routing without production or network side effects.</td>
+<td>User gets a safe backend action plan with contract/security/rollback evidence needs.</td>
+<td>Pilot blocks migrations, network calls, provider calls and production access; proposes unit/integration/contract checks and rollback artifacts.</td>
+<td>Synthetic backend pilot; source-policy/hygiene checks; command allowlist proof.</td>
+<td>Auth secrets, migrations and production data require separate approval.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M16</code></td>
+<td>P1</td>
+<td>Run AI/RAG archetype pilot.</td>
+<td>AI Owner + Security/Data Owner + Tester / <code>test-eval-designer</code>, <code>risk-reviewer</code></td>
+<td>Detect prompt/model/RAG/eval/corpus signals and provider/cache/data boundaries.</td>
+<td>Validates AI methodology routing and eval-first behavior.</td>
+<td>User sees baseline/eval requirements before any model or embedding call.</td>
+<td>Pilot proposes eval baseline, dataset manifest and grounding checks; blocks live model/API calls, embedding generation and cache writes unless approved.</td>
+<td>Synthetic AI/RAG target; no-provider proof; eval-spec fixture.</td>
+<td>Provider/live external model/API calls and private corpus access are approval-bound.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M17</code></td>
+<td>P1</td>
+<td>Run data/migration archetype pilot.</td>
+<td>Data Owner + Release Operator + Tester / <code>risk-reviewer</code>, <code>test-eval-designer</code></td>
+<td>Detect schema/data/migration signals, backup needs, synthetic fixture policy and rollback feasibility.</td>
+<td>Validates data safety gates before destructive work.</td>
+<td>User gets a migration plan shape that names backup, rollback and data policy before execution.</td>
+<td>Pilot blocks production writes, destructive migration and external export; proposes dry-run, backup/restore evidence and data classification.</td>
+<td>Synthetic migration target; rollback-plan fixture; no-write proof.</td>
+<td>Production data and destructive commands require separate approval.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M18</code></td>
+<td>P1</td>
+<td>Run PR/review archetype pilot.</td>
+<td>Reviewer + Release Operator / <code>risk-reviewer</code>, <code>pr-release-operator</code></td>
+<td>Route from a diff or branch context to review findings, test proposals and git approval boundaries.</td>
+<td>Validates code-review stance and no-git default.</td>
+<td>User gets actionable findings without accidental stage/commit/push/PR.</td>
+<td>Pilot uses diff-only scope, reports findings first, proposes tests and records no git action.</td>
+<td>Synthetic diff fixture; git preflight read-only check; review-output contract.</td>
+<td>Git stage/commit/push/PR require exact approval and fresh preflight.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M19</code></td>
+<td>P1</td>
+<td>Run automation/release archetype pilot.</td>
+<td>Release Operator + Security/Data Owner / <code>pr-release-operator</code>, <code>automation-promoter</code></td>
+<td>Inspect automation candidates, release packets, schedules, GitHub Actions and external-write risks.</td>
+<td>Validates candidate-only automation governance.</td>
+<td>User knows when a workflow is ready for automation review and why it is not active yet.</td>
+<td>Pilot emits candidate review, release packet draft and disable/rollback requirements; no active schedule, GitHub Actions enablement, deploy or publication.</td>
+<td>Automation policy tests; candidate fixture; no-active-schedule scan.</td>
+<td>External writes, active schedules, deploys and publication require explicit approval.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M20</code></td>
+<td>P1</td>
+<td>Run desktop/native/local-first archetype pilot.</td>
+<td>Architect + Tester / <code>workspace-discovery-auditor</code>, <code>test-eval-designer</code></td>
+<td>Detect desktop/native/local-first build/runtime assumptions, permissions, logs and GUI verification needs.</td>
+<td>Expands Product-Agent OS beyond web/backend/docs.</td>
+<td>User gets platform-specific next checks without unsafe GUI/runtime actions.</td>
+<td>Pilot proposes platform build/run/log/screenshot checks and blocks GUI/runtime execution unless approved.</td>
+<td>Synthetic desktop/native target; route expectation test; approval-bound runtime proof.</td>
+<td>GUI launch, simulator/emulator, signing/notarization or OS permission changes need separate approval.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M21</code></td>
+<td>P1</td>
+<td>Run plugin/skill project archetype pilot.</td>
+<td>Architect + Docs Maintainer + Tester / <code>docs-maintainer</code>, <code>test-eval-designer</code></td>
+<td>Validate skill contracts, plugin manifest, MCP boundary, templates, hooks and packaging surface.</td>
+<td>Tests Product-Agent OS on projects similar to itself.</td>
+<td>User gets a plugin-readiness packet for future local/internal plugin work.</td>
+<td>Pilot detects skills, manifest, scripts/templates, staged hooks and MCP; classifies public/team metadata gaps.</td>
+<td>Synthetic plugin target; Codex compatibility; source-policy and hygiene checks.</td>
+<td>MCP activation, hook activation and publication require exact approval.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M22</code></td>
+<td>P0</td>
+<td>Add route accuracy suite for <code>detect_project.py</code>.</td>
+<td>Tester + Architect / <code>test-eval-designer</code>, <code>workspace-discovery-auditor</code></td>
+<td>Assert expected <code>usage_mode</code>, stack signals and <code>complexity_profile</code> across pilot archetypes.</td>
+<td>Prevents regressions like wrong PR/review route without a diff source.</td>
+<td>User sees more reliable first response routing.</td>
+<td>Tests cover docs-only, web, backend, AI/RAG, data, PR/review, automation/release, desktop/native and plugin/skill fixtures.</td>
+<td>Focused discovery tests; fixture eval integration.</td>
+<td>Route confidence must expose uncertainty rather than overclaim.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M23</code></td>
+<td>P0</td>
+<td>Add methodology applicability, false-positive/false-negative and cross-domain synthesis suite.</td>
+<td>Tester + Reviewer / <code>test-eval-designer</code>, <code>risk-reviewer</code></td>
+<td>Check methodology audit precision across target classes, all methodology pages and cross-domain synthesis while avoiding forced DDD/TDD/security/AI gates without evidence.</td>
+<td>Keeps methodology intelligence relevant instead of noisy and catches missing methodology gates.</td>
+<td>User gets fewer generic lectures, fewer missed risks and more precise missing-gate guidance.</td>
+<td>Tests assert <code>not_applicable</code>, <code>present_unverified</code>, <code>applicable_missing</code>, <code>approval_required</code>, accepted-gap behavior, false-positive/false-negative cases and cross-domain synthesis across business/product, requirements/domain, architecture, frontend, backend, API, data, AI/RAG, quality, security and delivery.</td>
+<td><code>run_methodology_audit.py --json</code> fixture tests; synthesis tests; cross-domain fixtures.</td>
+<td>Methodology presence is not owner acceptance; synthesis must not turn weak signals into mandatory heavy process.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M24</code></td>
+<td>P0</td>
+<td>Add runtime runner approval-boundary suite across high-risk surfaces.</td>
+<td>Tester + Reviewer / <code>test-eval-designer</code>, <code>risk-reviewer</code></td>
+<td>Verify <code>run_codex_runtime_runner.py</code> routing, blockers, files touched/proposed and approval requirements for target writes, provider calls, browser automation, live runtime, git, CI/GitHub, database access, hooks, automation and MCP.</td>
+<td>Ensures runtime packets do not accidentally imply writes, external actions or completion.</td>
+<td>User sees exact blocker reasons and safe next action for every high-risk boundary.</td>
+<td>Tests cover route-ready, source-policy-blocked, approval-required and unsupported-claim cases; <code>files_touched</code> stays empty in read-only pilots; every high-risk surface returns explicit approval requirements.</td>
+<td>Runtime runner contract tests; transcript eval cases; high-risk approval-boundary fixture matrix.</td>
+<td>Target writes and external actions remain blocked unless exact approval exists.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M25</code></td>
+<td>P1</td>
+<td>Validate staged infrastructure rendering in pilots.</td>
+<td>Builder + Tester / <code>implementation-planner</code>, <code>test-eval-designer</code></td>
+<td>Ensure <code>render_infrastructure.py --stage</code> creates safe companion proposals and manifests outside targets.</td>
+<td>Protects target workspaces while still showing useful control-plane proposals.</td>
+<td>User can inspect proposed <code>AGENTS.md</code>, control-plane files, agents, hooks and templates before applying anything.</td>
+<td>Stage manifest valid; hooks remain templates; existing user files become companion proposals; no target write.</td>
+<td>Infrastructure renderer tests; stage manifest validation; path escape tests.</td>
+<td>Applying generated infrastructure requires separate approval.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M26</code></td>
+<td>P1</td>
+<td>Validate merge and rollback dry-run flow.</td>
+<td>Release Operator + Reviewer / <code>pr-release-operator</code>, <code>risk-reviewer</code></td>
+<td>Exercise merge plan, approval template, approved-write gate and rollback manifest without target apply by default.</td>
+<td>Makes future apply decisions reviewable and reversible.</td>
+<td>User can approve or reject staged files with known rollback path.</td>
+<td>Merge plan lists targets/actions/risks; approval template generated; rollback plan valid; no apply without approval.</td>
+<td><code>merge_infrastructure.py</code> plan tests; rollback fixture tests.</td>
+<td>Actual merge/apply/rollback mutation requires exact target approval.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M27</code></td>
+<td>P1</td>
+<td>Validate source policy across clean and blocked targets.</td>
+<td>Docs Maintainer + Tester / <code>docs-maintainer</code>, <code>test-eval-designer</code></td>
+<td>Test <code>Source status</code>, registry gaps, trust metadata and secret finding behavior.</td>
+<td>Keeps source ownership from blocking good targets or passing unsafe ones.</td>
+<td>User sees clear cleanup steps for target source-policy gaps.</td>
+<td>Clean fixture passes; blocked fixture reports exact files, registry updates and trust fields; secret findings remain explicit.</td>
+<td><code>validate_source_policy.py</code> fixture tests; target pilot checks.</td>
+<td>Do not rewrite target source docs without target-specific approval.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M28</code></td>
+<td>P1</td>
+<td>Classify system hygiene false positives and size debt.</td>
+<td>Security/Data Owner + Docs Maintainer / <code>risk-reviewer</code>, <code>docs-maintainer</code></td>
+<td>Separate real secret findings from policy placeholders, synthetic fixtures, mojibake, BOM and hard-size debt.</td>
+<td>Reduces noisy blockers while preserving safety.</td>
+<td>User gets actionable hygiene findings instead of a scary undifferentiated blocked state.</td>
+<td>Hygiene output includes classification, owner, accepted-gap route, follow-up and release impact.</td>
+<td><code>validate_system_file_hygiene.py</code>; scoped fixture tests; manual review packet.</td>
+<td>Cannot claim security pass while unresolved real findings or size debt remain.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M29</code></td>
+<td>P1</td>
+<td>Validate base project graph scan, query and static index pilot behavior.</td>
+<td>Architect + Tester / <code>test-eval-designer</code></td>
+<td>Check base graph scan counts, validation, query packets, static index and generated-view boundaries, leaving live/provider/review/mutation/audit/runtime-QA extension modes to explicit hardening rows.</td>
+<td>Ensures code graph remains useful orientation evidence without becoming source truth.</td>
+<td>User can navigate project structure safely and know when to read source files.</td>
+<td>Base graph artifacts contain bounded nodes/edges/observations, no raw source bodies, no absolute paths and query packets are deterministic.</td>
+<td><code>scan_project_code_graph.py --stage</code>; graph validation; query/index fixture tests.</td>
+<td>Graph HTML/JSON is orientation evidence only; extension modes require separate approval-bound testing.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M30</code></td>
+<td>P1</td>
+<td>Validate agent-skill metrics evidence loop in pilot results.</td>
+<td>Tester + Learning Loop Maintainer / <code>test-eval-designer</code>, <code>learning-loop-maintainer</code></td>
+<td>Ingest pilot manifests as source-backed evidence for scorecards, ledgers and improvement candidates.</td>
+<td>Connects pilot failures to future skill/plugin improvements.</td>
+<td>User sees what to fix first and why, based on evidence.</td>
+<td>Metrics loop rejects dashboard-as-source claims, stores append-only scorecard records and ranks improvement candidates by failure impact.</td>
+<td><code>test_agent_skill_metrics</code>; pilot manifest fixture; redaction gate.</td>
+<td>No modernization candidate is applied automatically.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M31</code></td>
+<td>P1</td>
+<td>Extend fixture and transcript eval coverage for Batch 39, all CLIs, skills, workflow templates and public docs journeys.</td>
+<td>Tester + Docs Maintainer / <code>test-eval-designer</code>, <code>docs-maintainer</code></td>
+<td>Add synthetic sessions and fixture checks for pilot runner, result collector, taxonomy, archetypes, CLI matrix, packaged skills, workflow templates and public documentation first-run routes.</td>
+<td>Makes Batch 39 behavior regression-tested across the real operator surface.</td>
+<td>User gets consistent behavior across future sessions, not one-off manual success.</td>
+<td>Fixture eval and transcript eval include Batch 39 checks, CLI/skill/workflow/doc-journey coverage and zero failures.</td>
+<td><code>run_fixture_eval.py</code>; <code>run_transcript_eval.py</code>; focused eval runner tests.</td>
+<td>Synthetic transcripts cannot replace real target pilots or semantic user research.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M32</code></td>
+<td>P2</td>
+<td>Add pilot performance, output, scale and environment budget.</td>
+<td>Tester + Architect / <code>test-eval-designer</code></td>
+<td>Record command durations, file counts, output sizes, JSON sizes, timeout thresholds, truncation, graph 1k/5k/10k scale behavior, memory assumptions, Windows path behavior and search-index/site size.</td>
+<td>Prevents pilot runner and graph tooling from becoming slow, unstable or producing unreviewable output.</td>
+<td>User gets a practical tool that finishes quickly and returns bounded artifacts across realistic project sizes.</td>
+<td>Pilot summary includes duration budget, output-size budget, scale budget, environment assumptions and truncation warnings.</td>
+<td>Performance fixture; command timeout tests; JSON size checks; graph scale fixtures; Windows path fixture.</td>
+<td>Budgets are local/internal baselines, not public SLA.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M33</code></td>
+<td>P2</td>
+<td>Add repeatability and drift checks.</td>
+<td>Tester + Reviewer / <code>test-eval-designer</code>, <code>risk-reviewer</code></td>
+<td>Re-run stable fixtures or compare fingerprints to detect route/artifact drift.</td>
+<td>Catches nondeterministic pilot results before release decisions.</td>
+<td>User can trust that the plugin gives stable guidance on the same project state.</td>
+<td>Same target fingerprint produces stable route, taxonomy status and artifact digests or records drift with cause.</td>
+<td>Repeatability tests; deterministic digest checks; accepted drift policy.</td>
+<td>Real projects may legitimately drift when files change; fingerprint must explain that.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M34</code></td>
+<td>P2</td>
+<td>Sync Batch 39 source-owned docs after full <code>M01..M54</code> execution evidence exists.</td>
+<td>Docs Maintainer / <code>docs-maintainer</code></td>
+<td>Update Track 10 plan, backlog, registry, <code>TEST.md</code>, <code>EVALS.md</code>, <code>RUNLOG.md</code> and relevant Product-Agent OS docs after actual runs across pilot evidence, archetypes, regression, hardening and mass-user readiness.</td>
+<td>Keeps planning, evidence and source registry aligned only after the full production-hardening scope is represented.</td>
+<td>User can find the current state without reading raw transcripts.</td>
+<td>Source docs record actual evidence, residual risks, unsupported claims and next action for <code>B39-TEST-M01..M54</code>.</td>
+<td>Docs contract tests; <code>tools/check_docs.py</code>; <code>git diff --check</code>; strict MkDocs only if routed.</td>
+<td>Do not copy raw private logs, secrets, absolute paths or dashboard-as-source claims.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M35</code></td>
+<td>P0</td>
+<td>Produce go/no-go decision packet for <code>B38-PROD-M12</code> after <code>M01..M54</code>.</td>
+<td>Product Manager + Architect + Release Operator / <code>learning-loop-maintainer</code>, <code>pr-release-operator</code>, <code>risk-reviewer</code></td>
+<td>Convert Batch 39 rollup and hardening evidence into release, block, defer or next-slice recommendation.</td>
+<td>Gives the project an evidence-backed decision instead of endless pilot accumulation or premature release claims.</td>
+<td>User knows exactly what remains before local/internal use, target apply, public/team release or stop.</td>
+<td>Decision packet separates supported facts, assumptions, accepted gaps, blockers, product value, technical defects, mass-user readiness defects and exact approval needs.</td>
+<td>Rollup review; scorecard thresholds; hardening gate review; owner decision record.</td>
+<td>No public/team release, publication, git action or target apply without separate approval.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M36</code></td>
+<td>P0</td>
+<td>Final no-unapproved-actions proof across <code>M01..M54</code>.</td>
+<td>Reviewer + Release Operator / <code>risk-reviewer</code>, <code>pr-release-operator</code></td>
+<td>Prove Batch 39 did not perform forbidden actions outside exact approvals across pilots, regression, hardening, docs/site, CLI, graph, security and release/distribution checks.</td>
+<td>Maintains trust in the pilot process, sandbox boundaries and production-readiness review.</td>
+<td>User can safely continue pilots knowing hidden side effects were checked.</td>
+<td>Final packet records no target mutation, no live/browser/provider/canonical/external/git action unless separately approved and evidenced.</td>
+<td>Mutation proof; command collector; git status read-only preflight; approval ledger review; hardening no-action review.</td>
+<td>If any unapproved action is detected, stop and route to incident/owner review.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M37</code></td>
+<td>P0</td>
+<td>Add full public docs/site acceptance.</td>
+<td>Docs Maintainer + Tester / <code>docs-maintainer</code>, <code>test-eval-designer</code></td>
+<td>Check built <code>site/</code> promises: links, sitemap, search index, hreflang, RU/EN parity, language switcher, public/internal boundary, no fallback pollution and generated-view labels.</td>
+<td>Validates the user-facing documentation surface rather than only source Markdown.</td>
+<td>User gets a readable, navigable and non-stale docs experience.</td>
+<td>Site acceptance packet records page counts, broken-link status, search/sitemap parity, RU/EN sibling parity, generated-view labels and public/internal boundary status.</td>
+<td><code>tools/check_docs.py</code>; strict MkDocs when routed; static site link/search/sitemap/i18n scans; optional browser/file URL smoke with approval.</td>
+<td>Rebuilding <code>site/</code> or browser automation requires routed approval; generated <code>site/</code> is not source of truth.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M38</code></td>
+<td>P0</td>
+<td>Add offline asset and dependency readiness.</td>
+<td>Architect + Tester / <code>test-eval-designer</code>, <code>risk-reviewer</code></td>
+<td>Close or explicitly classify Mermaid CDN, local JS/CSS, vendored asset, package dependency and unexpected network gaps.</td>
+<td>Prevents hidden network/runtime assumptions from entering production packaging.</td>
+<td>User can run docs and evidence surfaces in restricted environments or see exact offline gaps.</td>
+<td>Offline readiness packet records external URLs, vendored/local assets, dependency install assumptions, network-required features and accepted gaps.</td>
+<td>Static URL scan; MkDocs asset inspection; package manifest inspection; no-unexpected-network fixture.</td>
+<td>Vendoring assets or changing package dependencies requires separate implementation approval.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M39</code></td>
+<td>P0</td>
+<td>Add full CLI contract matrix.</td>
+<td>Tester + Release Operator / <code>test-eval-designer</code>, <code>pr-release-operator</code></td>
+<td>Verify every top-level Product-Agent OS CLI for <code>--help</code>, invalid args, exit codes, JSON shape, stdout/stderr separation, path redaction and approval-bound behavior.</td>
+<td>Makes command-line behavior stable and scriptable.</td>
+<td>Operator understands commands and failures without reverse engineering.</td>
+<td>CLI matrix covers all top-level scripts under <code>plugins/product-agent-os/scripts</code>, documented modes, invalid-mode errors and deterministic output contracts.</td>
+<td>CLI smoke tests; JSON schema/shape tests; exit-code tests; redaction/path tests.</td>
+<td>CLI contract changes may require docs and fixture eval sync.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M40</code></td>
+<td>P0</td>
+<td>Add project graph live/provider extension approval-gate tests.</td>
+<td>Architect + Tester + Security/Data Owner / <code>test-eval-designer</code>, <code>risk-reviewer</code></td>
+<td>Test <code>scan_project_code_graph.py</code> extension modes for live governance/runtime, embedding, reranker, hybrid retrieval and LLM proposal provider gates without live calls.</td>
+<td>Prevents extension flags from implying provider or runtime permission.</td>
+<td>User sees which graph features are safe, staged or approval-required.</td>
+<td>Extension gate artifacts record disabled-by-default status, no provider calls, no live runtime launch, redaction/cache/budget policy and fallback behavior.</td>
+<td>Focused graph extension tests; provider-gate fixtures; no-live-call proof.</td>
+<td>Provider calls, cache writes and live runtime launch require exact approval.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M41</code></td>
+<td>P0</td>
+<td>Add graph review, canonical mutation and rollback drills.</td>
+<td>Reviewer + Architect + Tester / <code>risk-reviewer</code>, <code>test-eval-designer</code></td>
+<td>Test review ledger, proposal diff, canonical mutation dry-run, mutation journal, rollback proof and disable flows.</td>
+<td>Protects canonical graph sources from silent mutation.</td>
+<td>User can approve, reject or roll back graph changes with evidence.</td>
+<td>Drill artifacts show accepted/rejected/accepted-gap decisions, dry-run mutation plan, generated mutated copy only, rollback proof and no canonical source mutation.</td>
+<td>Review-ledger tests; mutation dry-run tests; rollback/digest tests; disable-flow tests.</td>
+<td>Canonical graph mutation remains approval-bound and cannot run from generated proposals alone.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M42</code></td>
+<td>P0</td>
+<td>Add runtime/browser QA approval harness.</td>
+<td>Tester + Release Operator / <code>test-eval-designer</code>, <code>pr-release-operator</code></td>
+<td>Test planned runtime server, browser automation smoke, performance and stabilization artifacts without launching live runtime by default.</td>
+<td>Keeps runtime/browser evidence separate from inspection-only or planned evidence.</td>
+<td>User knows when browser/runtime proof is missing and exactly what approval is needed.</td>
+<td>Harness records <code>planned_only</code>, <code>approval_required</code>, no-launch proof, browser check expectations, performance budget and stabilization defects.</td>
+<td>Runtime QA fixture tests; no-launch checks; planned evidence schema tests.</td>
+<td>Live server launch and browser automation require exact approval.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M43</code></td>
+<td>P0</td>
+<td>Add security, privacy, compliance and supply-chain deep matrix.</td>
+<td>Security/Data Owner + Reviewer + Tester / <code>risk-reviewer</code>, <code>test-eval-designer</code></td>
+<td>Check ASVS/SSDF/SAMM mapping, authorization negative tests, secrets/PII, SBOM/provenance, CI permissions, vulnerability response, compliance overlays and external-write approvals.</td>
+<td>Raises security review from terminology matching to production-risk evidence.</td>
+<td>User sees real security blockers before mass-user exposure.</td>
+<td>Security matrix records applicable controls, explicit not-applicable cases, current evidence, unresolved risks, accepted gaps and approval requirements.</td>
+<td>Security fixture tests; source/hygiene scan; SBOM/provenance fixture; CI permissions fixture; vulnerability-response fixture.</td>
+<td>This is not a security certification; unresolved real findings block readiness claims.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M44</code></td>
+<td>P0</td>
+<td>Validate artifact template and workflow template completeness.</td>
+<td>Docs Maintainer + Tester / <code>docs-maintainer</code>, <code>test-eval-designer</code></td>
+<td>Validate all artifact templates and workflow templates for required fields, placeholders, <code>Source status</code>, approval wording, no secrets, no raw private data and consistent accepted-gap vocabulary.</td>
+<td>Ensures generated artifacts are safe, complete and reviewable.</td>
+<td>User does not receive half-filled or unsafe proposal templates.</td>
+<td>Template packet covers all artifact templates and workflows, required fields, forbidden placeholders, no-secret status and routing to owning methodology gates.</td>
+<td>Template inventory tests; text hygiene scan; fixture generation smoke; docs contract tests.</td>
+<td>Template changes can ripple into fixture eval and docs.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M45</code></td>
+<td>P0</td>
+<td>Add skill and subagent contract eval.</td>
+<td>Architect + Tester / <code>agent-team-designer</code>, <code>test-eval-designer</code></td>
+<td>Check packaged skills, agent YAML, triggers, boundaries, handoff outputs, failure modes, stop conditions and model/reasoning policy.</td>
+<td>Ensures lifecycle skills behave as bounded methods, not vague personas.</td>
+<td>User gets predictable role handoffs and fewer agent overreach failures.</td>
+<td>Skill eval packet covers every packaged skill, required handoff fields, approval boundaries, no external activation and failure-mode routing.</td>
+<td>Skill structure tests; lifecycle skill tests; transcript eval; handoff fixture.</td>
+<td>Subagent/parallel execution remains optional and must respect file ownership.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M46</code></td>
+<td>P1</td>
+<td>Add MCP and Context7 boundary tests.</td>
+<td>Architect + Security/Data Owner + Tester / <code>risk-reviewer</code>, <code>test-eval-designer</code></td>
+<td>Verify <code>.mcp.json</code>, Context7 startup assumptions, no bundled credentials, failure handling, permission boundaries and private-source guidance.</td>
+<td>Keeps MCP from becoming a hidden external dependency or permission bypass.</td>
+<td>User knows when MCP is available, blocked or needs separate credentials.</td>
+<td>MCP packet records bundled server config, no-secret status, startup failure behavior, private-source boundary and approval requirements.</td>
+<td>Codex compatibility validator; <code>.mcp.json</code> schema scan; no-secret scan; startup-failure fixture.</td>
+<td>Starting MCP, installing packages or using private credentials requires environment-specific approval.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M47</code></td>
+<td>P1</td>
+<td>Run mass-user onboarding pilot.</td>
+<td>Product Manager + Docs Maintainer + Tester / <code>docs-maintainer</code>, <code>test-eval-designer</code></td>
+<td>Simulate first-run experience for a new operator: docs route, install visibility, command choice, first error, safe next action and support handoff.</td>
+<td>Tests product comprehensibility, not just script correctness.</td>
+<td>A new user can understand what to do without reading historical backlogs.</td>
+<td>Onboarding packet records time-to-first-safe-action, confusing steps, missing docs, first-error actionability and owner questions.</td>
+<td>Synthetic first-run transcript; docs journey check; scorecard review.</td>
+<td>Synthetic onboarding cannot replace real user research; real user pilots require consent.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M48</code></td>
+<td>P1</td>
+<td>Add cross-platform environment matrix.</td>
+<td>Tester + Architect / <code>test-eval-designer</code></td>
+<td>Check Windows PowerShell guard, path separators, encoding, shell assumptions, Python invocation, Linux/macOS assumptions, sandbox profiles and writable roots.</td>
+<td>Reduces environment-specific failures before broader distribution.</td>
+<td>User sees supported environments and exact unsupported gaps.</td>
+<td>Environment matrix records supported shells/platforms, known gaps, command variants and approval/sandbox assumptions.</td>
+<td>Windows path fixture; encoding/mojibake scan; command invocation tests; sandbox profile review.</td>
+<td>Cross-platform claims require current command evidence on each claimed platform.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M49</code></td>
+<td>P1</td>
+<td>Add source freshness and current-docs audit.</td>
+<td>Docs Maintainer + Reviewer / <code>docs-maintainer</code>, <code>risk-reviewer</code></td>
+<td>Check official OpenAI/Codex/Agents SDK links, checked dates, source registry drift, unsupported current claims and stale community/experiment content.</td>
+<td>Prevents outdated API/runtime/security claims from entering production docs.</td>
+<td>User gets source-backed current guidance or explicit freshness gaps.</td>
+<td>Freshness packet records official source status, stale links, unsupported claims, registry updates needed and missing current verification.</td>
+<td>Source registry scan; link/freshness audit; docs check; unsupported-claim fixture.</td>
+<td>Network/fresh source verification may require explicit browse approval and official-source restriction.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M50</code></td>
+<td>P1</td>
+<td>Add accessibility and usability checks for generated HTML surfaces.</td>
+<td>Tester + Product Manager / <code>test-eval-designer</code></td>
+<td>Check dashboard, cockpit and docs generated HTML for keyboard navigation, mobile layout, contrast, headings, labels, no overlap, copy controls and generated-view-only wording.</td>
+<td>Makes evidence surfaces usable, not merely generated.</td>
+<td>User can read and inspect artifacts without visual or accessibility friction.</td>
+<td>Accessibility packet records keyboard path, headings, labels, mobile/desktop layout, contrast or accepted gaps and generated-view labels.</td>
+<td>Static HTML checks; optional browser/screenshot smoke with approval; visual QA checklist.</td>
+<td>Browser automation requires exact approval; static checks cannot prove all runtime UI behavior.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M51</code></td>
+<td>P1</td>
+<td>Add optional LLM-as-judge calibration plan.</td>
+<td>Tester + Product Manager + Security/Data Owner / <code>test-eval-designer</code>, <code>risk-reviewer</code></td>
+<td>Define how semantic/user-value judging would be calibrated, separated from deterministic eval, redacted and approval-bound.</td>
+<td>Avoids mistaking keyword/transcript checks for semantic quality proof.</td>
+<td>User knows what quality is objectively checked and what needs calibrated judgment.</td>
+<td>Calibration plan records judge rubric, golden cases, disagreement handling, no-provider default, redaction, cost/budget and approval requirements.</td>
+<td>Deterministic eval baseline; rubric fixture; no-provider proof.</td>
+<td>Live model/API judge calls require exact approval and cannot be implied by this plan.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M52</code></td>
+<td>P1</td>
+<td>Add data retention, cache and stage cleanup proof.</td>
+<td>Security/Data Owner + Tester / <code>risk-reviewer</code>, <code>test-eval-designer</code></td>
+<td>Verify stage roots, generated caches, disable commands, deletion proof, no private residue and no raw source bodies after pilot closure.</td>
+<td>Ensures pilots can be safely cleaned up.</td>
+<td>User can run and end pilots without leaving unsafe evidence behind.</td>
+<td>Cleanup packet records generated locations, retained artifacts, deletion/disable proof, redaction status and residual data risks.</td>
+<td>Stage cleanup fixture; disable command tests; path/secret scan; retention policy check.</td>
+<td>Deleting target files or external caches requires exact approval; cleanup scope must stay generated-stage only.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M53</code></td>
+<td>P1</td>
+<td>Add incident and recovery drills.</td>
+<td>Reviewer + Security/Data Owner + Release Operator / <code>risk-reviewer</code>, <code>pr-release-operator</code></td>
+<td>Drill blocked incident routes for secret leak, unapproved action, failed rollback, provider boundary breach, malformed approval and corrupted evidence package.</td>
+<td>Ensures failure handling is explicit before production use.</td>
+<td>User has recovery routes, not just a stop message.</td>
+<td>Incident packet records trigger, severity, owner, containment, rollback/recovery action, communication boundary and no-further-action condition.</td>
+<td>Incident fixture tests; malformed approval tests; rollback failure fixture; no-unapproved-action review.</td>
+<td>Real incident actions, external notifications or ticket creation require explicit approval.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B39-TEST-M54</code></td>
+<td>P0</td>
+<td>Add release and distribution governance.</td>
+<td>Product Manager + Release Operator + Architect / <code>pr-release-operator</code>, <code>risk-reviewer</code></td>
+<td>Verify versioning, changelog, artifact manifest, package integrity, support channel, rollback/withdraw plan, release mode and public/team/local-only distribution boundary.</td>
+<td>Converts technical readiness into governed distribution readiness.</td>
+<td>User can decide local/internal use, target apply, public/team release or block with clear evidence.</td>
+<td>Release governance packet records version, artifact manifest, install evidence, support/owner, rollback/withdraw, distribution decision, unresolved blockers and exact approval needs.</td>
+<td>Release-readiness fixture; package integrity check; docs/source sync; owner decision record.</td>
+<td>Publication, package registry mutation, marketplace submission, git stage/commit/push/PR and external release actions require exact approval.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+</tbody>
+</table>
+<p>Recommended Batch 39 execution slices:</p>
+<table>
+<thead>
+<tr>
+<th>Slice</th>
+<th>Tasks</th>
+<th>Execution mode</th>
+<th>Why this grouping</th>
+<th>Stop / handoff condition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>B39-S1 Result collection foundation</code></td>
+<td><code>B39-TEST-M01..M10</code></td>
+<td>Sequential with focused implementation and tests</td>
+<td>Inventory normalization, manifest schema, command collection, mutation proof, redaction, session visibility, rollup, dashboard aggregation, taxonomy, scorecard and <code>prod_test.md</code> logging define the evidence system before target pilots.</td>
+<td>Stop when one synthetic pilot can produce <code>pilot-run-manifest.json</code>, <code>command-results.jsonl</code>, <code>pilot-summary.json</code>, <code>pilot-scorecard.json</code>, <code>redaction-report.json</code>, <code>target-mutation-proof.json</code>, <code>batch39-rollup.json/md</code> and matching <code>prod_test.md</code> attempt/fix/retest entries without target mutation.</td>
+</tr>
+<tr>
+<td><code>B39-S2 Archetype pilot coverage</code></td>
+<td><code>B39-TEST-M11..M21</code></td>
+<td>Parallel target-fixture preparation, then sequential pilot execution per archetype</td>
+<td>Synthetic and approved target pilots can be prepared independently, but each run must share the same result collector and approval boundary.</td>
+<td>Stop when docs-only happy path, <code>Neural_Flow</code> expected-block replay and representative web, backend, AI/RAG, data, PR/review, automation/release, desktop/native and plugin/skill routes are recorded or explicitly blocked.</td>
+</tr>
+<tr>
+<td><code>B39-S3 Functional regression and repeatability</code></td>
+<td><code>B39-TEST-M22..M33</code></td>
+<td>Focused test/eval batches, grouped by subsystem</td>
+<td>Discovery, methodology audit, runtime runner, infrastructure, merge/rollback, source policy, hygiene, base graph, metrics, all-CLI/skill/workflow/docs-journey eval and repeatability suites validate plugin functionality beyond one pilot.</td>
+<td>Stop when focused tests, fixture eval, transcript eval and performance/repeatability checks either pass or carry explicit blockers and accepted gaps.</td>
+</tr>
+<tr>
+<td><code>B39-S4 Production and mass-user hardening</code></td>
+<td><code>B39-TEST-M37..M54</code></td>
+<td>Focused hardening batches, grouped by public docs/site, packaging, CLI, graph extensions, security, templates, skills, MCP, onboarding, cross-platform, freshness, accessibility, cleanup, incident and release governance</td>
+<td>This slice closes the gap between pilot-evidence readiness and production/mass-user readiness.</td>
+<td>Stop when all hardening gates either pass with current evidence or carry owner-reviewed blockers/accepted gaps that keep <code>B38-PROD-M12</code> from overclaiming readiness.</td>
+</tr>
+<tr>
+<td><code>B39-S5 Source-owned closure and go/no-go</code></td>
+<td><code>B39-TEST-M34..M36</code></td>
+<td>Sequential docs/source closure after all <code>M01..M54</code> evidence exists</td>
+<td>Source registry, backlog, root control-plane files and the <code>B38-PROD-M12</code> decision packet must reflect actual pilot and hardening evidence, not planned intent.</td>
+<td>Stop when Batch 39 evidence is source-owned, no-unapproved-actions proof is recorded, and the owner has a clear release, block, defer or next-slice recommendation.</td>
+</tr>
+</tbody>
+</table>
+<p>Batch 39 closure criteria: no <code>B38-PROD-M12</code> release/readiness recommendation is supported until Batch 39 has at least one clean positive pilot, one expected-block negative pilot, coverage across the representative archetypes or accepted gaps for missing archetypes, current dashboard/rollup evidence, redaction and no-mutation proof, functional regression/repeatability evidence, production/mass-user hardening evidence for <code>B39-TEST-M37..M54</code>, complete <code>prod_test.md</code> attempt/failure/fix/retest ledger, source-owned closure and a final no-unapproved-actions review. If those conditions are not met, <code>B38-PROD-M12</code> must remain <code>blocked</code>, <code>deferred</code> or <code>learning_only</code> rather than <code>release_ready</code>.</p>
+<h4 id="batch-40-doubt-verifier-loop-completion-skeptic-gate">Batch 40: Doubt / Verifier Loop Completion-Skeptic Gate<a class="headerlink" href="#batch-40-doubt-verifier-loop-completion-skeptic-gate" title="Permanent link">&para;</a></h4>
+<p>Batch 40 is an owner-requested Task 26 planning addendum for turning the researched "doubt technique" into a Product-Agent OS verification-first completion gate. It is based on <code>output/doubt-technique-comparative-report.md</code> and <code>output/doubt-verifier-loop-batch-task-matrix.md</code>. It does not create <code>Task 27</code>, reopen completed Track 10 live/provider/canonical-mutation work or authorize implementation by itself.</p>
+<p>Batch 40 must implement the recommended architecture as <code>worker_output -&gt; doubt_verification_packet -&gt; completion-skeptic -&gt; revise_or_pass</code>. The gate must follow CoVe-style claim extraction, CRITIC-style tool/source/test-backed verification and evaluator-optimizer routing. It must not become an unconditional self-reflection rewrite prompt: the verifier finds evidence-backed gaps first, and the reviser changes only those gaps.</p>
+<p>Batch 40 is local-only/internal R&amp;D unless the owner gives a separate public/team release decision. The default execution mode is staged-first. It does not mutate target workspaces, start live servers, run browser automation, call providers/live external model/API endpoints, mutate canonical graph sources, activate hooks/automations, publish externally or perform git stage/commit/push/PR without a separate exact approval packet.</p>
+<p>Batch 40 matrix rows use the Batch 37 task-matrix contract: <code>planned</code> rows keep <code>pending_execution_timestamp</code>; implementation evidence must be added only after the exact slice runs with current command evidence, touched files or work locations, residual risks and follow-up. Dashboard/status projections remain generated review views and cannot prove completion by themselves.</p>
+<p>Second-pass architecture audit adds one correction to the first Batch 40 shape: the Doubt / verifier loop must be implemented as a layered evidence policy, not only as a new skill. The current system already has <code>codex_runtime_runner</code> route packets, <code>verified_claims</code> / <code>unsupported_claims</code> handoff fields, status snapshot warnings, source policy, transcript evals, task-matrix completion reports and <code>agent_skill_metrics_loop</code>; Batch 40 must connect to those existing surfaces before considering hooks, MCP, Agents SDK guardrails or automation candidates.</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Priority</th>
+<th>Task</th>
+<th>Agents / skills</th>
+<th>Scope</th>
+<th>Technical value for project</th>
+<th>Product value for user</th>
+<th>Acceptance criteria</th>
+<th>Verification gates</th>
+<th>Risks / approval gates</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>B40-DVL-M01</code></td>
+<td>P0</td>
+<td>Convert Doubt / verifier research into accepted requirements and non-goals.</td>
+<td>Product Manager + Architect / <code>implementation-planner</code></td>
+<td>Stage the product promise, non-promise, success criteria, failure modes, accepted-gap policy and no-auto-automation rule.</td>
+<td>Prevents implementation from becoming generic self-reflection or polishing.</td>
+<td>User sees a clear promise: "check evidence before claiming done" rather than vague confidence.</td>
+<td>Requirements packet includes pass/revise/needs_more_context/blocked verdicts, revision budget, evidence-first rule, community-claim boundary and no-provider/no-automation default.</td>
+<td>Review against <code>output/doubt-technique-comparative-report.md</code>, source policy and current Product-Agent OS boundaries.</td>
+<td>Source-backed docs transfer later requires registry update; planned requirements are not implementation evidence.</td>
+<td>status: <code>implemented</code>; what was done: B40-S1 freezes the product promise, non-goals, success/failure modes, accepted-gap policy and no-auto-automation boundary for the completion-skeptic gate; files touched / work locations: Track 10 plan, Track 10 backlog RU/EN and source registry RU/EN; technical value delivered: implementation cannot drift into generic self-reflection; product value delivered: user-facing promise is evidence-before-completion; actual implementation date and time: <code>09-06-2026 17:42</code> <code>Europe/Moscow</code>; verification evidence: B40-S1 current-run docs/control-plane checks are recorded in the B40-S1 contract below; residual risks: S2-S5 remain planned; follow-up: owner acceptance before B40-S2.</td>
+</tr>
+<tr>
+<td><code>B40-DVL-M02</code></td>
+<td>P0</td>
+<td>Define <code>doubt_verification_packet</code> schema.</td>
+<td>Architect + Tester / <code>implementation-planner</code>, <code>test-eval-designer</code></td>
+<td>Specify original request, artifact under review, claim ledger, requirement ledger, evidence/check ledger, verdict, revision budget and residual risks.</td>
+<td>Gives skills, validators and runtime routes one deterministic contract.</td>
+<td>User can inspect what was checked, what is missing and why the final answer is or is not safe.</td>
+<td>Schema supports <code>supported</code>, <code>unsupported</code>, <code>contradicted</code>, <code>needs_fresh_check</code>, <code>assumption</code>, <code>accepted_gap</code>, plus verdicts <code>pass</code>, <code>revise</code>, <code>needs_more_context</code>, <code>blocked_by_approval</code>, <code>accepted_risk</code>.</td>
+<td>Schema review; later unit tests in <code>B40-DVL-M11</code>; packet examples with no secrets.</td>
+<td>Over-large schema can slow manual use; packet is evidence container, not source of truth by itself.</td>
+<td>status: <code>implemented</code>; what was done: B40-S1 defines <code>doubt_verification_packet_v1</code> with request, artifact, claim, requirement, evidence, approval, verdict, revision and residual-risk ledgers; files touched / work locations: Track 10 plan and source evidence files; technical value delivered: future skill, validator and route work have one deterministic packet contract; product value delivered: user can inspect what was checked and why the answer passes, revises or blocks; actual implementation date and time: <code>09-06-2026 17:42</code> <code>Europe/Moscow</code>; verification evidence: B40-S1 contract section plus current-run docs/control-plane checks; residual risks: validator and template remain B40-S2/S3 work.</td>
+</tr>
+<tr>
+<td><code>B40-DVL-M03</code></td>
+<td>P0</td>
+<td>Define route triggers and exclusion rules.</td>
+<td>Architect + Product Manager + Tester / <code>implementation-planner</code>, <code>test-eval-designer</code></td>
+<td>Decide when Product-Agent OS recommends the skeptic gate: "проверь еще раз", completion claims, code changes, source-sensitive docs, architecture, security, release, eval and long-running goal work.</td>
+<td>Keeps the gate targeted and avoids latency for trivial deterministic tasks.</td>
+<td>User gets stronger assurance on risky work without making every small request slow.</td>
+<td>Route policy includes triggers, exclusions, risk classes, confidence reasons and <code>manual_only</code> fallback.</td>
+<td>Route fixture tests; transcript eval for natural user prompts; exclusion tests for trivial read-only commands.</td>
+<td>Over-triggering can degrade UX; under-triggering can miss high-risk completion claims.</td>
+<td>status: <code>implemented</code>; what was done: B40-S1 defines explicit and implicit triggers, high-risk work classes, runtime surfaces, skip rules and <code>manual_only</code> fallback; files touched / work locations: Track 10 plan and source evidence files; technical value delivered: future runtime route recommendation can be risk-scored instead of keyword-only; product value delivered: strong doubt loop is used for risky completion claims without slowing deterministic work; actual implementation date and time: <code>09-06-2026 17:42</code> <code>Europe/Moscow</code>; verification evidence: B40-S1 trigger matrix plus current-run docs/control-plane checks; residual risks: route code and transcript evals remain B40-S2/S3 work.</td>
+</tr>
+<tr>
+<td><code>B40-DVL-M04</code></td>
+<td>P0</td>
+<td>Define worker, skeptic and reviser prompt contracts.</td>
+<td>Architect + Reviewer / <code>implementation-planner</code>, <code>agent-team-designer</code></td>
+<td>Split generation, verification and revision into explicit role contracts with stop rules.</td>
+<td>Reduces false rewrites and prompt ambiguity.</td>
+<td>User receives corrections tied to concrete gaps instead of nervous answer churn.</td>
+<td>Skeptic must not rewrite first; reviser changes only confirmed gaps; speculative items remain optional risks; max two revision loops unless user asks otherwise.</td>
+<td>Transcript eval for false-rewrite and no-evidence cases; prompt contract review.</td>
+<td>Prompt contracts must not expose hidden chain-of-thought or raw private logs.</td>
+<td>status: <code>implemented</code>; what was done: B40-S1 defines Worker, Skeptic and Reviser contracts with no-rewrite-first, evidence-first, no-hidden-CoT/private-log and max-loop rules; files touched / work locations: Track 10 plan and source evidence files; technical value delivered: generation, verification and revision have separated responsibilities; product value delivered: corrections are tied to confirmed gaps instead of answer churn; actual implementation date and time: <code>09-06-2026 17:42</code> <code>Europe/Moscow</code>; verification evidence: B40-S1 role contract plus current-run docs/control-plane checks; residual risks: prompt fixtures and negative evals remain B40-S3 work.</td>
+</tr>
+<tr>
+<td><code>B40-DVL-M05</code></td>
+<td>P0</td>
+<td>Add <code>doubt-verification-packet.md</code> artifact template.</td>
+<td>Builder + Docs Maintainer / <code>docs-maintainer</code>, <code>test-eval-designer</code></td>
+<td>Add a reusable staged artifact template under Product-Agent OS artifact templates and renderer registration if needed.</td>
+<td>Creates a reusable target for verifier output and future validation.</td>
+<td>User gets a readable gap ledger and proof packet.</td>
+<td>Template includes schema, examples, accepted gaps, no-secrets warning, completion-report compatibility and generated-view boundary.</td>
+<td>Template tests; infrastructure renderer tests if registered; fixture eval.</td>
+<td>Template must not contain secrets, private data or raw chat examples.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B40-DVL-M06</code></td>
+<td>P0</td>
+<td>Implement <code>completion-skeptic</code> skill.</td>
+<td>Builder + Reviewer / <code>risk-reviewer</code>, <code>test-eval-designer</code></td>
+<td>Add a narrow skill with trigger, inputs, outputs, process, verification and failure modes.</td>
+<td>Encapsulates the repeatable doubt workflow as a Codex skill instead of ad hoc prompting.</td>
+<td>User can say "проверь еще раз" and get a consistent structured check.</td>
+<td>Skill returns <code>doubt_verification_packet</code>, verdict, confirmed gaps, unsupported claims, missing checks, approval hits and residual risks; no automatic external tools beyond allowed context.</td>
+<td>Skill structure tests; lifecycle skill tests; docs contract tests.</td>
+<td>Skill must not silently run subagents, provider calls, browser automation or approvals.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B40-DVL-M07</code></td>
+<td>P0</td>
+<td>Add validator and CLI for packet shape.</td>
+<td>Builder + Tester / <code>test-eval-designer</code></td>
+<td>Implement packet validation module and wrapper CLI.</td>
+<td>Blocks fake pass, incomplete ledgers and pass-without-evidence output.</td>
+<td>User can trust pass/revise labels because the packet shape is checked.</td>
+<td>Validator rejects missing verdict, missing claim status, pass without current evidence or accepted gap, malformed approval boundary and unsafe private-data markers.</td>
+<td>Unit tests for valid, missing-ledger, false-pass, accepted-gap and approval-bound cases.</td>
+<td>Validator cannot prove semantic truth; it proves contract completeness only.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B40-DVL-M08</code></td>
+<td>P0</td>
+<td>Integrate route recommendation into Codex runtime runner.</td>
+<td>Architect + Builder + Tester / <code>project-lifecycle-orchestrator</code>, <code>test-eval-designer</code></td>
+<td>Add <code>completion_skeptic_recommended</code> route fields with reasons and safe next action.</td>
+<td>Makes the skeptic gate discoverable through existing lifecycle routing.</td>
+<td>User gets proactive quality-gate suggestions before risky completion claims.</td>
+<td>Runtime route names trigger reason, artifact under review, required evidence, approval boundary and whether the gate is manual, recommended or required.</td>
+<td>Runtime contract tests; route fixture tests; no-provider/no-browser/no-git proof.</td>
+<td>Route recommendation is not permission to run tools or mutate workspace.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B40-DVL-M09</code></td>
+<td>P1</td>
+<td>Integrate gap ledger handoff with existing lifecycle skills.</td>
+<td>Architect + Builder + Reviewer / <code>risk-reviewer</code>, <code>test-eval-designer</code>, <code>docs-maintainer</code></td>
+<td>Teach risk review, test/eval design and docs maintenance how to consume skeptic gaps.</td>
+<td>Converts verifier output into tests, docs/source updates and accepted-risk records.</td>
+<td>User gets actionable next tasks instead of a loose critique list.</td>
+<td><code>risk-reviewer</code> audits broader risk while <code>completion-skeptic</code> owns completion-claim gate; <code>test-eval-designer</code> maps missing checks; <code>docs-maintainer</code> maps source/docs gaps.</td>
+<td>Lifecycle skill tests; handoff fixture; transcript eval.</td>
+<td>Skill responsibilities must not overlap without handoff rules.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B40-DVL-M10</code></td>
+<td>P1</td>
+<td>Add status/dashboard projection for skeptic verdicts.</td>
+<td>Builder + Tester / <code>test-eval-designer</code></td>
+<td>Show skeptic status in generated status snapshot/dashboard without making it source truth.</td>
+<td>Improves observability of pass/revise/blocked states.</td>
+<td>User can scan whether completion was verified, revised, blocked or missing evidence.</td>
+<td>Dashboard shows verdict, missing evidence count, accepted gaps and safe next action with generated-view-only wording.</td>
+<td><code>test_status_snapshot</code>, <code>test_status_dashboard</code>, stale-evidence dashboard tests.</td>
+<td>Dashboard cannot prove success; underlying packet/check evidence remains stronger.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B40-DVL-M11</code></td>
+<td>P0</td>
+<td>Unit-test schema, validator and route policy.</td>
+<td>Tester + Builder / <code>test-eval-designer</code></td>
+<td>Add focused tests for the new packet, CLI and runtime route fields.</td>
+<td>Locks the contract before docs/site promotion.</td>
+<td>Reduces silent regressions in the quality gate.</td>
+<td>Tests cover valid packet, missing ledgers, pass without evidence, accepted gap, approval boundary, trigger/exclusion rules and no-secret markers.</td>
+<td>Focused unittest; full unittest before closure.</td>
+<td>Passing unit tests do not prove product usefulness.</td>
+<td>status: <code>implemented</code>; what was done: B40-S3 added focused tests for fake evidence, approval-blocked pass verdicts, code-behavior claims without command evidence, accepted-gap owner/reason/residual-risk/follow-up requirements and scorecard blocking; files touched / work locations: <code>tests/product_agent_os/test_doubt_verification.py</code>, <code>plugins/product-agent-os/scripts/product_agent_os/doubt_verification.py</code>; technical value delivered: validator and schema failures are deterministic rather than prompt-only; product value delivered: user-facing completion claims are blocked when evidence or approval is missing; actual implementation date and time: <code>09-06-2026 19:18</code> <code>Europe/Moscow</code>; verification evidence: focused B40-S3 suite ran 31 tests with <code>OK</code>; residual risks: full Batch 40 usefulness and pilot evidence remain B40-S5; follow-up: run full Product-Agent OS verification before final S3 closure.</td>
+</tr>
+<tr>
+<td><code>B40-DVL-M12</code></td>
+<td>P0</td>
+<td>Add transcript eval for manual "check again" prompts.</td>
+<td>Tester + Product Manager / <code>test-eval-designer</code></td>
+<td>Add synthetic sessions for "проверь еще раз", "ничего не забыли", "before final" and completion claims.</td>
+<td>Verifies the natural user trigger maps to the skeptic route.</td>
+<td>The user's actual workflow becomes supported behavior, not a lucky prompt.</td>
+<td>Transcript response includes <code>completion-skeptic</code>, <code>doubt_verification_packet</code>, evidence-first policy, no-rewrite-first and residual risks.</td>
+<td>Transcript eval runner; behavioral workflow eval.</td>
+<td>Transcript keyword checks are not semantic proof; they need negative cases too.</td>
+<td>status: <code>implemented</code>; what was done: B40-S3 added <code>completion-skeptic-check-again-trigger</code> to behavioral evals and synthetic transcript replay; files touched / work locations: <code>plugins/product-agent-os/assets/templates/evals/behavioral-workflows.json</code>, <code>plugins/product-agent-os/assets/eval-fixtures/transcripts/product-agent-os-synthetic-sessions.json</code>, <code>plugins/product-agent-os/scripts/product_agent_os/behavioral_evals.py</code>; technical value delivered: manual re-check intent is a packaged route contract; product value delivered: the user's actual "проверь ещё раз" workflow becomes supported behavior; actual implementation date and time: <code>09-06-2026 19:18</code> <code>Europe/Moscow</code>; verification evidence: focused B40-S3 suite ran 31 tests with <code>OK</code>; residual risks: transcript checks remain deterministic term replay, not semantic judging; follow-up: B40-S5 pilot transcripts should add real phrasing variants.</td>
+</tr>
+<tr>
+<td><code>B40-DVL-M13</code></td>
+<td>P0</td>
+<td>Add negative evals for false rewrite and false pass.</td>
+<td>Tester + Reviewer / <code>risk-reviewer</code>, <code>test-eval-designer</code></td>
+<td>Cover correct answers that should not be rewritten, unsupported critiques and stale evidence.</td>
+<td>Controls known intrinsic self-correction degradation.</td>
+<td>User avoids answer churn and hallucinated "fixes".</td>
+<td>Negative cases block <code>pass</code> without evidence and block revision when the verifier found only speculative gaps.</td>
+<td>Fixture eval; transcript eval; validator tests.</td>
+<td>False negatives remain possible; add adversarial cases over time.</td>
+<td>status: <code>implemented</code>; what was done: B40-S3 added false-pass and false-rewrite behavioral/transcript cases plus validator guards for pass without current evidence and speculative rewrite boundaries; files touched / work locations: behavioral evals, transcript fixtures, <code>doubt_verification.py</code>, doubt verification tests and fixture runner checks; technical value delivered: the gate blocks generated-view/stale-evidence pass claims and no-rewrite-first violations; product value delivered: user avoids nervous answer churn and hallucinated "fixes"; actual implementation date and time: <code>09-06-2026 19:18</code> <code>Europe/Moscow</code>; verification evidence: focused B40-S3 suite ran 31 tests with <code>OK</code>; residual risks: negative synthetic cases are not exhaustive; follow-up: expand from real RUNLOG failures after pilots.</td>
+</tr>
+<tr>
+<td><code>B40-DVL-M14</code></td>
+<td>P1</td>
+<td>Add source-sensitive docs/research cases.</td>
+<td>Docs Maintainer + Reviewer + Tester / <code>docs-maintainer</code>, <code>risk-reviewer</code>, <code>test-eval-designer</code></td>
+<td>Test official source claims, community intake, current facts, missing registry and source conflicts.</td>
+<td>Enforces source hierarchy inside the skeptic gate.</td>
+<td>User can distinguish supported facts, assumptions and community observations.</td>
+<td>Cases mark community claims as <code>intake_only</code>, current facts as <code>needs_fresh_check</code> when no fresh source exists and unsupported docs claims as gaps.</td>
+<td>Docs tests; registry/source fixture; transcript eval.</td>
+<td>Network/current-source checks require scoped browsing and official-source policy when executed.</td>
+<td>status: <code>implemented</code>; what was done: B40-S3 added source-sensitive docs/research behavioral and transcript cases requiring official source or source registry evidence, community-claim <code>intake_only</code>, <code>needs_fresh_check</code>, assumptions, unsupported claims and missing context; files touched / work locations: behavioral evals and transcript fixtures; technical value delivered: source hierarchy is encoded in the skeptic eval contract; product value delivered: user can see facts, assumptions and unsupported claims separated; actual implementation date and time: <code>09-06-2026 19:18</code> <code>Europe/Moscow</code>; verification evidence: focused B40-S3 suite ran 31 tests with <code>OK</code>; residual risks: actual network/current-source verification still requires scoped browsing when claims are current; follow-up: B40-S4 docs/site examples should show source-backed packet usage.</td>
+</tr>
+<tr>
+<td><code>B40-DVL-M15</code></td>
+<td>P1</td>
+<td>Add code/tool evidence cases.</td>
+<td>Builder + Tester + Reviewer / <code>test-eval-designer</code>, <code>risk-reviewer</code></td>
+<td>Cover code claim without tests, lint failure, missing tool trace and static check pass.</td>
+<td>Connects code confidence to current checks, not inspection-only claims.</td>
+<td>User sees whether code actually ran or remains unverified.</td>
+<td>Cases require command evidence or explicit missing-check risk before completion language.</td>
+<td>Unit/fixture tests; transcript eval; no-tool-trace negative case.</td>
+<td>Running project-specific commands remains governed by sandbox and approvals.</td>
+<td>status: <code>implemented</code>; what was done: B40-S3 added code/tool evidence cases and validator policy that <code>claim_type: code_behavior</code> needs command evidence for <code>pass</code>; files touched / work locations: <code>doubt_verification.py</code>, doubt verification tests, behavioral evals and transcript fixtures; technical value delivered: code confidence is tied to current command/tool evidence instead of inspection-only claims; product value delivered: user sees whether code actually ran or remains an accepted gap; actual implementation date and time: <code>09-06-2026 19:18</code> <code>Europe/Moscow</code>; verification evidence: focused B40-S3 suite ran 31 tests with <code>OK</code>; residual risks: project-specific runtime commands still depend on sandbox/approval; follow-up: B40-S5 pilots should record real command evidence patterns.</td>
+</tr>
+<tr>
+<td><code>B40-DVL-M16</code></td>
+<td>P0</td>
+<td>Add Doubt / verifier loop playbook in RU/EN.</td>
+<td>Docs Maintainer + Product Manager / <code>docs-maintainer</code></td>
+<td>Add <code>docs/playbooks/doubt-verification-loop.md</code> and <code>.en.md</code>.</td>
+<td>Documents the repeatable manual workflow before automation.</td>
+<td>Users learn how to use the method safely.</td>
+<td>Pages include purpose, trigger, workflow, packet example, "do not rewrite first", examples, failure modes and next artifact.</td>
+<td>Docs tests; <code>tools/check_docs.py</code>; strict MkDocs if nav changes.</td>
+<td>Public docs must not imply implemented plugin behavior before code/evals land.</td>
+<td>status: <code>implemented</code>; what was done: B40-S4 added RU/EN Doubt / verifier loop playbook with trigger, workflow, packet excerpt, examples, failure modes and no-active-automation boundary; actual implementation date and time: <code>10-06-2026 07:30</code> <code>Europe/Moscow</code>; verification evidence: B40-S4 current-run docs/site checks are recorded below; residual risk: real manual pilot evidence remains B40-S5.</td>
+</tr>
+<tr>
+<td><code>B40-DVL-M17</code></td>
+<td>P0</td>
+<td>Add architecture diagrams for the completion-skeptic route.</td>
+<td>Architect + Docs Maintainer / <code>docs-maintainer</code></td>
+<td>Add or update diagram atlas/Product-Agent OS architecture with Mermaid diagrams for route, packet lifecycle and skill promotion.</td>
+<td>Makes the workflow reviewable and consistent with existing diagram rules.</td>
+<td>User understands where the gate sits in Product-Agent OS.</td>
+<td>Diagram page or section has <code>Source status:</code>, Mermaid diagram, usage guidance, related artifacts and failure modes.</td>
+<td><code>tools/check_docs.py</code>; strict MkDocs because Mermaid/site output changes.</td>
+<td>Diagram is explanatory, not runtime proof.</td>
+<td>status: <code>implemented</code>; what was done: B40-S4 added Completion-skeptic route Mermaid sections and packet lifecycle guidance to Product-Agent OS architecture RU/EN; actual implementation date and time: <code>10-06-2026 07:30</code> <code>Europe/Moscow</code>; verification evidence: B40-S4 strict MkDocs is required below; residual risk: diagram is explanatory, not runtime proof.</td>
+</tr>
+<tr>
+<td><code>B40-DVL-M18</code></td>
+<td>P1</td>
+<td>Update prompting, context and anti-hallucination docs.</td>
+<td>Docs Maintainer + Reviewer / <code>docs-maintainer</code>, <code>risk-reviewer</code></td>
+<td>Connect existing verifier agent and context-engineering pages to <code>doubt_verification_packet</code>.</td>
+<td>Aligns existing docs with the new named gate.</td>
+<td>User gets one consistent mental model for context, claims and verification.</td>
+<td>Docs explain claim ledger, requirement ledger, evidence ledger, missing context and supported/unsupported verdicts.</td>
+<td>Docs tests; <code>tools/check_docs.py</code>.</td>
+<td>Source-backed claims require registry sync.</td>
+<td>status: <code>implemented</code>; what was done: B40-S4 connected anti-hallucination and context-engineering docs to <code>doubt_verification_packet</code>, claim ledger, requirement ledger, evidence ledger, missing_context and accepted_gap; actual implementation date and time: <code>10-06-2026 07:30</code> <code>Europe/Moscow</code>; verification evidence: B40-S4 docs contract below; residual risk: current-source checking remains tool/approval-bound when executed.</td>
+</tr>
+<tr>
+<td><code>B40-DVL-M19</code></td>
+<td>P1</td>
+<td>Update agent-systems and workflow-to-skill docs.</td>
+<td>Docs Maintainer + Architect / <code>docs-maintainer</code>, <code>agent-team-designer</code></td>
+<td>Document manual -&gt; playbook -&gt; skill -&gt; plugin -&gt; automation candidate promotion path for the doubt loop.</td>
+<td>Prevents premature automation and clarifies skill ownership.</td>
+<td>Teams can adopt the method without turning it into a brittle global rule.</td>
+<td>Docs describe trigger, inputs, outputs, eval cases, failure log, owner review, rollback and automation blockers.</td>
+<td>Docs tests; <code>tools/check_docs.py</code>.</td>
+<td>Automation remains candidate-only until manual success evidence exists.</td>
+<td>status: <code>implemented</code>; what was done: B40-S4 documented manual -&gt; playbook -&gt; skill -&gt; plugin -&gt; automation candidate promotion path, owner review, rollback, failure log, eval cases and automation blockers for <code>completion-skeptic</code>; actual implementation date and time: <code>10-06-2026 07:30</code> <code>Europe/Moscow</code>; verification evidence: B40-S4 docs contract below; residual risk: automation stays candidate-only until B40-S5 and later approval.</td>
+</tr>
+<tr>
+<td><code>B40-DVL-M20</code></td>
+<td>P0</td>
+<td>Update source registry and insights boundaries for the research claims.</td>
+<td>Docs Maintainer + Reviewer / <code>docs-maintainer</code>, <code>risk-reviewer</code></td>
+<td>Register source-backed papers/tools and keep community "glitch prompt" observations under insights/intake rules if promoted.</td>
+<td>Keeps research and implementation claims auditable.</td>
+<td>User sees which claims are supported, experimental or community-only.</td>
+<td>Registry RU/EN entries include source, trust level, verification status and affected pages; community claims stay <code>intake_only</code> unless verified.</td>
+<td>Registry docs tests; <code>tools/check_docs.py</code>; link/source audit.</td>
+<td>Do not move community claims into core rules without explicit status.</td>
+<td>status: <code>implemented</code>; what was done: B40-S4 added source-transfer packet and registry RU/EN entries for Chain-of-Verification, CRITIC, Self-Refine, intrinsic self-correction limitations, OpenAI Agents SDK guardrails and community check-again prompts; actual implementation date and time: <code>10-06-2026 07:30</code> <code>Europe/Moscow</code>; verification evidence: B40-S4 source registry docs contract below; residual risk: community claims remain intake-only unless later verified.</td>
+</tr>
+<tr>
+<td><code>B40-DVL-M21</code></td>
+<td>P0</td>
+<td>Rebuild generated <code>site/</code> after docs/nav changes.</td>
+<td>Docs Maintainer + Tester / <code>docs-maintainer</code>, <code>test-eval-designer</code></td>
+<td>Refresh rendered pages, examples, diagrams, search/sitemap and RU/EN navigation if Batch 40 docs are added to public nav.</td>
+<td>Keeps generated docs aligned with source Markdown.</td>
+<td>User can read the feature docs in the site instead of only source files.</td>
+<td><code>site/</code> contains Batch 40 docs/diagrams, language switcher works, search/sitemap parity holds, generated-view/source-truth labels remain visible.</td>
+<td>Strict MkDocs; generated-site static checks; diff hygiene.</td>
+<td>Generated <code>site/</code> is not source of truth; browser automation requires separate approval.</td>
+<td>status: <code>implemented</code>; what was done: B40-S4 registers Batch 40 docs/source-transfer pages in MkDocs RU/EN navigation and docs checker; generated <code>site/</code> refresh is required as generated review output, not source truth; actual implementation date and time: <code>10-06-2026 07:30</code> <code>Europe/Moscow</code>; verification evidence: strict MkDocs and docs/site checks recorded below; residual risk: no browser automation was run.</td>
+</tr>
+<tr>
+<td><code>B40-DVL-M22</code></td>
+<td>P0</td>
+<td>Run manual pilots on docs/research/code examples.</td>
+<td>Product Manager + Tester + Reviewer / <code>test-eval-designer</code>, <code>risk-reviewer</code></td>
+<td>Exercise the loop on one docs/research answer, one code/check claim and one expected-block case.</td>
+<td>Measures real usefulness before promotion.</td>
+<td>User sees whether the gate actually catches missed requirements and evidence gaps.</td>
+<td>Pilot ledger records attempts, failures, fixes, retests, false positives, false rewrites, evidence sufficiency and owner-accepted gaps.</td>
+<td>Attempt/failure/fix/retest ledger; focused tests; transcript eval; no-unapproved-actions proof.</td>
+<td>Pilot examples must stay synthetic or approval-bound and contain no secrets/private data.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B40-DVL-M23</code></td>
+<td>P1</td>
+<td>Add scorecard fields to <code>agent_skill_metrics_loop</code>.</td>
+<td>Builder + Tester + Product Manager / <code>learning-loop-maintainer</code>, <code>test-eval-designer</code></td>
+<td>Track false pass, false rewrite, evidence sufficiency, missing-check catch rate, user-accepted gaps and revision usefulness.</td>
+<td>Makes the skeptic gate measurable over time.</td>
+<td>Product can improve based on observed outcomes rather than anecdote.</td>
+<td>Scorecards include denominator/numerator evidence and block modernization approval without calibration/owner review.</td>
+<td>Metrics loop tests; scorecard fixture; regression tests.</td>
+<td>Metrics report is staged evidence only and cannot auto-apply skill updates.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B40-DVL-M24</code></td>
+<td>P0</td>
+<td>Produce Batch 40 go/no-go and rollout boundary.</td>
+<td>Release Operator + Product Manager + Reviewer / <code>pr-release-operator</code>, <code>risk-reviewer</code></td>
+<td>Close Batch 40 with source-owned evidence, no-unapproved-actions proof, rollback/disable path and next recommendation.</td>
+<td>Prevents premature automation, release or durable-rule claims.</td>
+<td>User gets a clear decision: release, keep manual, revise, block or defer.</td>
+<td>Closure packet records implemented/blocked/accepted-gap rows, verification evidence, docs/site state, residual risks and exact next approval needs.</td>
+<td>Full Product-Agent OS verification route; docs checks; fixture/transcript eval; diff hygiene.</td>
+<td>Git stage/commit/push/PR, public/team release and automation activation require separate exact approval.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B40-DVL-M25</code></td>
+<td>P0</td>
+<td>Add claim, requirement and evidence taxonomy.</td>
+<td>Architect + Tester + Reviewer / <code>implementation-planner</code>, <code>test-eval-designer</code>, <code>risk-reviewer</code></td>
+<td>Define normalized claim types, requirement coverage states, evidence types, severity, confidence and freshness fields that map to existing <code>verified_claims</code>, <code>unsupported_claims</code> and <code>verification_evidence</code> handoff fields.</td>
+<td>Prevents the packet schema from becoming a free-text critique that validators cannot reason about.</td>
+<td>User can see whether a gap is factual, temporal, code-behavior, source, approval, UX, product, security, release or completion-claim related.</td>
+<td>Taxonomy covers claim type, artifact type, evidence source, freshness, severity, confidence, owner, accepted-gap reason and user-visible summary; it stays compatible with current handoff contract fields.</td>
+<td>Schema review; validator fixture; handoff contract tests; transcript negative case for unsupported confidence claims.</td>
+<td>Over-detailed taxonomy can make the packet heavy; use bounded enums and short user-facing summaries.</td>
+<td>status: <code>implemented</code>; what was done: B40-S1 defines bounded claim, artifact, requirement, evidence, severity, confidence and freshness enums compatible with existing handoff fields; files touched / work locations: Track 10 plan and source evidence files; technical value delivered: packet output is machine-reviewable instead of free-text critique; product value delivered: user can see what kind of gap was found and how strong the evidence is; actual implementation date and time: <code>09-06-2026 17:42</code> <code>Europe/Moscow</code>; verification evidence: B40-S1 taxonomy section plus current-run docs/control-plane checks; residual risks: validator fixtures remain B40-S2/S3 work.</td>
+</tr>
+<tr>
+<td><code>B40-DVL-M26</code></td>
+<td>P0</td>
+<td>Add evidence provider and check-routing registry.</td>
+<td>Architect + Builder + Tester / <code>test-eval-designer</code>, <code>risk-reviewer</code></td>
+<td>Map claim types to allowed evidence providers: source registry, local files, test/build/lint commands, transcript evals, fixture evals, status snapshot, project graph as orientation only, owner evidence, browser/runtime checks when approved and official web sources when required.</td>
+<td>Turns CRITIC-style "use tools" into a deterministic local routing table instead of a vague instruction.</td>
+<td>User sees exactly which check is required, missing, blocked by approval or accepted as a gap.</td>
+<td>Registry marks each provider as <code>available</code>, <code>missing</code>, <code>approval_required</code>, <code>not_applicable</code> or <code>accepted_gap</code>; it records no-provider/no-browser/no-live defaults and stale-evidence thresholds.</td>
+<td>Unit tests; route fixture tests; source-policy fixture; no-unapproved-action proof.</td>
+<td>Provider routing must not silently run network, browser, live server, external model/API or git actions.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B40-DVL-M27</code></td>
+<td>P0</td>
+<td>Integrate Doubt packets with the existing handoff contract.</td>
+<td>Architect + Builder + Reviewer / <code>agent-team-designer</code>, <code>risk-reviewer</code></td>
+<td>Extend handoff guidance so <code>doubt_verification_packet</code> can populate <code>verified_claims</code>, <code>unsupported_claims</code>, <code>commands_run</code>, <code>verification_evidence</code>, <code>risks</code>, <code>next_agent_task</code> and <code>stop_reason</code>.</td>
+<td>Reuses current Product-Agent OS contracts instead of inventing a parallel evidence language.</td>
+<td>User receives one coherent handoff after verification, not two disconnected reports.</td>
+<td>Handoff examples show pass, revise, needs-more-context, approval-blocked and accepted-risk outputs; no raw private chat or hidden reasoning is required.</td>
+<td><code>validate_handoff</code> tests; lifecycle skill tests; transcript eval for fresh-context handoff.</td>
+<td>Handoff compression can hide details; keep detailed packet as companion artifact when needed.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B40-DVL-M28</code></td>
+<td>P0</td>
+<td>Add risk-scored trigger matrix by work type and runtime surface.</td>
+<td>Product Manager + Architect + Tester / <code>implementation-planner</code>, <code>test-eval-designer</code></td>
+<td>Classify triggers across docs/research, code, frontend/runtime, backend/API, AI/evals, security, release, architecture, product, data, plugin/skill and long-running goals; map them to Codex App, CLI, IDE extension, <code>codex exec</code>, subagent and skill surfaces.</td>
+<td>Prevents a one-size-fits-all gate and makes route recommendations explainable.</td>
+<td>User gets the right level of doubt loop: skipped, lightweight, recommended, required or approval-blocked.</td>
+<td>Matrix includes trigger phrase, implicit completion claim, artifact risk, evidence type, runtime surface, latency budget and exclusion rules.</td>
+<td>Route tests; transcript eval; behavioral eval case for over-trigger and under-trigger.</td>
+<td>Too aggressive triggers can annoy users; too weak triggers miss the exact failure pattern the batch targets.</td>
+<td>status: <code>implemented</code>; what was done: B40-S1 defines risk levels <code>skip</code>, <code>lightweight</code>, <code>recommended</code>, <code>required</code> and <code>approval_blocked</code> across work types and Codex App, CLI, IDE extension, <code>codex exec</code>, subagent and skill surfaces; files touched / work locations: Track 10 plan and source evidence files; technical value delivered: route policy is explainable and bounded; product value delivered: user gets strong assurance where risk is high and speed where checks are deterministic; actual implementation date and time: <code>09-06-2026 17:42</code> <code>Europe/Moscow</code>; verification evidence: B40-S1 trigger matrix plus current-run docs/control-plane checks; residual risks: route tests remain B40-S3 work.</td>
+</tr>
+<tr>
+<td><code>B40-DVL-M29</code></td>
+<td>P1</td>
+<td>Add optional output-guardrail design for future Agents SDK integration.</td>
+<td>Architect + Security/Data Owner + Release Operator / <code>risk-reviewer</code>, <code>pr-release-operator</code></td>
+<td>Document how the same packet could become an Agents SDK output guardrail or server-owned orchestration check later, without implementing an SDK runner in Batch 40.</td>
+<td>Keeps future production orchestration aligned with OpenAI guardrail/tracing patterns while preserving local-first scope.</td>
+<td>User understands which pieces are ready for local skill use and which require a separate runtime approval packet.</td>
+<td>Design names input/output guardrail boundary, trace fields, tripwire conditions, human review pause, ZDR/tracing caveat and no-live-SDK default.</td>
+<td>Docs review; source registry sync if promoted; no-runner/no-provider proof.</td>
+<td>Agents SDK app, MCP server, tracing export or provider calls require separate explicit approval.</td>
+<td>status: <code>implemented</code>; what was done: B40-S4 documents the Agents SDK output guardrail candidate with tripwire conditions and <code>no_live_sdk_runner_in_batch_40</code>; actual implementation date and time: <code>10-06-2026 07:30</code> <code>Europe/Moscow</code>; verification evidence: docs/source checks below; residual risk: no Agents SDK runner, MCP server, tracing export or provider call was implemented.</td>
+</tr>
+<tr>
+<td><code>B40-DVL-M30</code></td>
+<td>P0</td>
+<td>Add trace and provenance fields to packet validation.</td>
+<td>Builder + Tester + Security/Data Owner / <code>test-eval-designer</code>, <code>risk-reviewer</code></td>
+<td>Require evidence IDs, command names, timestamps, source IDs, tool trace availability, freshness status, redaction status and generated-view/source-truth boundary.</td>
+<td>Blocks hallucinated tool evidence and stale proof reuse.</td>
+<td>User can distinguish "checked now", "checked earlier", "inspection-only", "blocked" and "accepted gap".</td>
+<td>Validator rejects <code>pass</code> when evidence lacks provenance, freshness or accepted-gap reason; generated dashboard/site/project graph cannot count as proof alone.</td>
+<td>Validator tests; redaction tests; stale-evidence fixture; status snapshot fixture.</td>
+<td>Do not store raw tool outputs, secrets, private data or absolute user-specific paths beyond existing redacted policy.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B40-DVL-M31</code></td>
+<td>P0</td>
+<td>Define escalation ladder and revision budget.</td>
+<td>Product Manager + Architect + Reviewer / <code>implementation-planner</code>, <code>risk-reviewer</code></td>
+<td>Standardize transitions: <code>pass</code>, <code>revise</code>, <code>ask_smallest_blocking_question</code>, <code>run_allowed_check</code>, <code>request_approval</code>, <code>accepted_risk</code>, <code>blocked</code>, plus max loop count.</td>
+<td>Prevents endless doubt loops and unsafe jumps from critique to action.</td>
+<td>User gets a crisp next action instead of a growing list of doubts.</td>
+<td>Ladder names stop condition, owner question policy, max two revise loops by default, approval boundary, rollback/disable note and final summary format.</td>
+<td>Transcript eval; negative eval for infinite loop; route status tests.</td>
+<td>Asking too many questions violates Product-Agent OS guided-question discipline.</td>
+<td>status: <code>implemented</code>; what was done: B40-S1 defines the transition ladder, approval pauses, smallest-blocking-question policy and max two revision loops by default; files touched / work locations: Track 10 plan and source evidence files; technical value delivered: the skeptic loop has bounded stop conditions; product value delivered: user gets one crisp next safe action rather than endless doubts; actual implementation date and time: <code>09-06-2026 17:42</code> <code>Europe/Moscow</code>; verification evidence: B40-S1 escalation section plus current-run docs/control-plane checks; residual risks: infinite-loop and route status tests remain B40-S3 work.</td>
+</tr>
+<tr>
+<td><code>B40-DVL-M32</code></td>
+<td>P1</td>
+<td>Add cost, latency and UX budget policy.</td>
+<td>Product Manager + Architect + Tester / <code>implementation-planner</code>, <code>test-eval-designer</code></td>
+<td>Define lightweight vs full skeptic pass, packet verbosity limits, summary-first output and when to skip the gate.</td>
+<td>Keeps verification useful without making every interaction expensive or slow.</td>
+<td>User gets assurance where it matters and fast responses where deterministic checks are enough.</td>
+<td>Policy includes risk thresholds, token/round budget, maximum packet size, summary/detail split and route reasons for skipped checks.</td>
+<td>Behavioral eval; transcript eval for concise user-visible summary; metrics review.</td>
+<td>Under-budgeting can miss gaps; over-budgeting can make the product feel bureaucratic.</td>
+<td>status: <code>implemented</code>; what was done: B40-S1 defines lightweight/full pass thresholds, verbosity limits, summary-first output and skip reasons; files touched / work locations: Track 10 plan and source evidence files; technical value delivered: completion-skeptic stays proportional to risk; product value delivered: assurance increases without making every interaction bureaucratic; actual implementation date and time: <code>09-06-2026 17:42</code> <code>Europe/Moscow</code>; verification evidence: B40-S1 UX budget section plus current-run docs/control-plane checks; residual risks: scorecards and concise-output evals remain B40-S3/S5 work.</td>
+</tr>
+<tr>
+<td><code>B40-DVL-M33</code></td>
+<td>P1</td>
+<td>Calibrate skeptic scorecards and thresholds.</td>
+<td>Tester + Product Manager + Reviewer / <code>learning-loop-maintainer</code>, <code>test-eval-designer</code>, <code>risk-reviewer</code></td>
+<td>Extend <code>B40-DVL-M23</code> with thresholds for false pass, false rewrite, unsupported-claim catch rate, missing-check catch rate, accepted-gap rate and user revision acceptance.</td>
+<td>Converts anecdotal improvement into measurable operating evidence.</td>
+<td>User can decide whether the loop is worth promoting beyond manual use.</td>
+<td>Scorecard defines denominator, threshold, sample class, owner review cadence, blocked modernization rule and accepted metrics gap path.</td>
+<td>Metrics tests; report rendering tests; pilot ledger review.</td>
+<td>Synthetic scores cannot prove broad product value without real pilot evidence.</td>
+<td>status: <code>implemented</code>; what was done: B40-S3 added <code>COMPLETION_SKEPTIC_SCORECARD_THRESHOLDS</code> and <code>evaluate_completion_skeptic_scorecard</code> with false-pass, false-rewrite, unsupported-claim catch, missing-check catch, accepted-gap and user-revision acceptance metrics plus fixture checks; files touched / work locations: <code>doubt_verification.py</code>, <code>run_fixture_eval.py</code>, tests and eval fixtures; technical value delivered: promotion is blocked by measurable scorecard thresholds and owner review instead of anecdotal confidence; product value delivered: user gets a clear manual-only vs promotable decision boundary; actual implementation date and time: <code>09-06-2026 19:18</code> <code>Europe/Moscow</code>; verification evidence: focused B40-S3 suite ran 31 tests with <code>OK</code>; residual risks: thresholds are synthetic defaults until real pilot calibration; follow-up: B40-S5 should review pilot scorecard denominators and accepted metrics gaps.</td>
+</tr>
+<tr>
+<td><code>B40-DVL-M34</code></td>
+<td>P0</td>
+<td>Add adversarial and fake-evidence evals.</td>
+<td>Tester + Security/Data Owner + Reviewer / <code>test-eval-designer</code>, <code>risk-reviewer</code></td>
+<td>Cover prompt injection, fake command output claims, user pressure to "just say done", invented citations, stale sources, unsupported community tricks and hidden approval bypass requests.</td>
+<td>Protects the gate from being bypassed by the same failure modes it is meant to catch.</td>
+<td>User gets a verifier that resists confident but unevidenced completion language.</td>
+<td>Negative cases require <code>blocked</code>, <code>needs_more_context</code>, <code>unsupported</code> or <code>approval_required</code>; no case may convert fake evidence into pass.</td>
+<td>Fixture eval; transcript eval; redaction/secret scan; source-policy tests.</td>
+<td>Adversarial coverage is never complete; keep adding cases from RUNLOG failures.</td>
+<td>status: <code>implemented</code>; what was done: B40-S3 added fake-evidence and approval-bypass adversarial behavioral/transcript cases plus validator rejection for fake command claims and invalid user-claim provenance; files touched / work locations: <code>doubt_verification.py</code>, behavioral evals, transcript fixtures, fixture runner and tests; technical value delivered: fake evidence cannot become a pass verdict when approval is blocked or provenance is invalid; product value delivered: user gets a verifier that resists pressure to "just say done"; actual implementation date and time: <code>09-06-2026 19:18</code> <code>Europe/Moscow</code>; verification evidence: focused B40-S3 suite ran 31 tests with <code>OK</code>; residual risks: adversarial coverage is intentionally open-ended; follow-up: add cases from RUNLOG failures and real pilots.</td>
+</tr>
+<tr>
+<td><code>B40-DVL-M35</code></td>
+<td>P1</td>
+<td>Stage hook and stop-reminder policy as candidate-only.</td>
+<td>Architect + Release Operator + Security/Data Owner / <code>risk-reviewer</code>, <code>pr-release-operator</code></td>
+<td>Decide whether existing hook templates such as post-tool-use evidence or stop reminders need candidate wording for completion-skeptic, without activation.</td>
+<td>Clarifies future enforcement path while respecting current no-hook-activation boundary.</td>
+<td>User knows the difference between manual skill, reminder hook candidate and active automation.</td>
+<td>Candidate packet states <code>schedule_status: not_created</code>, hook activation disabled, trigger examples, rollback/disable path and exact approval required for activation.</td>
+<td>Hook template tests if modified; automation policy tests; no-activation proof.</td>
+<td>Active hooks, schedules, automations or GitHub Actions are out of scope without separate approval.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B40-DVL-M36</code></td>
+<td>P0</td>
+<td>Add task-matrix and completion-report integration.</td>
+<td>Builder + Tester + Release Operator / <code>test-eval-designer</code>, <code>pr-release-operator</code></td>
+<td>Extend task-matrix planning guidance so implemented rows cannot claim value without current verification evidence or accepted gaps, and Batch 40 closure can consume task completion reports.</td>
+<td>Connects Doubt loop to the repository's existing Batch execution ledger.</td>
+<td>User sees planned vs implemented status stay honest across long batches.</td>
+<td>Task-matrix examples include <code>doubt_verification_packet</code> reference, evidence summary, unsupported claims, accepted gaps and no-unapproved-actions proof.</td>
+<td><code>validate_task_matrix.py</code> fixture; docs tests; <code>git diff --check</code>.</td>
+<td>Do not weaken existing task-matrix validator or allow inspection-only implemented claims.</td>
+<td><code>planned</code>; <code>pending_execution_timestamp</code></td>
+</tr>
+<tr>
+<td><code>B40-DVL-M37</code></td>
+<td>P1</td>
+<td>Expand public examples by artifact type.</td>
+<td>Docs Maintainer + Product Manager + Tester / <code>docs-maintainer</code>, <code>test-eval-designer</code></td>
+<td>Add examples for docs/research, code, architecture, product planning, security/release and AI/eval work, each with trigger, packet excerpt, verdict and final answer style.</td>
+<td>Prevents docs from describing the loop only abstractly.</td>
+<td>User can copy the right pattern for their actual task type.</td>
+<td>Examples are synthetic, source-safe, no secrets, and marked as planned/experimental until implementation lands.</td>
+<td>Docs tests; source policy scan; strict MkDocs if nav/examples change.</td>
+<td>Examples must not imply current runtime support before implementation evidence exists.</td>
+<td>status: <code>implemented</code>; what was done: B40-S4 adds synthetic <code>docs_research_example</code>, <code>code_check_example</code>, <code>architecture_review_example</code>, <code>product_planning_example</code>, <code>security_release_example</code> and <code>ai_eval_example</code> to artifact gallery and playbook; actual implementation date and time: <code>10-06-2026 07:30</code> <code>Europe/Moscow</code>; verification evidence: B40-S4 docs/source checks below; residual risk: examples are synthetic and do not prove pilot usefulness.</td>
+</tr>
+<tr>
+<td><code>B40-DVL-M38</code></td>
+<td>P0</td>
+<td>Add source-transfer packet for second-pass research claims.</td>
+<td>Docs Maintainer + Reviewer / <code>docs-maintainer</code>, <code>risk-reviewer</code></td>
+<td>Register or stage the source-backed deltas from CoVe, CRITIC, intrinsic self-correction limitations and OpenAI guardrails/tracing before moving them into core docs.</td>
+<td>Prevents research notes from becoming unsourced project rules.</td>
+<td>User can audit which academic/official claims justify the architecture and which remain assumptions.</td>
+<td>Packet links source, affected Batch 40 row, trust level, verification status, transfer target and registry update need in RU/EN.</td>
+<td>Source registry tests when updated; link audit; docs check.</td>
+<td>Network/current-source refresh must follow source policy and official-source preference for OpenAI claims.</td>
+<td>status: <code>implemented</code>; what was done: B40-S4 adds RU/EN source-transfer packet and source registry entries with trust level, verification status and transfer target; actual implementation date and time: <code>10-06-2026 07:30</code> <code>Europe/Moscow</code>; verification evidence: B40-S4 docs/source checks below; residual risk: no fresh network refresh was run in this docs slice.</td>
+</tr>
+</tbody>
+</table>
+<p>Recommended Batch 40 execution slices:</p>
+<table>
+<thead>
+<tr>
+<th>Slice</th>
+<th>Tasks</th>
+<th>Execution mode</th>
+<th>Why this grouping</th>
+<th>Stop / handoff condition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>B40-S1 Architecture and contract</code></td>
+<td><code>B40-DVL-M01..M04</code>, <code>B40-DVL-M25</code>, <code>B40-DVL-M28</code>, <code>B40-DVL-M31</code>, <code>B40-DVL-M32</code></td>
+<td>Sequential with owner acceptance before implementation</td>
+<td>Requirements, packet schema, taxonomy, triggers, escalation ladder, prompt contracts and UX budget define the safety boundary for the whole batch.</td>
+<td>Stop when the owner accepts schema, triggers, non-goals, revision policy, confidence/taxonomy fields, skip policy and no-auto-automation boundary.</td>
+</tr>
+<tr>
+<td><code>B40-S2 Plugin implementation</code></td>
+<td><code>B40-DVL-M05..M10</code>, <code>B40-DVL-M26</code>, <code>B40-DVL-M27</code>, <code>B40-DVL-M30</code>, <code>B40-DVL-M35</code>, <code>B40-DVL-M36</code></td>
+<td>Focused implementation with tests per subsystem</td>
+<td>Template, skill, validator, evidence routing, runtime route, handoff contract, dashboard projection, candidate-only hook wording and task-matrix completion integration can be implemented after the contract exists.</td>
+<td>Stop when packet template, <code>completion-skeptic</code> skill, validator CLI, route recommendation, handoff mapping and completion-report integration pass focused tests without external/live actions.</td>
+</tr>
+<tr>
+<td><code>B40-S3 Evals and verification</code></td>
+<td><code>B40-DVL-M11..M15</code>, <code>B40-DVL-M33</code>, <code>B40-DVL-M34</code></td>
+<td>Test-first or side-by-side with S2</td>
+<td>Negative and adversarial cases are required before the gate can claim quality improvement, and scorecards need calibrated thresholds before promotion.</td>
+<td>Stop when unit, fixture and transcript evals cover trigger, false-pass, false-rewrite, fake evidence, source-sensitive and code/tool evidence cases, plus scorecard thresholds or accepted metrics gaps.</td>
+</tr>
+<tr>
+<td><code>B40-S4 Docs and generated site</code></td>
+<td><code>B40-DVL-M16..M21</code>, <code>B40-DVL-M29</code>, <code>B40-DVL-M37</code>, <code>B40-DVL-M38</code></td>
+<td>Docs after names/contracts stabilize</td>
+<td>Public docs, diagrams, source registry, future guardrail design, examples and generated <code>site/</code> must describe implemented behavior without overclaiming planned features.</td>
+<td>Stop when RU/EN docs, registry/source-transfer packet, examples, diagrams, MkDocs nav and generated <code>site</code> pass required docs checks or carry explicit accepted gaps.</td>
+</tr>
+<tr>
+<td><code>B40-S5 Pilot, metrics and closure</code></td>
+<td><code>B40-DVL-M22..M24</code></td>
+<td>Sequential after S2-S4 evidence</td>
+<td>Manual pilots and scorecards prove whether the gate helps before promotion to automation, guardrail, hook reminder or durable rule.</td>
+<td>Stop when pilot ledger, metrics and closure packet support release, manual-only use, revision, block or deferral with no-unapproved-actions proof.</td>
+</tr>
+</tbody>
+</table>
+<p>B40-S1 implementation contract:</p>
+<ul>
+<li>Slice status: <code>implemented_contract_only</code>.</li>
+<li>Scope implemented: <code>B40-DVL-M01..M04</code>, <code>B40-DVL-M25</code>, <code>B40-DVL-M28</code>, <code>B40-DVL-M31</code>, <code>B40-DVL-M32</code>.</li>
+<li>Implementation timestamp: <code>09-06-2026 17:42</code> <code>Europe/Moscow</code>.</li>
+<li>Source context used: <code>output/doubt-technique-comparative-report.md</code>, <code>output/doubt-verifier-loop-batch-task-matrix.md</code>, current Product-Agent OS handoff fields, runtime route contracts, source policy, status snapshot evidence boundaries, task-matrix completion-report rules, Archimedes read-only docs/source audit and Turing read-only runtime/contract audit.</li>
+<li>Agent and skill routing: Product Manager owns promise, non-goals and UX budget; Architect owns schema, taxonomy, trigger levels and route boundaries; Tester owns future gate/eval acceptance; Reviewer owns false-pass, false-rewrite, fake-evidence and approval-risk checks; Docs Maintainer owns source/backlog/registry transfer; Release Operator owns no-unapproved-actions closure. <code>implementation-planner</code>, <code>agent-team-designer</code>, <code>test-eval-designer</code>, <code>risk-reviewer</code> and <code>docs-maintainer</code> remain the named skills for future slices. Explorer subagents are sidecar audit only and do not authorize edits, tools, runtime actions or completion claims.</li>
+<li>Product promise: before a high-risk completion claim, the system extracts requirements and claims, checks current available evidence, then returns <code>pass</code>, <code>revise</code>, <code>needs_more_context</code>, <code>blocked_by_approval</code> or <code>accepted_risk</code> with a concise user-visible reason.</li>
+<li>Non-goals: no unconditional self-reflection rewrite, no hidden external/provider/browser/live server/git/canonical graph/hook/automation action, no durable rule or automation promotion before manual pilots and metrics, no raw private chat logs, no hidden chain-of-thought storage, no secrets in packets, and no generated dashboard/site/project graph as proof by itself.</li>
+<li><code>doubt_verification_packet_v1</code> fields: <code>packet_id</code>, <code>schema_version</code>, <code>trigger</code>, <code>original_request_ref</code>, <code>artifact_under_review</code>, <code>artifact_type</code>, <code>source_context</code>, <code>claim_ledger</code>, <code>requirement_ledger</code>, <code>evidence_ledger</code>, <code>approval_boundary_hits</code>, <code>verdict</code>, <code>revision_budget</code>, <code>residual_risks</code>, <code>next_safe_action</code>, <code>handoff_projection</code> and <code>redaction_status</code>.</li>
+<li>Claim statuses: <code>supported</code>, <code>unsupported</code>, <code>contradicted</code>, <code>needs_fresh_check</code>, <code>assumption</code>, <code>accepted_gap</code>.</li>
+<li>Requirement statuses: <code>covered</code>, <code>missing</code>, <code>partial</code>, <code>not_applicable</code>, <code>accepted_gap</code>.</li>
+<li>Evidence statuses: <code>available</code>, <code>missing</code>, <code>stale</code>, <code>approval_required</code>, <code>not_applicable</code>, <code>accepted_gap</code>.</li>
+<li>Verdicts: <code>pass</code>, <code>revise</code>, <code>needs_more_context</code>, <code>blocked_by_approval</code>, <code>accepted_risk</code>, <code>blocked</code>.</li>
+<li>Claim types: <code>factual</code>, <code>temporal</code>, <code>code_behavior</code>, <code>architecture</code>, <code>product</code>, <code>security</code>, <code>release</code>, <code>eval_quality</code>, <code>approval</code>, <code>completion_claim</code>, <code>ux_frontend</code>, <code>data_privacy</code>, <code>source_policy</code>.</li>
+<li>Artifact types: <code>code</code>, <code>docs</code>, <code>research</code>, <code>architecture</code>, <code>product</code>, <code>review</code>, <code>release</code>, <code>eval</code>, <code>security</code>, <code>data</code>, <code>frontend_runtime</code>, <code>backend_api</code>, <code>plugin_skill</code>.</li>
+<li>Severity levels: <code>blocker</code>, <code>high</code>, <code>medium</code>, <code>low</code>, <code>note</code>.</li>
+<li>Confidence levels: <code>evidence_backed</code>, <code>inferred</code>, <code>assumption</code>, <code>speculative</code>.</li>
+<li>Freshness levels: <code>current</code>, <code>stale</code>, <code>needs_fresh_check</code>, <code>not_temporal</code>.</li>
+<li>Trigger levels: <code>skip</code>, <code>lightweight</code>, <code>recommended</code>, <code>required</code>, <code>approval_blocked</code>, <code>manual_only</code>.</li>
+<li>Explicit triggers: user asks to check again, asks whether anything was missed, asks for before-final audit or asks to audit the last answer.</li>
+<li>Implicit triggers: completion/readiness claims such as <code>done</code>, <code>implemented</code>, <code>works</code>, <code>ready</code>, <code>tests pass</code>, release/readiness recommendations and task-row implementation claims.</li>
+<li>High-risk work classes: code edits, source-sensitive/current-fact docs, architecture/spec work, security/privacy/release work, AI/eval/RAG work, long-running goals, plugin/skill/automation work and any claim that requires tool evidence.</li>
+<li>Exclusions: deterministic read-only command output, short explanations without readiness claims, low-risk formatting, owner-explicit no-extra-verification instruction and approval-blocked checks where the next action is to ask or stop rather than improvise.</li>
+<li>Runtime surfaces: Codex App, CLI, IDE extension, <code>codex exec</code>, subagent and skill. Agents SDK, MCP guardrails, hooks and automation remain future candidate designs only.</li>
+<li>Runtime compatibility rule: future <code>completion_skeptic_recommendation</code> must be additive inside <code>route_packet</code>, not a new top-level <code>build_result</code> field and not an unknown key inside <code>methodology_packet</code>; otherwise existing strict runner schema v1 and methodology packet validation can regress.</li>
+<li>Worker contract: produce the artifact plus a short ledger of request coverage, sources/checks used, assumptions, risks and completion-claim status.</li>
+<li>Skeptic contract: extract requirements and claims, map each to evidence or accepted gaps, identify approval boundaries, and output the packet. The skeptic does not rewrite first, does not invent tool evidence and does not escalate to live/provider/browser/git/canonical actions without exact approval.</li>
+<li>Reviser contract: change only confirmed gaps or unsupported high-risk claims. Speculative improvements remain optional risks. The reviser preserves source boundaries and writes a concise final summary with residual risks.</li>
+<li>Escalation ladder: <code>pass</code>, <code>revise</code>, <code>ask_smallest_blocking_question</code>, <code>run_allowed_check</code>, <code>request_approval</code>, <code>accepted_risk</code>, <code>blocked</code>.</li>
+<li>Revision budget: maximum two revise loops by default; one blocking question at a time; stop on approval boundary, secret/private-data risk, missing source-of-truth evidence, unavailable tools or repeated unsupported claim.</li>
+<li>UX and cost budget: use a lightweight pass for low/medium risk, a full pass for high-risk completion claims, keep user-visible output summary-first, keep detailed packets as companion evidence, and record skip reasons instead of silently omitting the gate.</li>
+<li>Handoff projection: packet fields map to existing <code>verified_claims</code>, <code>unsupported_claims</code>, <code>commands_run</code>, <code>verification_evidence</code>, <code>risks</code>, <code>next_agent_task</code> and <code>stop_reason</code> fields. Schema enforcement, route code, validators, templates and skill implementation are delivered by B40-S2 below; eval hardening remains B40-S3 work.</li>
+<li>No-unapproved-actions proof for S1: no plugin/runtime code was changed, no <code>completion-skeptic</code> skill was created, no artifact template or validator was added, no live server/browser/provider/live external model/API call ran, no target workspace was mutated, no canonical graph source changed, no hook/automation/MCP/Agents SDK runner was activated and no git stage/commit/push/PR was performed.</li>
+<li>Current verification evidence for this slice: <code>python -m unittest tests.product_agent_os.test_product_agent_os_docs -v</code> ran 76 tests with <code>OK</code>; <code>python tools\check_docs.py</code> returned <code>OK: documentation structure checks passed</code>; <code>git diff --check</code> exited <code>0</code>. Strict MkDocs is not routed for S1 because no MkDocs navigation, Mermaid diagram, Markdown extension, localized nav, search/sitemap or generated <code>site/</code> evidence changes are part of this slice.</li>
+<li>Residual risks: B40-S1 did not prove product usefulness, runtime behavior, validator enforcement, route recommendation, transcript quality, fake-evidence resistance, manual-pilot benefit or promotion readiness. B40-S2 and B40-S3 below now deliver plugin foundation plus eval hardening; B40-S4 through B40-S5 still own docs/site, pilots, final metrics review and closure.</li>
+<li>Next slice status: B40-S2 and B40-S3 have since been executed below; the next Batch 40 slice is B40-S4 docs/site and examples.</li>
+</ul>
+<p>B40-S2 implementation contract:</p>
+<ul>
+<li>Slice status: <code>implemented_plugin_foundation</code>.</li>
+<li>Scope implemented: <code>B40-DVL-M05..M10</code>, <code>B40-DVL-M26</code>, <code>B40-DVL-M27</code>, <code>B40-DVL-M30</code>, <code>B40-DVL-M35</code> and <code>B40-DVL-M36</code>.</li>
+<li>Implementation timestamp: <code>09-06-2026 18:32</code> <code>Europe/Moscow</code>.</li>
+<li>Source context used: B40-S1 contract, current Product-Agent OS runtime route contracts, status snapshot/dashboard generated-view rules, lifecycle handoff contract, task-matrix completion-report rules, Sagan read-only runtime/docs audit and local focused RED/GREEN tests.</li>
+<li>Files touched / work locations: <code>plugins/product-agent-os/scripts/product_agent_os/doubt_verification.py</code>, <code>plugins/product-agent-os/scripts/validate_doubt_verification_packet.py</code>, <code>plugins/product-agent-os/scripts/product_agent_os/validators.py</code>, <code>plugins/product-agent-os/scripts/codex_runtime_runner/contracts.py</code>, <code>plugins/product-agent-os/scripts/codex_runtime_runner/guards.py</code>, <code>plugins/product-agent-os/scripts/codex_runtime_runner/routes.py</code>, <code>plugins/product-agent-os/scripts/product_agent_os/status_snapshot.py</code>, <code>plugins/product-agent-os/scripts/product_agent_os/status_dashboard.py</code>, <code>plugins/product-agent-os/scripts/product_agent_os/templates.py</code>, <code>plugins/product-agent-os/assets/templates/artifact-templates/doubt-verification-packet.md</code>, <code>plugins/product-agent-os/assets/templates/automations/completion-skeptic-stop-reminder.md</code>, <code>plugins/product-agent-os/assets/templates/artifact-templates/task-matrix-plan.md</code>, <code>plugins/product-agent-os/skills/completion-skeptic/</code>, <code>plugins/product-agent-os/skills/references/handoff-contract.md</code>, <code>plugins/product-agent-os/README.md</code> and focused tests under <code>tests/product_agent_os/</code>.</li>
+<li>Technical result: the packet template, skill package, validator module/CLI, route-packet additive recommendation, runtime contract/guard validation, evidence provider policy, provenance checks, generated-view blocking, status snapshot/dashboard projection, candidate-only stop reminder and task-matrix/handoff mapping now exist in the plugin source.</li>
+<li>Product result: the user-visible "check again before claiming done" workflow has a reusable skill and proof packet, while missing checks, unsupported claims, accepted gaps and approval boundaries stay visible instead of becoming vague self-doubt prose.</li>
+<li>Route compatibility: <code>completion_skeptic_recommendation</code> is additive under <code>route_packet</code>; the primary lifecycle <code>recommended_skill</code>, <code>methodology_packet</code> and <code>finish_options</code> semantics are preserved.</li>
+<li>Evidence provider policy: source registry, local files, current commands, fixture evals, transcript evals, status snapshots, owner evidence and approved browser/runtime/web checks are represented as bounded providers; generated dashboards, generated site, reports and project graphs are orientation evidence only.</li>
+<li>Handoff projection: <code>doubt_verification_packet</code> maps to existing <code>verified_claims</code>, <code>unsupported_claims</code>, <code>commands_run</code>, <code>verification_evidence</code>, <code>risks</code>, <code>next_agent_task</code> and <code>stop_reason</code> fields through <code>handoff-contract.md</code>.</li>
+<li>Candidate-only automation boundary: <code>completion-skeptic-stop-reminder.md</code> is a staged inactive candidate with <code>schedule_status: not_created</code>; no hook, schedule, automation, MCP server or Agents SDK runner was activated.</li>
+<li>Current verification evidence for S2: focused post-source-sync suite ran 313 tests with <code>OK</code>; full unittest <code>python -m unittest discover -s tests -p "test_*.py" -v</code> ran 864 tests with <code>OK</code>; <code>python plugins\product-agent-os\scripts\run_fixture_eval.py</code> exited <code>0</code> with <code>renderer_file_count: 197</code>; transcript eval exited <code>0</code> with 19 sessions and 0 failures; <code>python plugins\product-agent-os\scripts\validate_codex_compatibility.py</code> returned <code>status: compatible</code> with 12 bundled skills; <code>python tools\check_docs.py</code> returned <code>OK</code>; <code>git diff --check</code> exited <code>0</code>.</li>
+<li>No-unapproved-actions proof for S2: no target workspace mutation, live server, browser automation, provider/live external model/API call, canonical graph mutation, active hook/automation/MCP/Agents SDK runner, external publication or git stage/commit/push/PR was performed.</li>
+<li>Residual risks: S2 did not yet prove transcript trigger quality, negative false-pass/false-rewrite behavior, adversarial fake-evidence resistance, public docs/site usefulness, manual pilot value, scorecard calibration or release readiness. B40-S3 below adds the eval/scorecard hardening layer; public docs/site, pilots and release readiness remain B40-S4/S5.</li>
+<li>Next slice: B40-S3 has since been executed below; B40-S4 should update docs/site, architecture diagrams and examples before any promotion beyond manual/internal skill use.</li>
+</ul>
+<p>B40-S2 row completion reports:</p>
+<ul>
+<li><code>B40-DVL-M05</code>: status <code>implemented</code>; description: staged <code>doubt-verification-packet.md</code> artifact template and renderer registration; technical value delivered: verifier output now has a reusable schema-aligned artifact target; product value delivered: users get a readable gap/proof packet with accepted gaps and generated-view boundary; evidence: template and infrastructure renderer tests in focused suite; residual risk: examples and public docs expansion remain S4/S5.</li>
+<li><code>B40-DVL-M06</code>: status <code>implemented</code>; description: packaged <code>completion-skeptic</code> skill with explicit trigger, boundaries, inputs, process, outputs, verification, failure modes and metadata; technical value delivered: the doubt loop is a repeatable skill rather than ad hoc prompting; product value delivered: "check again" produces consistent evidence-first output; evidence: lifecycle skill tests in focused suite; residual risk: transcript trigger eval remains S3.</li>
+<li><code>B40-DVL-M07</code>: status <code>implemented</code>; description: validator module and wrapper CLI for <code>doubt_verification_packet_v1</code>; technical value delivered: malformed packets, fake pass states, missing ledgers and unsafe local/private markers are blocked structurally; product value delivered: pass/revise labels are contract-checked before they are trusted; evidence: <code>test_doubt_verification</code> and validator tests in focused suite; residual risk: validator checks contract completeness, not semantic truth.</li>
+<li><code>B40-DVL-M08</code>: status <code>implemented</code>; description: additive <code>route_packet.completion_skeptic_recommendation</code> in the Codex runtime runner; technical value delivered: route output can recommend the skeptic gate without changing primary lifecycle routing or methodology packet schema; product value delivered: risky completion claims get a proactive next safe action; evidence: runtime contract, state route and guard tests in focused suite; residual risk: transcript route-quality cases remain S3.</li>
+<li><code>B40-DVL-M09</code>: status <code>implemented</code>; description: handoff mapping added through <code>completion-skeptic</code> skill and <code>handoff-contract.md</code>; technical value delivered: packet ledgers map to existing <code>verified_claims</code>, <code>unsupported_claims</code>, <code>commands_run</code>, <code>verification_evidence</code>, <code>risks</code>, <code>next_agent_task</code> and <code>stop_reason</code>; product value delivered: users receive actionable next tasks instead of a loose critique list; evidence: lifecycle/reference tests in focused suite; residual risk: fresh-context transcript handoff eval remains S3.</li>
+<li><code>B40-DVL-M10</code>: status <code>implemented</code>; description: status snapshot/dashboard projection for completion-skeptic verdicts; technical value delivered: generated status surfaces expose verdict, missing evidence, accepted gaps and safe next action while preserving generated-view-only policy; product value delivered: users can scan verified/revise/blocked/missing-evidence state; evidence: <code>test_status_snapshot</code> and <code>test_status_dashboard</code> in focused suite; residual risk: dashboard remains orientation evidence, not proof.</li>
+<li><code>B40-DVL-M26</code>: status <code>implemented</code>; description: evidence provider and check-routing policy encoded in <code>doubt_verification.py</code>; technical value delivered: allowed providers and statuses are bounded instead of free-text "use tools"; product value delivered: users see whether a check is available, missing, approval-required, not applicable or accepted as a gap; evidence: packet validator and route tests in focused suite; residual risk: browser/runtime/web providers stay approval-bound and are not auto-run.</li>
+<li><code>B40-DVL-M27</code>: status <code>implemented</code>; description: Doubt packet handoff projection integrated with the existing Product-Agent OS handoff contract; technical value delivered: no parallel evidence language is introduced; product value delivered: one coherent handoff survives role transitions; evidence: handoff reference and lifecycle tests in focused suite; residual risk: detailed packet must remain attached when handoff compression would hide gaps.</li>
+<li><code>B40-DVL-M30</code>: status <code>implemented</code>; description: provenance, freshness, redaction and generated-view/source-truth checks added to packet validation; technical value delivered: pass verdicts require current evidence or accepted gaps with provenance; product value delivered: users can distinguish checked-now, stale, inspection-only, blocked and accepted-gap states; evidence: validator tests in focused suite; residual risk: adversarial fake-evidence evals remain S3.</li>
+<li><code>B40-DVL-M35</code>: status <code>implemented</code>; description: candidate-only <code>completion-skeptic-stop-reminder.md</code> staged under automation candidates; technical value delivered: future enforcement path is documented without activation; product value delivered: user can distinguish manual skill, reminder candidate and active automation; evidence: infrastructure template tests in focused suite; residual risk: active hooks/automations require separate exact approval.</li>
+<li><code>B40-DVL-M36</code>: status <code>implemented</code>; description: task-matrix completion-report guidance now names <code>doubt_verification_packet</code>, unsupported claims, accepted gaps and no-unapproved-actions proof; technical value delivered: task rows cannot honestly claim completion without current evidence or accepted gaps; product value delivered: long-batch status remains inspectable instead of optimistic; evidence: infrastructure template tests and source docs sync; residual risk: dedicated <code>validate_task_matrix.py</code> fixture hardening remains outside S2.</li>
+</ul>
+<p>B40-S3 implementation contract:</p>
+<ul>
+<li>Slice status: <code>implemented_eval_hardening</code>.</li>
+<li>Scope implemented: <code>B40-DVL-M11..M15</code>, <code>B40-DVL-M33</code> and <code>B40-DVL-M34</code>.</li>
+<li>Implementation timestamp: <code>09-06-2026 19:18</code> <code>Europe/Moscow</code>.</li>
+<li>Source context used: B40-S1 architecture contract, B40-S2 plugin foundation, current packet validator and runtime route contracts, Batch 37 task-matrix completion-report policy, Euclid read-only transcript/behavioral audit and Averroes read-only scorecard/fixture audit.</li>
+<li>Files touched / work locations: <code>plugins/product-agent-os/scripts/product_agent_os/doubt_verification.py</code>, <code>plugins/product-agent-os/scripts/product_agent_os/behavioral_evals.py</code>, <code>plugins/product-agent-os/scripts/run_fixture_eval.py</code>, <code>plugins/product-agent-os/assets/templates/evals/behavioral-workflows.json</code>, <code>plugins/product-agent-os/assets/eval-fixtures/transcripts/product-agent-os-synthetic-sessions.json</code> and focused tests under <code>tests/product_agent_os/</code>.</li>
+<li>Technical result: validator guards now reject fake/unverified command evidence, pass verdicts blocked by approval, invalid user-claim provenance, code-behavior pass claims without command evidence and accepted-gap records without owner/reason/residual-risk/follow-up. Behavioral and transcript evals now include manual check-again trigger, false-pass, false-rewrite, source-sensitive docs/research, code/tool evidence, fake-evidence adversarial and scorecard-threshold cases.</li>
+<li>Product result: the user's "проверь ещё раз" workflow is covered as a packaged quality gate, and the gate now resists the two most harmful failure modes: confidently saying done without current evidence and rewriting/speculating before confirmed gaps exist.</li>
+<li>Fixture evidence added: <code>completion_skeptic_eval_hardening_present</code>, <code>completion_skeptic_scorecard_thresholds_present</code> and <code>completion_skeptic_fake_evidence_guards_present</code> are expected checks for the <code>python-app</code> fixture.</li>
+<li>Scorecard policy: <code>completion_skeptic_quality_scorecard</code> blocks promotion on false-pass, false-rewrite, low unsupported-claim catch rate, low missing-check catch rate, excessive accepted-gap rate, low user-revision acceptance or missing owner review; policy remains <code>manual_only_until_scorecard_and_owner_review_pass</code>.</li>
+<li>Current verification evidence for S3: RED focused suite first failed on missing scorecard import, absent behavioral cases, absent transcript sessions and absent fixture checks; after implementation, focused B40-S3 suite ran 31 tests with <code>OK</code>. Full unittest first caught stale infrastructure-template exact-set and unsafe-literal contracts; after repairing those contracts, focused B40 + infrastructure suite ran 117 tests with <code>OK</code>, <code>python -m unittest discover -s tests -p "test_*.py" -v</code> ran 867 tests with <code>OK</code>, fixture eval returned 91 records all OK with <code>renderer_file_count: 197</code> and all three <code>completion_skeptic_*</code> checks true, transcript eval returned 26 sessions and 0 failures, Codex compatibility returned <code>status: compatible</code>, <code>python tools\check_docs.py</code> returned <code>OK</code> and <code>git diff --check</code> exited <code>0</code>.</li>
+<li>No-unapproved-actions proof for S3: no target workspace mutation, live server, browser automation, provider/live external model/API call, canonical graph mutation, active hook/automation/MCP/Agents SDK runner, external publication or git stage/commit/push/PR was performed.</li>
+<li>Residual risks: deterministic transcript/behavioral evals do not prove semantic product usefulness; public docs/site, diagrams, examples, real manual pilots, scorecard calibration with pilot denominators and final go/no-go remain B40-S4/S5.</li>
+<li>Next slice: B40-S4 should update user-facing docs/site, architecture diagrams and examples for the implemented manual completion-skeptic gate.</li>
+</ul>
+<p>B40-S3 row completion reports:</p>
+<ul>
+<li><code>B40-DVL-M11</code>: status <code>implemented</code>; description: focused validator/schema/route policy tests and implementation guards for fake evidence, approval-blocked pass verdicts, code-behavior command evidence and accepted-gap required fields; evidence: focused B40-S3 suite ran 31 tests with <code>OK</code>; residual risk: unit tests do not prove product usefulness.</li>
+<li><code>B40-DVL-M12</code>: status <code>implemented</code>; description: manual "check again" behavioral and transcript coverage with <code>completion-skeptic</code> route, <code>doubt_verification_packet</code>, ledgers and source policy; evidence: focused B40-S3 suite ran 31 tests with <code>OK</code>; residual risk: real user phrasing variants need B40-S5 pilot evidence.</li>
+<li><code>B40-DVL-M13</code>: status <code>implemented</code>; description: false-pass and false-rewrite negative cases block generated-view/stale-evidence pass claims and no-rewrite-first violations; evidence: focused B40-S3 suite ran 31 tests with <code>OK</code>; residual risk: synthetic negative cases are not exhaustive.</li>
+<li><code>B40-DVL-M14</code>: status <code>implemented</code>; description: source-sensitive docs/research evals require official source or source registry evidence, community-claim <code>intake_only</code>, <code>needs_fresh_check</code>, assumptions, unsupported claims and missing context; evidence: focused B40-S3 suite ran 31 tests with <code>OK</code>; residual risk: fresh current-source checks require scoped browsing when executed.</li>
+<li><code>B40-DVL-M15</code>: status <code>implemented</code>; description: code/tool evidence evals and validator policy require command evidence or explicit accepted gap for code-behavior pass claims; evidence: focused B40-S3 suite ran 31 tests with <code>OK</code>; residual risk: project-specific runtime checks remain sandbox/approval-bound.</li>
+<li><code>B40-DVL-M33</code>: status <code>implemented</code>; description: scorecard thresholds and evaluation helper block promotion without owner review and acceptable false-pass, false-rewrite, catch-rate, accepted-gap and user-revision metrics; evidence: focused B40-S3 suite ran 31 tests with <code>OK</code>; residual risk: thresholds need pilot calibration.</li>
+<li><code>B40-DVL-M34</code>: status <code>implemented</code>; description: fake-evidence, prompt-injection and approval-bypass evals plus validator guards block invented command output and invalid provenance from becoming pass evidence; evidence: focused B40-S3 suite ran 31 tests with <code>OK</code>; residual risk: adversarial corpus must grow from real failures.</li>
+</ul>
+<p>B40-S4 implementation contract:</p>
+<ul>
+<li>Slice status: <code>implemented_docs_site_source_transfer</code>.</li>
+<li>Scope implemented: <code>B40-DVL-M16..M21</code>, <code>B40-DVL-M29</code>, <code>B40-DVL-M37</code> and <code>B40-DVL-M38</code>.</li>
+<li>Implementation timestamp: <code>10-06-2026 07:30</code> <code>Europe/Moscow</code>.</li>
+<li>Source context used: B40-S1 architecture contract, B40-S2 plugin foundation, B40-S3 eval hardening, Batch 40 source-transfer research artifacts, Bacon read-only docs/site/nav audit and current docs RED contract.</li>
+<li>Files touched / work locations: <code>docs/playbooks/doubt-verification-loop.md</code>, <code>docs/playbooks/doubt-verification-loop.en.md</code>, <code>docs/sources/product-agent-os-batch40-doubt-verifier-source-transfer.md</code>, <code>docs/sources/product-agent-os-batch40-doubt-verifier-source-transfer.en.md</code>, Product-Agent OS architecture/artifact/eval pages, prompting/context docs, agent-systems and workflow-to-skill docs, <code>mkdocs.yml</code>, <code>tools/check_docs.py</code>, source registry RU/EN, Track 10 backlog RU/EN, root control-plane files and generated <code>site/</code> output.</li>
+<li>Technical result: docs/site now expose the local/manual <code>completion-skeptic</code> architecture, packet lifecycle, examples, source-transfer claims, future Agents SDK output guardrail candidate boundary and generated-site navigation without activating runtime/provider/automation surfaces.</li>
+<li>Product result: users can learn how to use "check again" safely across docs/research, code, architecture, product planning, security/release and AI/eval work while seeing what remains pilot-only or approval-bound.</li>
+<li>Current verification evidence for S4: focused RED docs contract first failed on missing B40-S4 RU/EN playbook and source-transfer pages; focused B40-S4 GREEN docs contract passed; strict MkDocs rebuilt regular <code>site/</code> with ignored workspace-local <code>tmp\mkdocs_deps_b40s4</code> dependencies and exit <code>0</code>; generated-site language-switcher cleanup removed absolute <code>/en/</code> fallback links from English-original plan pages; final <code>python -m unittest tests.product_agent_os.test_product_agent_os_docs -v</code> ran 77 tests with <code>OK</code>; <code>python tools\check_docs.py</code> returned <code>OK</code>; <code>git diff --check</code> exited <code>0</code>.</li>
+<li>No-unapproved-actions proof for S4: no target workspace mutation, live server, browser automation, provider/live external model/API call, canonical graph mutation, active hook/automation/MCP/Agents SDK runner, external publication or git stage/commit/push/PR was performed.</li>
+<li>Residual risks: docs/site evidence does not prove real user value, semantic usefulness, pilot catch rates, scorecard calibration, automation readiness, release readiness or go/no-go closure. B40-S5 owns manual pilots, scorecard calibration and final decision.</li>
+</ul>
+<p>B40-S4 row completion reports:</p>
+<ul>
+<li><code>B40-DVL-M16</code>: status <code>implemented</code>; description: RU/EN Doubt / verifier loop playbook with triggers, workflow, packet excerpt, examples, failure modes and no-active-automation boundary; residual risk: real manual-pilot usefulness remains B40-S5.</li>
+<li><code>B40-DVL-M17</code>: status <code>implemented</code>; description: Completion-skeptic route diagram and packet lifecycle guidance added to Product-Agent OS architecture; residual risk: diagram is explanatory and not runtime proof.</li>
+<li><code>B40-DVL-M18</code>: status <code>implemented</code>; description: prompting/context docs now map verifier output to <code>doubt_verification_packet</code>, claim ledger, requirement ledger, evidence ledger, missing_context and accepted_gap; residual risk: fresh current-source checks remain tool/approval-bound.</li>
+<li><code>B40-DVL-M19</code>: status <code>implemented</code>; description: agent-systems and workflow-to-skill docs now document manual -&gt; playbook -&gt; skill -&gt; plugin -&gt; automation candidate promotion with owner review, failure log, eval cases, rollback and automation blockers; residual risk: automation remains candidate-only.</li>
+<li><code>B40-DVL-M20</code>: status <code>implemented</code>; description: registry/source boundaries now include B40-S4 docs/site and source-transfer entries; residual risk: community reports remain intake-only unless later verified.</li>
+<li><code>B40-DVL-M21</code>: status <code>implemented</code>; description: MkDocs RU/EN navigation and docs checker registration include B40-S4 playbook/source-transfer pages; generated <code>site/</code> is review output, not source truth; residual risk: no browser automation was run.</li>
+<li><code>B40-DVL-M29</code>: status <code>implemented</code>; description: future Agents SDK output guardrail candidate is documented with tripwire conditions and <code>no_live_sdk_runner_in_batch_40</code>; residual risk: no runner, MCP, tracing export or provider call was implemented.</li>
+<li><code>B40-DVL-M37</code>: status <code>implemented</code>; description: public synthetic examples cover docs/research, code, architecture, product planning, security/release and AI/eval work; residual risk: examples do not prove pilot usefulness.</li>
+<li><code>B40-DVL-M38</code>: status <code>implemented</code>; description: RU/EN source-transfer packet maps Chain-of-Verification, CRITIC, Self-Refine, intrinsic self-correction limitations, OpenAI Agents SDK guardrails and community check-again reports to trust level, verification status and transfer target; residual risk: no fresh network refresh was run in this docs slice.</li>
+</ul>
+<p>Batch 40 closure criteria: no claim that the Doubt / verifier loop is implemented, useful or ready for promotion is supported until Batch 40 has a validated packet schema, claim/evidence taxonomy, evidence provider registry, <code>completion-skeptic</code> skill, route recommendation, handoff mapping, provenance and stale-evidence checks, task-matrix completion-report integration, escalation ladder, cost/latency policy, negative evals for false pass/false rewrite, adversarial fake-evidence cases, source-sensitive and code/tool cases, docs/site updates with registry/source-transfer sync, at least one manual pilot with attempt/failure/fix/retest evidence, calibrated scorecard fields or an accepted metrics gap, candidate-only hook/guardrail boundaries, rollback/disable notes and final no-unapproved-actions proof. If those conditions are not met, Batch 40 must remain <code>planned</code>, <code>blocked</code>, <code>manual_only</code>, <code>accepted_gap</code> or <code>learning_only</code> rather than <code>ready</code>.</p>
 <p>Task 26 starts only after the verified Task 25 Batch 23 baseline remains current and the user gives explicit implementation approval for the next Task 26 batch. Planning matrix presence is not implementation evidence. The final acceptance gate is stricter than previous tasks: every Track 10 live/provider/mutation/real-testing-readiness/real-testing-execution row must be implemented and verified, explicitly disabled with rollback evidence, blocked by missing approval, or accepted as a documented owner gap. Batch 35 is the approval-bound real testing phase inside Task 26: it may start a local live server, run browser automation, call approved providers, perform accepted canonical graph mutation or run git release/PR actions only when each action has a separate explicit approval packet. After Task 26 closure, the next action is owner handoff or release follow-through, not <code>Task 27</code>, <code>Task 28</code> or another Track 10 implementation task.</p>
 <h2 id="execution-batches">Execution Batches<a class="headerlink" href="#execution-batches" title="Permanent link">&para;</a></h2>
 <h3 id="batch-1-question-protocol-foundation-t10-q-m-1m4">Batch 1: Question Protocol Foundation (<code>T10-Q-M-1..M4</code>)<a class="headerlink" href="#batch-1-question-protocol-foundation-t10-q-m-1m4" title="Permanent link">&para;</a></h3>

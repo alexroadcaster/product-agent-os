@@ -1,4 +1,4 @@
-
+﻿
 <!doctype html>
 <html lang="ru" class="no-js">
   <head>
@@ -480,6 +480,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -561,6 +563,27 @@
 
   <span class="md-ellipsis">
     Шаблон карточки источника
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="product-agent-os-batch40-doubt-verifier-source-transfer.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Batch 40 Doubt verifier source transfer
   </span>
 
 
@@ -2247,6 +2270,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2328,6 +2353,27 @@
 
   <span class="md-ellipsis">
     Grounded answering
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/doubt-verification-loop.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Doubt verification loop
   </span>
 
 
@@ -3351,7 +3397,7 @@
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">explicit_branch_creation_or_current_branch_push_policy</span>
 </code></pre></div>
 <p>M41 did not run <code>git add</code>, commit, push or PR creation. The git action remains blocked because the Batch 35 action matrix requires exact files, unrelated-change check, verification summary, commit message, push target, PR intent and release boundary, and project rules forbid creating or switching branches without explicit approval.</p>
-<p>T10-LIVE-M41 post-B38 audit: <code>dirty_file_count: 15 is historical Batch 35 evidence, not current release readiness</code>. This value is a <code>historical_preflight_snapshot</code>; B37/B38/B38-S1 do not close M41 and do not refresh the git release packet. A fresh preflight is required before any git write: current <code>git status --short</code>, unrelated-change check, exact file list, verification summary, release branch or push target, commit message, PR base/title/intent and explicit branch/current-branch policy.</p>
+<p>T10-LIVE-M41 post-B38 audit: <code>dirty_file_count: 15 is historical Batch 35 evidence, not current release readiness</code>. This value is a <code>historical_preflight_snapshot</code>; B37/B38/B38-S1 did not themselves close M41 or refresh the git release packet, while the later owner decision closed M41 as <code>owner_closed_no_op_git_release_pr</code>. A fresh preflight is required before any git write: current <code>git status --short</code>, unrelated-change check, exact file list, verification summary, release branch or push target, commit message, PR base/title/intent and explicit branch/current-branch policy.</p>
 <p>T10-LIVE-M41 owner closure addendum: the owner explicitly selected no git release/PR execution and closed M41 as <code>owner_closed_no_op_git_release_pr</code>. <code>git_stage_commit_push_pr_performed: false</code>, <code>branch_created: false</code>, <code>commit_created: false</code>, <code>push_performed: false</code>, <code>pull_request_created: false</code> and <code>future_git_write_requires_fresh_preflight: true</code> remain the release boundary.</p>
 <h2 id="residual-risks">Residual Risks<a class="headerlink" href="#residual-risks" title="Permanent link">&para;</a></h2>
 <ul>

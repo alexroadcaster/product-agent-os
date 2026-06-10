@@ -1,4 +1,4 @@
-
+﻿
 <!doctype html>
 <html lang="en" class="no-js">
   <head>
@@ -484,6 +484,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -565,6 +567,27 @@
 
   <span class="md-ellipsis">
     Source Card Template
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../sources/product-agent-os-batch40-doubt-verifier-source-transfer.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Batch 40 Doubt Verifier Source Transfer
   </span>
 
 
@@ -1564,6 +1587,30 @@
 </li>
 
         <li class="md-nav__item">
+  <a href="#completion-skeptic-route" class="md-nav__link">
+    <span class="md-ellipsis">
+      Completion-skeptic Route
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Completion-skeptic Route">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#agents-sdk-output-guardrail-candidate" class="md-nav__link">
+    <span class="md-ellipsis">
+      Agents SDK Output Guardrail Candidate
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#engineering-standards-route" class="md-nav__link">
     <span class="md-ellipsis">
       Engineering Standards Route
@@ -2435,6 +2482,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2516,6 +2565,27 @@
 
   <span class="md-ellipsis">
     Grounded Answering
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/doubt-verification-loop.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Doubt Verification Loop
   </span>
 
 
@@ -3073,6 +3143,30 @@
 </li>
 
         <li class="md-nav__item">
+  <a href="#completion-skeptic-route" class="md-nav__link">
+    <span class="md-ellipsis">
+      Completion-skeptic Route
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Completion-skeptic Route">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#agents-sdk-output-guardrail-candidate" class="md-nav__link">
+    <span class="md-ellipsis">
+      Agents SDK Output Guardrail Candidate
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#engineering-standards-route" class="md-nav__link">
     <span class="md-ellipsis">
       Engineering Standards Route
@@ -3265,6 +3359,21 @@
     L --&gt;|Yes| X["Specific approval boundary"]</code></pre>
 <h2 id="graph-and-live-boundary">Graph And Live Boundary<a class="headerlink" href="#graph-and-live-boundary" title="Permanent link">&para;</a></h2>
 <p>Generated project graphs, cockpit views, runtime summaries and analysis reports are orientation evidence. They help a worker find source files, stale assumptions and review targets, but they are not sources of truth. Any live runtime launch, browser automation, provider call, canonical graph mutation or git/release action needs a separate approval packet, current evidence and rollback or stop condition.</p>
+<h2 id="completion-skeptic-route">Completion-skeptic Route<a class="headerlink" href="#completion-skeptic-route" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>flowchart LR
+    W["worker_output"] --&gt; P["doubt_verification_packet"]
+    P --&gt; C["completion-skeptic"]
+    C --&gt; V{"verdict"}
+    V --&gt;|pass| A["final answer with evidence"]
+    V --&gt;|revise| R["reviser changes only confirmed gaps"]
+    V --&gt;|needs_more_context| Q["ask or record missing_context"]
+    V --&gt;|blocked_by_approval| B["stop at approval boundary"]
+    V --&gt;|accepted_risk| G["accepted_gap with owner and follow-up"]</code></pre>
+<p>The packet has a claim ledger, requirement ledger and evidence ledger. The claim ledger records supported, unsupported, contradicted and needs_fresh_check items. The requirement ledger keeps user requirements, non-goals and approval constraints visible. The evidence ledger records source registry, local files, current commands, evals, owner decisions or explicit missing checks.</p>
+<p>Completion-skeptic route is a manual/local Product-Agent OS gate, not a live runtime proof.</p>
+<p>The reviser changes only confirmed gaps. If the verifier finds only speculative concerns, the route returns residual risk instead of rewriting correct content.</p>
+<h3 id="agents-sdk-output-guardrail-candidate">Agents SDK Output Guardrail Candidate<a class="headerlink" href="#agents-sdk-output-guardrail-candidate" title="Permanent link">&para;</a></h3>
+<p>This is a design-only direction. The same packet can later become an Agents SDK output guardrail candidate with a tripwire for fake evidence, pass without evidence, approval-blocked pass, missing source status or unsafe private data. The current boundary: docs/site work does not create an Agents SDK runner, MCP server, tracing export, provider call or live guardrail.</p>
 <h2 id="engineering-standards-route">Engineering Standards Route<a class="headerlink" href="#engineering-standards-route" title="Permanent link">&para;</a></h2>
 <p>The engineering standards route maps workspace evidence to product, architecture, frontend, backend, API, data, AI/RAG, security, release and cross-domain gates. Detection creates <code>present_unverified</code>; readiness requires command evidence, runtime/eval proof, owner-reviewed evidence or an accepted gap.</p>
 <h2 id="lifecycle-routing">Lifecycle Routing<a class="headerlink" href="#lifecycle-routing" title="Permanent link">&para;</a></h2>

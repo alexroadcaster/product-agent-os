@@ -74,6 +74,7 @@ plugins:
                 - Source Registry: sources/registry.md
                 - Context7 Analysis: sources/context7-research.md
                 - Source Card Template: sources/source-card-template.md
+                - Batch 40 Doubt Verifier Source Transfer: sources/product-agent-os-batch40-doubt-verifier-source-transfer.md
             - Codex:
                 - Overview: codex/overview.md
                 - Work Surfaces: codex/surfaces.md
@@ -141,6 +142,7 @@ plugins:
                 - Research Loop: playbooks/research-loop.md
                 - Context7 Deep Research: playbooks/context7-deep-research.md
                 - Grounded Answering: playbooks/grounded-answering.md
+                - Doubt Verification Loop: playbooks/doubt-verification-loop.md
                 - Build Full Feature: playbooks/build-full-feature.md
                 - Workflow To Skill: playbooks/workflow-to-skill.md
                 - Use Case To Plugin: playbooks/use-case-to-plugin.md
@@ -204,6 +206,7 @@ nav:
       - Реестр источников: sources/registry.md
       - Анализ Context7: sources/context7-research.md
       - Шаблон карточки источника: sources/source-card-template.md
+      - Batch 40 Doubt verifier source transfer: sources/product-agent-os-batch40-doubt-verifier-source-transfer.md
   - Codex:
       - Обзор: codex/overview.md
       - Поверхности работы: codex/surfaces.md
@@ -271,6 +274,7 @@ nav:
       - Research loop: playbooks/research-loop.md
       - Context7 deep research: playbooks/context7-deep-research.md
       - Grounded answering: playbooks/grounded-answering.md
+      - Doubt verification loop: playbooks/doubt-verification-loop.md
       - Build full feature: playbooks/build-full-feature.md
       - Workflow to skill: playbooks/workflow-to-skill.md
       - Use case to plugin: playbooks/use-case-to-plugin.md

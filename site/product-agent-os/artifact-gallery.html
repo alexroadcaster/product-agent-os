@@ -1,4 +1,4 @@
-
+﻿
 <!doctype html>
 <html lang="ru" class="no-js">
   <head>
@@ -484,6 +484,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -565,6 +567,27 @@
 
   <span class="md-ellipsis">
     Шаблон карточки источника
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../sources/product-agent-os-batch40-doubt-verifier-source-transfer.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Batch 40 Doubt verifier source transfer
   </span>
 
 
@@ -1234,6 +1257,15 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       Как читать результаты
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#completion-skeptic-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Completion-skeptic examples
     </span>
   </a>
 
@@ -2336,6 +2368,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2417,6 +2451,27 @@
 
   <span class="md-ellipsis">
     Grounded answering
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/doubt-verification-loop.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Doubt verification loop
   </span>
 
 
@@ -2965,6 +3020,15 @@
 </li>
 
         <li class="md-nav__item">
+  <a href="#completion-skeptic-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Completion-skeptic examples
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       Связанные страницы
@@ -3077,9 +3141,67 @@
 <li>После этого проверьте boundary: что этот результат доказывает, а что только помогает увидеть.</li>
 <li>В конце берите ближайшее безопасное действие, а не всю карту проекта сразу.</li>
 </ol>
+<h2 id="completion-skeptic-examples">Completion-skeptic examples<a class="headerlink" href="#completion-skeptic-examples" title="Permanent link">&para;</a></h2>
+<p>Эти completion-skeptic examples синтетические и source-safe. Они показывают, как <code>doubt_verification_packet</code> меняет final answer style без заявления, что pilot value уже доказан.</p>
+<table>
+<thead>
+<tr>
+<th>Example id</th>
+<th>Artifact type</th>
+<th>Trigger</th>
+<th>Packet excerpt</th>
+<th>Verdict</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>docs_research_example</code></td>
+<td>Docs/research answer</td>
+<td>"Check sources"</td>
+<td>source registry evidence, community <code>intake_only</code>, <code>needs_fresh_check</code> for current facts</td>
+<td><code>revise</code> if unsupported claims are present</td>
+</tr>
+<tr>
+<td><code>code_check_example</code></td>
+<td>Code/change claim</td>
+<td>"Done?"</td>
+<td>command evidence, missing lint/test checks, approval boundary</td>
+<td><code>blocked_by_approval</code> or <code>accepted_risk</code> when checks cannot run</td>
+</tr>
+<tr>
+<td><code>architecture_review_example</code></td>
+<td>Architecture/spec</td>
+<td>"Did we miss anything?"</td>
+<td>requirement ledger, non-goals, dependencies, rollback gaps</td>
+<td><code>revise</code> only confirmed architecture gaps</td>
+</tr>
+<tr>
+<td><code>product_planning_example</code></td>
+<td>Product plan</td>
+<td>"Check the matrix"</td>
+<td>acceptance criteria, user value, stop conditions, dependencies</td>
+<td><code>revise</code> for missing tasks or <code>accepted_risk</code> for scoped cuts</td>
+</tr>
+<tr>
+<td><code>security_release_example</code></td>
+<td>Security/release</td>
+<td>"Can we ship?"</td>
+<td>source status, rollback, no-unapproved-actions proof, owner approval</td>
+<td><code>blocked_by_approval</code> until release evidence exists</td>
+</tr>
+<tr>
+<td><code>ai_eval_example</code></td>
+<td>AI/eval work</td>
+<td>"Check quality"</td>
+<td>baseline/current eval, scorecard thresholds, false pass/rewrite signals</td>
+<td>manual-only until scorecard and owner review</td>
+</tr>
+</tbody>
+</table>
 <h2 id="_3">Связанные страницы<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="artifact-contracts.html">Artifact Contracts</a> описывает форматы JSON, HTML и ledger-пакетов.</li>
+<li><a href="../playbooks/doubt-verification-loop.html">Doubt verification loop</a> показывает manual workflow behind these examples.</li>
 <li><a href="project-code-graph.html">Project Code Graph</a> объясняет generated graph, cockpit и query packets.</li>
 <li><a href="methodology-intelligence.html">Methodology Intelligence</a> показывает, как подбираются DDD, TDD, ADD, FSD и другие методологии.</li>
 <li><a href="approval-bound-real-testing.html">Approval-Bound Real Testing</a> фиксирует границы runtime, browser, provider, mutation и git actions.</li>

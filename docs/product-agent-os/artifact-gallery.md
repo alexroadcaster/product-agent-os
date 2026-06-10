@@ -24,9 +24,23 @@ Source status: `official + experiment`
 3. После этого проверьте boundary: что этот результат доказывает, а что только помогает увидеть.
 4. В конце берите ближайшее безопасное действие, а не всю карту проекта сразу.
 
+## Completion-skeptic examples
+
+Эти completion-skeptic examples синтетические и source-safe. Они показывают, как `doubt_verification_packet` меняет final answer style без заявления, что pilot value уже доказан.
+
+| Example id | Artifact type | Trigger | Packet excerpt | Verdict |
+| --- | --- | --- | --- | --- |
+| `docs_research_example` | Docs/research answer | "Check sources" | source registry evidence, community `intake_only`, `needs_fresh_check` for current facts | `revise` if unsupported claims are present |
+| `code_check_example` | Code/change claim | "Done?" | command evidence, missing lint/test checks, approval boundary | `blocked_by_approval` or `accepted_risk` when checks cannot run |
+| `architecture_review_example` | Architecture/spec | "Did we miss anything?" | requirement ledger, non-goals, dependencies, rollback gaps | `revise` only confirmed architecture gaps |
+| `product_planning_example` | Product plan | "Check the matrix" | acceptance criteria, user value, stop conditions, dependencies | `revise` for missing tasks or `accepted_risk` for scoped cuts |
+| `security_release_example` | Security/release | "Can we ship?" | source status, rollback, no-unapproved-actions proof, owner approval | `blocked_by_approval` until release evidence exists |
+| `ai_eval_example` | AI/eval work | "Check quality" | baseline/current eval, scorecard thresholds, false pass/rewrite signals | manual-only until scorecard and owner review |
+
 ## Связанные страницы
 
 - [Artifact Contracts](artifact-contracts.md) описывает форматы JSON, HTML и ledger-пакетов.
+- [Doubt verification loop](../playbooks/doubt-verification-loop.md) показывает manual workflow behind these examples.
 - [Project Code Graph](project-code-graph.md) объясняет generated graph, cockpit и query packets.
 - [Methodology Intelligence](methodology-intelligence.md) показывает, как подбираются DDD, TDD, ADD, FSD и другие методологии.
 - [Approval-Bound Real Testing](approval-bound-real-testing.md) фиксирует границы runtime, browser, provider, mutation и git actions.

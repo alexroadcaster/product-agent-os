@@ -59,6 +59,12 @@ Guided question protocol uses typed `question_queue` packets. The first response
 
 Expected behavior: one blocking question maximum, no broad methodology interview, no full queue dump in first response, no dashboard-as-source-of-truth and no success claim from stale evidence.
 
+## Completion-skeptic Eval Coverage
+
+The local eval suite adds deterministic coverage for the manual "check again" route. Current cases include `completion-skeptic-check-again-trigger`, `completion-skeptic-false-pass-blocked`, `completion-skeptic-false-rewrite-blocked`, `completion-skeptic-source-sensitive-docs`, `completion-skeptic-code-tool-evidence`, `completion-skeptic-fake-evidence-adversarial` and `completion-skeptic-scorecard-thresholds`.
+
+These cases require a `doubt_verification_packet`, no-rewrite-first behavior, source/evidence ledgers and fake-evidence resistance. The scorecard thresholds remain manual-only until pilot denominators, user-revision acceptance and owner review are recorded.
+
 ## Self-Verification Metrics Loop
 
 `agent_skill_metrics_loop` is a staged self-verification metrics loop for agents, skills, prompt/policy packs, router/tool policy and harness-version review. Expected behavior starts with a read-only target registry, trace intake, dataset quality blockers, local grader outputs, grader/judge calibration, cadence recommendation levels `L0`, `L1`, `L2` and `L3`, scorecard ledger, `agent-skill-evaluation-report.html` and modernization candidates with evidence, rollback and owner-review state.

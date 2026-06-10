@@ -75,6 +75,12 @@ Output:
 - verdict: pass | fail | needs_more_context
 ```
 
+## Doubt Verification Packet
+
+For Product-Agent OS, a verifier should return a `doubt_verification_packet`, not free-form advice. The packet contains a claim ledger, requirement ledger, evidence ledger, missing_context, accepted_gap and final verdict.
+
+Claim statuses are `supported | unsupported | contradicted | needs_fresh_check`. Verifier must not repair before evidence: it first records the gap, source and risk, then the reviser changes only confirmed gaps. If evidence is unavailable, the final answer should name the missing check or approval boundary instead of a completion claim.
+
 ## Hallucination score
 
 The Cookbook approach can be adapted into a simple scale:
@@ -97,4 +103,3 @@ Refusal or clarification is better than an answer when:
 - sources contradict each other;
 - the user asks for exact versions, prices, dates or legal/medical/financial advice without fresh verification;
 - schema forcing makes the model choose from false options.
-

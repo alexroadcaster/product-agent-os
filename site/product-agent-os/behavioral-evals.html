@@ -1,4 +1,4 @@
-
+﻿
 <!doctype html>
 <html lang="ru" class="no-js">
   <head>
@@ -484,6 +484,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -565,6 +567,27 @@
 
   <span class="md-ellipsis">
     Шаблон карточки источника
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../sources/product-agent-os-batch40-doubt-verifier-source-transfer.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Batch 40 Doubt verifier source transfer
   </span>
 
 
@@ -1549,6 +1572,15 @@
 </li>
 
         <li class="md-nav__item">
+  <a href="#completion-skeptic-eval-coverage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Completion-skeptic eval coverage
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#self-verification-metrics-loop" class="md-nav__link">
     <span class="md-ellipsis">
       Self-verification metrics loop
@@ -2399,6 +2431,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2480,6 +2514,27 @@
 
   <span class="md-ellipsis">
     Grounded answering
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/doubt-verification-loop.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Doubt verification loop
   </span>
 
 
@@ -3064,6 +3119,15 @@
 </li>
 
         <li class="md-nav__item">
+  <a href="#completion-skeptic-eval-coverage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Completion-skeptic eval coverage
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#self-verification-metrics-loop" class="md-nav__link">
     <span class="md-ellipsis">
       Self-verification metrics loop
@@ -3325,6 +3389,9 @@
 <p>Behavioral cases включают <code>guided-question-smallest-blocking-question</code>, <code>guided-question-no-broad-methodology-interview</code>, <code>status-dashboard-generated-view-only</code>, <code>status-dashboard-stale-evidence-no-success-claim</code> и <code>runtime-first-response-no-question-dump</code>.</p>
 <p>Ожидаемое поведение: один blocking question maximum, нет broad methodology interview, нет full queue dump в first response, нет dashboard-as-source-of-truth и нет success claim из stale evidence.</p>
 <p>Этот status dashboard stages <code>.codex/product-agent-os/status.html</code> и <code>.codex/product-agent-os/status.json</code> из <code>status_snapshot</code>. Dashboard HTML является generated view поверх underlying artifacts, не editable database и не является каноническим источником. Stale или inspection-only evidence не может produce success claim.</p>
+<h2 id="completion-skeptic-eval-coverage">Completion-skeptic eval coverage<a class="headerlink" href="#completion-skeptic-eval-coverage" title="Permanent link">&para;</a></h2>
+<p>Локальный eval suite добавляет deterministic coverage для ручного маршрута "проверь еще раз". Текущие cases: <code>completion-skeptic-check-again-trigger</code>, <code>completion-skeptic-false-pass-blocked</code>, <code>completion-skeptic-false-rewrite-blocked</code>, <code>completion-skeptic-source-sensitive-docs</code>, <code>completion-skeptic-code-tool-evidence</code>, <code>completion-skeptic-fake-evidence-adversarial</code> и <code>completion-skeptic-scorecard-thresholds</code>.</p>
+<p>Эти cases требуют <code>doubt_verification_packet</code>, no-rewrite-first behavior, source/evidence ledgers и fake-evidence resistance. Scorecard thresholds remain manual-only до записи pilot denominators, user-revision acceptance и owner review.</p>
 <h2 id="self-verification-metrics-loop">Self-verification metrics loop<a class="headerlink" href="#self-verification-metrics-loop" title="Permanent link">&para;</a></h2>
 <p><code>agent_skill_metrics_loop</code> является staged self-verification metrics loop для agents, skills, prompt/policy packs, router/tool policy и harness-version review. Ожидаемое поведение начинается с read-only target registry, trace intake, dataset quality blockers, local grader outputs, grader/judge calibration, cadence recommendation levels <code>L0</code>, <code>L1</code>, <code>L2</code> и <code>L3</code>, scorecard ledger, <code>agent-skill-evaluation-report.html</code> и modernization candidates с evidence, rollback и owner-review state.</p>
 <p>Политика канонического источника является частью eval contract: control-plane artifacts, запуск records, trace/eval packets и accepted gaps являются allowed evidence; generated dashboard/report HTML, memory, raw chat logs и unsupported community claims не являются evidence. Every metrics report является staged evidence only, и report является не является каноническим источником.</p>

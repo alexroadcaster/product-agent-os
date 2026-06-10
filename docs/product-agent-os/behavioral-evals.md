@@ -76,6 +76,12 @@ Behavioral cases включают `guided-question-smallest-blocking-question`, 
 
 Этот status dashboard stages `.codex/product-agent-os/status.html` и `.codex/product-agent-os/status.json` из `status_snapshot`. Dashboard HTML является generated view поверх underlying artifacts, не editable database и не является каноническим источником. Stale или inspection-only evidence не может produce success claim.
 
+## Completion-skeptic eval coverage
+
+Локальный eval suite добавляет deterministic coverage для ручного маршрута "проверь еще раз". Текущие cases: `completion-skeptic-check-again-trigger`, `completion-skeptic-false-pass-blocked`, `completion-skeptic-false-rewrite-blocked`, `completion-skeptic-source-sensitive-docs`, `completion-skeptic-code-tool-evidence`, `completion-skeptic-fake-evidence-adversarial` и `completion-skeptic-scorecard-thresholds`.
+
+Эти cases требуют `doubt_verification_packet`, no-rewrite-first behavior, source/evidence ledgers и fake-evidence resistance. Scorecard thresholds remain manual-only до записи pilot denominators, user-revision acceptance и owner review.
+
 ## Self-verification metrics loop
 
 `agent_skill_metrics_loop` является staged self-verification metrics loop для agents, skills, prompt/policy packs, router/tool policy и harness-version review. Ожидаемое поведение начинается с read-only target registry, trace intake, dataset quality blockers, local grader outputs, grader/judge calibration, cadence recommendation levels `L0`, `L1`, `L2` и `L3`, scorecard ledger, `agent-skill-evaluation-report.html` и modernization candidates с evidence, rollback и owner-review state.

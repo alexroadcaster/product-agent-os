@@ -135,6 +135,7 @@ If a public page references a graph, dashboard, cockpit, scorecard or report, it
 
 - [Technical details and installation](technical.md) - real files, commands, capabilities and install boundary.
 - [Artifact Gallery](artifact-gallery.md) - user-facing outputs and their trust boundary.
+- [Doubt / verifier loop](../playbooks/doubt-verification-loop.md) - how `completion-skeptic` uses a `doubt_verification_packet` before final completion claims.
 - [Real-Project Pilot](real-project-pilot.md) - first-run operator packet, target consent matrix, success metrics and evidence ledger for a safe real-project pilot.
 - [Engineering standards layer](development-standards.md) - how the plugin applies DDD/FSD/TDD/ADD, docs-as-code and eval-driven quality without turning them into dogma.
 - [Methodology intelligence](methodology-intelligence.md) - read-only audit, Delivery Map, recommendations, owner questions and staged artifact boundary.
@@ -143,6 +144,12 @@ If a public page references a graph, dashboard, cockpit, scorecard or report, it
 - [Codex compatibility](codex-compatibility.md) - Codex App, CLI, IDE extension, `.codex-plugin`, skills, MCP and staged hooks support boundary.
 - [Diagrams and operating principles](architecture.md) - state routing, staged-first merge, approval gates and runtime runner flow.
 - [Product-Agent Workflows](../product-agent/overview.md) - general operating model without coupling to the plugin package.
+
+## Doubt / verifier loop
+
+Doubt / verifier loop is the manual and local-plugin completion gate for "check again" work. The user-facing route is [doubt-verification-loop.md](../playbooks/doubt-verification-loop.md): `completion-skeptic` reads a `doubt_verification_packet`, checks claims, requirements, evidence and accepted gaps, then returns pass, revise, needs_more_context, blocked_by_approval or accepted_risk.
+
+This page only points to the gate. The documentation records the generated `site` view; manual pilots, scorecard calibration and any promotion beyond internal/manual use remain a separate stage.
 
 ## Inputs
 

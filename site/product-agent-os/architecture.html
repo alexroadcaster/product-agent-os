@@ -1,4 +1,4 @@
-
+﻿
 <!doctype html>
 <html lang="ru" class="no-js">
   <head>
@@ -484,6 +484,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -565,6 +567,27 @@
 
   <span class="md-ellipsis">
     Шаблон карточки источника
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../sources/product-agent-os-batch40-doubt-verifier-source-transfer.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Batch 40 Doubt verifier source transfer
   </span>
 
 
@@ -1573,6 +1596,30 @@
 </li>
 
         <li class="md-nav__item">
+  <a href="#completion-skeptic-route" class="md-nav__link">
+    <span class="md-ellipsis">
+      Completion-skeptic route
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Completion-skeptic route">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#agents-sdk-output-guardrail-candidate" class="md-nav__link">
+    <span class="md-ellipsis">
+      Agents SDK output guardrail candidate
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#engineering-standards-route" class="md-nav__link">
     <span class="md-ellipsis">
       Engineering Standards Route
@@ -2408,6 +2455,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2489,6 +2538,27 @@
 
   <span class="md-ellipsis">
     Grounded answering
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/doubt-verification-loop.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Doubt verification loop
   </span>
 
 
@@ -3055,6 +3125,30 @@
 </li>
 
         <li class="md-nav__item">
+  <a href="#completion-skeptic-route" class="md-nav__link">
+    <span class="md-ellipsis">
+      Completion-skeptic route
+    </span>
+  </a>
+
+    <nav class="md-nav" aria-label="Completion-skeptic route">
+      <ul class="md-nav__list">
+
+          <li class="md-nav__item">
+  <a href="#agents-sdk-output-guardrail-candidate" class="md-nav__link">
+    <span class="md-ellipsis">
+      Agents SDK output guardrail candidate
+    </span>
+  </a>
+
+</li>
+
+      </ul>
+    </nav>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#engineering-standards-route" class="md-nav__link">
     <span class="md-ellipsis">
       Engineering Standards Route
@@ -3342,6 +3436,21 @@
 </tr>
 </tbody>
 </table>
+<h2 id="completion-skeptic-route">Completion-skeptic route<a class="headerlink" href="#completion-skeptic-route" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>flowchart LR
+    W["worker_output"] --&gt; P["doubt_verification_packet"]
+    P --&gt; C["completion-skeptic"]
+    C --&gt; V{"verdict"}
+    V --&gt;|pass| A["final answer with evidence"]
+    V --&gt;|revise| R["reviser changes only confirmed gaps"]
+    V --&gt;|needs_more_context| Q["ask or record missing_context"]
+    V --&gt;|blocked_by_approval| B["stop at approval boundary"]
+    V --&gt;|accepted_risk| G["accepted_gap with owner and follow-up"]</code></pre>
+<p>Packet содержит <code>claim ledger</code>, <code>requirement ledger</code> и <code>evidence ledger</code>. <code>claim ledger</code> фиксирует <code>supported</code>, <code>unsupported</code>, <code>contradicted</code> и <code>needs_fresh_check</code>; <code>requirement ledger</code> держит видимыми user requirements, non-goals и approval constraints; <code>evidence ledger</code> указывает на source registry, local files, current commands, evals, owner decisions или explicit missing checks.</p>
+<p>Completion-skeptic route - ручной и локальный gate Product-Agent OS, а не live runtime proof.</p>
+<p>Reviser changes only confirmed gaps. Если verifier находит только speculative concerns, route возвращает residual risk вместо rewrite корректного content.</p>
+<h3 id="agents-sdk-output-guardrail-candidate">Agents SDK output guardrail candidate<a class="headerlink" href="#agents-sdk-output-guardrail-candidate" title="Permanent link">&para;</a></h3>
+<p>Это design-only направление. Тот же packet позже может стать Agents SDK output guardrail candidate с <code>tripwire</code> для fake evidence, pass without evidence, approval-blocked pass, missing source status или unsafe private data. Текущая граница: docs/site work не создает Agents SDK runner, MCP server, tracing export, provider call или live guardrail.</p>
 <h2 id="engineering-standards-route">Engineering Standards Route<a class="headerlink" href="#engineering-standards-route" title="Permanent link">&para;</a></h2>
 <pre class="mermaid"><code>flowchart LR
     S["Workspace signals"] --&gt; A["REQUIREMENTS.md hypothesis и metrics"]

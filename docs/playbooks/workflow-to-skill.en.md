@@ -42,6 +42,12 @@ flowchart LR
     P --> A["Automation candidate"]
 ```
 
+For `completion-skeptic`, the same path is mandatory: manual -> playbook -> skill -> plugin -> automation candidate. The failure log must capture false pass, false rewrite, fake evidence, missing checks, accepted gaps and owner review. Eval cases must cover trigger and non-trigger behavior before any automation candidate is promoted.
+
+Automation blockers: no schedule, hook, MCP server, Agents SDK runner, provider call or external write is allowed without separate approval, rollback/disable path and scorecard evidence.
+
+Use lowercase contract labels in handoffs when needed: eval cases and automation blockers.
+
 ## Candidate product skills
 
 - `product-spec-writer`
@@ -51,4 +57,3 @@ flowchart LR
 - `eval-loop-runner`
 - `ui-visual-reviewer`
 - `workspace-readiness-auditor`
-

@@ -24,9 +24,23 @@ This page shows the reviewable outputs a user normally gets from Product-Agent O
 3. Check the trust boundary: what the output proves and what it only helps review.
 4. Take the nearest safe action instead of treating the whole project map as a command.
 
+## Completion-skeptic Examples
+
+These completion-skeptic examples are synthetic and source-safe. They show how a `doubt_verification_packet` changes final answer style without claiming that pilot value is proven.
+
+| Example id | Artifact type | Trigger | Packet excerpt | Verdict |
+| --- | --- | --- | --- | --- |
+| `docs_research_example` | Docs/research answer | "Check sources" | source registry evidence, community `intake_only`, `needs_fresh_check` for current facts | `revise` if unsupported claims are present |
+| `code_check_example` | Code/change claim | "Done?" | command evidence, missing lint/test checks, approval boundary | `blocked_by_approval` or `accepted_risk` when checks cannot run |
+| `architecture_review_example` | Architecture/spec | "Did we miss anything?" | requirement ledger, non-goals, dependencies, rollback gaps | `revise` only confirmed architecture gaps |
+| `product_planning_example` | Product plan | "Check the matrix" | acceptance criteria, user value, stop conditions, dependencies | `revise` for missing tasks or `accepted_risk` for scoped cuts |
+| `security_release_example` | Security/release | "Can we ship?" | source status, rollback, no-unapproved-actions proof, owner approval | `blocked_by_approval` until release evidence exists |
+| `ai_eval_example` | AI/eval work | "Check quality" | baseline/current eval, scorecard thresholds, false pass/rewrite signals | manual-only until scorecard and owner review |
+
 ## Related Pages
 
 - [Artifact Contracts](artifact-contracts.md) describes JSON, HTML and ledger packet formats.
+- [Doubt verification loop](../playbooks/doubt-verification-loop.md) shows the manual workflow behind these examples.
 - [Project Code Graph](project-code-graph.md) explains the generated graph, cockpit and query packets.
 - [Methodology Intelligence](methodology-intelligence.md) shows how DDD, TDD, ADD, FSD and other methods are selected.
 - [Approval-Bound Real Testing](approval-bound-real-testing.md) fixes the runtime, browser, provider, mutation and git action boundaries.

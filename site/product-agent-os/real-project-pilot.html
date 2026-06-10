@@ -1,4 +1,4 @@
-
+﻿
 <!doctype html>
 <html lang="ru" class="no-js">
   <head>
@@ -484,6 +484,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -565,6 +567,27 @@
 
   <span class="md-ellipsis">
     Шаблон карточки источника
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../sources/product-agent-os-batch40-doubt-verifier-source-transfer.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Batch 40 Doubt verifier source transfer
   </span>
 
 
@@ -1351,9 +1374,27 @@
 </li>
 
         <li class="md-nav__item">
+  <a href="#rollback-and-cache-recovery-procedure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rollback And Cache Recovery Procedure
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#what-not-to-expect" class="md-nav__link">
     <span class="md-ellipsis">
       What Not To Expect
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#target-specific-pilot-evidence" class="md-nav__link">
+    <span class="md-ellipsis">
+      Target-Specific Pilot Evidence
     </span>
   </a>
 
@@ -2363,6 +2404,8 @@
 
 
 
+
+
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
 
 
@@ -2444,6 +2487,27 @@
 
   <span class="md-ellipsis">
     Grounded answering
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/doubt-verification-loop.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Doubt verification loop
   </span>
 
 
@@ -3019,9 +3083,27 @@
 </li>
 
         <li class="md-nav__item">
+  <a href="#rollback-and-cache-recovery-procedure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rollback And Cache Recovery Procedure
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
   <a href="#what-not-to-expect" class="md-nav__link">
     <span class="md-ellipsis">
       What Not To Expect
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#target-specific-pilot-evidence" class="md-nav__link">
+    <span class="md-ellipsis">
+      Target-Specific Pilot Evidence
     </span>
   </a>
 
@@ -3297,6 +3379,47 @@
 </tbody>
 </table>
 <p>The harness must not become active automation, a live server launcher, a provider gateway, a browser runner, a canonical graph writer, an external writer or a git release tool. It may propose those actions only as separate approval packets.</p>
+<h2 id="rollback-and-cache-recovery-procedure">Rollback And Cache Recovery Procedure<a class="headerlink" href="#rollback-and-cache-recovery-procedure" title="Permanent link">&para;</a></h2>
+<p>РџРµСЂРµРґ production pilot РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ РїРѕРЅСЏС‚РЅС‹Р№ rollback/remove path РґР»СЏ plugin Рё local cache. Р­С‚Р° РїСЂРѕС†РµРґСѓСЂР° РЅРµ РґР°РµС‚ approval РЅР° deletion, cache mutation, global config mutation, hook activation/deactivation, automation, publication РёР»Рё git action. РћРЅР° РѕРїРёСЃС‹РІР°РµС‚, С‡С‚Рѕ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ РїРѕРґС‚РІРµСЂР¶РґРµРЅРѕ РґРѕ РѕС‚РґРµР»СЊРЅРѕРіРѕ owner approval.</p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Required boundary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pre_rollback_read_only_inspection</code></td>
+<td>РџСЂРѕРІРµСЂРёС‚СЊ installed plugin cache path, package name/version, expected file count, skill count, manifest, <code>.mcp.json</code>, backup path, staged source digest Рё active hook/automation status.</td>
+</tr>
+<tr>
+<td><code>rollback_evidence_preservation</code></td>
+<td>РЎРѕС…СЂР°РЅРёС‚СЊ approval text, inspected paths, before/after counts, command transcript, backup pointer, moved-aside path Рё residual risks РІ staged evidence destination.</td>
+</tr>
+<tr>
+<td><code>installed_plugin_remove_path</code></td>
+<td>Р›СЋР±РѕР№ remove РґРµР»Р°РµС‚СЃСЏ С‡РµСЂРµР· move-aside/quarantine С‚РѕР»СЊРєРѕ РґР»СЏ exact approved version path; silent delete РЅРµ РґРѕРїСѓСЃРєР°РµС‚СЃСЏ.</td>
+</tr>
+<tr>
+<td><code>stale_cache_restore_path</code></td>
+<td>Restore РґРѕРїСѓСЃС‚РёРј С‚РѕР»СЊРєРѕ РёР· named backup, РїСЂРёРІСЏР·Р°РЅРЅРѕРіРѕ Рє evidence; РїРѕСЃР»Рµ restore РЅСѓР¶РЅС‹ file/skill count Рё manifest checks.</td>
+</tr>
+<tr>
+<td><code>cache_clear_recovery_path</code></td>
+<td>Cache clear/replace РґРѕРїСѓСЃС‚РёРј С‚РѕР»СЊРєРѕ РґР»СЏ exact cache root Рё version id; path РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ resolved Рё РїСЂРѕРІРµСЂРµРЅ РґРѕ write.</td>
+</tr>
+<tr>
+<td><code>disable_hooks_automations_if_ever_approved</code></td>
+<td>Р•СЃР»Рё hooks РёР»Рё automations РєРѕРіРґР°-Р»РёР±Рѕ Р±С‹Р»Рё Р°РєС‚РёРІРёСЂРѕРІР°РЅС‹, disable path РґРѕР»Р¶РµРЅ РЅР°Р·С‹РІР°С‚СЊ exact surface, owner, command boundary, evidence target Рё rollback owner.</td>
+</tr>
+<tr>
+<td><code>post_restore_verification</code></td>
+<td>РџРѕСЃР»Рµ approved mutation РЅСѓР¶РЅС‹ cache inspection, Codex compatibility smoke, docs/test checks when docs changed, diff hygiene Рё recorded residual risks.</td>
+</tr>
+</tbody>
+</table>
+<p>Stop immediately on missing owner approval, unresolved path outside the approved cache root, missing backup, digest/count mismatch, request for destructive delete, active automation without owner, secret/customer data in evidence, external write request, provider/API call, live server/browser request, canonical mutation or git stage/commit/push/PR request.</p>
 <h2 id="what-not-to-expect">What Not To Expect<a class="headerlink" href="#what-not-to-expect" title="Permanent link">&para;</a></h2>
 <ul>
 <li>No automatic installation, publication or plugin-cache refresh.</li>
@@ -3308,6 +3431,51 @@
 <li>No external writes or active automation.</li>
 <li>No git stage/commit/push/PR.</li>
 </ul>
+<h2 id="target-specific-pilot-evidence">Target-Specific Pilot Evidence<a class="headerlink" href="#target-specific-pilot-evidence" title="Permanent link">&para;</a></h2>
+<p>Первый owner-approved docs-only pilot addendum <code>B38-PILOT-NF01</code> выполнен read-only на target label <code>Neural_Flow</code>. Durable docs не сохраняют absolute user-specific target path; evidence хранится как workspace-local staged output.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>target_class</code></td>
+<td>docs-only / legacy onboarding</td>
+</tr>
+<tr>
+<td><code>staged_evidence_root</code></td>
+<td><code>tmp/neural-flow-product-agent-os-pilot-20260608-191510</code></td>
+</tr>
+<tr>
+<td><code>usage_mode</code></td>
+<td><code>legacy_onboarding</code> после clean docs-only intent</td>
+</tr>
+<tr>
+<td><code>complexity_profile</code></td>
+<td><code>guided-small</code></td>
+</tr>
+<tr>
+<td><code>source_policy_status</code></td>
+<td><code>blocked</code></td>
+</tr>
+<tr>
+<td><code>staged_outputs</code></td>
+<td>infrastructure, status dashboard and project graph validated outside the target</td>
+</tr>
+<tr>
+<td><code>target_apply_status</code></td>
+<td>blocked until target source-policy/control-plane cleanup</td>
+</tr>
+<tr>
+<td><code>target_workspace_mutation_performed</code></td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+<p>Что это доказывает: Product-Agent OS после local cache refresh способен выполнить read-only discovery, methodology audit, runtime routing, staged artifact rendering and static content checks на реальном docs-only target. Что это не доказывает: production readiness, public/team release readiness, target apply safety или product success. Следующий безопасный target step: добавить или принять gaps для <code>Source status</code>, source registry/control-plane ownership и smallest local verification contract в самом target.</p>
 <h2 id="verification">Verification<a class="headerlink" href="#verification" title="Permanent link">&para;</a></h2>
 <p>For docs-only pilot design changes, use docs contract tests, documentation structure checks, strict MkDocs when navigation/search/sitemap changes and diff hygiene. For any future real pilot execution, add target-specific command evidence, owner approval, rollback proof and redaction review before claiming readiness.</p>
 <h2 id="next-action">Next Action<a class="headerlink" href="#next-action" title="Permanent link">&para;</a></h2>
