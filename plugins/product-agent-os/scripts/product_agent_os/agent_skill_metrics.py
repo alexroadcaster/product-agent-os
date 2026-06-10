@@ -918,6 +918,67 @@ def build_scorecard_ledger_record(
     return _redacted_dict(packet)
 
 
+def build_completion_skeptic_metrics_loop_record(
+    *,
+    generated_at: str,
+    pilot_ledger: dict[str, Any],
+    scorecard_calibration: dict[str, Any],
+    closure_packet: dict[str, Any],
+    evidence_links: list[str] | None = None,
+) -> dict[str, Any]:
+    """Adapt completion-skeptic calibration evidence into the append-only metrics ledger."""
+
+    metric_evidence = scorecard_calibration.get("metric_evidence")
+    raw_counts = _json_ready(metric_evidence if isinstance(metric_evidence, dict) else {})
+    record = build_scorecard_ledger_record(
+        ledger_id="completion_skeptic_scorecard_calibration",
+        generated_at=generated_at,
+        baseline_version={"completion-skeptic": "manual-loop"},
+        current_version={"completion-skeptic": "b40-s5"},
+        candidate_version={"completion-skeptic": "manual-only"},
+        run_record_ids=[
+            str(pilot_ledger.get("ledger_id") or "completion_skeptic_manual_pilot_ledger"),
+            str(scorecard_calibration.get("calibration_id") or "completion_skeptic_scorecard_calibration"),
+            str(closure_packet.get("packet_id") or "completion_skeptic_go_no_go_closure"),
+        ],
+        raw_counts=raw_counts,
+        evidence_links=evidence_links or [],
+        redaction_status="ready",
+        report_anchors=["#completion-skeptic-b40-s5"],
+    )
+    record.update(
+        {
+            "target": {
+                "target_id": "skill:completion-skeptic",
+                "target_type": "manual_verifier_loop",
+                "pilot_scope": str(pilot_ledger.get("pilot_scope") or "unknown"),
+            },
+            "decision_status": str(closure_packet.get("decision_status") or "manual_only"),
+            "promotion_status": str(closure_packet.get("promotion_status") or "not_promoted"),
+            "pilot_denominators": {
+                "sample_size": int(pilot_ledger.get("sample_size") or 0),
+                "scenario_mix": _json_ready(pilot_ledger.get("archetype_counts") or {}),
+                "owner_review_status": str(scorecard_calibration.get("owner_review_status") or "missing"),
+                "no_unapproved_actions": bool(pilot_ledger.get("no_unapproved_actions")),
+            },
+            "blocked_promotions": [
+                "automation",
+                "MCP",
+                "Agents SDK runner",
+                "provider_call",
+                "browser_automation",
+                "target_apply",
+                "canonical_mutation",
+                "git_release",
+            ],
+            "next_approval_needs": sorted(str(item) for item in closure_packet.get("next_approval_needs", [])),
+            "update_policy": "staged_evidence_only_no_auto_apply",
+            "source_policy": "append_only_metrics_evidence_not_source_of_truth",
+        }
+    )
+    return _redacted_dict(record)
+
+
 def render_scorecard_ledger_markdown(record: dict[str, Any]) -> str:
     """Render a scorecard ledger entry as Markdown suitable for append-only storage."""
 

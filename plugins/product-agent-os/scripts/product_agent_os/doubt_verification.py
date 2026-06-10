@@ -142,9 +142,13 @@ COMPLETION_SKEPTIC_SCORECARD_THRESHOLDS = {
     "max_false_rewrite_rate": 0.0,
     "min_unsupported_claim_catch_rate": 0.95,
     "min_missing_check_catch_rate": 0.90,
+    "min_evidence_sufficiency_rate": 0.90,
     "max_accepted_gap_rate": 0.30,
     "min_user_revision_acceptance_rate": 0.75,
+    "min_revision_usefulness_rate": 0.75,
 }
+COMPLETION_SKEPTIC_REQUIRED_PILOT_ARCHETYPES = ("docs_research", "code_check", "expected_block")
+COMPLETION_SKEPTIC_REQUIRED_CLOSURE_ROWS = ("B40-DVL-M22", "B40-DVL-M23", "B40-DVL-M24")
 LOCAL_PATH_PATTERN = re.compile(r"(?:[A-Za-z]:[/\\]|[/\\]Users[/\\]|[/\\]home[/\\]|\\\\)")
 
 
@@ -404,13 +408,19 @@ def evaluate_completion_skeptic_scorecard(
         for row in rows
         if _truthy(row.get("user_revision_offered")) and _truthy(row.get("user_revision_accepted"))
     )
+    evidence_total = sum(1 for row in rows if "evidence_sufficient" in row)
+    evidence_sufficient = sum(1 for row in rows if "evidence_sufficient" in row and _truthy(row.get("evidence_sufficient")))
+    usefulness_total = sum(1 for row in rows if "revision_useful" in row)
+    usefulness_count = sum(1 for row in rows if "revision_useful" in row and _truthy(row.get("revision_useful")))
     metrics = {
         "false_pass_rate": _rate(sum(1 for row in rows if _truthy(row.get("false_pass"))), sample_size),
         "false_rewrite_rate": _rate(sum(1 for row in rows if _truthy(row.get("false_rewrite"))), sample_size),
         "unsupported_claim_catch_rate": _rate(unsupported_caught, unsupported_total),
         "missing_check_catch_rate": _rate(missing_caught, missing_total),
+        "evidence_sufficiency_rate": _rate(evidence_sufficient, evidence_total) if evidence_total else 1.0,
         "accepted_gap_rate": _rate(sum(1 for row in rows if _truthy(row.get("accepted_gap"))), sample_size),
         "user_revision_acceptance_rate": _rate(revision_accepted, revision_total),
+        "revision_usefulness_rate": _rate(usefulness_count, usefulness_total) if usefulness_total else 1.0,
     }
     blockers: list[str] = []
     if sample_size < int(active_thresholds["min_sample_size"]):
@@ -425,10 +435,14 @@ def evaluate_completion_skeptic_scorecard(
         blockers.append("unsupported_claim_catch_rate_below_threshold")
     if metrics["missing_check_catch_rate"] < float(active_thresholds["min_missing_check_catch_rate"]):
         blockers.append("missing_check_catch_rate_below_threshold")
+    if metrics["evidence_sufficiency_rate"] < float(active_thresholds["min_evidence_sufficiency_rate"]):
+        blockers.append("evidence_sufficiency_rate_below_threshold")
     if metrics["accepted_gap_rate"] > float(active_thresholds["max_accepted_gap_rate"]):
         blockers.append("accepted_gap_rate_above_threshold")
     if metrics["user_revision_acceptance_rate"] < float(active_thresholds["min_user_revision_acceptance_rate"]):
         blockers.append("user_revision_acceptance_rate_below_threshold")
+    if metrics["revision_usefulness_rate"] < float(active_thresholds["min_revision_usefulness_rate"]):
+        blockers.append("revision_usefulness_rate_below_threshold")
     return {
         "schema_version": 1,
         "scorecard_id": "completion_skeptic_quality_scorecard",
@@ -439,6 +453,251 @@ def evaluate_completion_skeptic_scorecard(
         "blockers": blockers,
         "owner_review_status": owner_review_status,
         "promotion_policy": "manual_only_until_scorecard_and_owner_review_pass",
+    }
+
+
+def build_completion_skeptic_pilot_ledger(
+    records: list[dict[str, Any]] | None,
+    *,
+    pilot_scope: str = "synthetic_local",
+    owner_review_status: str = "missing",
+) -> dict[str, Any]:
+    rows = [record for record in records or [] if isinstance(record, dict)]
+    archetype_counts: dict[str, int] = {}
+    for row in rows:
+        archetype = _string(row.get("archetype") or row.get("artifact_type") or "unknown")
+        archetype_counts[archetype] = archetype_counts.get(archetype, 0) + 1
+
+    missing_required = sorted(
+        archetype
+        for archetype in COMPLETION_SKEPTIC_REQUIRED_PILOT_ARCHETYPES
+        if archetype_counts.get(archetype, 0) == 0
+    )
+    summary = {
+        "attempt_count": sum(1 for row in rows if _truthy(row.get("attempt_recorded", True))),
+        "failure_count": sum(1 for row in rows if _truthy(row.get("failure_recorded"))),
+        "fix_count": sum(1 for row in rows if _truthy(row.get("fix_recorded"))),
+        "retest_count": sum(1 for row in rows if _truthy(row.get("retest_recorded"))),
+        "false_positive_count": sum(1 for row in rows if _truthy(row.get("false_positive"))),
+        "false_pass_count": sum(1 for row in rows if _truthy(row.get("false_pass"))),
+        "false_rewrite_count": sum(1 for row in rows if _truthy(row.get("false_rewrite"))),
+        "evidence_sufficient_count": sum(1 for row in rows if _truthy(row.get("evidence_sufficient"))),
+        "owner_accepted_gap_count": sum(
+            1 for row in rows if _truthy(row.get("owner_accepted_gap")) or _truthy(row.get("accepted_gap"))
+        ),
+        "unapproved_action_count": sum(1 for row in rows if _truthy(row.get("unapproved_action_performed"))),
+    }
+    blockers: list[str] = []
+    if len(rows) < int(COMPLETION_SKEPTIC_SCORECARD_THRESHOLDS["min_sample_size"]):
+        blockers.append("sample_size_below_threshold")
+    if missing_required:
+        blockers.append("required_pilot_archetype_missing")
+    if summary["unapproved_action_count"]:
+        blockers.append("unapproved_action_recorded")
+    if owner_review_status not in {"owner_reviewed", "accepted_gap"}:
+        blockers.append("owner_review_or_gap_missing")
+    return {
+        "schema_version": 1,
+        "ledger_id": "completion_skeptic_manual_pilot_ledger",
+        "pilot_scope": pilot_scope,
+        "decision_status": "blocked_by_pilot_ledger" if blockers else "pilot_evidence_recorded",
+        "sample_size": len(rows),
+        "required_archetypes": list(COMPLETION_SKEPTIC_REQUIRED_PILOT_ARCHETYPES),
+        "archetype_counts": archetype_counts,
+        "missing_required_archetypes": missing_required,
+        "summary": summary,
+        "blockers": blockers,
+        "owner_review_status": owner_review_status,
+        "no_unapproved_actions": summary["unapproved_action_count"] == 0,
+        "promotion_boundary": (
+            "manual_only_synthetic_pilots_do_not_prove_release"
+            if pilot_scope == "synthetic_local"
+            else "manual_only_until_owner_release_approval"
+        ),
+    }
+
+
+def build_completion_skeptic_scorecard_calibration(
+    records: list[dict[str, Any]] | None,
+    *,
+    thresholds: dict[str, float] | None = None,
+    owner_review_status: str = "missing",
+    pilot_scope: str = "synthetic_local",
+) -> dict[str, Any]:
+    rows = [record for record in records or [] if isinstance(record, dict)]
+    scorecard = evaluate_completion_skeptic_scorecard(
+        rows,
+        thresholds=thresholds,
+        owner_review_status=owner_review_status,
+    )
+    metric_evidence = _completion_skeptic_metric_evidence(rows)
+    blockers = list(scorecard.get("blockers", []))
+    missing_denominators = sorted(
+        metric for metric, evidence in metric_evidence.items() if _int(evidence.get("denominator")) <= 0
+    )
+    if missing_denominators:
+        blockers.append("metric_denominator_missing")
+    if pilot_scope == "synthetic_local":
+        decision_status = "calibrated_with_accepted_metrics_gap" if not blockers else "blocked_by_calibration"
+        promotion_policy = "manual_only_synthetic_calibration_gap"
+    else:
+        decision_status = "calibrated" if not blockers else "blocked_by_calibration"
+        promotion_policy = "manual_only_until_owner_review_and_release_approval"
+    return {
+        "schema_version": 1,
+        "calibration_id": "completion_skeptic_scorecard_calibration",
+        "pilot_scope": pilot_scope,
+        "decision_status": decision_status,
+        "scorecard": scorecard,
+        "metric_evidence": metric_evidence,
+        "missing_denominators": missing_denominators,
+        "blockers": blockers,
+        "owner_review_status": owner_review_status,
+        "promotion_policy": promotion_policy,
+    }
+
+
+def build_completion_skeptic_go_no_go_packet(
+    *,
+    pilot_ledger: dict[str, Any],
+    scorecard_calibration: dict[str, Any],
+    implemented_rows: list[str] | None,
+    verification_evidence: list[str] | None,
+    docs_site_state: dict[str, Any] | None,
+    no_unapproved_actions: bool,
+    owner_review_status: str = "missing",
+) -> dict[str, Any]:
+    row_set = set(implemented_rows or [])
+    missing_rows = sorted(row for row in COMPLETION_SKEPTIC_REQUIRED_CLOSURE_ROWS if row not in row_set)
+    docs_state = docs_site_state if isinstance(docs_site_state, dict) else {}
+    blockers: list[str] = []
+    if missing_rows:
+        blockers.append("required_rows_missing")
+    if pilot_ledger.get("decision_status") != "pilot_evidence_recorded":
+        blockers.append("pilot_ledger_not_ready")
+    if scorecard_calibration.get("decision_status") not in {"calibrated", "calibrated_with_accepted_metrics_gap"}:
+        blockers.append("scorecard_calibration_not_ready")
+    if not verification_evidence:
+        blockers.append("verification_evidence_missing")
+    if not docs_state.get("source_docs_synced"):
+        blockers.append("source_docs_not_synced")
+    if docs_state.get("generated_site_is_source_of_truth"):
+        blockers.append("generated_site_claimed_as_source_of_truth")
+    if not no_unapproved_actions or not pilot_ledger.get("no_unapproved_actions"):
+        blockers.append("unapproved_action_recorded")
+    if owner_review_status not in {"owner_reviewed", "accepted_gap"}:
+        blockers.append("owner_review_or_gap_missing")
+
+    synthetic_scope = pilot_ledger.get("pilot_scope") == "synthetic_local" or scorecard_calibration.get("pilot_scope") == "synthetic_local"
+    if blockers:
+        decision_status = "blocked"
+    elif synthetic_scope:
+        decision_status = "manual_only"
+    else:
+        decision_status = "ready_for_owner_go_no_go"
+    return {
+        "schema_version": 1,
+        "packet_id": "completion_skeptic_go_no_go_closure",
+        "decision_status": decision_status,
+        "promotion_status": "not_promoted",
+        "implemented_rows": sorted(row_set),
+        "missing_rows": missing_rows,
+        "pilot_ledger_id": pilot_ledger.get("ledger_id"),
+        "scorecard_calibration_id": scorecard_calibration.get("calibration_id"),
+        "verification_evidence": verification_evidence or [],
+        "docs_site_state": docs_state,
+        "blockers": blockers,
+        "no_unapproved_actions_proof": {
+            "status": bool(no_unapproved_actions and pilot_ledger.get("no_unapproved_actions")),
+            "policy": "no external/provider/browser/live-server/canonical/git/hook/automation action without exact approval",
+        },
+        "rollback_disable_path": "keep completion-skeptic manual-only; remove candidate reminder/template references before any future activation",
+        "next_approval_needs": [
+            "exact_owner_approval_for_release_or_automation",
+            "exact_owner_approval_for_git_stage_commit_push_pr",
+            "exact_owner_approval_for_real_project_pilots",
+        ],
+        "rollout_boundary": "manual_only_until_real_pilots_owner_review_and_explicit_release_approval",
+        "owner_review_status": owner_review_status,
+    }
+
+
+def _completion_skeptic_metric_evidence(rows: list[dict[str, Any]]) -> dict[str, dict[str, int]]:
+    sample_size = len(rows)
+    unsupported_total = sum(1 for row in rows if _truthy(row.get("unsupported_claim_present")))
+    missing_total = sum(1 for row in rows if _truthy(row.get("missing_check_present")))
+    evidence_total = sum(1 for row in rows if "evidence_sufficient" in row)
+    revision_total = sum(1 for row in rows if _truthy(row.get("user_revision_offered")))
+    usefulness_total = sum(1 for row in rows if "revision_useful" in row)
+    return {
+        "false_pass_rate": {
+            "numerator": sum(1 for row in rows if _truthy(row.get("false_pass"))),
+            "denominator": sample_size,
+        },
+        "false_rewrite_rate": {
+            "numerator": sum(1 for row in rows if _truthy(row.get("false_rewrite"))),
+            "denominator": sample_size,
+        },
+        "unsupported_claim_catch_rate": {
+            "numerator": sum(
+                1
+                for row in rows
+                if _truthy(row.get("unsupported_claim_present")) and _truthy(row.get("unsupported_claim_caught"))
+            ),
+            "denominator": unsupported_total,
+        },
+        "missing_check_catch_rate": {
+            "numerator": sum(
+                1
+                for row in rows
+                if _truthy(row.get("missing_check_present")) and _truthy(row.get("missing_check_caught"))
+            ),
+            "denominator": missing_total,
+        },
+        "evidence_sufficiency_rate": {
+            "numerator": sum(
+                1 for row in rows if "evidence_sufficient" in row and _truthy(row.get("evidence_sufficient"))
+            ),
+            "denominator": evidence_total,
+        },
+        "accepted_gap_rate": {
+            "numerator": sum(1 for row in rows if _truthy(row.get("accepted_gap"))),
+            "denominator": sample_size,
+        },
+        "owner_accepted_gap_rate": {
+            "numerator": sum(
+                1 for row in rows if _truthy(row.get("owner_accepted_gap")) or _truthy(row.get("accepted_gap"))
+            ),
+            "denominator": sample_size,
+        },
+        "user_revision_acceptance_rate": {
+            "numerator": sum(
+                1
+                for row in rows
+                if _truthy(row.get("user_revision_offered")) and _truthy(row.get("user_revision_accepted"))
+            ),
+            "denominator": revision_total,
+        },
+        "revision_usefulness_rate": {
+            "numerator": sum(1 for row in rows if "revision_useful" in row and _truthy(row.get("revision_useful"))),
+            "denominator": usefulness_total,
+        },
+        "expected_block_caught_rate": {
+            "numerator": sum(
+                1
+                for row in rows
+                if _string(row.get("archetype")) == "expected_block" and not _truthy(row.get("false_pass"))
+            ),
+            "denominator": sum(1 for row in rows if _string(row.get("archetype")) == "expected_block"),
+        },
+        "approval_bypass_blocked_count": {
+            "numerator": sum(1 for row in rows if _truthy(row.get("approval_bypass_blocked"))),
+            "denominator": sample_size,
+        },
+        "unapproved_action_count": {
+            "numerator": sum(1 for row in rows if _truthy(row.get("unapproved_action_performed"))),
+            "denominator": sample_size,
+        },
     }
 
 

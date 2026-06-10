@@ -16,6 +16,9 @@ from product_agent_os.doubt_verification import (  # noqa: E402
     COMPLETION_SKEPTIC_SCORECARD_THRESHOLDS,
     DOUBT_SOURCE_POLICY,
     DOUBT_VERIFICATION_PACKET_SCHEMA_VERSION,
+    build_completion_skeptic_go_no_go_packet,
+    build_completion_skeptic_pilot_ledger,
+    build_completion_skeptic_scorecard_calibration,
     evaluate_completion_skeptic_scorecard,
     validate_doubt_verification_packet,
 )
@@ -2192,6 +2195,15 @@ def _expected_checks(
         )
         checks["completion_skeptic_fake_evidence_guards_present"] = (
             _completion_skeptic_fake_evidence_guards_present()
+        )
+        checks["completion_skeptic_manual_pilot_ledger_present"] = (
+            _completion_skeptic_manual_pilot_ledger_present()
+        )
+        checks["completion_skeptic_scorecard_calibration_present"] = (
+            _completion_skeptic_scorecard_calibration_present()
+        )
+        checks["completion_skeptic_go_no_go_closure_present"] = (
+            _completion_skeptic_go_no_go_closure_present()
         )
         checks["question_budget_false_positive_guard_present"] = (
             _question_budget_false_positive_guard_present()
@@ -8039,6 +8051,176 @@ def _completion_skeptic_fake_evidence_guards_present() -> bool:
         "completion-skeptic-fake-evidence-adversarial",
     }
     return expected_errors.issubset(errors) and terms.issubset(set(_present_terms(payload, terms)))
+
+
+def _completion_skeptic_manual_pilot_ledger_present() -> bool:
+    records = _completion_skeptic_pilot_records()
+    ledger = build_completion_skeptic_pilot_ledger(
+        records,
+        pilot_scope="synthetic_local",
+        owner_review_status="accepted_gap",
+    )
+    paths = [
+        PLUGIN_ROOT / "scripts" / "product_agent_os" / "doubt_verification.py",
+        PROJECT_ROOT / "tests" / "product_agent_os" / "test_doubt_verification.py",
+        PROJECT_ROOT / "docs" / "sources" / "product-agent-os-batch40-doubt-verifier-pilot-closure.md",
+    ]
+    if any(not path.exists() for path in paths):
+        return False
+    payload = "\n".join(path.read_text(encoding="utf-8") for path in paths).lower()
+    terms = {
+        "completion_skeptic_manual_pilot_ledger",
+        "docs_research",
+        "code_check",
+        "expected_block",
+        "attempt/failure/fix/retest",
+        "manual_only_synthetic_pilots_do_not_prove_release",
+        "no_unapproved_actions",
+    }
+    return (
+        ledger.get("decision_status") == "pilot_evidence_recorded"
+        and ledger.get("missing_required_archetypes") == []
+        and ledger.get("no_unapproved_actions") is True
+        and set(terms).issubset(set(_present_terms(payload, terms)))
+    )
+
+
+def _completion_skeptic_scorecard_calibration_present() -> bool:
+    records = _completion_skeptic_pilot_records()
+    calibration = build_completion_skeptic_scorecard_calibration(
+        records,
+        owner_review_status="accepted_gap",
+        pilot_scope="synthetic_local",
+    )
+    paths = [
+        PLUGIN_ROOT / "scripts" / "product_agent_os" / "doubt_verification.py",
+        PROJECT_ROOT / "tests" / "product_agent_os" / "test_doubt_verification.py",
+        PROJECT_ROOT / "docs" / "sources" / "product-agent-os-batch40-doubt-verifier-pilot-closure.md",
+    ]
+    if any(not path.exists() for path in paths):
+        return False
+    payload = "\n".join(path.read_text(encoding="utf-8") for path in paths).lower()
+    terms = {
+        "completion_skeptic_scorecard_calibration",
+        "pilot_denominators",
+        "false_pass_rate",
+        "false_rewrite_rate",
+        "evidence_sufficiency_rate",
+        "missing_check_catch_rate",
+        "accepted_gap_rate",
+        "user_revision_acceptance_rate",
+        "revision_usefulness_rate",
+        "manual_only_synthetic_calibration_gap",
+    }
+    metric_names = {
+        "false_pass_rate",
+        "false_rewrite_rate",
+        "evidence_sufficiency_rate",
+        "missing_check_catch_rate",
+        "accepted_gap_rate",
+        "user_revision_acceptance_rate",
+        "revision_usefulness_rate",
+    }
+    metric_evidence = calibration.get("metric_evidence", {})
+    denominator_rich = all(
+        isinstance(metric_evidence.get(metric), dict)
+        and "numerator" in metric_evidence[metric]
+        and "denominator" in metric_evidence[metric]
+        for metric in metric_names
+    )
+    return (
+        calibration.get("decision_status") == "calibrated_with_accepted_metrics_gap"
+        and denominator_rich
+        and set(terms).issubset(set(_present_terms(payload, terms)))
+    )
+
+
+def _completion_skeptic_go_no_go_closure_present() -> bool:
+    records = _completion_skeptic_pilot_records()
+    ledger = build_completion_skeptic_pilot_ledger(
+        records,
+        pilot_scope="synthetic_local",
+        owner_review_status="accepted_gap",
+    )
+    calibration = build_completion_skeptic_scorecard_calibration(
+        records,
+        owner_review_status="accepted_gap",
+        pilot_scope="synthetic_local",
+    )
+    closure = build_completion_skeptic_go_no_go_packet(
+        pilot_ledger=ledger,
+        scorecard_calibration=calibration,
+        implemented_rows=["B40-DVL-M22", "B40-DVL-M23", "B40-DVL-M24"],
+        verification_evidence=["python -m unittest tests.product_agent_os.test_doubt_verification -v"],
+        docs_site_state={
+            "source_docs_synced": True,
+            "site_rebuild_required": False,
+            "generated_site_is_source_of_truth": False,
+        },
+        no_unapproved_actions=True,
+        owner_review_status="accepted_gap",
+    )
+    paths = [
+        PLUGIN_ROOT / "scripts" / "product_agent_os" / "doubt_verification.py",
+        PROJECT_ROOT / "tests" / "product_agent_os" / "test_doubt_verification.py",
+        PROJECT_ROOT / "docs" / "sources" / "product-agent-os-batch40-doubt-verifier-pilot-closure.md",
+    ]
+    if any(not path.exists() for path in paths):
+        return False
+    payload = "\n".join(path.read_text(encoding="utf-8") for path in paths).lower()
+    terms = {
+        "completion_skeptic_go_no_go_closure",
+        "manual_only",
+        "not_promoted",
+        "rollback_disable_path",
+        "exact_owner_approval_for_release_or_automation",
+        "not_ready_for_automation_or_release",
+    }
+    return (
+        closure.get("decision_status") == "manual_only"
+        and closure.get("promotion_status") == "not_promoted"
+        and closure.get("missing_rows") == []
+        and closure.get("no_unapproved_actions_proof", {}).get("status") is True
+        and set(terms).issubset(set(_present_terms(payload, terms)))
+    )
+
+
+def _completion_skeptic_pilot_records() -> list[dict[str, Any]]:
+    records = []
+    archetypes = [
+        "docs_research",
+        "code_check",
+        "expected_block",
+        "docs_research",
+        "code_check",
+    ]
+    for index, archetype in enumerate(archetypes):
+        records.append(
+            {
+                "pilot_id": f"synthetic-pilot-{index + 1}",
+                "archetype": archetype,
+                "attempt_recorded": True,
+                "failure_recorded": index in {1, 2},
+                "fix_recorded": index in {1, 2},
+                "retest_recorded": True,
+                "false_pass": False,
+                "false_positive": index == 3,
+                "false_rewrite": False,
+                "unsupported_claim_present": True,
+                "unsupported_claim_caught": True,
+                "missing_check_present": True,
+                "missing_check_caught": True,
+                "evidence_sufficient": True,
+                "accepted_gap": index == 0,
+                "owner_accepted_gap": index == 0,
+                "user_revision_offered": True,
+                "user_revision_accepted": True,
+                "revision_useful": True,
+                "approval_bypass_blocked": archetype == "expected_block",
+                "unapproved_action_performed": False,
+            }
+        )
+    return records
 
 
 def _completion_skeptic_valid_doubt_packet() -> dict[str, Any]:

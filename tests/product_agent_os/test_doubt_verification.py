@@ -14,6 +14,9 @@ from product_agent_os.doubt_verification import (  # noqa: E402
     COMPLETION_SKEPTIC_RECOMMENDATION_LIMITS,
     COMPLETION_SKEPTIC_SCORECARD_THRESHOLDS,
     DOUBT_VERIFICATION_PACKET_SCHEMA_VERSION,
+    build_completion_skeptic_go_no_go_packet,
+    build_completion_skeptic_pilot_ledger,
+    build_completion_skeptic_scorecard_calibration,
     evaluate_completion_skeptic_scorecard,
     validate_completion_skeptic_recommendation_packet,
     validate_doubt_verification_packet,
@@ -192,6 +195,87 @@ class DoubtVerificationTest(unittest.TestCase):
             with self.subTest(expected=expected):
                 self.assertIn(expected, blocked["blockers"])
 
+    def test_completion_skeptic_pilot_ledger_calibration_and_go_no_go_keep_manual(self):
+        records = _completion_skeptic_pilot_records()
+
+        ledger = build_completion_skeptic_pilot_ledger(
+            records,
+            pilot_scope="synthetic_local",
+            owner_review_status="accepted_gap",
+        )
+
+        self.assertEqual(ledger["schema_version"], 1)
+        self.assertEqual(ledger["ledger_id"], "completion_skeptic_manual_pilot_ledger")
+        self.assertEqual(ledger["decision_status"], "pilot_evidence_recorded")
+        self.assertTrue(ledger["no_unapproved_actions"])
+        self.assertEqual(ledger["sample_size"], COMPLETION_SKEPTIC_SCORECARD_THRESHOLDS["min_sample_size"])
+        self.assertEqual(ledger["missing_required_archetypes"], [])
+        for expected in ["docs_research", "code_check", "expected_block"]:
+            with self.subTest(archetype=expected):
+                self.assertIn(expected, ledger["archetype_counts"])
+        for expected in [
+            "attempt_count",
+            "failure_count",
+            "fix_count",
+            "retest_count",
+            "false_positive_count",
+            "false_rewrite_count",
+            "evidence_sufficient_count",
+            "owner_accepted_gap_count",
+        ]:
+            with self.subTest(summary_count=expected):
+                self.assertIn(expected, ledger["summary"])
+        self.assertEqual(ledger["promotion_boundary"], "manual_only_synthetic_pilots_do_not_prove_release")
+
+        calibration = build_completion_skeptic_scorecard_calibration(
+            records,
+            owner_review_status="accepted_gap",
+            pilot_scope=ledger["pilot_scope"],
+        )
+
+        self.assertEqual(calibration["schema_version"], 1)
+        self.assertEqual(calibration["calibration_id"], "completion_skeptic_scorecard_calibration")
+        self.assertEqual(calibration["decision_status"], "calibrated_with_accepted_metrics_gap")
+        self.assertEqual(calibration["scorecard"]["decision_status"], "scorecard_passed")
+        for metric_name in [
+            "false_pass_rate",
+            "false_rewrite_rate",
+            "evidence_sufficiency_rate",
+            "missing_check_catch_rate",
+            "accepted_gap_rate",
+            "user_revision_acceptance_rate",
+            "revision_usefulness_rate",
+        ]:
+            with self.subTest(metric_name=metric_name):
+                metric_evidence = calibration["metric_evidence"][metric_name]
+                self.assertIn("numerator", metric_evidence)
+                self.assertIn("denominator", metric_evidence)
+
+        closure = build_completion_skeptic_go_no_go_packet(
+            pilot_ledger=ledger,
+            scorecard_calibration=calibration,
+            implemented_rows=["B40-DVL-M22", "B40-DVL-M23", "B40-DVL-M24"],
+            verification_evidence=[
+                "python -m unittest tests.product_agent_os.test_doubt_verification -v",
+            ],
+            docs_site_state={
+                "source_docs_synced": True,
+                "site_rebuild_required": False,
+                "generated_site_is_source_of_truth": False,
+            },
+            no_unapproved_actions=True,
+            owner_review_status="accepted_gap",
+        )
+
+        self.assertEqual(closure["schema_version"], 1)
+        self.assertEqual(closure["packet_id"], "completion_skeptic_go_no_go_closure")
+        self.assertEqual(closure["decision_status"], "manual_only")
+        self.assertEqual(closure["promotion_status"], "not_promoted")
+        self.assertEqual(closure["missing_rows"], [])
+        self.assertTrue(closure["no_unapproved_actions_proof"]["status"])
+        self.assertIn("rollback_disable_path", closure)
+        self.assertIn("exact_owner_approval_for_release_or_automation", closure["next_approval_needs"])
+
 
 def _write_packet(packet):
     tmp = tempfile.NamedTemporaryFile("w", suffix=".json", encoding="utf-8", delete=False)
@@ -293,6 +377,43 @@ def _valid_doubt_packet():
         "source_policy": "doubt verification packet is evidence ledger, not generated dashboard proof",
         "redaction_status": {"status": "clean", "categories": []},
     }
+
+
+def _completion_skeptic_pilot_records():
+    records = []
+    archetypes = [
+        "docs_research",
+        "code_check",
+        "expected_block",
+        "docs_research",
+        "code_check",
+    ]
+    for index, archetype in enumerate(archetypes):
+        records.append(
+            {
+                "pilot_id": f"synthetic-pilot-{index + 1}",
+                "archetype": archetype,
+                "attempt_recorded": True,
+                "failure_recorded": index in {1, 2},
+                "fix_recorded": index in {1, 2},
+                "retest_recorded": True,
+                "false_pass": False,
+                "false_positive": index == 3,
+                "false_rewrite": False,
+                "unsupported_claim_present": True,
+                "unsupported_claim_caught": True,
+                "missing_check_present": True,
+                "missing_check_caught": True,
+                "evidence_sufficient": True,
+                "accepted_gap": index == 0,
+                "owner_accepted_gap": index == 0,
+                "user_revision_offered": True,
+                "user_revision_accepted": True,
+                "revision_useful": True,
+                "unapproved_action_performed": False,
+            }
+        )
+    return records
 
 
 if __name__ == "__main__":

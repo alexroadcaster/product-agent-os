@@ -1,4 +1,4 @@
-import unittest
+﻿import unittest
 import json
 from pathlib import Path
 import re
@@ -36,6 +36,12 @@ BATCH34E_FULL_SITE_INVENTORY = (
 )
 BATCH35_APPROVAL_DRAFT = DOCS / "sources" / "product-agent-os-batch35-approval-packet-draft.md"
 BATCH35_APPROVAL_DRAFT_EN = DOCS / "sources" / "product-agent-os-batch35-approval-packet-draft.en.md"
+BATCH40_DOUBT_VERIFIER_CLOSURE = (
+    DOCS / "sources" / "product-agent-os-batch40-doubt-verifier-pilot-closure.md"
+)
+BATCH40_DOUBT_VERIFIER_CLOSURE_EN = (
+    DOCS / "sources" / "product-agent-os-batch40-doubt-verifier-pilot-closure.en.md"
+)
 TRACK9_PLAN = DOCS / "superpowers" / "plans" / "2026-05-25-track-9-methodology-intelligence.md"
 TRACK10_PLAN = DOCS / "superpowers" / "plans" / "2026-05-27-track-10-guided-questions-status-dashboard.md"
 ROOT_README = ROOT / "README.md"
@@ -55,8 +61,8 @@ ENGLISH_ORIGINAL_SUPERPOWERS_PLAN_PAGES = {
     DOCS / "superpowers" / "plans" / "2026-05-25-track-9-methodology-intelligence.md",
     DOCS / "superpowers" / "plans" / "2026-05-27-track-10-guided-questions-status-dashboard.md",
 }
-BUILDABLE_MARKDOWN_PAGE_COUNT = 131
-LOCALIZED_MARKDOWN_PAGE_COUNT = 124
+BUILDABLE_MARKDOWN_PAGE_COUNT = 132
+LOCALIZED_MARKDOWN_PAGE_COUNT = 125
 ENGLISH_ORIGINAL_MARKDOWN_PAGE_COUNT = 7
 
 
@@ -4637,7 +4643,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "B34E-I18N-M46",
             "done_through_m46",
             "full_site_language_switcher_parity",
-            "static_language_switcher_pairs_checked: 120",
+            "static_language_switcher_pairs_checked: 121",
             "english_original_pages_total: 7",
             "language_switcher_pair_failures: 0",
             "file_url_escape_failures: 0",
@@ -4756,10 +4762,10 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "done_through_m47",
             "full_site_search_sitemap_parity",
             "strict_mkdocs_build_exit_code: 0",
-            "search_index_ru_pages_present: 120",
-            "search_index_en_pages_present: 120",
-            "sitemap_ru_pages_present: 120",
-            "sitemap_en_pages_present: 120",
+            "search_index_ru_pages_present: 121",
+            "search_index_en_pages_present: 121",
+            "sitemap_ru_pages_present: 121",
+            "sitemap_en_pages_present: 121",
             "english_original_pages_total: 7",
             "search_index_ru_fallback_pollution: 0",
             "sitemap_ru_fallback_pollution: 0",
@@ -4865,20 +4871,20 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "full_site_i18n_closure",
             "full_site_i18n_final_evidence",
             "strict_mkdocs_final_closure_exit_code: 0",
-            "docs_ru_pages_total: 127",
+            "docs_ru_pages_total: 128",
             "english_original_pages_total: 7",
-            "localized_ru_pages_total: 120",
-            "existing_en_siblings: 120",
+            "localized_ru_pages_total: 121",
+            "existing_en_siblings: 121",
             "missing_localized_en_siblings: 0",
-            "rendered_ru_pages_checked: 120",
-            "rendered_en_pages_checked: 120",
-            "static_language_switcher_pairs_checked: 120",
+            "rendered_ru_pages_checked: 121",
+            "rendered_en_pages_checked: 121",
+            "static_language_switcher_pairs_checked: 121",
             "language_switcher_pair_failures: 0",
             "file_url_escape_failures: 0",
-            "search_index_ru_pages_present: 120",
-            "search_index_en_pages_present: 120",
-            "sitemap_ru_pages_present: 120",
-            "sitemap_en_pages_present: 120",
+            "search_index_ru_pages_present: 121",
+            "search_index_en_pages_present: 121",
+            "sitemap_ru_pages_present: 121",
+            "sitemap_en_pages_present: 121",
             "en_source_cyrillic_hits: 0",
             "ru_source_forbidden_english_phrase_hits: 0",
         ]:
@@ -5082,10 +5088,10 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         for expected in [
             "Batch 34E: Full-Site I18N Parity Corrective Plan",
             "B34E-I18N-M34..M49",
-            "docs_ru_pages_total: 127",
+            "docs_ru_pages_total: 128",
             "english_original_pages_total: 7",
-            "localized_ru_pages_total: 120",
-            "existing_en_siblings: 120",
+            "localized_ru_pages_total: 121",
+            "existing_en_siblings: 121",
             "missing_localized_en_siblings: 0",
             "every localized RU Markdown page has a `.en.md` sibling",
             "full EN navigation/search/sitemap coverage",
@@ -5118,10 +5124,10 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "B34E-I18N-M45..M49",
             "B34E-I18N-M46..M49",
             "B34E-I18N-M47..M49",
-            "docs_ru_pages_total: 127",
+            "docs_ru_pages_total: 128",
             "english_original_pages_total: 7",
-            "localized_ru_pages_total: 120",
-            "existing_en_siblings: 120",
+            "localized_ru_pages_total: 121",
+            "existing_en_siblings: 121",
             "missing_localized_en_siblings: 0",
             "full_site_en_nav_configured",
             "full_site_en_siblings_created",
@@ -5143,10 +5149,10 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "Product-Agent OS Batch 34E M48-M49 final full-site i18n closure",
             "B34E-I18N-M34..M49",
             "full-site bilingual documentation",
-            "docs_ru_pages_total: 127",
+            "docs_ru_pages_total: 128",
             "english_original_pages_total: 7",
-            "localized_ru_pages_total: 120",
-            "existing_en_siblings: 120",
+            "localized_ru_pages_total: 121",
+            "existing_en_siblings: 121",
             "missing_localized_en_siblings: 0",
             "full_site_en_siblings_created",
             "full_site_search_sitemap_parity",
@@ -5169,10 +5175,10 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "done_through_m49",
                 "B34E-I18N-M47..M49",
                 "Batch 34C localized the public-ready set only",
-                "docs_ru_pages_total: 127",
+                "docs_ru_pages_total: 128",
                 "english_original_pages_total: 7",
-                "localized_ru_pages_total: 120",
-                "existing_en_siblings: 120",
+                "localized_ru_pages_total: 121",
+                "existing_en_siblings: 121",
                 "missing_localized_en_siblings: 0",
                 "full_site_i18n_closure",
                 "full_site_i18n_final_evidence",
@@ -5198,10 +5204,10 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "full_site_i18n_closure",
                 "full_site_i18n_final_evidence",
                 "full-site i18n parity",
-                "docs_ru_pages_total: 127",
+                "docs_ru_pages_total: 128",
                 "english_original_pages_total: 7",
-                "localized_ru_pages_total: 120",
-                "existing_en_siblings: 120",
+                "localized_ru_pages_total: 121",
+                "existing_en_siblings: 121",
                 "missing_localized_en_siblings: 0",
                 "full_site_en_siblings_created",
                 "full_site_en_editorial_quality_sweep",
@@ -5251,10 +5257,10 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "full_site_i18n_red_gate",
             "full_site_en_nav_configured",
             "full_site_en_siblings_created",
-            "docs_ru_pages_total: 127",
+            "docs_ru_pages_total: 128",
             "english_original_pages_total: 7",
-            "localized_ru_pages_total: 120",
-            "existing_en_siblings: 120",
+            "localized_ru_pages_total: 121",
+            "existing_en_siblings: 121",
             "missing_localized_en_siblings: 0",
             "initial_m35_existing_en_siblings: 37",
             "initial_m35_missing_en_siblings: 90",
@@ -5372,8 +5378,8 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         for text in [packet, registry, backlog, plan]:
             for expected in [
                 "english_original_pages_total: 7",
-                "localized_ru_pages_total: 120",
-                "existing_en_siblings: 120",
+                "localized_ru_pages_total: 121",
+                "existing_en_siblings: 121",
                 "missing_localized_en_siblings: 0",
             ]:
                 with self.subTest(expected=expected):
@@ -6978,8 +6984,110 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "strict MkDocs",
             ],
             "agents": [
-                "B40-S2/S3/S4 implement",
-                "B40-S5 still owns pilots",
+                "B40-S2/S3/S4/S5 implement",
+                "B40-S5 closes pilots",
+            ],
+        }
+
+        for document, terms in expected_terms.items():
+            for term in terms:
+                with self.subTest(document=document, term=term):
+                    self.assertIn(term, documents[document])
+
+    def test_batch40_s5_doubt_verifier_pilot_metrics_and_closure_are_synced(self):
+        for path in [BATCH40_DOUBT_VERIFIER_CLOSURE, BATCH40_DOUBT_VERIFIER_CLOSURE_EN]:
+            with self.subTest(required_path=path.relative_to(ROOT).as_posix()):
+                self.assertTrue(path.exists())
+
+        documents = {
+            "closure": self._localized_contract_text(BATCH40_DOUBT_VERIFIER_CLOSURE),
+            "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
+            "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
+            "track10_backlog": TRACK10_BACKLOG.read_text(encoding="utf-8"),
+            "track10_backlog_en": TRACK10_BACKLOG_EN.read_text(encoding="utf-8"),
+            "track10_plan": TRACK10_PLAN.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "test_plan": TEST.read_text(encoding="utf-8"),
+            "agents": AGENTS.read_text(encoding="utf-8"),
+        }
+
+        expected_terms = {
+            "closure": [
+                "Source status:",
+                "B40-S5 pilot metrics and closure packet",
+                "completion_skeptic_manual_pilot_ledger",
+                "completion_skeptic_scorecard_calibration",
+                "completion_skeptic_go_no_go_closure",
+                "docs_research",
+                "code_check",
+                "expected_block",
+                "attempt/failure/fix/retest",
+                "pilot_denominators",
+                "false_pass_rate",
+                "false_rewrite_rate",
+                "evidence_sufficiency_rate",
+                "missing_check_catch_rate",
+                "accepted_gap_rate",
+                "user_revision_acceptance_rate",
+                "revision_usefulness_rate",
+                "manual_only",
+                "no_unapproved_actions",
+                "rollback_disable_path",
+                "exact_owner_approval_for_release_or_automation",
+            ],
+            "registry": [
+                "Product-Agent OS Batch 40 S5 Doubt verifier pilot metrics and closure",
+                "docs/sources/product-agent-os-batch40-doubt-verifier-pilot-closure.md",
+                "manual_only",
+                "generated `site/` was rebuilt for S5",
+            ],
+            "registry_en": [
+                "Product-Agent OS Batch 40 S5 Doubt verifier pilot metrics and closure",
+                "docs/sources/product-agent-os-batch40-doubt-verifier-pilot-closure.md",
+                "manual_only",
+                "generated `site/` was rebuilt for S5",
+            ],
+            "track10_backlog": [
+                "Task 26 Batch 40 Doubt / Verifier Loop S5 Pilot Metrics and Closure Addendum",
+                "implemented_pilot_metrics_closure_manual_only",
+                "B40-DVL-M22",
+                "B40-DVL-M23",
+                "B40-DVL-M24",
+                "completion_skeptic_manual_pilot_ledger",
+                "completion_skeptic_go_no_go_closure",
+                "manual_only",
+            ],
+            "track10_backlog_en": [
+                "Task 26 Batch 40 Doubt / Verifier Loop S5 Pilot Metrics and Closure Addendum",
+                "implemented_pilot_metrics_closure_manual_only",
+                "B40-DVL-M22",
+                "B40-DVL-M23",
+                "B40-DVL-M24",
+                "completion_skeptic_manual_pilot_ledger",
+                "completion_skeptic_go_no_go_closure",
+                "manual_only",
+            ],
+            "track10_plan": [
+                "B40-S5 implementation contract",
+                "`B40-DVL-M22`: status `implemented`",
+                "`B40-DVL-M23`: status `implemented`",
+                "`B40-DVL-M24`: status `implemented`",
+                "implemented_pilot_metrics_closure_manual_only",
+            ],
+            "runlog": [
+                "B40-S5 pilot/metrics/closure run",
+                "implemented_pilot_metrics_closure_manual_only",
+                "manual_only",
+            ],
+            "test_plan": [
+                "B40-S5 implements Doubt / verifier loop pilot metrics and closure",
+                "completion_skeptic_manual_pilot_ledger",
+                "completion_skeptic_go_no_go_closure",
+            ],
+            "agents": [
+                "B40-S2/S3/S4/S5 implement",
+                "manual_only",
+                "B40-S5 closes pilots, scorecard calibration and go/no-go closure",
             ],
         }
 

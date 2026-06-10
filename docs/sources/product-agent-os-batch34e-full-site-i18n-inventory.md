@@ -1,4 +1,4 @@
-# Product-Agent OS Batch 34E: full-site i18n inventory and translation gate M34-M49
+﻿# Product-Agent OS Batch 34E: full-site i18n inventory and translation gate M34-M49
 
 Source status: `internal`
 
@@ -32,11 +32,11 @@ Status: `done_through_m35`.
 Initial M35 inventory keys:
 
 ```yaml
-docs_ru_pages_total: 127
+docs_ru_pages_total: 128
 initial_m35_existing_en_siblings: 37
 initial_m35_missing_en_siblings: 90
 english_original_pages_total: 7
-localized_ru_pages_total: 120
+localized_ru_pages_total: 121
 ```
 
 Inventory был собран из `docs/**/*.md`; существующие `*.en.md` pages исключены из RU count.
@@ -85,10 +85,10 @@ Status: `done_through_m43`.
 Current source inventory after M43:
 
 ```yaml
-docs_ru_pages_total: 127
+docs_ru_pages_total: 128
 english_original_pages_total: 7
-localized_ru_pages_total: 120
-existing_en_siblings: 120
+localized_ru_pages_total: 121
+existing_en_siblings: 121
 missing_localized_en_siblings: 0
 full_site_en_siblings_created: true
 en_source_cyrillic_hits: 0
@@ -158,10 +158,10 @@ Current generated-site language-switcher report after M46:
 
 ```yaml
 english_original_pages_total: 7
-localized_ru_pages_total: 120
-static_language_switcher_pairs_checked: 120
-rendered_ru_pages_checked: 120
-rendered_en_pages_checked: 120
+localized_ru_pages_total: 121
+static_language_switcher_pairs_checked: 121
+rendered_ru_pages_checked: 121
+rendered_en_pages_checked: 121
 language_switcher_pair_failures: 0
 file_url_escape_failures: 0
 ```
@@ -181,11 +181,11 @@ Current generated-site search/sitemap report after M47:
 ```yaml
 strict_mkdocs_build_exit_code: 0
 english_original_pages_total: 7
-localized_ru_pages_total: 120
-search_index_ru_pages_present: 120
-search_index_en_pages_present: 120
-sitemap_ru_pages_present: 120
-sitemap_en_pages_present: 120
+localized_ru_pages_total: 121
+search_index_ru_pages_present: 121
+search_index_en_pages_present: 121
+sitemap_ru_pages_present: 121
+sitemap_en_pages_present: 121
 search_index_missing_ru_pages: 0
 search_index_missing_en_pages: 0
 sitemap_missing_ru_pages: 0
@@ -230,20 +230,20 @@ Current final closure report:
 full_site_i18n_closure: true
 full_site_i18n_final_evidence: true
 strict_mkdocs_final_closure_exit_code: 0
-docs_ru_pages_total: 127
+docs_ru_pages_total: 128
 english_original_pages_total: 7
-localized_ru_pages_total: 120
-existing_en_siblings: 120
+localized_ru_pages_total: 121
+existing_en_siblings: 121
 missing_localized_en_siblings: 0
-rendered_ru_pages_checked: 120
-rendered_en_pages_checked: 120
-static_language_switcher_pairs_checked: 120
+rendered_ru_pages_checked: 121
+rendered_en_pages_checked: 121
+static_language_switcher_pairs_checked: 121
 language_switcher_pair_failures: 0
 file_url_escape_failures: 0
-search_index_ru_pages_present: 120
-search_index_en_pages_present: 120
-sitemap_ru_pages_present: 120
-sitemap_en_pages_present: 120
+search_index_ru_pages_present: 121
+search_index_en_pages_present: 121
+sitemap_ru_pages_present: 121
+sitemap_en_pages_present: 121
 search_index_missing_ru_pages: 0
 search_index_missing_en_pages: 0
 sitemap_missing_ru_pages: 0

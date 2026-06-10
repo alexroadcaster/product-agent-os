@@ -340,6 +340,9 @@ class FixtureEvalRunnerTest(unittest.TestCase):
         self.assertTrue(results["python-app"]["expected_checks"]["completion_skeptic_eval_hardening_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["completion_skeptic_scorecard_thresholds_present"])
         self.assertTrue(results["python-app"]["expected_checks"]["completion_skeptic_fake_evidence_guards_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["completion_skeptic_manual_pilot_ledger_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["completion_skeptic_scorecard_calibration_present"])
+        self.assertTrue(results["python-app"]["expected_checks"]["completion_skeptic_go_no_go_closure_present"])
         self.assertEqual(results["python-app"]["renderer_file_count"], 197)
         for check_name in [
             "methodology_catalog_contract_present",

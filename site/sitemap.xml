@@ -687,6 +687,13 @@
         <xhtml:link rel="alternate" hreflang="en" href="en/sources/product-agent-os-batch35-approval-packet-draft.html"/>
     </url>
     <url>
+        <loc>sources/product-agent-os-batch40-doubt-verifier-pilot-closure.html</loc>
+        <lastmod>2026-06-10</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ru" href="sources/product-agent-os-batch40-doubt-verifier-pilot-closure.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="en/sources/product-agent-os-batch40-doubt-verifier-pilot-closure.html"/>
+    </url>
+    <url>
         <loc>sources/product-agent-os-batch40-doubt-verifier-source-transfer.html</loc>
         <lastmod>2026-06-10</lastmod>
         <changefreq>daily</changefreq>
@@ -1595,6 +1602,13 @@
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="en/sources/product-agent-os-batch35-approval-packet-draft.html"/>
         <xhtml:link rel="alternate" hreflang="ru" href="sources/product-agent-os-batch35-approval-packet-draft.html"/>
+    </url>
+    <url>
+        <loc>en/sources/product-agent-os-batch40-doubt-verifier-pilot-closure.html</loc>
+        <lastmod>2026-06-10</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="en/sources/product-agent-os-batch40-doubt-verifier-pilot-closure.html"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="sources/product-agent-os-batch40-doubt-verifier-pilot-closure.html"/>
     </url>
     <url>
         <loc>en/sources/product-agent-os-batch40-doubt-verifier-source-transfer.html</loc>

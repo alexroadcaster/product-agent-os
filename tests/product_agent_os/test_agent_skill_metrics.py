@@ -11,6 +11,7 @@ sys.path.insert(0, str(SCRIPTS))
 
 from product_agent_os.agent_skill_metrics import (  # noqa: E402
     METRICS_PACKET_LIMITS,
+    build_completion_skeptic_metrics_loop_record,
     build_daily_metrics_report,
     build_scorecard_ledger_record,
     build_weekly_verification_packet,
@@ -752,6 +753,48 @@ class AgentSkillMetricsTest(unittest.TestCase):
         self.assertIn("Append-only policy", markdown)
         self.assertIn("#target-skill-review", markdown)
         self.assertNotIn("TOKEN=", serialized + markdown)
+
+    def test_completion_skeptic_metrics_loop_record_preserves_manual_only_boundary(self):
+        record = build_completion_skeptic_metrics_loop_record(
+            generated_at="2026-06-10T08:40:00+03:00",
+            pilot_ledger={
+                "ledger_id": "completion_skeptic_manual_pilot_ledger",
+                "sample_size": 5,
+                "pilot_scope": "synthetic_local",
+                "no_unapproved_actions": True,
+            },
+            scorecard_calibration={
+                "calibration_id": "completion_skeptic_scorecard_calibration",
+                "decision_status": "calibrated_with_accepted_metrics_gap",
+                "owner_review_status": "accepted_gap",
+                "metric_evidence": {
+                    "false_pass_rate": {"numerator": 0, "denominator": 5},
+                    "false_rewrite_rate": {"numerator": 0, "denominator": 5},
+                    "evidence_sufficiency_rate": {"numerator": 5, "denominator": 5},
+                    "missing_check_catch_rate": {"numerator": 5, "denominator": 5},
+                    "accepted_gap_rate": {"numerator": 1, "denominator": 5},
+                    "user_revision_acceptance_rate": {"numerator": 5, "denominator": 5},
+                    "revision_usefulness_rate": {"numerator": 5, "denominator": 5},
+                },
+            },
+            closure_packet={
+                "packet_id": "completion_skeptic_go_no_go_closure",
+                "decision_status": "manual_only",
+                "promotion_status": "not_promoted",
+                "next_approval_needs": ["exact_owner_approval_for_release_or_automation"],
+            },
+            evidence_links=["docs/sources/product-agent-os-batch40-doubt-verifier-pilot-closure.md"],
+        )
+
+        self.assertEqual(record["ledger_id"], "completion_skeptic_scorecard_calibration")
+        self.assertEqual(record["ledger_policy"], "append_only")
+        self.assertEqual(record["decision_status"], "manual_only")
+        self.assertEqual(record["promotion_status"], "not_promoted")
+        self.assertEqual(record["raw_counts"]["false_pass_rate"]["denominator"], 5)
+        self.assertEqual(record["raw_counts"]["revision_usefulness_rate"]["numerator"], 5)
+        self.assertEqual(record["pilot_denominators"]["sample_size"], 5)
+        self.assertIn("automation", record["blocked_promotions"])
+        self.assertEqual(record["update_policy"], "staged_evidence_only_no_auto_apply")
 
     def test_daily_metrics_report_recommends_safe_next_actions_without_autofix(self):
         report = build_daily_metrics_report(
