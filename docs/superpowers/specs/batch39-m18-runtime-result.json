@@ -1,0 +1,1983 @@
+{
+  "schema_version": 1,
+  "status": "needs_approval",
+  "workspace": "tests\\fixtures\\product_agent_os\\batch39-m18-pr-review-fixture",
+  "lifecycle_state": "infrastructure_planned",
+  "route_packet": {
+    "lifecycle_state": "infrastructure_planned",
+    "next_action": "Request explicit owner approval before any write, stage, or external action.",
+    "recommended_skill": "requirements-author",
+    "recommended_subagent_role": "",
+    "runtime_surface": "skill",
+    "write_policy": "staged_only",
+    "required_inputs": [
+      "AGENTS.md",
+      "REQUIREMENTS.md",
+      "PLAN.md",
+      "TEST.md",
+      "EVALS.md",
+      "RUNLOG.md"
+    ],
+    "expected_outputs": [
+      "codex_runner_result",
+      "handoff packet",
+      "doubt_verification_packet"
+    ],
+    "verification": [
+      "python -m unittest discover -s tests -p \"test_*.py\" -v",
+      "python plugins\\product-agent-os\\scripts\\run_fixture_eval.py"
+    ],
+    "approval_requirements": [
+      "explicit approval required before methodology-recommended external or irreversible action"
+    ],
+    "stop_conditions": [
+      "missing required control-plane context",
+      "blocked source policy",
+      "missing approval for approved_write route",
+      "active automation request",
+      "methodology action requires explicit approval",
+      "automation promotion requires maturity evidence",
+      "parallel work requires fresh-context handoff and explicit ownership",
+      "metrics loop reports are staged evidence only",
+      "project code graph is generated orientation evidence only",
+      "completion skeptic pass requires current evidence or accepted gaps"
+    ],
+    "usage_mode": {
+      "primary": "pr_review",
+      "secondary": [],
+      "confidence": "high",
+      "reasons": [
+        "prompt requests PR or diff review"
+      ],
+      "fallback": "standard_feature",
+      "first_response_contract": [
+        "mode",
+        "confidence",
+        "next smallest action",
+        "minimum artifacts",
+        "evidence gaps",
+        "approval boundary"
+      ],
+      "minimum_artifacts": [
+        "pr review readiness",
+        "pr risk review",
+        "changed files map"
+      ],
+      "behavioral_eval_cases": [
+        "pr-review-readiness",
+        "two-stage-review"
+      ]
+    },
+    "behavioral_route_inputs": {
+      "intent_hint_present": true,
+      "workspace_signals": {
+        "stack": [],
+        "active_surfaces": [
+          "pr_review_surface",
+          "ai_eval_surface"
+        ],
+        "methodology_signals": [
+          "backend",
+          "codex_agentic_workflow",
+          "delivery_release_operations",
+          "evals",
+          "quality_testing_evals"
+        ],
+        "docs_tooling_decision": {
+          "docs_as_code_impact": {
+            "status": "proposal_staged",
+            "allowed_statuses": [
+              "not_applicable",
+              "present_unverified",
+              "present_verified",
+              "proposal_staged",
+              "explicit_gap_accepted",
+              "approval_required"
+            ],
+            "evidence_owner": "docs maintainer",
+            "maintenance_owner": "docs maintainer"
+          },
+          "selected_tools": [],
+          "rejected_tools": [
+            "Docusaurus",
+            "Antora"
+          ],
+          "commands": [],
+          "approval_required": [],
+          "tool_statuses": {
+            "docs_portal": {
+              "status": "proposal_staged",
+              "tool": "none",
+              "command": "",
+              "reason": "docs exist but no docs portal tooling was detected"
+            },
+            "api_docs": {
+              "status": "not_applicable",
+              "tool": "none",
+              "command": "",
+              "reason": "no API contract signal"
+            },
+            "ui_component_docs": {
+              "status": "not_applicable",
+              "tool": "none",
+              "command": "",
+              "reason": "no UI component docs signal"
+            },
+            "database_docs": {
+              "status": "not_applicable",
+              "tool": "none",
+              "command": "",
+              "reason": "no database docs signal"
+            },
+            "db_introspection": {
+              "status": "not_applicable",
+              "tool": "none",
+              "command": "",
+              "reason": "no SchemaSpy signal"
+            },
+            "hosted_docs": {
+              "status": "not_applicable",
+              "tool": "none",
+              "command": "",
+              "reason": "no hosted docs signal"
+            },
+            "code_reference": {
+              "status": "not_applicable",
+              "tool": "none",
+              "command": "",
+              "reason": "no public code reference signal"
+            },
+            "docs_lint": {
+              "status": "not_applicable",
+              "tool": "none",
+              "command": "",
+              "reason": "no docs lint signal"
+            },
+            "architecture_diagrams": {
+              "status": "not_applicable",
+              "tool": "none",
+              "command": "",
+              "reason": "no architecture diagram tooling signal"
+            }
+          },
+          "safety": {
+            "no_forced_install": true,
+            "no_ci_activation_without_approval": true,
+            "hosted_docs_approval": "required",
+            "db_introspection_approval": "required"
+          }
+        },
+        "legacy_onboarding_signals": {
+          "entry_points": [],
+          "entry_points_status": "applicable_missing",
+          "run_commands": [],
+          "run_commands_status": "applicable_missing",
+          "documentation_files": [
+            "docs/code-review-findings.md",
+            "docs/pr-risk-review.md",
+            "docs/release-readiness-gap.md"
+          ],
+          "documentation_status": "present_unverified",
+          "architecture_files": [],
+          "architecture_status": "applicable_missing",
+          "control_plane_status": "present_unverified",
+          "note": "present_unverified until commands run or owner evidence confirms the claim"
+        },
+        "api_migration_signals": {
+          "contract_sources": [],
+          "contract_sources_status": "applicable_missing",
+          "consumer_sources": [],
+          "consumer_impact_status": "applicable_missing",
+          "generated_clients": [],
+          "generated_clients_status": "applicable_missing",
+          "deprecation_sources": [],
+          "deprecation_status": "applicable_missing",
+          "release_sources": [
+            "docs/release-readiness-gap.md"
+          ],
+          "release_impact_status": "present_unverified",
+          "compatibility_sources": [],
+          "compatibility_status": "applicable_missing",
+          "verification_status": "applicable_missing",
+          "note": "present_unverified until contract lint, generated client checks, or owner evidence confirms compatibility"
+        },
+        "api_integration_signals": {
+          "contract_sources": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "event_contract_sources": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "graphql_sources": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "protobuf_sources": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "json_schema_sources": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "pact_sources": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "generated_client_sources": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "webhook_event_sources": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "external_provider_sources": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "security_auth_sources": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "compatibility_sources": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "note": "API discovery records contracts, consumers, generated clients, webhooks, providers, auth and compatibility signals as present_unverified without executing API tools, publishing SDKs or performing external writes; approval_required applies before side effects."
+        },
+        "ai_eval_signals": {
+          "baseline_sources": [],
+          "baseline_status": "applicable_missing",
+          "dataset_sources": [],
+          "dataset_status": "applicable_missing",
+          "prompt_context_sources": [],
+          "prompt_context_status": "applicable_missing",
+          "retrieval_sources": [],
+          "retrieval_status": "applicable_missing",
+          "judge_rubric_sources": [
+            "EVALS.md"
+          ],
+          "judge_rubric_status": "present_unverified",
+          "threshold_sources": [],
+          "threshold_status": "applicable_missing",
+          "latency_cost_sources": [],
+          "latency_cost_status": "applicable_missing",
+          "failure_examples": [],
+          "failure_examples_status": "applicable_missing",
+          "verification_status": "applicable_missing",
+          "note": "present_unverified until eval rerun, baseline comparison, or owner evidence confirms quality"
+        },
+        "llm_ai_rag_signals": {
+          "prompt_sources": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "model_config_sources": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "structured_output_sources": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "tool_sources": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "retrieval_sources": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "dataset_sources": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "eval_sources": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "agent_trace_sources": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "safety_sources": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "latency_cost_sources": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "diff_signal_policy": {
+            "status": "limited_to_workspace_and_intent_signals",
+            "external_git_or_network_used": false,
+            "limitations": [
+              "no external branches",
+              "no network",
+              "filename changes alone are not certainty"
+            ]
+          },
+          "verification_status": "not_applicable",
+          "note": "no AI/RAG behavior signal detected"
+        },
+        "native_mobile_signals": {
+          "platform_sources": [],
+          "platform_status": "applicable_missing",
+          "permission_sources": [],
+          "permission_status": "applicable_missing",
+          "offline_sources": [],
+          "offline_status": "applicable_missing",
+          "simulator_emulator_sources": [],
+          "simulator_emulator_status": "applicable_missing",
+          "build_command_sources": [],
+          "build_command_status": "applicable_missing",
+          "log_sources": [
+            "RUNLOG.md"
+          ],
+          "logs_status": "present_unverified",
+          "screenshot_sources": [],
+          "screenshot_status": "applicable_missing",
+          "verification_status": "applicable_missing",
+          "note": "present_unverified until platform build/run, simulator/emulator, device, log, or screenshot evidence confirms behavior"
+        },
+        "desktop_local_signals": {
+          "platform_sources": [],
+          "platform_status": "applicable_missing",
+          "filesystem_sources": [],
+          "filesystem_status": "applicable_missing",
+          "local_data_sources": [],
+          "local_data_status": "applicable_missing",
+          "background_job_sources": [],
+          "background_job_status": "applicable_missing",
+          "privacy_sources": [],
+          "privacy_status": "applicable_missing",
+          "build_command_sources": [],
+          "build_command_status": "applicable_missing",
+          "runtime_log_sources": [],
+          "runtime_log_status": "applicable_missing",
+          "screenshot_sources": [],
+          "screenshot_status": "applicable_missing",
+          "recovery_sources": [],
+          "recovery_status": "applicable_missing",
+          "verification_status": "applicable_missing",
+          "note": "present_unverified until desktop build/run, app log, screenshot, local data, recovery, or owner evidence confirms behavior"
+        },
+        "data_migration_signals": {
+          "schema_sources": [],
+          "schema_status": "applicable_missing",
+          "backfill_sources": [],
+          "backfill_status": "applicable_missing",
+          "sensitive_data_sources": [],
+          "sensitive_data_status": "applicable_missing",
+          "retention_sources": [],
+          "retention_status": "applicable_missing",
+          "rollback_sources": [],
+          "rollback_status": "applicable_missing",
+          "validation_sources": [],
+          "validation_status": "applicable_missing",
+          "dry_run_sources": [
+            "PLAN.md"
+          ],
+          "dry_run_status": "present_unverified",
+          "database_dictionary_sources": [],
+          "database_dictionary_status": "applicable_missing",
+          "verification_status": "applicable_missing",
+          "note": "present_unverified until migration dry run, validation, rollback, backup, owner review, or approved environment evidence confirms behavior"
+        },
+        "database_data_signals": {
+          "schema_sources": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "migration_sources": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "migration_tools": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "orm_models": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "dictionary_sources": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "data_quality_sources": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "lineage_sources": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "query_performance_sources": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "production_access_sources": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "destructive_change_sources": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "pipeline_sources": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "rag_ingestion_sources": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "backup_restore_sources": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "privacy_retention_sources": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "verification_status": "applicable_missing",
+          "note": "database_data_signals are present_unverified until owner review, dry run, validation, backup/restore, query-plan, lineage, data-quality or runtime evidence exists; discovery is read-only without database connections; approval_required applies before DB introspection, production access, production data access, destructive migration, backup restore, retention mutation or migration execution; do not claim database safety from detection."
+        },
+        "security_sensitive_signals": {
+          "authn_sources": [],
+          "authn_status": "applicable_missing",
+          "authz_sources": [],
+          "authz_status": "applicable_missing",
+          "permission_sources": [],
+          "permission_status": "applicable_missing",
+          "payment_sources": [],
+          "payment_status": "applicable_missing",
+          "secret_sources": [],
+          "secret_status": "applicable_missing",
+          "sensitive_data_sources": [],
+          "sensitive_data_status": "applicable_missing",
+          "abuse_control_sources": [],
+          "abuse_control_status": "applicable_missing",
+          "audit_logging_sources": [],
+          "audit_logging_status": "applicable_missing",
+          "test_sources": [],
+          "test_status": "applicable_missing",
+          "rollback_sources": [],
+          "rollback_status": "applicable_missing",
+          "approval_sources": [
+            "docs/pr-risk-review.md",
+            "review/approval-boundary.json"
+          ],
+          "approval_status": "present_unverified",
+          "authn": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "authz": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "permissions": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "payments": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "secrets": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "sensitive_data": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "abuse_controls": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "audit_logging": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "security_tests": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "rollback": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "approvals": {
+            "sources": [
+              "docs/pr-risk-review.md",
+              "review/approval-boundary.json"
+            ],
+            "status": "present_unverified"
+          },
+          "supply_chain": {
+            "sources": [
+              "docs/release-readiness-gap.md"
+            ],
+            "status": "present_unverified"
+          },
+          "sbom_provenance": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "ci_permissions": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "compliance": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "ai_agent_security": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "codex_approval_boundaries": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "verification_status": "applicable_missing",
+          "note": "present_unverified until security tests, owner review, approval, rollback evidence, abuse-control evidence, source/legal owner review and explicit Codex Security scan status is explicit and confirms behavior; discovery is read-only and does not claim compliance or scan execution"
+        },
+        "backend_dependency_signals": {
+          "database": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "message_broker": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "cache": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "payment": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "email": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "storage": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "search": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "third_party_http_provider": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "note": "backend dependency categories include database, message broker, cache, payment, email, storage, search and third-party HTTP/provider clients; present_unverified until owner review, contract evidence and runtime verification confirm dependency behavior"
+        },
+        "backend_delivery_signals": {
+          "backend_stack": {
+            "sources": [
+              "docs/release-readiness-gap.md"
+            ],
+            "status": "present_unverified"
+          },
+          "commands": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "ci": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "api_contracts": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "database": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "queues": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "workers": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "deployment_manifests": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "security": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "note": "Workspace discovery records backend stack, backend commands, CI, APIs, DB, queues, workers, deployment manifests and security signals as present_unverified without executing deployments, commands or external writes; approval_required applies before deployment, production data, secrets or other external mutations."
+        },
+        "backend_resilience_signals": {
+          "retry_idempotency_terms": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "job_context": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "dependency_context": {
+            "sources": [],
+            "status": "applicable_missing"
+          },
+          "note": "T9-D7 uses lightweight read-only signals for retry/idempotency terms and dependency/job context only; deeper static analysis deferred to avoid false positives until a later stack-specific slice has owner, examples and verification."
+        },
+        "ci_stabilization_signals": {
+          "workflow_sources": [],
+          "workflow_status": "applicable_missing",
+          "failure_log_sources": [],
+          "failure_log_status": "applicable_missing",
+          "job_sources": [],
+          "job_status": "applicable_missing",
+          "command_sources": [],
+          "command_status": "applicable_missing",
+          "environment_sources": [],
+          "environment_status": "applicable_missing",
+          "test_result_sources": [],
+          "test_result_status": "applicable_missing",
+          "flaky_sources": [],
+          "flaky_status": "applicable_missing",
+          "local_reproduction_sources": [],
+          "local_reproduction_status": "applicable_missing",
+          "rerun_sources": [],
+          "rerun_status": "applicable_missing",
+          "approval_sources": [
+            "review/approval-boundary.json"
+          ],
+          "approval_status": "present_unverified",
+          "verification_status": "applicable_missing",
+          "note": "present_unverified until local reproduction, deterministic/flaky classification, rerun evidence, and owner approval confirm CI behavior"
+        },
+        "release_packaging_signals": {
+          "package_metadata_sources": [],
+          "package_metadata_status": "applicable_missing",
+          "version_sources": [
+            "docs/release-readiness-gap.md"
+          ],
+          "version_status": "present_unverified",
+          "changelog_sources": [],
+          "changelog_status": "applicable_missing",
+          "build_sources": [],
+          "build_status": "applicable_missing",
+          "test_sources": [
+            "tests/test_pricing.py"
+          ],
+          "test_status": "present_unverified",
+          "docs_sources": [
+            "docs/code-review-findings.md",
+            "docs/pr-risk-review.md",
+            "docs/release-readiness-gap.md"
+          ],
+          "docs_status": "present_unverified",
+          "security_sources": [],
+          "security_status": "applicable_missing",
+          "license_sources": [],
+          "license_status": "applicable_missing",
+          "artifact_sources": [],
+          "artifact_status": "applicable_missing",
+          "rollback_sources": [],
+          "rollback_status": "applicable_missing",
+          "approval_sources": [
+            "review/approval-boundary.json"
+          ],
+          "approval_status": "present_unverified",
+          "verification_status": "applicable_missing",
+          "note": "present_unverified until release evidence, SemVer review, build and test evidence, docs evidence, security/license review, owner review, publish approval, and rollback evidence confirm readiness"
+        },
+        "delivery_release_operations_signals": {
+          "release_intent_sources": [
+            "docs/release-readiness-gap.md"
+          ],
+          "release_intent_status": "present_unverified",
+          "version_sources": [
+            "docs/release-readiness-gap.md"
+          ],
+          "version_status": "present_unverified",
+          "changelog_sources": [],
+          "changelog_status": "applicable_missing",
+          "artifact_sources": [],
+          "artifact_status": "applicable_missing",
+          "deployment_sources": [],
+          "deployment_status": "applicable_missing",
+          "github_actions_sources": [],
+          "github_actions_status": "applicable_missing",
+          "github_environment_sources": [],
+          "github_environment_status": "applicable_missing",
+          "gitops_sources": [],
+          "gitops_status": "applicable_missing",
+          "feature_flag_sources": [],
+          "feature_flag_status": "applicable_missing",
+          "rollout_sources": [],
+          "rollout_status": "applicable_missing",
+          "rollback_sources": [],
+          "rollback_status": "applicable_missing",
+          "slo_sources": [],
+          "slo_status": "applicable_missing",
+          "observability_sources": [],
+          "observability_status": "applicable_missing",
+          "incident_sources": [],
+          "incident_status": "applicable_missing",
+          "postmortem_sources": [],
+          "postmortem_status": "applicable_missing",
+          "dora_sources": [],
+          "dora_status": "applicable_missing",
+          "versioning_tooling_sources": [],
+          "versioning_tooling_status": "applicable_missing",
+          "observability_on_call_tooling_sources": [],
+          "observability_on_call_tooling_status": "applicable_missing",
+          "automation_promotion_sources": [],
+          "automation_promotion_status": "applicable_missing",
+          "verification_status": "applicable_missing",
+          "note": "present_unverified until release scope, version impact, current release evidence, owner evidence, approval boundary and accepted gaps confirm readiness"
+        }
+      },
+      "control_plane_state": {
+        "existing_control_plane_files": [
+          "AGENTS.md",
+          "REQUIREMENTS.md",
+          "PLAN.md",
+          "TEST.md",
+          "EVALS.md",
+          "RUNLOG.md"
+        ],
+        "has_codex_assets": false
+      }
+    },
+    "methodology_packet": {
+      "methodology_domains": [
+        {
+          "id": "business_product",
+          "title": "Business & Product",
+          "source_file": "docs/methodologies/business-product.md",
+          "status": "applicable_missing",
+          "applicability_reason": "catalog domain applies to observed workspace or intent signals"
+        },
+        {
+          "id": "requirements_domain",
+          "title": "Requirements & Domain",
+          "source_file": "docs/methodologies/requirements-domain.md",
+          "status": "applicable_missing",
+          "applicability_reason": "catalog domain applies to observed workspace or intent signals"
+        },
+        {
+          "id": "solution_architecture",
+          "title": "Solution Architecture",
+          "source_file": "docs/methodologies/solution-architecture.md",
+          "status": "applicable_missing",
+          "applicability_reason": "catalog domain applies to observed workspace or intent signals"
+        },
+        {
+          "id": "quality_testing_evals",
+          "title": "Quality, Testing & Evals",
+          "source_file": "docs/methodologies/quality-testing-evals.md",
+          "status": "present_unverified",
+          "applicability_reason": "catalog domain applies to observed workspace or intent signals"
+        },
+        {
+          "id": "codex_agentic_workflow",
+          "title": "Codex / Agentic Workflow",
+          "source_file": "docs/methodologies/codex-agentic-workflow.md",
+          "status": "present_unverified",
+          "applicability_reason": "catalog domain applies to observed workspace or intent signals"
+        },
+        {
+          "id": "frontend",
+          "title": "Frontend",
+          "source_file": "docs/methodologies/frontend.md",
+          "status": "applicable_missing",
+          "applicability_reason": "catalog domain applies to observed workspace or intent signals"
+        },
+        {
+          "id": "backend",
+          "title": "Backend",
+          "source_file": "docs/methodologies/backend.md",
+          "status": "applicable_missing",
+          "applicability_reason": "catalog domain applies to observed workspace or intent signals"
+        },
+        {
+          "id": "api_integrations",
+          "title": "API & Integrations",
+          "source_file": "docs/methodologies/api-integrations.md",
+          "status": "applicable_missing",
+          "applicability_reason": "catalog domain applies to observed workspace or intent signals"
+        },
+        {
+          "id": "database_data",
+          "title": "Database & Data",
+          "source_file": "docs/methodologies/database-data.md",
+          "status": "not_applicable",
+          "applicability_reason": "no deterministic signal detected"
+        },
+        {
+          "id": "llm_ai_rag",
+          "title": "LLM / AI / RAG",
+          "source_file": "docs/methodologies/llm-ai-rag.md",
+          "status": "applicable_missing",
+          "applicability_reason": "catalog domain applies to observed workspace or intent signals"
+        },
+        {
+          "id": "security_privacy_compliance",
+          "title": "Security, Privacy & Compliance",
+          "source_file": "docs/methodologies/security-privacy-compliance.md",
+          "status": "present_unverified",
+          "applicability_reason": "catalog domain applies to observed workspace or intent signals"
+        },
+        {
+          "id": "delivery_release_operations",
+          "title": "Delivery, Release & Operations",
+          "source_file": "docs/methodologies/delivery-release-operations.md",
+          "status": "applicable_missing",
+          "applicability_reason": "catalog domain applies to observed workspace or intent signals"
+        }
+      ],
+      "methodology_recommendations": [
+        {
+          "priority": "P0_blocker",
+          "reason": "Backend runtime behavior needs retries, timeouts, idempotency, ordering, replay and failure modes documented.",
+          "domain": "backend",
+          "gate": "backend_runtime_behavior_present",
+          "artifact": "backend-runtime-behavior.md",
+          "evidence_required": [
+            "jobs/queues/remote calls",
+            "timeout",
+            "backoff/max attempts",
+            "idempotency",
+            "deduplication",
+            "ordering",
+            "backpressure",
+            "poison message",
+            "replay/recovery",
+            "process model",
+            "admin tasks",
+            "logs-as-event-stream",
+            "stateless process or accepted gap",
+            "lightweight read-only retry/idempotency signals",
+            "dependency/job context",
+            "deeper static analysis deferred",
+            "avoid false positives"
+          ],
+          "evidence_owner": "backend owner",
+          "approval_boundary": "not required for read-only audit; approval_required before production data, external writes, secrets or deploy actions",
+          "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+          "residual_risk": "Retries, workers or distributed behavior can amplify failures without idempotency and replay evidence.",
+          "safe_next_action": "Stage the backend artifact or accepted gap before claiming backend completion."
+        },
+        {
+          "priority": "P0_blocker",
+          "reason": "Backend work needs service/module boundary, owner, contracts, dependencies, data ownership and runtime shape.",
+          "domain": "backend",
+          "gate": "backend_service_boundary_present",
+          "artifact": "backend-service-overview.md",
+          "evidence_required": [
+            "changed backend responsibility",
+            "service/user behavior",
+            "affected backend unit",
+            "purpose",
+            "owner",
+            "inbound contracts",
+            "outbound dependencies",
+            "data stores",
+            "data ownership",
+            "deployment/runtime shape",
+            "operational assumptions",
+            "modular monolith default",
+            "microservice rationale",
+            "independent deploy/scale/team/ownership evidence",
+            "owner review",
+            "ADR",
+            "decision authority",
+            "boundary rationale",
+            "ADR link or accepted gap",
+            "ports/adapters boundary",
+            "domain logic independent from HTTP/DB/queue/vendor SDK",
+            "Twelve-Factor vocabulary",
+            "explicit dependencies",
+            "APIs/events/external providers",
+            "OpenAPI/AsyncAPI/Pact/protobuf/provider contracts where applicable",
+            "contract changes synced with code and tests"
+          ],
+          "evidence_owner": "backend owner",
+          "approval_boundary": "not required for read-only audit; approval_required before production data, external writes, secrets or deploy actions",
+          "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+          "residual_risk": "Package or service names can hide unclear ownership and runtime boundaries.",
+          "safe_next_action": "Stage the backend artifact or accepted gap before claiming backend completion."
+        },
+        {
+          "priority": "P0_blocker",
+          "reason": "Completion or readiness claim lacks current agentic workflow evidence.",
+          "domain": "codex_agentic_workflow",
+          "gate": "agentic_evidence_before_completion",
+          "artifact": "RUNLOG.md",
+          "evidence_required": [
+            "current commands",
+            "current evals",
+            "runtime/manual evidence",
+            "accepted gaps"
+          ],
+          "evidence_owner": "product-agent operator",
+          "approval_boundary": "approval_required before workspace writes, external writes or activation",
+          "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+          "residual_risk": "Inspection-only review can be mistaken for completed work.",
+          "safe_next_action": "Stage the missing Codex workflow artifact before activating capabilities."
+        },
+        {
+          "priority": "P0_blocker",
+          "reason": "External write, production, MCP, hook or automation boundary lacks approval evidence.",
+          "domain": "codex_agentic_workflow",
+          "gate": "approval_boundary_present",
+          "artifact": "approval-record.md",
+          "evidence_required": [
+            "requested action",
+            "permission boundary",
+            "owner",
+            "approval result",
+            "rollback"
+          ],
+          "evidence_owner": "product-agent operator",
+          "approval_boundary": "approval_required before workspace writes, external writes or activation",
+          "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+          "residual_risk": "A side-effecting workflow can execute without an auditable owner approval.",
+          "safe_next_action": "Stage the missing Codex workflow artifact before activating capabilities."
+        },
+        {
+          "priority": "P0_blocker",
+          "reason": "External release actions need explicit approval and rollback/unpublish path before side effects.",
+          "domain": "delivery_release_operations",
+          "gate": "external_release_approval_present",
+          "artifact": "approval-record.md",
+          "evidence_required": [
+            "publish",
+            "tag",
+            "GitHub Release",
+            "artifact upload",
+            "deployment",
+            "PR creation",
+            "branch push",
+            "package registry",
+            "marketplace",
+            "store submission",
+            "approval_required",
+            "rollback/unpublish"
+          ],
+          "evidence_owner": "release operator",
+          "approval_boundary": "approval_required before publish, tag, release creation, artifact upload, deploy, package registry, marketplace/store submission, PR creation, branch push or CI/CD environment mutation",
+          "accepted_gap_option": "explicit_gap_accepted with owner, reason, review date, residual risk and follow-up condition",
+          "residual_risk": "Release side effects can occur without owner approval, audit evidence or recovery path.",
+          "safe_next_action": "Record approval_required in approval-record.md before external release actions."
+        },
+        {
+          "priority": "P0_blocker",
+          "reason": "Release completion claims need current evidence or an explicit accepted gap.",
+          "domain": "delivery_release_operations",
+          "gate": "release_evidence_before_completion",
+          "artifact": "release-packet.md",
+          "evidence_required": [
+            "current build",
+            "test",
+            "docs",
+            "eval",
+            "runtime",
+            "artifact",
+            "owner evidence",
+            "explicit gap",
+            "inspection-only",
+            "residual risk",
+            "safe next action"
+          ],
+          "evidence_owner": "release operator",
+          "approval_boundary": "approval_required before publish, tag, release creation, artifact upload, deploy, package registry, marketplace/store submission, PR creation, branch push or CI/CD environment mutation",
+          "accepted_gap_option": "explicit_gap_accepted with owner, reason, review date, residual risk and follow-up condition",
+          "residual_risk": "A release claim can be presented as verified when only code or docs were inspected.",
+          "safe_next_action": "Stage release-packet.md with evidence-before-completion before final response."
+        },
+        {
+          "priority": "P0_blocker",
+          "reason": "Release-ready, deployed or published claims need current evidence, not inspection or stale CI assumptions.",
+          "domain": "delivery_release_operations",
+          "gate": "release_evidence_present",
+          "artifact": "release-readiness.md",
+          "evidence_required": [
+            "current build",
+            "test evidence",
+            "docs evidence",
+            "eval evidence",
+            "runtime evidence",
+            "artifact evidence",
+            "owner evidence",
+            "explicit gap",
+            "inspection-only label when only files were inspected"
+          ],
+          "evidence_owner": "release operator",
+          "approval_boundary": "approval_required before publish, tag, release creation, artifact upload, deploy, package registry, marketplace/store submission, PR creation, branch push or CI/CD environment mutation",
+          "accepted_gap_option": "explicit_gap_accepted with owner, reason, review date, residual risk and follow-up condition",
+          "residual_risk": "CI, changelog, Docker or package files do not prove that this release is ready.",
+          "safe_next_action": "Record current release evidence or accepted gap before any release-ready/deployed/published claim."
+        },
+        {
+          "priority": "P0_blocker",
+          "reason": "Release-ready, deployed or published claims need owner-reviewed evidence sufficiency.",
+          "domain": "delivery_release_operations",
+          "gate": "release_evidence_sufficiency_owner_reviewed",
+          "artifact": "release-readiness.md",
+          "evidence_required": [
+            "owner acceptance",
+            "sufficient for the real release risk",
+            "accepted gap",
+            "owner",
+            "reason",
+            "review date",
+            "residual risk",
+            "stop condition"
+          ],
+          "evidence_owner": "release operator",
+          "approval_boundary": "approval_required before publish, tag, release creation, artifact upload, deploy, package registry, marketplace/store submission, PR creation, branch push or CI/CD environment mutation",
+          "accepted_gap_option": "explicit_gap_accepted with owner, reason, review date, residual risk and follow-up condition",
+          "residual_risk": "Recorded checks can still be insufficient for the actual release risk without owner review or an accepted gap.",
+          "safe_next_action": "Record owner-reviewed release evidence sufficiency before release-ready, deployed or published claims."
+        },
+        {
+          "priority": "P0_blocker",
+          "reason": "UI completion requires current browser/runtime evidence or explicit verification gap.",
+          "domain": "frontend",
+          "gate": "frontend_runtime_console_evidence_present",
+          "artifact": "frontend-visual-qa.md",
+          "evidence_required": [
+            "dev-server or preview URL/context",
+            "browser/OS",
+            "console status",
+            "network/runtime errors",
+            "Playwright trace"
+          ],
+          "evidence_owner": "UI owner",
+          "approval_boundary": "not required for read-only audit; approval_required before external browser, visual service or production-data actions",
+          "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+          "residual_risk": "Code inspection cannot prove the UI renders, runs or has no relevant console/runtime errors.",
+          "safe_next_action": "Stage the frontend artifact or accepted gap before claiming UI completion."
+        },
+        {
+          "priority": "P0_blocker",
+          "reason": "Frontend work needs user flow, route/screen and acceptance scenario before implementation.",
+          "domain": "frontend",
+          "gate": "frontend_user_flow_acceptance_present",
+          "artifact": "frontend-flow-spec.md",
+          "evidence_required": [
+            "user goal",
+            "route/screen",
+            "acceptance scenario",
+            "visible state path",
+            "owner"
+          ],
+          "evidence_owner": "UI owner",
+          "approval_boundary": "not required for read-only audit; approval_required before external browser, visual service or production-data actions",
+          "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+          "residual_risk": "UI can optimize component structure while the actual user flow remains vague.",
+          "safe_next_action": "Stage the frontend artifact or accepted gap before claiming UI completion."
+        },
+        {
+          "priority": "P0_blocker",
+          "reason": "AI tool can write, spend money, call shell, expose data or affect users without an approval route.",
+          "domain": "llm_ai_rag",
+          "gate": "ai_human_approval_boundary_present",
+          "artifact": "guardrail-matrix.md",
+          "evidence_required": [
+            "human approval route",
+            "staged draft behavior",
+            "writes",
+            "shell",
+            "money",
+            "data exposure",
+            "irreversible actions",
+            "risky actions",
+            "side effects",
+            "owner"
+          ],
+          "evidence_owner": "AI product owner",
+          "approval_boundary": "approval_required before tool writes, shell commands, money movement, data exposure or irreversible actions",
+          "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+          "residual_risk": "Side-effecting AI tools can mutate external systems or expose data without review.",
+          "safe_next_action": "Stage guardrail-matrix.md and stop before side-effecting tool activation."
+        },
+        {
+          "priority": "P0_blocker",
+          "reason": "Completion, readiness, release or quality claim needs current evidence.",
+          "domain": "quality_testing_evals",
+          "gate": "current_evidence_before_completion",
+          "artifact": "RUNLOG.md",
+          "evidence_required": [
+            "current command evidence",
+            "current eval evidence",
+            "current runtime/manual evidence",
+            "accepted gap"
+          ],
+          "evidence_owner": "release operator",
+          "approval_boundary": "not required for drafting quality evidence; approval_required before external writes",
+          "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+          "residual_risk": "Old evidence or inspection-only review can be mistaken for current verification.",
+          "safe_next_action": "Stage the smallest quality evidence artifact before implementation or completion claims."
+        }
+      ],
+      "recommendation_groups": [
+        {
+          "artifact": "approval-record.md",
+          "priority": "P0_blocker",
+          "owner_domain": "security_privacy_compliance",
+          "consumer_domains": [
+            "codex_agentic_workflow",
+            "delivery_release_operations"
+          ],
+          "source_domains": [
+            "codex_agentic_workflow",
+            "delivery_release_operations",
+            "security_privacy_compliance"
+          ],
+          "gates": [
+            "approval_boundary_present",
+            "external_release_approval_present",
+            "external_write_approval_present"
+          ],
+          "reasons": [
+            "External write, production, MCP, hook or automation boundary lacks approval evidence.",
+            "External release actions need explicit approval and rollback/unpublish path before side effects.",
+            "Production data, payment/billing, secret rotation, policy changes or external security-system mutations need approval and rollback."
+          ],
+          "evidence_required": [
+            "requested action",
+            "permission boundary",
+            "owner",
+            "approval result",
+            "rollback",
+            "publish",
+            "tag",
+            "GitHub Release",
+            "artifact upload",
+            "deployment",
+            "PR creation",
+            "branch push",
+            "package registry",
+            "marketplace",
+            "store submission",
+            "approval_required",
+            "rollback/unpublish",
+            "approval",
+            "production data",
+            "payment/billing",
+            "secret rotation",
+            "policy change",
+            "external security system"
+          ],
+          "safe_next_action": "Stage the missing Codex workflow artifact before activating capabilities.",
+          "risk_rank": 100
+        },
+        {
+          "artifact": "release-readiness.md",
+          "priority": "P0_blocker",
+          "owner_domain": "delivery_release_operations",
+          "consumer_domains": [
+            "database_data"
+          ],
+          "source_domains": [
+            "delivery_release_operations"
+          ],
+          "gates": [
+            "release_evidence_present",
+            "release_evidence_sufficiency_owner_reviewed",
+            "changelog_release_notes_present",
+            "platform_distribution_evidence_present",
+            "release_communication_present",
+            "release_mode_policy_present",
+            "release_scope_present"
+          ],
+          "reasons": [
+            "Release-ready, deployed or published claims need current evidence, not inspection or stale CI assumptions.",
+            "Release-ready, deployed or published claims need owner-reviewed evidence sufficiency.",
+            "Release communication must be user-facing, not only generated commit summaries.",
+            "Desktop, mobile, store or platform release work needs platform-specific distribution evidence.",
+            "Release communication needs audience, user impact and ownership beyond a generated changelog.",
+            "Release work needs an explicit release mode policy before release-ready or deploy claims.",
+            "Release, deployment or publish work needs explicit scope before readiness claims."
+          ],
+          "evidence_required": [
+            "current build",
+            "test evidence",
+            "docs evidence",
+            "eval evidence",
+            "runtime evidence",
+            "artifact evidence",
+            "owner evidence",
+            "explicit gap",
+            "inspection-only label when only files were inspected",
+            "owner acceptance",
+            "sufficient for the real release risk",
+            "accepted gap",
+            "owner",
+            "reason",
+            "review date",
+            "residual risk",
+            "stop condition",
+            "changelog",
+            "release notes",
+            "user impact",
+            "migration guidance",
+            "compatibility",
+            "known issues",
+            "support contact",
+            "signing",
+            "notarization",
+            "app store review",
+            "installer/update path",
+            "rollback/yank path",
+            "phased rollout",
+            "crash reporting",
+            "platform owner evidence",
+            "audience",
+            "migration/deprecation note",
+            "changelog link",
+            "release-notes ownership",
+            "release train",
+            "continuous deployment",
+            "manual approval",
+            "release candidate",
+            "draft release",
+            "cadence",
+            "promotion trigger",
+            "freeze/cutoff",
+            "release type",
+            "target",
+            "external boundary",
+            "lifecycle stage",
+            "docs-only/internal/production distinction"
+          ],
+          "safe_next_action": "Record current release evidence or accepted gap before any release-ready/deployed/published claim.",
+          "risk_rank": 80
+        },
+        {
+          "artifact": "security-risk-review.md",
+          "priority": "P1_high_risk",
+          "owner_domain": "security_privacy_compliance",
+          "consumer_domains": [
+            "solution_architecture",
+            "backend",
+            "api_integrations",
+            "database_data",
+            "llm_ai_rag"
+          ],
+          "source_domains": [
+            "backend",
+            "security_privacy_compliance"
+          ],
+          "gates": [
+            "backend_security_reviewed",
+            "security_risk_review_present",
+            "security_sensitive_classification_present",
+            "codex_security_scan_status_present"
+          ],
+          "reasons": [
+            "Security-sensitive backend behavior needs authn/authz, secrets, rate limits, audit logging and abuse-case review.",
+            "Security risk review needs threat surface, tests, owner review, rollback and residual risk.",
+            "Security-sensitive scope must be classified before implementation.",
+            "Codex Security scan status must be explicit: run with evidence, not requested or blocked."
+          ],
+          "evidence_required": [
+            "authn/authz",
+            "tokens",
+            "PII",
+            "money movement",
+            "privileged operations",
+            "external writes",
+            "irreversible side effects",
+            "secrets",
+            "rate limits",
+            "audit logging",
+            "sensitive data",
+            "abuse cases",
+            "no-secrets evidence",
+            "threat surface",
+            "auth or data impact",
+            "security tests",
+            "owner review",
+            "rollback",
+            "residual risk",
+            "authn/authz impact",
+            "payment/billing",
+            "production data",
+            "CI permissions",
+            "external write",
+            "owner",
+            "Codex Security scan status",
+            "run with evidence",
+            "not requested",
+            "blocked",
+            "no implied scan"
+          ],
+          "safe_next_action": "Stage the backend artifact or accepted gap before claiming backend completion.",
+          "risk_rank": 90
+        },
+        {
+          "artifact": "RUNLOG.md",
+          "priority": "P0_blocker",
+          "owner_domain": "",
+          "consumer_domains": [],
+          "source_domains": [
+            "codex_agentic_workflow",
+            "quality_testing_evals",
+            "security_privacy_compliance",
+            "business_product",
+            "llm_ai_rag"
+          ],
+          "gates": [
+            "agentic_evidence_before_completion",
+            "current_evidence_before_completion",
+            "security_evidence_before_completion",
+            "release_measurement_evidence_present",
+            "read_only_discovery_complete",
+            "ai_behavior_diff_signal_policy_present"
+          ],
+          "reasons": [
+            "Completion or readiness claim lacks current agentic workflow evidence.",
+            "Completion, readiness, release or quality claim needs current evidence.",
+            "Security readiness claims need current tests, review evidence, scan evidence, owner evidence or explicit gap.",
+            "Product success claim after release needs actual evidence or an accepted evidence gap.",
+            "Read-only discovery evidence is missing before Codex workflow decisions.",
+            "AI behavior diff signals are limited to workspace and intent signals; external branch or network checks are not inferred."
+          ],
+          "evidence_required": [
+            "current commands",
+            "current evals",
+            "runtime/manual evidence",
+            "accepted gaps",
+            "current command evidence",
+            "current eval evidence",
+            "current runtime/manual evidence",
+            "accepted gap",
+            "current tests",
+            "review evidence",
+            "scan evidence",
+            "owner evidence",
+            "explicit gap",
+            "residual risk",
+            "safe next action",
+            "actual metric",
+            "eval result",
+            "user feedback",
+            "support signal",
+            "owner review",
+            "accepted evidence gap",
+            "files inspected",
+            "signals observed",
+            "assumptions",
+            "unknowns",
+            "no external branches",
+            "no network",
+            "filename changes alone are not certainty"
+          ],
+          "safe_next_action": "Stage the missing Codex workflow artifact before activating capabilities.",
+          "risk_rank": 0
+        },
+        {
+          "artifact": "acceptance-scenarios.md",
+          "priority": "P0_blocker",
+          "owner_domain": "",
+          "consumer_domains": [],
+          "source_domains": [
+            "requirements_domain"
+          ],
+          "gates": [
+            "acceptance_scenarios_when_behavior_changes"
+          ],
+          "reasons": [
+            "Behavior-changing work needs acceptance scenarios before implementation."
+          ],
+          "evidence_required": [
+            "requirement",
+            "scenario",
+            "observable outcome",
+            "check",
+            "evidence owner"
+          ],
+          "safe_next_action": "Stage acceptance-scenarios.md before implementation.",
+          "risk_rank": 0
+        },
+        {
+          "artifact": "backend-runtime-behavior.md",
+          "priority": "P0_blocker",
+          "owner_domain": "",
+          "consumer_domains": [],
+          "source_domains": [
+            "backend"
+          ],
+          "gates": [
+            "backend_runtime_behavior_present"
+          ],
+          "reasons": [
+            "Backend runtime behavior needs retries, timeouts, idempotency, ordering, replay and failure modes documented."
+          ],
+          "evidence_required": [
+            "jobs/queues/remote calls",
+            "timeout",
+            "backoff/max attempts",
+            "idempotency",
+            "deduplication",
+            "ordering",
+            "backpressure",
+            "poison message",
+            "replay/recovery",
+            "process model",
+            "admin tasks",
+            "logs-as-event-stream",
+            "stateless process or accepted gap",
+            "lightweight read-only retry/idempotency signals",
+            "dependency/job context",
+            "deeper static analysis deferred",
+            "avoid false positives"
+          ],
+          "safe_next_action": "Stage the backend artifact or accepted gap before claiming backend completion.",
+          "risk_rank": 0
+        },
+        {
+          "artifact": "backend-service-overview.md",
+          "priority": "P0_blocker",
+          "owner_domain": "",
+          "consumer_domains": [],
+          "source_domains": [
+            "backend"
+          ],
+          "gates": [
+            "backend_service_boundary_present"
+          ],
+          "reasons": [
+            "Backend work needs service/module boundary, owner, contracts, dependencies, data ownership and runtime shape."
+          ],
+          "evidence_required": [
+            "changed backend responsibility",
+            "service/user behavior",
+            "affected backend unit",
+            "purpose",
+            "owner",
+            "inbound contracts",
+            "outbound dependencies",
+            "data stores",
+            "data ownership",
+            "deployment/runtime shape",
+            "operational assumptions",
+            "modular monolith default",
+            "microservice rationale",
+            "independent deploy/scale/team/ownership evidence",
+            "owner review",
+            "ADR",
+            "decision authority",
+            "boundary rationale",
+            "ADR link or accepted gap",
+            "ports/adapters boundary",
+            "domain logic independent from HTTP/DB/queue/vendor SDK",
+            "Twelve-Factor vocabulary",
+            "explicit dependencies",
+            "APIs/events/external providers",
+            "OpenAPI/AsyncAPI/Pact/protobuf/provider contracts where applicable",
+            "contract changes synced with code and tests"
+          ],
+          "safe_next_action": "Stage the backend artifact or accepted gap before claiming backend completion.",
+          "risk_rank": 0
+        },
+        {
+          "artifact": "frontend-flow-spec.md",
+          "priority": "P0_blocker",
+          "owner_domain": "",
+          "consumer_domains": [],
+          "source_domains": [
+            "frontend"
+          ],
+          "gates": [
+            "frontend_user_flow_acceptance_present",
+            "frontend_api_contract_alignment_present",
+            "frontend_content_i18n_boundary_present"
+          ],
+          "reasons": [
+            "Frontend work needs user flow, route/screen and acceptance scenario before implementation.",
+            "UI data dependencies need contract examples, auth, permission, cache and error mapping.",
+            "Long text, localization or user-generated content needs layout and i18n assumptions recorded."
+          ],
+          "evidence_required": [
+            "user goal",
+            "route/screen",
+            "acceptance scenario",
+            "visible state path",
+            "owner",
+            "endpoint/query/mutation",
+            "contract examples",
+            "auth/permission",
+            "error shape",
+            "cache/stale/pagination",
+            "long text",
+            "wrapping/truncation",
+            "localization",
+            "pluralization",
+            "RTL/locales",
+            "non-overlap assumptions"
+          ],
+          "safe_next_action": "Stage the frontend artifact or accepted gap before claiming UI completion.",
+          "risk_rank": 0
+        }
+      ],
+      "questions_for_owner": [
+        "What is the smallest safe next artifact to stage?",
+        "Who owns the highest-priority missing methodology gate?",
+        "Which detected surfaces are in scope for this slice?"
+      ],
+      "safe_next_action": "Stage the missing Codex workflow artifact before activating capabilities.",
+      "semantic_evidence_sufficiency": {
+        "owner_domain": "quality_testing_evals",
+        "consumer_domains": [
+          "security_privacy_compliance",
+          "delivery_release_operations",
+          "llm_ai_rag",
+          "api_integrations",
+          "database_data",
+          "solution_architecture",
+          "backend",
+          "frontend"
+        ],
+        "satisfied_by": [
+          "owner_reviewed_evidence_sufficient_for_real_project_risk",
+          "explicit_gap_accepted"
+        ],
+        "applies_when": [
+          "high-risk",
+          "production",
+          "release",
+          "security-sensitive",
+          "AI",
+          "public-contract"
+        ],
+        "accepted_gap_required_fields": [
+          "owner",
+          "reason",
+          "review_date",
+          "downstream_risk",
+          "follow_up_condition"
+        ]
+      },
+      "source_artifact_ledger": [
+        {
+          "artifact": "CHANGELOG.md",
+          "decision": "existing_non_template",
+          "target": "",
+          "owner_domain": "delivery_release_operations",
+          "reason": "Changelog is usually a project artifact; Product-Agent OS packages release notes and release readiness templates instead."
+        },
+        {
+          "artifact": "SKILL.md",
+          "decision": "existing_non_template",
+          "target": "",
+          "owner_domain": "codex_agentic_workflow",
+          "reason": "Skill manifests live inside checked-in skill directories rather than staged project artifact templates."
+        },
+        {
+          "artifact": "accessibility-review.md",
+          "decision": "alias",
+          "target": "frontend-accessibility-review.md",
+          "owner_domain": "frontend",
+          "reason": "source-era name maps to canonical packaged artifact"
+        },
+        {
+          "artifact": "agent-eval-case.md",
+          "decision": "alias",
+          "target": "agent-eval-workflow.md",
+          "owner_domain": "codex_agentic_workflow",
+          "reason": "source-era name maps to canonical packaged artifact"
+        },
+        {
+          "artifact": "agent-handoff-contract.md",
+          "decision": "alias",
+          "target": "agent-task-packet.md",
+          "owner_domain": "codex_agentic_workflow",
+          "reason": "source-era name maps to canonical packaged artifact"
+        },
+        {
+          "artifact": "agentic-workflow-readiness.md",
+          "decision": "alias",
+          "target": "project-readiness.json",
+          "owner_domain": "codex_agentic_workflow",
+          "reason": "source-era name maps to canonical packaged artifact"
+        },
+        {
+          "artifact": "ai-model-decision-record.md",
+          "decision": "alias",
+          "target": "model-decision-record.md",
+          "owner_domain": "llm_ai_rag",
+          "reason": "source-era name maps to canonical packaged artifact"
+        },
+        {
+          "artifact": "ai-prompt-contract.md",
+          "decision": "alias",
+          "target": "prompt-contract.md",
+          "owner_domain": "llm_ai_rag",
+          "reason": "source-era name maps to canonical packaged artifact"
+        },
+        {
+          "artifact": "architecture-tradeoff-record.md",
+          "decision": "alias",
+          "target": "adr.md",
+          "owner_domain": "solution_architecture",
+          "reason": "source-era name maps to canonical packaged artifact"
+        },
+        {
+          "artifact": "architecture.md",
+          "decision": "alias",
+          "target": "architecture-overview.md",
+          "owner_domain": "solution_architecture",
+          "reason": "source-era name maps to canonical packaged artifact"
+        },
+        {
+          "artifact": "artifact-manifest.md",
+          "decision": "alias",
+          "target": "release-artifact-manifest.md",
+          "owner_domain": "delivery_release_operations",
+          "reason": "source-era name maps to canonical packaged artifact"
+        },
+        {
+          "artifact": "asvs-mapping.md",
+          "decision": "alias",
+          "target": "asvs-ssdf-mapping.md",
+          "owner_domain": "security_privacy_compliance",
+          "reason": "source-era name maps to canonical packaged artifact"
+        }
+      ],
+      "write_policy": "read_only",
+      "status": "ok"
+    },
+    "question_queue": {
+      "schema_version": 1,
+      "write_policy": "read_only",
+      "runtime_status": "route_ready",
+      "policy": {
+        "max_total_questions": 8,
+        "max_blocking_questions_in_first_response": 1,
+        "supported_priorities": [
+          "blocking",
+          "recommended",
+          "optional"
+        ],
+        "supported_categories": [
+          "scope",
+          "product",
+          "verification",
+          "approval",
+          "ownership",
+          "risk",
+          "release"
+        ],
+        "supported_answer_types": [
+          "text",
+          "single_choice",
+          "single_choice_or_text",
+          "multi_choice",
+          "approval",
+          "not_applicable_or_gap"
+        ]
+      },
+      "questions": [
+        {
+          "id": "q_approval_ef5ffaecf6",
+          "text": "Who can approve or explicitly reject the gap for approval-record.md?",
+          "priority": "blocking",
+          "category": "approval",
+          "answer_type": "approval",
+          "artifact": "approval-record.md",
+          "owner_domain": "security_privacy_compliance",
+          "source": {
+            "kind": "methodology_synthesis",
+            "key": "approval_boundary_present,external_release_approval_present,external_write_approval_present",
+            "block": "recommendation_groups",
+            "artifact": "approval-record.md"
+          },
+          "sequence": 1
+        },
+        {
+          "id": "q_approval_d6234260b8",
+          "text": "Can the owner provide or accept a gap for: artifact owners and approval boundaries?",
+          "priority": "recommended",
+          "category": "approval",
+          "answer_type": "not_applicable_or_gap",
+          "artifact": "",
+          "owner_domain": "",
+          "source": {
+            "kind": "methodology_audit",
+            "key": "artifact-owners-and-approval-boundaries",
+            "block": "unknowns"
+          },
+          "sequence": 2
+        },
+        {
+          "id": "q_approval_5ebf93f1b5",
+          "text": "Who can approve or explicitly reject the gap for ai-tool-contract.md?",
+          "priority": "recommended",
+          "category": "approval",
+          "answer_type": "approval",
+          "artifact": "ai-tool-contract.md",
+          "owner_domain": "",
+          "source": {
+            "kind": "methodology_synthesis",
+            "key": "ai_tool_contract_present",
+            "block": "recommendation_groups",
+            "artifact": "ai-tool-contract.md"
+          },
+          "sequence": 3
+        },
+        {
+          "id": "q_approval_974de0c2ec",
+          "text": "Who can approve or explicitly reject the gap for ci-cd-workflow-inventory.md?",
+          "priority": "recommended",
+          "category": "approval",
+          "answer_type": "approval",
+          "artifact": "ci-cd-workflow-inventory.md",
+          "owner_domain": "",
+          "source": {
+            "kind": "methodology_synthesis",
+            "key": "ci_cd_governance_present",
+            "block": "recommendation_groups",
+            "artifact": "ci-cd-workflow-inventory.md"
+          },
+          "sequence": 4
+        },
+        {
+          "id": "q_approval_e96a077fe4",
+          "text": "Who can approve or explicitly reject the gap for ci-permissions-review.md?",
+          "priority": "recommended",
+          "category": "approval",
+          "answer_type": "approval",
+          "artifact": "ci-permissions-review.md",
+          "owner_domain": "",
+          "source": {
+            "kind": "methodology_synthesis",
+            "key": "ci_permission_review_present",
+            "block": "recommendation_groups",
+            "artifact": "ci-permissions-review.md"
+          },
+          "sequence": 5
+        },
+        {
+          "id": "q_approval_f54e5f83e8",
+          "text": "Who can approve or explicitly reject the gap for environment-matrix.md?",
+          "priority": "recommended",
+          "category": "approval",
+          "answer_type": "approval",
+          "artifact": "environment-matrix.md",
+          "owner_domain": "",
+          "source": {
+            "kind": "methodology_synthesis",
+            "key": "environment_approval_boundary_present,github_environment_controls_present",
+            "block": "recommendation_groups",
+            "artifact": "environment-matrix.md"
+          },
+          "sequence": 6
+        },
+        {
+          "id": "q_approval_02c689a7c0",
+          "text": "Who can approve or explicitly reject the gap for frontend-flow-spec.md?",
+          "priority": "recommended",
+          "category": "approval",
+          "answer_type": "approval",
+          "artifact": "frontend-flow-spec.md",
+          "owner_domain": "",
+          "source": {
+            "kind": "methodology_synthesis",
+            "key": "frontend_user_flow_acceptance_present,frontend_api_contract_alignment_present,frontend_content_i18n_boundary_present",
+            "block": "recommendation_groups",
+            "artifact": "frontend-flow-spec.md"
+          },
+          "sequence": 7
+        },
+        {
+          "id": "q_approval_8d9a4c665b",
+          "text": "Who can approve or explicitly reject the gap for guardrail-matrix.md?",
+          "priority": "recommended",
+          "category": "approval",
+          "answer_type": "approval",
+          "artifact": "guardrail-matrix.md",
+          "owner_domain": "",
+          "source": {
+            "kind": "methodology_synthesis",
+            "key": "ai_human_approval_boundary_present",
+            "block": "recommendation_groups",
+            "artifact": "guardrail-matrix.md"
+          },
+          "sequence": 8
+        }
+      ],
+      "next_blocking_question": {
+        "id": "q_approval_ef5ffaecf6",
+        "text": "Who can approve or explicitly reject the gap for approval-record.md?",
+        "priority": "blocking",
+        "category": "approval",
+        "answer_type": "approval",
+        "artifact": "approval-record.md",
+        "owner_domain": "security_privacy_compliance",
+        "source": {
+          "kind": "methodology_synthesis",
+          "key": "approval_boundary_present,external_release_approval_present,external_write_approval_present",
+          "block": "recommendation_groups",
+          "artifact": "approval-record.md"
+        },
+        "sequence": 1
+      },
+      "summary": {
+        "total": 8,
+        "blocking": 1,
+        "recommended": 7,
+        "optional": 0,
+        "remaining": 7
+      }
+    },
+    "completion_skeptic_recommendation": {
+      "schema_version": 1,
+      "write_policy": "read_only",
+      "status": "skip",
+      "recommended_skill": "completion-skeptic",
+      "trigger_level": "skip",
+      "trigger_sources": [],
+      "risk_classes": [],
+      "reasons": [],
+      "skip_reasons": [
+        "no completion-risk trigger detected"
+      ],
+      "artifact_under_review": {
+        "kind": "runtime_result",
+        "path": "",
+        "label": "infrastructure_planned"
+      },
+      "artifact_type": "plugin_skill",
+      "required_evidence": [
+        "current verification evidence",
+        "source artifact ledger",
+        "accepted gaps ledger"
+      ],
+      "evidence_summary": {
+        "required": 3,
+        "available": 0,
+        "missing": 3,
+        "stale": 0,
+        "approval_required": 0,
+        "accepted_gap": 0
+      },
+      "approval_boundary": {
+        "status": "not_required",
+        "hits": []
+      },
+      "packet_ref": {
+        "kind": "not_available",
+        "path": "",
+        "digest": ""
+      },
+      "safe_next_action": "Continue with normal verification; do not claim completion without current evidence.",
+      "source_policy": "completion skeptic recommendation is generated routing guidance, not source of truth",
+      "redaction_status": {
+        "status": "clean",
+        "categories": []
+      }
+    },
+    "finish_options": [
+      "read_only_audit",
+      "ask_owner",
+      "request_approval",
+      "stop_blocked"
+    ],
+    "first_response_contract": {
+      "mode": "pr_review",
+      "confidence": "high",
+      "next_smallest_action": "Request explicit owner approval before any write, stage, or external action.",
+      "next_blocking_question": {
+        "id": "q_approval_ef5ffaecf6",
+        "text": "Who can approve or explicitly reject the gap for approval-record.md?",
+        "priority": "blocking",
+        "category": "approval",
+        "answer_type": "approval",
+        "artifact": "approval-record.md",
+        "owner_domain": "security_privacy_compliance",
+        "source": {
+          "kind": "methodology_synthesis",
+          "key": "approval_boundary_present,external_release_approval_present,external_write_approval_present",
+          "block": "recommendation_groups",
+          "artifact": "approval-record.md"
+        },
+        "sequence": 1
+      },
+      "question_counts": {
+        "total": 8,
+        "blocking": 1,
+        "recommended": 7,
+        "optional": 0,
+        "remaining": 7
+      },
+      "question_summary": [
+        "1 blocking question",
+        "7 recommended questions",
+        "0 optional questions"
+      ],
+      "safe_next_action": "Stage the missing Codex workflow artifact before activating capabilities.",
+      "required_fields": [
+        "mode",
+        "confidence",
+        "next smallest action",
+        "minimum artifacts",
+        "evidence gaps",
+        "approval boundary"
+      ],
+      "minimum_artifacts": [
+        "pr review readiness",
+        "pr risk review",
+        "changed files map"
+      ],
+      "evidence_gaps": [],
+      "approval_boundary": "staged_only",
+      "finish_options": [
+        "read_only_audit",
+        "ask_owner",
+        "request_approval",
+        "stop_blocked"
+      ],
+      "completion_skeptic_summary": {
+        "status": "skip",
+        "trigger_level": "skip",
+        "top_reason": "",
+        "missing_evidence_count": 3,
+        "approval_required_count": 0,
+        "safe_next_action": "Continue with normal verification; do not claim completion without current evidence."
+      }
+    }
+  },
+  "handoffs": [],
+  "files_touched": [],
+  "files_proposed": [
+    "staged handoff packet"
+  ],
+  "verification_evidence": [],
+  "source_policy_status": "ok",
+  "approval_status": "not_required",
+  "redactions": {
+    "count": 0,
+    "categories": []
+  },
+  "errors": [],
+  "warnings": [
+    "approval:required_for_methodology_action"
+  ],
+  "next_action": "Request explicit owner approval before any write, stage, or external action."
+}

@@ -1,0 +1,9 @@
+{
+  "git_action_performed": false,
+  "branch_created": false,
+  "external_pr_created": false,
+  "github_api_called": false,
+  "merge_performed": false,
+  "release_published": false
+}
+

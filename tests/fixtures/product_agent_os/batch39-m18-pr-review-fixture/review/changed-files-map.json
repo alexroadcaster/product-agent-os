@@ -1,0 +1,17 @@
+{
+  "schema_version": "changed_files_map_v1",
+  "changed_files": [
+    "src/pricing.py",
+    "tests/test_pricing.py",
+    "docs/pr-risk-review.md",
+    "docs/code-review-findings.md",
+    "docs/release-readiness-gap.md"
+  ],
+  "review_focus": [
+    "pricing behavior",
+    "edge-case tests",
+    "unsupported release-readiness claims",
+    "git and external PR approval boundary"
+  ]
+}
+
