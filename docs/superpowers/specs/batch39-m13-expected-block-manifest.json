@@ -1,0 +1,71 @@
+{
+  "approval_boundary": {
+    "automation_activation": "not_performed",
+    "browser_automation": "not_performed",
+    "cache_mutation": "not_performed",
+    "external_actions": "not_performed",
+    "git_actions": "not_performed",
+    "live_server": "not_performed",
+    "local_evidence_artifact_write": "allowed_workspace_output_only",
+    "provider_or_api_calls": "not_performed",
+    "target_workspace_mutation": "not_performed"
+  },
+  "attempt_id": "B39-TEST-M13-A01",
+  "batch": "B39",
+  "completion_skeptic": {
+    "accepted_gap_refs": [],
+    "doubt_packet_ref": "none",
+    "failure_classes": [],
+    "promotion_boundary": "manual_only_not_promoted",
+    "scorecard_ref": "none",
+    "trigger": "not_applicable_schema_fixture",
+    "verdict": "not_run"
+  },
+  "execution_plan": {
+    "checks_planned": [],
+    "commands_planned": [
+      "python plugins\\product-agent-os\\scripts\\validate_source_policy.py ..\\Neural_Flow",
+      "python plugins\\product-agent-os\\scripts\\run_codex_runtime_runner.py ..\\Neural_Flow --contract --intent-hint expected source policy block",
+      "python plugins\\product-agent-os\\scripts\\run_methodology_audit.py ..\\Neural_Flow --json"
+    ],
+    "evidence_artifacts": [
+      "docs/superpowers/specs/batch39-m13-source-policy.json",
+      "docs/superpowers/specs/batch39-m13-runtime-result.json",
+      "docs/superpowers/specs/batch39-m13-methodology-audit.json"
+    ],
+    "expected_outputs": [
+      "source policy status blocked",
+      "runtime status blocked",
+      "no target mutation or external action"
+    ]
+  },
+  "generated_at": "2026-06-11T00:00:00+00:00",
+  "manifest_digest": "sha256:7990f8c4286a9135dbccf38ee05886be9ac0eedef6e64380be7a3f294586a4fa",
+  "pilot": {
+    "archetype": "expected_block",
+    "mode": "expected_block",
+    "pilot_id": "neural-flow-source-policy-expected-block",
+    "real_pilot_evidence": false
+  },
+  "redaction": {
+    "local_absolute_paths_allowed": false,
+    "raw_private_logs_stored": false,
+    "redaction_report_ref": "pending_B39_TEST_M05",
+    "secrets_allowed": false
+  },
+  "schema_version": "pilot_run_manifest_v1",
+  "slice": "B39-S2",
+  "source_inventory_ref": "docs/superpowers/specs/batch39-m11-target-fixture-pack.json",
+  "status": {
+    "next_test": "B39-TEST-M03",
+    "open_blockers": [],
+    "overall": "ready_for_planned_pilot"
+  },
+  "target": {
+    "mutation_allowed": false,
+    "source_policy_status": "blocked",
+    "target_kind": "real_project",
+    "target_ref": "approved_target:Neural_Flow"
+  },
+  "test_id": "B39-TEST-M13"
+}

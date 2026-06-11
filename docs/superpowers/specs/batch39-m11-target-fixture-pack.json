@@ -1,0 +1,307 @@
+{
+  "approval_boundary": {
+    "automation_activation": "not_performed",
+    "browser_automation": "not_performed",
+    "cache_mutation": "not_performed",
+    "external_actions": "not_performed",
+    "git_actions": "not_performed",
+    "live_server": "not_performed",
+    "local_evidence_artifact_write": "allowed_workspace_output_only",
+    "provider_or_api_calls": "not_performed",
+    "target_workspace_mutation": "not_performed"
+  },
+  "archetype_candidates": [
+    {
+      "archetype": "docs_research",
+      "reason": "markdown-heavy target with source and control-plane documents",
+      "recommended_test": "B39-TEST-M12"
+    },
+    {
+      "archetype": "expected_block",
+      "reason": "target is read-only and source policy remains owner-reviewed before any apply",
+      "recommended_test": "B39-TEST-M13"
+    },
+    {
+      "archetype": "ai_rag",
+      "reason": "complex cognitive architecture and research/RAG/MCP signals are present",
+      "recommended_test": "B39-TEST-M16"
+    },
+    {
+      "archetype": "plugin_skill",
+      "reason": "Product-Agent OS control-plane artifacts can exercise skill/plugin governance boundaries",
+      "recommended_test": "B39-TEST-M21"
+    }
+  ],
+  "artifact_map": {
+    "architecture_artifacts": [
+      "architecture-v2.md",
+      "architecture.md"
+    ],
+    "control_plane_artifacts": [
+      "EVALS.md",
+      "PLAN.md",
+      "README.md",
+      "REQUIREMENTS.md",
+      "RUNLOG.md",
+      "TEST.md"
+    ],
+    "legacy_artifacts": [
+      "legacy/neural-flow-core-v2.txt",
+      "legacy/neural-flow-v1-architecture.md",
+      "legacy/neural-flow-v2-theory.md"
+    ],
+    "research_artifacts": [
+      "research/p2a-findings.md",
+      "research/p2a-implications-for-p2b.md"
+    ],
+    "top_level_artifacts": [
+      "EVALS.md",
+      "PLAN.md",
+      "README.md",
+      "REQUIREMENTS.md",
+      "RUNLOG.md",
+      "TEST.md",
+      "architecture-v2.md",
+      "architecture.md",
+      "issues.md",
+      "system-prompt.md"
+    ]
+  },
+  "attempt_id": "B39-TEST-M11-A01",
+  "batch": "B39",
+  "completion_skeptic": {
+    "accepted_gap_refs": [],
+    "doubt_packet_ref": "none",
+    "failure_classes": [],
+    "promotion_boundary": "manual_only_not_promoted",
+    "scorecard_ref": "docs/superpowers/specs/scorecard-gates.example.json",
+    "trigger": "not_applicable_fixture_pack",
+    "verdict": "not_run"
+  },
+  "control_plane": {
+    "optional_files": {
+      "AGENTS.md": false,
+      "README.md": true
+    },
+    "required_files": {
+      "EVALS.md": true,
+      "PLAN.md": true,
+      "REQUIREMENTS.md": true,
+      "RUNLOG.md": true,
+      "TEST.md": true
+    },
+    "required_missing": [],
+    "required_present_count": 5,
+    "status": "present"
+  },
+  "design_signals": {
+    "architecture_phase_count": 10,
+    "citation_density_signal": 162,
+    "design_complexity_flags": [
+      "control_plane_present",
+      "docs_superpowers_history_present",
+      "implementation_code_absent",
+      "large_architecture_docs",
+      "legacy_lineage_present",
+      "research_corpus_present"
+    ],
+    "legacy_architecture_phase_count": 10,
+    "open_issue_count": 41
+  },
+  "fixture_pack_digest": "sha256:faaf03658f0e983d8b3ac10fd52637f7853bc78d4f6071a926c77c7279b4b482",
+  "fixture_usage": {
+    "feeds_tests": [
+      "B39-TEST-M12",
+      "B39-TEST-M13",
+      "B39-TEST-M14",
+      "B39-TEST-M16",
+      "B39-TEST-M21"
+    ],
+    "raw_source_bodies_stored": false,
+    "safe_fixture_boundary": "relative_paths_digests_counts_only"
+  },
+  "generated_at": "2026-06-11T00:00:00+00:00",
+  "inventory": {
+    "entries": [
+      {
+        "category": "architecture",
+        "digest": "sha256:e77e4513bf26650bb06369d40611dc23f9c2de8ffe827162343701bb85315b00",
+        "path": "architecture-v2.md",
+        "size_bytes": 55792
+      },
+      {
+        "category": "architecture",
+        "digest": "sha256:134f1c8f67395f129413d0ad458cd4cac0a552661a1f0bf96fef712d6abb6e41",
+        "path": "architecture.md",
+        "size_bytes": 35560
+      },
+      {
+        "category": "docs",
+        "digest": "sha256:e74f39d8dfc01f206e71520914368de70066fd9ca479e755cde17c85079aa28a",
+        "path": "docs/superpowers/plans/2026-04-24-neural-flow-consolidation-implementation.md",
+        "size_bytes": 71657
+      },
+      {
+        "category": "docs",
+        "digest": "sha256:876ce3190bf03aa051b36c4a9ee622bc09fcb686facb052d99ffec592ea4fa14",
+        "path": "docs/superpowers/plans/2026-04-26-neural-flow-p2a-research-implementation.md",
+        "size_bytes": 53492
+      },
+      {
+        "category": "docs",
+        "digest": "sha256:7b45c8fbc3395bfb26f667091e2ce85231975d4499177b02a7882d8a8c82999e",
+        "path": "docs/superpowers/specs/2026-04-24-neural-flow-consolidation-design.md",
+        "size_bytes": 16927
+      },
+      {
+        "category": "docs",
+        "digest": "sha256:7049808ef3b6746f0fe5b6d8024fdcd2ad884026d609b2130d4c2846d2a104f7",
+        "path": "docs/superpowers/specs/2026-04-26-neural-flow-p2a-research-design.md",
+        "size_bytes": 20852
+      },
+      {
+        "category": "control_plane",
+        "digest": "sha256:2d0947ad38174a37ae681c9a7f8ce71181ce1a6422b50e8c841892303532b1b3",
+        "path": "EVALS.md",
+        "size_bytes": 3959
+      },
+      {
+        "category": "other",
+        "digest": "sha256:af9f005df43e3759d038e24d3d58b68257695b54cfae6e8095637e8307bd515c",
+        "path": "issues.md",
+        "size_bytes": 7597
+      },
+      {
+        "category": "legacy",
+        "digest": "sha256:3733744b33e8799c6e432a162ed8ec2da1e842b9cf0cc248c7e0dc28179095c3",
+        "path": "legacy/neural-flow-core-v2.txt",
+        "size_bytes": 4381
+      },
+      {
+        "category": "legacy",
+        "digest": "sha256:2666e3ffa7879efb29453901cd93f6ed0a5ee2272d7bf6d7a48b11b3544a1eb2",
+        "path": "legacy/neural-flow-v1-architecture.md",
+        "size_bytes": 60510
+      },
+      {
+        "category": "legacy",
+        "digest": "sha256:578388bf06d3acf05712947b69f9a26e98081c560a8366af350e6aca11f33bc2",
+        "path": "legacy/neural-flow-v2-theory.md",
+        "size_bytes": 80614
+      },
+      {
+        "category": "control_plane",
+        "digest": "sha256:82ca949dddf6a7b1aeafb6697a4deaacbaebf21f277f534806d2ddbf52db503a",
+        "path": "PLAN.md",
+        "size_bytes": 3557
+      },
+      {
+        "category": "control_plane",
+        "digest": "sha256:94c92dd09a69f1e8f0b4baebb952eb244145a874815f3bbf32f0b1e7f22268f2",
+        "path": "README.md",
+        "size_bytes": 3516
+      },
+      {
+        "category": "control_plane",
+        "digest": "sha256:aa272b5d88967ff051d8714d63921783781f025d902d9a39a4ec0f3443262c41",
+        "path": "REQUIREMENTS.md",
+        "size_bytes": 5387
+      },
+      {
+        "category": "research",
+        "digest": "sha256:05804c6fa3226199a0f37f5a06a764e96a266dc7b6cbaa2f6091af8168923f6e",
+        "path": "research/p2a-findings.md",
+        "size_bytes": 91943
+      },
+      {
+        "category": "research",
+        "digest": "sha256:99eecb39903b1c719ac85212db75889c6a50d71a0ee9bfc3f98861bd587edb92",
+        "path": "research/p2a-implications-for-p2b.md",
+        "size_bytes": 18443
+      },
+      {
+        "category": "control_plane",
+        "digest": "sha256:5bfa6cb7f177927bd567da56946b21b5bada385bce0242d063e399c593663037",
+        "path": "RUNLOG.md",
+        "size_bytes": 3389
+      },
+      {
+        "category": "other",
+        "digest": "sha256:8a079763ce7df338426c74478527c0c88972b8f75552eea0a09c08e3cffedb4c",
+        "path": "system-prompt.md",
+        "size_bytes": 7768
+      },
+      {
+        "category": "control_plane",
+        "digest": "sha256:74dd8d3a933bdaa076a4ae435be98e2a1e2159735f96fb3e230f57bce16b2107",
+        "path": "TEST.md",
+        "size_bytes": 3090
+      }
+    ],
+    "excluded_count": 0,
+    "excluded_entries": [],
+    "file_count": 19,
+    "git_repository_status": "not_git_repository",
+    "inventory_digest": "sha256:c914456a313fb975005f59340f0a2baee119e9d923406a24c29ce491c25d1a63",
+    "markdown_file_count": 18,
+    "non_markdown_file_count": 1,
+    "top_level_directory_count": 3
+  },
+  "redaction": {
+    "local_absolute_paths_allowed": false,
+    "raw_file_bodies_stored": false,
+    "raw_private_logs_stored": false,
+    "secrets_allowed": false
+  },
+  "safety_profile": {
+    "manual_verification_required": true,
+    "safe_fixture_categories": [
+      "relative_path",
+      "file_size",
+      "content_digest",
+      "section_count",
+      "citation_density_signal",
+      "control_plane_presence",
+      "architecture_keywords"
+    ],
+    "source_freshness_status": "project_evidence_not_fresh_external_verification",
+    "unsafe_content_exclusions": [
+      "absolute_user_paths",
+      "raw_private_source_bodies",
+      "secrets",
+      "raw_private_logs",
+      "fresh_external_verification_claims"
+    ]
+  },
+  "schema_version": "target_fixture_pack_v1",
+  "slice": "B39-S2",
+  "source_policy": {
+    "candidate_refs": [
+      "REQUIREMENTS.md",
+      "README.md",
+      "RUNLOG.md"
+    ],
+    "raw_source_bodies_stored": false,
+    "source_truth_needs_owner_review": true,
+    "status": "present_unverified"
+  },
+  "status": {
+    "next_test": "B39-TEST-M12",
+    "open_blockers": [],
+    "overall": "prepared_for_s2_pilots",
+    "warnings": [
+      "source_policy_present_unverified_owner_review_required"
+    ]
+  },
+  "target": {
+    "architecture_complexity": "complex",
+    "development_stage": "idea_stage",
+    "lifecycle_state": "p2b_design_planning",
+    "mutation_allowed": false,
+    "target_kind": "local_workspace",
+    "target_label": "Neural_Flow",
+    "target_ref": "approved_target:Neural_Flow",
+    "usage_mode": "read_only_pilot_fixture"
+  },
+  "test_id": "B39-TEST-M11"
+}

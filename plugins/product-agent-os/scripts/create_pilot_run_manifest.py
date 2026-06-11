@@ -30,6 +30,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--check-planned", action="append", default=[])
     parser.add_argument("--evidence-artifact", action="append", default=[])
     parser.add_argument("--expected-output", action="append", default=[])
+    parser.add_argument("--target-kind", default="fixture")
+    parser.add_argument("--mode", default="schema_fixture")
+    parser.add_argument("--source-policy-status", default="not_applicable")
     parser.add_argument("--generated-at")
     args = parser.parse_args(argv)
 
@@ -46,6 +49,9 @@ def main(argv: list[str] | None = None) -> int:
         checks_planned=args.check_planned,
         evidence_artifacts=args.evidence_artifact,
         expected_outputs=args.expected_output,
+        target_kind=args.target_kind,
+        mode=args.mode,
+        source_policy_status=args.source_policy_status,
     )
     errors = validate_pilot_run_manifest(manifest)
     if errors:

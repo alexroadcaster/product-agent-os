@@ -1,0 +1,82 @@
+{
+  "schema_version": "batch39_docs_only_pilot_summary_v1",
+  "batch": "B39",
+  "test_id": "B39-TEST-M12",
+  "slice": "B39-S2",
+  "summary_status": "passed_with_real_target_preflight_block_recorded",
+  "generated_at": "2026-06-11T00:00:00+00:00",
+  "real_target_preflight": {
+    "attempt_id": "B39-TEST-M12-A01",
+    "target_ref": "approved_target:Neural_Flow",
+    "mode": "read_only_preflight",
+    "status": "blocked_expected",
+    "source_policy_status": "blocked",
+    "runtime_status": "blocked",
+    "lifecycle_state": "uninitialized",
+    "blocker": "source_policy:blocked",
+    "evidence_refs": [
+      "docs/superpowers/specs/batch39-m12-source-policy.json",
+      "docs/superpowers/specs/batch39-m12-runtime-result.json",
+      "docs/superpowers/specs/batch39-m12-methodology-audit.json"
+    ],
+    "supported_claims": [
+      "Neural_Flow read-only runtime route correctly refuses a clean happy-path claim while source policy is blocked.",
+      "No target workspace mutation, live server, browser automation, provider/API call, git action or external action was performed."
+    ],
+    "unsupported_claims": [
+      "Neural_Flow is not a verified clean positive pilot target for B39-TEST-M12.",
+      "No source freshness, release readiness or target-apply readiness claim is supported."
+    ]
+  },
+  "clean_positive_pilot": {
+    "attempt_id": "B39-TEST-M12-A02",
+    "target_ref": "tests/fixtures/product_agent_os/batch39-m12-docs-happy-fixture",
+    "pilot_id": "synthetic-docs-happy-path",
+    "archetype": "docs_research",
+    "mode": "synthetic_local",
+    "status": "passed",
+    "source_policy_status": "ok",
+    "runtime_status": "route_ready",
+    "lifecycle_state": "plan_ready",
+    "manifest_ref": "docs/superpowers/specs/batch39-m12-pilot-run-manifest.json",
+    "command_results_ref": "docs/superpowers/specs/batch39-m12-command-results.jsonl",
+    "evidence_refs": [
+      "docs/superpowers/specs/batch39-m12-synthetic-source-policy.json",
+      "docs/superpowers/specs/batch39-m12-synthetic-runtime-result.json",
+      "docs/superpowers/specs/batch39-m12-synthetic-methodology-audit.json"
+    ],
+    "supported_claims": [
+      "A clean synthetic docs-only happy path can pass source-policy validation, runtime routing and methodology audit locally.",
+      "The command-results JSONL stores current command evidence digests without raw stdout/stderr."
+    ],
+    "unsupported_claims": [
+      "Synthetic-local evidence does not prove real-project value, public readiness or promotion readiness."
+    ]
+  },
+  "agent_skill_evidence": {
+    "skills_used": [
+      "product-agent-os:implementation-planner",
+      "product-agent-os:agent-team-designer",
+      "product-agent-os:docs-maintainer"
+    ],
+    "agent_handoff": {
+      "role": "Product Manager",
+      "name": "Northstar",
+      "status": "completed_read_only_review",
+      "recommendation": "Use Neural_Flow only as a narrow read-only blocked preflight unless the owner explicitly accepts the source-policy gap; use a synthetic docs fixture for the clean positive M12 path."
+    }
+  },
+  "approval_boundary": {
+    "target_workspace_mutation": "not_performed",
+    "provider_or_api_calls": "not_performed",
+    "browser_automation": "not_performed",
+    "live_server": "not_performed",
+    "cache_mutation": "not_performed",
+    "external_actions": "not_performed",
+    "git_actions": "not_performed",
+    "automation_activation": "not_performed",
+    "local_evidence_artifact_write": "allowed_workspace_output_only"
+  },
+  "promotion_boundary": "manual_only_not_promoted",
+  "next_action": "Run B39-TEST-M13 as the expected-block Neural_Flow baseline using the recorded source-policy blocker."
+}

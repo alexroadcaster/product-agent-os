@@ -30,7 +30,7 @@ Last compacted: 2026-06-11
 | Task 26 Batch 35 | Closed through `T10-LIVE-M41` as `owner_closed_no_op_git_release_pr`. | No branch, stage, commit, push or PR was performed; future git writes require fresh preflight and exact approval. |
 | Batch 38 S1/S2/S3/S4 | Recorded as implemented/reviewed according to source-owned history. | `B38-S2` includes `plugin_cache_refresh_final_status: completed_local_cache_refresh_from_prepared_stage`; historical `blocked_pending_explicit_cache_mutation_approval` is preserved. |
 | `B38-PILOT-NF01` | Docs-only target pilot addendum completed. | Target apply remains blocked by `source_policy_status: blocked` and missing target control-plane/source registry artifacts. |
-| Batch 39 | Executing through `prod_test.md`; `B39-S1` foundational local contracts `B39-TEST-M01..M10` have current local evidence. | Next route is `B39-TEST-M11`; selecting a project is required once a task needs real target evidence or mutation. |
+| Batch 39 | Executing through `prod_test.md`; `B39-S1` foundational local contracts `B39-TEST-M01..M10` have current local evidence, `B39-TEST-M11` has approved `Neural_Flow` read-only target fixture evidence, `B39-TEST-M12` has a synthetic docs-only happy-path pass and `B39-TEST-M13` has the `Neural_Flow` expected source-policy block. | Next route is `B39-TEST-M14`; target mutation, browser/provider/git/external actions and any broader target execution still require exact approval. |
 | Batch 40 completion-skeptic | Closed as local manual foundation through `B40-S5`. | Promotion state remains `manual_only` and `not_promoted`. |
 | Agent control-plane sync | Implemented and verified as mandatory project workflow and packaged template, not as active automation. | Before closing non-mechanical Product-Agent OS work, agents must update owned control-plane files or record `not_applicable` / `handoff_required`. |
 
@@ -67,8 +67,9 @@ These markers are retained as compact discovery anchors, not as full evidence:
 
 ## Current Batch 39 Handoff
 
-- Next active route: execute `B39-TEST-M11` in `prod_test.md`.
-- Owner action: choose or approve the target boundary only before a test needing real target evidence, target runtime behavior or mutation.
+- Latest completed route: `B39-TEST-M13-A01` recorded the expected `Neural_Flow` source-policy block. Evidence refs: `docs/superpowers/specs/batch39-m13-expected-block-summary.json`, `docs/superpowers/specs/batch39-m13-expected-block-manifest.json`, `docs/superpowers/specs/batch39-m13-command-results.jsonl`, `prod_test.md`. The block is current evidence against clean-positive, target-apply, release-readiness or promotion claims for `Neural_Flow`.
+- Next active route: execute `B39-TEST-M14` in `prod_test.md` as the web/frontend archetype pilot.
+- Owner action: resolve or explicitly accept target source-policy gaps only if a future real-target positive pilot is needed; approve any new target/runtime/browser actions before M14 if they leave local synthetic scope.
 - Codex action: continue Batch 39 attempt entries with technical/product objective, owner/Codex action split, prerequisites, evidence, result, failure/fix/retest and residual risk.
 - Approval boundary: no target write, browser automation, provider call, live server, canonical mutation, git write or external action without exact approval.
 
@@ -88,7 +89,7 @@ Strict MkDocs is required only when navigation, Mermaid diagrams, Markdown exten
 
 ## Residual Risks
 
-- Batch 39 is only partially executed; `B39-TEST-M11..M54` remain open until `prod_test.md` contains actual attempt evidence.
+- Batch 39 is only partially executed; `B39-TEST-M14..M54` remain open until `prod_test.md` contains actual attempt evidence.
 - `B38-PILOT-NF01` target apply remains blocked by source-policy and target-artifact gaps.
 - Batch 40 completion-skeptic automation is still `manual_only` and `not_promoted`.
 - Historical detail has been intentionally moved out of root control-plane files; future broad historical claims should cite the source backlogs or registry.

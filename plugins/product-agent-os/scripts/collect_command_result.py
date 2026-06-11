@@ -27,7 +27,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--started-at", required=True)
     parser.add_argument("--finished-at", required=True)
     parser.add_argument("--stdout", default="")
+    parser.add_argument("--stdout-file")
     parser.add_argument("--stderr", default="")
+    parser.add_argument("--stderr-file")
     parser.add_argument("--evidence-class", required=True)
     parser.add_argument("--evidence-source", required=True)
     parser.add_argument("--append", action="store_true")
@@ -42,8 +44,8 @@ def main(argv: list[str] | None = None) -> int:
         exit_code=_exit_code(args.exit_code),
         started_at=args.started_at,
         finished_at=args.finished_at,
-        stdout=args.stdout,
-        stderr=args.stderr,
+        stdout=_text_arg_or_file(args.stdout, args.stdout_file),
+        stderr=_text_arg_or_file(args.stderr, args.stderr_file),
         evidence_class=args.evidence_class,
         evidence_source=args.evidence_source,
     )
@@ -80,6 +82,20 @@ def _exit_code(value: str | None) -> int | None:
     if value is None or value == "":
         return None
     return int(value)
+
+
+def _text_arg_or_file(value: str, file_ref: str | None) -> str:
+    if not file_ref:
+        return value
+    path = Path(file_ref)
+    for encoding in ("utf-8", "utf-8-sig", "utf-16"):
+        try:
+            return path.read_text(encoding=encoding)
+        except UnicodeDecodeError:
+            continue
+        except OSError:
+            return value
+    return value
 
 
 if __name__ == "__main__":

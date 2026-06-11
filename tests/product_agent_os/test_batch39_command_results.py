@@ -159,6 +159,52 @@ class Batch39CommandResultsTests(unittest.TestCase):
             self.assertEqual(validate_command_results_jsonl(text), [])
             self.assertIn('"status": "ok"', result.stdout)
 
+    def test_cli_reads_stdout_from_file_without_storing_raw_output(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp) / "command-results.example.jsonl"
+            stdout_file = Path(tmp) / "stdout.json"
+            stdout_file.write_text(json.dumps({"status": "route_ready", "details": ["x"]}), encoding="utf-16")
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPTS / "collect_command_result.py"),
+                    "--output",
+                    str(output),
+                    "--test-id",
+                    "B39-TEST-M12",
+                    "--attempt-id",
+                    "B39-TEST-M12-A02",
+                    "--manifest-ref",
+                    "docs/superpowers/specs/batch39-m12-pilot-run-manifest.json",
+                    "--command-id",
+                    "cmd-file-stdout",
+                    "--command",
+                    "python plugins/product-agent-os/scripts/run_codex_runtime_runner.py fixture --contract",
+                    "--exit-code",
+                    "0",
+                    "--started-at",
+                    "2026-06-11T00:00:00+00:00",
+                    "--finished-at",
+                    "2026-06-11T00:00:02+00:00",
+                    "--stdout-file",
+                    str(stdout_file),
+                    "--evidence-class",
+                    "current_command",
+                    "--evidence-source",
+                    "local_command_run",
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
+            parsed = parse_command_results_jsonl(output.read_text(encoding="utf-8"))
+            self.assertEqual(len(parsed), 1)
+            self.assertFalse(parsed[0]["redaction"]["raw_stdout_stored"])
+            self.assertNotIn("stdout", parsed[0])
+            self.assertTrue(parsed[0]["output"]["stdout_digest"].startswith("sha256:"))
+
 
 if __name__ == "__main__":
     unittest.main()
