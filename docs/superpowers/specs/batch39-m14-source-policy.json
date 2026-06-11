@@ -1,0 +1,78 @@
+﻿{
+  "errors": [],
+  "files": [
+    {
+      "assumptions": [],
+      "freshness_risks": [
+        "current OpenAI/runtime behavior may drift"
+      ],
+      "missing_context": [],
+      "path": "docs/frontend-flow-spec.md",
+      "registry_update_required": false,
+      "secret_findings": [],
+      "source_status": "synthetic_fixture",
+      "supported_facts": [
+        "OpenAI-related claim requires source-policy review"
+      ],
+      "unsupported_claims": []
+    },
+    {
+      "assumptions": [],
+      "freshness_risks": [
+        "current OpenAI/runtime behavior may drift"
+      ],
+      "missing_context": [],
+      "path": "docs/frontend-visual-qa.md",
+      "registry_update_required": false,
+      "secret_findings": [],
+      "source_status": "synthetic_fixture",
+      "supported_facts": [
+        "OpenAI-related claim requires source-policy review"
+      ],
+      "unsupported_claims": []
+    }
+  ],
+  "registry_updates_required": [],
+  "secret_findings": [],
+  "source_policy_report": {
+    "errors": [],
+    "files": [
+      {
+        "assumptions": [],
+        "freshness_risks": [
+          "current OpenAI/runtime behavior may drift"
+        ],
+        "missing_context": [],
+        "path": "docs/frontend-flow-spec.md",
+        "registry_update_required": false,
+        "secret_findings": [],
+        "source_status": "synthetic_fixture",
+        "supported_facts": [
+          "OpenAI-related claim requires source-policy review"
+        ],
+        "unsupported_claims": []
+      },
+      {
+        "assumptions": [],
+        "freshness_risks": [
+          "current OpenAI/runtime behavior may drift"
+        ],
+        "missing_context": [],
+        "path": "docs/frontend-visual-qa.md",
+        "registry_update_required": false,
+        "secret_findings": [],
+        "source_status": "synthetic_fixture",
+        "supported_facts": [
+          "OpenAI-related claim requires source-policy review"
+        ],
+        "unsupported_claims": []
+      }
+    ],
+    "registry_updates_required": [],
+    "secret_findings": [],
+    "status": "ok",
+    "workspace": "tests\\fixtures\\product_agent_os\\batch39-m14-frontend-fixture"
+  },
+  "status": "ok",
+  "workspace": "tests\\fixtures\\product_agent_os\\batch39-m14-frontend-fixture"
+}

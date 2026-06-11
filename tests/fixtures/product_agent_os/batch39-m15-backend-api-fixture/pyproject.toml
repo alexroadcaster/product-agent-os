@@ -1,0 +1,6 @@
+[project]
+name = "batch39-m15-backend-api-fixture"
+version = "0.0.0"
+description = "Synthetic backend/API fixture for Product-Agent OS Batch 39 testing."
+requires-python = ">=3.10"
+

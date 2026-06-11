@@ -28,7 +28,7 @@ Last compacted: 2026-06-11
 | Task 26 Batch 35 | Closed through `T10-LIVE-M41` as `owner_closed_no_op_git_release_pr`; no branch, stage, commit, push or PR was performed. | `docs/sources/product-agent-os-track-10-backlog.md`, `RUNLOG.md` |
 | Batch 38 package-source and production-readiness work | Implemented/recorded with preserved historical blockers. `B38-S2` records `plugin_cache_refresh_final_status: completed_local_cache_refresh_from_prepared_stage`; historical `blocked_pending_explicit_cache_mutation_approval` remains preserved. | `docs/sources/product-agent-os-track-10-backlog.md`, `RUNLOG.md` |
 | `B38-PILOT-NF01` | First target-specific docs-only pilot addendum against `Neural_Flow`; target apply remains blocked by `source_policy_status: blocked` and missing target control-plane/source registry artifacts. | `docs/sources/product-agent-os-track-10-backlog.md`, `RUNLOG.md` |
-| Batch 39 | Executing as `B39-S1..B39-S5` and `B39-TEST-M01..M54`; `B39-TEST-M01..M13` have current attempt evidence in `prod_test.md`, with `B39-TEST-M14` next. | `PLAN.md`, `TEST.md`, `prod_test.md` |
+| Batch 39 | Executing as `B39-S1..B39-S5` and `B39-TEST-M01..M54`; `B39-TEST-M01..M15` have current attempt evidence in `prod_test.md`, with `B39-TEST-M16` next. | `PLAN.md`, `TEST.md`, `prod_test.md` |
 | Batch 40 completion-skeptic foundation | B40-S2/S3/S4/S5 closed as local manual foundation, eval hardening, docs/site/source-transfer, synthetic-local pilot ledger, scorecard calibration and go/no-go closure; current promotion status is `manual_only` and `not_promoted`. | `docs/sources/product-agent-os-track-10-backlog.md`, `RUNLOG.md` |
 
 ## Users And Actors
@@ -105,7 +105,7 @@ These compact anchors preserve current test/source contracts without restoring t
 
 ## Open Risks
 
-- Batch 39 real-project-adjacent execution has started only for owner-approved `Neural_Flow` read-only fixture/preflight boundaries; `B39-TEST-M12` records the target as source-policy blocked and uses a synthetic fixture for the clean positive pilot, while `B39-TEST-M13` records the expected source-policy block as current evidence. Target writes, runtime/browser/provider/git/external actions and any broader target execution still require exact approval.
+- Batch 39 real-project-adjacent execution has started only for owner-approved `Neural_Flow` read-only fixture/preflight boundaries; `B39-TEST-M12` records the target as source-policy blocked and uses a synthetic fixture for the clean positive pilot, `B39-TEST-M13` records the expected source-policy block as current evidence, `B39-TEST-M14` records a synthetic frontend contract pilot and `B39-TEST-M15` records a synthetic backend/API approval-guardrail pilot. Target writes, runtime/browser/provider/git/external actions and any broader target execution still require exact approval.
 - `B38-PILOT-NF01` remains blocked for target apply by missing target control-plane/source registry artifacts and `source_policy_status: blocked`.
 - Batch 40 completion-skeptic automation remains `manual_only` and `not_promoted`.
 - Historical evidence is intentionally source-owned outside this file; use the registry/backlogs before making broad historical claims.

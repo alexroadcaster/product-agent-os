@@ -1,0 +1,26 @@
+asyncapi: "3.0.0"
+info:
+  title: Batch 39 Synthetic Task Events
+  version: "0.0.0"
+channels:
+  task.completed:
+    address: task.completed
+    messages:
+      TaskCompleted:
+        payload:
+          type: object
+          required:
+            - task_id
+            - completed_at
+          properties:
+            task_id:
+              type: string
+            completed_at:
+              type: string
+              format: date-time
+operations:
+  publishTaskCompleted:
+    action: send
+    channel:
+      $ref: "#/channels/task.completed"
+

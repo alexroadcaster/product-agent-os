@@ -1,0 +1,17 @@
+:root {
+  color: #1f2937;
+  background: #f8fafc;
+}
+
+main {
+  display: grid;
+  gap: 1rem;
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+button {
+  width: fit-content;
+}
+

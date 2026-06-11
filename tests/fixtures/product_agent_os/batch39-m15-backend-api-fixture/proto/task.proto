@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package batch39.task;
+
+message TaskLookupRequest {
+  string task_id = 1;
+}
+
+message TaskLookupResponse {
+  string task_id = 1;
+  string status = 2;
+  string owner = 3;
+}
+

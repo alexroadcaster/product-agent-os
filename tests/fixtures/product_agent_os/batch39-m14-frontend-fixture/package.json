@@ -1,0 +1,14 @@
+{
+  "name": "batch39-m14-frontend-fixture",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --check scripts/fixture-smoke.mjs"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "0.0.0-fixture",
+    "vite": "0.0.0-fixture",
+    "react": "0.0.0-fixture",
+    "react-dom": "0.0.0-fixture"
+  }
+}
