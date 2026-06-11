@@ -6,7 +6,7 @@ Source status: Batch 39 execution ledger template. This file becomes current exe
 
 `prod_test.md` is the required ledger before any `B39-S1..B39-S5` execution starts. It records every Batch 39 test, every attempt, failed or blocked runs, Product-Agent OS changes made because of a failure, and the retest evidence that proves whether the change fixed the issue.
 
-This file complements generated artifacts such as `pilot-run-manifest.json`, `command-results.jsonl`, `pilot-summary.json`, `pilot-scorecard.json`, `redaction-report.json`, `target-mutation-proof.json` and `batch39-rollup.json/md`. Generated artifacts may be attached as evidence, but this ledger is the human-readable run history.
+This file complements generated artifacts such as `pilot-run-manifest.json`, `command-results.jsonl`, `pilot-summary.json`, `pilot-scorecard.json`, `redaction-report.json`, `target-mutation-proof.json`, `batch39-rollup.json/md`, `doubt_verification_packet`, `completion_skeptic_manual_pilot_ledger`, `completion_skeptic_scorecard_calibration` and `completion_skeptic_go_no_go_closure`. Generated artifacts may be attached as evidence, but this ledger is the human-readable run history.
 
 ## Fill Rules
 
@@ -19,6 +19,9 @@ This file complements generated artifacts such as `pilot-run-manifest.json`, `co
 - Do not hide expected safety blocks as success; use `blocked_expected` with reason and safe next action.
 - Keep raw logs in staged artifacts only after redaction. In this file, store short summaries, digests and artifact paths.
 - Record exact approvals for any live server, browser automation, provider/API call, canonical graph mutation, external write, automation activation, target apply or git action.
+- For any Batch 39 attempt that claims work is done, verified, release-ready, promotable or safe to hand off, record `completion-skeptic` evidence or an owner-reviewed accepted gap.
+- Do not treat B40 synthetic-local calibration as real pilot value, automation readiness, public/team release readiness or broad semantic usefulness.
+- Keep `completion-skeptic` promotion status `manual_only` / `not_promoted` unless real pilots, owner review and exact approval support a different decision.
 
 ## Status Taxonomy
 
@@ -35,6 +38,33 @@ This file complements generated artifacts such as `pilot-run-manifest.json`, `co
 | `warning` | Test passed core gate but found a non-blocking issue. | Requires owner review before closure. |
 | `accepted_gap` | Owner accepted an unresolved limitation with residual risk. | Must be visible in go/no-go packet. |
 | `deferred` | Test intentionally moved out of Batch 39 scope. | Blocks any claim that depends on it. |
+
+## Batch 40 Completion-Skeptic Ledger Contract
+
+Batch 40 added a local/manual Doubt / verifier loop. Batch 39 must preserve it as a production-hardening gate, not as release proof.
+
+Required fields for any attempt that uses or should use `completion-skeptic`:
+
+| Field | Meaning | Required when |
+| --- | --- | --- |
+| `doubt_packet_ref` | Relative reference to `doubt_verification_packet` or `none`. | Any completion/readiness claim is made. |
+| `completion_skeptic_verdict` | `pass`, `revise`, `needs_more_context`, `blocked_by_approval`, `accepted_risk`, `blocked`, `not_run` or `accepted_gap`. | Every attempt row. |
+| `completion_skeptic_trigger` | Explicit trigger, implicit completion claim, route recommendation, skipped or not applicable. | Every attempt row. |
+| `unsupported_claims` | Count or short summary of unsupported claims kept visible. | Verdict is not `pass`. |
+| `accepted_gap_refs` | Owner-reviewed accepted-gap refs with residual risk and follow-up. | Evidence is missing, stale, synthetic-only or approval-bound. |
+| `scorecard_ref` | Pilot scorecard or `completion_skeptic_scorecard_calibration` reference. | Scorecard, rollup, metrics-loop or go/no-go rows. |
+| `promotion_boundary` | `manual_only`, `not_promoted`, `synthetic_only_boundary`, `owner_review_required` or approved override ref. | Every Batch 39 closure and release-governance attempt. |
+
+Required B40 failure classes:
+
+| Failure class | Meaning | Release impact |
+| --- | --- | --- |
+| `false_pass_blocked` | A pass/readiness claim was blocked because current evidence was missing, stale or generated-view-only. | Supports safety only if the safe next action is clear. |
+| `false_rewrite_blocked` | The verifier prevented unsupported rewrite churn. | Non-blocking if the original claim remains supported; otherwise follow up. |
+| `fake_evidence_rejected` | User-claimed, invented or unverified command/source evidence was rejected. | Blocks readiness until current evidence exists or owner accepts the gap. |
+| `missing_current_evidence` | A required check/source/tool trace was absent. | Blocks the dependent claim. |
+| `generated_view_not_proof` | Dashboard/site/report/graph output was used as proof instead of underlying evidence. | Blocks readiness until source evidence is linked. |
+| `synthetic_only_boundary` | Evidence is deterministic/synthetic-local and cannot prove real user value or release readiness. | Keeps promotion `manual_only` / `not_promoted`. |
 
 ## Global Run Metadata
 
@@ -53,6 +83,9 @@ This file complements generated artifacts such as `pilot-run-manifest.json`, `co
 | Default execution mode | `read_only_staged_first` |
 | Approval packet refs | `none_yet` |
 | Generated evidence root(s) | `pending` |
+| Completion-skeptic rollout boundary | `manual_only_not_promoted_pending_batch39_real_pilot_evidence` |
+| Completion-skeptic source packet | `docs/sources/product-agent-os-batch40-doubt-verifier-pilot-closure.md` |
+| Completion-skeptic required archetypes | `docs_research`, `code_check`, `expected_block` |
 | Final go/no-go status | `not_started` |
 
 ## Global Counters
@@ -70,6 +103,12 @@ This file complements generated artifacts such as `pilot-run-manifest.json`, `co
 | Product-Agent OS change sets | 0 | Every fix/change row counts. |
 | Retests pending | 0 | Fix made but not rerun. |
 | Unapproved actions found | 0 | Must stay zero or route to incident review. |
+| Completion-skeptic attempts | 0 | Attempts that ran or explicitly evaluated the manual verifier gate. |
+| Completion-skeptic accepted gaps | 0 | Owner-reviewed verifier gaps, including synthetic-only boundaries. |
+| Completion-skeptic false passes blocked | 0 | `false_pass_blocked` failure class count. |
+| Completion-skeptic false rewrites blocked | 0 | `false_rewrite_blocked` failure class count. |
+| Completion-skeptic fake evidence rejected | 0 | `fake_evidence_rejected` failure class count. |
+| Completion-skeptic promotions approved | 0 | Must stay zero unless real pilots, owner review and exact approval exist. |
 
 ## Test Index
 
@@ -130,13 +169,33 @@ This file complements generated artifacts such as `pilot-run-manifest.json`, `co
 | `B39-TEST-M53` | `B39-S4` | P1 | `planned` | 0 | `none` | `none` | `pending` | Add incident and recovery drills. |
 | `B39-TEST-M54` | `B39-S4` | P0 | `planned` | 0 | `none` | `none` | `pending` | Add release and distribution governance. |
 
+## Batch 40 Overlay Coverage
+
+Use this table while executing Batch 39 to prove that B40 completion-skeptic changes are covered by the existing `B39-TEST-M01..M54` matrix instead of being treated as separate release evidence.
+
+| Overlay ID | Batch 39 rows | Required coverage | Current status | Evidence refs | Open blocker / next action |
+| --- | --- | --- | --- | --- | --- |
+| `B39-B40-OV01` | `B39-TEST-M02` | Manifest schema includes `completion_skeptic` packet ref, verdict, trigger level, risk classes, accepted gap refs, scorecard ref and promotion boundary. | `planned` | `pending` | Add schema fixture before pilot execution. |
+| `B39-B40-OV02` | `B39-TEST-M03` | Command collector separates current command evidence from user-claimed, fake, generated-view and stale evidence. | `planned` | `pending` | Add fake-evidence rejection fixture. |
+| `B39-B40-OV03` | `B39-TEST-M04`, `B39-TEST-M36` | No-unapproved-actions proof covers automation, MCP, Agents SDK runner, provider call, browser automation, target apply, canonical graph mutation and git action. | `planned` | `pending` | Extend final no-action packet. |
+| `B39-B40-OV04` | `B39-TEST-M05` | Redaction covers `doubt_verification_packet`, pilot ledger, scorecard calibration, go/no-go closure and metrics-loop records. | `planned` | `pending` | Add redaction fixtures for verifier artifacts. |
+| `B39-B40-OV05` | `B39-TEST-M07`, `B39-TEST-M08` | Rollup/dashboard show verdicts, blockers, accepted gaps and safe next action without making generated views proof. | `planned` | `pending` | Add generated-view-not-proof assertion. |
+| `B39-B40-OV06` | `B39-TEST-M09` | Failure taxonomy includes `false_pass_blocked`, `false_rewrite_blocked`, `fake_evidence_rejected`, `missing_current_evidence`, `generated_view_not_proof` and `synthetic_only_boundary`. | `planned` | `pending` | Add taxonomy fixture. |
+| `B39-B40-OV07` | `B39-TEST-M10`, `B39-TEST-M30` | Scorecard and metrics loop track B40 numerator/denominator metrics and keep synthetic-only promotion blocked. | `planned` | `pending` | Add real-vs-synthetic scorecard fixture. |
+| `B39-B40-OV08` | `B39-TEST-M11..M21` | Archetype pilots include or explicitly gap completion-skeptic checks for `docs_research`, `code_check` and `expected_block`. | `planned` | `pending` | Add packet refs to pilot manifest templates. |
+| `B39-B40-OV09` | `B39-TEST-M22..M24` | Runtime route keeps `completion_skeptic_recommendation` additive, read-only and approval-bounded. | `planned` | `pending` | Add route compatibility fixture. |
+| `B39-B40-OV10` | `B39-TEST-M27`, `B39-TEST-M49` | Source-sensitive claims use official/source-registry evidence or become `needs_fresh_check`; community claims stay intake-only. | `planned` | `pending` | Add source freshness verifier case. |
+| `B39-B40-OV11` | `B39-TEST-M31..M33` | Fixture/transcript/repeatability checks cover check-again triggers, generated-site-only proof, release claims, max revise loops and route/verdict drift. | `planned` | `pending` | Extend eval fixtures after B39 runner exists. |
+| `B39-B40-OV12` | `B39-TEST-M37`, `B39-TEST-M44`, `B39-TEST-M45`, `B39-TEST-M39` | Docs/site, templates, skills and CLI matrix include `completion-skeptic`, `doubt-verification-packet.md` and `validate_doubt_verification_packet.py`. | `planned` | `pending` | Include verifier artifacts in hardening inventory. |
+| `B39-B40-OV13` | `B39-TEST-M35`, `B39-TEST-M42`, `B39-TEST-M46`, `B39-TEST-M54` | Go/no-go, runtime/browser QA, MCP and release governance preserve `manual_only` / `not_promoted` until real pilots, owner review and exact approval exist. | `planned` | `pending` | Keep release decision blocked by synthetic-only evidence. |
+
 ## Attempt Log
 
 Copy one row per attempt. Use deterministic attempt IDs: `B39-TEST-M01-A01`, `B39-TEST-M01-A02`, and so on.
 
-| Attempt ID | Test ID | Slice | Started at | Finished at | Runner / surface | Environment | Target / fixture | Approval ref | Commands / checks | Expected result | Actual result | Status | Failure class | Evidence refs | Mutation proof | Redaction status | Next action |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `B39-TEST-MXX-A01` | `B39-TEST-MXX` | `B39-SX` | `pending` | `pending` | `pending` | `pending` | `pending` | `none` | `pending` | `pending` | `pending` | `planned` | `none` | `pending` | `pending` | `pending` | `pending` |
+| Attempt ID | Test ID | Slice | Started at | Finished at | Runner / surface | Environment | Target / fixture | Approval ref | Commands / checks | Expected result | Actual result | Status | Failure class | Evidence refs | Doubt packet ref | Completion-skeptic verdict | Accepted gap refs | Promotion boundary | Mutation proof | Redaction status | Next action |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `B39-TEST-MXX-A01` | `B39-TEST-MXX` | `B39-SX` | `pending` | `pending` | `pending` | `pending` | `pending` | `none` | `pending` | `pending` | `pending` | `planned` | `none` | `pending` | `none` | `not_run` | `none` | `manual_only_not_promoted` | `pending` | `pending` | `pending` |
 
 ## Defect And Product-Agent OS Change Ledger
 
@@ -158,11 +217,11 @@ Use this table to prove that fixes were actually retested against the failed gat
 
 | Slice | Required before closeout | Current status | Evidence refs | Open risks |
 | --- | --- | --- | --- | --- |
-| `B39-S1` | Manifest, command collector, mutation proof, redaction, session visibility, rollup, dashboard, taxonomy, scorecard and at least one synthetic evidence package. | `not_started` | `pending` | `pending` |
-| `B39-S2` | Archetype pilot coverage or owner-accepted gaps, including one clean positive and one expected-block negative pilot. | `not_started` | `pending` | `pending` |
-| `B39-S3` | Functional regression, repeatability, eval, performance and full verification evidence after Batch 39 changes. | `not_started` | `pending` | `pending` |
-| `B39-S4` | Production/mass-user hardening gates pass or carry owner-reviewed blockers/accepted gaps. | `not_started` | `pending` | `pending` |
-| `B39-S5` | Source-owned closure, go/no-go packet and final no-unapproved-actions proof. | `not_started` | `pending` | `pending` |
+| `B39-S1` | Manifest, command collector, mutation proof, redaction, session visibility, rollup, dashboard, taxonomy, scorecard, B40 overlay fields and at least one synthetic evidence package. | `not_started` | `pending` | `pending` |
+| `B39-S2` | Archetype pilot coverage or owner-accepted gaps, including one clean positive, one expected-block negative pilot and completion-skeptic coverage for `docs_research`, `code_check` and `expected_block`. | `not_started` | `pending` | `pending` |
+| `B39-S3` | Functional regression, repeatability, eval, performance, completion-skeptic route/packet/scorecard regressions and full verification evidence after Batch 39 changes. | `not_started` | `pending` | `pending` |
+| `B39-S4` | Production/mass-user hardening gates pass or carry owner-reviewed blockers/accepted gaps, while B40 promotions stay blocked without exact approval. | `not_started` | `pending` | `pending` |
+| `B39-S5` | Source-owned closure, go/no-go packet, completion-skeptic `manual_only` / `not_promoted` review and final no-unapproved-actions proof. | `not_started` | `pending` | `pending` |
 
 ## No-Unapproved-Actions Ledger
 
@@ -172,8 +231,11 @@ Use this table to prove that fixes were actually retested against the failed gat
 | Live server launch | Forbidden without exact approval. | `none` | `pending` |
 | Browser automation | Forbidden without exact approval. | `none` | `pending` |
 | Provider/API/model call | Forbidden without exact approval. | `none` | `pending` |
+| MCP server activation | Forbidden without exact approval. | `none` | `pending` |
+| Agents SDK runner activation | Forbidden without exact approval. | `none` | `pending` |
 | Canonical graph mutation | Forbidden without exact approval. | `none` | `pending` |
 | Hook or automation activation | Forbidden without exact approval. | `none` | `pending` |
+| Completion-skeptic promotion beyond manual-only | Forbidden without real pilots, owner review and exact approval. | `none` | `pending` |
 | External write or publication | Forbidden without exact approval. | `none` | `pending` |
 | Git stage/commit/push/PR | Forbidden without exact approval. | `none` | `pending` |
 
@@ -202,5 +264,9 @@ Accepted gaps require owner review. Do not use this table to bypass failed verif
 | Production/mass-user hardening evidence | `no` |
 | Product-Agent OS fixes retested | `no` |
 | No-unapproved-actions proof | `no` |
+| Completion-skeptic real pilot evidence | `no` |
+| Completion-skeptic scorecard calibrated beyond synthetic-local | `no` |
+| Completion-skeptic promotion status | `manual_only_not_promoted` |
+| Completion-skeptic accepted gaps visible | `no` |
 | Open P0/P1 blockers | `pending` |
 | Recommended `B38-PROD-M12` decision | `not_ready_not_executed` |
