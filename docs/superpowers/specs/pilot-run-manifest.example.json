@@ -1,0 +1,70 @@
+{
+  "approval_boundary": {
+    "automation_activation": "not_performed",
+    "browser_automation": "not_performed",
+    "cache_mutation": "not_performed",
+    "external_actions": "not_performed",
+    "git_actions": "not_performed",
+    "live_server": "not_performed",
+    "local_evidence_artifact_write": "allowed_workspace_output_only",
+    "provider_or_api_calls": "not_performed",
+    "target_workspace_mutation": "not_performed"
+  },
+  "attempt_id": "B39-TEST-M02-A01",
+  "batch": "B39",
+  "completion_skeptic": {
+    "accepted_gap_refs": [],
+    "doubt_packet_ref": "none",
+    "failure_classes": [],
+    "promotion_boundary": "manual_only_not_promoted",
+    "scorecard_ref": "none",
+    "trigger": "not_applicable_schema_fixture",
+    "verdict": "not_run"
+  },
+  "execution_plan": {
+    "checks_planned": [
+      "validate_pilot_run_manifest(manifest) returns []"
+    ],
+    "commands_planned": [
+      "python -m unittest tests.product_agent_os.test_batch39_pilot_manifest -v",
+      "python plugins\\product-agent-os\\scripts\\create_pilot_run_manifest.py --output docs\\superpowers\\specs\\pilot-run-manifest.example.json --schema-output docs\\superpowers\\specs\\pilot-run-manifest.schema.json --test-id B39-TEST-M02 --attempt-id B39-TEST-M02-A01 --slice B39-S1 --pilot-id synthetic-docs-pilot-manifest-schema --archetype docs_research --target-ref docs/superpowers/specs --source-inventory-ref docs/superpowers/specs/batch39-m01-inventory.json"
+    ],
+    "evidence_artifacts": [
+      "docs/superpowers/specs/pilot-run-manifest.schema.json",
+      "docs/superpowers/specs/pilot-run-manifest.example.json"
+    ],
+    "expected_outputs": [
+      "pilot-run-manifest schema includes completion_skeptic refs, verdict, trigger, failure classes, accepted gaps, scorecard and promotion boundary",
+      "manifest records no target/provider/browser/git/cache/live-server/external mutation"
+    ]
+  },
+  "generated_at": "2026-06-11T16:30:00+00:00",
+  "manifest_digest": "sha256:a8d22a748778a4db0c8dc86dd18d9411a8ae2917d908c431837449f5e2da5efe",
+  "pilot": {
+    "archetype": "docs_research",
+    "mode": "schema_fixture",
+    "pilot_id": "synthetic-docs-pilot-manifest-schema",
+    "real_pilot_evidence": false
+  },
+  "redaction": {
+    "local_absolute_paths_allowed": false,
+    "raw_private_logs_stored": false,
+    "redaction_report_ref": "pending_B39_TEST_M05",
+    "secrets_allowed": false
+  },
+  "schema_version": "pilot_run_manifest_v1",
+  "slice": "B39-S1",
+  "source_inventory_ref": "docs/superpowers/specs/batch39-m01-inventory.json",
+  "status": {
+    "next_test": "B39-TEST-M03",
+    "open_blockers": [],
+    "overall": "ready_for_planned_pilot"
+  },
+  "target": {
+    "mutation_allowed": false,
+    "source_policy_status": "not_applicable",
+    "target_kind": "fixture",
+    "target_ref": "docs/superpowers/specs"
+  },
+  "test_id": "B39-TEST-M02"
+}

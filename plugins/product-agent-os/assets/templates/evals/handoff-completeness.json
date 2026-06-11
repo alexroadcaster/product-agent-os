@@ -10,6 +10,23 @@
         "fields": ["sources", "assumptions", "files", "evidence", "risks", "next_role", "stop_reason"],
         "result": "Sources, assumptions, files, evidence, risks, and next role are present."
       }
+    },
+    {
+      "id": "subagent-context-and-result-packets",
+      "input": "Inspect a Codex subagent launch and completion.",
+      "expected": {
+        "fields": [
+          "Subagent Context Packet",
+          "Subagent Result Packet",
+          "role",
+          "fork_context",
+          "prompt",
+          "allowed files",
+          "files actually read",
+          "outputs"
+        ],
+        "result": "A Subagent Context Packet exists before launch and a Subagent Result Packet exists after completion, timeout, cancellation, or close."
+      }
     }
   ]
 }

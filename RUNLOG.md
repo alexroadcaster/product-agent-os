@@ -14,6 +14,8 @@ Last compacted: 2026-06-11
 - Task 26 Batch 35 `T10-LIVE-M41` closed as `owner_closed_no_op_git_release_pr`; `blocked_pending_explicit_cache_mutation_approval` is preserved as historical evidence; `done_through_m40`.
 - Root control-plane hygiene was audited in response to system-file review. Recommended remediation: compact `REQUIREMENTS.md`, `PLAN.md`, `TEST.md` and `RUNLOG.md`; remove mojibake from `REQUIREMENTS.md`; remove UTF-8 BOM from `TEST.md`; move historical density to source-owned artifacts.
 - `rg` is installed and available as `ripgrep 14.1.0`; future searches should prefer `rg`/`rg --files` before PowerShell fallbacks.
+- Agent control-plane sync audit found the root cause of stale control-plane docs: agents could propose or hand off docs updates, but no mandatory before-completion sync gate existed in agent templates, build/review workflows or `agent-context-contract`; hooks/automation were not active and remain inactive.
+- Current remediation: `.codex/workflows/control-plane-sync.md` and packaged Product-Agent OS `control-plane-sync.md` template require update vs `not_applicable` / `handoff_required` decisions before `Completion Brief`; verification passed with task lifecycle, infrastructure template, docs contract, full unittest discovery, docs structure and diff hygiene checks.
 - Current unrelated dirty work observed before this cleanup must be preserved and not reverted:
   - `.product-agent-os-status-current/.codex/product-agent-os/status.html` deleted;
   - `.product-agent-os-status-current/.codex/product-agent-os/status.json` deleted;
@@ -30,6 +32,7 @@ Last compacted: 2026-06-11
 | `B38-PILOT-NF01` | Docs-only target pilot addendum completed. | Target apply remains blocked by `source_policy_status: blocked` and missing target control-plane/source registry artifacts. |
 | Batch 39 | Planned as `B39-TEST-M01..M54` across `B39-S1..B39-S5`. | Execution must start in `prod_test.md`; selecting a project is required once a task needs real target evidence or mutation. |
 | Batch 40 completion-skeptic | Closed as local manual foundation through `B40-S5`. | Promotion state remains `manual_only` and `not_promoted`. |
+| Agent control-plane sync | Implemented and verified as mandatory project workflow and packaged template, not as active automation. | Before closing non-mechanical Product-Agent OS work, agents must update owned control-plane files or record `not_applicable` / `handoff_required`. |
 
 ## Control-Plane Marker Bank
 
@@ -75,6 +78,8 @@ For docs/control-plane edits, run:
 
 ```powershell
 python -m unittest tests.product_agent_os.test_product_agent_os_docs -v
+python -m unittest tests.product_agent_os.test_task_plan_lifecycle -v
+python -m unittest tests.product_agent_os.test_infrastructure_templates -v
 python tools\check_docs.py
 git diff --check
 ```

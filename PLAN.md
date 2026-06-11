@@ -26,6 +26,7 @@ Last compacted: 2026-06-11
 | `B38-PILOT-NF01` | Docs-only target addendum completed; target apply blocked by `source_policy_status: blocked` and missing target control-plane/source registry artifacts. | Do not mutate target project until source policy and artifacts are resolved. |
 | Batch 39 | Planned as `B39-S1..B39-S5` and `B39-TEST-M01..M54`. | Start execution only through `prod_test.md` with per-test evidence. |
 | Batch 40 completion-skeptic | Local manual foundation closed; automation status `manual_only` and `not_promoted`. | Keep automation promotion candidate-only until gates are satisfied. |
+| Agent control-plane sync | Current project agents and Product-Agent OS templates now require `.codex/workflows/control-plane-sync.md` before Completion Brief. | Future Product-Agent OS tasks must update owned control-plane files or record `not_applicable` / `handoff_required`; no hook or automation was activated. |
 
 ## Next Implementation Queue
 
@@ -68,6 +69,7 @@ Last compacted: 2026-06-11
 | `docs/sources/registry.md` and `docs/sources/registry.en.md` | Claim/source registry. |
 | `docs/sources/product-agent-os-batch35-approval-packet-draft.md` | Batch 35 approval and execution packet. |
 | `prod_test.md` | Batch 39 production test ledger. |
+| `.codex/workflows/control-plane-sync.md` | Mandatory before-completion control-plane sync checklist for non-mechanical Product-Agent OS tasks. |
 
 Evidence ownership stays source-routed; `git diff --check` remains part of docs/control-plane verification.
 

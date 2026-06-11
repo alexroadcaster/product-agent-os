@@ -48,6 +48,20 @@ Fresh-context handoff fields for any subagent or parallel worker:
 - `stop_conditions`
 - `sequential_fallback`
 
+Subagent transparency packet fields:
+
+- Subagent Context Packet
+- Subagent Result Packet
+- Agent Handoff / Context Packet
+- role
+- `fork_context`
+- prompt
+- allowed files
+- files actually read
+- outputs
+- before launch
+- after completion
+
 Planning control governance fields:
 
 - `planning_control_governance`

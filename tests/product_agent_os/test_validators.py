@@ -34,13 +34,9 @@ class ValidatorsTest(unittest.TestCase):
             path.write_text(
                 'name = "reviewer"\n'
                 'description = "Reviews correctness and missing tests."\n'
-                'developer_instructions = "Return findings by severity."\n'
-                'ownership = "Review findings"\n'
-                'inputs = "Diff and verification evidence"\n'
-                'outputs = "Findings and risks"\n'
-                'stop_conditions = "Stop when evidence is missing."\n'
-                'model_policy = "Use stronger reasoning for review."\n'
-                'handoff_requirements = "Return files reviewed and open risks."\n',
+                'developer_instructions = "Ownership: review findings. Inputs: diff and verification evidence. '
+                'Outputs: findings and risks. Stop conditions: stop when evidence is missing. '
+                'Handoff: return files reviewed and open risks."\n',
                 encoding="utf-8",
             )
             self.assertEqual(validate_agent_file(path), [])
@@ -227,12 +223,6 @@ class ValidatorsTest(unittest.TestCase):
             [
                 "missing required field: description",
                 "missing required field: developer_instructions",
-                "missing required field: ownership",
-                "missing required field: inputs",
-                "missing required field: outputs",
-                "missing required field: stop_conditions",
-                "missing required field: model_policy",
-                "missing required field: handoff_requirements",
             ],
         )
 
@@ -297,13 +287,9 @@ class ValidatorsTest(unittest.TestCase):
             path.write_text(
                 'name = "reviewer"\n'
                 'description = "Reviews correctness and missing tests."\n'
-                'developer_instructions = "Return findings by severity."\n'
-                'ownership = "Review findings"\n'
-                'inputs = "Diff and verification evidence"\n'
-                'outputs = "Findings and risks"\n'
-                'stop_conditions = "Stop when evidence is missing."\n'
-                'model_policy = "Use stronger reasoning for review."\n'
-                'handoff_requirements = "Return files reviewed and open risks."\n',
+                'developer_instructions = "Ownership: review findings. Inputs: diff and verification evidence. '
+                'Outputs: findings and risks. Stop conditions: stop when evidence is missing. '
+                'Handoff: return files reviewed and open risks."\n',
                 encoding="utf-8",
             )
             result = subprocess.run(

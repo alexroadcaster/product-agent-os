@@ -1,0 +1,72 @@
+{
+  "approval_boundary": {
+    "browser_automation": "not_performed",
+    "cache_mutation": "not_performed",
+    "external_actions": "not_performed",
+    "git_actions": "not_performed",
+    "local_evidence_artifact_write": "allowed_workspace_output_only",
+    "pilot_target_workspace_mutation": "not_performed",
+    "provider_or_api_calls": "not_performed"
+  },
+  "batch": "B39",
+  "generated_at": "2026-06-11T15:42:23+00:00",
+  "generated_view_policy": "orientation_only_not_proof",
+  "inventory": {
+    "cache": {
+      "roots": [
+        {
+          "file_count": 660,
+          "inventory_digest": "sha256:d4e601fb464b7e6675e6ad1549b9bcb5543bde1f5b8ab1d0121b5294bc61dd9f",
+          "label": "cache_root_1",
+          "mcp_present": true,
+          "plugin_json_present": true,
+          "read_errors": [],
+          "skill_count": 12,
+          "status": "present"
+        }
+      ],
+      "status": "present"
+    },
+    "package": {
+      "manifest": {
+        "mcpServers": "./.mcp.json",
+        "name": "product-agent-os",
+        "skills": "./skills/",
+        "version": "0.1.0"
+      },
+      "manifest_path_ref": "plugins/product-agent-os/.codex-plugin/plugin.json",
+      "manifest_present": true,
+      "mcp_path_ref": "plugins/product-agent-os/.mcp.json",
+      "mcp_present": true,
+      "mcp_server_keys": [],
+      "package_digest": "sha256:d773d82251f21940181fd636ca76a11fba52db289c64a5de190991c99cf32e16"
+    },
+    "session": {
+      "agent_count": 8,
+      "codex_root_ref": ".codex",
+      "config_present": true,
+      "rules_present": true,
+      "runlogs_present": false,
+      "session_digest": "sha256:e00d9215819834a2da070c32c64e3d21c081083fb34f460624416de82c6743ed",
+      "status": "present",
+      "workflow_count": 5
+    },
+    "source": {
+      "agent_template_count": 8,
+      "file_count": 673,
+      "inventory_digest": "sha256:cc3190bcc2c1ca1004577803d2cb86aca2decd134c13e639e575bdc72fae84b7",
+      "path_ref": "plugins/product-agent-os",
+      "read_errors": [],
+      "skill_count": 12,
+      "status": "present",
+      "workflow_template_count": 25
+    }
+  },
+  "packet_digest": "sha256:c9de10551ee4fc555f9df4cfa6aabf1ec85023a1607ce15ec7bf541a9d69a84c",
+  "schema_version": "batch39_inventory_v1",
+  "status": {
+    "open_blockers": [],
+    "overall": "ready"
+  },
+  "test_id": "B39-TEST-M01"
+}

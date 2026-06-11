@@ -49,6 +49,7 @@ This repository is a Russian knowledge base for researching OpenAI Codex, advanc
 ## Product-Agent Operating Model
 
 - Use `AGENTS.md` for durable rules only. Use `REQUIREMENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md` and `RUNLOG.md` for active long-running product work.
+- Before closing any non-mechanical Product-Agent OS task, run the local `.codex/workflows/control-plane-sync.md` checklist: update owned control-plane files when scope, sequencing, verification, evals, handoff state or Batch 39 ledger state changed, or record `not_applicable` / `handoff_required`.
 - Do not create or switch to a branch or worktree unless the user explicitly asks for it.
 - Do not stage, commit, push, open a PR, launch live servers, run browser automation, call providers/live external model/API endpoints, mutate canonical graph sources or create external automations without exact approval for that action.
 - Use skills when the task matches a repeatable method. Promote project knowledge in this order: manual workflow, playbook, skill, plugin, automation, durable rule.

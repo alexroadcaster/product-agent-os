@@ -32,7 +32,8 @@ Profile: {profile_name}
 6. Make the minimal edit inside the approved architecture boundary.
 7. Update source-of-truth docs affected by the slice.
 8. Run the relevant check.
-9. Record result, evidence, rollback, and risks.
+9. Run `.codex/workflows/control-plane-sync.md` before closing: update owned control-plane files or record `not_applicable` / `handoff_required`.
+10. Record result, evidence, rollback, control-plane sync decision, and risks.
 
 ## Outputs
 
@@ -40,6 +41,7 @@ Profile: {profile_name}
 - Command evidence:
 - Expected outputs:
 - Runtime or visual evidence:
+- Control-plane sync decision:
 - Rollback notes:
 - RUNLOG.md entry:
 
@@ -64,3 +66,4 @@ Profile: {profile_name}
 - Stop before build when `mechanical_change` lacks a reason.
 - No test-first, eval-first, or explicitly accepted gap exists.
 - Required check cannot run and no explicit gap is recorded.
+- Required control-plane sync is missing before completion.

@@ -14,6 +14,8 @@ Run these checks after changes to root control-plane files, docs/source registry
 
 ```powershell
 python -m unittest tests.product_agent_os.test_product_agent_os_docs -v
+python -m unittest tests.product_agent_os.test_task_plan_lifecycle -v
+python -m unittest tests.product_agent_os.test_infrastructure_templates -v
 python tools\check_docs.py
 git diff --check
 python -m unittest discover -s tests -p "test_*.py" -v
@@ -79,6 +81,7 @@ Approval for one surface does not authorize another. Runtime launch approval doe
 | `B38-PILOT-NF01` | Docs-only pilot addendum; target apply blocked by `source_policy_status: blocked`. | Resolve target source policy and target control-plane artifacts before target mutation. |
 | Batch 39 | Planned, not executed. | Start with `prod_test.md` attempt entries and approved target boundary. |
 | Batch 40 completion-skeptic | Local manual loop closed as `manual_only` and `not_promoted`. | Automation promotion requires manual success evidence, eval cases, owner, cadence, stop condition and rollback/disable path. |
+| Agent control-plane sync | Current local agents, packaged agent templates, workflows and `agent-context-contract` require control-plane sync before completion; current verification passed. | Rerun task lifecycle, infrastructure template, docs, full discovery, docs-structure and diff hygiene checks after future changes to this contract. |
 
 ## Historical Evidence Owners
 

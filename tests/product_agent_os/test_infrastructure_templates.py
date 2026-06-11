@@ -52,6 +52,8 @@ REQUIRED_TARGETS = {
     ".codex/workflows/source-context-pack.md",
     ".codex/workflows/worktree-ownership.md",
     ".codex/workflows/build-slice.md",
+    ".codex/workflows/task-plan-lifecycle.md",
+    ".codex/workflows/control-plane-sync.md",
     ".codex/workflows/review-slice.md",
     ".codex/workflows/release-packet.md",
     ".codex/workflows/runlog-compaction.md",
@@ -115,6 +117,8 @@ REQUIRED_TARGETS = {
     ".codex/artifact-templates/database-synthetic-fixtures-policy.md",
     ".codex/artifact-templates/database-production-access-approval.md",
     ".codex/artifact-templates/agent-task-packet.md",
+    ".codex/artifact-templates/subagent-context-packet.md",
+    ".codex/artifact-templates/subagent-result-packet.md",
     ".codex/artifact-templates/behavioral-eval-case.md",
     ".codex/artifact-templates/plan-quality-check.md",
     ".codex/artifact-templates/task-matrix-plan.md",
@@ -218,6 +222,7 @@ REQUIRED_TARGETS = {
     ".codex/artifact-templates/backend-operational-runbook.md",
     ".codex/runlogs/archive/README.md",
     ".codex/evals/project-readiness.json",
+    ".codex/evals/agent-context-contract.json",
     ".codex/evals/handoff-completeness.json",
     ".codex/evals/renderer-fixtures.json",
     ".codex/evals/behavioral-workflows.json",
@@ -262,6 +267,26 @@ class InfrastructureTemplateTest(unittest.TestCase):
 
         self.assertEqual(set(targets), REQUIRED_TARGETS)
         self.assertEqual(len(targets), len(set(targets)))
+
+    def test_subagent_packet_templates_are_registered_with_required_templates(self):
+        templates = required_templates()
+        by_target = {item.target_path: item for item in templates}
+
+        expected = {
+            ".codex/artifact-templates/subagent-context-packet.md": (
+                "artifact-subagent-context-packet",
+                "subagent-context-packet.md",
+            ),
+            ".codex/artifact-templates/subagent-result-packet.md": (
+                "artifact-subagent-result-packet",
+                "subagent-result-packet.md",
+            ),
+        }
+        for target, (key, source_name) in expected.items():
+            with self.subTest(target=target):
+                self.assertIn(target, by_target)
+                self.assertEqual(by_target[target].key, key)
+                self.assertEqual(by_target[target].source_path.name, source_name)
 
     def test_task_matrix_plan_template_is_registered_and_enforces_s1_contract(self):
         target = ".codex/artifact-templates/task-matrix-plan.md"
@@ -2116,6 +2141,8 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 "source-context-pack.md",
                 "worktree-ownership.md",
                 "build-slice.md",
+                "task-plan-lifecycle.md",
+                "control-plane-sync.md",
                 "review-slice.md",
                 "release-packet.md",
                 "runlog-compaction.md",
@@ -2139,6 +2166,78 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 "system-file-hygiene-audit.md",
             },
         )
+
+    def test_task_plan_lifecycle_workflow_declares_generator_and_post_execution_contract(self):
+        text = (TEMPLATE_ROOT / "workflows" / "task-plan-lifecycle.md").read_text(encoding="utf-8").lower()
+
+        for expected in [
+            "task brief",
+            "completion brief",
+            "user-visible",
+            "show the task brief",
+            "show the completion brief",
+            "product value",
+            "technical value",
+            "complexity",
+            "estimated execution time",
+            "task_matrix_plan_v1",
+            "before execution",
+            "after execution",
+            "pending_execution_timestamp",
+            "dd-mm-yyyy hh:mm",
+            "create_task_plan.py new",
+            "create_task_plan.py complete",
+            "validate_task_matrix.py",
+            "completion report",
+            "current evidence",
+            "approval",
+        ]:
+            self.assertIn(expected, text)
+
+    def test_agent_templates_require_user_visible_task_and_completion_briefs(self):
+        for path in (TEMPLATE_ROOT / "agents").glob("*.toml"):
+            text = path.read_text(encoding="utf-8").lower()
+            with self.subTest(agent_template=path.name):
+                self.assertIn("task brief", text)
+                self.assertIn("completion brief", text)
+                self.assertIn("before execution", text)
+                self.assertIn("after execution", text)
+                self.assertIn("control-plane-sync.md", text)
+                self.assertIn("not_applicable", text)
+                self.assertIn("handoff_required", text)
+                self.assertIn("subagent context packet", text)
+                self.assertIn("subagent result packet", text)
+                self.assertIn("role", text)
+                self.assertIn("fork_context", text)
+                self.assertIn("prompt", text)
+                self.assertIn("allowed files", text)
+                self.assertIn("files actually read", text)
+                self.assertIn("outputs", text)
+
+    def test_agent_context_eval_template_requires_task_brief_contract(self):
+        text = (TEMPLATE_ROOT / "evals" / "agent-context-contract.json").read_text(encoding="utf-8")
+
+        for expected in [
+            ".codex/workflows/task-plan-lifecycle.md",
+            ".codex/workflows/control-plane-sync.md",
+            "Task Brief",
+            "Completion Brief",
+            "Control-Plane Sync",
+            "control_plane_sync_before_completion",
+            "not_applicable",
+            "handoff_required",
+            "before execution",
+            "after execution",
+            "Subagent Context Packet",
+            "Subagent Result Packet",
+            "role",
+            "fork_context",
+            "prompt",
+            "allowed files",
+            "files actually read",
+            "outputs",
+        ]:
+            self.assertIn(expected, text)
 
     def test_methodology_workflows_cover_development_and_documentation_standards(self):
         development = (TEMPLATE_ROOT / "workflows" / "development-standards.md").read_text(encoding="utf-8")
@@ -2463,6 +2562,26 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 "open risks",
                 "recommended next role",
                 "stop reason",
+            ],
+            "subagent-context-packet.md": [
+                "role",
+                "fork_context",
+                "prompt",
+                "allowed files",
+                "files actually read",
+                "outputs",
+                "before launch",
+                "subagent result packet",
+            ],
+            "subagent-result-packet.md": [
+                "subagent context packet",
+                "role",
+                "fork_context",
+                "prompt",
+                "allowed files",
+                "files actually read",
+                "outputs",
+                "after completion",
             ],
             "behavioral-eval-case.md": ["prompt", "expected usage mode", "forbidden actions", "residual risk"],
             "plan-quality-check.md": ["exact files", "expected output", "rollback", "placeholder scan"],
@@ -4598,6 +4717,12 @@ class InfrastructureTemplateTest(unittest.TestCase):
         agent_task_packet = (TEMPLATE_ROOT / "artifact-templates" / "agent-task-packet.md").read_text(
             encoding="utf-8"
         ).lower()
+        subagent_context_packet = (
+            TEMPLATE_ROOT / "artifact-templates" / "subagent-context-packet.md"
+        ).read_text(encoding="utf-8").lower()
+        subagent_result_packet = (
+            TEMPLATE_ROOT / "artifact-templates" / "subagent-result-packet.md"
+        ).read_text(encoding="utf-8").lower()
         worktree_ownership = (TEMPLATE_ROOT / "workflows" / "worktree-ownership.md").read_text(
             encoding="utf-8"
         ).lower()
@@ -4625,6 +4750,19 @@ class InfrastructureTemplateTest(unittest.TestCase):
             "migrations",
             "read-only research",
         ]
+        subagent_transparency_terms = [
+            "subagent context packet",
+            "subagent result packet",
+            "agent handoff / context packet",
+            "role",
+            "fork_context",
+            "prompt",
+            "allowed files",
+            "files actually read",
+            "outputs",
+            "before launch",
+            "after completion",
+        ]
 
         for name, text in {
             "agent-task-packet.md": agent_task_packet,
@@ -4634,6 +4772,32 @@ class InfrastructureTemplateTest(unittest.TestCase):
             with self.subTest(name=name):
                 for expected in shared_terms:
                     self.assertIn(expected, text)
+
+        for name, text in {
+            "agent-task-packet.md": agent_task_packet,
+            "subagent-context-packet.md": subagent_context_packet,
+            "subagent-result-packet.md": subagent_result_packet,
+            "worktree-ownership.md": worktree_ownership,
+            "handoff-contract.md": handoff_contract,
+        }.items():
+            with self.subTest(name=name):
+                for expected in subagent_transparency_terms:
+                    self.assertIn(expected, text)
+
+    def test_handoff_eval_covers_subagent_context_and_result_packets(self):
+        data = json.loads((TEMPLATE_ROOT / "evals" / "handoff-completeness.json").read_text(encoding="utf-8"))
+        encoded = json.dumps(data, ensure_ascii=False).lower()
+
+        for expected in [
+            "subagent context packet",
+            "subagent result packet",
+            "fork_context",
+            "prompt",
+            "allowed files",
+            "files actually read",
+            "outputs",
+        ]:
+            self.assertIn(expected, encoded)
 
     def test_runtime_methodology_packet_templates_cover_control_plane_and_handoff(self):
         control_plane = "\n".join(

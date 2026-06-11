@@ -41,6 +41,7 @@ Profile: {profile_name}
 - Check source constraints and public contract before judging implementation quality.
 - Check file ownership and unrelated churn.
 - Identify missing tests, regressions, and security risk.
+- Check `.codex/workflows/control-plane-sync.md`: identify missing updates or missing `not_applicable` / `handoff_required` decisions for control-plane files.
 - Record a verdict: approve, request changes, or block.
 
 ## Outputs
@@ -52,6 +53,7 @@ Profile: {profile_name}
 - Regression risk:
 - Security risk:
 - Missing evidence:
+- Control-plane sync gaps:
 - Verdict:
 
 ## Verification
@@ -68,4 +70,5 @@ Profile: {profile_name}
 - Review attempts quality/risk before spec compliance.
 - Review attempts one-stage review for risky work.
 - Review attempts a ready verdict with missing evidence.
+- Review finds missing required control-plane sync evidence.
 - Security or data handling issue blocks release.

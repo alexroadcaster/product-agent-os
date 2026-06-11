@@ -2,6 +2,8 @@
 
 Use this as the fresh-context handoff for any subagent or parallel worker. The packet must be complete enough for the worker to act without raw conversation history.
 
+For Codex subagents, pair this task packet with a Subagent Context Packet before launch and a Subagent Result Packet after completion. The Agent Handoff / Context Packet must name role, `fork_context`, prompt, allowed files, files actually read, and outputs.
+
 ## Task
 
 - Goal:
@@ -41,6 +43,15 @@ Use this as the fresh-context handoff for any subagent or parallel worker. The p
 ## Execution Contract
 
 - Allowed actions:
+- Subagent Context Packet before launch:
+- Subagent Result Packet after completion:
+- Agent Handoff / Context Packet:
+- Role:
+- `fork_context`:
+- Prompt:
+- Allowed files:
+- Files actually read:
+- Outputs:
 - Approval requirements:
 - Commands to run:
 - Expected evidence:
