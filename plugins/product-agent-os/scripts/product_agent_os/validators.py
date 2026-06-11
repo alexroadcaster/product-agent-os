@@ -20,13 +20,15 @@ AGENT_REQUIRED_FIELDS = [
     "name",
     "description",
     "developer_instructions",
+]
+AGENT_FORBIDDEN_TOP_LEVEL_FIELDS = {
     "ownership",
     "inputs",
     "outputs",
     "stop_conditions",
     "model_policy",
     "handoff_requirements",
-]
+}
 TASK_MATRIX_SCHEMA_VERSION = "task_matrix_plan_v1"
 TASK_MATRIX_ALLOWED_STATUSES = {"planned", "in_progress", "implemented", "blocked", "accepted_gap"}
 TASK_MATRIX_REQUIRED_FIELDS = [
@@ -140,6 +142,15 @@ def validate_agent_file(path: Path) -> list[str]:
         value = data.get(field)
         if not isinstance(value, str) or not value.strip():
             errors.append(f"missing required field: {field}")
+    for field in sorted(AGENT_FORBIDDEN_TOP_LEVEL_FIELDS):
+        if field in data:
+            errors.append(f"unsupported top-level agent metadata field: {field}")
+    instructions = data.get("developer_instructions")
+    if isinstance(instructions, str) and instructions.strip():
+        lowered = instructions.lower()
+        for expected in ["ownership", "inputs", "outputs", "stop conditions", "handoff"]:
+            if expected not in lowered:
+                errors.append(f"developer_instructions missing agent contract term: {expected}")
     return errors
 
 

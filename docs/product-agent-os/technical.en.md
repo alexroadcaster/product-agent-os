@@ -69,6 +69,22 @@ The renderer must preserve user-authored files outside managed sections. Existin
 
 Packaged hooks and automations are examples or candidates. They must not be activated silently.
 
+The generated `.codex/config.toml` includes a `product-agent-os-project` permission profile. The profile keeps `.codex` itself read-only while opening only Product-Agent OS project artifact directories such as `.codex/agents`, `.codex/skills`, `.codex/workflows`, `.codex/artifact-templates`, `.codex/evals`, `.codex/runlogs`, `.codex/automation-candidates`, `.codex/pr`, `.codex/product-agent-os` and `.codex/eval-reports`. Sensitive control surfaces such as `.codex/config.toml`, `.codex/hooks`, `.codex/automations` and `.codex/plugins` remain approval-bound.
+
+On Windows, a managed permission profile can still be blocked by inherited filesystem ACL deny entries on `.codex`. Check the scoped Product-Agent OS paths with:
+
+```powershell
+python plugins\product-agent-os\scripts\prepare_windows_codex_permissions.py <workspace>
+```
+
+Apply the scoped ACL preparation only with explicit owner approval:
+
+```powershell
+python plugins\product-agent-os\scripts\prepare_windows_codex_permissions.py <workspace> --apply
+```
+
+The apply mode creates only the approved Product-Agent OS `.codex` subdirectories, disables inherited ACLs on those subdirectories and removes inherited deny ACEs from the same subdirectories. It does not open the `.codex` root, config, hooks, automations or plugin cache by default.
+
 Generated infrastructure also includes the system file hygiene surfaces:
 
 - `.codex/workflows/system-file-hygiene-audit.md`;

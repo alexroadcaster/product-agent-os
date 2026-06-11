@@ -15,6 +15,7 @@ from product_agent_os.offline_artifact_safety import (
     prepare_offline_payload,
     validate_offline_artifact,
 )
+from product_agent_os.offline_artifact_export import build_html_export_contract
 from product_agent_os.project_cockpit_model import build_project_cockpit_model
 from product_agent_os.project_graph_sanitization import safe_relative_path_text, sanitize_graph_text
 from product_agent_os.project_graph_visual_model import build_project_graph_visual_model
@@ -289,6 +290,11 @@ def _cockpit_renderer_result(
             "mode": "stage" if write_files else "dry-run",
             "root": str(stage_root if stage_root is not None else Path(".product-agent-os") / "project-graph-cockpit"),
             "output_dir": str(stage_root) if stage_root is not None else "",
+            "final_export_contract": build_html_export_contract(
+                workspace,
+                artifact_id="project-cockpit",
+                default_relative_path=PROJECT_COCKPIT_HTML_TARGET,
+            ),
             "files": files,
             "managed_sections": [],
             "validation": {

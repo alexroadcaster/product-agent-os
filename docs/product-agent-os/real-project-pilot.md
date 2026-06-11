@@ -84,17 +84,17 @@ The harness must not become active automation, a live server launcher, a provide
 
 ## Rollback And Cache Recovery Procedure
 
-РџРµСЂРµРґ production pilot РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ РїРѕРЅСЏС‚РЅС‹Р№ rollback/remove path РґР»СЏ plugin Рё local cache. Р­С‚Р° РїСЂРѕС†РµРґСѓСЂР° РЅРµ РґР°РµС‚ approval РЅР° deletion, cache mutation, global config mutation, hook activation/deactivation, automation, publication РёР»Рё git action. РћРЅР° РѕРїРёСЃС‹РІР°РµС‚, С‡С‚Рѕ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ РїРѕРґС‚РІРµСЂР¶РґРµРЅРѕ РґРѕ РѕС‚РґРµР»СЊРЅРѕРіРѕ owner approval.
+Перед production pilot должен быть понятный rollback/remove path для plugin и local cache. Эта процедура не дает approval на deletion, cache mutation, global config mutation, hook activation/deactivation, automation, publication или git action. Она описывает, что должно быть подтверждено до отдельного owner approval.
 
 | Step | Required boundary |
 | --- | --- |
-| `pre_rollback_read_only_inspection` | РџСЂРѕРІРµСЂРёС‚СЊ installed plugin cache path, package name/version, expected file count, skill count, manifest, `.mcp.json`, backup path, staged source digest Рё active hook/automation status. |
-| `rollback_evidence_preservation` | РЎРѕС…СЂР°РЅРёС‚СЊ approval text, inspected paths, before/after counts, command transcript, backup pointer, moved-aside path Рё residual risks РІ staged evidence destination. |
-| `installed_plugin_remove_path` | Р›СЋР±РѕР№ remove РґРµР»Р°РµС‚СЃСЏ С‡РµСЂРµР· move-aside/quarantine С‚РѕР»СЊРєРѕ РґР»СЏ exact approved version path; silent delete РЅРµ РґРѕРїСѓСЃРєР°РµС‚СЃСЏ. |
-| `stale_cache_restore_path` | Restore РґРѕРїСѓСЃС‚РёРј С‚РѕР»СЊРєРѕ РёР· named backup, РїСЂРёРІСЏР·Р°РЅРЅРѕРіРѕ Рє evidence; РїРѕСЃР»Рµ restore РЅСѓР¶РЅС‹ file/skill count Рё manifest checks. |
-| `cache_clear_recovery_path` | Cache clear/replace РґРѕРїСѓСЃС‚РёРј С‚РѕР»СЊРєРѕ РґР»СЏ exact cache root Рё version id; path РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ resolved Рё РїСЂРѕРІРµСЂРµРЅ РґРѕ write. |
-| `disable_hooks_automations_if_ever_approved` | Р•СЃР»Рё hooks РёР»Рё automations РєРѕРіРґР°-Р»РёР±Рѕ Р±С‹Р»Рё Р°РєС‚РёРІРёСЂРѕРІР°РЅС‹, disable path РґРѕР»Р¶РµРЅ РЅР°Р·С‹РІР°С‚СЊ exact surface, owner, command boundary, evidence target Рё rollback owner. |
-| `post_restore_verification` | РџРѕСЃР»Рµ approved mutation РЅСѓР¶РЅС‹ cache inspection, Codex compatibility smoke, docs/test checks when docs changed, diff hygiene Рё recorded residual risks. |
+| `pre_rollback_read_only_inspection` | Проверить installed plugin cache path, package name/version, expected file count, skill count, manifest, `.mcp.json`, backup path, staged source digest и active hook/automation status. |
+| `rollback_evidence_preservation` | Сохранить approval text, inspected paths, before/after counts, command transcript, backup pointer, moved-aside path и residual risks в staged evidence destination. |
+| `installed_plugin_remove_path` | Любой remove выполняется через move-aside/quarantine только для exact approved version path; silent delete не допускается. |
+| `stale_cache_restore_path` | Restore допустим только из named backup, привязанного к evidence; после restore нужны file/skill count и manifest checks. |
+| `cache_clear_recovery_path` | Cache clear/replace допустим только для exact cache root и version id; path должен быть resolved и проверен до write. |
+| `disable_hooks_automations_if_ever_approved` | Если hooks или automations когда-либо были активированы, disable path должен назвать exact surface, owner, command boundary, evidence target и rollback owner. |
+| `post_restore_verification` | После approved mutation нужны cache inspection, Codex compatibility smoke, docs/test checks when docs changed, diff hygiene и recorded residual risks. |
 
 Stop immediately on missing owner approval, unresolved path outside the approved cache root, missing backup, digest/count mismatch, request for destructive delete, active automation without owner, secret/customer data in evidence, external write request, provider/API call, live server/browser request, canonical mutation or git stage/commit/push/PR request.
 

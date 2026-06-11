@@ -1,0 +1,95 @@
+profile = "codex-docs-product-agent-os"
+project_name = "Codex Docs / Product-Agent OS"
+default_permissions = "product-agent-os-local-autonomy"
+
+[permissions.product-agent-os-local-autonomy]
+extends = ":workspace"
+description = "Local workspace autonomy for Product-Agent OS maintenance. External, git, provider, browser, hook, automation, deploy, and permission-change surfaces remain approval-bound."
+
+[permissions.product-agent-os-local-autonomy.filesystem.":workspace_roots"]
+"." = "write"
+".codex" = "write"
+".codex/agents" = "write"
+".codex/workflows" = "write"
+".codex/artifact-templates" = "write"
+".codex/evals" = "write"
+".codex/product-agent-os" = "write"
+"plugins/product-agent-os" = "write"
+"tests/product_agent_os" = "write"
+"docs" = "write"
+
+[agents]
+default_profile = "codex-docs-product-agent-os"
+max_parallel = 3
+parallel_requires_fresh_context_handoff = true
+explorer = ".codex/agents/explorer.toml"
+product_manager = ".codex/agents/product-manager.toml"
+architect = ".codex/agents/architect.toml"
+builder = ".codex/agents/builder.toml"
+tester = ".codex/agents/tester.toml"
+reviewer = ".codex/agents/reviewer.toml"
+docs_maintainer = ".codex/agents/docs-maintainer.toml"
+release_operator = ".codex/agents/release-operator.toml"
+
+[agents.autonomy]
+default_mode = "act_within_workspace_scope"
+ask_only_when_blocked = true
+read_before_edit = true
+prefer_existing_patterns = true
+avoid_project_rewrite = true
+avoid_context_hoarding = true
+require_current_evidence_before_completion = true
+fresh_context_files = [
+  ".codex/workflows/source-context-pack.md",
+  ".codex/workflows/worktree-ownership.md",
+  ".codex/workflows/build-slice.md",
+  ".codex/workflows/review-slice.md",
+  ".codex/evals/agent-context-contract.json",
+  ".rules",
+]
+
+[agents.reasoning]
+discovery = "low"
+product = "medium"
+architecture = "high"
+implementation = "medium"
+debugging = "high"
+verification = "high"
+review = "high"
+release = "high"
+mechanical = "low"
+
+[sandbox]
+default_mode = "workspace-write"
+read_only_roles = ["explorer", "reviewer", "release_operator"]
+workspace_write_roles = ["product_manager", "architect", "builder", "tester", "docs_maintainer"]
+
+[approvals]
+external_writes = "explicit"
+network_access = "explicit"
+provider_or_model_calls = "explicit"
+browser_automation = "explicit"
+live_servers = "explicit"
+git_stage_commit_push_pr = "explicit"
+branch_or_worktree_creation = "explicit"
+hooks_or_automation_activation = "explicit"
+deployment_or_publication = "explicit"
+permission_changes = "explicit"
+global_config_changes = "forbidden"
+destructive_commands = "explicit"
+
+[workflows]
+source_context_pack = ".codex/workflows/source-context-pack.md"
+worktree_ownership = ".codex/workflows/worktree-ownership.md"
+build_slice = ".codex/workflows/build-slice.md"
+review_slice = ".codex/workflows/review-slice.md"
+
+[evals]
+agent_context_contract = ".codex/evals/agent-context-contract.json"
+
+[product_agent_os]
+project_profile = "python_docs_plugin"
+current_focus = "Batch 39 hardening and Product-Agent OS local pilot readiness"
+source_policy = "source files and current command evidence outrank generated views"
+memory_policy = "memory is recall, not source truth"
+completion_policy = "no done, fixed, verified, ready, or release claim without current evidence or explicit accepted gap"

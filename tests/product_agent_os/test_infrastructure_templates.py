@@ -59,6 +59,7 @@ REQUIRED_TARGETS = {
     ".codex/workflows/development-standards.md",
     ".codex/workflows/documentation-system.md",
     ".codex/workflows/first-run-intake.md",
+    ".codex/workflows/project-formation.md",
     ".codex/workflows/bug-rescue.md",
     ".codex/workflows/greenfield-idea-to-plan.md",
     ".codex/workflows/complex-system-acceleration.md",
@@ -1983,6 +1984,47 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 path = self._render_temp_file(item, context)
                 self.assertEqual(validate_agent_file(path), [])
 
+    def test_agent_templates_keep_product_agent_metadata_inside_instructions(self):
+        forbidden_top_level = {
+            "ownership",
+            "inputs",
+            "outputs",
+            "stop_conditions",
+            "model_policy",
+            "handoff_requirements",
+        }
+        context = self._context()
+        for item in required_templates():
+            if item.validation_kind != "agent":
+                continue
+            with self.subTest(key=item.key):
+                data = tomllib.loads(render_template(item, context))
+                self.assertFalse(forbidden_top_level.intersection(data))
+                self.assertIn("developer_instructions", data)
+                instructions = data["developer_instructions"].lower()
+                for expected in ["ownership", "inputs", "outputs", "stop conditions", "handoff"]:
+                    self.assertIn(expected, instructions)
+
+    def test_project_formation_workflow_enforces_audit_before_control_surface(self):
+        target = ".codex/workflows/project-formation.md"
+        by_target = {item.target_path: item for item in required_templates()}
+
+        self.assertIn(target, by_target)
+        rendered = render_template(by_target[target], self._context()).lower()
+        for expected in [
+            "read-only project audit",
+            "recommendation packet",
+            "control surface synthesis",
+            "official custom-agent fields",
+            "developer_instructions",
+            "do not copy private paths",
+            "approval-bound",
+            "staged artifacts are proposals",
+            "current command evidence",
+        ]:
+            with self.subTest(expected=expected):
+                self.assertIn(expected, rendered)
+
     def test_hook_templates_validate_after_render(self):
         context = self._context()
         for item in required_templates():
@@ -2018,6 +2060,14 @@ class InfrastructureTemplateTest(unittest.TestCase):
         self.assertIn("sandbox", data)
         self.assertIn("approvals", data)
         self.assertIn("product_agent_os", data)
+        self.assertEqual(data["default_permissions"], "product-agent-os-project")
+        permission_profile = data["permissions"]["product-agent-os-project"]
+        codex_roots = permission_profile["filesystem"][":workspace_roots"]
+        self.assertEqual(codex_roots[".codex"], "read")
+        self.assertEqual(codex_roots[".codex/agents"], "write")
+        self.assertEqual(codex_roots[".codex/product-agent-os"], "write")
+        self.assertNotIn(".codex/hooks", codex_roots)
+        self.assertNotIn(".codex/plugins", codex_roots)
         self.assertEqual(data["product_agent_os"]["runlog_archive_dir"], ".codex/runlogs/archive")
         self.assertNotIn("network_access", data)
         self.assertNotIn("secrets", data)
@@ -2072,6 +2122,7 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 "development-standards.md",
                 "documentation-system.md",
                 "first-run-intake.md",
+                "project-formation.md",
                 "bug-rescue.md",
                 "greenfield-idea-to-plan.md",
                 "complex-system-acceleration.md",

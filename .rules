@@ -1,0 +1,99 @@
+# Product-Agent OS project-local command policy.
+# Purpose: maximize autonomous local work while keeping irreversible or external
+# actions behind explicit approval. Global deny-read and sandbox rules still win.
+
+prefix_rule(
+    pattern=["rg"],
+    decision="allow",
+    justification="Read-only source search is required for focused project discovery.",
+    match=["rg -n Product-Agent OS docs", "rg --files"],
+    not_match=["rg --replace value"],
+)
+
+prefix_rule(
+    pattern=[["Get-Content", "type", "cat", "more", "gc"]],
+    decision="allow",
+    justification="Read-only file inspection is required for source-backed work.",
+    match=["Get-Content AGENTS.md", "cat docs/index.md"],
+    not_match=["Set-Content AGENTS.md value"],
+)
+
+prefix_rule(
+    pattern=[["Get-ChildItem", "dir", "ls", "gci", "Get-Item", "Test-Path", "Resolve-Path", "Select-String"]],
+    decision="allow",
+    justification="Read-only PowerShell inspection supports autonomous local context gathering.",
+    match=["Get-ChildItem -Force", "Select-String -Path docs/*.md -Pattern Source"],
+    not_match=["Remove-Item -Recurse tmp"],
+)
+
+prefix_rule(
+    pattern=["python", "-m", "unittest"],
+    decision="allow",
+    justification="Local unittest is the main deterministic verification gate for Product-Agent OS.",
+    match=["python -m unittest tests.product_agent_os.test_infrastructure_templates -v"],
+    not_match=["python -m pip install pytest"],
+)
+
+prefix_rule(
+    pattern=["python", ["tools\\check_docs.py", "tools/check_docs.py"]],
+    decision="allow",
+    justification="Local documentation checks are deterministic project verification.",
+    match=["python tools/check_docs.py"],
+    not_match=["python -m pip install mkdocs"],
+)
+
+prefix_rule(
+    pattern=["git", ["status", "diff", "log", "show"]],
+    decision="allow",
+    justification="Read-only Git inspection is safe for review and dirty-worktree awareness.",
+    match=["git status --short", "git diff --check", "git log --oneline -5"],
+    not_match=["git add README.md"],
+)
+
+prefix_rule(
+    pattern=["git", ["add", "commit", "push", "tag", "branch", "switch", "checkout", "restore", "reset", "clean", "merge", "rebase", "stash", "apply"]],
+    decision="prompt",
+    justification="Git mutation, branch changes, release actions, and destructive operations need exact approval.",
+    match=["git add README.md", "git commit -m update", "git push origin main"],
+    not_match=["git status --short"],
+)
+
+prefix_rule(
+    pattern=[["Set-Content", "Add-Content", "Out-File", "New-Item", "Copy-Item", "Move-Item", "Rename-Item", "Remove-Item", "rm", "del", "rmdir"]],
+    decision="prompt",
+    justification="Shell-level file writes, moves, and deletes bypass patch review or can be destructive.",
+    match=["Set-Content file.txt value", "Remove-Item -Recurse tmp"],
+    not_match=["Get-Content file.txt"],
+)
+
+prefix_rule(
+    pattern=[["npm", "npm.cmd", "pnpm", "yarn", "npx", "node", "pytest", "tox", "make", "just", "task", "docker", "playwright"]],
+    decision="prompt",
+    justification="Package managers, task runners, browser tools, containers, and arbitrary runtimes can execute broad project code or start services.",
+    match=["npm install", "npm.cmd run dev", "pytest -q", "playwright test"],
+    not_match=["python -m unittest discover -v"],
+)
+
+prefix_rule(
+    pattern=[["curl", "wget", "gh", "wrangler", "aws", "az", "gcloud", "kubectl", "terraform"]],
+    decision="prompt",
+    justification="Network, cloud, GitHub, deployment, and infrastructure tools can read or mutate external systems.",
+    match=["gh pr create --draft", "curl https://example.com", "wrangler deploy"],
+    not_match=["rg --files"],
+)
+
+prefix_rule(
+    pattern=[["codex", "codex.exe"], ["exec", "mcp", "plugin"]],
+    decision="prompt",
+    justification="Nested Codex runs, MCP changes, and plugin management need explicit automation/tool-surface approval.",
+    match=["codex exec 'run checks'", "codex mcp add server"],
+    not_match=["codex --help"],
+)
+
+prefix_rule(
+    pattern=[["reg", "reg.exe", "schtasks", "sc", "net", "netsh", "icacls", "takeown", "bcdedit", "Set-ExecutionPolicy"]],
+    decision="forbidden",
+    justification="Project-local autonomy must not mutate Windows registry, services, scheduled tasks, machine permissions, or boot/security policy.",
+    match=["reg add HKCU\\Software\\X", "schtasks /Create /TN job"],
+    not_match=["git status --short"],
+)

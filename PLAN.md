@@ -2,159 +2,145 @@
 
 <!-- product-agent-os:start plan -->
 Project: Codex Docs / Product-Agent OS
-Generated at: 2026-06-07
+Last compacted: 2026-06-11
 
 ## Purpose
 
-`PLAN.md` is the compact sequencing and rollback layer for the current Product-Agent OS work. It should not store the full historical implementation ledger.
-
-Evidence ownership is distributed as follows:
-
-| PLAN information class | Owning file now |
-| --- | --- |
-| Current scope, acceptance and constraints | `REQUIREMENTS.md` |
-| Current verification commands and escalation rules | `TEST.md` |
-| Current eval rubrics, thresholds and subjective gates | `EVALS.md` |
-| Current-cycle handoff and residual risks | `RUNLOG.md` |
-| Durable operating rules and current operating status | `AGENTS.md` |
-| Track 8 detailed scenario/methodology history | `docs/sources/product-agent-os-track-8-detailed-backlog.md` |
-| Track 9 detailed methodology and verification history | `docs/sources/product-agent-os-track-9-backlog.md` |
-| Track 10 detailed execution and verification history | `docs/sources/product-agent-os-track-10-backlog.md` |
-| Source-backed claim registry | `docs/sources/registry.md` |
-| Batch 35 approval and execution packet | `docs/sources/product-agent-os-batch35-approval-packet-draft.md` |
-
-## Current State
-
-- Track 9 methodology intelligence, Track 10 Task 23, Task 24, Task 25 and Task 26 through `T10-LIVE-M41` owner no-op closure are implemented or closed as recorded in the source registry and Track 9/10 backlogs.
-- Task 26 Batch 35 is closed through `T10-LIVE-M41` under `batch35_approval_bound_real_testing_execution`.
-- `T10-LIVE-M41` reached `explicit_git_release_pr_action` preflight and is now `owner_closed_no_op_git_release_pr`: no branch, stage, commit, push or PR was performed; future git write requires fresh preflight and exact approval.
-- Separately approved maintenance: B37-S1 implements `T10-PLAN-M01..M03` and `T10-PLAN-M18` for the Product-Agent OS task-matrix contract, lifecycle/timestamp policy, `task-matrix-plan.md` placement policy and lightweight exception rule. B37-S2 implements `T10-PLAN-M04..M05` and `T10-PLAN-M17` for the checked-in `task-matrix-plan.md` template, renderer registration and packaging-surface evidence with `renderer_file_count: 195`. B37-S3 implements `T10-PLAN-M06`, `T10-PLAN-M10` and `T10-PLAN-M13` for `validate_task_matrix.py`, deterministic validator functions, eval/transcript/fixture coverage and user-facing Completion Report guards. B37-S4 implements `T10-PLAN-M07..M09` and `T10-PLAN-M20` for planner routing, task-row handoffs, discovery signal classification and planning control governance. B37-S5 implements `T10-PLAN-M11..M12`, `T10-PLAN-M14..M16` and `T10-PLAN-M19` for docs/source closure, compatibility, projection, hygiene ownership, lifecycle cleanup and Batch 37 handoff text.
-- Owner-requested Batch 38 is now implemented through `B38-DOC-M01..M10` as a documentation-source alignment slice. It updates Product-Agent OS real-testing docs, methodology intelligence docs, DDD terminology source drafts, public first-run route, artifact gallery, public/internal documentation boundary, compact README routing, RU/EN parity confirmation, source registry ownership, generated `site/` refresh decision and docs contract tests. It does not close `T10-LIVE-M41`, start live/runtime/browser/provider work, perform git actions or create external automations.
-- Owner-requested B38-S1 `B38-PROD-M01..M03` is current through package-source freeze and metadata audit: M01 is `owner_closed_no_op_git_release_pr`, M02 is implemented with package digest evidence, and M03 is owner-confirmed `local-only/internal R&D` distribution with public/team trust fields out of current scope. It did not run git actions, install or refresh the plugin, start live/runtime/browser/provider work or create external automations.
-- Owner-requested B38-S2 `B38-PROD-M04..M05` is current through full pre-install verification, read-only install/cache inspection, sandbox-blocked refresh attempt and owner-run local cache refresh: M04 is `implemented`; M05 is `implemented` with `plugin_cache_refresh_final_status: completed_local_cache_refresh_from_prepared_stage`, `local_cache_refresh_result: REFRESH_OK`, 586 target cache files, 11 target cache skills and `docs-maintainer` present. Historical stale-cache and sandbox-denial markers remain audit evidence only.
-- Owner-requested B38-S3 `B38-PROD-M06..M09` is current through real-project pilot design: M06 first-run operator packet, M07 target consent matrix, M08 success metrics and M09 pilot harness/evidence ledger are `implemented` as docs/source design artifacts; `no_real_project_execution_performed` remains true.
-- Owner-requested B38-S4 `B38-PROD-M10..M11` is current through safety and rollback review: M10 is `reviewed_gap_recorded` after read-only source-policy, system-file-hygiene, manifest/MCP and supply-chain inspection; M11 is `implemented` as a rollback/remove/cache-recovery procedure in the pilot operator page and source backlog. It does not certify release security readiness, mutate cache/global config, start live/runtime/browser/provider work, mutate canonical sources, perform external writes or run git actions.
-- Owner-approved target-specific pilot addendum `B38-PILOT-NF01` ran read-only against the docs-only `Neural_Flow` target. It produced staged evidence under `tmp/neural-flow-product-agent-os-pilot-20260608-191510`, detected `usage_mode: legacy_onboarding`, validated staged infrastructure/status-dashboard/project-graph outputs, and blocked target apply on `source_policy_status: blocked` plus missing target control-plane/source registry artifacts. No target workspace mutation or approval-bound external action was performed.
-- Owner-requested Batch 39 planning is now staged in the Track 10 plan as `B39-TEST-M01..M54` and slices `B39-S1..B39-S5`. It is the measurement and production/mass-user hardening layer before `B38-PROD-M12`: root `prod_test.md` attempt/failure/fix/retest ledger, result collector, pilot manifest, redaction, no-mutation proof, dashboard/rollup aggregation, archetype pilot coverage, functional regression, repeatability, public docs/site acceptance, offline/dependency readiness, full CLI contracts, graph extension approval gates, template/workflow completeness, skill/subagent contracts, MCP boundary, onboarding, cross-platform matrix, source freshness, generated HTML usability, cleanup, incident/recovery drills, release/distribution governance and go/no-go closure. It is planned only; no Batch 39 implementation, target mutation, live/browser/provider/canonical/git/external action has been performed.
-- Root `AGENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md` and `RUNLOG.md` follow the compact-control-plane model: current routing and safety boundaries stay in root files, detailed history stays in source-owned backlogs and registry entries.
-- Existing dirty `README.md` is unrelated to this planning maintenance unless the owner explicitly scopes it in.
+`PLAN.md` is the compact sequencing and rollback layer for current Product-Agent OS work. It points to source-owned plans/backlogs for detailed history and keeps active execution boundaries visible.
 
 ## Current Planning Contract
 
-- Next release/install/cache action: no remaining M05 cache refresh action is required. M03 public/team trust fields are intentionally out of scope for local-only/internal R&D. M11 rollback procedure action is also complete. The first target-specific pilot execution evidence exists as `B38-PILOT-NF01`; the next planned Product-Agent OS action is `B39-S1` result collection foundation. A small `Neural_Flow` source-policy/control-plane cleanup or M10 hardening follow-up remains optional and requires target-specific or slice-specific approval.
-- M41 closure status: `owner_closed_no_op_git_release_pr`; future git write still requires release branch or push target, commit message, PR base branch, PR title and intent, explicit branch creation/current-branch push policy, fresh preflight and exact approval.
-- Do not create or switch branches, stage files, commit, push or open a PR without explicit approval.
-- Task 27/28 planning may use Batch 35 only with the current `owner_closed_no_op_git_release_pr` boundary and must not imply release readiness or git approval.
-- Do not launch live servers, run browser automation, call providers/live external model/API endpoints or mutate canonical graph sources without the exact approved action packet.
-- B37-S1 task-matrix contract boundaries: `planned` uses `pending_execution_timestamp`; `implemented` requires actual `DD-MM-YYYY HH:mm`, touched files/work locations and current verification evidence; detailed task blocks are the future validator target and summary tables are indexes only; lightweight exceptions require `reason`, `reduced_evidence_path` and `residual_risk`.
-- B37-S2 template/renderer boundaries: checked-in source is `plugins/product-agent-os/assets/templates/artifact-templates/task-matrix-plan.md`; staged target is `.codex/artifact-templates/task-matrix-plan.md`; renderer key is `artifact-task-matrix-plan`; plugin cache remains stale until an explicit publication/cache refresh action is approved; no plugin publication, `.codex-plugin/plugin.json` mutation, live automation, provider/live external model/API call or git stage/commit/push/PR is authorized.
-- B37-S3 validator/eval boundaries: `validate_task_matrix.py` wraps `validate_task_matrix_text` and `validate_task_matrix_file`; `task_matrix_validator_contract_present` and related fixture checks prove valid detailed task blocks, fake-completion blocking, `pending_execution_timestamp` rejection for implemented rows, synthetic transcript coverage and summary-table index-only behavior; no discovery routing, dashboard/status projection, plugin publication, live action or git write is authorized.
-- B37-S4 skill/routing/discovery/control boundaries: planner guidance proposes staged `task-matrix-plan.md` for specs/ADRs/standards/handoffs/risky multi-slice work; `task_matrix_planner_routing_contract_present`, `task_matrix_agent_handoff_contract_present`, `task_matrix_discovery_signal_contract_present` and `task_matrix_planning_control_governance_present` prove task-row handoff and discovery/control contracts; discovery detection remains `present_unverified`; hard gates live in validator/tests/skills; hooks are reminder-only hooks unless explicitly approved; no hook activation, recurring automation, MCP, Agents SDK runner, external write, provider/live external model/API call, canonical graph mutation or git stage/commit/push/PR is authorized.
-- B37-S5 docs/source closure boundaries: `task-matrix-plan.md` is a staged planning artifact, not source truth and not execution evidence; historical Batch 34/35/36 matrices remain readable and are not retroactively failed unless explicitly targeted; dashboard/status projection is deferred as a read-only generated-view decision until separately implemented; `.codex/artifact-templates/task-matrix-plan.md` remains under the existing artifact-template/staged infrastructure ownership class and concrete task-matrix files stay docs/source-owned owner-approved artifacts; lifecycle detail moves from active plan rows to `RUNLOG.md`, Track 10 backlog and source registry rather than root `PLAN.md`; full S5 verification evidence is routed through `TEST.md`. B37-S5 does not activate hooks, recurring automation, MCP, Agents SDK runner, live server/browser automation, provider/live external model/API calls, canonical graph mutation or git stage/commit/push/PR.
-- B37-S5 markers: `task_matrix_docs_source_sync_present`, `task_matrix_backward_compatibility_policy_present`, `task_matrix_status_projection_deferred_present`, `task_matrix_system_file_hygiene_owner_present`, `task_matrix_lifecycle_archive_policy_present`.
-- B38 documentation-update boundaries: implemented rows below carry timestamp and verification evidence, while planned rows keep `pending_execution_timestamp`; no task is implemented by matrix presence alone; source-backed claims require owning source docs and registry sync; RU/EN page pairs and generated `site/` must stay in parity when touched; README remains compact and must not become a historical ledger; strict MkDocs is required only when navigation, localization, search/sitemap, Mermaid, MkDocs config or generated `site/` evidence changes.
-- B38-S1 production-readiness boundaries: B38-S1 `B38-PROD-M01..M03` has current package and metadata evidence, but it is not a release-ready or install-ready claim. M01 `owner_closed_no_op_git_release_pr`; M02 `implemented` for checked-in package-source freeze; M03 `accepted_gap` is resolved for local-only/internal R&D by owner decision and remains blocked only for future public/team release. No plugin install, plugin-cache mutation, live runtime, browser automation, provider/live external model/API call, canonical graph mutation, git stage/commit/push/PR or external publication is authorized.
-- B38-S2 verification/install-cache boundaries: M04 full pre-install verification passed in the current run; M05 read-only installed-cache inspection first found a stale visible plugin cache. Cache-refresh approval was explicit; backup/stage exist under workspace `tmp/`; the current sandbox denied target cache write; the owner then ran the prepared local PowerShell refresh successfully outside the sandbox. Current cache evidence shows 586 files, 11 skills, `docs-maintainer` present and `target_cache_still_stale: false`. No live runtime, browser automation, provider/live external model/API call, canonical graph mutation, git stage/commit/push/PR or external publication was performed.
-- B38-S3 real-project pilot design boundaries: M06-M09 define first-run operator packet, consent matrix, success metrics and dry-run evidence ledger for future pilots. This is design-only, not pilot execution; it performs no real project scan, no target workspace mutation, no production data access, no live server, no browser automation, no provider/API call, no canonical graph mutation, no external write and no git stage/commit/push/PR.
-- B38-S4 safety/rollback boundaries: M10 is a read-only local audit with recorded gaps, not a security certification or public-release claim. System-file hygiene is `blocked` with known false-positive/policy-field findings and existing size debt; MCP and fixture dependency supply-chain boundaries remain accepted gaps for local/synthetic use. M11 documents rollback/remove/cache recovery; no cache clear, restore, deletion, global config mutation, hook/automation disable, provider/API call, live server/browser action, canonical mutation, external write or git stage/commit/push/PR was performed.
-- B38-PILOT-NF01 target-pilot boundaries: `Neural_Flow` was inspected as a docs-only/legacy-onboarding target with staged outputs outside the target workspace. The pilot did not apply generated control-plane files to the target, did not create target `.codex/` assets, did not start live/browser/provider/runtime work, did not mutate canonical sources, did not use git and did not publish externally.
-- Batch 39 planning boundaries: `B39-TEST-M01..M54` is a planned pilot testing, automatic result collection and production/mass-user hardening matrix. `B39-S1..S5` must stay read-only and staged-first unless an exact approval packet authorizes a narrower action. Batch 39 cannot support `B38-PROD-M12` readiness or release claims until it records `prod_test.md` attempt/failure/fix/retest evidence, at least one clean positive pilot, one expected-block negative pilot, representative archetype coverage or accepted gaps, current dashboard/rollup evidence, redaction/no-mutation proof, functional regression/repeatability evidence, hardening evidence for `B39-TEST-M37..M54`, source-owned closure and no-unapproved-actions review.
+- Work in focused slices with explicit scope, acceptance criteria, risks, rollback and verification gates.
+- Use Product-Agent OS skills for requirements, implementation planning, test/eval design, docs maintenance, risk review and completion-skeptic loops when the task matches them.
+- Keep historical batch matrices in source-owned files, not in this root plan.
+- Do not create/switch branches, stage, commit, push, open PRs, mutate target workspaces, run browser automation, call providers/live APIs, publish, deploy or create automations without exact approval for that action.
+- Preserve unrelated dirty work and record only the evidence needed for current handoff.
+
+## Current State
+
+| Workstream | State | Planning impact |
+| --- | --- | --- |
+| Track 9 / Track 10 history | Source-owned and closed for completed historical slices. | Use backlogs and registry for historical detail. |
+| Batch 35 `T10-LIVE-M41` | Closed as `owner_closed_no_op_git_release_pr`; no branch, stage, commit, push or PR. | Future git-write work needs fresh preflight and exact approval. |
+| Batch 38 package-source/readiness | Implemented/recorded. `B38-S2` current cache evidence is `plugin_cache_refresh_final_status: completed_local_cache_refresh_from_prepared_stage`; historical `blocked_pending_explicit_cache_mutation_approval` remains preserved. | Treat prior blockers as historical evidence, not current active blockers unless the same condition recurs. |
+| `B38-PILOT-NF01` | Docs-only target addendum completed; target apply blocked by `source_policy_status: blocked` and missing target control-plane/source registry artifacts. | Do not mutate target project until source policy and artifacts are resolved. |
+| Batch 39 | Planned as `B39-S1..B39-S5` and `B39-TEST-M01..M54`. | Start execution only through `prod_test.md` with per-test evidence. |
+| Batch 40 completion-skeptic | Local manual foundation closed; automation status `manual_only` and `not_promoted`. | Keep automation promotion candidate-only until gates are satisfied. |
 
 ## Next Implementation Queue
 
-| Order | Item | Status | Owner action required |
-| --- | --- | --- | --- |
-| 1 | B37-S1 `T10-PLAN-M01..M03`, `T10-PLAN-M18` task-matrix contract | implemented in current maintenance slice | No owner action. |
-| 2 | B37-S2 `T10-PLAN-M04..M05`, `T10-PLAN-M17` template, renderer and packaging surface | implemented in current maintenance slice | No owner action unless the owner wants B37-S3 validator/eval work. |
-| 3 | B37-S3 `T10-PLAN-M06`, `T10-PLAN-M10`, `T10-PLAN-M13` validator, eval and Completion Report guard | implemented in current maintenance slice | No owner action unless the owner wants B37-S4 planner/agent/discovery work. |
-| 4 | B37-S4 `T10-PLAN-M07..M09`, `T10-PLAN-M20` skill routing, discovery signal and planning control | implemented in current maintenance slice | No owner action unless the owner wants B37-S5 docs/projection/lifecycle closure work. |
-| 5 | B37-S5 `T10-PLAN-M11..M12`, `T10-PLAN-M14..M16`, `T10-PLAN-M19` docs/projection/hygiene/lifecycle closure | implemented in current maintenance slice after full Product-Agent OS verification | No owner action unless the owner wants future bounded dashboard projection implementation. |
-| 6 | Batch 38 documentation update matrix | `B38-DOC-M01..M10` implemented | No owner action unless another generated-site refresh or public docs follow-up is requested. |
-| 7 | B38-S1 `B38-PROD-M01..M03` release gate and package metadata | M01 `owner_closed_no_op_git_release_pr`; M02 `implemented`; M03 owner-confirmed local-only/internal R&D distribution | No owner action unless a future git write or public/team metadata trust-field replacement is requested. |
-| 8 | `T10-LIVE-M41` explicit git release/PR action | `owner_closed_no_op_git_release_pr` | Future git write requires fresh preflight and exact approval. |
-| 9 | B38-S2 `B38-PROD-M04..M05` verification and install/cache smoke | M04 `implemented`; M05 `implemented`; `plugin_cache_refresh_final_status: completed_local_cache_refresh_from_prepared_stage` | No owner action for M05. Future release, pilot execution, git write or publication still needs exact approval. |
-| 10 | B38-S3 `B38-PROD-M06..M09` real-project pilot design | M06 `implemented`; M07 `implemented`; M08 `implemented`; M09 `implemented` | No owner action unless the owner wants target-specific pilot execution approval. |
-| 11 | B38-S4 `B38-PROD-M10..M11` safety and rollback | M10 `reviewed_gap_recorded`; M11 `implemented`; no mutation performed | No owner action unless the owner wants target-specific pilot execution approval or a separate M10 hardening follow-up. |
-| 12 | B38-PILOT-NF01 `Neural_Flow` docs-only target pilot | `read_only_pilot_executed_blocked_on_target_source_policy` | Choose whether to run a narrow target-local source-policy/control-plane cleanup. |
-| 13 | Batch 39 `B39-TEST-M01..M54` pilot testing, automatic result collection and production/mass-user hardening | planned in Track 10 plan with root `prod_test.md` ledger template; not executed | Start with `B39-S1` result collection foundation and update `prod_test.md` on every attempt. |
-| 14 | Future Task 27/28 planning | not started | Start only after B38/B39 production-readiness blockers are resolved or deliberately deferred. |
-
-## Batch 38 Documentation Update Matrix
-
-Batch 38 is a documentation alignment slice based on the current read-only product and technical analysis of `site/`, source docs, README and the checked-in Product-Agent OS implementation. Rows `B38-DOC-M01..M10` are implemented.
-
-| Task ID | Priority | Scope | Files / surfaces | Acceptance criteria | Verification route | Status |
-| --- | --- | --- | --- | --- | --- | --- |
-| `B38-DOC-M01` | P0 | Sync approval-bound real-testing status with current evidence. | `docs/product-agent-os/approval-bound-real-testing.md`, `docs/product-agent-os/approval-bound-real-testing.en.md`, `tests/product_agent_os/test_product_agent_os_docs.py`. | Page no longer says the whole matrix is only planned; it shows M37 local runtime, M38 browser smoke, M39 Codex-session provider pilot and M40 staged canonical mutation pilot as executed evidence, while M41 is now `owner_closed_no_op_git_release_pr`; approval boundaries remain action-specific and public docs avoid internal ledger IDs. | `python -m unittest tests.product_agent_os.test_product_agent_os_docs -v`, `python tools\check_docs.py`, `git diff --check`; strict MkDocs not run because `site/` and nav were not refreshed. | `implemented`; `08-06-2026 12:17` `Europe/Moscow`; docs tests 68 OK, docs check OK, diff hygiene OK |
-| `B38-DOC-M02` | P0 | Upgrade methodology intelligence docs to match the implemented catalog and README auto-selection section. | `docs/product-agent-os/methodology-intelligence.md`, `docs/product-agent-os/methodology-intelligence.en.md`, `tests/product_agent_os/test_product_agent_os_docs.py`. | Docs name the read-only scan principle, maturity/complexity classification, readiness statuses, all 12 methodology domains, TDD/ATDD/BDD/DDD/architecture-driven design/ADR/C4/FSD examples and false-positive guards. | `python -m unittest tests.product_agent_os.test_product_agent_os_docs -v`, `python tools\check_docs.py`, `git diff --check`; strict MkDocs not run because `site/` and nav were not refreshed. | `implemented`; `08-06-2026 12:17` `Europe/Moscow`; docs tests 68 OK, docs check OK, diff hygiene OK |
-| `B38-DOC-M03` | P0 | Resolve public terminology ambiguity around `DDD`. | `docs/sources/add-ddd-tdd-fsd-llm-development.md`, `docs/sources/add-ddd-tdd-fsd-llm-development.en.md`, `tests/product_agent_os/test_product_agent_os_docs.py`. | Search readers can distinguish Product-Agent OS core `DDD` as Domain-Driven Design from the incoming source draft that uses `DDD` as Data-Driven Development; draft status and canonical terminology are explicit. | `python -m unittest tests.product_agent_os.test_product_agent_os_docs -v`, `python tools\check_docs.py`, `git diff --check`; strict MkDocs not run because `site/` and nav were not refreshed. | `implemented`; `08-06-2026 12:17` `Europe/Moscow`; docs tests 68 OK, docs check OK, diff hygiene OK |
-| `B38-DOC-M04` | P1 | Add end-user first-run walkthrough. | `docs/product-agent-os/index.md`, `docs/product-agent-os/index.en.md`, `tests/product_agent_os/test_product_agent_os_docs.py`. | User can see the path from first prompt to read-only scan, lifecycle state, `usage_mode`, methodology selection, staged artifacts, verification route, approval boundary and next action without reading internal backlogs. | Docs contract, `python tools\check_docs.py`, strict MkDocs because `B38-DOC-M05` changes nav/site exposure. | `implemented`; `08-06-2026 12:40` `Europe/Moscow`; docs tests 69 OK, docs check OK, strict MkDocs OK, diff hygiene OK |
-| `B38-DOC-M05` | P1 | Add artifact/output gallery for user-facing value. | `docs/product-agent-os/artifact-gallery.md`, `docs/product-agent-os/artifact-gallery.en.md`, `docs/product-agent-os/index*.md`, `mkdocs.yml`, `tools/check_docs.py`, `tests/product_agent_os/test_product_agent_os_docs.py`. | Shows practical outputs such as control-plane files, methodology packet, status dashboard, project graph/cockpit, real-testing evidence packets, scorecards and release artifacts with source-of-truth boundaries. | Docs contract, `python tools\check_docs.py`, strict MkDocs because nav/search/sitemap exposure changes. | `implemented`; `08-06-2026 12:40` `Europe/Moscow`; docs tests 69 OK, docs check OK, strict MkDocs OK, diff hygiene OK |
-| `B38-DOC-M06` | P1 | Define public vs internal documentation IA boundary for `site/`. | `docs/index.md`, `docs/index.en.md`, `docs/product-agent-os/index.md`, `docs/product-agent-os/index.en.md`, `mkdocs.yml`, `requirements.txt`, `tests/product_agent_os/test_product_agent_os_docs.py`, existing internal EN link-hygiene pages, generated `site/`. | Public reader path is clear; internal `docs/sources/` evidence is labeled as source/history material; generated `site/` and search exposure do not blur source truth or product presentation; docs dependencies keep strict build and language-switcher output reproducible. | `python tools\check_docs.py`; strict MkDocs required for nav/search/sitemap changes. | `implemented`; `08-06-2026 12:40` `Europe/Moscow`; docs tests 69 OK, docs check OK, strict MkDocs OK, generated-site language-switcher cleanup OK, diff hygiene OK |
-| `B38-DOC-M07` | P1 | Compact README sync after source docs are corrected. | `README.md`, `tests/product_agent_os/test_product_agent_os_docs.py`. | README stays under compactness limit, adds only short links/status for methodology docs, real-testing evidence and public docs route; it does not store execution history. | Root README docs test, README length/history guard, `python tools\check_docs.py`, `git diff --check`. | `implemented`; `08-06-2026 13:09` `Europe/Moscow`; focused README/registry tests OK, docs tests 70 OK, docs check OK, diff hygiene OK |
-| `B38-DOC-M08` | P2 | Keep RU/EN parity for every changed user-facing page. | `README.md`, `docs/sources/registry.md`, `docs/sources/registry.en.md`; no new public `docs/` page pair or nav change. | RU and EN docs surfaces preserve source status, official term handling, links, commands, IDs and no fallback pollution; generated `site/` parity remains valid from the already rebuilt nav/site-sensitive slice. | `python -m unittest tests.product_agent_os.test_product_agent_os_docs -v`, `python tools\check_docs.py`; strict MkDocs not required because this slice did not change nav, localized nav, search, sitemap or generated `site/` evidence. | `implemented`; `08-06-2026 13:09` `Europe/Moscow`; read-only i18n audit complete, docs tests 70 OK, docs check OK, diff hygiene OK |
-| `B38-DOC-M09` | P2 | Update source registry and control-plane pointers only where source-backed claims change. | `docs/sources/registry.md`, `docs/sources/registry.en.md`, `PLAN.md`, `tests/product_agent_os/test_product_agent_os_docs.py`; `RUNLOG.md`, `TEST.md`, `EVALS.md` unchanged because no new evidence routing was required. | New or changed source-backed claims have `trust_level`, `verification_status` and owner evidence; root control-plane files remain compact. | Focused docs contract, `python tools\check_docs.py`, `git diff --check`. | `implemented`; `08-06-2026 13:09` `Europe/Moscow`; registry/control-plane audit complete, docs tests 70 OK, docs check OK, diff hygiene OK |
-| `B38-DOC-M10` | P2 | Final docs verification and generated `site/` refresh decision. | `PLAN.md`, `docs/sources/registry.md`, `docs/sources/registry.en.md`, `tests/product_agent_os/test_product_agent_os_docs.py`, generated `site/`. | The slice records which checks ran, strict MkDocs was required for rendered registry/search parity, `site/` was refreshed intentionally, generated-site language-switcher/trailing-whitespace cleanup was applied and no new public/internal IA gap was accepted. | `python -m unittest tests.product_agent_os.test_product_agent_os_docs -v`, `python tools\check_docs.py`, workspace-local `.venv\Scripts\python.exe -m mkdocs build --strict`, generated-site static checks, `git diff --check`. | `implemented`; `08-06-2026 13:26` `Europe/Moscow`; strict MkDocs OK, generated `site/` refreshed, rendered registry/search M10 markers present, language-switcher cleanup OK, generated whitespace cleanup OK, docs tests/check/diff hygiene OK |
-
-## Batch 38 Production Readiness Matrix
-
-B38-S1 `B38-PROD-M01..M03` is a release gate and package metadata slice. B38-S2 `B38-PROD-M04..M05` is the verification/install-cache smoke slice, including the owner-approved local cache refresh evidence for M05. B38-S3 `B38-PROD-M06..M09` is the real-project pilot design slice. B38-S4 `B38-PROD-M10..M11` is the safety and rollback slice. `B38-PILOT-NF01` is the first target-specific docs-only pilot execution addendum. Together they record current package, verification, cache, pilot-design, safety-gap, rollback-procedure and first read-only target evidence without authorizing release, publication, target apply or git actions.
-
-| Task ID | Priority | Scope | Files / surfaces | Acceptance criteria | Verification route | Status |
-| --- | --- | --- | --- | --- | --- | --- |
-| `B38-PROD-M01` | P0 | Resolve or explicitly defer `T10-LIVE-M41` git release/PR gate. | `docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md`, `docs/sources/product-agent-os-track-10-backlog.md`, `PLAN.md`, `RUNLOG.md`, `TEST.md`. | Release path is unblocked with exact owner-approved fields, or M41 is explicitly deferred/closed with residual risk and no hidden release claim. | `git status --short`, current verification summary, release packet review; no git write unless separately approved. | `owner_closed_no_op`; `08-06-2026 15:10` `Europe/Moscow`; M01 `owner_closed_no_op_git_release_pr`; git_stage_commit_push_pr_performed false; future_git_write_requires_fresh_preflight true |
-| `B38-PROD-M02` | P0 | Freeze install source and package surface. | `plugins/product-agent-os/`, `docs/sources/product-agent-os-track-10-backlog.md`, `docs/sources/registry.md`, `docs/sources/registry.en.md`. | Release artifact manifest distinguishes checked-in source, ignored local caches, generated evidence and installable package contents. | `git status --short`, `git ls-files plugins/product-agent-os`, ignored-cache check, package digest and manifest review. | `implemented`; `08-06-2026 14:00` `Europe/Moscow`; 586 tracked files, 11 skills, 202 template files, 84 script files, 266 fixture files, digest `7d5a7634d1223f72ccdd1edcd24fddeb8bbdcc38d36d73ab1d002f352b06dcbb`; ignored cache only `__pycache__`; no install/cache mutation |
-| `B38-PROD-M03` | P0 | Finalize public and organization-facing plugin metadata. | `plugins/product-agent-os/.codex-plugin/plugin.json`, `docs/sources/product-agent-os-track-10-backlog.md`, `docs/sources/registry.md`, `docs/sources/registry.en.md`. | No `example.invalid` trust fields remain in a release candidate intended for team/public installation, or the local-only/internal R&D decision is recorded. | Manifest review, `python plugins\product-agent-os\scripts\validate_codex_compatibility.py`, docs/source registry sync. | `accepted_gap`; `08-06-2026 19:01` `Europe/Moscow`; metadata_decision_status `owner_confirmed_local_only_internal_r_and_d`; local-only/internal R&D distribution only; Codex compatibility `status: compatible`; public/team release metadata remains blocked |
-| `B38-PROD-M04` | P0 | Run full pre-install verification. | `tests/`, `plugins/product-agent-os/scripts/`, `tools/check_docs.py`, `PLAN.md`, `RUNLOG.md`, `TEST.md`, `docs/sources/product-agent-os-track-10-backlog.md`, `docs/sources/registry.md`. | Full unittest, fixture eval, transcript eval, Codex compatibility, docs structure and diff hygiene pass in the current run; strict MkDocs runs if routed. | Full Product-Agent OS verification route from `TEST.md`; strict MkDocs not routed because no nav/site-sensitive source changed before verification. | `implemented`; `08-06-2026 15:10` `Europe/Moscow`; full_unittest_count 846 OK; fixture_eval_exit_code 0; transcript_eval_session_count 19; transcript_eval_failure_count 0; codex_compatibility_status compatible; docs_check_status ok; diff_hygiene_exit_code 0 |
-| `B38-PROD-M05` | P0 | Refresh or install the new plugin version and prove no stale plugin cache is used. | Local Codex plugin cache inspection and checked-in `plugins/product-agent-os/` source comparison. | Codex sees the intended version, 11 lifecycle skills, `.mcp.json`, scripts/templates/docs, and no stale cache mismatch against checked-in source. | Plugin install/cache inspection; owner-approved local cache refresh evidence; Codex compatibility smoke; docs/source sync. | `implemented`; `08-06-2026 18:02` `Europe/Moscow`; plugin_install_smoke_status `read_only_inspection_completed_stale_cache_detected`; visible_cache_skill_count 10 vs checked_in_skill_count 11; missing_cache_skill `docs-maintainer`; visible_cache_script_file_count 32 vs checked_in_script_file_count 84; visible_cache_template_file_count 34 vs checked_in_template_file_count 202; plugin_cache_refresh_status `blocked_pending_explicit_cache_mutation_approval` before owner approval; cache_refresh_approval_received true; cache_backup_path `tmp/product-agent-os-cache-backup-20260608-162108`; cache_stage_path `tmp/product-agent-os-cache-stage-20260608-162108`; stage_tracked_source_file_count 586; plugin_cache_refresh_attempt_status `blocked_sandbox_cache_write_denied_after_backup_stage`; local_cache_refresh_result `REFRESH_OK`; plugin_cache_refresh_final_status `completed_local_cache_refresh_from_prepared_stage`; local_cache_backup_path `tmp/product-agent-os-cache-backup-local-20260608-180210`; local_cache_moved_aside_target `local-product-agent-plugins/product-agent-os/0.1.0.pre-refresh-20260608-180210`; target_cache_files_after_refresh 586; target_cache_skill_count_after_refresh 11; target_cache_docs_maintainer_present_after_refresh true; target_cache_still_stale false; plugin_cache_refresh_completed |
-| `B38-PROD-M06` | P1 | Create first-run operator packet for real users. | `docs/product-agent-os/real-project-pilot.md`, `docs/product-agent-os/real-project-pilot.en.md`, `docs/product-agent-os/index.md`, `docs/product-agent-os/index.en.md`, `docs/sources/product-agent-os-track-10-backlog.md`, `docs/sources/registry.md`, `tests/product_agent_os/test_product_agent_os_docs.py`. | First prompt, expected first response, staged artifact route, approval boundary, rollback/remove path and what-not-to-expect section are defined without internal ledger dependency. | Docs contract, `python tools\check_docs.py`, strict MkDocs because nav/search/sitemap exposure changes, `git diff --check`. | `implemented`; `08-06-2026 15:36` `Europe/Moscow`; first_run_operator_packet_present; expected_first_response_fields_present; staged_artifact_route_defined; approval_boundary_defined; rollback_remove_path_defined; what_not_to_expect_section_present |
-| `B38-PROD-M07` | P1 | Build real-project pilot target and consent matrix. | `docs/product-agent-os/real-project-pilot.md`, `docs/product-agent-os/real-project-pilot.en.md`, Track 10 backlog, registry and control-plane docs. | Pilot archetypes web/frontend, backend/API, docs-only, AI/RAG, data/migration, PR/review and automation/release each name owner, target repo class, data policy, allowed commands, blocked commands, evidence destination and stop condition. | Docs contract and read-only target-consent review; no target-specific approval means no execution. | `implemented`; `08-06-2026 15:36` `Europe/Moscow`; pilot_target_count 7; owner_consent_required_per_target true; target_repo_class_required_per_target true; data_policy_required_per_target true; no_real_project_execution_performed |
-| `B38-PROD-M08` | P1 | Define pilot success criteria and product metrics. | `docs/product-agent-os/real-project-pilot.md`, `docs/product-agent-os/real-project-pilot.en.md`, `EVALS.md`, Track 10 backlog and registry. | Metrics include time-to-first-route, route accuracy, artifact usefulness, methodology-selection precision, owner-question usefulness, false-positive rate, evidence sufficiency, counter-metrics and accepted-gap rules. | Docs/eval contract review and source registry sync. | `implemented`; `08-06-2026 15:36` `Europe/Moscow`; pilot_success_metrics_defined; accepted_gap_rules_present; design_only_not_run |
-| `B38-PROD-M09` | P1 | Prepare pilot harness and evidence ledger. | `docs/product-agent-os/real-project-pilot.md`, `docs/product-agent-os/real-project-pilot.en.md`, `TEST.md`, `RUNLOG.md`, Track 10 backlog and registry. | Read-only pilot commands, staged output locations, runlog/evidence schema, screenshot/log redaction, cleanup steps and approval checks are defined; harness does not become active automation or an external writer. | Docs contract, strict MkDocs and diff hygiene; no live/browser/provider/runtime/canonical/git execution. | `implemented`; `08-06-2026 15:36` `Europe/Moscow`; pilot_harness_evidence_ledger_present; read_only_pilot_commands; staged_output_locations; runlog_evidence_schema; screenshot_log_redaction; cleanup_steps; no_live_server_browser_provider_canonical_git |
-| `B38-PROD-M10` | P1 | Reconfirm security, privacy and supply-chain readiness. | `plugins/product-agent-os/`, `plugins/product-agent-os/.codex-plugin/plugin.json`, `plugins/product-agent-os/.mcp.json`, `docs/product-agent-os/real-project-pilot.md`, Track 10 backlog, registry, control-plane docs and read-only agent audit handoff. | Read-only audit records no release-candidate security certification; source-policy status is OK; system-file hygiene remains blocked with known false-positive/policy-field and size findings; MCP and synthetic fixture dependency gaps are explicit. | `validate_source_policy.py`, `validate_system_file_hygiene.py`, `validate_codex_compatibility.py`, manifest/MCP review, dependency marker scan, docs contract and diff hygiene. | `reviewed_gap_recorded`; `08-06-2026 18:40` `Europe/Moscow`; source_policy_status ok; system_file_hygiene_status blocked; secret_like_findings 6; hygiene_known_findings_accepted_gap; mcp_boundary approval_required_unpinned_npx_context7; fixture_dependency_boundary synthetic_non_install_fixtures_unpinned_dependencies; release_readiness_claim false; no external action |
-| `B38-PROD-M11` | P2 | Define rollback, removal and cache-recovery procedure. | `docs/product-agent-os/real-project-pilot.md`, `docs/product-agent-os/real-project-pilot.en.md`, Track 10 backlog, registry, control-plane docs and read-only agent audit handoff. | Rollback/remove/cache recovery procedure names pre-rollback read-only inspection, evidence preservation, move-aside remove path, stale-cache restore path, cache-clear recovery path, hook/automation disable path if ever approved, post-restore verification and stop conditions. | Dry-run rollback plan review, docs contract, `python tools\check_docs.py`, `git diff --check`; no destructive deletion without resolved path check and exact approval. | `implemented`; `08-06-2026 18:40` `Europe/Moscow`; plugin_rollback_remove_procedure_present; installed_plugin_remove_path_documented; stale_cache_restore_path_documented; cache_clear_recovery_path_documented; no_destructive_cache_delete_without_exact_approval; no cache/global config mutation |
-
-## B38 Target-Specific Pilot Execution Addendum
-
-`B38-PILOT-NF01` executed the first owner-approved read-only target pilot against the docs-only `Neural_Flow` workspace. Evidence is staged under `tmp/neural-flow-product-agent-os-pilot-20260608-191510` and target writes remain blocked until the source-policy/control-plane gaps are resolved or explicitly accepted.
-
-| Pilot ID | Target class | Route | Evidence | Status |
+| Slice | Scope | Owner action | Codex action | Verification |
 | --- | --- | --- | --- | --- |
-| `B38-PILOT-NF01` | docs-only / legacy onboarding | `usage_mode: legacy_onboarding`; `complexity_profile: guided-small` | `detect_project.py`, `run_methodology_audit.py`, `run_codex_runtime_runner.py`, `render_infrastructure.py --stage`, `render_status_dashboard.py --stage`, `scan_project_code_graph.py --stage`, `validate_source_policy.py`, `validate_system_file_hygiene.py`, static content/citation/heading checks | `read_only_pilot_executed_blocked_on_target_source_policy`; source_policy_status `blocked`; staged outputs validated; no target mutation |
+| `B39-S1` | Prepare Batch 39 test matrix and select the first execution boundary. | Confirm target project or confirm docs-only dry run; approve any target read/write boundary. | Map `B39-TEST-M01..M54` into attempt order, prerequisites, evidence fields and owner/Codex actions. | `prod_test.md` entries exist before execution; no target mutation without approval. |
+| `B39-S2` | Run first approved Batch 39 test subset. | Provide/approve target, credentials-free setup and manual observations where needed. | Execute only approved read/write steps, record attempt/failure/fix/retest ledger. | Deterministic commands and manual evidence recorded in `prod_test.md`. |
+| `B39-S3` | Fix issues found by first subset. | Approve scoped edits if fixes require mutation. | Implement focused fixes, preserve unrelated dirty changes, update evidence. | Relevant tests/checks rerun; accepted gaps explicit. |
+| `B39-S4` | Retest and risk review. | Confirm product acceptance or residual risk tolerance. | Rerun failed checks, prepare risk/readiness summary. | Supported/unsupported claims separated. |
+| `B39-S5` | Closure and next-route decision. | Decide continue, pause, promote, or replan. | Update control-plane handoff and source registry if required. | No readiness claim without current-run evidence or accepted gap. |
+
+## Batch 39 Execution Rules
+
+- `prod_test.md` is the required attempt/failure/fix/retest ledger for Batch 39.
+- Each task must record:
+  - test id and slice;
+  - objective and product value;
+  - technical action;
+  - owner action vs Codex action;
+  - prerequisites and approvals;
+  - evidence path or command;
+  - result, failure, fix and retest status;
+  - residual risk or accepted gap.
+- Choosing a project is not automatically required for every preparatory task. It becomes required when a test step needs real target discovery, target-specific evidence, runtime behavior or mutation.
 
 ## Source Planning Artifacts
 
-- Track 9 design: `docs/superpowers/specs/2026-05-25-track-9-methodology-intelligence-design.md`.
-- Track 9 implementation plan: `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`.
-- Track 10 implementation plan: `docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md`.
-- Track 9 backlog: `docs/sources/product-agent-os-track-9-backlog.md`.
-- Track 10 backlog: `docs/sources/product-agent-os-track-10-backlog.md`.
-- Batch 35 approval packet: `docs/sources/product-agent-os-batch35-approval-packet-draft.md`.
+| Artifact | Role |
+| --- | --- |
+| `REQUIREMENTS.md` | Current scope, acceptance and constraints. |
+| `TEST.md` | Current verification commands and escalation rules. |
+| `EVALS.md` | Current eval rubrics, thresholds and subjective gates. |
+| `RUNLOG.md` | Current-cycle handoff and residual risks. |
+| `AGENTS.md` | Durable operating rules and current operating status. |
+| `docs/superpowers/plans/2026-05-25-track-9-methodology-intelligence.md` | Track 9 implementation plan. |
+| `docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md` | Track 10 staged plan and status-dashboard history. |
+| `docs/sources/product-agent-os-track-8-detailed-backlog.md` | Track 8 detailed scenario/methodology history. |
+| `docs/sources/product-agent-os-track-9-backlog.md` | Source-owned Track 9 methodology and verification history. |
+| `docs/sources/product-agent-os-track-10-backlog.md` | Source-owned Track 10, Batch 35, Batch 38, Batch 39 and Batch 40 history. |
+| `docs/sources/registry.md` and `docs/sources/registry.en.md` | Claim/source registry. |
+| `docs/sources/product-agent-os-batch35-approval-packet-draft.md` | Batch 35 approval and execution packet. |
+| `prod_test.md` | Batch 39 production test ledger. |
 
-## Architecture Boundary
+Evidence ownership stays source-routed; `git diff --check` remains part of docs/control-plane verification.
 
-- Plugin implementation package: `plugins/product-agent-os/`.
-- Operator and product docs: `docs/product-agent-os/`, `docs/product-agent/`, `docs/runtime/`, `docs/agent-systems/`, `docs/playbooks/`.
-- Evidence and registry docs: `docs/sources/`.
-- Generated site output: `site/`, not source of truth.
-- Root control-plane files: `AGENTS.md`, `REQUIREMENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md`, `RUNLOG.md`.
+## Compatibility Marker Bank
 
-## Planning Rules
+These lines are compact anchors for existing tests and source-owned history. They are not execution evidence by themselves.
 
-- Keep `PLAN.md` focused on active sequencing, ownership boundaries, source pointers and rollback.
-- Put completed-slice, implementation-status and historical verification history in Track 8/9/10 backlogs and the source registry, not in root control-plane files.
-- If a future docs contract starts requiring every historical marker in `PLAN.md`, update the contract and owning source docs together instead of growing `PLAN.md`.
-- Preserve user-authored files and unrelated dirty changes.
+- B37-S1 `T10-PLAN-M01..M03`, `T10-PLAN-M18`, task-matrix contract, `task-matrix-plan.md`.
+- B37-S2 `T10-PLAN-M04..M05`, `T10-PLAN-M17`, `renderer_file_count: 195`, plugin cache remains stale until an explicit publication/cache refresh action is approved.
+- B37-S3 `T10-PLAN-M06`, `T10-PLAN-M10`, `T10-PLAN-M13`, `validate_task_matrix.py`, `task_matrix_validator_contract_present`.
+- B37-S4 `T10-PLAN-M07..M09`, `T10-PLAN-M20`, `task_matrix_planner_routing_contract_present`, `task_matrix_agent_handoff_contract_present`, `task_matrix_discovery_signal_contract_present`, `task_matrix_planning_control_governance_present`.
+- B37-S5 `T10-PLAN-M11..M12`, `T10-PLAN-M14..M16`, `T10-PLAN-M19`, `task_matrix_docs_source_sync_present`, `task_matrix_backward_compatibility_policy_present`, `task_matrix_status_projection_deferred_present`, `task_matrix_system_file_hygiene_owner_present`, `task_matrix_lifecycle_archive_policy_present`.
+- `B38-DOC-M01..M10` implemented.
+- `B38-DOC-M04` | P1 | Add end-user first-run walkthrough.
+- `B38-DOC-M05` | P1 | Add artifact/output gallery for user-facing value.
+- `B38-DOC-M06` | P1 | Define public vs internal documentation IA boundary for `site/`.
+- `B38-DOC-M07` | P1 | Compact README sync after source docs are corrected.
+- `B38-DOC-M08` | P2 | Keep RU/EN parity for every changed user-facing page.
+- `B38-DOC-M09` | P2 | Update source registry and control-plane pointers only where source-backed claims change.
+- `B38-DOC-M10` | P2 | Final docs verification and generated `site/` refresh decision.
+- B38-S1 `B38-PROD-M01..M03`; M01 `owner_closed_no_op_git_release_pr`; M02 `implemented`; M03 `accepted_gap`.
+- B38-S2 `B38-PROD-M04..M05`; M04 `implemented`; M05 `implemented`; blocked_sandbox_cache_write_denied_after_backup_stage; plugin_cache_refresh_final_status: completed_local_cache_refresh_from_prepared_stage; Next release/install/cache action: no remaining M05 cache refresh action is required.
+- B38-S3 `B38-PROD-M06..M09`; M06 `implemented`; M07 `implemented`; M08 `implemented`; M09 `implemented`; no_real_project_execution_performed.
+- B38-S4 `B38-PROD-M10..M11`; M10 `reviewed_gap_recorded`; M11 `implemented`; source_policy_status ok; system_file_hygiene_status blocked; fixture_dependency_boundary synthetic_non_install_fixtures_unpinned_dependencies.
+- B38-PILOT-NF01 `Neural_Flow`, source_policy_status blocked.
+- T10-LIVE-M41 post-B38 audit, historical_preflight_snapshot, future git write, fresh preflight is required before any git write, B37/B38/B38-S1 did not themselves close M41.
 
-## Verification For This Planning Maintenance
+| Task | Priority | Summary | Status |
+| --- | --- | --- | --- |
+| `B38-DOC-M04` | P1 | Add end-user first-run walkthrough. | `implemented` |
+| `B38-DOC-M05` | P1 | Add artifact/output gallery for user-facing value. | `implemented` |
+| `B38-DOC-M06` | P1 | Define public vs internal documentation IA boundary for `site/`. | `implemented` |
+| `B38-DOC-M07` | P1 | Compact README sync after source docs are corrected. | `implemented` |
+| `B38-DOC-M08` | P2 | Keep RU/EN parity for every changed user-facing page. | `implemented` |
+| `B38-DOC-M09` | P2 | Update source registry and control-plane pointers only where source-backed claims change. | `implemented` |
+| `B38-DOC-M10` | P2 | Final docs verification and generated `site/` refresh decision. | `implemented` |
+| `B38-PROD-M01` | P0 | Resolve or explicitly defer `T10-LIVE-M41` git release/PR gate. | `owner_closed_no_op` |
+| `B38-PROD-M02` | P0 | Freeze install source and package surface. | `implemented` |
+| `B38-PROD-M03` | P0 | Finalize public and organization-facing plugin metadata. | `accepted_gap` |
+| `B38-PROD-M04` | P0 | Run full pre-install verification. | `implemented` |
+| `B38-PROD-M05` | P0 | Refresh or install the new plugin version and prove no stale plugin cache is used. | `implemented` |
+| `B38-PROD-M06` | P1 | Create first-run operator packet for real users. | `implemented` |
+| `B38-PROD-M07` | P1 | Build real-project pilot target and consent matrix. | `implemented` |
+| `B38-PROD-M08` | P1 | Define pilot success criteria and product metrics. | `implemented` |
+| `B38-PROD-M09` | P1 | Prepare pilot harness and evidence ledger. | `implemented` |
+| `B38-PROD-M10` | P1 | Reconfirm security, privacy and supply-chain readiness. | `reviewed_gap_recorded` |
+| `B38-PROD-M11` | P2 | Define rollback, removal and cache-recovery procedure. | `implemented` |
 
-- Focused docs contract: `python -m unittest tests.product_agent_os.test_product_agent_os_docs -v`.
-- Documentation structure: `python tools\check_docs.py`.
-- Diff hygiene: `git diff --check`.
+## Historical Planning Markers
+
+These markers are preserved here only as compact routing anchors for tests and future discovery:
+
+- B37: `T10-PLAN-M01..M03`, `T10-PLAN-M04..M05`, `T10-PLAN-M06`, `T10-PLAN-M07..M09`, `task_matrix_system_file_hygiene_owner_present`.
+- Batch 35: `T10-LIVE-M41`, `owner_closed_no_op_git_release_pr`.
+- Batch 38: `B38-S1`, `B38-S2`, `B38-S3`, `B38-S4`, `B38-PILOT-NF01`, `blocked_pending_explicit_cache_mutation_approval`.
+- Batch 39: `B39-S1`, `B39-S2`, `B39-S3`, `B39-S4`, `B39-S5`, `B39-TEST-M01..M54`.
+- Batch 40: `B40-S2`, `B40-S3`, `B40-S4`, `B40-S5`, `manual_only`, `not_promoted`.
 
 ## Rollback
 
-- Revert only files touched by the current maintenance slice.
-- Preserve evidence ownership notes in the Track 10 backlog and source registry.
+- Revert only files touched by the current slice.
+- Preserve unrelated dirty changes.
 - Do not use destructive git operations without explicit approval.
+- For target-workspace pilots, rollback must be defined before mutation and must name owner, files, commands and stop condition.
+
+## Verification
+
+For docs/control-plane changes, run:
+
+- `python -m unittest tests.product_agent_os.test_product_agent_os_docs -v`
+- `python tools\check_docs.py`
+- `git diff --check`
+
+Run strict MkDocs only when navigation, Mermaid diagrams, Markdown extensions, MkDocs config, localized nav, search/sitemap behavior or generated `site/` evidence changes.
+
 <!-- product-agent-os:end plan -->

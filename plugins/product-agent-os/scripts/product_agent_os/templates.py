@@ -211,6 +211,12 @@ _TEMPLATES: tuple[TemplateSpec, ...] = (
         ".codex/workflows/first-run-intake.md",
     ),
     _spec(
+        "workflow-project-formation",
+        "workflows",
+        "workflows/project-formation.md",
+        ".codex/workflows/project-formation.md",
+    ),
+    _spec(
         "workflow-bug-rescue",
         "workflows",
         "workflows/bug-rescue.md",

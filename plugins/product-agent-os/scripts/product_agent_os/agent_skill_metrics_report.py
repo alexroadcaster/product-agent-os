@@ -14,6 +14,7 @@ from product_agent_os.offline_artifact_safety import (
     prepare_offline_payload,
     validate_offline_artifact,
 )
+from product_agent_os.offline_artifact_export import build_html_export_contract
 from product_agent_os.stage_manifest import (
     MANIFEST_NAME,
     build_stage_manifest,
@@ -232,6 +233,11 @@ def _report_renderer_result(
             "mode": "stage" if write_files else "dry-run",
             "root": str(stage_root if stage_root is not None else Path(".product-agent-os") / "agent-skill-report"),
             "output_dir": str(stage_root) if stage_root is not None else "",
+            "final_export_contract": build_html_export_contract(
+                workspace,
+                artifact_id="agent-skill-evaluation-report",
+                default_relative_path=METRICS_REPORT_TARGET,
+            ),
             "files": files,
             "managed_sections": [],
             "validation": {
@@ -256,6 +262,7 @@ def _report_renderer_result(
 
 def _render_html(packet: dict[str, Any], json_for_html: str) -> str:
     title = "Agent Skill Metrics Report"
+    manifest = _dict(packet.get("manifest"))
     sections = "\n".join(
         [
             _summary_section(packet),
@@ -273,23 +280,41 @@ def _render_html(packet: dict[str, Any], json_for_html: str) -> str:
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{escape_html(title)}</title>
   <style>
-    body {{ font-family: Arial, sans-serif; margin: 0; color: #17202a; background: #f7f8fa; }}
-    main {{ max-width: 1120px; margin: 0 auto; padding: 28px; }}
-    section {{ background: #fff; border: 1px solid #d8dee8; border-radius: 6px; margin: 14px 0; padding: 18px; }}
-    table {{ width: 100%; border-collapse: collapse; }}
-    th, td {{ border-bottom: 1px solid #edf0f4; padding: 8px; text-align: left; vertical-align: top; }}
-    .banner {{ border-left: 4px solid #9a3412; background: #fff7ed; }}
-    .muted {{ color: #5f6b7a; }}
-    code {{ background: #edf2f7; padding: 2px 4px; border-radius: 4px; }}
+    :root {{ color-scheme: light; --bg: #f7f8fa; --panel: #ffffff; --text: #1d2733; --muted: #5f6b7a; --border: #d9e0e8; --accent: #126d60; --accent-2: #2f6fb0; --warning-bg: #fff4d6; --warning-border: #e0a92f; --danger: #a33a2a; }}
+    * {{ box-sizing: border-box; }}
+    body {{ margin: 0; background: var(--bg); color: var(--text); font-family: Arial, Helvetica, sans-serif; line-height: 1.5; }}
+    main {{ width: min(1180px, calc(100% - 32px)); margin: 0 auto; padding: 28px 0 44px; }}
+    header {{ margin-bottom: 18px; }}
+    h1, h2 {{ letter-spacing: 0; }}
+    h1 {{ margin: 0; font-size: 30px; line-height: 1.2; }}
+    h2 {{ margin: 0 0 12px; font-size: 18px; line-height: 1.25; }}
+    .eyebrow {{ margin: 0 0 6px; color: var(--accent); font-size: 12px; font-weight: 700; letter-spacing: 0; text-transform: uppercase; }}
+    .generated-view-policy, .muted {{ color: var(--muted); }}
+    .summary-grid {{ display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 18px 0; }}
+    .summary-card, section {{ background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 16px; min-width: 0; }}
+    .summary-card strong {{ display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; text-transform: uppercase; }}
+    section {{ margin: 14px 0; }}
+    table {{ width: 100%; border-collapse: collapse; table-layout: fixed; }}
+    th, td {{ border-bottom: 1px solid #edf0f4; padding: 8px; text-align: left; vertical-align: top; overflow-wrap: anywhere; }}
+    th {{ color: var(--text); }}
+    .banner {{ border: 1px solid var(--warning-border); background: var(--warning-bg); border-radius: 8px; padding: 12px 14px; margin: 0 0 12px; color: var(--danger); }}
+    code {{ background: #edf2f7; padding: 2px 4px; border-radius: 4px; overflow-wrap: anywhere; }}
+    pre {{ max-height: 320px; overflow: auto; border: 1px solid var(--border); border-radius: 8px; padding: 12px; background: #fbfcfe; }}
+    @media (max-width: 760px) {{ main {{ width: min(100% - 20px, 1180px); padding-top: 20px; }} .summary-grid {{ grid-template-columns: 1fr; }} table {{ font-size: 13px; }} }}
   </style>
 </head>
 <body>
   <main>
     <header>
-      <p class="muted">Product-Agent OS</p>
+      <p class="eyebrow">Product-Agent OS</p>
       <h1>{escape_html(title)}</h1>
-      <p>{escape_html(packet.get("generated_at", ""))}</p>
-      <p>{escape_html(GENERATED_VIEW_ONLY_TEXT)}</p>
+      <p class="muted">Generated {escape_html(packet.get("generated_at", ""))}</p>
+      <p class="generated-view-policy">{escape_html(GENERATED_VIEW_ONLY_TEXT)}</p>
+      <div class="summary-grid" aria-label="Report summary">
+        <div class="summary-card"><strong>Report</strong><code>{escape_html(manifest.get("report_id", "unassigned"))}</code></div>
+        <div class="summary-card"><strong>Project</strong><code>{escape_html(manifest.get("project_id", "unassigned"))}</code></div>
+        <div class="summary-card"><strong>Redaction</strong><code>{escape_html(manifest.get("redaction_status", "unknown"))}</code></div>
+      </div>
     </header>
 {sections}
   </main>
