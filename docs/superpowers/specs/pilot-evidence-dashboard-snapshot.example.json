@@ -1,0 +1,164 @@
+{
+  "agent_skill_metrics_loop": {
+    "approval_boundary": "owner review required before modernization or automation activation",
+    "readiness_reason": "",
+    "report_refs": [],
+    "source_policy": "generated summaries are not source of truth",
+    "status": "not_available",
+    "summary": {
+      "cadence_level": "",
+      "overall_status": "",
+      "target_count": 0
+    },
+    "update_candidate_summary": {
+      "candidate_count": 0,
+      "top_candidates": []
+    }
+  },
+  "approval_summary": {
+    "requirements": [],
+    "status": "not_available"
+  },
+  "completion_skeptic": {
+    "approval_boundary": {
+      "hits": [],
+      "status": "not_required"
+    },
+    "evidence_summary": {
+      "accepted_gap": 0,
+      "approval_required": 0,
+      "available": 0,
+      "missing": 0,
+      "required": 0,
+      "stale": 0
+    },
+    "packet_ref": {
+      "digest": "",
+      "kind": "not_available",
+      "path": ""
+    },
+    "recommended_skill": "completion-skeptic",
+    "required_evidence": [],
+    "risk_classes": [],
+    "safe_next_action": "Run normal verification before any completion claim.",
+    "source_policy": "completion skeptic recommendation is generated routing guidance, not source of truth",
+    "status": "not_available",
+    "top_reason": "",
+    "trigger_level": "not_available",
+    "trigger_sources": []
+  },
+  "dashboard_policy": {
+    "external_assets": "forbidden",
+    "source_of_truth": "underlying_artifacts",
+    "success_claim_policy": "never from dashboard alone",
+    "write_policy": "read_only"
+  },
+  "evidence_summary": {
+    "evidence_count": 0,
+    "freshness": "missing",
+    "max_age_days": 14,
+    "stale_count": 0
+  },
+  "generated_at": "2026-06-11T00:00:00+00:00",
+  "lifecycle_state": "",
+  "manifest_digests": {
+    "file_count": 0,
+    "file_digests": [],
+    "infrastructure_plan_digest": "",
+    "workspace_audit_digest": ""
+  },
+  "next_safe_action": "Review status snapshot and continue only from underlying artifacts.",
+  "pilot_evidence_rollup": {
+    "accepted_gaps": [],
+    "blockers": [],
+    "counts": {
+      "blocked": 0,
+      "failed": 0,
+      "in_progress": 0,
+      "partial_pass_m04": 0,
+      "passed": 3,
+      "planned": 0
+    },
+    "generated_view_policy": "orientation_only_not_proof",
+    "safe_next_action": "run_final_verification",
+    "source_policy": "generated view is not proof",
+    "status": "run_final_verification"
+  },
+  "project_graph_summary": {
+    "artifact_refs": [],
+    "counts": {
+      "edges": 0,
+      "nodes": 0,
+      "observations": 0,
+      "omitted_nodes": 0
+    },
+    "safe_next_action": "Read source files before graph-backed claims.",
+    "source_policy": "generated graph is not source of truth",
+    "status": "not_available",
+    "top_gaps": [],
+    "unsupported_languages": []
+  },
+  "projection_decisions": {
+    "task_matrix_state": {
+      "future_projection_policy": "future projection must be bounded read-only generated orientation evidence, never source of truth or completion evidence",
+      "source_policy": "task matrix state is not projected into status snapshot/dashboard in B37",
+      "state_projection": "not_projected",
+      "status": "deferred_in_b37"
+    }
+  },
+  "question_ledger_artifact_updates": [],
+  "question_ledger_summary": {},
+  "question_summary": {
+    "blocking": 0,
+    "first_response_summary": [],
+    "next_blocking_question": null,
+    "optional": 0,
+    "recommended": 0,
+    "remaining": 0,
+    "total": 0
+  },
+  "readiness_summary": {
+    "runtime_status": "route_ready",
+    "status": "route_ready",
+    "success_claim": "not_claimed",
+    "warnings": []
+  },
+  "redaction_summary": {
+    "categories": [
+      "absolute_path"
+    ],
+    "count": 1
+  },
+  "renderer_file_count": 0,
+  "schema_version": 1,
+  "semantic_evidence_sufficiency": {},
+  "snapshot_digest": "sha256:89a51ea04144c48886968ff0bb7796572bc8d2aedd436607667d4ddddde4a4c3",
+  "source_artifact_ledger": [],
+  "staged_artifacts": {
+    "mode": "not_available",
+    "targets": [],
+    "validation_ok": false
+  },
+  "system_file_hygiene": {
+    "approval_boundary": "owner_approval_required_for_writes",
+    "audit_trigger": "",
+    "file_statuses": [],
+    "last_audit_at": "",
+    "source_policy": "system file hygiene projection is generated status evidence, not source of truth",
+    "status": "not_available",
+    "summary": {
+      "active_schedule_markers": 0,
+      "errors": 0,
+      "files_scanned": 0,
+      "warnings": 0
+    }
+  },
+  "usage_mode": {
+    "confidence": "unknown",
+    "inspection_only": false,
+    "minimum_artifacts": [],
+    "primary": "unknown"
+  },
+  "workspace": "[REDACTED_LOCAL_PATH]",
+  "write_policy": "read_only"
+}

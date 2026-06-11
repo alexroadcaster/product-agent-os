@@ -1,0 +1,46 @@
+{
+  "approval_boundary": {
+    "automation_activation": "not_performed",
+    "browser_automation": "not_performed",
+    "cache_mutation": "not_performed",
+    "external_actions": "not_performed",
+    "git_actions": "not_performed",
+    "live_server": "not_performed",
+    "local_evidence_artifact_write": "allowed_workspace_output_only",
+    "provider_or_api_calls": "not_performed"
+  },
+  "artifact_refs": [
+    "docs/superpowers/specs/doubt-verification-packet.example.json",
+    "docs/superpowers/specs/pilot-run-manifest.example.json",
+    "docs/superpowers/specs/scorecard-gates.example.json"
+  ],
+  "attempt_id": "B39-TEST-M05-A01",
+  "batch": "B39",
+  "generated_at": "2026-06-11T00:00:00+00:00",
+  "policy": {
+    "local_absolute_paths_allowed": false,
+    "raw_file_bodies_stored": false,
+    "raw_private_logs_stored": false,
+    "secrets_allowed": false
+  },
+  "redacted_sample": {
+    "doubt_verification_packet": {
+      "path": "[REDACTED_LOCAL_PATH]",
+      "token": "[REDACTED_SECRET_ASSIGNMENT]"
+    },
+    "safe_ref": "docs/superpowers/specs/pilot-run-manifest.example.json"
+  },
+  "redaction_summary": {
+    "categories": [
+      "absolute_path",
+      "private_data",
+      "secret"
+    ],
+    "count": 3
+  },
+  "report_digest": "sha256:08029caa386ed28d41e0de0247736778060b56e4ccbe716cc017bf45baf1e832",
+  "sample_digest": "sha256:eaf67ceba8d641a6b2b8ba49cbdf0f436e13b25793b99b2d66abc6afd00d6112",
+  "schema_version": "redaction_report_v1",
+  "test_id": "B39-TEST-M05",
+  "verdict": "passed_redacted_local_paths"
+}

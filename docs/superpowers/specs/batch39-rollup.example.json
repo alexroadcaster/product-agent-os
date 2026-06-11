@@ -1,0 +1,104 @@
+{
+  "attempt_id": "B39-TEST-M07-A01",
+  "batch": "B39",
+  "blockers": [],
+  "counts": {
+    "blocked": 0,
+    "failed": 0,
+    "in_progress": 0,
+    "partial_pass_m04": 0,
+    "passed": 10,
+    "planned": 0
+  },
+  "generated_at": "2026-06-11T00:00:00+00:00",
+  "generated_view_policy": "orientation_only_not_proof",
+  "rollup_digest": "sha256:30d5d464850553b2067eb5e737523433f76e4d2c64b139c5da8f8021c74a26d0",
+  "safe_next_action": "run_final_verification",
+  "schema_version": "batch39_rollup_v1",
+  "source_policy": "generated view is not proof",
+  "task_rows": [
+    {
+      "attempts": 1,
+      "evidence_refs": [
+        "docs/superpowers/specs/batch39-m01-inventory.json"
+      ],
+      "status": "passed",
+      "test_id": "B39-TEST-M01"
+    },
+    {
+      "attempts": 1,
+      "evidence_refs": [
+        "docs/superpowers/specs/pilot-run-manifest.example.json"
+      ],
+      "status": "passed",
+      "test_id": "B39-TEST-M02"
+    },
+    {
+      "attempts": 1,
+      "evidence_refs": [
+        "docs/superpowers/specs/command-results.example.jsonl"
+      ],
+      "status": "passed",
+      "test_id": "B39-TEST-M03"
+    },
+    {
+      "attempts": 1,
+      "evidence_refs": [
+        "docs/superpowers/specs/target-mutation-proof.example.json"
+      ],
+      "status": "passed",
+      "test_id": "B39-TEST-M04"
+    },
+    {
+      "attempts": 1,
+      "evidence_refs": [
+        "docs/superpowers/specs/redaction-report.example.json"
+      ],
+      "status": "passed",
+      "test_id": "B39-TEST-M05"
+    },
+    {
+      "attempts": 1,
+      "evidence_refs": [
+        "docs/superpowers/specs/session-visibility-report.example.json"
+      ],
+      "status": "passed",
+      "test_id": "B39-TEST-M06"
+    },
+    {
+      "attempts": 1,
+      "evidence_refs": [
+        "docs/superpowers/specs/batch39-rollup.example.json"
+      ],
+      "status": "passed",
+      "test_id": "B39-TEST-M07"
+    },
+    {
+      "attempts": 1,
+      "evidence_refs": [
+        "status_dashboard_pilot_evidence_projection"
+      ],
+      "status": "passed",
+      "test_id": "B39-TEST-M08"
+    },
+    {
+      "attempts": 1,
+      "evidence_refs": [
+        "docs/superpowers/specs/pilot-failure-taxonomy.example.json"
+      ],
+      "status": "passed",
+      "test_id": "B39-TEST-M09"
+    },
+    {
+      "attempts": 1,
+      "evidence_refs": [
+        "docs/superpowers/specs/scorecard-gates.example.json"
+      ],
+      "status": "passed",
+      "test_id": "B39-TEST-M10"
+    }
+  ],
+  "test_id": "B39-TEST-M07",
+  "total_attempts": 10,
+  "total_tasks": 10
+}

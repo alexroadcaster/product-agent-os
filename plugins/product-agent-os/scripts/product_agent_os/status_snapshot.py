@@ -80,6 +80,7 @@ def build_status_snapshot(
         ),
         "project_graph_summary": _project_graph_summary(project_graph_status),
         "agent_skill_metrics_loop": _agent_skill_metrics_loop_summary(route, discovery),
+        "pilot_evidence_rollup": _pilot_evidence_rollup_summary(route),
         "completion_skeptic": _completion_skeptic_summary(route),
         "system_file_hygiene": _system_file_hygiene_summary(system_file_hygiene_audit),
         "projection_decisions": {
@@ -224,6 +225,29 @@ def _agent_skill_metrics_loop_summary(route: dict[str, Any], discovery: dict[str
         "source_policy": "generated summaries are not source of truth",
         "approval_boundary": "owner review required before modernization or automation activation",
         "readiness_reason": _string(readiness.get("reason")),
+    }
+
+
+def _pilot_evidence_rollup_summary(route: dict[str, Any]) -> dict[str, Any]:
+    packet = route.get("pilot_evidence_rollup")
+    if not isinstance(packet, dict) or not packet:
+        return {
+            "status": "not_available",
+            "counts": {},
+            "blockers": [],
+            "accepted_gaps": [],
+            "safe_next_action": "Review underlying pilot evidence before dashboard claims.",
+            "source_policy": "generated view is not proof",
+        }
+    counts = packet.get("counts") if isinstance(packet.get("counts"), dict) else {}
+    return {
+        "status": _string(packet.get("safe_next_action") or "available"),
+        "counts": {key: _int(value) for key, value in counts.items()},
+        "blockers": _safe_string_list(packet.get("blockers"))[:MAX_COMPLETION_SKEPTIC_ITEMS],
+        "accepted_gaps": _safe_string_list(packet.get("accepted_gaps"))[:MAX_COMPLETION_SKEPTIC_ITEMS],
+        "safe_next_action": _string(packet.get("safe_next_action") or "Review underlying pilot evidence before dashboard claims."),
+        "generated_view_policy": _string(packet.get("generated_view_policy") or "orientation_only_not_proof"),
+        "source_policy": "generated view is not proof",
     }
 
 

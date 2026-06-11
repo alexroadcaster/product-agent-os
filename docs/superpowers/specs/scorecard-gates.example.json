@@ -1,0 +1,66 @@
+{
+  "attempt_id": "B39-TEST-M10-A01",
+  "batch": "B39",
+  "blocking_reasons": [
+    "synthetic_only_boundary"
+  ],
+  "gate_results": [
+    {
+      "gate": "pilot_current_evidence",
+      "group": "pilot",
+      "reason": "",
+      "status": "passed"
+    },
+    {
+      "gate": "pilot_redaction_boundary",
+      "group": "pilot",
+      "reason": "",
+      "status": "passed"
+    },
+    {
+      "gate": "product_usability_value",
+      "group": "product_usability",
+      "reason": "",
+      "status": "passed"
+    },
+    {
+      "gate": "product_usability_context_fit",
+      "group": "product_usability",
+      "reason": "",
+      "status": "passed"
+    },
+    {
+      "gate": "real_project_evidence",
+      "group": "promotion",
+      "reason": "synthetic_only_boundary",
+      "status": "blocked"
+    }
+  ],
+  "generated_at": "2026-06-11T00:00:00+00:00",
+  "groups": {
+    "pilot": {
+      "accepted_gap": 0,
+      "blocked": 0,
+      "failed": 0,
+      "passed": 2
+    },
+    "product_usability": {
+      "accepted_gap": 0,
+      "blocked": 0,
+      "failed": 0,
+      "passed": 2
+    },
+    "promotion": {
+      "accepted_gap": 0,
+      "blocked": 1,
+      "failed": 0,
+      "passed": 0
+    }
+  },
+  "promotion_boundary": "manual_only_not_promoted",
+  "promotion_decision": "not_promoted",
+  "schema_version": "pilot_product_usability_scorecard_v1",
+  "scorecard_digest": "sha256:456a4e441d4771c6fd59fb7271ea7c534fba1b30351ed58194a3a863fd9ade01",
+  "source_policy": "scorecard is a gate ledger, not proof by itself",
+  "test_id": "B39-TEST-M10"
+}

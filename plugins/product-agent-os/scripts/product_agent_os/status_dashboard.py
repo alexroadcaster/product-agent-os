@@ -278,6 +278,7 @@ def _sections(snapshot: dict[str, Any]) -> str:
     manifest = _dict(snapshot.get("manifest_digests"))
     hygiene = _dict(snapshot.get("system_file_hygiene"))
     completion_skeptic = _dict(snapshot.get("completion_skeptic"))
+    pilot_evidence = _dict(snapshot.get("pilot_evidence_rollup"))
     projection_decisions = _dict(snapshot.get("projection_decisions"))
     task_matrix_projection = _dict(projection_decisions.get("task_matrix_state"))
 
@@ -326,6 +327,7 @@ def _sections(snapshot: dict[str, Any]) -> str:
             ],
         ),
         _completion_skeptic_section(completion_skeptic),
+        _pilot_evidence_section(pilot_evidence),
         _system_hygiene_section(hygiene),
         _section(
             "section-evidence",
@@ -383,6 +385,22 @@ def _completion_skeptic_section(packet: dict[str, Any]) -> str:
             ("Approval hits", approval.get("hits")),
             ("Packet ref", packet.get("packet_ref")),
             ("Next action", packet.get("safe_next_action")),
+            ("Source policy", packet.get("source_policy")),
+        ],
+    )
+
+
+def _pilot_evidence_section(packet: dict[str, Any]) -> str:
+    return _section(
+        "section-pilot-evidence",
+        "Pilot Evidence",
+        [
+            ("Status", packet.get("status")),
+            ("Counts", packet.get("counts")),
+            ("Blockers", packet.get("blockers")),
+            ("Accepted gaps", packet.get("accepted_gaps")),
+            ("Next action", packet.get("safe_next_action")),
+            ("Generated view policy", packet.get("generated_view_policy")),
             ("Source policy", packet.get("source_policy")),
         ],
     )
@@ -730,6 +748,7 @@ def _validation_checks() -> list[str]:
         "generated view policy present",
         "system hygiene dashboard present",
         "completion skeptic dashboard present",
+        "pilot evidence dashboard present",
     ]
 
 
