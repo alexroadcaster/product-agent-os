@@ -1,0 +1,9 @@
+{
+  "chunk_policy": "one_jsonl_record_per_chunk",
+  "embedding_provider": "not_run_local_stub",
+  "ranking": "deterministic_keyword_overlap",
+  "top_k": 2,
+  "rerank": false,
+  "vector_database": "not_used"
+}
+

@@ -2198,13 +2198,11 @@ class InfrastructureTemplateTest(unittest.TestCase):
         for path in (TEMPLATE_ROOT / "agents").glob("*.toml"):
             text = path.read_text(encoding="utf-8").lower()
             with self.subTest(agent_template=path.name):
+                self.assertIn("config-routed lifecycle workflow contract", text)
+                self.assertIn("[product_agent_os.lifecycle_contract]", text)
+                self.assertIn("[workflows]", text)
                 self.assertIn("task brief", text)
                 self.assertIn("completion brief", text)
-                self.assertIn("before execution", text)
-                self.assertIn("after execution", text)
-                self.assertIn("control-plane-sync.md", text)
-                self.assertIn("not_applicable", text)
-                self.assertIn("handoff_required", text)
                 self.assertIn("subagent context packet", text)
                 self.assertIn("subagent result packet", text)
                 self.assertIn("role", text)
@@ -2218,6 +2216,8 @@ class InfrastructureTemplateTest(unittest.TestCase):
         text = (TEMPLATE_ROOT / "evals" / "agent-context-contract.json").read_text(encoding="utf-8")
 
         for expected in [
+            "config_routed_task_plan_lifecycle",
+            "config_routed_control_plane_sync",
             ".codex/workflows/task-plan-lifecycle.md",
             ".codex/workflows/control-plane-sync.md",
             "Task Brief",
@@ -2238,6 +2238,23 @@ class InfrastructureTemplateTest(unittest.TestCase):
             "outputs",
         ]:
             self.assertIn(expected, text)
+
+    def test_config_template_routes_task_and_completion_briefs_through_workflows(self):
+        config = tomllib.loads((TEMPLATE_ROOT / "config" / "config.toml").read_text(encoding="utf-8"))
+
+        workflows = config["workflows"]
+        lifecycle_contract = config["product_agent_os"]["lifecycle_contract"]
+        self.assertEqual(workflows["task_plan_lifecycle"], ".codex/workflows/task-plan-lifecycle.md")
+        self.assertEqual(workflows["control_plane_sync"], ".codex/workflows/control-plane-sync.md")
+        self.assertEqual(lifecycle_contract["task_plan_lifecycle"], ".codex/workflows/task-plan-lifecycle.md")
+        self.assertEqual(lifecycle_contract["control_plane_sync"], ".codex/workflows/control-plane-sync.md")
+        self.assertEqual(lifecycle_contract["agent_context_contract"], ".codex/evals/agent-context-contract.json")
+        self.assertEqual(lifecycle_contract["chat_visibility"], "required")
+        self.assertEqual(lifecycle_contract["required_for"], "non_mechanical_tasks")
+        self.assertEqual(
+            lifecycle_contract["agent_instruction_policy"],
+            "reference_config_workflows_do_not_duplicate_contract",
+        )
 
     def test_methodology_workflows_cover_development_and_documentation_standards(self):
         development = (TEMPLATE_ROOT / "workflows" / "development-standards.md").read_text(encoding="utf-8")

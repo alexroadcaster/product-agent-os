@@ -1,0 +1,12 @@
+{
+  "status": "static_fixture_only",
+  "baseline_cases": 2,
+  "eval_rerun_performed": false,
+  "live_judge_used": false,
+  "provider_call_performed": false,
+  "notes": [
+    "This report is a static fixture signal and not quality proof.",
+    "A real eval rerun requires exact approval and current evidence."
+  ]
+}
+

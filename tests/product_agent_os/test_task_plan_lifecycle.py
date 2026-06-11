@@ -1,6 +1,7 @@
 import subprocess
 import sys
 import tempfile
+import tomllib
 import unittest
 from pathlib import Path
 
@@ -20,9 +21,25 @@ from product_agent_os.validators import validate_task_matrix_text  # noqa: E402
 
 class TaskPlanLifecycleTest(unittest.TestCase):
     def test_current_project_system_files_require_user_visible_briefs(self):
+        config = tomllib.loads((ROOT / ".codex" / "config.toml").read_text(encoding="utf-8"))
         workflow = (ROOT / ".codex" / "workflows" / "task-plan-lifecycle.md").read_text(encoding="utf-8")
         control_plane_sync = (ROOT / ".codex" / "workflows" / "control-plane-sync.md").read_text(encoding="utf-8")
         eval_contract = (ROOT / ".codex" / "evals" / "agent-context-contract.json").read_text(encoding="utf-8")
+
+        workflows = config["workflows"]
+        lifecycle_contract = config["product_agent_os"]["lifecycle_contract"]
+        fresh_context_files = config["product_agent_os"]["autonomy"]["fresh_context_files"]
+        self.assertEqual(workflows["task_plan_lifecycle"], ".codex/workflows/task-plan-lifecycle.md")
+        self.assertEqual(workflows["control_plane_sync"], ".codex/workflows/control-plane-sync.md")
+        self.assertEqual(lifecycle_contract["task_plan_lifecycle"], ".codex/workflows/task-plan-lifecycle.md")
+        self.assertEqual(lifecycle_contract["control_plane_sync"], ".codex/workflows/control-plane-sync.md")
+        self.assertEqual(lifecycle_contract["agent_context_contract"], ".codex/evals/agent-context-contract.json")
+        self.assertEqual(lifecycle_contract["chat_visibility"], "required")
+        self.assertEqual(lifecycle_contract["required_for"], "non_mechanical_tasks")
+        self.assertEqual(lifecycle_contract["agent_instruction_policy"], "reference_config_workflows_do_not_duplicate_contract")
+        self.assertIn(".codex/workflows/task-plan-lifecycle.md", fresh_context_files)
+        self.assertIn(".codex/workflows/control-plane-sync.md", fresh_context_files)
+        self.assertIn(".codex/evals/agent-context-contract.json", fresh_context_files)
 
         for expected in [
             "Task Brief",
@@ -30,11 +47,14 @@ class TaskPlanLifecycleTest(unittest.TestCase):
             "Show the Task Brief",
             "Show the Completion Brief",
             "user-visible",
+            "config-routed lifecycle workflow contract",
         ]:
             with self.subTest(workflow=expected):
                 self.assertIn(expected, workflow)
 
         for expected in [
+            "config_routed_task_plan_lifecycle",
+            "config_routed_control_plane_sync",
             ".codex/workflows/task-plan-lifecycle.md",
             ".codex/workflows/control-plane-sync.md",
             "user_visible_task_brief_before_execution",
@@ -67,13 +87,11 @@ class TaskPlanLifecycleTest(unittest.TestCase):
         for path in (ROOT / ".codex" / "agents").glob("*.toml"):
             text = path.read_text(encoding="utf-8")
             with self.subTest(agent=path.name):
+                self.assertIn("config-routed lifecycle workflow contract", text)
+                self.assertIn("[product_agent_os.lifecycle_contract]", text)
+                self.assertIn("[workflows]", text)
                 self.assertIn("Task Brief", text)
                 self.assertIn("Completion Brief", text)
-                self.assertIn(".codex/workflows/control-plane-sync.md", text)
-                self.assertIn("not_applicable", text)
-                self.assertIn("handoff_required", text)
-                self.assertIn("before execution", text)
-                self.assertIn("after execution", text)
 
     def test_build_planned_task_matrix_creates_valid_pre_execution_block(self):
         text = build_planned_task_matrix(

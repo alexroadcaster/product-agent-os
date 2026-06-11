@@ -1,0 +1,8 @@
+{
+  "backup_restore_performed": false,
+  "external_write_performed": false,
+  "live_database_connected": false,
+  "migration_executed": false,
+  "production_data_accessed": false
+}
+

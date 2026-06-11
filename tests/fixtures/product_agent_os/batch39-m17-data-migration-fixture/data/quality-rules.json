@@ -1,0 +1,17 @@
+{
+  "dataset": "synthetic-orders",
+  "expected_rows": 2,
+  "required_fields": [
+    "id",
+    "customer_ref",
+    "status",
+    "created_at"
+  ],
+  "allowed_statuses": [
+    "created",
+    "paid",
+    "cancelled"
+  ],
+  "production_data_allowed": false
+}
+

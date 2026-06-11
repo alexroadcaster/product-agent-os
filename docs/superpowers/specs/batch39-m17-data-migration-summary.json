@@ -1,0 +1,133 @@
+{
+  "agent_skill_evidence": {
+    "agent_handoff": {
+      "name": "Probe the 2nd",
+      "recommendation": "Record M17 as passed_contract_guardrail; do not claim migration verified, live DB behavior, backup restore, rollback, data quality, production access, real-project value, release readiness or promotion readiness.",
+      "role": "Tester",
+      "status": "completed_read_only_review"
+    },
+    "skills_used": [
+      "product-agent-os:implementation-planner",
+      "product-agent-os:agent-team-designer",
+      "product-agent-os:docs-maintainer"
+    ]
+  },
+  "approval_boundary": {
+    "automation_activation": "not_performed",
+    "backup_restore_execution": "not_performed",
+    "browser_automation": "not_performed",
+    "cache_mutation": "not_performed",
+    "database_introspection": "not_performed",
+    "destructive_database_action": "not_performed",
+    "external_actions": "not_performed",
+    "git_actions": "not_performed",
+    "live_database_access": "not_performed",
+    "live_server": "not_performed",
+    "local_evidence_artifact_write": "allowed_workspace_output_only",
+    "migration_execution": "not_performed",
+    "production_data_access": "not_performed",
+    "provider_or_api_calls": "not_performed",
+    "target_workspace_mutation": "not_performed"
+  },
+  "attempt_id": "B39-TEST-M17-A01",
+  "batch": "B39",
+  "data_migration_contract": {
+    "backup_restore_evidence_status": "not_run_approval_required",
+    "contract_verdict": "methodology_detected_database_data_surface_and_runtime_runner_blocked_approval_bound_migration_database_safety_claims",
+    "detected_database_surface": true,
+    "expected_artifacts_present": {
+      "data/quality-rules.json": true,
+      "data/synthetic-orders.jsonl": true,
+      "docs/data-classification-register.md": true,
+      "docs/database-backup-restore-evidence.md": true,
+      "docs/database-constraints-integrity-check.md": true,
+      "docs/database-data-contract.md": true,
+      "docs/database-data-quality-checks.md": true,
+      "docs/database-dictionary.md": true,
+      "docs/database-inventory.md": true,
+      "docs/database-lineage-map.md": true,
+      "docs/database-migration-plan.md": true,
+      "docs/database-production-access-approval.md": true,
+      "docs/database-query-performance-check.md": true,
+      "docs/database-retention-deletion-policy.md": true,
+      "docs/database-rollback-feasibility.md": true,
+      "docs/database-synthetic-fixtures-policy.md": true,
+      "migrations/001_init_orders.sql": true,
+      "schema/orders.sql": true,
+      "traces/no-live-db-action.json": true
+    },
+    "live_database_evidence_status": "not_run_approval_required",
+    "migration_execution_status": "not_run_approval_required",
+    "production_data_access_status": "not_run_approval_required",
+    "query_performance_evidence_status": "not_run_approval_required",
+    "rollback_execution_status": "not_run_approval_required"
+  },
+  "evidence_refs": {
+    "command_results": "docs/superpowers/specs/batch39-m17-command-results.jsonl",
+    "manifest": "docs/superpowers/specs/batch39-m17-data-migration-manifest.json",
+    "methodology_audit": "docs/superpowers/specs/batch39-m17-methodology-audit.json",
+    "runtime": "docs/superpowers/specs/batch39-m17-runtime-result.json",
+    "source_policy": "docs/superpowers/specs/batch39-m17-source-policy.json"
+  },
+  "generated_at": "2026-06-12T00:00:00+00:00",
+  "next_action": "Run B39-TEST-M18 as the PR/review archetype pilot.",
+  "observed_results": {
+    "command_entry_digests": [
+      "sha256:fddcd8d9bd79f50686c28245156c3887209b7fcf3a1073ea0131903cdd4c6a57",
+      "sha256:13efe0730a688a39db41c5f7396a682c494f698e7ad0ffbc4d2afedeb375f4dc",
+      "sha256:5b51c63003b5d2391c52e39eb12507047ab48f02eb282ce559564fc487c39103"
+    ],
+    "command_results_count": 3,
+    "database_data_domain_status": "present_unverified",
+    "fixture_pycompile_check": "passed_py_compile",
+    "fixture_smoke_check": "passed_python_script",
+    "lifecycle_state": "infrastructure_planned",
+    "manifest_digest": "sha256:b028f58b77954a55eb21dbeb9b4250b4888113d5c78814c18cc9144abea2400d",
+    "methodology_status": "ok",
+    "observed_signal_ids": [
+      "database_migration_or_schema",
+      "docs_or_control_plane",
+      "codex_agentic_workflow",
+      "test_evidence",
+      "quality_testing_signal"
+    ],
+    "quality_testing_signal_present": true,
+    "runtime_exit_code": 1,
+    "runtime_exit_interpretation": "expected_approval_guardrail_for_database_migration_production_access_backup_restore_runtime_safety_claims",
+    "runtime_status": "needs_approval",
+    "runtime_usage_mode_primary": "pr_review",
+    "runtime_usage_mode_secondary": [
+      "data_migration"
+    ],
+    "runtime_warnings": [
+      "approval:required_for_methodology_action"
+    ],
+    "source_policy_files": 14,
+    "source_policy_status": "ok"
+  },
+  "pilot": {
+    "archetype": "data_migration",
+    "mode": "synthetic_local",
+    "pilot_id": "synthetic-data-migration-contract",
+    "real_pilot_evidence": false,
+    "target_ref": "tests/fixtures/product_agent_os/batch39-m17-data-migration-fixture"
+  },
+  "promotion_boundary": "manual_only_not_promoted",
+  "schema_version": "batch39_data_migration_pilot_summary_v1",
+  "slice": "B39-S2",
+  "summary_status": "passed_contract_guardrail",
+  "supported_claims": [
+    "A synthetic local data/migration fixture can pass source-policy validation after source-status repair.",
+    "Methodology audit detects database/data, migration/schema and quality-testing signals.",
+    "Runtime runner blocks approval-bound database/data methodology actions with needs_approval instead of allowing migration or database safety claims.",
+    "The fixture smoke script validates static schema, synthetic rows, quality rules and no-live-database-action trace without dependency installation.",
+    "Python syntax compilation passes for the synthetic smoke script.",
+    "Command-results JSONL stores current command evidence digests without raw stdout or stderr."
+  ],
+  "test_id": "B39-TEST-M17",
+  "unsupported_claims": [
+    "The fixture does not prove live database behavior, migration execution, migration safety, production data access, backup restore, rollback execution, data quality correctness, lineage correctness, query performance or retention compliance.",
+    "Synthetic-local evidence does not prove real-project value, Neural_Flow positive evidence, release readiness or promotion readiness.",
+    "No live database access, migration execution, production data access, database introspection, backup restore, browser automation, live server, target mutation, external action, cache mutation or git action was performed."
+  ]
+}

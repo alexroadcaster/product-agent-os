@@ -6,6 +6,8 @@ Source status: project-local system workflow.
 
 Use this workflow before and after execution when Product-Agent OS work needs a concrete task-plan file instead of a loose chat plan.
 
+The source of truth is the config-routed lifecycle workflow contract in `.codex/config.toml`: `[product_agent_os.lifecycle_contract]` points to this workflow, `control_plane_sync`, and `agent_context_contract`. Agent profiles should reference that config route instead of duplicating field-level lifecycle rules.
+
 This workflow also defines the user-visible contract:
 
 - Show the Task Brief in chat before execution starts.

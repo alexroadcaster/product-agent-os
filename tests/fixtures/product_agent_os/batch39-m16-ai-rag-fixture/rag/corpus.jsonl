@@ -1,0 +1,3 @@
+{"id":"policy-001","text":"Synthetic policy states that answers must cite local snippet identifiers."}
+{"id":"policy-002","text":"Synthetic policy states that unsupported questions must return insufficient_context."}
+

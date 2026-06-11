@@ -14,8 +14,8 @@ Last compacted: 2026-06-11
 - Task 26 Batch 35 `T10-LIVE-M41` closed as `owner_closed_no_op_git_release_pr`; `blocked_pending_explicit_cache_mutation_approval` is preserved as historical evidence; `done_through_m40`.
 - Root control-plane hygiene was audited in response to system-file review. Recommended remediation: compact `REQUIREMENTS.md`, `PLAN.md`, `TEST.md` and `RUNLOG.md`; remove mojibake from `REQUIREMENTS.md`; remove UTF-8 BOM from `TEST.md`; move historical density to source-owned artifacts.
 - `rg` is installed and available as `ripgrep 14.1.0`; future searches should prefer `rg`/`rg --files` before PowerShell fallbacks.
-- Agent control-plane sync audit found the root cause of stale control-plane docs: agents could propose or hand off docs updates, but no mandatory before-completion sync gate existed in agent templates, build/review workflows or `agent-context-contract`; hooks/automation were not active and remain inactive.
-- Current remediation: `.codex/workflows/control-plane-sync.md` and packaged Product-Agent OS `control-plane-sync.md` template require update vs `not_applicable` / `handoff_required` decisions before `Completion Brief`; verification passed with task lifecycle, infrastructure template, docs contract, full unittest discovery, docs structure and diff hygiene checks.
+- Agent lifecycle/control-plane audit found the root cause of missing visible `Task Brief` / `Completion Brief`: lifecycle rules existed as prose in agents/workflows/evals, but not as a single config-routed contract loaded through `.codex/config.toml`; hooks/automation were not active and remain inactive.
+- Current remediation: `.codex/config.toml` and packaged Product-Agent OS config templates now declare `[product_agent_os.lifecycle_contract]` plus `[workflows]` for `task_plan_lifecycle`, `control_plane_sync` and `agent_context_contract`; agent profiles reference that route instead of duplicating lifecycle rules. Current verification passed: focused lifecycle/template 7/7, infrastructure templates 94/94, docs 78/78, Batch 39 command/manifest 10/10, docs structure OK and diff hygiene OK.
 - Current unrelated dirty work observed before this cleanup must be preserved and not reverted:
   - `.product-agent-os-status-current/.codex/product-agent-os/status.html` deleted;
   - `.product-agent-os-status-current/.codex/product-agent-os/status.json` deleted;
@@ -30,9 +30,9 @@ Last compacted: 2026-06-11
 | Task 26 Batch 35 | Closed through `T10-LIVE-M41` as `owner_closed_no_op_git_release_pr`. | No branch, stage, commit, push or PR was performed; future git writes require fresh preflight and exact approval. |
 | Batch 38 S1/S2/S3/S4 | Recorded as implemented/reviewed according to source-owned history. | `B38-S2` includes `plugin_cache_refresh_final_status: completed_local_cache_refresh_from_prepared_stage`; historical `blocked_pending_explicit_cache_mutation_approval` is preserved. |
 | `B38-PILOT-NF01` | Docs-only target pilot addendum completed. | Target apply remains blocked by `source_policy_status: blocked` and missing target control-plane/source registry artifacts. |
-| Batch 39 | Executing through `prod_test.md`; `B39-S1` foundational local contracts `B39-TEST-M01..M10` have current local evidence, `B39-TEST-M11` has approved `Neural_Flow` read-only target fixture evidence, `B39-TEST-M12` has a synthetic docs-only happy-path pass, `B39-TEST-M13` has the `Neural_Flow` expected source-policy block, `B39-TEST-M14` has a synthetic web/frontend contract pass and `B39-TEST-M15` has a synthetic backend/API approval-guardrail pass. | Next route is `B39-TEST-M16`; target mutation, browser/provider/git/external actions and any broader target execution still require exact approval. |
+| Batch 39 | Executing through `prod_test.md`; `B39-S1` foundational local contracts `B39-TEST-M01..M10` have current local evidence, `B39-TEST-M11` has approved `Neural_Flow` read-only target fixture evidence, `B39-TEST-M12` has a synthetic docs-only happy-path pass, `B39-TEST-M13` has the `Neural_Flow` expected source-policy block, `B39-TEST-M14` has a synthetic web/frontend contract pass, `B39-TEST-M15` has a synthetic backend/API approval-guardrail pass, `B39-TEST-M16` has a synthetic AI/RAG approval-guardrail pass and `B39-TEST-M17` has a synthetic data/migration approval-guardrail pass. | Next route is `B39-TEST-M18`; target mutation, browser/provider/model/vector/eval/live-database/migration/production-data/git/external actions and any broader target execution still require exact approval. |
 | Batch 40 completion-skeptic | Closed as local manual foundation through `B40-S5`. | Promotion state remains `manual_only` and `not_promoted`. |
-| Agent control-plane sync | Implemented and verified as mandatory project workflow and packaged template, not as active automation. | Before closing non-mechanical Product-Agent OS work, agents must update owned control-plane files or record `not_applicable` / `handoff_required`. |
+| Agent lifecycle/control-plane sync | Config-routed lifecycle contract implemented for local project agents and packaged Product-Agent OS templates, not as active automation. | Before non-mechanical work, agents must load `[product_agent_os.lifecycle_contract]`, show visible briefs, and before closing update owned control-plane files or record `not_applicable` / `handoff_required`. |
 
 ## Control-Plane Marker Bank
 
@@ -67,8 +67,8 @@ These markers are retained as compact discovery anchors, not as full evidence:
 
 ## Current Batch 39 Handoff
 
-- Latest completed route: `B39-TEST-M15-A01` recorded the synthetic backend/API contract and approval-guardrail pilot. Evidence refs: `docs/superpowers/specs/batch39-m15-backend-api-summary.json`, `docs/superpowers/specs/batch39-m15-backend-api-manifest.json`, `docs/superpowers/specs/batch39-m15-command-results.jsonl`, `prod_test.md`. The pass is contract/guardrail-only and does not prove live API serving, request/response behavior, dependency failure recovery, observability emission, security posture, contract compatibility, real-project value or release readiness.
-- Next active route: execute `B39-TEST-M16` in `prod_test.md` as the AI/RAG archetype pilot.
+- Latest completed route: `B39-TEST-M17-A01` recorded the synthetic data/migration contract and approval-guardrail pilot. Evidence refs: `docs/superpowers/specs/batch39-m17-data-migration-summary.json`, `docs/superpowers/specs/batch39-m17-data-migration-manifest.json`, `docs/superpowers/specs/batch39-m17-command-results.jsonl`, `prod_test.md`. The pass is contract/guardrail-only and does not prove live database behavior, migration execution, migration safety, production data access, backup restore, rollback execution, data quality correctness, lineage correctness, query performance, retention compliance, real-project value or release readiness.
+- Next active route: execute `B39-TEST-M18` in `prod_test.md` as the PR/review archetype pilot.
 - Owner action: resolve or explicitly accept target source-policy gaps only if a future real-target positive pilot is needed; approve any new target/runtime/browser actions before future tests if they leave local synthetic scope.
 - Codex action: continue Batch 39 attempt entries with technical/product objective, owner/Codex action split, prerequisites, evidence, result, failure/fix/retest and residual risk.
 - Approval boundary: no target write, browser automation, provider call, live server, canonical mutation, git write or external action without exact approval.
@@ -89,7 +89,7 @@ Strict MkDocs is required only when navigation, Mermaid diagrams, Markdown exten
 
 ## Residual Risks
 
-- Batch 39 is only partially executed; `B39-TEST-M16..M54` remain open until `prod_test.md` contains actual attempt evidence.
+- Batch 39 is only partially executed; `B39-TEST-M18..M54` remain open until `prod_test.md` contains actual attempt evidence.
 - `B38-PILOT-NF01` target apply remains blocked by source-policy and target-artifact gaps.
 - Batch 40 completion-skeptic automation is still `manual_only` and `not_promoted`.
 - Historical detail has been intentionally moved out of root control-plane files; future broad historical claims should cite the source backlogs or registry.

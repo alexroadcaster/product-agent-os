@@ -1,0 +1,346 @@
+{
+  "errors": [],
+  "files": [
+    {
+      "assumptions": [],
+      "freshness_risks": [],
+      "missing_context": [],
+      "path": "docs/data-classification-register.md",
+      "registry_update_required": false,
+      "secret_findings": [],
+      "source_status": "synthetic_fixture",
+      "supported_facts": [],
+      "unsupported_claims": []
+    },
+    {
+      "assumptions": [],
+      "freshness_risks": [
+        "current OpenAI/runtime behavior may drift"
+      ],
+      "missing_context": [],
+      "path": "docs/database-backup-restore-evidence.md",
+      "registry_update_required": false,
+      "secret_findings": [],
+      "source_status": "synthetic_fixture",
+      "supported_facts": [],
+      "unsupported_claims": []
+    },
+    {
+      "assumptions": [],
+      "freshness_risks": [],
+      "missing_context": [],
+      "path": "docs/database-constraints-integrity-check.md",
+      "registry_update_required": false,
+      "secret_findings": [],
+      "source_status": "synthetic_fixture",
+      "supported_facts": [],
+      "unsupported_claims": []
+    },
+    {
+      "assumptions": [],
+      "freshness_risks": [],
+      "missing_context": [],
+      "path": "docs/database-data-contract.md",
+      "registry_update_required": false,
+      "secret_findings": [],
+      "source_status": "synthetic_fixture",
+      "supported_facts": [],
+      "unsupported_claims": []
+    },
+    {
+      "assumptions": [],
+      "freshness_risks": [],
+      "missing_context": [],
+      "path": "docs/database-data-quality-checks.md",
+      "registry_update_required": false,
+      "secret_findings": [],
+      "source_status": "synthetic_fixture",
+      "supported_facts": [],
+      "unsupported_claims": []
+    },
+    {
+      "assumptions": [],
+      "freshness_risks": [],
+      "missing_context": [],
+      "path": "docs/database-dictionary.md",
+      "registry_update_required": false,
+      "secret_findings": [],
+      "source_status": "synthetic_fixture",
+      "supported_facts": [],
+      "unsupported_claims": []
+    },
+    {
+      "assumptions": [],
+      "freshness_risks": [],
+      "missing_context": [],
+      "path": "docs/database-inventory.md",
+      "registry_update_required": false,
+      "secret_findings": [],
+      "source_status": "synthetic_fixture",
+      "supported_facts": [],
+      "unsupported_claims": []
+    },
+    {
+      "assumptions": [],
+      "freshness_risks": [],
+      "missing_context": [],
+      "path": "docs/database-lineage-map.md",
+      "registry_update_required": false,
+      "secret_findings": [],
+      "source_status": "synthetic_fixture",
+      "supported_facts": [],
+      "unsupported_claims": []
+    },
+    {
+      "assumptions": [],
+      "freshness_risks": [
+        "current OpenAI/runtime behavior may drift"
+      ],
+      "missing_context": [],
+      "path": "docs/database-migration-plan.md",
+      "registry_update_required": false,
+      "secret_findings": [],
+      "source_status": "synthetic_fixture",
+      "supported_facts": [
+        "OpenAI-related claim requires source-policy review"
+      ],
+      "unsupported_claims": []
+    },
+    {
+      "assumptions": [],
+      "freshness_risks": [
+        "current OpenAI/runtime behavior may drift"
+      ],
+      "missing_context": [],
+      "path": "docs/database-production-access-approval.md",
+      "registry_update_required": false,
+      "secret_findings": [],
+      "source_status": "synthetic_fixture",
+      "supported_facts": [
+        "OpenAI-related claim requires source-policy review"
+      ],
+      "unsupported_claims": []
+    },
+    {
+      "assumptions": [],
+      "freshness_risks": [],
+      "missing_context": [],
+      "path": "docs/database-query-performance-check.md",
+      "registry_update_required": false,
+      "secret_findings": [],
+      "source_status": "synthetic_fixture",
+      "supported_facts": [],
+      "unsupported_claims": []
+    },
+    {
+      "assumptions": [],
+      "freshness_risks": [],
+      "missing_context": [],
+      "path": "docs/database-retention-deletion-policy.md",
+      "registry_update_required": false,
+      "secret_findings": [],
+      "source_status": "synthetic_fixture",
+      "supported_facts": [],
+      "unsupported_claims": []
+    },
+    {
+      "assumptions": [],
+      "freshness_risks": [],
+      "missing_context": [],
+      "path": "docs/database-rollback-feasibility.md",
+      "registry_update_required": false,
+      "secret_findings": [],
+      "source_status": "synthetic_fixture",
+      "supported_facts": [],
+      "unsupported_claims": []
+    },
+    {
+      "assumptions": [],
+      "freshness_risks": [],
+      "missing_context": [],
+      "path": "docs/database-synthetic-fixtures-policy.md",
+      "registry_update_required": false,
+      "secret_findings": [],
+      "source_status": "synthetic_fixture",
+      "supported_facts": [],
+      "unsupported_claims": []
+    }
+  ],
+  "registry_updates_required": [],
+  "secret_findings": [],
+  "source_policy_report": {
+    "errors": [],
+    "files": [
+      {
+        "assumptions": [],
+        "freshness_risks": [],
+        "missing_context": [],
+        "path": "docs/data-classification-register.md",
+        "registry_update_required": false,
+        "secret_findings": [],
+        "source_status": "synthetic_fixture",
+        "supported_facts": [],
+        "unsupported_claims": []
+      },
+      {
+        "assumptions": [],
+        "freshness_risks": [
+          "current OpenAI/runtime behavior may drift"
+        ],
+        "missing_context": [],
+        "path": "docs/database-backup-restore-evidence.md",
+        "registry_update_required": false,
+        "secret_findings": [],
+        "source_status": "synthetic_fixture",
+        "supported_facts": [],
+        "unsupported_claims": []
+      },
+      {
+        "assumptions": [],
+        "freshness_risks": [],
+        "missing_context": [],
+        "path": "docs/database-constraints-integrity-check.md",
+        "registry_update_required": false,
+        "secret_findings": [],
+        "source_status": "synthetic_fixture",
+        "supported_facts": [],
+        "unsupported_claims": []
+      },
+      {
+        "assumptions": [],
+        "freshness_risks": [],
+        "missing_context": [],
+        "path": "docs/database-data-contract.md",
+        "registry_update_required": false,
+        "secret_findings": [],
+        "source_status": "synthetic_fixture",
+        "supported_facts": [],
+        "unsupported_claims": []
+      },
+      {
+        "assumptions": [],
+        "freshness_risks": [],
+        "missing_context": [],
+        "path": "docs/database-data-quality-checks.md",
+        "registry_update_required": false,
+        "secret_findings": [],
+        "source_status": "synthetic_fixture",
+        "supported_facts": [],
+        "unsupported_claims": []
+      },
+      {
+        "assumptions": [],
+        "freshness_risks": [],
+        "missing_context": [],
+        "path": "docs/database-dictionary.md",
+        "registry_update_required": false,
+        "secret_findings": [],
+        "source_status": "synthetic_fixture",
+        "supported_facts": [],
+        "unsupported_claims": []
+      },
+      {
+        "assumptions": [],
+        "freshness_risks": [],
+        "missing_context": [],
+        "path": "docs/database-inventory.md",
+        "registry_update_required": false,
+        "secret_findings": [],
+        "source_status": "synthetic_fixture",
+        "supported_facts": [],
+        "unsupported_claims": []
+      },
+      {
+        "assumptions": [],
+        "freshness_risks": [],
+        "missing_context": [],
+        "path": "docs/database-lineage-map.md",
+        "registry_update_required": false,
+        "secret_findings": [],
+        "source_status": "synthetic_fixture",
+        "supported_facts": [],
+        "unsupported_claims": []
+      },
+      {
+        "assumptions": [],
+        "freshness_risks": [
+          "current OpenAI/runtime behavior may drift"
+        ],
+        "missing_context": [],
+        "path": "docs/database-migration-plan.md",
+        "registry_update_required": false,
+        "secret_findings": [],
+        "source_status": "synthetic_fixture",
+        "supported_facts": [
+          "OpenAI-related claim requires source-policy review"
+        ],
+        "unsupported_claims": []
+      },
+      {
+        "assumptions": [],
+        "freshness_risks": [
+          "current OpenAI/runtime behavior may drift"
+        ],
+        "missing_context": [],
+        "path": "docs/database-production-access-approval.md",
+        "registry_update_required": false,
+        "secret_findings": [],
+        "source_status": "synthetic_fixture",
+        "supported_facts": [
+          "OpenAI-related claim requires source-policy review"
+        ],
+        "unsupported_claims": []
+      },
+      {
+        "assumptions": [],
+        "freshness_risks": [],
+        "missing_context": [],
+        "path": "docs/database-query-performance-check.md",
+        "registry_update_required": false,
+        "secret_findings": [],
+        "source_status": "synthetic_fixture",
+        "supported_facts": [],
+        "unsupported_claims": []
+      },
+      {
+        "assumptions": [],
+        "freshness_risks": [],
+        "missing_context": [],
+        "path": "docs/database-retention-deletion-policy.md",
+        "registry_update_required": false,
+        "secret_findings": [],
+        "source_status": "synthetic_fixture",
+        "supported_facts": [],
+        "unsupported_claims": []
+      },
+      {
+        "assumptions": [],
+        "freshness_risks": [],
+        "missing_context": [],
+        "path": "docs/database-rollback-feasibility.md",
+        "registry_update_required": false,
+        "secret_findings": [],
+        "source_status": "synthetic_fixture",
+        "supported_facts": [],
+        "unsupported_claims": []
+      },
+      {
+        "assumptions": [],
+        "freshness_risks": [],
+        "missing_context": [],
+        "path": "docs/database-synthetic-fixtures-policy.md",
+        "registry_update_required": false,
+        "secret_findings": [],
+        "source_status": "synthetic_fixture",
+        "supported_facts": [],
+        "unsupported_claims": []
+      }
+    ],
+    "registry_updates_required": [],
+    "secret_findings": [],
+    "status": "ok",
+    "workspace": "tests\\fixtures\\product_agent_os\\batch39-m17-data-migration-fixture"
+  },
+  "status": "ok",
+  "workspace": "tests\\fixtures\\product_agent_os\\batch39-m17-data-migration-fixture"
+}

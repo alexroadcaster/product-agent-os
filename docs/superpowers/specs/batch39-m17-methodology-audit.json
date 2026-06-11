@@ -1,0 +1,2312 @@
+{
+  "complexity_profile": {
+    "confidence": "medium",
+    "reasons": [
+      "multiple implementation surfaces detected"
+    ],
+    "selected": "standard"
+  },
+  "delivery_map": {
+    "lifecycle_map": {
+      "artifact_strategy": "stage proposals before workspace writes",
+      "write_policy": "read_only"
+    },
+    "methodology_map": {
+      "codex_agentic_workflow": "present_unverified",
+      "database_data": "present_unverified",
+      "quality_testing_evals": "present_unverified",
+      "requirements_domain": "applicable_missing",
+      "solution_architecture": "applicable_missing"
+    },
+    "next_action_map": [
+      "Stage database evidence before connecting to production data or running migrations.",
+      "Stage the missing Codex workflow artifact before activating capabilities.",
+      "Stage the missing Codex workflow artifact before activating capabilities.",
+      "Stage architecture-overview.md with scope, context and container boundaries.",
+      "Stage architecture-review-record.md with boundary owner evidence."
+    ],
+    "surface_map": {
+      "ai": false,
+      "api": false,
+      "data": true,
+      "delivery": false,
+      "ui": false
+    },
+    "system_map": {
+      "control_plane_present": [
+        "AGENTS.md",
+        "REQUIREMENTS.md",
+        "PLAN.md",
+        "TEST.md",
+        "EVALS.md",
+        "RUNLOG.md"
+      ],
+      "directories_observed": 6,
+      "files_observed": 26
+    }
+  },
+  "intent_signals": [],
+  "maturity_level": {
+    "confidence": "medium",
+    "reasons": [
+      "workspace has project or collaboration signals"
+    ],
+    "selected": "team"
+  },
+  "methodology_domains": [
+    {
+      "applicability_reason": "no deterministic signal detected",
+      "id": "business_product",
+      "source_file": "docs/methodologies/business-product.md",
+      "status": "not_applicable",
+      "title": "Business & Product"
+    },
+    {
+      "applicability_reason": "catalog domain applies to observed workspace or intent signals",
+      "id": "requirements_domain",
+      "source_file": "docs/methodologies/requirements-domain.md",
+      "status": "applicable_missing",
+      "title": "Requirements & Domain"
+    },
+    {
+      "applicability_reason": "catalog domain applies to observed workspace or intent signals",
+      "id": "solution_architecture",
+      "source_file": "docs/methodologies/solution-architecture.md",
+      "status": "applicable_missing",
+      "title": "Solution Architecture"
+    },
+    {
+      "applicability_reason": "catalog domain applies to observed workspace or intent signals",
+      "id": "quality_testing_evals",
+      "source_file": "docs/methodologies/quality-testing-evals.md",
+      "status": "present_unverified",
+      "title": "Quality, Testing & Evals"
+    },
+    {
+      "applicability_reason": "catalog domain applies to observed workspace or intent signals",
+      "id": "codex_agentic_workflow",
+      "source_file": "docs/methodologies/codex-agentic-workflow.md",
+      "status": "present_unverified",
+      "title": "Codex / Agentic Workflow"
+    },
+    {
+      "applicability_reason": "no deterministic signal detected",
+      "id": "frontend",
+      "source_file": "docs/methodologies/frontend.md",
+      "status": "not_applicable",
+      "title": "Frontend"
+    },
+    {
+      "applicability_reason": "no deterministic signal detected",
+      "id": "backend",
+      "source_file": "docs/methodologies/backend.md",
+      "status": "not_applicable",
+      "title": "Backend"
+    },
+    {
+      "applicability_reason": "no deterministic signal detected",
+      "id": "api_integrations",
+      "source_file": "docs/methodologies/api-integrations.md",
+      "status": "not_applicable",
+      "title": "API & Integrations"
+    },
+    {
+      "applicability_reason": "catalog domain applies to observed workspace or intent signals",
+      "id": "database_data",
+      "source_file": "docs/methodologies/database-data.md",
+      "status": "present_unverified",
+      "title": "Database & Data"
+    },
+    {
+      "applicability_reason": "no deterministic signal detected",
+      "id": "llm_ai_rag",
+      "source_file": "docs/methodologies/llm-ai-rag.md",
+      "status": "not_applicable",
+      "title": "LLM / AI / RAG"
+    },
+    {
+      "applicability_reason": "no deterministic signal detected",
+      "id": "security_privacy_compliance",
+      "source_file": "docs/methodologies/security-privacy-compliance.md",
+      "status": "not_applicable",
+      "title": "Security, Privacy & Compliance"
+    },
+    {
+      "applicability_reason": "no deterministic signal detected",
+      "id": "delivery_release_operations",
+      "source_file": "docs/methodologies/delivery-release-operations.md",
+      "status": "not_applicable",
+      "title": "Delivery, Release & Operations"
+    }
+  ],
+  "methodology_synthesis": {
+    "owner_questions": [
+      "What is the smallest safe next artifact to stage?",
+      "Who owns the highest-priority missing methodology gate?",
+      "Which detected surfaces are in scope for this slice?"
+    ],
+    "recommendation_groups": [
+      {
+        "artifact": "database-production-access-approval.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "production access approval_required",
+          "read-only",
+          "introspection",
+          "least privilege",
+          "do not access production data",
+          "do not run migration",
+          "destructive migration"
+        ],
+        "gates": [
+          "database_production_access_approval_present"
+        ],
+        "owner_domain": "",
+        "priority": "P0_blocker",
+        "reasons": [
+          "Production data, production database access, backup restore or destructive migration needs approval evidence."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage database evidence before connecting to production data or running migrations.",
+        "source_domains": [
+          "database_data"
+        ]
+      },
+      {
+        "artifact": "PLAN.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "use-case archetype",
+          "runtime route",
+          "owner",
+          "non-goals",
+          "approval boundary"
+        ],
+        "gates": [
+          "agentic_scope_classified"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Agentic scope and runtime path are not classified."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage the missing Codex workflow artifact before activating capabilities.",
+        "source_domains": [
+          "codex_agentic_workflow"
+        ]
+      },
+      {
+        "artifact": "RUNLOG.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "files inspected",
+          "signals observed",
+          "assumptions",
+          "unknowns",
+          "safe next action"
+        ],
+        "gates": [
+          "read_only_discovery_complete"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Read-only discovery evidence is missing before Codex workflow decisions."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage the missing Codex workflow artifact before activating capabilities.",
+        "source_domains": [
+          "codex_agentic_workflow"
+        ]
+      },
+      {
+        "artifact": "architecture-overview.md",
+        "consumer_domains": [
+          "backend"
+        ],
+        "evidence_required": [
+          "runtime unit",
+          "boundary",
+          "responsibility",
+          "owner",
+          "external actors",
+          "systems",
+          "trust boundary",
+          "scope",
+          "stakeholders",
+          "architecture question",
+          "non-goals"
+        ],
+        "gates": [
+          "architecture_container_boundary_present",
+          "architecture_context_view_present",
+          "solution_architecture_scope_present"
+        ],
+        "owner_domain": "solution_architecture",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Multiple runtime units need container, service, storage, queue or worker boundaries.",
+          "External users, systems or trust boundaries need a context view or equivalent boundary map.",
+          "Complex or multi-surface work needs architecture scope, stakeholders and non-goals."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage architecture-overview.md with scope, context and container boundaries.",
+        "source_domains": [
+          "solution_architecture"
+        ]
+      },
+      {
+        "artifact": "architecture-review-record.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "boundary",
+          "responsibility",
+          "owner",
+          "public contract or data ownership",
+          "review outcome"
+        ],
+        "gates": [
+          "boundary_responsibility_owner_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Architecture boundary changes need responsibility, owner and review evidence."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage architecture-review-record.md with boundary owner evidence.",
+        "source_domains": [
+          "solution_architecture"
+        ]
+      },
+      {
+        "artifact": "database-backup-restore-evidence.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "backup restore evidence",
+          "backup",
+          "restore test",
+          "restore point",
+          "no production data in prompts",
+          "approval_required before production restore"
+        ],
+        "gates": [
+          "database_backup_restore_evidence_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Backup/restore evidence is missing for database risk."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage database evidence before connecting to production data or running migrations.",
+        "source_domains": [
+          "database_data"
+        ]
+      },
+      {
+        "artifact": "database-data-classification-matrix.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "PII",
+          "sensitive",
+          "retention",
+          "deletion",
+          "access boundary",
+          "legal hold"
+        ],
+        "gates": [
+          "database_data_classification_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "PII, sensitive data, retention and access classification are not explicit."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage database evidence before connecting to production data or running migrations.",
+        "source_domains": [
+          "database_data"
+        ]
+      },
+      {
+        "artifact": "database-data-contract.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "constraints",
+          "indexes",
+          "foreign keys",
+          "unique",
+          "not null",
+          "data drift",
+          "data contract",
+          "producer",
+          "consumer",
+          "compatibility",
+          "schema source",
+          "DBML/SQL/ORM/migration source",
+          "source of truth",
+          "ORM model is not complete production schema evidence",
+          "schema-only artifact is not safety proof",
+          "transaction boundary",
+          "atomic operation",
+          "idempotency",
+          "side effects",
+          "retry/replay behavior"
+        ],
+        "gates": [
+          "database_constraints_integrity_review_present",
+          "database_data_contract_present",
+          "database_schema_source_present",
+          "database_transaction_boundary_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Constraint, index and data drift integrity evidence is missing.",
+          "Producer/consumer data contract is not explicit.",
+          "Schema source of truth is missing or only inferred from tooling.",
+          "Transaction boundaries and side effects are not explicit."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage database evidence before connecting to production data or running migrations.",
+        "source_domains": [
+          "database_data"
+        ]
+      },
+      {
+        "artifact": "database-data-quality-checks.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "data quality",
+          "Great Expectations",
+          "dbt tests",
+          "constraints",
+          "row counts",
+          "checksum",
+          "drift"
+        ],
+        "gates": [
+          "database_data_quality_contract_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Data quality expectations and verification are missing."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage database evidence before connecting to production data or running migrations.",
+        "source_domains": [
+          "database_data"
+        ]
+      },
+      {
+        "artifact": "database-dictionary.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "database dictionary",
+          "business meaning",
+          "owner",
+          "classification",
+          "retention",
+          "source of truth",
+          "data owner",
+          "deletion",
+          "migration ownership"
+        ],
+        "gates": [
+          "database_dictionary_present",
+          "data_ownership_boundary_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Database fields, tables and ownership need a dictionary before migration or data safety claims.",
+          "Persistent data, PII, retention or migration changes need data ownership evidence."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage database evidence before connecting to production data or running migrations.",
+        "source_domains": [
+          "database_data",
+          "solution_architecture"
+        ]
+      },
+      {
+        "artifact": "database-expand-contract-record.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "expand phase",
+          "contract phase",
+          "backward compatibility",
+          "consumer compatibility",
+          "feature flag or dual-read/write path"
+        ],
+        "gates": [
+          "database_expand_contract_reviewed"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Schema evolution needs expand-contract compatibility review."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage database evidence before connecting to production data or running migrations.",
+        "source_domains": [
+          "database_data"
+        ]
+      },
+      {
+        "artifact": "database-inventory.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "database inventory",
+          "datastore",
+          "environment",
+          "owner",
+          "data classification",
+          "production access",
+          "approval_required"
+        ],
+        "gates": [
+          "database_inventory_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Database/data work needs datastore inventory and ownership before readiness claims."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage database evidence before connecting to production data or running migrations.",
+        "source_domains": [
+          "database_data"
+        ]
+      },
+      {
+        "artifact": "database-migration-plan.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "ordered migration steps",
+          "dry run command",
+          "rollback or compensation",
+          "owner approval",
+          "Liquibase",
+          "Flyway",
+          "Alembic",
+          "Prisma",
+          "Rails/Django",
+          "expand-contract",
+          "preconditions",
+          "databasechangelog",
+          "schema history",
+          "versioned/repeatable",
+          "DROP",
+          "rename",
+          "truncate",
+          "cleanup",
+          "purge",
+          "destructive migration",
+          "no universal default",
+          "schema-diff tooling deferred"
+        ],
+        "gates": [
+          "database_migration_plan_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Database migration or schema signals were detected."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage database evidence before connecting to production data or running migrations.",
+        "source_domains": [
+          "database_data"
+        ]
+      },
+      {
+        "artifact": "database-retention-deletion-policy.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "retention",
+          "deletion",
+          "purge",
+          "archive",
+          "legal hold",
+          "audit evidence"
+        ],
+        "gates": [
+          "database_retention_deletion_policy_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Retention/deletion behavior is not explicit."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage database evidence before connecting to production data or running migrations.",
+        "source_domains": [
+          "database_data"
+        ]
+      },
+      {
+        "artifact": "database-rollback-feasibility.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "rollback feasibility",
+          "restore",
+          "compensation",
+          "irreversible changes",
+          "accepted gap",
+          "owner approval"
+        ],
+        "gates": [
+          "database_rollback_feasibility_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Rollback or compensation feasibility is unknown."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage database evidence before connecting to production data or running migrations.",
+        "source_domains": [
+          "database_data"
+        ]
+      },
+      {
+        "artifact": "migration-plan.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "migration step",
+          "rollback",
+          "compensation",
+          "owner",
+          "verification command"
+        ],
+        "gates": [
+          "migration_rollback_path_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Architecture migration or service split needs rollback or compensation evidence."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage migration-plan.md with rollback or accepted no-rollback rationale.",
+        "source_domains": [
+          "solution_architecture"
+        ]
+      },
+      {
+        "artifact": "database-lineage-map.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "lineage",
+          "OpenLineage",
+          "dbt",
+          "upstream",
+          "downstream",
+          "runtime pipeline and RAG ingestion signals are present_unverified"
+        ],
+        "gates": [
+          "database_lineage_present"
+        ],
+        "owner_domain": "",
+        "priority": "P2_recommended",
+        "reasons": [
+          "Lineage, runtime pipeline or RAG ingestion impact is unreviewed."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage database evidence before connecting to production data or running migrations.",
+        "source_domains": [
+          "database_data"
+        ]
+      },
+      {
+        "artifact": "database-query-performance-review.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "query performance",
+          "query plan",
+          "index",
+          "EXPLAIN",
+          "production load risk",
+          "write-side EXPLAIN ANALYZE requires approval"
+        ],
+        "gates": [
+          "database_performance_review_present"
+        ],
+        "owner_domain": "",
+        "priority": "P2_recommended",
+        "reasons": [
+          "Query/index/performance impact is unreviewed."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage database evidence before connecting to production data or running migrations.",
+        "source_domains": [
+          "database_data"
+        ]
+      },
+      {
+        "artifact": "database-synthetic-fixtures-policy.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "synthetic fixtures",
+          "no secrets",
+          "no production data",
+          "no private customer data",
+          "fixtures"
+        ],
+        "gates": [
+          "database_synthetic_fixture_policy_present"
+        ],
+        "owner_domain": "",
+        "priority": "P2_recommended",
+        "reasons": [
+          "Database fixtures need synthetic/no-secrets/no-production-data policy."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage database evidence before connecting to production data or running migrations.",
+        "source_domains": [
+          "database_data"
+        ]
+      }
+    ],
+    "safe_next_action": "Stage database evidence before connecting to production data or running migrations.",
+    "semantic_evidence_sufficiency": {
+      "accepted_gap_required_fields": [
+        "owner",
+        "reason",
+        "review_date",
+        "downstream_risk",
+        "follow_up_condition"
+      ],
+      "applies_when": [
+        "high-risk",
+        "production",
+        "release",
+        "security-sensitive",
+        "AI",
+        "public-contract"
+      ],
+      "consumer_domains": [
+        "security_privacy_compliance",
+        "delivery_release_operations",
+        "llm_ai_rag",
+        "api_integrations",
+        "database_data",
+        "solution_architecture",
+        "backend",
+        "frontend"
+      ],
+      "owner_domain": "quality_testing_evals",
+      "satisfied_by": [
+        "owner_reviewed_evidence_sufficient_for_real_project_risk",
+        "explicit_gap_accepted"
+      ]
+    },
+    "source_artifact_ledger": [
+      {
+        "artifact": "CHANGELOG.md",
+        "decision": "existing_non_template",
+        "owner_domain": "delivery_release_operations",
+        "reason": "Changelog is usually a project artifact; Product-Agent OS packages release notes and release readiness templates instead.",
+        "target": ""
+      },
+      {
+        "artifact": "SKILL.md",
+        "decision": "existing_non_template",
+        "owner_domain": "codex_agentic_workflow",
+        "reason": "Skill manifests live inside checked-in skill directories rather than staged project artifact templates.",
+        "target": ""
+      },
+      {
+        "artifact": "accessibility-review.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "frontend-accessibility-review.md"
+      },
+      {
+        "artifact": "agent-eval-case.md",
+        "decision": "alias",
+        "owner_domain": "codex_agentic_workflow",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "agent-eval-workflow.md"
+      },
+      {
+        "artifact": "agent-handoff-contract.md",
+        "decision": "alias",
+        "owner_domain": "codex_agentic_workflow",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "agent-task-packet.md"
+      },
+      {
+        "artifact": "agentic-workflow-readiness.md",
+        "decision": "alias",
+        "owner_domain": "codex_agentic_workflow",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "project-readiness.json"
+      },
+      {
+        "artifact": "ai-model-decision-record.md",
+        "decision": "alias",
+        "owner_domain": "llm_ai_rag",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "model-decision-record.md"
+      },
+      {
+        "artifact": "ai-prompt-contract.md",
+        "decision": "alias",
+        "owner_domain": "llm_ai_rag",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "prompt-contract.md"
+      },
+      {
+        "artifact": "architecture-tradeoff-record.md",
+        "decision": "alias",
+        "owner_domain": "solution_architecture",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "adr.md"
+      },
+      {
+        "artifact": "architecture.md",
+        "decision": "alias",
+        "owner_domain": "solution_architecture",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "architecture-overview.md"
+      },
+      {
+        "artifact": "artifact-manifest.md",
+        "decision": "alias",
+        "owner_domain": "delivery_release_operations",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "release-artifact-manifest.md"
+      },
+      {
+        "artifact": "asvs-mapping.md",
+        "decision": "alias",
+        "owner_domain": "security_privacy_compliance",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "asvs-ssdf-mapping.md"
+      },
+      {
+        "artifact": "audit-log-policy.md",
+        "decision": "alias",
+        "owner_domain": "security_privacy_compliance",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "audit-logging-review.md"
+      },
+      {
+        "artifact": "authz-matrix.md",
+        "decision": "alias",
+        "owner_domain": "security_privacy_compliance",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "authz-negative-test-matrix.md"
+      },
+      {
+        "artifact": "boundary-responsibility-map.md",
+        "decision": "alias",
+        "owner_domain": "solution_architecture",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "architecture-review-record.md"
+      },
+      {
+        "artifact": "bug-reproduction.md",
+        "decision": "alias",
+        "owner_domain": "quality_testing_evals",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "bug-rescue-report.md"
+      },
+      {
+        "artifact": "ci-cd-governance.md",
+        "decision": "alias",
+        "owner_domain": "delivery_release_operations",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "ci-cd-workflow-inventory.md"
+      },
+      {
+        "artifact": "ci-quality-gates.md",
+        "decision": "alias",
+        "owner_domain": "quality_testing_evals",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "ci-evidence-record.md"
+      },
+      {
+        "artifact": "compliance-applicability-matrix.md",
+        "decision": "alias",
+        "owner_domain": "security_privacy_compliance",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "compliance-overlay.md"
+      },
+      {
+        "artifact": "component-state-matrix.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "frontend-state-matrix.md"
+      },
+      {
+        "artifact": "context-map.md",
+        "decision": "alias",
+        "owner_domain": "solution_architecture",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "architecture-overview.md"
+      },
+      {
+        "artifact": "context-memory-policy.md",
+        "decision": "alias",
+        "owner_domain": "codex_agentic_workflow",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "model-reasoning-policy.md"
+      },
+      {
+        "artifact": "contract-test-map.md",
+        "decision": "alias",
+        "owner_domain": "quality_testing_evals",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "api-contract-review.md"
+      },
+      {
+        "artifact": "coverage-policy.md",
+        "decision": "alias",
+        "owner_domain": "quality_testing_evals",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "quality-strategy.md"
+      },
+      {
+        "artifact": "dependency-rules.md",
+        "decision": "alias",
+        "owner_domain": "solution_architecture",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "architecture-fitness-functions.md"
+      },
+      {
+        "artifact": "design-system-inventory.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "component-card.md"
+      },
+      {
+        "artifact": "design-tokens-reference.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "component-card.md"
+      },
+      {
+        "artifact": "docs-tooling-decision.md",
+        "decision": "alias",
+        "owner_domain": "solution_architecture",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "architecture-docs-tooling-decision.md"
+      },
+      {
+        "artifact": "event-catalog.md",
+        "decision": "alias",
+        "owner_domain": "requirements_domain",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "requirements-traceability-matrix.md"
+      },
+      {
+        "artifact": "evidence-packet.md",
+        "decision": "alias",
+        "owner_domain": "quality_testing_evals",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "RUNLOG.md"
+      },
+      {
+        "artifact": "flaky-test-ledger.md",
+        "decision": "alias",
+        "owner_domain": "quality_testing_evals",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "flaky-test-policy.md"
+      },
+      {
+        "artifact": "frontend-api-dependency-map.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "frontend-flow-spec.md"
+      },
+      {
+        "artifact": "frontend-boundary-map.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "component-card.md"
+      },
+      {
+        "artifact": "frontend-browser-support-matrix.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "frontend-visual-qa.md"
+      },
+      {
+        "artifact": "frontend-content-i18n-record.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "frontend-flow-spec.md"
+      },
+      {
+        "artifact": "frontend-interaction-test-matrix.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "frontend-flow-spec.md"
+      },
+      {
+        "artifact": "fsd-boundary-record.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "component-card.md"
+      },
+      {
+        "artifact": "glossary.md",
+        "decision": "alias",
+        "owner_domain": "requirements_domain",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "domain-modeling.md"
+      },
+      {
+        "artifact": "handoff-contract.md",
+        "decision": "existing_non_template",
+        "owner_domain": "codex_agentic_workflow",
+        "reason": "The canonical handoff contract is packaged as a lifecycle skill reference and consumed by agent-task-packet.md.",
+        "target": ""
+      },
+      {
+        "artifact": "hook-activation-record.md",
+        "decision": "alias",
+        "owner_domain": "codex_agentic_workflow",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "hook-governance.md"
+      },
+      {
+        "artifact": "incident-response-path.md",
+        "decision": "alias",
+        "owner_domain": "delivery_release_operations",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "incident-record.md"
+      },
+      {
+        "artifact": "keyboard-focus-map.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "frontend-accessibility-review.md"
+      },
+      {
+        "artifact": "manual-qa-charter.md",
+        "decision": "alias",
+        "owner_domain": "quality_testing_evals",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "manual-qa-evidence.md"
+      },
+      {
+        "artifact": "mutation-test-report.md",
+        "decision": "alias",
+        "owner_domain": "quality_testing_evals",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "test-eval-matrix.md"
+      },
+      {
+        "artifact": "plugin-blueprint.md",
+        "decision": "existing_non_template",
+        "owner_domain": "codex_agentic_workflow",
+        "reason": "Plugin blueprint lives under docs/artifact-templates for plugin design, not as a generated target-project template.",
+        "target": ""
+      },
+      {
+        "artifact": "post-release-measurement.md",
+        "decision": "alias",
+        "owner_domain": "delivery_release_operations",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "post-release-review.md"
+      },
+      {
+        "artifact": "property-test-spec.md",
+        "decision": "alias",
+        "owner_domain": "quality_testing_evals",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "test-eval-matrix.md"
+      },
+      {
+        "artifact": "quality-attribute-scenarios.md",
+        "decision": "alias",
+        "owner_domain": "solution_architecture",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "architecture-fitness-functions.md"
+      },
+      {
+        "artifact": "rag-grounding-eval.md",
+        "decision": "alias",
+        "owner_domain": "llm_ai_rag",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "rag-eval-report.md"
+      },
+      {
+        "artifact": "red-green-refactor-log.md",
+        "decision": "alias",
+        "owner_domain": "quality_testing_evals",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "test-eval-matrix.md"
+      },
+      {
+        "artifact": "regression-impact-map.md",
+        "decision": "alias",
+        "owner_domain": "quality_testing_evals",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "test-eval-matrix.md"
+      },
+      {
+        "artifact": "release-scope.md",
+        "decision": "alias",
+        "owner_domain": "delivery_release_operations",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "release-readiness.md"
+      },
+      {
+        "artifact": "responsive-viewport-matrix.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "frontend-visual-qa.md"
+      },
+      {
+        "artifact": "risk-based-test-plan.md",
+        "decision": "alias",
+        "owner_domain": "quality_testing_evals",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "quality-strategy.md"
+      },
+      {
+        "artifact": "rollout-strategy.md",
+        "decision": "alias",
+        "owner_domain": "delivery_release_operations",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "rollout-plan.md"
+      },
+      {
+        "artifact": "route-page-inventory.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "frontend-flow-spec.md"
+      },
+      {
+        "artifact": "runbook.md",
+        "decision": "alias",
+        "owner_domain": "delivery_release_operations",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "operations-runbook.md"
+      },
+      {
+        "artifact": "runtime-evidence.md",
+        "decision": "alias",
+        "owner_domain": "quality_testing_evals",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "manual-qa-evidence.md"
+      },
+      {
+        "artifact": "runtime-topology.md",
+        "decision": "alias",
+        "owner_domain": "solution_architecture",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "architecture-overview.md"
+      },
+      {
+        "artifact": "secrets-inventory.md",
+        "decision": "alias",
+        "owner_domain": "security_privacy_compliance",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "secrets-policy.md"
+      },
+      {
+        "artifact": "skill-candidate.md",
+        "decision": "alias",
+        "owner_domain": "codex_agentic_workflow",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "skill-promotion-record.md"
+      },
+      {
+        "artifact": "skill-failure-log.md",
+        "decision": "alias",
+        "owner_domain": "codex_agentic_workflow",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "skill-promotion-record.md"
+      },
+      {
+        "artifact": "slo.md",
+        "decision": "alias",
+        "owner_domain": "delivery_release_operations",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "slo-spec.md"
+      },
+      {
+        "artifact": "storybook-story-map.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "component-card.md"
+      },
+      {
+        "artifact": "threat-model.md",
+        "decision": "alias",
+        "owner_domain": "security_privacy_compliance",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "threat-surface.md"
+      },
+      {
+        "artifact": "ubiquitous-language.md",
+        "decision": "alias",
+        "owner_domain": "requirements_domain",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "domain-modeling.md"
+      },
+      {
+        "artifact": "ui-flow-spec.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "frontend-flow-spec.md"
+      },
+      {
+        "artifact": "version-impact-record.md",
+        "decision": "alias",
+        "owner_domain": "delivery_release_operations",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "versioning-policy.md"
+      },
+      {
+        "artifact": "visual-a11y-evidence.md",
+        "decision": "alias",
+        "owner_domain": "quality_testing_evals",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "manual-qa-evidence.md"
+      },
+      {
+        "artifact": "visual-evidence-packet.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "frontend-visual-qa.md"
+      }
+    ],
+    "status": "ok",
+    "write_policy": "read_only"
+  },
+  "observed_signals": [
+    {
+      "evidence": [
+        "docs/database-backup-restore-evidence.md",
+        "docs/database-constraints-integrity-check.md",
+        "docs/database-data-contract.md",
+        "docs/database-data-quality-checks.md",
+        "docs/database-dictionary.md",
+        "docs/database-inventory.md",
+        "docs/database-lineage-map.md",
+        "docs/database-migration-plan.md",
+        "docs/database-production-access-approval.md",
+        "docs/database-query-performance-check.md",
+        "docs/database-retention-deletion-policy.md",
+        "docs/database-rollback-feasibility.md",
+        "docs/database-synthetic-fixtures-policy.md",
+        "migrations",
+        "migrations/001_init_orders.sql",
+        "schema/orders.sql"
+      ],
+      "id": "database_migration_or_schema",
+      "source": "workspace"
+    },
+    {
+      "evidence": [
+        "agents.md",
+        "docs",
+        "evals.md",
+        "plan.md",
+        "requirements.md",
+        "runlog.md",
+        "test.md"
+      ],
+      "id": "docs_or_control_plane",
+      "source": "workspace"
+    },
+    {
+      "evidence": [
+        "agents.md"
+      ],
+      "id": "codex_agentic_workflow",
+      "source": "workspace"
+    },
+    {
+      "evidence": [
+        "test.md"
+      ],
+      "id": "test_evidence",
+      "source": "workspace"
+    },
+    {
+      "evidence": [
+        "evals.md",
+        "runlog.md",
+        "test.md"
+      ],
+      "id": "quality_testing_signal",
+      "source": "workspace"
+    }
+  ],
+  "provisional_assumptions": [
+    "Audit is read-only and does not approve workspace writes."
+  ],
+  "questions_for_owner": [
+    "What is the smallest safe next artifact to stage?",
+    "Who owns the highest-priority missing methodology gate?",
+    "Which detected surfaces are in scope for this slice?"
+  ],
+  "recommendation_groups": [
+    {
+      "artifact": "database-production-access-approval.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "production access approval_required",
+        "read-only",
+        "introspection",
+        "least privilege",
+        "do not access production data",
+        "do not run migration",
+        "destructive migration"
+      ],
+      "gates": [
+        "database_production_access_approval_present"
+      ],
+      "owner_domain": "",
+      "priority": "P0_blocker",
+      "reasons": [
+        "Production data, production database access, backup restore or destructive migration needs approval evidence."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage database evidence before connecting to production data or running migrations.",
+      "source_domains": [
+        "database_data"
+      ]
+    },
+    {
+      "artifact": "PLAN.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "use-case archetype",
+        "runtime route",
+        "owner",
+        "non-goals",
+        "approval boundary"
+      ],
+      "gates": [
+        "agentic_scope_classified"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Agentic scope and runtime path are not classified."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage the missing Codex workflow artifact before activating capabilities.",
+      "source_domains": [
+        "codex_agentic_workflow"
+      ]
+    },
+    {
+      "artifact": "RUNLOG.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "files inspected",
+        "signals observed",
+        "assumptions",
+        "unknowns",
+        "safe next action"
+      ],
+      "gates": [
+        "read_only_discovery_complete"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Read-only discovery evidence is missing before Codex workflow decisions."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage the missing Codex workflow artifact before activating capabilities.",
+      "source_domains": [
+        "codex_agentic_workflow"
+      ]
+    },
+    {
+      "artifact": "architecture-overview.md",
+      "consumer_domains": [
+        "backend"
+      ],
+      "evidence_required": [
+        "runtime unit",
+        "boundary",
+        "responsibility",
+        "owner",
+        "external actors",
+        "systems",
+        "trust boundary",
+        "scope",
+        "stakeholders",
+        "architecture question",
+        "non-goals"
+      ],
+      "gates": [
+        "architecture_container_boundary_present",
+        "architecture_context_view_present",
+        "solution_architecture_scope_present"
+      ],
+      "owner_domain": "solution_architecture",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Multiple runtime units need container, service, storage, queue or worker boundaries.",
+        "External users, systems or trust boundaries need a context view or equivalent boundary map.",
+        "Complex or multi-surface work needs architecture scope, stakeholders and non-goals."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage architecture-overview.md with scope, context and container boundaries.",
+      "source_domains": [
+        "solution_architecture"
+      ]
+    },
+    {
+      "artifact": "architecture-review-record.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "boundary",
+        "responsibility",
+        "owner",
+        "public contract or data ownership",
+        "review outcome"
+      ],
+      "gates": [
+        "boundary_responsibility_owner_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Architecture boundary changes need responsibility, owner and review evidence."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage architecture-review-record.md with boundary owner evidence.",
+      "source_domains": [
+        "solution_architecture"
+      ]
+    },
+    {
+      "artifact": "database-backup-restore-evidence.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "backup restore evidence",
+        "backup",
+        "restore test",
+        "restore point",
+        "no production data in prompts",
+        "approval_required before production restore"
+      ],
+      "gates": [
+        "database_backup_restore_evidence_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Backup/restore evidence is missing for database risk."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage database evidence before connecting to production data or running migrations.",
+      "source_domains": [
+        "database_data"
+      ]
+    },
+    {
+      "artifact": "database-data-classification-matrix.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "PII",
+        "sensitive",
+        "retention",
+        "deletion",
+        "access boundary",
+        "legal hold"
+      ],
+      "gates": [
+        "database_data_classification_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "PII, sensitive data, retention and access classification are not explicit."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage database evidence before connecting to production data or running migrations.",
+      "source_domains": [
+        "database_data"
+      ]
+    },
+    {
+      "artifact": "database-data-contract.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "constraints",
+        "indexes",
+        "foreign keys",
+        "unique",
+        "not null",
+        "data drift",
+        "data contract",
+        "producer",
+        "consumer",
+        "compatibility",
+        "schema source",
+        "DBML/SQL/ORM/migration source",
+        "source of truth",
+        "ORM model is not complete production schema evidence",
+        "schema-only artifact is not safety proof",
+        "transaction boundary",
+        "atomic operation",
+        "idempotency",
+        "side effects",
+        "retry/replay behavior"
+      ],
+      "gates": [
+        "database_constraints_integrity_review_present",
+        "database_data_contract_present",
+        "database_schema_source_present",
+        "database_transaction_boundary_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Constraint, index and data drift integrity evidence is missing.",
+        "Producer/consumer data contract is not explicit.",
+        "Schema source of truth is missing or only inferred from tooling.",
+        "Transaction boundaries and side effects are not explicit."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage database evidence before connecting to production data or running migrations.",
+      "source_domains": [
+        "database_data"
+      ]
+    },
+    {
+      "artifact": "database-data-quality-checks.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "data quality",
+        "Great Expectations",
+        "dbt tests",
+        "constraints",
+        "row counts",
+        "checksum",
+        "drift"
+      ],
+      "gates": [
+        "database_data_quality_contract_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Data quality expectations and verification are missing."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage database evidence before connecting to production data or running migrations.",
+      "source_domains": [
+        "database_data"
+      ]
+    },
+    {
+      "artifact": "database-dictionary.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "database dictionary",
+        "business meaning",
+        "owner",
+        "classification",
+        "retention",
+        "source of truth",
+        "data owner",
+        "deletion",
+        "migration ownership"
+      ],
+      "gates": [
+        "database_dictionary_present",
+        "data_ownership_boundary_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Database fields, tables and ownership need a dictionary before migration or data safety claims.",
+        "Persistent data, PII, retention or migration changes need data ownership evidence."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage database evidence before connecting to production data or running migrations.",
+      "source_domains": [
+        "database_data",
+        "solution_architecture"
+      ]
+    },
+    {
+      "artifact": "database-expand-contract-record.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "expand phase",
+        "contract phase",
+        "backward compatibility",
+        "consumer compatibility",
+        "feature flag or dual-read/write path"
+      ],
+      "gates": [
+        "database_expand_contract_reviewed"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Schema evolution needs expand-contract compatibility review."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage database evidence before connecting to production data or running migrations.",
+      "source_domains": [
+        "database_data"
+      ]
+    },
+    {
+      "artifact": "database-inventory.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "database inventory",
+        "datastore",
+        "environment",
+        "owner",
+        "data classification",
+        "production access",
+        "approval_required"
+      ],
+      "gates": [
+        "database_inventory_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Database/data work needs datastore inventory and ownership before readiness claims."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage database evidence before connecting to production data or running migrations.",
+      "source_domains": [
+        "database_data"
+      ]
+    },
+    {
+      "artifact": "database-migration-plan.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "ordered migration steps",
+        "dry run command",
+        "rollback or compensation",
+        "owner approval",
+        "Liquibase",
+        "Flyway",
+        "Alembic",
+        "Prisma",
+        "Rails/Django",
+        "expand-contract",
+        "preconditions",
+        "databasechangelog",
+        "schema history",
+        "versioned/repeatable",
+        "DROP",
+        "rename",
+        "truncate",
+        "cleanup",
+        "purge",
+        "destructive migration",
+        "no universal default",
+        "schema-diff tooling deferred"
+      ],
+      "gates": [
+        "database_migration_plan_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Database migration or schema signals were detected."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage database evidence before connecting to production data or running migrations.",
+      "source_domains": [
+        "database_data"
+      ]
+    },
+    {
+      "artifact": "database-retention-deletion-policy.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "retention",
+        "deletion",
+        "purge",
+        "archive",
+        "legal hold",
+        "audit evidence"
+      ],
+      "gates": [
+        "database_retention_deletion_policy_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Retention/deletion behavior is not explicit."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage database evidence before connecting to production data or running migrations.",
+      "source_domains": [
+        "database_data"
+      ]
+    },
+    {
+      "artifact": "database-rollback-feasibility.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "rollback feasibility",
+        "restore",
+        "compensation",
+        "irreversible changes",
+        "accepted gap",
+        "owner approval"
+      ],
+      "gates": [
+        "database_rollback_feasibility_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Rollback or compensation feasibility is unknown."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage database evidence before connecting to production data or running migrations.",
+      "source_domains": [
+        "database_data"
+      ]
+    },
+    {
+      "artifact": "migration-plan.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "migration step",
+        "rollback",
+        "compensation",
+        "owner",
+        "verification command"
+      ],
+      "gates": [
+        "migration_rollback_path_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Architecture migration or service split needs rollback or compensation evidence."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage migration-plan.md with rollback or accepted no-rollback rationale.",
+      "source_domains": [
+        "solution_architecture"
+      ]
+    },
+    {
+      "artifact": "database-lineage-map.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "lineage",
+        "OpenLineage",
+        "dbt",
+        "upstream",
+        "downstream",
+        "runtime pipeline and RAG ingestion signals are present_unverified"
+      ],
+      "gates": [
+        "database_lineage_present"
+      ],
+      "owner_domain": "",
+      "priority": "P2_recommended",
+      "reasons": [
+        "Lineage, runtime pipeline or RAG ingestion impact is unreviewed."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage database evidence before connecting to production data or running migrations.",
+      "source_domains": [
+        "database_data"
+      ]
+    },
+    {
+      "artifact": "database-query-performance-review.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "query performance",
+        "query plan",
+        "index",
+        "EXPLAIN",
+        "production load risk",
+        "write-side EXPLAIN ANALYZE requires approval"
+      ],
+      "gates": [
+        "database_performance_review_present"
+      ],
+      "owner_domain": "",
+      "priority": "P2_recommended",
+      "reasons": [
+        "Query/index/performance impact is unreviewed."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage database evidence before connecting to production data or running migrations.",
+      "source_domains": [
+        "database_data"
+      ]
+    },
+    {
+      "artifact": "database-synthetic-fixtures-policy.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "synthetic fixtures",
+        "no secrets",
+        "no production data",
+        "no private customer data",
+        "fixtures"
+      ],
+      "gates": [
+        "database_synthetic_fixture_policy_present"
+      ],
+      "owner_domain": "",
+      "priority": "P2_recommended",
+      "reasons": [
+        "Database fixtures need synthetic/no-secrets/no-production-data policy."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage database evidence before connecting to production data or running migrations.",
+      "source_domains": [
+        "database_data"
+      ]
+    }
+  ],
+  "recommendations": [
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, review date, downstream risk, residual risk and follow-up condition",
+      "approval_boundary": "approval_required before database introspection, production database access, production data access, migration execution, destructive cleanup, backup restore or retention mutation",
+      "artifact": "database-production-access-approval.md",
+      "domain": "database_data",
+      "evidence_owner": "data owner",
+      "evidence_required": [
+        "production access approval_required",
+        "read-only",
+        "introspection",
+        "least privilege",
+        "do not access production data",
+        "do not run migration",
+        "destructive migration"
+      ],
+      "gate": "database_production_access_approval_present",
+      "priority": "P0_blocker",
+      "reason": "Production data, production database access, backup restore or destructive migration needs approval evidence.",
+      "residual_risk": "Database artifact presence does not prove migration, data quality or runtime safety.",
+      "safe_next_action": "Stage database evidence before connecting to production data or running migrations."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "approval_required before workspace writes, external writes or activation",
+      "artifact": "PLAN.md",
+      "domain": "codex_agentic_workflow",
+      "evidence_owner": "product-agent operator",
+      "evidence_required": [
+        "use-case archetype",
+        "runtime route",
+        "owner",
+        "non-goals",
+        "approval boundary"
+      ],
+      "gate": "agentic_scope_classified",
+      "priority": "P1_high_risk",
+      "reason": "Agentic scope and runtime path are not classified.",
+      "residual_risk": "Agent orchestration can be selected before the smallest useful workflow is known.",
+      "safe_next_action": "Stage the missing Codex workflow artifact before activating capabilities."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "approval_required before workspace writes, external writes or activation",
+      "artifact": "RUNLOG.md",
+      "domain": "codex_agentic_workflow",
+      "evidence_owner": "product-agent operator",
+      "evidence_required": [
+        "files inspected",
+        "signals observed",
+        "assumptions",
+        "unknowns",
+        "safe next action"
+      ],
+      "gate": "read_only_discovery_complete",
+      "priority": "P1_high_risk",
+      "reason": "Read-only discovery evidence is missing before Codex workflow decisions.",
+      "residual_risk": "Implementation can start from stale or incomplete repository context.",
+      "safe_next_action": "Stage the missing Codex workflow artifact before activating capabilities."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, review date, downstream risk, residual risk and follow-up condition",
+      "approval_boundary": "approval_required before database introspection, production database access, production data access, migration execution, destructive cleanup, backup restore or retention mutation",
+      "artifact": "database-backup-restore-evidence.md",
+      "domain": "database_data",
+      "evidence_owner": "data owner",
+      "evidence_required": [
+        "backup restore evidence",
+        "backup",
+        "restore test",
+        "restore point",
+        "no production data in prompts",
+        "approval_required before production restore"
+      ],
+      "gate": "database_backup_restore_evidence_present",
+      "priority": "P1_high_risk",
+      "reason": "Backup/restore evidence is missing for database risk.",
+      "residual_risk": "Database artifact presence does not prove migration, data quality or runtime safety.",
+      "safe_next_action": "Stage database evidence before connecting to production data or running migrations."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, review date, downstream risk, residual risk and follow-up condition",
+      "approval_boundary": "approval_required before database introspection, production database access, production data access, migration execution, destructive cleanup, backup restore or retention mutation",
+      "artifact": "database-data-contract.md",
+      "domain": "database_data",
+      "evidence_owner": "data owner",
+      "evidence_required": [
+        "constraints",
+        "indexes",
+        "foreign keys",
+        "unique",
+        "not null",
+        "data drift"
+      ],
+      "gate": "database_constraints_integrity_review_present",
+      "priority": "P1_high_risk",
+      "reason": "Constraint, index and data drift integrity evidence is missing.",
+      "residual_risk": "Database artifact presence does not prove migration, data quality or runtime safety.",
+      "safe_next_action": "Stage database evidence before connecting to production data or running migrations."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, review date, downstream risk, residual risk and follow-up condition",
+      "approval_boundary": "approval_required before database introspection, production database access, production data access, migration execution, destructive cleanup, backup restore or retention mutation",
+      "artifact": "database-data-classification-matrix.md",
+      "domain": "database_data",
+      "evidence_owner": "data owner",
+      "evidence_required": [
+        "PII",
+        "sensitive",
+        "retention",
+        "deletion",
+        "access boundary",
+        "legal hold"
+      ],
+      "gate": "database_data_classification_present",
+      "priority": "P1_high_risk",
+      "reason": "PII, sensitive data, retention and access classification are not explicit.",
+      "residual_risk": "Database artifact presence does not prove migration, data quality or runtime safety.",
+      "safe_next_action": "Stage database evidence before connecting to production data or running migrations."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, review date, downstream risk, residual risk and follow-up condition",
+      "approval_boundary": "approval_required before database introspection, production database access, production data access, migration execution, destructive cleanup, backup restore or retention mutation",
+      "artifact": "database-data-contract.md",
+      "domain": "database_data",
+      "evidence_owner": "data owner",
+      "evidence_required": [
+        "data contract",
+        "producer",
+        "consumer",
+        "compatibility",
+        "schema source",
+        "constraints",
+        "indexes"
+      ],
+      "gate": "database_data_contract_present",
+      "priority": "P1_high_risk",
+      "reason": "Producer/consumer data contract is not explicit.",
+      "residual_risk": "Database artifact presence does not prove migration, data quality or runtime safety.",
+      "safe_next_action": "Stage database evidence before connecting to production data or running migrations."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, review date, downstream risk, residual risk and follow-up condition",
+      "approval_boundary": "approval_required before database introspection, production database access, production data access, migration execution, destructive cleanup, backup restore or retention mutation",
+      "artifact": "database-data-quality-checks.md",
+      "domain": "database_data",
+      "evidence_owner": "data owner",
+      "evidence_required": [
+        "data quality",
+        "Great Expectations",
+        "dbt tests",
+        "constraints",
+        "row counts",
+        "checksum",
+        "drift"
+      ],
+      "gate": "database_data_quality_contract_present",
+      "priority": "P1_high_risk",
+      "reason": "Data quality expectations and verification are missing.",
+      "residual_risk": "Database artifact presence does not prove migration, data quality or runtime safety.",
+      "safe_next_action": "Stage database evidence before connecting to production data or running migrations."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, review date, downstream risk, residual risk and follow-up condition",
+      "approval_boundary": "approval_required before database introspection, production database access, production data access, migration execution, destructive cleanup, backup restore or retention mutation",
+      "artifact": "database-dictionary.md",
+      "domain": "database_data",
+      "evidence_owner": "data owner",
+      "evidence_required": [
+        "database dictionary",
+        "business meaning",
+        "owner",
+        "classification",
+        "retention",
+        "source of truth"
+      ],
+      "gate": "database_dictionary_present",
+      "priority": "P1_high_risk",
+      "reason": "Database fields, tables and ownership need a dictionary before migration or data safety claims.",
+      "residual_risk": "Database artifact presence does not prove migration, data quality or runtime safety.",
+      "safe_next_action": "Stage database evidence before connecting to production data or running migrations."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, review date, downstream risk, residual risk and follow-up condition",
+      "approval_boundary": "approval_required before database introspection, production database access, production data access, migration execution, destructive cleanup, backup restore or retention mutation",
+      "artifact": "database-expand-contract-record.md",
+      "domain": "database_data",
+      "evidence_owner": "data owner",
+      "evidence_required": [
+        "expand phase",
+        "contract phase",
+        "backward compatibility",
+        "consumer compatibility",
+        "feature flag or dual-read/write path"
+      ],
+      "gate": "database_expand_contract_reviewed",
+      "priority": "P1_high_risk",
+      "reason": "Schema evolution needs expand-contract compatibility review.",
+      "residual_risk": "Database artifact presence does not prove migration, data quality or runtime safety.",
+      "safe_next_action": "Stage database evidence before connecting to production data or running migrations."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, review date, downstream risk, residual risk and follow-up condition",
+      "approval_boundary": "approval_required before database introspection, production database access, production data access, migration execution, destructive cleanup, backup restore or retention mutation",
+      "artifact": "database-inventory.md",
+      "domain": "database_data",
+      "evidence_owner": "data owner",
+      "evidence_required": [
+        "database inventory",
+        "datastore",
+        "environment",
+        "owner",
+        "data classification",
+        "production access",
+        "approval_required"
+      ],
+      "gate": "database_inventory_present",
+      "priority": "P1_high_risk",
+      "reason": "Database/data work needs datastore inventory and ownership before readiness claims.",
+      "residual_risk": "Database artifact presence does not prove migration, data quality or runtime safety.",
+      "safe_next_action": "Stage database evidence before connecting to production data or running migrations."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, review date, downstream risk, residual risk and follow-up condition",
+      "approval_boundary": "approval_required before database introspection, production database access, production data access, migration execution, destructive cleanup, backup restore or retention mutation",
+      "artifact": "database-migration-plan.md",
+      "domain": "database_data",
+      "evidence_owner": "data owner",
+      "evidence_required": [
+        "ordered migration steps",
+        "dry run command",
+        "rollback or compensation",
+        "owner approval",
+        "Liquibase",
+        "Flyway",
+        "Alembic",
+        "Prisma",
+        "Rails/Django",
+        "expand-contract",
+        "preconditions",
+        "databasechangelog",
+        "schema history",
+        "versioned/repeatable",
+        "DROP",
+        "rename",
+        "truncate",
+        "cleanup",
+        "purge",
+        "destructive migration",
+        "no universal default",
+        "schema-diff tooling deferred"
+      ],
+      "gate": "database_migration_plan_present",
+      "priority": "P1_high_risk",
+      "reason": "Database migration or schema signals were detected.",
+      "residual_risk": "Database artifact presence does not prove migration, data quality or runtime safety.",
+      "safe_next_action": "Stage database evidence before connecting to production data or running migrations."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, review date, downstream risk, residual risk and follow-up condition",
+      "approval_boundary": "approval_required before database introspection, production database access, production data access, migration execution, destructive cleanup, backup restore or retention mutation",
+      "artifact": "database-retention-deletion-policy.md",
+      "domain": "database_data",
+      "evidence_owner": "data owner",
+      "evidence_required": [
+        "retention",
+        "deletion",
+        "purge",
+        "archive",
+        "legal hold",
+        "audit evidence"
+      ],
+      "gate": "database_retention_deletion_policy_present",
+      "priority": "P1_high_risk",
+      "reason": "Retention/deletion behavior is not explicit.",
+      "residual_risk": "Database artifact presence does not prove migration, data quality or runtime safety.",
+      "safe_next_action": "Stage database evidence before connecting to production data or running migrations."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, review date, downstream risk, residual risk and follow-up condition",
+      "approval_boundary": "approval_required before database introspection, production database access, production data access, migration execution, destructive cleanup, backup restore or retention mutation",
+      "artifact": "database-rollback-feasibility.md",
+      "domain": "database_data",
+      "evidence_owner": "data owner",
+      "evidence_required": [
+        "rollback feasibility",
+        "restore",
+        "compensation",
+        "irreversible changes",
+        "accepted gap",
+        "owner approval"
+      ],
+      "gate": "database_rollback_feasibility_present",
+      "priority": "P1_high_risk",
+      "reason": "Rollback or compensation feasibility is unknown.",
+      "residual_risk": "Database artifact presence does not prove migration, data quality or runtime safety.",
+      "safe_next_action": "Stage database evidence before connecting to production data or running migrations."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, review date, downstream risk, residual risk and follow-up condition",
+      "approval_boundary": "approval_required before database introspection, production database access, production data access, migration execution, destructive cleanup, backup restore or retention mutation",
+      "artifact": "database-data-contract.md",
+      "domain": "database_data",
+      "evidence_owner": "data owner",
+      "evidence_required": [
+        "schema source",
+        "DBML/SQL/ORM/migration source",
+        "source of truth",
+        "ORM model is not complete production schema evidence",
+        "schema-only artifact is not safety proof"
+      ],
+      "gate": "database_schema_source_present",
+      "priority": "P1_high_risk",
+      "reason": "Schema source of truth is missing or only inferred from tooling.",
+      "residual_risk": "Database artifact presence does not prove migration, data quality or runtime safety.",
+      "safe_next_action": "Stage database evidence before connecting to production data or running migrations."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, review date, downstream risk, residual risk and follow-up condition",
+      "approval_boundary": "approval_required before database introspection, production database access, production data access, migration execution, destructive cleanup, backup restore or retention mutation",
+      "artifact": "database-data-contract.md",
+      "domain": "database_data",
+      "evidence_owner": "data owner",
+      "evidence_required": [
+        "transaction boundary",
+        "atomic operation",
+        "idempotency",
+        "side effects",
+        "retry/replay behavior"
+      ],
+      "gate": "database_transaction_boundary_present",
+      "priority": "P1_high_risk",
+      "reason": "Transaction boundaries and side effects are not explicit.",
+      "residual_risk": "Database artifact presence does not prove migration, data quality or runtime safety.",
+      "safe_next_action": "Stage database evidence before connecting to production data or running migrations."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, scope, review date and residual risk",
+      "approval_boundary": "not required for read-only audit",
+      "artifact": "architecture-overview.md",
+      "domain": "solution_architecture",
+      "evidence_owner": "architecture owner",
+      "evidence_required": [
+        "runtime unit",
+        "boundary",
+        "responsibility",
+        "owner"
+      ],
+      "gate": "architecture_container_boundary_present",
+      "priority": "P1_high_risk",
+      "reason": "Multiple runtime units need container, service, storage, queue or worker boundaries.",
+      "residual_risk": "Implementation can cross implicit system boundaries without review.",
+      "safe_next_action": "Stage architecture-overview.md with scope, context and container boundaries."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, scope, review date and residual risk",
+      "approval_boundary": "not required for read-only audit",
+      "artifact": "architecture-overview.md",
+      "domain": "solution_architecture",
+      "evidence_owner": "architecture owner",
+      "evidence_required": [
+        "external actors",
+        "systems",
+        "trust boundary",
+        "owner"
+      ],
+      "gate": "architecture_context_view_present",
+      "priority": "P1_high_risk",
+      "reason": "External users, systems or trust boundaries need a context view or equivalent boundary map.",
+      "residual_risk": "Implementation can cross implicit system boundaries without review.",
+      "safe_next_action": "Stage architecture-overview.md with scope, context and container boundaries."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, scope, review date and residual risk",
+      "approval_boundary": "not required for read-only audit",
+      "artifact": "architecture-review-record.md",
+      "domain": "solution_architecture",
+      "evidence_owner": "architecture owner",
+      "evidence_required": [
+        "boundary",
+        "responsibility",
+        "owner",
+        "public contract or data ownership",
+        "review outcome"
+      ],
+      "gate": "boundary_responsibility_owner_present",
+      "priority": "P1_high_risk",
+      "reason": "Architecture boundary changes need responsibility, owner and review evidence.",
+      "residual_risk": "A changed boundary can be owned by no one or reviewed by the wrong owner.",
+      "safe_next_action": "Stage architecture-review-record.md with boundary owner evidence."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, scope, review date and residual risk",
+      "approval_boundary": "approval_required before production data or migration changes",
+      "artifact": "database-dictionary.md",
+      "domain": "solution_architecture",
+      "evidence_owner": "data owner",
+      "evidence_required": [
+        "data owner",
+        "source of truth",
+        "retention",
+        "deletion",
+        "migration ownership"
+      ],
+      "gate": "data_ownership_boundary_present",
+      "priority": "P1_high_risk",
+      "reason": "Persistent data, PII, retention or migration changes need data ownership evidence.",
+      "residual_risk": "Data responsibility can diverge from system boundaries and privacy obligations.",
+      "safe_next_action": "Stage database-dictionary.md ownership rows for affected architecture boundaries."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, scope, review date and residual risk",
+      "approval_boundary": "approval_required before irreversible migration or service split",
+      "artifact": "migration-plan.md",
+      "domain": "solution_architecture",
+      "evidence_owner": "implementation planner",
+      "evidence_required": [
+        "migration step",
+        "rollback",
+        "compensation",
+        "owner",
+        "verification command"
+      ],
+      "gate": "migration_rollback_path_present",
+      "priority": "P1_high_risk",
+      "reason": "Architecture migration or service split needs rollback or compensation evidence.",
+      "residual_risk": "A boundary migration can strand data, consumers or runtime traffic without recovery.",
+      "safe_next_action": "Stage migration-plan.md with rollback or accepted no-rollback rationale."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, scope, review date and residual risk",
+      "approval_boundary": "not required for read-only audit",
+      "artifact": "architecture-overview.md",
+      "domain": "solution_architecture",
+      "evidence_owner": "architecture owner",
+      "evidence_required": [
+        "scope",
+        "stakeholders",
+        "architecture question",
+        "non-goals",
+        "owner"
+      ],
+      "gate": "solution_architecture_scope_present",
+      "priority": "P1_high_risk",
+      "reason": "Complex or multi-surface work needs architecture scope, stakeholders and non-goals.",
+      "residual_risk": "Implementation can cross implicit system boundaries without review.",
+      "safe_next_action": "Stage architecture-overview.md with scope, context and container boundaries."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, review date, downstream risk, residual risk and follow-up condition",
+      "approval_boundary": "approval_required before database introspection, production database access, production data access, migration execution, destructive cleanup, backup restore or retention mutation",
+      "artifact": "database-lineage-map.md",
+      "domain": "database_data",
+      "evidence_owner": "data owner",
+      "evidence_required": [
+        "lineage",
+        "OpenLineage",
+        "dbt",
+        "upstream",
+        "downstream",
+        "runtime pipeline and RAG ingestion signals are present_unverified"
+      ],
+      "gate": "database_lineage_present",
+      "priority": "P2_recommended",
+      "reason": "Lineage, runtime pipeline or RAG ingestion impact is unreviewed.",
+      "residual_risk": "Database artifact presence does not prove migration, data quality or runtime safety.",
+      "safe_next_action": "Stage database evidence before connecting to production data or running migrations."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, review date, downstream risk, residual risk and follow-up condition",
+      "approval_boundary": "approval_required before database introspection, production database access, production data access, migration execution, destructive cleanup, backup restore or retention mutation",
+      "artifact": "database-query-performance-review.md",
+      "domain": "database_data",
+      "evidence_owner": "data owner",
+      "evidence_required": [
+        "query performance",
+        "query plan",
+        "index",
+        "EXPLAIN",
+        "production load risk",
+        "write-side EXPLAIN ANALYZE requires approval"
+      ],
+      "gate": "database_performance_review_present",
+      "priority": "P2_recommended",
+      "reason": "Query/index/performance impact is unreviewed.",
+      "residual_risk": "Database artifact presence does not prove migration, data quality or runtime safety.",
+      "safe_next_action": "Stage database evidence before connecting to production data or running migrations."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, review date, downstream risk, residual risk and follow-up condition",
+      "approval_boundary": "approval_required before database introspection, production database access, production data access, migration execution, destructive cleanup, backup restore or retention mutation",
+      "artifact": "database-synthetic-fixtures-policy.md",
+      "domain": "database_data",
+      "evidence_owner": "data owner",
+      "evidence_required": [
+        "synthetic fixtures",
+        "no secrets",
+        "no production data",
+        "no private customer data",
+        "fixtures"
+      ],
+      "gate": "database_synthetic_fixture_policy_present",
+      "priority": "P2_recommended",
+      "reason": "Database fixtures need synthetic/no-secrets/no-production-data policy.",
+      "residual_risk": "Database artifact presence does not prove migration, data quality or runtime safety.",
+      "safe_next_action": "Stage database evidence before connecting to production data or running migrations."
+    }
+  ],
+  "safe_next_action": "Stage database evidence before connecting to production data or running migrations.",
+  "status": "ok",
+  "unknowns": [
+    "artifact owners and approval boundaries"
+  ],
+  "write_policy": "read_only"
+}

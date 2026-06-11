@@ -9,6 +9,8 @@
     "fresh_context_handoff",
     "subagent_context_packet_before_launch",
     "subagent_result_packet_after_completion",
+    "config_routed_task_plan_lifecycle",
+    "config_routed_control_plane_sync",
     "user_visible_task_brief_before_execution",
     "user_visible_completion_brief_after_execution",
     "control_plane_sync_before_completion",
@@ -31,6 +33,7 @@
     "agent descriptions are role-specific and technical",
     "developer_instructions include ownership, inputs, outputs, stop conditions, and handoff",
     "agents mention local system files as context and not as default deliverables",
+    "agents load the config-routed lifecycle workflow contract from .codex/config.toml instead of duplicating lifecycle rules in every profile",
     "agents show a Task Brief before non-mechanical execution and a Completion Brief after execution or handoff",
     "agents run a Control-Plane Sync check before completion and update owned control-plane files or record not_applicable / handoff_required",
     "agents require a Subagent Context Packet before delegated subagent launch and a Subagent Result Packet after completion",
@@ -44,11 +47,31 @@
     "agent collects unrelated repository inventory after enough context exists",
     "agent claims done, fixed, verified, ready, or release-ready without current evidence or accepted gap",
     "agent treats generated dashboard, template presence, or stale logs as proof",
+    "agent profile duplicates field-level lifecycle rules instead of referencing [product_agent_os.lifecycle_contract] and [workflows] in .codex/config.toml",
     "agent performs non-mechanical execution without a user-visible Task Brief or closes without a user-visible Completion Brief",
     "agent closes after changing scope, plan, verification, eval, runlog, or Batch 39 state without control-plane sync",
     "agent launches a delegated subagent without a Subagent Context Packet or closes it without a Subagent Result Packet"
   ],
   "cases": [
+    {
+      "id": "config-routed-task-brief-lifecycle",
+      "input": "Inspect Product-Agent OS config and agent profiles before a non-mechanical task.",
+      "expected": {
+        "fields": [
+          ".codex/config.toml",
+          "[product_agent_os.lifecycle_contract]",
+          "[workflows]",
+          "config_routed_task_plan_lifecycle",
+          "config_routed_control_plane_sync",
+          ".codex/workflows/task-plan-lifecycle.md",
+          ".codex/workflows/control-plane-sync.md",
+          ".codex/evals/agent-context-contract.json",
+          "chat_visibility",
+          "required"
+        ],
+        "result": "Agents must follow the lifecycle workflow through config, then show the required user-visible Task Brief and Completion Brief."
+      }
+    },
     {
       "id": "control-plane-sync-before-completion",
       "input": "Finish a Product-Agent OS task that changes scope, plan, tests, evals, runlog state, or Batch 39 ledger state.",

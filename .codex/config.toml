@@ -59,10 +59,19 @@ fresh_context_files = [
   ".codex/workflows/worktree-ownership.md",
   ".codex/workflows/build-slice.md",
   ".codex/workflows/task-plan-lifecycle.md",
+  ".codex/workflows/control-plane-sync.md",
   ".codex/workflows/review-slice.md",
   ".codex/evals/agent-context-contract.json",
   ".rules",
 ]
+
+[product_agent_os.lifecycle_contract]
+task_plan_lifecycle = ".codex/workflows/task-plan-lifecycle.md"
+control_plane_sync = ".codex/workflows/control-plane-sync.md"
+agent_context_contract = ".codex/evals/agent-context-contract.json"
+chat_visibility = "required"
+required_for = "non_mechanical_tasks"
+agent_instruction_policy = "reference_config_workflows_do_not_duplicate_contract"
 
 [product_agent_os.reasoning]
 discovery = "low"
@@ -99,6 +108,7 @@ source_context_pack = ".codex/workflows/source-context-pack.md"
 worktree_ownership = ".codex/workflows/worktree-ownership.md"
 build_slice = ".codex/workflows/build-slice.md"
 task_plan_lifecycle = ".codex/workflows/task-plan-lifecycle.md"
+control_plane_sync = ".codex/workflows/control-plane-sync.md"
 review_slice = ".codex/workflows/review-slice.md"
 
 [evals]

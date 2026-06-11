@@ -1,0 +1,13 @@
+{
+  "trace_id": "synthetic-trace-001",
+  "question": "What must the assistant cite?",
+  "retrieved_ids": ["policy-001"],
+  "answer": {
+    "answer": "The assistant must cite local snippet identifiers.",
+    "citations": ["policy-001"],
+    "confidence": "medium",
+    "unsupported": false
+  },
+  "provider_call_performed": false
+}
+
