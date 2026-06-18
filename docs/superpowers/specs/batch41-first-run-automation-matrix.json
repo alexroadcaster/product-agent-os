@@ -204,7 +204,8 @@
       "codex_does": "Include usage mode, stack, complexity, control-plane state and docs tooling.",
       "user_does": "Confirm or correct inferred route when asked.",
       "acceptance": "Packet includes route reasons and generated-artifact exclusion policy.",
-      "stop_condition": "Stop if generated HTML influences route as source truth."
+      "stop_condition": "Stop if generated HTML influences route as source truth.",
+      "status": "implemented"
     },
     {
       "id": "B41-S3-M11",
@@ -215,7 +216,8 @@
       "codex_does": "Include bounded recommendations and top-N first safe actions.",
       "user_does": "Answer owner questions or accept gaps.",
       "acceptance": "Noisy recommendations stay capped in first screen while full packet is preserved.",
-      "stop_condition": "Stop if first response overwhelms user with full recommendation dump."
+      "stop_condition": "Stop if first response overwhelms user with full recommendation dump.",
+      "status": "implemented"
     },
     {
       "id": "B41-S3-M12",
@@ -226,7 +228,8 @@
       "codex_does": "Run source policy read-only and map errors to next action.",
       "user_does": "Fix source docs or approve accepted gap later.",
       "acceptance": "Neural_Flow-style missing Source status produces blocked state plus one question.",
-      "stop_condition": "Stop if source-policy block is downgraded to warning for convenience."
+      "stop_condition": "Stop if source-policy block is downgraded to warning for convenience.",
+      "status": "implemented"
     },
     {
       "id": "B41-S3-M13",
@@ -237,7 +240,8 @@
       "codex_does": "Run graph dry-run and summarize counts, confidence and blind spots.",
       "user_does": "Use graph as orientation, not proof.",
       "acceptance": "HTML graph page contains bounded summary without raw source or absolute paths.",
-      "stop_condition": "Stop if graph claims semantic completeness."
+      "stop_condition": "Stop if graph claims semantic completeness.",
+      "status": "implemented"
     },
     {
       "id": "B41-S3-M14",
@@ -248,7 +252,8 @@
       "codex_does": "Add docs/logging detector and recommendations.",
       "user_does": "Confirm preferred docs/logging owner when ambiguous.",
       "acceptance": "Fixture covers MkDocs, Markdown-only, JSONL logs, app logs and missing docs tooling.",
-      "stop_condition": "Stop if docs tooling detection triggers install or build by default."
+      "stop_condition": "Stop if docs tooling detection triggers install or build by default.",
+      "status": "implemented"
     },
     {
       "id": "B41-S3-M15",
@@ -259,7 +264,8 @@
       "codex_does": "Reuse S4 hardening inventory in orchestrator packet.",
       "user_does": "Approve install/runtime separately if needed.",
       "acceptance": "SOL-style frontend/backend manifests are summarized; no install happens.",
-      "stop_condition": "Stop if dependency readiness is confused with install success."
+      "stop_condition": "Stop if dependency readiness is confused with install success.",
+      "status": "implemented"
     },
     {
       "id": "B41-S3-M16",
@@ -270,7 +276,8 @@
       "codex_does": "Include runtime/browser harness status and approval requirements.",
       "user_does": "Give exact disposable runtime/browser approval if desired.",
       "acceptance": "Runtime/browser page says approval_required when writes/provider/browser are needed.",
-      "stop_condition": "Stop if report says browser QA passed without current browser evidence."
+      "stop_condition": "Stop if report says browser QA passed without current browser evidence.",
+      "status": "implemented"
     },
     {
       "id": "B41-S4-M17",
@@ -281,7 +288,8 @@
       "codex_does": "Call render_first_run_analysis_artifact after packet validation.",
       "user_does": "Open staged or written HTML.",
       "acceptance": "index.html plus all expected pages and manifest are produced in stage/write mode.",
-      "stop_condition": "Stop if renderer writes outside allowed directory."
+      "stop_condition": "Stop if renderer writes outside allowed directory.",
+      "status": "implemented"
     },
     {
       "id": "B41-S4-M18",
@@ -292,7 +300,8 @@
       "codex_does": "Update renderer/template sections and navigation.",
       "user_does": "Review whether report is understandable.",
       "acceptance": "HTML audit verifies pages, no external URLs/scripts and no generated-view proof claims.",
-      "stop_condition": "Stop if HTML becomes source of truth instead of generated view."
+      "stop_condition": "Stop if HTML becomes source of truth instead of generated view.",
+      "status": "implemented"
     },
     {
       "id": "B41-S4-M19",
@@ -303,7 +312,8 @@
       "codex_does": "Surface digest/page/source deltas and first-run history.",
       "user_does": "Interpret deltas before making decisions.",
       "acceptance": "Repeated run records unchanged/changed pages and source artifacts.",
-      "stop_condition": "Stop if comparison hides changed source inputs."
+      "stop_condition": "Stop if comparison hides changed source inputs.",
+      "status": "implemented"
     },
     {
       "id": "B41-S4-M20",
@@ -314,7 +324,8 @@
       "codex_does": "Generate remove path and optional cleanup command preview.",
       "user_does": "Approve cleanup if desired.",
       "acceptance": "Report lists generated files and deletion scope; no deletion by default.",
-      "stop_condition": "Stop if cleanup includes user-authored files."
+      "stop_condition": "Stop if cleanup includes user-authored files.",
+      "status": "implemented"
     },
     {
       "id": "B41-S5-M21",
@@ -325,7 +336,8 @@
       "codex_does": "Add first response fields: mode, confidence, summary, one blocking question and safe next action.",
       "user_does": "Answer the question or accept a gap.",
       "acceptance": "First-run output contains max one blocking question and keeps others in packet.",
-      "stop_condition": "Stop if first response asks a long questionnaire."
+      "stop_condition": "Stop if first response asks a long questionnaire.",
+      "status": "implemented"
     },
     {
       "id": "B41-S5-M22",
@@ -336,7 +348,8 @@
       "codex_does": "Stage answer ledger template and validation.",
       "user_does": "Approve which answers become project context.",
       "acceptance": "Ledger records source, owner, timestamp, status and affected artifact.",
-      "stop_condition": "Stop if unreviewed answers mutate source docs."
+      "stop_condition": "Stop if unreviewed answers mutate source docs.",
+      "status": "implemented"
     },
     {
       "id": "B41-S5-M23",
@@ -347,7 +360,8 @@
       "codex_does": "Implement one-question intake and two or three route options when ambiguous.",
       "user_does": "Choose route or provide missing info.",
       "acceptance": "Ambiguous fixture shows one question plus route choices, not implementation.",
-      "stop_condition": "Stop if onboarding blocks deterministic read-only analysis."
+      "stop_condition": "Stop if onboarding blocks deterministic read-only analysis.",
+      "status": "implemented"
     },
     {
       "id": "B41-S6-M24",

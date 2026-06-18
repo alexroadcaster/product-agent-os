@@ -13,10 +13,12 @@ from codex_runtime_runner.redaction import redact_payload  # noqa: E402
 from product_agent_os.analysis_artifact_renderer import render_first_run_analysis_artifact  # noqa: E402
 from product_agent_os.first_run_analysis import (  # noqa: E402
     ANALYSIS_DIR,
+    ANSWER_LEDGER_TEMPLATE_NAME,
     FIRST_RUN_PACKET_NAME,
     build_first_run_automation_contract,
     run_first_project_analysis,
 )
+from product_agent_os.question_ledger import render_answer_ledger_json  # noqa: E402
 
 
 def _print_payload(payload: dict) -> None:
@@ -118,6 +120,10 @@ def _run_stage_mode(workspace: str, stage_dir: str, *, generated_at: str) -> dic
         json.dumps(packet, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
+    (stage_path / ANSWER_LEDGER_TEMPLATE_NAME).write_text(
+        render_answer_ledger_json(packet["answer_ledger_routing"]["ledger_template"]) + "\n",
+        encoding="utf-8",
+    )
     render_result = render_first_run_analysis_artifact(packet, workspace_path, output_dir=stage_path)
     result.update(
         {
@@ -129,8 +135,10 @@ def _run_stage_mode(workspace: str, stage_dir: str, *, generated_at: str) -> dic
                 "target_default": "read_only",
                 "target_workspace_mutation": False,
             },
-            "written_files": [FIRST_RUN_PACKET_NAME] + render_result["written_files"],
+            "written_files": [FIRST_RUN_PACKET_NAME, ANSWER_LEDGER_TEMPLATE_NAME] + render_result["written_files"],
             "render_result": render_result,
+            "baseline_comparison": render_result["baseline_comparison"],
+            "cleanup_guidance": render_result["cleanup_guidance"],
         }
     )
     return result
@@ -146,8 +154,12 @@ def _run_write_analysis_mode(workspace: str, *, generated_at: str) -> dict:
         json.dumps(packet, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
+    (analysis_dir / ANSWER_LEDGER_TEMPLATE_NAME).write_text(
+        render_answer_ledger_json(packet["answer_ledger_routing"]["ledger_template"]) + "\n",
+        encoding="utf-8",
+    )
     render_result = render_first_run_analysis_artifact(packet, workspace_path)
-    written = [f"{ANALYSIS_DIR}/{FIRST_RUN_PACKET_NAME}"]
+    written = [f"{ANALYSIS_DIR}/{FIRST_RUN_PACKET_NAME}", f"{ANALYSIS_DIR}/{ANSWER_LEDGER_TEMPLATE_NAME}"]
     written.extend(f"{ANALYSIS_DIR}/{path}" for path in render_result["written_files"])
     result.update(
         {
@@ -161,6 +173,8 @@ def _run_write_analysis_mode(workspace: str, *, generated_at: str) -> dict:
             },
             "written_files": written,
             "render_result": render_result,
+            "baseline_comparison": render_result["baseline_comparison"],
+            "cleanup_guidance": render_result["cleanup_guidance"],
         }
     )
     return result

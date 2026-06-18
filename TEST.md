@@ -84,7 +84,7 @@ For real-project target tests, the default verification mode is read-only: inven
 | `B38-PILOT-NF01` | Docs-only pilot addendum; target apply blocked by `source_policy_status: blocked`. | Resolve target source policy and target control-plane artifacts before target mutation. |
 | Batch 39 | `B39-S1` through `B39-S5` are current through `B39-S5-CLOSURE-A01`. S5 evidence closes source-doc sync, go/no-go and no-unapproved-actions proof as `closed_for_owner_feedback_testing_not_release_ready`: release is `no_go`, owner-feedback testing is `conditional_go`, runtime/browser pilot is `approval_required`, and promotion remains `manual_only_not_promoted`. | Run owner-feedback tests from `batch39-s5-owner-feedback-test-plan.json`; keep S4/S5 focused tests, full unittest, fixture/transcript eval, Codex compatibility, docs check and diff hygiene before any stronger readiness claim. |
 | Batch 40 completion-skeptic | Local manual loop closed as `manual_only` and `not_promoted`. | Automation promotion requires manual success evidence, eval cases, owner, cadence, stop condition and rollback/disable path. |
-| Batch 41 first-run orchestration | `B41-S1-M01..M05` and `B41-S2-M06..M09` implemented as local CLI/contract behavior. Current focused evidence: B41 command contract/script matrix tests, first-run regression tests and docs contract tests passed for prior slices. | Continue with B41-S3 project-analysis integration checks; no full B41, real-target pilot, runtime/browser or plugin-cache readiness claim yet. |
+| Batch 41 first-run orchestration | `B41-S1-M01..M05`, `B41-S2-M06..M09`, `B41-S3-M10..M16`, `B41-S4-M17..M20` and `B41-S5-M21..M23` implemented as local CLI/contract behavior. Current focused evidence: B41 command contract/script matrix/project-analysis/html artifact/guided-question tests pass for implemented slices. | Continue with B41-S6 synthetic E2E, read-only pilots, usefulness scorecard, verification sweep and plugin/cache readiness; no full B41, real-target pilot, runtime/browser or plugin-cache readiness claim yet. |
 | Agent lifecycle and control-plane sync | Current local agents, packaged agent templates, workflows, config templates and `agent-context-contract` require config-routed Task Brief / Completion Brief plus control-plane sync before completion; current verification passed. | Rerun task lifecycle, infrastructure template, docs, docs-structure and diff hygiene checks after future changes to this contract. |
 
 ## Historical Evidence Owners
@@ -97,6 +97,9 @@ For real-project target tests, the default verification mode is read-only: inven
 | `B40-S2..B40-S5`, `manual_only`, `not_promoted` | `docs/sources/product-agent-os-track-10-backlog.md`, `RUNLOG.md` |
 | `B41-S1-M01..M05` | `docs/superpowers/specs/batch41-s1-command-contract-summary.json`, `docs/superpowers/specs/batch41-first-run-automation-matrix.json`, `RUNLOG.md` |
 | `B41-S2-M06..M09` | `docs/superpowers/specs/batch41-s2-script-matrix-summary.json`, `docs/superpowers/specs/batch41-first-run-automation-matrix.json`, `RUNLOG.md` |
+| `B41-S3-M10..M16` | `docs/superpowers/specs/batch41-s3-project-analysis-summary.json`, `docs/superpowers/specs/batch41-first-run-automation-matrix.json`, `RUNLOG.md` |
+| `B41-S4-M17..M20` | `docs/superpowers/specs/batch41-s4-html-artifact-summary.json`, `docs/superpowers/specs/batch41-first-run-automation-matrix.json`, `RUNLOG.md` |
+| `B41-S5-M21..M23` | `docs/superpowers/specs/batch41-s5-guided-questions-summary.json`, `docs/superpowers/specs/batch41-first-run-automation-matrix.json`, `RUNLOG.md` |
 | Track 8 | `docs/sources/product-agent-os-track-8-detailed-backlog.md` |
 | Track 9 | `docs/sources/product-agent-os-track-9-backlog.md` |
 | Source registry | `docs/sources/registry.md` |
@@ -121,6 +124,9 @@ For real-project target tests, the default verification mode is read-only: inven
 - B40-S5 implements Doubt / verifier loop pilot metrics and closure; completion_skeptic_manual_pilot_ledger; completion_skeptic_go_no_go_closure.
 - B41-S1 implements first-run command/UX contract rows `B41-S1-M01..M05`: `first_run_orchestrator_contract_v1`, no-args help, `--full-dry-run`, external `--stage <dir>`, `--write-analysis`, stage-inside-target block, and renderer stage output support.
 - B41-S2 implements help-only script-matrix rows `B41-S2-M06..M09`: `first_run_script_registry_v1`, `first_run_command_matrix_v1`, `first_run_evidence_summary_v1`, `first_run_resume_ledger_v1`, skipped approval/live boundaries and no raw stdout/stderr retention.
+- B41-S3 implements project-analysis rows `B41-S3-M10..M16`: `first_run_project_analysis_summary_v1`, `first_run_methodology_audit_summary_v1`, `first_run_source_policy_summary_v1`, `first_run_graph_dry_run_summary_v1`, `first_run_docs_logging_summary_v1`, `first_run_dependency_readiness_summary_v1` and `first_run_runtime_browser_boundary_v1`.
+- B41-S4 implements HTML artifact rows `B41-S4-M17..M20`: orchestrator renderer output in stage/write-analysis modes, multi-page HTML project summaries, previous-baseline comparison in CLI/HTML/manifest, and cleanup/rollback guidance as preview-only with no deletion by default.
+- B41-S5 implements guided question rows `B41-S5-M21..M23`: `first_run_guided_question_protocol_v1`, `first_run_answer_ledger_v1`, `first_run_ambiguous_route_intake_v1`, top-level `first_response`, packet `question_queue`, staged `answer-ledger-template.json` and route options without blocking deterministic read-only analysis.
 
 ## Completion Claim Rule
 

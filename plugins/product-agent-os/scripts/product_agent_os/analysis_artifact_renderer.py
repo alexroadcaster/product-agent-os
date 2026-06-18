@@ -46,11 +46,26 @@ def render_first_run_analysis_artifact(
 
     analysis_dir = Path(output_dir) if output_dir is not None else workspace_path / ANALYSIS_DIR
     previous_manifest = _load_previous_manifest(analysis_dir / ANALYSIS_MANIFEST_NAME)
-    pages = [_page_entry(page_id, packet) for page_id in FIRST_RUN_ANALYSIS_PAGE_IDS]
     source_artifacts = _source_artifacts(packet)
-    page_digests = {page["page_id"]: page["digest"] for page in pages}
     source_digests = {item["artifact_id"]: item["digest"] for item in source_artifacts}
-    redaction_report = _redaction_report([packet, pages, source_artifacts, page_digests, source_digests])
+    previous_baseline = _previous_baseline(previous_manifest)
+    preliminary_change_summary = _change_summary(previous_manifest, {}, source_digests)
+    cleanup_guidance = _cleanup_guidance(FIRST_RUN_ANALYSIS_PAGE_IDS)
+    pages = [
+        _page_entry(
+            page_id,
+            packet,
+            previous_baseline=previous_baseline,
+            change_summary=preliminary_change_summary,
+            cleanup_guidance=cleanup_guidance,
+        )
+        for page_id in FIRST_RUN_ANALYSIS_PAGE_IDS
+    ]
+    page_digests = {page["page_id"]: page["digest"] for page in pages}
+    change_summary = _change_summary(previous_manifest, page_digests, source_digests)
+    redaction_report = _redaction_report(
+        [packet, pages, source_artifacts, page_digests, source_digests, previous_baseline, change_summary, cleanup_guidance]
+    )
     if redaction_report["status"] != "passed_redacted":
         raise ValueError("generated analysis artifact failed redaction guardrails")
     analysis_dir.mkdir(parents=True, exist_ok=True)
@@ -70,8 +85,9 @@ def render_first_run_analysis_artifact(
         "page_digests": page_digests,
         "source_artifacts": source_artifacts,
         "source_digests": source_digests,
-        "previous_baseline": _previous_baseline(previous_manifest),
-        "change_summary": _change_summary(previous_manifest, page_digests, source_digests),
+        "previous_baseline": previous_baseline,
+        "change_summary": change_summary,
+        "cleanup_guidance": cleanup_guidance,
         "redaction_report": redaction_report,
         "source_policy_gate": _source_policy_gate(packet),
         "graph_depth_summary": _graph_depth_summary(packet),
@@ -89,12 +105,32 @@ def render_first_run_analysis_artifact(
         "page_count": len(pages),
         "written_files": [ANALYSIS_MANIFEST_NAME] + [page["path"] for page in pages],
         "generated_view_policy": "orientation_only_not_proof",
+        "baseline_comparison": {
+            "status": previous_baseline.get("status", "missing"),
+            "previous_manifest_digest": previous_baseline.get("manifest_digest", "not_available"),
+            "previous_baseline": previous_baseline,
+            "change_summary": change_summary,
+        },
+        "cleanup_guidance": cleanup_guidance,
     }
 
 
-def _page_entry(page_id: str, packet: dict[str, Any]) -> dict[str, Any]:
+def _page_entry(
+    page_id: str,
+    packet: dict[str, Any],
+    *,
+    previous_baseline: dict[str, Any],
+    change_summary: dict[str, list[str]],
+    cleanup_guidance: dict[str, Any],
+) -> dict[str, Any]:
     path = "index.html" if page_id == "overview" else f"{page_id}.html"
-    body = _page_html(page_id, packet)
+    body = _page_html(
+        page_id,
+        packet,
+        previous_baseline=previous_baseline,
+        change_summary=change_summary,
+        cleanup_guidance=cleanup_guidance,
+    )
     return {
         "page_id": page_id,
         "path": path,
@@ -104,7 +140,14 @@ def _page_entry(page_id: str, packet: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def _page_html(page_id: str, packet: dict[str, Any]) -> str:
+def _page_html(
+    page_id: str,
+    packet: dict[str, Any],
+    *,
+    previous_baseline: dict[str, Any],
+    change_summary: dict[str, list[str]],
+    cleanup_guidance: dict[str, Any],
+) -> str:
     title = page_id.replace("-", " ").title()
     source_links = "\n".join(
         f"<li><code>{html.escape(item['artifact_id'])}</code>: {html.escape(item['path'])}</li>"
@@ -124,6 +167,9 @@ def _page_html(page_id: str, packet: dict[str, Any]) -> str:
     )
     safe_next = html.escape(str(packet.get("safe_next_action", "")))
     graph_depth_html = _graph_depth_html(packet) if page_id == "graph" else ""
+    s4_html = _s4_page_summary_html(page_id, packet)
+    baseline_html = _baseline_html(previous_baseline, change_summary)
+    cleanup_html = _cleanup_html(cleanup_guidance)
     return (
         "<!doctype html>\n"
         "<html lang=\"en\">\n"
@@ -140,9 +186,66 @@ def _page_html(page_id: str, packet: dict[str, Any]) -> str:
         "<h2>Section Evidence</h2>\n"
         "<table><thead><tr><th>Section</th><th>Status</th><th>Module</th><th>Artifact</th><th>Freshness</th><th>Confidence</th></tr></thead>"
         f"<tbody>{sections}</tbody></table>\n"
+        f"{s4_html}"
+        f"{baseline_html}"
+        f"{cleanup_html}"
         f"{graph_depth_html}"
         "</body>\n"
         "</html>\n"
+    )
+
+
+def _s4_page_summary_html(page_id: str, packet: dict[str, Any]) -> str:
+    blocks_by_page = {
+        "overview": [
+            ("Project Analysis", packet.get("project_analysis_summary", {})),
+            ("Safe Next Action", {"safe_next_action": packet.get("safe_next_action", "")}),
+        ],
+        "inventory": [
+            ("Project Analysis", packet.get("project_analysis_summary", {})),
+            ("Docs And Logging", packet.get("docs_logging_summary", {})),
+            ("Dependency Readiness", packet.get("dependency_readiness_summary", {})),
+        ],
+        "methodology": [("Methodology Audit", packet.get("methodology_audit_summary", {}))],
+        "runtime-route": [("Runtime Browser Boundary", packet.get("runtime_browser_boundary", {}))],
+        "graph": [("Graph Dry Run", packet.get("graph_dry_run_summary", {}))],
+        "recommendations": [
+            ("Safe Next Action", {"safe_next_action": packet.get("safe_next_action", "")}),
+            ("Unsupported Claims", packet.get("evidence_status", {}).get("unsupported_claims", [])),
+        ],
+    }
+    blocks = blocks_by_page.get(page_id, [])
+    if not blocks:
+        return ""
+    return (
+        "\n".join(
+            "<section>"
+            f"<h2>{html.escape(title)}</h2>"
+            f"<pre>{html.escape(json.dumps(value, ensure_ascii=False, sort_keys=True, indent=2))}</pre>"
+            "</section>"
+            for title, value in blocks
+        )
+        + "\n"
+    )
+
+
+def _baseline_html(previous_baseline: dict[str, Any], change_summary: dict[str, list[str]]) -> str:
+    return (
+        "<section aria-labelledby=\"baseline-comparison\">\n"
+        "<h2 id=\"baseline-comparison\">Baseline Comparison</h2>\n"
+        f"<p>Status: <code>{html.escape(str(previous_baseline.get('status', 'missing')))}</code></p>\n"
+        f"<pre>{html.escape(json.dumps(change_summary, ensure_ascii=False, sort_keys=True, indent=2))}</pre>\n"
+        "</section>\n"
+    )
+
+
+def _cleanup_html(cleanup_guidance: dict[str, Any]) -> str:
+    return (
+        "<section aria-labelledby=\"artifact-cleanup-rollback\">\n"
+        "<h2 id=\"artifact-cleanup-rollback\">Artifact Cleanup And Rollback</h2>\n"
+        "<p>Cleanup is preview-only and requires explicit approval; no files are deleted by default.</p>\n"
+        f"<pre>{html.escape(json.dumps(cleanup_guidance, ensure_ascii=False, sort_keys=True, indent=2))}</pre>\n"
+        "</section>\n"
     )
 
 
@@ -255,6 +358,21 @@ def _graph_depth_html(packet: dict[str, Any]) -> str:
         f"<ul>{tour_items}</ul>\n"
         "</section>\n"
     )
+
+
+def _cleanup_guidance(page_ids: list[str]) -> dict[str, Any]:
+    generated_files = [ANALYSIS_MANIFEST_NAME]
+    generated_files.extend("index.html" if page_id == "overview" else f"{page_id}.html" for page_id in page_ids)
+    return {
+        "schema_version": "first_run_artifact_cleanup_guidance_v1",
+        "status": "preview_only",
+        "deletion_performed": False,
+        "approval_required": True,
+        "generated_files": generated_files,
+        "cleanup_command_preview": "Remove only the generated files listed in this manifest after explicit approval.",
+        "rollback_policy": "Re-run first-run analysis to regenerate generated orientation artifacts.",
+        "forbidden_scope": ["user_authored_files", "source_docs", "project_config", "git_metadata"],
+    }
 
 
 def _count_local_absolute_paths(payload: Any) -> int:

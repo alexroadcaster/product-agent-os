@@ -8,6 +8,12 @@ import time
 from pathlib import Path, PureWindowsPath
 from typing import Any
 
+from product_agent_os.discovery import analyze_workspace
+from product_agent_os.methodology_audit import build_methodology_audit
+from product_agent_os.project_code_graph import build_project_code_graph
+from product_agent_os.question_ledger import build_answer_ledger, validate_answer_ledger
+from product_agent_os.question_protocol import build_question_queue
+from product_agent_os.source_policy import validate_source_policy
 from product_agent_os.stage_manifest import canonical_json, content_digest
 
 
@@ -17,9 +23,12 @@ FIRST_RUN_SCRIPT_REGISTRY_SCHEMA_VERSION = "first_run_script_registry_v1"
 FIRST_RUN_COMMAND_MATRIX_SCHEMA_VERSION = "first_run_command_matrix_v1"
 FIRST_RUN_EVIDENCE_SUMMARY_SCHEMA_VERSION = "first_run_evidence_summary_v1"
 FIRST_RUN_RESUME_LEDGER_SCHEMA_VERSION = "first_run_resume_ledger_v1"
+FIRST_RUN_GUIDED_RESPONSE_SCHEMA_VERSION = "first_run_guided_response_v1"
+FIRST_RUN_ANSWER_LEDGER_ROUTING_SCHEMA_VERSION = "first_run_answer_ledger_routing_v1"
 FIRST_RUN_ANALYSIS_ARTIFACT_VERSION = 1
 GENERATED_VIEW_POLICY = "orientation_only_not_proof"
 WRITE_POLICY = "read_only_generated_analysis_only"
+ANSWER_LEDGER_TEMPLATE_NAME = "answer-ledger-template.json"
 REQUIRED_SECTION_IDS = {
     "discovery",
     "runtime_route",
@@ -39,6 +48,7 @@ EVIDENCE_STATUSES = {
 }
 CONFIDENCE_LEVELS = {"high", "medium", "low", "unknown"}
 ANALYSIS_DIR = ".codex/product-agent-os/analysis"
+FIRST_RUN_ANALYSIS_ARTIFACT_PREFIX = f"{ANALYSIS_DIR}/"
 FIRST_RUN_PACKET_NAME = "first-run-analysis-packet.json"
 SECRET_LIKE_VALUE_RE = re.compile(r"\b(?:sk-proj|sk)-[A-Za-z0-9_-]{12,}")
 DEFAULT_SCRIPT_HELP_TIMEOUT_SECONDS = 10
@@ -103,6 +113,16 @@ FIRST_RUN_ANALYSIS_PACKET_SCHEMA: dict[str, Any] = {
         "generated_view_policy": {"const": GENERATED_VIEW_POLICY},
         "graph_depth_summary": {"type": "object"},
         "graph_artifact_summary": {"type": "object"},
+        "project_analysis_summary": {"type": "object"},
+        "methodology_audit_summary": {"type": "object"},
+        "source_policy_summary": {"type": "object"},
+        "graph_dry_run_summary": {"type": "object"},
+        "docs_logging_summary": {"type": "object"},
+        "dependency_readiness_summary": {"type": "object"},
+        "runtime_browser_boundary": {"type": "object"},
+        "question_queue": {"type": "object"},
+        "first_response": {"type": "object"},
+        "answer_ledger_routing": {"type": "object"},
         "safe_next_action": {"type": "string"},
         "packet_digest": {"type": "string"},
     },
@@ -231,6 +251,16 @@ def build_first_run_analysis_packet(
     section_summaries: dict[str, dict[str, Any]],
     safe_next_action: str,
     graph_artifact_summary: dict[str, Any] | None = None,
+    project_analysis_summary: dict[str, Any] | None = None,
+    methodology_audit_summary: dict[str, Any] | None = None,
+    source_policy_summary: dict[str, Any] | None = None,
+    graph_dry_run_summary: dict[str, Any] | None = None,
+    docs_logging_summary: dict[str, Any] | None = None,
+    dependency_readiness_summary: dict[str, Any] | None = None,
+    runtime_browser_boundary: dict[str, Any] | None = None,
+    question_queue: dict[str, Any] | None = None,
+    first_response: dict[str, Any] | None = None,
+    answer_ledger_routing: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Build the source packet for first-run project analysis."""
 
@@ -265,6 +295,16 @@ def build_first_run_analysis_packet(
         "generated_view_policy": GENERATED_VIEW_POLICY,
         "graph_depth_summary": graph_summary,
         "graph_artifact_summary": graph_summary,
+        "project_analysis_summary": project_analysis_summary or _empty_project_analysis_summary(),
+        "methodology_audit_summary": methodology_audit_summary or _empty_methodology_audit_summary(),
+        "source_policy_summary": source_policy_summary or _empty_source_policy_summary(),
+        "graph_dry_run_summary": graph_dry_run_summary or _empty_graph_dry_run_summary(),
+        "docs_logging_summary": docs_logging_summary or _empty_docs_logging_summary(),
+        "dependency_readiness_summary": dependency_readiness_summary or _empty_dependency_readiness_summary(),
+        "runtime_browser_boundary": runtime_browser_boundary or _empty_runtime_browser_boundary(),
+        "question_queue": question_queue or build_question_queue(runtime_status="not_available"),
+        "first_response": first_response or _empty_guided_first_response(safe_next_action),
+        "answer_ledger_routing": answer_ledger_routing or _empty_answer_ledger_routing(generated_at),
         "safe_next_action": str(safe_next_action).strip(),
     }
     packet["packet_digest"] = content_digest(canonical_json(packet))
@@ -295,6 +335,8 @@ def validate_first_run_analysis_packet(packet: Any) -> list[str]:
     errors.extend(_validate_evidence_status(packet.get("evidence_status")))
     errors.extend(_validate_graph_artifact_summary(packet.get("graph_depth_summary"), field_name="graph_depth_summary"))
     errors.extend(_validate_graph_artifact_summary(packet.get("graph_artifact_summary")))
+    errors.extend(_validate_guided_first_response(packet.get("first_response")))
+    errors.extend(_validate_answer_ledger_routing(packet.get("answer_ledger_routing")))
     if not isinstance(packet.get("safe_next_action"), str) or not packet.get("safe_next_action", "").strip():
         errors.append("safe_next_action must be a non-empty string")
     if not _valid_sha256_digest(str(packet.get("packet_digest", ""))):
@@ -323,57 +365,61 @@ def run_first_project_analysis(
         raise NotADirectoryError(f"workspace is not a directory: {workspace_path}")
 
     inventory = _workspace_inventory(workspace_path)
+    s3 = build_first_run_project_analysis_summaries(workspace_path, inventory=inventory, generated_at=generated_at)
     sections = adapt_first_run_analysis_sections(
         {
             "discovery": {
-                "source_module": "run_first_project_analysis",
-                "source_artifact": "workspace-inventory",
-                "evidence_freshness": "inspection_only",
-                "confidence": "medium",
+                "source_module": "product_agent_os.discovery.analyze_workspace",
+                "source_artifact": "project_analysis_summary",
+                "evidence_freshness": "current",
+                "confidence": s3["project_analysis_summary"]["usage_mode"]["confidence"],
             },
             "runtime_route": {
-                "source_module": "not_run",
-                "source_artifact": "not_available",
+                "source_module": "first_run_runtime_browser_boundary",
+                "source_artifact": "runtime_browser_boundary",
                 "evidence_freshness": "approval_required",
                 "confidence": "medium",
-                "unsupported_claims": ["live runtime not run"],
+                "unsupported_claims": ["runtime/browser proof not run"],
             },
             "control_plane": {
-                "source_module": "run_first_project_analysis",
-                "source_artifact": "workspace-inventory",
+                "source_module": "product_agent_os.discovery.analyze_workspace",
+                "source_artifact": "project_analysis_summary",
                 "evidence_freshness": "present_unverified",
                 "confidence": "low",
             },
             "source_policy": {
-                "source_module": "run_first_project_analysis",
-                "source_artifact": "workspace-inventory",
-                "evidence_freshness": "present_unverified",
-                "confidence": "low",
+                "source_module": "product_agent_os.source_policy.validate_source_policy",
+                "source_artifact": "source_policy_summary",
+                "evidence_freshness": s3["source_policy_summary"]["section_status"],
+                "confidence": "medium",
+                "unsupported_claims": s3["source_policy_summary"]["unsupported_claims"],
             },
             "graph": {
-                "source_module": "not_run",
-                "source_artifact": "not_available",
-                "evidence_freshness": "not_available",
-                "confidence": "unknown",
-                "unsupported_claims": ["graph not generated in M20.2"],
+                "source_module": "product_agent_os.project_code_graph.build_project_code_graph",
+                "source_artifact": "graph_dry_run_summary",
+                "evidence_freshness": "inspection_only",
+                "confidence": "medium",
+                "unsupported_claims": ["generated graph is not source truth", "semantic completeness not claimed"],
             },
         }
     )
     packet = build_first_run_analysis_packet(
         target_label=workspace_path.name,
         generated_at=generated_at,
-        source_artifacts=[
-            {
-                "artifact_id": "workspace_inventory",
-                "path": "workspace-inventory",
-                "digest": content_digest(canonical_json(inventory)),
-                "evidence_status": "inspection_only",
-                "provenance": "run_first_project_analysis",
-            }
-        ],
+        source_artifacts=_first_run_source_artifacts(inventory),
         generated_pages=[],
         section_summaries=sections,
-        safe_next_action="Review first-run packet; continue only with approved generated analysis artifacts.",
+        safe_next_action=s3["safe_next_action"],
+        project_analysis_summary=s3["project_analysis_summary"],
+        methodology_audit_summary=s3["methodology_audit_summary"],
+        source_policy_summary=s3["source_policy_summary"],
+        graph_dry_run_summary=s3["graph_dry_run_summary"],
+        docs_logging_summary=s3["docs_logging_summary"],
+        dependency_readiness_summary=s3["dependency_readiness_summary"],
+        runtime_browser_boundary=s3["runtime_browser_boundary"],
+        question_queue=s3["question_queue"],
+        first_response=s3["first_response"],
+        answer_ledger_routing=s3["answer_ledger_routing"],
     )
     errors = validate_first_run_analysis_packet(packet)
     if errors:
@@ -397,6 +443,8 @@ def run_first_project_analysis(
             "external_stage_required": False,
         },
         "packet": packet,
+        "first_response": packet["first_response"],
+        "answer_ledger_routing": _answer_ledger_routing_response(packet["answer_ledger_routing"]),
         "script_registry": script_registry,
         "command_matrix": command_matrix,
         "evidence_summary": evidence_summary,
@@ -418,6 +466,63 @@ def adapt_first_run_analysis_sections(analyzer_outputs: dict[str, dict[str, Any]
     return {
         section_id: _adapter_section_entry(analyzer_outputs.get(section_id, {}))
         for section_id in sorted(REQUIRED_SECTION_IDS)
+    }
+
+
+def build_first_run_project_analysis_summaries(
+    workspace: str | Path,
+    *,
+    inventory: dict[str, Any] | None = None,
+    generated_at: str = "",
+) -> dict[str, Any]:
+    """Build bounded read-only S3 first-run project analysis summaries."""
+
+    workspace_path = Path(workspace)
+    inventory = inventory if isinstance(inventory, dict) else _workspace_inventory(workspace_path)
+    discovery = analyze_workspace(workspace_path)
+    methodology = build_methodology_audit(
+        workspace_path,
+        intent_hint="",
+        ignored_path_prefixes=(FIRST_RUN_ANALYSIS_ARTIFACT_PREFIX,),
+    )
+    source_policy = validate_source_policy(workspace_path)
+    graph = build_project_code_graph(workspace_path)
+
+    project_analysis_summary = _project_analysis_summary(discovery)
+    methodology_summary = _methodology_audit_summary(methodology)
+    source_policy_summary = _source_policy_summary(source_policy)
+    graph_summary = _graph_dry_run_summary(graph)
+    docs_logging_summary = _docs_logging_summary(inventory)
+    dependency_summary = _dependency_readiness_summary(workspace_path, inventory)
+    runtime_boundary = _runtime_browser_boundary(dependency_summary)
+    safe_next_action = _s3_safe_next_action(source_policy_summary, runtime_boundary, methodology_summary)
+    question_queue = _first_run_question_queue(
+        methodology=methodology,
+        source_policy_summary=source_policy_summary,
+        runtime_boundary=runtime_boundary,
+        project_analysis_summary=project_analysis_summary,
+    )
+    first_response = _guided_first_response(
+        question_queue=question_queue,
+        project_analysis_summary=project_analysis_summary,
+        source_policy_summary=source_policy_summary,
+        runtime_boundary=runtime_boundary,
+        methodology_summary=methodology_summary,
+        safe_next_action=safe_next_action,
+    )
+    answer_ledger_routing = _answer_ledger_routing(question_queue, generated_at=generated_at)
+    return {
+        "project_analysis_summary": project_analysis_summary,
+        "methodology_audit_summary": methodology_summary,
+        "source_policy_summary": source_policy_summary,
+        "graph_dry_run_summary": graph_summary,
+        "docs_logging_summary": docs_logging_summary,
+        "dependency_readiness_summary": dependency_summary,
+        "runtime_browser_boundary": runtime_boundary,
+        "question_queue": question_queue,
+        "first_response": first_response,
+        "answer_ledger_routing": answer_ledger_routing,
+        "safe_next_action": safe_next_action,
     }
 
 
@@ -692,6 +797,602 @@ def _workspace_inventory(workspace: Path) -> dict[str, Any]:
         "file_count": len(files),
         "files": files[:200],
         "truncated": len(files) > 200,
+    }
+
+
+def _first_run_source_artifacts(inventory: dict[str, Any]) -> list[dict[str, Any]]:
+    artifacts = [
+        {
+            "artifact_id": "workspace_inventory",
+            "path": "workspace-inventory",
+            "digest": content_digest(canonical_json(inventory)),
+            "evidence_status": "inspection_only",
+            "provenance": "run_first_project_analysis",
+        }
+    ]
+    files = inventory.get("files") if isinstance(inventory, dict) else []
+    if not isinstance(files, list):
+        return artifacts
+    for item in files[:200]:
+        if not isinstance(item, dict):
+            continue
+        relative_path = _safe_relative_ref(str(item.get("path", "")))
+        if not relative_path:
+            continue
+        artifacts.append(
+            {
+                "artifact_id": relative_path,
+                "path": relative_path,
+                "digest": content_digest(canonical_json({"path": relative_path, "size": _int(item.get("size"))})),
+                "evidence_status": "inspection_only",
+                "provenance": "workspace_inventory_file",
+            }
+        )
+    return artifacts
+
+
+def _project_analysis_summary(discovery: dict[str, Any]) -> dict[str, Any]:
+    usage_mode = discovery.get("usage_mode") if isinstance(discovery.get("usage_mode"), dict) else {}
+    generated_inputs = discovery.get("generated_artifact_inputs") if isinstance(discovery.get("generated_artifact_inputs"), dict) else {}
+    first_run_generated = generated_inputs.get("first_run_analysis") if isinstance(generated_inputs.get("first_run_analysis"), dict) else {}
+    return {
+        "schema_version": "first_run_project_analysis_summary_v1",
+        "usage_mode": {
+            "primary": str(usage_mode.get("primary", "maintenance")),
+            "secondary": _safe_string_list(usage_mode.get("secondary"))[:5],
+            "confidence": _confidence_or_default(usage_mode.get("confidence")),
+        },
+        "route_reasons": _safe_string_list(usage_mode.get("reasons"))[:5],
+        "detected_stack": _safe_string_list(discovery.get("detected_stack"))[:8],
+        "complexity_profile": {
+            "name": str((discovery.get("complexity_profile") or {}).get("name", "unknown")),
+            "confidence": _confidence_or_default((discovery.get("complexity_profile") or {}).get("confidence")),
+        },
+        "control_plane": {
+            "existing": _safe_string_list(discovery.get("existing_control_plane"))[:12],
+            "missing": _safe_string_list(discovery.get("missing_control_plane"))[:12],
+        },
+        "generated_artifact_inputs": {
+            "status": str(first_run_generated.get("status", "not_available")),
+            "source_truth_allowed": False,
+            "generated_view_policy": GENERATED_VIEW_POLICY,
+            "evidence_ref_count": len(first_run_generated.get("evidence_refs", []))
+            if isinstance(first_run_generated.get("evidence_refs"), list)
+            else 0,
+        },
+        "source_policy": "route uses source files; generated artifacts are orientation-only",
+        "completion_claim": "not_claimed",
+    }
+
+
+def _methodology_audit_summary(methodology: dict[str, Any]) -> dict[str, Any]:
+    domains = methodology.get("methodology_domains") if isinstance(methodology.get("methodology_domains"), list) else []
+    recommendations = methodology.get("recommendations") if isinstance(methodology.get("recommendations"), list) else []
+    return {
+        "schema_version": "first_run_methodology_audit_summary_v1",
+        "status": str(methodology.get("status", "not_available")),
+        "write_policy": str(methodology.get("write_policy", "read_only")),
+        "maturity_level": _selected_packet(methodology.get("maturity_level")),
+        "complexity_profile": _selected_packet(methodology.get("complexity_profile")),
+        "applicable_domains": [
+            {
+                "id": str(item.get("id", "")),
+                "status": str(item.get("status", "")),
+            }
+            for item in domains
+            if isinstance(item, dict) and str(item.get("status", "")) != "not_applicable"
+        ][:8],
+        "top_recommendations": [
+            {
+                "priority": str(item.get("priority", "")),
+                "domain": str(item.get("domain", "")),
+                "gate": str(item.get("gate", "")),
+                "safe_next_action": str(item.get("safe_next_action", "")),
+            }
+            for item in recommendations
+            if isinstance(item, dict)
+        ][:5],
+        "first_safe_action": _first_safe_action_text(methodology.get("first_safe_action")),
+        "safe_next_action": str(methodology.get("safe_next_action", "")),
+        "question_count": len(methodology.get("questions_for_owner", []))
+        if isinstance(methodology.get("questions_for_owner"), list)
+        else 0,
+        "completion_claim": "not_claimed",
+    }
+
+
+def _source_policy_summary(source_policy: dict[str, Any]) -> dict[str, Any]:
+    status = str(source_policy.get("status", "not_available"))
+    blocked = status in {"blocked", "needs_review"}
+    errors = _safe_string_list(source_policy.get("errors"))[:8]
+    registry_updates = _safe_string_list(source_policy.get("registry_updates_required"))[:12]
+    secret_findings = _safe_string_list(source_policy.get("secret_findings"))[:8]
+    unsupported = ["source policy blocked apply/promotion"] if blocked else []
+    if secret_findings:
+        unsupported.append("secret findings block generated evidence promotion")
+    return {
+        "schema_version": "first_run_source_policy_summary_v1",
+        "status": status,
+        "section_status": "approval_required" if blocked else "current",
+        "file_count": len(source_policy.get("files", [])) if isinstance(source_policy.get("files"), list) else 0,
+        "registry_update_required_count": len(source_policy.get("registry_updates_required", []))
+        if isinstance(source_policy.get("registry_updates_required"), list)
+        else 0,
+        "registry_updates_required": registry_updates,
+        "error_count": len(errors),
+        "errors": errors,
+        "secret_finding_count": len(secret_findings),
+        "unsupported_claims": unsupported,
+        "safe_next_action": "Fix source-policy blockers before apply, promotion or readiness claims."
+        if blocked
+        else "Source policy has no current blocker in this read-only pass.",
+        "completion_claim": "not_claimed",
+    }
+
+
+def _graph_dry_run_summary(graph: dict[str, Any]) -> dict[str, Any]:
+    metadata = graph.get("metadata") if isinstance(graph.get("metadata"), dict) else {}
+    validation = graph.get("validation") if isinstance(graph.get("validation"), dict) else {}
+    coverage = metadata.get("coverage_map") if isinstance(metadata.get("coverage_map"), dict) else {}
+    return {
+        "schema_version": "first_run_graph_dry_run_summary_v1",
+        "status": "inspection_only",
+        "write_policy": str(graph.get("write_policy", "read_only")),
+        "node_count": len(graph.get("nodes", [])) if isinstance(graph.get("nodes"), list) else 0,
+        "edge_count": len(graph.get("edges", [])) if isinstance(graph.get("edges"), list) else 0,
+        "observation_count": len(graph.get("observations", [])) if isinstance(graph.get("observations"), list) else 0,
+        "validation_ok": bool(validation.get("ok", False)),
+        "coverage": {
+            "status": str(coverage.get("status", "not_available")),
+            "total_files": _int((coverage.get("files") or {}).get("total") if isinstance(coverage.get("files"), dict) else 0),
+            "partial_files": _int((coverage.get("files") or {}).get("partial") if isinstance(coverage.get("files"), dict) else 0),
+        },
+        "source_policy": "generated graph is not source truth",
+        "generated_view_policy": GENERATED_VIEW_POLICY,
+        "completion_claim": "not_claimed",
+        "unsupported_claims": ["semantic completeness", "runtime behavior", "impact proof"],
+    }
+
+
+def _docs_logging_summary(inventory: dict[str, Any]) -> dict[str, Any]:
+    files = _inventory_paths(inventory)
+    lowered = {path.lower() for path in files}
+    docs_systems: list[str] = []
+    if "mkdocs.yml" in lowered:
+        docs_systems.append("mkdocs")
+    if any(path.startswith("docs/") and path.endswith(".md") for path in lowered) or "readme.md" in lowered:
+        docs_systems.append("markdown_docs")
+    if any(path.startswith(".github/workflows/") for path in lowered):
+        docs_systems.append("github_actions")
+    signals: list[str] = []
+    if _package_has_script(inventory, "test"):
+        signals.append("package_test_script")
+    if any(path.endswith(".log") or "runlog" in path for path in lowered):
+        signals.append("log_or_runlog_files")
+    if any(path.startswith("tests/") or "/tests/" in path for path in lowered):
+        signals.append("test_files")
+    return {
+        "schema_version": "first_run_docs_logging_summary_v1",
+        "status": "inspection_only",
+        "docs_systems": sorted(set(docs_systems)) or ["not_detected"],
+        "logging_or_test_signals": sorted(set(signals)) or ["not_detected"],
+        "install_or_build_triggered": False,
+        "source_policy": "static detection only; docs/logging presence is not verification success",
+        "completion_claim": "not_claimed",
+    }
+
+
+def _dependency_readiness_summary(workspace: Path, inventory: dict[str, Any]) -> dict[str, Any]:
+    files = _inventory_paths(inventory)
+    product_manifests: list[str] = []
+    lockfiles: list[str] = []
+    generated_runtime_artifacts: list[str] = []
+    excluded_dependency_corpora: list[str] = []
+    for ref in files:
+        parts = set(ref.split("/"))
+        if parts & {".git", ".next", "dist", "node_modules", "site", "vendor"}:
+            excluded_dependency_corpora.append(ref)
+            if parts & {".next", "dist", "site"}:
+                generated_runtime_artifacts.append(ref)
+            continue
+        if ref.endswith(("package.json", "pyproject.toml", "requirements.txt", "Cargo.toml", "go.mod")):
+            product_manifests.append(ref)
+        if ref.endswith(("package-lock.json", "pnpm-lock.yaml", "yarn.lock", "poetry.lock", "uv.lock")):
+            lockfiles.append(ref)
+    provider_risks = _provider_risks(workspace)
+    runtime_entrypoints = _runtime_entrypoints_from_workspace(workspace)
+    return {
+        "schema_version": "first_run_dependency_readiness_summary_v1",
+        "status": "partial_static_inventory" if product_manifests or lockfiles else "not_available",
+        "product_manifests": sorted(product_manifests)[:20],
+        "lockfiles": sorted(lockfiles)[:20],
+        "generated_runtime_artifacts": sorted(generated_runtime_artifacts)[:20],
+        "excluded_dependency_corpora_count": len(excluded_dependency_corpora),
+        "provider_risks": provider_risks,
+        "runtime_entrypoints": runtime_entrypoints,
+        "install_or_dependency_mutation_performed": False,
+        "build_performed": False,
+        "source_policy": "static dependency inventory is not install/build/supply-chain proof",
+        "completion_claim": "not_claimed",
+    }
+
+
+def _runtime_browser_boundary(dependency_summary: dict[str, Any]) -> dict[str, Any]:
+    runtime_entrypoints = _safe_string_list(dependency_summary.get("runtime_entrypoints"))
+    has_runtime = bool(runtime_entrypoints)
+    return {
+        "schema_version": "first_run_runtime_browser_boundary_v1",
+        "status": "approval_required" if has_runtime else "not_available",
+        "runtime_entrypoints": runtime_entrypoints[:12],
+        "runtime_executed": False,
+        "browser_automation_performed": False,
+        "provider_api_call_performed": False,
+        "target_workspace_mutation_performed": False,
+        "browser_tool_status": "not_run",
+        "provider_risks": dependency_summary.get("provider_risks", []),
+        "approval_boundary": "runtime/browser/provider checks require exact approval and current evidence",
+        "unsupported_claims": [
+            "runtime/browser behavior",
+            "provider/API/model quality",
+            "performance",
+            "accessibility",
+        ],
+        "completion_claim": "not_claimed",
+    }
+
+
+def _first_run_question_queue(
+    *,
+    methodology: dict[str, Any],
+    source_policy_summary: dict[str, Any],
+    runtime_boundary: dict[str, Any],
+    project_analysis_summary: dict[str, Any],
+) -> dict[str, Any]:
+    owner_questions = list(methodology.get("questions_for_owner") or [])
+    source_status = str(source_policy_summary.get("status", "not_available"))
+    if source_status in {"blocked", "needs_review"}:
+        owner_questions.append(
+            {
+                "text": "Which source-policy blocker should be fixed or accepted as a gap before apply, promotion or readiness claims?",
+                "priority": "blocking",
+                "category": "approval",
+                "answer_type": "single_choice_or_text",
+                "source_kind": "first_run_source_policy",
+                "source_key": "source_policy_blocker_owner_decision",
+                "block": "source_policy_summary",
+                "artifact": "docs/sources/registry.md",
+                "choices": ["fix_source_policy", "record_accepted_gap", "keep_blocked"],
+            }
+        )
+    if runtime_boundary.get("status") == "approval_required":
+        owner_questions.append(
+            {
+                "text": "Is runtime, browser or provider execution approved for a later separate run, or should this stay static-only?",
+                "priority": "recommended",
+                "category": "approval",
+                "answer_type": "single_choice_or_text",
+                "source_kind": "first_run_runtime_boundary",
+                "source_key": "runtime_browser_provider_approval",
+                "block": "runtime_browser_boundary",
+                "artifact": "RUNLOG.md",
+                "choices": ["static_only", "approve_disposable_runtime_later", "record_gap"],
+            }
+        )
+    unknowns = [
+        {
+            "text": "Whether generated first-run output is useful enough for the next owner-reviewed slice.",
+            "priority": "recommended",
+            "category": "product",
+            "source_key": "first_run_usefulness_review",
+        }
+    ]
+    usage_mode = project_analysis_summary.get("usage_mode") if isinstance(project_analysis_summary.get("usage_mode"), dict) else {}
+    return build_question_queue(
+        owner_questions=owner_questions,
+        unknowns=unknowns,
+        usage_mode=usage_mode,
+        runtime_status=str(runtime_boundary.get("status", "")),
+    )
+
+
+def _guided_first_response(
+    *,
+    question_queue: dict[str, Any],
+    project_analysis_summary: dict[str, Any],
+    source_policy_summary: dict[str, Any],
+    runtime_boundary: dict[str, Any],
+    methodology_summary: dict[str, Any],
+    safe_next_action: str,
+) -> dict[str, Any]:
+    summary = question_queue.get("summary") if isinstance(question_queue.get("summary"), dict) else {}
+    questions = [item for item in question_queue.get("questions", []) if isinstance(item, dict)]
+    next_blocking = question_queue.get("next_blocking_question")
+    deferred_questions = [item for item in questions if item != next_blocking]
+    confidence = _guided_confidence(project_analysis_summary, source_policy_summary, runtime_boundary)
+    route_options = _first_run_route_options(
+        project_analysis_summary=project_analysis_summary,
+        source_policy_summary=source_policy_summary,
+        runtime_boundary=runtime_boundary,
+        methodology_summary=methodology_summary,
+    )
+    return {
+        "schema_version": FIRST_RUN_GUIDED_RESPONSE_SCHEMA_VERSION,
+        "mode": "guided_first_response",
+        "confidence": confidence,
+        "summary": _first_response_summary(project_analysis_summary, source_policy_summary, runtime_boundary),
+        "blocking_question": next_blocking if isinstance(next_blocking, dict) else None,
+        "blocking_question_count": 1 if isinstance(next_blocking, dict) else 0,
+        "question_counts": {
+            "total": _int(summary.get("total")),
+            "blocking": _int(summary.get("blocking")),
+            "recommended": _int(summary.get("recommended")),
+            "optional": _int(summary.get("optional")),
+            "remaining": _int(summary.get("remaining")),
+        },
+        "deferred_question_count": len(deferred_questions),
+        "deferred_question_preview_count": min(2, len(deferred_questions)),
+        "deferred_question_preview": [
+            {
+                "id": str(item.get("id", "")),
+                "priority": str(item.get("priority", "")),
+                "category": str(item.get("category", "")),
+                "text": str(item.get("text", "")),
+            }
+            for item in deferred_questions[:2]
+        ],
+        "route_options": route_options,
+        "safe_next_action": str(safe_next_action),
+        "generated_view_policy": GENERATED_VIEW_POLICY,
+        "answer_policy": "answers_require_staged_ledger_and_owner_review",
+        "completion_claim": "not_claimed",
+    }
+
+
+def _answer_ledger_routing(question_queue: dict[str, Any], *, generated_at: str) -> dict[str, Any]:
+    as_of_date = _date_from_timestamp(generated_at)
+    ledger_template = build_answer_ledger(question_queue, {}, as_of_date=as_of_date)
+    validation_errors = validate_answer_ledger(ledger_template)
+    return {
+        "schema_version": FIRST_RUN_ANSWER_LEDGER_ROUTING_SCHEMA_VERSION,
+        "write_policy": "staged_only",
+        "artifact_name": ANSWER_LEDGER_TEMPLATE_NAME,
+        "target_workspace_mutation_performed": False,
+        "unreviewed_answers_mutate_source_docs": False,
+        "source_truth_policy": "answers_are_not_source_truth_until_owner_reviewed_and_staged",
+        "ledger_template": ledger_template,
+        "validation_errors": validation_errors,
+        "completion_claim": "not_claimed",
+    }
+
+
+def _answer_ledger_routing_response(routing: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "schema_version": str(routing.get("schema_version", "")),
+        "write_policy": str(routing.get("write_policy", "")),
+        "artifact_name": str(routing.get("artifact_name", "")),
+        "target_workspace_mutation_performed": bool(routing.get("target_workspace_mutation_performed", True)),
+        "unreviewed_answers_mutate_source_docs": bool(routing.get("unreviewed_answers_mutate_source_docs", True)),
+        "validation_errors": _safe_string_list(routing.get("validation_errors")),
+        "completion_claim": str(routing.get("completion_claim", "not_claimed")),
+    }
+
+
+def _first_run_route_options(
+    *,
+    project_analysis_summary: dict[str, Any],
+    source_policy_summary: dict[str, Any],
+    runtime_boundary: dict[str, Any],
+    methodology_summary: dict[str, Any],
+) -> list[dict[str, str]]:
+    options = [
+        {
+            "id": "static_read_only_analysis",
+            "label": "Review static first-run analysis",
+            "safe_next_action": "Review packet and generated HTML as orientation evidence only.",
+            "write_boundary": "no_target_mutation",
+        }
+    ]
+    if source_policy_summary.get("status") in {"blocked", "needs_review"}:
+        options.append(
+            {
+                "id": "fix_source_policy_or_record_gap",
+                "label": "Resolve source-policy blocker",
+                "safe_next_action": "Fix source-policy blockers or record an owner-reviewed accepted gap before promotion.",
+                "write_boundary": "staged_docs_only_after_owner_review",
+            }
+        )
+    elif methodology_summary.get("top_recommendations"):
+        options.append(
+            {
+                "id": "stage_methodology_recommendation",
+                "label": "Stage methodology recommendation",
+                "safe_next_action": str(methodology_summary.get("safe_next_action") or "Stage the next methodology recommendation for review."),
+                "write_boundary": "staged_generated_analysis_only",
+            }
+        )
+    if runtime_boundary.get("status") == "approval_required":
+        options.append(
+            {
+                "id": "request_runtime_browser_approval",
+                "label": "Request separate runtime approval",
+                "safe_next_action": "Ask for exact runtime/browser/provider approval before any live check.",
+                "write_boundary": "approval_required_before_runtime_or_browser",
+            }
+        )
+    if len(options) == 1:
+        primary = str((project_analysis_summary.get("usage_mode") or {}).get("primary", "unknown"))
+        options.append(
+            {
+                "id": "clarify_first_product_slice",
+                "label": "Clarify first product slice",
+                "safe_next_action": f"Confirm whether the detected route '{primary}' is the intended next slice.",
+                "write_boundary": "answer_ledger_staged_only",
+            }
+        )
+    return options[:3]
+
+
+def _first_response_summary(
+    project_analysis_summary: dict[str, Any],
+    source_policy_summary: dict[str, Any],
+    runtime_boundary: dict[str, Any],
+) -> str:
+    usage = project_analysis_summary.get("usage_mode") if isinstance(project_analysis_summary.get("usage_mode"), dict) else {}
+    primary = str(usage.get("primary", "unknown"))
+    source_status = str(source_policy_summary.get("status", "not_available"))
+    runtime_status = str(runtime_boundary.get("status", "not_available"))
+    return f"Detected route: {primary}; source policy: {source_status}; runtime boundary: {runtime_status}."
+
+
+def _guided_confidence(
+    project_analysis_summary: dict[str, Any],
+    source_policy_summary: dict[str, Any],
+    runtime_boundary: dict[str, Any],
+) -> str:
+    if source_policy_summary.get("status") in {"blocked", "needs_review"}:
+        return "medium"
+    if runtime_boundary.get("status") == "approval_required":
+        return "medium"
+    usage = project_analysis_summary.get("usage_mode") if isinstance(project_analysis_summary.get("usage_mode"), dict) else {}
+    return _confidence_or_default(usage.get("confidence"))
+
+
+def _date_from_timestamp(value: str) -> str:
+    match = re.match(r"^(\d{4}-\d{2}-\d{2})", str(value or ""))
+    return match.group(1) if match else "1970-01-01"
+
+
+def _empty_guided_first_response(safe_next_action: str) -> dict[str, Any]:
+    return {
+        "schema_version": FIRST_RUN_GUIDED_RESPONSE_SCHEMA_VERSION,
+        "mode": "guided_first_response",
+        "confidence": "unknown",
+        "summary": "First-run guided response is not available.",
+        "blocking_question": None,
+        "blocking_question_count": 0,
+        "question_counts": {"total": 0, "blocking": 0, "recommended": 0, "optional": 0, "remaining": 0},
+        "deferred_question_count": 0,
+        "deferred_question_preview_count": 0,
+        "deferred_question_preview": [],
+        "route_options": [],
+        "safe_next_action": str(safe_next_action or "Review first-run analysis."),
+        "generated_view_policy": GENERATED_VIEW_POLICY,
+        "answer_policy": "answers_require_staged_ledger_and_owner_review",
+        "completion_claim": "not_claimed",
+    }
+
+
+def _empty_answer_ledger_routing(generated_at: str) -> dict[str, Any]:
+    return _answer_ledger_routing(build_question_queue(runtime_status="not_available"), generated_at=generated_at)
+
+
+def _empty_project_analysis_summary() -> dict[str, Any]:
+    return {
+        "schema_version": "first_run_project_analysis_summary_v1",
+        "usage_mode": {"primary": "unknown", "secondary": [], "confidence": "unknown"},
+        "route_reasons": [],
+        "detected_stack": [],
+        "complexity_profile": {"name": "unknown", "confidence": "unknown"},
+        "control_plane": {"existing": [], "missing": []},
+        "generated_artifact_inputs": {"status": "not_available", "source_truth_allowed": False, "generated_view_policy": GENERATED_VIEW_POLICY, "evidence_ref_count": 0},
+        "source_policy": "not_available",
+        "completion_claim": "not_claimed",
+    }
+
+
+def _empty_methodology_audit_summary() -> dict[str, Any]:
+    return {
+        "schema_version": "first_run_methodology_audit_summary_v1",
+        "status": "not_available",
+        "write_policy": "read_only",
+        "maturity_level": {"selected": "unknown", "confidence": "unknown"},
+        "complexity_profile": {"selected": "unknown", "confidence": "unknown"},
+        "applicable_domains": [],
+        "top_recommendations": [],
+        "first_safe_action": "",
+        "safe_next_action": "",
+        "question_count": 0,
+        "completion_claim": "not_claimed",
+    }
+
+
+def _empty_source_policy_summary() -> dict[str, Any]:
+    return {
+        "schema_version": "first_run_source_policy_summary_v1",
+        "status": "not_available",
+        "section_status": "not_available",
+        "file_count": 0,
+        "registry_update_required_count": 0,
+        "registry_updates_required": [],
+        "error_count": 0,
+        "errors": [],
+        "secret_finding_count": 0,
+        "unsupported_claims": [],
+        "safe_next_action": "Run source-policy validation before promotion.",
+        "completion_claim": "not_claimed",
+    }
+
+
+def _empty_graph_dry_run_summary() -> dict[str, Any]:
+    return {
+        "schema_version": "first_run_graph_dry_run_summary_v1",
+        "status": "not_available",
+        "write_policy": "read_only",
+        "node_count": 0,
+        "edge_count": 0,
+        "observation_count": 0,
+        "validation_ok": False,
+        "coverage": {"status": "not_available", "total_files": 0, "partial_files": 0},
+        "source_policy": "generated graph is not source truth",
+        "generated_view_policy": GENERATED_VIEW_POLICY,
+        "completion_claim": "not_claimed",
+        "unsupported_claims": [],
+    }
+
+
+def _empty_docs_logging_summary() -> dict[str, Any]:
+    return {
+        "schema_version": "first_run_docs_logging_summary_v1",
+        "status": "not_available",
+        "docs_systems": [],
+        "logging_or_test_signals": [],
+        "install_or_build_triggered": False,
+        "source_policy": "static detection only",
+        "completion_claim": "not_claimed",
+    }
+
+
+def _empty_dependency_readiness_summary() -> dict[str, Any]:
+    return {
+        "schema_version": "first_run_dependency_readiness_summary_v1",
+        "status": "not_available",
+        "product_manifests": [],
+        "lockfiles": [],
+        "generated_runtime_artifacts": [],
+        "excluded_dependency_corpora_count": 0,
+        "provider_risks": [],
+        "runtime_entrypoints": [],
+        "install_or_dependency_mutation_performed": False,
+        "build_performed": False,
+        "source_policy": "static dependency inventory is not install/build/supply-chain proof",
+        "completion_claim": "not_claimed",
+    }
+
+
+def _empty_runtime_browser_boundary() -> dict[str, Any]:
+    return {
+        "schema_version": "first_run_runtime_browser_boundary_v1",
+        "status": "not_available",
+        "runtime_entrypoints": [],
+        "runtime_executed": False,
+        "browser_automation_performed": False,
+        "provider_api_call_performed": False,
+        "target_workspace_mutation_performed": False,
+        "browser_tool_status": "not_run",
+        "provider_risks": [],
+        "approval_boundary": "runtime/browser/provider checks require exact approval and current evidence",
+        "unsupported_claims": [],
+        "completion_claim": "not_claimed",
     }
 
 
@@ -1029,6 +1730,50 @@ def _validate_graph_artifact_summary(value: Any, *, field_name: str = "graph_art
     return errors
 
 
+def _validate_guided_first_response(value: Any) -> list[str]:
+    if not isinstance(value, dict):
+        return ["first_response must be an object"]
+    errors: list[str] = []
+    if value.get("schema_version") != FIRST_RUN_GUIDED_RESPONSE_SCHEMA_VERSION:
+        errors.append(f"first_response.schema_version must be {FIRST_RUN_GUIDED_RESPONSE_SCHEMA_VERSION}")
+    if value.get("mode") != "guided_first_response":
+        errors.append("first_response.mode must be guided_first_response")
+    if "questions" in value:
+        errors.append("first_response.questions is forbidden")
+    if _int(value.get("blocking_question_count")) > 1:
+        errors.append("first_response.blocking_question_count must be <= 1")
+    route_options = value.get("route_options")
+    if not isinstance(route_options, list):
+        errors.append("first_response.route_options must be list")
+    elif len(route_options) > 3:
+        errors.append("first_response.route_options must contain at most 3 options")
+    if value.get("generated_view_policy") != GENERATED_VIEW_POLICY:
+        errors.append(f"first_response.generated_view_policy must be {GENERATED_VIEW_POLICY}")
+    if value.get("completion_claim") != "not_claimed":
+        errors.append("first_response.completion_claim must be not_claimed")
+    return errors
+
+
+def _validate_answer_ledger_routing(value: Any) -> list[str]:
+    if not isinstance(value, dict):
+        return ["answer_ledger_routing must be an object"]
+    errors: list[str] = []
+    if value.get("schema_version") != FIRST_RUN_ANSWER_LEDGER_ROUTING_SCHEMA_VERSION:
+        errors.append(f"answer_ledger_routing.schema_version must be {FIRST_RUN_ANSWER_LEDGER_ROUTING_SCHEMA_VERSION}")
+    if value.get("write_policy") != "staged_only":
+        errors.append("answer_ledger_routing.write_policy must be staged_only")
+    if value.get("target_workspace_mutation_performed") is not False:
+        errors.append("answer_ledger_routing.target_workspace_mutation_performed must be false")
+    if value.get("unreviewed_answers_mutate_source_docs") is not False:
+        errors.append("answer_ledger_routing.unreviewed_answers_mutate_source_docs must be false")
+    template = value.get("ledger_template")
+    if not isinstance(template, dict):
+        errors.append("answer_ledger_routing.ledger_template must be an object")
+    else:
+        errors.extend(f"answer_ledger_routing.{error}" for error in validate_answer_ledger(template))
+    return errors
+
+
 def _status_or_default(value: Any) -> str:
     status = str(value or "not_available").strip()
     return status if status in EVIDENCE_STATUSES else "not_available"
@@ -1100,6 +1845,98 @@ def _safe_string_list(value: Any) -> list[str]:
     if not isinstance(value, list):
         return []
     return [str(item).strip() for item in value if str(item).strip()]
+
+
+def _selected_packet(value: Any) -> dict[str, str]:
+    source = value if isinstance(value, dict) else {}
+    return {
+        "selected": str(source.get("selected", "unknown")),
+        "confidence": _confidence_or_default(source.get("confidence")),
+    }
+
+
+def _first_safe_action_text(value: Any) -> str:
+    if isinstance(value, dict):
+        direct = value.get("safe_next_action")
+        if isinstance(direct, str) and direct.strip():
+            return direct.strip()
+        recommendations = value.get("recommendations")
+        if isinstance(recommendations, list):
+            for item in recommendations:
+                if isinstance(item, dict) and isinstance(item.get("safe_next_action"), str):
+                    return item["safe_next_action"].strip()
+        return str(value.get("status", "not_available"))
+    return str(value or "").strip()
+
+
+def _inventory_paths(inventory: dict[str, Any]) -> list[str]:
+    files = inventory.get("files") if isinstance(inventory.get("files"), list) else []
+    paths = []
+    for item in files:
+        if not isinstance(item, dict):
+            continue
+        ref = _safe_relative_ref(str(item.get("path", "")))
+        if ref and ref != "[REDACTED_LOCAL_PATH]":
+            paths.append(ref)
+    return paths
+
+
+def _package_has_script(inventory: dict[str, Any], script_name: str) -> bool:
+    return "package.json" in {path.lower() for path in _inventory_paths(inventory)} and bool(script_name)
+
+
+def _runtime_entrypoints_from_workspace(workspace: Path) -> list[str]:
+    package_file = workspace / "package.json"
+    if not package_file.is_file():
+        return []
+    try:
+        payload = json.loads(package_file.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return []
+    scripts = payload.get("scripts") if isinstance(payload, dict) else None
+    if not isinstance(scripts, dict):
+        return []
+    entrypoints: list[str] = []
+    for name in ("dev", "start", "serve", "preview", "electron", "tauri"):
+        value = scripts.get(name)
+        if isinstance(value, str) and value.strip():
+            entrypoints.append(f"package.json:scripts.{name}")
+    return entrypoints
+
+
+def _provider_risks(workspace: Path) -> list[str]:
+    risks: set[str] = set()
+    package_file = workspace / "package.json"
+    if package_file.is_file():
+        try:
+            payload = json.loads(package_file.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            payload = {}
+        dependencies: dict[str, Any] = {}
+        if isinstance(payload, dict):
+            for field in ("dependencies", "devDependencies", "optionalDependencies"):
+                if isinstance(payload.get(field), dict):
+                    dependencies.update(payload[field])
+        for name in dependencies:
+            lowered = str(name).lower()
+            if any(term in lowered for term in ("openai", "anthropic", "google", "genai", "stripe", "supabase")):
+                risks.add(f"provider_dependency:{name}")
+    env_refs = [path.name for path in workspace.glob(".env*") if path.is_file()]
+    if env_refs:
+        risks.add("env_file_provider_credentials_possible")
+    return sorted(risks)[:12]
+
+
+def _s3_safe_next_action(
+    source_policy_summary: dict[str, Any],
+    runtime_boundary: dict[str, Any],
+    methodology_summary: dict[str, Any],
+) -> str:
+    if source_policy_summary.get("status") in {"blocked", "needs_review"}:
+        return str(source_policy_summary.get("safe_next_action"))
+    if runtime_boundary.get("status") == "approval_required":
+        return "Review static first-run analysis; request exact approval before runtime/browser/provider checks."
+    return str(methodology_summary.get("safe_next_action") or "Review first-run project analysis before the next slice.")
 
 
 def _classify_first_run_script(script_name: str, source: str) -> str:
@@ -1217,11 +2054,13 @@ __all__ = [
     "FIRST_RUN_ANALYSIS_PACKET_SCHEMA_VERSION",
     "FIRST_RUN_ORCHESTRATOR_CONTRACT_SCHEMA_VERSION",
     "ANALYSIS_DIR",
+    "ANSWER_LEDGER_TEMPLATE_NAME",
     "FIRST_RUN_PACKET_NAME",
     "SECRET_LIKE_VALUE_RE",
     "adapt_first_run_analysis_sections",
     "build_first_run_analysis_packet",
     "build_first_run_automation_contract",
+    "build_first_run_project_analysis_summaries",
     "build_first_run_resume_ledger",
     "build_first_run_script_registry",
     "execute_first_run_safe_script_matrix",

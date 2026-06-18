@@ -1,0 +1,195 @@
+{
+  "schema_version": "batch41_s5_guided_questions_summary_v1",
+  "source_status": "local_implementation_evidence",
+  "attempt_id": "B41-S5-GUIDED-QUESTIONS-A01",
+  "generated_at": "2026-06-18T00:00:00+03:00",
+  "slice": "B41-S5",
+  "implemented_tasks": [
+    "B41-S5-M21",
+    "B41-S5-M22",
+    "B41-S5-M23"
+  ],
+  "status": "implemented_local_guided_question_contract",
+  "implemented_behavior": {
+    "B41-S5-M21": {
+      "status": "implemented",
+      "technical_value": "First-run analysis packet and CLI result now include a compact guided first response built from the typed question_queue.",
+      "product_value": "The first launch asks the next useful blocking question instead of forcing the user to inspect the full packet.",
+      "contract_markers": [
+        "first_run_guided_question_protocol_v1",
+        "first_response",
+        "question_queue"
+      ],
+      "acceptance_evidence": "First response exposes max one blocking question, includes mode/confidence/summary/safe_next_action and keeps deferred questions in the packet."
+    },
+    "B41-S5-M22": {
+      "status": "implemented",
+      "technical_value": "First-run stage/write-analysis modes now emit a staged-only answer-ledger template and routing summary.",
+      "product_value": "Owner answers can become auditable reviewed context instead of hidden chat-only memory.",
+      "contract_markers": [
+        "first_run_answer_ledger_v1",
+        "answer_ledger_routing",
+        "answer-ledger-template.json"
+      ],
+      "acceptance_evidence": "Answer ledger routing is staged_only, validates with no blocked entries for the unanswered template and performs no target mutation in stage mode."
+    },
+    "B41-S5-M23": {
+      "status": "implemented",
+      "technical_value": "Ambiguous first-run output now includes bounded route options without blocking deterministic read-only analysis.",
+      "product_value": "The first launch can understand, ask and propose a next route without becoming a broad questionnaire.",
+      "contract_markers": [
+        "first_run_ambiguous_route_intake_v1",
+        "route_options",
+        "safe_next_action"
+      ],
+      "acceptance_evidence": "Ambiguous fixture returns two or three route options and still returns status ok, command_matrix and no target mutation."
+    }
+  },
+  "guided_question_evidence": {
+    "first_response_schema_version": "first_run_guided_response_v1",
+    "max_blocking_questions_in_first_response": 1,
+    "deferred_questions_policy": "full_queue_in_packet_not_first_response",
+    "completion_claim": "not_claimed"
+  },
+  "answer_ledger_evidence": {
+    "routing_schema_version": "first_run_answer_ledger_routing_v1",
+    "ledger_schema_version": 1,
+    "write_policy": "staged_only",
+    "artifact_name": "answer-ledger-template.json",
+    "unreviewed_answers_mutate_source_docs": false,
+    "source_truth_policy": "answers_are_not_source_truth_until_owner_reviewed_and_staged"
+  },
+  "ambiguous_route_evidence": {
+    "route_option_count": "2_to_3",
+    "deterministic_analysis_blocked": false,
+    "target_workspace_mutation_performed": false,
+    "generated_view_policy": "orientation_only_not_proof"
+  },
+  "changed_files": [
+    "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+    "plugins/product-agent-os/scripts/run_first_project_analysis.py",
+    "tests/product_agent_os/test_batch41_first_run_automation.py",
+    "docs/superpowers/specs/batch41-first-run-automation-matrix.json",
+    "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md",
+    "PLAN.md",
+    "TEST.md",
+    "RUNLOG.md",
+    "docs/superpowers/specs/batch41-s5-guided-questions-summary.json"
+  ],
+  "agent_handoffs": [
+    {
+      "agent": "Cartographer the 2nd",
+      "role": "explorer",
+      "status": "completed_read_only",
+      "summary": "Inspected first-run, question_protocol and question_ledger contracts and recommended integrating question_queue plus staged answer ledger into first-run output."
+    },
+    {
+      "agent": "Index the 2nd",
+      "role": "docs-maintainer",
+      "status": "completed_read_only",
+      "summary": "Identified control-plane updates, summary artifact shape, unsupported-claim wording and verification commands for B41-S5."
+    }
+  ],
+  "verification_evidence": [
+    {
+      "command": "python -m unittest tests.product_agent_os.test_batch41_first_run_automation.Batch41FirstRunAutomationTests.test_b41_s5_m21_first_response_exposes_one_blocking_question_and_keeps_queue_in_packet tests.product_agent_os.test_batch41_first_run_automation.Batch41FirstRunAutomationTests.test_b41_s5_m22_stage_writes_answer_ledger_template_without_target_mutation tests.product_agent_os.test_batch41_first_run_automation.Batch41FirstRunAutomationTests.test_b41_s5_m23_ambiguous_intake_returns_route_options_without_blocking_analysis -v",
+      "result": "red_before_implementation_then_green_after_implementation",
+      "latest_exit_code": 0
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_batch41_first_run_automation -v",
+      "result": "17 tests OK",
+      "exit_code": 0
+    },
+    {
+      "command": "python -m json.tool docs\\superpowers\\specs\\batch41-first-run-automation-matrix.json > $null; python -m json.tool docs\\superpowers\\specs\\batch41-s5-guided-questions-summary.json > $null",
+      "result": "JSON parse OK",
+      "exit_code": 0
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_first_run_analysis -v",
+      "result": "14 tests OK",
+      "exit_code": 0
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_question_ledger -v",
+      "result": "3 tests OK",
+      "exit_code": 0
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+      "result": "81 tests OK",
+      "exit_code": 0
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_task_plan_lifecycle -v",
+      "result": "4 tests OK",
+      "exit_code": 0
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_infrastructure_templates -v",
+      "result": "94 tests OK",
+      "exit_code": 0
+    },
+    {
+      "command": "python tools\\check_docs.py",
+      "result": "OK: documentation structure checks passed",
+      "exit_code": 0
+    },
+    {
+      "command": "python -m unittest discover -s tests -p \"test_*.py\" -v",
+      "result": "1005 tests OK, skipped=1",
+      "exit_code": 0
+    },
+    {
+      "command": "python plugins\\product-agent-os\\scripts\\run_fixture_eval.py",
+      "result": "exit_code 0",
+      "exit_code": 0
+    },
+    {
+      "command": "python plugins\\product-agent-os\\scripts\\run_transcript_eval.py",
+      "result": "26 passed, 0 failed",
+      "exit_code": 0
+    },
+    {
+      "command": "python plugins\\product-agent-os\\scripts\\validate_codex_compatibility.py",
+      "result": "status compatible",
+      "exit_code": 0
+    },
+    {
+      "command": "git diff --check",
+      "result": "exit_code 0 with pre-existing Batch 39 CRLF warnings only",
+      "exit_code": 0
+    }
+  ],
+  "no_unapproved_actions": {
+    "target_workspace_mutation": false,
+    "live_server": false,
+    "browser_automation": false,
+    "provider_api_call": false,
+    "mcp_external_call": false,
+    "git_stage_commit_push_pr": false,
+    "release_deploy_publish": false,
+    "active_automation": false,
+    "external_write": false
+  },
+  "unsupported_claims": [
+    "Full Batch 41 closure is not claimed.",
+    "Real-target Neural_Flow or SOL pilot behavior is not claimed.",
+    "Runtime/browser behavior is not claimed.",
+    "Provider/API/model quality is not claimed.",
+    "Release readiness is not claimed.",
+    "Plugin cache/install readiness is not claimed.",
+    "Unreviewed user answers are not source truth and do not mutate source docs.",
+    "Generated HTML and generated question output remain orientation evidence only."
+  ],
+  "control_plane_sync": {
+    "PLAN.md": "updated",
+    "TEST.md": "updated",
+    "RUNLOG.md": "updated",
+    "track_10_plan": "updated",
+    "batch41_matrix": "updated",
+    "source_registry": "not_applicable_no_public_source_backed_claims_added"
+  },
+  "next_action": "Continue with B41-S6-M24..M30 synthetic E2E, read-only pilots, scorecard, verification, plugin/cache readiness and closure."
+}

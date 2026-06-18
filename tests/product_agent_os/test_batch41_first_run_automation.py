@@ -307,6 +307,353 @@ class Batch41FirstRunAutomationTests(unittest.TestCase):
         self.assertIn("merge_infrastructure.py", ledger["approval_required_for"])
         self.assertIn("--help", ledger["resume_commands"][0]["command"])
 
+    def test_b41_s3_m10_m16_full_dry_run_projects_bounded_project_analysis_summaries(self) -> None:
+        with TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "s3-target"
+            workspace.mkdir()
+            (workspace / "README.md").write_text("Source status: `synthetic_fixture`\n", encoding="utf-8")
+            docs = workspace / "docs"
+            docs.mkdir()
+            (docs / "guide.md").write_text("# Guide\n\nOpenAI Codex behavior can change.\n", encoding="utf-8")
+            (workspace / "package.json").write_text(
+                json.dumps(
+                    {
+                        "scripts": {"dev": "vite --host 127.0.0.1", "test": "vitest"},
+                        "dependencies": {"@vitejs/plugin-react": "latest"},
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (workspace / "package-lock.json").write_text("{}", encoding="utf-8")
+            (workspace / "src").mkdir()
+            (workspace / "src" / "main.ts").write_text("export const answer = 42;\n", encoding="utf-8")
+            (workspace / "tests").mkdir()
+            (workspace / "tests" / "app.test.ts").write_text("test('x', () => {});\n", encoding="utf-8")
+
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPTS / "run_first_project_analysis.py"),
+                    str(workspace),
+                    "--full-dry-run",
+                    "--generated-at",
+                    "2026-06-18T23:50:00+03:00",
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
+            payload = json.loads(result.stdout)
+            packet = payload["packet"]
+
+            self.assertEqual(packet["project_analysis_summary"]["schema_version"], "first_run_project_analysis_summary_v1")
+            self.assertIn(packet["project_analysis_summary"]["usage_mode"]["primary"], {"standard_feature", "maintenance", "docs_only"})
+            self.assertTrue(packet["project_analysis_summary"]["route_reasons"])
+            self.assertFalse(packet["project_analysis_summary"]["generated_artifact_inputs"]["source_truth_allowed"])
+
+            self.assertEqual(packet["methodology_audit_summary"]["schema_version"], "first_run_methodology_audit_summary_v1")
+            self.assertLessEqual(len(packet["methodology_audit_summary"]["top_recommendations"]), 5)
+            self.assertTrue(packet["methodology_audit_summary"]["first_safe_action"])
+
+            self.assertEqual(packet["source_policy_summary"]["schema_version"], "first_run_source_policy_summary_v1")
+            self.assertEqual(packet["source_policy_summary"]["status"], "blocked")
+            self.assertTrue(packet["source_policy_summary"]["registry_update_required_count"] >= 1)
+
+            self.assertEqual(packet["graph_dry_run_summary"]["schema_version"], "first_run_graph_dry_run_summary_v1")
+            self.assertGreaterEqual(packet["graph_dry_run_summary"]["node_count"], 1)
+            self.assertEqual(packet["graph_dry_run_summary"]["source_policy"], "generated graph is not source truth")
+            self.assertEqual(packet["graph_dry_run_summary"]["completion_claim"], "not_claimed")
+
+            self.assertEqual(packet["docs_logging_summary"]["schema_version"], "first_run_docs_logging_summary_v1")
+            self.assertIn("markdown_docs", packet["docs_logging_summary"]["docs_systems"])
+            self.assertIn("package_test_script", packet["docs_logging_summary"]["logging_or_test_signals"])
+
+            self.assertEqual(packet["dependency_readiness_summary"]["schema_version"], "first_run_dependency_readiness_summary_v1")
+            self.assertEqual(packet["dependency_readiness_summary"]["install_or_dependency_mutation_performed"], False)
+            self.assertIn("package.json", packet["dependency_readiness_summary"]["product_manifests"])
+
+            self.assertEqual(packet["runtime_browser_boundary"]["schema_version"], "first_run_runtime_browser_boundary_v1")
+            self.assertEqual(packet["runtime_browser_boundary"]["status"], "approval_required")
+            self.assertFalse(packet["runtime_browser_boundary"]["runtime_executed"])
+            self.assertFalse(packet["runtime_browser_boundary"]["browser_automation_performed"])
+            self.assertNotIn(str(workspace), json.dumps(packet, sort_keys=True))
+
+    def test_b41_s3_m12_source_policy_block_updates_section_without_success_claim(self) -> None:
+        with TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "source-policy-target"
+            docs = workspace / "docs"
+            docs.mkdir(parents=True)
+            (docs / "guide.md").write_text("# Guide\n\nOpenAI Codex behavior can change.\n", encoding="utf-8")
+
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPTS / "run_first_project_analysis.py"),
+                    str(workspace),
+                    "--full-dry-run",
+                    "--generated-at",
+                    "2026-06-18T23:55:00+03:00",
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
+            packet = json.loads(result.stdout)["packet"]
+            self.assertEqual(packet["section_summaries"]["source_policy"]["status"], "approval_required")
+            self.assertIn("source policy blocked", " ".join(packet["section_summaries"]["source_policy"]["unsupported_claims"]))
+            self.assertEqual(packet["evidence_status"]["completion_claim"], "not_claimed")
+
+    def test_b41_s4_m17_m20_stage_renders_complete_html_baseline_and_cleanup_guidance(self) -> None:
+        with TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "s4-target"
+            stage = Path(tmp) / "stage-output"
+            workspace.mkdir()
+            (workspace / "README.md").write_text("Source status: `synthetic_fixture`\n", encoding="utf-8")
+            (workspace / "package.json").write_text(
+                json.dumps({"scripts": {"dev": "vite --host 127.0.0.1", "test": "vitest"}}),
+                encoding="utf-8",
+            )
+
+            first = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPTS / "run_first_project_analysis.py"),
+                    str(workspace),
+                    "--stage",
+                    str(stage),
+                    "--generated-at",
+                    "2026-06-19T00:10:00+03:00",
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            self.assertEqual(first.returncode, 0, first.stderr + first.stdout)
+
+            (workspace / "docs").mkdir()
+            (workspace / "docs" / "guide.md").write_text("# Guide\n\nSource status: `synthetic_fixture`\n", encoding="utf-8")
+            second = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPTS / "run_first_project_analysis.py"),
+                    str(workspace),
+                    "--stage",
+                    str(stage),
+                    "--generated-at",
+                    "2026-06-19T00:11:00+03:00",
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(second.returncode, 0, second.stderr + second.stdout)
+            payload = json.loads(second.stdout)
+            manifest = json.loads(stage.joinpath("analysis-manifest.json").read_text(encoding="utf-8"))
+            index_html = stage.joinpath("index.html").read_text(encoding="utf-8")
+
+            self.assertEqual(payload["mode"], "stage")
+            self.assertEqual(payload["render_result"]["status"], "ready")
+            self.assertEqual(payload["render_result"]["page_count"], 11)
+            for page_name in [
+                "index.html",
+                "inventory.html",
+                "architecture.html",
+                "methodology.html",
+                "runtime-route.html",
+                "control-plane.html",
+                "graph.html",
+                "code-flow.html",
+                "quality-evals.html",
+                "risks.html",
+                "recommendations.html",
+                "analysis-manifest.json",
+            ]:
+                self.assertIn(page_name, payload["written_files"])
+                self.assertTrue(stage.joinpath(page_name).exists(), page_name)
+
+            self.assertEqual(payload["baseline_comparison"]["status"], "compared")
+            self.assertEqual(manifest["previous_baseline"]["status"], "compared")
+            self.assertIn("docs/guide.md", manifest["change_summary"]["added_sources"])
+            self.assertIn("Baseline Comparison", index_html)
+            self.assertIn("Artifact Cleanup And Rollback", index_html)
+            self.assertEqual(manifest["cleanup_guidance"]["deletion_performed"], False)
+            self.assertEqual(manifest["cleanup_guidance"]["approval_required"], True)
+            self.assertTrue(all(path.startswith(".") is False for path in manifest["cleanup_guidance"]["generated_files"]))
+            self.assertNotIn(str(workspace), second.stdout)
+
+    def test_b41_s4_m18_html_pages_surface_project_analysis_without_source_truth_claim(self) -> None:
+        with TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "s4-html-target"
+            stage = Path(tmp) / "stage-output"
+            workspace.mkdir()
+            (workspace / "README.md").write_text("Source status: `synthetic_fixture`\n", encoding="utf-8")
+            (workspace / "package.json").write_text(
+                json.dumps({"scripts": {"dev": "vite --host 127.0.0.1", "test": "vitest"}}),
+                encoding="utf-8",
+            )
+
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPTS / "run_first_project_analysis.py"),
+                    str(workspace),
+                    "--stage",
+                    str(stage),
+                    "--generated-at",
+                    "2026-06-19T00:15:00+03:00",
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
+            inventory_html = stage.joinpath("inventory.html").read_text(encoding="utf-8")
+            methodology_html = stage.joinpath("methodology.html").read_text(encoding="utf-8")
+            runtime_html = stage.joinpath("runtime-route.html").read_text(encoding="utf-8")
+            graph_html = stage.joinpath("graph.html").read_text(encoding="utf-8")
+
+            self.assertIn("Project Analysis", inventory_html)
+            self.assertIn("Docs And Logging", inventory_html)
+            self.assertIn("Dependency Readiness", inventory_html)
+            self.assertIn("Methodology Audit", methodology_html)
+            self.assertIn("Runtime Browser Boundary", runtime_html)
+            self.assertIn("approval_required", runtime_html)
+            self.assertIn("Graph Dry Run", graph_html)
+            self.assertIn("generated graph is not source truth", graph_html)
+            self.assertIn("generated-view-only", inventory_html)
+            self.assertNotIn(str(workspace), inventory_html + methodology_html + runtime_html + graph_html)
+
+    def test_b41_s5_m21_first_response_exposes_one_blocking_question_and_keeps_queue_in_packet(self) -> None:
+        with TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "s5-question-target"
+            docs = workspace / "docs"
+            docs.mkdir(parents=True)
+            (docs / "guide.md").write_text("# Guide\n\nOpenAI Codex behavior can change.\n", encoding="utf-8")
+
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPTS / "run_first_project_analysis.py"),
+                    str(workspace),
+                    "--full-dry-run",
+                    "--generated-at",
+                    "2026-06-19T00:20:00+03:00",
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
+            payload = json.loads(result.stdout)
+            packet = payload["packet"]
+            first_response = payload["first_response"]
+            question_queue = packet["question_queue"]
+
+            self.assertEqual(first_response["schema_version"], "first_run_guided_response_v1")
+            self.assertEqual(first_response["mode"], "guided_first_response")
+            self.assertEqual(first_response["blocking_question_count"], 1)
+            self.assertIsInstance(first_response["blocking_question"], dict)
+            self.assertEqual(
+                question_queue["policy"]["max_blocking_questions_in_first_response"],
+                1,
+            )
+            self.assertEqual(question_queue["summary"]["blocking"], 1)
+            self.assertGreaterEqual(question_queue["summary"]["remaining"], 1)
+            self.assertIn("deferred_question_count", first_response)
+            self.assertLessEqual(first_response["deferred_question_preview_count"], 2)
+            self.assertNotIn("questions", first_response)
+            self.assertEqual(first_response["completion_claim"], "not_claimed")
+            self.assertNotIn(str(workspace), result.stdout)
+
+    def test_b41_s5_m22_stage_writes_answer_ledger_template_without_target_mutation(self) -> None:
+        with TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "s5-ledger-target"
+            stage = Path(tmp) / "stage-output"
+            workspace.mkdir()
+            (workspace / "README.md").write_text("Source status: `synthetic_fixture`\n", encoding="utf-8")
+            before_target_files = sorted(path.relative_to(workspace).as_posix() for path in workspace.rglob("*") if path.is_file())
+
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPTS / "run_first_project_analysis.py"),
+                    str(workspace),
+                    "--stage",
+                    str(stage),
+                    "--generated-at",
+                    "2026-06-19T00:25:00+03:00",
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
+            payload = json.loads(result.stdout)
+            packet = payload["packet"]
+            routing = packet["answer_ledger_routing"]
+            after_target_files = sorted(path.relative_to(workspace).as_posix() for path in workspace.rglob("*") if path.is_file())
+            ledger_template = json.loads(stage.joinpath("answer-ledger-template.json").read_text(encoding="utf-8"))
+
+            self.assertEqual(before_target_files, after_target_files)
+            self.assertIn("answer-ledger-template.json", payload["written_files"])
+            self.assertEqual(routing["schema_version"], "first_run_answer_ledger_routing_v1")
+            self.assertEqual(routing["write_policy"], "staged_only")
+            self.assertFalse(routing["target_workspace_mutation_performed"])
+            self.assertFalse(routing["unreviewed_answers_mutate_source_docs"])
+            self.assertEqual(routing["ledger_template"]["schema_version"], 1)
+            self.assertEqual(ledger_template["write_policy"], "staged_only")
+            self.assertIn("entries", ledger_template)
+            self.assertEqual(payload["answer_ledger_routing"]["validation_errors"], [])
+            self.assertNotIn("chat_memory", json.dumps(routing, sort_keys=True))
+            self.assertNotIn(str(workspace), result.stdout)
+
+    def test_b41_s5_m23_ambiguous_intake_returns_route_options_without_blocking_analysis(self) -> None:
+        with TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "s5-ambiguous-target"
+            workspace.mkdir()
+            (workspace / "README.md").write_text("# Idea\n\nSource status: `synthetic_fixture`\n", encoding="utf-8")
+
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPTS / "run_first_project_analysis.py"),
+                    str(workspace),
+                    "--full-dry-run",
+                    "--generated-at",
+                    "2026-06-19T00:30:00+03:00",
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
+            payload = json.loads(result.stdout)
+            first_response = payload["first_response"]
+            route_options = first_response["route_options"]
+
+            self.assertEqual(payload["status"], "ok")
+            self.assertEqual(payload["mode"], "full_dry_run")
+            self.assertIn("command_matrix", payload)
+            self.assertGreaterEqual(len(route_options), 2)
+            self.assertLessEqual(len(route_options), 3)
+            for option in route_options:
+                self.assertIn("id", option)
+                self.assertIn("label", option)
+                self.assertIn("safe_next_action", option)
+                self.assertIn("write_boundary", option)
+            self.assertEqual(first_response["blocking_question_count"], 1)
+            self.assertFalse(payload["actions_performed"]["target_workspace_mutation"])
+            self.assertNotIn(str(workspace), result.stdout)
+
 
 if __name__ == "__main__":
     unittest.main()
