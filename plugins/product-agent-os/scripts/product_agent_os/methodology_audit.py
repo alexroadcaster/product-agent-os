@@ -854,11 +854,16 @@ SECURITY_SUPPLY_CHAIN_TERMS = {"dependency", "package", "container", "release ar
 SECURITY_INCIDENT_TERMS = {"vulnerability", "advisory", "leaked secret", "abuse incident", "dependency alert", "data exposure"}
 
 
-def build_methodology_audit(workspace: Path, intent_hint: str = "") -> dict[str, Any]:
+def build_methodology_audit(
+    workspace: Path,
+    intent_hint: str = "",
+    *,
+    ignored_path_prefixes: tuple[str, ...] = (),
+) -> dict[str, Any]:
     """Build a read-only methodology audit packet for a workspace."""
 
     root = Path(workspace)
-    files, directories = _relative_inventory(root)
+    files, directories = _relative_inventory(root, ignored_path_prefixes=ignored_path_prefixes)
     lowered_files = {path.lower() for path in files}
     lowered_dirs = {path.lower() for path in directories}
     intent = intent_hint.lower()
@@ -912,25 +917,45 @@ def build_methodology_audit(workspace: Path, intent_hint: str = "") -> dict[str,
     }
 
 
-def _relative_inventory(root: Path) -> tuple[set[str], set[str]]:
+def _relative_inventory(root: Path, *, ignored_path_prefixes: tuple[str, ...] = ()) -> tuple[set[str], set[str]]:
     files: set[str] = set()
     directories: set[str] = set()
     if not root.exists() or not root.is_dir():
         return files, directories
+    ignored_prefixes = tuple(
+        prefix.lower().replace("\\", "/").rstrip("/")
+        for prefix in ignored_path_prefixes
+        if prefix
+    )
     for current_root, dirnames, filenames in os.walk(root):
-        dirnames[:] = [name for name in dirnames if name not in {".git", "node_modules", "__pycache__"}]
         current_path = Path(current_root)
+        kept_dirnames: list[str] = []
         for dirname in dirnames:
             try:
-                directories.add((current_path / dirname).relative_to(root).as_posix())
+                relative_dirname = (current_path / dirname).relative_to(root).as_posix()
             except ValueError:
                 continue
+            if dirname in {".git", "node_modules", "__pycache__"}:
+                continue
+            if _is_ignored_inventory_path(relative_dirname, ignored_prefixes):
+                continue
+            directories.add(relative_dirname)
+            kept_dirnames.append(dirname)
+        dirnames[:] = kept_dirnames
         for filename in filenames:
             try:
-                files.add((current_path / filename).relative_to(root).as_posix())
+                relative_filename = (current_path / filename).relative_to(root).as_posix()
             except ValueError:
                 continue
+            if _is_ignored_inventory_path(relative_filename, ignored_prefixes):
+                continue
+            files.add(relative_filename)
     return files, directories
+
+
+def _is_ignored_inventory_path(path: str, ignored_prefixes: tuple[str, ...]) -> bool:
+    normalized = path.lower().replace("\\", "/").rstrip("/")
+    return any(normalized == prefix or normalized.startswith(f"{prefix}/") for prefix in ignored_prefixes)
 
 
 def _observed_signals(root: Path, files: set[str], directories: set[str]) -> list[dict[str, Any]]:

@@ -1,0 +1,141 @@
+{
+  "approval_boundary": "owner_requested_repeat_testing_read_only_no_target_mutation_no_runtime_browser_provider_git_external_actions",
+  "attempt_id": "B39-TEST-M22-A03",
+  "commands": {
+    "detect_project": {
+      "exit_code": 0,
+      "stderr_present": false,
+      "stdout_parse_status": "json"
+    },
+    "first_run_dry_run": {
+      "exit_code": 0,
+      "stderr_present": false,
+      "stdout_parse_status": "json"
+    },
+    "runtime_contract": {
+      "exit_code": 1,
+      "stderr_present": false,
+      "stdout_parse_status": "json"
+    },
+    "source_policy": {
+      "exit_code": 1,
+      "stderr_present": false,
+      "stdout_parse_status": "json"
+    }
+  },
+  "date": "2026-06-18",
+  "detect_project_summary": {
+    "active_surfaces": [
+      "api_contract_surface",
+      "ai_eval_surface",
+      "desktop_local_surface",
+      "database_data_surface",
+      "data_migration_surface",
+      "security_sensitive_surface",
+      "integration_surface",
+      "legacy_docs_debt_surface"
+    ],
+    "detected_file_count": 3394,
+    "detected_stack": [],
+    "existing_control_plane": [],
+    "generated_artifact_inputs": {
+      "first_run_analysis": {
+        "evidence_refs": [],
+        "generated_view_policy": "orientation_only_not_proof",
+        "note": "first-run analysis artifacts are generated orientation evidence only; route selection must use workspace source signals instead",
+        "promotion_supported": false,
+        "release_readiness_supported": false,
+        "source_truth_allowed": false,
+        "status": "not_available"
+      }
+    },
+    "git_present": false,
+    "missing_control_plane_count": 6,
+    "risks": [
+      "missing durable project instructions",
+      "missing architecture documentation signals",
+      "missing domain model for complex domain"
+    ],
+    "status": "ok",
+    "usage_mode_primary": "desktop_local_first",
+    "usage_mode_secondary": [
+      "data_migration",
+      "security_sensitive_change"
+    ]
+  },
+  "first_run_dry_run_summary": {
+    "artifact_version": 1,
+    "evidence_status": {
+      "completion_claim": "not_claimed",
+      "freshness": "mixed",
+      "generated_page_count": 0,
+      "source_artifact_count": 1,
+      "unsupported_claim_count": 2
+    },
+    "generated_page_count": 0,
+    "generated_view_policy": "orientation_only_not_proof",
+    "mode": "dry_run",
+    "packet_digest_present": true,
+    "redaction_finding_count": null,
+    "redaction_verdict": null,
+    "safe_next_action": "Review first-run packet; continue only with approved generated analysis artifacts.",
+    "schema_version": "first_run_analysis_packet_v1",
+    "section_count": 7,
+    "source_artifact_count": 1,
+    "status": "ok",
+    "write_boundary": {
+      "allowed_workspace_writes": [
+        ".codex/product-agent-os/analysis/first-run-analysis-packet.json"
+      ],
+      "analysis_dir": ".codex/product-agent-os/analysis",
+      "external_stage_required": false
+    },
+    "write_policy": "read_only_generated_analysis_only",
+    "written_file_count": 0
+  },
+  "mode": "read_only_retest_after_m22_route_fix",
+  "no_unapproved_actions": {
+    "automation_activation": "not_performed",
+    "browser_automation": "not_performed",
+    "external_actions": "not_performed",
+    "git_actions": "not_performed",
+    "live_server": "not_performed",
+    "provider_or_api_calls": "not_performed",
+    "target_analysis_dir_after": false,
+    "target_analysis_dir_before": false,
+    "target_generated_analysis_write": "not_performed"
+  },
+  "runtime_contract_summary": {
+    "approval_status": "not_required",
+    "errors": [
+      "source_policy:blocked"
+    ],
+    "finish_options_count": null,
+    "lifecycle_state": "uninitialized",
+    "recommended_skill": null,
+    "source_policy_status": "blocked",
+    "status": "blocked",
+    "usage_mode_primary": null
+  },
+  "schema": "batch39_m22_real_target_retest_summary_v1",
+  "source_policy_summary": {
+    "error_count": 1,
+    "errors": [
+      "missing Source status"
+    ],
+    "registry_updates_required_count": 17,
+    "secret_findings_count": 0,
+    "status": "blocked"
+  },
+  "target_exists": true,
+  "target_label": "SOL 0.6",
+  "test_id": "B39-TEST-M22",
+  "unsupported_claims": [
+    "release_readiness",
+    "target_apply_safety",
+    "runtime_browser_behavior",
+    "provider_model_quality",
+    "git_or_deploy_readiness",
+    "automation_readiness"
+  ]
+}

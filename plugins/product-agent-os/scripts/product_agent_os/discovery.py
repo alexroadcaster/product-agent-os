@@ -134,6 +134,8 @@ IGNORED_DIR_NAMES = {
     "venv",
 }
 
+FIRST_RUN_ANALYSIS_ARTIFACT_PREFIX = ".codex/product-agent-os/analysis/"
+
 BUG_EVIDENCE_FILE_NAMES = {
     "runlog.md",
     "test-results.log",
@@ -190,6 +192,40 @@ def _detect_stack(files: set[str]) -> list[str]:
     if any(path.startswith("packages/") for path in files):
         stack.append("monorepo")
     return stack
+
+
+def _route_source_files(files: set[str]) -> set[str]:
+    return {
+        path
+        for path in files
+        if not _is_first_run_generated_analysis_artifact(path)
+    }
+
+
+def _is_first_run_generated_analysis_artifact(path: str) -> bool:
+    return path.lower().replace("\\", "/").startswith(FIRST_RUN_ANALYSIS_ARTIFACT_PREFIX)
+
+
+def _generated_artifact_inputs(files: set[str]) -> dict[str, Any]:
+    first_run_refs = sorted(path for path in files if _is_first_run_generated_analysis_artifact(path))
+    if not first_run_refs:
+        status = "not_available"
+    else:
+        status = "present_unverified"
+    return {
+        "first_run_analysis": {
+            "status": status,
+            "generated_view_policy": "orientation_only_not_proof",
+            "source_truth_allowed": False,
+            "release_readiness_supported": False,
+            "promotion_supported": False,
+            "evidence_refs": first_run_refs[:20],
+            "note": (
+                "first-run analysis artifacts are generated orientation evidence only; "
+                "route selection must use workspace source signals instead"
+            ),
+        }
+    }
 
 
 def _has_any(files: set[str], predicates: list[str]) -> bool:
@@ -1041,13 +1077,22 @@ def _has_native_mobile_surface(lowered_files: set[str]) -> bool:
     return any(
         path.startswith("android/")
         or path.startswith("ios/")
+        or path in {"app.json", "app.config.js", "app.config.ts"}
         or path.endswith(".xcodeproj/project.pbxproj")
         or path.endswith(".xcworkspace/contents.xcworkspacedata")
         or path.endswith("androidmanifest.xml")
         or path in {"podfile", "pubspec.yaml"}
-        or "react-native" in path
+        or _is_react_native_project_source(path)
         for path in lowered_files
     )
+
+
+def _is_react_native_project_source(path: str) -> bool:
+    if "react-native" not in path:
+        return False
+    if path.startswith(("skills/", "docs/", "templates/", "benchmarks/", "fixtures/")):
+        return False
+    return path in {"package.json", "app.json"} or path.startswith(("src/", "app/", "mobile/"))
 
 
 def _has_desktop_local_surface(lowered_files: set[str]) -> bool:
@@ -1171,14 +1216,21 @@ def _has_delivery_release_operations_signal(lowered_files: set[str], ci_present:
 
 def _has_pr_review_surface(lowered_files: set[str]) -> bool:
     return any(
-        path.endswith(".patch")
-        or path.endswith(".diff")
+        _is_pr_review_diff_source(path)
         or path in {".codex/pr/changed-files.md", ".codex/pr/pr-body.md"}
         or path.endswith("/changed-files.md")
         or path.endswith("/diff-summary.md")
         or path.endswith("/review-request.md")
         for path in lowered_files
     )
+
+
+def _is_pr_review_diff_source(path: str) -> bool:
+    if not (path.endswith(".patch") or path.endswith(".diff")):
+        return False
+    if any(term in path for term in ("/benchmarks/", "/fixtures/", "/swebench-patches/", "/testdata/")):
+        return False
+    return "/" not in path or path.startswith((".codex/pr/", "review/", "reviews/", "diffs/"))
 
 
 def _has_ci_failure_surface(lowered_files: set[str], profile: dict[str, Any]) -> bool:
@@ -3593,6 +3645,7 @@ def _behavioral_route_inputs(
     existing_codex_assets: list[str],
     intent_hint: str,
     bug_reproduction_signals: dict[str, Any],
+    generated_artifact_inputs: dict[str, Any],
 ) -> dict[str, Any]:
     lowered = {path.lower() for path in files}
     active_surfaces = _active_route_surfaces(
@@ -3631,6 +3684,7 @@ def _behavioral_route_inputs(
             "existing_control_plane_files": existing_control_plane,
             "has_codex_assets": bool(existing_codex_assets),
         },
+        "generated_artifact_inputs": generated_artifact_inputs,
     }
 
 
@@ -3723,17 +3777,23 @@ def analyze_workspace(root: str | Path, *, intent_hint: str = "") -> dict[str, A
     if not workspace.is_dir():
         raise NotADirectoryError(f"workspace is not a directory: {workspace}")
     files = _relative_files(workspace)
-    stack = _detect_stack(files)
-    existing_control_plane = [name for name in CONTROL_PLANE_FILES if name in files]
-    missing_control_plane = [name for name in CONTROL_PLANE_FILES if name not in files]
+    route_files = _route_source_files(files)
+    generated_artifact_inputs = _generated_artifact_inputs(files)
+    stack = _detect_stack(route_files)
+    existing_control_plane = [name for name in CONTROL_PLANE_FILES if name in route_files]
+    missing_control_plane = [name for name in CONTROL_PLANE_FILES if name not in route_files]
     existing_codex_assets = sorted(path for path in files if path.startswith(".codex/"))
-    profile = _profile_for(files, stack)
-    methodology_signals = _detect_methodology_signals(files, profile)
-    docs_tooling_decision = _docs_tooling_decision(files, stack, profile, methodology_signals)
-    methodology_intelligence = build_methodology_audit(workspace, intent_hint=intent_hint)
-    methodology_gaps = _methodology_gaps(methodology_signals, profile, files)
+    profile = _profile_for(route_files, stack)
+    methodology_signals = _detect_methodology_signals(route_files, profile)
+    docs_tooling_decision = _docs_tooling_decision(route_files, stack, profile, methodology_signals)
+    methodology_intelligence = build_methodology_audit(
+        workspace,
+        intent_hint=intent_hint,
+        ignored_path_prefixes=(FIRST_RUN_ANALYSIS_ARTIFACT_PREFIX,),
+    )
+    methodology_gaps = _methodology_gaps(methodology_signals, profile, route_files)
     methodology_applicability = _methodology_applicability(
-        files,
+        route_files,
         stack,
         profile,
         methodology_signals,
@@ -3741,9 +3801,9 @@ def analyze_workspace(root: str | Path, *, intent_hint: str = "") -> dict[str, A
         docs_tooling_decision,
         methodology_intelligence.get("methodology_synthesis") if isinstance(methodology_intelligence, dict) else None,
     )
-    bug_reproduction_signals = _detect_bug_reproduction_signals(workspace, files)
+    bug_reproduction_signals = _detect_bug_reproduction_signals(workspace, route_files)
     route_inputs = _behavioral_route_inputs(
-        files,
+        route_files,
         stack,
         profile,
         methodology_signals,
@@ -3751,10 +3811,11 @@ def analyze_workspace(root: str | Path, *, intent_hint: str = "") -> dict[str, A
         existing_codex_assets,
         intent_hint,
         bug_reproduction_signals,
+        generated_artifact_inputs,
     )
     usage_mode = _classify_usage_mode(
         workspace,
-        files,
+        route_files,
         stack,
         profile,
         methodology_signals,
@@ -3767,12 +3828,12 @@ def analyze_workspace(root: str | Path, *, intent_hint: str = "") -> dict[str, A
         usage_mode,
         missing_control_plane,
         existing_control_plane,
-        files,
+        route_files,
     )
     risks: list[str] = []
-    if "AGENTS.md" not in files:
+    if "AGENTS.md" not in route_files:
         risks.append("missing durable project instructions")
-    if not any("test" in path.lower() for path in files):
+    if not any("test" in path.lower() for path in route_files):
         risks.append("no detected test files or test configuration")
     risks.extend(methodology_gaps)
     return {
@@ -3791,21 +3852,22 @@ def analyze_workspace(root: str | Path, *, intent_hint: str = "") -> dict[str, A
         "methodology_intelligence": methodology_intelligence,
         "docs_tooling_decision": docs_tooling_decision,
         "bug_reproduction_signals": bug_reproduction_signals,
-        "legacy_onboarding_signals": _legacy_onboarding_signals(files, methodology_signals, existing_control_plane),
-        "api_migration_signals": _api_migration_signals(files, methodology_signals),
-        "ai_eval_signals": _ai_eval_signals(files),
-        "llm_ai_rag_signals": _llm_ai_rag_signals(files),
-        "native_mobile_signals": _native_mobile_signals(files),
-        "desktop_local_signals": _desktop_local_signals(files),
-        "data_migration_signals": _data_migration_signals(files),
-        "database_data_signals": _database_data_signals(files),
-        "security_sensitive_signals": _security_sensitive_signals(files),
-        "backend_dependency_signals": _backend_dependency_signals(files),
-        "backend_delivery_signals": _backend_delivery_signals(files, stack),
-        "backend_resilience_signals": _backend_resilience_signals(files),
-        "ci_stabilization_signals": _ci_stabilization_signals(files),
-        "release_packaging_signals": _release_packaging_signals(files),
-        "delivery_release_operations_signals": _delivery_release_operations_signals(files),
+        "legacy_onboarding_signals": _legacy_onboarding_signals(route_files, methodology_signals, existing_control_plane),
+        "api_migration_signals": _api_migration_signals(route_files, methodology_signals),
+        "ai_eval_signals": _ai_eval_signals(route_files),
+        "llm_ai_rag_signals": _llm_ai_rag_signals(route_files),
+        "native_mobile_signals": _native_mobile_signals(route_files),
+        "desktop_local_signals": _desktop_local_signals(route_files),
+        "data_migration_signals": _data_migration_signals(route_files),
+        "database_data_signals": _database_data_signals(route_files),
+        "security_sensitive_signals": _security_sensitive_signals(route_files),
+        "backend_dependency_signals": _backend_dependency_signals(route_files),
+        "backend_delivery_signals": _backend_delivery_signals(route_files, stack),
+        "backend_resilience_signals": _backend_resilience_signals(route_files),
+        "ci_stabilization_signals": _ci_stabilization_signals(route_files),
+        "release_packaging_signals": _release_packaging_signals(route_files),
+        "delivery_release_operations_signals": _delivery_release_operations_signals(route_files),
+        "generated_artifact_inputs": generated_artifact_inputs,
         "route_inputs": route_inputs,
         "usage_mode": usage_mode,
         "question_queue": question_queue,

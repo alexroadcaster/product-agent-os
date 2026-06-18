@@ -1,4 +1,5 @@
 import json
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -199,6 +200,42 @@ class DiscoveryTest(unittest.TestCase):
         self.assertIn("pr_review_surface", result["route_inputs"]["workspace_signals"]["active_surfaces"])
         self.assertIn("api_migration", usage_mode["secondary"])
         self.assertIn("data_migration", usage_mode["secondary"])
+
+    def test_benchmark_patch_corpus_does_not_route_pr_review(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            workspace = Path(tmpdir)
+            self._write_files(
+                workspace,
+                {
+                    "package.json": '{"name": "fixture-benchmark-corpus"}\n',
+                    "antigravity-awesome-skills-main/skills/loki-mode/benchmarks/results/run/swebench-patches/django__django-123.patch": (
+                        "diff --git a/file.py b/file.py\n"
+                    ),
+                },
+            )
+
+            result = analyze_workspace(workspace)
+
+        self.assertNotEqual(result["usage_mode"]["primary"], "pr_review")
+        self.assertNotIn("pr_review_surface", result["route_inputs"]["workspace_signals"]["active_surfaces"])
+
+    def test_imported_skill_templates_do_not_route_native_mobile(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            workspace = Path(tmpdir)
+            self._write_files(
+                workspace,
+                {
+                    "package.json": '{"name": "fixture-skill-pack"}\n',
+                    "skills/app-builder/templates/react-native-app/TEMPLATE.md": "# React Native template\n",
+                    "skills/react-native-architecture/SKILL.md": "# React Native Architecture\n",
+                    "skills/ui-ux-pro-max/data/stacks/react-native.csv": "name\nreact-native\n",
+                },
+            )
+
+            result = analyze_workspace(workspace)
+
+        self.assertNotEqual(result["usage_mode"]["primary"], "native_mobile_feature")
+        self.assertNotIn("native_mobile_surface", result["route_inputs"]["workspace_signals"]["active_surfaces"])
 
     def test_undocumented_run_script_repo_routes_legacy_with_unverified_statuses(self):
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -888,6 +925,119 @@ class DiscoveryTest(unittest.TestCase):
                 self.assertIn(expected_artifact, usage_mode["minimum_artifacts"])
                 self.assertIn(expected_surface, result["route_inputs"]["workspace_signals"]["active_surfaces"])
                 self.assertFalse(result["route_inputs"]["intent_hint_present"])
+
+    def test_first_run_generated_artifacts_are_orientation_only_not_route_sources(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            workspace = Path(tmpdir)
+            self._write_files(
+                workspace,
+                {
+                    ".codex/product-agent-os/analysis/first-run-analysis-packet.json": (
+                        '{"generated_view_policy":"orientation_only_not_proof"}\n'
+                    ),
+                    ".codex/product-agent-os/analysis/analysis-manifest.json": (
+                        '{"generated_view_policy":"orientation_only_not_proof"}\n'
+                    ),
+                    ".codex/product-agent-os/analysis/release-readiness.html": (
+                        "<p>generated release readiness recommendation</p>\n"
+                    ),
+                    ".codex/product-agent-os/analysis/security-risk-review.html": (
+                        "<p>generated security review recommendation</p>\n"
+                    ),
+                    ".codex/product-agent-os/analysis/prompts-eval.html": (
+                        "<p>generated eval recommendation</p>\n"
+                    ),
+                },
+            )
+
+            result = analyze_workspace(workspace)
+
+        self.assertEqual(result["usage_mode"]["primary"], "greenfield_idea")
+        self.assertEqual(result["detected_stack"], [])
+        self.assertEqual(result["route_inputs"]["workspace_signals"]["active_surfaces"], [])
+
+        generated = result["route_inputs"]["generated_artifact_inputs"]["first_run_analysis"]
+        self.assertEqual(generated["status"], "present_unverified")
+        self.assertEqual(generated["generated_view_policy"], "orientation_only_not_proof")
+        self.assertFalse(generated["source_truth_allowed"])
+        self.assertFalse(generated["release_readiness_supported"])
+        self.assertIn(".codex/product-agent-os/analysis/analysis-manifest.json", generated["evidence_refs"])
+        self.assertIn("orientation evidence only", generated["note"])
+        encoded_methodology = json.dumps(result["methodology_intelligence"], ensure_ascii=False, sort_keys=True)
+        encoded_questions = json.dumps(result["question_queue"], ensure_ascii=False, sort_keys=True)
+        self.assertNotIn(".codex/product-agent-os/analysis", encoded_methodology)
+        self.assertNotIn("security-risk-review.html", encoded_methodology)
+        self.assertNotIn("prompts-eval.html", encoded_questions)
+
+    def test_first_run_generated_artifacts_do_not_override_real_workspace_route(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            workspace = Path(tmpdir)
+            self._write_files(
+                workspace,
+                {
+                    "package.json": '{"name": "fixture-release", "version": "1.2.0"}\n',
+                    "CHANGELOG.md": "# Changelog\n",
+                    "docs/release.md": "# Real release checklist\n",
+                    ".codex/product-agent-os/analysis/first-run-analysis-packet.json": (
+                        '{"generated_view_policy":"orientation_only_not_proof"}\n'
+                    ),
+                    ".codex/product-agent-os/analysis/analysis-manifest.json": (
+                        '{"generated_view_policy":"orientation_only_not_proof"}\n'
+                    ),
+                    ".codex/product-agent-os/analysis/ai-eval.html": (
+                        "<p>generated AI eval gap</p>\n"
+                    ),
+                },
+            )
+
+            result = analyze_workspace(workspace)
+
+        self.assertEqual(result["usage_mode"]["primary"], "release_packaging")
+        self.assertIn("distribution_surface", result["route_inputs"]["workspace_signals"]["active_surfaces"])
+        self.assertNotIn("ai_eval_surface", result["route_inputs"]["workspace_signals"]["active_surfaces"])
+        self.assertEqual(
+            result["route_inputs"]["generated_artifact_inputs"]["first_run_analysis"]["status"],
+            "present_unverified",
+        )
+
+    def test_detect_project_cli_preserves_first_run_orientation_only_route(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            workspace = Path(tmpdir)
+            self._write_files(
+                workspace,
+                {
+                    ".codex/product-agent-os/analysis/analysis-manifest.json": (
+                        '{"generated_view_policy":"orientation_only_not_proof"}\n'
+                    ),
+                    ".codex/product-agent-os/analysis/prompts-eval.html": (
+                        "<p>generated eval recommendation</p>\n"
+                    ),
+                },
+            )
+
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(ROOT / "plugins" / "product-agent-os" / "scripts" / "detect_project.py"),
+                    str(workspace),
+                ],
+                cwd=ROOT,
+                text=True,
+                capture_output=True,
+                check=False,
+            )
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        payload = json.loads(result.stdout)
+        self.assertEqual(payload["usage_mode"]["primary"], "greenfield_idea")
+        self.assertEqual(
+            payload["route_inputs"]["generated_artifact_inputs"]["first_run_analysis"]["status"],
+            "present_unverified",
+        )
+        self.assertNotIn(
+            ".codex/product-agent-os/analysis",
+            json.dumps(payload["methodology_intelligence"], ensure_ascii=False, sort_keys=True),
+        )
 
     def test_behavioral_route_inputs_keep_intent_workspace_and_control_plane_separate(self):
         with tempfile.TemporaryDirectory() as tmpdir:
