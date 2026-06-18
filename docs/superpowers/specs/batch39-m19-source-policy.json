@@ -1,0 +1,16 @@
+﻿{
+  "errors": [],
+  "files": [],
+  "registry_updates_required": [],
+  "secret_findings": [],
+  "source_policy_report": {
+    "errors": [],
+    "files": [],
+    "registry_updates_required": [],
+    "secret_findings": [],
+    "status": "ok",
+    "workspace": "tests\\fixtures\\product_agent_os\\batch39-m19-automation-release-fixture"
+  },
+  "status": "ok",
+  "workspace": "tests\\fixtures\\product_agent_os\\batch39-m19-automation-release-fixture"
+}

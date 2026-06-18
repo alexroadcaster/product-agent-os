@@ -1,0 +1,9 @@
+{
+  "name": "batch39-m19-automation-release-fixture",
+  "version": "0.0.0-fixture",
+  "private": true,
+  "scripts": {
+    "release:dry-run": "python scripts/manual_release_dry_run.py",
+    "test": "python scripts/fixture_smoke.py"
+  }
+}

@@ -1,0 +1,10 @@
+name: release-draft-fixture
+
+on:
+  workflow_dispatch:
+
+jobs:
+  draft:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Synthetic fixture only; no workflow is activated by this repository."
