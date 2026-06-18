@@ -215,7 +215,7 @@ class FirstRunAnalysisPacketTests(unittest.TestCase):
             self.assertEqual(validate_packet(written_packet), [])
             self.assertNotIn(str(workspace), result.stdout)
 
-    def test_m20_2_cli_rejects_ambiguous_mode_and_external_stage_argument(self) -> None:
+    def test_m20_2_cli_rejects_ambiguous_mode(self) -> None:
         with TemporaryDirectory() as tmp:
             workspace = Path(tmp) / "sample-target"
             workspace.mkdir()
@@ -232,23 +232,9 @@ class FirstRunAnalysisPacketTests(unittest.TestCase):
                 capture_output=True,
                 text=True,
             )
-            external_stage = subprocess.run(
-                [
-                    sys.executable,
-                    str(SCRIPTS / "run_first_project_analysis.py"),
-                    str(workspace),
-                    "--stage",
-                    str(Path(tmp) / "stage"),
-                ],
-                check=False,
-                capture_output=True,
-                text=True,
-            )
 
             self.assertNotEqual(ambiguous.returncode, 0)
             self.assertIn("choose exactly one mode", ambiguous.stdout)
-            self.assertNotEqual(external_stage.returncode, 0)
-            self.assertIn("unrecognized arguments", external_stage.stderr)
 
     def test_m20_3_adapter_normalizes_analyzer_outputs_with_provenance_and_gaps(self) -> None:
         _schema, build_packet, validate_packet = _load_contract()

@@ -9,6 +9,7 @@ from product_agent_os.stage_manifest import canonical_json, content_digest
 
 
 FIRST_RUN_ANALYSIS_PACKET_SCHEMA_VERSION = "first_run_analysis_packet_v1"
+FIRST_RUN_ORCHESTRATOR_CONTRACT_SCHEMA_VERSION = "first_run_orchestrator_contract_v1"
 FIRST_RUN_ANALYSIS_ARTIFACT_VERSION = 1
 GENERATED_VIEW_POLICY = "orientation_only_not_proof"
 WRITE_POLICY = "read_only_generated_analysis_only"
@@ -33,6 +34,18 @@ CONFIDENCE_LEVELS = {"high", "medium", "low", "unknown"}
 ANALYSIS_DIR = ".codex/product-agent-os/analysis"
 FIRST_RUN_PACKET_NAME = "first-run-analysis-packet.json"
 SECRET_LIKE_VALUE_RE = re.compile(r"\b(?:sk-proj|sk)-[A-Za-z0-9_-]{12,}")
+
+
+FIRST_RUN_UNSUPPORTED_CLAIMS = [
+    "release readiness",
+    "runtime/browser proof",
+    "provider/API/model quality",
+    "target apply safety",
+    "public docs/site acceptance",
+    "active automation promotion",
+    "source-read semantic completeness",
+    "external writes or deployment safety",
+]
 
 
 FIRST_RUN_ANALYSIS_PACKET_SCHEMA: dict[str, Any] = {
@@ -76,6 +89,119 @@ FIRST_RUN_ANALYSIS_PACKET_SCHEMA: dict[str, Any] = {
         "packet_digest": {"type": "string"},
     },
 }
+
+
+def build_first_run_automation_contract() -> dict[str, Any]:
+    """Build the Batch 41 first-run orchestration contract."""
+
+    return {
+        "schema_version": FIRST_RUN_ORCHESTRATOR_CONTRACT_SCHEMA_VERSION,
+        "generated_view_policy": GENERATED_VIEW_POLICY,
+        "default_mode": "read_only",
+        "modes": [
+            {
+                "id": "read_only",
+                "cli_flags": ["--full-dry-run", "--dry-run"],
+                "target_mutation_allowed": False,
+                "allowed_write_roots": [],
+                "description": "Build and print a first-run packet without writing target files.",
+            },
+            {
+                "id": "stage",
+                "cli_flags": ["--stage <dir>"],
+                "target_mutation_allowed": False,
+                "allowed_write_roots": ["explicit external stage root"],
+                "description": "Write packet and offline HTML artifacts under an explicit stage root outside the target.",
+            },
+            {
+                "id": "write_analysis",
+                "cli_flags": ["--write-analysis"],
+                "target_mutation_allowed": True,
+                "allowed_write_roots": [ANALYSIS_DIR],
+                "description": "Write generated analysis artifacts only under the target analysis directory.",
+            },
+            {
+                "id": "render_html",
+                "cli_flags": ["--stage <dir>", "--write-analysis"],
+                "target_mutation_allowed": False,
+                "allowed_write_roots": ["stage root", ANALYSIS_DIR],
+                "description": "Render offline HTML as generated orientation evidence only.",
+            },
+            {
+                "id": "ask",
+                "cli_flags": [],
+                "target_mutation_allowed": False,
+                "allowed_write_roots": [],
+                "description": "Expose at most one blocking owner question in the first-launch response.",
+            },
+            {
+                "id": "compare",
+                "cli_flags": ["--stage <dir>", "--write-analysis"],
+                "target_mutation_allowed": False,
+                "allowed_write_roots": ["stage root", ANALYSIS_DIR],
+                "description": "Compare against previous generated manifest when one exists.",
+            },
+        ],
+        "inputs": ["workspace", "generated_at", "stage_dir"],
+        "outputs": [
+            FIRST_RUN_PACKET_NAME,
+            "index.html",
+            "analysis-manifest.json",
+            "first-launch summary",
+        ],
+        "write_boundaries": {
+            "target_default": "read_only",
+            "stage_inside_target": "blocked_without_write_analysis_mode",
+            "write_analysis_root": ANALYSIS_DIR,
+            "external_actions": "not_performed",
+        },
+        "unsupported_claims": FIRST_RUN_UNSUPPORTED_CLAIMS,
+        "stop_conditions": [
+            "silent target mutation",
+            "stage path is inside target without write-analysis mode",
+            "help suggests unsafe writes or live actions",
+            "generated view is treated as source truth",
+            "runtime/browser/provider/git/release claim without current evidence",
+        ],
+    }
+
+
+def validate_first_run_automation_contract(contract: Any) -> list[str]:
+    if not isinstance(contract, dict):
+        return ["first-run automation contract must be an object"]
+    errors: list[str] = []
+    if contract.get("schema_version") != FIRST_RUN_ORCHESTRATOR_CONTRACT_SCHEMA_VERSION:
+        errors.append(f"schema_version must be {FIRST_RUN_ORCHESTRATOR_CONTRACT_SCHEMA_VERSION}")
+    if contract.get("generated_view_policy") != GENERATED_VIEW_POLICY:
+        errors.append(f"generated_view_policy must be {GENERATED_VIEW_POLICY}")
+    modes = contract.get("modes")
+    if not isinstance(modes, list):
+        errors.append("modes must be list")
+        modes = []
+    mode_ids = {str(mode.get("id", "")) for mode in modes if isinstance(mode, dict)}
+    for mode_id in {"read_only", "stage", "write_analysis", "render_html", "ask", "compare"}:
+        if mode_id not in mode_ids:
+            errors.append(f"mode {mode_id} is required")
+    for mode in modes:
+        if not isinstance(mode, dict):
+            errors.append("mode entry must be an object")
+            continue
+        if not isinstance(mode.get("target_mutation_allowed"), bool):
+            errors.append(f"mode {mode.get('id', '')}.target_mutation_allowed must be boolean")
+        if not isinstance(mode.get("allowed_write_roots"), list):
+            errors.append(f"mode {mode.get('id', '')}.allowed_write_roots must be list")
+    if not isinstance(contract.get("unsupported_claims"), list):
+        errors.append("unsupported_claims must be list")
+    else:
+        for claim in FIRST_RUN_UNSUPPORTED_CLAIMS:
+            if claim not in contract["unsupported_claims"]:
+                errors.append(f"unsupported claim missing: {claim}")
+    write_boundaries = contract.get("write_boundaries")
+    if not isinstance(write_boundaries, dict):
+        errors.append("write_boundaries must be object")
+    elif write_boundaries.get("stage_inside_target") != "blocked_without_write_analysis_mode":
+        errors.append("stage_inside_target boundary must block without write-analysis mode")
+    return errors
 
 
 def build_first_run_analysis_packet(
@@ -717,11 +843,14 @@ def _valid_sha256_digest(value: str) -> bool:
 __all__ = [
     "FIRST_RUN_ANALYSIS_PACKET_SCHEMA",
     "FIRST_RUN_ANALYSIS_PACKET_SCHEMA_VERSION",
+    "FIRST_RUN_ORCHESTRATOR_CONTRACT_SCHEMA_VERSION",
     "ANALYSIS_DIR",
     "FIRST_RUN_PACKET_NAME",
     "SECRET_LIKE_VALUE_RE",
     "adapt_first_run_analysis_sections",
     "build_first_run_analysis_packet",
+    "build_first_run_automation_contract",
     "run_first_project_analysis",
+    "validate_first_run_automation_contract",
     "validate_first_run_analysis_packet",
 ]

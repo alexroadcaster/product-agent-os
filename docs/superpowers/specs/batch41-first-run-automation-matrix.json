@@ -96,7 +96,8 @@
       "codex_does": "Draft schema and CLI contract for first_run_orchestrator_v1.",
       "user_does": "Review product expectation and approval boundary.",
       "acceptance": "Contract names read-only, stage, write, render-html, ask and compare; tests validate schema.",
-      "stop_condition": "Stop if the contract implies silent target mutation."
+      "stop_condition": "Stop if the contract implies silent target mutation.",
+      "status": "implemented"
     },
     {
       "id": "B41-S1-M02",
@@ -107,7 +108,8 @@
       "codex_does": "Implement help/intake output with example commands and safety summary.",
       "user_does": "Confirm wording matches expected operator flow.",
       "acceptance": "Running command without mode prints help plus next safe command and exits non-destructively.",
-      "stop_condition": "Stop if help suggests unsafe writes or live actions."
+      "stop_condition": "Stop if help suggests unsafe writes or live actions.",
+      "status": "implemented"
     },
     {
       "id": "B41-S1-M03",
@@ -118,7 +120,8 @@
       "codex_does": "Build orchestrator wrapper around existing scripts/modules.",
       "user_does": "Provide target workspace path.",
       "acceptance": "Synthetic fixture returns merged packet with all expected sections populated or blocked.",
-      "stop_condition": "Stop if any subprocess can mutate target by default."
+      "stop_condition": "Stop if any subprocess can mutate target by default.",
+      "status": "implemented"
     },
     {
       "id": "B41-S1-M04",
@@ -129,7 +132,8 @@
       "codex_does": "Render packet and HTML into explicit stage directory.",
       "user_does": "Choose stage directory when target write is not approved.",
       "acceptance": "Stage mode writes only under stage root; mutation proof confirms target unchanged.",
-      "stop_condition": "Stop if stage path is inside target without explicit write mode."
+      "stop_condition": "Stop if stage path is inside target without explicit write mode.",
+      "status": "implemented"
     },
     {
       "id": "B41-S1-M05",
@@ -140,7 +144,8 @@
       "codex_does": "Gate write mode with clear summary and allowed path list.",
       "user_does": "Give exact approval for target write when desired.",
       "acceptance": "Write mode writes only analysis packet, HTML pages and manifest under allowed analysis dir.",
-      "stop_condition": "Stop if source policy or approval gate blocks promotion."
+      "stop_condition": "Stop if source policy or approval gate blocks promotion.",
+      "status": "implemented"
     },
     {
       "id": "B41-S2-M06",

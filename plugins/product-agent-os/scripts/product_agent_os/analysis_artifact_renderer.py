@@ -27,7 +27,12 @@ PRODUCT_AGENT_OS_PLUGIN_VERSION = "local-first-run-analysis"
 ANALYSIS_MANIFEST_NAME = "analysis-manifest.json"
 
 
-def render_first_run_analysis_artifact(packet: dict[str, Any], workspace: str | Path) -> dict[str, Any]:
+def render_first_run_analysis_artifact(
+    packet: dict[str, Any],
+    workspace: str | Path,
+    *,
+    output_dir: str | Path | None = None,
+) -> dict[str, Any]:
     """Render a first-run analysis packet into offline in-project HTML artifacts."""
 
     errors = validate_first_run_analysis_packet(packet)
@@ -39,7 +44,7 @@ def render_first_run_analysis_artifact(packet: dict[str, Any], workspace: str | 
     if not workspace_path.is_dir():
         raise NotADirectoryError(f"workspace is not a directory: {workspace_path}")
 
-    analysis_dir = workspace_path / ANALYSIS_DIR
+    analysis_dir = Path(output_dir) if output_dir is not None else workspace_path / ANALYSIS_DIR
     previous_manifest = _load_previous_manifest(analysis_dir / ANALYSIS_MANIFEST_NAME)
     pages = [_page_entry(page_id, packet) for page_id in FIRST_RUN_ANALYSIS_PAGE_IDS]
     source_artifacts = _source_artifacts(packet)
@@ -79,7 +84,7 @@ def render_first_run_analysis_artifact(packet: dict[str, Any], workspace: str | 
     )
     return {
         "status": "ready",
-        "analysis_dir": ANALYSIS_DIR,
+        "analysis_dir": ANALYSIS_DIR if output_dir is None else ".",
         "manifest": ANALYSIS_MANIFEST_NAME,
         "page_count": len(pages),
         "written_files": [ANALYSIS_MANIFEST_NAME] + [page["path"] for page in pages],

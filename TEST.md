@@ -84,6 +84,7 @@ For real-project target tests, the default verification mode is read-only: inven
 | `B38-PILOT-NF01` | Docs-only pilot addendum; target apply blocked by `source_policy_status: blocked`. | Resolve target source policy and target control-plane artifacts before target mutation. |
 | Batch 39 | `B39-S1` through `B39-S5` are current through `B39-S5-CLOSURE-A01`. S5 evidence closes source-doc sync, go/no-go and no-unapproved-actions proof as `closed_for_owner_feedback_testing_not_release_ready`: release is `no_go`, owner-feedback testing is `conditional_go`, runtime/browser pilot is `approval_required`, and promotion remains `manual_only_not_promoted`. | Run owner-feedback tests from `batch39-s5-owner-feedback-test-plan.json`; keep S4/S5 focused tests, full unittest, fixture/transcript eval, Codex compatibility, docs check and diff hygiene before any stronger readiness claim. |
 | Batch 40 completion-skeptic | Local manual loop closed as `manual_only` and `not_promoted`. | Automation promotion requires manual success evidence, eval cases, owner, cadence, stop condition and rollback/disable path. |
+| Batch 41 first-run orchestration | `B41-S1-M01..M05` implemented as local CLI/contract behavior. Current focused evidence: B41 command contract tests, first-run regression tests and docs contract tests passed. | Continue with B41-S2 checks for all-script registry and safe read-only matrix; no full B41, real-target pilot, runtime/browser or plugin-cache readiness claim yet. |
 | Agent lifecycle and control-plane sync | Current local agents, packaged agent templates, workflows, config templates and `agent-context-contract` require config-routed Task Brief / Completion Brief plus control-plane sync before completion; current verification passed. | Rerun task lifecycle, infrastructure template, docs, docs-structure and diff hygiene checks after future changes to this contract. |
 
 ## Historical Evidence Owners
@@ -94,6 +95,7 @@ For real-project target tests, the default verification mode is read-only: inven
 | `blocked_pending_explicit_cache_mutation_approval`, `B38-S2` | `docs/sources/product-agent-os-track-10-backlog.md`, `RUNLOG.md` |
 | `B39-TEST-M01..M54`, `B39-S1..B39-S5` | `PLAN.md`, `prod_test.md` |
 | `B40-S2..B40-S5`, `manual_only`, `not_promoted` | `docs/sources/product-agent-os-track-10-backlog.md`, `RUNLOG.md` |
+| `B41-S1-M01..M05` | `docs/superpowers/specs/batch41-s1-command-contract-summary.json`, `docs/superpowers/specs/batch41-first-run-automation-matrix.json`, `RUNLOG.md` |
 | Track 8 | `docs/sources/product-agent-os-track-8-detailed-backlog.md` |
 | Track 9 | `docs/sources/product-agent-os-track-9-backlog.md` |
 | Source registry | `docs/sources/registry.md` |
@@ -116,6 +118,7 @@ For real-project target tests, the default verification mode is read-only: inven
 - B39 S2/S3 markers: `B39-TEST-M21-A01..A03`, `B39-TEST-M22-A01..A03`, `B39-TEST-M23..M33`; generated first-run views remain orientation-only, read-only real-target evidence is not release readiness, and S3 is functional regression/repeatability evidence only.
 - B40-S4 implements Doubt / verifier loop docs/site/source-transfer; strict MkDocs.
 - B40-S5 implements Doubt / verifier loop pilot metrics and closure; completion_skeptic_manual_pilot_ledger; completion_skeptic_go_no_go_closure.
+- B41-S1 implements first-run command/UX contract rows `B41-S1-M01..M05`: `first_run_orchestrator_contract_v1`, no-args help, `--full-dry-run`, external `--stage <dir>`, `--write-analysis`, stage-inside-target block, and renderer stage output support.
 
 ## Completion Claim Rule
 
