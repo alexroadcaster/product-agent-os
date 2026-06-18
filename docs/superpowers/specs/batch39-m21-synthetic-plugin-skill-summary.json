@@ -1,0 +1,58 @@
+{
+  "approval_boundary": {
+    "automation_activation": "not_performed",
+    "browser_automation": "not_performed",
+    "external_actions": "not_performed",
+    "git_actions": "not_performed",
+    "live_server": "not_performed",
+    "local_evidence_artifact_write": "allowed_workspace_output_only",
+    "provider_or_api_calls": "not_performed",
+    "target_workspace_mutation": "not_performed"
+  },
+  "attempt_digest": "sha256:9597c89d993ec3ab59308d666e6bf1550a07593745d3ba79d58760d30bd9ab4c",
+  "attempt_id": "B39-TEST-M21-A01",
+  "batch": "B39",
+  "comparison_role": "primary_pass_fail_contract",
+  "first_run_artifact": {
+    "detected_archetypes": [
+      "plugin_skill"
+    ],
+    "manifest_ref": ".codex/product-agent-os/analysis/analysis-manifest.json",
+    "packet_digest": "sha256:c359c68e160ea978b80764b6f5b60033bf4d3ed34f298054d3dd20e958f56952",
+    "packet_ref": ".codex/product-agent-os/analysis/first-run-analysis-packet.json",
+    "page_count": 11,
+    "status": "rendered_in_temp_copy"
+  },
+  "first_run_artifact_usefulness": {
+    "page_count": 11,
+    "status": "rendered_artifact_available"
+  },
+  "generated_at": "2026-06-18T00:00:00Z",
+  "generated_view_policy": "orientation_only_not_proof",
+  "mode": "synthetic_local",
+  "next_action": "Use synthetic pass/fail result as the M21 baseline contract.",
+  "plugin_skill_contract": {
+    "required": true,
+    "required_archetype": "plugin_skill",
+    "required_page_count": 11,
+    "status": "passed"
+  },
+  "schema_version": "batch39_m21_attempt_summary_v1",
+  "source_policy_status": "verified_synthetic",
+  "summary_status": "passed_contract_guardrail",
+  "synthetic_write_status": "allowed_generated_analysis_only",
+  "target": {
+    "kind": "synthetic_fixture",
+    "label": "synthetic_plugin_skill_fixture",
+    "location_ref": "workspace_fixture:batch39-m21-plugin-skill-fixture"
+  },
+  "test_id": "B39-TEST-M21",
+  "unsupported_claims": [
+    "live_runtime",
+    "browser_ui",
+    "provider_calls",
+    "git_release",
+    "automation_activation",
+    "release_readiness"
+  ]
+}

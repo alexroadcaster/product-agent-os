@@ -32,7 +32,16 @@ def build_batch39_rollup(
         counts[status] += 1
         if status in {"failed", "blocked"}:
             blockers.append(test_ref)
-        rows.append({"test_id": test_ref, "status": status, "attempts": attempts, "evidence_refs": evidence_refs})
+        row_entry: dict[str, Any] = {
+            "test_id": test_ref,
+            "status": status,
+            "attempts": attempts,
+            "evidence_refs": evidence_refs,
+        }
+        first_run_ref = _safe_first_run_analysis_ref(row.get("first_run_analysis_ref"))
+        if first_run_ref:
+            row_entry["first_run_analysis_ref"] = first_run_ref
+        rows.append(row_entry)
     rollup = {
         "schema_version": BATCH39_ROLLUP_SCHEMA_VERSION,
         "batch": "B39",
@@ -79,6 +88,12 @@ def validate_batch39_rollup(rollup: dict[str, Any]) -> list[str]:
     for status in TASK_STATUSES:
         if not isinstance(counts.get(status), int):
             errors.append(f"counts.{status} must be integer")
+    for index, row in enumerate(rows):
+        if not isinstance(row, dict):
+            continue
+        first_run_ref = row.get("first_run_analysis_ref")
+        if first_run_ref is not None and not isinstance(first_run_ref, dict):
+            errors.append(f"task_rows[{index}].first_run_analysis_ref must be object")
     return errors
 
 
@@ -94,6 +109,24 @@ def _safe_ref(value: str) -> str:
     if len(normalized) >= 3 and normalized[1] == ":" and normalized[2] == "/":
         return "[REDACTED_LOCAL_PATH]"
     return normalized
+
+
+def _safe_first_run_analysis_ref(value: Any) -> dict[str, Any]:
+    if not isinstance(value, dict):
+        return {}
+    path = _safe_ref(str(value.get("path", ""))).strip()
+    digest = str(value.get("digest", "")).strip()
+    if not path or path == "[REDACTED_LOCAL_PATH]" or not digest.startswith("sha256:"):
+        return {}
+    return {
+        "kind": str(value.get("kind", "generated_analysis_pack")).strip() or "generated_analysis_pack",
+        "path": path,
+        "digest": digest,
+        "page_count": _int(value.get("page_count")),
+        "freshness": str(value.get("freshness", "not_available")).strip() or "not_available",
+        "unsupported_claim_count": _int(value.get("unsupported_claim_count")),
+        "generated_view_policy": "orientation_only_not_proof",
+    }
 
 
 __all__ = [

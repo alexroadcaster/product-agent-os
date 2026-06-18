@@ -1,0 +1,244 @@
+{
+  "schema_version": "doubt_verification_packet_v1",
+  "verdict": "accepted_risk",
+  "artifact_under_review": {
+    "kind": "task_row",
+    "path": "prod_test.md",
+    "label": "B39-FRIA-M20.10"
+  },
+  "claim_ledger": [
+    {
+      "claim_id": "claim-m20-local-contracts",
+      "claim": "B39-FRIA-M20.1..M20.9 local first-run artifact contracts have current command and source evidence.",
+      "claim_type": "code_behavior",
+      "status": "supported",
+      "provenance": {
+        "kind": "command",
+        "ref": "python -m unittest tests.product_agent_os.test_first_run_analysis tests.product_agent_os.test_batch39_s1_contracts -v",
+        "checked_at": "2026-06-18T00:00:00+03:00"
+      }
+    },
+    {
+      "claim_id": "claim-m20-docs-registry",
+      "claim": "First-run artifact docs, CLI reference and source registry markers are synchronized for M20.9.",
+      "claim_type": "factual",
+      "status": "supported",
+      "provenance": {
+        "kind": "command",
+        "ref": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+        "checked_at": "2026-06-18T00:00:00+03:00"
+      }
+    },
+    {
+      "claim_id": "claim-no_unapproved_actions",
+      "claim": "M20.10 performed no target mutation, live server, browser automation, provider call, external write, automation activation or git action.",
+      "claim_type": "approval",
+      "status": "supported",
+      "provenance": {
+        "kind": "local_file",
+        "ref": "prod_test.md no-unapproved-actions ledger",
+        "checked_at": "2026-06-18T00:00:00+03:00"
+      }
+    },
+    {
+      "claim_id": "claim-release-readiness",
+      "claim": "The first-run artifact proves release readiness or production readiness.",
+      "claim_type": "release",
+      "status": "unsupported",
+      "provenance": {
+        "kind": "local_file",
+        "ref": "AGENTS.md release boundary and prod_test.md open Batch 39 gates",
+        "checked_at": "2026-06-18T00:00:00+03:00"
+      }
+    },
+    {
+      "claim_id": "claim-real-project-value",
+      "claim": "The first-run artifact proves real-project value for SOL 0.6 or another live target.",
+      "claim_type": "product",
+      "status": "unsupported",
+      "provenance": {
+        "kind": "local_file",
+        "ref": "prod_test.md M20 target boundary",
+        "checked_at": "2026-06-18T00:00:00+03:00"
+      }
+    }
+  ],
+  "requirement_ledger": [
+    {
+      "requirement_id": "req-focused-first-run-tests",
+      "requirement": "Run focused schema, CLI, renderer, redaction, status/rollup and scorecard tests.",
+      "status": "covered",
+      "provenance": {
+        "kind": "command",
+        "ref": "python -m unittest tests.product_agent_os.test_first_run_analysis tests.product_agent_os.test_batch39_s1_contracts -v",
+        "checked_at": "2026-06-18T00:00:00+03:00"
+      }
+    },
+    {
+      "requirement_id": "req-docs-eval-checks",
+      "requirement": "Run docs, fixture eval, transcript eval, Codex compatibility, compile and diff checks before closing M20.10.",
+      "status": "covered",
+      "provenance": {
+        "kind": "command",
+        "ref": "M20.10 verification command group",
+        "checked_at": "2026-06-18T00:00:00+03:00"
+      }
+    },
+    {
+      "requirement_id": "req-real-target-readiness",
+      "requirement": "Do not claim real target value, runtime behavior, provider behavior, browser behavior, release readiness or promotion without exact approval and target evidence.",
+      "status": "partial",
+      "provenance": {
+        "kind": "local_file",
+        "ref": "AGENTS.md, PLAN.md, prod_test.md",
+        "checked_at": "2026-06-18T00:00:00+03:00"
+      }
+    }
+  ],
+  "evidence_ledger": [
+    {
+      "evidence_id": "ev-focused-first-run-unittest",
+      "evidence_provider": "command",
+      "evidence_role": "proof",
+      "status": "available",
+      "evidence_ref": "python -m unittest tests.product_agent_os.test_first_run_analysis tests.product_agent_os.test_batch39_s1_contracts -v",
+      "provenance": {
+        "kind": "command",
+        "ref": "22 tests OK",
+        "checked_at": "2026-06-18T00:00:00+03:00"
+      }
+    },
+    {
+      "evidence_id": "ev-docs-unittest",
+      "evidence_provider": "command",
+      "evidence_role": "proof",
+      "status": "available",
+      "evidence_ref": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+      "provenance": {
+        "kind": "command",
+        "ref": "79 tests OK",
+        "checked_at": "2026-06-18T00:00:00+03:00"
+      }
+    },
+    {
+      "evidence_id": "ev-fixture-eval",
+      "evidence_provider": "fixture_eval",
+      "evidence_role": "proof",
+      "status": "available",
+      "evidence_ref": "python plugins/product-agent-os/scripts/run_fixture_eval.py",
+      "provenance": {
+        "kind": "fixture_eval",
+        "ref": "status ok",
+        "checked_at": "2026-06-18T00:00:00+03:00"
+      }
+    },
+    {
+      "evidence_id": "ev-transcript-eval",
+      "evidence_provider": "transcript_eval",
+      "evidence_role": "proof",
+      "status": "available",
+      "evidence_ref": "python plugins/product-agent-os/scripts/run_transcript_eval.py plugins/product-agent-os/assets/eval-fixtures/transcripts/product-agent-os-synthetic-sessions.json",
+      "provenance": {
+        "kind": "transcript_eval",
+        "ref": "26 passed, 0 failed",
+        "checked_at": "2026-06-18T00:00:00+03:00"
+      }
+    },
+    {
+      "evidence_id": "ev-codex-compatibility",
+      "evidence_provider": "codex_compatibility",
+      "evidence_role": "proof",
+      "status": "available",
+      "evidence_ref": "python plugins/product-agent-os/scripts/validate_codex_compatibility.py",
+      "provenance": {
+        "kind": "codex_compatibility",
+        "ref": "status compatible",
+        "checked_at": "2026-06-18T00:00:00+03:00"
+      }
+    },
+    {
+      "evidence_id": "ev-docs-structure",
+      "evidence_provider": "command",
+      "evidence_role": "proof",
+      "status": "available",
+      "evidence_ref": "python tools/check_docs.py",
+      "provenance": {
+        "kind": "command",
+        "ref": "OK: documentation structure checks passed",
+        "checked_at": "2026-06-18T00:00:00+03:00"
+      }
+    },
+    {
+      "evidence_id": "ev-diff-check",
+      "evidence_provider": "command",
+      "evidence_role": "proof",
+      "status": "available",
+      "evidence_ref": "git diff --check",
+      "provenance": {
+        "kind": "command",
+        "ref": "exit code 0",
+        "checked_at": "2026-06-18T00:00:00+03:00"
+      }
+    },
+    {
+      "evidence_id": "ev-real-target-runtime",
+      "evidence_provider": "not_available",
+      "evidence_role": "gap",
+      "status": "approval_required",
+      "evidence_ref": "SOL 0.6 runtime/browser/provider/target mutation evidence not approved or collected",
+      "provenance": {
+        "kind": "local_file",
+        "ref": "prod_test.md approval boundary",
+        "checked_at": "2026-06-18T00:00:00+03:00"
+      }
+    }
+  ],
+  "approval_boundary": {
+    "status": "required",
+    "hits": [
+      "target workspace mutation",
+      "live server launch",
+      "browser automation",
+      "provider/API/model call",
+      "external write or automation activation",
+      "git stage/commit/push/PR"
+    ]
+  },
+  "gap_ledger": [
+    {
+      "gap_id": "gap-real-target-runtime",
+      "related_claim_or_requirement": "claim-real-project-value",
+      "owner": "project owner",
+      "reason": "No exact approval was given for SOL 0.6 mutation, runtime, browser, provider or external actions.",
+      "residual_risk": "M20.10 supports local first-run artifact contracts only; real target value remains unproven.",
+      "follow_up": "Run an approved read-only or runtime/browser/provider target slice with explicit surface approval."
+    }
+  ],
+  "handoff": {
+    "verified_claims": [
+      "claim-m20-local-contracts",
+      "claim-m20-docs-registry",
+      "claim-no_unapproved_actions"
+    ],
+    "unsupported_claims": [
+      "claim-release-readiness",
+      "claim-real-project-value"
+    ],
+    "verification_evidence": [
+      "ev-focused-first-run-unittest",
+      "ev-docs-unittest",
+      "ev-fixture-eval",
+      "ev-transcript-eval",
+      "ev-codex-compatibility",
+      "ev-docs-structure",
+      "ev-diff-check"
+    ],
+    "stop_reason": "m20_first_run_local_verification_closed_with_accepted_risk_boundary",
+    "recommended_next_role": "tester"
+  },
+  "source_policy": "doubt verification packet is evidence ledger, not generated dashboard proof",
+  "redaction_status": {
+    "status": "clean",
+    "categories": []
+  }
+}

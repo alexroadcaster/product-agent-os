@@ -1,0 +1,13 @@
+{
+  "id": "synthetic-plugin-skill-fixture",
+  "name": "Synthetic Plugin Skill Fixture",
+  "version": "0.0.0-test",
+  "description": "Synthetic plugin/skill fixture for Batch 39 M21 contract testing.",
+  "skills": [
+    {
+      "id": "synthetic-skill",
+      "path": "skills/synthetic-skill/SKILL.md"
+    }
+  ]
+}
+

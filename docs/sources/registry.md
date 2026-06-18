@@ -1258,4 +1258,10 @@ These markers preserve source-owned test routing after registry compaction. Full
 - .en.md
 - index.en.md
 - location
+- Product-Agent OS Batch 39 M20 first-run analysis artifact contract
+- B39-FRIA-M20.9
+- docs/product-agent-os/artifact-contracts.md
+- docs/product-agent-os/cli-reference.md
+- plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py
+- plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py
 ```

@@ -7096,6 +7096,139 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 with self.subTest(document=document, term=term):
                     self.assertIn(term, documents[document])
 
+    def test_batch39_m20_first_run_artifact_docs_and_registry_are_synced(self):
+        documents = {
+            "artifact_contracts": (PRODUCT_AGENT_OS / "artifact-contracts.md").read_text(encoding="utf-8"),
+            "cli_reference": (PRODUCT_AGENT_OS / "cli-reference.md").read_text(encoding="utf-8"),
+            "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
+            "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
+            "track10_plan": TRACK10_PLAN.read_text(encoding="utf-8"),
+        }
+
+        expected_terms = {
+            "artifact_contracts": [
+                "First-run analysis artifact",
+                ".codex/product-agent-os/analysis/first-run-analysis-packet.json",
+                ".codex/product-agent-os/analysis/analysis-manifest.json",
+                "orientation_only_not_proof",
+                "redaction_report",
+                "source_policy_gate",
+                "first_run_artifact_scorecard_v1",
+                "not release approval",
+            ],
+            "cli_reference": [
+                "run_first_project_analysis.py",
+                "--dry-run",
+                "--write",
+                ".codex/product-agent-os/analysis/",
+                "does not accept `--stage`",
+            ],
+            "registry": [
+                "Product-Agent OS Batch 39 M20 first-run analysis artifact contract",
+                "docs/product-agent-os/artifact-contracts.md",
+                "docs/product-agent-os/cli-reference.md",
+                "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+                "plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py",
+                "B39-FRIA-M20.9",
+            ],
+            "registry_en": [
+                "Product-Agent OS Batch 39 M20 first-run analysis artifact contract",
+                "docs/product-agent-os/artifact-contracts.md",
+                "docs/product-agent-os/cli-reference.md",
+                "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+                "plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py",
+                "B39-FRIA-M20.9",
+            ],
+            "track10_plan": [
+                "`B39-FRIA-M20.9`",
+                "docs, artifact contracts and source registry sync",
+            ],
+        }
+
+        for document, terms in expected_terms.items():
+            for term in terms:
+                with self.subTest(document=document, term=term):
+                    self.assertIn(term, documents[document])
+
+    def test_batch39_m20_first_run_completion_verification_is_recorded(self):
+        packet = DOCS / "superpowers" / "specs" / "batch39-m20-first-run-doubt-verification-packet.json"
+        documents = {
+            "packet": packet.read_text(encoding="utf-8"),
+            "prod_test": (ROOT / "prod_test.md").read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "agents": AGENTS.read_text(encoding="utf-8"),
+            "track10_plan": TRACK10_PLAN.read_text(encoding="utf-8"),
+        }
+
+        expected_terms = {
+            "packet": [
+                "doubt_verification_packet_v1",
+                "accepted_risk",
+                "claim-m20-local-contracts",
+                "claim-release-readiness",
+                "ev-focused-first-run-unittest",
+                "ev-docs-unittest",
+                "ev-fixture-eval",
+                "ev-transcript-eval",
+                "no_unapproved_actions",
+            ],
+            "prod_test": [
+                "B39-FRIA-M20.10-A01",
+                "batch39-m20-first-run-doubt-verification-packet.json",
+                "accepted_risk",
+                "no_unapproved_actions",
+                "python -m unittest tests.product_agent_os.test_first_run_analysis tests.product_agent_os.test_batch39_s1_contracts -v",
+                "python plugins\\product-agent-os\\scripts\\run_fixture_eval.py",
+            ],
+            "plan": ["`B39-FRIA-M20.1..M20.10`", "`B39-TEST-M22` / `B39-S3` is next"],
+            "test": ["`B39-FRIA-M20.1..M20.10`", "`B39-TEST-M21-A01..A03`"],
+            "evals": ["`B39-FRIA-M20.1..M20.10`", "accepted_risk"],
+            "runlog": ["`B39-TEST-M21-A01..A03`", "`B39-TEST-M22`"],
+            "agents": ["`B39-FRIA-M20.1..M20.10`", "`B39-S3` / `B39-TEST-M22` is the next route"],
+            "track10_plan": ["`B39-FRIA-M20.10`", "`implemented`; `2026-06-18`"],
+        }
+
+        for document, terms in expected_terms.items():
+            for term in terms:
+                with self.subTest(document=document, term=term):
+                    self.assertIn(term, documents[document])
+
+    def test_batch39_future_matrix_includes_first_run_artifact_followups(self):
+        documents = {
+            "prod_test": (ROOT / "prod_test.md").read_text(encoding="utf-8"),
+            "track10_plan": TRACK10_PLAN.read_text(encoding="utf-8"),
+        }
+
+        expected_terms = {
+            "prod_test": [
+                "M21 recorded three variants",
+                "generated orientation evidence",
+                "stable manifest baseline",
+                "time-to-first-safe-action",
+                "malformed first-run packet",
+            ],
+            "track10_plan": [
+                "`run_first_project_analysis.py --dry-run`",
+                "synthetic temp-copy rendering",
+                "11 generated pages",
+                "read-only real-target packet usefulness",
+                "generated orientation evidence",
+                "stable manifest baseline",
+                "ignore `generated_at`",
+                "first_run_analysis_ref",
+                "time-to-first-safe-action",
+                "malformed first-run packet",
+            ],
+        }
+
+        for document, terms in expected_terms.items():
+            for term in terms:
+                with self.subTest(document=document, term=term):
+                    self.assertIn(term, documents[document])
+
 
 if __name__ == "__main__":
     unittest.main()

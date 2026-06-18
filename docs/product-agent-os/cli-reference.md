@@ -35,6 +35,19 @@ CLI слой нужен для повторяемого локального evi
 
 Runtime runner optional inputs включают `--approval-status`, `--intent-hint` и `--output`. Они change emitted route packet или save JSON; they не bypass политика источников, sandbox, approvals или external-action boundaries.
 
+## First-run Analysis CLI
+
+| Команда | Назначение | Входы | Вывод / граница |
+| --- | --- | --- | --- |
+| `python plugins\product-agent-os\scripts\run_first_project_analysis.py <workspace> --dry-run` | Печатает first-run packet без записи файлов. | Путь target workspace. | Read-only preview; generated files не создаются. |
+| `python plugins\product-agent-os\scripts\run_first_project_analysis.py <workspace> --write` | Записывает локальный пакет первого анализа. | Путь target workspace. | Запись только в `.codex/product-agent-os/analysis/`, включая `.codex/product-agent-os/analysis/first-run-analysis-packet.json`; generated views остаются `orientation_only_not_proof`. |
+
+`run_first_project_analysis.py` выбирает ровно один режим: `--dry-run` или `--write`. Команда не выдает approval на live servers, browser automation, provider/API calls, target source mutation, git actions, release или promotion.
+
+```text
+does not accept `--stage`
+```
+
 ## Project Graph CLI
 
 `scan_project_code_graph.py` имеет exactly-one-mode semantics. Choose один mode per invocation.

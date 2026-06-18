@@ -1,0 +1,58 @@
+{
+  "approval_boundary": {
+    "automation_activation": "not_performed",
+    "browser_automation": "not_performed",
+    "external_actions": "not_performed",
+    "git_actions": "not_performed",
+    "live_server": "not_performed",
+    "local_evidence_artifact_write": "allowed_workspace_output_only",
+    "provider_or_api_calls": "not_performed",
+    "target_workspace_mutation": "not_performed"
+  },
+  "attempt_digest": "sha256:309fa2a48dcc9f0a3c917dcc203bb878c3046e5cb0e6bc2abe3919756687a57e",
+  "attempt_id": "B39-TEST-M21-A02",
+  "batch": "B39",
+  "comparison_role": "expected_block_behavior",
+  "first_run_artifact": {
+    "detected_archetypes": [
+      "unknown"
+    ],
+    "manifest_ref": "not_rendered",
+    "packet_digest": "sha256:fcc9372a286f878fd8f0cb25a72015a364151c29bd8c0c4906d2e09c16bccd41",
+    "packet_ref": "packet_digest_only",
+    "page_count": 0,
+    "status": "packet_only_dry_run"
+  },
+  "first_run_artifact_usefulness": {
+    "packet_digest": "sha256:fcc9372a286f878fd8f0cb25a72015a364151c29bd8c0c4906d2e09c16bccd41",
+    "status": "packet_only"
+  },
+  "generated_at": "2026-06-18T00:00:00Z",
+  "generated_view_policy": "orientation_only_not_proof",
+  "mode": "read_only_comparative",
+  "next_action": "Record Neural Flow expected-block behavior; do not infer apply readiness.",
+  "plugin_skill_contract": {
+    "required": false,
+    "status": "not_applicable"
+  },
+  "schema_version": "batch39_m21_attempt_summary_v1",
+  "source_policy_status": "present_unverified",
+  "summary_status": "blocked_expected_source_policy",
+  "synthetic_write_status": "not_applicable_read_only",
+  "target": {
+    "kind": "approved_read_only_target",
+    "label": "Neural Flow",
+    "location_ref": "approved_read_only_target:redacted"
+  },
+  "test_id": "B39-TEST-M21",
+  "unsupported_claims": [
+    "live_runtime",
+    "browser_ui",
+    "provider_calls",
+    "target_apply",
+    "git_release",
+    "automation_activation",
+    "release_readiness",
+    "clean_positive_source_policy"
+  ]
+}

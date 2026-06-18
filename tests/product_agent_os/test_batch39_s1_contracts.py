@@ -184,6 +184,54 @@ class Batch39S1ContractsTests(unittest.TestCase):
         self.assertNotIn("C:\\Users\\person", rendered)
         self.assertEqual(dashboard["validation"]["errors"], [])
 
+    def test_m20_7_status_and_rollup_reference_first_run_analysis_without_proof_claims(self) -> None:
+        analysis_ref = {
+            "kind": "generated_analysis_pack",
+            "path": ".codex/product-agent-os/analysis/analysis-manifest.json",
+            "digest": "sha256:" + "5" * 64,
+            "page_count": 11,
+            "freshness": "current",
+            "unsupported_claim_count": 3,
+        }
+        rollup = build_batch39_rollup(
+            test_id="B39-TEST-M20",
+            attempt_id="B39-FRIA-M20.7-A01",
+            generated_at="2026-06-18T18:00:00+00:00",
+            task_rows=[
+                {
+                    "test_id": "B39-TEST-M20",
+                    "status": "in_progress",
+                    "attempts": 7,
+                    "evidence_refs": ["prod_test.md"],
+                    "first_run_analysis_ref": analysis_ref,
+                }
+            ],
+        )
+        snapshot = build_status_snapshot(
+            runtime_result={
+                "status": "route_ready",
+                "workspace": "C:\\Users\\person\\first-run-rollup",
+                "route_packet": {
+                    "pilot_evidence_rollup": rollup,
+                    "first_run_analysis_ref": analysis_ref,
+                },
+            },
+            generated_at="2026-06-18T18:00:00+00:00",
+        )
+        dashboard = render_status_dashboard(snapshot)
+        rendered = dashboard["html"] + dashboard["json"]
+
+        self.assertEqual(rollup["task_rows"][0]["first_run_analysis_ref"]["path"], analysis_ref["path"])
+        self.assertEqual(snapshot["first_run_analysis"]["manifest_digest"], analysis_ref["digest"])
+        self.assertEqual(snapshot["first_run_analysis"]["page_count"], 11)
+        self.assertEqual(snapshot["first_run_analysis"]["freshness"], "current")
+        self.assertEqual(snapshot["first_run_analysis"]["unsupported_claim_count"], 3)
+        self.assertEqual(snapshot["first_run_analysis"]["generated_view_policy"], "orientation_only_not_proof")
+        self.assertIn("First Run Analysis", dashboard["html"])
+        self.assertIn("orientation_only_not_proof", rendered)
+        self.assertNotIn("C:\\Users\\person", rendered)
+        self.assertEqual(dashboard["validation"]["errors"], [])
+
     def test_m09_failure_taxonomy_contains_required_completion_skeptic_classes(self) -> None:
         taxonomy = build_failure_taxonomy(
             test_id="B39-TEST-M09",
@@ -218,6 +266,43 @@ class Batch39S1ContractsTests(unittest.TestCase):
         self.assertEqual(scorecard["groups"]["promotion"]["blocked"], 1)
         self.assertIn("synthetic_only_boundary", scorecard["blocking_reasons"])
         self.assertEqual(validate_scorecard_gates(scorecard), [])
+
+    def test_m20_8_first_run_artifact_scorecard_keeps_operator_review_and_synthetic_boundary(self) -> None:
+        from product_agent_os.batch39_scorecard import (  # noqa: PLC0415
+            build_first_run_artifact_scorecard,
+            validate_first_run_artifact_scorecard,
+        )
+
+        scorecard = build_first_run_artifact_scorecard(
+            test_id="B39-TEST-M20",
+            attempt_id="B39-FRIA-M20.8-A01",
+            generated_at="2026-06-18T19:00:00+00:00",
+            artifact_summary={
+                "page_count": 11,
+                "source_artifact_count": 3,
+                "unsupported_claim_count": 4,
+                "manifest_digest": "sha256:" + "6" * 64,
+                "freshness": "current",
+                "redaction_status": "passed_redacted",
+                "source_policy_status": "approval_required",
+                "safe_next_action_present": True,
+                "navigation_status": "complete",
+            },
+            owner_review_status="pending_owner_review",
+        )
+
+        self.assertEqual(scorecard["schema_version"], "first_run_artifact_scorecard_v1")
+        self.assertEqual(scorecard["raw_counts"]["page_count"], 11)
+        self.assertEqual(scorecard["raw_counts"]["unsupported_claim_count"], 4)
+        self.assertEqual(scorecard["owner_review"]["status"], "pending_owner_review")
+        self.assertEqual(scorecard["boundary_status"], "synthetic_only_boundary")
+        self.assertEqual(scorecard["promotion_decision"], "not_promoted")
+        self.assertEqual(scorecard["generated_view_policy"], "orientation_only_not_proof")
+        self.assertIn("clarity", scorecard["scores"])
+        self.assertIn("artifact_navigation", scorecard["scores"])
+        self.assertGreaterEqual(scorecard["operator_usability_score"], 0.0)
+        self.assertLessEqual(scorecard["operator_usability_score"], 1.0)
+        self.assertEqual(validate_first_run_artifact_scorecard(scorecard), [])
 
 
 if __name__ == "__main__":

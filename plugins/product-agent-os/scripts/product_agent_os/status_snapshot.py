@@ -81,6 +81,7 @@ def build_status_snapshot(
         "project_graph_summary": _project_graph_summary(project_graph_status),
         "agent_skill_metrics_loop": _agent_skill_metrics_loop_summary(route, discovery),
         "pilot_evidence_rollup": _pilot_evidence_rollup_summary(route),
+        "first_run_analysis": _first_run_analysis_summary(route),
         "completion_skeptic": _completion_skeptic_summary(route),
         "system_file_hygiene": _system_file_hygiene_summary(system_file_hygiene_audit),
         "projection_decisions": {
@@ -249,6 +250,57 @@ def _pilot_evidence_rollup_summary(route: dict[str, Any]) -> dict[str, Any]:
         "generated_view_policy": _string(packet.get("generated_view_policy") or "orientation_only_not_proof"),
         "source_policy": "generated view is not proof",
     }
+
+
+def _first_run_analysis_summary(route: dict[str, Any]) -> dict[str, Any]:
+    packet = route.get("first_run_analysis_ref")
+    if not isinstance(packet, dict):
+        packet = _first_run_ref_from_rollup(route.get("pilot_evidence_rollup"))
+    if not isinstance(packet, dict) or not packet:
+        return {
+            "status": "not_available",
+            "kind": "not_available",
+            "path": "",
+            "manifest_digest": "",
+            "page_count": 0,
+            "freshness": "not_available",
+            "unsupported_claim_count": 0,
+            "generated_view_policy": "orientation_only_not_proof",
+            "source_policy": "first-run analysis is generated orientation evidence, not proof",
+        }
+    safe_ref = _safe_ref(
+        {
+            "kind": packet.get("kind") or "generated_analysis_pack",
+            "path": packet.get("path") or "",
+            "digest": packet.get("digest") or packet.get("manifest_digest") or "",
+        }
+    )
+    return {
+        "status": "available" if safe_ref["path"] and safe_ref["digest"] else "not_available",
+        "kind": safe_ref["kind"],
+        "path": safe_ref["path"],
+        "manifest_digest": safe_ref["digest"],
+        "page_count": _int(packet.get("page_count")),
+        "freshness": _string(packet.get("freshness") or "not_available"),
+        "unsupported_claim_count": _int(packet.get("unsupported_claim_count")),
+        "generated_view_policy": "orientation_only_not_proof",
+        "source_policy": "first-run analysis is generated orientation evidence, not proof",
+    }
+
+
+def _first_run_ref_from_rollup(value: Any) -> dict[str, Any]:
+    if not isinstance(value, dict):
+        return {}
+    rows = value.get("task_rows")
+    if not isinstance(rows, list):
+        return {}
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        ref = row.get("first_run_analysis_ref")
+        if isinstance(ref, dict) and ref:
+            return ref
+    return {}
 
 
 def _project_graph_summary(packet: dict[str, Any]) -> dict[str, Any]:

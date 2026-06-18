@@ -279,6 +279,7 @@ def _sections(snapshot: dict[str, Any]) -> str:
     hygiene = _dict(snapshot.get("system_file_hygiene"))
     completion_skeptic = _dict(snapshot.get("completion_skeptic"))
     pilot_evidence = _dict(snapshot.get("pilot_evidence_rollup"))
+    first_run_analysis = _dict(snapshot.get("first_run_analysis"))
     projection_decisions = _dict(snapshot.get("projection_decisions"))
     task_matrix_projection = _dict(projection_decisions.get("task_matrix_state"))
 
@@ -328,6 +329,7 @@ def _sections(snapshot: dict[str, Any]) -> str:
         ),
         _completion_skeptic_section(completion_skeptic),
         _pilot_evidence_section(pilot_evidence),
+        _first_run_analysis_section(first_run_analysis),
         _system_hygiene_section(hygiene),
         _section(
             "section-evidence",
@@ -400,6 +402,24 @@ def _pilot_evidence_section(packet: dict[str, Any]) -> str:
             ("Blockers", packet.get("blockers")),
             ("Accepted gaps", packet.get("accepted_gaps")),
             ("Next action", packet.get("safe_next_action")),
+            ("Generated view policy", packet.get("generated_view_policy")),
+            ("Source policy", packet.get("source_policy")),
+        ],
+    )
+
+
+def _first_run_analysis_section(packet: dict[str, Any]) -> str:
+    return _section(
+        "section-first-run-analysis",
+        "First Run Analysis",
+        [
+            ("Status", packet.get("status")),
+            ("Kind", packet.get("kind")),
+            ("Manifest path", packet.get("path")),
+            ("Manifest digest", packet.get("manifest_digest")),
+            ("Page count", packet.get("page_count")),
+            ("Freshness", packet.get("freshness")),
+            ("Unsupported claims", packet.get("unsupported_claim_count")),
             ("Generated view policy", packet.get("generated_view_policy")),
             ("Source policy", packet.get("source_policy")),
         ],

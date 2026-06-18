@@ -97,6 +97,19 @@ Artifacts должен не contain secrets, credentials, raw private chat logs,
 | `.codex/artifact-templates/agent-skill-weekly-verification.md` | Template registry | Weekly owner-review packet. | Requires rollback/holdout/flake/cost evidence или accepted gaps. |
 | `.codex/artifact-templates/agent-skill-update-candidate.md` | Template registry | Modernization candidate packet. | Нет self-applied updates. |
 
+## First-run analysis artifact
+
+First-run analysis artifact - это локальный generated orientation pack для первого анализа проекта. Он помогает оператору увидеть inventory, runtime route, control-plane state, graph summary, risks и safe next action, но остается `orientation_only_not_proof`.
+
+| Artifact | Producer | Роль контракта | Граница |
+| --- | --- | --- | --- |
+| `.codex/product-agent-os/analysis/first-run-analysis-packet.json` | `run_first_project_analysis.py --write`, `first_run_analysis.py` | Пакет анализа: версия схемы, метка цели, source artifacts, summaries, generated pages, evidence/redaction status и safe next action. | Только обзорное evidence; не доказывает завершение, готовность, release или source truth. |
+| `.codex/product-agent-os/analysis/analysis-manifest.json` | `analysis_artifact_renderer.py` | Манифест рендера: digests страниц/источников, предыдущий baseline, change summary, `redaction_report`, `source_policy_gate` и digest манифеста. | Граница generated-view; исходники и текущие команды остаются сильнее. |
+| `.codex/product-agent-os/analysis/*.html` | `analysis_artifact_renderer.py` | Локальные HTML-страницы для overview, inventory, architecture, methodology, runtime route, control plane, graph, code flow, quality/evals, risks и recommendations. | HTML является обзорной поверхностью и сам не подтверждает release/readiness. |
+| `first_run_artifact_scorecard_v1` | `batch39_scorecard.py` | Scorecard удобства оператора: ясность, полнота, actionability, видимость missing evidence, первый безопасный шаг, approval boundary, onboarding time и навигация. | Scorecard имеет статус `not release approval` и не заменяет owner review или real-project evidence. |
+
+`source_policy_gate` может разрешать diagnostic artifact, сохраняя apply/promotion выключенными. `redaction_report` обязан фиксировать заблокированные secret-like values, raw source fields и локальные absolute paths до финализации пакета.
+
 ## Doubt verification artifacts
 
 | Artifact | Producer | Contract role | Boundary |

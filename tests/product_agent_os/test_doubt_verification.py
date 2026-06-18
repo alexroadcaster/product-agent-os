@@ -136,6 +136,28 @@ class DoubtVerificationTest(unittest.TestCase):
             with self.subTest(expected=expected):
                 self.assertIn(expected, errors)
 
+    def test_batch39_m20_first_run_doubt_packet_is_valid_and_boundary_explicit(self):
+        packet_path = (
+            ROOT
+            / "docs"
+            / "superpowers"
+            / "specs"
+            / "batch39-m20-first-run-doubt-verification-packet.json"
+        )
+        self.assertTrue(packet_path.exists())
+
+        packet = json.loads(packet_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(validate_doubt_verification_packet(packet), [])
+        self.assertEqual(packet["schema_version"], DOUBT_VERIFICATION_PACKET_SCHEMA_VERSION)
+        self.assertEqual(packet["verdict"], "accepted_risk")
+        self.assertEqual(packet["artifact_under_review"]["label"], "B39-FRIA-M20.10")
+        self.assertIn("claim-m20-local-contracts", packet["handoff"]["verified_claims"])
+        self.assertIn("claim-release-readiness", packet["handoff"]["unsupported_claims"])
+        self.assertIn("ev-focused-first-run-unittest", packet["handoff"]["verification_evidence"])
+        self.assertEqual(packet["approval_boundary"]["status"], "required")
+        self.assertIn("git stage/commit/push/PR", packet["approval_boundary"]["hits"])
+
     def test_completion_skeptic_scorecard_blocks_false_pass_false_rewrite_and_low_catch_rates(self):
         good_records = [
             {
