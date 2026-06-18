@@ -12,6 +12,8 @@ sys.path.insert(0, str(SCRIPTS))
 
 from product_agent_os.project_code_graph import build_project_code_graph  # noqa: E402
 from product_agent_os.project_graph_adapters import available_graph_adapters  # noqa: E402
+from product_agent_os.project_graph_ontology import default_ontology  # noqa: E402
+from product_agent_os.project_graph_queries import query_project_graph  # noqa: E402
 
 
 class ProjectGraphPythonScannerTest(unittest.TestCase):
@@ -164,21 +166,206 @@ class ProjectGraphPythonScannerTest(unittest.TestCase):
             self.assertTrue(any(item["name"] == "missing" for item in unresolved))
             self.assertTrue(graph["validation"]["ok"], graph["validation"])
 
-    def test_unsupported_language_files_stay_file_only_with_adapter_boundary(self):
+    def test_generated_typescript_files_stay_file_only_with_adapter_boundary(self):
         with TemporaryDirectory() as tmp:
             workspace = Path(tmp) / "workspace"
             (workspace / "web").mkdir(parents=True)
-            (workspace / "web" / "app.ts").write_text("export const value = 1;\n", encoding="utf-8")
+            (workspace / "web" / "app.generated.ts").write_text("export const value = 1;\n", encoding="utf-8")
             (workspace / "app.py").write_text("print('supported')\n", encoding="utf-8")
 
             graph = build_project_code_graph(workspace)
             nodes = {node["id"]: node for node in graph["nodes"]}
 
             self.assertIn("python_ast", available_graph_adapters())
+            self.assertIn("typescript_javascript_stdlib", available_graph_adapters())
             self.assertIn("unsupported_file", available_graph_adapters())
-            self.assertEqual(nodes["file:web/app.ts"]["language"], "typescript")
-            self.assertEqual(nodes["file:web/app.ts"]["status"], "unsupported")
-            self.assertEqual(graph["metadata"]["adapter_summary"]["typescript"], "file_only")
+            self.assertEqual(nodes["file:web/app.generated.ts"]["language"], "typescript")
+            self.assertEqual(nodes["file:web/app.generated.ts"]["status"], "generated")
+            self.assertEqual(graph["metadata"]["adapter_summary"]["typescript"], "typescript_javascript_stdlib")
+            self.assertNotIn("module:web.app.generated", nodes)
+            self.assertTrue(graph["validation"]["ok"], graph["validation"])
+
+    def test_typescript_exports_imports_and_calls_are_entity_level_without_external_parser(self):
+        with TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "workspace"
+            (workspace / "web").mkdir(parents=True)
+            (workspace / "web" / "apiClient.ts").write_text(
+                "export function fetchUser(id: string) {\n"
+                "  return { id };\n"
+                "}\n",
+                encoding="utf-8",
+            )
+            (workspace / "web" / "UserCard.tsx").write_text(
+                "import { fetchUser } from './apiClient';\n\n"
+                "export function UserCard() {\n"
+                "  const user = fetchUser('42');\n"
+                "  return <section>{user.id}</section>;\n"
+                "}\n",
+                encoding="utf-8",
+            )
+
+            graph = build_project_code_graph(workspace)
+            nodes = {node["id"]: node for node in graph["nodes"]}
+            edge_index = {(edge["type"], edge["source"], edge["target"]): edge for edge in graph["edges"]}
+            serialized = json.dumps(graph, sort_keys=True)
+
+            self.assertIn("typescript_javascript_stdlib", available_graph_adapters())
+            for expected_id in [
+                "module:web.apiClient",
+                "module:web.UserCard",
+                "function:web.apiClient.fetchUser",
+                "function:web.UserCard.UserCard",
+            ]:
+                with self.subTest(expected_id=expected_id):
+                    self.assertIn(expected_id, nodes)
+                    self.assertEqual(nodes[expected_id]["language"], "typescript")
+                    self.assertEqual(nodes[expected_id]["status"], "current")
+                    self.assertTrue(nodes[expected_id]["source_spans"])
+
+            self.assertEqual(graph["metadata"]["adapter_summary"]["typescript"], "typescript_javascript_stdlib")
+            self.assertEqual(graph["metadata"]["typescript_javascript_scanner"]["parser_dependency"], "stdlib_regex_no_external_dependency")
+            self.assertIn(("imports", "module:web.UserCard", "function:web.apiClient.fetchUser"), edge_index)
+            self.assertIn(("calls", "function:web.UserCard.UserCard", "function:web.apiClient.fetchUser"), edge_index)
+            self.assertNotIn("return <section>", serialized)
+            self.assertNotIn(str(workspace), serialized)
+            self.assertTrue(graph["validation"]["ok"], graph["validation"])
+
+    def test_typescript_framework_terms_remain_metadata_not_node_types(self):
+        with TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "workspace"
+            (workspace / "app").mkdir(parents=True)
+            (workspace / "app" / "page.tsx").write_text(
+                "export function useUser() {\n"
+                "  return { id: '42' };\n"
+                "}\n\n"
+                "export function UserPage() {\n"
+                "  const user = useUser();\n"
+                "  return <main>{user.id}</main>;\n"
+                "}\n",
+                encoding="utf-8",
+            )
+
+            graph = build_project_code_graph(workspace)
+            node_types = {node["type"] for node in graph["nodes"]}
+
+            self.assertLessEqual(node_types, set(default_ontology()["node_types"]))
+            self.assertNotIn("component", node_types)
+            self.assertNotIn("hook", node_types)
+            self.assertNotIn("api_route", node_types)
+            self.assertIn(
+                "framework semantics remain unsupported",
+                graph["metadata"]["typescript_javascript_scanner"]["unsupported_syntax_policy"],
+            )
+            self.assertTrue(graph["validation"]["ok"], graph["validation"])
+
+    def test_typescript_framework_semantics_are_metadata_hints_without_runtime_claims(self):
+        with TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "workspace"
+            (workspace / "src").mkdir(parents=True)
+            (workspace / "app" / "api" / "users").mkdir(parents=True)
+            (workspace / "electron").mkdir()
+            (workspace / "src" / "App.tsx").write_text(
+                "import React from 'react';\n\n"
+                "export function useUser() {\n"
+                "  return { id: '42' };\n"
+                "}\n\n"
+                "export function App() {\n"
+                "  const user = useUser();\n"
+                "  return <main>{user.id}</main>;\n"
+                "}\n",
+                encoding="utf-8",
+            )
+            (workspace / "app" / "api" / "users" / "route.ts").write_text(
+                "export async function GET() {\n"
+                "  return Response.json([]);\n"
+                "}\n",
+                encoding="utf-8",
+            )
+            (workspace / "vite.config.ts").write_text(
+                "import { defineConfig } from 'vite';\n"
+                "export default defineConfig({});\n",
+                encoding="utf-8",
+            )
+            (workspace / "electron" / "main.ts").write_text(
+                "import { app, BrowserWindow } from 'electron';\n"
+                "app.whenReady().then(() => new BrowserWindow());\n",
+                encoding="utf-8",
+            )
+            (workspace / "src" / "desktop.ts").write_text(
+                "import { invoke } from '@tauri-apps/api/core';\n"
+                "export async function ping() {\n"
+                "  return invoke('ping');\n"
+                "}\n",
+                encoding="utf-8",
+            )
+            (workspace / "src" / "usefullyNamed.ts").write_text(
+                "export function usefullyNamed() {\n"
+                "  return true;\n"
+                "}\n",
+                encoding="utf-8",
+            )
+            (workspace / "src" / "notRoute.ts").write_text(
+                "export async function GET() {\n"
+                "  return [];\n"
+                "}\n",
+                encoding="utf-8",
+            )
+            (workspace / "src" / "windowFactory.ts").write_text(
+                "export function makeWindow() {\n"
+                "  return 'BrowserWindow';\n"
+                "}\n",
+                encoding="utf-8",
+            )
+            (workspace / "src" / "viteNotes.ts").write_text(
+                "// vite is mentioned in a comment, not a build config.\n"
+                "export function note() {\n"
+                "  return 'vite';\n"
+                "}\n",
+                encoding="utf-8",
+            )
+
+            graph = build_project_code_graph(workspace)
+            packet = query_project_graph(
+                graph,
+                {"query": "agent_reading_packet", "node_id": "function:src.App.App", "max_results": 5},
+            )
+            scanner = graph["metadata"]["typescript_javascript_scanner"]
+            semantics = scanner["framework_semantics"]
+            semantic_index = {
+                (item["relative_path"], item["semantic_type"], item.get("symbol_id", "")): item
+                for item in semantics
+            }
+            node_types = {node["type"] for node in graph["nodes"]}
+            serialized = json.dumps(graph, sort_keys=True).lower()
+
+            self.assertLessEqual(node_types, set(default_ontology()["node_types"]))
+            self.assertNotIn("component", node_types)
+            self.assertNotIn("hook", node_types)
+            self.assertNotIn("api_route", node_types)
+            self.assertIn(("src/App.tsx", "component", "function:src.App.App"), semantic_index)
+            self.assertIn(("src/App.tsx", "hook", "function:src.App.useUser"), semantic_index)
+            self.assertIn(("app/api/users/route.ts", "api_route", "function:app.api.users.route.GET"), semantic_index)
+            self.assertIn(("vite.config.ts", "build_config", "module:vite.config"), semantic_index)
+            self.assertIn(("electron/main.ts", "native_shell_entrypoint", "module:electron.main"), semantic_index)
+            self.assertIn(("src/desktop.ts", "native_bridge_api", "function:src.desktop.ping"), semantic_index)
+            self.assertFalse(any(item["relative_path"] == "src/usefullyNamed.ts" for item in semantics))
+            self.assertFalse(any(item["relative_path"] == "src/notRoute.ts" for item in semantics))
+            self.assertFalse(any(item["relative_path"] == "src/windowFactory.ts" for item in semantics))
+            self.assertFalse(any(item["relative_path"] == "src/viteNotes.ts" for item in semantics))
+            self.assertGreaterEqual(scanner["framework_semantic_count"], 6)
+            self.assertTrue(scanner["unsupported_framework_inventory"])
+            self.assertTrue(packet["framework_semantics"])
+            self.assertIn("framework_runtime_behavior", packet["unsupported_claims"])
+            self.assertEqual(packet["framework_semantics"][0]["source_boundary"], "graph_metadata_only_raw_source_excluded")
+            for item in semantics:
+                with self.subTest(item=item):
+                    self.assertEqual(item["confidence"], "inferred")
+                    self.assertTrue(item["source_read_required"])
+                    self.assertEqual(item["source_boundary"], "graph_metadata_only_raw_source_excluded")
+                    self.assertIn("runtime_behavior", item["unsupported_claims"])
+            self.assertNotIn("runtime route verified", serialized)
+            self.assertNotIn("browser verified", serialized)
+            self.assertNotIn(str(workspace).lower(), serialized)
             self.assertTrue(graph["validation"]["ok"], graph["validation"])
 
     def test_product_agent_os_scripts_smoke_scan_has_symbols_imports_and_calls(self):

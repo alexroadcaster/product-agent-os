@@ -387,6 +387,67 @@ class StatusSnapshotTest(unittest.TestCase):
         self.assertNotIn("C:\\Users\\person", serialized)
         self.assertNotIn("graph-project", serialized)
 
+    def test_snapshot_projects_graph_depth_packet_summary_without_generated_view_as_proof(self):
+        runtime_result = {
+            "status": "route_ready",
+            "workspace": "C:\\Users\\person\\graph-depth-project",
+            "route_packet": {
+                "usage_mode": {"primary": "maintenance", "confidence": "medium"},
+                "project_graph_status": {
+                    "schema_version": 1,
+                    "write_policy": "read_only",
+                    "status": "current",
+                    "freshness": {
+                        "status": "partial",
+                        "blocks_action_claims": True,
+                        "safe_next_action": "Refresh graph or read source files before edits.",
+                    },
+                    "counts": {"nodes": 10, "edges": 11, "observations": 12, "omitted_nodes": 0},
+                    "coverage_map": {
+                        "status": "partial_static",
+                        "covered_files": 7,
+                        "partial_files": 2,
+                        "unsupported_languages": {"ruby": "unsupported"},
+                        "raw_source": "must not project",
+                    },
+                    "rejected_link_summary": {"total": 2, "by_reason": {"weak_name_similarity": 2}},
+                    "framework_semantic_summary": {"total": 3, "frameworks": {"react": 2, "next": 1}},
+                    "agent_packet_refs": [
+                        {
+                            "kind": "agent_reading_packet",
+                            "path": ".codex/product-agent-os/agent-reading-packet.json",
+                            "digest": "sha256:" + "b" * 64,
+                        },
+                        {"kind": "external_ref", "path": "https://example.invalid/packet.json"},
+                    ],
+                    "safe_next_action": "Use graph as orientation only; read source files before edits.",
+                    "source_policy": "generated graph is not source of truth",
+                    "nodes": [{"id": "file:C:\\Users\\person\\graph-depth-project\\app.py"}],
+                },
+            },
+            "verification_evidence": [],
+        }
+
+        snapshot = build_status_snapshot(
+            runtime_result=runtime_result,
+            generated_at="2026-06-18T21:15:00+03:00",
+        )
+        serialized = json.dumps(snapshot, sort_keys=True)
+        graph_summary = snapshot["project_graph_summary"]
+
+        self.assertEqual(graph_summary["coverage"]["status"], "partial_static")
+        self.assertEqual(graph_summary["coverage"]["unsupported_languages"]["ruby"], "unsupported")
+        self.assertTrue(graph_summary["freshness"]["blocks_action_claims"])
+        self.assertEqual(graph_summary["rejected_link_summary"]["total"], 2)
+        self.assertEqual(graph_summary["framework_semantic_summary"]["frameworks"]["react"], 2)
+        self.assertEqual(len(graph_summary["agent_packet_refs"]), 1)
+        self.assertEqual(graph_summary["generated_view_policy"], "orientation_only_not_proof")
+        self.assertEqual(graph_summary["source_policy"], "generated graph is not source of truth")
+        self.assertNotIn("raw_source", serialized)
+        self.assertNotIn("https://example.invalid", serialized)
+        self.assertNotIn("C:\\Users\\person", serialized)
+        self.assertNotIn("release-ready", serialized.lower())
+
     def test_snapshot_includes_bounded_system_file_hygiene_projection_without_raw_content(self):
         audit_packet = {
             "artifact_kind": "system_file_hygiene_audit",

@@ -133,6 +133,41 @@ class ProjectCodeGraphTest(unittest.TestCase):
             self.assertEqual(scope_policy["status"], "excluded_prefixes_reported")
             self.assertTrue(graph["validation"]["ok"], graph["validation"])
 
+    def test_graph_artifact_records_coverage_map_without_source_or_absolute_paths(self):
+        with TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "workspace"
+            (workspace / "app").mkdir(parents=True)
+            (workspace / "docs").mkdir()
+            (workspace / "generated").mkdir()
+            (workspace / "antigravity-awesome-skills-main").mkdir()
+            (workspace / "app" / "service.py").write_text("def run():\n    return 1\n", encoding="utf-8")
+            (workspace / "app" / "view.ts").write_text("export function View() { return null }\n", encoding="utf-8")
+            (workspace / "docs" / "index.md").write_text("# Docs\n", encoding="utf-8")
+            (workspace / "generated" / "client.generated.ts").write_text("export const x = 1\n", encoding="utf-8")
+            (workspace / "diagram.puml").write_text("@startuml\nAlice -> Bob\n@enduml\n", encoding="utf-8")
+            (workspace / "antigravity-awesome-skills-main" / "vendor.py").write_text("def ignored():\n    return 1\n", encoding="utf-8")
+
+            graph = build_project_code_graph(workspace)
+            coverage = graph["metadata"]["coverage_map"]
+            serialized = json.dumps(coverage, sort_keys=True)
+
+            self.assertEqual(coverage["schema_version"], 1)
+            self.assertEqual(coverage["source_boundary"], "raw_source_bodies_excluded")
+            self.assertEqual(coverage["status"], "diagnostic_only")
+            self.assertGreaterEqual(coverage["files"]["total"], 5)
+            self.assertGreaterEqual(coverage["files"]["generated"], 1)
+            self.assertGreaterEqual(coverage["files"]["partial"], 1)
+            self.assertGreaterEqual(coverage["files"]["skipped"], 1)
+            self.assertIn("excluded_prefix", coverage["skipped_reasons"])
+            self.assertIn("python", coverage["by_language"])
+            self.assertIn("typescript", coverage["by_language"])
+            self.assertEqual(coverage["unsupported_languages"]["plantuml"], "file_only")
+            self.assertIn("function", coverage["by_node_type"])
+            self.assertTrue(coverage["recommended_next_parser_or_linker_action"])
+            self.assertNotIn("return 1", serialized)
+            self.assertNotIn(str(workspace), serialized)
+            self.assertTrue(graph["validation"]["ok"], graph["validation"])
+
     def test_synthetic_scale_graph_keeps_prompt_payload_bounded_for_1k_5k_10k_cases(self):
         for node_count in [1_000, 5_000, 10_000]:
             with self.subTest(node_count=node_count):

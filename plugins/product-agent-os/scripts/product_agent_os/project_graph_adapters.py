@@ -5,6 +5,7 @@ from __future__ import annotations
 import ast
 import hashlib
 import json
+import re
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -13,9 +14,17 @@ from product_agent_os.project_graph_observations import build_observation_record
 
 
 PYTHON_AST_ADAPTER = "python_ast"
+TYPESCRIPT_JAVASCRIPT_ADAPTER = "typescript_javascript_stdlib"
 UNSUPPORTED_FILE_ADAPTER = "unsupported_file"
 MAX_UNRESOLVED_CALLS = 100
 MAX_ADAPTER_FILE_BYTES = 1_000_000
+JS_EXTENSIONS = [".ts", ".tsx", ".js", ".jsx"]
+_JS_IDENTIFIER = r"[A-Za-z_$][A-Za-z0-9_$]*"
+_JS_EXPORT_FUNCTION_RE = re.compile(rf"^\s*export\s+(?:default\s+)?(?:async\s+)?function\s+({_JS_IDENTIFIER})\b")
+_JS_EXPORT_CLASS_RE = re.compile(rf"^\s*export\s+(?:default\s+)?class\s+({_JS_IDENTIFIER})\b")
+_JS_EXPORT_CONST_RE = re.compile(rf"^\s*export\s+(?:const|let|var)\s+({_JS_IDENTIFIER})\s*=\s*(?:async\s*)?(?:\([^)]*\)|{_JS_IDENTIFIER})\s*=>")
+_JS_IMPORT_NAMED_RE = re.compile(r"^\s*import\s+\{(?P<names>[^}]+)\}\s+from\s+['\"](?P<source>[^'\"]+)['\"]")
+_JS_IMPORT_DEFAULT_RE = re.compile(rf"^\s*import\s+(?P<name>{_JS_IDENTIFIER})\s+from\s+['\"](?P<source>[^'\"]+)['\"]")
 
 
 @dataclass
@@ -30,10 +39,22 @@ class PythonModuleInfo:
     import_bindings: dict[str, str] = field(default_factory=dict)
 
 
+@dataclass
+class JsModuleInfo:
+    relative_path: str
+    module_name: str
+    fingerprint: str
+    source_lines: list[str]
+    language: str
+    symbol_ids: dict[str, str] = field(default_factory=dict)
+    import_bindings: dict[str, str] = field(default_factory=dict)
+    unresolved_imports: list[dict[str, Any]] = field(default_factory=list)
+
+
 def available_graph_adapters() -> list[str]:
     """Return installed graph adapter names without activating external tools."""
 
-    return [PYTHON_AST_ADAPTER, UNSUPPORTED_FILE_ADAPTER]
+    return [PYTHON_AST_ADAPTER, TYPESCRIPT_JAVASCRIPT_ADAPTER, UNSUPPORTED_FILE_ADAPTER]
 
 
 def build_language_overlays(
@@ -53,6 +74,14 @@ def build_language_overlays(
         and str(item.get("relative_path"))
         and int(item.get("size_bytes") or 0) <= MAX_ADAPTER_FILE_BYTES
     ]
+    js_items = [
+        item
+        for item in manifest_files
+        if item.get("language") in {"typescript", "javascript"}
+        and not item.get("generated")
+        and str(item.get("relative_path"))
+        and int(item.get("size_bytes") or 0) <= MAX_ADAPTER_FILE_BYTES
+    ]
     modules = _load_python_modules(root, python_items)
     package_nodes, package_edges, package_observations = _build_package_overlay(
         root,
@@ -68,12 +97,17 @@ def build_language_overlays(
         scan_id=scan_id,
         symbol_ids=symbol_ids,
     )
+    js_modules = _load_js_modules(root, js_items)
+    js_nodes, js_edges, js_observations = _build_js_overlay(
+        js_modules,
+        scan_id=scan_id,
+    )
     adapter_summary = _adapter_summary(manifest_files)
 
     return {
-        "nodes": package_nodes + symbol_nodes,
-        "edges": package_edges + symbol_edges + import_edges + call_edges + test_edges,
-        "observations": package_observations + symbol_observations + import_observations + call_observations,
+        "nodes": package_nodes + symbol_nodes + js_nodes,
+        "edges": package_edges + symbol_edges + import_edges + call_edges + test_edges + js_edges,
+        "observations": package_observations + symbol_observations + import_observations + call_observations + js_observations,
         "metadata": {
             "adapter_summary": adapter_summary,
             "python_scanner": {
@@ -88,6 +122,7 @@ def build_language_overlays(
                 "unresolved_call_count": len(unresolved_calls),
                 "confidence_policy": "direct local or imported calls only",
             },
+            "typescript_javascript_scanner": _js_scanner_summary(js_modules, js_edges),
         },
     }
 
@@ -356,6 +391,480 @@ def _build_call_overlay(
     return edges, test_edges, observations, unresolved
 
 
+def _load_js_modules(root: Path, items: list[dict[str, Any]]) -> dict[str, JsModuleInfo]:
+    modules: dict[str, JsModuleInfo] = {}
+    for item in sorted(items, key=lambda value: str(value["relative_path"])):
+        relative_path = str(item["relative_path"])
+        path = root / relative_path
+        try:
+            text = path.read_text(encoding="utf-8")
+        except (OSError, UnicodeDecodeError):
+            continue
+        module = JsModuleInfo(
+            relative_path=relative_path,
+            module_name=_module_name_for_path(relative_path),
+            fingerprint=str(item["fingerprint"]),
+            source_lines=text.splitlines(),
+            language=str(item.get("language") or "javascript"),
+        )
+        module.symbol_ids.update(_js_local_symbol_ids(module))
+        modules[relative_path] = module
+    module_ids = {f"module:{module.module_name}" for module in modules.values()}
+    for module in modules.values():
+        module.import_bindings.update(_js_import_bindings(module, modules, module_ids))
+    return modules
+
+
+def _build_js_overlay(
+    modules: dict[str, JsModuleInfo],
+    *,
+    scan_id: str,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]]]:
+    nodes: list[dict[str, Any]] = []
+    edges: list[dict[str, Any]] = []
+    observations: list[dict[str, Any]] = []
+    for module in modules.values():
+        module_id = f"module:{module.module_name}"
+        module_observation = _observation(
+            scan_id,
+            subject_id=module_id,
+            relative_path=module.relative_path,
+            start_line=1,
+            end_line=max(1, len(module.source_lines) or 1),
+            fingerprint=module.fingerprint,
+            extractor="typescript_javascript_stdlib_module",
+            confidence="inferred",
+        )
+        observations.append(module_observation)
+        nodes.append(
+            _node(
+                module_id,
+                node_type="module",
+                label=module.module_name,
+                language=module.language,
+                path=module.relative_path,
+                source_span=_span(module.relative_path, 1, max(1, len(module.source_lines) or 1), module.fingerprint),
+                observation_id=module_observation["id"],
+            )
+        )
+        edge, edge_observation = _edge(
+            scan_id,
+            edge_type="contains",
+            source=f"file:{module.relative_path}",
+            target=module_id,
+            relative_path=module.relative_path,
+            line=1,
+            fingerprint=module.fingerprint,
+            extractor="typescript_javascript_stdlib_module",
+            confidence="inferred",
+        )
+        edges.append(edge)
+        observations.append(edge_observation)
+
+        for item in _iter_js_symbol_defs(module):
+            symbol_id = item["id"]
+            observation = _observation(
+                scan_id,
+                subject_id=symbol_id,
+                relative_path=module.relative_path,
+                start_line=item["start_line"],
+                end_line=item["end_line"],
+                fingerprint=module.fingerprint,
+                extractor="typescript_javascript_stdlib_symbol",
+                confidence="inferred",
+            )
+            observations.append(observation)
+            nodes.append(
+                _node(
+                    symbol_id,
+                    node_type=item["type"],
+                    label=item["label"],
+                    language=module.language,
+                    path=module.relative_path,
+                    source_span=_span(module.relative_path, item["start_line"], item["end_line"], module.fingerprint),
+                    observation_id=observation["id"],
+                )
+            )
+            for edge_type in ["contains", "exports"]:
+                edge, edge_observation = _edge(
+                    scan_id,
+                    edge_type=edge_type,
+                    source=module_id,
+                    target=symbol_id,
+                    relative_path=module.relative_path,
+                    line=item["start_line"],
+                    fingerprint=module.fingerprint,
+                    extractor="typescript_javascript_stdlib_symbol",
+                    confidence="inferred",
+                )
+                edges.append(edge)
+                observations.append(edge_observation)
+
+        for _binding_name, target_id in sorted(module.import_bindings.items()):
+            edge, observation = _edge(
+                scan_id,
+                edge_type="imports",
+                source=module_id,
+                target=target_id,
+                relative_path=module.relative_path,
+                line=_js_import_line(module, target_id),
+                fingerprint=module.fingerprint,
+                extractor="typescript_javascript_stdlib_import",
+                confidence="inferred",
+            )
+            edges.append(edge)
+            observations.append(observation)
+
+        call_edges, call_observations = _build_js_call_edges(module, scan_id=scan_id)
+        edges.extend(call_edges)
+        observations.extend(call_observations)
+    return nodes, edges, observations
+
+
+def _iter_js_symbol_defs(module: JsModuleInfo) -> list[dict[str, Any]]:
+    items: list[dict[str, Any]] = []
+    for index, line in enumerate(module.source_lines, start=1):
+        match = _JS_EXPORT_FUNCTION_RE.match(line) or _JS_EXPORT_CONST_RE.match(line)
+        if match:
+            name = match.group(1)
+            items.append(
+                {
+                    "id": f"function:{module.module_name}.{name}",
+                    "type": "function",
+                    "label": name,
+                    "start_line": index,
+                    "end_line": _js_symbol_end_line(module.source_lines, index),
+                }
+            )
+            continue
+        class_match = _JS_EXPORT_CLASS_RE.match(line)
+        if class_match:
+            name = class_match.group(1)
+            items.append(
+                {
+                    "id": f"class:{module.module_name}.{name}",
+                    "type": "class",
+                    "label": name,
+                    "start_line": index,
+                    "end_line": _js_symbol_end_line(module.source_lines, index),
+                }
+            )
+    return items
+
+
+def _js_local_symbol_ids(module: JsModuleInfo) -> dict[str, str]:
+    symbols: dict[str, str] = {}
+    for item in _iter_js_symbol_defs(module):
+        symbols[item["label"]] = item["id"]
+    return symbols
+
+
+def _js_import_bindings(
+    module: JsModuleInfo,
+    modules: dict[str, JsModuleInfo],
+    module_ids: set[str],
+) -> dict[str, str]:
+    bindings: dict[str, str] = {}
+    for line in module.source_lines:
+        named = _JS_IMPORT_NAMED_RE.match(line)
+        if named:
+            target_module = _resolve_js_import_module(module.relative_path, named.group("source"), modules)
+            if not target_module:
+                module.unresolved_imports.append(
+                    _js_unresolved_import(
+                        module,
+                        source=named.group("source"),
+                        imported_name=",".join(_js_import_alias(raw_name)[0] for raw_name in named.group("names").split(",")),
+                        reason="missing_module",
+                    )
+                )
+                continue
+            for raw_name in named.group("names").split(","):
+                imported_name, local_name = _js_import_alias(raw_name)
+                target_id = target_module.symbol_ids.get(imported_name)
+                if not target_id:
+                    module.unresolved_imports.append(
+                        _js_unresolved_import(
+                            module,
+                            source=named.group("source"),
+                            imported_name=imported_name,
+                            reason="missing_export",
+                        )
+                    )
+                    continue
+                bindings[local_name] = target_id
+            continue
+        default = _JS_IMPORT_DEFAULT_RE.match(line)
+        if default:
+            target_module = _resolve_js_import_module(module.relative_path, default.group("source"), modules)
+            if not target_module:
+                module.unresolved_imports.append(
+                    _js_unresolved_import(
+                        module,
+                        source=default.group("source"),
+                        imported_name=default.group("name"),
+                        reason="missing_module",
+                    )
+                )
+                continue
+            module_id = f"module:{target_module.module_name}"
+            if module_id in module_ids:
+                bindings[default.group("name")] = module_id
+    return bindings
+
+
+def _build_js_call_edges(module: JsModuleInfo, *, scan_id: str) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    edges: list[dict[str, Any]] = []
+    observations: list[dict[str, Any]] = []
+    for item in _iter_js_symbol_defs(module):
+        source_id = item["id"]
+        body = module.source_lines[item["start_line"] - 1 : item["end_line"]]
+        for binding_name, target_id in sorted(module.import_bindings.items()):
+            if not target_id.startswith(("function:", "class:")):
+                continue
+            if not any(re.search(rf"\b{re.escape(binding_name)}\s*\(", line) for line in body):
+                continue
+            edge, observation = _edge(
+                scan_id,
+                edge_type="calls",
+                source=source_id,
+                target=target_id,
+                relative_path=module.relative_path,
+                line=item["start_line"],
+                fingerprint=module.fingerprint,
+                extractor="typescript_javascript_stdlib_call",
+                confidence="inferred",
+            )
+            edges.append(edge)
+            observations.append(observation)
+            if _is_test_source(module.relative_path, source_id):
+                test_edge, test_observation = _edge(
+                    scan_id,
+                    edge_type="tests",
+                    source=source_id,
+                    target=target_id,
+                    relative_path=module.relative_path,
+                    line=item["start_line"],
+                    fingerprint=module.fingerprint,
+                    extractor="typescript_javascript_stdlib_test_link",
+                    confidence="inferred",
+                )
+                edges.append(test_edge)
+                observations.append(test_observation)
+    return edges, observations
+
+
+def _resolve_js_import_module(
+    relative_path: str,
+    source: str,
+    modules: dict[str, JsModuleInfo],
+) -> JsModuleInfo | None:
+    if not source.startswith("."):
+        return None
+    parent = Path(relative_path).parent
+    base = (parent / source).as_posix()
+    candidates = [base, *[base + suffix for suffix in JS_EXTENSIONS], *[(Path(base) / f"index{suffix}").as_posix() for suffix in JS_EXTENSIONS]]
+    for candidate in candidates:
+        normalized = str(Path(candidate)).replace("\\", "/")
+        if normalized in modules:
+            return modules[normalized]
+    return None
+
+
+def _js_import_alias(value: str) -> tuple[str, str]:
+    parts = [part.strip() for part in value.strip().split(" as ", 1)]
+    if len(parts) == 2:
+        return parts[0], parts[1]
+    return parts[0], parts[0]
+
+
+def _js_unresolved_import(module: JsModuleInfo, *, source: str, imported_name: str, reason: str) -> dict[str, Any]:
+    return {
+        "relative_path": module.relative_path,
+        "line": _js_import_source_line(module, source),
+        "source": _safe_call_label(source),
+        "imported_name": _safe_call_label(imported_name),
+        "reason": reason,
+        "status": "unsupported",
+    }
+
+
+def _js_import_source_line(module: JsModuleInfo, source: str) -> int:
+    quoted_single = f"'{source}'"
+    quoted_double = f'"{source}"'
+    for index, line in enumerate(module.source_lines, start=1):
+        if "import" in line and (quoted_single in line or quoted_double in line):
+            return index
+    return 1
+
+
+def _js_import_line(module: JsModuleInfo, target_id: str) -> int:
+    for index, line in enumerate(module.source_lines, start=1):
+        if "import" in line and (target_id in module.import_bindings.values()):
+            return index
+    return 1
+
+
+def _js_symbol_end_line(lines: list[str], start_line: int) -> int:
+    balance = 0
+    saw_brace = False
+    for index in range(start_line, len(lines) + 1):
+        line = lines[index - 1]
+        balance += line.count("{") - line.count("}")
+        saw_brace = saw_brace or "{" in line
+        if saw_brace and balance <= 0:
+            return index
+    return start_line
+
+
+def _js_scanner_summary(modules: dict[str, JsModuleInfo], edges: list[dict[str, Any]]) -> dict[str, Any]:
+    symbol_count = sum(len(module.symbol_ids) for module in modules.values())
+    unresolved_imports = [
+        item
+        for module in sorted(modules.values(), key=lambda value: value.relative_path)
+        for item in module.unresolved_imports
+    ][:MAX_UNRESOLVED_CALLS]
+    framework_semantics = _js_framework_semantics(modules)
+    return {
+        "adapter": TYPESCRIPT_JAVASCRIPT_ADAPTER,
+        "parser_dependency": "stdlib_regex_no_external_dependency",
+        "module_count": len(modules),
+        "symbol_count": symbol_count,
+        "import_edge_count": sum(1 for edge in edges if edge.get("type") == "imports"),
+        "call_edge_count": sum(1 for edge in edges if edge.get("type") == "calls"),
+        "test_edge_count": sum(1 for edge in edges if edge.get("type") == "tests"),
+        "unresolved_imports": unresolved_imports,
+        "unresolved_import_count": sum(len(module.unresolved_imports) for module in modules.values()),
+        "framework_semantics": framework_semantics,
+        "framework_semantic_count": len(framework_semantics),
+        "unsupported_framework_inventory": _unsupported_framework_inventory(framework_semantics),
+        "confidence_policy": "explicit exports and relative imports only; static hints are inferred",
+        "unsupported_syntax_policy": "dynamic imports, runtime routing, JSX behavior and framework semantics remain unsupported as runtime proof",
+    }
+
+
+def _js_framework_semantics(modules: dict[str, JsModuleInfo]) -> list[dict[str, Any]]:
+    semantics: list[dict[str, Any]] = []
+    for module in sorted(modules.values(), key=lambda value: value.relative_path):
+        text = "\n".join(module.source_lines)
+        react_evidence = _has_react_evidence(module, text)
+        next_api_route = _is_next_api_route(module.relative_path)
+        for item in _iter_js_symbol_defs(module):
+            name = item["label"]
+            symbol_id = item["id"]
+            if react_evidence and _is_react_component_name(name):
+                semantics.append(_framework_semantic(module, "react", "component", symbol_id=symbol_id, evidence="exported_pascal_case_jsx_symbol"))
+            if react_evidence and _is_react_hook_name(name):
+                semantics.append(_framework_semantic(module, "react", "hook", symbol_id=symbol_id, evidence="exported_use_prefix_symbol_with_react_evidence"))
+            if next_api_route and name in {"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"}:
+                semantics.append(
+                    _framework_semantic(
+                        module,
+                        "next",
+                        "api_route",
+                        symbol_id=symbol_id,
+                        evidence="app_api_route_handler_export",
+                        route_path=_next_route_path(module.relative_path),
+                    )
+                )
+            if "@tauri-apps/api" in text:
+                semantics.append(_framework_semantic(module, "tauri", "native_bridge_api", symbol_id=symbol_id, evidence="tauri_api_import"))
+        module_id = f"module:{module.module_name}"
+        if _is_vite_config(module.relative_path, text):
+            semantics.append(_framework_semantic(module, "vite", "build_config", symbol_id=module_id, evidence="vite_config_file_or_define_config"))
+        if _has_electron_evidence(text):
+            semantics.append(_framework_semantic(module, "electron", "native_shell_entrypoint", symbol_id=module_id, evidence="electron_import_or_browser_window"))
+    return semantics[:MAX_UNRESOLVED_CALLS]
+
+
+def _framework_semantic(
+    module: JsModuleInfo,
+    framework: str,
+    semantic_type: str,
+    *,
+    symbol_id: str,
+    evidence: str,
+    route_path: str | None = None,
+) -> dict[str, Any]:
+    item = {
+        "schema_version": 1,
+        "framework": framework,
+        "semantic_type": semantic_type,
+        "relative_path": module.relative_path,
+        "symbol_id": symbol_id,
+        "evidence": evidence,
+        "confidence": "inferred",
+        "status": "static_hint",
+        "source_read_required": True,
+        "source_boundary": "graph_metadata_only_raw_source_excluded",
+        "unsupported_claims": [
+            "runtime_behavior",
+            "auth_or_data_flow_correctness",
+            "browser_behavior",
+            "native_packaging",
+            "route_reachability",
+        ],
+    }
+    if route_path:
+        item["route_path"] = route_path
+    return item
+
+
+def _unsupported_framework_inventory(semantics: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    inventory: list[dict[str, Any]] = []
+    for framework in sorted({str(item.get("framework")) for item in semantics if item.get("framework")}):
+        inventory.append(
+            {
+                "framework": framework,
+                "status": "static_hints_only",
+                "unsupported_signature": "runtime_behavior_or_version_specific_semantics",
+                "source_read_required": True,
+            }
+        )
+    return inventory
+
+
+def _has_react_evidence(module: JsModuleInfo, text: str) -> bool:
+    return module.relative_path.endswith((".tsx", ".jsx")) or "from 'react'" in text or 'from "react"' in text or "return <" in text
+
+
+def _is_react_component_name(name: str) -> bool:
+    return bool(name) and name[0].isupper()
+
+
+def _is_react_hook_name(name: str) -> bool:
+    return bool(re.match(r"^use[A-Z0-9]", name))
+
+
+def _is_next_api_route(relative_path: str) -> bool:
+    return relative_path.startswith("app/api/") and Path(relative_path).name in {"route.ts", "route.tsx", "route.js", "route.jsx"}
+
+
+def _next_route_path(relative_path: str) -> str:
+    path = relative_path.replace("\\", "/")
+    if path.startswith("app/"):
+        path = path[len("app/") :]
+    for suffix in JS_EXTENSIONS:
+        if path.endswith(suffix):
+            path = path[: -len(suffix)]
+            break
+    if path.endswith("/route"):
+        path = path[: -len("/route")]
+    if path == "page":
+        return "/"
+    if path.endswith("/page"):
+        path = path[: -len("/page")]
+    return "/" + path.strip("/")
+
+
+def _is_vite_config(relative_path: str, text: str) -> bool:
+    return Path(relative_path).name in {"vite.config.ts", "vite.config.js", "vite.config.mts", "vite.config.mjs"} or "from 'vite'" in text or 'from "vite"' in text
+
+
+def _has_electron_evidence(text: str) -> bool:
+    return "from 'electron'" in text or 'from \"electron\"' in text or "require('electron')" in text or 'require("electron")' in text
+
+
 def _iter_symbol_defs(tree: ast.AST, module_name: str) -> list[dict[str, Any]]:
     items: list[dict[str, Any]] = []
     for node in getattr(tree, "body", []):
@@ -506,6 +1015,8 @@ def _adapter_summary(files: list[dict[str, Any]]) -> dict[str, str]:
         language = str(item.get("language") or "unknown")
         if language == "python":
             summary[language] = PYTHON_AST_ADAPTER
+        elif language in {"typescript", "javascript"}:
+            summary[language] = TYPESCRIPT_JAVASCRIPT_ADAPTER
         elif language in {"markdown", "yaml", "json", "sql", "dbml", "toml"}:
             summary.setdefault(language, "structured_overlay")
         else:

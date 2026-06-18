@@ -66,6 +66,7 @@ def normalize_first_run_dry_run_summary(packet: dict[str, Any]) -> dict[str, Any
         "generated_view_policy": _string_or_none(first_run_packet.get("generated_view_policy")),
         "packet_digest": _string_or_none(first_run_packet.get("packet_digest")),
         "safe_next_action": _string_or_none(first_run_packet.get("safe_next_action")),
+        "graph_depth_summary": _bounded_graph_depth_summary(first_run_packet.get("graph_depth_summary")),
         "first_run_page_count": len(generated_pages),
         "written_file_count": len(_list(packet.get("written_files"))),
     }
@@ -110,6 +111,16 @@ def normalize_project_graph_summary(packet: dict[str, Any]) -> dict[str, Any]:
     validation = _dict(packet.get("validation"))
     metadata = _dict(packet.get("metadata"))
     scope_policy = _dict(metadata.get("scope_policy") or packet.get("scope_policy"))
+    coverage = _dict(metadata.get("coverage_map") or packet.get("coverage_map") or packet.get("coverage"))
+    freshness = _dict(metadata.get("temporal_delta") or packet.get("freshness"))
+    rejected_links = _list(metadata.get("rejected_links") or packet.get("rejected_links"))
+    conservative_linker = _dict(metadata.get("conservative_linker"))
+    ts_js = _dict(metadata.get("typescript_javascript_scanner"))
+    framework_semantics = _dict(
+        ts_js.get("framework_semantics")
+        or metadata.get("framework_semantics")
+        or packet.get("framework_semantic_summary")
+    )
     if packet.get("status"):
         status = str(packet.get("status"))
     elif validation.get("ok") is True:
@@ -127,7 +138,87 @@ def normalize_project_graph_summary(packet: dict[str, Any]) -> dict[str, Any]:
         "observation_count": _int_or_zero(packet.get("observation_count") or len(_list(packet.get("observations")))),
         "scope_policy_status": _string_or_none(scope_policy.get("status")),
         "excluded_prefixes": _string_list(scope_policy.get("excluded_prefixes")),
+        "coverage": _bounded_coverage_summary(coverage),
+        "freshness": _bounded_freshness_summary(freshness),
+        "rejected_link_summary": _bounded_rejected_link_summary(rejected_links, conservative_linker),
+        "framework_semantic_summary": _bounded_framework_summary(framework_semantics),
     }
+
+
+def _bounded_graph_depth_summary(value: Any) -> dict[str, Any]:
+    packet = _dict(value)
+    return {
+        "status": str(packet.get("status") or "not_available"),
+        "coverage": _bounded_coverage_summary(_dict(packet.get("coverage"))),
+        "freshness": _bounded_freshness_summary(_dict(packet.get("freshness"))),
+        "rejected_link_summary": _bounded_counter_summary(_dict(packet.get("rejected_link_summary"))),
+        "framework_semantic_summary": _bounded_counter_summary(_dict(packet.get("framework_semantic_summary"))),
+        "generated_view_policy": _string_or_none(packet.get("generated_view_policy")),
+    }
+
+
+def _bounded_coverage_summary(packet: dict[str, Any]) -> dict[str, Any]:
+    unsupported = packet.get("unsupported_languages")
+    skipped = packet.get("skipped_reasons")
+    return {
+        "status": str(packet.get("status") or "not_available"),
+        "supported_file_count": _int_or_zero(packet.get("supported_file_count")),
+        "partial_file_count": _int_or_zero(packet.get("partial_file_count")),
+        "unsupported_file_count": _int_or_zero(packet.get("unsupported_file_count")),
+        "unsupported_languages": _bounded_string_counter(_dict(unsupported)),
+        "skipped_reasons": _bounded_string_counter(_dict(skipped)),
+        "recommended_next_parser_or_linker_action": _string_or_none(
+            packet.get("recommended_next_parser_or_linker_action")
+        ),
+    }
+
+
+def _bounded_freshness_summary(packet: dict[str, Any]) -> dict[str, Any]:
+    status = str(packet.get("status") or "not_available")
+    return {
+        "status": status,
+        "changed_edge_count": _int_or_zero(packet.get("changed_edge_count")),
+        "removed_edge_count": _int_or_zero(packet.get("removed_edge_count")),
+        "blocks_action_claims": bool(packet.get("blocks_action_claims", status != "current")),
+    }
+
+
+def _bounded_rejected_link_summary(rejected_links: list[Any], conservative_linker: dict[str, Any]) -> dict[str, Any]:
+    by_reason: dict[str, int] = {}
+    for item in rejected_links:
+        reason = _string_or_none(_dict(item).get("reason")) or "unknown"
+        by_reason[reason] = by_reason.get(reason, 0) + 1
+    total = len(rejected_links) if rejected_links else _int_or_zero(conservative_linker.get("rejected_link_count"))
+    return {
+        "total": total,
+        "by_reason": {key: by_reason[key] for key in sorted(by_reason)[:10]},
+    }
+
+
+def _bounded_framework_summary(packet: dict[str, Any]) -> dict[str, Any]:
+    frameworks = _dict(packet.get("frameworks"))
+    total = _int_or_zero(packet.get("framework_count") or packet.get("total") or sum(_int_or_zero(item) for item in frameworks.values()))
+    return {
+        "total": total,
+        "frameworks": {key: _int_or_zero(frameworks[key]) for key in sorted(frameworks)[:10]},
+    }
+
+
+def _bounded_counter_summary(packet: dict[str, Any]) -> dict[str, Any]:
+    summary = {
+        "total": _int_or_zero(packet.get("total")),
+    }
+    by_reason = _bounded_string_counter(_dict(packet.get("by_reason")))
+    frameworks = _bounded_string_counter(_dict(packet.get("frameworks")))
+    if by_reason:
+        summary["by_reason"] = by_reason
+    if frameworks:
+        summary["frameworks"] = frameworks
+    return summary
+
+
+def _bounded_string_counter(packet: dict[str, Any]) -> dict[str, str]:
+    return {str(key): str(packet[key]) for key in sorted(packet)[:10] if str(key)}
 
 
 def _packet_payload(packet: dict[str, Any]) -> dict[str, Any]:

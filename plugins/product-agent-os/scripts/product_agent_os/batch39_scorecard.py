@@ -8,6 +8,7 @@ from product_agent_os.stage_manifest import canonical_json, content_digest
 
 SCORECARD_SCHEMA_VERSION = "pilot_product_usability_scorecard_v1"
 FIRST_RUN_ARTIFACT_SCORECARD_SCHEMA_VERSION = "first_run_artifact_scorecard_v1"
+GRAPH_USEFULNESS_SCORECARD_SCHEMA_VERSION = "graph_usefulness_scorecard_v1"
 GATE_GROUPS = ("pilot", "product_usability", "promotion")
 GATE_STATUSES = ("passed", "failed", "blocked", "accepted_gap")
 FIRST_RUN_SCORE_KEYS = (
@@ -20,6 +21,27 @@ FIRST_RUN_SCORE_KEYS = (
     "onboarding_time",
     "artifact_navigation",
 )
+GRAPH_USEFULNESS_METRIC_KEYS = (
+    "symbol_recall",
+    "top_k_relevance",
+    "affected_test_precision",
+    "false_positive_rate",
+    "reading_scope_reduction",
+    "unsupported_language_rate",
+    "stale_block_behavior",
+    "first_safe_action",
+)
+GRAPH_USEFULNESS_THRESHOLDS = {
+    "min_symbol_recall": 0.8,
+    "min_top_k_relevance": 0.75,
+    "min_affected_test_precision": 0.8,
+    "max_false_positive_rate": 0.1,
+    "min_reading_scope_reduction": 0.4,
+    "max_unsupported_language_rate": 0.25,
+    "require_stale_block_behavior": True,
+    "require_first_safe_action": True,
+    "require_real_target_comparison_for_promotion": True,
+}
 
 
 def build_scorecard_gates(
@@ -178,8 +200,177 @@ def validate_first_run_artifact_scorecard(scorecard: dict[str, Any]) -> list[str
     return errors
 
 
+def build_graph_usefulness_scorecard(
+    *,
+    test_id: str,
+    attempt_id: str,
+    metric_summary: dict[str, Any],
+    generated_at: str | None = None,
+) -> dict[str, Any]:
+    summary = metric_summary if isinstance(metric_summary, dict) else {}
+    raw_counts = {
+        "symbol_queries_total": _int(summary.get("symbol_queries_total")),
+        "symbol_queries_hit": _int(summary.get("symbol_queries_hit")),
+        "top_k_hits": _int(summary.get("top_k_hits")),
+        "affected_tests_expected": _int(summary.get("affected_tests_expected")),
+        "affected_tests_matched": _int(summary.get("affected_tests_matched")),
+        "affected_tests_false_positive": _int(summary.get("affected_tests_false_positive")),
+        "baseline_read_files": _int(summary.get("baseline_read_files")),
+        "packet_read_files": _int(summary.get("packet_read_files")),
+        "unsupported_language_count": _int(summary.get("unsupported_language_count")),
+        "language_count": _int(summary.get("language_count")),
+    }
+    affected_returned = raw_counts["affected_tests_matched"] + raw_counts["affected_tests_false_positive"]
+    metrics = {
+        "symbol_recall": _rate(raw_counts["symbol_queries_hit"], raw_counts["symbol_queries_total"]),
+        "top_k_relevance": _rate(raw_counts["top_k_hits"], raw_counts["symbol_queries_total"]),
+        "affected_test_precision": _rate(raw_counts["affected_tests_matched"], affected_returned),
+        "false_positive_rate": _rate(raw_counts["affected_tests_false_positive"], affected_returned),
+        "reading_scope_reduction": _scope_reduction(raw_counts["baseline_read_files"], raw_counts["packet_read_files"]),
+        "unsupported_language_rate": _rate(raw_counts["unsupported_language_count"], raw_counts["language_count"]),
+        "stale_block_behavior": _score_bool(summary.get("stale_block_behavior") is True),
+        "first_safe_action": _score_bool(summary.get("safe_next_action_present") is True),
+    }
+    threshold_results = _graph_threshold_results(metrics)
+    metric_blockers = [item["blocker"] for item in threshold_results if item["status"] == "failed"]
+    real_target_comparison_present = summary.get("real_target_comparison_present") is True
+    blocking_reasons = list(metric_blockers)
+    if not real_target_comparison_present:
+        blocking_reasons.append("real_target_comparison_missing")
+    fixture_status = "fixture_thresholds_passed" if not metric_blockers else "fixture_thresholds_failed"
+    scorecard = {
+        "schema_version": GRAPH_USEFULNESS_SCORECARD_SCHEMA_VERSION,
+        "batch": "B39",
+        "task_ids": ["B39-S4-GRAPH-DEPTH-06", "B39-S4-GRAPH-DEPTH-14"],
+        "test_id": test_id,
+        "attempt_id": attempt_id,
+        "generated_at": generated_at or datetime.now(UTC).replace(microsecond=0).isoformat(),
+        "raw_counts": raw_counts,
+        "metrics": metrics,
+        "thresholds": GRAPH_USEFULNESS_THRESHOLDS,
+        "threshold_results": threshold_results,
+        "fixture_evaluation_status": fixture_status,
+        "target_comparison": {
+            "status": "available" if real_target_comparison_present else "missing",
+            "delta": summary.get("target_comparison_delta") if real_target_comparison_present else None,
+            "required_for_promotion": True,
+        },
+        "blocking_reasons": sorted(set(blocking_reasons)),
+        "accepted_gaps": [
+            "fixture_metrics_are_local_calibration_only",
+            "small_target_sets_do_not_prove_broad_semantic_usefulness",
+        ],
+        "unsupported_claims": [
+            "release_readiness",
+            "production_readiness",
+            "broad_agent_navigation_usefulness",
+            "real_target_improvement_without_comparison",
+        ],
+        "decision_status": "manual_only",
+        "promotion_decision": "not_promoted",
+        "promotion_boundary": "manual_only_not_promoted",
+        "generated_view_policy": "orientation_only_not_proof",
+        "source_boundary": "graph_artifact_only_raw_source_excluded",
+        "source_policy": "graph scorecard is local calibration evidence, not readiness proof",
+    }
+    scorecard["scorecard_digest"] = content_digest(canonical_json(scorecard))
+    return scorecard
+
+
+def validate_graph_usefulness_scorecard(scorecard: dict[str, Any]) -> list[str]:
+    if not isinstance(scorecard, dict):
+        return ["graph usefulness scorecard must be an object"]
+    errors: list[str] = []
+    if scorecard.get("schema_version") != GRAPH_USEFULNESS_SCORECARD_SCHEMA_VERSION:
+        errors.append(f"schema_version must be {GRAPH_USEFULNESS_SCORECARD_SCHEMA_VERSION}")
+    if scorecard.get("promotion_decision") != "not_promoted":
+        errors.append("promotion_decision must be not_promoted")
+    if scorecard.get("promotion_boundary") != "manual_only_not_promoted":
+        errors.append("promotion_boundary must be manual_only_not_promoted")
+    if scorecard.get("decision_status") != "manual_only":
+        errors.append("decision_status must be manual_only")
+    if scorecard.get("generated_view_policy") != "orientation_only_not_proof":
+        errors.append("generated_view_policy must be orientation_only_not_proof")
+    if scorecard.get("source_boundary") != "graph_artifact_only_raw_source_excluded":
+        errors.append("source_boundary must be graph_artifact_only_raw_source_excluded")
+    metrics = scorecard.get("metrics")
+    if not isinstance(metrics, dict):
+        errors.append("metrics must be an object")
+        metrics = {}
+    for key in GRAPH_USEFULNESS_METRIC_KEYS:
+        value = metrics.get(key)
+        if not isinstance(value, (int, float)) or value < 0 or value > 1:
+            errors.append(f"metrics.{key} must be between 0 and 1")
+    thresholds = scorecard.get("thresholds")
+    if not isinstance(thresholds, dict):
+        errors.append("thresholds must be an object")
+    target_comparison = scorecard.get("target_comparison")
+    if not isinstance(target_comparison, dict) or target_comparison.get("required_for_promotion") is not True:
+        errors.append("target_comparison.required_for_promotion must be true")
+    if "release_readiness" not in set(scorecard.get("unsupported_claims", [])):
+        errors.append("unsupported_claims must include release_readiness")
+    if not str(scorecard.get("scorecard_digest", "")).startswith("sha256:"):
+        errors.append("scorecard_digest must be a sha256 digest")
+    return errors
+
+
+def _graph_threshold_results(metrics: dict[str, float]) -> list[dict[str, Any]]:
+    threshold_checks = [
+        ("symbol_recall", ">=", GRAPH_USEFULNESS_THRESHOLDS["min_symbol_recall"], "symbol_recall_below_threshold"),
+        ("top_k_relevance", ">=", GRAPH_USEFULNESS_THRESHOLDS["min_top_k_relevance"], "top_k_relevance_below_threshold"),
+        (
+            "affected_test_precision",
+            ">=",
+            GRAPH_USEFULNESS_THRESHOLDS["min_affected_test_precision"],
+            "affected_test_precision_below_threshold",
+        ),
+        ("false_positive_rate", "<=", GRAPH_USEFULNESS_THRESHOLDS["max_false_positive_rate"], "false_positive_rate_above_threshold"),
+        (
+            "reading_scope_reduction",
+            ">=",
+            GRAPH_USEFULNESS_THRESHOLDS["min_reading_scope_reduction"],
+            "reading_scope_reduction_below_threshold",
+        ),
+        (
+            "unsupported_language_rate",
+            "<=",
+            GRAPH_USEFULNESS_THRESHOLDS["max_unsupported_language_rate"],
+            "unsupported_language_rate_above_threshold",
+        ),
+        ("stale_block_behavior", ">=", 1.0, "stale_block_behavior_missing"),
+        ("first_safe_action", ">=", 1.0, "first_safe_action_missing"),
+    ]
+    results = []
+    for metric, operator, threshold, blocker in threshold_checks:
+        value = metrics.get(metric, 0.0)
+        passed = value >= threshold if operator == ">=" else value <= threshold
+        results.append(
+            {
+                "metric": metric,
+                "operator": operator,
+                "threshold": threshold,
+                "value": value,
+                "status": "passed" if passed else "failed",
+                "blocker": "" if passed else blocker,
+            }
+        )
+    return results
+
+
 def _score_bool(value: Any) -> float:
     return 1.0 if bool(value) else 0.0
+
+
+def _rate(numerator: int, denominator: int) -> float:
+    if denominator <= 0:
+        return 0.0
+    return round(max(0.0, min(1.0, numerator / denominator)), 3)
+
+
+def _scope_reduction(baseline: int, packet: int) -> float:
+    if baseline <= 0:
+        return 0.0
+    return round(max(0.0, min(1.0, (baseline - packet) / baseline)), 3)
 
 
 def _int(value: Any) -> int:
@@ -192,8 +383,11 @@ def _int(value: Any) -> int:
 __all__ = [
     "FIRST_RUN_ARTIFACT_SCORECARD_SCHEMA_VERSION",
     "GATE_GROUPS",
+    "GRAPH_USEFULNESS_SCORECARD_SCHEMA_VERSION",
     "build_first_run_artifact_scorecard",
+    "build_graph_usefulness_scorecard",
     "build_scorecard_gates",
     "validate_first_run_artifact_scorecard",
+    "validate_graph_usefulness_scorecard",
     "validate_scorecard_gates",
 ]

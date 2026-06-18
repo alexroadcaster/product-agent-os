@@ -1,0 +1,106 @@
+{
+  "artifact_kind": "batch39_s4_graph_depth_s0_s2_summary",
+  "batch": "B39",
+  "date": "2026-06-18",
+  "slice": "B39-S4",
+  "task_ids": [
+    "B39-S4-GRAPH-DEPTH-00",
+    "B39-S4-GRAPH-DEPTH-01",
+    "B39-S4-GRAPH-DEPTH-02",
+    "B39-S4-GRAPH-DEPTH-query-safety"
+  ],
+  "status": "partial_pass_graph_depth_contract",
+  "source_status": "current-run local code/test evidence only",
+  "summary": [
+    "Added stdlib-only TypeScript/JavaScript graph adapter with module/function/class nodes and conservative imports/exports/calls edges.",
+    "Kept TypeScript/JavaScript adapter inside existing core ontology terms; no component/hook/API-route node types were added.",
+    "Added reverse-reachability max_depth enforcement for impact and affected_tests packets.",
+    "Added explicit query validation for invalid or unbounded max_depth, max_results and max_tokens values."
+  ],
+  "files_changed": [
+    "plugins/product-agent-os/scripts/product_agent_os/project_graph_adapters.py",
+    "plugins/product-agent-os/scripts/product_agent_os/project_code_graph.py",
+    "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+    "tests/product_agent_os/test_project_graph_python_scanner.py",
+    "tests/product_agent_os/test_project_graph_queries.py"
+  ],
+  "commands": [
+    {
+      "command": "python -m unittest tests.product_agent_os.test_project_graph_queries.ProjectGraphQueriesTest.test_impact_and_affected_tests_respect_max_depth_for_reverse_reachability -v",
+      "red_result": "failed before fix: impact ignored max_depth and returned the full reverse chain",
+      "green_result": "ok"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_project_graph_python_scanner.ProjectGraphPythonScannerTest.test_typescript_exports_imports_and_calls_are_entity_level_without_external_parser -v",
+      "red_result": "failed before adapter: typescript_javascript_stdlib was unavailable",
+      "green_result": "ok"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_project_graph_queries.ProjectGraphQueriesTest.test_query_validation_blocks_invalid_depth_and_unbounded_limits -v",
+      "red_result": "failed before validation: max_depth=0 silently fell back and query returned ok",
+      "green_result": "ok"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_project_graph_python_scanner -v",
+      "result": "9 tests OK"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_project_graph_queries -v",
+      "result": "8 tests OK"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_project_code_graph -v",
+      "result": "9 tests OK"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_project_graph_cli.ProjectGraphCliTest.test_query_cli_reads_staged_graph_without_workspace_writes_or_source_leak -v",
+      "result": "1 test OK"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_project_graph_search_quality -v",
+      "result": "3 tests OK"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_project_graph_semantic.ProjectGraphSemanticRetrievalTest.test_semantic_query_uses_local_embeddings_and_cross_encoder_rerank_without_completion_claims -v",
+      "result": "1 test OK"
+    }
+  ],
+  "subagent_evidence": [
+    {
+      "agent": "explorer",
+      "status": "handoff_ready_read_only",
+      "finding": "GRAPH-DEPTH-00..15 exists in the Track 10 plan; current implementation gap is strongest around mixed Python/TypeScript depth and agent-facing graph packets."
+    },
+    {
+      "agent": "tester",
+      "status": "handoff_ready_read_only",
+      "finding": "Recommended starting with the TypeScript adapter test, graph query smoke, semantic retrieval smoke, and unsafe depth/budget validation."
+    },
+    {
+      "agent": "docs-maintainer",
+      "status": "maintenance_handoff",
+      "finding": "Record implementation in prod_test.md and compact control-plane files; source registry updates only if source-backed docs claims change."
+    }
+  ],
+  "approval_boundary": {
+    "target_workspace_mutation": "not_performed",
+    "browser_automation": "not_performed",
+    "provider_api_model_calls": "not_performed",
+    "live_server": "not_performed",
+    "canonical_graph_mutation": "not_performed",
+    "git_actions": "not_performed",
+    "external_actions": "not_performed",
+    "dependency_installation": "not_performed"
+  },
+  "unsupported_claims": [
+    "does not close B39-S4-GRAPH-DEPTH-00..15",
+    "does not prove SOL or Neural Flow target usefulness",
+    "does not add framework semantics, rejected-link ledger, coverage map, freshness gate, agent reading packet, guided tour or HTML explainer",
+    "does not support release readiness, promotion, runtime/browser behavior, provider quality, target apply or automation readiness"
+  ],
+  "next_actions": [
+    "Continue GRAPH-DEPTH with ontology decision packet and parser-dependency decision before adding framework-specific node types.",
+    "Add synthetic mixed Python plus TypeScript fixture coverage for contracts, schema/table nodes, stale markers and rejected links.",
+    "Add agent reading packet, coverage map, freshness gate and rejected-link ledger before real-target retest."
+  ]
+}

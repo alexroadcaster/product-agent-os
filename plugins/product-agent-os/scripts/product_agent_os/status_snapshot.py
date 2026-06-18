@@ -307,7 +307,13 @@ def _project_graph_summary(packet: dict[str, Any]) -> dict[str, Any]:
     if not isinstance(packet, dict) or not packet:
         return {
             "status": "not_available",
+            "generated_view_policy": "orientation_only_not_proof",
             "counts": {"nodes": 0, "edges": 0, "observations": 0, "omitted_nodes": 0},
+            "coverage": _safe_project_graph_coverage({}),
+            "freshness": _safe_project_graph_freshness({}),
+            "rejected_link_summary": _bounded_project_graph_counter_summary({}),
+            "framework_semantic_summary": _bounded_project_graph_counter_summary({}),
+            "agent_packet_refs": [],
             "unsupported_languages": [],
             "artifact_refs": [],
             "top_gaps": [],
@@ -317,13 +323,18 @@ def _project_graph_summary(packet: dict[str, Any]) -> dict[str, Any]:
     counts = packet.get("counts") if isinstance(packet.get("counts"), dict) else {}
     return {
         "status": _string(packet.get("status") or "not_available"),
-        "freshness": packet.get("freshness") if isinstance(packet.get("freshness"), dict) else {},
+        "generated_view_policy": _string(packet.get("generated_view_policy") or "orientation_only_not_proof"),
+        "freshness": _safe_project_graph_freshness(packet.get("freshness")),
         "counts": {
             "nodes": _int(counts.get("nodes")),
             "edges": _int(counts.get("edges")),
             "observations": _int(counts.get("observations")),
             "omitted_nodes": _int(counts.get("omitted_nodes")),
         },
+        "coverage": _safe_project_graph_coverage(packet.get("coverage_map") or packet.get("coverage")),
+        "rejected_link_summary": _bounded_project_graph_counter_summary(packet.get("rejected_link_summary")),
+        "framework_semantic_summary": _bounded_project_graph_counter_summary(packet.get("framework_semantic_summary")),
+        "agent_packet_refs": _safe_project_graph_refs(packet.get("agent_packet_refs")),
         "unsupported_languages": _safe_project_graph_unsupported_languages(packet.get("unsupported_languages")),
         "artifact_refs": _safe_project_graph_refs(packet.get("artifact_refs")),
         "top_gaps": _safe_project_graph_gaps(packet.get("top_gaps")),
@@ -479,6 +490,56 @@ def _safe_project_graph_refs(value: Any) -> list[dict[str, str]]:
             }
         )
     return refs
+
+
+def _safe_project_graph_coverage(value: Any) -> dict[str, Any]:
+    packet = value if isinstance(value, dict) else {}
+    unsupported = packet.get("unsupported_languages") if isinstance(packet.get("unsupported_languages"), dict) else {}
+    return {
+        "status": _string(packet.get("status") or "not_available"),
+        "covered_files": _int(packet.get("covered_files")),
+        "partial_files": _int(packet.get("partial_files")),
+        "unsupported_languages": {
+            _string(key): _string(item)
+            for key, item in sorted(unsupported.items(), key=lambda entry: str(entry[0]))[
+                :MAX_PROJECT_GRAPH_UNSUPPORTED_LANGUAGES
+            ]
+            if _string(key)
+        },
+    }
+
+
+def _safe_project_graph_freshness(value: Any) -> dict[str, Any]:
+    packet = value if isinstance(value, dict) else {}
+    return {
+        "status": _string(packet.get("status") or "not_available"),
+        "blocks_action_claims": bool(packet.get("blocks_action_claims")),
+        "safe_next_action": _string(
+            packet.get("safe_next_action") or "Read source files before graph-backed claims."
+        ),
+    }
+
+
+def _bounded_project_graph_counter_summary(value: Any) -> dict[str, Any]:
+    packet = value if isinstance(value, dict) else {}
+    reasons = packet.get("by_reason") if isinstance(packet.get("by_reason"), dict) else {}
+    frameworks = packet.get("frameworks") if isinstance(packet.get("frameworks"), dict) else {}
+    result: dict[str, Any] = {"total": _int(packet.get("total"))}
+    if reasons:
+        result["by_reason"] = {
+            _string(key): _int(item)
+            for key, item in sorted(reasons.items(), key=lambda entry: str(entry[0]))[:MAX_PROJECT_GRAPH_GAPS]
+            if _string(key)
+        }
+    if frameworks:
+        result["frameworks"] = {
+            _string(key): _int(item)
+            for key, item in sorted(frameworks.items(), key=lambda entry: str(entry[0]))[
+                :MAX_PROJECT_GRAPH_UNSUPPORTED_LANGUAGES
+            ]
+            if _string(key)
+        }
+    return result
 
 
 def _safe_project_graph_unsupported_languages(value: Any) -> list[dict[str, Any]]:

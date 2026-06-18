@@ -1,0 +1,103 @@
+{
+  "artifact_kind": "batch39_s4_graph_depth_ontology_parser_decision",
+  "decision_id": "B39-S4-GD-S0-ONTOLOGY-PARSER-DECISION",
+  "batch": "B39",
+  "slice": "B39-S4",
+  "date": "2026-06-18",
+  "status": "accepted_local_decision_no_new_dependency",
+  "source_status": "current-run local decision evidence for project graph implementation only",
+  "task_ids": [
+    "B39-S4-GRAPH-DEPTH-00",
+    "B39-S4-GRAPH-DEPTH-07"
+  ],
+  "ontology_decision": {
+    "ontology_profile": "core_terms_plus_framework_metadata",
+    "core_node_types_added": [],
+    "core_edge_types_added": [],
+    "schema_migration_required": false,
+    "compatibility_impact": "backward_compatible_metadata_language_support_update",
+    "framework_extension_boundary": "framework terms stay metadata-only until registered by a later extension decision",
+    "schema_visible_terms_rejected_for_this_decision": [
+      "component",
+      "hook",
+      "api_route",
+      "store",
+      "event_handler",
+      "api_client",
+      "operation",
+      "test_case"
+    ],
+    "framework_terms_kept_as_metadata": [
+      "component",
+      "hook",
+      "api_route",
+      "store",
+      "event_handler",
+      "api_client",
+      "schema",
+      "table",
+      "operation",
+      "test_case"
+    ],
+    "query_filter_behavior": "existing core node and edge filters remain valid; framework terms are not accepted as node types in this decision",
+    "source_read_boundary": "graph output is orientation evidence; agents must read source files before edits, impact claims or readiness claims"
+  },
+  "parser_dependency_decision": {
+    "selected_option": "stdlib_regex_no_external_dependency",
+    "dependency_installation_required": false,
+    "external_parser_dependency_allowed": false,
+    "network_required": false,
+    "vendored_dependency_required": false,
+    "license_or_hash_expectations": "not_applicable_no_dependency_or_vendored_artifact",
+    "unsupported_syntax_classes": [
+      "dynamic imports",
+      "runtime route resolution",
+      "JSX runtime behavior",
+      "framework semantics",
+      "type-only semantic resolution",
+      "decorator metadata"
+    ],
+    "deferred_options": [
+      "tree-sitter WASM",
+      "vendored local parser",
+      "existing project parser dependency reuse",
+      "framework-specific parser adapter"
+    ],
+    "exact_approval_required_for": [
+      "installing a new parser dependency",
+      "vendoring parser artifacts",
+      "calling external parser services",
+      "changing schema-visible node or edge ontology",
+      "promoting framework metadata to ontology terms"
+    ],
+    "rollback": "remove graph_depth_decision metadata and revert TypeScript/JavaScript language support to file_only if conservative stdlib overlay becomes misleading"
+  },
+  "verification_contract": {
+    "required_tests": [
+      "tests.product_agent_os.test_project_graph_ontology.ProjectGraphOntologyTest.test_graph_depth_decision_artifact_records_ontology_and_parser_boundaries",
+      "tests.product_agent_os.test_project_graph_ontology.ProjectGraphOntologyTest.test_project_graph_metadata_cites_graph_depth_decision",
+      "tests.product_agent_os.test_project_graph_python_scanner.ProjectGraphPythonScannerTest.test_typescript_exports_imports_and_calls_are_entity_level_without_external_parser",
+      "tests.product_agent_os.test_project_graph_python_scanner.ProjectGraphPythonScannerTest.test_typescript_framework_terms_remain_metadata_not_node_types"
+    ],
+    "required_checks": [
+      "graph schema validation stays OK",
+      "no raw source bodies or absolute paths appear in graph packets",
+      "generated TypeScript/JavaScript files remain file-only",
+      "unsupported framework/runtime semantics remain unsupported claims"
+    ]
+  },
+  "unsupported_claims": [
+    "This decision does not close B39-S4-GRAPH-DEPTH-00..15.",
+    "This decision does not prove SOL or Neural Flow usefulness.",
+    "This decision does not add framework semantics, runtime routing, rejected-link ledger, coverage map, freshness gate, scorecard, real-target retest or HTML integration.",
+    "This decision does not support release readiness, promotion, provider calls, browser/runtime behavior, target apply, canonical mutation, automation readiness or external writes."
+  ],
+  "approval_boundary": {
+    "target_workspace_mutation": "not_performed",
+    "browser_or_runtime_automation": "not_performed",
+    "provider_or_model_call": "not_performed",
+    "dependency_installation": "not_performed",
+    "git_stage_commit_push_pr": "not_performed",
+    "external_write": "not_performed"
+  }
+}

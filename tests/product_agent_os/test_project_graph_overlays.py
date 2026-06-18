@@ -12,6 +12,7 @@ sys.path.insert(0, str(SCRIPTS))
 
 from product_agent_os.project_code_graph import build_project_code_graph  # noqa: E402
 from product_agent_os.project_graph_chunking import build_structured_chunks  # noqa: E402
+from product_agent_os.project_graph_queries import query_project_graph  # noqa: E402
 
 
 class ProjectGraphOverlaysTest(unittest.TestCase):
@@ -193,6 +194,186 @@ class ProjectGraphOverlaysTest(unittest.TestCase):
         self.assertIn("accepted_gaps", metadata["readiness_summary"])
         self.assertLessEqual(len(metadata["readiness_summary"]["methodology_gates"]), 20)
         self.assertTrue(graph["validation"]["ok"], graph["validation"])
+
+    def test_mixed_python_typescript_contract_schema_and_stale_fixture_is_bounded(self):
+        with TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "workspace"
+            (workspace / "backend").mkdir(parents=True)
+            (workspace / "web").mkdir()
+            (workspace / "tests").mkdir()
+            (workspace / "docs").mkdir()
+            (workspace / "schema").mkdir()
+            (workspace / "backend" / "__init__.py").write_text("", encoding="utf-8")
+            (workspace / "backend" / "service.py").write_text(
+                "def list_users():\n"
+                "    return []\n",
+                encoding="utf-8",
+            )
+            (workspace / "backend" / "api.py").write_text(
+                "from backend.service import list_users\n\n"
+                "def handle_users():\n"
+                "    return list_users()\n",
+                encoding="utf-8",
+            )
+            (workspace / "tests" / "test_api.py").write_text(
+                "from backend.api import handle_users\n\n"
+                "def test_handle_users():\n"
+                "    assert handle_users() == []\n",
+                encoding="utf-8",
+            )
+            (workspace / "web" / "apiClient.ts").write_text(
+                "export function fetchUsers() {\n"
+                "  return [];\n"
+                "}\n",
+                encoding="utf-8",
+            )
+            (workspace / "web" / "UsersPage.tsx").write_text(
+                "import { fetchUsers, missingExport } from './apiClient';\n"
+                "import { ghostCall } from './missingClient';\n\n"
+                "export function useUsers() {\n"
+                "  return fetchUsers();\n"
+                "}\n\n"
+                "export function UsersPage() {\n"
+                "  const users = useUsers();\n"
+                "  missingExport();\n"
+                "  ghostCall();\n"
+                "  return <main>{users.length}</main>;\n"
+                "}\n",
+                encoding="utf-8",
+            )
+            (workspace / "openapi.yaml").write_text(
+                "openapi: 3.0.0\n"
+                "paths:\n"
+                "  /users:\n"
+                "    get:\n"
+                "      operationId: listUsers\n",
+                encoding="utf-8",
+            )
+            (workspace / "schema" / "schema.dbml").write_text("Table users {\n  id integer [primary key]\n}\n", encoding="utf-8")
+            (workspace / "docs" / "architecture.md").write_text(
+                "# Architecture\n\n"
+                "See [OpenAPI](../openapi.yaml).\n",
+                encoding="utf-8",
+            )
+
+            first = build_project_code_graph(workspace)
+            (workspace / "backend" / "api.py").write_text(
+                "from backend.service import list_users\n\n"
+                "def handle_users():\n"
+                "    users = list_users()\n"
+                "    return users\n",
+                encoding="utf-8",
+            )
+            graph = build_project_code_graph(workspace, previous_graph=first)
+            nodes = {node["id"]: node for node in graph["nodes"]}
+            edges = {(edge["type"], edge["source"], edge["target"]) for edge in graph["edges"]}
+            serialized = json.dumps(graph, sort_keys=True)
+            js_summary = graph["metadata"]["typescript_javascript_scanner"]
+
+            for expected_id in [
+                "function:backend.api.handle_users",
+                "function:backend.service.list_users",
+                "function:tests.test_api.test_handle_users",
+                "module:web.apiClient",
+                "module:web.UsersPage",
+                "function:web.apiClient.fetchUsers",
+                "function:web.UsersPage.useUsers",
+                "function:web.UsersPage.UsersPage",
+                "chunk:openapi.yaml:operation:listUsers",
+                "chunk:schema/schema.dbml:table:users",
+                "chunk:docs/architecture.md:heading:architecture",
+            ]:
+                with self.subTest(expected_id=expected_id):
+                    self.assertIn(expected_id, nodes)
+
+            self.assertIn(("calls", "function:backend.api.handle_users", "function:backend.service.list_users"), edges)
+            self.assertIn(("tests", "function:tests.test_api.test_handle_users", "function:backend.api.handle_users"), edges)
+            self.assertIn(("imports", "module:web.UsersPage", "function:web.apiClient.fetchUsers"), edges)
+            self.assertIn(("calls", "function:web.UsersPage.useUsers", "function:web.apiClient.fetchUsers"), edges)
+            self.assertIn(("references", "chunk:docs/architecture.md:heading:architecture", "file:openapi.yaml"), edges)
+            self.assertEqual(graph["metadata"]["temporal_delta"]["status"], "changed")
+            self.assertGreaterEqual(js_summary["unresolved_import_count"], 2)
+            self.assertEqual(
+                {item["reason"] for item in js_summary["unresolved_imports"]},
+                {"missing_export", "missing_module"},
+            )
+            self.assertNotIn("ghostCall()", serialized)
+            self.assertNotIn("missingExport()", serialized)
+            self.assertNotIn(str(workspace), serialized)
+            self.assertTrue(graph["validation"]["ok"], graph["validation"])
+
+    def test_conservative_linker_records_explicit_links_and_rejected_candidates(self):
+        with TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "workspace"
+            (workspace / "backend").mkdir(parents=True)
+            (workspace / "web").mkdir()
+            (workspace / "backend" / "__init__.py").write_text("", encoding="utf-8")
+            (workspace / "backend" / "api.py").write_text(
+                "def list_users():\n"
+                "    return []\n",
+                encoding="utf-8",
+            )
+            (workspace / "web" / "apiClient.ts").write_text(
+                "export function listUsers() {\n"
+                "  return [];\n"
+                "}\n\n"
+                "export function listUserSettings() {\n"
+                "  return [];\n"
+                "}\n",
+                encoding="utf-8",
+            )
+            (workspace / "openapi.yaml").write_text(
+                "openapi: 3.0.0\n"
+                "paths:\n"
+                "  /users:\n"
+                "    get:\n"
+                "      operationId: listUsers\n",
+                encoding="utf-8",
+            )
+
+            graph = build_project_code_graph(workspace)
+            edges = {(edge["type"], edge["source"], edge["target"], edge["confidence"]) for edge in graph["edges"]}
+            rejected = graph["metadata"]["rejected_links"]
+            packet = query_project_graph(
+                graph,
+                {"query": "agent_reading_packet", "node_id": "function:web.apiClient.listUserSettings", "max_results": 5},
+            )
+            serialized = json.dumps([graph["metadata"]["rejected_links"], packet["rejected_links"]], sort_keys=True)
+
+            self.assertIn(
+                (
+                    "references",
+                    "function:web.apiClient.listUsers",
+                    "chunk:openapi.yaml:operation:listUsers",
+                    "inferred",
+                ),
+                edges,
+            )
+            self.assertIn(
+                (
+                    "references",
+                    "function:backend.api.list_users",
+                    "chunk:openapi.yaml:operation:listUsers",
+                    "inferred",
+                ),
+                edges,
+            )
+            self.assertNotIn(
+                (
+                    "references",
+                    "function:web.apiClient.listUserSettings",
+                    "chunk:openapi.yaml:operation:listUsers",
+                    "inferred",
+                ),
+                edges,
+            )
+            self.assertTrue(any(item["source"] == "function:web.apiClient.listUserSettings" for item in rejected))
+            self.assertTrue(all(item["source_read_required"] is True for item in rejected))
+            self.assertIn("weak_name_similarity", {item["reason"] for item in rejected})
+            self.assertTrue(packet["rejected_links"])
+            self.assertNotIn("return []", serialized)
+            self.assertNotIn(str(workspace), serialized)
+            self.assertTrue(graph["validation"]["ok"], graph["validation"])
 
 
 if __name__ == "__main__":

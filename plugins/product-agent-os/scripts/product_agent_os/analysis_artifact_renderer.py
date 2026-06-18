@@ -69,6 +69,8 @@ def render_first_run_analysis_artifact(packet: dict[str, Any], workspace: str | 
         "change_summary": _change_summary(previous_manifest, page_digests, source_digests),
         "redaction_report": redaction_report,
         "source_policy_gate": _source_policy_gate(packet),
+        "graph_depth_summary": _graph_depth_summary(packet),
+        "graph_artifact_summary": _graph_depth_summary(packet),
     }
     manifest["manifest_digest"] = content_digest(canonical_json(manifest))
     (analysis_dir / ANALYSIS_MANIFEST_NAME).write_text(
@@ -116,6 +118,7 @@ def _page_html(page_id: str, packet: dict[str, Any]) -> str:
         if isinstance(summary, dict)
     )
     safe_next = html.escape(str(packet.get("safe_next_action", "")))
+    graph_depth_html = _graph_depth_html(packet) if page_id == "graph" else ""
     return (
         "<!doctype html>\n"
         "<html lang=\"en\">\n"
@@ -132,6 +135,7 @@ def _page_html(page_id: str, packet: dict[str, Any]) -> str:
         "<h2>Section Evidence</h2>\n"
         "<table><thead><tr><th>Section</th><th>Status</th><th>Module</th><th>Artifact</th><th>Freshness</th><th>Confidence</th></tr></thead>"
         f"<tbody>{sections}</tbody></table>\n"
+        f"{graph_depth_html}"
         "</body>\n"
         "</html>\n"
     )
@@ -182,6 +186,70 @@ def _source_policy_gate(packet: dict[str, Any]) -> dict[str, Any]:
         "promotion_allowed": False,
         "diagnostic_artifact_allowed": True,
     }
+
+
+def _graph_depth_summary(packet: dict[str, Any]) -> dict[str, Any]:
+    summary = packet.get("graph_depth_summary")
+    if not isinstance(summary, dict):
+        summary = packet.get("graph_artifact_summary")
+    return summary if isinstance(summary, dict) else {}
+
+
+def _graph_depth_html(packet: dict[str, Any]) -> str:
+    summary = _graph_depth_summary(packet)
+    if not summary:
+        return ""
+    coverage = summary.get("coverage") if isinstance(summary.get("coverage"), dict) else {}
+    freshness = summary.get("freshness") if isinstance(summary.get("freshness"), dict) else {}
+    rejected = summary.get("rejected_link_summary") if isinstance(summary.get("rejected_link_summary"), dict) else {}
+    framework = (
+        summary.get("framework_semantic_summary")
+        if isinstance(summary.get("framework_semantic_summary"), dict)
+        else {}
+    )
+    unsupported_languages = coverage.get("unsupported_languages") if isinstance(coverage.get("unsupported_languages"), dict) else {}
+    rejected_reasons = rejected.get("by_reason") if isinstance(rejected.get("by_reason"), dict) else {}
+    frameworks = framework.get("frameworks") if isinstance(framework.get("frameworks"), dict) else {}
+    tour = summary.get("guided_tour") if isinstance(summary.get("guided_tour"), list) else []
+    tour_items = "\n".join(
+        "<li>"
+        f"<code>{html.escape(str(item.get('page', '')))}</code>: "
+        f"{html.escape(str(item.get('safe_next_action', '')))}"
+        "</li>"
+        for item in tour
+        if isinstance(item, dict)
+    )
+    return (
+        "<section aria-labelledby=\"graph-packet-summary\">\n"
+        "<h2 id=\"graph-packet-summary\">Graph Packet Summary</h2>\n"
+        "<p><strong>Boundary</strong>: graph packets are orientation evidence only; read source files before edits or completion claims.</p>\n"
+        "<h3>Coverage</h3>\n"
+        "<dl>"
+        f"<dt>Status</dt><dd>{html.escape(str(coverage.get('status', 'not_available')))}</dd>"
+        f"<dt>Covered files</dt><dd>{html.escape(str(coverage.get('covered_files', 0)))}</dd>"
+        f"<dt>Partial files</dt><dd>{html.escape(str(coverage.get('partial_files', 0)))}</dd>"
+        f"<dt>Unsupported languages</dt><dd>{html.escape(json.dumps(unsupported_languages, sort_keys=True))}</dd>"
+        "</dl>\n"
+        "<h3>Freshness</h3>\n"
+        "<dl>"
+        f"<dt>Status</dt><dd>{html.escape(str(freshness.get('status', 'not_available')))}</dd>"
+        f"<dt>Blocks action claims</dt><dd>{html.escape(str(bool(freshness.get('blocks_action_claims'))).lower())}</dd>"
+        f"<dt>Safe next action</dt><dd>{html.escape(str(freshness.get('safe_next_action', 'Read source files before graph-backed actions.')))}</dd>"
+        "</dl>\n"
+        "<h3>Rejected Links</h3>\n"
+        "<dl>"
+        f"<dt>Total</dt><dd>{html.escape(str(rejected.get('total', 0)))}</dd>"
+        f"<dt>Reasons</dt><dd>{html.escape(json.dumps(rejected_reasons, sort_keys=True))}</dd>"
+        "</dl>\n"
+        "<h3>Framework Hints</h3>\n"
+        "<dl>"
+        f"<dt>Total</dt><dd>{html.escape(str(framework.get('total', 0)))}</dd>"
+        f"<dt>Frameworks</dt><dd>{html.escape(json.dumps(frameworks, sort_keys=True))}</dd>"
+        "</dl>\n"
+        "<h3>Guided Tour</h3>\n"
+        f"<ul>{tour_items}</ul>\n"
+        "</section>\n"
+    )
 
 
 def _count_local_absolute_paths(payload: Any) -> int:

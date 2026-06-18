@@ -87,6 +87,83 @@ class RealTargetEvidenceContractTest(unittest.TestCase):
         self.assertTrue(summary["project_graph_summary"]["validation_ok"])
         self.assertEqual(summary["project_graph_summary"]["excluded_prefixes"], ["antigravity-awesome-skills-main"])
 
+    def test_project_graph_depth_signals_are_preserved_for_real_target_retest(self):
+        from product_agent_os.real_target_evidence import normalize_real_target_evidence
+
+        summary = normalize_real_target_evidence(
+            target_label="SOL 0.6",
+            first_run_dry_run_output={
+                "status": "ok",
+                "mode": "dry_run",
+                "packet": {
+                    "graph_depth_summary": {
+                        "schema_version": "graph_depth_first_run_summary_v1",
+                        "status": "current",
+                        "coverage": {"status": "diagnostic_only"},
+                        "freshness": {"status": "current", "blocks_action_claims": False},
+                        "rejected_link_summary": {"total": 3, "by_reason": {"weak_name_similarity": 3}},
+                        "framework_semantic_summary": {"total": 2, "frameworks": {"react": 2}},
+                    },
+                    "generated_pages": [],
+                },
+                "written_files": [],
+            },
+            project_graph_output={
+                "validation": {"ok": True, "errors": []},
+                "node_count": 12,
+                "edge_count": 8,
+                "observation_count": 20,
+                "metadata": {
+                    "coverage_map": {
+                        "status": "diagnostic_only",
+                        "supported_file_count": 5,
+                        "partial_file_count": 2,
+                        "unsupported_file_count": 1,
+                        "unsupported_languages": {"css": 1},
+                        "skipped_reasons": {"excluded_prefix": 1},
+                        "recommended_next_parser_or_linker_action": "Add CSS selector overlay only after target need.",
+                    },
+                    "temporal_delta": {
+                        "status": "not_available",
+                        "changed_edge_count": 0,
+                        "removed_edge_count": 0,
+                    },
+                    "conservative_linker": {
+                        "rejected_link_count": 3,
+                    },
+                    "rejected_links": [
+                        {"reason": "weak_name_similarity"},
+                        {"reason": "weak_name_similarity"},
+                        {"reason": "ambiguous_target"},
+                    ],
+                    "typescript_javascript_scanner": {
+                        "framework_semantics": {
+                            "framework_count": 2,
+                            "frameworks": {"react": 2, "nextjs": 1},
+                        }
+                    },
+                    "scope_policy": {
+                        "status": "excluded_prefixes_reported",
+                        "excluded_prefixes": ["antigravity-awesome-skills-main"],
+                    },
+                },
+            },
+        )
+
+        graph_summary = summary["project_graph_summary"]
+        self.assertEqual(graph_summary["coverage"]["status"], "diagnostic_only")
+        self.assertEqual(graph_summary["coverage"]["unsupported_languages"], {"css": "1"})
+        self.assertEqual(graph_summary["freshness"]["status"], "not_available")
+        self.assertTrue(graph_summary["freshness"]["blocks_action_claims"])
+        self.assertEqual(graph_summary["rejected_link_summary"]["total"], 3)
+        self.assertEqual(graph_summary["rejected_link_summary"]["by_reason"]["weak_name_similarity"], 2)
+        self.assertEqual(graph_summary["framework_semantic_summary"]["frameworks"]["react"], 2)
+        self.assertEqual(
+            summary["first_run_dry_run_summary"]["graph_depth_summary"]["rejected_link_summary"]["total"],
+            3,
+        )
+        self.assertEqual(summary["first_run_dry_run_summary"]["written_file_count"], 0)
+
 
 if __name__ == "__main__":
     unittest.main()

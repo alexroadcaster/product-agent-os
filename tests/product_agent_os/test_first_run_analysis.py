@@ -565,6 +565,91 @@ class FirstRunAnalysisPacketTests(unittest.TestCase):
                 render_first_run_analysis_artifact(packet, workspace)
             self.assertFalse((workspace / ".codex" / "product-agent-os" / "analysis").exists())
 
+    def test_graph_depth_artifact_pack_projects_graph_packets_into_first_run_html_without_proof_claims(self) -> None:
+        _schema, build_packet, validate_packet = _load_contract()
+        from product_agent_os.analysis_artifact_renderer import render_first_run_analysis_artifact  # noqa: PLC0415
+
+        with TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "sample-target"
+            workspace.mkdir()
+            packet = build_packet(
+                target_label="SOL 0.6",
+                generated_at="2026-06-18T21:00:00+03:00",
+                source_artifacts=[
+                    {
+                        "artifact_id": "project_graph",
+                        "path": ".codex/product-agent-os/project-code-graph.json",
+                        "digest": "sha256:" + "7" * 64,
+                        "evidence_status": "inspection_only",
+                        "provenance": "scan_project_code_graph",
+                    }
+                ],
+                generated_pages=[],
+                section_summaries={
+                    "discovery": {"status": "current", "unsupported_claims": []},
+                    "runtime_route": {"status": "approval_required", "unsupported_claims": ["live runtime not run"]},
+                    "methodology_audit": {"status": "present_unverified", "unsupported_claims": []},
+                    "control_plane": {"status": "present_unverified", "unsupported_claims": []},
+                    "source_policy": {"status": "present_unverified", "unsupported_claims": []},
+                    "graph": {"status": "inspection_only", "unsupported_claims": ["graph is orientation evidence only"]},
+                    "status_snapshot": {"status": "inspection_only", "unsupported_claims": []},
+                },
+                safe_next_action="Use graph packet as orientation only; read source files before edits.",
+                graph_artifact_summary={
+                    "status": "inspection_only",
+                    "graph_packet_digest": "sha256:" + "8" * 64,
+                    "agent_packet_refs": [
+                        {
+                            "kind": "agent_reading_packet",
+                            "path": ".codex/product-agent-os/agent-reading-packet.json",
+                            "digest": "sha256:" + "9" * 64,
+                        }
+                    ],
+                    "coverage": {
+                        "status": "partial_static",
+                        "covered_files": 4,
+                        "partial_files": 1,
+                        "unsupported_languages": {"ruby": "unsupported"},
+                    },
+                    "freshness": {
+                        "status": "stale",
+                        "blocks_action_claims": True,
+                        "safe_next_action": "Refresh graph or read source first.",
+                    },
+                    "rejected_link_summary": {"total": 2, "by_reason": {"weak_name_similarity": 2}},
+                    "framework_semantic_summary": {"total": 3, "frameworks": {"react": 2, "next": 1}},
+                    "guided_tour": [
+                        {"page": "code-intelligence", "safe_next_action": "Read listed spans before editing."}
+                    ],
+                    "unsupported_claims": ["release_readiness", "runtime_routing", "source_read_completion"],
+                },
+            )
+
+            self.assertEqual(validate_packet(packet), [])
+            self.assertEqual(packet["graph_artifact_summary"]["generated_view_policy"], "orientation_only_not_proof")
+            self.assertTrue(packet["graph_artifact_summary"]["freshness"]["blocks_action_claims"])
+
+            render_first_run_analysis_artifact(packet, workspace)
+            analysis_dir = workspace / ".codex" / "product-agent-os" / "analysis"
+            graph_html = (analysis_dir / "graph.html").read_text(encoding="utf-8")
+            index_html = (analysis_dir / "index.html").read_text(encoding="utf-8")
+            manifest = json.loads((analysis_dir / "analysis-manifest.json").read_text(encoding="utf-8"))
+            rendered = graph_html + index_html + json.dumps(manifest, sort_keys=True)
+
+            self.assertEqual(manifest["graph_artifact_summary"]["status"], "inspection_only")
+            self.assertEqual(manifest["graph_artifact_summary"]["freshness"]["status"], "stale")
+            self.assertIn("Graph Packet Summary", graph_html)
+            self.assertIn("Coverage", graph_html)
+            self.assertIn("Freshness", graph_html)
+            self.assertIn("Rejected Links", graph_html)
+            self.assertIn("Framework Hints", graph_html)
+            self.assertIn("Guided Tour", graph_html)
+            self.assertIn("orientation evidence only", rendered)
+            self.assertNotIn("release-ready", rendered.lower())
+            self.assertNotIn("production-ready", rendered.lower())
+            self.assertNotIn("runtime route verified", rendered.lower())
+            self.assertNotIn(str(workspace), rendered)
+
 
 if __name__ == "__main__":
     unittest.main()

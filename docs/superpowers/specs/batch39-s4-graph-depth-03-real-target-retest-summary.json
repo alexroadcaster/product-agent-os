@@ -1,0 +1,927 @@
+{
+  "acceptance_result": {
+    "promotion_decision": "not_promoted",
+    "readiness_claim": "not_claimed",
+    "specific_blocker": null,
+    "status": "partial_pass_graph_depth_03_read_only_real_target_retest",
+    "usefulness_delta_observed": true
+  },
+  "approval_boundary": "read_only_target_inspection_no_runtime_browser_provider_model_git_deploy_external_actions",
+  "attempt_id": "B39-S4-GRAPH-DEPTH-03-A01",
+  "commands_executed": [
+    {
+      "command": "build_project_code_graph(<SOL_TARGET_REDACTED>)",
+      "surface": "local_read_only_source_scan",
+      "target_write": false
+    },
+    {
+      "command": "query_project_graph(in_memory_graph, status/search/neighbors/agent_reading_packet/affected_tests/impact)",
+      "surface": "in_memory_graph_query",
+      "target_write": false
+    },
+    {
+      "command": "build_first_run_analysis_packet(... graph_artifact_summary ...)",
+      "surface": "codex_docs_evidence_projection",
+      "target_write": false
+    },
+    {
+      "command": "normalize_real_target_evidence(... project_graph_output ...)",
+      "surface": "codex_docs_evidence_projection",
+      "target_write": false
+    }
+  ],
+  "comparison": {
+    "baseline": {
+      "artifact": "docs/superpowers/specs/batch39-s4-retest-sol_0_6-summary.json",
+      "edge_count": 2551,
+      "node_count": 2539,
+      "normalized_graph_depth_fields_present": false,
+      "observation_count": 5090
+    },
+    "current": {
+      "coverage_status": "diagnostic_only",
+      "edge_count": 2914,
+      "framework_semantic_total": 0,
+      "node_count": 2830,
+      "observation_count": 5751,
+      "rejected_link_total": 0,
+      "typescript_javascript_import_edge_count": 21,
+      "typescript_javascript_module_count": 254,
+      "typescript_javascript_symbol_count": 37,
+      "typescript_javascript_unresolved_import_count": 177
+    },
+    "delta": {
+      "edge_count": 363,
+      "node_count": 291,
+      "normalized_graph_depth_fields_now_present": true,
+      "observation_count": 661
+    },
+    "interpretation": "current read-only SOL graph exposes TypeScript/JavaScript entities and bounded graph-depth summaries beyond the prior count-only baseline; this supports orientation value only, not semantic correctness or readiness."
+  },
+  "conservative_linker_summary": {
+    "allowed_evidence_sources": [
+      "function_label",
+      "openapi_operation_id"
+    ],
+    "edge_confidence": "inferred",
+    "edge_type": "references",
+    "link_count": 0,
+    "policy": "exact_normalized_names_only_for_static_cross_language_links",
+    "rejected_link_count": 0,
+    "rejected_link_summary": {
+      "by_reason": {},
+      "total": 0
+    },
+    "schema_version": 1,
+    "unsupported_claims": [
+      "runtime_api_compatibility",
+      "auth_or_data_flow_correctness",
+      "production_behavior",
+      "readiness"
+    ]
+  },
+  "coverage_summary": {
+    "by_language": {
+      "javascript": 235,
+      "json": 80,
+      "markdown": 25,
+      "python": 2,
+      "typescript": 53,
+      "unknown": 1289
+    },
+    "by_node_type": {
+      "class": 15,
+      "diagram": 3,
+      "function": 32,
+      "markdown_page": 603,
+      "module": 1915,
+      "schema": 261,
+      "workspace": 1
+    },
+    "by_path_prefix_top": {
+      ".": 2,
+      ".agents": 1,
+      ".vscode": 1,
+      "backend": 98,
+      "docs": 17,
+      "frontend": 1563,
+      "scripts": 2
+    },
+    "files": {
+      "generated": 0,
+      "low_value": 950,
+      "omitted_count": 0,
+      "partial": 393,
+      "skipped": 1,
+      "total": 1684,
+      "truncated": false
+    },
+    "partial_languages": {
+      "javascript": "supported_conservative_stdlib",
+      "json": "structured_overlay_supported",
+      "markdown": "structured_overlay_supported",
+      "typescript": "supported_conservative_stdlib"
+    },
+    "recommended_next_parser_or_linker_action": "Review unsupported language inventory before graph-backed edits or impact claims.",
+    "skipped_reasons": {
+      "excluded_prefix": 1
+    },
+    "status": "diagnostic_only",
+    "unsupported_languages": {
+      "unknown": "file_only"
+    }
+  },
+  "first_run_packet_summary": {
+    "generated_view_policy": "orientation_only_not_proof",
+    "graph_depth_summary": {
+      "agent_packet_refs": [
+        {
+          "digest": "sha256:f12a3bcf1bbb8d5f3be87ff671f20e069a2201da5e006c4899aeb246c6bbab2f",
+          "kind": "query_packet",
+          "path": "docs/superpowers/specs/batch39-s4-graph-depth-03-real-target-retest-summary.json"
+        }
+      ],
+      "completion_claim": "not_claimed",
+      "coverage": {
+        "covered_files": 0,
+        "partial_files": 0,
+        "status": "diagnostic_only",
+        "unsupported_languages": {
+          "unknown": "file_only"
+        }
+      },
+      "decision_status": "manual_only",
+      "framework_semantic_summary": {
+        "total": 0
+      },
+      "framework_semantics": {
+        "total": 0
+      },
+      "freshness": {
+        "blocks_action_claims": true,
+        "safe_next_action": "Read source files before graph-backed actions.",
+        "status": "not_available"
+      },
+      "generated_view_policy": "orientation_only_not_proof",
+      "graph_packet_digest": "sha256:f12a3bcf1bbb8d5f3be87ff671f20e069a2201da5e006c4899aeb246c6bbab2f",
+      "guided_tour": [
+        {
+          "page": "",
+          "safe_next_action": ""
+        },
+        {
+          "page": "",
+          "safe_next_action": ""
+        },
+        {
+          "page": "",
+          "safe_next_action": ""
+        }
+      ],
+      "must_read_source_before_edit": true,
+      "promotion_boundary": "manual_only_not_promoted",
+      "promotion_decision": "not_promoted",
+      "rejected_link_summary": {
+        "total": 0
+      },
+      "rejected_links": {
+        "total": 0
+      },
+      "schema_version": "graph_depth_first_run_summary_v1",
+      "source_policy": "graph artifacts are generated orientation evidence, not source truth",
+      "source_read_required": true,
+      "status": "current",
+      "unsupported_claims": [
+        "source_read_completion",
+        "semantic_correctness_of_all_links",
+        "runtime_or_browser_behavior",
+        "provider_or_model_quality",
+        "target_apply_safety",
+        "release_readiness",
+        "automation_readiness"
+      ]
+    },
+    "packet_digest": "sha256:3009f52cec8e46c99143ece647aebc4996880d0b56c97b4ae4170af4dec17c6c",
+    "safe_next_action": "Use the graph only to choose source files to read next; read source before edits, impact claims, completion or readiness claims.",
+    "validation_errors": [],
+    "write_policy": "read_only_generated_analysis_only"
+  },
+  "generated_at": "2026-06-18T16:00:00Z",
+  "graph_counts": {
+    "edges": 2914,
+    "nodes": 2830,
+    "observations": 5751
+  },
+  "graph_digest": "sha256:f12a3bcf1bbb8d5f3be87ff671f20e069a2201da5e006c4899aeb246c6bbab2f",
+  "graph_validation": {
+    "checks": [
+      "schema version is stable",
+      "write policy is read-only",
+      "controlled ontology terms validate",
+      "node and edge bounds validate",
+      "relative paths validate",
+      "raw source bodies are forbidden",
+      "redaction validates"
+    ],
+    "errors": [],
+    "ok": true
+  },
+  "location_ref": "approved_read_only_target:redacted",
+  "normalized_real_target_evidence": {
+    "detect_project_summary": {
+      "detected_stack": [],
+      "existing_control_plane": [],
+      "first_run_analysis_input_status": null,
+      "missing_control_plane": [],
+      "risk_count": 0,
+      "risks": [],
+      "status": "not_available",
+      "usage_mode_confidence": null,
+      "usage_mode_primary": null,
+      "usage_mode_reasons": []
+    },
+    "first_run_dry_run_summary": {
+      "first_run_page_count": 0,
+      "generated_view_policy": "orientation_only_not_proof",
+      "graph_depth_summary": {
+        "coverage": {
+          "partial_file_count": 0,
+          "recommended_next_parser_or_linker_action": null,
+          "skipped_reasons": {},
+          "status": "diagnostic_only",
+          "supported_file_count": 0,
+          "unsupported_file_count": 0,
+          "unsupported_languages": {
+            "unknown": "file_only"
+          }
+        },
+        "framework_semantic_summary": {
+          "total": 0
+        },
+        "freshness": {
+          "blocks_action_claims": true,
+          "changed_edge_count": 0,
+          "removed_edge_count": 0,
+          "status": "not_available"
+        },
+        "generated_view_policy": "orientation_only_not_proof",
+        "rejected_link_summary": {
+          "total": 0
+        },
+        "status": "current"
+      },
+      "mode": "dry_run",
+      "packet_digest": "sha256:3009f52cec8e46c99143ece647aebc4996880d0b56c97b4ae4170af4dec17c6c",
+      "safe_next_action": "Use the graph only to choose source files to read next; read source before edits, impact claims, completion or readiness claims.",
+      "schema_version": "first_run_analysis_packet_v1",
+      "status": "ok",
+      "write_policy": "read_only_generated_analysis_only",
+      "written_file_count": 0
+    },
+    "methodology_audit_summary": {
+      "first_safe_action_count": 0,
+      "first_safe_action_policy": null,
+      "recommendation_count": 0,
+      "recommendation_group_count": 0,
+      "safe_next_action": null,
+      "status": "not_available"
+    },
+    "project_graph_summary": {
+      "coverage": {
+        "partial_file_count": 0,
+        "recommended_next_parser_or_linker_action": "Review unsupported language inventory before graph-backed edits or impact claims.",
+        "skipped_reasons": {
+          "excluded_prefix": "1"
+        },
+        "status": "diagnostic_only",
+        "supported_file_count": 0,
+        "unsupported_file_count": 0,
+        "unsupported_languages": {
+          "unknown": "file_only"
+        }
+      },
+      "edge_count": 2914,
+      "excluded_prefixes": [
+        "antigravity-awesome-skills-main"
+      ],
+      "framework_semantic_summary": {
+        "frameworks": {},
+        "total": 0
+      },
+      "freshness": {
+        "blocks_action_claims": true,
+        "changed_edge_count": 0,
+        "removed_edge_count": 0,
+        "status": "not_available"
+      },
+      "node_count": 2830,
+      "observation_count": 5751,
+      "rejected_link_summary": {
+        "by_reason": {},
+        "total": 0
+      },
+      "scope_policy_status": "excluded_prefixes_reported",
+      "status": "ok",
+      "validation_errors": [],
+      "validation_ok": true
+    },
+    "runtime_contract_summary": {
+      "approval_required": true,
+      "errors": [
+        "runtime_not_run_in_graph_depth_03",
+        "prior_source_policy_runtime_block_preserved"
+      ],
+      "route_id": null,
+      "source_policy_status": "blocked",
+      "status": "blocked",
+      "usage_mode_primary": null,
+      "usage_mode_reasons": []
+    },
+    "schema_version": "real_target_evidence_summary_v1",
+    "source_policy_summary": {
+      "blocker_count": 1,
+      "source_policy_status": "blocked",
+      "status": "blocked",
+      "unsupported_claims": []
+    },
+    "summary_digest": "sha256:4440ee7abdf5568f1dc8c3bd6e72a0ebcf89a45f2bc9678475e9f6ef75c2461a",
+    "target_label": "SOL 0.6",
+    "write_policy": "read_only_summary_only"
+  },
+  "query_packets": {
+    "affected_tests": {
+      "edge_count": 3,
+      "edges": [
+        {
+          "confidence": "inferred",
+          "source": "module:backend.src.services.orchestrator",
+          "target": "class:backend.src.services.orchestrator.Orchestrator",
+          "type": "contains"
+        },
+        {
+          "confidence": "inferred",
+          "source": "file:backend/src/services/orchestrator.ts",
+          "target": "module:backend.src.services.orchestrator",
+          "type": "contains"
+        },
+        {
+          "confidence": "verified",
+          "source": "workspace:sol-0-6",
+          "target": "file:backend/src/services/orchestrator.ts",
+          "type": "contains"
+        }
+      ],
+      "node_count": 3,
+      "nodes": [
+        {
+          "id": "module:backend.src.services.orchestrator",
+          "label": "backend.src.services.orchestrator",
+          "language": "typescript",
+          "path": "backend/src/services/orchestrator.ts",
+          "type": "module"
+        },
+        {
+          "id": "file:backend/src/services/orchestrator.ts",
+          "label": "backend/src/services/orchestrator.ts",
+          "language": "typescript",
+          "path": "backend/src/services/orchestrator.ts",
+          "type": "module"
+        },
+        {
+          "id": "workspace:sol-0-6",
+          "label": "SOL 0.6",
+          "language": "unknown",
+          "type": "workspace"
+        }
+      ],
+      "omitted_count": 0,
+      "result_kind": "affected_tests",
+      "safe_next_action": "Use graph as orientation only; read source files before edits or completion claims.",
+      "status": "ok",
+      "truncation_reasons": []
+    },
+    "agent_reading_packet": {
+      "edge_count": 0,
+      "edges": [],
+      "node_count": 1,
+      "nodes": [
+        {
+          "id": "class:backend.src.services.orchestrator.Orchestrator",
+          "label": "Orchestrator",
+          "language": "typescript",
+          "path": "backend/src/services/orchestrator.ts",
+          "type": "class"
+        }
+      ],
+      "omitted_count": 0,
+      "result_kind": "agent_reading_packet",
+      "safe_next_action": "Refresh graph or read source files from listed spans before edits, impact claims, or completion/readiness claims.",
+      "status": "ok",
+      "truncation_reasons": []
+    },
+    "impact": {
+      "edge_count": 3,
+      "edges": [
+        {
+          "confidence": "inferred",
+          "source": "module:backend.src.services.orchestrator",
+          "target": "class:backend.src.services.orchestrator.Orchestrator",
+          "type": "contains"
+        },
+        {
+          "confidence": "inferred",
+          "source": "file:backend/src/services/orchestrator.ts",
+          "target": "module:backend.src.services.orchestrator",
+          "type": "contains"
+        },
+        {
+          "confidence": "verified",
+          "source": "workspace:sol-0-6",
+          "target": "file:backend/src/services/orchestrator.ts",
+          "type": "contains"
+        }
+      ],
+      "node_count": 3,
+      "nodes": [
+        {
+          "id": "module:backend.src.services.orchestrator",
+          "label": "backend.src.services.orchestrator",
+          "language": "typescript",
+          "path": "backend/src/services/orchestrator.ts",
+          "type": "module"
+        },
+        {
+          "id": "file:backend/src/services/orchestrator.ts",
+          "label": "backend/src/services/orchestrator.ts",
+          "language": "typescript",
+          "path": "backend/src/services/orchestrator.ts",
+          "type": "module"
+        },
+        {
+          "id": "workspace:sol-0-6",
+          "label": "SOL 0.6",
+          "language": "unknown",
+          "type": "workspace"
+        }
+      ],
+      "omitted_count": 0,
+      "result_kind": "impact",
+      "safe_next_action": "Use graph as orientation only; read source files before edits or completion claims.",
+      "status": "ok",
+      "truncation_reasons": []
+    },
+    "neighbors": {
+      "edge_count": 2,
+      "edges": [
+        {
+          "confidence": "inferred",
+          "source": "module:backend.src.services.orchestrator",
+          "target": "class:backend.src.services.orchestrator.Orchestrator",
+          "type": "contains"
+        },
+        {
+          "confidence": "inferred",
+          "source": "module:backend.src.services.orchestrator",
+          "target": "class:backend.src.services.orchestrator.Orchestrator",
+          "type": "exports"
+        }
+      ],
+      "node_count": 2,
+      "nodes": [
+        {
+          "id": "module:backend.src.services.orchestrator",
+          "label": "backend.src.services.orchestrator",
+          "language": "typescript",
+          "path": "backend/src/services/orchestrator.ts",
+          "type": "module"
+        },
+        {
+          "id": "module:backend.src.services.orchestrator",
+          "label": "backend.src.services.orchestrator",
+          "language": "typescript",
+          "path": "backend/src/services/orchestrator.ts",
+          "type": "module"
+        }
+      ],
+      "omitted_count": 0,
+      "result_kind": "neighbors",
+      "safe_next_action": "Use graph as orientation only; read source files before edits or completion claims.",
+      "status": "ok",
+      "truncation_reasons": []
+    },
+    "search": {
+      "agent": {
+        "edge_count": 0,
+        "edges": [],
+        "node_count": 8,
+        "nodes": [
+          {
+            "id": "class:backend.src.services.agent-registry.AgentRegistry",
+            "label": "AgentRegistry",
+            "language": "typescript",
+            "path": "backend/src/services/agent-registry.ts",
+            "type": "class"
+          },
+          {
+            "id": "class:backend.src.services.agents.architect-agent.ArchitectAgent",
+            "label": "ArchitectAgent",
+            "language": "typescript",
+            "path": "backend/src/services/agents/architect-agent.ts",
+            "type": "class"
+          },
+          {
+            "id": "class:backend.src.services.agents.ba-agent.BusinessAnalystAgent",
+            "label": "BusinessAnalystAgent",
+            "language": "typescript",
+            "path": "backend/src/services/agents/ba-agent.ts",
+            "type": "class"
+          },
+          {
+            "id": "class:backend.src.services.agents.data-analyst-agent.DataAnalystAgent",
+            "label": "DataAnalystAgent",
+            "language": "typescript",
+            "path": "backend/src/services/agents/data-analyst-agent.ts",
+            "type": "class"
+          },
+          {
+            "id": "class:backend.src.services.agents.designer-agent.DesignerAgent",
+            "label": "DesignerAgent",
+            "language": "typescript",
+            "path": "backend/src/services/agents/designer-agent.ts",
+            "type": "class"
+          },
+          {
+            "id": "class:backend.src.services.agents.developer-agent.IntentEngineerAgent",
+            "label": "IntentEngineerAgent",
+            "language": "typescript",
+            "path": "backend/src/services/agents/developer-agent.ts",
+            "type": "class"
+          },
+          {
+            "id": "class:backend.src.services.agents.marketer-agent.MarketerAgent",
+            "label": "MarketerAgent",
+            "language": "typescript",
+            "path": "backend/src/services/agents/marketer-agent.ts",
+            "type": "class"
+          },
+          {
+            "id": "class:backend.src.services.agents.optimizer-agent.OptimizerAgent",
+            "label": "OptimizerAgent",
+            "language": "typescript",
+            "path": "backend/src/services/agents/optimizer-agent.ts",
+            "type": "class"
+          }
+        ],
+        "omitted_count": 0,
+        "result_kind": "search",
+        "safe_next_action": "Use graph as orientation only; read source files before edits or completion claims.",
+        "status": "ok",
+        "truncation_reasons": []
+      },
+      "backend": {
+        "edge_count": 0,
+        "edges": [],
+        "node_count": 8,
+        "nodes": [
+          {
+            "id": "class:backend.src.services.agent-registry.AgentRegistry",
+            "label": "AgentRegistry",
+            "language": "typescript",
+            "path": "backend/src/services/agent-registry.ts",
+            "type": "class"
+          },
+          {
+            "id": "class:backend.src.services.agents.architect-agent.ArchitectAgent",
+            "label": "ArchitectAgent",
+            "language": "typescript",
+            "path": "backend/src/services/agents/architect-agent.ts",
+            "type": "class"
+          },
+          {
+            "id": "class:backend.src.services.agents.ba-agent.BusinessAnalystAgent",
+            "label": "BusinessAnalystAgent",
+            "language": "typescript",
+            "path": "backend/src/services/agents/ba-agent.ts",
+            "type": "class"
+          },
+          {
+            "id": "class:backend.src.services.agents.data-analyst-agent.DataAnalystAgent",
+            "label": "DataAnalystAgent",
+            "language": "typescript",
+            "path": "backend/src/services/agents/data-analyst-agent.ts",
+            "type": "class"
+          },
+          {
+            "id": "class:backend.src.services.agents.designer-agent.DesignerAgent",
+            "label": "DesignerAgent",
+            "language": "typescript",
+            "path": "backend/src/services/agents/designer-agent.ts",
+            "type": "class"
+          },
+          {
+            "id": "class:backend.src.services.agents.developer-agent.IntentEngineerAgent",
+            "label": "IntentEngineerAgent",
+            "language": "typescript",
+            "path": "backend/src/services/agents/developer-agent.ts",
+            "type": "class"
+          },
+          {
+            "id": "class:backend.src.services.agents.marketer-agent.MarketerAgent",
+            "label": "MarketerAgent",
+            "language": "typescript",
+            "path": "backend/src/services/agents/marketer-agent.ts",
+            "type": "class"
+          },
+          {
+            "id": "class:backend.src.services.agents.optimizer-agent.OptimizerAgent",
+            "label": "OptimizerAgent",
+            "language": "typescript",
+            "path": "backend/src/services/agents/optimizer-agent.ts",
+            "type": "class"
+          }
+        ],
+        "omitted_count": 0,
+        "result_kind": "search",
+        "safe_next_action": "Use graph as orientation only; read source files before edits or completion claims.",
+        "status": "ok",
+        "truncation_reasons": []
+      },
+      "frontend": {
+        "edge_count": 0,
+        "edges": [],
+        "node_count": 8,
+        "nodes": [
+          {
+            "id": "function:frontend..next.dev.server.chunks.ssr.node_modules_bb185932._.middleware",
+            "label": "middleware",
+            "language": "javascript",
+            "path": "frontend/.next/dev/server/chunks/ssr/node_modules_bb185932._.js",
+            "type": "function"
+          },
+          {
+            "id": "function:frontend..next.dev.types.cache-life.d.cacheLife",
+            "label": "cacheLife",
+            "language": "typescript",
+            "path": "frontend/.next/dev/types/cache-life.d.ts",
+            "type": "function"
+          },
+          {
+            "id": "function:frontend..next.server.chunks.[root-of-the-server]__206abf59._.middleware",
+            "label": "middleware",
+            "language": "javascript",
+            "path": "frontend/.next/server/chunks/[root-of-the-server]__206abf59._.js",
+            "type": "function"
+          },
+          {
+            "id": "function:frontend.src.app.layout.RootLayout",
+            "label": "RootLayout",
+            "language": "typescript",
+            "path": "frontend/src/app/layout.tsx",
+            "type": "function"
+          },
+          {
+            "id": "function:frontend.src.app.page.Home",
+            "label": "Home",
+            "language": "typescript",
+            "path": "frontend/src/app/page.tsx",
+            "type": "function"
+          },
+          {
+            "id": "function:frontend.src.components.layout.main-layout.MainLayout",
+            "label": "MainLayout",
+            "language": "typescript",
+            "path": "frontend/src/components/layout/main-layout.tsx",
+            "type": "function"
+          },
+          {
+            "id": "function:frontend.src.components.layout.sidebar.Sidebar",
+            "label": "Sidebar",
+            "language": "typescript",
+            "path": "frontend/src/components/layout/sidebar.tsx",
+            "type": "function"
+          },
+          {
+            "id": "function:frontend.src.components.views.chat-view.ChatView",
+            "label": "ChatView",
+            "language": "typescript",
+            "path": "frontend/src/components/views/chat-view.tsx",
+            "type": "function"
+          }
+        ],
+        "omitted_count": 0,
+        "result_kind": "search",
+        "safe_next_action": "Use graph as orientation only; read source files before edits or completion claims.",
+        "status": "ok",
+        "truncation_reasons": []
+      },
+      "orchestrator": {
+        "edge_count": 0,
+        "edges": [],
+        "node_count": 8,
+        "nodes": [
+          {
+            "id": "class:backend.src.services.orchestrator.Orchestrator",
+            "label": "Orchestrator",
+            "language": "typescript",
+            "path": "backend/src/services/orchestrator.ts",
+            "type": "class"
+          },
+          {
+            "id": "function:backend.src.services.orchestrator.getAgentSystemInstructions",
+            "label": "getAgentSystemInstructions",
+            "language": "typescript",
+            "path": "backend/src/services/orchestrator.ts",
+            "type": "function"
+          },
+          {
+            "id": "file:backend/src/services/orchestrator.ts",
+            "label": "backend/src/services/orchestrator.ts",
+            "language": "typescript",
+            "path": "backend/src/services/orchestrator.ts",
+            "type": "module"
+          },
+          {
+            "id": "module:backend.src.services.orchestrator",
+            "label": "backend.src.services.orchestrator",
+            "language": "typescript",
+            "path": "backend/src/services/orchestrator.ts",
+            "type": "module"
+          },
+          {
+            "id": "class:backend.src.services.agent-registry.AgentRegistry",
+            "label": "AgentRegistry",
+            "language": "typescript",
+            "path": "backend/src/services/agent-registry.ts",
+            "type": "class"
+          },
+          {
+            "id": "class:backend.src.services.agents.architect-agent.ArchitectAgent",
+            "label": "ArchitectAgent",
+            "language": "typescript",
+            "path": "backend/src/services/agents/architect-agent.ts",
+            "type": "class"
+          },
+          {
+            "id": "class:backend.src.services.agents.ba-agent.BusinessAnalystAgent",
+            "label": "BusinessAnalystAgent",
+            "language": "typescript",
+            "path": "backend/src/services/agents/ba-agent.ts",
+            "type": "class"
+          },
+          {
+            "id": "class:backend.src.services.agents.data-analyst-agent.DataAnalystAgent",
+            "label": "DataAnalystAgent",
+            "language": "typescript",
+            "path": "backend/src/services/agents/data-analyst-agent.ts",
+            "type": "class"
+          }
+        ],
+        "omitted_count": 0,
+        "result_kind": "search",
+        "safe_next_action": "Use graph as orientation only; read source files before edits or completion claims.",
+        "status": "ok",
+        "truncation_reasons": []
+      },
+      "socket": {
+        "edge_count": 0,
+        "edges": [],
+        "node_count": 8,
+        "nodes": [
+          {
+            "id": "chunk:docs/Tasks/phase_2_chat_Setting Up WebSockets.md:heading:1-backend",
+            "label": "1) \u0421\u043c\u043e\u0436\u0435\u0442 \u043b\u0438 \u043d\u0430\u0448 \u0441\u043a\u0440\u0438\u043f\u0442 \u043f\u043e\u0434\u0431\u0438\u0440\u0430\u0442\u044c \u043d\u0430\u0432\u044b\u043a\u0438 \u0434\u043b\u044f Backend-\u0437\u0430\u0434\u0430\u0447?",
+            "language": "markdown",
+            "path": "docs/Tasks/phase_2_chat_Setting Up WebSockets.md",
+            "type": "markdown_page"
+          },
+          {
+            "id": "chunk:docs/Tasks/phase_2_chat_Setting Up WebSockets.md:heading:1-google-ai-studio-iam",
+            "label": "\ud83d\udd25 \u041f\u0423\u0422\u042c 1 (\u0420\u0435\u043a\u043e\u043c\u0435\u043d\u0434\u0443\u0435\u043c\u044b\u0439): \u0418\u0441\u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u044c Google AI Studio (\u0411\u0435\u0437 \u043a\u043b\u044e\u0447\u0435\u0439 \u0438 IAM)",
+            "language": "markdown",
+            "path": "docs/Tasks/phase_2_chat_Setting Up WebSockets.md",
+            "type": "markdown_page"
+          },
+          {
+            "id": "chunk:docs/Tasks/phase_2_chat_Setting Up WebSockets.md:heading:1-google-cloud-console",
+            "label": "\u0428\u0430\u0433 1: \u041d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0430 \u043f\u0440\u043e\u0435\u043a\u0442\u0430 \u0432 Google Cloud Console",
+            "language": "markdown",
+            "path": "docs/Tasks/phase_2_chat_Setting Up WebSockets.md",
+            "type": "markdown_page"
+          },
+          {
+            "id": "chunk:docs/Tasks/phase_2_chat_Setting Up WebSockets.md:heading:1-typescript-node.js-electron-tauri-1-ide",
+            "label": "\u0412\u0430\u0440\u0438\u0430\u043d\u0442 1: TypeScript / Node.js (Electron \u0438\u043b\u0438 Tauri) \u2014 **\u0412\u044b\u0431\u043e\u0440 \u21161 \u0434\u043b\u044f IDE**",
+            "language": "markdown",
+            "path": "docs/Tasks/phase_2_chat_Setting Up WebSockets.md",
+            "type": "markdown_page"
+          },
+          {
+            "id": "chunk:docs/Tasks/phase_2_chat_Setting Up WebSockets.md:heading:1.-gemini-1.5-pro-gemini-1.5-flash",
+            "label": "1. \u041f\u043e\u0447\u0435\u043c\u0443 \u0432 \u043a\u043e\u0434\u0435 \u0443\u043a\u0430\u0437\u0430\u043d\u0430 `gemini-1.5-pro` \u0438 `gemini-1.5-flash`?",
+            "language": "markdown",
+            "path": "docs/Tasks/phase_2_chat_Setting Up WebSockets.md",
+            "type": "markdown_page"
+          },
+          {
+            "id": "chunk:docs/Tasks/phase_2_chat_Setting Up WebSockets.md:heading:1.-vs-execution-gap",
+            "label": "1. \u0418\u043d\u044a\u0435\u043a\u0446\u0438\u044f \u041f\u0440\u043e\u043c\u043f\u0442\u0430 vs \u0420\u0435\u0430\u043b\u044c\u043d\u043e\u0435 \u0432\u044b\u043f\u043e\u043b\u043d\u0435\u043d\u0438\u0435 (Execution Gap)",
+            "language": "markdown",
+            "path": "docs/Tasks/phase_2_chat_Setting Up WebSockets.md",
+            "type": "markdown_page"
+          },
+          {
+            "id": "chunk:docs/Tasks/phase_2_chat_Setting Up WebSockets.md:heading:2-python-fastapi-pyside6-pyqt-electron-python-backend",
+            "label": "\u0412\u0430\u0440\u0438\u0430\u043d\u0442 2: Python (FastAPI + Pyside6/PyQt \u0438\u043b\u0438 Electron + Python Backend) \u2014 **\u0421\u043b\u043e\u0436\u043d\u044b\u0439 \u043f\u0443\u0442\u044c**",
+            "language": "markdown",
+            "path": "docs/Tasks/phase_2_chat_Setting Up WebSockets.md",
+            "type": "markdown_page"
+          },
+          {
+            "id": "chunk:docs/Tasks/phase_2_chat_Setting Up WebSockets.md:heading:2-python-fastapi-vs-node.js-sol",
+            "label": "2) Python (FastAPI) vs Node.js: \u0427\u0442\u043e \u0432\u044b\u0431\u0440\u0430\u0442\u044c \u0434\u043b\u044f \u043e\u0440\u043a\u0435\u0441\u0442\u0440\u0430\u0442\u043e\u0440\u0430 SOL?",
+            "language": "markdown",
+            "path": "docs/Tasks/phase_2_chat_Setting Up WebSockets.md",
+            "type": "markdown_page"
+          }
+        ],
+        "omitted_count": 0,
+        "result_kind": "search",
+        "safe_next_action": "Use graph as orientation only; read source files before edits or completion claims.",
+        "status": "ok",
+        "truncation_reasons": []
+      }
+    },
+    "selected_node_id": "class:backend.src.services.orchestrator.Orchestrator",
+    "status": {
+      "edge_count": 0,
+      "edges": [],
+      "node_count": 0,
+      "nodes": [],
+      "omitted_count": 0,
+      "result_kind": "status",
+      "safe_next_action": "Use graph as orientation only; read source files before edits or completion claims.",
+      "status": "ok",
+      "truncation_reasons": []
+    }
+  },
+  "safe_next_action": "Record this retest in prod_test.md, PLAN.md, TEST.md and RUNLOG.md; keep graph/status/HTML outputs as orientation evidence only and read target source before any edit or readiness claim.",
+  "schema_version": "batch39_s4_graph_depth_03_real_target_retest_summary_v1",
+  "scope_policy": {
+    "excluded_prefixes": [
+      "antigravity-awesome-skills-main"
+    ],
+    "policy": "imported_skill_vendor_and_benchmark_corpora_are_not_primary_project_source",
+    "status": "excluded_prefixes_reported"
+  },
+  "summary_digest": "sha256:12931e00d42518cda8b00a3d5561c730143ba04e021cc1cb1289e1e8cc545e45",
+  "target_artifact_state": {
+    "after": {
+      ".codex/product-agent-os/analysis/first-run-analysis-packet.json": false,
+      ".codex/product-agent-os/project-code-graph.json": false,
+      ".codex/product-agent-os/project-code-graph.jsonl": false
+    },
+    "before": {
+      ".codex/product-agent-os/analysis/first-run-analysis-packet.json": false,
+      ".codex/product-agent-os/project-code-graph.json": false,
+      ".codex/product-agent-os/project-code-graph.jsonl": false
+    },
+    "changed": false,
+    "checked_paths": [
+      ".codex/product-agent-os/project-code-graph.json",
+      ".codex/product-agent-os/project-code-graph.jsonl",
+      ".codex/product-agent-os/analysis/first-run-analysis-packet.json"
+    ]
+  },
+  "target_label": "SOL 0.6",
+  "typescript_javascript_summary": {
+    "adapter": "typescript_javascript_stdlib",
+    "call_edge_count": 0,
+    "framework_semantic_summary": {
+      "frameworks": {},
+      "total": 0
+    },
+    "import_edge_count": 21,
+    "module_count": 254,
+    "parser_dependency": "stdlib_regex_no_external_dependency",
+    "symbol_count": 37,
+    "test_edge_count": 0,
+    "unresolved_import_count": 177,
+    "unresolved_import_reason_counts": {
+      "missing_export": 10,
+      "missing_module": 90
+    }
+  },
+  "unsupported_claims": [
+    "B39-S4 closure",
+    "GRAPH-DEPTH-00..15 closure without control-plane verification",
+    "source-read completion",
+    "semantic correctness of every graph edge",
+    "runtime/browser/provider/model behavior",
+    "target apply safety",
+    "release readiness",
+    "promotion readiness",
+    "automation readiness",
+    "public docs/site acceptance"
+  ],
+  "write_policy": "codex_docs_evidence_only_no_target_mutation"
+}

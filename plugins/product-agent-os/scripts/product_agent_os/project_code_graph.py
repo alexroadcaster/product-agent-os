@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import hashlib
+import re
 from pathlib import Path
 from typing import Any
 
@@ -21,6 +22,7 @@ PROJECT_GRAPH_TARGET = ".codex/product-agent-os/project-code-graph.json"
 PROJECT_GRAPH_JSONL_TARGET = ".codex/product-agent-os/project-code-graph.jsonl"
 MAX_SYNTHETIC_PROMPT_NODES = 250
 LINE_COUNT_LIMIT = 10_000
+GRAPH_DEPTH_DECISION_ARTIFACT = "docs/superpowers/specs/batch39-s4-graph-depth-s0-ontology-parser-decision.json"
 
 
 def build_project_code_graph(
@@ -128,6 +130,9 @@ def build_project_code_graph(
     edges.extend(structured_overlay["edges"])
     observations.extend(language_overlay["observations"])
     observations.extend(structured_overlay["observations"])
+    linker = _build_conservative_linker(nodes, scan_id=scan_id)
+    edges.extend(linker["edges"])
+    observations.extend(linker["observations"])
     partition_metadata = build_partition_alias_readiness_metadata(manifest)
     node_dedupe = _dedupe_by_id(nodes)
     edge_dedupe = _dedupe_by_id(edges)
@@ -146,8 +151,13 @@ def build_project_code_graph(
         },
         "language_support_summary": _language_support_summary(manifest["files"]),
         "adapter_summary": language_overlay["metadata"]["adapter_summary"],
+        "graph_depth_decision": _graph_depth_decision_metadata(),
         "structured_overlay_summary": structured_overlay["metadata"]["structured_overlay_summary"],
+        "coverage_map": _coverage_map(manifest, node_dedupe["items"], edge_dedupe["items"]),
         "python_scanner": language_overlay["metadata"]["python_scanner"],
+        "typescript_javascript_scanner": language_overlay["metadata"]["typescript_javascript_scanner"],
+        "conservative_linker": linker["metadata"],
+        "rejected_links": linker["rejected_links"],
         "line_count_policy": f"capped_at_{LINE_COUNT_LIMIT}",
         "manifest": manifest,
         "scope_policy": manifest.get("scope_policy", {}),
@@ -271,9 +281,6 @@ def _node_type_for_file(relative_path: str, generated: bool) -> str:
 def _file_status(item: dict[str, Any]) -> str:
     if item["generated"]:
         return "generated"
-    language = str(item.get("language") or "unknown")
-    if language in {"typescript", "javascript"}:
-        return "unsupported"
     return "current"
 
 
@@ -296,13 +303,259 @@ def _language_support_summary(files: list[dict[str, Any]]) -> dict[str, str]:
         language = str(item.get("language") or "unknown")
         if language == "python":
             summary[language] = "supported"
+        elif language in {"typescript", "javascript"}:
+            summary[language] = "supported_conservative_stdlib"
         elif language in {"markdown", "yaml", "json", "sql", "dbml"}:
             summary[language] = "structured_overlay_supported"
-        elif language in {"typescript", "javascript"}:
-            summary[language] = "file_only"
         else:
             summary[language] = "file_only"
     return dict(sorted(summary.items()))
+
+
+def _coverage_map(manifest: dict[str, Any], nodes: list[dict[str, Any]], edges: list[dict[str, Any]]) -> dict[str, Any]:
+    files = [item for item in manifest.get("files", []) if isinstance(item, dict)]
+    language_support = _language_support_summary(files)
+    unsupported_languages = {
+        language: support
+        for language, support in language_support.items()
+        if support == "file_only"
+    }
+    partial_languages = {
+        language: support
+        for language, support in language_support.items()
+        if support in {"supported_conservative_stdlib", "structured_overlay_supported"}
+    }
+    partial_file_count = sum(
+        1
+        for item in files
+        if language_support.get(str(item.get("language") or "unknown")) in {"supported_conservative_stdlib", "structured_overlay_supported"}
+    )
+    scope_policy = manifest.get("scope_policy", {}) if isinstance(manifest.get("scope_policy"), dict) else {}
+    omitted_count = int((manifest.get("summary") or {}).get("omitted_count") or 0)
+    skipped_reasons = _coverage_skipped_reasons(scope_policy, omitted_count)
+    return {
+        "schema_version": 1,
+        "status": "diagnostic_only",
+        "source_boundary": "raw_source_bodies_excluded",
+        "generated_view_policy": "coverage_is_not_semantic_correctness_proof",
+        "files": {
+            "total": len(files),
+            "generated": sum(1 for item in files if bool(item.get("generated"))),
+            "partial": partial_file_count,
+            "skipped": sum(skipped_reasons.values()),
+            "low_value": sum(1 for item in files if bool(item.get("low_value"))),
+            "truncated": bool((manifest.get("summary") or {}).get("truncated")),
+            "omitted_count": omitted_count,
+        },
+        "by_language": _count_by(files, "language"),
+        "by_path_prefix": _path_prefix_counts(files),
+        "by_file_type": _file_type_counts(files),
+        "by_node_type": _count_by(nodes, "type"),
+        "confidence_distribution": _count_by(edges, "confidence"),
+        "unsupported_languages": unsupported_languages,
+        "partial_languages": partial_languages,
+        "skipped_reasons": skipped_reasons,
+        "generated_vendor_imported_scope": scope_policy,
+        "scope_policy": scope_policy,
+        "recommended_next_parser_or_linker_action": _coverage_next_action(unsupported_languages, partial_languages),
+    }
+
+
+def _count_by(items: list[dict[str, Any]], key: str) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for item in items:
+        value = str(item.get(key) or "unknown")
+        counts[value] = counts.get(value, 0) + 1
+    return dict(sorted(counts.items()))
+
+
+def _path_prefix_counts(files: list[dict[str, Any]]) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for item in files:
+        relative = str(item.get("relative_path") or "")
+        prefix = relative.split("/", 1)[0] if "/" in relative else "."
+        counts[prefix] = counts.get(prefix, 0) + 1
+    return dict(sorted(counts.items()))
+
+
+def _file_type_counts(files: list[dict[str, Any]]) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for item in files:
+        relative = str(item.get("relative_path") or "")
+        suffix = Path(relative).suffix.lower() or "no_extension"
+        counts[suffix] = counts.get(suffix, 0) + 1
+    return dict(sorted(counts.items()))
+
+
+def _coverage_skipped_reasons(scope_policy: dict[str, Any], omitted_count: int) -> dict[str, int]:
+    reasons: dict[str, int] = {}
+    excluded_prefixes = scope_policy.get("excluded_prefixes")
+    if isinstance(excluded_prefixes, list) and excluded_prefixes:
+        reasons["excluded_prefix"] = len(excluded_prefixes)
+    if omitted_count:
+        reasons["skipped_or_omitted_file"] = omitted_count
+    return dict(sorted(reasons.items()))
+
+
+def _coverage_next_action(unsupported_languages: dict[str, str], partial_languages: dict[str, str]) -> str:
+    if unsupported_languages:
+        return "Review unsupported language inventory before graph-backed edits or impact claims."
+    if partial_languages:
+        return "Treat partial language and structured overlays as orientation; read source before claims."
+    return "Use graph as orientation and read source before edits or completion claims."
+
+
+def _build_conservative_linker(nodes: list[dict[str, Any]], *, scan_id: str) -> dict[str, Any]:
+    operations = [
+        node
+        for node in nodes
+        if isinstance(node, dict)
+        and node.get("metadata", {}).get("source_kind") == "openapi_operation"
+        and node.get("id")
+    ]
+    functions = [
+        node
+        for node in nodes
+        if isinstance(node, dict)
+        and node.get("type") in {"function", "method"}
+        and node.get("id")
+    ]
+    edges: list[dict[str, Any]] = []
+    observations: list[dict[str, Any]] = []
+    rejected_links: list[dict[str, Any]] = []
+    seen_edges: set[tuple[str, str]] = set()
+    seen_rejections: set[tuple[str, str, str]] = set()
+    for function in functions:
+        function_label = str(function.get("label") or "")
+        function_norm = _link_name(function_label)
+        function_tokens = _link_tokens(function_label)
+        if not function_norm:
+            continue
+        for operation in operations:
+            operation_label = str(operation.get("label") or "")
+            operation_norm = _link_name(operation_label)
+            operation_tokens = _link_tokens(operation_label)
+            if not operation_norm:
+                continue
+            source_id = str(function["id"])
+            target_id = str(operation["id"])
+            if function_norm == operation_norm:
+                if (source_id, target_id) in seen_edges:
+                    continue
+                seen_edges.add((source_id, target_id))
+                edge, observation = _linker_edge(scan_id, function, operation)
+                edges.append(edge)
+                observations.append(observation)
+                continue
+            if _weak_link_candidate(function_norm, operation_norm, function_tokens, operation_tokens):
+                key = (source_id, target_id, "weak_name_similarity")
+                if key in seen_rejections:
+                    continue
+                seen_rejections.add(key)
+                rejected_links.append(_rejected_link(function, operation, reason="weak_name_similarity"))
+    return {
+        "edges": edges,
+        "observations": observations,
+        "rejected_links": rejected_links[:100],
+        "metadata": {
+            "schema_version": 1,
+            "policy": "exact_normalized_names_only_for_static_cross_language_links",
+            "allowed_evidence_sources": ["function_label", "openapi_operation_id"],
+            "edge_confidence": "inferred",
+            "edge_type": "references",
+            "link_count": len(edges),
+            "rejected_link_count": len(rejected_links),
+            "unsupported_claims": [
+                "runtime_api_compatibility",
+                "auth_or_data_flow_correctness",
+                "production_behavior",
+                "readiness",
+            ],
+        },
+    }
+
+
+def _linker_edge(scan_id: str, source_node: dict[str, Any], target_node: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
+    source_id = str(source_node["id"])
+    target_id = str(target_node["id"])
+    span = _first_source_span(source_node)
+    edge_id = _edge_id("references", source_id, target_id)
+    observation = build_observation_record(
+        scan_id=scan_id,
+        relative_path=span["relative_path"],
+        span={"start_line": span["start_line"], "end_line": span["start_line"]},
+        fingerprint=span["fingerprint"],
+        extractor="conservative_static_linker",
+        confidence="inferred",
+        redaction_status="redacted",
+        subject_id=edge_id,
+    )
+    return (
+        {
+            "id": edge_id,
+            "type": "references",
+            "source": source_id,
+            "target": target_id,
+            "confidence": "inferred",
+            "status": "current",
+            "observation_ids": [observation["id"]],
+            "fingerprint": span["fingerprint"],
+            "metadata": {
+                "linker": "conservative_static_linker",
+                "evidence": "exact_normalized_name_match",
+                "source_read_required": True,
+                "runtime_claims_supported": False,
+            },
+        },
+        observation,
+    )
+
+
+def _rejected_link(source_node: dict[str, Any], target_node: dict[str, Any], *, reason: str) -> dict[str, Any]:
+    return {
+        "schema_version": 1,
+        "source": str(source_node.get("id") or ""),
+        "target": str(target_node.get("id") or ""),
+        "rule": "conservative_static_linker_exact_match_only",
+        "reason": reason,
+        "confidence": "unsupported",
+        "source_read_required": True,
+        "future_resolution": "explicit_route_or_contract_mapping_required",
+        "unsupported_claims": ["hidden_dependency", "impact_proof", "runtime_api_compatibility"],
+    }
+
+
+def _first_source_span(node: dict[str, Any]) -> dict[str, Any]:
+    spans = node.get("source_spans")
+    if isinstance(spans, list) and spans and isinstance(spans[0], dict):
+        return {
+            "relative_path": str(spans[0].get("relative_path") or str(node.get("path") or ".")),
+            "start_line": int(spans[0].get("start_line") or 1),
+            "fingerprint": str(spans[0].get("fingerprint") or "sha256:" + "0" * 64),
+        }
+    return {
+        "relative_path": str(node.get("path") or "."),
+        "start_line": 1,
+        "fingerprint": "sha256:" + "0" * 64,
+    }
+
+
+def _link_name(value: str) -> str:
+    return "".join(_link_tokens(value))
+
+
+def _link_tokens(value: str) -> list[str]:
+    expanded = re.sub(r"([a-z0-9])([A-Z])", r"\1 \2", value)
+    tokens = [token.lower() for token in re.split(r"[^A-Za-z0-9]+", expanded) if token]
+    return [token[:-1] if len(token) > 3 and token.endswith("s") else token for token in tokens]
+
+
+def _weak_link_candidate(source_norm: str, target_norm: str, source_tokens: list[str], target_tokens: list[str]) -> bool:
+    if not source_norm or not target_norm:
+        return False
+    if source_norm.startswith(target_norm) or target_norm.startswith(source_norm):
+        return True
+    return len(set(source_tokens) & set(target_tokens)) >= 2
 
 
 def _dedupe_by_id(items: list[dict[str, Any]]) -> dict[str, Any]:
@@ -315,6 +568,21 @@ def _dedupe_by_id(items: list[dict[str, Any]]) -> dict[str, Any]:
         elif isinstance(item_id, str):
             dropped_count += 1
     return {"items": list(by_id.values()), "dropped_count": dropped_count}
+
+
+def _graph_depth_decision_metadata() -> dict[str, Any]:
+    return {
+        "decision_id": "B39-S4-GD-S0-ONTOLOGY-PARSER-DECISION",
+        "task_ids": ["B39-S4-GRAPH-DEPTH-00", "B39-S4-GRAPH-DEPTH-07"],
+        "decision_artifact": GRAPH_DEPTH_DECISION_ARTIFACT,
+        "ontology_profile": "core_terms_plus_framework_metadata",
+        "parser_dependency_policy": "stdlib_regex_no_external_dependency",
+        "core_node_types_added": [],
+        "core_edge_types_added": [],
+        "schema_migration_required": False,
+        "framework_terms_policy": "metadata_only_until_registered",
+        "readiness_policy": "orientation_evidence_only",
+    }
 
 
 def _safe_id(value: str) -> str:

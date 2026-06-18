@@ -21,6 +21,10 @@ MAX_QUERY_TEXT_LENGTH = 120
 DEFAULT_MAX_RESULTS = 25
 DEFAULT_MAX_TOKENS = 4_000
 DEFAULT_HUB_THRESHOLD = 100
+MAX_QUERY_DEPTH = 25
+MAX_QUERY_RESULTS = 250
+MAX_QUERY_TOKENS = 20_000
+MAX_HUB_THRESHOLD = 1_000
 QUERY_KINDS = {
     "neighbors",
     "path",
@@ -32,6 +36,7 @@ QUERY_KINDS = {
     "trace",
     "impact",
     "affected_tests",
+    "agent_reading_packet",
     "changed_since",
     "why_changed",
 }
@@ -111,6 +116,8 @@ def query_project_graph(
         return _impact(graph, index, request)
     if kind == "affected_tests":
         return _affected_tests(graph, index, request)
+    if kind == "agent_reading_packet":
+        return _agent_reading_packet(graph, index, request)
     if kind == "changed_since":
         return _changed_since(graph, request)
     if kind == "why_changed":
@@ -146,7 +153,31 @@ def _validate_request(request: dict[str, Any]) -> list[str]:
             continue
         if any(str(item) not in allowed_values[key] for item in value):
             errors.append(f"query:{key}:unknown")
+    for key, max_value in [
+        ("max_depth", MAX_QUERY_DEPTH),
+        ("max_results", MAX_QUERY_RESULTS),
+        ("max_tokens", MAX_QUERY_TOKENS),
+        ("hub_threshold", MAX_HUB_THRESHOLD),
+    ]:
+        errors.extend(_validate_positive_int_limit(request, key, max_value))
     return errors
+
+
+def _validate_positive_int_limit(request: dict[str, Any], key: str, max_value: int) -> list[str]:
+    if key not in request:
+        return []
+    value = request.get(key)
+    if isinstance(value, bool):
+        return [f"query:{key}:invalid"]
+    try:
+        parsed = int(value)
+    except (TypeError, ValueError):
+        return [f"query:{key}:invalid"]
+    if parsed <= 0:
+        return [f"query:{key}:invalid"]
+    if parsed > max_value:
+        return [f"query:{key}:too_large"]
+    return []
 
 
 def _neighbors(graph: dict[str, Any], index: dict[str, Any], request: dict[str, Any]) -> dict[str, Any]:
@@ -265,13 +296,23 @@ def _read_order(graph: dict[str, Any], index: dict[str, Any], request: dict[str,
 
 def _impact(graph: dict[str, Any], index: dict[str, Any], request: dict[str, Any]) -> dict[str, Any]:
     node_id = str(request.get("node_id") or "")
-    nodes, edges = _reverse_reachable(index, node_id, max_results=_positive_int(request.get("max_results"), DEFAULT_MAX_RESULTS))
+    nodes, edges = _reverse_reachable(
+        index,
+        node_id,
+        max_depth=_positive_int(request.get("max_depth"), 6),
+        max_results=_positive_int(request.get("max_results"), DEFAULT_MAX_RESULTS),
+    )
     return _packet(graph, request, "impact", nodes=nodes, edges=edges, status="ok")
 
 
 def _affected_tests(graph: dict[str, Any], index: dict[str, Any], request: dict[str, Any]) -> dict[str, Any]:
     node_id = str(request.get("node_id") or "")
-    nodes, edges = _reverse_reachable(index, node_id, max_results=_positive_int(request.get("max_results"), DEFAULT_MAX_RESULTS))
+    nodes, edges = _reverse_reachable(
+        index,
+        node_id,
+        max_depth=_positive_int(request.get("max_depth"), 6),
+        max_results=_positive_int(request.get("max_results"), DEFAULT_MAX_RESULTS),
+    )
     tests = [
         _compact_node(node)
         for node in nodes
@@ -280,6 +321,51 @@ def _affected_tests(graph: dict[str, Any], index: dict[str, Any], request: dict[
     packet = _packet(graph, request, "affected_tests", nodes=nodes, edges=edges, status="ok")
     packet["tests"] = tests
     packet["coverage_status"] = "partial_static"
+    _enforce_budget(packet)
+    return packet
+
+
+def _agent_reading_packet(graph: dict[str, Any], index: dict[str, Any], request: dict[str, Any]) -> dict[str, Any]:
+    node_id = str(request.get("node_id") or "")
+    node = index["nodes"].get(node_id)
+    if not node:
+        return _packet(graph, request, "agent_reading_packet", status="not_found")
+
+    max_results = _positive_int(request.get("max_results"), DEFAULT_MAX_RESULTS)
+    max_depth = _positive_int(request.get("max_depth"), 6)
+    related_edges = _filter_edges(index["outgoing"].get(node_id, []) + index["incoming"].get(node_id, []), request)
+    related_nodes = _related_nodes(index, node_id, related_edges, limit=max_results)
+    affected_nodes, affected_edges = _reverse_reachable(index, node_id, max_depth=max_depth, max_results=max_results)
+    affected_tests = _compact_test_nodes(affected_nodes)
+    read_nodes = [node] + [candidate for candidate in related_nodes if candidate.get("id") != node_id]
+
+    packet = _packet(
+        graph,
+        request,
+        "agent_reading_packet",
+        nodes=[node],
+        edges=[],
+        status="ok",
+    )
+    packet["target_entity"] = _compact_node(node)
+    packet["related_entities"] = [_compact_node(item) for item in related_nodes[:max_results]]
+    packet["read_order"] = [_compact_node(item) for item in read_nodes[:max_results]]
+    packet["source_spans"] = _compact_source_spans([node] + related_nodes, limit=max_results)
+    packet["confidence_summary"] = _confidence_summary(related_edges + affected_edges)
+    packet["must_read_source_before_edit"] = True
+    packet["source_read_required"] = True
+    packet["affected_tests"] = affected_tests[:max_results]
+    packet["stale_status"] = _stale_status_for_node(graph, node)
+    packet["freshness_status"] = _freshness_status_for_graph(graph)
+    packet["rejected_links"] = _rejected_links(graph, node_id, limit=max_results)
+    packet["unresolved_edges"] = _unresolved_edges(related_edges + affected_edges, limit=max_results)
+    packet["unsupported_languages"] = _unsupported_languages(graph, [node] + related_nodes)
+    packet["framework_semantics"] = _framework_semantics(graph, [node] + related_nodes, limit=max_results)
+    packet["unsupported_claims"] = _unsupported_agent_packet_claims(graph, [node] + related_nodes)
+    if packet["freshness_status"]["blocks_action_claims"]:
+        packet["safe_next_action"] = "Refresh graph or read source files from listed spans before edits, impact claims, or completion/readiness claims."
+    else:
+        packet["safe_next_action"] = "Read source files from listed spans before edits, impact claims, or completion/readiness claims."
     _enforce_budget(packet)
     return packet
 
@@ -321,6 +407,9 @@ def _status_packet(graph: dict[str, Any], request: dict[str, Any]) -> dict[str, 
         "observation_count": int(metadata.get("observation_count") or len(graph.get("observations", []))),
         "language_support_summary": metadata.get("language_support_summary", {}),
         "temporal_delta": _bounded_delta(graph),
+        "freshness_status": _freshness_status_for_graph(graph),
+        "coverage_map": _bounded_coverage_map(graph),
+        "rejected_link_summary": _rejected_link_summary(graph),
     }
     _enforce_budget(packet)
     return packet
@@ -382,7 +471,18 @@ def _packet(
 def _enforce_budget(packet: dict[str, Any]) -> None:
     budget = packet.get("budget") if isinstance(packet.get("budget"), dict) else {}
     max_tokens = _positive_int(budget.get("max_tokens"), DEFAULT_MAX_TOKENS)
-    trim_keys = ["hotspots", "read_order", "path", "trace", "tests", "nodes", "edges"]
+    trim_keys = [
+        "hotspots",
+        "read_order",
+        "related_entities",
+        "source_spans",
+        "affected_tests",
+        "path",
+        "trace",
+        "tests",
+        "nodes",
+        "edges",
+    ]
     while _estimated_tokens(packet) > max_tokens:
         trimmed = False
         for key in trim_keys:
@@ -453,13 +553,15 @@ def _shortest_path(index: dict[str, Any], source: str, target: str, *, max_depth
     return [], []
 
 
-def _reverse_reachable(index: dict[str, Any], node_id: str, *, max_results: int) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+def _reverse_reachable(index: dict[str, Any], node_id: str, *, max_depth: int, max_results: int) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     nodes: list[dict[str, Any]] = []
     edges: list[dict[str, Any]] = []
-    queue = deque([node_id])
+    queue = deque([(node_id, 0)])
     visited = {node_id}
     while queue and len(nodes) < max_results:
-        current = queue.popleft()
+        current, depth = queue.popleft()
+        if depth >= max_depth:
+            continue
         for edge in index["incoming"].get(current, []):
             source = str(edge.get("source") or "")
             if source in visited:
@@ -469,7 +571,7 @@ def _reverse_reachable(index: dict[str, Any], node_id: str, *, max_results: int)
             node = index["nodes"].get(source)
             if node:
                 nodes.append(node)
-            queue.append(source)
+            queue.append((source, depth + 1))
             if len(nodes) >= max_results:
                 break
     return nodes, edges
@@ -507,6 +609,307 @@ def _compact_node(node: dict[str, Any]) -> dict[str, Any]:
         "language": str(node.get("language") or ""),
         "path": str(node.get("path") or ""),
     }
+
+
+def _related_nodes(index: dict[str, Any], node_id: str, edges: list[dict[str, Any]], *, limit: int) -> list[dict[str, Any]]:
+    nodes: list[dict[str, Any]] = []
+    seen = {node_id}
+    for edge in edges:
+        related_id = _other(edge, node_id)
+        if related_id in seen:
+            continue
+        node = index["nodes"].get(related_id)
+        if not node:
+            continue
+        seen.add(related_id)
+        nodes.append(node)
+        if len(nodes) >= limit:
+            break
+    return nodes
+
+
+def _compact_test_nodes(nodes: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    return [
+        _compact_node(node)
+        for node in nodes
+        if node.get("type") in {"test", "function", "method"} and ("test" in str(node.get("id") or "").lower())
+    ]
+
+
+def _compact_source_spans(nodes: list[dict[str, Any]], *, limit: int) -> list[dict[str, Any]]:
+    spans: list[dict[str, Any]] = []
+    seen: set[tuple[str, int, int]] = set()
+    for node in nodes:
+        for span in node.get("source_spans") or []:
+            if not isinstance(span, dict):
+                continue
+            relative_path = str(span.get("relative_path") or "")
+            if not _safe_relative_path(relative_path):
+                continue
+            start_line = _positive_int(span.get("start_line"), 1)
+            end_line = _positive_int(span.get("end_line"), start_line)
+            key = (relative_path, start_line, end_line)
+            if key in seen:
+                continue
+            seen.add(key)
+            spans.append(
+                {
+                    "relative_path": relative_path,
+                    "start_line": start_line,
+                    "end_line": end_line,
+                    "fingerprint": str(span.get("fingerprint") or ""),
+                }
+            )
+            if len(spans) >= limit:
+                return spans
+    return spans
+
+
+def _confidence_summary(edges: list[dict[str, Any]]) -> dict[str, int]:
+    summary = {
+        "verified_edges": 0,
+        "inferred_edges": 0,
+        "unsupported_edges": 0,
+        "accepted_gap_edges": 0,
+        "unknown_edges": 0,
+    }
+    for edge in edges:
+        confidence = str(edge.get("confidence") or "")
+        status = str(edge.get("status") or "")
+        if confidence == "verified":
+            summary["verified_edges"] += 1
+        elif confidence == "inferred":
+            summary["inferred_edges"] += 1
+        elif confidence == "accepted_gap" or status == "accepted_gap":
+            summary["accepted_gap_edges"] += 1
+        elif confidence == "unsupported" or status == "unsupported":
+            summary["unsupported_edges"] += 1
+        else:
+            summary["unknown_edges"] += 1
+    return summary
+
+
+def _stale_status_for_node(graph: dict[str, Any], node: dict[str, Any]) -> dict[str, Any]:
+    delta = _bounded_delta(graph)
+    node_id = str(node.get("id") or "")
+    path = str(node.get("path") or "")
+    file_id = f"file:{path}" if path else ""
+    related: list[dict[str, Any]] = []
+    for key in ["new_edges", "invalidated_edges", "superseded_edges"]:
+        for item in delta.get(key, []):
+            if not isinstance(item, dict):
+                continue
+            if node_id in {item.get("source"), item.get("target")} or file_id in {item.get("source"), item.get("target")}:
+                related.append(_compact_delta_edge(item, key))
+    if related:
+        status = "stale"
+    elif delta.get("status") == "changed":
+        status = "partial"
+    elif delta.get("status") in {"not_available"}:
+        status = "unknown"
+    else:
+        status = "fresh"
+    return {
+        "schema_version": 1,
+        "status": status,
+        "graph_delta_status": str(delta.get("status") or "not_available"),
+        "blocks_action_claims": status in {"partial", "stale", "unknown"},
+        "related_delta_edges": related[:5],
+    }
+
+
+def _freshness_status_for_graph(graph: dict[str, Any]) -> dict[str, Any]:
+    delta = _bounded_delta(graph)
+    delta_status = str(delta.get("status") or "not_available")
+    if delta_status in {"changed", "stale"}:
+        status = "stale"
+    elif delta_status in {"current", "fresh"}:
+        status = "fresh"
+    else:
+        status = "unknown"
+    blocks = status in {"partial", "stale", "unknown"}
+    return {
+        "schema_version": 1,
+        "status": status,
+        "graph_delta_status": delta_status,
+        "blocks_action_claims": blocks,
+        "safe_next_action": (
+            "Refresh graph or read source files before edits or readiness claims."
+            if blocks
+            else "Read source files before edits or readiness claims."
+        ),
+    }
+
+
+def _bounded_coverage_map(graph: dict[str, Any]) -> dict[str, Any]:
+    metadata = graph.get("metadata", {}) if isinstance(graph.get("metadata"), dict) else {}
+    coverage = metadata.get("coverage_map")
+    if not isinstance(coverage, dict):
+        return {
+            "schema_version": 1,
+            "status": "not_available",
+            "source_boundary": "graph_artifact_only_raw_source_excluded",
+            "by_language": {},
+            "by_node_type": {},
+            "unsupported_languages": {},
+            "partial_languages": {},
+            "recommended_next_parser_or_linker_action": "Review source files before graph-backed claims.",
+        }
+    bounded = dict(coverage)
+    for key in ["by_language", "by_path_prefix", "by_file_type", "by_node_type", "confidence_distribution"]:
+        value = bounded.get(key)
+        if isinstance(value, dict):
+            bounded[key] = dict(sorted(value.items())[:25])
+    for key in ["unsupported_languages", "partial_languages"]:
+        value = bounded.get(key)
+        if isinstance(value, dict):
+            bounded[key] = dict(sorted(value.items())[:25])
+    return bounded
+
+
+def _compact_delta_edge(edge: dict[str, Any], bucket: str) -> dict[str, Any]:
+    return {
+        "bucket": bucket,
+        "type": str(edge.get("type") or ""),
+        "source": str(edge.get("source") or ""),
+        "target": str(edge.get("target") or ""),
+        "status": str(edge.get("status") or ""),
+    }
+
+
+def _rejected_links(graph: dict[str, Any], node_id: str, *, limit: int) -> list[dict[str, Any]]:
+    metadata = graph.get("metadata", {}) if isinstance(graph.get("metadata"), dict) else {}
+    rejected = metadata.get("rejected_links")
+    if not isinstance(rejected, list):
+        return []
+    items: list[dict[str, Any]] = []
+    for item in rejected:
+        if not isinstance(item, dict):
+            continue
+        if node_id not in {item.get("source"), item.get("target"), item.get("target_candidate"), item.get("node_id")}:
+            continue
+        items.append(
+            {
+                "source": str(item.get("source") or ""),
+                "target": str(item.get("target") or item.get("target_candidate") or ""),
+                "target_candidate": str(item.get("target_candidate") or item.get("target") or ""),
+                "rule": str(item.get("rule") or "not_available")[:120],
+                "reason": str(item.get("reason") or "not_available")[:120],
+                "confidence": str(item.get("confidence") or ""),
+                "status": str(item.get("status") or ""),
+                "source_read_required": bool(item.get("source_read_required")),
+                "future_parser_or_linker_task": str(item.get("future_parser_or_linker_task") or item.get("future_resolution") or "")[:120],
+            }
+        )
+        if len(items) >= limit:
+            break
+    return items
+
+
+def _rejected_link_summary(graph: dict[str, Any]) -> dict[str, Any]:
+    metadata = graph.get("metadata", {}) if isinstance(graph.get("metadata"), dict) else {}
+    rejected = metadata.get("rejected_links")
+    if not isinstance(rejected, list):
+        return {"schema_version": 1, "total": 0, "by_reason": {}, "by_rule": {}, "policy": "rejected_candidates_are_not_dependencies"}
+    by_reason: dict[str, int] = {}
+    by_rule: dict[str, int] = {}
+    for item in rejected:
+        if not isinstance(item, dict):
+            continue
+        reason = str(item.get("reason") or "not_available")
+        rule = str(item.get("rule") or "not_available")
+        by_reason[reason] = by_reason.get(reason, 0) + 1
+        by_rule[rule] = by_rule.get(rule, 0) + 1
+    return {
+        "schema_version": 1,
+        "total": sum(by_reason.values()),
+        "by_reason": dict(sorted(by_reason.items())[:25]),
+        "by_rule": dict(sorted(by_rule.items())[:25]),
+        "policy": "rejected_candidates_are_not_dependencies",
+    }
+
+
+def _unresolved_edges(edges: list[dict[str, Any]], *, limit: int) -> list[dict[str, Any]]:
+    items: list[dict[str, Any]] = []
+    for edge in edges:
+        status = str(edge.get("status") or "")
+        confidence = str(edge.get("confidence") or "")
+        if status not in {"unresolved", "unsupported"} and confidence not in {"unsupported", "accepted_gap"}:
+            continue
+        items.append(_compact_edge(edge))
+        if len(items) >= limit:
+            break
+    return items
+
+
+def _unsupported_languages(graph: dict[str, Any], nodes: list[dict[str, Any]]) -> list[dict[str, str]]:
+    language_summary = graph.get("metadata", {}).get("language_support_summary")
+    if not isinstance(language_summary, dict):
+        return []
+    warnings: list[dict[str, str]] = []
+    seen: set[str] = set()
+    for node in nodes:
+        language = str(node.get("language") or "")
+        if not language or language in seen:
+            continue
+        support = language_summary.get(language)
+        support_level = ""
+        if isinstance(support, dict):
+            support_level = str(support.get("support_level") or support.get("status") or "")
+        elif isinstance(support, str):
+            support_level = support
+        if support_level and support_level not in {"supported", "supported_stdlib", "supported_conservative_stdlib"}:
+            seen.add(language)
+            warnings.append({"language": language, "support_level": support_level})
+    return warnings
+
+
+def _unsupported_agent_packet_claims(graph: dict[str, Any], nodes: list[dict[str, Any]]) -> list[str]:
+    claims = [
+        "release_readiness",
+        "production_runtime_behavior",
+        "source_read_completion",
+        "completion_verification",
+    ]
+    for warning in _unsupported_languages(graph, nodes):
+        claims.append(f"unsupported_language:{warning['language']}")
+    if _framework_semantics(graph, nodes, limit=1):
+        claims.append("framework_runtime_behavior")
+    return sorted(set(claims))
+
+
+def _framework_semantics(graph: dict[str, Any], nodes: list[dict[str, Any]], *, limit: int) -> list[dict[str, Any]]:
+    metadata = graph.get("metadata", {}) if isinstance(graph.get("metadata"), dict) else {}
+    scanner = metadata.get("typescript_javascript_scanner")
+    if not isinstance(scanner, dict):
+        return []
+    semantics = scanner.get("framework_semantics")
+    if not isinstance(semantics, list):
+        return []
+    node_ids = {str(node.get("id") or "") for node in nodes}
+    paths = {str(node.get("path") or "") for node in nodes}
+    results: list[dict[str, Any]] = []
+    for item in semantics:
+        if not isinstance(item, dict):
+            continue
+        if str(item.get("symbol_id") or "") not in node_ids and str(item.get("relative_path") or "") not in paths:
+            continue
+        results.append(
+            {
+                "framework": str(item.get("framework") or ""),
+                "semantic_type": str(item.get("semantic_type") or ""),
+                "relative_path": str(item.get("relative_path") or ""),
+                "symbol_id": str(item.get("symbol_id") or ""),
+                "confidence": str(item.get("confidence") or ""),
+                "status": str(item.get("status") or ""),
+                "source_read_required": bool(item.get("source_read_required")),
+                "source_boundary": str(item.get("source_boundary") or ""),
+                "unsupported_claims": list(item.get("unsupported_claims") or [])[:8],
+            }
+        )
+        if len(results) >= limit:
+            break
+    return results
 
 
 def _compact_edge(edge: dict[str, Any]) -> dict[str, Any]:

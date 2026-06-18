@@ -27,7 +27,9 @@ from product_agent_os.batch39_rollup import (  # noqa: E402
     validate_batch39_rollup,
 )
 from product_agent_os.batch39_scorecard import (  # noqa: E402
+    build_graph_usefulness_scorecard,
     build_scorecard_gates,
+    validate_graph_usefulness_scorecard,
     validate_scorecard_gates,
 )
 from product_agent_os.batch39_session_visibility import (  # noqa: E402
@@ -303,6 +305,82 @@ class Batch39S1ContractsTests(unittest.TestCase):
         self.assertGreaterEqual(scorecard["operator_usability_score"], 0.0)
         self.assertLessEqual(scorecard["operator_usability_score"], 1.0)
         self.assertEqual(validate_first_run_artifact_scorecard(scorecard), [])
+
+    def test_graph_depth_scorecard_calibrates_fixture_usefulness_without_promotion_claim(self) -> None:
+        scorecard = build_graph_usefulness_scorecard(
+            test_id="B39-S4-GRAPH-DEPTH-06",
+            attempt_id="B39-S4-GD-S6-SCORECARD-A01",
+            generated_at="2026-06-18T20:30:00+00:00",
+            metric_summary={
+                "symbol_queries_total": 4,
+                "symbol_queries_hit": 4,
+                "top_k_hits": 3,
+                "affected_tests_expected": 2,
+                "affected_tests_matched": 2,
+                "affected_tests_false_positive": 0,
+                "baseline_read_files": 12,
+                "packet_read_files": 4,
+                "unsupported_language_count": 1,
+                "language_count": 6,
+                "stale_block_behavior": True,
+                "safe_next_action_present": True,
+                "real_target_comparison_present": False,
+                "target_comparison_delta": None,
+            },
+        )
+
+        self.assertEqual(scorecard["schema_version"], "graph_usefulness_scorecard_v1")
+        self.assertEqual(scorecard["task_ids"], ["B39-S4-GRAPH-DEPTH-06", "B39-S4-GRAPH-DEPTH-14"])
+        self.assertEqual(scorecard["fixture_evaluation_status"], "fixture_thresholds_passed")
+        self.assertEqual(scorecard["promotion_decision"], "not_promoted")
+        self.assertEqual(scorecard["promotion_boundary"], "manual_only_not_promoted")
+        self.assertEqual(scorecard["target_comparison"]["status"], "missing")
+        self.assertEqual(scorecard["generated_view_policy"], "orientation_only_not_proof")
+        self.assertEqual(scorecard["source_boundary"], "graph_artifact_only_raw_source_excluded")
+        self.assertEqual(scorecard["metrics"]["symbol_recall"], 1.0)
+        self.assertEqual(scorecard["metrics"]["top_k_relevance"], 0.75)
+        self.assertEqual(scorecard["metrics"]["affected_test_precision"], 1.0)
+        self.assertEqual(scorecard["metrics"]["false_positive_rate"], 0.0)
+        self.assertGreaterEqual(scorecard["metrics"]["reading_scope_reduction"], 0.6)
+        self.assertLessEqual(scorecard["metrics"]["unsupported_language_rate"], 0.2)
+        self.assertIn("real_target_comparison_missing", scorecard["blocking_reasons"])
+        self.assertIn("release_readiness", scorecard["unsupported_claims"])
+        self.assertEqual(validate_graph_usefulness_scorecard(scorecard), [])
+
+    def test_graph_depth_scorecard_validation_blocks_overclaim_and_missing_metrics(self) -> None:
+        scorecard = build_graph_usefulness_scorecard(
+            test_id="B39-S4-GRAPH-DEPTH-14",
+            attempt_id="B39-S4-GD-S6-SCORECARD-A01",
+            metric_summary={
+                "symbol_queries_total": 2,
+                "symbol_queries_hit": 1,
+                "top_k_hits": 1,
+                "affected_tests_expected": 2,
+                "affected_tests_matched": 1,
+                "affected_tests_false_positive": 2,
+                "baseline_read_files": 4,
+                "packet_read_files": 4,
+                "unsupported_language_count": 3,
+                "language_count": 4,
+                "stale_block_behavior": False,
+                "safe_next_action_present": False,
+                "real_target_comparison_present": True,
+                "target_comparison_delta": {"time_to_first_safe_action_delta": -0.2},
+            },
+        )
+
+        self.assertEqual(scorecard["fixture_evaluation_status"], "fixture_thresholds_failed")
+        self.assertEqual(scorecard["promotion_decision"], "not_promoted")
+        self.assertIn("symbol_recall_below_threshold", scorecard["blocking_reasons"])
+        self.assertIn("stale_block_behavior_missing", scorecard["blocking_reasons"])
+
+        scorecard["promotion_decision"] = "owner_review_required"
+        scorecard["metrics"].pop("symbol_recall")
+
+        errors = validate_graph_usefulness_scorecard(scorecard)
+
+        self.assertIn("promotion_decision must be not_promoted", errors)
+        self.assertIn("metrics.symbol_recall must be between 0 and 1", errors)
 
 
 if __name__ == "__main__":

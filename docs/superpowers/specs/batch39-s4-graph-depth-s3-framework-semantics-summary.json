@@ -1,0 +1,116 @@
+{
+  "artifact_kind": "batch39_s4_graph_depth_s3_framework_semantics_summary",
+  "attempt_id": "B39-S4-GD-S3-A02",
+  "batch": "B39",
+  "slice": "B39-S4",
+  "date": "2026-06-18",
+  "status": "partial_pass_graph_depth_framework_semantics",
+  "source_status": "current-run local synthetic fixture evidence only",
+  "task_ids": [
+    "B39-S4-GRAPH-DEPTH-11"
+  ],
+  "summary": [
+    "Added metadata-only framework semantics for common React, Next, Vite, Electron and Tauri static patterns.",
+    "Framework hints are stored in the TypeScript/JavaScript scanner metadata as static hints and are surfaced in agent_reading_packet framework_semantics when related to the target entity.",
+    "The core graph ontology remains unchanged: framework terms such as component, hook and api_route are not emitted as node types.",
+    "Each framework hint records confidence=inferred, source_read_required=true and unsupported runtime/browser/native/auth/data-flow claims."
+  ],
+  "files_changed": [
+    "plugins/product-agent-os/scripts/product_agent_os/project_graph_adapters.py",
+    "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+    "tests/product_agent_os/test_project_graph_python_scanner.py"
+  ],
+  "agent_inputs": [
+    {
+      "role": "architect",
+      "result": "read-only architecture handoff recommended metadata-only framework hints, no core ontology changes, no runtime/auth/browser/native claims"
+    },
+    {
+      "role": "docs-maintainer",
+      "result": "read-only control-plane recommendation for attempt id B39-S4-GD-S3-A02 and framework-semantics evidence path"
+    },
+    {
+      "role": "tester",
+      "result": "read-only RED/GREEN contract recommendation for React, Next, Vite, Electron, Tauri static hints, false positives, metadata fields and no-overclaim assertions"
+    }
+  ],
+  "framework_semantics_contract": {
+    "storage": "metadata.typescript_javascript_scanner.framework_semantics",
+    "packet_visibility": "agent_reading_packet.framework_semantics",
+    "node_type_policy": "no_framework_node_types_added",
+    "edge_policy": "no_runtime_route_auth_or_data_flow_edges_added",
+    "confidence": "inferred",
+    "source_read_required": true,
+    "source_boundary": "graph_metadata_only_raw_source_excluded"
+  },
+  "supported_static_hints": [
+    "react_component",
+    "react_hook",
+    "next_api_route_handler",
+    "vite_build_config",
+    "electron_native_shell_entrypoint",
+    "tauri_native_bridge_api"
+  ],
+  "commands": [
+    {
+      "command": "python -m unittest tests.product_agent_os.test_project_graph_python_scanner.ProjectGraphPythonScannerTest.test_typescript_framework_semantics_are_metadata_hints_without_runtime_claims -v",
+      "red_result": "failed before implementation: framework_semantics missing from TypeScript/JavaScript scanner metadata and packet output",
+      "green_result": "ok"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_project_graph_python_scanner.ProjectGraphPythonScannerTest.test_typescript_framework_semantics_are_metadata_hints_without_runtime_claims -v",
+      "red_result": "failed after adding false-positive assertions: BrowserWindow text without Electron import was treated as native shell evidence",
+      "green_result": "ok after requiring explicit Electron import or require"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_project_graph_python_scanner.ProjectGraphPythonScannerTest.test_typescript_framework_terms_remain_metadata_not_node_types tests.product_agent_os.test_project_graph_python_scanner.ProjectGraphPythonScannerTest.test_typescript_framework_semantics_are_metadata_hints_without_runtime_claims -v",
+      "result": "2 tests OK"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_project_graph_python_scanner -v",
+      "result": "11 tests OK"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_project_graph_queries -v",
+      "result": "11 tests OK"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_project_graph_ontology tests.product_agent_os.test_project_graph_overlays tests.product_agent_os.test_project_code_graph -v",
+      "result": "25 tests OK"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_project_graph_ontology tests.product_agent_os.test_project_graph_python_scanner tests.product_agent_os.test_project_graph_overlays tests.product_agent_os.test_project_graph_queries tests.product_agent_os.test_project_code_graph tests.product_agent_os.test_batch39_s1_contracts -v",
+      "result": "58 tests OK"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs tests.product_agent_os.test_task_plan_lifecycle tests.product_agent_os.test_infrastructure_templates -v",
+      "result": "179 tests OK"
+    },
+    {
+      "command": "python tools\\check_docs.py",
+      "result": "OK: documentation structure checks passed"
+    },
+    {
+      "command": "git diff --check",
+      "result": "OK"
+    }
+  ],
+  "approval_boundary": {
+    "target_workspace_mutation": "not_performed",
+    "browser_or_runtime_automation": "not_performed",
+    "provider_or_model_call": "not_performed",
+    "dependency_installation": "not_performed",
+    "git_stage_commit_push_pr": "not_performed",
+    "external_write": "not_performed"
+  },
+  "unsupported_claims": [
+    "This attempt does not close B39-S4-GRAPH-DEPTH-00..15.",
+    "This attempt does not prove SOL 0.6 or Neural Flow real-target usefulness.",
+    "This attempt does not prove runtime routing, auth, data-flow correctness, framework runtime behavior, native packaging, browser behavior or production API compatibility.",
+    "This attempt does not support release readiness, promotion, target apply, source-read completion, automation readiness, browser/runtime/provider behavior or external actions."
+  ],
+  "next_actions": [
+    "Keep framework semantics as static metadata hints unless a later ontology extension is explicitly registered and tested.",
+    "Continue graph-depth work with real-target retest and HTML/status integration after local layers remain stable."
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "artifact_kind": "batch39_s4_graph_depth_s1_mixed_fixture_summary",
+  "attempt_id": "B39-S4-GD-S1-A01",
+  "batch": "B39",
+  "slice": "B39-S4",
+  "date": "2026-06-18",
+  "status": "partial_pass_graph_depth_mixed_fixture_contract",
+  "source_status": "current-run local synthetic fixture evidence only",
+  "task_ids": [
+    "B39-S4-GRAPH-DEPTH-01"
+  ],
+  "summary": [
+    "Added a synthetic mixed Python + TypeScript + OpenAPI + DBML + Markdown fixture contract.",
+    "The fixture proves Python symbols, tests, TypeScript exports/imports/calls, contract/schema chunks, docs references and stale graph temporal delta in one bounded graph.",
+    "Added TypeScript/JavaScript unresolved import inventory for missing modules and missing exports instead of silently creating weak module-level links.",
+    "The fixture keeps raw source bodies, unresolved call text and absolute workspace paths out of graph packets."
+  ],
+  "files_changed": [
+    "plugins/product-agent-os/scripts/product_agent_os/project_graph_adapters.py",
+    "tests/product_agent_os/test_project_graph_overlays.py"
+  ],
+  "commands": [
+    {
+      "command": "python -m unittest tests.product_agent_os.test_project_graph_overlays.ProjectGraphOverlaysTest.test_mixed_python_typescript_contract_schema_and_stale_fixture_is_bounded -v",
+      "red_result": "failed before implementation: KeyError for typescript_javascript_scanner.unresolved_import_count",
+      "green_result": "ok"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_project_graph_python_scanner.ProjectGraphPythonScannerTest.test_typescript_exports_imports_and_calls_are_entity_level_without_external_parser tests.product_agent_os.test_project_graph_python_scanner.ProjectGraphPythonScannerTest.test_typescript_framework_terms_remain_metadata_not_node_types -v",
+      "result": "2 tests OK"
+    }
+  ],
+  "approval_boundary": {
+    "target_workspace_mutation": "not_performed",
+    "browser_or_runtime_automation": "not_performed",
+    "provider_or_model_call": "not_performed",
+    "dependency_installation": "not_performed",
+    "git_stage_commit_push_pr": "not_performed",
+    "external_write": "not_performed"
+  },
+  "unsupported_claims": [
+    "This fixture does not close B39-S4-GRAPH-DEPTH-00..15.",
+    "This fixture does not prove SOL 0.6 or Neural Flow target usefulness.",
+    "This fixture does not implement framework semantics, cross-language runtime links, rejected-link ledger, coverage map, freshness action gates, agent reading packet, scorecard, guided tour or HTML explainer.",
+    "This fixture does not support release readiness, promotion, runtime/browser behavior, provider quality, target apply or automation readiness."
+  ],
+  "next_actions": [
+    "Continue B39-S4-GD-S4 coverage/freshness or B39-S4-GD-S6 agent reading packet after the mixed fixture contract.",
+    "Keep real-target retest read-only and defer it until synthetic correctness and safety layers are stronger."
+  ]
+}

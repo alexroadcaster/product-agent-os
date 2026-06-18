@@ -70,6 +70,8 @@ FIRST_RUN_ANALYSIS_PACKET_SCHEMA: dict[str, Any] = {
         "redaction_status": {"type": "object"},
         "evidence_status": {"type": "object"},
         "generated_view_policy": {"const": GENERATED_VIEW_POLICY},
+        "graph_depth_summary": {"type": "object"},
+        "graph_artifact_summary": {"type": "object"},
         "safe_next_action": {"type": "string"},
         "packet_digest": {"type": "string"},
     },
@@ -84,6 +86,7 @@ def build_first_run_analysis_packet(
     generated_pages: list[dict[str, Any]],
     section_summaries: dict[str, dict[str, Any]],
     safe_next_action: str,
+    graph_artifact_summary: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Build the source packet for first-run project analysis."""
 
@@ -93,6 +96,7 @@ def build_first_run_analysis_packet(
         section_id: _section_summary_entry(section_summaries.get(section_id, {}))
         for section_id in sorted(REQUIRED_SECTION_IDS)
     }
+    graph_summary = _graph_artifact_summary_entry(graph_artifact_summary)
     packet = {
         "schema_version": FIRST_RUN_ANALYSIS_PACKET_SCHEMA_VERSION,
         "artifact_version": FIRST_RUN_ANALYSIS_ARTIFACT_VERSION,
@@ -115,6 +119,8 @@ def build_first_run_analysis_packet(
         },
         "evidence_status": _evidence_status(artifact_entries, page_entries, section_entries),
         "generated_view_policy": GENERATED_VIEW_POLICY,
+        "graph_depth_summary": graph_summary,
+        "graph_artifact_summary": graph_summary,
         "safe_next_action": str(safe_next_action).strip(),
     }
     packet["packet_digest"] = content_digest(canonical_json(packet))
@@ -143,6 +149,8 @@ def validate_first_run_analysis_packet(packet: Any) -> list[str]:
     errors.extend(_validate_section_summaries(packet.get("section_summaries")))
     errors.extend(_validate_redaction_status(packet.get("redaction_status")))
     errors.extend(_validate_evidence_status(packet.get("evidence_status")))
+    errors.extend(_validate_graph_artifact_summary(packet.get("graph_depth_summary"), field_name="graph_depth_summary"))
+    errors.extend(_validate_graph_artifact_summary(packet.get("graph_artifact_summary")))
     if not isinstance(packet.get("safe_next_action"), str) or not packet.get("safe_next_action", "").strip():
         errors.append("safe_next_action must be a non-empty string")
     if not _valid_sha256_digest(str(packet.get("packet_digest", ""))):
@@ -310,6 +318,105 @@ def _generated_page_entry(item: dict[str, Any]) -> dict[str, Any]:
         "digest": str(item.get("digest", "")).strip(),
         "source_policy": str(item.get("source_policy", GENERATED_VIEW_POLICY)).strip() or GENERATED_VIEW_POLICY,
     }
+
+
+def _graph_artifact_summary_entry(value: dict[str, Any] | None) -> dict[str, Any]:
+    source = value if isinstance(value, dict) else {}
+    rejected_link_summary = _bounded_reason_summary(source.get("rejected_link_summary"))
+    framework_semantic_summary = _bounded_reason_summary(source.get("framework_semantic_summary"))
+    return {
+        "schema_version": "graph_depth_first_run_summary_v1",
+        "status": _status_or_default(source.get("status")),
+        "graph_packet_digest": str(source.get("graph_packet_digest", "")).strip(),
+        "agent_packet_refs": _safe_refs(source.get("agent_packet_refs")),
+        "coverage": _bounded_graph_coverage(source.get("coverage")),
+        "freshness": _bounded_graph_freshness(source.get("freshness")),
+        "rejected_link_summary": rejected_link_summary,
+        "rejected_links": rejected_link_summary,
+        "framework_semantic_summary": framework_semantic_summary,
+        "framework_semantics": framework_semantic_summary,
+        "guided_tour": _bounded_guided_tour(source.get("guided_tour")),
+        "unsupported_claims": _safe_string_list(source.get("unsupported_claims")),
+        "generated_view_policy": GENERATED_VIEW_POLICY,
+        "source_policy": "graph artifacts are generated orientation evidence, not source truth",
+        "source_read_required": True,
+        "must_read_source_before_edit": True,
+        "completion_claim": "not_claimed",
+        "decision_status": "manual_only",
+        "promotion_decision": "not_promoted",
+        "promotion_boundary": "manual_only_not_promoted",
+    }
+
+
+def _safe_refs(value: Any, limit: int = 4) -> list[dict[str, str]]:
+    refs: list[dict[str, str]] = []
+    if not isinstance(value, list):
+        return refs
+    for item in value[:limit]:
+        if not isinstance(item, dict):
+            continue
+        path = _safe_relative_ref(str(item.get("path", "")))
+        if not path or path == "[REDACTED_LOCAL_PATH]":
+            continue
+        refs.append(
+            {
+                "kind": str(item.get("kind", "staged_artifact")).strip() or "staged_artifact",
+                "path": path,
+                "digest": str(item.get("digest", "")).strip(),
+            }
+        )
+    return refs
+
+
+def _bounded_graph_coverage(value: Any) -> dict[str, Any]:
+    source = value if isinstance(value, dict) else {}
+    unsupported = source.get("unsupported_languages") if isinstance(source.get("unsupported_languages"), dict) else {}
+    return {
+        "status": str(source.get("status", "not_available")).strip() or "not_available",
+        "covered_files": _int(source.get("covered_files")),
+        "partial_files": _int(source.get("partial_files")),
+        "unsupported_languages": {
+            str(key): str(item)
+            for key, item in sorted(unsupported.items())[:8]
+        },
+    }
+
+
+def _bounded_graph_freshness(value: Any) -> dict[str, Any]:
+    source = value if isinstance(value, dict) else {}
+    return {
+        "status": str(source.get("status", "not_available")).strip() or "not_available",
+        "blocks_action_claims": bool(source.get("blocks_action_claims")),
+        "safe_next_action": str(source.get("safe_next_action", "Read source files before graph-backed actions.")).strip(),
+    }
+
+
+def _bounded_reason_summary(value: Any) -> dict[str, Any]:
+    source = value if isinstance(value, dict) else {}
+    reasons = source.get("by_reason") if isinstance(source.get("by_reason"), dict) else {}
+    frameworks = source.get("frameworks") if isinstance(source.get("frameworks"), dict) else {}
+    result: dict[str, Any] = {"total": _int(source.get("total"))}
+    if reasons:
+        result["by_reason"] = {str(key): _int(item) for key, item in sorted(reasons.items())[:8]}
+    if frameworks:
+        result["frameworks"] = {str(key): _int(item) for key, item in sorted(frameworks.items())[:8]}
+    return result
+
+
+def _bounded_guided_tour(value: Any, limit: int = 8) -> list[dict[str, str]]:
+    if not isinstance(value, list):
+        return []
+    items: list[dict[str, str]] = []
+    for item in value[:limit]:
+        if not isinstance(item, dict):
+            continue
+        items.append(
+            {
+                "page": str(item.get("page", "")).strip(),
+                "safe_next_action": str(item.get("safe_next_action", "")).strip(),
+            }
+        )
+    return items
 
 
 def _section_summary_entry(item: dict[str, Any]) -> dict[str, Any]:
@@ -486,6 +593,40 @@ def _validate_evidence_status(value: Any) -> list[str]:
     return errors
 
 
+def _validate_graph_artifact_summary(value: Any, *, field_name: str = "graph_artifact_summary") -> list[str]:
+    if not isinstance(value, dict):
+        return [f"{field_name} must be an object"]
+    errors: list[str] = []
+    if value.get("schema_version") != "graph_depth_first_run_summary_v1":
+        errors.append(f"{field_name}.schema_version must be graph_depth_first_run_summary_v1")
+    if value.get("status") not in EVIDENCE_STATUSES:
+        errors.append(f"{field_name}.status missing or invalid")
+    digest = str(value.get("graph_packet_digest", ""))
+    if digest and not _valid_sha256_digest(digest):
+        errors.append(f"{field_name}.graph_packet_digest must be a sha256 digest when present")
+    if not isinstance(value.get("agent_packet_refs"), list):
+        errors.append(f"{field_name}.agent_packet_refs must be list")
+    if not isinstance(value.get("coverage"), dict):
+        errors.append(f"{field_name}.coverage must be object")
+    if not isinstance(value.get("freshness"), dict):
+        errors.append(f"{field_name}.freshness must be object")
+    if not isinstance(value.get("rejected_link_summary"), dict):
+        errors.append(f"{field_name}.rejected_link_summary must be object")
+    if not isinstance(value.get("framework_semantic_summary"), dict):
+        errors.append(f"{field_name}.framework_semantic_summary must be object")
+    if not isinstance(value.get("guided_tour"), list):
+        errors.append(f"{field_name}.guided_tour must be list")
+    if value.get("generated_view_policy") != GENERATED_VIEW_POLICY:
+        errors.append(f"{field_name}.generated_view_policy must be {GENERATED_VIEW_POLICY}")
+    if value.get("source_read_required") is not True:
+        errors.append(f"{field_name}.source_read_required must be true")
+    if value.get("must_read_source_before_edit") is not True:
+        errors.append(f"{field_name}.must_read_source_before_edit must be true")
+    if value.get("completion_claim") != "not_claimed":
+        errors.append(f"{field_name}.completion_claim must be not_claimed")
+    return errors
+
+
 def _status_or_default(value: Any) -> str:
     status = str(value or "not_available").strip()
     return status if status in EVIDENCE_STATUSES else "not_available"
@@ -551,6 +692,19 @@ def _contains_secret_like_value(payload: Any) -> bool:
     if isinstance(payload, list):
         return any(_contains_secret_like_value(item) for item in payload)
     return False
+
+
+def _safe_string_list(value: Any) -> list[str]:
+    if not isinstance(value, list):
+        return []
+    return [str(item).strip() for item in value if str(item).strip()]
+
+
+def _int(value: Any) -> int:
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return 0
 
 
 def _valid_sha256_digest(value: str) -> bool:

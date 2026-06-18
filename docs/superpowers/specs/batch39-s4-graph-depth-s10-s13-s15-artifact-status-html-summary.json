@@ -1,0 +1,118 @@
+{
+  "artifact_kind": "batch39_s4_graph_depth_s10_s13_s15_artifact_status_html_summary",
+  "attempt_id": "B39-S4-GD-S10-S13-S15-A01",
+  "batch": "B39",
+  "slice": "B39-S4",
+  "date": "2026-06-18",
+  "status": "partial_pass_graph_depth_artifact_status_html_integration",
+  "source_status": "current-run local synthetic fixture evidence only",
+  "task_ids": [
+    "B39-S4-GRAPH-DEPTH-10",
+    "B39-S4-GRAPH-DEPTH-13",
+    "B39-S4-GRAPH-DEPTH-15"
+  ],
+  "summary": [
+    "Added bounded graph_depth_summary and graph_artifact_summary fields to the first-run analysis packet contract.",
+    "The first-run analysis renderer now carries graph summary data into the manifest and renders a Graph Packet Summary block on graph.html.",
+    "The status snapshot now projects coverage, freshness, rejected-link summary, framework semantic summary and safe agent packet refs without raw source, absolute paths or external refs.",
+    "All generated graph-depth surfaces keep generated_view_policy=orientation_only_not_proof, source-read requirements and not_claimed completion boundaries."
+  ],
+  "files_changed": [
+    "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+    "plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py",
+    "plugins/product-agent-os/scripts/product_agent_os/status_snapshot.py",
+    "tests/product_agent_os/test_first_run_analysis.py",
+    "tests/product_agent_os/test_status_snapshot.py"
+  ],
+  "agent_inputs": [
+    {
+      "role": "tester",
+      "result": "read-only RED/GREEN contract recommendation for graph summary packet, status snapshot projection, first-run HTML visibility and no-overclaim assertions"
+    },
+    {
+      "role": "product-manager",
+      "result": "read-only acceptance contract for graph status, freshness, coverage gaps, rejected links, safe next action, generated-view boundary and stale/unknown blockers"
+    },
+    {
+      "role": "docs-maintainer",
+      "result": "read-only control-plane sync recommendation for evidence filename, attempt id, status and remaining unsupported claims"
+    }
+  ],
+  "graph_summary_contract": {
+    "schema_version": "graph_depth_first_run_summary_v1",
+    "generated_view_policy": "orientation_only_not_proof",
+    "source_policy": "graph artifacts are generated orientation evidence, not source truth",
+    "source_read_required": true,
+    "must_read_source_before_edit": true,
+    "completion_claim": "not_claimed",
+    "decision_status": "manual_only",
+    "promotion_decision": "not_promoted",
+    "promotion_boundary": "manual_only_not_promoted",
+    "bounded_fields": [
+      "status",
+      "graph_packet_digest",
+      "agent_packet_refs",
+      "coverage",
+      "freshness",
+      "rejected_link_summary",
+      "framework_semantic_summary",
+      "guided_tour",
+      "unsupported_claims"
+    ]
+  },
+  "commands": [
+    {
+      "command": "python -m unittest tests.product_agent_os.test_first_run_analysis.FirstRunAnalysisPacketTests.test_graph_depth_artifact_pack_projects_graph_packets_into_first_run_html_without_proof_claims -v",
+      "red_result": "failed before implementation: build_first_run_analysis_packet did not accept graph_artifact_summary",
+      "green_result": "1 test OK"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_status_snapshot.StatusSnapshotTest.test_snapshot_projects_graph_depth_packet_summary_without_generated_view_as_proof -v",
+      "red_result": "failed before implementation: project_graph_summary did not project coverage",
+      "green_result": "1 test OK"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_first_run_analysis tests.product_agent_os.test_status_snapshot -v",
+      "result": "23 tests OK"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_project_graph_ontology tests.product_agent_os.test_project_graph_python_scanner tests.product_agent_os.test_project_graph_overlays tests.product_agent_os.test_project_graph_queries tests.product_agent_os.test_project_code_graph tests.product_agent_os.test_batch39_s1_contracts -v",
+      "result": "58 tests OK"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_first_run_analysis tests.product_agent_os.test_status_snapshot tests.product_agent_os.test_batch39_s1_contracts -v",
+      "result": "34 tests OK"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs tests.product_agent_os.test_task_plan_lifecycle tests.product_agent_os.test_infrastructure_templates -v",
+      "result": "179 tests OK"
+    },
+    {
+      "command": "python tools\\check_docs.py",
+      "result": "OK: documentation structure checks passed"
+    },
+    {
+      "command": "git diff --check",
+      "result": "OK"
+    }
+  ],
+  "approval_boundary": {
+    "target_workspace_mutation": "not_performed",
+    "browser_or_runtime_automation": "not_performed",
+    "provider_or_model_call": "not_performed",
+    "dependency_installation": "not_performed",
+    "git_stage_commit_push_pr": "not_performed",
+    "external_write": "not_performed"
+  },
+  "unsupported_claims": [
+    "This integration does not close B39-S4-GRAPH-DEPTH-00..15.",
+    "This integration does not prove SOL 0.6 or Neural Flow graph usefulness.",
+    "This integration does not prove source files were read or edited correctly.",
+    "This integration does not prove runtime routing, browser behavior, provider/model behavior, production readiness, release readiness, promotion, target apply, automation readiness or public documentation acceptance."
+  ],
+  "next_actions": [
+    "Run read-only real-target retest for the completed graph-depth packet/status/HTML contract only after exact approval names the target and allowed commands.",
+    "Continue broader B39-S4 hardening gates for public docs/site acceptance, offline asset and CLI matrix, runtime/browser QA harness, security/privacy, skill/subagent contracts, MCP/Context7 and onboarding.",
+    "Keep generated first-run graph HTML as orientation evidence only and require source reads before graph-backed edits or completion claims."
+  ]
+}

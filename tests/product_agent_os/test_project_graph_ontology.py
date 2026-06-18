@@ -2,6 +2,7 @@ import json
 import sys
 import unittest
 from pathlib import Path
+from tempfile import TemporaryDirectory
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -14,6 +15,10 @@ from product_agent_os.project_graph_ontology import (  # noqa: E402
     register_ontology_extension,
     validate_graph_schema,
 )
+from product_agent_os.project_code_graph import build_project_code_graph  # noqa: E402
+
+
+DECISION_ARTIFACT = ROOT / "docs" / "superpowers" / "specs" / "batch39-s4-graph-depth-s0-ontology-parser-decision.json"
 
 
 class ProjectGraphOntologyTest(unittest.TestCase):
@@ -32,8 +37,58 @@ class ProjectGraphOntologyTest(unittest.TestCase):
         self.assertIn("inferred", ontology["confidence_levels"])
         self.assertIn("unsupported", ontology["status_values"])
         self.assertEqual(ontology["language_support"]["python"], "supported")
+        self.assertEqual(ontology["language_support"]["typescript"], "supported_conservative_stdlib")
+        self.assertEqual(ontology["language_support"]["javascript"], "supported_conservative_stdlib")
         self.assertEqual(ontology["language_support"]["unknown"], "file_only")
         self.assertLessEqual(GRAPH_LIMITS["max_nodes"], 10_000)
+
+    def test_graph_depth_decision_artifact_records_ontology_and_parser_boundaries(self):
+        payload = json.loads(DECISION_ARTIFACT.read_text(encoding="utf-8"))
+
+        self.assertEqual(payload["artifact_kind"], "batch39_s4_graph_depth_ontology_parser_decision")
+        self.assertEqual(payload["status"], "accepted_local_decision_no_new_dependency")
+        self.assertEqual(
+            payload["task_ids"],
+            ["B39-S4-GRAPH-DEPTH-00", "B39-S4-GRAPH-DEPTH-07"],
+        )
+        self.assertEqual(payload["ontology_decision"]["core_node_types_added"], [])
+        self.assertEqual(payload["ontology_decision"]["core_edge_types_added"], [])
+        self.assertEqual(payload["ontology_decision"]["schema_migration_required"], False)
+        self.assertIn("component", payload["ontology_decision"]["framework_terms_kept_as_metadata"])
+        self.assertIn("api_route", payload["ontology_decision"]["framework_terms_kept_as_metadata"])
+        self.assertEqual(
+            payload["parser_dependency_decision"]["selected_option"],
+            "stdlib_regex_no_external_dependency",
+        )
+        self.assertEqual(payload["parser_dependency_decision"]["dependency_installation_required"], False)
+        self.assertEqual(payload["parser_dependency_decision"]["external_parser_dependency_allowed"], False)
+        self.assertIn("tree-sitter WASM", payload["parser_dependency_decision"]["deferred_options"])
+        self.assertIn("release readiness", " ".join(payload["unsupported_claims"]))
+
+    def test_project_graph_metadata_cites_graph_depth_decision(self):
+        with TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "workspace"
+            (workspace / "web").mkdir(parents=True)
+            (workspace / "web" / "widget.ts").write_text(
+                "export function Widget() {\n"
+                "  return null;\n"
+                "}\n",
+                encoding="utf-8",
+            )
+
+            graph = build_project_code_graph(workspace)
+            decision = graph["metadata"]["graph_depth_decision"]
+
+            self.assertEqual(decision["decision_id"], "B39-S4-GD-S0-ONTOLOGY-PARSER-DECISION")
+            self.assertEqual(decision["decision_artifact"], "docs/superpowers/specs/batch39-s4-graph-depth-s0-ontology-parser-decision.json")
+            self.assertEqual(decision["parser_dependency_policy"], "stdlib_regex_no_external_dependency")
+            self.assertEqual(decision["core_node_types_added"], [])
+            self.assertEqual(decision["schema_migration_required"], False)
+            self.assertEqual(
+                graph["metadata"]["language_support_summary"]["typescript"],
+                "supported_conservative_stdlib",
+            )
+            self.assertTrue(graph["validation"]["ok"], graph["validation"])
 
     def test_register_ontology_extension_keeps_core_terms_and_marks_extension(self):
         extended = register_ontology_extension(
