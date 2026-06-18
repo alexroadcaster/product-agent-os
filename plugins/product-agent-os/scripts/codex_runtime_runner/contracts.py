@@ -97,6 +97,10 @@ DETECTION_ONLY_METHODOLOGY_STATUSES = {
     "present_unverified",
 }
 METHODOLOGY_HIGH_RISK_ACTIONS = [
+    "live_runtime",
+    "browser_automation",
+    "provider_api_call",
+    "git_action",
     "publish",
     "deploy",
     "tag",
@@ -111,6 +115,30 @@ METHODOLOGY_HIGH_RISK_ACTIONS = [
     "external_system_mutation",
 ]
 HIGH_RISK_ACTION_PATTERNS = {
+    "live_runtime": [
+        re.compile(r"\blive server\b", re.IGNORECASE),
+        re.compile(r"\bstart (?:a )?(?:dev |local )?server\b", re.IGNORECASE),
+        re.compile(r"\brun(?:ning)? (?:the )?(?:app|runtime|server)\b", re.IGNORECASE),
+        re.compile(r"\bruntime execution\b", re.IGNORECASE),
+    ],
+    "browser_automation": [
+        re.compile(r"\bbrowser automation\b", re.IGNORECASE),
+        re.compile(r"\bplaywright\b", re.IGNORECASE),
+        re.compile(r"\bselenium\b", re.IGNORECASE),
+        re.compile(r"\bin-app browser\b", re.IGNORECASE),
+    ],
+    "provider_api_call": [
+        re.compile(r"\bprovider api\b", re.IGNORECASE),
+        re.compile(r"\bapi call\b", re.IGNORECASE),
+        re.compile(r"\bmodel call\b", re.IGNORECASE),
+        re.compile(r"\bexternal provider\b", re.IGNORECASE),
+        re.compile(r"\bcall provider\b", re.IGNORECASE),
+    ],
+    "git_action": [
+        re.compile(r"\bgit (?:push|commit|tag|checkout|merge|rebase|reset)\b", re.IGNORECASE),
+        re.compile(r"\bcreate (?:a )?branch\b", re.IGNORECASE),
+        re.compile(r"\bstage files\b", re.IGNORECASE),
+    ],
     "publish": [re.compile(r"\bpublish(?:ing)?\b", re.IGNORECASE)],
     "deploy": [re.compile(r"\bdeploy(?:ing|ed)?\b", re.IGNORECASE)],
     "tag": [re.compile(r"\btag\b", re.IGNORECASE)],

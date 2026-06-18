@@ -19,6 +19,7 @@ from codex_runtime_runner.contracts import (  # noqa: E402
     build_methodology_packet,
     build_result,
     classify_methodology_high_risk_actions,
+    methodology_requires_approval,
     validate_agent_skill_metrics_loop_packet,
     validate_completion_skeptic_recommendation_packet,
     validate_methodology_packet,
@@ -161,6 +162,20 @@ class CodexRuntimeRunnerContractsTest(unittest.TestCase):
 
         self.assertIn("methodology_packet.safe_next_action:required", errors)
         self.assertIn("methodology_packet.write_policy:must_be_read_only", errors)
+
+    def test_methodology_high_risk_classifier_covers_runtime_browser_provider_and_git(self):
+        packet = self._valid_methodology_packet()
+        packet["safe_next_action"] = (
+            "Start live server, run browser automation, call provider API, "
+            "and perform git push after first-run analysis."
+        )
+
+        actions = classify_methodology_high_risk_actions(packet)
+
+        for action in ["live_runtime", "browser_automation", "provider_api_call", "git_action"]:
+            with self.subTest(action=action):
+                self.assertIn(action, actions)
+        self.assertTrue(methodology_requires_approval(packet))
 
     def test_old_schema_v1_result_without_methodology_packet_remains_valid(self):
         result = build_result(
@@ -452,6 +467,10 @@ class CodexRuntimeRunnerContractsTest(unittest.TestCase):
         self.assertEqual(
             METHODOLOGY_HIGH_RISK_ACTIONS,
             [
+                "live_runtime",
+                "browser_automation",
+                "provider_api_call",
+                "git_action",
                 "publish",
                 "deploy",
                 "tag",

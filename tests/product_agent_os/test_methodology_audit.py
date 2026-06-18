@@ -219,6 +219,95 @@ class MethodologyAuditContractTest(unittest.TestCase):
         ]
         self.assertEqual(docs_recommendations, [])
 
+    def test_generated_first_run_gap_wording_does_not_force_heavy_methodology_gates(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "README.md").write_text("# Notes\n", encoding="utf-8")
+            analysis = root / ".codex" / "product-agent-os" / "analysis"
+            analysis.mkdir(parents=True)
+            (analysis / "first-run-overview.html").write_text(
+                "<p>Generated orientation-only page mentioning missing security, runtime, AI/RAG and release gaps.</p>\n",
+                encoding="utf-8",
+            )
+            result = build_methodology_audit(
+                root,
+                intent_hint=(
+                    "generated first-run orientation-only analysis mentions missing security, "
+                    "runtime, AI/RAG and release gaps for inspection"
+                ),
+                ignored_path_prefixes=(".codex/product-agent-os/analysis/",),
+            )
+
+        for domain_id in [
+            "llm_ai_rag",
+            "security_privacy_compliance",
+            "delivery_release_operations",
+        ]:
+            with self.subTest(domain_id=domain_id):
+                self.assertEqual(self._domain_status(result, domain_id), "not_applicable")
+
+        heavy_artifacts = {
+            "ai-eval-spec.md",
+            "security-risk-review.md",
+            "release-readiness.md",
+            "release-packet.md",
+        }
+        self.assertTrue(
+            heavy_artifacts.isdisjoint({recommendation["artifact"] for recommendation in result["recommendations"]})
+        )
+
+    def test_real_cross_domain_signals_still_route_methodology_gates(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "package.json").write_text(
+                '{"name":"synthetic-agentic-api","version":"1.0.0","scripts":{"test":"pytest"}}\n',
+                encoding="utf-8",
+            )
+            (root / "openapi.yaml").write_text(
+                "openapi: 3.1.0\ninfo:\n  title: Payments\n  version: 1.0.0\npaths: {}\n",
+                encoding="utf-8",
+            )
+            (root / "rag").mkdir()
+            (root / "rag" / "ingestion.py").write_text("def ingest():\n    pass\n", encoding="utf-8")
+            (root / "src" / "payments").mkdir(parents=True)
+            (root / "src" / "payments" / "charge.py").write_text(
+                "def charge(token):\n    return token\n",
+                encoding="utf-8",
+            )
+            (root / "CHANGELOG.md").write_text("# Changelog\n", encoding="utf-8")
+            result = build_methodology_audit(
+                root,
+                intent_hint=(
+                    "ship public payment API with RAG ingestion, external write, "
+                    "security-sensitive release readiness and owner-reviewed evidence"
+                ),
+            )
+
+        for domain_id in [
+            "api_integrations",
+            "llm_ai_rag",
+            "security_privacy_compliance",
+            "delivery_release_operations",
+        ]:
+            with self.subTest(domain_id=domain_id):
+                self.assertNotEqual(self._domain_status(result, domain_id), "not_applicable")
+
+        grouped_artifacts = [group["artifact"] for group in result["recommendation_groups"]]
+        for artifact in [
+            "approval-record.md",
+            "security-risk-review.md",
+            "api-contract-review.md",
+            "ai-eval-spec.md",
+            "release-readiness.md",
+        ]:
+            with self.subTest(artifact=artifact):
+                self.assertIn(artifact, grouped_artifacts)
+        self.assertLess(grouped_artifacts.index("approval-record.md"), grouped_artifacts.index("quality-strategy.md"))
+
     def test_business_product_intent_routes_domain_and_product_hypothesis_priority(self):
         from product_agent_os.methodology_audit import build_methodology_audit
 

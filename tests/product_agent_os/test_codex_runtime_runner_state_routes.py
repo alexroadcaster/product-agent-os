@@ -146,6 +146,33 @@ class CodexRuntimeRunnerStateRoutesTest(unittest.TestCase):
         self.assertTrue(route["approval_requirements"])
         self.assertNotIn("publish", " ".join(route["expected_outputs"]).lower())
 
+    def test_runtime_browser_provider_git_safe_next_actions_remain_approval_bound(self):
+        route = plan_route(
+            "quality_gate",
+            allow_subagents=False,
+            methodology_intelligence=self._methodology_intelligence(
+                artifact="runtime-approval-record.md",
+                safe_next_action=(
+                    "Start live server, run browser automation, call provider API, "
+                    "push git branch, create tag and deploy after first-run analysis."
+                ),
+                owner_domain="delivery_release_operations",
+            ),
+        )
+
+        approval_errors = validate_approval_boundary(route, {"approval_status": "not_required"})
+
+        self.assertEqual(route["write_policy"], "read_only")
+        self.assertIn("request_approval", route["finish_options"])
+        self.assertIn("approval:required_for_methodology_action", approval_errors)
+        self.assertIn(
+            "explicit approval required before methodology-recommended external or irreversible action",
+            route["approval_requirements"],
+        )
+        self.assertEqual(route["first_response_contract"]["approval_boundary"], "read_only")
+        self.assertIn("request_approval", route["first_response_contract"]["finish_options"])
+        self.assertNotIn("completed", route["finish_options"])
+
     def test_runner_status_maps_finish_options_without_staging_for_blocked_or_context_states(self):
         staged_route = plan_route(
             "requirements_ready",

@@ -30,6 +30,7 @@ def prepare_offline_payload(
     json_text = json.dumps(safe_payload, ensure_ascii=False, indent=2, sort_keys=True)
     byte_size = len(json_text.encode("utf-8"))
     if byte_size > max_json_bytes:
+        preserved_sections = _preserved_trimmed_sections(safe_payload)
         safe_payload = {
             "schema_version": 1,
             "write_policy": "read_only",
@@ -38,6 +39,7 @@ def prepare_offline_payload(
             "max_json_bytes": max_json_bytes,
             "original_json_bytes": byte_size,
             "summary": _payload_summary(safe_payload),
+            **preserved_sections,
         }
         json_text = json.dumps(safe_payload, ensure_ascii=False, indent=2, sort_keys=True)
         byte_size = len(json_text.encode("utf-8"))
@@ -142,6 +144,44 @@ def _payload_summary(payload: Any) -> dict[str, Any]:
     if isinstance(payload, list):
         return {"item_count": len(payload)}
     return {"payload_type": type(payload).__name__}
+
+
+def _preserved_trimmed_sections(payload: Any) -> dict[str, Any]:
+    if not isinstance(payload, dict):
+        return {}
+    preserved: dict[str, Any] = {}
+    hygiene = payload.get("system_file_hygiene")
+    if isinstance(hygiene, dict):
+        file_statuses = hygiene.get("file_statuses")
+        preserved["system_file_hygiene"] = {
+            "status": str(hygiene.get("status") or "not_available"),
+            "summary": hygiene.get("summary") if isinstance(hygiene.get("summary"), dict) else {},
+            "file_statuses": _bounded_file_statuses(file_statuses),
+            "source_policy": str(hygiene.get("source_policy") or "generated status summary is not source of truth"),
+        }
+    return preserved
+
+
+def _bounded_file_statuses(value: Any) -> list[dict[str, Any]]:
+    if not isinstance(value, list):
+        return []
+    allowed_keys = {
+        "path",
+        "class",
+        "owner",
+        "state",
+        "severity",
+        "finding_count",
+        "age_days",
+        "last_audit_at",
+        "top_finding",
+    }
+    statuses: list[dict[str, Any]] = []
+    for item in value[:8]:
+        if not isinstance(item, dict):
+            continue
+        statuses.append({key: item[key] for key in sorted(allowed_keys) if key in item})
+    return statuses
 
 
 def _unique(items: list[str]) -> list[str]:

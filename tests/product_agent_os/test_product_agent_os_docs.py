@@ -7183,11 +7183,11 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "python -m unittest tests.product_agent_os.test_first_run_analysis tests.product_agent_os.test_batch39_s1_contracts -v",
                 "python plugins\\product-agent-os\\scripts\\run_fixture_eval.py",
             ],
-            "plan": ["`B39-FRIA-M20.1..M20.10`", "`B39-TEST-M22-A01..A03`", "`B39-TEST-M23` is next"],
-            "test": ["`B39-FRIA-M20.1..M20.10`", "`B39-TEST-M21-A01..A03`", "`B39-TEST-M22-A01..A03`"],
+            "plan": ["`B39-TEST-M22-A01..A03`", "`B39-TEST-M23..M33`", "`B39-S4` hardening"],
+            "test": ["`B39-TEST-M21-A01..A03`", "`B39-TEST-M22-A01..A03`", "`B39-TEST-M23..M33`"],
             "evals": ["`B39-FRIA-M20.1..M20.10`", "accepted_risk"],
-            "runlog": ["`B39-TEST-M21-A01..A03`", "`B39-TEST-M22-A01..A03`", "`B39-TEST-M23`"],
-            "agents": ["`B39-FRIA-M20.1..M20.10`", "`B39-S3` / `B39-TEST-M23` is the next route"],
+            "runlog": ["`B39-TEST-M21-A01..A03`", "`B39-TEST-M22-A01..A03`", "`B39-TEST-M23..M33`"],
+            "agents": ["`B39-FRIA-M20.1..M20.10`", "`B39-S4` is the next route"],
             "track10_plan": ["`B39-FRIA-M20.10`", "`implemented`; `2026-06-18`"],
         }
 

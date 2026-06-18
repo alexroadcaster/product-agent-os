@@ -866,7 +866,7 @@ def build_methodology_audit(
     files, directories = _relative_inventory(root, ignored_path_prefixes=ignored_path_prefixes)
     lowered_files = {path.lower() for path in files}
     lowered_dirs = {path.lower() for path in directories}
-    intent = intent_hint.lower()
+    intent = _methodology_relevant_intent(intent_hint.lower())
     observed = _observed_signals(root, lowered_files, lowered_dirs)
     intent_signals = _intent_signals(intent)
     maturity_level = _classify_maturity(lowered_files, lowered_dirs, observed, intent)
@@ -956,6 +956,21 @@ def _relative_inventory(root: Path, *, ignored_path_prefixes: tuple[str, ...] = 
 def _is_ignored_inventory_path(path: str, ignored_prefixes: tuple[str, ...]) -> bool:
     normalized = path.lower().replace("\\", "/").rstrip("/")
     return any(normalized == prefix or normalized.startswith(f"{prefix}/") for prefix in ignored_prefixes)
+
+
+def _methodology_relevant_intent(intent: str) -> str:
+    if _is_generated_first_run_orientation_intent(intent):
+        return "generated first-run orientation-only inspection"
+    return intent
+
+
+def _is_generated_first_run_orientation_intent(intent: str) -> bool:
+    return (
+        "generated" in intent
+        and "first-run" in intent
+        and "orientation-only" in intent
+        and ("analysis" in intent or "inspection" in intent)
+    )
 
 
 def _observed_signals(root: Path, files: set[str], directories: set[str]) -> list[dict[str, Any]]:
@@ -1385,20 +1400,31 @@ def _security_signal_evidence(files: set[str], directories: set[str]) -> list[st
     evidence = [
         path
         for path in files
-        if path.startswith(directory_prefixes)
-        or _is_security_relevant_workflow(path)
-        or any(fragment in path for fragment in file_fragments)
-        or path in {"security.md", "dependabot.yml", "package-lock.json", "pnpm-lock.yaml", "yarn.lock", "poetry.lock"}
+        if not _is_generated_first_run_analysis_path(path)
+        and (
+            path.startswith(directory_prefixes)
+            or _is_security_relevant_workflow(path)
+            or any(fragment in path for fragment in file_fragments)
+            or path in {"security.md", "dependabot.yml", "package-lock.json", "pnpm-lock.yaml", "yarn.lock", "poetry.lock"}
+        )
     ]
     evidence.extend(
         directory
         for directory in directories
-        if directory in {"auth", "security", "privacy", "compliance", "audit", "abuse", "payments", "billing", "secrets"}
-        or directory.startswith(directory_prefixes)
+        if not _is_generated_first_run_analysis_path(directory)
+        and (
+            directory in {"auth", "security", "privacy", "compliance", "audit", "abuse", "payments", "billing", "secrets"}
+            or directory.startswith(directory_prefixes)
+        )
     )
     if _security_evidence_is_docs_only_article(evidence):
         return []
     return evidence
+
+
+def _is_generated_first_run_analysis_path(path: str) -> bool:
+    normalized = path.lower().replace("\\", "/").rstrip("/")
+    return normalized == ".codex/product-agent-os" or normalized.startswith(".codex/product-agent-os/analysis")
 
 
 def _is_security_relevant_workflow(path: str) -> bool:
