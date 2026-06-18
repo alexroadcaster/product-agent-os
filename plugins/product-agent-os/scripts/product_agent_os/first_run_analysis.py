@@ -2,6 +2,9 @@ from __future__ import annotations
 
 import json
 import re
+import subprocess
+import sys
+import time
 from pathlib import Path, PureWindowsPath
 from typing import Any
 
@@ -10,6 +13,10 @@ from product_agent_os.stage_manifest import canonical_json, content_digest
 
 FIRST_RUN_ANALYSIS_PACKET_SCHEMA_VERSION = "first_run_analysis_packet_v1"
 FIRST_RUN_ORCHESTRATOR_CONTRACT_SCHEMA_VERSION = "first_run_orchestrator_contract_v1"
+FIRST_RUN_SCRIPT_REGISTRY_SCHEMA_VERSION = "first_run_script_registry_v1"
+FIRST_RUN_COMMAND_MATRIX_SCHEMA_VERSION = "first_run_command_matrix_v1"
+FIRST_RUN_EVIDENCE_SUMMARY_SCHEMA_VERSION = "first_run_evidence_summary_v1"
+FIRST_RUN_RESUME_LEDGER_SCHEMA_VERSION = "first_run_resume_ledger_v1"
 FIRST_RUN_ANALYSIS_ARTIFACT_VERSION = 1
 GENERATED_VIEW_POLICY = "orientation_only_not_proof"
 WRITE_POLICY = "read_only_generated_analysis_only"
@@ -34,6 +41,17 @@ CONFIDENCE_LEVELS = {"high", "medium", "low", "unknown"}
 ANALYSIS_DIR = ".codex/product-agent-os/analysis"
 FIRST_RUN_PACKET_NAME = "first-run-analysis-packet.json"
 SECRET_LIKE_VALUE_RE = re.compile(r"\b(?:sk-proj|sk)-[A-Za-z0-9_-]{12,}")
+DEFAULT_SCRIPT_HELP_TIMEOUT_SECONDS = 10
+
+
+APPROVAL_REQUIRED_SCRIPTS = {
+    "merge_infrastructure.py",
+    "merge_markdown.py",
+    "prepare_windows_codex_permissions.py",
+}
+BLOCKED_LIVE_SCRIPTS = {
+    "run_codex_runtime_runner.py",
+}
 
 
 FIRST_RUN_UNSUPPORTED_CLAIMS = [
@@ -361,6 +379,15 @@ def run_first_project_analysis(
     if errors:
         raise ValueError("; ".join(errors))
 
+    scripts_root = Path(__file__).resolve().parents[1]
+    script_registry = build_first_run_script_registry(scripts_root)
+    registry_errors = validate_first_run_script_registry(script_registry)
+    if registry_errors:
+        raise ValueError("; ".join(registry_errors))
+    command_matrix = execute_first_run_safe_script_matrix(script_registry, generated_at=generated_at)
+    evidence_summary = normalize_first_run_command_outputs(command_matrix)
+    resume_ledger = build_first_run_resume_ledger(command_matrix)
+
     result: dict[str, Any] = {
         "status": "ok",
         "mode": "write" if write else "dry_run",
@@ -370,6 +397,10 @@ def run_first_project_analysis(
             "external_stage_required": False,
         },
         "packet": packet,
+        "script_registry": script_registry,
+        "command_matrix": command_matrix,
+        "evidence_summary": evidence_summary,
+        "resume_ledger": resume_ledger,
         "written_files": [],
     }
     if write:
@@ -388,6 +419,251 @@ def adapt_first_run_analysis_sections(analyzer_outputs: dict[str, dict[str, Any]
         section_id: _adapter_section_entry(analyzer_outputs.get(section_id, {}))
         for section_id in sorted(REQUIRED_SECTION_IDS)
     }
+
+
+def build_first_run_script_registry(scripts_root: str | Path) -> dict[str, Any]:
+    """Build a versioned registry for top-level Product-Agent OS scripts."""
+
+    root = Path(scripts_root)
+    scripts: list[dict[str, Any]] = []
+    for script_path in sorted(root.glob("*.py")):
+        source = script_path.read_text(encoding="utf-8", errors="replace")
+        risk_class = _classify_first_run_script(script_path.name, source)
+        help_contract = "present" if _has_help_contract(source) else "missing"
+        safe_to_execute = risk_class == "safe_read_only" and help_contract == "present"
+        execution_mode = "help_only" if safe_to_execute else "skip"
+        scripts.append(
+            {
+                "script": script_path.name,
+                "command_shape": f"python plugins/product-agent-os/scripts/{script_path.name} --help",
+                "safe_command": ["python", f"plugins/product-agent-os/scripts/{script_path.name}", "--help"],
+                "execution_mode": execution_mode,
+                "risk_class": risk_class,
+                "help_contract": help_contract,
+                "safe_to_execute": safe_to_execute,
+                "approval_required": risk_class in {"approval_required", "blocked_live"},
+                "timeout_seconds": DEFAULT_SCRIPT_HELP_TIMEOUT_SECONDS,
+                "expected_output_shape": "help_text",
+                "write_boundary": _script_write_boundary(risk_class),
+                "prerequisites": [],
+                "stop_condition": _script_stop_condition(risk_class, help_contract),
+            }
+        )
+    registry = {
+        "schema_version": FIRST_RUN_SCRIPT_REGISTRY_SCHEMA_VERSION,
+        "script_root": "plugins/product-agent-os/scripts",
+        "execution_policy": "help_only_safe_read_only_scripts",
+        "generated_view_policy": GENERATED_VIEW_POLICY,
+        "scripts": scripts,
+        "counts": _count_by_field(scripts, "risk_class"),
+    }
+    registry["registry_digest"] = content_digest(canonical_json(registry))
+    return registry
+
+
+def validate_first_run_script_registry(registry: Any) -> list[str]:
+    if not isinstance(registry, dict):
+        return ["first-run script registry must be an object"]
+    errors: list[str] = []
+    if registry.get("schema_version") != FIRST_RUN_SCRIPT_REGISTRY_SCHEMA_VERSION:
+        errors.append(f"schema_version must be {FIRST_RUN_SCRIPT_REGISTRY_SCHEMA_VERSION}")
+    scripts = registry.get("scripts")
+    if not isinstance(scripts, list) or not scripts:
+        return errors + ["scripts must be a non-empty list"]
+    seen: set[str] = set()
+    for index, row in enumerate(scripts):
+        if not isinstance(row, dict):
+            errors.append(f"scripts[{index}] must be an object")
+            continue
+        script = str(row.get("script", "")).strip()
+        if not script.endswith(".py") or not _safe_relative_path(script):
+            errors.append(f"scripts[{index}].script must be a top-level Python file name")
+        if script in seen:
+            errors.append(f"duplicate script registry row: {script}")
+        seen.add(script)
+        if row.get("risk_class") not in {"safe_read_only", "approval_required", "blocked_live"}:
+            errors.append(f"scripts[{index}].risk_class missing or invalid")
+        if row.get("help_contract") not in {"present", "missing"}:
+            errors.append(f"scripts[{index}].help_contract missing or invalid")
+        if row.get("help_contract") != "present":
+            errors.append(f"scripts[{index}].help_contract must be present")
+        if row.get("execution_mode") not in {"help_only", "skip"}:
+            errors.append(f"scripts[{index}].execution_mode missing or invalid")
+        if not isinstance(row.get("safe_to_execute"), bool):
+            errors.append(f"scripts[{index}].safe_to_execute must be boolean")
+        if not isinstance(row.get("timeout_seconds"), int) or row.get("timeout_seconds", 0) <= 0:
+            errors.append(f"scripts[{index}].timeout_seconds must be a positive integer")
+        safe_command = row.get("safe_command")
+        if not isinstance(safe_command, list) or "--help" not in [str(part) for part in safe_command]:
+            errors.append(f"scripts[{index}].safe_command must include --help")
+        if _contains_local_absolute_path(row):
+            errors.append(f"scripts[{index}] leaks a local absolute path")
+    return errors
+
+
+def execute_first_run_safe_script_matrix(
+    registry: dict[str, Any],
+    *,
+    executor: Any | None = None,
+    generated_at: str = "",
+) -> dict[str, Any]:
+    """Execute only safe help-only rows from the first-run script registry."""
+
+    runner = executor or _default_help_executor
+    commands: list[dict[str, Any]] = []
+    for row in registry.get("scripts", []):
+        if not isinstance(row, dict):
+            continue
+        risk_class = str(row.get("risk_class", "blocked_live"))
+        command_entry = {
+            "script": str(row.get("script", "")).strip(),
+            "risk_class": risk_class,
+            "execution_mode": str(row.get("execution_mode", "skip")),
+            "safe_command": _safe_command_parts(row.get("safe_command")),
+            "command": _command_string(row.get("safe_command")),
+            "raw_stdout_stored": False,
+            "raw_stderr_stored": False,
+            "redaction_status": {
+                "status": "passed_redacted",
+                "raw_stdout_stored": False,
+                "raw_stderr_stored": False,
+                "local_absolute_paths_allowed": False,
+                "secrets_allowed": False,
+            },
+        }
+        if row.get("safe_to_execute") is not True:
+            command_entry.update(
+                {
+                    "status": _skip_status_for_risk(risk_class),
+                    "exit_code": None,
+                    "duration_ms": 0,
+                    "stdout_digest": content_digest(""),
+                    "stderr_digest": content_digest(""),
+                    "stdout_line_count": 0,
+                    "stderr_line_count": 0,
+                    "skip_reason": str(row.get("stop_condition", "approval or live runtime boundary")),
+                }
+            )
+            commands.append(command_entry)
+            continue
+        try:
+            result = runner(row)
+            exit_code = _int(result.get("exit_code"))
+            duration_ms = _int(result.get("duration_ms"))
+            stdout = str(result.get("stdout", ""))
+            stderr = str(result.get("stderr", ""))
+            command_entry.update(
+                {
+                    "status": "passed" if exit_code == 0 else "failed",
+                    "exit_code": exit_code,
+                    "duration_ms": duration_ms,
+                    "stdout_digest": content_digest(stdout),
+                    "stderr_digest": content_digest(stderr),
+                    "stdout_line_count": _line_count(stdout),
+                    "stderr_line_count": _line_count(stderr),
+                }
+            )
+        except subprocess.TimeoutExpired:
+            command_entry.update(
+                {
+                    "status": "failed",
+                    "exit_code": None,
+                    "duration_ms": _int(row.get("timeout_seconds")) * 1000,
+                    "stdout_digest": content_digest(""),
+                    "stderr_digest": content_digest("timeout"),
+                    "stdout_line_count": 0,
+                    "stderr_line_count": 1,
+                    "failure_reason": "timeout",
+                }
+            )
+        commands.append(command_entry)
+    matrix = {
+        "schema_version": FIRST_RUN_COMMAND_MATRIX_SCHEMA_VERSION,
+        "generated_at": str(generated_at),
+        "execution_policy": "safe_help_only_no_target_mutation",
+        "commands": commands,
+        "counts": _count_by_field(commands, "status"),
+        "completion_claim": "not_claimed",
+        "generated_view_policy": GENERATED_VIEW_POLICY,
+    }
+    matrix["matrix_digest"] = content_digest(canonical_json(matrix))
+    return matrix
+
+
+def normalize_first_run_command_outputs(matrix: dict[str, Any]) -> dict[str, Any]:
+    """Build a bounded evidence summary from the command matrix."""
+
+    commands = [row for row in matrix.get("commands", []) if isinstance(row, dict)]
+    counts = _count_by_field(commands, "status")
+    failed = sorted(str(row.get("script", "")) for row in commands if row.get("status") == "failed")
+    skipped_approval = sorted(
+        str(row.get("script", ""))
+        for row in commands
+        if row.get("status") == "skipped_approval_required"
+    )
+    skipped_live = sorted(
+        str(row.get("script", ""))
+        for row in commands
+        if row.get("status") == "skipped_blocked_live"
+    )
+    if failed:
+        overall_status = "partial_failure"
+    elif skipped_approval or skipped_live:
+        overall_status = "partial_with_skips"
+    elif commands and counts.get("passed", 0) == len(commands):
+        overall_status = "complete"
+    else:
+        overall_status = "not_available"
+    summary = {
+        "schema_version": FIRST_RUN_EVIDENCE_SUMMARY_SCHEMA_VERSION,
+        "overall_status": overall_status,
+        "counts": counts,
+        "failed_commands": failed,
+        "skipped_commands": sorted(skipped_approval + skipped_live),
+        "approval_required_commands": skipped_approval,
+        "blocked_live_commands": skipped_live,
+        "redaction_status": {
+            "raw_stdout_stored": False,
+            "raw_stderr_stored": False,
+            "local_absolute_paths_allowed": False,
+            "secrets_allowed": False,
+        },
+        "completion_claim": "not_claimed",
+        "safe_next_action": _safe_next_action_for_command_summary(overall_status),
+    }
+    summary["summary_digest"] = content_digest(canonical_json(summary))
+    return summary
+
+
+def build_first_run_resume_ledger(matrix: dict[str, Any]) -> dict[str, Any]:
+    """Build the partial-failure and resume ledger for first-run command evidence."""
+
+    commands = [row for row in matrix.get("commands", []) if isinstance(row, dict)]
+    summary = normalize_first_run_command_outputs({"commands": commands})
+    failed_rows = [row for row in commands if row.get("status") == "failed"]
+    approval_rows = [row for row in commands if row.get("status") == "skipped_approval_required"]
+    blocked_rows = [row for row in commands if row.get("status") == "skipped_blocked_live"]
+    resume_commands = [
+        {
+            "script": str(row.get("script", "")),
+            "command": _command_string(row.get("safe_command")),
+            "reason": "previous_run_failed",
+        }
+        for row in failed_rows
+    ]
+    ledger = {
+        "schema_version": FIRST_RUN_RESUME_LEDGER_SCHEMA_VERSION,
+        "status": summary["overall_status"],
+        "completion_claim": "not_claimed",
+        "resume_required_for": sorted(str(row.get("script", "")) for row in failed_rows),
+        "approval_required_for": sorted(str(row.get("script", "")) for row in approval_rows),
+        "blocked_live_for": sorted(str(row.get("script", "")) for row in blocked_rows),
+        "resume_commands": resume_commands,
+        "safe_next_action": _safe_next_action_for_command_summary(summary["overall_status"]),
+        "state_policy": "passed_blocked_failed_skipped_states_are_preserved",
+    }
+    ledger["ledger_digest"] = content_digest(canonical_json(ledger))
+    return ledger
 
 
 def _source_artifact_entry(item: dict[str, Any]) -> dict[str, Any]:
@@ -826,6 +1102,102 @@ def _safe_string_list(value: Any) -> list[str]:
     return [str(item).strip() for item in value if str(item).strip()]
 
 
+def _classify_first_run_script(script_name: str, source: str) -> str:
+    if script_name in BLOCKED_LIVE_SCRIPTS:
+        return "blocked_live"
+    if script_name in APPROVAL_REQUIRED_SCRIPTS:
+        return "approval_required"
+    if re.search(r"\b(--apply|rollback|Start-Process|browser|provider|deploy|publish)\b", source):
+        return "approval_required"
+    return "safe_read_only"
+
+
+def _has_help_contract(source: str) -> bool:
+    return any(
+        marker in source
+        for marker in ("argparse", "ArgumentParser", "--help", "def main", "main(sys.argv", 'if __name__ == "__main__"')
+    )
+
+
+def _script_write_boundary(risk_class: str) -> str:
+    if risk_class == "safe_read_only":
+        return "help_only_no_target_mutation"
+    if risk_class == "approval_required":
+        return "script_has_write_or_apply_modes_approval_required"
+    return "live_runtime_or_external_boundary_blocked"
+
+
+def _script_stop_condition(risk_class: str, help_contract: str) -> str:
+    if help_contract != "present":
+        return "missing help contract"
+    if risk_class == "safe_read_only":
+        return "stop if help output leaks raw source, secrets or local absolute paths"
+    if risk_class == "approval_required":
+        return "approval required before non-help execution"
+    return "live/runtime/provider/browser boundary requires exact approval"
+
+
+def _count_by_field(rows: list[dict[str, Any]], field: str) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for row in rows:
+        key = str(row.get(field, "unknown")).strip() or "unknown"
+        counts[key] = counts.get(key, 0) + 1
+    return dict(sorted(counts.items()))
+
+
+def _safe_command_parts(value: Any) -> list[str]:
+    if not isinstance(value, list):
+        return []
+    return [_safe_relative_ref(str(part)) if index > 0 else str(part).strip() for index, part in enumerate(value)]
+
+
+def _command_string(value: Any) -> str:
+    return " ".join(_safe_command_parts(value))
+
+
+def _skip_status_for_risk(risk_class: str) -> str:
+    if risk_class == "approval_required":
+        return "skipped_approval_required"
+    if risk_class == "blocked_live":
+        return "skipped_blocked_live"
+    return "skipped_not_applicable"
+
+
+def _line_count(value: str) -> int:
+    if not value:
+        return 0
+    return len(value.splitlines())
+
+
+def _default_help_executor(row: dict[str, Any]) -> dict[str, Any]:
+    script_name = str(row.get("script", "")).strip()
+    script_path = Path(__file__).resolve().parents[1] / script_name
+    started = time.perf_counter()
+    result = subprocess.run(
+        [sys.executable, str(script_path), "--help"],
+        check=False,
+        capture_output=True,
+        text=True,
+        timeout=_int(row.get("timeout_seconds")) or DEFAULT_SCRIPT_HELP_TIMEOUT_SECONDS,
+    )
+    return {
+        "exit_code": result.returncode,
+        "duration_ms": int((time.perf_counter() - started) * 1000),
+        "stdout": result.stdout,
+        "stderr": result.stderr,
+    }
+
+
+def _safe_next_action_for_command_summary(overall_status: str) -> str:
+    if overall_status == "partial_failure":
+        return "Inspect failed help-only command rows, fix the local script contract, then rerun first-run analysis."
+    if overall_status == "partial_with_skips":
+        return "Review approval-required or live-bound scripts before any non-help execution."
+    if overall_status == "complete":
+        return "Continue to the next first-run integration slice without claiming release or runtime readiness."
+    return "Review the command matrix before continuing."
+
+
 def _int(value: Any) -> int:
     try:
         return int(value)
@@ -850,7 +1222,12 @@ __all__ = [
     "adapt_first_run_analysis_sections",
     "build_first_run_analysis_packet",
     "build_first_run_automation_contract",
+    "build_first_run_resume_ledger",
+    "build_first_run_script_registry",
+    "execute_first_run_safe_script_matrix",
+    "normalize_first_run_command_outputs",
     "run_first_project_analysis",
     "validate_first_run_automation_contract",
     "validate_first_run_analysis_packet",
+    "validate_first_run_script_registry",
 ]

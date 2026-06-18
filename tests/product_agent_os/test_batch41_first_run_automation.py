@@ -178,6 +178,135 @@ class Batch41FirstRunAutomationTests(unittest.TestCase):
             self.assertTrue(all(path.startswith(".codex/product-agent-os/analysis/") for path in added_files))
             self.assertNotIn(str(workspace), result.stdout)
 
+    def test_b41_m06_script_registry_covers_all_top_level_scripts_with_risk_classification(self) -> None:
+        from product_agent_os.first_run_analysis import (  # noqa: PLC0415
+            build_first_run_script_registry,
+            validate_first_run_script_registry,
+        )
+
+        registry = build_first_run_script_registry(SCRIPTS)
+        script_names = {row["script"] for row in registry["scripts"]}
+        top_level_scripts = {path.name for path in SCRIPTS.glob("*.py")}
+
+        self.assertEqual(registry["schema_version"], "first_run_script_registry_v1")
+        self.assertEqual(script_names, top_level_scripts)
+        self.assertEqual(validate_first_run_script_registry(registry), [])
+        for row in registry["scripts"]:
+            self.assertIn(row["risk_class"], {"safe_read_only", "approval_required", "blocked_live"})
+            self.assertIn(row["help_contract"], {"present", "missing"})
+            self.assertIn(row["execution_mode"], {"help_only", "skip"})
+            self.assertNotIn(str(ROOT), json.dumps(row, sort_keys=True))
+        by_script = {row["script"]: row for row in registry["scripts"]}
+        self.assertEqual(by_script["run_first_project_analysis.py"]["risk_class"], "safe_read_only")
+        self.assertEqual(by_script["merge_infrastructure.py"]["risk_class"], "approval_required")
+        self.assertEqual(by_script["run_codex_runtime_runner.py"]["risk_class"], "blocked_live")
+
+    def test_b41_m07_executes_only_safe_help_matrix_and_keeps_redacted_digests(self) -> None:
+        from product_agent_os.first_run_analysis import execute_first_run_safe_script_matrix  # noqa: PLC0415
+
+        registry = {
+            "schema_version": "first_run_script_registry_v1",
+            "scripts": [
+                {
+                    "script": "safe_tool.py",
+                    "risk_class": "safe_read_only",
+                    "execution_mode": "help_only",
+                    "safe_to_execute": True,
+                    "safe_command": ["python", "safe_tool.py", "--help"],
+                    "timeout_seconds": 10,
+                },
+                {
+                    "script": "merge_infrastructure.py",
+                    "risk_class": "approval_required",
+                    "execution_mode": "skip",
+                    "safe_to_execute": False,
+                    "safe_command": ["python", "merge_infrastructure.py", "--help"],
+                    "timeout_seconds": 10,
+                },
+            ],
+        }
+        calls: list[str] = []
+
+        def fake_executor(row: dict) -> dict:
+            calls.append(row["script"])
+            return {
+                "exit_code": 0,
+                "duration_ms": 12,
+                "stdout": "usage: safe_tool.py C:/Users/user/Desktop/project/codex_docs\n",
+                "stderr": "",
+            }
+
+        matrix = execute_first_run_safe_script_matrix(registry, executor=fake_executor)
+        by_script = {row["script"]: row for row in matrix["commands"]}
+
+        self.assertEqual(calls, ["safe_tool.py"])
+        self.assertEqual(by_script["safe_tool.py"]["status"], "passed")
+        self.assertEqual(by_script["merge_infrastructure.py"]["status"], "skipped_approval_required")
+        self.assertIn("stdout_digest", by_script["safe_tool.py"])
+        self.assertNotIn("stdout", by_script["safe_tool.py"])
+        self.assertNotIn(str(ROOT), json.dumps(matrix, sort_keys=True))
+
+    def test_b41_m08_normalizes_command_outputs_without_hiding_failures(self) -> None:
+        from product_agent_os.first_run_analysis import normalize_first_run_command_outputs  # noqa: PLC0415
+
+        matrix = {
+            "schema_version": "first_run_command_matrix_v1",
+            "commands": [
+                {"script": "detect_project.py", "status": "passed", "exit_code": 0, "risk_class": "safe_read_only"},
+                {"script": "scan_project_code_graph.py", "status": "failed", "exit_code": 1, "risk_class": "safe_read_only"},
+                {"script": "merge_infrastructure.py", "status": "skipped_approval_required", "exit_code": None, "risk_class": "approval_required"},
+            ],
+        }
+
+        summary = normalize_first_run_command_outputs(matrix)
+
+        self.assertEqual(summary["schema_version"], "first_run_evidence_summary_v1")
+        self.assertEqual(summary["counts"]["passed"], 1)
+        self.assertEqual(summary["counts"]["failed"], 1)
+        self.assertEqual(summary["counts"]["skipped_approval_required"], 1)
+        self.assertEqual(summary["completion_claim"], "not_claimed")
+        self.assertIn("scan_project_code_graph.py", summary["failed_commands"])
+        self.assertEqual(summary["overall_status"], "partial_failure")
+
+    def test_b41_m09_resume_ledger_records_partial_failure_and_safe_rerun_hints(self) -> None:
+        from product_agent_os.first_run_analysis import build_first_run_resume_ledger  # noqa: PLC0415
+
+        matrix = {
+            "schema_version": "first_run_command_matrix_v1",
+            "commands": [
+                {
+                    "script": "detect_project.py",
+                    "status": "passed",
+                    "exit_code": 0,
+                    "risk_class": "safe_read_only",
+                    "safe_command": ["python", "detect_project.py", "--help"],
+                },
+                {
+                    "script": "scan_project_code_graph.py",
+                    "status": "failed",
+                    "exit_code": 1,
+                    "risk_class": "safe_read_only",
+                    "safe_command": ["python", "scan_project_code_graph.py", "--help"],
+                },
+                {
+                    "script": "merge_infrastructure.py",
+                    "status": "skipped_approval_required",
+                    "exit_code": None,
+                    "risk_class": "approval_required",
+                    "safe_command": ["python", "merge_infrastructure.py", "--help"],
+                },
+            ],
+        }
+
+        ledger = build_first_run_resume_ledger(matrix)
+
+        self.assertEqual(ledger["schema_version"], "first_run_resume_ledger_v1")
+        self.assertEqual(ledger["status"], "partial_failure")
+        self.assertEqual(ledger["completion_claim"], "not_claimed")
+        self.assertIn("scan_project_code_graph.py", ledger["resume_required_for"])
+        self.assertIn("merge_infrastructure.py", ledger["approval_required_for"])
+        self.assertIn("--help", ledger["resume_commands"][0]["command"])
+
 
 if __name__ == "__main__":
     unittest.main()

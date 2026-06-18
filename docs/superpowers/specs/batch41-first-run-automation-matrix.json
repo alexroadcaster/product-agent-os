@@ -156,7 +156,8 @@
       "codex_does": "Inventory safe scripts, modes, prerequisites, timeout, mutation risk and expected output shape.",
       "user_does": "Review scripts considered unsafe or approval-gated.",
       "acceptance": "Matrix covers every top-level Product-Agent OS script and classifies safe, blocked and live modes.",
-      "stop_condition": "Stop if a script lacks help or risk classification."
+      "stop_condition": "Stop if a script lacks help or risk classification.",
+      "status": "implemented"
     },
     {
       "id": "B41-S2-M07",
@@ -167,7 +168,8 @@
       "codex_does": "Run safe commands with timeouts, redaction and structured capture.",
       "user_does": "No action unless approval-gated commands are desired.",
       "acceptance": "Command-result artifact records exit code, status, duration, redaction and normalized summary.",
-      "stop_condition": "Stop if command output includes raw source, secrets or absolute target paths in generated view."
+      "stop_condition": "Stop if command output includes raw source, secrets or absolute target paths in generated view.",
+      "status": "implemented"
     },
     {
       "id": "B41-S2-M08",
@@ -178,7 +180,8 @@
       "codex_does": "Extend real_target_evidence_summary_v1 or create first_run_evidence_summary_v1.",
       "user_does": "Review whether summary answers product questions.",
       "acceptance": "Tests cover nested shapes for all included commands.",
-      "stop_condition": "Stop if any failed command is hidden as success."
+      "stop_condition": "Stop if any failed command is hidden as success.",
+      "status": "implemented"
     },
     {
       "id": "B41-S2-M09",
@@ -189,7 +192,8 @@
       "codex_does": "Record passed, blocked, failed, skipped_approval_required and not_applicable states.",
       "user_does": "Decide whether to rerun after fixing blockers.",
       "acceptance": "Fixture with failing graph still renders risks and next action.",
-      "stop_condition": "Stop if final summary claims completion after missing critical evidence."
+      "stop_condition": "Stop if final summary claims completion after missing critical evidence.",
+      "status": "implemented"
     },
     {
       "id": "B41-S3-M10",

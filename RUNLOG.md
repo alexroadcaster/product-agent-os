@@ -24,6 +24,7 @@ Last compacted: 2026-06-11
 - `B39-FIX-M40-PARTIAL-LANGUAGE-SUMMARY-001` records the full-discovery regression fix found after S4 remaining gates. Evidence: `project_graph_analysis.py` now separates `partial_language_summary` from `unsupported_language_summary`, so TypeScript/JavaScript conservative stdlib support is visible without being mislabeled unsupported; focused graph-analysis tests passed and full unittest discovery passed 983 tests with 1 skipped.
 - `B39-S5-CLOSURE-A01` records Batch 39 closure/go-no-go with agents and skills. Evidence: `docs/superpowers/specs/batch39-s5-closure-summary.json`, `docs/superpowers/specs/batch39-s5-go-no-go-decision-packet.json`, `docs/superpowers/specs/batch39-s5-no-unapproved-actions-proof.json` and `docs/superpowers/specs/batch39-s5-owner-feedback-test-plan.json`. Decision: release/distribution `no_go`, owner-feedback testing `conditional_go`, runtime/browser pilot `approval_required`; all no-unapproved-actions surfaces remain false.
 - `B41-S1-COMMAND-CONTRACT-A01` records Batch 41 first-run command/UX contract implementation with agents and skills. Evidence: `docs/superpowers/specs/batch41-s1-command-contract-summary.json`; `B41-S1-M01..M05` are implemented for `first_run_orchestrator_contract_v1`, no-args help, `--full-dry-run`, external `--stage <dir>`, approved `--write-analysis`, stage-inside-target blocking and renderer stage output support. Agent `Archivist` provided read-only fresh-context handoff. No live server, browser automation, provider/API, MCP external call, git action, release/deploy/publish, active automation or external write was performed.
+- `B41-S2-SCRIPT-MATRIX-A01` records Batch 41 first-run script-matrix implementation with agents and skills. Evidence: `docs/superpowers/specs/batch41-s2-script-matrix-summary.json`; `B41-S2-M06..M09` are implemented for `first_run_script_registry_v1`, `first_run_command_matrix_v1`, `first_run_evidence_summary_v1` and `first_run_resume_ledger_v1`. The current local help-only matrix covers 34 top-level scripts: 26 passed safe help commands, 7 skipped approval-required rows and 1 skipped live-bound row; completion remains `not_claimed`. Agent `Scout` provided read-only inventory and stop-condition handoff. No live server, browser automation, provider/API, MCP external call, git action, release/deploy/publish, active automation or external write was performed.
 - Current unrelated dirty work observed before this cleanup must be preserved and not reverted:
   - `.product-agent-os-status-current/.codex/product-agent-os/status.html` deleted;
   - `.product-agent-os-status-current/.codex/product-agent-os/status.json` deleted;
@@ -40,7 +41,7 @@ Last compacted: 2026-06-11
 | `B38-PILOT-NF01` | Docs-only target pilot addendum completed. | Target apply remains blocked by `source_policy_status: blocked` and missing target control-plane/source registry artifacts. |
 | Batch 39 | Executed through `B39-S5-CLOSURE-A01` as local/read-only/contract evidence. | Continue with manual owner-feedback testing. Store evidence in `codex_docs`, and do not mutate `SOL 0.6`, `Neural Flow` or any target without exact approval. Runtime/browser/provider/model/vector/eval/live-database/migration/production-data/git/GitHub/release/deploy/publish/automation/external actions still require exact approval. |
 | Batch 40 completion-skeptic | Closed as local manual foundation through `B40-S5`. | Promotion state remains `manual_only` and `not_promoted`. |
-| Batch 41 first-run orchestration | `B41-S1-M01..M05` implemented as local CLI/contract behavior. | Continue with `B41-S2-M06..M09`; no full B41 closure, real-target pilot, runtime/browser proof, release readiness, automation promotion or plugin-cache readiness is claimed. |
+| Batch 41 first-run orchestration | `B41-S1-M01..M05` and `B41-S2-M06..M09` implemented as local CLI/contract behavior. | Continue with `B41-S3-M10..M16`; no full B41 closure, real-target pilot, runtime/browser proof, release readiness, automation promotion or plugin-cache readiness is claimed. |
 | Agent lifecycle/control-plane sync | Config-routed lifecycle contract implemented for local project agents and packaged Product-Agent OS templates, not as active automation. | Before non-mechanical work, agents must load `[product_agent_os.lifecycle_contract]`, show visible briefs, and before closing update owned control-plane files or record `not_applicable` / `handoff_required`. |
 
 ## Control-Plane Marker Bank
@@ -71,7 +72,7 @@ These markers are retained as compact discovery anchors, not as full evidence:
 - Batch 38 markers: `B38-S1`, `B38-S2`, `B38-S3`, `B38-S4`, `B38-PILOT-NF01`, `blocked_pending_explicit_cache_mutation_approval`, `blocked_sandbox_cache_write_denied_after_backup_stage`.
 - Batch 39 markers: `B39-S1`, `B39-S2`, `B39-S3`, `B39-S4`, `B39-S5`, `B39-TEST-M01..M54`.
 - Batch 40 markers: `B40-S2`, `B40-S3`, `B40-S4`, `B40-S5`, `B40-DVL-M22`, `B40-DVL-M23`, `B40-DVL-M24`, `completion_skeptic_manual_pilot_ledger`, `completion_skeptic_go_no_go_closure`, `implemented_pilot_metrics_closure_manual_only`, `manual_only`, `not_promoted`.
-- Batch 41 markers: `B41-S1-M01..M05`, `first_run_orchestrator_contract_v1`, `--full-dry-run`, `--stage <dir>`, `--write-analysis`, `batch41-s1-command-contract-summary.json`.
+- Batch 41 markers: `B41-S1-M01..M05`, `B41-S2-M06..M09`, `first_run_orchestrator_contract_v1`, `first_run_script_registry_v1`, `first_run_command_matrix_v1`, `first_run_evidence_summary_v1`, `first_run_resume_ledger_v1`, `--full-dry-run`, `--stage <dir>`, `--write-analysis`, `batch41-s1-command-contract-summary.json`, `batch41-s2-script-matrix-summary.json`.
 - Product-Agent OS Track 10 Task 26 Batch 35 approval-bound real testing execution matrix.
 - `done_through_m40` is historical status context, not permission for new execution.
 
@@ -85,9 +86,9 @@ These markers are retained as compact discovery anchors, not as full evidence:
 
 ## Current Batch 41 Handoff
 
-- Latest completed route: `B41-S1` command/UX contract is implemented through `B41-S1-COMMAND-CONTRACT-A01`.
-- Evidence refs: `docs/superpowers/specs/batch41-s1-command-contract-summary.json`, `docs/superpowers/specs/batch41-first-run-automation-matrix.json`, focused B41/first-run tests and docs contract tests.
-- Next active route: `B41-S2-M06..M09` all-script registry, safe read-only matrix, output normalization and partial-failure/resume ledger.
+- Latest completed route: `B41-S2` help-only script matrix is implemented through `B41-S2-SCRIPT-MATRIX-A01`.
+- Evidence refs: `docs/superpowers/specs/batch41-s1-command-contract-summary.json`, `docs/superpowers/specs/batch41-s2-script-matrix-summary.json`, `docs/superpowers/specs/batch41-first-run-automation-matrix.json`, focused B41/first-run tests and docs contract tests.
+- Next active route: `B41-S3-M10..M16` project-analysis integration for discovery, methodology, source-policy, graph, docs/logging, dependency/offline and runtime/browser boundary summaries.
 - Approval boundary: no real-target mutation, live server, browser automation, provider/API/MCP call, git write, release/deploy/publish, automation activation or external write without exact approval.
 
 ## Verification Runbook
@@ -109,7 +110,7 @@ Strict MkDocs is required only when navigation, Mermaid diagrams, Markdown exten
 - Batch 39 is closed for manual owner-feedback testing only; owner-feedback results and any runtime/browser pilot remain pending.
 - `B38-PILOT-NF01` target apply remains blocked by source-policy and target-artifact gaps.
 - Batch 40 completion-skeptic automation is still `manual_only` and `not_promoted`.
-- Batch 41 is only implemented through S1; S2-S6, real-target pilots, full first-run orchestration closure, runtime/browser proof and plugin-cache readiness remain open.
+- Batch 41 is only implemented through S2; S3-S6, real-target pilots, full first-run orchestration closure, runtime/browser proof and plugin-cache readiness remain open.
 - Historical detail has been intentionally moved out of root control-plane files; future broad historical claims should cite the source backlogs or registry.
 
 <!-- product-agent-os:end runlog -->
