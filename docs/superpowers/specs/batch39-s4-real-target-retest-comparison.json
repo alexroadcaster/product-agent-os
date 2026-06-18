@@ -1,0 +1,245 @@
+{
+  "architecture_problem_candidates": [
+    {
+      "evidence": "top_path_prefixes include antigravity-awesome-skills-main as dominant graph prefix",
+      "id": "B39-REAL-RET-ARCH-001",
+      "severity": "high",
+      "summary": "Target appears to combine product code, local agent rules and a large imported skill corpus in one workspace boundary, so scanners cannot infer the intended system boundary cleanly.",
+      "target": "SOL 0.6"
+    },
+    {
+      "evidence": "missing_control_plane and risks in Neural Flow detect_project_summary",
+      "id": "B39-REAL-RET-ARCH-002",
+      "severity": "medium",
+      "summary": "Target has control-plane docs but lacks durable AGENTS.md, docs-as-code ownership and product measurement evidence; it stays useful as expected-block, not clean-positive.",
+      "target": "Neural Flow"
+    },
+    {
+      "evidence": "source_policy_summary.status=blocked and runtime_contract_summary.status=blocked for both targets",
+      "id": "B39-REAL-RET-ARCH-003",
+      "severity": "medium",
+      "summary": "Source-policy blocks are stable and useful, but they also mean real-target retests still cannot validate target apply, runtime/browser behavior or release readiness.",
+      "target": "both"
+    }
+  ],
+  "artifact_refs": [
+    "batch39-s4-retest-neural_flow-summary.json",
+    "batch39-s4-retest-sol_0_6-summary.json"
+  ],
+  "batch": "B39",
+  "comparison_basis": [
+    "B39-TEST-M21 real-target summaries",
+    "B39-TEST-M22 real-target retest summaries",
+    "post-B39-S3 read-only retest summaries"
+  ],
+  "cross_target_findings": [
+    "Both targets preserve read-only first-run dry-run behavior and did not create target analysis directories.",
+    "Both targets remain source-policy blocked; runtime contract remains blocked before target-apply/runtime claims.",
+    "Neural Flow remains an expected-block AI-eval/docs target; SOL 0.6 remains desktop_local_first with data/security secondary modes.",
+    "SOL 0.6 graph dry-run exceeds node/edge/observation bounds and includes large imported skill/vendor-like trees, making graph-derived analysis too noisy for readiness claims."
+  ],
+  "date": "2026-06-18",
+  "implementation_problem_candidates": [
+    {
+      "area": "project graph scope filtering",
+      "evidence": "batch39-s4-retest-sol_0_6-summary.json project_graph_summary validation_errors and top_path_prefixes",
+      "id": "B39-REAL-RET-IMP-001",
+      "severity": "high",
+      "summary": "SOL 0.6 graph dry-run scans imported/vendored skill trees and exceeds graph bounds."
+    },
+    {
+      "area": "intent hint classification",
+      "evidence": "intent_hint_sanity_checks: neutral hints preserve target routes, preserve approval boundaries routes both targets to pr_review",
+      "id": "B39-REAL-RET-IMP-002",
+      "severity": "high",
+      "summary": "Intent hint parser routes the word preserve to pr_review because PR is matched as a substring, not as a token or phrase."
+    },
+    {
+      "area": "CLI/schema normalization",
+      "evidence": "detect_project outputs usage_mode.primary; run_first_project_analysis outputs packet.*",
+      "id": "B39-REAL-RET-IMP-003",
+      "severity": "medium",
+      "summary": "Read-only evidence consumers must normalize detect_project usage_mode and first-run packet wrapper shapes; direct flattening assumptions lose primary route fields."
+    },
+    {
+      "area": "methodology recommendation volume",
+      "evidence": "batch39-s4-retest-sol_0_6-summary.json methodology_audit_summary",
+      "id": "B39-REAL-RET-IMP-004",
+      "severity": "medium",
+      "summary": "SOL 0.6 methodology audit emits 81 recommendations / 60 groups, too large for first safe action without stronger grouping/prioritization."
+    }
+  ],
+  "intent_hint_sanity_checks": [
+    {
+      "false_positive_preserve_hint": {
+        "exit_code": 1,
+        "hint": "post B39-S3 repeat read-only real-target retest; preserve approval boundaries",
+        "route_primary": "pr_review",
+        "route_reasons": [
+          "prompt requests PR or diff review"
+        ],
+        "source_policy_status": "blocked",
+        "status": "blocked"
+      },
+      "neutral_no_hint": {
+        "exit_code": 1,
+        "hint": "<none>",
+        "route_primary": "ai_eval_regression",
+        "route_reasons": [
+          "workspace has AI or RAG eval regression signals"
+        ],
+        "source_policy_status": "blocked",
+        "status": "blocked"
+      },
+      "neutral_read_only_hint": {
+        "exit_code": 1,
+        "hint": "read only target inspection",
+        "route_primary": "ai_eval_regression",
+        "route_reasons": [
+          "workspace has AI or RAG eval regression signals"
+        ],
+        "source_policy_status": "blocked",
+        "status": "blocked"
+      },
+      "target_label": "Neural Flow"
+    },
+    {
+      "false_positive_preserve_hint": {
+        "exit_code": 1,
+        "hint": "post B39-S3 repeat read-only real-target retest; preserve approval boundaries",
+        "route_primary": "pr_review",
+        "route_reasons": [
+          "prompt requests PR or diff review"
+        ],
+        "source_policy_status": "blocked",
+        "status": "blocked"
+      },
+      "neutral_no_hint": {
+        "exit_code": 1,
+        "hint": "<none>",
+        "route_primary": "desktop_local_first",
+        "route_reasons": [
+          "workspace has desktop or local-first runtime signals"
+        ],
+        "source_policy_status": "blocked",
+        "status": "blocked"
+      },
+      "neutral_read_only_hint": {
+        "exit_code": 1,
+        "hint": "read only target inspection",
+        "route_primary": "desktop_local_first",
+        "route_reasons": [
+          "workspace has desktop or local-first runtime signals"
+        ],
+        "source_policy_status": "blocked",
+        "status": "blocked"
+      },
+      "target_label": "SOL 0.6"
+    }
+  ],
+  "mode": "compare_previous_m21_m22_to_post_b39_s3_retest",
+  "schema": "batch39_s4_real_target_retest_comparison_v3",
+  "target_deltas": [
+    {
+      "current_graph_validation_errors": [],
+      "current_graph_validation_ok": true,
+      "current_runtime_route_primary": "ai_eval_regression",
+      "current_runtime_status": "blocked",
+      "current_source_policy_status": "blocked",
+      "delta_vs_m22": {
+        "first_run_page_count": {
+          "current": 0,
+          "previous": 0
+        },
+        "first_run_status": {
+          "current": "ok",
+          "previous": "ok"
+        },
+        "runtime_route_primary": {
+          "current": "ai_eval_regression",
+          "previous": null
+        },
+        "runtime_status": {
+          "current": "blocked",
+          "previous": "blocked"
+        },
+        "source_policy_status": {
+          "current": "blocked",
+          "previous": "blocked"
+        },
+        "target_analysis_dir_after": {
+          "current": false,
+          "previous": false
+        },
+        "usage_mode_primary": {
+          "current": "ai_eval_regression",
+          "previous": "ai_eval_regression"
+        },
+        "usage_mode_secondary": {
+          "current": [],
+          "previous": []
+        }
+      },
+      "target_label": "Neural Flow"
+    },
+    {
+      "current_graph_validation_errors": [
+        "edges:count_limit_exceeded",
+        "nodes:count_limit_exceeded",
+        "observations:count_limit_exceeded"
+      ],
+      "current_graph_validation_ok": false,
+      "current_runtime_route_primary": "desktop_local_first",
+      "current_runtime_status": "blocked",
+      "current_source_policy_status": "blocked",
+      "delta_vs_m22": {
+        "first_run_page_count": {
+          "current": 0,
+          "previous": 0
+        },
+        "first_run_status": {
+          "current": "ok",
+          "previous": "ok"
+        },
+        "runtime_route_primary": {
+          "current": "desktop_local_first",
+          "previous": null
+        },
+        "runtime_status": {
+          "current": "blocked",
+          "previous": "blocked"
+        },
+        "source_policy_status": {
+          "current": "blocked",
+          "previous": "blocked"
+        },
+        "target_analysis_dir_after": {
+          "current": false,
+          "previous": false
+        },
+        "usage_mode_primary": {
+          "current": "desktop_local_first",
+          "previous": "desktop_local_first"
+        },
+        "usage_mode_secondary": {
+          "current": [
+            "data_migration",
+            "security_sensitive_change"
+          ],
+          "previous": [
+            "data_migration",
+            "security_sensitive_change"
+          ]
+        }
+      },
+      "target_label": "SOL 0.6"
+    }
+  ],
+  "unsupported_claims": [
+    "release_readiness",
+    "runtime_browser_behavior",
+    "target_apply_safety",
+    "provider_model_quality",
+    "production_readiness"
+  ]
+}

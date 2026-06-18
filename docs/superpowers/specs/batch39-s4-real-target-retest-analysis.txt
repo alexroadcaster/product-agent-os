@@ -1,0 +1,123 @@
+Batch 39 S4 Real-Target Retest Analysis
+
+Source status: Current-run read-only retest and analysis report for Neural Flow and SOL 0.6, generated on 2026-06-18 from local Product-Agent OS scripts. Target workspaces were inspected read-only. No target mutation, live server, browser automation, provider/API/model call, git action, deployment, publication or external action was performed.
+
+Scope
+
+This report compares the previous Batch 39 real-target artifacts with a fresh post-B39-S3 read-only retest:
+
+- Previous Neural Flow: batch39-m21-neural-flow-readonly-summary.json, batch39-m22-retest-neural_flow-summary.json.
+- Previous SOL 0.6: batch39-m21-sol-readonly-summary.json, batch39-m22-retest-sol_0_6-summary.json.
+- New summaries: batch39-s4-retest-neural_flow-summary.json, batch39-s4-retest-sol_0_6-summary.json.
+- New comparison packet: batch39-s4-real-target-retest-comparison.json.
+
+Commands run per target:
+
+- detect_project.py <target>
+- validate_source_policy.py <target>
+- run_codex_runtime_runner.py <target> --contract --intent-hint "read only target inspection"
+- run_first_project_analysis.py <target> --dry-run --generated-at 2026-06-18T12:00:00Z
+- run_methodology_audit.py <target> --json
+- scan_project_code_graph.py <target> --dry-run
+
+Results
+
+| Target | Route | Source policy | Runtime contract | First-run dry-run | Graph |
+| --- | --- | --- | --- | --- | --- |
+| Neural Flow | ai_eval_regression | blocked: missing Source status | blocked: source_policy:blocked | ok, 0 writes, generated-view-only | ok, 557 nodes / 556 edges |
+| SOL 0.6 | desktop_local_first, secondary data_migration, security_sensitive_change | blocked: missing Source status | blocked: source_policy:blocked | ok, 0 writes, generated-view-only | failed validation, 43,326 nodes / 44,239 edges |
+
+Stable behavior versus B39-TEST-M22:
+
+- Neural Flow remains an expected-block target, not a clean-positive pilot.
+- SOL 0.6 remains desktop_local_first; the M22 PR/native false-positive route fix still holds under the neutral retest.
+- Both targets preserve source-policy and runtime blocking before any target apply, runtime/browser, provider, release or automation claim.
+- Both targets preserved the target no-write boundary: .codex/product-agent-os/analysis was absent before and after the dry-runs.
+
+Implementation Problems
+
+B39-REAL-RET-IMP-001: Project graph scope filtering is too weak for SOL 0.6
+
+Severity: high.
+
+Evidence: batch39-s4-retest-sol_0_6-summary.json records graph validation errors: edges:count_limit_exceeded, nodes:count_limit_exceeded, observations:count_limit_exceeded. The dominant graph prefix is antigravity-awesome-skills-main with 40,787 nodes, far larger than the product folders.
+
+Impact: graph output becomes noisy and fails validation on a real target. Architectural and product conclusions can be dominated by imported skill/vendor-like corpora instead of the actual frontend, backend, docs, scripts and control surfaces.
+
+Recommended fix: add first-class ignore/scope policy for imported skill packs, vendored corpora, benchmark result trees and tool cache directories before graph construction and methodology signal extraction. The policy should be explicit and reported as excluded_prefixes, not hidden.
+
+B39-REAL-RET-IMP-002: Intent hint matching treats preserve as PR
+
+Severity: high.
+
+Evidence: neutral runtime checks route correctly (Neural Flow -> ai_eval_regression, SOL 0.6 -> desktop_local_first), but the hint "post B39-S3 repeat read-only real-target retest; preserve approval boundaries" routes both targets to pr_review.
+
+Root cause candidate: discovery.py checks _mentions_any(intent, ["pr", "pull request", "diff", "review before merge"]). Matching pr as a substring catches ordinary words such as preserve.
+
+Impact: a benign operator instruction can override real workspace signals and send users into the wrong workflow. This is especially dangerous for real-target onboarding where the first response decides artifacts, questions and approval boundaries.
+
+Recommended fix: replace substring matching for short tokens with token/phrase matching. PR should match standalone PR, pull request, diff review, not preserve, proposal, profile or project.
+
+B39-REAL-RET-IMP-003: CLI evidence shapes need a shared normalization layer
+
+Severity: medium.
+
+Evidence: detect_project.py exposes route as usage_mode.primary; run_first_project_analysis.py --dry-run wraps the packet under packet.*; previous M22 summaries used flattened fields such as usage_mode_primary and first_run_dry_run_summary.status.
+
+Impact: ad-hoc evidence collectors can silently lose route or packet fields, producing null in comparison reports. This happened during the first pass of this retest and was corrected in the generated v3 artifacts.
+
+Recommended fix: introduce a reusable evidence-normalization adapter for real-target retests and dashboard ingestion. It should normalize detect_project, runtime_runner, first_run_analysis, source_policy, methodology_audit and project_graph into one versioned schema.
+
+B39-REAL-RET-IMP-004: Methodology output is too large for first safe action on noisy targets
+
+Severity: medium.
+
+Evidence: SOL 0.6 methodology audit emits 81 recommendations and 60 groups. The safe next action is useful, but the full recommendation surface is too broad for an operator-facing first-run decision.
+
+Impact: the system can overwhelm the user and obscure the real blocker: source policy plus workspace boundary/scope. More recommendations do not equal better guidance.
+
+Recommended fix: add a top-N first-safe-action layer with strict grouping, dedupe and suppression rules. For first-run real-target retests, show P0 blockers first, then at most a few P1 follow-ups, with the full packet available as evidence.
+
+Architecture Problems
+
+B39-REAL-RET-ARCH-001: SOL 0.6 workspace boundary is ambiguous
+
+Severity: high.
+
+The target appears to combine product code, local agent rules and a large imported skill corpus inside one workspace. Product-Agent OS currently treats that entire folder as one system boundary. That is technically consistent with a filesystem scan, but architecturally wrong for route, graph and methodology decisions.
+
+Recommended target-side direction: define project ownership boundaries before deeper pilots. At minimum, classify frontend, backend, docs, .agents and imported skill packs as separate scopes, and mark skill/vendor corpora as dependency/reference inputs rather than primary product source.
+
+B39-REAL-RET-ARCH-002: Neural Flow is still expected-block, not clean-positive
+
+Severity: medium.
+
+Neural Flow has useful control-plane docs and a stable AI-eval/docs route, but still lacks durable AGENTS.md, docs-as-code ownership and product measurement evidence. It remains valuable as an expected-block target for source-policy behavior, not as a positive proof of Product-Agent OS readiness.
+
+Recommended target-side direction: add or stage source policy markers and ownership docs before using it as a clean pilot.
+
+B39-REAL-RET-ARCH-003: Real-target retests still cannot support readiness claims
+
+Severity: medium.
+
+Both targets are source-policy blocked and runtime blocked. The new retest strengthens confidence that guardrails are working, but it does not validate target apply, runtime/browser behavior, provider/model quality, git/deploy readiness or automation readiness.
+
+Recommended Batch 39 direction: keep B39-S4 focused on hardening gates: graph scope filtering, CLI schema normalization, source-policy guidance, approval harnesses and onboarding clarity before any go/no-go packet.
+
+Product Conclusions
+
+- The retest improves confidence in the guardrail model: blocked targets remain blocked, read-only dry-runs do not mutate targets, and generated views remain orientation-only.
+- The retest reduces confidence in graph/product readability for large real targets: without scope filtering, a user may receive a technically valid but product-wrong analysis.
+- The next highest-value work is not another broad retest. It is a narrow S4 fix slice for graph scope filtering and intent-hint tokenization, followed by a repeat SOL graph/methodology check.
+
+Unsupported Claims
+
+This report does not support:
+
+- release readiness;
+- target apply safety;
+- runtime/browser behavior;
+- provider/model quality;
+- git, deploy or publication readiness;
+- automation readiness;
+- target source-policy acceptance.
