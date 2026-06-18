@@ -112,6 +112,27 @@ class ProjectCodeGraphTest(unittest.TestCase):
         self.assertEqual(graph["metadata"]["language_support_summary"]["markdown"], "structured_overlay_supported")
         self.assertTrue(graph["validation"]["ok"], graph["validation"])
 
+    def test_imported_skill_pack_prefix_is_excluded_and_reported_in_scope_policy(self):
+        with TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "workspace"
+            workspace.mkdir()
+            (workspace / "frontend").mkdir()
+            (workspace / "frontend" / "app.ts").write_text("export const app = true;\n", encoding="utf-8")
+            imported = workspace / "antigravity-awesome-skills-main" / "skills" / "loki-mode"
+            imported.mkdir(parents=True)
+            (imported / "SKILL.md").write_text("# Imported Skill\n", encoding="utf-8")
+            (imported / "benchmarks.jsonl").write_text("{}\n" * 20, encoding="utf-8")
+
+            graph = build_project_code_graph(workspace)
+
+            node_paths = {node.get("path") for node in graph["nodes"]}
+            self.assertIn("frontend/app.ts", node_paths)
+            self.assertFalse(any(str(path).startswith("antigravity-awesome-skills-main/") for path in node_paths))
+            scope_policy = graph["metadata"]["scope_policy"]
+            self.assertIn("antigravity-awesome-skills-main", scope_policy["excluded_prefixes"])
+            self.assertEqual(scope_policy["status"], "excluded_prefixes_reported")
+            self.assertTrue(graph["validation"]["ok"], graph["validation"])
+
     def test_synthetic_scale_graph_keeps_prompt_payload_bounded_for_1k_5k_10k_cases(self):
         for node_count in [1_000, 5_000, 10_000]:
             with self.subTest(node_count=node_count):

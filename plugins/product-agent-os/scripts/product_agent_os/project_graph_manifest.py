@@ -22,6 +22,9 @@ _SKIPPED_DIRS = {
     ".mkdocs_task23_site",
     ".understand-anything",
 }
+_EXCLUDED_PREFIX_DIRS = {
+    "antigravity-awesome-skills-main",
+}
 _LANGUAGE_BY_SUFFIX = {
     ".py": "python",
     ".md": "markdown",
@@ -144,6 +147,17 @@ def build_project_graph_manifest(
             "truncated": any(bool(item.get("collection_truncated")) for item in project_files),
             "omitted_count": sum(int(item.get("omitted_count") or 0) for item in project_files),
         },
+        "scope_policy": project_scope_policy(root),
+    }
+
+
+def project_scope_policy(workspace: str | Path) -> dict[str, Any]:
+    root = Path(workspace).resolve()
+    excluded = sorted(name for name in _EXCLUDED_PREFIX_DIRS if (root / name).exists())
+    return {
+        "status": "excluded_prefixes_reported" if excluded else "no_excluded_prefixes_detected",
+        "excluded_prefixes": excluded,
+        "policy": "imported_skill_vendor_and_benchmark_corpora_are_not_primary_project_source",
     }
 
 
@@ -197,7 +211,7 @@ def _should_skip(path: Path, root: Path) -> bool:
         relative_parts = path.relative_to(root).parts
     except ValueError:
         return True
-    return any(part in _SKIPPED_DIRS for part in relative_parts)
+    return any(part in _SKIPPED_DIRS or part in _EXCLUDED_PREFIX_DIRS for part in relative_parts)
 
 
 def _relative_path(root: Path, path: Path) -> str:
@@ -209,7 +223,7 @@ def _relative_path(root: Path, path: Path) -> str:
 
 def _iter_project_file_candidates(root: Path):
     for current_root, dir_names, file_names in os.walk(root):
-        dir_names[:] = sorted(name for name in dir_names if name not in _SKIPPED_DIRS)
+        dir_names[:] = sorted(name for name in dir_names if name not in _SKIPPED_DIRS and name not in _EXCLUDED_PREFIX_DIRS)
         for file_name in sorted(file_names):
             yield Path(current_root) / file_name
 

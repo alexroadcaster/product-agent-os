@@ -129,6 +129,49 @@ class MethodologyAuditContractTest(unittest.TestCase):
         self.assertIn("api_integrations", api_group["source_domains"])
         self.assertEqual(api_group["evidence_required"], list(dict.fromkeys(api_group["evidence_required"])))
 
+    def test_first_safe_action_recommendations_are_bounded_but_full_evidence_is_preserved(self):
+        from product_agent_os.methodology_audit import build_methodology_audit
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "package.json").write_text(
+                '{"scripts":{"test":"vitest","build":"vite build"}}\n',
+                encoding="utf-8",
+            )
+            (root / "openapi.yaml").write_text(
+                "openapi: 3.1.0\ninfo:\n  title: API\n  version: 1.0.0\npaths: {}\n",
+                encoding="utf-8",
+            )
+            (root / "migrations").mkdir()
+            (root / "migrations" / "001_init.sql").write_text("create table accounts(id text);\n", encoding="utf-8")
+            (root / "src" / "components").mkdir(parents=True)
+            (root / "src" / "components" / "Dashboard.tsx").write_text("export function Dashboard(){}\n", encoding="utf-8")
+            (root / "docs" / "architecture").mkdir(parents=True)
+            (root / "docs" / "architecture" / "overview.md").write_text("# Architecture\n", encoding="utf-8")
+            (root / ".github" / "workflows").mkdir(parents=True)
+            (root / ".github" / "workflows" / "ci.yml").write_text("name: ci\n", encoding="utf-8")
+
+            result = build_methodology_audit(
+                root,
+                intent_hint=(
+                    "first run real-target methodology audit for production API desktop frontend "
+                    "release readiness security privacy data migration RAG eval automation"
+                ),
+            )
+
+        self.assertGreater(len(result["recommendations"]), 5)
+        self.assertIn("first_safe_action", result)
+        self.assertLessEqual(len(result["first_safe_action"]["recommendations"]), 5)
+        self.assertEqual(result["first_safe_action"]["full_recommendation_count"], len(result["recommendations"]))
+        self.assertEqual(
+            result["first_safe_action"]["policy"],
+            "risk_ordered_top_n_keep_full_packet_as_evidence",
+        )
+        for item in result["first_safe_action"]["recommendations"]:
+            self.assertIn("priority", item)
+            self.assertIn("artifact", item)
+            self.assertIn("safe_next_action", item)
+
     def test_security_release_and_quality_safe_next_action_resolution(self):
         from product_agent_os.methodology_audit import build_methodology_audit
 

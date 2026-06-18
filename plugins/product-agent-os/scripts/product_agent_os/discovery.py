@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import sys
 from pathlib import Path
 from typing import Any
@@ -959,7 +960,13 @@ def _secondary_usage_modes(
 
 
 def _mentions_any(text: str, terms: list[str]) -> bool:
-    return any(term in text for term in terms)
+    return any(_mentions_term(text, term) for term in terms)
+
+
+def _mentions_term(text: str, term: str) -> bool:
+    if len(term) <= 3 and term.isalnum():
+        return re.search(rf"(?<![a-z0-9]){re.escape(term)}(?![a-z0-9])", text) is not None
+    return term in text
 
 
 def _is_greenfield(files: set[str]) -> bool:

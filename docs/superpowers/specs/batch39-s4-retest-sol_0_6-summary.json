@@ -1,124 +1,49 @@
 {
-  "approval_boundary": "owner_requested_repeat_testing_read_only_no_target_mutation_no_runtime_browser_provider_git_external_actions",
+  "approval_boundary": "owner_requested_s4_blocker_fix_retest_read_only_no_target_mutation_no_runtime_browser_provider_git_external_actions",
   "batch": "B39",
   "commands": {
     "detect_project": {
-      "command": "python plugins/product-agent-os/scripts/detect_project.py <target>",
+      "command": "plugins/product-agent-os/scripts/detect_project.py <target>",
       "exit_code": 0,
       "stderr_present": false,
       "stdout_parse_status": "json"
     },
     "first_run_dry_run": {
-      "command": "python plugins/product-agent-os/scripts/run_first_project_analysis.py <target> --dry-run --generated-at 2026-06-18T12:00:00Z",
+      "command": "plugins/product-agent-os/scripts/run_first_project_analysis.py <target> --dry-run --generated-at 2026-06-18T12:30:00Z",
       "exit_code": 0,
       "stderr_present": false,
       "stdout_parse_status": "json"
     },
     "methodology_audit": {
-      "command": "python plugins/product-agent-os/scripts/run_methodology_audit.py <target> --json",
+      "command": "plugins/product-agent-os/scripts/run_methodology_audit.py <target> --json",
       "exit_code": 0,
       "stderr_present": false,
       "stdout_parse_status": "json"
     },
     "project_graph_dry_run": {
-      "command": "python plugins/product-agent-os/scripts/scan_project_code_graph.py <target> --dry-run",
-      "exit_code": 1,
+      "command": "plugins/product-agent-os/scripts/scan_project_code_graph.py <target> --dry-run",
+      "exit_code": 0,
       "stderr_present": false,
       "stdout_parse_status": "json"
     },
     "runtime_contract": {
-      "command": "python plugins/product-agent-os/scripts/run_codex_runtime_runner.py <target> --contract --intent-hint \"read only target inspection\"",
+      "command": "plugins/product-agent-os/scripts/run_codex_runtime_runner.py <target> --contract --intent-hint read only target inspection",
       "exit_code": 1,
       "stderr_present": false,
       "stdout_parse_status": "json"
     },
     "source_policy": {
-      "command": "python plugins/product-agent-os/scripts/validate_source_policy.py <target>",
+      "command": "plugins/product-agent-os/scripts/validate_source_policy.py <target>",
       "exit_code": 1,
       "stderr_present": false,
       "stdout_parse_status": "json"
     }
   },
   "date": "2026-06-18",
-  "delta_vs_m22": {
-    "first_run_page_count": {
-      "current": 0,
-      "previous": 0
-    },
-    "first_run_status": {
-      "current": "ok",
-      "previous": "ok"
-    },
-    "runtime_route_primary": {
-      "current": "desktop_local_first",
-      "previous": null
-    },
-    "runtime_status": {
-      "current": "blocked",
-      "previous": "blocked"
-    },
-    "source_policy_status": {
-      "current": "blocked",
-      "previous": "blocked"
-    },
-    "target_analysis_dir_after": {
-      "current": false,
-      "previous": false
-    },
-    "usage_mode_primary": {
-      "current": "desktop_local_first",
-      "previous": "desktop_local_first"
-    },
-    "usage_mode_secondary": {
-      "current": [
-        "data_migration",
-        "security_sensitive_change"
-      ],
-      "previous": [
-        "data_migration",
-        "security_sensitive_change"
-      ]
-    }
-  },
   "detect_project_summary": {
-    "complexity_profile": {
-      "confidence": "medium",
-      "drivers": {
-        "ci_present": false,
-        "repo_size": "medium",
-        "service_count": 1,
-        "stack_count": 0,
-        "test_maturity": "partial"
-      },
-      "name": "guided-small"
-    },
-    "detected_file_count": 3394,
     "detected_stack": [],
     "existing_control_plane": [],
-    "generated_artifact_inputs": {
-      "first_run_analysis": {
-        "evidence_refs": [],
-        "generated_view_policy": "orientation_only_not_proof",
-        "note": "first-run analysis artifacts are generated orientation evidence only; route selection must use workspace source signals instead",
-        "promotion_supported": false,
-        "release_readiness_supported": false,
-        "source_truth_allowed": false,
-        "status": "not_available"
-      }
-    },
-    "git_present": false,
-    "methodology_map": {
-      "api_integrations": "present_unverified",
-      "backend": "present_unverified",
-      "codex_agentic_workflow": "present_unverified",
-      "database_data": "present_unverified",
-      "frontend": "present_unverified",
-      "llm_ai_rag": "present_unverified",
-      "quality_testing_evals": "present_unverified",
-      "requirements_domain": "applicable_missing",
-      "security_privacy_compliance": "present_unverified",
-      "solution_architecture": "applicable_missing"
-    },
+    "first_run_analysis_input_status": "not_available",
     "missing_control_plane": [
       "AGENTS.md",
       "REQUIREMENTS.md",
@@ -127,237 +52,319 @@
       "EVALS.md",
       "RUNLOG.md"
     ],
-    "missing_control_plane_count": 6,
-    "next_blocking_question": "Who can approve or explicitly reject the gap for approval-record.md?",
+    "risk_count": 3,
     "risks": [
       "missing durable project instructions",
       "missing architecture documentation signals",
       "missing domain model for complex domain"
     ],
     "status": "ok",
-    "surface_map": {
-      "ai": true,
-      "api": true,
-      "data": true,
-      "delivery": false,
-      "ui": false
-    },
     "usage_mode_confidence": "medium",
     "usage_mode_primary": "desktop_local_first",
-    "usage_mode_secondary": [
-      "data_migration",
-      "security_sensitive_change"
+    "usage_mode_reasons": [
+      "workspace has desktop or local-first runtime signals"
     ]
   },
   "first_run_dry_run_summary": {
-    "artifact_version": 1,
-    "freshness": "mixed",
-    "generated_page_count": 0,
+    "first_run_page_count": 0,
     "generated_view_policy": "orientation_only_not_proof",
     "mode": "dry_run",
-    "packet_digest_present": true,
-    "redaction_verdict": null,
+    "packet_digest": "sha256:193be9e021f656c812298017563991c09fcc05db604564626a5e0ea3b3048adf",
     "safe_next_action": "Review first-run packet; continue only with approved generated analysis artifacts.",
     "schema_version": "first_run_analysis_packet_v1",
-    "section_count": 0,
-    "section_ids": [],
-    "source_artifact_count": 1,
     "status": "ok",
-    "unsupported_claim_count": 2,
-    "write_boundary": {
-      "allowed_workspace_writes": [
-        ".codex/product-agent-os/analysis/first-run-analysis-packet.json"
-      ],
-      "analysis_dir": ".codex/product-agent-os/analysis",
-      "external_stage_required": false
-    },
     "write_policy": "read_only_generated_analysis_only",
     "written_file_count": 0
   },
+  "live_runtime_browser_provider_git_external_actions_performed": false,
   "methodology_audit_summary": {
-    "applicable_domains": [
-      "requirements_domain",
-      "solution_architecture",
-      "quality_testing_evals",
-      "codex_agentic_workflow",
-      "frontend",
-      "backend",
-      "api_integrations",
-      "database_data",
-      "llm_ai_rag",
-      "security_privacy_compliance"
-    ],
-    "domain_status_counts": {
-      "applicable_missing": 2,
-      "not_applicable": 2,
-      "present_unverified": 8
+    "first_safe_action": {
+      "full_group_count": 60,
+      "full_recommendation_count": 81,
+      "max_recommendations": 5,
+      "policy": "risk_ordered_top_n_keep_full_packet_as_evidence",
+      "recommendations": [
+        {
+          "artifact": "approval-record.md",
+          "gates": [
+            "external_write_approval_present"
+          ],
+          "owner_domain": "security_privacy_compliance",
+          "priority": "P0_blocker",
+          "risk_rank": 100,
+          "safe_next_action": "Stage approval-record.md and stop before side-effecting sensitive actions.",
+          "source_domains": [
+            "security_privacy_compliance"
+          ]
+        },
+        {
+          "artifact": "security-risk-review.md",
+          "gates": [
+            "backend_security_reviewed",
+            "security_risk_review_present",
+            "security_sensitive_classification_present",
+            "codex_security_scan_status_present"
+          ],
+          "owner_domain": "security_privacy_compliance",
+          "priority": "P1_high_risk",
+          "risk_rank": 90,
+          "safe_next_action": "Stage the backend artifact or accepted gap before claiming backend completion.",
+          "source_domains": [
+            "backend",
+            "security_privacy_compliance"
+          ]
+        },
+        {
+          "artifact": "AGENTS.md",
+          "gates": [
+            "control_plane_present",
+            "source_of_truth_present"
+          ],
+          "owner_domain": "",
+          "priority": "P0_blocker",
+          "risk_rank": 0,
+          "safe_next_action": "Stage control-plane artifact proposals without mutating existing workspace files.",
+          "source_domains": [
+            "codex_agentic_workflow"
+          ]
+        },
+        {
+          "artifact": "RUNLOG.md",
+          "gates": [
+            "security_evidence_before_completion",
+            "read_only_discovery_complete"
+          ],
+          "owner_domain": "",
+          "priority": "P0_blocker",
+          "risk_rank": 0,
+          "safe_next_action": "Record current security evidence or accepted gap in RUNLOG.md before completion claim.",
+          "source_domains": [
+            "security_privacy_compliance",
+            "codex_agentic_workflow"
+          ]
+        },
+        {
+          "artifact": "backend-runtime-behavior.md",
+          "gates": [
+            "backend_runtime_behavior_present"
+          ],
+          "owner_domain": "",
+          "priority": "P0_blocker",
+          "risk_rank": 0,
+          "safe_next_action": "Stage the backend artifact or accepted gap before claiming backend completion.",
+          "source_domains": [
+            "backend"
+          ]
+        }
+      ],
+      "safe_next_action": "Stage approval-record.md and stop before side-effecting sensitive actions.",
+      "status": "ok",
+      "write_policy": "read_only"
     },
-    "question_count": 3,
+    "first_safe_action_count": 5,
+    "first_safe_action_policy": "risk_ordered_top_n_keep_full_packet_as_evidence",
     "recommendation_count": 81,
-    "recommendation_groups_count": 60,
+    "recommendation_group_count": 60,
     "safe_next_action": "Stage approval-record.md and stop before side-effecting sensitive actions.",
-    "status": "ok",
-    "write_policy": "read_only"
+    "status": "ok"
   },
-  "mode": "post_b39_s3_repeat_read_only_real_target_retest",
-  "no_unapproved_actions": {
-    "automation_activation": "not_performed",
-    "browser_automation": "not_performed",
-    "external_actions": "not_performed",
-    "git_actions": "not_performed",
-    "live_server": "not_performed",
-    "provider_or_api_calls": "not_performed",
-    "target_analysis_dir_after": false,
-    "target_analysis_dir_before": false,
-    "target_generated_analysis_write": "not_performed"
+  "normalized_evidence": {
+    "detect_project_summary": {
+      "detected_stack": [],
+      "existing_control_plane": [],
+      "first_run_analysis_input_status": "not_available",
+      "missing_control_plane": [
+        "AGENTS.md",
+        "REQUIREMENTS.md",
+        "PLAN.md",
+        "TEST.md",
+        "EVALS.md",
+        "RUNLOG.md"
+      ],
+      "risk_count": 3,
+      "risks": [
+        "missing durable project instructions",
+        "missing architecture documentation signals",
+        "missing domain model for complex domain"
+      ],
+      "status": "ok",
+      "usage_mode_confidence": "medium",
+      "usage_mode_primary": "desktop_local_first",
+      "usage_mode_reasons": [
+        "workspace has desktop or local-first runtime signals"
+      ]
+    },
+    "first_run_dry_run_summary": {
+      "first_run_page_count": 0,
+      "generated_view_policy": "orientation_only_not_proof",
+      "mode": "dry_run",
+      "packet_digest": "sha256:193be9e021f656c812298017563991c09fcc05db604564626a5e0ea3b3048adf",
+      "safe_next_action": "Review first-run packet; continue only with approved generated analysis artifacts.",
+      "schema_version": "first_run_analysis_packet_v1",
+      "status": "ok",
+      "write_policy": "read_only_generated_analysis_only",
+      "written_file_count": 0
+    },
+    "methodology_audit_summary": {
+      "first_safe_action_count": 5,
+      "first_safe_action_policy": "risk_ordered_top_n_keep_full_packet_as_evidence",
+      "recommendation_count": 81,
+      "recommendation_group_count": 60,
+      "safe_next_action": "Stage approval-record.md and stop before side-effecting sensitive actions.",
+      "status": "ok"
+    },
+    "project_graph_summary": {
+      "edge_count": 2551,
+      "excluded_prefixes": [
+        "antigravity-awesome-skills-main"
+      ],
+      "node_count": 2539,
+      "observation_count": 5090,
+      "scope_policy_status": "excluded_prefixes_reported",
+      "status": "ok",
+      "top_path_prefixes": [
+        {
+          "node_count": 1801,
+          "prefix": "frontend"
+        },
+        {
+          "node_count": 577,
+          "prefix": "docs"
+        },
+        {
+          "node_count": 122,
+          "prefix": "backend"
+        },
+        {
+          "node_count": 14,
+          "prefix": "scripts"
+        },
+        {
+          "node_count": 12,
+          "prefix": "sol-ide.json"
+        },
+        {
+          "node_count": 10,
+          "prefix": ".agents"
+        },
+        {
+          "node_count": 1,
+          "prefix": ".vscode"
+        },
+        {
+          "node_count": 1,
+          "prefix": "<none>"
+        },
+        {
+          "node_count": 1,
+          "prefix": "tmp-ai-test.ts"
+        }
+      ],
+      "validation_errors": [],
+      "validation_ok": true
+    },
+    "runtime_contract_summary": {
+      "approval_required": false,
+      "errors": [
+        "source_policy:blocked"
+      ],
+      "route_id": null,
+      "source_policy_status": "blocked",
+      "status": "blocked",
+      "usage_mode_primary": "desktop_local_first",
+      "usage_mode_reasons": [
+        "workspace has desktop or local-first runtime signals"
+      ]
+    },
+    "schema_version": "real_target_evidence_summary_v1",
+    "source_policy_summary": {
+      "blocker_count": 0,
+      "source_policy_status": null,
+      "status": "blocked",
+      "unsupported_claims": []
+    },
+    "summary_digest": "sha256:0ce351fb72aad7bab7975f759f7c6891aa85e3db55d03e35ba1c73d0c2688d00",
+    "target_label": "SOL 0.6",
+    "write_policy": "read_only_summary_only"
   },
   "previous_artifact_refs": {
     "m21": "batch39-m21-sol-readonly-summary.json",
     "m22": "batch39-m22-retest-sol_0_6-summary.json"
   },
-  "previous_summary": {
-    "m21_first_run_status": "packet_only_dry_run",
-    "m21_source_policy_status": "present_unverified",
-    "m21_status": "inspection_only_real_target_value",
-    "m22_detect_usage_mode_primary": "desktop_local_first",
-    "m22_first_run_status": "ok",
-    "m22_runtime_status": "blocked",
-    "m22_source_policy_status": "blocked"
-  },
   "project_graph_summary": {
-    "edge_count": 44239,
-    "exit_code": 1,
-    "generated_view_policy": "html_is_review_only",
-    "metadata_edge_count": 44239,
-    "metadata_node_count": 43326,
-    "metadata_observation_count": 87641,
-    "node_count": 43326,
-    "node_type_counts": {
-      "class": 138,
-      "control_plane": 6,
-      "diagram": 17,
-      "fixture": 5,
-      "function": 679,
-      "generated_artifact": 46,
-      "markdown_page": 37522,
-      "method": 702,
-      "module": 3570,
-      "package": 6,
-      "schema": 614,
-      "test": 20,
-      "workspace": 1
-    },
-    "observation_count": 87641,
-    "schema_version": 1,
-    "source_boundary": "raw_source_bodies_excluded",
+    "edge_count": 2551,
+    "excluded_prefixes": [
+      "antigravity-awesome-skills-main"
+    ],
+    "node_count": 2539,
+    "observation_count": 5090,
+    "scope_policy_status": "excluded_prefixes_reported",
+    "status": "ok",
     "top_path_prefixes": [
       {
-        "count": 40787,
-        "prefix": "antigravity-awesome-skills-main"
-      },
-      {
-        "count": 1801,
+        "node_count": 1801,
         "prefix": "frontend"
       },
       {
-        "count": 577,
+        "node_count": 577,
         "prefix": "docs"
       },
       {
-        "count": 122,
+        "node_count": 122,
         "prefix": "backend"
       },
       {
-        "count": 14,
+        "node_count": 14,
         "prefix": "scripts"
       },
       {
-        "count": 12,
+        "node_count": 12,
         "prefix": "sol-ide.json"
       },
       {
-        "count": 10,
+        "node_count": 10,
         "prefix": ".agents"
       },
       {
-        "count": 1,
+        "node_count": 1,
         "prefix": ".vscode"
       },
       {
-        "count": 1,
+        "node_count": 1,
+        "prefix": "<none>"
+      },
+      {
+        "node_count": 1,
         "prefix": "tmp-ai-test.ts"
       }
     ],
-    "validation_errors": [
-      "edges:count_limit_exceeded",
-      "nodes:count_limit_exceeded",
-      "observations:count_limit_exceeded"
-    ],
-    "validation_ok": false,
-    "write_policy": "read_only"
+    "validation_errors": [],
+    "validation_ok": true
   },
   "runtime_contract_summary": {
-    "approval_status": "not_required",
+    "approval_required": false,
     "errors": [
       "source_policy:blocked"
     ],
-    "finish_options_count": null,
-    "lifecycle_state": "uninitialized",
-    "next_action": "Stop and resolve the blocking evidence, source-policy, approval, or ownership gap.",
-    "route_recommended_skill": "workspace-discovery-auditor",
-    "route_usage_mode": {
-      "behavioral_eval_cases": [
-        "desktop-local-runtime-plan",
-        "data-migration-plan",
-        "security-sensitive-change-plan"
-      ],
-      "confidence": "medium",
-      "fallback": "standard_feature",
-      "first_response_contract": [
-        "mode",
-        "confidence",
-        "next smallest action",
-        "minimum artifacts",
-        "evidence gaps",
-        "approval boundary"
-      ],
-      "minimum_artifacts": [
-        "local data risk note",
-        "runtime log check"
-      ],
-      "primary": "desktop_local_first",
-      "reasons": [
-        "workspace has desktop or local-first runtime signals"
-      ],
-      "secondary": [
-        "data_migration",
-        "security_sensitive_change"
-      ]
-    },
+    "route_id": null,
     "source_policy_status": "blocked",
-    "status": "blocked"
+    "status": "blocked",
+    "usage_mode_primary": "desktop_local_first",
+    "usage_mode_reasons": [
+      "workspace has desktop or local-first runtime signals"
+    ]
   },
-  "schema": "batch39_s4_real_target_retest_summary_v3",
-  "slice": "B39-S4-readonly-target-retest-analysis",
+  "schema": "batch39_s4_real_target_retest_summary_v4",
   "source_policy_summary": {
-    "error_count": 1,
-    "errors": [
-      "missing Source status"
-    ],
-    "registry_updates_required_count": 17,
-    "secret_findings_count": 0,
-    "status": "blocked"
+    "blocker_count": 0,
+    "source_policy_status": null,
+    "status": "blocked",
+    "unsupported_claims": []
   },
-  "target_exists": true,
-  "target_key": "sol_0_6",
+  "summary_digest": "sha256:0b0ce666a419f0e809c1c27265e98e955fb4fd0094203a9b041ee4c6b056332d",
+  "target_analysis_dir_after": false,
+  "target_analysis_dir_before": false,
   "target_label": "SOL 0.6",
-  "target_location_ref": "read_only_target:redacted",
-  "unsupported_claims": [
-    "release_readiness",
-    "target_apply_safety",
-    "runtime_browser_behavior",
-    "provider_model_quality",
-    "git_or_deploy_readiness",
-    "automation_readiness"
-  ]
+  "target_mutation_performed": false,
+  "task": "B39-S4-blocker-fix-retest"
 }

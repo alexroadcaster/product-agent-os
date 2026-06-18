@@ -177,6 +177,20 @@ class DiscoveryTest(unittest.TestCase):
         self.assertIn("pr risk review", usage_mode["minimum_artifacts"])
         self.assertIn("pr-review-readiness", usage_mode["behavioral_eval_cases"])
 
+    def test_pr_intent_token_does_not_match_preserve_or_project_words(self):
+        for hint in [
+            "post B39-S3 repeat read-only real-target retest; preserve approval boundaries",
+            "project profile proposal review only",
+        ]:
+            with self.subTest(hint=hint), tempfile.TemporaryDirectory() as tmpdir:
+                workspace = Path(tmpdir)
+                (workspace / "package.json").write_text('{"name": "token-boundary"}\n', encoding="utf-8")
+
+                result = analyze_workspace(workspace, intent_hint=hint)
+
+                self.assertNotEqual(result["usage_mode"]["primary"], "pr_review")
+                self.assertNotIn("prompt requests PR or diff review", result["usage_mode"]["reasons"])
+
     def test_diff_surface_routes_pr_review_and_reports_pr_route_inputs(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             workspace = Path(tmpdir)

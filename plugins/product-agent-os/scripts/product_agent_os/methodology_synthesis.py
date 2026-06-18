@@ -34,14 +34,16 @@ def build_methodology_synthesis(
     synthesis = active_catalog["synthesis"]
     groups = group_recommendations(recommendations, catalog=active_catalog)
     ordered_groups = sorted(groups, key=_group_sort_key)
+    first_safe_action = first_safe_action_packet(ordered_groups, recommendations)
     return {
         "status": "ok",
         "write_policy": "read_only",
         "recommendation_groups": ordered_groups,
+        "first_safe_action": first_safe_action,
         "source_artifact_ledger": source_artifact_ledger(catalog=active_catalog),
         "semantic_evidence_sufficiency": synthesis["semantic_evidence_sufficiency"],
         "owner_questions": dedupe_owner_questions(owner_questions or []),
-        "safe_next_action": _safe_next_action(ordered_groups),
+        "safe_next_action": first_safe_action["safe_next_action"],
     }
 
 
@@ -143,6 +145,41 @@ def dedupe_owner_questions(questions: list[str]) -> list[str]:
     return result
 
 
+def first_safe_action_packet(
+    ordered_groups: list[dict[str, Any]],
+    recommendations: list[dict[str, Any]],
+    *,
+    limit: int = 5,
+) -> dict[str, Any]:
+    """Return a bounded first-action view while preserving the full packet elsewhere."""
+
+    selected_groups = _bounded_first_action_groups(ordered_groups, limit=limit)
+    compact = [
+        {
+            "priority": str(group.get("priority", "")),
+            "artifact": str(group.get("artifact", "")),
+            "owner_domain": str(group.get("owner_domain", "")),
+            "source_domains": list(group.get("source_domains", [])),
+            "gates": list(group.get("gates", []))[:5],
+            "safe_next_action": str(group.get("safe_next_action", "")),
+            "risk_rank": int(group.get("risk_rank", 0)),
+        }
+        for group in selected_groups
+    ]
+    return {
+        "status": "ok",
+        "write_policy": "read_only",
+        "policy": "risk_ordered_top_n_keep_full_packet_as_evidence",
+        "max_recommendations": limit,
+        "recommendations": compact,
+        "full_recommendation_count": len(recommendations),
+        "full_group_count": len(ordered_groups),
+        "safe_next_action": compact[0]["safe_next_action"]
+        if compact
+        else "Record methodology synthesis output and proceed only with evidence-backed planning.",
+    }
+
+
 def _empty_group(artifact: str, synthesis: dict[str, Any]) -> dict[str, Any]:
     owner_record = synthesis["artifact_owners"].get(artifact, {})
     return {
@@ -164,6 +201,11 @@ def _safe_next_action(groups: list[dict[str, Any]]) -> str:
         if group.get("safe_next_action"):
             return str(group["safe_next_action"])
     return "Record methodology synthesis output and proceed only with evidence-backed planning."
+
+
+def _bounded_first_action_groups(groups: list[dict[str, Any]], *, limit: int) -> list[dict[str, Any]]:
+    bounded_limit = max(1, int(limit))
+    return groups[:bounded_limit]
 
 
 def _risk_rank(artifact: str, synthesis: dict[str, Any]) -> int:

@@ -913,6 +913,7 @@ def build_methodology_audit(
         "recommendations": recommendations,
         "recommendation_groups": recommendation_groups,
         "methodology_synthesis": methodology_synthesis,
+        "first_safe_action": methodology_synthesis["first_safe_action"],
         "safe_next_action": methodology_synthesis["safe_next_action"],
     }
 

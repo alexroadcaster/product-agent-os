@@ -150,6 +150,7 @@ def build_project_code_graph(
         "python_scanner": language_overlay["metadata"]["python_scanner"],
         "line_count_policy": f"capped_at_{LINE_COUNT_LIMIT}",
         "manifest": manifest,
+        "scope_policy": manifest.get("scope_policy", {}),
         "temporal_delta": (
             diff_observation_lineage(previous_graph, {"edges": edge_dedupe["items"]}, scan_id=scan_id)
             if isinstance(previous_graph, dict)
