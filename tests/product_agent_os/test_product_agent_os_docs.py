@@ -7187,7 +7187,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "test": ["`B39-TEST-M21-A01..A03`", "`B39-TEST-M22-A01..A03`", "`B39-TEST-M23..M33`"],
             "evals": ["`B39-FRIA-M20.1..M20.10`", "accepted_risk"],
             "runlog": ["`B39-TEST-M21-A01..A03`", "`B39-TEST-M22-A01..A03`", "`B39-TEST-M23..M33`"],
-            "agents": ["`B39-FRIA-M20.1..M20.10`", "`B39-S4` is the next route"],
+            "agents": ["`B39-FRIA-M20.1..M20.10`", "`B39-S4-REMAINING-GATES-A01`"],
             "track10_plan": ["`B39-FRIA-M20.10`", "`implemented`; `2026-06-18`"],
         }
 

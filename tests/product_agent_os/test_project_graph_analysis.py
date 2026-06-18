@@ -49,7 +49,8 @@ class ProjectGraphAnalysisTest(unittest.TestCase):
                 report["ambiguous_edge_inventory"],
             )
             self.assertTrue(report["surprising_cross_module_links"])
-            self.assertEqual(report["unsupported_language_summary"]["typescript"], 1)
+            self.assertNotIn("typescript", report["unsupported_language_summary"])
+            self.assertGreaterEqual(report["partial_language_summary"]["typescript"], 1)
             self.assertTrue(report["suggested_agent_questions"])
             self.assertNotIn("unknown_dynamic()", serialized)
             self.assertNotIn(str(workspace), serialized)

@@ -9,6 +9,9 @@ from product_agent_os.methodology_report import render_methodology_audit_report
 
 
 def main(argv: list[str]) -> int:
+    if any(arg in {"-h", "--help"} for arg in argv):
+        print("usage: run_methodology_audit.py <workspace> (--json | --report)")
+        return 0
     if len(argv) != 2 or argv[1] not in {"--json", "--report"}:
         print("usage: run_methodology_audit.py <workspace> (--json | --report)", file=sys.stderr)
         return 2

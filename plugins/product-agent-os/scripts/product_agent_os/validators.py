@@ -320,6 +320,9 @@ def print_json(payload: dict[str, Any]) -> int:
 
 
 def main_control_plane(argv: list[str]) -> int:
+    if any(arg in {"-h", "--help"} for arg in argv):
+        print("usage: validate_control_plane.py [workspace]")
+        return 0
     root = Path(argv[0]) if argv else Path.cwd()
     if not root.exists():
         return print_json(
@@ -346,6 +349,9 @@ def main_control_plane(argv: list[str]) -> int:
 
 
 def main_agents(argv: list[str]) -> int:
+    if any(arg in {"-h", "--help"} for arg in argv):
+        print("usage: validate_agents.py [agents-dir]")
+        return 0
     root = Path(argv[0]) if argv else Path(".codex/agents")
     if not root.exists():
         return print_json(
@@ -381,6 +387,9 @@ def main_agents(argv: list[str]) -> int:
 
 
 def main_hooks(argv: list[str]) -> int:
+    if any(arg in {"-h", "--help"} for arg in argv):
+        print("usage: validate_hooks.py [hooks-dir]")
+        return 0
     root = Path(argv[0]) if argv else Path(".codex/hooks")
     if not root.exists():
         return print_json(
@@ -416,6 +425,9 @@ def main_hooks(argv: list[str]) -> int:
 
 
 def main_task_matrix(argv: list[str]) -> int:
+    if any(arg in {"-h", "--help"} for arg in argv):
+        print("usage: validate_task_matrix.py <task-matrix-file>")
+        return 0
     if not argv:
         return print_json(
             {

@@ -11,6 +11,9 @@ from product_agent_os.source_policy import validate_source_policy  # noqa: E402
 
 
 def main(argv: list[str]) -> int:
+    if any(arg in {"-h", "--help"} for arg in argv):
+        print("usage: validate_source_policy.py [workspace]")
+        return 0
     workspace = Path(argv[0]) if argv else Path.cwd()
     result = validate_source_policy(workspace)
     print(json.dumps(result, indent=2, sort_keys=True))

@@ -19,6 +19,7 @@ def build_project_graph_analysis(graph: dict[str, Any], *, max_items: int = DEFA
     ambiguous = _ambiguous_edge_inventory(graph, limit)
     cross_module = _surprising_cross_module_links(graph, limit)
     unsupported = _unsupported_language_summary(graph)
+    partial = _partial_language_summary(graph)
     truncated = any(
         [
             len(hotspots["all"]) > limit,
@@ -42,7 +43,8 @@ def build_project_graph_analysis(graph: dict[str, Any], *, max_items: int = DEFA
         "surprising_cross_module_links": cross_module["all"][:limit],
         "ambiguous_edge_inventory": ambiguous["all"][:limit],
         "unsupported_language_summary": unsupported,
-        "suggested_agent_questions": _suggested_agent_questions(visible_hotspots, ambiguous["all"], unsupported)[:limit],
+        "partial_language_summary": partial,
+        "suggested_agent_questions": _suggested_agent_questions(visible_hotspots, ambiguous["all"], unsupported, partial)[:limit],
         "safe_next_action": "Use the graph as orientation only; read source files before edits, impact claims, or readiness claims.",
         "redaction_summary": {"raw_source_bodies": "excluded", "local_paths": "not_included"},
         "validation": {"ok": True, "checks": ["bounded analysis", "source-free report"], "errors": []},
@@ -157,10 +159,30 @@ def _unsupported_language_summary(graph: dict[str, Any]) -> dict[str, int]:
     return dict(sorted(summary.items()))
 
 
+def _partial_language_summary(graph: dict[str, Any]) -> dict[str, int]:
+    summary: dict[str, int] = {}
+    partial_statuses = {"supported_conservative_stdlib", "structured_overlay_supported"}
+    metadata_summary = graph.get("metadata", {}).get("language_support_summary")
+    if isinstance(metadata_summary, dict):
+        partial_languages = {str(language) for language, status in metadata_summary.items() if str(status) in partial_statuses}
+    else:
+        partial_languages = set()
+    for node in graph.get("nodes", []):
+        if not isinstance(node, dict):
+            continue
+        language = str(node.get("language") or "unknown")
+        if language in partial_languages:
+            summary[language] = summary.get(language, 0) + 1
+    for language in partial_languages:
+        summary.setdefault(language, 0)
+    return dict(sorted(summary.items()))
+
+
 def _suggested_agent_questions(
     hotspots: list[dict[str, Any]],
     ambiguous: list[dict[str, Any]],
     unsupported: dict[str, int],
+    partial: dict[str, int],
 ) -> list[dict[str, str]]:
     questions: list[dict[str, str]] = []
     if hotspots:
@@ -185,6 +207,15 @@ def _suggested_agent_questions(
             {
                 "id": "graph-unsupported-language",
                 "text": f"Which source-read path covers unsupported graph languages: {languages}?",
+                "source": "project_graph_analysis",
+            }
+        )
+    if partial:
+        languages = ", ".join(sorted(partial.keys()))
+        questions.append(
+            {
+                "id": "graph-partial-language",
+                "text": f"Which source files confirm partial graph language hints before claims: {languages}?",
                 "source": "project_graph_analysis",
             }
         )

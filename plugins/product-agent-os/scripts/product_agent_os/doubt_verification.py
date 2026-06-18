@@ -702,6 +702,9 @@ def _completion_skeptic_metric_evidence(rows: list[dict[str, Any]]) -> dict[str,
 
 
 def main_doubt_verification(argv: list[str]) -> int:
+    if any(arg in {"-h", "--help"} for arg in argv):
+        print("usage: validate_doubt_verification_packet.py <packet-file>")
+        return 0
     if not argv:
         return print_json(
             {

@@ -1,0 +1,173 @@
+{
+  "agent_usage": {
+    "docs_maintainer": "read_only_M37_acceptance_inventory",
+    "main_agent": "TDD_implementation_and_control_plane_sync",
+    "tester": "read_only_M38_M39_contract_inventory"
+  },
+  "attempt_id": "B39-S4-M37-M39-A01",
+  "covered_tasks": [
+    "B39-TEST-M37",
+    "B39-TEST-M38",
+    "B39-TEST-M39"
+  ],
+  "generated_at": "2026-06-18T18:00:00+03:00",
+  "schema_version": "batch39_s4_m37_m39_hardening_summary_v1",
+  "slice": "B39-S4",
+  "slice_status": "partial_pass_broader_b39_s4_still_open",
+  "summary_digest": "sha256:fe3f7d55f1c180e1a787df733057339d93a2dc5c1fe411c1b44f1c74c3afeede",
+  "tasks": {
+    "B39-TEST-M37": {
+      "acceptance": {
+        "release_surface": "approval_required",
+        "required_public_claim_boundary": "generated pages may orient operators but cannot prove readiness",
+        "site_freshness": {
+          "b39_s4_source_evidence_date": "2026-06-18",
+          "latest_site_build_known_from_inspection": "2026-06-10",
+          "status": "stale_rendered_site_not_rebuilt_in_this_attempt"
+        },
+        "source_docs_checked": [
+          "docs/product-agent-os/",
+          "mkdocs.yml",
+          "docs/superpowers/specs/"
+        ]
+      },
+      "first_run_generated_pages": {
+        "classification": "not_applicable_to_public_site",
+        "generated_view_policy": "orientation_only_not_proof",
+        "page_count": 11,
+        "page_ids": [
+          "overview",
+          "inventory",
+          "architecture",
+          "methodology",
+          "runtime-route",
+          "control-plane",
+          "graph",
+          "code-flow",
+          "quality-evals",
+          "risks",
+          "recommendations"
+        ]
+      },
+      "public_docs_scope": "internal_control_plane_only",
+      "public_readiness_claim": "not_claimed",
+      "residual_gaps": [
+        "strict MkDocs site rebuild was not run in this attempt",
+        "rendered site freshness remains older than current B39-S4 evidence",
+        "public documentation acceptance remains blocked until a fresh docs/site verification packet exists"
+      ],
+      "status": "partial_pass_public_docs_internal_only",
+      "task_id": "B39-TEST-M37",
+      "unsupported_claims": [
+        "generated orientation evidence is not public readiness proof",
+        "public docs/site publication acceptance has not been claimed",
+        "external publication, deploy and release review were not performed"
+      ]
+    },
+    "B39-TEST-M38": {
+      "dependency_policy": {
+        "cdn_assets_allowed": false,
+        "generated_html_must_remain_static": true,
+        "new_external_runtime_dependencies_added": false
+      },
+      "first_run_html_audit": {
+        "blocked_counts": {
+          "external_url": 0,
+          "script_tag": 0
+        },
+        "page_count": 3,
+        "policy": {
+          "external_urls_allowed": false,
+          "offline_generated_html_only": true,
+          "script_tags_allowed": false
+        },
+        "status": "passed_no_external_url_or_script",
+        "task_id": "B39-TEST-M38",
+        "unsupported_claims": [
+          "offline HTML audit does not prove browser/runtime behavior",
+          "dependency supply-chain readiness beyond generated first-run HTML is still separate B39-S4 work"
+        ],
+        "violations": []
+      },
+      "residual_gaps": [
+        "full static URL scan across docs, templates, renderers and MkDocs assets is not complete",
+        "package manifest dependency readiness matrix is still pending",
+        "Mermaid external asset gap remains accepted/follow-up rather than closed"
+      ],
+      "status": "partial_pass_offline_asset_readiness",
+      "task_id": "B39-TEST-M38",
+      "unsupported_claims": [
+        "offline HTML audit does not prove browser/runtime behavior",
+        "dependency supply-chain readiness beyond generated first-run HTML is still separate B39-S4 work"
+      ]
+    },
+    "B39-TEST-M39": {
+      "cases": [
+        {
+          "case_id": "first_run_dry_run",
+          "command_shape": "python plugins/product-agent-os/scripts/run_first_project_analysis.py <workspace> --dry-run",
+          "evidence_ref": "tests/product_agent_os/test_first_run_analysis.py::test_m20_2_cli_dry_run_prints_packet_without_writing_analysis_directory",
+          "expected_status": "accepted",
+          "write_scope": "stdout_only"
+        },
+        {
+          "case_id": "first_run_write",
+          "command_shape": "python plugins/product-agent-os/scripts/run_first_project_analysis.py <workspace> --write",
+          "evidence_ref": "tests/product_agent_os/test_first_run_analysis.py::test_m20_2_cli_write_mode_writes_only_generated_analysis_packet_inside_workspace",
+          "expected_status": "accepted",
+          "write_scope": ".codex/product-agent-os/analysis"
+        },
+        {
+          "case_id": "first_run_ambiguous_mode_rejection",
+          "command_shape": "python plugins/product-agent-os/scripts/run_first_project_analysis.py <workspace> --dry-run --write",
+          "evidence_ref": "tests/product_agent_os/test_first_run_analysis.py::test_m20_2_cli_rejects_ambiguous_mode_and_external_stage_argument",
+          "expected_status": "rejected",
+          "guardrail": "choose_exactly_one_mode",
+          "write_scope": "none"
+        },
+        {
+          "case_id": "first_run_stage_rejection",
+          "command_shape": "python plugins/product-agent-os/scripts/run_first_project_analysis.py <workspace> --stage <external-stage>",
+          "evidence_ref": "tests/product_agent_os/test_first_run_analysis.py::test_m20_2_cli_rejects_ambiguous_mode_and_external_stage_argument",
+          "expected_status": "rejected",
+          "guardrail": "first_run_cli_does_not_accept_stage",
+          "write_scope": "none"
+        },
+        {
+          "case_id": "unsafe_packet_rejection",
+          "command_shape": "validate_first_run_analysis_packet(<packet>)",
+          "evidence_ref": "tests/product_agent_os/test_first_run_analysis.py::test_m20_1_packet_round_trips_as_json_and_rejects_unsafe_values",
+          "expected_status": "rejected",
+          "guardrail": "no_secret_no_raw_source_no_local_path",
+          "write_scope": "none"
+        }
+      ],
+      "residual_gaps": [
+        "all top-level Product-Agent OS CLI scripts are not yet covered by one full matrix",
+        "generic --help, invalid-args, stdout/stderr and JSON-shape checks remain pending for the broader CLI fleet",
+        "validate_doubt_verification_packet.py still needs explicit B39-B40-OV12 matrix coverage"
+      ],
+      "status": "partial_pass_cli_contract_matrix",
+      "task_id": "B39-TEST-M39",
+      "unsupported_claims": [
+        "target mutation was not performed",
+        "runtime/browser QA was not performed",
+        "external stage, provider, git and release actions remain approval-bound"
+      ]
+    }
+  },
+  "unsupported_claims": [
+    "runtime/browser QA was not performed",
+    "target workspace mutation was not performed",
+    "public docs/site publication readiness was not claimed",
+    "provider/API, live model, database, git, GitHub, release, deploy, publish and automation actions were not performed",
+    "broader B39-S4 remains open after M37-M39"
+  ],
+  "verification_plan": [
+    "python -m unittest tests.product_agent_os.test_batch39_s4_hardening -v",
+    "python -m unittest tests.product_agent_os.test_first_run_analysis tests.product_agent_os.test_batch39_s4_hardening -v",
+    "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+    "python tools\\check_docs.py",
+    "git diff --check"
+  ]
+}

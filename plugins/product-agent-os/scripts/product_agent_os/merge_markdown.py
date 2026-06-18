@@ -75,6 +75,9 @@ def merge_section(text: str, owner: str, section_id: str, body: str) -> str:
 
 
 def main(argv: list[str]) -> int:
+    if any(arg in {"-h", "--help"} for arg in argv):
+        print("usage: merge_markdown.py <file> <owner> <section-id> <body-file>")
+        return 0
     if len(argv) != 4:
         print("usage: merge_markdown.py <file> <owner> <section-id> <body-file>", file=sys.stderr)
         return 2

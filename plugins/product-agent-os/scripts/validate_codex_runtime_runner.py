@@ -11,6 +11,9 @@ from codex_runtime_runner.contracts import validate_runner_result  # noqa: E402
 
 
 def main(argv: list[str]) -> int:
+    if any(arg in {"-h", "--help"} for arg in argv):
+        print("usage: validate_codex_runtime_runner.py <result-json>")
+        return 0
     if not argv:
         print("usage: validate_codex_runtime_runner.py <result-json>", file=sys.stderr)
         return 2

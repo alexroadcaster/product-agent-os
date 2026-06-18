@@ -9643,6 +9643,9 @@ def evaluate_all(fixtures_root: Path = FIXTURES) -> list[dict[str, Any]]:
 
 
 def main() -> int:
+    if any(arg in {"-h", "--help"} for arg in sys.argv[1:]):
+        print("usage: run_fixture_eval.py")
+        return 0
     results = evaluate_all()
     print(json.dumps(results, indent=2, sort_keys=True))
     return 0 if results and all(item["ok"] for item in results) else 1
