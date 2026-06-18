@@ -274,6 +274,22 @@ class Batch39S4HardeningTests(unittest.TestCase):
         self.assertNotIn("C:\\Users\\user", encoded)
         self.assertNotIn("sk-", encoded)
 
+    def test_s4_closure_matrix_accounts_for_passed_cli_task(self) -> None:
+        result = subprocess.run(
+            [sys.executable, str(SCRIPTS / "run_batch39_s4_remaining_gates.py"), "--generated-at", "2026-06-18T21:45:00+03:00"],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
+        matrix_path = ROOT / "docs" / "superpowers" / "specs" / "batch39-s4-closure-readiness-matrix.json"
+        matrix = json.loads(matrix_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(matrix["task_counts"]["passed"], 1)
+        self.assertEqual(matrix["passed_tasks"], ["B39-TEST-M39"])
+        self.assertEqual(matrix["task_counts"]["total"], 16)
+
 
 if __name__ == "__main__":
     unittest.main()

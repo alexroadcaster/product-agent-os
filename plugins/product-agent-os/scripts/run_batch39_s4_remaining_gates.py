@@ -59,6 +59,7 @@ def _build_closure_matrix(summary: dict[str, Any]) -> dict[str, Any]:
         task_id for task_id, task in tasks.items() if str(task.get("status", "")) == "approval_required_live_or_external_surface"
     ]
     partial = [task_id for task_id, task in tasks.items() if str(task.get("status", "")).startswith("partial")]
+    passed = [task_id for task_id, task in tasks.items() if str(task.get("status", "")).startswith("passed")]
     return {
         "schema_version": "batch39_s4_closure_readiness_matrix_v1",
         "attempt_id": summary["attempt_id"],
@@ -67,10 +68,12 @@ def _build_closure_matrix(summary: dict[str, Any]) -> dict[str, Any]:
         "closure_status": "not_release_ready_expected_blocks_recorded",
         "task_counts": {
             "total": len(tasks),
+            "passed": len(passed),
             "partial": len(partial),
             "blocked_expected": len(blocked),
             "approval_required": len(approval_required),
         },
+        "passed_tasks": passed,
         "blocked_expected_tasks": blocked,
         "approval_required_tasks": approval_required,
         "partial_tasks": partial,

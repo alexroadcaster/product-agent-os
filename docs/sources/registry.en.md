@@ -1265,4 +1265,17 @@ These markers preserve source-owned test routing after registry compaction. Full
 - docs/product-agent-os/cli-reference.md
 - plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py
 - plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py
+- Product-Agent OS Batch 39 S4/S5 hardening and closure evidence
+- B39-S4-REMAINING-GATES-A01
+- B39-S5-CLOSURE-A01
+- docs/superpowers/specs/batch39-s4-remaining-gates-summary.json
+- docs/superpowers/specs/batch39-s4-closure-readiness-matrix.json
+- docs/superpowers/specs/batch39-s5-closure-summary.json
+- docs/superpowers/specs/batch39-s5-go-no-go-decision-packet.json
+- docs/superpowers/specs/batch39-s5-no-unapproved-actions-proof.json
+- docs/superpowers/specs/batch39-s5-owner-feedback-test-plan.json
+- release no_go
+- owner-feedback conditional_go
+- runtime-browser approval_required
+- manual_only_not_promoted
 ```
