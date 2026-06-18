@@ -14,6 +14,7 @@ Last compacted: 2026-06-11
 - Use Product-Agent OS skills for requirements, implementation planning, test/eval design, docs maintenance, risk review and completion-skeptic loops when the task matches them.
 - Keep historical batch matrices in source-owned files, not in this root plan.
 - Do not create/switch branches, stage, commit, push, open PRs, mutate target workspaces, run browser automation, call providers/live APIs, publish, deploy or create automations without exact approval for that action.
+- For Product-Agent OS pilots, prefer real-project target evidence where it improves confidence. Keep `codex_docs` as the control-plane, runner and evidence workspace; keep target projects read-only unless a test row names an approved mutation surface, rollback and owner.
 - Preserve unrelated dirty work and record only the evidence needed for current handoff.
 
 ## Current State
@@ -25,6 +26,7 @@ Last compacted: 2026-06-11
 | Batch 38 package-source/readiness | Implemented/recorded. `B38-S2` current cache evidence is `plugin_cache_refresh_final_status: completed_local_cache_refresh_from_prepared_stage`; historical `blocked_pending_explicit_cache_mutation_approval` remains preserved. | Treat prior blockers as historical evidence, not current active blockers unless the same condition recurs. |
 | `B38-PILOT-NF01` | Docs-only target addendum completed; target apply blocked by `source_policy_status: blocked` and missing target control-plane/source registry artifacts. | Do not mutate target project until source policy and artifacts are resolved. |
 | Batch 39 | Executing through `prod_test.md`; `B39-S1` foundational local contracts `B39-TEST-M01..M10` have current local evidence, `B39-TEST-M11` has current `Neural_Flow` read-only target fixture evidence, `B39-TEST-M12` has a synthetic docs-only happy-path pilot, `B39-TEST-M13` records the `Neural_Flow` expected source-policy block, `B39-TEST-M14` records a synthetic web/frontend contract pilot, `B39-TEST-M15` records a synthetic backend/API approval-guardrail pilot, `B39-TEST-M16` records a synthetic AI/RAG approval-guardrail pilot, `B39-TEST-M17` records a synthetic data/migration approval-guardrail pilot, `B39-TEST-M18` records a synthetic PR/review approval-guardrail pilot and `B39-TEST-M19` records a synthetic automation/release approval-guardrail pilot. `B39-TEST-M20` is next. | Continue only through per-test attempt/failure/fix/retest evidence; no readiness claim until the full Batch 39 gate set is satisfied. |
+| Batch 39 real-project targets | Owner clarified that future Product-Agent OS testing should run on real projects, not only internal `codex_docs` fixtures. `SOL 0.6` is the current `B39-TEST-M20` candidate context as a local-first web-desktop target, but it must not be modified. | Use real targets for read-only discovery and evidence first; record target labels, relative paths, counts, digests and approval boundaries in `codex_docs`. Runtime/browser/provider/git/external actions need separate exact approval. |
 | Batch 40 completion-skeptic | Local manual foundation closed; automation status `manual_only` and `not_promoted`. | Keep automation promotion candidate-only until gates are satisfied. |
 | Agent lifecycle and control-plane sync | Current project agents and Product-Agent OS templates route Task Brief / Completion Brief and control-plane sync through `.codex/config.toml` `[product_agent_os.lifecycle_contract]` plus `[workflows]`. | Future Product-Agent OS tasks must load the config-routed workflow, show the visible briefs, then update owned control-plane files or record `not_applicable` / `handoff_required`; no hook or automation was activated. |
 
@@ -33,7 +35,7 @@ Last compacted: 2026-06-11
 | Slice | Scope | Owner action | Codex action | Verification |
 | --- | --- | --- | --- | --- |
 | `B39-S1` | Foundational local evidence package closed for `B39-TEST-M01..M10`. | Review only if S1 evidence needs rework. | Preserve S1 artifacts as source evidence; do not promote to readiness by themselves. | `prod_test.md` attempt rows, focused tests and synthetic artifacts exist; no target mutation occurred. |
-| `B39-S2` | Run first approved Batch 39 test subset. `B39-TEST-M11..M19` are recorded; `B39-TEST-M20` is the next desktop/native/local-first archetype pilot. | Provide/approve target, credentials-free setup and manual observations where needed. | Execute only approved read/write steps, record attempt/failure/fix/retest ledger. | Deterministic commands and manual evidence recorded in `prod_test.md`. |
+| `B39-S2` | Run first approved Batch 39 test subset. `B39-TEST-M11..M19` are recorded; `B39-TEST-M20` is the next desktop/native/local-first archetype pilot and should use real-project read-only evidence where approved. | Provide/approve target, credentials-free setup and manual observations where needed; confirm any escalation beyond read-only target discovery. | Execute read-only target discovery first, keep evidence in `codex_docs`, and record attempt/failure/fix/retest ledger; do not modify `SOL 0.6` or any target without exact approval. | Deterministic commands and manual evidence recorded in `prod_test.md`; target mutation proof and redaction/no-raw-source rules apply. |
 | `B39-S3` | Fix issues found by first subset. | Approve scoped edits if fixes require mutation. | Implement focused fixes, preserve unrelated dirty changes, update evidence. | Relevant tests/checks rerun; accepted gaps explicit. |
 | `B39-S4` | Retest and risk review. | Confirm product acceptance or residual risk tolerance. | Rerun failed checks, prepare risk/readiness summary. | Supported/unsupported claims separated. |
 | `B39-S5` | Closure and next-route decision. | Decide continue, pause, promote, or replan. | Update control-plane handoff and source registry if required. | No readiness claim without current-run evidence or accepted gap. |
@@ -51,6 +53,7 @@ Last compacted: 2026-06-11
   - result, failure, fix and retest status;
   - residual risk or accepted gap.
 - Choosing a project is not automatically required for every preparatory task. It becomes required when a test step needs real target discovery, target-specific evidence, runtime behavior or mutation.
+- When a real project is chosen, the default mode is `read_only_target_discovery`: inspect structure, source-policy state, route signals and evidence shape only. Any live server, browser, provider/API, database, git, release, external write or target mutation action must be approved as a separate surface.
 
 ## Source Planning Artifacts
 

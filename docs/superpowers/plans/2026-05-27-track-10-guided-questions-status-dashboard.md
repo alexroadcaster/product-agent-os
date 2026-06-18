@@ -1168,6 +1168,84 @@ Recommended Batch 39 execution slices:
 
 Batch 39 closure criteria: no `B38-PROD-M12` release/readiness recommendation is supported until Batch 39 has at least one clean positive pilot, one expected-block negative pilot, coverage across the representative archetypes or accepted gaps for missing archetypes, current dashboard/rollup evidence, redaction and no-mutation proof, functional regression/repeatability evidence, production/mass-user hardening evidence for `B39-TEST-M37..M54`, complete `prod_test.md` attempt/failure/fix/retest ledger, source-owned closure and a final no-unapproved-actions review. After Batch 40, closure must also show that `completion-skeptic` evidence or owner-reviewed accepted gaps cover Batch 39 completion/readiness claims, that synthetic-local B40 calibration is not treated as release proof and that `completion-skeptic` remains `manual_only` / `not_promoted` unless real pilots, owner review and exact approval support a different decision. If those conditions are not met, `B38-PROD-M12` must remain `blocked`, `deferred` or `learning_only` rather than `release_ready`.
 
+#### Batch 39 M20 Addendum: First-Run Project Intelligence Artifact
+
+This addendum captures the planned implementation matrix for a first-run project intelligence artifact. It does not create `Task 27`, reopen closed Track 10 work, activate hooks, start browser/runtime automation, use external stage paths or turn HTML into source of truth. The goal is to compose existing Product-Agent OS discovery, runtime routing, status dashboard, project graph and cockpit capabilities into one versioned, multi-page offline artifact pack created directly inside the user's project under `.codex/product-agent-os/analysis/`.
+
+Current implementation baseline:
+
+- `discovery.py` already detects stack, control-plane files, `.codex` assets, usage mode, methodology signals, methodology gaps, route inputs, risks and guided-question seeds.
+- `render_status_dashboard.py`, `status_snapshot.py` and `status_dashboard.py` already build a read-only status snapshot and offline `.codex/product-agent-os/status.html` / `status.json`.
+- `scan_project_code_graph.py` already stages `.codex/product-agent-os/project-code-graph.json` and `.jsonl` with graph shrink guards and no raw source body policy.
+- `project_graph_renderer.py` already stages `.codex/product-agent-os/project-cockpit.html` / `.json` using project graph and code-flow templates.
+- `offline_artifact_export.py` already has an approval-aware offline HTML export contract, but current exports are single-surface contracts rather than one versioned multi-page first-run artifact pack.
+
+Planned artifact shape:
+
+```text
+.codex/product-agent-os/analysis/
+  analysis-manifest.json
+  first-run-analysis.json
+  discovery.json
+  runtime-route.json
+  source-policy.json
+  methodology-audit.json
+  status-snapshot.json
+  project-code-graph.json
+  project-code-graph.jsonl
+  project-cockpit.json
+  redaction-report.json
+  pages/
+    index.html
+    overview.html
+    inventory.html
+    architecture.html
+    control-plane.html
+    methodology.html
+    runtime-route.html
+    project-graph.html
+    code-flow.html
+    quality-evals.html
+    risks.html
+    recommendations.html
+```
+
+Batch 39 M20 first-run artifact task matrix:
+
+| ID | Priority | Task | Agents / skills | Scope | Technical value for project | Product value for user | Acceptance criteria | Verification gates | Risks / approval gates | Status |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `B39-FRIA-M20.1` | P0 | Define `first_run_analysis_packet_v1`. | Architect + Tester / `implementation-planner`, `test-eval-designer` | Add a schema contract that composes discovery, runtime route, methodology audit, control-plane state, source policy, graph summaries, status snapshot, redaction summary, page registry and safe next action. | Creates a stable source packet instead of relying on scattered dashboard, graph and command outputs. | User gets one baseline project snapshot that future runs can diff and maintain. | Packet has `schema_version`, `artifact_version`, `generated_at`, target label, write policy, source artifacts, generated pages, digests, redaction status, evidence status and generated-view policy. | Schema unit tests; JSON round-trip; no-placeholder field coverage; stale/inspection-only fixture. | Packet is source evidence container, not readiness proof; no raw source bodies, secrets or absolute user-specific paths. | `planned`; `pending_execution_timestamp` |
+| `B39-FRIA-M20.2` | P0 | Add first-run orchestrator CLI. | Builder + Architect / `workspace-discovery-auditor`, `implementation-planner` | Create `run_first_project_analysis.py` and/or `product_agent_os/first_run_analysis.py` to run read-only preflight, discovery, runtime route, methodology audit, hygiene audit, graph generation, cockpit model and status snapshot in deterministic order. | Converts independent analyzers into a repeatable pipeline with explicit dependencies and stop conditions. | User can run one command and get a complete in-project analysis pack instead of separate manual steps. | CLI supports `--dry-run` and a direct in-project write mode that writes only under `.codex/product-agent-os/analysis/`; it must not require an external stage path or external dependency. | CLI contract tests; generated-path boundary tests; read-only target mutation proof outside the generated artifact directory; expected-block fixture. | Writes are limited to the generated analysis directory; live server, browser automation, provider calls, unrelated target writes and git actions remain blocked without exact approval. | `planned`; `pending_execution_timestamp` |
+| `B39-FRIA-M20.3` | P0 | Build analyzer adapter layer. | Architect + Builder / `workspace-discovery-auditor`, `risk-reviewer` | Normalize existing outputs from `analyze_workspace`, `run_contract`, methodology audit, `build_status_snapshot`, graph scanner and cockpit model into one packet with explicit provenance. | Prevents tight coupling between renderers and low-level analyzer internals. | User sees where every conclusion came from and which evidence is missing. | Every section names source module, source artifact, evidence freshness, confidence, unsupported claims and accepted gaps. | Adapter tests with docs-only, frontend, backend, AI/RAG, data, desktop/local-first and plugin fixtures. | Detection remains `present_unverified` until current command/runtime/owner evidence exists. | `planned`; `pending_execution_timestamp` |
+| `B39-FRIA-M20.4` | P0 | Add multi-page offline artifact renderer. | Builder + Product Manager + Docs Maintainer / `test-eval-designer`, `docs-maintainer` | Add `analysis_artifact_renderer.py` with a declarative page registry and templates for overview, inventory, architecture, methodology, runtime route, control plane, graph, code flow, quality/evals, risks and recommendations. | Reuses existing status/cockpit rendering safety while making the first-run artifact maintainable and versionable. | User gets an immediately inspectable HTML artifact with all important project pages from the first launch. | Renderer outputs offline HTML pages plus `analysis-manifest.json` directly under `.codex/product-agent-os/analysis/`; every page links back to source artifacts and shows generated-view-only wording. | HTML safety tests; no external URLs/scripts; mobile viewport static checks; section coverage tests; embedded JSON escaping tests. | HTML is generated orientation evidence only and cannot support completion, release or readiness claims by itself. | `planned`; `pending_execution_timestamp` |
+| `B39-FRIA-M20.5` | P0 | Add manifest, digest and diff baseline support. | Builder + Tester / `test-eval-designer` | Extend artifact manifest handling for multi-file analysis packs with stable page IDs, content digests, source artifact digests and previous-baseline comparison metadata. | Enables version control and regression detection for first-run and repeated-run artifacts. | User can compare what changed between the first project scan and later scans. | Manifest records page/source digests, renderer version, plugin version, target fingerprint, previous baseline status and changed/added/removed page/source summaries. | Manifest digest tests; previous-baseline fixture; suspicious shrink/change guard; deterministic sort tests. | Digests must not expose private contents; target fingerprint must be bounded and redacted. | `planned`; `pending_execution_timestamp` |
+| `B39-FRIA-M20.6` | P0 | Add redaction, privacy and source-policy guardrails. | Security/Data Owner + Reviewer / `risk-reviewer`, `test-eval-designer` | Apply one no-secrets/no-raw-source/no-absolute-path policy to packet JSON, graph JSON/JSONL, page HTML, manifests and generated recommendations. | Makes first-run artifacts safe for internal review and future versioning. | User can keep the artifact in the project without leaking private data. | Redaction report records blocked categories, counts and accepted false positives; unsafe values block artifact finalization. | Secret/path/raw-body negative tests; private path fixtures; source-policy expected-block fixture. | Real target details stay read-only; source-policy block must stop apply/promotion, not hide the artifact's diagnostic value. | `planned`; `pending_execution_timestamp` |
+| `B39-FRIA-M20.7` | P1 | Integrate first-run artifact into status dashboard and pilot rollups. | Builder + Product Manager / `test-eval-designer`, `learning-loop-maintainer` | Add snapshot fields and rollup references so `status.html`, pilot manifests and Batch 39 rollups can point to the analysis pack without duplicating it. | Keeps generated surfaces coherent and avoids parallel sources of truth. | User can open status/rollup and navigate to the full first-run analysis. | Status snapshot includes `first_run_analysis_ref`, page count, manifest digest, freshness and unsupported-claim summary. | Status snapshot/dashboard tests; fixture eval markers; transcript eval for generated-view-only wording. | Dashboard and rollup remain projections; underlying packet and source artifacts remain authoritative. | `planned`; `pending_execution_timestamp` |
+| `B39-FRIA-M20.8` | P1 | Add product-readiness and operator-usability scoring for first-run artifact. | Product Manager + Tester / `test-eval-designer`, `learning-loop-maintainer` | Score clarity, completeness, actionability, missing-evidence visibility, first safe action, approval boundary clarity, onboarding time and artifact navigation. | Connects technical artifact generation to actual operator usefulness. | User can judge whether the first-run artifact helps a non-author understand the project. | Scorecard has raw counts, thresholds, owner review slot and `synthetic_only_boundary` status. | Synthetic onboarding transcript; docs journey check; scorecard fixture; optional real-user pilot later. | Scorecard is not release approval and cannot replace real-project owner feedback. | `planned`; `pending_execution_timestamp` |
+| `B39-FRIA-M20.9` | P1 | Add docs, artifact contracts and source registry sync. | Docs Maintainer + Reviewer / `docs-maintainer`, `risk-reviewer` | Document first-run artifact contract, source-of-truth boundary, CLI workflow, approval requirements, generated-view limits, versioning and cleanup. | Keeps operators from treating HTML as proof or missing required approval boundaries. | User knows how to run, review, version, diff and clean up the artifact. | RU/EN docs and artifact contract pages describe packet fields, target paths, direct in-project generation workflow, generated-view-only policy and supported gaps. | Product-Agent OS docs tests; `tools/check_docs.py`; source registry update; `git diff --check`. | Current-source claims need fresh official-source support where applicable; no live/docs publication without approval. | `planned`; `pending_execution_timestamp` |
+| `B39-FRIA-M20.10` | P0 | Close focused and full verification for first-run artifact. | Tester + Reviewer / `verification-before-completion`, `completion-skeptic` | Run focused schema/CLI/renderer/redaction/dashboard/fixture tests, then broader Product-Agent OS docs/eval checks before any completion claim. | Prevents inspection-only design from being mistaken for implemented behavior. | User gets a trustworthy implementation handoff with supported claims, gaps and next approval boundary. | Completion packet separates supported claims, unsupported claims, stale evidence, generated-view-only evidence, accepted gaps and exact next action. | Focused unittest suite; fixture eval; transcript eval; docs check; diff check; optional strict MkDocs if nav/site changes. | No release/readiness/promotion claim until current-run evidence exists; no git stage/commit/push/PR without explicit command. | `planned`; `pending_execution_timestamp` |
+
+Batch 39 M20 sequencing recommendation:
+
+| Slice | Tasks | Execution mode | Stop / handoff condition |
+| --- | --- | --- | --- |
+| `B39-FRIA-S1 Schema and orchestration` | `B39-FRIA-M20.1..M20.3` | Sequential, test-first | Stop when one dry-run packet can compose discovery/runtime/methodology/status/graph summaries and one write-mode run can write only the generated analysis directory inside the target project. |
+| `B39-FRIA-S2 Multi-page artifact pack` | `B39-FRIA-M20.4..M20.6` | Sequential with renderer safety tests | Stop when the in-project pack contains all required pages, JSON sources, manifest digests and redaction proof under `.codex/product-agent-os/analysis/`. |
+| `B39-FRIA-S3 Product integration and docs` | `B39-FRIA-M20.7..M20.9` | Focused integration and docs sync | Stop when status/rollup references, product scorecard and docs/source registry all describe the artifact without treating HTML as proof. |
+| `B39-FRIA-S4 Verification and closure` | `B39-FRIA-M20.10` | Current-run verification only | Stop when focused tests, eval/docs checks and completion-skeptic packet either pass or record explicit blockers/accepted gaps. |
+
+Depth checks before implementation:
+
+- The artifact pack writer must create artifacts directly inside the user's project under `.codex/product-agent-os/analysis/`; no external stage directory, external copy/apply step or external runtime dependency is allowed for the first-run artifact path.
+- The direct writer must still be atomic from the user's point of view: build into a temporary generated directory under `.codex/product-agent-os/analysis/.tmp/`, validate manifest/digests/redaction, then promote inside the same `.codex/product-agent-os/analysis/` tree.
+- The orchestrator must be idempotent: rerunning against the same target without source changes should produce stable page IDs, stable source artifact IDs and deterministic manifest ordering except for explicit `generated_at` fields.
+- Partial analyzer failures must degrade into page-level and packet-level `blocked`, `not_available` or `present_unverified` sections instead of aborting the whole pack silently or dropping pages.
+- Every page must have a stable `page_id`, source-artifact dependencies, generated-view-only text, freshness status, unsupported-claim count and safe next action.
+- The packet must distinguish `target_identity`, `target_fingerprint`, `target_profile` and `target_private_details`; only bounded/redacted profile data may enter versioned artifacts.
+- Existing `status.html` and `project-cockpit.html` renderers should be reused through adapter contracts where possible, but the first-run renderer must own navigation, manifest and cross-page consistency instead of copying renderer internals.
+- The cleanup/retention contract must name only generated in-project analysis paths, cache files, retained source packets, removable review HTML and deletion boundaries; cleanup must not delete target-authored files outside `.codex/product-agent-os/analysis/` without exact approval.
+- The real-project pilot path must keep `analysis-manifest.json` as baseline evidence and later compare new runs against that baseline before suggesting implementation tasks.
+
 #### Batch 40: Doubt / Verifier Loop Completion-Skeptic Gate
 
 Batch 40 is an owner-requested Task 26 planning addendum for turning the researched "doubt technique" into a Product-Agent OS verification-first completion gate. It is based on `output/doubt-technique-comparative-report.md` and `output/doubt-verifier-loop-batch-task-matrix.md`. It does not create `Task 27`, reopen completed Track 10 live/provider/canonical-mutation work or authorize implementation by itself.
