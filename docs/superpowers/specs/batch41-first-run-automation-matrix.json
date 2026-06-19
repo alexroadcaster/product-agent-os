@@ -561,7 +561,7 @@
       "user_does": "Validate whether the graph helps understand project structure.",
       "acceptance": "Cockpit contains a file/source graph with legend, status coloring, selected-file panel, cluster/LOD behavior, table fallback and clear omitted-node/edge counts for large graphs.",
       "stop_condition": "Stop if the graph is only a text summary or hides unavailable data.",
-      "status": "planned"
+      "status": "implemented"
     },
     {
       "id": "B41-S7-M35",
@@ -573,7 +573,7 @@
       "user_does": "Review graph usefulness on Neural_Flow and later code-heavy targets.",
       "acceptance": "Code graph renders when packet data exists, uses clustered/LOD/top-N/selected-neighborhood modes for large graphs, records omitted counts and shows explicit not_available state with safe next action when data does not exist.",
       "stop_condition": "Stop if generated graph implies source-read, runtime or readiness proof.",
-      "status": "planned"
+      "status": "implemented"
     },
     {
       "id": "B41-S7-M36",

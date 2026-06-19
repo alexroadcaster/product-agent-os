@@ -576,12 +576,28 @@ class Batch41FirstRunAutomationTests(unittest.TestCase):
             self.assertEqual(len(contract["primary_pages"]), 8)
             self.assertEqual(len(view_model["cockpit"]["pages"]), 8)
             self.assertEqual(view_model["source_file_graph"]["status"], "adapter_ready")
+            self.assertEqual(view_model["source_file_graph"]["renderer"], "Cosmos.gl")
+            self.assertTrue(view_model["source_file_graph"]["graphology_compatible_payload"])
+            self.assertIn("cosmos_payload", view_model["source_file_graph"])
+            self.assertIn("visual_projection", view_model["source_file_graph"])
+            self.assertIn("legend", view_model["source_file_graph"])
+            self.assertIn("selected_file_panel", view_model["source_file_graph"])
+            self.assertEqual(view_model["source_file_graph"]["table_fallback"]["status"], "available")
+            self.assertIn("omitted_edge_count", view_model["source_file_graph"])
             self.assertEqual(view_model["code_graph"]["status"], "not_available")
+            self.assertEqual(view_model["code_graph"]["node_count"], 0)
+            self.assertEqual(view_model["code_graph"]["hotspot_count"], 0)
+            self.assertEqual(view_model["code_graph"]["table_fallback"]["status"], "empty")
 
             self.assertIn('class="first-run-cockpit cockpit-shell"', index_html)
             self.assertIn('id="page-overview"', index_html)
             self.assertIn('id="page-project-map"', index_html)
             self.assertIn('id="page-code-intelligence"', index_html)
+            self.assertIn('id="source-file-graph-canvas"', index_html)
+            self.assertIn('id="source-file-graph-selected-file-panel"', index_html)
+            self.assertIn('class="graph-fallback-table"', index_html)
+            self.assertIn('id="code-graph-canvas"', index_html)
+            self.assertIn("not_available", index_html)
             self.assertIn("Cosmos.gl", index_html)
             self.assertIn("Generated view only", index_html)
             self.assertIn("Baseline Comparison", index_html)
@@ -590,6 +606,110 @@ class Batch41FirstRunAutomationTests(unittest.TestCase):
             self.assertNotIn("http://", index_html.lower())
             self.assertNotIn("https://", index_html.lower())
             self.assertNotIn(str(workspace), result.stdout + index_html + json.dumps(manifest, sort_keys=True))
+
+    def test_b41_s7_m34_m35_cockpit_renders_source_graph_and_code_graph_summary_payloads(self) -> None:
+        from product_agent_os.analysis_artifact_renderer import render_first_run_analysis_artifact  # noqa: PLC0415
+        from product_agent_os.first_run_analysis import build_first_run_analysis_packet, validate_first_run_analysis_packet  # noqa: PLC0415
+
+        with TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "s7-graph-target"
+            stage = Path(tmp) / "stage-output"
+            workspace.mkdir()
+            (workspace / "README.md").write_text("Source status: `synthetic_fixture`\n", encoding="utf-8")
+
+            packet = build_first_run_analysis_packet(
+                target_label="synthetic-graph-target",
+                generated_at="2026-06-19T02:30:00+03:00",
+                source_artifacts=[
+                    {
+                        "artifact_id": "project_graph",
+                        "path": ".codex/product-agent-os/project-code-graph.json",
+                        "digest": "sha256:" + "1" * 64,
+                        "provenance": "scan_project_code_graph",
+                    },
+                    {
+                        "artifact_id": "analysis_manifest",
+                        "path": ".codex/product-agent-os/analysis/analysis-manifest.json",
+                        "digest": "sha256:" + "2" * 64,
+                        "provenance": "render_first_run_analysis_artifact",
+                    },
+                ],
+                generated_pages=[],
+                section_summaries={
+                    "discovery": {"status": "current", "source_artifact": "analysis_manifest"},
+                    "runtime_route": {"status": "approval_required", "source_artifact": "analysis_manifest"},
+                    "methodology_audit": {"status": "present_unverified", "source_artifact": "analysis_manifest"},
+                    "control_plane": {"status": "present_unverified", "source_artifact": "analysis_manifest"},
+                    "source_policy": {"status": "approval_required", "source_artifact": "analysis_manifest"},
+                    "graph": {"status": "inspection_only", "source_artifact": "project_graph"},
+                    "status_snapshot": {"status": "inspection_only", "source_artifact": "analysis_manifest"},
+                },
+                safe_next_action="Use graph packet as orientation only; read source files before edits.",
+                graph_artifact_summary={
+                    "status": "inspection_only",
+                    "graph_packet_digest": "sha256:" + "3" * 64,
+                    "agent_packet_refs": [
+                        {
+                            "kind": "agent_reading_packet",
+                            "path": ".codex/product-agent-os/agent-reading-packet.json",
+                            "digest": "sha256:" + "4" * 64,
+                        }
+                    ],
+                    "coverage": {
+                        "status": "partial_static",
+                        "covered_files": 6,
+                        "partial_files": 2,
+                        "unsupported_languages": {"ruby": "unsupported"},
+                    },
+                    "freshness": {
+                        "status": "stale",
+                        "blocks_action_claims": True,
+                        "safe_next_action": "Refresh graph or read source first.",
+                    },
+                    "rejected_link_summary": {"total": 3, "by_reason": {"weak_name_similarity": 3}},
+                    "framework_semantic_summary": {"total": 2, "frameworks": {"react": 2}},
+                    "guided_tour": [{"page": "code-intelligence", "safe_next_action": "Read listed spans before editing."}],
+                    "unsupported_claims": ["runtime_routing", "source_read_completion"],
+                },
+            )
+
+            self.assertEqual(validate_first_run_analysis_packet(packet), [])
+            render_first_run_analysis_artifact(packet, workspace, output_dir=stage)
+            manifest = json.loads(stage.joinpath("analysis-manifest.json").read_text(encoding="utf-8"))
+            index_html = stage.joinpath("index.html").read_text(encoding="utf-8")
+            view_model = manifest["primary_cockpit"]["view_model"]
+            source_graph = view_model["source_file_graph"]
+            code_graph = view_model["code_graph"]
+
+            self.assertEqual(source_graph["status"], "adapter_ready")
+            self.assertEqual(source_graph["renderer"], "Cosmos.gl")
+            self.assertEqual(source_graph["cosmos_payload"]["schema_version"], "cosmos_gl_static_adapter_v1")
+            self.assertTrue(source_graph["visual_projection"]["graphology_compatible"])
+            self.assertGreaterEqual(source_graph["node_count"], 2)
+            self.assertGreaterEqual(source_graph["edge_count"], 1)
+            self.assertIn("omitted_node_count", source_graph)
+            self.assertIn("omitted_edge_count", source_graph)
+            self.assertEqual(source_graph["table_fallback"]["status"], "available")
+
+            self.assertEqual(code_graph["status"], "available")
+            self.assertEqual(code_graph["availability_detail"], "summary_available")
+            self.assertEqual(code_graph["renderer"], "Cosmos.gl")
+            self.assertEqual(code_graph["cosmos_payload"]["schema_version"], "cosmos_gl_static_adapter_v1")
+            self.assertTrue(code_graph["source_read_required"])
+            self.assertGreaterEqual(code_graph["node_count"], 4)
+            self.assertGreaterEqual(code_graph["hotspot_count"], 3)
+            self.assertEqual(code_graph["relationships"]["read_order"]["status"], "summary_available")
+            self.assertIn("omitted_edge_count", code_graph)
+
+            self.assertIn('data-graph-kind="source-file-graph"', index_html)
+            self.assertIn('data-graph-kind="code-graph"', index_html)
+            self.assertIn("Selected File Panel", index_html)
+            self.assertIn("Code Graph And Hotspots", index_html)
+            self.assertIn("Refresh graph or read source first.", index_html)
+            self.assertNotIn("<script", index_html.lower())
+            self.assertNotIn("http://", index_html.lower())
+            self.assertNotIn("https://", index_html.lower())
+            self.assertNotIn(str(workspace), index_html + json.dumps(manifest, sort_keys=True))
 
     def test_b41_s5_m21_first_response_exposes_one_blocking_question_and_keeps_queue_in_packet(self) -> None:
         with TemporaryDirectory() as tmp:

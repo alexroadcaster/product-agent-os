@@ -7,6 +7,7 @@ from typing import Any
 
 from product_agent_os.first_run_analysis import ANALYSIS_DIR, SECRET_LIKE_VALUE_RE, validate_first_run_analysis_packet
 from product_agent_os.project_cockpit_model import COCKPIT_PAGE_IDS, COCKPIT_PAGE_LABELS, build_project_cockpit_model
+from product_agent_os.project_graph_visual_model import build_project_graph_visual_model
 from product_agent_os.stage_manifest import canonical_json, content_digest
 
 
@@ -322,9 +323,8 @@ def build_first_run_cockpit_view_model(
     source_artifacts = _source_artifacts(packet)
     section_cards = _section_status_cards(packet)
     graph_summary = _graph_depth_summary(packet)
-    code_graph_status = str(graph_summary.get("status", "not_available") or "not_available")
-    if code_graph_status in {"", "not_available"}:
-        code_graph_status = "not_available"
+    source_file_graph = _first_run_source_file_graph_view(graph_payload, contract)
+    code_graph = _first_run_code_graph_view(packet, contract)
     model = {
         "schema_version": FIRST_RUN_COCKPIT_ARTIFACT_SCHEMA_VERSION,
         "path": "index.html",
@@ -339,21 +339,8 @@ def build_first_run_cockpit_view_model(
             "completion_claim": packet.get("evidence_status", {}).get("completion_claim", "not_claimed"),
             "unsupported_claims": _unsupported_claims(packet),
         },
-        "source_file_graph": {
-            "status": "adapter_ready",
-            "graphology_compatible_payload": True,
-            "node_count": len(graph_payload["nodes"]),
-            "edge_count": len(graph_payload["edges"]),
-            "source_artifact_count": len(source_artifacts),
-            "section_count": len(packet.get("section_summaries", {})),
-            "omitted_node_count": 0,
-            "generated_view_policy": "orientation_only_not_proof",
-        },
-        "code_graph": {
-            "status": code_graph_status,
-            "empty_state": "not_available" if code_graph_status == "not_available" else "",
-            "safe_next_action": "Read source files before graph-backed edits or completion claims.",
-        },
+        "source_file_graph": source_file_graph,
+        "code_graph": code_graph,
         "section_cards": section_cards,
         "source_artifacts": source_artifacts,
         "baseline_comparison": {
@@ -429,6 +416,395 @@ def _first_run_cockpit_graph_payload(packet: dict[str, Any]) -> dict[str, Any]:
         "edges": edges,
         "observations": [],
     }
+
+
+def _first_run_source_file_graph_view(graph_payload: dict[str, Any], contract: dict[str, Any]) -> dict[str, Any]:
+    visual = build_project_graph_visual_model(graph_payload, max_nodes=500, max_edges=1_000)
+    cosmos_payload = _cosmos_payload_from_visual_projection(visual)
+    budget = visual.get("performance_budget") if isinstance(visual.get("performance_budget"), dict) else {}
+    return {
+        "schema_version": "first_run_source_file_graph_view_v1",
+        "status": "adapter_ready",
+        "write_policy": "read_only",
+        "source_boundary": "raw_source_bodies_excluded",
+        "renderer": "Cosmos.gl",
+        "selected_renderer": "Cosmos.gl",
+        "renderer_mode": "cosmos_gl_payload_with_static_html_fallback",
+        "runtime_asset_status": "not_vendored_static_fallback",
+        "external_assets": "forbidden",
+        "renderer_policy": contract.get("renderer_policy", {}),
+        "graphology_compatible_payload": True,
+        "graphology_payload": {
+            "schema_version": graph_payload.get("schema_version", 1),
+            "metadata": graph_payload.get("metadata", {}),
+            "nodes": graph_payload.get("nodes", []),
+            "edges": graph_payload.get("edges", []),
+        },
+        "cosmos_payload": cosmos_payload,
+        "visual_projection": visual,
+        "legend": _graph_legend(visual),
+        "status_colors": _graph_status_colors(visual),
+        "selected_file_panel": _selected_file_panel(visual),
+        "table_fallback": _graph_table_fallback(visual),
+        "large_graph_policy": contract.get("large_graph_policy", {}),
+        "cluster_policy": "clustered_overview_with_lod_label_suppression",
+        "node_count": int(budget.get("declared_node_count", len(graph_payload.get("nodes", [])))),
+        "edge_count": int(budget.get("declared_edge_count", len(graph_payload.get("edges", [])))),
+        "visible_node_count": int(budget.get("visible_node_count", 0)),
+        "visible_edge_count": int(budget.get("visible_edge_count", 0)),
+        "omitted_node_count": int(budget.get("omitted_node_count", 0)),
+        "omitted_edge_count": int(budget.get("omitted_edge_count", 0)),
+        "source_artifact_count": len(graph_payload.get("artifact_targets", {})),
+        "section_count": len([node for node in graph_payload.get("nodes", []) if node.get("type") == "section"]),
+        "generated_view_policy": "orientation_only_not_proof",
+        "source_read_required": True,
+        "must_read_source_before_edit": True,
+        "safe_next_action": "Use the file/source graph for navigation only; read source files before edits.",
+    }
+
+
+def _first_run_code_graph_view(packet: dict[str, Any], contract: dict[str, Any]) -> dict[str, Any]:
+    graph_summary = _graph_depth_summary(packet)
+    status = str(graph_summary.get("status", "not_available") or "not_available")
+    if status in {"", "not_available"}:
+        return {
+            "schema_version": "first_run_code_graph_view_v1",
+            "status": "not_available",
+            "write_policy": "read_only",
+            "source_boundary": "raw_source_bodies_excluded",
+            "renderer": "Cosmos.gl",
+            "selected_renderer": "Cosmos.gl",
+            "renderer_mode": "not_available_static_empty_state",
+            "runtime_asset_status": "not_vendored_static_fallback",
+            "external_assets": "forbidden",
+            "renderer_policy": contract.get("renderer_policy", {}),
+            "graphology_compatible_payload": True,
+            "empty_state": "not_available",
+            "not_available_reason": "No code graph packet data is present in the first-run packet.",
+            "large_graph_policy": contract.get("large_graph_policy", {}),
+            "node_count": 0,
+            "edge_count": 0,
+            "visible_node_count": 0,
+            "visible_edge_count": 0,
+            "omitted_node_count": 0,
+            "omitted_edge_count": 0,
+            "hotspots": [],
+            "hotspot_count": 0,
+            "relationships": _empty_code_graph_relationships(),
+            "table_fallback": {"status": "empty", "rows": []},
+            "safe_next_action": "Run or refresh the project graph packet, then read source files before graph-backed edits.",
+            "generated_view_policy": "orientation_only_not_proof",
+            "source_read_required": True,
+            "must_read_source_before_edit": True,
+        }
+    graph_payload = _first_run_code_graph_payload(graph_summary)
+    visual = build_project_graph_visual_model(graph_payload, max_nodes=500, max_edges=1_000)
+    budget = visual.get("performance_budget") if isinstance(visual.get("performance_budget"), dict) else {}
+    hotspots = _code_graph_hotspots(graph_summary)
+    return {
+        "schema_version": "first_run_code_graph_view_v1",
+        "status": "available",
+        "availability_detail": "summary_available",
+        "write_policy": "read_only",
+        "source_boundary": "raw_source_bodies_excluded",
+        "renderer": "Cosmos.gl",
+        "selected_renderer": "Cosmos.gl",
+        "renderer_mode": "cosmos_gl_summary_payload_with_static_html_fallback",
+        "runtime_asset_status": "not_vendored_static_fallback",
+        "external_assets": "forbidden",
+        "renderer_policy": contract.get("renderer_policy", {}),
+        "graphology_compatible_payload": True,
+        "empty_state": "",
+        "graph_packet_ref": graph_summary.get("graph_packet_digest", ""),
+        "graphology_payload": graph_payload,
+        "cosmos_payload": _cosmos_payload_from_visual_projection(visual),
+        "visual_projection": visual,
+        "legend": _graph_legend(visual),
+        "status_colors": _graph_status_colors(visual),
+        "selected_file_panel": _selected_file_panel(visual),
+        "table_fallback": _graph_table_fallback(visual),
+        "large_graph_policy": contract.get("large_graph_policy", {}),
+        "node_count": int(budget.get("declared_node_count", len(graph_payload.get("nodes", [])))),
+        "edge_count": int(budget.get("declared_edge_count", len(graph_payload.get("edges", [])))),
+        "visible_node_count": int(budget.get("visible_node_count", 0)),
+        "visible_edge_count": int(budget.get("visible_edge_count", 0)),
+        "omitted_node_count": int(budget.get("omitted_node_count", 0)),
+        "omitted_edge_count": int(budget.get("omitted_edge_count", 0)),
+        "hotspots": hotspots,
+        "hotspot_count": len(hotspots),
+        "relationships": _code_graph_relationships(graph_summary),
+        "safe_next_action": graph_summary.get("freshness", {}).get(
+            "safe_next_action",
+            "Read source files before graph-backed edits or completion claims.",
+        )
+        if isinstance(graph_summary.get("freshness"), dict)
+        else "Read source files before graph-backed edits or completion claims.",
+        "generated_view_policy": "orientation_only_not_proof",
+        "source_policy": graph_summary.get("source_policy", "graph artifacts are generated orientation evidence, not source truth"),
+        "source_read_required": True,
+        "must_read_source_before_edit": True,
+    }
+
+
+def _first_run_code_graph_payload(graph_summary: dict[str, Any]) -> dict[str, Any]:
+    nodes: list[dict[str, Any]] = [
+        {
+            "id": "code_graph:summary",
+            "type": "code_graph_summary",
+            "label": "Code graph summary",
+            "status": str(graph_summary.get("status", "inspection_only")),
+            "language": "",
+            "path": "graph_artifact_summary",
+        }
+    ]
+    edges: list[dict[str, Any]] = []
+
+    def add_node(node_id: str, node_type: str, label: str, status: str, path: str = "") -> None:
+        nodes.append({"id": node_id, "type": node_type, "label": label, "status": status, "language": "", "path": path})
+        edges.append(
+            {
+                "id": f"edge:code_graph:summary:{node_id}",
+                "source": "code_graph:summary",
+                "target": node_id,
+                "type": "references",
+                "confidence": "inferred",
+                "status": "generated",
+            }
+        )
+
+    coverage = graph_summary.get("coverage") if isinstance(graph_summary.get("coverage"), dict) else {}
+    if coverage:
+        add_node("code_graph:coverage", "coverage", "Coverage", str(coverage.get("status", "not_available")))
+    freshness = graph_summary.get("freshness") if isinstance(graph_summary.get("freshness"), dict) else {}
+    if freshness:
+        add_node("code_graph:freshness", "freshness", "Freshness", str(freshness.get("status", "not_available")))
+    rejected = graph_summary.get("rejected_link_summary") if isinstance(graph_summary.get("rejected_link_summary"), dict) else {}
+    if int(rejected.get("total", 0) or 0) > 0:
+        add_node("code_graph:rejected_links", "rejected_links", "Rejected links", "inspection_only")
+    framework = graph_summary.get("framework_semantic_summary") if isinstance(graph_summary.get("framework_semantic_summary"), dict) else {}
+    if int(framework.get("total", 0) or 0) > 0:
+        add_node("code_graph:framework_semantics", "framework_semantics", "Framework semantics", "inspection_only")
+    for index, ref in enumerate(graph_summary.get("agent_packet_refs", []) if isinstance(graph_summary.get("agent_packet_refs"), list) else []):
+        if not isinstance(ref, dict):
+            continue
+        add_node(
+            f"code_graph:agent_packet:{index}",
+            "agent_packet",
+            str(ref.get("kind", "agent_packet")),
+            "inspection_only",
+            str(ref.get("path", "")),
+        )
+    for index, item in enumerate(graph_summary.get("guided_tour", []) if isinstance(graph_summary.get("guided_tour"), list) else []):
+        if not isinstance(item, dict):
+            continue
+        add_node(
+            f"code_graph:guided_tour:{index}",
+            "guided_tour",
+            str(item.get("page", "guided_tour")),
+            "inspection_only",
+        )
+    return {
+        "schema_version": 1,
+        "write_policy": "read_only",
+        "metadata": {
+            "scan_id": "first-run-code-graph-summary",
+            "node_count": len(nodes),
+            "edge_count": len(edges),
+            "observation_count": len(nodes) + len(edges),
+            "source_boundary": "raw_source_bodies_excluded",
+            "generated_view_policy": "orientation_only_not_proof",
+        },
+        "artifact_targets": {"summary": "graph_artifact_summary"},
+        "nodes": nodes,
+        "edges": edges,
+        "observations": [],
+    }
+
+
+def _cosmos_payload_from_visual_projection(projection: dict[str, Any]) -> dict[str, Any]:
+    nodes = projection.get("nodes") if isinstance(projection.get("nodes"), list) else []
+    edges = projection.get("edges") if isinstance(projection.get("edges"), list) else []
+    node_index_by_id: dict[str, int] = {}
+    cosmos_nodes: list[dict[str, Any]] = []
+    for index, node in enumerate(nodes):
+        if not isinstance(node, dict):
+            continue
+        node_id = str(node.get("key", ""))
+        attrs = node.get("attributes") if isinstance(node.get("attributes"), dict) else {}
+        node_index_by_id[node_id] = len(cosmos_nodes)
+        cosmos_nodes.append(
+            {
+                "index": len(cosmos_nodes),
+                "id": node_id,
+                "label": str(attrs.get("label", "")),
+                "type": str(attrs.get("type", "")),
+                "status": str(attrs.get("status", "")),
+                "x": float(attrs.get("x") or 0),
+                "y": float(attrs.get("y") or 0),
+                "size": float(attrs.get("size") or 1),
+                "color": str(attrs.get("color", "")),
+                "cluster": str(attrs.get("community", "")),
+                "lod_tier": int(attrs.get("lod_tier") or 0),
+                "label_priority": int(attrs.get("label_priority") or 0),
+            }
+        )
+    cosmos_links: list[dict[str, Any]] = []
+    for edge in edges:
+        if not isinstance(edge, dict):
+            continue
+        source_id = str(edge.get("source", ""))
+        target_id = str(edge.get("target", ""))
+        if source_id not in node_index_by_id or target_id not in node_index_by_id:
+            continue
+        attrs = edge.get("attributes") if isinstance(edge.get("attributes"), dict) else {}
+        cosmos_links.append(
+            {
+                "index": len(cosmos_links),
+                "id": str(edge.get("key", "")),
+                "source": node_index_by_id[source_id],
+                "target": node_index_by_id[target_id],
+                "source_id": source_id,
+                "target_id": target_id,
+                "type": str(attrs.get("type", "")),
+                "status": str(attrs.get("status", "")),
+                "color": str(attrs.get("color", "")),
+                "size": float(attrs.get("size") or 1),
+            }
+        )
+    return {
+        "schema_version": "cosmos_gl_static_adapter_v1",
+        "renderer": "Cosmos.gl",
+        "adapter_status": "payload_ready_runtime_not_bundled",
+        "external_assets": "forbidden",
+        "typed_array_contract": {
+            "node_positions": "x/y fields are deterministic numeric coordinates",
+            "link_indices": "source/target fields are zero-based node indexes",
+            "index_maps": "node_index_by_id preserves Graphology ids for selected-neighborhood lookup",
+        },
+        "nodes": cosmos_nodes,
+        "links": cosmos_links,
+        "node_index_by_id": node_index_by_id,
+        "link_index_by_id": {item["id"]: item["index"] for item in cosmos_links},
+    }
+
+
+def _graph_legend(projection: dict[str, Any]) -> list[dict[str, Any]]:
+    clusters = projection.get("clusters") if isinstance(projection.get("clusters"), list) else []
+    return [
+        {
+            "id": str(cluster.get("id", "")),
+            "label": str(cluster.get("label", "")),
+            "color": str(cluster.get("color", "")),
+            "node_count": int(cluster.get("node_count", 0) or 0),
+            "lod_tier": int(cluster.get("lod_tier", 0) or 0),
+        }
+        for cluster in clusters[:12]
+        if isinstance(cluster, dict)
+    ]
+
+
+def _graph_status_colors(projection: dict[str, Any]) -> dict[str, str]:
+    colors: dict[str, str] = {}
+    for node in projection.get("nodes", []) if isinstance(projection.get("nodes"), list) else []:
+        if not isinstance(node, dict):
+            continue
+        attrs = node.get("attributes") if isinstance(node.get("attributes"), dict) else {}
+        status = str(attrs.get("status", "") or "unknown")
+        colors.setdefault(status, str(attrs.get("color", "") or "#7d8793"))
+    return colors
+
+
+def _selected_file_panel(projection: dict[str, Any]) -> dict[str, Any]:
+    selected = projection.get("focused_subgraph") if isinstance(projection.get("focused_subgraph"), dict) else {}
+    node = selected.get("selected_node") if isinstance(selected.get("selected_node"), dict) else {}
+    if not node:
+        rows = _graph_table_fallback(projection).get("rows", [])
+        node = rows[0] if rows else {}
+    return {
+        "status": "selected" if node else "not_selected",
+        "node_id": str(node.get("id", "")),
+        "type": str(node.get("type", "")),
+        "label": str(node.get("label", "")),
+        "path": str(node.get("path", "")),
+        "source_boundary": "raw source bodies are excluded; selected file is an orientation pointer only",
+    }
+
+
+def _graph_table_fallback(projection: dict[str, Any], limit: int = 80) -> dict[str, Any]:
+    rows: list[dict[str, str]] = []
+    for node in projection.get("nodes", []) if isinstance(projection.get("nodes"), list) else []:
+        if not isinstance(node, dict):
+            continue
+        attrs = node.get("attributes") if isinstance(node.get("attributes"), dict) else {}
+        rows.append(
+            {
+                "id": str(node.get("key", "")),
+                "type": str(attrs.get("type", "")),
+                "status": str(attrs.get("status", "")),
+                "cluster": str(attrs.get("community", "")),
+                "path": str(attrs.get("path", "")),
+            }
+        )
+    return {
+        "status": "available" if rows else "empty",
+        "rows": rows[:limit],
+        "omitted_row_count": max(0, len(rows) - limit),
+    }
+
+
+def _code_graph_hotspots(graph_summary: dict[str, Any]) -> list[dict[str, str]]:
+    hotspots: list[dict[str, str]] = []
+    coverage = graph_summary.get("coverage") if isinstance(graph_summary.get("coverage"), dict) else {}
+    if coverage:
+        hotspots.append(
+            {
+                "id": "coverage",
+                "status": str(coverage.get("status", "not_available")),
+                "detail": f"covered_files={coverage.get('covered_files', 0)} partial_files={coverage.get('partial_files', 0)}",
+            }
+        )
+        unsupported = coverage.get("unsupported_languages") if isinstance(coverage.get("unsupported_languages"), dict) else {}
+        for language, status in sorted(unsupported.items())[:6]:
+            hotspots.append({"id": f"unsupported_language:{language}", "status": str(status), "detail": "source read required"})
+    freshness = graph_summary.get("freshness") if isinstance(graph_summary.get("freshness"), dict) else {}
+    if freshness:
+        hotspots.append(
+            {
+                "id": "freshness",
+                "status": str(freshness.get("status", "not_available")),
+                "detail": str(freshness.get("safe_next_action", "Read source files before action.")),
+            }
+        )
+    rejected = graph_summary.get("rejected_link_summary") if isinstance(graph_summary.get("rejected_link_summary"), dict) else {}
+    if int(rejected.get("total", 0) or 0) > 0:
+        hotspots.append({"id": "rejected_links", "status": "inspection_only", "detail": f"total={rejected.get('total', 0)}"})
+    return hotspots[:12]
+
+
+def _empty_code_graph_relationships() -> dict[str, Any]:
+    return {
+        "imports": {"status": "not_available", "count": 0},
+        "calls": {"status": "not_available", "count": 0},
+        "tests": {"status": "not_available", "count": 0},
+        "routes": {"status": "not_available", "count": 0},
+        "code_flow": {"status": "not_available", "count": 0},
+        "read_order": {"status": "not_available", "count": 0},
+        "trace_impact": {"status": "not_available", "count": 0},
+    }
+
+
+def _code_graph_relationships(graph_summary: dict[str, Any]) -> dict[str, Any]:
+    relationships = _empty_code_graph_relationships()
+    refs = graph_summary.get("agent_packet_refs") if isinstance(graph_summary.get("agent_packet_refs"), list) else []
+    guided_tour = graph_summary.get("guided_tour") if isinstance(graph_summary.get("guided_tour"), list) else []
+    coverage = graph_summary.get("coverage") if isinstance(graph_summary.get("coverage"), dict) else {}
+    relationships["read_order"] = {"status": "summary_available" if guided_tour else "not_available", "count": len(guided_tour)}
+    relationships["trace_impact"] = {"status": "summary_available" if refs else "not_available", "count": len(refs)}
+    relationships["code_flow"] = {
+        "status": str(coverage.get("status", "summary_available")) if coverage else "summary_available",
+        "count": int(coverage.get("covered_files", 0) or 0) if coverage else 0,
+    }
+    return relationships
 
 
 def _first_run_cockpit_analysis(packet: dict[str, Any]) -> dict[str, Any]:
@@ -583,25 +959,14 @@ def _cockpit_section_html(page: dict[str, Any], primary_cockpit: dict[str, Any])
     )
     extra = ""
     if page_id == "project-map":
-        graph = primary_cockpit["source_file_graph"]
-        extra = _definition_rows(
-            [
-                ("Status", graph.get("status")),
-                ("Graphology-compatible", str(graph.get("graphology_compatible_payload")).lower()),
-                ("Nodes", graph.get("node_count")),
-                ("Edges", graph.get("edge_count")),
-                ("Fallback", "bounded table fallback"),
-            ]
+        extra = _graph_panel_html(
+            primary_cockpit["source_file_graph"],
+            graph_id="source-file-graph",
+            title="File / Source Graph",
+            empty_message="No file/source graph rows are available.",
         )
     elif page_id == "code-intelligence":
-        code_graph = primary_cockpit["code_graph"]
-        extra = _definition_rows(
-            [
-                ("Status", code_graph.get("status")),
-                ("Empty state", code_graph.get("empty_state") or "available"),
-                ("Safe next action", code_graph.get("safe_next_action")),
-            ]
-        )
+        extra = _code_graph_panel_html(primary_cockpit["code_graph"])
     return (
         f"<section class=\"cockpit-page\" id=\"page-{_attr(page_id)}\">\n"
         f"<h2>{_text(page.get('label'))}</h2>\n"
@@ -609,6 +974,158 @@ def _cockpit_section_html(page: dict[str, Any], primary_cockpit: dict[str, Any])
         f"<p class=\"boundary\">{_text('; '.join(str(item) for item in boundaries[:2]))}</p>\n"
         f"{extra}<div class=\"section-grid\">{body}</div>\n"
         "</section>\n"
+    )
+
+
+def _code_graph_panel_html(code_graph: dict[str, Any]) -> str:
+    status = str(code_graph.get("status", "not_available"))
+    hotspots = "\n".join(
+        "<tr>"
+        f"<td><code>{_text(item.get('id'))}</code></td>"
+        f"<td>{_text(item.get('status'))}</td>"
+        f"<td>{_text(item.get('detail'))}</td>"
+        "</tr>"
+        for item in code_graph.get("hotspots", [])[:12]
+        if isinstance(item, dict)
+    )
+    hotspot_table = (
+        "<table class=\"compact-table graph-hotspots\"><thead><tr><th>Hotspot</th><th>Status</th><th>Detail</th></tr></thead>"
+        f"<tbody>{hotspots}</tbody></table>"
+        if hotspots
+        else "<p class=\"empty-state\">No hotspots are available in the current first-run packet.</p>"
+    )
+    empty = ""
+    if status == "not_available":
+        empty = (
+            "<p class=\"empty-state\"><strong>not_available</strong>: "
+            f"{_text(code_graph.get('not_available_reason'))}</p>"
+        )
+    return (
+        _graph_panel_html(
+            code_graph,
+            graph_id="code-graph",
+            title="Code Graph And Hotspots",
+            empty_message="Code graph data is not available for this packet.",
+        )
+        + empty
+        + hotspot_table
+    )
+
+
+def _graph_panel_html(graph: dict[str, Any], *, graph_id: str, title: str, empty_message: str) -> str:
+    budget_rows = _definition_rows(
+        [
+            ("Status", graph.get("status")),
+            ("Renderer", graph.get("renderer", "Cosmos.gl")),
+            ("Renderer mode", graph.get("renderer_mode")),
+            ("Runtime assets", graph.get("runtime_asset_status")),
+            ("Graphology-compatible", str(graph.get("graphology_compatible_payload", True)).lower()),
+            ("Nodes", graph.get("node_count", 0)),
+            ("Edges", graph.get("edge_count", 0)),
+            ("Visible nodes", graph.get("visible_node_count", 0)),
+            ("Visible edges", graph.get("visible_edge_count", 0)),
+            ("Omitted nodes", graph.get("omitted_node_count", 0)),
+            ("Omitted edges", graph.get("omitted_edge_count", 0)),
+            ("Fallback", "bounded table fallback"),
+        ]
+    )
+    legend = "\n".join(
+        "<li>"
+        f"<span class=\"legend-swatch\" style=\"background:{_attr(item.get('color'))}\"></span>"
+        f"{_text(item.get('label'))} ({_text(item.get('node_count'))})"
+        "</li>"
+        for item in graph.get("legend", [])[:12]
+        if isinstance(item, dict)
+    )
+    selected = graph.get("selected_file_panel") if isinstance(graph.get("selected_file_panel"), dict) else {}
+    selected_panel = _definition_rows(
+        [
+            ("Status", selected.get("status", "not_selected")),
+            ("Node", selected.get("node_id", "")),
+            ("Type", selected.get("type", "")),
+            ("Path", selected.get("path", "")),
+            ("Boundary", selected.get("source_boundary", "raw source bodies are excluded")),
+        ]
+    )
+    table_fallback = _graph_table_html(graph)
+    canvas = _graph_svg_html(graph, graph_id=graph_id, empty_message=empty_message)
+    return (
+        f"<div class=\"graph-surface\" data-graph-kind=\"{_attr(graph_id)}\" data-renderer=\"Cosmos.gl\" "
+        f"data-adapter-status=\"{_attr(graph.get('runtime_asset_status'))}\">\n"
+        f"<h3>{_text(title)}</h3>\n"
+        "<p class=\"graph-boundary\">Cosmos.gl is the selected renderer; this offline file carries a Cosmos-ready payload "
+        "and uses a static SVG/table fallback with no external assets.</p>\n"
+        f"{budget_rows}\n"
+        f"{canvas}\n"
+        f"<div class=\"graph-side-panel\" id=\"{_attr(graph_id)}-selected-file-panel\"><h4>Selected File Panel</h4>{selected_panel}</div>\n"
+        f"<ul class=\"graph-legend\" aria-label=\"Graph legend\">{legend}</ul>\n"
+        f"{table_fallback}\n"
+        "</div>\n"
+    )
+
+
+def _graph_svg_html(graph: dict[str, Any], *, graph_id: str, empty_message: str) -> str:
+    payload = graph.get("cosmos_payload") if isinstance(graph.get("cosmos_payload"), dict) else {}
+    nodes = payload.get("nodes") if isinstance(payload.get("nodes"), list) else []
+    links = payload.get("links") if isinstance(payload.get("links"), list) else []
+    if not nodes:
+        return (
+            f"<div id=\"{_attr(graph_id)}-canvas\" class=\"graph-canvas empty-graph\" role=\"img\" "
+            f"aria-label=\"{_attr(graph_id)} empty state\" data-renderer=\"Cosmos.gl\">{_text(empty_message)}</div>"
+        )
+    by_index = {int(node.get("index", 0)): node for node in nodes if isinstance(node, dict)}
+    edge_parts: list[str] = []
+    for link in links[:300]:
+        if not isinstance(link, dict):
+            continue
+        source = by_index.get(int(link.get("source", 0) or 0))
+        target = by_index.get(int(link.get("target", 0) or 0))
+        if not source or not target:
+            continue
+        edge_parts.append(
+            f"<line class=\"graph-edge\" x1=\"{_attr(_num(source.get('x')))}\" y1=\"{_attr(_num(source.get('y')))}\" "
+            f"x2=\"{_attr(_num(target.get('x')))}\" y2=\"{_attr(_num(target.get('y')))}\" "
+            f"stroke=\"{_attr(link.get('color') or '#7d8793')}\" data-edge-type=\"{_attr(link.get('type'))}\" />"
+        )
+    node_parts: list[str] = []
+    for node in nodes[:500]:
+        if not isinstance(node, dict):
+            continue
+        label = str(node.get("label", ""))
+        node_parts.append(
+            f"<g class=\"graph-node\" data-node-id=\"{_attr(node.get('id'))}\" data-node-type=\"{_attr(node.get('type'))}\" "
+            f"data-status=\"{_attr(node.get('status'))}\" data-cluster=\"{_attr(node.get('cluster'))}\">"
+            f"<circle cx=\"{_attr(_num(node.get('x')))}\" cy=\"{_attr(_num(node.get('y')))}\" "
+            f"r=\"{_attr(max(2.5, min(8.0, float(node.get('size') or 3))))}\" fill=\"{_attr(node.get('color') or '#2f6fb0')}\"></circle>"
+            f"<text x=\"{_attr(_num(float(node.get('x') or 0) + 3))}\" y=\"{_attr(_num(float(node.get('y') or 0) - 3))}\">"
+            f"{_text(label[:42])}</text></g>"
+        )
+    return (
+        f"<svg id=\"{_attr(graph_id)}-canvas\" class=\"graph-canvas\" viewBox=\"-70 -70 140 140\" "
+        f"role=\"img\" aria-label=\"{_attr(graph_id)} static Cosmos.gl fallback\" data-renderer=\"Cosmos.gl\">"
+        + "".join(edge_parts)
+        + "".join(node_parts)
+        + "</svg>"
+    )
+
+
+def _graph_table_html(graph: dict[str, Any]) -> str:
+    fallback = graph.get("table_fallback") if isinstance(graph.get("table_fallback"), dict) else {}
+    rows = "\n".join(
+        "<tr>"
+        f"<td><code>{_text(item.get('id'))}</code></td>"
+        f"<td>{_text(item.get('type'))}</td>"
+        f"<td>{_text(item.get('status'))}</td>"
+        f"<td>{_text(item.get('cluster'))}</td>"
+        f"<td>{_text(item.get('path'))}</td>"
+        "</tr>"
+        for item in fallback.get("rows", [])[:80]
+        if isinstance(item, dict)
+    )
+    return (
+        "<table class=\"graph-fallback-table\" aria-label=\"Bounded graph table fallback\">"
+        "<thead><tr><th>Node</th><th>Type</th><th>Status</th><th>Cluster</th><th>Path</th></tr></thead>"
+        f"<tbody>{rows}</tbody></table>"
     )
 
 
@@ -623,7 +1140,7 @@ def _definition_rows(rows: list[tuple[str, Any]]) -> str:
 def _cockpit_css() -> str:
     return """
 :root{color-scheme:light;--ink:#151515;--muted:#5f6368;--line:#d7d9dd;--paper:#f7f8f5;--panel:#ffffff;--accent:#1f7a5a;--warn:#a05a00}
-*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.55 Arial,Helvetica,sans-serif}.cockpit-shell{max-width:1180px;margin:0 auto;padding:24px}.cockpit-hero{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:24px}.eyebrow{margin:0 0 8px;color:var(--accent);font-weight:700;text-transform:uppercase;font-size:12px}h1{font-size:34px;line-height:1.12;margin:0 0 12px}h2{font-size:21px;margin:0 0 12px}h3{font-size:15px;margin:0 0 8px}.hero-grid,.status-grid,.section-grid{display:grid;gap:10px}.hero-grid{grid-template-columns:repeat(4,minmax(0,1fr));margin-top:18px}.hero-grid span,.status-card,.section-card,.cockpit-band,.cockpit-page{background:var(--panel);border:1px solid var(--line);border-radius:8px}.hero-grid span{padding:12px}.cockpit-nav{position:sticky;top:0;z-index:2;display:flex;gap:8px;overflow:auto;padding:12px 0;background:var(--paper)}.cockpit-nav a{white-space:nowrap;color:var(--ink);text-decoration:none;border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:8px 10px}.cockpit-band,.cockpit-page{margin-top:14px;padding:18px}.status-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.status-card,.section-card{padding:14px}.section-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.page-role,.boundary,.status-card p,.section-card p{color:var(--muted);margin:0 0 6px}.claim-list{margin:0;padding-left:20px}.compact-table{width:100%;border-collapse:collapse;margin:10px 0}.compact-table th,.compact-table td{border-top:1px solid var(--line);padding:9px;text-align:left;vertical-align:top;overflow-wrap:anywhere}.compact-table th{width:210px;color:var(--muted);font-weight:600}@media(max-width:760px){.cockpit-shell{padding:14px}.hero-grid,.status-grid,.section-grid{grid-template-columns:1fr}h1{font-size:26px}.cockpit-nav{position:static}.compact-table th{width:auto}}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.55 Arial,Helvetica,sans-serif}.cockpit-shell{max-width:1180px;margin:0 auto;padding:24px}.cockpit-hero{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:24px}.eyebrow{margin:0 0 8px;color:var(--accent);font-weight:700;text-transform:uppercase;font-size:12px}h1{font-size:34px;line-height:1.12;margin:0 0 12px}h2{font-size:21px;margin:0 0 12px}h3{font-size:15px;margin:0 0 8px}h4{font-size:14px;margin:0 0 8px}.hero-grid,.status-grid,.section-grid{display:grid;gap:10px}.hero-grid{grid-template-columns:repeat(4,minmax(0,1fr));margin-top:18px}.hero-grid span,.status-card,.section-card,.cockpit-band,.cockpit-page{background:var(--panel);border:1px solid var(--line);border-radius:8px}.hero-grid span{padding:12px}.cockpit-nav{position:sticky;top:0;z-index:2;display:flex;gap:8px;overflow:auto;padding:12px 0;background:var(--paper)}.cockpit-nav a{white-space:nowrap;color:var(--ink);text-decoration:none;border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:8px 10px}.cockpit-band,.cockpit-page{margin-top:14px;padding:18px}.status-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.status-card,.section-card{padding:14px}.section-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.page-role,.boundary,.status-card p,.section-card p,.graph-boundary,.empty-state{color:var(--muted);margin:0 0 6px}.claim-list{margin:0;padding-left:20px}.compact-table,.graph-fallback-table{width:100%;border-collapse:collapse;margin:10px 0}.compact-table th,.compact-table td,.graph-fallback-table th,.graph-fallback-table td{border-top:1px solid var(--line);padding:9px;text-align:left;vertical-align:top;overflow-wrap:anywhere}.compact-table th{width:210px;color:var(--muted);font-weight:600}.graph-surface{margin:12px 0;padding:14px;border:1px solid var(--line);border-radius:8px;background:#fbfbf8}.graph-canvas{display:block;width:100%;min-height:320px;margin:12px 0;border:1px solid var(--line);border-radius:8px;background:#fdfdfb}.empty-graph{display:flex;align-items:center;justify-content:center;padding:24px;color:var(--muted)}.graph-edge{stroke-width:1;opacity:.58}.graph-node text{font-size:3.5px;fill:#252525;paint-order:stroke;stroke:#fff;stroke-width:1.8px}.graph-side-panel{margin:10px 0;padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--panel)}.graph-legend{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 12px;padding:0;list-style:none}.graph-legend li{display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;background:var(--panel);padding:5px 8px}.legend-swatch{width:10px;height:10px;border-radius:50%;display:inline-block}.graph-hotspots th:first-child,.graph-fallback-table th:first-child{width:230px}@media(max-width:760px){.cockpit-shell{padding:14px}.hero-grid,.status-grid,.section-grid{grid-template-columns:1fr}h1{font-size:26px}.cockpit-nav{position:static}.compact-table th{width:auto}.graph-canvas{min-height:240px}.graph-legend{display:block}.graph-legend li{margin:6px 0}}
 """.strip()
 
 
@@ -633,6 +1150,13 @@ def _attr(value: Any) -> str:
 
 def _text(value: Any) -> str:
     return html.escape(str(value or ""))
+
+
+def _num(value: Any) -> str:
+    try:
+        return f"{float(value):.3f}"
+    except (TypeError, ValueError):
+        return "0.000"
 
 
 def _s4_page_summary_html(page_id: str, packet: dict[str, Any]) -> str:
