@@ -1110,7 +1110,7 @@ def _cockpit_page_html(
         "<a class=\"skip-link\" href=\"#main-content\">Skip to cockpit content</a>\n"
         "<main id=\"main-content\" class=\"first-run-cockpit cockpit-shell\" data-schema=\"first_run_cockpit_artifact_v1\" tabindex=\"-1\">\n"
         "<header class=\"cockpit-hero\">\n"
-        "<p class=\"eyebrow\">Generated view only</p>\n"
+        "<p class=\"eyebrow\">generated-view-only</p>\n"
         "<h1>Product-Agent OS First-Run Cockpit</h1>\n"
         f"<p>{_text(primary_cockpit['source_truth_policy'])}.</p>\n"
         "<div class=\"hero-grid\">\n"

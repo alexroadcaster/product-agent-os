@@ -154,6 +154,97 @@
       ]
     }
   },
+  "html_redesign_after_owner_review": {
+    "trigger": "Owner rejected the current M40 HTML as too text-file-like, missing project architecture diagrams and insufficient visual design.",
+    "source_artifacts_reviewed": [
+      {
+        "path": "C:\\Users\\user\\Desktop\\project\\myAI Labs\\myPartners concept\\mypartners\\docs\\superpowers\\2026-05-20-mypartners-architecture-db-stack-flow-status.html",
+        "useful_concepts": [
+          "hero-grid architecture dossier entry",
+          "toc-grid document navigation",
+          "status legend and semantic status chips",
+          "Mermaid diagram panels with toolbar/fallback concept",
+          "decision-grid and solution-stack sections",
+          "future-gate and current-state cards",
+          "database/source blueprint style cards",
+          "architecture status map as a first-class section"
+        ]
+      },
+      {
+        "path": "C:\\Users\\user\\Desktop\\project\\myAI Labs\\myPartners concept\\mypartners\\docs\\superpowers\\frontend_design_sources_130.md",
+        "minimum_links_checked": 40,
+        "checked_links": [
+          "https://21st.dev/",
+          "https://ui.shadcn.com/docs",
+          "https://ui.shadcn.com/blocks",
+          "https://www.shadcnblocks.com/",
+          "https://shadcnstudio.com/components",
+          "https://blocks.so/",
+          "https://shadcnspace.com/",
+          "https://magicui.design/",
+          "https://ui.aceternity.com/components",
+          "https://reactbits.dev/",
+          "https://www.cult-ui.com/",
+          "https://coss.com/origin",
+          "https://www.hover.dev/",
+          "https://animate-ui.com/",
+          "https://kokonutui.com/",
+          "https://skiper-ui.com/components",
+          "https://tailwindcss.com/plus/ui-blocks",
+          "https://flowbite.com/docs/getting-started/introduction/",
+          "https://flowbite.com/blocks/",
+          "https://daisyui.com/",
+          "https://preline.co/",
+          "https://www.hyperui.dev/",
+          "https://merakiui.com/",
+          "https://mambaui.com/",
+          "https://www.ripple-ui.com/",
+          "https://tremor.so/",
+          "https://park-ui.com/",
+          "https://www.chakra-ui.com/",
+          "https://mantine.dev/",
+          "https://www.heroui.com/",
+          "https://mui.com/",
+          "https://ant.design/",
+          "https://primereact.org/",
+          "https://uiverse.io/",
+          "https://www.radix-ui.com/",
+          "https://base-ui.com/",
+          "https://headlessui.com/",
+          "https://react-spectrum.adobe.com/react-aria/components.html",
+          "https://ariakit.org/",
+          "https://zagjs.com/"
+        ],
+        "design_synthesis": [
+          "Use app/dashboard and technical-documentation patterns rather than marketing hero patterns.",
+          "Use shadcn/Tremor/Mantine/MUI/Ant-style density and status readability as inspiration, not as runtime dependencies.",
+          "Use Radix/Base UI/Headless UI/React Aria/Ariakit/Zag principles for accessible controls and keyboard behavior.",
+          "Use motion/effect sources only as restrained interaction inspiration; offline static evidence remains the default."
+        ]
+      }
+    ],
+    "design_direction": {
+      "artifact_type": "technical architecture dossier / operational cockpit",
+      "density": "high",
+      "motion": "minimal_offline_safe",
+      "must_have": [
+        "first-viewport architecture signal",
+        "multiple project architecture diagrams",
+        "visible source/trust boundary",
+        "status legend",
+        "decision/risk/next-action surfaces",
+        "desktop and mobile Playwright screenshots",
+        "no white-page/default-browser regression"
+      ],
+      "must_not_have": [
+        "plain text-file appearance",
+        "raw JSON as primary content",
+        "marketing landing-page composition",
+        "external CDN/runtime dependency by default",
+        "release/readiness claims from generated HTML alone"
+      ]
+    }
+  },
   "tasks": [
     {
       "id": "B41-S1-M01",
@@ -635,7 +726,7 @@
       "stop_condition": "Stop if the pilot requires target source mutation, plugin-cache refresh, provider/API calls, git/release actions, external writes, production publication or any surface outside the M40 owner approval packet.",
       "owner_approval": {
         "approval_packet": "docs/superpowers/specs/batch41-s7-m40-owner-approval-packet.json",
-        "approval_status": "approved_for_m40_execution_not_yet_run",
+        "approval_status": "executed_with_recorded_runtime_blocker",
         "approved_checks": [
           "browser_visual_proof",
           "runtime_interaction",
@@ -652,6 +743,153 @@
           "target_source_mutation_without_separate_patch_scope"
         ]
       },
+      "evidence": {
+        "acceptance_summary": "docs/superpowers/specs/batch41-s7-m40-neural-flow-acceptance-summary.json",
+        "stage_root": "docs/superpowers/specs/batch41-s7-m40-neural-flow-stage",
+        "playwright_runtime_proof": "output/playwright/b41-s7-m40/playwright-runtime-proof.json",
+        "screenshots": [
+          "output/playwright/b41-s7-m40/desktop-overview.png",
+          "output/playwright/b41-s7-m40/desktop-interaction.png",
+          "output/playwright/b41-s7-m40/mobile-source-map.png"
+        ],
+        "browser_visual_proof": "passed_screenshots_captured",
+        "runtime_interaction": "passed_static_runtime_interaction",
+        "console_network": "passed_clean",
+        "wcag_oriented_checks": "passed_static_browser_checks_not_certification",
+        "cosmos_gl_runtime_webgl": "blocked_static_fallback_no_vendored_runtime",
+        "neural_flow_acceptance": "conditional_static_acceptance_with_runtime_blocker"
+      },
+      "status": "implemented_with_runtime_blocker"
+    },
+    {
+      "id": "B41-S8-M41",
+      "slice": "html_redesign_architecture_dossier",
+      "priority": "P0",
+      "task": "Create HTML redesign design artifact and IA brief.",
+      "agents_skills": [
+        "design-taste-frontend for anti-slop visual direction",
+        "implementation-planner for task matrix and acceptance gates",
+        "docs-maintainer for control-plane sync"
+      ],
+      "technical_value": "Turns owner feedback and the myPartners reference into a concrete renderer/design contract before code changes.",
+      "product_value": "Prevents another structurally valid but product-poor HTML artifact.",
+      "codex_does": "Stage a design artifact covering IA, visual language, component inventory, diagram inventory, source/trust labels, offline constraints and acceptance gates.",
+      "user_does": "Review whether the design direction matches the desired architecture cockpit before implementation.",
+      "acceptance": "Design artifact names borrowed myPartners concepts, checked design-source groups, rejected patterns, exact cockpit sections, component states, diagram list and verification gates.",
+      "verification": "Artifact review plus placeholder scan; no renderer readiness claim until implementation and browser screenshots exist.",
+      "risks_approval_gates": "Do not install UI libraries, add CDN assets, publish site output or call external visual services without separate approval.",
+      "status": "planned"
+    },
+    {
+      "id": "B41-S8-M42",
+      "slice": "html_redesign_architecture_dossier",
+      "priority": "P0",
+      "task": "Add first-class project architecture diagram layer.",
+      "agents_skills": [
+        "solution-architecture methodology",
+        "frontend methodology",
+        "Playwright visual proof"
+      ],
+      "technical_value": "Adds architecture-as-content instead of leaving architecture.html as a source-artifact table.",
+      "product_value": "User can understand system context, pipeline, trust boundaries and artifact lifecycle visually.",
+      "codex_does": "Render diagram panels for System Context, First-Run Pipeline, Trust Boundary, Artifact Data Model, Graph Rendering, Runtime Approval Path and Evidence Lifecycle.",
+      "user_does": "Confirm the diagram set answers the project architecture questions.",
+      "acceptance": "Every diagram has title, source status, generated-view-only boundary, raw Mermaid/static fallback and responsive non-overlap proof.",
+      "verification": "Unit tests for diagram payload/rendering plus Playwright desktop/mobile screenshots; no Mermaid/diagram claim without visible artifact evidence.",
+      "risks_approval_gates": "Mermaid runtime, external diagram services or hosted assets are not allowed by default; use local/static fallback unless separately approved.",
+      "status": "planned"
+    },
+    {
+      "id": "B41-S8-M43",
+      "slice": "html_redesign_architecture_dossier",
+      "priority": "P0",
+      "task": "Redesign primary cockpit shell using architecture-dossier layout.",
+      "agents_skills": [
+        "frontend methodology",
+        "design-taste-frontend",
+        "Playwright screenshots"
+      ],
+      "technical_value": "Replaces the text-file-like output with a robust offline layout system: hero, TOC, status rail, diagram band, proof strip and dense sections.",
+      "product_value": "The first screen immediately communicates project identity, architecture status and next action.",
+      "codex_does": "Implement self-contained CSS/layout and reusable section components inspired by myPartners hero-grid/toc-grid/status/decision/solution blocks.",
+      "user_does": "Compare visual quality against the myPartners artifact and reject/accept the direction.",
+      "acceptance": "Index HTML is visually designed, not default-browser; first viewport shows artifact identity, status, architecture signal and next route; no text overlap on desktop/mobile.",
+      "verification": "Focused renderer tests, Playwright screenshots, console/network clean check, text-overlap/manual visual proof packet.",
+      "risks_approval_gates": "No external fonts, CDN, JS animation library or target mutation by default.",
+      "status": "planned"
+    },
+    {
+      "id": "B41-S8-M44",
+      "slice": "html_redesign_architecture_dossier",
+      "priority": "P1",
+      "task": "Add evidence, decision, risk and source-blueprint sections.",
+      "agents_skills": [
+        "docs-maintainer",
+        "quality-testing-evals methodology"
+      ],
+      "technical_value": "Separates evidence, unsupported claims, decisions and risks into scan-friendly structured sections.",
+      "product_value": "User can see what is proven, what is blocked and what the next safe action is without parsing JSON.",
+      "codex_does": "Add status legend, decision grid, risk ledger, future gates, source blueprint cards and proof/evidence strip.",
+      "user_does": "Review whether the sections reflect the real owner decision surface.",
+      "acceptance": "Generated HTML exposes supported claims, unsupported claims, blockers, owner actions and Codex actions as separate visible surfaces.",
+      "verification": "Renderer tests for all sections, source/trust-boundary assertions and screenshot proof.",
+      "risks_approval_gates": "Generated evidence remains orientation-only; do not promote to source truth, release readiness or target apply safety.",
+      "status": "planned"
+    },
+    {
+      "id": "B41-S8-M45",
+      "slice": "html_redesign_architecture_dossier",
+      "priority": "P1",
+      "task": "Clarify graph/Cosmos.gl runtime versus static fallback in the redesigned UI.",
+      "agents_skills": [
+        "frontend methodology",
+        "quality-testing-evals methodology"
+      ],
+      "technical_value": "Makes renderer state explicit: Graphology payload, Cosmos.gl-ready model, SVG/table fallback and optional future WebGL runtime.",
+      "product_value": "User sees graph value without mistaking static fallback for WebGL proof.",
+      "codex_does": "Add graph rendering architecture panel, runtime blocker banner, selected-node UX and fallback explanation.",
+      "user_does": "Decide whether a later vendored Cosmos.gl runtime slice is needed.",
+      "acceptance": "UI clearly labels adapter_ready, static_fallback, not_available and runtime_webgl_blocked states; no Cosmos.gl runtime pass claim without canvas/WebGL proof.",
+      "verification": "Renderer tests plus Playwright canvas/SVG/table checks for desktop/mobile graph states.",
+      "risks_approval_gates": "Vendoring Cosmos.gl, enabling scripts or executing WebGL runtime is a separate approval/implementation slice.",
+      "status": "planned"
+    },
+    {
+      "id": "B41-S8-M46",
+      "slice": "html_redesign_architecture_dossier",
+      "priority": "P1",
+      "task": "Run visual, interaction and accessibility acceptance for redesigned artifact.",
+      "agents_skills": [
+        "Playwright",
+        "frontend-testing-debugging",
+        "quality-testing-evals methodology"
+      ],
+      "technical_value": "Upgrades acceptance from structural HTML checks to browser-visible product quality checks.",
+      "product_value": "Prevents recurrence of the poor text-file artifact.",
+      "codex_does": "Capture desktop/mobile screenshots, interaction state, console/network status, landmark/control-name checks, contrast-oriented checks and no-overlap evidence.",
+      "user_does": "Review screenshots and accept/reject visual quality.",
+      "acceptance": "Proof packet contains screenshots, interaction checks, console/network result, accessible-name summary, no-overlap notes and explicit WCAG-certification non-claim unless a full audit is performed.",
+      "verification": "Playwright proof plus focused tests and git diff hygiene.",
+      "risks_approval_gates": "Browser automation is already owner-approved for this HTML acceptance route only; no live server, provider, target mutation, release or external write follows from it.",
+      "status": "planned"
+    },
+    {
+      "id": "B41-S8-M47",
+      "slice": "html_redesign_architecture_dossier",
+      "priority": "P1",
+      "task": "Regenerate Neural_Flow artifact and close owner-review delta.",
+      "agents_skills": [
+        "docs-maintainer",
+        "completion-skeptic",
+        "Playwright"
+      ],
+      "technical_value": "Applies the redesigned architecture cockpit to the real artifact that triggered the failure and records before/after evidence.",
+      "product_value": "User gets a concrete improved Neural_Flow HTML artifact, not only a design plan.",
+      "codex_does": "Regenerate staged Neural_Flow artifact, capture before/after screenshots, write summary packet and sync PLAN/TEST/EVALS/RUNLOG.",
+      "user_does": "Provide final visual/product acceptance or next correction.",
+      "acceptance": "New Neural_Flow artifact passes design artifact gates, architecture diagram gates, static safety gates and browser visual proof; remaining gaps are explicit.",
+      "verification": "Run focused B41 renderer tests, docs/control-plane checks, Playwright proof and completion-skeptic unsupported-claim review.",
+      "risks_approval_gates": "No target source mutation, plugin-cache write, provider/API call, git action, release/deploy/publish or external write without a new exact approval.",
       "status": "planned"
     }
   ],
@@ -662,6 +900,7 @@
     "B41-S4 HTML generation in the first-run flow",
     "B41-S5 question and answer UX",
     "B41-S6 synthetic, Neural_Flow and SOL pilots plus closure",
-    "B41-S7 cockpit-grade first-run HTML and graph artifact"
+    "B41-S7 cockpit-grade first-run HTML and graph artifact",
+    "B41-S8 architecture-dossier redesign after owner review"
   ]
 }

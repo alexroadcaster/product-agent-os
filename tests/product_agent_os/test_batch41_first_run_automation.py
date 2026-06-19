@@ -600,7 +600,7 @@ class Batch41FirstRunAutomationTests(unittest.TestCase):
             self.assertIn('id="code-graph-canvas"', index_html)
             self.assertIn("not_available", index_html)
             self.assertIn("Cosmos.gl", index_html)
-            self.assertIn("Generated view only", index_html)
+            self.assertIn("generated-view-only", index_html)
             self.assertIn("Baseline Comparison", index_html)
             self.assertIn("Artifact Cleanup And Rollback", index_html)
             self.assertNotIn("<pre", index_html.lower())
@@ -772,6 +772,7 @@ class Batch41FirstRunAutomationTests(unittest.TestCase):
             self.assertTrue(safety["accessibility_contract"]["labels_required"])
 
             self.assertIn('class="skip-link"', index_html)
+            self.assertIn("generated-view-only", index_html)
             self.assertIn('id="main-content"', index_html)
             self.assertIn('role="search"', index_html)
             self.assertIn('for="cockpit-search"', index_html)

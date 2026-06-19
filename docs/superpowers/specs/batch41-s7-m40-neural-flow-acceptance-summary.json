@@ -1,0 +1,149 @@
+{
+  "actions_performed": {
+    "active_automation": false,
+    "browser_automation": true,
+    "external_write": false,
+    "git_stage_commit_push_pr": false,
+    "live_server": false,
+    "mcp_external_call": false,
+    "plugin_cache_write": false,
+    "provider_api_call": false,
+    "release_deploy_publish": false,
+    "target_workspace_mutation": false
+  },
+  "agents_used": [
+    {
+      "agent": "Scout",
+      "role": "explorer",
+      "result": "read-only renderer and artifact route discovery; identified run_first_project_analysis.py --stage as the M40 generator and Cosmos.gl runtime asset gap"
+    },
+    {
+      "agent": "Probe",
+      "role": "tester",
+      "result": "read-only Playwright capability and runtime proof design; confirmed npx.cmd availability, root package gaps and Chrome/browser fallback path"
+    }
+  ],
+  "attempt_id": "B41-S7-M40-A01",
+  "browser_runtime_evidence": {
+    "console_network": "passed_clean",
+    "launch_mode": "bundled-chromium",
+    "playwright_cli_status": "blocked_timeout_for_npx_playwright_cli_help",
+    "playwright_runtime_source": "local staged node_modules/playwright package, no network install",
+    "proof_packet": "output/playwright/b41-s7-m40/playwright-runtime-proof.json",
+    "runtime_interaction": "passed_static_runtime_interaction",
+    "screenshots": [
+      {
+        "path": "output/playwright/b41-s7-m40/desktop-overview.png",
+        "sha256": "384af5c385f6d4240c889884b42a5f18775b7be7794684a869f6e46943bc825f"
+      },
+      {
+        "path": "output/playwright/b41-s7-m40/desktop-interaction.png",
+        "sha256": "b4cbacf824d1849a584f38a087a88d223ddf376b07d7d9f816006b7278d8855f"
+      },
+      {
+        "path": "output/playwright/b41-s7-m40/mobile-source-map.png",
+        "sha256": "0c243eae84863a1696528fbae375ef3b9e703e6cfa4e33ebc483a31054340edb"
+      }
+    ],
+    "screenshots_status": "passed_screenshots_captured",
+    "wcag_oriented_checks": {
+      "certification_claim": "not_claimed",
+      "result": "passed_static_browser_checks",
+      "summary": "Browser checks found lang=en, main landmark, skip link, 19/19 controls with accessible names, 11 aria-label elements and zero missing accessible names."
+    }
+  },
+  "changed_files": [
+    "plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py",
+    "tests/product_agent_os/test_batch41_first_run_automation.py",
+    "docs/superpowers/specs/batch41-s7-m40-neural-flow-acceptance-summary.json",
+    "docs/superpowers/specs/batch41-first-run-automation-matrix.json",
+    "PLAN.md",
+    "TEST.md",
+    "EVALS.md",
+    "RUNLOG.md"
+  ],
+  "context7_evidence": {
+    "cosmos_gl": {
+      "library_id": "/cosmosgl/graph",
+      "source_basis": "Context7 Cosmos.gl docs: Graph(container, config), setPointPositions(Float32Array), setLinks(Float32Array), render(), graph.ready/isReady and WebGL/canvas outcome are expected for runtime proof.",
+      "used_for": "Classifying current artifact as static adapter/fallback rather than Cosmos.gl runtime/WebGL execution."
+    },
+    "playwright": {
+      "library_id": "/microsoft/playwright",
+      "source_basis": "Context7 Playwright docs: screenshots, console messages and network/request inspection are valid browser proof surfaces.",
+      "used_for": "Designing screenshot, console/network and interaction evidence collection."
+    }
+  },
+  "cosmos_gl_runtime_webgl": {
+    "blocker": "The generated artifact is intentionally script-free and has no vendored Cosmos.gl runtime asset or canvas. It exposes Cosmos.gl-compatible static adapter payload and SVG/table fallback only.",
+    "canvas_count": 0,
+    "code_graph_adapter_status": "not_vendored_static_fallback",
+    "code_graph_status": "not_available",
+    "source_graph_adapter_status": "not_vendored_static_fallback",
+    "source_graph_status": "adapter_ready",
+    "status": "blocked_static_fallback_no_vendored_runtime",
+    "svg_count": 1,
+    "webgl_canvas_available": false
+  },
+  "generated_artifact": {
+    "analysis_manifest": {
+      "manifest_digest": "sha256:e7182a37be30cf38db13b263d815c01e43e5f2d1c79cf3ec0cf2598cb8987472",
+      "path": "docs/superpowers/specs/batch41-s7-m40-neural-flow-stage/analysis-manifest.json",
+      "sha256": "18fde930cdb1a9fa4473dcca89b638011f3f5854b1e095c0774d420f32e09af1"
+    },
+    "index_html": {
+      "path": "docs/superpowers/specs/batch41-s7-m40-neural-flow-stage/index.html",
+      "sha256": "c73a95909c8e89ebb127ea4cea83b2d2f2b348b1dcb2fae27c1ca5be343e9e3b"
+    },
+    "mode": "stage",
+    "page_count": 11,
+    "source_packet_digest": "sha256:9152e14e907cc07db2ac51f95a27484fd9863a7d04b575938e77e08fe95d94f4",
+    "stage_root": "docs/superpowers/specs/batch41-s7-m40-neural-flow-stage",
+    "target_label": "Neural_Flow",
+    "target_workspace_mutation": false
+  },
+  "necessary_cockpit_fix": {
+    "reason": "Browser proof showed the canonical generated-view-only label was not present as a stable case-insensitive runtime text match.",
+    "result": "Renderer now emits the canonical visible label generated-view-only and tests assert it.",
+    "status": "implemented"
+  },
+  "neural_flow_acceptance": {
+    "result": "conditional_static_acceptance_with_runtime_blocker",
+    "scorecard": {
+      "artifact_navigation": "passed",
+      "browser_visual_proof": "passed",
+      "console_network": "passed",
+      "cosmos_runtime_webgl": "blocked",
+      "offline_privacy": "passed",
+      "runtime_interaction": "passed_static",
+      "source_graph_usefulness": "passed_static_orientation",
+      "wcag_oriented_browser_checks": "passed_static_not_certification"
+    },
+    "summary": "The regenerated Neural_Flow cockpit is browser-visible, navigable, labelled, offline, and substantially more usable than the earlier diagnostic white page. It remains orientation evidence only and does not prove Cosmos.gl runtime/WebGL execution, source-read semantic completeness, release readiness or target apply safety."
+  },
+  "schema_version": "batch41_s7_m40_neural_flow_acceptance_summary_v1",
+  "status": "implemented_with_runtime_blocker",
+  "unsupported_claims": [
+    "Cosmos.gl runtime/WebGL execution passed",
+    "WCAG certification",
+    "source-read semantic completeness",
+    "target apply safety",
+    "release readiness",
+    "installed plugin-cache readiness",
+    "provider/API/model quality"
+  ],
+  "verification": [
+    {
+      "command": "python plugins/product-agent-os/scripts/run_first_project_analysis.py <Neural_Flow> --stage docs/superpowers/specs/batch41-s7-m40-neural-flow-stage --generated-at 2026-06-19T12:40:00+03:00",
+      "result": "passed; target_workspace_mutation false; stage artifacts generated"
+    },
+    {
+      "command": "node output/playwright/b41-s7-m40/m40_playwright_probe.js <workspace> <stage>/index.html output/playwright/b41-s7-m40",
+      "result": "passed; screenshots captured; console/network clean; runtime interaction passed; Cosmos/WebGL blocked by static fallback"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_batch41_first_run_automation.Batch41FirstRunAutomationTests.test_b41_s7_m31_m33_stage_renders_primary_cockpit_contract_shell_and_view_model tests.product_agent_os.test_batch41_first_run_automation.Batch41FirstRunAutomationTests.test_b41_s7_m34_m35_cockpit_renders_source_graph_and_code_graph_summary_payloads tests.product_agent_os.test_batch41_first_run_automation.Batch41FirstRunAutomationTests.test_b41_s7_m36_m39_cockpit_has_static_navigation_diagnostics_visual_qa_and_safety_contracts -v",
+      "result": "passed; 3 tests"
+    }
+  ]
+}
