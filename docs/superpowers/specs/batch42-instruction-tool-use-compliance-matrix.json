@@ -1,0 +1,254 @@
+{
+  "schema_version": "batch42_instruction_tool_use_compliance_matrix_v1",
+  "source_status": "owner_requested_planning_matrix",
+  "generated_at": "2026-06-19T13:03:00+03:00",
+  "purpose": "Plan Batch 42 as the Product-Agent OS instruction and tool-use compliance hardening slice after the owner observed that installed Product-Agent OS mechanisms are not automatically engaged.",
+  "planning_boundary": {
+    "status": "planned_only",
+    "planning_is_not_implementation_evidence": true,
+    "target_workspace_mutation_authorized": false,
+    "plugin_cache_write_authorized": false,
+    "global_codex_config_write_authorized": false,
+    "live_server_browser_provider_git_external_authorized": false
+  },
+  "source_context": [
+    "Owner request to add the Product-Agent OS compliance/tool-use audit requirements as Batch 42 in Track 10.",
+    "Prior local audit found the Product-Agent OS bundle installed with more skills than the active session exposed.",
+    "Prior local audit found Product-Agent OS skill agents configured with allow_implicit_invocation=false.",
+    "Prior local audit found meta instruction/tool-use prompts can route to generic bug rescue instead of Product-Agent OS lifecycle/learning-loop paths.",
+    "Prior local audit found system-file hygiene still has secret_like_literal findings requiring triage or accepted-gap handling."
+  ],
+  "non_goals": [
+    "Do not turn every Product-Agent OS skill into implicit invocation without a risk-ranked policy.",
+    "Do not mutate user-level Codex config, installed plugin cache, target workspaces, hooks, automations, provider/API state, git state or external systems from this planning matrix alone.",
+    "Do not treat a fresh-session exposure check as proof of task behavior unless route and transcript/eval evidence also exists.",
+    "Do not promote self-learning-loop output to automatic skill, prompt, rule, hook or automation changes without owner approval and rollback evidence."
+  ],
+  "tasks": [
+    {
+      "id": "B42-S1-M01",
+      "slice": "scope_and_source_contract",
+      "priority": "P0",
+      "task": "Freeze Batch 42 compliance requirements and approval boundaries.",
+      "agents_skills": [
+        "implementation-planner",
+        "requirements-author",
+        "docs-maintainer"
+      ],
+      "scope": "Convert the owner audit request into requirements, non-goals, source policy, approval boundaries and explicit success criteria.",
+      "codex_does": "Document the Batch 42 scope, keep it planned-only, and map each requirement to the exact Track 10 source artifact.",
+      "user_does": "Confirm whether Batch 42 should later execute as a local source-tree fix, an installed-cache refresh, a global Codex policy change, or only a read-only audit.",
+      "technical_value": "Prevents implicit tool-use fixes from becoming unbounded config or plugin-cache mutation.",
+      "product_value": "The owner gets a concrete compliance backlog instead of an ambiguous complaint about missing automation.",
+      "acceptance": "Track 10 plan and source matrix state that Batch 42 is planned-only, list all approval-bound surfaces, and separate source-tree changes from installed-cache/global-session behavior.",
+      "verification": "Docs/control-plane checks and diff hygiene.",
+      "risks_approval_gates": "No execution, cache write, global config write, browser/provider/git/external action or automation activation follows from this row.",
+      "status": "planned"
+    },
+    {
+      "id": "B42-S1-M02",
+      "slice": "plugin_exposure_audit",
+      "priority": "P0",
+      "task": "Build physical bundle, installed cache and active-session skill exposure inventory.",
+      "agents_skills": [
+        "workspace-discovery-auditor",
+        "docs-maintainer",
+        "implementation-planner"
+      ],
+      "scope": "Compare checked-in plugin source, user plugin cache, active session skill registry, plugin manifest and per-skill agent metadata.",
+      "codex_does": "Run read-only inventory commands, normalize counts and record which Product-Agent OS skills are physically installed versus exposed in the current session.",
+      "user_does": "Restart or open a fresh session only if active-session exposure cannot be validated inside the current runtime.",
+      "technical_value": "Turns the suspected auto-engagement failure into a reproducible source/cache/session delta.",
+      "product_value": "The owner can see whether the problem is packaging, cache refresh, session loading or routing policy.",
+      "acceptance": "Evidence packet lists each Product-Agent OS skill, source path, cache path, manifest entry, agent metadata and active-session exposure status.",
+      "verification": "`validate_codex_compatibility.py`, read-only file inventory, fresh-session manual proof when needed.",
+      "risks_approval_gates": "Installed cache mutation or global config edits require separate exact approval.",
+      "status": "planned"
+    },
+    {
+      "id": "B42-S1-M03",
+      "slice": "official_docs_source_check",
+      "priority": "P0",
+      "task": "Verify current official OpenAI/Codex documentation for plugins, skills, instructions and tool routing.",
+      "agents_skills": [
+        "docs-maintainer",
+        "risk-reviewer"
+      ],
+      "scope": "Check official OpenAI/Codex docs before making claims about supported automatic skill/plugin behavior, instruction hierarchy, MCP/tool use and restart/session reload requirements.",
+      "codex_does": "Use official docs as source truth, record source links and separate verified product behavior from local inference.",
+      "user_does": "Approve any follow-up that would change global Codex settings, installed plugin state or project trust/approval policy.",
+      "technical_value": "Prevents local reverse-engineering from being mistaken for official Codex behavior.",
+      "product_value": "The owner receives a compliance plan that aligns with the supported product surface.",
+      "acceptance": "Source registry or Batch 42 packet records official-source status, checked date, supported claims, unsupported claims and local-inference gaps.",
+      "verification": "Docs source check, source registry/docs tests if claims are added to public docs, and completion-skeptic unsupported-claim review.",
+      "risks_approval_gates": "Official docs may not expose every app internals detail; unresolved behavior must stay as local inference or accepted gap.",
+      "status": "planned"
+    },
+    {
+      "id": "B42-S2-M04",
+      "slice": "implicit_invocation_policy",
+      "priority": "P0",
+      "task": "Define Product-Agent OS implicit invocation policy.",
+      "agents_skills": [
+        "project-lifecycle-orchestrator",
+        "risk-reviewer",
+        "implementation-planner"
+      ],
+      "scope": "Decide explicit-only versus narrow router-only implicit invocation for Product-Agent OS skills, with risk classes and forbidden automatic surfaces.",
+      "codex_does": "Draft a policy that names which skills may be implicit, which must remain explicit, and what prompts should route to lifecycle, discovery, compliance or learning-loop paths.",
+      "user_does": "Choose the policy mode before any `allow_implicit_invocation` or router default changes are implemented.",
+      "technical_value": "Fixes the likely auto-engagement root cause without blindly enabling every skill.",
+      "product_value": "The owner gets predictable Product-Agent OS engagement on relevant requests while approval-heavy actions remain controlled.",
+      "acceptance": "Policy lists safe implicit triggers, explicit-only skills, stop conditions, approval gates and rollback path.",
+      "verification": "Policy review, fixture route tests, transcript evals and no-unapproved-actions proof.",
+      "risks_approval_gates": "Broad implicit invocation can over-trigger skills, add latency or bypass user intent; config/cache changes need separate approval.",
+      "status": "planned"
+    },
+    {
+      "id": "B42-S2-M05",
+      "slice": "skill_agent_policy_validator",
+      "priority": "P0",
+      "task": "Add a validator for Product-Agent OS skill agent metadata and implicit-invocation policy.",
+      "agents_skills": [
+        "test-eval-designer",
+        "implementation-planner"
+      ],
+      "scope": "Validate `skills/*/agents/openai.yaml`, manifest skill entries, implicit invocation flags, explicit-only gates and policy exceptions.",
+      "codex_does": "Implement or specify a focused validator that fails unknown, missing or policy-inconsistent skill agent metadata.",
+      "user_does": "Approve implementation of the validator when Batch 42 moves from planning to execution.",
+      "technical_value": "Makes future skill exposure and invocation policy drift detectable by deterministic tests.",
+      "product_value": "The owner no longer has to notice missing auto-engagement manually.",
+      "acceptance": "Validator reports all Product-Agent OS skills, policy class, implicit flag, route owner and actionable errors without exposing secrets or raw private paths.",
+      "verification": "Focused validator tests, Codex compatibility validation, fixture eval field if promoted.",
+      "risks_approval_gates": "Validator must not rewrite metadata automatically or mutate installed cache.",
+      "status": "planned"
+    },
+    {
+      "id": "B42-S2-M06",
+      "slice": "fresh_session_exposure_smoke",
+      "priority": "P0",
+      "task": "Validate fresh-session skill registry exposure after any source or cache change.",
+      "agents_skills": [
+        "workspace-discovery-auditor",
+        "docs-maintainer",
+        "completion-skeptic"
+      ],
+      "scope": "Prove whether a new Codex session exposes the full Product-Agent OS skill set and whether stale current-session behavior remains expected.",
+      "codex_does": "Prepare the exact smoke checklist and compare old-session versus fresh-session evidence.",
+      "user_does": "Start a fresh Codex session or restart the app when requested because active skill loading cannot always be refreshed in-place.",
+      "technical_value": "Separates source correctness from stale runtime/session loading.",
+      "product_value": "The owner knows whether a fix is active in real use, not only present on disk.",
+      "acceptance": "Fresh-session packet records exposed skills, missing skills, plugin version, restart requirement and accepted gaps.",
+      "verification": "Fresh-session manual proof plus docs/control-plane sync; no runtime claim from old-session evidence alone.",
+      "risks_approval_gates": "Current session may remain stale; do not claim fixed auto-engagement until fresh-session proof exists.",
+      "status": "planned"
+    },
+    {
+      "id": "B42-S3-M07",
+      "slice": "runtime_route_compliance",
+      "priority": "P0",
+      "task": "Add runtime routing tests for instruction/tool-use audit and Product-Agent OS compliance prompts.",
+      "agents_skills": [
+        "project-lifecycle-orchestrator",
+        "test-eval-designer",
+        "completion-skeptic"
+      ],
+      "scope": "Cover prompts such as instruction compliance audit, tool-use compliance, Product-Agent OS auto-engagement failure, and self-learning-loop request.",
+      "codex_does": "Add route fixtures/transcripts that fail if these prompts route only to generic bug rescue or ordinary implementation paths.",
+      "user_does": "Review the expected first response style: audit-first, plan-first, learning-loop candidate, or direct implementation when safe.",
+      "technical_value": "Prevents meta-compliance requests from being swallowed by generic bug triage.",
+      "product_value": "The owner sees the installed Product-Agent OS workflow engage when they explicitly ask for it.",
+      "acceptance": "Runtime route packet recommends Product-Agent OS discovery/lifecycle/compliance/learning-loop handling and records why `bug_rescue` is insufficient when used alone.",
+      "verification": "`test_codex_runtime_runner_state_routes`, transcript evals, behavioral eval fixtures and no-provider/no-browser/no-git proof.",
+      "risks_approval_gates": "Route recommendation is not permission to mutate config, cache, target files or external systems.",
+      "status": "planned"
+    },
+    {
+      "id": "B42-S3-M08",
+      "slice": "tool_use_instruction_eval",
+      "priority": "P0",
+      "task": "Add tool-use and instruction-compliance eval cases.",
+      "agents_skills": [
+        "test-eval-designer",
+        "completion-skeptic",
+        "docs-maintainer"
+      ],
+      "scope": "Evaluate whether the agent reads required Product-Agent OS skills, obeys project/global instruction hierarchy, uses official docs for OpenAI/Codex claims, and keeps approval boundaries.",
+      "codex_does": "Create deterministic cases and expected terms for skill loading, official-doc source status, no-unapproved-actions proof and completion-skeptic second pass.",
+      "user_does": "Provide additional real prompts that previously failed, if available, so they can become regression cases.",
+      "technical_value": "Turns observed instruction/tool-use drift into repeatable regression coverage.",
+      "product_value": "The owner can verify that the workflow improves across future sessions rather than relying on memory.",
+      "acceptance": "Eval set catches missing skill reads, unsupported official-doc claims, route bypass, missing approval gates and false completion claims.",
+      "verification": "Behavioral evals, transcript replay, focused docs tests and completion-skeptic review.",
+      "risks_approval_gates": "Eval fixtures must not include raw private chat logs, secrets or user-specific absolute paths.",
+      "status": "planned"
+    },
+    {
+      "id": "B42-S4-M09",
+      "slice": "staged_self_learning_loop",
+      "priority": "P0",
+      "task": "Route self-learning-loop through staged metrics and lessons only.",
+      "agents_skills": [
+        "learning-loop-maintainer",
+        "docs-maintainer",
+        "risk-reviewer"
+      ],
+      "scope": "Use `agent_skill_metrics_loop` and learning-loop packets to capture failures, lessons and candidate durable rules without auto-applying changes.",
+      "codex_does": "Record failure patterns, candidate rules, eval follow-ups and ownership without activating hooks, schedules or automatic skill rewrites.",
+      "user_does": "Approve any later durable-rule, skill, plugin, config, hook or automation change separately.",
+      "technical_value": "Provides a safe learning loop that improves evidence without mutating policy automatically.",
+      "product_value": "The owner gets continuous improvement proposals without hidden self-modification.",
+      "acceptance": "Learning-loop packet lists incidents, lessons, candidate changes, evidence, owner decision needed and rollback/disable path; auto-apply is false.",
+      "verification": "Metrics-loop tests, automation-policy tests, no-active-automation proof and docs/control-plane sync.",
+      "risks_approval_gates": "No automatic memory write, skill rewrite, hook activation, automation schedule or global rule change.",
+      "status": "planned"
+    },
+    {
+      "id": "B42-S4-M10",
+      "slice": "system_file_hygiene_triage",
+      "priority": "P1",
+      "task": "Triage system-file hygiene and secret-like literal findings.",
+      "agents_skills": [
+        "risk-reviewer",
+        "docs-maintainer",
+        "test-eval-designer"
+      ],
+      "scope": "Review Product-Agent OS system-file hygiene findings, especially secret-like literals, and classify real issues, synthetic fixtures, policy literals and accepted gaps.",
+      "codex_does": "Run focused hygiene checks, avoid echoing sensitive values, and produce remediation or accepted-gap records.",
+      "user_does": "Approve any canonical file edits if a real secret, policy change or fixture rewrite is needed.",
+      "technical_value": "Removes or classifies compliance blockers that can hide real instruction/tool-use readiness.",
+      "product_value": "The owner gets a cleaner trust boundary for plugin packaging and internal use.",
+      "acceptance": "Hygiene packet records finding counts, classes, fix/accept decisions, no-secret disclosure policy and next action.",
+      "verification": "`validate_system_file_hygiene.py`, focused tests, docs/source sync and diff hygiene.",
+      "risks_approval_gates": "Do not print secret-like raw values; real secret remediation may require out-of-band owner action.",
+      "status": "planned"
+    },
+    {
+      "id": "B42-S5-M11",
+      "slice": "closure_and_control_plane_sync",
+      "priority": "P0",
+      "task": "Close Batch 42 with docs/control-plane sync and no-unapproved-actions proof.",
+      "agents_skills": [
+        "docs-maintainer",
+        "completion-skeptic",
+        "risk-reviewer"
+      ],
+      "scope": "Synchronize Track 10 plan/backlog, root control-plane files, test/eval pointers and final residual risks after execution.",
+      "codex_does": "Write the closure packet only after actual checks run, then separate supported claims, unsupported claims, accepted gaps and next approvals.",
+      "user_does": "Decide whether the result should remain manual-only, proceed to cache refresh, proceed to global config changes, or become a release candidate.",
+      "technical_value": "Prevents planning matrix presence from being mistaken for Product-Agent OS auto-engagement being fixed.",
+      "product_value": "The owner receives a clean go/no-go decision and next approval list.",
+      "acceptance": "Closure records implemented rows, current verification evidence, fresh-session status, route/eval results, residual risks and exact next approvals.",
+      "verification": "Focused Batch 42 tests, `validate_codex_compatibility.py`, runtime route tests, `python -m unittest tests.product_agent_os.test_product_agent_os_docs -v`, `python tools\\check_docs.py`, `git diff --check` and fresh-session proof if required.",
+      "risks_approval_gates": "No release, cache refresh, global config write, target mutation, provider call, browser automation, git action, external write or automation activation without separate approval.",
+      "status": "planned"
+    }
+  ],
+  "suggested_order": [
+    "B42-S1 scope, inventory and official-source check",
+    "B42-S2 implicit invocation policy, validator and fresh-session exposure proof",
+    "B42-S3 runtime route and instruction/tool-use eval hardening",
+    "B42-S4 staged self-learning-loop and system-file hygiene triage",
+    "B42-S5 closure, control-plane sync and no-unapproved-actions proof"
+  ]
+}

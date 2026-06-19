@@ -538,6 +538,30 @@ B40-S5 covers `B40-DVL-M22..M24` as the pilot ledger, metrics-loop calibration a
 | --- | --- | --- |
 | `implemented_pilot_metrics_closure_manual_only` | B40-S5 pilot, metrics and closure | The owner asked to start B40-S5 with agents and skills. B40-S5 adds deterministic manual pilot ledger helpers, scorecard calibration with denominator evidence, an append-only metrics-loop record and a go/no-go packet. The final decision is `manual_only`, not release. No real target mutation, live server, browser automation, provider/API call, active hook/automation/MCP/Agents SDK runner, canonical graph mutation, external write or git action was performed. |
 
+## Task 26 Batch 42 Instruction And Tool-Use Compliance Hardening Planned Addendum
+
+B42 records the owner-requested planning matrix for Product-Agent OS instruction and tool-use compliance after local audit found that installed Product-Agent OS mechanisms are not reliably auto-engaged for instruction/tool-use audits, Product-Agent OS compliance prompts and `self-learning-loop` requests.
+
+- batch_status: `planned_task_matrix_added`.
+- planning_timestamp: `19-06-2026 13:03` `Europe/Moscow`.
+- source_matrix: `docs/superpowers/specs/batch42-instruction-tool-use-compliance-matrix.json`.
+- planned_rows: `B42-S1-M01..M03`, `B42-S2-M04..M06`, `B42-S3-M07..M08`, `B42-S4-M09..M10`, `B42-S5-M11`.
+- execution_status: `not_started`.
+- planning_is_not_implementation_evidence: true.
+- target_workspace_mutation_authorized: false.
+- plugin_cache_write_authorized: false.
+- global_codex_config_write_authorized: false.
+- live_server_browser_provider_canonical_git_performed: false.
+- active_hook_automation_mcp_agents_sdk_runner_created: false.
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `planned` | `B42-S1-M01..M03` scope, inventory and official-source check | Freeze requirements and approval boundaries, inventory physical bundle/cache/session exposure, and verify official OpenAI/Codex documentation before product-behavior claims. Owner action remains deciding whether later execution may touch source tree, installed cache, global Codex policy or stay read-only. |
+| `planned` | `B42-S2-M04..M06` implicit invocation policy, validator and fresh-session smoke | Decide explicit-only versus narrow router-only implicit policy, add metadata validator coverage and prove fresh-session skill exposure after any source/cache change. Broad implicit invocation and cache/global config mutation remain approval-gated. |
+| `planned` | `B42-S3-M07..M08` runtime route and instruction/tool-use eval hardening | Add route and eval cases for instruction compliance, tool-use compliance, Product-Agent OS auto-engagement failure and `self-learning-loop`, so these prompts do not route only to generic bug rescue. |
+| `planned` | `B42-S4-M09..M10` staged self-learning-loop and system-file hygiene triage | Route learning-loop output through staged `agent_skill_metrics_loop` lessons only, and triage system-file hygiene / secret-like literal findings without echoing sensitive values or auto-applying policy changes. |
+| `planned` | `B42-S5-M11` closure, control-plane sync and no-unapproved-actions proof | Close only after actual checks run, with implemented rows, fresh-session exposure status, route/eval results, residual risks and exact next approvals. Planning matrix presence is not proof that auto-engagement is fixed. |
+
 ## Deferred
 
 | Status | Item | Reason |

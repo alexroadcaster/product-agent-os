@@ -1,0 +1,200 @@
+{
+  "schema_version": "batch41_post_neural_flow_rerun_summary_v1",
+  "attempt_id": "B41-POST-NF-RERUN-A01",
+  "generated_at": "2026-06-19T13:21:00+03:00",
+  "task_plan": "docs/superpowers/specs/batch41-post-neural-flow-rerun-task-plan.txt",
+  "target": {
+    "name": "Neural_Flow",
+    "path": "C:/Users/user/Desktop/project/Neural_Flow",
+    "access_mode": "read_only",
+    "target_workspace_mutation": false
+  },
+  "new_artifact": {
+    "stage_root": "docs/superpowers/specs/batch41-post-neural-flow-rerun-stage",
+    "index_html": "docs/superpowers/specs/batch41-post-neural-flow-rerun-stage/index.html",
+    "manifest": "docs/superpowers/specs/batch41-post-neural-flow-rerun-stage/analysis-manifest.json",
+    "packet": "docs/superpowers/specs/batch41-post-neural-flow-rerun-stage/first-run-analysis-packet.json"
+  },
+  "old_artifacts_compared": {
+    "old_m40_pre_redesign": "docs/superpowers/specs/batch41-s7-m40-neural-flow-stage/index.html",
+    "previous_m47_redesign": "docs/superpowers/specs/batch41-s8-m47-neural-flow-stage/index.html"
+  },
+  "comparison": {
+    "path": "docs/superpowers/specs/batch41-post-neural-flow-rerun-comparison.json",
+    "m40_to_new": {
+      "from": "old_m40_pre_redesign",
+      "to": "new_post_batch41_rerun",
+      "index_digest_changed": true,
+      "index_bytes_delta": 41330,
+      "html_page_count_delta": 0,
+      "source_artifact_count_delta": 0,
+      "tag_count_delta": {
+        "script": 0,
+        "canvas": 0,
+        "svg": 10,
+        "pre": 0,
+        "section": 13,
+        "article": 46,
+        "nav": 0,
+        "main": 0,
+        "button": 0,
+        "a": 1
+      },
+      "new_markers_added": [
+        "architecture_dossier_shell",
+        "architecture_diagrams"
+      ],
+      "markers_missing_in_new": [],
+      "unsupported_claims_present_in_new": {
+        "wcag_certification_claim": false,
+        "release_ready_claim": false
+      }
+    },
+    "m47_to_new": {
+      "from": "previous_m47_redesign",
+      "to": "new_post_batch41_rerun",
+      "index_digest_changed": false,
+      "index_bytes_delta": 0,
+      "html_page_count_delta": 0,
+      "source_artifact_count_delta": 0,
+      "tag_count_delta": {
+        "script": 0,
+        "canvas": 0,
+        "svg": 0,
+        "pre": 0,
+        "section": 0,
+        "article": 0,
+        "nav": 0,
+        "main": 0,
+        "button": 0,
+        "a": 0
+      },
+      "new_markers_added": [],
+      "markers_missing_in_new": [],
+      "unsupported_claims_present_in_new": {
+        "wcag_certification_claim": false,
+        "release_ready_claim": false
+      }
+    },
+    "assessment": {
+      "new_artifact_path": "docs/superpowers/specs/batch41-post-neural-flow-rerun-stage/index.html",
+      "old_pre_redesign_path": "docs/superpowers/specs/batch41-s7-m40-neural-flow-stage/index.html",
+      "previous_redesign_path": "docs/superpowers/specs/batch41-s8-m47-neural-flow-stage/index.html",
+      "new_contains_architecture_dossier_surfaces": true,
+      "new_is_script_free": true,
+      "new_has_no_canvas_runtime": true,
+      "new_has_no_pre_dump": true,
+      "new_has_no_external_links": true,
+      "unsupported_claims": [
+        "full WCAG certification not claimed",
+        "release readiness not claimed",
+        "Cosmos.gl/WebGL runtime execution not claimed",
+        "target apply safety not claimed",
+        "source-read semantic completeness not claimed"
+      ]
+    }
+  },
+  "playwright_proof": {
+    "path": "output/playwright/b41-post-neural-flow-rerun/playwright-proof.json",
+    "status": "passed",
+    "browser": {
+      "executablePath": "C:/Program Files/Google/Chrome/Application/chrome.exe",
+      "install_performed": false
+    },
+    "screenshots": [
+      "output/playwright/b41-post-neural-flow-rerun/old-m40-desktop-full.png",
+      "output/playwright/b41-post-neural-flow-rerun/new-post-batch41-desktop-full.png",
+      "output/playwright/b41-post-neural-flow-rerun/new-post-batch41-mobile-full.png",
+      "output/playwright/b41-post-neural-flow-rerun/previous-m47-desktop-full.png"
+    ],
+    "assertions": {
+      "new_console_clean": true,
+      "new_no_external_requests": true,
+      "new_no_body_overflow": true,
+      "new_no_duplicate_ids": true,
+      "new_script_free": true,
+      "new_no_canvas_runtime": true,
+      "new_no_pre_dump": true,
+      "new_generated_view_only_visible": true,
+      "new_no_wcag_certification_claim": true,
+      "new_no_release_ready_claim": true
+    },
+    "comparison": {
+      "old_m40_to_new": {
+        "section_delta": 13,
+        "article_delta": 46,
+        "svg_delta": 10,
+        "new_architecture_markers": true,
+        "new_evidence_decision_markers": true,
+        "new_graph_runtime_boundary_marker": true
+      },
+      "previous_m47_to_new": {
+        "same_key_metrics": true,
+        "section_delta": 0,
+        "article_delta": 0,
+        "svg_delta": 0
+      }
+    }
+  },
+  "actions_performed": {
+    "target_workspace_mutation": false,
+    "browser_automation": true,
+    "live_server": false,
+    "provider_api_call": false,
+    "mcp_external_call": false,
+    "external_write": false,
+    "git_stage_commit_push_pr": false,
+    "release_deploy_publish": false,
+    "active_automation": false
+  },
+  "verification": [
+    {
+      "command": "python plugins/product-agent-os/scripts/validate_task_matrix.py docs/superpowers/specs/batch41-post-neural-flow-rerun-task-plan.txt",
+      "result": "passed before and after execution"
+    },
+    {
+      "command": "python plugins/product-agent-os/scripts/run_first_project_analysis.py C:/Users/user/Desktop/project/Neural_Flow --stage docs/superpowers/specs/batch41-post-neural-flow-rerun-stage --generated-at 2026-06-19T12:00:00+03:00",
+      "result": "passed; status ok; target_workspace_mutation false"
+    },
+    {
+      "command": "HTML/manifest comparison script",
+      "result": "passed; comparison JSON generated"
+    },
+    {
+      "command": "Playwright file:// proof with system Chrome",
+      "result": "passed; desktop/mobile screenshots and assertions generated"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_task_plan_lifecycle -q",
+      "result": "passed; 4 tests"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -q",
+      "result": "passed; 81 tests"
+    },
+    {
+      "command": "python tools/check_docs.py",
+      "result": "passed"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ],
+  "unsupported_claims": [
+    "full WCAG certification",
+    "Cosmos.gl/WebGL runtime execution",
+    "release readiness",
+    "target apply safety",
+    "source-read semantic completeness",
+    "owner final visual acceptance"
+  ],
+  "control_plane_sync_decision": {
+    "RUNLOG.md": "updated_compact_handoff",
+    "PLAN.md": "not_applicable_no_queue_change",
+    "TEST.md": "not_applicable_no_verification_policy_change",
+    "EVALS.md": "not_applicable_no_rubric_change",
+    "REQUIREMENTS.md": "not_applicable_no_scope_change"
+  },
+  "status": "post_batch41_neural_flow_rerun_and_comparison_completed_with_unsupported_claims_preserved"
+}

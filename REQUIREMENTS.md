@@ -16,6 +16,7 @@ Last compacted: 2026-06-11
 - Keep Product-Agent OS plugin work routed through skills, staged artifacts, explicit verification and approval boundaries.
 - Preserve the closed Track 10 and Batch 38/B40 evidence as source-backed context without expanding root control-plane files into historical ledgers.
 - Prepare Batch 39 (`B39-TEST-M01..M54`) for real-project testing. `prod_test.md` is the required attempt/failure/fix/retest ledger before execution begins.
+- Track Batch 42 as planned instruction/tool-use compliance hardening for Product-Agent OS auto-engagement, source/cache/session skill exposure, implicit invocation policy, route/eval coverage, staged `self-learning-loop` and hygiene triage.
 
 ## Current Product-Agent OS State
 
@@ -30,6 +31,7 @@ Last compacted: 2026-06-11
 | `B38-PILOT-NF01` | First target-specific docs-only pilot addendum against `Neural_Flow`; target apply remains blocked by `source_policy_status: blocked` and missing target control-plane/source registry artifacts. | `docs/sources/product-agent-os-track-10-backlog.md`, `RUNLOG.md` |
 | Batch 39 | Executed through `B39-S5` as local/read-only/contract evidence. `B39-S5` closes source-doc sync, go/no-go and no-unapproved-actions proof as `closed_for_owner_feedback_testing_not_release_ready`: release/distribution is `no_go`, owner-feedback testing is `conditional_go`, and runtime/browser/provider/MCP/git/release/deploy/publish/automation surfaces remain approval-bound. | `PLAN.md`, `TEST.md`, `prod_test.md`, `docs/superpowers/specs/batch39-s5-closure-summary.json` |
 | Batch 40 completion-skeptic foundation | B40-S2/S3/S4/S5 closed as local manual foundation, eval hardening, docs/site/source-transfer, synthetic-local pilot ledger, scorecard calibration and go/no-go closure; current promotion status is `manual_only` and `not_promoted`. | `docs/sources/product-agent-os-track-10-backlog.md`, `RUNLOG.md` |
+| Batch 42 instruction/tool-use compliance | Planned only; source matrix covers Product-Agent OS auto-engagement, skill exposure, implicit invocation policy, route/eval hardening, staged `self-learning-loop`, system-file hygiene triage and closure. | `docs/superpowers/specs/batch42-instruction-tool-use-compliance-matrix.json`, `docs/sources/product-agent-os-track-10-backlog.md`, `RUNLOG.md` |
 
 ## Users And Actors
 
@@ -108,6 +110,7 @@ These compact anchors preserve current test/source contracts without restoring t
 - Batch 39 real-project-adjacent execution is source-owned through `prod_test.md` and S5 closure artifacts. It includes synthetic archetype pilots, read-only `Neural_Flow` / `SOL 0.6` evidence, S4 hardening and S5 conditional owner-feedback closure. Target writes, runtime/browser/provider/model/vector/eval/live-database/migration/production-data/git/external actions and any broader target execution still require exact approval.
 - `B38-PILOT-NF01` remains blocked for target apply by missing target control-plane/source registry artifacts and `source_policy_status: blocked`.
 - Batch 40 completion-skeptic automation remains `manual_only` and `not_promoted`.
+- Batch 42 is a planning matrix only; it does not prove fixed Product-Agent OS auto-engagement until execution produces current source/cache/session exposure, official-doc source status, route/eval evidence, fresh-session proof if required and no-unapproved-actions closure.
 - Historical evidence is intentionally source-owned outside this file; use the registry/backlogs before making broad historical claims.
 
 <!-- product-agent-os:end requirements -->
