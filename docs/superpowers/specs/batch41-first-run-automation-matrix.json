@@ -1,7 +1,7 @@
 {
   "schema_version": "batch41_first_run_automation_matrix_v1",
   "source_status": "local_implementation_planning",
-  "generated_at": "2026-06-18T23:59:00+03:00",
+  "generated_at": "2026-06-19T00:00:00+03:00",
   "purpose": "Plan Batch 41 as the missing product-level first-run orchestration layer for Product-Agent OS.",
   "analysis_summary": {
     "short_answer": "Yes, the desired first-launch behavior is the product behavior that should exist. The earlier Batch 39 work built packet, renderer, graph, question, guardrail and hardening contracts, but did not assemble them into one end-user first-run automation command.",
@@ -85,6 +85,68 @@
       "source-read semantic completeness",
       "external writes or deployment safety"
     ]
+  },
+  "html_cockpit_target": {
+    "primary_artifact": "single_self_contained_index_html",
+    "legacy_artifact_policy": "existing 11-page first-run output is diagnostic/raw evidence only and must not be the primary end-user report",
+    "source_of_truth_policy": "generated cockpit, generated graph and generated diagnostics are orientation evidence only; source files and current command evidence remain source truth",
+    "primary_pages": [
+      {
+        "id": "overview",
+        "title": "Overview",
+        "displays": "scan summary, target profile, generated-view policy, safe next action, route/status cards, top blockers, freshness and confidence"
+      },
+      {
+        "id": "project-map",
+        "title": "Project Map",
+        "displays": "file/source graph, source artifacts, generated artifacts, source-policy blockers, clusters, selected-file panel, filters and table fallback"
+      },
+      {
+        "id": "docs-sources",
+        "title": "Docs & Sources",
+        "displays": "source registry state, control-plane documents, source-status overlays, missing/stale docs, unsupported docs claims and documentation next actions"
+      },
+      {
+        "id": "code-intelligence",
+        "title": "Code Intelligence",
+        "displays": "code graph, hotspots, imports/calls/tests/routes when graph packets exist, read order, trace/impact packets and explicit not_available empty state"
+      },
+      {
+        "id": "contracts",
+        "title": "Contracts",
+        "displays": "runtime, API, schema, config and diagram contracts; detected versus missing contract evidence and ownership/source-of-truth boundaries"
+      },
+      {
+        "id": "quality-metrics",
+        "title": "Quality & Metrics",
+        "displays": "tests, fixtures, evals, static checks, scorecard, visual QA status, verification gates and accepted gaps"
+      },
+      {
+        "id": "operations-risk",
+        "title": "Operations & Risk",
+        "displays": "approval boundaries, runtime/browser/provider/git risks, source-policy gate, dependency/offline/privacy risks, cleanup and rollback"
+      },
+      {
+        "id": "proposal-ledger",
+        "title": "Proposal Ledger",
+        "displays": "analysis manifest, answer ledger, generated artifact list, next actions, approval requirements and no-unapproved-actions evidence"
+      }
+    ],
+    "large_graph_rendering": {
+      "default_strategy": "do not render 5000 nodes / 50000 edges in full by default; render clustered overview, sampled/aggregated edges, selected-neighborhood subgraphs, query-driven expansion and table fallback",
+      "data_model": "Graphology-compatible graph payload",
+      "primary_renderer": "locally bundled Sigma.js WebGL renderer for interactive subgraphs and normal large-project exploration",
+      "dense_graph_candidate": "Cosmos.gl for dense 5000+ node / 50000+ edge projections when full or near-full interactive rendering is required",
+      "non_primary_renderer": "Cytoscape.js may be evaluated for smaller analysis/compound subgraphs but is not the primary renderer for 50000-edge cockpit views",
+      "fallback_renderer": "static SVG/Canvas summary, cluster cards and bounded table fallback when WebGL/vendor assets are unavailable",
+      "dependency_policy": "no CDN, no network fetch, no install by default; any vendored library requires version, license, hash and offline validation evidence",
+      "performance_gates": [
+        "1k graph fixture uses interactive subgraph mode within visible budget",
+        "5k graph fixture uses clustered overview, hidden labels, selected-neighborhood expansion and edge sampling",
+        "10k+ graph fixture or synthetic stress case stays responsive through LOD, hard visible limits and fallback table",
+        "all graph modes preserve generated-view-only wording and do not imply source-read completeness"
+      ]
+    }
   },
   "tasks": [
     {
@@ -372,7 +434,8 @@
       "codex_does": "Create fixture with docs, app code, tests, logs and source-policy variants.",
       "user_does": "Review fixture realism.",
       "acceptance": "Full-dry-run, stage HTML, comparison and question output pass.",
-      "stop_condition": "Stop if fixture is too synthetic to exercise routing."
+      "stop_condition": "Stop if fixture is too synthetic to exercise routing.",
+      "status": "implemented"
     },
     {
       "id": "B41-S6-M25",
@@ -383,7 +446,8 @@
       "codex_does": "Run orchestrator read-only/stage outside target.",
       "user_does": "Review the blocking question and report usefulness.",
       "acceptance": "Source-policy block, methodology route and HTML artifact match expectations; target unchanged.",
-      "stop_condition": "Stop if target files are modified."
+      "stop_condition": "Stop if target files are modified.",
+      "status": "implemented_read_only_expected_block"
     },
     {
       "id": "B41-S6-M26",
@@ -394,7 +458,8 @@
       "codex_does": "Run orchestrator read-only/stage outside target.",
       "user_does": "Decide whether later runtime/browser pilot is approved.",
       "acceptance": "Dependency/static graph summary appears; runtime/browser remains approval-required; target unchanged.",
-      "stop_condition": "Stop if .next, caches, provider state or app data are written."
+      "stop_condition": "Stop if .next, caches, provider state or app data are written.",
+      "status": "blocked_timeout"
     },
     {
       "id": "B41-S6-M27",
@@ -405,7 +470,8 @@
       "codex_does": "Add scorecard for clarity, actionability, safety, completeness and noise.",
       "user_does": "Score Neural_Flow and SOL outputs.",
       "acceptance": "Scorecard records thresholds and accepted gaps.",
-      "stop_condition": "Stop if scorecard claims release readiness from owner satisfaction alone."
+      "stop_condition": "Stop if scorecard claims release readiness from owner satisfaction alone.",
+      "status": "implemented_owner_feedback_pending"
     },
     {
       "id": "B41-S6-M28",
@@ -416,7 +482,8 @@
       "codex_does": "Run focused tests, full relevant unittest, fixture eval, transcript eval, docs check and diff check.",
       "user_does": "Review residual risks.",
       "acceptance": "Verification packet lists commands, results, failures, skipped checks and blockers.",
-      "stop_condition": "Stop if any required check is skipped without accepted gap."
+      "stop_condition": "Stop if any required check is skipped without accepted gap.",
+      "status": "implemented_verification_sweep_with_recorded_gaps"
     },
     {
       "id": "B41-S6-M29",
@@ -427,7 +494,8 @@
       "codex_does": "Update plugin manifest/docs if needed and prepare cache refresh instructions.",
       "user_does": "Approve local plugin cache refresh if required.",
       "acceptance": "Installed plugin exposes command/skill docs after refresh evidence.",
-      "stop_condition": "Stop if source tree works but installed plugin remains stale."
+      "stop_condition": "Stop if source tree works but installed plugin remains stale.",
+      "status": "blocked_expected_approval_required"
     },
     {
       "id": "B41-S6-M30",
@@ -438,7 +506,128 @@
       "codex_does": "Write closure packet and no-unapproved-actions proof.",
       "user_does": "Decide next approval-gated pilot.",
       "acceptance": "Closure states release, owner-feedback and runtime/browser status separately.",
-      "stop_condition": "Stop if closure says release-ready without owner feedback and runtime evidence."
+      "stop_condition": "Stop if closure says release-ready without owner feedback and runtime evidence.",
+      "status": "implemented_no_go_closure"
+    },
+    {
+      "id": "B41-S7-M31",
+      "slice": "html_cockpit_artifact",
+      "task": "Define first_run_cockpit_artifact_v1 contract.",
+      "technical_value": "Gives the first-run renderer a product-grade artifact contract instead of a page-exists contract, including the primary eight-page cockpit model and legacy diagnostic-page boundary.",
+      "product_value": "User can judge one readable cockpit report instead of scattered diagnostic pages or raw packet dumps.",
+      "codex_does": "Specify single-file output, the eight primary pages, view-model inputs, graph layers, navigation, fallback states, raw diagnostic disclosure, generated-view-only wording and large-graph library policy.",
+      "user_does": "Review whether the contract matches the expected final Neural_Flow artifact.",
+      "acceptance": "Contract names one primary index.html cockpit, eight cockpit pages, legacy 11-page diagnostics policy, source/file graph, code graph, persistent navigation, safety labels, manifest fields and 5k/50k graph handling.",
+      "stop_condition": "Stop if the contract still accepts plain multi-page raw dumps as sufficient.",
+      "status": "planned"
+    },
+    {
+      "id": "B41-S7-M32",
+      "slice": "html_cockpit_artifact",
+      "task": "Build single-file cockpit shell.",
+      "technical_value": "Connects first-run HTML generation to a real UI shell with offline assets and responsive layout.",
+      "product_value": "User opens one artifact and can scan the project without page hopping or default-browser styling.",
+      "codex_does": "Implement a self-contained cockpit shell inspired by output/playwright references with nav, cards, status bands and readable typography.",
+      "user_does": "Compare the generated shell against expected report readability.",
+      "acceptance": "Primary index.html has persistent navigation, responsive layout, styled evidence cards and no white-page/default-serif presentation.",
+      "stop_condition": "Stop if CSS/layout is decorative only and does not improve reading, navigation or graph inspection.",
+      "status": "planned"
+    },
+    {
+      "id": "B41-S7-M33",
+      "slice": "html_cockpit_artifact",
+      "task": "Add first-run cockpit view-model adapter.",
+      "technical_value": "Decouples presentation from raw packet JSON by composing first-run packet, manifest and project cockpit model into one bounded view model.",
+      "product_value": "User sees summaries, decisions, blockers and source boundaries instead of implementation dumps.",
+      "codex_does": "Adapt first-run packet sections, manifest digests, source artifacts and project_cockpit_model outputs into a cockpit-ready model.",
+      "user_does": "Review whether summaries answer the expected project questions.",
+      "acceptance": "View model includes overview, source map, risks, evidence statuses, graph summaries, code flow and approval boundaries without raw source bodies.",
+      "stop_condition": "Stop if page templates still read directly from arbitrary packet dictionaries.",
+      "status": "planned"
+    },
+    {
+      "id": "B41-S7-M34",
+      "slice": "html_cockpit_artifact",
+      "task": "Render project file/source graph.",
+      "technical_value": "Adds a graph layer that can work from first-run source artifacts even when code graph packets are unavailable, with Graphology-compatible payloads and bounded visual projection.",
+      "product_value": "User can see which files, docs, generated artifacts and blockers explain the project without reading source lists manually.",
+      "codex_does": "Generate nodes and edges for docs, control-plane files, source artifacts, generated artifacts, section evidence and source-policy blockers; render clustered overview, selected-file panel and fallback table.",
+      "user_does": "Validate whether the graph helps understand project structure.",
+      "acceptance": "Cockpit contains a file/source graph with legend, status coloring, selected-file panel, cluster/LOD behavior, table fallback and clear omitted-node/edge counts for large graphs.",
+      "stop_condition": "Stop if the graph is only a text summary or hides unavailable data.",
+      "status": "planned"
+    },
+    {
+      "id": "B41-S7-M35",
+      "slice": "html_cockpit_artifact",
+      "task": "Render code graph and hotspots when graph packets exist.",
+      "technical_value": "Reuses project graph intelligence for entity, import, test, route and hotspot exploration instead of only listing summary text, while defining renderer limits for 5000+ nodes and 50000+ edges.",
+      "product_value": "User can inspect code relationships and coverage gaps from the artifact without freezing the browser or mistaking graph output for proof.",
+      "codex_does": "Render code graph nodes/edges from graph packets through Graphology-compatible data, local Sigma.js for interactive subgraphs, Cosmos.gl candidate path for dense graph projection and explicit empty state when graph data is unavailable.",
+      "user_does": "Review graph usefulness on Neural_Flow and later code-heavy targets.",
+      "acceptance": "Code graph renders when packet data exists, uses clustered/LOD/top-N/selected-neighborhood modes for large graphs, records omitted counts and shows explicit not_available state with safe next action when data does not exist.",
+      "stop_condition": "Stop if generated graph implies source-read, runtime or readiness proof.",
+      "status": "planned"
+    },
+    {
+      "id": "B41-S7-M36",
+      "slice": "html_cockpit_artifact",
+      "task": "Add navigation, search, filters and detail panels.",
+      "technical_value": "Makes large generated reports navigable through stable anchors, local filtering and selected-node details.",
+      "product_value": "User can find relevant files, risks, blockers and recommendations quickly.",
+      "codex_does": "Implement offline in-page navigation, filter controls, search indexes and detail panels without external dependencies.",
+      "user_does": "Use the artifact to find a file, a blocker and a next action.",
+      "acceptance": "Navigation is keyboard reachable, filters do not shift layout, and selected details remain readable on desktop and mobile.",
+      "stop_condition": "Stop if interaction requires network assets or browser-only side effects outside the local artifact.",
+      "status": "planned"
+    },
+    {
+      "id": "B41-S7-M37",
+      "slice": "html_cockpit_artifact",
+      "task": "Replace raw JSON dumps with progressive disclosure.",
+      "technical_value": "Keeps diagnostics available while making page-specific human summaries the primary representation.",
+      "product_value": "User reads explanations first and opens raw packet data only when needed.",
+      "codex_does": "Create structured renderers for evidence, risks, baseline diff, cleanup, source artifacts and diagnostics.",
+      "user_does": "Review whether the report can be read without parsing JSON.",
+      "acceptance": "Raw JSON appears only in collapsed diagnostics or packet references; main sections are human-readable summaries.",
+      "stop_condition": "Stop if raw <pre> packet dumps remain the main content of any primary page.",
+      "status": "planned"
+    },
+    {
+      "id": "B41-S7-M38",
+      "slice": "html_cockpit_artifact",
+      "task": "Add visual QA and regression gate.",
+      "technical_value": "Prevents structural HTML checks from accepting unusable default-browser output.",
+      "product_value": "User gets a designed, readable artifact instead of a white text dump.",
+      "codex_does": "Add visual/static QA for layout, navigation visibility, graph visibility, graph scale states, text overflow, mobile/desktop states and generated-view labels.",
+      "user_does": "Approve any browser automation if live screenshot verification is needed.",
+      "acceptance": "QA packet distinguishes cockpit-grade output from plain HTML and records screenshots or accepted static gaps for desktop, mobile, empty graph, 1k, 5k and 10k+ graph states.",
+      "stop_condition": "Stop if visual QA cannot catch the current Neural_Flow white-page regression.",
+      "status": "planned"
+    },
+    {
+      "id": "B41-S7-M39",
+      "slice": "html_cockpit_artifact",
+      "task": "Harden offline, privacy and accessibility boundaries.",
+      "technical_value": "Extends existing renderer safety checks to embedded data, graph labels, UI controls and diagnostics.",
+      "product_value": "User can keep and share the generated artifact internally without unsafe leakage or inaccessible layout.",
+      "codex_does": "Preserve no external URL/script policy, no secrets/raw source/absolute private paths, keyboard navigation and contrast/readability checks.",
+      "user_does": "Review any accepted privacy or accessibility gaps.",
+      "acceptance": "Safety checks cover HTML, embedded JSON, graph data, diagnostics, labels and manifest references.",
+      "stop_condition": "Stop if richer UI requires CDN assets, external scripts, target mutation or private source bodies.",
+      "status": "planned"
+    },
+    {
+      "id": "B41-S7-M40",
+      "slice": "html_cockpit_artifact",
+      "task": "Run Neural_Flow acceptance pilot for cockpit artifact.",
+      "technical_value": "Validates the redesigned artifact on the real project that exposed the usability failure.",
+      "product_value": "User can compare the new cockpit with the current white-page artifact and decide if it is useful.",
+      "codex_does": "Regenerate read-only Neural_Flow artifact, record usability scorecard, graph availability, blockers and no-unapproved-actions proof.",
+      "user_does": "Review the cockpit artifact and provide owner-feedback scoring.",
+      "acceptance": "Pilot packet records generated file path, static or screenshot evidence, graph states, usability scorecard and remaining blockers.",
+      "stop_condition": "Stop if the pilot requires target mutation, browser automation, plugin-cache refresh or external calls without exact approval.",
+      "status": "planned"
     }
   ],
   "suggested_order": [
@@ -447,6 +636,7 @@
     "B41-S3 full project-analysis sources",
     "B41-S4 HTML generation in the first-run flow",
     "B41-S5 question and answer UX",
-    "B41-S6 synthetic, Neural_Flow and SOL pilots plus closure"
+    "B41-S6 synthetic, Neural_Flow and SOL pilots plus closure",
+    "B41-S7 cockpit-grade first-run HTML and graph artifact"
   ]
 }

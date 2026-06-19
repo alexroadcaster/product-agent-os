@@ -1,0 +1,135 @@
+{
+  "actions_performed": {
+    "active_automation": false,
+    "browser_automation": false,
+    "dependency_install": false,
+    "git_stage_commit_push_pr": false,
+    "live_server": false,
+    "mcp_external_call": false,
+    "plugin_cache_write": false,
+    "provider_api_call": false,
+    "release_deploy_publish": false,
+    "target_workspace_mutation": false
+  },
+  "blocked_count": 2,
+  "failed_count": 0,
+  "generated_at": "2026-06-18T01:10:00+03:00",
+  "passed_count": 0,
+  "pilot_count": 2,
+  "pilots": [
+    {
+      "actions_performed": {
+        "active_automation": false,
+        "browser_automation": false,
+        "dependency_install": false,
+        "git_stage_commit_push_pr": false,
+        "live_server": false,
+        "mcp_external_call": false,
+        "plugin_cache_write": false,
+        "provider_api_call": false,
+        "release_deploy_publish": false,
+        "target_workspace_mutation": false
+      },
+      "dependency_readiness_status": "unknown",
+      "dry_run_status": "not_run",
+      "generated_at": "2026-06-18T01:10:00+03:00",
+      "generated_view_policy": "orientation_only_not_proof",
+      "guided_question_output": {
+        "blocking": 0,
+        "total": 0
+      },
+      "html_artifact_status": "not_rendered",
+      "html_page_count": 0,
+      "methodology_status": "unknown",
+      "runtime_browser_status": "unknown",
+      "schema_version": "batch41_s6_real_target_pilot_summary_v1",
+      "source_policy_status": "unknown",
+      "status": "blocked_target_unavailable",
+      "summary_digest": "sha256:cd0797153b79b509d98e6f038113c2717225603aeb635219f48972bfef386885",
+      "target_access_status": "not_provided",
+      "target_kind": "docs_research_expected_block",
+      "target_label": "Neural_Flow",
+      "target_mutation": {
+        "after_file_count": 0,
+        "after_fingerprint": "sha256:not-provided",
+        "before_file_count": 0,
+        "before_fingerprint": "sha256:not-provided",
+        "changed": false
+      },
+      "task_id": "B41-S6-M25",
+      "unsupported_claims": [
+        "real-target pilot is read-only orientation evidence only",
+        "release readiness is not claimed",
+        "runtime/browser behavior is not claimed without current approved runtime/browser evidence",
+        "provider/API/model quality is not claimed",
+        "target apply safety is not claimed; read-only pilots prove target unchanged only for inspected paths/digests",
+        "generated HTML, generated graph and generated question output remain orientation evidence only, not source truth",
+        "owner-feedback usefulness is not proven until owner scorecard evidence exists",
+        "plugin cache/install readiness is not claimed unless installed-cache evidence exists after approved refresh/check"
+      ]
+    },
+    {
+      "actions_performed": {
+        "active_automation": false,
+        "browser_automation": false,
+        "dependency_install": false,
+        "git_stage_commit_push_pr": false,
+        "live_server": false,
+        "mcp_external_call": false,
+        "plugin_cache_write": false,
+        "provider_api_call": false,
+        "release_deploy_publish": false,
+        "target_workspace_mutation": false
+      },
+      "dependency_readiness_status": "unknown",
+      "dry_run_status": "not_run",
+      "generated_at": "2026-06-18T01:10:00+03:00",
+      "generated_view_policy": "orientation_only_not_proof",
+      "guided_question_output": {
+        "blocking": 0,
+        "total": 0
+      },
+      "html_artifact_status": "not_rendered",
+      "html_page_count": 0,
+      "methodology_status": "unknown",
+      "runtime_browser_status": "unknown",
+      "schema_version": "batch41_s6_real_target_pilot_summary_v1",
+      "source_policy_status": "unknown",
+      "status": "blocked_target_unavailable",
+      "summary_digest": "sha256:394be451dd7ca0d97a5d30cebfa79e54a32f517eeea5310be6f50d7ac458799e",
+      "target_access_status": "not_provided",
+      "target_kind": "app_static_runtime_boundary",
+      "target_label": "SOL 0.6 app-like target",
+      "target_mutation": {
+        "after_file_count": 0,
+        "after_fingerprint": "sha256:not-provided",
+        "before_file_count": 0,
+        "before_fingerprint": "sha256:not-provided",
+        "changed": false
+      },
+      "task_id": "B41-S6-M26",
+      "unsupported_claims": [
+        "real-target pilot is read-only orientation evidence only",
+        "release readiness is not claimed",
+        "runtime/browser behavior is not claimed without current approved runtime/browser evidence",
+        "provider/API/model quality is not claimed",
+        "target apply safety is not claimed; read-only pilots prove target unchanged only for inspected paths/digests",
+        "generated HTML, generated graph and generated question output remain orientation evidence only, not source truth",
+        "owner-feedback usefulness is not proven until owner scorecard evidence exists",
+        "plugin cache/install readiness is not claimed unless installed-cache evidence exists after approved refresh/check"
+      ]
+    }
+  ],
+  "rollup_digest": "sha256:3e8db02380e257d224ff78533c899ec5a15d32b8974aeead94c281ee514128cc",
+  "schema_version": "batch41_s6_real_target_pilots_summary_v1",
+  "status": "partial_with_expected_blocks",
+  "unsupported_claims": [
+    "release readiness is not claimed",
+    "runtime/browser behavior is not claimed without current approved runtime/browser evidence",
+    "provider/API/model quality is not claimed",
+    "target apply safety is not claimed; read-only pilots prove target unchanged only for inspected paths/digests",
+    "generated HTML, generated graph and generated question output remain orientation evidence only, not source truth",
+    "owner-feedback usefulness is not proven until owner scorecard evidence exists",
+    "plugin cache/install readiness is not claimed unless installed-cache evidence exists after approved refresh/check"
+  ]
+}

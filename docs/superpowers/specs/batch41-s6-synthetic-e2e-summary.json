@@ -1,0 +1,57 @@
+{
+  "actions_performed": {
+    "active_automation": false,
+    "browser_automation": false,
+    "dependency_install": false,
+    "git_stage_commit_push_pr": false,
+    "live_server": false,
+    "mcp_external_call": false,
+    "plugin_cache_write": false,
+    "provider_api_call": false,
+    "release_deploy_publish": false,
+    "target_workspace_mutation": false
+  },
+  "answer_ledger_template_present": true,
+  "completion_claim": "not_claimed",
+  "dry_run": {
+    "first_response_schema_version": "first_run_guided_response_v1",
+    "mode": "full_dry_run",
+    "packet_schema_version": "first_run_analysis_packet_v1",
+    "status": "ok"
+  },
+  "generated_at": "2026-06-18T01:10:00+03:00",
+  "generated_view_policy": "orientation_only_not_proof",
+  "guided_question_output": {
+    "blocking": 1,
+    "one_blocking_question_max": true,
+    "route_option_count": 3,
+    "total": 5
+  },
+  "schema_version": "batch41_s6_synthetic_e2e_summary_v1",
+  "stage": {
+    "baseline_comparison_status": "missing",
+    "html_page_count": 11,
+    "mode": "stage",
+    "status": "ok",
+    "written_file_count": 14
+  },
+  "status": "passed_synthetic_e2e",
+  "summary_digest": "sha256:9ccfe0139486690ef27b7ba6f3571934477717352c2babada0145a327eed3f71",
+  "target_mutation": {
+    "after_file_count": 11,
+    "after_fingerprint": "sha256:92b301841d4f23fa5ac2fa8279caebffc7ed6660ce2db28c7d67f799a37ee395",
+    "before_file_count": 11,
+    "before_fingerprint": "sha256:92b301841d4f23fa5ac2fa8279caebffc7ed6660ce2db28c7d67f799a37ee395",
+    "changed": false
+  },
+  "task_id": "B41-S6-M24",
+  "unsupported_claims": [
+    "release readiness is not claimed",
+    "runtime/browser behavior is not claimed without current approved runtime/browser evidence",
+    "provider/API/model quality is not claimed",
+    "target apply safety is not claimed; read-only pilots prove target unchanged only for inspected paths/digests",
+    "generated HTML, generated graph and generated question output remain orientation evidence only, not source truth",
+    "owner-feedback usefulness is not proven until owner scorecard evidence exists",
+    "plugin cache/install readiness is not claimed unless installed-cache evidence exists after approved refresh/check"
+  ]
+}

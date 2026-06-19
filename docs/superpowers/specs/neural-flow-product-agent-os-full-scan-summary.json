@@ -1,0 +1,240 @@
+{
+  "blocking_question": {
+    "answer_type": "single_choice_or_text",
+    "artifact": "docs/sources/registry.md",
+    "category": "approval",
+    "choices": [
+      "fix_source_policy",
+      "record_accepted_gap",
+      "keep_blocked"
+    ],
+    "id": "q_approval_2ae3da13e2",
+    "owner_domain": "",
+    "priority": "blocking",
+    "sequence": 1,
+    "source": {
+      "artifact": "docs/sources/registry.md",
+      "block": "source_policy_summary",
+      "key": "source_policy_blocker_owner_decision",
+      "kind": "first_run_source_policy"
+    },
+    "text": "Which source-policy blocker should be fixed or accepted as a gap before apply, promotion or readiness claims?"
+  },
+  "dependency_readiness_status": "not_available",
+  "first_response_summary": "Detected route: ai_eval_regression; source policy: blocked; runtime boundary: not_available.",
+  "generated_at": "2026-06-18T03:00:00+03:00",
+  "generated_view_policy": "orientation_only_not_proof",
+  "html_entrypoint": "docs/superpowers/specs/neural-flow-product-agent-os-full-scan-20260618T030000/index.html",
+  "manifest": "docs/superpowers/specs/neural-flow-product-agent-os-full-scan-20260618T030000/analysis-manifest.json",
+  "manifest_digest": "sha256:93eda07b956c4c1c9b59142d73a2cd3ecaf12302e377d8d3798aa0d5407933b6",
+  "methodology_status": "ok",
+  "packet": "docs/superpowers/specs/neural-flow-product-agent-os-full-scan-20260618T030000/first-run-analysis-packet.json",
+  "page_count": 11,
+  "pages": [
+    {
+      "digest": "sha256:0a8414779853e237abb0140cdaa8c29d247400e49a6051cd81b705c7b035658f",
+      "page_id": "overview",
+      "path": "index.html",
+      "source_policy": "generated_view_only"
+    },
+    {
+      "digest": "sha256:3d25a7c24dc6d5cb0aa685f5af7d44119749681b93638c49a9a2d396c9a78e62",
+      "page_id": "inventory",
+      "path": "inventory.html",
+      "source_policy": "generated_view_only"
+    },
+    {
+      "digest": "sha256:c879950f9a35a715ad314c6f2a7109532f77e3abce273252963f885e18da26d1",
+      "page_id": "architecture",
+      "path": "architecture.html",
+      "source_policy": "generated_view_only"
+    },
+    {
+      "digest": "sha256:2f29e4ba9561f3b6ec2e236e74fc57e3b9646a98ce933815b999bf53d0d9e7ce",
+      "page_id": "methodology",
+      "path": "methodology.html",
+      "source_policy": "generated_view_only"
+    },
+    {
+      "digest": "sha256:259dfcfbc09df3775480f25a590f3a6eb64934d381d5e736427df4f37c36dc14",
+      "page_id": "runtime-route",
+      "path": "runtime-route.html",
+      "source_policy": "generated_view_only"
+    },
+    {
+      "digest": "sha256:45ba44586e3c076630df8aa25c065425398ed06279da69aa75c8edf4054f9c87",
+      "page_id": "control-plane",
+      "path": "control-plane.html",
+      "source_policy": "generated_view_only"
+    },
+    {
+      "digest": "sha256:93d050ff06d27a1ce1c2b1e23b3e88bd5acb7ca5a0bfbe2938679cdc5fac5bf5",
+      "page_id": "graph",
+      "path": "graph.html",
+      "source_policy": "generated_view_only"
+    },
+    {
+      "digest": "sha256:b35f64e1212fb6c3ff64dfbfbe357ea7dfaf54c5fdc2a28f16a3f975cd02179d",
+      "page_id": "code-flow",
+      "path": "code-flow.html",
+      "source_policy": "generated_view_only"
+    },
+    {
+      "digest": "sha256:b07d7383ca813143831ffab8b1a4247f942b50c2292041229859af0d599898ab",
+      "page_id": "quality-evals",
+      "path": "quality-evals.html",
+      "source_policy": "generated_view_only"
+    },
+    {
+      "digest": "sha256:00077700459afc4e3901e4e2276d2a694b2de27a0aa0e057cbd265ade55b0465",
+      "page_id": "risks",
+      "path": "risks.html",
+      "source_policy": "generated_view_only"
+    },
+    {
+      "digest": "sha256:2ef7c0747f30793e04d2e51ef835441a3133e7edddcb3368f50cf51844293b07",
+      "page_id": "recommendations",
+      "path": "recommendations.html",
+      "source_policy": "generated_view_only"
+    }
+  ],
+  "question_queue_summary": {
+    "blocking": 1,
+    "optional": 0,
+    "recommended": 3,
+    "remaining": 3,
+    "total": 4
+  },
+  "runtime_browser_status": "not_available",
+  "safe_next_action": "Fix source-policy blockers before apply, promotion or readiness claims.",
+  "schema_version": "neural_flow_product_agent_os_full_scan_summary_v1",
+  "source_artifact_count": 20,
+  "source_artifacts": [
+    {
+      "artifact_id": "workspace_inventory",
+      "digest": "sha256:72a8d1acfbda55655bdca309f18541ca524fa0d5e07156185b8486f67ba0b195",
+      "path": "workspace-inventory"
+    },
+    {
+      "artifact_id": "architecture-v2.md",
+      "digest": "sha256:0847aca4940dcc9f2e85be8d5d29bca86187587c32c55a448c6144b4e8f18e32",
+      "path": "architecture-v2.md"
+    },
+    {
+      "artifact_id": "architecture.md",
+      "digest": "sha256:75ed0ede5875bc073eff109c5e2532664c2060c577d9ab745add03f386f22791",
+      "path": "architecture.md"
+    },
+    {
+      "artifact_id": "docs/superpowers/plans/2026-04-24-neural-flow-consolidation-implementation.md",
+      "digest": "sha256:08bbd1b7b66fd10c42237b0934d2bf902d664f4825fdbd783eb266a220f8c53b",
+      "path": "docs/superpowers/plans/2026-04-24-neural-flow-consolidation-implementation.md"
+    },
+    {
+      "artifact_id": "docs/superpowers/plans/2026-04-26-neural-flow-p2a-research-implementation.md",
+      "digest": "sha256:e988afd40e09dabbd555bcba4f63701af4739b7cbd6bc71bbbe9eff2ae9606ff",
+      "path": "docs/superpowers/plans/2026-04-26-neural-flow-p2a-research-implementation.md"
+    },
+    {
+      "artifact_id": "docs/superpowers/specs/2026-04-24-neural-flow-consolidation-design.md",
+      "digest": "sha256:7e742ee4be8502b8e2a8883fac0fdf92d49b8054961ab8cb3c4f609d3103e0dc",
+      "path": "docs/superpowers/specs/2026-04-24-neural-flow-consolidation-design.md"
+    },
+    {
+      "artifact_id": "docs/superpowers/specs/2026-04-26-neural-flow-p2a-research-design.md",
+      "digest": "sha256:a9a9cee08410248a5d65fdd03fea27777e04cba4db64b1b1dc53010b962640e5",
+      "path": "docs/superpowers/specs/2026-04-26-neural-flow-p2a-research-design.md"
+    },
+    {
+      "artifact_id": "EVALS.md",
+      "digest": "sha256:c6be7d6054877c6fb33dc43f00c673e1114666708beda33fb5389d7cea34ff84",
+      "path": "EVALS.md"
+    },
+    {
+      "artifact_id": "issues.md",
+      "digest": "sha256:c852f0cbe8f426eccc8fb2bcd09d7cdf71316ed1f42f4095dcb78d3efb613a68",
+      "path": "issues.md"
+    },
+    {
+      "artifact_id": "legacy/neural-flow-core-v2.txt",
+      "digest": "sha256:b09a1759e9df85e39083fbd2e4b3b3392d848df0ad61e42ac73c2842b4adeb5a",
+      "path": "legacy/neural-flow-core-v2.txt"
+    },
+    {
+      "artifact_id": "legacy/neural-flow-v1-architecture.md",
+      "digest": "sha256:f9c0bb27bf8d2d341daf95e71266cd7883eb2f5e697e689b05ccc23a775ba310",
+      "path": "legacy/neural-flow-v1-architecture.md"
+    },
+    {
+      "artifact_id": "legacy/neural-flow-v2-theory.md",
+      "digest": "sha256:ca242e3e1d7ceeb6214e4c17ca2641e740d60b0d79b41b51bd489e1cb10a96f1",
+      "path": "legacy/neural-flow-v2-theory.md"
+    },
+    {
+      "artifact_id": "PLAN.md",
+      "digest": "sha256:17cafcc9294114a070136e05dbc96e11ea0ac614c0363683342dcb131086ba53",
+      "path": "PLAN.md"
+    },
+    {
+      "artifact_id": "README.md",
+      "digest": "sha256:50370935d62b696b8cce261ee5a4805379f962d3b1d814cbe48f35aec352424c",
+      "path": "README.md"
+    },
+    {
+      "artifact_id": "REQUIREMENTS.md",
+      "digest": "sha256:d57882521cbec1086c91eb2b352f331bd1c6ddef9fd353e362e660187c5e8981",
+      "path": "REQUIREMENTS.md"
+    },
+    {
+      "artifact_id": "research/p2a-findings.md",
+      "digest": "sha256:ece3099e6ca8254c955033c01034e45c8980dda7e75f665a5799058b23371d18",
+      "path": "research/p2a-findings.md"
+    },
+    {
+      "artifact_id": "research/p2a-implications-for-p2b.md",
+      "digest": "sha256:5cd50eabcccd3e6a4e55c6ba68f04e1c2f147aaa77cfe3e9194b44b257e06b8c",
+      "path": "research/p2a-implications-for-p2b.md"
+    },
+    {
+      "artifact_id": "RUNLOG.md",
+      "digest": "sha256:fd488dfd42ead74c6caee9a4f4271d33c3db273f57e269c8c8fea0bc2bb701e3",
+      "path": "RUNLOG.md"
+    },
+    {
+      "artifact_id": "system-prompt.md",
+      "digest": "sha256:3ca072dbeed14f5589665df363c16cc2c39e60b3d0314d8c3da31381a4ba2128",
+      "path": "system-prompt.md"
+    },
+    {
+      "artifact_id": "TEST.md",
+      "digest": "sha256:3133e93bff46ac1661331e9764cec925d3d5413f07976499231e7b3a0f2b6eb4",
+      "path": "TEST.md"
+    }
+  ],
+  "source_policy_status": "blocked",
+  "stage_root": "docs/superpowers/specs/neural-flow-product-agent-os-full-scan-20260618T030000",
+  "target_label": "Neural_Flow",
+  "target_workspace_mutation": false,
+  "unsupported_claims": [
+    "HTML and graph are orientation evidence only, not source truth or readiness proof.",
+    "Runtime/browser behavior was not executed or verified.",
+    "Target apply, promotion and readiness claims remain blocked by source policy until owner review.",
+    "No target workspace mutation, live server, browser automation, provider/API call, git action, release/deploy/publish or automation activation was performed."
+  ],
+  "written_files": [
+    "first-run-analysis-packet.json",
+    "answer-ledger-template.json",
+    "analysis-manifest.json",
+    "index.html",
+    "inventory.html",
+    "architecture.html",
+    "methodology.html",
+    "runtime-route.html",
+    "control-plane.html",
+    "graph.html",
+    "code-flow.html",
+    "quality-evals.html",
+    "risks.html",
+    "recommendations.html"
+  ]
+}

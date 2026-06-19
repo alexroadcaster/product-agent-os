@@ -1,0 +1,112 @@
+# Batch 41 S7 HTML Cockpit Analysis
+
+Source status: current-run local implementation analysis; generated-view-only screenshots and HTML artifacts are orientation evidence, not readiness proof.
+
+## Scope
+
+This packet records the product and technical gap found after reviewing the current `Neural_Flow` first-run HTML artifact generated under `docs/superpowers/specs/neural-flow-product-agent-os-full-scan-20260618T030000/`.
+
+The owner expectation is not "many HTML pages with diagnostic text". The expected artifact is a single readable cockpit-style report with persistent navigation, designed information hierarchy, a project graph, file/source map, code relationship view and clear action boundaries. Existing visual direction is represented by the reference screenshots under `output/playwright/`, especially the project cockpit overview, code graph and docs pipeline views.
+
+No target workspace mutation, live server, browser automation, provider/API call, plugin-cache write, git action, release, deploy, publish, automation activation or external write is authorized by this analysis.
+
+## Evidence Inspected
+
+| Evidence | Finding |
+| --- | --- |
+| `plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py:12` | The renderer has a fixed 11-page registry for overview, inventory, architecture, methodology, runtime route, control plane, graph, code flow, quality/evals, risks and recommendations. |
+| `plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py:30` | `render_first_run_analysis_artifact()` writes each page separately and returns page counts and file lists. |
+| `plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py:118` | `_page_entry()` maps `overview` to `index.html` and every other page to a separate file. |
+| `plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py:143` | `_page_html()` emits minimal HTML without a designed shell, persistent navigation, responsive layout, graph canvas or interaction model. |
+| `plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py:198` | `_s4_page_summary_html()` renders major sections as raw formatted JSON, which is useful for diagnostics but not for end-user reading. |
+| `plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py:306` | `_graph_depth_html()` renders text summaries only; it does not draw file/code graphs. |
+| `plugins/product-agent-os/scripts/product_agent_os/project_cockpit_model.py:10` | A richer eight-page cockpit model already exists with Overview, Project Map, Docs & Sources, Code Intelligence, Contracts, Quality & Metrics, Operations & Risk and Proposal Ledger. |
+| `plugins/product-agent-os/scripts/product_agent_os/project_cockpit_model.py:139` | `build_project_cockpit_model()` builds navigation, graph summary, code flow, source links, action surfaces and approval boundaries, but the first-run artifact renderer is not wired to this model. |
+| `docs/superpowers/specs/neural-flow-product-agent-os-full-scan-20260618T030000/analysis-manifest.json:71` | The generated artifact is explicitly `orientation_only_not_proof`, which is correct as a safety boundary but not sufficient as a product UX. |
+| `docs/superpowers/specs/neural-flow-product-agent-os-full-scan-20260618T030000/analysis-manifest.json:72` | Graph artifact summary is `not_available`, with zero covered files and no guided tour. |
+| `docs/superpowers/specs/neural-flow-product-agent-os-full-scan-20260618T030000/analysis-manifest.json:164` | The manifest lists 11 separate pages, reinforcing the multi-page pack instead of one cockpit artifact. |
+| `docs/superpowers/specs/neural-flow-product-agent-os-full-scan-20260618T030000/analysis-manifest.json:379` | Source policy is approval-gated, so the report must surface blockers clearly without pretending to be readiness proof. |
+
+## Key Problems
+
+1. The renderer passes structural HTML tests while failing the user-facing artifact requirement. Current checks prove pages exist, are offline and avoid unsafe links/scripts; they do not prove readability, navigation, layout quality, or graph usefulness.
+2. The artifact is split across 11 plain pages. That makes it hard to read as a project report, hard to compare sections, and unlike the cockpit references in `output/playwright/`.
+3. There is no persistent navigation, no designed shell, no page state, no search/filter behavior and no selected-node/selected-file panel.
+4. The renderer serializes packet data directly into tables and `<pre>` JSON blocks. This exposes implementation structure rather than explaining the project.
+5. Graph support is not end-user graph support. The current Neural_Flow manifest has `graph_artifact_summary.status: not_available`, and the renderer has no visual node/edge projection even when graph data exists.
+6. The existing `project_cockpit_model.py` and visual references are disconnected from `analysis_artifact_renderer.py`, so the implemented first-run path cannot produce the expected cockpit experience.
+7. The report lacks two separate graph layers the owner expects: a file/source graph for the whole project and a code graph for entities, imports, tests, routes and hotspots when graph packets exist.
+8. Long labels, tables and raw JSON overflow the viewport. The screenshots show default serif browser typography, wide tables, and content that is visually cut off or unreadable.
+9. The visual QA gate is missing. There is no regression test that compares the artifact against the cockpit design direction, checks mobile/desktop layout, or blocks white-page regressions.
+10. Product acceptance was too weak: "generated HTML exists" was treated as enough, even though the owner requirement is "a final user can understand the project from one artifact".
+
+## Required Product Direction
+
+The next Batch 41 slice should replace the current first-run HTML surface with a cockpit-grade artifact:
+
+- one primary self-contained `index.html` report;
+- persistent left navigation and section anchors;
+- designed overview cards, evidence status, risks and safe next action;
+- source/file graph of docs, control-plane files, generated artifacts and blockers;
+- code graph view when graph packets exist, with clear empty state when unavailable;
+- selected node/file detail panel and compact table fallback;
+- progressive disclosure for raw packet JSON rather than raw JSON as the primary interface;
+- offline-safe implementation with no secret/raw-source/absolute-path leakage;
+- visual QA against desktop and mobile screenshots, including text overflow and layout checks.
+
+## Primary Cockpit Pages
+
+The primary artifact should be one self-contained `index.html` with eight navigable sections. The current 11-page first-run output can remain as legacy/raw diagnostics, but it must not be the primary end-user report.
+
+| Page | Displays |
+| --- | --- |
+| Overview | Scan summary, target profile, generated-view policy, safe next action, route/status cards, top blockers, freshness and confidence. |
+| Project Map | File/source graph, source artifacts, generated artifacts, source-policy blockers, clusters, selected-file panel, filters and table fallback. |
+| Docs & Sources | Source registry state, control-plane documents, source-status overlays, missing/stale docs, unsupported docs claims and documentation next actions. |
+| Code Intelligence | Code graph, hotspots, imports/calls/tests/routes when graph packets exist, read order, trace/impact packets and explicit `not_available` empty state. |
+| Contracts | Runtime, API, schema, config and diagram contracts; detected versus missing contract evidence and ownership/source-of-truth boundaries. |
+| Quality & Metrics | Tests, fixtures, evals, static checks, scorecard, visual QA status, verification gates and accepted gaps. |
+| Operations & Risk | Approval boundaries, runtime/browser/provider/git risks, source-policy gate, dependency/offline/privacy risks, cleanup and rollback. |
+| Proposal Ledger | Analysis manifest, answer ledger, generated artifact list, next actions, approval requirements and no-unapproved-actions evidence. |
+
+## Large Graph Rendering Policy
+
+For projects above roughly 5,000 nodes and 50,000 edges, the cockpit must not render the full graph by default. The default view should show clustered overview, sampled or aggregated edges, selected-neighborhood subgraphs, query-driven expansion and bounded table fallback.
+
+| Layer | Decision |
+| --- | --- |
+| Data model | Use a Graphology-compatible graph payload so the visual projection and query model stay separate from renderer choice. |
+| Primary renderer | Use locally bundled Sigma.js WebGL for interactive subgraphs and normal large-project exploration. |
+| Dense graph candidate | Evaluate Cosmos.gl for dense 5k+ node / 50k+ edge projections when full or near-full interactive rendering is explicitly required. |
+| Non-primary renderer | Cytoscape.js can be evaluated for smaller analysis or compound subgraphs, but should not be the primary 50k-edge cockpit renderer. |
+| Fallback | Preserve static SVG/Canvas summary, cluster cards and bounded table fallback when WebGL or vendored assets are unavailable. |
+| Dependency policy | No CDN, no network fetch and no install by default. Any vendored library requires version, license, hash and offline validation evidence. |
+| Performance gates | 1k fixture uses interactive subgraph mode; 5k fixture uses clusters, hidden labels and edge sampling; 10k+ fixture stays responsive through LOD, hard visible limits and fallback table. |
+
+## Batch 41 S7 Task Matrix
+
+| ID | Priority | Task | Agents / skills | Scope | Technical value | Product value | Acceptance | Verification | Risks / approvals | Status |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `B41-S7-M31` | P0 | Define `first_run_cockpit_artifact_v1` contract. | Product Manager + Architect / `implementation-planner`, `docs-maintainer` | Specify one-file cockpit artifact, eight primary pages, view model, graph layers, source boundary, offline policy, large-graph library policy and manifest fields. | Gives renderer a product contract instead of a page-exists contract and separates the primary cockpit from legacy raw diagnostics. | User gets a report shape that can be judged for readability. | Contract names single-file output, eight cockpit pages, legacy 11-page diagnostics policy, graph inputs, 5k/50k handling, fallback states, raw JSON disclosure and generated-view-only wording. | Contract/schema tests and docs sync. | No readiness claim from generated HTML. | `planned` |
+| `B41-S7-M32` | P0 | Build single-file cockpit shell. | Builder + Designer / `frontend-app-builder`, `test-eval-designer` | Replace plain multi-page HTML as the primary artifact with a self-contained shell inspired by `output/playwright` cockpit references. | Connects artifact generation to an actual UI surface. | User opens one file and can scan the project. | `index.html` has persistent nav, responsive layout, styled cards, readable typography and no default-browser white-page look. | Static HTML tests and screenshot/visual checklist. | Browser automation requires exact approval if executed. | `planned` |
+| `B41-S7-M33` | P0 | Add first-run cockpit view-model adapter. | Architect + Builder / `implementation-planner` | Compose first-run packet, manifest, section evidence, source artifacts and `project_cockpit_model.py` into a bounded view model. | Decouples presentation from raw packet JSON. | User sees summaries, not implementation dumps. | View model contains overview, source map, status, risks, graph summaries, code flow and approval boundaries without raw source bodies. | Unit tests with synthetic and Neural_Flow packet fixtures. | Missing graph data must degrade to useful empty states. | `planned` |
+| `B41-S7-M34` | P0 | Render project file/source graph. | Builder + Graph Reviewer / `graphify`, `test-eval-designer` | Draw docs/control-plane/source-artifact/generated-artifact relationships from packet and manifest data using a Graphology-compatible visual projection. | Adds project-level graph even when code graph packets are missing, with bounded cluster/LOD behavior. | User can understand which files and artifacts explain the project. | Cockpit includes file/source graph, legend, status coloring, selected-file panel, cluster/LOD behavior, omitted-node/edge counts and table fallback. | Graph fixture tests and visual QA. | Graph remains orientation evidence only. | `planned` |
+| `B41-S7-M35` | P0 | Render code graph and hotspots when available. | Builder + Graph Reviewer / `graphify`, `implementation-planner` | Use graph packets, graph summaries and code-flow model for entity/import/test/route/hotspot views; define Sigma.js/Cosmos.gl/fallback boundaries for 5k/50k graphs. | Reuses existing graph intelligence instead of text summaries and prevents large graphs from freezing the artifact. | User can inspect actual code relationships and missing coverage. | Code graph renders nodes/edges when present, uses clustered/LOD/top-N/selected-neighborhood modes for large graphs, records omitted counts and shows clear `not_available` state for Neural_Flow-style docs-only cases. | Graph packet fixture tests, empty-state tests and 1k/5k/10k+ scale fixtures. | Static graph cannot replace source reads or runtime proof; vendored graph libraries need version/license/hash evidence. | `planned` |
+| `B41-S7-M36` | P1 | Add navigation, search, filters and detail panels. | Builder + Product Manager / `frontend-testing-debugging` | Provide in-page nav, search/filter by section/file/status, selected node details and copy-safe labels. | Makes large reports usable without page hopping. | User can find what matters quickly. | Keyboard reachable controls, stable anchors, filter states, no layout shift and table fallback. | Static interaction tests or approved browser smoke later. | Interactive JS must remain offline and bundled. | `planned` |
+| `B41-S7-M37` | P1 | Replace raw JSON dumps with progressive disclosure. | Builder + Docs Maintainer / `docs-maintainer` | Create page-specific renderers for evidence, risks, baseline diff, cleanup and raw packet diagnostics. | Keeps diagnostics without making them the primary UX. | User reads explanations first and opens raw data only when needed. | Raw JSON appears only in collapsed diagnostics or linked packet refs; main sections use human summaries. | Renderer tests for JSON escaping, section coverage and no raw-source leakage. | Do not hide blockers behind polished summaries. | `planned` |
+| `B41-S7-M38` | P0 | Add visual QA and regression gate. | Tester + Reviewer / `test-eval-designer`, `completion-skeptic` | Compare generated cockpit against reference expectations from `output/playwright` and block default-browser/plain-page regressions across empty, 1k, 5k and 10k+ graph states. | Prevents structural tests from accepting unusable HTML. | User gets a designed artifact, not a dump. | QA packet records desktop/mobile screenshots or accepted static gaps, overflow checks, nav visibility, graph visibility, scale states and generated-view labels. | Screenshot smoke if approved; static CSS/layout/text checks otherwise. | Browser automation needs exact approval; static checks are not full visual proof. | `planned` |
+| `B41-S7-M39` | P0 | Harden offline, privacy and accessibility boundaries. | Security/Data Owner + Tester / `risk-reviewer`, `test-eval-designer` | Preserve no external URL/script policy, no secrets/raw source/absolute private paths, keyboard navigation and contrast/readability requirements. | Keeps the richer artifact safe to store and share internally. | User can open the report without leaking project internals beyond approved summaries. | Redaction and safety checks cover HTML, embedded data, graph labels, diagnostics and generated manifest. | Existing renderer guardrails plus new cockpit-specific negative tests. | External assets, CDN scripts and target writes remain blocked. | `planned` |
+| `B41-S7-M40` | P0 | Run Neural_Flow acceptance pilot for cockpit artifact. | Product Manager + Tester / `completion-skeptic`, `docs-maintainer` | Regenerate a read-only Neural_Flow artifact and compare against the current white-page output. | Validates the fix on the project that exposed the issue. | User can judge a real target report, not a synthetic fixture. | Pilot packet records generated file path, screenshot/static evidence, usability scorecard, graph availability, blockers and no-unapproved-actions proof. | Focused B41 cockpit tests, Neural_Flow read-only pilot evidence and docs/control-plane verification. | Target mutation, browser automation and plugin-cache refresh require separate exact approval. | `planned` |
+
+## Stop Conditions
+
+- Stop if the new artifact is still primarily a raw JSON/text dump.
+- Stop if the generated cockpit cannot explain missing graph data without pretending the graph exists.
+- Stop if visual QA cannot distinguish designed cockpit output from default browser HTML.
+- Stop if 5k/50k graph behavior is undefined, tries to render all nodes/edges by default, or requires CDN/network assets.
+- Stop if the implementation requires target mutation, external network, provider calls or plugin-cache writes without exact approval.
+- Stop if any completion claim relies on generated HTML alone instead of current evidence.
+
+## Recommended Next Action
+
+Execute `B41-S7-M31..M33` first: contract, shell target and view-model adapter. Do not spend more effort polishing current 11-page templates until the primary single-file cockpit contract is in place.

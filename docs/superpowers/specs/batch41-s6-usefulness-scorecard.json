@@ -1,0 +1,51 @@
+{
+  "accepted_gaps": [
+    "owner feedback has not been collected in this run",
+    "runtime/browser proof remains approval-required",
+    "plugin cache readiness may require an approved cache refresh"
+  ],
+  "dimensions": {
+    "actionability": {
+      "rationale": "next actions remain separated across owner feedback, runtime approval and plugin cache readiness",
+      "score": 3,
+      "threshold": 4
+    },
+    "clarity": {
+      "rationale": "first response, route options and HTML pages are present in generated evidence",
+      "score": 4,
+      "threshold": 4
+    },
+    "completeness": {
+      "rationale": "synthetic E2E covers dry-run, stage, HTML, baseline comparison and questions",
+      "score": 4,
+      "threshold": 4
+    },
+    "noise": {
+      "rationale": "first response is capped to one blocking question while full details remain in packet artifacts",
+      "score": 4,
+      "threshold": 4
+    },
+    "safety": {
+      "rationale": "all live, provider, git, release and target-write actions are blocked or not performed",
+      "score": 5,
+      "threshold": 5
+    }
+  },
+  "generated_at": "2026-06-18T01:10:00+03:00",
+  "owner_feedback_required": true,
+  "release_readiness_claim": "not_claimed",
+  "schema_version": "batch41_s6_usefulness_scorecard_v1",
+  "scorecard_digest": "sha256:5db9eb4706e7df39469419869beb7f486c28468b64edfdcb434ef4344c9a1a7c",
+  "status": "local_scorecard_ready_owner_feedback_pending",
+  "task_id": "B41-S6-M27",
+  "threshold_status": "not_met",
+  "unsupported_claims": [
+    "release readiness is not claimed",
+    "runtime/browser behavior is not claimed without current approved runtime/browser evidence",
+    "provider/API/model quality is not claimed",
+    "target apply safety is not claimed; read-only pilots prove target unchanged only for inspected paths/digests",
+    "generated HTML, generated graph and generated question output remain orientation evidence only, not source truth",
+    "owner-feedback usefulness is not proven until owner scorecard evidence exists",
+    "plugin cache/install readiness is not claimed unless installed-cache evidence exists after approved refresh/check"
+  ]
+}
