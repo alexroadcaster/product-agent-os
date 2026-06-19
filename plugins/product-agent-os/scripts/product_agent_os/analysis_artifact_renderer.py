@@ -322,9 +322,17 @@ def build_first_run_cockpit_view_model(
     )
     source_artifacts = _source_artifacts(packet)
     section_cards = _section_status_cards(packet)
-    graph_summary = _graph_depth_summary(packet)
     source_file_graph = _first_run_source_file_graph_view(graph_payload, contract)
     code_graph = _first_run_code_graph_view(packet, contract)
+    navigation_search = _first_run_navigation_search_model(cockpit, section_cards, source_file_graph, code_graph)
+    progressive_diagnostics = _first_run_progressive_diagnostics(
+        packet,
+        previous_baseline=previous_baseline,
+        change_summary=change_summary,
+        cleanup_guidance=cleanup_guidance,
+    )
+    visual_qa = _first_run_visual_qa_contract(source_file_graph, code_graph)
+    safety_accessibility = _first_run_safety_accessibility_contract()
     model = {
         "schema_version": FIRST_RUN_COCKPIT_ARTIFACT_SCHEMA_VERSION,
         "path": "index.html",
@@ -341,6 +349,10 @@ def build_first_run_cockpit_view_model(
         },
         "source_file_graph": source_file_graph,
         "code_graph": code_graph,
+        "navigation_search": navigation_search,
+        "progressive_diagnostics": progressive_diagnostics,
+        "visual_qa": visual_qa,
+        "safety_accessibility": safety_accessibility,
         "section_cards": section_cards,
         "source_artifacts": source_artifacts,
         "baseline_comparison": {
@@ -807,6 +819,182 @@ def _code_graph_relationships(graph_summary: dict[str, Any]) -> dict[str, Any]:
     return relationships
 
 
+def _first_run_navigation_search_model(
+    cockpit: dict[str, Any],
+    section_cards: list[dict[str, str]],
+    source_file_graph: dict[str, Any],
+    code_graph: dict[str, Any],
+) -> dict[str, Any]:
+    pages = cockpit.get("pages") if isinstance(cockpit.get("pages"), list) else []
+    anchors = [f"page-{page.get('id')}" for page in pages if isinstance(page, dict) and page.get("id")]
+    rows = source_file_graph.get("table_fallback", {}).get("rows", [])
+    graph_rows = rows if isinstance(rows, list) else []
+    search_index: list[dict[str, str]] = []
+    for page in pages:
+        if not isinstance(page, dict):
+            continue
+        page_id = str(page.get("id", ""))
+        search_index.append(
+            {
+                "id": f"page:{page_id}",
+                "label": str(page.get("label", "")),
+                "kind": "page",
+                "anchor": f"#page-{page_id}",
+                "tokens": " ".join([str(page.get("label", "")), str(page.get("role", ""))]).lower(),
+            }
+        )
+    for card in section_cards:
+        search_index.append(
+            {
+                "id": f"section:{card['id']}",
+                "label": card["id"],
+                "kind": "section_status",
+                "anchor": "#status-cards",
+                "tokens": " ".join([card["id"], card["status"], card["confidence"], card["source_artifact"]]).lower(),
+            }
+        )
+    for row in graph_rows[:80]:
+        if not isinstance(row, dict):
+            continue
+        search_index.append(
+            {
+                "id": str(row.get("id", "")),
+                "label": str(row.get("id", "")),
+                "kind": "graph_node",
+                "anchor": "#page-project-map",
+                "tokens": " ".join(str(row.get(field, "")) for field in ["id", "type", "status", "cluster", "path"]).lower(),
+            }
+        )
+    return {
+        "schema_version": "first_run_cockpit_navigation_search_v1",
+        "status": "static_controls_ready",
+        "interaction_policy": "offline_no_script_static_controls_with_table_fallback",
+        "persistent_navigation": True,
+        "skip_link_target": "#main-content",
+        "anchors": anchors,
+        "search_index": search_index[:160],
+        "search_index_count": min(len(search_index), 160),
+        "filters": [
+            {"id": "section-status-filter", "label": "Section status", "source": "section_cards", "field": "status"},
+            {"id": "graph-node-type-filter", "label": "Graph node type", "source": "source_file_graph", "field": "type"},
+            {"id": "graph-status-filter", "label": "Graph status", "source": "source_file_graph", "field": "status"},
+            {"id": "code-graph-status-filter", "label": "Code graph status", "source": "code_graph", "field": "status"},
+        ],
+        "filter_state": {
+            "mode": "static_default_all_visible",
+            "script_required": False,
+            "layout_shift_policy": "controls have stable dimensions and tables remain visible",
+        },
+        "detail_panels": [
+            {"id": "source-file-graph-selected-file-panel", "kind": "selected_file", "status": source_file_graph["selected_file_panel"]["status"]},
+            {"id": "code-graph-selected-file-panel", "kind": "selected_code_graph_node", "status": code_graph.get("selected_file_panel", {}).get("status", "not_available")},
+            {"id": "cockpit-diagnostics", "kind": "progressive_diagnostics", "status": "collapsed_by_default"},
+        ],
+        "keyboard_contract": {
+            "controls": ["skip link", "anchor navigation", "labelled search input", "labelled select filters", "details summary"],
+            "focus_management": "native browser focus order only; no custom JavaScript trap",
+        },
+    }
+
+
+def _first_run_progressive_diagnostics(
+    packet: dict[str, Any],
+    *,
+    previous_baseline: dict[str, Any],
+    change_summary: dict[str, list[str]],
+    cleanup_guidance: dict[str, Any],
+) -> dict[str, Any]:
+    return {
+        "schema_version": "first_run_progressive_diagnostics_v1",
+        "status": "collapsed_diagnostics_ready",
+        "raw_json_policy": "collapsed_only_or_packet_ref",
+        "primary_surface_policy": "human_summary_first_no_preformatted_json_dump",
+        "diagnostic_sections": [
+            {
+                "id": "packet-boundary",
+                "label": "Packet Boundary",
+                "status": packet.get("evidence_status", {}).get("overall_status", "inspection_only"),
+                "detail": "Primary cockpit shows summaries; raw packet JSON stays outside the main reading path.",
+            },
+            {
+                "id": "baseline-diff",
+                "label": "Baseline Diff",
+                "status": previous_baseline.get("status", "missing"),
+                "detail": f"changed_pages={len(change_summary.get('changed_pages', []))}; added_sources={len(change_summary.get('added_sources', []))}",
+            },
+            {
+                "id": "cleanup-rollback",
+                "label": "Cleanup And Rollback",
+                "status": cleanup_guidance.get("status", "preview_only"),
+                "detail": cleanup_guidance.get("rollback_policy", "cleanup requires explicit approval"),
+            },
+            {
+                "id": "source-policy",
+                "label": "Source Policy",
+                "status": packet.get("section_summaries", {}).get("source_policy", {}).get("status", "not_available"),
+                "detail": "Source files and current command evidence remain source truth.",
+            },
+        ],
+        "raw_packet_ref": "first-run-analysis-packet.json",
+        "html_elements": ["details", "summary", "compact-table"],
+        "source_read_required": True,
+    }
+
+
+def _first_run_visual_qa_contract(source_file_graph: dict[str, Any], code_graph: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "schema_version": "first_run_cockpit_static_visual_qa_v1",
+        "status": "static_checks_present_browser_gap_accepted",
+        "browser_screenshot_status": "not_run_approval_required",
+        "checks": [
+            {"id": "cockpit-shell-not-default-browser", "status": "present_static_css"},
+            {"id": "persistent-nav-visible", "status": "present_static_html"},
+            {"id": "generated-view-label-visible", "status": "present_static_html"},
+            {"id": "source-graph-visible", "status": "present" if source_file_graph.get("visible_node_count", 0) else "empty_state_present"},
+            {"id": "code-graph-state-visible", "status": code_graph.get("status", "not_available")},
+            {"id": "mobile-breakpoint", "status": "present_static_css"},
+            {"id": "text-overflow-guard", "status": "present_static_css"},
+            {"id": "white-page-regression-gate", "status": "blocked_by_static_assertions"},
+        ],
+        "accepted_static_gaps": [
+            "No browser screenshot, canvas pixel, layout engine or responsiveness proof was produced in this slice.",
+            "Cosmos.gl runtime execution remains unverified until an approved browser/runtime pass.",
+        ],
+    }
+
+
+def _first_run_safety_accessibility_contract() -> dict[str, Any]:
+    return {
+        "schema_version": "first_run_cockpit_safety_accessibility_v1",
+        "status": "static_contract_present",
+        "offline_policy": {
+            "external_urls_allowed": False,
+            "script_tags_allowed": False,
+            "fetch_allowed": False,
+            "network_dependency_allowed": False,
+        },
+        "privacy_policy": {
+            "absolute_local_paths_allowed": False,
+            "raw_source_bodies_allowed": False,
+            "secret_like_values_allowed": False,
+            "private_logs_allowed": False,
+        },
+        "accessibility_contract": {
+            "landmarks": ["main", "nav", "section"],
+            "keyboard_reachable_controls": ["skip link", "nav anchors", "search input", "select filters", "details summary"],
+            "labels_required": True,
+            "aria_labels_required": True,
+            "contrast_policy": "light theme uses dark text on light panels and non-color status text",
+        },
+        "readability_contract": {
+            "font_family": "Arial, Helvetica, sans-serif",
+            "overflow_wrap": "anywhere",
+            "mobile_breakpoint": "760px",
+            "stable_graph_min_height": "320px desktop / 240px mobile",
+        },
+    }
+
+
 def _first_run_cockpit_analysis(packet: dict[str, Any]) -> dict[str, Any]:
     graph_summary = _graph_depth_summary(packet)
     return {
@@ -879,6 +1067,7 @@ def _cockpit_page_html(
         for page in pages
         if isinstance(page, dict)
     )
+    controls_html = _cockpit_controls_html(primary_cockpit)
     status_cards = "\n".join(
         "<article class=\"status-card\">"
         f"<h3>{_text(card['id'])}</h3>"
@@ -909,6 +1098,7 @@ def _cockpit_page_html(
             ("Rollback", cleanup_guidance.get("rollback_policy", "")),
         ]
     )
+    diagnostics_html = _progressive_diagnostics_html(primary_cockpit)
     css = _cockpit_css()
     return (
         "<!doctype html>\n"
@@ -917,7 +1107,8 @@ def _cockpit_page_html(
         "<title>Product-Agent OS First-Run Cockpit</title>"
         f"<style>{css}</style></head>\n"
         "<body>\n"
-        "<main class=\"first-run-cockpit cockpit-shell\" data-schema=\"first_run_cockpit_artifact_v1\">\n"
+        "<a class=\"skip-link\" href=\"#main-content\">Skip to cockpit content</a>\n"
+        "<main id=\"main-content\" class=\"first-run-cockpit cockpit-shell\" data-schema=\"first_run_cockpit_artifact_v1\" tabindex=\"-1\">\n"
         "<header class=\"cockpit-hero\">\n"
         "<p class=\"eyebrow\">Generated view only</p>\n"
         "<h1>Product-Agent OS First-Run Cockpit</h1>\n"
@@ -930,11 +1121,13 @@ def _cockpit_page_html(
         "</div>\n"
         "</header>\n"
         f"<nav class=\"cockpit-nav\" aria-label=\"First-run cockpit sections\">{nav}</nav>\n"
+        f"{controls_html}\n"
         "<section class=\"cockpit-band\" aria-labelledby=\"status-cards\"><h2 id=\"status-cards\">Evidence Status</h2>"
         f"<div class=\"status-grid\">{status_cards}</div></section>\n"
         "<section class=\"cockpit-band\" aria-labelledby=\"unsupported-claims\"><h2 id=\"unsupported-claims\">Unsupported Claims</h2>"
         f"<ul class=\"claim-list\">{unsupported}</ul></section>\n"
         f"{pages_html}\n"
+        f"{diagnostics_html}\n"
         "<section class=\"cockpit-band\" aria-labelledby=\"baseline-comparison\"><h2 id=\"baseline-comparison\">Baseline Comparison</h2>"
         f"{baseline_rows}</section>\n"
         "<section class=\"cockpit-band\" aria-labelledby=\"artifact-cleanup-rollback\"><h2 id=\"artifact-cleanup-rollback\">Artifact Cleanup And Rollback</h2>"
@@ -950,7 +1143,7 @@ def _cockpit_section_html(page: dict[str, Any], primary_cockpit: dict[str, Any])
     sections = page.get("sections") if isinstance(page.get("sections"), list) else []
     boundaries = page.get("approval_boundaries") if isinstance(page.get("approval_boundaries"), list) else []
     body = "\n".join(
-        "<article class=\"section-card\">"
+        f"<article class=\"section-card\" id=\"section-{_attr(section.get('id'))}\">"
         f"<h3>{_text(section.get('label'))}</h3>"
         f"<p>{_text(section.get('source_boundary'))}</p>"
         "</article>"
@@ -967,6 +1160,10 @@ def _cockpit_section_html(page: dict[str, Any], primary_cockpit: dict[str, Any])
         )
     elif page_id == "code-intelligence":
         extra = _code_graph_panel_html(primary_cockpit["code_graph"])
+    elif page_id == "quality-metrics":
+        extra = _visual_qa_html(primary_cockpit["visual_qa"])
+    elif page_id == "operations-risk":
+        extra = _safety_accessibility_html(primary_cockpit["safety_accessibility"])
     return (
         f"<section class=\"cockpit-page\" id=\"page-{_attr(page_id)}\">\n"
         f"<h2>{_text(page.get('label'))}</h2>\n"
@@ -1009,6 +1206,95 @@ def _code_graph_panel_html(code_graph: dict[str, Any]) -> str:
         )
         + empty
         + hotspot_table
+    )
+
+
+def _cockpit_controls_html(primary_cockpit: dict[str, Any]) -> str:
+    model = primary_cockpit.get("navigation_search") if isinstance(primary_cockpit.get("navigation_search"), dict) else {}
+    filters = model.get("filters") if isinstance(model.get("filters"), list) else []
+    filter_controls = "\n".join(
+        '<label class="filter-control" for="{id}">{label}<select id="{id}" name="{id}" data-filter-source="{source}" data-filter-field="{field}">'
+        '<option value="">All</option><option value="current">current</option><option value="inspection_only">inspection_only</option>'
+        '<option value="approval_required">approval_required</option><option value="not_available">not_available</option></select></label>'.format(
+            id=_attr(item.get("id")),
+            label=_text(item.get("label")),
+            source=_attr(item.get("source")),
+            field=_attr(item.get("field")),
+        )
+        for item in filters
+        if isinstance(item, dict)
+    )
+    detail_panels = "\n".join(
+        f"<li><a href=\"#{_attr(item.get('id'))}\">{_text(item.get('kind'))}: {_text(item.get('status'))}</a></li>"
+        for item in model.get("detail_panels", [])[:8]
+        if isinstance(item, dict)
+    )
+    return (
+        '<form class="cockpit-controls" role="search" aria-label="Cockpit search and filters" '
+        'data-filter-state="static-default-all-visible" action="#page-overview">'
+        '<label class="search-control" for="cockpit-search">Search cockpit'
+        '<input id="cockpit-search" name="q" type="search" autocomplete="off" placeholder="section, file, status, graph node"></label>'
+        f"{filter_controls}"
+        '<button type="submit">Apply static filters</button>'
+        '<p class="control-note">Controls are offline and script-free; tables remain visible as fallback.</p>'
+        f'<ul class="detail-panel-links" aria-label="Detail panels">{detail_panels}</ul>'
+        "</form>"
+    )
+
+
+def _progressive_diagnostics_html(primary_cockpit: dict[str, Any]) -> str:
+    diagnostics = primary_cockpit.get("progressive_diagnostics")
+    if not isinstance(diagnostics, dict):
+        return ""
+    rows = "\n".join(
+        "<tr>"
+        f"<td><code>{_text(item.get('id'))}</code></td>"
+        f"<td>{_text(item.get('status'))}</td>"
+        f"<td>{_text(item.get('detail'))}</td>"
+        "</tr>"
+        for item in diagnostics.get("diagnostic_sections", [])[:12]
+        if isinstance(item, dict)
+    )
+    return (
+        '<section class="cockpit-band diagnostic-disclosure" id="cockpit-diagnostics" aria-labelledby="diagnostics-heading">'
+        '<h2 id="diagnostics-heading">Progressive Diagnostics</h2>'
+        '<p>Primary cockpit sections show summaries first; raw packet data stays behind collapsed diagnostics or packet references.</p>'
+        '<details><summary>Raw Diagnostics Boundary</summary>'
+        f"{_definition_rows([('Raw JSON policy', diagnostics.get('raw_json_policy')), ('Raw packet ref', diagnostics.get('raw_packet_ref')), ('Source read required', str(diagnostics.get('source_read_required', True)).lower())])}"
+        '<table class="compact-table"><thead><tr><th>Diagnostic</th><th>Status</th><th>Detail</th></tr></thead>'
+        f"<tbody>{rows}</tbody></table></details></section>"
+    )
+
+
+def _visual_qa_html(visual_qa: dict[str, Any]) -> str:
+    rows = "\n".join(
+        "<tr>"
+        f"<td><code>{_text(item.get('id'))}</code></td>"
+        f"<td>{_text(item.get('status'))}</td>"
+        "</tr>"
+        for item in visual_qa.get("checks", [])[:16]
+        if isinstance(item, dict)
+    )
+    gaps = "".join(f"<li>{_text(item)}</li>" for item in visual_qa.get("accepted_static_gaps", [])[:8])
+    return (
+        '<div class="qa-contract" id="static-visual-qa" aria-label="Static visual QA contract">'
+        '<h3>Static Visual QA</h3>'
+        f"{_definition_rows([('Status', visual_qa.get('status')), ('Browser screenshots', visual_qa.get('browser_screenshot_status'))])}"
+        '<table class="compact-table"><thead><tr><th>Check</th><th>Status</th></tr></thead>'
+        f"<tbody>{rows}</tbody></table><ul class=\"claim-list\">{gaps}</ul></div>"
+    )
+
+
+def _safety_accessibility_html(safety: dict[str, Any]) -> str:
+    offline = safety.get("offline_policy") if isinstance(safety.get("offline_policy"), dict) else {}
+    privacy = safety.get("privacy_policy") if isinstance(safety.get("privacy_policy"), dict) else {}
+    accessibility = safety.get("accessibility_contract") if isinstance(safety.get("accessibility_contract"), dict) else {}
+    readability = safety.get("readability_contract") if isinstance(safety.get("readability_contract"), dict) else {}
+    return (
+        '<div class="safety-contract" id="offline-privacy-accessibility" aria-label="Offline privacy and accessibility contract">'
+        '<h3>Offline, Privacy And Accessibility</h3>'
+        f"{_definition_rows([('Status', safety.get('status')), ('External URLs allowed', str(offline.get('external_urls_allowed', False)).lower()), ('Script tags allowed', str(offline.get('script_tags_allowed', False)).lower()), ('Raw source bodies allowed', str(privacy.get('raw_source_bodies_allowed', False)).lower()), ('Labels required', str(accessibility.get('labels_required', True)).lower()), ('Font family', readability.get('font_family')), ('Overflow wrap', readability.get('overflow_wrap'))])}"
+        "</div>"
     )
 
 
@@ -1140,7 +1426,7 @@ def _definition_rows(rows: list[tuple[str, Any]]) -> str:
 def _cockpit_css() -> str:
     return """
 :root{color-scheme:light;--ink:#151515;--muted:#5f6368;--line:#d7d9dd;--paper:#f7f8f5;--panel:#ffffff;--accent:#1f7a5a;--warn:#a05a00}
-*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.55 Arial,Helvetica,sans-serif}.cockpit-shell{max-width:1180px;margin:0 auto;padding:24px}.cockpit-hero{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:24px}.eyebrow{margin:0 0 8px;color:var(--accent);font-weight:700;text-transform:uppercase;font-size:12px}h1{font-size:34px;line-height:1.12;margin:0 0 12px}h2{font-size:21px;margin:0 0 12px}h3{font-size:15px;margin:0 0 8px}h4{font-size:14px;margin:0 0 8px}.hero-grid,.status-grid,.section-grid{display:grid;gap:10px}.hero-grid{grid-template-columns:repeat(4,minmax(0,1fr));margin-top:18px}.hero-grid span,.status-card,.section-card,.cockpit-band,.cockpit-page{background:var(--panel);border:1px solid var(--line);border-radius:8px}.hero-grid span{padding:12px}.cockpit-nav{position:sticky;top:0;z-index:2;display:flex;gap:8px;overflow:auto;padding:12px 0;background:var(--paper)}.cockpit-nav a{white-space:nowrap;color:var(--ink);text-decoration:none;border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:8px 10px}.cockpit-band,.cockpit-page{margin-top:14px;padding:18px}.status-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.status-card,.section-card{padding:14px}.section-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.page-role,.boundary,.status-card p,.section-card p,.graph-boundary,.empty-state{color:var(--muted);margin:0 0 6px}.claim-list{margin:0;padding-left:20px}.compact-table,.graph-fallback-table{width:100%;border-collapse:collapse;margin:10px 0}.compact-table th,.compact-table td,.graph-fallback-table th,.graph-fallback-table td{border-top:1px solid var(--line);padding:9px;text-align:left;vertical-align:top;overflow-wrap:anywhere}.compact-table th{width:210px;color:var(--muted);font-weight:600}.graph-surface{margin:12px 0;padding:14px;border:1px solid var(--line);border-radius:8px;background:#fbfbf8}.graph-canvas{display:block;width:100%;min-height:320px;margin:12px 0;border:1px solid var(--line);border-radius:8px;background:#fdfdfb}.empty-graph{display:flex;align-items:center;justify-content:center;padding:24px;color:var(--muted)}.graph-edge{stroke-width:1;opacity:.58}.graph-node text{font-size:3.5px;fill:#252525;paint-order:stroke;stroke:#fff;stroke-width:1.8px}.graph-side-panel{margin:10px 0;padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--panel)}.graph-legend{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 12px;padding:0;list-style:none}.graph-legend li{display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;background:var(--panel);padding:5px 8px}.legend-swatch{width:10px;height:10px;border-radius:50%;display:inline-block}.graph-hotspots th:first-child,.graph-fallback-table th:first-child{width:230px}@media(max-width:760px){.cockpit-shell{padding:14px}.hero-grid,.status-grid,.section-grid{grid-template-columns:1fr}h1{font-size:26px}.cockpit-nav{position:static}.compact-table th{width:auto}.graph-canvas{min-height:240px}.graph-legend{display:block}.graph-legend li{margin:6px 0}}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.55 Arial,Helvetica,sans-serif}.skip-link{position:absolute;left:12px;top:-48px;background:var(--ink);color:#fff;padding:8px 10px;border-radius:4px;z-index:5}.skip-link:focus{top:12px}.cockpit-shell{max-width:1180px;margin:0 auto;padding:24px}.cockpit-hero{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:24px}.eyebrow{margin:0 0 8px;color:var(--accent);font-weight:700;text-transform:uppercase;font-size:12px}h1{font-size:34px;line-height:1.12;margin:0 0 12px}h2{font-size:21px;margin:0 0 12px}h3{font-size:15px;margin:0 0 8px}h4{font-size:14px;margin:0 0 8px}.hero-grid,.status-grid,.section-grid{display:grid;gap:10px}.hero-grid{grid-template-columns:repeat(4,minmax(0,1fr));margin-top:18px}.hero-grid span,.status-card,.section-card,.cockpit-band,.cockpit-page,.cockpit-controls{background:var(--panel);border:1px solid var(--line);border-radius:8px}.hero-grid span{padding:12px}.cockpit-nav{position:sticky;top:0;z-index:2;display:flex;gap:8px;overflow:auto;padding:12px 0;background:var(--paper)}.cockpit-nav a{white-space:nowrap;color:var(--ink);text-decoration:none;border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:8px 10px}.cockpit-controls{display:grid;grid-template-columns:2fr repeat(4,minmax(120px,1fr));gap:10px;align-items:end;margin-top:10px;padding:12px}.cockpit-controls label{display:grid;gap:4px;font-size:13px;font-weight:700}.cockpit-controls input,.cockpit-controls select,.cockpit-controls button{min-height:38px;border:1px solid var(--line);border-radius:6px;background:#fff;color:var(--ink);padding:7px}.control-note,.detail-panel-links{grid-column:1/-1;color:var(--muted);margin:0}.detail-panel-links{display:flex;flex-wrap:wrap;gap:8px;padding:0;list-style:none}.detail-panel-links a{color:var(--ink)}.cockpit-band,.cockpit-page{margin-top:14px;padding:18px}.status-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.status-card,.section-card{padding:14px}.section-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.page-role,.boundary,.status-card p,.section-card p,.graph-boundary,.empty-state{color:var(--muted);margin:0 0 6px}.claim-list{margin:0;padding-left:20px}.diagnostic-disclosure details{border:1px solid var(--line);border-radius:8px;background:var(--panel);padding:12px}.diagnostic-disclosure summary{cursor:pointer;font-weight:700}.compact-table,.graph-fallback-table{width:100%;border-collapse:collapse;margin:10px 0}.compact-table th,.compact-table td,.graph-fallback-table th,.graph-fallback-table td{border-top:1px solid var(--line);padding:9px;text-align:left;vertical-align:top;overflow-wrap:anywhere}.compact-table th{width:210px;color:var(--muted);font-weight:600}.graph-surface,.qa-contract,.safety-contract{margin:12px 0;padding:14px;border:1px solid var(--line);border-radius:8px;background:#fbfbf8}.graph-canvas{display:block;width:100%;min-height:320px;margin:12px 0;border:1px solid var(--line);border-radius:8px;background:#fdfdfb}.empty-graph{display:flex;align-items:center;justify-content:center;padding:24px;color:var(--muted)}.graph-edge{stroke-width:1;opacity:.58}.graph-node text{font-size:3.5px;fill:#252525;paint-order:stroke;stroke:#fff;stroke-width:1.8px}.graph-side-panel{margin:10px 0;padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--panel)}.graph-legend{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 12px;padding:0;list-style:none}.graph-legend li{display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;background:var(--panel);padding:5px 8px}.legend-swatch{width:10px;height:10px;border-radius:50%;display:inline-block}.graph-hotspots th:first-child,.graph-fallback-table th:first-child{width:230px}@media(max-width:760px){.cockpit-shell{padding:14px}.hero-grid,.status-grid,.section-grid,.cockpit-controls{grid-template-columns:1fr}h1{font-size:26px}.cockpit-nav{position:static}.compact-table th{width:auto}.graph-canvas{min-height:240px}.graph-legend{display:block}.graph-legend li{margin:6px 0}}
 """.strip()
 
 

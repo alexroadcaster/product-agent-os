@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 import subprocess
 import sys
 import unittest
@@ -709,6 +710,96 @@ class Batch41FirstRunAutomationTests(unittest.TestCase):
             self.assertNotIn("<script", index_html.lower())
             self.assertNotIn("http://", index_html.lower())
             self.assertNotIn("https://", index_html.lower())
+            self.assertNotIn(str(workspace), index_html + json.dumps(manifest, sort_keys=True))
+
+    def test_b41_s7_m36_m39_cockpit_has_static_navigation_diagnostics_visual_qa_and_safety_contracts(self) -> None:
+        with TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "s7-ux-safety-target"
+            stage = Path(tmp) / "stage-output"
+            workspace.mkdir()
+            (workspace / "README.md").write_text("Source status: `synthetic_fixture`\n", encoding="utf-8")
+            (workspace / "docs").mkdir()
+            (workspace / "docs" / "guide.md").write_text("# Guide\n\nSource status: `synthetic_fixture`\n", encoding="utf-8")
+            (workspace / "package.json").write_text(
+                json.dumps({"scripts": {"dev": "vite --host 127.0.0.1", "test": "vitest"}}),
+                encoding="utf-8",
+            )
+
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPTS / "run_first_project_analysis.py"),
+                    str(workspace),
+                    "--stage",
+                    str(stage),
+                    "--generated-at",
+                    "2026-06-19T02:45:00+03:00",
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
+            manifest = json.loads(stage.joinpath("analysis-manifest.json").read_text(encoding="utf-8"))
+            index_html = stage.joinpath("index.html").read_text(encoding="utf-8")
+            view_model = manifest["primary_cockpit"]["view_model"]
+
+            navigation = view_model["navigation_search"]
+            self.assertEqual(navigation["schema_version"], "first_run_cockpit_navigation_search_v1")
+            self.assertEqual(navigation["status"], "static_controls_ready")
+            self.assertTrue(navigation["persistent_navigation"])
+            self.assertEqual(navigation["filter_state"]["script_required"], False)
+            self.assertGreaterEqual(navigation["search_index_count"], 8)
+            self.assertEqual(len(navigation["filters"]), 4)
+            self.assertTrue(any(item["id"] == "cockpit-diagnostics" for item in navigation["detail_panels"]))
+
+            diagnostics = view_model["progressive_diagnostics"]
+            self.assertEqual(diagnostics["schema_version"], "first_run_progressive_diagnostics_v1")
+            self.assertEqual(diagnostics["raw_json_policy"], "collapsed_only_or_packet_ref")
+            self.assertIn("details", diagnostics["html_elements"])
+
+            visual_qa = view_model["visual_qa"]
+            self.assertEqual(visual_qa["schema_version"], "first_run_cockpit_static_visual_qa_v1")
+            self.assertEqual(visual_qa["browser_screenshot_status"], "not_run_approval_required")
+            self.assertIn("cockpit-shell-not-default-browser", {item["id"] for item in visual_qa["checks"]})
+
+            safety = view_model["safety_accessibility"]
+            self.assertEqual(safety["schema_version"], "first_run_cockpit_safety_accessibility_v1")
+            self.assertFalse(safety["offline_policy"]["external_urls_allowed"])
+            self.assertFalse(safety["offline_policy"]["script_tags_allowed"])
+            self.assertFalse(safety["privacy_policy"]["absolute_local_paths_allowed"])
+            self.assertTrue(safety["accessibility_contract"]["labels_required"])
+
+            self.assertIn('class="skip-link"', index_html)
+            self.assertIn('id="main-content"', index_html)
+            self.assertIn('role="search"', index_html)
+            self.assertIn('for="cockpit-search"', index_html)
+            self.assertIn('id="section-visual-projection"', index_html)
+            self.assertIn('data-filter-state="static-default-all-visible"', index_html)
+            self.assertIn('id="cockpit-diagnostics"', index_html)
+            self.assertIn("<details>", index_html)
+            self.assertIn("<summary>Raw Diagnostics Boundary</summary>", index_html)
+            self.assertIn('id="static-visual-qa"', index_html)
+            self.assertIn('id="offline-privacy-accessibility"', index_html)
+            self.assertIn("Arial,Helvetica,sans-serif", index_html)
+            self.assertIn("overflow-wrap:anywhere", index_html)
+            self.assertIn("@media(max-width:760px)", index_html)
+            self.assertNotIn("font-family:serif", index_html.replace(" ", "").lower())
+            self.assertNotIn("<pre", index_html.lower())
+            self.assertNotIn("<script", index_html.lower())
+            self.assertNotIn("fetch(", index_html.lower())
+            self.assertNotIn("http://", index_html.lower())
+            self.assertNotIn("https://", index_html.lower())
+            self.assertNotIn("raw_source", index_html.lower())
+
+            ids = re.findall(r'id="([^"]+)"', index_html)
+            self.assertEqual(len(ids), len(set(ids)))
+            nav_targets = re.findall(r'<a href="#([^"]+)">', index_html)
+            page_targets = [target for target in nav_targets if target.startswith("page-")]
+            self.assertEqual(len(page_targets), 8)
+            for target in page_targets:
+                self.assertEqual(ids.count(target), 1, target)
             self.assertNotIn(str(workspace), index_html + json.dumps(manifest, sort_keys=True))
 
     def test_b41_s5_m21_first_response_exposes_one_blocking_question_and_keeps_queue_in_packet(self) -> None:

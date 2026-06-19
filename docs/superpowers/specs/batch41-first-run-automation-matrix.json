@@ -585,7 +585,7 @@
       "user_does": "Use the artifact to find a file, a blocker and a next action.",
       "acceptance": "Navigation is keyboard reachable, filters do not shift layout, and selected details remain readable on desktop and mobile.",
       "stop_condition": "Stop if interaction requires network assets or browser-only side effects outside the local artifact.",
-      "status": "planned"
+      "status": "implemented"
     },
     {
       "id": "B41-S7-M37",
@@ -597,7 +597,7 @@
       "user_does": "Review whether the report can be read without parsing JSON.",
       "acceptance": "Raw JSON appears only in collapsed diagnostics or packet references; main sections are human-readable summaries.",
       "stop_condition": "Stop if raw <pre> packet dumps remain the main content of any primary page.",
-      "status": "planned"
+      "status": "implemented"
     },
     {
       "id": "B41-S7-M38",
@@ -609,7 +609,7 @@
       "user_does": "Approve any browser automation if live screenshot verification is needed.",
       "acceptance": "QA packet distinguishes cockpit-grade output from plain HTML and records screenshots or accepted static gaps for desktop, mobile, empty graph, 1k, 5k and 10k+ graph states.",
       "stop_condition": "Stop if visual QA cannot catch the current Neural_Flow white-page regression.",
-      "status": "planned"
+      "status": "implemented"
     },
     {
       "id": "B41-S7-M39",
@@ -621,7 +621,7 @@
       "user_does": "Review any accepted privacy or accessibility gaps.",
       "acceptance": "Safety checks cover HTML, embedded JSON, graph data, diagnostics, labels and manifest references.",
       "stop_condition": "Stop if richer UI requires CDN assets, external scripts, target mutation or private source bodies.",
-      "status": "planned"
+      "status": "implemented"
     },
     {
       "id": "B41-S7-M40",
@@ -629,10 +629,29 @@
       "task": "Run Neural_Flow acceptance pilot for cockpit artifact.",
       "technical_value": "Validates the redesigned artifact on the real project that exposed the usability failure.",
       "product_value": "User can compare the new cockpit with the current white-page artifact and decide if it is useful.",
-      "codex_does": "Regenerate read-only Neural_Flow artifact, record usability scorecard, graph availability, blockers and no-unapproved-actions proof.",
-      "user_does": "Review the cockpit artifact and provide owner-feedback scoring.",
-      "acceptance": "Pilot packet records generated file path, static or screenshot evidence, graph states, usability scorecard and remaining blockers.",
-      "stop_condition": "Stop if the pilot requires target mutation, browser automation, plugin-cache refresh or external calls without exact approval.",
+      "codex_does": "Regenerate read-only Neural_Flow artifact, run owner-approved browser visual proof, runtime interaction checks, WCAG-oriented static/browser checks, Cosmos.gl runtime/WebGL checks where local assets/tooling are available, record usability scorecard, graph availability, blockers and no-unapproved-actions proof.",
+      "user_does": "Review the cockpit artifact and provide owner-feedback scoring after the M40 evidence packet is generated.",
+      "acceptance": "Pilot packet records generated file path, static and approved browser evidence, runtime interaction result, console/network result or blocker, WCAG/static accessibility result or accepted gap, Cosmos.gl/WebGL result or blocker, graph states, usability scorecard and remaining blockers.",
+      "stop_condition": "Stop if the pilot requires target source mutation, plugin-cache refresh, provider/API calls, git/release actions, external writes, production publication or any surface outside the M40 owner approval packet.",
+      "owner_approval": {
+        "approval_packet": "docs/superpowers/specs/batch41-s7-m40-owner-approval-packet.json",
+        "approval_status": "approved_for_m40_execution_not_yet_run",
+        "approved_checks": [
+          "browser_visual_proof",
+          "runtime_interaction",
+          "wcag_static_and_browser_accessibility_checks",
+          "cosmos_gl_runtime_webgl_execution",
+          "neural_flow_acceptance",
+          "necessary_codex_docs_cockpit_fixes"
+        ],
+        "not_approved": [
+          "git_stage_commit_push_pr",
+          "release_deploy_publish",
+          "provider_api_call",
+          "external_write",
+          "target_source_mutation_without_separate_patch_scope"
+        ]
+      },
       "status": "planned"
     }
   ],
