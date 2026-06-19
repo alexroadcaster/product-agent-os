@@ -778,7 +778,18 @@
       "acceptance": "Design artifact names borrowed myPartners concepts, checked design-source groups, rejected patterns, exact cockpit sections, component states, diagram list and verification gates.",
       "verification": "Artifact review plus placeholder scan; no renderer readiness claim until implementation and browser screenshots exist.",
       "risks_approval_gates": "Do not install UI libraries, add CDN assets, publish site output or call external visual services without separate approval.",
-      "status": "planned"
+      "evidence": {
+        "design_artifact": "docs/superpowers/specs/batch41-s8-m41-html-redesign-design-artifact.txt",
+        "summary": "docs/superpowers/specs/batch41-s8-m41-html-redesign-design-summary.json",
+        "agents": [
+          "Northstar product-manager read-only handoff",
+          "Blueprint architect read-only handoff",
+          "Atlas reviewer read-only handoff"
+        ],
+        "subagent_packet_evidence": "docs/superpowers/specs/batch41-s8-m41-html-redesign-design-summary.json#subagent_packets",
+        "verification_status": "passed_current_docs_control_plane_checks"
+      },
+      "status": "implemented_design_contract_only"
     },
     {
       "id": "B41-S8-M42",
