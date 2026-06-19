@@ -1,0 +1,95 @@
+{
+  "artifact_updates": [],
+  "as_of_date": "2026-06-19",
+  "entries": [
+    {
+      "answer": "",
+      "answer_type": "single_choice_or_text",
+      "answered_at": "",
+      "artifact_action": "none",
+      "category": "approval",
+      "private_data_status": "not_applicable",
+      "question_id": "q_approval_2ae3da13e2",
+      "question_text": "Which source-policy blocker should be fixed or accepted as a gap before apply, promotion or readiness claims?",
+      "redaction": {
+        "categories": [],
+        "count": 0
+      },
+      "status": "unanswered",
+      "target_artifact": "docs/sources/registry.md",
+      "validation_errors": []
+    },
+    {
+      "answer": "",
+      "answer_type": "text",
+      "answered_at": "",
+      "artifact_action": "none",
+      "category": "ownership",
+      "private_data_status": "not_applicable",
+      "question_id": "q_ownership_f53bf5b125",
+      "question_text": "Who owns the highest-priority missing methodology gate?",
+      "redaction": {
+        "categories": [],
+        "count": 0
+      },
+      "status": "unanswered",
+      "target_artifact": "",
+      "validation_errors": []
+    },
+    {
+      "answer": "",
+      "answer_type": "not_applicable_or_gap",
+      "answered_at": "",
+      "artifact_action": "none",
+      "category": "product",
+      "private_data_status": "not_applicable",
+      "question_id": "q_product_6424cfc782",
+      "question_text": "Can the owner provide or accept a gap for: Whether generated first-run output is useful enough for the next owner-reviewed slice.?",
+      "redaction": {
+        "categories": [],
+        "count": 0
+      },
+      "status": "unanswered",
+      "target_artifact": "",
+      "validation_errors": []
+    },
+    {
+      "answer": "",
+      "answer_type": "single_choice_or_text",
+      "answered_at": "",
+      "artifact_action": "none",
+      "category": "scope",
+      "private_data_status": "not_applicable",
+      "question_id": "q_scope_a8b291adcc",
+      "question_text": "What is the smallest safe next artifact to stage?",
+      "redaction": {
+        "categories": [],
+        "count": 0
+      },
+      "status": "unanswered",
+      "target_artifact": "",
+      "validation_errors": []
+    }
+  ],
+  "policy": {
+    "blocked_private_data_statuses": [
+      "raw_private_customer_data"
+    ],
+    "malicious_instruction_guard": "enabled",
+    "max_answer_age_days": 30,
+    "private_data_statuses": [
+      "synthetic_or_none",
+      "redacted",
+      "not_applicable",
+      "raw_private_customer_data"
+    ]
+  },
+  "schema_version": 1,
+  "summary": {
+    "accepted": 0,
+    "blocked": 0,
+    "total": 4,
+    "unanswered": 4
+  },
+  "write_policy": "staged_only"
+}

@@ -277,6 +277,20 @@ def build_first_run_cockpit_artifact_contract() -> dict[str, Any]:
             ],
         },
         "fallback_states": ["not_available", "static_table_fallback", "cluster_summary_only"],
+        "architecture_diagram_layer": {
+            "schema_version": "first_run_architecture_diagram_layer_v1",
+            "status": "static_fallback_ready",
+            "diagram_ids": [
+                "system-context",
+                "first-run-pipeline",
+                "trust-boundary",
+                "artifact-data-model",
+                "graph-rendering",
+                "runtime-approval-path",
+                "evidence-lifecycle",
+            ],
+            "runtime_policy": "static_svg_plus_raw_mermaid_fallback_no_mermaid_runtime",
+        },
         "raw_diagnostics_policy": "raw packet diagnostics appear outside the primary reading path",
         "unsupported_claims": [
             "release readiness",
@@ -325,6 +339,14 @@ def build_first_run_cockpit_view_model(
     source_file_graph = _first_run_source_file_graph_view(graph_payload, contract)
     code_graph = _first_run_code_graph_view(packet, contract)
     navigation_search = _first_run_navigation_search_model(cockpit, section_cards, source_file_graph, code_graph)
+    architecture_diagrams = _first_run_architecture_diagram_layer(packet, contract)
+    graph_runtime_layer = _first_run_graph_runtime_layer(source_file_graph, code_graph)
+    evidence_decision_layer = _first_run_evidence_decision_layer(
+        packet,
+        section_cards=section_cards,
+        source_artifacts=source_artifacts,
+        architecture_diagrams=architecture_diagrams,
+    )
     progressive_diagnostics = _first_run_progressive_diagnostics(
         packet,
         previous_baseline=previous_baseline,
@@ -349,6 +371,9 @@ def build_first_run_cockpit_view_model(
         },
         "source_file_graph": source_file_graph,
         "code_graph": code_graph,
+        "architecture_diagrams": architecture_diagrams,
+        "graph_runtime_layer": graph_runtime_layer,
+        "evidence_decision_layer": evidence_decision_layer,
         "navigation_search": navigation_search,
         "progressive_diagnostics": progressive_diagnostics,
         "visual_qa": visual_qa,
@@ -365,6 +390,362 @@ def build_first_run_cockpit_view_model(
     }
     model["view_model_digest"] = content_digest(canonical_json(model))
     return model
+
+
+def _first_run_evidence_decision_layer(
+    packet: dict[str, Any],
+    *,
+    section_cards: list[dict[str, Any]],
+    source_artifacts: list[dict[str, str]],
+    architecture_diagrams: dict[str, Any],
+) -> dict[str, Any]:
+    """Build the owner-facing evidence, decision, risk and source-blueprint layer."""
+
+    default_unsupported_claims = [
+        "release readiness",
+        "target apply safety",
+        "Cosmos.gl/WebGL runtime proof",
+        "WCAG certification",
+        "provider/API/model quality",
+        "installed plugin-cache readiness",
+        "source-read semantic completeness",
+    ]
+    unsupported_claims = sorted(set(_unsupported_claims(packet) + default_unsupported_claims))
+    blocker_claims = unsupported_claims[:8] or ["No stronger completion claim is available without fresh evidence."]
+    section_blockers = [
+        {
+            "id": str(card.get("id", "section")),
+            "status": str(card.get("status", "inspection_only")),
+            "action": str(card.get("safe_next_action", "Review evidence before a stronger claim.")),
+        }
+        for card in section_cards
+        if str(card.get("status", "")).lower() in {"missing", "not_available", "blocked", "approval_required"}
+    ][:8]
+    if not section_blockers:
+        section_blockers = [
+            {
+                "id": "claim-boundary",
+                "status": "generated_view_only",
+                "action": "Keep generated evidence as orientation until source files and current commands are checked.",
+            }
+        ]
+    supported_claims = [
+        {
+            "id": "single-file-cockpit",
+            "claim": "A self-contained primary index.html cockpit is generated.",
+            "evidence": "first_run_cockpit_artifact_v1 view model and renderer output",
+            "boundary": "generated-view-only",
+        },
+        {
+            "id": "static-architecture-diagrams",
+            "claim": f"{architecture_diagrams.get('diagram_count', 0)} static architecture diagrams are available.",
+            "evidence": "inline SVG fallback plus collapsed Mermaid source",
+            "boundary": str(architecture_diagrams.get("runtime_policy", "no runtime execution claimed")),
+        },
+        {
+            "id": "source-digests",
+            "claim": f"{len(source_artifacts)} source artifact references are linked by digest.",
+            "evidence": "manifest source_artifacts and source_digests",
+            "boundary": "raw source bodies excluded",
+        },
+        {
+            "id": "no-default-release-claim",
+            "claim": "Completion and release readiness remain separate from generated orientation evidence.",
+            "evidence": str(packet.get("evidence_status", {}).get("completion_claim", "not_claimed")),
+            "boundary": "evidence before claims",
+        },
+    ]
+    owner_actions = [
+        "Review screenshots and first viewport hierarchy against owner expectations.",
+        "Choose whether M45 should remain static-only or approve a vendored runtime slice later.",
+        "Accept, reject or score the regenerated Neural_Flow artifact after M47 evidence.",
+    ]
+    codex_actions = [
+        "Keep implementation local and offline by default.",
+        "Record unsupported claims instead of upgrading them to readiness.",
+        "Run focused renderer, docs and Playwright checks after each S8 slice.",
+    ]
+    decision_grid = [
+        {
+            "id": "owner-review",
+            "decision": "Owner visual acceptance",
+            "owner_action": owner_actions[0],
+            "codex_action": "Provide desktop/mobile screenshots and proof packet.",
+            "approval_requirement": "owner feedback required before final acceptance",
+            "next_safe_step": "Run M46 visual/accessibility-oriented checks before acceptance.",
+            "status": "pending_owner_review",
+        },
+        {
+            "id": "runtime-scope",
+            "decision": "Runtime execution boundary",
+            "owner_action": owner_actions[1],
+            "codex_action": "Keep M45 labels honest: adapter/static fallback versus WebGL runtime.",
+            "approval_requirement": "separate approval before vendoring or executing runtime dependencies",
+            "next_safe_step": "Complete M45 static-vs-runtime labeling first.",
+            "status": "static_default",
+        },
+        {
+            "id": "claim-boundary",
+            "decision": "Evidence claim level",
+            "owner_action": "Decide whether remaining gaps are accepted or need another implementation slice.",
+            "codex_action": "Preserve unsupported-claim and blocker ledgers.",
+            "approval_requirement": "fresh evidence required before stronger readiness claims",
+            "next_safe_step": "Keep unsupported claims visible through M47.",
+            "status": "not_release_ready",
+        },
+    ]
+    risk_ledger = [
+        {"id": "runtime-browser", "status": "approval_required", "risk": "Browser/runtime proof does not imply live server, provider or release readiness."},
+        {"id": "cosmos-webgl", "status": "blocked_until_m45", "risk": "Cosmos.gl/WebGL runtime execution is not claimed without a vendored runtime and explicit proof."},
+        {"id": "target-mutation", "status": "forbidden_by_default", "risk": "Generated artifacts must not mutate target source without exact approval."},
+        {"id": "git-release", "status": "forbidden_by_default", "risk": "No branch, stage, commit, push, PR, release or deployment follows from this artifact."},
+        {"id": "source-policy", "status": "source_read_required", "risk": "Generated diagrams and graphs are orientation only; source files remain truth."},
+        {"id": "privacy-offline", "status": "guarded", "risk": "No raw source bodies, external URLs or hosted assets belong in the primary cockpit."},
+    ]
+    source_blueprints = [
+        {
+            "id": str(artifact.get("artifact_id") or "source"),
+            "type": "source_artifact",
+            "path": str(artifact.get("path", "")),
+            "read_before_action": True,
+            "source_truth": True,
+        }
+        for artifact in source_artifacts[:8]
+    ]
+    if not source_blueprints:
+        source_blueprints.append(
+            {
+                "id": "source-registry",
+                "type": "source_policy",
+                "path": "source files and current command evidence",
+                "read_before_action": True,
+                "source_truth": True,
+            }
+        )
+    future_gates = [
+        {"id": "B41-S8-M45", "gate": "Graphology/Cosmos.gl static-vs-runtime labels", "status": "pending"},
+        {"id": "B41-S8-M46", "gate": "Desktop/mobile visual, interaction and accessibility-oriented proof", "status": "pending"},
+        {"id": "B41-S8-M47", "gate": "Regenerated Neural_Flow before/after acceptance evidence", "status": "pending"},
+    ]
+    proof_refs = [
+        {
+            "id": "B41-S8-M42",
+            "label": "Architecture diagram desktop/mobile proof",
+            "path": "output/playwright/b41-s8-m42/playwright-diagram-proof.json",
+            "status": "current_static_visual_proof",
+        },
+        {
+            "id": "B41-S8-M43",
+            "label": "Architecture dossier shell desktop/mobile proof",
+            "path": "output/playwright/b41-s8-m43/playwright-shell-proof.json",
+            "status": "current_static_visual_proof",
+        },
+    ]
+    return {
+        "schema_version": "first_run_evidence_decision_layer_v1",
+        "status": "visible_acceptance_surfaces_ready",
+        "generated_view_policy": "orientation_only_not_proof",
+        "supported_claims": supported_claims,
+        "unsupported_claims": unsupported_claims,
+        "blockers": blocker_claims,
+        "section_blockers": section_blockers,
+        "decision_grid": decision_grid,
+        "owner_actions": owner_actions,
+        "codex_actions": codex_actions,
+        "risk_ledger": risk_ledger,
+        "future_gates": future_gates,
+        "source_blueprints": source_blueprints,
+        "proof_refs": proof_refs,
+    }
+
+
+def _first_run_graph_runtime_layer(source_file_graph: dict[str, Any], code_graph: dict[str, Any]) -> dict[str, Any]:
+    """Describe graph runtime boundaries without claiming WebGL execution."""
+
+    source_state = "static_fallback" if source_file_graph.get("visible_node_count", 0) else "not_available"
+    code_state = "static_fallback" if code_graph.get("visible_node_count", 0) else "not_available"
+    selected = source_file_graph.get("selected_file_panel") if isinstance(source_file_graph.get("selected_file_panel"), dict) else {}
+    return {
+        "schema_version": "first_run_graph_runtime_layer_v1",
+        "status": "runtime_webgl_blocked_static_fallback_ready",
+        "generated_view_policy": "orientation_only_not_proof",
+        "runtime_execution_claim": "not_claimed",
+        "required_labels": ["adapter_ready", "static_fallback", "not_available", "runtime_webgl_blocked"],
+        "graphology_payload": {
+            "status": "adapter_ready",
+            "compatible": True,
+            "node_count": source_file_graph.get("node_count", 0),
+            "edge_count": source_file_graph.get("edge_count", 0),
+            "boundary": "Graphology-compatible payload is an interchange model, not WebGL proof.",
+        },
+        "cosmos_adapter": {
+            "status": source_file_graph.get("status", "adapter_ready"),
+            "selected_renderer": "Cosmos.gl",
+            "runtime_asset_status": source_file_graph.get("runtime_asset_status", "not_vendored_static_fallback"),
+            "runtime_webgl_status": "runtime_webgl_blocked",
+            "execution_evidence": "not_available",
+        },
+        "rendered_states": [
+            {
+                "id": "source-file-graph",
+                "label": "File / Source Graph",
+                "adapter_status": source_file_graph.get("status", "adapter_ready"),
+                "fallback_status": source_state,
+                "visible_nodes": source_file_graph.get("visible_node_count", 0),
+                "table_fallback": source_file_graph.get("table_fallback", {}).get("status", "available")
+                if isinstance(source_file_graph.get("table_fallback"), dict)
+                else "available",
+            },
+            {
+                "id": "code-graph",
+                "label": "Code Graph",
+                "adapter_status": code_graph.get("status", "not_available"),
+                "fallback_status": code_state,
+                "visible_nodes": code_graph.get("visible_node_count", 0),
+                "table_fallback": code_graph.get("table_fallback", {}).get("status", "empty")
+                if isinstance(code_graph.get("table_fallback"), dict)
+                else "empty",
+            },
+        ],
+        "runtime_blocker_banner": {
+            "status": "runtime_webgl_blocked",
+            "reason": "Cosmos.gl runtime assets are not vendored and no WebGL canvas execution is performed in this static artifact.",
+            "approval_required": "separate approval before vendoring Cosmos.gl, enabling scripts or claiming WebGL runtime proof",
+        },
+        "selected_node_ux": {
+            "status": selected.get("status", "selected"),
+            "panel_id": "source-file-graph-selected-file-panel",
+            "source_boundary": selected.get("source_boundary", "raw source bodies are excluded"),
+            "safe_next_action": "Use selected node metadata for navigation only; read source files before edits.",
+        },
+        "fallback_explanation": {
+            "status": "static_fallback",
+            "svg": "Static SVG gives a browser-visible graph overview without runtime execution.",
+            "table": "Bounded table fallback remains the source-free inspection surface.",
+            "empty_state": "not_available states are rendered explicitly when graph packets are missing.",
+        },
+    }
+
+
+def _first_run_architecture_diagram_layer(packet: dict[str, Any], contract: dict[str, Any]) -> dict[str, Any]:
+    """Build the static architecture-diagram layer for the owner-facing cockpit."""
+
+    diagram_specs = [
+        (
+            "system-context",
+            "System Context",
+            "Product-Agent OS reads a target workspace and produces orientation artifacts without making them source truth.",
+            ["Target Workspace", "First-Run Analyzer", "Offline Cockpit", "Owner Review"],
+            ["workspace inventory", "analysis packet", "generated-view-only HTML"],
+            "flowchart LR\n  W[Target Workspace] --> A[First-Run Analyzer]\n  A --> C[Offline Cockpit]\n  C --> O[Owner Review]",
+        ),
+        (
+            "first-run-pipeline",
+            "First-Run Pipeline",
+            "Safe discovery, packet composition, static rendering and owner question routing stay separate.",
+            ["Discovery", "Packet", "Renderer", "Question Queue"],
+            ["safe read-only inputs", "bounded JSON", "self-contained HTML"],
+            "flowchart LR\n  D[Discovery] --> P[Packet]\n  P --> R[Renderer]\n  R --> Q[Question Queue]",
+        ),
+        (
+            "trust-boundary",
+            "Source/Trust Boundary",
+            "Generated graph, diagnostics and cockpit views are orientation evidence; sources and current commands remain truth.",
+            ["Source Files", "Generated Views", "Current Commands", "Unsupported Claims"],
+            ["source truth", "orientation only", "evidence before claims"],
+            "flowchart TB\n  S[Source Files] --> E[Current Evidence]\n  G[Generated Views] -.orientation.-> E\n  E --> U[Unsupported Claims Ledger]",
+        ),
+        (
+            "artifact-data-model",
+            "Artifact Data Model",
+            "The manifest links packet, pages, source digests and primary cockpit view-model without raw source bodies.",
+            ["Packet", "Manifest", "View Model", "HTML Pages"],
+            ["digests", "redaction report", "page refs"],
+            "flowchart LR\n  P[Packet] --> M[Manifest]\n  M --> V[View Model]\n  V --> H[HTML Pages]",
+        ),
+        (
+            "graph-rendering",
+            "Graph Rendering",
+            "Graphology-compatible payloads feed a Cosmos.gl-ready adapter while the default artifact renders static SVG/table fallback.",
+            ["Graphology Payload", "Cosmos.gl Adapter", "Static SVG", "Table Fallback"],
+            ["adapter_ready", "static_fallback", "runtime_webgl_blocked"],
+            "flowchart LR\n  G[Graphology Payload] --> C[Cosmos.gl Adapter]\n  C --> S[Static SVG]\n  C --> T[Table Fallback]",
+        ),
+        (
+            "runtime-approval-path",
+            "Runtime Approval Path",
+            "Runtime, browser, provider, target mutation and git/release actions remain explicit approval surfaces.",
+            ["Static Checks", "Approval Gate", "Browser Proof", "Release Boundary"],
+            ["approval_required", "no external write", "no release claim"],
+            "flowchart LR\n  S[Static Checks] --> A[Approval Gate]\n  A --> B[Browser Proof]\n  A --> R[Release Boundary]",
+        ),
+        (
+            "evidence-lifecycle",
+            "Evidence Lifecycle",
+            "Evidence moves from source intake to generated orientation, review packets and control-plane handoff.",
+            ["Source Intake", "Generated Evidence", "Review Packet", "Control Plane"],
+            ["freshness", "accepted gaps", "handoff"],
+            "flowchart LR\n  I[Source Intake] --> G[Generated Evidence]\n  G --> R[Review Packet]\n  R --> C[Control Plane]",
+        ),
+    ]
+    status_by_section = packet.get("section_summaries") if isinstance(packet.get("section_summaries"), dict) else {}
+    diagrams: list[dict[str, Any]] = []
+    for diagram_id, title, takeaway, nodes, edges, mermaid in diagram_specs:
+        source_status = "inspection_only"
+        if diagram_id == "runtime-approval-path":
+            runtime_summary = status_by_section.get("runtime_route") if isinstance(status_by_section.get("runtime_route"), dict) else {}
+            source_status = str(runtime_summary.get("status", "approval_required"))
+        elif diagram_id == "graph-rendering":
+            graph_summary = status_by_section.get("graph") if isinstance(status_by_section.get("graph"), dict) else {}
+            source_status = str(graph_summary.get("status", "inspection_only"))
+        diagrams.append(
+            {
+                "id": diagram_id,
+                "title": title,
+                "question_answered": f"How should the cockpit explain {title.lower()} without turning generated diagrams into source truth?",
+                "generated_view_boundary": "generated-view-only",
+                "required_boundary": "source files and current command evidence remain source truth",
+                "source_status": source_status,
+                "source_boundary": "generated-view-only; read source files and current command evidence before acting",
+                "takeaway": takeaway,
+                "static_fallback": {
+                    "kind": "inline_svg",
+                    "status": "rendered_static_fallback",
+                    "nodes": nodes,
+                    "edges": edges,
+                    "responsive_policy": "svg scales to panel width; labels wrap through bounded text blocks",
+                },
+                "raw_mermaid_fallback": {
+                    "status": "available_collapsed",
+                    "runtime_status": "not_executed_no_mermaid_runtime",
+                    "source": mermaid,
+                },
+                "rendering_acceptance": {
+                    "static_fallback_present": True,
+                    "raw_mermaid_present": True,
+                    "external_assets_forbidden": True,
+                    "runtime_not_executed": True,
+                },
+            }
+        )
+    return {
+        "schema_version": "first_run_architecture_diagram_layer_v1",
+        "status": "static_fallback_ready",
+        "diagram_count": len(diagrams),
+        "diagram_ids": [diagram["id"] for diagram in diagrams],
+        "generated_view_policy": "orientation_only_not_proof",
+        "runtime_policy": contract.get("architecture_diagram_layer", {}).get(
+            "runtime_policy",
+            "static_svg_plus_raw_mermaid_fallback_no_mermaid_runtime",
+        ),
+        "external_assets": "forbidden",
+        "diagrams": diagrams,
+        "proof_gates": [
+            "diagram payload/rendering unit tests",
+            "desktop and mobile visual proof before diagram-quality claims",
+            "no Mermaid runtime claim without explicit runtime evidence",
+        ],
+    }
 
 
 def _first_run_cockpit_graph_payload(packet: dict[str, Any]) -> dict[str, Any]:
@@ -1078,10 +1459,9 @@ def _cockpit_page_html(
         for card in primary_cockpit.get("section_cards", [])[:12]
     )
     pages_html = "\n".join(_cockpit_section_html(page, primary_cockpit) for page in pages if isinstance(page, dict))
-    unsupported = "\n".join(
-        f"<li>{_text(claim)}</li>"
-        for claim in primary_cockpit.get("overview", {}).get("unsupported_claims", [])[:12]
-    )
+    architecture_diagrams_html = _architecture_diagrams_html(primary_cockpit.get("architecture_diagrams", {}))
+    evidence_decision_html = _evidence_decision_layer_html(primary_cockpit.get("evidence_decision_layer", {}))
+    graph_runtime_html = _graph_runtime_layer_html(primary_cockpit.get("graph_runtime_layer", {}))
     baseline_rows = _definition_rows(
         [
             ("Status", previous_baseline.get("status", "missing")),
@@ -1099,6 +1479,11 @@ def _cockpit_page_html(
         ]
     )
     diagnostics_html = _progressive_diagnostics_html(primary_cockpit)
+    diagram_layer = primary_cockpit.get("architecture_diagrams", {}) if isinstance(primary_cockpit.get("architecture_diagrams"), dict) else {}
+    safe_next_action = primary_cockpit.get("overview", {}).get("safe_next_action", "")
+    completion_claim = primary_cockpit.get("overview", {}).get("completion_claim", "not_claimed")
+    target = primary_cockpit.get("overview", {}).get("target", {})
+    target_label = target.get("label", "target workspace") if isinstance(target, dict) else "target workspace"
     css = _cockpit_css()
     return (
         "<!doctype html>\n"
@@ -1109,23 +1494,44 @@ def _cockpit_page_html(
         "<body>\n"
         "<a class=\"skip-link\" href=\"#main-content\">Skip to cockpit content</a>\n"
         "<main id=\"main-content\" class=\"first-run-cockpit cockpit-shell\" data-schema=\"first_run_cockpit_artifact_v1\" tabindex=\"-1\">\n"
-        "<header class=\"cockpit-hero\">\n"
-        "<p class=\"eyebrow\">generated-view-only</p>\n"
-        "<h1>Product-Agent OS First-Run Cockpit</h1>\n"
-        f"<p>{_text(primary_cockpit['source_truth_policy'])}.</p>\n"
-        "<div class=\"hero-grid\">\n"
-        f"<span>Primary artifact <strong>{_text(contract['primary_artifact'])}</strong></span>\n"
-        f"<span>Graph renderer <strong>{_text(contract['selected_graph_renderer'])}</strong></span>\n"
-        f"<span>Pages <strong>{_text(primary_cockpit['page_count'])}</strong></span>\n"
-        f"<span>Completion claim <strong>{_text(primary_cockpit['overview']['completion_claim'])}</strong></span>\n"
+        "<header class=\"cockpit-hero dossier-hero\" data-shell=\"architecture-dossier\">\n"
+        "<div class=\"hero-kicker-row\"><p class=\"eyebrow\">generated-view-only</p><p class=\"dossier-label\">Architecture dossier / operational cockpit</p></div>\n"
+        "<div class=\"hero-layout\">\n"
+        "<section class=\"hero-primary\" aria-labelledby=\"cockpit-title\">\n"
+        "<h1 id=\"cockpit-title\">Product-Agent OS First-Run Architecture Cockpit</h1>\n"
+        f"<p class=\"target-context\"><strong>Target:</strong> {_text(target_label)}</p>\n"
+        f"<p class=\"hero-lede\">{_text(primary_cockpit['source_truth_policy'])}. Generated diagrams, graphs and diagnostics are orientation evidence only.</p>\n"
+        "</section>\n"
+        "<aside class=\"next-route-panel\" aria-label=\"Next safe route\">\n"
+        "<h2>Next Safe Route</h2>\n"
+        f"<p>{_text(safe_next_action)}</p>\n"
+        f"<strong>{_text(completion_claim)}</strong>\n"
+        "</aside>\n"
         "</div>\n"
+        "<div class=\"hero-grid dossier-grid\" aria-label=\"Cockpit status summary\">\n"
+        f"<span><small>Primary artifact</small><strong>{_text(contract['primary_artifact'])}</strong></span>\n"
+        f"<span><small>Architecture diagrams</small><strong>{_text(diagram_layer.get('diagram_count', 0))}</strong></span>\n"
+        f"<span><small>Graph renderer</small><strong>{_text(contract['selected_graph_renderer'])}</strong></span>\n"
+        f"<span><small>Pages</small><strong>{_text(primary_cockpit['page_count'])}</strong></span>\n"
+        "</div>\n"
+        "<div class=\"architecture-signal\" aria-label=\"Architecture signal\">\n"
+        "<p><strong>Architecture signal:</strong> system context, first-run pipeline, source/trust boundary, artifact data model, graph rendering, runtime approval path and evidence lifecycle are visible as static diagram panels.</p>\n"
+        f"<p><strong>Runtime boundary:</strong> {_text(diagram_layer.get('runtime_policy', 'static fallback only'))}.</p>\n"
+        "</div>\n"
+        "<ul class=\"proof-strip\" aria-label=\"Proof and boundary strip\">\n"
+        "<li>source truth stays in files and current commands</li>\n"
+        "<li>no external diagram assets</li>\n"
+        "<li>no target mutation by default</li>\n"
+        f"<li>completion claim: {_text(completion_claim)}</li>\n"
+        "</ul>\n"
         "</header>\n"
         f"<nav class=\"cockpit-nav\" aria-label=\"First-run cockpit sections\">{nav}</nav>\n"
         f"{controls_html}\n"
         "<section class=\"cockpit-band\" aria-labelledby=\"status-cards\"><h2 id=\"status-cards\">Evidence Status</h2>"
         f"<div class=\"status-grid\">{status_cards}</div></section>\n"
-        "<section class=\"cockpit-band\" aria-labelledby=\"unsupported-claims\"><h2 id=\"unsupported-claims\">Unsupported Claims</h2>"
-        f"<ul class=\"claim-list\">{unsupported}</ul></section>\n"
+        f"{evidence_decision_html}\n"
+        f"{graph_runtime_html}\n"
+        f"{architecture_diagrams_html}\n"
         f"{pages_html}\n"
         f"{diagnostics_html}\n"
         "<section class=\"cockpit-band\" aria-labelledby=\"baseline-comparison\"><h2 id=\"baseline-comparison\">Baseline Comparison</h2>"
@@ -1160,6 +1566,8 @@ def _cockpit_section_html(page: dict[str, Any], primary_cockpit: dict[str, Any])
         )
     elif page_id == "code-intelligence":
         extra = _code_graph_panel_html(primary_cockpit["code_graph"])
+    elif page_id == "contracts":
+        extra = _architecture_diagrams_html(primary_cockpit.get("architecture_diagrams", {}), compact=True)
     elif page_id == "quality-metrics":
         extra = _visual_qa_html(primary_cockpit["visual_qa"])
     elif page_id == "operations-risk":
@@ -1172,6 +1580,256 @@ def _cockpit_section_html(page: dict[str, Any], primary_cockpit: dict[str, Any])
         f"{extra}<div class=\"section-grid\">{body}</div>\n"
         "</section>\n"
     )
+
+
+def _evidence_decision_layer_html(layer: dict[str, Any]) -> str:
+    if not isinstance(layer, dict):
+        return ""
+    supported_claims = layer.get("supported_claims") if isinstance(layer.get("supported_claims"), list) else []
+    unsupported_claims = layer.get("unsupported_claims") if isinstance(layer.get("unsupported_claims"), list) else []
+    blockers = layer.get("blockers") if isinstance(layer.get("blockers"), list) else []
+    section_blockers = layer.get("section_blockers") if isinstance(layer.get("section_blockers"), list) else []
+    decision_grid = layer.get("decision_grid") if isinstance(layer.get("decision_grid"), list) else []
+    risk_ledger = layer.get("risk_ledger") if isinstance(layer.get("risk_ledger"), list) else []
+    future_gates = layer.get("future_gates") if isinstance(layer.get("future_gates"), list) else []
+    source_blueprints = layer.get("source_blueprints") if isinstance(layer.get("source_blueprints"), list) else []
+    owner_actions = layer.get("owner_actions") if isinstance(layer.get("owner_actions"), list) else []
+    codex_actions = layer.get("codex_actions") if isinstance(layer.get("codex_actions"), list) else []
+    proof_refs = layer.get("proof_refs") if isinstance(layer.get("proof_refs"), list) else []
+    supported_html = "\n".join(
+        "<article class=\"evidence-card supported-claim-card\">"
+        f"<h3>{_text(item.get('id'))}</h3>"
+        f"<p>{_text(item.get('claim'))}</p>"
+        f"<p><strong>Evidence:</strong> {_text(item.get('evidence'))}</p>"
+        f"<p><strong>Boundary:</strong> {_text(item.get('boundary'))}</p>"
+        "</article>"
+        for item in supported_claims
+        if isinstance(item, dict)
+    )
+    unsupported_html = "\n".join(f"<li>{_text(item)}</li>" for item in unsupported_claims[:12])
+    blockers_html = "\n".join(f"<li>{_text(item)}</li>" for item in blockers[:8])
+    section_blockers_html = "\n".join(
+        "<article class=\"evidence-card blocker-card\">"
+        f"<h3>{_text(item.get('id'))}</h3>"
+        f"<p><strong>{_text(item.get('status'))}</strong></p>"
+        f"<p>{_text(item.get('action'))}</p>"
+        "</article>"
+        for item in section_blockers
+        if isinstance(item, dict)
+    )
+    decision_html = "\n".join(
+        "<article class=\"decision-card\">"
+        f"<h3>{_text(item.get('decision'))}</h3>"
+        f"<p><strong>Status:</strong> {_text(item.get('status'))}</p>"
+        f"<p><strong>Owner action:</strong> {_text(item.get('owner_action'))}</p>"
+        f"<p><strong>Codex action:</strong> {_text(item.get('codex_action'))}</p>"
+        f"<p><strong>Approval requirement:</strong> {_text(item.get('approval_requirement'))}</p>"
+        f"<p><strong>Next safe step:</strong> {_text(item.get('next_safe_step'))}</p>"
+        "</article>"
+        for item in decision_grid
+        if isinstance(item, dict)
+    )
+    risk_html = "\n".join(
+        "<article class=\"risk-card\">"
+        f"<h3>{_text(item.get('id'))}</h3>"
+        f"<p><strong>{_text(item.get('status'))}</strong></p>"
+        f"<p>{_text(item.get('risk'))}</p>"
+        "</article>"
+        for item in risk_ledger
+        if isinstance(item, dict)
+    )
+    gates_html = "\n".join(
+        "<article class=\"future-gate-card\">"
+        f"<h3>{_text(item.get('id'))}</h3>"
+        f"<p><strong>{_text(item.get('status'))}</strong></p>"
+        f"<p>{_text(item.get('gate'))}</p>"
+        "</article>"
+        for item in future_gates
+        if isinstance(item, dict)
+    )
+    source_html = "\n".join(
+        "<article class=\"source-blueprint-card\">"
+        f"<h3>{_text(item.get('id'))}</h3>"
+        f"<p>{_text(item.get('type'))}</p>"
+        f"<p><code>{_text(item.get('path'))}</code></p>"
+        f"<p>read before action: {_text(str(item.get('read_before_action', True)).lower())}; source truth: {_text(str(item.get('source_truth', True)).lower())}</p>"
+        "</article>"
+        for item in source_blueprints
+        if isinstance(item, dict)
+    )
+    proof_html = "\n".join(
+        "<article class=\"proof-ref-card\">"
+        f"<h3>{_text(item.get('id'))}</h3>"
+        f"<p>{_text(item.get('label'))}</p>"
+        f"<p><strong>{_text(item.get('status'))}</strong></p>"
+        f"<p><code>{_text(item.get('path'))}</code></p>"
+        "</article>"
+        for item in proof_refs
+        if isinstance(item, dict)
+    )
+    owner_html = "\n".join(f"<li>{_text(item)}</li>" for item in owner_actions)
+    codex_html = "\n".join(f"<li>{_text(item)}</li>" for item in codex_actions)
+    return (
+        '<section class="cockpit-band evidence-decision-layer" id="evidence-decision-layer" '
+        'aria-labelledby="evidence-decision-layer-heading" data-acceptance-surface="m44">'
+        '<h2 id="evidence-decision-layer-heading">Evidence, Decision And Source Blueprint</h2>'
+        '<p class="diagram-layer-summary">Supported claims, unsupported claims, blockers, owner actions and Codex actions are separate visible surfaces; policy: orientation_only_not_proof.</p>'
+        '<section class="acceptance-surface supported-claims-surface" id="supported-claims" aria-labelledby="supported-claims-heading">'
+        '<h3 id="supported-claims-heading">Supported Claims</h3>'
+        f'<div class="evidence-grid">{supported_html}</div></section>'
+        '<section class="acceptance-surface unsupported-claims-surface" id="unsupported-claims" aria-labelledby="unsupported-claims-heading">'
+        '<h3 id="unsupported-claims-heading">Unsupported Claims</h3>'
+        f'<ul class="claim-list">{unsupported_html}</ul></section>'
+        '<section class="acceptance-surface blocker-ledger-surface" id="blocker-ledger" aria-labelledby="blocker-ledger-heading">'
+        '<h3 id="blocker-ledger-heading">Blocker Ledger</h3>'
+        f'<ul class="claim-list">{blockers_html}</ul><div class="evidence-grid">{section_blockers_html}</div></section>'
+        '<section class="acceptance-surface decision-grid-surface" id="decision-grid" aria-labelledby="decision-grid-heading">'
+        '<h3 id="decision-grid-heading">Decision Grid</h3>'
+        f'<div class="decision-grid">{decision_html}</div></section>'
+        '<section class="acceptance-surface action-split-surface" id="owner-codex-actions" aria-labelledby="owner-codex-actions-heading">'
+        '<h3 id="owner-codex-actions-heading">Owner Actions / Codex Actions</h3>'
+        f'<div class="action-columns"><div><h4>Owner Actions</h4><ul>{owner_html}</ul></div><div><h4>Codex Actions</h4><ul>{codex_html}</ul></div></div></section>'
+        '<section class="acceptance-surface risk-ledger-surface" id="risk-ledger" aria-labelledby="risk-ledger-heading">'
+        '<h3 id="risk-ledger-heading">Risk Ledger</h3>'
+        f'<div class="risk-grid">{risk_html}</div></section>'
+        '<section class="acceptance-surface future-gates-surface" id="future-gates" aria-labelledby="future-gates-heading">'
+        '<h3 id="future-gates-heading">Future Gates</h3>'
+        f'<div class="decision-grid">{gates_html}</div></section>'
+        '<section class="acceptance-surface proof-evidence-strip-surface" id="proof-evidence-strip" aria-labelledby="proof-evidence-strip-heading">'
+        '<h3 id="proof-evidence-strip-heading">Proof / Evidence Strip</h3>'
+        f'<div class="proof-ref-grid">{proof_html}</div></section>'
+        '<section class="acceptance-surface source-blueprint-surface" id="source-blueprint" aria-labelledby="source-blueprint-heading">'
+        '<h3 id="source-blueprint-heading">Source Blueprint</h3>'
+        f'<div class="source-blueprint-grid">{source_html}</div></section>'
+        "</section>"
+    )
+
+
+def _graph_runtime_layer_html(layer: dict[str, Any]) -> str:
+    if not isinstance(layer, dict):
+        return ""
+    labels = layer.get("required_labels") if isinstance(layer.get("required_labels"), list) else []
+    graphology = layer.get("graphology_payload") if isinstance(layer.get("graphology_payload"), dict) else {}
+    adapter = layer.get("cosmos_adapter") if isinstance(layer.get("cosmos_adapter"), dict) else {}
+    blocker = layer.get("runtime_blocker_banner") if isinstance(layer.get("runtime_blocker_banner"), dict) else {}
+    selected = layer.get("selected_node_ux") if isinstance(layer.get("selected_node_ux"), dict) else {}
+    fallback = layer.get("fallback_explanation") if isinstance(layer.get("fallback_explanation"), dict) else {}
+    states = layer.get("rendered_states") if isinstance(layer.get("rendered_states"), list) else []
+    label_html = "".join(f"<li>{_text(item)}</li>" for item in labels)
+    state_html = "\n".join(
+        "<article class=\"graph-state-card\">"
+        f"<h3>{_text(item.get('label'))}</h3>"
+        f"<p><strong>Adapter:</strong> {_text(item.get('adapter_status'))}</p>"
+        f"<p><strong>Fallback:</strong> {_text(item.get('fallback_status'))}</p>"
+        f"<p><strong>Visible nodes:</strong> {_text(item.get('visible_nodes'))}</p>"
+        f"<p><strong>Table:</strong> {_text(item.get('table_fallback'))}</p>"
+        "</article>"
+        for item in states
+        if isinstance(item, dict)
+    )
+    return (
+        '<section class="cockpit-band graph-runtime-layer" id="graph-runtime-layer" '
+        'aria-labelledby="graph-runtime-layer-heading" data-runtime-status="runtime_webgl_blocked">'
+        '<h2 id="graph-runtime-layer-heading">Graphology / Cosmos.gl Runtime Boundary</h2>'
+        '<p class="diagram-layer-summary">The cockpit carries a Graphology-compatible payload and Cosmos.gl-ready adapter, but renders static SVG/table fallback by default. Cosmos.gl WebGL runtime execution is not claimed.</p>'
+        f'<ul class="runtime-label-strip" aria-label="Graph runtime labels">{label_html}</ul>'
+        '<div class="graph-runtime-grid">'
+        '<article class="graph-runtime-card"><h3>Graphology Payload</h3>'
+        f'<p><strong>{_text(graphology.get("status"))}</strong>; compatible: {_text(str(graphology.get("compatible", True)).lower())}</p>'
+        f'<p>nodes: {_text(graphology.get("node_count"))}; edges: {_text(graphology.get("edge_count"))}</p>'
+        f'<p>{_text(graphology.get("boundary"))}</p></article>'
+        '<article class="graph-runtime-card"><h3>Cosmos.gl Adapter</h3>'
+        f'<p><strong>{_text(adapter.get("status"))}</strong>; renderer: {_text(adapter.get("selected_renderer"))}</p>'
+        f'<p>runtime assets: {_text(adapter.get("runtime_asset_status"))}</p>'
+        f'<p>WebGL runtime: <strong>{_text(adapter.get("runtime_webgl_status"))}</strong>; execution evidence: {_text(adapter.get("execution_evidence"))}</p></article>'
+        '<article class="graph-runtime-card runtime-blocker-banner"><h3>Runtime Blocker</h3>'
+        f'<p><strong>{_text(blocker.get("status"))}</strong></p>'
+        f'<p>{_text(blocker.get("reason"))}</p>'
+        f'<p>{_text(blocker.get("approval_required"))}</p></article>'
+        '<article class="graph-runtime-card"><h3>Selected Node UX</h3>'
+        f'<p><strong>{_text(selected.get("status"))}</strong>; panel: <a href="#{_attr(selected.get("panel_id"))}">{_text(selected.get("panel_id"))}</a></p>'
+        f'<p>{_text(selected.get("source_boundary"))}</p>'
+        f'<p>{_text(selected.get("safe_next_action"))}</p></article>'
+        "</div>"
+        f'<div class="graph-runtime-states">{state_html}</div>'
+        '<div class="fallback-explanation"><h3>Static Fallback Explanation</h3>'
+        f'<p><strong>{_text(fallback.get("status"))}</strong></p>'
+        f'<p>{_text(fallback.get("svg"))}</p>'
+        f'<p>{_text(fallback.get("table"))}</p>'
+        f'<p>{_text(fallback.get("empty_state"))}</p></div>'
+        "</section>"
+    )
+
+
+def _architecture_diagrams_html(diagram_layer: dict[str, Any], *, compact: bool = False) -> str:
+    if not isinstance(diagram_layer, dict):
+        return ""
+    diagrams = diagram_layer.get("diagrams") if isinstance(diagram_layer.get("diagrams"), list) else []
+    if not diagrams:
+        return ""
+    visible_diagrams = diagrams[:3] if compact else diagrams
+    id_prefix = "diagram-summary" if compact else "diagram"
+    panels = "\n".join(_diagram_panel_html(diagram, id_prefix=id_prefix) for diagram in visible_diagrams if isinstance(diagram, dict))
+    heading = "Architecture Diagram Layer" if not compact else "Architecture Diagram Summary"
+    section_id = "architecture-diagram-summary" if compact else "architecture-diagram-layer"
+    heading_id = f"{section_id}-heading"
+    description = (
+        "Static diagram panels explain project architecture as generated orientation evidence. "
+        "Raw Mermaid is provided as a collapsed fallback; no Mermaid runtime, external diagram service or hosted asset is used."
+    )
+    return (
+        f'<section class="cockpit-band architecture-diagram-layer" id="{_attr(section_id)}" '
+        f'aria-labelledby="{_attr(heading_id)}" '
+        f'data-diagram-runtime="{_attr(diagram_layer.get("runtime_policy"))}">'
+        f'<h2 id="{_attr(heading_id)}">{_text(heading)}</h2>'
+        f"<p class=\"diagram-layer-summary\">{_text(description)}</p>"
+        f"<div class=\"diagram-grid\">{panels}</div>"
+        "</section>"
+    )
+
+
+def _diagram_panel_html(diagram: dict[str, Any], *, id_prefix: str = "diagram") -> str:
+    fallback = diagram.get("static_fallback") if isinstance(diagram.get("static_fallback"), dict) else {}
+    mermaid = diagram.get("raw_mermaid_fallback") if isinstance(diagram.get("raw_mermaid_fallback"), dict) else {}
+    return (
+        f'<article class="diagram-panel" id="{_attr(id_prefix)}-{_attr(diagram.get("id"))}" '
+        f'data-source-status="{_attr(diagram.get("source_status"))}" '
+        f'data-runtime-status="{_attr(mermaid.get("runtime_status"))}">'
+        f"<header><h3>{_text(diagram.get('title'))}</h3>"
+        f"<p><strong>{_text(diagram.get('source_status'))}</strong> / {_text(diagram.get('source_boundary'))}</p></header>"
+        f"<p>{_text(diagram.get('takeaway'))}</p>"
+        f"{_diagram_static_svg(diagram)}"
+        f"<p class=\"diagram-fallback-status\">Static fallback: {_text(fallback.get('status'))}; Mermaid runtime: {_text(mermaid.get('runtime_status'))}.</p>"
+        "<details class=\"raw-mermaid-fallback\"><summary>Raw Mermaid fallback</summary>"
+        f"<code>{_text(mermaid.get('source'))}</code></details>"
+        "</article>"
+    )
+
+
+def _diagram_static_svg(diagram: dict[str, Any]) -> str:
+    fallback = diagram.get("static_fallback") if isinstance(diagram.get("static_fallback"), dict) else {}
+    nodes = [str(item) for item in fallback.get("nodes", [])[:4]] if isinstance(fallback.get("nodes"), list) else []
+    edges = [str(item) for item in fallback.get("edges", [])[:3]] if isinstance(fallback.get("edges"), list) else []
+    title = _attr(diagram.get("title"))
+    while len(nodes) < 4:
+        nodes.append("not_available")
+    x_positions = [42, 190, 338, 486]
+    node_markup: list[str] = []
+    edge_markup: list[str] = []
+    for index, label in enumerate(nodes[:4]):
+        x = x_positions[index]
+        node_markup.append(
+            f'<g class="diagram-node"><rect x="{x}" y="36" width="112" height="56" rx="8"></rect>'
+            f'<text x="{x + 56}" y="61">{_text(label[:24])}</text></g>'
+        )
+        if index < 3:
+            edge_label = edges[index] if index < len(edges) else "flow"
+            edge_markup.append(
+                f'<path class="diagram-edge" d="M{x + 112} 64 H{x_positions[index + 1] - 10}"></path>'
+                f'<text class="diagram-edge-label" x="{x + 126}" y="51">{_text(edge_label[:22])}</text>'
+            )
+    svg_open = f'<svg class="architecture-diagram-svg" viewBox="0 0 640 132" role="img" aria-label="{title} static architecture diagram">'
+    return svg_open + '<rect class="diagram-stage" x="8" y="8" width="624" height="116" rx="10"></rect>' + "".join(edge_markup) + "".join(node_markup) + "</svg>"
 
 
 def _code_graph_panel_html(code_graph: dict[str, Any]) -> str:
@@ -1305,6 +1963,8 @@ def _graph_panel_html(graph: dict[str, Any], *, graph_id: str, title: str, empty
             ("Renderer", graph.get("renderer", "Cosmos.gl")),
             ("Renderer mode", graph.get("renderer_mode")),
             ("Runtime assets", graph.get("runtime_asset_status")),
+            ("Static fallback", "static_fallback"),
+            ("Runtime WebGL", "runtime_webgl_blocked"),
             ("Graphology-compatible", str(graph.get("graphology_compatible_payload", True)).lower()),
             ("Nodes", graph.get("node_count", 0)),
             ("Edges", graph.get("edge_count", 0)),
@@ -1340,7 +2000,7 @@ def _graph_panel_html(graph: dict[str, Any], *, graph_id: str, title: str, empty
         f"data-adapter-status=\"{_attr(graph.get('runtime_asset_status'))}\">\n"
         f"<h3>{_text(title)}</h3>\n"
         "<p class=\"graph-boundary\">Cosmos.gl is the selected renderer; this offline file carries a Cosmos-ready payload "
-        "and uses a static SVG/table fallback with no external assets.</p>\n"
+        "and uses a static_fallback SVG/table path with no external assets; runtime_webgl_blocked is the current execution boundary.</p>\n"
         f"{budget_rows}\n"
         f"{canvas}\n"
         f"<div class=\"graph-side-panel\" id=\"{_attr(graph_id)}-selected-file-panel\"><h4>Selected File Panel</h4>{selected_panel}</div>\n"
@@ -1426,7 +2086,10 @@ def _definition_rows(rows: list[tuple[str, Any]]) -> str:
 def _cockpit_css() -> str:
     return """
 :root{color-scheme:light;--ink:#151515;--muted:#5f6368;--line:#d7d9dd;--paper:#f7f8f5;--panel:#ffffff;--accent:#1f7a5a;--warn:#a05a00}
-*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.55 Arial,Helvetica,sans-serif}.skip-link{position:absolute;left:12px;top:-48px;background:var(--ink);color:#fff;padding:8px 10px;border-radius:4px;z-index:5}.skip-link:focus{top:12px}.cockpit-shell{max-width:1180px;margin:0 auto;padding:24px}.cockpit-hero{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:24px}.eyebrow{margin:0 0 8px;color:var(--accent);font-weight:700;text-transform:uppercase;font-size:12px}h1{font-size:34px;line-height:1.12;margin:0 0 12px}h2{font-size:21px;margin:0 0 12px}h3{font-size:15px;margin:0 0 8px}h4{font-size:14px;margin:0 0 8px}.hero-grid,.status-grid,.section-grid{display:grid;gap:10px}.hero-grid{grid-template-columns:repeat(4,minmax(0,1fr));margin-top:18px}.hero-grid span,.status-card,.section-card,.cockpit-band,.cockpit-page,.cockpit-controls{background:var(--panel);border:1px solid var(--line);border-radius:8px}.hero-grid span{padding:12px}.cockpit-nav{position:sticky;top:0;z-index:2;display:flex;gap:8px;overflow:auto;padding:12px 0;background:var(--paper)}.cockpit-nav a{white-space:nowrap;color:var(--ink);text-decoration:none;border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:8px 10px}.cockpit-controls{display:grid;grid-template-columns:2fr repeat(4,minmax(120px,1fr));gap:10px;align-items:end;margin-top:10px;padding:12px}.cockpit-controls label{display:grid;gap:4px;font-size:13px;font-weight:700}.cockpit-controls input,.cockpit-controls select,.cockpit-controls button{min-height:38px;border:1px solid var(--line);border-radius:6px;background:#fff;color:var(--ink);padding:7px}.control-note,.detail-panel-links{grid-column:1/-1;color:var(--muted);margin:0}.detail-panel-links{display:flex;flex-wrap:wrap;gap:8px;padding:0;list-style:none}.detail-panel-links a{color:var(--ink)}.cockpit-band,.cockpit-page{margin-top:14px;padding:18px}.status-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.status-card,.section-card{padding:14px}.section-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.page-role,.boundary,.status-card p,.section-card p,.graph-boundary,.empty-state{color:var(--muted);margin:0 0 6px}.claim-list{margin:0;padding-left:20px}.diagnostic-disclosure details{border:1px solid var(--line);border-radius:8px;background:var(--panel);padding:12px}.diagnostic-disclosure summary{cursor:pointer;font-weight:700}.compact-table,.graph-fallback-table{width:100%;border-collapse:collapse;margin:10px 0}.compact-table th,.compact-table td,.graph-fallback-table th,.graph-fallback-table td{border-top:1px solid var(--line);padding:9px;text-align:left;vertical-align:top;overflow-wrap:anywhere}.compact-table th{width:210px;color:var(--muted);font-weight:600}.graph-surface,.qa-contract,.safety-contract{margin:12px 0;padding:14px;border:1px solid var(--line);border-radius:8px;background:#fbfbf8}.graph-canvas{display:block;width:100%;min-height:320px;margin:12px 0;border:1px solid var(--line);border-radius:8px;background:#fdfdfb}.empty-graph{display:flex;align-items:center;justify-content:center;padding:24px;color:var(--muted)}.graph-edge{stroke-width:1;opacity:.58}.graph-node text{font-size:3.5px;fill:#252525;paint-order:stroke;stroke:#fff;stroke-width:1.8px}.graph-side-panel{margin:10px 0;padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--panel)}.graph-legend{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 12px;padding:0;list-style:none}.graph-legend li{display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;background:var(--panel);padding:5px 8px}.legend-swatch{width:10px;height:10px;border-radius:50%;display:inline-block}.graph-hotspots th:first-child,.graph-fallback-table th:first-child{width:230px}@media(max-width:760px){.cockpit-shell{padding:14px}.hero-grid,.status-grid,.section-grid,.cockpit-controls{grid-template-columns:1fr}h1{font-size:26px}.cockpit-nav{position:static}.compact-table th{width:auto}.graph-canvas{min-height:240px}.graph-legend{display:block}.graph-legend li{margin:6px 0}}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.55 Arial,Helvetica,sans-serif}.skip-link{position:absolute;left:12px;top:-48px;background:var(--ink);color:#fff;padding:8px 10px;border-radius:4px;z-index:5}.skip-link:focus{top:12px}.cockpit-shell{max-width:1180px;margin:0 auto;padding:24px}.cockpit-hero{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:24px}.dossier-hero{border-top:5px solid var(--accent);box-shadow:0 16px 40px rgb(30 50 40 / .08)}.hero-kicker-row,.hero-layout,.proof-strip{display:flex;gap:14px}.hero-kicker-row{justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:12px}.dossier-label{margin:0;color:var(--muted);font-weight:700}.hero-layout{display:grid;grid-template-columns:minmax(0,1.8fr) minmax(260px,.8fr);align-items:stretch;margin-top:18px}.hero-primary{padding-right:18px}.target-context{display:inline-block;margin:0 0 10px;padding:6px 9px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--muted);font-size:13px}.hero-lede{max-width:72ch;color:var(--muted);font-size:16px}.next-route-panel{background:#f5f8f3;border:1px solid var(--line);border-radius:8px;padding:16px}.next-route-panel h2{font-size:16px}.next-route-panel strong{display:inline-block;margin-top:8px;color:var(--accent)}.architecture-signal{display:grid;grid-template-columns:1.2fr .8fr;gap:12px;margin-top:14px;padding:14px;border:1px solid var(--line);border-radius:8px;background:#fbfbf8}.architecture-signal p{margin:0}.proof-strip{flex-wrap:wrap;margin:14px 0 0;padding:0;list-style:none}.proof-strip li{border:1px solid var(--line);border-radius:999px;background:#fff;padding:7px 10px;color:var(--muted);font-size:13px}.eyebrow{margin:0 0 8px;color:var(--accent);font-weight:700;text-transform:uppercase;font-size:12px}h1{font-size:38px;line-height:1.08;margin:0 0 12px;max-width:760px}h2{font-size:21px;margin:0 0 12px}h3{font-size:15px;margin:0 0 8px}h4{font-size:14px;margin:0 0 8px}.hero-grid,.status-grid,.section-grid{display:grid;gap:10px}.hero-grid{grid-template-columns:repeat(4,minmax(0,1fr));margin-top:18px}.hero-grid span,.status-card,.section-card,.cockpit-band,.cockpit-page,.cockpit-controls{background:var(--panel);border:1px solid var(--line);border-radius:8px}.hero-grid span{padding:12px}.dossier-grid span{display:grid;gap:4px}.dossier-grid small{color:var(--muted);font-weight:700;text-transform:uppercase;font-size:11px}.dossier-grid strong{font-size:18px}.cockpit-nav{position:sticky;top:0;z-index:2;display:flex;gap:8px;overflow:auto;padding:12px 0;background:var(--paper)}.cockpit-nav a{white-space:nowrap;color:var(--ink);text-decoration:none;border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:8px 10px}.cockpit-controls{display:grid;grid-template-columns:2fr repeat(4,minmax(120px,1fr));gap:10px;align-items:end;margin-top:10px;padding:12px}.cockpit-controls label{display:grid;gap:4px;font-size:13px;font-weight:700}.cockpit-controls input,.cockpit-controls select,.cockpit-controls button{min-height:38px;border:1px solid var(--line);border-radius:6px;background:#fff;color:var(--ink);padding:7px}.control-note,.detail-panel-links{grid-column:1/-1;color:var(--muted);margin:0}.detail-panel-links{display:flex;flex-wrap:wrap;gap:8px;padding:0;list-style:none}.detail-panel-links a{color:var(--ink)}.cockpit-band,.cockpit-page{margin-top:14px;padding:18px}.status-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.status-card,.section-card{padding:14px}.section-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.page-role,.boundary,.status-card p,.section-card p,.graph-boundary,.empty-state,.diagram-layer-summary,.diagram-panel p,.diagram-fallback-status{color:var(--muted);margin:0 0 6px}.claim-list{margin:0;padding-left:20px}.diagnostic-disclosure details,.raw-mermaid-fallback{border:1px solid var(--line);border-radius:8px;background:var(--panel);padding:12px}.diagnostic-disclosure summary,.raw-mermaid-fallback summary{cursor:pointer;font-weight:700}.compact-table,.graph-fallback-table{width:100%;border-collapse:collapse;margin:10px 0}.compact-table th,.compact-table td,.graph-fallback-table th,.graph-fallback-table td{border-top:1px solid var(--line);padding:9px;text-align:left;vertical-align:top;overflow-wrap:anywhere}.compact-table th{width:210px;color:var(--muted);font-weight:600}.graph-surface,.qa-contract,.safety-contract,.diagram-panel{margin:12px 0;padding:14px;border:1px solid var(--line);border-radius:8px;background:#fbfbf8}.diagram-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.diagram-panel{background:#fff}.architecture-diagram-svg{display:block;width:100%;height:auto;min-height:112px;margin:12px 0}.diagram-stage{fill:#f6f8f5;stroke:#d7d9dd}.diagram-node rect{fill:#fff;stroke:#1f7a5a;stroke-width:1.2}.diagram-node text{font-size:12px;fill:#151515;text-anchor:middle;dominant-baseline:middle}.diagram-edge{stroke:#7d8793;stroke-width:1.4}.diagram-edge-label{font-size:9px;fill:#5f6368}.raw-mermaid-fallback code{display:block;white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.45 ui-monospace,SFMono-Regular,Consolas,monospace;color:#222}.graph-canvas{display:block;width:100%;min-height:320px;margin:12px 0;border:1px solid var(--line);border-radius:8px;background:#fdfdfb}.empty-graph{display:flex;align-items:center;justify-content:center;padding:24px;color:var(--muted)}.graph-edge{stroke-width:1;opacity:.58}.graph-node text{font-size:3.5px;fill:#252525;paint-order:stroke;stroke:#fff;stroke-width:1.8px}.graph-side-panel{margin:10px 0;padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--panel)}.graph-legend{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 12px;padding:0;list-style:none}.graph-legend li{display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;background:var(--panel);padding:5px 8px}.legend-swatch{width:10px;height:10px;border-radius:50%;display:inline-block}.graph-hotspots th:first-child,.graph-fallback-table th:first-child{width:230px}@media(max-width:760px){.cockpit-shell{padding:14px}.hero-layout,.architecture-signal{display:grid;grid-template-columns:1fr}.hero-primary{padding-right:0}.hero-kicker-row{align-items:flex-start;flex-direction:column}.hero-grid,.status-grid,.section-grid,.cockpit-controls,.diagram-grid{grid-template-columns:1fr}h1{font-size:28px}.cockpit-nav{position:static}.compact-table th{width:auto}.graph-canvas{min-height:240px}.graph-legend{display:block}.graph-legend li{margin:6px 0}.diagram-panel{padding:12px}.architecture-diagram-svg{min-height:96px}}
+.acceptance-surface{margin:12px 0;padding:14px;border:1px solid var(--line);border-radius:8px;background:#fbfbf8}.evidence-decision-layer{border-top:5px solid #365f91}.evidence-grid,.decision-grid,.risk-grid,.source-blueprint-grid,.proof-ref-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.evidence-card,.decision-card,.risk-card,.future-gate-card,.source-blueprint-card,.proof-ref-card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px;min-width:0}.supported-claim-card{border-left:4px solid #1f7a5a}.blocker-card,.risk-card{border-left:4px solid #8a4b18}.decision-card{border-left:4px solid #365f91}.source-blueprint-card{border-left:4px solid #5f6368}.proof-ref-card{border-left:4px solid var(--accent)}.evidence-card p,.decision-card p,.risk-card p,.future-gate-card p,.source-blueprint-card p,.proof-ref-card p{margin:0 0 6px;color:var(--muted)}.source-blueprint-card code,.proof-ref-card code{overflow-wrap:anywhere}.action-columns{display:grid;grid-template-columns:1fr 1fr;gap:12px}.action-columns>div{background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px}@media(max-width:760px){.evidence-grid,.decision-grid,.risk-grid,.source-blueprint-grid,.proof-ref-grid,.action-columns{grid-template-columns:1fr}}
+.cockpit-shell,.cockpit-band,.cockpit-page,.architecture-signal,.cockpit-nav,.graph-surface,.diagram-panel,.acceptance-surface{min-width:0;max-width:100%}.cockpit-nav{scrollbar-width:thin}.architecture-signal p,.graph-boundary,.evidence-card,.decision-card,.risk-card,.future-gate-card,.source-blueprint-card,.proof-ref-card{overflow-wrap:anywhere}.architecture-diagram-svg,.graph-canvas{overflow:hidden}
+.graph-runtime-layer{border-top:5px solid #8a4b18}.runtime-label-strip{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px;padding:0;list-style:none}.runtime-label-strip li{border:1px solid var(--line);border-radius:999px;background:#fff;padding:7px 10px;color:var(--muted);font-size:13px}.graph-runtime-grid,.graph-runtime-states{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.graph-runtime-card,.graph-state-card,.fallback-explanation{background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px;min-width:0}.runtime-blocker-banner{border-left:4px solid #8a4b18;background:#fff9f2}.graph-runtime-card p,.graph-state-card p,.fallback-explanation p{margin:0 0 6px;color:var(--muted);overflow-wrap:anywhere}@media(max-width:760px){.graph-runtime-grid,.graph-runtime-states{grid-template-columns:1fr}}
 """.strip()
 
 

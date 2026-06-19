@@ -608,6 +608,337 @@ class Batch41FirstRunAutomationTests(unittest.TestCase):
             self.assertNotIn("https://", index_html.lower())
             self.assertNotIn(str(workspace), result.stdout + index_html + json.dumps(manifest, sort_keys=True))
 
+    def test_b41_s8_m42_cockpit_renders_static_architecture_diagram_layer(self) -> None:
+        with TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "s8-diagram-target"
+            stage = Path(tmp) / "stage-output"
+            workspace.mkdir()
+            (workspace / "README.md").write_text("Source status: `synthetic_fixture`\n", encoding="utf-8")
+            (workspace / "package.json").write_text(
+                json.dumps({"scripts": {"dev": "vite --host 127.0.0.1", "test": "vitest"}}),
+                encoding="utf-8",
+            )
+
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPTS / "run_first_project_analysis.py"),
+                    str(workspace),
+                    "--stage",
+                    str(stage),
+                    "--generated-at",
+                    "2026-06-19T03:10:00+03:00",
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
+            manifest = json.loads(stage.joinpath("analysis-manifest.json").read_text(encoding="utf-8"))
+            index_html = stage.joinpath("index.html").read_text(encoding="utf-8")
+            view_model = manifest["primary_cockpit"]["view_model"]
+            diagram_layer = view_model["architecture_diagrams"]
+            diagram_ids = {diagram["id"] for diagram in diagram_layer["diagrams"]}
+
+            self.assertEqual(manifest["cockpit_contract"]["architecture_diagram_layer"]["status"], "static_fallback_ready")
+            self.assertEqual(
+                manifest["cockpit_contract"]["architecture_diagram_layer"]["diagram_ids"],
+                [
+                    "system-context",
+                    "first-run-pipeline",
+                    "trust-boundary",
+                    "artifact-data-model",
+                    "graph-rendering",
+                    "runtime-approval-path",
+                    "evidence-lifecycle",
+                ],
+            )
+            self.assertEqual(diagram_layer["schema_version"], "first_run_architecture_diagram_layer_v1")
+            self.assertEqual(diagram_layer["status"], "static_fallback_ready")
+            self.assertEqual(diagram_layer["diagram_count"], 7)
+            self.assertEqual(diagram_layer["diagram_ids"], manifest["cockpit_contract"]["architecture_diagram_layer"]["diagram_ids"])
+            self.assertEqual(diagram_layer["external_assets"], "forbidden")
+            self.assertEqual(
+                diagram_ids,
+                {
+                    "system-context",
+                    "first-run-pipeline",
+                    "trust-boundary",
+                    "artifact-data-model",
+                    "graph-rendering",
+                    "runtime-approval-path",
+                    "evidence-lifecycle",
+                },
+            )
+            for diagram in diagram_layer["diagrams"]:
+                self.assertTrue(diagram["question_answered"])
+                self.assertEqual(diagram["generated_view_boundary"], "generated-view-only")
+                self.assertEqual(diagram["required_boundary"], "source files and current command evidence remain source truth")
+                self.assertEqual(diagram["source_boundary"].split(";")[0], "generated-view-only")
+                self.assertEqual(diagram["static_fallback"]["status"], "rendered_static_fallback")
+                self.assertEqual(diagram["raw_mermaid_fallback"]["status"], "available_collapsed")
+                self.assertEqual(diagram["raw_mermaid_fallback"]["runtime_status"], "not_executed_no_mermaid_runtime")
+                self.assertIn("flowchart", diagram["raw_mermaid_fallback"]["source"])
+                self.assertEqual(
+                    diagram["rendering_acceptance"],
+                    {
+                        "static_fallback_present": True,
+                        "raw_mermaid_present": True,
+                        "external_assets_forbidden": True,
+                        "runtime_not_executed": True,
+                    },
+                )
+
+            self.assertIn('class="cockpit-band architecture-diagram-layer"', index_html)
+            self.assertEqual(index_html.count('id="architecture-diagram-layer"'), 1)
+            self.assertIn('id="architecture-diagram-summary"', index_html)
+            self.assertEqual(index_html.count('class="diagram-panel"'), 10)
+            self.assertEqual(index_html.count('class="architecture-diagram-svg"'), 10)
+            self.assertIn('id="diagram-system-context"', index_html)
+            self.assertEqual(index_html.count('id="diagram-system-context"'), 1)
+            self.assertIn('id="diagram-summary-system-context"', index_html)
+            self.assertIn('id="diagram-first-run-pipeline"', index_html)
+            self.assertIn('id="diagram-trust-boundary"', index_html)
+            self.assertIn('id="diagram-artifact-data-model"', index_html)
+            self.assertIn('id="diagram-graph-rendering"', index_html)
+            self.assertIn('id="diagram-runtime-approval-path"', index_html)
+            self.assertIn('id="diagram-evidence-lifecycle"', index_html)
+            self.assertIn('class="architecture-diagram-svg"', index_html)
+            self.assertIn("Raw Mermaid fallback", index_html)
+            self.assertIn("Source/Trust Boundary", index_html)
+            self.assertIn("generated-view-only", index_html)
+            self.assertIn("not_executed_no_mermaid_runtime", index_html)
+            self.assertNotIn("mermaid.min", index_html.lower())
+            self.assertNotIn("<script", index_html.lower())
+            self.assertNotIn("http://", index_html.lower())
+            self.assertNotIn("https://", index_html.lower())
+            self.assertNotIn("<pre", index_html.lower())
+            self.assertNotIn(str(workspace), result.stdout + index_html + json.dumps(manifest, sort_keys=True))
+
+    def test_b41_s8_m43_cockpit_shell_uses_architecture_dossier_layout(self) -> None:
+        with TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "s8-shell-target"
+            stage = Path(tmp) / "stage-output"
+            workspace.mkdir()
+            (workspace / "README.md").write_text("Source status: `synthetic_fixture`\n", encoding="utf-8")
+            (workspace / "package.json").write_text(
+                json.dumps({"scripts": {"dev": "vite --host 127.0.0.1", "test": "vitest"}}),
+                encoding="utf-8",
+            )
+
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPTS / "run_first_project_analysis.py"),
+                    str(workspace),
+                    "--stage",
+                    str(stage),
+                    "--generated-at",
+                    "2026-06-19T04:00:00+03:00",
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
+            index_html = stage.joinpath("index.html").read_text(encoding="utf-8")
+
+            self.assertIn('class="cockpit-hero dossier-hero"', index_html)
+            self.assertIn('data-shell="architecture-dossier"', index_html)
+            self.assertIn("Product-Agent OS First-Run Architecture Cockpit", index_html)
+            self.assertIn("Architecture dossier / operational cockpit", index_html)
+            self.assertIn('class="next-route-panel"', index_html)
+            self.assertIn("Next Safe Route", index_html)
+            self.assertIn('class="hero-grid dossier-grid"', index_html)
+            self.assertIn("Architecture diagrams", index_html)
+            self.assertIn('class="architecture-signal"', index_html)
+            self.assertIn("Architecture signal:", index_html)
+            self.assertIn("Runtime boundary:", index_html)
+            self.assertIn('class="proof-strip"', index_html)
+            self.assertIn("source truth stays in files and current commands", index_html)
+            self.assertIn("no external diagram assets", index_html)
+            self.assertIn("no target mutation by default", index_html)
+            self.assertIn("completion claim: not_claimed", index_html)
+            self.assertIn("dossier-grid", index_html)
+            self.assertIn("proof-strip", index_html)
+            self.assertNotIn("<script", index_html.lower())
+            self.assertNotIn("http://", index_html.lower())
+            self.assertNotIn("https://", index_html.lower())
+            self.assertNotIn(str(workspace), result.stdout + index_html)
+
+    def test_b41_s8_m44_cockpit_renders_evidence_decision_risk_source_blueprint_sections(self) -> None:
+        with TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "s8-evidence-target"
+            stage = Path(tmp) / "stage-output"
+            workspace.mkdir()
+            (workspace / "README.md").write_text("Source status: `synthetic_fixture`\n", encoding="utf-8")
+            (workspace / "package.json").write_text(
+                json.dumps({"scripts": {"dev": "vite --host 127.0.0.1", "test": "vitest"}}),
+                encoding="utf-8",
+            )
+
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPTS / "run_first_project_analysis.py"),
+                    str(workspace),
+                    "--stage",
+                    str(stage),
+                    "--generated-at",
+                    "2026-06-19T04:30:00+03:00",
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
+            manifest = json.loads(stage.joinpath("analysis-manifest.json").read_text(encoding="utf-8"))
+            index_html = stage.joinpath("index.html").read_text(encoding="utf-8")
+            layer = manifest["primary_cockpit"]["view_model"]["evidence_decision_layer"]
+
+            self.assertEqual(layer["schema_version"], "first_run_evidence_decision_layer_v1")
+            self.assertEqual(layer["status"], "visible_acceptance_surfaces_ready")
+            self.assertEqual(layer["generated_view_policy"], "orientation_only_not_proof")
+            self.assertGreaterEqual(len(layer["supported_claims"]), 4)
+            self.assertGreaterEqual(len(layer["unsupported_claims"]), 1)
+            self.assertGreaterEqual(len(layer["blockers"]), 1)
+            self.assertGreaterEqual(len(layer["decision_grid"]), 3)
+            self.assertGreaterEqual(len(layer["owner_actions"]), 3)
+            self.assertGreaterEqual(len(layer["codex_actions"]), 3)
+            self.assertGreaterEqual(len(layer["risk_ledger"]), 6)
+            self.assertGreaterEqual(len(layer["source_blueprints"]), 1)
+            self.assertGreaterEqual(len(layer["proof_refs"]), 2)
+            for decision in layer["decision_grid"]:
+                self.assertIn("owner_action", decision)
+                self.assertIn("codex_action", decision)
+                self.assertIn("approval_requirement", decision)
+                self.assertIn("next_safe_step", decision)
+
+            required_markers = [
+                'id="evidence-decision-layer"',
+                'data-acceptance-surface="m44"',
+                'id="supported-claims"',
+                'id="unsupported-claims"',
+                'id="blocker-ledger"',
+                'id="decision-grid"',
+                'id="owner-codex-actions"',
+                'id="risk-ledger"',
+                'id="future-gates"',
+                'id="proof-evidence-strip"',
+                'id="source-blueprint"',
+                "Supported Claims",
+                "Unsupported Claims",
+                "Blocker Ledger",
+                "Decision Grid",
+                "Owner Actions",
+                "Codex Actions",
+                "Risk Ledger",
+                "Source Blueprint",
+                "Approval requirement:",
+                "Next safe step:",
+                "output/playwright/b41-s8-m42/playwright-diagram-proof.json",
+                "output/playwright/b41-s8-m43/playwright-shell-proof.json",
+            ]
+            for marker in required_markers:
+                self.assertIn(marker, index_html)
+
+            self.assertEqual(index_html.count('id="supported-claims"'), 1)
+            self.assertEqual(index_html.count('id="unsupported-claims"'), 1)
+            self.assertIn("release readiness", index_html)
+            self.assertIn("target apply safety", index_html)
+            self.assertIn("Cosmos.gl/WebGL runtime execution is not claimed", index_html)
+            self.assertIn("Generated artifacts must not mutate target source", index_html)
+            self.assertIn("generated-view-only", index_html)
+            self.assertIn("orientation_only_not_proof", index_html)
+            self.assertNotIn("release-ready", index_html.lower())
+            self.assertNotIn("wcag certified", index_html.lower())
+            self.assertNotIn("raw_source", index_html)
+            self.assertNotIn("<script", index_html.lower())
+            self.assertNotIn("http://", index_html.lower())
+            self.assertNotIn("https://", index_html.lower())
+            self.assertNotIn(str(workspace), result.stdout + index_html + json.dumps(manifest, sort_keys=True))
+
+    def test_b41_s8_m45_cockpit_labels_graph_runtime_static_fallback_boundary(self) -> None:
+        with TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "s8-graph-runtime-target"
+            stage = Path(tmp) / "stage-output"
+            workspace.mkdir()
+            (workspace / "README.md").write_text("Source status: `synthetic_fixture`\n", encoding="utf-8")
+            (workspace / "package.json").write_text(
+                json.dumps({"scripts": {"dev": "vite --host 127.0.0.1", "test": "vitest"}}),
+                encoding="utf-8",
+            )
+
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPTS / "run_first_project_analysis.py"),
+                    str(workspace),
+                    "--stage",
+                    str(stage),
+                    "--generated-at",
+                    "2026-06-19T05:20:00+03:00",
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
+            manifest = json.loads(stage.joinpath("analysis-manifest.json").read_text(encoding="utf-8"))
+            index_html = stage.joinpath("index.html").read_text(encoding="utf-8")
+            view_model = manifest["primary_cockpit"]["view_model"]
+            layer = view_model["graph_runtime_layer"]
+
+            self.assertEqual(layer["schema_version"], "first_run_graph_runtime_layer_v1")
+            self.assertEqual(layer["status"], "runtime_webgl_blocked_static_fallback_ready")
+            self.assertEqual(layer["runtime_execution_claim"], "not_claimed")
+            self.assertEqual(
+                layer["required_labels"],
+                ["adapter_ready", "static_fallback", "not_available", "runtime_webgl_blocked"],
+            )
+            self.assertEqual(layer["graphology_payload"]["status"], "adapter_ready")
+            self.assertTrue(layer["graphology_payload"]["compatible"])
+            self.assertEqual(layer["cosmos_adapter"]["runtime_webgl_status"], "runtime_webgl_blocked")
+            self.assertEqual(layer["cosmos_adapter"]["execution_evidence"], "not_available")
+            self.assertEqual(layer["runtime_blocker_banner"]["status"], "runtime_webgl_blocked")
+            self.assertEqual(layer["fallback_explanation"]["status"], "static_fallback")
+            self.assertGreaterEqual(len(layer["rendered_states"]), 2)
+
+            required_markers = [
+                'id="graph-runtime-layer"',
+                'data-runtime-status="runtime_webgl_blocked"',
+                "Graphology / Cosmos.gl Runtime Boundary",
+                "Graphology-compatible payload",
+                "Cosmos.gl-ready adapter",
+                "Cosmos.gl WebGL runtime execution is not claimed",
+                "adapter_ready",
+                "static_fallback",
+                "not_available",
+                "runtime_webgl_blocked",
+                "Runtime Blocker",
+                "Selected Node UX",
+                "Static Fallback Explanation",
+                'id="source-file-graph-canvas"',
+                'id="source-file-graph-selected-file-panel"',
+                'class="graph-fallback-table"',
+                "Runtime WebGL",
+            ]
+            for marker in required_markers:
+                self.assertIn(marker, index_html)
+
+            self.assertIn("runtime_webgl_blocked is the current execution boundary", index_html)
+            self.assertIn("Code graph data is not available for this packet.", index_html)
+            self.assertNotIn("WebGL runtime passed", index_html)
+            self.assertNotIn("Cosmos.gl runtime passed", index_html)
+            self.assertNotIn("<script", index_html.lower())
+            self.assertNotIn("http://", index_html.lower())
+            self.assertNotIn("https://", index_html.lower())
+            self.assertNotIn(str(workspace), result.stdout + index_html + json.dumps(manifest, sort_keys=True))
+
     def test_b41_s7_m34_m35_cockpit_renders_source_graph_and_code_graph_summary_payloads(self) -> None:
         from product_agent_os.analysis_artifact_renderer import render_first_run_analysis_artifact  # noqa: PLC0415
         from product_agent_os.first_run_analysis import build_first_run_analysis_packet, validate_first_run_analysis_packet  # noqa: PLC0415

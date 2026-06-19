@@ -808,7 +808,17 @@
       "acceptance": "Every diagram has title, source status, generated-view-only boundary, raw Mermaid/static fallback and responsive non-overlap proof.",
       "verification": "Unit tests for diagram payload/rendering plus Playwright desktop/mobile screenshots; no Mermaid/diagram claim without visible artifact evidence.",
       "risks_approval_gates": "Mermaid runtime, external diagram services or hosted assets are not allowed by default; use local/static fallback unless separately approved.",
-      "status": "planned"
+      "evidence": {
+        "summary": "docs/superpowers/specs/batch41-s8-m42-architecture-diagram-layer-summary.json",
+        "playwright_proof": "output/playwright/b41-s8-m42/playwright-diagram-proof.json",
+        "screenshots": [
+          "output/playwright/b41-s8-m42/desktop-diagrams.png",
+          "output/playwright/b41-s8-m42/mobile-diagrams.png"
+        ],
+        "agent": "Keystone architect read-only handoff",
+        "verification_status": "passed_unit_and_playwright_static_diagram_checks"
+      },
+      "status": "implemented_static_diagram_layer_with_playwright_proof"
     },
     {
       "id": "B41-S8-M43",
@@ -827,7 +837,17 @@
       "acceptance": "Index HTML is visually designed, not default-browser; first viewport shows artifact identity, status, architecture signal and next route; no text overlap on desktop/mobile.",
       "verification": "Focused renderer tests, Playwright screenshots, console/network clean check, text-overlap/manual visual proof packet.",
       "risks_approval_gates": "No external fonts, CDN, JS animation library or target mutation by default.",
-      "status": "planned"
+      "evidence": {
+        "summary": "docs/superpowers/specs/batch41-s8-m43-cockpit-shell-redesign-summary.json",
+        "playwright_proof": "output/playwright/b41-s8-m43/playwright-shell-proof.json",
+        "screenshots": [
+          "output/playwright/b41-s8-m43/desktop-first-viewport.png",
+          "output/playwright/b41-s8-m43/mobile-first-viewport.png"
+        ],
+        "agent": "Ariadne product/design reviewer read-only handoff",
+        "verification_status": "passed_unit_and_playwright_shell_checks"
+      },
+      "status": "implemented_architecture_dossier_shell_with_playwright_proof"
     },
     {
       "id": "B41-S8-M44",
@@ -845,7 +865,17 @@
       "acceptance": "Generated HTML exposes supported claims, unsupported claims, blockers, owner actions and Codex actions as separate visible surfaces.",
       "verification": "Renderer tests for all sections, source/trust-boundary assertions and screenshot proof.",
       "risks_approval_gates": "Generated evidence remains orientation-only; do not promote to source truth, release readiness or target apply safety.",
-      "status": "planned"
+      "evidence": {
+        "summary": "docs/superpowers/specs/batch41-s8-m44-evidence-decision-risk-summary.json",
+        "playwright_proof": "output/playwright/b41-s8-m44/playwright-evidence-decision-proof.json",
+        "screenshots": [
+          "output/playwright/b41-s8-m44/desktop-evidence-decision.png",
+          "output/playwright/b41-s8-m44/mobile-evidence-decision.png"
+        ],
+        "agent": "Harbor product/evidence reviewer read-only handoff",
+        "verification_status": "passed_unit_and_playwright_evidence_decision_checks"
+      },
+      "status": "implemented_evidence_decision_risk_source_blueprint_with_playwright_proof"
     },
     {
       "id": "B41-S8-M45",
@@ -863,7 +893,17 @@
       "acceptance": "UI clearly labels adapter_ready, static_fallback, not_available and runtime_webgl_blocked states; no Cosmos.gl runtime pass claim without canvas/WebGL proof.",
       "verification": "Renderer tests plus Playwright canvas/SVG/table checks for desktop/mobile graph states.",
       "risks_approval_gates": "Vendoring Cosmos.gl, enabling scripts or executing WebGL runtime is a separate approval/implementation slice.",
-      "status": "planned"
+      "evidence": {
+        "summary": "docs/superpowers/specs/batch41-s8-m45-graph-runtime-boundary-summary.json",
+        "playwright_proof": "output/playwright/b41-s8-m45/playwright-graph-runtime-proof.json",
+        "screenshots": [
+          "output/playwright/b41-s8-m45/desktop-graph-runtime.png",
+          "output/playwright/b41-s8-m45/mobile-graph-runtime.png"
+        ],
+        "agent": "Vector architecture reviewer read-only handoff",
+        "verification_status": "passed_unit_and_playwright_graph_runtime_boundary_checks"
+      },
+      "status": "implemented_graph_runtime_static_fallback_boundary_with_playwright_proof"
     },
     {
       "id": "B41-S8-M46",
@@ -882,7 +922,19 @@
       "acceptance": "Proof packet contains screenshots, interaction checks, console/network result, accessible-name summary, no-overlap notes and explicit WCAG-certification non-claim unless a full audit is performed.",
       "verification": "Playwright proof plus focused tests and git diff hygiene.",
       "risks_approval_gates": "Browser automation is already owner-approved for this HTML acceptance route only; no live server, provider, target mutation, release or external write follows from it.",
-      "status": "planned"
+      "evidence": {
+        "summary": "docs/superpowers/specs/batch41-s8-m46-visual-a11y-acceptance-summary.json",
+        "playwright_proof": "output/playwright/b41-s8-m46/playwright-visual-a11y-proof.json",
+        "screenshots": [
+          "output/playwright/b41-s8-m46/desktop-full-page.png",
+          "output/playwright/b41-s8-m46/desktop-first-viewport.png",
+          "output/playwright/b41-s8-m46/mobile-full-page.png",
+          "output/playwright/b41-s8-m46/mobile-first-viewport.png"
+        ],
+        "agent": "Signal tester read-only handoff",
+        "verification_status": "passed_playwright_visual_interaction_accessibility_oriented_checks"
+      },
+      "status": "implemented_visual_interaction_accessibility_oriented_acceptance_with_playwright_proof"
     },
     {
       "id": "B41-S8-M47",
@@ -901,7 +953,20 @@
       "acceptance": "New Neural_Flow artifact passes design artifact gates, architecture diagram gates, static safety gates and browser visual proof; remaining gaps are explicit.",
       "verification": "Run focused B41 renderer tests, docs/control-plane checks, Playwright proof and completion-skeptic unsupported-claim review.",
       "risks_approval_gates": "No target source mutation, plugin-cache write, provider/API call, git action, release/deploy/publish or external write without a new exact approval.",
-      "status": "planned"
+      "evidence": {
+        "summary": "docs/superpowers/specs/batch41-s8-m47-neural-flow-before-after-summary.json",
+        "stage_root": "docs/superpowers/specs/batch41-s8-m47-neural-flow-stage",
+        "playwright_proof": "output/playwright/b41-s8-m47/playwright-neural-flow-before-after-proof.json",
+        "screenshots": [
+          "output/playwright/b41-s8-m47/desktop-neural-flow-overview.png",
+          "output/playwright/b41-s8-m47/desktop-neural-flow-full.png",
+          "output/playwright/b41-s8-m47/mobile-neural-flow-overview.png",
+          "output/playwright/b41-s8-m47/mobile-neural-flow-full.png"
+        ],
+        "agent": "Probe tester read-only handoff requested",
+        "verification_status": "passed_neural_flow_regenerated_before_after_playwright_checks"
+      },
+      "status": "implemented_regenerated_neural_flow_before_after_proof"
     }
   ],
   "suggested_order": [

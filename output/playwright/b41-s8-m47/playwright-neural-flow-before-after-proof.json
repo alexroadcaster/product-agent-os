@@ -1,0 +1,118 @@
+﻿{
+    "schema_version":  "batch41_s8_m47_neural_flow_playwright_proof_v1",
+    "status":  "passed",
+    "fileUrl":  "file:///C:/Users/user/Desktop/project/codex_docs/docs/superpowers/specs/batch41-s8-m47-neural-flow-stage/index.html",
+    "before_refs":  {
+                        "stage_root":  "docs/superpowers/specs/batch41-s7-m40-neural-flow-stage",
+                        "proof_packet":  "output/playwright/b41-s7-m40/playwright-runtime-proof.json"
+                    },
+    "after_refs":  {
+                       "stage_root":  "docs/superpowers/specs/batch41-s8-m47-neural-flow-stage",
+                       "index_html":  "docs/superpowers/specs/batch41-s8-m47-neural-flow-stage/index.html",
+                       "analysis_manifest":  "docs/superpowers/specs/batch41-s8-m47-neural-flow-stage/analysis-manifest.json",
+                       "index_sha256":  "sha256:4791538425a27edd23629c8f7d08523889f224d8a1a252a09c69a0ee77c8052b",
+                       "manifest_digest":  "sha256:72ca345138c61cc9fb815d60c70a35691f24c933cf9ce9487d24942955118dd2",
+                       "source_packet_digest":  "sha256:62a823925b2b0198f4db9ff228ffe086c0a495cbd020e9fc24c393cdebbe7dbe",
+                       "target_workspace_mutation":  false,
+                       "page_count":  11,
+                       "view_model_schema":  "first_run_cockpit_artifact_v1",
+                       "view_model_digest":  "sha256:89e9b8807201cc57f9808b22c8f57b57a1b59bd85ef31a9f68f69ac17bb580cf"
+                   },
+    "viewports":  [
+                      {
+                          "name":  "desktop",
+                          "width":  1365,
+                          "height":  900,
+                          "titleVisible":  true,
+                          "targetVisible":  true,
+                          "generatedViewVisible":  true,
+                          "architectureVisible":  true,
+                          "evidenceVisible":  true,
+                          "graphRuntimeVisible":  true,
+                          "unsupportedVisible":  true,
+                          "m40OldTitleAbsent":  true,
+                          "uniqueIds":  {
+                                            "architecture-diagram-layer":  1,
+                                            "evidence-decision-layer":  1,
+                                            "graph-runtime-layer":  1,
+                                            "supported-claims":  1,
+                                            "unsupported-claims":  1,
+                                            "decision-grid":  1,
+                                            "risk-ledger":  1,
+                                            "source-blueprint":  1
+                                        },
+                          "bodyOverflow":  false,
+                          "scrollWidth":  1365,
+                          "viewportWidth":  1365,
+                          "overlaps":  0,
+                          "controlsTotal":  30,
+                          "namedControls":  29,
+                          "noPre":  true,
+                          "noScript":  true,
+                          "canvasCount":  0,
+                          "svgCount":  11,
+                          "externalLinkCount":  0,
+                          "runtimePassClaimAbsent":  true,
+                          "wcagCertificationClaim":  false,
+                          "releaseReadyClaim":  false,
+                          "namedControlRatio":  0.96666666666666667
+                      },
+                      {
+                          "name":  "mobile",
+                          "width":  390,
+                          "height":  844,
+                          "titleVisible":  true,
+                          "targetVisible":  true,
+                          "generatedViewVisible":  true,
+                          "architectureVisible":  true,
+                          "evidenceVisible":  true,
+                          "graphRuntimeVisible":  true,
+                          "unsupportedVisible":  true,
+                          "m40OldTitleAbsent":  true,
+                          "uniqueIds":  {
+                                            "architecture-diagram-layer":  1,
+                                            "evidence-decision-layer":  1,
+                                            "graph-runtime-layer":  1,
+                                            "supported-claims":  1,
+                                            "unsupported-claims":  1,
+                                            "decision-grid":  1,
+                                            "risk-ledger":  1,
+                                            "source-blueprint":  1
+                                        },
+                          "bodyOverflow":  false,
+                          "scrollWidth":  390,
+                          "viewportWidth":  390,
+                          "overlaps":  0,
+                          "controlsTotal":  30,
+                          "namedControls":  29,
+                          "noPre":  true,
+                          "noScript":  true,
+                          "canvasCount":  0,
+                          "svgCount":  11,
+                          "externalLinkCount":  0,
+                          "runtimePassClaimAbsent":  true,
+                          "wcagCertificationClaim":  false,
+                          "releaseReadyClaim":  false,
+                          "namedControlRatio":  0.96666666666666667
+                      }
+                  ],
+    "consoleMessages":  [
+
+                        ],
+    "externalRequests":  [
+
+                         ],
+    "screenshots":  [
+                        "C:\\Users\\user\\Desktop\\project\\codex_docs\\output\\playwright\\b41-s8-m47\\desktop-neural-flow-overview.png",
+                        "C:\\Users\\user\\Desktop\\project\\codex_docs\\output\\playwright\\b41-s8-m47\\desktop-neural-flow-full.png",
+                        "C:\\Users\\user\\Desktop\\project\\codex_docs\\output\\playwright\\b41-s8-m47\\mobile-neural-flow-overview.png",
+                        "C:\\Users\\user\\Desktop\\project\\codex_docs\\output\\playwright\\b41-s8-m47\\mobile-neural-flow-full.png"
+                    ],
+    "accepted_gaps":  [
+                          "Owner visual acceptance remains pending owner review of screenshots.",
+                          "Cosmos.gl WebGL runtime execution remains blocked/static fallback only.",
+                          "No full WCAG certification audit was performed.",
+                          "No target source mutation, provider/API, git/release/deploy/publish or external write was performed."
+                      ],
+    "named_control_threshold":  "\u003e=0.95, aligned with M46 accessibility-oriented proof"
+}

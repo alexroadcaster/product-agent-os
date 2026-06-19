@@ -1,0 +1,109 @@
+{
+  "actions_performed": {
+    "active_automation": false,
+    "browser_automation": true,
+    "external_write": false,
+    "git_stage_commit_push_pr": false,
+    "live_server": false,
+    "mcp_external_call": false,
+    "provider_api_call": false,
+    "release_deploy_publish": false,
+    "target_workspace_mutation": false
+  },
+  "agents_used": [
+    {
+      "agent": "Ariadne",
+      "role": "product/design reviewer",
+      "result": "read-only M43 first-viewport acceptance and visual-risk handoff; no files touched"
+    }
+  ],
+  "attempt_id": "B41-S8-M43-A01",
+  "changed_files": [
+    "plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py",
+    "tests/product_agent_os/test_batch41_first_run_automation.py",
+    "docs/superpowers/specs/batch41-s8-m43-cockpit-shell-redesign-summary.json",
+    "docs/superpowers/specs/batch41-first-run-automation-matrix.json",
+    "PLAN.md",
+    "TEST.md",
+    "EVALS.md",
+    "RUNLOG.md"
+  ],
+  "schema_version": "batch41_s8_m43_cockpit_shell_redesign_summary_v1",
+  "shell": {
+    "status": "architecture_dossier_shell_implemented",
+    "markers": [
+      "header.cockpit-hero.dossier-hero[data-shell=\"architecture-dossier\"]",
+      ".hero-kicker-row",
+      ".hero-layout",
+      ".target-context",
+      ".next-route-panel",
+      ".hero-grid.dossier-grid",
+      ".architecture-signal",
+      ".proof-strip"
+    ],
+    "first_viewport_contract": [
+      "artifact identity visible",
+      "target/profile context visible",
+      "generated-view-only boundary visible",
+      "next safe route visible",
+      "architecture signal visible",
+      "proof strip visible",
+      "not a raw JSON or plain text first viewport"
+    ]
+  },
+  "playwright_visual_proof": {
+    "path": "output/playwright/b41-s8-m43/playwright-shell-proof.json",
+    "status": "passed",
+    "screenshots": [
+      "output/playwright/b41-s8-m43/desktop-first-viewport.png",
+      "output/playwright/b41-s8-m43/mobile-first-viewport.png"
+    ],
+    "checks": {
+      "desktop_mobile_first_viewport": true,
+      "target_context_visible": true,
+      "generated_view_boundary_visible": true,
+      "next_route_visible": true,
+      "architecture_signal_visible": true,
+      "proof_strip_visible": true,
+      "body_overflow": false,
+      "peer_overlaps": 0,
+      "console_messages": 0,
+      "external_requests": 0
+    }
+  },
+  "status": "implemented_architecture_dossier_shell_with_playwright_proof",
+  "unsupported_claims": [
+    "M44 evidence/decision/risk/source-blueprint sections implemented",
+    "Cosmos.gl runtime/WebGL execution passed",
+    "WCAG certification",
+    "Neural_Flow regenerated artifact accepted",
+    "release readiness",
+    "target apply safety"
+  ],
+  "verification": [
+    {
+      "command": "python -m unittest tests.product_agent_os.test_batch41_first_run_automation.Batch41FirstRunAutomationTests.test_b41_s8_m43_cockpit_shell_uses_architecture_dossier_layout -v",
+      "result": "passed"
+    },
+    {
+      "command": "node Playwright proof against staged file:// index.html with desktop 1365x900 and mobile 390x844",
+      "result": "passed; proof stored in output/playwright/b41-s8-m43/playwright-shell-proof.json"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_batch41_first_run_automation -q",
+      "result": "passed; 22 tests"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -q",
+      "result": "passed; 81 tests"
+    },
+    {
+      "command": "python tools\\check_docs.py",
+      "result": "passed"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ]
+}

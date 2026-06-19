@@ -1,0 +1,504 @@
+{
+  "status": "passed",
+  "fileUrl": "file:///C:/Users/user/AppData/Local/Temp/b41-s8-m46-stage-20260619-0600/index.html",
+  "viewports": [
+    {
+      "name": "desktop",
+      "width": 1365,
+      "height": 900,
+      "detailsBefore": 0,
+      "detailsAfter": 1,
+      "interaction": {
+        "searchFilled": true,
+        "filterSelected": true,
+        "detailsOpened": true
+      },
+      "schemaPresent": true,
+      "mainLandmark": true,
+      "skipLink": true,
+      "navNamed": true,
+      "searchNamed": true,
+      "controlsTotal": 30,
+      "namedControls": 29,
+      "namedControlRatio": 0.9666666666666667,
+      "sectionCount": 36,
+      "bodyOverflow": false,
+      "scrollWidth": 1365,
+      "viewportWidth": 1365,
+      "overlaps": 0,
+      "overlapPairs": [],
+      "generatedViewVisible": true,
+      "unsupportedVisible": true,
+      "runtimeBoundaryVisible": true,
+      "wcagCertificationClaim": false,
+      "releaseReadyClaim": false,
+      "noPre": true,
+      "noScript": true,
+      "styleSamples": [
+        {
+          "selector": "body",
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(247, 248, 245)",
+          "text": "Skip to cockpit content\n\n\ngenerated-view"
+        },
+        {
+          "selector": "header.cockpit-hero.dossier-hero",
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(255, 255, 255)",
+          "text": "generated-view-onlyArchitecture dossier "
+        },
+        {
+          "selector": "aside.next-route-panel",
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(245, 248, 243)",
+          "text": "Next Safe Route\nFix source-policy blocke"
+        },
+        {
+          "selector": "li",
+          "color": "rgb(95, 99, 104)",
+          "background": "rgb(255, 255, 255)",
+          "text": "source truth stays in files and current "
+        },
+        {
+          "selector": "li",
+          "color": "rgb(95, 99, 104)",
+          "background": "rgb(255, 255, 255)",
+          "text": "no external diagram assets"
+        },
+        {
+          "selector": "li",
+          "color": "rgb(95, 99, 104)",
+          "background": "rgb(255, 255, 255)",
+          "text": "no target mutation by default"
+        },
+        {
+          "selector": "li",
+          "color": "rgb(95, 99, 104)",
+          "background": "rgb(255, 255, 255)",
+          "text": "completion claim: not_claimed"
+        },
+        {
+          "selector": "a",
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(255, 255, 255)",
+          "text": "Overview"
+        },
+        {
+          "selector": "a",
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(255, 255, 255)",
+          "text": "Project Map"
+        },
+        {
+          "selector": "a",
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(255, 255, 255)",
+          "text": "Docs & Sources"
+        },
+        {
+          "selector": "a",
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(255, 255, 255)",
+          "text": "Code Intelligence"
+        },
+        {
+          "selector": "a",
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(255, 255, 255)",
+          "text": "Contracts"
+        },
+        {
+          "selector": "a",
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(255, 255, 255)",
+          "text": "Quality & Metrics"
+        },
+        {
+          "selector": "a",
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(255, 255, 255)",
+          "text": "Operations & Risk"
+        },
+        {
+          "selector": "a",
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(255, 255, 255)",
+          "text": "Proposal Ledger"
+        },
+        {
+          "selector": "button",
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(255, 255, 255)",
+          "text": "Apply static filters"
+        },
+        {
+          "selector": "article.status-card",
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(255, 255, 255)",
+          "text": "control_planeStatus present_unverifiedCo"
+        },
+        {
+          "selector": "article.status-card",
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(255, 255, 255)",
+          "text": "discoveryStatus currentConfidence highUs"
+        },
+        {
+          "selector": "article.status-card",
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(255, 255, 255)",
+          "text": "graphStatus inspection_onlyConfidence me"
+        },
+        {
+          "selector": "article.status-card",
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(255, 255, 255)",
+          "text": "methodology_auditStatus not_availableCon"
+        }
+      ],
+      "contrastSamples": [
+        {
+          "selector": "body",
+          "text": "Skip to cockpit content\n\n\ngenerated-view",
+          "ratio": 17.130989673055264,
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(247, 248, 245)"
+        },
+        {
+          "selector": "header.cockpit-hero.dossier-hero",
+          "text": "generated-view-onlyArchitecture dossier ",
+          "ratio": 18.26117697443392,
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": "aside.next-route-panel",
+          "text": "Next Safe Route\nFix source-policy blocke",
+          "ratio": 17.04695572859574,
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(245, 248, 243)"
+        },
+        {
+          "selector": "li",
+          "text": "source truth stays in files and current ",
+          "ratio": 6.049762685939967,
+          "color": "rgb(95, 99, 104)",
+          "background": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": "li",
+          "text": "no external diagram assets",
+          "ratio": 6.049762685939967,
+          "color": "rgb(95, 99, 104)",
+          "background": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": "li",
+          "text": "no target mutation by default",
+          "ratio": 6.049762685939967,
+          "color": "rgb(95, 99, 104)",
+          "background": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": "li",
+          "text": "completion claim: not_claimed",
+          "ratio": 6.049762685939967,
+          "color": "rgb(95, 99, 104)",
+          "background": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": "a",
+          "text": "Overview",
+          "ratio": 18.26117697443392,
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": "a",
+          "text": "Project Map",
+          "ratio": 18.26117697443392,
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": "a",
+          "text": "Docs & Sources",
+          "ratio": 18.26117697443392,
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": "a",
+          "text": "Code Intelligence",
+          "ratio": 18.26117697443392,
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": "a",
+          "text": "Contracts",
+          "ratio": 18.26117697443392,
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(255, 255, 255)"
+        }
+      ],
+      "lowContrast": []
+    },
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844,
+      "detailsBefore": 0,
+      "detailsAfter": 1,
+      "interaction": {
+        "searchFilled": true,
+        "filterSelected": true,
+        "detailsOpened": true
+      },
+      "schemaPresent": true,
+      "mainLandmark": true,
+      "skipLink": true,
+      "navNamed": true,
+      "searchNamed": true,
+      "controlsTotal": 30,
+      "namedControls": 29,
+      "namedControlRatio": 0.9666666666666667,
+      "sectionCount": 36,
+      "bodyOverflow": false,
+      "scrollWidth": 390,
+      "viewportWidth": 390,
+      "overlaps": 0,
+      "overlapPairs": [],
+      "generatedViewVisible": true,
+      "unsupportedVisible": true,
+      "runtimeBoundaryVisible": true,
+      "wcagCertificationClaim": false,
+      "releaseReadyClaim": false,
+      "noPre": true,
+      "noScript": true,
+      "styleSamples": [
+        {
+          "selector": "body",
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(247, 248, 245)",
+          "text": "Skip to cockpit content\n\n\ngenerated-view"
+        },
+        {
+          "selector": "header.cockpit-hero.dossier-hero",
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(255, 255, 255)",
+          "text": "generated-view-onlyArchitecture dossier "
+        },
+        {
+          "selector": "aside.next-route-panel",
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(245, 248, 243)",
+          "text": "Next Safe Route\nFix source-policy blocke"
+        },
+        {
+          "selector": "li",
+          "color": "rgb(95, 99, 104)",
+          "background": "rgb(255, 255, 255)",
+          "text": "source truth stays in files and current "
+        },
+        {
+          "selector": "li",
+          "color": "rgb(95, 99, 104)",
+          "background": "rgb(255, 255, 255)",
+          "text": "no external diagram assets"
+        },
+        {
+          "selector": "li",
+          "color": "rgb(95, 99, 104)",
+          "background": "rgb(255, 255, 255)",
+          "text": "no target mutation by default"
+        },
+        {
+          "selector": "li",
+          "color": "rgb(95, 99, 104)",
+          "background": "rgb(255, 255, 255)",
+          "text": "completion claim: not_claimed"
+        },
+        {
+          "selector": "a",
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(255, 255, 255)",
+          "text": "Overview"
+        },
+        {
+          "selector": "a",
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(255, 255, 255)",
+          "text": "Project Map"
+        },
+        {
+          "selector": "a",
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(255, 255, 255)",
+          "text": "Docs & Sources"
+        },
+        {
+          "selector": "a",
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(255, 255, 255)",
+          "text": "Code Intelligence"
+        },
+        {
+          "selector": "a",
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(255, 255, 255)",
+          "text": "Contracts"
+        },
+        {
+          "selector": "a",
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(255, 255, 255)",
+          "text": "Quality & Metrics"
+        },
+        {
+          "selector": "a",
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(255, 255, 255)",
+          "text": "Operations & Risk"
+        },
+        {
+          "selector": "a",
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(255, 255, 255)",
+          "text": "Proposal Ledger"
+        },
+        {
+          "selector": "button",
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(255, 255, 255)",
+          "text": "Apply static filters"
+        },
+        {
+          "selector": "article.status-card",
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(255, 255, 255)",
+          "text": "control_planeStatus present_unverifiedCo"
+        },
+        {
+          "selector": "article.status-card",
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(255, 255, 255)",
+          "text": "discoveryStatus currentConfidence highUs"
+        },
+        {
+          "selector": "article.status-card",
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(255, 255, 255)",
+          "text": "graphStatus inspection_onlyConfidence me"
+        },
+        {
+          "selector": "article.status-card",
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(255, 255, 255)",
+          "text": "methodology_auditStatus not_availableCon"
+        }
+      ],
+      "contrastSamples": [
+        {
+          "selector": "body",
+          "text": "Skip to cockpit content\n\n\ngenerated-view",
+          "ratio": 17.130989673055264,
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(247, 248, 245)"
+        },
+        {
+          "selector": "header.cockpit-hero.dossier-hero",
+          "text": "generated-view-onlyArchitecture dossier ",
+          "ratio": 18.26117697443392,
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": "aside.next-route-panel",
+          "text": "Next Safe Route\nFix source-policy blocke",
+          "ratio": 17.04695572859574,
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(245, 248, 243)"
+        },
+        {
+          "selector": "li",
+          "text": "source truth stays in files and current ",
+          "ratio": 6.049762685939967,
+          "color": "rgb(95, 99, 104)",
+          "background": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": "li",
+          "text": "no external diagram assets",
+          "ratio": 6.049762685939967,
+          "color": "rgb(95, 99, 104)",
+          "background": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": "li",
+          "text": "no target mutation by default",
+          "ratio": 6.049762685939967,
+          "color": "rgb(95, 99, 104)",
+          "background": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": "li",
+          "text": "completion claim: not_claimed",
+          "ratio": 6.049762685939967,
+          "color": "rgb(95, 99, 104)",
+          "background": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": "a",
+          "text": "Overview",
+          "ratio": 18.26117697443392,
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": "a",
+          "text": "Project Map",
+          "ratio": 18.26117697443392,
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": "a",
+          "text": "Docs & Sources",
+          "ratio": 18.26117697443392,
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": "a",
+          "text": "Code Intelligence",
+          "ratio": 18.26117697443392,
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(255, 255, 255)"
+        },
+        {
+          "selector": "a",
+          "text": "Contracts",
+          "ratio": 18.26117697443392,
+          "color": "rgb(21, 21, 21)",
+          "background": "rgb(255, 255, 255)"
+        }
+      ],
+      "lowContrast": []
+    }
+  ],
+  "consoleMessages": [],
+  "externalRequests": [],
+  "screenshots": [
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\output\\playwright\\b41-s8-m46\\desktop-full-page.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\output\\playwright\\b41-s8-m46\\desktop-first-viewport.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\output\\playwright\\b41-s8-m46\\mobile-full-page.png",
+    "C:\\Users\\user\\Desktop\\project\\codex_docs\\output\\playwright\\b41-s8-m46\\mobile-first-viewport.png"
+  ],
+  "wcagCertificationClaim": false,
+  "overlapPolicy": "exclude intentional sticky nav and ancestor/descendant containment; count peer section/card incoherence only",
+  "acceptedGaps": [
+    "No axe-core/full WCAG certification audit was performed.",
+    "Cosmos.gl WebGL runtime execution remains blocked/static fallback only."
+  ]
+}
