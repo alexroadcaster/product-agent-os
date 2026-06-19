@@ -1,7 +1,7 @@
 {
   "schema_version": "batch41_first_run_automation_matrix_v1",
   "source_status": "local_implementation_planning",
-  "generated_at": "2026-06-19T00:00:00+03:00",
+  "generated_at": "2026-06-19T00:30:00+03:00",
   "purpose": "Plan Batch 41 as the missing product-level first-run orchestration layer for Product-Agent OS.",
   "analysis_summary": {
     "short_answer": "Yes, the desired first-launch behavior is the product behavior that should exist. The earlier Batch 39 work built packet, renderer, graph, question, guardrail and hardening contracts, but did not assemble them into one end-user first-run automation command.",
@@ -135,15 +135,21 @@
     "large_graph_rendering": {
       "default_strategy": "do not render 5000 nodes / 50000 edges in full by default; render clustered overview, sampled/aggregated edges, selected-neighborhood subgraphs, query-driven expansion and table fallback",
       "data_model": "Graphology-compatible graph payload",
-      "primary_renderer": "locally bundled Sigma.js WebGL renderer for interactive subgraphs and normal large-project exploration",
-      "dense_graph_candidate": "Cosmos.gl for dense 5000+ node / 50000+ edge projections when full or near-full interactive rendering is required",
+      "selected_renderer": "Cosmos.gl",
+      "selection_source": "owner_selected_2026-06-19",
+      "selection_reference": "https://cosmos.gl/?path=/docs/welcome-to-cosmos-gl--docs",
+      "primary_renderer": "locally bundled Cosmos.gl WebGL/GPU force graph renderer for the cockpit graph canvas and large-project exploration",
+      "data_adapter": "convert Product-Agent OS graph packets to Cosmos.gl typed arrays and index maps while preserving source-free metadata labels",
+      "compatibility_adapter": "Graphology-compatible payload remains the internal graph/query interchange format; Cosmos.gl is the selected visualization layer",
+      "secondary_renderer": "Sigma.js is kept only as a compatibility or fallback evaluation path, not the selected primary renderer",
       "non_primary_renderer": "Cytoscape.js may be evaluated for smaller analysis/compound subgraphs but is not the primary renderer for 50000-edge cockpit views",
       "fallback_renderer": "static SVG/Canvas summary, cluster cards and bounded table fallback when WebGL/vendor assets are unavailable",
       "dependency_policy": "no CDN, no network fetch, no install by default; any vendored library requires version, license, hash and offline validation evidence",
       "performance_gates": [
-        "1k graph fixture uses interactive subgraph mode within visible budget",
-        "5k graph fixture uses clustered overview, hidden labels, selected-neighborhood expansion and edge sampling",
-        "10k+ graph fixture or synthetic stress case stays responsive through LOD, hard visible limits and fallback table",
+        "1k graph fixture uses Cosmos.gl interactive mode within visible budget",
+        "5k graph fixture uses Cosmos.gl clustered overview, hidden labels, selected-neighborhood expansion and edge sampling",
+        "10k+ graph fixture or synthetic stress case stays responsive through Cosmos.gl LOD, hard visible limits and fallback table",
+        "50k-edge dense case validates link sampling, label suppression, fallback state and no browser-freeze regression",
         "all graph modes preserve generated-view-only wording and do not imply source-read completeness"
       ]
     }
@@ -513,13 +519,13 @@
       "id": "B41-S7-M31",
       "slice": "html_cockpit_artifact",
       "task": "Define first_run_cockpit_artifact_v1 contract.",
-      "technical_value": "Gives the first-run renderer a product-grade artifact contract instead of a page-exists contract, including the primary eight-page cockpit model and legacy diagnostic-page boundary.",
+      "technical_value": "Gives the first-run renderer a product-grade artifact contract instead of a page-exists contract, including the primary eight-page cockpit model, Cosmos.gl renderer choice and legacy diagnostic-page boundary.",
       "product_value": "User can judge one readable cockpit report instead of scattered diagnostic pages or raw packet dumps.",
-      "codex_does": "Specify single-file output, the eight primary pages, view-model inputs, graph layers, navigation, fallback states, raw diagnostic disclosure, generated-view-only wording and large-graph library policy.",
+      "codex_does": "Specify single-file output, the eight primary pages, view-model inputs, graph layers, Cosmos.gl renderer boundary, navigation, fallback states, raw diagnostic disclosure, generated-view-only wording and large-graph library policy.",
       "user_does": "Review whether the contract matches the expected final Neural_Flow artifact.",
-      "acceptance": "Contract names one primary index.html cockpit, eight cockpit pages, legacy 11-page diagnostics policy, source/file graph, code graph, persistent navigation, safety labels, manifest fields and 5k/50k graph handling.",
+      "acceptance": "Contract names one primary index.html cockpit, eight cockpit pages, legacy 11-page diagnostics policy, Cosmos.gl as selected graph renderer, source/file graph, code graph, persistent navigation, safety labels, manifest fields and 5k/50k graph handling.",
       "stop_condition": "Stop if the contract still accepts plain multi-page raw dumps as sufficient.",
-      "status": "planned"
+      "status": "implemented"
     },
     {
       "id": "B41-S7-M32",
@@ -531,7 +537,7 @@
       "user_does": "Compare the generated shell against expected report readability.",
       "acceptance": "Primary index.html has persistent navigation, responsive layout, styled evidence cards and no white-page/default-serif presentation.",
       "stop_condition": "Stop if CSS/layout is decorative only and does not improve reading, navigation or graph inspection.",
-      "status": "planned"
+      "status": "implemented"
     },
     {
       "id": "B41-S7-M33",
@@ -543,15 +549,15 @@
       "user_does": "Review whether summaries answer the expected project questions.",
       "acceptance": "View model includes overview, source map, risks, evidence statuses, graph summaries, code flow and approval boundaries without raw source bodies.",
       "stop_condition": "Stop if page templates still read directly from arbitrary packet dictionaries.",
-      "status": "planned"
+      "status": "implemented"
     },
     {
       "id": "B41-S7-M34",
       "slice": "html_cockpit_artifact",
       "task": "Render project file/source graph.",
-      "technical_value": "Adds a graph layer that can work from first-run source artifacts even when code graph packets are unavailable, with Graphology-compatible payloads and bounded visual projection.",
+      "technical_value": "Adds a graph layer that can work from first-run source artifacts even when code graph packets are unavailable, with Graphology-compatible payloads, Cosmos.gl visualization adapter and bounded visual projection.",
       "product_value": "User can see which files, docs, generated artifacts and blockers explain the project without reading source lists manually.",
-      "codex_does": "Generate nodes and edges for docs, control-plane files, source artifacts, generated artifacts, section evidence and source-policy blockers; render clustered overview, selected-file panel and fallback table.",
+      "codex_does": "Generate nodes and edges for docs, control-plane files, source artifacts, generated artifacts, section evidence and source-policy blockers; map them into Cosmos.gl point/link arrays; render clustered overview, selected-file panel and fallback table.",
       "user_does": "Validate whether the graph helps understand project structure.",
       "acceptance": "Cockpit contains a file/source graph with legend, status coloring, selected-file panel, cluster/LOD behavior, table fallback and clear omitted-node/edge counts for large graphs.",
       "stop_condition": "Stop if the graph is only a text summary or hides unavailable data.",
@@ -561,9 +567,9 @@
       "id": "B41-S7-M35",
       "slice": "html_cockpit_artifact",
       "task": "Render code graph and hotspots when graph packets exist.",
-      "technical_value": "Reuses project graph intelligence for entity, import, test, route and hotspot exploration instead of only listing summary text, while defining renderer limits for 5000+ nodes and 50000+ edges.",
+      "technical_value": "Reuses project graph intelligence for entity, import, test, route and hotspot exploration instead of only listing summary text, while defining Cosmos.gl renderer limits for 5000+ nodes and 50000+ edges.",
       "product_value": "User can inspect code relationships and coverage gaps from the artifact without freezing the browser or mistaking graph output for proof.",
-      "codex_does": "Render code graph nodes/edges from graph packets through Graphology-compatible data, local Sigma.js for interactive subgraphs, Cosmos.gl candidate path for dense graph projection and explicit empty state when graph data is unavailable.",
+      "codex_does": "Render code graph nodes/edges from graph packets through Graphology-compatible data, local Cosmos.gl for GPU/WebGL graph visualization and explicit empty state when graph data is unavailable.",
       "user_does": "Review graph usefulness on Neural_Flow and later code-heavy targets.",
       "acceptance": "Code graph renders when packet data exists, uses clustered/LOD/top-N/selected-neighborhood modes for large graphs, records omitted counts and shows explicit not_available state with safe next action when data does not exist.",
       "stop_condition": "Stop if generated graph implies source-read, runtime or readiness proof.",

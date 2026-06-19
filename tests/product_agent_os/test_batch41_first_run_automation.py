@@ -529,6 +529,68 @@ class Batch41FirstRunAutomationTests(unittest.TestCase):
             self.assertIn("generated-view-only", inventory_html)
             self.assertNotIn(str(workspace), inventory_html + methodology_html + runtime_html + graph_html)
 
+    def test_b41_s7_m31_m33_stage_renders_primary_cockpit_contract_shell_and_view_model(self) -> None:
+        with TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "s7-cockpit-target"
+            stage = Path(tmp) / "stage-output"
+            workspace.mkdir()
+            (workspace / "README.md").write_text("Source status: `synthetic_fixture`\n", encoding="utf-8")
+            (workspace / "docs").mkdir()
+            (workspace / "docs" / "guide.md").write_text("# Guide\n\nSource status: `synthetic_fixture`\n", encoding="utf-8")
+            (workspace / "package.json").write_text(
+                json.dumps({"scripts": {"dev": "vite --host 127.0.0.1", "test": "vitest"}}),
+                encoding="utf-8",
+            )
+
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPTS / "run_first_project_analysis.py"),
+                    str(workspace),
+                    "--stage",
+                    str(stage),
+                    "--generated-at",
+                    "2026-06-19T02:10:00+03:00",
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
+            payload = json.loads(result.stdout)
+            manifest = json.loads(stage.joinpath("analysis-manifest.json").read_text(encoding="utf-8"))
+            index_html = stage.joinpath("index.html").read_text(encoding="utf-8")
+            primary = manifest["primary_cockpit"]
+            contract = manifest["cockpit_contract"]
+            view_model = primary["view_model"]
+
+            self.assertEqual(payload["render_result"]["primary_cockpit"]["schema_version"], "first_run_cockpit_artifact_v1")
+            self.assertEqual(primary["schema_version"], "first_run_cockpit_artifact_v1")
+            self.assertEqual(primary["path"], "index.html")
+            self.assertEqual(contract["schema_version"], "first_run_cockpit_artifact_contract_v1")
+            self.assertEqual(contract["primary_artifact"], "index.html")
+            self.assertEqual(contract["artifact_mode"], "single_self_contained_index_html")
+            self.assertEqual(contract["selected_graph_renderer"], "Cosmos.gl")
+            self.assertEqual(contract["legacy_diagnostics_policy"], "separate first-run pages are diagnostic/raw evidence only")
+            self.assertEqual(len(contract["primary_pages"]), 8)
+            self.assertEqual(len(view_model["cockpit"]["pages"]), 8)
+            self.assertEqual(view_model["source_file_graph"]["status"], "adapter_ready")
+            self.assertEqual(view_model["code_graph"]["status"], "not_available")
+
+            self.assertIn('class="first-run-cockpit cockpit-shell"', index_html)
+            self.assertIn('id="page-overview"', index_html)
+            self.assertIn('id="page-project-map"', index_html)
+            self.assertIn('id="page-code-intelligence"', index_html)
+            self.assertIn("Cosmos.gl", index_html)
+            self.assertIn("Generated view only", index_html)
+            self.assertIn("Baseline Comparison", index_html)
+            self.assertIn("Artifact Cleanup And Rollback", index_html)
+            self.assertNotIn("<pre", index_html.lower())
+            self.assertNotIn("http://", index_html.lower())
+            self.assertNotIn("https://", index_html.lower())
+            self.assertNotIn(str(workspace), result.stdout + index_html + json.dumps(manifest, sort_keys=True))
+
     def test_b41_s5_m21_first_response_exposes_one_blocking_question_and_keeps_queue_in_packet(self) -> None:
         with TemporaryDirectory() as tmp:
             workspace = Path(tmp) / "s5-question-target"

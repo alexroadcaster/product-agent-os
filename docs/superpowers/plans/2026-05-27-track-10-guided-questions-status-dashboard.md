@@ -8,7 +8,7 @@ Source status: `local implementation planning`
 
 **Architecture:** Extend the existing Track 8 usage-mode route and Track 9 methodology packet with a typed question protocol, answer ledger, status snapshot, staged static dashboard renderer, local-first metrics loop for self-verification, staged code-graph pipeline, and final approval-gated live semantic runtime closure. JSON, JSONL and Markdown remain the source of truth; HTML artifacts are generated, reviewable views that are staged first and never silently mutate the target workspace. Task 26 is the final Track 10 umbrella for approved live local runtime, external provider adapters, human-reviewed canonical graph mutation, observability, rollback and real-testing readiness.
 
-**Tech Stack:** Python standard library, `ast`, `unittest`, JSON/JSONL contracts, Markdown control-plane artifacts, static HTML/CSS/vanilla JavaScript, optional locally bundled `graphology`/`sigma.js` for graph rendering, existing `plugins/product-agent-os/scripts/product_agent_os/*` modules, existing Codex runtime runner, fixture eval runner, transcript eval runner, docs checks, MkDocs.
+**Tech Stack:** Python standard library, `ast`, `unittest`, JSON/JSONL contracts, Markdown control-plane artifacts, static HTML/CSS/vanilla JavaScript, owner-selected locally bundled `Cosmos.gl` for graph visualization, Graphology-compatible payloads for graph/query interchange, optional Sigma.js compatibility/fallback evaluation, existing `plugins/product-agent-os/scripts/product_agent_os/*` modules, existing Codex runtime runner, fixture eval runner, transcript eval runner, docs checks, MkDocs.
 
 ---
 
@@ -523,8 +523,8 @@ Task 25 product outcome:
 - render a generated eight-page project cockpit shell with top-level pages `Overview`, `Project Map`, `Docs & Sources`, `Code Intelligence`, `Contracts`, `Quality & Metrics`, `Operations & Risk` and `Proposal Ledger`, while preserving all detailed sections as local page sections;
 - render an offline HTML project cockpit graph with filters, clustering and level-of-detail so 1k, 5k and 10k node graphs stay navigable;
 - produce a Graphology-compatible visual projection with layout, size, color, community, label-priority and level-of-detail metadata derived from the canonical graph artifact, not from browser state;
-- initialize a local Sigma-based interactive renderer when bundled assets are available, with selected-node evidence, filter state, graph navigation commands, mobile behavior and static fallback views;
-- keep graph visualization assets local. `graphology` and `sigma.js` may be used only when vendored or locally bundled; no CDN, network fetch or external runtime dependency is allowed.
+- initialize a local Cosmos.gl interactive renderer when bundled assets are available, with selected-node evidence, filter state, graph navigation commands, mobile behavior and static fallback views;
+- keep graph visualization assets local. Cosmos.gl is the owner-selected visualization library; Graphology-compatible payloads remain the internal interchange format; Sigma.js is fallback/compatibility-only. Vendored assets require version/license/hash records; no CDN, network fetch or external runtime dependency is allowed.
 
 Task 25 future-gated extension analysis:
 
@@ -559,7 +559,7 @@ Task 25 implementation surfaces:
 - Create: `plugins/product-agent-os/assets/templates/project-graph/project-graph.html`
 - Create: `plugins/product-agent-os/assets/templates/project-graph/project-code-flow.html`
 - Create: `plugins/product-agent-os/assets/templates/project-graph/project-graph.css`
-- Optional create after local-bundle decision: `plugins/product-agent-os/assets/vendor/graphology/` and `plugins/product-agent-os/assets/vendor/sigma/`
+- Optional create after local-bundle decision: `plugins/product-agent-os/assets/vendor/cosmos-gl/` plus compatibility-only `plugins/product-agent-os/assets/vendor/graphology/` / `plugins/product-agent-os/assets/vendor/sigma/` if required by the adapter path.
 - Modify: `discovery.py`, `status_snapshot.py`, `status_dashboard.py`, `codex_runtime_runner/contracts.py`, `codex_runtime_runner/routes.py`, `run_fixture_eval.py`, lifecycle skills, Product-Agent OS docs and root control-plane files.
 
 Task 25 implementation matrix:
@@ -587,7 +587,7 @@ Task 25 implementation matrix:
 | `T10-CG-V2-M19` | Cockpit information architecture and eight-page shell | `project_cockpit_model.py`, `project_graph_renderer.py`, `project-cockpit.html`, template tests | Renderer exposes exactly eight top-level pages and maps all detailed sections into those pages exactly once; active page and optional section anchor remain stable. |
 | `T10-CG-V2-M20` | Cockpit page content contracts | `project_cockpit_model.py`, renderer tests | `Overview`, `Project Map`, `Docs & Sources`, `Code Intelligence`, `Contracts`, `Quality & Metrics`, `Operations & Risk` and `Proposal Ledger` each expose their role, source links, stale flags, graph/query packets, approval boundaries and action surfaces. |
 | `T10-CG-V2-M21` | Offline renderer and no-external-assets gate | `project_graph_renderer.py`, `project-graph.html`, `project-graph.css`, renderer tests | Offline HTML/CSS/JS contains no CDN URLs, external scripts, network fetches, browser edit/write controls or unsafe embedded JSON. |
-| `T10-CG-V2-M22` | Visual projection and Graphology/Sigma boundary | `project_graph_visual_model.py`, renderer tests, optional `assets/vendor/graphology/`, optional `assets/vendor/sigma/` | Derived visual projection stores layout, size, color, community, `lod_tier`, label priority and renderer hints from canonical graph evidence; Graphology/Sigma are local/vendor-only with version/license/hash records and static fallback. |
+| `T10-CG-V2-M22` | Visual projection and Cosmos.gl boundary | `project_graph_visual_model.py`, renderer tests, optional `assets/vendor/cosmos-gl/`, optional compatibility adapters | Derived visual projection stores layout, size, color, community, `lod_tier`, label priority and renderer hints from canonical graph evidence; Cosmos.gl is the selected visualization library, Graphology-compatible payloads remain the internal interchange format, and any vendored assets require version/license/hash records plus static fallback. |
 | `T10-CG-V2-M23` | Graph filters, focused subgraphs and node evidence | `project_graph_queries.py`, HTML template tests | UI supports node/edge/confidence/language/artifact/partition/stale/text filters, bounded selected-node neighborhoods, trace/read-order subgraphs, fit/isolate/expand/reset/copy commands and evidence panel without raw source bodies. |
 | `T10-CG-V2-M24` | Large graph, clustering, fallback and mobile | `project_graph_analysis.py`, renderer/performance/mobile tests | 1k/5k/10k graphs use overview clusters, level-of-detail, stable communities, hidden labels where needed, performance budget packets, WebGL/vendor failure fallback tables and mobile layouts without overlap. |
 | `T10-CG-V2-M25` | Code Flow inside Code Intelligence | `project-code-flow.html`, renderer tests | Code Flow is a section inside `Code Intelligence`, links module/call-flow summaries to graph nodes and preserves generated-view/source-boundary wording. |
@@ -1917,7 +1917,7 @@ Expected: commit succeeds.
 | Agent graph queries expand through high-degree hub nodes and waste context. | Add token-budgeted BFS/DFS traversal, hub suppression, context filters, seed scoring and truncation metadata. |
 | Graph artifacts leak source code, secrets or local user paths. | Exclude raw file contents by default, keep line spans/hashes only, reuse redaction policy and block secret-like values in renderer/query output. |
 | HTML graph is treated as source of truth. | Keep code/docs plus graph JSON/JSONL as source/evidence layers; HTML remains generated cockpit review output. |
-| Graph visualization libraries introduce network or supply-chain risk. | Use `graphology`/`sigma.js` only as locally bundled, version-recorded assets with no CDN; keep a fallback renderer. |
+| Graph visualization libraries introduce network or supply-chain risk. | Use owner-selected Cosmos.gl only as locally bundled, version-recorded assets with no CDN; keep Graphology-compatible payloads as internal interchange, Sigma.js as fallback/compatibility-only, and preserve a static/table fallback renderer. |
 | Cockpit navigation hides important warnings after page grouping. | Preserve every detailed section exactly once, add local section navigation and test Source Conflicts, Verification Gates and Security/Risk visibility. |
 | Eight-page cockpit shell becomes a second documentation site instead of a project map. | Keep pages action-oriented: source links, graph packets, stale flags, verification gates, approval boundaries and proposal lifecycle must remain visible. |
 
