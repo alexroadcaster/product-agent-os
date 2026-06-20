@@ -42,6 +42,9 @@ BATCH40_DOUBT_VERIFIER_CLOSURE = (
 BATCH40_DOUBT_VERIFIER_CLOSURE_EN = (
     DOCS / "sources" / "product-agent-os-batch40-doubt-verifier-pilot-closure.en.md"
 )
+DOCUMENTATION_REFRESH_G1 = (
+    DOCS / "superpowers" / "specs" / "documentation-refresh-g1-source-site-parity-summary.json"
+)
 TRACK9_PLAN = DOCS / "superpowers" / "plans" / "2026-05-25-track-9-methodology-intelligence.md"
 TRACK10_PLAN = DOCS / "superpowers" / "plans" / "2026-05-27-track-10-guided-questions-status-dashboard.md"
 ROOT_README = ROOT / "README.md"
@@ -1532,19 +1535,28 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         pilot_pair = pilot + "\n" + pilot_en
 
         for expected in [
-            "B38-PILOT-NF01",
-            "Neural_Flow",
-            "Target-Specific Pilot Evidence",
+            "Private Sample Pilot Evidence",
+            "private sample workspace",
+            "Reader-facing docs do not expose internal execution labels",
+            "точные labels и staged evidence paths остаются только в source-owned ledgers",
             "source_policy_status",
             "blocked",
             "target_workspace_mutation_performed",
             "false",
             "target_apply_status",
             "staged_evidence_root",
-            "tmp/neural-flow-product-agent-os-pilot-20260608-191510",
+            "recorded in source-owned ledger",
         ]:
             with self.subTest(pilot_page=expected):
                 self.assertIn(expected, pilot_pair)
+
+        for forbidden in [
+            "B38-PILOT-NF01",
+            "Neural_Flow",
+            "tmp/neural-flow-product-agent-os-pilot-20260608-191510",
+        ]:
+            with self.subTest(public_pilot_forbidden=forbidden):
+                self.assertNotIn(forbidden, pilot_pair)
 
         for expected in [
             "Batch 38 Target-Specific Neural_Flow Pilot Execution Addendum",
@@ -7090,6 +7102,98 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "B40-S2/S3/S4/S5 implement",
                 "manual_only",
                 "B40-S5 closes pilots, scorecard calibration and go/no-go closure",
+            ],
+        }
+
+        for document, terms in expected_terms.items():
+            for term in terms:
+                with self.subTest(document=document, term=term):
+                    self.assertIn(term, documents[document])
+
+    def test_documentation_refresh_g1_source_site_parity_is_recorded(self):
+        self.assertTrue(DOCUMENTATION_REFRESH_G1.exists(), DOCUMENTATION_REFRESH_G1)
+        packet = json.loads(DOCUMENTATION_REFRESH_G1.read_text(encoding="utf-8"))
+        documents = {
+            "packet": json.dumps(packet, ensure_ascii=False),
+            "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
+            "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
+            "track10_backlog": TRACK10_BACKLOG.read_text(encoding="utf-8"),
+            "track10_backlog_en": TRACK10_BACKLOG_EN.read_text(encoding="utf-8"),
+            "track11_plan": (DOCS / "superpowers" / "plans" / "2026-06-20-track-11-documentation-architecture-refresh.md").read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+        }
+
+        self.assertEqual("documentation_refresh_g1_source_site_parity_summary_v1", packet["schema_version"])
+        self.assertEqual("closed_source_records_site_rebuild_blocked", packet["status"])
+        for item_id in ["DOC-M02", "DOC-M13", "DOC-M14", "DOC-M16", "DOC-M17"]:
+            with self.subTest(work_item=item_id):
+                self.assertIn(item_id, packet["work_item_status"])
+                self.assertTrue(packet["work_item_status"][item_id]["status"].startswith("closed"))
+        self.assertEqual("blocked_mkdocs_unavailable", packet["work_item_status"]["DOC-M25"]["status"])
+
+        expected_terms = {
+            "packet": [
+                "pre-G1 generated site output was stale and orientation-only",
+                "docs/product-agent-os/cli-reference.md",
+                "docs/product-agent-os/artifact-contracts.md",
+                "docs/sources/registry.md",
+                "blocked_active_python_no_module_named_mkdocs_historical_targets_not_currently_runnable",
+                "C:\\\\tmp\\\\codex_docs_mkdocs",
+                "tmp\\\\mkdocs_deps_b40s4",
+                "Publication readiness is not claimed",
+                "Local lifecycle marker creation remains blocked",
+            ],
+            "registry": [
+                "Product-Agent OS Track 11 G1 source records, registry and generated-site parity",
+                "Product-Agent OS Batch 41 first-run orchestration S1-S6 evidence",
+                "Product-Agent OS Batch 41 cockpit, architecture dossier and HTML modernization S7-S9 evidence",
+                "Product-Agent OS Batch 42 instruction/tool-use compliance planning matrix",
+                "Product-Agent OS Track 11 documentation refresh G0 governance packet",
+                "documentation_refresh_G1-A01",
+                "docs/superpowers/specs/documentation-refresh-g1-source-site-parity-summary.json",
+                "pre-G1 generated `site/` stale orientation evidence",
+                "historical dependency targets found at C:\\tmp\\codex_docs_mkdocs and tmp\\mkdocs_deps_b40s4",
+            ],
+            "registry_en": [
+                "Product-Agent OS Track 11 G1 source records, registry and generated-site parity",
+                "Product-Agent OS Batch 41 first-run orchestration S1-S6 evidence",
+                "Product-Agent OS Batch 41 cockpit, architecture dossier and HTML modernization S7-S9 evidence",
+                "Product-Agent OS Batch 42 instruction/tool-use compliance planning matrix",
+                "Product-Agent OS Track 11 documentation refresh G0 governance packet",
+                "documentation_refresh_G1-A01",
+                "docs/superpowers/specs/documentation-refresh-g1-source-site-parity-summary.json",
+                "pre-G1 generated `site/` stale orientation evidence",
+                "historical dependency targets found at C:\\tmp\\codex_docs_mkdocs and tmp\\mkdocs_deps_b40s4",
+            ],
+            "track10_backlog": [
+                "Batch 41 First-Run Orchestration And Architecture Cockpit Executed Addendum",
+                "implemented_local_read_only_staged_evidence_not_release_ready",
+                "B41-S1-M01..M05",
+                "B41-S9-M48..M57",
+                "architecture_intelligence_design_contract_v1",
+                "orientation_only_not_proof",
+            ],
+            "track10_backlog_en": [
+                "Batch 41 First-Run Orchestration And Architecture Cockpit Executed Addendum",
+                "implemented_local_read_only_staged_evidence_not_release_ready",
+                "B41-S1-M01..M05",
+                "B41-S9-M48..M57",
+                "architecture_intelligence_design_contract_v1",
+                "orientation_only_not_proof",
+            ],
+            "track11_plan": [
+                "`DOC-M02` | `G1`",
+                "`DOC-M25` | `G1`",
+                "`closed_no_new_public_page_required`",
+                "g1_source_records_closed_site_rebuild_blocked",
+                "future rebuilds need a readable docs runtime",
+            ],
+            "runlog": [
+                "documentation_refresh_G1-A01",
+                "docs/superpowers/specs/documentation-refresh-g1-source-site-parity-summary.json",
+                "generated site/search/sitemap freshness is not claimed",
+                "`TEST.md` records the future docs-runtime route",
+                "G2-G5 remain planned",
             ],
         }
 

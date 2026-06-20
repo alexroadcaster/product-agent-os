@@ -40,6 +40,11 @@ verification_status: "Current compaction preserves test-visible markers; full ev
 - Product-Agent OS Batch 40 S3 Doubt verifier loop eval hardening (checked_at=2026-06-09, trust=high)
 - Product-Agent OS Batch 40 S4 Doubt verifier loop docs and site (checked_at=2026-06-10, trust=high)
 - Product-Agent OS Batch 40 S4 source-transfer packet (checked_at=2026-06-10, trust=high for transfer bookkeeping; mixed per source family)
+- Product-Agent OS Batch 41 first-run orchestration S1-S6 evidence (checked_at=2026-06-20, trust=high)
+- Product-Agent OS Batch 41 cockpit, architecture dossier and HTML modernization S7-S9 evidence (checked_at=2026-06-20, trust=high)
+- Product-Agent OS Batch 42 instruction/tool-use compliance planning matrix (checked_at=2026-06-20, trust=high)
+- Product-Agent OS Track 11 documentation refresh G0 governance packet (checked_at=2026-06-20, trust=high)
+- Product-Agent OS Track 11 G1 source records, registry and generated-site parity (checked_at=2026-06-20, trust=high)
 - Codex web / cloud (checked_at=2026-05-14, trust=high)
 - Codex app (checked_at=2026-05-14, trust=high)
 - Codex CLI (checked_at=2026-05-14, trust=high)
@@ -1277,4 +1282,35 @@ These markers preserve source-owned test routing after registry compaction. Full
 - owner-feedback conditional_go
 - runtime-browser approval_required
 - manual_only_not_promoted
+- Product-Agent OS Batch 41 first-run orchestration S1-S6 evidence
+- batch41_first_run_orchestration_s1_s6
+- docs/superpowers/specs/batch41-s1-command-contract-summary.json
+- docs/superpowers/specs/batch41-s2-script-matrix-summary.json
+- docs/superpowers/specs/batch41-s3-project-analysis-summary.json
+- docs/superpowers/specs/batch41-s4-html-artifact-summary.json
+- docs/superpowers/specs/batch41-s5-guided-questions-summary.json
+- docs/superpowers/specs/batch41-s6-closure-summary.json
+- local/read-only/staged evidence only
+- Product-Agent OS Batch 41 cockpit, architecture dossier and HTML modernization S7-S9 evidence
+- batch41_cockpit_architecture_html_modernization_s7_s9
+- docs/superpowers/specs/batch41-s7-m31-m33-cockpit-foundation-summary.json
+- docs/superpowers/specs/batch41-s8-m47-neural-flow-before-after-summary.json
+- docs/superpowers/specs/batch41-s9-html-modernization-summary.json
+- docs/superpowers/specs/batch41-s9-m57-neural-flow-comparison.json
+- generated artifacts are orientation_only_not_proof
+- Product-Agent OS Batch 42 instruction/tool-use compliance planning matrix
+- batch42_instruction_tool_use_compliance_matrix_v1
+- docs/superpowers/specs/batch42-instruction-tool-use-compliance-matrix.json
+- planned_only_not_implementation_evidence
+- Product-Agent OS Track 11 documentation refresh G0 governance packet
+- documentation_refresh_G0-A01
+- docs/superpowers/specs/documentation-refresh-g0-governance-summary.json
+- closed_g0_scope_only
+- Product-Agent OS Track 11 G1 source/site parity packet
+- documentation_refresh_G1-A01
+- docs/superpowers/specs/documentation-refresh-g1-source-site-parity-summary.json
+- source records, registry and generated-site parity
+- pre-G1 generated `site/` stale orientation evidence
+- strict MkDocs blocked in current active Python: No module named mkdocs; historical dependency targets found at C:\tmp\codex_docs_mkdocs and tmp\mkdocs_deps_b40s4 but they are not currently usable as a runnable MkDocs module from this process
+- no browser automation, provider/API call, target mutation, publication, git action, cache refresh or automation activation
 ```

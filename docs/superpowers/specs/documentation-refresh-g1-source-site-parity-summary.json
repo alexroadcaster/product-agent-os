@@ -1,0 +1,216 @@
+{
+  "schema_version": "documentation_refresh_g1_source_site_parity_summary_v1",
+  "source_status": "source_owned_local_documentation_parity_evidence",
+  "generated_at": "2026-06-20T17:23:35+03:00",
+  "status": "closed_source_records_site_rebuild_blocked",
+  "group": "G1",
+  "purpose": "Record source records, source registry updates, generated-site freshness and verification boundaries for the documentation refresh.",
+  "work_item_status": {
+      "DOC-M02": {
+        "status": "closed",
+        "result": "Source docs versus generated site freshness was audited. pre-G1 generated site output was stale and orientation-only; current strict MkDocs evidence is required before claiming generated-site freshness."
+    },
+    "DOC-M13": {
+      "status": "closed_no_new_public_page_required",
+      "result": "No new reader-facing Product-Agent OS page was added in G1; existing nav paths for inspected pages were present. Source-owned records were updated instead."
+    },
+    "DOC-M14": {
+      "status": "closed",
+      "result": "Focused docs, structure and diff hygiene checks are recorded in this packet. Strict MkDocs is blocked in the current active Python environment because the default interpreter cannot resolve MkDocs; historical target-install dependency locations were later found but are not currently importable by this process."
+    },
+    "DOC-M16": {
+      "status": "closed",
+      "result": "Source-transfer history is backfilled through this G1 packet and compact source-registry markers."
+    },
+    "DOC-M17": {
+      "status": "closed",
+      "result": "Registry RU/EN compact entries now point to the G1 source/site parity packet and claim map."
+    },
+    "DOC-M25": {
+      "status": "blocked_mkdocs_unavailable",
+      "result": "Generated site/search/sitemap parity is not refreshed in G1 because plain `python -m mkdocs --version` fails with `No module named mkdocs`; historical dependency targets exist at `C:\\tmp\\codex_docs_mkdocs` and `tmp\\mkdocs_deps_b40s4`, but current imports from those targets hit `PermissionError`. Existing site output remains stale orientation evidence only."
+    }
+  },
+  "pre_rebuild_drift": {
+    "site_status_before_g1": "stale_orientation_evidence_only",
+    "site_top_level_last_write": "2026-06-10T09:36:07+03:00",
+    "source_files_newer_than_site": [
+      {
+        "source": "docs/product-agent-os/cli-reference.md",
+        "source_last_write": "2026-06-18T07:30:08+03:00",
+        "site_counterpart": "site/product-agent-os/cli-reference.html",
+        "site_last_write": "2026-06-10T09:36:29+03:00"
+      },
+      {
+        "source": "docs/product-agent-os/artifact-contracts.md",
+        "source_last_write": "2026-06-18T07:30:08+03:00",
+        "site_counterpart": "site/product-agent-os/artifact-contracts.html",
+        "site_last_write": "2026-06-10T09:36:29+03:00"
+      },
+      {
+        "source": "docs/product-agent-os/real-project-pilot.md",
+        "source_last_write": "2026-06-11T13:35:48+03:00",
+        "site_counterpart": "site/product-agent-os/real-project-pilot.html",
+        "site_last_write": "2026-06-10T09:36:30+03:00"
+      },
+      {
+        "source": "docs/product-agent-os/technical.en.md",
+        "source_last_write": "2026-06-11T16:40:17+03:00",
+        "site_counterpart": "site/en/product-agent-os/technical.html",
+        "site_last_write": "2026-06-10T09:36:30+03:00"
+      },
+      {
+        "source": "docs/sources/registry.md",
+        "source_last_write": "2026-06-18T17:28:05+03:00",
+        "site_counterpart": "site/sources/registry.html",
+        "site_last_write": "2026-06-10T09:36:34+03:00"
+      },
+      {
+        "source": "docs/sources/registry.en.md",
+        "source_last_write": "2026-06-18T17:28:12+03:00",
+        "site_counterpart": "site/en/sources/registry.html",
+        "site_last_write": "2026-06-10T09:36:23+03:00"
+      }
+    ],
+    "nav_search_sitemap_path_coverage": "present_for_inspected_existing_pages_before_rebuild",
+    "missing_inspected_paths": []
+  },
+  "mkdocs_runtime_inventory": {
+    "active_python": "C:\\Python313\\python.exe",
+    "active_python_result": "mkdocs_spec_none_for_plain_python",
+    "declared_dependencies": [
+      "requirements.txt: mkdocs>=1.6,<2",
+      "requirements.txt: mkdocs-material>=9.5,<9.6",
+      "requirements.txt: mkdocs-static-i18n>=1.2,<1.3"
+    ],
+    "historical_dependency_locations": [
+      {
+        "path": "C:\\tmp\\codex_docs_mkdocs",
+        "evidence": "source registry/archive and Track 8/9/34 commands use PYTHONPATH=C:\\tmp\\codex_docs_mkdocs for strict MkDocs builds",
+        "current_status": "exists_but_not_usable_as_runnable_python_m_mkdocs_module_from_active_process"
+      },
+      {
+        "path": "tmp\\mkdocs_deps_b40s4",
+        "evidence": "Batch 40 S4 source evidence records a strict MkDocs rebuild with workspace-local tmp\\mkdocs_deps_b40s4 dependencies; current site generator metadata shows mkdocs-1.6.1 and mkdocs-material-9.5.50",
+        "current_status": "exists_but_python_import_hits_permissionerror_for_mkdocs"
+      }
+    ],
+    "documentation_note": "TEST.md now records the historical dependency locations and the distinction between missing active-Python module resolution and project-level docs-runtime activation/access."
+  },
+  "source_records": {
+    "source_packet": "docs/superpowers/specs/documentation-refresh-g1-source-site-parity-summary.json",
+    "registry_ru": "docs/sources/registry.md",
+    "registry_en": "docs/sources/registry.en.md",
+    "plan": "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md",
+    "runlog": "RUNLOG.md",
+    "support_status": "source_supported_with_current_static_verification_site_rebuild_blocked",
+    "public_page_change": "reader-facing pilot wording was neutralized to remove internal labels and private target labels"
+  },
+  "claim_map": [
+    {
+      "claim": "Source docs were newer than generated site before G1 verification.",
+      "support": "current filesystem timestamp audit",
+      "allowed_wording": "Pre-G1 generated site output was stale and orientation-only.",
+      "forbidden_wording": "The old generated site was current."
+    },
+    {
+      "claim": "G1 source registry and parity records exist.",
+      "support": "this packet, registry RU/EN compact entries, Track 11 plan status and RUNLOG pointer",
+      "allowed_wording": "G1 source/site parity is source-recorded.",
+      "forbidden_wording": "All Track 11 documentation groups are complete."
+    },
+    {
+      "claim": "Generated site/search/sitemap parity is current.",
+      "support": "unsupported in G1 because plain active Python cannot resolve MkDocs, and discovered historical dependency targets are not currently importable by this process",
+      "allowed_wording": "Generated site freshness remains blocked until strict MkDocs runs successfully.",
+      "forbidden_wording": "Site freshness is proven without a current rebuild."
+    },
+    {
+      "claim": "Reader-facing docs are publication-ready.",
+      "support": "unsupported in G1",
+      "allowed_wording": "Publication readiness is not claimed.",
+      "forbidden_wording": "Public documentation is release-ready."
+    }
+  ],
+  "agent_team": [
+    {
+      "role": "workspace discovery auditor",
+      "agent": "Cartographer",
+      "ownership": "read-only source versus site freshness audit",
+      "result": "completed_inspection_only"
+    },
+    {
+      "role": "docs maintainer",
+      "agent": "Scribe",
+      "ownership": "registry and source-history handoff",
+      "result": "completed_inspection_only"
+    },
+    {
+      "role": "tester",
+      "agent": "Signal",
+      "ownership": "verification and nav/i18n handoff",
+      "result": "completed_inspection_only"
+    },
+    {
+      "role": "integrator",
+      "agent": "Codex",
+      "ownership": "G1 packet, registry, plan, runlog, tests and verification integration",
+      "result": "completed_with_current_verification"
+    }
+  ],
+  "unsupported_claims": [
+    "all documentation refresh groups are complete",
+    "new reader-facing cockpit pages are implemented",
+    "publication readiness",
+    "release readiness",
+    "runtime behavior is verified",
+    "provider or external API behavior is verified",
+    "installed plugin cache or active session exposure is fixed",
+    "target workspace mutation or apply safety is proven",
+    "browser visual proof was run for G1"
+  ],
+  "no_unapproved_actions": {
+    "browser_automation": false,
+    "live_runtime": false,
+    "provider_or_external_api_call": false,
+    "installed_cache_refresh": false,
+    "global_configuration_write": false,
+    "target_workspace_mutation": false,
+    "git_stage_commit_push_pr": false,
+    "publication_or_deployment": false,
+    "automation_activation": false
+  },
+  "verification_evidence": [
+    {
+      "command": "python -m json.tool docs\\superpowers\\specs\\documentation-refresh-g1-source-site-parity-summary.json",
+      "result": "passed_json_valid"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+      "result": "passed_82_tests_after_contract_phrase_alignment"
+    },
+    {
+      "command": "python tools\\check_docs.py",
+      "result": "passed_documentation_structure_checks"
+    },
+    {
+      "command": "python -m mkdocs build --strict",
+      "result": "blocked_active_python_no_module_named_mkdocs_historical_targets_not_currently_runnable"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed_no_whitespace_errors_with_line_ending_warnings"
+    }
+  ],
+  "residual_risks": [
+    "G1 does not implement G2-G5 reader-facing pages, diagrams or evidence-quality guidance.",
+    "Source correctness and generated-site freshness do not prove runtime, browser, accessibility-certification, release or publication readiness.",
+    "Historical MkDocs dependency targets exist, but they are not currently usable as a runnable MkDocs module from this process; future site rebuilds need a readable docs runtime before freshness can be claimed.",
+    "Local lifecycle marker creation remains blocked by the current .codex ACL/sandbox state, so G1 records this as an execution-environment gap rather than hook evidence."
+  ],
+  "next_safe_actions": [
+    "Execute G2 first-run cockpit and artifact-contract documentation.",
+    "Execute G3 diagram atlas pages after G2 source wording stabilizes.",
+    "Keep any publication, browser, runtime, provider, cache, global config, target mutation, git or automation action approval-bound."
+  ]
+}

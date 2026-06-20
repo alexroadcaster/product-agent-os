@@ -109,14 +109,14 @@ Stop immediately on missing owner approval, unresolved path outside the approved
 - No external writes or active automation.
 - No git stage/commit/push/PR.
 
-## Target-Specific Pilot Evidence
+## Private Sample Pilot Evidence
 
-The first owner-approved docs-only pilot addendum `B38-PILOT-NF01` ran read-only on target label `Neural_Flow`. Durable docs do not store the absolute user-specific target path; evidence is recorded as workspace-local staged output.
+The first owner-approved docs-only pilot ran read-only on a private sample workspace. Reader-facing docs do not expose internal execution labels, private target labels or absolute user-specific paths; exact labels and staged evidence paths remain only in source-owned ledgers.
 
 | Field | Evidence |
 | --- | --- |
 | `target_class` | docs-only / legacy onboarding |
-| `staged_evidence_root` | `tmp/neural-flow-product-agent-os-pilot-20260608-191510` |
+| `staged_evidence_root` | recorded in source-owned ledger |
 | `usage_mode` | `legacy_onboarding` after a clean docs-only intent |
 | `complexity_profile` | `guided-small` |
 | `source_policy_status` | `blocked` |

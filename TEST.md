@@ -24,6 +24,28 @@ python -m unittest discover -s tests -p "test_*.py" -v
 
 Run strict MkDocs only when navigation, Mermaid diagrams, Markdown extensions, MkDocs config, localized nav, search/sitemap behavior or generated `site/` evidence changes.
 
+### MkDocs Runtime Location
+
+`requirements.txt` declares the docs runtime:
+
+```text
+mkdocs>=1.6,<2
+mkdocs-material>=9.5,<9.6
+mkdocs-static-i18n>=1.2,<1.3
+```
+
+The default `python` in the current Codex App shell can be `C:\Python313\python.exe`; it does not necessarily have MkDocs installed, so plain `python -m mkdocs ...` may fail with `No module named mkdocs`.
+
+Historical strict-site builds used target-install dependencies rather than the default Python environment:
+
+```powershell
+$env:PYTHONPATH='C:\tmp\codex_docs_mkdocs'
+$env:NO_MKDOCS_2_WARNING='1'
+python -m mkdocs build --strict
+```
+
+The repository also has a prior workspace-local target install at `tmp\mkdocs_deps_b40s4`; it matches the last generated `site/` metadata (`mkdocs-1.6.1`, `mkdocs-material-9.5.50`) and the Batch 40 S4 source evidence. In the 2026-06-20 shell, `tmp\mkdocs_deps_b40s4` was blocked by `PermissionError`, while `C:\tmp\codex_docs_mkdocs` existed but was not usable as a runnable `python -m mkdocs` module from the active process. Future agents must not report this as "MkDocs absent from the project." Treat it as a docs-runtime activation/access gap: use a readable prepared docs runtime, refresh the target install, or create an approved project-local virtual environment before claiming generated `site/`, search or sitemap freshness.
+
 ## Required Checks After Plugin Or Runtime Changes
 
 Use focused checks first, then broaden through the relevant project route:

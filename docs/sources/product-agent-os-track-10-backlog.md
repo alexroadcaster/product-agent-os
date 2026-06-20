@@ -538,6 +538,23 @@ B40-S5 covers `B40-DVL-M22..M24` as the pilot ledger, metrics-loop calibration a
 | --- | --- | --- |
 | `implemented_pilot_metrics_closure_manual_only` | B40-S5 pilot, metrics and closure | The owner asked to start B40-S5 with agents and skills. B40-S5 adds deterministic manual pilot ledger helpers, scorecard calibration with denominator evidence, an append-only metrics-loop record and a go/no-go packet. The final decision is `manual_only`, not release. No real target mutation, live server, browser automation, provider/API call, active hook/automation/MCP/Agents SDK runner, canonical graph mutation, external write or git action was performed. |
 
+## Batch 41 First-Run Orchestration And Architecture Cockpit Executed Addendum
+
+B41 records the implemented first-run orchestration and generated architecture cockpit evidence set. It is source-owned implementation evidence, not release readiness, publication readiness or target-apply safety.
+
+- batch_status: `implemented_local_read_only_staged_evidence_not_release_ready`.
+- implemented_groups: `B41-S1..S6`, `B41-S7`, `B41-S8`, `B41-S9`.
+- implemented_rows: `B41-S1-M01..M05`, `B41-S2-M06..M09`, `B41-S3-M10..M16`, `B41-S4-M17..M20`, `B41-S5-M21..M23`, `B41-S6-M24..M30`, `B41-S7-M31..M40`, `B41-S8-M41..M47`, `B41-S9-M48..M57`.
+- source_matrices_and_packets: `docs/superpowers/specs/batch41-first-run-automation-matrix.json`, `docs/superpowers/specs/batch41-s1-command-contract-summary.json`, `docs/superpowers/specs/batch41-s2-script-matrix-summary.json`, `docs/superpowers/specs/batch41-s3-project-analysis-summary.json`, `docs/superpowers/specs/batch41-s4-html-artifact-summary.json`, `docs/superpowers/specs/batch41-s5-guided-questions-summary.json`, `docs/superpowers/specs/batch41-s6-closure-summary.json`, `docs/superpowers/specs/batch41-s7-m31-m33-cockpit-foundation-summary.json`, `docs/superpowers/specs/batch41-s7-m34-m35-graph-rendering-summary.json`, `docs/superpowers/specs/batch41-s7-m36-m39-cockpit-ux-safety-summary.json`, `docs/superpowers/specs/batch41-s7-m40-neural-flow-acceptance-summary.json`, `docs/superpowers/specs/batch41-s8-m47-neural-flow-before-after-summary.json`, `docs/superpowers/specs/batch41-s9-html-modernization-summary.json`, `docs/superpowers/specs/batch41-s9-m57-neural-flow-summary.json`, `docs/superpowers/specs/batch41-s9-m57-neural-flow-comparison.json`.
+- implemented_contracts: `first_run_orchestrator_contract_v1`, `first_run_script_registry_v1`, `first_run_command_matrix_v1`, `first_run_project_analysis_summary_v1`, `first_run_cockpit_artifact_v1`, `architecture_intelligence_design_contract_v1`, `first_run_first_viewport_shell_v1`, `first_run_local_interaction_layer_v1`, `first_run_static_diagram_workbench_v1`, `first_run_schema_contract_surface_v1`, `first_run_graph_file_code_surface_v1`, `first_run_guided_tour_surface_v1`, `first_run_evidence_risk_hierarchy_v1`, `first_run_visual_accessibility_acceptance_v1`.
+- claim_ceiling: generated artifacts are `orientation_only_not_proof`; static/browser evidence remains scoped to the recorded B41 rows and must not be generalized to later docs/site groups.
+- unsupported_claims: release readiness, publication readiness, target apply safety, installed plugin readiness, automation promotion, provider/API quality, full WCAG certification and Cosmos.gl/WebGL runtime execution.
+- no_unapproved_actions: no target source mutation, live runtime, provider/API call, installed cache refresh, global config write, git action, release/deploy/publish or active automation was performed by B41.
+
+| Status | Item | Notes |
+| --- | --- | --- |
+| `implemented_local_read_only_staged_evidence_not_release_ready` | B41 first-run orchestration and architecture cockpit evidence | B41 implemented the safe first-run command flow, script matrix, project-analysis packet, guided question flow, generated HTML/cockpit surfaces, architecture-dossier redesign and static modernization evidence. The evidence is local/read-only/staged or explicitly scoped browser/static proof, not a release or publication claim. |
+
 ## Task 26 Batch 42 Instruction And Tool-Use Compliance Hardening Planned Addendum
 
 B42 records the owner-requested planning matrix for Product-Agent OS instruction and tool-use compliance after local audit found that installed Product-Agent OS mechanisms are not reliably auto-engaged for instruction/tool-use audits, Product-Agent OS compliance prompts and `self-learning-loop` requests.
