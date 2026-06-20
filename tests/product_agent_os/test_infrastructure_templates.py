@@ -2249,6 +2249,8 @@ class InfrastructureTemplateTest(unittest.TestCase):
         self.assertEqual(lifecycle_contract["task_plan_lifecycle"], ".codex/workflows/task-plan-lifecycle.md")
         self.assertEqual(lifecycle_contract["control_plane_sync"], ".codex/workflows/control-plane-sync.md")
         self.assertEqual(lifecycle_contract["agent_context_contract"], ".codex/evals/agent-context-contract.json")
+        self.assertEqual(lifecycle_contract["lifecycle_state"], ".codex/product-agent-os/lifecycle-state.json")
+        self.assertEqual(lifecycle_contract["hook_policy"], ".codex/hooks/hooks.json")
         self.assertEqual(lifecycle_contract["chat_visibility"], "required")
         self.assertEqual(lifecycle_contract["required_for"], "non_mechanical_tasks")
         self.assertEqual(

@@ -291,6 +291,7 @@ def build_first_run_cockpit_artifact_contract() -> dict[str, Any]:
             ],
             "runtime_policy": "static_svg_plus_raw_mermaid_fallback_no_mermaid_runtime",
         },
+        "architecture_intelligence_design_contract": _architecture_intelligence_design_contract(),
         "raw_diagnostics_policy": "raw packet diagnostics appear outside the primary reading path",
         "unsupported_claims": [
             "release readiness",
@@ -299,6 +300,109 @@ def build_first_run_cockpit_artifact_contract() -> dict[str, Any]:
             "target apply safety",
             "source-read semantic completeness",
             "external writes or deployment safety",
+        ],
+    }
+
+
+def _architecture_intelligence_design_contract() -> dict[str, Any]:
+    return {
+        "schema_version": "architecture_intelligence_design_contract_v1",
+        "artifact_family": "self_contained_architecture_intelligence_cockpit",
+        "generated_view_boundary": "generated-view-only",
+        "first_viewport": {
+            "layout": "identity_status_architecture_next_route",
+            "required_signals": [
+                "target identity",
+                "generated-view-only boundary",
+                "completion claim level",
+                "architecture signal",
+                "runtime boundary",
+                "next safe route",
+            ],
+        },
+        "navigation_modes": {
+            "primary_tabs": [
+                "overview",
+                "project-map",
+                "code-intelligence",
+                "contracts",
+                "methodology",
+                "quality-metrics",
+                "operations-risk",
+                "recommendations",
+            ],
+            "approved_enhancements": ["tabs", "local_search", "local_filtering", "diagram_zoom", "fullscreen_diagram"],
+            "fallback": "anchor navigation and readable sections without JavaScript",
+        },
+        "section_hierarchy": [
+            "hero identity and next route",
+            "evidence status",
+            "evidence decision risk layer",
+            "runtime boundary",
+            "architecture diagrams",
+            "page surfaces",
+            "diagnostics",
+            "baseline and cleanup",
+        ],
+        "component_grammar": {
+            "source": "shadcn/ui principles mapped to semantic self-contained HTML/CSS",
+            "mapped_components": [
+                "shadcn_card",
+                "shadcn_tabs",
+                "shadcn_badge",
+                "shadcn_alert",
+                "shadcn_table",
+                "shadcn_separator",
+                "shadcn_input",
+                "shadcn_select",
+            ],
+            "runtime_migration": "not_claimed",
+        },
+        "design_tokens": {
+            "surface": "panel, band, cockpit page, acceptance surface",
+            "radius_px": 8,
+            "spacing_scale_px": [4, 8, 12, 16, 24, 32],
+            "dominant_palette_policy": "neutral workspace with distinct status accents",
+        },
+        "typography": {
+            "body_min_px": 15,
+            "body_target_px": 16,
+            "line_height": "1.55",
+            "letter_spacing": "0",
+            "heading_policy": "hero-scale only in first viewport; compact headings inside panels",
+        },
+        "status_semantics": {
+            "current": "supported by current local evidence",
+            "inspection_only": "orientation evidence only",
+            "present_unverified": "detected but not enough for readiness",
+            "approval_required": "owner approval needed before expanding action surface",
+            "not_available": "explicit empty state, not hidden",
+            "blocked": "visible blocker with next safe step",
+        },
+        "diagram_modes": {
+            "default": "inline_static_svg",
+            "raw_mermaid": "available_collapsed",
+            "mermaid_runtime": "not_included",
+            "zoom": "approved_local_js_enhancement_without_external_assets",
+        },
+        "local_js_boundary": {
+            "status": "approved_for_b41_s9_m50",
+            "allowed_features": ["tabs", "local search/filtering", "diagram zoom/fullscreen"],
+            "external_requests_allowed": False,
+            "live_runtime_allowed": False,
+            "target_mutation_allowed": False,
+            "provider_calls_allowed": False,
+            "webgl_execution_allowed": False,
+        },
+        "non_goals": [
+            "React/shadcn runtime migration",
+            "release readiness",
+            "target apply safety",
+            "Cosmos.gl/WebGL runtime proof",
+            "full WCAG certification",
+            "external requests",
+            "provider/API calls",
+            "git or release actions",
         ],
     }
 
@@ -341,12 +445,14 @@ def build_first_run_cockpit_view_model(
     navigation_search = _first_run_navigation_search_model(cockpit, section_cards, source_file_graph, code_graph)
     architecture_diagrams = _first_run_architecture_diagram_layer(packet, contract)
     graph_runtime_layer = _first_run_graph_runtime_layer(source_file_graph, code_graph)
+    graph_code_surface = _first_run_graph_code_surface(source_file_graph, code_graph)
     evidence_decision_layer = _first_run_evidence_decision_layer(
         packet,
         section_cards=section_cards,
         source_artifacts=source_artifacts,
         architecture_diagrams=architecture_diagrams,
     )
+    evidence_risk_hierarchy = _first_run_evidence_risk_hierarchy(evidence_decision_layer)
     progressive_diagnostics = _first_run_progressive_diagnostics(
         packet,
         previous_baseline=previous_baseline,
@@ -355,6 +461,11 @@ def build_first_run_cockpit_view_model(
     )
     visual_qa = _first_run_visual_qa_contract(source_file_graph, code_graph)
     safety_accessibility = _first_run_safety_accessibility_contract()
+    visual_accessibility_acceptance = _first_run_visual_accessibility_acceptance()
+    schema_contract_surface = _first_run_schema_contract_surface(packet)
+    first_viewport_shell = _first_run_first_viewport_shell(packet, contract, architecture_diagrams)
+    local_interaction_layer = _first_run_local_interaction_layer()
+    guided_tour_surface = _first_run_guided_tour_surface()
     model = {
         "schema_version": FIRST_RUN_COCKPIT_ARTIFACT_SCHEMA_VERSION,
         "path": "index.html",
@@ -362,6 +473,10 @@ def build_first_run_cockpit_view_model(
         "generated_view_policy": "orientation_only_not_proof",
         "source_truth_policy": "source files and current command evidence remain source truth",
         "contract": contract,
+        "design_contract": contract["architecture_intelligence_design_contract"],
+        "first_viewport_shell": first_viewport_shell,
+        "local_interaction_layer": local_interaction_layer,
+        "guided_tour_surface": guided_tour_surface,
         "cockpit": cockpit,
         "overview": {
             "target": packet.get("target", {}),
@@ -371,13 +486,17 @@ def build_first_run_cockpit_view_model(
         },
         "source_file_graph": source_file_graph,
         "code_graph": code_graph,
+        "graph_code_surface": graph_code_surface,
         "architecture_diagrams": architecture_diagrams,
         "graph_runtime_layer": graph_runtime_layer,
         "evidence_decision_layer": evidence_decision_layer,
+        "evidence_risk_hierarchy": evidence_risk_hierarchy,
         "navigation_search": navigation_search,
         "progressive_diagnostics": progressive_diagnostics,
         "visual_qa": visual_qa,
         "safety_accessibility": safety_accessibility,
+        "visual_accessibility_acceptance": visual_accessibility_acceptance,
+        "schema_contract_surface": schema_contract_surface,
         "section_cards": section_cards,
         "source_artifacts": source_artifacts,
         "baseline_comparison": {
@@ -390,6 +509,212 @@ def build_first_run_cockpit_view_model(
     }
     model["view_model_digest"] = content_digest(canonical_json(model))
     return model
+
+
+def _first_run_local_interaction_layer() -> dict[str, Any]:
+    return {
+        "schema_version": "first_run_local_interaction_layer_v1",
+        "status": "approved_inline_js_ready",
+        "script_id": "cockpit-local-interactions",
+        "approval_ref": "B41-S9-M50 owner-approved self-contained local JS",
+        "approved_features": [
+            "tabs",
+            "local_search_filter",
+            "collapsible_panels",
+            "diagram_zoom_fullscreen",
+            "selected_node_focus",
+        ],
+        "fallback": "readable_anchor_navigation_without_javascript",
+        "external_script_src_allowed": False,
+        "external_requests_allowed": False,
+        "fetch_allowed": False,
+        "target_mutation_allowed": False,
+        "provider_calls_allowed": False,
+        "webgl_execution_allowed": False,
+        "dangerous_api_policy": {
+            "fetch": False,
+            "XMLHttpRequest": False,
+            "WebSocket": False,
+            "eval": False,
+            "localStorage": False,
+        },
+    }
+
+
+def _first_run_first_viewport_shell(
+    packet: dict[str, Any], contract: dict[str, Any], architecture_diagrams: dict[str, Any]
+) -> dict[str, Any]:
+    target = packet.get("target") if isinstance(packet.get("target"), dict) else {}
+    design_contract = contract.get("architecture_intelligence_design_contract", {})
+    primary_tabs = design_contract.get("navigation_modes", {}).get("primary_tabs", []) if isinstance(design_contract, dict) else []
+    return {
+        "schema_version": "first_run_first_viewport_shell_v1",
+        "status": "architecture_intelligence_operator_shell_ready",
+        "layout": "identity_status_architecture_next_route",
+        "generated_view_label": "generated-view-only",
+        "target_identity": {
+            "label": str(target.get("label", "target workspace")),
+            "target_ref": str(target.get("target_ref", "redacted")),
+        },
+        "status_strip": [
+            {"label": "Evidence State", "value": str(packet.get("evidence_status", {}).get("overall_status", "inspection_only"))},
+            {"label": "Completion Claim", "value": str(packet.get("evidence_status", {}).get("completion_claim", "not_claimed"))},
+            {"label": "Diagrams", "value": str(architecture_diagrams.get("diagram_count", 0))},
+            {"label": "Renderer", "value": str(contract.get("selected_graph_renderer", "Cosmos.gl"))},
+        ],
+        "source_boundary": {
+            "status": "source_truth_required",
+            "label": "Source Boundary",
+            "detail": "Generated HTML is orientation evidence; source files and current commands remain truth.",
+        },
+        "next_route": {
+            "status": "owner_review_required",
+            "label": "Review route",
+            "detail": str(packet.get("safe_next_action", "")),
+        },
+        "mode_navigation": [str(item) for item in primary_tabs],
+        "architecture_signal": {
+            "status": "static_diagram_signal_ready",
+            "detail": "System context, pipeline, trust boundary, data model, graph rendering, approval path and evidence lifecycle are visible.",
+        },
+        "responsive_contract": {
+            "mobile_order": ["identity", "status_strip", "source_boundary", "next_route", "mode_navigation"],
+            "css_guards": ["minmax(0,1fr)", "overflow-wrap:anywhere", "max-width:100%", "stable grid tracks"],
+        },
+    }
+
+
+def _first_run_schema_contract_surface(packet: dict[str, Any]) -> dict[str, Any]:
+    artifacts = _source_artifacts(packet)
+
+    def candidate(item: dict[str, str], kind: str) -> dict[str, str]:
+        return {
+            "kind": kind,
+            "artifact_id": item["artifact_id"],
+            "path": item["path"],
+            "digest": item["digest"],
+            "status": "candidate_from_path_inventory",
+            "source_boundary": "path_and_digest_inventory_only",
+        }
+
+    db_schema_candidates: list[dict[str, str]] = []
+    migration_candidates: list[dict[str, str]] = []
+    api_contract_candidates: list[dict[str, str]] = []
+    config_contract_candidates: list[dict[str, str]] = []
+    for item in artifacts:
+        path = item["path"]
+        normalized = path.replace("\\", "/").lower()
+        file_name = normalized.rsplit("/", 1)[-1]
+        if (
+            "schema.prisma" in normalized
+            or "schema.sql" in normalized
+            or "/db/schema" in normalized
+            or "/database/schema" in normalized
+            or file_name in {"models.py", "schema.graphql"}
+        ):
+            db_schema_candidates.append(candidate(item, "db_schema"))
+        if (
+            "/migration" in normalized
+            or "/migrations/" in normalized
+            or normalized.startswith("migration/")
+            or normalized.startswith("migrations/")
+            or file_name.startswith("migration_")
+        ):
+            migration_candidates.append(candidate(item, "db_migration"))
+        if file_name in {"openapi.yaml", "openapi.yml", "swagger.yaml", "swagger.yml", "asyncapi.yaml"} or normalized.endswith(
+            (".proto", ".graphql")
+        ):
+            api_contract_candidates.append(candidate(item, "api_contract"))
+        if file_name in {".env.example", ".env.sample", "config.toml", "settings.toml"} or "/config/" in normalized:
+            config_contract_candidates.append(candidate(item, "config_contract"))
+
+    categories = {
+        "db_schema_candidates": db_schema_candidates,
+        "migration_candidates": migration_candidates,
+        "api_contract_candidates": api_contract_candidates,
+        "config_contract_candidates": config_contract_candidates,
+    }
+    detected_count = sum(len(items) for items in categories.values())
+    return {
+        "schema_version": "first_run_schema_contract_surface_v1",
+        "status": "contract_inventory_ready" if detected_count else "not_available_explicit_empty_state",
+        "source_boundary": "path_and_digest_inventory_only",
+        "runtime_introspection_performed": False,
+        "migration_execution_performed": False,
+        "database_connection_performed": False,
+        "db_schema_candidates": db_schema_candidates,
+        "migration_candidates": migration_candidates,
+        "api_contract_candidates": api_contract_candidates,
+        "config_contract_candidates": config_contract_candidates,
+        "detected_candidate_count": detected_count,
+        "empty_state_policy": "show explicit not_available state, do not hide missing schemas",
+        "safe_next_action": "Read the listed source files before DB, migration, API or config contract changes.",
+    }
+
+
+def _first_run_graph_code_surface(source_file_graph: dict[str, Any], code_graph: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "schema_version": "first_run_graph_file_code_surface_v1",
+        "status": "graph_code_surface_ready",
+        "renderer": "Cosmos.gl",
+        "runtime_boundary": "static_svg_table_fallback_no_webgl_execution",
+        "selected_node_panel": True,
+        "table_fallback": True,
+        "source_read_required": True,
+        "webgl_execution_claimed": False,
+        "safe_interactions": ["local_search_filter", "selected_node_focus", "table_fallback_scan"],
+        "surface_cards": [
+            {
+                "id": "file_source_graph",
+                "label": "File / Source Graph",
+                "status": str(source_file_graph.get("status", "not_available")),
+                "node_count": int(source_file_graph.get("node_count", 0) or 0),
+                "edge_count": int(source_file_graph.get("edge_count", 0) or 0),
+                "visible_node_count": int(source_file_graph.get("visible_node_count", 0) or 0),
+                "safe_next_action": str(source_file_graph.get("safe_next_action", "")),
+            },
+            {
+                "id": "code_graph",
+                "label": "Code Graph",
+                "status": str(code_graph.get("status", "not_available")),
+                "node_count": int(code_graph.get("node_count", 0) or 0),
+                "edge_count": int(code_graph.get("edge_count", 0) or 0),
+                "visible_node_count": int(code_graph.get("visible_node_count", 0) or 0),
+                "safe_next_action": str(code_graph.get("safe_next_action", "")),
+            },
+        ],
+        "empty_state_policy": "render not_available graph panels instead of hiding graph/code sections",
+        "safe_next_action": "Read source files before graph-backed edits; use graph surfaces for navigation only.",
+    }
+
+
+def _first_run_guided_tour_surface() -> dict[str, Any]:
+    steps = [
+        ("start-boundary", "Start With Boundary", "#main-content", "Confirm generated-view-only, target identity and next safe route."),
+        ("evidence-status", "Check Evidence Status", "#status-cards", "Scan supported status cards before stronger claims."),
+        ("evidence-risk", "Check Evidence And Risk", "#evidence-decision-layer", "Separate supported claims, blockers, future gates and owner actions."),
+        ("architecture-diagrams", "Read Architecture Diagrams", "#architecture-diagram-layer", "Use static diagrams to understand architecture; keep source truth separate."),
+        ("schema-contracts", "Inspect DB / Schema / Contract Surface", "#schema-contract-surface", "Review schema/API/config candidates before changing contracts."),
+        ("graph-code", "Use Graph / File / Code Surface", "#graph-file-code-surface", "Use graphs for navigation; read source files before edits."),
+        ("runtime-boundary", "Confirm Runtime Boundary", "#graph-runtime-layer", "Do not upgrade static fallback to runtime proof."),
+        ("diagnostics", "Open Diagnostics If Needed", "#cockpit-diagnostics", "Use raw diagnostics only after reading the primary summaries."),
+    ]
+    return {
+        "schema_version": "first_run_guided_tour_surface_v1",
+        "status": "guided_read_order_ready",
+        "interaction_mode": "anchor_links_with_optional_local_tab_activation",
+        "completion_tracking_enabled": False,
+        "steps": [
+            {
+                "id": step_id,
+                "label": label,
+                "target": target,
+                "purpose": purpose,
+                "source_boundary": "generated_orientation_requires_source_check",
+            }
+            for step_id, label, target, purpose in steps
+        ],
+    }
 
 
 def _first_run_evidence_decision_layer(
@@ -728,6 +1053,7 @@ def _first_run_architecture_diagram_layer(packet: dict[str, Any], contract: dict
                 },
             }
         )
+    diagram_workbench = _first_run_static_diagram_workbench(diagrams)
     return {
         "schema_version": "first_run_architecture_diagram_layer_v1",
         "status": "static_fallback_ready",
@@ -739,12 +1065,42 @@ def _first_run_architecture_diagram_layer(packet: dict[str, Any], contract: dict
             "static_svg_plus_raw_mermaid_fallback_no_mermaid_runtime",
         ),
         "external_assets": "forbidden",
+        "diagram_workbench": diagram_workbench,
         "diagrams": diagrams,
         "proof_gates": [
             "diagram payload/rendering unit tests",
             "desktop and mobile visual proof before diagram-quality claims",
             "no Mermaid runtime claim without explicit runtime evidence",
         ],
+    }
+
+
+def _first_run_static_diagram_workbench(diagrams: list[dict[str, Any]]) -> dict[str, Any]:
+    return {
+        "schema_version": "first_run_static_diagram_workbench_v1",
+        "status": "zoom_ready_static_svg_workbench",
+        "rendering_mode": "inline_static_svg_plus_collapsed_mermaid_source",
+        "runtime_boundary": "no_mermaid_runtime_no_external_assets",
+        "local_zoom_controls": True,
+        "external_assets_allowed": False,
+        "runtime_execution_claimed": False,
+        "diagram_cards": [
+            {
+                "diagram_id": str(diagram.get("id", "")),
+                "title": str(diagram.get("title", "")),
+                "source_status": str(diagram.get("source_status", "inspection_only")),
+                "static_fallback": str(diagram.get("static_fallback", {}).get("status", "not_available"))
+                if isinstance(diagram.get("static_fallback"), dict)
+                else "not_available",
+                "mermaid_source": str(diagram.get("raw_mermaid_fallback", {}).get("status", "not_available"))
+                if isinstance(diagram.get("raw_mermaid_fallback"), dict)
+                else "not_available",
+                "zoom_state": "local_js_optional",
+                "source_truth_boundary": "source_files_and_current_commands",
+            }
+            for diagram in diagrams
+        ],
+        "empty_state_policy": "render explicit not_available panel when no diagram payload exists",
     }
 
 
@@ -1278,6 +1634,55 @@ def _first_run_navigation_search_model(
     }
 
 
+def _first_run_evidence_risk_hierarchy(evidence_layer: dict[str, Any]) -> dict[str, Any]:
+    supported_claims = evidence_layer.get("supported_claims") if isinstance(evidence_layer.get("supported_claims"), list) else []
+    blockers = evidence_layer.get("blockers") if isinstance(evidence_layer.get("blockers"), list) else []
+    future_gates = evidence_layer.get("future_gates") if isinstance(evidence_layer.get("future_gates"), list) else []
+    return {
+        "schema_version": "first_run_evidence_risk_hierarchy_v1",
+        "status": "risk_hierarchy_ready",
+        "claim_ceiling": "orientation_only_not_proof",
+        "release_ready_claim_allowed": False,
+        "runtime_proof_claim_allowed": False,
+        "target_apply_allowed": False,
+        "priority_lanes": [
+            {
+                "id": "supported",
+                "label": "Supported Evidence",
+                "count": len(supported_claims),
+                "action": "Use as local orientation evidence only.",
+            },
+            {
+                "id": "blocked",
+                "label": "Blocked Claims",
+                "count": 5,
+                "action": "Do not promote without exact approval and current proof.",
+            },
+            {
+                "id": "approval",
+                "label": "Approval Gates",
+                "count": len(evidence_layer.get("owner_actions", [])) if isinstance(evidence_layer.get("owner_actions"), list) else 0,
+                "action": "Ask owner before runtime, provider, target mutation, git or release surfaces.",
+            },
+            {
+                "id": "future",
+                "label": "Future Gates",
+                "count": len(future_gates),
+                "action": "Keep separate from current completion claims.",
+            },
+        ],
+        "blocked_claims": [
+            {"id": "runtime_browser_proof", "reason": "browser/runtime proof not executed"},
+            {"id": "cosmos_webgl_execution", "reason": "Cosmos.gl/WebGL runtime execution not performed"},
+            {"id": "full_wcag_certification", "reason": "static accessibility contract is not certification"},
+            {"id": "release_readiness", "reason": "release readiness requires separate approval and full verification"},
+            {"id": "target_apply", "reason": "target mutation/apply is outside generated artifact review"},
+        ],
+        "source_boundary": "generated dashboards are orientation evidence, not proof by themselves",
+        "blocker_count": len(blockers),
+    }
+
+
 def _first_run_progressive_diagnostics(
     packet: dict[str, Any],
     *,
@@ -1350,7 +1755,10 @@ def _first_run_safety_accessibility_contract() -> dict[str, Any]:
         "status": "static_contract_present",
         "offline_policy": {
             "external_urls_allowed": False,
-            "script_tags_allowed": False,
+            "script_tags_allowed": True,
+            "inline_local_script_allowed": True,
+            "external_script_src_allowed": False,
+            "script_policy": "approved_inline_local_only_no_script_src",
             "fetch_allowed": False,
             "network_dependency_allowed": False,
         },
@@ -1362,7 +1770,15 @@ def _first_run_safety_accessibility_contract() -> dict[str, Any]:
         },
         "accessibility_contract": {
             "landmarks": ["main", "nav", "section"],
-            "keyboard_reachable_controls": ["skip link", "nav anchors", "search input", "select filters", "details summary"],
+            "keyboard_reachable_controls": [
+                "skip link",
+                "nav anchors",
+                "search input",
+                "select filters",
+                "details summary",
+                "diagram zoom buttons",
+                "graph nodes",
+            ],
             "labels_required": True,
             "aria_labels_required": True,
             "contrast_policy": "light theme uses dark text on light panels and non-color status text",
@@ -1373,6 +1789,50 @@ def _first_run_safety_accessibility_contract() -> dict[str, Any]:
             "mobile_breakpoint": "760px",
             "stable_graph_min_height": "320px desktop / 240px mobile",
         },
+    }
+
+
+def _first_run_visual_accessibility_acceptance() -> dict[str, Any]:
+    return {
+        "schema_version": "first_run_visual_accessibility_acceptance_v1",
+        "status": "static_gate_ready_browser_gap_recorded",
+        "certification_status": "not_certified_static_orientation_only",
+        "browser_visual_proof_status": "not_run_approval_required",
+        "wcag_certification_claimed": False,
+        "runtime_interaction_proof_claimed": False,
+        "static_checks": [
+            {
+                "id": "responsive_css_guards",
+                "status": "present_static_css",
+                "evidence": "@media(max-width:760px), minmax(0,1fr), max-width guards",
+            },
+            {
+                "id": "text_overflow_guards",
+                "status": "present_static_css",
+                "evidence": "overflow-wrap:anywhere on dense surfaces",
+            },
+            {
+                "id": "keyboard_reachable_controls",
+                "status": "present_static_contract",
+                "evidence": "skip link, anchors, details summaries, form controls, diagram buttons and graph nodes",
+            },
+            {
+                "id": "labels_and_landmarks",
+                "status": "present_static_html",
+                "evidence": "main/nav/section landmarks plus aria labels and form labels",
+            },
+            {
+                "id": "no_external_network",
+                "status": "present_static_assertion",
+                "evidence": "no script src, fetch, http or https dependencies in generated artifact tests",
+            },
+        ],
+        "accepted_gaps": [
+            "browser screenshot proof",
+            "layout engine overlap proof",
+            "screen reader walkthrough",
+            "full WCAG audit by a qualified evaluator",
+        ],
     }
 
 
@@ -1449,6 +1909,7 @@ def _cockpit_page_html(
         if isinstance(page, dict)
     )
     controls_html = _cockpit_controls_html(primary_cockpit)
+    guided_tour_html = _guided_tour_surface_html(primary_cockpit.get("guided_tour_surface", {}))
     status_cards = "\n".join(
         "<article class=\"status-card\">"
         f"<h3>{_text(card['id'])}</h3>"
@@ -1461,6 +1922,7 @@ def _cockpit_page_html(
     pages_html = "\n".join(_cockpit_section_html(page, primary_cockpit) for page in pages if isinstance(page, dict))
     architecture_diagrams_html = _architecture_diagrams_html(primary_cockpit.get("architecture_diagrams", {}))
     evidence_decision_html = _evidence_decision_layer_html(primary_cockpit.get("evidence_decision_layer", {}))
+    evidence_risk_hierarchy_html = _evidence_risk_hierarchy_html(primary_cockpit.get("evidence_risk_hierarchy", {}))
     graph_runtime_html = _graph_runtime_layer_html(primary_cockpit.get("graph_runtime_layer", {}))
     baseline_rows = _definition_rows(
         [
@@ -1480,10 +1942,30 @@ def _cockpit_page_html(
     )
     diagnostics_html = _progressive_diagnostics_html(primary_cockpit)
     diagram_layer = primary_cockpit.get("architecture_diagrams", {}) if isinstance(primary_cockpit.get("architecture_diagrams"), dict) else {}
+    first_viewport = primary_cockpit.get("first_viewport_shell") if isinstance(primary_cockpit.get("first_viewport_shell"), dict) else {}
+    local_interaction = (
+        primary_cockpit.get("local_interaction_layer") if isinstance(primary_cockpit.get("local_interaction_layer"), dict) else {}
+    )
     safe_next_action = primary_cockpit.get("overview", {}).get("safe_next_action", "")
     completion_claim = primary_cockpit.get("overview", {}).get("completion_claim", "not_claimed")
     target = primary_cockpit.get("overview", {}).get("target", {})
     target_label = target.get("label", "target workspace") if isinstance(target, dict) else "target workspace"
+    status_strip = "\n".join(
+        "<li class=\"status-strip-item\">"
+        f"<span>{_text(item.get('label'))}</span><strong>{_text(item.get('value'))}</strong>"
+        "</li>"
+        for item in first_viewport.get("status_strip", [])
+        if isinstance(item, dict)
+    )
+    page_ids = {str(page.get("id", "")) for page in pages if isinstance(page, dict)}
+    mode_nav = "\n".join(
+        f'<a href="#page-{_attr(item)}">{_text(item.replace("-", " "))}</a>'
+        for item in first_viewport.get("mode_navigation", [])
+        if str(item) in page_ids
+    )
+    source_boundary = first_viewport.get("source_boundary") if isinstance(first_viewport.get("source_boundary"), dict) else {}
+    review_route = first_viewport.get("next_route") if isinstance(first_viewport.get("next_route"), dict) else {}
+    local_interaction_html = _local_interaction_script_html(local_interaction)
     css = _cockpit_css()
     return (
         "<!doctype html>\n"
@@ -1493,20 +1975,27 @@ def _cockpit_page_html(
         f"<style>{css}</style></head>\n"
         "<body>\n"
         "<a class=\"skip-link\" href=\"#main-content\">Skip to cockpit content</a>\n"
-        "<main id=\"main-content\" class=\"first-run-cockpit cockpit-shell\" data-schema=\"first_run_cockpit_artifact_v1\" tabindex=\"-1\">\n"
-        "<header class=\"cockpit-hero dossier-hero\" data-shell=\"architecture-dossier\">\n"
+        "<main id=\"main-content\" class=\"first-run-cockpit cockpit-shell\" data-schema=\"first_run_cockpit_artifact_v1\" data-interaction-layer=\"approved-local-js\" tabindex=\"-1\">\n"
+        "<header class=\"cockpit-hero dossier-hero\" data-shell=\"architecture-dossier\" data-shell-version=\"architecture-intelligence-v2\" data-shell-role=\"architecture-intelligence-hero\">\n"
         "<div class=\"hero-kicker-row\"><p class=\"eyebrow\">generated-view-only</p><p class=\"dossier-label\">Architecture dossier / operational cockpit</p></div>\n"
-        "<div class=\"hero-layout\">\n"
+        "<div class=\"hero-layout operator-layout\">\n"
         "<section class=\"hero-primary\" aria-labelledby=\"cockpit-title\">\n"
-        "<h1 id=\"cockpit-title\">Product-Agent OS First-Run Architecture Cockpit</h1>\n"
+        "<h1 id=\"cockpit-title\">Architecture Intelligence Cockpit</h1>\n"
+        "<p class=\"legacy-title-marker\">Product-Agent OS First-Run Architecture Cockpit</p>\n"
         f"<p class=\"target-context\"><strong>Target:</strong> {_text(target_label)}</p>\n"
         f"<p class=\"hero-lede\">{_text(primary_cockpit['source_truth_policy'])}. Generated diagrams, graphs and diagnostics are orientation evidence only.</p>\n"
+        f"<ul class=\"status-strip\" id=\"first-viewport-status-strip\" aria-label=\"First viewport status strip\">{status_strip}</ul>\n"
         "</section>\n"
-        "<aside class=\"next-route-panel\" aria-label=\"Next safe route\">\n"
+        "<aside class=\"next-route-panel\" data-route-role=\"review-route-card\" aria-label=\"Next safe route\">\n"
         "<h2>Next Safe Route</h2>\n"
+        "<p class=\"route-label\">Review route</p>\n"
         f"<p>{_text(safe_next_action)}</p>\n"
         f"<strong>{_text(completion_claim)}</strong>\n"
         "</aside>\n"
+        "</div>\n"
+        "<div class=\"operator-rail source-boundary-rail\" aria-label=\"Source Boundary\">\n"
+        f"<p><strong>Source Boundary</strong><span>{_text(source_boundary.get('detail'))}</span></p>\n"
+        "<p><strong>No target mutation</strong><span>Generated artifact review does not authorize apply, provider, release or git actions.</span></p>\n"
         "</div>\n"
         "<div class=\"hero-grid dossier-grid\" aria-label=\"Cockpit status summary\">\n"
         f"<span><small>Primary artifact</small><strong>{_text(contract['primary_artifact'])}</strong></span>\n"
@@ -1524,12 +2013,15 @@ def _cockpit_page_html(
         "<li>no target mutation by default</li>\n"
         f"<li>completion claim: {_text(completion_claim)}</li>\n"
         "</ul>\n"
+        f"<nav class=\"mode-navigation\" aria-label=\"Cockpit mode navigation\">{mode_nav}</nav>\n"
         "</header>\n"
         f"<nav class=\"cockpit-nav\" aria-label=\"First-run cockpit sections\">{nav}</nav>\n"
         f"{controls_html}\n"
+        f"{guided_tour_html}\n"
         "<section class=\"cockpit-band\" aria-labelledby=\"status-cards\"><h2 id=\"status-cards\">Evidence Status</h2>"
         f"<div class=\"status-grid\">{status_cards}</div></section>\n"
         f"{evidence_decision_html}\n"
+        f"{evidence_risk_hierarchy_html}\n"
         f"{graph_runtime_html}\n"
         f"{architecture_diagrams_html}\n"
         f"{pages_html}\n"
@@ -1538,10 +2030,129 @@ def _cockpit_page_html(
         f"{baseline_rows}</section>\n"
         "<section class=\"cockpit-band\" aria-labelledby=\"artifact-cleanup-rollback\"><h2 id=\"artifact-cleanup-rollback\">Artifact Cleanup And Rollback</h2>"
         f"<p>Cleanup is preview-only and requires explicit approval; no files are deleted by default.</p>{cleanup_rows}</section>\n"
+        f"{local_interaction_html}\n"
         "</main>\n"
         "</body>\n"
         "</html>\n"
     )
+
+
+def _local_interaction_script_html(layer: dict[str, Any]) -> str:
+    if layer.get("status") != "approved_inline_js_ready":
+        return ""
+    script_id = _attr(layer.get("script_id", "cockpit-local-interactions"))
+    script = """
+(function () {
+  'use strict';
+  var root = document.querySelector('[data-schema="first_run_cockpit_artifact_v1"]');
+  if (!root) { return; }
+
+  function each(selector, handler) {
+    Array.prototype.forEach.call(root.querySelectorAll(selector), handler);
+  }
+
+  function scopedEach(scope, selector, handler) {
+    Array.prototype.forEach.call(scope.querySelectorAll(selector), handler);
+  }
+
+  function textOf(node) {
+    return (node.textContent || '').toLowerCase();
+  }
+
+  function applyCockpitSearch() {
+    var input = document.getElementById('cockpit-search');
+    var query = input ? input.value.trim().toLowerCase() : '';
+    each('.status-card,.section-card,.diagram-panel,.graph-fallback-table tbody tr', function (item) {
+      item.hidden = Boolean(query) && textOf(item).indexOf(query) === -1;
+    });
+  }
+
+  function applyLocalFilters() {
+    var sectionStatus = document.getElementById('section-status-filter');
+    var wanted = sectionStatus ? sectionStatus.value.toLowerCase() : '';
+    each('.status-card', function (card) {
+      card.hidden = Boolean(wanted) && textOf(card).indexOf(wanted) === -1;
+    });
+  }
+
+  function activateCockpitMode(anchor) {
+    each('.mode-navigation a,.cockpit-nav a', function (item) {
+      item.removeAttribute('aria-current');
+    });
+    anchor.setAttribute('aria-current', 'page');
+    var target = document.querySelector(anchor.getAttribute('href'));
+    if (target) {
+      target.setAttribute('data-active-mode', 'true');
+      target.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    }
+  }
+
+  function setDiagramScale(panel, delta, absolute) {
+    var svg = panel.querySelector('.architecture-diagram-svg');
+    if (!svg) { return; }
+    var current = Number(panel.getAttribute('data-diagram-scale') || '1');
+    var next = absolute ? 1 : Math.max(0.7, Math.min(1.8, current + delta));
+    panel.setAttribute('data-diagram-scale', String(next));
+    svg.style.transform = 'scale(' + next + ')';
+    svg.style.transformOrigin = 'center top';
+  }
+
+  function focusSelectedNode(node) {
+    var graph = node.closest('.graph-surface');
+    var panel = graph ? graph.querySelector('.graph-side-panel') : document.getElementById('source-file-graph-selected-file-panel');
+    if (!panel) { return; }
+    panel.setAttribute('data-selected-node', node.getAttribute('data-node-id') || 'selected');
+    panel.setAttribute('tabindex', '-1');
+    panel.focus({ preventScroll: false });
+  }
+
+  var search = document.getElementById('cockpit-search');
+  if (search) {
+    search.addEventListener('input', applyCockpitSearch);
+  }
+
+  each('.cockpit-controls select', function (select) {
+    select.addEventListener('change', function () {
+      applyCockpitSearch();
+      applyLocalFilters();
+    });
+  });
+
+  each('.mode-navigation a,.cockpit-nav a', function (anchor) {
+    anchor.addEventListener('click', function () {
+      activateCockpitMode(anchor);
+    });
+  });
+
+  each('.diagram-panel', function (panel) {
+    panel.setAttribute('data-diagram-scale', '1');
+    scopedEach(panel, '[data-diagram-action]', function (button) {
+      button.addEventListener('click', function () {
+        var action = button.getAttribute('data-diagram-action');
+        if (action === 'zoom-in') { setDiagramScale(panel, 0.15, false); }
+        if (action === 'zoom-out') { setDiagramScale(panel, -0.15, false); }
+        if (action === 'reset') { setDiagramScale(panel, 0, true); }
+        if (action === 'fullscreen' && panel.requestFullscreen) { panel.requestFullscreen(); }
+      });
+    });
+  });
+
+  each('.graph-node', function (node) {
+    node.setAttribute('tabindex', '0');
+    node.setAttribute('role', 'button');
+    node.addEventListener('click', function () {
+      focusSelectedNode(node);
+    });
+    node.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        focusSelectedNode(node);
+      }
+    });
+  });
+}());
+""".strip()
+    return f'<script id="{script_id}">{script}</script>'
 
 
 def _cockpit_section_html(page: dict[str, Any], primary_cockpit: dict[str, Any]) -> str:
@@ -1558,7 +2169,7 @@ def _cockpit_section_html(page: dict[str, Any], primary_cockpit: dict[str, Any])
     )
     extra = ""
     if page_id == "project-map":
-        extra = _graph_panel_html(
+        extra = _graph_code_surface_html(primary_cockpit.get("graph_code_surface", {})) + _graph_panel_html(
             primary_cockpit["source_file_graph"],
             graph_id="source-file-graph",
             title="File / Source Graph",
@@ -1567,9 +2178,13 @@ def _cockpit_section_html(page: dict[str, Any], primary_cockpit: dict[str, Any])
     elif page_id == "code-intelligence":
         extra = _code_graph_panel_html(primary_cockpit["code_graph"])
     elif page_id == "contracts":
-        extra = _architecture_diagrams_html(primary_cockpit.get("architecture_diagrams", {}), compact=True)
+        extra = _schema_contract_surface_html(primary_cockpit.get("schema_contract_surface", {})) + _architecture_diagrams_html(
+            primary_cockpit.get("architecture_diagrams", {}), compact=True
+        )
     elif page_id == "quality-metrics":
-        extra = _visual_qa_html(primary_cockpit["visual_qa"])
+        extra = _visual_accessibility_acceptance_html(primary_cockpit.get("visual_accessibility_acceptance", {})) + _visual_qa_html(
+            primary_cockpit["visual_qa"]
+        )
     elif page_id == "operations-risk":
         extra = _safety_accessibility_html(primary_cockpit["safety_accessibility"])
     return (
@@ -1579,6 +2194,136 @@ def _cockpit_section_html(page: dict[str, Any], primary_cockpit: dict[str, Any])
         f"<p class=\"boundary\">{_text('; '.join(str(item) for item in boundaries[:2]))}</p>\n"
         f"{extra}<div class=\"section-grid\">{body}</div>\n"
         "</section>\n"
+    )
+
+
+def _guided_tour_surface_html(surface: dict[str, Any]) -> str:
+    if not isinstance(surface, dict):
+        return ""
+    steps = surface.get("steps") if isinstance(surface.get("steps"), list) else []
+    items = "\n".join(
+        '<li class="guided-tour-step">'
+        f'<a href="{_attr(step.get("target"))}">{_text(step.get("label"))}</a>'
+        f'<p>{_text(step.get("purpose"))}</p>'
+        f'<small>{_text(step.get("source_boundary"))}</small>'
+        "</li>"
+        for step in steps
+        if isinstance(step, dict)
+    )
+    return (
+        '<section class="cockpit-band guided-tour-surface" id="guided-review-route" '
+        'data-guided-tour="read-order" aria-labelledby="guided-review-route-heading">'
+        '<h2 id="guided-review-route-heading">Guided Review Route</h2>'
+        f'<p><strong>{_text(surface.get("status"))}</strong>: {_text(surface.get("interaction_mode"))}. '
+        "Completion tracking is disabled; this is a suggested reading order, not proof of review.</p>"
+        f'<ol class="guided-tour-list">{items}</ol>'
+        "</section>"
+    )
+
+
+def _evidence_risk_hierarchy_html(hierarchy: dict[str, Any]) -> str:
+    if not isinstance(hierarchy, dict):
+        return ""
+    lanes = "\n".join(
+        '<article class="risk-hierarchy-lane">'
+        f"<h3>{_text(lane.get('label'))}</h3>"
+        f"<p><strong>{_text(lane.get('count'))}</strong></p>"
+        f"<p>{_text(lane.get('action'))}</p>"
+        "</article>"
+        for lane in hierarchy.get("priority_lanes", [])
+        if isinstance(lane, dict)
+    )
+    blocked = "\n".join(
+        f"<li><code>{_text(item.get('id'))}</code>: {_text(item.get('reason'))}</li>"
+        for item in hierarchy.get("blocked_claims", [])
+        if isinstance(item, dict)
+    )
+    return (
+        '<section class="evidence-risk-hierarchy" id="evidence-risk-hierarchy" '
+        'data-risk-hierarchy="claim-ceiling" aria-labelledby="evidence-risk-hierarchy-heading">'
+        '<h2 id="evidence-risk-hierarchy-heading">Evidence / Risk Hierarchy</h2>'
+        f'<p><strong>{_text(hierarchy.get("claim_ceiling"))}</strong>: {_text(hierarchy.get("source_boundary"))}</p>'
+        f'<div class="risk-hierarchy-grid">{lanes}</div>'
+        '<div class="blocked-claim-list"><h3>Blocked Claims</h3>'
+        f"<ul>{blocked}</ul></div>"
+        "</section>"
+    )
+
+
+def _graph_code_surface_html(surface: dict[str, Any]) -> str:
+    if not isinstance(surface, dict):
+        return ""
+    cards = "\n".join(
+        '<article class="graph-code-card">'
+        f"<h4>{_text(card.get('label'))}</h4>"
+        f"<p><strong>{_text(card.get('status'))}</strong></p>"
+        f"<p>Nodes {_text(card.get('node_count'))} / edges {_text(card.get('edge_count'))} / visible {_text(card.get('visible_node_count'))}</p>"
+        f"<p>{_text(card.get('safe_next_action'))}</p>"
+        "</article>"
+        for card in surface.get("surface_cards", [])
+        if isinstance(card, dict)
+    )
+    interactions = "\n".join(f"<li>{_text(item)}</li>" for item in surface.get("safe_interactions", []) if item)
+    return (
+        '<section class="graph-code-surface" id="graph-file-code-surface" '
+        'data-graph-code-surface="static-navigation" aria-labelledby="graph-file-code-surface-heading">'
+        '<h3 id="graph-file-code-surface-heading">Graph / File / Code Surface</h3>'
+        f'<p><strong>{_text(surface.get("runtime_boundary"))}</strong>. '
+        "Read source files before graph-backed edits; generated graph panels are navigation evidence only.</p>"
+        f'<ul class="graph-code-interactions" aria-label="Safe graph interactions">{interactions}</ul>'
+        f'<div class="graph-code-grid">{cards}</div>'
+        f'<p class="boundary">{_text(surface.get("empty_state_policy"))}</p>'
+        "</section>"
+    )
+
+
+def _schema_contract_surface_html(surface: dict[str, Any]) -> str:
+    if not isinstance(surface, dict):
+        return ""
+
+    def rows(items: list[dict[str, Any]], empty: str) -> str:
+        if not items:
+            return f'<tr><td colspan="4" class="empty-state">{_text(empty)}</td></tr>'
+        return "\n".join(
+            "<tr>"
+            f"<td><code>{_text(item.get('kind'))}</code></td>"
+            f"<td>{_text(item.get('artifact_id'))}</td>"
+            f"<td><code>{_text(item.get('path'))}</code></td>"
+            f"<td>{_text(item.get('status'))}</td>"
+            "</tr>"
+            for item in items
+            if isinstance(item, dict)
+        )
+
+    table_groups = [
+        ("DB schema candidates", surface.get("db_schema_candidates", []), "No DB schema candidate paths were detected."),
+        ("Migration candidates", surface.get("migration_candidates", []), "No migration candidate paths were detected."),
+        ("API contract candidates", surface.get("api_contract_candidates", []), "No API contract candidate paths were detected."),
+        ("Config contract candidates", surface.get("config_contract_candidates", []), "No config contract candidate paths were detected."),
+    ]
+    tables = "\n".join(
+        '<article class="schema-contract-card">'
+        f"<h4>{_text(label)}</h4>"
+        '<table class="compact-table schema-contract-table">'
+        "<thead><tr><th>Kind</th><th>Artifact</th><th>Path</th><th>Status</th></tr></thead>"
+        f"<tbody>{rows(items if isinstance(items, list) else [], empty)}</tbody></table>"
+        "</article>"
+        for label, items, empty in table_groups
+    )
+    return (
+        '<section class="schema-contract-surface" id="schema-contract-surface" '
+        'data-contract-surface="db-schema-api-config" aria-labelledby="schema-contract-surface-heading">'
+        '<h3 id="schema-contract-surface-heading">DB / Schema / Contract Surface</h3>'
+        f'<p><strong>{_text(surface.get("status"))}</strong>: {_text(surface.get("source_boundary"))}. '
+        "This is path and digest inventory, not database introspection or migration proof.</p>"
+        "<ul class=\"schema-contract-flags\" aria-label=\"Schema contract execution boundaries\">"
+        f"<li>runtime introspection: {_text(str(surface.get('runtime_introspection_performed', False)).lower())}</li>"
+        f"<li>migration execution: {_text(str(surface.get('migration_execution_performed', False)).lower())}</li>"
+        f"<li>database connection: {_text(str(surface.get('database_connection_performed', False)).lower())}</li>"
+        "</ul>"
+        f'<p class="boundary">{_text(surface.get("safe_next_action"))}</p>'
+        f'<div class="schema-contract-grid">{tables}</div>'
+        "</section>"
     )
 
 
@@ -1767,6 +2512,7 @@ def _architecture_diagrams_html(diagram_layer: dict[str, Any], *, compact: bool 
     diagrams = diagram_layer.get("diagrams") if isinstance(diagram_layer.get("diagrams"), list) else []
     if not diagrams:
         return ""
+    workbench = diagram_layer.get("diagram_workbench") if isinstance(diagram_layer.get("diagram_workbench"), dict) else {}
     visible_diagrams = diagrams[:3] if compact else diagrams
     id_prefix = "diagram-summary" if compact else "diagram"
     panels = "\n".join(_diagram_panel_html(diagram, id_prefix=id_prefix) for diagram in visible_diagrams if isinstance(diagram, dict))
@@ -1777,12 +2523,22 @@ def _architecture_diagrams_html(diagram_layer: dict[str, Any], *, compact: bool 
         "Static diagram panels explain project architecture as generated orientation evidence. "
         "Raw Mermaid is provided as a collapsed fallback; no Mermaid runtime, external diagram service or hosted asset is used."
     )
+    summary = (
+        '<ul class="diagram-workbench-summary" aria-label="Static diagram workbench summary">'
+        f'<li><span>Mode</span><strong>{_text(workbench.get("rendering_mode", "inline_static_svg_plus_collapsed_mermaid_source"))}</strong></li>'
+        f'<li><span>Cards</span><strong>{_text(len(visible_diagrams))}</strong></li>'
+        '<li><span>Runtime</span><strong>No Mermaid runtime</strong></li>'
+        '<li><span>Controls</span><strong>Zoom-ready</strong></li>'
+        "</ul>"
+    )
     return (
-        f'<section class="cockpit-band architecture-diagram-layer" id="{_attr(section_id)}" '
+        f'<section class="cockpit-band architecture-diagram-layer diagram-workbench" id="{_attr(section_id)}" '
         f'aria-labelledby="{_attr(heading_id)}" '
+        f'data-diagram-workbench="static-svg-local-zoom" '
         f'data-diagram-runtime="{_attr(diagram_layer.get("runtime_policy"))}">'
-        f'<h2 id="{_attr(heading_id)}">{_text(heading)}</h2>'
+        f'<h2 id="{_attr(heading_id)}">{_text(heading)} / Static SVG Workbench</h2>'
         f"<p class=\"diagram-layer-summary\">{_text(description)}</p>"
+        f"{summary}"
         f"<div class=\"diagram-grid\">{panels}</div>"
         "</section>"
     )
@@ -1791,14 +2547,27 @@ def _architecture_diagrams_html(diagram_layer: dict[str, Any], *, compact: bool 
 def _diagram_panel_html(diagram: dict[str, Any], *, id_prefix: str = "diagram") -> str:
     fallback = diagram.get("static_fallback") if isinstance(diagram.get("static_fallback"), dict) else {}
     mermaid = diagram.get("raw_mermaid_fallback") if isinstance(diagram.get("raw_mermaid_fallback"), dict) else {}
+    tools = (
+        '<div class="diagram-tools" aria-label="Diagram zoom controls">'
+        '<button type="button" data-diagram-action="zoom-out" aria-label="Zoom diagram out">-</button>'
+        '<button type="button" data-diagram-action="reset" aria-label="Reset diagram zoom">1:1</button>'
+        '<button type="button" data-diagram-action="zoom-in" aria-label="Zoom diagram in">+</button>'
+        '<button type="button" data-diagram-action="fullscreen" aria-label="Open diagram fullscreen">Full</button>'
+        "</div>"
+    )
     return (
         f'<article class="diagram-panel" id="{_attr(id_prefix)}-{_attr(diagram.get("id"))}" '
         f'data-source-status="{_attr(diagram.get("source_status"))}" '
+        f'data-diagram-source-boundary="source_files_and_current_commands" '
         f'data-runtime-status="{_attr(mermaid.get("runtime_status"))}">'
         f"<header><h3>{_text(diagram.get('title'))}</h3>"
-        f"<p><strong>{_text(diagram.get('source_status'))}</strong> / {_text(diagram.get('source_boundary'))}</p></header>"
+        f"<p><strong>{_text(diagram.get('source_status'))}</strong> / {_text(diagram.get('source_boundary'))}</p>"
+        '<ul class="diagram-boundary-badges" aria-label="Diagram rendering boundaries">'
+        "<li>Static SVG</li><li>No Mermaid runtime</li><li>Zoom-ready</li><li>Source files remain truth</li>"
+        "</ul></header>"
         f"<p>{_text(diagram.get('takeaway'))}</p>"
         f"{_diagram_static_svg(diagram)}"
+        f"{tools}"
         f"<p class=\"diagram-fallback-status\">Static fallback: {_text(fallback.get('status'))}; Mermaid runtime: {_text(mermaid.get('runtime_status'))}.</p>"
         "<details class=\"raw-mermaid-fallback\"><summary>Raw Mermaid fallback</summary>"
         f"<code>{_text(mermaid.get('source'))}</code></details>"
@@ -1921,6 +2690,32 @@ def _progressive_diagnostics_html(primary_cockpit: dict[str, Any]) -> str:
         f"{_definition_rows([('Raw JSON policy', diagnostics.get('raw_json_policy')), ('Raw packet ref', diagnostics.get('raw_packet_ref')), ('Source read required', str(diagnostics.get('source_read_required', True)).lower())])}"
         '<table class="compact-table"><thead><tr><th>Diagnostic</th><th>Status</th><th>Detail</th></tr></thead>'
         f"<tbody>{rows}</tbody></table></details></section>"
+    )
+
+
+def _visual_accessibility_acceptance_html(gate: dict[str, Any]) -> str:
+    if not isinstance(gate, dict):
+        return ""
+    checks = "\n".join(
+        "<tr>"
+        f"<td><code>{_text(item.get('id'))}</code></td>"
+        f"<td>{_text(item.get('status'))}</td>"
+        f"<td>{_text(item.get('evidence'))}</td>"
+        "</tr>"
+        for item in gate.get("static_checks", [])
+        if isinstance(item, dict)
+    )
+    gaps = "\n".join(f"<li>{_text(item)}</li>" for item in gate.get("accepted_gaps", []) if item)
+    return (
+        '<section class="visual-accessibility-acceptance" id="visual-accessibility-acceptance" '
+        'data-visual-a11y-gate="static-only" aria-labelledby="visual-accessibility-acceptance-heading">'
+        '<h3 id="visual-accessibility-acceptance-heading">Visual / Responsive / Accessibility Gate</h3>'
+        f'<p><strong>{_text(gate.get("certification_status"))}</strong>. '
+        f'browser_visual_proof_status: {_text(gate.get("browser_visual_proof_status"))}.</p>'
+        '<table class="compact-table visual-a11y-table"><thead><tr><th>Check</th><th>Status</th><th>Evidence</th></tr></thead>'
+        f"<tbody>{checks}</tbody></table>"
+        f'<ul class="claim-list">{gaps}</ul>'
+        "</section>"
     )
 
 
@@ -2086,9 +2881,16 @@ def _definition_rows(rows: list[tuple[str, Any]]) -> str:
 def _cockpit_css() -> str:
     return """
 :root{color-scheme:light;--ink:#151515;--muted:#5f6368;--line:#d7d9dd;--paper:#f7f8f5;--panel:#ffffff;--accent:#1f7a5a;--warn:#a05a00}
-*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.55 Arial,Helvetica,sans-serif}.skip-link{position:absolute;left:12px;top:-48px;background:var(--ink);color:#fff;padding:8px 10px;border-radius:4px;z-index:5}.skip-link:focus{top:12px}.cockpit-shell{max-width:1180px;margin:0 auto;padding:24px}.cockpit-hero{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:24px}.dossier-hero{border-top:5px solid var(--accent);box-shadow:0 16px 40px rgb(30 50 40 / .08)}.hero-kicker-row,.hero-layout,.proof-strip{display:flex;gap:14px}.hero-kicker-row{justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:12px}.dossier-label{margin:0;color:var(--muted);font-weight:700}.hero-layout{display:grid;grid-template-columns:minmax(0,1.8fr) minmax(260px,.8fr);align-items:stretch;margin-top:18px}.hero-primary{padding-right:18px}.target-context{display:inline-block;margin:0 0 10px;padding:6px 9px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--muted);font-size:13px}.hero-lede{max-width:72ch;color:var(--muted);font-size:16px}.next-route-panel{background:#f5f8f3;border:1px solid var(--line);border-radius:8px;padding:16px}.next-route-panel h2{font-size:16px}.next-route-panel strong{display:inline-block;margin-top:8px;color:var(--accent)}.architecture-signal{display:grid;grid-template-columns:1.2fr .8fr;gap:12px;margin-top:14px;padding:14px;border:1px solid var(--line);border-radius:8px;background:#fbfbf8}.architecture-signal p{margin:0}.proof-strip{flex-wrap:wrap;margin:14px 0 0;padding:0;list-style:none}.proof-strip li{border:1px solid var(--line);border-radius:999px;background:#fff;padding:7px 10px;color:var(--muted);font-size:13px}.eyebrow{margin:0 0 8px;color:var(--accent);font-weight:700;text-transform:uppercase;font-size:12px}h1{font-size:38px;line-height:1.08;margin:0 0 12px;max-width:760px}h2{font-size:21px;margin:0 0 12px}h3{font-size:15px;margin:0 0 8px}h4{font-size:14px;margin:0 0 8px}.hero-grid,.status-grid,.section-grid{display:grid;gap:10px}.hero-grid{grid-template-columns:repeat(4,minmax(0,1fr));margin-top:18px}.hero-grid span,.status-card,.section-card,.cockpit-band,.cockpit-page,.cockpit-controls{background:var(--panel);border:1px solid var(--line);border-radius:8px}.hero-grid span{padding:12px}.dossier-grid span{display:grid;gap:4px}.dossier-grid small{color:var(--muted);font-weight:700;text-transform:uppercase;font-size:11px}.dossier-grid strong{font-size:18px}.cockpit-nav{position:sticky;top:0;z-index:2;display:flex;gap:8px;overflow:auto;padding:12px 0;background:var(--paper)}.cockpit-nav a{white-space:nowrap;color:var(--ink);text-decoration:none;border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:8px 10px}.cockpit-controls{display:grid;grid-template-columns:2fr repeat(4,minmax(120px,1fr));gap:10px;align-items:end;margin-top:10px;padding:12px}.cockpit-controls label{display:grid;gap:4px;font-size:13px;font-weight:700}.cockpit-controls input,.cockpit-controls select,.cockpit-controls button{min-height:38px;border:1px solid var(--line);border-radius:6px;background:#fff;color:var(--ink);padding:7px}.control-note,.detail-panel-links{grid-column:1/-1;color:var(--muted);margin:0}.detail-panel-links{display:flex;flex-wrap:wrap;gap:8px;padding:0;list-style:none}.detail-panel-links a{color:var(--ink)}.cockpit-band,.cockpit-page{margin-top:14px;padding:18px}.status-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.status-card,.section-card{padding:14px}.section-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.page-role,.boundary,.status-card p,.section-card p,.graph-boundary,.empty-state,.diagram-layer-summary,.diagram-panel p,.diagram-fallback-status{color:var(--muted);margin:0 0 6px}.claim-list{margin:0;padding-left:20px}.diagnostic-disclosure details,.raw-mermaid-fallback{border:1px solid var(--line);border-radius:8px;background:var(--panel);padding:12px}.diagnostic-disclosure summary,.raw-mermaid-fallback summary{cursor:pointer;font-weight:700}.compact-table,.graph-fallback-table{width:100%;border-collapse:collapse;margin:10px 0}.compact-table th,.compact-table td,.graph-fallback-table th,.graph-fallback-table td{border-top:1px solid var(--line);padding:9px;text-align:left;vertical-align:top;overflow-wrap:anywhere}.compact-table th{width:210px;color:var(--muted);font-weight:600}.graph-surface,.qa-contract,.safety-contract,.diagram-panel{margin:12px 0;padding:14px;border:1px solid var(--line);border-radius:8px;background:#fbfbf8}.diagram-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.diagram-panel{background:#fff}.architecture-diagram-svg{display:block;width:100%;height:auto;min-height:112px;margin:12px 0}.diagram-stage{fill:#f6f8f5;stroke:#d7d9dd}.diagram-node rect{fill:#fff;stroke:#1f7a5a;stroke-width:1.2}.diagram-node text{font-size:12px;fill:#151515;text-anchor:middle;dominant-baseline:middle}.diagram-edge{stroke:#7d8793;stroke-width:1.4}.diagram-edge-label{font-size:9px;fill:#5f6368}.raw-mermaid-fallback code{display:block;white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.45 ui-monospace,SFMono-Regular,Consolas,monospace;color:#222}.graph-canvas{display:block;width:100%;min-height:320px;margin:12px 0;border:1px solid var(--line);border-radius:8px;background:#fdfdfb}.empty-graph{display:flex;align-items:center;justify-content:center;padding:24px;color:var(--muted)}.graph-edge{stroke-width:1;opacity:.58}.graph-node text{font-size:3.5px;fill:#252525;paint-order:stroke;stroke:#fff;stroke-width:1.8px}.graph-side-panel{margin:10px 0;padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--panel)}.graph-legend{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 12px;padding:0;list-style:none}.graph-legend li{display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;background:var(--panel);padding:5px 8px}.legend-swatch{width:10px;height:10px;border-radius:50%;display:inline-block}.graph-hotspots th:first-child,.graph-fallback-table th:first-child{width:230px}@media(max-width:760px){.cockpit-shell{padding:14px}.hero-layout,.architecture-signal{display:grid;grid-template-columns:1fr}.hero-primary{padding-right:0}.hero-kicker-row{align-items:flex-start;flex-direction:column}.hero-grid,.status-grid,.section-grid,.cockpit-controls,.diagram-grid{grid-template-columns:1fr}h1{font-size:28px}.cockpit-nav{position:static}.compact-table th{width:auto}.graph-canvas{min-height:240px}.graph-legend{display:block}.graph-legend li{margin:6px 0}.diagram-panel{padding:12px}.architecture-diagram-svg{min-height:96px}}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.55 Arial,Helvetica,sans-serif}.skip-link{position:absolute;left:12px;top:-48px;background:var(--ink);color:#fff;padding:8px 10px;border-radius:4px;z-index:5}.skip-link:focus{top:12px}.cockpit-shell{max-width:1180px;margin:0 auto;padding:24px}.cockpit-hero{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:24px}.dossier-hero{border-top:5px solid var(--accent);box-shadow:0 16px 40px rgb(30 50 40 / .08)}.architecture-intelligence-hero{position:relative;overflow:hidden}.hero-kicker-row,.hero-layout,.proof-strip{display:flex;gap:14px}.hero-kicker-row{justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:12px}.dossier-label{margin:0;color:var(--muted);font-weight:700}.hero-layout{display:grid;grid-template-columns:minmax(0,1.8fr) minmax(260px,.8fr);align-items:stretch;margin-top:18px}.operator-layout{grid-template-columns:minmax(0,1.5fr) minmax(280px,.65fr)}.hero-primary{padding-right:18px}.legacy-title-marker{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}.target-context{display:inline-block;margin:0 0 10px;padding:6px 9px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--muted);font-size:13px}.hero-lede{max-width:72ch;color:var(--muted);font-size:16px}.status-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:18px 0 0;padding:0;list-style:none}.status-strip-item{min-width:0;border:1px solid var(--line);border-radius:8px;background:#fbfbf8;padding:10px}.status-strip-item span{display:block;color:var(--muted);font-size:11px;font-weight:700;text-transform:uppercase}.status-strip-item strong{display:block;margin-top:4px;font-size:16px;overflow-wrap:anywhere}.next-route-panel{background:#f5f8f3;border:1px solid var(--line);border-radius:8px;padding:16px}.next-route-panel h2{font-size:16px}.next-route-panel strong{display:inline-block;margin-top:8px;color:var(--accent)}.route-label{margin:0 0 6px;color:var(--muted);font-weight:700;text-transform:uppercase;font-size:11px}.operator-rail{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;margin-top:14px}.operator-rail p{margin:0;padding:12px;border:1px solid var(--line);border-radius:8px;background:#fbfbf8}.operator-rail strong{display:block;margin-bottom:4px}.operator-rail span{display:block;color:var(--muted);overflow-wrap:anywhere}.architecture-signal{display:grid;grid-template-columns:1.2fr .8fr;gap:12px;margin-top:14px;padding:14px;border:1px solid var(--line);border-radius:8px;background:#fbfbf8}.architecture-signal p{margin:0}.proof-strip{flex-wrap:wrap;margin:14px 0 0;padding:0;list-style:none}.proof-strip li{border:1px solid var(--line);border-radius:999px;background:#fff;padding:7px 10px;color:var(--muted);font-size:13px}.mode-navigation{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}.mode-navigation a{color:var(--ink);text-decoration:none;border:1px solid var(--line);border-radius:6px;background:#fff;padding:8px 10px;text-transform:capitalize}.eyebrow{margin:0 0 8px;color:var(--accent);font-weight:700;text-transform:uppercase;font-size:12px}h1{font-size:38px;line-height:1.08;margin:0 0 12px;max-width:760px}h2{font-size:21px;margin:0 0 12px}h3{font-size:15px;margin:0 0 8px}h4{font-size:14px;margin:0 0 8px}.hero-grid,.status-grid,.section-grid{display:grid;gap:10px}.hero-grid{grid-template-columns:repeat(4,minmax(0,1fr));margin-top:18px}.hero-grid span,.status-card,.section-card,.cockpit-band,.cockpit-page,.cockpit-controls{background:var(--panel);border:1px solid var(--line);border-radius:8px}.hero-grid span{padding:12px}.dossier-grid span{display:grid;gap:4px}.dossier-grid small{color:var(--muted);font-weight:700;text-transform:uppercase;font-size:11px}.dossier-grid strong{font-size:18px}.cockpit-nav{position:sticky;top:0;z-index:2;display:flex;gap:8px;overflow:auto;padding:12px 0;background:var(--paper)}.cockpit-nav a{white-space:nowrap;color:var(--ink);text-decoration:none;border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:8px 10px}.cockpit-controls{display:grid;grid-template-columns:2fr repeat(4,minmax(120px,1fr));gap:10px;align-items:end;margin-top:10px;padding:12px}.cockpit-controls label{display:grid;gap:4px;font-size:13px;font-weight:700}.cockpit-controls input,.cockpit-controls select,.cockpit-controls button{min-height:38px;border:1px solid var(--line);border-radius:6px;background:#fff;color:var(--ink);padding:7px}.control-note,.detail-panel-links{grid-column:1/-1;color:var(--muted);margin:0}.detail-panel-links{display:flex;flex-wrap:wrap;gap:8px;padding:0;list-style:none}.detail-panel-links a{color:var(--ink)}.cockpit-band,.cockpit-page{margin-top:14px;padding:18px}.status-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.status-card,.section-card{padding:14px}.section-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.page-role,.boundary,.status-card p,.section-card p,.graph-boundary,.empty-state,.diagram-layer-summary,.diagram-panel p,.diagram-fallback-status{color:var(--muted);margin:0 0 6px}.claim-list{margin:0;padding-left:20px}.diagnostic-disclosure details,.raw-mermaid-fallback{border:1px solid var(--line);border-radius:8px;background:var(--panel);padding:12px}.diagnostic-disclosure summary,.raw-mermaid-fallback summary{cursor:pointer;font-weight:700}.compact-table,.graph-fallback-table{width:100%;border-collapse:collapse;margin:10px 0}.compact-table th,.compact-table td,.graph-fallback-table th,.graph-fallback-table td{border-top:1px solid var(--line);padding:9px;text-align:left;vertical-align:top;overflow-wrap:anywhere}.compact-table th{width:210px;color:var(--muted);font-weight:600}.graph-surface,.qa-contract,.safety-contract,.diagram-panel{margin:12px 0;padding:14px;border:1px solid var(--line);border-radius:8px;background:#fbfbf8}.diagram-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.diagram-panel{background:#fff}.architecture-diagram-svg{display:block;width:100%;height:auto;min-height:112px;margin:12px 0}.diagram-stage{fill:#f6f8f5;stroke:#d7d9dd}.diagram-node rect{fill:#fff;stroke:#1f7a5a;stroke-width:1.2}.diagram-node text{font-size:12px;fill:#151515;text-anchor:middle;dominant-baseline:middle}.diagram-edge{stroke:#7d8793;stroke-width:1.4}.diagram-edge-label{font-size:9px;fill:#5f6368}.raw-mermaid-fallback code{display:block;white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.45 ui-monospace,SFMono-Regular,Consolas,monospace;color:#222}.graph-canvas{display:block;width:100%;min-height:320px;margin:12px 0;border:1px solid var(--line);border-radius:8px;background:#fdfdfb}.empty-graph{display:flex;align-items:center;justify-content:center;padding:24px;color:var(--muted)}.graph-edge{stroke-width:1;opacity:.58}.graph-node text{font-size:3.5px;fill:#252525;paint-order:stroke;stroke:#fff;stroke-width:1.8px}.graph-side-panel{margin:10px 0;padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--panel)}.graph-legend{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 12px;padding:0;list-style:none}.graph-legend li{display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;background:var(--panel);padding:5px 8px}.legend-swatch{width:10px;height:10px;border-radius:50%;display:inline-block}.graph-hotspots th:first-child,.graph-fallback-table th:first-child{width:230px}@media(max-width:760px){.cockpit-shell{padding:14px}.hero-layout,.architecture-signal,.operator-rail{display:grid;grid-template-columns:1fr}.hero-primary{padding-right:0}.hero-kicker-row{align-items:flex-start;flex-direction:column}.hero-grid,.status-grid,.section-grid,.cockpit-controls,.diagram-grid,.status-strip{grid-template-columns:1fr}h1{font-size:28px}.cockpit-nav{position:static}.compact-table th{width:auto}.graph-canvas{min-height:240px}.graph-legend{display:block}.graph-legend li{margin:6px 0}.diagram-panel{padding:12px}.architecture-diagram-svg{min-height:96px}}
 .acceptance-surface{margin:12px 0;padding:14px;border:1px solid var(--line);border-radius:8px;background:#fbfbf8}.evidence-decision-layer{border-top:5px solid #365f91}.evidence-grid,.decision-grid,.risk-grid,.source-blueprint-grid,.proof-ref-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.evidence-card,.decision-card,.risk-card,.future-gate-card,.source-blueprint-card,.proof-ref-card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px;min-width:0}.supported-claim-card{border-left:4px solid #1f7a5a}.blocker-card,.risk-card{border-left:4px solid #8a4b18}.decision-card{border-left:4px solid #365f91}.source-blueprint-card{border-left:4px solid #5f6368}.proof-ref-card{border-left:4px solid var(--accent)}.evidence-card p,.decision-card p,.risk-card p,.future-gate-card p,.source-blueprint-card p,.proof-ref-card p{margin:0 0 6px;color:var(--muted)}.source-blueprint-card code,.proof-ref-card code{overflow-wrap:anywhere}.action-columns{display:grid;grid-template-columns:1fr 1fr;gap:12px}.action-columns>div{background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px}@media(max-width:760px){.evidence-grid,.decision-grid,.risk-grid,.source-blueprint-grid,.proof-ref-grid,.action-columns{grid-template-columns:1fr}}
 .cockpit-shell,.cockpit-band,.cockpit-page,.architecture-signal,.cockpit-nav,.graph-surface,.diagram-panel,.acceptance-surface{min-width:0;max-width:100%}.cockpit-nav{scrollbar-width:thin}.architecture-signal p,.graph-boundary,.evidence-card,.decision-card,.risk-card,.future-gate-card,.source-blueprint-card,.proof-ref-card{overflow-wrap:anywhere}.architecture-diagram-svg,.graph-canvas{overflow:hidden}
+.diagram-tools{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}.diagram-tools button{min-height:32px;border:1px solid var(--line);border-radius:6px;background:#fff;color:var(--ink);padding:4px 8px;font:inherit}.diagram-tools button:focus-visible,.graph-node:focus-visible{outline:2px solid var(--accent);outline-offset:2px}.diagram-panel[data-diagram-scale]{overflow:auto}.architecture-diagram-svg{transition:transform .16s ease}
+.diagram-workbench-summary,.diagram-boundary-badges{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 12px;padding:0;list-style:none}.diagram-workbench-summary li,.diagram-boundary-badges li{border:1px solid var(--line);border-radius:6px;background:#fff;padding:7px 9px;color:var(--muted);font-size:13px}.diagram-workbench-summary span{display:block;font-size:11px;font-weight:700;text-transform:uppercase}.diagram-workbench-summary strong{display:block;color:var(--ink);overflow-wrap:anywhere}.diagram-boundary-badges li{border-radius:999px}
+.schema-contract-surface{margin:12px 0;padding:14px;border:1px solid var(--line);border-radius:8px;background:#fbfbf8}.schema-contract-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.schema-contract-card{min-width:0;border:1px solid var(--line);border-radius:8px;background:#fff;padding:12px}.schema-contract-flags{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 12px;padding:0;list-style:none}.schema-contract-flags li{border:1px solid var(--line);border-radius:999px;background:#fff;padding:6px 8px;color:var(--muted);font-size:13px}.schema-contract-table th:first-child{width:120px}@media(max-width:760px){.schema-contract-grid{grid-template-columns:1fr}}
+.graph-code-surface{margin:12px 0;padding:14px;border:1px solid var(--line);border-radius:8px;background:#fbfbf8}.graph-code-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.graph-code-card{min-width:0;border:1px solid var(--line);border-radius:8px;background:#fff;padding:12px}.graph-code-card p{margin:0 0 6px;color:var(--muted);overflow-wrap:anywhere}.graph-code-interactions{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 12px;padding:0;list-style:none}.graph-code-interactions li{border:1px solid var(--line);border-radius:999px;background:#fff;padding:6px 8px;color:var(--muted);font-size:13px}@media(max-width:760px){.graph-code-grid{grid-template-columns:1fr}}
+.guided-tour-list{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:12px 0 0;padding-left:20px}.guided-tour-step{min-width:0;border:1px solid var(--line);border-radius:8px;background:#fff;padding:10px}.guided-tour-step a{font-weight:700;color:var(--ink);text-decoration:none}.guided-tour-step p{margin:6px 0;color:var(--muted);overflow-wrap:anywhere}.guided-tour-step small{color:var(--muted);font-size:11px;overflow-wrap:anywhere}@media(max-width:960px){.guided-tour-list{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:760px){.guided-tour-list{grid-template-columns:1fr}}
+.evidence-risk-hierarchy{margin:12px 0;padding:14px;border:1px solid var(--line);border-radius:8px;background:#fbfbf8}.risk-hierarchy-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.risk-hierarchy-lane{min-width:0;border:1px solid var(--line);border-radius:8px;background:#fff;padding:12px}.risk-hierarchy-lane p{margin:0 0 6px;color:var(--muted);overflow-wrap:anywhere}.blocked-claim-list{margin-top:12px;border:1px solid var(--line);border-radius:8px;background:#fff;padding:12px}.blocked-claim-list ul{margin:0;padding-left:20px}.blocked-claim-list li{margin:4px 0;overflow-wrap:anywhere}@media(max-width:960px){.risk-hierarchy-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:760px){.risk-hierarchy-grid{grid-template-columns:1fr}}
+.visual-accessibility-acceptance{margin:12px 0;padding:14px;border:1px solid var(--line);border-radius:8px;background:#fbfbf8}.visual-accessibility-acceptance p{margin:0 0 10px;color:var(--muted);overflow-wrap:anywhere}.visual-a11y-table th:first-child{width:220px}
 .graph-runtime-layer{border-top:5px solid #8a4b18}.runtime-label-strip{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px;padding:0;list-style:none}.runtime-label-strip li{border:1px solid var(--line);border-radius:999px;background:#fff;padding:7px 10px;color:var(--muted);font-size:13px}.graph-runtime-grid,.graph-runtime-states{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.graph-runtime-card,.graph-state-card,.fallback-explanation{background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px;min-width:0}.runtime-blocker-banner{border-left:4px solid #8a4b18;background:#fff9f2}.graph-runtime-card p,.graph-state-card p,.fallback-explanation p{margin:0 0 6px;color:var(--muted);overflow-wrap:anywhere}@media(max-width:760px){.graph-runtime-grid,.graph-runtime-states{grid-template-columns:1fr}}
 """.strip()
 

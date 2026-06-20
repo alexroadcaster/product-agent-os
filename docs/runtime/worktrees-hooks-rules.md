@@ -26,6 +26,19 @@ Hooks подходят для deterministic checks around agent work:
 
 Hooks не заменяют human review и не должны хранить secrets.
 
+## Product-Agent OS lifecycle hooks
+
+Product-Agent OS поставляет staged hooks через `plugins/product-agent-os/assets/templates/hooks/` и `render_infrastructure.py --stage`. Для конечного проекта они попадают в `.codex/hooks/` как proposal/staged asset, а не как silently activated automation.
+
+Lifecycle guard устроен так:
+
+- `SessionStart` показывает наличие control-plane и lifecycle файлов;
+- `PreToolUse` пропускает read-only discovery, но блокирует mutating/non-read-only команды без `.codex/product-agent-os/lifecycle-state.json`;
+- marker должен появиться только после видимого пользователю стартового брифа и содержать `task_start_brief_shown`, `task_id`, `scope`, `updated_at`, `approval_boundary`;
+- `PostToolUse` и `Stop` напоминают про evidence, `RUNLOG.md`, control-plane sync и user-visible `Completion Brief`.
+
+Marker не является transcript store: в него нельзя помещать raw chat, secrets, private source bodies, private customer data или credentials. Activation hooks остаётся отдельным approval boundary.
+
 ## Rules
 
 Rules описывают policy, которую Codex должен учитывать перед действиями. Хорошие rules:
@@ -44,4 +57,3 @@ Rules описывают policy, которую Codex должен учитыв�
 | Agent misses project conventions | `AGENTS.md` + nested instructions |
 | Long thread drifts | `/compact`, `/fork`, один thread per coherent task |
 | Automation запускается too early | Manual skill workflow first |
-

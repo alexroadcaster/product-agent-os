@@ -113,6 +113,10 @@ English-original plan files excluded from localized sibling parity:
 - `superpowers/plans/2026-05-25-track-9-methodology-intelligence.md`
 - `superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md`
 
+Post-Batch34E English-original plan additions are not part of the historical M35-M49 counts above, but they follow the same planning-artifact parity boundary:
+
+- `superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md`
+
 ## B34E-I18N-M44 EN Editorial Quality Sweep
 
 Status: `done_through_m44`.

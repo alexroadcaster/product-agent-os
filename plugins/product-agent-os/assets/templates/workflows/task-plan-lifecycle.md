@@ -24,7 +24,8 @@ This workflow also defines the user-visible contract:
 2. Keep status `planned`.
 3. Use `pending_execution_timestamp` for date and time of task implementation.
 4. Name product value, technical value, scope, non-goals, expected result, acceptance criteria, verification gates, risks, agents, skills, output artifacts, complexity, estimated execution time, and next step.
-5. Validate the plan file before execution:
+5. Record the lightweight lifecycle marker at `.codex/product-agent-os/lifecycle-state.json` with `task_start_brief_shown: true`, `task_id`, `scope`, `updated_at`, and `approval_boundary` after the user-visible Task Brief is shown. Do not store raw chat, secrets, private source bodies, or private customer data in this marker.
+6. Validate the plan file before execution:
 
 ```powershell
 python plugins\product-agent-os\scripts\validate_task_matrix.py <plan-file>
@@ -91,6 +92,7 @@ python plugins\product-agent-os\scripts\create_task_plan.py complete --path <pla
 
 - The work is small and mechanical and a lightweight exception is explicitly recorded.
 - A required Task Brief or Completion Brief would be missing from the user-visible conversation.
+- A mutating or non-read-only tool command is about to run while `.codex/product-agent-os/lifecycle-state.json` is missing or does not record `task_start_brief_shown: true`.
 - Exact files, verification gates, evidence owner, or approval boundaries are unknown.
 - Current evidence is missing for an `implemented`, `fixed`, `verified`, `ready`, or `release-ready` claim.
 - The task would require external writes, provider calls, browser automation, git mutation, deployment, hooks, automation, or permission changes without approval.

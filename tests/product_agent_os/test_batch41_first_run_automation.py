@@ -690,7 +690,7 @@ class Batch41FirstRunAutomationTests(unittest.TestCase):
                     },
                 )
 
-            self.assertIn('class="cockpit-band architecture-diagram-layer"', index_html)
+            self.assertIn('class="cockpit-band architecture-diagram-layer diagram-workbench"', index_html)
             self.assertEqual(index_html.count('id="architecture-diagram-layer"'), 1)
             self.assertIn('id="architecture-diagram-summary"', index_html)
             self.assertEqual(index_html.count('class="diagram-panel"'), 10)
@@ -710,7 +710,7 @@ class Batch41FirstRunAutomationTests(unittest.TestCase):
             self.assertIn("generated-view-only", index_html)
             self.assertIn("not_executed_no_mermaid_runtime", index_html)
             self.assertNotIn("mermaid.min", index_html.lower())
-            self.assertNotIn("<script", index_html.lower())
+            self.assertNotIn("<script src", index_html.lower())
             self.assertNotIn("http://", index_html.lower())
             self.assertNotIn("https://", index_html.lower())
             self.assertNotIn("<pre", index_html.lower())
@@ -763,7 +763,7 @@ class Batch41FirstRunAutomationTests(unittest.TestCase):
             self.assertIn("completion claim: not_claimed", index_html)
             self.assertIn("dossier-grid", index_html)
             self.assertIn("proof-strip", index_html)
-            self.assertNotIn("<script", index_html.lower())
+            self.assertNotIn("<script src", index_html.lower())
             self.assertNotIn("http://", index_html.lower())
             self.assertNotIn("https://", index_html.lower())
             self.assertNotIn(str(workspace), result.stdout + index_html)
@@ -856,7 +856,7 @@ class Batch41FirstRunAutomationTests(unittest.TestCase):
             self.assertNotIn("release-ready", index_html.lower())
             self.assertNotIn("wcag certified", index_html.lower())
             self.assertNotIn("raw_source", index_html)
-            self.assertNotIn("<script", index_html.lower())
+            self.assertNotIn("<script src", index_html.lower())
             self.assertNotIn("http://", index_html.lower())
             self.assertNotIn("https://", index_html.lower())
             self.assertNotIn(str(workspace), result.stdout + index_html + json.dumps(manifest, sort_keys=True))
@@ -934,7 +934,621 @@ class Batch41FirstRunAutomationTests(unittest.TestCase):
             self.assertIn("Code graph data is not available for this packet.", index_html)
             self.assertNotIn("WebGL runtime passed", index_html)
             self.assertNotIn("Cosmos.gl runtime passed", index_html)
-            self.assertNotIn("<script", index_html.lower())
+            self.assertNotIn("<script src", index_html.lower())
+            self.assertNotIn("http://", index_html.lower())
+            self.assertNotIn("https://", index_html.lower())
+            self.assertNotIn(str(workspace), result.stdout + index_html + json.dumps(manifest, sort_keys=True))
+
+    def test_b41_s9_m48_cockpit_declares_architecture_intelligence_design_contract(self) -> None:
+        with TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "s9-design-contract-target"
+            stage = Path(tmp) / "stage-output"
+            workspace.mkdir()
+            (workspace / "README.md").write_text("Source status: `synthetic_fixture`\n", encoding="utf-8")
+            (workspace / "package.json").write_text(
+                json.dumps({"scripts": {"test": "pytest", "lint": "ruff check ."}}),
+                encoding="utf-8",
+            )
+
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPTS / "run_first_project_analysis.py"),
+                    str(workspace),
+                    "--stage",
+                    str(stage),
+                    "--generated-at",
+                    "2026-06-19T13:40:00+03:00",
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
+            manifest = json.loads(stage.joinpath("analysis-manifest.json").read_text(encoding="utf-8"))
+            view_model = manifest["primary_cockpit"]["view_model"]
+            contract = manifest["cockpit_contract"]["architecture_intelligence_design_contract"]
+
+            self.assertEqual(contract["schema_version"], "architecture_intelligence_design_contract_v1")
+            self.assertEqual(contract["artifact_family"], "self_contained_architecture_intelligence_cockpit")
+            self.assertEqual(contract["generated_view_boundary"], "generated-view-only")
+            self.assertEqual(contract["first_viewport"]["layout"], "identity_status_architecture_next_route")
+            self.assertIn("overview", contract["navigation_modes"]["primary_tabs"])
+            self.assertIn("local_search", contract["navigation_modes"]["approved_enhancements"])
+            self.assertIn("diagram_zoom", contract["navigation_modes"]["approved_enhancements"])
+            self.assertEqual(contract["local_js_boundary"]["status"], "approved_for_b41_s9_m50")
+            self.assertFalse(contract["local_js_boundary"]["external_requests_allowed"])
+            self.assertFalse(contract["local_js_boundary"]["live_runtime_allowed"])
+            self.assertIn("shadcn_card", contract["component_grammar"]["mapped_components"])
+            self.assertIn("shadcn_tabs", contract["component_grammar"]["mapped_components"])
+            self.assertEqual(contract["typography"]["body_min_px"], 15)
+            self.assertEqual(contract["typography"]["letter_spacing"], "0")
+            self.assertIn("approval_required", contract["status_semantics"])
+            self.assertEqual(contract["diagram_modes"]["mermaid_runtime"], "not_included")
+            self.assertIn("release readiness", contract["non_goals"])
+            self.assertIn("full WCAG certification", contract["non_goals"])
+            self.assertEqual(view_model["design_contract"], contract)
+
+    def test_b41_s9_m49_first_viewport_uses_operator_architecture_shell(self) -> None:
+        with TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "s9-operator-shell-target"
+            stage = Path(tmp) / "stage-output"
+            workspace.mkdir()
+            (workspace / "README.md").write_text("Source status: `synthetic_fixture`\n", encoding="utf-8")
+            (workspace / "package.json").write_text(
+                json.dumps({"scripts": {"dev": "vite --host 127.0.0.1", "test": "vitest"}}),
+                encoding="utf-8",
+            )
+
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPTS / "run_first_project_analysis.py"),
+                    str(workspace),
+                    "--stage",
+                    str(stage),
+                    "--generated-at",
+                    "2026-06-19T14:05:00+03:00",
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
+            manifest = json.loads(stage.joinpath("analysis-manifest.json").read_text(encoding="utf-8"))
+            index_html = stage.joinpath("index.html").read_text(encoding="utf-8")
+            shell = manifest["primary_cockpit"]["view_model"]["first_viewport_shell"]
+
+            self.assertEqual(shell["schema_version"], "first_run_first_viewport_shell_v1")
+            self.assertEqual(shell["status"], "architecture_intelligence_operator_shell_ready")
+            self.assertEqual(shell["layout"], "identity_status_architecture_next_route")
+            self.assertEqual(shell["generated_view_label"], "generated-view-only")
+            self.assertEqual(shell["source_boundary"]["status"], "source_truth_required")
+            self.assertEqual(shell["next_route"]["status"], "owner_review_required")
+            self.assertGreaterEqual(len(shell["status_strip"]), 4)
+            self.assertIn("overview", shell["mode_navigation"])
+            self.assertIn("operations-risk", shell["mode_navigation"])
+            self.assertEqual(shell["responsive_contract"]["mobile_order"][0], "identity")
+            self.assertIn("minmax(0,1fr)", shell["responsive_contract"]["css_guards"])
+
+            required_markers = [
+                'data-shell-version="architecture-intelligence-v2"',
+                'data-shell-role="architecture-intelligence-hero"',
+                'class="cockpit-hero dossier-hero"',
+                'id="first-viewport-status-strip"',
+                'class="status-strip-item"',
+                'class="operator-rail source-boundary-rail"',
+                'data-route-role="review-route-card"',
+                'class="mode-navigation"',
+                "Architecture Intelligence Cockpit",
+                "Source Boundary",
+                "Evidence State",
+                "No target mutation",
+                "Review route",
+                "generated-view-only",
+            ]
+            for marker in required_markers:
+                self.assertIn(marker, index_html)
+            self.assertIn("grid-template-columns:minmax(0,1.5fr) minmax(280px,.65fr)", index_html)
+            self.assertIn(".status-strip", index_html)
+            self.assertIn(".mode-navigation", index_html)
+            self.assertNotIn("<script src", index_html.lower())
+            self.assertNotIn("http://", index_html.lower())
+            self.assertNotIn("https://", index_html.lower())
+            self.assertNotIn(str(workspace), result.stdout + index_html + json.dumps(manifest, sort_keys=True))
+
+    def test_b41_s9_m50_cockpit_embeds_approved_local_interaction_layer_only(self) -> None:
+        with TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "s9-local-js-target"
+            stage = Path(tmp) / "stage-output"
+            workspace.mkdir()
+            (workspace / "README.md").write_text("Source status: `synthetic_fixture`\n", encoding="utf-8")
+            (workspace / "package.json").write_text(
+                json.dumps({"scripts": {"dev": "vite --host 127.0.0.1", "test": "vitest"}}),
+                encoding="utf-8",
+            )
+
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPTS / "run_first_project_analysis.py"),
+                    str(workspace),
+                    "--stage",
+                    str(stage),
+                    "--generated-at",
+                    "2026-06-19T14:40:00+03:00",
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
+            manifest = json.loads(stage.joinpath("analysis-manifest.json").read_text(encoding="utf-8"))
+            index_html = stage.joinpath("index.html").read_text(encoding="utf-8")
+            layer = manifest["primary_cockpit"]["view_model"]["local_interaction_layer"]
+
+            self.assertEqual(layer["schema_version"], "first_run_local_interaction_layer_v1")
+            self.assertEqual(layer["status"], "approved_inline_js_ready")
+            self.assertEqual(layer["script_id"], "cockpit-local-interactions")
+            self.assertEqual(layer["fallback"], "readable_anchor_navigation_without_javascript")
+            self.assertEqual(
+                layer["approved_features"],
+                ["tabs", "local_search_filter", "collapsible_panels", "diagram_zoom_fullscreen", "selected_node_focus"],
+            )
+            self.assertFalse(layer["external_script_src_allowed"])
+            self.assertFalse(layer["external_requests_allowed"])
+            self.assertFalse(layer["fetch_allowed"])
+            self.assertFalse(layer["target_mutation_allowed"])
+            self.assertFalse(layer["webgl_execution_allowed"])
+
+            self.assertIn('<script id="cockpit-local-interactions">', index_html)
+            self.assertIn('data-interaction-layer="approved-local-js"', index_html)
+            self.assertIn('data-diagram-action="zoom-in"', index_html)
+            self.assertIn('data-diagram-action="zoom-out"', index_html)
+            self.assertIn('data-diagram-action="reset"', index_html)
+            self.assertIn('data-diagram-action="fullscreen"', index_html)
+            for marker in [
+                "applyCockpitSearch",
+                "activateCockpitMode",
+                "setDiagramScale",
+                "requestFullscreen",
+                "focusSelectedNode",
+            ]:
+                self.assertIn(marker, index_html)
+            unsafe_markers = [
+                "<script src",
+                "fetch(",
+                "xmlhttprequest",
+                "websocket",
+                "eval(",
+                "localstorage",
+                "http://",
+                "https://",
+            ]
+            for marker in unsafe_markers:
+                self.assertNotIn(marker, index_html.lower())
+            self.assertNotIn(str(workspace), result.stdout + index_html + json.dumps(manifest, sort_keys=True))
+
+    def test_b41_s9_m51_cockpit_exposes_static_diagram_workbench_contract(self) -> None:
+        with TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "s9-diagram-workbench-target"
+            stage = Path(tmp) / "stage-output"
+            workspace.mkdir()
+            (workspace / "README.md").write_text("Source status: `synthetic_fixture`\n", encoding="utf-8")
+            (workspace / "package.json").write_text(
+                json.dumps({"scripts": {"test": "vitest", "build": "vite build"}}),
+                encoding="utf-8",
+            )
+
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPTS / "run_first_project_analysis.py"),
+                    str(workspace),
+                    "--stage",
+                    str(stage),
+                    "--generated-at",
+                    "2026-06-19T15:10:00+03:00",
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
+            manifest = json.loads(stage.joinpath("analysis-manifest.json").read_text(encoding="utf-8"))
+            index_html = stage.joinpath("index.html").read_text(encoding="utf-8")
+            diagram_layer = manifest["primary_cockpit"]["view_model"]["architecture_diagrams"]
+            workbench = diagram_layer["diagram_workbench"]
+
+            self.assertEqual(workbench["schema_version"], "first_run_static_diagram_workbench_v1")
+            self.assertEqual(workbench["status"], "zoom_ready_static_svg_workbench")
+            self.assertEqual(workbench["rendering_mode"], "inline_static_svg_plus_collapsed_mermaid_source")
+            self.assertEqual(workbench["runtime_boundary"], "no_mermaid_runtime_no_external_assets")
+            self.assertTrue(workbench["local_zoom_controls"])
+            self.assertFalse(workbench["external_assets_allowed"])
+            self.assertFalse(workbench["runtime_execution_claimed"])
+            self.assertEqual(len(workbench["diagram_cards"]), diagram_layer["diagram_count"])
+            self.assertIn("system-context", {card["diagram_id"] for card in workbench["diagram_cards"]})
+            for card in workbench["diagram_cards"]:
+                self.assertEqual(card["zoom_state"], "local_js_optional")
+                self.assertEqual(card["source_truth_boundary"], "source_files_and_current_commands")
+
+            for marker in [
+                'class="cockpit-band architecture-diagram-layer diagram-workbench"',
+                'data-diagram-workbench="static-svg-local-zoom"',
+                'class="diagram-workbench-summary"',
+                'class="diagram-boundary-badges"',
+                'data-diagram-source-boundary="source_files_and_current_commands"',
+                "Static SVG Workbench",
+                "No Mermaid runtime",
+                "Zoom-ready",
+            ]:
+                self.assertIn(marker, index_html)
+            self.assertNotIn("<script src", index_html.lower())
+            self.assertNotIn("fetch(", index_html.lower())
+            self.assertNotIn("http://", index_html.lower())
+            self.assertNotIn("https://", index_html.lower())
+            self.assertNotIn(str(workspace), result.stdout + index_html + json.dumps(manifest, sort_keys=True))
+
+    def test_b41_s9_m52_cockpit_exposes_db_schema_and_contract_surface(self) -> None:
+        from product_agent_os.analysis_artifact_renderer import render_first_run_analysis_artifact  # noqa: PLC0415
+        from product_agent_os.first_run_analysis import build_first_run_analysis_packet, validate_first_run_analysis_packet  # noqa: PLC0415
+
+        with TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "s9-schema-contract-target"
+            stage = Path(tmp) / "stage-output"
+            workspace.mkdir()
+            packet = build_first_run_analysis_packet(
+                target_label="schema-contract-target",
+                generated_at="2026-06-19T15:35:00+03:00",
+                source_artifacts=[
+                    {
+                        "artifact_id": "db_schema",
+                        "path": "prisma/schema.prisma",
+                        "digest": "sha256:" + "1" * 64,
+                        "provenance": "synthetic_fixture",
+                    },
+                    {
+                        "artifact_id": "db_migration",
+                        "path": "migrations/001_init.sql",
+                        "digest": "sha256:" + "2" * 64,
+                        "provenance": "synthetic_fixture",
+                    },
+                    {
+                        "artifact_id": "api_contract",
+                        "path": "openapi.yaml",
+                        "digest": "sha256:" + "3" * 64,
+                        "provenance": "synthetic_fixture",
+                    },
+                    {
+                        "artifact_id": "config_contract",
+                        "path": ".env.example",
+                        "digest": "sha256:" + "4" * 64,
+                        "provenance": "synthetic_fixture",
+                    },
+                ],
+                generated_pages=[],
+                section_summaries={
+                    "discovery": {"status": "current", "source_artifact": "db_schema"},
+                    "runtime_route": {"status": "approval_required", "source_artifact": "api_contract"},
+                    "methodology_audit": {"status": "present_unverified", "source_artifact": "api_contract"},
+                    "control_plane": {"status": "present_unverified", "source_artifact": "config_contract"},
+                    "source_policy": {"status": "current", "source_artifact": "db_schema"},
+                    "graph": {"status": "inspection_only", "source_artifact": "db_schema"},
+                    "status_snapshot": {"status": "inspection_only", "source_artifact": "config_contract"},
+                },
+                safe_next_action="Read schema and API contract source files before DB or API changes.",
+            )
+
+            self.assertEqual(validate_first_run_analysis_packet(packet), [])
+            render_first_run_analysis_artifact(packet, workspace, output_dir=stage)
+            manifest = json.loads(stage.joinpath("analysis-manifest.json").read_text(encoding="utf-8"))
+            index_html = stage.joinpath("index.html").read_text(encoding="utf-8")
+            surface = manifest["primary_cockpit"]["view_model"]["schema_contract_surface"]
+
+            self.assertEqual(surface["schema_version"], "first_run_schema_contract_surface_v1")
+            self.assertEqual(surface["status"], "contract_inventory_ready")
+            self.assertEqual(surface["source_boundary"], "path_and_digest_inventory_only")
+            self.assertFalse(surface["runtime_introspection_performed"])
+            self.assertFalse(surface["migration_execution_performed"])
+            self.assertIn("prisma/schema.prisma", [item["path"] for item in surface["db_schema_candidates"]])
+            self.assertIn("migrations/001_init.sql", [item["path"] for item in surface["migration_candidates"]])
+            self.assertIn("openapi.yaml", [item["path"] for item in surface["api_contract_candidates"]])
+            self.assertIn(".env.example", [item["path"] for item in surface["config_contract_candidates"]])
+            self.assertEqual(surface["empty_state_policy"], "show explicit not_available state, do not hide missing schemas")
+
+            for marker in [
+                'id="schema-contract-surface"',
+                'class="schema-contract-surface"',
+                'data-contract-surface="db-schema-api-config"',
+                "DB / Schema / Contract Surface",
+                "path_and_digest_inventory_only",
+                "prisma/schema.prisma",
+                "migrations/001_init.sql",
+                "openapi.yaml",
+                ".env.example",
+            ]:
+                self.assertIn(marker, index_html)
+            self.assertNotIn("<script src", index_html.lower())
+            self.assertNotIn("fetch(", index_html.lower())
+            self.assertNotIn("http://", index_html.lower())
+            self.assertNotIn("https://", index_html.lower())
+            self.assertNotIn(str(workspace), index_html + json.dumps(manifest, sort_keys=True))
+
+    def test_b41_s9_m53_cockpit_exposes_graph_file_code_surface(self) -> None:
+        from product_agent_os.analysis_artifact_renderer import render_first_run_analysis_artifact  # noqa: PLC0415
+        from product_agent_os.first_run_analysis import build_first_run_analysis_packet, validate_first_run_analysis_packet  # noqa: PLC0415
+
+        with TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "s9-graph-code-surface-target"
+            stage = Path(tmp) / "stage-output"
+            workspace.mkdir()
+            packet = build_first_run_analysis_packet(
+                target_label="graph-code-surface-target",
+                generated_at="2026-06-19T16:05:00+03:00",
+                source_artifacts=[
+                    {
+                        "artifact_id": "project_graph",
+                        "path": ".codex/product-agent-os/project-code-graph.json",
+                        "digest": "sha256:" + "5" * 64,
+                        "provenance": "scan_project_code_graph",
+                    },
+                    {
+                        "artifact_id": "agent_packet",
+                        "path": ".codex/product-agent-os/agent-reading-packet.json",
+                        "digest": "sha256:" + "6" * 64,
+                        "provenance": "scan_project_code_graph",
+                    },
+                ],
+                generated_pages=[],
+                section_summaries={
+                    "discovery": {"status": "current", "source_artifact": "project_graph"},
+                    "runtime_route": {"status": "approval_required", "source_artifact": "project_graph"},
+                    "methodology_audit": {"status": "present_unverified", "source_artifact": "agent_packet"},
+                    "control_plane": {"status": "present_unverified", "source_artifact": "agent_packet"},
+                    "source_policy": {"status": "current", "source_artifact": "project_graph"},
+                    "graph": {"status": "inspection_only", "source_artifact": "project_graph"},
+                    "status_snapshot": {"status": "inspection_only", "source_artifact": "agent_packet"},
+                },
+                safe_next_action="Use graph surfaces for navigation; read source files before edits.",
+                graph_artifact_summary={
+                    "status": "inspection_only",
+                    "graph_packet_digest": "sha256:" + "7" * 64,
+                    "agent_packet_refs": [
+                        {
+                            "kind": "agent_reading_packet",
+                            "path": ".codex/product-agent-os/agent-reading-packet.json",
+                            "digest": "sha256:" + "8" * 64,
+                        }
+                    ],
+                    "coverage": {"status": "partial_static", "covered_files": 4, "partial_files": 1},
+                    "freshness": {
+                        "status": "current",
+                        "blocks_action_claims": False,
+                        "safe_next_action": "Read listed spans before editing.",
+                    },
+                    "rejected_link_summary": {"total": 1, "by_reason": {"weak_name_similarity": 1}},
+                    "framework_semantic_summary": {"total": 1, "frameworks": {"react": 1}},
+                    "guided_tour": [{"page": "code-intelligence", "safe_next_action": "Start with graph hotspots."}],
+                },
+            )
+
+            self.assertEqual(validate_first_run_analysis_packet(packet), [])
+            render_first_run_analysis_artifact(packet, workspace, output_dir=stage)
+            manifest = json.loads(stage.joinpath("analysis-manifest.json").read_text(encoding="utf-8"))
+            index_html = stage.joinpath("index.html").read_text(encoding="utf-8")
+            surface = manifest["primary_cockpit"]["view_model"]["graph_code_surface"]
+
+            self.assertEqual(surface["schema_version"], "first_run_graph_file_code_surface_v1")
+            self.assertEqual(surface["status"], "graph_code_surface_ready")
+            self.assertEqual(surface["renderer"], "Cosmos.gl")
+            self.assertEqual(surface["runtime_boundary"], "static_svg_table_fallback_no_webgl_execution")
+            self.assertTrue(surface["selected_node_panel"])
+            self.assertTrue(surface["table_fallback"])
+            self.assertTrue(surface["source_read_required"])
+            self.assertFalse(surface["webgl_execution_claimed"])
+            self.assertEqual(surface["safe_interactions"], ["local_search_filter", "selected_node_focus", "table_fallback_scan"])
+            self.assertGreaterEqual(surface["surface_cards"][0]["node_count"], 1)
+            self.assertGreaterEqual(surface["surface_cards"][1]["node_count"], 1)
+
+            for marker in [
+                'id="graph-file-code-surface"',
+                'class="graph-code-surface"',
+                'data-graph-code-surface="static-navigation"',
+                "Graph / File / Code Surface",
+                "static_svg_table_fallback_no_webgl_execution",
+                "selected_node_focus",
+                "table_fallback_scan",
+                "Read source files before graph-backed edits",
+            ]:
+                self.assertIn(marker, index_html)
+            self.assertNotIn("WebGL runtime passed", index_html)
+            self.assertNotIn("Cosmos.gl runtime passed", index_html)
+            self.assertNotIn("<script src", index_html.lower())
+            self.assertNotIn("fetch(", index_html.lower())
+            self.assertNotIn("http://", index_html.lower())
+            self.assertNotIn("https://", index_html.lower())
+            self.assertNotIn(str(workspace), index_html + json.dumps(manifest, sort_keys=True))
+
+    def test_b41_s9_m54_cockpit_exposes_guided_review_route_and_read_order(self) -> None:
+        with TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "s9-guided-route-target"
+            stage = Path(tmp) / "stage-output"
+            workspace.mkdir()
+            (workspace / "README.md").write_text("Source status: `synthetic_fixture`\n", encoding="utf-8")
+            (workspace / "package.json").write_text(
+                json.dumps({"scripts": {"test": "pytest", "build": "mkdocs build --strict"}}),
+                encoding="utf-8",
+            )
+
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPTS / "run_first_project_analysis.py"),
+                    str(workspace),
+                    "--stage",
+                    str(stage),
+                    "--generated-at",
+                    "2026-06-19T16:30:00+03:00",
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
+            manifest = json.loads(stage.joinpath("analysis-manifest.json").read_text(encoding="utf-8"))
+            index_html = stage.joinpath("index.html").read_text(encoding="utf-8")
+            route = manifest["primary_cockpit"]["view_model"]["guided_tour_surface"]
+
+            self.assertEqual(route["schema_version"], "first_run_guided_tour_surface_v1")
+            self.assertEqual(route["status"], "guided_read_order_ready")
+            self.assertEqual(route["interaction_mode"], "anchor_links_with_optional_local_tab_activation")
+            self.assertFalse(route["completion_tracking_enabled"])
+            self.assertGreaterEqual(len(route["steps"]), 7)
+            self.assertEqual(route["steps"][0]["target"], "#main-content")
+            self.assertIn("#architecture-diagram-layer", {step["target"] for step in route["steps"]})
+            self.assertIn("#schema-contract-surface", {step["target"] for step in route["steps"]})
+            self.assertIn("#graph-file-code-surface", {step["target"] for step in route["steps"]})
+            for step in route["steps"]:
+                self.assertEqual(step["source_boundary"], "generated_orientation_requires_source_check")
+
+            for marker in [
+                'id="guided-review-route"',
+                'class="cockpit-band guided-tour-surface"',
+                'data-guided-tour="read-order"',
+                "Guided Review Route",
+                "Start With Boundary",
+                "Read Architecture Diagrams",
+                "Inspect DB / Schema / Contract Surface",
+                "Use Graph / File / Code Surface",
+                "Check Evidence And Risk",
+            ]:
+                self.assertIn(marker, index_html)
+            self.assertNotIn("<script src", index_html.lower())
+            self.assertNotIn("fetch(", index_html.lower())
+            self.assertNotIn("http://", index_html.lower())
+            self.assertNotIn("https://", index_html.lower())
+            self.assertNotIn(str(workspace), result.stdout + index_html + json.dumps(manifest, sort_keys=True))
+
+    def test_b41_s9_m55_cockpit_exposes_evidence_risk_hierarchy(self) -> None:
+        with TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "s9-evidence-risk-target"
+            stage = Path(tmp) / "stage-output"
+            workspace.mkdir()
+            (workspace / "README.md").write_text("Source status: `synthetic_fixture`\n", encoding="utf-8")
+            (workspace / "package.json").write_text(json.dumps({"scripts": {"test": "pytest"}}), encoding="utf-8")
+
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPTS / "run_first_project_analysis.py"),
+                    str(workspace),
+                    "--stage",
+                    str(stage),
+                    "--generated-at",
+                    "2026-06-19T17:00:00+03:00",
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
+            manifest = json.loads(stage.joinpath("analysis-manifest.json").read_text(encoding="utf-8"))
+            index_html = stage.joinpath("index.html").read_text(encoding="utf-8")
+            hierarchy = manifest["primary_cockpit"]["view_model"]["evidence_risk_hierarchy"]
+
+            self.assertEqual(hierarchy["schema_version"], "first_run_evidence_risk_hierarchy_v1")
+            self.assertEqual(hierarchy["status"], "risk_hierarchy_ready")
+            self.assertEqual(hierarchy["claim_ceiling"], "orientation_only_not_proof")
+            self.assertFalse(hierarchy["release_ready_claim_allowed"])
+            self.assertFalse(hierarchy["runtime_proof_claim_allowed"])
+            self.assertFalse(hierarchy["target_apply_allowed"])
+            self.assertEqual([lane["id"] for lane in hierarchy["priority_lanes"]], ["supported", "blocked", "approval", "future"])
+            self.assertTrue(any(item["id"] == "runtime_browser_proof" for item in hierarchy["blocked_claims"]))
+            self.assertTrue(any(item["id"] == "release_readiness" for item in hierarchy["blocked_claims"]))
+
+            for marker in [
+                'id="evidence-risk-hierarchy"',
+                'class="evidence-risk-hierarchy"',
+                'data-risk-hierarchy="claim-ceiling"',
+                "Evidence / Risk Hierarchy",
+                "orientation_only_not_proof",
+                "runtime_browser_proof",
+                "release_readiness",
+                "target_apply",
+            ]:
+                self.assertIn(marker, index_html)
+            self.assertNotIn("release-ready", index_html.lower())
+            self.assertNotIn("runtime proof passed", index_html.lower())
+            self.assertNotIn("<script src", index_html.lower())
+            self.assertNotIn("fetch(", index_html.lower())
+            self.assertNotIn("http://", index_html.lower())
+            self.assertNotIn("https://", index_html.lower())
+            self.assertNotIn(str(workspace), result.stdout + index_html + json.dumps(manifest, sort_keys=True))
+
+    def test_b41_s9_m56_cockpit_exposes_static_visual_accessibility_acceptance_gate(self) -> None:
+        with TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "s9-visual-a11y-target"
+            stage = Path(tmp) / "stage-output"
+            workspace.mkdir()
+            (workspace / "README.md").write_text("Source status: `synthetic_fixture`\n", encoding="utf-8")
+            (workspace / "package.json").write_text(json.dumps({"scripts": {"test": "pytest"}}), encoding="utf-8")
+
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPTS / "run_first_project_analysis.py"),
+                    str(workspace),
+                    "--stage",
+                    str(stage),
+                    "--generated-at",
+                    "2026-06-19T17:35:00+03:00",
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
+            manifest = json.loads(stage.joinpath("analysis-manifest.json").read_text(encoding="utf-8"))
+            index_html = stage.joinpath("index.html").read_text(encoding="utf-8")
+            gate = manifest["primary_cockpit"]["view_model"]["visual_accessibility_acceptance"]
+
+            self.assertEqual(gate["schema_version"], "first_run_visual_accessibility_acceptance_v1")
+            self.assertEqual(gate["status"], "static_gate_ready_browser_gap_recorded")
+            self.assertEqual(gate["certification_status"], "not_certified_static_orientation_only")
+            self.assertEqual(gate["browser_visual_proof_status"], "not_run_approval_required")
+            self.assertFalse(gate["wcag_certification_claimed"])
+            self.assertFalse(gate["runtime_interaction_proof_claimed"])
+            self.assertIn("responsive_css_guards", {item["id"] for item in gate["static_checks"]})
+            self.assertIn("keyboard_reachable_controls", {item["id"] for item in gate["static_checks"]})
+            self.assertIn("no_external_network", {item["id"] for item in gate["static_checks"]})
+            self.assertIn("browser screenshot proof", gate["accepted_gaps"])
+
+            for marker in [
+                'id="visual-accessibility-acceptance"',
+                'class="visual-accessibility-acceptance"',
+                'data-visual-a11y-gate="static-only"',
+                "Visual / Responsive / Accessibility Gate",
+                "not_certified_static_orientation_only",
+                "browser_visual_proof_status",
+                "responsive_css_guards",
+                "keyboard_reachable_controls",
+                "no_external_network",
+            ]:
+                self.assertIn(marker, index_html)
+            self.assertIn("@media(max-width:760px)", index_html)
+            self.assertIn("overflow-wrap:anywhere", index_html)
+            self.assertNotIn("wcag certified", index_html.lower())
+            self.assertNotIn("full wcag certification", index_html.lower())
+            self.assertNotIn("<script src", index_html.lower())
+            self.assertNotIn("fetch(", index_html.lower())
             self.assertNotIn("http://", index_html.lower())
             self.assertNotIn("https://", index_html.lower())
             self.assertNotIn(str(workspace), result.stdout + index_html + json.dumps(manifest, sort_keys=True))
@@ -1038,7 +1652,7 @@ class Batch41FirstRunAutomationTests(unittest.TestCase):
             self.assertIn("Selected File Panel", index_html)
             self.assertIn("Code Graph And Hotspots", index_html)
             self.assertIn("Refresh graph or read source first.", index_html)
-            self.assertNotIn("<script", index_html.lower())
+            self.assertNotIn("<script src", index_html.lower())
             self.assertNotIn("http://", index_html.lower())
             self.assertNotIn("https://", index_html.lower())
             self.assertNotIn(str(workspace), index_html + json.dumps(manifest, sort_keys=True))
@@ -1098,7 +1712,10 @@ class Batch41FirstRunAutomationTests(unittest.TestCase):
             safety = view_model["safety_accessibility"]
             self.assertEqual(safety["schema_version"], "first_run_cockpit_safety_accessibility_v1")
             self.assertFalse(safety["offline_policy"]["external_urls_allowed"])
-            self.assertFalse(safety["offline_policy"]["script_tags_allowed"])
+            self.assertTrue(safety["offline_policy"]["script_tags_allowed"])
+            self.assertTrue(safety["offline_policy"]["inline_local_script_allowed"])
+            self.assertFalse(safety["offline_policy"]["external_script_src_allowed"])
+            self.assertEqual(safety["offline_policy"]["script_policy"], "approved_inline_local_only_no_script_src")
             self.assertFalse(safety["privacy_policy"]["absolute_local_paths_allowed"])
             self.assertTrue(safety["accessibility_contract"]["labels_required"])
 
@@ -1119,7 +1736,7 @@ class Batch41FirstRunAutomationTests(unittest.TestCase):
             self.assertIn("@media(max-width:760px)", index_html)
             self.assertNotIn("font-family:serif", index_html.replace(" ", "").lower())
             self.assertNotIn("<pre", index_html.lower())
-            self.assertNotIn("<script", index_html.lower())
+            self.assertNotIn("<script src", index_html.lower())
             self.assertNotIn("fetch(", index_html.lower())
             self.assertNotIn("http://", index_html.lower())
             self.assertNotIn("https://", index_html.lower())
@@ -1129,8 +1746,8 @@ class Batch41FirstRunAutomationTests(unittest.TestCase):
             self.assertEqual(len(ids), len(set(ids)))
             nav_targets = re.findall(r'<a href="#([^"]+)">', index_html)
             page_targets = [target for target in nav_targets if target.startswith("page-")]
-            self.assertEqual(len(page_targets), 8)
-            for target in page_targets:
+            self.assertEqual(len(set(page_targets)), view_model["page_count"])
+            for target in set(page_targets):
                 self.assertEqual(ids.count(target), 1, target)
             self.assertNotIn(str(workspace), index_html + json.dumps(manifest, sort_keys=True))
 

@@ -10,7 +10,11 @@ def main() -> int:
         "hook": "post_tool_use_evidence",
         "decision": "record_evidence",
         "input_bytes": len(event.encode("utf-8")),
-        "reminder": "Record command, exit code, and relevant output in RUNLOG.md when useful.",
+        "reminders": [
+            "Record command, exit code, and relevant output in RUNLOG.md when useful.",
+            "Keep verification claims tied to current command/runtime evidence or an explicit accepted gap.",
+            "Do not treat hook output alone as completion proof.",
+        ],
     }
     print(json.dumps(payload, sort_keys=True))
     return 0

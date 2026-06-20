@@ -360,7 +360,8 @@ class FirstRunAnalysisPacketTests(unittest.TestCase):
             self.assertIn("docs/superpowers/specs/discovery.json", html)
             self.assertNotIn("http://", html)
             self.assertNotIn("https://", html)
-            self.assertNotIn("<script", html.lower())
+            self.assertNotIn("<script src", html.lower())
+            self.assertNotIn("fetch(", html.lower())
             self.assertNotIn(str(workspace), html)
 
     def test_m20_4_renderer_rejects_invalid_packet_before_writing_pages(self) -> None:

@@ -60,10 +60,11 @@ ENGLISH_ORIGINAL_SUPERPOWERS_PLAN_PAGES = {
     DOCS / "superpowers" / "plans" / "2026-05-15-product-agent-os-codex-runtime-runner.md",
     DOCS / "superpowers" / "plans" / "2026-05-25-track-9-methodology-intelligence.md",
     DOCS / "superpowers" / "plans" / "2026-05-27-track-10-guided-questions-status-dashboard.md",
+    DOCS / "superpowers" / "plans" / "2026-06-20-track-11-documentation-architecture-refresh.md",
 }
-BUILDABLE_MARKDOWN_PAGE_COUNT = 132
+BUILDABLE_MARKDOWN_PAGE_COUNT = 133
 LOCALIZED_MARKDOWN_PAGE_COUNT = 125
-ENGLISH_ORIGINAL_MARKDOWN_PAGE_COUNT = 7
+ENGLISH_ORIGINAL_MARKDOWN_PAGE_COUNT = 8
 
 
 class ProductAgentOsDocsTest(unittest.TestCase):
@@ -5348,6 +5349,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             DOCS / "superpowers" / "plans" / "2026-05-15-product-agent-os-codex-runtime-runner.md",
             DOCS / "superpowers" / "plans" / "2026-05-25-track-9-methodology-intelligence.md",
             DOCS / "superpowers" / "plans" / "2026-05-27-track-10-guided-questions-status-dashboard.md",
+            DOCS / "superpowers" / "plans" / "2026-06-20-track-11-documentation-architecture-refresh.md",
         ]
         base_pages = sorted(
             path
@@ -5364,7 +5366,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         ]
 
         self.assertEqual(BUILDABLE_MARKDOWN_PAGE_COUNT, len(base_pages))
-        self.assertEqual(7, len(english_original_pages))
+        self.assertEqual(ENGLISH_ORIGINAL_MARKDOWN_PAGE_COUNT, len(english_original_pages))
         self.assertEqual(LOCALIZED_MARKDOWN_PAGE_COUNT, len(localized_pages))
         self.assertEqual([], missing_localized_siblings)
         self.assertTrue(

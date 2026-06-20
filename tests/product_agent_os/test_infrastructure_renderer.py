@@ -87,6 +87,44 @@ class InfrastructureRendererTest(unittest.TestCase):
         self.assertEqual(by_target[".codex/hooks/hooks.json"]["write_policy"], "staged_only")
         self.assertIn("explicit approval", " ".join(result["infrastructure_plan"]["approval_required"]))
 
+    def test_lifecycle_hooks_are_staged_with_marker_guard(self):
+        expected_targets = {
+            ".codex/hooks/hooks.json",
+            ".codex/hooks/session_start_context.py",
+            ".codex/hooks/pre_tool_use_policy.py",
+            ".codex/hooks/permission_request_summary.py",
+            ".codex/hooks/post_tool_use_evidence.py",
+            ".codex/hooks/stop_runlog_reminder.py",
+        }
+
+        with tempfile.TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "workspace"
+            stage_root = Path(tmp) / "stage"
+            shutil.copytree(FIXTURES / "empty-repo", workspace)
+
+            staged = stage_infrastructure(workspace, stage_root)
+
+            staged_by_target = {
+                item["target_path"]: Path(item["staged_path"])
+                for item in staged["rendered_artifacts"]["files"]
+                if item["target_path"] in expected_targets
+            }
+            manifest = json.loads(Path(staged["rendered_artifacts"]["manifest_path"]).read_text(encoding="utf-8"))
+            manifest_targets = {item["target_path"] for item in manifest["files"]}
+
+            self.assertEqual(set(staged_by_target), expected_targets)
+            self.assertTrue(expected_targets.issubset(manifest_targets))
+            for path in staged_by_target.values():
+                self.assertTrue(path.resolve().is_relative_to(stage_root.resolve()), path)
+                self.assertTrue(path.exists(), path)
+
+            pre_tool = staged_by_target[".codex/hooks/pre_tool_use_policy.py"].read_text(encoding="utf-8")
+            stop = staged_by_target[".codex/hooks/stop_runlog_reminder.py"].read_text(encoding="utf-8")
+            self.assertIn(".codex/product-agent-os/lifecycle-state.json", pre_tool)
+            self.assertIn("missing_lifecycle_marker", pre_tool)
+            self.assertIn("task_start_brief_shown", pre_tool)
+            self.assertIn("Completion Brief", stop)
+
     def test_stage_mode_writes_only_inside_output_directory(self):
         with tempfile.TemporaryDirectory() as tmp:
             workspace = Path(tmp) / "workspace"

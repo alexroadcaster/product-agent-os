@@ -30,6 +30,17 @@ Source status: `official + experiment`
 - что вне scope.
 ```
 
+## Guardrail стартового брифа
+
+Для сложной Product-Agent OS работы стартовый бриф теперь поддерживается staged hook-механизмом:
+
+- lifecycle contract живёт в `.codex/config.toml` и `.codex/workflows/task-plan-lifecycle.md`;
+- packaged hook templates живут в `plugins/product-agent-os/assets/templates/hooks/`;
+- `PreToolUse` hook блокирует команды с изменениями, если после видимого пользователю стартового брифа не создан `.codex/product-agent-os/lifecycle-state.json`;
+- `Stop` hook напоминает показать завершающий бриф и выполнить control-plane sync, если менялись scope, plan, tests, evals, runlog или evidence state.
+
+Это guardrail, а не доказательство само по себе. Completion/readiness claims всё равно требуют current command/runtime/eval evidence или explicit accepted gap.
+
 ## Work granularity
 
 Хорошая работа для Codex достаточно ограничена, чтобы человек мог выполнить ее за один сфокусированный блок. Если запрос одновременно затрагивает product, design, backend, frontend, tests, docs и release, разделите его на lifecycle stages и используйте control-plane files как handoff.

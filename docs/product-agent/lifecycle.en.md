@@ -30,6 +30,17 @@ Do not edit product code until the plan names:
 - what is out of scope.
 ```
 
+## Start brief hook guard
+
+For Product-Agent OS non-mechanical work, the start brief is now backed by a staged hook mechanism:
+
+- the lifecycle contract lives in `.codex/config.toml` and `.codex/workflows/task-plan-lifecycle.md`;
+- packaged hook templates live in `plugins/product-agent-os/assets/templates/hooks/`;
+- the `PreToolUse` hook blocks mutating or non-read-only commands when `.codex/product-agent-os/lifecycle-state.json` has not been created after the user-visible start brief;
+- the `Stop` hook reminds the agent to show a completion brief and run control-plane sync when scope, plan, tests, evals, runlog, or evidence state changed.
+
+This is a guardrail, not proof by itself. Completion and readiness claims still require current command, runtime, or eval evidence, or an explicit accepted gap.
+
 ## Work granularity
 
 Good Codex work is scoped enough that a human could complete it in a focused block. If one request spans product, design, backend, frontend, tests, docs and release, split it into lifecycle stages and use control-plane files as the handoff.

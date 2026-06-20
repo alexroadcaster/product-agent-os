@@ -98,7 +98,7 @@ if (-not [string]::IsNullOrEmpty($pathValue)) {
 - Track 3 infrastructure generation is staged-first. Use `python plugins\product-agent-os\scripts\render_infrastructure.py <workspace> --dry-run` before staging infrastructure for a project.
 - Use `--stage <output-dir>` only with an output directory outside the target workspace unless a later approved merge workflow proves a safe write path.
 - Preserve user-authored files outside managed sections. Existing unmarked `AGENTS.md`, `.codex/config.toml`, hooks, workflows and automation files are user content and must be staged as companion proposals rather than overwritten.
-- Packaged hooks are examples and staged target-project assets. Do not add plugin-root hook activation or enable target-project hooks without explicit approval.
+- Packaged hooks are staged target-project assets. The lifecycle `PreToolUse` hook may block mutating Product-Agent OS commands until a user-visible Task Brief is followed by `.codex/product-agent-os/lifecycle-state.json`; do not add plugin-root hook activation or enable target-project hooks without explicit approval.
 - Automation artifacts under `assets/templates/automations/` are candidate-only. Do not create schedules, recurring jobs, GitHub Actions, Codex App automations or external workflows from Track 3 templates.
 - Template files, fixtures and generated examples must remain synthetic and must not contain secrets, private customer data, raw private chat logs or absolute user-specific paths.
 

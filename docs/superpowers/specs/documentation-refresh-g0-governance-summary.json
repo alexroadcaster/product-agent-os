@@ -1,0 +1,503 @@
+{
+  "schema_version": "documentation_refresh_g0_governance_summary_v1",
+  "source_status": "source_owned_local_documentation_governance_evidence",
+  "generated_at": "2026-06-20T16:29:08+03:00",
+  "status": "closed_g0_scope_with_current_verification",
+  "group": "G0",
+  "purpose": "Freeze governance, terminology, source mapping, claim ceilings and closure boundaries for reader-facing documentation about the system.",
+  "reader_facing_policy": {
+    "forbidden_public_labels": [
+      "internal execution labels",
+      "historical planning labels",
+      "target workspace names",
+      "private target paths"
+    ],
+    "allowed_public_focus": [
+      "system capabilities",
+      "operator actions",
+      "evidence boundaries",
+      "approval requirements",
+      "unsupported claims",
+      "next safe action"
+    ],
+    "source_owned_exception": "Internal ledgers may preserve historical evidence labels when needed for traceability, but public pages produced from this packet should not copy those labels."
+  },
+  "work_item_status": {
+    "DOC-M00": {
+      "status": "closed",
+      "result": "Reader-facing terminology and numbering were normalized before this execution pass."
+    },
+    "DOC-M01": {
+      "status": "closed",
+      "result": "Documentation requirements, non-goals and approval boundaries are frozen for G0."
+    },
+    "DOC-M03": {
+      "status": "closed",
+      "result": "Capability-to-documentation source map is recorded in this packet."
+    },
+    "DOC-M15": {
+      "status": "closed_g0_scope_only",
+      "result": "G0 closure is recorded; later groups remain planned and no site/publication/readiness claim is made."
+    },
+    "DOC-M22": {
+      "status": "closed",
+      "result": "Claim ceiling matrix is recorded in this packet."
+    }
+  },
+  "requirements_and_boundaries": {
+    "scope": [
+      "governance and terminology for reader-facing documentation",
+      "capability-to-documentation source map",
+      "claim ceiling matrix",
+      "G0 closure and handoff state"
+    ],
+    "non_goals": [
+      "do not implement runtime features",
+      "do not rebuild generated site output",
+      "do not publish documentation",
+      "do not run browser automation",
+      "do not call providers or live external APIs",
+      "do not refresh installed plugin cache",
+      "do not mutate global configuration",
+      "do not create git, release, deployment or automation actions",
+      "do not claim release readiness or public documentation readiness"
+    ],
+    "approval_required_surfaces": [
+      "generated site rebuild as freshness evidence",
+      "browser or visual proof",
+      "live runtime proof",
+      "provider or external API call",
+      "installed cache refresh",
+      "global configuration write",
+      "target workspace mutation",
+      "publication or deployment",
+      "git stage, commit, push or pull request",
+      "automation activation"
+    ]
+  },
+  "agent_team": [
+    {
+      "role": "docs-maintainer",
+      "agent": "Index",
+      "ownership": "read-only source map audit and payload proposal",
+      "result": "completed_inspection_only"
+    },
+    {
+      "role": "reviewer",
+      "agent": "Echo",
+      "ownership": "read-only claim ceiling and closure risk review",
+      "result": "completed_inspection_only"
+    },
+    {
+      "role": "integrator",
+      "agent": "Codex",
+      "ownership": "source-owned G0 packet, plan status update, control-plane sync and verification",
+      "result": "completed_with_current_verification"
+    }
+  ],
+  "capability_source_map": [
+    {
+      "capability": "First-run orchestration and safe command modes",
+      "owning_source_labels": [
+        "first-run analysis implementation",
+        "first-run command contract evidence",
+        "script command matrix evidence"
+      ],
+      "implementation_surfaces": [
+        "first_run_orchestrator_contract_v1",
+        "first_run_command_matrix_v1",
+        "safe help and dry-run command modes"
+      ],
+      "proposed_reader_facing_section": "Product-Agent OS / First-run operator flow",
+      "support_status": "source_supported",
+      "unsupported_claims": [
+        "release readiness",
+        "runtime or browser behavior",
+        "provider or model quality",
+        "installed plugin readiness"
+      ]
+    },
+    {
+      "capability": "Architecture cockpit artifact and generated-view boundary",
+      "owning_source_labels": [
+        "artifact renderer implementation",
+        "static HTML modernization evidence",
+        "first-run cockpit tests"
+      ],
+      "implementation_surfaces": [
+        "first_run_cockpit_artifact_v1",
+        "architecture_intelligence_design_contract_v1",
+        "approved local interaction layer"
+      ],
+      "proposed_reader_facing_section": "Product-Agent OS / Architecture cockpit",
+      "support_status": "local_static_evidence_supported",
+      "unsupported_claims": [
+        "generated site freshness",
+        "full accessibility certification",
+        "owner final visual acceptance"
+      ]
+    },
+    {
+      "capability": "Artifact contracts and schema atlas",
+      "owning_source_labels": [
+        "artifact contracts documentation",
+        "artifact renderer implementation",
+        "first-run analysis implementation"
+      ],
+      "implementation_surfaces": [
+        "analysis manifest",
+        "cockpit contract",
+        "guided response",
+        "answer-ledger routing"
+      ],
+      "proposed_reader_facing_section": "Product-Agent OS / Artifact contracts",
+      "support_status": "source_supported",
+      "unsupported_claims": [
+        "complete JSON Schema coverage unless schema validation exists",
+        "generated artifact as source truth"
+      ]
+    },
+    {
+      "capability": "Evidence, decision, risk and claim ceilings",
+      "owning_source_labels": [
+        "evidence decision risk summary",
+        "first-run closure evidence",
+        "go-no-go decision evidence"
+      ],
+      "implementation_surfaces": [
+        "first_run_evidence_decision_layer_v1",
+        "first_run_evidence_risk_hierarchy_v1"
+      ],
+      "proposed_reader_facing_section": "Product-Agent OS / Evidence and claim boundaries",
+      "support_status": "source_supported",
+      "unsupported_claims": [
+        "release readiness",
+        "target apply safety",
+        "provider or model quality",
+        "automation promotion"
+      ]
+    },
+    {
+      "capability": "Graph, code and static runtime boundary",
+      "owning_source_labels": [
+        "project code graph documentation",
+        "graph runtime boundary evidence",
+        "artifact renderer implementation"
+      ],
+      "implementation_surfaces": [
+        "first_run_graph_runtime_layer_v1",
+        "static graph adapter payload",
+        "static fallback"
+      ],
+      "proposed_reader_facing_section": "Product-Agent OS / Graph and code intelligence",
+      "support_status": "local_static_evidence_supported",
+      "unsupported_claims": [
+        "live graph runtime proof",
+        "semantic completeness",
+        "source-read completion"
+      ]
+    },
+    {
+      "capability": "Guided questions and answer-ledger routing",
+      "owning_source_labels": [
+        "guided question evidence",
+        "first-run analysis implementation"
+      ],
+      "implementation_surfaces": [
+        "first_run_guided_response_v1",
+        "first_run_answer_ledger_routing_v1"
+      ],
+      "proposed_reader_facing_section": "Product-Agent OS / Guided first response",
+      "support_status": "source_supported",
+      "unsupported_claims": [
+        "unreviewed answers mutate source docs",
+        "question output as source truth"
+      ]
+    },
+    {
+      "capability": "Instruction and tool-use compliance with source/cache/session distinction",
+      "owning_source_labels": [
+        "instruction and tool-use compliance matrix",
+        "source registry"
+      ],
+      "implementation_surfaces": [
+        "skill exposure inventory",
+        "implicit invocation policy",
+        "fresh-session proof"
+      ],
+      "proposed_reader_facing_section": "Product-Agent OS / Instruction and tool-use compliance",
+      "support_status": "planned_only",
+      "unsupported_claims": [
+        "auto-engagement fixed",
+        "installed cache refreshed",
+        "global configuration updated",
+        "fresh-session behavior proven"
+      ]
+    },
+    {
+      "capability": "Source docs versus generated site freshness",
+      "owning_source_labels": [
+        "docs update playbook",
+        "documentation refresh plan",
+        "source registry"
+      ],
+      "implementation_surfaces": [
+        "MkDocs source pages",
+        "generated site output",
+        "strict build gate"
+      ],
+      "proposed_reader_facing_section": "Docs / Source and generated site boundary",
+      "support_status": "approval_required",
+      "unsupported_claims": [
+        "site is current without strict build evidence",
+        "publication readiness"
+      ]
+    }
+  ],
+  "claim_ceiling_matrix": [
+    {
+      "evidence_type": "Planning matrix only",
+      "allowed_wording": "The system has a locally recorded documentation plan and future claim boundaries.",
+      "forbidden_wording": [
+        "documentation is ready",
+        "site is ready",
+        "public release is ready"
+      ],
+      "required_next_proof": [
+        "implemented docs edits",
+        "source map",
+        "docs checks",
+        "closure record"
+      ],
+      "approval_boundary": "No external or publication action without separate approval.",
+      "residual_risk": "A plan can be mistaken for implementation evidence."
+    },
+    {
+      "evidence_type": "Reader-facing terminology rule",
+      "allowed_wording": "Public pages describe the system and hide internal execution labels.",
+      "forbidden_wording": [
+        "public pages expose internal execution labels",
+        "public pages expose target workspace names"
+      ],
+      "required_next_proof": [
+        "source map review",
+        "reader-facing forbidden-term search"
+      ],
+      "approval_boundary": "Disclosure of private target details is approval-bound.",
+      "residual_risk": "Raw ledger text can accidentally enter public docs."
+    },
+    {
+      "evidence_type": "Source map",
+      "allowed_wording": "Traceability design is recorded; claims must be source-backed before publication.",
+      "forbidden_wording": [
+        "every public claim is already fully traced",
+        "generated artifacts are source truth"
+      ],
+      "required_next_proof": [
+        "claim/source/page/support-status map",
+        "source registry review when public claims change"
+      ],
+      "approval_boundary": "Registry and public documentation edits follow docs-maintainer ownership.",
+      "residual_risk": "Claims can be copied from ledgers without support status."
+    },
+    {
+      "evidence_type": "Local unit and static tests",
+      "allowed_wording": "Local static contracts and renderer expectations are covered by focused tests.",
+      "forbidden_wording": [
+        "runtime behavior verified",
+        "browser UX verified",
+        "production-ready"
+      ],
+      "required_next_proof": [
+        "fresh command evidence for exact changed surface",
+        "runtime or browser evidence when such claims are made"
+      ],
+      "approval_boundary": "Browser and live runtime proof require separate approval.",
+      "residual_risk": "Unit tests do not prove visual or runtime quality."
+    },
+    {
+      "evidence_type": "Generated HTML artifact",
+      "allowed_wording": "Generated artifact is orientation evidence with an explicit source/generated boundary.",
+      "forbidden_wording": [
+        "generated view is source truth",
+        "artifact proves system correctness"
+      ],
+      "required_next_proof": [
+        "source reads",
+        "current command evidence",
+        "owner accepted gap where applicable"
+      ],
+      "approval_boundary": "Generated artifacts must not publish private names or paths without approval.",
+      "residual_risk": "A polished UI can weaken the perceived evidence boundary."
+    },
+    {
+      "evidence_type": "Static digest and marker comparison",
+      "allowed_wording": "Static comparison shows structure, marker and digest deltas while preserving unsupported-claim guards.",
+      "forbidden_wording": [
+        "comparison proves user acceptance",
+        "comparison proves accessibility conformance",
+        "comparison proves runtime safety"
+      ],
+      "required_next_proof": [
+        "browser proof",
+        "owner review",
+        "accessibility and runtime gates as separate slices"
+      ],
+      "approval_boundary": "Browser automation and target apply checks are approval-bound.",
+      "residual_risk": "Static checks miss visual overlap and interaction defects."
+    },
+    {
+      "evidence_type": "Read-only staged sample analysis",
+      "allowed_wording": "A private sample workspace was analyzed read-only into staged artifacts; no target mutation is claimed.",
+      "forbidden_wording": [
+        "safe to apply to targets",
+        "works on all projects",
+        "public target names or paths"
+      ],
+      "required_next_proof": [
+        "approved target-apply safety test",
+        "broader fixture matrix"
+      ],
+      "approval_boundary": "Target mutation requires separate approval.",
+      "residual_risk": "One staged sample is not general compatibility."
+    },
+    {
+      "evidence_type": "Browser and runtime evidence",
+      "allowed_wording": "No current G0 browser or live runtime proof is claimed.",
+      "forbidden_wording": [
+        "browser proof passed",
+        "runtime verified",
+        "console/network clean for this group"
+      ],
+      "required_next_proof": [
+        "approved browser proof",
+        "screenshots",
+        "console and network logs"
+      ],
+      "approval_boundary": "Browser automation and live runtime launch require separate approval.",
+      "residual_risk": "Historical browser evidence may be overgeneralized."
+    },
+    {
+      "evidence_type": "Accessibility evidence",
+      "allowed_wording": "A static accessibility-oriented gate exists; full conformance certification is not claimed.",
+      "forbidden_wording": [
+        "accessibility certified",
+        "full conformance proven"
+      ],
+      "required_next_proof": [
+        "defined accessibility audit scope",
+        "browser checks",
+        "owner or qualified reviewer evidence"
+      ],
+      "approval_boundary": "Browser or manual audit proof may require separate approval.",
+      "residual_risk": "Static checks are insufficient for conformance claims."
+    },
+    {
+      "evidence_type": "Generated site and publication",
+      "allowed_wording": "Source docs may be current after checks; generated site remains stale until strict build evidence.",
+      "forbidden_wording": [
+        "published docs are current",
+        "generated site is current"
+      ],
+      "required_next_proof": [
+        "strict MkDocs build",
+        "search evidence",
+        "sitemap evidence",
+        "navigation evidence"
+      ],
+      "approval_boundary": "Publication and deployment require separate approval.",
+      "residual_risk": "Source/site drift remains possible."
+    },
+    {
+      "evidence_type": "Release, automation and active exposure",
+      "allowed_wording": "Release, automation, installed-cache and active-session exposure remain approval-required or unproven.",
+      "forbidden_wording": [
+        "release-ready",
+        "automation promoted",
+        "installed plugin ready",
+        "auto-engagement fixed"
+      ],
+      "required_next_proof": [
+        "owner-approved release evidence",
+        "cache/session proof",
+        "fresh route evidence"
+      ],
+      "approval_boundary": "Git, deploy, cache refresh, external writes and automation activation require separate approval.",
+      "residual_risk": "Source correctness can be confused with active runtime exposure."
+    }
+  ],
+  "closure": {
+    "closed_scope": "G0 only",
+    "remaining_groups_status": "planned",
+    "site_status": "not_rebuilt",
+    "publication_status": "not_performed",
+    "readiness_claim": "not_claimed",
+    "supported_claims": [
+      "G0 governance packet exists as source-owned local evidence",
+      "G0 source map exists in this packet",
+      "G0 claim ceiling matrix exists in this packet",
+      "G0 reader-facing terminology policy is explicit"
+    ],
+    "unsupported_claims": [
+      "all documentation groups are complete",
+      "generated site is current",
+      "public docs are publication-ready",
+      "runtime behavior is verified",
+      "browser behavior is verified",
+      "full accessibility conformance is proven",
+      "release readiness",
+      "automation promotion",
+      "installed cache or active session behavior is fixed"
+    ],
+    "next_safe_actions": [
+      "execute G1 source records, registry and generated-site parity",
+      "execute G2 first-run cockpit and artifact contracts",
+      "run strict MkDocs only when navigation, localization, Mermaid or generated site evidence changes"
+    ]
+  },
+  "no_unapproved_actions": {
+    "browser_automation": false,
+    "live_runtime": false,
+    "provider_or_external_api_call": false,
+    "installed_cache_refresh": false,
+    "global_configuration_write": false,
+    "target_workspace_mutation": false,
+    "git_stage_commit_push_pr": false,
+    "publication_or_deployment": false,
+    "automation_activation": false
+  },
+  "control_plane_sync": {
+    "RUNLOG.md": "update_required",
+    "PLAN.md": "not_applicable_compact_source_plan_already_owns_queue",
+    "REQUIREMENTS.md": "not_applicable_scope_unchanged",
+    "TEST.md": "not_applicable_verification_commands_unchanged",
+    "EVALS.md": "not_applicable_eval_policy_unchanged",
+    "prod_test.md": "not_applicable_not_a_production_test_attempt"
+  },
+  "verification_evidence": [
+    {
+      "command": "python -m json.tool docs\\superpowers\\specs\\documentation-refresh-g0-governance-summary.json",
+      "result": "passed_json_valid"
+    },
+    {
+      "command": "Select-String forbidden-marker check on G0 packet",
+      "result": "passed_no_old_internal_markers_or_known_target_names"
+    },
+    {
+      "command": "Documentation matrix forbidden-marker check",
+      "result": "passed_zero_hits_for_old_internal_ids_or_target_names"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+      "result": "passed_81_tests"
+    },
+    {
+      "command": "python tools\\check_docs.py",
+      "result": "passed_documentation_structure_checks"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed_no_whitespace_errors"
+    }
+  ]
+}

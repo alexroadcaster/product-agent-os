@@ -15,6 +15,7 @@ Run these checks after changes to root control-plane files, docs/source registry
 ```powershell
 python -m unittest tests.product_agent_os.test_product_agent_os_docs -v
 python -m unittest tests.product_agent_os.test_task_plan_lifecycle -v
+python -m unittest tests.product_agent_os.test_lifecycle_hooks -v
 python -m unittest tests.product_agent_os.test_infrastructure_templates -v
 python tools\check_docs.py
 git diff --check
@@ -29,6 +30,7 @@ Use focused checks first, then broaden through the relevant project route:
 
 ```powershell
 python -m unittest tests.product_agent_os.test_product_agent_os_docs -v
+python -m unittest tests.product_agent_os.test_lifecycle_hooks -v
 python -m unittest discover tests -v
 python -m unittest discover -s tests -p "test_*.py" -v
 python plugins\product-agent-os\scripts\run_fixture_eval.py
@@ -86,7 +88,7 @@ For real-project target tests, the default verification mode is read-only: inven
 | Batch 40 completion-skeptic | Local manual loop closed as `manual_only` and `not_promoted`. | Automation promotion requires manual success evidence, eval cases, owner, cadence, stop condition and rollback/disable path. |
 | Batch 41 first-run orchestration | `B41-S1-M01..M05`, `B41-S2-M06..M09`, `B41-S3-M10..M16`, `B41-S4-M17..M20`, `B41-S5-M21..M23` and `B41-S6-M24..M30` are recorded as local/read-only/staged CLI/contract behavior. Owner review of the Neural_Flow artifact exposed that structurally valid first-run HTML is not product-usable; `B41-S7-M31..M40` added cockpit/static/browser evidence and conditional Neural_Flow acceptance. A later owner review still rejected the HTML as too text-file-like and missing architecture diagrams, so `B41-S8-M41..M47` is now planned for architecture-dossier redesign, diagram panels, visual shell, evidence/decision sections, graph runtime/fallback clarity, Playwright visual/a11y acceptance and regenerated Neural_Flow before/after proof. | S8 verification must include focused renderer tests, diagram render/fallback checks, Playwright desktop/mobile screenshots, interaction checks, console/network result, accessible-name/landmark checks, no-overlap visual review and completion-skeptic unsupported-claim review. Cosmos.gl/WebGL runtime execution remains blocked unless a later vendored-runtime slice is approved; no release readiness, target apply safety, provider/API call, git/release action, external write or installed-plugin readiness claim is approved. |
 | Batch 42 instruction/tool-use compliance | `B42-S1-M01..M03`, `B42-S2-M04..M06`, `B42-S3-M07..M08`, `B42-S4-M09..M10` and `B42-S5-M11` are planned only in `docs/superpowers/specs/batch42-instruction-tool-use-compliance-matrix.json`. | When approved for execution, run source/cache/session inventory, official-doc source check, implicit-invocation metadata validation, runtime route tests, instruction/tool-use evals, hygiene checks, Codex compatibility, docs checks, diff hygiene and fresh-session proof if required. Do not claim Product-Agent OS auto-engagement is fixed from the planning matrix alone. |
-| Agent lifecycle and control-plane sync | Current local agents, packaged agent templates, workflows, config templates and `agent-context-contract` require config-routed Task Brief / Completion Brief plus control-plane sync before completion; current verification passed. | Rerun task lifecycle, infrastructure template, docs, docs-structure and diff hygiene checks after future changes to this contract. |
+| Agent lifecycle, hooks and control-plane sync | Current local agents, packaged agent templates, workflows, config templates and `agent-context-contract` require config-routed Task Brief / Completion Brief plus control-plane sync before completion. Packaged lifecycle hooks add a `PreToolUse` guard that blocks mutating commands without `.codex/product-agent-os/lifecycle-state.json`; local `.codex/hooks` installation is subject to workspace ACL/approval boundary. | Rerun task lifecycle, lifecycle hooks, infrastructure template, docs, docs-structure and diff hygiene checks after future changes to this contract. |
 
 ## Historical Evidence Owners
 
