@@ -1,4 +1,4 @@
-﻿# AGENTS.md
+# AGENTS.md
 
 ## Project Purpose
 
@@ -37,6 +37,7 @@ This repository is a Russian knowledge base for researching OpenAI Codex, advanc
 - Treat `docs/codex/use-cases-deep-analysis.md` as the official use-case extraction map.
 - Use `docs/playbooks/use-case-to-plugin.md` and `docs/artifact-templates/plugin-blueprint.md` when turning a repeated workflow into a distributable plugin.
 - Prefer behavior-level documentation over tool hype: every workflow should name inputs, outputs, verification, risks and the next artifact it produces.
+- Project-local documentation tooling belongs under `.venv-docs/`, `.docs-tools/node/`, `.docs-tools/bin/`, `.docs-tools/reports/` and, when approved, `docs/assets/javascripts/vendor/`; do not rely on global installs for docs freshness claims.
 
 ## Diagram Atlas Rules
 
@@ -53,6 +54,7 @@ This repository is a Russian knowledge base for researching OpenAI Codex, advanc
 - Task Brief / Completion Brief lifecycle is config-routed: agents must load `.codex/config.toml` `[product_agent_os.lifecycle_contract]` and `[workflows]` instead of relying on duplicated lifecycle prose in each agent profile.
 - Do not create or switch to a branch or worktree unless the user explicitly asks for it.
 - Do not stage, commit, push, open a PR, launch live servers, run browser automation, call providers/live external model/API endpoints, mutate canonical graph sources or create external automations without exact approval for that action.
+- Do not install documentation dependencies, vendor binaries/minified assets, activate documentation hooks/automation or claim generated `site/` freshness unless the current slice has explicit approval and records project-local smoke/build evidence.
 - Use skills when the task matches a repeatable method. Promote project knowledge in this order: manual workflow, playbook, skill, plugin, automation, durable rule.
 - Use subagents or parallel work only when ownership is independent and file/subsystem boundaries are explicit.
 - Design agent teams around ownership, handoff artifacts, verification and stop conditions.

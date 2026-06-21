@@ -1,0 +1,19 @@
+{
+  "name": "codex-docs-node-tooling",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Project-local Node documentation tooling for Track 11 G1.1 DOC-M36.",
+  "license": "UNLICENSED",
+  "scripts": {
+    "markdownlint:version": "markdownlint-cli2 --version",
+    "markdownlint:smoke": "markdownlint-cli2 README.md",
+    "prettier:check:readme": "prettier --check README.md",
+    "prettier:version": "prettier --version",
+    "redocly:version": "redocly --version"
+  },
+  "devDependencies": {
+    "@redocly/cli": "2.34.0",
+    "markdownlint-cli2": "0.22.1",
+    "prettier": "3.8.4"
+  }
+}

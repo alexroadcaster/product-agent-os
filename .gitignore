@@ -14,6 +14,27 @@ node_modules/
 dist/
 build/
 
+# Project-local documentation toolchain (Track 11 G1.1)
+.venv-docs/
+.docs-tools/node/node_modules/
+.docs-tools/node/.npm/
+.docs-tools/node/.cache/
+.docs-tools/bin/*.exe
+.docs-tools/bin/*.dll
+.docs-tools/bin/*.zip
+.docs-tools/bin/*.tar.gz
+.docs-tools/reports/*
+!.docs-tools/
+!.docs-tools/README.md
+!.docs-tools/node/
+!.docs-tools/node/README.md
+!.docs-tools/node/package.json
+!.docs-tools/node/package-lock.json
+!.docs-tools/bin/
+!.docs-tools/bin/README.md
+!.docs-tools/reports/
+!.docs-tools/reports/README.md
+
 # Local temporary workspaces and OS/editor noise
 .tmp-external/
 tmp/

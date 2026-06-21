@@ -1,0 +1,84 @@
+{
+  "schema_version": "documentation_refresh_g1_1_doc_m35_preflight_v1",
+  "evidence_id": "documentation_refresh_G1_1-DOC-M35-PREFLIGHT-A01",
+  "status": "superseded_by_successful_install_retry",
+  "superseded_by": "docs/superpowers/specs/documentation-refresh-g1-1-doc-m35-install-summary.json",
+  "work_item": "DOC-M35",
+  "group": "G1.1",
+  "candidate_helper": "tools/docs_install.ps1",
+  "requirements_source": "requirements.txt",
+  "target_runtime": ".venv-docs/",
+  "preflight_results": [
+    {
+      "command": "python --version",
+      "result": "Python 3.13.5"
+    },
+    {
+      "command": "python -m mkdocs --version",
+      "result": "failed_no_module_named_mkdocs"
+    },
+    {
+      "command": "PYTHONPATH=C:\\tmp\\codex_docs_mkdocs python -m mkdocs --version",
+      "result": "failed_permission_error_mkdocs_init"
+    },
+    {
+      "command": "PYTHONPATH=tmp\\mkdocs_deps_b40s4 python -m mkdocs --version",
+      "result": "failed_permission_error_mkdocs_init"
+    },
+    {
+      "command": "powershell -ExecutionPolicy Bypass -File tools\\docs_install.ps1 -Install -AllowNetwork",
+      "result": "failed_network_socket_policy_winerror_10013_then_no_module_named_mkdocs"
+    },
+    {
+      "command": ".venv-docs\\Scripts\\python.exe -m pip cache dir",
+      "result": "blocked_by_command_policy_approval_required"
+    },
+    {
+      "command": "Remove-Item .venv-docs -Recurse -Force after workspace path validation",
+      "result": "blocked_by_command_policy"
+    }
+  ],
+  "current_partial_local_state": {
+    "venv_scaffold_exists": true,
+    "dependency_install_complete": false,
+    "mkdocs_import_available": false,
+    "cleanup_attempted": true,
+    "cleanup_blocked_by_command_policy": true
+  },
+  "approval_required_before_install": [
+    "network access allowed by runtime policy for requirements.txt",
+    "or offline wheel cache path approved and readable by the sandbox",
+    "and command policy permits executing .venv-docs\\Scripts\\python.exe"
+  ],
+  "install_command_candidates": [
+    "powershell -ExecutionPolicy Bypass -File tools\\docs_install.ps1 -Install -AllowNetwork",
+    "powershell -ExecutionPolicy Bypass -File tools\\docs_install.ps1 -Install -OfflineWheelhouse <approved-wheelhouse>"
+  ],
+  "verification_after_approved_install": [
+    ".venv-docs\\Scripts\\python.exe -m mkdocs --version",
+    ".venv-docs\\Scripts\\python.exe -m mkdocs build --strict",
+    "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+    "python tools\\check_docs.py",
+    "git diff --check"
+  ],
+  "unsupported_claims": [
+    "MkDocs installed",
+    "MkDocs Material installed",
+    "mkdocs-static-i18n installed",
+    "strict MkDocs build passed",
+    "site freshness verified",
+    "search or sitemap freshness verified",
+    "dependency safety reviewed"
+  ],
+  "no_unapproved_actions": {
+    "venv_created": false,
+    "dependency_install": false,
+    "network_download": false,
+    "offline_wheelhouse_consumed": false,
+    "site_rebuild": false,
+    "browser_automation": false,
+    "provider_api_call": false,
+    "git_action": false,
+    "publication": false
+  }
+}

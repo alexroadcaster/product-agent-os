@@ -515,13 +515,34 @@ def _unresolved_marker_errors(text: str) -> list[str]:
 def _validate_hook_json(data: Any) -> list[str]:
     if not isinstance(data, dict):
         return ["hook json must be an object"]
+    hook_events = data.get("hooks", data)
+    if not isinstance(hook_events, dict):
+        return ["hook json hooks must be an object"]
     errors: list[str] = []
     for event in REQUIRED_HOOK_EVENTS:
-        value = data.get(event)
+        value = hook_events.get(event)
         if value is None:
             errors.append(f"missing hook event: {event}")
         elif not isinstance(value, list):
             errors.append(f"hook event must be a list: {event}")
+        else:
+            for index, group in enumerate(value):
+                if not isinstance(group, dict):
+                    errors.append(f"hook event group must be an object: {event}[{index}]")
+                    continue
+                commands = group.get("hooks")
+                if not isinstance(commands, list) or not commands:
+                    errors.append(f"hook event group hooks must be a non-empty list: {event}[{index}]")
+                    continue
+                for hook_index, hook in enumerate(commands):
+                    if not isinstance(hook, dict):
+                        errors.append(f"hook command must be an object: {event}[{index}].hooks[{hook_index}]")
+                        continue
+                    if hook.get("type") != "command":
+                        errors.append(f"hook command type must be command: {event}[{index}].hooks[{hook_index}]")
+                    command = hook.get("command")
+                    if not isinstance(command, str) or not command.strip():
+                        errors.append(f"hook command must be a non-empty string: {event}[{index}].hooks[{hook_index}]")
     return errors
 
 

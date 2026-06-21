@@ -1,4 +1,4 @@
-﻿import unittest
+import unittest
 import json
 from pathlib import Path
 import re
@@ -44,6 +44,18 @@ BATCH40_DOUBT_VERIFIER_CLOSURE_EN = (
 )
 DOCUMENTATION_REFRESH_G1 = (
     DOCS / "superpowers" / "specs" / "documentation-refresh-g1-source-site-parity-summary.json"
+)
+DOCUMENTATION_REFRESH_G1_1_DOC_M34 = (
+    DOCS / "superpowers" / "specs" / "documentation-refresh-g1-1-doc-m34-folder-contract-summary.json"
+)
+DOCUMENTATION_REFRESH_G1_1_DOC_M35_INSTALL = (
+    DOCS / "superpowers" / "specs" / "documentation-refresh-g1-1-doc-m35-install-summary.json"
+)
+DOCUMENTATION_REFRESH_G1_1_DOC_M36_NODE = (
+    DOCS / "superpowers" / "specs" / "documentation-refresh-g1-1-doc-m36-node-tooling-summary.json"
+)
+PRODUCT_AGENT_OS_LIFECYCLE_HOOKS_LOCAL_ACTIVATION = (
+    DOCS / "superpowers" / "specs" / "product-agent-os-lifecycle-hooks-local-activation-summary.json"
 )
 TRACK9_PLAN = DOCS / "superpowers" / "plans" / "2026-05-25-track-9-methodology-intelligence.md"
 TRACK10_PLAN = DOCS / "superpowers" / "plans" / "2026-05-27-track-10-guided-questions-status-dashboard.md"
@@ -7153,6 +7165,17 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "docs/superpowers/specs/documentation-refresh-g1-source-site-parity-summary.json",
                 "pre-G1 generated `site/` stale orientation evidence",
                 "historical dependency targets found at C:\\tmp\\codex_docs_mkdocs and tmp\\mkdocs_deps_b40s4",
+                "Product-Agent OS Track 11 G1.1 project-local documentation toolchain planning matrix",
+                "documentation_refresh_G1_1-PLANNING-A01",
+                "documentation_refresh_G1_1-SYSTEM-FILES-A01",
+                "documentation_refresh_G1_1-DOC-M34-A01",
+                "docs/superpowers/specs/documentation-refresh-g1-1-doc-m34-folder-contract-summary.json",
+                ".venv-docs/",
+                ".docs-tools/node/",
+                "Redocly CLI",
+                "Vale",
+                "lychee",
+                "gitleaks",
             ],
             "registry_en": [
                 "Product-Agent OS Track 11 G1 source records, registry and generated-site parity",
@@ -7164,6 +7187,17 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "docs/superpowers/specs/documentation-refresh-g1-source-site-parity-summary.json",
                 "pre-G1 generated `site/` stale orientation evidence",
                 "historical dependency targets found at C:\\tmp\\codex_docs_mkdocs and tmp\\mkdocs_deps_b40s4",
+                "Product-Agent OS Track 11 G1.1 project-local documentation toolchain planning matrix",
+                "documentation_refresh_G1_1-PLANNING-A01",
+                "documentation_refresh_G1_1-SYSTEM-FILES-A01",
+                "documentation_refresh_G1_1-DOC-M34-A01",
+                "docs/superpowers/specs/documentation-refresh-g1-1-doc-m34-folder-contract-summary.json",
+                ".venv-docs/",
+                ".docs-tools/node/",
+                "Redocly CLI",
+                "Vale",
+                "lychee",
+                "gitleaks",
             ],
             "track10_backlog": [
                 "Batch 41 First-Run Orchestration And Architecture Cockpit Executed Addendum",
@@ -7184,20 +7218,459 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "track11_plan": [
                 "`DOC-M02` | `G1`",
                 "`DOC-M25` | `G1`",
+                "`DOC-M34` | `G1.1`",
+                "`DOC-M41` | `G1.1`",
                 "`closed_no_new_public_page_required`",
-                "g1_source_records_closed_site_rebuild_blocked",
-                "future rebuilds need a readable docs runtime",
+                "g1_1_doc_m34_contract_doc_m35_m36_installed_smoke_passed",
+                "runtime_available_site_rebuild_not_run",
+                "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
+                "documentation_refresh_G1_1-DOC-M36-NODE-A01",
+                ".venv-docs/",
+                ".docs-tools/node/",
+                "markdownlint-cli2",
+                "@redocly/cli",
+                "Vale",
+                "lychee",
+                "gitleaks",
+                "Docusaurus",
+                "Storybook",
+                "Structurizr DSL",
             ],
             "runlog": [
                 "documentation_refresh_G1-A01",
+                "documentation_refresh_G1_1-PLANNING-A01",
+                "documentation_refresh_G1_1-SYSTEM-FILES-A01",
+                "documentation_refresh_G1_1-DOC-M34-A01",
                 "docs/superpowers/specs/documentation-refresh-g1-source-site-parity-summary.json",
                 "generated site/search/sitemap freshness is not claimed",
                 "`TEST.md` records the future docs-runtime route",
-                "G2-G5 remain planned",
+                "planned-only",
+                ".docs-tools/bin/",
             ],
         }
 
         for document, terms in expected_terms.items():
+            for term in terms:
+                with self.subTest(document=document, term=term):
+                    self.assertIn(term, documents[document])
+
+    def test_documentation_refresh_g1_1_system_files_are_synced(self):
+        documents = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "agents": AGENTS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
+            "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
+        }
+
+        expected_terms = {
+            "requirements": [
+                "Track 11 G1.1 as the project-local documentation toolchain route",
+                "Track 11 G1.1 documentation toolchain",
+                "Do not install further documentation dependencies",
+                "G1.1 acceptance: root control-plane files name the local docs-toolchain route",
+                "DOC-M36",
+            ],
+            "plan": [
+                "Track 11 G1.1 documentation toolchain",
+                "`DOC-M34..DOC-M41`",
+                "`.venv-docs/`",
+                "documentation_refresh_G1_1-SYSTEM-FILES-A01",
+                "documentation_refresh_G1_1-DOC-M34-A01",
+                "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
+                "documentation_refresh_G1_1-DOC-M36-NODE-A01",
+                "planned_only_no_dependency_install_no_site_rebuild",
+            ],
+            "test": [
+                "Track 11 G1.1 Project-Local Docs Toolchain Checks",
+                ".docs-tools/node/",
+                "redocly:version",
+                "gitleaks.exe version",
+                "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
+                "DOC-M36",
+                "`DOC-M34..DOC-M41`",
+            ],
+            "evals": [
+                "Docs-toolchain evidence",
+                "Track 11 G1.1 docs-toolchain system-file sync",
+                "documentation_refresh_G1_1-SYSTEM-FILES-A01",
+                "documentation_refresh_G1_1-DOC-M34-A01",
+                "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
+                "documentation_refresh_G1_1-DOC-M36-NODE-A01",
+                "strict MkDocs smoke passed under `.docs-tools/reports/mkdocs-strict-smoke-2026-06-21`",
+            ],
+            "agents": [
+                "Project-local documentation tooling belongs under `.venv-docs/`",
+                "Do not install documentation dependencies",
+                "claim generated `site/` freshness",
+                "project-local smoke/build evidence",
+            ],
+            "runlog": [
+                "documentation_refresh_G1_1-SYSTEM-FILES-A01",
+                "documentation_refresh_G1_1-DOC-M34-A01",
+                "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
+                "documentation_refresh_G1_1-DOC-M36-NODE-A01",
+                "root system files for G1.1 implementation",
+                "successful project-local MkDocs runtime retry",
+            ],
+            "registry": [
+                "documentation_refresh_G1_1-SYSTEM-FILES-A01",
+                "documentation_refresh_G1_1-DOC-M34-A01",
+                "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
+                "documentation_refresh_G1_1-DOC-M36-NODE-A01",
+                "root control-plane system files synced for G1.1 implementation route",
+            ],
+            "registry_en": [
+                "documentation_refresh_G1_1-SYSTEM-FILES-A01",
+                "documentation_refresh_G1_1-DOC-M34-A01",
+                "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
+                "documentation_refresh_G1_1-DOC-M36-NODE-A01",
+                "root control-plane system files synced for G1.1 implementation route",
+            ],
+        }
+
+        for document, terms in expected_terms.items():
+            for term in terms:
+                with self.subTest(document=document, term=term):
+                    self.assertIn(term, documents[document])
+
+    def test_documentation_refresh_g1_1_doc_m34_folder_contract_is_implemented(self):
+        packet = json.loads(DOCUMENTATION_REFRESH_G1_1_DOC_M34.read_text(encoding="utf-8"))
+        gitignore = (ROOT / ".gitignore").read_text(encoding="utf-8")
+        docs_tools_readme = (ROOT / ".docs-tools" / "README.md").read_text(encoding="utf-8")
+
+        self.assertEqual(
+            "documentation_refresh_g1_1_doc_m34_folder_contract_v1",
+            packet["schema_version"],
+        )
+        self.assertEqual("documentation_refresh_G1_1-DOC-M34-A01", packet["evidence_id"])
+        self.assertEqual("implemented_contract_only_no_install", packet["status"])
+        self.assertEqual("DOC-M34", packet["work_item"])
+
+        for path in [
+            ".gitignore",
+            ".docs-tools/README.md",
+            ".docs-tools/node/README.md",
+            ".docs-tools/bin/README.md",
+            ".docs-tools/reports/README.md",
+        ]:
+            with self.subTest(implemented_path=path):
+                self.assertIn(path, packet["implemented_paths"])
+                self.assertTrue((ROOT / path).exists())
+
+        for path in [
+            ".venv-docs/",
+            ".docs-tools/node/node_modules/",
+            ".docs-tools/node/.npm/",
+            ".docs-tools/node/.cache/",
+            ".docs-tools/bin/*.exe",
+            ".docs-tools/reports/*",
+        ]:
+            with self.subTest(ignored_path=path):
+                self.assertIn(path, packet["ignored_local_paths"])
+                self.assertIn(path, gitignore)
+
+        for term in [
+            "Allowed Checked-In Content",
+            "Forbidden Content",
+            "Approval Boundaries",
+            "Generated `site/` freshness claims without current strict MkDocs evidence",
+            "Dependency installation, network download, binary vendoring",
+        ]:
+            with self.subTest(term=term):
+                self.assertIn(term, docs_tools_readme)
+
+        for action, value in packet["no_unapproved_actions"].items():
+            with self.subTest(action=action):
+                self.assertFalse(value)
+
+    def test_documentation_refresh_g1_1_doc_m35_install_is_recorded(self):
+        packet = json.loads(DOCUMENTATION_REFRESH_G1_1_DOC_M35_INSTALL.read_text(encoding="utf-8"))
+        documents = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
+            "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
+        }
+
+        self.assertEqual(
+            "documentation_refresh_g1_1_doc_m35_install_v1",
+            packet["schema_version"],
+        )
+        self.assertEqual("documentation_refresh_G1_1-DOC-M35-INSTALL-A01", packet["evidence_id"])
+        self.assertEqual("installed_smoke_passed", packet["status"])
+        self.assertEqual("DOC-M35", packet["work_item"])
+
+        expected_versions = {
+            "mkdocs": "1.6.1",
+            "mkdocs-material": "9.5.50",
+            "mkdocs-static-i18n": "1.2.3",
+        }
+        for package_name, version in expected_versions.items():
+            with self.subTest(package_name=package_name):
+                self.assertEqual(version, packet["installed_runtime"][package_name])
+
+        self.assertTrue(packet["approved_actions_performed"]["venv_dependency_install"])
+        self.assertTrue(packet["approved_actions_performed"]["network_download_from_requirements"])
+        self.assertTrue(packet["approved_actions_performed"]["project_local_mkdocs_smoke_build"])
+        self.assertEqual(
+            ".docs-tools/reports/mkdocs-strict-smoke-2026-06-21",
+            packet["smoke_build_output"]["site_dir"],
+        )
+        self.assertEqual(0, packet["smoke_build_output"]["exit_code"])
+        self.assertFalse(packet["smoke_build_output"]["main_site_rebuilt"])
+
+        for claim in [
+            "generated root site/ freshness verified",
+            "dependency safety reviewed",
+            "SBOM generated",
+            "browser/runtime visual proof",
+        ]:
+            with self.subTest(unsupported_claim=claim):
+                self.assertIn(claim, packet["unsupported_claims"])
+
+        for action, value in packet["no_unapproved_actions"].items():
+            with self.subTest(action=action):
+                self.assertFalse(value)
+
+        document_terms = {
+            "requirements": [
+                "documentation-refresh-g1-1-doc-m35-install-summary.json",
+                "strict smoke build under `.docs-tools/reports/`",
+            ],
+            "plan": [
+                "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
+                "installed_smoke_passed",
+                "DOC-M36",
+            ],
+            "test": [
+                "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
+                ".docs-tools\\reports\\mkdocs-strict-smoke-2026-06-21",
+            ],
+            "evals": [
+                "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
+                "strict MkDocs smoke passed under `.docs-tools/reports/mkdocs-strict-smoke-2026-06-21`",
+            ],
+            "runlog": [
+                "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
+                ".docs-tools/reports/mkdocs-strict-smoke-2026-06-21",
+            ],
+            "registry": [
+                "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
+                "installed_smoke_passed",
+            ],
+            "registry_en": [
+                "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
+                "installed_smoke_passed",
+            ],
+        }
+
+        for document, terms in document_terms.items():
+            for term in terms:
+                with self.subTest(document=document, term=term):
+                    self.assertIn(term, documents[document])
+
+    def test_documentation_refresh_g1_1_doc_m36_node_tooling_is_recorded(self):
+        packet = json.loads(DOCUMENTATION_REFRESH_G1_1_DOC_M36_NODE.read_text(encoding="utf-8"))
+        node_package = json.loads((ROOT / ".docs-tools" / "node" / "package.json").read_text(encoding="utf-8"))
+        documents = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
+            "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
+            "track11_plan": (
+                DOCS / "superpowers" / "plans" / "2026-06-20-track-11-documentation-architecture-refresh.md"
+            ).read_text(encoding="utf-8"),
+        }
+
+        self.assertEqual(
+            "documentation_refresh_g1_1_doc_m36_node_tooling_v1",
+            packet["schema_version"],
+        )
+        self.assertEqual("documentation_refresh_G1_1-DOC-M36-NODE-A01", packet["evidence_id"])
+        self.assertEqual("installed_smoke_passed", packet["status"])
+        self.assertEqual("DOC-M36", packet["work_item"])
+
+        expected_versions = {
+            "markdownlint-cli2": "0.22.1",
+            "prettier": "3.8.4",
+            "@redocly/cli": "2.34.0",
+        }
+        for package_name, version in expected_versions.items():
+            with self.subTest(package_name=package_name):
+                self.assertEqual(version, packet["installed_runtime"][package_name])
+                self.assertEqual(version, node_package["devDependencies"][package_name])
+
+        for path in [
+            ".docs-tools/node/package.json",
+            ".docs-tools/node/package-lock.json",
+            "tools/docs_node_install.ps1",
+        ]:
+            with self.subTest(path=path):
+                self.assertTrue((ROOT / path).exists())
+
+        self.assertTrue(packet["approved_actions_performed"]["node_dependency_install"])
+        self.assertTrue(packet["approved_actions_performed"]["network_download_from_npm_registry"])
+        self.assertTrue(packet["approved_actions_performed"]["project_local_tool_smoke"])
+        self.assertEqual(3, packet["npm_install_notes"]["moderate_vulnerabilities_reported_by_install"])
+        self.assertFalse(packet["npm_install_notes"]["audit_fix_performed"])
+        self.assertEqual("DOC-M40", packet["npm_install_notes"]["audit_governance_owner"])
+        self.assertEqual(
+            "not_applicable_until_openapi_source_contract_exists",
+            packet["redocly_boundary"]["enforcement_status"],
+        )
+
+        for claim in [
+            "broad Markdown lint passed",
+            "broad Prettier check passed",
+            "OpenAPI or Redocly contract validation passed",
+            "dependency safety reviewed",
+            "npm audit clean",
+        ]:
+            with self.subTest(unsupported_claim=claim):
+                self.assertIn(claim, packet["unsupported_claims"])
+
+        for action, value in packet["no_unapproved_actions"].items():
+            with self.subTest(action=action):
+                self.assertFalse(value)
+
+        document_terms = {
+            "requirements": [
+                "documentation-refresh-g1-1-doc-m36-node-tooling-summary.json",
+                "DOC-M36",
+            ],
+            "plan": [
+                "documentation_refresh_G1_1-DOC-M36-NODE-A01",
+                "DOC-M37..DOC-M41",
+            ],
+            "test": [
+                "documentation-refresh-g1-1-doc-m36-node-tooling-summary.json",
+                "npm.cmd --prefix .docs-tools\\node run markdownlint:smoke",
+            ],
+            "evals": [
+                "documentation_refresh_G1_1-DOC-M36-NODE-A01",
+                "broad docs lint/format",
+            ],
+            "runlog": [
+                "documentation_refresh_G1_1-DOC-M36-NODE-A01",
+                "3 moderate vulnerabilities",
+            ],
+            "registry": [
+                "documentation_refresh_G1_1-DOC-M36-NODE-A01",
+                "DOC-M36 installed_smoke_passed",
+            ],
+            "registry_en": [
+                "documentation_refresh_G1_1-DOC-M36-NODE-A01",
+                "DOC-M36 installed_smoke_passed",
+            ],
+            "track11_plan": [
+                "documentation_refresh_G1_1-DOC-M36-NODE-A01",
+                "`installed_smoke_passed`",
+            ],
+        }
+
+        for document, terms in document_terms.items():
+            for term in terms:
+                with self.subTest(document=document, term=term):
+                    self.assertIn(term, documents[document])
+
+    def test_product_agent_os_lifecycle_hooks_local_activation_is_recorded(self):
+        self.assertTrue(
+            PRODUCT_AGENT_OS_LIFECYCLE_HOOKS_LOCAL_ACTIVATION.exists(),
+            PRODUCT_AGENT_OS_LIFECYCLE_HOOKS_LOCAL_ACTIVATION,
+        )
+        packet = json.loads(PRODUCT_AGENT_OS_LIFECYCLE_HOOKS_LOCAL_ACTIVATION.read_text(encoding="utf-8"))
+        documents = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
+            "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
+        }
+        hooks_json = json.loads((ROOT / ".codex" / "hooks.json").read_text(encoding="utf-8"))
+
+        self.assertEqual("product_agent_os_lifecycle_hooks_local_activation_v1", packet["schema_version"])
+        self.assertEqual("product_agent_os_LIFECYCLE-HOOKS-A01", packet["evidence_id"])
+        self.assertEqual("project_local_hooks_installed_pending_codex_trust_review", packet["status"])
+        self.assertIn("hooks", hooks_json)
+
+        for event in ["SessionStart", "PreToolUse", "PermissionRequest", "PostToolUse", "Stop"]:
+            with self.subTest(event=event):
+                self.assertIn(event, packet["installed_project_hooks"]["events"])
+                self.assertIn(event, hooks_json["hooks"])
+
+        for path in [
+            ".codex/hooks/hooks.json",
+            ".codex/hooks.json",
+            ".codex/hooks/pre_tool_use_policy.py",
+            ".codex/product-agent-os/lifecycle-state.json",
+            "plugins/product-agent-os/assets/templates/hooks/hooks.json",
+            "plugins/product-agent-os/scripts/product_agent_os/validators.py",
+        ]:
+            with self.subTest(path=path):
+                self.assertTrue((ROOT / path).exists())
+
+        self.assertEqual(".codex/hooks.json", packet["installed_project_hooks"]["hooks_json"])
+        self.assertEqual(".codex/product-agent-os/lifecycle-state.json", packet["installed_project_hooks"]["lifecycle_marker"])
+        self.assertEqual("https://developers.openai.com/codex/hooks", packet["official_codex_hook_docs"]["url"])
+        self.assertTrue(packet["approval_and_acl"]["owner_approval"])
+        self.assertFalse(packet["approval_and_acl"]["global_config_changed"])
+        self.assertFalse(packet["approval_and_acl"]["automation_created"])
+
+        for claim in [
+            "Codex has already trusted the new project-local hooks.",
+            "A fresh Codex session has already executed the installed hooks.",
+            "Hooks alone guarantee that future agents will produce semantically useful briefs.",
+        ]:
+            with self.subTest(unsupported_claim=claim):
+                self.assertIn(claim, packet["unsupported_claims"])
+
+        for action, value in packet["no_unapproved_actions"].items():
+            with self.subTest(action=action):
+                self.assertFalse(value)
+
+        document_terms = {
+            "requirements": [
+                "product_agent_os_LIFECYCLE-HOOKS-A01",
+                "Codex hook trust review / fresh-session execution",
+            ],
+            "plan": [
+                "product_agent_os_LIFECYCLE-HOOKS-A01",
+                "Codex may require `/hooks` trust review",
+            ],
+            "test": [
+                "validate_hooks.py .codex\\hooks",
+                "Codex hook trust review / new-session execution",
+            ],
+            "evals": [
+                "product_agent_os_LIFECYCLE-HOOKS-A01",
+                "hook output is reminder/evidence context only",
+            ],
+            "runlog": [
+                "product_agent_os_LIFECYCLE-HOOKS-A01",
+                "DOC-M36 Task Brief miss",
+            ],
+            "registry": [
+                "product_agent_os_LIFECYCLE-HOOKS-A01",
+                "Codex hook trust review / fresh-session execution remains unclaimed",
+            ],
+            "registry_en": [
+                "product_agent_os_LIFECYCLE-HOOKS-A01",
+                "Codex hook trust review / fresh-session execution remains unclaimed",
+            ],
+        }
+        for document, terms in document_terms.items():
             for term in terms:
                 with self.subTest(document=document, term=term):
                     self.assertIn(term, documents[document])

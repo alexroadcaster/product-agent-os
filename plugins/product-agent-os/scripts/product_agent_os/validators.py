@@ -119,6 +119,13 @@ TASK_HEADING_PATTERN = re.compile(r"^###\s+Task\s+`?(?P<id>[^`\r\n]+?)`?\s*$")
 TASK_FIELD_PATTERN = re.compile(r"^\s*-\s+(?P<name>[^:]+):\s*(?P<value>.*)$")
 TASK_TIMESTAMP_PATTERN = re.compile(r"^\d{2}-\d{2}-\d{4} \d{2}:\d{2}$")
 TASK_PLACEHOLDER_PATTERN = re.compile(r"(<[^>]+>|\{\{[^}]+\}\}|\{generated_at\}|\bTODO\b|\bTBD\b|\?\?\?|\.\.\.)")
+HOOK_JSON_REQUIRED_EVENTS = [
+    "SessionStart",
+    "PreToolUse",
+    "PermissionRequest",
+    "PostToolUse",
+    "Stop",
+]
 
 
 def validate_control_plane(root: Path) -> dict[str, Any]:
@@ -187,6 +194,47 @@ def validate_hook_file(path: Path) -> list[str]:
     errors: list[str] = []
     if any(is_forbidden_secret_assignment(line) for line in text.splitlines()):
         errors.append("contains forbidden secret-like literal")
+    if path.name == "hooks.json":
+        errors.extend(validate_hook_json_text(text))
+    return errors
+
+
+def validate_hook_json_text(text: str) -> list[str]:
+    try:
+        data = json.loads(text)
+    except json.JSONDecodeError as exc:
+        return [f"invalid json: {exc}"]
+    if not isinstance(data, dict):
+        return ["hook json must be an object"]
+    hook_events = data.get("hooks", data)
+    if not isinstance(hook_events, dict):
+        return ["hook json hooks must be an object"]
+    errors: list[str] = []
+    for event in HOOK_JSON_REQUIRED_EVENTS:
+        value = hook_events.get(event)
+        if value is None:
+            errors.append(f"missing hook event: {event}")
+            continue
+        if not isinstance(value, list):
+            errors.append(f"hook event must be a list: {event}")
+            continue
+        for index, group in enumerate(value):
+            if not isinstance(group, dict):
+                errors.append(f"hook event group must be an object: {event}[{index}]")
+                continue
+            commands = group.get("hooks")
+            if not isinstance(commands, list) or not commands:
+                errors.append(f"hook event group hooks must be a non-empty list: {event}[{index}]")
+                continue
+            for hook_index, hook in enumerate(commands):
+                if not isinstance(hook, dict):
+                    errors.append(f"hook command must be an object: {event}[{index}].hooks[{hook_index}]")
+                    continue
+                if hook.get("type") != "command":
+                    errors.append(f"hook command type must be command: {event}[{index}].hooks[{hook_index}]")
+                command = hook.get("command")
+                if not isinstance(command, str) or not command.strip():
+                    errors.append(f"hook command must be a non-empty string: {event}[{index}].hooks[{hook_index}]")
     return errors
 
 
@@ -398,6 +446,18 @@ def main_hooks(argv: list[str]) -> int:
                 "root": str(root),
                 "files": [],
                 "errors": ["hook directory does not exist"],
+            }
+        )
+    if root.is_file():
+        file_errors = {str(root): validate_hook_file(root)}
+        ok = not file_errors[str(root)]
+        return print_json(
+            {
+                "ok": ok,
+                "root": str(root),
+                "files": [str(root)],
+                "errors": [],
+                "file_errors": file_errors,
             }
         )
     if not root.is_dir():

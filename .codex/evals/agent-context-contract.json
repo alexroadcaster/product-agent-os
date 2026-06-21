@@ -29,6 +29,9 @@
     ".codex/workflows/task-plan-lifecycle.md",
     ".codex/workflows/control-plane-sync.md",
     ".codex/workflows/review-slice.md",
+    ".codex/hooks.json",
+    ".codex/hooks/hooks.json",
+    ".codex/product-agent-os/lifecycle-state.json",
     ".rules"
   ],
   "pass_conditions": [
@@ -70,6 +73,7 @@
           ".codex/workflows/task-plan-lifecycle.md",
           ".codex/workflows/control-plane-sync.md",
           ".codex/evals/agent-context-contract.json",
+          ".codex/hooks.json",
           ".codex/hooks/hooks.json",
           ".codex/product-agent-os/lifecycle-state.json",
           "chat_visibility",

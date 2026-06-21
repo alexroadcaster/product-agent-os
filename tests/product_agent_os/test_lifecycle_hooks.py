@@ -8,6 +8,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 HOOKS = ROOT / "plugins" / "product-agent-os" / "assets" / "templates" / "hooks"
+LOCAL_HOOKS = ROOT / ".codex" / "hooks"
+ACTIVE_HOOKS_JSON = ROOT / ".codex" / "hooks.json"
 
 
 def run_hook(script: Path, payload: dict[str, object] | None = None, cwd: Path | None = None) -> subprocess.CompletedProcess[str]:
@@ -22,6 +24,34 @@ def run_hook(script: Path, payload: dict[str, object] | None = None, cwd: Path |
 
 
 class LifecycleHooksTest(unittest.TestCase):
+    def test_project_local_hooks_are_installed_with_codex_hooks_shape(self):
+        hooks_json = ACTIVE_HOOKS_JSON
+        self.assertTrue(hooks_json.exists())
+
+        data = json.loads(hooks_json.read_text(encoding="utf-8"))
+        hooks = data["hooks"]
+        for event in ["SessionStart", "PreToolUse", "PermissionRequest", "PostToolUse", "Stop"]:
+            with self.subTest(event=event):
+                self.assertIn(event, hooks)
+                self.assertTrue(hooks[event])
+                handler = hooks[event][0]["hooks"][0]
+                self.assertEqual(handler["type"], "command")
+                self.assertTrue(handler["command"].startswith("python "))
+                self.assertIn("/.codex/hooks/", handler["command"])
+                self.assertIn("statusMessage", handler)
+
+    def test_project_local_hook_scripts_are_installed(self):
+        self.assertTrue((LOCAL_HOOKS / "hooks.json").exists())
+        for name in [
+            "session_start_context.py",
+            "pre_tool_use_policy.py",
+            "permission_request_summary.py",
+            "post_tool_use_evidence.py",
+            "stop_runlog_reminder.py",
+        ]:
+            with self.subTest(name=name):
+                self.assertTrue((LOCAL_HOOKS / name).exists())
+
     def test_session_start_reports_lifecycle_contract_files(self):
         result = run_hook(HOOKS / "session_start_context.py")
 

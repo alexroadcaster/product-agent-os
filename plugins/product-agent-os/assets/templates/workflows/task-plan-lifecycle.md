@@ -11,6 +11,8 @@ Use this workflow before and after execution when Product-Agent OS work needs a 
 
 The source of truth is the config-routed lifecycle workflow contract in `.codex/config.toml`: `[product_agent_os.lifecycle_contract]` points to this workflow, `control_plane_sync`, and `agent_context_contract`. Agent profiles should reference that config route instead of duplicating field-level lifecycle rules.
 
+Project-local lifecycle hooks are configured in `.codex/hooks.json`; scripts and the Product-Agent OS policy mirror live under `.codex/hooks/`. They may enforce the lightweight marker before mutating commands, but remain guardrails and reminders, not a substitute for the visible chat brief. New or changed non-managed hooks may require Codex `/hooks` trust review or a fresh session before they execute.
+
 This workflow also defines the user-visible contract:
 
 - Show the Task Brief in chat before execution starts.

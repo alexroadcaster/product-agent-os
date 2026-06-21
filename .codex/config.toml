@@ -62,6 +62,8 @@ fresh_context_files = [
   ".codex/workflows/control-plane-sync.md",
   ".codex/workflows/review-slice.md",
   ".codex/evals/agent-context-contract.json",
+  ".codex/hooks.json",
+  ".codex/hooks/hooks.json",
   ".rules",
 ]
 
@@ -69,6 +71,8 @@ fresh_context_files = [
 task_plan_lifecycle = ".codex/workflows/task-plan-lifecycle.md"
 control_plane_sync = ".codex/workflows/control-plane-sync.md"
 agent_context_contract = ".codex/evals/agent-context-contract.json"
+lifecycle_state = ".codex/product-agent-os/lifecycle-state.json"
+hook_policy = ".codex/hooks.json"
 chat_visibility = "required"
 required_for = "non_mechanical_tasks"
 agent_instruction_policy = "reference_config_workflows_do_not_duplicate_contract"

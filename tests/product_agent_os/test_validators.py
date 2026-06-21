@@ -348,6 +348,107 @@ class ValidatorsTest(unittest.TestCase):
             {str(root / "bad.py"): ["unable to read file as utf-8 text"]},
         )
 
+    def test_hooks_wrapper_validates_hooks_json_shape(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            hooks_json = root / "hooks.json"
+            hooks_json.write_text(
+                json.dumps(
+                    {
+                        "hooks": {
+                            event: [
+                                {
+                                    "hooks": [
+                                        {
+                                            "type": "command",
+                                            "command": f"python .codex/hooks/{event}.py",
+                                        }
+                                    ]
+                                }
+                            ]
+                            for event in ["SessionStart", "PreToolUse", "PermissionRequest", "PostToolUse", "Stop"]
+                        }
+                    }
+                ),
+                encoding="utf-8",
+            )
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPTS / "validate_hooks.py"),
+                    str(root),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+        payload = json.loads(result.stdout)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertTrue(payload["ok"])
+        self.assertEqual(payload["file_errors"], {str(hooks_json): []})
+
+    def test_hooks_wrapper_accepts_single_hooks_json_file(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            hooks_json = root / "hooks.json"
+            hooks_json.write_text(
+                json.dumps(
+                    {
+                        "hooks": {
+                            event: [
+                                {
+                                    "hooks": [
+                                        {
+                                            "type": "command",
+                                            "command": f"python .codex/hooks/{event}.py",
+                                        }
+                                    ]
+                                }
+                            ]
+                            for event in ["SessionStart", "PreToolUse", "PermissionRequest", "PostToolUse", "Stop"]
+                        }
+                    }
+                ),
+                encoding="utf-8",
+            )
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPTS / "validate_hooks.py"),
+                    str(hooks_json),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+        payload = json.loads(result.stdout)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertTrue(payload["ok"])
+        self.assertEqual(payload["files"], [str(hooks_json)])
+
+    def test_hooks_wrapper_rejects_incomplete_hooks_json_shape(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            hooks_json = root / "hooks.json"
+            hooks_json.write_text('{"hooks":{"PreToolUse":[]}}\n', encoding="utf-8")
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPTS / "validate_hooks.py"),
+                    str(root),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+        payload = json.loads(result.stdout)
+        self.assertEqual(result.returncode, 1)
+        self.assertFalse(payload["ok"])
+        self.assertIn("missing hook event: SessionStart", payload["file_errors"][str(hooks_json)])
+
 
 VALID_TASK_MATRIX = """# Task Matrix
 

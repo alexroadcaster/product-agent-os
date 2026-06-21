@@ -1,0 +1,120 @@
+{
+  "schema_version": "product_agent_os_lifecycle_hooks_local_activation_v1",
+  "evidence_id": "product_agent_os_LIFECYCLE-HOOKS-A01",
+  "task_id": "LIFECYCLE-HOOKS-A01",
+  "status": "project_local_hooks_installed_pending_codex_trust_review",
+  "recorded_at": "2026-06-21T09:31:47.7285923+03:00",
+  "owner_trigger": "DOC-M36 started without a user-visible Task Brief; owner requested project hooks for Task Brief and Completion Brief lifecycle enforcement.",
+  "root_cause": {
+    "immediate": "The previous DOC-M36 run followed Product-Agent OS skills and subagent routing but did not emit the required user-visible Task Brief before mutating execution.",
+    "systemic": "Project lifecycle contract existed in .codex/config.toml, workflows and evals, but active project-local .codex/hooks.json and .codex/hooks scripts were not installed because earlier attempts were blocked by ACL.",
+    "not_root_cause": [
+      "No evidence that Product-Agent OS hook templates were absent.",
+      "No evidence that global Codex config was required.",
+      "No evidence that active automation was required."
+    ]
+  },
+  "official_codex_hook_docs": {
+    "url": "https://developers.openai.com/codex/hooks",
+    "used_for": [
+      "hooks.json top-level hooks shape",
+      "event -> matcher group -> hook handler structure",
+      "non-managed hook trust-review boundary",
+      "repo-local hook cwd and git-root path guidance"
+    ]
+  },
+  "installed_project_hooks": {
+    "hooks_json": ".codex/hooks.json",
+    "product_agent_os_policy_mirror": ".codex/hooks/hooks.json",
+    "shape": "hooks.Event[].hooks[] command handlers",
+    "events": [
+      "SessionStart",
+      "PreToolUse",
+      "PermissionRequest",
+      "PostToolUse",
+      "Stop"
+    ],
+    "scripts": [
+      ".codex/hooks/session_start_context.py",
+      ".codex/hooks/pre_tool_use_policy.py",
+      ".codex/hooks/permission_request_summary.py",
+      ".codex/hooks/post_tool_use_evidence.py",
+      ".codex/hooks/stop_runlog_reminder.py"
+    ],
+    "lifecycle_marker": ".codex/product-agent-os/lifecycle-state.json",
+    "hook_behavior": [
+      "SessionStart reports control-plane and lifecycle file presence.",
+      "PreToolUse blocks mutating Product-Agent OS work when lifecycle marker is missing.",
+      "PermissionRequest summarizes approval boundary fields.",
+      "PostToolUse reminds that hook output is not completion proof.",
+      "Stop reminds agents to run control-plane sync and show Completion Brief."
+    ]
+  },
+  "product_agent_os_template_sync": {
+    "updated_template": "plugins/product-agent-os/assets/templates/hooks/hooks.json",
+    "updated_template_scripts": [
+      "plugins/product-agent-os/assets/templates/hooks/session_start_context.py",
+      "plugins/product-agent-os/assets/templates/hooks/pre_tool_use_policy.py",
+      "plugins/product-agent-os/assets/templates/hooks/stop_runlog_reminder.py"
+    ],
+    "updated_template_eval": "plugins/product-agent-os/assets/templates/evals/agent-context-contract.json",
+    "validator_update": "plugins/product-agent-os/scripts/product_agent_os/validators.py"
+  },
+  "approval_and_acl": {
+    "owner_approval": "Owner explicitly requested project hooks for Task Brief and Completion Brief lifecycle enforcement.",
+    "escalated_action": "Created .codex/hooks after normal New-Item failed with UnauthorizedAccessException.",
+    "escalated_command": "New-Item -ItemType Directory -Path .codex\\hooks -Force",
+    "global_config_changed": false,
+    "automation_created": false,
+    "external_write_performed": false
+  },
+  "verification_results": [
+    {
+      "command": "python plugins\\product-agent-os\\scripts\\validate_hooks.py .codex\\hooks.json",
+      "result": "passed",
+      "evidence": "ok=true for active project-local hooks.json"
+    },
+    {
+      "command": "python plugins\\product-agent-os\\scripts\\validate_hooks.py .codex\\hooks",
+      "result": "passed",
+      "evidence": "ok=true for hooks.json and five project-local hook scripts"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_lifecycle_hooks tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_validators tests.product_agent_os.test_product_agent_os_docs -v",
+      "result": "passed",
+      "evidence": "215 tests OK"
+    },
+    {
+      "command": "python tools\\check_docs.py",
+      "result": "passed",
+      "evidence": "documentation structure checks passed"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed_with_line_ending_warnings_only",
+      "evidence": "no whitespace errors; existing CRLF-to-LF warnings reported"
+    },
+    {
+      "command": "python .codex\\hooks\\session_start_context.py; python .codex\\hooks\\stop_runlog_reminder.py; pre_tool_use_policy.py with a synthetic mutating command payload",
+      "result": "passed",
+      "evidence": "installed local scripts emitted JSON, found lifecycle marker and observed mutating command only after marker was present"
+    }
+  ],
+  "unsupported_claims": [
+    "Codex has already trusted the new project-local hooks.",
+    "A fresh Codex session has already executed the installed hooks.",
+    "Hooks alone guarantee that future agents will produce semantically useful briefs.",
+    "Hook reminders replace Product-Agent OS skill/workflow discipline.",
+    "Global hooks, automations, schedules, browser automation, provider calls, git actions, deployment or publication were enabled."
+  ],
+  "no_unapproved_actions": {
+    "global_config_write": false,
+    "active_automation_or_schedule": false,
+    "provider_or_model_call": false,
+    "browser_automation": false,
+    "git_stage_commit_push_pr": false,
+    "deployment_or_publication": false,
+    "external_write": false,
+    "target_workspace_mutation": false
+  }
+}

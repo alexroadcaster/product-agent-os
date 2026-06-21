@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import subprocess
 from pathlib import Path
 
 
@@ -10,9 +11,29 @@ LIFECYCLE_FILES = [
     ".codex/workflows/task-plan-lifecycle.md",
     ".codex/workflows/control-plane-sync.md",
     ".codex/evals/agent-context-contract.json",
+    ".codex/hooks.json",
     ".codex/hooks/hooks.json",
 ]
 LIFECYCLE_STATE = ".codex/product-agent-os/lifecycle-state.json"
+
+
+def _workspace_root() -> Path:
+    try:
+        result = subprocess.run(
+            ["git", "rev-parse", "--show-toplevel"],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+    except OSError:
+        result = ""
+    if result and result.returncode == 0 and result.stdout.strip():
+        return Path(result.stdout.strip())
+    current = Path.cwd()
+    for candidate in [current, *current.parents]:
+        if (candidate / ".codex").exists():
+            return candidate
+    return current
 
 
 def _present(root: Path, files: list[str]) -> list[str]:
@@ -24,7 +45,7 @@ def _missing(root: Path, files: list[str]) -> list[str]:
 
 
 def main() -> int:
-    root = Path.cwd()
+    root = _workspace_root()
     payload = {
         "hook": "session_start_context",
         "workspace": str(root),

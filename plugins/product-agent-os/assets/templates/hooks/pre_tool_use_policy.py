@@ -2,12 +2,13 @@ from __future__ import annotations
 
 import json
 import re
+import subprocess
 import sys
 from pathlib import Path
 from typing import Any
 
 
-LIFECYCLE_STATE = Path(".codex/product-agent-os/lifecycle-state.json")
+LIFECYCLE_STATE_REL = Path(".codex/product-agent-os/lifecycle-state.json")
 
 DESTRUCTIVE_PATTERNS = [
     re.compile(r"(?i)\brm\s+-(?:[a-z]*r[a-z]*f|[a-z]*f[a-z]*r)\b"),
@@ -42,6 +43,25 @@ LIFECYCLE_MARKER_WRITE_PATTERNS = [
     re.compile(r"(?i)\.codex[/\\]product-agent-os[/\\]lifecycle-state\.json"),
     re.compile(r"(?i)task_start_brief_shown"),
 ]
+
+
+def _workspace_root() -> Path:
+    try:
+        result = subprocess.run(
+            ["git", "rev-parse", "--show-toplevel"],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+    except OSError:
+        result = ""
+    if result and result.returncode == 0 and result.stdout.strip():
+        return Path(result.stdout.strip())
+    current = Path.cwd()
+    for candidate in [current, *current.parents]:
+        if (candidate / ".codex").exists():
+            return candidate
+    return current
 
 
 def _read_payload() -> tuple[dict[str, Any], str]:
@@ -111,7 +131,7 @@ def _is_mutating(tool: str, command: str) -> bool:
     return bool(_matches(MUTATING_PATTERNS, command))
 
 
-def _lifecycle_marker_ok(path: Path = LIFECYCLE_STATE) -> tuple[bool, str]:
+def _lifecycle_marker_ok(path: Path) -> tuple[bool, str]:
     if not path.exists():
         return False, "missing lifecycle marker"
     try:
@@ -155,7 +175,8 @@ def main() -> int:
 
     mutating = _is_mutating(tool, command)
     marker_write = _is_lifecycle_marker_write(command)
-    marker_ok, marker_reason = _lifecycle_marker_ok()
+    lifecycle_state = _workspace_root() / LIFECYCLE_STATE_REL
+    marker_ok, marker_reason = _lifecycle_marker_ok(lifecycle_state)
     if mutating and not marker_write and not marker_ok:
         blocking = True
         findings.append(
@@ -174,7 +195,7 @@ def main() -> int:
         "tool": tool,
         "mutating_command_detected": mutating,
         "lifecycle_marker": {
-            "path": str(LIFECYCLE_STATE),
+            "path": str(LIFECYCLE_STATE_REL),
             "ok": marker_ok,
             "reason": marker_reason,
             "marker_write_allowed": marker_write,

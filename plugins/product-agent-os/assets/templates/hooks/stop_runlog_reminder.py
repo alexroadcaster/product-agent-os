@@ -1,21 +1,42 @@
 from __future__ import annotations
 
 import json
+import subprocess
 from pathlib import Path
 
 
-LIFECYCLE_STATE = Path(".codex/product-agent-os/lifecycle-state.json")
+LIFECYCLE_STATE_REL = Path(".codex/product-agent-os/lifecycle-state.json")
+
+
+def _workspace_root() -> Path:
+    try:
+        result = subprocess.run(
+            ["git", "rev-parse", "--show-toplevel"],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+    except OSError:
+        result = ""
+    if result and result.returncode == 0 and result.stdout.strip():
+        return Path(result.stdout.strip())
+    current = Path.cwd()
+    for candidate in [current, *current.parents]:
+        if (candidate / ".codex").exists():
+            return candidate
+    return current
 
 
 def _marker_summary() -> dict[str, object]:
-    if not LIFECYCLE_STATE.exists():
-        return {"path": str(LIFECYCLE_STATE), "exists": False}
+    lifecycle_state = _workspace_root() / LIFECYCLE_STATE_REL
+    if not lifecycle_state.exists():
+        return {"path": str(LIFECYCLE_STATE_REL), "exists": False}
     try:
-        data = json.loads(LIFECYCLE_STATE.read_text(encoding="utf-8"))
+        data = json.loads(lifecycle_state.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError):
-        return {"path": str(LIFECYCLE_STATE), "exists": True, "valid_json": False}
+        return {"path": str(LIFECYCLE_STATE_REL), "exists": True, "valid_json": False}
     return {
-        "path": str(LIFECYCLE_STATE),
+        "path": str(LIFECYCLE_STATE_REL),
         "exists": True,
         "valid_json": isinstance(data, dict),
         "task_id": data.get("task_id") if isinstance(data, dict) else "",
@@ -24,9 +45,10 @@ def _marker_summary() -> dict[str, object]:
 
 
 def main() -> int:
+    root = _workspace_root()
     payload = {
         "hook": "stop_runlog_reminder",
-        "runlog_exists": Path("RUNLOG.md").exists(),
+        "runlog_exists": (root / "RUNLOG.md").exists(),
         "lifecycle_marker": _marker_summary(),
         "reminders": [
             "Before closing a work cycle, record files changed, checks run, result, and open risks.",

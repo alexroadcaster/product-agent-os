@@ -1,0 +1,100 @@
+{
+  "schema_version": "documentation_refresh_g1_1_doc_m36_node_tooling_v1",
+  "evidence_id": "documentation_refresh_G1_1-DOC-M36-NODE-A01",
+  "status": "installed_smoke_passed",
+  "work_item": "DOC-M36",
+  "group": "G1.1",
+  "install_date": "2026-06-21",
+  "target_folder": ".docs-tools/node/",
+  "install_helper": "tools/docs_node_install.ps1",
+  "package_manifest": ".docs-tools/node/package.json",
+  "package_lock": ".docs-tools/node/package-lock.json",
+  "ignored_local_paths": [
+    ".docs-tools/node/node_modules/",
+    ".docs-tools/node/.npm/",
+    ".docs-tools/node/.cache/"
+  ],
+  "installed_runtime": {
+    "node": "v22.18.0",
+    "npm": "10.9.3",
+    "markdownlint-cli2": "0.22.1",
+    "markdownlint": "0.40.0",
+    "prettier": "3.8.4",
+    "@redocly/cli": "2.34.0"
+  },
+  "approved_actions_performed": {
+    "node_dependency_install": true,
+    "network_download_from_npm_registry": true,
+    "project_local_tool_smoke": true
+  },
+  "verification": [
+    {
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File tools\\docs_node_install.ps1",
+      "result": "passed_plan_only_no_install"
+    },
+    {
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File tools\\docs_node_install.ps1 -Install -AllowNetwork",
+      "result": "passed_installed_dev_dependencies_and_confirmed_tool_versions"
+    },
+    {
+      "command": "npm.cmd --prefix .docs-tools\\node run markdownlint:smoke",
+      "result": "passed_readme_smoke_0_errors"
+    },
+    {
+      "command": "npm.cmd --prefix .docs-tools\\node run prettier:check:readme",
+      "result": "passed_readme_prettier_check"
+    },
+    {
+      "command": "npm.cmd --prefix .docs-tools\\node run markdownlint:version",
+      "result": "passed_markdownlint_cli2_v0_22_1_markdownlint_v0_40_0"
+    },
+    {
+      "command": "npm.cmd --prefix .docs-tools\\node run prettier:version",
+      "result": "passed_prettier_3_8_4"
+    },
+    {
+      "command": "npm.cmd --prefix .docs-tools\\node run redocly:version",
+      "result": "passed_redocly_2_34_0"
+    },
+    {
+      "command": "npm.cmd --prefix .docs-tools\\node ls --depth=0 --json",
+      "result": "passed_dependency_inventory_recorded"
+    }
+  ],
+  "npm_install_notes": {
+    "packages_added": 88,
+    "packages_audited": 89,
+    "moderate_vulnerabilities_reported_by_install": 3,
+    "audit_fix_performed": false,
+    "audit_governance_owner": "DOC-M40"
+  },
+  "redocly_boundary": {
+    "installed": true,
+    "openapi_source_contract_present": false,
+    "enforcement_status": "not_applicable_until_openapi_source_contract_exists"
+  },
+  "unsupported_claims": [
+    "broad Markdown lint passed",
+    "broad Prettier check passed",
+    "OpenAPI or Redocly contract validation passed",
+    "dependency safety reviewed",
+    "npm audit clean",
+    "SBOM generated",
+    "root site freshness verified",
+    "browser/runtime visual proof"
+  ],
+  "no_unapproved_actions": {
+    "broad_docs_autoformat": false,
+    "openapi_contract_claim": false,
+    "npm_audit_fix": false,
+    "node_tool_global_install": false,
+    "binary_vendoring": false,
+    "root_site_rebuild": false,
+    "browser_automation": false,
+    "provider_api_call": false,
+    "target_workspace_mutation": false,
+    "git_action": false,
+    "publication": false,
+    "automation_activation": false
+  }
+}

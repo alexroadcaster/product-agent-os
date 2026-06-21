@@ -2063,9 +2063,17 @@ class InfrastructureTemplateTest(unittest.TestCase):
         self.assertFalse((PLUGIN_ROOT / "hooks" / "hooks.json").exists())
         hooks_template = TEMPLATE_ROOT / "hooks" / "hooks.json"
         data = json.loads(hooks_template.read_text(encoding="utf-8"))
+        hooks = data["hooks"]
 
         for event in ["SessionStart", "PreToolUse", "PermissionRequest", "PostToolUse", "Stop"]:
-            self.assertIn(event, data)
+            self.assertIn(event, hooks)
+            self.assertIsInstance(hooks[event], list)
+            self.assertTrue(hooks[event])
+            handler = hooks[event][0]["hooks"][0]
+            self.assertEqual(handler["type"], "command")
+            self.assertTrue(handler["command"].startswith("python "))
+            self.assertIn("/.codex/hooks/", handler["command"])
+            self.assertIn("statusMessage", handler)
 
     def test_eval_templates_are_valid_json(self):
         for item in required_templates():

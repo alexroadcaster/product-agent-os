@@ -45,6 +45,7 @@ verification_status: "Current compaction preserves test-visible markers; full ev
 - Product-Agent OS Batch 42 instruction/tool-use compliance planning matrix (checked_at=2026-06-20, trust=high)
 - Product-Agent OS Track 11 documentation refresh G0 governance packet (checked_at=2026-06-20, trust=high)
 - Product-Agent OS Track 11 G1 source records, registry and generated-site parity (checked_at=2026-06-20, trust=high)
+- Product-Agent OS Track 11 G1.1 project-local documentation toolchain planning matrix (checked_at=2026-06-20, trust=high)
 - Codex web / cloud (checked_at=2026-05-14, trust=high)
 - Codex app (checked_at=2026-05-14, trust=high)
 - Codex CLI (checked_at=2026-05-14, trust=high)
@@ -1311,6 +1312,38 @@ These markers preserve source-owned test routing after registry compaction. Full
 - docs/superpowers/specs/documentation-refresh-g1-source-site-parity-summary.json
 - source records, registry and generated-site parity
 - pre-G1 generated `site/` stale orientation evidence
-- strict MkDocs blocked in current active Python: No module named mkdocs; historical dependency targets found at C:\tmp\codex_docs_mkdocs and tmp\mkdocs_deps_b40s4 but they are not currently usable as a runnable MkDocs module from this process
+- 2026-06-20 strict MkDocs was blocked in default active Python: No module named mkdocs; historical dependency targets found at C:\tmp\codex_docs_mkdocs and tmp\mkdocs_deps_b40s4 but they were not usable as a runnable MkDocs module from that process
 - no browser automation, provider/API call, target mutation, publication, git action, cache refresh or automation activation
+- Product-Agent OS Track 11 G1.1 project-local documentation toolchain planning matrix
+- documentation_refresh_G1_1-PLANNING-A01
+- documentation_refresh_G1_1-SYSTEM-FILES-A01
+- documentation_refresh_G1_1-DOC-M34-A01
+- documentation_refresh_G1_1-DOC-M35-PREFLIGHT-A01
+- documentation_refresh_G1_1-DOC-M35-INSTALL-A01
+- documentation_refresh_G1_1-DOC-M36-NODE-A01
+- docs/superpowers/specs/documentation-refresh-g1-1-doc-m34-folder-contract-summary.json
+- docs/superpowers/specs/documentation-refresh-g1-1-doc-m35-preflight-summary.json
+- docs/superpowers/specs/documentation-refresh-g1-1-doc-m35-install-summary.json
+- docs/superpowers/specs/documentation-refresh-g1-1-doc-m36-node-tooling-summary.json
+- Product-Agent OS project-local lifecycle hook activation
+- product_agent_os_LIFECYCLE-HOOKS-A01
+- docs/superpowers/specs/product-agent-os-lifecycle-hooks-local-activation-summary.json
+- .codex/hooks.json
+- .codex/hooks/hooks.json
+- .codex/product-agent-os/lifecycle-state.json
+- Codex hook trust review / fresh-session execution remains unclaimed
+- tools/docs_install.ps1
+- tools/docs_node_install.ps1
+- .docs-tools/node/package.json
+- .docs-tools/node/package-lock.json
+- DOC-M34..DOC-M41
+- .venv-docs/
+- .docs-tools/node/
+- .docs-tools/bin/
+- .docs-tools/reports/
+- docs/assets/javascripts/vendor/
+- mkdocs-material, mkdocs-static-i18n, markdownlint-cli2, Prettier, Redocly CLI, Vale, lychee, gitleaks, Mermaid
+- Docusaurus, Storybook and Structurizr DSL deferred until trigger evidence exists
+- implemented_contract_only_no_install for DOC-M34; DOC-M35 installed_smoke_passed in .venv-docs with strict smoke output under .docs-tools/reports; DOC-M36 installed_smoke_passed in .docs-tools/node with scoped README smoke; DOC-M37..DOC-M41 planned_only_no_dependency_install_no_site_rebuild
+- root control-plane system files synced for G1.1 implementation route
 ```

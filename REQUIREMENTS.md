@@ -17,6 +17,7 @@ Last compacted: 2026-06-11
 - Preserve the closed Track 10 and Batch 38/B40 evidence as source-backed context without expanding root control-plane files into historical ledgers.
 - Prepare Batch 39 (`B39-TEST-M01..M54`) for real-project testing. `prod_test.md` is the required attempt/failure/fix/retest ledger before execution begins.
 - Track Batch 42 as planned instruction/tool-use compliance hardening for Product-Agent OS auto-engagement, source/cache/session skill exposure, implicit invocation policy, route/eval coverage, staged `self-learning-loop` and hygiene triage.
+- Implement Track 11 G1.1 as the project-local documentation toolchain route for reproducible docs processing, site rebuilds, Markdown/API checks, terminology checks, link/secret hygiene, offline diagrams and docs-tooling supply-chain governance.
 
 ## Current Product-Agent OS State
 
@@ -32,6 +33,7 @@ Last compacted: 2026-06-11
 | Batch 39 | Executed through `B39-S5` as local/read-only/contract evidence. `B39-S5` closes source-doc sync, go/no-go and no-unapproved-actions proof as `closed_for_owner_feedback_testing_not_release_ready`: release/distribution is `no_go`, owner-feedback testing is `conditional_go`, and runtime/browser/provider/MCP/git/release/deploy/publish/automation surfaces remain approval-bound. | `PLAN.md`, `TEST.md`, `prod_test.md`, `docs/superpowers/specs/batch39-s5-closure-summary.json` |
 | Batch 40 completion-skeptic foundation | B40-S2/S3/S4/S5 closed as local manual foundation, eval hardening, docs/site/source-transfer, synthetic-local pilot ledger, scorecard calibration and go/no-go closure; current promotion status is `manual_only` and `not_promoted`. | `docs/sources/product-agent-os-track-10-backlog.md`, `RUNLOG.md` |
 | Batch 42 instruction/tool-use compliance | Planned only; source matrix covers Product-Agent OS auto-engagement, skill exposure, implicit invocation policy, route/eval hardening, staged `self-learning-loop`, system-file hygiene triage and closure. | `docs/superpowers/specs/batch42-instruction-tool-use-compliance-matrix.json`, `docs/sources/product-agent-os-track-10-backlog.md`, `RUNLOG.md` |
+| Track 11 G1.1 documentation toolchain | Active implementation route for project-local docs tooling. `DOC-M35` installed the MkDocs runtime in `.venv-docs/` and passed a strict smoke build under `.docs-tools/reports/`; `DOC-M36` installed Node docs tooling in `.docs-tools/node/` and passed scoped README markdownlint/Prettier smoke; `.docs-tools/bin/`, optional `docs/assets/javascripts/vendor/`, docs automation, Redocly enforcement, broad docs lint/format, dependency safety and root `site/` freshness remain approval-gated until their own current evidence exists. Product-Agent OS lifecycle hooks are tracked separately through `product_agent_os_LIFECYCLE-HOOKS-A01`. | `docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md`, `docs/superpowers/specs/documentation-refresh-g1-1-doc-m35-install-summary.json`, `docs/superpowers/specs/documentation-refresh-g1-1-doc-m36-node-tooling-summary.json`, `docs/superpowers/specs/product-agent-os-lifecycle-hooks-local-activation-summary.json`, `TEST.md`, `RUNLOG.md` |
 
 ## Users And Actors
 
@@ -47,6 +49,7 @@ Last compacted: 2026-06-11
 - Treat memory, chat history, generated dashboards, generated reports and project graphs as orientation evidence unless backed by source artifacts or current command/runtime evidence.
 - Do not store secrets, private keys, credentials, customer data, raw private chat logs or unredacted PII in prompts, docs, memory, examples, fixtures, evals or reports.
 - Do not mutate target workspaces, canonical graph sources, live/provider/external systems, git state, releases, automations or hooks without exact approval for that action.
+- Do not install further documentation dependencies, vendor binaries/minified assets, activate docs hooks/automation or claim generated `site/` freshness for G1.1 until an approved local-toolchain slice records current install, smoke and build evidence for that specific surface.
 - Preserve unrelated dirty work. Do not revert user-authored changes unless explicitly requested and scoped.
 - Keep root control-plane files compact:
   - `AGENTS.md`: durable rules and operating boundaries.
@@ -100,6 +103,7 @@ These compact anchors preserve current test/source contracts without restoring t
 - Product-Agent OS work names scope, owners, assumptions, acceptance criteria, non-goals, verification gates and residual risks before readiness claims.
 - Batch 39 execution is traceable through `prod_test.md`, with each test attempt recording setup, action, evidence, failure/fix/retest status and owner/Codex split.
 - Current readiness claims separate supported evidence, unsupported claims, stale evidence, accepted gaps and approval boundaries.
+- G1.1 acceptance: root control-plane files name the local docs-toolchain route, folder contract, approval gates, verification commands, eval boundaries and evidence owners before any dependency installation occurs.
 - Verification for docs/control-plane changes runs:
   - `python -m unittest tests.product_agent_os.test_product_agent_os_docs -v`
   - `python tools\check_docs.py`
@@ -111,6 +115,7 @@ These compact anchors preserve current test/source contracts without restoring t
 - `B38-PILOT-NF01` remains blocked for target apply by missing target control-plane/source registry artifacts and `source_policy_status: blocked`.
 - Batch 40 completion-skeptic automation remains `manual_only` and `not_promoted`.
 - Batch 42 is a planning matrix only; it does not prove fixed Product-Agent OS auto-engagement until execution produces current source/cache/session exposure, official-doc source status, route/eval evidence, fresh-session proof if required and no-unapproved-actions closure.
+- Track 11 G1.1 is a project-local docs-toolchain route. `DOC-M35` and `DOC-M36` have install/smoke evidence for `.venv-docs/` and `.docs-tools/node/`; `.docs-tools/bin/`, `docs/assets/javascripts/vendor/`, generated root `site/` freshness, dependency safety and broad lint/format enforcement remain unclaimed until their specific slices run. Product-Agent OS lifecycle hooks are project-local and owner-approved, but Codex hook trust review / fresh-session execution is still not claimed.
 - Historical evidence is intentionally source-owned outside this file; use the registry/backlogs before making broad historical claims.
 
 <!-- product-agent-os:end requirements -->
