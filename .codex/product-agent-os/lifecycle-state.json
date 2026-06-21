@@ -1,7 +1,7 @@
-﻿{
+{
   "task_start_brief_shown": true,
-  "task_id": "TRACK11-G2-G5-G1.1-RESIDUAL-INTEGRATION",
-  "scope": "Track 11 G2-G5 row-level integration of G1.1 residual requirements while keeping DOC-M25 as the final generated-site freshness gate",
-  "updated_at": "2026-06-21T18:14:00+03:00",
-  "approval_boundary": "Project-local codex_docs planning and test-contract edits only; root site rebuild, browser proof, dependency remediation, report retention, platform installs, provider/API, external writes, active automation, git, release, deploy, publish, or target mutation require separate explicit approval"
+  "task_id": "TRACK11-G3-DIAGRAM-ATLAS",
+  "scope": "Track 11 G3 source documentation for diagram atlas and architecture maps: DOC-M07, DOC-M08, DOC-M09, DOC-M10 and DOC-M23, with nav/test/registry/control-plane sync and final root site freshness deferred to DOC-M25",
+  "updated_at": "2026-06-21T22:05:00+03:00",
+  "approval_boundary": "Project-local codex_docs docs, tests and control-plane edits only; root site rebuild, browser proof, dependency remediation, report retention, platform installs, provider/API, external writes, active automation, git, release, deploy, publish, cache refresh or target mutation require separate explicit approval"
 }

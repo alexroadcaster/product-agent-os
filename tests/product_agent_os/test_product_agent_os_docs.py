@@ -72,6 +72,9 @@ DOCUMENTATION_REFRESH_G1_1_DOC_M41_DEFERRED_PLATFORMS = (
 DOCUMENTATION_REFRESH_G2 = (
     DOCS / "superpowers" / "specs" / "documentation-refresh-g2-first-run-cockpit-artifact-docs-summary.json"
 )
+DOCUMENTATION_REFRESH_G3 = (
+    DOCS / "superpowers" / "specs" / "documentation-refresh-g3-diagram-atlas-architecture-maps-summary.json"
+)
 PRODUCT_AGENT_OS_LIFECYCLE_HOOKS_LOCAL_ACTIVATION = (
     DOCS / "superpowers" / "specs" / "product-agent-os-lifecycle-hooks-local-activation-summary.json"
 )
@@ -97,9 +100,14 @@ ENGLISH_ORIGINAL_SUPERPOWERS_PLAN_PAGES = {
 }
 DOC_M25_PENDING_SITE_PAGES = {
     DOCS / "product-agent-os" / "first-run-architecture-cockpit.md",
+    DOCS / "diagrams" / "source-generated-trust-boundary.md",
+    DOCS / "diagrams" / "first-run-cockpit-architecture.md",
+    DOCS / "diagrams" / "evidence-risk-lifecycle.md",
+    DOCS / "diagrams" / "skill-exposure-and-invocation.md",
+    DOCS / "diagrams" / "architecture-intelligence-diagram-atlas.md",
 }
-BUILDABLE_MARKDOWN_PAGE_COUNT = 134
-LOCALIZED_MARKDOWN_PAGE_COUNT = 126
+BUILDABLE_MARKDOWN_PAGE_COUNT = 139
+LOCALIZED_MARKDOWN_PAGE_COUNT = 131
 SITE_PROMOTED_LOCALIZED_MARKDOWN_PAGE_COUNT = 125
 ENGLISH_ORIGINAL_MARKDOWN_PAGE_COUNT = 8
 
@@ -8527,6 +8535,203 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "G2 source docs are implemented through `DOC-M04`, `DOC-M05`, `DOC-M06`, `DOC-M19`, `DOC-M20` and `DOC-M33`",
                 "Generated root `site/` freshness is not claimed",
                 "No dependency upgrade",
+            ],
+        }
+        for document, terms in sync_terms.items():
+            for term in terms:
+                with self.subTest(sync_document=document, term=term):
+                    self.assertIn(term, documents[document])
+
+    def test_documentation_refresh_g3_diagram_atlas_architecture_maps_are_synced(self):
+        self.assertTrue(DOCUMENTATION_REFRESH_G3.exists(), DOCUMENTATION_REFRESH_G3)
+        packet = json.loads(DOCUMENTATION_REFRESH_G3.read_text(encoding="utf-8"))
+        diagrams = {
+            "source_boundary": self._localized_contract_text(
+                DOCS / "diagrams" / "source-generated-trust-boundary.md"
+            ),
+            "cockpit_architecture": self._localized_contract_text(
+                DOCS / "diagrams" / "first-run-cockpit-architecture.md"
+            ),
+            "evidence_risk": self._localized_contract_text(
+                DOCS / "diagrams" / "evidence-risk-lifecycle.md"
+            ),
+            "skill_exposure": self._localized_contract_text(
+                DOCS / "diagrams" / "skill-exposure-and-invocation.md"
+            ),
+            "architecture_intelligence": self._localized_contract_text(
+                DOCS / "diagrams" / "architecture-intelligence-diagram-atlas.md"
+            ),
+            "diagram_index": self._localized_contract_text(DOCS / "diagrams" / "index.md"),
+        }
+        documents = {
+            "mkdocs": MKDOCS.read_text(encoding="utf-8"),
+            "check_docs": CHECK_DOCS.read_text(encoding="utf-8"),
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
+            "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
+            "track11_plan": (
+                DOCS
+                / "superpowers"
+                / "plans"
+                / "2026-06-20-track-11-documentation-architecture-refresh.md"
+            ).read_text(encoding="utf-8"),
+        }
+
+        self.assertEqual(
+            "documentation_refresh_g3_diagram_atlas_architecture_maps_v1",
+            packet["schema_version"],
+        )
+        self.assertEqual("documentation_refresh_G3-A01", packet["evidence_id"])
+        self.assertEqual("implemented_source_docs_no_site_rebuild", packet["status"])
+
+        for work_item in ["DOC-M07", "DOC-M08", "DOC-M09", "DOC-M10", "DOC-M23"]:
+            with self.subTest(work_item=work_item):
+                self.assertEqual(
+                    "implemented_source_docs_no_site_rebuild",
+                    packet["work_item_status"][work_item]["status"],
+                )
+                self.assertIn(f"`{work_item}`", documents["track11_plan"])
+
+        for action, value in packet["no_unapproved_actions"].items():
+            with self.subTest(no_unapproved_action=action):
+                self.assertFalse(value)
+
+        self.assertEqual(139, packet["test_contract"]["source_markdown_page_count"])
+        self.assertEqual(131, packet["test_contract"]["localized_markdown_page_count"])
+        self.assertEqual(125, packet["test_contract"]["site_promoted_localized_markdown_page_count"])
+        self.assertEqual(
+            [
+                "docs/product-agent-os/first-run-architecture-cockpit.md",
+                "docs/diagrams/source-generated-trust-boundary.md",
+                "docs/diagrams/first-run-cockpit-architecture.md",
+                "docs/diagrams/evidence-risk-lifecycle.md",
+                "docs/diagrams/skill-exposure-and-invocation.md",
+                "docs/diagrams/architecture-intelligence-diagram-atlas.md",
+            ],
+            packet["test_contract"]["pending_site_pages_until_doc_m25"],
+        )
+        self.assertEqual(LOCALIZED_MARKDOWN_PAGE_COUNT, len(self._localized_markdown_pages()))
+        self.assertEqual(
+            SITE_PROMOTED_LOCALIZED_MARKDOWN_PAGE_COUNT,
+            len(self._site_promoted_localized_markdown_pages()),
+        )
+
+        expected_terms = {
+            "source_boundary": [
+                "Source status:",
+                "generated-view-only",
+                "orientation evidence",
+                "source truth",
+                "current command evidence",
+                "owner approval",
+                "accepted gap",
+                "DOC-M25",
+                "browser proof approval_required",
+                "generated `site` freshness deferred",
+            ],
+            "cockpit_architecture": [
+                "first_run_cockpit_artifact_v1",
+                "architecture_intelligence_design_contract_v1",
+                "strict MkDocs",
+                "browser screenshot proof",
+                "browser proof approval_required",
+                "Cosmos.gl/WebGL",
+                "DOC-M25",
+                "unsupported claims",
+            ],
+            "evidence_risk": [
+                "evidence_before_completion",
+                "generated-view-only",
+                "accepted gap",
+                "owner approval",
+                "unsupported claims",
+                "DOC-M25",
+            ],
+            "skill_exposure": [
+                "Source bundle",
+                "Installed plugin cache",
+                "Fresh Codex session",
+                "planned-only",
+                "active session behavior",
+                "DOC-M25",
+            ],
+            "architecture_intelligence": [
+                "architecture_intelligence_design_contract_v1",
+                "first_run_cockpit_artifact_v1",
+                "source registry loop",
+                "local Mermaid",
+                "Structurizr DSL",
+                "generated `site` freshness deferred",
+                "browser proof approval_required",
+            ],
+            "diagram_index": [
+                "Source/generated trust boundary",
+                "First-Run Cockpit Architecture",
+                "Evidence And Risk Lifecycle",
+                "Skill Exposure And Invocation Boundary",
+                "Architecture Intelligence Diagram Atlas",
+            ],
+        }
+        for document, terms in expected_terms.items():
+            for term in terms:
+                with self.subTest(document=document, term=term):
+                    self.assertIn(term, diagrams[document])
+
+        for path in [
+            "diagrams/source-generated-trust-boundary.md",
+            "diagrams/first-run-cockpit-architecture.md",
+            "diagrams/evidence-risk-lifecycle.md",
+            "diagrams/skill-exposure-and-invocation.md",
+            "diagrams/architecture-intelligence-diagram-atlas.md",
+        ]:
+            with self.subTest(nav_path=path):
+                self.assertIn(path, documents["mkdocs"])
+                self.assertIn(path, documents["check_docs"])
+
+        sync_terms = {
+            "requirements": [
+                "documentation_refresh_G3-A01",
+                "source/generated trust boundary",
+                "search and sitemap freshness remain deferred to final `DOC-M25`",
+            ],
+            "plan": [
+                "Track 11 G3 diagram atlas and architecture maps",
+                "documentation-refresh-g3-diagram-atlas-architecture-maps-summary.json",
+                "Continue with G4-G5 source/docs slices",
+            ],
+            "test": [
+                "documentation_refresh_G3-A01",
+                ".docs-tools\\reports\\mkdocs-strict-smoke-g3-2026-06-21",
+                "do not claim root `site`/search/sitemap freshness until final `DOC-M25`",
+            ],
+            "evals": [
+                "documentation_refresh_G3-A01",
+                "Track 11 G3 diagram atlas source/nav docs",
+                "browser proof remains approval_required",
+            ],
+            "runlog": [
+                "documentation_refresh_G3-A01",
+                "DOC_M25_PENDING_SITE_PAGES",
+                "No root site, browser/runtime/provider, target, git, release or automation action.",
+            ],
+            "registry": [
+                "Product-Agent OS Track 11 G3 diagram atlas and architecture maps packet",
+                "documentation_refresh_G3-A01",
+                "implemented_source_docs_no_site_rebuild",
+            ],
+            "registry_en": [
+                "Product-Agent OS Track 11 G3 diagram atlas and architecture maps packet",
+                "documentation_refresh_G3-A01",
+                "implemented_source_docs_no_site_rebuild",
+            ],
+            "track11_plan": [
+                "G3 source docs are implemented through `DOC-M07`, `DOC-M08`, `DOC-M09`, `DOC-M10` and `DOC-M23`",
+                "Generated root `site/` freshness is not claimed",
+                "No Structurizr DSL install",
             ],
         }
         for document, terms in sync_terms.items():

@@ -91,6 +91,11 @@ REQUIRED_PATHS = [
     DOCS / "insights" / "seed-insights.md",
     DOCS / "diagrams" / "index.md",
     DOCS / "diagrams" / "architecture.md",
+    DOCS / "diagrams" / "source-generated-trust-boundary.md",
+    DOCS / "diagrams" / "first-run-cockpit-architecture.md",
+    DOCS / "diagrams" / "evidence-risk-lifecycle.md",
+    DOCS / "diagrams" / "skill-exposure-and-invocation.md",
+    DOCS / "diagrams" / "architecture-intelligence-diagram-atlas.md",
     DOCS / "diagrams" / "product-delivery-lifecycle.md",
     DOCS / "diagrams" / "agent-team-and-skills.md",
     DOCS / "diagrams" / "runtime-decision-map.md",
@@ -125,6 +130,11 @@ REQUIRED_NAV_PATHS = [
     "product-agent/product-agent-os-plugin-spec.md",
     "product-agent-os/artifact-gallery.md",
     "product-agent-os/first-run-architecture-cockpit.md",
+    "diagrams/source-generated-trust-boundary.md",
+    "diagrams/first-run-cockpit-architecture.md",
+    "diagrams/evidence-risk-lifecycle.md",
+    "diagrams/skill-exposure-and-invocation.md",
+    "diagrams/architecture-intelligence-diagram-atlas.md",
     "product-agent-os/project-code-graph.md",
     "product-agent-os/live-runtime-governance.md",
     "product-agent-os/approval-bound-real-testing.md",
@@ -151,6 +161,13 @@ DOC_M41_DEFERRED_PLATFORM_PACKET = (
     / "superpowers"
     / "specs"
     / "documentation-refresh-g1-1-doc-m41-deferred-platform-triggers-summary.json"
+)
+DOCUMENTATION_REFRESH_G3_EVIDENCE = "documentation_refresh_G3-A01"
+DOCUMENTATION_REFRESH_G3_PACKET = (
+    DOCS
+    / "superpowers"
+    / "specs"
+    / "documentation-refresh-g3-diagram-atlas-architecture-maps-summary.json"
 )
 
 
@@ -217,6 +234,12 @@ def check_mkdocs_nav() -> None:
 
     if not DOC_M41_DEFERRED_PLATFORM_PACKET.exists():
         fail("DOC-M41 deferred platform trigger evidence packet is missing")
+
+    if DOCUMENTATION_REFRESH_G3_EVIDENCE not in registry:
+        fail("source registry missing Track 11 G3 diagram atlas evidence")
+
+    if not DOCUMENTATION_REFRESH_G3_PACKET.exists():
+        fail("Track 11 G3 diagram atlas evidence packet is missing")
 
 
 def check_placeholders() -> None:

@@ -10,8 +10,11 @@ This section turns the knowledge base into an implementation map for building pr
 2. Use [planning matrix architecture](../product-agent-os/architecture.md#task-and-plan-architecture) when work needs a task matrix, staged delivery or completion report.
 3. Use [Agent Team And Skills](agent-team-and-skills.md) to split roles, ownership and reusable methods.
 4. Use [Runtime Decision Map](runtime-decision-map.md) to choose Codex App, CLI, Cloud, `codex exec`, MCP, GitHub Action or automation.
-5. Check [Skill Lifecycle](skill-lifecycle.md) before turning a playbook into a skill.
-6. Finish with [Context, Memory, Verification](context-memory-verification.md) to reduce unsupported claims and keep useful knowledge.
+5. Check [Source And Generated Evidence Boundary](source-generated-trust-boundary.md) when work depends on generated graph, cockpit HTML, reports or `site/`.
+6. Use [First-Run Cockpit Architecture](first-run-cockpit-architecture.md), [Evidence And Risk Lifecycle](evidence-risk-lifecycle.md) and [Architecture Intelligence Diagram Atlas](architecture-intelligence-diagram-atlas.md) when first-run outputs become documentation or handoff material.
+7. Check [Skill Exposure And Invocation Boundary](skill-exposure-and-invocation.md) when a claim touches source bundle, installed cache or active session behavior.
+8. Check [Skill Lifecycle](skill-lifecycle.md) before turning a playbook into a skill.
+9. Finish with [Context, Memory, Verification](context-memory-verification.md) to reduce unsupported claims and keep useful knowledge.
 
 ```mermaid
 flowchart LR
@@ -19,11 +22,14 @@ flowchart LR
     B --> B1["Planning matrix architecture"]
     B1 --> C["Agent team and skills"]
     C --> D["Runtime decision"]
-    D --> E["Implementation loop"]
-    E --> F["Skill lifecycle"]
-    E --> G["Context and verification"]
-    F --> H["Reusable project methods"]
-    G --> I["Product-ready output"]
+    D --> E["Source/generated boundary"]
+    E --> F["Architecture Intelligence maps"]
+    F --> G["Implementation loop"]
+    G --> H["Skill exposure boundary"]
+    H --> I["Skill lifecycle"]
+    G --> J["Context and verification"]
+    I --> K["Reusable project methods"]
+    J --> L["Product-ready output"]
 ```
 
 ## Inputs
@@ -34,7 +40,7 @@ flowchart LR
 ## Outputs
 
 - A practical route through the Product-Agent OS operating model.
-- Links to the next artifact for delivery, planning matrix architecture, team design, runtime selection, skill promotion and verification.
+- Links to the next artifact for delivery, planning matrix architecture, team design, runtime selection, source/generated trust, Architecture Intelligence maps, skill exposure, skill promotion and verification.
 
 ## Verification
 
@@ -44,3 +50,4 @@ Each atlas page should have a practical diagram, usage guidance, related artifac
 
 - Decorative diagrams can hide missing implementation decisions.
 - Skipping the atlas can lead to runtime or agent choices that are not aligned with approvals and evidence.
+- Treating generated views, browser proof gaps or installed skill cache as source truth can create unsupported completion claims.

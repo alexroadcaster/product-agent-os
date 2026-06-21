@@ -65,6 +65,11 @@ plugins:
             - Diagrams:
                 - Diagram Atlas: diagrams/index.md
                 - Architecture: diagrams/architecture.md
+                - Source And Generated Evidence Boundary: diagrams/source-generated-trust-boundary.md
+                - First-Run Cockpit Architecture: diagrams/first-run-cockpit-architecture.md
+                - Evidence And Risk Lifecycle: diagrams/evidence-risk-lifecycle.md
+                - Skill Exposure And Invocation Boundary: diagrams/skill-exposure-and-invocation.md
+                - Architecture Intelligence Diagram Atlas: diagrams/architecture-intelligence-diagram-atlas.md
                 - Delivery Lifecycle: diagrams/product-delivery-lifecycle.md
                 - Agent Team And Skills: diagrams/agent-team-and-skills.md
                 - Runtime Decision Map: diagrams/runtime-decision-map.md
@@ -197,6 +202,11 @@ nav:
   - Диаграммы:
       - Обзор диаграмм: diagrams/index.md
       - Архитектура проекта: diagrams/architecture.md
+      - Граница source и generated evidence: diagrams/source-generated-trust-boundary.md
+      - Архитектура first-run cockpit: diagrams/first-run-cockpit-architecture.md
+      - Цикл evidence и risk: diagrams/evidence-risk-lifecycle.md
+      - Граница skill exposure и invocation: diagrams/skill-exposure-and-invocation.md
+      - Architecture Intelligence diagram atlas: diagrams/architecture-intelligence-diagram-atlas.md
       - Product-Agent Delivery Lifecycle: diagrams/product-delivery-lifecycle.md
       - Команда агентов и skills: diagrams/agent-team-and-skills.md
       - Runtime decision map: diagrams/runtime-decision-map.md

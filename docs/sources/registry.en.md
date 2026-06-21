@@ -1378,6 +1378,18 @@ These markers preserve source-owned test routing after registry compaction. Full
 - DOC_M25_PENDING_SITE_PAGES
 - root `site` freshness deferred to final DOC-M25
 - browser/runtime/Cosmos.gl/WebGL/root site freshness unsupported in G2
+- Product-Agent OS Track 11 G3 diagram atlas and architecture maps packet
+- documentation_refresh_G3-A01
+- docs/superpowers/specs/documentation-refresh-g3-diagram-atlas-architecture-maps-summary.json
+- docs/diagrams/source-generated-trust-boundary.md
+- docs/diagrams/first-run-cockpit-architecture.md
+- docs/diagrams/evidence-risk-lifecycle.md
+- docs/diagrams/skill-exposure-and-invocation.md
+- docs/diagrams/architecture-intelligence-diagram-atlas.md
+- implemented_source_docs_no_site_rebuild
+- DOC_M25_PENDING_SITE_PAGES
+- root `site` freshness deferred to final DOC-M25
+- browser proof approval_required, Cosmos.gl/WebGL runtime proof unsupported and Structurizr DSL deferred/uninstalled in G3
 - .venv-docs/
 - .docs-tools/node/
 - .docs-tools/bin/
