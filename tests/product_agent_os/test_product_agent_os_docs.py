@@ -66,6 +66,9 @@ DOCUMENTATION_REFRESH_G1_1_DOC_M39_MERMAID = (
 DOCUMENTATION_REFRESH_G1_1_DOC_M40_AUDIT = (
     DOCS / "superpowers" / "specs" / "documentation-refresh-g1-1-doc-m40-dependency-audit-summary.json"
 )
+DOCUMENTATION_REFRESH_G1_1_DOC_M41_DEFERRED_PLATFORMS = (
+    DOCS / "superpowers" / "specs" / "documentation-refresh-g1-1-doc-m41-deferred-platform-triggers-summary.json"
+)
 PRODUCT_AGENT_OS_LIFECYCLE_HOOKS_LOCAL_ACTIVATION = (
     DOCS / "superpowers" / "specs" / "product-agent-os-lifecycle-hooks-local-activation-summary.json"
 )
@@ -7229,17 +7232,18 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             ],
             "track11_plan": [
                 "`DOC-M02` | `G1`",
-                "`DOC-M25` | `G1`",
+                "`DOC-M25` | `G5`",
                 "`DOC-M34` | `G1.1`",
                 "`DOC-M41` | `G1.1`",
                 "`closed_no_new_public_page_required`",
-                "g1_1_doc_m34_contract_doc_m35_m36_m37_m38_m39_m40_installed_audit_governance_recorded",
-                "runtime_available_site_rebuild_not_run",
+                "g1_1_doc_m34_contract_doc_m35_m36_m37_m38_m39_m40_m41_toolchain_governance_recorded",
+                "runtime_available_site_rebuild_deferred_final",
                 "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
                 "documentation_refresh_G1_1-DOC-M36-NODE-A01",
                 "documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01",
                 "documentation_refresh_G1_1-DOC-M39-MERMAID-A01",
                 "documentation_refresh_G1_1-DOC-M40-AUDIT-SBOM-A01",
+                "documentation_refresh_G1_1-DOC-M41-DEFERRED-PLATFORMS-A01",
                 ".venv-docs/",
                 ".docs-tools/node/",
                 "markdownlint-cli2",
@@ -7300,7 +7304,8 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01",
                 "documentation_refresh_G1_1-DOC-M39-MERMAID-A01",
                 "documentation_refresh_G1_1-DOC-M40-AUDIT-SBOM-A01",
-                "planned_only_no_dependency_install_no_site_rebuild",
+                "documentation_refresh_G1_1-DOC-M41-DEFERRED-PLATFORMS-A01",
+                "implemented_deferred_platform_trigger_governance_no_install_no_site_rebuild",
             ],
             "test": [
                 "Track 11 G1.1 Project-Local Docs Toolchain Checks",
@@ -7326,6 +7331,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01",
                 "documentation_refresh_G1_1-DOC-M39-MERMAID-A01",
                 "documentation_refresh_G1_1-DOC-M40-AUDIT-SBOM-A01",
+                "documentation_refresh_G1_1-DOC-M41-DEFERRED-PLATFORMS-A01",
                 "strict MkDocs smoke passed under `.docs-tools/reports/mkdocs-strict-smoke-2026-06-21`",
             ],
             "agents": [
@@ -7342,6 +7348,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01",
                 "documentation_refresh_G1_1-DOC-M39-MERMAID-A01",
                 "documentation_refresh_G1_1-DOC-M40-AUDIT-SBOM-A01",
+                "documentation_refresh_G1_1-DOC-M41-DEFERRED-PLATFORMS-A01",
                 "root system files for G1.1 implementation",
                 "successful project-local MkDocs runtime retry",
             ],
@@ -7353,6 +7360,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01",
                 "documentation_refresh_G1_1-DOC-M39-MERMAID-A01",
                 "documentation_refresh_G1_1-DOC-M40-AUDIT-SBOM-A01",
+                "documentation_refresh_G1_1-DOC-M41-DEFERRED-PLATFORMS-A01",
                 "root control-plane system files synced for G1.1 implementation route",
             ],
             "registry_en": [
@@ -7363,6 +7371,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01",
                 "documentation_refresh_G1_1-DOC-M39-MERMAID-A01",
                 "documentation_refresh_G1_1-DOC-M40-AUDIT-SBOM-A01",
+                "documentation_refresh_G1_1-DOC-M41-DEFERRED-PLATFORMS-A01",
                 "root control-plane system files synced for G1.1 implementation route",
             ],
         }
@@ -7585,7 +7594,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             ],
             "plan": [
                 "documentation_refresh_G1_1-DOC-M36-NODE-A01",
-                "`DOC-M41` remains planned",
+                "documentation_refresh_G1_1-DOC-M41-DEFERRED-PLATFORMS-A01",
             ],
             "test": [
                 "documentation-refresh-g1-1-doc-m36-node-tooling-summary.json",
@@ -8123,6 +8132,208 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             for term in terms:
                 with self.subTest(document=document, term=term):
                     self.assertIn(term, documents[document])
+
+    def test_documentation_refresh_g1_1_doc_m41_deferred_platform_triggers_are_recorded(self):
+        packet = json.loads(DOCUMENTATION_REFRESH_G1_1_DOC_M41_DEFERRED_PLATFORMS.read_text(encoding="utf-8"))
+        documents = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
+            "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
+            "track11_plan": (
+                DOCS / "superpowers" / "plans" / "2026-06-20-track-11-documentation-architecture-refresh.md"
+            ).read_text(encoding="utf-8"),
+            "check_docs": CHECK_DOCS.read_text(encoding="utf-8"),
+        }
+
+        self.assertEqual(
+            "documentation_refresh_g1_1_doc_m41_deferred_platform_triggers_v1",
+            packet["schema_version"],
+        )
+        self.assertEqual(
+            "documentation_refresh_G1_1-DOC-M41-DEFERRED-PLATFORMS-A01",
+            packet["evidence_id"],
+        )
+        self.assertEqual(
+            "implemented_deferred_platform_trigger_governance_no_install_no_site_rebuild",
+            packet["status"],
+        )
+        self.assertEqual("DOC-M41", packet["work_item"])
+        self.assertEqual("G1.1", packet["group"])
+        self.assertEqual(
+            "deferred_until_trigger_evidence_exists",
+            packet["decision_summary"]["deferred_status"],
+        )
+        self.assertEqual(
+            "not_installed_no_download_no_scaffold",
+            packet["decision_summary"]["installation_status"],
+        )
+        self.assertEqual("root_site_rebuild_not_run", packet["decision_summary"]["site_status"])
+
+        platform_records = {record["tool"]: record for record in packet["platform_trigger_records"]}
+        self.assertEqual({"Docusaurus", "Storybook", "Structurizr DSL"}, set(platform_records))
+        self.assertIn("React or MDX-heavy", " ".join(platform_records["Docusaurus"]["trigger_evidence_required"]))
+        self.assertIn("component", " ".join(platform_records["Storybook"]["trigger_evidence_required"]).lower())
+        self.assertIn("model-driven C4", " ".join(platform_records["Structurizr DSL"]["trigger_evidence_required"]))
+
+        for record in platform_records.values():
+            with self.subTest(tool=record["tool"]):
+                self.assertEqual("deferred", record["deferred_status"])
+                self.assertTrue(record["proposed_project_local_install_folder"])
+                self.assertTrue(record["acceptance_criteria"])
+                self.assertTrue(record["approval_required_actions"])
+
+        for claim in [
+            "DOC-M41 records trigger criteria for deferred documentation platforms and architecture tooling.",
+            "Docusaurus, Storybook and Structurizr DSL remain deferred until concrete trigger evidence exists.",
+            "No DOC-M41 install, download, scaffold, root site rebuild, browser proof or publication action was performed.",
+        ]:
+            with self.subTest(supported_claim=claim):
+                self.assertIn(claim, packet["supported_claims"])
+
+        for claim in [
+            "Docusaurus is installed or verified",
+            "Storybook is installed or verified",
+            "Structurizr DSL is installed or verified",
+            "root site freshness",
+            "browser/runtime behavior",
+            "release readiness",
+            "publication readiness",
+        ]:
+            with self.subTest(unsupported_claim=claim):
+                self.assertIn(claim, packet["unsupported_claims"])
+
+        for action, value in packet["no_unapproved_actions"].items():
+            with self.subTest(action=action):
+                self.assertFalse(value)
+
+        self.assertIn("DOC_M41_DEFERRED_PLATFORM_EVIDENCE", documents["check_docs"])
+        self.assertIn("DOC-M41 deferred platform trigger evidence packet is missing", documents["check_docs"])
+        self.assertNotIn("npm install docusaurus", documents["check_docs"].lower())
+        self.assertNotIn("storybook build", documents["check_docs"].lower())
+        self.assertNotIn("structurizr", documents["check_docs"].lower())
+
+        document_terms = {
+            "requirements": [
+                "documentation-refresh-g1-1-doc-m41-deferred-platform-triggers-summary.json",
+                "Docusaurus, Storybook and Structurizr DSL remain deferred",
+            ],
+            "plan": [
+                "documentation_refresh_G1_1-DOC-M41-DEFERRED-PLATFORMS-A01",
+                "implemented_deferred_platform_trigger_governance_no_install_no_site_rebuild",
+            ],
+            "test": [
+                "DOC-M41",
+                "deferred platform trigger",
+            ],
+            "evals": [
+                "documentation_refresh_G1_1-DOC-M41-DEFERRED-PLATFORMS-A01",
+                "Docusaurus, Storybook and Structurizr DSL",
+            ],
+            "runlog": [
+                "documentation_refresh_G1_1-DOC-M41-DEFERRED-PLATFORMS-A01",
+                "No Docusaurus, Storybook or Structurizr install",
+            ],
+            "registry": [
+                "documentation_refresh_G1_1-DOC-M41-DEFERRED-PLATFORMS-A01",
+                "DOC-M41 implemented_deferred_platform_trigger_governance_no_install_no_site_rebuild",
+            ],
+            "registry_en": [
+                "documentation_refresh_G1_1-DOC-M41-DEFERRED-PLATFORMS-A01",
+                "DOC-M41 implemented_deferred_platform_trigger_governance_no_install_no_site_rebuild",
+            ],
+            "track11_plan": [
+                "documentation_refresh_G1_1-DOC-M41-DEFERRED-PLATFORMS-A01",
+                "`implemented_deferred_platform_trigger_governance_no_install_no_site_rebuild`",
+            ],
+        }
+        for document, terms in document_terms.items():
+            for term in terms:
+                with self.subTest(document=document, term=term):
+                    self.assertIn(term, documents[document])
+
+    def test_documentation_refresh_g1_1_residual_followups_are_routed(self):
+        track11_plan = (
+            DOCS / "superpowers" / "plans" / "2026-06-20-track-11-documentation-architecture-refresh.md"
+        ).read_text(encoding="utf-8")
+        runlog = RUNLOG.read_text(encoding="utf-8")
+
+        for term in [
+            "## G1.1 Residual Follow-Up Routing",
+            "Root `site` rebuild, search/sitemap freshness and generated-site evidence.",
+            "`DOC-M25`",
+            "final generated-site freshness gate after G2-G5 source updates",
+            "Mermaid browser proof and visual diagram screenshot evidence.",
+            "`DOC-M08`, `DOC-M23`",
+            "Structurizr DSL trigger for model-driven C4 or architecture-as-code diagrams.",
+            "Broad docs lint/format enforcement with markdownlint and Prettier beyond scoped smokes.",
+            "Broad Vale enforcement for terminology, readiness wording and claim ceilings.",
+            "Broad lychee/gitleaks scans, external URL crawling and raw report retention.",
+            "Redocly enforcement for API documentation.",
+            "Python vulnerability audit / Python SBOM and complete repository SBOM.",
+            "Node dependency remediation for the current moderate audit findings.",
+            "Docusaurus trigger for a future docs platform decision record.",
+            "Storybook trigger for component or generated-artifact visual acceptance.",
+            "`planned_g1_1_residual_handoff`",
+            "No item in this table authorizes installation, root `site` rebuild, browser proof",
+        ]:
+            with self.subTest(term=term):
+                self.assertIn(term, track11_plan)
+
+        self.assertLess(
+            track11_plan.index("`DOC-M30` | `G5`"),
+            track11_plan.index("`DOC-M25` | `G5`"),
+        )
+
+        for term in [
+            "documentation_refresh_G1_1-RESIDUAL-ROUTING-A01",
+            "Root `site` rebuild routes to final `DOC-M25` after G2-G5 source updates",
+            "Mermaid/browser/Structurizr proof routes to `DOC-M08` and `DOC-M23`",
+            "supply-chain, Python vulnerability audit, complete repository SBOM, Node remediation",
+            "No install, root site rebuild, browser proof, dependency remediation",
+        ]:
+            with self.subTest(runlog_term=term):
+                self.assertIn(term, runlog)
+
+        for term in [
+            "`DOC-M04` | `G2` | P0 | Add reader-facing Architecture Intelligence Cockpit page.",
+            "`planned_g1_1_residual_hooked`",
+            "final `DOC-M25` site-freshness route",
+            "`DOC-M06` | `G2` | P0 | Update code graph and CLI docs for cockpit surfaces.",
+            "broad tooling commands stay with `DOC-M26`",
+            "`DOC-M08` | `G3` | P0 | Add diagram atlas page for first-run cockpit architecture.",
+            "optional browser/screenshot proof only with separate approval",
+            "`DOC-M23` | `G3` | P2 | Add an Architecture Intelligence diagram atlas page.",
+            "deferred Structurizr DSL trigger criteria",
+            "`DOC-M12` | `G4` | P1 | Update Product-Agent OS index and scenarios with new routes.",
+            "final `DOC-M25` generated-site freshness route",
+            "`DOC-M26` | `G4` | P0 | Document first-run CLI modes and safe docs-tooling command matrix.",
+            "markdownlint/Prettier/Vale/lychee/gitleaks/Redocly command modes",
+            "`DOC-M31` | `G4` | P1 | Update methodology integration map.",
+            "Redocly `not_applicable` / OpenAPI-trigger status",
+            "`DOC-M21` | `G5` | P1 | Add generated artifact UX acceptance criteria.",
+            "conditional Storybook trigger",
+            "`DOC-M24` | `G5` | P2 | Add source, cache, session, supply-chain and report-retention docs.",
+            "Python vulnerability audit / Python SBOM",
+            "`DOC-M29` | `G5` | P0 | Document local HTML interaction and browser-proof approval boundary.",
+            "console/network evidence requirements",
+            "row-level G2-G5 hook review",
+            "G2-G5 row-level hooks now carry those residuals directly",
+        ]:
+            with self.subTest(row_level_term=term):
+                self.assertIn(term, track11_plan)
+
+        for term in [
+            "documentation_refresh_G2_G5-G1_1-RESIDUAL-HOOKS-A01",
+            "G2-G5 task rows now carry G1.1 residual hooks directly",
+            "`DOC-M30` checks row-level residual closure before final `DOC-M25`",
+            "No root site rebuild, browser proof, dependency remediation",
+        ]:
+            with self.subTest(runlog_row_level_term=term):
+                self.assertIn(term, runlog)
 
     def test_product_agent_os_lifecycle_hooks_local_activation_is_recorded(self):
         self.assertTrue(

@@ -143,6 +143,13 @@ DOC_M40_AUDIT_HELPER = ROOT / "tools" / "docs_dependency_audit.ps1"
 DOC_M40_AUDIT_PACKET = (
     DOCS / "superpowers" / "specs" / "documentation-refresh-g1-1-doc-m40-dependency-audit-summary.json"
 )
+DOC_M41_DEFERRED_PLATFORM_EVIDENCE = "documentation_refresh_G1_1-DOC-M41-DEFERRED-PLATFORMS-A01"
+DOC_M41_DEFERRED_PLATFORM_PACKET = (
+    DOCS
+    / "superpowers"
+    / "specs"
+    / "documentation-refresh-g1-1-doc-m41-deferred-platform-triggers-summary.json"
+)
 
 
 def fail(message: str) -> None:
@@ -202,6 +209,12 @@ def check_mkdocs_nav() -> None:
 
     if not DOC_M40_AUDIT_PACKET.exists():
         fail("DOC-M40 dependency audit evidence packet is missing")
+
+    if DOC_M41_DEFERRED_PLATFORM_EVIDENCE not in registry:
+        fail("source registry missing DOC-M41 deferred platform trigger evidence")
+
+    if not DOC_M41_DEFERRED_PLATFORM_PACKET.exists():
+        fail("DOC-M41 deferred platform trigger evidence packet is missing")
 
 
 def check_placeholders() -> None:

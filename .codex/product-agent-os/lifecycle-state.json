@@ -1,7 +1,7 @@
 ﻿{
   "task_start_brief_shown": true,
-  "task_id": "DOC-M40",
-  "scope": "Track 11 G1.1 DOC-M40 dependency audit and SBOM governance for project-local documentation tooling with Product-Agent OS skills and bounded read-only agent handoffs",
-  "updated_at": "2026-06-21T12:04:00+03:00",
-  "approval_boundary": "Project-local codex_docs work only; local read-only dependency inventory and workspace evidence/docs updates allowed; network install/download, external advisory refresh, new audit tool install, root site freshness claim, browser/runtime proof, provider/API, deploy/publish, external writes, active automation, git, or dependency remediation require separate explicit approval"
+  "task_id": "TRACK11-G2-G5-G1.1-RESIDUAL-INTEGRATION",
+  "scope": "Track 11 G2-G5 row-level integration of G1.1 residual requirements while keeping DOC-M25 as the final generated-site freshness gate",
+  "updated_at": "2026-06-21T18:14:00+03:00",
+  "approval_boundary": "Project-local codex_docs planning and test-contract edits only; root site rebuild, browser proof, dependency remediation, report retention, platform installs, provider/API, external writes, active automation, git, release, deploy, publish, or target mutation require separate explicit approval"
 }

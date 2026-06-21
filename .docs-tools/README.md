@@ -71,3 +71,9 @@ and a bounded `npm audit --audit-level=high` advisory check for docs tooling.
 Use `tools/docs_dependency_audit.ps1` for local inventory/SBOM/hash consistency.
 Raw report retention, Python vulnerability audit tooling, dependency upgrades,
 `npm audit fix` and remediation remain separate approval boundaries.
+
+`DOC-M41` records deferred trigger criteria for Docusaurus, Storybook and
+Structurizr DSL. These tools are not installed, scaffolded or verified by the
+current G1.1 evidence; future use requires concrete trigger evidence, an
+owner-approved platform decision record, local install path, rollback and
+verification gates.
