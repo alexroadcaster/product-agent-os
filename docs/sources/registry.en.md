@@ -1324,12 +1324,14 @@ These markers preserve source-owned test routing after registry compaction. Full
 - documentation_refresh_G1_1-DOC-M36-NODE-A01
 - documentation_refresh_G1_1-DOC-M37-VALE-A01
 - documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01
+- documentation_refresh_G1_1-DOC-M39-MERMAID-A01
 - docs/superpowers/specs/documentation-refresh-g1-1-doc-m34-folder-contract-summary.json
 - docs/superpowers/specs/documentation-refresh-g1-1-doc-m35-preflight-summary.json
 - docs/superpowers/specs/documentation-refresh-g1-1-doc-m35-install-summary.json
 - docs/superpowers/specs/documentation-refresh-g1-1-doc-m36-node-tooling-summary.json
 - docs/superpowers/specs/documentation-refresh-g1-1-doc-m37-vale-language-summary.json
 - docs/superpowers/specs/documentation-refresh-g1-1-doc-m38-link-secret-summary.json
+- docs/superpowers/specs/documentation-refresh-g1-1-doc-m39-mermaid-summary.json
 - Product-Agent OS project-local lifecycle hook activation
 - product_agent_os_LIFECYCLE-HOOKS-A01
 - docs/superpowers/specs/product-agent-os-lifecycle-hooks-local-activation-summary.json
@@ -1341,6 +1343,7 @@ These markers preserve source-owned test routing after registry compaction. Full
 - tools/docs_node_install.ps1
 - tools/docs_vale_install.ps1
 - tools/docs_link_secret_install.ps1
+- tools/docs_mermaid_install.ps1
 - .vale.ini
 - .gitleaks.toml
 - .docs-tools/vale/
@@ -1348,6 +1351,10 @@ These markers preserve source-owned test routing after registry compaction. Full
 - .docs-tools/bin/vale.sha256
 - .docs-tools/bin/lychee.sha256
 - .docs-tools/bin/gitleaks.sha256
+- docs/assets/javascripts/vendor/mermaid-10.9.6.min.js
+- docs/assets/javascripts/vendor/mermaid-10.9.6.min.js.sha256
+- docs/assets/javascripts/vendor/mermaid-10.9.6.LICENSE.txt
+- docs/assets/javascripts/vendor/mermaid-10.9.6.package.json
 - .docs-tools/node/package.json
 - .docs-tools/node/package-lock.json
 - DOC-M34..DOC-M41
@@ -1358,6 +1365,6 @@ These markers preserve source-owned test routing after registry compaction. Full
 - docs/assets/javascripts/vendor/
 - mkdocs-material, mkdocs-static-i18n, markdownlint-cli2, Prettier, Redocly CLI, Vale, lychee, gitleaks, Mermaid
 - Docusaurus, Storybook and Structurizr DSL deferred until trigger evidence exists
-- implemented_contract_only_no_install for DOC-M34; DOC-M35 installed_smoke_passed in .venv-docs with strict smoke output under .docs-tools/reports; DOC-M36 installed_smoke_passed in .docs-tools/node with scoped README smoke; DOC-M37 installed_advisory_smoke_passed with local Vale rules/checksum; DOC-M38 installed_scoped_smoke_passed with local lychee/gitleaks checksums and scoped fixture smokes; DOC-M39..DOC-M41 planned_only_no_dependency_install_no_site_rebuild
+- implemented_contract_only_no_install for DOC-M34; DOC-M35 installed_smoke_passed in .venv-docs with strict smoke output under .docs-tools/reports; DOC-M36 installed_smoke_passed in .docs-tools/node with scoped README smoke; DOC-M37 installed_advisory_smoke_passed with local Vale rules/checksum; DOC-M38 installed_scoped_smoke_passed with local lychee/gitleaks checksums and scoped fixture smokes; DOC-M39 installed_offline_vendor_smoke_passed with local Mermaid checksum/license/static MkDocs smoke; DOC-M40..DOC-M41 planned_only_no_dependency_install_no_site_rebuild
 - root control-plane system files synced for G1.1 implementation route
 ```

@@ -60,6 +60,9 @@ DOCUMENTATION_REFRESH_G1_1_DOC_M37_VALE = (
 DOCUMENTATION_REFRESH_G1_1_DOC_M38_LINK_SECRET = (
     DOCS / "superpowers" / "specs" / "documentation-refresh-g1-1-doc-m38-link-secret-summary.json"
 )
+DOCUMENTATION_REFRESH_G1_1_DOC_M39_MERMAID = (
+    DOCS / "superpowers" / "specs" / "documentation-refresh-g1-1-doc-m39-mermaid-summary.json"
+)
 PRODUCT_AGENT_OS_LIFECYCLE_HOOKS_LOCAL_ACTIVATION = (
     DOCS / "superpowers" / "specs" / "product-agent-os-lifecycle-hooks-local-activation-summary.json"
 )
@@ -7227,11 +7230,12 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "`DOC-M34` | `G1.1`",
                 "`DOC-M41` | `G1.1`",
                 "`closed_no_new_public_page_required`",
-                "g1_1_doc_m34_contract_doc_m35_m36_m37_m38_installed_smoke_passed",
+                "g1_1_doc_m34_contract_doc_m35_m36_m37_m38_m39_installed_smoke_passed",
                 "runtime_available_site_rebuild_not_run",
                 "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
                 "documentation_refresh_G1_1-DOC-M36-NODE-A01",
                 "documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01",
+                "documentation_refresh_G1_1-DOC-M39-MERMAID-A01",
                 ".venv-docs/",
                 ".docs-tools/node/",
                 "markdownlint-cli2",
@@ -7290,6 +7294,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
                 "documentation_refresh_G1_1-DOC-M36-NODE-A01",
                 "documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01",
+                "documentation_refresh_G1_1-DOC-M39-MERMAID-A01",
                 "planned_only_no_dependency_install_no_site_rebuild",
             ],
             "test": [
@@ -7299,6 +7304,8 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "gitleaks.exe version",
                 ".docs-tools\\bin\\lychee.exe --offline --no-progress .docs-tools\\link-secret\\fixtures\\doc-m38-links.md",
                 ".docs-tools\\bin\\gitleaks.exe dir .docs-tools\\link-secret\\fixtures --config .gitleaks.toml --redact",
+                "tools\\docs_mermaid_install.ps1 -Install -AllowNetwork -Force",
+                "mkdocs-strict-smoke-doc-m39-2026-06-21",
                 "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
                 "DOC-M36",
                 "`DOC-M34..DOC-M41`",
@@ -7311,6 +7318,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
                 "documentation_refresh_G1_1-DOC-M36-NODE-A01",
                 "documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01",
+                "documentation_refresh_G1_1-DOC-M39-MERMAID-A01",
                 "strict MkDocs smoke passed under `.docs-tools/reports/mkdocs-strict-smoke-2026-06-21`",
             ],
             "agents": [
@@ -7325,6 +7333,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
                 "documentation_refresh_G1_1-DOC-M36-NODE-A01",
                 "documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01",
+                "documentation_refresh_G1_1-DOC-M39-MERMAID-A01",
                 "root system files for G1.1 implementation",
                 "successful project-local MkDocs runtime retry",
             ],
@@ -7334,6 +7343,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
                 "documentation_refresh_G1_1-DOC-M36-NODE-A01",
                 "documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01",
+                "documentation_refresh_G1_1-DOC-M39-MERMAID-A01",
                 "root control-plane system files synced for G1.1 implementation route",
             ],
             "registry_en": [
@@ -7342,6 +7352,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
                 "documentation_refresh_G1_1-DOC-M36-NODE-A01",
                 "documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01",
+                "documentation_refresh_G1_1-DOC-M39-MERMAID-A01",
                 "root control-plane system files synced for G1.1 implementation route",
             ],
         }
@@ -7564,7 +7575,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             ],
             "plan": [
                 "documentation_refresh_G1_1-DOC-M36-NODE-A01",
-                "DOC-M39..DOC-M41",
+                "DOC-M40..DOC-M41",
             ],
             "test": [
                 "documentation-refresh-g1-1-doc-m36-node-tooling-summary.json",
@@ -7831,6 +7842,128 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "link_secret_readme": [
                 "DOC-M38",
                 "`--redact`",
+            ],
+        }
+        for document, terms in document_terms.items():
+            for term in terms:
+                with self.subTest(document=document, term=term):
+                    self.assertIn(term, documents[document])
+
+    def test_documentation_refresh_g1_1_doc_m39_mermaid_vendor_is_recorded(self):
+        packet = json.loads(DOCUMENTATION_REFRESH_G1_1_DOC_M39_MERMAID.read_text(encoding="utf-8"))
+        mermaid_package = json.loads(
+            (ROOT / "docs" / "assets" / "javascripts" / "vendor" / "mermaid-10.9.6.package.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        documents = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
+            "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
+            "track11_plan": (
+                DOCS / "superpowers" / "plans" / "2026-06-20-track-11-documentation-architecture-refresh.md"
+            ).read_text(encoding="utf-8"),
+            "docs_tools_readme": (ROOT / ".docs-tools" / "README.md").read_text(encoding="utf-8"),
+            "vendor_readme": (
+                ROOT / "docs" / "assets" / "javascripts" / "vendor" / "README.txt"
+            ).read_text(encoding="utf-8"),
+            "mkdocs": MKDOCS.read_text(encoding="utf-8"),
+            "check_docs": CHECK_DOCS.read_text(encoding="utf-8"),
+        }
+
+        self.assertEqual(
+            "documentation_refresh_g1_1_doc_m39_mermaid_vendor_v1",
+            packet["schema_version"],
+        )
+        self.assertEqual("documentation_refresh_G1_1-DOC-M39-MERMAID-A01", packet["evidence_id"])
+        self.assertEqual("installed_offline_vendor_smoke_passed", packet["status"])
+        self.assertEqual("DOC-M39", packet["work_item"])
+        self.assertEqual("10.9.6", packet["installed_runtime"]["mermaid"]["version"])
+        self.assertEqual("10.9.6", mermaid_package["version"])
+        self.assertEqual("MIT", packet["installed_runtime"]["mermaid"]["license"])
+        self.assertEqual("MIT", mermaid_package["license"])
+        self.assertEqual(
+            "eda3a0ad572bbe69a318c1be0163e8233dd824f3f12939e5168feba207767151",
+            packet["installed_runtime"]["mermaid"]["sha256"],
+        )
+        self.assertEqual("passed", packet["scope_boundary"]["strict_mkdocs_smoke_status"])
+        self.assertEqual("not_run_approval_required", packet["scope_boundary"]["browser_runtime_proof_status"])
+        self.assertEqual("not_claimed", packet["scope_boundary"]["root_site_freshness_status"])
+
+        for path in [
+            "tools/docs_mermaid_install.ps1",
+            "docs/assets/javascripts/vendor/README.txt",
+            "docs/assets/javascripts/vendor/mermaid-10.9.6.min.js",
+            "docs/assets/javascripts/vendor/mermaid-10.9.6.min.js.sha256",
+            "docs/assets/javascripts/vendor/mermaid-10.9.6.LICENSE.txt",
+            "docs/assets/javascripts/vendor/mermaid-10.9.6.package.json",
+        ]:
+            with self.subTest(path=path):
+                self.assertTrue((ROOT / path).exists(), path)
+
+        self.assertIn("assets/javascripts/vendor/mermaid-10.9.6.min.js", documents["mkdocs"])
+        self.assertNotIn("https://unpkg.com/mermaid@10/dist/mermaid.min.js", documents["mkdocs"])
+        self.assertIn("mkdocs Mermaid external CDN asset is no longer allowed after DOC-M39", documents["check_docs"])
+        self.assertIn("MERMAID_VENDOR_EVIDENCE", documents["check_docs"])
+
+        for claim in [
+            "Mermaid diagrams rendered visually in a browser",
+            "browser console and network are clean",
+            "generated root site/ freshness verified",
+            "dependency safety reviewed",
+            "SBOM generated",
+        ]:
+            with self.subTest(unsupported_claim=claim):
+                self.assertIn(claim, packet["unsupported_claims"])
+
+        for action, value in packet["no_unapproved_actions"].items():
+            with self.subTest(action=action):
+                self.assertFalse(value)
+
+        document_terms = {
+            "requirements": [
+                "documentation-refresh-g1-1-doc-m39-mermaid-summary.json",
+                "browser Mermaid rendering proof",
+            ],
+            "plan": [
+                "documentation_refresh_G1_1-DOC-M39-MERMAID-A01",
+                "installed_offline_vendor_smoke_passed",
+            ],
+            "test": [
+                "tools\\docs_mermaid_install.ps1 -Install -AllowNetwork -Force",
+                "mkdocs-strict-smoke-doc-m39-2026-06-21",
+            ],
+            "evals": [
+                "documentation_refresh_G1_1-DOC-M39-MERMAID-A01",
+                "browser Mermaid rendering",
+            ],
+            "runlog": [
+                "documentation_refresh_G1_1-DOC-M39-MERMAID-A01",
+                "strict MkDocs/static external-runtime smoke passed",
+            ],
+            "registry": [
+                "documentation_refresh_G1_1-DOC-M39-MERMAID-A01",
+                "DOC-M39 installed_offline_vendor_smoke_passed",
+            ],
+            "registry_en": [
+                "documentation_refresh_G1_1-DOC-M39-MERMAID-A01",
+                "DOC-M39 installed_offline_vendor_smoke_passed",
+            ],
+            "track11_plan": [
+                "documentation_refresh_G1_1-DOC-M39-MERMAID-A01",
+                "`installed_offline_vendor_smoke_passed`",
+            ],
+            "docs_tools_readme": [
+                "DOC-M39",
+                "Strict MkDocs and static external-runtime audits are not browser proof",
+            ],
+            "vendor_readme": [
+                "DOC-M39",
+                "checksum file",
             ],
         }
         for document, terms in document_terms.items():

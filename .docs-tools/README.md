@@ -29,6 +29,8 @@ Source status: local implementation contract.
 - Tool configuration files such as `.vale.ini`, `.gitleaks.toml` or documented rules after their slice is approved.
 - Vale style rules and vocabulary under `.docs-tools/vale/`.
 - Synthetic link/secret smoke fixtures under `.docs-tools/link-secret/`.
+- Vendored documentation runtime assets under `docs/assets/javascripts/vendor/`
+  only after their slice records source, license, checksum and approval.
 - Redacted report examples only when the report-retention policy says they are safe to commit.
 
 ## Ignored Local Content
@@ -59,3 +61,7 @@ thresholds, failure policy and report handling.
 scoped fixture smokes. External URL crawling, broad link checks, broad secret
 scans, raw finding publication and report retention remain separate approval
 boundaries.
+
+`DOC-M39` approved only pinned Mermaid `10.9.6` vendoring for MkDocs diagram
+runtime replacement, with source, license, package metadata and checksum
+records under `docs/assets/javascripts/vendor/`. Strict MkDocs and static external-runtime audits are not browser proof.

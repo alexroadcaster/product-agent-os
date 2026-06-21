@@ -136,7 +136,8 @@ REQUIRED_NAV_PATHS = [
 ]
 
 MERMAID_EXTERNAL_ASSET = "https://unpkg.com/mermaid@10/dist/mermaid.min.js"
-MERMAID_ACCEPTED_GAP = "Batch 34 accepted gap: Mermaid loads from CDN"
+MERMAID_LOCAL_ASSET = "assets/javascripts/vendor/mermaid-10.9.6.min.js"
+MERMAID_VENDOR_EVIDENCE = "documentation_refresh_G1_1-DOC-M39-MERMAID-A01"
 
 
 def fail(message: str) -> None:
@@ -178,8 +179,15 @@ def check_mkdocs_nav() -> None:
     if missing:
         fail("mkdocs nav missing required paths: " + ", ".join(missing))
 
-    if MERMAID_EXTERNAL_ASSET in config and MERMAID_ACCEPTED_GAP not in config:
-        fail("mkdocs Mermaid external asset needs accepted gap or vendor/offline follow-up")
+    if MERMAID_EXTERNAL_ASSET in config:
+        fail("mkdocs Mermaid external CDN asset is no longer allowed after DOC-M39")
+
+    if MERMAID_LOCAL_ASSET not in config:
+        fail("mkdocs Mermaid local vendor asset missing from extra_javascript")
+
+    registry = read(DOCS / "sources" / "registry.md")
+    if MERMAID_VENDOR_EVIDENCE not in registry:
+        fail("source registry missing DOC-M39 Mermaid vendor evidence")
 
 
 def check_placeholders() -> None:

@@ -188,9 +188,8 @@ markdown_extensions:
 
 extra_javascript:
   - assets/javascripts/local-file-i18n.js
-  # Batch 34 accepted gap: Mermaid loads from CDN in this docs site.
-  # Vendor/offline asset packaging remains a follow-up before offline-only publishing.
-  - https://unpkg.com/mermaid@10/dist/mermaid.min.js
+  # DOC-M39: Mermaid is vendored locally for offline diagram rendering.
+  - assets/javascripts/vendor/mermaid-10.9.6.min.js
 
 nav:
   - Главная: index.md
