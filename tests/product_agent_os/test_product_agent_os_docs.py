@@ -63,6 +63,9 @@ DOCUMENTATION_REFRESH_G1_1_DOC_M38_LINK_SECRET = (
 DOCUMENTATION_REFRESH_G1_1_DOC_M39_MERMAID = (
     DOCS / "superpowers" / "specs" / "documentation-refresh-g1-1-doc-m39-mermaid-summary.json"
 )
+DOCUMENTATION_REFRESH_G1_1_DOC_M40_AUDIT = (
+    DOCS / "superpowers" / "specs" / "documentation-refresh-g1-1-doc-m40-dependency-audit-summary.json"
+)
 PRODUCT_AGENT_OS_LIFECYCLE_HOOKS_LOCAL_ACTIVATION = (
     DOCS / "superpowers" / "specs" / "product-agent-os-lifecycle-hooks-local-activation-summary.json"
 )
@@ -7230,12 +7233,13 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "`DOC-M34` | `G1.1`",
                 "`DOC-M41` | `G1.1`",
                 "`closed_no_new_public_page_required`",
-                "g1_1_doc_m34_contract_doc_m35_m36_m37_m38_m39_installed_smoke_passed",
+                "g1_1_doc_m34_contract_doc_m35_m36_m37_m38_m39_m40_installed_audit_governance_recorded",
                 "runtime_available_site_rebuild_not_run",
                 "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
                 "documentation_refresh_G1_1-DOC-M36-NODE-A01",
                 "documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01",
                 "documentation_refresh_G1_1-DOC-M39-MERMAID-A01",
+                "documentation_refresh_G1_1-DOC-M40-AUDIT-SBOM-A01",
                 ".venv-docs/",
                 ".docs-tools/node/",
                 "markdownlint-cli2",
@@ -7295,6 +7299,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "documentation_refresh_G1_1-DOC-M36-NODE-A01",
                 "documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01",
                 "documentation_refresh_G1_1-DOC-M39-MERMAID-A01",
+                "documentation_refresh_G1_1-DOC-M40-AUDIT-SBOM-A01",
                 "planned_only_no_dependency_install_no_site_rebuild",
             ],
             "test": [
@@ -7305,6 +7310,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 ".docs-tools\\bin\\lychee.exe --offline --no-progress .docs-tools\\link-secret\\fixtures\\doc-m38-links.md",
                 ".docs-tools\\bin\\gitleaks.exe dir .docs-tools\\link-secret\\fixtures --config .gitleaks.toml --redact",
                 "tools\\docs_mermaid_install.ps1 -Install -AllowNetwork -Force",
+                "tools\\docs_dependency_audit.ps1",
                 "mkdocs-strict-smoke-doc-m39-2026-06-21",
                 "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
                 "DOC-M36",
@@ -7319,6 +7325,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "documentation_refresh_G1_1-DOC-M36-NODE-A01",
                 "documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01",
                 "documentation_refresh_G1_1-DOC-M39-MERMAID-A01",
+                "documentation_refresh_G1_1-DOC-M40-AUDIT-SBOM-A01",
                 "strict MkDocs smoke passed under `.docs-tools/reports/mkdocs-strict-smoke-2026-06-21`",
             ],
             "agents": [
@@ -7334,6 +7341,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "documentation_refresh_G1_1-DOC-M36-NODE-A01",
                 "documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01",
                 "documentation_refresh_G1_1-DOC-M39-MERMAID-A01",
+                "documentation_refresh_G1_1-DOC-M40-AUDIT-SBOM-A01",
                 "root system files for G1.1 implementation",
                 "successful project-local MkDocs runtime retry",
             ],
@@ -7344,6 +7352,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "documentation_refresh_G1_1-DOC-M36-NODE-A01",
                 "documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01",
                 "documentation_refresh_G1_1-DOC-M39-MERMAID-A01",
+                "documentation_refresh_G1_1-DOC-M40-AUDIT-SBOM-A01",
                 "root control-plane system files synced for G1.1 implementation route",
             ],
             "registry_en": [
@@ -7353,6 +7362,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "documentation_refresh_G1_1-DOC-M36-NODE-A01",
                 "documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01",
                 "documentation_refresh_G1_1-DOC-M39-MERMAID-A01",
+                "documentation_refresh_G1_1-DOC-M40-AUDIT-SBOM-A01",
                 "root control-plane system files synced for G1.1 implementation route",
             ],
         }
@@ -7575,7 +7585,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             ],
             "plan": [
                 "documentation_refresh_G1_1-DOC-M36-NODE-A01",
-                "DOC-M40..DOC-M41",
+                "`DOC-M41` remains planned",
             ],
             "test": [
                 "documentation-refresh-g1-1-doc-m36-node-tooling-summary.json",
@@ -7964,6 +7974,149 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "vendor_readme": [
                 "DOC-M39",
                 "checksum file",
+            ],
+        }
+        for document, terms in document_terms.items():
+            for term in terms:
+                with self.subTest(document=document, term=term):
+                    self.assertIn(term, documents[document])
+
+    def test_documentation_refresh_g1_1_doc_m40_dependency_audit_is_recorded(self):
+        packet = json.loads(DOCUMENTATION_REFRESH_G1_1_DOC_M40_AUDIT.read_text(encoding="utf-8"))
+        documents = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
+            "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
+            "track11_plan": (
+                DOCS / "superpowers" / "plans" / "2026-06-20-track-11-documentation-architecture-refresh.md"
+            ).read_text(encoding="utf-8"),
+            "docs_tools_readme": (ROOT / ".docs-tools" / "README.md").read_text(encoding="utf-8"),
+            "check_docs": CHECK_DOCS.read_text(encoding="utf-8"),
+        }
+
+        self.assertEqual(
+            "documentation_refresh_g1_1_doc_m40_dependency_audit_v1",
+            packet["schema_version"],
+        )
+        self.assertEqual("documentation_refresh_G1_1-DOC-M40-AUDIT-SBOM-A01", packet["evidence_id"])
+        self.assertEqual("implemented_audit_sbom_governance_current_findings_recorded", packet["status"])
+        self.assertEqual("DOC-M40", packet["work_item"])
+        self.assertEqual(31, packet["python_dependency_inventory"]["package_count"])
+        self.assertEqual("passed", packet["python_dependency_inventory"]["pip_check"]["status"])
+        self.assertEqual(
+            "not_installed_approval_required",
+            packet["python_dependency_inventory"]["pip_audit"]["status"],
+        )
+        self.assertEqual(
+            "not_generated_tool_not_installed_approval_required",
+            packet["python_dependency_inventory"]["python_sbom"]["status"],
+        )
+
+        direct_deps = packet["node_dependency_inventory"]["direct_dependencies"]
+        self.assertEqual("2.34.0", direct_deps["@redocly/cli"])
+        self.assertEqual("0.22.1", direct_deps["markdownlint-cli2"])
+        self.assertEqual("3.8.4", direct_deps["prettier"])
+        self.assertEqual("CycloneDX", packet["node_dependency_inventory"]["cyclonedx_sbom"]["bom_format"])
+        self.assertEqual("1.5", packet["node_dependency_inventory"]["cyclonedx_sbom"]["spec_version"])
+        self.assertEqual(88, packet["node_dependency_inventory"]["cyclonedx_sbom"]["component_count"])
+
+        vulnerability_counts = packet["node_dependency_inventory"]["npm_audit"]["vulnerability_counts"]
+        self.assertEqual(3, vulnerability_counts["moderate"])
+        self.assertEqual(0, vulnerability_counts["high"])
+        self.assertEqual(0, vulnerability_counts["critical"])
+        self.assertEqual("passed_no_high_or_critical_findings", packet["node_dependency_inventory"]["npm_audit"]["audit_level_high_status"])
+
+        self.assertEqual(
+            "passed_recorded_hashes_match_current_files",
+            packet["binary_and_vendor_integrity"]["status"],
+        )
+        for finding in ["js-yaml", "markdown-it", "markdownlint-cli2"]:
+            with self.subTest(finding=finding):
+                self.assertIn(
+                    finding,
+                    [item["name"] for item in packet["node_dependency_inventory"]["npm_audit"]["tracked_moderate_findings"]],
+                )
+
+        for gap in [
+            "pip-audit and Python SBOM tools are not installed",
+            "raw audit and SBOM reports are not retained under .docs-tools/reports",
+            "moderate npm findings remain unresolved",
+        ]:
+            with self.subTest(gap=gap):
+                self.assertIn(gap, [item["gap"] for item in packet["accepted_gaps"]])
+
+        for claim in [
+            "Python vulnerability audit is clean",
+            "complete repository SBOM exists",
+            "dependency remediation was performed",
+            "release readiness",
+            "root site freshness",
+            "browser/runtime behavior",
+        ]:
+            with self.subTest(unsupported_claim=claim):
+                self.assertIn(claim, packet["unsupported_claims"])
+
+        for action, value in packet["no_unapproved_actions"].items():
+            with self.subTest(action=action):
+                self.assertFalse(value)
+
+        for path in [
+            "tools/docs_dependency_audit.ps1",
+            "docs/superpowers/specs/documentation-refresh-g1-1-doc-m40-dependency-audit-summary.json",
+            ".docs-tools/node/package.json",
+            ".docs-tools/node/package-lock.json",
+            ".docs-tools/bin/vale.sha256",
+            ".docs-tools/bin/lychee.sha256",
+            ".docs-tools/bin/gitleaks.sha256",
+            "docs/assets/javascripts/vendor/mermaid-10.9.6.min.js.sha256",
+        ]:
+            with self.subTest(path=path):
+                self.assertTrue((ROOT / path).exists(), path)
+
+        self.assertIn("DOC_M40_AUDIT_EVIDENCE", documents["check_docs"])
+        self.assertIn("DOC-M40 dependency audit helper is missing", documents["check_docs"])
+        self.assertNotIn("npm.cmd --prefix .docs-tools\\node audit --json", documents["check_docs"])
+
+        document_terms = {
+            "requirements": [
+                "documentation-refresh-g1-1-doc-m40-dependency-audit-summary.json",
+                "Python vulnerability audit",
+            ],
+            "plan": [
+                "documentation_refresh_G1_1-DOC-M40-AUDIT-SBOM-A01",
+                "implemented_audit_sbom_governance_current_findings_recorded",
+            ],
+            "test": [
+                "tools\\docs_dependency_audit.ps1",
+                "npm.cmd --prefix .docs-tools\\node audit --audit-level=high",
+            ],
+            "evals": [
+                "documentation_refresh_G1_1-DOC-M40-AUDIT-SBOM-A01",
+                "3 moderate Node findings",
+            ],
+            "runlog": [
+                "documentation_refresh_G1_1-DOC-M40-AUDIT-SBOM-A01",
+                "3 moderate / 0 high / 0 critical findings",
+            ],
+            "registry": [
+                "documentation_refresh_G1_1-DOC-M40-AUDIT-SBOM-A01",
+                "DOC-M40 implemented_audit_sbom_governance_current_findings_recorded",
+            ],
+            "registry_en": [
+                "documentation_refresh_G1_1-DOC-M40-AUDIT-SBOM-A01",
+                "DOC-M40 implemented_audit_sbom_governance_current_findings_recorded",
+            ],
+            "track11_plan": [
+                "documentation_refresh_G1_1-DOC-M40-AUDIT-SBOM-A01",
+                "`implemented_audit_sbom_governance_current_findings_recorded`",
+            ],
+            "docs_tools_readme": [
+                "DOC-M40",
+                "Raw report retention",
             ],
         }
         for document, terms in document_terms.items():

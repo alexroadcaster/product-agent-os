@@ -65,3 +65,9 @@ boundaries.
 `DOC-M39` approved only pinned Mermaid `10.9.6` vendoring for MkDocs diagram
 runtime replacement, with source, license, package metadata and checksum
 records under `docs/assets/javascripts/vendor/`. Strict MkDocs and static external-runtime audits are not browser proof.
+
+`DOC-M40` approved local dependency inventory, Node CycloneDX SBOM generation
+and a bounded `npm audit --audit-level=high` advisory check for docs tooling.
+Use `tools/docs_dependency_audit.ps1` for local inventory/SBOM/hash consistency.
+Raw report retention, Python vulnerability audit tooling, dependency upgrades,
+`npm audit fix` and remediation remain separate approval boundaries.

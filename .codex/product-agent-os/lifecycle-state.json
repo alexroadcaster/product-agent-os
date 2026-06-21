@@ -1,7 +1,7 @@
 ﻿{
   "task_start_brief_shown": true,
-  "task_id": "DOC-M39",
-  "scope": "Track 11 G1.1 DOC-M39 offline Mermaid/runtime vendoring and diagram render checks with Product-Agent OS skills and bounded read-only agent handoffs",
-  "updated_at": "2026-06-21T11:18:00+03:00",
-  "approval_boundary": "Project-local codex_docs work only; Mermaid asset download or vendored minified asset write requires explicit approval; no global config, root site freshness claim, broad browser/runtime proof, provider/API, deploy/publish, external writes, active automation, git, or unapproved network/install expansion"
+  "task_id": "DOC-M40",
+  "scope": "Track 11 G1.1 DOC-M40 dependency audit and SBOM governance for project-local documentation tooling with Product-Agent OS skills and bounded read-only agent handoffs",
+  "updated_at": "2026-06-21T12:04:00+03:00",
+  "approval_boundary": "Project-local codex_docs work only; local read-only dependency inventory and workspace evidence/docs updates allowed; network install/download, external advisory refresh, new audit tool install, root site freshness claim, browser/runtime proof, provider/API, deploy/publish, external writes, active automation, git, or dependency remediation require separate explicit approval"
 }

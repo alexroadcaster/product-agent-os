@@ -138,6 +138,11 @@ REQUIRED_NAV_PATHS = [
 MERMAID_EXTERNAL_ASSET = "https://unpkg.com/mermaid@10/dist/mermaid.min.js"
 MERMAID_LOCAL_ASSET = "assets/javascripts/vendor/mermaid-10.9.6.min.js"
 MERMAID_VENDOR_EVIDENCE = "documentation_refresh_G1_1-DOC-M39-MERMAID-A01"
+DOC_M40_AUDIT_EVIDENCE = "documentation_refresh_G1_1-DOC-M40-AUDIT-SBOM-A01"
+DOC_M40_AUDIT_HELPER = ROOT / "tools" / "docs_dependency_audit.ps1"
+DOC_M40_AUDIT_PACKET = (
+    DOCS / "superpowers" / "specs" / "documentation-refresh-g1-1-doc-m40-dependency-audit-summary.json"
+)
 
 
 def fail(message: str) -> None:
@@ -188,6 +193,15 @@ def check_mkdocs_nav() -> None:
     registry = read(DOCS / "sources" / "registry.md")
     if MERMAID_VENDOR_EVIDENCE not in registry:
         fail("source registry missing DOC-M39 Mermaid vendor evidence")
+
+    if DOC_M40_AUDIT_EVIDENCE not in registry:
+        fail("source registry missing DOC-M40 dependency audit evidence")
+
+    if not DOC_M40_AUDIT_HELPER.exists():
+        fail("DOC-M40 dependency audit helper is missing")
+
+    if not DOC_M40_AUDIT_PACKET.exists():
+        fail("DOC-M40 dependency audit evidence packet is missing")
 
 
 def check_placeholders() -> None:
