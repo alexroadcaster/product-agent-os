@@ -6,7 +6,11 @@ This folder is reserved for project-local standalone documentation-check binarie
 ignored from git; `vale.sha256` records the local checksum for the installed
 `vale.exe`.
 
-Planned future tools include lychee and gitleaks. Binary files and archives are
-ignored by default. If a future slice needs a checked-in binary or vendored
-runtime, it must record source URL, license, checksum, owner approval, rollback
-and smoke evidence before the artifact is treated as usable.
+`DOC-M38` installed lychee `0.24.2` and gitleaks `8.30.0` locally from GitHub
+Releases. The binaries are ignored from git; `lychee.sha256` and
+`gitleaks.sha256` record the local checksums.
+
+Binary files and archives are ignored by default. If a future slice needs a
+checked-in binary or vendored runtime, it must record source URL, license,
+checksum, owner approval, rollback and smoke evidence before the artifact is
+treated as usable.

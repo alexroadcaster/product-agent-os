@@ -1,7 +1,7 @@
 ﻿{
   "task_start_brief_shown": true,
-  "task_id": "DOC-M37",
-  "scope": "Track 11 G1.1 DOC-M37 with Product-Agent OS skills and bounded agent handoffs",
-  "updated_at": "2026-06-21T00:00:00+03:00",
-  "approval_boundary": "Project-local codex_docs work only; no global config, git, browser, provider/API, deploy/publish, external writes, active automation, or unapproved network/install expansion"
+  "task_id": "DOC-M38",
+  "scope": "Track 11 G1.1 DOC-M38 local link and secret hygiene tools with Product-Agent OS skills and bounded read-only agent handoffs",
+  "updated_at": "2026-06-21T10:43:20+03:00",
+  "approval_boundary": "Project-local codex_docs work only; binary download/network install requires explicit approval; no global config, broad repository scan, external URL crawl, raw finding publication, git, browser, provider/API, deploy/publish, external writes, active automation, or unapproved network/install expansion"
 }

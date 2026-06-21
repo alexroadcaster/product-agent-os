@@ -1,0 +1,4 @@
+title = "codex_docs DOC-M38 scoped docs secret hygiene"
+
+[extend]
+useDefault = true

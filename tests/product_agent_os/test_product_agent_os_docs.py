@@ -57,6 +57,9 @@ DOCUMENTATION_REFRESH_G1_1_DOC_M36_NODE = (
 DOCUMENTATION_REFRESH_G1_1_DOC_M37_VALE = (
     DOCS / "superpowers" / "specs" / "documentation-refresh-g1-1-doc-m37-vale-language-summary.json"
 )
+DOCUMENTATION_REFRESH_G1_1_DOC_M38_LINK_SECRET = (
+    DOCS / "superpowers" / "specs" / "documentation-refresh-g1-1-doc-m38-link-secret-summary.json"
+)
 PRODUCT_AGENT_OS_LIFECYCLE_HOOKS_LOCAL_ACTIVATION = (
     DOCS / "superpowers" / "specs" / "product-agent-os-lifecycle-hooks-local-activation-summary.json"
 )
@@ -7224,10 +7227,11 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "`DOC-M34` | `G1.1`",
                 "`DOC-M41` | `G1.1`",
                 "`closed_no_new_public_page_required`",
-                "g1_1_doc_m34_contract_doc_m35_m36_m37_installed_smoke_passed",
+                "g1_1_doc_m34_contract_doc_m35_m36_m37_m38_installed_smoke_passed",
                 "runtime_available_site_rebuild_not_run",
                 "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
                 "documentation_refresh_G1_1-DOC-M36-NODE-A01",
+                "documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01",
                 ".venv-docs/",
                 ".docs-tools/node/",
                 "markdownlint-cli2",
@@ -7285,6 +7289,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "documentation_refresh_G1_1-DOC-M34-A01",
                 "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
                 "documentation_refresh_G1_1-DOC-M36-NODE-A01",
+                "documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01",
                 "planned_only_no_dependency_install_no_site_rebuild",
             ],
             "test": [
@@ -7292,6 +7297,8 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 ".docs-tools/node/",
                 "redocly:version",
                 "gitleaks.exe version",
+                ".docs-tools\\bin\\lychee.exe --offline --no-progress .docs-tools\\link-secret\\fixtures\\doc-m38-links.md",
+                ".docs-tools\\bin\\gitleaks.exe dir .docs-tools\\link-secret\\fixtures --config .gitleaks.toml --redact",
                 "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
                 "DOC-M36",
                 "`DOC-M34..DOC-M41`",
@@ -7303,6 +7310,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "documentation_refresh_G1_1-DOC-M34-A01",
                 "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
                 "documentation_refresh_G1_1-DOC-M36-NODE-A01",
+                "documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01",
                 "strict MkDocs smoke passed under `.docs-tools/reports/mkdocs-strict-smoke-2026-06-21`",
             ],
             "agents": [
@@ -7316,6 +7324,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "documentation_refresh_G1_1-DOC-M34-A01",
                 "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
                 "documentation_refresh_G1_1-DOC-M36-NODE-A01",
+                "documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01",
                 "root system files for G1.1 implementation",
                 "successful project-local MkDocs runtime retry",
             ],
@@ -7324,6 +7333,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "documentation_refresh_G1_1-DOC-M34-A01",
                 "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
                 "documentation_refresh_G1_1-DOC-M36-NODE-A01",
+                "documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01",
                 "root control-plane system files synced for G1.1 implementation route",
             ],
             "registry_en": [
@@ -7331,6 +7341,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "documentation_refresh_G1_1-DOC-M34-A01",
                 "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
                 "documentation_refresh_G1_1-DOC-M36-NODE-A01",
+                "documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01",
                 "root control-plane system files synced for G1.1 implementation route",
             ],
         }
@@ -7553,7 +7564,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             ],
             "plan": [
                 "documentation_refresh_G1_1-DOC-M36-NODE-A01",
-                "DOC-M38..DOC-M41",
+                "DOC-M39..DOC-M41",
             ],
             "test": [
                 "documentation-refresh-g1-1-doc-m36-node-tooling-summary.json",
@@ -7691,6 +7702,135 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             "bin_readme": [
                 "Vale `3.15.1`",
                 "vale.sha256",
+            ],
+        }
+        for document, terms in document_terms.items():
+            for term in terms:
+                with self.subTest(document=document, term=term):
+                    self.assertIn(term, documents[document])
+
+    def test_documentation_refresh_g1_1_doc_m38_link_secret_hygiene_is_recorded(self):
+        packet = json.loads(DOCUMENTATION_REFRESH_G1_1_DOC_M38_LINK_SECRET.read_text(encoding="utf-8"))
+        documents = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
+            "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
+            "track11_plan": (
+                DOCS / "superpowers" / "plans" / "2026-06-20-track-11-documentation-architecture-refresh.md"
+            ).read_text(encoding="utf-8"),
+            "docs_tools_readme": (ROOT / ".docs-tools" / "README.md").read_text(encoding="utf-8"),
+            "bin_readme": (ROOT / ".docs-tools" / "bin" / "README.md").read_text(encoding="utf-8"),
+            "link_secret_readme": (ROOT / ".docs-tools" / "link-secret" / "README.md").read_text(
+                encoding="utf-8"
+            ),
+            "gitleaks_toml": (ROOT / ".gitleaks.toml").read_text(encoding="utf-8"),
+        }
+
+        self.assertEqual(
+            "documentation_refresh_g1_1_doc_m38_link_secret_v1",
+            packet["schema_version"],
+        )
+        self.assertEqual("documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01", packet["evidence_id"])
+        self.assertEqual("installed_scoped_smoke_passed", packet["status"])
+        self.assertEqual("DOC-M38", packet["work_item"])
+        self.assertEqual("0.24.2", packet["installed_runtime"]["lychee"]["version"])
+        self.assertEqual("8.30.0", packet["installed_runtime"]["gitleaks"]["version"])
+        self.assertEqual(
+            "2d15a3f78ac680103720b0c59667dc6f1da7de35f7e9c95171bdf4b76fb6829b",
+            packet["installed_runtime"]["lychee"]["sha256"],
+        )
+        self.assertEqual(
+            "9d08e3f5cfb35a98f230b97bcda24f8d3fc66363c91868ffc98dac0afebdcb72",
+            packet["installed_runtime"]["gitleaks"]["sha256"],
+        )
+        self.assertEqual("offline_local_fixture_only", packet["scope_boundary"]["lychee_scope"])
+        self.assertEqual(
+            "synthetic_fixture_only_redacted_stdout_no_report_file",
+            packet["scope_boundary"]["gitleaks_scope"],
+        )
+        self.assertEqual("not_enabled", packet["scope_boundary"]["external_url_crawl_status"])
+        self.assertEqual("not_claimed", packet["scope_boundary"]["broad_docs_link_scan_status"])
+        self.assertEqual("not_claimed", packet["scope_boundary"]["broad_repository_secret_scan_status"])
+        self.assertEqual("not_enabled", packet["scope_boundary"]["report_retention_status"])
+
+        for path in [
+            ".gitleaks.toml",
+            ".docs-tools/bin/lychee.sha256",
+            ".docs-tools/bin/gitleaks.sha256",
+            ".docs-tools/link-secret/README.md",
+            ".docs-tools/link-secret/fixtures/doc-m38-links.md",
+            ".docs-tools/link-secret/fixtures/doc-m38-clean-secret-smoke.md",
+            ".docs-tools/link-secret/fixtures/target.md",
+            "tools/docs_link_secret_install.ps1",
+        ]:
+            with self.subTest(path=path):
+                self.assertTrue((ROOT / path).exists(), path)
+
+        self.assertIn("[extend]", documents["gitleaks_toml"])
+        self.assertIn("useDefault = true", documents["gitleaks_toml"])
+
+        for claim in [
+            "external links are healthy",
+            "broad docs link scan passed",
+            "broad repository secret scan passed",
+            "docs are secret-free",
+            "report retention is approved",
+        ]:
+            with self.subTest(unsupported_claim=claim):
+                self.assertIn(claim, packet["unsupported_claims"])
+
+        for action, value in packet["no_unapproved_actions"].items():
+            with self.subTest(action=action):
+                self.assertFalse(value)
+
+        document_terms = {
+            "requirements": [
+                "documentation-refresh-g1-1-doc-m38-link-secret-summary.json",
+                "broad link/secret scans",
+            ],
+            "plan": [
+                "documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01",
+                "installed_scoped_smoke_passed",
+            ],
+            "test": [
+                ".docs-tools\\bin\\lychee.exe --offline --no-progress .docs-tools\\link-secret\\fixtures\\doc-m38-links.md",
+                ".docs-tools\\bin\\gitleaks.exe dir .docs-tools\\link-secret\\fixtures --config .gitleaks.toml --redact",
+            ],
+            "evals": [
+                "documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01",
+                "external URL crawling",
+            ],
+            "runlog": [
+                "documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01",
+                "redacted clean secret fixture",
+            ],
+            "registry": [
+                "documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01",
+                "DOC-M38 installed_scoped_smoke_passed",
+            ],
+            "registry_en": [
+                "documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01",
+                "DOC-M38 installed_scoped_smoke_passed",
+            ],
+            "track11_plan": [
+                "documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01",
+                "`installed_scoped_smoke_passed`",
+            ],
+            "docs_tools_readme": [
+                "DOC-M38",
+                "External URL crawling",
+            ],
+            "bin_readme": [
+                "lychee `0.24.2`",
+                "gitleaks `8.30.0`",
+            ],
+            "link_secret_readme": [
+                "DOC-M38",
+                "`--redact`",
             ],
         }
         for document, terms in document_terms.items():
