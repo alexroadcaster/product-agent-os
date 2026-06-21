@@ -1,0 +1,9 @@
+extends: existence
+message: "Avoid implying approval for '%s'; name the explicit approval boundary."
+level: warning
+ignorecase: true
+tokens:
+  - '\bapproval (is )?(implicit|assumed|not required)\b'
+  - '\bapproved by default\b'
+  - '\bauto[- ]?promoted\b'
+  - '\bactive automation enabled by default\b'

@@ -1,7 +1,7 @@
-{
+﻿{
   "task_start_brief_shown": true,
-  "task_id": "LIFECYCLE-HOOKS-A01",
-  "scope": "Project-local Product-Agent OS Task Brief and Completion Brief lifecycle hooks",
-  "updated_at": "2026-06-21T09:31:47.7285923+03:00",
-  "approval_boundary": "Owner-approved project-local hooks only; no global config, automation, git, provider, browser, deployment, or external writes"
+  "task_id": "DOC-M37",
+  "scope": "Track 11 G1.1 DOC-M37 with Product-Agent OS skills and bounded agent handoffs",
+  "updated_at": "2026-06-21T00:00:00+03:00",
+  "approval_boundary": "Project-local codex_docs work only; no global config, git, browser, provider/API, deploy/publish, external writes, active automation, or unapproved network/install expansion"
 }

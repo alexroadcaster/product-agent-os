@@ -54,6 +54,9 @@ DOCUMENTATION_REFRESH_G1_1_DOC_M35_INSTALL = (
 DOCUMENTATION_REFRESH_G1_1_DOC_M36_NODE = (
     DOCS / "superpowers" / "specs" / "documentation-refresh-g1-1-doc-m36-node-tooling-summary.json"
 )
+DOCUMENTATION_REFRESH_G1_1_DOC_M37_VALE = (
+    DOCS / "superpowers" / "specs" / "documentation-refresh-g1-1-doc-m37-vale-language-summary.json"
+)
 PRODUCT_AGENT_OS_LIFECYCLE_HOOKS_LOCAL_ACTIVATION = (
     DOCS / "superpowers" / "specs" / "product-agent-os-lifecycle-hooks-local-activation-summary.json"
 )
@@ -7221,7 +7224,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "`DOC-M34` | `G1.1`",
                 "`DOC-M41` | `G1.1`",
                 "`closed_no_new_public_page_required`",
-                "g1_1_doc_m34_contract_doc_m35_m36_installed_smoke_passed",
+                "g1_1_doc_m34_contract_doc_m35_m36_m37_installed_smoke_passed",
                 "runtime_available_site_rebuild_not_run",
                 "documentation_refresh_G1_1-DOC-M35-INSTALL-A01",
                 "documentation_refresh_G1_1-DOC-M36-NODE-A01",
@@ -7550,7 +7553,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             ],
             "plan": [
                 "documentation_refresh_G1_1-DOC-M36-NODE-A01",
-                "DOC-M37..DOC-M41",
+                "DOC-M38..DOC-M41",
             ],
             "test": [
                 "documentation-refresh-g1-1-doc-m36-node-tooling-summary.json",
@@ -7578,6 +7581,118 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             ],
         }
 
+        for document, terms in document_terms.items():
+            for term in terms:
+                with self.subTest(document=document, term=term):
+                    self.assertIn(term, documents[document])
+
+    def test_documentation_refresh_g1_1_doc_m37_vale_language_guard_is_recorded(self):
+        packet = json.loads(DOCUMENTATION_REFRESH_G1_1_DOC_M37_VALE.read_text(encoding="utf-8"))
+        documents = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
+            "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
+            "track11_plan": (
+                DOCS / "superpowers" / "plans" / "2026-06-20-track-11-documentation-architecture-refresh.md"
+            ).read_text(encoding="utf-8"),
+            "docs_tools_readme": (ROOT / ".docs-tools" / "README.md").read_text(encoding="utf-8"),
+            "bin_readme": (ROOT / ".docs-tools" / "bin" / "README.md").read_text(encoding="utf-8"),
+        }
+
+        self.assertEqual(
+            "documentation_refresh_g1_1_doc_m37_vale_language_v1",
+            packet["schema_version"],
+        )
+        self.assertEqual("documentation_refresh_G1_1-DOC-M37-VALE-A01", packet["evidence_id"])
+        self.assertEqual("installed_advisory_smoke_passed", packet["status"])
+        self.assertEqual("DOC-M37", packet["work_item"])
+        self.assertEqual("3.15.1", packet["installed_runtime"]["vale"])
+        self.assertEqual(
+            "103e18687f59f860c6fdbf9ef7edfaa116092542db968039bab6105fb8906aae",
+            packet["installed_runtime"]["sha256"],
+        )
+        self.assertEqual("advisory_only", packet["advisory_boundary"]["enforcement_status"])
+        self.assertEqual("not_claimed", packet["advisory_boundary"]["broad_docs_scan_status"])
+
+        for path in [
+            ".vale.ini",
+            ".docs-tools/bin/vale.sha256",
+            ".docs-tools/vale/README.md",
+            ".docs-tools/vale/ProductAgentOS/ApprovalBoundary.yml",
+            ".docs-tools/vale/ProductAgentOS/CanonicalTerms.yml",
+            ".docs-tools/vale/ProductAgentOS/GeneratedViewClaims.yml",
+            ".docs-tools/vale/ProductAgentOS/ReadinessClaims.yml",
+            ".docs-tools/vale/ProductAgentOS/SourceStatusLabel.yml",
+            ".docs-tools/vale/config/vocabularies/ProductAgentOS/accept.txt",
+            ".docs-tools/vale/fixtures/doc-m37-smoke.md",
+            "tools/docs_vale_install.ps1",
+        ]:
+            with self.subTest(path=path):
+                self.assertTrue((ROOT / path).exists(), path)
+
+        vale_ini = (ROOT / ".vale.ini").read_text(encoding="utf-8")
+        self.assertIn("StylesPath = .docs-tools/vale", vale_ini)
+        self.assertIn("BasedOnStyles = ProductAgentOS", vale_ini)
+
+        for claim in [
+            "Vale proves source correctness",
+            "Vale proves legal or compliance review",
+            "broad docs language scan passed",
+            "Vale warnings are enforced in CI or hooks",
+        ]:
+            with self.subTest(unsupported_claim=claim):
+                self.assertIn(claim, packet["unsupported_claims"])
+
+        for action, value in packet["no_unapproved_actions"].items():
+            with self.subTest(action=action):
+                self.assertFalse(value)
+
+        document_terms = {
+            "requirements": [
+                "documentation-refresh-g1-1-doc-m37-vale-language-summary.json",
+                "broad Vale enforcement",
+            ],
+            "plan": [
+                "documentation_refresh_G1_1-DOC-M37-VALE-A01",
+                "installed_advisory_smoke_passed",
+            ],
+            "test": [
+                ".docs-tools\\bin\\vale.exe --config=.vale.ini .docs-tools\\vale\\fixtures\\doc-m37-smoke.md",
+                "DOC-M37",
+            ],
+            "evals": [
+                "documentation_refresh_G1_1-DOC-M37-VALE-A01",
+                "broad Vale enforcement",
+            ],
+            "runlog": [
+                "documentation_refresh_G1_1-DOC-M37-VALE-A01",
+                "negative readiness-wording smoke",
+            ],
+            "registry": [
+                "documentation_refresh_G1_1-DOC-M37-VALE-A01",
+                "DOC-M37 installed_advisory_smoke_passed",
+            ],
+            "registry_en": [
+                "documentation_refresh_G1_1-DOC-M37-VALE-A01",
+                "DOC-M37 installed_advisory_smoke_passed",
+            ],
+            "track11_plan": [
+                "documentation_refresh_G1_1-DOC-M37-VALE-A01",
+                "`installed_advisory_smoke_passed`",
+            ],
+            "docs_tools_readme": [
+                "DOC-M37",
+                "Vale warnings are not enforcement",
+            ],
+            "bin_readme": [
+                "Vale `3.15.1`",
+                "vale.sha256",
+            ],
+        }
         for document, terms in document_terms.items():
             for term in terms:
                 with self.subTest(document=document, term=term):

@@ -1,0 +1,7 @@
+extends: substitution
+message: "Use canonical label '%s' instead of '%s'."
+level: suggestion
+ignorecase: false
+swap:
+  "source status:": "Source status:"
+  "Source Status:": "Source status:"

@@ -1,0 +1,116 @@
+{
+  "schema_version": "documentation_refresh_g1_1_doc_m37_vale_language_v1",
+  "evidence_id": "documentation_refresh_G1_1-DOC-M37-VALE-A01",
+  "status": "installed_advisory_smoke_passed",
+  "work_item": "DOC-M37",
+  "group": "G1.1",
+  "install_date": "2026-06-21",
+  "target_binary": ".docs-tools/bin/vale.exe",
+  "binary_checksum_file": ".docs-tools/bin/vale.sha256",
+  "install_helper": "tools/docs_vale_install.ps1",
+  "config": ".vale.ini",
+  "styles_path": ".docs-tools/vale/",
+  "official_vale_docs": {
+    "install": "https://vale.sh/docs/install",
+    "config": "https://vale.sh/docs/vale-ini",
+    "release": "https://github.com/vale-cli/vale/releases/tag/v3.15.1"
+  },
+  "installed_runtime": {
+    "vale": "3.15.1",
+    "version_output": "vale version 3.15.1",
+    "source_asset": "vale_3.15.1_Windows_64-bit.zip",
+    "source_url": "https://github.com/vale-cli/vale/releases/download/v3.15.1/vale_3.15.1_Windows_64-bit.zip",
+    "sha256": "103e18687f59f860c6fdbf9ef7edfaa116092542db968039bab6105fb8906aae"
+  },
+  "local_rules": [
+    ".docs-tools/vale/ProductAgentOS/ApprovalBoundary.yml",
+    ".docs-tools/vale/ProductAgentOS/CanonicalTerms.yml",
+    ".docs-tools/vale/ProductAgentOS/GeneratedViewClaims.yml",
+    ".docs-tools/vale/ProductAgentOS/ReadinessClaims.yml",
+    ".docs-tools/vale/ProductAgentOS/SourceStatusLabel.yml"
+  ],
+  "local_vocabulary": ".docs-tools/vale/config/vocabularies/ProductAgentOS/accept.txt",
+  "smoke_fixture": ".docs-tools/vale/fixtures/doc-m37-smoke.md",
+  "approved_actions_performed": {
+    "vale_binary_download": true,
+    "network_download_from_github_releases": true,
+    "project_local_binary_install": true,
+    "project_local_vale_smoke": true,
+    "advisory_rule_smoke": true
+  },
+  "verification": [
+    {
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File tools\\docs_vale_install.ps1",
+      "result": "passed_plan_only_no_install"
+    },
+    {
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File tools\\docs_vale_install.ps1 -Install -AllowNetwork",
+      "result": "passed_installed_vale_3_15_1_and_recorded_sha256"
+    },
+    {
+      "command": ".docs-tools\\bin\\vale.exe --version",
+      "result": "passed_vale_version_3_15_1"
+    },
+    {
+      "command": ".docs-tools\\bin\\vale.exe --config=.vale.ini .docs-tools\\vale\\fixtures\\doc-m37-smoke.md",
+      "result": "passed_0_errors_0_warnings_0_suggestions"
+    },
+    {
+      "command": "temporary negative fixture with production-ready and safe to publish",
+      "result": "passed_detected_2_readiness_warnings"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+      "result": "passed_88_tests_ok"
+    },
+    {
+      "command": "python tools\\check_docs.py",
+      "result": "passed_documentation_structure_checks"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed_no_whitespace_errors_with_crlf_normalization_warnings"
+    }
+  ],
+  "advisory_boundary": {
+    "enforcement_status": "advisory_only",
+    "broad_docs_scan_status": "not_claimed",
+    "report_retention_status": "not_enabled",
+    "failure_policy_status": "not_enabled_until_approved"
+  },
+  "unsupported_claims": [
+    "Vale proves source correctness",
+    "Vale proves legal or compliance review",
+    "Vale proves publication readiness",
+    "broad docs language scan passed",
+    "Vale warnings are enforced in CI or hooks",
+    "dependency safety reviewed",
+    "SBOM generated",
+    "root site freshness verified",
+    "browser/runtime visual proof"
+  ],
+  "no_unapproved_actions": {
+    "global_vale_install": false,
+    "checked_in_binary_vendoring": false,
+    "broad_docs_scan": false,
+    "report_retention": false,
+    "ci_or_hook_enforcement": false,
+    "root_site_rebuild": false,
+    "browser_automation": false,
+    "provider_api_call": false,
+    "target_workspace_mutation": false,
+    "git_action": false,
+    "publication": false,
+    "automation_activation": false
+  },
+  "subagents": [
+    {
+      "role": "explorer",
+      "result": "read_only_doc_m37_contract_packet"
+    },
+    {
+      "role": "tester",
+      "result": "read_only_tooling_and_verification_packet"
+    }
+  ]
+}

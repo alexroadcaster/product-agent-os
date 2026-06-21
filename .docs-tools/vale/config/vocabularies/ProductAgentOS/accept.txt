@@ -1,0 +1,21 @@
+AGENTS.md
+Agents SDK
+approval_required
+approvals
+Codex App
+generated-view-only
+gitleaks
+IDE extension
+lychee
+manual_only
+MCP
+Mermaid
+MkDocs
+not source of truth
+not_promoted
+Product-Agent OS
+Redocly
+sandbox
+Source status
+subagents
+Vale

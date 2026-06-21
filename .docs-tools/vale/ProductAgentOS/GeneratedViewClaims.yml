@@ -1,0 +1,9 @@
+extends: existence
+message: "Generated views are orientation evidence only; avoid unqualified claim '%s'."
+level: warning
+ignorecase: true
+tokens:
+  - '\bgenerated (dashboard|site|report|graph|html|view)s? (is|are) (proof|source of truth|current)\b'
+  - '\bsite/ freshness verified\b'
+  - '\broot site freshness verified\b'
+  - '\bsearch or sitemap freshness verified\b'

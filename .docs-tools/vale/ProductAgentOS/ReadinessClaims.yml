@@ -1,0 +1,13 @@
+extends: existence
+message: "Avoid readiness claim '%s' unless current evidence and accepted gaps are named."
+level: warning
+ignorecase: true
+tokens:
+  - '\bproduction[- ]ready\b'
+  - '\brelease[- ]ready\b'
+  - '\bpublication ready\b'
+  - '\bsafe to publish\b'
+  - '\bfully verified\b'
+  - '\bdependency safety reviewed\b'
+  - '\bnpm audit clean\b'
+  - '\bbrowser/runtime visual proof\b'

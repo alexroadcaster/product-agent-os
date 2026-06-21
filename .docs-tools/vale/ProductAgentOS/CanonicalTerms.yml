@@ -1,0 +1,10 @@
+extends: substitution
+message: "Use '%s' instead of '%s'."
+level: suggestion
+ignorecase: false
+swap:
+  "Product Agent OS": "Product-Agent OS"
+  "Codex app": "Codex App"
+  "AGENTS file": "AGENTS.md"
+  "agents sdk": "Agents SDK"
+  "model context protocol": "MCP"
