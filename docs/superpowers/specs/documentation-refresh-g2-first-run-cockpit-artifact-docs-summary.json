@@ -1,0 +1,206 @@
+{
+  "schema_version": "documentation_refresh_g2_first_run_cockpit_artifact_docs_v1",
+  "evidence_id": "documentation_refresh_G2-A01",
+  "status": "implemented_source_docs_no_site_rebuild",
+  "checked_at": "2026-06-21",
+  "group": "G2",
+  "scope": "Reader-facing first-run Architecture Intelligence Cockpit, artifact contracts/gallery atlas, graph/CLI/technical cockpit documentation, RU/EN parity, source navigation and test-contract routing.",
+  "work_item_status": {
+    "DOC-M04": {
+      "status": "implemented_source_docs_no_site_rebuild",
+      "owned_files": [
+        "docs/product-agent-os/first-run-architecture-cockpit.md",
+        "docs/product-agent-os/first-run-architecture-cockpit.en.md"
+      ],
+      "summary": "Added the reader-facing Architecture Intelligence Cockpit page with generated-view boundaries, local-JS boundaries, screenshot/browser proof boundary, safe first actions and final DOC-M25 route."
+    },
+    "DOC-M05": {
+      "status": "implemented_source_docs_no_site_rebuild",
+      "owned_files": [
+        "docs/product-agent-os/artifact-contracts.md",
+        "docs/product-agent-os/artifact-contracts.en.md"
+      ],
+      "summary": "Expanded first-run artifact contracts with cockpit, manifest, graph/code/schema/guided/evidence/redaction/cleanup/comparison/answer-ledger and scorecard surfaces."
+    },
+    "DOC-M06": {
+      "status": "implemented_source_docs_no_site_rebuild",
+      "owned_files": [
+        "docs/product-agent-os/project-code-graph.md",
+        "docs/product-agent-os/project-code-graph.en.md",
+        "docs/product-agent-os/cli-reference.md",
+        "docs/product-agent-os/cli-reference.en.md",
+        "docs/product-agent-os/technical.md",
+        "docs/product-agent-os/technical.en.md"
+      ],
+      "summary": "Updated code graph, CLI and technical docs for cockpit surfaces, guided read order, static fallback, Cosmos.gl/WebGL non-claim and DOC-M26 command-matrix boundary."
+    },
+    "DOC-M19": {
+      "status": "implemented_source_docs_no_site_rebuild",
+      "owned_files": [
+        "docs/product-agent-os/first-run-architecture-cockpit.md",
+        "docs/product-agent-os/first-run-architecture-cockpit.en.md"
+      ],
+      "summary": "Documented workspace detection, routing, generated pages, artifact relationships, safe first actions and failure modes."
+    },
+    "DOC-M20": {
+      "status": "implemented_source_docs_no_site_rebuild",
+      "owned_files": [
+        "docs/product-agent-os/artifact-contracts.md",
+        "docs/product-agent-os/artifact-contracts.en.md"
+      ],
+      "summary": "Added the First-Run Artifact Schema Atlas inside artifact contracts instead of a separate schema page."
+    },
+    "DOC-M33": {
+      "status": "implemented_source_docs_no_site_rebuild",
+      "owned_files": [
+        "docs/product-agent-os/artifact-gallery.md",
+        "docs/product-agent-os/artifact-gallery.en.md"
+      ],
+      "summary": "Updated the artifact gallery with first-run packet, render manifest, primary HTML cockpit, diagnostic pages, answer ledger, comparison packet, generated-view policy and cleanup guidance."
+    }
+  },
+  "agent_team": [
+    {
+      "agent_id": "019eeaf7-d772-7af1-9ce9-2eb0aed48ef6",
+      "nickname": "Scribe",
+      "role": "docs-maintainer",
+      "owned_items": [
+        "DOC-M04",
+        "DOC-M19"
+      ],
+      "changed_files": [
+        "docs/product-agent-os/first-run-architecture-cockpit.md"
+      ],
+      "handoff_status": "completed"
+    },
+    {
+      "agent_id": "019eeaf8-4058-7542-8a9a-a84ef4e7807e",
+      "nickname": "Ledger",
+      "role": "docs-maintainer",
+      "owned_items": [
+        "DOC-M05",
+        "DOC-M20",
+        "DOC-M33"
+      ],
+      "changed_files": [
+        "docs/product-agent-os/artifact-contracts.md",
+        "docs/product-agent-os/artifact-gallery.md"
+      ],
+      "handoff_status": "completed"
+    },
+    {
+      "agent_id": "019eeaf8-948c-7913-a7ee-6ef0a2014db3",
+      "nickname": "Index",
+      "role": "docs-maintainer",
+      "owned_items": [
+        "DOC-M06"
+      ],
+      "changed_files": [
+        "docs/product-agent-os/project-code-graph.md",
+        "docs/product-agent-os/cli-reference.md",
+        "docs/product-agent-os/technical.md"
+      ],
+      "handoff_status": "completed"
+    },
+    {
+      "agent_id": "main",
+      "nickname": "Codex",
+      "role": "integrator",
+      "owned_items": [
+        "G2 integration",
+        "RU/EN parity",
+        "nav/check_docs/test/control-plane/registry sync"
+      ],
+      "handoff_status": "current_run"
+    }
+  ],
+  "source_docs": [
+    "docs/product-agent-os/first-run-architecture-cockpit.md",
+    "docs/product-agent-os/first-run-architecture-cockpit.en.md",
+    "docs/product-agent-os/artifact-contracts.md",
+    "docs/product-agent-os/artifact-contracts.en.md",
+    "docs/product-agent-os/artifact-gallery.md",
+    "docs/product-agent-os/artifact-gallery.en.md",
+    "docs/product-agent-os/project-code-graph.md",
+    "docs/product-agent-os/project-code-graph.en.md",
+    "docs/product-agent-os/cli-reference.md",
+    "docs/product-agent-os/cli-reference.en.md",
+    "docs/product-agent-os/technical.md",
+    "docs/product-agent-os/technical.en.md"
+  ],
+  "sync_artifacts": [
+    "mkdocs.yml",
+    "tools/check_docs.py",
+    "tests/product_agent_os/test_product_agent_os_docs.py",
+    "docs/sources/registry.md",
+    "docs/sources/registry.en.md",
+    "REQUIREMENTS.md",
+    "PLAN.md",
+    "TEST.md",
+    "EVALS.md",
+    "RUNLOG.md",
+    "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md"
+  ],
+  "supported_claims": [
+    "G2 source Markdown and EN counterparts are present.",
+    "MkDocs navigation and tools/check_docs.py include the new first-run Architecture Cockpit page.",
+    "First-run cockpit, artifact contract, artifact gallery, graph, CLI and technical docs state generated-view and source-truth boundaries.",
+    "DOC-M25 is the final root site freshness gate after G2-G5 source/nav changes.",
+    "DOC-M26 remains the owner for broad command-policy and docs-tooling command matrix coverage."
+  ],
+  "unsupported_claims": [
+    "Root site freshness is current.",
+    "Search index or sitemap includes the new G2 page in root site output.",
+    "Browser screenshot proof or runtime interaction proof was produced in this G2 slice.",
+    "Cosmos.gl/WebGL runtime execution is supported.",
+    "Full WCAG certification is complete.",
+    "Live server, provider/API, target mutation, installed cache refresh, git action, release, deploy, publish or automation occurred."
+  ],
+  "test_contract": {
+    "source_markdown_page_count": 134,
+    "localized_markdown_page_count": 126,
+    "site_promoted_localized_markdown_page_count": 125,
+    "pending_site_pages_until_doc_m25": [
+      "docs/product-agent-os/first-run-architecture-cockpit.md"
+    ],
+    "reason": "The new G2 source page is included in source/nav checks now, while root site/search/sitemap freshness remains deferred to final DOC-M25."
+  },
+  "no_unapproved_actions": {
+    "root_site_rebuild": false,
+    "browser_automation": false,
+    "live_runtime": false,
+    "provider_api_call": false,
+    "target_workspace_mutation": false,
+    "installed_plugin_cache_refresh": false,
+    "global_codex_config_write": false,
+    "git_stage_commit_push_pr": false,
+    "release_deploy_publish": false,
+    "automation_activation": false,
+    "dependency_install_or_remediation": false
+  },
+  "verification": [
+    {
+      "command": "python -m json.tool docs\\superpowers\\specs\\documentation-refresh-g2-first-run-cockpit-artifact-docs-summary.json",
+      "status": "passed_current_run"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+      "status": "passed_current_run",
+      "notes": "94 tests passed."
+    },
+    {
+      "command": "python tools\\check_docs.py",
+      "status": "passed_current_run"
+    },
+    {
+      "command": ".venv-docs\\Scripts\\python.exe -m mkdocs build --strict --site-dir .docs-tools\\reports\\mkdocs-strict-smoke-g2-2026-06-21",
+      "status": "passed_current_run",
+      "notes": "Source/nav smoke only; output written under .docs-tools/reports, not root site freshness."
+    },
+    {
+      "command": "git diff --check",
+      "status": "passed_current_run",
+      "notes": "Passed with CRLF normalization warnings only."
+    }
+  ]
+}

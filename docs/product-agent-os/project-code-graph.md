@@ -53,6 +53,33 @@ Extension artifacts:
 - `.codex/product-agent-os/project-code-graph-llm-proposals.json` - staged local deterministic semantic extraction proposals с provenance, uncertainty и unsupported-claim labels.
 - `.codex/product-agent-os/project-code-graph-extension-closure.json` - extension verification, rollback/data deletion proof и graph-only fallback report.
 
+## Поверхности cockpit
+
+Cockpit собирает graph, file и code orientation surfaces в один offline generated view. Он полезен для первого чтения проекта, но остается поверхностью review:
+
+- `Project Map` показывает graph projection, filters, selected-node evidence и fallback static table.
+- `Code Intelligence` показывает hotspots, `read_order`, trace/impact packets и `Code Flow`.
+- `Contracts` показывает API, schema, diagram и explicit contract overlays.
+- `Quality & Metrics` показывает tests, fixtures, affected-test packets и quality evidence pointers.
+- `Operations & Risk` показывает stale flags, ambiguous edges, scale budget и visual QA hints.
+- `Proposal Ledger` показывает proposal-only items, owner-review boundary и unsupported-claim labels.
+
+Практический порядок чтения:
+
+1. Начните с `Project Map`, чтобы найти крупные file/code кластеры и selected-node evidence.
+2. Перейдите в `Code Intelligence` и используйте `read_order` как подсказку, какие файлы читать первыми.
+3. Проверьте `Contracts`, если изменение касается API, schema, diagrams, OpenAPI/Swagger, AsyncAPI, DBML, SQL, JSON или YAML overlays.
+4. Сверьте `Quality & Metrics`, чтобы понять, какие tests или fixture references могут быть затронуты.
+5. Перед claim о behavior, readiness или fix откройте исходные файлы и запустите текущие verification gates; cockpit сам по себе этого не доказывает.
+
+Schema/contract surface указывает, где scanner нашел parseable contracts и schema-like inputs. Это не заменяет contract tests, owner-approved API changes, source registry updates или runtime evidence.
+
+## Граница static visual
+
+Текущий cockpit рендерит local-only static fallback: SVG/table projection, selected-node panel, filters и safe embedded JSON. `project_graph_visual_model.py` отмечает Graphology/Sigma как `not_bundled_static_fallback`; renderer не подтягивает external assets.
+
+Cosmos.gl/WebGL surface не является подтвержденной runtime/browser возможностью этого слоя. Пока нет отдельного approved browser/runtime proof, docs не должны утверждать interactive WebGL rendering, canvas performance, browser screenshots, WCAG visual proof или generated `site/` freshness. Если будущий renderer добавит Cosmos.gl, Graphology, Sigma или другой browser layer, он должен сохранить static fallback, local/vendor boundary, source labels, visual QA evidence и отдельный approval gate.
+
 ## Operating Modes And Commands
 
 Базовый scanner и stage-only generation:

@@ -35,6 +35,16 @@ Generated outputs are not source of truth. Source of truth remains checked-in so
 
 Runtime runner optional inputs include `--approval-status`, `--intent-hint` and `--output`. They change the emitted route packet or save JSON; they do not bypass source policy, sandbox, approvals or external-action boundaries.
 
+Safe operator examples:
+
+```powershell
+python plugins\product-agent-os\scripts\run_first_project_analysis.py <workspace> --dry-run
+python plugins\product-agent-os\scripts\scan_project_code_graph.py <workspace> --dry-run
+python plugins\product-agent-os\scripts\scan_project_code_graph.py <workspace> --stage C:\tmp\product-agent-os-graph-stage
+```
+
+These examples are not the broad command matrix. The full command-policy matrix, docs-tooling smokes, install/runtime variants and approval-state coverage belong to later `DOC-M26`. Until then, CLI docs provide safe pointers only and do not expand permission for live servers, browser automation, provider/API calls, canonical mutation, git actions or root `site` rebuild.
+
 ## Project Graph CLI
 
 `scan_project_code_graph.py` has exactly-one-mode semantics. Choose one mode per invocation.
@@ -73,6 +83,25 @@ Graph query mode accepts:
 - `--max-results`, `--max-depth`, `--max-tokens`, `--hub-threshold`, `--node-type`, `--edge-type`, `--confidence` and `--path-prefix` for bounded output.
 
 Supported query kinds include `neighbors`, `path`, `trace`, `impact`, `affected_tests`, `changed_since`, `why_changed`, `read_order`, `hotspots`, `node`, `status` and `search`.
+
+## Cockpit Query Surface
+
+The project graph CLI feeds cockpit data, but it does not turn the cockpit into proof:
+
+- `--stage <stage-dir>` writes generated `project-code-graph.json`, `project-code-graph.jsonl`, `project-cockpit.html` and `project-cockpit.json` inside the stage root.
+- `--query read_order --graph <project-code-graph.json>` returns bounded guided read order; use it as a reading hint, then inspect source files before edits or impact claims.
+- `--query trace`, `--query impact` and `--query affected_tests` create static query packets; they do not prove runtime routes, dynamic dispatch or test results.
+- `--query search` may use graph-only search, static index, semantic index or hybrid inputs when provided; returned hits remain orientation evidence.
+
+Examples:
+
+```powershell
+python plugins\product-agent-os\scripts\scan_project_code_graph.py <workspace> --query read_order --graph C:\tmp\product-agent-os-graph-stage\.codex\product-agent-os\project-code-graph.json --max-results 12
+python plugins\product-agent-os\scripts\scan_project_code_graph.py <workspace> --query trace --graph C:\tmp\product-agent-os-graph-stage\.codex\product-agent-os\project-code-graph.json --node-id function:app.main.main --max-depth 3
+python plugins\product-agent-os\scripts\scan_project_code_graph.py <workspace> --query status --graph C:\tmp\product-agent-os-graph-stage\.codex\product-agent-os\project-code-graph.json
+```
+
+Static fallback is the supported visual boundary in this docs slice. Cosmos.gl/WebGL, browser screenshots, interactive canvas behavior, performance proof and accessibility visual proof remain unsupported until a separate approved runtime/browser evidence packet exists.
 
 ## Outputs
 

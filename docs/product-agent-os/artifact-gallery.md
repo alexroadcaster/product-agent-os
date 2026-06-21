@@ -17,6 +17,55 @@ Source status: `official + experiment`
 | Scorecards | metrics report, scorecard ledger, modernization candidate | Agents и skills можно улучшать по фактам, а не по впечатлению. | Candidate-only: предложения не применяются сами. |
 | Release и closure | readiness packet, artifact manifest, rollback, handoff | Решение о PR, package или release имеет scope, проверки и остаточные риски. | Нет publish, git stage, commit, push или PR без отдельного explicit approval. |
 
+## First-run Packet And Cockpit
+
+First-run outputs помогают понять проект до изменения файлов. Они не являются source truth и не подтверждают готовность сами по себе.
+
+| Артефакт | Где искать | Что показывает | Producer / consumer | Что доказывает | Что не доказывает |
+| --- | --- | --- | --- | --- | --- |
+| First-run packet | `.codex/product-agent-os/analysis/first-run-analysis-packet.json` | Inventory, route, source-policy state, gaps, safe next action и unsupported claims. | `run_first_project_analysis.py --write`, `first_run_analysis.py` -> `analysis_artifact_renderer.py`. | Что локальный diagnostic packet был собран для чтения оператором. | Не доказывает source truth, readiness, completion, release, runtime/browser/provider proof или target mutation safety. |
+| Render manifest | `.codex/product-agent-os/analysis/analysis-manifest.json` | Список страниц, page/source digests, `manifest_digest`, `redaction_report`, `source_policy_gate`, baseline comparison и cleanup guidance. | `analysis_artifact_renderer.py` -> docs maintainer, reviewer, cleanup handoff. | Что renderer зафиксировал generated files и свои guardrails. | Не доказывает generated-site freshness, semantic review источников или public readiness. |
+| Primary HTML cockpit | `.codex/product-agent-os/analysis/index.html` | Self-contained architecture cockpit: overview, project map, code intelligence, contracts, methodology, quality, risk и recommendations. | `analysis_artifact_renderer.py` -> human reader. | Что generated view доступен как orientation surface. | Не доказывает WebGL/Cosmos.gl runtime execution, browser screenshots, WCAG certification или release readiness. |
+| Diagnostic HTML pages | `.codex/product-agent-os/analysis/*.html` | Legacy/detail pages: inventory, architecture, methodology, runtime route, control plane, graph, code flow, quality/evals, risks и recommendations. | `analysis_artifact_renderer.py` -> maintainer diagnostics. | Что разделы можно читать отдельно при разборе. | Не заменяет primary cockpit и не является evidence сильнее source files. |
+| Answer ledger | `answer-ledger-template.json` рядом со staged first-run outputs | Вопросы владельцу, статус ответа, `target_artifact`, redaction metadata и validation errors. | Guided question protocol -> owner handoff. | Что вопросы подготовлены и private-data boundary размечен. | Не является owner decision, accepted gap или artifact update до фактического ответа и review. |
+| Comparison packet | `batch41-s9-m57-neural-flow-comparison.json` или аналогичный target comparison | Digest/key/HTML marker deltas между staged runs, unsupported claims preserved и no-unapproved-actions surface. | Maintainer comparison script/result -> reviewer. | Что конкретный read-only rerun сравнил staged outputs и зафиксировал mutation/runtime/browser/provider/git boundaries. | Не переносится автоматически на другой target и не доказывает freshness после нового rerun. |
+
+## Manifest Fields To Check
+
+При чтении manifest сначала проверьте эти поля:
+
+- `schema_version`: версия generated manifest, а не обещание полной JSON Schema.
+- `pages` и `page_digests`: какие HTML outputs были записаны и как они связаны с digest evidence.
+- `source_digests`: какие source artifacts попали в digest boundary; это не равно semantic source review.
+- `primary_cockpit` и `cockpit_contract`: primary view model и contract map для `index.html`.
+- `redaction_report`: `passed_redacted` должен быть текущим для generated payload; это не DLP или security certification.
+- `source_policy_gate`: `diagnostic_artifact_allowed` может быть true, пока `apply_allowed` и `promotion_allowed` остаются false.
+- `baseline_comparison`: показывает добавленные/измененные pages/sources при наличии baseline.
+- `cleanup_guidance`: preview-only список generated files; удаление требует explicit approval.
+
+## Generated-view Policy
+
+Generated dashboard, graph, cockpit, scorecard, report или comparison packet имеют статус orientation evidence. Они помогают выбрать следующий шаг, но не заменяют:
+
+- source files и checked-in contracts;
+- `AGENTS.md`, `REQUIREMENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md`, `RUNLOG.md`;
+- source registry entries с актуальным verification status;
+- current command/eval/runtime evidence;
+- owner decisions и accepted gaps с residual risk.
+
+Если first-run artifact выглядит убедительно, следующий шаг все равно должен быть source-backed: прочитать owning source, проверить текущую команду или записать явный accepted gap. Generated `site/` freshness остается финальным `DOC-M25` gate после G2-G5 и не следует из этой галереи.
+
+## Cleanup Guidance
+
+`first_run_artifact_cleanup_guidance_v1` в manifest является подсказкой, а не разрешением удалить файлы. Без отдельного approval запрещено:
+
+- удалять user-authored files, source docs, project config или `.git`;
+- чистить target workspace шире generated analysis directory;
+- считать cleanup выполненным, если `deletion_performed` остается `false`;
+- использовать cleanup как rollback proof для release, mutation или external-write действий.
+
+Безопасная трактовка: список `generated_files` помогает reviewer понять, что было создано renderer, а `rollback_policy` обычно означает повторный first-run analysis для восстановления generated orientation artifacts.
+
 ## Как читать результаты
 
 1. Сначала выберите группу результата и проверьте, какой пользовательский вопрос она закрывает.
@@ -30,10 +79,10 @@ Source status: `official + experiment`
 
 | Example id | Artifact type | Trigger | Packet excerpt | Verdict |
 | --- | --- | --- | --- | --- |
-| `docs_research_example` | Docs/research answer | "Check sources" | source registry evidence, community `intake_only`, `needs_fresh_check` for current facts | `revise` if unsupported claims are present |
-| `code_check_example` | Code/change claim | "Done?" | command evidence, missing lint/test checks, approval boundary | `blocked_by_approval` or `accepted_risk` when checks cannot run |
+| `docs_research_example` | Ответ docs/research | "Check sources" | evidence из source registry, community `intake_only`, `needs_fresh_check` для текущих фактов | `revise`, если есть unsupported claims |
+| `code_check_example` | Claim по code/change | "Done?" | command evidence, missing lint/test checks, approval boundary | `blocked_by_approval` или `accepted_risk`, если checks нельзя запустить |
 | `architecture_review_example` | Architecture/spec | "Did we miss anything?" | requirement ledger, non-goals, dependencies, rollback gaps | `revise` only confirmed architecture gaps |
-| `product_planning_example` | Product plan | "Check the matrix" | acceptance criteria, user value, stop conditions, dependencies | `revise` for missing tasks or `accepted_risk` for scoped cuts |
+| `product_planning_example` | Product plan | "Check the matrix" | acceptance criteria, user value, stop conditions и dependencies | `revise` для missing tasks или `accepted_risk` для scoped cuts |
 | `security_release_example` | Security/release | "Can we ship?" | source status, rollback, no-unapproved-actions proof, owner approval | `blocked_by_approval` until release evidence exists |
 | `ai_eval_example` | AI/eval work | "Check quality" | baseline/current eval, scorecard thresholds, false pass/rewrite signals | manual-only until scorecard and owner review |
 

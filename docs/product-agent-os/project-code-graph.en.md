@@ -53,6 +53,33 @@ Extension artifacts:
 - `.codex/product-agent-os/project-code-graph-llm-proposals.json` - staged local deterministic semantic extraction proposals with provenance, uncertainty and unsupported-claim labels.
 - `.codex/product-agent-os/project-code-graph-extension-closure.json` - extension verification, rollback/data deletion proof and graph-only fallback report.
 
+## Cockpit Surfaces
+
+The cockpit collects graph, file and code orientation surfaces into one offline generated view. It is useful for first project reading, but it remains a review surface:
+
+- `Project Map` shows graph projection, filters, selected-node evidence and a fallback static table.
+- `Code Intelligence` shows hotspots, `read_order`, trace/impact packets and `Code Flow`.
+- `Contracts` shows API, schema, diagram and explicit contract overlays.
+- `Quality & Metrics` shows tests, fixtures, affected-test packets and quality evidence pointers.
+- `Operations & Risk` shows stale flags, ambiguous edges, scale budget and visual QA hints.
+- `Proposal Ledger` shows proposal-only items, owner-review boundary and unsupported-claim labels.
+
+Recommended reading order:
+
+1. Start with `Project Map` to identify large file/code clusters and selected-node evidence.
+2. Open `Code Intelligence` and use `read_order` as a hint for which files to read first.
+3. Check `Contracts` when a change touches APIs, schemas, diagrams, OpenAPI/Swagger, AsyncAPI, DBML, SQL, JSON or YAML overlays.
+4. Check `Quality & Metrics` to understand which tests or fixture references might be affected.
+5. Before claiming behavior, readiness or a fix, open source files and run the current verification gates; the cockpit does not prove those claims by itself.
+
+The schema/contract surface shows where the scanner found parseable contracts and schema-like inputs. It does not replace contract tests, owner-approved API changes, source registry updates or runtime evidence.
+
+## Static Visual Boundary
+
+The current cockpit renders a local-only static fallback: SVG/table projection, selected-node panel, filters and safe embedded JSON. `project_graph_visual_model.py` marks Graphology/Sigma as `not_bundled_static_fallback`; the renderer does not fetch external assets.
+
+Cosmos.gl/WebGL is not a confirmed runtime/browser capability of this layer. Until separate approved browser/runtime proof exists, docs must not claim interactive WebGL rendering, canvas performance, browser screenshots, WCAG visual proof or generated `site` freshness. If a future renderer adds Cosmos.gl, Graphology, Sigma or another browser layer, it must preserve static fallback, local/vendor boundary, source labels, visual QA evidence and a separate approval gate.
+
 ## Operating Modes And Commands
 
 Base scanner and stage-only generation:

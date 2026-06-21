@@ -97,6 +97,31 @@ Artifacts must not contain secrets, credentials, raw private chat logs, private 
 | `.codex/artifact-templates/agent-skill-weekly-verification.md` | Template registry | Weekly owner-review packet. | Requires rollback/holdout/flake/cost evidence or accepted gaps. |
 | `.codex/artifact-templates/agent-skill-update-candidate.md` | Template registry | Modernization candidate packet. | No self-applied updates. |
 
+## First-run analysis artifact
+
+The first-run analysis artifact is a local generated orientation pack for first project review. It helps an operator see inventory, runtime route, control-plane state, graph summary, risks and a safe next action, but it remains `orientation_only_not_proof`.
+
+This map describes artifact families and view-model contracts used by `analysis_artifact_renderer.py` and staged B41/B42 evidence. It is not a complete JSON Schema: the repository has contract fields, tests and staged examples, but no standalone exhaustive JSON Schema validation for every nested first-run surface.
+
+| Artifact / schema | Producer | Contract role | Boundary |
+| --- | --- | --- | --- |
+| `.codex/product-agent-os/analysis/first-run-analysis-packet.json` | `run_first_project_analysis.py --write`, `first_run_analysis.py` | First analysis packet: target, source artifacts, summaries, generated pages, evidence/redaction status and safe next action. | Orientation evidence only; does not prove readiness, release, target mutation, runtime/browser/provider proof or source truth. |
+| `.codex/product-agent-os/analysis/analysis-manifest.json` | `analysis_artifact_renderer.py` | `first_run_analysis_manifest_v1`: pages, digests, source digests, `manifest_digest`, `redaction_report`, `source_policy_gate`, baseline comparison and cleanup guidance. | Generated-view boundary; source files and current command evidence are stronger. |
+| `.codex/product-agent-os/analysis/index.html` | `analysis_artifact_renderer.py` | `first_run_cockpit_artifact_v1`: primary self-contained architecture cockpit. | Local review surface; not WebGL/Cosmos.gl, browser screenshot, WCAG, runtime, release or target-apply proof. |
+| `first_run_cockpit_artifact_contract_v1` | `build_first_run_cockpit_artifact_contract()` | Contract map for primary cockpit pages, graph layers, renderer choice, large-graph policy and unsupported claims. | Contract map only; not proof that browser/runtime dependencies executed. |
+| `architecture_intelligence_design_contract_v1` | `_architecture_intelligence_design_contract()` | Design contract for the architecture cockpit shell, section hierarchy and component grammar. | Design intent; not browser proof or public readiness. |
+| `first_run_schema_contract_surface_v1` | `_first_run_schema_contract_surface()` | Inventory of API/schema/config/diagram contracts by path and digest. | Path-and-digest inventory only; not API compatibility, migration safety or schema completeness. |
+| `first_run_graph_file_code_surface_v1` | `_first_run_graph_code_surface()` | Project Map and Code Intelligence graph/code surfaces. | Static fallback unless separate approved browser/WebGL evidence exists. |
+| `first_run_guided_tour_surface_v1` | `_first_run_guided_tour_surface()` | Guided read order and safe next action surface. | Does not prove a human completed review or approved action. |
+| `first_run_evidence_decision_layer_v1` / `first_run_evidence_risk_hierarchy_v1` | Renderer evidence helpers | Supported/unsupported claims, blockers, risks and proposal-only decision surfaces. | Evidence organization only; no completion, fixed, verified or ready claim without current evidence. |
+| `first_run_artifact_cleanup_guidance_v1` | `_cleanup_guidance()` | Cleanup preview listing generated files and rollback policy. | `approval_required: true`; `deletion_performed: false`; no automatic cleanup. |
+| `first_run_redaction_report_v1` | `_redaction_report()` | Redaction guardrail for generated manifest/model payloads. | Blocks local absolute paths, raw source fields and secret-like values, but is not full DLP/security certification. |
+| `batch41_s9_m57_neural_flow_comparison_v1` | B41/S9 comparison artifact | Read-only staged rerun comparison with digests, key deltas, marker checks and no-unapproved-actions surface. | Historical target evidence; not general readiness or freshness after a new rerun. |
+| `answer-ledger-template.json` | Guided question protocol | Staged owner-question ledger with `question_id`, status, `target_artifact`, redaction and validation errors. | Not an owner decision or accepted gap until answered and reviewed. |
+| `first_run_artifact_scorecard_v1` | `batch39_scorecard.py` | Operator usability scorecard: clarity, completeness, actionability, approval boundary, onboarding time and navigation. | `not release approval`; does not replace owner review or real-project evidence. |
+
+`source_policy_gate` may allow diagnostic artifacts while keeping apply/promotion disabled. `redaction_report` must record blocked secret-like values, raw source fields and local absolute paths before a packet is finalized. `cleanup_guidance` is preview-only: file deletion, target cleanup and rollback actions require separate explicit approval.
+
 ## Doubt Verification Artifacts
 
 | Artifact | Producer | Contract role | Boundary |

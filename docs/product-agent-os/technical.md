@@ -14,6 +14,8 @@ Source status: `official + experiment`
 | Проверить live/runtime/provider gates | [Live Runtime Governance](live-runtime-governance.md) | Нет live server, provider calls или canonical graph mutation. |
 | Подготовить docs и packaging closure | [Packaging And Closure](packaging-and-closure.md) | Исходные docs -> registry -> docs tests -> `check_docs.py` -> strict MkDocs -> optional full closure. |
 
+Эта quick-start таблица не является полной command-policy матрицей. Широкий перечень docs tooling commands, install/runtime variants и approval-state cases относится к later `DOC-M26`; финальная свежесть root `site/` относится к `DOC-M25` после G2-G5.
+
 ## Capability status
 
 Product-Agent OS ships local, approval-bound capabilities для staged infrastructure, lifecycle routing, project code graph navigation, generated cockpit views, offline search, runtime governance, provider gates, review ledgers, mutation dry-runs, audit packets, real-testing readiness, runtime QA и packaging closure.
@@ -233,6 +235,15 @@ Status dashboard projection показывает `file_statuses`, `mtime_utc`, `
 
 Local read-only graph foundation и generated cockpit поддерживают project navigation. Scanner inventories files, emits stable file-level graph nodes и `contains` edges, adds Python AST package/module/class/function/method overlays, adds conservative import/call/test edges, builds structured overlays для parseable Markdown, OpenAPI/Swagger, AsyncAPI, DBML, SQL, JSON, YAML, Mermaid и PlantUML inputs, проверяет controlled ontology, records manifest freshness/provenance, stores observation records с relative paths/spans/fingerprints и поддерживает temporal edge invalidation/supersession helpers. Query mode читает existing JSON/JSONL graph artifacts и produce bounded `neighbors`, `path`, `trace`, `impact`, `affected_tests`, `changed_since`, `why_changed`, `read_order`, `hotspots`, `node`, `status` и `search` packets. Это исключает raw source bodies через default и redacts local absolute paths или secret-like values из returned packets.
 
+Cockpit surface группирует эти данные в reader-facing views:
+
+- `Project Map` для graph/file surface, selected-node evidence, filters и static fallback table.
+- `Code Intelligence` для hotspots, guided `read_order`, trace/impact packets и `Code Flow`.
+- `Contracts` для API/schema/diagram overlays и explicit contract pointers.
+- `Quality & Metrics`, `Operations & Risk` и `Proposal Ledger` для affected-test hints, stale/ambiguous signals, visual QA hints и proposal-only boundaries.
+
+Рекомендуемый read path: сначала graph, затем guided read order, затем source files, затем tests/evidence. Cockpit и query packets не доказывают runtime behavior, browser behavior, source freshness, contract correctness, test pass status или release readiness.
+
 Main files и commands:
 
 - `plugins/product-agent-os/scripts/product_agent_os/project_code_graph.py` - graph JSON/JSONL packet builder.
@@ -258,6 +269,8 @@ python plugins\product-agent-os\scripts\scan_project_code_graph.py <workspace> -
 Stage mode должен использовать output directory outside target workspace. Query mode reads existing graph artifact и не scan source text. Existing graph artifacts в target workspace являются не modified. Этот graph остается conservative: dynamic dispatch, framework wiring, runtime routes и semantic/rationale extraction являются не verified dependency proof. Runtime/status summaries и graph analysis reports являются orientation evidence only.
 
 Cockpit rendering использует `render_project_graph_cockpit_plan()` для dry-run plans и `stage_project_graph_cockpit()` для explicit stage directories outside target workspace. Это stages `.codex/product-agent-os/project-cockpit.html` и `.codex/product-agent-os/project-cockpit.json`. Этот staged HTML exposes exactly eight top-level pages, keeps Code Flow inside `Code Intelligence`, embeds safe JSON, использует static local CSS/JS, имеет filter/reset/copy/select commands, selected-node evidence, fallback static table, mobile layout и generated-view-only wording. Graphology и Sigma являются recorded как local Graphology/Sigma vendor-only capabilities; нет vendored assets являются currently bundled, so verified renderer использует static fallback path с Graphology-compatible static projection data.
+
+Cosmos.gl/WebGL rendering находится вне supported proof boundary этой страницы. Current implementation evidence поддерживает local static fallback, а не interactive WebGL, browser screenshots, canvas performance или WCAG visual proof.
 
 Fixture structural fields, search-quality evals, local backend gates и semantic gates keep graph features bounded. Fixture eval records graph contract, нет external assets, redaction, scale bounds, generated-view-only, eight-page cockpit structure, section preservation, cockpit generated-view boundary, `project_graph_search_quality_present` и `project_graph_future_backend_semantic_gates_present`. Search-quality evals являются local и deterministic: they record symbol recall, top-k/MRR, trace success или failure labels, affected-test precision, edge density и explicit thresholds. Этот approved static index, local backend gate и local deterministic semantic retrieval gate являются implemented; live database/server, live external model/API embedding или cross-encoder providers, LLM semantic extraction и rationale/comment extraction stay outside approved surface пока explicit approval defines redaction, cache, token budget, eval threshold и rollback path.
 

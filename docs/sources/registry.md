@@ -46,6 +46,7 @@ verification_status: "Current compaction preserves test-visible markers; full ev
 - Product-Agent OS Track 11 documentation refresh G0 governance packet (checked_at=2026-06-20, trust=high)
 - Product-Agent OS Track 11 G1 source records, registry and generated-site parity (checked_at=2026-06-20, trust=high)
 - Product-Agent OS Track 11 G1.1 project-local documentation toolchain planning matrix (checked_at=2026-06-20, trust=high)
+- Product-Agent OS Track 11 G2 first-run cockpit and artifact docs packet (checked_at=2026-06-21, trust=high)
 - Codex web / cloud (checked_at=2026-05-14, trust=high)
 - Codex app (checked_at=2026-05-14, trust=high)
 - Codex CLI (checked_at=2026-05-14, trust=high)
@@ -1362,6 +1363,20 @@ These markers preserve source-owned test routing after registry compaction. Full
 - .docs-tools/node/package.json
 - .docs-tools/node/package-lock.json
 - DOC-M34..DOC-M41
+- Product-Agent OS Track 11 G2 first-run cockpit and artifact docs packet
+- documentation_refresh_G2-A01
+- docs/superpowers/specs/documentation-refresh-g2-first-run-cockpit-artifact-docs-summary.json
+- docs/product-agent-os/first-run-architecture-cockpit.md
+- docs/product-agent-os/first-run-architecture-cockpit.en.md
+- docs/product-agent-os/artifact-contracts.md
+- docs/product-agent-os/artifact-gallery.md
+- docs/product-agent-os/project-code-graph.md
+- docs/product-agent-os/cli-reference.md
+- docs/product-agent-os/technical.md
+- implemented_source_docs_no_site_rebuild
+- DOC_M25_PENDING_SITE_PAGES
+- root `site` freshness deferred to final DOC-M25
+- browser/runtime/Cosmos.gl/WebGL/root site freshness unsupported in G2
 - .venv-docs/
 - .docs-tools/node/
 - .docs-tools/bin/

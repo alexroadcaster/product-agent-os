@@ -7,6 +7,8 @@ Sources: [Codex plugins](https://developers.openai.com/codex/plugins), [Build pl
 
 Product-Agent OS is a local Codex plugin package. Use it to stage control-plane artifacts, route product-agent workflows, run deterministic validators and package repeatable methods as skills. Installation does not grant permission to start live systems, call providers, mutate target repositories or publish anything.
 
+This quick-start page is not the full command-policy matrix. The broader list of docs-tooling commands, install/runtime variants and approval-state cases belongs to later `DOC-M26`; final root `site` freshness belongs to `DOC-M25` after G2-G5.
+
 ## Capability status
 
 | Capability | Status | Boundary |
@@ -19,6 +21,8 @@ Product-Agent OS is a local Codex plugin package. Use it to stage control-plane 
 | Codex compatibility validator | Implemented. | Checks package shape, not live operational readiness. |
 | Graph/cockpit orientation | Staged evidence route. | Generated views are not source of truth. |
 | Live runtime/provider/mutation actions | Approval-bound. | Disabled until a specific owner-approved packet exists. |
+
+The cockpit surface groups graph data into reader-facing views: `Project Map`, `Code Intelligence`, `Contracts`, `Quality & Metrics`, `Operations & Risk` and `Proposal Ledger`. The recommended path is graph, guided read order, source files, then tests/evidence. The cockpit and query packets do not prove runtime behavior, browser behavior, source freshness, contract correctness, test pass status or release readiness.
 
 ## Operator contract
 

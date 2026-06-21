@@ -69,6 +69,9 @@ DOCUMENTATION_REFRESH_G1_1_DOC_M40_AUDIT = (
 DOCUMENTATION_REFRESH_G1_1_DOC_M41_DEFERRED_PLATFORMS = (
     DOCS / "superpowers" / "specs" / "documentation-refresh-g1-1-doc-m41-deferred-platform-triggers-summary.json"
 )
+DOCUMENTATION_REFRESH_G2 = (
+    DOCS / "superpowers" / "specs" / "documentation-refresh-g2-first-run-cockpit-artifact-docs-summary.json"
+)
 PRODUCT_AGENT_OS_LIFECYCLE_HOOKS_LOCAL_ACTIVATION = (
     DOCS / "superpowers" / "specs" / "product-agent-os-lifecycle-hooks-local-activation-summary.json"
 )
@@ -92,8 +95,12 @@ ENGLISH_ORIGINAL_SUPERPOWERS_PLAN_PAGES = {
     DOCS / "superpowers" / "plans" / "2026-05-27-track-10-guided-questions-status-dashboard.md",
     DOCS / "superpowers" / "plans" / "2026-06-20-track-11-documentation-architecture-refresh.md",
 }
-BUILDABLE_MARKDOWN_PAGE_COUNT = 133
-LOCALIZED_MARKDOWN_PAGE_COUNT = 125
+DOC_M25_PENDING_SITE_PAGES = {
+    DOCS / "product-agent-os" / "first-run-architecture-cockpit.md",
+}
+BUILDABLE_MARKDOWN_PAGE_COUNT = 134
+LOCALIZED_MARKDOWN_PAGE_COUNT = 126
+SITE_PROMOTED_LOCALIZED_MARKDOWN_PAGE_COUNT = 125
 ENGLISH_ORIGINAL_MARKDOWN_PAGE_COUNT = 8
 
 
@@ -165,6 +172,13 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             path
             for path in self._base_markdown_pages()
             if path not in english_original
+        ]
+
+    def _site_promoted_localized_markdown_pages(self):
+        return [
+            path
+            for path in self._localized_markdown_pages()
+            if path not in DOC_M25_PENDING_SITE_PAGES
         ]
 
     def _english_original_markdown_pages(self):
@@ -4732,7 +4746,9 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         pair_failures = []
         file_escape_failures = []
         site_root = SITE.resolve()
-        for source_path in source_pages:
+        site_pages = self._site_promoted_localized_markdown_pages()
+        self.assertEqual(SITE_PROMOTED_LOCALIZED_MARKDOWN_PAGE_COUNT, len(site_pages))
+        for source_path in site_pages:
             ru_html = self._rendered_site_path_for_source(source_path)
             en_html = self._rendered_site_path_for_source(source_path, locale="en")
             expected = {
@@ -4850,13 +4866,15 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         self.assertEqual(LOCALIZED_MARKDOWN_PAGE_COUNT, len(source_pages))
         self.assertEqual([], self._missing_localized_en_siblings())
 
+        site_pages = self._site_promoted_localized_markdown_pages()
+        self.assertEqual(SITE_PROMOTED_LOCALIZED_MARKDOWN_PAGE_COUNT, len(site_pages))
         expected_ru = {
             source_path.relative_to(DOCS).with_suffix(".html").as_posix()
-            for source_path in source_pages
+            for source_path in site_pages
         }
         expected_en = {
             "en/" + source_path.relative_to(DOCS).with_suffix(".html").as_posix()
-            for source_path in source_pages
+            for source_path in site_pages
         }
 
         search_index = SITE / "search" / "search_index.json"
@@ -4885,10 +4903,10 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         self.assertEqual([], missing_search_en[:20])
         self.assertEqual([], missing_sitemap_ru[:20])
         self.assertEqual([], missing_sitemap_en[:20])
-        self.assertEqual(LOCALIZED_MARKDOWN_PAGE_COUNT, len(expected_ru & search_locations))
-        self.assertEqual(LOCALIZED_MARKDOWN_PAGE_COUNT, len(expected_en & search_locations))
-        self.assertEqual(LOCALIZED_MARKDOWN_PAGE_COUNT, len(expected_ru & sitemap_locations))
-        self.assertEqual(LOCALIZED_MARKDOWN_PAGE_COUNT, len(expected_en & sitemap_locations))
+        self.assertEqual(SITE_PROMOTED_LOCALIZED_MARKDOWN_PAGE_COUNT, len(expected_ru & search_locations))
+        self.assertEqual(SITE_PROMOTED_LOCALIZED_MARKDOWN_PAGE_COUNT, len(expected_en & search_locations))
+        self.assertEqual(SITE_PROMOTED_LOCALIZED_MARKDOWN_PAGE_COUNT, len(expected_ru & sitemap_locations))
+        self.assertEqual(SITE_PROMOTED_LOCALIZED_MARKDOWN_PAGE_COUNT, len(expected_en & sitemap_locations))
 
     def test_track10_task26_batch34e_m48_m49_final_closure_is_recorded(self):
         packet = BATCH34E_FULL_SITE_INVENTORY.read_text(encoding="utf-8")
@@ -5006,16 +5024,18 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             ],
         )
 
+        site_pages = self._site_promoted_localized_markdown_pages()
+        self.assertEqual(SITE_PROMOTED_LOCALIZED_MARKDOWN_PAGE_COUNT, len(site_pages))
         expected_ru = {
             source_path.relative_to(DOCS).with_suffix(".html").as_posix()
-            for source_path in source_pages
+            for source_path in site_pages
         }
         expected_en = {
             "en/" + source_path.relative_to(DOCS).with_suffix(".html").as_posix()
-            for source_path in source_pages
+            for source_path in site_pages
         }
         rendered_missing = []
-        for source_path in source_pages:
+        for source_path in site_pages:
             for locale in (None, "en"):
                 rendered = self._rendered_site_path_for_source(source_path, locale)
                 if not rendered.exists():
@@ -5025,7 +5045,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         pair_failures = []
         file_escape_failures = []
         site_root = SITE.resolve()
-        for source_path in source_pages:
+        for source_path in site_pages:
             ru_html = self._rendered_site_path_for_source(source_path)
             en_html = self._rendered_site_path_for_source(source_path, "en")
             pages = {
@@ -5085,10 +5105,10 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         self.assertEqual([], sorted(expected_en - search_locations)[:20])
         self.assertEqual([], sorted(expected_ru - sitemap_locations)[:20])
         self.assertEqual([], sorted(expected_en - sitemap_locations)[:20])
-        self.assertEqual(LOCALIZED_MARKDOWN_PAGE_COUNT, len(expected_ru & search_locations))
-        self.assertEqual(LOCALIZED_MARKDOWN_PAGE_COUNT, len(expected_en & search_locations))
-        self.assertEqual(LOCALIZED_MARKDOWN_PAGE_COUNT, len(expected_ru & sitemap_locations))
-        self.assertEqual(LOCALIZED_MARKDOWN_PAGE_COUNT, len(expected_en & sitemap_locations))
+        self.assertEqual(SITE_PROMOTED_LOCALIZED_MARKDOWN_PAGE_COUNT, len(expected_ru & search_locations))
+        self.assertEqual(SITE_PROMOTED_LOCALIZED_MARKDOWN_PAGE_COUNT, len(expected_en & search_locations))
+        self.assertEqual(SITE_PROMOTED_LOCALIZED_MARKDOWN_PAGE_COUNT, len(expected_ru & sitemap_locations))
+        self.assertEqual(SITE_PROMOTED_LOCALIZED_MARKDOWN_PAGE_COUNT, len(expected_en & sitemap_locations))
 
         en_cyrillic = [
             path.relative_to(DOCS).as_posix()
@@ -5741,8 +5761,10 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 cyrillic_en_pages.append(path.relative_to(DOCS).as_posix())
         self.assertEqual([], cyrillic_en_pages)
 
+        site_pages = self._site_promoted_localized_markdown_pages()
+        self.assertEqual(SITE_PROMOTED_LOCALIZED_MARKDOWN_PAGE_COUNT, len(site_pages))
         missing_rendered_en = []
-        for path in ru_pages:
+        for path in site_pages:
             rel = path.relative_to(DOCS).with_suffix(".html")
             rendered = SITE / "en" / rel
             if rel.name == "index.html":
@@ -8334,6 +8356,183 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         ]:
             with self.subTest(runlog_row_level_term=term):
                 self.assertIn(term, runlog)
+
+    def test_documentation_refresh_g2_first_run_cockpit_artifact_docs_are_synced(self):
+        self.assertTrue(DOCUMENTATION_REFRESH_G2.exists(), DOCUMENTATION_REFRESH_G2)
+        packet = json.loads(DOCUMENTATION_REFRESH_G2.read_text(encoding="utf-8"))
+        documents = {
+            "cockpit": self._localized_contract_text(PRODUCT_AGENT_OS / "first-run-architecture-cockpit.md"),
+            "artifact_contracts": self._localized_contract_text(PRODUCT_AGENT_OS / "artifact-contracts.md"),
+            "artifact_gallery": self._localized_contract_text(PRODUCT_AGENT_OS / "artifact-gallery.md"),
+            "project_code_graph": self._localized_contract_text(PRODUCT_AGENT_OS / "project-code-graph.md"),
+            "cli_reference": self._localized_contract_text(PRODUCT_AGENT_OS / "cli-reference.md"),
+            "technical": self._localized_contract_text(PRODUCT_AGENT_OS / "technical.md"),
+            "mkdocs": MKDOCS.read_text(encoding="utf-8"),
+            "check_docs": CHECK_DOCS.read_text(encoding="utf-8"),
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
+            "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
+            "track11_plan": (
+                DOCS
+                / "superpowers"
+                / "plans"
+                / "2026-06-20-track-11-documentation-architecture-refresh.md"
+            ).read_text(encoding="utf-8"),
+        }
+
+        self.assertEqual(
+            "documentation_refresh_g2_first_run_cockpit_artifact_docs_v1",
+            packet["schema_version"],
+        )
+        self.assertEqual("documentation_refresh_G2-A01", packet["evidence_id"])
+        self.assertEqual("implemented_source_docs_no_site_rebuild", packet["status"])
+
+        for work_item in ["DOC-M04", "DOC-M05", "DOC-M06", "DOC-M19", "DOC-M20", "DOC-M33"]:
+            with self.subTest(work_item=work_item):
+                self.assertEqual(
+                    "implemented_source_docs_no_site_rebuild",
+                    packet["work_item_status"][work_item]["status"],
+                )
+                self.assertIn(
+                    f"`{work_item}`",
+                    documents["track11_plan"],
+                )
+
+        for action, value in packet["no_unapproved_actions"].items():
+            with self.subTest(no_unapproved_action=action):
+                self.assertFalse(value)
+
+        self.assertEqual(134, packet["test_contract"]["source_markdown_page_count"])
+        self.assertEqual(126, packet["test_contract"]["localized_markdown_page_count"])
+        self.assertEqual(125, packet["test_contract"]["site_promoted_localized_markdown_page_count"])
+        self.assertEqual(
+            ["docs/product-agent-os/first-run-architecture-cockpit.md"],
+            packet["test_contract"]["pending_site_pages_until_doc_m25"],
+        )
+        self.assertIn(
+            DOCS / "product-agent-os" / "first-run-architecture-cockpit.md",
+            DOC_M25_PENDING_SITE_PAGES,
+        )
+        self.assertEqual(LOCALIZED_MARKDOWN_PAGE_COUNT, len(self._localized_markdown_pages()))
+        self.assertEqual(
+            SITE_PROMOTED_LOCALIZED_MARKDOWN_PAGE_COUNT,
+            len(self._site_promoted_localized_markdown_pages()),
+        )
+
+        expected_terms = {
+            "cockpit": [
+                "Source status:",
+                "orientation_only_not_proof",
+                "architecture_intelligence_design_contract_v1",
+                "Local-JS Boundary",
+                "Workspace Detection And Routing",
+                "Screenshot And Browser Proof Boundary",
+                "DOC-M25",
+                "not_run_approval_required",
+            ],
+            "artifact_contracts": [
+                "First-run analysis artifact",
+                "first_run_cockpit_artifact_v1",
+                "first_run_cockpit_artifact_contract_v1",
+                "architecture_intelligence_design_contract_v1",
+                "first_run_schema_contract_surface_v1",
+                "first_run_graph_file_code_surface_v1",
+                "first_run_artifact_cleanup_guidance_v1",
+                "first_run_redaction_report_v1",
+                "answer-ledger-template.json",
+                "not a complete JSON Schema",
+            ],
+            "artifact_gallery": [
+                "First-run Packet",
+                "analysis-manifest.json",
+                "Primary HTML cockpit",
+                "Generated-view Policy",
+                "first_run_artifact_cleanup_guidance_v1",
+                "Generated `site/` freshness",
+                "DOC-M25",
+            ],
+            "project_code_graph": [
+                "Cockpit Surfaces",
+                "Project Map",
+                "Code Intelligence",
+                "Static Visual Boundary",
+                "Cosmos.gl/WebGL",
+                "generated `site` freshness",
+            ],
+            "cli_reference": [
+                "Safe operator examples",
+                "Cockpit Query Surface",
+                "--query read_order",
+                "DOC-M26",
+                "root `site` rebuild",
+            ],
+            "technical": [
+                "DOC-M26",
+                "DOC-M25",
+                "Project Map",
+                "Proposal Ledger",
+                "release readiness",
+            ],
+        }
+        for document, terms in expected_terms.items():
+            for term in terms:
+                with self.subTest(document=document, term=term):
+                    self.assertIn(term, documents[document])
+
+        for document in ["mkdocs", "check_docs"]:
+            with self.subTest(document=document):
+                self.assertIn("product-agent-os/first-run-architecture-cockpit.md", documents[document])
+
+        sync_terms = {
+            "requirements": [
+                "documentation_refresh_G2-A01",
+                "DOC_M25_PENDING_SITE_PAGES",
+                "search and sitemap freshness remain deferred to final `DOC-M25`",
+            ],
+            "plan": [
+                "Track 11 G2 first-run cockpit and artifact docs",
+                "documentation-refresh-g2-first-run-cockpit-artifact-docs-summary.json",
+                "Continue with G3-G5 source/docs slices",
+            ],
+            "test": [
+                "documentation_refresh_G2-A01",
+                ".docs-tools\\reports\\mkdocs-strict-smoke-g2-2026-06-21",
+                "do not claim root `site`/search/sitemap freshness until final `DOC-M25`",
+            ],
+            "evals": [
+                "documentation_refresh_G2-A01",
+                "Track 11 G2 source/nav docs",
+                "root `site` freshness remains a `DOC-M25` eval gate",
+            ],
+            "runlog": [
+                "documentation_refresh_G2-A01",
+                "DOC_M25_PENDING_SITE_PAGES",
+                "No root site, browser/runtime/provider, target, git, release or automation action.",
+            ],
+            "registry": [
+                "Product-Agent OS Track 11 G2 first-run cockpit and artifact docs packet",
+                "documentation_refresh_G2-A01",
+                "implemented_source_docs_no_site_rebuild",
+            ],
+            "registry_en": [
+                "Product-Agent OS Track 11 G2 first-run cockpit and artifact docs packet",
+                "documentation_refresh_G2-A01",
+                "implemented_source_docs_no_site_rebuild",
+            ],
+            "track11_plan": [
+                "G2 source docs are implemented through `DOC-M04`, `DOC-M05`, `DOC-M06`, `DOC-M19`, `DOC-M20` and `DOC-M33`",
+                "Generated root `site/` freshness is not claimed",
+                "No dependency upgrade",
+            ],
+        }
+        for document, terms in sync_terms.items():
+            for term in terms:
+                with self.subTest(sync_document=document, term=term):
+                    self.assertIn(term, documents[document])
 
     def test_product_agent_os_lifecycle_hooks_local_activation_is_recorded(self):
         self.assertTrue(

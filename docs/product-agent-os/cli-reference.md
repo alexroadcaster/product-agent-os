@@ -48,6 +48,16 @@ Runtime runner optional inputs включают `--approval-status`, `--intent-h
 does not accept `--stage`
 ```
 
+Безопасные operator examples:
+
+```powershell
+python plugins\product-agent-os\scripts\run_first_project_analysis.py <workspace> --dry-run
+python plugins\product-agent-os\scripts\scan_project_code_graph.py <workspace> --dry-run
+python plugins\product-agent-os\scripts\scan_project_code_graph.py <workspace> --stage C:\tmp\product-agent-os-graph-stage
+```
+
+Эти examples не являются broad command matrix. Полная command-policy матрица, docs tooling smokes, install/runtime variations и approval-state coverage принадлежат later `DOC-M26`. До него CLI docs дают только безопасные pointers и не расширяют разрешение на live server, browser automation, provider/API calls, canonical mutation, git actions или root `site` rebuild.
+
 ## Project Graph CLI
 
 `scan_project_code_graph.py` имеет exactly-one-mode semantics. Choose один mode per invocation.
@@ -86,6 +96,25 @@ Graph query mode accepts:
 - `--max-results`, `--max-depth`, `--max-tokens`, `--hub-threshold`, `--node-type`, `--edge-type`, `--confidence` и `--path-prefix` для bounded output.
 
 Supported query kinds включают `neighbors`, `path`, `trace`, `impact`, `affected_tests`, `changed_since`, `why_changed`, `read_order`, `hotspots`, `node`, `status` и `search`.
+
+## Query-поверхность cockpit
+
+Project graph CLI передает данные в cockpit, но не превращает cockpit в доказательство:
+
+- `--stage <stage-dir>` пишет generated `project-code-graph.json`, `project-code-graph.jsonl`, `project-cockpit.html` и `project-cockpit.json` внутри stage root.
+- `--query read_order --graph <project-code-graph.json>` возвращает bounded guided read order; используйте его как подсказку чтения, затем проверяйте source files перед правками или impact claims.
+- `--query trace`, `--query impact` и `--query affected_tests` создают static query packets; они не доказывают runtime routes, dynamic dispatch или test results.
+- `--query search` может использовать graph-only search, static index, semantic index или hybrid inputs, если они переданы; returned hits остаются orientation evidence.
+
+Примеры команд для чтения cockpit:
+
+```powershell
+python plugins\product-agent-os\scripts\scan_project_code_graph.py <workspace> --query read_order --graph C:\tmp\product-agent-os-graph-stage\.codex\product-agent-os\project-code-graph.json --max-results 12
+python plugins\product-agent-os\scripts\scan_project_code_graph.py <workspace> --query trace --graph C:\tmp\product-agent-os-graph-stage\.codex\product-agent-os\project-code-graph.json --node-id function:app.main.main --max-depth 3
+python plugins\product-agent-os\scripts\scan_project_code_graph.py <workspace> --query status --graph C:\tmp\product-agent-os-graph-stage\.codex\product-agent-os\project-code-graph.json
+```
+
+Static fallback является поддержанной visual boundary в этом docs slice. Cosmos.gl/WebGL, browser screenshots, interactive canvas behavior, performance proof и accessibility visual proof остаются unsupported, пока не появится separate approved runtime/browser evidence packet.
 
 ## Проверка Commands
 
