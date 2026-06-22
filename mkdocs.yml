@@ -111,6 +111,11 @@ plugins:
                 - Operator Command Matrix: product-agent-os/operator-command-matrix.md
                 - Guided Questions And Answer Ledger: product-agent-os/guided-questions-answer-ledger.md
                 - Source Cache And Active Session State: product-agent-os/source-cache-session-state.md
+                - Generated Artifact UX Criteria: product-agent-os/generated-artifact-ux-criteria.md
+                - Graph Intelligence Contract: product-agent-os/graph-intelligence-contract.md
+                - Privacy Supply-Chain And Retention: product-agent-os/privacy-supply-chain-retention.md
+                - Local HTML Interaction Boundary: product-agent-os/local-html-interaction-boundary.md
+                - Residual Follow-Up And Site Freshness: product-agent-os/residual-follow-up-site-freshness.md
                 - CLI Reference: product-agent-os/cli-reference.md
                 - Artifact Contracts: product-agent-os/artifact-contracts.md
                 - Packaging And Closure: product-agent-os/packaging-and-closure.md
@@ -252,6 +257,11 @@ nav:
       - Operator Command Matrix: product-agent-os/operator-command-matrix.md
       - Guided Questions And Answer Ledger: product-agent-os/guided-questions-answer-ledger.md
       - Source Cache And Active Session State: product-agent-os/source-cache-session-state.md
+      - Generated Artifact UX Criteria: product-agent-os/generated-artifact-ux-criteria.md
+      - Graph Intelligence Contract: product-agent-os/graph-intelligence-contract.md
+      - Privacy Supply-Chain And Retention: product-agent-os/privacy-supply-chain-retention.md
+      - Local HTML Interaction Boundary: product-agent-os/local-html-interaction-boundary.md
+      - Residual Follow-Up And Site Freshness: product-agent-os/residual-follow-up-site-freshness.md
       - CLI Reference: product-agent-os/cli-reference.md
       - Artifact Contracts: product-agent-os/artifact-contracts.md
       - Packaging And Closure: product-agent-os/packaging-and-closure.md

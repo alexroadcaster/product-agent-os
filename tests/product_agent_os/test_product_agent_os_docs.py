@@ -78,6 +78,9 @@ DOCUMENTATION_REFRESH_G3 = (
 DOCUMENTATION_REFRESH_G4 = (
     DOCS / "superpowers" / "specs" / "documentation-refresh-g4-operator-flows-system-behavior-summary.json"
 )
+DOCUMENTATION_REFRESH_G5 = (
+    DOCS / "superpowers" / "specs" / "documentation-refresh-g5-evidence-quality-site-gate-summary.json"
+)
 PRODUCT_AGENT_OS_LIFECYCLE_HOOKS_LOCAL_ACTIVATION = (
     DOCS / "superpowers" / "specs" / "product-agent-os-lifecycle-hooks-local-activation-summary.json"
 )
@@ -112,9 +115,14 @@ DOC_M25_PENDING_SITE_PAGES = {
     DOCS / "product-agent-os" / "operator-command-matrix.md",
     DOCS / "product-agent-os" / "guided-questions-answer-ledger.md",
     DOCS / "product-agent-os" / "source-cache-session-state.md",
+    DOCS / "product-agent-os" / "generated-artifact-ux-criteria.md",
+    DOCS / "product-agent-os" / "graph-intelligence-contract.md",
+    DOCS / "product-agent-os" / "privacy-supply-chain-retention.md",
+    DOCS / "product-agent-os" / "local-html-interaction-boundary.md",
+    DOCS / "product-agent-os" / "residual-follow-up-site-freshness.md",
 }
-BUILDABLE_MARKDOWN_PAGE_COUNT = 143
-LOCALIZED_MARKDOWN_PAGE_COUNT = 135
+BUILDABLE_MARKDOWN_PAGE_COUNT = 148
+LOCALIZED_MARKDOWN_PAGE_COUNT = 140
 SITE_PROMOTED_LOCALIZED_MARKDOWN_PAGE_COUNT = 125
 ENGLISH_ORIGINAL_MARKDOWN_PAGE_COUNT = 8
 
@@ -8960,6 +8968,212 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "G4 source docs are implemented through `DOC-M11`, `DOC-M12`, `DOC-M26`, `DOC-M27`, `DOC-M31` and `DOC-M32`",
                 "Generated root `site/` freshness is not claimed",
                 "No cache refresh",
+            ],
+        }
+        for document, terms in sync_terms.items():
+            for term in terms:
+                with self.subTest(sync_document=document, term=term):
+                    self.assertIn(term, documents[document])
+
+    def test_documentation_refresh_g5_evidence_quality_site_gate_are_synced(self):
+        self.assertTrue(DOCUMENTATION_REFRESH_G5.exists(), DOCUMENTATION_REFRESH_G5)
+        packet = json.loads(DOCUMENTATION_REFRESH_G5.read_text(encoding="utf-8"))
+        product_docs = {
+            "generated_artifact_ux": self._localized_contract_text(
+                PRODUCT_AGENT_OS / "generated-artifact-ux-criteria.md"
+            ),
+            "graph_intelligence": self._localized_contract_text(
+                PRODUCT_AGENT_OS / "graph-intelligence-contract.md"
+            ),
+            "privacy_supply_chain": self._localized_contract_text(
+                PRODUCT_AGENT_OS / "privacy-supply-chain-retention.md"
+            ),
+            "local_html_boundary": self._localized_contract_text(
+                PRODUCT_AGENT_OS / "local-html-interaction-boundary.md"
+            ),
+            "residual_site_freshness": self._localized_contract_text(
+                PRODUCT_AGENT_OS / "residual-follow-up-site-freshness.md"
+            ),
+            "index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
+        }
+        documents = {
+            "mkdocs": MKDOCS.read_text(encoding="utf-8"),
+            "check_docs": CHECK_DOCS.read_text(encoding="utf-8"),
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
+            "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
+            "track11_plan": (
+                DOCS
+                / "superpowers"
+                / "plans"
+                / "2026-06-20-track-11-documentation-architecture-refresh.md"
+            ).read_text(encoding="utf-8"),
+        }
+
+        self.assertEqual(
+            "documentation_refresh_g5_evidence_quality_site_gate_v1",
+            packet["schema_version"],
+        )
+        self.assertEqual("documentation_refresh_G5-A01", packet["evidence_id"])
+        self.assertEqual("implemented_source_docs_no_site_rebuild", packet["status"])
+
+        for work_item in ["DOC-M21", "DOC-M24", "DOC-M28", "DOC-M29", "DOC-M30"]:
+            with self.subTest(work_item=work_item):
+                self.assertEqual(
+                    "implemented_source_docs_no_site_rebuild",
+                    packet["work_item_status"][work_item]["status"],
+                )
+                self.assertIn(f"`{work_item}`", documents["track11_plan"])
+
+        self.assertEqual(
+            "approval_required_not_run",
+            packet["work_item_status"]["DOC-M25"]["status"],
+        )
+
+        for action, value in packet["no_unapproved_actions"].items():
+            with self.subTest(no_unapproved_action=action):
+                self.assertFalse(value)
+
+        self.assertEqual(148, packet["test_contract"]["source_markdown_page_count"])
+        self.assertEqual(140, packet["test_contract"]["localized_markdown_page_count"])
+        self.assertEqual(125, packet["test_contract"]["site_promoted_localized_markdown_page_count"])
+        self.assertEqual(
+            [
+                "docs/product-agent-os/first-run-architecture-cockpit.md",
+                "docs/diagrams/source-generated-trust-boundary.md",
+                "docs/diagrams/first-run-cockpit-architecture.md",
+                "docs/diagrams/evidence-risk-lifecycle.md",
+                "docs/diagrams/skill-exposure-and-invocation.md",
+                "docs/diagrams/architecture-intelligence-diagram-atlas.md",
+                "docs/product-agent-os/instruction-tool-use-compliance.md",
+                "docs/product-agent-os/operator-command-matrix.md",
+                "docs/product-agent-os/guided-questions-answer-ledger.md",
+                "docs/product-agent-os/source-cache-session-state.md",
+                "docs/product-agent-os/generated-artifact-ux-criteria.md",
+                "docs/product-agent-os/graph-intelligence-contract.md",
+                "docs/product-agent-os/privacy-supply-chain-retention.md",
+                "docs/product-agent-os/local-html-interaction-boundary.md",
+                "docs/product-agent-os/residual-follow-up-site-freshness.md",
+            ],
+            packet["test_contract"]["pending_site_pages_until_doc_m25"],
+        )
+        self.assertEqual(LOCALIZED_MARKDOWN_PAGE_COUNT, len(self._localized_markdown_pages()))
+        self.assertEqual(
+            SITE_PROMOTED_LOCALIZED_MARKDOWN_PAGE_COUNT,
+            len(self._site_promoted_localized_markdown_pages()),
+        )
+
+        expected_terms = {
+            "generated_artifact_ux": [
+                "Source status:",
+                "Storybook remains deferred",
+                "Local Vale is currently advisory",
+                "Generated artifacts are review surfaces",
+                "Browser proof, screenshots, broad Vale enforcement, and Storybook remain approval-required",
+            ],
+            "graph_intelligence": [
+                "graph ontology",
+                "rejected-link ledger",
+                "freshness gates",
+                "bounded queries",
+                "Graph packets remain orientation evidence",
+            ],
+            "privacy_supply_chain": [
+                "raw findings",
+                "complete repository SBOM",
+                "dependency remediation",
+                "report retention",
+                "redaction policy",
+            ],
+            "local_html_boundary": [
+                "local tabs, search, filters, diagrams",
+                "no external scripts",
+                "JS-disabled fallback",
+                "status remains `static_docs_only`",
+            ],
+            "residual_site_freshness": [
+                "G5 residual routing",
+                "approval_required_not_run",
+                "Final `DOC-M25`",
+                "generated `site`, search index, and sitemap remain stale/unsupported",
+            ],
+            "index": [
+                "Generated artifact UX criteria",
+                "Graph intelligence contract",
+                "Privacy, supply-chain and retention",
+                "Local HTML interaction boundary",
+                "Residual follow-up and site freshness",
+                "documentation_refresh_G5-A01",
+            ],
+            "scenarios": [
+                "generated_artifact_ux_criteria",
+                "graph_intelligence_contract",
+                "privacy_supply_chain_retention",
+                "local_html_interaction_boundary",
+                "residual_follow_up_site_freshness",
+            ],
+        }
+        for document, terms in expected_terms.items():
+            for term in terms:
+                with self.subTest(document=document, term=term):
+                    self.assertIn(term, product_docs[document])
+
+        for path in [
+            "product-agent-os/generated-artifact-ux-criteria.md",
+            "product-agent-os/graph-intelligence-contract.md",
+            "product-agent-os/privacy-supply-chain-retention.md",
+            "product-agent-os/local-html-interaction-boundary.md",
+            "product-agent-os/residual-follow-up-site-freshness.md",
+        ]:
+            with self.subTest(nav_path=path):
+                self.assertIn(path, documents["mkdocs"])
+                self.assertIn(path, documents["check_docs"])
+
+        sync_terms = {
+            "requirements": [
+                "documentation_refresh_G5-A01",
+                "generated artifact UX",
+                "search and sitemap freshness remain deferred to final `DOC-M25`",
+            ],
+            "plan": [
+                "Track 11 G5 evidence quality and final site gate docs",
+                "documentation-refresh-g5-evidence-quality-site-gate-summary.json",
+                "DOC-M25 remains approval_required_not_run",
+            ],
+            "test": [
+                "documentation_refresh_G5-A01",
+                ".docs-tools\\reports\\mkdocs-strict-smoke-g5-2026-06-22",
+                "do not claim root `site`/search/sitemap freshness until final `DOC-M25`",
+            ],
+            "evals": [
+                "documentation_refresh_G5-A01",
+                "Track 11 G5 evidence-quality/source-nav docs",
+                "root `site` freshness remains a `DOC-M25` eval gate",
+            ],
+            "runlog": [
+                "documentation_refresh_G5-A01",
+                "DOC_M25_PENDING_SITE_PAGES",
+                "No root site, browser/runtime/provider, target, dependency remediation, raw report retention, git, release or automation action.",
+            ],
+            "registry": [
+                "Product-Agent OS Track 11 G5 evidence quality and final site gate docs packet",
+                "documentation_refresh_G5-A01",
+                "implemented_source_docs_no_site_rebuild",
+            ],
+            "registry_en": [
+                "Product-Agent OS Track 11 G5 evidence quality and final site gate docs packet",
+                "documentation_refresh_G5-A01",
+                "implemented_source_docs_no_site_rebuild",
+            ],
+            "track11_plan": [
+                "G5 source docs are implemented through `DOC-M21`, `DOC-M24`, `DOC-M28`, `DOC-M29` and `DOC-M30`",
+                "`DOC-M25` remains `approval_required_not_run`",
+                "No root `site` rebuild",
             ],
         }
         for document, terms in sync_terms.items():

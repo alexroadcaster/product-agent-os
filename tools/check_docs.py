@@ -50,6 +50,11 @@ REQUIRED_PATHS = [
     DOCS / "product-agent-os" / "operator-command-matrix.md",
     DOCS / "product-agent-os" / "guided-questions-answer-ledger.md",
     DOCS / "product-agent-os" / "source-cache-session-state.md",
+    DOCS / "product-agent-os" / "generated-artifact-ux-criteria.md",
+    DOCS / "product-agent-os" / "graph-intelligence-contract.md",
+    DOCS / "product-agent-os" / "privacy-supply-chain-retention.md",
+    DOCS / "product-agent-os" / "local-html-interaction-boundary.md",
+    DOCS / "product-agent-os" / "residual-follow-up-site-freshness.md",
     DOCS / "product-agent-os" / "cli-reference.md",
     DOCS / "product-agent-os" / "artifact-contracts.md",
     DOCS / "product-agent-os" / "packaging-and-closure.md",
@@ -148,6 +153,11 @@ REQUIRED_NAV_PATHS = [
     "product-agent-os/operator-command-matrix.md",
     "product-agent-os/guided-questions-answer-ledger.md",
     "product-agent-os/source-cache-session-state.md",
+    "product-agent-os/generated-artifact-ux-criteria.md",
+    "product-agent-os/graph-intelligence-contract.md",
+    "product-agent-os/privacy-supply-chain-retention.md",
+    "product-agent-os/local-html-interaction-boundary.md",
+    "product-agent-os/residual-follow-up-site-freshness.md",
     "playbooks/doubt-verification-loop.md",
     "sources/product-agent-os-batch40-doubt-verifier-source-transfer.md",
     "product-agent-os/cli-reference.md",
@@ -183,6 +193,13 @@ DOCUMENTATION_REFRESH_G4_PACKET = (
     / "superpowers"
     / "specs"
     / "documentation-refresh-g4-operator-flows-system-behavior-summary.json"
+)
+DOCUMENTATION_REFRESH_G5_EVIDENCE = "documentation_refresh_G5-A01"
+DOCUMENTATION_REFRESH_G5_PACKET = (
+    DOCS
+    / "superpowers"
+    / "specs"
+    / "documentation-refresh-g5-evidence-quality-site-gate-summary.json"
 )
 
 
@@ -261,6 +278,12 @@ def check_mkdocs_nav() -> None:
 
     if not DOCUMENTATION_REFRESH_G4_PACKET.exists():
         fail("Track 11 G4 operator-flow evidence packet is missing")
+
+    if DOCUMENTATION_REFRESH_G5_EVIDENCE not in registry:
+        fail("source registry missing Track 11 G5 evidence quality evidence")
+
+    if not DOCUMENTATION_REFRESH_G5_PACKET.exists():
+        fail("Track 11 G5 evidence quality evidence packet is missing")
 
 
 def check_placeholders() -> None:

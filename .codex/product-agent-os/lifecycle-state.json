@@ -1,7 +1,7 @@
 {
   "task_start_brief_shown": true,
-  "task_id": "TRACK11-G3-DIAGRAM-ATLAS",
-  "scope": "Track 11 G3 source documentation for diagram atlas and architecture maps: DOC-M07, DOC-M08, DOC-M09, DOC-M10 and DOC-M23, with nav/test/registry/control-plane sync and final root site freshness deferred to DOC-M25",
-  "updated_at": "2026-06-21T22:05:00+03:00",
-  "approval_boundary": "Project-local codex_docs docs, tests and control-plane edits only; root site rebuild, browser proof, dependency remediation, report retention, platform installs, provider/API, external writes, active automation, git, release, deploy, publish, cache refresh or target mutation require separate explicit approval"
+  "task_id": "TRACK11-G5-EVIDENCE-QUALITY-SITE-GATE",
+  "scope": "Track 11 G5 source documentation for evidence quality, generated artifact UX, graph intelligence, privacy/supply-chain/report-retention boundaries, HTML interaction proof boundaries, residual G1.1 follow-up routing and final DOC-M25 site-freshness gate",
+  "updated_at": "2026-06-22T16:18:18.0330897+03:00",
+  "approval_boundary": "Project-local codex_docs docs, tests and control-plane edits only; root site rebuild/search/sitemap freshness, browser proof, broad scans, dependency remediation, raw report retention, installs, provider/API, external writes, active automation, git, release, deploy, publish, cache refresh, global config or target mutation require separate explicit approval"
 }

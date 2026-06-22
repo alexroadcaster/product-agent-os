@@ -142,6 +142,18 @@ Plugin держит lifecycle последовательным. Он не дол
 
 Если публичная страница ссылается на graph, dashboard, cockpit, scorecard или report, она должна явно говорить, что это обзорная поверхность. Если claim влияет на readiness, release, security или approval, он должен вести к owning source: исходному файлу, source registry, command/eval/runtime evidence, owner decision или accepted gap.
 
+## G5 маршруты качества evidence
+
+`documentation_refresh_G5-A01` добавляет последний слой source-docs перед `DOC-M25`: качество generated artifacts, graph evidence, privacy/supply-chain границы, локальный HTML interaction boundary и residual follow-up.
+
+| Маршрут | Когда открывать |
+| --- | --- |
+| [Generated artifact UX criteria](generated-artifact-ux-criteria.md) | Проверить качество `generated HTML/report` для внутреннего review, owner review или будущего public transfer без claim на browser proof. |
+| [Graph intelligence contract](graph-intelligence-contract.md) | Использовать graph packets, ontology, rejected links, freshness или query output как orientation перед source reads. |
+| [Privacy, supply-chain and retention](privacy-supply-chain-retention.md) | Проверить cache/session summaries, SBOM, dependency audit, remediation и raw report-retention границы. |
+| [Local HTML interaction boundary](local-html-interaction-boundary.md) | Отделить local tabs/search/filter/diagram controls от approved browser-proof evidence. |
+| [Residual follow-up and site freshness](residual-follow-up-site-freshness.md) | Вести G1.1 residuals и финальный root `site`/search/sitemap gate через `DOC-M25`. |
+
 ## Doubt / verifier loop
 
 Doubt / verifier loop - ручной и локальный gate завершения для запросов "проверь еще раз". Пользовательский маршрут описан в [doubt-verification-loop.md](../playbooks/doubt-verification-loop.md): `completion-skeptic` читает `doubt_verification_packet`, сверяет claims, requirements, evidence и accepted gaps, затем возвращает `pass`, `revise`, `needs_more_context`, `blocked_by_approval` или `accepted_risk`.
@@ -156,6 +168,11 @@ Doubt / verifier loop - ручной и локальный gate завершен
 - [Engineering standards layer](development-standards.md) - как plugin внедряет DDD/FSD/TDD/ADD, docs-as-code и eval-driven quality без превращения их в dogma.
 - [Methodology intelligence](methodology-intelligence.md) - read-only audit, Delivery Map, recommendations, owner questions и staged artifact boundary.
 - [Scenarios и usage modes](scenarios.md) - first response, minimum artifacts, approval boundary и verification gates для product scenarios.
+- [Generated artifact UX criteria](generated-artifact-ux-criteria.md) - практический checklist качества `generated HTML/report` без claim на `Storybook` или browser proof.
+- [Graph intelligence contract](graph-intelligence-contract.md) - ontology, freshness, rejected-link ledger и граница source-read-before-edit.
+- [Privacy, supply-chain and retention](privacy-supply-chain-retention.md) - privacy, SBOM/audit/remediation и approval gates для report retention.
+- [Local HTML interaction boundary](local-html-interaction-boundary.md) - local controls, no-network policy, fallback и требования к browser-proof packet.
+- [Residual follow-up and site freshness](residual-follow-up-site-freshness.md) - финальный G1.1 residual routing и `DOC-M25` generated-site gate.
 - [Behavioral evals](behavioral-evals.md) - expected behavior, forbidden behavior, fixture eval и transcript/session replay.
 - [Codex compatibility](codex-compatibility.md) - Codex App, CLI, IDE extension, `.codex-plugin`, skills, MCP и staged hooks support boundary.
 - [Диаграммы и принципы работы](architecture.md) - state routing, staged-first merge, approval gates и runtime runner flow.

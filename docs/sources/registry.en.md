@@ -1406,6 +1406,18 @@ These markers preserve source-owned test routing after registry compaction. Full
 - DOC_M25_PENDING_SITE_PAGES
 - root `site` freshness deferred to final DOC-M25
 - auto-engagement/cache refresh/global config/fresh session proof unsupported in G4
+- Product-Agent OS Track 11 G5 evidence quality and final site gate docs packet
+- documentation_refresh_G5-A01
+- docs/superpowers/specs/documentation-refresh-g5-evidence-quality-site-gate-summary.json
+- docs/product-agent-os/generated-artifact-ux-criteria.md
+- docs/product-agent-os/graph-intelligence-contract.md
+- docs/product-agent-os/privacy-supply-chain-retention.md
+- docs/product-agent-os/local-html-interaction-boundary.md
+- docs/product-agent-os/residual-follow-up-site-freshness.md
+- implemented_source_docs_no_site_rebuild
+- DOC_M25_PENDING_SITE_PAGES
+- root `site` freshness deferred to final DOC-M25
+- browser proof, broad scans, dependency remediation and raw report retention approval_required in G5
 - .venv-docs/
 - .docs-tools/node/
 - .docs-tools/bin/

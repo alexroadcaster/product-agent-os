@@ -72,6 +72,18 @@ Guided question protocol использует typed `question_queue` packets so 
 
 Этот boundary остается conservative: generated graph artifacts, runtime graph summaries, analysis reports и HTML cockpit views являются только review evidence. Scanner и cockpit renderer не мутируют target workspaces. Live database/server, live external model/API embedding или cross-encoder providers, LLM semantic extraction, rationale/comment extraction и canonical graph mutation остаются approval-bound future actions, пока explicit approval не задаст redaction, cache, token budget, eval threshold и rollback path.
 
+## G5 evidence-quality routes
+
+Эти маршруты применяются, когда пользователь спрашивает не о новом поведении plugin, а о качестве и границах generated evidence.
+
+| route_id | Когда применять | Минимальный результат | Граница |
+| --- | --- | --- | --- |
+| `generated_artifact_ux_criteria` | HTML/report выглядит слишком диагностическим или готовится owner review. | Checklist качества, claim ceilings, `Vale` advisory status, `Storybook` trigger status. | Browser proof и Storybook install остаются `approval_required`. |
+| `graph_intelligence_contract` | Используются graph packets, ontology, rejected links, freshness или query packets. | Orientation summary, stale/rejected-link handling, source-read-before-edit reminder. | Graph packet не заменяет source read и не разрешает mutation. |
+| `privacy_supply_chain_retention` | Обсуждаются cache/session evidence, SBOM, vulnerability audit, remediation или raw reports. | Redaction and retention boundary, approval gates, unsupported claims. | Broad scans, remediation и raw report retention требуют отдельного approval. |
+| `local_html_interaction_boundary` | Generated HTML содержит tabs, search, filters или diagrams. | Local-only interaction rules, no-network policy, fallback и browser-proof packet fields. | Static check не равен browser proof. |
+| `residual_follow_up_site_freshness` | Нужно закрыть G1.1 residuals или понять final `DOC-M25`. | Residual routing table, private-target redaction policy, site freshness gate. | Root `site`, search и sitemap остаются stale до approved `DOC-M25`. |
+
 ## Scenario Matrix
 
 | usage_mode | Когда применять | first response | minimum artifacts | approval boundary | verification gates |

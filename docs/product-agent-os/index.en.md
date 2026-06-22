@@ -142,6 +142,18 @@ Public product pages explain capabilities, user route, outputs, boundaries and n
 
 If a public page references a graph, dashboard, cockpit, scorecard or report, it must say that the artifact is an orientation surface. If a claim affects readiness, release, security or approval, it must route to an owning source: source file, source registry, command/eval/runtime evidence, owner decision or accepted gap.
 
+## G5 Evidence Quality Routes
+
+`documentation_refresh_G5-A01` adds the final source-docs layer before `DOC-M25`: generated artifact quality, graph evidence, privacy/supply-chain boundaries, local HTML interaction boundaries and residual follow-up.
+
+| Route | When to open it |
+| --- | --- |
+| [Generated artifact UX criteria](generated-artifact-ux-criteria.md) | Review generated HTML/report quality for internal review, owner review or future public transfer without claiming browser proof. |
+| [Graph intelligence contract](graph-intelligence-contract.md) | Use graph packets, ontology, rejected links, freshness or query output for orientation before source reads. |
+| [Privacy, supply-chain and retention](privacy-supply-chain-retention.md) | Review cache/session summaries, SBOM, dependency audit, remediation and raw report-retention boundaries. |
+| [Local HTML interaction boundary](local-html-interaction-boundary.md) | Separate local tabs/search/filter/diagram controls from approved browser-proof evidence. |
+| [Residual follow-up and site freshness](residual-follow-up-site-freshness.md) | Follow G1.1 residuals and the final root `site`/search/sitemap gate through `DOC-M25`. |
+
 ## Where To Go Next
 
 - [Technical details and installation](technical.md) - real files, commands, capabilities and install boundary.
@@ -151,6 +163,11 @@ If a public page references a graph, dashboard, cockpit, scorecard or report, it
 - [Engineering standards layer](development-standards.md) - how the plugin applies DDD/FSD/TDD/ADD, docs-as-code and eval-driven quality without turning them into dogma.
 - [Methodology intelligence](methodology-intelligence.md) - read-only audit, Delivery Map, recommendations, owner questions and staged artifact boundary.
 - [Scenarios and usage modes](scenarios.md) - first response, minimum artifacts, approval boundary and verification gates for product scenarios.
+- [Generated artifact UX criteria](generated-artifact-ux-criteria.md) - practical checklist for generated HTML/report quality without Storybook/browser proof claim.
+- [Graph intelligence contract](graph-intelligence-contract.md) - ontology, freshness, rejected-link ledger and source-read-before-edit boundary.
+- [Privacy, supply-chain and retention](privacy-supply-chain-retention.md) - privacy, SBOM/audit/remediation and report-retention approval gates.
+- [Local HTML interaction boundary](local-html-interaction-boundary.md) - local controls, no-network policy, fallback and browser-proof packet requirements.
+- [Residual follow-up and site freshness](residual-follow-up-site-freshness.md) - final G1.1 residual routing and `DOC-M25` generated-site gate.
 - [Behavioral evals](behavioral-evals.md) - expected behavior, forbidden behavior, fixture eval and transcript/session replay.
 - [Codex compatibility](codex-compatibility.md) - Codex App, CLI, IDE extension, `.codex-plugin`, skills, MCP and staged hooks support boundary.
 - [Diagrams and operating principles](architecture.md) - state routing, staged-first merge, approval gates and runtime runner flow.
