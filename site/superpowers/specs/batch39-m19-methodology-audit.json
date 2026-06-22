@@ -1,0 +1,4492 @@
+﻿{
+  "complexity_profile": {
+    "confidence": "medium",
+    "reasons": [
+      "multiple implementation surfaces detected"
+    ],
+    "selected": "standard"
+  },
+  "delivery_map": {
+    "lifecycle_map": {
+      "artifact_strategy": "stage proposals before workspace writes",
+      "write_policy": "read_only"
+    },
+    "methodology_map": {
+      "backend": "present_unverified",
+      "codex_agentic_workflow": "present_unverified",
+      "delivery_release_operations": "present_unverified",
+      "quality_testing_evals": "present_unverified",
+      "requirements_domain": "applicable_missing",
+      "security_privacy_compliance": "present_unverified",
+      "solution_architecture": "applicable_missing"
+    },
+    "next_action_map": [
+      "Stage approval-record.md and stop before side-effecting sensitive actions.",
+      "Record owner-reviewed release evidence sufficiency before release-ready, deployed or published claims.",
+      "Stage the backend artifact or accepted gap before claiming backend completion.",
+      "Record current security evidence or accepted gap in RUNLOG.md before completion claim.",
+      "Stage the backend artifact or accepted gap before claiming backend completion."
+    ],
+    "surface_map": {
+      "ai": false,
+      "api": false,
+      "data": false,
+      "delivery": true,
+      "ui": true
+    },
+    "system_map": {
+      "control_plane_present": [
+        "AGENTS.md",
+        "REQUIREMENTS.md",
+        "PLAN.md",
+        "TEST.md",
+        "EVALS.md",
+        "RUNLOG.md"
+      ],
+      "directories_observed": 6,
+      "files_observed": 24
+    }
+  },
+  "intent_signals": [],
+  "maturity_level": {
+    "confidence": "medium",
+    "reasons": [
+      "production or release intent with CI or deployment evidence"
+    ],
+    "selected": "production"
+  },
+  "methodology_domains": [
+    {
+      "applicability_reason": "no deterministic signal detected",
+      "id": "business_product",
+      "source_file": "docs/methodologies/business-product.md",
+      "status": "not_applicable",
+      "title": "Business & Product"
+    },
+    {
+      "applicability_reason": "catalog domain applies to observed workspace or intent signals",
+      "id": "requirements_domain",
+      "source_file": "docs/methodologies/requirements-domain.md",
+      "status": "applicable_missing",
+      "title": "Requirements & Domain"
+    },
+    {
+      "applicability_reason": "catalog domain applies to observed workspace or intent signals",
+      "id": "solution_architecture",
+      "source_file": "docs/methodologies/solution-architecture.md",
+      "status": "applicable_missing",
+      "title": "Solution Architecture"
+    },
+    {
+      "applicability_reason": "catalog domain applies to observed workspace or intent signals",
+      "id": "quality_testing_evals",
+      "source_file": "docs/methodologies/quality-testing-evals.md",
+      "status": "present_unverified",
+      "title": "Quality, Testing & Evals"
+    },
+    {
+      "applicability_reason": "catalog domain applies to observed workspace or intent signals",
+      "id": "codex_agentic_workflow",
+      "source_file": "docs/methodologies/codex-agentic-workflow.md",
+      "status": "present_unverified",
+      "title": "Codex / Agentic Workflow"
+    },
+    {
+      "applicability_reason": "no deterministic signal detected",
+      "id": "frontend",
+      "source_file": "docs/methodologies/frontend.md",
+      "status": "not_applicable",
+      "title": "Frontend"
+    },
+    {
+      "applicability_reason": "catalog domain applies to observed workspace or intent signals",
+      "id": "backend",
+      "source_file": "docs/methodologies/backend.md",
+      "status": "present_unverified",
+      "title": "Backend"
+    },
+    {
+      "applicability_reason": "no deterministic signal detected",
+      "id": "api_integrations",
+      "source_file": "docs/methodologies/api-integrations.md",
+      "status": "not_applicable",
+      "title": "API & Integrations"
+    },
+    {
+      "applicability_reason": "no deterministic signal detected",
+      "id": "database_data",
+      "source_file": "docs/methodologies/database-data.md",
+      "status": "not_applicable",
+      "title": "Database & Data"
+    },
+    {
+      "applicability_reason": "no deterministic signal detected",
+      "id": "llm_ai_rag",
+      "source_file": "docs/methodologies/llm-ai-rag.md",
+      "status": "not_applicable",
+      "title": "LLM / AI / RAG"
+    },
+    {
+      "applicability_reason": "catalog domain applies to observed workspace or intent signals",
+      "id": "security_privacy_compliance",
+      "source_file": "docs/methodologies/security-privacy-compliance.md",
+      "status": "present_unverified",
+      "title": "Security, Privacy & Compliance"
+    },
+    {
+      "applicability_reason": "catalog domain applies to observed workspace or intent signals",
+      "id": "delivery_release_operations",
+      "source_file": "docs/methodologies/delivery-release-operations.md",
+      "status": "present_unverified",
+      "title": "Delivery, Release & Operations"
+    }
+  ],
+  "methodology_synthesis": {
+    "owner_questions": [
+      "What is the smallest safe next artifact to stage?",
+      "Who owns the highest-priority missing methodology gate?",
+      "Which detected surfaces are in scope for this slice?"
+    ],
+    "recommendation_groups": [
+      {
+        "artifact": "approval-record.md",
+        "consumer_domains": [
+          "codex_agentic_workflow",
+          "delivery_release_operations"
+        ],
+        "evidence_required": [
+          "approval",
+          "rollback",
+          "production data",
+          "payment/billing",
+          "secret rotation",
+          "policy change",
+          "external security system"
+        ],
+        "gates": [
+          "external_write_approval_present"
+        ],
+        "owner_domain": "security_privacy_compliance",
+        "priority": "P0_blocker",
+        "reasons": [
+          "Production data, payment/billing, secret rotation, policy changes or external security-system mutations need approval and rollback."
+        ],
+        "risk_rank": 100,
+        "safe_next_action": "Stage approval-record.md and stop before side-effecting sensitive actions.",
+        "source_domains": [
+          "security_privacy_compliance"
+        ]
+      },
+      {
+        "artifact": "release-readiness.md",
+        "consumer_domains": [
+          "database_data"
+        ],
+        "evidence_required": [
+          "owner acceptance",
+          "sufficient for the real release risk",
+          "accepted gap",
+          "owner",
+          "reason",
+          "review date",
+          "residual risk",
+          "stop condition"
+        ],
+        "gates": [
+          "release_evidence_sufficiency_owner_reviewed"
+        ],
+        "owner_domain": "delivery_release_operations",
+        "priority": "P0_blocker",
+        "reasons": [
+          "Release-ready, deployed or published claims need owner-reviewed evidence sufficiency."
+        ],
+        "risk_rank": 80,
+        "safe_next_action": "Record owner-reviewed release evidence sufficiency before release-ready, deployed or published claims.",
+        "source_domains": [
+          "delivery_release_operations"
+        ]
+      },
+      {
+        "artifact": "security-risk-review.md",
+        "consumer_domains": [
+          "solution_architecture",
+          "backend",
+          "api_integrations",
+          "database_data",
+          "llm_ai_rag"
+        ],
+        "evidence_required": [
+          "authn/authz",
+          "tokens",
+          "PII",
+          "money movement",
+          "privileged operations",
+          "external writes",
+          "irreversible side effects",
+          "secrets",
+          "rate limits",
+          "audit logging",
+          "sensitive data",
+          "abuse cases",
+          "no-secrets evidence",
+          "threat surface",
+          "auth or data impact",
+          "security tests",
+          "owner review",
+          "rollback",
+          "residual risk",
+          "authn/authz impact",
+          "payment/billing",
+          "production data",
+          "CI permissions",
+          "external write",
+          "owner",
+          "Codex Security scan status",
+          "run with evidence",
+          "not requested",
+          "blocked",
+          "no implied scan"
+        ],
+        "gates": [
+          "backend_security_reviewed",
+          "security_risk_review_present",
+          "security_sensitive_classification_present",
+          "codex_security_scan_status_present"
+        ],
+        "owner_domain": "security_privacy_compliance",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Security-sensitive backend behavior needs authn/authz, secrets, rate limits, audit logging and abuse-case review.",
+          "Security risk review needs threat surface, tests, owner review, rollback and residual risk.",
+          "Security-sensitive scope must be classified before implementation.",
+          "Codex Security scan status must be explicit: run with evidence, not requested or blocked."
+        ],
+        "risk_rank": 90,
+        "safe_next_action": "Stage the backend artifact or accepted gap before claiming backend completion.",
+        "source_domains": [
+          "backend",
+          "security_privacy_compliance"
+        ]
+      },
+      {
+        "artifact": "RUNLOG.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "current tests",
+          "review evidence",
+          "scan evidence",
+          "owner evidence",
+          "explicit gap",
+          "residual risk",
+          "safe next action",
+          "files inspected",
+          "signals observed",
+          "assumptions",
+          "unknowns"
+        ],
+        "gates": [
+          "security_evidence_before_completion",
+          "read_only_discovery_complete"
+        ],
+        "owner_domain": "",
+        "priority": "P0_blocker",
+        "reasons": [
+          "Security readiness claims need current tests, review evidence, scan evidence, owner evidence or explicit gap.",
+          "Read-only discovery evidence is missing before Codex workflow decisions."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Record current security evidence or accepted gap in RUNLOG.md before completion claim.",
+        "source_domains": [
+          "security_privacy_compliance",
+          "codex_agentic_workflow"
+        ]
+      },
+      {
+        "artifact": "backend-runtime-behavior.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "jobs/queues/remote calls",
+          "timeout",
+          "backoff/max attempts",
+          "idempotency",
+          "deduplication",
+          "ordering",
+          "backpressure",
+          "poison message",
+          "replay/recovery",
+          "process model",
+          "admin tasks",
+          "logs-as-event-stream",
+          "stateless process or accepted gap",
+          "lightweight read-only retry/idempotency signals",
+          "dependency/job context",
+          "deeper static analysis deferred",
+          "avoid false positives"
+        ],
+        "gates": [
+          "backend_runtime_behavior_present"
+        ],
+        "owner_domain": "",
+        "priority": "P0_blocker",
+        "reasons": [
+          "Backend runtime behavior needs retries, timeouts, idempotency, ordering, replay and failure modes documented."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage the backend artifact or accepted gap before claiming backend completion.",
+        "source_domains": [
+          "backend"
+        ]
+      },
+      {
+        "artifact": "backend-service-overview.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "changed backend responsibility",
+          "service/user behavior",
+          "affected backend unit",
+          "purpose",
+          "owner",
+          "inbound contracts",
+          "outbound dependencies",
+          "data stores",
+          "data ownership",
+          "deployment/runtime shape",
+          "operational assumptions",
+          "modular monolith default",
+          "microservice rationale",
+          "independent deploy/scale/team/ownership evidence",
+          "owner review",
+          "ADR",
+          "decision authority",
+          "boundary rationale",
+          "ADR link or accepted gap",
+          "ports/adapters boundary",
+          "domain logic independent from HTTP/DB/queue/vendor SDK",
+          "Twelve-Factor vocabulary",
+          "explicit dependencies",
+          "APIs/events/external providers",
+          "OpenAPI/AsyncAPI/Pact/protobuf/provider contracts where applicable",
+          "contract changes synced with code and tests"
+        ],
+        "gates": [
+          "backend_service_boundary_present"
+        ],
+        "owner_domain": "",
+        "priority": "P0_blocker",
+        "reasons": [
+          "Backend work needs service/module boundary, owner, contracts, dependencies, data ownership and runtime shape."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage the backend artifact or accepted gap before claiming backend completion.",
+        "source_domains": [
+          "backend"
+        ]
+      },
+      {
+        "artifact": "secrets-policy.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "secret storage",
+          "rotation",
+          "access scope",
+          "scanning",
+          "incident path",
+          "no raw secrets",
+          "no credentials",
+          "no access tokens"
+        ],
+        "gates": [
+          "secrets_policy_present"
+        ],
+        "owner_domain": "",
+        "priority": "P0_blocker",
+        "reasons": [
+          "Secrets/tokens/keys need storage, rotation, access and incident policy without values."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage secrets-policy.md and stop before any secret value handling.",
+        "source_domains": [
+          "security_privacy_compliance"
+        ]
+      },
+      {
+        "artifact": "EVALS.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "owner reviewed test/eval/runtime evidence sufficiency",
+          "real project risk",
+          "accepted gap owner",
+          "accepted gap reason",
+          "review date",
+          "downstream risk",
+          "follow-up",
+          "T9-S",
+          "cross-domain semantic sufficiency backlog"
+        ],
+        "gates": [
+          "backend_evidence_sufficiency_owner_reviewed"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Backend completion evidence needs human owner review of test/eval/runtime sufficiency for real project risk."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Record owner-reviewed evidence sufficiency in EVALS/RUNLOG or route the gap to T9-S.",
+        "source_domains": [
+          "backend"
+        ]
+      },
+      {
+        "artifact": "PLAN.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "use-case archetype",
+          "runtime route",
+          "owner",
+          "non-goals",
+          "approval boundary"
+        ],
+        "gates": [
+          "agentic_scope_classified"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Agentic scope and runtime path are not classified."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage the missing Codex workflow artifact before activating capabilities.",
+        "source_domains": [
+          "codex_agentic_workflow"
+        ]
+      },
+      {
+        "artifact": "abuse-rate-limit-plan.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "abuse cases",
+          "rate limits",
+          "monitoring",
+          "fallback",
+          "kill switch",
+          "escalation"
+        ],
+        "gates": [
+          "abuse_rate_limit_review_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Public endpoints, payments, uploads, messaging and AI/tool actions need abuse and rate-limit review."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage abuse-rate-limit-plan.md before exposing abuse-prone surfaces.",
+        "source_domains": [
+          "security_privacy_compliance"
+        ]
+      },
+      {
+        "artifact": "agent-skill-scorecard-ledger.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "current metrics evidence",
+          "scorecard ledger",
+          "redacted metrics report",
+          "owner review",
+          "cadence recommendation",
+          "approval boundary",
+          "rollback evidence for update candidates"
+        ],
+        "gates": [
+          "agent_skill_metrics_loop_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Agent, skill, subagent, prompt policy, tool routing or harness surfaces need a self-verification metrics loop before modernization readiness claims."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage agent-skill-scorecard-ledger.md and metrics report for owner review before modernization.",
+        "source_domains": [
+          "codex_agentic_workflow"
+        ]
+      },
+      {
+        "artifact": "ai-security-review.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "prompt injection",
+          "data leakage",
+          "tool misuse",
+          "excessive agency",
+          "RAG data exposure",
+          "red-team cases",
+          "eval evidence"
+        ],
+        "gates": [
+          "ai_security_review_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "AI/RAG/agent security needs prompt injection, data leakage, tool misuse and excessive agency review."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage ai-security-review.md and link to AI/RAG eval evidence before release.",
+        "source_domains": [
+          "security_privacy_compliance"
+        ]
+      },
+      {
+        "artifact": "api-security-review.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "security scheme",
+          "OAuth/JWT/session policy",
+          "scopes",
+          "error behavior",
+          "negative examples",
+          "OpenAPI or equivalent contract"
+        ],
+        "gates": [
+          "api_security_scheme_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "API security scheme, scopes, error behavior and negative examples are missing."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage api-security-review.md before API security claims.",
+        "source_domains": [
+          "security_privacy_compliance"
+        ]
+      },
+      {
+        "artifact": "architecture-fitness-functions.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "signals",
+          "logs",
+          "metrics",
+          "traces",
+          "dashboards or alerts",
+          "owner"
+        ],
+        "gates": [
+          "observability_architecture_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Service or runtime behavior needs observability architecture evidence."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage architecture-fitness-functions.md with observability checks.",
+        "source_domains": [
+          "solution_architecture"
+        ]
+      },
+      {
+        "artifact": "architecture-overview.md",
+        "consumer_domains": [
+          "backend"
+        ],
+        "evidence_required": [
+          "runtime unit",
+          "boundary",
+          "responsibility",
+          "owner",
+          "external actors",
+          "systems",
+          "trust boundary",
+          "deployment target",
+          "dependency",
+          "health check",
+          "rollback path",
+          "scope",
+          "stakeholders",
+          "architecture question",
+          "non-goals"
+        ],
+        "gates": [
+          "architecture_container_boundary_present",
+          "architecture_context_view_present",
+          "runtime_deployment_topology_present",
+          "solution_architecture_scope_present"
+        ],
+        "owner_domain": "solution_architecture",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Multiple runtime units need container, service, storage, queue or worker boundaries.",
+          "External users, systems or trust boundaries need a context view or equivalent boundary map.",
+          "Runtime or deployment changes need topology evidence.",
+          "Complex or multi-surface work needs architecture scope, stakeholders and non-goals."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage architecture-overview.md with scope, context and container boundaries.",
+        "source_domains": [
+          "solution_architecture"
+        ]
+      },
+      {
+        "artifact": "asvs-ssdf-mapping.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "ASVS Level 1",
+          "ASVS Level 2",
+          "ASVS Level 3",
+          "project risk",
+          "owner",
+          "evidence",
+          "explicit gaps",
+          "ASVS version",
+          "applicable controls",
+          "test evidence",
+          "accepted gaps",
+          "Secure SDLC",
+          "SSDF",
+          "SAMM",
+          "requirements",
+          "design",
+          "implementation",
+          "tests",
+          "release",
+          "vulnerability response"
+        ],
+        "gates": [
+          "asvs_level_selection_present",
+          "asvs_mapping_present",
+          "secure_sdlc_ssdf_samm_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "ASVS level selection needs applicability, project risk and explicit gaps.",
+          "Web/security controls need versioned ASVS evidence when ASVS applies.",
+          "Secure SDLC/SSDF and SAMM maturity vocabulary should be explicit for production or shared software."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Record ASVS level selection before treating ASVS mapping as settled.",
+        "source_domains": [
+          "security_privacy_compliance"
+        ]
+      },
+      {
+        "artifact": "audit-logging-review.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "event taxonomy",
+          "sensitive-data exclusions",
+          "redaction",
+          "retention",
+          "alerting",
+          "investigation owner"
+        ],
+        "gates": [
+          "audit_logging_review_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Sensitive/admin/payment/data-access actions need audit logging, redaction, retention and alerting."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage audit-logging-review.md before sensitive action readiness claims.",
+        "source_domains": [
+          "security_privacy_compliance"
+        ]
+      },
+      {
+        "artifact": "authz-negative-test-matrix.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "allowed behavior",
+          "forbidden behavior",
+          "BOLA",
+          "BFLA",
+          "object property authorization",
+          "role",
+          "scope",
+          "resource ownership",
+          "rate limits",
+          "unsafe consumption"
+        ],
+        "gates": [
+          "authz_negative_tests_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Authorization changes need allowed and forbidden behavior plus negative tests."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage authz-negative-test-matrix.md before auth/authz readiness claims.",
+        "source_domains": [
+          "security_privacy_compliance"
+        ]
+      },
+      {
+        "artifact": "automation-candidate.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "manual success evidence",
+          "stable inputs/outputs",
+          "owner",
+          "verification",
+          "approval requirements",
+          "value evidence",
+          "rollback/disable path",
+          "candidate-only",
+          "active schedules remain out of scope"
+        ],
+        "gates": [
+          "automation_manual_stability_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Release and operations automation promotion needs manual stability evidence before activation."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Keep automation candidate-only until manual stability, approvals, verification and rollback/disable evidence exist.",
+        "source_domains": [
+          "delivery_release_operations"
+        ]
+      },
+      {
+        "artifact": "backend-config-secrets-manifest.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "config/env keys without values",
+          "secret source",
+          "rotation notes",
+          "local/prod parity",
+          "required/optional",
+          "required/optional status",
+          "authn/authz config",
+          "tokens",
+          "PII",
+          "explicit dependencies",
+          "build-release-run boundary",
+          "dev/prod parity",
+          "no-secrets/no-private-data constraints",
+          "docs, prompts, fixtures, logs and examples"
+        ],
+        "gates": [
+          "backend_config_secrets_boundary_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Backend config and secrets need manifest without values, secret source, rotation and local/prod parity."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage the backend artifact or accepted gap before claiming backend completion.",
+        "source_domains": [
+          "backend"
+        ]
+      },
+      {
+        "artifact": "backend-data-consistency-record.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "local transaction",
+          "transaction boundary",
+          "consistency model",
+          "outbox",
+          "saga",
+          "compensation",
+          "monitoring",
+          "reconciliation",
+          "migration impact",
+          "recovery path"
+        ],
+        "gates": [
+          "backend_data_consistency_strategy_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Distributed data behavior needs transaction boundary, consistency model, outbox/saga/compensation and recovery path."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage the backend artifact or accepted gap before claiming backend completion.",
+        "source_domains": [
+          "backend"
+        ]
+      },
+      {
+        "artifact": "backend-dependency-failure-matrix.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "per dependency",
+          "timeout",
+          "retry/backoff/max attempts",
+          "circuit breaker non-applicability",
+          "fallback",
+          "alert owner",
+          "verification evidence"
+        ],
+        "gates": [
+          "backend_dependency_failure_matrix_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Remote dependencies need timeout, retry, circuit breaker or non-applicability, fallback, alert and owner policy."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage the backend artifact or accepted gap before claiming backend completion.",
+        "source_domains": [
+          "backend"
+        ]
+      },
+      {
+        "artifact": "backend-health-check-contract.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "health endpoint semantics",
+          "liveness",
+          "readiness",
+          "startup",
+          "platform equivalent",
+          "test evidence or accepted gap",
+          "platform-unavailable gap",
+          "tested where platform/runtime is available",
+          "platform-unavailable gap owner",
+          "platform-unavailable gap reason",
+          "platform-unavailable follow-up",
+          "documentation alone is not sufficient"
+        ],
+        "gates": [
+          "backend_health_probe_contract_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Deployable backend needs health semantics and verification or a platform-unavailable gap."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage the backend artifact or accepted gap before claiming backend completion.",
+        "source_domains": [
+          "backend"
+        ]
+      },
+      {
+        "artifact": "backend-job-queue-contract.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "queue/job",
+          "producer",
+          "consumer",
+          "payload contract",
+          "retry policy",
+          "dead-letter behavior",
+          "dead-letter queue",
+          "idempotency key",
+          "replay procedure",
+          "poison-message handling"
+        ],
+        "gates": [
+          "backend_job_queue_contract_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Jobs, queues, consumers or schedulers need payload, retry, DLQ, idempotency and replay contract."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage the backend artifact or accepted gap before claiming backend completion.",
+        "source_domains": [
+          "backend"
+        ]
+      },
+      {
+        "artifact": "backend-observability-map.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "traces",
+          "metrics",
+          "logs",
+          "dashboards",
+          "alerts",
+          "correlation IDs",
+          "redaction/no-secrets",
+          "context propagation",
+          "semantic conventions or accepted gaps",
+          "collector/instrumentation notes",
+          "redaction policy",
+          "alert ownership",
+          "no-private-payload logging",
+          "logs alone are not accepted as observability"
+        ],
+        "gates": [
+          "backend_observability_contract_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Backend runtime changes need traces, metrics, logs, dashboards, alerts, correlation IDs and redaction notes."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage the backend artifact or accepted gap before claiming backend completion.",
+        "source_domains": [
+          "backend"
+        ]
+      },
+      {
+        "artifact": "backend-release-rollback-notes.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "rollback trigger",
+          "feature flag",
+          "migration",
+          "rollback command or manual procedure",
+          "rollback/no-rollback rationale",
+          "verification command",
+          "data recovery/replay",
+          "irreversible side effects",
+          "owner approval",
+          "residual risk",
+          "contract changes synced with code/tests where applicable"
+        ],
+        "gates": [
+          "backend_rollback_plan_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Risky backend changes need rollback trigger, migration/feature flag plan, replay and data recovery path."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage the backend artifact or accepted gap before claiming backend completion.",
+        "source_domains": [
+          "backend"
+        ]
+      },
+      {
+        "artifact": "backend-slo-sheet.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "SLI/SLO or explicit gap",
+          "user journey",
+          "user-relevant SLI",
+          "SLO target",
+          "measurement window",
+          "alert policy",
+          "owner",
+          "no-telemetry or not-yet-production gap"
+        ],
+        "gates": [
+          "backend_slo_or_gap_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Production or user-facing backend needs SLI/SLO or explicit no-telemetry/not-yet-production gap."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage the backend artifact or accepted gap before claiming backend completion.",
+        "source_domains": [
+          "backend"
+        ]
+      },
+      {
+        "artifact": "ci-cd-workflow-inventory.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "workflow names",
+          "triggers",
+          "permissions",
+          "secrets",
+          "environments",
+          "required reviewers",
+          "wait timers",
+          "branch/tag restrictions",
+          "artifacts",
+          "cache",
+          "concurrency",
+          "external action pinning",
+          "remote CI mutation approval"
+        ],
+        "gates": [
+          "ci_cd_governance_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "CI/CD workflows that publish, deploy or mutate environments need governance review."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage ci-cd-workflow-inventory.md and ci-permissions-review.md before CI/CD release changes.",
+        "source_domains": [
+          "delivery_release_operations"
+        ]
+      },
+      {
+        "artifact": "ci-permissions-review.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "workflow triggers",
+          "token permissions",
+          "secrets",
+          "external actions",
+          "artifacts",
+          "cache",
+          "approval boundary"
+        ],
+        "gates": [
+          "ci_permission_review_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "CI/workflow/action changes need least-privilege token permissions and approval boundary."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage ci-permissions-review.md before changing CI permissions or workflow security.",
+        "source_domains": [
+          "security_privacy_compliance"
+        ]
+      },
+      {
+        "artifact": "compliance-overlay.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "applicability",
+          "owner",
+          "evidence",
+          "non-goals",
+          "gaps",
+          "review cadence",
+          "no certification claim",
+          "legal/regulatory",
+          "customer contractual",
+          "internal policy",
+          "finance",
+          "healthcare",
+          "minors",
+          "enterprise",
+          "public sector",
+          "marketplace",
+          "AI agent tooling"
+        ],
+        "gates": [
+          "compliance_overlay_present",
+          "compliance_overlay_taxonomy_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Compliance-sensitive work needs applicability, owner, evidence, non-goals, gaps and review cadence.",
+          "Compliance overlays must separate obligation types and domain overlays."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage compliance-overlay.md before compliance claims.",
+        "source_domains": [
+          "security_privacy_compliance"
+        ]
+      },
+      {
+        "artifact": "data-classification-register.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "data class",
+          "sensitivity",
+          "purpose",
+          "retention",
+          "access",
+          "sharing",
+          "storage",
+          "deletion/export",
+          "prompts",
+          "docs",
+          "fixtures",
+          "eval datasets",
+          "logs",
+          "traces",
+          "screenshots",
+          "redaction",
+          "no raw PII",
+          "no payment data"
+        ],
+        "gates": [
+          "data_classification_present",
+          "data_redaction_lifecycle_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Data class, purpose, retention, access and sharing are not explicit.",
+          "Data redaction lifecycle must cover artifact and runtime evidence channels."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage data-classification-register.md before examples, fixtures, evals, logs, traces, screenshots or docs.",
+        "source_domains": [
+          "security_privacy_compliance"
+        ]
+      },
+      {
+        "artifact": "deployment-plan.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "immutable artifact",
+          "release identifier",
+          "runtime configuration boundary",
+          "environment-specific config injection",
+          "accepted platform exception"
+        ],
+        "gates": [
+          "build_release_run_boundary_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Deployable release work needs build-release-run separation or an explicit platform exception."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage deployment-plan.md with build-release-run boundary or accepted platform exception.",
+        "source_domains": [
+          "delivery_release_operations"
+        ]
+      },
+      {
+        "artifact": "observability-map.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "logs",
+          "metrics",
+          "traces",
+          "dashboards",
+          "alert owner",
+          "redaction",
+          "sampling",
+          "user journey"
+        ],
+        "gates": [
+          "observability_release_evidence_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Runtime releases need diagnosable observability evidence or an accepted no-telemetry gap."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage observability-map.md before runtime release or record an explicit accepted gap.",
+        "source_domains": [
+          "delivery_release_operations"
+        ]
+      },
+      {
+        "artifact": "privacy-impact-record.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "purpose",
+          "data minimization",
+          "notice/consent",
+          "retention",
+          "deletion/export",
+          "access",
+          "sharing",
+          "legal owner"
+        ],
+        "gates": [
+          "privacy_impact_record_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Privacy-impacting work needs purpose, minimization, retention, deletion/export, sharing and owner review."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage privacy-impact-record.md before privacy-impacting implementation or claims.",
+        "source_domains": [
+          "security_privacy_compliance"
+        ]
+      },
+      {
+        "artifact": "sbom-manifest.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "internal app",
+          "package",
+          "plugin",
+          "container",
+          "release artifact",
+          "SBOM format",
+          "provenance",
+          "validation command",
+          "storage policy"
+        ],
+        "gates": [
+          "sbom_provenance_decision_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "SBOM/provenance decision must distinguish internal app, package, plugin, container and release artifact paths."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage sbom-manifest.md or explicit not-applicable/accepted-gap reason.",
+        "source_domains": [
+          "security_privacy_compliance"
+        ]
+      },
+      {
+        "artifact": "slo-spec.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "user journey",
+          "SLI",
+          "SLO",
+          "measurement source",
+          "alert policy",
+          "accepted no-telemetry",
+          "not-yet-production gap"
+        ],
+        "gates": [
+          "slo_or_operational_gap_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Production runtime releases need SLI/SLO evidence or an explicit operational gap."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage slo-spec.md for production service releases or document the operational gap.",
+        "source_domains": [
+          "delivery_release_operations"
+        ]
+      },
+      {
+        "artifact": "supply-chain-review.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "dependencies",
+          "licenses",
+          "vulnerabilities",
+          "SBOM",
+          "provenance",
+          "CI action pinning",
+          "release signing",
+          "update path"
+        ],
+        "gates": [
+          "supply_chain_review_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Dependency, package, container, CI action or release artifact changes need supply-chain review."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage supply-chain-review.md before release or package readiness claims.",
+        "source_domains": [
+          "security_privacy_compliance"
+        ]
+      },
+      {
+        "artifact": "threat-surface.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "actors",
+          "assets",
+          "entry points",
+          "trust boundaries",
+          "privileged operations",
+          "data exposed",
+          "external systems",
+          "abuse cases"
+        ],
+        "gates": [
+          "threat_surface_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Threat surface is missing for a sensitive boundary."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage threat-surface.md before touching sensitive boundaries.",
+        "source_domains": [
+          "security_privacy_compliance"
+        ]
+      },
+      {
+        "artifact": "versioning-policy.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "SemVer",
+          "non-SemVer",
+          "compatibility impact",
+          "deprecation",
+          "migration guidance",
+          "generated client",
+          "Conventional Commits",
+          "semantic-release",
+          "release-please",
+          "manual versioning",
+          "non-package policy",
+          "selected/rejected/deferred",
+          "reason",
+          "owner",
+          "no forced SemVer tooling"
+        ],
+        "gates": [
+          "version_impact_present",
+          "versioning_tooling_decision_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Public package, SDK, API, plugin or production release needs version and compatibility review.",
+          "Versioning tooling must be selected, rejected or deferred instead of forced by package files."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage versioning-policy.md before release text or package publishing.",
+        "source_domains": [
+          "delivery_release_operations"
+        ]
+      },
+      {
+        "artifact": "vulnerability-response-record.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "triage",
+          "severity",
+          "containment",
+          "fix evidence",
+          "verification",
+          "disclosure path",
+          "patch/release plan",
+          "post-incident lessons"
+        ],
+        "gates": [
+          "vulnerability_response_workflow_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Security bugs, advisories, leaked secrets, abuse incidents, dependency alerts or data exposure need incident workflow."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage vulnerability-response-record.md before closing security incident work.",
+        "source_domains": [
+          "security_privacy_compliance"
+        ]
+      },
+      {
+        "artifact": "ci-evidence-record.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "job or command",
+          "trigger",
+          "permissions",
+          "artifact",
+          "exit code",
+          "rerun path"
+        ],
+        "gates": [
+          "ci_quality_gate_present"
+        ],
+        "owner_domain": "",
+        "priority": "P2_recommended",
+        "reasons": [
+          "CI quality gate needs command/job, trigger, permissions, artifacts and current result."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage the smallest quality evidence artifact before implementation or completion claims.",
+        "source_domains": [
+          "quality_testing_evals"
+        ]
+      }
+    ],
+    "safe_next_action": "Stage approval-record.md and stop before side-effecting sensitive actions.",
+    "semantic_evidence_sufficiency": {
+      "accepted_gap_required_fields": [
+        "owner",
+        "reason",
+        "review_date",
+        "downstream_risk",
+        "follow_up_condition"
+      ],
+      "applies_when": [
+        "high-risk",
+        "production",
+        "release",
+        "security-sensitive",
+        "AI",
+        "public-contract"
+      ],
+      "consumer_domains": [
+        "security_privacy_compliance",
+        "delivery_release_operations",
+        "llm_ai_rag",
+        "api_integrations",
+        "database_data",
+        "solution_architecture",
+        "backend",
+        "frontend"
+      ],
+      "owner_domain": "quality_testing_evals",
+      "satisfied_by": [
+        "owner_reviewed_evidence_sufficient_for_real_project_risk",
+        "explicit_gap_accepted"
+      ]
+    },
+    "source_artifact_ledger": [
+      {
+        "artifact": "CHANGELOG.md",
+        "decision": "existing_non_template",
+        "owner_domain": "delivery_release_operations",
+        "reason": "Changelog is usually a project artifact; Product-Agent OS packages release notes and release readiness templates instead.",
+        "target": ""
+      },
+      {
+        "artifact": "SKILL.md",
+        "decision": "existing_non_template",
+        "owner_domain": "codex_agentic_workflow",
+        "reason": "Skill manifests live inside checked-in skill directories rather than staged project artifact templates.",
+        "target": ""
+      },
+      {
+        "artifact": "accessibility-review.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "frontend-accessibility-review.md"
+      },
+      {
+        "artifact": "agent-eval-case.md",
+        "decision": "alias",
+        "owner_domain": "codex_agentic_workflow",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "agent-eval-workflow.md"
+      },
+      {
+        "artifact": "agent-handoff-contract.md",
+        "decision": "alias",
+        "owner_domain": "codex_agentic_workflow",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "agent-task-packet.md"
+      },
+      {
+        "artifact": "agentic-workflow-readiness.md",
+        "decision": "alias",
+        "owner_domain": "codex_agentic_workflow",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "project-readiness.json"
+      },
+      {
+        "artifact": "ai-model-decision-record.md",
+        "decision": "alias",
+        "owner_domain": "llm_ai_rag",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "model-decision-record.md"
+      },
+      {
+        "artifact": "ai-prompt-contract.md",
+        "decision": "alias",
+        "owner_domain": "llm_ai_rag",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "prompt-contract.md"
+      },
+      {
+        "artifact": "architecture-tradeoff-record.md",
+        "decision": "alias",
+        "owner_domain": "solution_architecture",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "adr.md"
+      },
+      {
+        "artifact": "architecture.md",
+        "decision": "alias",
+        "owner_domain": "solution_architecture",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "architecture-overview.md"
+      },
+      {
+        "artifact": "artifact-manifest.md",
+        "decision": "alias",
+        "owner_domain": "delivery_release_operations",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "release-artifact-manifest.md"
+      },
+      {
+        "artifact": "asvs-mapping.md",
+        "decision": "alias",
+        "owner_domain": "security_privacy_compliance",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "asvs-ssdf-mapping.md"
+      },
+      {
+        "artifact": "audit-log-policy.md",
+        "decision": "alias",
+        "owner_domain": "security_privacy_compliance",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "audit-logging-review.md"
+      },
+      {
+        "artifact": "authz-matrix.md",
+        "decision": "alias",
+        "owner_domain": "security_privacy_compliance",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "authz-negative-test-matrix.md"
+      },
+      {
+        "artifact": "boundary-responsibility-map.md",
+        "decision": "alias",
+        "owner_domain": "solution_architecture",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "architecture-review-record.md"
+      },
+      {
+        "artifact": "bug-reproduction.md",
+        "decision": "alias",
+        "owner_domain": "quality_testing_evals",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "bug-rescue-report.md"
+      },
+      {
+        "artifact": "ci-cd-governance.md",
+        "decision": "alias",
+        "owner_domain": "delivery_release_operations",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "ci-cd-workflow-inventory.md"
+      },
+      {
+        "artifact": "ci-quality-gates.md",
+        "decision": "alias",
+        "owner_domain": "quality_testing_evals",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "ci-evidence-record.md"
+      },
+      {
+        "artifact": "compliance-applicability-matrix.md",
+        "decision": "alias",
+        "owner_domain": "security_privacy_compliance",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "compliance-overlay.md"
+      },
+      {
+        "artifact": "component-state-matrix.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "frontend-state-matrix.md"
+      },
+      {
+        "artifact": "context-map.md",
+        "decision": "alias",
+        "owner_domain": "solution_architecture",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "architecture-overview.md"
+      },
+      {
+        "artifact": "context-memory-policy.md",
+        "decision": "alias",
+        "owner_domain": "codex_agentic_workflow",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "model-reasoning-policy.md"
+      },
+      {
+        "artifact": "contract-test-map.md",
+        "decision": "alias",
+        "owner_domain": "quality_testing_evals",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "api-contract-review.md"
+      },
+      {
+        "artifact": "coverage-policy.md",
+        "decision": "alias",
+        "owner_domain": "quality_testing_evals",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "quality-strategy.md"
+      },
+      {
+        "artifact": "dependency-rules.md",
+        "decision": "alias",
+        "owner_domain": "solution_architecture",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "architecture-fitness-functions.md"
+      },
+      {
+        "artifact": "design-system-inventory.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "component-card.md"
+      },
+      {
+        "artifact": "design-tokens-reference.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "component-card.md"
+      },
+      {
+        "artifact": "docs-tooling-decision.md",
+        "decision": "alias",
+        "owner_domain": "solution_architecture",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "architecture-docs-tooling-decision.md"
+      },
+      {
+        "artifact": "event-catalog.md",
+        "decision": "alias",
+        "owner_domain": "requirements_domain",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "requirements-traceability-matrix.md"
+      },
+      {
+        "artifact": "evidence-packet.md",
+        "decision": "alias",
+        "owner_domain": "quality_testing_evals",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "RUNLOG.md"
+      },
+      {
+        "artifact": "flaky-test-ledger.md",
+        "decision": "alias",
+        "owner_domain": "quality_testing_evals",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "flaky-test-policy.md"
+      },
+      {
+        "artifact": "frontend-api-dependency-map.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "frontend-flow-spec.md"
+      },
+      {
+        "artifact": "frontend-boundary-map.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "component-card.md"
+      },
+      {
+        "artifact": "frontend-browser-support-matrix.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "frontend-visual-qa.md"
+      },
+      {
+        "artifact": "frontend-content-i18n-record.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "frontend-flow-spec.md"
+      },
+      {
+        "artifact": "frontend-interaction-test-matrix.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "frontend-flow-spec.md"
+      },
+      {
+        "artifact": "fsd-boundary-record.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "component-card.md"
+      },
+      {
+        "artifact": "glossary.md",
+        "decision": "alias",
+        "owner_domain": "requirements_domain",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "domain-modeling.md"
+      },
+      {
+        "artifact": "handoff-contract.md",
+        "decision": "existing_non_template",
+        "owner_domain": "codex_agentic_workflow",
+        "reason": "The canonical handoff contract is packaged as a lifecycle skill reference and consumed by agent-task-packet.md.",
+        "target": ""
+      },
+      {
+        "artifact": "hook-activation-record.md",
+        "decision": "alias",
+        "owner_domain": "codex_agentic_workflow",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "hook-governance.md"
+      },
+      {
+        "artifact": "incident-response-path.md",
+        "decision": "alias",
+        "owner_domain": "delivery_release_operations",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "incident-record.md"
+      },
+      {
+        "artifact": "keyboard-focus-map.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "frontend-accessibility-review.md"
+      },
+      {
+        "artifact": "manual-qa-charter.md",
+        "decision": "alias",
+        "owner_domain": "quality_testing_evals",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "manual-qa-evidence.md"
+      },
+      {
+        "artifact": "mutation-test-report.md",
+        "decision": "alias",
+        "owner_domain": "quality_testing_evals",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "test-eval-matrix.md"
+      },
+      {
+        "artifact": "plugin-blueprint.md",
+        "decision": "existing_non_template",
+        "owner_domain": "codex_agentic_workflow",
+        "reason": "Plugin blueprint lives under docs/artifact-templates for plugin design, not as a generated target-project template.",
+        "target": ""
+      },
+      {
+        "artifact": "post-release-measurement.md",
+        "decision": "alias",
+        "owner_domain": "delivery_release_operations",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "post-release-review.md"
+      },
+      {
+        "artifact": "property-test-spec.md",
+        "decision": "alias",
+        "owner_domain": "quality_testing_evals",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "test-eval-matrix.md"
+      },
+      {
+        "artifact": "quality-attribute-scenarios.md",
+        "decision": "alias",
+        "owner_domain": "solution_architecture",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "architecture-fitness-functions.md"
+      },
+      {
+        "artifact": "rag-grounding-eval.md",
+        "decision": "alias",
+        "owner_domain": "llm_ai_rag",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "rag-eval-report.md"
+      },
+      {
+        "artifact": "red-green-refactor-log.md",
+        "decision": "alias",
+        "owner_domain": "quality_testing_evals",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "test-eval-matrix.md"
+      },
+      {
+        "artifact": "regression-impact-map.md",
+        "decision": "alias",
+        "owner_domain": "quality_testing_evals",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "test-eval-matrix.md"
+      },
+      {
+        "artifact": "release-scope.md",
+        "decision": "alias",
+        "owner_domain": "delivery_release_operations",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "release-readiness.md"
+      },
+      {
+        "artifact": "responsive-viewport-matrix.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "frontend-visual-qa.md"
+      },
+      {
+        "artifact": "risk-based-test-plan.md",
+        "decision": "alias",
+        "owner_domain": "quality_testing_evals",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "quality-strategy.md"
+      },
+      {
+        "artifact": "rollout-strategy.md",
+        "decision": "alias",
+        "owner_domain": "delivery_release_operations",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "rollout-plan.md"
+      },
+      {
+        "artifact": "route-page-inventory.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "frontend-flow-spec.md"
+      },
+      {
+        "artifact": "runbook.md",
+        "decision": "alias",
+        "owner_domain": "delivery_release_operations",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "operations-runbook.md"
+      },
+      {
+        "artifact": "runtime-evidence.md",
+        "decision": "alias",
+        "owner_domain": "quality_testing_evals",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "manual-qa-evidence.md"
+      },
+      {
+        "artifact": "runtime-topology.md",
+        "decision": "alias",
+        "owner_domain": "solution_architecture",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "architecture-overview.md"
+      },
+      {
+        "artifact": "secrets-inventory.md",
+        "decision": "alias",
+        "owner_domain": "security_privacy_compliance",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "secrets-policy.md"
+      },
+      {
+        "artifact": "skill-candidate.md",
+        "decision": "alias",
+        "owner_domain": "codex_agentic_workflow",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "skill-promotion-record.md"
+      },
+      {
+        "artifact": "skill-failure-log.md",
+        "decision": "alias",
+        "owner_domain": "codex_agentic_workflow",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "skill-promotion-record.md"
+      },
+      {
+        "artifact": "slo.md",
+        "decision": "alias",
+        "owner_domain": "delivery_release_operations",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "slo-spec.md"
+      },
+      {
+        "artifact": "storybook-story-map.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "component-card.md"
+      },
+      {
+        "artifact": "threat-model.md",
+        "decision": "alias",
+        "owner_domain": "security_privacy_compliance",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "threat-surface.md"
+      },
+      {
+        "artifact": "ubiquitous-language.md",
+        "decision": "alias",
+        "owner_domain": "requirements_domain",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "domain-modeling.md"
+      },
+      {
+        "artifact": "ui-flow-spec.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "frontend-flow-spec.md"
+      },
+      {
+        "artifact": "version-impact-record.md",
+        "decision": "alias",
+        "owner_domain": "delivery_release_operations",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "versioning-policy.md"
+      },
+      {
+        "artifact": "visual-a11y-evidence.md",
+        "decision": "alias",
+        "owner_domain": "quality_testing_evals",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "manual-qa-evidence.md"
+      },
+      {
+        "artifact": "visual-evidence-packet.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "frontend-visual-qa.md"
+      }
+    ],
+    "status": "ok",
+    "write_policy": "read_only"
+  },
+  "observed_signals": [
+    {
+      "evidence": [
+        "package.json"
+      ],
+      "id": "stack_manifest",
+      "source": "workspace"
+    },
+    {
+      "evidence": [
+        ".github/workflows/release-draft.yml"
+      ],
+      "id": "ci_configuration",
+      "source": "workspace"
+    },
+    {
+      "evidence": [
+        "dockerfile"
+      ],
+      "id": "deployment_configuration",
+      "source": "workspace"
+    },
+    {
+      "evidence": [
+        "changelog.md",
+        "release-notes.md"
+      ],
+      "id": "release_file",
+      "source": "workspace"
+    },
+    {
+      "evidence": [
+        "agents.md",
+        "evals.md",
+        "plan.md",
+        "requirements.md",
+        "runlog.md",
+        "test.md"
+      ],
+      "id": "docs_or_control_plane",
+      "source": "workspace"
+    },
+    {
+      "evidence": [
+        ".codex",
+        ".codex/automation-candidates/automation-candidate.md",
+        "agents.md"
+      ],
+      "id": "codex_agentic_workflow",
+      "source": "workspace"
+    },
+    {
+      "evidence": [
+        ".codex/automation-candidates/automation-candidate.md"
+      ],
+      "id": "agent_skill_metrics_loop",
+      "source": "workspace"
+    },
+    {
+      "evidence": [
+        "dockerfile"
+      ],
+      "id": "backend",
+      "source": "workspace"
+    },
+    {
+      "evidence": [
+        ".codex/automation-candidates",
+        ".codex/automation-candidates/automation-candidate.md",
+        ".github/workflows/release-draft.yml",
+        "release/approval-record.md"
+      ],
+      "id": "security_sensitive_surface",
+      "source": "workspace"
+    },
+    {
+      "evidence": [
+        "test.md"
+      ],
+      "id": "test_evidence",
+      "source": "workspace"
+    },
+    {
+      "evidence": [
+        ".github/workflows",
+        ".github/workflows/release-draft.yml",
+        "evals.md",
+        "runlog.md",
+        "test.md"
+      ],
+      "id": "quality_testing_signal",
+      "source": "workspace"
+    },
+    {
+      "evidence": [
+        "package.json"
+      ],
+      "id": "test_command",
+      "source": "workspace"
+    }
+  ],
+  "provisional_assumptions": [
+    "Audit is read-only and does not approve workspace writes."
+  ],
+  "questions_for_owner": [
+    "What is the smallest safe next artifact to stage?",
+    "Who owns the highest-priority missing methodology gate?",
+    "Which detected surfaces are in scope for this slice?"
+  ],
+  "recommendation_groups": [
+    {
+      "artifact": "approval-record.md",
+      "consumer_domains": [
+        "codex_agentic_workflow",
+        "delivery_release_operations"
+      ],
+      "evidence_required": [
+        "approval",
+        "rollback",
+        "production data",
+        "payment/billing",
+        "secret rotation",
+        "policy change",
+        "external security system"
+      ],
+      "gates": [
+        "external_write_approval_present"
+      ],
+      "owner_domain": "security_privacy_compliance",
+      "priority": "P0_blocker",
+      "reasons": [
+        "Production data, payment/billing, secret rotation, policy changes or external security-system mutations need approval and rollback."
+      ],
+      "risk_rank": 100,
+      "safe_next_action": "Stage approval-record.md and stop before side-effecting sensitive actions.",
+      "source_domains": [
+        "security_privacy_compliance"
+      ]
+    },
+    {
+      "artifact": "release-readiness.md",
+      "consumer_domains": [
+        "database_data"
+      ],
+      "evidence_required": [
+        "owner acceptance",
+        "sufficient for the real release risk",
+        "accepted gap",
+        "owner",
+        "reason",
+        "review date",
+        "residual risk",
+        "stop condition"
+      ],
+      "gates": [
+        "release_evidence_sufficiency_owner_reviewed"
+      ],
+      "owner_domain": "delivery_release_operations",
+      "priority": "P0_blocker",
+      "reasons": [
+        "Release-ready, deployed or published claims need owner-reviewed evidence sufficiency."
+      ],
+      "risk_rank": 80,
+      "safe_next_action": "Record owner-reviewed release evidence sufficiency before release-ready, deployed or published claims.",
+      "source_domains": [
+        "delivery_release_operations"
+      ]
+    },
+    {
+      "artifact": "security-risk-review.md",
+      "consumer_domains": [
+        "solution_architecture",
+        "backend",
+        "api_integrations",
+        "database_data",
+        "llm_ai_rag"
+      ],
+      "evidence_required": [
+        "authn/authz",
+        "tokens",
+        "PII",
+        "money movement",
+        "privileged operations",
+        "external writes",
+        "irreversible side effects",
+        "secrets",
+        "rate limits",
+        "audit logging",
+        "sensitive data",
+        "abuse cases",
+        "no-secrets evidence",
+        "threat surface",
+        "auth or data impact",
+        "security tests",
+        "owner review",
+        "rollback",
+        "residual risk",
+        "authn/authz impact",
+        "payment/billing",
+        "production data",
+        "CI permissions",
+        "external write",
+        "owner",
+        "Codex Security scan status",
+        "run with evidence",
+        "not requested",
+        "blocked",
+        "no implied scan"
+      ],
+      "gates": [
+        "backend_security_reviewed",
+        "security_risk_review_present",
+        "security_sensitive_classification_present",
+        "codex_security_scan_status_present"
+      ],
+      "owner_domain": "security_privacy_compliance",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Security-sensitive backend behavior needs authn/authz, secrets, rate limits, audit logging and abuse-case review.",
+        "Security risk review needs threat surface, tests, owner review, rollback and residual risk.",
+        "Security-sensitive scope must be classified before implementation.",
+        "Codex Security scan status must be explicit: run with evidence, not requested or blocked."
+      ],
+      "risk_rank": 90,
+      "safe_next_action": "Stage the backend artifact or accepted gap before claiming backend completion.",
+      "source_domains": [
+        "backend",
+        "security_privacy_compliance"
+      ]
+    },
+    {
+      "artifact": "RUNLOG.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "current tests",
+        "review evidence",
+        "scan evidence",
+        "owner evidence",
+        "explicit gap",
+        "residual risk",
+        "safe next action",
+        "files inspected",
+        "signals observed",
+        "assumptions",
+        "unknowns"
+      ],
+      "gates": [
+        "security_evidence_before_completion",
+        "read_only_discovery_complete"
+      ],
+      "owner_domain": "",
+      "priority": "P0_blocker",
+      "reasons": [
+        "Security readiness claims need current tests, review evidence, scan evidence, owner evidence or explicit gap.",
+        "Read-only discovery evidence is missing before Codex workflow decisions."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Record current security evidence or accepted gap in RUNLOG.md before completion claim.",
+      "source_domains": [
+        "security_privacy_compliance",
+        "codex_agentic_workflow"
+      ]
+    },
+    {
+      "artifact": "backend-runtime-behavior.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "jobs/queues/remote calls",
+        "timeout",
+        "backoff/max attempts",
+        "idempotency",
+        "deduplication",
+        "ordering",
+        "backpressure",
+        "poison message",
+        "replay/recovery",
+        "process model",
+        "admin tasks",
+        "logs-as-event-stream",
+        "stateless process or accepted gap",
+        "lightweight read-only retry/idempotency signals",
+        "dependency/job context",
+        "deeper static analysis deferred",
+        "avoid false positives"
+      ],
+      "gates": [
+        "backend_runtime_behavior_present"
+      ],
+      "owner_domain": "",
+      "priority": "P0_blocker",
+      "reasons": [
+        "Backend runtime behavior needs retries, timeouts, idempotency, ordering, replay and failure modes documented."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage the backend artifact or accepted gap before claiming backend completion.",
+      "source_domains": [
+        "backend"
+      ]
+    },
+    {
+      "artifact": "backend-service-overview.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "changed backend responsibility",
+        "service/user behavior",
+        "affected backend unit",
+        "purpose",
+        "owner",
+        "inbound contracts",
+        "outbound dependencies",
+        "data stores",
+        "data ownership",
+        "deployment/runtime shape",
+        "operational assumptions",
+        "modular monolith default",
+        "microservice rationale",
+        "independent deploy/scale/team/ownership evidence",
+        "owner review",
+        "ADR",
+        "decision authority",
+        "boundary rationale",
+        "ADR link or accepted gap",
+        "ports/adapters boundary",
+        "domain logic independent from HTTP/DB/queue/vendor SDK",
+        "Twelve-Factor vocabulary",
+        "explicit dependencies",
+        "APIs/events/external providers",
+        "OpenAPI/AsyncAPI/Pact/protobuf/provider contracts where applicable",
+        "contract changes synced with code and tests"
+      ],
+      "gates": [
+        "backend_service_boundary_present"
+      ],
+      "owner_domain": "",
+      "priority": "P0_blocker",
+      "reasons": [
+        "Backend work needs service/module boundary, owner, contracts, dependencies, data ownership and runtime shape."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage the backend artifact or accepted gap before claiming backend completion.",
+      "source_domains": [
+        "backend"
+      ]
+    },
+    {
+      "artifact": "secrets-policy.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "secret storage",
+        "rotation",
+        "access scope",
+        "scanning",
+        "incident path",
+        "no raw secrets",
+        "no credentials",
+        "no access tokens"
+      ],
+      "gates": [
+        "secrets_policy_present"
+      ],
+      "owner_domain": "",
+      "priority": "P0_blocker",
+      "reasons": [
+        "Secrets/tokens/keys need storage, rotation, access and incident policy without values."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage secrets-policy.md and stop before any secret value handling.",
+      "source_domains": [
+        "security_privacy_compliance"
+      ]
+    },
+    {
+      "artifact": "EVALS.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "owner reviewed test/eval/runtime evidence sufficiency",
+        "real project risk",
+        "accepted gap owner",
+        "accepted gap reason",
+        "review date",
+        "downstream risk",
+        "follow-up",
+        "T9-S",
+        "cross-domain semantic sufficiency backlog"
+      ],
+      "gates": [
+        "backend_evidence_sufficiency_owner_reviewed"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Backend completion evidence needs human owner review of test/eval/runtime sufficiency for real project risk."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Record owner-reviewed evidence sufficiency in EVALS/RUNLOG or route the gap to T9-S.",
+      "source_domains": [
+        "backend"
+      ]
+    },
+    {
+      "artifact": "PLAN.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "use-case archetype",
+        "runtime route",
+        "owner",
+        "non-goals",
+        "approval boundary"
+      ],
+      "gates": [
+        "agentic_scope_classified"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Agentic scope and runtime path are not classified."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage the missing Codex workflow artifact before activating capabilities.",
+      "source_domains": [
+        "codex_agentic_workflow"
+      ]
+    },
+    {
+      "artifact": "abuse-rate-limit-plan.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "abuse cases",
+        "rate limits",
+        "monitoring",
+        "fallback",
+        "kill switch",
+        "escalation"
+      ],
+      "gates": [
+        "abuse_rate_limit_review_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Public endpoints, payments, uploads, messaging and AI/tool actions need abuse and rate-limit review."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage abuse-rate-limit-plan.md before exposing abuse-prone surfaces.",
+      "source_domains": [
+        "security_privacy_compliance"
+      ]
+    },
+    {
+      "artifact": "agent-skill-scorecard-ledger.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "current metrics evidence",
+        "scorecard ledger",
+        "redacted metrics report",
+        "owner review",
+        "cadence recommendation",
+        "approval boundary",
+        "rollback evidence for update candidates"
+      ],
+      "gates": [
+        "agent_skill_metrics_loop_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Agent, skill, subagent, prompt policy, tool routing or harness surfaces need a self-verification metrics loop before modernization readiness claims."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage agent-skill-scorecard-ledger.md and metrics report for owner review before modernization.",
+      "source_domains": [
+        "codex_agentic_workflow"
+      ]
+    },
+    {
+      "artifact": "ai-security-review.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "prompt injection",
+        "data leakage",
+        "tool misuse",
+        "excessive agency",
+        "RAG data exposure",
+        "red-team cases",
+        "eval evidence"
+      ],
+      "gates": [
+        "ai_security_review_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "AI/RAG/agent security needs prompt injection, data leakage, tool misuse and excessive agency review."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage ai-security-review.md and link to AI/RAG eval evidence before release.",
+      "source_domains": [
+        "security_privacy_compliance"
+      ]
+    },
+    {
+      "artifact": "api-security-review.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "security scheme",
+        "OAuth/JWT/session policy",
+        "scopes",
+        "error behavior",
+        "negative examples",
+        "OpenAPI or equivalent contract"
+      ],
+      "gates": [
+        "api_security_scheme_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "API security scheme, scopes, error behavior and negative examples are missing."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage api-security-review.md before API security claims.",
+      "source_domains": [
+        "security_privacy_compliance"
+      ]
+    },
+    {
+      "artifact": "architecture-fitness-functions.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "signals",
+        "logs",
+        "metrics",
+        "traces",
+        "dashboards or alerts",
+        "owner"
+      ],
+      "gates": [
+        "observability_architecture_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Service or runtime behavior needs observability architecture evidence."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage architecture-fitness-functions.md with observability checks.",
+      "source_domains": [
+        "solution_architecture"
+      ]
+    },
+    {
+      "artifact": "architecture-overview.md",
+      "consumer_domains": [
+        "backend"
+      ],
+      "evidence_required": [
+        "runtime unit",
+        "boundary",
+        "responsibility",
+        "owner",
+        "external actors",
+        "systems",
+        "trust boundary",
+        "deployment target",
+        "dependency",
+        "health check",
+        "rollback path",
+        "scope",
+        "stakeholders",
+        "architecture question",
+        "non-goals"
+      ],
+      "gates": [
+        "architecture_container_boundary_present",
+        "architecture_context_view_present",
+        "runtime_deployment_topology_present",
+        "solution_architecture_scope_present"
+      ],
+      "owner_domain": "solution_architecture",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Multiple runtime units need container, service, storage, queue or worker boundaries.",
+        "External users, systems or trust boundaries need a context view or equivalent boundary map.",
+        "Runtime or deployment changes need topology evidence.",
+        "Complex or multi-surface work needs architecture scope, stakeholders and non-goals."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage architecture-overview.md with scope, context and container boundaries.",
+      "source_domains": [
+        "solution_architecture"
+      ]
+    },
+    {
+      "artifact": "asvs-ssdf-mapping.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "ASVS Level 1",
+        "ASVS Level 2",
+        "ASVS Level 3",
+        "project risk",
+        "owner",
+        "evidence",
+        "explicit gaps",
+        "ASVS version",
+        "applicable controls",
+        "test evidence",
+        "accepted gaps",
+        "Secure SDLC",
+        "SSDF",
+        "SAMM",
+        "requirements",
+        "design",
+        "implementation",
+        "tests",
+        "release",
+        "vulnerability response"
+      ],
+      "gates": [
+        "asvs_level_selection_present",
+        "asvs_mapping_present",
+        "secure_sdlc_ssdf_samm_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "ASVS level selection needs applicability, project risk and explicit gaps.",
+        "Web/security controls need versioned ASVS evidence when ASVS applies.",
+        "Secure SDLC/SSDF and SAMM maturity vocabulary should be explicit for production or shared software."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Record ASVS level selection before treating ASVS mapping as settled.",
+      "source_domains": [
+        "security_privacy_compliance"
+      ]
+    },
+    {
+      "artifact": "audit-logging-review.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "event taxonomy",
+        "sensitive-data exclusions",
+        "redaction",
+        "retention",
+        "alerting",
+        "investigation owner"
+      ],
+      "gates": [
+        "audit_logging_review_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Sensitive/admin/payment/data-access actions need audit logging, redaction, retention and alerting."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage audit-logging-review.md before sensitive action readiness claims.",
+      "source_domains": [
+        "security_privacy_compliance"
+      ]
+    },
+    {
+      "artifact": "authz-negative-test-matrix.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "allowed behavior",
+        "forbidden behavior",
+        "BOLA",
+        "BFLA",
+        "object property authorization",
+        "role",
+        "scope",
+        "resource ownership",
+        "rate limits",
+        "unsafe consumption"
+      ],
+      "gates": [
+        "authz_negative_tests_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Authorization changes need allowed and forbidden behavior plus negative tests."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage authz-negative-test-matrix.md before auth/authz readiness claims.",
+      "source_domains": [
+        "security_privacy_compliance"
+      ]
+    },
+    {
+      "artifact": "automation-candidate.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "manual success evidence",
+        "stable inputs/outputs",
+        "owner",
+        "verification",
+        "approval requirements",
+        "value evidence",
+        "rollback/disable path",
+        "candidate-only",
+        "active schedules remain out of scope"
+      ],
+      "gates": [
+        "automation_manual_stability_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Release and operations automation promotion needs manual stability evidence before activation."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Keep automation candidate-only until manual stability, approvals, verification and rollback/disable evidence exist.",
+      "source_domains": [
+        "delivery_release_operations"
+      ]
+    },
+    {
+      "artifact": "backend-config-secrets-manifest.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "config/env keys without values",
+        "secret source",
+        "rotation notes",
+        "local/prod parity",
+        "required/optional",
+        "required/optional status",
+        "authn/authz config",
+        "tokens",
+        "PII",
+        "explicit dependencies",
+        "build-release-run boundary",
+        "dev/prod parity",
+        "no-secrets/no-private-data constraints",
+        "docs, prompts, fixtures, logs and examples"
+      ],
+      "gates": [
+        "backend_config_secrets_boundary_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Backend config and secrets need manifest without values, secret source, rotation and local/prod parity."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage the backend artifact or accepted gap before claiming backend completion.",
+      "source_domains": [
+        "backend"
+      ]
+    },
+    {
+      "artifact": "backend-data-consistency-record.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "local transaction",
+        "transaction boundary",
+        "consistency model",
+        "outbox",
+        "saga",
+        "compensation",
+        "monitoring",
+        "reconciliation",
+        "migration impact",
+        "recovery path"
+      ],
+      "gates": [
+        "backend_data_consistency_strategy_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Distributed data behavior needs transaction boundary, consistency model, outbox/saga/compensation and recovery path."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage the backend artifact or accepted gap before claiming backend completion.",
+      "source_domains": [
+        "backend"
+      ]
+    },
+    {
+      "artifact": "backend-dependency-failure-matrix.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "per dependency",
+        "timeout",
+        "retry/backoff/max attempts",
+        "circuit breaker non-applicability",
+        "fallback",
+        "alert owner",
+        "verification evidence"
+      ],
+      "gates": [
+        "backend_dependency_failure_matrix_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Remote dependencies need timeout, retry, circuit breaker or non-applicability, fallback, alert and owner policy."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage the backend artifact or accepted gap before claiming backend completion.",
+      "source_domains": [
+        "backend"
+      ]
+    },
+    {
+      "artifact": "backend-health-check-contract.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "health endpoint semantics",
+        "liveness",
+        "readiness",
+        "startup",
+        "platform equivalent",
+        "test evidence or accepted gap",
+        "platform-unavailable gap",
+        "tested where platform/runtime is available",
+        "platform-unavailable gap owner",
+        "platform-unavailable gap reason",
+        "platform-unavailable follow-up",
+        "documentation alone is not sufficient"
+      ],
+      "gates": [
+        "backend_health_probe_contract_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Deployable backend needs health semantics and verification or a platform-unavailable gap."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage the backend artifact or accepted gap before claiming backend completion.",
+      "source_domains": [
+        "backend"
+      ]
+    },
+    {
+      "artifact": "backend-job-queue-contract.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "queue/job",
+        "producer",
+        "consumer",
+        "payload contract",
+        "retry policy",
+        "dead-letter behavior",
+        "dead-letter queue",
+        "idempotency key",
+        "replay procedure",
+        "poison-message handling"
+      ],
+      "gates": [
+        "backend_job_queue_contract_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Jobs, queues, consumers or schedulers need payload, retry, DLQ, idempotency and replay contract."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage the backend artifact or accepted gap before claiming backend completion.",
+      "source_domains": [
+        "backend"
+      ]
+    },
+    {
+      "artifact": "backend-observability-map.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "traces",
+        "metrics",
+        "logs",
+        "dashboards",
+        "alerts",
+        "correlation IDs",
+        "redaction/no-secrets",
+        "context propagation",
+        "semantic conventions or accepted gaps",
+        "collector/instrumentation notes",
+        "redaction policy",
+        "alert ownership",
+        "no-private-payload logging",
+        "logs alone are not accepted as observability"
+      ],
+      "gates": [
+        "backend_observability_contract_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Backend runtime changes need traces, metrics, logs, dashboards, alerts, correlation IDs and redaction notes."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage the backend artifact or accepted gap before claiming backend completion.",
+      "source_domains": [
+        "backend"
+      ]
+    },
+    {
+      "artifact": "backend-release-rollback-notes.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "rollback trigger",
+        "feature flag",
+        "migration",
+        "rollback command or manual procedure",
+        "rollback/no-rollback rationale",
+        "verification command",
+        "data recovery/replay",
+        "irreversible side effects",
+        "owner approval",
+        "residual risk",
+        "contract changes synced with code/tests where applicable"
+      ],
+      "gates": [
+        "backend_rollback_plan_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Risky backend changes need rollback trigger, migration/feature flag plan, replay and data recovery path."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage the backend artifact or accepted gap before claiming backend completion.",
+      "source_domains": [
+        "backend"
+      ]
+    },
+    {
+      "artifact": "backend-slo-sheet.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "SLI/SLO or explicit gap",
+        "user journey",
+        "user-relevant SLI",
+        "SLO target",
+        "measurement window",
+        "alert policy",
+        "owner",
+        "no-telemetry or not-yet-production gap"
+      ],
+      "gates": [
+        "backend_slo_or_gap_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Production or user-facing backend needs SLI/SLO or explicit no-telemetry/not-yet-production gap."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage the backend artifact or accepted gap before claiming backend completion.",
+      "source_domains": [
+        "backend"
+      ]
+    },
+    {
+      "artifact": "ci-cd-workflow-inventory.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "workflow names",
+        "triggers",
+        "permissions",
+        "secrets",
+        "environments",
+        "required reviewers",
+        "wait timers",
+        "branch/tag restrictions",
+        "artifacts",
+        "cache",
+        "concurrency",
+        "external action pinning",
+        "remote CI mutation approval"
+      ],
+      "gates": [
+        "ci_cd_governance_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "CI/CD workflows that publish, deploy or mutate environments need governance review."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage ci-cd-workflow-inventory.md and ci-permissions-review.md before CI/CD release changes.",
+      "source_domains": [
+        "delivery_release_operations"
+      ]
+    },
+    {
+      "artifact": "ci-permissions-review.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "workflow triggers",
+        "token permissions",
+        "secrets",
+        "external actions",
+        "artifacts",
+        "cache",
+        "approval boundary"
+      ],
+      "gates": [
+        "ci_permission_review_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "CI/workflow/action changes need least-privilege token permissions and approval boundary."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage ci-permissions-review.md before changing CI permissions or workflow security.",
+      "source_domains": [
+        "security_privacy_compliance"
+      ]
+    },
+    {
+      "artifact": "compliance-overlay.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "applicability",
+        "owner",
+        "evidence",
+        "non-goals",
+        "gaps",
+        "review cadence",
+        "no certification claim",
+        "legal/regulatory",
+        "customer contractual",
+        "internal policy",
+        "finance",
+        "healthcare",
+        "minors",
+        "enterprise",
+        "public sector",
+        "marketplace",
+        "AI agent tooling"
+      ],
+      "gates": [
+        "compliance_overlay_present",
+        "compliance_overlay_taxonomy_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Compliance-sensitive work needs applicability, owner, evidence, non-goals, gaps and review cadence.",
+        "Compliance overlays must separate obligation types and domain overlays."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage compliance-overlay.md before compliance claims.",
+      "source_domains": [
+        "security_privacy_compliance"
+      ]
+    },
+    {
+      "artifact": "data-classification-register.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "data class",
+        "sensitivity",
+        "purpose",
+        "retention",
+        "access",
+        "sharing",
+        "storage",
+        "deletion/export",
+        "prompts",
+        "docs",
+        "fixtures",
+        "eval datasets",
+        "logs",
+        "traces",
+        "screenshots",
+        "redaction",
+        "no raw PII",
+        "no payment data"
+      ],
+      "gates": [
+        "data_classification_present",
+        "data_redaction_lifecycle_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Data class, purpose, retention, access and sharing are not explicit.",
+        "Data redaction lifecycle must cover artifact and runtime evidence channels."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage data-classification-register.md before examples, fixtures, evals, logs, traces, screenshots or docs.",
+      "source_domains": [
+        "security_privacy_compliance"
+      ]
+    },
+    {
+      "artifact": "deployment-plan.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "immutable artifact",
+        "release identifier",
+        "runtime configuration boundary",
+        "environment-specific config injection",
+        "accepted platform exception"
+      ],
+      "gates": [
+        "build_release_run_boundary_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Deployable release work needs build-release-run separation or an explicit platform exception."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage deployment-plan.md with build-release-run boundary or accepted platform exception.",
+      "source_domains": [
+        "delivery_release_operations"
+      ]
+    },
+    {
+      "artifact": "observability-map.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "logs",
+        "metrics",
+        "traces",
+        "dashboards",
+        "alert owner",
+        "redaction",
+        "sampling",
+        "user journey"
+      ],
+      "gates": [
+        "observability_release_evidence_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Runtime releases need diagnosable observability evidence or an accepted no-telemetry gap."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage observability-map.md before runtime release or record an explicit accepted gap.",
+      "source_domains": [
+        "delivery_release_operations"
+      ]
+    },
+    {
+      "artifact": "privacy-impact-record.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "purpose",
+        "data minimization",
+        "notice/consent",
+        "retention",
+        "deletion/export",
+        "access",
+        "sharing",
+        "legal owner"
+      ],
+      "gates": [
+        "privacy_impact_record_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Privacy-impacting work needs purpose, minimization, retention, deletion/export, sharing and owner review."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage privacy-impact-record.md before privacy-impacting implementation or claims.",
+      "source_domains": [
+        "security_privacy_compliance"
+      ]
+    },
+    {
+      "artifact": "sbom-manifest.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "internal app",
+        "package",
+        "plugin",
+        "container",
+        "release artifact",
+        "SBOM format",
+        "provenance",
+        "validation command",
+        "storage policy"
+      ],
+      "gates": [
+        "sbom_provenance_decision_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "SBOM/provenance decision must distinguish internal app, package, plugin, container and release artifact paths."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage sbom-manifest.md or explicit not-applicable/accepted-gap reason.",
+      "source_domains": [
+        "security_privacy_compliance"
+      ]
+    },
+    {
+      "artifact": "slo-spec.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "user journey",
+        "SLI",
+        "SLO",
+        "measurement source",
+        "alert policy",
+        "accepted no-telemetry",
+        "not-yet-production gap"
+      ],
+      "gates": [
+        "slo_or_operational_gap_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Production runtime releases need SLI/SLO evidence or an explicit operational gap."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage slo-spec.md for production service releases or document the operational gap.",
+      "source_domains": [
+        "delivery_release_operations"
+      ]
+    },
+    {
+      "artifact": "supply-chain-review.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "dependencies",
+        "licenses",
+        "vulnerabilities",
+        "SBOM",
+        "provenance",
+        "CI action pinning",
+        "release signing",
+        "update path"
+      ],
+      "gates": [
+        "supply_chain_review_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Dependency, package, container, CI action or release artifact changes need supply-chain review."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage supply-chain-review.md before release or package readiness claims.",
+      "source_domains": [
+        "security_privacy_compliance"
+      ]
+    },
+    {
+      "artifact": "threat-surface.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "actors",
+        "assets",
+        "entry points",
+        "trust boundaries",
+        "privileged operations",
+        "data exposed",
+        "external systems",
+        "abuse cases"
+      ],
+      "gates": [
+        "threat_surface_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Threat surface is missing for a sensitive boundary."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage threat-surface.md before touching sensitive boundaries.",
+      "source_domains": [
+        "security_privacy_compliance"
+      ]
+    },
+    {
+      "artifact": "versioning-policy.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "SemVer",
+        "non-SemVer",
+        "compatibility impact",
+        "deprecation",
+        "migration guidance",
+        "generated client",
+        "Conventional Commits",
+        "semantic-release",
+        "release-please",
+        "manual versioning",
+        "non-package policy",
+        "selected/rejected/deferred",
+        "reason",
+        "owner",
+        "no forced SemVer tooling"
+      ],
+      "gates": [
+        "version_impact_present",
+        "versioning_tooling_decision_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Public package, SDK, API, plugin or production release needs version and compatibility review.",
+        "Versioning tooling must be selected, rejected or deferred instead of forced by package files."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage versioning-policy.md before release text or package publishing.",
+      "source_domains": [
+        "delivery_release_operations"
+      ]
+    },
+    {
+      "artifact": "vulnerability-response-record.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "triage",
+        "severity",
+        "containment",
+        "fix evidence",
+        "verification",
+        "disclosure path",
+        "patch/release plan",
+        "post-incident lessons"
+      ],
+      "gates": [
+        "vulnerability_response_workflow_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Security bugs, advisories, leaked secrets, abuse incidents, dependency alerts or data exposure need incident workflow."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage vulnerability-response-record.md before closing security incident work.",
+      "source_domains": [
+        "security_privacy_compliance"
+      ]
+    },
+    {
+      "artifact": "ci-evidence-record.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "job or command",
+        "trigger",
+        "permissions",
+        "artifact",
+        "exit code",
+        "rerun path"
+      ],
+      "gates": [
+        "ci_quality_gate_present"
+      ],
+      "owner_domain": "",
+      "priority": "P2_recommended",
+      "reasons": [
+        "CI quality gate needs command/job, trigger, permissions, artifacts and current result."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage the smallest quality evidence artifact before implementation or completion claims.",
+      "source_domains": [
+        "quality_testing_evals"
+      ]
+    }
+  ],
+  "recommendations": [
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before production data, external writes, secrets or deploy actions",
+      "artifact": "backend-runtime-behavior.md",
+      "domain": "backend",
+      "evidence_owner": "backend owner",
+      "evidence_required": [
+        "jobs/queues/remote calls",
+        "timeout",
+        "backoff/max attempts",
+        "idempotency",
+        "deduplication",
+        "ordering",
+        "backpressure",
+        "poison message",
+        "replay/recovery",
+        "process model",
+        "admin tasks",
+        "logs-as-event-stream",
+        "stateless process or accepted gap",
+        "lightweight read-only retry/idempotency signals",
+        "dependency/job context",
+        "deeper static analysis deferred",
+        "avoid false positives"
+      ],
+      "gate": "backend_runtime_behavior_present",
+      "priority": "P0_blocker",
+      "reason": "Backend runtime behavior needs retries, timeouts, idempotency, ordering, replay and failure modes documented.",
+      "residual_risk": "Retries, workers or distributed behavior can amplify failures without idempotency and replay evidence.",
+      "safe_next_action": "Stage the backend artifact or accepted gap before claiming backend completion."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before production data, external writes, secrets or deploy actions",
+      "artifact": "backend-service-overview.md",
+      "domain": "backend",
+      "evidence_owner": "backend owner",
+      "evidence_required": [
+        "changed backend responsibility",
+        "service/user behavior",
+        "affected backend unit",
+        "purpose",
+        "owner",
+        "inbound contracts",
+        "outbound dependencies",
+        "data stores",
+        "data ownership",
+        "deployment/runtime shape",
+        "operational assumptions",
+        "modular monolith default",
+        "microservice rationale",
+        "independent deploy/scale/team/ownership evidence",
+        "owner review",
+        "ADR",
+        "decision authority",
+        "boundary rationale",
+        "ADR link or accepted gap",
+        "ports/adapters boundary",
+        "domain logic independent from HTTP/DB/queue/vendor SDK",
+        "Twelve-Factor vocabulary",
+        "explicit dependencies",
+        "APIs/events/external providers",
+        "OpenAPI/AsyncAPI/Pact/protobuf/provider contracts where applicable",
+        "contract changes synced with code and tests"
+      ],
+      "gate": "backend_service_boundary_present",
+      "priority": "P0_blocker",
+      "reason": "Backend work needs service/module boundary, owner, contracts, dependencies, data ownership and runtime shape.",
+      "residual_risk": "Package or service names can hide unclear ownership and runtime boundaries.",
+      "safe_next_action": "Stage the backend artifact or accepted gap before claiming backend completion."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, review date, residual risk and follow-up condition",
+      "approval_boundary": "approval_required before publish, tag, release creation, artifact upload, deploy, package registry, marketplace/store submission, PR creation, branch push or CI/CD environment mutation",
+      "artifact": "release-readiness.md",
+      "domain": "delivery_release_operations",
+      "evidence_owner": "release operator",
+      "evidence_required": [
+        "owner acceptance",
+        "sufficient for the real release risk",
+        "accepted gap",
+        "owner",
+        "reason",
+        "review date",
+        "residual risk",
+        "stop condition"
+      ],
+      "gate": "release_evidence_sufficiency_owner_reviewed",
+      "priority": "P0_blocker",
+      "reason": "Release-ready, deployed or published claims need owner-reviewed evidence sufficiency.",
+      "residual_risk": "Recorded checks can still be insufficient for the actual release risk without owner review or an accepted gap.",
+      "safe_next_action": "Record owner-reviewed release evidence sufficiency before release-ready, deployed or published claims."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "approval_required before production data, payment/billing, secret rotation, policy change or external security-system mutation",
+      "artifact": "approval-record.md",
+      "domain": "security_privacy_compliance",
+      "evidence_owner": "security or product owner",
+      "evidence_required": [
+        "approval",
+        "rollback",
+        "production data",
+        "payment/billing",
+        "secret rotation",
+        "policy change",
+        "external security system"
+      ],
+      "gate": "external_write_approval_present",
+      "priority": "P0_blocker",
+      "reason": "Production data, payment/billing, secret rotation, policy changes or external security-system mutations need approval and rollback.",
+      "residual_risk": "Unapproved sensitive mutations can expose data, move money or change security posture.",
+      "safe_next_action": "Stage approval-record.md and stop before side-effecting sensitive actions."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "approval_required before secret rotation, credential changes or secret-manager mutation",
+      "artifact": "secrets-policy.md",
+      "domain": "security_privacy_compliance",
+      "evidence_owner": "security or product owner",
+      "evidence_required": [
+        "secret storage",
+        "rotation",
+        "access scope",
+        "scanning",
+        "incident path",
+        "no raw secrets",
+        "no credentials",
+        "no access tokens"
+      ],
+      "gate": "secrets_policy_present",
+      "priority": "P0_blocker",
+      "reason": "Secrets/tokens/keys need storage, rotation, access and incident policy without values.",
+      "residual_risk": "Raw secrets can leak through prompts, logs, traces, screenshots, fixtures or generated docs.",
+      "safe_next_action": "Stage secrets-policy.md and stop before any secret value handling."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before secrets, payment, production data, policy or external security-system mutation",
+      "artifact": "RUNLOG.md",
+      "domain": "security_privacy_compliance",
+      "evidence_owner": "security or product owner",
+      "evidence_required": [
+        "current tests",
+        "review evidence",
+        "scan evidence",
+        "owner evidence",
+        "explicit gap",
+        "residual risk",
+        "safe next action"
+      ],
+      "gate": "security_evidence_before_completion",
+      "priority": "P0_blocker",
+      "reason": "Security readiness claims need current tests, review evidence, scan evidence, owner evidence or explicit gap.",
+      "residual_risk": "Security/privacy/compliance readiness can be overstated without owner-reviewed evidence and explicit gaps.",
+      "safe_next_action": "Record current security evidence or accepted gap in RUNLOG.md before completion claim."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before production data, external writes, secrets or deploy actions",
+      "artifact": "backend-config-secrets-manifest.md",
+      "domain": "backend",
+      "evidence_owner": "backend owner",
+      "evidence_required": [
+        "config/env keys without values",
+        "secret source",
+        "rotation notes",
+        "local/prod parity",
+        "required/optional",
+        "required/optional status",
+        "authn/authz config",
+        "tokens",
+        "PII",
+        "explicit dependencies",
+        "build-release-run boundary",
+        "dev/prod parity",
+        "no-secrets/no-private-data constraints",
+        "docs, prompts, fixtures, logs and examples"
+      ],
+      "gate": "backend_config_secrets_boundary_present",
+      "priority": "P1_high_risk",
+      "reason": "Backend config and secrets need manifest without values, secret source, rotation and local/prod parity.",
+      "residual_risk": "Secrets or environment assumptions can leak into docs, prompts, fixtures and logs, or expose production payloads and private customer data.",
+      "safe_next_action": "Stage the backend artifact or accepted gap before claiming backend completion."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before production data, external writes, secrets or deploy actions",
+      "artifact": "backend-data-consistency-record.md",
+      "domain": "backend",
+      "evidence_owner": "backend and data owners",
+      "evidence_required": [
+        "local transaction",
+        "transaction boundary",
+        "consistency model",
+        "outbox",
+        "saga",
+        "compensation",
+        "monitoring",
+        "reconciliation",
+        "migration impact",
+        "recovery path"
+      ],
+      "gate": "backend_data_consistency_strategy_present",
+      "priority": "P1_high_risk",
+      "reason": "Distributed data behavior needs transaction boundary, consistency model, outbox/saga/compensation and recovery path.",
+      "residual_risk": "Distributed workflow can partially commit without compensation or reconciliation evidence.",
+      "safe_next_action": "Stage the backend artifact or accepted gap before claiming backend completion."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before production data, external writes, secrets or deploy actions",
+      "artifact": "backend-dependency-failure-matrix.md",
+      "domain": "backend",
+      "evidence_owner": "backend owner",
+      "evidence_required": [
+        "per dependency",
+        "timeout",
+        "retry/backoff/max attempts",
+        "circuit breaker non-applicability",
+        "fallback",
+        "alert owner",
+        "verification evidence"
+      ],
+      "gate": "backend_dependency_failure_matrix_present",
+      "priority": "P1_high_risk",
+      "reason": "Remote dependencies need timeout, retry, circuit breaker or non-applicability, fallback, alert and owner policy.",
+      "residual_risk": "A backend dependency can fail in production with no bounded failure policy.",
+      "safe_next_action": "Stage the backend artifact or accepted gap before claiming backend completion."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before production data, external writes, secrets or deploy actions",
+      "artifact": "EVALS.md",
+      "domain": "backend",
+      "evidence_owner": "human owner and backend owner",
+      "evidence_required": [
+        "owner reviewed test/eval/runtime evidence sufficiency",
+        "real project risk",
+        "accepted gap owner",
+        "accepted gap reason",
+        "review date",
+        "downstream risk",
+        "follow-up",
+        "T9-S",
+        "cross-domain semantic sufficiency backlog"
+      ],
+      "gate": "backend_evidence_sufficiency_owner_reviewed",
+      "priority": "P1_high_risk",
+      "reason": "Backend completion evidence needs human owner review of test/eval/runtime sufficiency for real project risk.",
+      "residual_risk": "A backend route can prove evidence shape without proving the human owner accepted that the specific checks are sufficient for this project's production risk.",
+      "safe_next_action": "Record owner-reviewed evidence sufficiency in EVALS/RUNLOG or route the gap to T9-S."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before production data, external writes, secrets or deploy actions",
+      "artifact": "backend-health-check-contract.md",
+      "domain": "backend",
+      "evidence_owner": "backend owner",
+      "evidence_required": [
+        "health endpoint semantics",
+        "liveness",
+        "readiness",
+        "startup",
+        "platform equivalent",
+        "test evidence or accepted gap",
+        "platform-unavailable gap",
+        "tested where platform/runtime is available",
+        "platform-unavailable gap owner",
+        "platform-unavailable gap reason",
+        "platform-unavailable follow-up",
+        "documentation alone is not sufficient"
+      ],
+      "gate": "backend_health_probe_contract_present",
+      "priority": "P1_high_risk",
+      "reason": "Deployable backend needs health semantics and verification or a platform-unavailable gap.",
+      "residual_risk": "A vague health endpoint can route traffic to an alive but not ready service.",
+      "safe_next_action": "Stage the backend artifact or accepted gap before claiming backend completion."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before production data, external writes, secrets or deploy actions",
+      "artifact": "backend-job-queue-contract.md",
+      "domain": "backend",
+      "evidence_owner": "backend owner",
+      "evidence_required": [
+        "queue/job",
+        "producer",
+        "consumer",
+        "payload contract",
+        "retry policy",
+        "dead-letter behavior",
+        "dead-letter queue",
+        "idempotency key",
+        "replay procedure",
+        "poison-message handling"
+      ],
+      "gate": "backend_job_queue_contract_present",
+      "priority": "P1_high_risk",
+      "reason": "Jobs, queues, consumers or schedulers need payload, retry, DLQ, idempotency and replay contract.",
+      "residual_risk": "Duplicate or poison messages can corrupt state without dedupe and recovery procedures.",
+      "safe_next_action": "Stage the backend artifact or accepted gap before claiming backend completion."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before production data, external writes, secrets or deploy actions",
+      "artifact": "backend-observability-map.md",
+      "domain": "backend",
+      "evidence_owner": "backend owner",
+      "evidence_required": [
+        "traces",
+        "metrics",
+        "logs",
+        "dashboards",
+        "alerts",
+        "correlation IDs",
+        "redaction/no-secrets",
+        "context propagation",
+        "semantic conventions or accepted gaps",
+        "collector/instrumentation notes",
+        "redaction policy",
+        "alert ownership",
+        "no-private-payload logging",
+        "logs alone are not accepted as observability"
+      ],
+      "gate": "backend_observability_contract_present",
+      "priority": "P1_high_risk",
+      "reason": "Backend runtime changes need traces, metrics, logs, dashboards, alerts, correlation IDs and redaction notes.",
+      "residual_risk": "Logs alone cannot prove observability or safe production debugging.",
+      "safe_next_action": "Stage the backend artifact or accepted gap before claiming backend completion."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before production data, external writes, secrets or deploy actions",
+      "artifact": "backend-release-rollback-notes.md",
+      "domain": "backend",
+      "evidence_owner": "backend and release owners",
+      "evidence_required": [
+        "rollback trigger",
+        "feature flag",
+        "migration",
+        "rollback command or manual procedure",
+        "rollback/no-rollback rationale",
+        "verification command",
+        "data recovery/replay",
+        "irreversible side effects",
+        "owner approval",
+        "residual risk",
+        "contract changes synced with code/tests where applicable"
+      ],
+      "gate": "backend_rollback_plan_present",
+      "priority": "P1_high_risk",
+      "reason": "Risky backend changes need rollback trigger, migration/feature flag plan, replay and data recovery path.",
+      "residual_risk": "Production backend changes can become irreversible without rollback, recovery or replay evidence.",
+      "safe_next_action": "Stage the backend artifact or accepted gap before claiming backend completion."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "approval_required before touching auth, secrets, PII, money movement, privileged operations or external writes",
+      "artifact": "security-risk-review.md",
+      "domain": "backend",
+      "evidence_owner": "security or backend owner",
+      "evidence_required": [
+        "authn/authz",
+        "tokens",
+        "PII",
+        "money movement",
+        "privileged operations",
+        "external writes",
+        "irreversible side effects",
+        "secrets",
+        "rate limits",
+        "audit logging",
+        "sensitive data",
+        "abuse cases",
+        "no-secrets evidence"
+      ],
+      "gate": "backend_security_reviewed",
+      "priority": "P1_high_risk",
+      "reason": "Security-sensitive backend behavior needs authn/authz, secrets, rate limits, audit logging and abuse-case review.",
+      "residual_risk": "Security-sensitive backend behavior can ship without explicit risk ownership.",
+      "safe_next_action": "Stage the backend artifact or accepted gap before claiming backend completion."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before production data, external writes, secrets or deploy actions",
+      "artifact": "backend-slo-sheet.md",
+      "domain": "backend",
+      "evidence_owner": "backend owner",
+      "evidence_required": [
+        "SLI/SLO or explicit gap",
+        "user journey",
+        "user-relevant SLI",
+        "SLO target",
+        "measurement window",
+        "alert policy",
+        "owner",
+        "no-telemetry or not-yet-production gap"
+      ],
+      "gate": "backend_slo_or_gap_present",
+      "priority": "P1_high_risk",
+      "reason": "Production or user-facing backend needs SLI/SLO or explicit no-telemetry/not-yet-production gap.",
+      "residual_risk": "Reliability expectations can remain implicit until incidents expose them.",
+      "safe_next_action": "Stage the backend artifact or accepted gap before claiming backend completion."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "approval_required before workspace writes, external writes or activation",
+      "artifact": "agent-skill-scorecard-ledger.md",
+      "domain": "codex_agentic_workflow",
+      "evidence_owner": "product-agent operator",
+      "evidence_required": [
+        "current metrics evidence",
+        "scorecard ledger",
+        "redacted metrics report",
+        "owner review",
+        "cadence recommendation",
+        "approval boundary",
+        "rollback evidence for update candidates"
+      ],
+      "gate": "agent_skill_metrics_loop_present",
+      "priority": "P1_high_risk",
+      "reason": "Agent, skill, subagent, prompt policy, tool routing or harness surfaces need a self-verification metrics loop before modernization readiness claims.",
+      "residual_risk": "Detected agentic surfaces are present_unverified until current metrics evidence, owner review, cadence and approval boundaries prove modernization safety.",
+      "safe_next_action": "Stage agent-skill-scorecard-ledger.md and metrics report for owner review before modernization."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "approval_required before workspace writes, external writes or activation",
+      "artifact": "PLAN.md",
+      "domain": "codex_agentic_workflow",
+      "evidence_owner": "product-agent operator",
+      "evidence_required": [
+        "use-case archetype",
+        "runtime route",
+        "owner",
+        "non-goals",
+        "approval boundary"
+      ],
+      "gate": "agentic_scope_classified",
+      "priority": "P1_high_risk",
+      "reason": "Agentic scope and runtime path are not classified.",
+      "residual_risk": "Agent orchestration can be selected before the smallest useful workflow is known.",
+      "safe_next_action": "Stage the missing Codex workflow artifact before activating capabilities."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "approval_required before workspace writes, external writes or activation",
+      "artifact": "RUNLOG.md",
+      "domain": "codex_agentic_workflow",
+      "evidence_owner": "product-agent operator",
+      "evidence_required": [
+        "files inspected",
+        "signals observed",
+        "assumptions",
+        "unknowns",
+        "safe next action"
+      ],
+      "gate": "read_only_discovery_complete",
+      "priority": "P1_high_risk",
+      "reason": "Read-only discovery evidence is missing before Codex workflow decisions.",
+      "residual_risk": "Implementation can start from stale or incomplete repository context.",
+      "safe_next_action": "Stage the missing Codex workflow artifact before activating capabilities."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, review date, residual risk and follow-up condition",
+      "approval_boundary": "approval_required before publish, tag, release creation, artifact upload, deploy, package registry, marketplace/store submission, PR creation, branch push or CI/CD environment mutation",
+      "artifact": "automation-candidate.md",
+      "domain": "delivery_release_operations",
+      "evidence_owner": "release operator",
+      "evidence_required": [
+        "manual success evidence",
+        "stable inputs/outputs",
+        "owner",
+        "verification",
+        "approval requirements",
+        "value evidence",
+        "rollback/disable path",
+        "candidate-only",
+        "active schedules remain out of scope"
+      ],
+      "gate": "automation_manual_stability_present",
+      "priority": "P1_high_risk",
+      "reason": "Release and operations automation promotion needs manual stability evidence before activation.",
+      "residual_risk": "Repeatable release or operations automation can repeat damage without owner-approved evidence and a disable path.",
+      "safe_next_action": "Keep automation candidate-only until manual stability, approvals, verification and rollback/disable evidence exist."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, review date, residual risk and follow-up condition",
+      "approval_boundary": "approval_required before publish, tag, release creation, artifact upload, deploy, package registry, marketplace/store submission, PR creation, branch push or CI/CD environment mutation",
+      "artifact": "deployment-plan.md",
+      "domain": "delivery_release_operations",
+      "evidence_owner": "release operator",
+      "evidence_required": [
+        "immutable artifact",
+        "release identifier",
+        "runtime configuration boundary",
+        "environment-specific config injection",
+        "accepted platform exception"
+      ],
+      "gate": "build_release_run_boundary_present",
+      "priority": "P1_high_risk",
+      "reason": "Deployable release work needs build-release-run separation or an explicit platform exception.",
+      "residual_risk": "Rebuild-per-environment or unclear runtime configuration can hide what actually shipped.",
+      "safe_next_action": "Stage deployment-plan.md with build-release-run boundary or accepted platform exception."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, review date, residual risk and follow-up condition",
+      "approval_boundary": "approval_required before publish, tag, release creation, artifact upload, deploy, package registry, marketplace/store submission, PR creation, branch push or CI/CD environment mutation",
+      "artifact": "ci-cd-workflow-inventory.md",
+      "domain": "delivery_release_operations",
+      "evidence_owner": "release operator",
+      "evidence_required": [
+        "workflow names",
+        "triggers",
+        "permissions",
+        "secrets",
+        "environments",
+        "required reviewers",
+        "wait timers",
+        "branch/tag restrictions",
+        "artifacts",
+        "cache",
+        "concurrency",
+        "external action pinning",
+        "remote CI mutation approval"
+      ],
+      "gate": "ci_cd_governance_present",
+      "priority": "P1_high_risk",
+      "reason": "CI/CD workflows that publish, deploy or mutate environments need governance review.",
+      "residual_risk": "Workflow edits can silently expand permissions, secrets access, deployment triggers or external release actions.",
+      "safe_next_action": "Stage ci-cd-workflow-inventory.md and ci-permissions-review.md before CI/CD release changes."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, review date, residual risk and follow-up condition",
+      "approval_boundary": "approval_required before publish, tag, release creation, artifact upload, deploy, package registry, marketplace/store submission, PR creation, branch push or CI/CD environment mutation",
+      "artifact": "observability-map.md",
+      "domain": "delivery_release_operations",
+      "evidence_owner": "release operator",
+      "evidence_required": [
+        "logs",
+        "metrics",
+        "traces",
+        "dashboards",
+        "alert owner",
+        "redaction",
+        "sampling",
+        "user journey"
+      ],
+      "gate": "observability_release_evidence_present",
+      "priority": "P1_high_risk",
+      "reason": "Runtime releases need diagnosable observability evidence or an accepted no-telemetry gap.",
+      "residual_risk": "A release can reach users without enough runtime evidence for incident response or rollback judgement.",
+      "safe_next_action": "Stage observability-map.md before runtime release or record an explicit accepted gap."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, review date, residual risk and follow-up condition",
+      "approval_boundary": "approval_required before publish, tag, release creation, artifact upload, deploy, package registry, marketplace/store submission, PR creation, branch push or CI/CD environment mutation",
+      "artifact": "slo-spec.md",
+      "domain": "delivery_release_operations",
+      "evidence_owner": "release operator",
+      "evidence_required": [
+        "user journey",
+        "SLI",
+        "SLO",
+        "measurement source",
+        "alert policy",
+        "accepted no-telemetry",
+        "not-yet-production gap"
+      ],
+      "gate": "slo_or_operational_gap_present",
+      "priority": "P1_high_risk",
+      "reason": "Production runtime releases need SLI/SLO evidence or an explicit operational gap.",
+      "residual_risk": "Reliability expectations can be implied without measurement source, alerting or owner-accepted gap.",
+      "safe_next_action": "Stage slo-spec.md for production service releases or document the operational gap."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, review date, residual risk and follow-up condition",
+      "approval_boundary": "approval_required before publish, tag, release creation, artifact upload, deploy, package registry, marketplace/store submission, PR creation, branch push or CI/CD environment mutation",
+      "artifact": "versioning-policy.md",
+      "domain": "delivery_release_operations",
+      "evidence_owner": "release operator",
+      "evidence_required": [
+        "SemVer",
+        "non-SemVer",
+        "compatibility impact",
+        "deprecation",
+        "migration guidance",
+        "generated client"
+      ],
+      "gate": "version_impact_present",
+      "priority": "P1_high_risk",
+      "reason": "Public package, SDK, API, plugin or production release needs version and compatibility review.",
+      "residual_risk": "A version bump can hide public API, generated client, plugin, SDK or data compatibility impact.",
+      "safe_next_action": "Stage versioning-policy.md before release text or package publishing."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, review date, residual risk and follow-up condition",
+      "approval_boundary": "approval_required before publish, tag, release creation, artifact upload, deploy, package registry, marketplace/store submission, PR creation, branch push or CI/CD environment mutation",
+      "artifact": "versioning-policy.md",
+      "domain": "delivery_release_operations",
+      "evidence_owner": "release operator",
+      "evidence_required": [
+        "Conventional Commits",
+        "semantic-release",
+        "release-please",
+        "manual versioning",
+        "non-package policy",
+        "selected/rejected/deferred",
+        "reason",
+        "owner",
+        "no forced SemVer tooling"
+      ],
+      "gate": "versioning_tooling_decision_present",
+      "priority": "P1_high_risk",
+      "reason": "Versioning tooling must be selected, rejected or deferred instead of forced by package files.",
+      "residual_risk": "A project can be forced into SemVer or release automation tooling that does not fit the release type.",
+      "safe_next_action": "Record versioning tooling decision in versioning-policy.md."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before secrets, payment, production data, policy or external security-system mutation",
+      "artifact": "abuse-rate-limit-plan.md",
+      "domain": "security_privacy_compliance",
+      "evidence_owner": "security or product owner",
+      "evidence_required": [
+        "abuse cases",
+        "rate limits",
+        "monitoring",
+        "fallback",
+        "kill switch",
+        "escalation"
+      ],
+      "gate": "abuse_rate_limit_review_present",
+      "priority": "P1_high_risk",
+      "reason": "Public endpoints, payments, uploads, messaging and AI/tool actions need abuse and rate-limit review.",
+      "residual_risk": "Security/privacy/compliance readiness can be overstated without owner-reviewed evidence and explicit gaps.",
+      "safe_next_action": "Stage abuse-rate-limit-plan.md before exposing abuse-prone surfaces."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before secrets, payment, production data, policy or external security-system mutation",
+      "artifact": "ai-security-review.md",
+      "domain": "security_privacy_compliance",
+      "evidence_owner": "security or product owner",
+      "evidence_required": [
+        "prompt injection",
+        "data leakage",
+        "tool misuse",
+        "excessive agency",
+        "RAG data exposure",
+        "red-team cases",
+        "eval evidence"
+      ],
+      "gate": "ai_security_review_present",
+      "priority": "P1_high_risk",
+      "reason": "AI/RAG/agent security needs prompt injection, data leakage, tool misuse and excessive agency review.",
+      "residual_risk": "Security/privacy/compliance readiness can be overstated without owner-reviewed evidence and explicit gaps.",
+      "safe_next_action": "Stage ai-security-review.md and link to AI/RAG eval evidence before release."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before secrets, payment, production data, policy or external security-system mutation",
+      "artifact": "api-security-review.md",
+      "domain": "security_privacy_compliance",
+      "evidence_owner": "security or product owner",
+      "evidence_required": [
+        "security scheme",
+        "OAuth/JWT/session policy",
+        "scopes",
+        "error behavior",
+        "negative examples",
+        "OpenAPI or equivalent contract"
+      ],
+      "gate": "api_security_scheme_present",
+      "priority": "P1_high_risk",
+      "reason": "API security scheme, scopes, error behavior and negative examples are missing.",
+      "residual_risk": "Security/privacy/compliance readiness can be overstated without owner-reviewed evidence and explicit gaps.",
+      "safe_next_action": "Stage api-security-review.md before API security claims."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before secrets, payment, production data, policy or external security-system mutation",
+      "artifact": "asvs-ssdf-mapping.md",
+      "domain": "security_privacy_compliance",
+      "evidence_owner": "security or product owner",
+      "evidence_required": [
+        "ASVS Level 1",
+        "ASVS Level 2",
+        "ASVS Level 3",
+        "project risk",
+        "owner",
+        "evidence",
+        "explicit gaps"
+      ],
+      "gate": "asvs_level_selection_present",
+      "priority": "P1_high_risk",
+      "reason": "ASVS level selection needs applicability, project risk and explicit gaps.",
+      "residual_risk": "Security/privacy/compliance readiness can be overstated without owner-reviewed evidence and explicit gaps.",
+      "safe_next_action": "Record ASVS level selection before treating ASVS mapping as settled."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before secrets, payment, production data, policy or external security-system mutation",
+      "artifact": "asvs-ssdf-mapping.md",
+      "domain": "security_privacy_compliance",
+      "evidence_owner": "security or product owner",
+      "evidence_required": [
+        "ASVS version",
+        "applicable controls",
+        "test evidence",
+        "accepted gaps",
+        "owner"
+      ],
+      "gate": "asvs_mapping_present",
+      "priority": "P1_high_risk",
+      "reason": "Web/security controls need versioned ASVS evidence when ASVS applies.",
+      "residual_risk": "Security/privacy/compliance readiness can be overstated without owner-reviewed evidence and explicit gaps.",
+      "safe_next_action": "Stage asvs-ssdf-mapping.md with applicable controls or explicit not-applicable rationale."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before secrets, payment, production data, policy or external security-system mutation",
+      "artifact": "audit-logging-review.md",
+      "domain": "security_privacy_compliance",
+      "evidence_owner": "security or product owner",
+      "evidence_required": [
+        "event taxonomy",
+        "sensitive-data exclusions",
+        "redaction",
+        "retention",
+        "alerting",
+        "investigation owner"
+      ],
+      "gate": "audit_logging_review_present",
+      "priority": "P1_high_risk",
+      "reason": "Sensitive/admin/payment/data-access actions need audit logging, redaction, retention and alerting.",
+      "residual_risk": "Security/privacy/compliance readiness can be overstated without owner-reviewed evidence and explicit gaps.",
+      "safe_next_action": "Stage audit-logging-review.md before sensitive action readiness claims."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before secrets, payment, production data, policy or external security-system mutation",
+      "artifact": "authz-negative-test-matrix.md",
+      "domain": "security_privacy_compliance",
+      "evidence_owner": "security or product owner",
+      "evidence_required": [
+        "allowed behavior",
+        "forbidden behavior",
+        "BOLA",
+        "BFLA",
+        "object property authorization",
+        "role",
+        "scope",
+        "resource ownership",
+        "rate limits",
+        "unsafe consumption"
+      ],
+      "gate": "authz_negative_tests_present",
+      "priority": "P1_high_risk",
+      "reason": "Authorization changes need allowed and forbidden behavior plus negative tests.",
+      "residual_risk": "Security/privacy/compliance readiness can be overstated without owner-reviewed evidence and explicit gaps.",
+      "safe_next_action": "Stage authz-negative-test-matrix.md before auth/authz readiness claims."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before secrets, payment, production data, policy or external security-system mutation",
+      "artifact": "ci-permissions-review.md",
+      "domain": "security_privacy_compliance",
+      "evidence_owner": "security or product owner",
+      "evidence_required": [
+        "workflow triggers",
+        "token permissions",
+        "secrets",
+        "external actions",
+        "artifacts",
+        "cache",
+        "approval boundary"
+      ],
+      "gate": "ci_permission_review_present",
+      "priority": "P1_high_risk",
+      "reason": "CI/workflow/action changes need least-privilege token permissions and approval boundary.",
+      "residual_risk": "Security/privacy/compliance readiness can be overstated without owner-reviewed evidence and explicit gaps.",
+      "safe_next_action": "Stage ci-permissions-review.md before changing CI permissions or workflow security."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before secrets, payment, production data, policy or external security-system mutation",
+      "artifact": "compliance-overlay.md",
+      "domain": "security_privacy_compliance",
+      "evidence_owner": "security or product owner",
+      "evidence_required": [
+        "applicability",
+        "owner",
+        "evidence",
+        "non-goals",
+        "gaps",
+        "review cadence",
+        "no certification claim"
+      ],
+      "gate": "compliance_overlay_present",
+      "priority": "P1_high_risk",
+      "reason": "Compliance-sensitive work needs applicability, owner, evidence, non-goals, gaps and review cadence.",
+      "residual_risk": "Security/privacy/compliance readiness can be overstated without owner-reviewed evidence and explicit gaps.",
+      "safe_next_action": "Stage compliance-overlay.md before compliance claims."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before secrets, payment, production data, policy or external security-system mutation",
+      "artifact": "compliance-overlay.md",
+      "domain": "security_privacy_compliance",
+      "evidence_owner": "security or product owner",
+      "evidence_required": [
+        "legal/regulatory",
+        "customer contractual",
+        "internal policy",
+        "finance",
+        "healthcare",
+        "minors",
+        "enterprise",
+        "public sector",
+        "marketplace",
+        "AI agent tooling"
+      ],
+      "gate": "compliance_overlay_taxonomy_present",
+      "priority": "P1_high_risk",
+      "reason": "Compliance overlays must separate obligation types and domain overlays.",
+      "residual_risk": "Security/privacy/compliance readiness can be overstated without owner-reviewed evidence and explicit gaps.",
+      "safe_next_action": "Stage compliance-overlay.md with obligation taxonomy and owner review."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before secrets, payment, production data, policy or external security-system mutation",
+      "artifact": "data-classification-register.md",
+      "domain": "security_privacy_compliance",
+      "evidence_owner": "security or product owner",
+      "evidence_required": [
+        "data class",
+        "sensitivity",
+        "purpose",
+        "retention",
+        "access",
+        "sharing",
+        "storage",
+        "deletion/export"
+      ],
+      "gate": "data_classification_present",
+      "priority": "P1_high_risk",
+      "reason": "Data class, purpose, retention, access and sharing are not explicit.",
+      "residual_risk": "Security/privacy/compliance readiness can be overstated without owner-reviewed evidence and explicit gaps.",
+      "safe_next_action": "Stage data-classification-register.md before examples, fixtures, evals, logs, traces, screenshots or docs."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before secrets, payment, production data, policy or external security-system mutation",
+      "artifact": "data-classification-register.md",
+      "domain": "security_privacy_compliance",
+      "evidence_owner": "security or product owner",
+      "evidence_required": [
+        "prompts",
+        "docs",
+        "fixtures",
+        "eval datasets",
+        "logs",
+        "traces",
+        "screenshots",
+        "redaction",
+        "no raw PII",
+        "no payment data"
+      ],
+      "gate": "data_redaction_lifecycle_present",
+      "priority": "P1_high_risk",
+      "reason": "Data redaction lifecycle must cover artifact and runtime evidence channels.",
+      "residual_risk": "Security/privacy/compliance readiness can be overstated without owner-reviewed evidence and explicit gaps.",
+      "safe_next_action": "Stage data-classification-register.md with redaction policy before evidence capture."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before secrets, payment, production data, policy or external security-system mutation",
+      "artifact": "privacy-impact-record.md",
+      "domain": "security_privacy_compliance",
+      "evidence_owner": "security or product owner",
+      "evidence_required": [
+        "purpose",
+        "data minimization",
+        "notice/consent",
+        "retention",
+        "deletion/export",
+        "access",
+        "sharing",
+        "legal owner"
+      ],
+      "gate": "privacy_impact_record_present",
+      "priority": "P1_high_risk",
+      "reason": "Privacy-impacting work needs purpose, minimization, retention, deletion/export, sharing and owner review.",
+      "residual_risk": "Security/privacy/compliance readiness can be overstated without owner-reviewed evidence and explicit gaps.",
+      "safe_next_action": "Stage privacy-impact-record.md before privacy-impacting implementation or claims."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before secrets, payment, production data, policy or external security-system mutation",
+      "artifact": "sbom-manifest.md",
+      "domain": "security_privacy_compliance",
+      "evidence_owner": "security or product owner",
+      "evidence_required": [
+        "internal app",
+        "package",
+        "plugin",
+        "container",
+        "release artifact",
+        "SBOM format",
+        "provenance",
+        "validation command",
+        "storage policy"
+      ],
+      "gate": "sbom_provenance_decision_present",
+      "priority": "P1_high_risk",
+      "reason": "SBOM/provenance decision must distinguish internal app, package, plugin, container and release artifact paths.",
+      "residual_risk": "Security/privacy/compliance readiness can be overstated without owner-reviewed evidence and explicit gaps.",
+      "safe_next_action": "Stage sbom-manifest.md or explicit not-applicable/accepted-gap reason."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before secrets, payment, production data, policy or external security-system mutation",
+      "artifact": "security-risk-review.md",
+      "domain": "security_privacy_compliance",
+      "evidence_owner": "security or product owner",
+      "evidence_required": [
+        "threat surface",
+        "auth or data impact",
+        "security tests",
+        "owner review",
+        "rollback",
+        "residual risk"
+      ],
+      "gate": "security_risk_review_present",
+      "priority": "P1_high_risk",
+      "reason": "Security risk review needs threat surface, tests, owner review, rollback and residual risk.",
+      "residual_risk": "Security/privacy/compliance readiness can be overstated without owner-reviewed evidence and explicit gaps.",
+      "safe_next_action": "Stage security-risk-review.md before implementation or security readiness claims."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before secrets, payment, production data, policy or external security-system mutation",
+      "artifact": "security-risk-review.md",
+      "domain": "security_privacy_compliance",
+      "evidence_owner": "security or product owner",
+      "evidence_required": [
+        "authn/authz impact",
+        "secrets",
+        "PII",
+        "payment/billing",
+        "production data",
+        "CI permissions",
+        "external write",
+        "owner"
+      ],
+      "gate": "security_sensitive_classification_present",
+      "priority": "P1_high_risk",
+      "reason": "Security-sensitive scope must be classified before implementation.",
+      "residual_risk": "Security/privacy/compliance readiness can be overstated without owner-reviewed evidence and explicit gaps.",
+      "safe_next_action": "Stage security-risk-review.md with classification before implementation."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before secrets, payment, production data, policy or external security-system mutation",
+      "artifact": "supply-chain-review.md",
+      "domain": "security_privacy_compliance",
+      "evidence_owner": "security or product owner",
+      "evidence_required": [
+        "dependencies",
+        "licenses",
+        "vulnerabilities",
+        "SBOM",
+        "provenance",
+        "CI action pinning",
+        "release signing",
+        "update path"
+      ],
+      "gate": "supply_chain_review_present",
+      "priority": "P1_high_risk",
+      "reason": "Dependency, package, container, CI action or release artifact changes need supply-chain review.",
+      "residual_risk": "Security/privacy/compliance readiness can be overstated without owner-reviewed evidence and explicit gaps.",
+      "safe_next_action": "Stage supply-chain-review.md before release or package readiness claims."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before secrets, payment, production data, policy or external security-system mutation",
+      "artifact": "threat-surface.md",
+      "domain": "security_privacy_compliance",
+      "evidence_owner": "security or product owner",
+      "evidence_required": [
+        "actors",
+        "assets",
+        "entry points",
+        "trust boundaries",
+        "privileged operations",
+        "data exposed",
+        "external systems",
+        "abuse cases"
+      ],
+      "gate": "threat_surface_present",
+      "priority": "P1_high_risk",
+      "reason": "Threat surface is missing for a sensitive boundary.",
+      "residual_risk": "Security/privacy/compliance readiness can be overstated without owner-reviewed evidence and explicit gaps.",
+      "safe_next_action": "Stage threat-surface.md before touching sensitive boundaries."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before secrets, payment, production data, policy or external security-system mutation",
+      "artifact": "vulnerability-response-record.md",
+      "domain": "security_privacy_compliance",
+      "evidence_owner": "security or product owner",
+      "evidence_required": [
+        "triage",
+        "severity",
+        "containment",
+        "fix evidence",
+        "verification",
+        "disclosure path",
+        "patch/release plan",
+        "post-incident lessons"
+      ],
+      "gate": "vulnerability_response_workflow_present",
+      "priority": "P1_high_risk",
+      "reason": "Security bugs, advisories, leaked secrets, abuse incidents, dependency alerts or data exposure need incident workflow.",
+      "residual_risk": "Security/privacy/compliance readiness can be overstated without owner-reviewed evidence and explicit gaps.",
+      "safe_next_action": "Stage vulnerability-response-record.md before closing security incident work."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, scope, review date and residual risk",
+      "approval_boundary": "not required for read-only audit",
+      "artifact": "architecture-overview.md",
+      "domain": "solution_architecture",
+      "evidence_owner": "architecture owner",
+      "evidence_required": [
+        "runtime unit",
+        "boundary",
+        "responsibility",
+        "owner"
+      ],
+      "gate": "architecture_container_boundary_present",
+      "priority": "P1_high_risk",
+      "reason": "Multiple runtime units need container, service, storage, queue or worker boundaries.",
+      "residual_risk": "Implementation can cross implicit system boundaries without review.",
+      "safe_next_action": "Stage architecture-overview.md with scope, context and container boundaries."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, scope, review date and residual risk",
+      "approval_boundary": "not required for read-only audit",
+      "artifact": "architecture-overview.md",
+      "domain": "solution_architecture",
+      "evidence_owner": "architecture owner",
+      "evidence_required": [
+        "external actors",
+        "systems",
+        "trust boundary",
+        "owner"
+      ],
+      "gate": "architecture_context_view_present",
+      "priority": "P1_high_risk",
+      "reason": "External users, systems or trust boundaries need a context view or equivalent boundary map.",
+      "residual_risk": "Implementation can cross implicit system boundaries without review.",
+      "safe_next_action": "Stage architecture-overview.md with scope, context and container boundaries."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, scope, review date and residual risk",
+      "approval_boundary": "not required for read-only audit",
+      "artifact": "architecture-fitness-functions.md",
+      "domain": "solution_architecture",
+      "evidence_owner": "architecture or operations owner",
+      "evidence_required": [
+        "signals",
+        "logs",
+        "metrics",
+        "traces",
+        "dashboards or alerts",
+        "owner"
+      ],
+      "gate": "observability_architecture_present",
+      "priority": "P1_high_risk",
+      "reason": "Service or runtime behavior needs observability architecture evidence.",
+      "residual_risk": "Runtime failures can ship without measurable health or diagnostics.",
+      "safe_next_action": "Stage architecture-fitness-functions.md with observability checks."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, scope, review date and residual risk",
+      "approval_boundary": "not required for read-only audit",
+      "artifact": "architecture-overview.md",
+      "domain": "solution_architecture",
+      "evidence_owner": "architecture owner",
+      "evidence_required": [
+        "runtime unit",
+        "deployment target",
+        "dependency",
+        "health check",
+        "rollback path"
+      ],
+      "gate": "runtime_deployment_topology_present",
+      "priority": "P1_high_risk",
+      "reason": "Runtime or deployment changes need topology evidence.",
+      "residual_risk": "Runtime behavior can diverge from documented service boundaries.",
+      "safe_next_action": "Add runtime topology to architecture-overview.md."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, scope, review date and residual risk",
+      "approval_boundary": "not required for read-only audit",
+      "artifact": "architecture-overview.md",
+      "domain": "solution_architecture",
+      "evidence_owner": "architecture owner",
+      "evidence_required": [
+        "scope",
+        "stakeholders",
+        "architecture question",
+        "non-goals",
+        "owner"
+      ],
+      "gate": "solution_architecture_scope_present",
+      "priority": "P1_high_risk",
+      "reason": "Complex or multi-surface work needs architecture scope, stakeholders and non-goals.",
+      "residual_risk": "Implementation can cross implicit system boundaries without review.",
+      "safe_next_action": "Stage architecture-overview.md with scope, context and container boundaries."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "approval_required before changing remote CI, rerunning remote jobs or external writes",
+      "artifact": "ci-evidence-record.md",
+      "domain": "quality_testing_evals",
+      "evidence_owner": "release operator",
+      "evidence_required": [
+        "job or command",
+        "trigger",
+        "permissions",
+        "artifact",
+        "exit code",
+        "rerun path"
+      ],
+      "gate": "ci_quality_gate_present",
+      "priority": "P2_recommended",
+      "reason": "CI quality gate needs command/job, trigger, permissions, artifacts and current result.",
+      "residual_risk": "CI configuration does not prove the latest run supports the claim.",
+      "safe_next_action": "Stage the smallest quality evidence artifact before implementation or completion claims."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before secrets, payment, production data, policy or external security-system mutation",
+      "artifact": "security-risk-review.md",
+      "domain": "security_privacy_compliance",
+      "evidence_owner": "security or product owner",
+      "evidence_required": [
+        "Codex Security scan status",
+        "run with evidence",
+        "not requested",
+        "blocked",
+        "no implied scan"
+      ],
+      "gate": "codex_security_scan_status_present",
+      "priority": "P2_recommended",
+      "reason": "Codex Security scan status must be explicit: run with evidence, not requested or blocked.",
+      "residual_risk": "Security/privacy/compliance readiness can be overstated without owner-reviewed evidence and explicit gaps.",
+      "safe_next_action": "Record Codex Security scan status in security-risk-review.md before claiming scan coverage."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before secrets, payment, production data, policy or external security-system mutation",
+      "artifact": "asvs-ssdf-mapping.md",
+      "domain": "security_privacy_compliance",
+      "evidence_owner": "security or product owner",
+      "evidence_required": [
+        "Secure SDLC",
+        "SSDF",
+        "SAMM",
+        "requirements",
+        "design",
+        "implementation",
+        "tests",
+        "release",
+        "vulnerability response"
+      ],
+      "gate": "secure_sdlc_ssdf_samm_present",
+      "priority": "P2_recommended",
+      "reason": "Secure SDLC/SSDF and SAMM maturity vocabulary should be explicit for production or shared software.",
+      "residual_risk": "Security/privacy/compliance readiness can be overstated without owner-reviewed evidence and explicit gaps.",
+      "safe_next_action": "Record SSDF/SAMM lifecycle vocabulary in asvs-ssdf-mapping.md or accepted gap."
+    }
+  ],
+  "safe_next_action": "Stage approval-record.md and stop before side-effecting sensitive actions.",
+  "status": "ok",
+  "unknowns": [
+    "artifact owners and approval boundaries"
+  ],
+  "write_policy": "read_only"
+}

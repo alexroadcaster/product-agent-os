@@ -1,0 +1,24 @@
+{
+  "command_results": {
+    "runner_self": {
+      "result": "S6 runner generated local evidence artifacts",
+      "status": "passed"
+    }
+  },
+  "failed_checks": {},
+  "generated_at": "2026-06-18T01:10:00+03:00",
+  "schema_version": "batch41_s6_verification_sweep_summary_v1",
+  "skipped_checks": [],
+  "status": "passed",
+  "summary_digest": "sha256:a9d9d4ff1489e423a233eb7fb696bf88a7b9e320cf72f893a23bec6ff5d3e549",
+  "task_id": "B41-S6-M28",
+  "unsupported_claims": [
+    "release readiness is not claimed",
+    "runtime/browser behavior is not claimed without current approved runtime/browser evidence",
+    "provider/API/model quality is not claimed",
+    "target apply safety is not claimed; read-only pilots prove target unchanged only for inspected paths/digests",
+    "generated HTML, generated graph and generated question output remain orientation evidence only, not source truth",
+    "owner-feedback usefulness is not proven until owner scorecard evidence exists",
+    "plugin cache/install readiness is not claimed unless installed-cache evidence exists after approved refresh/check"
+  ]
+}

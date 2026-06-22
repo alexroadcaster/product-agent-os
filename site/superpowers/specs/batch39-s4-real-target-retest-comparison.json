@@ -1,0 +1,262 @@
+{
+  "artifact_refs": [
+    "batch39-s4-retest-neural_flow-summary.json",
+    "batch39-s4-retest-sol_0_6-summary.json"
+  ],
+  "batch": "B39",
+  "comparison_basis": [
+    "B39-TEST-M21 real-target summaries",
+    "B39-TEST-M22 real-target retest summaries",
+    "post-B39-S3 S4 blocker-fix read-only retest summaries"
+  ],
+  "comparison_digest": "sha256:38816fb08db43d98218e0ca51970ee0bd7b9db545c77b3874a2f995d05ed7ce8",
+  "cross_target_findings": [
+    "Both targets preserve read-only first-run dry-run behavior and did not create target analysis directories.",
+    "Both targets remain source-policy blocked; runtime contract remains blocked before target-apply/runtime claims.",
+    "The benign preserve approval boundaries hint no longer routes to pr_review and preserves the target route.",
+    "SOL 0.6 graph dry-run now excludes the imported antigravity skill corpus and passes graph validation bounds.",
+    "Methodology audit now exposes bounded first_safe_action while preserving full recommendation evidence."
+  ],
+  "date": "2026-06-18",
+  "fix_status": [
+    {
+      "evidence": {
+        "edge_count": 2551,
+        "excluded_prefixes": [
+          "antigravity-awesome-skills-main"
+        ],
+        "node_count": 2539,
+        "observation_count": 5090,
+        "scope_policy_status": "excluded_prefixes_reported",
+        "status": "ok",
+        "top_path_prefixes": [
+          {
+            "node_count": 1801,
+            "prefix": "frontend"
+          },
+          {
+            "node_count": 577,
+            "prefix": "docs"
+          },
+          {
+            "node_count": 122,
+            "prefix": "backend"
+          },
+          {
+            "node_count": 14,
+            "prefix": "scripts"
+          },
+          {
+            "node_count": 12,
+            "prefix": "sol-ide.json"
+          },
+          {
+            "node_count": 10,
+            "prefix": ".agents"
+          },
+          {
+            "node_count": 1,
+            "prefix": ".vscode"
+          },
+          {
+            "node_count": 1,
+            "prefix": "<none>"
+          },
+          {
+            "node_count": 1,
+            "prefix": "tmp-ai-test.ts"
+          }
+        ],
+        "validation_errors": [],
+        "validation_ok": true
+      },
+      "id": "B39-FIX-M40-GRAPH-SCOPE-001",
+      "status": "fixed_retested"
+    },
+    {
+      "evidence": [
+        {
+          "neutral_no_hint": {
+            "exit_code": 1,
+            "hint": "<none>",
+            "route_primary": "ai_eval_regression",
+            "route_reasons": [
+              "workspace has AI or RAG eval regression signals"
+            ],
+            "source_policy_status": "blocked",
+            "status": "blocked"
+          },
+          "neutral_read_only_hint": {
+            "exit_code": 1,
+            "hint": "read only target inspection",
+            "route_primary": "ai_eval_regression",
+            "route_reasons": [
+              "workspace has AI or RAG eval regression signals"
+            ],
+            "source_policy_status": "blocked",
+            "status": "blocked"
+          },
+          "preserve_approval_boundaries_hint": {
+            "exit_code": 1,
+            "hint": "post B39-S3 repeat read-only real-target retest; preserve approval boundaries",
+            "route_primary": "ai_eval_regression",
+            "route_reasons": [
+              "workspace has AI or RAG eval regression signals"
+            ],
+            "source_policy_status": "blocked",
+            "status": "blocked"
+          },
+          "target_label": "Neural Flow"
+        },
+        {
+          "neutral_no_hint": {
+            "exit_code": 1,
+            "hint": "<none>",
+            "route_primary": "desktop_local_first",
+            "route_reasons": [
+              "workspace has desktop or local-first runtime signals"
+            ],
+            "source_policy_status": "blocked",
+            "status": "blocked"
+          },
+          "neutral_read_only_hint": {
+            "exit_code": 1,
+            "hint": "read only target inspection",
+            "route_primary": "desktop_local_first",
+            "route_reasons": [
+              "workspace has desktop or local-first runtime signals"
+            ],
+            "source_policy_status": "blocked",
+            "status": "blocked"
+          },
+          "preserve_approval_boundaries_hint": {
+            "exit_code": 1,
+            "hint": "post B39-S3 repeat read-only real-target retest; preserve approval boundaries",
+            "route_primary": "desktop_local_first",
+            "route_reasons": [
+              "workspace has desktop or local-first runtime signals"
+            ],
+            "source_policy_status": "blocked",
+            "status": "blocked"
+          },
+          "target_label": "SOL 0.6"
+        }
+      ],
+      "id": "B39-FIX-M39-INTENT-HINT-PR-TOKEN-001",
+      "status": "fixed_retested"
+    },
+    {
+      "evidence": [
+        {
+          "first_run_status": "ok",
+          "runtime_usage_mode_primary": "ai_eval_regression",
+          "schema_version": "real_target_evidence_summary_v1",
+          "target_label": "Neural Flow",
+          "usage_mode_primary": "ai_eval_regression"
+        },
+        {
+          "first_run_status": "ok",
+          "runtime_usage_mode_primary": "desktop_local_first",
+          "schema_version": "real_target_evidence_summary_v1",
+          "target_label": "SOL 0.6",
+          "usage_mode_primary": "desktop_local_first"
+        }
+      ],
+      "id": "B39-FIX-M39-CLI-SCHEMA-NORMALIZATION-001",
+      "status": "fixed_retested"
+    },
+    {
+      "evidence": [
+        {
+          "first_safe_action_count": 1,
+          "first_safe_action_policy": "risk_ordered_top_n_keep_full_packet_as_evidence",
+          "recommendation_count": 3,
+          "recommendation_group_count": 1,
+          "target_label": "Neural Flow"
+        },
+        {
+          "first_safe_action_count": 5,
+          "first_safe_action_policy": "risk_ordered_top_n_keep_full_packet_as_evidence",
+          "recommendation_count": 81,
+          "recommendation_group_count": 60,
+          "target_label": "SOL 0.6"
+        }
+      ],
+      "id": "B39-FIX-M47-METHODOLOGY-VOLUME-001",
+      "status": "fixed_retested"
+    }
+  ],
+  "intent_hint_sanity_checks": [
+    {
+      "neutral_no_hint": {
+        "exit_code": 1,
+        "hint": "<none>",
+        "route_primary": "ai_eval_regression",
+        "route_reasons": [
+          "workspace has AI or RAG eval regression signals"
+        ],
+        "source_policy_status": "blocked",
+        "status": "blocked"
+      },
+      "neutral_read_only_hint": {
+        "exit_code": 1,
+        "hint": "read only target inspection",
+        "route_primary": "ai_eval_regression",
+        "route_reasons": [
+          "workspace has AI or RAG eval regression signals"
+        ],
+        "source_policy_status": "blocked",
+        "status": "blocked"
+      },
+      "preserve_approval_boundaries_hint": {
+        "exit_code": 1,
+        "hint": "post B39-S3 repeat read-only real-target retest; preserve approval boundaries",
+        "route_primary": "ai_eval_regression",
+        "route_reasons": [
+          "workspace has AI or RAG eval regression signals"
+        ],
+        "source_policy_status": "blocked",
+        "status": "blocked"
+      },
+      "target_label": "Neural Flow"
+    },
+    {
+      "neutral_no_hint": {
+        "exit_code": 1,
+        "hint": "<none>",
+        "route_primary": "desktop_local_first",
+        "route_reasons": [
+          "workspace has desktop or local-first runtime signals"
+        ],
+        "source_policy_status": "blocked",
+        "status": "blocked"
+      },
+      "neutral_read_only_hint": {
+        "exit_code": 1,
+        "hint": "read only target inspection",
+        "route_primary": "desktop_local_first",
+        "route_reasons": [
+          "workspace has desktop or local-first runtime signals"
+        ],
+        "source_policy_status": "blocked",
+        "status": "blocked"
+      },
+      "preserve_approval_boundaries_hint": {
+        "exit_code": 1,
+        "hint": "post B39-S3 repeat read-only real-target retest; preserve approval boundaries",
+        "route_primary": "desktop_local_first",
+        "route_reasons": [
+          "workspace has desktop or local-first runtime signals"
+        ],
+        "source_policy_status": "blocked",
+        "status": "blocked"
+      },
+      "target_label": "SOL 0.6"
+    }
+  ],
+  "residual_risks": [
+    "Source-policy and runtime contract remain blocked for both real targets, so no target-apply, runtime/browser, provider, release or automation readiness claim is supported.",
+    "SOL workspace boundaries still need owner-level classification before deeper product readiness pilots."
+  ],
+  "schema": "batch39_s4_real_target_retest_comparison_v4"
+}

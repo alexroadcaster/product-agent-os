@@ -1,0 +1,130 @@
+{
+  "schema_version": "documentation_refresh_doc_m25_site_freshness_v1",
+  "evidence_id": "documentation_refresh_DOC-M25-A01",
+  "status": "implemented_root_site_search_sitemap_freshness",
+  "checked_at": "2026-06-22",
+  "track": "Track 11",
+  "group": "G5",
+  "title": "Product-Agent OS Track 11 DOC-M25 root site freshness packet",
+  "summary": "DOC-M25 performs the owner-approved final root site rebuild after G2-G5 source updates. The former DOC_M25_PENDING_SITE_PAGES set is promoted into root site/search/sitemap parity while browser proof, broad scans, dependency remediation, raw report retention, publication and release actions remain out of scope.",
+  "agent_team": {
+    "mode": "main_integrator_with_read_only_subagents",
+    "main_owner": "Codex main integrator",
+    "subagents": [
+      {
+        "role": "explorer",
+        "scope": "Read-only DOC-M25 matrix and evidence inventory",
+        "writes_performed": false
+      },
+      {
+        "role": "tester",
+        "scope": "Read-only verification contract inspection",
+        "writes_performed": false
+      }
+    ],
+    "skills_used": [
+      "product-agent-os:implementation-planner",
+      "product-agent-os:agent-team-designer",
+      "product-agent-os:docs-maintainer"
+    ]
+  },
+  "work_item_status": {
+    "DOC-M25": {
+      "status": "implemented_root_site_search_sitemap_freshness",
+      "artifact": "site/",
+      "acceptance_summary": "Root site is rebuilt with the project-local MkDocs runtime, and the former pending G2-G5 pages are expected in RU/EN HTML, search index and sitemap evidence."
+    }
+  },
+  "promoted_pages_from_former_doc_m25_pending": [
+    "docs/product-agent-os/first-run-architecture-cockpit.md",
+    "docs/diagrams/source-generated-trust-boundary.md",
+    "docs/diagrams/first-run-cockpit-architecture.md",
+    "docs/diagrams/evidence-risk-lifecycle.md",
+    "docs/diagrams/skill-exposure-and-invocation.md",
+    "docs/diagrams/architecture-intelligence-diagram-atlas.md",
+    "docs/product-agent-os/instruction-tool-use-compliance.md",
+    "docs/product-agent-os/operator-command-matrix.md",
+    "docs/product-agent-os/guided-questions-answer-ledger.md",
+    "docs/product-agent-os/source-cache-session-state.md",
+    "docs/product-agent-os/generated-artifact-ux-criteria.md",
+    "docs/product-agent-os/graph-intelligence-contract.md",
+    "docs/product-agent-os/privacy-supply-chain-retention.md",
+    "docs/product-agent-os/local-html-interaction-boundary.md",
+    "docs/product-agent-os/residual-follow-up-site-freshness.md"
+  ],
+  "generated_site_evidence": {
+    "site_dir": "site/",
+    "search_index": "site/search/search_index.json",
+    "sitemap": "site/sitemap.xml",
+    "expected_promoted_localized_source_pages": 140,
+    "expected_ru_search_locations": 140,
+    "expected_en_search_locations": 140,
+    "expected_ru_sitemap_locations": 140,
+    "expected_en_sitemap_locations": 140,
+    "build_command": ".venv-docs\\Scripts\\python.exe -m mkdocs build --strict",
+    "local_file_i18n_repair_command": "powershell -NoProfile -ExecutionPolicy Bypass -File tools\\fix_site_i18n_links.ps1 -SiteDir site",
+    "site_parity_test": "python -B -m unittest tests.product_agent_os.test_product_agent_os_docs -v"
+  },
+  "test_contract": {
+    "source_markdown_page_count": 148,
+    "localized_markdown_page_count": 140,
+    "site_promoted_localized_markdown_page_count_after_doc_m25": 140,
+    "pending_site_pages_after_doc_m25": [],
+    "promoted_pages_from_former_doc_m25_pending": [
+      "docs/product-agent-os/first-run-architecture-cockpit.md",
+      "docs/diagrams/source-generated-trust-boundary.md",
+      "docs/diagrams/first-run-cockpit-architecture.md",
+      "docs/diagrams/evidence-risk-lifecycle.md",
+      "docs/diagrams/skill-exposure-and-invocation.md",
+      "docs/diagrams/architecture-intelligence-diagram-atlas.md",
+      "docs/product-agent-os/instruction-tool-use-compliance.md",
+      "docs/product-agent-os/operator-command-matrix.md",
+      "docs/product-agent-os/guided-questions-answer-ledger.md",
+      "docs/product-agent-os/source-cache-session-state.md",
+      "docs/product-agent-os/generated-artifact-ux-criteria.md",
+      "docs/product-agent-os/graph-intelligence-contract.md",
+      "docs/product-agent-os/privacy-supply-chain-retention.md",
+      "docs/product-agent-os/local-html-interaction-boundary.md",
+      "docs/product-agent-os/residual-follow-up-site-freshness.md"
+    ],
+    "verification": [
+      "python -B -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+      "python -B tools\\check_docs.py",
+      ".venv-docs\\Scripts\\python.exe -m mkdocs --version",
+      ".venv-docs\\Scripts\\python.exe -m mkdocs build --strict",
+      "powershell -NoProfile -ExecutionPolicy Bypass -File tools\\fix_site_i18n_links.ps1 -SiteDir site",
+      "git diff --check"
+    ]
+  },
+  "supported_claims_after_verification": [
+    "The root site build is current for the G2-G5 source pages listed in this packet.",
+    "The former DOC_M25_PENDING_SITE_PAGES set has RU/EN rendered HTML outputs.",
+    "The root search index contains RU/EN locations for the former pending pages.",
+    "The root sitemap contains RU/EN locations for the former pending pages."
+  ],
+  "unsupported_claims": [
+    "Browser rendering proof, screenshots, console/network cleanliness or WCAG certification.",
+    "Mermaid browser proof or WebGL/Cosmos.gl runtime proof.",
+    "Broad Vale enforcement, broad link/secret scans, external URL crawling or raw report retention.",
+    "Python vulnerability audit, complete repository SBOM or dependency remediation.",
+    "Publication, release readiness, deploy, provider/API calls, target workspace mutation, cache refresh, global config writes, active automation or git actions."
+  ],
+  "no_unapproved_actions": {
+    "root_site_rebuild": true,
+    "search_sitemap_refresh": true,
+    "browser_automation": false,
+    "live_server": false,
+    "broad_scans": false,
+    "dependency_remediation": false,
+    "raw_report_retention": false,
+    "install": false,
+    "cache_refresh": false,
+    "global_config_write": false,
+    "target_workspace_mutation": false,
+    "external_write": false,
+    "automation_created_or_enabled": false,
+    "git_stage_commit_push_pr": false,
+    "release_deploy_publish": false,
+    "provider_or_api_call": false
+  }
+}

@@ -1,0 +1,72 @@
+# Task Matrix Plan
+
+Source status: project-local task plan
+
+## Task Brief
+
+- User-visible moment: before execution
+- Task ID: B41-POST-NF-RERUN-A01
+- Product value: Owner can inspect the new Neural_Flow HTML artifact and see concrete deltas versus the old artifact.
+- Technical value: Validates current plugin and renderer output on the real target after Batch 41 without target mutation.
+- Source: owner request 2026-06-19
+- Scope: Read Neural_Flow target, write staged artifacts and comparison evidence under codex_docs only.
+- Non-goals: No target apply, no Neural_Flow mutation, no live server, no provider/API call, no git/release/deploy, no full WCAG or WebGL runtime claim.
+- Agents and skills: Codex main agent; no subagents because sequential single write scope; using-superpowers, implementation-planner, docs-maintainer, playwright, verification-before-completion
+- Files / artifacts: docs/superpowers/specs/batch41-post-neural-flow-rerun-task-plan.txt; docs/superpowers/specs/batch41-post-neural-flow-rerun-stage/; docs/superpowers/specs/batch41-post-neural-flow-rerun-comparison.json; output/playwright/b41-post-neural-flow-rerun/
+- Verification: validate_task_matrix.py before/after; plugin command exit 0; comparison proof; Playwright/file proof where available; docs checks; git diff hygiene
+- Approval boundary: Approval is limited to read-only target scan and staged codex_docs output; all mutation/live/provider/git/release surfaces remain out of scope.
+- Complexity: medium
+- Estimated execution time: 20-35m
+- Next action: run read-only Neural_Flow plugin rerun after pre-execution validation
+
+### Task `B41-POST-NF-RERUN-A01`
+
+- Task: B41-POST-NF-RERUN-A01
+- Status: implemented
+- Schema version: task_matrix_plan_v1
+- Timezone: Europe/Moscow
+- Plan trigger: owner requested post-Batch41 Neural_Flow plugin rerun and HTML comparison
+- Validator target: detailed task blocks
+- Date and time of task implementation: 19-06-2026 13:21
+- Depends on: B41-S8-M47
+- Blocks: post-Batch41 owner visual/product comparison
+- Source: owner request 2026-06-19
+- Short description: Rerun Product-Agent OS first-run analysis on Neural_Flow read-only after Batch 41 and compare fresh HTML artifact against prior staged versions.
+- Technical value: Validates current plugin and renderer output on the real target after Batch 41 without target mutation.
+- Product value: Owner can inspect the new Neural_Flow HTML artifact and see concrete deltas versus the old artifact.
+- Scope: Read Neural_Flow target, write staged artifacts and comparison evidence under codex_docs only.
+- Non-goals: No target apply, no Neural_Flow mutation, no live server, no provider/API call, no git/release/deploy, no full WCAG or WebGL runtime claim.
+- Expected result: New staged Neural_Flow HTML artifact plus comparison packet against prior Batch 41 artifact versions.
+- Acceptance criteria: Plugin rerun exits 0, index.html and manifest exist, comparison packet records old/new deltas and unsupported claims, verification commands pass or record explicit blockers.
+- Verification gates: validate_task_matrix.py before/after; plugin command exit 0; comparison proof; Playwright/file proof where available; docs checks; git diff hygiene
+- Risks / approval gates: Approval is limited to read-only target scan and staged codex_docs output; all mutation/live/provider/git/release surfaces remain out of scope.
+- Complexity: medium
+- Estimated execution time: 20-35m
+- Agents: Codex main agent; no subagents because sequential single write scope
+- Skills: using-superpowers, implementation-planner, docs-maintainer, playwright, verification-before-completion
+- Output artifacts: docs/superpowers/specs/batch41-post-neural-flow-rerun-task-plan.txt; docs/superpowers/specs/batch41-post-neural-flow-rerun-stage/; docs/superpowers/specs/batch41-post-neural-flow-rerun-comparison.json; output/playwright/b41-post-neural-flow-rerun/
+- Next step: run read-only Neural_Flow plugin rerun after pre-execution validation
+
+#### Completion Report
+
+- status: implemented
+- what was done: Reran Product-Agent OS first-run analysis against Neural_Flow in read-only mode, generated a fresh staged HTML artifact, compared it against M40 pre-redesign and M47 redesign artifacts, captured Playwright file:// screenshots/proof through system Chrome, synced RUNLOG, and preserved unsupported claims.
+- files touched / work locations: docs/superpowers/specs/batch41-post-neural-flow-rerun-task-plan.txt; docs/superpowers/specs/batch41-post-neural-flow-rerun-stage/; docs/superpowers/specs/batch41-post-neural-flow-rerun-comparison.json; docs/superpowers/specs/batch41-post-neural-flow-rerun-summary.json; output/playwright/b41-post-neural-flow-rerun/; RUNLOG.md
+- technical value delivered: Current plugin/renderer output was verified on the real Neural_Flow target with staged output, deterministic old/new artifact comparison and browser-visible proof.
+- product value delivered: Owner now has a fresh post-Batch41 Neural_Flow HTML artifact, old/new comparison evidence, and screenshots for visual review.
+- actual implementation date and time: 19-06-2026 13:21
+- verification evidence: validate_task_matrix passed before/after; run_first_project_analysis exit 0 status ok target_workspace_mutation false; comparison JSON generated; Playwright file proof passed via system Chrome; python -m unittest tests.product_agent_os.test_task_plan_lifecycle -q passed 4 tests; python -m unittest tests.product_agent_os.test_product_agent_os_docs -q passed 81 tests; python tools/check_docs.py passed; git diff --check passed
+- residual risks: Fresh rerun is identical to M47, so it proves stability after Batch 41 but not a new visual direction; full WCAG certification, Cosmos.gl/WebGL runtime execution, release readiness, target apply safety and owner final visual acceptance remain unsupported.
+- follow-up: Owner reviews the fresh staged artifact and screenshots; next slice should target visual redesign depth or approved Cosmos.gl/WebGL/WCAG/release gates.
+
+## Completion Brief
+
+- User-visible moment: after execution
+- Result status: implemented
+- Done: Reran Product-Agent OS first-run analysis against Neural_Flow in read-only mode, generated a fresh staged HTML artifact, compared it against M40 pre-redesign and M47 redesign artifacts, captured Playwright file:// screenshots/proof through system Chrome, synced RUNLOG, and preserved unsupported claims.
+- Files / artifacts: docs/superpowers/specs/batch41-post-neural-flow-rerun-task-plan.txt; docs/superpowers/specs/batch41-post-neural-flow-rerun-stage/; docs/superpowers/specs/batch41-post-neural-flow-rerun-comparison.json; docs/superpowers/specs/batch41-post-neural-flow-rerun-summary.json; output/playwright/b41-post-neural-flow-rerun/; RUNLOG.md
+- Technical value delivered: Current plugin/renderer output was verified on the real Neural_Flow target with staged output, deterministic old/new artifact comparison and browser-visible proof.
+- Product value delivered: Owner now has a fresh post-Batch41 Neural_Flow HTML artifact, old/new comparison evidence, and screenshots for visual review.
+- Evidence: validate_task_matrix passed before/after; run_first_project_analysis exit 0 status ok target_workspace_mutation false; comparison JSON generated; Playwright file proof passed via system Chrome; python -m unittest tests.product_agent_os.test_task_plan_lifecycle -q passed 4 tests; python -m unittest tests.product_agent_os.test_product_agent_os_docs -q passed 81 tests; python tools/check_docs.py passed; git diff --check passed
+- Residual risk: Fresh rerun is identical to M47, so it proves stability after Batch 41 but not a new visual direction; full WCAG certification, Cosmos.gl/WebGL runtime execution, release readiness, target apply safety and owner final visual acceptance remain unsupported.
+- Next action: Owner reviews the fresh staged artifact and screenshots; next slice should target visual redesign depth or approved Cosmos.gl/WebGL/WCAG/release gates.

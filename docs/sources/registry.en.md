@@ -1427,4 +1427,14 @@ These markers preserve source-owned test routing after registry compaction. Full
 - Docusaurus, Storybook and Structurizr DSL deferred until trigger evidence exists
 - implemented_contract_only_no_install for DOC-M34; DOC-M35 installed_smoke_passed in .venv-docs with strict smoke output under .docs-tools/reports; DOC-M36 installed_smoke_passed in .docs-tools/node with scoped README smoke; DOC-M37 installed_advisory_smoke_passed with local Vale rules/checksum; DOC-M38 installed_scoped_smoke_passed with local lychee/gitleaks checksums and scoped fixture smokes; DOC-M39 installed_offline_vendor_smoke_passed with local Mermaid checksum/license/static MkDocs smoke; DOC-M40 implemented_audit_sbom_governance_current_findings_recorded with local Python inventory, Node CycloneDX SBOM generation and 3 moderate / 0 high / 0 critical npm audit findings; DOC-M41 implemented_deferred_platform_trigger_governance_no_install_no_site_rebuild
 - root control-plane system files synced for G1.1 implementation route
+- Product-Agent OS Track 11 DOC-M25 root site freshness packet
+- documentation_refresh_DOC-M25-A01
+- docs/superpowers/specs/documentation-refresh-doc-m25-site-freshness-summary.json
+- tools/fix_site_i18n_links.ps1
+- site/
+- site/search/search_index.json
+- site/sitemap.xml
+- implemented_root_site_search_sitemap_freshness
+- former DOC_M25_PENDING_SITE_PAGES rendered in RU/EN HTML, search index and sitemap after owner-approved root MkDocs build
+- browser proof, broad scans, dependency remediation, raw report retention, publication, release, deploy and git actions remain out of scope
 ```

@@ -1,0 +1,43 @@
+# Task Matrix Plan
+
+Source status: project-local task plan
+
+### Task `B39-TEST-M01`
+
+- Task: B39-TEST-M01
+- Status: completed
+- Schema version: task_matrix_plan_v1
+- Timezone: Europe/Moscow
+- Plan trigger: Batch 39 first execution task
+- Validator target: detailed task blocks
+- Date and time of task implementation: 2026-06-11
+- Depends on: none
+- Blocks: B39-TEST-M02 pilot-run-manifest schema
+- Source: prod_test.md B39-TEST-M01
+- Short description: Normalize source/cache/package/session inventory for Batch 39.
+- Technical value: Provide deterministic read-only inventory packet before pilot execution.
+- Product value: Users can see which source, cache, package and session surfaces are being tested before Batch 39 proceeds.
+- Scope: Add local collector, CLI and focused tests for redacted inventory evidence.
+- Non-goals: No cache mutation, no install/update/uninstall, no target workspace mutation, no provider/browser/git/external actions.
+- Expected result: A validator-backed inventory packet records source, cache, package and session status.
+- Acceptance criteria: Focused tests pass and inventory output validates without unredacted absolute user paths.
+- Verification gates: python -m unittest tests.product_agent_os.test_batch39_inventory -v
+- Risks / approval gates: Cache roots may be unreadable; report inaccessible as status instead of failing or mutating. .codex/runlogs write was denied in this session.
+- Complexity: medium
+- Estimated execution time: 1h
+- Agents: Explorer, Product Manager, Architect, Builder, Tester, Reviewer
+- Skills: implementation-planner, agent-team-designer, test-driven-development, verification-before-completion
+- Output artifacts: plugins/product-agent-os/scripts/product_agent_os/batch39_inventory.py; plugins/product-agent-os/scripts/collect_batch39_inventory.py; tests/product_agent_os/test_batch39_inventory.py
+- Next step: Start `B39-TEST-M02` pilot-run-manifest schema.
+
+#### Completion Report
+
+- status: completed
+- what was done: Added a validator-backed Batch 39 inventory collector, CLI, focused tests, real local inventory evidence and `prod_test.md` attempt ledger row.
+- files touched / work locations: plugins/product-agent-os/scripts/product_agent_os/batch39_inventory.py; plugins/product-agent-os/scripts/collect_batch39_inventory.py; tests/product_agent_os/test_batch39_inventory.py; docs/superpowers/specs/batch39-m01-inventory.json; prod_test.md
+- technical value delivered: Source, cache, package and session inventory are separated, redacted and validated with structural checks and content-sensitive cache digests.
+- product value delivered: Batch 39 now starts from a readable evidence packet showing what Product-Agent OS source/cache/package/session surfaces are under test.
+- actual implementation date and time: 2026-06-11
+- verification evidence: python -m unittest tests.product_agent_os.test_batch39_inventory -v; python -m unittest tests.product_agent_os.test_product_agent_os_docs -v; python tools\check_docs.py; git diff --check; local-path `rg` scrub with no matches.
+- residual risks: No install/update/uninstall or target pilot mutation was attempted in M01; those remain later Batch 39 tests.
+- follow-up: Start `B39-TEST-M02` and define `pilot-run-manifest.json` schema.

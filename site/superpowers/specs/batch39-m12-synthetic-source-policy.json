@@ -1,0 +1,40 @@
+{
+  "errors": [],
+  "files": [
+    {
+      "assumptions": [],
+      "freshness_risks": [],
+      "missing_context": [],
+      "path": "docs/guide.md",
+      "registry_update_required": false,
+      "secret_findings": [],
+      "source_status": "synthetic_fixture",
+      "supported_facts": [],
+      "unsupported_claims": []
+    }
+  ],
+  "registry_updates_required": [],
+  "secret_findings": [],
+  "source_policy_report": {
+    "errors": [],
+    "files": [
+      {
+        "assumptions": [],
+        "freshness_risks": [],
+        "missing_context": [],
+        "path": "docs/guide.md",
+        "registry_update_required": false,
+        "secret_findings": [],
+        "source_status": "synthetic_fixture",
+        "supported_facts": [],
+        "unsupported_claims": []
+      }
+    ],
+    "registry_updates_required": [],
+    "secret_findings": [],
+    "status": "ok",
+    "workspace": "tests\\fixtures\\product_agent_os\\batch39-m12-docs-happy-fixture"
+  },
+  "status": "ok",
+  "workspace": "tests\\fixtures\\product_agent_os\\batch39-m12-docs-happy-fixture"
+}

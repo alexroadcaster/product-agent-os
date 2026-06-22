@@ -1,0 +1,319 @@
+{
+  "approval_boundary": "owner_requested_s4_blocker_fix_retest_read_only_no_target_mutation_no_runtime_browser_provider_git_external_actions",
+  "batch": "B39",
+  "commands": {
+    "detect_project": {
+      "command": "plugins/product-agent-os/scripts/detect_project.py <target>",
+      "exit_code": 0,
+      "stderr_present": false,
+      "stdout_parse_status": "json"
+    },
+    "first_run_dry_run": {
+      "command": "plugins/product-agent-os/scripts/run_first_project_analysis.py <target> --dry-run --generated-at 2026-06-18T12:30:00Z",
+      "exit_code": 0,
+      "stderr_present": false,
+      "stdout_parse_status": "json"
+    },
+    "methodology_audit": {
+      "command": "plugins/product-agent-os/scripts/run_methodology_audit.py <target> --json",
+      "exit_code": 0,
+      "stderr_present": false,
+      "stdout_parse_status": "json"
+    },
+    "project_graph_dry_run": {
+      "command": "plugins/product-agent-os/scripts/scan_project_code_graph.py <target> --dry-run",
+      "exit_code": 0,
+      "stderr_present": false,
+      "stdout_parse_status": "json"
+    },
+    "runtime_contract": {
+      "command": "plugins/product-agent-os/scripts/run_codex_runtime_runner.py <target> --contract --intent-hint read only target inspection",
+      "exit_code": 1,
+      "stderr_present": false,
+      "stdout_parse_status": "json"
+    },
+    "source_policy": {
+      "command": "plugins/product-agent-os/scripts/validate_source_policy.py <target>",
+      "exit_code": 1,
+      "stderr_present": false,
+      "stdout_parse_status": "json"
+    }
+  },
+  "date": "2026-06-18",
+  "detect_project_summary": {
+    "detected_stack": [],
+    "existing_control_plane": [
+      "REQUIREMENTS.md",
+      "PLAN.md",
+      "TEST.md",
+      "EVALS.md",
+      "RUNLOG.md"
+    ],
+    "first_run_analysis_input_status": "not_available",
+    "missing_control_plane": [
+      "AGENTS.md"
+    ],
+    "risk_count": 3,
+    "risks": [
+      "missing durable project instructions",
+      "missing docs-as-code ownership or CI signals",
+      "missing product measurement signals"
+    ],
+    "status": "ok",
+    "usage_mode_confidence": "medium",
+    "usage_mode_primary": "ai_eval_regression",
+    "usage_mode_reasons": [
+      "workspace has AI or RAG eval regression signals"
+    ]
+  },
+  "first_run_dry_run_summary": {
+    "first_run_page_count": 0,
+    "generated_view_policy": "orientation_only_not_proof",
+    "mode": "dry_run",
+    "packet_digest": "sha256:09bcfb449e64dda1b7db750024f0ce0227f766ee1ce960d96fc1d7176861d3ad",
+    "safe_next_action": "Review first-run packet; continue only with approved generated analysis artifacts.",
+    "schema_version": "first_run_analysis_packet_v1",
+    "status": "ok",
+    "write_policy": "read_only_generated_analysis_only",
+    "written_file_count": 0
+  },
+  "live_runtime_browser_provider_git_external_actions_performed": false,
+  "methodology_audit_summary": {
+    "first_safe_action": {
+      "full_group_count": 1,
+      "full_recommendation_count": 3,
+      "max_recommendations": 5,
+      "policy": "risk_ordered_top_n_keep_full_packet_as_evidence",
+      "recommendations": [
+        {
+          "artifact": "architecture-overview.md",
+          "gates": [
+            "architecture_container_boundary_present",
+            "architecture_context_view_present",
+            "solution_architecture_scope_present"
+          ],
+          "owner_domain": "solution_architecture",
+          "priority": "P1_high_risk",
+          "risk_rank": 0,
+          "safe_next_action": "Stage architecture-overview.md with scope, context and container boundaries.",
+          "source_domains": [
+            "solution_architecture"
+          ]
+        }
+      ],
+      "safe_next_action": "Stage architecture-overview.md with scope, context and container boundaries.",
+      "status": "ok",
+      "write_policy": "read_only"
+    },
+    "first_safe_action_count": 1,
+    "first_safe_action_policy": "risk_ordered_top_n_keep_full_packet_as_evidence",
+    "recommendation_count": 3,
+    "recommendation_group_count": 1,
+    "safe_next_action": "Stage architecture-overview.md with scope, context and container boundaries.",
+    "status": "ok"
+  },
+  "normalized_evidence": {
+    "detect_project_summary": {
+      "detected_stack": [],
+      "existing_control_plane": [
+        "REQUIREMENTS.md",
+        "PLAN.md",
+        "TEST.md",
+        "EVALS.md",
+        "RUNLOG.md"
+      ],
+      "first_run_analysis_input_status": "not_available",
+      "missing_control_plane": [
+        "AGENTS.md"
+      ],
+      "risk_count": 3,
+      "risks": [
+        "missing durable project instructions",
+        "missing docs-as-code ownership or CI signals",
+        "missing product measurement signals"
+      ],
+      "status": "ok",
+      "usage_mode_confidence": "medium",
+      "usage_mode_primary": "ai_eval_regression",
+      "usage_mode_reasons": [
+        "workspace has AI or RAG eval regression signals"
+      ]
+    },
+    "first_run_dry_run_summary": {
+      "first_run_page_count": 0,
+      "generated_view_policy": "orientation_only_not_proof",
+      "mode": "dry_run",
+      "packet_digest": "sha256:09bcfb449e64dda1b7db750024f0ce0227f766ee1ce960d96fc1d7176861d3ad",
+      "safe_next_action": "Review first-run packet; continue only with approved generated analysis artifacts.",
+      "schema_version": "first_run_analysis_packet_v1",
+      "status": "ok",
+      "write_policy": "read_only_generated_analysis_only",
+      "written_file_count": 0
+    },
+    "methodology_audit_summary": {
+      "first_safe_action_count": 1,
+      "first_safe_action_policy": "risk_ordered_top_n_keep_full_packet_as_evidence",
+      "recommendation_count": 3,
+      "recommendation_group_count": 1,
+      "safe_next_action": "Stage architecture-overview.md with scope, context and container boundaries.",
+      "status": "ok"
+    },
+    "project_graph_summary": {
+      "edge_count": 556,
+      "excluded_prefixes": [],
+      "node_count": 557,
+      "observation_count": 1113,
+      "scope_policy_status": "no_excluded_prefixes_detected",
+      "status": "ok",
+      "top_path_prefixes": [
+        {
+          "node_count": 268,
+          "prefix": "docs"
+        },
+        {
+          "node_count": 69,
+          "prefix": "research"
+        },
+        {
+          "node_count": 61,
+          "prefix": "architecture-v2.md"
+        },
+        {
+          "node_count": 45,
+          "prefix": "architecture.md"
+        },
+        {
+          "node_count": 18,
+          "prefix": "REQUIREMENTS.md"
+        },
+        {
+          "node_count": 17,
+          "prefix": "legacy"
+        },
+        {
+          "node_count": 15,
+          "prefix": "EVALS.md"
+        },
+        {
+          "node_count": 12,
+          "prefix": "PLAN.md"
+        },
+        {
+          "node_count": 12,
+          "prefix": "RUNLOG.md"
+        },
+        {
+          "node_count": 12,
+          "prefix": "system-prompt.md"
+        }
+      ],
+      "validation_errors": [],
+      "validation_ok": true
+    },
+    "runtime_contract_summary": {
+      "approval_required": false,
+      "errors": [
+        "source_policy:blocked"
+      ],
+      "route_id": null,
+      "source_policy_status": "blocked",
+      "status": "blocked",
+      "usage_mode_primary": "ai_eval_regression",
+      "usage_mode_reasons": [
+        "workspace has AI or RAG eval regression signals"
+      ]
+    },
+    "schema_version": "real_target_evidence_summary_v1",
+    "source_policy_summary": {
+      "blocker_count": 0,
+      "source_policy_status": null,
+      "status": "blocked",
+      "unsupported_claims": []
+    },
+    "summary_digest": "sha256:3a466501af05cbbe1f0183485c41a927a45b70078479f54229cdd93968c996c2",
+    "target_label": "Neural Flow",
+    "write_policy": "read_only_summary_only"
+  },
+  "previous_artifact_refs": {
+    "m21": "batch39-m21-neural-flow-readonly-summary.json",
+    "m22": "batch39-m22-retest-neural_flow-summary.json"
+  },
+  "project_graph_summary": {
+    "edge_count": 556,
+    "excluded_prefixes": [],
+    "node_count": 557,
+    "observation_count": 1113,
+    "scope_policy_status": "no_excluded_prefixes_detected",
+    "status": "ok",
+    "top_path_prefixes": [
+      {
+        "node_count": 268,
+        "prefix": "docs"
+      },
+      {
+        "node_count": 69,
+        "prefix": "research"
+      },
+      {
+        "node_count": 61,
+        "prefix": "architecture-v2.md"
+      },
+      {
+        "node_count": 45,
+        "prefix": "architecture.md"
+      },
+      {
+        "node_count": 18,
+        "prefix": "REQUIREMENTS.md"
+      },
+      {
+        "node_count": 17,
+        "prefix": "legacy"
+      },
+      {
+        "node_count": 15,
+        "prefix": "EVALS.md"
+      },
+      {
+        "node_count": 12,
+        "prefix": "PLAN.md"
+      },
+      {
+        "node_count": 12,
+        "prefix": "RUNLOG.md"
+      },
+      {
+        "node_count": 12,
+        "prefix": "system-prompt.md"
+      }
+    ],
+    "validation_errors": [],
+    "validation_ok": true
+  },
+  "runtime_contract_summary": {
+    "approval_required": false,
+    "errors": [
+      "source_policy:blocked"
+    ],
+    "route_id": null,
+    "source_policy_status": "blocked",
+    "status": "blocked",
+    "usage_mode_primary": "ai_eval_regression",
+    "usage_mode_reasons": [
+      "workspace has AI or RAG eval regression signals"
+    ]
+  },
+  "schema": "batch39_s4_real_target_retest_summary_v4",
+  "source_policy_summary": {
+    "blocker_count": 0,
+    "source_policy_status": null,
+    "status": "blocked",
+    "unsupported_claims": []
+  },
+  "summary_digest": "sha256:5371197009f633f969393546a06c3f582e1b2cbeaea31ab7514bab87e34cdd31",
+  "target_analysis_dir_after": false,
+  "target_analysis_dir_before": false,
+  "target_label": "Neural Flow",
+  "target_mutation_performed": false,
+  "task": "B39-S4-blocker-fix-retest"
+}

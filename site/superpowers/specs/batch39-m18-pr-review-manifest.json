@@ -1,0 +1,81 @@
+{
+  "approval_boundary": {
+    "automation_activation": "not_performed",
+    "browser_automation": "not_performed",
+    "cache_mutation": "not_performed",
+    "external_actions": "not_performed",
+    "git_actions": "not_performed",
+    "github_api_calls": "not_performed",
+    "live_server": "not_performed",
+    "local_evidence_artifact_write": "allowed_workspace_output_only",
+    "provider_or_api_calls": "not_performed",
+    "target_workspace_mutation": "not_performed"
+  },
+  "attempt_id": "B39-TEST-M18-A01",
+  "batch": "B39",
+  "completion_skeptic": {
+    "accepted_gap_refs": [],
+    "doubt_packet_ref": "none",
+    "failure_classes": [],
+    "promotion_boundary": "manual_only_not_promoted",
+    "scorecard_ref": "none",
+    "trigger": "code_check_archetype_guardrail",
+    "verdict": "not_run"
+  },
+  "execution_plan": {
+    "checks_planned": [
+      "PR/review usage mode is selected",
+      "changed-files map and PR risk review artifacts are present",
+      "runtime runner blocks approval-bound external PR, merge, GitHub and release claims",
+      "local fixture code checks pass without git or external actions"
+    ],
+    "commands_planned": [
+      "python plugins\\product-agent-os\\scripts\\validate_source_policy.py tests\\fixtures\\product_agent_os\\batch39-m18-pr-review-fixture",
+      "python plugins\\product-agent-os\\scripts\\run_codex_runtime_runner.py tests\\fixtures\\product_agent_os\\batch39-m18-pr-review-fixture --contract --allow-subagents --intent-hint \"pull request PR review diff code check changed files map pr risk review security risk review CI quality gate merge readiness release-ready claim owner review GitHub external PR creation requires approval\" --output docs\\superpowers\\specs\\batch39-m18-runtime-result.json",
+      "python plugins\\product-agent-os\\scripts\\run_methodology_audit.py tests\\fixtures\\product_agent_os\\batch39-m18-pr-review-fixture --json",
+      "python tests\\fixtures\\product_agent_os\\batch39-m18-pr-review-fixture\\tests\\test_pricing.py",
+      "python tests\\fixtures\\product_agent_os\\batch39-m18-pr-review-fixture\\scripts\\fixture_smoke.py"
+    ],
+    "evidence_artifacts": [
+      "docs/superpowers/specs/batch39-m18-source-policy.json",
+      "docs/superpowers/specs/batch39-m18-runtime-result.json",
+      "docs/superpowers/specs/batch39-m18-methodology-audit.json",
+      "docs/superpowers/specs/batch39-m18-command-results.jsonl"
+    ],
+    "expected_outputs": [
+      "source policy status ok",
+      "runtime status needs_approval for approval-bound PR/review external, merge, GitHub and release actions",
+      "usage mode primary pr_review",
+      "methodology audit includes quality_testing_evals and codex_agentic_workflow present_unverified",
+      "no real PR, merge, GitHub, release or git action claim"
+    ]
+  },
+  "generated_at": "2026-06-12T01:42:35+03:00",
+  "pilot": {
+    "archetype": "pr_review",
+    "mode": "synthetic_local",
+    "pilot_id": "synthetic-pr-review-contract",
+    "real_pilot_evidence": false
+  },
+  "redaction": {
+    "local_absolute_paths_allowed": false,
+    "raw_private_logs_stored": false,
+    "redaction_report_ref": "pending_B39_TEST_M05",
+    "secrets_allowed": false
+  },
+  "schema_version": "pilot_run_manifest_v1",
+  "slice": "B39-S2",
+  "source_inventory_ref": "docs/superpowers/specs/batch39-m11-target-fixture-pack.json",
+  "status": {
+    "next_test": "B39-TEST-M19",
+    "open_blockers": [],
+    "overall": "ready_for_planned_pilot"
+  },
+  "target": {
+    "mutation_allowed": false,
+    "source_policy_status": "present",
+    "target_kind": "fixture",
+    "target_ref": "tests/fixtures/product_agent_os/batch39-m18-pr-review-fixture"
+  },
+  "test_id": "B39-TEST-M18"
+}

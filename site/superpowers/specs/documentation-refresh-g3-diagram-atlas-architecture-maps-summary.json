@@ -1,0 +1,202 @@
+{
+  "schema_version": "documentation_refresh_g3_diagram_atlas_architecture_maps_v1",
+  "evidence_id": "documentation_refresh_G3-A01",
+  "status": "implemented_source_docs_no_site_rebuild",
+  "checked_at": "2026-06-21",
+  "group": "G3",
+  "scope": "Diagram atlas and architecture-map source documentation for source/generated trust boundaries, first-run cockpit architecture, evidence/risk lifecycle, skill exposure/invocation boundary and Architecture Intelligence maps.",
+  "work_item_status": {
+    "DOC-M07": {
+      "status": "implemented_source_docs_no_site_rebuild",
+      "owned_files": [
+        "docs/diagrams/source-generated-trust-boundary.md",
+        "docs/diagrams/source-generated-trust-boundary.en.md"
+      ],
+      "summary": "Added a source/generated trust-boundary diagram page that separates source truth, orientation evidence, generated-view-only artifacts, current command evidence, owner approval, accepted gaps and unsupported claims."
+    },
+    "DOC-M08": {
+      "status": "implemented_source_docs_no_site_rebuild",
+      "owned_files": [
+        "docs/diagrams/first-run-cockpit-architecture.md",
+        "docs/diagrams/first-run-cockpit-architecture.en.md"
+      ],
+      "summary": "Added a first-run cockpit architecture page showing first_run_cockpit_artifact_v1, renderer, view model, cockpit surfaces, strict MkDocs boundary, browser screenshot proof boundary and unsupported claims."
+    },
+    "DOC-M09": {
+      "status": "implemented_source_docs_no_site_rebuild",
+      "owned_files": [
+        "docs/diagrams/evidence-risk-lifecycle.md",
+        "docs/diagrams/evidence-risk-lifecycle.en.md"
+      ],
+      "summary": "Added an evidence/risk lifecycle diagram page for evidence_before_completion, supported claims, blockers, accepted gaps, owner decisions, browser proof approval_required and next safe actions."
+    },
+    "DOC-M10": {
+      "status": "implemented_source_docs_no_site_rebuild",
+      "owned_files": [
+        "docs/diagrams/skill-exposure-and-invocation.md",
+        "docs/diagrams/skill-exposure-and-invocation.en.md"
+      ],
+      "summary": "Added a skill exposure and invocation boundary page separating source bundle, installed cache, active session exposure and implicit invocation proof."
+    },
+    "DOC-M23": {
+      "status": "implemented_source_docs_no_site_rebuild",
+      "owned_files": [
+        "docs/diagrams/architecture-intelligence-diagram-atlas.md",
+        "docs/diagrams/architecture-intelligence-diagram-atlas.en.md"
+      ],
+      "summary": "Added an Architecture Intelligence diagram atlas covering first-run flow, artifact pipeline, graph depth, methodology routing, approval gates, site sync, source registry loop and deferred Structurizr DSL trigger criteria."
+    }
+  },
+  "agent_team": [
+    {
+      "agent_id": "019eeb1c-e4da-78e1-9ca0-6389e08233e2",
+      "nickname": "Scribe the 2nd",
+      "role": "docs-maintainer",
+      "owned_items": [
+        "DOC-M07",
+        "DOC-M09"
+      ],
+      "changed_files": [
+        "docs/diagrams/source-generated-trust-boundary.md",
+        "docs/diagrams/source-generated-trust-boundary.en.md",
+        "docs/diagrams/evidence-risk-lifecycle.md",
+        "docs/diagrams/evidence-risk-lifecycle.en.md"
+      ],
+      "handoff_status": "shutdown_after_draft_files_integrated_by_main_agent"
+    },
+    {
+      "agent_id": "019eeb1d-3816-7e93-b23e-3179b6402830",
+      "nickname": "Ledger the 2nd",
+      "role": "docs-maintainer",
+      "owned_items": [
+        "DOC-M08",
+        "DOC-M23"
+      ],
+      "changed_files": [
+        "docs/diagrams/first-run-cockpit-architecture.md",
+        "docs/diagrams/first-run-cockpit-architecture.en.md",
+        "docs/diagrams/architecture-intelligence-diagram-atlas.md",
+        "docs/diagrams/architecture-intelligence-diagram-atlas.en.md"
+      ],
+      "handoff_status": "completed"
+    },
+    {
+      "agent_id": "main",
+      "nickname": "Codex",
+      "role": "integrator",
+      "owned_items": [
+        "DOC-M10",
+        "G3 integration",
+        "RU/EN parity",
+        "nav/check_docs/test/control-plane/registry sync"
+      ],
+      "changed_files": [
+        "docs/diagrams/skill-exposure-and-invocation.md",
+        "docs/diagrams/skill-exposure-and-invocation.en.md",
+        "docs/diagrams/index.md",
+        "docs/diagrams/index.en.md",
+        "mkdocs.yml",
+        "tools/check_docs.py",
+        "tests/product_agent_os/test_product_agent_os_docs.py"
+      ],
+      "handoff_status": "current_run"
+    }
+  ],
+  "source_docs": [
+    "docs/diagrams/source-generated-trust-boundary.md",
+    "docs/diagrams/source-generated-trust-boundary.en.md",
+    "docs/diagrams/first-run-cockpit-architecture.md",
+    "docs/diagrams/first-run-cockpit-architecture.en.md",
+    "docs/diagrams/evidence-risk-lifecycle.md",
+    "docs/diagrams/evidence-risk-lifecycle.en.md",
+    "docs/diagrams/skill-exposure-and-invocation.md",
+    "docs/diagrams/skill-exposure-and-invocation.en.md",
+    "docs/diagrams/architecture-intelligence-diagram-atlas.md",
+    "docs/diagrams/architecture-intelligence-diagram-atlas.en.md",
+    "docs/diagrams/index.md",
+    "docs/diagrams/index.en.md"
+  ],
+  "sync_artifacts": [
+    "mkdocs.yml",
+    "tools/check_docs.py",
+    "tests/product_agent_os/test_product_agent_os_docs.py",
+    "docs/sources/registry.md",
+    "docs/sources/registry.en.md",
+    "REQUIREMENTS.md",
+    "PLAN.md",
+    "TEST.md",
+    "EVALS.md",
+    "RUNLOG.md",
+    "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md"
+  ],
+  "supported_claims": [
+    "G3 source Markdown pages and EN counterparts are present.",
+    "MkDocs navigation and tools/check_docs.py include the five new diagram pages.",
+    "Diagram pages separate source truth, generated-view-only outputs, orientation evidence, current command evidence, owner approval and accepted gaps.",
+    "First-run cockpit and Architecture Intelligence diagrams state strict MkDocs, local Mermaid, browser screenshot proof, Cosmos.gl/WebGL and Structurizr DSL boundaries.",
+    "DOC-M25 remains the final root site freshness gate after G2-G5 source/nav changes."
+  ],
+  "unsupported_claims": [
+    "Root site freshness is current.",
+    "Search index or sitemap includes the new G3 pages in root site output.",
+    "Browser screenshot proof, runtime interaction proof or visual overlap proof was produced in this G3 slice.",
+    "Cosmos.gl/WebGL runtime execution is supported.",
+    "Structurizr DSL is installed, verified or required.",
+    "Full WCAG certification is complete.",
+    "Live server, provider/API, target mutation, installed cache refresh, git action, release, deploy, publish or automation occurred."
+  ],
+  "test_contract": {
+    "source_markdown_page_count": 139,
+    "localized_markdown_page_count": 131,
+    "site_promoted_localized_markdown_page_count": 125,
+    "pending_site_pages_until_doc_m25": [
+      "docs/product-agent-os/first-run-architecture-cockpit.md",
+      "docs/diagrams/source-generated-trust-boundary.md",
+      "docs/diagrams/first-run-cockpit-architecture.md",
+      "docs/diagrams/evidence-risk-lifecycle.md",
+      "docs/diagrams/skill-exposure-and-invocation.md",
+      "docs/diagrams/architecture-intelligence-diagram-atlas.md"
+    ],
+    "reason": "G2 and G3 source pages are included in source/nav checks now, while root site/search/sitemap freshness remains deferred to final DOC-M25."
+  },
+  "no_unapproved_actions": {
+    "root_site_rebuild": false,
+    "browser_automation": false,
+    "live_runtime": false,
+    "provider_api_call": false,
+    "target_workspace_mutation": false,
+    "installed_plugin_cache_refresh": false,
+    "global_codex_config_write": false,
+    "git_stage_commit_push_pr": false,
+    "release_deploy_publish": false,
+    "automation_activation": false,
+    "dependency_install_or_remediation": false,
+    "structurizr_dsl_install": false,
+    "broad_docs_scan_or_report_retention": false
+  },
+  "verification": [
+    {
+      "command": "python -m json.tool docs\\superpowers\\specs\\documentation-refresh-g3-diagram-atlas-architecture-maps-summary.json",
+      "status": "passed_current_run"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+      "status": "passed_current_run",
+      "notes": "95 tests passed."
+    },
+    {
+      "command": "python tools\\check_docs.py",
+      "status": "passed_current_run"
+    },
+    {
+      "command": ".venv-docs\\Scripts\\python.exe -m mkdocs build --strict --site-dir .docs-tools\\reports\\mkdocs-strict-smoke-g3-2026-06-21",
+      "status": "passed_current_run",
+      "notes": "Source/nav smoke only; output path is under .docs-tools/reports, not root site freshness. MkDocs reported existing INFO messages about non-nav source pages and one existing anchor note."
+    },
+    {
+      "command": "git diff --check",
+      "status": "passed_current_run",
+      "notes": "Passed with CRLF normalization warnings only."
+    }
+  ]
+}

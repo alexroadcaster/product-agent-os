@@ -1,0 +1,75 @@
+{
+  "approval_boundary": {
+    "automation_activation": "not_performed",
+    "browser_automation": "not_performed",
+    "cache_mutation": "not_performed",
+    "external_actions": "not_performed",
+    "git_actions": "not_performed",
+    "live_server": "not_performed",
+    "local_evidence_artifact_write": "allowed_workspace_output_only",
+    "provider_or_api_calls": "not_performed",
+    "target_workspace_mutation": "not_performed"
+  },
+  "attempt_id": "B39-TEST-M16-A01",
+  "batch": "B39",
+  "completion_skeptic": {
+    "accepted_gap_refs": [],
+    "doubt_packet_ref": "none",
+    "failure_classes": [],
+    "promotion_boundary": "manual_only_not_promoted",
+    "scorecard_ref": "none",
+    "trigger": "not_applicable_schema_fixture",
+    "verdict": "not_run"
+  },
+  "execution_plan": {
+    "checks_planned": [
+      "AI/RAG observed signals present",
+      "live model/provider/vector/eval quality claims remain unsupported without exact approval"
+    ],
+    "commands_planned": [
+      "python plugins\\product-agent-os\\scripts\\validate_source_policy.py tests\\fixtures\\product_agent_os\\batch39-m16-ai-rag-fixture",
+      "python plugins\\product-agent-os\\scripts\\run_codex_runtime_runner.py tests\\fixtures\\product_agent_os\\batch39-m16-ai-rag-fixture --contract --intent-hint AI RAG eval model retrieval grounding dataset rubric threshold latency cost guardrail --output docs\\superpowers\\specs\\batch39-m16-runtime-result.json",
+      "python plugins\\product-agent-os\\scripts\\run_methodology_audit.py tests\\fixtures\\product_agent_os\\batch39-m16-ai-rag-fixture --json"
+    ],
+    "evidence_artifacts": [
+      "docs/superpowers/specs/batch39-m16-source-policy.json",
+      "docs/superpowers/specs/batch39-m16-runtime-result.json",
+      "docs/superpowers/specs/batch39-m16-methodology-audit.json"
+    ],
+    "expected_outputs": [
+      "source policy status ok",
+      "runtime status needs_approval for approval-bound AI/RAG methodology",
+      "methodology audit includes AI/RAG recommendations",
+      "no AI quality/grounding/safety completion claim"
+    ]
+  },
+  "generated_at": "2026-06-12T00:00:00+00:00",
+  "manifest_digest": "sha256:a5170c3a1751e5af5bfca949ec0b1294dbdad257c4af5e2c365d3af028977e4e",
+  "pilot": {
+    "archetype": "ai_rag",
+    "mode": "synthetic_local",
+    "pilot_id": "synthetic-ai-rag-contract",
+    "real_pilot_evidence": false
+  },
+  "redaction": {
+    "local_absolute_paths_allowed": false,
+    "raw_private_logs_stored": false,
+    "redaction_report_ref": "pending_B39_TEST_M05",
+    "secrets_allowed": false
+  },
+  "schema_version": "pilot_run_manifest_v1",
+  "slice": "B39-S2",
+  "source_inventory_ref": "docs/superpowers/specs/batch39-m11-target-fixture-pack.json",
+  "status": {
+    "next_test": "B39-TEST-M03",
+    "open_blockers": [],
+    "overall": "ready_for_planned_pilot"
+  },
+  "target": {
+    "mutation_allowed": false,
+    "source_policy_status": "present",
+    "target_kind": "fixture",
+    "target_ref": "tests/fixtures/product_agent_os/batch39-m16-ai-rag-fixture"
+  },
+  "test_id": "B39-TEST-M16"
+}

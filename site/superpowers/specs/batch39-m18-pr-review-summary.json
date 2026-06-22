@@ -1,0 +1,123 @@
+{
+  "agent_skill_evidence": {
+    "agent_handoff": {
+      "name": "ReviewSignal",
+      "recommendation": "Record M18 as passed_contract_guardrail; do not claim real PR approval, GitHub checks, merge safety, CI success, release readiness or promotion readiness.",
+      "role": "Tester",
+      "status": "completed_read_only_review"
+    },
+    "reviewer_handoff": {
+      "name": "DiffLens",
+      "recommendation": "Keep the code-check archetype evidence synthetic-local and require exact approval before git, GitHub, merge, release or external PR actions.",
+      "role": "Reviewer",
+      "status": "completed_read_only_review"
+    },
+    "skills_used": [
+      "product-agent-os:implementation-planner",
+      "product-agent-os:agent-team-designer",
+      "product-agent-os:docs-maintainer"
+    ]
+  },
+  "approval_boundary": {
+    "automation_activation": "not_performed",
+    "browser_automation": "not_performed",
+    "cache_mutation": "not_performed",
+    "external_actions": "not_performed",
+    "git_actions": "not_performed",
+    "github_api_calls": "not_performed",
+    "live_server": "not_performed",
+    "local_evidence_artifact_write": "allowed_workspace_output_only",
+    "merge_action": "not_performed",
+    "provider_or_api_calls": "not_performed",
+    "release_publication": "not_performed",
+    "target_workspace_mutation": "not_performed"
+  },
+  "attempt_id": "B39-TEST-M18-A01",
+  "batch": "B39",
+  "evidence_refs": {
+    "command_results": "docs/superpowers/specs/batch39-m18-command-results.jsonl",
+    "manifest": "docs/superpowers/specs/batch39-m18-pr-review-manifest.json",
+    "methodology_audit": "docs/superpowers/specs/batch39-m18-methodology-audit.json",
+    "runtime": "docs/superpowers/specs/batch39-m18-runtime-result.json",
+    "source_policy": "docs/superpowers/specs/batch39-m18-source-policy.json"
+  },
+  "generated_at": "2026-06-12T01:42:35+03:00",
+  "next_action": "Run B39-TEST-M19 as the automation/release archetype pilot.",
+  "observed_results": {
+    "command_entry_digests": [
+      "sha256:7440ae343dd2910f8812cf4fe9ebba8a92bb7c8cb6d48d23d535f34a0784e44a",
+      "sha256:506f7e926a19afd27db03a93357c544cd7b0d90162e855a110cb642047016a02",
+      "sha256:f6ba563abe9806627bcd9e2530c3b3d43c2f563f59ec79a093cd9983de9d2648"
+    ],
+    "command_results_count": 3,
+    "fixture_pycompile_check": "passed_py_compile",
+    "fixture_smoke_check": "passed_python_script",
+    "fixture_unit_check": "passed_python_script",
+    "lifecycle_state": "infrastructure_planned",
+    "manifest_digest": "sha256:e3486e60029b992ee3772d5f87dc4644444c8c188b48d312b704ff7825580e54",
+    "methodology_status": "ok",
+    "observed_signal_ids": [
+      "docs_or_control_plane",
+      "codex_agentic_workflow",
+      "security_sensitive_surface",
+      "test_evidence",
+      "quality_testing_signal"
+    ],
+    "quality_testing_signal_present": true,
+    "runtime_approval_requirements": [
+      "explicit approval required before methodology-recommended external or irreversible action"
+    ],
+    "runtime_exit_code": 1,
+    "runtime_exit_interpretation": "expected_approval_guardrail_for_pr_review_git_github_merge_release_claims",
+    "runtime_status": "needs_approval",
+    "runtime_usage_mode_primary": "pr_review",
+    "security_sensitive_surface_present": true,
+    "source_policy_files": 3,
+    "source_policy_status": "ok"
+  },
+  "pilot": {
+    "archetype": "pr_review",
+    "mode": "synthetic_local",
+    "pilot_id": "synthetic-pr-review-contract",
+    "real_pilot_evidence": false,
+    "target_ref": "tests/fixtures/product_agent_os/batch39-m18-pr-review-fixture"
+  },
+  "pr_review_contract": {
+    "changed_files_map_present": true,
+    "code_check_archetype_status": "covered_synthetic_local",
+    "contract_verdict": "runtime_runner_selected_pr_review_and_blocked_approval_bound_external_pr_merge_git_github_release_claims",
+    "detected_pr_review_surface": true,
+    "expected_artifacts_present": {
+      "docs/code-review-findings.md": true,
+      "docs/pr-risk-review.md": true,
+      "docs/release-readiness-gap.md": true,
+      "review/approval-boundary.json": true,
+      "review/changed-files-map.json": true,
+      "review/review-request.md": true,
+      "src/pricing.py": true,
+      "tests/test_pricing.py": true
+    },
+    "external_pr_status": "not_run_approval_required",
+    "github_check_status": "not_run_approval_required",
+    "merge_status": "not_run_approval_required",
+    "release_readiness_status": "unsupported_synthetic_only"
+  },
+  "promotion_boundary": "manual_only_not_promoted",
+  "schema_version": "batch39_pr_review_pilot_summary_v1",
+  "slice": "B39-S2",
+  "summary_status": "passed_contract_guardrail",
+  "supported_claims": [
+    "A synthetic local PR/review fixture can pass source-policy validation after source-status repair.",
+    "Runtime runner selects pr_review usage mode from the PR/diff review intent.",
+    "Runtime runner blocks approval-bound external PR, merge, GitHub, git and release claims with needs_approval.",
+    "Methodology audit detects quality-testing, Codex agentic workflow and security-sensitive review signals.",
+    "The fixture unit check and smoke script validate local changed-files, review-risk and approval-boundary artifacts without dependency installation.",
+    "Command-results JSONL stores current command evidence digests without raw stdout or stderr."
+  ],
+  "test_id": "B39-TEST-M18",
+  "unsupported_claims": [
+    "The fixture does not prove real PR approval, GitHub checks, CI success, merge safety, reviewer acceptance, release readiness or production behavior.",
+    "Synthetic-local evidence does not prove real-project value, Neural_Flow positive evidence, release readiness or promotion readiness.",
+    "No git action, GitHub API call, external PR creation, merge, release publication, browser automation, live server, target mutation, external action, cache mutation or provider/API call was performed."
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "approval_required": true,
+  "cache_markers": {
+    "answer_ledger_template": false,
+    "first_run_guided_response": false,
+    "s6_closure_runner": false
+  },
+  "cache_refresh_required": true,
+  "cache_write_performed": false,
+  "generated_at": "2026-06-18T01:10:00+03:00",
+  "installed_cache_ready": false,
+  "readiness_digest": "sha256:2681dd4994b85127e4e6b2dcc4774611ce9acaba8a4ab4ad51eb70bd8b76391e",
+  "schema_version": "batch41_s6_plugin_cache_readiness_v1",
+  "source_markers": {
+    "answer_ledger_template": true,
+    "first_run_guided_response": true,
+    "s6_closure_runner": true
+  },
+  "source_tree_ready": true,
+  "status": "blocked_expected_approval_required",
+  "task_id": "B41-S6-M29",
+  "unsupported_claims": [
+    "plugin cache/install readiness is not claimed unless installed-cache evidence exists after approved refresh/check"
+  ]
+}

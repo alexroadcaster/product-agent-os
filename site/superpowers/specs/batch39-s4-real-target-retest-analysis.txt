@@ -1,0 +1,99 @@
+Batch 39 S4 Blocker-Fix Real-Target Retest Analysis
+
+Source status: Current-run read-only blocker-fix retest and analysis report for Neural Flow and SOL 0.6, generated on 2026-06-18 from local Product-Agent OS scripts. Target workspaces were inspected read-only. No target mutation, live server, browser automation, provider/API/model call, git action, deployment, publication, automation activation or external action was performed.
+
+Scope
+
+This report updates the previous post-B39-S3 real-target retest after fixing the S4 blockers identified in:
+
+- batch39-s4-retest-neural_flow-summary.json
+- batch39-s4-retest-sol_0_6-summary.json
+- batch39-s4-real-target-retest-comparison.json
+
+Commands run per target:
+
+- detect_project.py <target>
+- validate_source_policy.py <target>
+- run_codex_runtime_runner.py <target> --contract --intent-hint "read only target inspection"
+- run_first_project_analysis.py <target> --dry-run --generated-at 2026-06-18T12:30:00Z
+- run_methodology_audit.py <target> --json
+- scan_project_code_graph.py <target> --dry-run
+- runtime contract sanity checks with no hint, read-only hint and the previous false-positive "preserve approval boundaries" hint
+
+Results
+
+| Target | Route | Source policy | Runtime contract | First-run dry-run | Graph |
+| --- | --- | --- | --- | --- | --- |
+| Neural Flow | ai_eval_regression | blocked | blocked: source_policy:blocked | ok, 0 writes, generated-view-only | ok |
+| SOL 0.6 | desktop_local_first | blocked | blocked: source_policy:blocked | ok, 0 writes, generated-view-only | ok, 2,539 nodes / 2,551 edges |
+
+Fixed Blockers
+
+B39-FIX-M40-GRAPH-SCOPE-001: fixed_retested.
+
+Previous symptom: SOL 0.6 graph dry-run scanned the imported antigravity skill corpus and exceeded graph bounds with 43,326 nodes, 44,239 edges and 87,641 observations.
+
+Current evidence: SOL 0.6 graph dry-run now reports scope_policy_status=excluded_prefixes_reported, excluded_prefixes=["antigravity-awesome-skills-main"], validation_ok=true, 2,539 nodes, 2,551 edges and 5,090 observations. Top prefixes are now frontend, docs, backend and scripts instead of the imported skill corpus.
+
+Product value: graph evidence is again about the target product surface, not dominated by imported skill/vendor-like material.
+
+B39-FIX-M39-INTENT-HINT-PR-TOKEN-001: fixed_retested.
+
+Previous symptom: the benign hint "preserve approval boundaries" routed both real targets to pr_review because "pr" matched inside "preserve".
+
+Current evidence: the same hint now preserves target routes. Neural Flow stays ai_eval_regression, and SOL 0.6 stays desktop_local_first. The explicit PR route still works for standalone PR/diff wording in unit tests.
+
+Product value: operator safety wording no longer overrides project-shape routing.
+
+B39-FIX-M39-CLI-SCHEMA-NORMALIZATION-001: fixed_retested.
+
+Previous symptom: ad-hoc evidence collectors could lose route and packet fields because detect_project uses usage_mode.primary, runtime runner uses route_packet.usage_mode, and first-run dry-run wraps the packet under packet.*.
+
+Current evidence: product_agent_os.real_target_evidence normalizes detect_project, runtime_contract, first_run_dry_run, source_policy, methodology_audit and project_graph into real_target_evidence_summary_v1. The regenerated summaries preserve usage_mode_primary and runtime_usage_mode_primary for both targets.
+
+Product value: future S4 dashboards and comparison reports have one stable evidence shape instead of fragile per-script flattening.
+
+B39-FIX-M47-METHODOLOGY-VOLUME-001: fixed_retested.
+
+Previous symptom: SOL 0.6 methodology audit emitted 81 recommendations and 60 groups, too broad for first-safe-action onboarding.
+
+Current evidence: methodology_synthesis now exposes first_safe_action with policy=risk_ordered_top_n_keep_full_packet_as_evidence. SOL keeps the full 81 recommendations / 60 groups as evidence, but first_safe_action is capped at 5 recommendations.
+
+Product value: the operator sees the first safe action layer while the full methodology packet remains available for audit and later planning.
+
+Stable Guardrails
+
+- Both targets remain source-policy blocked.
+- Runtime contract remains blocked before target apply, runtime/browser behavior, provider/model calls, release, deployment or automation claims.
+- First-run analysis stayed dry-run only and did not create target .codex/product-agent-os/analysis directories.
+- Generated first-run artifacts remain orientation evidence only, not source truth.
+
+Residual Architecture Risks
+
+B39-REAL-RET-ARCH-001: SOL 0.6 workspace boundary is still ambiguous.
+
+The graph is now technically bounded, but the target still combines product code, local agent rules and imported/reference material in one workspace. Before a deeper readiness pilot, the owner should classify frontend, backend, docs, .agents and imported skill/reference corpora as separate scopes.
+
+B39-REAL-RET-ARCH-002: Neural Flow is still expected-block, not clean-positive.
+
+Neural Flow remains useful for expected source-policy block behavior. It still does not support a clean-positive pilot or readiness claim without target-side ownership/source-policy work.
+
+B39-REAL-RET-ARCH-003: Real-target retests still cannot support readiness claims.
+
+These fixes harden route, graph, schema and first-action behavior. They do not validate target apply, runtime/browser behavior, provider/model quality, git/deploy readiness, release readiness or automation readiness.
+
+Product Conclusion
+
+S4 blockers from the post-S3 retest are fixed and retested in read-only real-target mode. Batch 39 can continue to the remaining S4 hardening gates, but no release/readiness or promotion claim follows from this slice.
+
+Unsupported Claims
+
+This report does not support:
+
+- release readiness;
+- target apply safety;
+- runtime/browser behavior;
+- provider/model quality;
+- git, deploy or publication readiness;
+- automation readiness;
+- target source-policy acceptance.

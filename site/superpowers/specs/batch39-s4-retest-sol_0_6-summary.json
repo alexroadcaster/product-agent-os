@@ -1,0 +1,370 @@
+{
+  "approval_boundary": "owner_requested_s4_blocker_fix_retest_read_only_no_target_mutation_no_runtime_browser_provider_git_external_actions",
+  "batch": "B39",
+  "commands": {
+    "detect_project": {
+      "command": "plugins/product-agent-os/scripts/detect_project.py <target>",
+      "exit_code": 0,
+      "stderr_present": false,
+      "stdout_parse_status": "json"
+    },
+    "first_run_dry_run": {
+      "command": "plugins/product-agent-os/scripts/run_first_project_analysis.py <target> --dry-run --generated-at 2026-06-18T12:30:00Z",
+      "exit_code": 0,
+      "stderr_present": false,
+      "stdout_parse_status": "json"
+    },
+    "methodology_audit": {
+      "command": "plugins/product-agent-os/scripts/run_methodology_audit.py <target> --json",
+      "exit_code": 0,
+      "stderr_present": false,
+      "stdout_parse_status": "json"
+    },
+    "project_graph_dry_run": {
+      "command": "plugins/product-agent-os/scripts/scan_project_code_graph.py <target> --dry-run",
+      "exit_code": 0,
+      "stderr_present": false,
+      "stdout_parse_status": "json"
+    },
+    "runtime_contract": {
+      "command": "plugins/product-agent-os/scripts/run_codex_runtime_runner.py <target> --contract --intent-hint read only target inspection",
+      "exit_code": 1,
+      "stderr_present": false,
+      "stdout_parse_status": "json"
+    },
+    "source_policy": {
+      "command": "plugins/product-agent-os/scripts/validate_source_policy.py <target>",
+      "exit_code": 1,
+      "stderr_present": false,
+      "stdout_parse_status": "json"
+    }
+  },
+  "date": "2026-06-18",
+  "detect_project_summary": {
+    "detected_stack": [],
+    "existing_control_plane": [],
+    "first_run_analysis_input_status": "not_available",
+    "missing_control_plane": [
+      "AGENTS.md",
+      "REQUIREMENTS.md",
+      "PLAN.md",
+      "TEST.md",
+      "EVALS.md",
+      "RUNLOG.md"
+    ],
+    "risk_count": 3,
+    "risks": [
+      "missing durable project instructions",
+      "missing architecture documentation signals",
+      "missing domain model for complex domain"
+    ],
+    "status": "ok",
+    "usage_mode_confidence": "medium",
+    "usage_mode_primary": "desktop_local_first",
+    "usage_mode_reasons": [
+      "workspace has desktop or local-first runtime signals"
+    ]
+  },
+  "first_run_dry_run_summary": {
+    "first_run_page_count": 0,
+    "generated_view_policy": "orientation_only_not_proof",
+    "mode": "dry_run",
+    "packet_digest": "sha256:193be9e021f656c812298017563991c09fcc05db604564626a5e0ea3b3048adf",
+    "safe_next_action": "Review first-run packet; continue only with approved generated analysis artifacts.",
+    "schema_version": "first_run_analysis_packet_v1",
+    "status": "ok",
+    "write_policy": "read_only_generated_analysis_only",
+    "written_file_count": 0
+  },
+  "live_runtime_browser_provider_git_external_actions_performed": false,
+  "methodology_audit_summary": {
+    "first_safe_action": {
+      "full_group_count": 60,
+      "full_recommendation_count": 81,
+      "max_recommendations": 5,
+      "policy": "risk_ordered_top_n_keep_full_packet_as_evidence",
+      "recommendations": [
+        {
+          "artifact": "approval-record.md",
+          "gates": [
+            "external_write_approval_present"
+          ],
+          "owner_domain": "security_privacy_compliance",
+          "priority": "P0_blocker",
+          "risk_rank": 100,
+          "safe_next_action": "Stage approval-record.md and stop before side-effecting sensitive actions.",
+          "source_domains": [
+            "security_privacy_compliance"
+          ]
+        },
+        {
+          "artifact": "security-risk-review.md",
+          "gates": [
+            "backend_security_reviewed",
+            "security_risk_review_present",
+            "security_sensitive_classification_present",
+            "codex_security_scan_status_present"
+          ],
+          "owner_domain": "security_privacy_compliance",
+          "priority": "P1_high_risk",
+          "risk_rank": 90,
+          "safe_next_action": "Stage the backend artifact or accepted gap before claiming backend completion.",
+          "source_domains": [
+            "backend",
+            "security_privacy_compliance"
+          ]
+        },
+        {
+          "artifact": "AGENTS.md",
+          "gates": [
+            "control_plane_present",
+            "source_of_truth_present"
+          ],
+          "owner_domain": "",
+          "priority": "P0_blocker",
+          "risk_rank": 0,
+          "safe_next_action": "Stage control-plane artifact proposals without mutating existing workspace files.",
+          "source_domains": [
+            "codex_agentic_workflow"
+          ]
+        },
+        {
+          "artifact": "RUNLOG.md",
+          "gates": [
+            "security_evidence_before_completion",
+            "read_only_discovery_complete"
+          ],
+          "owner_domain": "",
+          "priority": "P0_blocker",
+          "risk_rank": 0,
+          "safe_next_action": "Record current security evidence or accepted gap in RUNLOG.md before completion claim.",
+          "source_domains": [
+            "security_privacy_compliance",
+            "codex_agentic_workflow"
+          ]
+        },
+        {
+          "artifact": "backend-runtime-behavior.md",
+          "gates": [
+            "backend_runtime_behavior_present"
+          ],
+          "owner_domain": "",
+          "priority": "P0_blocker",
+          "risk_rank": 0,
+          "safe_next_action": "Stage the backend artifact or accepted gap before claiming backend completion.",
+          "source_domains": [
+            "backend"
+          ]
+        }
+      ],
+      "safe_next_action": "Stage approval-record.md and stop before side-effecting sensitive actions.",
+      "status": "ok",
+      "write_policy": "read_only"
+    },
+    "first_safe_action_count": 5,
+    "first_safe_action_policy": "risk_ordered_top_n_keep_full_packet_as_evidence",
+    "recommendation_count": 81,
+    "recommendation_group_count": 60,
+    "safe_next_action": "Stage approval-record.md and stop before side-effecting sensitive actions.",
+    "status": "ok"
+  },
+  "normalized_evidence": {
+    "detect_project_summary": {
+      "detected_stack": [],
+      "existing_control_plane": [],
+      "first_run_analysis_input_status": "not_available",
+      "missing_control_plane": [
+        "AGENTS.md",
+        "REQUIREMENTS.md",
+        "PLAN.md",
+        "TEST.md",
+        "EVALS.md",
+        "RUNLOG.md"
+      ],
+      "risk_count": 3,
+      "risks": [
+        "missing durable project instructions",
+        "missing architecture documentation signals",
+        "missing domain model for complex domain"
+      ],
+      "status": "ok",
+      "usage_mode_confidence": "medium",
+      "usage_mode_primary": "desktop_local_first",
+      "usage_mode_reasons": [
+        "workspace has desktop or local-first runtime signals"
+      ]
+    },
+    "first_run_dry_run_summary": {
+      "first_run_page_count": 0,
+      "generated_view_policy": "orientation_only_not_proof",
+      "mode": "dry_run",
+      "packet_digest": "sha256:193be9e021f656c812298017563991c09fcc05db604564626a5e0ea3b3048adf",
+      "safe_next_action": "Review first-run packet; continue only with approved generated analysis artifacts.",
+      "schema_version": "first_run_analysis_packet_v1",
+      "status": "ok",
+      "write_policy": "read_only_generated_analysis_only",
+      "written_file_count": 0
+    },
+    "methodology_audit_summary": {
+      "first_safe_action_count": 5,
+      "first_safe_action_policy": "risk_ordered_top_n_keep_full_packet_as_evidence",
+      "recommendation_count": 81,
+      "recommendation_group_count": 60,
+      "safe_next_action": "Stage approval-record.md and stop before side-effecting sensitive actions.",
+      "status": "ok"
+    },
+    "project_graph_summary": {
+      "edge_count": 2551,
+      "excluded_prefixes": [
+        "antigravity-awesome-skills-main"
+      ],
+      "node_count": 2539,
+      "observation_count": 5090,
+      "scope_policy_status": "excluded_prefixes_reported",
+      "status": "ok",
+      "top_path_prefixes": [
+        {
+          "node_count": 1801,
+          "prefix": "frontend"
+        },
+        {
+          "node_count": 577,
+          "prefix": "docs"
+        },
+        {
+          "node_count": 122,
+          "prefix": "backend"
+        },
+        {
+          "node_count": 14,
+          "prefix": "scripts"
+        },
+        {
+          "node_count": 12,
+          "prefix": "sol-ide.json"
+        },
+        {
+          "node_count": 10,
+          "prefix": ".agents"
+        },
+        {
+          "node_count": 1,
+          "prefix": ".vscode"
+        },
+        {
+          "node_count": 1,
+          "prefix": "<none>"
+        },
+        {
+          "node_count": 1,
+          "prefix": "tmp-ai-test.ts"
+        }
+      ],
+      "validation_errors": [],
+      "validation_ok": true
+    },
+    "runtime_contract_summary": {
+      "approval_required": false,
+      "errors": [
+        "source_policy:blocked"
+      ],
+      "route_id": null,
+      "source_policy_status": "blocked",
+      "status": "blocked",
+      "usage_mode_primary": "desktop_local_first",
+      "usage_mode_reasons": [
+        "workspace has desktop or local-first runtime signals"
+      ]
+    },
+    "schema_version": "real_target_evidence_summary_v1",
+    "source_policy_summary": {
+      "blocker_count": 0,
+      "source_policy_status": null,
+      "status": "blocked",
+      "unsupported_claims": []
+    },
+    "summary_digest": "sha256:0ce351fb72aad7bab7975f759f7c6891aa85e3db55d03e35ba1c73d0c2688d00",
+    "target_label": "SOL 0.6",
+    "write_policy": "read_only_summary_only"
+  },
+  "previous_artifact_refs": {
+    "m21": "batch39-m21-sol-readonly-summary.json",
+    "m22": "batch39-m22-retest-sol_0_6-summary.json"
+  },
+  "project_graph_summary": {
+    "edge_count": 2551,
+    "excluded_prefixes": [
+      "antigravity-awesome-skills-main"
+    ],
+    "node_count": 2539,
+    "observation_count": 5090,
+    "scope_policy_status": "excluded_prefixes_reported",
+    "status": "ok",
+    "top_path_prefixes": [
+      {
+        "node_count": 1801,
+        "prefix": "frontend"
+      },
+      {
+        "node_count": 577,
+        "prefix": "docs"
+      },
+      {
+        "node_count": 122,
+        "prefix": "backend"
+      },
+      {
+        "node_count": 14,
+        "prefix": "scripts"
+      },
+      {
+        "node_count": 12,
+        "prefix": "sol-ide.json"
+      },
+      {
+        "node_count": 10,
+        "prefix": ".agents"
+      },
+      {
+        "node_count": 1,
+        "prefix": ".vscode"
+      },
+      {
+        "node_count": 1,
+        "prefix": "<none>"
+      },
+      {
+        "node_count": 1,
+        "prefix": "tmp-ai-test.ts"
+      }
+    ],
+    "validation_errors": [],
+    "validation_ok": true
+  },
+  "runtime_contract_summary": {
+    "approval_required": false,
+    "errors": [
+      "source_policy:blocked"
+    ],
+    "route_id": null,
+    "source_policy_status": "blocked",
+    "status": "blocked",
+    "usage_mode_primary": "desktop_local_first",
+    "usage_mode_reasons": [
+      "workspace has desktop or local-first runtime signals"
+    ]
+  },
+  "schema": "batch39_s4_real_target_retest_summary_v4",
+  "source_policy_summary": {
+    "blocker_count": 0,
+    "source_policy_status": null,
+    "status": "blocked",
+    "unsupported_claims": []
+  },
+  "summary_digest": "sha256:0b0ce666a419f0e809c1c27265e98e955fb4fd0094203a9b041ee4c6b056332d",
+  "target_analysis_dir_after": false,
+  "target_analysis_dir_before": false,
+  "target_label": "SOL 0.6",
+  "target_mutation_performed": false,
+  "task": "B39-S4-blocker-fix-retest"
+}

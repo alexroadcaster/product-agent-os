@@ -1,0 +1,65 @@
+{
+  "artifact_kind": "batch39_s4_graph_depth_s6_agent_reading_packet_summary",
+  "attempt_id": "B39-S4-GD-S6-A01",
+  "batch": "B39",
+  "slice": "B39-S4",
+  "date": "2026-06-18",
+  "status": "partial_pass_graph_depth_agent_reading_packet",
+  "source_status": "current-run local synthetic fixture evidence only",
+  "task_ids": [
+    "B39-S4-GRAPH-DEPTH-04"
+  ],
+  "summary": [
+    "Added a bounded agent_reading_packet graph query for graph-first agent handoffs.",
+    "The packet returns target_entity, related_entities, read_order, source_spans, confidence_summary, affected_tests, stale_status, rejected_links, unresolved_edges, unsupported_languages, unsupported_claims, source_read_required, must_read_source_before_edit, budget and safe_next_action.",
+    "The packet remains read-only and graph-artifact-only: raw source bodies and absolute workspace paths are excluded.",
+    "The packet records graph output as orientation evidence only and keeps release readiness, production runtime behavior, source-read completion and completion verification unsupported."
+  ],
+  "files_changed": [
+    "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+    "tests/product_agent_os/test_project_graph_queries.py"
+  ],
+  "agent_inputs": [
+    {
+      "role": "tester",
+      "result": "read-only RED/green contract recommendation for agent_reading_packet shape, stale/truncation/no-overclaim assertions and source_spans risk"
+    },
+    {
+      "role": "architect",
+      "result": "read-only schema/helper strategy recommendation to add agent_reading_packet inside the existing query layer"
+    },
+    {
+      "role": "docs-maintainer",
+      "result": "read-only control-plane update recommendation for attempt id, evidence path, unsupported claims and verification commands"
+    }
+  ],
+  "commands": [
+    {
+      "command": "python -m unittest tests.product_agent_os.test_project_graph_queries.ProjectGraphQueriesTest.test_agent_reading_packet_is_bounded_source_first_and_not_readiness_proof -v",
+      "red_result": "failed before implementation: query returned status blocked because agent_reading_packet was not registered",
+      "green_result": "ok"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_project_graph_queries -v",
+      "result": "9 tests OK"
+    }
+  ],
+  "approval_boundary": {
+    "target_workspace_mutation": "not_performed",
+    "browser_or_runtime_automation": "not_performed",
+    "provider_or_model_call": "not_performed",
+    "dependency_installation": "not_performed",
+    "git_stage_commit_push_pr": "not_performed",
+    "external_write": "not_performed"
+  },
+  "unsupported_claims": [
+    "This packet does not close B39-S4-GRAPH-DEPTH-00..15.",
+    "This packet does not prove SOL 0.6 or Neural Flow target usefulness.",
+    "This packet does not implement framework semantics, cross-language runtime links, a full rejected-link ledger, coverage map, freshness action gates, usefulness scorecard, real-target retest, guided tour or HTML explainer.",
+    "This packet does not support release readiness, promotion, runtime/browser behavior, provider quality, target apply, automation readiness or source-read completion."
+  ],
+  "next_actions": [
+    "Add rejected-link ledger, coverage/freshness gates, usefulness scorecard, real-target retest and HTML integration before S4 graph-depth closure.",
+    "Keep graph packets as orientation evidence and require agents to read listed source spans before edits or completion/readiness claims."
+  ]
+}

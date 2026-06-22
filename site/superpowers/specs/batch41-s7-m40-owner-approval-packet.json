@@ -1,0 +1,53 @@
+{
+  "actions_approved_for_m40": {
+    "browser_automation": true,
+    "browser_visual_proof": true,
+    "console_network_clean_proof": true,
+    "cosmos_gl_runtime_webgl_execution": true,
+    "necessary_codex_docs_cockpit_fixes": true,
+    "neural_flow_acceptance": true,
+    "runtime_interaction": true,
+    "wcag_static_and_browser_accessibility_checks": true
+  },
+  "actions_not_approved_by_this_packet": {
+    "active_automation": false,
+    "external_write": false,
+    "git_stage_commit_push_pr": false,
+    "live_provider_api_call": false,
+    "production_or_public_release": false,
+    "target_source_mutation_without_separate_patch_scope": false
+  },
+  "approval_basis": "Owner explicitly approved all previously unsupported checks and necessary fixes for B41-S7-M40 in chat.",
+  "approval_date": "2026-06-19",
+  "approval_status": "approved_for_m40_execution_not_yet_run",
+  "approved_check_scope": [
+    "Neural_Flow read-only acceptance pilot for the cockpit artifact",
+    "browser visual proof with screenshots or equivalent browser evidence",
+    "runtime interaction checks for local/offline cockpit artifact behavior",
+    "console and network cleanliness checks where browser tooling is available",
+    "WCAG-oriented static and browser accessibility checks, recorded as verification evidence or explicit gaps",
+    "Cosmos.gl runtime/WebGL execution checks where local assets and browser tooling are available",
+    "necessary Product-Agent OS cockpit renderer/test/docs fixes inside codex_docs"
+  ],
+  "evidence_required_before_claim": [
+    "commands run in the current M40 execution",
+    "artifact paths and digests",
+    "browser screenshots or explicit browser-tooling blocker",
+    "console/network results or explicit browser-tooling blocker",
+    "a11y/WCAG check output or explicit accepted gap",
+    "Cosmos.gl/WebGL result or explicit local-asset/tooling blocker",
+    "Neural_Flow usability scorecard and residual blockers",
+    "no-unapproved-actions proof"
+  ],
+  "schema_version": "batch41_s7_m40_owner_approval_packet_v1",
+  "status": "approval_recorded_not_executed",
+  "unsupported_until_executed": [
+    "browser visual proof",
+    "runtime interaction proof",
+    "WCAG verification",
+    "Cosmos.gl runtime/WebGL execution",
+    "Neural_Flow acceptance",
+    "release readiness",
+    "target apply safety"
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "schema_version": "batch41_s1_command_contract_summary_v1",
+  "source_status": "local_implementation_evidence",
+  "attempt_id": "B41-S1-COMMAND-CONTRACT-A01",
+  "generated_at": "2026-06-18T23:10:00+03:00",
+  "slice": "B41-S1",
+  "implemented_tasks": [
+    "B41-S1-M01",
+    "B41-S1-M02",
+    "B41-S1-M03",
+    "B41-S1-M04",
+    "B41-S1-M05"
+  ],
+  "status": "implemented_local_cli_contract",
+  "implemented_behavior": {
+    "first_run_orchestrator_contract_v1": true,
+    "no_args_first_launch_help": true,
+    "full_dry_run_mode": true,
+    "external_stage_artifact_mode": true,
+    "write_analysis_mode": true,
+    "legacy_dry_run_write_modes_preserved": true,
+    "stage_inside_target_blocked_without_write_analysis": true,
+    "offline_html_renderer_stage_output_supported": true
+  },
+  "changed_files": [
+    "plugins/product-agent-os/scripts/run_first_project_analysis.py",
+    "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+    "plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py",
+    "tests/product_agent_os/test_batch41_first_run_automation.py",
+    "tests/product_agent_os/test_first_run_analysis.py",
+    "docs/superpowers/specs/batch41-first-run-automation-matrix.json",
+    "docs/superpowers/specs/batch41-s1-command-contract-summary.json"
+  ],
+  "agent_handoff": {
+    "agent": "Archivist",
+    "mode": "read_only_explorer",
+    "result": "fresh-context handoff identified current CLI behavior, relevant files, suggested tests, write boundaries and stop conditions",
+    "external_actions_performed": false
+  },
+  "verification_evidence": [
+    {
+      "command": "python -m unittest tests.product_agent_os.test_batch41_first_run_automation -v",
+      "result": "6 tests OK after RED failures confirmed missing B41-S1 behavior"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_batch41_first_run_automation tests.product_agent_os.test_first_run_analysis -v",
+      "result": "20 tests OK"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+      "result": "81 tests OK"
+    },
+    {
+      "command": "python tools\\check_docs.py",
+      "result": "OK: documentation structure checks passed"
+    },
+    {
+      "command": "git diff --check",
+      "result": "exit 0"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs tests.product_agent_os.test_batch41_first_run_automation tests.product_agent_os.test_first_run_analysis -v",
+      "result": "101 tests OK"
+    },
+    {
+      "command": "python -m unittest discover -s tests -p \"test_*.py\" -v",
+      "result": "994 tests OK / 1 skipped"
+    },
+    {
+      "command": "python plugins\\product-agent-os\\scripts\\run_fixture_eval.py",
+      "result": "exit 0 after rerun with extended timeout"
+    },
+    {
+      "command": "python plugins\\product-agent-os\\scripts\\run_transcript_eval.py",
+      "result": "26 sessions passed, 0 failures"
+    },
+    {
+      "command": "python plugins\\product-agent-os\\scripts\\validate_codex_compatibility.py",
+      "result": "status compatible"
+    }
+  ],
+  "no_unapproved_actions": {
+    "target_workspace_mutation": "synthetic_temp_fixture_only_for_write-analysis test",
+    "live_server": false,
+    "browser_automation": false,
+    "provider_api_call": false,
+    "mcp_external_call": false,
+    "git_stage_commit_push_pr": false,
+    "release_deploy_publish": false,
+    "active_automation": false,
+    "external_write": false
+  },
+  "unsupported_claims": [
+    "release readiness is not claimed",
+    "runtime/browser behavior is not claimed",
+    "provider/API/model quality is not claimed",
+    "public docs/site acceptance is not claimed",
+    "real-target Neural_Flow or SOL pilot behavior is not claimed",
+    "plugin cache/install readiness is not claimed"
+  ],
+  "next_action": "Continue with B41-S2-M06..M09 all-script registry, safe read-only matrix, normalization and partial-failure ledger."
+}

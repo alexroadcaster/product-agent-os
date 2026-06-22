@@ -170,6 +170,7 @@ MERMAID_LOCAL_ASSET = "assets/javascripts/vendor/mermaid-10.9.6.min.js"
 MERMAID_VENDOR_EVIDENCE = "documentation_refresh_G1_1-DOC-M39-MERMAID-A01"
 DOC_M40_AUDIT_EVIDENCE = "documentation_refresh_G1_1-DOC-M40-AUDIT-SBOM-A01"
 DOC_M40_AUDIT_HELPER = ROOT / "tools" / "docs_dependency_audit.ps1"
+DOC_M25_I18N_REPAIR_HELPER = ROOT / "tools" / "fix_site_i18n_links.ps1"
 DOC_M40_AUDIT_PACKET = (
     DOCS / "superpowers" / "specs" / "documentation-refresh-g1-1-doc-m40-dependency-audit-summary.json"
 )
@@ -200,6 +201,13 @@ DOCUMENTATION_REFRESH_G5_PACKET = (
     / "superpowers"
     / "specs"
     / "documentation-refresh-g5-evidence-quality-site-gate-summary.json"
+)
+DOCUMENTATION_REFRESH_DOC_M25_EVIDENCE = "documentation_refresh_DOC-M25-A01"
+DOCUMENTATION_REFRESH_DOC_M25_PACKET = (
+    DOCS
+    / "superpowers"
+    / "specs"
+    / "documentation-refresh-doc-m25-site-freshness-summary.json"
 )
 
 
@@ -258,6 +266,9 @@ def check_mkdocs_nav() -> None:
     if not DOC_M40_AUDIT_HELPER.exists():
         fail("DOC-M40 dependency audit helper is missing")
 
+    if not DOC_M25_I18N_REPAIR_HELPER.exists():
+        fail("DOC-M25 local file i18n repair helper is missing")
+
     if not DOC_M40_AUDIT_PACKET.exists():
         fail("DOC-M40 dependency audit evidence packet is missing")
 
@@ -284,6 +295,12 @@ def check_mkdocs_nav() -> None:
 
     if not DOCUMENTATION_REFRESH_G5_PACKET.exists():
         fail("Track 11 G5 evidence quality evidence packet is missing")
+
+    if DOCUMENTATION_REFRESH_DOC_M25_EVIDENCE not in registry:
+        fail("source registry missing Track 11 DOC-M25 site freshness evidence")
+
+    if not DOCUMENTATION_REFRESH_DOC_M25_PACKET.exists():
+        fail("Track 11 DOC-M25 site freshness evidence packet is missing")
 
 
 def check_placeholders() -> None:

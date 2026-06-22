@@ -1,0 +1,88 @@
+{
+  "schema_version": "batch39_frontend_pilot_summary_v1",
+  "batch": "B39",
+  "test_id": "B39-TEST-M14",
+  "attempt_id": "B39-TEST-M14-A01",
+  "slice": "B39-S2",
+  "summary_status": "passed_contract",
+  "generated_at": "2026-06-11T00:00:00+00:00",
+  "pilot": {
+    "pilot_id": "synthetic-frontend-contract",
+    "archetype": "web_frontend",
+    "mode": "synthetic_local",
+    "target_ref": "tests/fixtures/product_agent_os/batch39-m14-frontend-fixture",
+    "real_pilot_evidence": false
+  },
+  "evidence_refs": {
+    "manifest": "docs/superpowers/specs/batch39-m14-frontend-manifest.json",
+    "command_results": "docs/superpowers/specs/batch39-m14-command-results.jsonl",
+    "source_policy": "docs/superpowers/specs/batch39-m14-source-policy.json",
+    "runtime": "docs/superpowers/specs/batch39-m14-runtime-result.json",
+    "methodology_audit": "docs/superpowers/specs/batch39-m14-methodology-audit.json"
+  },
+  "observed_results": {
+    "source_policy_status": "ok",
+    "source_policy_files": 2,
+    "runtime_status": "route_ready",
+    "lifecycle_state": "plan_ready",
+    "runtime_recommended_skill": "agent-team-designer",
+    "runtime_write_policy": "staged_only",
+    "methodology_status": "ok",
+    "frontend_domain_status": "present_unverified",
+    "surface_map_ui": true,
+    "command_results_count": 3,
+    "fixture_smoke_syntax_check": "passed_node_check"
+  },
+  "frontend_contract": {
+    "detected_surface": true,
+    "required_gates_observed": [
+      "frontend_runtime_console_evidence_present",
+      "frontend_user_flow_acceptance_present",
+      "frontend_accessibility_review_present",
+      "frontend_component_state_matrix_present",
+      "frontend_interaction_test_evidence_present",
+      "frontend_keyboard_focus_contract_present",
+      "frontend_responsive_viewport_matrix_present",
+      "frontend_visual_evidence_present"
+    ],
+    "contract_verdict": "methodology_detected_frontend_and_required_runtime_visual_accessibility_interaction_evidence",
+    "browser_runtime_evidence_status": "not_run_approval_required"
+  },
+  "supported_claims": [
+    "A synthetic local frontend fixture can pass source-policy validation and runtime contract routing.",
+    "Methodology audit detects the frontend surface and records frontend gates as present_unverified before UI completion claims.",
+    "The fixture smoke script is syntactically valid without dependency installation.",
+    "Command-results JSONL stores current command evidence digests without raw stdout or stderr."
+  ],
+  "unsupported_claims": [
+    "The fixture does not prove UI rendering, visual correctness, responsive behavior, accessibility compliance, console or network cleanliness.",
+    "Synthetic-local evidence does not prove real-project value, Neural_Flow positive evidence, release readiness or promotion readiness.",
+    "No browser automation, live server, provider/API call, target mutation, external action, cache mutation or git action was performed."
+  ],
+  "agent_skill_evidence": {
+    "skills_used": [
+      "product-agent-os:implementation-planner",
+      "product-agent-os:agent-team-designer",
+      "product-agent-os:docs-maintainer"
+    ],
+    "agent_handoff": {
+      "role": "Tester",
+      "name": "Signal",
+      "status": "completed_read_only_review",
+      "recommendation": "Record M14 as a synthetic contract pass only; keep browser/runtime UI claims unsupported without explicit approval and evidence."
+    }
+  },
+  "approval_boundary": {
+    "target_workspace_mutation": "not_performed",
+    "provider_or_api_calls": "not_performed",
+    "browser_automation": "not_performed",
+    "live_server": "not_performed",
+    "cache_mutation": "not_performed",
+    "external_actions": "not_performed",
+    "git_actions": "not_performed",
+    "automation_activation": "not_performed",
+    "local_evidence_artifact_write": "allowed_workspace_output_only"
+  },
+  "promotion_boundary": "manual_only_not_promoted",
+  "next_action": "Run B39-TEST-M15 as the backend/API archetype pilot."
+}

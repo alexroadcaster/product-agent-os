@@ -1,0 +1,79 @@
+{
+  "after_snapshot": {
+    "entries": [
+      {
+        "digest": "sha256:3aa5a0f3a5d8689a99d11722b65f413bed032ecaf77a8b46e24bffe34fd038a8",
+        "path": "docs/note.md",
+        "size_bytes": 33
+      },
+      {
+        "digest": "sha256:c0054567d044afe5ab23d32ccaab2c15202732c2e169c55b910e75e33d24e0de",
+        "path": "README.md",
+        "size_bytes": 38
+      }
+    ],
+    "file_count": 2,
+    "root_ref": "after",
+    "snapshot_digest": "sha256:256c74d3d0ab174b46e104a118800b9420393a4f2afea6a582d6bbbf1a335a54"
+  },
+  "approval_boundary": {
+    "agents_sdk_runner_activation": "not_performed",
+    "automation_activation": "not_performed",
+    "browser_automation": "not_performed",
+    "cache_mutation": "not_performed",
+    "canonical_graph_mutation": "not_performed",
+    "external_actions": "not_performed",
+    "git_actions": "not_performed",
+    "live_server": "not_performed",
+    "local_evidence_artifact_write": "allowed_workspace_output_only",
+    "mcp_server_activation": "not_performed",
+    "provider_or_api_calls": "not_performed",
+    "target_workspace_mutation": "not_performed"
+  },
+  "attempt_id": "B39-TEST-M04-A01",
+  "batch": "B39",
+  "before_snapshot": {
+    "entries": [
+      {
+        "digest": "sha256:3aa5a0f3a5d8689a99d11722b65f413bed032ecaf77a8b46e24bffe34fd038a8",
+        "path": "docs/note.md",
+        "size_bytes": 33
+      },
+      {
+        "digest": "sha256:c0054567d044afe5ab23d32ccaab2c15202732c2e169c55b910e75e33d24e0de",
+        "path": "README.md",
+        "size_bytes": 38
+      }
+    ],
+    "file_count": 2,
+    "root_ref": "before",
+    "snapshot_digest": "sha256:92d25ec1015b12659d8edacf717f4a1b8bbe95697aae4284674b45a97dae3ba2"
+  },
+  "diff": {
+    "added": [],
+    "counts": {
+      "added": 0,
+      "deleted": 0,
+      "modified": 0
+    },
+    "deleted": [],
+    "modified": [],
+    "status": "unchanged"
+  },
+  "generated_at": "2026-06-11T00:00:00+00:00",
+  "proof_digest": "sha256:184b557b0cb05c700f5c524b6d3d84600530343b5dbfba8d96f8b7eb4862c749",
+  "redaction": {
+    "absolute_paths_stored": false,
+    "raw_file_bodies_stored": false,
+    "secrets_allowed": false
+  },
+  "schema_version": "target_mutation_proof_v1",
+  "target": {
+    "approval_ref": "none",
+    "mutation_allowed": false,
+    "target_kind": "fixture_or_project_snapshot",
+    "target_ref": "synthetic-local-target"
+  },
+  "test_id": "B39-TEST-M04",
+  "verdict": "no_mutation_detected"
+}

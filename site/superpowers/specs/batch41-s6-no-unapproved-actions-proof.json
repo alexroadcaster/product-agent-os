@@ -1,0 +1,25 @@
+{
+  "actions_performed": {
+    "active_automation": false,
+    "browser_automation": false,
+    "dependency_install": false,
+    "git_stage_commit_push_pr": false,
+    "live_server": false,
+    "mcp_external_call": false,
+    "plugin_cache_write": false,
+    "provider_api_call": false,
+    "release_deploy_publish": false,
+    "target_workspace_mutation": false
+  },
+  "approval_required_followups": [
+    "runtime/browser pilot",
+    "plugin cache refresh",
+    "git/release/publish actions",
+    "target workspace apply"
+  ],
+  "generated_at": "2026-06-18T01:10:00+03:00",
+  "proof_digest": "sha256:adb04a7bb08f50fbe5df2d4697375c2138aca87a566dbcbf4cf3bea614b8a192",
+  "proof_id": "B41-S6-M30-NO-ACTIONS-A01",
+  "schema_version": "batch41_s6_no_unapproved_actions_proof_v1",
+  "status": "passed_no_unapproved_actions_proof"
+}

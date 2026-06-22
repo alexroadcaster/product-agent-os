@@ -1,0 +1,88 @@
+{
+  "schema_version": "documentation_refresh_g1_1_doc_m34_folder_contract_v1",
+  "evidence_id": "documentation_refresh_G1_1-DOC-M34-A01",
+  "status": "implemented_contract_only_no_install",
+  "work_item": "DOC-M34",
+  "group": "G1.1",
+  "implemented_paths": [
+    ".gitignore",
+    ".docs-tools/README.md",
+    ".docs-tools/node/README.md",
+    ".docs-tools/bin/README.md",
+    ".docs-tools/reports/README.md"
+  ],
+  "planned_local_paths": [
+    ".venv-docs/",
+    ".docs-tools/node/",
+    ".docs-tools/bin/",
+    ".docs-tools/reports/",
+    "docs/assets/javascripts/vendor/"
+  ],
+  "ignored_local_paths": [
+    ".venv-docs/",
+    ".docs-tools/node/node_modules/",
+    ".docs-tools/node/.npm/",
+    ".docs-tools/node/.cache/",
+    ".docs-tools/bin/*.exe",
+    ".docs-tools/bin/*.dll",
+    ".docs-tools/bin/*.zip",
+    ".docs-tools/bin/*.tar.gz",
+    ".docs-tools/reports/*"
+  ],
+  "allowed_checked_in_content": [
+    "README files",
+    ".docs-tools/node/package.json",
+    ".docs-tools/node/package-lock.json",
+    "approved tool configuration files",
+    "redacted report examples only after report-retention approval"
+  ],
+  "forbidden_content": [
+    "secrets",
+    "tokens",
+    "private keys",
+    "credentials",
+    "unredacted PII",
+    "private customer data",
+    "raw private chat logs",
+    "raw provider responses",
+    "raw scanner findings",
+    "unapproved downloaded binaries",
+    "unapproved minified assets",
+    "unapproved vendored runtimes"
+  ],
+  "approval_boundaries": [
+    "dependency installation",
+    "network download",
+    "binary vendoring",
+    "broad link scans",
+    "broad secret scans",
+    "report retention",
+    "hook activation",
+    "automation activation",
+    "publication"
+  ],
+  "unsupported_claims": [
+    "dependencies installed",
+    "MkDocs runtime available",
+    "Node tools installed",
+    "Vale available",
+    "lychee available",
+    "gitleaks available",
+    "binary provenance verified",
+    "SBOM generated",
+    "site freshness verified",
+    "publication ready"
+  ],
+  "no_unapproved_actions": {
+    "dependency_install": false,
+    "network_download": false,
+    "binary_vendoring": false,
+    "hook_activation": false,
+    "automation_activation": false,
+    "site_rebuild": false,
+    "browser_automation": false,
+    "provider_api_call": false,
+    "git_action": false,
+    "publication": false
+  }
+}

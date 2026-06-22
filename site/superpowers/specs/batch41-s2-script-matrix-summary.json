@@ -1,0 +1,122 @@
+{
+  "schema_version": "batch41_s2_script_matrix_summary_v1",
+  "source_status": "local_implementation_evidence",
+  "attempt_id": "B41-S2-SCRIPT-MATRIX-A01",
+  "generated_at": "2026-06-18T23:35:00+03:00",
+  "slice": "B41-S2",
+  "implemented_tasks": [
+    "B41-S2-M06",
+    "B41-S2-M07",
+    "B41-S2-M08",
+    "B41-S2-M09"
+  ],
+  "status": "implemented_local_help_only_script_matrix",
+  "implemented_behavior": {
+    "first_run_script_registry_v1": true,
+    "first_run_command_matrix_v1": true,
+    "first_run_evidence_summary_v1": true,
+    "first_run_resume_ledger_v1": true,
+    "full_dry_run_includes_script_matrix": true,
+    "raw_stdout_stored": false,
+    "raw_stderr_stored": false,
+    "completion_claim": "not_claimed"
+  },
+  "script_registry_counts": {
+    "total_scripts": 34,
+    "safe_read_only": 26,
+    "approval_required": 7,
+    "blocked_live": 1
+  },
+  "command_matrix_counts": {
+    "passed": 26,
+    "skipped_approval_required": 7,
+    "skipped_blocked_live": 1
+  },
+  "evidence_summary": {
+    "overall_status": "partial_with_skips",
+    "failed_commands": [],
+    "approval_required_commands": [
+      "merge_infrastructure.py",
+      "merge_markdown.py",
+      "prepare_windows_codex_permissions.py",
+      "run_batch39_s4_full_hardening.py",
+      "run_batch39_s4_remaining_gates.py",
+      "run_fixture_eval.py",
+      "scan_project_code_graph.py"
+    ],
+    "blocked_live_commands": [
+      "run_codex_runtime_runner.py"
+    ],
+    "safe_next_action": "Review approval-required or live-bound scripts before any non-help execution."
+  },
+  "changed_files": [
+    "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+    "tests/product_agent_os/test_batch41_first_run_automation.py",
+    "docs/superpowers/specs/batch41-first-run-automation-matrix.json",
+    "docs/superpowers/specs/batch41-s2-script-matrix-summary.json"
+  ],
+  "agent_handoff": {
+    "agent": "Scout",
+    "mode": "read_only_explorer",
+    "result": "fresh-context handoff identified script inventory, reusable collector/normalizer utilities, focused tests and stop conditions for B41-S2",
+    "external_actions_performed": false
+  },
+  "verification_evidence": [
+    {
+      "command": "python -m unittest tests.product_agent_os.test_batch41_first_run_automation -v",
+      "result": "10 tests OK after RED failures confirmed missing B41-S2 behavior"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_batch41_first_run_automation tests.product_agent_os.test_first_run_analysis -v",
+      "result": "24 tests OK"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+      "result": "81 tests OK"
+    },
+    {
+      "command": "python tools\\check_docs.py",
+      "result": "OK: documentation structure checks passed"
+    },
+    {
+      "command": "git diff --check",
+      "result": "exit 0"
+    },
+    {
+      "command": "python -m unittest discover -s tests -p \"test_*.py\" -v",
+      "result": "998 tests OK / 1 skipped"
+    },
+    {
+      "command": "python plugins\\product-agent-os\\scripts\\run_fixture_eval.py",
+      "result": "exit 0"
+    },
+    {
+      "command": "python plugins\\product-agent-os\\scripts\\run_transcript_eval.py",
+      "result": "26 sessions passed, 0 failures"
+    },
+    {
+      "command": "python plugins\\product-agent-os\\scripts\\validate_codex_compatibility.py",
+      "result": "status compatible"
+    }
+  ],
+  "no_unapproved_actions": {
+    "target_workspace_mutation": "synthetic_temp_fixture_only_for existing write-analysis test",
+    "live_server": false,
+    "browser_automation": false,
+    "provider_api_call": false,
+    "mcp_external_call": false,
+    "git_stage_commit_push_pr": false,
+    "release_deploy_publish": false,
+    "active_automation": false,
+    "external_write": false
+  },
+  "unsupported_claims": [
+    "full Batch 41 closure is not claimed",
+    "real-target Neural_Flow or SOL pilot behavior is not claimed",
+    "runtime/browser behavior is not claimed",
+    "provider/API/model quality is not claimed",
+    "release readiness is not claimed",
+    "plugin cache/install readiness is not claimed"
+  ],
+  "next_action": "Continue with B41-S3-M10..M16 project-analysis integrations."
+}

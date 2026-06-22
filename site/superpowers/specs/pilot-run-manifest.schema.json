@@ -1,0 +1,176 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "approval_boundary": {
+      "required": [
+        "target_workspace_mutation",
+        "provider_or_api_calls",
+        "browser_automation",
+        "live_server",
+        "cache_mutation",
+        "external_actions",
+        "git_actions",
+        "automation_activation",
+        "local_evidence_artifact_write"
+      ],
+      "type": "object"
+    },
+    "attempt_id": {
+      "pattern": "^B39-TEST-M\\d{2}-A\\d{2}$",
+      "type": "string"
+    },
+    "batch": {
+      "const": "B39"
+    },
+    "completion_skeptic": {
+      "required": [
+        "doubt_packet_ref",
+        "verdict",
+        "trigger",
+        "failure_classes",
+        "accepted_gap_refs",
+        "scorecard_ref",
+        "promotion_boundary"
+      ],
+      "type": "object"
+    },
+    "execution_plan": {
+      "required": [
+        "commands_planned",
+        "checks_planned",
+        "evidence_artifacts",
+        "expected_outputs"
+      ],
+      "type": "object"
+    },
+    "generated_at": {
+      "type": "string"
+    },
+    "manifest_digest": {
+      "type": "string"
+    },
+    "pilot": {
+      "properties": {
+        "archetype": {
+          "enum": [
+            "ai_rag",
+            "automation_release",
+            "backend_api",
+            "code_check",
+            "data_migration",
+            "desktop_native",
+            "docs_research",
+            "expected_block",
+            "plugin_skill",
+            "pr_review",
+            "web_frontend"
+          ]
+        },
+        "mode": {
+          "enum": [
+            "schema_fixture",
+            "synthetic_local",
+            "real_project",
+            "expected_block"
+          ]
+        },
+        "pilot_id": {
+          "type": "string"
+        },
+        "real_pilot_evidence": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "pilot_id",
+        "archetype",
+        "mode",
+        "real_pilot_evidence"
+      ],
+      "type": "object"
+    },
+    "redaction": {
+      "required": [
+        "local_absolute_paths_allowed",
+        "raw_private_logs_stored",
+        "secrets_allowed",
+        "redaction_report_ref"
+      ],
+      "type": "object"
+    },
+    "schema_version": {
+      "const": "pilot_run_manifest_v1"
+    },
+    "slice": {
+      "pattern": "^B39-S\\d$",
+      "type": "string"
+    },
+    "source_inventory_ref": {
+      "type": "string"
+    },
+    "status": {
+      "required": [
+        "overall",
+        "open_blockers"
+      ],
+      "type": "object"
+    },
+    "target": {
+      "properties": {
+        "mutation_allowed": {
+          "type": "boolean"
+        },
+        "source_policy_status": {
+          "enum": [
+            "not_applicable",
+            "present",
+            "blocked",
+            "accepted_gap"
+          ]
+        },
+        "target_kind": {
+          "enum": [
+            "fixture",
+            "local_workspace",
+            "real_project",
+            "none"
+          ]
+        },
+        "target_ref": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "target_ref",
+        "target_kind",
+        "mutation_allowed",
+        "source_policy_status"
+      ],
+      "type": "object"
+    },
+    "test_id": {
+      "pattern": "^B39-TEST-M\\d{2}$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "batch",
+    "test_id",
+    "attempt_id",
+    "slice",
+    "generated_at",
+    "pilot",
+    "target",
+    "source_inventory_ref",
+    "approval_boundary",
+    "execution_plan",
+    "completion_skeptic",
+    "redaction",
+    "status",
+    "manifest_digest"
+  ],
+  "title": "Batch 39 Pilot Run Manifest",
+  "type": "object"
+}

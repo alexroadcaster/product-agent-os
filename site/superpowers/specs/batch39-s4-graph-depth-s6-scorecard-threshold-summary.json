@@ -1,0 +1,104 @@
+{
+  "artifact_kind": "batch39_s4_graph_depth_s6_scorecard_threshold_summary",
+  "attempt_id": "B39-S4-GD-S6-SCORECARD-A01",
+  "batch": "B39",
+  "slice": "B39-S4",
+  "date": "2026-06-18",
+  "status": "partial_pass_graph_depth_scorecard_threshold",
+  "source_status": "current-run local synthetic fixture evidence only",
+  "task_ids": [
+    "B39-S4-GRAPH-DEPTH-06",
+    "B39-S4-GRAPH-DEPTH-14"
+  ],
+  "summary": [
+    "Added graph_usefulness_scorecard_v1 to the existing Batch 39 scorecard module.",
+    "The scorecard records symbol_recall, top_k_relevance, affected_test_precision, false_positive_rate, reading_scope_reduction, unsupported_language_rate, stale_block_behavior and first_safe_action.",
+    "The scorecard defines deterministic local thresholds and emits fixture_thresholds_passed or fixture_thresholds_failed without readiness or promotion language.",
+    "Real-target comparison is required for promotion and remains missing in this local attempt, so promotion_decision stays not_promoted and promotion_boundary stays manual_only_not_promoted."
+  ],
+  "files_changed": [
+    "plugins/product-agent-os/scripts/product_agent_os/batch39_scorecard.py",
+    "tests/product_agent_os/test_batch39_s1_contracts.py"
+  ],
+  "agent_inputs": [
+    {
+      "role": "tester",
+      "result": "read-only RED/GREEN contract recommendation for graph usefulness scorecard fields, thresholds, blockers and no-overclaim assertions"
+    },
+    {
+      "role": "product-manager",
+      "result": "read-only acceptance contract for local fixture usefulness, unsupported claims and manual_only/not_promoted boundary"
+    },
+    {
+      "role": "docs-maintainer",
+      "result": "read-only control-plane sync recommendation for evidence filename, status, unsupported claims and update locations"
+    }
+  ],
+  "thresholds": {
+    "min_symbol_recall": 0.8,
+    "min_top_k_relevance": 0.75,
+    "min_affected_test_precision": 0.8,
+    "max_false_positive_rate": 0.1,
+    "min_reading_scope_reduction": 0.4,
+    "max_unsupported_language_rate": 0.25,
+    "require_stale_block_behavior": true,
+    "require_first_safe_action": true,
+    "require_real_target_comparison_for_promotion": true
+  },
+  "fixture_metrics": {
+    "symbol_recall": 1.0,
+    "top_k_relevance": 0.75,
+    "affected_test_precision": 1.0,
+    "false_positive_rate": 0.0,
+    "reading_scope_reduction": 0.667,
+    "unsupported_language_rate": 0.167,
+    "stale_block_behavior": 1.0,
+    "first_safe_action": 1.0
+  },
+  "commands": [
+    {
+      "command": "python -m unittest tests.product_agent_os.test_batch39_s1_contracts.Batch39S1ContractsTests.test_graph_depth_scorecard_calibrates_fixture_usefulness_without_promotion_claim tests.product_agent_os.test_batch39_s1_contracts.Batch39S1ContractsTests.test_graph_depth_scorecard_validation_blocks_overclaim_and_missing_metrics -v",
+      "red_result": "failed before implementation: build_graph_usefulness_scorecard was not exported by batch39_scorecard.py",
+      "green_result": "2 tests OK"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_batch39_s1_contracts -v",
+      "result": "11 tests OK"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_project_graph_ontology tests.product_agent_os.test_project_graph_python_scanner tests.product_agent_os.test_project_graph_overlays tests.product_agent_os.test_project_graph_queries tests.product_agent_os.test_project_code_graph -v",
+      "result": "46 tests OK"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs tests.product_agent_os.test_task_plan_lifecycle tests.product_agent_os.test_infrastructure_templates -v",
+      "result": "179 tests OK"
+    },
+    {
+      "command": "python tools\\check_docs.py",
+      "result": "OK: documentation structure checks passed"
+    },
+    {
+      "command": "git diff --check",
+      "result": "OK"
+    }
+  ],
+  "approval_boundary": {
+    "target_workspace_mutation": "not_performed",
+    "browser_or_runtime_automation": "not_performed",
+    "provider_or_model_call": "not_performed",
+    "dependency_installation": "not_performed",
+    "git_stage_commit_push_pr": "not_performed",
+    "external_write": "not_performed"
+  },
+  "unsupported_claims": [
+    "This scorecard does not close B39-S4-GRAPH-DEPTH-00..15.",
+    "This scorecard does not prove SOL 0.6 or Neural Flow graph usefulness.",
+    "This scorecard does not prove broad semantic usefulness, production or mass-user threshold validity.",
+    "This scorecard does not implement framework semantics, real-target retest, HTML/status integration, target apply, runtime/browser/provider behavior, release readiness, promotion, automation readiness or source-read completion."
+  ],
+  "next_actions": [
+    "Integrate the scorecard into later graph-depth evidence packets and dashboards only as local calibration evidence.",
+    "Run real-target comparison separately before any graph-first usefulness or promotion language.",
+    "Continue remaining B39-S4 graph-depth gates: framework semantics, real-target retest and HTML/status integration."
+  ]
+}

@@ -1,0 +1,170 @@
+{
+  "schema_version": "batch41_s4_html_artifact_summary_v1",
+  "source_status": "local_implementation_evidence",
+  "attempt_id": "B41-S4-HTML-ARTIFACT-A01",
+  "generated_at": "2026-06-18T23:59:00+03:00",
+  "slice": "B41-S4",
+  "implemented_tasks": [
+    "B41-S4-M17",
+    "B41-S4-M18",
+    "B41-S4-M19",
+    "B41-S4-M20"
+  ],
+  "status": "implemented_local_html_artifact_contract",
+  "implemented_behavior": {
+    "renderer_called_from_orchestrator": true,
+    "expected_pages_and_manifest_written": true,
+    "html_has_no_external_urls_or_scripts": true,
+    "generated_view_source_truth_allowed": false,
+    "baseline_comparison_visible": true,
+    "cleanup_preview_only": true,
+    "cleanup_deletes_by_default": false
+  },
+  "artifact_outputs": {
+    "stage_mode": [
+      "first-run-analysis-packet.json",
+      "analysis-manifest.json",
+      "index.html"
+    ],
+    "write_analysis_mode": [
+      ".codex/product-agent-os/analysis/first-run-analysis-packet.json",
+      ".codex/product-agent-os/analysis/analysis-manifest.json",
+      ".codex/product-agent-os/analysis/index.html"
+    ],
+    "expected_pages": [
+      "index.html",
+      "inventory.html",
+      "architecture.html",
+      "methodology.html",
+      "runtime-route.html",
+      "control-plane.html",
+      "graph.html",
+      "code-flow.html",
+      "quality-evals.html",
+      "risks.html",
+      "recommendations.html"
+    ],
+    "manifest_ref": "analysis-manifest.json"
+  },
+  "baseline_comparison": {
+    "status": "compared_when_previous_manifest_exists",
+    "page_deltas_recorded": true,
+    "source_artifact_deltas_recorded": true,
+    "cli_payload_visible": true,
+    "html_visible": true,
+    "manifest_visible": true
+  },
+  "redaction_privacy": {
+    "raw_source_stored": false,
+    "raw_stdout_stored": false,
+    "raw_stderr_stored": false,
+    "absolute_paths_in_generated_view": false,
+    "secret_like_values_found": 0
+  },
+  "changed_files": [
+    "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+    "plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py",
+    "plugins/product-agent-os/scripts/run_first_project_analysis.py",
+    "tests/product_agent_os/test_batch41_first_run_automation.py",
+    "docs/superpowers/specs/batch41-first-run-automation-matrix.json",
+    "docs/superpowers/specs/batch41-s4-html-artifact-summary.json",
+    "docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md",
+    "PLAN.md",
+    "TEST.md",
+    "RUNLOG.md"
+  ],
+  "agent_handoffs": [
+    {
+      "agent": "Scout the 2nd",
+      "mode": "read_only_explorer",
+      "result": "identified orchestrator, renderer, manifest and test surfaces plus redaction/source-truth risks",
+      "external_actions_performed": false
+    },
+    {
+      "agent": "Scribe the 2nd",
+      "mode": "read_only_docs_maintainer",
+      "result": "identified S4 evidence artifact shape, control-plane sync files, unsupported claims and docs checks",
+      "external_actions_performed": false
+    }
+  ],
+  "verification_evidence": [
+    {
+      "command": "python -m unittest tests.product_agent_os.test_batch41_first_run_automation -v",
+      "result": "RED failed on missing baseline_comparison and incomplete HTML project-analysis sections"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_batch41_first_run_automation -v",
+      "result": "14 tests OK after implementation"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_first_run_analysis -v",
+      "result": "14 tests OK"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_batch41_first_run_automation tests.product_agent_os.test_first_run_analysis -v",
+      "result": "28 tests OK"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+      "result": "81 tests OK"
+    },
+    {
+      "command": "python -m unittest discover -s tests -p \"test_*.py\"",
+      "result": "1002 tests OK, skipped=1"
+    },
+    {
+      "command": "python plugins\\product-agent-os\\scripts\\run_fixture_eval.py",
+      "result": "exit 0"
+    },
+    {
+      "command": "python plugins\\product-agent-os\\scripts\\run_transcript_eval.py",
+      "result": "26 behavioral sessions OK"
+    },
+    {
+      "command": "python plugins\\product-agent-os\\scripts\\validate_codex_compatibility.py",
+      "result": "compatible"
+    },
+    {
+      "command": "python tools\\check_docs.py",
+      "result": "OK"
+    },
+    {
+      "command": "git diff --check",
+      "result": "exit 0; unrelated Batch39 CRLF warnings emitted"
+    }
+  ],
+  "no_unapproved_actions": {
+    "target_workspace_mutation": "synthetic_temp_fixture_only_for stage/write-analysis tests",
+    "live_server": false,
+    "browser_automation": false,
+    "provider_api_call": false,
+    "mcp_external_call": false,
+    "git_stage_commit_push_pr": false,
+    "release_deploy_publish": false,
+    "active_automation": false,
+    "external_write": false
+  },
+  "unsupported_claims": [
+    "full Batch 41 closure is not claimed",
+    "real-target Neural_Flow or SOL pilot behavior is not claimed",
+    "runtime/browser behavior is not claimed",
+    "provider/API/model quality is not claimed",
+    "dependency install/build success is not claimed",
+    "generated graph semantic completeness is not claimed",
+    "generated HTML is orientation evidence only, not source truth",
+    "release readiness is not claimed",
+    "plugin cache/install readiness is not claimed",
+    "cleanup/delete action was not performed by default",
+    "public docs/site acceptance is not claimed"
+  ],
+  "control_plane_sync": {
+    "PLAN.md": "updated",
+    "TEST.md": "updated",
+    "RUNLOG.md": "updated",
+    "batch41-first-run-automation-matrix.json": "updated",
+    "track10_guided_questions_plan": "updated",
+    "source_registry": "not_applicable",
+    "mkdocs_nav": "not_applicable"
+  },
+  "next_action": "Continue with B41-S5-M21..M23 guided question UX and answer-ledger routing."
+}

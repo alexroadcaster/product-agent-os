@@ -1,0 +1,119 @@
+{
+  "agent_review": {
+    "explorer_agent": "identified discovery.py, routes.py and tests/product_agent_os/test_discovery.py as the owned route surface and recommended generated-artifact false-positive cases",
+    "reviewer_agent": "blocked closure until methodology_audit and detect_project.py CLI coverage were added; both concerns were retested"
+  },
+  "attempt_id": "B39-TEST-M22-A01",
+  "attempt_ids": [
+    "B39-TEST-M22-A01",
+    "B39-TEST-M22-A02",
+    "B39-TEST-M22-A03"
+  ],
+  "date": "2026-06-18",
+  "files_changed": [
+    "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
+    "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+    "tests/product_agent_os/test_discovery.py",
+    "docs/superpowers/specs/batch39-m22-route-accuracy-summary.json",
+    "docs/superpowers/specs/batch39-m22-retest-neural_flow-summary.json",
+    "docs/superpowers/specs/batch39-m22-retest-sol_0_6-summary.json",
+    "docs/superpowers/specs/batch39-m22-real-target-retest-rollup.json"
+  ],
+  "implemented_contracts": [
+    "Files under .codex/product-agent-os/analysis/ remain visible as generated_artifact_inputs with status present_unverified.",
+    "First-run generated analysis files are excluded from route source files used for usage_mode, stack, active surfaces, gaps, methodology signals and question queue inputs.",
+    "Methodology audit called through discovery ignores .codex/product-agent-os/analysis/ so generated gap wording cannot force methodology gates.",
+    "detect_project.py preserves the same orientation-only route contract through the CLI.",
+    "Benchmark or fixture .patch/.diff corpora do not imply pr_review unless they are plausible review diff sources.",
+    "Imported skill/template references to React Native do not imply native_mobile_feature without project-source evidence."
+  ],
+  "next_route": "B39-TEST-M23",
+  "no_unapproved_actions": {
+    "automation_activation": "not_performed",
+    "browser_automation": "not_performed",
+    "external_actions": "not_performed",
+    "git_actions": "not_performed",
+    "live_server": "not_performed",
+    "provider_or_api_calls": "not_performed",
+    "target_workspace_mutation": "not_performed"
+  },
+  "real_target_learning": {
+    "evidence_boundary": "target snapshots are inspection-only and do not prove runtime behavior, release readiness or promotion",
+    "neural_flow_snapshot": "read-only retest remained ai_eval_regression with expected source-policy/runtime block; no target mutation or clean-positive claim",
+    "sol_snapshot": "read-only retest routed SOL 0.6 as desktop_local_first after PR/native false-positive filters; source-policy/runtime remain blocked"
+  },
+  "real_target_retests": {
+    "neural_flow": {
+      "attempt_id": "B39-TEST-M22-A02",
+      "runtime_status": "blocked",
+      "source_policy_status": "blocked",
+      "target_generated_analysis_write": "not_performed",
+      "usage_mode_primary": "ai_eval_regression"
+    },
+    "rollup_ref": "docs/superpowers/specs/batch39-m22-real-target-retest-rollup.json",
+    "sol_0_6": {
+      "attempt_id": "B39-TEST-M22-A03",
+      "runtime_status": "blocked",
+      "source_policy_status": "blocked",
+      "target_generated_analysis_write": "not_performed",
+      "usage_mode_primary": "desktop_local_first"
+    }
+  },
+  "schema": "batch39_m22_route_accuracy_summary_v1",
+  "scope": {
+    "primary_goal": "Prevent first-run generated analysis artifacts from becoming route source truth or readiness evidence.",
+    "route_surfaces": [
+      "detect_project.py",
+      "product_agent_os.discovery.analyze_workspace",
+      "product_agent_os.methodology_audit.build_methodology_audit"
+    ],
+    "target_policy": "codex_docs_control_plane_only"
+  },
+  "slice": "B39-S3",
+  "status": "passed_route_accuracy_contract_with_read_only_retests",
+  "tdd": {
+    "green": [
+      {
+        "command": "python -m unittest tests.product_agent_os.test_discovery.DiscoveryTest.test_first_run_generated_artifacts_are_orientation_only_not_route_sources tests.product_agent_os.test_discovery.DiscoveryTest.test_detect_project_cli_preserves_first_run_orientation_only_route -v",
+        "result": "2 tests OK"
+      }
+    ],
+    "red": [
+      {
+        "command": "python -m unittest tests.product_agent_os.test_discovery.DiscoveryTest.test_first_run_generated_artifacts_are_orientation_only_not_route_sources tests.product_agent_os.test_discovery.DiscoveryTest.test_detect_project_cli_preserves_first_run_orientation_only_route -v",
+        "expected_failure": "generated analysis HTML leaked into methodology_intelligence and CLI route packet"
+      }
+    ]
+  },
+  "test_id": "B39-TEST-M22",
+  "unsupported_claims": [
+    "full Batch 39 readiness",
+    "B38-PROD-M12 release readiness",
+    "real target apply safety",
+    "browser/runtime/provider behavior",
+    "live database or migration safety",
+    "GitHub, git, release, deploy, publish or automation readiness"
+  ],
+  "verification": [
+    {
+      "command": "python -m unittest tests.product_agent_os.test_discovery -v",
+      "result": "66 tests OK"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_first_run_analysis -v",
+      "result": "13 tests OK"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_methodology_audit -v",
+      "result": "53 tests OK"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_codex_runtime_runner_cli tests.product_agent_os.test_codex_runtime_runner_contracts -v",
+      "result": "29 tests OK"
+    },
+    {
+      "command": "python -m py_compile plugins\\product-agent-os\\scripts\\product_agent_os\\discovery.py plugins\\product-agent-os\\scripts\\product_agent_os\\methodology_audit.py",
+      "result": "OK"
+    }
+  ]
+}

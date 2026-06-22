@@ -1,0 +1,116 @@
+{
+  "actions_performed": {
+    "active_automation": false,
+    "browser_automation": false,
+    "external_write": false,
+    "git_write": false,
+    "live_server": false,
+    "mcp_external_call": false,
+    "plugin_cache_write": false,
+    "provider_api_call": false,
+    "release_deploy_publish": false,
+    "target_workspace_mutation": false
+  },
+  "agents_used": [
+    {
+      "agent": "Cartographer",
+      "role": "explorer",
+      "result": "read-only discovery of renderer seams for navigation, progressive diagnostics, static QA and safety; no files changed"
+    },
+    {
+      "agent": "Gauge",
+      "role": "tester",
+      "result": "read-only static/unit test design for keyboard controls, diagnostics, visual QA and offline/privacy/a11y contracts; no files changed"
+    },
+    {
+      "agent": "Index",
+      "role": "docs-maintainer",
+      "result": "read-only docs/control-plane impact audit for M36..M39; no files changed"
+    }
+  ],
+  "attempt_id": "B41-S7-M36-M39-A01",
+  "changed_files": [
+    "plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py",
+    "tests/product_agent_os/test_batch41_first_run_automation.py",
+    "docs/superpowers/specs/batch41-first-run-automation-matrix.json",
+    "docs/superpowers/specs/batch41-s7-m36-m39-cockpit-ux-safety-summary.json"
+  ],
+  "control_plane_sync": {
+    "EVALS.md": "update_required",
+    "PLAN.md": "update_required",
+    "RUNLOG.md": "update_required",
+    "TEST.md": "update_required",
+    "docs/sources/registry.md": "not_applicable_no_new_public_source_claims"
+  },
+  "covered_tasks": [
+    "B41-S7-M36",
+    "B41-S7-M37",
+    "B41-S7-M38",
+    "B41-S7-M39"
+  ],
+  "evidence": {
+    "accessibility_safety_contract": "first_run_cockpit_safety_accessibility_v1 records offline, privacy, keyboard, labeling and readability static boundaries",
+    "navigation_search": "first_run_cockpit_navigation_search_v1 records persistent anchors, labelled search/filter controls, default static filter state, search index and detail panels",
+    "progressive_diagnostics": "first_run_progressive_diagnostics_v1 keeps raw packet diagnostics collapsed or referenced instead of primary visible JSON dumps",
+    "static_visual_qa": "first_run_cockpit_static_visual_qa_v1 records static gates for custom shell, nav, graph visibility, generated-view labels, mobile breakpoint and white-page regression blocking"
+  },
+  "next_tasks": [
+    "B41-S7-M40"
+  ],
+  "residual_risks": [
+    "Browser visual QA was not run; screenshots, focus order proof, console/network checks and responsive runtime evidence remain approval-required.",
+    "Cosmos.gl runtime/WebGL execution remains unverified; this slice preserves static adapter/fallback behavior only.",
+    "Neural_Flow acceptance pilot is not run in this slice.",
+    "Static accessibility checks are not a WCAG certification or runtime assistive-technology proof.",
+    "Generated cockpit remains orientation evidence only and does not prove source-read completion, release readiness or target apply safety."
+  ],
+  "schema_version": "batch41_s7_cockpit_ux_safety_summary_v1",
+  "status": "implemented_local_static_evidence_only",
+  "unsupported_claims": [
+    "browser visual proof",
+    "responsive screenshot proof",
+    "runtime/browser proof",
+    "console/network clean proof",
+    "Cosmos.gl runtime execution",
+    "WCAG verified",
+    "Neural_Flow acceptance",
+    "release readiness",
+    "target apply safety",
+    "source-read semantic completeness",
+    "installed plugin-cache readiness"
+  ],
+  "verification": [
+    {
+      "command": "python -m unittest tests.product_agent_os.test_batch41_first_run_automation.Batch41FirstRunAutomationTests.test_b41_s7_m31_m33_stage_renders_primary_cockpit_contract_shell_and_view_model tests.product_agent_os.test_batch41_first_run_automation.Batch41FirstRunAutomationTests.test_b41_s7_m34_m35_cockpit_renders_source_graph_and_code_graph_summary_payloads tests.product_agent_os.test_batch41_first_run_automation.Batch41FirstRunAutomationTests.test_b41_s7_m36_m39_cockpit_has_static_navigation_diagnostics_visual_qa_and_safety_contracts -v",
+      "result": "passed"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_batch41_first_run_automation -v",
+      "result": "passed; 20 tests"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_project_cockpit_model -v",
+      "result": "passed; 2 tests"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_offline_artifact_export -v",
+      "result": "passed; 2 tests"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_first_run_analysis -v",
+      "result": "passed; 14 tests"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+      "result": "passed; 81 tests"
+    },
+    {
+      "command": "python tools\\check_docs.py",
+      "result": "passed"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ]
+}

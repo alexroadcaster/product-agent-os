@@ -1,0 +1,75 @@
+{
+  "approval_boundary": {
+    "automation_activation": "not_performed",
+    "browser_automation": "not_performed",
+    "cache_mutation": "not_performed",
+    "external_actions": "not_performed",
+    "git_actions": "not_performed",
+    "live_server": "not_performed",
+    "local_evidence_artifact_write": "allowed_workspace_output_only",
+    "provider_or_api_calls": "not_performed",
+    "target_workspace_mutation": "not_performed"
+  },
+  "attempt_id": "B39-TEST-M15-A01",
+  "batch": "B39",
+  "completion_skeptic": {
+    "accepted_gap_refs": [],
+    "doubt_packet_ref": "none",
+    "failure_classes": [],
+    "promotion_boundary": "manual_only_not_promoted",
+    "scorecard_ref": "none",
+    "trigger": "not_applicable_schema_fixture",
+    "verdict": "not_run"
+  },
+  "execution_plan": {
+    "checks_planned": [
+      "backend and api observed signals present",
+      "approval-bound backend/API completion claims are blocked without exact approval"
+    ],
+    "commands_planned": [
+      "python plugins\\product-agent-os\\scripts\\validate_source_policy.py tests\\fixtures\\product_agent_os\\batch39-m15-backend-api-fixture",
+      "python plugins\\product-agent-os\\scripts\\run_codex_runtime_runner.py tests\\fixtures\\product_agent_os\\batch39-m15-backend-api-fixture --contract --intent-hint backend api service queue worker openapi asyncapi protobuf health readiness liveness retry idempotency observability rollback contract consumer auth error integration generated sdk compatibility deprecation --output docs\\superpowers\\specs\\batch39-m15-runtime-result.json",
+      "python plugins\\product-agent-os\\scripts\\run_methodology_audit.py tests\\fixtures\\product_agent_os\\batch39-m15-backend-api-fixture --json"
+    ],
+    "evidence_artifacts": [
+      "docs/superpowers/specs/batch39-m15-source-policy.json",
+      "docs/superpowers/specs/batch39-m15-runtime-result.json",
+      "docs/superpowers/specs/batch39-m15-methodology-audit.json"
+    ],
+    "expected_outputs": [
+      "source policy status ok",
+      "runtime status needs_approval for approval-bound backend/API methodology",
+      "methodology audit includes backend and api recommendations",
+      "no live API/runtime/security/release completion claim"
+    ]
+  },
+  "generated_at": "2026-06-12T00:00:00+00:00",
+  "manifest_digest": "sha256:54622de9d35f09d59a10f4aba1b8a7c3de052a91166979ff467bbbe1e2bf0b85",
+  "pilot": {
+    "archetype": "backend_api",
+    "mode": "synthetic_local",
+    "pilot_id": "synthetic-backend-api-contract",
+    "real_pilot_evidence": false
+  },
+  "redaction": {
+    "local_absolute_paths_allowed": false,
+    "raw_private_logs_stored": false,
+    "redaction_report_ref": "pending_B39_TEST_M05",
+    "secrets_allowed": false
+  },
+  "schema_version": "pilot_run_manifest_v1",
+  "slice": "B39-S2",
+  "source_inventory_ref": "docs/superpowers/specs/batch39-m11-target-fixture-pack.json",
+  "status": {
+    "next_test": "B39-TEST-M03",
+    "open_blockers": [],
+    "overall": "ready_for_planned_pilot"
+  },
+  "target": {
+    "mutation_allowed": false,
+    "source_policy_status": "present",
+    "target_kind": "fixture",
+    "target_ref": "tests/fixtures/product_agent_os/batch39-m15-backend-api-fixture"
+  },
+  "test_id": "B39-TEST-M15"
+}

@@ -1,0 +1,239 @@
+{
+  "schema_version": "documentation_refresh_g4_operator_flows_system_behavior_v1",
+  "evidence_id": "documentation_refresh_G4-A01",
+  "status": "implemented_source_docs_no_site_rebuild",
+  "checked_at": "2026-06-22",
+  "track": "Track 11",
+  "group": "G4",
+  "summary": "Track 11 G4 adds source-owned operator-flow and system-behavior documentation for instruction/tool-use compliance, operator command modes, guided questions, methodology routing, and source/cache/session state. The generated root site remains deferred to final DOC-M25.",
+  "agent_team": [
+    {
+      "agent_id": "main",
+      "role": "Codex integrator",
+      "skills_applied": [
+        "implementation-planner",
+        "agent-team-designer",
+        "docs-maintainer",
+        "openai-docs"
+      ],
+      "ownership": "Integrated G4 source docs, navigation, tests, check_docs, registry and control-plane files.",
+      "handoff_status": "method_applied_no_subagent_dispatch"
+    },
+    {
+      "agent_id": "method:docs-maintainer",
+      "role": "Documentation synchronization method",
+      "skills_applied": [
+        "docs-maintainer"
+      ],
+      "ownership": "Kept reader-facing pages, source registry, MkDocs navigation and control-plane artifacts aligned.",
+      "handoff_status": "method_applied_no_subagent_dispatch"
+    },
+    {
+      "agent_id": "method:implementation-planner",
+      "role": "Task matrix and verification method",
+      "skills_applied": [
+        "implementation-planner",
+        "agent-team-designer"
+      ],
+      "ownership": "Mapped DOC-M11, DOC-M12, DOC-M26, DOC-M27, DOC-M31 and DOC-M32 to owned files, verification gates and unsupported claims.",
+      "handoff_status": "method_applied_no_subagent_dispatch"
+    }
+  ],
+  "work_item_status": {
+    "DOC-M11": {
+      "status": "implemented_source_docs_no_site_rebuild",
+      "owned_files": [
+        "docs/product-agent-os/instruction-tool-use-compliance.md",
+        "docs/product-agent-os/instruction-tool-use-compliance.en.md"
+      ],
+      "summary": "Added reader-facing instruction/tool-use compliance page with official Codex source references, invocation policy modes, no-auto-apply learning loop and unsupported auto-engagement claims."
+    },
+    "DOC-M12": {
+      "status": "implemented_source_docs_no_site_rebuild",
+      "owned_files": [
+        "docs/product-agent-os/index.md",
+        "docs/product-agent-os/index.en.md",
+        "docs/product-agent-os/scenarios.md",
+        "docs/product-agent-os/scenarios.en.md",
+        "mkdocs.yml"
+      ],
+      "summary": "Linked G4 routes from product-agent index, scenarios and MkDocs navigation while keeping DOC-M25 generated-site freshness deferred."
+    },
+    "DOC-M26": {
+      "status": "implemented_source_docs_no_site_rebuild",
+      "owned_files": [
+        "docs/product-agent-os/operator-command-matrix.md",
+        "docs/product-agent-os/operator-command-matrix.en.md",
+        "docs/product-agent-os/cli-reference.md",
+        "docs/product-agent-os/cli-reference.en.md"
+      ],
+      "summary": "Documented first-run CLI modes, generated artifact write boundaries, docs-tooling command rows, Redocly not_applicable status and approval-required broad scans."
+    },
+    "DOC-M27": {
+      "status": "implemented_source_docs_no_site_rebuild",
+      "owned_files": [
+        "docs/product-agent-os/guided-questions-answer-ledger.md",
+        "docs/product-agent-os/guided-questions-answer-ledger.en.md",
+        "docs/product-agent-os/scenarios.md",
+        "docs/product-agent-os/scenarios.en.md"
+      ],
+      "summary": "Documented one-blocking-question first response, question counts, staged-only answer ledger and owner-review boundary."
+    },
+    "DOC-M31": {
+      "status": "implemented_source_docs_no_site_rebuild",
+      "owned_files": [
+        "docs/product-agent-os/methodology-intelligence.md",
+        "docs/product-agent-os/methodology-intelligence.en.md"
+      ],
+      "summary": "Updated methodology integration map from detected signals to recommendation groups, artifact ledgers, owner questions and safe next actions."
+    },
+    "DOC-M32": {
+      "status": "implemented_source_docs_no_site_rebuild",
+      "owned_files": [
+        "docs/product-agent-os/source-cache-session-state.md",
+        "docs/product-agent-os/source-cache-session-state.en.md"
+      ],
+      "summary": "Documented source bundle, installed cache and active-session exposure comparison without cache refresh, global config mutation or auto-repair."
+    }
+  },
+  "official_doc_evidence": [
+    {
+      "source": "OpenAI Codex manual",
+      "url": "https://developers.openai.com/codex/agent-skills",
+      "local_cache": "C:/tmp/openai-docs-cache/codex-manual.md",
+      "line_range": "7399-7550",
+      "claim_supported": "Skills are reusable task instructions, can be distributed by plugins, and may be invoked explicitly or implicitly according to metadata."
+    },
+    {
+      "source": "OpenAI Codex manual",
+      "url": "https://developers.openai.com/codex/advanced",
+      "local_cache": "C:/tmp/openai-docs-cache/codex-manual.md",
+      "line_range": "7641-7772",
+      "claim_supported": "AGENTS.md instruction discovery has global and project scopes; closer project docs override broader instructions."
+    },
+    {
+      "source": "OpenAI Codex manual",
+      "url": "https://developers.openai.com/codex/agent-plugins",
+      "local_cache": "C:/tmp/openai-docs-cache/codex-manual.md",
+      "line_range": "11806-11942",
+      "claim_supported": "Plugins can include skills, apps and MCP servers; install/update behavior does not bypass approvals."
+    },
+    {
+      "source": "OpenAI Codex manual",
+      "url": "https://developers.openai.com/codex/hooks",
+      "local_cache": "C:/tmp/openai-docs-cache/codex-manual.md",
+      "line_range": "11122-11365",
+      "claim_supported": "Hooks require trust review and deterministic configuration; plugin hooks still need activation/trust boundaries."
+    },
+    {
+      "source": "OpenAI Codex manual",
+      "url": "https://developers.openai.com/codex/permissions",
+      "local_cache": "C:/tmp/openai-docs-cache/codex-manual.md",
+      "line_range": "11574-11805",
+      "claim_supported": "Filesystem and network permissions constrain tool behavior and approval requirements."
+    },
+    {
+      "source": "OpenAI Codex manual",
+      "url": "https://developers.openai.com/codex/subagents",
+      "local_cache": "C:/tmp/openai-docs-cache/codex-manual.md",
+      "line_range": "12366-12528",
+      "claim_supported": "Subagents inherit sandbox/approval context and should be spawned only when requested or when the workflow requires it."
+    }
+  ],
+  "project_evidence": [
+    "plugins/product-agent-os/scripts/run_first_project_analysis.py --help exposes --dry-run, --write, --full-dry-run, --stage and --write-analysis.",
+    "plugins/product-agent-os/scripts/scan_project_code_graph.py --help exposes staged graph/cockpit and gated extension modes.",
+    "tools/docs_install.ps1, tools/docs_node_install.ps1, tools/docs_vale_install.ps1, tools/docs_link_secret_install.ps1 and tools/docs_mermaid_install.ps1 expose plan/scoped smoke behavior.",
+    "tools/docs_dependency_audit.ps1 help was not used as fresh proof in this slice because the help invocation timed out."
+  ],
+  "source_docs": [
+    "docs/product-agent-os/instruction-tool-use-compliance.md",
+    "docs/product-agent-os/instruction-tool-use-compliance.en.md",
+    "docs/product-agent-os/operator-command-matrix.md",
+    "docs/product-agent-os/operator-command-matrix.en.md",
+    "docs/product-agent-os/guided-questions-answer-ledger.md",
+    "docs/product-agent-os/guided-questions-answer-ledger.en.md",
+    "docs/product-agent-os/source-cache-session-state.md",
+    "docs/product-agent-os/source-cache-session-state.en.md",
+    "docs/product-agent-os/index.md",
+    "docs/product-agent-os/index.en.md",
+    "docs/product-agent-os/scenarios.md",
+    "docs/product-agent-os/scenarios.en.md",
+    "docs/product-agent-os/cli-reference.md",
+    "docs/product-agent-os/cli-reference.en.md",
+    "docs/product-agent-os/methodology-intelligence.md",
+    "docs/product-agent-os/methodology-intelligence.en.md"
+  ],
+  "sync_artifacts": [
+    "mkdocs.yml",
+    "tools/check_docs.py",
+    "tests/product_agent_os/test_product_agent_os_docs.py",
+    "docs/sources/registry.md",
+    "docs/sources/registry.en.md",
+    "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md",
+    "REQUIREMENTS.md",
+    "PLAN.md",
+    "TEST.md",
+    "EVALS.md",
+    "RUNLOG.md"
+  ],
+  "supported_claims": [
+    "G4 source pages and English counterparts exist.",
+    "MkDocs navigation and tools/check_docs.py require the new G4 pages.",
+    "The documentation test contract tracks the new pages as deferred from site promotion until DOC-M25.",
+    "Official Codex documentation was refreshed for skills, plugins, AGENTS.md, hooks, permissions and subagents before writing durable G4 claims.",
+    "Operator command documentation reflects the currently inspected help output for first-run analysis and project code graph commands.",
+    "Guided question and answer-ledger documentation separates first response, staged answer ledger and owner-review boundary.",
+    "Source/cache/session documentation explains comparison fields and no-auto-repair boundaries."
+  ],
+  "unsupported_claims": [
+    "Product-Agent OS auto-engagement is fixed.",
+    "Installed plugin cache was refreshed.",
+    "Global Codex config was changed.",
+    "A fresh Codex session has proven new active-session exposure.",
+    "Root site, search index and sitemap are fresh for G4 pages.",
+    "Browser, runtime, provider/API, target mutation, git, release, deploy, publish or automation behavior was executed."
+  ],
+  "test_contract": {
+    "source_markdown_page_count": 143,
+    "localized_markdown_page_count": 135,
+    "site_promoted_localized_markdown_page_count": 125,
+    "pending_site_pages_until_doc_m25": [
+      "docs/product-agent-os/first-run-architecture-cockpit.md",
+      "docs/diagrams/source-generated-trust-boundary.md",
+      "docs/diagrams/first-run-cockpit-architecture.md",
+      "docs/diagrams/evidence-risk-lifecycle.md",
+      "docs/diagrams/skill-exposure-and-invocation.md",
+      "docs/diagrams/architecture-intelligence-diagram-atlas.md",
+      "docs/product-agent-os/instruction-tool-use-compliance.md",
+      "docs/product-agent-os/operator-command-matrix.md",
+      "docs/product-agent-os/guided-questions-answer-ledger.md",
+      "docs/product-agent-os/source-cache-session-state.md"
+    ]
+  },
+  "no_unapproved_actions": {
+    "cache_refresh": false,
+    "global_config_write": false,
+    "hook_trust_activation": false,
+    "root_site_rebuild": false,
+    "browser_automation": false,
+    "live_server": false,
+    "provider_or_api_call": false,
+    "target_workspace_mutation": false,
+    "external_write": false,
+    "automation_created_or_enabled": false,
+    "git_stage_commit_push_pr": false,
+    "release_deploy_publish": false,
+    "dependency_install_or_upgrade": false
+  },
+  "verification": {
+    "planned_current_run_commands": [
+      "python -m json.tool docs/superpowers/specs/documentation-refresh-g4-operator-flows-system-behavior-summary.json",
+      "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+      "python tools/check_docs.py",
+      ".venv-docs/Scripts/python.exe -m mkdocs build --strict --site-dir .docs-tools/reports/mkdocs-strict-smoke-g4-2026-06-22",
+      "git diff --check"
+    ],
+    "root_site_freshness": "deferred_to_final_DOC-M25"
+  }
+}

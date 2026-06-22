@@ -81,6 +81,9 @@ DOCUMENTATION_REFRESH_G4 = (
 DOCUMENTATION_REFRESH_G5 = (
     DOCS / "superpowers" / "specs" / "documentation-refresh-g5-evidence-quality-site-gate-summary.json"
 )
+DOCUMENTATION_REFRESH_DOC_M25 = (
+    DOCS / "superpowers" / "specs" / "documentation-refresh-doc-m25-site-freshness-summary.json"
+)
 PRODUCT_AGENT_OS_LIFECYCLE_HOOKS_LOCAL_ACTIVATION = (
     DOCS / "superpowers" / "specs" / "product-agent-os-lifecycle-hooks-local-activation-summary.json"
 )
@@ -104,7 +107,7 @@ ENGLISH_ORIGINAL_SUPERPOWERS_PLAN_PAGES = {
     DOCS / "superpowers" / "plans" / "2026-05-27-track-10-guided-questions-status-dashboard.md",
     DOCS / "superpowers" / "plans" / "2026-06-20-track-11-documentation-architecture-refresh.md",
 }
-DOC_M25_PENDING_SITE_PAGES = {
+DOC_M25_HISTORICAL_PENDING_SITE_PAGES = {
     DOCS / "product-agent-os" / "first-run-architecture-cockpit.md",
     DOCS / "diagrams" / "source-generated-trust-boundary.md",
     DOCS / "diagrams" / "first-run-cockpit-architecture.md",
@@ -121,9 +124,10 @@ DOC_M25_PENDING_SITE_PAGES = {
     DOCS / "product-agent-os" / "local-html-interaction-boundary.md",
     DOCS / "product-agent-os" / "residual-follow-up-site-freshness.md",
 }
+DOC_M25_PENDING_SITE_PAGES = set()
 BUILDABLE_MARKDOWN_PAGE_COUNT = 148
 LOCALIZED_MARKDOWN_PAGE_COUNT = 140
-SITE_PROMOTED_LOCALIZED_MARKDOWN_PAGE_COUNT = 125
+SITE_PROMOTED_LOCALIZED_MARKDOWN_PAGE_COUNT = 140
 ENGLISH_ORIGINAL_MARKDOWN_PAGE_COUNT = 8
 
 
@@ -8438,7 +8442,7 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         )
         self.assertIn(
             DOCS / "product-agent-os" / "first-run-architecture-cockpit.md",
-            DOC_M25_PENDING_SITE_PAGES,
+            DOC_M25_HISTORICAL_PENDING_SITE_PAGES,
         )
         self.assertEqual(LOCALIZED_MARKDOWN_PAGE_COUNT, len(self._localized_markdown_pages()))
         self.assertEqual(
@@ -9174,6 +9178,135 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "G5 source docs are implemented through `DOC-M21`, `DOC-M24`, `DOC-M28`, `DOC-M29` and `DOC-M30`",
                 "`DOC-M25` remains `approval_required_not_run`",
                 "No root `site` rebuild",
+            ],
+        }
+        for document, terms in sync_terms.items():
+            for term in terms:
+                with self.subTest(sync_document=document, term=term):
+                    self.assertIn(term, documents[document])
+
+    def test_documentation_refresh_doc_m25_site_freshness_is_recorded(self):
+        self.assertTrue(DOCUMENTATION_REFRESH_DOC_M25.exists(), DOCUMENTATION_REFRESH_DOC_M25)
+        packet = json.loads(DOCUMENTATION_REFRESH_DOC_M25.read_text(encoding="utf-8"))
+        documents = {
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
+            "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
+            "track11_plan": (
+                DOCS
+                / "superpowers"
+                / "plans"
+                / "2026-06-20-track-11-documentation-architecture-refresh.md"
+            ).read_text(encoding="utf-8"),
+            "residual_site_freshness": self._localized_contract_text(
+                PRODUCT_AGENT_OS / "residual-follow-up-site-freshness.md"
+            ),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
+        }
+
+        self.assertEqual("documentation_refresh_doc_m25_site_freshness_v1", packet["schema_version"])
+        self.assertEqual("documentation_refresh_DOC-M25-A01", packet["evidence_id"])
+        self.assertEqual("implemented_root_site_search_sitemap_freshness", packet["status"])
+        self.assertEqual(
+            "implemented_root_site_search_sitemap_freshness",
+            packet["work_item_status"]["DOC-M25"]["status"],
+        )
+        self.assertEqual([], packet["test_contract"]["pending_site_pages_after_doc_m25"])
+        self.assertEqual(
+            sorted(
+                f"docs/{path.relative_to(DOCS).as_posix()}"
+                for path in DOC_M25_HISTORICAL_PENDING_SITE_PAGES
+            ),
+            sorted(packet["test_contract"]["promoted_pages_from_former_doc_m25_pending"]),
+        )
+        self.assertEqual(LOCALIZED_MARKDOWN_PAGE_COUNT, len(self._localized_markdown_pages()))
+        self.assertEqual(
+            SITE_PROMOTED_LOCALIZED_MARKDOWN_PAGE_COUNT,
+            len(self._site_promoted_localized_markdown_pages()),
+        )
+        self.assertEqual(LOCALIZED_MARKDOWN_PAGE_COUNT, SITE_PROMOTED_LOCALIZED_MARKDOWN_PAGE_COUNT)
+        self.assertEqual([], sorted(DOC_M25_PENDING_SITE_PAGES))
+
+        expected_ru = {
+            source_path.relative_to(DOCS).with_suffix(".html").as_posix()
+            for source_path in DOC_M25_HISTORICAL_PENDING_SITE_PAGES
+        }
+        expected_en = {"en/" + path for path in expected_ru}
+        search_index = SITE / "search" / "search_index.json"
+        sitemap = SITE / "sitemap.xml"
+        self.assertTrue(search_index.exists())
+        self.assertTrue(sitemap.exists())
+
+        search_locations = {
+            doc.get("location", "").split("#", 1)[0]
+            for doc in json.loads(search_index.read_text(encoding="utf-8")).get("docs", [])
+        }
+        sitemap_locations = set(
+            match.split("#", 1)[0]
+            for match in re.findall(r"<loc>(.*?)</loc>", sitemap.read_text(encoding="utf-8"))
+        )
+        for source_path in DOC_M25_HISTORICAL_PENDING_SITE_PAGES:
+            with self.subTest(rendered=source_path.relative_to(DOCS).as_posix()):
+                self.assertTrue(self._rendered_site_path_for_source(source_path).exists())
+                self.assertTrue(self._rendered_site_path_for_source(source_path, locale="en").exists())
+
+        self.assertEqual([], sorted(expected_ru - search_locations))
+        self.assertEqual([], sorted(expected_en - search_locations))
+        self.assertEqual([], sorted(expected_ru - sitemap_locations))
+        self.assertEqual([], sorted(expected_en - sitemap_locations))
+
+        for action, value in packet["no_unapproved_actions"].items():
+            with self.subTest(no_unapproved_action=action):
+                if action in {"root_site_rebuild", "search_sitemap_refresh"}:
+                    self.assertTrue(value)
+                else:
+                    self.assertFalse(value)
+
+        sync_terms = {
+            "requirements": [
+                "documentation_refresh_DOC-M25-A01",
+                "root `site`, search and sitemap freshness are current",
+            ],
+            "plan": [
+                "Track 11 DOC-M25 generated site freshness",
+                "documentation-refresh-doc-m25-site-freshness-summary.json",
+            ],
+            "test": [
+                "documentation_refresh_DOC-M25-A01",
+                ".venv-docs\\Scripts\\python.exe -m mkdocs build --strict",
+            ],
+            "evals": [
+                "documentation_refresh_DOC-M25-A01",
+                "root `site`, search and sitemap freshness current",
+            ],
+            "runlog": [
+                "documentation_refresh_DOC-M25-A01",
+                "Root `site`/search/sitemap freshness now covers the former `DOC_M25_PENDING_SITE_PAGES` set",
+            ],
+            "registry": [
+                "Product-Agent OS Track 11 DOC-M25 root site freshness packet",
+                "documentation_refresh_DOC-M25-A01",
+                "implemented_root_site_search_sitemap_freshness",
+            ],
+            "registry_en": [
+                "Product-Agent OS Track 11 DOC-M25 root site freshness packet",
+                "documentation_refresh_DOC-M25-A01",
+                "implemented_root_site_search_sitemap_freshness",
+            ],
+            "track11_plan": [
+                "`DOC-M25` is implemented through `documentation_refresh_DOC-M25-A01`",
+                "former `DOC_M25_PENDING_SITE_PAGES` are now rendered",
+            ],
+            "residual_site_freshness": [
+                "implemented_root_site_search_sitemap_freshness",
+                "documentation_refresh_DOC-M25-A01",
+            ],
+            "scenarios": [
+                "Root `site`, search and sitemap are current after `documentation_refresh_DOC-M25-A01`",
             ],
         }
         for document, terms in sync_terms.items():

@@ -33,7 +33,7 @@
     }
 
     document
-      .querySelectorAll('a[href="../../en/index.html"], link[href="../../en/index.html"]')
+      .querySelectorAll('a[href="/en/"], link[href="/en/"]')
       .forEach(function (node) {
         node.setAttribute("href", prefix + "en/index.html");
       });

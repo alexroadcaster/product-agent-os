@@ -1,0 +1,123 @@
+{
+  "schema_version": "documentation_refresh_g1_1_doc_m39_mermaid_vendor_v1",
+  "evidence_id": "documentation_refresh_G1_1-DOC-M39-MERMAID-A01",
+  "status": "installed_offline_vendor_smoke_passed",
+  "work_item": "DOC-M39",
+  "group": "G1.1",
+  "install_date": "2026-06-21",
+  "target_asset": "docs/assets/javascripts/vendor/mermaid-10.9.6.min.js",
+  "asset_checksum_file": "docs/assets/javascripts/vendor/mermaid-10.9.6.min.js.sha256",
+  "license_file": "docs/assets/javascripts/vendor/mermaid-10.9.6.LICENSE.txt",
+  "package_metadata_file": "docs/assets/javascripts/vendor/mermaid-10.9.6.package.json",
+  "vendor_contract_file": "docs/assets/javascripts/vendor/README.txt",
+  "install_helper": "tools/docs_mermaid_install.ps1",
+  "mkdocs_config": "mkdocs.yml",
+  "official_sources": {
+    "mermaid_releases": "https://github.com/mermaid-js/mermaid/releases",
+    "mermaid_v10_9_6_release": "https://github.com/mermaid-js/mermaid/releases/tag/v10.9.6",
+    "unpkg_pinned_asset": "https://unpkg.com/mermaid@10.9.6/dist/mermaid.min.js",
+    "unpkg_package_metadata": "https://unpkg.com/mermaid@10.9.6/package.json",
+    "github_license": "https://raw.githubusercontent.com/mermaid-js/mermaid/v10.9.6/LICENSE"
+  },
+  "installed_runtime": {
+    "mermaid": {
+      "version": "10.9.6",
+      "major_preserved_from_previous_config": "10",
+      "source_url": "https://unpkg.com/mermaid@10.9.6/dist/mermaid.min.js",
+      "sha256": "eda3a0ad572bbe69a318c1be0163e8233dd824f3f12939e5168feba207767151",
+      "license": "MIT"
+    }
+  },
+  "approved_actions_performed": {
+    "mermaid_asset_download": true,
+    "license_download": true,
+    "package_metadata_download": true,
+    "network_download_from_pinned_sources": true,
+    "project_local_vendor_asset_write": true,
+    "mkdocs_cdn_replacement": true
+  },
+  "verification": [
+    {
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File tools\\docs_mermaid_install.ps1",
+      "result": "passed_plan_only_no_install"
+    },
+    {
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File tools\\docs_mermaid_install.ps1 -Install -AllowNetwork",
+      "result": "failed_partial_asset_download_license_url_not_found"
+    },
+    {
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File tools\\docs_mermaid_install.ps1 -Install -AllowNetwork -Force",
+      "result": "passed_installed_mermaid_10_9_6_with_license_package_metadata_and_sha256"
+    },
+    {
+      "command": "$asset='docs\\assets\\javascripts\\vendor\\mermaid-10.9.6.min.js'; $hash=(Get-FileHash $asset -Algorithm SHA256).Hash.ToLowerInvariant(); $record=Get-Content \"$asset.sha256\" -Raw; if ($record -notmatch $hash) { throw \"hash mismatch\" }",
+      "result": "passed_recorded_hash_matches_asset"
+    },
+    {
+      "command": ".venv-docs\\Scripts\\python.exe -m mkdocs build --strict --site-dir .docs-tools\\reports\\mkdocs-strict-smoke-doc-m39-2026-06-21",
+      "result": "passed_strict_mkdocs_smoke_build"
+    },
+    {
+      "command": "$patterns = @('https://unpkg.com/mermaid','cdn.jsdelivr.net/npm/mermaid','<script[^>]+src=\"https?://', \"<script[^>]+src='https?://\"); $files = Get-ChildItem -Path .docs-tools\\reports\\mkdocs-strict-smoke-doc-m39-2026-06-21 -Recurse -Filter *.html; $hits = $files | Select-String -Pattern $patterns; if ($hits) { $hits; exit 1 }",
+      "result": "passed_no_external_mermaid_cdn_or_external_script_src_in_smoke_html"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+      "result": "passed_90_tests_ok"
+    },
+    {
+      "command": "python tools\\check_docs.py",
+      "result": "passed_documentation_structure_checks"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed_no_whitespace_errors_crlf_warnings_only"
+    },
+    {
+      "command": "rg -n \"[ \\\\t]+$\" tools\\\\docs_mermaid_install.ps1 docs\\\\assets\\\\javascripts\\\\vendor\\\\README.txt docs\\\\assets\\\\javascripts\\\\vendor\\\\mermaid-10.9.6.LICENSE.txt docs\\\\assets\\\\javascripts\\\\vendor\\\\mermaid-10.9.6.min.js.sha256 docs\\\\assets\\\\javascripts\\\\vendor\\\\mermaid-10.9.6.package.json docs\\\\superpowers\\\\specs\\\\documentation-refresh-g1-1-doc-m39-mermaid-summary.json",
+      "result": "passed_no_trailing_whitespace_in_new_text_artifacts"
+    }
+  ],
+  "scope_boundary": {
+    "previous_cdn_asset": "https://unpkg.com/mermaid@10/dist/mermaid.min.js",
+    "current_mkdocs_asset": "assets/javascripts/vendor/mermaid-10.9.6.min.js",
+    "strict_mkdocs_smoke_status": "passed",
+    "generated_report_site_dir": ".docs-tools/reports/mkdocs-strict-smoke-doc-m39-2026-06-21",
+    "browser_runtime_proof_status": "not_run_approval_required",
+    "root_site_freshness_status": "not_claimed",
+    "dependency_safety_or_sbom_status": "not_claimed_doc_m40_owner"
+  },
+  "unsupported_claims": [
+    "Mermaid diagrams rendered visually in a browser",
+    "browser console and network are clean",
+    "offline browser file load works",
+    "responsive diagram layout has no overlap",
+    "keyboard or accessibility behavior is verified",
+    "generated root site/ freshness verified",
+    "dependency safety reviewed",
+    "SBOM generated",
+    "publication readiness",
+    "release readiness"
+  ],
+  "no_unapproved_actions": {
+    "global_mermaid_install": false,
+    "npm_package_install": false,
+    "root_site_rebuild": false,
+    "browser_automation": false,
+    "provider_api_call": false,
+    "target_workspace_mutation": false,
+    "git_action": false,
+    "publication": false,
+    "automation_activation": false
+  },
+  "subagents": [
+    {
+      "role": "explorer",
+      "result": "read_only_doc_m39_contract_packet"
+    },
+    {
+      "role": "tester",
+      "result": "read_only_verification_and_risk_matrix"
+    }
+  ]
+}

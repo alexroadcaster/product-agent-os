@@ -1,0 +1,40 @@
+{
+  "accepted_gaps": [
+    "real target runtime/browser/provider checks not performed",
+    "generated views remain orientation evidence, not proof",
+    "source-policy positive apply remains unsupported for read-only targets"
+  ],
+  "attempt_count": 3,
+  "attempt_ids": [
+    "B39-TEST-M21-A01",
+    "B39-TEST-M21-A02",
+    "B39-TEST-M21-A03"
+  ],
+  "batch": "B39",
+  "control_plane_ref": "prod_test.md#B39-TEST-M21",
+  "evidence_refs": [
+    {
+      "attempt_id": "B39-TEST-M21-A01",
+      "path": "batch39-m21-synthetic-plugin-skill-summary.json"
+    },
+    {
+      "attempt_id": "B39-TEST-M21-A02",
+      "path": "batch39-m21-neural-flow-readonly-summary.json"
+    },
+    {
+      "attempt_id": "B39-TEST-M21-A03",
+      "path": "batch39-m21-sol-readonly-summary.json"
+    }
+  ],
+  "generated_at": "2026-06-18T00:00:00Z",
+  "generated_view_policy": "orientation_only_not_proof",
+  "next_action": "Continue Batch 39 through B39-S3 route accuracy only after recording accepted M21 evidence gaps.",
+  "next_route": "B39-S3",
+  "provider_or_external_actions_performed": false,
+  "release_readiness_supported": false,
+  "rollup_digest": "sha256:c6af74411427024085f758adfd237cfc0bc9c5cea275c71a11d5447116d60801",
+  "rollup_status": "accepted_risk_three_target_evidence",
+  "schema_version": "batch39_m21_three_target_rollup_v1",
+  "target_mutation_performed": false,
+  "test_id": "B39-TEST-M21"
+}

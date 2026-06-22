@@ -1,0 +1,96 @@
+{
+  "agent": {
+    "agent_label": "Scout",
+    "agent_type": "explorer",
+    "fork_context": false,
+    "role": "read_only_target_discovery"
+  },
+  "approval_boundary": {
+    "automation_activation": "not_performed",
+    "browser_automation": "not_performed",
+    "cache_mutation": "not_performed",
+    "external_actions": "not_performed",
+    "git_actions": "not_performed",
+    "live_server": "not_performed",
+    "provider_or_api_calls": "not_performed",
+    "target_workspace_mutation": "not_performed"
+  },
+  "attempt_id": "B39-TEST-M11-A01",
+  "batch": "B39",
+  "control_plane_sync": "not_applicable_read_only_review",
+  "files_updated": [],
+  "handoff_status": "completed",
+  "outputs": {
+    "archetype_candidates": [
+      "ai_rag",
+      "docs_research",
+      "expected_block",
+      "plugin_skill"
+    ],
+    "recommended_fixture_fields": [
+      "project_archetype",
+      "lifecycle_state",
+      "usage_mode",
+      "control_plane_presence",
+      "top_level_artifact_map",
+      "legacy_artifact_map",
+      "research_artifact_map",
+      "architecture_phase_count",
+      "citation_density_signal",
+      "open_issue_count",
+      "design_complexity_flags",
+      "safe_fixture_categories",
+      "unsafe_content_exclusions",
+      "source_freshness_status",
+      "manual_verification_required",
+      "next_route_recommendation"
+    ],
+    "source_policy_gaps": [
+      "target_AGENTS_absent",
+      "target_codex_tree_absent",
+      "target_source_registry_absent",
+      "external_sources_not_freshly_reverified"
+    ],
+    "target_signals": [
+      "doc_first_research_heavy_project",
+      "idea_stage_structurally_mature_architecture_spec",
+      "control_plane_files_present",
+      "research_and_legacy_subtrees_present",
+      "implementation_code_absent"
+    ]
+  },
+  "prompt_contract": {
+    "allowed_actions": [
+      "read_only_directory_inventory",
+      "read_only_file_listing",
+      "limited_first_lines_for_classification",
+      "sanitized_handoff_summary"
+    ],
+    "forbidden_actions": [
+      "target_writes",
+      "raw_private_source_body_storage",
+      "live_server",
+      "browser_automation",
+      "provider_or_api_calls",
+      "git_writes",
+      "external_actions"
+    ],
+    "target_ref": "approved_target:Neural_Flow"
+  },
+  "redaction": {
+    "absolute_paths_stored": false,
+    "raw_private_logs_stored": false,
+    "raw_source_bodies_stored": false,
+    "secrets_allowed": false
+  },
+  "schema_version": "batch39_agent_handoff_v1",
+  "slice": "B39-S2",
+  "sources_context_used": [
+    "top_level_inventory",
+    "docs_research_legacy_file_listing",
+    "limited_root_doc_headings",
+    "control_plane_presence_scan",
+    "read_only_no_mutation_observation"
+  ],
+  "test_id": "B39-TEST-M11"
+}

@@ -1,0 +1,110 @@
+{
+  "actions_performed": {
+    "active_automation": false,
+    "browser_automation": true,
+    "external_write": false,
+    "git_stage_commit_push_pr": false,
+    "live_server": false,
+    "mcp_external_call": false,
+    "provider_api_call": false,
+    "release_deploy_publish": false,
+    "target_workspace_mutation": false
+  },
+  "agents_used": [
+    {
+      "agent": "Harbor",
+      "role": "product/evidence reviewer",
+      "result": "read-only M44 acceptance handoff; no files touched"
+    }
+  ],
+  "attempt_id": "B41-S8-M44-A01",
+  "changed_files": [
+    "plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py",
+    "tests/product_agent_os/test_batch41_first_run_automation.py",
+    "docs/superpowers/specs/batch41-s8-m44-evidence-decision-risk-summary.json",
+    "docs/superpowers/specs/batch41-first-run-automation-matrix.json",
+    "PLAN.md",
+    "TEST.md",
+    "EVALS.md",
+    "RUNLOG.md"
+  ],
+  "evidence_decision_layer": {
+    "schema_version": "first_run_evidence_decision_layer_v1",
+    "status": "visible_acceptance_surfaces_ready",
+    "visible_surfaces": [
+      "supported_claims",
+      "unsupported_claims",
+      "blocker_ledger",
+      "decision_grid",
+      "owner_codex_actions",
+      "risk_ledger",
+      "future_gates",
+      "proof_evidence_strip",
+      "source_blueprint"
+    ],
+    "claim_boundary": "orientation_only_not_proof",
+    "default_unsupported_claims": [
+      "release readiness",
+      "target apply safety",
+      "Cosmos.gl/WebGL runtime proof",
+      "WCAG certification",
+      "provider/API/model quality",
+      "installed plugin-cache readiness",
+      "source-read semantic completeness"
+    ]
+  },
+  "playwright_visual_proof": {
+    "path": "output/playwright/b41-s8-m44/playwright-evidence-decision-proof.json",
+    "status": "passed",
+    "screenshots": [
+      "output/playwright/b41-s8-m44/desktop-evidence-decision.png",
+      "output/playwright/b41-s8-m44/mobile-evidence-decision.png"
+    ],
+    "checks": {
+      "desktop_mobile_required_sections_visible": true,
+      "body_overflow": false,
+      "peer_overlaps": 0,
+      "console_messages": 0,
+      "external_requests": 0,
+      "proof_refs_visible": true,
+      "orientation_policy_visible": true
+    }
+  },
+  "schema_version": "batch41_s8_m44_evidence_decision_risk_summary_v1",
+  "status": "implemented_evidence_decision_risk_source_blueprint_with_playwright_proof",
+  "unsupported_claims": [
+    "Cosmos.gl runtime/WebGL execution passed",
+    "WCAG certification",
+    "Neural_Flow regenerated artifact accepted",
+    "release readiness",
+    "target apply safety",
+    "provider/API/model quality",
+    "installed plugin-cache readiness"
+  ],
+  "verification": [
+    {
+      "command": "python -m unittest tests.product_agent_os.test_batch41_first_run_automation.Batch41FirstRunAutomationTests.test_b41_s8_m44_cockpit_renders_evidence_decision_risk_source_blueprint_sections -v",
+      "result": "passed"
+    },
+    {
+      "command": "node Playwright proof against staged file:// index.html with desktop 1365x900 and mobile 390x844",
+      "result": "passed; proof stored in output/playwright/b41-s8-m44/playwright-evidence-decision-proof.json"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_batch41_first_run_automation -q",
+      "result": "passed; 23 tests"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -q",
+      "result": "passed; 81 tests"
+    },
+    {
+      "command": "python tools\\check_docs.py",
+      "result": "passed"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ]
+}

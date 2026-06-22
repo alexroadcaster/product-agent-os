@@ -1,0 +1,97 @@
+{
+  "actions_performed": {
+    "active_automation": false,
+    "browser_automation": false,
+    "external_write": false,
+    "git_write": false,
+    "live_server": false,
+    "mcp_external_call": false,
+    "plugin_cache_write": false,
+    "provider_api_call": false,
+    "release_deploy_publish": false,
+    "target_workspace_mutation": false
+  },
+  "agents_used": [
+    {
+      "agent": "Cartographer",
+      "role": "explorer",
+      "result": "read-only discovery of reusable graph visual model, renderer fallback, selected-node panel and tests; no files changed"
+    },
+    {
+      "agent": "Vector",
+      "role": "architect",
+      "result": "read-only M34/M35 acceptance and stop-condition audit; no files changed"
+    }
+  ],
+  "attempt_id": "B41-S7-M34-M35-A01",
+  "changed_files": [
+    "plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py",
+    "tests/product_agent_os/test_batch41_first_run_automation.py",
+    "docs/superpowers/specs/batch41-first-run-automation-matrix.json",
+    "docs/superpowers/specs/batch41-s7-m34-m35-graph-rendering-summary.json"
+  ],
+  "covered_tasks": [
+    "B41-S7-M34",
+    "B41-S7-M35"
+  ],
+  "evidence": {
+    "code_graph_not_available_state": "docs-only or missing graph-packet cases render explicit not_available state with zero counts and a safe next action",
+    "code_graph_summary_state": "graph_artifact_summary packets render an available summary graph with hotspots, relationships, Cosmos.gl adapter payload, table fallback and omitted counts",
+    "cosmos_boundary": "Cosmos.gl is selected renderer and payload target, but no vendored runtime asset was installed or bundled in this slice; offline SVG/table fallback remains active",
+    "source_file_graph": "first-run source artifacts and section evidence are projected through Graphology-compatible payloads, build_project_graph_visual_model, Cosmos.gl static adapter payload, legend, status coloring, selected-file panel and fallback table"
+  },
+  "next_tasks": [
+    "B41-S7-M36",
+    "B41-S7-M37",
+    "B41-S7-M38",
+    "B41-S7-M39",
+    "B41-S7-M40"
+  ],
+  "residual_risks": [
+    "Browser visual QA was not run; graph visibility evidence is static/unit evidence only.",
+    "Cosmos.gl runtime asset is not vendored; this slice records a Cosmos-ready adapter payload and offline fallback, not live WebGL execution.",
+    "Large-scale 1k/5k/10k+/50k browser responsiveness remains for B41-S7-M38 or a separately approved visual/runtime pass.",
+    "Neural_Flow acceptance pilot is not run in this slice.",
+    "Generated graph remains orientation evidence only and does not prove source-read completion, runtime behavior, release readiness or target apply safety."
+  ],
+  "schema_version": "batch41_s7_graph_rendering_summary_v1",
+  "status": "implemented_local_static_evidence_only",
+  "unsupported_claims": [
+    "release readiness",
+    "runtime/browser proof",
+    "provider/API/model quality",
+    "public docs/site acceptance",
+    "active automation promotion",
+    "target apply safety",
+    "source-read semantic completeness",
+    "installed plugin-cache readiness",
+    "visual QA pass",
+    "Cosmos.gl runtime execution"
+  ],
+  "verification": [
+    {
+      "command": "python -m unittest tests.product_agent_os.test_batch41_first_run_automation.Batch41FirstRunAutomationTests.test_b41_s7_m31_m33_stage_renders_primary_cockpit_contract_shell_and_view_model tests.product_agent_os.test_batch41_first_run_automation.Batch41FirstRunAutomationTests.test_b41_s7_m34_m35_cockpit_renders_source_graph_and_code_graph_summary_payloads -v",
+      "result": "passed"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_batch41_first_run_automation -v",
+      "result": "passed; 19 tests"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_first_run_analysis -v",
+      "result": "passed; 14 tests"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+      "result": "passed; 81 tests"
+    },
+    {
+      "command": "python tools\\check_docs.py",
+      "result": "passed"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ]
+}

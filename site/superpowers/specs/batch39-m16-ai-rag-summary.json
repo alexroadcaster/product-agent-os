@@ -1,0 +1,136 @@
+{
+  "agent_skill_evidence": {
+    "agent_handoff": {
+      "name": "Signal the 2nd",
+      "recommendation": "Record M16 as passed_contract_guardrail; do not claim model quality, grounding, live eval, provider calls, vector DB, production readiness or promotion readiness.",
+      "role": "Tester",
+      "status": "completed_read_only_review"
+    },
+    "skills_used": [
+      "product-agent-os:implementation-planner",
+      "product-agent-os:agent-team-designer",
+      "product-agent-os:docs-maintainer"
+    ]
+  },
+  "ai_rag_contract": {
+    "ai_related_gates_observed": [
+      "ai_security_review_present",
+      "api_security_scheme_present",
+      "codex_security_scan_status_present",
+      "external_write_approval_present",
+      "security_evidence_before_completion",
+      "security_risk_review_present",
+      "security_sensitive_classification_present"
+    ],
+    "contract_verdict": "methodology_detected_ai_rag_surface_and_runtime_runner_blocked_approval_bound_ai_quality_model_tool_eval_security_claims",
+    "detected_ai_rag_surface": true,
+    "expected_artifacts_present": {
+      "datasets/ai-dataset-manifest.md": true,
+      "docs/agent-workflow-map.md": true,
+      "docs/ai-behavior-spec.md": true,
+      "docs/ai-cost-latency-budget.md": true,
+      "docs/ai-eval-spec.md": true,
+      "docs/ai-tool-contract.md": true,
+      "docs/grounding-rubric.md": true,
+      "docs/guardrail-matrix.md": true,
+      "docs/prompt-contract.md": true,
+      "docs/rag-eval-report.md": true,
+      "docs/rag-retrieval-config.md": true,
+      "docs/rag-source-inventory.md": true,
+      "docs/structured-output-schema.md": true,
+      "docs/trace-evidence-packet.md": true,
+      "model-config/model-decision-record.md": true,
+      "safety/ai-security-review.md": true
+    },
+    "live_eval_evidence_status": "not_run_approval_required",
+    "live_model_evidence_status": "not_run_approval_required",
+    "provider_call_evidence_status": "not_run_approval_required",
+    "vector_db_runtime_evidence_status": "not_run_approval_required"
+  },
+  "approval_boundary": {
+    "automation_activation": "not_performed",
+    "browser_automation": "not_performed",
+    "cache_mutation": "not_performed",
+    "external_actions": "not_performed",
+    "external_eval_service": "not_performed",
+    "git_actions": "not_performed",
+    "live_model_calls": "not_performed",
+    "live_server": "not_performed",
+    "local_evidence_artifact_write": "allowed_workspace_output_only",
+    "provider_or_api_calls": "not_performed",
+    "target_workspace_mutation": "not_performed",
+    "vector_database_access": "not_performed"
+  },
+  "attempt_id": "B39-TEST-M16-A01",
+  "batch": "B39",
+  "evidence_refs": {
+    "command_results": "docs/superpowers/specs/batch39-m16-command-results.jsonl",
+    "manifest": "docs/superpowers/specs/batch39-m16-ai-rag-manifest.json",
+    "methodology_audit": "docs/superpowers/specs/batch39-m16-methodology-audit.json",
+    "runtime": "docs/superpowers/specs/batch39-m16-runtime-result.json",
+    "source_policy": "docs/superpowers/specs/batch39-m16-source-policy.json"
+  },
+  "generated_at": "2026-06-12T00:00:00+00:00",
+  "next_action": "Run B39-TEST-M17 as the data/migration archetype pilot.",
+  "observed_results": {
+    "ai_eval_or_rag_signal_present": true,
+    "command_entry_digests": [
+      "sha256:5f15731e1c11212f582e29f97e97f977568d171a6edaf2b0d1dc9d4a1146c3c2",
+      "sha256:72d45c843c37635598913f18700ef8d639c00f6ac260b9dd7fbfb1d6589f12b8",
+      "sha256:b8997ff1f33341d99b4239b3dd47736c0848070471623e755c9c774b269b661a"
+    ],
+    "command_results_count": 3,
+    "fixture_pycompile_check": "passed_py_compile",
+    "fixture_smoke_check": "passed_python_script",
+    "lifecycle_state": "infrastructure_planned",
+    "manifest_digest": "sha256:a5170c3a1751e5af5bfca949ec0b1294dbdad257c4af5e2c365d3af028977e4e",
+    "methodology_status": "ok",
+    "observed_signal_ids": [
+      "database_migration_or_schema",
+      "docs_or_control_plane",
+      "codex_agentic_workflow",
+      "agent_skill_metrics_loop",
+      "security_sensitive_surface",
+      "ai_eval_or_rag",
+      "test_evidence",
+      "quality_testing_signal"
+    ],
+    "quality_testing_signal_present": true,
+    "runtime_approval_requirements": [
+      "explicit approval required before methodology-recommended external or irreversible action"
+    ],
+    "runtime_exit_code": 1,
+    "runtime_exit_interpretation": "expected_approval_guardrail_for_ai_rag_model_tool_eval_security_methodology_actions",
+    "runtime_recommended_skill": "requirements-author",
+    "runtime_status": "needs_approval",
+    "runtime_write_policy": "staged_only",
+    "security_sensitive_surface_present": true,
+    "source_policy_files": 14,
+    "source_policy_status": "ok"
+  },
+  "pilot": {
+    "archetype": "ai_rag",
+    "mode": "synthetic_local",
+    "pilot_id": "synthetic-ai-rag-contract",
+    "real_pilot_evidence": false,
+    "target_ref": "tests/fixtures/product_agent_os/batch39-m16-ai-rag-fixture"
+  },
+  "promotion_boundary": "manual_only_not_promoted",
+  "schema_version": "batch39_ai_rag_pilot_summary_v1",
+  "slice": "B39-S2",
+  "summary_status": "passed_contract_guardrail",
+  "supported_claims": [
+    "A synthetic local AI/RAG fixture can pass source-policy validation.",
+    "Methodology audit detects AI/RAG, quality-testing and security-sensitive signals.",
+    "Runtime runner blocks approval-bound AI/RAG methodology actions with needs_approval instead of allowing quality or readiness claims.",
+    "The fixture smoke script validates static corpus, eval cases, structured-output schema and provider_call_performed=false trace without dependency installation.",
+    "Python syntax compilation passes for the synthetic smoke script.",
+    "Command-results JSONL stores current command evidence digests without raw stdout or stderr."
+  ],
+  "test_id": "B39-TEST-M16",
+  "unsupported_claims": [
+    "The fixture does not prove live model behavior, provider/API behavior, vector database retrieval, grounding quality, answer quality, prompt safety, tool safety, latency or cost.",
+    "Synthetic-local evidence does not prove real-project value, Neural_Flow positive evidence, release readiness or promotion readiness.",
+    "No live model call, provider/API call, browser automation, live server, target mutation, external action, cache mutation or git action was performed."
+  ]
+}

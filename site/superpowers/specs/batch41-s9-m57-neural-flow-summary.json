@@ -1,0 +1,26 @@
+{
+  "schema_version": "batch41_s9_m57_neural_flow_summary_v1",
+  "status": "implemented_read_only_neural_flow_rerun_and_static_comparison",
+  "comparison_path": "docs/superpowers/specs/batch41-s9-m57-neural-flow-comparison.json",
+  "new_stage": "docs/superpowers/specs/batch41-s9-m57-neural-flow-stage",
+  "new_index_html": "docs/superpowers/specs/batch41-s9-m57-neural-flow-stage/index.html",
+  "new_manifest": "docs/superpowers/specs/batch41-s9-m57-neural-flow-stage/analysis-manifest.json",
+  "target_mutation_performed": false,
+  "analysis_exit_code": 0,
+  "checks": {
+    "required_new_keys_all_present": true,
+    "html_markers_all_pass": true,
+    "unsupported_claims_preserved_all_pass": true
+  },
+  "completion_boundary": "generated orientation evidence only; no browser/runtime/WCAG/release/target-apply claim",
+  "commands": [
+    {
+      "command": "python plugins/product-agent-os/scripts/run_first_project_analysis.py C:/Users/user/Desktop/project/Neural_Flow --stage docs/superpowers/specs/batch41-s9-m57-neural-flow-stage --generated-at 2026-06-19T17:50:00+03:00",
+      "result": "exit 0; target mutation false by before/after file inventory comparison command output"
+    },
+    {
+      "command": "structured comparison script",
+      "result": "comparison and summary JSON generated"
+    }
+  ]
+}

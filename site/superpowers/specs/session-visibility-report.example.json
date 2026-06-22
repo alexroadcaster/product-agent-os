@@ -1,0 +1,45 @@
+{
+  "approval_boundary": {
+    "automation_activation": "not_performed",
+    "cache_mutation": "not_performed",
+    "external_actions": "not_performed",
+    "git_actions": "not_performed",
+    "local_evidence_artifact_write": "allowed_workspace_output_only"
+  },
+  "attempt_id": "B39-TEST-M06-A01",
+  "batch": "B39",
+  "coverage": {
+    "install": "observed",
+    "session_visible": "observed",
+    "uninstall": "observed",
+    "update": "observed"
+  },
+  "events": [
+    {
+      "artifact": "plugin-cache-synthetic-inventory",
+      "operation": "install",
+      "status": "observed"
+    },
+    {
+      "artifact": "plugin-cache-synthetic-inventory",
+      "operation": "update",
+      "status": "observed"
+    },
+    {
+      "artifact": "codex-app-session-synthetic-marker",
+      "operation": "session_visible",
+      "status": "observed"
+    },
+    {
+      "artifact": "staged-removal-synthetic-check",
+      "operation": "uninstall",
+      "status": "observed"
+    }
+  ],
+  "generated_at": "2026-06-11T00:00:00+00:00",
+  "package_ref": "product-agent-os@0.1.0",
+  "report_digest": "sha256:6b2912238b9036138555b243fe220af293bf0a6e20a042acd3e04763b30d2aab",
+  "schema_version": "session_visibility_report_v1",
+  "test_id": "B39-TEST-M06",
+  "verdict": "session_visibility_verified"
+}

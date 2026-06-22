@@ -1,0 +1,144 @@
+{
+  "schema_version": "documentation_refresh_g5_evidence_quality_site_gate_v1",
+  "evidence_id": "documentation_refresh_G5-A01",
+  "status": "implemented_source_docs_no_site_rebuild",
+  "checked_at": "2026-06-22",
+  "track": "Track 11",
+  "group": "G5",
+  "title": "Product-Agent OS Track 11 G5 evidence quality and final site gate docs packet",
+  "summary": "G5 source documentation now covers generated artifact UX criteria, graph intelligence contract, privacy/supply-chain/report-retention boundaries, local HTML interaction proof boundaries and residual follow-up routing. Root site/search/sitemap freshness remains deferred to DOC-M25 and was not run in this slice.",
+  "agent_team": {
+    "mode": "single_integrator_with_skills",
+    "main_owner": "Codex main integrator",
+    "skills_used": [
+      "product-agent-os:implementation-planner",
+      "product-agent-os:agent-team-designer",
+      "product-agent-os:docs-maintainer",
+      "test-eval-designer guidance"
+    ],
+    "subagent_dispatch": "not_used_overlap_between_docs_nav_tests_registry_control_plane"
+  },
+  "work_item_status": {
+    "DOC-M21": {
+      "status": "implemented_source_docs_no_site_rebuild",
+      "artifact": "docs/product-agent-os/generated-artifact-ux-criteria.md",
+      "acceptance_summary": "Generated artifact UX criteria, Vale advisory boundary and Storybook trigger status are documented without installing Storybook or claiming browser proof."
+    },
+    "DOC-M24": {
+      "status": "implemented_source_docs_no_site_rebuild",
+      "artifact": "docs/product-agent-os/privacy-supply-chain-retention.md",
+      "acceptance_summary": "Source/cache/session privacy, supply-chain evidence, SBOM/audit/remediation approval gates and raw report-retention boundaries are documented."
+    },
+    "DOC-M28": {
+      "status": "implemented_source_docs_no_site_rebuild",
+      "artifact": "docs/product-agent-os/graph-intelligence-contract.md",
+      "acceptance_summary": "Graph ontology, coverage, freshness, rejected links, bounded query packets and source-read-before-edit rules are documented."
+    },
+    "DOC-M29": {
+      "status": "implemented_source_docs_no_site_rebuild",
+      "artifact": "docs/product-agent-os/local-html-interaction-boundary.md",
+      "acceptance_summary": "Generated HTML local interaction rules, no-external-request policy, JS-disabled fallback and browser-proof packet requirements are documented."
+    },
+    "DOC-M30": {
+      "status": "implemented_source_docs_no_site_rebuild",
+      "artifact": "docs/product-agent-os/residual-follow-up-site-freshness.md",
+      "acceptance_summary": "Real-target static comparison redaction, residual G1.1 follow-up routing and row-level G2-G5 closure status are documented."
+    },
+    "DOC-M25": {
+      "status": "approval_required_not_run",
+      "artifact": "root site/search/sitemap freshness",
+      "acceptance_summary": "Final root site rebuild remains a separate approval gate after G2-G5 source updates; this packet does not claim generated site freshness."
+    }
+  },
+  "source_docs": [
+    "docs/product-agent-os/generated-artifact-ux-criteria.md",
+    "docs/product-agent-os/generated-artifact-ux-criteria.en.md",
+    "docs/product-agent-os/graph-intelligence-contract.md",
+    "docs/product-agent-os/graph-intelligence-contract.en.md",
+    "docs/product-agent-os/privacy-supply-chain-retention.md",
+    "docs/product-agent-os/privacy-supply-chain-retention.en.md",
+    "docs/product-agent-os/local-html-interaction-boundary.md",
+    "docs/product-agent-os/local-html-interaction-boundary.en.md",
+    "docs/product-agent-os/residual-follow-up-site-freshness.md",
+    "docs/product-agent-os/residual-follow-up-site-freshness.en.md"
+  ],
+  "sync_artifacts": [
+    "mkdocs.yml",
+    "tools/check_docs.py",
+    "tests/product_agent_os/test_product_agent_os_docs.py",
+    "docs/product-agent-os/index.md",
+    "docs/product-agent-os/index.en.md",
+    "docs/product-agent-os/scenarios.md",
+    "docs/product-agent-os/scenarios.en.md",
+    "docs/sources/registry.md",
+    "docs/sources/registry.en.md",
+    "REQUIREMENTS.md",
+    "PLAN.md",
+    "TEST.md",
+    "EVALS.md",
+    "RUNLOG.md",
+    "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md"
+  ],
+  "supported_claims": [
+    "G5 source Markdown pages and EN counterparts exist.",
+    "MkDocs navigation and tools/check_docs.py include the G5 pages.",
+    "The docs unittest contract routes G5 pages through DOC_M25_PENDING_SITE_PAGES.",
+    "Source registry and control-plane files record the G5 source-doc closure boundary.",
+    "DOC-M25 root site/search/sitemap freshness remains approval-required and not run."
+  ],
+  "unsupported_claims": [
+    "Root site freshness for G2-G5 pages.",
+    "Search index or sitemap freshness for G2-G5 pages.",
+    "Browser proof, screenshots, runtime interaction proof or WCAG certification.",
+    "Storybook, Docusaurus or Structurizr installation/runtime proof.",
+    "Broad Vale enforcement, markdownlint/Prettier autoformat, broad lychee/gitleaks scans, external URL crawling or raw report retention.",
+    "Python vulnerability audit, complete repository SBOM, Node dependency remediation or npm audit fix.",
+    "Target workspace mutation, provider/API call, global config write, installed cache refresh, git/release/deploy/publish or active automation."
+  ],
+  "test_contract": {
+    "source_markdown_page_count": 148,
+    "localized_markdown_page_count": 140,
+    "site_promoted_localized_markdown_page_count": 125,
+    "pending_site_pages_until_doc_m25": [
+      "docs/product-agent-os/first-run-architecture-cockpit.md",
+      "docs/diagrams/source-generated-trust-boundary.md",
+      "docs/diagrams/first-run-cockpit-architecture.md",
+      "docs/diagrams/evidence-risk-lifecycle.md",
+      "docs/diagrams/skill-exposure-and-invocation.md",
+      "docs/diagrams/architecture-intelligence-diagram-atlas.md",
+      "docs/product-agent-os/instruction-tool-use-compliance.md",
+      "docs/product-agent-os/operator-command-matrix.md",
+      "docs/product-agent-os/guided-questions-answer-ledger.md",
+      "docs/product-agent-os/source-cache-session-state.md",
+      "docs/product-agent-os/generated-artifact-ux-criteria.md",
+      "docs/product-agent-os/graph-intelligence-contract.md",
+      "docs/product-agent-os/privacy-supply-chain-retention.md",
+      "docs/product-agent-os/local-html-interaction-boundary.md",
+      "docs/product-agent-os/residual-follow-up-site-freshness.md"
+    ],
+    "planned_verification": [
+      "python -m json.tool docs\\superpowers\\specs\\documentation-refresh-g5-evidence-quality-site-gate-summary.json",
+      "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+      "python tools\\check_docs.py",
+      ".venv-docs\\Scripts\\python.exe -m mkdocs build --strict --site-dir .docs-tools\\reports\\mkdocs-strict-smoke-g5-2026-06-22",
+      "git diff --check"
+    ]
+  },
+  "no_unapproved_actions": {
+    "root_site_rebuild": false,
+    "search_sitemap_refresh": false,
+    "browser_automation": false,
+    "broad_scans": false,
+    "dependency_remediation": false,
+    "raw_report_retention": false,
+    "install": false,
+    "cache_refresh": false,
+    "global_config_write": false,
+    "target_workspace_mutation": false,
+    "external_write": false,
+    "automation_created_or_enabled": false,
+    "git_stage_commit_push_pr": false,
+    "release_deploy_publish": false,
+    "provider_or_api_call": false
+  }
+}

@@ -1,0 +1,460 @@
+{
+  "errors": [],
+  "files": [
+    {
+      "assumptions": [],
+      "freshness_risks": [],
+      "missing_context": [],
+      "path": "docs/api-auth-authorization-matrix.md",
+      "registry_update_required": false,
+      "secret_findings": [],
+      "source_status": "synthetic_fixture",
+      "supported_facts": [],
+      "unsupported_claims": []
+    },
+    {
+      "assumptions": [],
+      "freshness_risks": [],
+      "missing_context": [],
+      "path": "docs/api-compatibility-record.md",
+      "registry_update_required": false,
+      "secret_findings": [],
+      "source_status": "synthetic_fixture",
+      "supported_facts": [],
+      "unsupported_claims": []
+    },
+    {
+      "assumptions": [],
+      "freshness_risks": [],
+      "missing_context": [],
+      "path": "docs/api-consumer-map.md",
+      "registry_update_required": false,
+      "secret_findings": [],
+      "source_status": "synthetic_fixture",
+      "supported_facts": [],
+      "unsupported_claims": []
+    },
+    {
+      "assumptions": [],
+      "freshness_risks": [],
+      "missing_context": [],
+      "path": "docs/api-contract-review.md",
+      "registry_update_required": false,
+      "secret_findings": [],
+      "source_status": "synthetic_fixture",
+      "supported_facts": [],
+      "unsupported_claims": []
+    },
+    {
+      "assumptions": [],
+      "freshness_risks": [],
+      "missing_context": [],
+      "path": "docs/api-contract-test-matrix.md",
+      "registry_update_required": false,
+      "secret_findings": [],
+      "source_status": "synthetic_fixture",
+      "supported_facts": [],
+      "unsupported_claims": []
+    },
+    {
+      "assumptions": [],
+      "freshness_risks": [],
+      "missing_context": [],
+      "path": "docs/api-error-catalog.md",
+      "registry_update_required": false,
+      "secret_findings": [],
+      "source_status": "synthetic_fixture",
+      "supported_facts": [],
+      "unsupported_claims": []
+    },
+    {
+      "assumptions": [],
+      "freshness_risks": [],
+      "missing_context": [],
+      "path": "docs/api-inventory.md",
+      "registry_update_required": false,
+      "secret_findings": [],
+      "source_status": "synthetic_fixture",
+      "supported_facts": [],
+      "unsupported_claims": []
+    },
+    {
+      "assumptions": [],
+      "freshness_risks": [],
+      "missing_context": [],
+      "path": "docs/api-observability-contract.md",
+      "registry_update_required": false,
+      "secret_findings": [],
+      "source_status": "synthetic_fixture",
+      "supported_facts": [],
+      "unsupported_claims": []
+    },
+    {
+      "assumptions": [],
+      "freshness_risks": [
+        "current OpenAI/runtime behavior may drift"
+      ],
+      "missing_context": [],
+      "path": "docs/api-security-review.md",
+      "registry_update_required": false,
+      "secret_findings": [],
+      "source_status": "synthetic_fixture",
+      "supported_facts": [],
+      "unsupported_claims": []
+    },
+    {
+      "assumptions": [],
+      "freshness_risks": [
+        "current OpenAI/runtime behavior may drift"
+      ],
+      "missing_context": [],
+      "path": "docs/backend-config-secrets-manifest.md",
+      "registry_update_required": false,
+      "secret_findings": [],
+      "source_status": "synthetic_fixture",
+      "supported_facts": [],
+      "unsupported_claims": []
+    },
+    {
+      "assumptions": [],
+      "freshness_risks": [],
+      "missing_context": [],
+      "path": "docs/backend-dependency-failure-matrix.md",
+      "registry_update_required": false,
+      "secret_findings": [],
+      "source_status": "synthetic_fixture",
+      "supported_facts": [],
+      "unsupported_claims": []
+    },
+    {
+      "assumptions": [],
+      "freshness_risks": [],
+      "missing_context": [],
+      "path": "docs/backend-health-check-contract.md",
+      "registry_update_required": false,
+      "secret_findings": [],
+      "source_status": "synthetic_fixture",
+      "supported_facts": [],
+      "unsupported_claims": []
+    },
+    {
+      "assumptions": [],
+      "freshness_risks": [],
+      "missing_context": [],
+      "path": "docs/backend-observability-map.md",
+      "registry_update_required": false,
+      "secret_findings": [],
+      "source_status": "synthetic_fixture",
+      "supported_facts": [],
+      "unsupported_claims": []
+    },
+    {
+      "assumptions": [],
+      "freshness_risks": [],
+      "missing_context": [],
+      "path": "docs/backend-release-rollback-notes.md",
+      "registry_update_required": false,
+      "secret_findings": [],
+      "source_status": "synthetic_fixture",
+      "supported_facts": [],
+      "unsupported_claims": []
+    },
+    {
+      "assumptions": [],
+      "freshness_risks": [],
+      "missing_context": [],
+      "path": "docs/backend-runtime-behavior.md",
+      "registry_update_required": false,
+      "secret_findings": [],
+      "source_status": "synthetic_fixture",
+      "supported_facts": [],
+      "unsupported_claims": []
+    },
+    {
+      "assumptions": [],
+      "freshness_risks": [
+        "current OpenAI/runtime behavior may drift"
+      ],
+      "missing_context": [],
+      "path": "docs/backend-service-overview.md",
+      "registry_update_required": false,
+      "secret_findings": [],
+      "source_status": "synthetic_fixture",
+      "supported_facts": [
+        "OpenAI-related claim requires source-policy review"
+      ],
+      "unsupported_claims": []
+    },
+    {
+      "assumptions": [],
+      "freshness_risks": [],
+      "missing_context": [],
+      "path": "docs/external-integration-approval.md",
+      "registry_update_required": false,
+      "secret_findings": [],
+      "source_status": "synthetic_fixture",
+      "supported_facts": [],
+      "unsupported_claims": []
+    },
+    {
+      "assumptions": [],
+      "freshness_risks": [],
+      "missing_context": [],
+      "path": "docs/generated-sdk-manifest.md",
+      "registry_update_required": false,
+      "secret_findings": [],
+      "source_status": "synthetic_fixture",
+      "supported_facts": [],
+      "unsupported_claims": []
+    },
+    {
+      "assumptions": [],
+      "freshness_risks": [
+        "current OpenAI/runtime behavior may drift"
+      ],
+      "missing_context": [],
+      "path": "docs/webhook-event-contract.md",
+      "registry_update_required": false,
+      "secret_findings": [],
+      "source_status": "synthetic_fixture",
+      "supported_facts": [
+        "OpenAI-related claim requires source-policy review"
+      ],
+      "unsupported_claims": []
+    }
+  ],
+  "registry_updates_required": [],
+  "secret_findings": [],
+  "source_policy_report": {
+    "errors": [],
+    "files": [
+      {
+        "assumptions": [],
+        "freshness_risks": [],
+        "missing_context": [],
+        "path": "docs/api-auth-authorization-matrix.md",
+        "registry_update_required": false,
+        "secret_findings": [],
+        "source_status": "synthetic_fixture",
+        "supported_facts": [],
+        "unsupported_claims": []
+      },
+      {
+        "assumptions": [],
+        "freshness_risks": [],
+        "missing_context": [],
+        "path": "docs/api-compatibility-record.md",
+        "registry_update_required": false,
+        "secret_findings": [],
+        "source_status": "synthetic_fixture",
+        "supported_facts": [],
+        "unsupported_claims": []
+      },
+      {
+        "assumptions": [],
+        "freshness_risks": [],
+        "missing_context": [],
+        "path": "docs/api-consumer-map.md",
+        "registry_update_required": false,
+        "secret_findings": [],
+        "source_status": "synthetic_fixture",
+        "supported_facts": [],
+        "unsupported_claims": []
+      },
+      {
+        "assumptions": [],
+        "freshness_risks": [],
+        "missing_context": [],
+        "path": "docs/api-contract-review.md",
+        "registry_update_required": false,
+        "secret_findings": [],
+        "source_status": "synthetic_fixture",
+        "supported_facts": [],
+        "unsupported_claims": []
+      },
+      {
+        "assumptions": [],
+        "freshness_risks": [],
+        "missing_context": [],
+        "path": "docs/api-contract-test-matrix.md",
+        "registry_update_required": false,
+        "secret_findings": [],
+        "source_status": "synthetic_fixture",
+        "supported_facts": [],
+        "unsupported_claims": []
+      },
+      {
+        "assumptions": [],
+        "freshness_risks": [],
+        "missing_context": [],
+        "path": "docs/api-error-catalog.md",
+        "registry_update_required": false,
+        "secret_findings": [],
+        "source_status": "synthetic_fixture",
+        "supported_facts": [],
+        "unsupported_claims": []
+      },
+      {
+        "assumptions": [],
+        "freshness_risks": [],
+        "missing_context": [],
+        "path": "docs/api-inventory.md",
+        "registry_update_required": false,
+        "secret_findings": [],
+        "source_status": "synthetic_fixture",
+        "supported_facts": [],
+        "unsupported_claims": []
+      },
+      {
+        "assumptions": [],
+        "freshness_risks": [],
+        "missing_context": [],
+        "path": "docs/api-observability-contract.md",
+        "registry_update_required": false,
+        "secret_findings": [],
+        "source_status": "synthetic_fixture",
+        "supported_facts": [],
+        "unsupported_claims": []
+      },
+      {
+        "assumptions": [],
+        "freshness_risks": [
+          "current OpenAI/runtime behavior may drift"
+        ],
+        "missing_context": [],
+        "path": "docs/api-security-review.md",
+        "registry_update_required": false,
+        "secret_findings": [],
+        "source_status": "synthetic_fixture",
+        "supported_facts": [],
+        "unsupported_claims": []
+      },
+      {
+        "assumptions": [],
+        "freshness_risks": [
+          "current OpenAI/runtime behavior may drift"
+        ],
+        "missing_context": [],
+        "path": "docs/backend-config-secrets-manifest.md",
+        "registry_update_required": false,
+        "secret_findings": [],
+        "source_status": "synthetic_fixture",
+        "supported_facts": [],
+        "unsupported_claims": []
+      },
+      {
+        "assumptions": [],
+        "freshness_risks": [],
+        "missing_context": [],
+        "path": "docs/backend-dependency-failure-matrix.md",
+        "registry_update_required": false,
+        "secret_findings": [],
+        "source_status": "synthetic_fixture",
+        "supported_facts": [],
+        "unsupported_claims": []
+      },
+      {
+        "assumptions": [],
+        "freshness_risks": [],
+        "missing_context": [],
+        "path": "docs/backend-health-check-contract.md",
+        "registry_update_required": false,
+        "secret_findings": [],
+        "source_status": "synthetic_fixture",
+        "supported_facts": [],
+        "unsupported_claims": []
+      },
+      {
+        "assumptions": [],
+        "freshness_risks": [],
+        "missing_context": [],
+        "path": "docs/backend-observability-map.md",
+        "registry_update_required": false,
+        "secret_findings": [],
+        "source_status": "synthetic_fixture",
+        "supported_facts": [],
+        "unsupported_claims": []
+      },
+      {
+        "assumptions": [],
+        "freshness_risks": [],
+        "missing_context": [],
+        "path": "docs/backend-release-rollback-notes.md",
+        "registry_update_required": false,
+        "secret_findings": [],
+        "source_status": "synthetic_fixture",
+        "supported_facts": [],
+        "unsupported_claims": []
+      },
+      {
+        "assumptions": [],
+        "freshness_risks": [],
+        "missing_context": [],
+        "path": "docs/backend-runtime-behavior.md",
+        "registry_update_required": false,
+        "secret_findings": [],
+        "source_status": "synthetic_fixture",
+        "supported_facts": [],
+        "unsupported_claims": []
+      },
+      {
+        "assumptions": [],
+        "freshness_risks": [
+          "current OpenAI/runtime behavior may drift"
+        ],
+        "missing_context": [],
+        "path": "docs/backend-service-overview.md",
+        "registry_update_required": false,
+        "secret_findings": [],
+        "source_status": "synthetic_fixture",
+        "supported_facts": [
+          "OpenAI-related claim requires source-policy review"
+        ],
+        "unsupported_claims": []
+      },
+      {
+        "assumptions": [],
+        "freshness_risks": [],
+        "missing_context": [],
+        "path": "docs/external-integration-approval.md",
+        "registry_update_required": false,
+        "secret_findings": [],
+        "source_status": "synthetic_fixture",
+        "supported_facts": [],
+        "unsupported_claims": []
+      },
+      {
+        "assumptions": [],
+        "freshness_risks": [],
+        "missing_context": [],
+        "path": "docs/generated-sdk-manifest.md",
+        "registry_update_required": false,
+        "secret_findings": [],
+        "source_status": "synthetic_fixture",
+        "supported_facts": [],
+        "unsupported_claims": []
+      },
+      {
+        "assumptions": [],
+        "freshness_risks": [
+          "current OpenAI/runtime behavior may drift"
+        ],
+        "missing_context": [],
+        "path": "docs/webhook-event-contract.md",
+        "registry_update_required": false,
+        "secret_findings": [],
+        "source_status": "synthetic_fixture",
+        "supported_facts": [
+          "OpenAI-related claim requires source-policy review"
+        ],
+        "unsupported_claims": []
+      }
+    ],
+    "registry_updates_required": [],
+    "secret_findings": [],
+    "status": "ok",
+    "workspace": "tests\\fixtures\\product_agent_os\\batch39-m15-backend-api-fixture"
+  },
+  "status": "ok",
+  "workspace": "tests\\fixtures\\product_agent_os\\batch39-m15-backend-api-fixture"
+}

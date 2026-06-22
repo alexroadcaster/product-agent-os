@@ -1,0 +1,30 @@
+{
+  "approval_required_followups": [
+    "collect owner feedback using the usefulness scorecard",
+    "approve disposable runtime/browser pilot before runtime claims",
+    "approve plugin cache refresh before installed-plugin readiness claims",
+    "approve git/release/publish actions before external distribution"
+  ],
+  "attempt_id": "B41-S6-CLOSURE-A01",
+  "decision_digest": "sha256:2cfae0dd1fca91d6292fddc7314a4503d81ffdd39aa5ae59c2f199dc686e2aa3",
+  "generated_at": "2026-06-18T01:10:00+03:00",
+  "go_no_go": {
+    "owner_feedback_testing": "conditional_go",
+    "plugin_cache_readiness": "approval_required",
+    "reason": "Batch 41 has local/read-only/staged evidence, but release, runtime/browser and plugin-cache readiness remain separately gated.",
+    "release": "no_go",
+    "runtime_browser_pilot": "approval_required",
+    "target_apply": "approval_required"
+  },
+  "schema_version": "batch41_s6_go_no_go_decision_packet_v1",
+  "status": "closed_conditional_go_not_release_ready",
+  "unsupported_claims": [
+    "release readiness is not claimed",
+    "runtime/browser behavior is not claimed without current approved runtime/browser evidence",
+    "provider/API/model quality is not claimed",
+    "target apply safety is not claimed; read-only pilots prove target unchanged only for inspected paths/digests",
+    "generated HTML, generated graph and generated question output remain orientation evidence only, not source truth",
+    "owner-feedback usefulness is not proven until owner scorecard evidence exists",
+    "plugin cache/install readiness is not claimed unless installed-cache evidence exists after approved refresh/check"
+  ]
+}

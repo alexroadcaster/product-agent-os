@@ -1,0 +1,48 @@
+{
+  "attempt_ids": [
+    "B39-TEST-M22-A02",
+    "B39-TEST-M22-A03"
+  ],
+  "boundary": "read_only_retest_only_no_release_or_promotion_claim",
+  "date": "2026-06-18",
+  "evidence_refs": [
+    "docs/superpowers/specs/batch39-m22-retest-neural_flow-summary.json",
+    "docs/superpowers/specs/batch39-m22-retest-sol_0_6-summary.json"
+  ],
+  "schema": "batch39_m22_real_target_retest_rollup_v1",
+  "status": "read_only_retest_recorded",
+  "targets": [
+    {
+      "active_surfaces": [
+        "ai_eval_surface"
+      ],
+      "attempt_id": "B39-TEST-M22-A02",
+      "runtime_lifecycle_state": "uninitialized",
+      "runtime_status": "blocked",
+      "source_policy_status": "blocked",
+      "target_generated_analysis_write": "not_performed",
+      "target_label": "Neural Flow",
+      "usage_mode_primary": "ai_eval_regression"
+    },
+    {
+      "active_surfaces": [
+        "api_contract_surface",
+        "ai_eval_surface",
+        "desktop_local_surface",
+        "database_data_surface",
+        "data_migration_surface",
+        "security_sensitive_surface",
+        "integration_surface",
+        "legacy_docs_debt_surface"
+      ],
+      "attempt_id": "B39-TEST-M22-A03",
+      "runtime_lifecycle_state": "uninitialized",
+      "runtime_status": "blocked",
+      "source_policy_status": "blocked",
+      "target_generated_analysis_write": "not_performed",
+      "target_label": "SOL 0.6",
+      "usage_mode_primary": "desktop_local_first"
+    }
+  ],
+  "test_id": "B39-TEST-M22"
+}

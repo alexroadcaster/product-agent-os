@@ -1,0 +1,76 @@
+{
+  "artifact_kind": "batch39_s4_graph_depth_s4_coverage_freshness_summary",
+  "attempt_id": "B39-S4-GD-S4-A01",
+  "batch": "B39",
+  "slice": "B39-S4",
+  "date": "2026-06-18",
+  "status": "partial_pass_graph_depth_coverage_freshness",
+  "source_status": "current-run local synthetic fixture evidence only",
+  "task_ids": [
+    "B39-S4-GRAPH-DEPTH-08",
+    "B39-S4-GRAPH-DEPTH-09"
+  ],
+  "summary": [
+    "Added graph metadata coverage_map with file totals, generated/partial/skipped counts, language/path/file-type/node-type distributions, confidence distribution, unsupported languages, partial languages, skipped reasons and scope policy.",
+    "Added bounded coverage_map and freshness_status to status query packets.",
+    "Added packet-level freshness_status and stale_status action-claim blocking for agent_reading_packet.",
+    "Normalized freshness status to fresh, partial, stale or unknown; stale and unknown packets require graph refresh or source reads before edits, impact claims or completion/readiness claims.",
+    "Coverage and freshness outputs exclude raw source bodies and absolute workspace paths."
+  ],
+  "files_changed": [
+    "plugins/product-agent-os/scripts/product_agent_os/project_code_graph.py",
+    "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+    "tests/product_agent_os/test_project_code_graph.py",
+    "tests/product_agent_os/test_project_graph_queries.py"
+  ],
+  "agent_inputs": [
+    {
+      "role": "tester",
+      "result": "read-only recommendation to require skipped reasons and freshness enum fresh|partial|stale|unknown before treating 08/09 as partial green"
+    },
+    {
+      "role": "architect",
+      "result": "read-only recommendation to emit coverage_map from graph builder metadata and freshness_status from query helpers"
+    },
+    {
+      "role": "docs-maintainer",
+      "result": "read-only recommendation for separate coverage/freshness attempt id and control-plane update points"
+    }
+  ],
+  "commands": [
+    {
+      "command": "python -m unittest tests.product_agent_os.test_project_code_graph.ProjectCodeGraphTest.test_graph_artifact_records_coverage_map_without_source_or_absolute_paths -v",
+      "red_result": "failed before implementation: metadata.coverage_map missing",
+      "green_result": "ok"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_project_graph_queries.ProjectGraphQueriesTest.test_status_and_agent_packet_surface_coverage_and_freshness_gates -v",
+      "red_result": "failed before implementation: graph_status.freshness_status missing",
+      "green_result": "ok"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_project_code_graph tests.product_agent_os.test_project_graph_queries -v",
+      "result": "20 tests OK"
+    }
+  ],
+  "approval_boundary": {
+    "target_workspace_mutation": "not_performed",
+    "browser_or_runtime_automation": "not_performed",
+    "provider_or_model_call": "not_performed",
+    "dependency_installation": "not_performed",
+    "git_stage_commit_push_pr": "not_performed",
+    "external_write": "not_performed"
+  },
+  "unsupported_claims": [
+    "Coverage map is diagnostic-only and does not prove semantic correctness.",
+    "Freshness gate is based on graph artifacts and previous graph deltas, not a background watcher.",
+    "This attempt does not close B39-S4-GRAPH-DEPTH-00..15.",
+    "This attempt does not prove SOL 0.6 or Neural Flow target usefulness.",
+    "This attempt does not implement framework semantics, cross-language runtime links, a full rejected-link ledger, usefulness scorecard, real-target retest, guided tour or HTML explainer.",
+    "This attempt does not support release readiness, promotion, runtime/browser behavior, provider quality, target apply, automation readiness or source-read completion."
+  ],
+  "next_actions": [
+    "Add rejected-link ledger and conservative linker evidence before real-target retest.",
+    "Keep graph packets as orientation evidence and require agents to refresh stale graph artifacts or read source files before edits or completion/readiness claims."
+  ]
+}

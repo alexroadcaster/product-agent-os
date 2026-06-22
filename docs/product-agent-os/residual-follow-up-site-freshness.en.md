@@ -23,7 +23,10 @@ For private or real-target comparison, store only redacted target class, run IDs
 
 Final `DOC-M25` may rebuild root `site` only after separate approval. Until then, source docs may be current while generated `site`, search index, and sitemap remain stale/unsupported for new G2-G5 pages.
 
+## DOC-M25 Closure Update
+
+`DOC-M25` is closed through `documentation_refresh_DOC-M25-A01` with status `implemented_root_site_search_sitemap_freshness`. Root `site`, search index and sitemap now include the former `DOC_M25_PENDING_SITE_PAGES`; browser proof, broad scans, dependency remediation, raw report retention, publication, release, deploy and git actions remain outside this closure.
+
 ## Closure Rule
 
 G5 can close source docs, nav, tests, registry, and control-plane sync without a root `site` freshness claim. Full generated-site freshness requires current strict MkDocs build to root `site`, search/sitemap evidence, and `git diff --check` in the same approved slice.
-

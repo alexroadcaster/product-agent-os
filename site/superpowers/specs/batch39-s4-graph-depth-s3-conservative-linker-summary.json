@@ -1,0 +1,81 @@
+{
+  "artifact_kind": "batch39_s4_graph_depth_s3_conservative_linker_summary",
+  "attempt_id": "B39-S4-GD-S3-A01",
+  "batch": "B39",
+  "slice": "B39-S4",
+  "date": "2026-06-18",
+  "status": "partial_pass_graph_depth_conservative_linker",
+  "source_status": "current-run local synthetic fixture evidence only",
+  "task_ids": [
+    "B39-S4-GRAPH-DEPTH-05",
+    "B39-S4-GRAPH-DEPTH-12"
+  ],
+  "summary": [
+    "Added a conservative static linker layer that creates inferred references edges only for exact normalized name matches between function/method nodes and OpenAPI operation nodes.",
+    "Added bounded graph metadata rejected_links plus conservative_linker summary for weak candidates that must not become edges.",
+    "Added packet visibility for rejected links through agent_reading_packet rejected_links and status packet rejected_link_summary.",
+    "False-positive candidates such as listUserSettings versus listUsers are rejected with reason weak_name_similarity and source_read_required true.",
+    "The linker does not read raw source bodies, install parser dependencies, infer runtime behavior, auth, data flow or production API compatibility."
+  ],
+  "files_changed": [
+    "plugins/product-agent-os/scripts/product_agent_os/project_code_graph.py",
+    "tests/product_agent_os/test_project_graph_overlays.py"
+  ],
+  "agent_inputs": [
+    {
+      "role": "tester",
+      "result": "read-only recommendation for explicit link, false-positive rejection and packet visibility tests"
+    },
+    {
+      "role": "architect",
+      "result": "read-only recommendation to use existing references edge type with confidence inferred and metadata rejected_links"
+    },
+    {
+      "role": "docs-maintainer",
+      "result": "read-only recommendation for B39-S4-GD-S3-A01 attempt id, evidence path and control-plane update points"
+    }
+  ],
+  "commands": [
+    {
+      "command": "python -m unittest tests.product_agent_os.test_project_graph_overlays.ProjectGraphOverlaysTest.test_conservative_linker_records_explicit_links_and_rejected_candidates -v",
+      "red_result": "failed before implementation: metadata.rejected_links missing",
+      "green_result": "ok"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_project_graph_python_scanner.ProjectGraphPythonScannerTest.test_ambiguous_python_calls_are_reported_without_guessing_verified_edges -v",
+      "result": "1 test OK"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_project_graph_queries.ProjectGraphQueriesTest.test_agent_reading_packet_is_bounded_source_first_and_not_readiness_proof tests.product_agent_os.test_project_graph_queries.ProjectGraphQueriesTest.test_status_and_agent_packet_surface_coverage_and_freshness_gates -v",
+      "result": "2 tests OK"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_project_graph_queries.ProjectGraphQueriesTest.test_packets_surface_rejected_links_without_dependency_or_readiness_claims -v",
+      "red_result": "failed before implementation: rejected_links compact output omitted target_candidate",
+      "green_result": "ok"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_project_graph_overlays -v",
+      "result": "8 tests OK"
+    }
+  ],
+  "approval_boundary": {
+    "target_workspace_mutation": "not_performed",
+    "browser_or_runtime_automation": "not_performed",
+    "provider_or_model_call": "not_performed",
+    "dependency_installation": "not_performed",
+    "git_stage_commit_push_pr": "not_performed",
+    "external_write": "not_performed"
+  },
+  "unsupported_claims": [
+    "This attempt does not close B39-S4-GRAPH-DEPTH-00..15.",
+    "This attempt does not prove SOL 0.6 or Neural Flow target usefulness.",
+    "This attempt does not implement framework semantics, route semantics, auth, data-flow correctness, runtime API compatibility, usefulness scorecard, real-target retest, guided tour or HTML explainer.",
+    "Rejected candidates are not hidden dependencies, impact proof or readiness evidence.",
+    "This attempt does not support release readiness, promotion, runtime/browser behavior, provider quality, target apply, automation readiness or source-read completion."
+  ],
+  "next_actions": [
+    "Continue GD-S3 with framework semantics only after explicit static linker and rejected-link behavior remain stable.",
+    "Run real-target retest only after synthetic linker, rejected-link, coverage/freshness and agent packet layers are verified."
+  ]
+}

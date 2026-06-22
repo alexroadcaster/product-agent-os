@@ -1,0 +1,1767 @@
+﻿{
+  "complexity_profile": {
+    "confidence": "medium",
+    "reasons": [
+      "limited workspace signals"
+    ],
+    "selected": "simple"
+  },
+  "delivery_map": {
+    "lifecycle_map": {
+      "artifact_strategy": "stage proposals before workspace writes",
+      "write_policy": "read_only"
+    },
+    "methodology_map": {
+      "codex_agentic_workflow": "present_unverified",
+      "frontend": "present_unverified",
+      "quality_testing_evals": "present_unverified",
+      "requirements_domain": "applicable_missing",
+      "solution_architecture": "applicable_missing"
+    },
+    "next_action_map": [
+      "Stage the frontend artifact or accepted gap before claiming UI completion.",
+      "Stage the frontend artifact or accepted gap before claiming UI completion.",
+      "Stage the missing Codex workflow artifact before activating capabilities.",
+      "Stage the missing Codex workflow artifact before activating capabilities.",
+      "Stage architecture-overview.md with scope, context and container boundaries."
+    ],
+    "surface_map": {
+      "ai": false,
+      "api": false,
+      "data": false,
+      "delivery": false,
+      "ui": true
+    },
+    "system_map": {
+      "control_plane_present": [
+        "AGENTS.md",
+        "REQUIREMENTS.md",
+        "PLAN.md",
+        "TEST.md",
+        "EVALS.md",
+        "RUNLOG.md"
+      ],
+      "directories_observed": 3,
+      "files_observed": 12
+    }
+  },
+  "intent_signals": [],
+  "maturity_level": {
+    "confidence": "medium",
+    "reasons": [
+      "workspace has project or collaboration signals"
+    ],
+    "selected": "team"
+  },
+  "methodology_domains": [
+    {
+      "applicability_reason": "no deterministic signal detected",
+      "id": "business_product",
+      "source_file": "docs/methodologies/business-product.md",
+      "status": "not_applicable",
+      "title": "Business & Product"
+    },
+    {
+      "applicability_reason": "catalog domain applies to observed workspace or intent signals",
+      "id": "requirements_domain",
+      "source_file": "docs/methodologies/requirements-domain.md",
+      "status": "applicable_missing",
+      "title": "Requirements & Domain"
+    },
+    {
+      "applicability_reason": "catalog domain applies to observed workspace or intent signals",
+      "id": "solution_architecture",
+      "source_file": "docs/methodologies/solution-architecture.md",
+      "status": "applicable_missing",
+      "title": "Solution Architecture"
+    },
+    {
+      "applicability_reason": "catalog domain applies to observed workspace or intent signals",
+      "id": "quality_testing_evals",
+      "source_file": "docs/methodologies/quality-testing-evals.md",
+      "status": "present_unverified",
+      "title": "Quality, Testing & Evals"
+    },
+    {
+      "applicability_reason": "catalog domain applies to observed workspace or intent signals",
+      "id": "codex_agentic_workflow",
+      "source_file": "docs/methodologies/codex-agentic-workflow.md",
+      "status": "present_unverified",
+      "title": "Codex / Agentic Workflow"
+    },
+    {
+      "applicability_reason": "catalog domain applies to observed workspace or intent signals",
+      "id": "frontend",
+      "source_file": "docs/methodologies/frontend.md",
+      "status": "present_unverified",
+      "title": "Frontend"
+    },
+    {
+      "applicability_reason": "no deterministic signal detected",
+      "id": "backend",
+      "source_file": "docs/methodologies/backend.md",
+      "status": "not_applicable",
+      "title": "Backend"
+    },
+    {
+      "applicability_reason": "no deterministic signal detected",
+      "id": "api_integrations",
+      "source_file": "docs/methodologies/api-integrations.md",
+      "status": "not_applicable",
+      "title": "API & Integrations"
+    },
+    {
+      "applicability_reason": "no deterministic signal detected",
+      "id": "database_data",
+      "source_file": "docs/methodologies/database-data.md",
+      "status": "not_applicable",
+      "title": "Database & Data"
+    },
+    {
+      "applicability_reason": "no deterministic signal detected",
+      "id": "llm_ai_rag",
+      "source_file": "docs/methodologies/llm-ai-rag.md",
+      "status": "not_applicable",
+      "title": "LLM / AI / RAG"
+    },
+    {
+      "applicability_reason": "no deterministic signal detected",
+      "id": "security_privacy_compliance",
+      "source_file": "docs/methodologies/security-privacy-compliance.md",
+      "status": "not_applicable",
+      "title": "Security, Privacy & Compliance"
+    },
+    {
+      "applicability_reason": "no deterministic signal detected",
+      "id": "delivery_release_operations",
+      "source_file": "docs/methodologies/delivery-release-operations.md",
+      "status": "not_applicable",
+      "title": "Delivery, Release & Operations"
+    }
+  ],
+  "methodology_synthesis": {
+    "owner_questions": [
+      "What is the smallest safe next artifact to stage?",
+      "Who owns the highest-priority missing methodology gate?",
+      "Which detected surfaces are in scope for this slice?"
+    ],
+    "recommendation_groups": [
+      {
+        "artifact": "frontend-flow-spec.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "user goal",
+          "route/screen",
+          "acceptance scenario",
+          "visible state path",
+          "owner",
+          "endpoint/query/mutation",
+          "contract examples",
+          "auth/permission",
+          "error shape",
+          "cache/stale/pagination",
+          "long text",
+          "wrapping/truncation",
+          "localization",
+          "pluralization",
+          "RTL/locales",
+          "non-overlap assumptions"
+        ],
+        "gates": [
+          "frontend_user_flow_acceptance_present",
+          "frontend_api_contract_alignment_present",
+          "frontend_content_i18n_boundary_present"
+        ],
+        "owner_domain": "",
+        "priority": "P0_blocker",
+        "reasons": [
+          "Frontend work needs user flow, route/screen and acceptance scenario before implementation.",
+          "UI data dependencies need contract examples, auth, permission, cache and error mapping.",
+          "Long text, localization or user-generated content needs layout and i18n assumptions recorded."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage the frontend artifact or accepted gap before claiming UI completion.",
+        "source_domains": [
+          "frontend"
+        ]
+      },
+      {
+        "artifact": "frontend-visual-qa.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "dev-server or preview URL/context",
+          "browser/OS",
+          "console status",
+          "network/runtime errors",
+          "Playwright trace",
+          "mobile viewport",
+          "desktop viewport",
+          "orientation",
+          "input modality",
+          "reduced motion/preferences",
+          "theme",
+          "screenshot/story baseline",
+          "browser/OS/viewport",
+          "baseline owner",
+          "known noisy diffs",
+          "privacy-safe mock data",
+          "supported browsers",
+          "devices/webviews",
+          "Playwright projects",
+          "known gaps",
+          "fallback"
+        ],
+        "gates": [
+          "frontend_runtime_console_evidence_present",
+          "frontend_responsive_viewport_matrix_present",
+          "frontend_visual_evidence_present",
+          "frontend_browser_support_present"
+        ],
+        "owner_domain": "",
+        "priority": "P0_blocker",
+        "reasons": [
+          "UI completion requires current browser/runtime evidence or explicit verification gap.",
+          "Layout or visual work needs responsive viewport evidence.",
+          "Visual UI work needs privacy-safe screenshot, baseline or explicit gap.",
+          "Public UI needs supported browsers/devices or known gaps named."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage the frontend artifact or accepted gap before claiming UI completion.",
+        "source_domains": [
+          "frontend"
+        ]
+      },
+      {
+        "artifact": "PLAN.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "use-case archetype",
+          "runtime route",
+          "owner",
+          "non-goals",
+          "approval boundary"
+        ],
+        "gates": [
+          "agentic_scope_classified"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Agentic scope and runtime path are not classified."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage the missing Codex workflow artifact before activating capabilities.",
+        "source_domains": [
+          "codex_agentic_workflow"
+        ]
+      },
+      {
+        "artifact": "RUNLOG.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "files inspected",
+          "signals observed",
+          "assumptions",
+          "unknowns",
+          "safe next action"
+        ],
+        "gates": [
+          "read_only_discovery_complete"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Read-only discovery evidence is missing before Codex workflow decisions."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage the missing Codex workflow artifact before activating capabilities.",
+        "source_domains": [
+          "codex_agentic_workflow"
+        ]
+      },
+      {
+        "artifact": "architecture-overview.md",
+        "consumer_domains": [
+          "backend"
+        ],
+        "evidence_required": [
+          "runtime unit",
+          "boundary",
+          "responsibility",
+          "owner",
+          "external actors",
+          "systems",
+          "trust boundary",
+          "scope",
+          "stakeholders",
+          "architecture question",
+          "non-goals"
+        ],
+        "gates": [
+          "architecture_container_boundary_present",
+          "architecture_context_view_present",
+          "solution_architecture_scope_present"
+        ],
+        "owner_domain": "solution_architecture",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Multiple runtime units need container, service, storage, queue or worker boundaries.",
+          "External users, systems or trust boundaries need a context view or equivalent boundary map.",
+          "Complex or multi-surface work needs architecture scope, stakeholders and non-goals."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage architecture-overview.md with scope, context and container boundaries.",
+        "source_domains": [
+          "solution_architecture"
+        ]
+      },
+      {
+        "artifact": "component-card.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "component card",
+          "Storybook story",
+          "Autodocs/MDX note",
+          "state coverage",
+          "owner",
+          "existing primitive reuse",
+          "token owner",
+          "variant policy",
+          "icon/typography/spacing/theme rule",
+          "breaking component API migration notes",
+          "layer",
+          "slice",
+          "segment",
+          "public API",
+          "import direction",
+          "not applicable reason"
+        ],
+        "gates": [
+          "frontend_component_docs_present",
+          "frontend_design_system_boundary_present",
+          "frontend_fsd_boundary_reviewed"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Reusable UI or design-system work needs component documentation or an explicit docs gap.",
+          "Design-system changes need reuse or extension decision and owner review.",
+          "FSD or growing UI structure needs boundary review when it applies."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage the frontend artifact or accepted gap before claiming UI completion.",
+        "source_domains": [
+          "frontend"
+        ]
+      },
+      {
+        "artifact": "frontend-accessibility-review.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "WCAG 2.2 AA target or accepted exception",
+          "semantic controls",
+          "labels/names",
+          "errors",
+          "contrast",
+          "tab order",
+          "visible focus",
+          "focus trap/release",
+          "escape behavior",
+          "modal/menu/listbox/dialog behavior"
+        ],
+        "gates": [
+          "frontend_accessibility_review_present",
+          "frontend_keyboard_focus_contract_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Interactive or public UI needs accessibility review beyond scanner output.",
+          "Interactive UI needs keyboard and focus behavior specified or marked as gap."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage the frontend artifact or accepted gap before claiming UI completion.",
+        "source_domains": [
+          "frontend"
+        ]
+      },
+      {
+        "artifact": "frontend-performance-budget.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "LCP target",
+          "INP target",
+          "CLS target",
+          "measurement path",
+          "lab vs field/RUM status"
+        ],
+        "gates": [
+          "frontend_performance_budget_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "User-facing or interaction-heavy routes need Web Vitals budget or non-applicability."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage the frontend artifact or accepted gap before claiming UI completion.",
+        "source_domains": [
+          "frontend"
+        ]
+      },
+      {
+        "artifact": "frontend-state-matrix.md",
+        "consumer_domains": [],
+        "evidence_required": [
+          "default/loading/skeleton",
+          "empty/error/validation error",
+          "disabled/success/focus",
+          "long-content/responsive states",
+          "state ownership"
+        ],
+        "gates": [
+          "frontend_component_state_matrix_present"
+        ],
+        "owner_domain": "",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Frontend component or page work needs visible state coverage."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage the frontend artifact or accepted gap before claiming UI completion.",
+        "source_domains": [
+          "frontend"
+        ]
+      },
+      {
+        "artifact": "test-eval-matrix.md",
+        "consumer_domains": [
+          "frontend",
+          "backend",
+          "llm_ai_rag"
+        ],
+        "evidence_required": [
+          "role/name query",
+          "keyboard input",
+          "click/tap",
+          "form submit",
+          "async state assertion"
+        ],
+        "gates": [
+          "frontend_interaction_test_evidence_present"
+        ],
+        "owner_domain": "quality_testing_evals",
+        "priority": "P1_high_risk",
+        "reasons": [
+          "Interaction changes need user-observable test or manual interaction evidence."
+        ],
+        "risk_rank": 0,
+        "safe_next_action": "Stage the frontend artifact or accepted gap before claiming UI completion.",
+        "source_domains": [
+          "frontend"
+        ]
+      }
+    ],
+    "safe_next_action": "Stage the frontend artifact or accepted gap before claiming UI completion.",
+    "semantic_evidence_sufficiency": {
+      "accepted_gap_required_fields": [
+        "owner",
+        "reason",
+        "review_date",
+        "downstream_risk",
+        "follow_up_condition"
+      ],
+      "applies_when": [
+        "high-risk",
+        "production",
+        "release",
+        "security-sensitive",
+        "AI",
+        "public-contract"
+      ],
+      "consumer_domains": [
+        "security_privacy_compliance",
+        "delivery_release_operations",
+        "llm_ai_rag",
+        "api_integrations",
+        "database_data",
+        "solution_architecture",
+        "backend",
+        "frontend"
+      ],
+      "owner_domain": "quality_testing_evals",
+      "satisfied_by": [
+        "owner_reviewed_evidence_sufficient_for_real_project_risk",
+        "explicit_gap_accepted"
+      ]
+    },
+    "source_artifact_ledger": [
+      {
+        "artifact": "CHANGELOG.md",
+        "decision": "existing_non_template",
+        "owner_domain": "delivery_release_operations",
+        "reason": "Changelog is usually a project artifact; Product-Agent OS packages release notes and release readiness templates instead.",
+        "target": ""
+      },
+      {
+        "artifact": "SKILL.md",
+        "decision": "existing_non_template",
+        "owner_domain": "codex_agentic_workflow",
+        "reason": "Skill manifests live inside checked-in skill directories rather than staged project artifact templates.",
+        "target": ""
+      },
+      {
+        "artifact": "accessibility-review.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "frontend-accessibility-review.md"
+      },
+      {
+        "artifact": "agent-eval-case.md",
+        "decision": "alias",
+        "owner_domain": "codex_agentic_workflow",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "agent-eval-workflow.md"
+      },
+      {
+        "artifact": "agent-handoff-contract.md",
+        "decision": "alias",
+        "owner_domain": "codex_agentic_workflow",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "agent-task-packet.md"
+      },
+      {
+        "artifact": "agentic-workflow-readiness.md",
+        "decision": "alias",
+        "owner_domain": "codex_agentic_workflow",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "project-readiness.json"
+      },
+      {
+        "artifact": "ai-model-decision-record.md",
+        "decision": "alias",
+        "owner_domain": "llm_ai_rag",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "model-decision-record.md"
+      },
+      {
+        "artifact": "ai-prompt-contract.md",
+        "decision": "alias",
+        "owner_domain": "llm_ai_rag",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "prompt-contract.md"
+      },
+      {
+        "artifact": "architecture-tradeoff-record.md",
+        "decision": "alias",
+        "owner_domain": "solution_architecture",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "adr.md"
+      },
+      {
+        "artifact": "architecture.md",
+        "decision": "alias",
+        "owner_domain": "solution_architecture",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "architecture-overview.md"
+      },
+      {
+        "artifact": "artifact-manifest.md",
+        "decision": "alias",
+        "owner_domain": "delivery_release_operations",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "release-artifact-manifest.md"
+      },
+      {
+        "artifact": "asvs-mapping.md",
+        "decision": "alias",
+        "owner_domain": "security_privacy_compliance",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "asvs-ssdf-mapping.md"
+      },
+      {
+        "artifact": "audit-log-policy.md",
+        "decision": "alias",
+        "owner_domain": "security_privacy_compliance",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "audit-logging-review.md"
+      },
+      {
+        "artifact": "authz-matrix.md",
+        "decision": "alias",
+        "owner_domain": "security_privacy_compliance",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "authz-negative-test-matrix.md"
+      },
+      {
+        "artifact": "boundary-responsibility-map.md",
+        "decision": "alias",
+        "owner_domain": "solution_architecture",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "architecture-review-record.md"
+      },
+      {
+        "artifact": "bug-reproduction.md",
+        "decision": "alias",
+        "owner_domain": "quality_testing_evals",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "bug-rescue-report.md"
+      },
+      {
+        "artifact": "ci-cd-governance.md",
+        "decision": "alias",
+        "owner_domain": "delivery_release_operations",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "ci-cd-workflow-inventory.md"
+      },
+      {
+        "artifact": "ci-quality-gates.md",
+        "decision": "alias",
+        "owner_domain": "quality_testing_evals",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "ci-evidence-record.md"
+      },
+      {
+        "artifact": "compliance-applicability-matrix.md",
+        "decision": "alias",
+        "owner_domain": "security_privacy_compliance",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "compliance-overlay.md"
+      },
+      {
+        "artifact": "component-state-matrix.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "frontend-state-matrix.md"
+      },
+      {
+        "artifact": "context-map.md",
+        "decision": "alias",
+        "owner_domain": "solution_architecture",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "architecture-overview.md"
+      },
+      {
+        "artifact": "context-memory-policy.md",
+        "decision": "alias",
+        "owner_domain": "codex_agentic_workflow",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "model-reasoning-policy.md"
+      },
+      {
+        "artifact": "contract-test-map.md",
+        "decision": "alias",
+        "owner_domain": "quality_testing_evals",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "api-contract-review.md"
+      },
+      {
+        "artifact": "coverage-policy.md",
+        "decision": "alias",
+        "owner_domain": "quality_testing_evals",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "quality-strategy.md"
+      },
+      {
+        "artifact": "dependency-rules.md",
+        "decision": "alias",
+        "owner_domain": "solution_architecture",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "architecture-fitness-functions.md"
+      },
+      {
+        "artifact": "design-system-inventory.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "component-card.md"
+      },
+      {
+        "artifact": "design-tokens-reference.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "component-card.md"
+      },
+      {
+        "artifact": "docs-tooling-decision.md",
+        "decision": "alias",
+        "owner_domain": "solution_architecture",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "architecture-docs-tooling-decision.md"
+      },
+      {
+        "artifact": "event-catalog.md",
+        "decision": "alias",
+        "owner_domain": "requirements_domain",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "requirements-traceability-matrix.md"
+      },
+      {
+        "artifact": "evidence-packet.md",
+        "decision": "alias",
+        "owner_domain": "quality_testing_evals",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "RUNLOG.md"
+      },
+      {
+        "artifact": "flaky-test-ledger.md",
+        "decision": "alias",
+        "owner_domain": "quality_testing_evals",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "flaky-test-policy.md"
+      },
+      {
+        "artifact": "frontend-api-dependency-map.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "frontend-flow-spec.md"
+      },
+      {
+        "artifact": "frontend-boundary-map.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "component-card.md"
+      },
+      {
+        "artifact": "frontend-browser-support-matrix.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "frontend-visual-qa.md"
+      },
+      {
+        "artifact": "frontend-content-i18n-record.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "frontend-flow-spec.md"
+      },
+      {
+        "artifact": "frontend-interaction-test-matrix.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "frontend-flow-spec.md"
+      },
+      {
+        "artifact": "fsd-boundary-record.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "component-card.md"
+      },
+      {
+        "artifact": "glossary.md",
+        "decision": "alias",
+        "owner_domain": "requirements_domain",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "domain-modeling.md"
+      },
+      {
+        "artifact": "handoff-contract.md",
+        "decision": "existing_non_template",
+        "owner_domain": "codex_agentic_workflow",
+        "reason": "The canonical handoff contract is packaged as a lifecycle skill reference and consumed by agent-task-packet.md.",
+        "target": ""
+      },
+      {
+        "artifact": "hook-activation-record.md",
+        "decision": "alias",
+        "owner_domain": "codex_agentic_workflow",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "hook-governance.md"
+      },
+      {
+        "artifact": "incident-response-path.md",
+        "decision": "alias",
+        "owner_domain": "delivery_release_operations",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "incident-record.md"
+      },
+      {
+        "artifact": "keyboard-focus-map.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "frontend-accessibility-review.md"
+      },
+      {
+        "artifact": "manual-qa-charter.md",
+        "decision": "alias",
+        "owner_domain": "quality_testing_evals",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "manual-qa-evidence.md"
+      },
+      {
+        "artifact": "mutation-test-report.md",
+        "decision": "alias",
+        "owner_domain": "quality_testing_evals",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "test-eval-matrix.md"
+      },
+      {
+        "artifact": "plugin-blueprint.md",
+        "decision": "existing_non_template",
+        "owner_domain": "codex_agentic_workflow",
+        "reason": "Plugin blueprint lives under docs/artifact-templates for plugin design, not as a generated target-project template.",
+        "target": ""
+      },
+      {
+        "artifact": "post-release-measurement.md",
+        "decision": "alias",
+        "owner_domain": "delivery_release_operations",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "post-release-review.md"
+      },
+      {
+        "artifact": "property-test-spec.md",
+        "decision": "alias",
+        "owner_domain": "quality_testing_evals",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "test-eval-matrix.md"
+      },
+      {
+        "artifact": "quality-attribute-scenarios.md",
+        "decision": "alias",
+        "owner_domain": "solution_architecture",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "architecture-fitness-functions.md"
+      },
+      {
+        "artifact": "rag-grounding-eval.md",
+        "decision": "alias",
+        "owner_domain": "llm_ai_rag",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "rag-eval-report.md"
+      },
+      {
+        "artifact": "red-green-refactor-log.md",
+        "decision": "alias",
+        "owner_domain": "quality_testing_evals",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "test-eval-matrix.md"
+      },
+      {
+        "artifact": "regression-impact-map.md",
+        "decision": "alias",
+        "owner_domain": "quality_testing_evals",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "test-eval-matrix.md"
+      },
+      {
+        "artifact": "release-scope.md",
+        "decision": "alias",
+        "owner_domain": "delivery_release_operations",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "release-readiness.md"
+      },
+      {
+        "artifact": "responsive-viewport-matrix.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "frontend-visual-qa.md"
+      },
+      {
+        "artifact": "risk-based-test-plan.md",
+        "decision": "alias",
+        "owner_domain": "quality_testing_evals",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "quality-strategy.md"
+      },
+      {
+        "artifact": "rollout-strategy.md",
+        "decision": "alias",
+        "owner_domain": "delivery_release_operations",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "rollout-plan.md"
+      },
+      {
+        "artifact": "route-page-inventory.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "frontend-flow-spec.md"
+      },
+      {
+        "artifact": "runbook.md",
+        "decision": "alias",
+        "owner_domain": "delivery_release_operations",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "operations-runbook.md"
+      },
+      {
+        "artifact": "runtime-evidence.md",
+        "decision": "alias",
+        "owner_domain": "quality_testing_evals",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "manual-qa-evidence.md"
+      },
+      {
+        "artifact": "runtime-topology.md",
+        "decision": "alias",
+        "owner_domain": "solution_architecture",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "architecture-overview.md"
+      },
+      {
+        "artifact": "secrets-inventory.md",
+        "decision": "alias",
+        "owner_domain": "security_privacy_compliance",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "secrets-policy.md"
+      },
+      {
+        "artifact": "skill-candidate.md",
+        "decision": "alias",
+        "owner_domain": "codex_agentic_workflow",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "skill-promotion-record.md"
+      },
+      {
+        "artifact": "skill-failure-log.md",
+        "decision": "alias",
+        "owner_domain": "codex_agentic_workflow",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "skill-promotion-record.md"
+      },
+      {
+        "artifact": "slo.md",
+        "decision": "alias",
+        "owner_domain": "delivery_release_operations",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "slo-spec.md"
+      },
+      {
+        "artifact": "storybook-story-map.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "component-card.md"
+      },
+      {
+        "artifact": "threat-model.md",
+        "decision": "alias",
+        "owner_domain": "security_privacy_compliance",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "threat-surface.md"
+      },
+      {
+        "artifact": "ubiquitous-language.md",
+        "decision": "alias",
+        "owner_domain": "requirements_domain",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "domain-modeling.md"
+      },
+      {
+        "artifact": "ui-flow-spec.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "frontend-flow-spec.md"
+      },
+      {
+        "artifact": "version-impact-record.md",
+        "decision": "alias",
+        "owner_domain": "delivery_release_operations",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "versioning-policy.md"
+      },
+      {
+        "artifact": "visual-a11y-evidence.md",
+        "decision": "alias",
+        "owner_domain": "quality_testing_evals",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "manual-qa-evidence.md"
+      },
+      {
+        "artifact": "visual-evidence-packet.md",
+        "decision": "alias",
+        "owner_domain": "frontend",
+        "reason": "source-era name maps to canonical packaged artifact",
+        "target": "frontend-visual-qa.md"
+      }
+    ],
+    "status": "ok",
+    "write_policy": "read_only"
+  },
+  "observed_signals": [
+    {
+      "evidence": [
+        "package.json"
+      ],
+      "id": "stack_manifest",
+      "source": "workspace"
+    },
+    {
+      "evidence": [
+        "agents.md",
+        "docs",
+        "evals.md",
+        "plan.md",
+        "requirements.md",
+        "runlog.md",
+        "test.md"
+      ],
+      "id": "docs_or_control_plane",
+      "source": "workspace"
+    },
+    {
+      "evidence": [
+        "agents.md"
+      ],
+      "id": "codex_agentic_workflow",
+      "source": "workspace"
+    },
+    {
+      "evidence": [
+        "src/app.jsx",
+        "src/styles.css"
+      ],
+      "id": "frontend",
+      "source": "workspace"
+    },
+    {
+      "evidence": [
+        "test.md"
+      ],
+      "id": "test_evidence",
+      "source": "workspace"
+    },
+    {
+      "evidence": [
+        "evals.md",
+        "runlog.md",
+        "test.md"
+      ],
+      "id": "quality_testing_signal",
+      "source": "workspace"
+    },
+    {
+      "evidence": [
+        "package.json"
+      ],
+      "id": "test_command",
+      "source": "workspace"
+    }
+  ],
+  "provisional_assumptions": [
+    "Audit is read-only and does not approve workspace writes."
+  ],
+  "questions_for_owner": [
+    "What is the smallest safe next artifact to stage?",
+    "Who owns the highest-priority missing methodology gate?",
+    "Which detected surfaces are in scope for this slice?"
+  ],
+  "recommendation_groups": [
+    {
+      "artifact": "frontend-flow-spec.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "user goal",
+        "route/screen",
+        "acceptance scenario",
+        "visible state path",
+        "owner",
+        "endpoint/query/mutation",
+        "contract examples",
+        "auth/permission",
+        "error shape",
+        "cache/stale/pagination",
+        "long text",
+        "wrapping/truncation",
+        "localization",
+        "pluralization",
+        "RTL/locales",
+        "non-overlap assumptions"
+      ],
+      "gates": [
+        "frontend_user_flow_acceptance_present",
+        "frontend_api_contract_alignment_present",
+        "frontend_content_i18n_boundary_present"
+      ],
+      "owner_domain": "",
+      "priority": "P0_blocker",
+      "reasons": [
+        "Frontend work needs user flow, route/screen and acceptance scenario before implementation.",
+        "UI data dependencies need contract examples, auth, permission, cache and error mapping.",
+        "Long text, localization or user-generated content needs layout and i18n assumptions recorded."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage the frontend artifact or accepted gap before claiming UI completion.",
+      "source_domains": [
+        "frontend"
+      ]
+    },
+    {
+      "artifact": "frontend-visual-qa.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "dev-server or preview URL/context",
+        "browser/OS",
+        "console status",
+        "network/runtime errors",
+        "Playwright trace",
+        "mobile viewport",
+        "desktop viewport",
+        "orientation",
+        "input modality",
+        "reduced motion/preferences",
+        "theme",
+        "screenshot/story baseline",
+        "browser/OS/viewport",
+        "baseline owner",
+        "known noisy diffs",
+        "privacy-safe mock data",
+        "supported browsers",
+        "devices/webviews",
+        "Playwright projects",
+        "known gaps",
+        "fallback"
+      ],
+      "gates": [
+        "frontend_runtime_console_evidence_present",
+        "frontend_responsive_viewport_matrix_present",
+        "frontend_visual_evidence_present",
+        "frontend_browser_support_present"
+      ],
+      "owner_domain": "",
+      "priority": "P0_blocker",
+      "reasons": [
+        "UI completion requires current browser/runtime evidence or explicit verification gap.",
+        "Layout or visual work needs responsive viewport evidence.",
+        "Visual UI work needs privacy-safe screenshot, baseline or explicit gap.",
+        "Public UI needs supported browsers/devices or known gaps named."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage the frontend artifact or accepted gap before claiming UI completion.",
+      "source_domains": [
+        "frontend"
+      ]
+    },
+    {
+      "artifact": "PLAN.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "use-case archetype",
+        "runtime route",
+        "owner",
+        "non-goals",
+        "approval boundary"
+      ],
+      "gates": [
+        "agentic_scope_classified"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Agentic scope and runtime path are not classified."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage the missing Codex workflow artifact before activating capabilities.",
+      "source_domains": [
+        "codex_agentic_workflow"
+      ]
+    },
+    {
+      "artifact": "RUNLOG.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "files inspected",
+        "signals observed",
+        "assumptions",
+        "unknowns",
+        "safe next action"
+      ],
+      "gates": [
+        "read_only_discovery_complete"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Read-only discovery evidence is missing before Codex workflow decisions."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage the missing Codex workflow artifact before activating capabilities.",
+      "source_domains": [
+        "codex_agentic_workflow"
+      ]
+    },
+    {
+      "artifact": "architecture-overview.md",
+      "consumer_domains": [
+        "backend"
+      ],
+      "evidence_required": [
+        "runtime unit",
+        "boundary",
+        "responsibility",
+        "owner",
+        "external actors",
+        "systems",
+        "trust boundary",
+        "scope",
+        "stakeholders",
+        "architecture question",
+        "non-goals"
+      ],
+      "gates": [
+        "architecture_container_boundary_present",
+        "architecture_context_view_present",
+        "solution_architecture_scope_present"
+      ],
+      "owner_domain": "solution_architecture",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Multiple runtime units need container, service, storage, queue or worker boundaries.",
+        "External users, systems or trust boundaries need a context view or equivalent boundary map.",
+        "Complex or multi-surface work needs architecture scope, stakeholders and non-goals."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage architecture-overview.md with scope, context and container boundaries.",
+      "source_domains": [
+        "solution_architecture"
+      ]
+    },
+    {
+      "artifact": "component-card.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "component card",
+        "Storybook story",
+        "Autodocs/MDX note",
+        "state coverage",
+        "owner",
+        "existing primitive reuse",
+        "token owner",
+        "variant policy",
+        "icon/typography/spacing/theme rule",
+        "breaking component API migration notes",
+        "layer",
+        "slice",
+        "segment",
+        "public API",
+        "import direction",
+        "not applicable reason"
+      ],
+      "gates": [
+        "frontend_component_docs_present",
+        "frontend_design_system_boundary_present",
+        "frontend_fsd_boundary_reviewed"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Reusable UI or design-system work needs component documentation or an explicit docs gap.",
+        "Design-system changes need reuse or extension decision and owner review.",
+        "FSD or growing UI structure needs boundary review when it applies."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage the frontend artifact or accepted gap before claiming UI completion.",
+      "source_domains": [
+        "frontend"
+      ]
+    },
+    {
+      "artifact": "frontend-accessibility-review.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "WCAG 2.2 AA target or accepted exception",
+        "semantic controls",
+        "labels/names",
+        "errors",
+        "contrast",
+        "tab order",
+        "visible focus",
+        "focus trap/release",
+        "escape behavior",
+        "modal/menu/listbox/dialog behavior"
+      ],
+      "gates": [
+        "frontend_accessibility_review_present",
+        "frontend_keyboard_focus_contract_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Interactive or public UI needs accessibility review beyond scanner output.",
+        "Interactive UI needs keyboard and focus behavior specified or marked as gap."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage the frontend artifact or accepted gap before claiming UI completion.",
+      "source_domains": [
+        "frontend"
+      ]
+    },
+    {
+      "artifact": "frontend-performance-budget.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "LCP target",
+        "INP target",
+        "CLS target",
+        "measurement path",
+        "lab vs field/RUM status"
+      ],
+      "gates": [
+        "frontend_performance_budget_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "User-facing or interaction-heavy routes need Web Vitals budget or non-applicability."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage the frontend artifact or accepted gap before claiming UI completion.",
+      "source_domains": [
+        "frontend"
+      ]
+    },
+    {
+      "artifact": "frontend-state-matrix.md",
+      "consumer_domains": [],
+      "evidence_required": [
+        "default/loading/skeleton",
+        "empty/error/validation error",
+        "disabled/success/focus",
+        "long-content/responsive states",
+        "state ownership"
+      ],
+      "gates": [
+        "frontend_component_state_matrix_present"
+      ],
+      "owner_domain": "",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Frontend component or page work needs visible state coverage."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage the frontend artifact or accepted gap before claiming UI completion.",
+      "source_domains": [
+        "frontend"
+      ]
+    },
+    {
+      "artifact": "test-eval-matrix.md",
+      "consumer_domains": [
+        "frontend",
+        "backend",
+        "llm_ai_rag"
+      ],
+      "evidence_required": [
+        "role/name query",
+        "keyboard input",
+        "click/tap",
+        "form submit",
+        "async state assertion"
+      ],
+      "gates": [
+        "frontend_interaction_test_evidence_present"
+      ],
+      "owner_domain": "quality_testing_evals",
+      "priority": "P1_high_risk",
+      "reasons": [
+        "Interaction changes need user-observable test or manual interaction evidence."
+      ],
+      "risk_rank": 0,
+      "safe_next_action": "Stage the frontend artifact or accepted gap before claiming UI completion.",
+      "source_domains": [
+        "frontend"
+      ]
+    }
+  ],
+  "recommendations": [
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before external browser, visual service or production-data actions",
+      "artifact": "frontend-visual-qa.md",
+      "domain": "frontend",
+      "evidence_owner": "UI owner",
+      "evidence_required": [
+        "dev-server or preview URL/context",
+        "browser/OS",
+        "console status",
+        "network/runtime errors",
+        "Playwright trace"
+      ],
+      "gate": "frontend_runtime_console_evidence_present",
+      "priority": "P0_blocker",
+      "reason": "UI completion requires current browser/runtime evidence or explicit verification gap.",
+      "residual_risk": "Code inspection cannot prove the UI renders, runs or has no relevant console/runtime errors.",
+      "safe_next_action": "Stage the frontend artifact or accepted gap before claiming UI completion."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before external browser, visual service or production-data actions",
+      "artifact": "frontend-flow-spec.md",
+      "domain": "frontend",
+      "evidence_owner": "UI owner",
+      "evidence_required": [
+        "user goal",
+        "route/screen",
+        "acceptance scenario",
+        "visible state path",
+        "owner"
+      ],
+      "gate": "frontend_user_flow_acceptance_present",
+      "priority": "P0_blocker",
+      "reason": "Frontend work needs user flow, route/screen and acceptance scenario before implementation.",
+      "residual_risk": "UI can optimize component structure while the actual user flow remains vague.",
+      "safe_next_action": "Stage the frontend artifact or accepted gap before claiming UI completion."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "approval_required before workspace writes, external writes or activation",
+      "artifact": "PLAN.md",
+      "domain": "codex_agentic_workflow",
+      "evidence_owner": "product-agent operator",
+      "evidence_required": [
+        "use-case archetype",
+        "runtime route",
+        "owner",
+        "non-goals",
+        "approval boundary"
+      ],
+      "gate": "agentic_scope_classified",
+      "priority": "P1_high_risk",
+      "reason": "Agentic scope and runtime path are not classified.",
+      "residual_risk": "Agent orchestration can be selected before the smallest useful workflow is known.",
+      "safe_next_action": "Stage the missing Codex workflow artifact before activating capabilities."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "approval_required before workspace writes, external writes or activation",
+      "artifact": "RUNLOG.md",
+      "domain": "codex_agentic_workflow",
+      "evidence_owner": "product-agent operator",
+      "evidence_required": [
+        "files inspected",
+        "signals observed",
+        "assumptions",
+        "unknowns",
+        "safe next action"
+      ],
+      "gate": "read_only_discovery_complete",
+      "priority": "P1_high_risk",
+      "reason": "Read-only discovery evidence is missing before Codex workflow decisions.",
+      "residual_risk": "Implementation can start from stale or incomplete repository context.",
+      "safe_next_action": "Stage the missing Codex workflow artifact before activating capabilities."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before external browser, visual service or production-data actions",
+      "artifact": "frontend-accessibility-review.md",
+      "domain": "frontend",
+      "evidence_owner": "accessibility owner",
+      "evidence_required": [
+        "WCAG 2.2 AA target or accepted exception",
+        "semantic controls",
+        "labels/names",
+        "errors",
+        "contrast"
+      ],
+      "gate": "frontend_accessibility_review_present",
+      "priority": "P1_high_risk",
+      "reason": "Interactive or public UI needs accessibility review beyond scanner output.",
+      "residual_risk": "Automated checks can miss keyboard, semantic and error-announcement behavior.",
+      "safe_next_action": "Stage the frontend artifact or accepted gap before claiming UI completion."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before external browser, visual service or production-data actions",
+      "artifact": "frontend-flow-spec.md",
+      "domain": "frontend",
+      "evidence_owner": "API and UI owners",
+      "evidence_required": [
+        "endpoint/query/mutation",
+        "contract examples",
+        "auth/permission",
+        "error shape",
+        "cache/stale/pagination"
+      ],
+      "gate": "frontend_api_contract_alignment_present",
+      "priority": "P1_high_risk",
+      "reason": "UI data dependencies need contract examples, auth, permission, cache and error mapping.",
+      "residual_risk": "UI can assume ideal data and miss permission, stale, loading or error states.",
+      "safe_next_action": "Stage the frontend artifact or accepted gap before claiming UI completion."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before external browser, visual service or production-data actions",
+      "artifact": "component-card.md",
+      "domain": "frontend",
+      "evidence_owner": "UI owner",
+      "evidence_required": [
+        "component card",
+        "Storybook story",
+        "Autodocs/MDX note",
+        "state coverage",
+        "owner"
+      ],
+      "gate": "frontend_component_docs_present",
+      "priority": "P1_high_risk",
+      "reason": "Reusable UI or design-system work needs component documentation or an explicit docs gap.",
+      "residual_risk": "Reusable UI can be shipped without stable usage, state or ownership documentation.",
+      "safe_next_action": "Stage the frontend artifact or accepted gap before claiming UI completion."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before external browser, visual service or production-data actions",
+      "artifact": "frontend-state-matrix.md",
+      "domain": "frontend",
+      "evidence_owner": "UI owner",
+      "evidence_required": [
+        "default/loading/skeleton",
+        "empty/error/validation error",
+        "disabled/success/focus",
+        "long-content/responsive states",
+        "state ownership"
+      ],
+      "gate": "frontend_component_state_matrix_present",
+      "priority": "P1_high_risk",
+      "reason": "Frontend component or page work needs visible state coverage.",
+      "residual_risk": "Missing state coverage hides loading, empty, error, focus or long-content regressions.",
+      "safe_next_action": "Stage the frontend artifact or accepted gap before claiming UI completion."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before external browser, visual service or production-data actions",
+      "artifact": "component-card.md",
+      "domain": "frontend",
+      "evidence_owner": "design-system owner",
+      "evidence_required": [
+        "existing primitive reuse",
+        "token owner",
+        "variant policy",
+        "icon/typography/spacing/theme rule",
+        "breaking component API migration notes"
+      ],
+      "gate": "frontend_design_system_boundary_present",
+      "priority": "P1_high_risk",
+      "reason": "Design-system changes need reuse or extension decision and owner review.",
+      "residual_risk": "Unowned tokens, variants or primitives can drift from product and brand constraints.",
+      "safe_next_action": "Stage the frontend artifact or accepted gap before claiming UI completion."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before external browser, visual service or production-data actions",
+      "artifact": "test-eval-matrix.md",
+      "domain": "frontend",
+      "evidence_owner": "tester",
+      "evidence_required": [
+        "role/name query",
+        "keyboard input",
+        "click/tap",
+        "form submit",
+        "async state assertion"
+      ],
+      "gate": "frontend_interaction_test_evidence_present",
+      "priority": "P1_high_risk",
+      "reason": "Interaction changes need user-observable test or manual interaction evidence.",
+      "residual_risk": "Implementation-oriented checks can miss observable user behavior.",
+      "safe_next_action": "Stage the frontend artifact or accepted gap before claiming UI completion."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before external browser, visual service or production-data actions",
+      "artifact": "frontend-accessibility-review.md",
+      "domain": "frontend",
+      "evidence_owner": "accessibility owner",
+      "evidence_required": [
+        "tab order",
+        "visible focus",
+        "focus trap/release",
+        "escape behavior",
+        "modal/menu/listbox/dialog behavior"
+      ],
+      "gate": "frontend_keyboard_focus_contract_present",
+      "priority": "P1_high_risk",
+      "reason": "Interactive UI needs keyboard and focus behavior specified or marked as gap.",
+      "residual_risk": "Keyboard users can be blocked even when visual UI looks complete.",
+      "safe_next_action": "Stage the frontend artifact or accepted gap before claiming UI completion."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before external browser, visual service or production-data actions",
+      "artifact": "frontend-performance-budget.md",
+      "domain": "frontend",
+      "evidence_owner": "performance owner",
+      "evidence_required": [
+        "LCP target",
+        "INP target",
+        "CLS target",
+        "measurement path",
+        "lab vs field/RUM status"
+      ],
+      "gate": "frontend_performance_budget_present",
+      "priority": "P1_high_risk",
+      "reason": "User-facing or interaction-heavy routes need Web Vitals budget or non-applicability.",
+      "residual_risk": "Lab metrics can be mistaken for production UX and performance can regress late.",
+      "safe_next_action": "Stage the frontend artifact or accepted gap before claiming UI completion."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before external browser, visual service or production-data actions",
+      "artifact": "frontend-visual-qa.md",
+      "domain": "frontend",
+      "evidence_owner": "UI owner",
+      "evidence_required": [
+        "mobile viewport",
+        "desktop viewport",
+        "orientation",
+        "input modality",
+        "reduced motion/preferences",
+        "theme"
+      ],
+      "gate": "frontend_responsive_viewport_matrix_present",
+      "priority": "P1_high_risk",
+      "reason": "Layout or visual work needs responsive viewport evidence.",
+      "residual_risk": "Desktop-only screenshots can hide mobile, input and preference regressions.",
+      "safe_next_action": "Stage the frontend artifact or accepted gap before claiming UI completion."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "approval_required before external visual service, hosted screenshot upload or production-data screenshot",
+      "artifact": "frontend-visual-qa.md",
+      "domain": "frontend",
+      "evidence_owner": "UI owner",
+      "evidence_required": [
+        "screenshot/story baseline",
+        "browser/OS/viewport",
+        "baseline owner",
+        "known noisy diffs",
+        "privacy-safe mock data"
+      ],
+      "gate": "frontend_visual_evidence_present",
+      "priority": "P1_high_risk",
+      "reason": "Visual UI work needs privacy-safe screenshot, baseline or explicit gap.",
+      "residual_risk": "Visual regressions can ship without deterministic or reviewable evidence.",
+      "safe_next_action": "Stage the frontend artifact or accepted gap before claiming UI completion."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, scope, review date and residual risk",
+      "approval_boundary": "not required for read-only audit",
+      "artifact": "architecture-overview.md",
+      "domain": "solution_architecture",
+      "evidence_owner": "architecture owner",
+      "evidence_required": [
+        "runtime unit",
+        "boundary",
+        "responsibility",
+        "owner"
+      ],
+      "gate": "architecture_container_boundary_present",
+      "priority": "P1_high_risk",
+      "reason": "Multiple runtime units need container, service, storage, queue or worker boundaries.",
+      "residual_risk": "Implementation can cross implicit system boundaries without review.",
+      "safe_next_action": "Stage architecture-overview.md with scope, context and container boundaries."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, scope, review date and residual risk",
+      "approval_boundary": "not required for read-only audit",
+      "artifact": "architecture-overview.md",
+      "domain": "solution_architecture",
+      "evidence_owner": "architecture owner",
+      "evidence_required": [
+        "external actors",
+        "systems",
+        "trust boundary",
+        "owner"
+      ],
+      "gate": "architecture_context_view_present",
+      "priority": "P1_high_risk",
+      "reason": "External users, systems or trust boundaries need a context view or equivalent boundary map.",
+      "residual_risk": "Implementation can cross implicit system boundaries without review.",
+      "safe_next_action": "Stage architecture-overview.md with scope, context and container boundaries."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, scope, review date and residual risk",
+      "approval_boundary": "not required for read-only audit",
+      "artifact": "architecture-overview.md",
+      "domain": "solution_architecture",
+      "evidence_owner": "architecture owner",
+      "evidence_required": [
+        "scope",
+        "stakeholders",
+        "architecture question",
+        "non-goals",
+        "owner"
+      ],
+      "gate": "solution_architecture_scope_present",
+      "priority": "P1_high_risk",
+      "reason": "Complex or multi-surface work needs architecture scope, stakeholders and non-goals.",
+      "residual_risk": "Implementation can cross implicit system boundaries without review.",
+      "safe_next_action": "Stage architecture-overview.md with scope, context and container boundaries."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before external browser, visual service or production-data actions",
+      "artifact": "frontend-visual-qa.md",
+      "domain": "frontend",
+      "evidence_owner": "UI owner",
+      "evidence_required": [
+        "supported browsers",
+        "devices/webviews",
+        "Playwright projects",
+        "known gaps",
+        "fallback"
+      ],
+      "gate": "frontend_browser_support_present",
+      "priority": "P2_recommended",
+      "reason": "Public UI needs supported browsers/devices or known gaps named.",
+      "residual_risk": "Browser-specific behavior can fail outside the developer's default browser.",
+      "safe_next_action": "Stage the frontend artifact or accepted gap before claiming UI completion."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before external browser, visual service or production-data actions",
+      "artifact": "frontend-flow-spec.md",
+      "domain": "frontend",
+      "evidence_owner": "product copy or i18n owner",
+      "evidence_required": [
+        "long text",
+        "wrapping/truncation",
+        "localization",
+        "pluralization",
+        "RTL/locales",
+        "non-overlap assumptions"
+      ],
+      "gate": "frontend_content_i18n_boundary_present",
+      "priority": "P2_recommended",
+      "reason": "Long text, localization or user-generated content needs layout and i18n assumptions recorded.",
+      "residual_risk": "Content variants can break layout or meaning after implementation appears complete.",
+      "safe_next_action": "Stage the frontend artifact or accepted gap before claiming UI completion."
+    },
+    {
+      "accepted_gap_option": "explicit_gap_accepted with owner, reason, residual risk and review date",
+      "approval_boundary": "not required for read-only audit; approval_required before external browser, visual service or production-data actions",
+      "artifact": "component-card.md",
+      "domain": "frontend",
+      "evidence_owner": "UI owner",
+      "evidence_required": [
+        "layer",
+        "slice",
+        "segment",
+        "public API",
+        "import direction",
+        "not applicable reason"
+      ],
+      "gate": "frontend_fsd_boundary_reviewed",
+      "priority": "P2_recommended",
+      "reason": "FSD or growing UI structure needs boundary review when it applies.",
+      "residual_risk": "Folders can imitate Feature-Sliced Design while imports and public APIs remain tangled.",
+      "safe_next_action": "Stage the frontend artifact or accepted gap before claiming UI completion."
+    }
+  ],
+  "safe_next_action": "Stage the frontend artifact or accepted gap before claiming UI completion.",
+  "status": "ok",
+  "unknowns": [
+    "artifact owners and approval boundaries"
+  ],
+  "write_policy": "read_only"
+}

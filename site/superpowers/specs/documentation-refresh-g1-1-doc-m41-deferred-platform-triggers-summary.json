@@ -1,0 +1,232 @@
+{
+  "schema_version": "documentation_refresh_g1_1_doc_m41_deferred_platform_triggers_v1",
+  "evidence_id": "documentation_refresh_G1_1-DOC-M41-DEFERRED-PLATFORMS-A01",
+  "status": "implemented_deferred_platform_trigger_governance_no_install_no_site_rebuild",
+  "work_item": "DOC-M41",
+  "group": "G1.1",
+  "run_date": "2026-06-21",
+  "scope": {
+    "current_docs_platform": "MkDocs Material with project-local Python, Node, Vale, link/secret, Mermaid and audit/SBOM tooling",
+    "deferred_platforms": [
+      "Docusaurus",
+      "Storybook",
+      "Structurizr DSL"
+    ],
+    "decision_record": "trigger criteria only",
+    "source_owned_summary": "docs/superpowers/specs/documentation-refresh-g1-1-doc-m41-deferred-platform-triggers-summary.json"
+  },
+  "decision_summary": {
+    "current_stack_policy": "Keep the G1.1 documentation toolchain MkDocs-centered until concrete platform trigger evidence exists.",
+    "deferred_status": "deferred_until_trigger_evidence_exists",
+    "installation_status": "not_installed_no_download_no_scaffold",
+    "site_status": "root_site_rebuild_not_run",
+    "browser_status": "browser_runtime_proof_not_run"
+  },
+  "platform_trigger_records": [
+    {
+      "tool": "Docusaurus",
+      "deferred_status": "deferred",
+      "trigger_evidence_required": [
+        "A React or MDX-heavy documentation experience is required by an accepted Product-Agent OS docs requirement.",
+        "Versioned documentation, plugin ecosystem, or docs-app routing needs exceed the current MkDocs Material route.",
+        "A migration or coexistence decision record names affected pages, i18n impact, source ownership, rollback and publication boundary."
+      ],
+      "proposed_project_local_install_folder": ".docs-tools/node/ for package management; prototype output under .docs-tools/reports/docusaurus-prototype/ until source adoption is approved",
+      "candidate_artifacts": [
+        "future docs platform decision record",
+        "future Docusaurus prototype smoke report",
+        "future migration rollback note"
+      ],
+      "acceptance_criteria": [
+        "Owner-approved platform decision record exists before install.",
+        "Prototype build evidence is recorded without replacing MkDocs source ownership.",
+        "MkDocs/site freshness and Docusaurus publication readiness remain separate claims."
+      ],
+      "verification_gate_if_triggered": [
+        "npm package/version inventory",
+        "local prototype build smoke",
+        "source registry update",
+        "docs tests",
+        "tools/check_docs.py",
+        "git diff --check"
+      ],
+      "approval_required_actions": [
+        "npm install/download",
+        "new docs app scaffold",
+        "root site replacement",
+        "publication/deployment"
+      ]
+    },
+    {
+      "tool": "Storybook",
+      "deferred_status": "deferred",
+      "trigger_evidence_required": [
+        "A Product-Agent OS UI component library, generated artifact component system, or reusable interactive documentation surface exists.",
+        "Component states, visual QA, accessibility review, or interaction examples need a dedicated component documentation runner.",
+        "A component ownership map names source components, stories, fixtures, test data privacy and visual proof boundaries."
+      ],
+      "proposed_project_local_install_folder": ".docs-tools/node/ for package management; static proof output under .docs-tools/reports/storybook-static/ until source adoption is approved",
+      "candidate_artifacts": [
+        "future Storybook trigger decision record",
+        "future component/story inventory",
+        "future visual accessibility evidence packet"
+      ],
+      "acceptance_criteria": [
+        "Owner-approved component documentation need exists before install.",
+        "Stories use synthetic/privacy-safe fixtures only.",
+        "Storybook static output is treated as documentation or visual evidence, not runtime proof by itself."
+      ],
+      "verification_gate_if_triggered": [
+        "npm package/version inventory",
+        "local Storybook build smoke",
+        "visual/a11y evidence or explicit accepted gap",
+        "docs tests",
+        "tools/check_docs.py",
+        "git diff --check"
+      ],
+      "approval_required_actions": [
+        "npm install/download",
+        "story source scaffolding",
+        "browser automation",
+        "hosted visual services",
+        "publication/deployment"
+      ]
+    },
+    {
+      "tool": "Structurizr DSL",
+      "deferred_status": "deferred",
+      "trigger_evidence_required": [
+        "Architecture documentation requires a model-driven C4/system landscape source rather than Mermaid-only diagrams.",
+        "Multiple systems, containers, relationships, deployment views, or ADR-linked architecture decisions need a governed architecture-as-code model.",
+        "A model ownership record names source files, diagram consumers, render checks, review owner and rollback path."
+      ],
+      "proposed_project_local_install_folder": ".docs-tools/bin/ for any approved local CLI/JAR wrapper; model/render outputs under .docs-tools/reports/structurizr/ until source adoption is approved",
+      "candidate_artifacts": [
+        "future architecture tooling decision record",
+        "future Structurizr workspace/model source proposal",
+        "future render validation report"
+      ],
+      "acceptance_criteria": [
+        "Owner-approved architecture-as-code need exists before install.",
+        "Model source remains separate from generated diagrams and rendered views.",
+        "Rendered diagrams are not treated as proof without source and current render evidence."
+      ],
+      "verification_gate_if_triggered": [
+        "local tool/version inventory",
+        "workspace syntax/render smoke",
+        "architecture source registry update",
+        "docs tests",
+        "tools/check_docs.py",
+        "git diff --check"
+      ],
+      "approval_required_actions": [
+        "binary/JAR download",
+        "new architecture model source adoption",
+        "browser/render proof",
+        "publication/deployment"
+      ]
+    }
+  ],
+  "owner_decision_path": [
+    "Record a concrete requirement or accepted owner need.",
+    "Create a short platform decision record naming trigger evidence, affected files, proposed local install path, rollback and verification.",
+    "Request explicit approval for any install/download/scaffold/browser/publication action.",
+    "Run only the approved local smoke checks and update source registry/control-plane evidence."
+  ],
+  "supported_claims": [
+    "DOC-M41 records trigger criteria for deferred documentation platforms and architecture tooling.",
+    "Docusaurus, Storybook and Structurizr DSL remain deferred until concrete trigger evidence exists.",
+    "The current G1.1 stack remains MkDocs-centered with project-local docs tooling.",
+    "No DOC-M41 install, download, scaffold, root site rebuild, browser proof or publication action was performed."
+  ],
+  "unsupported_claims": [
+    "Docusaurus is installed or verified",
+    "Storybook is installed or verified",
+    "Structurizr DSL is installed or verified",
+    "latest upstream versions or current official docs were checked",
+    "MkDocs is permanently sufficient for all future documentation needs",
+    "root site freshness",
+    "browser/runtime behavior",
+    "Storybook visual accessibility proof",
+    "Structurizr render proof",
+    "dependency safety or vulnerability-free status for deferred tools",
+    "release readiness",
+    "publication readiness",
+    "automation readiness"
+  ],
+  "accepted_gaps": [
+    {
+      "gap": "Official current Docusaurus, Storybook and Structurizr documentation was not refreshed",
+      "owner": "DOC-M41 governance",
+      "reason": "DOC-M41 is a local trigger-governance record; network research and install decisions require a separate approved slice",
+      "residual_risk": "Future trigger slices must verify current official documentation before selecting versions or install commands",
+      "follow_up": "Refresh official docs when a trigger decision record is opened"
+    },
+    {
+      "gap": "No prototype platform scaffold was created",
+      "owner": "DOC-M41 governance",
+      "reason": "The current evidence does not justify adding another docs platform",
+      "residual_risk": "Platform fit remains untested until a concrete trigger appears",
+      "follow_up": "Create an approved prototype only after requirement evidence exists"
+    },
+    {
+      "gap": "No root site rebuild or browser proof was run",
+      "owner": "DOC-M41 governance",
+      "reason": "DOC-M41 changes source-owned trigger records only",
+      "residual_risk": "Generated site freshness and browser behavior remain unclaimed",
+      "follow_up": "Run the separate approved site or browser proof slice when needed"
+    }
+  ],
+  "verification": [
+    {
+      "command": "python -m json.tool docs\\superpowers\\specs\\documentation-refresh-g1-1-doc-m41-deferred-platform-triggers-summary.json",
+      "result": "passed_json_valid"
+    },
+    {
+      "command": "python plugins\\product-agent-os\\scripts\\validate_task_matrix.py docs\\superpowers\\plans\\2026-06-20-track-11-documentation-architecture-refresh.md",
+      "result": "failed_non_blocking_legacy_markdown_table_has_no_task_matrix_plan_v1_detailed_task_blocks"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+      "result": "passed_92_tests_ok"
+    },
+    {
+      "command": "python tools\\check_docs.py",
+      "result": "passed_documentation_structure_checks"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed_no_whitespace_errors_crlf_warnings_only"
+    }
+  ],
+  "approved_actions_performed": {
+    "local_trigger_record": true,
+    "local_docs_control_plane_sync": true
+  },
+  "no_unapproved_actions": {
+    "docusaurus_install": false,
+    "storybook_install": false,
+    "structurizr_install": false,
+    "dependency_install_or_upgrade": false,
+    "network_download": false,
+    "new_docs_app_scaffold": false,
+    "new_architecture_model_source": false,
+    "root_site_rebuild": false,
+    "browser_automation": false,
+    "provider_api_call": false,
+    "target_workspace_mutation": false,
+    "git_action": false,
+    "publication": false,
+    "automation_activation": false
+  },
+  "subagents": [
+    {
+      "role": "docs-maintainer",
+      "result": "read_only_control_plane_and_registry_sync_recommendations"
+    },
+    {
+      "role": "tester",
+      "result": "read_only_guardrail_and_test_invariant_recommendations"
+    }
+  ]
+}

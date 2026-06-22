@@ -1,0 +1,105 @@
+{
+  "schema_version": "batch41_s9_m57_neural_flow_comparison_v1",
+  "status": "completed_read_only_rerun_comparison",
+  "target": {
+    "label": "Neural_Flow",
+    "path": "C:/Users/user/Desktop/project/Neural_Flow",
+    "mutation_performed": false,
+    "fingerprint_file_count_before": 19,
+    "fingerprint_file_count_after": 19
+  },
+  "stages": {
+    "old_s8_m47": "docs/superpowers/specs/batch41-s8-m47-neural-flow-stage",
+    "post_batch41_prior": "docs/superpowers/specs/batch41-post-neural-flow-rerun-stage",
+    "new_s9_m57": "docs/superpowers/specs/batch41-s9-m57-neural-flow-stage"
+  },
+  "digests": {
+    "old_s8_m47_index_html": "sha256:4791538425a27edd23629c8f7d08523889f224d8a1a252a09c69a0ee77c8052b",
+    "post_batch41_prior_index_html": "sha256:4791538425a27edd23629c8f7d08523889f224d8a1a252a09c69a0ee77c8052b",
+    "new_s9_m57_index_html": "sha256:a71bb4ed433bc7abf2b21e14e160123f85decbab73cf59a08613450b579471f7",
+    "old_s8_m47_manifest": "sha256:d46e4331048e5495f546ceea0bb12fc98425adfaae644dc44d4210a56b7c041a",
+    "post_batch41_prior_manifest": "sha256:f3248aede7ee1f9b01cb5a144f7077f3968f7a26b6c0b7fec5c35fcb93808088",
+    "new_s9_m57_manifest": "sha256:44d96ab0be14832f62a9b6605087f7fbf5be97841e1dfce6894c16702024f15f"
+  },
+  "view_model_key_delta": {
+    "old_s8_m47_key_count": 24,
+    "post_batch41_prior_key_count": 24,
+    "new_s9_m57_key_count": 32,
+    "new_required_keys_present": {
+      "design_contract": true,
+      "first_viewport_shell": true,
+      "local_interaction_layer": true,
+      "architecture_diagrams": true,
+      "schema_contract_surface": true,
+      "graph_code_surface": true,
+      "guided_tour_surface": true,
+      "evidence_risk_hierarchy": true,
+      "visual_accessibility_acceptance": true
+    },
+    "keys_added_vs_s8_m47": [
+      "design_contract",
+      "evidence_risk_hierarchy",
+      "first_viewport_shell",
+      "graph_code_surface",
+      "guided_tour_surface",
+      "local_interaction_layer",
+      "schema_contract_surface",
+      "visual_accessibility_acceptance"
+    ],
+    "keys_added_vs_post_batch41_prior": [
+      "design_contract",
+      "evidence_risk_hierarchy",
+      "first_viewport_shell",
+      "graph_code_surface",
+      "guided_tour_surface",
+      "local_interaction_layer",
+      "schema_contract_surface",
+      "visual_accessibility_acceptance"
+    ]
+  },
+  "html_marker_results": {
+    "architecture_intelligence_hero": true,
+    "approved_local_js": true,
+    "static_diagram_workbench": true,
+    "schema_contract_surface": true,
+    "graph_file_code_surface": true,
+    "guided_review_route": true,
+    "evidence_risk_hierarchy": true,
+    "visual_accessibility_acceptance": true,
+    "no_external_script_src": true,
+    "no_fetch_call": true,
+    "no_http_url": true,
+    "no_https_url": true
+  },
+  "unsupported_claims_preserved": {
+    "webgl_runtime_not_claimed": true,
+    "release_ready_not_claimed": true,
+    "wcag_certified_not_claimed": true,
+    "target_apply_not_claimed": true
+  },
+  "new_surface_statuses": {
+    "local_interaction_layer": "approved_inline_js_ready",
+    "diagram_workbench": "zoom_ready_static_svg_workbench",
+    "schema_contract_surface": "not_available_explicit_empty_state",
+    "graph_code_surface": "graph_code_surface_ready",
+    "guided_tour_surface": "guided_read_order_ready",
+    "evidence_risk_hierarchy": "risk_hierarchy_ready",
+    "visual_accessibility_acceptance": "static_gate_ready_browser_gap_recorded"
+  },
+  "actions_performed": {
+    "target_workspace_mutation": false,
+    "live_runtime": false,
+    "browser_automation": false,
+    "provider_api_call": false,
+    "external_request": false,
+    "git_stage_commit_push_pr": false,
+    "release_deploy_publish": false
+  },
+  "accepted_gaps": [
+    "No browser screenshot proof in B41-S9-M57.",
+    "No Cosmos.gl/WebGL runtime execution proof.",
+    "No full WCAG certification.",
+    "No target apply safety proof.",
+    "No release readiness claim."
+  ]
+}

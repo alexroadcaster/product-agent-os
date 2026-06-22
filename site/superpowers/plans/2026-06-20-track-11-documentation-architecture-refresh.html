@@ -1,0 +1,4218 @@
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+
+        <meta name="description" content="Документация Product-Agent OS для рабочих процессов с агентами и skills.">
+
+
+
+
+
+
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.50">
+
+
+
+        <title>Track 11 Documentation Architecture Refresh Plan - Product-Agent OS</title>
+
+
+
+      <link rel="stylesheet" href="../../assets/stylesheets/main.a40c8224.min.css">
+
+
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+
+
+
+
+
+
+
+
+
+
+
+
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+
+
+
+      <link rel="stylesheet" href="../../assets/stylesheets/extra.css">
+
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+
+
+
+
+
+
+  </head>
+
+
+
+
+
+
+
+
+
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="deep-orange">
+
+
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+
+
+        <a href="#track-11-documentation-architecture-refresh-plan" class="md-skip">
+          Перейти к содержанию
+        </a>
+
+    </div>
+    <div data-md-component="announce">
+
+    </div>
+
+
+
+
+
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href="../../index.html" title="Product-Agent OS" class="md-header__button md-logo" aria-label="Product-Agent OS" data-md-component="logo">
+
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Product-Agent OS
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+
+              Track 11 Documentation Architecture Refresh Plan
+
+          </span>
+        </div>
+      </div>
+    </div>
+
+
+        <form class="md-header__option" data-md-component="palette">
+
+
+
+
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="deep-orange"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+
+
+</form>
+
+
+
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+
+
+      <div class="md-header__option">
+  <div class="md-select">
+
+    <button class="md-header__button md-icon" aria-label="Выберите язык">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+
+          <li class="md-select__item">
+            <a href="2026-06-20-track-11-documentation-architecture-refresh.html" hreflang="ru" class="md-select__link">
+              RU
+            </a>
+          </li>
+
+          <li class="md-select__item">
+            <a href="../../en/index.html" hreflang="en" class="md-select__link">
+              EN
+            </a>
+          </li>
+
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+      <label class="md-header__button md-icon" for="__search">
+
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Поиск" placeholder="Поиск" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Поиск">
+
+        <button type="reset" class="md-search__icon md-icon" title="Очистить" aria-label="Очистить" tabindex="-1">
+
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Инициализация поиска
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  </nav>
+
+</header>
+
+    <div class="md-container" data-md-component="container">
+
+
+
+
+
+
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+
+
+
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Product-Agent OS" class="md-nav__button md-logo" aria-label="Product-Agent OS" data-md-component="logo">
+
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Product-Agent OS
+  </label>
+
+  <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../index.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Главная
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="../../diagrams/index.html" class="md-nav__link ">
+
+
+  <span class="md-ellipsis">
+    Диаграммы
+  </span>
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Диаграммы
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../diagrams/architecture.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Архитектура проекта
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../diagrams/source-generated-trust-boundary.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Граница source и generated evidence
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../diagrams/first-run-cockpit-architecture.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Архитектура first-run cockpit
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../diagrams/evidence-risk-lifecycle.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Цикл evidence и risk
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../diagrams/skill-exposure-and-invocation.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Граница skill exposure и invocation
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../diagrams/architecture-intelligence-diagram-atlas.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Architecture Intelligence diagram atlas
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../diagrams/product-delivery-lifecycle.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Product-Agent Delivery Lifecycle
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../diagrams/agent-team-and-skills.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Команда агентов и skills
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../diagrams/runtime-decision-map.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Runtime decision map
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../diagrams/skill-lifecycle.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Skill lifecycle
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../diagrams/context-memory-verification.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Context, memory, verification
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+
+
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+
+
+  <span class="md-ellipsis">
+    Источники
+  </span>
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Источники
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../sources/registry.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Реестр источников
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../sources/context7-research.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Анализ Context7
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../sources/source-card-template.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Шаблон карточки источника
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../sources/product-agent-os-batch40-doubt-verifier-source-transfer.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Batch 40 Doubt verifier source transfer
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+
+
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+
+
+  <span class="md-ellipsis">
+    Codex
+  </span>
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Codex
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../codex/overview.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Обзор
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../codex/surfaces.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Поверхности работы
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../codex/configuration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Конфигурация и расширяемость
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../codex/security.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Безопасность и approvals
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../codex/workflows.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Рабочие процессы
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../codex/use-cases-deep-analysis.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Deep analysis of use cases
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+
+
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+
+
+  <span class="md-ellipsis">
+    Prompt & Context Engineering
+  </span>
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Prompt & Context Engineering
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../prompting/overview.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Обзор
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../prompting/question-design.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Проектирование вопросов
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../prompting/context-engineering.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Context engineering
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../prompting/anti-hallucination.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Контроль галлюцинаций
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+
+
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+
+
+  <span class="md-ellipsis">
+    Product-Agent Workflows
+  </span>
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Product-Agent Workflows
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent/overview.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Обзор
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent/lifecycle.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Product lifecycle
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent/roles.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Роли агентной команды
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent/control-plane.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Control-plane files
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent/product-agent-os-plugin-spec.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Product-Agent OS plugin spec
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="../../product-agent-os/index.html" class="md-nav__link ">
+
+
+  <span class="md-ellipsis">
+    Product-Agent OS plugin
+  </span>
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_7" id="__nav_7_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Product-Agent OS plugin
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/artifact-gallery.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Витрина результатов
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/first-run-architecture-cockpit.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    First-run Architecture Cockpit
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/project-code-graph.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Project Code Graph
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/live-runtime-governance.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Live Runtime Governance
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/approval-bound-real-testing.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Approval-Bound Real Testing
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/real-project-pilot.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Real-Project Pilot
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/agent-skill-modernization-loop.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Agent-Skill Modernization Loop
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/instruction-tool-use-compliance.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Instruction And Tool-Use Compliance
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/operator-command-matrix.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Operator Command Matrix
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/guided-questions-answer-ledger.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Guided Questions And Answer Ledger
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/source-cache-session-state.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Source Cache And Active Session State
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/generated-artifact-ux-criteria.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Generated Artifact UX Criteria
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/graph-intelligence-contract.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Graph Intelligence Contract
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/privacy-supply-chain-retention.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Privacy Supply-Chain And Retention
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/local-html-interaction-boundary.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Local HTML Interaction Boundary
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/residual-follow-up-site-freshness.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Residual Follow-Up And Site Freshness
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/cli-reference.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    CLI Reference
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/artifact-contracts.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Artifact Contracts
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/packaging-and-closure.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Packaging And Closure
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/technical.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Технические особенности и установка
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/development-standards.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Engineering standards layer
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/methodology-intelligence.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Methodology intelligence
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/scenarios.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Сценарии и usage modes
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/behavioral-evals.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Behavioral evals
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/codex-compatibility.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Codex compatibility
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../product-agent-os/architecture.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Диаграммы и принципы работы
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
+
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="../../methodologies/index.html" class="md-nav__link ">
+
+
+  <span class="md-ellipsis">
+    Methodologies for Large Projects
+  </span>
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Methodologies for Large Projects
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/business-product.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Business & Product
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/requirements-domain.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Requirements & Domain
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/solution-architecture.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Solution Architecture
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/frontend.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Frontend
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/backend.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Backend
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/api-integrations.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    API & Integrations
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/database-data.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Database & Data
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/llm-ai-rag.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    LLM / AI / RAG
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/quality-testing-evals.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Quality, Testing & Evals
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/security-privacy-compliance.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Security, Privacy & Compliance
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/delivery-release-operations.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Delivery, Release & Operations
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../methodologies/codex-agentic-workflow.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Codex / Agentic Workflow
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_9" >
+
+
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="">
+
+
+  <span class="md-ellipsis">
+    Codex Automation & Runtime
+  </span>
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            Codex Automation & Runtime
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../runtime/overview.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Обзор runtime
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../runtime/non-interactive-and-mcp.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Non-interactive и MCP
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../runtime/automations-github.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Automations и GitHub
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../runtime/worktrees-hooks-rules.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Worktrees, hooks, rules
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_10" >
+
+
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
+
+
+  <span class="md-ellipsis">
+    Агентные системы
+  </span>
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            Агентные системы
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../agent-systems/overview.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Архитектура
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../agent-systems/memory.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Память
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../agent-systems/session-control.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Контроль сессий
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../agent-systems/subagents-skills.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Subagents, Skills, AGENTS.md
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../agent-systems/sdk-patterns.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Agents SDK patterns
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../agent-systems/evals-observability.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Evals и observability
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../agent-systems/templates.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Шаблоны агентов
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_11" >
+
+
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="">
+
+
+  <span class="md-ellipsis">
+    Playbooks
+  </span>
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            Playbooks
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/research-loop.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Research loop
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/context7-deep-research.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Context7 deep research
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/grounded-answering.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Grounded answering
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/doubt-verification-loop.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Doubt verification loop
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/build-full-feature.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Build full feature
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/workflow-to-skill.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Workflow to skill
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/use-case-to-plugin.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Use case to plugin
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/eval-driven-improvement.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Eval-driven improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/product-ready-pr.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Product-ready PR
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/maintain-agent-operating-docs.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Agent operating docs
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/workspace-readiness-audit.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Workspace readiness audit
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/docs-update.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Обновление документации
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/code-review.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Code review
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../playbooks/ai-team-design.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    AI-native команда
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_12" >
+
+
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="">
+
+
+  <span class="md-ellipsis">
+    Templates
+  </span>
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            Templates
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../artifact-templates/prompt-packet.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Prompt template
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../artifact-templates/control-plane-files.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Control-plane templates
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../artifact-templates/runlog.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    RUNLOG template
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../artifact-templates/product-skill.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Skill template
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../artifact-templates/plugin-blueprint.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Plugin blueprint
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_13" >
+
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="../../insights/index.html" class="md-nav__link ">
+
+
+  <span class="md-ellipsis">
+    Insights
+  </span>
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_13" id="__nav_13_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13">
+            <span class="md-nav__icon md-icon"></span>
+            Insights
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../insights/insight-card-template.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Шаблон карточки insight
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../../insights/seed-insights.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Начальный backlog
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+
+
+
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+
+
+
+
+
+
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+
+        <li class="md-nav__item">
+  <a href="#scope-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scope Check
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#source-inventory" class="md-nav__link">
+    <span class="md-ellipsis">
+      Source Inventory
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#documentation-refresh-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      Documentation Refresh Matrix
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#g11-residual-follow-up-routing" class="md-nav__link">
+    <span class="md-ellipsis">
+      G1.1 Residual Follow-Up Routing
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#verification-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verification Plan
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#rollback" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rollback
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#current-status" class="md-nav__link">
+    <span class="md-ellipsis">
+      Current Status
+    </span>
+  </a>
+
+</li>
+
+    </ul>
+
+</nav>
+                  </div>
+                </div>
+              </div>
+
+
+
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+
+
+
+
+<h1 id="track-11-documentation-architecture-refresh-plan">Track 11 Documentation Architecture Refresh Plan<a class="headerlink" href="#track-11-documentation-architecture-refresh-plan" title="Permanent link">&para;</a></h1>
+<p>Source status: <code>local implementation planning</code></p>
+<blockquote>
+<p><strong>For agentic workers:</strong> REQUIRED ROUTING: use <code>docs-maintainer</code> for documentation/source-registry alignment, <code>implementation-planner</code> for task slicing, <code>completion-skeptic</code> before readiness claims, and <code>test-eval-designer</code> for docs/site verification gates. Do not treat generated <code>site/</code>, HTML cockpits, graph outputs, dashboards, scorecards or memory as source truth.</p>
+</blockquote>
+<p><strong>Goal:</strong> Refresh Product-Agent OS documentation so the public/docs layer matches the deeper current implementation: Batch 41 first-run orchestration, Architecture Intelligence Cockpit, graph/code/schema surfaces, evidence/risk hierarchy, visual/accessibility gates, Batch 42 instruction/tool-use compliance planning, and the source-vs-generated trust boundary.</p>
+<p><strong>Architecture:</strong> Track 11 is a docs architecture track, not a runtime/product implementation track. It turns current source-owned evidence from <code>RUNLOG.md</code>, Track 10 plan/backlog files, Product-Agent OS docs, renderer contracts, tests and spec artifacts into reader-facing documentation, diagram atlas updates, artifact contract maps and site-refresh gates. Source Markdown and registry/backlog files remain canonical; generated <code>site/</code> is a rebuild output and stale until strict MkDocs evidence exists.</p>
+<p><strong>Tech Stack:</strong> Markdown, MkDocs Material, Mermaid/static diagrams, local Product-Agent OS docs contracts, <code>tools/check_docs.py</code>, <code>tests.product_agent_os.test_product_agent_os_docs</code>, strict MkDocs, git diff hygiene, optional source-safe generated diagrams and no external runtime/provider/browser/git/cache/global-config action without separate approval.</p>
+<hr />
+<h2 id="scope-check">Scope Check<a class="headerlink" href="#scope-check" title="Permanent link">&para;</a></h2>
+<p>Track 11 includes documentation planning and later documentation implementation for:</p>
+<ul>
+<li>current docs-vs-site drift after Batch 41 and Batch 42 compliance planning, captured under Batch 43 docs refresh;</li>
+<li>reader-facing first-run / Architecture Intelligence Cockpit documentation;</li>
+<li>artifact schema and generated-view trust boundaries;</li>
+<li>diagram atlas expansion for source/generated/evidence/runtime boundaries;</li>
+<li>Batch 42 instruction/tool-use compliance documentation;</li>
+<li>site rebuild and publication-readiness gates.</li>
+</ul>
+<p>Track 11 does not implement runtime features, refresh installed plugin cache, mutate global Codex config, activate hooks/automations/MCP, call providers, run browser automation, create git actions, publish docs, or claim release readiness.</p>
+<h2 id="source-inventory">Source Inventory<a class="headerlink" href="#source-inventory" title="Permanent link">&para;</a></h2>
+<p>Primary source artifacts for this plan:</p>
+<ul>
+<li><code>RUNLOG.md</code></li>
+<li><code>TEST.md</code></li>
+<li><code>EVALS.md</code></li>
+<li><code>docs/superpowers/plans/2026-05-27-track-10-guided-questions-status-dashboard.md</code></li>
+<li><code>docs/sources/product-agent-os-track-10-backlog.md</code></li>
+<li><code>docs/product-agent-os/architecture.md</code></li>
+<li><code>docs/product-agent-os/project-code-graph.md</code></li>
+<li><code>docs/product-agent-os/artifact-contracts.md</code></li>
+<li><code>docs/product-agent-os/cli-reference.md</code></li>
+<li><code>docs/product-agent-os/technical.md</code></li>
+<li><code>plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py</code></li>
+<li><code>plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py</code></li>
+<li><code>tests/product_agent_os/test_batch41_first_run_automation.py</code></li>
+<li><code>docs/superpowers/specs/batch41-s9-html-modernization-summary.json</code></li>
+<li><code>docs/superpowers/specs/batch41-s9-m57-neural-flow-summary.json</code></li>
+<li><code>docs/superpowers/specs/batch41-s9-m57-neural-flow-comparison.json</code></li>
+<li><code>docs/superpowers/specs/batch42-instruction-tool-use-compliance-matrix.json</code></li>
+</ul>
+<p>Generated <code>site/</code> files are comparison evidence only until rebuilt in the current run.</p>
+<h2 id="documentation-refresh-matrix">Documentation Refresh Matrix<a class="headerlink" href="#documentation-refresh-matrix" title="Permanent link">&para;</a></h2>
+<p>This matrix plans reader-facing documentation for the system itself. Public pages produced from it must avoid internal planning labels, target workspace names, and historical execution labels; those details stay in source packets, registries and internal ledgers.</p>
+<p>Group map:</p>
+<ul>
+<li><code>G0</code> Governance, scope and terminology.</li>
+<li><code>G1</code> Source records, registry and generated-site parity.</li>
+<li><code>G1.1</code> Project-local documentation toolchain and install folders.</li>
+<li><code>G2</code> First-run cockpit and artifact contracts.</li>
+<li><code>G3</code> Diagram atlas and architecture maps.</li>
+<li><code>G4</code> Operator flows and system behavior docs.</li>
+<li><code>G5</code> Evidence quality, graph intelligence, privacy boundaries and final generated-site freshness.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Group</th>
+<th>Priority</th>
+<th>Work item</th>
+<th>Agents / skills</th>
+<th>Scope</th>
+<th>Codex action</th>
+<th>Owner action</th>
+<th>Technical value for the system</th>
+<th>Product value for the user</th>
+<th>Acceptance criteria</th>
+<th>Verification gates</th>
+<th>Risks / approval gates</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DOC-M00</code></td>
+<td><code>G0</code></td>
+<td>P0</td>
+<td>Normalize internal numbering and reader-facing terminology.</td>
+<td>Implementation Planner + Docs Maintainer / <code>implementation-planner</code>, <code>docs-maintainer</code></td>
+<td>Documentation matrix IDs, reader-facing naming policy and source-transfer boundaries.</td>
+<td>Replaced internal planning identifiers in the matrix with neutral documentation work items and kept historical labels out of planned public pages.</td>
+<td>No further action unless a future source packet finds a conflicting public label.</td>
+<td>Removes trace ambiguity while preserving internal evidence separately.</td>
+<td>The user sees product documentation work organized around system capabilities, not internal run history.</td>
+<td>Matrix rows use neutral IDs; public-page acceptance criteria forbid internal planning labels and target workspace names.</td>
+<td>Docs tests; source-map review; <code>git diff --check</code>.</td>
+<td>Do not rewrite historical evidence as public product documentation.</td>
+<td><code>closed</code></td>
+</tr>
+<tr>
+<td><code>DOC-M01</code></td>
+<td><code>G0</code></td>
+<td>P0</td>
+<td>Freeze documentation requirements and approval boundaries.</td>
+<td>Implementation Planner + Docs Maintainer / <code>implementation-planner</code>, <code>docs-maintainer</code></td>
+<td>Documentation goal, non-goals, source artifacts, generated-site freshness boundary and publication boundary.</td>
+<td>Recorded G0 scope, non-goals, approval-gated surfaces and source/generated boundaries in <code>docs/superpowers/specs/documentation-refresh-g0-governance-summary.json</code>.</td>
+<td>Confirm whether a later group should include site rebuild/publication approval.</td>
+<td>Prevents documentation refresh from becoming unbounded runtime or release work.</td>
+<td>User gets an explicit docs roadmap instead of scattered recommendations.</td>
+<td>G0 packet names non-goals, approval-gated surfaces and verification gates; reader-facing docs avoid internal planning labels.</td>
+<td>JSON validation; <code>git diff --check</code>; docs tests.</td>
+<td>Do not claim docs/site readiness from this G0 packet alone.</td>
+<td><code>closed</code></td>
+</tr>
+<tr>
+<td><code>DOC-M03</code></td>
+<td><code>G0</code></td>
+<td>P0</td>
+<td>Create a capability-to-documentation source map.</td>
+<td>Docs Maintainer + Completion Skeptic / <code>docs-maintainer</code>, <code>completion-skeptic</code></td>
+<td>Map implemented capabilities to owning docs, specs, tests and reader-facing pages.</td>
+<td>Added a capability source map to <code>docs/superpowers/specs/documentation-refresh-g0-governance-summary.json</code>; flagged planned-only and approval-required claims.</td>
+<td>Review which G1/G2 details should become public docs versus internal evidence.</td>
+<td>Prevents loss of implementation contract details during docs rewrite.</td>
+<td>User can trace every new docs claim to a source artifact.</td>
+<td>Map includes capability, owning source label, proposed page, support status and unsupported claims; no target workspace names in public prose.</td>
+<td>Source-map review; JSON validation; docs contract tests when docs change.</td>
+<td>Avoid copying raw private paths or generated HTML bodies into public docs.</td>
+<td><code>closed</code></td>
+</tr>
+<tr>
+<td><code>DOC-M15</code></td>
+<td><code>G0</code></td>
+<td>P0</td>
+<td>Close the documentation refresh with control-plane sync and go/no-go.</td>
+<td>Docs Maintainer + Completion Skeptic + Risk Reviewer / <code>docs-maintainer</code>, <code>completion-skeptic</code>, <code>risk-reviewer</code></td>
+<td><code>RUNLOG.md</code>, optional compact root pointers, source registry/backlog updates and residual risk.</td>
+<td>Recorded G0 closure, no-unapproved-actions proof, unsupported claims and next safe route in the G0 packet; broader documentation refresh remains open.</td>
+<td>Decide whether the next group should start with source registry/site parity or cockpit contracts.</td>
+<td>Gives a clean closure boundary for the governance group without closing the whole documentation refresh.</td>
+<td>User gets a current G0 handoff without hidden release claims.</td>
+<td>Closure names changed files, commands run, accepted gaps, residual risks and next route.</td>
+<td>Control-plane sync checklist; completion-skeptic pass; no-unapproved-actions proof.</td>
+<td>No release, publish, git, browser, provider, cache or global config action without separate approval.</td>
+<td><code>closed_g0_scope_only</code></td>
+</tr>
+<tr>
+<td><code>DOC-M22</code></td>
+<td><code>G0</code></td>
+<td>P1</td>
+<td>Add a claim ceiling matrix.</td>
+<td>Risk Reviewer + Docs Maintainer / <code>risk-reviewer</code>, <code>docs-maintainer</code></td>
+<td>Runtime/browser/provider/git/release/automation/publication claim ceilings across local/static evidence.</td>
+<td>Added a claim ceiling matrix to <code>docs/superpowers/specs/documentation-refresh-g0-governance-summary.json</code>.</td>
+<td>Confirm owner-approved wording if these claim ceilings are promoted into public pages.</td>
+<td>Prevents docs from upgrading local/static evidence into readiness claims.</td>
+<td>User can see exactly what has and has not been proven.</td>
+<td>Matrix maps evidence type to allowed wording, forbidden wording, next proof, approval boundary and residual risk.</td>
+<td>JSON validation; docs tests; check docs.</td>
+<td>Must not imply release-readiness or public readiness.</td>
+<td><code>closed</code></td>
+</tr>
+<tr>
+<td><code>DOC-M02</code></td>
+<td><code>G1</code></td>
+<td>P0</td>
+<td>Audit source docs versus generated <code>site/</code> freshness.</td>
+<td>Workspace Discovery Auditor + Docs Maintainer / <code>workspace-discovery-auditor</code>, <code>docs-maintainer</code></td>
+<td>Source docs, generated <code>site/</code> timestamps, search/sitemap output and missing capability coverage.</td>
+<td>Recorded <code>docs/superpowers/specs/documentation-refresh-g1-source-site-parity-summary.json</code> with pre-rebuild stale site evidence and affected source/site paths.</td>
+<td>No action unless later public-page coverage should expand.</td>
+<td>Makes stale build risk visible and testable.</td>
+<td>User knows when <code>site/</code> is orientation-only versus current generated evidence.</td>
+<td>Drift packet lists source files newer than <code>site/</code>, missing nav/page coverage and required rebuild checks.</td>
+<td><code>Get-Item</code> timestamp check; <code>rg</code> marker check; strict MkDocs after edits.</td>
+<td>Do not treat stale <code>site/</code> as source truth or publication evidence.</td>
+<td><code>closed</code></td>
+</tr>
+<tr>
+<td><code>DOC-M13</code></td>
+<td><code>G1</code></td>
+<td>P0</td>
+<td>Update MkDocs navigation and bilingual page set.</td>
+<td>Docs Maintainer + Localization Reviewer / <code>docs-maintainer</code></td>
+<td><code>mkdocs.yml</code>, RU/EN docs pages where public docs change.</td>
+<td>Closed as <code>no_new_public_page_required</code>: existing inspected paths were present in nav/search/sitemap; G1 added source-owned packet and registry markers, not new public product pages.</td>
+<td>Decide in G2/G3 whether cockpit, compliance or diagram pages should enter public nav.</td>
+<td>Keeps generated site navigable and i18n-safe.</td>
+<td>RU/EN users see coherent docs structure.</td>
+<td>Existing nav covers inspected pages; no localization gap introduced by G1.</td>
+<td><code>python -m mkdocs build --strict</code>; docs check.</td>
+<td>Nav changes can break site build; Mermaid/CDN/offline boundary must remain explicit.</td>
+<td><code>closed_no_new_public_page_required</code></td>
+</tr>
+<tr>
+<td><code>DOC-M14</code></td>
+<td><code>G1</code></td>
+<td>P0</td>
+<td>Run docs, site and diff verification.</td>
+<td>Tester + Docs Maintainer + Completion Skeptic / <code>test-eval-designer</code>, <code>docs-maintainer</code>, <code>completion-skeptic</code></td>
+<td>Verification commands and evidence packet.</td>
+<td>Recorded G1 verification in the summary packet and current command evidence after implementation.</td>
+<td>Approve any slower full unittest or browser proof if requested later.</td>
+<td>Prevents documentation refresh from closing on inspection only.</td>
+<td>User gets current evidence for docs/site correctness.</td>
+<td>Evidence packet records commands, exit codes, failures, skipped checks and explicit gaps.</td>
+<td><code>python -m unittest tests.product_agent_os.test_product_agent_os_docs -v</code>; <code>python tools/check_docs.py</code>; <code>python -m mkdocs build --strict</code>; <code>git diff --check</code>.</td>
+<td>Do not claim verified if checks are skipped or fail.</td>
+<td><code>closed</code></td>
+</tr>
+<tr>
+<td><code>DOC-M16</code></td>
+<td><code>G1</code></td>
+<td>P0</td>
+<td>Backfill source-transfer history into source-owned records.</td>
+<td>Docs Maintainer / <code>docs-maintainer</code></td>
+<td>Source-owned history records and bilingual registry entries.</td>
+<td>Added G1 source-transfer status through the summary packet, registry markers and RUNLOG pointer.</td>
+<td>Confirm whether implementation evidence remains historical source material or moves into reader-facing docs in later groups.</td>
+<td>Restores chronological continuity between implementation evidence and documentation refresh.</td>
+<td>User can audit what changed since the last source-backed documentation update.</td>
+<td>Source history includes implementation and site-transfer evidence without overclaiming runtime/browser proof.</td>
+<td>Docs tests; <code>tools/check_docs.py</code>; <code>git diff --check</code>.</td>
+<td>Avoid duplicating generated summaries as source truth.</td>
+<td><code>closed</code></td>
+</tr>
+<tr>
+<td><code>DOC-M17</code></td>
+<td><code>G1</code></td>
+<td>P0</td>
+<td>Add source registry entries and a claim map.</td>
+<td>Docs Maintainer + Risk Reviewer / <code>docs-maintainer</code>, <code>risk-reviewer</code></td>
+<td><code>docs/sources/registry.md</code>, <code>docs/sources/registry.en.md</code> and related source packets.</td>
+<td>Added compact RU/EN registry entries and a claim map in <code>documentation-refresh-g1-source-site-parity-summary.json</code>.</td>
+<td>Approve any public-facing claim labels if docs are later published externally.</td>
+<td>Gives every new documentation claim an owning source and verification status.</td>
+<td>User can separate implemented local evidence from unsupported runtime/browser/provider claims.</td>
+<td>Registry names artifacts, evidence status, trust level and unsupported claim ceilings.</td>
+<td>Docs tests; check docs; registry parity review.</td>
+<td>Publication, provider and runtime claims stay approval-gated.</td>
+<td><code>closed</code></td>
+</tr>
+<tr>
+<td><code>DOC-M34</code></td>
+<td><code>G1.1</code></td>
+<td>P0</td>
+<td>Define project-local documentation toolchain folder contract.</td>
+<td>Implementation Planner + Docs Maintainer / <code>implementation-planner</code>, <code>docs-maintainer</code></td>
+<td><code>.venv-docs/</code>, <code>.docs-tools/node/</code>, <code>.docs-tools/bin/</code>, <code>.docs-tools/reports/</code>, optional <code>docs/assets/javascripts/vendor/</code>, <code>.gitignore</code>, <code>TEST.md</code>.</td>
+<td>Added a contract-only local tooling layout: <code>.gitignore</code>, <code>.docs-tools/README.md</code>, <code>.docs-tools/node/README.md</code>, <code>.docs-tools/bin/README.md</code>, <code>.docs-tools/reports/README.md</code> and <code>docs/superpowers/specs/documentation-refresh-g1-1-doc-m34-folder-contract-summary.json</code>.</td>
+<td>Approve dependency installation, binary vendoring, config activation or network download before moving to later rows.</td>
+<td>Makes documentation processing reproducible without relying on global Python, global Node packages or temporary folders.</td>
+<td>User gets one predictable place for documentation tooling and generated reports.</td>
+<td>Folder contract lists purpose, ignored paths, allowed checked-in config, forbidden secrets and approval boundaries.</td>
+<td>Docs tests; <code>tools/check_docs.py</code>; <code>git diff --check</code>; later install smoke for each folder.</td>
+<td>No install, download, hook activation, automation activation or global config mutation without explicit approval.</td>
+<td><code>implemented_contract_only_no_install</code></td>
+</tr>
+<tr>
+<td><code>DOC-M35</code></td>
+<td><code>G1.1</code></td>
+<td>P0</td>
+<td>Install MkDocs Material runtime into project-local Python environment.</td>
+<td>Docs Maintainer + Tester / <code>docs-maintainer</code>, <code>test-eval-designer</code></td>
+<td><code>.venv-docs/</code>, <code>requirements.txt</code>, <code>mkdocs.yml</code>, <code>TEST.md</code>, optional <code>tools/docs_install.ps1</code>.</td>
+<td>Added install preflight and a candidate helper in <code>tools/docs_install.ps1</code>; after the earlier <code>WinError 10013</code> failure, the approved 2026-06-21 retry installed requirements into <code>.venv-docs/</code> and recorded <code>documentation_refresh_G1_1-DOC-M35-INSTALL-A01</code>.</td>
+<td>Decide whether to rebuild root <code>site/</code> next or continue to <code>DOC-M36</code> Node tooling; later installs still need their own approval boundaries.</td>
+<td>Unblocks strict site, search and sitemap rebuilds from a repository-owned Python runtime.</td>
+<td>User can rebuild docs with <code>.venv-docs\Scripts\python.exe -m mkdocs build --strict</code> after choosing the target output path.</td>
+<td>Runtime is project-local, ignored from git, version-pinned and documented in <code>TEST.md</code>; strict smoke build passed under <code>.docs-tools/reports/mkdocs-strict-smoke-2026-06-21</code>.</td>
+<td><code>.venv-docs\Scripts\python.exe -m mkdocs --version</code>; strict smoke build under <code>.docs-tools/reports/</code>; docs tests; diff hygiene.</td>
+<td>Root <code>site/</code>, search and sitemap freshness remain unclaimed until a current build to <code>site/</code> runs.</td>
+<td><code>installed_smoke_passed</code></td>
+</tr>
+<tr>
+<td><code>DOC-M36</code></td>
+<td><code>G1.1</code></td>
+<td>P1</td>
+<td>Install Node-based Markdown and API documentation tools under the project.</td>
+<td>Docs Maintainer + API Reviewer / <code>docs-maintainer</code>, <code>test-eval-designer</code></td>
+<td><code>.docs-tools/node/package.json</code>, <code>.docs-tools/node/package-lock.json</code>, <code>.docs-tools/node/node_modules/</code>, optional config files.</td>
+<td>Installed project-local Node docs tooling with <code>tools/docs_node_install.ps1</code>: <code>markdownlint-cli2==0.22.1</code>, <code>prettier==3.8.4</code> and <code>@redocly/cli==2.34.0</code>; source-owned evidence is <code>documentation_refresh_G1_1-DOC-M36-NODE-A01</code>.</td>
+<td>Decide whether broad Markdown lint/Prettier checks should be enabled as manual-only commands or later command-owned policy; keep Redocly enforcement blocked until an OpenAPI source contract exists.</td>
+<td>Adds repeatable Markdown style checks, formatting and future OpenAPI lint/bundle support without global npm dependencies.</td>
+<td>User can lint docs and later validate OpenAPI docs from project-owned tooling.</td>
+<td>Local package manifest and lock exist, <code>node_modules/</code> is ignored, scoped README smoke passed, and Redocly is <code>not_applicable</code> until an OpenAPI source exists.</td>
+<td><code>npm.cmd --prefix .docs-tools\node run markdownlint:smoke</code>; <code>npm.cmd --prefix .docs-tools\node run prettier:check:readme</code>; version smokes for markdownlint, Prettier and Redocly; docs tests; diff hygiene.</td>
+<td>Do not autoformat broad docs, claim OpenAPI coverage, run <code>npm audit fix</code>, or introduce dependency-safety claims without <code>DOC-M40</code> evidence.</td>
+<td><code>installed_smoke_passed</code></td>
+</tr>
+<tr>
+<td><code>DOC-M37</code></td>
+<td><code>G1.1</code></td>
+<td>P1</td>
+<td>Install terminology, tone and claim-language checks locally.</td>
+<td>Docs Maintainer + Risk Reviewer / <code>docs-maintainer</code>, <code>risk-reviewer</code></td>
+<td><code>.docs-tools/bin/vale.exe</code>, <code>.vale.ini</code>, <code>.docs-tools/vale/</code>, terminology and claim-language rule files.</td>
+<td>Installed project-local Vale <code>3.15.1</code> with <code>tools/docs_vale_install.ps1</code>, recorded <code>.docs-tools/bin/vale.sha256</code>, and added advisory Product-Agent OS rules/vocabulary for <code>Source status</code>, <code>generated-view-only</code>, <code>not source of truth</code>, <code>approval_required</code>, readiness wording and canonical terms. Source-owned evidence is <code>documentation_refresh_G1_1-DOC-M37-VALE-A01</code>.</td>
+<td>Decide whether broad docs language scans or enforcement thresholds should be approved later; keep warnings advisory until then.</td>
+<td>Catches language drift that normal Markdown lint cannot see.</td>
+<td>User gets docs that preserve claim ceilings and avoid accidental readiness/publication wording.</td>
+<td>Vale config and vocabulary are local, checksum-recorded, and failures remain advisory until enforcement is approved.</td>
+<td>Vale version smoke; Vale fixture smoke; negative readiness-wording smoke; docs tests; check docs; diff hygiene.</td>
+<td>Vale is a language guard, not proof of source correctness or legal/compliance review.</td>
+<td><code>installed_advisory_smoke_passed</code></td>
+</tr>
+<tr>
+<td><code>DOC-M38</code></td>
+<td><code>G1.1</code></td>
+<td>P1</td>
+<td>Install local link and secret hygiene tools.</td>
+<td>Docs Maintainer + Security Reviewer / <code>docs-maintainer</code>, <code>risk-reviewer</code></td>
+<td><code>.docs-tools/bin/lychee.exe</code>, <code>.docs-tools/bin/gitleaks.exe</code>, <code>.docs-tools/bin/lychee.sha256</code>, <code>.docs-tools/bin/gitleaks.sha256</code>, <code>.gitleaks.toml</code>, <code>.docs-tools/link-secret/</code>, <code>.docs-tools/reports/</code>.</td>
+<td>Installed project-local lychee <code>0.24.2</code> and gitleaks <code>8.30.0</code> with <code>tools/docs_link_secret_install.ps1</code>, recorded checksum files, added <code>.gitleaks.toml</code> and synthetic link/secret fixtures. Source-owned evidence is <code>documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01</code>.</td>
+<td>Decide whether external URL checks, broad docs/repo scans or report retention should be approved later.</td>
+<td>Finds stale links and accidental secrets in docs without relying on CI or global tools.</td>
+<td>User can run approved local/internal link checks and redacted docs secret hygiene checks locally.</td>
+<td>Commands default to offline local link fixture and redacted clean secret fixture; reports are not retained and raw findings are not copied into public docs.</td>
+<td>Lychee/gitleaks version smokes; <code>.docs-tools\bin\lychee.exe --offline --no-progress .docs-tools\link-secret\fixtures\doc-m38-links.md</code>; <code>.docs-tools\bin\gitleaks.exe dir .docs-tools\link-secret\fixtures --config .gitleaks.toml --redact --no-banner --no-color --exit-code 1 --log-level error</code>; docs tests; check docs; diff hygiene.</td>
+<td>External URL checks, broad repository scans, raw finding publication and report retention require explicit approval.</td>
+<td><code>installed_scoped_smoke_passed</code></td>
+</tr>
+<tr>
+<td><code>DOC-M39</code></td>
+<td><code>G1.1</code></td>
+<td>P2</td>
+<td>Vendor Mermaid/offline diagram runtime and define diagram render checks.</td>
+<td>Diagram Designer + Docs Maintainer / <code>docs-maintainer</code>, <code>implementation-planner</code></td>
+<td><code>mkdocs.yml</code>, <code>docs/assets/javascripts/vendor/mermaid-10.9.6.min.js</code>, <code>docs/assets/javascripts/vendor/mermaid-10.9.6.min.js.sha256</code>, <code>docs/assets/javascripts/vendor/mermaid-10.9.6.LICENSE.txt</code>, <code>docs/assets/javascripts/vendor/mermaid-10.9.6.package.json</code>, <code>tools/docs_mermaid_install.ps1</code>.</td>
+<td>Replaced the CDN-only Mermaid dependency with pinned local Mermaid <code>10.9.6</code>, recorded source/license/package metadata/checksum evidence and updated <code>tools/check_docs.py</code> so the old CDN asset fails. Source-owned evidence is <code>documentation_refresh_G1_1-DOC-M39-MERMAID-A01</code>.</td>
+<td>Decide whether browser diagram proof or root <code>site</code> rebuild should be approved later; keep dependency safety/SBOM with <code>DOC-M40</code>.</td>
+<td>Makes architecture diagrams render from a local MkDocs asset and keeps generated site behavior more reproducible.</td>
+<td>User can browse built docs without the previous floating Mermaid CDN dependency once a site build is produced.</td>
+<td>Mermaid asset source, MIT license, checksum, MkDocs integration and static external-runtime audit are documented; heavy Mermaid CLI remains optional/deferred.</td>
+<td>Strict MkDocs smoke to <code>.docs-tools/reports/mkdocs-strict-smoke-doc-m39-2026-06-21</code>; static external Mermaid/script audit; docs tests; check docs; diff hygiene.</td>
+<td>Browser Mermaid rendering, console/network cleanliness, root <code>site</code> freshness and dependency safety still need separate approval/evidence.</td>
+<td><code>installed_offline_vendor_smoke_passed</code></td>
+</tr>
+<tr>
+<td><code>DOC-M40</code></td>
+<td><code>G1.1</code></td>
+<td>P2</td>
+<td>Add dependency audit and SBOM governance for docs tooling.</td>
+<td>Docs Maintainer + Security Reviewer / <code>docs-maintainer</code>, <code>risk-reviewer</code></td>
+<td><code>.venv-docs/</code>, <code>.docs-tools/node/</code>, <code>.docs-tools/reports/</code>, optional SBOM outputs.</td>
+<td>Added <code>tools/docs_dependency_audit.ps1</code>, recorded current Python inventory / <code>pip check</code>, Node CycloneDX SBOM generation and approved <code>npm audit</code> advisory evidence. Source-owned evidence is <code>documentation_refresh_G1_1-DOC-M40-AUDIT-SBOM-A01</code>.</td>
+<td>Decide whether to install <code>pip-audit</code> / Python SBOM tooling, retain raw reports under <code>.docs-tools/reports/</code> or remediate the tracked moderate Node findings.</td>
+<td>Gives the documentation toolchain its own supply-chain governance.</td>
+<td>User can understand which tooling risk is checked before publication or release-style use.</td>
+<td>Local audit/SBOM commands, accepted gaps, unsupported security claims and current Node moderate findings are documented; raw reports are not retained by default.</td>
+<td><code>powershell -NoProfile -ExecutionPolicy Bypass -File tools\docs_dependency_audit.ps1</code>; <code>npm.cmd --prefix .docs-tools\node audit --audit-level=high --json</code>; docs tests; check docs; diff hygiene.</td>
+<td>Audit output is not legal/compliance proof; Python vulnerability audit remains unclaimed until approved tooling exists; no dependency upgrade without review.</td>
+<td><code>implemented_audit_sbom_governance_current_findings_recorded</code></td>
+</tr>
+<tr>
+<td><code>DOC-M41</code></td>
+<td><code>G1.1</code></td>
+<td>P3</td>
+<td>Record deferred documentation platforms and architecture tooling triggers.</td>
+<td>Implementation Planner + Docs Maintainer / <code>implementation-planner</code>, <code>docs-maintainer</code></td>
+<td>Docusaurus, Storybook, Structurizr DSL and future docs platform decision records.</td>
+<td>Recorded source-owned trigger governance through <code>documentation_refresh_G1_1-DOC-M41-DEFERRED-PLATFORMS-A01</code> and kept Docusaurus, Storybook and Structurizr DSL deferred until concrete trigger evidence exists.</td>
+<td>Revisit only when owner-approved React/MDX/versioning, UI-component/story, or model-driven architecture evidence appears.</td>
+<td>Prevents unnecessary tool sprawl while preserving future decision criteria.</td>
+<td>User knows why the current stack stays MkDocs-centered and when to expand it.</td>
+<td>Deferred tools have trigger conditions, owner decision path, install folder proposal, acceptance criteria and unsupported install/site/browser/readiness claims.</td>
+<td>JSON validation; docs tests; check docs; task matrix validation; diff hygiene; later decision record if triggered.</td>
+<td>Do not install Docusaurus, Storybook or Structurizr DSL without concrete React/MDX/versioning, UI-component or model-driven architecture need and separate approval.</td>
+<td><code>implemented_deferred_platform_trigger_governance_no_install_no_site_rebuild</code></td>
+</tr>
+<tr>
+<td><code>DOC-M04</code></td>
+<td><code>G2</code></td>
+<td>P0</td>
+<td>Add reader-facing Architecture Intelligence Cockpit page.</td>
+<td>Docs Maintainer + Product Reviewer / <code>docs-maintainer</code>, <code>completion-skeptic</code></td>
+<td>New <code>docs/product-agent-os/first-run-architecture-cockpit.md</code>, with G1.1 residual claim ceilings for screenshots, browser proof and final generated-site freshness.</td>
+<td>Draft page explaining purpose, surfaces, view model, local-JS boundary, generated-view boundary, acceptance gates, screenshot/browser proof boundary and final <code>DOC-M25</code> site-freshness route.</td>
+<td>Review whether the page should include screenshots or stay text/diagram-only; keep root <code>site</code> rebuild deferred to final <code>DOC-M25</code>.</td>
+<td>Gives one canonical page for the cockpit architecture.</td>
+<td>User understands what the cockpit is, what it proves, what it does not prove and why final generated-site freshness is separate.</td>
+<td>Page includes <code>Source status:</code>, source links, inputs/outputs, unsupported claims, next action, no internal planning labels, and no generated-site freshness claim before final <code>DOC-M25</code>.</td>
+<td>Docs test; <code>tools/check_docs.py</code>; strict MkDocs only as source/nav preflight until final <code>DOC-M25</code> rebuild.</td>
+<td>Browser/runtime/Cosmos.gl/WCAG and generated-site freshness claims remain unsupported unless current evidence exists.</td>
+<td><code>implemented_source_docs_no_site_rebuild</code></td>
+</tr>
+<tr>
+<td><code>DOC-M05</code></td>
+<td><code>G2</code></td>
+<td>P0</td>
+<td>Expand first-run artifact schema and contract documentation.</td>
+<td>Docs Maintainer + Tester / <code>docs-maintainer</code>, <code>test-eval-designer</code></td>
+<td><code>artifact-contracts.md</code> plus optional <code>first-run-artifact-schema.md</code>.</td>
+<td>Document <code>first_run_cockpit_artifact_v1</code>, <code>architecture_intelligence_design_contract_v1</code>, graph/code/schema/guided/evidence/visual gate schemas.</td>
+<td>Decide whether a separate schema page is preferable to expanding <code>artifact-contracts.md</code>.</td>
+<td>Makes renderer contracts reviewable without reading Python tests.</td>
+<td>User can inspect exact artifact families and claim ceilings.</td>
+<td>Contract table lists producer, schema version, source input, redaction, freshness and forbidden claims.</td>
+<td>Focused docs tests; renderer/test references checked; <code>git diff --check</code>.</td>
+<td>Do not imply JSON Schema completeness unless actual schema validation exists.</td>
+<td><code>implemented_source_docs_no_site_rebuild</code></td>
+</tr>
+<tr>
+<td><code>DOC-M06</code></td>
+<td><code>G2</code></td>
+<td>P0</td>
+<td>Update code graph and CLI docs for cockpit surfaces.</td>
+<td>Docs Maintainer + Graph Reviewer / <code>docs-maintainer</code>, <code>test-eval-designer</code></td>
+<td><code>project-code-graph.md</code>, <code>cli-reference.md</code>, <code>technical.md</code>, plus a pointer to the later <code>DOC-M26</code> docs-tooling command matrix.</td>
+<td>Add graph/file/code surface, guided read order, schema/contract surface, static fallback, Cosmos.gl/WebGL unsupported boundary and command examples that do not bypass <code>DOC-M26</code> approval gates.</td>
+<td>Review whether CLI examples should include staged first-run commands or stay high-level.</td>
+<td>Aligns graph/CLI docs with actual renderer behavior and future command-policy documentation.</td>
+<td>User can run or inspect first-run outputs without confusing graph orientation, CLI examples or docs-tooling smokes with proof.</td>
+<td>Updated pages separate static graph, cockpit view, query packets, runtime proof, approval gates and final <code>DOC-M25</code> site-freshness route.</td>
+<td>Docs contract tests; command examples linted manually; no live command claim without run evidence; broad tooling commands stay with <code>DOC-M26</code>.</td>
+<td>Avoid stale command syntax; no browser, runtime, broad scan or root <code>site</code> freshness claim from static docs.</td>
+<td><code>implemented_source_docs_no_site_rebuild</code></td>
+</tr>
+<tr>
+<td><code>DOC-M19</code></td>
+<td><code>G2</code></td>
+<td>P1</td>
+<td>Add a First-Run Architecture Intelligence guide.</td>
+<td>Docs Maintainer + Implementation Planner / <code>docs-maintainer</code>, <code>implementation-planner</code></td>
+<td>New or expanded Product-Agent docs page.</td>
+<td>Document workspace kind detection, routing, generated pages, artifact relationships and safe first actions.</td>
+<td>Review whether the page is internal-only or can become public guidance.</td>
+<td>Converts code behavior into maintainable architecture documentation.</td>
+<td>User gets one page that explains how first-run analysis actually works.</td>
+<td>Page includes inputs, outputs, routing decisions, failure modes and next artifacts.</td>
+<td>Docs tests; check docs; optional MkDocs when nav changes.</td>
+<td>Generated examples are orientation evidence, not proof.</td>
+<td><code>implemented_source_docs_no_site_rebuild</code></td>
+</tr>
+<tr>
+<td><code>DOC-M20</code></td>
+<td><code>G2</code></td>
+<td>P1</td>
+<td>Add a First-Run Artifact Schema Atlas.</td>
+<td>Docs Maintainer + Test/Eval Designer / <code>docs-maintainer</code>, <code>test-eval-designer</code></td>
+<td>Manifest, status, recommendations, HTML, methodology, graph and comparison artifacts.</td>
+<td>Add a table mapping artifact schemas, producers, consumers, stable fields and unsupported claims.</td>
+<td>Confirm which schemas are stable versus experimental.</td>
+<td>Reduces breakage when renderers, CLI routes or tests evolve.</td>
+<td>User can inspect artifact contracts without reading every script.</td>
+<td>Atlas includes schema owner, source path, renderer path, tests and acceptance gates.</td>
+<td>Docs tests; check docs; focused schema-related tests if changed later.</td>
+<td>Do not mark experimental generated artifact fields as stable.</td>
+<td><code>implemented_source_docs_no_site_rebuild</code></td>
+</tr>
+<tr>
+<td><code>DOC-M33</code></td>
+<td><code>G2</code></td>
+<td>P1</td>
+<td>Update artifact gallery for first-run outputs.</td>
+<td>Docs Maintainer + Product Reviewer / <code>docs-maintainer</code></td>
+<td><code>artifact-gallery.md</code>, <code>artifact-contracts.md</code>, index links and EN counterparts if updated.</td>
+<td>Add first-run packet, manifest, HTML cockpit, answer ledger, comparison packet, cleanup guidance and generated-view policy to the gallery.</td>
+<td>Review which artifacts are public-facing examples versus internal evidence.</td>
+<td>Gives users a discoverable map of generated outputs.</td>
+<td>User can find the right artifact and understand what it proves.</td>
+<td>Gallery groups artifacts by purpose, producer, output path, proof boundary and rollback/cleanup guidance.</td>
+<td>Docs tests; check docs; strict MkDocs if nav changes.</td>
+<td>Gallery must not imply generated artifacts are source truth or publication-ready proof.</td>
+<td><code>implemented_source_docs_no_site_rebuild</code></td>
+</tr>
+<tr>
+<td><code>DOC-M07</code></td>
+<td><code>G3</code></td>
+<td>P0</td>
+<td>Add diagram atlas page for source/generated trust boundary.</td>
+<td>Diagram Designer + Docs Maintainer / <code>docs-maintainer</code>, <code>implementation-planner</code></td>
+<td>New <code>docs/diagrams/source-generated-trust-boundary.md</code>.</td>
+<td>Added RU/EN trust-boundary page mapping source files, generated graph, cockpit HTML, command evidence, owner approval, accepted gaps and unsupported claims.</td>
+<td>Review whether later browser proof should add screenshots without changing source-truth wording.</td>
+<td>Centralizes the strongest safety rule in visual form.</td>
+<td>User can see which artifacts are canonical and which are orientation-only.</td>
+<td>Page has <code>Source status:</code>, Mermaid diagram, usage guidance, related artifacts and failure modes.</td>
+<td><code>tools/check_docs.py</code>; strict MkDocs source/nav smoke; docs tests.</td>
+<td>Diagram must not treat generated views as proof or hide approval boundaries.</td>
+<td><code>implemented_source_docs_no_site_rebuild</code></td>
+</tr>
+<tr>
+<td><code>DOC-M08</code></td>
+<td><code>G3</code></td>
+<td>P0</td>
+<td>Add diagram atlas page for first-run cockpit architecture.</td>
+<td>Diagram Designer + Frontend Reviewer / <code>docs-maintainer</code>, <code>frontend-testing-debugging</code></td>
+<td>New <code>docs/diagrams/first-run-cockpit-architecture.md</code>, local Mermaid asset boundary and optional later browser-proof packet.</td>
+<td>Added RU/EN first-run cockpit architecture page covering first-run packet, renderer, view model, cockpit surfaces, evidence gates, strict MkDocs boundary and browser screenshot proof boundary.</td>
+<td>Decide only in a later approved slice whether screenshots belong in a browser proof packet.</td>
+<td>Makes the cockpit architecture inspectable without reading renderer code.</td>
+<td>User sees how first-run analysis becomes the architecture cockpit and when a diagram is visually proven versus only source-render checked.</td>
+<td>Diagram page includes component map, artifact flow, safe next action, common failure modes, local Mermaid dependency note and browser-proof gap.</td>
+<td>Mermaid render via strict MkDocs source/nav smoke; docs check; optional browser/screenshot proof only with separate approval.</td>
+<td>Screenshots/browser claims and final root <code>site</code> freshness require separate approved proof.</td>
+<td><code>implemented_source_docs_no_site_rebuild</code></td>
+</tr>
+<tr>
+<td><code>DOC-M09</code></td>
+<td><code>G3</code></td>
+<td>P1</td>
+<td>Add diagram atlas page for evidence/risk lifecycle.</td>
+<td>Risk Reviewer + Completion Skeptic / <code>risk-reviewer</code>, <code>completion-skeptic</code>, <code>docs-maintainer</code></td>
+<td>New <code>docs/diagrams/evidence-risk-lifecycle.md</code>.</td>
+<td>Added RU/EN evidence/risk lifecycle page visualizing supported claims, unsupported claims, blockers, accepted gaps, owner decisions, evidence-before-completion and next safe actions.</td>
+<td>Review accepted-gap wording if future owner decisions change.</td>
+<td>Makes completion-skeptic boundaries visible in docs architecture.</td>
+<td>User can tell proved, blocked, proposed and approval-required states apart.</td>
+<td>Diagram separates evidence classes and states required evidence before readiness claims.</td>
+<td>Docs check; completion-skeptic review; docs tests.</td>
+<td>Do not imply a doubt packet is proof by itself.</td>
+<td><code>implemented_source_docs_no_site_rebuild</code></td>
+</tr>
+<tr>
+<td><code>DOC-M10</code></td>
+<td><code>G3</code></td>
+<td>P1</td>
+<td>Add diagram atlas page for skill exposure and invocation boundary.</td>
+<td>Workspace Discovery Auditor + Docs Maintainer / <code>workspace-discovery-auditor</code>, <code>docs-maintainer</code></td>
+<td>New <code>docs/diagrams/skill-exposure-and-invocation.md</code>.</td>
+<td>Added RU/EN skill exposure and invocation boundary page separating source bundle, installed cache, active session exposure, implicit policy and required fresh-session proof.</td>
+<td>Later cache/session checks still require read-only scope or explicit approval for mutation.</td>
+<td>Turns auto-engagement risk into an understandable architecture boundary.</td>
+<td>User can distinguish source correctness from active Codex session behavior.</td>
+<td>Diagram labels planned-only status and required proof for fixed auto-engagement.</td>
+<td>Docs check; later route/eval tests when implemented.</td>
+<td>Do not claim Product-Agent OS auto-engagement is fixed until evidence exists.</td>
+<td><code>implemented_source_docs_no_site_rebuild</code></td>
+</tr>
+<tr>
+<td><code>DOC-M23</code></td>
+<td><code>G3</code></td>
+<td>P2</td>
+<td>Add an Architecture Intelligence diagram atlas page.</td>
+<td>Implementation Planner + Docs Maintainer / <code>implementation-planner</code>, <code>docs-maintainer</code></td>
+<td>Mermaid diagrams for first-run flow, artifact pipeline, graph depth, methodology routing, approval gates, site sync, source registry loop and deferred Structurizr DSL trigger criteria.</td>
+<td>Added RU/EN Architecture Intelligence diagram atlas, connected it from the diagrams index and recorded local Mermaid/browser-proof boundary plus deferred Structurizr DSL trigger criteria.</td>
+<td>Approve any future Structurizr DSL decision only after trigger evidence names install path, rollback and verification.</td>
+<td>Gives maintainers a visual map of the expanded implementation without prematurely adding architecture-as-code tooling.</td>
+<td>User can understand architecture without reconstructing it from scripts/tests and can see when Structurizr DSL would be justified.</td>
+<td>Page includes diagrams, usage guidance, related artifacts, common failure modes, local Mermaid/browser-proof boundary and Structurizr trigger status.</td>
+<td>Docs tests; check docs; strict MkDocs source/nav smoke; browser or Structurizr proof only with approval.</td>
+<td>Do not add diagrams that duplicate stale generated site views or install Structurizr DSL without trigger evidence and approval.</td>
+<td><code>implemented_source_docs_no_site_rebuild</code></td>
+</tr>
+<tr>
+<td><code>DOC-M11</code></td>
+<td><code>G4</code></td>
+<td>P0</td>
+<td>Add reader-facing instruction and tool-use compliance documentation.</td>
+<td>Docs Maintainer + Risk Reviewer / <code>docs-maintainer</code>, <code>risk-reviewer</code></td>
+<td>New <code>docs/product-agent-os/instruction-tool-use-compliance.md</code>.</td>
+<td>Added RU/EN page explaining compliance issue, source/cache/session model, implicit invocation options, official-doc source check and no-auto-apply learning loop.</td>
+<td>Review future public/internal tone only if installed cache/session evidence changes.</td>
+<td>Moves compliance planning out of hidden ledger-only context.</td>
+<td>User understands what the system will fix, what remains planned and what requires approval.</td>
+<td>Page states planned-only status, exact proof required and unsupported claims without internal planning labels.</td>
+<td>Docs tests; source registry update if source-backed public claims change.</td>
+<td>Avoid unsupported OpenAI product behavior claims; official docs must be refreshed before durable claims.</td>
+<td><code>implemented_source_docs_no_site_rebuild</code></td>
+</tr>
+<tr>
+<td><code>DOC-M12</code></td>
+<td><code>G4</code></td>
+<td>P1</td>
+<td>Update Product-Agent OS index and scenarios with new routes.</td>
+<td>Docs Maintainer + Product Reviewer / <code>docs-maintainer</code></td>
+<td><code>docs/product-agent-os/index.md</code>, <code>scenarios.md</code>, EN counterparts if updated, plus final <code>DOC-M25</code> generated-site freshness route.</td>
+<td>Linked first-run cockpit, compliance page, trust-boundary diagrams, site freshness policy and docs-tooling command matrix without implying that root <code>site</code> is current.</td>
+<td>Review navigation priority only if future owner wants G4 pages promoted differently.</td>
+<td>Improves discoverability of new architecture docs while preserving source/generated boundaries.</td>
+<td>User finds the new pages without reading internal ledgers and understands that final generated-site freshness is a separate last gate.</td>
+<td>Index/scenarios include concise route links, no duplicated long history, no stale generated-site claim and a route to final <code>DOC-M25</code>.</td>
+<td>Docs tests; check docs; strict MkDocs preflight if nav changes; final root <code>site</code> rebuild remains <code>DOC-M25</code>.</td>
+<td>Avoid root/docs bloat, stale duplicated summaries and generated-site freshness claims before final rebuild.</td>
+<td><code>implemented_source_docs_no_site_rebuild</code></td>
+</tr>
+<tr>
+<td><code>DOC-M26</code></td>
+<td><code>G4</code></td>
+<td>P0</td>
+<td>Document first-run CLI modes and safe docs-tooling command matrix.</td>
+<td>Docs Maintainer + Tester / <code>docs-maintainer</code>, <code>test-eval-designer</code></td>
+<td><code>run_first_project_analysis.py</code>, <code>first_run_analysis.py</code>, command matrix, script registry, markdownlint/Prettier/Vale/lychee/gitleaks/Redocly command modes and approval gates.</td>
+<td>Added operator contract for <code>--dry-run</code>, <code>--write</code>, <code>--full-dry-run</code>, <code>--stage</code>, <code>--write-analysis</code>, safe-help rows, docs-tooling smoke rows, broad-scan rows, external-crawl rows, report-retention rows and approval-blocked rows.</td>
+<td>Confirm later only if command help changes again or broad tooling commands get explicit approval.</td>
+<td>Makes operator entrypoints and docs-tooling checks auditable while avoiding stale CLI examples.</td>
+<td>User can choose the safe first command, understand write boundaries and distinguish smoke checks from broad enforcement.</td>
+<td>Docs list modes, outputs, allowed write roots, generated files, skipped live-bound rows, markdownlint/Prettier/Vale/lychee/gitleaks/Redocly applicability, unsupported claims and approval requirements.</td>
+<td>CLI help inspection; scoped docs-tooling smoke references; docs tests; check docs; <code>git diff --check</code>.</td>
+<td>Do not imply external stage, runtime launch, provider call, target mutation, broad scan, external crawl, report retention or Redocly API coverage is approved by docs.</td>
+<td><code>implemented_source_docs_no_site_rebuild</code></td>
+</tr>
+<tr>
+<td><code>DOC-M27</code></td>
+<td><code>G4</code></td>
+<td>P0</td>
+<td>Document guided questions and answer-ledger routing.</td>
+<td>Docs Maintainer + Product Reviewer / <code>docs-maintainer</code>, <code>implementation-planner</code></td>
+<td><code>question_protocol.py</code>, <code>question_ledger.py</code>, first response and answer-ledger templates.</td>
+<td>Added guide explaining one blocking question maximum, recommended/optional questions, owner answers and unreviewed-answer boundaries.</td>
+<td>Review reader-facing wording only if question protocol changes.</td>
+<td>Prevents guided questions from becoming hidden requirements or source truth.</td>
+<td>User understands how the system asks, records and uses questions.</td>
+<td>Page separates question queue, first response, answer ledger, owner review and source promotion.</td>
+<td>Docs tests; source-map review; focused question tests if docs cite exact schema.</td>
+<td>Answers do not mutate source docs or authorize actions without review.</td>
+<td><code>implemented_source_docs_no_site_rebuild</code></td>
+</tr>
+<tr>
+<td><code>DOC-M31</code></td>
+<td><code>G4</code></td>
+<td>P1</td>
+<td>Update methodology integration map.</td>
+<td>Docs Maintainer + Implementation Planner / <code>docs-maintainer</code>, <code>implementation-planner</code></td>
+<td><code>docs/methodologies/*</code>, methodology audit/synthesis outputs, route-to-artifact mapping and conditional Redocly/OpenAPI source-contract route.</td>
+<td>Updated map showing how system methodology signals become recommended artifacts, owner questions, safe next actions and optional API-doc enforcement only when an OpenAPI source contract exists.</td>
+<td>Review only if methodology output fields or API contract tooling status changes.</td>
+<td>Keeps methodology intelligence tied to real outputs instead of abstract method lists or unused tooling.</td>
+<td>User sees why the system recommends certain artifacts and gates, and why Redocly remains deferred without API source truth.</td>
+<td>Docs link methodology signals to artifacts, evidence status, owner questions, claim limits and Redocly <code>not_applicable</code> / OpenAPI-trigger status.</td>
+<td>Docs tests; check docs; source registry update if claims change.</td>
+<td>Detection alone must stay <code>present_unverified</code>; Redocly enforcement must not run or claim API coverage without source-contract approval.</td>
+<td><code>implemented_source_docs_no_site_rebuild</code></td>
+</tr>
+<tr>
+<td><code>DOC-M32</code></td>
+<td><code>G4</code></td>
+<td>P1</td>
+<td>Document installed-source, cache and active-session state.</td>
+<td>Workspace Discovery Auditor + Docs Maintainer / <code>workspace-discovery-auditor</code>, <code>docs-maintainer</code></td>
+<td>Source tree, installed plugin cache, active session exposure, fresh-session proof and implicit invocation policy.</td>
+<td>Added source/cache/session page explaining how to compare source, installed cache and active session without mutating them.</td>
+<td>Future validation may inspect local cache/session only under read-only scope or explicit approval.</td>
+<td>Makes installation/exposure drift diagnosable.</td>
+<td>User can understand why a capability exists in source but is not active in a session.</td>
+<td>Docs name source/cache/session layers, proof required, privacy boundary and no-auto-repair policy.</td>
+<td>Read-only inventory; docs tests; check docs.</td>
+<td>No cache refresh, global config write or session mutation without separate approval.</td>
+<td><code>implemented_source_docs_no_site_rebuild</code></td>
+</tr>
+<tr>
+<td><code>DOC-M21</code></td>
+<td><code>G5</code></td>
+<td>P1</td>
+<td>Add generated artifact UX acceptance criteria.</td>
+<td>Docs Maintainer + Risk Reviewer / <code>docs-maintainer</code>, <code>risk-reviewer</code></td>
+<td>HTML modernization, printable output, no external URL/script policy, accessibility-oriented review, Vale claim-language checks and conditional Storybook trigger.</td>
+<td>Document what makes generated artifacts acceptable for internal use, owner review and public transfer, including when component/story evidence would justify Storybook and when Vale warning thresholds are advisory versus enforced.</td>
+<td>Approve any stricter visual/UX acceptance thresholds, Vale enforcement thresholds or future Storybook decision record.</td>
+<td>Makes HTML/report quality review repeatable instead of subjective while preventing unnecessary UI-tool sprawl.</td>
+<td>User gets a practical checklist for generated pages and reports plus clear criteria for optional Storybook-based visual acceptance.</td>
+<td>Criteria covers navigation, readability, table density, source links, offline behavior, claim boundaries, Vale advisory/enforcement state and Storybook trigger status.</td>
+<td>Docs tests; check docs; optional rendered artifact review; Storybook/browser proof only with approval.</td>
+<td>Browser/runtime proof, Vale enforcement and Storybook install remain approval-required when needed.</td>
+<td><code>implemented_source_docs_no_site_rebuild</code></td>
+</tr>
+<tr>
+<td><code>DOC-M24</code></td>
+<td><code>G5</code></td>
+<td>P2</td>
+<td>Add source, cache, session, supply-chain and report-retention docs.</td>
+<td>Docs Maintainer + Risk Reviewer / <code>docs-maintainer</code>, <code>risk-reviewer</code></td>
+<td>Plugin cache, installed skill count, session summaries, synthetic fixture boundaries, privacy rules, Python vulnerability audit / Python SBOM, complete repository SBOM, Node remediation and raw report-retention policy.</td>
+<td>Document what local/cache/session evidence can be stored, summarized or redacted, and how supply-chain reports, raw findings, Python vulnerability audit, full SBOM and Node remediation remain approval-gated.</td>
+<td>Confirm privacy, distribution labels, report retention/redaction policy and dependency-remediation approval boundaries for local-only/internal R&amp;D data.</td>
+<td>Reduces accidental leakage, clarifies source trust and keeps supply-chain evidence from becoming hidden publication or compliance claims.</td>
+<td>User gets a clear private/public boundary for future docs, reports and dependency-risk evidence.</td>
+<td>Page or section names allowed evidence, redaction rules, forbidden content, owner approval gates, Python audit/SBOM gap, complete repository SBOM gap, Node remediation gap and raw report-retention policy.</td>
+<td>Docs tests; check docs; registry parity review; no raw report retention or remediation command without approval.</td>
+<td>Never store secrets, raw private chat logs, unredacted sensitive data, raw findings or dependency-remediation claims without explicit approval and rollback evidence.</td>
+<td><code>implemented_source_docs_no_site_rebuild</code></td>
+</tr>
+<tr>
+<td><code>DOC-M28</code></td>
+<td><code>G5</code></td>
+<td>P0</td>
+<td>Document graph ontology, query packets, freshness and rejected links.</td>
+<td>Graph Reviewer + Docs Maintainer / <code>docs-maintainer</code>, <code>test-eval-designer</code></td>
+<td><code>project_code_graph.py</code>, <code>project_graph_ontology.py</code>, <code>project_graph_queries.py</code>, manifest/freshness model.</td>
+<td>Add graph intelligence contract covering ontology, coverage map, rejected-link ledger, freshness gates, bounded queries and source-read-before-edit rules.</td>
+<td>Approve how much graph internals should be public versus advanced operator docs.</td>
+<td>Makes graph outputs trustworthy without overclaiming semantic completeness.</td>
+<td>User can use graph packets safely for navigation and impact orientation.</td>
+<td>Docs define supported queries, stale handling, rejected-link meaning, unsupported claims and next safe action.</td>
+<td>Graph docs tests; focused graph query tests if examples are added; check docs.</td>
+<td>Graph packets remain orientation evidence and cannot replace source reads.</td>
+<td><code>implemented_source_docs_no_site_rebuild</code></td>
+</tr>
+<tr>
+<td><code>DOC-M29</code></td>
+<td><code>G5</code></td>
+<td>P0</td>
+<td>Document local HTML interaction and browser-proof approval boundary.</td>
+<td>Frontend Reviewer + Risk Reviewer / <code>frontend-testing-debugging</code>, <code>risk-reviewer</code>, <code>docs-maintainer</code></td>
+<td>Embedded local JS, tabs/search/filter/diagram controls, no external requests, fallback behavior, approved browser proof packets and Mermaid/HTML visual evidence boundary.</td>
+<td>Add a standard for generated HTML interactions: allowed local controls, forbidden external scripts/requests, keyboard/focus expectations, no hidden warnings and what browser proof must record if approved.</td>
+<td>Approve whether this standard belongs in artifact contracts, generated-artifact UX criteria or a separate page.</td>
+<td>Keeps richer generated HTML useful without expanding runtime authority or silently upgrading static checks into browser proof.</td>
+<td>User can open generated HTML knowing what it may and may not do, and can tell static checks from approved browser evidence.</td>
+<td>Docs define allowed interactions, no-network policy, JS-disabled fallback, visual/a11y checks, console/network evidence requirements and unsupported runtime claims.</td>
+<td>Static HTML checks; docs tests; optional browser proof with explicit approval.</td>
+<td>Local JS must not fetch, mutate files, call providers, start runtime, hide claim ceilings or imply browser proof without current approved evidence.</td>
+<td><code>implemented_source_docs_no_site_rebuild</code></td>
+</tr>
+<tr>
+<td><code>DOC-M30</code></td>
+<td><code>G5</code></td>
+<td>P1</td>
+<td>Add real-target static comparison and final G1.1 residual follow-up guidance.</td>
+<td>Product Reviewer + Completion Skeptic + Docs Maintainer / <code>completion-skeptic</code>, <code>docs-maintainer</code>, <code>test-eval-designer</code></td>
+<td>Before/after generated artifact comparisons, digests, structure deltas, screenshots or accepted static gaps, plus final G1.1 residual checklist and row-level G2-G5 hook review.</td>
+<td>Document how to summarize real-target static comparisons without naming private targets in public docs, carry the routed G1.1 residual checklist to closure and confirm each relevant G2-G5 row either implemented, deferred or accepted its residual hook.</td>
+<td>Confirm public/private wording, redaction rules and which residual items get later owner-approved execution.</td>
+<td>Lets implementation evidence inform docs without leaking private target details, while preventing G1.1 leftovers from being lost or hidden inside broad rows.</td>
+<td>User can evaluate generated artifact quality improvements from a safe summary and see which G1.1 follow-ups still need approval/evidence.</td>
+<td>Page or section names comparison fields, redaction rules, unsupported claims, owner-facing evidence path, residual routing table from this plan and row-level closure status.</td>
+<td>Docs tests; registry review; optional screenshot, dependency remediation or report-retention proof only with approval; root <code>site</code> freshness remains final <code>DOC-M25</code>.</td>
+<td>Do not publish target names, raw paths, private screenshots, runtime claims or execute residual items without separate approval.</td>
+<td><code>implemented_source_docs_no_site_rebuild</code></td>
+</tr>
+<tr>
+<td><code>DOC-M25</code></td>
+<td><code>G5</code></td>
+<td>P2</td>
+<td>Final rebuild public site/search/sitemap parity after G2-G5 source updates.</td>
+<td>Docs Maintainer / <code>docs-maintainer</code></td>
+<td><code>site/</code>, MkDocs nav, localized pages, search index, sitemap and freshness evidence.</td>
+<td>Rebuilt root <code>site/</code> with the project-local MkDocs runtime after owner approval, promoted the former <code>DOC_M25_PENDING_SITE_PAGES</code> into the site parity contract and recorded source-owned evidence in <code>docs/superpowers/specs/documentation-refresh-doc-m25-site-freshness-summary.json</code>.</td>
+<td>No further action unless the owner separately approves browser proof, broad scans, publication, release, deployment or git actions.</td>
+<td>Keeps generated-site freshness evidence honest by tying it to a current root build rather than stale output or intermediate smoke directories.</td>
+<td>User sees that source docs and generated <code>site</code>/search/sitemap now agree for G2-G5 pages.</td>
+<td>Site freshness is claimed only for the current strict MkDocs rebuild, search and sitemap evidence against root <code>site</code>; browser/runtime/publication/release claims remain unsupported.</td>
+<td>Docs tests; check docs; <code>.venv-docs\Scripts\python.exe -m mkdocs --version</code>; strict MkDocs rebuild to root <code>site</code>; search/sitemap parity tests; <code>git diff --check</code>.</td>
+<td>Do not claim browser proof, publication, runtime/provider behavior, broad scans, dependency remediation, raw report retention or release readiness from this site rebuild.</td>
+<td><code>implemented_root_site_search_sitemap_freshness</code></td>
+</tr>
+</tbody>
+</table>
+<p>G4 source docs are implemented through <code>DOC-M11</code>, <code>DOC-M12</code>, <code>DOC-M26</code>, <code>DOC-M27</code>, <code>DOC-M31</code> and <code>DOC-M32</code> with source pages, EN counterparts, MkDocs nav, <code>tools/check_docs.py</code>, test contract and source-registry sync. Evidence packet: <code>docs/superpowers/specs/documentation-refresh-g4-operator-flows-system-behavior-summary.json</code>. Generated root <code>site/</code> freshness is not claimed; final search/sitemap parity still routes through <code>DOC-M25</code>. No cache refresh, global config write, hook trust activation, browser/runtime/provider call, target mutation, git action, release, deploy, publish or automation action is approved or performed by G4.</p>
+<p>G5 source docs are implemented through <code>DOC-M21</code>, <code>DOC-M24</code>, <code>DOC-M28</code>, <code>DOC-M29</code> and <code>DOC-M30</code> with source pages, EN counterparts, MkDocs nav, <code>tools/check_docs.py</code>, test contract and source-registry sync. Evidence packet: <code>docs/superpowers/specs/documentation-refresh-g5-evidence-quality-site-gate-summary.json</code>. <code>DOC-M25</code> remains <code>approval_required_not_run</code>: generated root <code>site/</code>, search and sitemap freshness are not claimed. No root <code>site</code> rebuild, browser/runtime/provider call, target mutation, dependency remediation, raw report retention, git action, release, deploy, publish or automation action is approved or performed by G5.</p>
+<p><code>DOC-M25</code> is implemented through <code>documentation_refresh_DOC-M25-A01</code> after the separate owner-approved site-freshness slice. Evidence packet: <code>docs/superpowers/specs/documentation-refresh-doc-m25-site-freshness-summary.json</code>. The former <code>DOC_M25_PENDING_SITE_PAGES</code> are now rendered in root <code>site/</code>, included in search index and included in sitemap; browser proof, broad scans, dependency remediation, raw report retention, publication, release, deploy and git actions remain outside this closure.</p>
+<p>Historical residual hook marker <code>planned_g1_1_residual_hooked</code> is superseded for G5 source-doc rows by <code>implemented_source_docs_no_site_rebuild</code>; <code>planned_g1_1_residual_handoff</code> remains as the residual-handoff vocabulary for future approval-gated execution.</p>
+<h2 id="g11-residual-follow-up-routing">G1.1 Residual Follow-Up Routing<a class="headerlink" href="#g11-residual-follow-up-routing" title="Permanent link">&para;</a></h2>
+<p>These items come from the G1.1 closure inventory after <code>DOC-M41</code>. They are not approval to execute the work; they are task ownership and future acceptance routing. <code>G5 / DOC-M30</code> keeps the residual checklist and row-level hook review, and the moved <code>G5 / DOC-M25</code> row is the final generated-site freshness gate after G2-G5 source updates.</p>
+<table>
+<thead>
+<tr>
+<th>Residual requirement</th>
+<th>Primary future owner row(s)</th>
+<th>Final handoff row</th>
+<th>Execution boundary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Root <code>site</code> rebuild, search/sitemap freshness and generated-site evidence.</td>
+<td><code>DOC-M25</code></td>
+<td><code>DOC-M25</code></td>
+<td>Requires separate approval for a final root <code>site/</code> build and current search/sitemap evidence after G2-G5 source updates; current strict builds under <code>.docs-tools/reports/</code> do not prove root <code>site</code> freshness.</td>
+</tr>
+<tr>
+<td>Mermaid browser proof and visual diagram screenshot evidence.</td>
+<td><code>DOC-M08</code>, <code>DOC-M23</code></td>
+<td><code>DOC-M30</code></td>
+<td>Requires separate browser/runtime approval; strict MkDocs and static asset checks do not prove rendered browser behavior.</td>
+</tr>
+<tr>
+<td>Structurizr DSL trigger for model-driven C4 or architecture-as-code diagrams.</td>
+<td><code>DOC-M23</code></td>
+<td><code>DOC-M30</code></td>
+<td>Remains deferred until trigger evidence, local install path, rollback and verification are owner-approved.</td>
+</tr>
+<tr>
+<td>Broad docs lint/format enforcement with markdownlint and Prettier beyond scoped smokes.</td>
+<td><code>DOC-M26</code>, optionally <code>DOC-M12</code> if public navigation/index wording changes.</td>
+<td><code>DOC-M30</code></td>
+<td>Broad autoformat or enforcement is not approved by G1.1 smoke evidence.</td>
+</tr>
+<tr>
+<td>Broad Vale enforcement for terminology, readiness wording and claim ceilings.</td>
+<td><code>DOC-M26</code>, <code>DOC-M21</code></td>
+<td><code>DOC-M30</code></td>
+<td>Vale remains advisory until thresholds, report retention and owner review rules are approved.</td>
+</tr>
+<tr>
+<td>Broad lychee/gitleaks scans, external URL crawling and raw report retention.</td>
+<td><code>DOC-M26</code>, <code>DOC-M24</code></td>
+<td><code>DOC-M30</code></td>
+<td>Requires approval for broad repository scans, external network checks and any retained raw findings.</td>
+</tr>
+<tr>
+<td>Redocly enforcement for API documentation.</td>
+<td><code>DOC-M26</code>, optionally <code>DOC-M31</code> when methodology/API map needs it.</td>
+<td><code>DOC-M30</code></td>
+<td><code>@redocly/cli</code> is installed locally, but enforcement stays <code>not_applicable</code> until an OpenAPI source contract exists.</td>
+</tr>
+<tr>
+<td>Python vulnerability audit / Python SBOM and complete repository SBOM.</td>
+<td><code>DOC-M24</code></td>
+<td><code>DOC-M30</code></td>
+<td>G1.1 has Python inventory and <code>pip check</code>, not a Python vulnerability audit or full repository SBOM.</td>
+</tr>
+<tr>
+<td>Node dependency remediation for the current moderate audit findings.</td>
+<td><code>DOC-M24</code></td>
+<td><code>DOC-M30</code></td>
+<td><code>npm audit fix</code>, package upgrades and lockfile remediation require separate dependency-change approval and rollback evidence.</td>
+</tr>
+<tr>
+<td>Docusaurus trigger for a future docs platform decision record.</td>
+<td><code>DOC-M30</code></td>
+<td><code>DOC-M30</code></td>
+<td>Deferred decision record only; no scaffold, install, migration or publication without trigger evidence and approval.</td>
+</tr>
+<tr>
+<td>Storybook trigger for component or generated-artifact visual acceptance.</td>
+<td><code>DOC-M21</code>, <code>DOC-M30</code></td>
+<td><code>DOC-M30</code></td>
+<td>Storybook is conditional documentation/verification surface only and remains uninstalled.</td>
+</tr>
+</tbody>
+</table>
+<p>No item in this table authorizes installation, root <code>site</code> rebuild, browser proof, dependency remediation, external crawling, raw report retention, provider/API calls, publication, automation, target mutation or git actions.</p>
+<h2 id="verification-plan">Verification Plan<a class="headerlink" href="#verification-plan" title="Permanent link">&para;</a></h2>
+<p>Minimum verification when this plan file alone changes:</p>
+<div class="highlight"><pre><span></span><code><span class="n">python</span> <span class="n">-m</span> <span class="n">unittest</span> <span class="n">tests</span><span class="p">.</span><span class="n">product_agent_os</span><span class="p">.</span><span class="n">test_product_agent_os_docs</span> <span class="n">-v</span>
+<span class="n">python</span> <span class="n">tools</span><span class="p">\</span><span class="n">check_docs</span><span class="p">.</span><span class="n">py</span>
+<span class="n">git</span> <span class="nb">diff </span><span class="p">-</span><span class="n">-check</span>
+</code></pre></div>
+<p>Additional verification when documentation implementation edits nav, diagrams, localized pages or generated site evidence:</p>
+<div class="highlight"><pre><span></span><code><span class="n">python</span> <span class="n">-m</span> <span class="n">mkdocs</span> <span class="n">build</span> <span class="p">-</span><span class="n">-strict</span>
+</code></pre></div>
+<p>Do not claim <code>site/</code> is current unless strict MkDocs has rebuilt it in the current run or an explicit accepted gap says the source docs are current while the generated site remains stale.</p>
+<h2 id="rollback">Rollback<a class="headerlink" href="#rollback" title="Permanent link">&para;</a></h2>
+<p>Rollback for this planning file is deletion of <code>docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md</code> and restoration of the docs test page-count and English-original constants. Later documentation implementation slices must name their own touched files and rollback notes row-by-row.</p>
+<h2 id="current-status">Current Status<a class="headerlink" href="#current-status" title="Permanent link">&para;</a></h2>
+<p><code>g1_1_doc_m34_contract_doc_m35_m36_m37_m38_m39_m40_m41_toolchain_governance_recorded</code>: G0 is closed through <code>DOC-M00</code>, <code>DOC-M01</code>, <code>DOC-M03</code>, <code>DOC-M15</code> and <code>DOC-M22</code>; G1 source records are closed through <code>DOC-M02</code>, <code>DOC-M13</code>, <code>DOC-M14</code>, <code>DOC-M16</code> and <code>DOC-M17</code>, while <code>DOC-M25</code> is moved to the final <code>G5</code> task row with status <code>runtime_available_site_rebuild_deferred_final</code> because <code>DOC-M35</code> installed the project-local MkDocs runtime but root <code>site/</code> should be rebuilt only after G2-G5 source updates unless the owner explicitly approves an earlier freshness slice. G1.1 has <code>DOC-M34</code> implemented as a contract-only local tooling layout; <code>DOC-M35</code> has project-local MkDocs install evidence and strict smoke evidence through <code>documentation_refresh_G1_1-DOC-M35-INSTALL-A01</code>; <code>DOC-M36</code> has project-local Node tooling evidence through <code>documentation_refresh_G1_1-DOC-M36-NODE-A01</code>; <code>DOC-M37</code> has project-local Vale evidence through <code>documentation_refresh_G1_1-DOC-M37-VALE-A01</code>; <code>DOC-M38</code> has project-local lychee/gitleaks evidence through <code>documentation_refresh_G1_1-DOC-M38-LINK-SECRET-A01</code>; <code>DOC-M39</code> has vendored Mermaid evidence through <code>documentation_refresh_G1_1-DOC-M39-MERMAID-A01</code>; <code>DOC-M40</code> has audit/SBOM governance evidence through <code>documentation_refresh_G1_1-DOC-M40-AUDIT-SBOM-A01</code>; <code>DOC-M41</code> has deferred platform trigger governance through <code>documentation_refresh_G1_1-DOC-M41-DEFERRED-PLATFORMS-A01</code> with status <code>implemented_deferred_platform_trigger_governance_no_install_no_site_rebuild</code>. G2 source docs are implemented through <code>DOC-M04</code>, <code>DOC-M05</code>, <code>DOC-M06</code>, <code>DOC-M19</code>, <code>DOC-M20</code> and <code>DOC-M33</code> with evidence <code>documentation_refresh_G2-A01</code>: new first-run cockpit RU/EN page, artifact contracts/gallery atlas, graph/CLI/technical cockpit boundary updates, MkDocs nav/source checks and <code>DOC_M25_PENDING_SITE_PAGES</code> test routing. G3 source docs are implemented through <code>DOC-M07</code>, <code>DOC-M08</code>, <code>DOC-M09</code>, <code>DOC-M10</code> and <code>DOC-M23</code> with evidence <code>documentation_refresh_G3-A01</code>: new RU/EN diagram atlas pages for source/generated trust boundary, first-run cockpit architecture, evidence/risk lifecycle, skill exposure and Architecture Intelligence maps, plus diagrams index, MkDocs nav/source checks and expanded <code>DOC_M25_PENDING_SITE_PAGES</code> routing. The G1.1 residual follow-up routing matrix assigns root <code>site</code> rebuild to final <code>DOC-M25</code>, Mermaid/browser and Structurizr follow-ups to <code>DOC-M08</code>/<code>DOC-M23</code>, broad lint/format/Vale/link/secret/Redocly enforcement to <code>DOC-M26</code>/<code>DOC-M21</code>, supply-chain/report-retention/remediation follow-ups to <code>DOC-M24</code>, and residual closure tracking to <code>DOC-M30</code> as <code>planned_g1_1_residual_handoff</code>; G2-G5 row-level hooks now carry those residuals directly. Generated root <code>site/</code> freshness is not claimed because strict builds only write under <code>.docs-tools/reports/</code> until final <code>DOC-M25</code>. Redocly enforcement remains <code>not_applicable</code> until an OpenAPI source contract exists, Vale warnings remain advisory until enforcement is approved, external URL crawling, broad link/secret scans, browser Mermaid rendering and raw report retention remain unclaimed. Dependency-safety claims are bounded: current Node audit reports 3 moderate findings and 0 high/critical findings, while Python vulnerability audit, complete repository SBOM and dependency remediation remain unclaimed. Docusaurus, Storybook and Structurizr DSL remain deferred and uninstalled until a future owner-approved platform decision record names trigger evidence, local install path, rollback and verification. No Structurizr DSL install was performed. No dependency upgrade, <code>npm audit fix</code>, new audit tool install, Docusaurus/Storybook install, hook activation, automation activation, browser automation, live runtime, provider/API call, installed plugin cache refresh, global Codex config write, target mutation, git action or publish/deploy action was performed.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </article>
+            </div>
+
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  К началу
+</button>
+
+      </main>
+
+        <footer class="md-footer">
+
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+
+
+</div>
+
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+
+
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.indexes", "navigation.top", "search.highlight", "search.suggest", "content.code.copy"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}}</script>
+
+
+      <script src="../../assets/javascripts/bundle.60a45f97.min.js"></script>
+
+        <script src="../../assets/javascripts/local-file-i18n.js"></script>
+
+        <script src="../../assets/javascripts/vendor/mermaid-10.9.6.min.js"></script>
+
+
+  </body>
+</html>

@@ -23,7 +23,10 @@ Source status: `project evidence`
 
 Final `DOC-M25` может rebuild root `site` только после отдельного approval. До этого source docs могут быть current, а generated `site`, search index и sitemap остаются stale/unsupported для новых G2-G5 pages.
 
+## DOC-M25 Closure Update
+
+`DOC-M25` закрыт через `documentation_refresh_DOC-M25-A01` со статусом `implemented_root_site_search_sitemap_freshness`. Root `site`, search index и sitemap теперь включают former `DOC_M25_PENDING_SITE_PAGES`; browser proof, broad scans, dependency remediation, raw report retention, publication, release, deploy и git actions остаются вне этого closure.
+
 ## Closure Rule
 
 G5 может закрыть source docs, nav, tests, registry и control-plane sync без root `site` freshness claim. Полная generated-site freshness требует current strict MkDocs build to root `site`, search/sitemap evidence и `git diff --check` в том же approved slice.
-

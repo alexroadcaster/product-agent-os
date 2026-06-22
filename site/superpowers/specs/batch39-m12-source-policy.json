@@ -1,0 +1,180 @@
+{
+  "errors": [
+    "missing Source status"
+  ],
+  "files": [
+    {
+      "assumptions": [],
+      "freshness_risks": [
+        "current OpenAI/runtime behavior may drift"
+      ],
+      "missing_context": [
+        "Source status is required",
+        "official source hint is required for OpenAI behavior claim"
+      ],
+      "path": "docs/superpowers/plans/2026-04-24-neural-flow-consolidation-implementation.md",
+      "registry_update_required": true,
+      "secret_findings": [],
+      "source_status": "missing",
+      "supported_facts": [
+        "OpenAI-related claim requires source-policy review"
+      ],
+      "unsupported_claims": [
+        "community claim lacks trust_level or verification_status"
+      ]
+    },
+    {
+      "assumptions": [],
+      "freshness_risks": [
+        "current OpenAI/runtime behavior may drift"
+      ],
+      "missing_context": [
+        "Source status is required"
+      ],
+      "path": "docs/superpowers/plans/2026-04-26-neural-flow-p2a-research-implementation.md",
+      "registry_update_required": true,
+      "secret_findings": [],
+      "source_status": "missing",
+      "supported_facts": [
+        "OpenAI-related claim requires source-policy review"
+      ],
+      "unsupported_claims": []
+    },
+    {
+      "assumptions": [],
+      "freshness_risks": [
+        "current OpenAI/runtime behavior may drift"
+      ],
+      "missing_context": [
+        "Source status is required",
+        "official source hint is required for OpenAI behavior claim"
+      ],
+      "path": "docs/superpowers/specs/2026-04-24-neural-flow-consolidation-design.md",
+      "registry_update_required": true,
+      "secret_findings": [],
+      "source_status": "missing",
+      "supported_facts": [
+        "OpenAI-related claim requires source-policy review"
+      ],
+      "unsupported_claims": [
+        "community claim lacks trust_level or verification_status"
+      ]
+    },
+    {
+      "assumptions": [],
+      "freshness_risks": [
+        "current OpenAI/runtime behavior may drift"
+      ],
+      "missing_context": [
+        "Source status is required"
+      ],
+      "path": "docs/superpowers/specs/2026-04-26-neural-flow-p2a-research-design.md",
+      "registry_update_required": true,
+      "secret_findings": [],
+      "source_status": "missing",
+      "supported_facts": [
+        "OpenAI-related claim requires source-policy review"
+      ],
+      "unsupported_claims": []
+    }
+  ],
+  "registry_updates_required": [
+    "docs/superpowers/plans/2026-04-24-neural-flow-consolidation-implementation.md",
+    "docs/superpowers/plans/2026-04-26-neural-flow-p2a-research-implementation.md",
+    "docs/superpowers/specs/2026-04-24-neural-flow-consolidation-design.md",
+    "docs/superpowers/specs/2026-04-26-neural-flow-p2a-research-design.md"
+  ],
+  "secret_findings": [],
+  "source_policy_report": {
+    "errors": [
+      "missing Source status"
+    ],
+    "files": [
+      {
+        "assumptions": [],
+        "freshness_risks": [
+          "current OpenAI/runtime behavior may drift"
+        ],
+        "missing_context": [
+          "Source status is required",
+          "official source hint is required for OpenAI behavior claim"
+        ],
+        "path": "docs/superpowers/plans/2026-04-24-neural-flow-consolidation-implementation.md",
+        "registry_update_required": true,
+        "secret_findings": [],
+        "source_status": "missing",
+        "supported_facts": [
+          "OpenAI-related claim requires source-policy review"
+        ],
+        "unsupported_claims": [
+          "community claim lacks trust_level or verification_status"
+        ]
+      },
+      {
+        "assumptions": [],
+        "freshness_risks": [
+          "current OpenAI/runtime behavior may drift"
+        ],
+        "missing_context": [
+          "Source status is required"
+        ],
+        "path": "docs/superpowers/plans/2026-04-26-neural-flow-p2a-research-implementation.md",
+        "registry_update_required": true,
+        "secret_findings": [],
+        "source_status": "missing",
+        "supported_facts": [
+          "OpenAI-related claim requires source-policy review"
+        ],
+        "unsupported_claims": []
+      },
+      {
+        "assumptions": [],
+        "freshness_risks": [
+          "current OpenAI/runtime behavior may drift"
+        ],
+        "missing_context": [
+          "Source status is required",
+          "official source hint is required for OpenAI behavior claim"
+        ],
+        "path": "docs/superpowers/specs/2026-04-24-neural-flow-consolidation-design.md",
+        "registry_update_required": true,
+        "secret_findings": [],
+        "source_status": "missing",
+        "supported_facts": [
+          "OpenAI-related claim requires source-policy review"
+        ],
+        "unsupported_claims": [
+          "community claim lacks trust_level or verification_status"
+        ]
+      },
+      {
+        "assumptions": [],
+        "freshness_risks": [
+          "current OpenAI/runtime behavior may drift"
+        ],
+        "missing_context": [
+          "Source status is required"
+        ],
+        "path": "docs/superpowers/specs/2026-04-26-neural-flow-p2a-research-design.md",
+        "registry_update_required": true,
+        "secret_findings": [],
+        "source_status": "missing",
+        "supported_facts": [
+          "OpenAI-related claim requires source-policy review"
+        ],
+        "unsupported_claims": []
+      }
+    ],
+    "registry_updates_required": [
+      "docs/superpowers/plans/2026-04-24-neural-flow-consolidation-implementation.md",
+      "docs/superpowers/plans/2026-04-26-neural-flow-p2a-research-implementation.md",
+      "docs/superpowers/specs/2026-04-24-neural-flow-consolidation-design.md",
+      "docs/superpowers/specs/2026-04-26-neural-flow-p2a-research-design.md"
+    ],
+    "secret_findings": [],
+    "status": "blocked",
+    "workspace": "C:\\Users\\user\\Desktop\\project\\Neural_Flow"
+  },
+  "status": "blocked",
+  "workspace": "C:\\Users\\user\\Desktop\\project\\Neural_Flow"
+}

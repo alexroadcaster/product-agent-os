@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Product-Agent OS First-Run Cockpit</title><style>:root{color-scheme:light;--ink:#151515;--muted:#5f6368;--line:#d7d9dd;--paper:#f7f8f5;--panel:#ffffff;--accent:#1f7a5a;--warn:#a05a00}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.55 Arial,Helvetica,sans-serif}.skip-link{position:absolute;left:12px;top:-48px;background:var(--ink);color:#fff;padding:8px 10px;border-radius:4px;z-index:5}.skip-link:focus{top:12px}.cockpit-shell{max-width:1180px;margin:0 auto;padding:24px}.cockpit-hero{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:24px}.eyebrow{margin:0 0 8px;color:var(--accent);font-weight:700;text-transform:uppercase;font-size:12px}h1{font-size:34px;line-height:1.12;margin:0 0 12px}h2{font-size:21px;margin:0 0 12px}h3{font-size:15px;margin:0 0 8px}h4{font-size:14px;margin:0 0 8px}.hero-grid,.status-grid,.section-grid{display:grid;gap:10px}.hero-grid{grid-template-columns:repeat(4,minmax(0,1fr));margin-top:18px}.hero-grid span,.status-card,.section-card,.cockpit-band,.cockpit-page,.cockpit-controls{background:var(--panel);border:1px solid var(--line);border-radius:8px}.hero-grid span{padding:12px}.cockpit-nav{position:sticky;top:0;z-index:2;display:flex;gap:8px;overflow:auto;padding:12px 0;background:var(--paper)}.cockpit-nav a{white-space:nowrap;color:var(--ink);text-decoration:none;border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:8px 10px}.cockpit-controls{display:grid;grid-template-columns:2fr repeat(4,minmax(120px,1fr));gap:10px;align-items:end;margin-top:10px;padding:12px}.cockpit-controls label{display:grid;gap:4px;font-size:13px;font-weight:700}.cockpit-controls input,.cockpit-controls select,.cockpit-controls button{min-height:38px;border:1px solid var(--line);border-radius:6px;background:#fff;color:var(--ink);padding:7px}.control-note,.detail-panel-links{grid-column:1/-1;color:var(--muted);margin:0}.detail-panel-links{display:flex;flex-wrap:wrap;gap:8px;padding:0;list-style:none}.detail-panel-links a{color:var(--ink)}.cockpit-band,.cockpit-page{margin-top:14px;padding:18px}.status-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.status-card,.section-card{padding:14px}.section-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.page-role,.boundary,.status-card p,.section-card p,.graph-boundary,.empty-state{color:var(--muted);margin:0 0 6px}.claim-list{margin:0;padding-left:20px}.diagnostic-disclosure details{border:1px solid var(--line);border-radius:8px;background:var(--panel);padding:12px}.diagnostic-disclosure summary{cursor:pointer;font-weight:700}.compact-table,.graph-fallback-table{width:100%;border-collapse:collapse;margin:10px 0}.compact-table th,.compact-table td,.graph-fallback-table th,.graph-fallback-table td{border-top:1px solid var(--line);padding:9px;text-align:left;vertical-align:top;overflow-wrap:anywhere}.compact-table th{width:210px;color:var(--muted);font-weight:600}.graph-surface,.qa-contract,.safety-contract{margin:12px 0;padding:14px;border:1px solid var(--line);border-radius:8px;background:#fbfbf8}.graph-canvas{display:block;width:100%;min-height:320px;margin:12px 0;border:1px solid var(--line);border-radius:8px;background:#fdfdfb}.empty-graph{display:flex;align-items:center;justify-content:center;padding:24px;color:var(--muted)}.graph-edge{stroke-width:1;opacity:.58}.graph-node text{font-size:3.5px;fill:#252525;paint-order:stroke;stroke:#fff;stroke-width:1.8px}.graph-side-panel{margin:10px 0;padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--panel)}.graph-legend{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 12px;padding:0;list-style:none}.graph-legend li{display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;background:var(--panel);padding:5px 8px}.legend-swatch{width:10px;height:10px;border-radius:50%;display:inline-block}.graph-hotspots th:first-child,.graph-fallback-table th:first-child{width:230px}@media(max-width:760px){.cockpit-shell{padding:14px}.hero-grid,.status-grid,.section-grid,.cockpit-controls{grid-template-columns:1fr}h1{font-size:26px}.cockpit-nav{position:static}.compact-table th{width:auto}.graph-canvas{min-height:240px}.graph-legend{display:block}.graph-legend li{margin:6px 0}}</style></head>
+<body>
+<a class="skip-link" href="#main-content">Skip to cockpit content</a>
+<main id="main-content" class="first-run-cockpit cockpit-shell" data-schema="first_run_cockpit_artifact_v1" tabindex="-1">
+<header class="cockpit-hero">
+<p class="eyebrow">generated-view-only</p>
+<h1>Product-Agent OS First-Run Cockpit</h1>
+<p>source files and current command evidence remain source truth.</p>
+<div class="hero-grid">
+<span>Primary artifact <strong>index.html</strong></span>
+<span>Graph renderer <strong>Cosmos.gl</strong></span>
+<span>Pages <strong>8</strong></span>
+<span>Completion claim <strong>not_claimed</strong></span>
+</div>
+</header>
+<nav class="cockpit-nav" aria-label="First-run cockpit sections"><a href="#page-overview">Overview</a>
+<a href="#page-project-map">Project Map</a>
+<a href="#page-docs-sources">Docs &amp; Sources</a>
+<a href="#page-code-intelligence">Code Intelligence</a>
+<a href="#page-contracts">Contracts</a>
+<a href="#page-quality-metrics">Quality &amp; Metrics</a>
+<a href="#page-operations-risk">Operations &amp; Risk</a>
+<a href="#page-proposal-ledger">Proposal Ledger</a></nav>
+<form class="cockpit-controls" role="search" aria-label="Cockpit search and filters" data-filter-state="static-default-all-visible" action="#page-overview"><label class="search-control" for="cockpit-search">Search cockpit<input id="cockpit-search" name="q" type="search" autocomplete="off" placeholder="section, file, status, graph node"></label><label class="filter-control" for="section-status-filter">Section status<select id="section-status-filter" name="section-status-filter" data-filter-source="section_cards" data-filter-field="status"><option value="">All</option><option value="current">current</option><option value="inspection_only">inspection_only</option><option value="approval_required">approval_required</option><option value="not_available">not_available</option></select></label>
+<label class="filter-control" for="graph-node-type-filter">Graph node type<select id="graph-node-type-filter" name="graph-node-type-filter" data-filter-source="source_file_graph" data-filter-field="type"><option value="">All</option><option value="current">current</option><option value="inspection_only">inspection_only</option><option value="approval_required">approval_required</option><option value="not_available">not_available</option></select></label>
+<label class="filter-control" for="graph-status-filter">Graph status<select id="graph-status-filter" name="graph-status-filter" data-filter-source="source_file_graph" data-filter-field="status"><option value="">All</option><option value="current">current</option><option value="inspection_only">inspection_only</option><option value="approval_required">approval_required</option><option value="not_available">not_available</option></select></label>
+<label class="filter-control" for="code-graph-status-filter">Code graph status<select id="code-graph-status-filter" name="code-graph-status-filter" data-filter-source="code_graph" data-filter-field="status"><option value="">All</option><option value="current">current</option><option value="inspection_only">inspection_only</option><option value="approval_required">approval_required</option><option value="not_available">not_available</option></select></label><button type="submit">Apply static filters</button><p class="control-note">Controls are offline and script-free; tables remain visible as fallback.</p><ul class="detail-panel-links" aria-label="Detail panels"><li><a href="#source-file-graph-selected-file-panel">selected_file: selected</a></li>
+<li><a href="#code-graph-selected-file-panel">selected_code_graph_node: not_available</a></li>
+<li><a href="#cockpit-diagnostics">progressive_diagnostics: collapsed_by_default</a></li></ul></form>
+<section class="cockpit-band" aria-labelledby="status-cards"><h2 id="status-cards">Evidence Status</h2><div class="status-grid"><article class="status-card"><h3>control_plane</h3><p>Status <strong>present_unverified</strong></p><p>Confidence low</p><p>Use this section as orientation; verify source evidence before action.</p></article>
+<article class="status-card"><h3>discovery</h3><p>Status <strong>current</strong></p><p>Confidence medium</p><p>Use this section as orientation; verify source evidence before action.</p></article>
+<article class="status-card"><h3>graph</h3><p>Status <strong>inspection_only</strong></p><p>Confidence medium</p><p>Review graph blockers before stronger claims.</p></article>
+<article class="status-card"><h3>methodology_audit</h3><p>Status <strong>not_available</strong></p><p>Confidence unknown</p><p>Use this section as orientation; verify source evidence before action.</p></article>
+<article class="status-card"><h3>runtime_route</h3><p>Status <strong>approval_required</strong></p><p>Confidence medium</p><p>Review runtime_route blockers before stronger claims.</p></article>
+<article class="status-card"><h3>source_policy</h3><p>Status <strong>approval_required</strong></p><p>Confidence medium</p><p>Review source_policy blockers before stronger claims.</p></article>
+<article class="status-card"><h3>status_snapshot</h3><p>Status <strong>not_available</strong></p><p>Confidence unknown</p><p>Use this section as orientation; verify source evidence before action.</p></article></div></section>
+<section class="cockpit-band" aria-labelledby="unsupported-claims"><h2 id="unsupported-claims">Unsupported Claims</h2><ul class="claim-list"><li>generated graph is not source truth</li>
+<li>runtime/browser proof not run</li>
+<li>semantic completeness not claimed</li>
+<li>source policy blocked apply/promotion</li></ul></section>
+<section class="cockpit-page" id="page-overview">
+<h2>Overview</h2>
+<p class="page-role">Current scan, freshness, source boundary and safe next action.</p>
+<p class="boundary">No approval, write or completion claim can come from this generated view.</p>
+<div class="section-grid"><article class="section-card" id="section-scan-summary"><h3>Scan Summary</h3><p>section uses graph artifacts and compact packets only</p></article>
+<article class="section-card" id="section-source-boundary"><h3>Source Boundary</h3><p>section uses graph artifacts and compact packets only</p></article>
+<article class="section-card" id="section-safe-next-action"><h3>Safe Next Action</h3><p>section uses graph artifacts and compact packets only</p></article></div>
+</section>
+
+<section class="cockpit-page" id="page-project-map">
+<h2>Project Map</h2>
+<p class="page-role">Graph projection, filters, selected-node evidence and fallback table.</p>
+<p class="boundary">Project Map is generated navigation, not dependency proof.</p>
+<div class="graph-surface" data-graph-kind="source-file-graph" data-renderer="Cosmos.gl" data-adapter-status="not_vendored_static_fallback">
+<h3>File / Source Graph</h3>
+<p class="graph-boundary">Cosmos.gl is the selected renderer; this offline file carries a Cosmos-ready payload and uses a static SVG/table fallback with no external assets.</p>
+<table class="compact-table"><tbody><tr><th scope="row">Status</th><td>adapter_ready</td></tr>
+<tr><th scope="row">Renderer</th><td>Cosmos.gl</td></tr>
+<tr><th scope="row">Renderer mode</th><td>cosmos_gl_payload_with_static_html_fallback</td></tr>
+<tr><th scope="row">Runtime assets</th><td>not_vendored_static_fallback</td></tr>
+<tr><th scope="row">Graphology-compatible</th><td>true</td></tr>
+<tr><th scope="row">Nodes</th><td>27</td></tr>
+<tr><th scope="row">Edges</th><td></td></tr>
+<tr><th scope="row">Visible nodes</th><td>27</td></tr>
+<tr><th scope="row">Visible edges</th><td></td></tr>
+<tr><th scope="row">Omitted nodes</th><td></td></tr>
+<tr><th scope="row">Omitted edges</th><td></td></tr>
+<tr><th scope="row">Fallback</th><td>bounded table fallback</td></tr></tbody></table>
+<svg id="source-file-graph-canvas" class="graph-canvas" viewBox="-70 -70 140 140" role="img" aria-label="source-file-graph static Cosmos.gl fallback" data-renderer="Cosmos.gl"><g class="graph-node" data-node-id="source:workspace_inventory" data-node-type="source_artifact" data-status="inspection_only" data-cluster="source_artifact"><circle cx="44.980" cy="1.350" r="5.0" fill="#26707f"></circle><text x="47.980" y="-1.650">workspace_inventory</text></g><g class="graph-node" data-node-id="source:architecture-v2.md" data-node-type="source_artifact" data-status="inspection_only" data-cluster="architecture-v2"><circle cx="42.555" cy="26.250" r="5.0" fill="#4f6b2f"></circle><text x="45.555" y="23.250">architecture-v2.md</text></g><g class="graph-node" data-node-id="source:architecture.md" data-node-type="source_artifact" data-status="inspection_only" data-cluster="architecture"><circle cx="33.944" cy="22.995" r="5.0" fill="#8c4a5f"></circle><text x="36.944" y="19.995">architecture.md</text></g><g class="graph-node" data-node-id="source:docs/superpowers/plans/2026-04-24-neural-flow-consolidation-implementation.md" data-node-type="source_artifact" data-status="inspection_only" data-cluster="docs"><circle cx="30.642" cy="25.712" r="5.0" fill="#7a5c12"></circle><text x="33.642" y="22.712">docs/superpowers/plans/2026-04-24-neural-f</text></g><g class="graph-node" data-node-id="source:docs/superpowers/plans/2026-04-26-neural-flow-p2a-research-implementation.md" data-node-type="source_artifact" data-status="inspection_only" data-cluster="docs"><circle cx="23.886" cy="32.085" r="5.0" fill="#7a5c12"></circle><text x="26.886" y="29.085">docs/superpowers/plans/2026-04-26-neural-f</text></g><g class="graph-node" data-node-id="source:docs/superpowers/specs/2026-04-24-neural-flow-consolidation-design.md" data-node-type="source_artifact" data-status="inspection_only" data-cluster="docs"><circle cx="15.843" cy="36.729" r="5.0" fill="#7a5c12"></circle><text x="18.843" y="33.729">docs/superpowers/specs/2026-04-24-neural-f</text></g><g class="graph-node" data-node-id="source:docs/superpowers/specs/2026-04-26-neural-flow-p2a-research-design.md" data-node-type="source_artifact" data-status="inspection_only" data-cluster="docs"><circle cx="6.946" cy="39.392" r="5.0" fill="#7a5c12"></circle><text x="9.946" y="36.392">docs/superpowers/specs/2026-04-26-neural-f</text></g><g class="graph-node" data-node-id="source:EVALS.md" data-node-type="source_artifact" data-status="inspection_only" data-cluster="EVALS"><circle cx="-3.875" cy="43.829" r="5.0" fill="#a24d2d"></circle><text x="-0.875" y="40.829">EVALS.md</text></g><g class="graph-node" data-node-id="source:issues.md" data-node-type="source_artifact" data-status="inspection_only" data-cluster="issues"><circle cx="-23.470" cy="41.871" r="5.0" fill="#7a5c12"></circle><text x="-20.470" y="38.871">issues.md</text></g><g class="graph-node" data-node-id="source:legacy/neural-flow-core-v2.txt" data-node-type="source_artifact" data-status="inspection_only" data-cluster="legacy"><circle cx="-30.811" cy="28.543" r="5.0" fill="#4f6b2f"></circle><text x="-27.811" y="25.543">legacy/neural-flow-core-v2.txt</text></g><g class="graph-node" data-node-id="source:legacy/neural-flow-v1-architecture.md" data-node-type="source_artifact" data-status="inspection_only" data-cluster="legacy"><circle cx="-36.563" cy="20.668" r="5.0" fill="#4f6b2f"></circle><text x="-33.563" y="17.668">legacy/neural-flow-v1-architecture.md</text></g><g class="graph-node" data-node-id="source:legacy/neural-flow-v2-theory.md" data-node-type="source_artifact" data-status="inspection_only" data-cluster="legacy"><circle cx="-40.344" cy="11.679" r="5.0" fill="#4f6b2f"></circle><text x="-37.344" y="8.679">legacy/neural-flow-v2-theory.md</text></g><g class="graph-node" data-node-id="source:PLAN.md" data-node-type="source_artifact" data-status="inspection_only" data-cluster="PLAN"><circle cx="-41.000" cy="-0.038" r="5.0" fill="#8c4a5f"></circle><text x="-38.000" y="-3.038">PLAN.md</text></g><g class="graph-node" data-node-id="source:README.md" data-node-type="source_artifact" data-status="inspection_only" data-cluster="README"><circle cx="-40.068" cy="-8.693" r="5.0" fill="#8c4a5f"></circle><text x="-37.068" y="-11.693">README.md</text></g><g class="graph-node" data-node-id="source:REQUIREMENTS.md" data-node-type="source_artifact" data-status="inspection_only" data-cluster="REQUIREMENTS"><circle cx="-39.916" cy="-13.066" r="5.0" fill="#4f6b2f"></circle><text x="-36.916" y="-16.066">REQUIREMENTS.md</text></g><g class="graph-node" data-node-id="source:research/p2a-findings.md" data-node-type="source_artifact" data-status="inspection_only" data-cluster="research"><circle cx="-40.389" cy="-22.016" r="5.0" fill="#126d60"></circle><text x="-37.389" y="-25.016">research/p2a-findings.md</text></g><g class="graph-node" data-node-id="source:research/p2a-implications-for-p2b.md" data-node-type="source_artifact" data-status="inspection_only" data-cluster="research"><circle cx="-34.223" cy="-30.737" r="5.0" fill="#126d60"></circle><text x="-31.223" y="-33.737">research/p2a-implications-for-p2b.md</text></g><g class="graph-node" data-node-id="source:RUNLOG.md" data-node-type="source_artifact" data-status="inspection_only" data-cluster="RUNLOG"><circle cx="-29.632" cy="-42.731" r="5.0" fill="#a24d2d"></circle><text x="-26.632" y="-45.731">RUNLOG.md</text></g><g class="graph-node" data-node-id="source:system-prompt.md" data-node-type="source_artifact" data-status="inspection_only" data-cluster="system-prompt"><circle cx="-25.577" cy="-46.420" r="5.0" fill="#26707f"></circle><text x="-22.577" y="-49.420">system-prompt.md</text></g><g class="graph-node" data-node-id="source:TEST.md" data-node-type="source_artifact" data-status="inspection_only" data-cluster="TEST"><circle cx="-4.944" cy="-40.701" r="5.0" fill="#8c4a5f"></circle><text x="-1.944" y="-43.701">TEST.md</text></g><g class="graph-node" data-node-id="section:control_plane" data-node-type="section" data-status="present_unverified" data-cluster="section"><circle cx="9.420" cy="-39.903" r="5.0" fill="#8c4a5f"></circle><text x="12.420" y="-42.903">control_plane</text></g><g class="graph-node" data-node-id="section:discovery" data-node-type="section" data-status="current" data-cluster="section"><circle cx="18.368" cy="-36.655" r="5.0" fill="#8c4a5f"></circle><text x="21.368" y="-39.655">discovery</text></g><g class="graph-node" data-node-id="section:graph" data-node-type="section" data-status="inspection_only" data-cluster="section"><circle cx="26.326" cy="-31.431" r="5.0" fill="#8c4a5f"></circle><text x="29.326" y="-34.431">graph</text></g><g class="graph-node" data-node-id="section:methodology_audit" data-node-type="section" data-status="not_available" data-cluster="section"><circle cx="32.865" cy="-24.513" r="5.0" fill="#8c4a5f"></circle><text x="35.865" y="-27.513">methodology_audit</text></g><g class="graph-node" data-node-id="section:runtime_route" data-node-type="section" data-status="approval_required" data-cluster="section"><circle cx="37.632" cy="-16.273" r="5.0" fill="#8c4a5f"></circle><text x="40.632" y="-19.273">runtime_route</text></g><g class="graph-node" data-node-id="section:source_policy" data-node-type="section" data-status="approval_required" data-cluster="section"><circle cx="40.371" cy="-7.155" r="5.0" fill="#8c4a5f"></circle><text x="43.371" y="-10.155">source_policy</text></g><g class="graph-node" data-node-id="section:status_snapshot" data-node-type="section" data-status="not_available" data-cluster="section"><circle cx="40.933" cy="2.348" r="5.0" fill="#8c4a5f"></circle><text x="43.933" y="-0.652">status_snapshot</text></g></svg>
+<div class="graph-side-panel" id="source-file-graph-selected-file-panel"><h4>Selected File Panel</h4><table class="compact-table"><tbody><tr><th scope="row">Status</th><td>selected</td></tr>
+<tr><th scope="row">Node</th><td>source:workspace_inventory</td></tr>
+<tr><th scope="row">Type</th><td>source_artifact</td></tr>
+<tr><th scope="row">Path</th><td>workspace-inventory</td></tr>
+<tr><th scope="row">Boundary</th><td>raw source bodies are excluded; selected file is an orientation pointer only</td></tr></tbody></table></div>
+<ul class="graph-legend" aria-label="Graph legend"><li><span class="legend-swatch" style="background:#a24d2d"></span>EVALS (1)</li>
+<li><span class="legend-swatch" style="background:#8c4a5f"></span>PLAN (1)</li>
+<li><span class="legend-swatch" style="background:#8c4a5f"></span>README (1)</li>
+<li><span class="legend-swatch" style="background:#4f6b2f"></span>REQUIREMENTS (1)</li>
+<li><span class="legend-swatch" style="background:#a24d2d"></span>RUNLOG (1)</li>
+<li><span class="legend-swatch" style="background:#8c4a5f"></span>TEST (1)</li>
+<li><span class="legend-swatch" style="background:#8c4a5f"></span>architecture (1)</li>
+<li><span class="legend-swatch" style="background:#4f6b2f"></span>architecture-v2 (1)</li>
+<li><span class="legend-swatch" style="background:#7a5c12"></span>docs (4)</li>
+<li><span class="legend-swatch" style="background:#7a5c12"></span>issues (1)</li>
+<li><span class="legend-swatch" style="background:#4f6b2f"></span>legacy (3)</li>
+<li><span class="legend-swatch" style="background:#126d60"></span>research (2)</li></ul>
+<table class="graph-fallback-table" aria-label="Bounded graph table fallback"><thead><tr><th>Node</th><th>Type</th><th>Status</th><th>Cluster</th><th>Path</th></tr></thead><tbody><tr><td><code>source:workspace_inventory</code></td><td>source_artifact</td><td>inspection_only</td><td>source_artifact</td><td>workspace-inventory</td></tr>
+<tr><td><code>source:architecture-v2.md</code></td><td>source_artifact</td><td>inspection_only</td><td>architecture-v2</td><td>architecture-v2.md</td></tr>
+<tr><td><code>source:architecture.md</code></td><td>source_artifact</td><td>inspection_only</td><td>architecture</td><td>architecture.md</td></tr>
+<tr><td><code>source:docs/superpowers/plans/2026-04-24-neural-flow-consolidation-implementation.md</code></td><td>source_artifact</td><td>inspection_only</td><td>docs</td><td>docs/superpowers/plans/2026-04-24-neural-flow-consolidation-implementation.md</td></tr>
+<tr><td><code>source:docs/superpowers/plans/2026-04-26-neural-flow-p2a-research-implementation.md</code></td><td>source_artifact</td><td>inspection_only</td><td>docs</td><td>docs/superpowers/plans/2026-04-26-neural-flow-p2a-research-implementation.md</td></tr>
+<tr><td><code>source:docs/superpowers/specs/2026-04-24-neural-flow-consolidation-design.md</code></td><td>source_artifact</td><td>inspection_only</td><td>docs</td><td>docs/superpowers/specs/2026-04-24-neural-flow-consolidation-design.md</td></tr>
+<tr><td><code>source:docs/superpowers/specs/2026-04-26-neural-flow-p2a-research-design.md</code></td><td>source_artifact</td><td>inspection_only</td><td>docs</td><td>docs/superpowers/specs/2026-04-26-neural-flow-p2a-research-design.md</td></tr>
+<tr><td><code>source:EVALS.md</code></td><td>source_artifact</td><td>inspection_only</td><td>EVALS</td><td>EVALS.md</td></tr>
+<tr><td><code>source:issues.md</code></td><td>source_artifact</td><td>inspection_only</td><td>issues</td><td>issues.md</td></tr>
+<tr><td><code>source:legacy/neural-flow-core-v2.txt</code></td><td>source_artifact</td><td>inspection_only</td><td>legacy</td><td>legacy/neural-flow-core-v2.txt</td></tr>
+<tr><td><code>source:legacy/neural-flow-v1-architecture.md</code></td><td>source_artifact</td><td>inspection_only</td><td>legacy</td><td>legacy/neural-flow-v1-architecture.md</td></tr>
+<tr><td><code>source:legacy/neural-flow-v2-theory.md</code></td><td>source_artifact</td><td>inspection_only</td><td>legacy</td><td>legacy/neural-flow-v2-theory.md</td></tr>
+<tr><td><code>source:PLAN.md</code></td><td>source_artifact</td><td>inspection_only</td><td>PLAN</td><td>PLAN.md</td></tr>
+<tr><td><code>source:README.md</code></td><td>source_artifact</td><td>inspection_only</td><td>README</td><td>README.md</td></tr>
+<tr><td><code>source:REQUIREMENTS.md</code></td><td>source_artifact</td><td>inspection_only</td><td>REQUIREMENTS</td><td>REQUIREMENTS.md</td></tr>
+<tr><td><code>source:research/p2a-findings.md</code></td><td>source_artifact</td><td>inspection_only</td><td>research</td><td>research/p2a-findings.md</td></tr>
+<tr><td><code>source:research/p2a-implications-for-p2b.md</code></td><td>source_artifact</td><td>inspection_only</td><td>research</td><td>research/p2a-implications-for-p2b.md</td></tr>
+<tr><td><code>source:RUNLOG.md</code></td><td>source_artifact</td><td>inspection_only</td><td>RUNLOG</td><td>RUNLOG.md</td></tr>
+<tr><td><code>source:system-prompt.md</code></td><td>source_artifact</td><td>inspection_only</td><td>system-prompt</td><td>system-prompt.md</td></tr>
+<tr><td><code>source:TEST.md</code></td><td>source_artifact</td><td>inspection_only</td><td>TEST</td><td>TEST.md</td></tr>
+<tr><td><code>section:control_plane</code></td><td>section</td><td>present_unverified</td><td>section</td><td>project_analysis_summary</td></tr>
+<tr><td><code>section:discovery</code></td><td>section</td><td>current</td><td>section</td><td>project_analysis_summary</td></tr>
+<tr><td><code>section:graph</code></td><td>section</td><td>inspection_only</td><td>section</td><td>graph_dry_run_summary</td></tr>
+<tr><td><code>section:methodology_audit</code></td><td>section</td><td>not_available</td><td>section</td><td>not_available</td></tr>
+<tr><td><code>section:runtime_route</code></td><td>section</td><td>approval_required</td><td>section</td><td>runtime_browser_boundary</td></tr>
+<tr><td><code>section:source_policy</code></td><td>section</td><td>approval_required</td><td>section</td><td>source_policy_summary</td></tr>
+<tr><td><code>section:status_snapshot</code></td><td>section</td><td>not_available</td><td>section</td><td>not_available</td></tr></tbody></table>
+</div>
+<div class="section-grid"><article class="section-card" id="section-visual-projection"><h3>Visual Projection</h3><p>section uses graph artifacts and compact packets only</p></article>
+<article class="section-card" id="section-graph-filters"><h3>Graph Filters</h3><p>section uses graph artifacts and compact packets only</p></article>
+<article class="section-card" id="section-selected-node-evidence"><h3>Selected Node Evidence</h3><p>section uses graph artifacts and compact packets only</p></article>
+<article class="section-card" id="section-fallback-static-view"><h3>Fallback Static View</h3><p>section uses graph artifacts and compact packets only</p></article></div>
+</section>
+
+<section class="cockpit-page" id="page-docs-sources">
+<h2>Docs &amp; Sources</h2>
+<p class="page-role">Document, source and graph artifact references with stale flags.</p>
+<p class="boundary">Unsupported or stale graph areas require source reads or owner questions.</p>
+<div class="section-grid"><article class="section-card" id="section-source-links"><h3>Source Links</h3><p>section uses graph artifacts and compact packets only</p></article>
+<article class="section-card" id="section-docs-overlays"><h3>Docs Overlays</h3><p>section uses graph artifacts and compact packets only</p></article>
+<article class="section-card" id="section-unsupported-languages"><h3>Unsupported Languages</h3><p>section uses graph artifacts and compact packets only</p></article></div>
+</section>
+
+<section class="cockpit-page" id="page-code-intelligence">
+<h2>Code Intelligence</h2>
+<p class="page-role">Hotspots, read order, trace packets, impact hints and Code Flow.</p>
+<p class="boundary">Code intelligence is static and partial; dynamic runtime paths require source/runtime evidence.</p>
+<div class="graph-surface" data-graph-kind="code-graph" data-renderer="Cosmos.gl" data-adapter-status="not_vendored_static_fallback">
+<h3>Code Graph And Hotspots</h3>
+<p class="graph-boundary">Cosmos.gl is the selected renderer; this offline file carries a Cosmos-ready payload and uses a static SVG/table fallback with no external assets.</p>
+<table class="compact-table"><tbody><tr><th scope="row">Status</th><td>not_available</td></tr>
+<tr><th scope="row">Renderer</th><td>Cosmos.gl</td></tr>
+<tr><th scope="row">Renderer mode</th><td>not_available_static_empty_state</td></tr>
+<tr><th scope="row">Runtime assets</th><td>not_vendored_static_fallback</td></tr>
+<tr><th scope="row">Graphology-compatible</th><td>true</td></tr>
+<tr><th scope="row">Nodes</th><td></td></tr>
+<tr><th scope="row">Edges</th><td></td></tr>
+<tr><th scope="row">Visible nodes</th><td></td></tr>
+<tr><th scope="row">Visible edges</th><td></td></tr>
+<tr><th scope="row">Omitted nodes</th><td></td></tr>
+<tr><th scope="row">Omitted edges</th><td></td></tr>
+<tr><th scope="row">Fallback</th><td>bounded table fallback</td></tr></tbody></table>
+<div id="code-graph-canvas" class="graph-canvas empty-graph" role="img" aria-label="code-graph empty state" data-renderer="Cosmos.gl">Code graph data is not available for this packet.</div>
+<div class="graph-side-panel" id="code-graph-selected-file-panel"><h4>Selected File Panel</h4><table class="compact-table"><tbody><tr><th scope="row">Status</th><td>not_selected</td></tr>
+<tr><th scope="row">Node</th><td></td></tr>
+<tr><th scope="row">Type</th><td></td></tr>
+<tr><th scope="row">Path</th><td></td></tr>
+<tr><th scope="row">Boundary</th><td>raw source bodies are excluded</td></tr></tbody></table></div>
+<ul class="graph-legend" aria-label="Graph legend"></ul>
+<table class="graph-fallback-table" aria-label="Bounded graph table fallback"><thead><tr><th>Node</th><th>Type</th><th>Status</th><th>Cluster</th><th>Path</th></tr></thead><tbody></tbody></table>
+</div>
+<p class="empty-state"><strong>not_available</strong>: No code graph packet data is present in the first-run packet.</p><p class="empty-state">No hotspots are available in the current first-run packet.</p><div class="section-grid"><article class="section-card" id="section-hotspots"><h3>Hotspots</h3><p>section uses graph artifacts and compact packets only</p></article>
+<article class="section-card" id="section-read-order"><h3>Read Order</h3><p>section uses graph artifacts and compact packets only</p></article>
+<article class="section-card" id="section-trace-packets"><h3>Trace Packets</h3><p>section uses graph artifacts and compact packets only</p></article>
+<article class="section-card" id="section-impact-packets"><h3>Impact Packets</h3><p>section uses graph artifacts and compact packets only</p></article>
+<article class="section-card" id="section-code-flow"><h3>Code Flow</h3><p>section uses graph artifacts and compact packets only</p></article></div>
+</section>
+
+<section class="cockpit-page" id="page-contracts">
+<h2>Contracts</h2>
+<p class="page-role">API, schema, diagram and explicit contract overlays.</p>
+<p class="boundary">Contract overlays do not replace contract tests or owner-approved API changes.</p>
+<div class="section-grid"><article class="section-card" id="section-contract-overlays"><h3>Contract Overlays</h3><p>section uses graph artifacts and compact packets only</p></article>
+<article class="section-card" id="section-schema-overlays"><h3>Schema Overlays</h3><p>section uses graph artifacts and compact packets only</p></article>
+<article class="section-card" id="section-diagram-overlays"><h3>Diagram Overlays</h3><p>section uses graph artifacts and compact packets only</p></article></div>
+</section>
+
+<section class="cockpit-page" id="page-quality-metrics">
+<h2>Quality &amp; Metrics</h2>
+<p class="page-role">Tests, fixtures, affected-test packets and quality evidence pointers.</p>
+<p class="boundary">Affected-test output is partial static evidence and needs actual test execution.</p>
+<div class="qa-contract" id="static-visual-qa" aria-label="Static visual QA contract"><h3>Static Visual QA</h3><table class="compact-table"><tbody><tr><th scope="row">Status</th><td>static_checks_present_browser_gap_accepted</td></tr>
+<tr><th scope="row">Browser screenshots</th><td>not_run_approval_required</td></tr></tbody></table><table class="compact-table"><thead><tr><th>Check</th><th>Status</th></tr></thead><tbody><tr><td><code>cockpit-shell-not-default-browser</code></td><td>present_static_css</td></tr>
+<tr><td><code>persistent-nav-visible</code></td><td>present_static_html</td></tr>
+<tr><td><code>generated-view-label-visible</code></td><td>present_static_html</td></tr>
+<tr><td><code>source-graph-visible</code></td><td>present</td></tr>
+<tr><td><code>code-graph-state-visible</code></td><td>not_available</td></tr>
+<tr><td><code>mobile-breakpoint</code></td><td>present_static_css</td></tr>
+<tr><td><code>text-overflow-guard</code></td><td>present_static_css</td></tr>
+<tr><td><code>white-page-regression-gate</code></td><td>blocked_by_static_assertions</td></tr></tbody></table><ul class="claim-list"><li>No browser screenshot, canvas pixel, layout engine or responsiveness proof was produced in this slice.</li><li>Cosmos.gl runtime execution remains unverified until an approved browser/runtime pass.</li></ul></div><div class="section-grid"><article class="section-card" id="section-tests-fixtures"><h3>Tests &amp; Fixtures</h3><p>section uses graph artifacts and compact packets only</p></article>
+<article class="section-card" id="section-affected-tests"><h3>Affected Tests</h3><p>section uses graph artifacts and compact packets only</p></article>
+<article class="section-card" id="section-quality-evidence"><h3>Quality Evidence</h3><p>section uses graph artifacts and compact packets only</p></article></div>
+</section>
+
+<section class="cockpit-page" id="page-operations-risk">
+<h2>Operations &amp; Risk</h2>
+<p class="page-role">Gaps, ambiguous edges, stale data, scale budget and operational risks.</p>
+<p class="boundary">Risk and visual QA hints do not approve releases or production changes.</p>
+<div class="safety-contract" id="offline-privacy-accessibility" aria-label="Offline privacy and accessibility contract"><h3>Offline, Privacy And Accessibility</h3><table class="compact-table"><tbody><tr><th scope="row">Status</th><td>static_contract_present</td></tr>
+<tr><th scope="row">External URLs allowed</th><td>false</td></tr>
+<tr><th scope="row">Script tags allowed</th><td>false</td></tr>
+<tr><th scope="row">Raw source bodies allowed</th><td>false</td></tr>
+<tr><th scope="row">Labels required</th><td>true</td></tr>
+<tr><th scope="row">Font family</th><td>Arial, Helvetica, sans-serif</td></tr>
+<tr><th scope="row">Overflow wrap</th><td>anywhere</td></tr></tbody></table></div><div class="section-grid"><article class="section-card" id="section-graph-gaps"><h3>Graph Gaps</h3><p>section uses graph artifacts and compact packets only</p></article>
+<article class="section-card" id="section-ambiguous-edges"><h3>Ambiguous Edges</h3><p>section uses graph artifacts and compact packets only</p></article>
+<article class="section-card" id="section-scale-budget"><h3>Scale Budget</h3><p>section uses graph artifacts and compact packets only</p></article>
+<article class="section-card" id="section-visual-qa"><h3>Visual QA</h3><p>section uses graph artifacts and compact packets only</p></article></div>
+</section>
+
+<section class="cockpit-page" id="page-proposal-ledger">
+<h2>Proposal Ledger</h2>
+<p class="page-role">Generated output ledger, approval boundaries and next proposed actions.</p>
+<p class="boundary">Generated proposals must go through the staged approval flow before workspace writes.</p>
+<div class="section-grid"><article class="section-card" id="section-artifact-ledger"><h3>Artifact Ledger</h3><p>section uses graph artifacts and compact packets only</p></article>
+<article class="section-card" id="section-approval-boundaries"><h3>Approval Boundaries</h3><p>section uses graph artifacts and compact packets only</p></article>
+<article class="section-card" id="section-next-actions"><h3>Next Actions</h3><p>section uses graph artifacts and compact packets only</p></article></div>
+</section>
+
+<section class="cockpit-band diagnostic-disclosure" id="cockpit-diagnostics" aria-labelledby="diagnostics-heading"><h2 id="diagnostics-heading">Progressive Diagnostics</h2><p>Primary cockpit sections show summaries first; raw packet data stays behind collapsed diagnostics or packet references.</p><details><summary>Raw Diagnostics Boundary</summary><table class="compact-table"><tbody><tr><th scope="row">Raw JSON policy</th><td>collapsed_only_or_packet_ref</td></tr>
+<tr><th scope="row">Raw packet ref</th><td>first-run-analysis-packet.json</td></tr>
+<tr><th scope="row">Source read required</th><td>true</td></tr></tbody></table><table class="compact-table"><thead><tr><th>Diagnostic</th><th>Status</th><th>Detail</th></tr></thead><tbody><tr><td><code>packet-boundary</code></td><td>inspection_only</td><td>Primary cockpit shows summaries; raw packet JSON stays outside the main reading path.</td></tr>
+<tr><td><code>baseline-diff</code></td><td>compared</td><td>changed_pages=0; added_sources=0</td></tr>
+<tr><td><code>cleanup-rollback</code></td><td>preview_only</td><td>Re-run first-run analysis to regenerate generated orientation artifacts.</td></tr>
+<tr><td><code>source-policy</code></td><td>approval_required</td><td>Source files and current command evidence remain source truth.</td></tr></tbody></table></details></section>
+<section class="cockpit-band" aria-labelledby="baseline-comparison"><h2 id="baseline-comparison">Baseline Comparison</h2><table class="compact-table"><tbody><tr><th scope="row">Status</th><td>compared</td></tr>
+<tr><th scope="row">Previous manifest</th><td>sha256:ecb5d1d66244edd732222bd62f359cdda375dd8202950044dfebb1689cbea17e</td></tr>
+<tr><th scope="row">Changed pages</th><td>none</td></tr>
+<tr><th scope="row">Added sources</th><td>none</td></tr></tbody></table></section>
+<section class="cockpit-band" aria-labelledby="artifact-cleanup-rollback"><h2 id="artifact-cleanup-rollback">Artifact Cleanup And Rollback</h2><p>Cleanup is preview-only and requires explicit approval; no files are deleted by default.</p><table class="compact-table"><tbody><tr><th scope="row">Status</th><td>preview_only</td></tr>
+<tr><th scope="row">Approval required</th><td>true</td></tr>
+<tr><th scope="row">Deletion performed</th><td>false</td></tr>
+<tr><th scope="row">Rollback</th><td>Re-run first-run analysis to regenerate generated orientation artifacts.</td></tr></tbody></table></section>
+</main>
+</body>
+</html>

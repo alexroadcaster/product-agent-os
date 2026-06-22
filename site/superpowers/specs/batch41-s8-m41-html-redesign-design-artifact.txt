@@ -1,0 +1,208 @@
+B41-S8-M41 HTML Redesign Design Artifact
+=========================================
+
+Source status: local design contract from owner feedback, current Batch 41 matrix, M40 evidence, read-only subagent handoffs and checked design-source inventory.
+
+## Task Brief
+
+Task ID: `B41-S8-M41`.
+
+Reading this as: internal Product-Agent OS architecture-cockpit redesign for a technical owner/operator, with a dense engineering-dossier language, leaning toward offline native HTML/CSS, static Mermaid-compatible diagram specs and restrained dashboard-style interaction.
+
+Design dials:
+
+| Dial | Value | Reason |
+| --- | --- | --- |
+| `DESIGN_VARIANCE` | `5` | Needs a clear designed identity without becoming a decorative marketing page. |
+| `MOTION_INTENSITY` | `1` | M41 defines an offline/static artifact contract; runtime motion is out of scope. |
+| `VISUAL_DENSITY` | `8` | The target is a technical architecture cockpit with evidence, diagrams and decisions. |
+
+M41 goal: convert owner feedback into an implementation-ready design artifact and IA brief before renderer, CSS, runtime graph or browser-proof implementation begins.
+
+## Trigger
+
+The current M40 HTML is browser-visible and safer than the earlier diagnostic output, but owner review rejected it as still too close to a poor text file. The explicit gaps are:
+
+- the first viewport does not feel like a designed architecture dossier;
+- `architecture.html` is mostly source lists, section evidence and JSON-like diagnostics;
+- project architecture diagrams are absent as first-class content;
+- raw/generated evidence still feels too primary;
+- visual hierarchy is not strong enough for owner/operator decision-making.
+
+M41 does not implement the redesigned HTML. It defines the design contract that M42..M47 must implement and verify.
+
+## Source Inputs
+
+| Source | Use in M41 |
+| --- | --- |
+| `docs/superpowers/specs/batch41-first-run-automation-matrix.json` | Source task row, S8 scope, checked-link inventory and acceptance boundaries. |
+| `docs/superpowers/specs/batch41-s7-m40-neural-flow-acceptance-summary.json` | M40 proof status and unsupported claims. |
+| `docs/superpowers/specs/batch41-s7-m40-neural-flow-stage/index.html` | Current cockpit shell and graph fallback baseline. |
+| `docs/superpowers/specs/batch41-s7-m40-neural-flow-stage/architecture.html` | Current architecture-page gap. |
+| `C:\Users\user\Desktop\project\myAI Labs\myPartners concept\mypartners\docs\superpowers\2026-05-20-mypartners-architecture-db-stack-flow-status.html` | Architecture-dossier reference blocks. |
+| `C:\Users\user\Desktop\project\myAI Labs\myPartners concept\mypartners\docs\superpowers\frontend_design_sources_130.md` | Design-source inventory, checked through the 40 links recorded in the matrix. |
+| `Northstar` product-manager subagent handoff | Product acceptance, non-goals and owner-review risks. |
+| `Blueprint` architect subagent handoff | IA, component inventory, diagram list, design tokens and proof gates. |
+
+## Design Direction
+
+Artifact type: `technical architecture dossier / operational cockpit`.
+
+Primary artifact policy: one self-contained `index.html` remains the primary artifact. Any multi-page diagnostic output is supporting evidence, not the owner-facing product surface.
+
+Design language:
+
+- light operational dossier, not dark marketing tech;
+- off-white paper background, near-black ink, white panels, restrained green/teal accent;
+- stable semantic colors for status, not decorative color cycling;
+- system sans for prose and `ui-monospace` for paths, hashes, statuses and counts;
+- 8px panel radius, pill radius only for navigation/status chips;
+- high-density grids, ledgers and diagram panels;
+- no external fonts, CDN, external scripts, hosted visual services or UI-library runtime by default.
+
+## Borrowed Concepts From myPartners
+
+| Concept | How Product-Agent OS should use it |
+| --- | --- |
+| `hero-grid` architecture dossier entry | First viewport shows target, scan route, source boundary, safe next action and top blockers. |
+| `toc-grid` navigation | Persistent map of the artifact, not a generic list of pages. |
+| Status legend and semantic chips | Status labels become a design system: `current`, `inspection_only`, `approval_required`, `not_available`, `blocked`, `unsupported`. |
+| Mermaid panel pattern | Architecture diagrams are first-class panels with title, source status and static/raw fallback. |
+| `decision-grid` | Owner action, Codex action, approval gate and next safe step are separate cells. |
+| `solution-stack` | Show the artifact pipeline as layers rather than prose. |
+| Future/current cards | Separate current evidence from future gates and accepted gaps. |
+| Source/DB blueprint cards | Use blueprint-style cards for control-plane files, source registry, graph/source artifacts and missing/stale docs. |
+| Architecture status map | Architecture map becomes the central section, not a hidden support page. |
+
+## Information Architecture
+
+The redesigned artifact should use this top-level IA:
+
+| Section | First job | Must show |
+| --- | --- | --- |
+| Overview | Establish project identity and status. | Target label, generated-view-only label, freshness, confidence, safe next action, top blockers. |
+| Architecture Map | Explain how the Product-Agent OS first-run system works. | Seven architecture diagrams, source/trust boundary and artifact lifecycle. |
+| Project Map | Orient through files, docs and generated artifacts. | Source/file graph, selected-node panel, legend, table fallback and blockers. |
+| Docs & Sources | Show documentation/source truth state. | Control-plane docs, source registry, stale/missing docs, source status. |
+| Code Intelligence | Show code graph where available. | Hotspots, read order, code graph states, explicit `not_available` state. |
+| Contracts | Show runtime/API/schema/diagram contracts. | Contract evidence, missing contracts, owner/source-of-truth boundaries. |
+| Quality & Metrics | Show tests, evals and proof. | Checks, scorecards, visual QA, accepted gaps and missing evidence. |
+| Operations & Risk | Show approval boundaries and residual risks. | Browser/provider/git/runtime/source-policy/privacy/offline risk ledger. |
+| Proposal Ledger | Show what can happen next. | Owner action, Codex action, approval requirements, cleanup preview and no-unapproved-actions proof. |
+
+First viewport requirement: before scrolling, the artifact must show the artifact identity, target profile, `generated-view-only`, architecture status signal, safe next action, top blockers and confidence.
+
+## Diagram Inventory For M42
+
+M42 must add these diagrams. M41 defines the contract only.
+
+| Diagram | Question answered | Required boundary |
+| --- | --- | --- |
+| System Context | Who interacts with the first-run artifact and what systems are involved? | `codex_docs` evidence workspace vs target workspace vs generated artifact. |
+| First-Run Pipeline | How does a command become a cockpit artifact? | Inventory, source policy, methodology, graph, renderer, evidence and handoff. |
+| Source/Trust Boundary | What is source truth and what is orientation evidence? | Generated views/graphs are not source truth. |
+| Artifact Data Model | What data shapes feed the HTML? | Packet, view model, manifest, pages, screenshots and summary JSON. |
+| Graph Rendering | How do Graphology and Cosmos.gl relate? | Graphology payload, Cosmos-ready adapter, SVG/table fallback, future WebGL runtime. |
+| Runtime Approval Path | When do browser/runtime/provider/git actions become allowed? | Approval for one surface does not authorize another. |
+| Evidence Lifecycle | How does evidence move into control-plane files? | Command evidence, screenshots, summary packets, RUNLOG/TEST/EVALS sync. |
+
+Every diagram panel must include:
+
+- title and short purpose;
+- source status;
+- `generated-view-only` boundary;
+- static rendered view or local fallback;
+- raw Mermaid-compatible text or equivalent source;
+- responsive non-overlap proof in later Playwright evidence.
+
+## Component Inventory
+
+| Component | Required states |
+| --- | --- |
+| Architecture dossier hero | target, scan status, safe next action, blockers, freshness, confidence. |
+| Sticky TOC/filter rail | desktop single-line nav, mobile stacked fallback, keyboard reachability. |
+| Status legend | `current`, `inspection_only`, `approval_required`, `not_available`, `blocked`, `unsupported`. |
+| Diagram panel | title, source boundary, static visual, raw source fallback, optional script-free toolbar. |
+| Evidence cards | supported claims, unsupported claims, accepted gaps, proof references. |
+| Decision grid | owner action, Codex action, approval requirement, next safe step. |
+| Source blueprint cards | control-plane docs, registry, graph/source artifacts, stale/missing docs. |
+| Graph surface | overview, selected-node panel, legend, bounded table fallback, empty state. |
+| Risk ledger | provider, browser, git, runtime, source-policy, privacy and offline risks. |
+| Proof strip | screenshots, console/network, accessibility-oriented checks, visual overlap and no-unapproved-actions proof. |
+| Cleanup/rollback panel | preview-only cleanup, regeneration path and no delete by default. |
+
+## Design-Source Synthesis
+
+The checked design sources are not runtime dependencies. They inform patterns only.
+
+| Source group | Checked examples | What we keep |
+| --- | --- | --- |
+| Open component/block galleries | 21st, shadcn/ui docs, shadcn blocks, shadcnblocks, shadcnstudio, blocks.so, shadcnspace | Composition, component ownership, clean defaults and dashboard blocks. |
+| Motion/effect libraries | Magic UI, Aceternity, React Bits, Cult UI, Hover.dev, Animate UI, Kokonut UI, Skiper UI | Restraint: effects are inspiration only, not default runtime. |
+| Tailwind UI ecosystems | Tailwind Plus, Flowbite docs, Flowbite blocks, daisyUI, Preline, HyperUI, Meraki UI, Mamba UI, Ripple UI | Dense layout patterns, tables, tabs, alerts, timelines and theme discipline. |
+| Dashboard/product systems | Tremor, Park UI, Chakra UI, Mantine, HeroUI, MUI, Ant Design, PrimeReact | Status readability, metrics, dense controls and operational UX. |
+| Headless/accessibility systems | Radix UI, Base UI, Headless UI, React Aria, Ariakit, Zag.js | Keyboard, labels, accessible controls and state-machine discipline. |
+
+Design rule: borrow patterns, not dependencies. Runtime dependencies require a separate approval, version, license, hash and offline validation evidence.
+
+## Rejected Patterns
+
+M42..M47 must reject these patterns:
+
+- plain text-file appearance;
+- raw JSON as primary content;
+- marketing landing-page composition;
+- centered generic hero with decorative gradients;
+- AI-purple glow or one-note purple/blue palette;
+- three equal marketing cards as the main structure;
+- external CDN/runtime dependency by default;
+- release/readiness claims from generated HTML alone;
+- Cosmos.gl runtime pass claim without canvas/WebGL proof;
+- WCAG certification claim from lightweight browser checks.
+
+## Verification Gates By Follow-Up Task
+
+| Task | Required proof |
+| --- | --- |
+| `B41-S8-M42` | Diagram inventory rendered or static fallback present; every diagram has title, source status and generated-view boundary. |
+| `B41-S8-M43` | Renderer tests plus Playwright desktop/mobile screenshots; first viewport has identity, status, architecture signal and next route; no text overlap. |
+| `B41-S8-M44` | Tests assert supported claims, unsupported claims, blockers, owner actions and Codex actions are separate visible surfaces. |
+| `B41-S8-M45` | Tests/screenshots cover `adapter_ready`, `static_fallback`, `not_available`, `runtime_webgl_blocked`; no runtime pass without canvas/WebGL proof. |
+| `B41-S8-M46` | Proof packet includes screenshots, interaction checks, console/network result, accessible-name summary, contrast-oriented checks, no-overlap notes and WCAG non-certification label. |
+| `B41-S8-M47` | Regenerated Neural_Flow artifact passes design artifact gates, diagram gates, static safety gates, browser proof and completion-skeptic unsupported-claim review. |
+
+## Non-Goals For M41
+
+M41 does not:
+
+- implement renderer templates, CSS, JavaScript, Mermaid runtime, Cosmos.gl runtime or graph runtime;
+- regenerate the Neural_Flow HTML artifact;
+- run browser automation, live server, provider/API calls, external visual services, network checks or UI-library installs;
+- add CDN assets, external fonts, animation libraries or runtime dependencies;
+- mutate target projects, plugin cache, git state, release/deploy/publish surfaces, hooks, automations or global config;
+- claim release readiness, renderer readiness, visual acceptance, accessibility certification, runtime/browser proof or target apply safety.
+
+## Owner Review Questions
+
+These questions can remain open after M41 and should not block the design artifact:
+
+- Should the artifact feel closer to a restrained engineering dossier or a more visually expressive dashboard?
+- Which myPartners concepts are mandatory visually, and which are only inspiration?
+- Should the final HTML UI copy be mostly Russian, or use mixed Russian plus canonical English labels?
+- Which diagrams are P0 for the first redesigned artifact if implementation time is constrained?
+- Is static/offline diagram fallback enough for M42, or should interactive Mermaid/Cosmos.gl runtime become a later approval-bound slice?
+- Is review-only acceptance enough for M41, or should M42 begin with a visual mock/prototype before renderer changes?
+
+## Handoff To M42
+
+M42 starts from this artifact and implements the architecture diagram layer. It should not redesign the entire shell yet. Its output must be a diagram contract/renderer slice that M43 can place inside the redesigned primary cockpit shell.
+
+Minimum M42 input:
+
+- this artifact;
+- `docs/superpowers/specs/batch41-first-run-automation-matrix.json`;
+- current M40 stage HTML;
+- M40 acceptance summary;
+- source/trust boundary rules in `TEST.md`, `EVALS.md` and `RUNLOG.md`.
+
+M42 stop condition: stop if diagram rendering requires CDN, hosted diagram service, target mutation, live runtime, provider/API call, git action or a claim that generated diagrams are source truth.

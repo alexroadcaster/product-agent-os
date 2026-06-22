@@ -1,0 +1,132 @@
+{
+  "agent_skill_evidence": {
+    "agent_handoff": {
+      "name": "Probe",
+      "recommendation": "Record M15 as a synthetic backend/API contract and approval-guardrail pilot; do not claim real backend runtime, integration safety, contract compatibility, auth/security safety, SLO readiness, migration safety, release readiness, Neural_Flow positive evidence or promotion readiness.",
+      "role": "Tester",
+      "status": "completed_read_only_review"
+    },
+    "skills_used": [
+      "product-agent-os:implementation-planner",
+      "product-agent-os:agent-team-designer",
+      "product-agent-os:docs-maintainer"
+    ]
+  },
+  "approval_boundary": {
+    "automation_activation": "not_performed",
+    "browser_automation": "not_performed",
+    "cache_mutation": "not_performed",
+    "external_actions": "not_performed",
+    "git_actions": "not_performed",
+    "live_server": "not_performed",
+    "local_evidence_artifact_write": "allowed_workspace_output_only",
+    "provider_or_api_calls": "not_performed",
+    "target_workspace_mutation": "not_performed"
+  },
+  "attempt_id": "B39-TEST-M15-A01",
+  "backend_api_contract": {
+    "api_gates_observed": [
+      "api_consumer_map_present",
+      "api_contract_source_present",
+      "api_error_contract_present",
+      "api_observability_contract_present",
+      "api_style_choice_recorded"
+    ],
+    "backend_gates_observed": [
+      "backend_config_secrets_boundary_present",
+      "backend_data_consistency_strategy_present",
+      "backend_dependency_failure_matrix_present",
+      "backend_evidence_sufficiency_owner_reviewed",
+      "backend_health_probe_contract_present",
+      "backend_job_queue_contract_present",
+      "backend_observability_contract_present",
+      "backend_rollback_plan_present",
+      "backend_runtime_behavior_present",
+      "backend_security_reviewed",
+      "backend_service_boundary_present",
+      "backend_slo_or_gap_present"
+    ],
+    "contract_verdict": "methodology_detected_backend_and_api_contract_surfaces_and_runtime_runner_blocked_approval_bound_backend_api_claims",
+    "detected_api_contract_surface": true,
+    "detected_backend_surface": true,
+    "external_integration_evidence_status": "not_run_approval_required",
+    "live_runtime_evidence_status": "not_run_approval_required"
+  },
+  "batch": "B39",
+  "evidence_refs": {
+    "command_results": "docs/superpowers/specs/batch39-m15-command-results.jsonl",
+    "manifest": "docs/superpowers/specs/batch39-m15-backend-api-manifest.json",
+    "methodology_audit": "docs/superpowers/specs/batch39-m15-methodology-audit.json",
+    "runtime": "docs/superpowers/specs/batch39-m15-runtime-result.json",
+    "source_policy": "docs/superpowers/specs/batch39-m15-source-policy.json"
+  },
+  "generated_at": "2026-06-12T00:00:00+00:00",
+  "next_action": "Run B39-TEST-M16 as the AI/RAG archetype pilot.",
+  "observed_results": {
+    "api_generated_client_signal_present": true,
+    "api_webhook_event_signal_present": true,
+    "asyncapi_contract_signal_present": true,
+    "backend_signal_present": true,
+    "command_entry_digests": [
+      "sha256:f12d4797855b6b11f047ee29f78b796d921895567fdf4401800e998e8bc882f7",
+      "sha256:444646cfc97f86be10963b14c498f4f98eb3c0e2a8bb3193337919bc05156bf9",
+      "sha256:74be013670e4efdf19b05bbc54767f4f30b38e967a9b6ae00b48e67b1b4e57a1"
+    ],
+    "command_results_count": 3,
+    "fixture_pycompile_check": "passed_py_compile",
+    "fixture_smoke_check": "passed_python_script",
+    "lifecycle_state": "infrastructure_planned",
+    "manifest_digest": "sha256:54622de9d35f09d59a10f4aba1b8a7c3de052a91166979ff467bbbe1e2bf0b85",
+    "methodology_status": "ok",
+    "observed_signal_ids": [
+      "stack_manifest",
+      "openapi_contract",
+      "asyncapi_contract",
+      "protobuf_schema",
+      "api_generated_client",
+      "api_webhook_event",
+      "docs_or_control_plane",
+      "codex_agentic_workflow",
+      "backend",
+      "test_evidence",
+      "quality_testing_signal"
+    ],
+    "openapi_contract_signal_present": true,
+    "protobuf_schema_signal_present": true,
+    "runtime_approval_requirements": [
+      "explicit approval required before methodology-recommended external or irreversible action"
+    ],
+    "runtime_exit_code": 1,
+    "runtime_exit_interpretation": "expected_approval_guardrail_for_backend_api_external_or_irreversible_methodology_actions",
+    "runtime_recommended_skill": "requirements-author",
+    "runtime_status": "needs_approval",
+    "runtime_write_policy": "staged_only",
+    "source_policy_files": 19,
+    "source_policy_status": "ok"
+  },
+  "pilot": {
+    "archetype": "backend_api",
+    "mode": "synthetic_local",
+    "pilot_id": "synthetic-backend-api-contract",
+    "real_pilot_evidence": false,
+    "target_ref": "tests/fixtures/product_agent_os/batch39-m15-backend-api-fixture"
+  },
+  "promotion_boundary": "manual_only_not_promoted",
+  "schema_version": "batch39_backend_api_pilot_summary_v1",
+  "slice": "B39-S2",
+  "summary_status": "passed_contract_guardrail",
+  "supported_claims": [
+    "A synthetic local backend/API fixture can pass source-policy validation.",
+    "Methodology audit detects backend, OpenAPI, AsyncAPI, protobuf, generated-client and webhook/event signals.",
+    "Runtime runner blocks approval-bound backend/API methodology actions with needs_approval instead of allowing readiness claims.",
+    "The fixture smoke script validates the static OpenAPI path/schema contract without dependency installation.",
+    "Python syntax compilation passes for the synthetic service and smoke script.",
+    "Command-results JSONL stores current command evidence digests without raw stdout or stderr."
+  ],
+  "test_id": "B39-TEST-M15",
+  "unsupported_claims": [
+    "The fixture does not prove live API serving, request/response behavior, database behavior, dependency failure recovery, observability emission, security posture or rollback execution.",
+    "Synthetic-local evidence does not prove real-project value, Neural_Flow positive evidence, release readiness or promotion readiness.",
+    "No browser automation, live server, provider/API call, target mutation, external action, cache mutation or git action was performed."
+  ]
+}

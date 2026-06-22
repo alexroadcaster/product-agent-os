@@ -1,0 +1,3852 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+
+        <meta name="description" content="Product documentation for Product-Agent OS.">
+
+
+
+
+        <link rel="prev" href="artifact-gallery.html">
+
+
+        <link rel="next" href="project-code-graph.html">
+
+
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.50">
+
+
+
+        <title>First-Run Architecture Cockpit - Product-Agent OS Documentation</title>
+
+
+
+      <link rel="stylesheet" href="../../assets/stylesheets/main.a40c8224.min.css">
+
+
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+
+
+
+
+
+
+
+
+
+
+
+
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+
+
+
+      <link rel="stylesheet" href="../../assets/stylesheets/extra.css">
+
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+
+
+
+
+
+
+  </head>
+
+
+
+
+
+
+
+
+
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="deep-orange">
+
+
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+
+
+        <a href="#first-run-architecture-intelligence-cockpit" class="md-skip">
+          Skip to content
+        </a>
+
+    </div>
+    <div data-md-component="announce">
+
+    </div>
+
+
+
+
+
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="Product-Agent OS Documentation" class="md-header__button md-logo" aria-label="Product-Agent OS Documentation" data-md-component="logo">
+
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Product-Agent OS Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+
+              First-Run Architecture Cockpit
+
+          </span>
+        </div>
+      </div>
+    </div>
+
+
+        <form class="md-header__option" data-md-component="palette">
+
+
+
+
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="deep-orange"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+
+
+</form>
+
+
+
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+
+
+      <div class="md-header__option">
+  <div class="md-select">
+
+    <button class="md-header__button md-icon" aria-label="Select language">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+
+          <li class="md-select__item">
+            <a href="../../product-agent-os/first-run-architecture-cockpit.html" hreflang="ru" class="md-select__link">
+              RU
+            </a>
+          </li>
+
+          <li class="md-select__item">
+            <a href="first-run-architecture-cockpit.html" hreflang="en" class="md-select__link">
+              EN
+            </a>
+          </li>
+
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+      <label class="md-header__button md-icon" for="__search">
+
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  </nav>
+
+</header>
+
+    <div class="md-container" data-md-component="container">
+
+
+
+
+
+
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+
+
+
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="Product-Agent OS Documentation" class="md-nav__button md-logo" aria-label="Product-Agent OS Documentation" data-md-component="logo">
+
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Product-Agent OS Documentation
+  </label>
+
+  <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="../diagrams/index.html" class="md-nav__link ">
+
+
+  <span class="md-ellipsis">
+    Diagrams
+  </span>
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Diagrams
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/architecture.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Architecture
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/source-generated-trust-boundary.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Source And Generated Evidence Boundary
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/first-run-cockpit-architecture.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    First-Run Cockpit Architecture
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/evidence-risk-lifecycle.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Evidence And Risk Lifecycle
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/skill-exposure-and-invocation.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Skill Exposure And Invocation Boundary
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/architecture-intelligence-diagram-atlas.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Architecture Intelligence Diagram Atlas
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/product-delivery-lifecycle.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Delivery Lifecycle
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/agent-team-and-skills.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Agent Team And Skills
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/runtime-decision-map.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Runtime Decision Map
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/skill-lifecycle.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Skill Lifecycle
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../diagrams/context-memory-verification.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Context, Memory, Verification
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+
+
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+
+
+  <span class="md-ellipsis">
+    Sources
+  </span>
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Sources
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../sources/registry.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Source Registry
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../sources/context7-research.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Context7 Analysis
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../sources/source-card-template.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Source Card Template
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../sources/product-agent-os-batch40-doubt-verifier-source-transfer.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Batch 40 Doubt Verifier Source Transfer
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+
+
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+
+
+  <span class="md-ellipsis">
+    Codex
+  </span>
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Codex
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/overview.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Overview
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/surfaces.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Work Surfaces
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/configuration.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Configuration And Extensibility
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/security.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Security And Approvals
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/workflows.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Workflows
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../codex/use-cases-deep-analysis.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Deep Use-Case Analysis
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+
+
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+
+
+  <span class="md-ellipsis">
+    Prompt And Context Engineering
+  </span>
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Prompt And Context Engineering
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../prompting/overview.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Overview
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../prompting/question-design.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Question Design
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../prompting/context-engineering.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Context Engineering
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../prompting/anti-hallucination.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Anti-Hallucination Controls
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+
+
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+
+
+  <span class="md-ellipsis">
+    Product-Agent Workflows
+  </span>
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Product-Agent Workflows
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent/overview.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Overview
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent/lifecycle.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Product Lifecycle
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent/roles.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Agent Team Roles
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent/control-plane.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Control-Plane Files
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../product-agent/product-agent-os-plugin-spec.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Product-Agent OS Plugin Spec
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+
+
+
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="index.html" class="md-nav__link ">
+
+
+  <span class="md-ellipsis">
+    Product-Agent OS Plugin
+  </span>
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_7" id="__nav_7_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Product-Agent OS Plugin
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="artifact-gallery.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Artifact Gallery
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--active">
+
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+
+
+
+
+
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+
+
+  <span class="md-ellipsis">
+    First-Run Architecture Cockpit
+  </span>
+
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+
+      <a href="first-run-architecture-cockpit.html" class="md-nav__link md-nav__link--active">
+
+
+  <span class="md-ellipsis">
+    First-Run Architecture Cockpit
+  </span>
+
+
+      </a>
+
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+
+
+
+
+
+
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+
+        <li class="md-nav__item">
+  <a href="#purpose" class="md-nav__link">
+    <span class="md-ellipsis">
+      Purpose
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#source-boundary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Source Boundary
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#inputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Inputs
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#outputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Outputs
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#view-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      View Model
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#local-js-boundary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Local-JS Boundary
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#workspace-detection-and-routing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Workspace Detection And Routing
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#artifact-relationships" class="md-nav__link">
+    <span class="md-ellipsis">
+      Artifact Relationships
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#safe-first-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Safe First Actions
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#failure-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Failure Modes
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#unsupported-claims" class="md-nav__link">
+    <span class="md-ellipsis">
+      Unsupported Claims
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#screenshot-and-browser-proof-boundary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Screenshot And Browser Proof Boundary
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#final-site-freshness-route" class="md-nav__link">
+    <span class="md-ellipsis">
+      Final Site Freshness Route
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#related-pages" class="md-nav__link">
+    <span class="md-ellipsis">
+      Related Pages
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#next-action" class="md-nav__link">
+    <span class="md-ellipsis">
+      Next Action
+    </span>
+  </a>
+
+</li>
+
+    </ul>
+
+</nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="project-code-graph.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Project Code Graph
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="live-runtime-governance.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Live Runtime Governance
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="approval-bound-real-testing.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Approval-Bound Real Testing
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="real-project-pilot.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Real-Project Pilot
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="agent-skill-modernization-loop.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Agent-Skill Modernization Loop
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="instruction-tool-use-compliance.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Instruction And Tool-Use Compliance
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="operator-command-matrix.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Operator Command Matrix
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="guided-questions-answer-ledger.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Guided Questions And Answer Ledger
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="source-cache-session-state.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Source Cache And Active Session State
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="generated-artifact-ux-criteria.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Generated Artifact UX Criteria
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="graph-intelligence-contract.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Graph Intelligence Contract
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="privacy-supply-chain-retention.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Privacy Supply-Chain And Retention
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="local-html-interaction-boundary.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Local HTML Interaction Boundary
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="residual-follow-up-site-freshness.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Residual Follow-Up And Site Freshness
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="cli-reference.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    CLI Reference
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="artifact-contracts.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Artifact Contracts
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="packaging-and-closure.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Packaging And Closure
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="technical.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Technical Setup
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="development-standards.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Engineering Standards Layer
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="methodology-intelligence.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Methodology Intelligence
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="scenarios.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Scenarios And Usage Modes
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="behavioral-evals.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Behavioral Evals
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="codex-compatibility.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Codex Compatibility
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="architecture.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Diagrams And Operating Principles
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
+
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="../methodologies/index.html" class="md-nav__link ">
+
+
+  <span class="md-ellipsis">
+    Methodologies For Large Projects
+  </span>
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Methodologies For Large Projects
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/business-product.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Business And Product
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/requirements-domain.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Requirements And Domain
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/solution-architecture.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Solution Architecture
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/frontend.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Frontend
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/backend.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Backend
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/api-integrations.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    API And Integrations
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/database-data.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Database And Data
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/llm-ai-rag.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    LLM / AI / RAG
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/quality-testing-evals.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Quality, Testing And Evals
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/security-privacy-compliance.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Security, Privacy And Compliance
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/delivery-release-operations.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Delivery, Release And Operations
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../methodologies/codex-agentic-workflow.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Codex / Agentic Workflow
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_9" >
+
+
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="">
+
+
+  <span class="md-ellipsis">
+    Codex Automation And Runtime
+  </span>
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            Codex Automation And Runtime
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../runtime/overview.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Runtime Overview
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../runtime/non-interactive-and-mcp.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Non-Interactive And MCP
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../runtime/automations-github.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Automations And GitHub
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../runtime/worktrees-hooks-rules.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Worktrees, Hooks, Rules
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_10" >
+
+
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
+
+
+  <span class="md-ellipsis">
+    Agent Systems
+  </span>
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            Agent Systems
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/overview.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Architecture
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/memory.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Memory
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/session-control.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Session Control
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/subagents-skills.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Subagents, Skills, AGENTS.md
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/sdk-patterns.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Agents SDK Patterns
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/evals-observability.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Evals And Observability
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../agent-systems/templates.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Agent Templates
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_11" >
+
+
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="">
+
+
+  <span class="md-ellipsis">
+    Playbooks
+  </span>
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            Playbooks
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/research-loop.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Research Loop
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/context7-deep-research.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Context7 Deep Research
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/grounded-answering.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Grounded Answering
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/doubt-verification-loop.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Doubt Verification Loop
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/build-full-feature.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Build Full Feature
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/workflow-to-skill.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Workflow To Skill
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/use-case-to-plugin.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Use Case To Plugin
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/eval-driven-improvement.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Eval-Driven Improvement
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/product-ready-pr.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Product-Ready PR
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/maintain-agent-operating-docs.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Agent Operating Docs
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/docs-update.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Docs Update
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/workspace-readiness-audit.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Workspace Readiness Audit
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/code-review.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Code Review
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../playbooks/ai-team-design.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    AI-Native Team
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_12" >
+
+
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="">
+
+
+  <span class="md-ellipsis">
+    Templates
+  </span>
+
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            Templates
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../artifact-templates/prompt-packet.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Prompt Template
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../artifact-templates/control-plane-files.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Control-Plane Templates
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../artifact-templates/runlog.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    RUNLOG Template
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../artifact-templates/product-skill.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Skill Template
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../artifact-templates/plugin-blueprint.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Plugin Blueprint
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+
+
+
+
+
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_13" >
+
+
+
+          <div class="md-nav__link md-nav__container">
+            <a href="../insights/index.html" class="md-nav__link ">
+
+
+  <span class="md-ellipsis">
+    Insights
+  </span>
+
+
+            </a>
+
+
+              <label class="md-nav__link " for="__nav_13" id="__nav_13_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+
+          </div>
+
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13">
+            <span class="md-nav__icon md-icon"></span>
+            Insights
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../insights/insight-card-template.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Insight Card Template
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+
+
+
+
+
+
+    <li class="md-nav__item">
+      <a href="../insights/seed-insights.html" class="md-nav__link">
+
+
+  <span class="md-ellipsis">
+    Initial Backlog
+  </span>
+
+
+      </a>
+    </li>
+
+
+
+
+          </ul>
+        </nav>
+
+    </li>
+
+
+
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+
+
+
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+
+
+
+
+
+
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+
+        <li class="md-nav__item">
+  <a href="#purpose" class="md-nav__link">
+    <span class="md-ellipsis">
+      Purpose
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#source-boundary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Source Boundary
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#inputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Inputs
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#outputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Outputs
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#view-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      View Model
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#local-js-boundary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Local-JS Boundary
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#workspace-detection-and-routing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Workspace Detection And Routing
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#artifact-relationships" class="md-nav__link">
+    <span class="md-ellipsis">
+      Artifact Relationships
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#safe-first-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Safe First Actions
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#failure-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Failure Modes
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#unsupported-claims" class="md-nav__link">
+    <span class="md-ellipsis">
+      Unsupported Claims
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#screenshot-and-browser-proof-boundary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Screenshot And Browser Proof Boundary
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#final-site-freshness-route" class="md-nav__link">
+    <span class="md-ellipsis">
+      Final Site Freshness Route
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#related-pages" class="md-nav__link">
+    <span class="md-ellipsis">
+      Related Pages
+    </span>
+  </a>
+
+</li>
+
+        <li class="md-nav__item">
+  <a href="#next-action" class="md-nav__link">
+    <span class="md-ellipsis">
+      Next Action
+    </span>
+  </a>
+
+</li>
+
+    </ul>
+
+</nav>
+                  </div>
+                </div>
+              </div>
+
+
+
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+
+
+
+
+<h1 id="first-run-architecture-intelligence-cockpit">First-Run Architecture Intelligence Cockpit<a class="headerlink" href="#first-run-architecture-intelligence-cockpit" title="Permanent link">&para;</a></h1>
+<p>Source status: <code>official + experiment</code></p>
+<p>This page explains how to read the first-run Architecture Intelligence Cockpit in Product-Agent OS. The cockpit is a local orientation surface: it combines the first project analysis, routing, graph/code/schema signals, evidence and risk hierarchy, and one safe next action into a local HTML/JSON packet. It does not replace source files, current commands, owner decisions, the source registry or control-plane artifacts.</p>
+<h2 id="purpose">Purpose<a class="headerlink" href="#purpose" title="Permanent link">&para;</a></h2>
+<p>The first-run cockpit answers a practical question: what kind of workspace is this, where are the source boundaries, which artifacts already exist, which route is safe, and which claims need more evidence?</p>
+<p>It is useful at the start of a pilot, after a read-only audit or before an architecture review. A good result should not read like an internal ledger: the reader should see the summary, key surfaces, evidence gaps, approval boundary and one <code>safe_next_action</code>.</p>
+<h2 id="source-boundary">Source Boundary<a class="headerlink" href="#source-boundary" title="Permanent link">&para;</a></h2>
+<p>The cockpit is a generated view and remains <code>orientation_only_not_proof</code>. It can guide navigation and review, but it is not standalone proof of architecture correctness, runtime behavior, security posture, visual quality, release readiness or target apply safety.</p>
+<table>
+<thead>
+<tr>
+<th>Stronger than the cockpit</th>
+<th>Orientation surface only</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Project source files and checked-in docs</td>
+<td><code>index.html</code> cockpit</td>
+</tr>
+<tr>
+<td><code>AGENTS.md</code>, <code>REQUIREMENTS.md</code>, <code>PLAN.md</code>, <code>TEST.md</code>, <code>EVALS.md</code>, <code>RUNLOG.md</code></td>
+<td><code>analysis-manifest.json</code> and renderer summaries</td>
+</tr>
+<tr>
+<td>Source registry entries and owner decisions</td>
+<td>Graph/code/schema projections</td>
+</tr>
+<tr>
+<td>Current command/eval/runtime evidence</td>
+<td>Scorecards, dashboards, generated pages</td>
+</tr>
+<tr>
+<td>Accepted gaps with owner, reason, residual risk and follow-up</td>
+<td>Static visual/a11y gate without browser proof</td>
+</tr>
+</tbody>
+</table>
+<p>If the cockpit shows a problem or recommendation, the next step must return to the source: read files, check command evidence, update owning docs or request an owner decision.</p>
+<h2 id="inputs">Inputs<a class="headerlink" href="#inputs" title="Permanent link">&para;</a></h2>
+<p>The main input is the first-run analysis packet. It contains workspace metadata, detected project shape, source artifacts, control-plane state, <code>usage_mode</code>, methodology route, risk map, source-policy status, graph/file/code summaries, schema/contract signals, runtime/browser/provider boundaries, generated pages, redaction status, evidence gaps and <code>safe_next_action</code>.</p>
+<p>For private or real-project targets, the packet must stay redacted: no secrets, credentials, raw private chat logs, private customer data, unredacted PII, raw source bodies or absolute user-specific paths.</p>
+<h2 id="outputs">Outputs<a class="headerlink" href="#outputs" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th>Role</th>
+<th>Boundary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>first-run-analysis-packet.json</code></td>
+<td>Machine-readable first analysis packet: route, summaries, gaps, generated pages, source policy and safe next action.</td>
+<td>Orientation evidence; not release/readiness proof.</td>
+</tr>
+<tr>
+<td><code>analysis-manifest.json</code></td>
+<td>Renderer manifest: digests, baseline comparison, redaction report, generated page list and cockpit view model.</td>
+<td>Generated-view boundary; sources and current commands are stronger.</td>
+</tr>
+<tr>
+<td><code>index.html</code></td>
+<td>Primary self-contained Architecture Intelligence Cockpit.</td>
+<td>Local review surface; not browser/runtime proof by itself.</td>
+</tr>
+<tr>
+<td>Additional <code>*.html</code> pages</td>
+<td>Diagnostic pages for inventory, architecture, methodology, runtime route, control plane, graph, code flow, quality/evals, risks and recommendations.</td>
+<td>Supporting views, not source truth.</td>
+</tr>
+<tr>
+<td>Scorecard or comparison packet</td>
+<td>Reading quality, structural checks, unsupported claim ceilings and static comparison.</td>
+<td>Review evidence only; owner acceptance and runtime proof are separate.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="view-model">View Model<a class="headerlink" href="#view-model" title="Permanent link">&para;</a></h2>
+<p>The primary cockpit is organized around <code>first_run_cockpit_artifact_v1</code> and <code>architecture_intelligence_design_contract_v1</code>. These names describe the contract surface; they do not mean all claims are proven.</p>
+<p>The view model should show:</p>
+<ul>
+<li>first viewport operator shell: goal, status, route, next action and claim ceiling;</li>
+<li>architecture/design contract: what the cockpit shows, what questions it answers and where the trust boundary sits;</li>
+<li>static diagrams: local SVG/Mermaid-style projections without external runtime;</li>
+<li>schema/contract surface: detected or explicitly missing DB/API/config/contract signals;</li>
+<li>graph/file/code surface: source graph, selected nodes, read order and graph blockers;</li>
+<li>guided review route for operator, reviewer and owner;</li>
+<li>evidence/risk hierarchy: supported, inspection-only, unsupported, approval-required and accepted-gap labels;</li>
+<li>visual/accessibility acceptance surface with static checks and an explicit browser proof gap.</li>
+</ul>
+<h2 id="local-js-boundary">Local-JS Boundary<a class="headerlink" href="#local-js-boundary" title="Permanent link">&para;</a></h2>
+<p>The cockpit may include local inline JavaScript for reading convenience: search, filters, tabs, expanded diagnostics, navigation highlighting and copy/select controls. This layer is allowed only as self-contained local interaction.</p>
+<p>Without separate approval, the cockpit must not include external <code>&lt;script src=...&gt;</code>, external CSS, hosted assets, <code>fetch</code>, network calls, telemetry, provider/API calls, live server launch, browser automation, target mutation, canonical graph mutation, source-doc mutation or hidden runtime checks.</p>
+<p>If JavaScript is disabled, the main content must remain readable as static HTML. Local controls improve navigation but do not increase evidentiary strength.</p>
+<h2 id="workspace-detection-and-routing">Workspace Detection And Routing<a class="headerlink" href="#workspace-detection-and-routing" title="Permanent link">&para;</a></h2>
+<p>First-run routing must classify a workspace narrowly enough to avoid an unsafe next step.</p>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>What the cockpit shows</th>
+<th>Safe interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Control-plane files</td>
+<td>Whether <code>AGENTS.md</code>, requirements, plan, tests, evals, runlog or staged proposals exist.</td>
+<td>File presence does not prove freshness; read owner source.</td>
+</tr>
+<tr>
+<td>Stack and artifacts</td>
+<td>Docs-only, backend/API, web/frontend, AI/RAG, data/migration, PR/review, automation/release or mixed signals.</td>
+<td><code>usage_mode</code> is a route hint, not owner approval.</td>
+</tr>
+<tr>
+<td>Source policy</td>
+<td>Missing <code>Source status</code>, registry gaps, private target boundaries and unsupported claims.</td>
+<td>Block apply/promotion until fixed or accepted as an owner gap.</td>
+</tr>
+<tr>
+<td>Runtime/browser/provider hints</td>
+<td>Surfaces that need runtime or external proof.</td>
+<td>Keep <code>approval_required</code> if proof was not run.</td>
+</tr>
+<tr>
+<td>Graph/code/schema signals</td>
+<td>Files, contracts and relationships worth reading first.</td>
+<td>Use for read order, not automatic edit decisions.</td>
+</tr>
+</tbody>
+</table>
+<p>The first safe action is usually one of three things: read named source files, fix source-policy blockers or prepare an owner-reviewed accepted gap. A stronger action needs current evidence and an approval boundary.</p>
+<h2 id="artifact-relationships">Artifact Relationships<a class="headerlink" href="#artifact-relationships" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>flowchart LR
+    A["Workspace sources"] --&gt; B["first-run analysis packet"]
+    B --&gt; C["analysis manifest"]
+    C --&gt; D["Architecture Intelligence Cockpit"]
+    C --&gt; E["diagnostic HTML pages"]
+    D --&gt; F["reader route and safe_next_action"]
+    E --&gt; F
+    F --&gt; G["source read / owner decision / accepted gap"]</code></pre>
+<p>This Mermaid diagram is Markdown source, not browser screenshot proof. Final generated <code>site/</code> and search/sitemap parity remain a separate final gate.</p>
+<h2 id="safe-first-actions">Safe First Actions<a class="headerlink" href="#safe-first-actions" title="Permanent link">&para;</a></h2>
+<p>After opening the cockpit, the operator should:</p>
+<ol>
+<li>Check <code>Source status</code>, <code>generated_view_policy</code> and <code>approval_boundary</code>.</li>
+<li>Read <code>safe_next_action</code> and avoid expanding it into runtime, browser, provider, git or target mutation.</li>
+<li>Open the named source files or control-plane artifacts before architecture/readiness claims.</li>
+<li>If source-policy blockers exist, fix the owning source or record an owner-reviewed accepted gap.</li>
+<li>If screenshot/browser proof is needed, prepare a separate approval packet instead of inferring it from static HTML.</li>
+</ol>
+<h2 id="failure-modes">Failure Modes<a class="headerlink" href="#failure-modes" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Failure mode</th>
+<th>Why it is risky</th>
+<th>Correct response</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Generated HTML treated as source truth</td>
+<td>A stale or partial view can look convincing.</td>
+<td>Return to source files and current command evidence.</td>
+</tr>
+<tr>
+<td>Static visual gate called WCAG proof</td>
+<td>Static checks are not browser/a11y/runtime proof.</td>
+<td>Record a browser proof gap or request approved visual QA.</td>
+</tr>
+<tr>
+<td>Graph edge treated as runtime dependency</td>
+<td>Static graph does not prove dynamic dispatch, framework wiring or live behavior.</td>
+<td>Read code and run approved checks.</td>
+</tr>
+<tr>
+<td>Local JS treated as app runtime</td>
+<td>Inline controls only manage the HTML view.</td>
+<td>Do not claim runtime behavior without separate proof.</td>
+</tr>
+<tr>
+<td>Private target details leak into reader docs</td>
+<td>The public/internal boundary breaks redaction policy.</td>
+<td>Keep private labels and paths in source-owned ledgers only.</td>
+</tr>
+<tr>
+<td>Root <code>site/</code> freshness claimed after a source edit</td>
+<td>Generated site can be stale.</td>
+<td>Wait for the final <code>DOC-M25</code> rebuild/search/sitemap gate.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="unsupported-claims">Unsupported Claims<a class="headerlink" href="#unsupported-claims" title="Permanent link">&para;</a></h2>
+<p>This page does not claim browser screenshot proof, Cosmos.gl/WebGL runtime execution proof, full WCAG certification, release readiness, publication readiness, target apply safety, provider/API behavior, canonical graph mutation safety or root <code>site/</code> freshness after G2-G5 source updates.</p>
+<p>Those claims require separate current evidence, owner approval or an accepted gap. Static cockpit evidence can only show which proof is needed next.</p>
+<h2 id="screenshot-and-browser-proof-boundary">Screenshot And Browser Proof Boundary<a class="headerlink" href="#screenshot-and-browser-proof-boundary" title="Permanent link">&para;</a></h2>
+<p>Screenshots, canvas pixel checks, responsive layout proof, console/network cleanliness, keyboard/focus verification and actual browser behavior do not appear automatically from Markdown, strict MkDocs or static HTML inspection.</p>
+<p>If that proof is needed, the next slice must name the target artifact, redaction policy, browser automation approval, viewport matrix, console/network evidence, screenshot or trace destination, expected failure handling and owner review path. Until then, the status is <code>not_run_approval_required</code>.</p>
+<h2 id="final-site-freshness-route">Final Site Freshness Route<a class="headerlink" href="#final-site-freshness-route" title="Permanent link">&para;</a></h2>
+<p>Source docs can be updated before the root <code>site/</code> rebuild. For this refresh, the final gate is <code>DOC-M25</code>: it should run after G2-G5 source/nav decisions so one final build can prove generated-site freshness, search index and sitemap parity.</p>
+<p>Before <code>DOC-M25</code>, the correct claim is: source Markdown is updated, but generated <code>site/</code> freshness is not claimed.</p>
+<h2 id="related-pages">Related Pages<a class="headerlink" href="#related-pages" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="artifact-contracts.html">Artifact Contracts</a> maps generated artifacts and the first-run analysis artifact.</li>
+<li><a href="project-code-graph.html">Project Code Graph</a> explains graph/query/cockpit source boundaries.</li>
+<li><a href="real-project-pilot.html">Real-project pilot</a> covers first-run operator packets, target consent and evidence ledgers.</li>
+<li><a href="technical.html">Technical Setup</a> covers commands, package layout and local capability boundaries.</li>
+</ul>
+<h2 id="next-action">Next Action<a class="headerlink" href="#next-action" title="Permanent link">&para;</a></h2>
+<p>Use the cockpit as a reader-facing route map: choose <code>safe_next_action</code>, read the owning sources and only then move to docs/source updates, accepted gaps, approved browser proof or the final <code>DOC-M25</code> site freshness gate.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </article>
+            </div>
+
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+
+      </main>
+
+        <footer class="md-footer">
+
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+
+
+</div>
+
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+
+
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.indexes", "navigation.top", "search.highlight", "search.suggest", "content.code.copy"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+
+
+      <script src="../../assets/javascripts/bundle.60a45f97.min.js"></script>
+
+        <script src="../../assets/javascripts/local-file-i18n.js"></script>
+
+        <script src="../../assets/javascripts/vendor/mermaid-10.9.6.min.js"></script>
+
+
+  </body>
+</html>

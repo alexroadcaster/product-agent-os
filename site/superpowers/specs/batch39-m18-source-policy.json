@@ -1,0 +1,100 @@
+﻿{
+  "errors": [],
+  "files": [
+    {
+      "assumptions": [],
+      "freshness_risks": [],
+      "missing_context": [],
+      "path": "docs/code-review-findings.md",
+      "registry_update_required": false,
+      "secret_findings": [],
+      "source_status": "synthetic_fixture",
+      "supported_facts": [],
+      "unsupported_claims": []
+    },
+    {
+      "assumptions": [],
+      "freshness_risks": [
+        "current OpenAI/runtime behavior may drift"
+      ],
+      "missing_context": [],
+      "path": "docs/pr-risk-review.md",
+      "registry_update_required": false,
+      "secret_findings": [],
+      "source_status": "synthetic_fixture",
+      "supported_facts": [
+        "OpenAI-related claim requires source-policy review"
+      ],
+      "unsupported_claims": []
+    },
+    {
+      "assumptions": [],
+      "freshness_risks": [
+        "current OpenAI/runtime behavior may drift"
+      ],
+      "missing_context": [],
+      "path": "docs/release-readiness-gap.md",
+      "registry_update_required": false,
+      "secret_findings": [],
+      "source_status": "synthetic_fixture",
+      "supported_facts": [
+        "OpenAI-related claim requires source-policy review"
+      ],
+      "unsupported_claims": []
+    }
+  ],
+  "registry_updates_required": [],
+  "secret_findings": [],
+  "source_policy_report": {
+    "errors": [],
+    "files": [
+      {
+        "assumptions": [],
+        "freshness_risks": [],
+        "missing_context": [],
+        "path": "docs/code-review-findings.md",
+        "registry_update_required": false,
+        "secret_findings": [],
+        "source_status": "synthetic_fixture",
+        "supported_facts": [],
+        "unsupported_claims": []
+      },
+      {
+        "assumptions": [],
+        "freshness_risks": [
+          "current OpenAI/runtime behavior may drift"
+        ],
+        "missing_context": [],
+        "path": "docs/pr-risk-review.md",
+        "registry_update_required": false,
+        "secret_findings": [],
+        "source_status": "synthetic_fixture",
+        "supported_facts": [
+          "OpenAI-related claim requires source-policy review"
+        ],
+        "unsupported_claims": []
+      },
+      {
+        "assumptions": [],
+        "freshness_risks": [
+          "current OpenAI/runtime behavior may drift"
+        ],
+        "missing_context": [],
+        "path": "docs/release-readiness-gap.md",
+        "registry_update_required": false,
+        "secret_findings": [],
+        "source_status": "synthetic_fixture",
+        "supported_facts": [
+          "OpenAI-related claim requires source-policy review"
+        ],
+        "unsupported_claims": []
+      }
+    ],
+    "registry_updates_required": [],
+    "secret_findings": [],
+    "status": "ok",
+    "workspace": "tests\\fixtures\\product_agent_os\\batch39-m18-pr-review-fixture"
+  },
+  "status": "ok",
+  "workspace": "tests\\fixtures\\product_agent_os\\batch39-m18-pr-review-fixture"
+}

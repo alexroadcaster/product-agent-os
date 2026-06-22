@@ -1,0 +1,63 @@
+{
+  "schema_version": "batch39_expected_block_summary_v1",
+  "batch": "B39",
+  "test_id": "B39-TEST-M13",
+  "attempt_id": "B39-TEST-M13-A01",
+  "slice": "B39-S2",
+  "summary_status": "passed_expected_block",
+  "generated_at": "2026-06-11T00:00:00+00:00",
+  "target": {
+    "target_ref": "approved_target:Neural_Flow",
+    "target_kind": "real_project",
+    "mode": "read_only_expected_block",
+    "mutation_allowed": false
+  },
+  "expected_block": {
+    "reason": "source_policy_blocked",
+    "source_policy_status": "blocked",
+    "source_policy_validator_exit_code": 1,
+    "runtime_status": "blocked",
+    "runtime_exit_code": 1,
+    "runtime_lifecycle_state": "uninitialized",
+    "runtime_approval_status": "not_required",
+    "methodology_audit_exit_code": 0
+  },
+  "evidence_refs": [
+    "docs/superpowers/specs/batch39-m13-expected-block-manifest.json",
+    "docs/superpowers/specs/batch39-m13-command-results.jsonl",
+    "docs/superpowers/specs/batch39-m13-source-policy.json",
+    "docs/superpowers/specs/batch39-m13-runtime-result.json",
+    "docs/superpowers/specs/batch39-m13-runtime-stdout.json",
+    "docs/superpowers/specs/batch39-m13-methodology-audit.json"
+  ],
+  "supported_claims": [
+    "Product-Agent OS blocks the approved Neural_Flow target before a real-project happy-path or target-apply claim when source policy is blocked.",
+    "The expected block is reproducible from current local command evidence.",
+    "No target workspace mutation, live server, browser automation, provider/API call, cache mutation, git action, automation activation or external action was performed."
+  ],
+  "unsupported_claims": [
+    "Neural_Flow is not a verified clean positive pilot target.",
+    "No source freshness, release readiness, product value, target-apply readiness or automation promotion claim is supported."
+  ],
+  "approval_boundary": {
+    "target_workspace_mutation": "not_performed",
+    "provider_or_api_calls": "not_performed",
+    "browser_automation": "not_performed",
+    "live_server": "not_performed",
+    "cache_mutation": "not_performed",
+    "external_actions": "not_performed",
+    "git_actions": "not_performed",
+    "automation_activation": "not_performed",
+    "local_evidence_artifact_write": "allowed_workspace_output_only"
+  },
+  "completion_skeptic": {
+    "verdict": "blocked",
+    "trigger": "expected_block_baseline",
+    "failure_classes": [
+      "missing_current_evidence"
+    ],
+    "accepted_gap_refs": [],
+    "promotion_boundary": "manual_only_not_promoted"
+  },
+  "next_action": "Run B39-TEST-M14 web/frontend archetype pilot or resolve target source-policy artifacts before any future Neural_Flow positive pilot."
+}

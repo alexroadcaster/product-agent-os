@@ -1,0 +1,59 @@
+{
+  "approval_boundary": {
+    "automation_activation": "not_performed",
+    "browser_automation": "not_performed",
+    "external_actions": "not_performed",
+    "git_actions": "not_performed",
+    "live_server": "not_performed",
+    "local_evidence_artifact_write": "allowed_workspace_output_only",
+    "provider_or_api_calls": "not_performed",
+    "target_workspace_mutation": "not_performed"
+  },
+  "attempt_digest": "sha256:0e6109ddee158886225c2bf5866802f961dcfb55055784c0a24b5a6dfdc78f17",
+  "attempt_id": "B39-TEST-M21-A03",
+  "batch": "B39",
+  "comparison_role": "first_run_artifact_usefulness",
+  "first_run_artifact": {
+    "detected_archetypes": [
+      "unknown"
+    ],
+    "manifest_ref": "not_rendered",
+    "packet_digest": "sha256:710c3eaefdd3e526ea3a53aa539e34040244a47af71e6908492f70827a5438fb",
+    "packet_ref": "packet_digest_only",
+    "page_count": 0,
+    "status": "packet_only_dry_run"
+  },
+  "first_run_artifact_usefulness": {
+    "packet_digest": "sha256:710c3eaefdd3e526ea3a53aa539e34040244a47af71e6908492f70827a5438fb",
+    "signal_basis": "first-run dry-run packet classified target shape without target mutation",
+    "status": "usefulness_signal_recorded"
+  },
+  "generated_at": "2026-06-18T00:00:00Z",
+  "generated_view_policy": "orientation_only_not_proof",
+  "mode": "read_only_real_target",
+  "next_action": "Use SOL first-run usefulness signal to tune B39-S3 route accuracy questions.",
+  "plugin_skill_contract": {
+    "required": false,
+    "status": "not_applicable"
+  },
+  "schema_version": "batch39_m21_attempt_summary_v1",
+  "source_policy_status": "present_unverified",
+  "summary_status": "inspection_only_real_target_value",
+  "synthetic_write_status": "not_applicable_read_only",
+  "target": {
+    "kind": "approved_read_only_target",
+    "label": "SOL",
+    "location_ref": "approved_read_only_target:redacted"
+  },
+  "test_id": "B39-TEST-M21",
+  "unsupported_claims": [
+    "live_runtime",
+    "browser_ui",
+    "provider_calls",
+    "target_apply",
+    "git_release",
+    "automation_activation",
+    "release_readiness",
+    "clean_positive_source_policy"
+  ]
+}

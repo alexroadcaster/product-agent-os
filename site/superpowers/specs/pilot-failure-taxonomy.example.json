@@ -1,0 +1,25 @@
+{
+  "attempt_id": "B39-TEST-M09-A01",
+  "batch": "B39",
+  "class_definitions": {
+    "fake_evidence_rejected": "Claimed or fabricated evidence cannot satisfy a verification gate.",
+    "false_pass_blocked": "Completion claim blocked when current evidence is absent or contradictory.",
+    "false_rewrite_blocked": "Rewrite-from-scratch drift blocked when project context should be extended.",
+    "generated_view_not_proof": "Dashboard, rollup, report, or graph is orientation evidence only.",
+    "missing_current_evidence": "Only stale, generated, or claimed evidence is available.",
+    "synthetic_only_boundary": "Synthetic fixtures cannot promote a real-project or production claim."
+  },
+  "classes": [
+    "fake_evidence_rejected",
+    "false_pass_blocked",
+    "false_rewrite_blocked",
+    "generated_view_not_proof",
+    "missing_current_evidence",
+    "synthetic_only_boundary"
+  ],
+  "generated_at": "2026-06-11T00:00:00+00:00",
+  "promotion_boundary": "manual_only_not_promoted",
+  "schema_version": "pilot_failure_taxonomy_v1",
+  "taxonomy_digest": "sha256:067cd673fd15ab660df8c1934f6f4697c6c8ec10aaf9aeb0b19d38ee3824f60c",
+  "test_id": "B39-TEST-M09"
+}

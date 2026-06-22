@@ -1,0 +1,286 @@
+{
+  "schema_version": "documentation_refresh_g1_1_doc_m40_dependency_audit_v1",
+  "evidence_id": "documentation_refresh_G1_1-DOC-M40-AUDIT-SBOM-A01",
+  "status": "implemented_audit_sbom_governance_current_findings_recorded",
+  "work_item": "DOC-M40",
+  "group": "G1.1",
+  "run_date": "2026-06-21",
+  "scope": {
+    "python_runtime": ".venv-docs/",
+    "python_manifest": "requirements.txt",
+    "node_tooling": ".docs-tools/node/",
+    "node_manifest": ".docs-tools/node/package.json",
+    "node_lockfile": ".docs-tools/node/package-lock.json",
+    "standalone_binary_checksums": ".docs-tools/bin/*.sha256",
+    "vendored_runtime_metadata": "docs/assets/javascripts/vendor/mermaid-10.9.6.package.json",
+    "raw_report_retention": "not_enabled",
+    "source_owned_summary": "docs/superpowers/specs/documentation-refresh-g1-1-doc-m40-dependency-audit-summary.json"
+  },
+  "governance_policy": {
+    "default_gate": "local_inventory_and_high_critical_node_audit_gate",
+    "release_style_gate": "rerun npm audit and any approved Python/SBOM scanners before publication or release-style use",
+    "moderate_findings_policy": "tracked_review_required_no_auto_fix",
+    "remediation_policy": "dependency upgrades, npm audit fix, npm update and pip install -U require separate review and approval",
+    "raw_report_retention_policy": "raw audit or SBOM reports stay out of source by default; retention under .docs-tools/reports requires explicit owner approval"
+  },
+  "python_dependency_inventory": {
+    "package_count": 31,
+    "requested_packages": [
+      {
+        "name": "mkdocs",
+        "version": "1.6.1"
+      },
+      {
+        "name": "mkdocs-material",
+        "version": "9.5.50"
+      },
+      {
+        "name": "mkdocs-static-i18n",
+        "version": "1.2.3"
+      },
+      {
+        "name": "pip",
+        "version": "26.1.2"
+      }
+    ],
+    "pip_check": {
+      "status": "passed",
+      "output": "No broken requirements found."
+    },
+    "pip_inspect": {
+      "status": "passed_with_utf8_output_workaround",
+      "installed_count": 31,
+      "initial_cp1251_run_status": "failed_unicode_encode_error"
+    },
+    "pip_audit": {
+      "status": "not_installed_approval_required",
+      "vulnerability_claim": "not_claimed"
+    },
+    "python_sbom": {
+      "status": "not_generated_tool_not_installed_approval_required"
+    }
+  },
+  "node_dependency_inventory": {
+    "npm_version": "10.9.3",
+    "direct_dependencies": {
+      "@redocly/cli": "2.34.0",
+      "markdownlint-cli2": "0.22.1",
+      "prettier": "3.8.4"
+    },
+    "npm_ls_depth_0": "passed",
+    "cyclonedx_sbom": {
+      "status": "generated_to_stdout_not_retained_as_raw_report",
+      "bom_format": "CycloneDX",
+      "spec_version": "1.5",
+      "component_count": 88,
+      "dependency_entries": 89,
+      "root_depends_on": [
+        "@redocly/cli@2.34.0",
+        "markdownlint-cli2@0.22.1",
+        "prettier@3.8.4"
+      ]
+    },
+    "npm_audit": {
+      "initial_sandbox_status": "failed_network_request_to_registry",
+      "approved_network_audit_status": "ran",
+      "audit_report_version": 2,
+      "audit_level_high_status": "passed_no_high_or_critical_findings",
+      "vulnerability_counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 3,
+        "high": 0,
+        "critical": 0,
+        "total": 3
+      },
+      "dependency_counts": {
+        "prod": 1,
+        "dev": 88,
+        "optional": 0,
+        "peer": 0,
+        "peerOptional": 0,
+        "total": 88
+      },
+      "tracked_moderate_findings": [
+        {
+          "name": "js-yaml",
+          "title": "JS-YAML: Quadratic-complexity DoS in merge key handling via repeated aliases",
+          "advisory": "GHSA-h67p-54hq-rp68",
+          "severity": "moderate",
+          "effects": [
+            "markdownlint-cli2"
+          ],
+          "fix_available": "markdownlint-cli2 0.12.1 semver-major downgrade candidate; not applied"
+        },
+        {
+          "name": "markdown-it",
+          "title": "markdown-it: Quadratic complexity DoS in smartquotes rule via replaceAt string operations",
+          "advisory": "GHSA-6v5v-wf23-fmfq",
+          "severity": "moderate",
+          "effects": [
+            "markdownlint-cli2"
+          ],
+          "fix_available": "markdownlint-cli2 0.12.1 semver-major downgrade candidate; not applied"
+        },
+        {
+          "name": "markdownlint-cli2",
+          "severity": "moderate",
+          "direct": true,
+          "via": [
+            "js-yaml",
+            "markdown-it"
+          ],
+          "fix_available": "markdownlint-cli2 0.12.1 semver-major downgrade candidate; not applied"
+        }
+      ]
+    }
+  },
+  "binary_and_vendor_integrity": {
+    "status": "passed_recorded_hashes_match_current_files",
+    "hashes": [
+      {
+        "path": ".docs-tools/bin/vale.exe",
+        "sha256": "103e18687f59f860c6fdbf9ef7edfaa116092542db968039bab6105fb8906aae"
+      },
+      {
+        "path": ".docs-tools/bin/lychee.exe",
+        "sha256": "2d15a3f78ac680103720b0c59667dc6f1da7de35f7e9c95171bdf4b76fb6829b"
+      },
+      {
+        "path": ".docs-tools/bin/gitleaks.exe",
+        "sha256": "9d08e3f5cfb35a98f230b97bcda24f8d3fc66363c91868ffc98dac0afebdcb72"
+      },
+      {
+        "path": "docs/assets/javascripts/vendor/mermaid-10.9.6.min.js",
+        "sha256": "eda3a0ad572bbe69a318c1be0163e8233dd824f3f12939e5168feba207767151"
+      }
+    ],
+    "unsupported_claim": "checksum match is local integrity evidence, not source authenticity, vulnerability safety or legal approval"
+  },
+  "verification": [
+    {
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File tools\\docs_dependency_audit.ps1",
+      "result": "passed_local_inventory_sbom_hash_summary_with_network_audit_skipped"
+    },
+    {
+      "command": ".venv-docs\\Scripts\\python.exe -m pip check",
+      "result": "passed_no_broken_requirements"
+    },
+    {
+      "command": "$env:PYTHONIOENCODING='utf-8'; .venv-docs\\Scripts\\python.exe -m pip inspect --local",
+      "result": "passed_installed_count_31"
+    },
+    {
+      "command": ".venv-docs\\Scripts\\python.exe -m pip_audit --version",
+      "result": "failed_expected_no_module_named_pip_audit"
+    },
+    {
+      "command": "npm.cmd --prefix .docs-tools\\node ls --depth=0 --json",
+      "result": "passed_direct_dependency_inventory"
+    },
+    {
+      "command": "npm.cmd --prefix .docs-tools\\node sbom --json --sbom-format=cyclonedx",
+      "result": "passed_cyclonedx_1_5_component_count_88_dependency_entries_89"
+    },
+    {
+      "command": "npm.cmd --prefix .docs-tools\\node audit --json",
+      "result": "passed_as_current_advisory_evidence_with_exit_1_due_3_moderate_findings_after_explicit_network_approval"
+    },
+    {
+      "command": "npm.cmd --prefix .docs-tools\\node audit --audit-level=high --json",
+      "result": "passed_no_high_or_critical_findings_3_moderate_still_reported"
+    },
+    {
+      "command": "Get-FileHash for vale.exe, lychee.exe, gitleaks.exe and mermaid-10.9.6.min.js",
+      "result": "passed_recorded_hashes_match"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+      "result": "passed_91_tests_ok"
+    },
+    {
+      "command": "python tools\\check_docs.py",
+      "result": "passed_documentation_structure_checks"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed_no_whitespace_errors_crlf_warnings_only"
+    }
+  ],
+  "supported_claims": [
+    "Python docs runtime inventory is captured for the current local .venv-docs environment",
+    "Python installed docs runtime has no broken requirements according to pip check",
+    "Node docs tooling direct dependency inventory is captured from the current local install",
+    "Node docs tooling CycloneDX SBOM can be generated locally with npm 10.9.3 and covers 88 npm components",
+    "Current npm advisory audit reports 3 moderate findings and 0 high or critical findings",
+    "Standalone binary and Mermaid vendor checksums match the recorded local hash files"
+  ],
+  "unsupported_claims": [
+    "Python vulnerability audit is clean",
+    "complete repository SBOM exists",
+    "standalone binaries are covered by a standards SBOM",
+    "Mermaid vendored runtime is vulnerability-audited",
+    "docs toolchain is vulnerability-free",
+    "dependency remediation was performed",
+    "npm audit fix is safe",
+    "legal or compliance approval exists",
+    "release readiness",
+    "publication readiness",
+    "root site freshness",
+    "browser/runtime behavior"
+  ],
+  "accepted_gaps": [
+    {
+      "gap": "pip-audit and Python SBOM tools are not installed",
+      "owner": "DOC-M40 governance",
+      "reason": "Installing scanners or refreshing vulnerability databases requires separate dependency/network approval",
+      "residual_risk": "Python package vulnerability status is not currently proven",
+      "follow_up": "Approve and run pip-audit or a selected Python SBOM/audit tool before release-style use"
+    },
+    {
+      "gap": "raw audit and SBOM reports are not retained under .docs-tools/reports",
+      "owner": "DOC-M40 governance",
+      "reason": "Report retention cadence and redaction policy are not enabled",
+      "residual_risk": "Only the source-owned summary is durable",
+      "follow_up": "Approve report retention policy before storing raw scanner outputs"
+    },
+    {
+      "gap": "moderate npm findings remain unresolved",
+      "owner": "DOC-M40 governance",
+      "reason": "Available npm fix suggests a semver-major markdownlint-cli2 downgrade candidate and was not reviewed as safe",
+      "residual_risk": "Markdown lint tooling has moderate DoS advisories in transitive dependencies",
+      "follow_up": "Review markdownlint-cli2 upgrade/downgrade/remediation options in a separate dependency remediation slice"
+    }
+  ],
+  "approved_actions_performed": {
+    "npm_registry_audit_read": true,
+    "local_inventory": true,
+    "local_node_sbom_stdout_generation": true,
+    "local_hash_checks": true
+  },
+  "no_unapproved_actions": {
+    "dependency_upgrade": false,
+    "npm_audit_fix": false,
+    "npm_update": false,
+    "pip_install_or_upgrade": false,
+    "new_audit_tool_install": false,
+    "raw_report_retention_enabled": false,
+    "root_site_rebuild": false,
+    "browser_automation": false,
+    "provider_api_call": false,
+    "target_workspace_mutation": false,
+    "git_action": false,
+    "publication": false,
+    "automation_activation": false
+  },
+  "subagents": [
+    {
+      "role": "explorer",
+      "result": "read_only_dependency_surface_inventory"
+    },
+    {
+      "role": "tester",
+      "result": "read_only_verification_matrix_and_guardrail_recommendations"
+    }
+  ]
+}
