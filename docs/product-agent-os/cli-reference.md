@@ -2,89 +2,90 @@
 
 Source status: `official + experiment`
 
-Эта страница фиксирует локальные Product-Agent OS CLI surfaces, которые уже есть в `plugins/product-agent-os/scripts/`. Она описывает команды как stage/read-only tooling: они не публикуют plugin, не запускают внешние системы и не выполняют live provider/model/API calls без отдельного explicit approval.
+Эта страница фиксирует локальные поверхности `CLI`, которые уже есть в `plugins/product-agent-os/scripts/`. Команды рассматриваются как `stage/read-only tooling`: они не публикуют plugin, не запускают внешние системы и не выполняют `live provider/model/API calls` без отдельного `explicit approval`.
 
 ## Назначение
 
-CLI слой нужен для повторяемого локального evidence loop:
+Слой `CLI` нужен для повторяемого локального цикла доказательств:
 
-- read-only audit или dry-run packet перед изменениями;
-- stage-only generation в явный output directory;
-- approval-bound merge или rollback только через отдельный approval record;
-- deterministic runtime contract для Codex App, CLI или IDE extension;
-- project graph generation, queries, generated cockpit, local indexes и provider/mutation governance packets;
-- docs/closure verification через отдельные docs-maintainer и tester slices.
+- аудит только для чтения или пакет `dry-run` перед изменениями;
+- генерация только в явный каталог вывода;
+- слияние или откат только через отдельную запись approval;
+- детерминированный runtime contract для Codex App, CLI или IDE extension;
+- генерация graph, query-пакеты, cockpit, локальные индексы и governance-пакеты для provider/mutation;
+- проверка документации и закрытия через отдельные роли `docs-maintainer` и `tester`.
 
-Сгенерированные выходы не являются источником истины. Источником истины остаются checked-in source files, project docs, source registry, control-plane artifacts, текущий command evidence и owner-approved records.
+Сгенерированные выходы не являются источником истины. Источником истины остаются исходные файлы, проектная документация, `source registry`, `control-plane artifacts`, текущие доказательства команд и `owner-approved records`.
 
-## Core Commands
+## Основные команды
 
-| Command | Purpose | Обязательные входы | Output / boundary |
+| Команда | Назначение | Обязательные входы | Вывод / граница |
 | --- | --- | --- | --- |
-| `python plugins\product-agent-os\scripts\render_infrastructure.py <workspace> --dry-run` | Print infrastructure render plan. | Target workspace path. | Read-only JSON/text plan; нет staged files. |
-| `python plugins\product-agent-os\scripts\render_infrastructure.py <workspace> --stage <stage-dir>` | Stage generated control-plane/templates. | Workspace и explicit stage directory. | Writes только в рамках `<stage-dir>`; direct target merge остается separate. |
-| `python plugins\product-agent-os\scripts\merge_infrastructure.py <workspace> <stage-dir> --plan` | Build read-only merge plan. | Workspace и stage directory. | Нет пишет к target workspace. |
-| `python plugins\product-agent-os\scripts\merge_infrastructure.py <workspace> <stage-dir> --apply --approval-file <approval.json>` | Применить approved merge decisions. | Approval file matching plan. | Approved target пишет only; rollback manifest может быть produced через merge tooling. |
-| `python plugins\product-agent-os\scripts\merge_infrastructure.py <workspace> <stage-dir> --rollback <rollback.json>` | Roll back prior approved merge. | Rollback manifest. | Restores scoped files из recorded rollback data. |
-| `python plugins\product-agent-os\scripts\run_codex_runtime_runner.py <workspace> --contract` | Produce deterministic Codex runtime route packet. | Workspace. | Offline contract; нет external model call. |
-| `python plugins\product-agent-os\scripts\run_codex_runtime_runner.py <workspace> --contract --allow-subagents` | Allow route recommendations который mention subagents. | Workspace и explicit subagent permission в текущий workflow. | Recommendation only; не create agents через itself. |
-| `python plugins\product-agent-os\scripts\render_status_dashboard.py <workspace> --dry-run` | Print status dashboard plan. | Workspace. | Нет write. |
-| `python plugins\product-agent-os\scripts\render_status_dashboard.py <workspace> --stage <stage-dir>` | Stage generated status dashboard HTML/JSON. | Workspace и explicit stage directory. | Generated view only, не является каноническим источником. |
-| `python plugins\product-agent-os\scripts\render_agent_skill_metrics_report.py <workspace> --dry-run` | Print metrics report plan. | Workspace. | Нет write. |
-| `python plugins\product-agent-os\scripts\render_agent_skill_metrics_report.py <workspace> --stage <stage-dir>` | Stage agent/skill metrics report. | Workspace и explicit stage directory. | Candidate-only report; нет modernization является applied. |
+| `python plugins\product-agent-os\scripts\render_infrastructure.py <workspace> --dry-run` | Печатает план генерации инфраструктуры. | Путь workspace. | JSON/text план только для чтения; staged files не создаются. |
+| `python plugins\product-agent-os\scripts\render_infrastructure.py <workspace> --stage <stage-dir>` | Создает control-plane/templates в staging-каталоге. | Workspace и явный stage directory. | Запись только в рамках `<stage-dir>`; прямое слияние в target остается отдельным шагом. |
+| `python plugins\product-agent-os\scripts\merge_infrastructure.py <workspace> <stage-dir> --plan` | Строит план слияния только для чтения. | Workspace и stage directory. | Не пишет в target workspace. |
+| `python plugins\product-agent-os\scripts\merge_infrastructure.py <workspace> <stage-dir> --apply --approval-file <approval.json>` | Применяет решения merge с `approval`. | `Approval file`, соответствующий плану. | Пишет только разрешенный `target scope`; `rollback manifest` создается через `merge tooling`. |
+| `python plugins\product-agent-os\scripts\merge_infrastructure.py <workspace> <stage-dir> --rollback <rollback.json>` | Откатывает предыдущее approved merge. | Rollback manifest. | Восстанавливает scoped files из recorded rollback data. |
+| `python plugins\product-agent-os\scripts\run_codex_runtime_runner.py <workspace> --contract` | Создает детерминированный `Codex runtime route packet`. | Workspace. | `Offline contract`; нет `external model call`. |
+| `python plugins\product-agent-os\scripts\run_codex_runtime_runner.py <workspace> --contract --allow-subagents` | Разрешает `route recommendations` с упоминанием subagents. | Workspace и explicit subagent permission в текущем workflow. | Только рекомендация; agents не создаются автоматически. |
+| `python plugins\product-agent-os\scripts\render_status_dashboard.py <workspace> --dry-run` | Печатает план status dashboard. | Workspace. | Записи нет. |
+| `python plugins\product-agent-os\scripts\render_status_dashboard.py <workspace> --stage <stage-dir>` | Создает status dashboard HTML/JSON в staging-каталоге. | Workspace и explicit stage directory. | `Generated view only`; не является каноническим источником. |
+| `python plugins\product-agent-os\scripts\render_agent_skill_metrics_report.py <workspace> --dry-run` | Печатает план metrics report. | Workspace. | Записи нет. |
+| `python plugins\product-agent-os\scripts\render_agent_skill_metrics_report.py <workspace> --stage <stage-dir>` | Создает agent/skill metrics report в staging-каталоге. | Workspace и explicit stage directory. | Candidate-only report; modernization не применяется. |
 
-Runtime runner optional inputs включают `--approval-status`, `--intent-hint` и `--output`. Они change emitted route packet или save JSON; they не bypass политика источников, sandbox, approvals или external-action boundaries.
+Optional inputs runtime runner включают `--approval-status`, `--intent-hint` и `--output`. Они меняют emitted route packet или сохраняют JSON, но не обходят политику источников, sandbox, approvals или external-action boundaries.
 
 ## First-run Analysis CLI
 
 | Команда | Назначение | Входы | Вывод / граница |
 | --- | --- | --- | --- |
-| `python plugins\product-agent-os\scripts\run_first_project_analysis.py <workspace> --dry-run` | Печатает first-run packet без записи файлов. | Путь target workspace. | Read-only preview; generated files не создаются. |
-| `python plugins\product-agent-os\scripts\run_first_project_analysis.py <workspace> --write` | Записывает локальный пакет первого анализа. | Путь target workspace. | Запись только в `.codex/product-agent-os/analysis/`, включая `.codex/product-agent-os/analysis/first-run-analysis-packet.json`; generated views остаются `orientation_only_not_proof`. |
+| `python plugins\product-agent-os\scripts\run_first_project_analysis.py <workspace> --full-dry-run` | Выполняет safe first-run orchestration без записи файлов. | Путь `target workspace`. | Preview только для чтения; `generated files` не создаются. |
+| `python plugins\product-agent-os\scripts\run_first_project_analysis.py <workspace> --dry-run` | Печатает first-run packet без записи файлов. | Путь `target workspace`. | Preview только для чтения; `generated files` не создаются. |
+| `python plugins\product-agent-os\scripts\run_first_project_analysis.py <workspace> --stage <dir>` | Создает `first-run generated artifacts` в explicit stage directory. | `Target workspace` и `stage directory`. | `Stage root` должен быть вне `target workspace`; `stage-inside-target is blocked`. |
+| `python plugins\product-agent-os\scripts\run_first_project_analysis.py <workspace> --write-analysis` | Записывает `generated first-run packet` и offline HTML в локальную analysis folder. | Путь `target workspace`. | Запись только в `.codex/product-agent-os/analysis/`; `generated views` остаются `orientation_only_not_proof`. |
+| `python plugins\product-agent-os\scripts\run_first_project_analysis.py <workspace> --write` | `Legacy write route` для локального пакета первого анализа. | Путь `target workspace`. | Запись `generated packet`, включая `.codex/product-agent-os/analysis/first-run-analysis-packet.json`; не является `target source mutation`. |
 
-`run_first_project_analysis.py` выбирает ровно один режим: `--dry-run` или `--write`. Команда не выдает approval на live servers, browser automation, provider/API calls, target source mutation, git actions, release или promotion.
-
-```text
-does not accept `--stage`
-```
+`run_first_project_analysis.py` выбирает ровно один режим: `--full-dry-run`, `--dry-run`, `--stage <dir>`, `--write-analysis` или `--write`. Полная матрица команд принадлежит `DOC-M26`: см. [матрицу команд](operator-command-matrix.md). Redocly `not_applicable` до появления `OpenAPI source contract`. Эти команды не выдают `approval` на `live servers`, `browser automation`, `provider/API calls`, `target source mutation`, `git actions`, `release`, `promotion` или root `site` rebuild.
 
 Безопасные operator examples:
 
 ```powershell
+python plugins\product-agent-os\scripts\run_first_project_analysis.py <workspace> --full-dry-run
 python plugins\product-agent-os\scripts\run_first_project_analysis.py <workspace> --dry-run
+python plugins\product-agent-os\scripts\run_first_project_analysis.py <workspace> --stage C:\tmp\product-agent-os-first-run
 python plugins\product-agent-os\scripts\scan_project_code_graph.py <workspace> --dry-run
 python plugins\product-agent-os\scripts\scan_project_code_graph.py <workspace> --stage C:\tmp\product-agent-os-graph-stage
 ```
 
-Эти examples не являются broad command matrix. Полная command-policy матрица, docs tooling smokes, install/runtime variations и approval-state coverage принадлежат later `DOC-M26`. До него CLI docs дают только безопасные pointers и не расширяют разрешение на live server, browser automation, provider/API calls, canonical mutation, git actions или root `site` rebuild.
+Эти examples не являются `broad command matrix`. Полная `command-policy` матрица, `docs tooling smokes`, `install/runtime variations` и `approval-state coverage` принадлежат `DOC-M26`. `CLI docs` дают только безопасные pointers и не расширяют разрешение на `live server`, `browser automation`, `provider/API calls`, `canonical mutation`, `git actions` или root `site` rebuild.
 
 ## Project Graph CLI
 
-`scan_project_code_graph.py` имеет exactly-one-mode semantics. Choose один mode per invocation.
+`scan_project_code_graph.py` использует exactly-one-mode semantics: выбирайте один mode за запуск.
 
-| Mode | Purpose | Обязательные входы | Output / boundary |
+| Mode | Назначение | Обязательные входы | Вывод / граница |
 | --- | --- | --- | --- |
-| `--dry-run` | Build graph packet без writing files. | `<workspace>`. | Prints graph JSON; нет write. |
-| `--stage <stage-dir>` | Stage graph и cockpit artifacts. | `<workspace>`, explicit stage directory. | Writes generated graph/cockpit files в рамках stage root. |
-| `--query <kind>` | Read bounded query packet из existing graph. | `--graph <project-code-graph.json>` plus query args. | Reads existing graph artifact; не rescan source. |
-| `--build-index` | Build offline static search index. | `--stage`, `--graph`. | Generated index cache; не является каноническим источником. |
-| `--build-backend` | Stage disabled-by-default local query backend store. | `--stage`, `--graph`, `--backend-approval`. | Generated file-store; нет active server через default. |
-| `--build-semantic-index` | Stage local deterministic semantic retrieval index. | `--stage`, `--graph`, `--semantic-approval`. | Generated semantic cache; provider calls остаются blocked пока separately approved. |
-| `--build-llm-proposals` | Stage local deterministic LLM-style proposal packets. | `--stage`, `--graph`, `--llm-approval`. | Proposals only, never canonical facts. |
-| `--verify-extensions` | Stage extension verification и rollback closure. | `--stage`, `--graph`, `--verification-evidence`. | Closure packet и rollback/data deletion proof. |
-| `--validate-live-governance` | Stage live governance packet. | `--stage`, `--live-approval`. | Нет live calls; проверяет approval/data/redaction/cache/budget boundary. |
-| `--validate-live-runtime` | Stage local read-only runtime contract. | `--stage`, `--live-runtime-approval`, `--live-governance`. | Disabled-by-default local runtime contract; нет launch. |
-| `--validate-embedding-provider` | Stage embedding provider gate. | `--stage`, `--embedding-provider-approval`, graph/semantic inputs как required. | Provider gate/eval packet; нет provider call пока approved в later execution. |
-| `--validate-reranker-provider` | Stage reranker provider gate. | `--stage`, `--reranker-provider-approval`. | Provider gate packet; нет external call через default. |
-| `--build-hybrid-retrieval` | Stage hybrid retrieval pipeline. | `--stage`, graph/index/semantic/reranker inputs. | Generated explainable fusion packet; нет canonical mutation. |
-| `--validate-llm-proposal-provider` | Stage LLM proposal provider gate. | `--stage`, `--llm-proposal-provider-approval`, proposal/eval inputs. | Provider gate и safety eval; proposal-only. |
-| `--build-review-ledger` | Stage human review ledger и proposal diff. | `--stage`, `--review-ledger-approval`, `--review-decisions`. | Owner decision ledger; still non-mutating. |
-| `--build-canonical-mutation` | Stage mutation dry-run, journal и rollback artifacts. | `--stage`, `--canonical-mutation-approval`, review ledger и proposal diff. | Staged mutated graph copy only; canonical source graph является не silently changed. |
-| `--build-live-audit` | Stage audit/security/observability/handoff packets. | `--stage`, `--live-audit-approval`, live runtime/actions/security inputs. | Redacted audit и operability evidence. |
-| `--build-real-testing-readiness` | Stage readiness, target consent и pilot artifacts. | `--stage`, `--real-testing-approval` и target/gate/pilot inputs. | Dry-run pilot/readiness evidence only. |
-| `--build-runtime-qa` | Stage runtime QA, performance и stabilization artifacts. | `--stage`, `--runtime-qa-approval` и QA/performance/stabilization inputs. | Staged QA evidence; нет live browser automation в docs work. |
+| `--dry-run` | Строит `graph packet` без записи файлов. | `<workspace>`. | Печатает graph JSON; записи нет. |
+| `--stage <stage-dir>` | Создает graph и `cockpit artifacts`. | `<workspace>`, explicit stage directory. | Пишет `generated graph/cockpit files` в рамках `stage root`. |
+| `--query <kind>` | Читает `bounded query packet` из `existing graph`. | `--graph <project-code-graph.json>` plus query args. | Читает `existing graph artifact`; source не сканируется заново. |
+| `--build-index` | Строит offline static search index. | `--stage`, `--graph`. | `Generated index cache`; не является каноническим источником. |
+| `--build-backend` | Создает disabled-by-default local query backend store. | `--stage`, `--graph`, `--backend-approval`. | `Generated file-store`; `active server` по умолчанию не запускается. |
+| `--build-semantic-index` | Создает local deterministic semantic retrieval index. | `--stage`, `--graph`, `--semantic-approval`. | `Generated semantic cache`; `provider calls` остаются `blocked` до отдельного `approval`. |
+| `--build-llm-proposals` | Создает local deterministic LLM-style proposal packets. | `--stage`, `--graph`, `--llm-approval`. | Только proposals, не canonical facts. |
+| `--verify-extensions` | Создает extension verification и rollback closure. | `--stage`, `--graph`, `--verification-evidence`. | Closure packet и rollback/data deletion proof. |
+| `--validate-live-governance` | Создает live governance packet. | `--stage`, `--live-approval`. | Нет `live calls`; проверяет `approval/data/redaction/cache/budget boundary`. |
+| `--validate-live-runtime` | Создает local read-only runtime contract. | `--stage`, `--live-runtime-approval`, `--live-governance`. | `Disabled-by-default local runtime contract`; запуска нет. |
+| `--validate-embedding-provider` | Создает embedding provider gate. | `--stage`, `--embedding-provider-approval`, graph/semantic inputs как required. | `Provider gate/eval packet`; `provider call` запрещен до `later execution approval`. |
+| `--validate-reranker-provider` | Создает reranker provider gate. | `--stage`, `--reranker-provider-approval`. | `Provider gate packet`; `external call` по умолчанию нет. |
+| `--build-hybrid-retrieval` | Создает hybrid retrieval pipeline. | `--stage`, graph/index/semantic/reranker inputs. | Generated explainable fusion packet; canonical mutation не выполняется. |
+| `--validate-llm-proposal-provider` | Создает LLM proposal provider gate. | `--stage`, `--llm-proposal-provider-approval`, proposal/eval inputs. | `Provider gate` и safety eval; proposal-only. |
+| `--build-review-ledger` | Создает human review ledger и proposal diff. | `--stage`, `--review-ledger-approval`, `--review-decisions`. | Owner decision ledger; остается non-mutating. |
+| `--build-canonical-mutation` | Создает mutation dry-run, journal и rollback artifacts. | `--stage`, `--canonical-mutation-approval`, review ledger и proposal diff. | Только `staged mutated graph copy`; `canonical source graph` не меняется silently. |
+| `--build-live-audit` | Создает audit/security/observability/handoff packets. | `--stage`, `--live-audit-approval`, live runtime/actions/security inputs. | Redacted audit и `operability evidence`. |
+| `--build-real-testing-readiness` | Создает readiness, `target consent` и pilot artifacts. | `--stage`, `--real-testing-approval` и target/gate/pilot inputs. | Только `dry-run pilot/readiness evidence`. |
+| `--build-runtime-qa` | Создает runtime QA, performance и `stabilization artifacts`. | `--stage`, `--runtime-qa-approval` и QA/performance/stabilization inputs. | `Staged QA evidence`; `live browser automation` в docs work нет. |
 
-Disable modes delete generated artifacts в рамках stage root: `--disable-backend`, `--disable-semantic-index`, `--disable-llm-proposals`, `--disable-extensions`, `--disable-live-governance`, `--disable-live-runtime`, `--disable-embedding-provider`, `--disable-reranker-provider`, `--disable-hybrid-retrieval`, `--disable-llm-proposal-provider`, `--disable-review-ledger`, `--disable-canonical-mutation`, `--disable-live-audit`, `--disable-real-testing-readiness` и `--disable-runtime-qa`.
+Disable modes удаляют `generated artifacts` в рамках `stage root`: `--disable-backend`, `--disable-semantic-index`, `--disable-llm-proposals`, `--disable-extensions`, `--disable-live-governance`, `--disable-live-runtime`, `--disable-embedding-provider`, `--disable-reranker-provider`, `--disable-hybrid-retrieval`, `--disable-llm-proposal-provider`, `--disable-review-ledger`, `--disable-canonical-mutation`, `--disable-live-audit`, `--disable-real-testing-readiness` и `--disable-runtime-qa`.
 
 ## Входы query
 
@@ -102,7 +103,7 @@ Supported query kinds включают `neighbors`, `path`, `trace`, `impact`, `
 Project graph CLI передает данные в cockpit, но не превращает cockpit в доказательство:
 
 - `--stage <stage-dir>` пишет generated `project-code-graph.json`, `project-code-graph.jsonl`, `project-cockpit.html` и `project-cockpit.json` внутри stage root.
-- `--query read_order --graph <project-code-graph.json>` возвращает bounded guided read order; используйте его как подсказку чтения, затем проверяйте source files перед правками или impact claims.
+- `--query read_order --graph <project-code-graph.json>` возвращает `bounded guided read order`; используйте его как подсказку чтения, затем проверяйте `source files` перед правками или `impact claims`.
 - `--query trace`, `--query impact` и `--query affected_tests` создают static query packets; они не доказывают runtime routes, dynamic dispatch или test results.
 - `--query search` может использовать graph-only search, static index, semantic index или hybrid inputs, если они переданы; returned hits остаются orientation evidence.
 
@@ -114,11 +115,11 @@ python plugins\product-agent-os\scripts\scan_project_code_graph.py <workspace> -
 python plugins\product-agent-os\scripts\scan_project_code_graph.py <workspace> --query status --graph C:\tmp\product-agent-os-graph-stage\.codex\product-agent-os\project-code-graph.json
 ```
 
-Static fallback является поддержанной visual boundary в этом docs slice. Cosmos.gl/WebGL, browser screenshots, interactive canvas behavior, performance proof и accessibility visual proof остаются unsupported, пока не появится separate approved runtime/browser evidence packet.
+Static fallback является поддержанной `visual boundary` в этом docs slice. Cosmos.gl/WebGL, `browser screenshots`, `interactive canvas behavior`, `performance proof` и `accessibility visual proof` остаются unsupported до появления отдельного `approved runtime/browser evidence packet`.
 
-## Проверка Commands
+## Проверка команд
 
-Common local verification commands:
+Базовые локальные команды проверки:
 
 ```powershell
 python plugins\product-agent-os\scripts\run_fixture_eval.py
@@ -129,17 +130,17 @@ python -m mkdocs build --strict
 git diff --check
 ```
 
-Запустите smallest relevant set для текущий slice. A closure claim требует full source docs -> registry -> docs tests -> `check_docs.py` -> strict MkDocs -> optional full closure order.
+Запустите минимальный релевантный набор для текущего slice. Закрывающий claim требует порядок: `source docs -> registry -> docs tests -> check_docs.py -> strict MkDocs -> optional full closure`.
 
-## Риски And Failure Modes
+## Риски и сбои
 
-- Running stage command inside target workspace может blur generated и source-of-truth boundaries.
-- Supplying approval JSON является не enough если owner, allowed surfaces, data policy, rollback и verification evidence являются missing.
-- Query packets может быть stale если graph fingerprints нет longer match текущий source.
-- Provider gate commands являются не permission к call providers.
-- Canonical mutation dry-run является не permission к mutate checked-in source или graph facts.
-- Git commands остаются explicit-only и являются outside these CLI reference commands.
+- Запуск `stage command` внутри `target workspace` может смешать generated и source-of-truth boundaries.
+- Approval JSON недостаточен, если `owner`, `allowed surfaces`, `data policy`, rollback и `verification evidence` отсутствуют.
+- Query packets могут устареть, если `graph fingerprints` больше не совпадают с текущим source.
+- Provider gate commands не являются permission к `call providers`.
+- Canonical mutation dry-run не является permission к `mutate checked-in source` или graph facts.
+- Git commands остаются explicit-only и находятся вне этих CLI reference commands.
 
-## Next Action
+## Следующее действие
 
-Используйте эта page как operator reference для local scripts. Navigation, source registry entries, docs tests и generated `site/` refresh belong к their owning docs-maintainer и tester slices.
+Используйте эту страницу как operator reference для local scripts. `Navigation`, `source registry entries`, `docs tests` и `generated site refresh` принадлежат своим `docs-maintainer` и `tester` slices.

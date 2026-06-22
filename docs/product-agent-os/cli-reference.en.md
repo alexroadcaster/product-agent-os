@@ -35,15 +35,29 @@ Generated outputs are not source of truth. Source of truth remains checked-in so
 
 Runtime runner optional inputs include `--approval-status`, `--intent-hint` and `--output`. They change the emitted route packet or save JSON; they do not bypass source policy, sandbox, approvals or external-action boundaries.
 
+## First-Run Analysis CLI
+
+| Command | Purpose | Required inputs | Output / boundary |
+| --- | --- | --- | --- |
+| `python plugins\product-agent-os\scripts\run_first_project_analysis.py <workspace> --full-dry-run` | Run safe first-run orchestration without writing files. | Target workspace path. | Read-only preview; no generated files are created. |
+| `python plugins\product-agent-os\scripts\run_first_project_analysis.py <workspace> --dry-run` | Print the first-run packet without writing files. | Target workspace path. | Read-only preview; no generated files are created. |
+| `python plugins\product-agent-os\scripts\run_first_project_analysis.py <workspace> --stage <dir>` | Stage first-run generated artifacts into an explicit stage directory. | Target workspace and stage directory. | Stage root must be outside the target workspace; stage-inside-target is blocked. |
+| `python plugins\product-agent-os\scripts\run_first_project_analysis.py <workspace> --write-analysis` | Write generated first-run packet and offline HTML to the local analysis folder. | Target workspace path. | Writes only under `.codex/product-agent-os/analysis/`; generated views remain `orientation_only_not_proof`. |
+| `python plugins\product-agent-os\scripts\run_first_project_analysis.py <workspace> --write` | Legacy write route for the first-run packet. | Target workspace path. | Writes generated packet, including `.codex/product-agent-os/analysis/first-run-analysis-packet.json`; not target source mutation. |
+
+`run_first_project_analysis.py` chooses exactly one mode: `--full-dry-run`, `--dry-run`, `--stage <dir>`, `--write-analysis` or `--write`. `DOC-M26` owns the full operator command matrix: see [Operator command matrix](operator-command-matrix.md). Redocly `not_applicable` until an OpenAPI source contract exists. These commands do not approve live servers, browser automation, provider/API calls, target source mutation, git actions, release, promotion or root `site` rebuild.
+
 Safe operator examples:
 
 ```powershell
+python plugins\product-agent-os\scripts\run_first_project_analysis.py <workspace> --full-dry-run
 python plugins\product-agent-os\scripts\run_first_project_analysis.py <workspace> --dry-run
+python plugins\product-agent-os\scripts\run_first_project_analysis.py <workspace> --stage C:\tmp\product-agent-os-first-run
 python plugins\product-agent-os\scripts\scan_project_code_graph.py <workspace> --dry-run
 python plugins\product-agent-os\scripts\scan_project_code_graph.py <workspace> --stage C:\tmp\product-agent-os-graph-stage
 ```
 
-These examples are not the broad command matrix. The full command-policy matrix, docs-tooling smokes, install/runtime variants and approval-state coverage belong to later `DOC-M26`. Until then, CLI docs provide safe pointers only and do not expand permission for live servers, browser automation, provider/API calls, canonical mutation, git actions or root `site` rebuild.
+These examples are not the broad command matrix. The full command-policy matrix, docs-tooling smokes, install/runtime variants and approval-state coverage belong to `DOC-M26`. CLI docs provide safe pointers only and do not expand permission for live servers, browser automation, provider/API calls, canonical mutation, git actions or root `site` rebuild.
 
 ## Project Graph CLI
 

@@ -20,6 +20,17 @@ Product-Agent OS plugin - локальный Codex plugin для проекто�
 | Какие JSON/HTML/ledger artifacts считаются evidence | [Artifact Contracts](artifact-contracts.md) |
 | Как готовить release packet и handoff | [Packaging And Closure](packaging-and-closure.md) |
 
+## G4 operator-flow routes
+
+`documentation_refresh_G4-A01` добавляет четыре читательских маршрута, которые закрывают операторские вопросы без claim, что generated root `site` уже свежий. До финального `DOC-M25` эти страницы являются source docs, а search/sitemap freshness остается отдельным gate.
+
+| Нужно понять | Страница |
+| --- | --- |
+| Проверка инструкций и использования инструментов | [Проверка инструкций и использования инструментов](instruction-tool-use-compliance.md) |
+| Матрица команд оператора | [Матрица команд оператора](operator-command-matrix.md) |
+| Журнал guided questions и ответов | [Журнал guided questions и ответов](guided-questions-answer-ledger.md) |
+| Состояние источников, кэша и активной сессии | [Состояние источников, кэша и активной сессии](source-cache-session-state.md) |
+
 Источники: [Codex plugins](https://developers.openai.com/codex/plugins), [Build plugins](https://developers.openai.com/codex/plugins/build), [Agent Skills](https://developers.openai.com/codex/skills), [Subagents](https://developers.openai.com/codex/subagents), [AGENTS.md](https://developers.openai.com/codex/guides/agents-md), [Codex hooks](https://developers.openai.com/codex/hooks), [Agent approvals and security](https://developers.openai.com/codex/agent-approvals-security), [Codex workflows](https://developers.openai.com/codex/workflows), [Product-Agent Workflows](../product-agent/overview.md).
 
 ## Текущая операционная граница

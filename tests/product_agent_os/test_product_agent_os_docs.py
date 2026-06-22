@@ -75,6 +75,9 @@ DOCUMENTATION_REFRESH_G2 = (
 DOCUMENTATION_REFRESH_G3 = (
     DOCS / "superpowers" / "specs" / "documentation-refresh-g3-diagram-atlas-architecture-maps-summary.json"
 )
+DOCUMENTATION_REFRESH_G4 = (
+    DOCS / "superpowers" / "specs" / "documentation-refresh-g4-operator-flows-system-behavior-summary.json"
+)
 PRODUCT_AGENT_OS_LIFECYCLE_HOOKS_LOCAL_ACTIVATION = (
     DOCS / "superpowers" / "specs" / "product-agent-os-lifecycle-hooks-local-activation-summary.json"
 )
@@ -105,9 +108,13 @@ DOC_M25_PENDING_SITE_PAGES = {
     DOCS / "diagrams" / "evidence-risk-lifecycle.md",
     DOCS / "diagrams" / "skill-exposure-and-invocation.md",
     DOCS / "diagrams" / "architecture-intelligence-diagram-atlas.md",
+    DOCS / "product-agent-os" / "instruction-tool-use-compliance.md",
+    DOCS / "product-agent-os" / "operator-command-matrix.md",
+    DOCS / "product-agent-os" / "guided-questions-answer-ledger.md",
+    DOCS / "product-agent-os" / "source-cache-session-state.md",
 }
-BUILDABLE_MARKDOWN_PAGE_COUNT = 139
-LOCALIZED_MARKDOWN_PAGE_COUNT = 131
+BUILDABLE_MARKDOWN_PAGE_COUNT = 143
+LOCALIZED_MARKDOWN_PAGE_COUNT = 135
 SITE_PROMOTED_LOCALIZED_MARKDOWN_PAGE_COUNT = 125
 ENGLISH_ORIGINAL_MARKDOWN_PAGE_COUNT = 8
 
@@ -8739,6 +8746,227 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 with self.subTest(sync_document=document, term=term):
                     self.assertIn(term, documents[document])
 
+    def test_documentation_refresh_g4_operator_flows_system_behavior_are_synced(self):
+        self.assertTrue(DOCUMENTATION_REFRESH_G4.exists(), DOCUMENTATION_REFRESH_G4)
+        packet = json.loads(DOCUMENTATION_REFRESH_G4.read_text(encoding="utf-8"))
+        product_docs = {
+            "instruction_tool_use": self._localized_contract_text(
+                PRODUCT_AGENT_OS / "instruction-tool-use-compliance.md"
+            ),
+            "operator_matrix": self._localized_contract_text(
+                PRODUCT_AGENT_OS / "operator-command-matrix.md"
+            ),
+            "guided_questions": self._localized_contract_text(
+                PRODUCT_AGENT_OS / "guided-questions-answer-ledger.md"
+            ),
+            "source_cache_session": self._localized_contract_text(
+                PRODUCT_AGENT_OS / "source-cache-session-state.md"
+            ),
+            "index": self._localized_contract_text(PRODUCT_AGENT_OS / "index.md"),
+            "scenarios": self._localized_contract_text(PRODUCT_AGENT_OS / "scenarios.md"),
+            "cli_reference": self._localized_contract_text(PRODUCT_AGENT_OS / "cli-reference.md"),
+            "methodology": self._localized_contract_text(
+                PRODUCT_AGENT_OS / "methodology-intelligence.md"
+            ),
+        }
+        documents = {
+            "mkdocs": MKDOCS.read_text(encoding="utf-8"),
+            "check_docs": CHECK_DOCS.read_text(encoding="utf-8"),
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
+            "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
+            "track11_plan": (
+                DOCS
+                / "superpowers"
+                / "plans"
+                / "2026-06-20-track-11-documentation-architecture-refresh.md"
+            ).read_text(encoding="utf-8"),
+        }
+
+        self.assertEqual(
+            "documentation_refresh_g4_operator_flows_system_behavior_v1",
+            packet["schema_version"],
+        )
+        self.assertEqual("documentation_refresh_G4-A01", packet["evidence_id"])
+        self.assertEqual("implemented_source_docs_no_site_rebuild", packet["status"])
+
+        for work_item in ["DOC-M11", "DOC-M12", "DOC-M26", "DOC-M27", "DOC-M31", "DOC-M32"]:
+            with self.subTest(work_item=work_item):
+                self.assertEqual(
+                    "implemented_source_docs_no_site_rebuild",
+                    packet["work_item_status"][work_item]["status"],
+                )
+                self.assertIn(f"`{work_item}`", documents["track11_plan"])
+
+        for action, value in packet["no_unapproved_actions"].items():
+            with self.subTest(no_unapproved_action=action):
+                self.assertFalse(value)
+
+        self.assertEqual(143, packet["test_contract"]["source_markdown_page_count"])
+        self.assertEqual(135, packet["test_contract"]["localized_markdown_page_count"])
+        self.assertEqual(125, packet["test_contract"]["site_promoted_localized_markdown_page_count"])
+        self.assertEqual(
+            [
+                "docs/product-agent-os/first-run-architecture-cockpit.md",
+                "docs/diagrams/source-generated-trust-boundary.md",
+                "docs/diagrams/first-run-cockpit-architecture.md",
+                "docs/diagrams/evidence-risk-lifecycle.md",
+                "docs/diagrams/skill-exposure-and-invocation.md",
+                "docs/diagrams/architecture-intelligence-diagram-atlas.md",
+                "docs/product-agent-os/instruction-tool-use-compliance.md",
+                "docs/product-agent-os/operator-command-matrix.md",
+                "docs/product-agent-os/guided-questions-answer-ledger.md",
+                "docs/product-agent-os/source-cache-session-state.md",
+            ],
+            packet["test_contract"]["pending_site_pages_until_doc_m25"],
+        )
+        self.assertEqual(LOCALIZED_MARKDOWN_PAGE_COUNT, len(self._localized_markdown_pages()))
+        self.assertEqual(
+            SITE_PROMOTED_LOCALIZED_MARKDOWN_PAGE_COUNT,
+            len(self._site_promoted_localized_markdown_pages()),
+        )
+
+        expected_terms = {
+            "instruction_tool_use": [
+                "Source status:",
+                "official + project evidence",
+                "allow_implicit_invocation",
+                "explicit_only",
+                "narrow_implicit",
+                "blocked_implicit",
+                "no_unapproved_actions",
+                "planned-only",
+                "self-learning-loop",
+                "auto-engagement is fixed",
+            ],
+            "operator_matrix": [
+                "--full-dry-run",
+                "--stage <dir>",
+                "--write-analysis",
+                "stage-inside-target is blocked",
+                "Redocly",
+                "not_applicable",
+                "broad repository scans",
+                "root `site` rebuild",
+            ],
+            "guided_questions": [
+                "next_blocking_question",
+                "policy.max_blocking_questions_in_first_response",
+                "policy.max_total_questions",
+                "staged_only",
+                "answer-ledger-template.json",
+                "question_counts",
+                "not_claimed",
+            ],
+            "source_cache_session": [
+                "source_skill_count",
+                "cache_skill_count",
+                "active_session_exposure",
+                "allow_implicit_invocation",
+                "No Auto-Repair",
+                "Fresh-session proof",
+            ],
+            "index": [
+                "Instruction and tool-use compliance",
+                "Operator command matrix",
+                "Guided questions and answer ledger",
+                "Source, cache and active-session state",
+                "DOC-M25",
+                "documentation_refresh_G4-A01",
+            ],
+            "scenarios": [
+                "instruction_tool_use_compliance",
+                "operator_command_matrix",
+                "guided_question_answer_ledger",
+                "source_cache_session_state",
+                "one blocking question maximum",
+                "answers_require_staged_ledger_and_owner_review",
+                "fresh-session proof",
+            ],
+            "cli_reference": [
+                "--full-dry-run",
+                "--stage <dir>",
+                "--write-analysis",
+                "stage-inside-target is blocked",
+                "DOC-M26",
+                "Redocly `not_applicable`",
+            ],
+            "methodology": [
+                "Methodology Integration Map",
+                "recommendation_groups",
+                "source_artifact_ledger",
+                "owner_questions",
+                "safe_next_action",
+                "present_unverified",
+                "Redocly `not_applicable` / OpenAPI-trigger status",
+            ],
+        }
+        for document, terms in expected_terms.items():
+            for term in terms:
+                with self.subTest(document=document, term=term):
+                    self.assertIn(term, product_docs[document])
+
+        for path in [
+            "product-agent-os/instruction-tool-use-compliance.md",
+            "product-agent-os/operator-command-matrix.md",
+            "product-agent-os/guided-questions-answer-ledger.md",
+            "product-agent-os/source-cache-session-state.md",
+        ]:
+            with self.subTest(nav_path=path):
+                self.assertIn(path, documents["mkdocs"])
+                self.assertIn(path, documents["check_docs"])
+
+        sync_terms = {
+            "requirements": [
+                "documentation_refresh_G4-A01",
+                "instruction/tool-use compliance",
+                "search and sitemap freshness remain deferred to final `DOC-M25`",
+            ],
+            "plan": [
+                "Track 11 G4 operator flows and system behavior docs",
+                "documentation-refresh-g4-operator-flows-system-behavior-summary.json",
+                "Continue with G5 source/docs slices",
+            ],
+            "test": [
+                "documentation_refresh_G4-A01",
+                ".docs-tools\\reports\\mkdocs-strict-smoke-g4-2026-06-22",
+                "do not claim root `site`/search/sitemap freshness until final `DOC-M25`",
+            ],
+            "evals": [
+                "documentation_refresh_G4-A01",
+                "Track 11 G4 operator-flow source/nav docs",
+                "auto-engagement/cache/global config/fresh-session proof remains unsupported",
+            ],
+            "runlog": [
+                "documentation_refresh_G4-A01",
+                "DOC_M25_PENDING_SITE_PAGES",
+                "No root site, cache refresh, global config, browser/runtime/provider, target, git, release or automation action.",
+            ],
+            "registry": [
+                "Product-Agent OS Track 11 G4 operator flows and system behavior docs packet",
+                "documentation_refresh_G4-A01",
+                "implemented_source_docs_no_site_rebuild",
+            ],
+            "registry_en": [
+                "Product-Agent OS Track 11 G4 operator flows and system behavior docs packet",
+                "documentation_refresh_G4-A01",
+                "implemented_source_docs_no_site_rebuild",
+            ],
+            "track11_plan": [
+                "G4 source docs are implemented through `DOC-M11`, `DOC-M12`, `DOC-M26`, `DOC-M27`, `DOC-M31` and `DOC-M32`",
+                "Generated root `site/` freshness is not claimed",
+                "No cache refresh",
+            ],
+        }
+        for document, terms in sync_terms.items():
+            for term in terms:
+                with self.subTest(sync_document=document, term=term):
+                    self.assertIn(term, documents[document])
+
     def test_product_agent_os_lifecycle_hooks_local_activation_is_recorded(self):
         self.assertTrue(
             PRODUCT_AGENT_OS_LIFECYCLE_HOOKS_LOCAL_ACTIVATION.exists(),
@@ -8855,8 +9083,10 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "run_first_project_analysis.py",
                 "--dry-run",
                 "--write",
+                "--stage <dir>",
+                "--write-analysis",
                 ".codex/product-agent-os/analysis/",
-                "does not accept `--stage`",
+                "stage-inside-target is blocked",
             ],
             "registry": [
                 "Product-Agent OS Batch 39 M20 first-run analysis artifact contract",

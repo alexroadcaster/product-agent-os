@@ -20,6 +20,17 @@ Scenarios являются route decisions, а не permission на запуск
 | `canonical_graph_mutation_review` | Нужно проверить proposal acceptance и mutation readiness. | Human review ledger, proposal diff, mutation dry-run plan и rollback proof. | Остановиться до canonical graph mutation пока owner accepted proposal и rollback evidence является current. |
 | `real_testing_approval` | Нужно перейти от staged evidence к controlled real testing. | Target/data owner approval, runtime/browser/provider/mutation/git action packet и rollback plan. | Остановиться пока specific action является approved; approvals являются не bundled. |
 
+## G4 Operator Flows
+
+G4 routes добавляют четыре системных маршрута. Они не дают approval на cache refresh, global config write, live runtime, browser automation, provider/API calls, target mutation, git, release или automation.
+
+| Route | Когда применять | Evidence boundary |
+| --- | --- | --- |
+| `instruction_tool_use_compliance` | Нужно проверить, когда Product-Agent OS skill/plugin route можно выбрать implicitly, а когда нужен explicit user request. | Использует официальные Codex docs, `allow_implicit_invocation`, `explicit_only`, `narrow_implicit` и `blocked_implicit`; fresh-session proof остается отдельным. |
+| `operator_command_matrix` | Нужно выбрать безопасную команду для first-run analysis, graph/cockpit или docs-tooling smoke. | Использует help/current command evidence, stage только для generated artifacts и оставляет широкие scans/root `site` rebuild внутри approval-boundary. |
+| `guided_question_answer_ledger` | Нужно задать вопрос без превращения intake в длинную анкету. | Ограничивает blocking question одной штукой; `answers_require_staged_ledger_and_owner_review` действует до source promotion. |
+| `source_cache_session_state` | Нужно понять, почему source, installed cache и active session могут расходиться. | Требует read-only comparison fields и fresh-session proof до любого claim `fixed` или `ready`. |
+
 ## Входы
 
 - цель пользователя или `intent_hint`, если он передан в Codex runtime runner;

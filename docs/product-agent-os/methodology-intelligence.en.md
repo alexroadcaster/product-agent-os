@@ -55,6 +55,20 @@ The scan is evidence-first and non-mutating. Product-Agent OS reads the user's w
 | `source_artifact_ledger` | Mapping from recommendations to the source artifacts that support them. |
 | `methodology_synthesis` | Grouped recommendations across domains with risk-aware ordering. |
 
+## Methodology Integration Map
+
+G4 clarifies how methodology signals become operator artifacts. Detection alone remains `present_unverified`: methodology can propose a route, but it does not turn that route into readiness, source truth or approval.
+
+| Signal layer | Output field | Operator artifact | Claim boundary |
+| --- | --- | --- | --- |
+| Domain applicability | `recommendation_groups` | Grouped recommendations with owner/consumer domains. | Recommendation only until current evidence or owner review exists. |
+| Source backing | `source_artifact_ledger` | Paths, packets, tests or accepted gaps that support each recommendation. | Missing source creates `present_unverified`, not a completion claim. |
+| Missing decisions | `owner_questions` | One or more owner questions routed to guided question protocol. | Answers require staged ledger and owner review before source promotion. |
+| Next move | `safe_next_action` | Read, stage, request approval, verify or stop on gap. | Must not cross sandbox, approvals, provider/API, browser/runtime or git boundaries. |
+| API contract signal | Redocly `not_applicable` / OpenAPI-trigger status | API docs/lint gate only when an OpenAPI source contract exists. | Redocly enforcement is not run or claimed from generic API wording. |
+
+This map keeps methodology intelligence tied to real outputs instead of abstract method lists. It also gives downstream agents a stable handoff: which evidence was read, which artifacts are recommended, which owner decision is missing and which action is still safe.
+
 ## Methodology Domains
 
 | Domain | When it applies | Minimum evidence |

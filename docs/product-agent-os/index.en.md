@@ -20,6 +20,17 @@ The plugin helps move a project through a full lifecycle: read-only workspace au
 | Understand JSON/HTML/ledger evidence artifacts | [Artifact Contracts](artifact-contracts.md) |
 | Prepare release packet and handoff | [Packaging And Closure](packaging-and-closure.md) |
 
+## G4 Operator-Flow Routes
+
+`documentation_refresh_G4-A01` adds four operator-facing routes without claiming that the generated root `site` is fresh. Until final `DOC-M25`, these pages are source docs and search/sitemap freshness remains a separate gate.
+
+| Need | Page |
+| --- | --- |
+| Instruction and tool-use compliance | [Instruction and tool-use compliance](instruction-tool-use-compliance.md) |
+| Operator command matrix | [Operator command matrix](operator-command-matrix.md) |
+| Guided questions and answer ledger | [Guided questions and answer ledger](guided-questions-answer-ledger.md) |
+| Source, cache and active-session state | [Source, cache and active-session state](source-cache-session-state.md) |
+
 Sources: [Codex plugins](https://developers.openai.com/codex/plugins), [Build plugins](https://developers.openai.com/codex/plugins/build), [Agent Skills](https://developers.openai.com/codex/skills), [Subagents](https://developers.openai.com/codex/subagents), [AGENTS.md](https://developers.openai.com/codex/guides/agents-md), [Codex hooks](https://developers.openai.com/codex/hooks), [Agent approvals and security](https://developers.openai.com/codex/agent-approvals-security), [Codex workflows](https://developers.openai.com/codex/workflows), [Product-Agent Workflows](../product-agent/overview.md).
 
 ## Current operating boundary

@@ -55,6 +55,20 @@ Scan является evidence-first и non-mutating. Product-Agent OS чита�
 | `source_artifact_ledger` | Mapping из recommendations к source artifacts который support them. |
 | `methodology_synthesis` | Grouped recommendations across domains с risk-aware ordering. |
 
+## Methodology Integration Map
+
+G4 уточняет, как methodology signals становятся операторскими artifacts. Detection alone остается `present_unverified`: методология может предложить маршрут, но не превращает его в readiness, source truth или approval.
+
+| Signal layer | Output field | Operator artifact | Claim boundary |
+| --- | --- | --- | --- |
+| Применимость домена | `recommendation_groups` | Сгруппированные рекомендации с доменами владельца и потребителя. | Рекомендация остается предварительной до текущего evidence или проверки владельцем. |
+| Опора на источники | `source_artifact_ledger` | Пути, packets, tests или принятые gaps, которые поддерживают каждую рекомендацию. | Отсутствующий источник дает `present_unverified`, а не claim о завершении. |
+| Недостающие решения | `owner_questions` | Один или несколько вопросов владельцу по протоколу guided questions. | Ответы требуют staged ledger и проверки владельцем до продвижения в источник. |
+| Следующее действие | `safe_next_action` | Читать, подготовить stage, запросить approval, проверить или остановиться на gap. | Нельзя пересекать sandbox, approvals, provider/API, browser/runtime или git boundaries. |
+| Сигнал API-контракта | Redocly `not_applicable` / OpenAPI-trigger status | Проверка API-документации и lint включается только при наличии исходного OpenAPI-контракта. | Redocly enforcement не запускается и не заявляется по общим словам про API. |
+
+Эта карта привязывает methodology intelligence к реальным outputs, а не к абстрактному списку методов. Она также дает следующим agents устойчивый handoff: какое evidence прочитано, какие artifacts рекомендованы, какого решения владельца не хватает и какое действие все еще безопасно.
+
 ## Methodology Domains
 
 | Domain | Когда применять | Minimum evidence |

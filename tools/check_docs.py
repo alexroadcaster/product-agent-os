@@ -46,6 +46,10 @@ REQUIRED_PATHS = [
     DOCS / "product-agent-os" / "approval-bound-real-testing.md",
     DOCS / "product-agent-os" / "real-project-pilot.md",
     DOCS / "product-agent-os" / "agent-skill-modernization-loop.md",
+    DOCS / "product-agent-os" / "instruction-tool-use-compliance.md",
+    DOCS / "product-agent-os" / "operator-command-matrix.md",
+    DOCS / "product-agent-os" / "guided-questions-answer-ledger.md",
+    DOCS / "product-agent-os" / "source-cache-session-state.md",
     DOCS / "product-agent-os" / "cli-reference.md",
     DOCS / "product-agent-os" / "artifact-contracts.md",
     DOCS / "product-agent-os" / "packaging-and-closure.md",
@@ -140,6 +144,10 @@ REQUIRED_NAV_PATHS = [
     "product-agent-os/approval-bound-real-testing.md",
     "product-agent-os/real-project-pilot.md",
     "product-agent-os/agent-skill-modernization-loop.md",
+    "product-agent-os/instruction-tool-use-compliance.md",
+    "product-agent-os/operator-command-matrix.md",
+    "product-agent-os/guided-questions-answer-ledger.md",
+    "product-agent-os/source-cache-session-state.md",
     "playbooks/doubt-verification-loop.md",
     "sources/product-agent-os-batch40-doubt-verifier-source-transfer.md",
     "product-agent-os/cli-reference.md",
@@ -168,6 +176,13 @@ DOCUMENTATION_REFRESH_G3_PACKET = (
     / "superpowers"
     / "specs"
     / "documentation-refresh-g3-diagram-atlas-architecture-maps-summary.json"
+)
+DOCUMENTATION_REFRESH_G4_EVIDENCE = "documentation_refresh_G4-A01"
+DOCUMENTATION_REFRESH_G4_PACKET = (
+    DOCS
+    / "superpowers"
+    / "specs"
+    / "documentation-refresh-g4-operator-flows-system-behavior-summary.json"
 )
 
 
@@ -240,6 +255,12 @@ def check_mkdocs_nav() -> None:
 
     if not DOCUMENTATION_REFRESH_G3_PACKET.exists():
         fail("Track 11 G3 diagram atlas evidence packet is missing")
+
+    if DOCUMENTATION_REFRESH_G4_EVIDENCE not in registry:
+        fail("source registry missing Track 11 G4 operator-flow evidence")
+
+    if not DOCUMENTATION_REFRESH_G4_PACKET.exists():
+        fail("Track 11 G4 operator-flow evidence packet is missing")
 
 
 def check_placeholders() -> None:

@@ -107,6 +107,10 @@ plugins:
                 - Approval-Bound Real Testing: product-agent-os/approval-bound-real-testing.md
                 - Real-Project Pilot: product-agent-os/real-project-pilot.md
                 - Agent-Skill Modernization Loop: product-agent-os/agent-skill-modernization-loop.md
+                - Instruction And Tool-Use Compliance: product-agent-os/instruction-tool-use-compliance.md
+                - Operator Command Matrix: product-agent-os/operator-command-matrix.md
+                - Guided Questions And Answer Ledger: product-agent-os/guided-questions-answer-ledger.md
+                - Source Cache And Active Session State: product-agent-os/source-cache-session-state.md
                 - CLI Reference: product-agent-os/cli-reference.md
                 - Artifact Contracts: product-agent-os/artifact-contracts.md
                 - Packaging And Closure: product-agent-os/packaging-and-closure.md
@@ -244,6 +248,10 @@ nav:
       - Approval-Bound Real Testing: product-agent-os/approval-bound-real-testing.md
       - Real-Project Pilot: product-agent-os/real-project-pilot.md
       - Agent-Skill Modernization Loop: product-agent-os/agent-skill-modernization-loop.md
+      - Instruction And Tool-Use Compliance: product-agent-os/instruction-tool-use-compliance.md
+      - Operator Command Matrix: product-agent-os/operator-command-matrix.md
+      - Guided Questions And Answer Ledger: product-agent-os/guided-questions-answer-ledger.md
+      - Source Cache And Active Session State: product-agent-os/source-cache-session-state.md
       - CLI Reference: product-agent-os/cli-reference.md
       - Artifact Contracts: product-agent-os/artifact-contracts.md
       - Packaging And Closure: product-agent-os/packaging-and-closure.md

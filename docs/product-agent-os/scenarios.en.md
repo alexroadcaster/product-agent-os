@@ -20,6 +20,17 @@ Scenarios are route decisions, not permission to run live systems. Each route mu
 | `canonical_graph_mutation_review` | Need to check proposal acceptance and mutation readiness. | Human review ledger, proposal diff, mutation dry-run plan and rollback proof. | Stop before canonical graph mutation unless owner accepted the proposal and rollback evidence is current. |
 | `real_testing_approval` | Need to move from staged evidence to controlled real testing. | Target/data owner approval, runtime/browser/provider/mutation/git action packet and rollback plan. | Stop unless the specific action is approved; approvals are not bundled. |
 
+## G4 Operator Flows
+
+G4 adds four system routes. They do not approve cache refresh, global config writes, live runtime, browser automation, provider/API calls, target mutation, git, release or automation.
+
+| Route | When to use | Evidence boundary |
+| --- | --- | --- |
+| `instruction_tool_use_compliance` | Check when a Product-Agent OS skill/plugin route may be selected implicitly and when it needs an explicit user request. | Uses official Codex docs, `allow_implicit_invocation`, `explicit_only`, `narrow_implicit` and `blocked_implicit`; fresh-session proof remains separate. |
+| `operator_command_matrix` | Choose a safe command for first-run analysis, graph/cockpit or docs-tooling smoke. | Uses help/current command evidence, stages only generated artifacts, and keeps broad scans/root `site` rebuild approval-bound. |
+| `guided_question_answer_ledger` | Ask a question without turning intake into a long questionnaire. | Enforces one blocking question maximum; `answers_require_staged_ledger_and_owner_review` before source promotion. |
+| `source_cache_session_state` | Understand why source, installed cache and active session can diverge. | Requires read-only comparison fields and fresh-session proof before any fixed/ready claim. |
+
 ## Inputs
 
 - user goal or `intent_hint`, if passed to the Codex runtime runner;

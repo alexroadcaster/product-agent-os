@@ -47,6 +47,7 @@ verification_status: "Current compaction preserves test-visible markers; full ev
 - Product-Agent OS Track 11 G1 source records, registry and generated-site parity (checked_at=2026-06-20, trust=high)
 - Product-Agent OS Track 11 G1.1 project-local documentation toolchain planning matrix (checked_at=2026-06-20, trust=high)
 - Product-Agent OS Track 11 G2 first-run cockpit and artifact docs packet (checked_at=2026-06-21, trust=high)
+- Product-Agent OS Track 11 G4 operator flows and system behavior docs packet (checked_at=2026-06-22, trust=high)
 - Codex web / cloud (checked_at=2026-05-14, trust=high)
 - Codex app (checked_at=2026-05-14, trust=high)
 - Codex CLI (checked_at=2026-05-14, trust=high)
@@ -1389,6 +1390,21 @@ These markers preserve source-owned test routing after registry compaction. Full
 - DOC_M25_PENDING_SITE_PAGES
 - root `site` freshness deferred to final DOC-M25
 - browser proof approval_required, Cosmos.gl/WebGL runtime proof unsupported and Structurizr DSL deferred/uninstalled in G3
+- Product-Agent OS Track 11 G4 operator flows and system behavior docs packet
+- documentation_refresh_G4-A01
+- docs/superpowers/specs/documentation-refresh-g4-operator-flows-system-behavior-summary.json
+- docs/product-agent-os/instruction-tool-use-compliance.md
+- docs/product-agent-os/operator-command-matrix.md
+- docs/product-agent-os/guided-questions-answer-ledger.md
+- docs/product-agent-os/source-cache-session-state.md
+- docs/product-agent-os/index.md
+- docs/product-agent-os/scenarios.md
+- docs/product-agent-os/cli-reference.md
+- docs/product-agent-os/methodology-intelligence.md
+- implemented_source_docs_no_site_rebuild
+- DOC_M25_PENDING_SITE_PAGES
+- root `site` freshness deferred to final DOC-M25
+- auto-engagement/cache refresh/global config/fresh session proof unsupported in G4
 - .venv-docs/
 - .docs-tools/node/
 - .docs-tools/bin/
