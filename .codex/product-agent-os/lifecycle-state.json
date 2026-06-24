@@ -1,7 +1,7 @@
 {
   "task_start_brief_shown": true,
-  "task_id": "TRACK11-DOC-M25-SITE-FRESHNESS",
-  "scope": "Track 11 DOC-M25 final root site rebuild plus search and sitemap freshness evidence after G2-G5 source updates",
-  "updated_at": "2026-06-22T16:56:09.8067040+03:00",
-  "approval_boundary": "Owner approved project-local root site rebuild/search/sitemap freshness for codex_docs; browser proof, broad scans, dependency remediation, raw report retention, installs, provider/API, external writes, active automation, git, release, deploy, publish, cache refresh, global config or target mutation remain out of scope without separate explicit approval"
+  "task_id": "FIRST-RUN-WELCOME-SELF-LEARNING-HELP",
+  "scope": "Analyze and update Product-Agent OS install/first-run welcome help to explain Product-Agent OS and Self-Learning Loop disclosure without activating automation",
+  "updated_at": "2026-06-24T02:00:00+03:00",
+  "approval_boundary": "Owner requested analysis and insertion into install/first-run help; hook activation, recurring automation, live/provider/model calls, real private Codex session ingestion, external writes, dependency changes, cache refresh, global config, target mutation outside generated first-run artifacts, git, release, deploy and publish remain out of scope without separate explicit approval"
 }

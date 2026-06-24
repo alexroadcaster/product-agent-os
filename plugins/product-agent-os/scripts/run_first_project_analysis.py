@@ -16,6 +16,7 @@ from product_agent_os.first_run_analysis import (  # noqa: E402
     ANSWER_LEDGER_TEMPLATE_NAME,
     FIRST_RUN_PACKET_NAME,
     build_first_run_automation_contract,
+    build_first_run_welcome_message,
     run_first_project_analysis,
 )
 from product_agent_os.question_ledger import render_answer_ledger_json  # noqa: E402
@@ -45,7 +46,8 @@ def _help_payload() -> dict:
     return {
         "schema_version": "first_run_orchestrator_help_v1",
         "status": "help",
-        "summary": "Run Product-Agent OS first project analysis in a safe mode.",
+        "summary": "Welcome to Product-Agent OS. Run first project analysis in a safe mode.",
+        "welcome_message": build_first_run_welcome_message(),
         "next_safe_command": "python plugins/product-agent-os/scripts/run_first_project_analysis.py <workspace> --full-dry-run",
         "safe_modes": ["--full-dry-run", "--stage <dir>", "--write-analysis"],
         "contract": contract,

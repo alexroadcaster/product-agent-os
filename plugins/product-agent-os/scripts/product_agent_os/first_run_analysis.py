@@ -23,6 +23,7 @@ FIRST_RUN_SCRIPT_REGISTRY_SCHEMA_VERSION = "first_run_script_registry_v1"
 FIRST_RUN_COMMAND_MATRIX_SCHEMA_VERSION = "first_run_command_matrix_v1"
 FIRST_RUN_EVIDENCE_SUMMARY_SCHEMA_VERSION = "first_run_evidence_summary_v1"
 FIRST_RUN_RESUME_LEDGER_SCHEMA_VERSION = "first_run_resume_ledger_v1"
+FIRST_RUN_WELCOME_MESSAGE_SCHEMA_VERSION = "first_run_welcome_message_v1"
 FIRST_RUN_GUIDED_RESPONSE_SCHEMA_VERSION = "first_run_guided_response_v1"
 FIRST_RUN_ANSWER_LEDGER_ROUTING_SCHEMA_VERSION = "first_run_answer_ledger_routing_v1"
 FIRST_RUN_ANALYSIS_ARTIFACT_VERSION = 1
@@ -201,6 +202,83 @@ def build_first_run_automation_contract() -> dict[str, Any]:
             "generated view is treated as source truth",
             "runtime/browser/provider/git/release claim without current evidence",
         ],
+    }
+
+
+def build_first_run_welcome_message() -> dict[str, Any]:
+    """Build the first-run help message shown before Product-Agent OS work starts."""
+
+    return {
+        "schema_version": FIRST_RUN_WELCOME_MESSAGE_SCHEMA_VERSION,
+        "title": "Welcome to Product-Agent OS",
+        "summary": (
+            "Product-Agent OS is a local Codex operating layer for turning a real project workspace "
+            "into a governed product-delivery loop."
+        ),
+        "product_agent_os": {
+            "what_it_is": (
+                "It connects requirements, planning, agent ownership, verification evidence, review, "
+                "handoff, packaging and learning so project work does not live only in chat."
+            ),
+            "first_run_role": (
+                "The first run audits the workspace, identifies the safest next route, creates generated "
+                "orientation artifacts and asks at most one blocking owner question."
+            ),
+            "core_artifacts": [
+                "REQUIREMENTS.md",
+                "PLAN.md",
+                "TEST.md",
+                "EVALS.md",
+                "RUNLOG.md",
+                ".codex/product-agent-os/analysis/",
+            ],
+            "does_not_do": [
+                "does not claim generated HTML is source truth",
+                "does not mutate target source files by default",
+                "does not run providers, browsers, hooks, automations, git or releases without exact approval",
+                "does not store private conversation transcripts, secrets or hidden telemetry",
+            ],
+        },
+        "self_learning_loop": {
+            "status": "disclosed_planned_manual_first",
+            "what_it_is": (
+                "Self-Learning Loop is the planned Product-Agent OS improvement cycle for analyzing "
+                "approved project evidence, owner feedback, agent/skill metrics and safety regressions "
+                "to propose better prompts, skills, routing, memory summaries, evals or harnesses."
+            ),
+            "scope": (
+                "It is scoped to eligible Product-Agent OS projects only; it must not analyze all user "
+                "Codex sessions, hidden app logs or unrelated workspaces."
+            ),
+            "default_settings": {
+                "cadence": "manual_only",
+                "apply_mode": "draft_only",
+                "notify_user": True,
+                "show_in_html": True,
+            },
+            "cadence_options": [
+                "manual_only",
+                "weekly_due_check",
+                "after_product_agent_os_change",
+                "after_owner_feedback",
+                "disabled",
+            ],
+            "apply_modes": [
+                "draft_only",
+                "approval_required",
+                "auto_apply_limited_future_after_explicit_approval",
+            ],
+            "manual_activation": (
+                "A future approved skill/manual command can run the loop on demand. This first-run help "
+                "only discloses the mechanism and does not activate it."
+            ),
+        },
+        "safe_start": {
+            "recommended_mode": "--full-dry-run",
+            "next_safe_command": "python plugins/product-agent-os/scripts/run_first_project_analysis.py <workspace> --full-dry-run",
+            "write_modes": ["--stage <dir>", "--write-analysis"],
+            "review_policy": "generated artifacts are orientation evidence until source files and current checks support a claim",
+        },
     }
 
 
@@ -1119,6 +1197,7 @@ def _guided_first_response(
         "schema_version": FIRST_RUN_GUIDED_RESPONSE_SCHEMA_VERSION,
         "mode": "guided_first_response",
         "confidence": confidence,
+        "welcome_message": build_first_run_welcome_message(),
         "summary": _first_response_summary(project_analysis_summary, source_policy_summary, runtime_boundary),
         "blocking_question": next_blocking if isinstance(next_blocking, dict) else None,
         "blocking_question_count": 1 if isinstance(next_blocking, dict) else 0,
@@ -1267,6 +1346,7 @@ def _empty_guided_first_response(safe_next_action: str) -> dict[str, Any]:
         "schema_version": FIRST_RUN_GUIDED_RESPONSE_SCHEMA_VERSION,
         "mode": "guided_first_response",
         "confidence": "unknown",
+        "welcome_message": build_first_run_welcome_message(),
         "summary": "First-run guided response is not available.",
         "blocking_question": None,
         "blocking_question_count": 0,
@@ -2063,6 +2143,7 @@ __all__ = [
     "build_first_run_project_analysis_summaries",
     "build_first_run_resume_ledger",
     "build_first_run_script_registry",
+    "build_first_run_welcome_message",
     "execute_first_run_safe_script_matrix",
     "normalize_first_run_command_outputs",
     "run_first_project_analysis",

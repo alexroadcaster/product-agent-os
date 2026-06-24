@@ -5,7 +5,12 @@ import json
 from pathlib import Path
 from typing import Any
 
-from product_agent_os.first_run_analysis import ANALYSIS_DIR, SECRET_LIKE_VALUE_RE, validate_first_run_analysis_packet
+from product_agent_os.first_run_analysis import (
+    ANALYSIS_DIR,
+    SECRET_LIKE_VALUE_RE,
+    build_first_run_welcome_message,
+    validate_first_run_analysis_packet,
+)
 from product_agent_os.project_cockpit_model import COCKPIT_PAGE_IDS, COCKPIT_PAGE_LABELS, build_project_cockpit_model
 from product_agent_os.project_graph_visual_model import build_project_graph_visual_model
 from product_agent_os.stage_manifest import canonical_json, content_digest
@@ -466,6 +471,12 @@ def build_first_run_cockpit_view_model(
     first_viewport_shell = _first_run_first_viewport_shell(packet, contract, architecture_diagrams)
     local_interaction_layer = _first_run_local_interaction_layer()
     guided_tour_surface = _first_run_guided_tour_surface()
+    first_response = packet.get("first_response") if isinstance(packet.get("first_response"), dict) else {}
+    welcome_message = (
+        first_response.get("welcome_message")
+        if isinstance(first_response.get("welcome_message"), dict)
+        else build_first_run_welcome_message()
+    )
     model = {
         "schema_version": FIRST_RUN_COCKPIT_ARTIFACT_SCHEMA_VERSION,
         "path": "index.html",
@@ -475,6 +486,7 @@ def build_first_run_cockpit_view_model(
         "contract": contract,
         "design_contract": contract["architecture_intelligence_design_contract"],
         "first_viewport_shell": first_viewport_shell,
+        "welcome_message": welcome_message,
         "local_interaction_layer": local_interaction_layer,
         "guided_tour_surface": guided_tour_surface,
         "cockpit": cockpit,
@@ -1894,6 +1906,48 @@ def _unsupported_claims(packet: dict[str, Any]) -> list[str]:
     return sorted(set(item for item in claims if item))
 
 
+def _welcome_help_html(welcome_message: dict[str, Any]) -> str:
+    if not welcome_message:
+        return ""
+    product = welcome_message.get("product_agent_os") if isinstance(welcome_message.get("product_agent_os"), dict) else {}
+    learning = welcome_message.get("self_learning_loop") if isinstance(welcome_message.get("self_learning_loop"), dict) else {}
+    defaults = learning.get("default_settings") if isinstance(learning.get("default_settings"), dict) else {}
+    cadence_options = learning.get("cadence_options") if isinstance(learning.get("cadence_options"), list) else []
+    apply_modes = learning.get("apply_modes") if isinstance(learning.get("apply_modes"), list) else []
+    boundaries = product.get("does_not_do") if isinstance(product.get("does_not_do"), list) else []
+    cadence_html = "".join(f"<li><code>{_text(item)}</code></li>" for item in cadence_options)
+    apply_html = "".join(f"<li><code>{_text(item)}</code></li>" for item in apply_modes)
+    boundary_html = "".join(f"<li>{_text(item)}</li>" for item in boundaries)
+    return (
+        "<section class=\"welcome-help-panel\" aria-labelledby=\"welcome-help-title\">\n"
+        f"<h2 id=\"welcome-help-title\">{_text(welcome_message.get('title', 'Welcome to Product-Agent OS'))}</h2>\n"
+        f"<p>{_text(welcome_message.get('summary', ''))}</p>\n"
+        "<div class=\"welcome-help-grid\">\n"
+        "<article>\n"
+        "<h3>What Product-Agent OS does</h3>\n"
+        f"<p>{_text(product.get('what_it_is', ''))}</p>\n"
+        f"<p>{_text(product.get('first_run_role', ''))}</p>\n"
+        "</article>\n"
+        "<article>\n"
+        "<h3>Self-Learning Loop</h3>\n"
+        f"<p>{_text(learning.get('what_it_is', ''))}</p>\n"
+        f"<p>{_text(learning.get('scope', ''))}</p>\n"
+        "<p class=\"welcome-defaults\">"
+        f"Default: cadence <code>{_text(defaults.get('cadence', 'manual_only'))}</code>, "
+        f"apply mode <code>{_text(defaults.get('apply_mode', 'draft_only'))}</code>."
+        "</p>\n"
+        "</article>\n"
+        "</div>\n"
+        "<div class=\"welcome-lists\">\n"
+        f"<div><h3>Cadence choices</h3><ul>{cadence_html}</ul></div>\n"
+        f"<div><h3>Apply modes</h3><ul>{apply_html}</ul></div>\n"
+        f"<div><h3>Safety boundaries</h3><ul>{boundary_html}</ul></div>\n"
+        "</div>\n"
+        f"<p class=\"welcome-manual-activation\">{_text(learning.get('manual_activation', ''))}</p>\n"
+        "</section>\n"
+    )
+
+
 def _cockpit_page_html(
     primary_cockpit: dict[str, Any],
     previous_baseline: dict[str, Any],
@@ -1965,6 +2019,8 @@ def _cockpit_page_html(
     )
     source_boundary = first_viewport.get("source_boundary") if isinstance(first_viewport.get("source_boundary"), dict) else {}
     review_route = first_viewport.get("next_route") if isinstance(first_viewport.get("next_route"), dict) else {}
+    welcome_message = primary_cockpit.get("welcome_message") if isinstance(primary_cockpit.get("welcome_message"), dict) else {}
+    welcome_html = _welcome_help_html(welcome_message)
     local_interaction_html = _local_interaction_script_html(local_interaction)
     css = _cockpit_css()
     return (
@@ -1997,6 +2053,7 @@ def _cockpit_page_html(
         f"<p><strong>Source Boundary</strong><span>{_text(source_boundary.get('detail'))}</span></p>\n"
         "<p><strong>No target mutation</strong><span>Generated artifact review does not authorize apply, provider, release or git actions.</span></p>\n"
         "</div>\n"
+        f"{welcome_html}"
         "<div class=\"hero-grid dossier-grid\" aria-label=\"Cockpit status summary\">\n"
         f"<span><small>Primary artifact</small><strong>{_text(contract['primary_artifact'])}</strong></span>\n"
         f"<span><small>Architecture diagrams</small><strong>{_text(diagram_layer.get('diagram_count', 0))}</strong></span>\n"
@@ -2892,6 +2949,7 @@ def _cockpit_css() -> str:
 .evidence-risk-hierarchy{margin:12px 0;padding:14px;border:1px solid var(--line);border-radius:8px;background:#fbfbf8}.risk-hierarchy-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.risk-hierarchy-lane{min-width:0;border:1px solid var(--line);border-radius:8px;background:#fff;padding:12px}.risk-hierarchy-lane p{margin:0 0 6px;color:var(--muted);overflow-wrap:anywhere}.blocked-claim-list{margin-top:12px;border:1px solid var(--line);border-radius:8px;background:#fff;padding:12px}.blocked-claim-list ul{margin:0;padding-left:20px}.blocked-claim-list li{margin:4px 0;overflow-wrap:anywhere}@media(max-width:960px){.risk-hierarchy-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:760px){.risk-hierarchy-grid{grid-template-columns:1fr}}
 .visual-accessibility-acceptance{margin:12px 0;padding:14px;border:1px solid var(--line);border-radius:8px;background:#fbfbf8}.visual-accessibility-acceptance p{margin:0 0 10px;color:var(--muted);overflow-wrap:anywhere}.visual-a11y-table th:first-child{width:220px}
 .graph-runtime-layer{border-top:5px solid #8a4b18}.runtime-label-strip{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px;padding:0;list-style:none}.runtime-label-strip li{border:1px solid var(--line);border-radius:999px;background:#fff;padding:7px 10px;color:var(--muted);font-size:13px}.graph-runtime-grid,.graph-runtime-states{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.graph-runtime-card,.graph-state-card,.fallback-explanation{background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px;min-width:0}.runtime-blocker-banner{border-left:4px solid #8a4b18;background:#fff9f2}.graph-runtime-card p,.graph-state-card p,.fallback-explanation p{margin:0 0 6px;color:var(--muted);overflow-wrap:anywhere}@media(max-width:760px){.graph-runtime-grid,.graph-runtime-states{grid-template-columns:1fr}}
+.welcome-help-panel{margin-top:14px;padding:16px;border:1px solid var(--line);border-radius:8px;background:#fff}.welcome-help-panel p{margin:0 0 8px;color:var(--muted);overflow-wrap:anywhere}.welcome-help-grid,.welcome-lists{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.welcome-help-grid article,.welcome-lists>div{min-width:0;border:1px solid var(--line);border-radius:8px;background:#fbfbf8;padding:12px}.welcome-lists{grid-template-columns:repeat(3,minmax(0,1fr));margin-top:12px}.welcome-lists ul{margin:0;padding-left:20px}.welcome-manual-activation{margin-top:12px;padding:10px;border-left:4px solid var(--accent);background:#f5f8f3}@media(max-width:760px){.welcome-help-grid,.welcome-lists{grid-template-columns:1fr}}
 """.strip()
 
 

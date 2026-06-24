@@ -40,7 +40,7 @@ verification_status: "Current compaction preserves test-visible markers; full ev
 - Product-Agent OS Batch 40 S3 Doubt verifier loop eval hardening (checked_at=2026-06-09, trust=high)
 - Product-Agent OS Batch 40 S4 Doubt verifier loop docs and site (checked_at=2026-06-10, trust=high)
 - Product-Agent OS Batch 40 S4 source-transfer packet (checked_at=2026-06-10, trust=high for transfer bookkeeping; mixed per source family)
-- Product-Agent OS Batch 41 first-run orchestration S1-S6 evidence (checked_at=2026-06-20, trust=high)
+- Product-Agent OS Batch 41 first-run orchestration S1-S6 evidence plus first-run welcome/help disclosure (checked_at=2026-06-24, trust=high)
 - Product-Agent OS Batch 41 cockpit, architecture dossier and HTML modernization S7-S9 evidence (checked_at=2026-06-20, trust=high)
 - Product-Agent OS Batch 42 instruction/tool-use compliance planning matrix (checked_at=2026-06-20, trust=high)
 - Product-Agent OS Track 11 documentation refresh G0 governance packet (checked_at=2026-06-20, trust=high)
@@ -48,6 +48,7 @@ verification_status: "Current compaction preserves test-visible markers; full ev
 - Product-Agent OS Track 11 G1.1 project-local documentation toolchain planning matrix (checked_at=2026-06-20, trust=high)
 - Product-Agent OS Track 11 G2 first-run cockpit and artifact docs packet (checked_at=2026-06-21, trust=high)
 - Product-Agent OS Track 11 G4 operator flows and system behavior docs packet (checked_at=2026-06-22, trust=high)
+- Product-Agent OS Track 11 Batch 44 Self-Learning Loop activation, agent/skill metrics and HTML progress planning matrix (checked_at=2026-06-24, trust=high for local plan evidence; arXiv intake trust=primary preprint source)
 - Codex web / cloud (checked_at=2026-05-14, trust=high)
 - Codex app (checked_at=2026-05-14, trust=high)
 - Codex CLI (checked_at=2026-05-14, trust=high)
@@ -1294,6 +1295,9 @@ These markers preserve source-owned test routing after registry compaction. Full
 - docs/superpowers/specs/batch41-s4-html-artifact-summary.json
 - docs/superpowers/specs/batch41-s5-guided-questions-summary.json
 - docs/superpowers/specs/batch41-s6-closure-summary.json
+- plugins/product-agent-os/scripts/run_first_project_analysis.py
+- plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py
+- first-run welcome/help now discloses Product-Agent OS purpose and Self-Learning Loop as manual-first, project-scoped and not activated by first-run help
 - local/read-only/staged evidence only
 - Product-Agent OS Batch 41 cockpit, architecture dossier and HTML modernization S7-S9 evidence
 - batch41_cockpit_architecture_html_modernization_s7_s9
@@ -1301,6 +1305,8 @@ These markers preserve source-owned test routing after registry compaction. Full
 - docs/superpowers/specs/batch41-s8-m47-neural-flow-before-after-summary.json
 - docs/superpowers/specs/batch41-s9-html-modernization-summary.json
 - docs/superpowers/specs/batch41-s9-m57-neural-flow-comparison.json
+- plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py
+- tests/product_agent_os/test_batch41_first_run_automation.py
 - generated artifacts are orientation_only_not_proof
 - Product-Agent OS Batch 42 instruction/tool-use compliance planning matrix
 - batch42_instruction_tool_use_compliance_matrix_v1
@@ -1437,4 +1443,11 @@ These markers preserve source-owned test routing after registry compaction. Full
 - implemented_root_site_search_sitemap_freshness
 - former DOC_M25_PENDING_SITE_PAGES rendered in RU/EN HTML, search index and sitemap after owner-approved root MkDocs build
 - browser proof, broad scans, dependency remediation, raw report retention, publication, release, deploy and git actions remain out of scope
+- Product-Agent OS Track 11 Batch 44 Self-Learning Loop activation, Product-Agent OS project scope, agent/skill metrics and HTML progress planning matrix
+- batch44_self_learning_loop_planned_only
+- docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md
+- arXiv research intake: 2507.21046, 2508.07407, 2507.19457, 2510.04618, 2510.09801, 2603.20939, 2510.09720, 2507.05257, 2511.20857, 2603.03329, 2510.26852, 2510.23595, 2506.15841, 2512.16301, 2602.12670, 2605.05726, 2603.00718, 2605.18693, 2603.15401, 2512.24565, 2507.21504, 2605.20251, 2511.13998, 2508.03680, 2602.12430, 2602.20867, 2602.20156, 2604.15415
+- expanded metrics intake: Product-Agent OS-only project scope, owner feedback import filter, paired skill utility, skill retrieval, tool composition, process-control, adversarial skill safety, satisfaction, memory quality, resumable progress state and project-local HTML progress artifact
+- planned_only_not_implementation_evidence
+- no active scheduler, hook activation, automation activation, global user-session analysis, hidden telemetry, real private session ingestion, provider/model call, cache refresh, global config write, target mutation, project HTML proof claim, git action, release, deploy or publish action
 ```

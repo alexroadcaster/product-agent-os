@@ -749,6 +749,12 @@ class Batch41FirstRunAutomationTests(unittest.TestCase):
             self.assertIn('data-shell="architecture-dossier"', index_html)
             self.assertIn("Product-Agent OS First-Run Architecture Cockpit", index_html)
             self.assertIn("Architecture dossier / operational cockpit", index_html)
+            self.assertIn("Welcome to Product-Agent OS", index_html)
+            self.assertIn("What Product-Agent OS does", index_html)
+            self.assertIn("Self-Learning Loop", index_html)
+            self.assertIn("manual_only", index_html)
+            self.assertIn("draft_only", index_html)
+            self.assertIn("eligible Product-Agent OS projects only", index_html)
             self.assertIn('class="next-route-panel"', index_html)
             self.assertIn("Next Safe Route", index_html)
             self.assertIn('class="hero-grid dossier-grid"', index_html)
@@ -1780,6 +1786,16 @@ class Batch41FirstRunAutomationTests(unittest.TestCase):
 
             self.assertEqual(first_response["schema_version"], "first_run_guided_response_v1")
             self.assertEqual(first_response["mode"], "guided_first_response")
+            welcome = first_response["welcome_message"]
+            self.assertEqual(welcome["schema_version"], "first_run_welcome_message_v1")
+            self.assertEqual(welcome["title"], "Welcome to Product-Agent OS")
+            self.assertIn("Product-Agent OS", welcome["summary"])
+            self.assertEqual(welcome["self_learning_loop"]["status"], "disclosed_planned_manual_first")
+            self.assertEqual(welcome["self_learning_loop"]["default_settings"]["cadence"], "manual_only")
+            self.assertEqual(welcome["self_learning_loop"]["default_settings"]["apply_mode"], "draft_only")
+            self.assertIn("weekly_due_check", welcome["self_learning_loop"]["cadence_options"])
+            self.assertIn("approval_required", welcome["self_learning_loop"]["apply_modes"])
+            self.assertIn("does not activate it", welcome["self_learning_loop"]["manual_activation"])
             self.assertEqual(first_response["blocking_question_count"], 1)
             self.assertIsInstance(first_response["blocking_question"], dict)
             self.assertEqual(
@@ -1793,6 +1809,31 @@ class Batch41FirstRunAutomationTests(unittest.TestCase):
             self.assertNotIn("questions", first_response)
             self.assertEqual(first_response["completion_claim"], "not_claimed")
             self.assertNotIn(str(workspace), result.stdout)
+
+    def test_b41_s5_m21_no_args_help_discloses_product_agent_os_and_self_learning_loop(self) -> None:
+        result = subprocess.run(
+            [
+                sys.executable,
+                str(SCRIPTS / "run_first_project_analysis.py"),
+            ],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+
+        self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
+        payload = json.loads(result.stdout)
+        welcome = payload["welcome_message"]
+
+        self.assertEqual(payload["status"], "help")
+        self.assertEqual(welcome["schema_version"], "first_run_welcome_message_v1")
+        self.assertIn("Product-Agent OS", welcome["summary"])
+        self.assertEqual(welcome["self_learning_loop"]["default_settings"]["cadence"], "manual_only")
+        self.assertEqual(welcome["self_learning_loop"]["default_settings"]["apply_mode"], "draft_only")
+        self.assertIn("weekly_due_check", welcome["self_learning_loop"]["cadence_options"])
+        self.assertIn("auto_apply_limited_future_after_explicit_approval", welcome["self_learning_loop"]["apply_modes"])
+        self.assertFalse(payload["actions_performed"]["active_automation"])
+        self.assertFalse(payload["actions_performed"]["target_workspace_mutation"])
 
     def test_b41_s5_m22_stage_writes_answer_ledger_template_without_target_mutation(self) -> None:
         with TemporaryDirectory() as tmp:
