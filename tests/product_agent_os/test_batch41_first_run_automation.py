@@ -54,6 +54,33 @@ class Batch41FirstRunAutomationTests(unittest.TestCase):
         self.assertFalse(payload["actions_performed"]["live_server"])
         self.assertFalse(payload["actions_performed"]["browser_automation"])
 
+    def test_b44_s1_first_launch_help_discloses_self_learning_loop_cadence_and_manual_trigger(self) -> None:
+        result = subprocess.run(
+            [sys.executable, str(SCRIPTS / "run_first_project_analysis.py")],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+
+        self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
+        payload = json.loads(result.stdout)
+        self_learning = payload["welcome_message"]["self_learning_loop"]
+
+        self.assertEqual(self_learning["schema_version"], "self_learning_loop_disclosure_v1")
+        self.assertEqual(self_learning["default_approval_state"], "manual_only")
+        self.assertIn("manual_now", {trigger["id"] for trigger in self_learning["triggers"]})
+        self.assertIn("weekly_due_check", {trigger["id"] for trigger in self_learning["triggers"]})
+        self.assertIn("manual_only", {option["id"] for option in self_learning["cadence_options"]})
+        self.assertIn("weekly", {option["id"] for option in self_learning["cadence_options"]})
+        self.assertEqual(self_learning["schedule_status"], "not_created")
+        self.assertEqual(self_learning["auto_apply_status"], "not_enabled")
+        self.assertIn("check_self_learning_due.py", self_learning["manual_commands"]["check_due"])
+        self.assertNotIn("run_now", self_learning["manual_commands"])
+        self.assertEqual(self_learning["future_manual_runner"]["status"], "planned_for_B44_S2")
+        self.assertIn("run_self_learning_loop.py", self_learning["future_manual_runner"]["proposed_command"])
+        self.assertFalse(self_learning["actions_performed"]["active_automation"])
+        self.assertFalse(self_learning["actions_performed"]["provider_api_call"])
+
     def test_b41_m03_full_dry_run_returns_packet_without_writing_target(self) -> None:
         with TemporaryDirectory() as tmp:
             workspace = Path(tmp) / "sample-target"
@@ -1793,8 +1820,9 @@ class Batch41FirstRunAutomationTests(unittest.TestCase):
             self.assertEqual(welcome["self_learning_loop"]["status"], "disclosed_planned_manual_first")
             self.assertEqual(welcome["self_learning_loop"]["default_settings"]["cadence"], "manual_only")
             self.assertEqual(welcome["self_learning_loop"]["default_settings"]["apply_mode"], "draft_only")
-            self.assertIn("weekly_due_check", welcome["self_learning_loop"]["cadence_options"])
-            self.assertIn("approval_required", welcome["self_learning_loop"]["apply_modes"])
+            self.assertIn("weekly", {option["id"] for option in welcome["self_learning_loop"]["cadence_options"]})
+            self.assertIn("weekly_due_check", {trigger["id"] for trigger in welcome["self_learning_loop"]["triggers"]})
+            self.assertIn("approval_required", {mode["id"] for mode in welcome["self_learning_loop"]["apply_modes"]})
             self.assertIn("does not activate it", welcome["self_learning_loop"]["manual_activation"])
             self.assertEqual(first_response["blocking_question_count"], 1)
             self.assertIsInstance(first_response["blocking_question"], dict)
@@ -1830,8 +1858,12 @@ class Batch41FirstRunAutomationTests(unittest.TestCase):
         self.assertIn("Product-Agent OS", welcome["summary"])
         self.assertEqual(welcome["self_learning_loop"]["default_settings"]["cadence"], "manual_only")
         self.assertEqual(welcome["self_learning_loop"]["default_settings"]["apply_mode"], "draft_only")
-        self.assertIn("weekly_due_check", welcome["self_learning_loop"]["cadence_options"])
-        self.assertIn("auto_apply_limited_future_after_explicit_approval", welcome["self_learning_loop"]["apply_modes"])
+        self.assertIn("weekly", {option["id"] for option in welcome["self_learning_loop"]["cadence_options"]})
+        self.assertIn("weekly_due_check", {trigger["id"] for trigger in welcome["self_learning_loop"]["triggers"]})
+        self.assertIn(
+            "auto_apply_limited_future_after_explicit_approval",
+            {mode["id"] for mode in welcome["self_learning_loop"]["apply_modes"]},
+        )
         self.assertFalse(payload["actions_performed"]["active_automation"])
         self.assertFalse(payload["actions_performed"]["target_workspace_mutation"])
 

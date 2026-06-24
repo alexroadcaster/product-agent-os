@@ -1,8 +1,8 @@
 {
   "task_start_brief_shown": true,
-  "task_id": "B44-HOOKS-TASK-BRIEF-FULL-FIELDS",
-  "scope": "Strengthen Product-Agent OS Task Start Brief hooks, templates, workflow contract, and tests in local codex_docs workspace only",
-  "updated_at": "2026-06-24T08:50:00+03:00",
+  "task_id": "B44-S1-State-And-Trigger-UX",
+  "scope": "Implement Product-Agent OS Self-learning-loop state, trigger and user-facing cadence UX contract in local codex_docs workspace only",
+  "updated_at": "2026-06-24T09:40:00+03:00",
   "approval_boundary": "No scheduler/automation activation, no global config, no provider/model/browser/git/release/deploy/publish actions, no target-project mutation",
   "brief_schema_version": "task_start_brief_v1",
   "brief_format": "field_list",

@@ -122,6 +122,12 @@ First-run analysis artifact - это локальный generated orientation pa
 
 `source_policy_gate` может разрешать diagnostic artifact, сохраняя apply/promotion выключенными. `redaction_report` обязан фиксировать заблокированные secret-like values, raw source fields и локальные absolute paths до финализации пакета. `cleanup_guidance` является preview-only: удаление файлов, target cleanup и rollback действия требуют отдельного explicit approval.
 
+## Артефакт состояния Self-Learning Loop
+
+| Артефакт | Создатель / потребитель | Роль контракта | Граница |
+| --- | --- | --- | --- |
+| `.codex/product-agent-os/self-learning-state.json` | Будущий approved state initializer/manual runner; `check_self_learning_due.py --dry-run` читает файл только для проверки. | `self_learning_state_v1`: `installed_at`, `last_analysis_at`, `last_success_at`, `last_failure_at`, `next_due_at`, `cadence_level`, `last_report_id`, `last_metrics_digest`, `approval_state`, `disable_reason`. | Только состояние для due-check; due-check CLI не пишет этот файл, не запускает analysis, не создает active schedule, не импортирует sessions, не вызывает providers, не меняет targets и не включает auto-apply. |
+
 ## Doubt verification artifacts
 
 | Artifact | Producer | Contract role | Boundary |

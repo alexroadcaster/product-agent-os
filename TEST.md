@@ -42,6 +42,26 @@ paths by default and remain a detector only. These checks do not prove any
 active scheduler, Codex App automation, hidden session ingestion, provider call,
 target mutation or auto-apply behavior.
 
+## Batch 44 S1 Self-Learning Loop State And Trigger UX Checks
+
+For `B44-S1-State-And-Trigger-UX`, run:
+
+```powershell
+python -m unittest tests.product_agent_os.test_self_learning_state tests.product_agent_os.test_batch41_first_run_automation -v
+python -m unittest tests.product_agent_os.test_first_run_analysis -v
+python plugins\product-agent-os\scripts\check_self_learning_due.py . --dry-run
+```
+
+The due-check CLI must report only `due`, `not_due`, `disabled` or
+`state_invalid`; it must not run analysis, write state, create a schedule,
+include raw workspace paths or enable auto-apply. First-run help must disclose
+the Self-Learning Loop, default `manual_only` mode, cadence choices, manual
+due-check trigger and `not_created` schedule boundary. It must not expose a
+runnable `run_now` command before the B44-S2 manual runner exists. Invalid
+`--now` input must return bounded JSON with `now:invalid_datetime` and no
+traceback; `on_change` cadence must stay `not_due` until a Product-Agent OS
+change trigger exists.
+
 ## Control-Plane Size Budgets
 
 `RUNLOG.md` has a `50 KB` budget, measured as `50 * 1024` UTF-8 bytes. If it exceeds that budget, run `.codex/workflows/control-plane-sync.md` as an overflow protocol: redistribute scope to `REQUIREMENTS.md`, sequencing to `PLAN.md`, verification to `TEST.md`, eval/claim ceilings to `EVALS.md`, detailed evidence to source-owned plans/specs/backlogs or `prod_test.md`, then shorten `RUNLOG.md` to current handoff and residual-risk pointers.

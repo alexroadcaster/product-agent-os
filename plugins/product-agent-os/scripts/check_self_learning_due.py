@@ -1,0 +1,91 @@
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from datetime import UTC, datetime
+from pathlib import Path
+
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+from product_agent_os.self_learning_state import (  # noqa: E402
+    evaluate_self_learning_due,
+    load_self_learning_state,
+    workspace_ref,
+)
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(
+        description="Check whether the Product-Agent OS Self-Learning Loop is due without running it."
+    )
+    parser.add_argument("workspace", nargs="?", default=".", help="Workspace path to inspect.")
+    parser.add_argument("--dry-run", action="store_true", help="Read state and print due status without writes.")
+    parser.add_argument("--now", help="Deterministic ISO timestamp for tests.")
+    args = parser.parse_args(argv)
+
+    if not args.dry_run:
+        _print_payload(
+            {
+                "schema_version": "self_learning_due_check_v1",
+                "status": "error",
+                "error": "only --dry-run is supported in B44-S1",
+                "analysis_executed": False,
+                "state_written": False,
+            }
+        )
+        return 2
+
+    now = args.now or datetime.now(UTC).replace(microsecond=0).isoformat()
+    if args.now and not _valid_iso_datetime(args.now):
+        _print_payload(
+            {
+                "schema_version": "self_learning_due_check_v1",
+                "status": "state_invalid",
+                "errors": ["now:invalid_datetime"],
+                "analysis_executed": False,
+                "state_written": False,
+                "mode": "dry_run",
+            }
+        )
+        return 2
+
+    workspace = Path(args.workspace)
+    state, load_errors = load_self_learning_state(workspace)
+    if load_errors:
+        payload = evaluate_self_learning_due(None, now=now)
+        payload["errors"] = load_errors
+    else:
+        payload = evaluate_self_learning_due(state, now=now)
+    payload.update(
+        {
+            "mode": "dry_run",
+            "workspace_ref": workspace_ref(workspace),
+            "manual_run_command": "not_available_until_B44_S2_manual_runner",
+            "future_manual_runner": {
+                "status": "planned_for_B44_S2",
+                "proposed_command": "python plugins/product-agent-os/scripts/run_self_learning_loop.py <workspace> --dry-run",
+            },
+        }
+    )
+    _print_payload(payload)
+    if "now:invalid_datetime" in payload.get("errors", []):
+        return 2
+    return 0 if payload["status"] in {"due", "not_due", "disabled", "state_invalid"} else 2
+
+
+def _print_payload(payload: dict) -> None:
+    print(json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True))
+
+
+def _valid_iso_datetime(value: str) -> bool:
+    try:
+        datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return False
+    return True
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

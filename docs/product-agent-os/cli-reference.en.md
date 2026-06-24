@@ -59,6 +59,14 @@ python plugins\product-agent-os\scripts\scan_project_code_graph.py <workspace> -
 
 These examples are not the broad command matrix. The full command-policy matrix, docs-tooling smokes, install/runtime variants and approval-state coverage belong to `DOC-M26`. CLI docs provide safe pointers only and do not expand permission for live servers, browser automation, provider/API calls, canonical mutation, git actions or root `site` rebuild.
 
+## Self-Learning Loop Due-Check CLI
+
+| Command | Purpose | Inputs | Output / boundary |
+| --- | --- | --- | --- |
+| `python plugins\product-agent-os\scripts\check_self_learning_due.py <workspace> --dry-run` | Checks whether the owner should be offered a manual Self-Learning Loop run. | Product-Agent OS workspace with `.codex/product-agent-os/self-learning-state.json`. | Prints `due`, `not_due`, `disabled` or `state_invalid`; does not run analysis, write state, create a schedule or enable auto-apply. |
+
+In this contract, `weekly` means a due-check basis, not an active schedule. Manual loop execution remains a separate future surface with its own approval and write boundary.
+
 ## Project Graph CLI
 
 `scan_project_code_graph.py` has exactly-one-mode semantics. Choose one mode per invocation.

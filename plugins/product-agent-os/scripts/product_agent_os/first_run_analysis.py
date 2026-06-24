@@ -13,6 +13,7 @@ from product_agent_os.methodology_audit import build_methodology_audit
 from product_agent_os.project_code_graph import build_project_code_graph
 from product_agent_os.question_ledger import build_answer_ledger, validate_answer_ledger
 from product_agent_os.question_protocol import build_question_queue
+from product_agent_os.self_learning_state import CADENCE_OPTIONS, TRIGGER_CLASSES
 from product_agent_os.source_policy import validate_source_policy
 from product_agent_os.stage_manifest import canonical_json, content_digest
 
@@ -240,6 +241,7 @@ def build_first_run_welcome_message() -> dict[str, Any]:
             ],
         },
         "self_learning_loop": {
+            "schema_version": "self_learning_loop_disclosure_v1",
             "status": "disclosed_planned_manual_first",
             "what_it_is": (
                 "Self-Learning Loop is the planned Product-Agent OS improvement cycle for analyzing "
@@ -256,18 +258,42 @@ def build_first_run_welcome_message() -> dict[str, Any]:
                 "notify_user": True,
                 "show_in_html": True,
             },
-            "cadence_options": [
-                "manual_only",
-                "weekly_due_check",
-                "after_product_agent_os_change",
-                "after_owner_feedback",
-                "disabled",
-            ],
+            "default_approval_state": "manual_only",
+            "schedule_status": "not_created",
+            "auto_apply_status": "not_enabled",
+            "triggers": TRIGGER_CLASSES,
+            "cadence_options": CADENCE_OPTIONS,
             "apply_modes": [
-                "draft_only",
-                "approval_required",
-                "auto_apply_limited_future_after_explicit_approval",
+                {
+                    "id": "draft_only",
+                    "label": "Draft only",
+                    "description": "The loop may propose candidate improvements but cannot apply them.",
+                },
+                {
+                    "id": "approval_required",
+                    "label": "Approval required",
+                    "description": "Every write or activation needs explicit owner approval.",
+                },
+                {
+                    "id": "auto_apply_limited_future_after_explicit_approval",
+                    "label": "Future limited auto-apply candidate",
+                    "description": "Not enabled by default; requires a later approved automation packet.",
+                },
             ],
+            "manual_commands": {
+                "check_due": "python plugins/product-agent-os/scripts/check_self_learning_due.py <workspace> --dry-run",
+            },
+            "future_manual_runner": {
+                "status": "planned_for_B44_S2",
+                "proposed_command": "python plugins/product-agent-os/scripts/run_self_learning_loop.py <workspace> --dry-run",
+                "boundary": "not available in B44-S1; no analysis is executed by first-run help or due-check",
+            },
+            "actions_performed": {
+                "active_automation": False,
+                "provider_api_call": False,
+                "target_workspace_mutation": False,
+                "auto_apply": False,
+            },
             "manual_activation": (
                 "A future approved skill/manual command can run the loop on demand. This first-run help "
                 "only discloses the mechanism and does not activate it."
