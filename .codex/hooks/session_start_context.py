@@ -15,6 +15,21 @@ LIFECYCLE_FILES = [
     ".codex/hooks/hooks.json",
 ]
 LIFECYCLE_STATE = ".codex/product-agent-os/lifecycle-state.json"
+TASK_BRIEF_REQUIRED_FIELDS = [
+    "Task ID",
+    "Product value",
+    "Technical value",
+    "Source / trigger",
+    "Scope",
+    "Non-goals",
+    "Agents and skills",
+    "Files / artifacts expected",
+    "Verification gate",
+    "Approval boundary / risks",
+    "Complexity",
+    "Estimated execution time",
+    "Next action",
+]
 
 
 def _workspace_root() -> Path:
@@ -58,11 +73,13 @@ def main() -> int:
             "missing": _missing(root, LIFECYCLE_FILES),
             "state_marker": LIFECYCLE_STATE,
             "task_start_brief_required_for": "non_mechanical_tasks",
+            "task_start_brief_schema_version": "task_start_brief_v1",
+            "task_start_brief_required_fields": TASK_BRIEF_REQUIRED_FIELDS,
             "completion_brief_required": True,
         },
         "reminders": [
-            "Show a user-visible Task Brief before non-mechanical execution.",
-            "Record the lightweight lifecycle marker after the Task Brief and before mutating commands.",
+            "Show a user-visible full field-list Task Brief before non-mechanical execution.",
+            "Record the lifecycle marker after the full Task Brief and before mutating commands.",
             "Run control-plane sync before the Completion Brief when scope, plan, tests, evals, runlog, or evidence state changes.",
         ],
     }

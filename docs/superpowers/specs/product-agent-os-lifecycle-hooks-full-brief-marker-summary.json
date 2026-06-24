@@ -1,0 +1,68 @@
+{
+  "schema_version": "product_agent_os_lifecycle_hooks_full_brief_marker_summary_v1",
+  "evidence_id": "product_agent_os_LIFECYCLE-HOOKS-FULL-BRIEF-A01",
+  "recorded_at": "2026-06-24",
+  "source_status": "local_hook_contract_evidence",
+  "status": "implemented",
+  "summary": "Product-Agent OS project-local lifecycle hooks now reject legacy minimal Task Start Brief markers for mutating work. Accepted markers must use task_start_brief_v1, field_list format, a sha256 digest, and a complete brief_fields_present list.",
+  "changed_surfaces": [
+    ".codex/hooks/pre_tool_use_policy.py",
+    ".codex/hooks/session_start_context.py",
+    ".codex/hooks/stop_runlog_reminder.py",
+    "plugins/product-agent-os/assets/templates/hooks/pre_tool_use_policy.py",
+    "plugins/product-agent-os/assets/templates/hooks/session_start_context.py",
+    "plugins/product-agent-os/assets/templates/hooks/stop_runlog_reminder.py",
+    ".codex/workflows/task-plan-lifecycle.md",
+    "plugins/product-agent-os/assets/templates/workflows/task-plan-lifecycle.md",
+    ".codex/evals/agent-context-contract.json",
+    "plugins/product-agent-os/assets/templates/evals/agent-context-contract.json",
+    "tests/product_agent_os/test_lifecycle_hooks.py",
+    "docs/runtime/worktrees-hooks-rules.md",
+    "docs/runtime/worktrees-hooks-rules.en.md"
+  ],
+  "required_marker_fields": [
+    "task_start_brief_shown",
+    "task_id",
+    "scope",
+    "updated_at",
+    "approval_boundary",
+    "brief_schema_version",
+    "brief_format",
+    "brief_digest",
+    "brief_fields_present"
+  ],
+  "required_task_brief_fields": [
+    "Task ID",
+    "Product value",
+    "Technical value",
+    "Source / trigger",
+    "Scope",
+    "Non-goals",
+    "Agents and skills",
+    "Files / artifacts expected",
+    "Verification gate",
+    "Approval boundary / risks",
+    "Complexity",
+    "Estimated execution time",
+    "Next action"
+  ],
+  "unsupported_claims": [
+    "Hook output does not prove that the visible chat transcript contained the full Task Brief.",
+    "Hook trust review or fresh-session execution remains a runtime boundary.",
+    "No scheduler, recurring automation, provider call, browser automation, git action, release, deployment, publication or target mutation was activated by this change."
+  ],
+    "verification": {
+        "red_test_observed": "legacy marker was accepted before the hook change",
+        "focused_tests": [
+            "python -m unittest tests.product_agent_os.test_lifecycle_hooks tests.product_agent_os.test_task_plan_lifecycle tests.product_agent_os.test_infrastructure_templates",
+            "python -m unittest tests.product_agent_os.test_product_agent_os_docs"
+        ],
+        "hook_validation": [
+            "python plugins\\product-agent-os\\scripts\\validate_hooks.py .codex\\hooks.json",
+            "python plugins\\product-agent-os\\scripts\\validate_hooks.py .codex\\hooks"
+        ],
+        "docs_check": "python tools\\check_docs.py",
+        "diff_check": "git diff --check",
+        "latest_status": "passed"
+    }
+}

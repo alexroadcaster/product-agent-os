@@ -1,0 +1,81 @@
+{
+  "schema_version": "batch44_self_learning_loop_scope_detector_summary_v1",
+  "evidence_id": "B44-SLL-M17-A01",
+  "task_id": "B44-SLL-M17",
+  "slice": "B44-S0-Discovery-And-Scope",
+  "generated_at": "2026-06-24",
+  "source_status": "local_contract_evidence",
+  "status": "implemented_fail_closed_contract",
+  "owned_surfaces": {
+    "core_detector": "plugins/product-agent-os/scripts/product_agent_os/discovery.py::detect_product_agent_os_scope",
+    "full_discovery_cli": "plugins/product-agent-os/scripts/detect_project.py",
+    "scope_only_cli": "plugins/product-agent-os/scripts/detect_product_agent_os_scope.py",
+    "tests": "tests/product_agent_os/test_discovery.py"
+  },
+  "contract": {
+    "schema_version": 1,
+    "statuses": [
+      "eligible",
+      "out_of_scope",
+      "missing_marker",
+      "needs_owner_review"
+    ],
+    "eligible_requires_explicit_product_agent_os_marker": true,
+    "ambiguous_codex_or_control_plane_markers_do_not_make_project_eligible": true,
+    "regular_project_signals_without_product_agent_os_marker_are_out_of_scope": true,
+    "raw_workspace_path_excluded_by_default": true,
+    "workspace_identity_policy": "sha256_path_hash_short_form_by_default",
+    "marker_lists_bounded": true,
+    "marker_counts_reported_separately": true,
+    "manual_owner_review_required_for_ambiguous_markers": true
+  },
+  "marker_policy": {
+    "explicit_marker_examples": [
+      ".codex/product-agent-os/",
+      ".codex/product-agent-os/lifecycle-state.json",
+      ".codex/workflows/control-plane-sync.md",
+      ".codex/workflows/task-plan-lifecycle.md",
+      "docs/product-agent/",
+      "docs/superpowers/",
+      "plugins/product-agent-os/"
+    ],
+    "ambiguous_marker_examples": [
+      ".codex/config.toml",
+      ".codex/hooks.json",
+      "AGENTS.md",
+      "PLAN.md",
+      "RUNLOG.md",
+      ".codex/agents/",
+      ".codex/workflows/"
+    ],
+    "regular_project_signal_examples": [
+      "package.json",
+      "pyproject.toml",
+      "src/",
+      "app/",
+      "services/",
+      "migrations/"
+    ]
+  },
+  "acceptance_mapping": {
+    "prevents_global_user_session_analysis": true,
+    "prevents_unrelated_project_ingestion": true,
+    "supports_product_agent_os_only_loop_scope": true,
+    "supports_later_due_check_and_runner_gate": true,
+    "does_not_activate_self_learning_runner": true,
+    "does_not_write_project_scope_state": true
+  },
+  "unsupported_claims": [
+    "The detector does not prove that the Self-Learning Loop runner exists.",
+    "The detector does not write .codex/product-agent-os/project-scope.json in B44-S0.",
+    "The detector does not authorize session ingestion, target mutation, hooks, scheduler, provider calls, external writes or auto-apply.",
+    "The full analyze_workspace payload still includes the historical workspace field for compatibility; the scope packet itself is redacted by default."
+  ],
+  "verification": {
+    "focused_tests": [
+      "python -m unittest tests.product_agent_os.test_discovery -v"
+    ],
+    "docs_checks_required": true,
+    "diff_check_required": true
+  }
+}

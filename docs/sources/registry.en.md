@@ -48,7 +48,7 @@ verification_status: "Current compaction preserves test-visible markers; full ev
 - Product-Agent OS Track 11 G1.1 project-local documentation toolchain planning matrix (checked_at=2026-06-20, trust=high)
 - Product-Agent OS Track 11 G2 first-run cockpit and artifact docs packet (checked_at=2026-06-21, trust=high)
 - Product-Agent OS Track 11 G4 operator flows and system behavior docs packet (checked_at=2026-06-22, trust=high)
-- Product-Agent OS Track 11 Batch 44 Self-Learning Loop activation, agent/skill metrics and HTML progress planning matrix (checked_at=2026-06-24, trust=high for local plan evidence; arXiv intake trust=primary preprint source)
+- Product-Agent OS Track 11 Batch 44 Self-Learning Loop activation, agent/skill metrics and HTML progress matrix with `B44-S0` local evidence and remaining slices planned-only (checked_at=2026-06-24, trust=high for local plan evidence; arXiv intake trust=primary preprint source)
 - Codex web / cloud (checked_at=2026-05-14, trust=high)
 - Codex app (checked_at=2026-05-14, trust=high)
 - Codex CLI (checked_at=2026-05-14, trust=high)
@@ -1347,9 +1347,11 @@ These markers preserve source-owned test routing after registry compaction. Full
 - Product-Agent OS project-local lifecycle hook activation
 - product_agent_os_LIFECYCLE-HOOKS-A01
 - docs/superpowers/specs/product-agent-os-lifecycle-hooks-local-activation-summary.json
+- docs/superpowers/specs/product-agent-os-lifecycle-hooks-full-brief-marker-summary.json
 - .codex/hooks.json
 - .codex/hooks/hooks.json
 - .codex/product-agent-os/lifecycle-state.json
+- task_start_brief_v1 full field-list lifecycle marker contract
 - Codex hook trust review / fresh-session execution remains unclaimed
 - tools/docs_install.ps1
 - tools/docs_node_install.ps1
@@ -1443,8 +1445,8 @@ These markers preserve source-owned test routing after registry compaction. Full
 - implemented_root_site_search_sitemap_freshness
 - former DOC_M25_PENDING_SITE_PAGES rendered in RU/EN HTML, search index and sitemap after owner-approved root MkDocs build
 - browser proof, broad scans, dependency remediation, raw report retention, publication, release, deploy and git actions remain out of scope
-- Product-Agent OS Track 11 Batch 44 Self-Learning Loop activation, Product-Agent OS project scope, agent/skill metrics and HTML progress planning matrix
-- batch44_self_learning_loop_planned_only
+- Product-Agent OS Track 11 Batch 44 Self-Learning Loop activation, Product-Agent OS project scope, agent/skill metrics and HTML progress matrix; `B44-S0` research/gap/scope detector evidence implemented, remaining activation slices planned-only
+- batch44_self_learning_loop_S0_implemented_rest_planned
 - docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md
 - arXiv research intake: 2507.21046, 2508.07407, 2507.19457, 2510.04618, 2510.09801, 2603.20939, 2510.09720, 2507.05257, 2511.20857, 2603.03329, 2510.26852, 2510.23595, 2506.15841, 2512.16301, 2602.12670, 2605.05726, 2603.00718, 2605.18693, 2603.15401, 2512.24565, 2507.21504, 2605.20251, 2511.13998, 2508.03680, 2602.12430, 2602.20867, 2602.20156, 2604.15415
 - expanded metrics intake: Product-Agent OS-only project scope, owner feedback import filter, paired skill utility, skill retrieval, tool composition, process-control, adversarial skill safety, satisfaction, memory quality, resumable progress state and project-local HTML progress artifact

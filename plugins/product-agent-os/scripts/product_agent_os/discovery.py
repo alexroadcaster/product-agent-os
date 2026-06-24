@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import re
@@ -137,6 +138,61 @@ IGNORED_DIR_NAMES = {
 
 FIRST_RUN_ANALYSIS_ARTIFACT_PREFIX = ".codex/product-agent-os/analysis/"
 
+PRODUCT_AGENT_OS_EXPLICIT_MARKER_FILES = {
+    ".codex/evals/agent-context-contract.json",
+    ".codex/product-agent-os/lifecycle-state.json",
+    ".codex/workflows/control-plane-sync.md",
+    ".codex/workflows/task-plan-lifecycle.md",
+    "docs/artifact-templates/agent-task-packet.md",
+    "docs/artifact-templates/task-matrix-plan.md",
+    "prod_test.md",
+}
+
+PRODUCT_AGENT_OS_EXPLICIT_MARKER_PREFIXES = (
+    ".codex/product-agent-os/",
+    "docs/product-agent/",
+    "docs/superpowers/",
+    "plugins/product-agent-os/",
+)
+
+PRODUCT_AGENT_OS_AMBIGUOUS_MARKER_FILES = {
+    ".codex/config.toml",
+    ".codex/hooks.json",
+    ".mcp.json",
+    "AGENTS.md",
+    "AGENTS.override.md",
+    *CONTROL_PLANE_FILES,
+}
+
+PRODUCT_AGENT_OS_AMBIGUOUS_MARKER_PREFIXES = (
+    ".agents/",
+    ".codex/agents/",
+    ".codex/artifact-templates/",
+    ".codex/evals/",
+    ".codex/workflows/",
+)
+
+REGULAR_PROJECT_MARKER_PREFIXES = (
+    "src/",
+    "app/",
+    "server/",
+    "packages/",
+    "services/",
+    "migrations/",
+)
+
+REGULAR_PROJECT_FILE_SUFFIXES = (
+    ".py",
+    ".js",
+    ".jsx",
+    ".ts",
+    ".tsx",
+    ".go",
+    ".rs",
+    ".java",
+    ".cs",
+)
+
 BUG_EVIDENCE_FILE_NAMES = {
     "runlog.md",
     "test-results.log",
@@ -201,6 +257,106 @@ def _route_source_files(files: set[str]) -> set[str]:
         for path in files
         if not _is_first_run_generated_analysis_artifact(path)
     }
+
+
+def detect_product_agent_os_scope(root: str | Path, *, allow_raw_paths: bool = False) -> dict[str, Any]:
+    workspace = Path(root).resolve()
+    if not workspace.exists():
+        raise FileNotFoundError(f"workspace does not exist: {workspace}")
+    if not workspace.is_dir():
+        raise NotADirectoryError(f"workspace is not a directory: {workspace}")
+
+    files = _relative_files(workspace)
+    lowered = {path.lower().replace("\\", "/") for path in files}
+    explicit_markers = sorted(
+        path
+        for path in files
+        if _is_product_agent_os_explicit_marker(path.lower().replace("\\", "/"))
+    )
+    ambiguous_markers = sorted(
+        path
+        for path in files
+        if _is_product_agent_os_ambiguous_marker(path.lower().replace("\\", "/"))
+        and path not in explicit_markers
+    )
+    regular_project_signals = _has_regular_project_signals(lowered)
+
+    reasons: list[str] = []
+    if explicit_markers:
+        status = "eligible"
+        eligible = True
+        reasons.append("explicit Product-Agent OS marker found")
+    elif ambiguous_markers:
+        status = "needs_owner_review"
+        eligible = False
+        reasons.extend(
+            [
+                "missing explicit Product-Agent OS marker",
+                "generic Codex/control-plane markers without Product-Agent OS marker",
+            ]
+        )
+    elif regular_project_signals:
+        status = "out_of_scope"
+        eligible = False
+        reasons.extend(
+            [
+                "missing explicit Product-Agent OS marker",
+                "regular project signals detected",
+            ]
+        )
+    else:
+        status = "missing_marker"
+        eligible = False
+        reasons.append("missing explicit Product-Agent OS marker")
+
+    workspace_ref = {
+        "path_hash": _path_hash(workspace),
+        "raw_path_included": allow_raw_paths,
+    }
+    if allow_raw_paths:
+        workspace_ref["path"] = str(workspace)
+
+    return {
+        "schema_version": 1,
+        "eligible": eligible,
+        "status": status,
+        "reasons": reasons,
+        "markers": {
+            "explicit": explicit_markers[:20],
+            "ambiguous": ambiguous_markers[:20],
+        },
+        "marker_counts": {
+            "explicit": len(explicit_markers),
+            "ambiguous": len(ambiguous_markers),
+        },
+        "workspace_ref": workspace_ref,
+        "privacy": {
+            "path_policy": "hash_only_by_default",
+            "raw_private_paths": "excluded_unless_allow_raw_paths_true",
+        },
+    }
+
+
+def _is_product_agent_os_explicit_marker(path: str) -> bool:
+    return path in PRODUCT_AGENT_OS_EXPLICIT_MARKER_FILES or path.startswith(PRODUCT_AGENT_OS_EXPLICIT_MARKER_PREFIXES)
+
+
+def _is_product_agent_os_ambiguous_marker(path: str) -> bool:
+    return path in {marker.lower() for marker in PRODUCT_AGENT_OS_AMBIGUOUS_MARKER_FILES} or path.startswith(
+        PRODUCT_AGENT_OS_AMBIGUOUS_MARKER_PREFIXES
+    )
+
+
+def _has_regular_project_signals(lowered_files: set[str]) -> bool:
+    return any(path in STACK_MARKERS for path in lowered_files) or any(
+        path.startswith(REGULAR_PROJECT_MARKER_PREFIXES) or path.endswith(REGULAR_PROJECT_FILE_SUFFIXES)
+        for path in lowered_files
+    )
+
+
+def _path_hash(path: Path) -> str:
+    normalized = str(path.resolve()).replace("\\", "/").lower()
+    return "sha256:" + hashlib.sha256(normalized.encode("utf-8")).hexdigest()[:16]
 
 
 def _is_first_run_generated_analysis_artifact(path: str) -> bool:
@@ -3785,6 +3941,7 @@ def analyze_workspace(root: str | Path, *, intent_hint: str = "") -> dict[str, A
         raise NotADirectoryError(f"workspace is not a directory: {workspace}")
     files = _relative_files(workspace)
     route_files = _route_source_files(files)
+    product_agent_os_scope = detect_product_agent_os_scope(workspace)
     generated_artifact_inputs = _generated_artifact_inputs(files)
     stack = _detect_stack(route_files)
     existing_control_plane = [name for name in CONTROL_PLANE_FILES if name in route_files]
@@ -3850,6 +4007,7 @@ def analyze_workspace(root: str | Path, *, intent_hint: str = "") -> dict[str, A
         "existing_control_plane": existing_control_plane,
         "missing_control_plane": missing_control_plane,
         "existing_codex_assets": existing_codex_assets,
+        "product_agent_os_scope": product_agent_os_scope,
         "git": {
             "present": (workspace / ".git").exists(),
         },
@@ -3894,5 +4052,8 @@ def main(argv: list[str]) -> int:
     except (FileNotFoundError, NotADirectoryError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
-    print(json.dumps(audit, indent=2, sort_keys=True))
+    from codex_runtime_runner.redaction import redact_payload
+
+    safe_audit, _redaction_report = redact_payload(audit)
+    print(json.dumps(safe_audit, indent=2, sort_keys=True))
     return 0

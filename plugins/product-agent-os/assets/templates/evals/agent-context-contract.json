@@ -95,9 +95,18 @@
           "scope",
           "updated_at",
           "approval_boundary",
+          "brief_schema_version",
+          "task_start_brief_v1",
+          "brief_format",
+          "field_list",
+          "brief_digest",
+          "brief_fields_present",
+          "Product value",
+          "Technical value",
+          "Verification gate",
           "missing_lifecycle_marker"
         ],
-        "result": "Mutating work must be blocked or stopped until the user-visible Task Brief is shown and the lightweight lifecycle marker exists."
+        "result": "Mutating work must be blocked or stopped until the user-visible full field-list Task Brief is shown and the lifecycle marker records the full brief schema."
       }
     },
     {

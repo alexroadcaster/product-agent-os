@@ -97,6 +97,8 @@ TEST = ROOT / "TEST.md"
 EVALS = ROOT / "EVALS.md"
 RUNLOG = ROOT / "RUNLOG.md"
 AGENTS = ROOT / "AGENTS.md"
+CONTROL_PLANE_SYNC = ROOT / ".codex" / "workflows" / "control-plane-sync.md"
+RUNLOG_SIZE_BUDGET_BYTES = 50 * 1024
 ENGLISH_ORIGINAL_SUPERPOWERS_PLAN_PAGES = {
     DOCS / "superpowers" / "plans" / "2026-05-14-product-agent-os-generated-infrastructure.md",
     DOCS / "superpowers" / "plans" / "2026-05-14-product-agent-os-lifecycle-skills.md",
@@ -250,9 +252,18 @@ class ProductAgentOsDocsTest(unittest.TestCase):
         return (html_path.parent / unquote(target)).resolve()
 
     def test_root_runlog_is_compact_current_handoff_and_distribution_map(self):
-        runlog = RUNLOG.read_text(encoding="utf-8")
+        runlog_bytes = RUNLOG.read_bytes()
+        runlog = runlog_bytes.decode("utf-8")
+        control_plane_sync = CONTROL_PLANE_SYNC.read_text(encoding="utf-8")
 
-        self.assertLess(len(runlog), 50000)
+        self.assertLessEqual(len(runlog_bytes), RUNLOG_SIZE_BUDGET_BYTES)
+        self.assertIn("50 KB", control_plane_sync)
+        self.assertIn("Before shortening `RUNLOG.md`", control_plane_sync)
+        self.assertIn("REQUIREMENTS.md", control_plane_sync)
+        self.assertIn("PLAN.md", control_plane_sync)
+        self.assertIn("TEST.md", control_plane_sync)
+        self.assertIn("EVALS.md", control_plane_sync)
+        self.assertIn("source-owned plans/specs/backlogs or `prod_test.md`", control_plane_sync)
         self.assertIn(
             "track10_task26_batch35_closed_through_m41_owner_closed_no_op_git_release_pr_b38_s2_m05_cache_refresh_completed_b38_s3_m09_design_only_no_real_project_execution_b38_s4_m11_safety_rollback_gap_recorded",
             runlog,

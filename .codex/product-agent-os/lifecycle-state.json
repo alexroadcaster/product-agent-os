@@ -1,7 +1,25 @@
 {
   "task_start_brief_shown": true,
-  "task_id": "FIRST-RUN-WELCOME-SELF-LEARNING-HELP",
-  "scope": "Analyze and update Product-Agent OS install/first-run welcome help to explain Product-Agent OS and Self-Learning Loop disclosure without activating automation",
-  "updated_at": "2026-06-24T02:00:00+03:00",
-  "approval_boundary": "Owner requested analysis and insertion into install/first-run help; hook activation, recurring automation, live/provider/model calls, real private Codex session ingestion, external writes, dependency changes, cache refresh, global config, target mutation outside generated first-run artifacts, git, release, deploy and publish remain out of scope without separate explicit approval"
+  "task_id": "B44-HOOKS-TASK-BRIEF-FULL-FIELDS",
+  "scope": "Strengthen Product-Agent OS Task Start Brief hooks, templates, workflow contract, and tests in local codex_docs workspace only",
+  "updated_at": "2026-06-24T08:50:00+03:00",
+  "approval_boundary": "No scheduler/automation activation, no global config, no provider/model/browser/git/release/deploy/publish actions, no target-project mutation",
+  "brief_schema_version": "task_start_brief_v1",
+  "brief_format": "field_list",
+  "brief_digest": "sha256:0123456789abcdef",
+  "brief_fields_present": [
+    "Task ID",
+    "Product value",
+    "Technical value",
+    "Source / trigger",
+    "Scope",
+    "Non-goals",
+    "Agents and skills",
+    "Files / artifacts expected",
+    "Verification gate",
+    "Approval boundary / risks",
+    "Complexity",
+    "Estimated execution time",
+    "Next action"
+  ]
 }

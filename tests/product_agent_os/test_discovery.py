@@ -11,11 +11,174 @@ SCRIPTS = ROOT / "plugins" / "product-agent-os" / "scripts"
 FIXTURES = ROOT / "plugins" / "product-agent-os" / "assets" / "fixtures"
 sys.path.insert(0, str(SCRIPTS))
 
-from product_agent_os.discovery import analyze_workspace, discover_workspace  # noqa: E402
+from product_agent_os.discovery import analyze_workspace, detect_product_agent_os_scope, discover_workspace  # noqa: E402
 from product_agent_os.question_protocol import MAX_TOTAL_QUESTIONS  # noqa: E402
 
 
 class DiscoveryTest(unittest.TestCase):
+    def test_product_agent_os_scope_is_eligible_only_with_explicit_marker(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            workspace = Path(tmpdir)
+            self._write_files(
+                workspace,
+                {
+                    ".codex/product-agent-os/lifecycle-state.json": "{}\n",
+                    "README.md": "# Synthetic Product-Agent OS workspace\n",
+                },
+            )
+
+            packet = detect_product_agent_os_scope(workspace)
+
+        self.assertTrue(packet["eligible"])
+        self.assertEqual(packet["status"], "eligible")
+        self.assertIn(".codex/product-agent-os/lifecycle-state.json", packet["markers"]["explicit"])
+        self.assertEqual(packet["workspace_ref"]["raw_path_included"], False)
+        self.assertNotIn(str(workspace), json.dumps(packet, sort_keys=True))
+
+    def test_product_agent_os_scope_fails_closed_for_regular_project_without_marker(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            workspace = Path(tmpdir)
+            self._write_files(
+                workspace,
+                {
+                    "package.json": '{"name": "regular-app"}\n',
+                    "src/app.ts": "export const app = true;\n",
+                },
+            )
+
+            packet = detect_product_agent_os_scope(workspace)
+
+        self.assertFalse(packet["eligible"])
+        self.assertEqual(packet["status"], "out_of_scope")
+        self.assertIn("missing explicit Product-Agent OS marker", packet["reasons"])
+        self.assertIn("regular project signals detected", packet["reasons"])
+        self.assertNotIn(str(workspace), json.dumps(packet, sort_keys=True))
+
+    def test_product_agent_os_scope_requires_owner_review_for_ambiguous_codex_assets(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            workspace = Path(tmpdir)
+            self._write_files(
+                workspace,
+                {
+                    "AGENTS.md": "# Local instructions\n",
+                    ".codex/config.toml": "project_name = 'Generic Codex workspace'\n",
+                    "PLAN.md": "# Plan\n",
+                },
+            )
+
+            packet = detect_product_agent_os_scope(workspace)
+
+        self.assertFalse(packet["eligible"])
+        self.assertEqual(packet["status"], "needs_owner_review")
+        self.assertIn("generic Codex/control-plane markers without Product-Agent OS marker", packet["reasons"])
+        self.assertEqual(packet["markers"]["explicit"], [])
+        self.assertIn(".codex/config.toml", packet["markers"]["ambiguous"])
+
+    def test_product_agent_os_scope_reports_missing_marker_for_sparse_workspace(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            workspace = Path(tmpdir)
+            (workspace / "README.md").write_text("# Idea only\n", encoding="utf-8")
+
+            packet = detect_product_agent_os_scope(workspace)
+
+        self.assertFalse(packet["eligible"])
+        self.assertEqual(packet["status"], "missing_marker")
+        self.assertIn("missing explicit Product-Agent OS marker", packet["reasons"])
+        self.assertRegex(packet["workspace_ref"]["path_hash"], r"^sha256:[0-9a-f]{16}$")
+
+    def test_product_agent_os_scope_cli_outputs_redacted_scope_packet_only(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            workspace = Path(tmpdir)
+            self._write_files(
+                workspace,
+                {
+                    ".codex/product-agent-os/lifecycle-state.json": "{}\n",
+                    "README.md": "# Synthetic Product-Agent OS workspace\n",
+                },
+            )
+
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(ROOT / "plugins" / "product-agent-os" / "scripts" / "detect_product_agent_os_scope.py"),
+                    str(workspace),
+                ],
+                cwd=ROOT,
+                text=True,
+                capture_output=True,
+                check=False,
+            )
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        payload = json.loads(result.stdout)
+        self.assertTrue(payload["eligible"])
+        self.assertEqual(payload["status"], "eligible")
+        self.assertEqual(payload["workspace_ref"]["raw_path_included"], False)
+        self.assertNotIn(str(workspace), result.stdout)
+        self.assertNotIn("detected_files", payload)
+
+    def test_product_agent_os_scope_marker_lists_are_bounded_with_counts(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            workspace = Path(tmpdir)
+            files = {
+                f"docs/superpowers/specs/scope-marker-{index:02d}.json": "{}\n"
+                for index in range(25)
+            }
+            self._write_files(workspace, files)
+
+            packet = detect_product_agent_os_scope(workspace)
+
+        self.assertTrue(packet["eligible"])
+        self.assertEqual(packet["marker_counts"]["explicit"], 25)
+        self.assertEqual(len(packet["markers"]["explicit"]), 20)
+        self.assertNotIn(str(workspace), json.dumps(packet, sort_keys=True))
+
+    def test_discovery_result_includes_product_agent_os_scope_packet(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            workspace = Path(tmpdir)
+            self._write_files(
+                workspace,
+                {
+                    ".codex/workflows/task-plan-lifecycle.md": "# Task Plan Lifecycle\n",
+                    "AGENTS.md": "# Product-Agent OS workspace\n",
+                },
+            )
+
+            result = analyze_workspace(workspace)
+
+        self.assertIn("product_agent_os_scope", result)
+        self.assertTrue(result["product_agent_os_scope"]["eligible"])
+        self.assertNotIn(str(workspace), json.dumps(result["product_agent_os_scope"], sort_keys=True))
+
+    def test_detect_project_cli_redacts_raw_workspace_path_by_default(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            workspace = Path(tmpdir)
+            self._write_files(
+                workspace,
+                {
+                    ".codex/workflows/control-plane-sync.md": "# Control-Plane Sync\n",
+                    "AGENTS.md": "# Product-Agent OS workspace\n",
+                },
+            )
+
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(ROOT / "plugins" / "product-agent-os" / "scripts" / "detect_project.py"),
+                    str(workspace),
+                ],
+                cwd=ROOT,
+                text=True,
+                capture_output=True,
+                check=False,
+            )
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertNotIn(str(workspace), result.stdout)
+        payload = json.loads(result.stdout)
+        self.assertEqual(payload["workspace"], "[REDACTED_LOCAL_PATH]")
+        self.assertEqual(payload["product_agent_os_scope"]["workspace_ref"]["raw_path_included"], False)
+
     def test_node_app_detection(self):
         result = analyze_workspace(FIXTURES / "node-app")
 

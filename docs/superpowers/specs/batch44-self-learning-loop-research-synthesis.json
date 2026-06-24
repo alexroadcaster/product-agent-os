@@ -1,0 +1,103 @@
+{
+  "schema_version": "batch44_self_learning_loop_research_synthesis_v1",
+  "evidence_id": "B44-SLL-M01-A01",
+  "task_id": "B44-SLL-M01",
+  "slice": "B44-S0-Discovery-And-Scope",
+  "generated_at": "2026-06-24",
+  "source_status": "arxiv_research_intake_not_runtime_evidence",
+  "research_window": {
+    "from": "2025-06-01",
+    "to": "2026-06-24",
+    "note": "Current-run source check used arXiv pages opened during B44-S0 implementation; the prior Batch 44 planning matrix contains a broader arXiv intake list."
+  },
+  "boundary": {
+    "local_self_learning_loop_active": false,
+    "weekly_scheduler_active": false,
+    "codex_app_automation_active": false,
+    "global_user_session_analysis_active": false,
+    "raw_private_chat_ingestion_active": false,
+    "provider_or_model_calls_performed": false,
+    "auto_apply_allowed": false,
+    "research_claims_are_not_local_proof": true
+  },
+  "sources": [
+    {
+      "arxiv_id": "2507.21046",
+      "title": "A Survey of Self-Evolving Agents: On Path to Artificial Super Intelligence",
+      "url": "https://arxiv.org/abs/2507.21046",
+      "date_status": "submitted_2025-07-28_revised_2026-01-16",
+      "mechanism": "Organizes self-evolving agents by what, when and how to evolve; includes model, memory, tool and architecture evolution with feedback and reward signals.",
+      "product_agent_os_design_implication": "Batch 44 should separate loop scope, trigger, evidence, metrics, candidate generation and owner review instead of treating self-learning as one opaque job.",
+      "local_status": "research_intake_only"
+    },
+    {
+      "arxiv_id": "2603.07670",
+      "title": "Memory for Autonomous LLM Agents: A Survey",
+      "url": "https://arxiv.org/abs/2603.07670",
+      "date_status": "submitted_2026-03-08",
+      "mechanism": "Frames agent memory as write, manage and read operations with filtering, compression, retrieval, contradiction handling and privacy tradeoffs.",
+      "product_agent_os_design_implication": "Self-Learning Loop progress, preference summaries and metrics ledgers should store bounded summaries and hashes, not raw private transcripts or hidden telemetry.",
+      "local_status": "research_intake_only"
+    },
+    {
+      "arxiv_id": "2606.11435",
+      "title": "Agent Skill Evaluation and Evolution: A Survey",
+      "url": "https://arxiv.org/abs/2606.11435",
+      "date_status": "submitted_2026-06-09",
+      "mechanism": "Surveys execution-feedback, trajectory-distillation, compression and reinforcement-learning approaches for evaluating and improving agent skills.",
+      "product_agent_os_design_implication": "Metrics should cover paired skill utility, skill retrieval, composition reliability, safety gates and candidate-only skill modernization proposals.",
+      "local_status": "research_intake_only"
+    },
+    {
+      "arxiv_id": "2606.04465",
+      "title": "Self-Evolutionary Prompt Optimization for LLM Agents",
+      "url": "https://arxiv.org/abs/2606.04465",
+      "date_status": "submitted_2026-06-03",
+      "mechanism": "Uses evolutionary search and prompt archives to improve task-agent and prompt-agent prompts.",
+      "product_agent_os_design_implication": "Prompt, skill and rule changes should be generated as reviewable candidates with rollback notes and eval evidence, never auto-applied by the loop.",
+      "local_status": "research_intake_only"
+    },
+    {
+      "arxiv_id": "2604.12986",
+      "title": "Parallax: A Control Plane for Securing AI Agents",
+      "url": "https://arxiv.org/abs/2604.12986",
+      "date_status": "submitted_2026-04-14",
+      "mechanism": "Argues that execution-capable agents need control-plane separation, adversarial validation, information-flow control and reversible execution boundaries.",
+      "product_agent_os_design_implication": "Batch 44 should keep analysis, candidate generation, owner approval and apply surfaces separated; forbidden-action evals must block scheduler, hook, provider, git and target mutations without approval.",
+      "local_status": "research_intake_only"
+    },
+    {
+      "arxiv_id": "2602.12670",
+      "title": "SkillsBench: How Skills Impact Large Language Model Agents",
+      "url": "https://arxiv.org/abs/2602.12670",
+      "date_status": "submitted_2026-02-13_revised_2026-06-14",
+      "mechanism": "Evaluates agents with and without curated skills across task domains and reports that focused skill bundles can improve task pass rate.",
+      "product_agent_os_design_implication": "Batch 44 should use paired no-skill versus skill-enabled checks and track whether focused Product-Agent OS skills improve outcomes without broad skill bloat.",
+      "local_status": "research_intake_only"
+    }
+  ],
+  "metric_families_to_carry_forward": [
+    "scope_eligibility_precision_and_false_positive_rate",
+    "owner_feedback_coverage_and_satisfaction_signal_confidence",
+    "paired_skill_utility_delta",
+    "skill_retrieval_precision",
+    "tool_composition_success_rate",
+    "candidate_quality_and_rollback_readiness",
+    "privacy_redaction_pass_rate",
+    "forbidden_action_block_rate",
+    "progress_resume_integrity",
+    "generated_html_orientation_only_compliance"
+  ],
+  "unsupported_claims": [
+    "This packet does not prove that Product-Agent OS has an active Self-Learning Loop.",
+    "This packet does not prove real Codex session satisfaction analysis.",
+    "This packet does not justify global user-session analysis or raw transcript storage.",
+    "This packet does not authorize auto-apply, hook activation, scheduler activation, provider calls, target mutation or external writes."
+  ],
+  "verification": {
+    "source_link_check": "current_run_web_opened_arxiv_abs_pages",
+    "json_parse_required": true,
+    "docs_checks_required": true,
+    "diff_check_required": true
+  }
+}

@@ -26,7 +26,7 @@ This workflow also defines the user-visible contract:
 2. Keep status `planned`.
 3. Use `pending_execution_timestamp` for date and time of task implementation.
 4. Name product value, technical value, scope, non-goals, expected result, acceptance criteria, verification gates, risks, agents, skills, output artifacts, complexity, estimated execution time, and next step.
-5. Record the lightweight lifecycle marker at `.codex/product-agent-os/lifecycle-state.json` with `task_start_brief_shown: true`, `task_id`, `scope`, `updated_at`, and `approval_boundary` after the user-visible Task Brief is shown. Do not store raw chat, secrets, private source bodies, or private customer data in this marker.
+5. Record the lifecycle marker at `.codex/product-agent-os/lifecycle-state.json` after the user-visible full field-list Task Brief is shown. The marker must include `task_start_brief_shown: true`, `task_id`, `scope`, `updated_at`, `approval_boundary`, `brief_schema_version: task_start_brief_v1`, `brief_format: field_list`, `brief_digest`, and `brief_fields_present` containing every required Task Brief field below. Do not store raw chat, secrets, private source bodies, or private customer data in this marker.
 6. Validate the plan file before execution:
 
 ```powershell
@@ -79,6 +79,20 @@ python plugins\product-agent-os\scripts\create_task_plan.py complete --path <pla
 - Complexity:
 - Estimated execution time:
 - Next action:
+
+## Lifecycle Marker Fields
+
+- `task_start_brief_shown`: `true` only after the full Task Brief is visible in chat.
+- `task_id`: the current task or slice ID.
+- `scope`: concise scope boundary.
+- `updated_at`: current timestamp with timezone.
+- `approval_boundary`: concise forbidden/approval-required surfaces.
+- `brief_schema_version`: `task_start_brief_v1`.
+- `brief_format`: `field_list`.
+- `brief_digest`: `sha256:<hex>` digest or stable short digest for the visible brief content.
+- `brief_fields_present`: list containing every field from `Task Brief Fields`.
+
+A legacy marker with only `task_start_brief_shown`, `task_id`, `scope`, `updated_at`, and `approval_boundary` is not sufficient for non-mechanical execution.
 
 ## Completion Brief Fields
 

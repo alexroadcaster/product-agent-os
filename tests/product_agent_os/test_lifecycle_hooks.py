@@ -59,6 +59,9 @@ class LifecycleHooksTest(unittest.TestCase):
         payload = json.loads(result.stdout)
         self.assertEqual(payload["hook"], "session_start_context")
         self.assertEqual(payload["lifecycle"]["state_marker"], ".codex/product-agent-os/lifecycle-state.json")
+        self.assertEqual(payload["lifecycle"]["task_start_brief_schema_version"], "task_start_brief_v1")
+        self.assertIn("Product value", payload["lifecycle"]["task_start_brief_required_fields"])
+        self.assertIn("Next action", payload["lifecycle"]["task_start_brief_required_fields"])
         self.assertIn("Task Brief", " ".join(payload["reminders"]))
         self.assertIn("control-plane sync", " ".join(payload["reminders"]))
 
@@ -108,6 +111,24 @@ class LifecycleHooksTest(unittest.TestCase):
                         "scope": "local hook test",
                         "updated_at": "2026-06-20T00:00:00+03:00",
                         "approval_boundary": "local workspace only",
+                        "brief_schema_version": "task_start_brief_v1",
+                        "brief_format": "field_list",
+                        "brief_digest": "sha256:0123456789abcdef",
+                        "brief_fields_present": [
+                            "Task ID",
+                            "Product value",
+                            "Technical value",
+                            "Source / trigger",
+                            "Scope",
+                            "Non-goals",
+                            "Agents and skills",
+                            "Files / artifacts expected",
+                            "Verification gate",
+                            "Approval boundary / risks",
+                            "Complexity",
+                            "Estimated execution time",
+                            "Next action",
+                        ],
                     }
                 ),
                 encoding="utf-8",
@@ -126,6 +147,123 @@ class LifecycleHooksTest(unittest.TestCase):
         payload = json.loads(result.stdout)
         self.assertEqual(payload["decision"], "observe")
         self.assertTrue(payload["lifecycle_marker"]["ok"])
+
+    def test_pre_tool_use_blocks_legacy_marker_without_full_task_brief_fields(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            state = root / ".codex" / "product-agent-os" / "lifecycle-state.json"
+            state.parent.mkdir(parents=True)
+            state.write_text(
+                json.dumps(
+                    {
+                        "task_start_brief_shown": True,
+                        "task_id": "DOC-LIFECYCLE-HOOKS-A01",
+                        "scope": "local hook test",
+                        "updated_at": "2026-06-20T00:00:00+03:00",
+                        "approval_boundary": "local workspace only",
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            result = run_hook(
+                HOOKS / "pre_tool_use_policy.py",
+                {
+                    "tool_name": "functions.shell_command",
+                    "tool_input": {"command": "Set-Content PLAN.md 'updated'"},
+                },
+                root,
+            )
+
+        self.assertEqual(result.returncode, 1)
+        payload = json.loads(result.stdout)
+        self.assertEqual(payload["decision"], "block")
+        self.assertFalse(payload["lifecycle_marker"]["ok"])
+        self.assertIn("brief_schema_version", payload["lifecycle_marker"]["reason"])
+
+    def test_project_local_pre_tool_use_blocks_legacy_marker_without_full_task_brief_fields(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            state = root / ".codex" / "product-agent-os" / "lifecycle-state.json"
+            state.parent.mkdir(parents=True)
+            state.write_text(
+                json.dumps(
+                    {
+                        "task_start_brief_shown": True,
+                        "task_id": "DOC-LIFECYCLE-HOOKS-A01",
+                        "scope": "local hook test",
+                        "updated_at": "2026-06-20T00:00:00+03:00",
+                        "approval_boundary": "local workspace only",
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            result = run_hook(
+                LOCAL_HOOKS / "pre_tool_use_policy.py",
+                {
+                    "tool_name": "functions.shell_command",
+                    "tool_input": {"command": "Set-Content PLAN.md 'updated'"},
+                },
+                root,
+            )
+
+        self.assertEqual(result.returncode, 1)
+        payload = json.loads(result.stdout)
+        self.assertEqual(payload["decision"], "block")
+        self.assertFalse(payload["lifecycle_marker"]["ok"])
+        self.assertIn("brief_schema_version", payload["lifecycle_marker"]["reason"])
+
+    def test_pre_tool_use_allows_full_task_brief_marker_with_required_fields(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            state = root / ".codex" / "product-agent-os" / "lifecycle-state.json"
+            state.parent.mkdir(parents=True)
+            state.write_text(
+                json.dumps(
+                    {
+                        "task_start_brief_shown": True,
+                        "task_id": "DOC-LIFECYCLE-HOOKS-A01",
+                        "scope": "local hook test",
+                        "updated_at": "2026-06-20T00:00:00+03:00",
+                        "approval_boundary": "local workspace only",
+                        "brief_schema_version": "task_start_brief_v1",
+                        "brief_format": "field_list",
+                        "brief_digest": "sha256:0123456789abcdef",
+                        "brief_fields_present": [
+                            "Task ID",
+                            "Product value",
+                            "Technical value",
+                            "Source / trigger",
+                            "Scope",
+                            "Non-goals",
+                            "Agents and skills",
+                            "Files / artifacts expected",
+                            "Verification gate",
+                            "Approval boundary / risks",
+                            "Complexity",
+                            "Estimated execution time",
+                            "Next action",
+                        ],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            result = run_hook(
+                HOOKS / "pre_tool_use_policy.py",
+                {
+                    "tool_name": "functions.shell_command",
+                    "tool_input": {"command": "Set-Content PLAN.md 'updated'"},
+                },
+                root,
+            )
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        payload = json.loads(result.stdout)
+        self.assertEqual(payload["decision"], "observe")
+        self.assertTrue(payload["lifecycle_marker"]["ok"])
+        self.assertEqual(payload["lifecycle_marker"]["brief_schema_version"], "task_start_brief_v1")
 
     def test_pre_tool_use_allows_lifecycle_marker_write_without_existing_marker(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -154,6 +292,7 @@ class LifecycleHooksTest(unittest.TestCase):
         self.assertEqual(payload["hook"], "stop_runlog_reminder")
         reminders = " ".join(payload["reminders"])
         self.assertIn("Completion Brief", reminders)
+        self.assertIn("compact or incomplete", reminders)
         self.assertIn("control-plane sync", reminders)
 
 

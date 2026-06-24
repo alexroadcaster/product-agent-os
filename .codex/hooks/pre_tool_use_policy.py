@@ -43,6 +43,23 @@ LIFECYCLE_MARKER_WRITE_PATTERNS = [
     re.compile(r"(?i)\.codex[/\\]product-agent-os[/\\]lifecycle-state\.json"),
     re.compile(r"(?i)task_start_brief_shown"),
 ]
+TASK_BRIEF_SCHEMA_VERSION = "task_start_brief_v1"
+TASK_BRIEF_REQUIRED_FIELDS = [
+    "Task ID",
+    "Product value",
+    "Technical value",
+    "Source / trigger",
+    "Scope",
+    "Non-goals",
+    "Agents and skills",
+    "Files / artifacts expected",
+    "Verification gate",
+    "Approval boundary / risks",
+    "Complexity",
+    "Estimated execution time",
+    "Next action",
+]
+BRIEF_DIGEST_RE = re.compile(r"^sha256:[0-9a-f]{16,64}$")
 
 
 def _workspace_root() -> Path:
@@ -146,6 +163,19 @@ def _lifecycle_marker_ok(path: Path) -> tuple[bool, str]:
         value = payload.get(key)
         if not isinstance(value, str) or not value.strip():
             return False, "missing lifecycle marker field: " + key
+    if payload.get("brief_schema_version") != TASK_BRIEF_SCHEMA_VERSION:
+        return False, "brief_schema_version must be " + TASK_BRIEF_SCHEMA_VERSION
+    if payload.get("brief_format") != "field_list":
+        return False, "brief_format must be field_list"
+    brief_digest = payload.get("brief_digest")
+    if not isinstance(brief_digest, str) or not BRIEF_DIGEST_RE.match(brief_digest):
+        return False, "brief_digest must match sha256:<hex>"
+    fields = payload.get("brief_fields_present")
+    if not isinstance(fields, list) or not all(isinstance(item, str) for item in fields):
+        return False, "brief_fields_present must list Task Brief fields"
+    missing_fields = [field for field in TASK_BRIEF_REQUIRED_FIELDS if field not in fields]
+    if missing_fields:
+        return False, "brief_fields_present missing: " + ", ".join(missing_fields)
     raw = json.dumps(payload, sort_keys=True).lower()
     if any(secret_word in raw for secret_word in ("api_key", "password", "secret", "token", "private_key")):
         return False, "lifecycle marker must not contain secrets"
@@ -199,11 +229,13 @@ def main() -> int:
             "ok": marker_ok,
             "reason": marker_reason,
             "marker_write_allowed": marker_write,
+            "brief_schema_version": TASK_BRIEF_SCHEMA_VERSION if marker_ok else "",
+            "required_brief_fields": TASK_BRIEF_REQUIRED_FIELDS,
         },
         "findings": findings,
         "notes": [
             "Read-only discovery remains allowed.",
-            "For non-mechanical execution, show the Task Brief in chat before creating the lifecycle marker.",
+            "For non-mechanical execution, show the full field-list Task Brief in chat before creating the lifecycle marker.",
             "The lifecycle marker is a guardrail, not a raw transcript store.",
         ],
     }

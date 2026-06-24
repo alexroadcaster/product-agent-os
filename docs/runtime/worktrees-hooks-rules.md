@@ -34,7 +34,7 @@ Lifecycle guard устроен так:
 
 - `SessionStart` показывает наличие control-plane и lifecycle файлов;
 - `PreToolUse` пропускает read-only discovery, но блокирует mutating/non-read-only команды без `.codex/product-agent-os/lifecycle-state.json`;
-- marker должен появиться только после видимого пользователю стартового брифа и содержать `task_start_brief_shown`, `task_id`, `scope`, `updated_at`, `approval_boundary`;
+- marker должен появиться только после видимого пользователю полного стартового брифа в формате списка полей и содержать `task_start_brief_shown`, `task_id`, `scope`, `updated_at`, `approval_boundary`, `brief_schema_version: task_start_brief_v1`, `brief_format: field_list`, `brief_digest` и `brief_fields_present` со всеми обязательными полями стартового брифа;
 - `PostToolUse` и `Stop` напоминают про evidence, `RUNLOG.md`, control-plane sync и user-visible `Completion Brief`.
 
 Marker не является transcript store: в него нельзя помещать raw chat, secrets, private source bodies, private customer data или credentials. Activation hooks остаётся отдельным approval boundary.

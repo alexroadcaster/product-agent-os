@@ -1,0 +1,168 @@
+{
+  "schema_version": "batch44_self_learning_loop_current_gap_audit_v1",
+  "evidence_id": "B44-SLL-M02-A01",
+  "task_id": "B44-SLL-M02",
+  "slice": "B44-S0-Discovery-And-Scope",
+  "generated_at": "2026-06-24",
+  "source_status": "local_gap_audit_packet",
+  "summary": {
+    "overall_status": "baseline_recorded",
+    "current_state": "Product-Agent OS has local metrics, eval, discovery, lifecycle and automation-candidate surfaces, but no active Self-Learning Loop scheduler, no real private session satisfaction ingestion and no operational self-learning ledger populated by Batch 44.",
+    "implementation_claim": "This packet records gaps and local surfaces only; it is not a runtime activation claim."
+  },
+  "implemented_or_staged_surfaces": [
+    {
+      "surface": "project_scope_detection",
+      "status": "implemented_contract_available",
+      "refs": [
+        "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
+        "tests/product_agent_os/test_discovery.py",
+        "plugins/product-agent-os/scripts/detect_product_agent_os_scope.py"
+      ],
+      "notes": "The scope detector returns eligible, out_of_scope, missing_marker or needs_owner_review and redacts raw workspace paths by default."
+    },
+    {
+      "surface": "first_run_detection_and_generated_artifacts",
+      "status": "implemented_for_first_run_orientation",
+      "refs": [
+        "plugins/product-agent-os/scripts/run_first_project_analysis.py",
+        "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+        "plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py",
+        "tests/product_agent_os/test_first_run_analysis.py"
+      ],
+      "notes": "First-run artifacts are orientation evidence and do not activate self-learning."
+    },
+    {
+      "surface": "agent_skill_metrics",
+      "status": "implemented_local_metrics_surface",
+      "refs": [
+        "plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py",
+        "plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics_report.py",
+        "plugins/product-agent-os/scripts/render_agent_skill_metrics_report.py",
+        "tests/product_agent_os/test_agent_skill_metrics.py",
+        "tests/product_agent_os/test_agent_skill_metrics_report.py"
+      ],
+      "notes": "Metrics helpers and report rendering exist, but Batch 44 has not yet created a self-learning metrics ledger."
+    },
+    {
+      "surface": "transcript_and_behavioral_evals",
+      "status": "implemented_synthetic_or_explicit_input_eval_surface",
+      "refs": [
+        "plugins/product-agent-os/scripts/product_agent_os/transcript_evals.py",
+        "plugins/product-agent-os/scripts/run_transcript_eval.py",
+        "tests/product_agent_os/test_transcript_session_evals.py",
+        "tests/product_agent_os/test_behavioral_workflow_evals.py"
+      ],
+      "notes": "The current surface evaluates supplied artifacts/fixtures; it is not hidden Codex App log scraping."
+    },
+    {
+      "surface": "doubt_verification",
+      "status": "implemented_manual_verifier_loop_surface",
+      "refs": [
+        "plugins/product-agent-os/scripts/product_agent_os/doubt_verification.py",
+        "tests/product_agent_os/test_doubt_verification.py"
+      ],
+      "notes": "Doubt verification supports evidence-before-completion, not automatic self-modification."
+    },
+    {
+      "surface": "automation_policy",
+      "status": "candidate_only_guard_available",
+      "refs": [
+        "plugins/product-agent-os/scripts/product_agent_os/automation_policy.py",
+        "plugins/product-agent-os/scripts/validate_automation_candidate.py",
+        "tests/product_agent_os/test_automation_policy.py"
+      ],
+      "notes": "Automation candidates are validated as candidate-only; activation remains approval-required."
+    },
+    {
+      "surface": "lifecycle_hooks",
+      "status": "local_lifecycle_guard_surface_present",
+      "refs": [
+        ".codex/hooks.json",
+        ".codex/hooks/",
+        ".codex/workflows/task-plan-lifecycle.md",
+        ".codex/workflows/control-plane-sync.md",
+        "plugins/product-agent-os/scripts/product_agent_os/task_plan_lifecycle.py",
+        "tests/product_agent_os/test_lifecycle_hooks.py",
+        "tests/product_agent_os/test_task_plan_lifecycle.py"
+      ],
+      "notes": "These hooks/checklists enforce lifecycle behavior; they are not a Self-Learning Loop cadence trigger."
+    },
+    {
+      "surface": "learning_loop_skill_route",
+      "status": "installed_skill_file_present_but_not_active_scheduler",
+      "refs": [
+        "~/.codex/plugins/cache/personal-product-agent-plugins/product-agent-os/0.1.0/skills/learning-loop-maintainer/SKILL.md",
+        "plugins/product-agent-os/scripts/codex_runtime_runner/routes.py",
+        "tests/product_agent_os/test_codex_runtime_runner_state_routes.py"
+      ],
+      "notes": "The skill and routing concept exist; active session exposure and automatic invocation are separate Batch 42/44 concerns."
+    }
+  ],
+  "missing_or_not_yet_implemented": [
+    {
+      "gap": "weekly_or_cadence_due_state",
+      "status": "not_implemented_in_B44_S0",
+      "planned_task_refs": [
+        "B44-SLL-M03",
+        "B44-SLL-M04",
+        "B44-SLL-M19"
+      ],
+      "notes": "No self_learning_state contract or due-check CLI is implemented by this slice."
+    },
+    {
+      "gap": "active_scheduler_or_codex_app_automation",
+      "status": "forbidden_until_later_approval",
+      "planned_task_refs": [
+        "B44-SLL-M19",
+        "B44-SLL-M16"
+      ],
+      "notes": "No schedule, recurring automation or hook activation was created."
+    },
+    {
+      "gap": "real_owner_feedback_or_satisfaction_ingestion",
+      "status": "not_implemented_in_B44_S0",
+      "planned_task_refs": [
+        "B44-SLL-M07",
+        "B44-SLL-M08"
+      ],
+      "notes": "Batch 44 still needs scoped owner-feedback import and satisfaction evaluation for Product-Agent OS projects only."
+    },
+    {
+      "gap": "append_only_operational_metrics_and_version_ledger",
+      "status": "not_implemented_in_B44_S0",
+      "planned_task_refs": [
+        "B44-SLL-M10",
+        "B44-SLL-M21"
+      ],
+      "notes": "The repository has metrics helpers, but no Batch 44 append-only self-learning metrics ledger is populated."
+    },
+    {
+      "gap": "resumable_progress_state_and_project_html_artifact",
+      "status": "not_implemented_in_B44_S0",
+      "planned_task_refs": [
+        "B44-SLL-M23",
+        "B44-SLL-M24"
+      ],
+      "notes": "Progress persistence and generated HTML visualization remain later slice work."
+    }
+  ],
+  "approval_boundaries": {
+    "target_workspace_mutation_authorized": false,
+    "global_codex_config_write_authorized": false,
+    "installed_plugin_cache_write_authorized": false,
+    "hook_activation_authorized": false,
+    "scheduler_or_automation_activation_authorized": false,
+    "provider_or_model_call_authorized": false,
+    "raw_private_chat_storage_authorized": false,
+    "git_stage_commit_push_pr_authorized": false,
+    "auto_apply_authorized": false
+  },
+  "verification": {
+    "read_only_inventory_performed": true,
+    "json_parse_required": true,
+    "focused_detector_tests_required": true,
+    "docs_checks_required": true,
+    "diff_check_required": true
+  }
+}

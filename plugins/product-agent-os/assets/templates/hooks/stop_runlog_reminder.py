@@ -41,6 +41,10 @@ def _marker_summary() -> dict[str, object]:
         "valid_json": isinstance(data, dict),
         "task_id": data.get("task_id") if isinstance(data, dict) else "",
         "task_start_brief_shown": data.get("task_start_brief_shown") if isinstance(data, dict) else False,
+        "brief_schema_version": data.get("brief_schema_version") if isinstance(data, dict) else "",
+        "brief_fields_count": len(data.get("brief_fields_present", []))
+        if isinstance(data, dict) and isinstance(data.get("brief_fields_present"), list)
+        else 0,
     }
 
 
@@ -53,6 +57,7 @@ def main() -> int:
         "reminders": [
             "Before closing a work cycle, record files changed, checks run, result, and open risks.",
             "Show a user-visible Completion Brief after execution, verification, or blocked handoff.",
+            "If the Task Start Brief was compact or incomplete, record the accepted gap instead of treating the marker as proof.",
             "Run control-plane sync before the Completion Brief when Product-Agent OS scope, plan, tests, evals, runlog, or evidence state changed.",
         ],
     }
