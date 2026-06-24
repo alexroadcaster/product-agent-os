@@ -1,0 +1,180 @@
+{
+  "schema_version": "batch44_self_learning_loop_metrics_evals_summary_v1",
+  "evidence_id": "B44-SLL-M11-M12-M19-M20-M21-M22-A01",
+  "recorded_at": "2026-06-24",
+  "source_status": "local_implementation_evidence",
+  "status": "implemented",
+  "slice": "B44-S4-Metrics-And-Evals",
+  "implemented_markers": [
+    "B44-SLL-M11",
+    "B44-SLL-M12",
+    "B44-SLL-M19",
+    "B44-SLL-M20",
+    "B44-SLL-M21",
+    "B44-SLL-M22"
+  ],
+  "summary": "Self-Learning Loop now has local schema and fixture evidence for an append-only metrics/version ledger, static-vs-evolutionary eval reports, agent/skill quality metric taxonomy, paired skill utility evals, skill retrieval/composition metrics and process-control safety scorecards. The manual runner summarizes a local metrics ledger when present, but still performs no live eval service call, provider/model call, hidden telemetry, target mutation, scheduler, hook, automation or auto-apply.",
+  "changed_surfaces": [
+    "plugins/product-agent-os/scripts/product_agent_os/self_learning_metrics.py",
+    "plugins/product-agent-os/scripts/product_agent_os/self_learning_progress.py",
+    "tests/product_agent_os/test_agent_skill_metrics.py",
+    "docs/superpowers/specs/batch44-self-learning-loop-metrics-evals-summary.json",
+    "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md",
+    "REQUIREMENTS.md",
+    "PLAN.md",
+    "TEST.md",
+    "EVALS.md",
+    "RUNLOG.md"
+  ],
+  "metrics_ledger_contract": {
+    "schema_version": "self_learning_metrics_ledger_v1",
+    "target_path": ".codex/eval-reports/agent-skill-metrics-ledger.jsonl",
+    "write_policy": "append_only",
+    "required_fields": [
+      "run_id",
+      "evidence_window",
+      "baseline_version",
+      "current_version",
+      "candidate_version",
+      "metrics",
+      "confidence_intervals",
+      "cost_latency",
+      "user_effort",
+      "regression_flags",
+      "accepted_gaps",
+      "report_paths",
+      "rollback_targets",
+      "source_status",
+      "privacy_status"
+    ],
+    "rejected_content": [
+      "raw_chat",
+      "raw_transcript",
+      "raw private chat",
+      "private email strings",
+      "raw_private_chat_log privacy status",
+      "metric rows without denominator, source or confidence"
+    ],
+    "generated_view_success_claim": "never"
+  },
+  "eval_report_contract": {
+    "schema_version": "self_learning_eval_report_v1",
+    "static_quality_fields": [
+      "denominator",
+      "pass_rate",
+      "holdout_count"
+    ],
+    "evolutionary_quality_fields": [
+      "baseline_pass_rate",
+      "post_feedback_pass_rate",
+      "post_feedback_delta",
+      "regression_count"
+    ],
+    "real_user_value_claim": "unsupported_without_real_owner_feedback"
+  },
+  "metric_taxonomy_contract": {
+    "schema_version": "self_learning_metric_taxonomy_v1",
+    "required_metric_fields": [
+      "metric_id",
+      "denominator",
+      "source",
+      "confidence",
+      "privacy_status"
+    ],
+    "families": [
+      "outcome",
+      "satisfaction",
+      "skill_utility",
+      "retrieval",
+      "composition",
+      "process_control",
+      "memory_quality",
+      "safety",
+      "cost",
+      "regression"
+    ],
+    "source_policy": "source_backed_or_accepted_gap",
+    "raw_private_data_policy": "forbidden"
+  },
+  "paired_skill_utility_contract": {
+    "schema_version": "paired_skill_utility_eval_v1",
+    "metrics": [
+      "skill_pass_rate_delta",
+      "normalized_skill_gain",
+      "marginal_skill_utility",
+      "skill_token_overhead",
+      "negative_delta",
+      "version_mismatch_regression",
+      "acceptance_pass_rate"
+    ],
+    "required_context": [
+      "paired baseline",
+      "cost context",
+      "regression context"
+    ],
+    "promotion_blockers": [
+      "negative_skill_delta",
+      "version_mismatch_regression",
+      "missing_cost_context"
+    ]
+  },
+  "retrieval_composition_contract": {
+    "schema_version": "skill_retrieval_composition_metrics_v1",
+    "metrics": [
+      "skill_retrieval_ndcg_at_10",
+      "top_k_hit_rate",
+      "query_skill_precision",
+      "tool_composition_success_rate",
+      "skill_reuse_rate",
+      "token_savings"
+    ],
+    "large_catalog_scope": "explicitly_not_claimed",
+    "fixture_policy": "synthetic_or_redacted_only"
+  },
+  "process_control_safety_contract": {
+    "schema_version": "process_control_safety_scorecard_v1",
+    "metrics": [
+      "process_defect_rate",
+      "control_preservation_rate",
+      "interruptibility_rate",
+      "correctability_rate",
+      "reversibility_rate",
+      "authority_handoff_rate",
+      "injection_attack_success_rate",
+      "harmful_skill_score",
+      "legitimate_instruction_compliance_rate"
+    ],
+    "promotion_blockers": [
+      "harmful_skill_action_detected",
+      "prompt_injection_success_detected",
+      "process_control_regression"
+    ],
+    "fixture_execution_policy": "synthetic_only_no_harmful_actions"
+  },
+  "runner_integration": {
+    "run_packet_field": "metrics_summary",
+    "no_ledger_status": "no_metrics_ledger",
+    "ledger_present_status": "available",
+    "quality_regression_claim": "unsupported_without_current_verification",
+    "generated_view_success_claim": "never"
+  },
+  "unsupported_claims": [
+    "No live eval service, provider/model call, hidden telemetry or raw private session ingestion was performed.",
+    "No real owner satisfaction or real user value claim is supported without owner-provided feedback evidence.",
+    "No target workspace mutation, scheduler, hook, Codex App automation, git action, release, deploy, publish or auto-apply was performed.",
+    "Generated HTML or generated reports are orientation evidence only and never proof of improvement.",
+    "Large skill-catalog retrieval quality remains explicitly unclaimed."
+  ],
+  "verification": {
+    "red_test_observed": "tests failed before implementation with ModuleNotFoundError for product_agent_os.self_learning_metrics",
+    "focused_tests": [
+      "python -m unittest tests.product_agent_os.test_agent_skill_metrics -v",
+      "python -m unittest tests.product_agent_os.test_self_learning_state -v"
+    ],
+    "latest_status": "passed_focused_tests_agent_skill_metrics_31_of_31_and_self_learning_state_19_of_19",
+    "docs_unittest": "passed_98_of_98",
+    "check_docs": "passed",
+    "diff_check": "passed_with_crlf_warnings_only"
+  },
+  "next_action": "Continue with B44-S5-Candidate-Generation-And-Safety for B44-SLL-M13 and B44-SLL-M14."
+}

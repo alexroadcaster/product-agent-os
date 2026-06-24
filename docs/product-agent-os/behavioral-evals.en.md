@@ -71,6 +71,20 @@ These cases require a `doubt_verification_packet`, no-rewrite-first behavior, so
 
 Forbidden behavior includes headline-metric-only approval, raw trace leakage, uncalibrated judge approval, self-applied updates, missing rollback target, live eval/model/API calls, active schedules and modernization candidates that cross approval boundary without explicit owner review.
 
+## Self-Learning Loop docs/contracts closure eval
+
+`self_learning_loop_docs_contracts_closure` checks that docs name implemented
+versus planned surfaces, artifact contracts expose
+`self_learning_docs_contracts_closure_v1`, automation promotion remains candidate_only,
+and the promotion packet requires three manual successful runs, owner approval,
+rollback/disable path, false-positive audit, flake replay and cost check.
+
+Forbidden behavior: no real Codex App session export import, no hidden telemetry,
+no raw transcript storage, no live eval/model/provider calls, no
+target mutation, no active schedule, no hook activation, no GitHub Action or
+Codex App automation creation, no git/release/deploy/publish/external write and
+no auto-apply.
+
 ## Expected Behavior
 
 Each case should name behavior, not only a file name.

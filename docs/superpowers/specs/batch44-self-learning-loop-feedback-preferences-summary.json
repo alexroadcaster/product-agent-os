@@ -1,0 +1,127 @@
+{
+  "schema_version": "batch44_self_learning_loop_feedback_preferences_summary_v1",
+  "evidence_id": "B44-SLL-M07-M08-M18-M09-M10-A01",
+  "recorded_at": "2026-06-24",
+  "source_status": "local_implementation_evidence",
+  "status": "implemented",
+  "slice": "B44-S3-Feedback-And-Preferences",
+  "implemented_markers": [
+    "B44-SLL-M07",
+    "B44-SLL-M08",
+    "B44-SLL-M18",
+    "B44-SLL-M09",
+    "B44-SLL-M10"
+  ],
+  "summary": "Self-Learning Loop now has local schema and fixture evidence for privacy-safe owner feedback rows, scoped redacted session-summary import, conservative satisfaction scoring and compact preference memory. The manual runner summarizes an owner feedback ledger when present, but still performs no hidden session ingestion, provider calls, target mutation or auto-apply.",
+  "changed_surfaces": [
+    "plugins/product-agent-os/scripts/product_agent_os/self_learning_feedback.py",
+    "plugins/product-agent-os/scripts/product_agent_os/self_learning_progress.py",
+    "tests/product_agent_os/test_self_learning_state.py",
+    "docs/superpowers/specs/batch44-self-learning-loop-feedback-preferences-summary.json",
+    "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md",
+    "REQUIREMENTS.md",
+    "PLAN.md",
+    "TEST.md",
+    "EVALS.md",
+    "RUNLOG.md"
+  ],
+  "feedback_ledger_contract": {
+    "schema_version": "owner_feedback_ledger_v1",
+    "target_path": ".codex/product-agent-os/owner-feedback-ledger.jsonl",
+    "required_privacy": {
+      "consent": "owner_provided_redacted_summary",
+      "redaction_status": "redacted",
+      "raw_chat_body_stored": false,
+      "contains_pii": false,
+      "raw_session_id_included": false
+    },
+    "rejected_content": [
+      "raw_chat",
+      "raw_transcript",
+      "private email strings",
+      "absolute user-specific paths",
+      "unredacted rows"
+    ]
+  },
+  "feedback_import_contract": {
+    "schema_version": "codex_session_feedback_import_v1",
+    "required_fields": [
+      "project_scope_id",
+      "workspace_path_hash",
+      "product_agent_os_detected",
+      "evidence_consent",
+      "redaction_status",
+      "contains_raw_transcript"
+    ],
+    "imported_only_when": [
+      "Product-Agent OS scope is eligible",
+      "scope hash matches",
+      "evidence_consent is owner_provided_redacted_summary",
+      "redaction_status is redacted",
+      "contains_raw_transcript is false"
+    ],
+    "skip_reasons": [
+      "product_agent_os_scope_not_eligible",
+      "missing_product_agent_os_scope",
+      "out_of_scope",
+      "missing_consent",
+      "unredacted",
+      "raw_transcript_blocked"
+    ],
+    "raw_session_ingestion": "not_performed",
+    "hidden_app_telemetry": "not_performed",
+    "provider_calls": "not_performed"
+  },
+  "satisfaction_contract": {
+    "schema_version": "self_learning_satisfaction_report_v1",
+    "owner_labels_override_pseudo_labels": true,
+    "pseudo_label_confidence": "low",
+    "promotion_signal_when_low_confidence": "blocked_low_confidence",
+    "required_fields": [
+      "denominator",
+      "human_label_count",
+      "human_label_coverage",
+      "source_type",
+      "confidence"
+    ],
+    "unsupported_claims": [
+      "private emotions inferred",
+      "real user satisfaction known without owner feedback",
+      "pseudo-labels override explicit owner labels"
+    ]
+  },
+  "preference_memory_contract": {
+    "schema_version": "preference_memory_v1",
+    "owner_editable": true,
+    "raw_chat_stored": false,
+    "source_policy": "feedback_ids_only_no_raw_chat",
+    "sections": [
+      "long_term",
+      "recent",
+      "disabled"
+    ],
+    "status": "recall_aid_not_source_truth"
+  },
+  "runner_integration": {
+    "run_packet_field": "feedback_summary",
+    "no_ledger_status": "no_owner_feedback_ledger",
+    "ledger_present_status": "available",
+    "raw_session_ingestion": "not_performed",
+    "workspace_path_redaction": "raw workspace path excluded from stdout"
+  },
+  "unsupported_claims": [
+    "No real Codex App session export was imported.",
+    "No hidden app telemetry, raw private transcript, global session analysis or provider/model call was performed.",
+    "No target workspace mutation, scheduler, hook, Codex App automation, git action, release, deploy, publish or auto-apply was performed.",
+    "Preference memory is a compact recall aid and does not override system, developer, user or project instructions.",
+    "Satisfaction pseudo-labels are low-confidence routing signals and do not prove real owner satisfaction."
+  ],
+  "verification": {
+    "red_test_observed": "tests failed before implementation with ModuleNotFoundError for product_agent_os.self_learning_feedback",
+    "focused_tests": [
+      "python -m unittest tests.product_agent_os.test_self_learning_state -v"
+    ],
+    "latest_status": "passed_focused_tests_19_of_19"
+  },
+  "next_action": "Continue with B44-S4-Metrics-And-Evals for B44-SLL-M11, B44-SLL-M12, B44-SLL-M19, B44-SLL-M20, B44-SLL-M21 and B44-SLL-M22."
+}

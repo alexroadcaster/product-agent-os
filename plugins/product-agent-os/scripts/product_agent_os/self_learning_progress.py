@@ -11,6 +11,9 @@ from product_agent_os.offline_artifact_safety import (
     prepare_offline_payload,
     validate_offline_artifact,
 )
+from product_agent_os.self_learning_candidates import summarize_self_learning_candidates
+from product_agent_os.self_learning_feedback import summarize_owner_feedback_ledger
+from product_agent_os.self_learning_metrics import summarize_self_learning_metrics
 from product_agent_os.self_learning_state import workspace_ref
 from product_agent_os.stage_manifest import MANIFEST_NAME, content_digest
 
@@ -113,9 +116,9 @@ def build_progress_events(
         return events
 
     add("evidence_collect", "completed", "Collected allowed local Product-Agent OS evidence references only")
-    add("metrics_eval", "completed", "Recorded local metric placeholders without provider or live eval calls")
-    add("feedback_eval", "completed", "No owner feedback ledger is implemented before B44-S3")
-    add("candidate_generation", "completed", "Produced no auto-apply candidates; candidate list stays review-only")
+    add("metrics_eval", "completed", "Read local self-learning metrics ledger without provider or live eval calls")
+    add("feedback_eval", "completed", "Read owner feedback ledger summaries without raw session ingestion")
+    add("candidate_generation", "completed", "Built review-only candidate summary without auto-apply or external actions")
     add("reporting", "completed", "Prepared staged run packet and progress artifact")
     add("owner_review", "waiting", "Owner review required before any apply, automation, schedule or target write")
     if status == "completed":
@@ -144,6 +147,13 @@ def build_self_learning_run_packet(
         blockers=blockers,
     )
     progress_status = "blocked" if blockers else "ready_for_owner_review"
+    metrics_summary = summarize_self_learning_metrics(workspace)
+    feedback_summary = summarize_owner_feedback_ledger(workspace)
+    candidate_summary = summarize_self_learning_candidates(
+        workspace,
+        metrics_summary=metrics_summary,
+        feedback_summary=feedback_summary,
+    )
     return {
         "schema_version": SELF_LEARNING_RUN_PACKET_SCHEMA_VERSION,
         "run_id": run_id,
@@ -179,21 +189,9 @@ def build_self_learning_run_packet(
                 "raw_private_paths": "excluded",
             },
         ],
-        "metrics_summary": {
-            "status": "placeholder_until_B44_S4",
-            "metric_delta_count": 0,
-            "quality_regression_claim": "unsupported",
-        },
-        "feedback_summary": {
-            "status": "not_available_until_B44_S3",
-            "owner_feedback_rows": 0,
-            "raw_session_ingestion": "not_performed",
-        },
-        "candidate_summary": {
-            "status": "no_candidates_generated",
-            "candidate_count": 0,
-            "auto_apply": "disabled",
-        },
+        "metrics_summary": metrics_summary,
+        "feedback_summary": feedback_summary,
+        "candidate_summary": candidate_summary,
         "owner_questions": [
             "Review the staged packet before approving any target write, candidate update or automation.",
         ],

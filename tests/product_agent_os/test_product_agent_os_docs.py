@@ -9417,6 +9417,127 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 with self.subTest(document=document, term=term):
                     self.assertIn(term, documents[document])
 
+    def test_batch44_s6_self_learning_docs_contracts_and_closure_are_synced(self):
+        packet_path = (
+            DOCS
+            / "superpowers"
+            / "specs"
+            / "batch44-self-learning-loop-docs-contracts-closure-summary.json"
+        )
+        self.assertTrue(packet_path.exists(), packet_path)
+        packet = json.loads(packet_path.read_text(encoding="utf-8"))
+        documents = {
+            "modernization_loop": self._localized_contract_text(
+                PRODUCT_AGENT_OS / "agent-skill-modernization-loop.md"
+            ),
+            "artifact_contracts": self._localized_contract_text(
+                PRODUCT_AGENT_OS / "artifact-contracts.md"
+            ),
+            "behavioral_evals": self._localized_contract_text(PRODUCT_AGENT_OS / "behavioral-evals.md"),
+            "requirements": REQUIREMENTS.read_text(encoding="utf-8"),
+            "plan": PLAN.read_text(encoding="utf-8"),
+            "test": TEST.read_text(encoding="utf-8"),
+            "evals": EVALS.read_text(encoding="utf-8"),
+            "runlog": RUNLOG.read_text(encoding="utf-8"),
+            "registry": SOURCE_REGISTRY.read_text(encoding="utf-8"),
+            "registry_en": SOURCE_REGISTRY_EN.read_text(encoding="utf-8"),
+            "track11_plan": (
+                DOCS
+                / "superpowers"
+                / "plans"
+                / "2026-06-20-track-11-documentation-architecture-refresh.md"
+            ).read_text(encoding="utf-8"),
+        }
+
+        self.assertEqual("batch44_self_learning_loop_docs_contracts_closure_v1", packet["schema_version"])
+        self.assertEqual("B44-SLL-M15-M16-A01", packet["evidence_id"])
+        self.assertEqual("implemented", packet["status"])
+        self.assertEqual(["B44-SLL-M15", "B44-SLL-M16"], packet["work_items"])
+        self.assertEqual("candidate_only", packet["automation_promotion_gate"]["status"])
+        self.assertEqual(3, packet["automation_promotion_gate"]["minimum_manual_successful_runs"])
+        self.assertEqual(
+            "required_before_activation",
+            packet["automation_promotion_gate"]["owner_approval_record"],
+        )
+        self.assertEqual("not_created", packet["automation_promotion_gate"]["active_schedule_status"])
+
+        for action, value in packet["no_unapproved_actions"].items():
+            with self.subTest(no_unapproved_action=action):
+                self.assertFalse(value)
+
+        expected_terms = {
+            "modernization_loop": [
+                "Self-Learning Loop Docs Contracts And Closure",
+                "self_learning_docs_contracts_closure_v1",
+                "self-learning-automation-candidate.md",
+                "minimum_manual_successful_runs: 3",
+                "candidate_only",
+                "real Codex App session export",
+                "no active scheduler",
+            ],
+            "artifact_contracts": [
+                ".codex/automation-candidates/self-learning-automation-candidate.md",
+                "self_learning_docs_contracts_closure_v1",
+                "self_learning_candidate_packet_v1",
+                "self_learning_forbidden_action_report_v1",
+                "owner approval record",
+                "minimum_manual_successful_runs",
+                "active schedule remains not_created",
+            ],
+            "behavioral_evals": [
+                "self_learning_loop_docs_contracts_closure",
+                "automation promotion remains candidate_only",
+                "no real Codex App session export import",
+                "no hidden telemetry",
+                "no auto-apply",
+            ],
+            "requirements": [
+                "B44-S6",
+                "docs/contracts/closure",
+                "automation promotion gate is candidate-only",
+                "minimum manual successful runs: 3",
+            ],
+            "plan": [
+                "`B44-S0` through `B44-S6` are implemented",
+                "B44-SLL-M15-M16-A01",
+                "Continue with `B44-S7`",
+            ],
+            "test": [
+                "B44-SLL-M15-M16-A01",
+                "self_learning_docs_contracts_closure_v1",
+                "no active automation marker check",
+            ],
+            "evals": [
+                "B44 Self-Learning Loop S6 evidence",
+                "B44-SLL-M15-M16-A01",
+                "candidate-only automation promotion",
+            ],
+            "runlog": [
+                "B44-SLL-M15-M16-A01",
+                "S6 docs/contracts/closure",
+                "no real session import",
+            ],
+            "registry": [
+                "Product-Agent OS Track 11 Batch 44 Self-Learning Loop docs/contracts/closure packet",
+                "B44-SLL-M15-M16-A01",
+                "self-learning-automation-candidate.md",
+            ],
+            "registry_en": [
+                "Product-Agent OS Track 11 Batch 44 Self-Learning Loop docs/contracts/closure packet",
+                "B44-SLL-M15-M16-A01",
+                "self-learning-automation-candidate.md",
+            ],
+            "track11_plan": [
+                "`B44-SLL-M16` | `B44-S6`",
+                "`B44-S6-Docs-Contracts-And-Closure`",
+                "`implemented_B44_S6_evidence: B44-SLL-M15-M16-A01`",
+            ],
+        }
+        for document, terms in expected_terms.items():
+            for term in terms:
+                with self.subTest(document=document, term=term):
+                    self.assertIn(term, documents[document])
+
     def test_batch39_m20_first_run_artifact_docs_and_registry_are_synced(self):
         documents = {
             "artifact_contracts": (PRODUCT_AGENT_OS / "artifact-contracts.md").read_text(encoding="utf-8"),

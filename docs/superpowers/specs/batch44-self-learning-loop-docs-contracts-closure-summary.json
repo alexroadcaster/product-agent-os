@@ -1,0 +1,80 @@
+{
+  "schema_version": "batch44_self_learning_loop_docs_contracts_closure_v1",
+  "evidence_id": "B44-SLL-M15-M16-A01",
+  "status": "implemented",
+  "slice": "B44-S6-Docs-Contracts-And-Closure",
+  "work_items": [
+    "B44-SLL-M15",
+    "B44-SLL-M16"
+  ],
+  "implemented_contracts": {
+    "docs_contract": {
+      "status": "implemented",
+      "artifact": "self_learning_docs_contracts_closure_v1",
+      "owned_docs": [
+        "docs/product-agent-os/agent-skill-modernization-loop.md",
+        "docs/product-agent-os/artifact-contracts.md",
+        "docs/product-agent-os/behavioral-evals.md",
+        "docs/sources/registry.md",
+        "docs/sources/registry.en.md"
+      ],
+      "boundary": "Documents implemented, planned, manual-only, candidate-only and approval-required behavior without claiming activation."
+    },
+    "automation_candidate_contract": {
+      "status": "candidate_only",
+      "artifact": ".codex/automation-candidates/self-learning-automation-candidate.md",
+      "boundary": "Proposal-only packet. It does not create an active schedule, hook, Codex App automation, GitHub Action, external workflow or recurring job."
+    }
+  },
+  "automation_promotion_gate": {
+    "status": "candidate_only",
+    "minimum_manual_successful_runs": 3,
+    "owner_approval_record": "required_before_activation",
+    "active_schedule_status": "not_created",
+    "rollback_disable_path": "required_before_activation",
+    "false_positive_audit": "required_before_activation",
+    "flake_replay": "required_before_activation",
+    "cost_check": "required_before_activation"
+  },
+  "unsupported_claims": [
+    "real Codex App session export import was performed",
+    "hidden telemetry or raw transcript ingestion was performed",
+    "provider/model/live eval calls were performed",
+    "target workspace mutation was performed",
+    "candidate auto-apply was performed",
+    "active scheduler, hook, automation or recurring job was created",
+    "git/release/deploy/publish/external write action was performed"
+  ],
+  "no_unapproved_actions": {
+    "real_session_import": false,
+    "hidden_telemetry": false,
+    "raw_transcript_storage": false,
+    "provider_or_model_call": false,
+    "live_eval_service": false,
+    "target_workspace_mutation": false,
+    "skill_prompt_route_memory_config_hook_auto_apply": false,
+    "active_schedule_creation": false,
+    "hook_activation": false,
+    "codex_app_automation_creation": false,
+    "github_action_creation": false,
+    "external_workflow_creation": false,
+    "git_stage_commit_push_pr": false,
+    "release_deploy_publish": false,
+    "external_write": false
+  },
+  "verification": {
+    "red_test": "python -m unittest tests.product_agent_os.test_product_agent_os_docs.ProductAgentOsDocsTest.test_batch44_s6_self_learning_docs_contracts_and_closure_are_synced -v failed before this packet existed",
+    "focused_docs_test": "passed",
+    "docs_unittest": "passed_99_of_99",
+    "check_docs": "passed",
+    "diff_check": "passed_with_crlf_warnings_only"
+  },
+  "next_route": "B44-S7-Approved-Pilot-And-Manual-Run",
+  "approval_required_before_next_route": [
+    "target project",
+    "evidence window",
+    "redacted feedback use",
+    "stage or target write surface",
+    "manual run count acceptance"
+  ]
+}

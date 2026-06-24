@@ -14,6 +14,290 @@ sys.path.insert(0, str(SCRIPTS))
 
 
 class SelfLearningStateTests(unittest.TestCase):
+    def test_owner_feedback_ledger_accepts_redacted_owner_review_rows(self) -> None:
+        from product_agent_os.self_learning_feedback import validate_owner_feedback_row
+
+        row = {
+            "schema_version": "owner_feedback_ledger_v1",
+            "feedback_id": "fb-001",
+            "session_ref": {
+                "session_id_hash": "sha256:abc123",
+                "raw_session_id_included": False,
+            },
+            "task_ref": {
+                "task_id": "B44-SLL-M07",
+                "slice_id": "B44-S3-Feedback-And-Preferences",
+            },
+            "explicit_rating": "dissatisfied",
+            "revision_requested": True,
+            "revision_accepted": False,
+            "usefulness": "low",
+            "user_effort": "high",
+            "outcome": "reopened",
+            "evidence_links": [
+                "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md"
+            ],
+            "redaction_status": "redacted",
+            "owner_review": "owner_labeled",
+            "privacy": {
+                "consent": "owner_provided_redacted_summary",
+                "raw_chat_body_stored": False,
+                "contains_pii": False,
+            },
+            "preference_signals": [
+                {
+                    "category": "verification_expectations",
+                    "summary": "Do not claim completion without current command evidence.",
+                    "scope": "product_agent_os",
+                }
+            ],
+        }
+
+        self.assertEqual(validate_owner_feedback_row(row), [])
+
+    def test_owner_feedback_ledger_rejects_raw_chat_pii_and_absolute_paths(self) -> None:
+        from product_agent_os.self_learning_feedback import validate_owner_feedback_row
+
+        row = {
+            "schema_version": "owner_feedback_ledger_v1",
+            "feedback_id": "fb-raw",
+            "session_ref": "C:\\Users\\user\\secret\\raw-session.json",
+            "task_ref": {"task_id": "B44-SLL-M07"},
+            "explicit_rating": "dissatisfied",
+            "revision_requested": True,
+            "revision_accepted": False,
+            "usefulness": "low",
+            "user_effort": "high",
+            "outcome": "reopened",
+            "evidence_links": ["C:\\Users\\user\\Desktop\\project\\private.txt"],
+            "redaction_status": "unredacted",
+            "owner_review": "owner_labeled",
+            "privacy": {
+                "consent": "missing",
+                "raw_chat_body_stored": True,
+                "contains_pii": True,
+            },
+            "raw_chat": "email alex@example.com and raw transcript body",
+        }
+
+        errors = validate_owner_feedback_row(row)
+
+        self.assertIn("redaction_status:must_be_redacted", errors)
+        self.assertIn("privacy.raw_chat_body_stored:must_be_false", errors)
+        self.assertIn("privacy.consent:missing_owner_redacted_summary_consent", errors)
+        self.assertIn("raw_private_content:blocked", errors)
+
+    def test_feedback_import_contract_filters_scope_consent_redaction_and_raw_transcripts(self) -> None:
+        from product_agent_os.self_learning_feedback import build_feedback_import_contract
+
+        scope_packet = {
+            "eligible": True,
+            "status": "eligible",
+            "workspace_ref": {"path_hash": "sha256:scope-ok", "raw_path_included": False},
+        }
+        summaries = [
+            {
+                "summary_id": "s-ok",
+                "project_scope_id": "sha256:scope-ok",
+                "workspace_path_hash": "sha256:scope-ok",
+                "product_agent_os_detected": True,
+                "evidence_consent": "owner_provided_redacted_summary",
+                "redaction_status": "redacted",
+                "contains_raw_transcript": False,
+                "feedback_row": {"feedback_id": "fb-ok"},
+            },
+            {
+                "summary_id": "s-other",
+                "project_scope_id": "sha256:other",
+                "workspace_path_hash": "sha256:other",
+                "product_agent_os_detected": True,
+                "evidence_consent": "owner_provided_redacted_summary",
+                "redaction_status": "redacted",
+                "contains_raw_transcript": False,
+            },
+            {
+                "summary_id": "s-raw",
+                "project_scope_id": "sha256:scope-ok",
+                "workspace_path_hash": "sha256:scope-ok",
+                "product_agent_os_detected": True,
+                "evidence_consent": "owner_provided_redacted_summary",
+                "redaction_status": "redacted",
+                "contains_raw_transcript": True,
+            },
+            {
+                "summary_id": "s-no-consent",
+                "project_scope_id": "sha256:scope-ok",
+                "workspace_path_hash": "sha256:scope-ok",
+                "product_agent_os_detected": True,
+                "evidence_consent": "missing",
+                "redaction_status": "redacted",
+                "contains_raw_transcript": False,
+            },
+        ]
+
+        contract = build_feedback_import_contract(scope_packet=scope_packet, summaries=summaries)
+
+        self.assertEqual(contract["schema_version"], "codex_session_feedback_import_v1")
+        self.assertEqual(contract["raw_session_ingestion"], "not_performed")
+        self.assertEqual(contract["imported_summary_ids"], ["s-ok"])
+        skipped = {item["summary_id"]: item["reason"] for item in contract["skipped_summaries"]}
+        self.assertEqual(skipped["s-other"], "out_of_scope")
+        self.assertEqual(skipped["s-raw"], "raw_transcript_blocked")
+        self.assertEqual(skipped["s-no-consent"], "missing_consent")
+
+    def test_satisfaction_evaluator_prefers_owner_labels_and_keeps_pseudo_labels_low_confidence(self) -> None:
+        from product_agent_os.self_learning_feedback import evaluate_satisfaction
+
+        rows = [
+            {
+                "feedback_id": "fb-owner",
+                "explicit_rating": "satisfied",
+                "revision_requested": True,
+                "revision_accepted": True,
+                "usefulness": "high",
+                "user_effort": "low",
+                "outcome": "accepted",
+                "owner_review": "owner_labeled",
+            },
+            {
+                "feedback_id": "fb-pseudo",
+                "explicit_rating": None,
+                "revision_requested": True,
+                "revision_accepted": False,
+                "usefulness": "low",
+                "user_effort": "high",
+                "outcome": "reopened",
+                "owner_review": "inferred_from_redacted_summary",
+            },
+        ]
+
+        report = evaluate_satisfaction(rows)
+
+        self.assertEqual(report["schema_version"], "self_learning_satisfaction_report_v1")
+        self.assertEqual(report["denominator"], 2)
+        self.assertEqual(report["human_label_count"], 1)
+        by_id = {item["feedback_id"]: item for item in report["labels"]}
+        self.assertEqual(by_id["fb-owner"]["label"], "satisfied")
+        self.assertEqual(by_id["fb-owner"]["source_type"], "owner_label")
+        self.assertEqual(by_id["fb-pseudo"]["label"], "dissatisfied")
+        self.assertEqual(by_id["fb-pseudo"]["source_type"], "pseudo_label")
+        self.assertEqual(by_id["fb-pseudo"]["confidence"], "low")
+        self.assertEqual(report["promotion_signal"], "blocked_low_confidence")
+
+    def test_preference_memory_is_compact_traceable_and_owner_editable(self) -> None:
+        from product_agent_os.self_learning_feedback import build_preference_memory, validate_preference_memory
+
+        rows = [
+            {
+                "feedback_id": "fb-verify",
+                "preference_signals": [
+                    {
+                        "category": "verification_expectations",
+                        "summary": "Report command evidence and unsupported claims separately.",
+                        "scope": "product_agent_os",
+                    }
+                ],
+            },
+            {
+                "feedback_id": "fb-language",
+                "preference_signals": [
+                    {
+                        "category": "response_language",
+                        "summary": "Use Russian prose and keep canonical Codex terms in English.",
+                        "scope": "global_style",
+                    }
+                ],
+            },
+        ]
+
+        memory = build_preference_memory(rows, generated_at="2026-06-24T00:00:00Z")
+
+        self.assertEqual(memory["schema_version"], "preference_memory_v1")
+        self.assertTrue(memory["owner_editable"])
+        self.assertFalse(memory["raw_chat_stored"])
+        self.assertEqual(validate_preference_memory(memory), [])
+        categories = {item["category"]: item for item in memory["preferences"]["recent"]}
+        self.assertEqual(categories["verification_expectations"]["source_feedback_ids"], ["fb-verify"])
+        self.assertEqual(categories["response_language"]["source_feedback_ids"], ["fb-language"])
+        self.assertNotIn("raw transcript body", json.dumps(memory, ensure_ascii=False))
+
+    def test_candidate_packet_stages_review_only_modernization_from_metrics_and_feedback(self) -> None:
+        from product_agent_os.self_learning_candidates import (
+            build_self_learning_candidate_packet,
+            validate_candidate_packet,
+        )
+
+        packet = build_self_learning_candidate_packet(
+            metrics_summary={
+                "status": "available",
+                "latest_run_id": "sll-20260624T100000Z-demo",
+                "latest_report_paths": ["docs/superpowers/specs/batch44-self-learning-loop-metrics-evals-summary.json"],
+                "regression_flags": ["skill_trigger_recall_regression"],
+                "metric_delta_count": 2,
+            },
+            feedback_summary={
+                "status": "available",
+                "owner_feedback_rows": 1,
+                "satisfaction_report": {
+                    "denominator": 1,
+                    "dissatisfied_count": 1,
+                    "promotion_signal": "blocked_low_confidence",
+                },
+            },
+            generated_at="2026-06-24T10:00:00Z",
+        )
+
+        self.assertEqual(packet["schema_version"], "self_learning_candidate_packet_v1")
+        self.assertEqual(packet["candidate_policy"], "candidate_only")
+        self.assertEqual(packet["apply_policy"], "cannot_apply")
+        self.assertEqual(packet["auto_apply"], "disabled")
+        self.assertEqual(packet["provider_calls"], "not_performed")
+        self.assertEqual(packet["target_workspace_writes"], "not_performed")
+        self.assertGreaterEqual(packet["candidate_count"], 2)
+        self.assertEqual(packet["safety_report"]["promotion_status"], "review_ready")
+        for candidate in packet["candidates"]:
+            with self.subTest(candidate=candidate["candidate_id"]):
+                self.assertEqual(candidate["status"], "staged_for_review")
+                self.assertEqual(candidate["external_write_action"], "none")
+                self.assertEqual(candidate["approval_state"], "not_requested")
+                self.assertEqual(candidate["auto_apply"], "disabled")
+                self.assertTrue(candidate["rollback_target"])
+                self.assertTrue(candidate["tests_required"])
+                self.assertTrue(candidate["evidence_refs"])
+        self.assertEqual(validate_candidate_packet(packet), [])
+
+    def test_forbidden_action_safety_report_blocks_auto_apply_and_external_actions(self) -> None:
+        from product_agent_os.self_learning_candidates import evaluate_forbidden_action_fixtures
+
+        report = evaluate_forbidden_action_fixtures(
+            [
+                {
+                    "candidate_id": "candidate-danger",
+                    "proposed_actions": [
+                        {"action_type": "activate_hook", "description": "turn on a hook"},
+                        {"action_type": "store_raw_transcript", "description": "save raw transcript"},
+                        {"action_type": "provider_call", "description": "call live model"},
+                        {"action_type": "target_mutation", "description": "edit target workspace"},
+                        {"action_type": "git_push", "description": "push release branch"},
+                        {"action_type": "deploy_publish", "description": "publish package"},
+                        {"action_type": "auto_apply", "description": "apply patch automatically"},
+                    ],
+                }
+            ]
+        )
+
+        blocked = report["candidate_results"][0]
+        self.assertEqual(report["schema_version"], "self_learning_forbidden_action_report_v1")
+        self.assertEqual(report["fixture_execution_policy"], "synthetic_only_no_side_effects")
+        self.assertEqual(report["promotion_status"], "blocked")
+        self.assertIn("hook_activation", blocked["blocked_actions"])
+        self.assertIn("raw_transcript_storage", blocked["blocked_actions"])
+        self.assertIn("provider_call", blocked["blocked_actions"])
+        self.assertIn("target_mutation", blocked["blocked_actions"])
+        self.assertIn("git_action", blocked["blocked_actions"])
+        self.assertIn("release_deploy_publish", blocked["blocked_actions"])
+        self.assertIn("auto_apply", blocked["blocked_actions"])
+
     def test_default_state_is_manual_only_and_due_without_running_analysis(self) -> None:
         from product_agent_os.self_learning_state import build_default_self_learning_state, evaluate_self_learning_due
 
@@ -237,6 +521,202 @@ class SelfLearningStateTests(unittest.TestCase):
             payload["rendered_artifacts"]["targets"],
         )
         self.assertEqual(before, after)
+        self.assertNotIn(str(workspace), result.stdout)
+
+    def test_manual_runner_summarizes_owner_feedback_without_raw_ingestion(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            workspace = Path(tmpdir)
+            feedback_row = {
+                "schema_version": "owner_feedback_ledger_v1",
+                "feedback_id": "fb-runner",
+                "session_ref": {
+                    "session_id_hash": "sha256:session-runner",
+                    "raw_session_id_included": False,
+                },
+                "task_ref": {
+                    "task_id": "B44-SLL-M09",
+                    "slice_id": "B44-S3-Feedback-And-Preferences",
+                },
+                "explicit_rating": "dissatisfied",
+                "revision_requested": True,
+                "revision_accepted": False,
+                "usefulness": "low",
+                "user_effort": "high",
+                "outcome": "reopened",
+                "evidence_links": ["docs/superpowers/specs/batch44-self-learning-loop-feedback-preferences-summary.json"],
+                "redaction_status": "redacted",
+                "owner_review": "owner_labeled",
+                "privacy": {
+                    "consent": "owner_provided_redacted_summary",
+                    "raw_chat_body_stored": False,
+                    "contains_pii": False,
+                },
+                "preference_signals": [],
+            }
+            self._write_files(
+                workspace,
+                {
+                    ".codex/product-agent-os/lifecycle-state.json": "{}\n",
+                    ".codex/product-agent-os/self-learning-state.json": json.dumps(
+                        {
+                            "schema_version": "self_learning_state_v1",
+                            "plugin_id": "product-agent-os",
+                            "plugin_version": "0.1.0",
+                            "installed_at": "2026-06-01T00:00:00+00:00",
+                            "last_analysis_at": None,
+                            "last_success_at": None,
+                            "last_failure_at": None,
+                            "next_due_at": None,
+                            "cadence_level": "manual_only",
+                            "last_report_id": None,
+                            "last_metrics_digest": None,
+                            "approval_state": "manual_only",
+                            "disable_reason": None,
+                        },
+                        sort_keys=True,
+                    )
+                    + "\n",
+                    ".codex/product-agent-os/owner-feedback-ledger.jsonl": json.dumps(
+                        feedback_row,
+                        sort_keys=True,
+                    )
+                    + "\n",
+                },
+            )
+
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPTS / "run_self_learning_loop.py"),
+                    str(workspace),
+                    "--now",
+                    "2026-06-09T00:00:00+00:00",
+                    "--dry-run",
+                ],
+                cwd=ROOT,
+                text=True,
+                capture_output=True,
+                check=False,
+            )
+
+        self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
+        payload = json.loads(result.stdout)
+        self.assertEqual(payload["feedback_summary"]["status"], "available")
+        self.assertEqual(payload["feedback_summary"]["owner_feedback_rows"], 1)
+        self.assertEqual(payload["feedback_summary"]["raw_session_ingestion"], "not_performed")
+        self.assertEqual(payload["feedback_summary"]["satisfaction_report"]["denominator"], 1)
+        self.assertNotIn(str(workspace), result.stdout)
+
+    def test_manual_runner_summarizes_candidate_packet_without_auto_apply(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            workspace = Path(tmpdir)
+            feedback_row = {
+                "schema_version": "owner_feedback_ledger_v1",
+                "feedback_id": "fb-candidate",
+                "session_ref": {
+                    "session_id_hash": "sha256:session-candidate",
+                    "raw_session_id_included": False,
+                },
+                "task_ref": {
+                    "task_id": "B44-SLL-M13",
+                    "slice_id": "B44-S5-Candidate-Generation-And-Safety",
+                },
+                "explicit_rating": "dissatisfied",
+                "revision_requested": True,
+                "revision_accepted": False,
+                "usefulness": "low",
+                "user_effort": "high",
+                "outcome": "reopened",
+                "evidence_links": ["docs/superpowers/specs/batch44-self-learning-loop-feedback-preferences-summary.json"],
+                "redaction_status": "redacted",
+                "owner_review": "owner_labeled",
+                "privacy": {
+                    "consent": "owner_provided_redacted_summary",
+                    "raw_chat_body_stored": False,
+                    "contains_pii": False,
+                },
+                "preference_signals": [],
+            }
+            metrics_row = {
+                "schema_version": "self_learning_metrics_ledger_v1",
+                "run_id": "sll-20260624T100000Z-candidate",
+                "evidence_window": {"started_at": "2026-06-24T09:00:00Z", "ended_at": "2026-06-24T10:00:00Z"},
+                "baseline_version": "skill:review@1.0.0",
+                "current_version": "skill:review@1.0.1",
+                "candidate_version": "skill:review@1.0.2-candidate",
+                "metrics": {
+                    "skill_trigger_recall": {
+                        "value": 0.5,
+                        "denominator": 10,
+                        "source": "fixture_eval",
+                        "confidence": "low",
+                    }
+                },
+                "confidence_intervals": {},
+                "cost_latency": {"median_latency_ms": 900},
+                "user_effort": {"owner_minutes": 3},
+                "regression_flags": ["skill_trigger_recall_regression"],
+                "accepted_gaps": ["real_owner_feedback_pending"],
+                "report_paths": ["docs/superpowers/specs/batch44-self-learning-loop-metrics-evals-summary.json"],
+                "rollback_targets": ["skill:review@1.0.1"],
+                "source_status": "source_backed",
+                "privacy_status": "synthetic_only",
+                "append_only": True,
+            }
+            self._write_files(
+                workspace,
+                {
+                    ".codex/product-agent-os/lifecycle-state.json": "{}\n",
+                    ".codex/product-agent-os/self-learning-state.json": json.dumps(
+                        {
+                            "schema_version": "self_learning_state_v1",
+                            "plugin_id": "product-agent-os",
+                            "plugin_version": "0.1.0",
+                            "installed_at": "2026-06-01T00:00:00+00:00",
+                            "last_analysis_at": None,
+                            "last_success_at": None,
+                            "last_failure_at": None,
+                            "next_due_at": None,
+                            "cadence_level": "manual_only",
+                            "last_report_id": None,
+                            "last_metrics_digest": None,
+                            "approval_state": "manual_only",
+                            "disable_reason": None,
+                        },
+                        sort_keys=True,
+                    )
+                    + "\n",
+                    ".codex/product-agent-os/owner-feedback-ledger.jsonl": json.dumps(feedback_row, sort_keys=True) + "\n",
+                    ".codex/eval-reports/agent-skill-metrics-ledger.jsonl": json.dumps(metrics_row, sort_keys=True) + "\n",
+                },
+            )
+
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPTS / "run_self_learning_loop.py"),
+                    str(workspace),
+                    "--now",
+                    "2026-06-09T00:00:00+00:00",
+                    "--dry-run",
+                ],
+                cwd=ROOT,
+                text=True,
+                capture_output=True,
+                check=False,
+            )
+
+        self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
+        payload = json.loads(result.stdout)
+        self.assertEqual(payload["candidate_summary"]["schema_version"], "self_learning_candidate_summary_v1")
+        self.assertEqual(payload["candidate_summary"]["status"], "available")
+        self.assertGreaterEqual(payload["candidate_summary"]["candidate_count"], 2)
+        self.assertEqual(payload["candidate_summary"]["auto_apply"], "disabled")
+        self.assertEqual(payload["candidate_summary"]["apply_policy"], "cannot_apply")
+        self.assertEqual(payload["candidate_summary"]["provider_calls"], "not_performed")
+        self.assertEqual(payload["candidate_summary"]["target_workspace_writes"], "not_performed")
+        self.assertEqual(payload["candidate_summary"]["external_write_action"], "none")
+        self.assertEqual(payload["candidate_summary"]["safety_report"]["promotion_status"], "review_ready")
         self.assertNotIn(str(workspace), result.stdout)
 
     def test_manual_runner_stage_writes_progress_and_html_only_under_stage_root(self) -> None:

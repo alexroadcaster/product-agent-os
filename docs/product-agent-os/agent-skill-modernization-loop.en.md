@@ -109,6 +109,28 @@ python plugins\product-agent-os\scripts\render_agent_skill_metrics_report.py <wo
 - Running live eval/model/API calls would violate the read-only modernization boundary unless a later explicit approval packet changes scope.
 - Auto-applying candidate updates would turn the loop into autonomous auto-update, which is explicitly out of scope.
 
+## Self-Learning Loop Docs Contracts And Closure
+
+`self_learning_docs_contracts_closure_v1` defines documentation and
+promotion-gate contracts for the Self-Learning Loop.
+
+Current status:
+
+- Local/schema/fixture evidence exists for scope, state, manual progress,
+  feedback, metrics and candidate-only safety.
+- The docs closure documents state, feedback, metrics, privacy, trigger and
+  candidate boundaries.
+- Automation promotion remains `candidate_only`.
+- Candidate packet: `.codex/automation-candidates/self-learning-automation-candidate.md`.
+- `minimum_manual_successful_runs: 3`.
+- Owner approval record, rollback/disable path, false-positive audit,
+  flake replay and cost check are required before activation.
+
+This closure does not import a real Codex App session export, does not use
+hidden telemetry, does not store raw transcripts, does not call providers or
+live eval services, does not mutate target workspaces, does not auto-apply
+candidates and creates no active scheduler.
+
 ## Next Action
 
 Use this page when agent/skill evidence needs to be interpreted or packaged for owner review. The next safe artifact is a staged scorecard ledger, daily report, weekly verification packet or update candidate. Applying any update remains a separate owner-approved implementation slice.

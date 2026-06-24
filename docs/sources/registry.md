@@ -1451,4 +1451,15 @@ These markers preserve source-owned test routing after registry compaction. Full
 - expanded metrics intake: Product-Agent OS-only project scope, owner feedback import filter, paired skill utility, skill retrieval, tool composition, process-control, adversarial skill safety, satisfaction, memory quality, resumable progress state and project-local HTML progress artifact
 - planned_only_not_implementation_evidence
 - no active scheduler, hook activation, automation activation, global user-session analysis, hidden telemetry, real private session ingestion, provider/model call, cache refresh, global config write, target mutation, project HTML proof claim, git action, release, deploy or publish action
+- Product-Agent OS Track 11 Batch 44 Self-Learning Loop docs/contracts/closure packet
+- B44-SLL-M15-M16-A01
+- docs/superpowers/specs/batch44-self-learning-loop-docs-contracts-closure-summary.json
+- docs/product-agent-os/agent-skill-modernization-loop.md
+- docs/product-agent-os/artifact-contracts.md
+- docs/product-agent-os/behavioral-evals.md
+- self-learning-automation-candidate.md
+- self_learning_docs_contracts_closure_v1
+- batch44_self_learning_loop_S0_S1_S2_S3_S4_S5_S6_implemented_rest_planned
+- automation promotion remains candidate_only with minimum_manual_successful_runs: 3 and active schedule remains not_created
+- no real Codex App session export import, hidden telemetry, raw transcript, provider/model/live eval call, target mutation, active automation, git/release/deploy/publish, external write or auto-apply
 ```

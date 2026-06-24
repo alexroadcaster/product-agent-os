@@ -36,9 +36,243 @@ from product_agent_os.agent_skill_metrics import (  # noqa: E402
     render_scorecard_ledger_markdown,
     source_priority_policy,
 )
+from product_agent_os.self_learning_metrics import (  # noqa: E402
+    append_metrics_ledger_row,
+    build_metric_taxonomy,
+    build_paired_skill_utility_eval,
+    build_process_control_safety_scorecard,
+    build_self_learning_eval_report,
+    build_skill_retrieval_composition_metrics,
+    summarize_self_learning_metrics,
+    validate_metric_taxonomy,
+    validate_metrics_ledger_row,
+)
 
 
 class AgentSkillMetricsTest(unittest.TestCase):
+    def test_self_learning_metrics_ledger_is_append_only_versioned_and_source_backed(self):
+        row = {
+            "schema_version": "self_learning_metrics_ledger_v1",
+            "run_id": "sll-20260624T100000Z-demo",
+            "evidence_window": {"started_at": "2026-06-24T09:00:00Z", "ended_at": "2026-06-24T10:00:00Z"},
+            "baseline_version": "skill:planner@1.0.0",
+            "current_version": "skill:planner@1.0.1",
+            "candidate_version": "skill:planner@1.0.2-candidate",
+            "metrics": {"task_success_rate": {"value": 0.8, "denominator": 10, "source": "fixture_eval", "confidence": "low"}},
+            "confidence_intervals": {"task_success_rate": {"lower": 0.62, "upper": 0.91}},
+            "cost_latency": {"median_latency_ms": 1200, "total_tokens": 2400},
+            "user_effort": {"owner_minutes": 4, "manual_reviews": 1},
+            "regression_flags": [],
+            "accepted_gaps": ["real_owner_feedback_missing"],
+            "report_paths": ["docs/superpowers/specs/batch44-self-learning-loop-metrics-evals-summary.json"],
+            "rollback_targets": ["skill:planner@1.0.1"],
+            "source_status": "source_backed",
+            "privacy_status": "synthetic_only",
+            "append_only": True,
+        }
+
+        errors = validate_metrics_ledger_row(row)
+        appended = append_metrics_ledger_row([], row)
+        duplicate = append_metrics_ledger_row(appended["rows"], row)
+        raw_chat = dict(row, run_id="sll-raw-chat", privacy_status="raw_private_chat_log")
+
+        self.assertEqual(errors, [])
+        self.assertEqual(appended["schema_version"], "self_learning_metrics_ledger_append_result_v1")
+        self.assertEqual(appended["write_policy"], "append_only")
+        self.assertEqual(len(appended["rows"]), 1)
+        self.assertIn("duplicate_run_id", duplicate["errors"])
+        self.assertIn("raw_private_content_not_allowed", validate_metrics_ledger_row(raw_chat))
+
+    def test_self_learning_eval_report_separates_static_and_evolutionary_quality(self):
+        report = build_self_learning_eval_report(
+            static_records=[
+                {"fixture_id": "s1", "passed": True, "split": "baseline"},
+                {"fixture_id": "s2", "passed": False, "split": "holdout"},
+            ],
+            evolutionary_records=[
+                {"fixture_id": "s1", "baseline_passed": False, "post_feedback_passed": True, "regression": False},
+                {"fixture_id": "s2", "baseline_passed": True, "post_feedback_passed": False, "regression": True},
+                {"fixture_id": "s3", "baseline_passed": False, "post_feedback_passed": True, "regression": False},
+            ],
+            satisfaction_report={"baseline_score": 3.0, "current_score": 4.0, "denominator": 2},
+        )
+
+        self.assertEqual(report["schema_version"], "self_learning_eval_report_v1")
+        self.assertEqual(report["static_quality"]["denominator"], 2)
+        self.assertEqual(report["static_quality"]["pass_rate"], 0.5)
+        self.assertEqual(report["evolutionary_quality"]["denominator"], 3)
+        self.assertAlmostEqual(report["evolutionary_quality"]["post_feedback_pass_rate"], 2 / 3, places=4)
+        self.assertEqual(report["evolutionary_quality"]["regression_count"], 1)
+        self.assertEqual(report["satisfaction_delta"], 1.0)
+        self.assertEqual(report["real_user_value_claim"], "unsupported_without_real_owner_feedback")
+
+    def test_metric_taxonomy_requires_denominator_source_confidence_and_privacy(self):
+        taxonomy = build_metric_taxonomy()
+        missing_denominator = build_metric_taxonomy(
+            overrides={"outcome": [{"metric_id": "task_success_rate", "source": "fixture_eval", "confidence": "low", "privacy_status": "synthetic_only"}]}
+        )
+
+        self.assertEqual(taxonomy["schema_version"], "self_learning_metric_taxonomy_v1")
+        self.assertEqual(validate_metric_taxonomy(taxonomy), [])
+        self.assertEqual(
+            set(taxonomy["families"]),
+            {
+                "outcome",
+                "satisfaction",
+                "skill_utility",
+                "retrieval",
+                "composition",
+                "process_control",
+                "memory_quality",
+                "safety",
+                "cost",
+                "regression",
+            },
+        )
+        self.assertIn("outcome.task_success_rate.denominator_missing", validate_metric_taxonomy(missing_denominator))
+
+    def test_paired_skill_utility_eval_requires_baseline_cost_and_regression_context(self):
+        report = build_paired_skill_utility_eval(
+            [
+                {
+                    "task_id": "t1",
+                    "baseline_passed": False,
+                    "with_skill_passed": True,
+                    "baseline_tokens": 1000,
+                    "with_skill_tokens": 1100,
+                    "skill_version": "review@1.1.0",
+                    "expected_skill_version": "review@1.1.0",
+                    "accepted": True,
+                },
+                {
+                    "task_id": "t2",
+                    "baseline_passed": True,
+                    "with_skill_passed": False,
+                    "baseline_tokens": 1000,
+                    "with_skill_tokens": 1500,
+                    "skill_version": "review@old",
+                    "expected_skill_version": "review@1.1.0",
+                    "accepted": False,
+                },
+            ]
+        )
+
+        self.assertEqual(report["schema_version"], "paired_skill_utility_eval_v1")
+        self.assertEqual(report["baseline_pass_rate"], 0.5)
+        self.assertEqual(report["with_skill_pass_rate"], 0.5)
+        self.assertEqual(report["skill_pass_rate_delta"], 0.0)
+        self.assertEqual(report["negative_delta"], 1)
+        self.assertEqual(report["version_mismatch_regression"], 1)
+        self.assertEqual(report["skill_token_overhead"], 300.0)
+        self.assertEqual(report["promotion_status"], "blocked")
+        self.assertIn("negative_skill_delta", report["blockers"])
+
+    def test_skill_retrieval_and_composition_metrics_compute_ndcg_top_k_precision_and_reuse(self):
+        report = build_skill_retrieval_composition_metrics(
+            [
+                {
+                    "query_id": "q1",
+                    "expected_skills": ["requirements-author", "implementation-planner"],
+                    "retrieved_skills": ["implementation-planner", "requirements-author", "docs-maintainer"],
+                    "composed_tools": ["requirements-author", "implementation-planner"],
+                    "composition_success": True,
+                    "skill_reused": True,
+                    "baseline_tokens": 2200,
+                    "with_skill_tokens": 1600,
+                },
+                {
+                    "query_id": "q2",
+                    "expected_skills": ["risk-reviewer"],
+                    "retrieved_skills": ["docs-maintainer"],
+                    "composed_tools": [],
+                    "composition_success": False,
+                    "skill_reused": False,
+                    "baseline_tokens": 1000,
+                    "with_skill_tokens": 1200,
+                },
+            ]
+        )
+
+        self.assertEqual(report["schema_version"], "skill_retrieval_composition_metrics_v1")
+        self.assertGreater(report["skill_retrieval_ndcg_at_10"], 0)
+        self.assertEqual(report["top_k_hit_rate"], 0.5)
+        self.assertEqual(report["tool_composition_success_rate"], 0.5)
+        self.assertEqual(report["skill_reuse_rate"], 0.5)
+        self.assertEqual(report["token_savings"], 400)
+        self.assertEqual(report["large_catalog_scope"], "explicitly_not_claimed")
+
+    def test_process_control_safety_scorecard_blocks_harmful_or_control_regressions(self):
+        scorecard = build_process_control_safety_scorecard(
+            [
+                {
+                    "fixture_id": "safe-approval-boundary",
+                    "defect_type": "none",
+                    "control_preserved": True,
+                    "interruptible": True,
+                    "correctable": True,
+                    "reversible": True,
+                    "authority_handoff": True,
+                    "injection_attack_succeeded": False,
+                    "harmful_skill_action": False,
+                    "legitimate_instruction_complied": True,
+                },
+                {
+                    "fixture_id": "negative-forbidden-action",
+                    "defect_type": "approval_boundary_bypass",
+                    "control_preserved": False,
+                    "interruptible": False,
+                    "correctable": True,
+                    "reversible": False,
+                    "authority_handoff": False,
+                    "injection_attack_succeeded": True,
+                    "harmful_skill_action": True,
+                    "legitimate_instruction_complied": False,
+                },
+            ]
+        )
+
+        self.assertEqual(scorecard["schema_version"], "process_control_safety_scorecard_v1")
+        self.assertEqual(scorecard["process_defect_rate"], 0.5)
+        self.assertEqual(scorecard["control_preservation_rate"], 0.5)
+        self.assertEqual(scorecard["injection_attack_success_rate"], 0.5)
+        self.assertEqual(scorecard["harmful_skill_score"], 0.5)
+        self.assertEqual(scorecard["promotion_status"], "blocked")
+        self.assertIn("harmful_skill_action_detected", scorecard["blockers"])
+        self.assertEqual(scorecard["fixture_execution_policy"], "synthetic_only_no_harmful_actions")
+
+    def test_self_learning_run_packet_reads_metrics_ledger_without_generated_view_claims(self):
+        with TemporaryDirectory() as workspace:
+            root = Path(workspace)
+            ledger_row = {
+                "schema_version": "self_learning_metrics_ledger_v1",
+                "run_id": "sll-20260624T100000Z-demo",
+                "evidence_window": {"started_at": "2026-06-24T09:00:00Z", "ended_at": "2026-06-24T10:00:00Z"},
+                "baseline_version": "agent@1",
+                "current_version": "agent@2",
+                "candidate_version": "agent@3-candidate",
+                "metrics": {"task_success_rate": {"value": 0.7, "denominator": 10, "source": "fixture_eval", "confidence": "low"}},
+                "confidence_intervals": {},
+                "cost_latency": {"median_latency_ms": 900},
+                "user_effort": {"owner_minutes": 2},
+                "regression_flags": ["latency_regression"],
+                "accepted_gaps": ["real_owner_feedback_missing"],
+                "report_paths": ["docs/superpowers/specs/report.json"],
+                "rollback_targets": ["agent@2"],
+                "source_status": "source_backed",
+                "privacy_status": "synthetic_only",
+                "append_only": True,
+            }
+            self._write(root / ".codex" / "eval-reports" / "agent-skill-metrics-ledger.jsonl", json.dumps(ledger_row) + "\n")
+
+            summary = summarize_self_learning_metrics(root)
+
+            self.assertEqual(summary["schema_version"], "self_learning_metrics_summary_v1")
+            self.assertEqual(summary["status"], "available")
+            self.assertEqual(summary["ledger_rows"], 1)
+            self.assertEqual(summary["latest_run_id"], "sll-20260624T100000Z-demo")
+            self.assertEqual(summary["quality_regression_claim"], "unsupported_without_current_verification")
+            self.assertEqual(summary["generated_view_success_claim"], "never")
+
     def test_source_priority_policy_accepts_artifacts_and_rejects_generated_views(self):
         policy = source_priority_policy()
 
