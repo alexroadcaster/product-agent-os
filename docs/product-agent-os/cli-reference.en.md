@@ -65,7 +65,16 @@ These examples are not the broad command matrix. The full command-policy matrix,
 | --- | --- | --- | --- |
 | `python plugins\product-agent-os\scripts\check_self_learning_due.py <workspace> --dry-run` | Checks whether the owner should be offered a manual Self-Learning Loop run. | Product-Agent OS workspace with `.codex/product-agent-os/self-learning-state.json`. | Prints `due`, `not_due`, `disabled` or `state_invalid`; does not run analysis, write state, create a schedule or enable auto-apply. |
 
-In this contract, `weekly` means a due-check basis, not an active schedule. Manual loop execution remains a separate future surface with its own approval and write boundary.
+In this contract, `weekly` means a due-check basis, not an active schedule.
+
+## Self-Learning Loop Manual Runner CLI
+
+| Command | Purpose | Inputs | Output / boundary |
+| --- | --- | --- | --- |
+| `python plugins\product-agent-os\scripts\run_self_learning_loop.py <workspace> --dry-run` | Builds a Self-Learning Loop run packet without writing files. | Product-Agent OS workspace with an explicit marker and self-learning state. | Prints `self_learning_run_packet_v1`, progress events and planned artifact targets; does not write the workspace or auto-apply anything. |
+| `python plugins\product-agent-os\scripts\run_self_learning_loop.py <workspace> --stage <dir>` | Generates staged progress state and an offline HTML artifact. | Product-Agent OS workspace, stage directory outside the target workspace. | Writes only under the stage root: `progress.jsonl`, run `progress.json`, `self-learning-run-packet.json` and `self-learning-progress.html`. The target workspace is not changed. |
+
+The manual runner starts with the Product-Agent OS scope detector and fails closed for `out_of_scope`, `missing_marker` and `needs_owner_review`. It does not create scheduler/hooks/Codex App automation, ingest raw sessions, call providers or perform git/release/deploy/publish actions.
 
 ## Project Graph CLI
 

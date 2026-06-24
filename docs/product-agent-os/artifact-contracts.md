@@ -1,4 +1,4 @@
-# Product-Agent OS artifact contracts
+﻿# Product-Agent OS artifact contracts
 
 Source status: `official + experiment`
 
@@ -127,6 +127,15 @@ First-run analysis artifact - это локальный generated orientation pa
 | Артефакт | Создатель / потребитель | Роль контракта | Граница |
 | --- | --- | --- | --- |
 | `.codex/product-agent-os/self-learning-state.json` | Будущий approved state initializer/manual runner; `check_self_learning_due.py --dry-run` читает файл только для проверки. | `self_learning_state_v1`: `installed_at`, `last_analysis_at`, `last_success_at`, `last_failure_at`, `next_due_at`, `cadence_level`, `last_report_id`, `last_metrics_digest`, `approval_state`, `disable_reason`. | Только состояние для due-check; due-check CLI не пишет этот файл, не запускает analysis, не создает active schedule, не импортирует sessions, не вызывает providers, не меняет targets и не включает auto-apply. |
+
+## Артефакты прогресса Self-Learning Loop
+
+| Артефакт | Создатель | Роль контракта | Граница |
+| --- | --- | --- | --- |
+| `.codex/product-agent-os/self-learning/progress.jsonl` | `run_self_learning_loop.py --stage <dir>` | Добавляемые события `self_learning_progress_v1` для фаз `scope_check`, `due_check`, сбора свидетельств, метрик, обратной связи, кандидатов, отчета и просмотра владельцем. | В B44-S2 пишется только в `stage root`; без `raw chat`, скрытой телеметрии, абсолютных путей `target` и controls для `auto-approval`. |
+| `.codex/product-agent-os/self-learning/runs/<run_id>/progress.json` | `run_self_learning_loop.py --stage <dir>` | Снимок одного run: `run_id`, hash области проекта, состояние approval владельца, blockers и последние пути артефактов. | Только сгенерированное свидетельство для инспекции; не доказывает улучшение качества, удовлетворенность владельца или готовность. |
+| `.codex/product-agent-os/self-learning/runs/<run_id>/self-learning-run-packet.json` | `run_self_learning_loop.py --stage <dir>` | `self_learning_run_packet_v1` со scope packet, due-check packet, refs свидетельств, unsupported claims, placeholders метрик и summary кандидатов. | Только `manual-only` / `staged-only`; `provider calls`, `live eval services`, `target mutation` и `auto-apply` остаются `not performed`. |
+| `.codex/product-agent-os/self-learning/self-learning-progress.html` | `run_self_learning_loop.py --stage <dir>` | Сгенерированная офлайн-страница прогресса для проверки границ проекта, статуса запуска, фаз, блокеров и состояния просмотра владельцем. | Только сгенерированная страница просмотра; не является источником истины и не может одобрять, применять или доказывать завершение работы. |
 
 ## Doubt verification artifacts
 

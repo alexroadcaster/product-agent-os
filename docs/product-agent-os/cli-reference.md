@@ -1,4 +1,4 @@
-# Product-Agent OS CLI reference
+﻿# Product-Agent OS CLI reference
 
 Source status: `official + experiment`
 
@@ -65,7 +65,16 @@ python plugins\product-agent-os\scripts\scan_project_code_graph.py <workspace> -
 | --- | --- | --- | --- |
 | `python plugins\product-agent-os\scripts\check_self_learning_due.py <workspace> --dry-run` | Проверяет, пора ли предложить ручной запуск Self-Learning Loop. | Product-Agent OS workspace с `.codex/product-agent-os/self-learning-state.json`. | Печатает `due`, `not_due`, `disabled` или `state_invalid`; не запускает анализ, не пишет state, не создает schedule и не включает auto-apply. |
 
-`weekly` в этом контракте означает due-check basis, а не active schedule. Ручной запуск loop остается отдельной будущей поверхностью и требует своего approval/write boundary.
+`weekly` в этом контракте означает due-check basis, а не active schedule. Ручной запуск loop доступен через отдельную manual-only/staged-only команду ниже и не включает auto-apply.
+
+## Self-Learning Loop Manual Runner CLI
+
+| Команда | Назначение | Входы | Вывод / граница |
+| --- | --- | --- | --- |
+| `python plugins\product-agent-os\scripts\run_self_learning_loop.py <workspace> --dry-run` | Собирает Self-Learning Loop run packet без записи файлов. | Product-Agent OS workspace с explicit marker и self-learning state. | Печатает `self_learning_run_packet_v1`, progress events и planned artifact targets; не пишет workspace и не делает auto-apply. |
+| `python plugins\product-agent-os\scripts\run_self_learning_loop.py <workspace> --stage <dir>` | Генерирует staged progress state и offline HTML artifact. | Product-Agent OS workspace, stage directory outside target workspace. | Пишет только в `stage root`: `progress.jsonl`, run `progress.json`, `self-learning-run-packet.json` и `self-learning-progress.html`. Target workspace не меняется. |
+
+`Manual runner` сначала вызывает `Product-Agent OS scope detector` и останавливается по принципу `fail-closed` для `out_of_scope`, `missing_marker` и `needs_owner_review`. Он не создает расписания, не включает `hooks` или `Codex App automation`, не импортирует сырые пользовательские сессии, не вызывает провайдеров и не выполняет действия `git`, release, deploy или publish.
 
 ## Project Graph CLI
 

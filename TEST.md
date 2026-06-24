@@ -57,10 +57,30 @@ The due-check CLI must report only `due`, `not_due`, `disabled` or
 include raw workspace paths or enable auto-apply. First-run help must disclose
 the Self-Learning Loop, default `manual_only` mode, cadence choices, manual
 due-check trigger and `not_created` schedule boundary. It must not expose a
-runnable `run_now` command before the B44-S2 manual runner exists. Invalid
+`run_now` command unless the B44-S2 manual runner exists and remains
+manual-only/staged-only. Invalid
 `--now` input must return bounded JSON with `now:invalid_datetime` and no
 traceback; `on_change` cadence must stay `not_due` until a Product-Agent OS
 change trigger exists.
+
+## Batch 44 S2 Self-Learning Loop Manual Runner And Progress Checks
+
+For `B44-S2-Manual-Runner-And-Project-Progress`, run:
+
+```powershell
+python -m unittest tests.product_agent_os.test_self_learning_state tests.product_agent_os.test_batch41_first_run_automation -v
+python plugins\product-agent-os\scripts\run_self_learning_loop.py . --dry-run
+python plugins\product-agent-os\scripts\run_self_learning_loop.py . --stage <stage-dir-outside-workspace>
+```
+
+The manual runner must start with Product-Agent OS scope detection, fail closed
+for unrelated projects, and emit `self_learning_run_packet_v1` without raw
+workspace paths. `--dry-run` must not write files. `--stage` may write only under
+the explicit stage root and must produce `progress.jsonl`, per-run
+`progress.json`, `self-learning-run-packet.json` and
+`self-learning-progress.html`. The HTML artifact is generated review evidence
+only; it must not contain external URLs, external scripts, raw chat, hidden
+telemetry, auto-approval controls or auto-apply behavior.
 
 ## Control-Plane Size Budgets
 

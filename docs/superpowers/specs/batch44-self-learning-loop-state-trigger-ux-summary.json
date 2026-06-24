@@ -75,18 +75,20 @@
     "schedule_status": "not_created",
     "auto_apply_status": "not_enabled",
     "manual_commands": [
-      "check_self_learning_due.py"
+      "check_self_learning_due.py",
+      "run_self_learning_loop.py"
     ],
-    "future_manual_runner": {
-      "status": "planned_for_B44_S2",
-      "proposed_command": "run_self_learning_loop.py"
+    "manual_runner": {
+      "status": "available_manual_only_after_B44_S2",
+      "dry_run_command": "run_self_learning_loop.py",
+      "stage_command": "run_self_learning_loop.py --stage <dir>"
     }
   },
   "unsupported_claims": [
     "No active scheduler, Codex App automation, hook trigger or recurring job was created.",
     "No Self-Learning Loop analysis runner was executed by the due-check CLI.",
     "No provider/model call, hidden session ingestion, raw private transcript storage, target mutation, git action, release, deployment or publication was performed.",
-    "The run_self_learning_loop.py command is disclosed only as a future B44-S2 surface; B44-S1 only implements due-check and disclosure UX."
+    "The run_self_learning_loop.py command is implemented by B44-S2 as a manual-only staged runner; B44-S1 itself only implemented due-check and disclosure UX."
   ],
   "verification": {
     "red_test_observed": "self_learning_state module, check_self_learning_due.py and structured first-run disclosure were missing before implementation",
@@ -95,7 +97,7 @@
         "python -m unittest tests.product_agent_os.test_first_run_analysis -v",
         "invalid --now returns bounded JSON with now:invalid_datetime and no traceback",
         "on_change cadence returns not_due without a Product-Agent OS change trigger",
-        "first-run help does not expose a runnable run_now command before B44-S2"
+        "first-run help exposes run_now only after B44-S2 and keeps it manual-only/staged-only"
     ],
     "latest_status": "passed_after_review_fixes"
   }

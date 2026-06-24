@@ -282,11 +282,13 @@ def build_first_run_welcome_message() -> dict[str, Any]:
             ],
             "manual_commands": {
                 "check_due": "python plugins/product-agent-os/scripts/check_self_learning_due.py <workspace> --dry-run",
+                "run_now": "python plugins/product-agent-os/scripts/run_self_learning_loop.py <workspace> --dry-run",
             },
-            "future_manual_runner": {
-                "status": "planned_for_B44_S2",
-                "proposed_command": "python plugins/product-agent-os/scripts/run_self_learning_loop.py <workspace> --dry-run",
-                "boundary": "not available in B44-S1; no analysis is executed by first-run help or due-check",
+            "manual_runner": {
+                "status": "available_manual_only",
+                "dry_run_command": "python plugins/product-agent-os/scripts/run_self_learning_loop.py <workspace> --dry-run",
+                "stage_command": "python plugins/product-agent-os/scripts/run_self_learning_loop.py <workspace> --stage <dir>",
+                "boundary": "manual runner emits staged evidence and progress artifacts only; no auto-apply or automation is enabled",
             },
             "actions_performed": {
                 "active_automation": False,
@@ -295,8 +297,8 @@ def build_first_run_welcome_message() -> dict[str, Any]:
                 "auto_apply": False,
             },
             "manual_activation": (
-                "A future approved skill/manual command can run the loop on demand. This first-run help "
-                "only discloses the mechanism and does not activate it."
+                "The owner can run the loop on demand with the manual command. This first-run help only "
+                "discloses the mechanism and does not activate it."
             ),
         },
         "safe_start": {

@@ -62,10 +62,12 @@ def main(argv: list[str] | None = None) -> int:
         {
             "mode": "dry_run",
             "workspace_ref": workspace_ref(workspace),
-            "manual_run_command": "not_available_until_B44_S2_manual_runner",
-            "future_manual_runner": {
-                "status": "planned_for_B44_S2",
-                "proposed_command": "python plugins/product-agent-os/scripts/run_self_learning_loop.py <workspace> --dry-run",
+            "manual_run_command": "python plugins/product-agent-os/scripts/run_self_learning_loop.py <workspace> --dry-run",
+            "manual_run_command_status": "available_manual_only",
+            "manual_runner_boundary": {
+                "write_policy": "read_only_or_staged_only",
+                "auto_apply_status": "not_enabled",
+                "schedule_status": "not_created",
             },
         }
     )

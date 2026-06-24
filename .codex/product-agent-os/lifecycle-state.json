@@ -1,9 +1,9 @@
 {
   "task_start_brief_shown": true,
-  "task_id": "B44-S1-State-And-Trigger-UX",
-  "scope": "Implement Product-Agent OS Self-learning-loop state, trigger and user-facing cadence UX contract in local codex_docs workspace only",
-  "updated_at": "2026-06-24T09:40:00+03:00",
-  "approval_boundary": "No scheduler/automation activation, no global config, no provider/model/browser/git/release/deploy/publish actions, no target-project mutation",
+  "task_id": "B44-S2-Manual-Runner-And-Project-Progress",
+  "scope": "Implement Product-Agent OS Self-Learning Loop manual runner and staged project progress artifact in local codex_docs workspace only",
+  "updated_at": "2026-06-24T12:20:00+03:00",
+  "approval_boundary": "No scheduler/automation activation, no global config, no provider/model/browser/git/release/deploy/publish actions, no target-project mutation, no auto-apply",
   "brief_schema_version": "task_start_brief_v1",
   "brief_format": "field_list",
   "brief_digest": "sha256:0123456789abcdef",

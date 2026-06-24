@@ -75,9 +75,9 @@ class Batch41FirstRunAutomationTests(unittest.TestCase):
         self.assertEqual(self_learning["schedule_status"], "not_created")
         self.assertEqual(self_learning["auto_apply_status"], "not_enabled")
         self.assertIn("check_self_learning_due.py", self_learning["manual_commands"]["check_due"])
-        self.assertNotIn("run_now", self_learning["manual_commands"])
-        self.assertEqual(self_learning["future_manual_runner"]["status"], "planned_for_B44_S2")
-        self.assertIn("run_self_learning_loop.py", self_learning["future_manual_runner"]["proposed_command"])
+        self.assertIn("run_self_learning_loop.py", self_learning["manual_commands"]["run_now"])
+        self.assertEqual(self_learning["manual_runner"]["status"], "available_manual_only")
+        self.assertIn("run_self_learning_loop.py", self_learning["manual_runner"]["dry_run_command"])
         self.assertFalse(self_learning["actions_performed"]["active_automation"])
         self.assertFalse(self_learning["actions_performed"]["provider_api_call"])
 
@@ -1824,6 +1824,7 @@ class Batch41FirstRunAutomationTests(unittest.TestCase):
             self.assertIn("weekly_due_check", {trigger["id"] for trigger in welcome["self_learning_loop"]["triggers"]})
             self.assertIn("approval_required", {mode["id"] for mode in welcome["self_learning_loop"]["apply_modes"]})
             self.assertIn("does not activate it", welcome["self_learning_loop"]["manual_activation"])
+            self.assertEqual(welcome["self_learning_loop"]["manual_runner"]["status"], "available_manual_only")
             self.assertEqual(first_response["blocking_question_count"], 1)
             self.assertIsInstance(first_response["blocking_question"], dict)
             self.assertEqual(
@@ -1860,6 +1861,7 @@ class Batch41FirstRunAutomationTests(unittest.TestCase):
         self.assertEqual(welcome["self_learning_loop"]["default_settings"]["apply_mode"], "draft_only")
         self.assertIn("weekly", {option["id"] for option in welcome["self_learning_loop"]["cadence_options"]})
         self.assertIn("weekly_due_check", {trigger["id"] for trigger in welcome["self_learning_loop"]["triggers"]})
+        self.assertIn("run_self_learning_loop.py", welcome["self_learning_loop"]["manual_commands"]["run_now"])
         self.assertIn(
             "auto_apply_limited_future_after_explicit_approval",
             {mode["id"] for mode in welcome["self_learning_loop"]["apply_modes"]},
