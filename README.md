@@ -1,43 +1,43 @@
 # Product-Agent OS
 
-Product-Agent OS - local Codex plugin for turning Codex App, CLI, IDE extension, subagents, skills, `AGENTS.md`, memory, sandbox, approvals, MCP and agent workflows into a governed product engineering system.
+Product-Agent OS - local Codex plugin for turning Codex App, CLI, IDE extension, subagents, skills, `AGENTS.md`, memory, sandbox, approvals, MCP and product-agent workflows into a governed product engineering system.
 
-Product-Agent OS full stack keeps product context, requirements, architecture boundaries, documentation, verification, ownership, release evidence and the learning loop in explicit artifacts. Codex writes and verifies focused slices; Product-Agent OS defines the operating order: understand the project first, record risk and boundaries, then change files.
+Product-Agent OS full stack keeps product context, requirements, architecture boundaries, documentation, verification, ownership, release evidence and learning loops in explicit artifacts. Codex still performs the engineering work; Product-Agent OS defines the operating order: understand the project first, record risk and boundaries, then change files only through the approved route.
 
-Source boundary: this README is the compact product and operator entrypoint. Detailed implementation history and source-backed ledgers live in the owning artifacts listed in [Where History Lives](#where-history-lives).
+Source boundary: this README is the compact product and operator entrypoint. It explains what Product-Agent OS is, which modules it contains, how to use them and where deeper documentation lives. It is not a ledger; it should route first run, outputs, methods, approvals and deeper implementation detail to the owning docs. Detailed implementation history and source-backed ledgers live in [docs/sources/registry.md](docs/sources/registry.md), source-owned backlog files and the plugin docs.
 
 ## Why Product-Agent OS
 
-Product-Agent OS is for the moment when a Codex session becomes too important to live only in chat. It turns a messy or high-stakes workspace into a reviewable delivery route: what the project is, what is risky, which files matter, which checks prove progress, what needs approval and what the next safe slice should be.
+Product-Agent OS is for work that is too important to live only in a chat thread. It turns a messy or high-stakes workspace into a reviewable delivery route: what the project is, what is risky, which files matter, which checks prove progress, what needs approval and what the next safe slice should be.
 
-Use it when you want Codex to keep momentum without losing product intent, engineering discipline or source-of-truth boundaries. It blocks unsafe completion claims so safe work can move faster.
+It is useful when you want Codex to keep momentum without losing product intent, engineering discipline or source-of-truth boundaries.
 
-| Plain workflow pain | Product-Agent OS outcome |
+| Workflow pain | Product-Agent OS outcome |
 | --- | --- |
 | "Just implement it" hides missing context. | The first move is a read-only audit with risks, gaps and a bounded next action. |
-| A long thread becomes the only plan. | Requirements, plan, tests, evals, handoff and learning move into durable artifacts. |
+| A long thread becomes the only plan. | Requirements, plans, checks, evals, handoffs and learning records move into durable artifacts. |
 | Subagents can collide in the same files. | Ownership, forbidden files, expected evidence and stop conditions are explicit before parallel work. |
 | Verification is reconstructed after coding. | Checks, evals, runtime evidence, rollback and owner evidence are part of the route. |
 | Safety feels like a blocker. | Approval boundaries make risky actions explicit while local deterministic work continues. |
 
 ## What It Solves
 
-In real projects, the bottleneck is rarely only code generation speed. The usual failure is context control:
+In real projects, the bottleneck is rarely only code generation speed. The common failure is context control:
 
 - requirements stay in chat and disappear between sessions;
 - architecture decisions are not connected to files, commands and owners;
-- several agent workers can edit the same area without ownership;
+- several agent workers edit the same area without ownership;
 - tests, evals, rollback and release evidence are defined after the change;
 - AI/RAG quality is judged by intuition instead of baseline and rerun evidence;
 - security, privacy, data and external-write risks appear late;
-- dashboards and generated views are mistaken for proof;
-- "done" is claimed without current command, eval or runtime evidence.
+- generated dashboards and graphs are mistaken for proof;
+- completion is claimed without current command, eval, runtime or owner evidence.
 
 Product-Agent OS moves work from chat into reviewable artifacts: requirements, plan, test/eval matrix, source context, handoff packets, risk review, docs sync, release packet and learning loop.
 
 ## What You Get After The First Run
 
-A good first run should not dump a methodology lecture or start rewriting the repo. It should return a compact operating packet:
+A good first run should not start by rewriting the repository. It should return a compact operating packet:
 
 | Output | Why it matters |
 | --- | --- |
@@ -49,11 +49,9 @@ A good first run should not dump a methodology lecture or start rewriting the re
 | Approval boundary | Separates read-only work, staged proposals and actions that need explicit permission. |
 | Evidence gaps | Prevents readiness, fixed, works or release claims from detection-only evidence. |
 
-The first useful artifact can be as small as a route summary, or as concrete as staged `REQUIREMENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md`, `RUNLOG.md` and `.codex/` proposals.
-
 ## Quick Start
 
-If the plugin is available in Codex, start with a workspace route:
+If the plugin is available in Codex, start with a read-only route:
 
 ```text
 Use Product-Agent OS to audit this workspace and propose the next safe product-engineering step.
@@ -65,11 +63,7 @@ Recommended first prompt:
 Use Product-Agent OS to run a read-only first-run audit. Return lifecycle state, risk map, next smallest action, required artifacts, checks, approvals and evidence gaps. Do not write files yet.
 ```
 
-Good starter prompts:
-
-```text
-Use Product-Agent OS to turn this repo into a product-ready Codex project.
-```
+Useful follow-up prompts:
 
 ```text
 Use Product-Agent OS for this feature: write requirements, plan build slices, define tests/evals, then execute only the first safe slice.
@@ -92,44 +86,50 @@ Use Product-Agent OS to build a project code graph and show read order, hotspots
 When Product-Agent OS stages project infrastructure, the output is designed to be inspectable before it touches the target workspace:
 
 ```text
-AGENTS.md       -> durable project rules, safety and ownership boundaries
-REQUIREMENTS.md -> scope, non-goals, constraints and acceptance scenarios
-PLAN.md         -> slices, owned files, commands, rollback and stop conditions
-TEST.md         -> deterministic checks, runtime checks and escalation rules
-EVALS.md        -> subjective, AI/RAG and long-horizon quality gates
-RUNLOG.md       -> current-cycle evidence, failures, residual risks and next action
-.codex/agents   -> project-scoped role proposals
+AGENTS.md        -> durable project rules, safety and ownership boundaries
+REQUIREMENTS.md  -> scope, non-goals, constraints and acceptance scenarios
+PLAN.md          -> slices, owned files, commands, rollback and stop conditions
+TEST.md          -> deterministic checks, runtime checks and escalation rules
+EVALS.md         -> subjective, AI/RAG and long-horizon quality gates
+RUNLOG.md        -> current-cycle evidence, failures, residual risks and next action
+.codex/agents    -> project-scoped role proposals
 .codex/workflows -> repeatable workflow playbooks
 .codex/artifact-templates -> reviewable packets for product, architecture, data, AI, security and release work
 ```
 
-Generated status, graph and cockpit views can help orientation, but the source files, control-plane artifacts, command evidence and owner decisions remain authoritative.
+Generated status, graph and cockpit views help orientation. Source files, control-plane artifacts, current command evidence and owner decisions remain authoritative.
+
+## First-Run Architecture Intelligence Cockpit
+
+The first-run path can stage a local Architecture Intelligence Cockpit before it asks to mutate the target workspace: architecture dossier, HTML/JSON views, status snapshot, methodology routes, evidence gaps and approval boundaries for live runtime, browser proof, provider calls, canonical mutation, git actions, publication and automation.
+
+Cockpit artifacts help a human and Codex decide what to read next. They are generated views, not replacements for source files, current command evidence, owner decisions or accepted gaps.
 
 ## Codex Vs Product-Agent OS
 
 | Surface | Best at | Product-Agent OS adds |
 | --- | --- | --- |
 | Codex App | Ambiguous product and engineering work with steering. | Durable control plane, first-run route, source policy, approval map and evidence discipline. |
-| CLI | Local implementation, tests and repo tasks. | Staged infrastructure, deterministic checks, runtime route packets and safe merge planning. |
+| CLI | Local implementation, tests and repository tasks. | Staged infrastructure, deterministic checks, runtime route packets and safe merge planning. |
 | IDE extension | In-editor code changes and review. | File ownership, handoff context, acceptance scenarios and completion evidence. |
 | Subagents | Independent slices with clear ownership. | Role design, owned/forbidden files, expected evidence and stop conditions. |
 | Skills | Repeatable methods. | Promotion path from manual success to playbook, skill, plugin and automation candidate. |
 
-Codex still does the engineering work. Product-Agent OS keeps the work product-shaped, source-backed and reviewable.
+Codex does the engineering work. Product-Agent OS keeps the work product-shaped, source-backed and reviewable.
 
 ## Implementation Depth
 
-The current repository is not just a README around prompts. It includes a local implementation surface with:
+The repository is not just a README around prompts. Current local inventory includes:
 
-- 11 packaged lifecycle skills;
-- 20+ workflow templates for first-run intake, bug rescue, PR review, AI/RAG eval regression, data migration, release packaging and related routes;
-- 142 artifact templates for product, architecture, requirements/domain, frontend, backend, API, database, AI/RAG, security, release, agentic workflow and governance packets;
-- 91 local fixtures for routing, false-positive, approval-bound and regression coverage;
-- 65 Product-Agent OS test files;
+- 12 packaged lifecycle skills;
+- 26 workflow templates for first-run intake, bug rescue, PR review, AI/RAG eval regression, data migration, release packaging and related routes;
+- 145 artifact templates for product, architecture, requirements/domain, frontend, backend, API, database, AI/RAG, security, release, agentic workflow and governance packets;
+- 91 local fixture directories for routing, false-positive, approval-bound and regression coverage;
+- 84 Product-Agent OS test files;
 - deterministic fixture and transcript eval runners;
-- project graph, cockpit, status dashboard, agent/skill metrics and live-governance staging modules.
+- project graph, first-run cockpit, status dashboard, agent/skill metrics, self-learning and live-governance staging modules.
 
-These numbers are implementation depth signals, not readiness claims for a target project. A target project still needs current source reads, checks, owner decisions and accepted gaps.
+These numbers are implementation-depth signals, not target-project readiness proof. A target project still needs current source reads, checks, owner decisions and accepted gaps.
 
 ## Before And After
 
@@ -146,43 +146,25 @@ These numbers are implementation depth signals, not readiness claims for a targe
 The current implementation is a checked-in local Codex plugin package under `plugins/product-agent-os/`. It includes:
 
 - a Codex plugin manifest at `plugins/product-agent-os/.codex-plugin/plugin.json`;
-- packaged lifecycle skills under `plugins/product-agent-os/skills/`;
+- bundled lifecycle skills under `plugins/product-agent-os/skills/`;
 - staged infrastructure templates under `plugins/product-agent-os/assets/templates/`;
 - deterministic Python tooling under `plugins/product-agent-os/scripts/`;
 - fixture and transcript eval assets under `plugins/product-agent-os/assets/`;
 - operator docs under `docs/product-agent-os/` and `docs/product-agent/`;
 - unit and contract tests under `tests/product_agent_os/`.
 
-Implemented surfaces are local and deterministic by default. The package does not require a separate OpenAI API key for its local tooling, does not run as a standalone Agents SDK app, does not publish itself, does not start live systems, does not call external providers and does not mutate target workspaces unless an explicit approval path is used.
+Implemented surfaces are local and deterministic by default. The package does not require a separate OpenAI API key for local tooling, does not run as a standalone Agents SDK app, does not publish itself, does not start live systems, does not call external providers and does not mutate target workspaces unless an explicit approval path is used.
 
 The shipped implementation should be read as a governed local operating system for Codex work, not as an autonomous production deployment platform.
 
 ## Operating Loop
 
-```mermaid
-flowchart TD
-    A["User intent or project problem"] --> B["Read-only workspace audit"]
-    B --> C["Use-case, maturity and risk routing"]
-    C --> D["Requirements, constraints and acceptance criteria"]
-    D --> E["Methodology selection and artifact plan"]
-    E --> F{"Approval required?"}
-    F -->|yes| G["Approval record, scope, rollback and evidence owner"]
-    F -->|no| H["Focused build or docs slice"]
-    G --> H
-    H --> I["Tests, evals, runtime evidence or explicit gap"]
-    I --> J["Risk review, docs sync and release packet"]
-    J --> K["RUNLOG, learning loop and next action"]
-    K --> L{"Repeatable and stable?"}
-    L -->|yes| M["Playbook -> skill -> plugin -> automation candidate"]
-    L -->|no| A
-```
-
-Normal cycle:
+Product-Agent OS follows a conservative loop:
 
 1. **Audit** - read the workspace without writing.
 2. **Route** - classify use case, maturity and risk profile.
 3. **Plan** - record scope, non-goals, acceptance, ownership, verification and rollback.
-4. **Stage** - create proposals only in a safe staging path.
+4. **Stage** - create proposals in a safe staging path.
 5. **Approve** - require explicit permission for target writes, external action, release, secrets, production data and automation.
 6. **Build** - execute one focused slice.
 7. **Verify** - run current checks, evals or runtime evidence, or record an explicit gap.
@@ -191,41 +173,153 @@ Normal cycle:
 
 ## Capability Map
 
+This is the primary architecture map. It shows the project scope, module dependencies, evidence flow and trust boundaries. The diagram is formatted as an A3 portrait map: large labels, a vertical spine and reduced horizontal fan-out.
+
 ```mermaid
-flowchart LR
-    subgraph Control["Control Plane"]
-        A1["AGENTS.md"]
-        A2["REQUIREMENTS.md"]
-        A3["PLAN.md"]
-        A4["TEST.md"]
-        A5["EVALS.md"]
-        A6["RUNLOG.md"]
+%%{init: {"theme":"base","flowchart":{"htmlLabels":true,"curve":"basis","nodeSpacing":90,"rankSpacing":120,"padding":32,"useMaxWidth":false},"themeVariables":{"fontSize":"24px","fontFamily":"Segoe UI, Arial, sans-serif","primaryTextColor":"#0f172a","primaryBorderColor":"#334155","lineColor":"#64748b","clusterBkg":"#ffffff","clusterBorder":"#94a3b8"}}}%%
+flowchart TB
+    U["1. User intent<br/>project problem or delivery risk"]:::input
+
+    subgraph codex["2. Codex entry surfaces"]
+        direction TB
+        SA["Codex App<br/>planning, ambiguity and steering"]:::surface
+        SB["CLI<br/>local implementation and checks"]:::surface
+        SC["IDE extension<br/>editor loop and review"]:::surface
     end
 
-    subgraph Skills["Lifecycle Skills"]
-        B1["Discovery"]
-        B2["Requirements"]
-        B3["Planning"]
-        B4["Agent team"]
-        B5["Tests and evals"]
-        B6["Docs"]
-        B7["Review and release"]
-        B8["Learning and automation"]
+    U --> SA --> SB --> SC
+    SC --> P["3. Product-Agent OS plugin<br/>governed local operating system"]:::core
+
+    P --> M["4. Plugin manifest and package boundary<br/>skills, templates, scripts, fixtures and docs"]:::core
+
+    subgraph skills["5. Lifecycle skills"]
+        direction TB
+        S1["Route and discover<br/>project-lifecycle-orchestrator<br/>workspace-discovery-auditor"]:::module
+        S2["Define and plan<br/>requirements-author<br/>implementation-planner"]:::module
+        S3["Split ownership<br/>agent-team-designer<br/>handoff contracts"]:::module
+        S4["Choose evidence gates<br/>test-eval-designer<br/>risk-reviewer"]:::module
+        S5["Maintain docs and doubt loop<br/>docs-maintainer<br/>completion-skeptic"]:::module
+        S6["Release, learn and promote<br/>pr-release-operator<br/>learning-loop-maintainer<br/>automation-promoter"]:::module
     end
 
-    subgraph Engines["Local Engines"]
-        C1["Infrastructure renderer"]
-        C2["Safe merge planner"]
-        C3["Methodology audit"]
-        C4["Project code graph"]
-        C5["Status dashboard"]
-        C6["Fixture and transcript evals"]
-        C7["Compatibility validators"]
+    M --> S1 --> S2 --> S3 --> S4 --> S5 --> S6
+
+    subgraph control["6. Control-plane artifacts"]
+        direction TB
+        C1["AGENTS.md<br/>durable rules and safety boundaries"]:::artifact
+        C2["REQUIREMENTS.md<br/>scope, non-goals and acceptance"]:::artifact
+        C3["PLAN.md<br/>slices, ownership and rollback"]:::artifact
+        C4["TEST.md<br/>deterministic checks and runtime gates"]:::artifact
+        C5["EVALS.md<br/>subjective and AI quality gates"]:::artifact
+        C6["RUNLOG.md<br/>current evidence and handoff state"]:::artifact
     end
 
-    Control --> Skills
-    Skills --> Engines
-    Engines --> Control
+    S6 --> C1 --> C2 --> C3 --> C4 --> C5 --> C6
+
+    subgraph workflows["7. Workflows and artifact templates"]
+        direction TB
+        W1["Scenario workflows<br/>first run, bug rescue, PR readiness"]:::artifact
+        W2["Product and architecture packets<br/>briefs, ADRs, trust boundaries"]:::artifact
+        W3["Quality, eval and release packets<br/>test matrix, scorecards, rollout"]:::artifact
+        W4["Security, data, AI/RAG and governance packets<br/>approval, redaction, source policy"]:::artifact
+        W5["Automation candidate packets<br/>manual stability before activation"]:::artifact
+    end
+
+    C6 --> W1 --> W2 --> W3 --> W4 --> W5
+
+    subgraph engines["8. Local engines and validators"]
+        direction TB
+        E1["Infrastructure renderer<br/>stage before target writes"]:::engine
+        E2["Safe merge and rollback planner<br/>manifest, digest and path checks"]:::engine
+        E3["Methodology audit and synthesis<br/>risk-aware gate selection"]:::engine
+        E4["Codex runtime route runner<br/>deterministic local routing"]:::engine
+        E5["Fixture and transcript evals<br/>shortcut and privacy checks"]:::engine
+        E6["Compatibility and policy validators<br/>docs, package and hygiene checks"]:::engine
+        E7["Project code graph scanner<br/>read order, hotspots and impact"]:::engine
+        E8["Self-learning and metrics reports<br/>staged evidence only"]:::engine
+    end
+
+    W5 --> E1 --> E2 --> E3 --> E4 --> E5 --> E6 --> E7 --> E8
+
+    subgraph views["9. Generated orientation views"]
+        direction TB
+        G1["First-run Architecture Intelligence Cockpit<br/>local JSON and HTML"]:::view
+        G2["Project Code Graph<br/>JSON, JSONL, query packets and search index"]:::view
+        G3["Status dashboard<br/>generated view, not source of truth"]:::view
+        G4["Agent and skill scorecards<br/>redacted staged metrics"]:::view
+        G5["Doubt verification packet<br/>claim, evidence and gap ledger"]:::view
+        G6["Offline reports<br/>reviewable HTML and JSON artifacts"]:::view
+    end
+
+    E8 --> G1 --> G2 --> G3 --> G4 --> G5 --> G6
+
+    subgraph approvals["10. Approval gates and trust boundaries"]
+        direction TB
+        A1["Read-only allowed<br/>inspect and route"]:::gate
+        A2["Staged-only proposals<br/>safe external output path"]:::gate
+        A3["Approved target writes<br/>explicit scope and rollback"]:::gate
+        A4["Live runtime or browser approval<br/>server, UI and screenshots"]:::gate
+        A5["Provider or API approval<br/>model, embedding and external calls"]:::gate
+        A6["Canonical mutation approval<br/>graph or source-of-truth writes"]:::gate
+        A7["Git or release approval<br/>stage, commit, push, PR, publish"]:::gate
+        A8["Automation activation approval<br/>owner, cadence and disable path"]:::gate
+    end
+
+    G6 --> A1 --> A2 --> A3 --> A4 --> A5 --> A6 --> A7 --> A8
+
+    subgraph targets["11. Execution surfaces"]
+        direction TB
+        T1["Target workspace<br/>source, tests, docs and runtime"]:::target
+        T2["External stage directory<br/>review before merge"]:::target
+        T3["External systems<br/>providers, integrations and APIs"]:::target
+        T4["Git, release and automation surfaces<br/>approval-bound writes"]:::target
+    end
+
+    A1 --> T1
+    A2 --> T2
+    A3 --> T1
+    A4 --> T1
+    A5 --> T3
+    A6 --> T1
+    A7 --> T4
+    A8 --> T4
+
+    subgraph evidence["12. Evidence flow"]
+        direction TB
+        R1["Command evidence<br/>tests, lint, checks and logs"]:::evidence
+        R2["Eval evidence<br/>fixture, transcript and subjective gates"]:::evidence
+        R3["Runtime evidence<br/>server, browser, UI or API proof"]:::evidence
+        R4["Owner decision<br/>approval, accepted gap or rejection"]:::evidence
+        R5["Accepted gap<br/>reason, residual risk and follow-up"]:::evidence
+    end
+
+    T1 --> R1
+    T2 --> R1
+    T3 --> R3
+    T4 --> R4
+    R1 --> R2 --> R3 --> R4 --> R5
+
+    R5 --> CL["13. Claim ledger<br/>supported, unsupported, stale or approval-bound"]:::claim
+    CL --> DS["14. Docs and source registry<br/>source-backed routing and history"]:::claim
+    DS --> NL["15. Next safe action<br/>smallest executable or approvable slice"]:::next
+    NL --> U
+
+    G6 -. "orientation evidence only" .-> CL
+    C6 -. "current source context" .-> CL
+    M -. "package presence is not activation" .-> A1
+
+    classDef input fill:#fef3c7,stroke:#b45309,stroke-width:3px,color:#451a03;
+    classDef surface fill:#dbeafe,stroke:#1d4ed8,stroke-width:3px,color:#172554;
+    classDef core fill:#e0f2fe,stroke:#0369a1,stroke-width:4px,color:#082f49;
+    classDef module fill:#f0fdf4,stroke:#15803d,stroke-width:3px,color:#052e16;
+    classDef artifact fill:#f8fafc,stroke:#475569,stroke-width:3px,color:#0f172a;
+    classDef engine fill:#ede9fe,stroke:#6d28d9,stroke-width:3px,color:#2e1065;
+    classDef view fill:#ecfeff,stroke:#0e7490,stroke-width:3px,color:#164e63;
+    classDef gate fill:#fff7ed,stroke:#c2410c,stroke-width:3px,color:#431407;
+    classDef target fill:#f1f5f9,stroke:#334155,stroke-width:3px,color:#0f172a;
+    classDef evidence fill:#ecfdf5,stroke:#047857,stroke-width:3px,color:#064e3b;
+    classDef claim fill:#fef2f2,stroke:#b91c1c,stroke-width:3px,color:#450a0a;
+    classDef next fill:#fdf4ff,stroke:#a21caf,stroke-width:4px,color:#4a044e;
 ```
 
 ## Core Capabilities
@@ -238,7 +332,7 @@ flowchart LR
 | Agent team design | Creates roles around ownership, owned/forbidden files, handoff artifacts and verification. | `agent-team-designer` |
 | Test/eval routing | Selects deterministic tests, subjective evals, AI evals, runtime checks and manual QA evidence. | `test-eval-designer` |
 | Docs and source policy | Aligns docs, source registry, glossary, traceability, unsupported claims and accepted gaps. | `docs-maintainer` |
-| System file hygiene | Reviews control-plane files, agents, skills, workflows, hooks, evals, automation candidates and plugin package files for size, duplicates, stale evidence, secrets and active schedules. | `docs-maintainer`, `automation-promoter` |
+| Completion skepticism | Re-checks claims, evidence, gaps and approvals before final handoff. | `completion-skeptic` |
 | Risk and release | Reviews behavioral regressions, missing tests, release scope, rollback and publish boundary. | `risk-reviewer`, `pr-release-operator` |
 | Learning loop | Moves repeated success and failure patterns into playbooks, skills, plugin updates or automation candidates. | `learning-loop-maintainer`, `automation-promoter` |
 
@@ -249,23 +343,27 @@ The methodology intelligence layer chooses only the product, architecture, quali
 | Surface | Implemented form | Boundary |
 | --- | --- | --- |
 | Plugin package | `.codex-plugin/plugin.json`, `.mcp.json`, skills, templates, scripts, fixtures and docs. | Package presence is not installation, publication or runtime activation. |
-| Lifecycle skills | Skills for orchestration, discovery, requirements, planning, agent teams, test/eval design, docs, risk, release, learning and automation promotion. | Skills guide and stage work; approvals and project instructions still win. |
-| Infrastructure renderer | `render_infrastructure.py` stages `AGENTS.md`, control-plane files, `.codex/config.toml`, agents, hooks, workflows, artifact templates, evals, PR/release files and automation candidates. | Writes to an explicit stage directory unless an approved merge path is used. |
+| Bundled MCP declaration | `.mcp.json` declares the Context7 MCP command for optional documentation/context lookup. | The declaration is inert by itself; MCP startup, network use and retrieved external context remain approval-bound. |
+| Lifecycle skills | Skills for orchestration, discovery, requirements, planning, agent teams, test/eval design, docs, skepticism, risk, release, learning and automation promotion. | Skills guide and stage work; approvals and project instructions still win. |
+| Infrastructure renderer | `render_infrastructure.py` stages control-plane files, config proposals, agents, hooks, workflows, artifact templates, evals, PR/release files and automation candidates. | Writes to an explicit stage directory unless an approved merge path is used. |
 | Safe merge tooling | `merge_infrastructure.py` validates stage manifests, digests, workspace binding, path safety, approved targets and rollback data. | Target writes require an approval record; rollback refuses stale targets. |
 | Codex-only runtime | `run_codex_runtime_runner.py` reads local context, infers lifecycle state, validates route packets, redacts output and returns deterministic route status. | It does not call a model, start a server or hide a standalone Agents SDK runtime. |
 | Methodology audit | `run_methodology_audit.py` and `product_agent_os/methodology_*` map workspace evidence to applicability, owner questions, recommendations and source-artifact routing. | Detection creates `present_unverified`; readiness needs evidence or accepted gaps. |
-| Fixture evals | `run_fixture_eval.py` checks scenario fixtures, methodology gates, approval boundaries and false-positive routing. | Local deterministic evidence only. |
-| Transcript evals | `run_transcript_eval.py` replays synthetic or redacted sessions, checks expected/forbidden terms and privacy errors. | No external systems or model calls. |
-| Source and policy validators | Validators cover control plane, agents, hooks, source policy, automation candidates, compatibility, system hygiene and planning matrices. | Validation is evidence for shape and policy, not proof of product behavior. |
-| Status projection | `render_status_dashboard.py` stages `.codex/product-agent-os/status.html` and `.codex/product-agent-os/status.json`. | Dashboard is a generated view, not source of truth. |
-| Agent/skill metrics loop | `render_agent_skill_metrics_report.py` and metrics modules stage redacted scorecards, reports and modernization candidates. | Staged evidence only; no live eval/model/API calls, no active schedules, no self-applied updates. |
+| Guided questions and answer ledger | `question_protocol.py`, `question_ledger.py` and status projection keep one blocking question maximum, optional questions and answer routing visible. | Questions are not evidence; unanswered items become gaps, assumptions or owner-review needs. |
+| First-run cockpit | `run_first_project_analysis.py` and `analysis_artifact_renderer.py` produce local JSON/HTML orientation artifacts. | Cockpit output is generated-view-only until backed by source reads and current evidence. |
 | Project code graph | `scan_project_code_graph.py` stages graph JSON/JSONL, cockpit HTML/JSON, query packets, search index and extension evidence. | Generated graph artifacts are orientation evidence, not canonical facts. |
-| Retrieval and proposal gates | Modules cover static search, local backend store, semantic retrieval, embedding/reranker provider gates, hybrid retrieval and LLM proposal packets. | Provider-backed and live surfaces stay approval-bound and fallback to graph-only or local deterministic modes. |
+| Offline artifact safety | `offline_artifact_export.py` and `offline_artifact_safety.py` support local export checks for generated HTML/JSON artifacts and external-reference boundaries. | Offline artifacts must not imply browser/runtime/provider proof or silently load external scripts or URLs. |
 | Live governance gates | Modules cover approval packets, data classification, redaction, cache, budget, runtime, review ledger, mutation dry-run, audit/security/observability, real-testing readiness and runtime QA. | Live server, browser automation, provider calls, canonical graph mutation and git actions require specific approval. |
+| Fixture and transcript evals | `run_fixture_eval.py` and `run_transcript_eval.py` check scenario fixtures, shortcut resistance, forbidden behavior and privacy errors. | Local deterministic evidence only. |
+| Status projection | `render_status_dashboard.py` stages `.codex/product-agent-os/status.html` and `.codex/product-agent-os/status.json`. | The dashboard is a generated view, not source of truth. |
+| Agent/skill metrics loop | `render_agent_skill_metrics_report.py` and metrics modules stage redacted scorecards, reports and modernization candidates. | Staged evidence only; no live eval/model/API calls, active schedules or self-applied updates. |
+| Self-learning loop | `check_self_learning_due.py`, `run_self_learning_loop.py` and self-learning modules support manual due checks, staged progress and review-only candidates. | Manual-only by default; no hidden telemetry, scheduler, auto-apply or target mutation. |
+| System file hygiene | `validate_system_file_hygiene.py` checks control-plane files, skills, workflows, hooks, evals, automation candidates and plugin control files. | Read-only audit; no compaction, hook activation or schedule creation by itself. |
+| Windows Codex permission support | `prepare_windows_codex_permissions.py` and `windows_codex_permissions.py` help inspect and stage Windows/Codex permission guidance. | Support output is advisory or staged; it does not mutate global config or weaken approvals. |
 
 ## Packaged Skills
 
-The plugin currently packages these lifecycle skills:
+The plugin packages these lifecycle skills:
 
 | Skill | Purpose |
 | --- | --- |
@@ -277,6 +375,7 @@ The plugin currently packages these lifecycle skills:
 | `test-eval-designer` | Choose deterministic checks, AI evals, subjective gates and manual QA evidence. |
 | `risk-reviewer` | Review unsupported claims, missing evidence, behavioral risk and release readiness. |
 | `docs-maintainer` | Keep source registry, docs, glossary, traceability and accepted gaps aligned. |
+| `completion-skeptic` | Re-check completion claims against requirements, evidence, gaps and approvals. |
 | `pr-release-operator` | Prepare PR, release, rollout, rollback and residual-risk packets. |
 | `learning-loop-maintainer` | Convert repeated lessons and failures into durable guidance. |
 | `automation-promoter` | Create candidate-only automation readiness packets after manual success evidence. |
@@ -294,81 +393,54 @@ Product-Agent OS first classifies the work, then chooses the lightest sufficient
 | Desktop | OS-specific run path, file permission review, local storage boundary. | App logs, GUI behavior, packaging risk. |
 | Backend/API | Service/API contract, error/auth matrix. | Integration tests, migration, observability, rollback. |
 | Data | Schema/data inventory, migration plan, lineage. | Backup/restore, data quality, production access approval. |
-| AI/RAG | AI behavior spec, prompt/model decision, eval baseline. | Dataset policy, grounding, cost/latency, safety. |
-| Docs | Docs tooling decision, source registry impact. | `Source status:`, link/nav checks, strict build when needed. |
+| AI/RAG | AI behavior spec, prompt/model decision, eval baseline. | Dataset policy, grounding, redaction, rerun evidence and cost/latency. |
 | PR/review | Findings by severity, residual risk. | Missing tests, contract risk, release notes. |
-| Automation | Automation candidate. | Manual success log, owner/cadence, permissions, rollback. |
-
-The current classifier also covers greenfield idea shaping, bug rescue, complex system acceleration, legacy onboarding, API migration, AI/RAG eval regression, native/mobile work, desktop local-first work, data migration, security-sensitive change, CI stabilization, release packaging, docs-only work, standard feature work and maintenance.
+| Evals | Evaluation spec, scorecard, threshold. | Dataset governance, rerun proof, flaky policy. |
+| Docs | Source status, registry route, unsupported claims. | Strict docs checks, site freshness, link/secret boundaries. |
+| Automation/release | Candidate packet or release packet. | Manual stability, owner, cadence, rollback, publish approval. |
 
 ## Methodology Intelligence And Auto-Selection
 
-Product-Agent OS treats methodology as project-specific risk routing, not as a fixed checklist. It scans the user's workspace in read-only mode, combines repository evidence with user intent, classifies maturity and complexity, then activates only the methods that reduce real project risk.
-
-The methodology packet includes applicable domains, missing evidence, owner questions, recommendations, priorities, synthesis and the next safe action. It can route work through TDD, ATDD/BDD, DDD, ADD, ADRs, C4/arc42-style views, FSD, API contract-first delivery, risk-based testing, eval-driven AI work, security engineering, release operations and Codex agentic workflow governance.
+Methodology intelligence is a routing layer, not a doctrine engine. It scans workspace signals and selects relevant gates only when they reduce risk.
 
 ### Project Scanning Principle
 
-The scan is evidence-first and non-mutating. It reads files, directories and control-plane artifacts, but it does not write to the target workspace, call providers, activate hooks, run automation or treat generated views as proof.
-
-| Scan layer | Examples of signals | How Product-Agent OS uses it |
-| --- | --- | --- |
-| Workspace inventory | Manifests, source folders, tests, docs, CI, release and config files. | Classifies simple, standard, complex or high-risk work and avoids heavy process for tiny tasks. |
-| Stack and surface detection | Frontend, backend, native/mobile, desktop, API, database, AI/RAG, docs, automation, release. | Routes work to product, architecture, quality, data, AI, security and operations domains. |
-| Contract evidence | OpenAPI, AsyncAPI, GraphQL, gRPC, JSON Schema, Pact, generated SDKs, webhooks. | Activates API contract-first, compatibility, error/auth and contract-test gates. |
-| Data evidence | Schemas, migrations, ORM models, DB docs, data contracts, backfills. | Activates migration planning, data dictionary, rollback, backup/restore and access approval. |
-| AI/RAG evidence | Prompts, evals, model decisions, tools, retrieval config, vector data, datasets. | Activates baseline evals, prompt/model/tool contracts, grounding, dataset and cost/latency checks. |
-| Security and privacy evidence | Auth, secrets, PII, payments, permissions, compliance, SBOM, security review. | Activates threat surface, ASVS/SSDF/SAMM, authz negative tests, privacy and supply-chain review. |
-| Codex control-plane evidence | `AGENTS.md`, `REQUIREMENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md`, `RUNLOG.md`, skills, subagents, MCP, hooks. | Activates model/reasoning policy, handoffs, ownership, approvals and automation maturity checks. |
-| User intent | Feature, bug, release, migration, AI behavior, PR review, production readiness, regulated risk. | Adds intent-only risk when repo evidence is incomplete and asks owner questions instead of guessing. |
-
-Detection alone is never a readiness claim. A detected signal becomes `present_unverified` until current evidence, owner review or an accepted gap promotes it. Missing applicable methodology becomes `applicable_missing`; risky actions can remain `approval_required`.
+Product-Agent OS treats detection as `present_unverified` until current evidence exists. A folder named `domain`, a generated graph, an OpenAPI page, a dashboard or a status file can suggest a route, but none of them prove readiness.
 
 ### Methodology Map
 
-| Methodology or practice | When it activates | Example application in Product-Agent OS |
+| Methodology signal | When it applies | Output |
 | --- | --- | --- |
-| Product discovery and metric design | Product behavior, MVP, launch, growth, pricing, onboarding or value claims change. | Product hypothesis, value proposition, opportunity tree, metric spec, guardrails and owner signoff. |
-| Requirements engineering | Behavior, workflow, rules, public contract, UI state, data flow or multi-slice scope is unclear. | Requirement registry, non-goals, acceptance scenarios, owner questions and requirement-to-check traceability. |
-| ATDD / BDD acceptance scenarios | User-visible behavior or domain correctness needs shared examples. | Example scenarios linked to tests, evals, manual QA evidence or explicit gaps. |
-| DDD | Domain language, bounded contexts, business rules, events, workflows or multi-team ownership matter. | Domain model, rules, ubiquitous language, context boundaries and domain-to-architecture traceability. Simple CRUD does not force DDD. |
-| ADD / architecture-driven design | Quality attributes, runtime topology, contracts, persistence, deployment or trust boundaries change. | Architecture scope, context/container boundaries, tradeoffs, fitness checks and rollback assumptions. |
-| ADR | A decision has alternatives, risk, non-goals, migration impact or future ownership cost. | Decision, rejected options, consequences, rollback path and evidence owner. |
-| C4 / arc42-style architecture views | Context, container, component, deployment or runtime views are needed. | Architecture overview, diagrams, trust-boundary map and architecture review record. |
-| TDD / Red-Green-Refactor | Behavior-changing code, shared logic, bug fixes, migrations, API/schema/UI logic or risky refactors are planned. | Test-first evidence where practical, explicit gap where not, and regression evidence linked to the slice. |
-| Risk-based testing and QA | Ready, done, fixed, works or release claims need evidence. | Unit, integration, contract, runtime, visual, manual QA, CI and flaky-test evidence by blast radius. |
-| FSD and frontend boundary discipline | Web UI structure, features, widgets, pages, shared components or frontend ownership boundaries exist. | Feature boundary review, state matrix, visual QA, accessibility, responsive checks and performance budget. |
-| Component-driven UI | Reusable components, design states, Storybook-like evidence or UI regressions matter. | Component cards, state coverage, visual review, keyboard/focus contract and design-system impact notes. |
-| Backend service design | Services, jobs, queues, observability, SLOs, consistency, modular boundaries or runtime failures matter. | Service overview, dependency failure matrix, health checks, job contracts, observability map and rollback plan. |
-| API contract-first delivery | OpenAPI, AsyncAPI, GraphQL, gRPC, webhooks, generated clients or external consumers are involved. | API inventory, consumer map, error catalog, auth matrix, compatibility record and contract tests. |
-| Data and migration discipline | Persistent data, schema changes, migrations, backfills, retention, classification or production access exist. | Database inventory, migration plan, data dictionary, backup/restore evidence, rollback feasibility and approvals. |
-| Eval-driven AI / RAG development | Prompts, models, tools, retrieval, grounding, AI behavior, datasets or safety claims change. | AI behavior spec, baseline eval, prompt contract, model decision, RAG source inventory, rerun evidence and residual risk. |
+| Product hypothesis | User value, launch scope or success metric is unclear. | Product brief, value proposition, opportunity tree, tracking plan. |
+| TDD / Red-Green-Refactor | Behavior changes need regression confidence. | Test-first or explicit test-gap route. |
+| DDD | Complex workflow, enterprise, data-heavy or multi-context domain. | Domain model, bounded context, ubiquitous language traceability. |
+| ADD / architecture-driven design | Architecture boundary, runtime topology, trust boundary or ownership split changes. | Architecture overview, ADR, trust-boundary map, fitness functions. |
+| FSD and frontend boundary discipline | Web UI scale or coupling justifies feature/layer boundaries. | Component card, public API, import rule and UI state matrix. |
+| Eval-driven AI / RAG development | Prompts, models, tools, retrieval, grounding or AI behavior change. | Baseline eval, prompt contract, model decision record, RAG source inventory and rerun evidence. |
 | Security engineering | Auth, authorization, secrets, PII, payments, abuse, supply chain, compliance or external writes are in scope. | Threat surface, risk review, ASVS/SSDF/SAMM mapping, negative tests, secrets policy and privacy impact. |
-| Release and operations readiness | PR, package, deploy, publish, rollout, CI/CD, production data or external systems are involved. | Release readiness, versioning, changelog, artifact manifest, rollout, rollback/recovery and runbook evidence. |
-| Codex agentic workflow governance | Subagents, skills, MCP, hooks, memory, model choice, automation or long-running Codex work are used. | Control plane, model/reasoning policy, handoffs, owned/forbidden files, approvals and promotion path. |
-| Scrum/Kanban-style sequencing | Staged delivery, WIP control, owner handoffs or release coordination are needed. | Scope, queue, next slice, stop conditions, evidence owner and rollback without heavyweight ceremony. |
-| Definition of Done / evidence-before-completion | The agent is about to claim ready, done, fixed, works, verified or releasable. | Completion language is blocked until checks, evals, runtime evidence, owner review or accepted gaps exist. |
+
+### Methodology Domains
+
+The catalog is broader than named frameworks. It routes detected signals across business/product, requirements, solution architecture, quality/testing/evals, Codex agentic workflow, frontend, backend, API/integrations, database/data, LLM/AI/RAG, security/privacy/compliance and delivery/release operations.
+
+Cross-domain synthesis then returns the owner domain, consumer domains, evidence sufficiency, deferred artifacts and the risk-aware safe next action instead of dumping every possible artifact.
 
 ## Methodology And Readiness Gates
 
-Product-Agent OS includes methodology gates that become active only when the project evidence makes them relevant:
-
-- no-placeholder planning: exact files, owned/forbidden files, exact commands, expected outputs, rollback, evidence owner and placeholder scan;
-- two-stage review: spec compliance before quality/risk for risky, public-contract, migration, security, data, release, parallel or external-system slices;
-- fresh-context handoff: complete context, source constraints, ownership, expected evidence and stop conditions before subagents or parallel workers;
-- acceptance scenario traceability: requirement -> scenario -> check -> evidence owner;
-- conditional domain modeling for complex backend, workflow, enterprise, data-heavy, multi-service or multi-context work;
-- conditional Feature-Sliced Design routing for applicable web UI work only;
-- metric hardening for product behavior changes, including primary value metric, input metric, counter-metric, guardrail, privacy and owner signoff;
-- evidence-before-completion before ready, completed, fixed, works or release claims;
-- docs tooling selection for MkDocs, Docusaurus, Sphinx, Antora, Storybook, OpenAPI/AsyncAPI, DBML, SchemaSpy, TypeDoc/JSDoc/Javadoc/XML docs, Vale, markdownlint, Mermaid, PlantUML and Structurizr DSL when detected;
-- Codex / agentic workflow governance for source-of-truth boundaries, model/reasoning policy, memory as recall only, MCP permission review, hook activation approval and automation maturity.
-
 Readiness statuses are explicit: `not_applicable`, `applicable_missing`, `present_unverified`, `present_verified`, `proposal_staged`, `explicit_gap_accepted` and `approval_required`. Detection alone can only produce `present_unverified`.
+
+Before Product-Agent OS treats a claim as supported, it asks:
+
+- What is the source of truth?
+- Which artifact owns the requirement?
+- Which files or subsystems are in scope?
+- Which commands, evals, runtime checks or owner decisions are current?
+- Which risks are accepted gaps rather than hidden omissions?
+- Which actions need explicit approval?
 
 ## No Forced Ceremony
 
-Product-Agent OS should make real risk visible without turning every request into a heavyweight process. The methodology layer uses applicability and false-positive guards:
+Product-Agent OS should make real risk visible without turning every request into heavyweight process:
 
 - simple docs edits do not need a full product, architecture and release process unless they change public contracts or publishing;
 - simple CRUD does not force domain-driven design;
@@ -377,40 +449,24 @@ Product-Agent OS should make real risk visible without turning every request int
 - hosted docs, CI activation, DB introspection, production data and provider calls stay approval-required;
 - generated artifacts stay labeled as orientation or staged evidence until source or owner evidence promotes the claim.
 
-This is the product stance: use stronger methodology when risk justifies it, and keep small work small.
-
 ## Who It Fits Best
 
-Product-Agent OS is strongest when the work is valuable enough that losing context would be expensive:
+Product-Agent OS is strongest when losing context would be expensive:
 
 | Situation | Why it helps |
 | --- | --- |
-| A messy repo with unclear entry points | Produces read order, hotspots, run commands, evidence gaps and safe first slice. |
+| A messy repository with unclear entry points | Produces read order, hotspots, run commands, evidence gaps and safe first slice. |
 | A product feature that may expand in scope | Keeps value, non-goals, acceptance, files, checks and rollback connected. |
 | A bug with uncertain root cause | Forces reproduction and regression evidence before a fix claim. |
 | A team using subagents or parallel workers | Makes file ownership, handoff context and stop conditions explicit. |
 | AI/RAG behavior changes | Requires baseline, dataset policy, eval threshold, rerun evidence and residual risk. |
 | Release or PR readiness | Separates review findings, current checks, artifact manifest, rollback and approval boundary. |
 
-## Product Scenarios By Role
-
-| Role | Main value | Output artifacts |
-| --- | --- | --- |
-| Founder / solo builder | Move from idea to a releasable slice without chaos. | Product brief, value proposition, first-run intake, release readiness. |
-| Product Manager | See value, scope, metric, owner decisions and accepted gaps. | `REQUIREMENTS.md`, acceptance scenarios, metric spec, launch packet. |
-| Developer | Get files, commands, rollback and tests before coding. | `PLAN.md`, build slice, regression evidence, RUNLOG update. |
-| Tech Lead / Architect | Record boundaries, tradeoffs and ownership. | ADR, architecture overview, trust-boundary map, handoff contract. |
-| QA / Tester | Tie quality to risk instead of a random test list. | `TEST.md`, `EVALS.md`, quality strategy, manual QA packet. |
-| AI Engineer | Avoid prompt/model/RAG changes without baseline and rerun evidence. | AI behavior spec, prompt contract, model decision record, RAG eval report. |
-| Docs Maintainer | Keep docs, source registry, glossary and traceability aligned. | Docs packet, source registry updates, unsupported claims log. |
-| Release Operator | Avoid release without scope, rollback and evidence. | PR body, release notes, artifact manifest, rollout and rollback plan. |
-| Security / Privacy Owner | Identify trust boundaries, data, secrets and external writes. | Threat surface, privacy impact, approval record, supply-chain review. |
-
 ## Artifacts
 
 | Family | Examples | When created |
 | --- | --- | --- |
-| Control plane | `AGENTS.md`, `REQUIREMENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md`, `RUNLOG.md` | For long-running or production work. |
+| Control plane | `AGENTS.md`, `REQUIREMENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md`, `RUNLOG.md` | For long-running or production-style work. |
 | Product | `product-brief.md`, `value-proposition.md`, `opportunity-tree.md`, `metric-spec.md` | When value, target user, metric or launch hypothesis is unclear. |
 | Requirements/domain | `requirement-registry.md`, `acceptance-scenarios.md`, `business-rules.md`, `domain-modeling.md` | When behavior or domain correctness matters. |
 | Architecture | `architecture-overview.md`, `adr.md`, `trust-boundary-map.md`, C4/arc42 views | When boundaries, public contracts, runtime topology or ownership risk exist. |
@@ -420,32 +476,44 @@ Product-Agent OS is strongest when the work is valuable enough that losing conte
 | Agentic workflow | `agent-task-packet.md`, `handoff-contract.md`, `worktree-ownership.md`, `automation-candidate.md` | For subagents, skills, parallelism and repeatable workflows. |
 | System hygiene | `system-file-hygiene-report.md`, `system-file-hygiene-audit.md` | For scheduled-candidate or size-triggered review without active automation. |
 
-The renderer also packages artifact templates for API contracts, integration catalogs, generated SDK manifests, database inventories, migration plans, data contracts, privacy records, supply-chain review, SBOM manifest, CI permissions, audit logging, AI security, compliance overlays, vulnerability response, approval records, release readiness, behavior eval cases, model/reasoning policy, MCP permission review, hook governance, skill promotion, agent eval workflows and Codex compatibility.
-
 ## Documentation And Evidence
 
-Documentation in Product-Agent OS is not a separate Markdown folder; it is part of the delivery loop.
+Documentation in Product-Agent OS is part of the delivery loop:
 
-- `docs-maintainer` links claims to sources/evidence; `Source status:` separates official/local/community/experiment evidence.
-- `docs/sources/registry.md` stores source-backed claims.
-- Generated graph/dashboard/status/cockpit artifacts are orientation evidence, not source of truth.
-- README is entrypoint/commands, not a ledger; `docs/product-agent-os/index.md`, `artifact-gallery.md`, `methodology-intelligence.md`, `approval-bound-real-testing.md` route first run, outputs, methods, approvals.
-- Proof requires current command/eval/runtime/owner evidence, not files/dashboards.
+- `docs-maintainer` links claims to sources and evidence.
+- `docs/sources/registry.md` stores source-backed claims and historical source pointers.
+- Generated graph, dashboard, status, cockpit, scorecard and report artifacts are orientation evidence, not source of truth.
+- README is an entrypoint and operator guide, not a long ledger.
+- Proof requires current command/eval/runtime/owner evidence, not just files, folders or dashboards.
+
+Key pages:
+
+- [docs/product-agent-os/index.md](docs/product-agent-os/index.md)
+- [docs/product-agent-os/artifact-gallery.md](docs/product-agent-os/artifact-gallery.md)
+- [docs/product-agent-os/methodology-intelligence.md](docs/product-agent-os/methodology-intelligence.md)
+- [docs/product-agent-os/first-run-architecture-cockpit.md](docs/product-agent-os/first-run-architecture-cockpit.md)
+- [docs/product-agent-os/approval-bound-real-testing.md](docs/product-agent-os/approval-bound-real-testing.md)
+- [docs/product-agent-os/cli-reference.md](docs/product-agent-os/cli-reference.md)
+- [docs/product-agent-os/artifact-contracts.md](docs/product-agent-os/artifact-contracts.md)
+- [docs/product-agent-os/architecture.md](docs/product-agent-os/architecture.md)
+- [docs/product-agent-os/local-html-interaction-boundary.md](docs/product-agent-os/local-html-interaction-boundary.md)
 
 ## Guided Questions And Status
 
 Guided question protocol keeps the first response compact: one blocking question maximum, only when the next step would be risky without the answer.
 
-Status snapshot and dashboard help orientation, but they do not become proof:
+The protocol keeps three things separate:
+
+- blocking questions that must be answered before a risky next step;
+- optional questions that can remain in a packet without stopping safe read-only work;
+- answer-ledger entries that become assumptions, accepted gaps, owner-review needs or follow-up artifacts.
+
+Status snapshot and dashboard help orientation:
 
 - `.codex/product-agent-os/status.html`
 - `.codex/product-agent-os/status.json`
-- dashboard is a generated view
-- generated view only
-- underlying artifacts remain source material
-- no success claim from stale evidence
 
-The status layer projects route, lifecycle state, evidence gaps, question queue, system hygiene status, graph status and agent/skill metrics references into generated artifacts. It must keep source-boundary labels visible and must avoid completion language when evidence is stale or missing.
+The status layer projects route, lifecycle state, evidence gaps, question queue, system hygiene status, graph status and agent/skill metrics references into generated artifacts. The dashboard is a generated view; there is no success claim from stale evidence. It must keep source-boundary labels visible and must avoid completion language when evidence is stale or missing.
 
 ## Project Code Graph
 
@@ -460,10 +528,6 @@ Project Code Graph is for large or unclear repositories:
 - supports query modes such as `neighbors`, `path`, `trace`, `impact`, `affected_tests`, `changed_since`, `why_changed`, `read_order`, `hotspots`, `node`, `status` and `search`;
 - does not replace reading source files before claims;
 - does not mutate canonical graph source without separate approval and rollback evidence.
-
-Generated graph artifacts are not source of truth. Graph JSON/JSONL, cockpit HTML/JSON, static search indexes, local backend stores, semantic indexes, LLM proposal packets and extension closure reports are orientation evidence and cache-bound generated views.
-
-For a user, the value is practical: know what to read first, where change risk clusters, which tests may be affected, which assumptions are stale and where source reads are still required before claiming implementation or review confidence.
 
 ## Live Runtime And Retrieval Boundaries
 
@@ -480,19 +544,21 @@ The implementation includes approval-bound surfaces for live and provider-assist
 - real-testing readiness, target consent, pilot harness and Codex surface smoke;
 - runtime browser QA, performance budget and stabilization ledger.
 
-Without a complete approval packet, these surfaces remain `approval_required`, `blocked` or degraded to graph-only fallback. Live server launch, browser automation, provider/API calls, canonical graph mutation, git stage/commit/push/PR and external writes require explicit scope, owner, rollback and current verification evidence.
+Without a complete approval packet, these surfaces remain `approval_required`, `blocked` or degraded to graph-only fallback.
 
 ## Self-Verification And Modernization Loop
 
-Self-Verification And Modernization Loop is a self-verification metrics loop for signals about how agents, skills, prompt/policy packs, router/tool policies and harness versions behave.
+Self-Verification And Modernization Loop is a metrics loop for agents, skills, prompt/policy packs, router/tool policies and harness versions. The self-verification metrics loop is local, redacted and staged-only.
 
-Technical surface: `agent_skill_metrics_loop`, redacted reports, scorecard ledger, modernization candidates and approval boundary. These outputs are staged evidence only: no live eval/model/API calls, no active schedules, no self-applied updates.
+Technical surface: `agent_skill_metrics_loop`, redacted reports, scorecard ledger, modernization candidates and approval boundary. These outputs are staged evidence only: no live eval/model/API calls, no active schedules and no self-applied updates.
 
-Workflow promotion only moves in this order:
+Workflow promotion moves in this order:
 
 ```text
 manual thread -> playbook -> skill -> plugin -> automation candidate
 ```
+
+The Self-Learning Loop is manual-only by default. It can check due state and stage progress artifacts, but it must not run hidden telemetry, ingest raw private sessions, mutate targets, activate schedules or apply its own candidates.
 
 ## System File Hygiene
 
@@ -505,6 +571,8 @@ It reports size limits, duplicate headings, mojibake/BOM markers, secret-like li
 - No separate OpenAI API key is required for local deterministic Product-Agent OS tooling.
 - Secrets, tokens, private keys, private customer data, raw private chats and absolute user-specific paths must not enter prompts, docs, templates, fixtures or examples.
 - Generated views are orientation evidence, not source of truth.
+- Packaged MCP declarations are not active connections; MCP startup, network retrieval and external context use require explicit approval.
+- Local HTML/JSON artifacts must stay self-contained and offline unless an approved runtime/browser/provider path says otherwise.
 - Live server, browser automation, external provider calls, canonical graph mutation, git stage/commit/push/PR and plugin publication require explicit scope and approval.
 - Existing user files are preserved outside managed sections.
 - Community claims do not become project rules without `trust_level` and `verification_status`.
@@ -544,8 +612,9 @@ python plugins\product-agent-os\scripts\render_infrastructure.py <workspace> --s
 # Review merge plan before applying staged artifacts
 python plugins\product-agent-os\scripts\merge_infrastructure.py <workspace> C:\tmp\product-agent-os-stage --plan
 
-# Apply only with explicit approval record
-python plugins\product-agent-os\scripts\merge_infrastructure.py <workspace> C:\tmp\product-agent-os-stage --apply --approval-file <approval.json>
+# First-run project analysis
+python plugins\product-agent-os\scripts\run_first_project_analysis.py <workspace> --full-dry-run
+python plugins\product-agent-os\scripts\run_first_project_analysis.py <workspace> --stage C:\tmp\product-agent-os-first-run
 
 # Methodology audit
 python plugins\product-agent-os\scripts\run_methodology_audit.py <workspace> --report
@@ -558,18 +627,16 @@ python plugins\product-agent-os\scripts\scan_project_code_graph.py <workspace> -
 # Project code graph query against a staged graph
 python plugins\product-agent-os\scripts\scan_project_code_graph.py <workspace> --query status --graph C:\tmp\product-agent-os-graph\.codex\product-agent-os\project-code-graph.json
 
-# Project code graph generated extension surfaces
-python plugins\product-agent-os\scripts\scan_project_code_graph.py <workspace> --build-index --stage C:\tmp\product-agent-os-graph --graph C:\tmp\product-agent-os-graph\.codex\product-agent-os\project-code-graph.json
-python plugins\product-agent-os\scripts\scan_project_code_graph.py <workspace> --build-backend --stage C:\tmp\product-agent-os-graph --graph C:\tmp\product-agent-os-graph\.codex\product-agent-os\project-code-graph.json --backend-approval approval.json
-python plugins\product-agent-os\scripts\scan_project_code_graph.py <workspace> --build-semantic-index --stage C:\tmp\product-agent-os-graph --graph C:\tmp\product-agent-os-graph\.codex\product-agent-os\project-code-graph.json --semantic-approval approval.json
-python plugins\product-agent-os\scripts\scan_project_code_graph.py <workspace> --build-llm-proposals --stage C:\tmp\product-agent-os-graph --graph C:\tmp\product-agent-os-graph\.codex\product-agent-os\project-code-graph.json --llm-approval approval.json
-python plugins\product-agent-os\scripts\scan_project_code_graph.py <workspace> --verify-extensions --stage C:\tmp\product-agent-os-graph --graph C:\tmp\product-agent-os-graph\.codex\product-agent-os\project-code-graph.json --verification-evidence evidence.json
-
 # Status dashboard
 python plugins\product-agent-os\scripts\render_status_dashboard.py <workspace> --stage C:\tmp\product-agent-os-status
 
 # Agent/skill metrics report
 python plugins\product-agent-os\scripts\render_agent_skill_metrics_report.py <workspace> --stage C:\tmp\product-agent-os-metrics
+
+# Self-learning loop, manual-only
+python plugins\product-agent-os\scripts\check_self_learning_due.py <workspace> --dry-run
+python plugins\product-agent-os\scripts\run_self_learning_loop.py <workspace> --dry-run
+python plugins\product-agent-os\scripts\run_self_learning_loop.py <workspace> --stage C:\tmp\product-agent-os-self-learning
 
 # System file hygiene audit
 python plugins\product-agent-os\scripts\validate_system_file_hygiene.py <workspace> --trigger soft_size_review
@@ -578,14 +645,9 @@ python plugins\product-agent-os\scripts\validate_system_file_hygiene.py <workspa
 python plugins\product-agent-os\scripts\run_codex_runtime_runner.py <workspace> --contract
 ```
 
-## Verification
+For the full command matrix, use [docs/product-agent-os/cli-reference.md](docs/product-agent-os/cli-reference.md).
 
-```powershell
-python tools\check_docs.py
-python plugins\product-agent-os\scripts\validate_codex_compatibility.py
-python plugins\product-agent-os\scripts\run_fixture_eval.py
-python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json
-```
+## Verification
 
 For docs, source-registry, control-plane or test-contract edits in this repository, use:
 
@@ -595,10 +657,10 @@ python tools\check_docs.py
 git diff --check
 ```
 
-Strict MkDocs build is required when navigation, Markdown extensions, i18n, Mermaid, search/sitemap behavior or generated `site/` evidence changes:
+Strict MkDocs build is required when navigation, Mermaid diagrams, Markdown extensions, MkDocs config, localized nav, search/sitemap behavior or generated `site/` evidence changes:
 
 ```powershell
-python -m mkdocs build --strict
+.venv-docs\Scripts\python.exe -m mkdocs build --strict
 ```
 
 For plugin/runtime changes, run focused tests first, then route through `TEST.md` for full unittest, fixture eval, transcript eval and Codex compatibility checks.
