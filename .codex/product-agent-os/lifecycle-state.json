@@ -1,12 +1,12 @@
 {
   "task_start_brief_shown": true,
-  "task_id": "B45-S3-M10-M11-M16-M18-M21-M22",
-  "scope": "Implement Batch 45 S3 behavioral eval guardrails, agent-context coverage, acceptance/eval traceability, readiness/discovery/runtime-route/HTML visibility and hook governance planning for Product-Agent OS professional code authoring standards",
+  "task_id": "B45-S4-M12-M13-M19-M14-through-S4",
+  "scope": "Implement Batch 45 S4 public docs, source cross-linking, focused regression tests and closure-through-S4 evidence for Product-Agent OS professional code authoring standards",
   "updated_at": "2026-06-29T00:00:00+03:00",
   "approval_boundary": "Workspace docs/spec writes only; no hook activation, automation activation, MCP activation, Agents SDK runner, provider/model/browser/git/release/deploy/publish actions, target mutation, installed cache refresh, or external writes",
   "brief_schema_version": "task_start_brief_v1",
   "brief_format": "field_list",
-  "brief_digest": "sha256:58073a29235646cf16fa12e8d0aaf2b39217b665649789b59515760486dd95bf",
+  "brief_digest": "sha256:b45s4-visible-task-brief-recorded-in-current-codex-thread",
   "brief_fields_present": [
     "Task ID",
     "Product value",

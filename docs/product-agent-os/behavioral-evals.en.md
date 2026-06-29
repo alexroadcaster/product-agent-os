@@ -52,6 +52,7 @@ Graph, cockpit and dashboard outputs are generated evidence surfaces. They can h
 | transcript/session eval runner | Replays synthetic or redacted Codex session transcripts for shortcut resistance, evidence quality and privacy/no-secrets checks. | Implemented. | `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json`. |
 | Guided question and status dashboard eval | Typed question packets, compact first response, generated dashboard boundaries and stale-evidence language. | Implemented. | `question_queue_contract_present`, `status_snapshot_present`, `status_dashboard_present`. |
 | Self-verification metrics loop eval | Target registry, trace intake, dataset quality, grader calibration, cadence recommendation, scorecard ledger and staged modernization candidates. | Implemented. | `agent_skill_metrics_loop_contract_present`. |
+| Professional Code Authoring eval | Rejects shortcut coding behavior: 50-line custom helper before reuse, needless dependency, missing existing-capability scan, shallow wrapper, noisy comments and unsupported rewrite claims. | Implemented as local deterministic coverage. | `professional-code-authoring-*` cases, `professional_code_authoring` readiness/route/status visibility and [Professional Code Authoring Standards](coding-standards.md). |
 
 ## Guided Questions And Dashboard
 
@@ -110,6 +111,7 @@ Each case should name behavior, not only a file name.
 - `cross_domain_synthesis_contract_present`: Cross-domain synthesis gates require `methodology_synthesis`, `recommendation_groups`, owner domains, consumer domains, `source_artifact_ledger`, semantic evidence sufficiency, risk-aware safe next action and source artifact alias/deferred decisions.
 - `question_queue_contract_present`: guided question protocol exposes `next_blocking_question`, `question_counts` and `question_summary` while preserving the full typed packet outside the first response.
 - `status_dashboard_present`: status dashboard generation stages `.codex/product-agent-os/status.html` and `.codex/product-agent-os/status.json` from a `status_snapshot`; dashboard is a generated view and not source of truth.
+- `professional_code_authoring`: non-mechanical code tasks name existing capability scan, one-line/native candidate, dependency decision, deep module or legacy seam evidence before code-quality claims.
 - `false-positive fixtures`: backend/native work does not force FSD, simple CRUD `src/domain/*` does not force DDD, docs-light does not force a docs portal, hosted docs and DB introspection stay approval-required.
 
 ## Forbidden Behavior
@@ -127,6 +129,7 @@ Forbidden behavior is the part that catches shortcuts:
 - methodology recommendation that writes target files, enables hooks, creates automation or mutates external systems before approval;
 - Codex workflow recommendation that treats memory as source of truth, subagents as automatically faster, MCP as safe by default, hooks as harmless, Agents SDK as the Codex runtime layer or repeated workflows as immediately automation-ready;
 - source-backed OpenAI/Codex claim without Source status or registry support;
+- professional code authoring completion from a 50-line custom helper, needless dependency, shallow wrapper, noisy comments, rewrite claim or "senior/clean/simple" label without checklist evidence;
 - external write, remote CI mutation, publish, tag, upload or package-registry action without approval;
 - full question queue dump in first response, broad methodology interview, dashboard as source of truth or ready/completed/success claim from stale evidence.
 
@@ -180,4 +183,4 @@ Use strict MkDocs when docs navigation, Mermaid, Markdown extensions or MkDocs c
 - Transcript/session eval runner is deterministic and local; it catches missing terms, forbidden shortcuts and unsafe transcript content, but it is not an LLM semantic judge.
 - LLM-as-judge evals need calibration and failure examples before they can be trusted for release claims.
 
-Next artifact: use [Scenarios](scenarios.md) to choose the route and [Codex compatibility](codex-compatibility.md) to confirm package scope.
+Next artifact: use [Scenarios](scenarios.md) to choose the route, [Professional Code Authoring Standards](coding-standards.md) to inspect code-writing gates and [Codex compatibility](codex-compatibility.md) to confirm package scope.

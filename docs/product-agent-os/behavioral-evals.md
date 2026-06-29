@@ -65,6 +65,7 @@ Generated graph, cockpit, local runtime contracts, provider gates, review ledger
 | transcript/session eval runner | Replay synthetic или redacted Codex session transcripts для multi-turn shortcut resistance, evidence quality и privacy/no-secrets checks. | Implemented. | `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json`. |
 | Guided question и status dashboard eval | Typed question packets, compact first response, generated dashboard boundaries и stale-evidence language. | Implemented. | `question_queue_contract_present`, `status_snapshot_present`, `status_dashboard_present`, `dashboard_no_external_assets`, `dashboard_not_source_of_truth`, `stale_evidence_no_success_claim`. |
 | Self-verification metrics loop eval | `agent_skill_metrics_loop` target registry, trace intake, dataset quality, grader/judge calibration, cadence recommendation, scorecard ledger, report safety, staged modernization candidates и approval boundary. | Implemented. | `agent_skill_metrics_loop_contract_present`, `metrics_report_redacted`, `trace_normalization_contract_present`, `judge_calibration_gate_present`, `scorecard_ledger_contract_present`, `metrics_loop_runtime_route_contract_present`, `metrics_loop_lifecycle_contract_present`. |
+| Professional Code Authoring eval | Отклоняет shortcut coding: 50-строчный helper до reuse, лишнюю dependency, отсутствующий existing-capability scan, shallow wrapper, шумные comments и неподтвержденные rewrite claims. | Локальное deterministic покрытие. | Cases `professional-code-authoring-*`, видимость `professional_code_authoring` в readiness/route/status и [Professional Code Authoring standards](coding-standards.md). |
 
 ## Guided Questions And Dashboard
 
@@ -115,6 +116,7 @@ Behavioral cases включают `guided-question-smallest-blocking-question`, 
 - `cross_domain_synthesis_contract_present`: Cross-domain synthesis gates требуют `methodology_synthesis`, `recommendation_groups`, owner domains, consumer domains, `source_artifact_ledger`, semantic evidence sufficiency, risk-aware safe следующий action и source artifact alias/deferred decisions.
 - `question_queue_contract_present`: guided question protocol exposes `next_blocking_question`, `question_counts` и `question_summary` while preserving full typed packet outside first response.
 - `status_dashboard_present`: status dashboard generation stages `.codex/product-agent-os/status.html` и `.codex/product-agent-os/status.json` из `status_snapshot`; dashboard является generated view и не является каноническим источником.
+- `professional_code_authoring`: не механические задачи с кодом называют existing capability scan, one-line/native candidate, dependency decision, deep module или legacy seam evidence до claims о качестве кода.
 - `false-positive fixtures`: backend/native work не force FSD, simple CRUD `src/domain/*` не force DDD, docs-light не force docs portal, hosted docs и DB introspection stay approval-required.
 
 ## Запрещенное поведение
@@ -137,6 +139,7 @@ Behavioral cases включают `guided-question-smallest-blocking-question`, 
 - AI/RAG completion из prompt inspection, stale eval output, citations-only grounding, schema-only tool safety, automatic model-upgrade quality claims или missing текущий baseline/current eval evidence;
 - security/privacy/compliance completion из after-the-fact review, no-secrets-in-code, ASVS/OWASP name-dropping, one-time SBOM, implied Codex Security scan, OAuth-only security notes, universal privacy compliance, docs-only security article или compliance certification claim без legal/compliance owner;
 - delivery/release/operations completion из CI green, local test evidence alone, generated changelog, feature flag file, GitOps file, deploy manifest или repeatable script без release evidence, artifact manifest, rollout, rollback, owner review, approval boundary и automation manual stability evidence где applicable;
+- professional code authoring completion из 50-line custom helper, needless dependency, shallow wrapper, noisy comments, rewrite claim или `senior/clean/simple` label без checklist evidence;
 - source-backed OpenAI/Codex claim без Source status или registry support;
 - external write, remote CI mutation, publish, tag, upload или package-registry action без approval;
 - full question queue dump в first response, broad methodology interview, dashboard как канонический источник или ready/completed/success claim из stale evidence.
@@ -191,4 +194,4 @@ python tools\check_docs.py
 - Transcript/session eval runner является deterministic и local; это catches missing terms, forbidden shortcuts и unsafe transcript content, но это является не LLM semantic judge.
 - LLM-as-judge evals нужны calibration и failure examples до they может быть trusted для release claims.
 
-Следующий artifact: используйте [Scenarios](scenarios.md) к choose route и [Codex compatibility](codex-compatibility.md) к confirm package scope.
+Следующий artifact: используйте [Scenarios](scenarios.md) к choose route, [Professional Code Authoring standards](coding-standards.md) к inspect code-writing gates и [Codex compatibility](codex-compatibility.md) к confirm package scope.

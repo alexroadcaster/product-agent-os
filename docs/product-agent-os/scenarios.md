@@ -30,6 +30,7 @@ G4 routes добавляют четыре системных маршрута. �
 | `operator_command_matrix` | Нужно выбрать безопасную команду для first-run analysis, graph/cockpit или docs-tooling smoke. | Использует help/current command evidence, stage только для generated artifacts и оставляет широкие scans/root `site` rebuild внутри approval-boundary. |
 | `guided_question_answer_ledger` | Нужно задать вопрос без превращения intake в длинную анкету. | Ограничивает blocking question одной штукой; `answers_require_staged_ledger_and_owner_review` действует до source promotion. |
 | `source_cache_session_state` | Нужно понять, почему source, installed cache и active session могут расходиться. | Требует read-only comparison fields и fresh-session proof до любого claim `fixed` или `ready`. |
+| `professional_code_authoring` | Нужно ограничить custom code, dependency debt, shallow wrappers или risky refactor в не механической coding task. | Использует [Professional Code Authoring standards](coding-standards.md), checklist evidence и shortcut evals; остается source contract пока нет runtime или owner-pilot proof. |
 
 ## Входы
 
@@ -104,6 +105,7 @@ Guided question protocol использует typed `question_queue` packets so 
 | `release_packaging` | Package, SDK, plugin, app, mobile, desktop или open-source release. | Build release readiness до publish. | `release-readiness.md`, package metadata, changelog, artifacts. | Publishing, tagging, release creation, upload или package registry mutation требуют approval. | Build/test/docs evidence, security/license notes, rollback и owner review. |
 | `docs_only` | Documentation update без behavior change. | Update source-backed docs и запуск docs checks. | Source status, affected docs, registry entry когда source-backed claims changed. | Hosted docs, CI activation и sharing changes требуют approval. | `python tools\check_docs.py`, strict MkDocs когда nav/build-sensitive. |
 | `standard_feature` | Bounded feature work без special scenario risk. | Используйте normal lifecycle route. | Requirements, plan, test/eval evidence. | Writes follow sandbox и project approval policy. | Unit/integration/contract checks, влияние на docs, review. |
+| `professional_code_authoring` | Не механическая работа с кодом, где важна самая маленькая безопасная реализация. | Проверить reuse до custom code. | Coding-standard checklist, existing-capability scan, one-line/native candidate, dependency и legacy-seam decisions. | Выбор route не активирует `hook`, runtime или automation. | Focused tests/evals/review evidence плюс unsupported-claim ledger. |
 | `maintenance` | Small upkeep, formatting или status sync. | Keep scope mechanical и evidence explicit. | RUNLOG note или control-plane sync. | Нет unrelated refactor. | Focused command или explicit inspection-only gap. |
 
 ## Database & Data Methodology Routing
@@ -177,4 +179,4 @@ Final release/operations depth also требует owner-reviewed release eviden
 - Approval boundaries являются project-specific. Product-Agent OS может mark them, но пользователь или workspace policy decides следует ли к proceed.
 - Transcript/session eval runner replays synthetic или redacted session fixtures с deterministic expected/forbidden term checks и privacy/no-secrets guards; semantic judgment still требует reviewer или future calibrated judge coverage.
 
-Следующий artifact: используйте [Behavioral evals](behavioral-evals.md), чтобы проверить, что scenario route resists shortcuts и produces ожидаемые доказательства.
+Следующий artifact: используйте [Behavioral evals](behavioral-evals.md), чтобы проверить, что scenario route resists shortcuts, и [Professional Code Authoring standards](coding-standards.md), чтобы проверить code-writing gates.

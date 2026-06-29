@@ -2,7 +2,7 @@
 
 Source status: `official + verified methodology + experiment`
 
-Sources: [Product-Agent OS architecture](architecture.md), [Product-Agent OS scenarios](scenarios.md), [Behavioral evals](behavioral-evals.md), [Agent approvals and security](https://developers.openai.com/codex/agent-approvals-security), [Codex workflows](https://developers.openai.com/codex/workflows).
+Sources: [Product-Agent OS architecture](architecture.md), [Product-Agent OS scenarios](scenarios.md), [Behavioral evals](behavioral-evals.md), [Professional Code Authoring Standards](coding-standards.md), [Agent approvals and security](https://developers.openai.com/codex/agent-approvals-security), [Codex workflows](https://developers.openai.com/codex/workflows).
 
 Development standards turn methodology into concrete reviewable artifacts. They define how Product-Agent OS handles product hypothesis, architecture, tests, evals, docs, security, release and post-release learning without forcing heavy ceremony onto simple work.
 
@@ -153,7 +153,7 @@ Use strict MkDocs when documentation navigation, Mermaid or site-generation beha
 - High-risk work needs explicit owner-reviewed evidence sufficiency or accepted gap.
 - Product-Agent OS must preserve staged-first behavior, source policy, sandbox and approvals even when a recommendation is confident.
 
-Next artifact: use [Methodology intelligence](methodology-intelligence.md) to decide which gates apply and [Behavioral evals](behavioral-evals.md) to check shortcut resistance.
+Next artifact: use [Methodology intelligence](methodology-intelligence.md) to decide which gates apply, [Professional Code Authoring Standards](coding-standards.md) to inspect code-writing gates and [Behavioral evals](behavioral-evals.md) to check shortcut resistance.
 
 ## Inputs
 

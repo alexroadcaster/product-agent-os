@@ -121,6 +121,7 @@ plugins:
                 - Packaging And Closure: product-agent-os/packaging-and-closure.md
                 - Technical Setup: product-agent-os/technical.md
                 - Engineering Standards Layer: product-agent-os/development-standards.md
+                - Professional Code Authoring: product-agent-os/coding-standards.md
                 - Methodology Intelligence: product-agent-os/methodology-intelligence.md
                 - Scenarios And Usage Modes: product-agent-os/scenarios.md
                 - Behavioral Evals: product-agent-os/behavioral-evals.md
@@ -267,6 +268,7 @@ nav:
       - Packaging And Closure: product-agent-os/packaging-and-closure.md
       - Технические особенности и установка: product-agent-os/technical.md
       - Engineering standards layer: product-agent-os/development-standards.md
+      - Professional Code Authoring: product-agent-os/coding-standards.md
       - Methodology intelligence: product-agent-os/methodology-intelligence.md
       - Сценарии и usage modes: product-agent-os/scenarios.md
       - Behavioral evals: product-agent-os/behavioral-evals.md

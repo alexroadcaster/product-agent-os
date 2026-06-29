@@ -21,6 +21,7 @@ This quick-start page is not the full command-policy matrix. The broader list of
 | Codex compatibility validator | Implemented. | Checks package shape, not live operational readiness. |
 | Graph/cockpit orientation | Staged evidence route. | Generated views are not source of truth. |
 | Live runtime/provider/mutation actions | Approval-bound. | Disabled until a specific owner-approved packet exists. |
+| Professional Code Authoring | Source contract. | Uses [Professional Code Authoring Standards](coding-standards.md); does not prove real agent behavior or runtime enforcement. |
 
 The cockpit surface groups graph data into reader-facing views: `Project Map`, `Code Intelligence`, `Contracts`, `Quality & Metrics`, `Operations & Risk` and `Proposal Ledger`. The recommended path is graph, guided read order, source files, then tests/evidence. The cockpit and query packets do not prove runtime behavior, browser behavior, source freshness, contract correctness, test pass status or release readiness.
 
@@ -94,6 +95,8 @@ Generated infrastructure also includes the system file hygiene surfaces:
 - `.codex/workflows/system-file-hygiene-audit.md`;
 - `.codex/artifact-templates/system-file-hygiene-report.md`;
 - `.codex/automation-candidates/system-file-hygiene-audit.md`.
+
+Professional Code Authoring infrastructure includes `.codex/workflows/coding-standards.md` and `.codex/artifact-templates/coding-standard-checklist.md`. The public map lives in [Professional Code Authoring Standards](coding-standards.md); the artifacts remain source contracts until a later approved runtime or owner-pilot batch supplies stronger evidence.
 
 ## Local commands
 

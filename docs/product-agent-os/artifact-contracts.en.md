@@ -97,6 +97,14 @@ Artifacts must not contain secrets, credentials, raw private chat logs, private 
 | `.codex/artifact-templates/agent-skill-weekly-verification.md` | Template registry | Weekly owner-review packet. | Requires rollback/holdout/flake/cost evidence or accepted gaps. |
 | `.codex/artifact-templates/agent-skill-update-candidate.md` | Template registry | Modernization candidate packet. | No self-applied updates. |
 
+## Professional Code Authoring Artifacts
+
+| Artifact | Producer | Contract role | Boundary |
+| --- | --- | --- | --- |
+| `.codex/workflows/coding-standards.md` | Template registry / `workflow-coding-standards` | Workflow for existing-capability scan, one-line/native candidate, dependency refusal, deep-module check, legacy seam evidence and unsupported code-quality claims. | Source contract only; not live enforcement, hook activation or proof of real agent behavior. |
+| `.codex/artifact-templates/coding-standard-checklist.md` | Template registry / `artifact-coding-standard-checklist` | Review checklist for `enterprise_leverage_check`, `existing_capability_scan`, `one_line_candidate`, `negative_dependency_rule`, `legacy_seam_check`, `comment_policy` and `cleverness_budget`. | Checklist organizes evidence; it does not prove code quality without current tests/evals/review. |
+| `professional_code_authoring` route/eval visibility | Discovery, readiness, runtime route, status dashboard and HTML renderer surfaces | Indicates that Professional Code Authoring is applicable or available for a code-owning task. | `present_unverified` / generated-view evidence only; public map: [Professional Code Authoring Standards](coding-standards.md). |
+
 ## First-run analysis artifact
 
 The first-run analysis artifact is a local generated orientation pack for first project review. It helps an operator see inventory, runtime route, control-plane state, graph summary, risks and a safe next action, but it remains `orientation_only_not_proof`.

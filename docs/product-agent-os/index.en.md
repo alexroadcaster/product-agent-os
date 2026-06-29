@@ -18,6 +18,7 @@ The plugin helps move a project through a full lifecycle: read-only workspace au
 | Find local plugin commands | [CLI Reference](cli-reference.md) |
 | See user-facing outputs | [Artifact Gallery](artifact-gallery.md) |
 | Understand JSON/HTML/ledger evidence artifacts | [Artifact Contracts](artifact-contracts.md) |
+| Make agents write less custom code and reuse more | [Professional Code Authoring Standards](coding-standards.md) |
 | Prepare release packet and handoff | [Packaging And Closure](packaging-and-closure.md) |
 
 ## G4 Operator-Flow Routes
@@ -71,6 +72,7 @@ Generated views are not source of truth: graph, cockpit, dashboard and reports h
 - Live/runtime/provider governance with approval packets, redaction, budget, fallback, audit and staged-only evidence.
 - Scenario workflows for first-run intake, bug rescue, greenfield idea shaping, complex system acceleration, PR review readiness, legacy onboarding, API migration, AI/RAG eval regression, native/mobile work, desktop local-first work, data migration, security-sensitive change, CI stabilization and release packaging.
 - Engineering standards layer with product hypothesis, architecture boundary, acceptance scenarios, test/eval-first gates, docs-as-code, metric hardening, evidence-before-completion and release measurement.
+- Professional Code Authoring standards: existing-capability scan, one-line/native candidate, negative dependency rule, deep module check, legacy seam evidence and unsupported code-quality claim ledger.
 - Transcript/session eval runner and fixture eval coverage for expected behavior, forbidden behavior, privacy checks and regression replay without external systems.
 - Self-Verification And Modernization Loop for agents and skills through `agent_skill_metrics_loop`: target registry, trace intake, dataset quality, grader/judge calibration, scorecard ledger, staged modernization candidates, staged evidence only, no live eval/model/API calls, no active schedules and no self-applied updates.
 
@@ -84,6 +86,7 @@ Generated views are not source of truth: graph, cockpit, dashboard and reports h
 | Subagents work without boundaries | Designs roles through ownership, handoff artifacts and stop conditions |
 | Checks are named after the fact | Separates deterministic checks in `TEST.md` and quality gates in `EVALS.md` |
 | The agent writes code without engineering method | Adds product hypothesis, architecture boundary, test/eval-first path, docs impact and measurement |
+| The agent writes 50 lines instead of reusing capability | Requires the Professional Code Authoring checklist: check standard library, framework, config, current dependency or project helper before custom code |
 | Project rules are scattered across memory | Moves durable rules into `AGENTS.md` and current decisions into `RUNLOG.md` |
 | Hooks and automations are enabled too early | Keeps a staged-first and candidate-only boundary until manual approval |
 | It is hard to prove that work was verified | Requires evidence: commands, fixture evals, source policy and review findings |

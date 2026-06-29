@@ -18,6 +18,7 @@ Product-Agent OS plugin - локальный Codex plugin для проекто�
 | Какие локальные команды есть у plugin | [CLI Reference](cli-reference.md) |
 | Какие результаты получает пользователь | [Витрина результатов](artifact-gallery.md) |
 | Какие JSON/HTML/ledger artifacts считаются evidence | [Artifact Contracts](artifact-contracts.md) |
+| Как заставить agents писать меньше custom code и больше reuse | [Professional Code Authoring standards](coding-standards.md) |
 | Как готовить release packet и handoff | [Packaging And Closure](packaging-and-closure.md) |
 
 ## G4 operator-flow routes
@@ -71,6 +72,7 @@ Use Product-Agent OS for this project: start with a read-only workspace audit, i
 - Live/runtime/provider governance с approval packets, redaction, budget, fallback, audit и staged-only evidence.
 - Scenario workflows для first-run intake, bug rescue, greenfield idea shaping, complex system acceleration, PR review readiness, legacy onboarding, API migration, AI/RAG eval regression, native/mobile work, desktop local-first work, data migration, security-sensitive change, CI stabilization и release packaging.
 - Engineering standards layer с product hypothesis, architecture boundary, acceptance scenarios, test/eval-first gates, docs-as-code, metric hardening, evidence-before-completion и release measurement.
+- Professional Code Authoring standards: existing-capability scan, one-line/native candidate, negative dependency rule, deep module check, legacy seam evidence и unsupported code-quality claim ledger.
 - Transcript/session eval runner и fixture eval coverage для expected behavior, forbidden behavior, privacy checks и regression replay без external systems.
 - Self-verification и modernization loop для agents и skills через self-verification metrics loop `agent_skill_metrics_loop`: target registry, trace intake, dataset quality, grader/judge calibration, scorecard ledger, staged modernization candidates, staged evidence only, нет live eval/model/API calls, нет active schedules и нет self-applied updates.
 
@@ -84,6 +86,7 @@ Use Product-Agent OS for this project: start with a read-only workspace audit, i
 | Subagents работают без границ | Проектирует роли через ownership, handoff artifacts и stop conditions |
 | Проверки называются задним числом | Разделяет deterministic checks в `TEST.md` и quality gates в `EVALS.md` |
 | Агент пишет код без инженерной методологии | Добавляет product hypothesis, architecture boundary, test/eval-first path, влияние на docs и measurement |
+| Агент пишет 50 строк вместо reuse | Требует Professional Code Authoring checklist: сначала standard library, framework, config, current dependency или project helper, затем custom code |
 | Проектные правила размазаны по memory | Переносит durable rules в `AGENTS.md`, а текущие решения в `RUNLOG.md` |
 | Hooks и automations включаются слишком рано | Держит staged-first и candidate-only boundary до ручного approval |
 | Невозможно доказать, что работа verified | Требует evidence: команды, fixture evals, политика источников и review findings |

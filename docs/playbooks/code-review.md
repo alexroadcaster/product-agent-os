@@ -26,7 +26,7 @@ Do not rewrite code unless asked.
 
 ## Профессиональный review кода
 
-Для не механических изменений кода reviewer проверяет `.codex/workflows/coding-standards.md` и `.codex/artifact-templates/coding-standard-checklist.md`, если они есть в пакете задачи. Замечания должны указывать:
+Для не механических изменений кода reviewer проверяет [Professional Code Authoring standards](../product-agent-os/coding-standards.md), `.codex/workflows/coding-standards.md` и `.codex/artifact-templates/coding-standard-checklist.md`, если они есть в пакете задачи. Замечания должны указывать:
 
 - самописный код, где удаление, конфигурация, стандартная библиотека, фреймворк, текущая зависимость или проектный `helper` решают ту же задачу;
 - новую зависимость без `negative_dependency_rule`, отклоненных альтернатив, совместимости и доказательств отката или удаления;

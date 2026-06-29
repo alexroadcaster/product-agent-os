@@ -2,7 +2,7 @@
 
 Source status: `official + verified methodology + experiment`
 
-Источники: [Product-Agent OS architecture](architecture.md), [Product-Agent OS scenarios](scenarios.md), [Behavioral evals](behavioral-evals.md), [Agent approvals and security](https://developers.openai.com/codex/agent-approvals-security), [Codex workflows](https://developers.openai.com/codex/workflows).
+Источники: [Product-Agent OS architecture](architecture.md), [Product-Agent OS scenarios](scenarios.md), [Behavioral evals](behavioral-evals.md), [Professional Code Authoring standards](coding-standards.md), [Agent approvals and security](https://developers.openai.com/codex/agent-approvals-security), [Codex workflows](https://developers.openai.com/codex/workflows).
 
 Development standards turn methodology в concrete reviewable artifacts. Они define how Product-Agent OS handles product hypothesis, architecture, tests, evals, docs, security, release и post-release learning без forcing heavy ceremony onto simple work.
 
@@ -153,4 +153,4 @@ python plugins\product-agent-os\scripts\validate_codex_compatibility.py
 - High-risk work требует explicit owner-reviewed evidence sufficiency или accepted gap.
 - Product-Agent OS должен preserve staged-first behavior, политика источников, sandbox и approvals even когда recommendation является confident.
 
-Следующий artifact: используйте [Methodology intelligence](methodology-intelligence.md) к decide который gates apply и [Behavioral evals](behavioral-evals.md) к check shortcut resistance.
+Следующий artifact: используйте [Methodology intelligence](methodology-intelligence.md) к decide который gates apply, [Professional Code Authoring standards](coding-standards.md) к inspect code-writing gates и [Behavioral evals](behavioral-evals.md) к check shortcut resistance.

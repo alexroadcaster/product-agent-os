@@ -30,6 +30,7 @@ G4 adds four system routes. They do not approve cache refresh, global config wri
 | `operator_command_matrix` | Choose a safe command for first-run analysis, graph/cockpit or docs-tooling smoke. | Uses help/current command evidence, stages only generated artifacts, and keeps broad scans/root `site` rebuild approval-bound. |
 | `guided_question_answer_ledger` | Ask a question without turning intake into a long questionnaire. | Enforces one blocking question maximum; `answers_require_staged_ledger_and_owner_review` before source promotion. |
 | `source_cache_session_state` | Understand why source, installed cache and active session can diverge. | Requires read-only comparison fields and fresh-session proof before any fixed/ready claim. |
+| `professional_code_authoring` | Limit custom code, dependency debt, shallow wrappers or risky refactor in a non-mechanical coding task. | Uses [Professional Code Authoring Standards](coding-standards.md), checklist evidence and shortcut evals; remains a source contract until runtime/owner-pilot proof exists. |
 
 ## Inputs
 
@@ -100,6 +101,7 @@ Use these routes when the question is not about new plugin behavior, but about t
 | `release_packaging` | Package, SDK, plugin, app, mobile, desktop or open-source release. | Build release readiness before publish. | `release-readiness.md`, package metadata, changelog, artifacts. | Publishing, tagging, release creation, upload or package registry mutation require approval. | Build/test/docs evidence, security/license notes, rollback and owner review. |
 | `docs_only` | Documentation update without behavior change. | Update source-backed docs and run docs checks. | Source status, affected docs, registry entry when source-backed claims changed. | Hosted docs, CI activation and sharing changes require approval. | `python tools\check_docs.py`, strict MkDocs when nav/build-sensitive. |
 | `standard_feature` | Bounded feature work without special scenario risk. | Use normal lifecycle route. | Requirements, plan, test/eval evidence. | Writes follow sandbox and project approval policy. | Unit/integration/contract checks, docs impact, review. |
+| `professional_code_authoring` | Non-mechanical code work where the smallest safe implementation matters. | Check reuse before custom code. | Coding-standard checklist, existing-capability scan, one-line/native candidate, dependency and legacy-seam decisions. | No hook/runtime/automation activation from route selection. | Focused tests/evals/review evidence plus unsupported-claim ledger. |
 | `maintenance` | Small upkeep, formatting or status sync. | Keep scope mechanical and evidence explicit. | RUNLOG note or control-plane sync. | No unrelated refactor. | Focused command or explicit inspection-only gap. |
 
 ## Database & Data Methodology Routing
@@ -156,4 +158,4 @@ python tools\check_docs.py
 - Generated dashboards and graphs can look authoritative; source-boundary labels must remain visible.
 - Approval for one surface must not imply approval for another.
 
-Next artifact: use [Behavioral evals](behavioral-evals.md) to test route behavior and [Development standards](development-standards.md) to select evidence gates.
+Next artifact: use [Behavioral evals](behavioral-evals.md) to test route behavior, [Development standards](development-standards.md) to select evidence gates and [Professional Code Authoring Standards](coding-standards.md) to inspect code-writing gates.

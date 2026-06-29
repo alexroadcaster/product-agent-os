@@ -12,6 +12,7 @@ Source status: `official + experiment`
 | Сгенерировать proposal outside target workspace | `render_infrastructure.py <workspace> --stage <stage-dir>` | Stage directory должен быть явным. |
 | Построить static graph/cockpit | [Project Code Graph](project-code-graph.md) | Generated graph/cockpit являются orientation evidence only. |
 | Проверить live/runtime/provider gates | [Live Runtime Governance](live-runtime-governance.md) | Нет live server, provider calls или canonical graph mutation. |
+| Применить Professional Code Authoring | [Professional Code Authoring standards](coding-standards.md) | Source contract only; не доказывает real agent behavior или runtime enforcement. |
 | Подготовить docs и packaging closure | [Packaging And Closure](packaging-and-closure.md) | Исходные docs -> registry -> docs tests -> `check_docs.py` -> strict MkDocs -> optional full closure. |
 
 Эта quick-start таблица не является полной command-policy матрицей. Широкий перечень docs tooling commands, install/runtime variants и approval-state cases относится к later `DOC-M26`; финальная свежесть root `site/` относится к `DOC-M25` после G2-G5.
@@ -121,6 +122,7 @@ Renderer может создать или предложить:
 Workflow inventory включает two methodology packets:
 
 - `.codex/workflows/development-standards.md` - product hypothesis, architecture boundary, test-first/eval-first path, bounded agentic implementation, review и measurement.
+- `.codex/workflows/coding-standards.md` - Professional Code Authoring gate для existing-capability scan, one-line/native candidate и negative dependency rule; public map: [Professional Code Authoring standards](coding-standards.md).
 - `.codex/workflows/documentation-system.md` - docs-as-code routing для architecture docs, API contracts, UI component docs, database docs, code reference и release docs.
 
 Concrete artifact templates keep methodology guidance actionable:

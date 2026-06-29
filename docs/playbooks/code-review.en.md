@@ -26,7 +26,7 @@ Do not rewrite code unless asked.
 
 ## Professional Coding Review
 
-For non-mechanical code changes, the reviewer checks `.codex/workflows/coding-standards.md` and `.codex/artifact-templates/coding-standard-checklist.md` when they are present in the task packet. Findings should call out:
+For non-mechanical code changes, the reviewer checks [Professional Code Authoring Standards](../product-agent-os/coding-standards.md), `.codex/workflows/coding-standards.md` and `.codex/artifact-templates/coding-standard-checklist.md` when they are present in the task packet. Findings should call out:
 
 - custom code where delete/configuration/standard library/framework/current dependency/project helper would solve the same need;
 - new dependency without `negative_dependency_rule`, rejected alternatives, compatibility and rollback/removal evidence;

@@ -1,0 +1,73 @@
+# Professional Code Authoring Standards
+
+Source status: `project-authored + research-backed + experiment`
+
+Sources: Batch 45 research packets `plugins/product-agent-os/assets/research/ai-agent-coding-standards-research.md` and `plugins/product-agent-os/assets/research/ai-agent-coding-literature-research.md`, [Development Standards](development-standards.md), [Artifact Contracts](artifact-contracts.md), [Behavioral Evals](behavioral-evals.md), [Scenarios](scenarios.md), [Code Review playbook](../playbooks/code-review.md).
+
+Professional Code Authoring is the Product-Agent OS layer for non-mechanical coding tasks. Its main rule is simple: the agent checks existing capability, standard library support, framework primitives, configuration paths, current dependencies and project helpers before adding custom code. The best implementation may be one line, a deletion or a configuration change when that satisfies the acceptance criteria with less debt.
+
+## Applied Gates
+
+| Gate | What the agent records | When it can be skipped |
+| --- | --- | --- |
+| `enterprise_leverage_check` | The existing path checked before custom implementation. | Mechanical docs/format-only work with a `not_applicable` reason. |
+| `existing_capability_scan` | Standard library, framework, current dependency, project helper, config and deletion/reuse options. | Tiny isolated fix where source and reason are obvious and recorded. |
+| `one_line_candidate` | The shortest direct expression or native call before a multi-line helper. | Not applicable for behavioral workflow, migration or UI composition work. |
+| `negative_dependency_rule` | Why a new dependency is needed, rejected alternatives and rollback/removal path. | No new dependency. |
+| `deep_module_check` | Why an abstraction hides real complexity instead of creating a shallow wrapper. | Direct call is better than abstraction. |
+| `legacy_seam_check` | Characterization evidence, seam strategy, rollback or accepted gap. | No legacy/refactor impact. |
+| `comment_policy` | Comments explain intent, invariant, hazard or trade-off; they do not narrate code. | The code is self-explanatory and comments are unnecessary. |
+| `cleverness_budget` | Payoff, tests, naming clarity and reviewer rationale. | Direct/simple path chosen. |
+
+## Activation Path
+
+Product-Agent OS applies this standard through staged source artifacts:
+
+| Surface | How it appears | Boundary |
+| --- | --- | --- |
+| Workflow | `.codex/workflows/coding-standards.md` from the packaged template. | Template registration proves the workflow can be staged, not live enforcement. |
+| Checklist | `.codex/artifact-templates/coding-standard-checklist.md`. | Review artifact; not source truth without current evidence. |
+| Agent task packet | `.codex/artifact-templates/agent-task-packet.md` carries compact handoff fields. | Handoff contract, not raw research body. |
+| Skills and agents | Builder/reviewer/architect/tester/docs-maintainer prompts reference the compact contract. | Skills activate by selection/context; they do not launch subagents automatically. |
+| Evals | `behavioral-workflows.json`, agent-context contract and focused tests reject shortcut behavior. | Local deterministic coverage only. |
+| Runtime route and HTML | `professional_code_authoring` appears as recommendation/visibility. | Generated view is `orientation_only_not_proof`. |
+
+## Senior Leverage Ladder
+
+Use this order before writing new code:
+
+1. Delete or avoid the code path entirely.
+2. Use a language construct, standard library or framework primitive.
+3. Reuse a current dependency or project helper already accepted by the repo.
+4. Configure existing behavior instead of adding logic.
+5. Compose a small direct expression.
+6. Add a deep module only when it hides real complexity behind a stable interface.
+7. Add a dependency only after alternatives, lifecycle risk, security and removal path are recorded.
+
+## Evidence Ceiling
+
+Batch 45 currently supports `docs_contract_ready` / `synthetic_green` claims for local source artifacts, templates, eval cases, discovery/readiness visibility, runtime route visibility and generated HTML visibility. It does not prove that AI agents now write enterprise-quality code in real projects.
+
+Unsupported without a later approval-gated batch:
+
+- live runtime or browser behavior;
+- hook activation or blocking enforcement;
+- automation or Self-Learning Loop auto-apply;
+- provider/model/API calls;
+- installed plugin cache refresh;
+- target workspace mutation;
+- git, release, deploy or publish action;
+- replacement of human review.
+
+## Quick Checklist
+
+Before a non-mechanical code edit, the agent should be able to answer:
+
+- What existing capability was checked?
+- What is the one-line/native candidate?
+- Why is custom code still needed?
+- What dependency or legacy debt is added, avoided or removed?
+- What test/eval/runtime evidence will support the claim?
+- Which claims remain unsupported?
+
+Next artifact: use [Development Standards](development-standards.md) to decide whether the gate applies, [Artifact Contracts](artifact-contracts.md) to inspect the checklist boundary and [Behavioral Evals](behavioral-evals.md) to verify shortcut resistance.

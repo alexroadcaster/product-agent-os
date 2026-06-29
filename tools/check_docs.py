@@ -60,6 +60,7 @@ REQUIRED_PATHS = [
     DOCS / "product-agent-os" / "packaging-and-closure.md",
     DOCS / "product-agent-os" / "technical.md",
     DOCS / "product-agent-os" / "development-standards.md",
+    DOCS / "product-agent-os" / "coding-standards.md",
     DOCS / "product-agent-os" / "methodology-intelligence.md",
     DOCS / "product-agent-os" / "scenarios.md",
     DOCS / "product-agent-os" / "behavioral-evals.md",
@@ -163,6 +164,7 @@ REQUIRED_NAV_PATHS = [
     "product-agent-os/cli-reference.md",
     "product-agent-os/artifact-contracts.md",
     "product-agent-os/packaging-and-closure.md",
+    "product-agent-os/coding-standards.md",
 ]
 
 MERMAID_EXTERNAL_ASSET = "https://unpkg.com/mermaid@10/dist/mermaid.min.js"

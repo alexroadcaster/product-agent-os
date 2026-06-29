@@ -168,7 +168,7 @@ Automation is the last step in the promotion chain: manual workflow, playbook, s
 - Combining approvals across unrelated live surfaces.
 - Letting package compatibility imply publication, deployment or external mutation.
 
-Next artifact: use [Scenarios](scenarios.md) to choose the route and [Development standards](development-standards.md) to decide which evidence gates apply.
+Next artifact: use [Scenarios](scenarios.md) to choose the route, [Professional Code Authoring Standards](coding-standards.md) for code-writing gates and [Development standards](development-standards.md) to decide which evidence gates apply.
 
 ## Inputs
 

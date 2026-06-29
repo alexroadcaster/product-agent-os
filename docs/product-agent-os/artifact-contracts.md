@@ -97,6 +97,14 @@ Artifacts должен не contain secrets, credentials, raw private chat logs,
 | `.codex/artifact-templates/agent-skill-weekly-verification.md` | Template registry | Weekly owner-review packet. | Requires rollback/holdout/flake/cost evidence или accepted gaps. |
 | `.codex/artifact-templates/agent-skill-update-candidate.md` | Template registry | Modernization candidate packet. | Нет self-applied updates. |
 
+## Professional Code Authoring Artifacts
+
+| Artifact | Producer | Contract role | Boundary |
+| --- | --- | --- | --- |
+| `.codex/workflows/coding-standards.md` | Template registry / `workflow-coding-standards` | Workflow для existing-capability scan, one-line/native candidate, dependency refusal, deep-module check, legacy seam evidence и unsupported code-quality claims. | Source contract only; не live enforcement, не hook activation и не proof real agent behavior. |
+| `.codex/artifact-templates/coding-standard-checklist.md` | Реестр шаблонов / `artifact-coding-standard-checklist` | Чеклист review для `enterprise_leverage_check`, `existing_capability_scan`, `one_line_candidate`, `negative_dependency_rule`, `legacy_seam_check`, `comment_policy` и `cleverness_budget`. | Чеклист упорядочивает доказательства; без текущих проверок, `evals` и review он не доказывает качество кода. |
+| Видимость `professional_code_authoring` в route/eval | `discovery`, readiness, runtime route, status dashboard и HTML renderer | Показывает, что Professional Code Authoring применим или доступен для задачи, где агент владеет кодом. | Только `present_unverified` / generated-view evidence; публичная карта: [Professional Code Authoring standards](coding-standards.md). |
+
 ## First-run analysis artifact
 
 First-run analysis artifact - это локальный generated orientation pack для первого анализа проекта. Он помогает оператору увидеть inventory, runtime route, control-plane state, graph summary, risks и safe next action, но остается `orientation_only_not_proof`.

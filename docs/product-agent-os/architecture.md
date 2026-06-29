@@ -315,4 +315,4 @@ Product-Agent OS может stage automation candidate, но это должен
 | Secret-like content appears в output | Redact и report redaction category. |
 | Existing file имеет ambiguous managed markers | Остановиться и report conflict. |
 
-Следующий artifact: используйте [Scenarios](scenarios.md) для route selection и [Behavioral evals](behavioral-evals.md) для expected/forbidden behavior.
+Следующий artifact: используйте [Scenarios](scenarios.md) для route selection, [Professional Code Authoring standards](coding-standards.md) для code-writing gates и [Behavioral evals](behavioral-evals.md) для expected/forbidden behavior.

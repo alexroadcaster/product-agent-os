@@ -126,9 +126,11 @@ DOC_M25_HISTORICAL_PENDING_SITE_PAGES = {
     DOCS / "product-agent-os" / "local-html-interaction-boundary.md",
     DOCS / "product-agent-os" / "residual-follow-up-site-freshness.md",
 }
-DOC_M25_PENDING_SITE_PAGES = set()
-BUILDABLE_MARKDOWN_PAGE_COUNT = 148
-LOCALIZED_MARKDOWN_PAGE_COUNT = 140
+DOC_M25_PENDING_SITE_PAGES = {
+    DOCS / "product-agent-os" / "coding-standards.md",
+}
+BUILDABLE_MARKDOWN_PAGE_COUNT = 149
+LOCALIZED_MARKDOWN_PAGE_COUNT = 141
 SITE_PROMOTED_LOCALIZED_MARKDOWN_PAGE_COUNT = 140
 ENGLISH_ORIGINAL_MARKDOWN_PAGE_COUNT = 8
 
@@ -9239,8 +9241,14 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             SITE_PROMOTED_LOCALIZED_MARKDOWN_PAGE_COUNT,
             len(self._site_promoted_localized_markdown_pages()),
         )
-        self.assertEqual(LOCALIZED_MARKDOWN_PAGE_COUNT, SITE_PROMOTED_LOCALIZED_MARKDOWN_PAGE_COUNT)
-        self.assertEqual([], sorted(DOC_M25_PENDING_SITE_PAGES))
+        self.assertEqual(
+            LOCALIZED_MARKDOWN_PAGE_COUNT - len(DOC_M25_PENDING_SITE_PAGES),
+            SITE_PROMOTED_LOCALIZED_MARKDOWN_PAGE_COUNT,
+        )
+        self.assertEqual(
+            ["docs/product-agent-os/coding-standards.md"],
+            sorted(f"docs/{path.relative_to(DOCS).as_posix()}" for path in DOC_M25_PENDING_SITE_PAGES),
+        )
 
         expected_ru = {
             source_path.relative_to(DOCS).with_suffix(".html").as_posix()
