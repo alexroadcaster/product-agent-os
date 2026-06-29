@@ -49,6 +49,8 @@ verification_status: "Current compaction preserves test-visible markers; full ev
 - Product-Agent OS Track 11 G2 first-run cockpit and artifact docs packet (checked_at=2026-06-21, trust=high)
 - Product-Agent OS Track 11 G4 operator flows and system behavior docs packet (checked_at=2026-06-22, trust=high)
 - Product-Agent OS Track 11 Batch 44 Self-Learning Loop activation, agent/skill metrics and HTML progress matrix with `B44-S0`, `B44-S1` and `B44-S2` local evidence and remaining slices planned-only (checked_at=2026-06-24, trust=high for local plan evidence; arXiv intake trust=primary preprint source)
+- Product-Agent OS AI-agent coding standards research corpus with 135 sources, route `plugins/product-agent-os/assets/research/ai-agent-coding-standards-research.md` (checked_at=2026-06-29, trust=high for official sources; medium for community and author methodology sources)
+- Product-Agent OS AI-agent senior coding literature research corpus with 60 books, route `plugins/product-agent-os/assets/research/ai-agent-coding-literature-research.md` (checked_at=2026-06-29, trust=high for publisher/author anchors; medium for marketplace bibliography anchors)
 - Codex web / cloud (checked_at=2026-05-14, trust=high)
 - Codex app (checked_at=2026-05-14, trust=high)
 - Codex CLI (checked_at=2026-05-14, trust=high)

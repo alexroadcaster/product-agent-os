@@ -1,0 +1,955 @@
+{
+  "answer_ledger_routing": {
+    "artifact_name": "answer-ledger-template.json",
+    "completion_claim": "not_claimed",
+    "ledger_template": {
+      "artifact_updates": [],
+      "as_of_date": "2026-06-28",
+      "entries": [
+        {
+          "answer": "",
+          "answer_type": "single_choice_or_text",
+          "answered_at": "",
+          "artifact_action": "none",
+          "category": "approval",
+          "private_data_status": "not_applicable",
+          "question_id": "q_approval_2ae3da13e2",
+          "question_text": "Which source-policy blocker should be fixed or accepted as a gap before apply, promotion or readiness claims?",
+          "redaction": {
+            "categories": [],
+            "count": 0
+          },
+          "status": "unanswered",
+          "target_artifact": "docs/sources/registry.md",
+          "validation_errors": []
+        },
+        {
+          "answer": "",
+          "answer_type": "text",
+          "answered_at": "",
+          "artifact_action": "none",
+          "category": "ownership",
+          "private_data_status": "not_applicable",
+          "question_id": "q_ownership_f53bf5b125",
+          "question_text": "Who owns the highest-priority missing methodology gate?",
+          "redaction": {
+            "categories": [],
+            "count": 0
+          },
+          "status": "unanswered",
+          "target_artifact": "",
+          "validation_errors": []
+        },
+        {
+          "answer": "",
+          "answer_type": "not_applicable_or_gap",
+          "answered_at": "",
+          "artifact_action": "none",
+          "category": "product",
+          "private_data_status": "not_applicable",
+          "question_id": "q_product_6424cfc782",
+          "question_text": "Can the owner provide or accept a gap for: Whether generated first-run output is useful enough for the next owner-reviewed slice.?",
+          "redaction": {
+            "categories": [],
+            "count": 0
+          },
+          "status": "unanswered",
+          "target_artifact": "",
+          "validation_errors": []
+        },
+        {
+          "answer": "",
+          "answer_type": "single_choice_or_text",
+          "answered_at": "",
+          "artifact_action": "none",
+          "category": "scope",
+          "private_data_status": "not_applicable",
+          "question_id": "q_scope_a8b291adcc",
+          "question_text": "What is the smallest safe next artifact to stage?",
+          "redaction": {
+            "categories": [],
+            "count": 0
+          },
+          "status": "unanswered",
+          "target_artifact": "",
+          "validation_errors": []
+        }
+      ],
+      "policy": {
+        "blocked_private_data_statuses": [
+          "raw_private_customer_data"
+        ],
+        "malicious_instruction_guard": "enabled",
+        "max_answer_age_days": 30,
+        "private_data_statuses": [
+          "synthetic_or_none",
+          "redacted",
+          "not_applicable",
+          "raw_private_customer_data"
+        ]
+      },
+      "schema_version": 1,
+      "summary": {
+        "accepted": 0,
+        "blocked": 0,
+        "total": 4,
+        "unanswered": 4
+      },
+      "write_policy": "staged_only"
+    },
+    "schema_version": "first_run_answer_ledger_routing_v1",
+    "source_truth_policy": "answers_are_not_source_truth_until_owner_reviewed_and_staged",
+    "target_workspace_mutation_performed": false,
+    "unreviewed_answers_mutate_source_docs": false,
+    "validation_errors": [],
+    "write_policy": "staged_only"
+  },
+  "artifact_version": 1,
+  "dependency_readiness_summary": {
+    "build_performed": false,
+    "completion_claim": "not_claimed",
+    "excluded_dependency_corpora_count": 0,
+    "generated_runtime_artifacts": [],
+    "install_or_dependency_mutation_performed": false,
+    "lockfiles": [],
+    "product_manifests": [],
+    "provider_risks": [],
+    "runtime_entrypoints": [],
+    "schema_version": "first_run_dependency_readiness_summary_v1",
+    "source_policy": "static dependency inventory is not install/build/supply-chain proof",
+    "status": "not_available"
+  },
+  "docs_logging_summary": {
+    "completion_claim": "not_claimed",
+    "docs_systems": [
+      "markdown_docs"
+    ],
+    "install_or_build_triggered": false,
+    "logging_or_test_signals": [
+      "log_or_runlog_files"
+    ],
+    "schema_version": "first_run_docs_logging_summary_v1",
+    "source_policy": "static detection only; docs/logging presence is not verification success",
+    "status": "inspection_only"
+  },
+  "evidence_status": {
+    "completion_claim": "not_claimed",
+    "freshness": "mixed",
+    "generated_page_count": 0,
+    "source_artifact_count": 20,
+    "unsupported_claim_count": 4
+  },
+  "first_response": {
+    "answer_policy": "answers_require_staged_ledger_and_owner_review",
+    "blocking_question": {
+      "answer_type": "single_choice_or_text",
+      "artifact": "docs/sources/registry.md",
+      "category": "approval",
+      "choices": [
+        "fix_source_policy",
+        "record_accepted_gap",
+        "keep_blocked"
+      ],
+      "id": "q_approval_2ae3da13e2",
+      "owner_domain": "",
+      "priority": "blocking",
+      "sequence": 1,
+      "source": {
+        "artifact": "docs/sources/registry.md",
+        "block": "source_policy_summary",
+        "key": "source_policy_blocker_owner_decision",
+        "kind": "first_run_source_policy"
+      },
+      "text": "Which source-policy blocker should be fixed or accepted as a gap before apply, promotion or readiness claims?"
+    },
+    "blocking_question_count": 1,
+    "completion_claim": "not_claimed",
+    "confidence": "medium",
+    "deferred_question_count": 3,
+    "deferred_question_preview": [
+      {
+        "category": "ownership",
+        "id": "q_ownership_f53bf5b125",
+        "priority": "recommended",
+        "text": "Who owns the highest-priority missing methodology gate?"
+      },
+      {
+        "category": "product",
+        "id": "q_product_6424cfc782",
+        "priority": "recommended",
+        "text": "Can the owner provide or accept a gap for: Whether generated first-run output is useful enough for the next owner-reviewed slice.?"
+      }
+    ],
+    "deferred_question_preview_count": 2,
+    "generated_view_policy": "orientation_only_not_proof",
+    "mode": "guided_first_response",
+    "question_counts": {
+      "blocking": 1,
+      "optional": 0,
+      "recommended": 3,
+      "remaining": 3,
+      "total": 4
+    },
+    "route_options": [
+      {
+        "id": "static_read_only_analysis",
+        "label": "Review static first-run analysis",
+        "safe_next_action": "Review packet and generated HTML as orientation evidence only.",
+        "write_boundary": "no_target_mutation"
+      },
+      {
+        "id": "fix_source_policy_or_record_gap",
+        "label": "Resolve source-policy blocker",
+        "safe_next_action": "Fix source-policy blockers or record an owner-reviewed accepted gap before promotion.",
+        "write_boundary": "staged_docs_only_after_owner_review"
+      }
+    ],
+    "safe_next_action": "Fix source-policy blockers before apply, promotion or readiness claims.",
+    "schema_version": "first_run_guided_response_v1",
+    "summary": "Detected route: ai_eval_regression; source policy: blocked; runtime boundary: not_available.",
+    "welcome_message": {
+      "product_agent_os": {
+        "core_artifacts": [
+          "REQUIREMENTS.md",
+          "PLAN.md",
+          "TEST.md",
+          "EVALS.md",
+          "RUNLOG.md",
+          ".codex/product-agent-os/analysis/"
+        ],
+        "does_not_do": [
+          "does not claim generated HTML is source truth",
+          "does not mutate target source files by default",
+          "does not run providers, browsers, hooks, automations, git or releases without exact approval",
+          "does not store private conversation transcripts, secrets or hidden telemetry"
+        ],
+        "first_run_role": "The first run audits the workspace, identifies the safest next route, creates generated orientation artifacts and asks at most one blocking owner question.",
+        "what_it_is": "It connects requirements, planning, agent ownership, verification evidence, review, handoff, packaging and learning so project work does not live only in chat."
+      },
+      "safe_start": {
+        "next_safe_command": "python plugins/product-agent-os/scripts/run_first_project_analysis.py <workspace> --full-dry-run",
+        "recommended_mode": "--full-dry-run",
+        "review_policy": "generated artifacts are orientation evidence until source files and current checks support a claim",
+        "write_modes": [
+          "--stage <dir>",
+          "--write-analysis"
+        ]
+      },
+      "schema_version": "first_run_welcome_message_v1",
+      "self_learning_loop": {
+        "actions_performed": {
+          "active_automation": false,
+          "auto_apply": false,
+          "provider_api_call": false,
+          "target_workspace_mutation": false
+        },
+        "apply_modes": [
+          {
+            "description": "The loop may propose candidate improvements but cannot apply them.",
+            "id": "draft_only",
+            "label": "Draft only"
+          },
+          {
+            "description": "Every write or activation needs explicit owner approval.",
+            "id": "approval_required",
+            "label": "Approval required"
+          },
+          {
+            "description": "Not enabled by default; requires a later approved automation packet.",
+            "id": "auto_apply_limited_future_after_explicit_approval",
+            "label": "Future limited auto-apply candidate"
+          }
+        ],
+        "auto_apply_status": "not_enabled",
+        "cadence_options": [
+          {
+            "description": "The owner can check due status and run the loop manually; no recurring job exists.",
+            "due_basis": "installed_at_or_last_success_at",
+            "id": "manual_only",
+            "label": "Manual only",
+            "schedule_status": "not_created"
+          },
+          {
+            "description": "A weekly recommendation can be shown, but it is not an active schedule.",
+            "due_basis": "last_success_at_or_installed_at_plus_7_days",
+            "id": "weekly",
+            "label": "Weekly due check",
+            "schedule_status": "not_created"
+          },
+          {
+            "description": "The loop can be suggested after local Product-Agent OS changes.",
+            "due_basis": "skill_config_docs_or_control_plane_change",
+            "id": "on_change",
+            "label": "After Product-Agent OS changes",
+            "schedule_status": "not_created"
+          },
+          {
+            "description": "The due check reports disabled until the owner changes the state.",
+            "due_basis": "none",
+            "id": "disabled",
+            "label": "Disabled",
+            "schedule_status": "not_created"
+          }
+        ],
+        "default_approval_state": "manual_only",
+        "default_settings": {
+          "apply_mode": "draft_only",
+          "cadence": "manual_only",
+          "notify_user": true,
+          "show_in_html": true
+        },
+        "manual_activation": "The owner can run the loop on demand with the manual command. This first-run help only discloses the mechanism and does not activate it.",
+        "manual_commands": {
+          "check_due": "python plugins/product-agent-os/scripts/check_self_learning_due.py <workspace> --dry-run",
+          "run_now": "python plugins/product-agent-os/scripts/run_self_learning_loop.py <workspace> --dry-run"
+        },
+        "manual_runner": {
+          "boundary": "manual runner emits staged evidence and progress artifacts only; no auto-apply or automation is enabled",
+          "dry_run_command": "python plugins/product-agent-os/scripts/run_self_learning_loop.py <workspace> --dry-run",
+          "stage_command": "python plugins/product-agent-os/scripts/run_self_learning_loop.py <workspace> --stage <dir>",
+          "status": "available_manual_only"
+        },
+        "schedule_status": "not_created",
+        "schema_version": "self_learning_loop_disclosure_v1",
+        "scope": "It is scoped to eligible Product-Agent OS projects only; it must not analyze all user Codex sessions, hidden app logs or unrelated workspaces.",
+        "status": "disclosed_planned_manual_first",
+        "triggers": [
+          {
+            "action": "recommend_manual_run_only",
+            "activation": "owner_requested_manual_skill_or_cli",
+            "approval_required": false,
+            "id": "manual_now",
+            "label": "Run manually now"
+          },
+          {
+            "action": "report_due_status_only",
+            "activation": "manual_due_check_or_future_approved_schedule",
+            "approval_required": false,
+            "id": "weekly_due_check",
+            "label": "Weekly due check"
+          },
+          {
+            "action": "recommend_review_only",
+            "activation": "skill_config_docs_or_control_plane_change",
+            "approval_required": false,
+            "id": "on_change",
+            "label": "After Product-Agent OS change"
+          },
+          {
+            "action": "recommend_review_only",
+            "activation": "explicit_failure_or_reopen_signal",
+            "approval_required": false,
+            "id": "post_failure_review",
+            "label": "After failed verification or owner rejection"
+          },
+          {
+            "action": "recommend_review_only",
+            "activation": "owner_provided_redacted_feedback",
+            "approval_required": false,
+            "id": "post_owner_feedback_review",
+            "label": "After owner feedback"
+          },
+          {
+            "action": "recommend_review_only",
+            "activation": "release_or_promotion_gate",
+            "approval_required": true,
+            "id": "release_readiness_review",
+            "label": "Before release readiness claim"
+          }
+        ],
+        "what_it_is": "Self-Learning Loop is the planned Product-Agent OS improvement cycle for analyzing approved project evidence, owner feedback, agent/skill metrics and safety regressions to propose better prompts, skills, routing, memory summaries, evals or harnesses."
+      },
+      "summary": "Product-Agent OS is a local Codex operating layer for turning a real project workspace into a governed product-delivery loop.",
+      "title": "Welcome to Product-Agent OS"
+    }
+  },
+  "generated_at": "2026-06-28T00:00:00+03:00",
+  "generated_pages": [],
+  "generated_view_policy": "orientation_only_not_proof",
+  "graph_artifact_summary": {
+    "agent_packet_refs": [],
+    "completion_claim": "not_claimed",
+    "coverage": {
+      "covered_files": 0,
+      "partial_files": 0,
+      "status": "not_available",
+      "unsupported_languages": {}
+    },
+    "decision_status": "manual_only",
+    "framework_semantic_summary": {
+      "total": 0
+    },
+    "framework_semantics": {
+      "total": 0
+    },
+    "freshness": {
+      "blocks_action_claims": false,
+      "safe_next_action": "Read source files before graph-backed actions.",
+      "status": "not_available"
+    },
+    "generated_view_policy": "orientation_only_not_proof",
+    "graph_packet_digest": "",
+    "guided_tour": [],
+    "must_read_source_before_edit": true,
+    "promotion_boundary": "manual_only_not_promoted",
+    "promotion_decision": "not_promoted",
+    "rejected_link_summary": {
+      "total": 0
+    },
+    "rejected_links": {
+      "total": 0
+    },
+    "schema_version": "graph_depth_first_run_summary_v1",
+    "source_policy": "graph artifacts are generated orientation evidence, not source truth",
+    "source_read_required": true,
+    "status": "not_available",
+    "unsupported_claims": []
+  },
+  "graph_depth_summary": {
+    "agent_packet_refs": [],
+    "completion_claim": "not_claimed",
+    "coverage": {
+      "covered_files": 0,
+      "partial_files": 0,
+      "status": "not_available",
+      "unsupported_languages": {}
+    },
+    "decision_status": "manual_only",
+    "framework_semantic_summary": {
+      "total": 0
+    },
+    "framework_semantics": {
+      "total": 0
+    },
+    "freshness": {
+      "blocks_action_claims": false,
+      "safe_next_action": "Read source files before graph-backed actions.",
+      "status": "not_available"
+    },
+    "generated_view_policy": "orientation_only_not_proof",
+    "graph_packet_digest": "",
+    "guided_tour": [],
+    "must_read_source_before_edit": true,
+    "promotion_boundary": "manual_only_not_promoted",
+    "promotion_decision": "not_promoted",
+    "rejected_link_summary": {
+      "total": 0
+    },
+    "rejected_links": {
+      "total": 0
+    },
+    "schema_version": "graph_depth_first_run_summary_v1",
+    "source_policy": "graph artifacts are generated orientation evidence, not source truth",
+    "source_read_required": true,
+    "status": "not_available",
+    "unsupported_claims": []
+  },
+  "graph_dry_run_summary": {
+    "completion_claim": "not_claimed",
+    "coverage": {
+      "partial_files": 18,
+      "status": "diagnostic_only",
+      "total_files": 19
+    },
+    "edge_count": 556,
+    "generated_view_policy": "orientation_only_not_proof",
+    "node_count": 557,
+    "observation_count": 1113,
+    "schema_version": "first_run_graph_dry_run_summary_v1",
+    "source_policy": "generated graph is not source truth",
+    "status": "inspection_only",
+    "unsupported_claims": [
+      "semantic completeness",
+      "runtime behavior",
+      "impact proof"
+    ],
+    "validation_ok": true,
+    "write_policy": "read_only"
+  },
+  "methodology_audit_summary": {
+    "applicable_domains": [
+      {
+        "id": "requirements_domain",
+        "status": "applicable_missing"
+      },
+      {
+        "id": "solution_architecture",
+        "status": "applicable_missing"
+      },
+      {
+        "id": "quality_testing_evals",
+        "status": "present_unverified"
+      }
+    ],
+    "completion_claim": "not_claimed",
+    "complexity_profile": {
+      "confidence": "medium",
+      "selected": "standard"
+    },
+    "first_safe_action": "Stage architecture-overview.md with scope, context and container boundaries.",
+    "maturity_level": {
+      "confidence": "medium",
+      "selected": "team"
+    },
+    "question_count": 3,
+    "safe_next_action": "Stage architecture-overview.md with scope, context and container boundaries.",
+    "schema_version": "first_run_methodology_audit_summary_v1",
+    "status": "ok",
+    "top_recommendations": [
+      {
+        "domain": "solution_architecture",
+        "gate": "architecture_container_boundary_present",
+        "priority": "P1_high_risk",
+        "safe_next_action": "Stage architecture-overview.md with scope, context and container boundaries."
+      },
+      {
+        "domain": "solution_architecture",
+        "gate": "architecture_context_view_present",
+        "priority": "P1_high_risk",
+        "safe_next_action": "Stage architecture-overview.md with scope, context and container boundaries."
+      },
+      {
+        "domain": "solution_architecture",
+        "gate": "solution_architecture_scope_present",
+        "priority": "P1_high_risk",
+        "safe_next_action": "Stage architecture-overview.md with scope, context and container boundaries."
+      }
+    ],
+    "write_policy": "read_only"
+  },
+  "packet_digest": "sha256:317040d744e145f7668cb57b98b1463f0610145910d2e4d2bbb2dae13fc0f9ff",
+  "project_analysis_summary": {
+    "completion_claim": "not_claimed",
+    "complexity_profile": {
+      "confidence": "medium",
+      "name": "guided-small"
+    },
+    "control_plane": {
+      "existing": [
+        "REQUIREMENTS.md",
+        "PLAN.md",
+        "TEST.md",
+        "EVALS.md",
+        "RUNLOG.md"
+      ],
+      "missing": [
+        "AGENTS.md"
+      ]
+    },
+    "detected_stack": [],
+    "generated_artifact_inputs": {
+      "evidence_ref_count": 0,
+      "generated_view_policy": "orientation_only_not_proof",
+      "source_truth_allowed": false,
+      "status": "not_available"
+    },
+    "route_reasons": [
+      "workspace has AI or RAG eval regression signals"
+    ],
+    "schema_version": "first_run_project_analysis_summary_v1",
+    "source_policy": "route uses source files; generated artifacts are orientation-only",
+    "usage_mode": {
+      "confidence": "medium",
+      "primary": "ai_eval_regression",
+      "secondary": []
+    }
+  },
+  "question_queue": {
+    "next_blocking_question": {
+      "answer_type": "single_choice_or_text",
+      "artifact": "docs/sources/registry.md",
+      "category": "approval",
+      "choices": [
+        "fix_source_policy",
+        "record_accepted_gap",
+        "keep_blocked"
+      ],
+      "id": "q_approval_2ae3da13e2",
+      "owner_domain": "",
+      "priority": "blocking",
+      "sequence": 1,
+      "source": {
+        "artifact": "docs/sources/registry.md",
+        "block": "source_policy_summary",
+        "key": "source_policy_blocker_owner_decision",
+        "kind": "first_run_source_policy"
+      },
+      "text": "Which source-policy blocker should be fixed or accepted as a gap before apply, promotion or readiness claims?"
+    },
+    "policy": {
+      "max_blocking_questions_in_first_response": 1,
+      "max_total_questions": 8,
+      "supported_answer_types": [
+        "text",
+        "single_choice",
+        "single_choice_or_text",
+        "multi_choice",
+        "approval",
+        "not_applicable_or_gap"
+      ],
+      "supported_categories": [
+        "scope",
+        "product",
+        "verification",
+        "approval",
+        "ownership",
+        "risk",
+        "release"
+      ],
+      "supported_priorities": [
+        "blocking",
+        "recommended",
+        "optional"
+      ]
+    },
+    "questions": [
+      {
+        "answer_type": "single_choice_or_text",
+        "artifact": "docs/sources/registry.md",
+        "category": "approval",
+        "choices": [
+          "fix_source_policy",
+          "record_accepted_gap",
+          "keep_blocked"
+        ],
+        "id": "q_approval_2ae3da13e2",
+        "owner_domain": "",
+        "priority": "blocking",
+        "sequence": 1,
+        "source": {
+          "artifact": "docs/sources/registry.md",
+          "block": "source_policy_summary",
+          "key": "source_policy_blocker_owner_decision",
+          "kind": "first_run_source_policy"
+        },
+        "text": "Which source-policy blocker should be fixed or accepted as a gap before apply, promotion or readiness claims?"
+      },
+      {
+        "answer_type": "text",
+        "artifact": "",
+        "category": "ownership",
+        "id": "q_ownership_f53bf5b125",
+        "owner_domain": "",
+        "priority": "recommended",
+        "sequence": 2,
+        "source": {
+          "block": "questions_for_owner",
+          "key": "methodology_gate_owner",
+          "kind": "methodology_packet"
+        },
+        "text": "Who owns the highest-priority missing methodology gate?"
+      },
+      {
+        "answer_type": "not_applicable_or_gap",
+        "artifact": "",
+        "category": "product",
+        "id": "q_product_6424cfc782",
+        "owner_domain": "",
+        "priority": "recommended",
+        "sequence": 3,
+        "source": {
+          "block": "unknowns",
+          "key": "first_run_usefulness_review",
+          "kind": "methodology_audit"
+        },
+        "text": "Can the owner provide or accept a gap for: Whether generated first-run output is useful enough for the next owner-reviewed slice.?"
+      },
+      {
+        "answer_type": "single_choice_or_text",
+        "artifact": "",
+        "category": "scope",
+        "id": "q_scope_a8b291adcc",
+        "owner_domain": "",
+        "priority": "recommended",
+        "sequence": 4,
+        "source": {
+          "block": "questions_for_owner",
+          "key": "owner_scope",
+          "kind": "methodology_packet"
+        },
+        "text": "What is the smallest safe next artifact to stage?"
+      }
+    ],
+    "runtime_status": "not_available",
+    "schema_version": 1,
+    "summary": {
+      "blocking": 1,
+      "optional": 0,
+      "recommended": 3,
+      "remaining": 3,
+      "total": 4
+    },
+    "write_policy": "read_only"
+  },
+  "redaction_status": {
+    "local_absolute_paths_allowed": false,
+    "raw_file_bodies_allowed": false,
+    "raw_private_logs_allowed": false,
+    "secrets_allowed": false,
+    "status": "passed_redacted"
+  },
+  "runtime_browser_boundary": {
+    "approval_boundary": "runtime/browser/provider checks require exact approval and current evidence",
+    "browser_automation_performed": false,
+    "browser_tool_status": "not_run",
+    "completion_claim": "not_claimed",
+    "provider_api_call_performed": false,
+    "provider_risks": [],
+    "runtime_entrypoints": [],
+    "runtime_executed": false,
+    "schema_version": "first_run_runtime_browser_boundary_v1",
+    "status": "not_available",
+    "target_workspace_mutation_performed": false,
+    "unsupported_claims": [
+      "runtime/browser behavior",
+      "provider/API/model quality",
+      "performance",
+      "accessibility"
+    ]
+  },
+  "safe_next_action": "Fix source-policy blockers before apply, promotion or readiness claims.",
+  "schema_version": "first_run_analysis_packet_v1",
+  "section_summaries": {
+    "control_plane": {
+      "accepted_gaps": [],
+      "confidence": "low",
+      "evidence_freshness": "present_unverified",
+      "source_artifact": "project_analysis_summary",
+      "source_module": "product_agent_os.discovery.analyze_workspace",
+      "status": "present_unverified",
+      "unsupported_claims": []
+    },
+    "discovery": {
+      "accepted_gaps": [],
+      "confidence": "medium",
+      "evidence_freshness": "current",
+      "source_artifact": "project_analysis_summary",
+      "source_module": "product_agent_os.discovery.analyze_workspace",
+      "status": "current",
+      "unsupported_claims": []
+    },
+    "graph": {
+      "accepted_gaps": [],
+      "confidence": "medium",
+      "evidence_freshness": "inspection_only",
+      "source_artifact": "graph_dry_run_summary",
+      "source_module": "product_agent_os.project_code_graph.build_project_code_graph",
+      "status": "inspection_only",
+      "unsupported_claims": [
+        "generated graph is not source truth",
+        "semantic completeness not claimed"
+      ]
+    },
+    "methodology_audit": {
+      "accepted_gaps": [],
+      "confidence": "unknown",
+      "evidence_freshness": "not_available",
+      "source_artifact": "not_available",
+      "source_module": "not_available",
+      "status": "not_available",
+      "unsupported_claims": []
+    },
+    "runtime_route": {
+      "accepted_gaps": [],
+      "confidence": "medium",
+      "evidence_freshness": "approval_required",
+      "source_artifact": "runtime_browser_boundary",
+      "source_module": "first_run_runtime_browser_boundary",
+      "status": "approval_required",
+      "unsupported_claims": [
+        "runtime/browser proof not run"
+      ]
+    },
+    "source_policy": {
+      "accepted_gaps": [],
+      "confidence": "medium",
+      "evidence_freshness": "approval_required",
+      "source_artifact": "source_policy_summary",
+      "source_module": "product_agent_os.source_policy.validate_source_policy",
+      "status": "approval_required",
+      "unsupported_claims": [
+        "source policy blocked apply/promotion"
+      ]
+    },
+    "status_snapshot": {
+      "accepted_gaps": [],
+      "confidence": "unknown",
+      "evidence_freshness": "not_available",
+      "source_artifact": "not_available",
+      "source_module": "not_available",
+      "status": "not_available",
+      "unsupported_claims": []
+    }
+  },
+  "source_artifacts": [
+    {
+      "artifact_id": "workspace_inventory",
+      "digest": "sha256:72a8d1acfbda55655bdca309f18541ca524fa0d5e07156185b8486f67ba0b195",
+      "evidence_status": "inspection_only",
+      "path": "workspace-inventory",
+      "provenance": "run_first_project_analysis"
+    },
+    {
+      "artifact_id": "architecture-v2.md",
+      "digest": "sha256:0847aca4940dcc9f2e85be8d5d29bca86187587c32c55a448c6144b4e8f18e32",
+      "evidence_status": "inspection_only",
+      "path": "architecture-v2.md",
+      "provenance": "workspace_inventory_file"
+    },
+    {
+      "artifact_id": "architecture.md",
+      "digest": "sha256:75ed0ede5875bc073eff109c5e2532664c2060c577d9ab745add03f386f22791",
+      "evidence_status": "inspection_only",
+      "path": "architecture.md",
+      "provenance": "workspace_inventory_file"
+    },
+    {
+      "artifact_id": "docs/superpowers/plans/2026-04-24-neural-flow-consolidation-implementation.md",
+      "digest": "sha256:08bbd1b7b66fd10c42237b0934d2bf902d664f4825fdbd783eb266a220f8c53b",
+      "evidence_status": "inspection_only",
+      "path": "docs/superpowers/plans/2026-04-24-neural-flow-consolidation-implementation.md",
+      "provenance": "workspace_inventory_file"
+    },
+    {
+      "artifact_id": "docs/superpowers/plans/2026-04-26-neural-flow-p2a-research-implementation.md",
+      "digest": "sha256:e988afd40e09dabbd555bcba4f63701af4739b7cbd6bc71bbbe9eff2ae9606ff",
+      "evidence_status": "inspection_only",
+      "path": "docs/superpowers/plans/2026-04-26-neural-flow-p2a-research-implementation.md",
+      "provenance": "workspace_inventory_file"
+    },
+    {
+      "artifact_id": "docs/superpowers/specs/2026-04-24-neural-flow-consolidation-design.md",
+      "digest": "sha256:7e742ee4be8502b8e2a8883fac0fdf92d49b8054961ab8cb3c4f609d3103e0dc",
+      "evidence_status": "inspection_only",
+      "path": "docs/superpowers/specs/2026-04-24-neural-flow-consolidation-design.md",
+      "provenance": "workspace_inventory_file"
+    },
+    {
+      "artifact_id": "docs/superpowers/specs/2026-04-26-neural-flow-p2a-research-design.md",
+      "digest": "sha256:a9a9cee08410248a5d65fdd03fea27777e04cba4db64b1b1dc53010b962640e5",
+      "evidence_status": "inspection_only",
+      "path": "docs/superpowers/specs/2026-04-26-neural-flow-p2a-research-design.md",
+      "provenance": "workspace_inventory_file"
+    },
+    {
+      "artifact_id": "EVALS.md",
+      "digest": "sha256:c6be7d6054877c6fb33dc43f00c673e1114666708beda33fb5389d7cea34ff84",
+      "evidence_status": "inspection_only",
+      "path": "EVALS.md",
+      "provenance": "workspace_inventory_file"
+    },
+    {
+      "artifact_id": "issues.md",
+      "digest": "sha256:c852f0cbe8f426eccc8fb2bcd09d7cdf71316ed1f42f4095dcb78d3efb613a68",
+      "evidence_status": "inspection_only",
+      "path": "issues.md",
+      "provenance": "workspace_inventory_file"
+    },
+    {
+      "artifact_id": "legacy/neural-flow-core-v2.txt",
+      "digest": "sha256:b09a1759e9df85e39083fbd2e4b3b3392d848df0ad61e42ac73c2842b4adeb5a",
+      "evidence_status": "inspection_only",
+      "path": "legacy/neural-flow-core-v2.txt",
+      "provenance": "workspace_inventory_file"
+    },
+    {
+      "artifact_id": "legacy/neural-flow-v1-architecture.md",
+      "digest": "sha256:f9c0bb27bf8d2d341daf95e71266cd7883eb2f5e697e689b05ccc23a775ba310",
+      "evidence_status": "inspection_only",
+      "path": "legacy/neural-flow-v1-architecture.md",
+      "provenance": "workspace_inventory_file"
+    },
+    {
+      "artifact_id": "legacy/neural-flow-v2-theory.md",
+      "digest": "sha256:ca242e3e1d7ceeb6214e4c17ca2641e740d60b0d79b41b51bd489e1cb10a96f1",
+      "evidence_status": "inspection_only",
+      "path": "legacy/neural-flow-v2-theory.md",
+      "provenance": "workspace_inventory_file"
+    },
+    {
+      "artifact_id": "PLAN.md",
+      "digest": "sha256:17cafcc9294114a070136e05dbc96e11ea0ac614c0363683342dcb131086ba53",
+      "evidence_status": "inspection_only",
+      "path": "PLAN.md",
+      "provenance": "workspace_inventory_file"
+    },
+    {
+      "artifact_id": "README.md",
+      "digest": "sha256:50370935d62b696b8cce261ee5a4805379f962d3b1d814cbe48f35aec352424c",
+      "evidence_status": "inspection_only",
+      "path": "README.md",
+      "provenance": "workspace_inventory_file"
+    },
+    {
+      "artifact_id": "REQUIREMENTS.md",
+      "digest": "sha256:d57882521cbec1086c91eb2b352f331bd1c6ddef9fd353e362e660187c5e8981",
+      "evidence_status": "inspection_only",
+      "path": "REQUIREMENTS.md",
+      "provenance": "workspace_inventory_file"
+    },
+    {
+      "artifact_id": "research/p2a-findings.md",
+      "digest": "sha256:ece3099e6ca8254c955033c01034e45c8980dda7e75f665a5799058b23371d18",
+      "evidence_status": "inspection_only",
+      "path": "research/p2a-findings.md",
+      "provenance": "workspace_inventory_file"
+    },
+    {
+      "artifact_id": "research/p2a-implications-for-p2b.md",
+      "digest": "sha256:5cd50eabcccd3e6a4e55c6ba68f04e1c2f147aaa77cfe3e9194b44b257e06b8c",
+      "evidence_status": "inspection_only",
+      "path": "research/p2a-implications-for-p2b.md",
+      "provenance": "workspace_inventory_file"
+    },
+    {
+      "artifact_id": "RUNLOG.md",
+      "digest": "sha256:fd488dfd42ead74c6caee9a4f4271d33c3db273f57e269c8c8fea0bc2bb701e3",
+      "evidence_status": "inspection_only",
+      "path": "RUNLOG.md",
+      "provenance": "workspace_inventory_file"
+    },
+    {
+      "artifact_id": "system-prompt.md",
+      "digest": "sha256:3ca072dbeed14f5589665df363c16cc2c39e60b3d0314d8c3da31381a4ba2128",
+      "evidence_status": "inspection_only",
+      "path": "system-prompt.md",
+      "provenance": "workspace_inventory_file"
+    },
+    {
+      "artifact_id": "TEST.md",
+      "digest": "sha256:3133e93bff46ac1661331e9764cec925d3d5413f07976499231e7b3a0f2b6eb4",
+      "evidence_status": "inspection_only",
+      "path": "TEST.md",
+      "provenance": "workspace_inventory_file"
+    }
+  ],
+  "source_policy_summary": {
+    "completion_claim": "not_claimed",
+    "error_count": 1,
+    "errors": [
+      "missing Source status"
+    ],
+    "file_count": 4,
+    "registry_update_required_count": 4,
+    "registry_updates_required": [
+      "docs/superpowers/plans/2026-04-24-neural-flow-consolidation-implementation.md",
+      "docs/superpowers/plans/2026-04-26-neural-flow-p2a-research-implementation.md",
+      "docs/superpowers/specs/2026-04-24-neural-flow-consolidation-design.md",
+      "docs/superpowers/specs/2026-04-26-neural-flow-p2a-research-design.md"
+    ],
+    "safe_next_action": "Fix source-policy blockers before apply, promotion or readiness claims.",
+    "schema_version": "first_run_source_policy_summary_v1",
+    "secret_finding_count": 0,
+    "section_status": "approval_required",
+    "status": "blocked",
+    "unsupported_claims": [
+      "source policy blocked apply/promotion"
+    ]
+  },
+  "target": {
+    "label": "Neural_Flow",
+    "mutation_allowed": false,
+    "target_ref": "Neural_Flow"
+  },
+  "write_policy": "read_only_generated_analysis_only"
+}

@@ -222,29 +222,71 @@ def _page_html(
     s4_html = _s4_page_summary_html(page_id, packet)
     baseline_html = _baseline_html(previous_baseline, change_summary)
     cleanup_html = _cleanup_html(cleanup_guidance)
+    css = _diagnostic_page_css()
     return (
         "<!doctype html>\n"
         "<html lang=\"en\">\n"
-        "<head><meta charset=\"utf-8\"><title>"
+        "<head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>"
         f"{html.escape(title)}"
-        "</title></head>\n"
-        "<body>\n"
+        f"</title><style>{css}</style></head>\n"
+        f"<body class=\"diagnostic-page\" data-visual-system=\"tactical-telemetry\" data-page-id=\"{html.escape(page_id)}\">\n"
+        "<a class=\"skip-link\" href=\"#diagnostic-content\">Skip to diagnostic content</a>\n"
+        "<main id=\"diagnostic-content\" class=\"diagnostic-shell tactical-telemetry-diagnostic\" tabindex=\"-1\">\n"
+        "<header class=\"diagnostic-hero\" data-visual-archetype=\"tactical-telemetry-brutalist\">\n"
+        "<p class=\"diagnostic-kicker\">generated-view-only / diagnostic page</p>\n"
         f"<h1>{html.escape(title)}</h1>\n"
         "<p><strong>generated-view-only</strong>: orientation evidence only, not readiness proof.</p>\n"
-        f"<p>Packet digest: <code>{html.escape(str(packet.get('packet_digest', '')))}</code></p>\n"
-        f"<p>Safe next action: {safe_next}</p>\n"
-        "<h2>Source Artifacts</h2>\n"
-        f"<ul>{source_links}</ul>\n"
-        "<h2>Section Evidence</h2>\n"
+        "<dl class=\"diagnostic-facts\">"
+        f"<div><dt>Packet digest</dt><dd><code>{html.escape(str(packet.get('packet_digest', '')))}</code></dd></div>"
+        f"<div><dt>Safe next action</dt><dd>{safe_next}</dd></div>"
+        "<div><dt>Primary cockpit</dt><dd><a href=\"index.html\">Open index.html</a></dd></div>"
+        "</dl>\n"
+        "</header>\n"
+        "<section class=\"diagnostic-panel\"><h2>Source Artifacts</h2>\n"
+        f"<ul>{source_links}</ul></section>\n"
+        "<section class=\"diagnostic-panel\"><h2>Section Evidence</h2>\n"
         "<table><thead><tr><th>Section</th><th>Status</th><th>Module</th><th>Artifact</th><th>Freshness</th><th>Confidence</th></tr></thead>"
-        f"<tbody>{sections}</tbody></table>\n"
-        f"{s4_html}"
-        f"{baseline_html}"
-        f"{cleanup_html}"
-        f"{graph_depth_html}"
+        f"<tbody>{sections}</tbody></table></section>\n"
+        f"<section class=\"diagnostic-panel\">{s4_html}{baseline_html}{cleanup_html}{graph_depth_html}</section>\n"
+        "</main>\n"
         "</body>\n"
         "</html>\n"
     )
+
+
+def _diagnostic_page_css() -> str:
+    return """
+:root{color-scheme:dark;--ink:#f2f2ee;--muted:#aeb6bd;--line:#3b4148;--paper:#0a0a0a;--panel:#121212;--panel-2:#171717;--accent:#ff2a2a;--warn:#ffb35c;--readout:#4af626}
+*{box-sizing:border-box}
+html{background:var(--paper)}
+body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.55 Arial,Helvetica,sans-serif;letter-spacing:0}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0,rgba(255,255,255,.025) 1px,transparent 1px,transparent 4px)}
+.skip-link{position:absolute;left:12px;top:-48px;background:var(--readout);color:#050505;padding:8px 10px;z-index:3}
+.skip-link:focus{top:12px}
+.diagnostic-shell{position:relative;z-index:1;max-width:1280px;margin:0 auto;padding:18px;background:linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(0deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:32px 32px}
+.diagnostic-hero,.diagnostic-panel{background:rgba(18,18,18,.96);border:1px solid var(--line);border-radius:0;margin:0 0 14px;padding:18px}
+.diagnostic-hero{border-top:6px solid var(--accent)}
+.diagnostic-kicker{margin:0 0 10px;color:var(--readout);font:700 12px/1.4 Consolas,"Courier New",monospace;text-transform:uppercase}
+h1{margin:0 0 12px;font-size:44px;line-height:1;text-transform:uppercase;letter-spacing:0}
+h2{margin:0 0 12px;font-size:20px;text-transform:uppercase;letter-spacing:0}
+h3{font-size:15px;text-transform:uppercase;letter-spacing:0}
+p{color:var(--muted);overflow-wrap:anywhere}
+a{color:var(--readout)}
+code,pre{font-family:Consolas,"Courier New",monospace;color:var(--readout)}
+pre{max-width:100%;overflow:auto;background:#050505;border:1px solid var(--line);border-left:4px solid var(--accent);padding:12px;white-space:pre-wrap}
+.diagnostic-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;margin:16px 0 0;background:var(--line);border:1px solid var(--line)}
+.diagnostic-facts div{min-width:0;background:#171717;padding:12px}
+.diagnostic-facts dt{color:var(--muted);font:700 11px/1.4 Consolas,"Courier New",monospace;text-transform:uppercase}
+.diagnostic-facts dd{margin:4px 0 0;overflow-wrap:anywhere}
+ul{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;margin:0;padding:0;list-style:none;background:var(--line);border:1px solid var(--line)}
+li{min-width:0;background:#171717;padding:10px;overflow-wrap:anywhere}
+table{width:100%;border-collapse:collapse;background:#0c0c0c;border:1px solid var(--line);font:13px/1.5 Consolas,"Courier New",monospace}
+th,td{padding:9px;text-align:left;vertical-align:top;border-top:1px solid var(--line);border-right:1px solid rgba(255,255,255,.06);overflow-wrap:anywhere}
+th{color:var(--muted);background:#111;text-transform:uppercase}
+td{color:var(--ink)}
+section[aria-labelledby]{border-top:1px solid var(--line);margin-top:16px;padding-top:16px}
+@media(max-width:760px){.diagnostic-shell{padding:10px}.diagnostic-hero,.diagnostic-panel{padding:14px}h1{font-size:34px}.diagnostic-facts,ul{grid-template-columns:1fr}}
+""".strip()
 
 
 def build_first_run_cockpit_artifact_contract() -> dict[str, Any]:
@@ -314,6 +356,8 @@ def _architecture_intelligence_design_contract() -> dict[str, Any]:
         "schema_version": "architecture_intelligence_design_contract_v1",
         "artifact_family": "self_contained_architecture_intelligence_cockpit",
         "generated_view_boundary": "generated-view-only",
+        "visual_archetype": "tactical_telemetry_brutalist",
+        "substrate": "dark_crt_only",
         "first_viewport": {
             "layout": "identity_status_architecture_next_route",
             "required_signals": [
@@ -350,24 +394,25 @@ def _architecture_intelligence_design_contract() -> dict[str, Any]:
             "baseline and cleanup",
         ],
         "component_grammar": {
-            "source": "shadcn/ui principles mapped to semantic self-contained HTML/CSS",
+            "source": "industrial telemetry panels mapped to semantic self-contained HTML/CSS",
             "mapped_components": [
-                "shadcn_card",
-                "shadcn_tabs",
-                "shadcn_badge",
-                "shadcn_alert",
-                "shadcn_table",
-                "shadcn_separator",
-                "shadcn_input",
-                "shadcn_select",
+                "telemetry_panel",
+                "command_tabs",
+                "status_pill",
+                "blocker_alert",
+                "matrix_table",
+                "rule_separator",
+                "terminal_input",
+                "field_select",
             ],
             "runtime_migration": "not_claimed",
         },
         "design_tokens": {
             "surface": "panel, band, cockpit page, acceptance surface",
-            "radius_px": 8,
+            "radius_px": 0,
             "spacing_scale_px": [4, 8, 12, 16, 24, 32],
-            "dominant_palette_policy": "neutral workspace with distinct status accents",
+            "dominant_palette_policy": "dark CRT substrate with aviation red blockers and one terminal-green readout role",
+            "grid_policy": "visible compartment lines and dense telemetry matrices",
         },
         "typography": {
             "body_min_px": 15,
@@ -2031,9 +2076,9 @@ def _cockpit_page_html(
         f"<style>{css}</style></head>\n"
         "<body>\n"
         "<a class=\"skip-link\" href=\"#main-content\">Skip to cockpit content</a>\n"
-        "<main id=\"main-content\" class=\"first-run-cockpit cockpit-shell\" data-schema=\"first_run_cockpit_artifact_v1\" data-interaction-layer=\"approved-local-js\" tabindex=\"-1\">\n"
-        "<header class=\"cockpit-hero dossier-hero\" data-shell=\"architecture-dossier\" data-shell-version=\"architecture-intelligence-v2\" data-shell-role=\"architecture-intelligence-hero\">\n"
-        "<div class=\"hero-kicker-row\"><p class=\"eyebrow\">generated-view-only</p><p class=\"dossier-label\">Architecture dossier / operational cockpit</p></div>\n"
+        "<main id=\"main-content\" class=\"first-run-cockpit cockpit-shell tactical-telemetry\" data-schema=\"first_run_cockpit_artifact_v1\" data-visual-system=\"tactical-telemetry\" data-interaction-layer=\"approved-local-js\" tabindex=\"-1\">\n"
+        "<header class=\"cockpit-hero dossier-hero telemetry-hero\" data-shell=\"architecture-dossier\" data-shell-version=\"architecture-intelligence-v2\" data-shell-role=\"architecture-intelligence-hero\" data-visual-archetype=\"tactical-telemetry-brutalist\">\n"
+        "<div class=\"hero-kicker-row\"><p class=\"eyebrow\">generated-view-only</p><p class=\"dossier-label\">[ ARCHITECTURE DOSSIER / OPERATIONAL COCKPIT ]</p></div>\n"
         "<div class=\"hero-layout operator-layout\">\n"
         "<section class=\"hero-primary\" aria-labelledby=\"cockpit-title\">\n"
         "<h1 id=\"cockpit-title\">Architecture Intelligence Cockpit</h1>\n"
@@ -2847,12 +2892,18 @@ def _graph_panel_html(graph: dict[str, Any], *, graph_id: str, title: str, empty
     )
     table_fallback = _graph_table_html(graph)
     canvas = _graph_svg_html(graph, graph_id=graph_id, empty_message=empty_message)
+    graph_summary = (
+        f"Text alternative: {graph.get('visible_node_count', 0)} visible nodes and "
+        f"{graph.get('visible_edge_count', 0)} visible links are rendered as a static orientation map. "
+        "The bounded table below preserves node id, type, status, cluster and path without relying on color or hover."
+    )
     return (
         f"<div class=\"graph-surface\" data-graph-kind=\"{_attr(graph_id)}\" data-renderer=\"Cosmos.gl\" "
         f"data-adapter-status=\"{_attr(graph.get('runtime_asset_status'))}\">\n"
         f"<h3>{_text(title)}</h3>\n"
         "<p class=\"graph-boundary\">Cosmos.gl is the selected renderer; this offline file carries a Cosmos-ready payload "
         "and uses a static_fallback SVG/table path with no external assets; runtime_webgl_blocked is the current execution boundary.</p>\n"
+        f"<p class=\"graph-alt-summary\">{_text(graph_summary)}</p>\n"
         f"{budget_rows}\n"
         f"{canvas}\n"
         f"<div class=\"graph-side-panel\" id=\"{_attr(graph_id)}-selected-file-panel\"><h4>Selected File Panel</h4>{selected_panel}</div>\n"
@@ -2868,10 +2919,31 @@ def _graph_svg_html(graph: dict[str, Any], *, graph_id: str, empty_message: str)
     links = payload.get("links") if isinstance(payload.get("links"), list) else []
     if not nodes:
         return (
-            f"<div id=\"{_attr(graph_id)}-canvas\" class=\"graph-canvas empty-graph\" role=\"img\" "
-            f"aria-label=\"{_attr(graph_id)} empty state\" data-renderer=\"Cosmos.gl\">{_text(empty_message)}</div>"
+            f"<div id=\"{_attr(graph_id)}-canvas\" class=\"graph-canvas empty-graph telemetry-empty-state\" role=\"img\" "
+            f"aria-label=\"{_attr(graph_id)} empty state\" data-renderer=\"Cosmos.gl\"><strong>not_available</strong><span>{_text(empty_message)}</span></div>"
         )
     by_index = {int(node.get("index", 0)): node for node in nodes if isinstance(node, dict)}
+
+    def raw_number(value: Any) -> float:
+        try:
+            return float(value)
+        except (TypeError, ValueError):
+            return 0.0
+
+    raw_points = [(raw_number(node.get("x")), raw_number(node.get("y"))) for node in nodes if isinstance(node, dict)]
+    min_x = min((point[0] for point in raw_points), default=-1.0)
+    max_x = max((point[0] for point in raw_points), default=1.0)
+    min_y = min((point[1] for point in raw_points), default=-1.0)
+    max_y = max((point[1] for point in raw_points), default=1.0)
+    span_x = max(1.0, max_x - min_x)
+    span_y = max(1.0, max_y - min_y)
+
+    def project_x(value: Any) -> float:
+        return 64.0 + ((raw_number(value) - min_x) / span_x) * 832.0
+
+    def project_y(value: Any) -> float:
+        return 56.0 + ((raw_number(value) - min_y) / span_y) * 308.0
+
     edge_parts: list[str] = []
     for link in links[:300]:
         if not isinstance(link, dict):
@@ -2880,27 +2952,41 @@ def _graph_svg_html(graph: dict[str, Any], *, graph_id: str, empty_message: str)
         target = by_index.get(int(link.get("target", 0) or 0))
         if not source or not target:
             continue
+        dash = "" if str(link.get("status", "")).lower() in {"current", "verified"} else ' stroke-dasharray="8 5"'
         edge_parts.append(
-            f"<line class=\"graph-edge\" x1=\"{_attr(_num(source.get('x')))}\" y1=\"{_attr(_num(source.get('y')))}\" "
-            f"x2=\"{_attr(_num(target.get('x')))}\" y2=\"{_attr(_num(target.get('y')))}\" "
-            f"stroke=\"{_attr(link.get('color') or '#7d8793')}\" data-edge-type=\"{_attr(link.get('type'))}\" />"
+            f"<line class=\"graph-edge\" x1=\"{_attr(_num(project_x(source.get('x'))))}\" y1=\"{_attr(_num(project_y(source.get('y'))))}\" "
+            f"x2=\"{_attr(_num(project_x(target.get('x'))))}\" y2=\"{_attr(_num(project_y(target.get('y'))))}\" "
+            f"stroke=\"{_attr(link.get('color') or '#7d8793')}\" data-edge-type=\"{_attr(link.get('type'))}\"{dash} />"
         )
     node_parts: list[str] = []
     for node in nodes[:500]:
         if not isinstance(node, dict):
             continue
         label = str(node.get("label", ""))
+        node_x = project_x(node.get("x"))
+        node_y = project_y(node.get("y"))
+        node_radius = max(7.0, min(15.0, float(node.get("size") or 4) * 1.25))
         node_parts.append(
             f"<g class=\"graph-node\" data-node-id=\"{_attr(node.get('id'))}\" data-node-type=\"{_attr(node.get('type'))}\" "
             f"data-status=\"{_attr(node.get('status'))}\" data-cluster=\"{_attr(node.get('cluster'))}\">"
-            f"<circle cx=\"{_attr(_num(node.get('x')))}\" cy=\"{_attr(_num(node.get('y')))}\" "
-            f"r=\"{_attr(max(2.5, min(8.0, float(node.get('size') or 3))))}\" fill=\"{_attr(node.get('color') or '#2f6fb0')}\"></circle>"
-            f"<text x=\"{_attr(_num(float(node.get('x') or 0) + 3))}\" y=\"{_attr(_num(float(node.get('y') or 0) - 3))}\">"
-            f"{_text(label[:42])}</text></g>"
+            f"<title>{_text(label)} / {_text(node.get('type'))} / {_text(node.get('status'))}</title>"
+            f"<circle cx=\"{_attr(_num(node_x))}\" cy=\"{_attr(_num(node_y))}\" "
+            f"r=\"{_attr(_num(node_radius))}\" fill=\"{_attr(node.get('color') or '#d9e2e8')}\"></circle>"
+            f"<text x=\"{_attr(_num(node_x + node_radius + 5))}\" y=\"{_attr(_num(node_y - node_radius - 2))}\">"
+            f"{_text(label[:44])}</text></g>"
         )
+    grid_parts = "".join(
+        f'<line class="graph-grid-line" x1="{x}" y1="28" x2="{x}" y2="392"></line>'
+        for x in range(64, 897, 104)
+    ) + "".join(
+        f'<line class="graph-grid-line" x1="32" y1="{y}" x2="928" y2="{y}"></line>'
+        for y in range(56, 365, 77)
+    )
     return (
-        f"<svg id=\"{_attr(graph_id)}-canvas\" class=\"graph-canvas\" viewBox=\"-70 -70 140 140\" "
-        f"role=\"img\" aria-label=\"{_attr(graph_id)} static Cosmos.gl fallback\" data-renderer=\"Cosmos.gl\">"
+        f"<svg id=\"{_attr(graph_id)}-canvas\" class=\"graph-canvas\" viewBox=\"0 0 960 420\" preserveAspectRatio=\"xMidYMid meet\" "
+        f"role=\"img\" aria-label=\"{_attr(graph_id)} static Cosmos.gl fallback with table alternative\" data-renderer=\"Cosmos.gl\">"
+        "<rect x=\"0\" y=\"0\" width=\"960\" height=\"420\" fill=\"#050505\"></rect>"
+        + grid_parts
         + "".join(edge_parts)
         + "".join(node_parts)
         + "</svg>"
@@ -2937,7 +3023,7 @@ def _definition_rows(rows: list[tuple[str, Any]]) -> str:
 
 def _cockpit_css() -> str:
     return """
-:root{color-scheme:light;--ink:#151515;--muted:#5f6368;--line:#d7d9dd;--paper:#f7f8f5;--panel:#ffffff;--accent:#1f7a5a;--warn:#a05a00}
+:root{color-scheme:dark;--ink:#f2f2ee;--muted:#a6adb2;--line:#363a3f;--paper:#0a0a0a;--panel:#121212;--accent:#ff2a2a;--warn:#ffb35c;--readout:#4af626}
 *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.55 Arial,Helvetica,sans-serif}.skip-link{position:absolute;left:12px;top:-48px;background:var(--ink);color:#fff;padding:8px 10px;border-radius:4px;z-index:5}.skip-link:focus{top:12px}.cockpit-shell{max-width:1180px;margin:0 auto;padding:24px}.cockpit-hero{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:24px}.dossier-hero{border-top:5px solid var(--accent);box-shadow:0 16px 40px rgb(30 50 40 / .08)}.architecture-intelligence-hero{position:relative;overflow:hidden}.hero-kicker-row,.hero-layout,.proof-strip{display:flex;gap:14px}.hero-kicker-row{justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:12px}.dossier-label{margin:0;color:var(--muted);font-weight:700}.hero-layout{display:grid;grid-template-columns:minmax(0,1.8fr) minmax(260px,.8fr);align-items:stretch;margin-top:18px}.operator-layout{grid-template-columns:minmax(0,1.5fr) minmax(280px,.65fr)}.hero-primary{padding-right:18px}.legacy-title-marker{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}.target-context{display:inline-block;margin:0 0 10px;padding:6px 9px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--muted);font-size:13px}.hero-lede{max-width:72ch;color:var(--muted);font-size:16px}.status-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:18px 0 0;padding:0;list-style:none}.status-strip-item{min-width:0;border:1px solid var(--line);border-radius:8px;background:#fbfbf8;padding:10px}.status-strip-item span{display:block;color:var(--muted);font-size:11px;font-weight:700;text-transform:uppercase}.status-strip-item strong{display:block;margin-top:4px;font-size:16px;overflow-wrap:anywhere}.next-route-panel{background:#f5f8f3;border:1px solid var(--line);border-radius:8px;padding:16px}.next-route-panel h2{font-size:16px}.next-route-panel strong{display:inline-block;margin-top:8px;color:var(--accent)}.route-label{margin:0 0 6px;color:var(--muted);font-weight:700;text-transform:uppercase;font-size:11px}.operator-rail{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;margin-top:14px}.operator-rail p{margin:0;padding:12px;border:1px solid var(--line);border-radius:8px;background:#fbfbf8}.operator-rail strong{display:block;margin-bottom:4px}.operator-rail span{display:block;color:var(--muted);overflow-wrap:anywhere}.architecture-signal{display:grid;grid-template-columns:1.2fr .8fr;gap:12px;margin-top:14px;padding:14px;border:1px solid var(--line);border-radius:8px;background:#fbfbf8}.architecture-signal p{margin:0}.proof-strip{flex-wrap:wrap;margin:14px 0 0;padding:0;list-style:none}.proof-strip li{border:1px solid var(--line);border-radius:999px;background:#fff;padding:7px 10px;color:var(--muted);font-size:13px}.mode-navigation{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}.mode-navigation a{color:var(--ink);text-decoration:none;border:1px solid var(--line);border-radius:6px;background:#fff;padding:8px 10px;text-transform:capitalize}.eyebrow{margin:0 0 8px;color:var(--accent);font-weight:700;text-transform:uppercase;font-size:12px}h1{font-size:38px;line-height:1.08;margin:0 0 12px;max-width:760px}h2{font-size:21px;margin:0 0 12px}h3{font-size:15px;margin:0 0 8px}h4{font-size:14px;margin:0 0 8px}.hero-grid,.status-grid,.section-grid{display:grid;gap:10px}.hero-grid{grid-template-columns:repeat(4,minmax(0,1fr));margin-top:18px}.hero-grid span,.status-card,.section-card,.cockpit-band,.cockpit-page,.cockpit-controls{background:var(--panel);border:1px solid var(--line);border-radius:8px}.hero-grid span{padding:12px}.dossier-grid span{display:grid;gap:4px}.dossier-grid small{color:var(--muted);font-weight:700;text-transform:uppercase;font-size:11px}.dossier-grid strong{font-size:18px}.cockpit-nav{position:sticky;top:0;z-index:2;display:flex;gap:8px;overflow:auto;padding:12px 0;background:var(--paper)}.cockpit-nav a{white-space:nowrap;color:var(--ink);text-decoration:none;border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:8px 10px}.cockpit-controls{display:grid;grid-template-columns:2fr repeat(4,minmax(120px,1fr));gap:10px;align-items:end;margin-top:10px;padding:12px}.cockpit-controls label{display:grid;gap:4px;font-size:13px;font-weight:700}.cockpit-controls input,.cockpit-controls select,.cockpit-controls button{min-height:38px;border:1px solid var(--line);border-radius:6px;background:#fff;color:var(--ink);padding:7px}.control-note,.detail-panel-links{grid-column:1/-1;color:var(--muted);margin:0}.detail-panel-links{display:flex;flex-wrap:wrap;gap:8px;padding:0;list-style:none}.detail-panel-links a{color:var(--ink)}.cockpit-band,.cockpit-page{margin-top:14px;padding:18px}.status-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.status-card,.section-card{padding:14px}.section-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.page-role,.boundary,.status-card p,.section-card p,.graph-boundary,.empty-state,.diagram-layer-summary,.diagram-panel p,.diagram-fallback-status{color:var(--muted);margin:0 0 6px}.claim-list{margin:0;padding-left:20px}.diagnostic-disclosure details,.raw-mermaid-fallback{border:1px solid var(--line);border-radius:8px;background:var(--panel);padding:12px}.diagnostic-disclosure summary,.raw-mermaid-fallback summary{cursor:pointer;font-weight:700}.compact-table,.graph-fallback-table{width:100%;border-collapse:collapse;margin:10px 0}.compact-table th,.compact-table td,.graph-fallback-table th,.graph-fallback-table td{border-top:1px solid var(--line);padding:9px;text-align:left;vertical-align:top;overflow-wrap:anywhere}.compact-table th{width:210px;color:var(--muted);font-weight:600}.graph-surface,.qa-contract,.safety-contract,.diagram-panel{margin:12px 0;padding:14px;border:1px solid var(--line);border-radius:8px;background:#fbfbf8}.diagram-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.diagram-panel{background:#fff}.architecture-diagram-svg{display:block;width:100%;height:auto;min-height:112px;margin:12px 0}.diagram-stage{fill:#f6f8f5;stroke:#d7d9dd}.diagram-node rect{fill:#fff;stroke:#1f7a5a;stroke-width:1.2}.diagram-node text{font-size:12px;fill:#151515;text-anchor:middle;dominant-baseline:middle}.diagram-edge{stroke:#7d8793;stroke-width:1.4}.diagram-edge-label{font-size:9px;fill:#5f6368}.raw-mermaid-fallback code{display:block;white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.45 ui-monospace,SFMono-Regular,Consolas,monospace;color:#222}.graph-canvas{display:block;width:100%;min-height:320px;margin:12px 0;border:1px solid var(--line);border-radius:8px;background:#fdfdfb}.empty-graph{display:flex;align-items:center;justify-content:center;padding:24px;color:var(--muted)}.graph-edge{stroke-width:1;opacity:.58}.graph-node text{font-size:3.5px;fill:#252525;paint-order:stroke;stroke:#fff;stroke-width:1.8px}.graph-side-panel{margin:10px 0;padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--panel)}.graph-legend{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 12px;padding:0;list-style:none}.graph-legend li{display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;background:var(--panel);padding:5px 8px}.legend-swatch{width:10px;height:10px;border-radius:50%;display:inline-block}.graph-hotspots th:first-child,.graph-fallback-table th:first-child{width:230px}@media(max-width:760px){.cockpit-shell{padding:14px}.hero-layout,.architecture-signal,.operator-rail{display:grid;grid-template-columns:1fr}.hero-primary{padding-right:0}.hero-kicker-row{align-items:flex-start;flex-direction:column}.hero-grid,.status-grid,.section-grid,.cockpit-controls,.diagram-grid,.status-strip{grid-template-columns:1fr}h1{font-size:28px}.cockpit-nav{position:static}.compact-table th{width:auto}.graph-canvas{min-height:240px}.graph-legend{display:block}.graph-legend li{margin:6px 0}.diagram-panel{padding:12px}.architecture-diagram-svg{min-height:96px}}
 .acceptance-surface{margin:12px 0;padding:14px;border:1px solid var(--line);border-radius:8px;background:#fbfbf8}.evidence-decision-layer{border-top:5px solid #365f91}.evidence-grid,.decision-grid,.risk-grid,.source-blueprint-grid,.proof-ref-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.evidence-card,.decision-card,.risk-card,.future-gate-card,.source-blueprint-card,.proof-ref-card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px;min-width:0}.supported-claim-card{border-left:4px solid #1f7a5a}.blocker-card,.risk-card{border-left:4px solid #8a4b18}.decision-card{border-left:4px solid #365f91}.source-blueprint-card{border-left:4px solid #5f6368}.proof-ref-card{border-left:4px solid var(--accent)}.evidence-card p,.decision-card p,.risk-card p,.future-gate-card p,.source-blueprint-card p,.proof-ref-card p{margin:0 0 6px;color:var(--muted)}.source-blueprint-card code,.proof-ref-card code{overflow-wrap:anywhere}.action-columns{display:grid;grid-template-columns:1fr 1fr;gap:12px}.action-columns>div{background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px}@media(max-width:760px){.evidence-grid,.decision-grid,.risk-grid,.source-blueprint-grid,.proof-ref-grid,.action-columns{grid-template-columns:1fr}}
 .cockpit-shell,.cockpit-band,.cockpit-page,.architecture-signal,.cockpit-nav,.graph-surface,.diagram-panel,.acceptance-surface{min-width:0;max-width:100%}.cockpit-nav{scrollbar-width:thin}.architecture-signal p,.graph-boundary,.evidence-card,.decision-card,.risk-card,.future-gate-card,.source-blueprint-card,.proof-ref-card{overflow-wrap:anywhere}.architecture-diagram-svg,.graph-canvas{overflow:hidden}
@@ -2950,6 +3036,78 @@ def _cockpit_css() -> str:
 .visual-accessibility-acceptance{margin:12px 0;padding:14px;border:1px solid var(--line);border-radius:8px;background:#fbfbf8}.visual-accessibility-acceptance p{margin:0 0 10px;color:var(--muted);overflow-wrap:anywhere}.visual-a11y-table th:first-child{width:220px}
 .graph-runtime-layer{border-top:5px solid #8a4b18}.runtime-label-strip{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px;padding:0;list-style:none}.runtime-label-strip li{border:1px solid var(--line);border-radius:999px;background:#fff;padding:7px 10px;color:var(--muted);font-size:13px}.graph-runtime-grid,.graph-runtime-states{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.graph-runtime-card,.graph-state-card,.fallback-explanation{background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px;min-width:0}.runtime-blocker-banner{border-left:4px solid #8a4b18;background:#fff9f2}.graph-runtime-card p,.graph-state-card p,.fallback-explanation p{margin:0 0 6px;color:var(--muted);overflow-wrap:anywhere}@media(max-width:760px){.graph-runtime-grid,.graph-runtime-states{grid-template-columns:1fr}}
 .welcome-help-panel{margin-top:14px;padding:16px;border:1px solid var(--line);border-radius:8px;background:#fff}.welcome-help-panel p{margin:0 0 8px;color:var(--muted);overflow-wrap:anywhere}.welcome-help-grid,.welcome-lists{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.welcome-help-grid article,.welcome-lists>div{min-width:0;border:1px solid var(--line);border-radius:8px;background:#fbfbf8;padding:12px}.welcome-lists{grid-template-columns:repeat(3,minmax(0,1fr));margin-top:12px}.welcome-lists ul{margin:0;padding-left:20px}.welcome-manual-activation{margin-top:12px;padding:10px;border-left:4px solid var(--accent);background:#f5f8f3}@media(max-width:760px){.welcome-help-grid,.welcome-lists{grid-template-columns:1fr}}
+/* Tactical telemetry redesign: one dark substrate, visible compartments, no soft card language. */
+:root{color-scheme:dark;--ink:#f2f2ee;--muted:#aeb6bd;--line:#3b4148;--paper:#0a0a0a;--panel:#121212;--panel-2:#171717;--panel-3:#202020;--accent:#ff2a2a;--accent-soft:#4a1616;--warn:#ffb35c;--readout:#4af626;--grid:#262b30;--graph-edge:#6f7782;--graph-node:#d9e2e8;--shadow:none}
+html{background:var(--paper)}
+body{background:var(--paper);color:var(--ink);font:15px/1.55 Arial,Helvetica,sans-serif;letter-spacing:0}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0,rgba(255,255,255,.025) 1px,transparent 1px,transparent 4px),linear-gradient(90deg,rgba(255,42,42,.055),transparent 26%,transparent 74%,rgba(74,246,38,.035));mix-blend-mode:screen}
+.cockpit-shell{position:relative;z-index:1;max-width:1440px;padding:18px;background:linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(0deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:32px 32px}
+.cockpit-shell,.cockpit-hero,.cockpit-band,.cockpit-page,.cockpit-controls,.status-card,.section-card,.graph-surface,.diagram-panel,.acceptance-surface,.evidence-card,.decision-card,.risk-card,.future-gate-card,.source-blueprint-card,.proof-ref-card,.qa-contract,.safety-contract,.schema-contract-surface,.schema-contract-card,.graph-code-surface,.graph-code-card,.risk-hierarchy-lane,.blocked-claim-list,.graph-runtime-card,.graph-state-card,.fallback-explanation,.welcome-help-panel,.welcome-help-grid article,.welcome-lists>div{border-radius:0!important;box-shadow:none!important}
+.cockpit-hero,.cockpit-band,.cockpit-page,.cockpit-controls{background:rgba(18,18,18,.96);border:1px solid var(--line)}
+.cockpit-hero{padding:0;border-top:6px solid var(--accent)}
+.telemetry-hero{position:relative;overflow:hidden}
+.telemetry-hero:after{content:"";position:absolute;right:0;top:0;width:180px;height:100%;opacity:.22;background:repeating-linear-gradient(90deg,var(--ink) 0,var(--ink) 2px,transparent 2px,transparent 7px)}
+.hero-kicker-row{position:relative;z-index:1;padding:12px 16px;border-bottom:1px solid var(--line);background:#0d0d0d}
+.eyebrow,.dossier-label,.route-label,.status-strip-item span,.dossier-grid small,.diagram-workbench-summary span{letter-spacing:0;text-transform:uppercase;font-family:Consolas,"Courier New",monospace}
+.eyebrow{color:var(--readout)}
+.dossier-label{color:var(--muted)}
+.hero-layout{position:relative;z-index:1;margin:0;display:grid;grid-template-columns:minmax(0,1.45fr) minmax(320px,.8fr);gap:1px;background:var(--line)}
+.hero-primary,.next-route-panel{background:var(--panel);padding:22px}
+.next-route-panel{border:0;border-left:4px solid var(--accent)}
+h1{font-size:56px;line-height:.98;margin:0 0 16px;font-weight:900;text-transform:uppercase;letter-spacing:0;max-width:920px}
+h2{font-size:22px;text-transform:uppercase;letter-spacing:0}
+h3{font-size:16px;text-transform:uppercase;letter-spacing:0}
+h4{font-size:13px;text-transform:uppercase;letter-spacing:0}
+.target-context{border:1px solid var(--accent);border-radius:0;background:#1a0d0d;color:var(--ink);font-family:Consolas,"Courier New",monospace}
+.hero-lede{color:var(--muted);max-width:86ch}
+.status-strip{grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.status-strip-item{border:0;border-radius:0;background:#181818}
+.status-strip-item strong,.dossier-grid strong{color:var(--readout);font-family:Consolas,"Courier New",monospace}
+.operator-rail,.hero-grid,.status-grid,.section-grid,.evidence-grid,.decision-grid,.risk-grid,.source-blueprint-grid,.proof-ref-grid,.schema-contract-grid,.graph-code-grid,.risk-hierarchy-grid,.graph-runtime-grid,.graph-runtime-states,.welcome-help-grid,.welcome-lists{gap:1px;background:var(--line)}
+.operator-rail p,.hero-grid span,.status-card,.section-card,.evidence-card,.decision-card,.risk-card,.future-gate-card,.source-blueprint-card,.proof-ref-card,.schema-contract-card,.graph-code-card,.risk-hierarchy-lane,.graph-runtime-card,.graph-state-card,.fallback-explanation,.welcome-help-grid article,.welcome-lists>div{background:var(--panel-2);border:0}
+.architecture-signal{border:1px solid var(--line);border-left:4px solid var(--readout);border-radius:0;background:#101811}
+.proof-strip li,.mode-navigation a,.cockpit-nav a,.graph-legend li,.diagram-boundary-badges li,.schema-contract-flags li,.graph-code-interactions li,.runtime-label-strip li{border-radius:0;background:#111;border:1px solid var(--line);color:var(--ink)}
+.mode-navigation a[aria-current="page"],.cockpit-nav a[aria-current="page"],.mode-navigation a:focus-visible,.cockpit-nav a:focus-visible{outline:2px solid var(--readout);outline-offset:2px;color:var(--readout)}
+.cockpit-nav{top:0;padding:10px 0;background:rgba(10,10,10,.96)}
+.cockpit-controls{grid-template-columns:2fr repeat(4,minmax(150px,1fr));background:#0f0f0f}
+.cockpit-controls input,.cockpit-controls select,.cockpit-controls button,.diagram-tools button{border-radius:0;background:#050505;color:var(--ink);border:1px solid var(--line);min-height:44px}
+.cockpit-controls button,.diagram-tools button{cursor:pointer;text-transform:uppercase;font-weight:700}
+.cockpit-controls input:focus,.cockpit-controls select:focus,.cockpit-controls button:focus-visible,.diagram-tools button:focus-visible,.graph-node:focus-visible{outline:2px solid var(--readout);outline-offset:2px}
+.compact-table,.graph-fallback-table{background:#0c0c0c;border:1px solid var(--line);font-family:Consolas,"Courier New",monospace;font-size:13px}
+.compact-table th,.compact-table td,.graph-fallback-table th,.graph-fallback-table td{border-top:1px solid var(--line);border-right:1px solid rgba(255,255,255,.06)}
+.compact-table th,.graph-fallback-table th{color:var(--muted);background:#111;text-transform:uppercase;letter-spacing:0}
+.compact-table td,.graph-fallback-table td{color:var(--ink)}
+.evidence-decision-layer,.graph-runtime-layer,.architecture-diagram-layer,.graph-surface{border-top:5px solid var(--accent)}
+.supported-claim-card{border-left:4px solid var(--readout)}
+.blocker-card,.risk-card,.runtime-blocker-banner{border-left:4px solid var(--accent);background:#1a0d0d}
+.decision-card{border-left:4px solid var(--warn)}
+.source-blueprint-card,.proof-ref-card{border-left:4px solid var(--muted)}
+.diagram-panel,.schema-contract-surface,.graph-code-surface,.evidence-risk-hierarchy,.visual-accessibility-acceptance,.qa-contract,.safety-contract,.welcome-help-panel{background:#101010;border:1px solid var(--line)}
+.diagram-stage{fill:#111;stroke:#555}
+.diagram-node rect{fill:#181818;stroke:var(--readout);rx:0}
+.diagram-node text{fill:var(--ink);font-size:12px}
+.diagram-edge{stroke:var(--muted)}
+.diagram-edge-label{fill:var(--warn);font-size:10px}
+.raw-mermaid-fallback,.diagnostic-disclosure details{background:#090909;border:1px solid var(--line);border-radius:0}
+.raw-mermaid-fallback code{color:var(--readout)}
+.graph-surface{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(280px,.55fr);gap:12px;background:#0e0e0e}
+.graph-surface h3,.graph-boundary,.graph-alt-summary,.graph-surface>.compact-table,.graph-canvas,.graph-fallback-table{grid-column:1/-1}
+.graph-canvas{min-height:460px;background:#050505;border:1px solid var(--line);border-radius:0}
+.graph-canvas .graph-grid-line{stroke:rgba(255,255,255,.08);stroke-width:1}
+.graph-edge{stroke-width:1.4;opacity:.82}
+.graph-node circle{stroke:#f2f2ee;stroke-width:1.2}
+.graph-node text{font-size:11px;fill:var(--ink);stroke:#050505;stroke-width:3px;paint-order:stroke;letter-spacing:0}
+.graph-side-panel{background:#111;border:1px solid var(--line);border-left:4px solid var(--readout);border-radius:0}
+.legend-swatch{border-radius:0;border:1px solid rgba(255,255,255,.5)}
+.empty-graph{align-items:flex-start;justify-content:flex-start;text-transform:uppercase;font-family:Consolas,"Courier New",monospace;color:var(--warn)}
+.telemetry-empty-state{border-left:4px solid var(--accent);background:repeating-linear-gradient(135deg,#111 0,#111 10px,#181818 10px,#181818 20px)}
+.graph-alt-summary{margin:8px 0;color:var(--muted);font-family:Consolas,"Courier New",monospace}
+.visual-accessibility-acceptance{border-left:4px solid var(--readout)}
+.welcome-manual-activation{background:#101811;border-left:4px solid var(--readout)}
+a{color:var(--readout)}
+code,samp,kbd,data{font-family:Consolas,"Courier New",monospace;color:var(--readout)}
+@media(max-width:960px){.hero-layout,.graph-surface{grid-template-columns:1fr}.status-strip{grid-template-columns:repeat(2,minmax(0,1fr))}h1{font-size:40px}.cockpit-controls{grid-template-columns:1fr 1fr}}
+@media(max-width:760px){.cockpit-shell{padding:10px}.hero-primary,.next-route-panel{padding:16px}h1{font-size:34px}.status-strip,.cockpit-controls{grid-template-columns:1fr}.graph-canvas{min-height:300px}.operator-rail,.hero-grid,.status-grid,.section-grid,.diagram-grid,.evidence-grid,.decision-grid,.risk-grid,.source-blueprint-grid,.proof-ref-grid,.schema-contract-grid,.graph-code-grid,.risk-hierarchy-grid,.graph-runtime-grid,.graph-runtime-states,.welcome-help-grid,.welcome-lists{grid-template-columns:1fr}}
 """.strip()
 
 

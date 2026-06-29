@@ -545,6 +545,7 @@ class Batch41FirstRunAutomationTests(unittest.TestCase):
             methodology_html = stage.joinpath("methodology.html").read_text(encoding="utf-8")
             runtime_html = stage.joinpath("runtime-route.html").read_text(encoding="utf-8")
             graph_html = stage.joinpath("graph.html").read_text(encoding="utf-8")
+            legacy_pages = [inventory_html, methodology_html, runtime_html, graph_html]
 
             self.assertIn("Project Analysis", inventory_html)
             self.assertIn("Docs And Logging", inventory_html)
@@ -555,6 +556,11 @@ class Batch41FirstRunAutomationTests(unittest.TestCase):
             self.assertIn("Graph Dry Run", graph_html)
             self.assertIn("generated graph is not source truth", graph_html)
             self.assertIn("generated-view-only", inventory_html)
+            for page_html in legacy_pages:
+                self.assertIn('data-visual-system="tactical-telemetry"', page_html)
+                self.assertIn('class="diagnostic-shell tactical-telemetry-diagnostic"', page_html)
+                self.assertIn("color-scheme:dark", page_html)
+                self.assertIn("Open index.html", page_html)
             self.assertNotIn(str(workspace), inventory_html + methodology_html + runtime_html + graph_html)
 
     def test_b41_s7_m31_m33_stage_renders_primary_cockpit_contract_shell_and_view_model(self) -> None:
@@ -617,7 +623,7 @@ class Batch41FirstRunAutomationTests(unittest.TestCase):
             self.assertEqual(view_model["code_graph"]["hotspot_count"], 0)
             self.assertEqual(view_model["code_graph"]["table_fallback"]["status"], "empty")
 
-            self.assertIn('class="first-run-cockpit cockpit-shell"', index_html)
+            self.assertIn('class="first-run-cockpit cockpit-shell tactical-telemetry"', index_html)
             self.assertIn('id="page-overview"', index_html)
             self.assertIn('id="page-project-map"', index_html)
             self.assertIn('id="page-code-intelligence"', index_html)
@@ -772,10 +778,11 @@ class Batch41FirstRunAutomationTests(unittest.TestCase):
             self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
             index_html = stage.joinpath("index.html").read_text(encoding="utf-8")
 
-            self.assertIn('class="cockpit-hero dossier-hero"', index_html)
+            self.assertIn('class="cockpit-hero dossier-hero telemetry-hero"', index_html)
+            self.assertIn('data-visual-archetype="tactical-telemetry-brutalist"', index_html)
             self.assertIn('data-shell="architecture-dossier"', index_html)
             self.assertIn("Product-Agent OS First-Run Architecture Cockpit", index_html)
-            self.assertIn("Architecture dossier / operational cockpit", index_html)
+            self.assertIn("ARCHITECTURE DOSSIER / OPERATIONAL COCKPIT", index_html)
             self.assertIn("Welcome to Product-Agent OS", index_html)
             self.assertIn("What Product-Agent OS does", index_html)
             self.assertIn("Self-Learning Loop", index_html)
@@ -1006,6 +1013,8 @@ class Batch41FirstRunAutomationTests(unittest.TestCase):
             self.assertEqual(contract["schema_version"], "architecture_intelligence_design_contract_v1")
             self.assertEqual(contract["artifact_family"], "self_contained_architecture_intelligence_cockpit")
             self.assertEqual(contract["generated_view_boundary"], "generated-view-only")
+            self.assertEqual(contract["visual_archetype"], "tactical_telemetry_brutalist")
+            self.assertEqual(contract["substrate"], "dark_crt_only")
             self.assertEqual(contract["first_viewport"]["layout"], "identity_status_architecture_next_route")
             self.assertIn("overview", contract["navigation_modes"]["primary_tabs"])
             self.assertIn("local_search", contract["navigation_modes"]["approved_enhancements"])
@@ -1013,8 +1022,10 @@ class Batch41FirstRunAutomationTests(unittest.TestCase):
             self.assertEqual(contract["local_js_boundary"]["status"], "approved_for_b41_s9_m50")
             self.assertFalse(contract["local_js_boundary"]["external_requests_allowed"])
             self.assertFalse(contract["local_js_boundary"]["live_runtime_allowed"])
-            self.assertIn("shadcn_card", contract["component_grammar"]["mapped_components"])
-            self.assertIn("shadcn_tabs", contract["component_grammar"]["mapped_components"])
+            self.assertIn("telemetry_panel", contract["component_grammar"]["mapped_components"])
+            self.assertIn("command_tabs", contract["component_grammar"]["mapped_components"])
+            self.assertEqual(contract["design_tokens"]["radius_px"], 0)
+            self.assertEqual(contract["design_tokens"]["grid_policy"], "visible compartment lines and dense telemetry matrices")
             self.assertEqual(contract["typography"]["body_min_px"], 15)
             self.assertEqual(contract["typography"]["letter_spacing"], "0")
             self.assertIn("approval_required", contract["status_semantics"])
@@ -1069,7 +1080,9 @@ class Batch41FirstRunAutomationTests(unittest.TestCase):
             required_markers = [
                 'data-shell-version="architecture-intelligence-v2"',
                 'data-shell-role="architecture-intelligence-hero"',
-                'class="cockpit-hero dossier-hero"',
+                'data-visual-system="tactical-telemetry"',
+                'data-visual-archetype="tactical-telemetry-brutalist"',
+                'class="cockpit-hero dossier-hero telemetry-hero"',
                 'id="first-viewport-status-strip"',
                 'class="status-strip-item"',
                 'class="operator-rail source-boundary-rail"',
@@ -1084,7 +1097,10 @@ class Batch41FirstRunAutomationTests(unittest.TestCase):
             ]
             for marker in required_markers:
                 self.assertIn(marker, index_html)
-            self.assertIn("grid-template-columns:minmax(0,1.5fr) minmax(280px,.65fr)", index_html)
+            self.assertIn("color-scheme:dark", index_html)
+            self.assertIn("--paper:#0a0a0a", index_html)
+            self.assertIn("--readout:#4af626", index_html)
+            self.assertIn("grid-template-columns:minmax(0,1.45fr) minmax(320px,.8fr)", index_html)
             self.assertIn(".status-strip", index_html)
             self.assertIn(".mode-navigation", index_html)
             self.assertNotIn("<script src", index_html.lower())
@@ -1392,6 +1408,9 @@ class Batch41FirstRunAutomationTests(unittest.TestCase):
                 'id="graph-file-code-surface"',
                 'class="graph-code-surface"',
                 'data-graph-code-surface="static-navigation"',
+                'class="graph-alt-summary"',
+                'viewBox="0 0 960 420"',
+                'class="graph-grid-line"',
                 "Graph / File / Code Surface",
                 "static_svg_table_fallback_no_webgl_execution",
                 "selected_node_focus",
@@ -1682,6 +1701,9 @@ class Batch41FirstRunAutomationTests(unittest.TestCase):
 
             self.assertIn('data-graph-kind="source-file-graph"', index_html)
             self.assertIn('data-graph-kind="code-graph"', index_html)
+            self.assertIn('class="graph-alt-summary"', index_html)
+            self.assertIn('viewBox="0 0 960 420"', index_html)
+            self.assertIn('class="graph-grid-line"', index_html)
             self.assertIn("Selected File Panel", index_html)
             self.assertIn("Code Graph And Hotspots", index_html)
             self.assertIn("Refresh graph or read source first.", index_html)
