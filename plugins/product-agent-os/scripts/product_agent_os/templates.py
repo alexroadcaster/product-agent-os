@@ -211,6 +211,12 @@ _TEMPLATES: tuple[TemplateSpec, ...] = (
         ".codex/workflows/development-standards.md",
     ),
     _spec(
+        "workflow-coding-standards",
+        "workflows",
+        "workflows/coding-standards.md",
+        ".codex/workflows/coding-standards.md",
+    ),
+    _spec(
         "workflow-documentation-system",
         "workflows",
         "workflows/documentation-system.md",
@@ -552,6 +558,12 @@ _TEMPLATES: tuple[TemplateSpec, ...] = (
         "artifact-templates",
         "artifact-templates/agent-task-packet.md",
         ".codex/artifact-templates/agent-task-packet.md",
+    ),
+    _spec(
+        "artifact-coding-standard-checklist",
+        "artifact-templates",
+        "artifact-templates/coding-standard-checklist.md",
+        ".codex/artifact-templates/coding-standard-checklist.md",
     ),
     _spec(
         "artifact-subagent-context-packet",

@@ -61,6 +61,39 @@ For Codex subagents, pair this task packet with a Subagent Context Packet before
 - Rollback notes:
 - Handoff output schema:
 
+## Professional Code Authoring Contract
+
+Use this section for non-mechanical code authoring, refactoring, defect fixes, dependency changes, generated-code edits, or AI-agent handoffs that can create technical debt. For docs-only, read-only, formatting-only, or tiny mechanical edits, record `not_applicable` with the reason and reduced evidence path.
+
+- Coding standards workflow: `.codex/workflows/coding-standards.md`
+- Coding standard checklist: `.codex/artifact-templates/coding-standard-checklist.md`
+- Task classification:
+- `not_applicable` reason:
+- `enterprise_leverage_check`:
+- `existing_capability_scan`:
+- Local source/patterns inspected:
+- Standard library or language construct option:
+- Framework/platform API option:
+- Current dependency option:
+- Project helper or existing abstraction:
+- `one_line_candidate`:
+- Selected leverage path: `delete | configure | stdlib | language_construct | framework_api | platform_api | current_dependency | project_helper | tiny_adapter | small_custom_code | new_dependency | not_applicable`
+- Rejected options and reasons:
+- `negative_dependency_rule`:
+- New dependency count:
+- Dependency approval requirement:
+- `deep_module_check`:
+- Public API or runtime contract touched:
+- `legacy_seam_check`:
+- Characterization test or existing regression evidence:
+- Refactoring behavior proof:
+- Comment policy:
+- `cleverness_budget`:
+- Tests/evals tied to code-quality claim:
+- Unsupported code-quality claims:
+- Accepted gap:
+- Raw research body or raw conversation history included: forbidden.
+
 ## Planning Control Governance
 
 Hard gates live in validator/tests/skills. Hooks are reminder-only unless approved, and closure cannot claim readiness from hook reminders alone.
@@ -108,6 +141,12 @@ Carry only the compact runtime methodology packet. Do not include raw conversati
 - Cross-agent file ownership exists.
 - Approval is required and not present.
 - Verification command cannot run and no accepted gap exists.
+- Non-mechanical code work is requested without `enterprise_leverage_check`.
+- New custom code or dependency is proposed without `existing_capability_scan`.
+- A new dependency is proposed without `negative_dependency_rule` and approval path.
+- Shared modules, APIs, data models, generated code, or runtime contracts are touched without `deep_module_check`.
+- Legacy or fragile code is refactored without `legacy_seam_check` and characterization or accepted gap.
+- Code-quality claims are requested without tests/evals, current evidence, or accepted gap.
 - Secret-bearing or customer data is needed.
 - Parallel work is requested without this agent task packet.
 - Auto subagent dispatch is requested.

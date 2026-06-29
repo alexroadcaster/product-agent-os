@@ -1,12 +1,12 @@
 {
   "task_start_brief_shown": true,
-  "task_id": "B44-S2-Manual-Runner-And-Project-Progress",
-  "scope": "Implement Product-Agent OS Self-Learning Loop manual runner and staged project progress artifact in local codex_docs workspace only",
-  "updated_at": "2026-06-24T12:20:00+03:00",
-  "approval_boundary": "No scheduler/automation activation, no global config, no provider/model/browser/git/release/deploy/publish actions, no target-project mutation, no auto-apply",
+  "task_id": "B45-S1-M02-M04",
+  "scope": "Implement Batch 45 S1 artifact and workflow contracts for Product-Agent OS professional code authoring standards",
+  "updated_at": "2026-06-29T00:00:00+03:00",
+  "approval_boundary": "Workspace docs/spec writes only; no hook activation, automation activation, MCP activation, Agents SDK runner, provider/model/browser/git/release/deploy/publish actions, target mutation, installed cache refresh, or external writes",
   "brief_schema_version": "task_start_brief_v1",
   "brief_format": "field_list",
-  "brief_digest": "sha256:0123456789abcdef",
+  "brief_digest": "sha256:60aa410da1cfc1e60aea85bb29e4d4532b2f3841b61c7746919fc4b175e9b6e9",
   "brief_fields_present": [
     "Task ID",
     "Product value",

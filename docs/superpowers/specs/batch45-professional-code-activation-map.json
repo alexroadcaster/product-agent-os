@@ -1,0 +1,282 @@
+{
+  "schema_version": "batch45_professional_code_activation_map_v1",
+  "evidence_id": "B45-S0-M01-M20-A01",
+  "batch": "Batch 45",
+  "slice": "B45-S0",
+  "rows_implemented": [
+    "B45-PCA-M20"
+  ],
+  "generated_at": "2026-06-29",
+  "source_status": "local_plan_evidence",
+  "closure_level": "docs_contract_ready",
+  "activation_policy": {
+    "default_selector": "all_non_mechanical_code_tasks",
+    "not_applicable_path": "mechanical formatting, docs-only edits, pure typo fixes and read-only audits may record not_applicable with reason",
+    "first_implementation_status": "recommendation_and_contract_gate_only",
+    "future_enforcement_status": "requires template, eval, hook and owner-approval evidence before any blocking behavior",
+    "no_silent_activation": true,
+    "fallback_policy": {
+      "old_path": "existing development-standards, build-slice, review-slice, methodology and lifecycle guardrails",
+      "fallback_allowed": true,
+      "fallback_type": "compatibility_only_until_B45_templates_and_evals_are_wired",
+      "fallback_must_record": [
+        "why coding-standard checklist was unavailable or not applicable",
+        "which existing Product-Agent OS surface carried the evidence",
+        "which unsupported code-quality claims remain"
+      ]
+    }
+  },
+  "trigger_classes": [
+    {
+      "trigger": "implementation_slice_touches_source_code",
+      "selectors": [
+        "task classification is backend, frontend, native, desktop, API, data, AI/RAG, security, CI, release, automation or plugin implementation",
+        "changed files include source code, tests, config that changes runtime behavior, migrations, prompts, eval runners or workflow templates"
+      ],
+      "required_behavior": "run existing_capability_scan before custom code",
+      "initial_status": "planned_until_B45_PCA_M02_M04_M06"
+    },
+    {
+      "trigger": "refactoring_or_legacy_work",
+      "selectors": [
+        "request mentions refactor, legacy, spaghetti code, rewrite, cleanup, technical debt or large old module",
+        "workflow route is legacy-onboarding, bug-rescue or complex-system-acceleration"
+      ],
+      "required_behavior": "require characterization evidence or explicit gap before behavior-changing refactor",
+      "initial_status": "planned_until_B45_PCA_M08"
+    },
+    {
+      "trigger": "new_dependency_or_framework_choice",
+      "selectors": [
+        "package manifest changes",
+        "import from a new dependency",
+        "new framework, SDK, tool, service or generated client is proposed"
+      ],
+      "required_behavior": "apply negative_dependency_rule and supply-chain boundary",
+      "initial_status": "planned_until_B45_PCA_M09_M17"
+    },
+    {
+      "trigger": "custom_code_bloat_risk",
+      "selectors": [
+        "agent proposes a helper, wrapper, mini-framework, broad abstraction or multi-step loop for small behavior",
+        "standard library, framework helper, SQL primitive or project utility may exist"
+      ],
+      "required_behavior": "name one_line_candidate and rejected existing options",
+      "initial_status": "planned_until_B45_PCA_M10_M16"
+    },
+    {
+      "trigger": "agent_or_subagent_handoff_for_code_work",
+      "selectors": [
+        "fresh-context packet or subagent result packet is produced",
+        "builder, architect, tester or reviewer role owns code-adjacent files"
+      ],
+      "required_behavior": "carry professional code authoring fields across handoff",
+      "initial_status": "planned_until_B45_PCA_M15"
+    },
+    {
+      "trigger": "generated_analysis_or_runtime_route_mentions_code_readiness",
+      "selectors": [
+        "first-run analysis produces methodology, runtime-route, quality-evals, risks, recommendations or code-flow sections",
+        "Codex runtime runner returns a route for non-mechanical code work"
+      ],
+      "required_behavior": "show coding standard as recommendation or present_unverified readiness signal, not enforcement proof",
+      "initial_status": "planned_until_B45_PCA_M18_M22"
+    }
+  ],
+  "surface_map": [
+    {
+      "surface": "Task Brief and lifecycle marker",
+      "current_mechanism": ".codex/product-agent-os/lifecycle-state.json plus lifecycle hooks for mutating Product-Agent OS work",
+      "batch45_route": "B45-S0 records the policy; later rows may require a checklist reference in Task Brief or task packet.",
+      "automatic_behavior_allowed": "existing lifecycle guardrail only",
+      "proof_boundary": "proves visible task lifecycle marker, not professional code quality",
+      "activation_status": "current_guardrail_not_coding_standard"
+    },
+    {
+      "surface": "template and workflow staging",
+      "current_mechanism": "plugins/product-agent-os/scripts/product_agent_os/templates.py stages workflows, artifact-templates, agents, hooks, evals and config into .codex/",
+      "batch45_route": "B45-PCA-M02 and B45-PCA-M03 register coding-standard-checklist.md and coding-standards.md after artifacts exist.",
+      "automatic_behavior_allowed": "staging and lookup only after approved render/infrastructure path",
+      "proof_boundary": "staged template proves availability, not agent behavior or target-code quality",
+      "activation_status": "planned"
+    },
+    {
+      "surface": "workflow templates",
+      "current_mechanism": "development-standards.md, build-slice.md, review-slice.md, legacy-onboarding.md and domain workflows",
+      "batch45_route": "B45-PCA-M05..M09 and B45-PCA-M17 retrofit existing workflows instead of creating a disconnected standard.",
+      "automatic_behavior_allowed": "workflow selection by user/task context or Product-Agent OS route",
+      "proof_boundary": "workflow text can require evidence, but cannot prove implementation behavior by itself",
+      "activation_status": "planned"
+    },
+    {
+      "surface": "artifact templates",
+      "current_mechanism": "agent-task-packet.md, quality-strategy.md, plan-quality-check.md, acceptance-scenarios.md, test-eval-matrix.md and API/security/data templates",
+      "batch45_route": "B45-PCA-M04, B45-PCA-M09 and B45-PCA-M16 add compact fields for leverage, dependency, legacy seam, comments, tests and unsupported claims.",
+      "automatic_behavior_allowed": "template availability and local validation",
+      "proof_boundary": "filled artifact is evidence only when current task data and verification are present",
+      "activation_status": "planned"
+    },
+    {
+      "surface": "agent role profiles and subagent packets",
+      "current_mechanism": "builder, reviewer, architect, tester, docs-maintainer profiles plus subagent context/result packets",
+      "batch45_route": "B45-PCA-M15 adds role-specific professional coding responsibilities and handoff fields.",
+      "automatic_behavior_allowed": "role prompt may require fields when the role is selected; no auto-dispatch",
+      "proof_boundary": "role profile does not launch subagents and does not replace review/eval evidence",
+      "activation_status": "planned_no_auto_dispatch"
+    },
+    {
+      "surface": "skills",
+      "current_mechanism": "Product-Agent OS skills route planning, agent-team design, docs maintenance, testing/evals, risk review, learning loop and automation promotion",
+      "batch45_route": "Future skill text may reference the coding standard for code-owning tasks after artifacts are registered.",
+      "automatic_behavior_allowed": "skill routing by Codex or explicit user/task context",
+      "proof_boundary": "skill trigger is instruction activation only; no external action, subagent launch or provider call is implied",
+      "activation_status": "policy_defined_planned_updates"
+    },
+    {
+      "surface": "behavioral evals and contract tests",
+      "current_mechanism": "behavioral-workflows.json, agent-context-contract.json, handoff-completeness.json, project-readiness.json, fixture eval runner and unittests",
+      "batch45_route": "B45-PCA-M10..M13 and B45-PCA-M16 add shortcut-resistance cases and artifact assertions.",
+      "automatic_behavior_allowed": "deterministic local evals can fail a candidate template, skill or route change",
+      "proof_boundary": "passing local evals proves contract coverage only, not live project behavior",
+      "activation_status": "planned"
+    },
+    {
+      "surface": "methodology intelligence",
+      "current_mechanism": "methodology_catalog.py, methodology_synthesis.py, discovery.py and first_run_analysis.py produce methodology signals and present_unverified applicability",
+      "batch45_route": "B45-PCA-M18 and B45-PCA-M22 add professional code authoring as a cross-domain methodology overlay.",
+      "automatic_behavior_allowed": "recommend checklist when code, legacy, dependency, custom-code or abstraction risk is detected",
+      "proof_boundary": "detection remains present_unverified until source evidence and owner review exist",
+      "activation_status": "planned"
+    },
+    {
+      "surface": "Codex runtime route",
+      "current_mechanism": "codex_runtime_runner routes select lifecycle state, skill/subagent/write policy, methodology packet, finish options and first_response_contract",
+      "batch45_route": "B45-PCA-M18, B45-PCA-M20 and B45-PCA-M22 expose coding-standard recommendation or safe next action for non-mechanical code work.",
+      "automatic_behavior_allowed": "route output may recommend the standard and require approval for external or irreversible actions",
+      "proof_boundary": "runtime route visibility is not target mutation, provider execution, browser proof or installed cache refresh",
+      "activation_status": "planned"
+    },
+    {
+      "surface": "lifecycle hooks",
+      "current_mechanism": ".codex/hooks/hooks.json plus session_start_context.py, pre_tool_use_policy.py, permission_request_summary.py, post_tool_use_evidence.py and stop_runlog_reminder.py",
+      "batch45_route": "B45-PCA-M21 can add coding-standard reminders or checklist checks after owner approval and tests.",
+      "automatic_behavior_allowed": "reminder-only by default; blocking behavior only for approved lifecycle prerequisites or future owner-approved coding-standard guard",
+      "proof_boundary": "hook output is guardrail evidence, not proof that code follows the standard",
+      "activation_status": "not_active_for_coding_standard"
+    },
+    {
+      "surface": "generated HTML and cockpit artifacts",
+      "current_mechanism": "analysis_artifact_renderer.py and status_dashboard.py render orientation views with generated_view_policy orientation_only_not_proof",
+      "batch45_route": "B45-PCA-M22 displays coding-standard availability, applicability, gaps, next action and evidence status.",
+      "automatic_behavior_allowed": "HTML may display state when generated from local packets",
+      "proof_boundary": "HTML is generated orientation evidence only; it must not claim enforcement, runtime proof or source truth",
+      "activation_status": "planned"
+    },
+    {
+      "surface": "Self-Learning Loop and automation candidates",
+      "current_mechanism": "Batch 44 manual/staged-only loop and candidate-only automation promotion",
+      "batch45_route": "B45-PCA-M23 lets metrics and owner feedback propose coding-standard improvements or hook/eval candidates.",
+      "automatic_behavior_allowed": "candidate generation and due checks only",
+      "proof_boundary": "no schedule, hook activation, global memory/config write, provider call, target mutation or auto-apply without later approval",
+      "activation_status": "planned_candidate_only"
+    }
+  ],
+  "methodology_integration": {
+    "will_work_together": true,
+    "integration_type": "cross_domain_overlay",
+    "methodology_domains": [
+      "requirements_domain",
+      "solution_architecture",
+      "quality_testing_evals",
+      "codex_agentic_workflow",
+      "frontend",
+      "backend",
+      "api_integrations",
+      "database_data",
+      "llm_ai_rag",
+      "security_privacy_compliance",
+      "delivery_release_operations"
+    ],
+    "status_rule": "professional coding signals are present_unverified until the current slice provides source evidence, owner review or command/eval/runtime evidence",
+    "safe_next_action_rule": "recommend the checklist or coding-standard workflow, then require not_applicable or accepted_gap for mechanical/docs-only tasks"
+  },
+  "html_projection": {
+    "will_be_reflected": true,
+    "planned_sections": [
+      "methodology",
+      "runtime-route",
+      "quality-evals",
+      "risks",
+      "recommendations",
+      "code-flow"
+    ],
+    "fields_to_show": [
+      "coding_standard_available",
+      "applicability",
+      "missing_artifacts",
+      "next_safe_action",
+      "evidence_status",
+      "unsupported_claims"
+    ],
+    "claim_ceiling": "generated_view_policy must remain orientation_only_not_proof"
+  },
+  "proof_ladder": [
+    {
+      "level": "policy_defined",
+      "evidence": "B45-S0 activation map and Track 11 plan rows",
+      "allowed_claim": "activation policy exists",
+      "not_allowed_claim": "agent behavior is changed"
+    },
+    {
+      "level": "artifact_available",
+      "evidence": "coding-standard workflow/checklist staged and registered through templates.py",
+      "allowed_claim": "template is available",
+      "not_allowed_claim": "template is applied to all code tasks"
+    },
+    {
+      "level": "contract_checked",
+      "evidence": "focused template/eval/unit tests pass",
+      "allowed_claim": "local contract coverage exists",
+      "not_allowed_claim": "runtime behavior or real project quality is proven"
+    },
+    {
+      "level": "route_visible",
+      "evidence": "discovery, methodology or runtime route packet recommends the standard",
+      "allowed_claim": "route can expose the standard",
+      "not_allowed_claim": "route automatically mutates code or proves code quality"
+    },
+    {
+      "level": "hook_reminder_active",
+      "evidence": "owner-approved hook update, tests and trust/session proof",
+      "allowed_claim": "guardrail reminder or approved blocker is active",
+      "not_allowed_claim": "hook output is code-quality proof"
+    },
+    {
+      "level": "project_behavior_evidence",
+      "evidence": "current task packet, code diff, tests/evals, review findings and runtime/browser/provider evidence where applicable",
+      "allowed_claim": "specific slice followed the professional coding standard",
+      "not_allowed_claim": "all future agents or all projects are enterprise-quality"
+    }
+  ],
+  "forbidden_without_explicit_approval": [
+    "activate or modify hooks as enforcement",
+    "create schedules or Codex App automations",
+    "start MCP servers or Agents SDK runners",
+    "call providers or live external model/API endpoints",
+    "mutate target workspaces",
+    "refresh installed plugin cache",
+    "stage, commit, push or open PRs",
+    "publish docs or release artifacts",
+    "store raw private chat, secrets, credentials, unredacted PII or raw source bodies"
+  ],
+  "acceptance_for_B45_PCA_M20": {
+    "triggers_named": true,
+    "selectors_named": true,
+    "automatic_behavior_allowed_named": true,
+    "fallback_policy_named": true,
+    "approval_boundaries_named": true,
+    "evidence_ceilings_named": true,
+    "hooks_skills_agents_evals_runtime_methodology_html_covered": true,
+    "no_hidden_activation_claim": true
+  }
+}
