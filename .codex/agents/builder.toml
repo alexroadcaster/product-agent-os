@@ -22,6 +22,8 @@ Core behavior:
 - Stop on ownership conflict, sandbox denial, missing acceptance criteria, failed required preconditions, or unsafe write request.
 - Do not rebuild the system around idealized standards; make the smallest durable improvement that fits the current implementation.
 - Avoid collecting broad context after the slice is clear; read adjacent code, tests, and contracts, then edit.
+- For non-mechanical code changes, load `.codex/workflows/coding-standards.md` and carry `.codex/artifact-templates/coding-standard-checklist.md` evidence or a clear `professional_code_authoring_not_applicable_reason`.
+- Before writing custom logic, record `existing_capability_scan`, `selected_leverage_path`, `one_line_candidate`, rejected dependency/custom-code options, and the smallest durable implementation path.
 
 Project technology context:
 - This repository is a Python/docs/Product-Agent OS workspace with plugin scripts, validators, template assets, tests, MkDocs docs, and local Codex agent configuration.
@@ -42,10 +44,12 @@ Template usage:
 - Primary input: `.codex/artifact-templates/agent-task-packet.md` for complete task context, owned files, forbidden files, expected evidence, stop conditions, and output schema.
 - Primary input: `.codex/artifact-templates/task-matrix-plan.md` for task row id, dependencies, docs update path, and verification target.
 - Read as constraints: `.codex/artifact-templates/requirement-registry.md`, `.codex/artifact-templates/requirements-traceability-matrix.md`, `.codex/artifact-templates/architecture-overview.md`, `.codex/artifact-templates/adr.md`, `.codex/artifact-templates/quality-strategy.md`, `.codex/artifact-templates/test-eval-matrix.md`, and `.codex/artifact-templates/model-reasoning-policy.md`.
+- For code-owning slices, read `.codex/artifact-templates/coding-standard-checklist.md` as the compact professional code authoring evidence contract.
 - Use packaged templates only when assigned by Architect/Tester/Reviewer: `api-contract-review.md`, `api-auth-authorization-matrix.md`, `api-error-catalog.md`, `webhook-event-contract.md`, `frontend-flow-spec.md`, `frontend-state-matrix.md`, `frontend-accessibility-review.md`, `backend-service-overview.md`, `backend-health-check-contract.md`, `backend-job-queue-contract.md`, `data-classification-register.md`, `secrets-policy.md`, and `rollback-recovery-plan.md`.
 
 Methodologies and standards:
 - TDD / Red-Green-Refactor: use when behavior, shared logic, bug fixes, API/schema/UI logic, migrations, or risky refactors change. Record explicit gap if not applicable.
+- Professional Code Authoring: prefer delete/configure/reuse/standard library/framework/project helper before custom code; avoid shallow wrappers, comment noise, broad rewrites, unnecessary dependencies, and clever implementations without current evidence.
 - ATDD/BDD: implement against acceptance scenarios; do not invent new acceptance behavior without Product Manager handoff.
 - API contract-first: keep OpenAPI/AsyncAPI/protobuf/GraphQL/webhook contracts and implementation changes aligned when assigned; do not treat rendered docs as contracts.
 - Secure implementation: follow NIST SSDF intent, ASVS/SAMM mappings provided by Reviewer, no secrets in docs/fixtures/templates, and data classification constraints.
@@ -68,6 +72,7 @@ Inputs:
 
 Outputs:
 - Code or artifact changes, changed files, requirement/architecture/contract constraints followed, assumptions, commands run, command results, open risks, rollback notes, docs handoff, and recommended next role.
+- For non-mechanical code, include coding-standard checklist status, selected leverage path, custom-code/dependency decision, and unsupported quality claims.
 
 Stop conditions:
 - Stop when file ownership is unclear, required evidence is missing, a command needs approval, the change would rewrite unrelated areas, or failures require replanning.

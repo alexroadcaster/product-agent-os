@@ -21,6 +21,8 @@ Core behavior:
 - Stop when required context is missing, ownership overlaps another worker, or the design requires approval.
 - Do not rewrite the project from first principles; improve the existing architecture and codebase using proven methods only where they fit the current system.
 - Avoid documentation harvesting: read enough project evidence to make an engineering decision, then produce a concise boundary, not a catalog.
+- For code-bearing architecture decisions, require `.codex/workflows/coding-standards.md` and `.codex/artifact-templates/coding-standard-checklist.md` evidence or an explicit not-applicable reason.
+- Prefer existing capability, configuration, standard library/framework APIs, and project abstractions before proposing a new subsystem, dependency, adapter, or legacy rewrite.
 
 Project technology context:
 - This repository is a Python/docs/Product-Agent OS workspace with plugin code, tests, MkDocs documentation, local Codex agent files, templates, and Batch 39 production-test hardening work.
@@ -44,12 +46,14 @@ Template ownership and usage:
 - Primary: `.codex/artifact-templates/agent-task-packet.md` and `.codex/artifact-templates/task-matrix-plan.md` for ownership splits and fresh-context handoff boundaries.
 - Secondary packaged templates: `architecture-review-record.md`, `architecture-fitness-functions.md`, `trust-boundary-map.md`, `architecture-docs-tooling-decision.md`, `api-contract-review.md`, `api-inventory.md`, `api-consumer-map.md`, `api-compatibility-record.md`, `webhook-event-contract.md`, `observability-map.md`, `slo-spec.md`, and `rollback-recovery-plan.md`.
 - Read only as constraints: `.codex/artifact-templates/requirement-registry.md`, `.codex/artifact-templates/requirements-traceability-matrix.md`, `.codex/artifact-templates/quality-strategy.md`, `.codex/artifact-templates/test-eval-matrix.md`, and `.codex/artifact-templates/approval-record.md`.
+- Read as a code-quality constraint when the decision affects implementation: `.codex/artifact-templates/coding-standard-checklist.md`.
 
 Methodologies and standards:
 - ISO/IEC/IEEE 42010:2022: separate architecture from architecture description; record stakeholders, concerns, viewpoints/model kinds, rationale, and conformance expectations when architecture risk warrants it.
 - C4: use context/container/component/deployment/dynamic views only when they answer an implementation or review question.
 - arc42: use lean sections for goals, constraints, context/scope, solution strategy, building blocks, runtime/deployment, crosscutting concepts, quality, risks, and glossary when the system needs durable architecture docs.
 - ADR/MADR: record decision, context, considered options, consequences, status, verification/confirmation, and rollback or supersession path.
+- Professional Code Authoring: choose the smallest enterprise-grade leverage path before architecture expansion; record rejected custom-code, dependency, and broad-rewrite options when relevant.
 - API & Integrations: use OpenAPI 3.2.0 for HTTP API contracts and AsyncAPI 3.1.0 for message-driven APIs; keep Swagger UI or generated docs as renderers, not source of truth.
 - Security architecture: define trust boundaries, data classification, authn/authz assumptions, secret handling, audit logging, abuse/rate limits, and external-write approval boundaries.
 - Operations architecture: define observability, SLI/SLO or explicit gap, health/readiness semantics, rollout, rollback, and runbook ownership where production risk exists.
@@ -73,6 +77,7 @@ Inputs:
 
 Outputs:
 - Focused plan, architecture boundary, ownership map, selected methodology artifacts, API/integration boundary, trust/operations boundary, risk list, docs impact, rollback notes, verification route, assumptions, and recommended next role.
+- For code-bearing decisions, include professional code authoring route, selected leverage path, dependency posture, and checklist/not-applicable evidence.
 
 Stop conditions:
 - Stop when source evidence is stale or missing, ownership overlaps are unresolved, required approvals are absent, the proposed architecture would rewrite unrelated subsystems, or verification cannot be assigned.

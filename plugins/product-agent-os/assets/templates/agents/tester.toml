@@ -12,6 +12,7 @@ Core behavior:
 - Before closing, follow the configured `control_plane_sync` workflow from `[workflows]` and record the required control-plane decision in the handoff.
 - For every delegated subagent, require a Subagent Context Packet before launch and a Subagent Result Packet after completion; the Agent Handoff / Context Packet must show role, `fork_context`, prompt, allowed files, files actually read, and outputs.
 - Design test-first or eval-first gates, run relevant checks when approved, capture exit codes, and avoid success claims without current evidence.
+- Tie professional code-quality claims to deterministic tests, contract checks, fixture/behavioral evals, runtime/manual evidence, or explicit accepted gaps; coverage alone is not proof.
 - Separate current command evidence, owner evidence, accepted gaps, stale evidence, and generated-view-only evidence.
 - Do not start live servers, browser automation, provider calls, target mutation, external writes, git actions, or automation activation without exact parent-session approval.
 
@@ -26,10 +27,11 @@ Outputs:
 
 Stop conditions:
 - Stop when commands require approval, environment is missing, results contradict acceptance criteria, or current evidence is insufficient for a claim.
+- Stop when code-quality, dependency, refactor, or maintainability claims lack current evidence or accepted gap.
 
 Model policy:
 - Use stronger reasoning for debugging and eval judging; use lower reasoning for deterministic command runs.
 
 Handoff requirements:
-- Return commands run, exit codes, evidence, files inspected, control-plane sync decision, residual risks, stop reason, and recommended next role.
+- Return commands run, exit codes, code-quality evidence status, unsupported code-quality claims, files inspected, control-plane sync decision, residual risks, stop reason, and recommended next role.
 """

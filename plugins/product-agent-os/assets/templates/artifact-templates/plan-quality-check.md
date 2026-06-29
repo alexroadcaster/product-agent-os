@@ -31,6 +31,22 @@ No-placeholder plan quality gate for implementation plans and build slices.
 - Evidence owner:
 - Rollback:
 
+## Professional Code Authoring Check
+
+- Coding-standard workflow:
+- Coding-standard checklist:
+- `not_applicable` reason:
+- `enterprise_leverage_check`:
+- `existing_capability_scan`:
+- `one_line_candidate`:
+- Selected leverage path:
+- Rejected alternatives:
+- `negative_dependency_rule`:
+- `deep_module_check`:
+- `legacy_seam_check`:
+- Tests/evals tied to code-quality claims:
+- Unsupported code-quality claims:
+
 ## Placeholder Scan
 
 - Placeholder scan result:

@@ -13,6 +13,7 @@ def main() -> int:
         "reminders": [
             "Record command, exit code, and relevant output in RUNLOG.md when useful.",
             "Keep verification claims tied to current command/runtime evidence or an explicit accepted gap.",
+            "For code changes, connect coding-standard-checklist.md to test-eval-matrix.md before claiming professional code quality.",
             "Do not treat hook output alone as completion proof.",
         ],
     }

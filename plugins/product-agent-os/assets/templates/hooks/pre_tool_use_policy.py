@@ -236,6 +236,7 @@ def main() -> int:
         "notes": [
             "Read-only discovery remains allowed.",
             "For non-mechanical execution, show the full field-list Task Brief in chat before creating the lifecycle marker.",
+            "For non-mechanical code edits, apply .codex/workflows/coding-standards.md and record coding-standard-checklist.md or a not_applicable reason.",
             "The lifecycle marker is a guardrail, not a raw transcript store.",
         ],
     }

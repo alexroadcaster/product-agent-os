@@ -47,6 +47,7 @@ Read shared references when needed: [Lifecycle states](../references/lifecycle-s
 - Domain modeling input when `domain_model_when_complex_domain` applies: `.codex/artifact-templates/domain-modeling.md`, `.codex/artifact-templates/architecture-overview.md`, complex backend, workflow, enterprise, data-heavy, bounded context, ubiquitous language, invariant, accepted gap, `bounded_context_architecture_boundary_trace`, `context-to-boundary traceability`, `ubiquitous_language_traceability`, term-to-requirement, requirement or source, API/event/contract, UI label, code module or owner, domain expert review, and `missing domain model for complex domain`.
 - UI architecture input when `fsd_structure` applies: `.codex/artifact-templates/component-card.md`, Feature-Sliced Design, layer, slice, segment, public API, import rule, `not applicable` reason, accepted gap, backend, native, simple CRUD, simple MVP, and `missing fsd structure boundary`.
 - Task matrix input when specs/ADRs/standards/handoffs/risky multi-slice work applies: `task-matrix-plan.md`, task rows, methodology gates, task fields, artifacts, owners, dependencies, docs update path, expected evidence, stop conditions, and explicit lightweight exception status for small mechanical work.
+- Professional code authoring input when non-mechanical code, refactoring, dependency, generated-code, shared-module, API/data/runtime, or high-risk workflow changes apply: `.codex/workflows/coding-standards.md`, `.codex/artifact-templates/coding-standard-checklist.md`, `enterprise_leverage_check`, `existing_capability_scan`, `one_line_candidate`, selected leverage path, rejected alternatives, `negative_dependency_rule`, `deep_module_check`, `legacy_seam_check`, tests/evals tied to code-quality claims, unsupported code-quality claims, and `not_applicable` reason for mechanical/docs-only work.
 
 ## Process
 
@@ -75,19 +76,21 @@ Read shared references when needed: [Lifecycle states](../references/lifecycle-s
 23. For each slice, name the architecture boundary, test-first or eval-first path, documentation impact, acceptance scenarios, Business/Product methodology gates, domain model applicability, context-to-boundary traceability, ubiquitous language traceability, FSD applicability, and post-release measurement note.
 24. Run the no-placeholder planning gate before returning `plan_ready`.
 25. For every non-trivial slice, fill the `plan_quality_check` fields from `.codex/artifact-templates/plan-quality-check.md`: exact files, owned files, forbidden files, exact commands, expected outputs, rollback, evidence owner, and placeholder scan.
-26. Treat vague validation, repeated-by-reference steps, command steps without expected outputs, undefined file names, and hidden "fill later" work as blocking gaps.
-27. Use `mechanical_change` only for small docs, formatting, or config edits whose reduced plan still names exact files, exact commands or explicit no-command gap, rollback, evidence owner, and the mechanical_change reason.
-28. If the no-placeholder gate fails, stop before build and return a plan repair packet instead of `plan_ready`.
-29. Identify dependencies, file or subsystem ownership, rollback notes, risks, and command evidence needed.
-30. Keep commands as proposed `commands_to_run` unless already run in the current session.
-31. Route to `agent-team-designer` if ownership overlaps, parallel work is needed, or handoff risk is high.
-32. Return `plan_ready` only when slices, verification gates, rollback notes, documentation impact, risks, conditional readiness gates, and `plan_quality_check` are staged.
-33. If a slice touches live/provider/mutation routing, require `project_graph_live_audit_log_present`, `project_graph_live_security_privacy_tests_present`, `project_graph_live_runtime_observability_present`, `project_graph_live_agent_skill_handoff_routing_present`, no-live-call evidence, and stop conditions for missing ownership, missing verification evidence and live/provider/mutation without approval before `plan_ready`.
-34. Use `task-matrix-plan.md` when specs/ADRs/standards/handoffs/risky multi-slice work applies; map methodology gates into task fields and map methodology gates into artifacts so every task row names owner, files, dependency status, expected evidence, docs update path, stop conditions, and readiness gate status.
-35. Plans remain staged: propose `task-matrix-plan.md`, `PLAN.md`, `TEST.md`, and related artifacts as files proposed unless the user explicitly approves writes to those artifacts.
-36. Allow an explicit lightweight exception only for small mechanical work when the reduced task still names exact files, exact commands or an explicit command gap, rollback, evidence owner, docs impact, and why the full task matrix is not useful.
-37. Apply the compatibility policy before validator routing: old matrices remain historical evidence, task_matrix_plan_v1 applies to new concrete task-plan files and optional backfilled rows only, and validator should not retroactively fail historical summary tables unless explicitly targeted.
-38. Apply the plan lifecycle policy before completion claims: active concrete task files remain active until their execution, acceptance, verification and handoff decisions close; evidence moves to RUNLOG.md; history moves to docs/sources/*backlog*.md; source-backed claims enter docs/sources/registry*.md; no secrets, raw chat, customer data, root PLAN.md bloat, automatic deletion or destructive cleanup.
+26. For non-mechanical code work, require the professional code authoring sub-gate before `plan_ready`: coding-standard checklist or `not_applicable` reason, existing-capability scan, selected leverage path, rejected alternatives, dependency decision, deep module check when shared/public/runtime surfaces are touched, legacy seam check when refactoring fragile code, and tests/evals tied to code-quality claims.
+27. Reject plans that add custom code or a new dependency before standard library, framework/platform, current dependency, project helper, configuration, deletion/reduction, or small-adapter options are considered.
+28. Treat vague validation, repeated-by-reference steps, command steps without expected outputs, undefined file names, and hidden "fill later" work as blocking gaps.
+29. Use `mechanical_change` only for small docs, formatting, or config edits whose reduced plan still names exact files, exact commands or explicit no-command gap, rollback, evidence owner, the mechanical_change reason, and coding-standard `not_applicable` reason.
+30. If the no-placeholder gate fails, stop before build and return a plan repair packet instead of `plan_ready`.
+31. Identify dependencies, file or subsystem ownership, rollback notes, risks, and command evidence needed.
+32. Keep commands as proposed `commands_to_run` unless already run in the current session.
+33. Route to `agent-team-designer` if ownership overlaps, parallel work is needed, or handoff risk is high.
+34. Return `plan_ready` only when slices, verification gates, rollback notes, documentation impact, risks, conditional readiness gates, professional code authoring status, and `plan_quality_check` are staged.
+35. If a slice touches live/provider/mutation routing, require `project_graph_live_audit_log_present`, `project_graph_live_security_privacy_tests_present`, `project_graph_live_runtime_observability_present`, `project_graph_live_agent_skill_handoff_routing_present`, no-live-call evidence, and stop conditions for missing ownership, missing verification evidence and live/provider/mutation without approval before `plan_ready`.
+36. Use `task-matrix-plan.md` when specs/ADRs/standards/handoffs/risky multi-slice work applies; map methodology gates into task fields and map methodology gates into artifacts so every task row names owner, files, dependency status, expected evidence, docs update path, stop conditions, and readiness gate status.
+37. Plans remain staged: propose `task-matrix-plan.md`, `PLAN.md`, `TEST.md`, and related artifacts as files proposed unless the user explicitly approves writes to those artifacts.
+38. Allow an explicit lightweight exception only for small mechanical work when the reduced task still names exact files, exact commands or an explicit command gap, rollback, evidence owner, docs impact, why the full task matrix is not useful, and the coding-standard `not_applicable` reason.
+39. Apply the compatibility policy before validator routing: old matrices remain historical evidence, task_matrix_plan_v1 applies to new concrete task-plan files and optional backfilled rows only, and validator should not retroactively fail historical summary tables unless explicitly targeted.
+40. Apply the plan lifecycle policy before completion claims: active concrete task files remain active until their execution, acceptance, verification and handoff decisions close; evidence moves to RUNLOG.md; history moves to docs/sources/*backlog*.md; source-backed claims enter docs/sources/registry*.md; no secrets, raw chat, customer data, root PLAN.md bloat, automatic deletion or destructive cleanup.
 
 ## Outputs
 
@@ -186,6 +189,17 @@ implementation_plan_packet:
     placeholder_scan: ""
     mechanical_change_reason: ""
     blocking_gaps: []
+  professional_code_authoring:
+    workflow: ".codex/workflows/coding-standards.md"
+    checklist: ".codex/artifact-templates/coding-standard-checklist.md"
+    status: "required | not_applicable | explicit_gap_accepted"
+    existing_capability_scan: []
+    selected_leverage_path: ""
+    rejected_alternatives: []
+    dependency_decision: ""
+    deep_module_check: ""
+    legacy_seam_check: ""
+    unsupported_code_quality_claims: []
   task_matrix_plan:
     artifact: "task-matrix-plan.md"
     applies_when: "specs/ADRs/standards/handoffs/risky multi-slice work"

@@ -34,6 +34,7 @@ Read shared references when needed: [Lifecycle states](../references/lifecycle-s
 - Requirements & Domain artifacts: `requirement-registry.md`, `stakeholder-owner-map.md`, `story-slice-map.md`, `requirements-traceability-matrix.md`, `business-rules.md`, `example-map.md`, `requirement-change-impact.md`, `domain-review-record.md`, and `acceptance-scenarios.md`.
 - Methodology gates: `requirements_traceability_present`, `requirement_quality_present`, `constraints_traceability_present`, `declarative_acceptance_scenarios_present`, `business_rules_present`, `domain_expert_review_present`, `requirement_change_impact_review_present`, `accepted_gap_recorded`, and `requirements_evidence_before_implementation`.
 - Source registry updates, glossary or ubiquitous language terms, architecture/API/UI/data docs, release notes and user-facing docs affected by the slice.
+- Professional code authoring docs inputs when standards, development workflows, code review, agent handoffs, dependency policy, quality gates, or public coding guidance change: coding-standard workflow/checklist route, source packets used, implemented row ids, unsupported activation claims, and registry entries.
 - Evidence-before-completion (`evidence_before_completion`) fields: ready claim, completed claim, fixed claim, works claim, release claim, current command evidence, current eval evidence, current runtime evidence, inspection-only, explicit test gap, unsupported completion claim, and completion claim without current evidence.
 
 ## Process
@@ -51,8 +52,9 @@ Read shared references when needed: [Lifecycle states](../references/lifecycle-s
 11. Preserve `declarative_acceptance_scenarios_present`: docs should not turn business-facing scenarios into UI selectors, database internals, function names, or test harness details.
 12. Keep glossary and ubiquitous language separate: a glossary is not enough; terms must trace to requirement IDs, source, API/event/contract, UI label, code/test or owner review.
 13. Reject unsupported claims as docs evidence: BDD replaces testing, Gherkin is mandatory, user story template is complete requirements, glossary is ubiquitous language, and OpenAPI is requirements source of truth.
-14. Stage source registry and docs updates only; do not publish, change navigation broadly, or mutate external systems without explicit approval.
-15. Use evidence-before-completion before any ready claim, completed claim, fixed claim, works claim, or release claim.
+14. When professional coding standards change, keep docs proportional: link to the compact workflow/checklist, preserve `not_applicable` for mechanical/docs-only work, record unsupported activation claims, and do not imply hooks, runtime routes, HTML, subagent execution, or automation are active.
+15. Stage source registry and docs updates only; do not publish, change navigation broadly, or mutate external systems without explicit approval.
+16. Use evidence-before-completion before any ready claim, completed claim, fixed claim, works claim, or release claim.
 
 ## Outputs
 

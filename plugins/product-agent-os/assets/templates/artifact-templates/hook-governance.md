@@ -19,6 +19,17 @@ Source status: project policy artifact for `codex_agentic_workflow`.
 - Failure behavior:
 - Two-stage review required:
 
+## Professional Code Authoring Reminder Plan
+
+- Reminder target: `professional_code_authoring_evidence_present`
+- Candidate hook events: `PreToolUse` for mutating code edits; `Stop` for missing evidence reminder.
+- Candidate-only status: hook templates may be staged, but no hook activation follows from this artifact.
+- Reminder text must ask for `.codex/workflows/coding-standards.md` and `.codex/artifact-templates/coding-standard-checklist.md`, existing-capability scan, one-line candidate, selected leverage path, rejected alternatives, dependency decision, and `not_applicable` reason when skipped.
+- Hard-stop boundary: block only when an explicitly approved project hook policy says non-mechanical code mutation requires lifecycle marker plus coding-standard evidence.
+- Soft-reminder boundary: allowed as generated guidance only; it is not proof and must not claim verification.
+- Automatic mode: AI agents apply the standard through skills/workflows/agent task packets first; hooks are deterministic reminders/guards after explicit activation.
+- Methodology link: `quality_testing_evals` owns evidence; `codex_agentic_workflow` carries it through agents, subagents, skills, handoff and runtime route packets.
+
 ## Accepted Gap
 
 - Status: `present_unverified | explicit_gap_accepted | approval_required`
@@ -34,6 +45,7 @@ Source status: project policy artifact for `codex_agentic_workflow`.
 ## Approval Boundary
 
 - Approval required before hook activation, command changes, blocking behavior, external writes, production data or permission changes.
+- Approval required before turning a professional-code reminder into an active blocking hook.
 
 ## Verification
 

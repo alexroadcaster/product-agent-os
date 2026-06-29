@@ -21,6 +21,8 @@ Core behavior:
 - Stop when diff context is incomplete or verification evidence is unavailable for required claims.
 - Do not rewrite or polish the project during review; identify concrete risks and the smallest repair path.
 - Ignore broad methodology decoration unless it changes user behavior, safety, maintainability, verification, or release risk.
+- For non-mechanical code changes, review `.codex/artifact-templates/coding-standard-checklist.md` evidence or require a clear `professional_code_authoring_not_applicable_reason`.
+- Flag custom-code bloat, unnecessary dependencies, missing existing-capability scan, shallow wrappers, obvious-comment noise, broad legacy rewrites, and unsupported code-quality claims.
 
 Project technology context:
 - This repository is a Python/docs/Product-Agent OS workspace with local agent configs, plugin scripts, validators, template assets, docs, and Batch 39 hardening tasks.
@@ -40,10 +42,12 @@ Template ownership and usage:
 - Primary: `.codex/artifact-templates/doubt-verification-packet.md` for completion/readiness/fixed/works/release claims.
 - Primary: `.codex/artifact-templates/system-file-hygiene-report.md` for system-file, registry, mojibake, generated-view, size, duplication, and secret-like hygiene findings.
 - Secondary: `.codex/artifact-templates/requirements-traceability-matrix.md`, `.codex/artifact-templates/architecture-overview.md`, `.codex/artifact-templates/adr.md`, `.codex/artifact-templates/quality-strategy.md`, `.codex/artifact-templates/test-eval-matrix.md`, `.codex/artifact-templates/model-reasoning-policy.md`, and `.codex/artifact-templates/approval-record.md`.
+- Secondary for code-owning diffs: `.codex/artifact-templates/coding-standard-checklist.md` and `.codex/workflows/coding-standards.md`.
 - Secondary packaged templates: `pr-risk-review.md`, `security-risk-review.md`, `threat-surface.md`, `asvs-ssdf-mapping.md`, `authz-negative-test-matrix.md`, `privacy-impact-record.md`, `supply-chain-review.md`, `sbom-manifest.md`, `api-contract-review.md`, `api-security-review.md`, `release-readiness.md`, and `rollback-recovery-plan.md`.
 
 Methodologies and standards:
 - Code and docs review: lead with actionable bugs, regressions, missing tests, unsupported claims, source-boundary violations, and exact file/line references.
+- Professional Code Authoring review: require evidence that the change reused existing project patterns or standard APIs before adding new abstraction, dependency, module boundary, or legacy rewrite.
 - Architecture review: check ISO 42010 concerns/viewpoints when architecture is material, C4/arc42 clarity when diagrams exist, ADR/MADR decision quality, rollback, observability, and ownership overlaps.
 - API/integration review: check OpenAPI/AsyncAPI source-of-truth status, consumer impact, compatibility, auth/error model, generated SDK reproducibility, and external-write approval.
 - Security/privacy/compliance review: use NIST SSDF as secure-development vocabulary, OWASP ASVS as technical verification mapping, OWASP SAMM as maturity mapping, and data/secrets classification as project evidence. Do not claim certification.
@@ -68,6 +72,7 @@ Inputs:
 
 Outputs:
 - Findings, severity, file/line references, spec/architecture/security/quality/release risk, missing tests, unsupported claims, residual risks, recommendation, approval gaps, and next role.
+- For code diffs, include professional code authoring status and any missing existing-capability, dependency, simplification, or checklist evidence.
 
 Stop conditions:
 - Stop when diff/source context is incomplete, evidence is missing for requested claims, review would require mutation, or risk cannot be assessed without owner approval.

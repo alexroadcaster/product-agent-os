@@ -11,6 +11,8 @@ Profile: {profile_name}
 - Database dictionary:
 - Database data contract:
 - Schema change:
+- Framework-native migration option:
+- Existing migration tool option:
 - Backfill:
 - Data quality:
 - Constraints and indexes:
@@ -34,11 +36,12 @@ Profile: {profile_name}
 3. Classify each data change as schema-only, backfill, cleanup, retention change, sensitive-field change, destructive migration, production data operation, runtime pipeline impact, RAG ingestion impact, data contract change, constraint/index change, or query performance risk.
 4. Record schema change, backfill, data quality, constraints, indexes, lineage, PII, sensitive fields, retention, rollback, validation, dry run, backup, database dictionary, data contract, production DB access, and owner review as `present_unverified` until migration dry run, validation evidence, database owner review, backup/restore evidence, query-plan evidence, lineage evidence or approved production evidence confirms the claim.
 5. Define validation before implementation: pre-counts, post-counts, constraints, foreign keys, unique, not null, indexes, nullability checks, idempotency, duplicate handling, sampling, audit table, data drift, and rollback verification where applicable.
-6. Select verification from detected project files only: migration tool dry run, SQL lint, ORM migration plan, DBML/dbdocs check, local database restore, row count comparison, backup restore check, data quality check, lineage review, query performance review, or manual DBA review.
-7. Do not access production data, do not access production DB, do not run migration, and do not run destructive cleanup without explicit approval.
-8. Do not store PII, sensitive fields, raw customer data, credentials, connection strings, dumps, or secret-bearing configs in artifacts, prompts, fixtures, or logs.
-9. Do not claim migration safety, data quality, retention compliance, rollback readiness, database contract safety, lineage correctness, query performance, or production readiness from code inspection only.
-10. No universal database tooling default: Liquibase, Flyway, Alembic, Prisma, Rails/Django, dbt, Great Expectations, OpenLineage, DBML, dbdocs, SchemaSpy and schema-diff tooling are selected only when project evidence supports them; schema-diff tooling deferred needs owner/reason.
+6. Prefer existing migration tooling, ORM primitives, DB constraints, database-native operations, and project helpers before custom migration code or a new dependency.
+7. Select verification from detected project files only: migration tool dry run, SQL lint, ORM migration plan, DBML/dbdocs check, local database restore, row count comparison, backup restore check, data quality check, lineage review, query performance review, or manual DBA review.
+8. Do not access production data, do not access production DB, do not run migration, and do not run destructive cleanup without explicit approval.
+9. Do not store PII, sensitive fields, raw customer data, credentials, connection strings, dumps, or secret-bearing configs in artifacts, prompts, fixtures, or logs.
+10. Do not claim migration safety, data quality, retention compliance, rollback readiness, database contract safety, lineage correctness, query performance, or production readiness from code inspection only.
+11. No universal database tooling default: Liquibase, Flyway, Alembic, Prisma, Rails/Django, dbt, Great Expectations, OpenLineage, DBML, dbdocs, SchemaSpy and schema-diff tooling are selected only when project evidence supports them; schema-diff tooling deferred needs owner/reason.
 
 ## Outputs
 
@@ -47,6 +50,7 @@ Profile: {profile_name}
 - Database dictionary:
 - Database data contract:
 - Schema change:
+- Migration leverage decision:
 - Backfill:
 - Data quality:
 - Constraints and indexes:
@@ -69,6 +73,7 @@ Profile: {profile_name}
 - Migration plan and database dictionary are present or marked `applicable_missing`.
 - Schema change, backfill, data quality, constraints, indexes, lineage, data contract, PII, sensitive fields, retention, rollback, validation, dry run, backup, production DB boundary, and owner review are explicit.
 - Dry run is named before implementation or marked unavailable with reason.
+- Custom migration code or new migration dependency has rejected existing-tooling and database-native options.
 - Validation includes pre-counts, post-counts, constraints, foreign keys, unique, not null, indexes, idempotency, data drift, and rollback evidence where applicable.
 - PII and sensitive fields are documented without storing raw private data or dumps.
 - Production DB access, production data access, destructive migration, backup restore, and migration execution remain blocked until explicit approval.
@@ -80,5 +85,6 @@ Profile: {profile_name}
 - Rollback or backup plan is missing for a destructive migration.
 - Database data contract, constraints/index review, lineage review, or query performance review is missing for an affected database/data surface.
 - Validation or dry run evidence is missing for a migration readiness claim.
+- Custom migration code is proposed before existing migration tooling, database-native operations, or project helpers are evaluated.
 - Owner review is missing for a production DB or sensitive-data migration.
 - The request asks to access production data, access production DB, run migration, run destructive cleanup, restore backups, or change retention without explicit approval.

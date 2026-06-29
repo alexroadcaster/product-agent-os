@@ -15,6 +15,10 @@ Profile: {profile_name}
 - Data migration context:
 - Release packaging context:
 - Parallel work context:
+- Coding-standard checklist:
+- Existing-capability scan:
+- Selected leverage path:
+- Dependency decision:
 - Verification evidence:
 - Threat or data handling context:
 - Missing evidence:
@@ -41,6 +45,8 @@ Profile: {profile_name}
 - Check source constraints and public contract before judging implementation quality.
 - Check file ownership and unrelated churn.
 - Identify missing tests, regressions, and security risk.
+- Check professional code authoring risk: unnecessary custom code, missing `one_line_candidate`, weak existing-capability scan, dependency debt, shallow wrappers, brittle refactors, low-signal comments, and unsupported code-quality claims.
+- Treat maintainability findings as blockers only when they affect correctness, risk, evidence, ownership, dependency debt, legacy safety, or future change cost.
 - Check `.codex/workflows/control-plane-sync.md`: identify missing updates or missing `not_applicable` / `handoff_required` decisions for control-plane files.
 - Record a verdict: approve, request changes, or block.
 
@@ -52,6 +58,11 @@ Profile: {profile_name}
 - Missing tests:
 - Regression risk:
 - Security risk:
+- Unnecessary custom-code risk:
+- Dependency debt risk:
+- Legacy/refactor risk:
+- Low-signal comment risk:
+- Unsupported code-quality claims:
 - Missing evidence:
 - Control-plane sync gaps:
 - Verdict:
@@ -70,5 +81,8 @@ Profile: {profile_name}
 - Review attempts quality/risk before spec compliance.
 - Review attempts one-stage review for risky work.
 - Review attempts a ready verdict with missing evidence.
+- Review ignores missing coding-standard checklist for non-mechanical code work.
+- Review accepts new custom code without existing-capability scan, selected leverage path, rejected alternatives, or current evidence.
+- Review accepts new dependencies without dependency risk, rollback/removal path, and approval status.
 - Review finds missing required control-plane sync evidence.
 - Security or data handling issue blocks release.

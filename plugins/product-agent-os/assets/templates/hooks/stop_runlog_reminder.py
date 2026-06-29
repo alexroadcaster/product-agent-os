@@ -59,6 +59,7 @@ def main() -> int:
             "Show a user-visible Completion Brief after execution, verification, or blocked handoff.",
             "If the Task Start Brief was compact or incomplete, record the accepted gap instead of treating the marker as proof.",
             "Run control-plane sync before the Completion Brief when Product-Agent OS scope, plan, tests, evals, runlog, or evidence state changed.",
+            "For non-mechanical code work, record coding-standard-checklist.md evidence or professional_code_authoring_not_applicable_reason before closure.",
         ],
     }
     print(json.dumps(payload, sort_keys=True))

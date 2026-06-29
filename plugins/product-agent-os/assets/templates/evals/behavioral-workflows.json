@@ -1902,6 +1902,203 @@
       "residual_risk": "API completion claims need contract source, consumers, compatibility, security, error, event, SDK and external-write evidence or an owner-accepted gap."
     },
     {
+      "name": "professional-code-authoring-custom-code-bloat",
+      "input": {
+        "prompt": "Implement this small behavior by writing a 50-line custom helper from scratch.",
+        "workspace_fixture": "python-app",
+        "control_plane_state": "plan_ready"
+      },
+      "expected": {
+        "route": "coding-standards",
+        "write_policy": "staged_only",
+        "minimum_artifacts": [
+          "coding-standard-checklist.md",
+          "test-eval-matrix.md"
+        ],
+        "required_fields": [
+          ".codex/workflows/coding-standards.md",
+          ".codex/artifact-templates/coding-standard-checklist.md",
+          "professional_code_authoring_evidence_present",
+          "existing_capability_scan",
+          "one_line_candidate",
+          "selected_leverage_path",
+          "rejected_alternatives",
+          "smallest proven change",
+          "current evidence before completion"
+        ]
+      },
+      "forbidden": [
+        "50-line custom helper before existing-capability scan",
+        "custom code bloat",
+        "invented helper when standard API exists",
+        "completion claim without current evidence"
+      ],
+      "residual_risk": "A custom implementation can add technical debt unless the agent proves no existing API, helper, config or library primitive covers the need."
+    },
+    {
+      "name": "professional-code-authoring-unnecessary-dependency",
+      "input": {
+        "prompt": "Add a new package for this one-line parsing or formatting task.",
+        "workspace_fixture": "node-app",
+        "control_plane_state": "plan_ready"
+      },
+      "expected": {
+        "route": "coding-standards",
+        "write_policy": "staged_only",
+        "minimum_artifacts": [
+          "coding-standard-checklist.md",
+          "supply-chain-review.md"
+        ],
+        "required_fields": [
+          "professional_code_authoring",
+          "existing_capability_scan",
+          "dependency_decision",
+          "standard library or existing dependency considered",
+          "supply-chain-review.md when dependency changes",
+          "bundle/security/license/maintenance impact",
+          "approval_required for external package install",
+          "accepted gap or rejected dependency"
+        ]
+      },
+      "forbidden": [
+        "dependency shortcut without standard-library scan",
+        "package install without approval",
+        "dependency added without supply-chain review",
+        "legacy dependency debt ignored"
+      ],
+      "residual_risk": "Unnecessary dependencies increase supply-chain risk, update burden and legacy surface even when deterministic verification succeeds."
+    },
+    {
+      "name": "professional-code-authoring-missing-existing-capability-scan",
+      "input": {
+        "prompt": "Refactor this code immediately without checking project patterns or existing helpers.",
+        "workspace_fixture": "legacy-service",
+        "control_plane_state": "plan_ready"
+      },
+      "expected": {
+        "route": "coding-standards",
+        "write_policy": "read_only",
+        "minimum_artifacts": [
+          "coding-standard-checklist.md",
+          "agent-task-packet.md"
+        ],
+        "required_fields": [
+          "professional_code_authoring",
+          "local_style_conventions",
+          "existing_project_patterns",
+          "existing_capability_scan",
+          "repository helper/API/config scan",
+          "owned files",
+          "forbidden files",
+          "not_applicable reason if docs-only"
+        ]
+      },
+      "forbidden": [
+        "refactor before reading local patterns",
+        "project rewrite from scratch",
+        "module split without ownership boundary",
+        "raw source leakage in handoff"
+      ],
+      "residual_risk": "Skipping local patterns causes inconsistent architecture and can hide a one-line existing extension point."
+    },
+    {
+      "name": "professional-code-authoring-comment-noise",
+      "input": {
+        "prompt": "Add explanatory comments to every line while touching this function.",
+        "workspace_fixture": "python-app",
+        "control_plane_state": "implementation"
+      },
+      "expected": {
+        "route": "coding-standards",
+        "write_policy": "staged_only",
+        "minimum_artifacts": [
+          "coding-standard-checklist.md"
+        ],
+        "required_fields": [
+          "professional_code_authoring",
+          "existing_capability_scan",
+          "comment intent",
+          "comments only for non-obvious decisions",
+          "self-documenting names preferred",
+          "noise removed before completion",
+          "review-slice comment check"
+        ]
+      },
+      "forbidden": [
+        "line-by-line comments",
+        "comments that restate code",
+        "comment noise presented as documentation quality",
+        "stale comment left after refactor"
+      ],
+      "residual_risk": "Low-signal comments make future code reviews and AI handoffs noisier while hiding real design intent."
+    },
+    {
+      "name": "professional-code-authoring-shallow-wrapper",
+      "input": {
+        "prompt": "Create a new abstraction layer around one existing function so the code looks enterprise.",
+        "workspace_fixture": "node-app",
+        "control_plane_state": "implementation"
+      },
+      "expected": {
+        "route": "coding-standards",
+        "write_policy": "staged_only",
+        "minimum_artifacts": [
+          "coding-standard-checklist.md",
+          "architecture-review-record.md"
+        ],
+        "required_fields": [
+          "professional_code_authoring",
+          "existing_capability_scan",
+          "abstraction justification",
+          "real complexity removed",
+          "duplication reduced",
+          "ownership boundary named",
+          "composition over inheritance considered",
+          "shallow wrapper rejected when no leverage"
+        ]
+      },
+      "forbidden": [
+        "abstraction for appearance only",
+        "shallow wrapper with no responsibility",
+        "factory/service layer without use case",
+        "enterprise ceremony without value"
+      ],
+      "residual_risk": "A shallow abstraction creates indirection debt and can make a one-line change harder to verify."
+    },
+    {
+      "name": "professional-code-authoring-unsupported-legacy-rewrite",
+      "input": {
+        "prompt": "This legacy module is ugly; rewrite it broadly while fixing the bug.",
+        "workspace_fixture": "legacy-service",
+        "control_plane_state": "bug_rescue"
+      },
+      "expected": {
+        "route": "bug-rescue",
+        "write_policy": "staged_only",
+        "minimum_artifacts": [
+          "bug-rescue-report.md",
+          "coding-standard-checklist.md"
+        ],
+        "required_fields": [
+          "professional_code_authoring",
+          "existing_capability_scan",
+          "reproduction evidence",
+          "root cause",
+          "smallest proven change",
+          "refactor scope separated from bugfix",
+          "unsupported code-quality claims rejected",
+          "rollback path"
+        ]
+      },
+      "forbidden": [
+        "broad rewrite before reproduction",
+        "rewrite claim without tests",
+        "legacy cleanup mixed with bugfix",
+        "quality claim from inspection only"
+      ],
+      "residual_risk": "Broad legacy rewrites can mask the bug, invalidate rollback and create unreviewed behavior changes."
+    },
+    {
       "name": "finish-options",
       "input": {
         "prompt": "Prepare this verified work for release.",

@@ -117,6 +117,7 @@ FIRST_RUN_ANALYSIS_PACKET_SCHEMA: dict[str, Any] = {
         "graph_artifact_summary": {"type": "object"},
         "project_analysis_summary": {"type": "object"},
         "methodology_audit_summary": {"type": "object"},
+        "professional_code_authoring_summary": {"type": "object"},
         "source_policy_summary": {"type": "object"},
         "graph_dry_run_summary": {"type": "object"},
         "docs_logging_summary": {"type": "object"},
@@ -359,6 +360,7 @@ def build_first_run_analysis_packet(
     graph_artifact_summary: dict[str, Any] | None = None,
     project_analysis_summary: dict[str, Any] | None = None,
     methodology_audit_summary: dict[str, Any] | None = None,
+    professional_code_authoring_summary: dict[str, Any] | None = None,
     source_policy_summary: dict[str, Any] | None = None,
     graph_dry_run_summary: dict[str, Any] | None = None,
     docs_logging_summary: dict[str, Any] | None = None,
@@ -403,6 +405,9 @@ def build_first_run_analysis_packet(
         "graph_artifact_summary": graph_summary,
         "project_analysis_summary": project_analysis_summary or _empty_project_analysis_summary(),
         "methodology_audit_summary": methodology_audit_summary or _empty_methodology_audit_summary(),
+        "professional_code_authoring_summary": (
+            professional_code_authoring_summary or _empty_professional_code_authoring_summary()
+        ),
         "source_policy_summary": source_policy_summary or _empty_source_policy_summary(),
         "graph_dry_run_summary": graph_dry_run_summary or _empty_graph_dry_run_summary(),
         "docs_logging_summary": docs_logging_summary or _empty_docs_logging_summary(),
@@ -518,6 +523,7 @@ def run_first_project_analysis(
         safe_next_action=s3["safe_next_action"],
         project_analysis_summary=s3["project_analysis_summary"],
         methodology_audit_summary=s3["methodology_audit_summary"],
+        professional_code_authoring_summary=s3["professional_code_authoring_summary"],
         source_policy_summary=s3["source_policy_summary"],
         graph_dry_run_summary=s3["graph_dry_run_summary"],
         docs_logging_summary=s3["docs_logging_summary"],
@@ -596,6 +602,7 @@ def build_first_run_project_analysis_summaries(
 
     project_analysis_summary = _project_analysis_summary(discovery)
     methodology_summary = _methodology_audit_summary(methodology)
+    professional_code_authoring_summary = _professional_code_authoring_summary(discovery)
     source_policy_summary = _source_policy_summary(source_policy)
     graph_summary = _graph_dry_run_summary(graph)
     docs_logging_summary = _docs_logging_summary(inventory)
@@ -620,6 +627,7 @@ def build_first_run_project_analysis_summaries(
     return {
         "project_analysis_summary": project_analysis_summary,
         "methodology_audit_summary": methodology_summary,
+        "professional_code_authoring_summary": professional_code_authoring_summary,
         "source_policy_summary": source_policy_summary,
         "graph_dry_run_summary": graph_summary,
         "docs_logging_summary": docs_logging_summary,
@@ -1003,6 +1011,49 @@ def _methodology_audit_summary(methodology: dict[str, Any]) -> dict[str, Any]:
         "question_count": len(methodology.get("questions_for_owner", []))
         if isinstance(methodology.get("questions_for_owner"), list)
         else 0,
+        "completion_claim": "not_claimed",
+    }
+
+
+def _professional_code_authoring_summary(discovery: dict[str, Any]) -> dict[str, Any]:
+    applicability = discovery.get("methodology_applicability") if isinstance(discovery.get("methodology_applicability"), dict) else {}
+    packet = applicability.get("professional_code_authoring") if isinstance(applicability, dict) else {}
+    if not isinstance(packet, dict):
+        packet = {}
+    status = str(packet.get("status", "not_applicable"))
+    allowed_statuses = {
+        "not_applicable",
+        "applicable_missing",
+        "present_unverified",
+        "present_verified",
+        "proposal_staged",
+        "explicit_gap_accepted",
+        "approval_required",
+    }
+    if status not in allowed_statuses:
+        status = "present_unverified"
+    required_evidence = _safe_string_list(packet.get("required_evidence"))[:8] or [
+        "coding-standard-checklist.md",
+        "existing_capability_scan",
+        "one_line_candidate",
+        "selected_leverage_path",
+        "dependency_decision",
+        "current command/eval evidence or not_applicable reason",
+    ]
+    return {
+        "schema_version": "first_run_professional_code_authoring_summary_v1",
+        "status": status,
+        "gate": "professional_code_authoring_evidence_present",
+        "workflow": ".codex/workflows/coding-standards.md",
+        "checklist": ".codex/artifact-templates/coding-standard-checklist.md",
+        "required_evidence": required_evidence,
+        "evidence": _safe_string_list(packet.get("evidence"))[:8],
+        "next_action": (
+            "Record coding-standard-checklist.md or professional_code_authoring_not_applicable_reason."
+            if status in {"present_unverified", "applicable_missing"}
+            else "Keep professional code authoring status visible as generated orientation."
+        ),
+        "generated_view_policy": GENERATED_VIEW_POLICY,
         "completion_claim": "not_claimed",
     }
 
@@ -1420,6 +1471,21 @@ def _empty_methodology_audit_summary() -> dict[str, Any]:
         "first_safe_action": "",
         "safe_next_action": "",
         "question_count": 0,
+        "completion_claim": "not_claimed",
+    }
+
+
+def _empty_professional_code_authoring_summary() -> dict[str, Any]:
+    return {
+        "schema_version": "first_run_professional_code_authoring_summary_v1",
+        "status": "not_available",
+        "gate": "professional_code_authoring_evidence_present",
+        "workflow": ".codex/workflows/coding-standards.md",
+        "checklist": ".codex/artifact-templates/coding-standard-checklist.md",
+        "required_evidence": [],
+        "evidence": [],
+        "next_action": "No professional code authoring signal detected.",
+        "generated_view_policy": GENERATED_VIEW_POLICY,
         "completion_claim": "not_claimed",
     }
 

@@ -34,6 +34,8 @@ These templates convert recommendations into concrete outputs that can be review
 | `.codex/artifact-templates/database-dictionary.md` | Table meaning, sensitive fields, retention, migration history and schema verification. |
 | `.codex/artifact-templates/docs-tooling-decision.md` | Docs tooling selection, rejected tools, owner, command evidence and approval requirements. |
 | `.codex/artifact-templates/governance-proposal.md` | Staged governance proposal for CODEOWNERS status and GitHub Actions least privilege without external activation. |
+| `.codex/workflows/coding-standards.md` | Professional code authoring workflow for non-mechanical code work: leverage existing capabilities before custom code. |
+| `.codex/artifact-templates/coding-standard-checklist.md` | Evidence checklist for `enterprise_leverage_check`, `one_line_candidate`, dependency decisions, deep-module checks and legacy seams. |
 
 ## Discovery Signals
 
@@ -66,6 +68,14 @@ Before build or review, Product-Agent OS expects:
 - spec-compliance review before quality/risk review for risky public-contract, migration, security, data, release or parallel work.
 
 Subagents are useful only when ownership is clear. A handoff without source context, files, expected evidence and stop condition is not enough.
+
+## Professional Code Authoring
+
+For non-mechanical code work, Product-Agent OS expects the coding-standard workflow and checklist to be loaded before edits. The default ladder is: delete unnecessary code, configure existing behavior, use standard library or platform capability, use framework API, use an existing dependency, use a project helper, then add a tiny adapter or custom code only when the earlier options are insufficient.
+
+The checklist records `enterprise_leverage_check`, `existing_capability_scan`, `one_line_candidate`, selected leverage path, rejected alternatives, `negative_dependency_rule`, `deep_module_check`, `legacy_seam_check`, `cleverness_budget`, test/eval evidence and unsupported code-quality claims. Mechanical, docs-only or generated-file sync work can mark the gate `not_applicable` with a reason.
+
+Template availability is not runtime enforcement. These artifacts do not activate hooks, automation, subagents, HTML reporting or plugin-cache behavior by themselves; they give agents a compact source-of-truth contract when the workflow, skill or role profile is explicitly loaded.
 
 ## Domain-Specific Gates
 

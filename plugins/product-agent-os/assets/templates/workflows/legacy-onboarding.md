@@ -22,8 +22,9 @@ Profile: {profile_name}
 4. Mark every discovered command, entry point, docs page, and architecture clue as `present_unverified` until commands run or owner evidence confirms it.
 5. Record architecture/doc gaps and a docs debt map before proposing any cleanup.
 6. Treat stale docs as historical context, not source of truth. Do not infer behavior from stale docs without command or owner evidence.
-7. Propose the first safe documentation slice: a small onboarding note, runbook, source map, or architecture gap note.
-8. Do not refactor, rename, move files, rewrite stale docs as truth, or broaden scope before orientation is complete.
+7. For legacy refactor requests, record `legacy_seam_check`, characterization evidence, suspected seams, no-big-rewrite boundary, and rollback or accepted gap before proposing code changes.
+8. Propose the first safe documentation slice: a small onboarding note, runbook, source map, architecture gap note, or characterization-test plan.
+9. Do not refactor, rename, move files, rewrite stale docs as truth, or broaden scope before orientation and legacy seam evidence are complete.
 
 ## Outputs
 
@@ -35,6 +36,9 @@ Profile: {profile_name}
 - Verification status:
 - `present_unverified` items:
 - First safe documentation slice:
+- Legacy seam check:
+- Characterization evidence:
+- No-big-rewrite boundary:
 - Assumptions:
 - Open risks:
 - Approval requirements:
@@ -46,10 +50,12 @@ Profile: {profile_name}
 - Documentation and architecture claims are `present_unverified`, `applicable_missing`, or evidence-backed.
 - First safe documentation slice is explicitly without refactor.
 - No runtime, build, test, or architecture claim is treated as verified from inspection alone.
+- Legacy refactor work records characterization evidence, seam strategy, no-big-rewrite boundary, and rollback or accepted gap before implementation proposals.
 
 ## Stop Conditions
 
 - Read scope is unclear.
 - The user asks for broad refactor before source map and run commands are recorded.
+- The user asks for legacy rewrite before `legacy_seam_check`, characterization evidence, seam strategy, rollback, and owner acceptance exist.
 - The user asks to rewrite docs as truth before stale docs are checked.
 - A command, dependency install, external system, or write is needed without explicit approval.

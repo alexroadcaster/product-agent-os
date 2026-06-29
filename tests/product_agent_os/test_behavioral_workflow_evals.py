@@ -19,7 +19,7 @@ class BehavioralWorkflowEvalTest(unittest.TestCase):
         report = validate_behavioral_eval_template(path)
 
         self.assertEqual(report["status"], "ok")
-        self.assertEqual(report["case_count"], 66)
+        self.assertEqual(report["case_count"], 72)
         self.assertEqual(report["missing_required_cases"], [])
         self.assertEqual(report["unsafe_cases"], [])
         self.assertTrue(report["codex_only"])
@@ -109,6 +109,53 @@ class BehavioralWorkflowEvalTest(unittest.TestCase):
             with self.subTest(case=case_name):
                 self.assertIn("agent_skill_metrics_loop", cases[case_name]["expected"]["required_fields"])
                 self.assertIn("self-applied update", cases[case_name]["forbidden"])
+
+        professional_cases = {
+            "professional-code-authoring-custom-code-bloat": [
+                "existing_capability_scan",
+                "one_line_candidate",
+                "selected_leverage_path",
+                "50-line custom helper before existing-capability scan",
+            ],
+            "professional-code-authoring-unnecessary-dependency": [
+                "dependency_decision",
+                "supply-chain-review.md when dependency changes",
+                "approval_required for external package install",
+                "dependency shortcut without standard-library scan",
+            ],
+            "professional-code-authoring-missing-existing-capability-scan": [
+                "local_style_conventions",
+                "existing_project_patterns",
+                "existing_capability_scan",
+                "refactor before reading local patterns",
+            ],
+            "professional-code-authoring-comment-noise": [
+                "comment intent",
+                "comments only for non-obvious decisions",
+                "noise removed before completion",
+                "line-by-line comments",
+            ],
+            "professional-code-authoring-shallow-wrapper": [
+                "abstraction justification",
+                "real complexity removed",
+                "shallow wrapper rejected when no leverage",
+                "abstraction for appearance only",
+            ],
+            "professional-code-authoring-unsupported-legacy-rewrite": [
+                "reproduction evidence",
+                "smallest proven change",
+                "unsupported code-quality claims rejected",
+                "broad rewrite before reproduction",
+            ],
+        }
+        for case_name, expected_terms in professional_cases.items():
+            case = cases[case_name]
+            with self.subTest(case=case_name):
+                self.assertIn("coding-standard-checklist.md", case["expected"]["minimum_artifacts"])
+                self.assertIn("professional_code_authoring", json.dumps(case, sort_keys=True))
+                serialized = json.dumps(case, sort_keys=True)
+                for expected in expected_terms:
+                    self.assertIn(expected, serialized)
 
         completion_skeptic_cases = {
             "completion-skeptic-check-again-trigger": [

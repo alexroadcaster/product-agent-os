@@ -48,6 +48,7 @@ class StatusDashboardTest(unittest.TestCase):
         self.assertIn('id="section-questions"', html)
         self.assertIn('id="section-readiness"', html)
         self.assertIn('id="section-completion-skeptic"', html)
+        self.assertIn('id="section-professional-code-authoring"', html)
         self.assertIn('id="system-file-hygiene"', html)
         self.assertIn('id="section-evidence"', html)
         self.assertIn('id="section-approvals"', html)

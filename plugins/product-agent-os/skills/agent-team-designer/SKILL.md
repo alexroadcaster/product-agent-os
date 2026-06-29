@@ -40,6 +40,7 @@ Read shared references when needed: [Lifecycle states](../references/lifecycle-s
 - Known file or subsystem ownership requirements from the user or project docs.
 - Scenario handoff packet when a scenario workflow produced context, proposed files, or stop reasons.
 - Fresh-context handoff inputs when any subagent or parallel worker is proposed: `agent-task-packet.md`, `subagent-context-packet.md`, `subagent-result-packet.md`, `handoff-contract.md`, `worktree-ownership.md`, complete task context, source constraints, allowed sources, inputs used, owned files, forbidden files, expected evidence, stop conditions, handoff output schema, shared ownership ambiguity, and missing handoff schema.
+- Professional code authoring handoff inputs for code-owning roles: coding-standard workflow/checklist status, existing-capability scan, selected leverage path, rejected alternatives, dependency decision, deep module check, legacy seam check, code-quality evidence, unsupported code-quality claims, and `not_applicable` reason.
 - Task rows from `task-matrix-plan.md` when present, including task row id, complete task context, owned/forbidden files, dependency status, expected evidence, docs update path, stop conditions, and output schema.
 
 ## Process
@@ -51,19 +52,20 @@ Read shared references when needed: [Lifecycle states](../references/lifecycle-s
 5. Assign methodology ownership: Product Manager owns hypothesis/metrics, Architect owns architecture boundary, Tester owns test/eval gates, Docs Maintainer owns docs-as-code artifacts, Reviewer owns risk closure.
 6. Require fresh-context handoff for any subagent or parallel worker, not only complex acceleration.
 7. Build each fresh-context handoff from `agent-task-packet.md`, `subagent-context-packet.md`, `subagent-result-packet.md`, `handoff-contract.md`, and `worktree-ownership.md`; include complete task context, source constraints, allowed sources, inputs used, owned files, forbidden files, expected evidence, handoff output schema, stop conditions, and accepted gaps.
-8. Require a Subagent Context Packet before launch with role, `fork_context`, prompt, allowed files, owned files, forbidden files, allowed sources, source constraints, expected outputs, handoff output schema, and stop conditions.
-9. Require a Subagent Result Packet after completion, timeout, cancellation, or close with role, context packet reference, `fork_context`, prompt reference, files actually read, files touched, files proposed, outputs, commands run, verification evidence, unsupported claims, risks, stop reason, and recommended next role.
-10. Define scenario handoff packet fields: sources/context used, assumptions, files touched, files proposed, verification evidence, open risks, stop reason, and recommended next role.
-11. Define model/reasoning policy with escalation and downgrade rules tied to risk, ambiguity, cost, and latency.
-12. Define stop conditions for missing evidence, overlapping ownership, approvals, secrets exposure, failed verification gates, shared ownership ambiguity, missing handoff schema, missing Subagent Context Packet, missing Subagent Result Packet, or raw conversation history as context.
-13. Use sequential fallback when ownership cannot be split, when source constraints are missing, or when expected evidence cannot be assigned per worker.
-14. Keep handoffs concise enough for the next role to act without reading raw conversation history.
-15. Return `team_ready` only when ownership, fresh-context handoffs, model guidance, escalation rules, methodology ownership, subagent context/result packet requirements, and stop conditions are staged.
-16. For Batch 31-style live/provider/mutation routing, include `project_graph_live_audit_log`, `project_graph_live_security_privacy_tests`, `project_graph_runtime_observability`, `project_graph_agent_skill_handoff_routing`, `ownership_required`, `verification_evidence_required`, `fresh_context_required`, and stop conditions for `missing_ownership`, `missing_verification_evidence`, and `live_provider_or_mutation_without_approval`.
-17. Map each task row to one fresh-context handoff packet; preserve the task row id, complete task context, owned/forbidden files, dependency status, expected evidence, stop conditions, handoff output schema, docs update path, Subagent Context Packet requirement, and Subagent Result Packet requirement.
-18. Do not auto-dispatch subagents. Return staged handoff packets and wait for the user or approved runner to start work.
-19. Block overlapping ownership parallelism. If two workers need the same file, subsystem, public contract, generated artifact, or release surface, mark the overlap and use sequential fallback.
-20. Reject raw chat history and raw conversation history as worker context; use complete task context in the packet instead.
+8. For code-owning roles, include professional code authoring fields in the handoff: checklist status, existing-capability scan, selected leverage path, dependency decision, code-quality evidence, unsupported code-quality claims, and `not_applicable` reason when appropriate.
+9. Require a Subagent Context Packet before launch with role, `fork_context`, prompt, allowed files, owned files, forbidden files, allowed sources, source constraints, expected outputs, handoff output schema, coding-standard fields, and stop conditions.
+10. Require a Subagent Result Packet after completion, timeout, cancellation, or close with role, context packet reference, `fork_context`, prompt reference, files actually read, files touched, files proposed, outputs, commands run, verification evidence, coding-standard evidence, unsupported claims, risks, stop reason, and recommended next role.
+11. Define scenario handoff packet fields: sources/context used, assumptions, files touched, files proposed, verification evidence, open risks, stop reason, and recommended next role.
+12. Define model/reasoning policy with escalation and downgrade rules tied to risk, ambiguity, cost, and latency.
+13. Define stop conditions for missing evidence, overlapping ownership, approvals, secrets exposure, failed verification gates, shared ownership ambiguity, missing handoff schema, missing coding-standard fields for code-owning work, missing Subagent Context Packet, missing Subagent Result Packet, or raw conversation history as context.
+14. Use sequential fallback when ownership cannot be split, when source constraints are missing, or when expected evidence cannot be assigned per worker.
+15. Keep handoffs concise enough for the next role to act without reading raw conversation history.
+16. Return `team_ready` only when ownership, fresh-context handoffs, model guidance, escalation rules, methodology ownership, subagent context/result packet requirements, and stop conditions are staged.
+17. For Batch 31-style live/provider/mutation routing, include `project_graph_live_audit_log`, `project_graph_live_security_privacy_tests`, `project_graph_runtime_observability`, `project_graph_agent_skill_handoff_routing`, `ownership_required`, `verification_evidence_required`, `fresh_context_required`, and stop conditions for `missing_ownership`, `missing_verification_evidence`, and `live_provider_or_mutation_without_approval`.
+18. Map each task row to one fresh-context handoff packet; preserve the task row id, complete task context, owned/forbidden files, dependency status, expected evidence, stop conditions, handoff output schema, docs update path, Subagent Context Packet requirement, and Subagent Result Packet requirement.
+19. Do not auto-dispatch subagents. Return staged handoff packets and wait for the user or approved runner to start work.
+20. Block overlapping ownership parallelism. If two workers need the same file, subsystem, public contract, generated artifact, or release surface, mark the overlap and use sequential fallback.
+21. Reject raw chat history and raw conversation history as worker context; use complete task context in the packet instead.
 
 ## Outputs
 
@@ -86,6 +88,14 @@ agent_team_design_packet:
     owned_forbidden_files: []
     dependency_status: ""
     expected_evidence: []
+    professional_code_authoring:
+      checklist_status: ""
+      existing_capability_scan: []
+      selected_leverage_path: ""
+      dependency_decision: ""
+      code_quality_evidence: []
+      unsupported_code_quality_claims: []
+      not_applicable_reason: ""
     handoff_output_schema: []
     stop_conditions: []
     docs_update_path_assigned: ""

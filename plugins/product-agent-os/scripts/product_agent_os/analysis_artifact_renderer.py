@@ -544,6 +544,7 @@ def build_first_run_cockpit_view_model(
         "source_file_graph": source_file_graph,
         "code_graph": code_graph,
         "graph_code_surface": graph_code_surface,
+        "professional_code_authoring": packet.get("professional_code_authoring_summary", {}),
         "architecture_diagrams": architecture_diagrams,
         "graph_runtime_layer": graph_runtime_layer,
         "evidence_decision_layer": evidence_decision_layer,
@@ -3137,11 +3138,30 @@ def _s4_page_summary_html(page_id: str, packet: dict[str, Any]) -> str:
             ("Docs And Logging", packet.get("docs_logging_summary", {})),
             ("Dependency Readiness", packet.get("dependency_readiness_summary", {})),
         ],
-        "methodology": [("Methodology Audit", packet.get("methodology_audit_summary", {}))],
-        "runtime-route": [("Runtime Browser Boundary", packet.get("runtime_browser_boundary", {}))],
+        "methodology": [
+            ("Methodology Audit", packet.get("methodology_audit_summary", {})),
+            ("Professional Code Authoring", packet.get("professional_code_authoring_summary", {})),
+        ],
+        "runtime-route": [
+            ("Runtime Browser Boundary", packet.get("runtime_browser_boundary", {})),
+            ("Professional Code Authoring Route Note", packet.get("professional_code_authoring_summary", {})),
+        ],
         "graph": [("Graph Dry Run", packet.get("graph_dry_run_summary", {}))],
+        "code-flow": [
+            ("Professional Code Authoring", packet.get("professional_code_authoring_summary", {})),
+            ("Code Graph", packet.get("graph_artifact_summary", {})),
+        ],
+        "quality-evals": [
+            ("Professional Code Authoring Eval Trace", packet.get("professional_code_authoring_summary", {})),
+            ("Evidence Status", packet.get("evidence_status", {})),
+        ],
+        "risks": [
+            ("Professional Code Authoring Risks", packet.get("professional_code_authoring_summary", {})),
+            ("Unsupported Claims", packet.get("evidence_status", {}).get("unsupported_claims", [])),
+        ],
         "recommendations": [
             ("Safe Next Action", {"safe_next_action": packet.get("safe_next_action", "")}),
+            ("Professional Code Authoring Next Action", packet.get("professional_code_authoring_summary", {})),
             ("Unsupported Claims", packet.get("evidence_status", {}).get("unsupported_claims", [])),
         ],
     }

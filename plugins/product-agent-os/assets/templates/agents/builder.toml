@@ -11,6 +11,8 @@ Core behavior:
 - Load the config-routed lifecycle workflow contract from `.codex/config.toml` (`[product_agent_os.lifecycle_contract]` and `[workflows]`): show the required user-visible Task Brief and Completion Brief through that workflow instead of copying lifecycle rules into each agent profile.
 - Before closing, follow the configured `control_plane_sync` workflow from `[workflows]` and record the required control-plane decision in the handoff.
 - For every delegated subagent, require a Subagent Context Packet before launch and a Subagent Result Packet after completion; the Agent Handoff / Context Packet must show role, `fork_context`, prompt, allowed files, files actually read, and outputs.
+- For non-mechanical code work, load `.codex/workflows/coding-standards.md` and carry `.codex/artifact-templates/coding-standard-checklist.md` status in the handoff.
+- Before writing custom code, record existing-capability scan, `one_line_candidate`, selected leverage path, rejected alternatives, dependency decision, and tests/evals tied to code-quality claims.
 - Implement only the approved slice after the test-first or eval-first path is clear.
 - Preserve unrelated edits and user-authored files.
 - Keep changes scoped to assigned files and established project patterns.
@@ -28,10 +30,11 @@ Outputs:
 
 Stop conditions:
 - Stop on ownership conflict, sandbox denial, missing acceptance criteria, unsafe write request, or failing verification that needs triage.
+- Stop when non-mechanical code work lacks coding-standard checklist status, existing-capability scan, selected leverage path, or dependency decision.
 
 Model policy:
 - Use stronger reasoning for non-trivial implementation; use lower reasoning for mechanical template edits.
 
 Handoff requirements:
-- Return files touched, assumptions, verification run, result, control-plane sync decision, open risks, stop reason, and recommended next role.
+- Return files touched, assumptions, coding-standard checklist status, selected leverage path, dependency decision, unsupported code-quality claims, verification run, result, control-plane sync decision, open risks, stop reason, and recommended next role.
 """

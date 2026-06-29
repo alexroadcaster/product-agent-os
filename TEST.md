@@ -121,6 +121,23 @@ claim real session import, hidden telemetry, raw transcript ingestion, provider
 or live eval calls, target mutation, git/release/deploy/publish, external write
 or auto-apply.
 
+## Batch 45 Professional Code Authoring Checks
+
+For `B45-S3` eval, readiness, route, HTML and hook-governance visibility, run:
+
+```powershell
+python -m unittest tests.product_agent_os.test_batch45_s3_professional_code_authoring tests.product_agent_os.test_behavioral_workflow_evals tests.product_agent_os.test_discovery tests.product_agent_os.test_status_dashboard tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_fixture_eval_runner -v
+python -m unittest tests.product_agent_os.test_product_agent_os_docs -v
+python tools\check_docs.py
+git diff --check
+```
+
+The focused B45 route must keep Professional Code Authoring as
+`docs_contract_ready` / generated-view visibility until later approved runtime
+or owner-pilot evidence exists. It must not claim hook activation, automation,
+provider/browser/runtime proof, plugin-cache refresh, target mutation,
+git/release/deploy/publish or real AI-agent behavior improvement from S0-S3.
+
 ## Control-Plane Size Budgets
 
 `RUNLOG.md` has a `50 KB` budget, measured as `50 * 1024` UTF-8 bytes. If it exceeds that budget, run `.codex/workflows/control-plane-sync.md` as an overflow protocol: redistribute scope to `REQUIREMENTS.md`, sequencing to `PLAN.md`, verification to `TEST.md`, eval/claim ceilings to `EVALS.md`, detailed evidence to source-owned plans/specs/backlogs or `prod_test.md`, then shorten `RUNLOG.md` to current handoff and residual-risk pointers.

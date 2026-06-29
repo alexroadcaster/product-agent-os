@@ -22,6 +22,7 @@
           "evidence_before_completion",
           "test_eval_first_evidence",
           "quality_testing_evals",
+          "professional_code_authoring",
           "semantic_evidence_sufficiency",
           "runtime_methodology_packet",
           "agent_skill_metrics_loop",
@@ -48,6 +49,8 @@
           "metric_spec",
           "completion_evidence",
           "quality_testing_evals",
+          "professional_code_authoring",
+          "coding_standard_checklist",
           "runtime_methodology_packet",
           "agent_skill_metrics_loop",
           "codex_agentic_workflow",
@@ -202,6 +205,14 @@
             "required_evidence": ["quality-strategy.md", "test-eval-matrix.md", "ci-evidence-record.md", "flaky-test-policy.md", "manual-qa-evidence.md", "TEST.md", "EVALS.md", "RUNLOG.md", "coverage is a signal, not proof"],
             "owner": "test-eval-designer",
             "residual_risk": "Completion, readiness, release or quality claims can be made from stale evidence, coverage-only claims or file detection alone."
+          },
+          "professional_code_authoring": {
+            "applies_when": "Non-mechanical code authoring, refactoring, bugfix, generated-code edit, dependency change, legacy cleanup, agent/subagent code handoff, or code-quality claim.",
+            "pass_condition": "Set present_verified only when coding-standard-checklist.md records local_style_conventions, existing_capability_scan, one_line_candidate, selected_leverage_path, rejected_alternatives, dependency_decision, smallest proven change, comment-noise review, abstraction justification when applicable, and current test/eval evidence; use present_unverified for detected code-authoring signals until current evidence exists.",
+            "accepted_gap": "Use explicit_gap_accepted only for docs-only, read-only, formatting-only, or tiny mechanical work when owner or agent records not_applicable reason, residual risk and follow-up trigger.",
+            "required_evidence": ["coding-standard-checklist.md", ".codex/workflows/coding-standards.md", "agent-task-packet.md", "test-eval-matrix.md", "existing-capability scan", "current command/eval evidence", "not_applicable reason when skipped"],
+            "owner": "builder",
+            "residual_risk": "AI agents can add custom-code bloat, unnecessary dependencies, shallow wrappers, comment noise, broad rewrites, or unsupported code-quality claims."
           },
           "semantic_evidence_sufficiency": {
             "applies_when": "High-risk, production, release, security-sensitive, AI or public-contract work needs proof that recorded evidence is sufficient for the real project risk, not only present as files.",

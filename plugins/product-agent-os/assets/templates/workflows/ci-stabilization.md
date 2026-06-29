@@ -10,6 +10,7 @@ Use this workflow when a project has failing or flaky CI, pipeline, GitHub Actio
 - CI workflow files, failing job, failing command, logs, environment, runner, and test result evidence.
 - Deterministic or flaky classification evidence, including rerun evidence when available.
 - Local reproduction command, isolation plan, known dependency or cache changes, and residual risk.
+- Existing CI/tooling leverage option.
 - Remote CI, GitHub Actions, branch protection, secrets, runner, permission, or schedule approval boundary.
 
 ## Process
@@ -20,11 +21,12 @@ Use this workflow when a project has failing or flaky CI, pipeline, GitHub Actio
 4. Identify the failing job, command, logs, environment, runner image, dependency/cache surface, test result path, and recent change boundary.
 5. Prefer local reproduction before implementation: run or propose the smallest local command that matches the CI command and environment.
 6. Build an isolation plan before broad fixes: single failing test, dependency boundary, cache boundary, environment mismatch, timing/concurrency, network dependency, or fixture/data issue.
-7. Require rerun evidence before any CI health claim. Rerun evidence can be local rerun, approved remote CI rerun, or owner-provided CI result.
-8. Keep no remote mutation as a hard boundary: do not change CI settings, secrets, branch protections, GitHub Actions permissions, hosted runner config, schedules, concurrency, cache keys, or workflow activation without explicit approval.
-9. Do not rerun remote CI without approval when the action consumes hosted resources, writes status, changes external state, or requires connector access.
-10. Do not claim CI health, flake resolution, pipeline stability, or release readiness from code inspection only.
-11. Keep the Scenario Handoff concise.
+7. Prefer existing test runner flags, retry/isolation controls, cache cleanup, pinned tool versions, and local reproduction before custom CI scripts or dependency changes.
+8. Require rerun evidence before any CI health claim. Rerun evidence can be local rerun, approved remote CI rerun, or owner-provided CI result.
+9. Keep no remote mutation as a hard boundary: do not change CI settings, secrets, branch protections, GitHub Actions permissions, hosted runner config, schedules, concurrency, cache keys, or workflow activation without explicit approval.
+10. Do not rerun remote CI without approval when the action consumes hosted resources, writes status, changes external state, or requires connector access.
+11. Do not claim CI health, flake resolution, pipeline stability, or release readiness from code inspection only.
+12. Keep the Scenario Handoff concise.
 
 ## Outputs
 
@@ -38,6 +40,7 @@ Use this workflow when a project has failing or flaky CI, pipeline, GitHub Actio
   - test result evidence;
   - local reproduction;
   - isolation plan;
+  - existing CI/tooling leverage decision;
   - rerun evidence;
   - remote CI and GitHub Actions boundary;
   - approval needs;
@@ -56,6 +59,7 @@ Use this workflow when a project has failing or flaky CI, pipeline, GitHub Actio
 
 - Failing job, command, logs, environment, deterministic/flaky classification, failure evidence, isolation plan, local reproduction, rerun evidence, approval, and residual risk are explicit.
 - CI health claims cite current local reproduction, approved remote CI rerun evidence, or owner-provided CI evidence.
+- Custom CI scripts, dependency updates, or workflow rewrites record existing CI/tooling alternatives and rejected options.
 - Remote CI, GitHub Actions, branch protection, hosted runner, workflow permissions, workflow activation, and CI settings changes remain approval-bound.
 - No remote mutation occurred unless approval evidence is recorded.
 
@@ -65,4 +69,5 @@ Use this workflow when a project has failing or flaky CI, pipeline, GitHub Actio
 - Deterministic/flaky classification lacks evidence.
 - Local reproduction or explicit unavailable reason is missing.
 - Rerun evidence is missing for a CI health or flake-resolution claim.
+- CI workflow rewrite or dependency change is proposed before existing runner flags, isolation, cache, version pinning, or local reproduction options are checked.
 - The task requires remote CI rerun, CI settings change, workflow permission change, branch protection change, hosted runner mutation, or GitHub Actions activation without approval.

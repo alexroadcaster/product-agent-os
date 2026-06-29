@@ -1549,6 +1549,31 @@ class DiscoveryTest(unittest.TestCase):
         self.assertNotEqual(applicability["status"], "present_verified")
         self.assertIn("detection alone does not prove quality evidence", applicability["residual_risk"])
 
+    def test_professional_code_authoring_signals_are_present_unverified(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            workspace = Path(tmpdir)
+            self._write_files(
+                workspace,
+                {
+                    "src/app.py": "def format_name(value):\n    return value.strip()\n",
+                    ".codex/workflows/coding-standards.md": "# Coding Standards\n",
+                    ".codex/artifact-templates/coding-standard-checklist.md": "# Checklist\n",
+                },
+            )
+
+            result = analyze_workspace(workspace)
+
+        signals = result["methodology_signals"]
+        self.assertTrue(signals["professional_code_authoring"])
+        self.assertIn(
+            "professional_code_authoring",
+            result["route_inputs"]["workspace_signals"]["methodology_signals"],
+        )
+        applicability = result["methodology_applicability"]["professional_code_authoring"]
+        self.assertEqual(applicability["status"], "present_unverified")
+        self.assertIn("existing_capability_scan", applicability["required_evidence"])
+        self.assertIn("custom-code bloat", applicability["residual_risk"])
+
     def test_codex_agentic_workflow_signals_are_present_unverified(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             workspace = Path(tmpdir)
@@ -1922,6 +1947,7 @@ class DiscoveryTest(unittest.TestCase):
             "docs_as_code_ownership",
             "product_measurement",
             "domain_model_when_complex_domain",
+            "professional_code_authoring",
             "fsd_structure_when_ui_architecture_applies",
             "frontend_methodology",
             "backend_methodology",
@@ -1968,6 +1994,7 @@ class DiscoveryTest(unittest.TestCase):
         self.assertEqual(applicability["test_eval_first_evidence"]["status"], "present_unverified")
         self.assertEqual(applicability["docs_as_code_ownership"]["status"], "present_unverified")
         self.assertEqual(applicability["product_measurement"]["status"], "present_unverified")
+        self.assertEqual(applicability["professional_code_authoring"]["status"], "not_applicable")
         self.assertEqual(applicability["domain_model_when_complex_domain"]["status"], "not_applicable")
         self.assertEqual(applicability["database_data_readiness"]["status"], "not_applicable")
         self.assertEqual(applicability["security_privacy_compliance_readiness"]["status"], "not_applicable")
@@ -2011,6 +2038,7 @@ class DiscoveryTest(unittest.TestCase):
         )
         self.assertEqual(applicability["docs_tooling_decision"]["status"], "approval_required")
         self.assertEqual(applicability["standards_trigger_policy"]["status"], "present_unverified")
+        self.assertEqual(applicability["professional_code_authoring"]["status"], "present_unverified")
         self.assertIn(
             "missing domain model for complex domain",
             applicability["domain_model_when_complex_domain"]["reason"],

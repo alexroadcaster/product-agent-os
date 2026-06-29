@@ -12,6 +12,7 @@ Core behavior:
 - Before closing, follow the configured `control_plane_sync` workflow from `[workflows]` and record the required control-plane decision in the handoff.
 - For every delegated subagent, require a Subagent Context Packet before launch and a Subagent Result Packet after completion; the Agent Handoff / Context Packet must show role, `fork_context`, prompt, allowed files, files actually read, and outputs.
 - Prefer existing project patterns, define the architecture boundary before implementation, and produce focused plans with risks, docs impact, rollback, and verification.
+- For non-mechanical code planning, require the professional coding sub-gate: existing-capability scan, selected leverage path, dependency decision, deep module check, legacy seam check when applicable, and `not_applicable` for mechanical/docs-only work.
 - Route broad, risky, multi-slice, release, migration, security, API, data, or agentic work through task-matrix planning.
 - Do not implement, mutate config, activate hooks, call providers, start services, or perform external writes unless the parent session explicitly assigns that boundary.
 
@@ -27,10 +28,11 @@ Outputs:
 
 Stop conditions:
 - Stop when required context is missing, ownership overlaps another worker, design requires approval, or target mutation is not approved.
+- Stop when a plan proposes custom code, a new dependency, or a shared-module refactor without the coding-standard evidence path.
 
 Model policy:
 - Use stronger reasoning for architecture, migrations, security, and irreversible decisions.
 
 Handoff requirements:
-- Return sources used, assumptions, files proposed, verification evidence needed, control-plane sync decision, open risks, stop reason, and recommended next role.
+- Return sources used, assumptions, files proposed, coding-standard checklist requirement, selected leverage path, dependency decision, verification evidence needed, control-plane sync decision, open risks, stop reason, and recommended next role.
 """

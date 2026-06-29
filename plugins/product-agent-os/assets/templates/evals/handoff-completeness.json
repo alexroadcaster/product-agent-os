@@ -27,6 +27,22 @@
         ],
         "result": "A Subagent Context Packet exists before launch and a Subagent Result Packet exists after completion, timeout, cancellation, or close."
       }
+    },
+    {
+      "id": "professional-code-authoring-handoff",
+      "input": "Inspect a non-mechanical code handoff.",
+      "expected": {
+        "fields": [
+          "coding-standard workflow/checklist",
+          "existing-capability scan",
+          "selected leverage path",
+          "dependency decision",
+          "code-quality evidence",
+          "unsupported code-quality claims",
+          "not_applicable reason"
+        ],
+        "result": "The handoff carries professional code authoring evidence or a not_applicable reason without raw research body or raw conversation history."
+      }
     }
   ]
 }

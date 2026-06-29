@@ -21,10 +21,11 @@ Implement the smallest useful change in the existing project without rewriting u
 
 1. Read adjacent code, tests, scripts, and docs that directly constrain the slice.
 2. Add or update the smallest focused test/eval/check when useful and feasible.
-3. Patch only owned files.
-4. Run the relevant local verification command when allowed.
-5. Run `.codex/workflows/control-plane-sync.md` before closing: update owned control-plane files or record `not_applicable` / `handoff_required`.
-6. Record evidence, residual risk, control-plane sync decision, and the next handoff.
+3. For non-mechanical code work, run `.codex/workflows/coding-standards.md` and record `.codex/artifact-templates/coding-standard-checklist.md` or `not_applicable` reason before implementation claims.
+4. Patch only owned files.
+5. Run the relevant local verification command when allowed.
+6. Run `.codex/workflows/control-plane-sync.md` before closing: update owned control-plane files or record `not_applicable` / `handoff_required`.
+7. Record evidence, residual risk, control-plane sync decision, and the next handoff.
 
 ## Outputs
 
@@ -42,6 +43,7 @@ Implement the smallest useful change in the existing project without rewriting u
 - Owned files are unclear.
 - The change expands into an unrelated rewrite.
 - Required verification cannot run and no accepted gap exists.
+- Non-mechanical code work lacks coding-standard checklist status or `not_applicable` reason.
 - Required control-plane sync is missing.
 - Approval-bound action is required.
 

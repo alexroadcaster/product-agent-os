@@ -20,11 +20,16 @@ Use this before launch for every Codex subagent, parallel worker, or read-only s
 - Prompt source:
 - Complete task context:
 - Templates/workflows/evals included:
+- Coding-standard workflow/checklist included:
 - Allowed files:
 - Allowed sources:
 - Forbidden files:
 - Inputs used:
 - Expected outputs:
+- Existing-capability scan required:
+- Selected leverage path required:
+- Dependency decision required:
+- Unsupported code-quality claims required:
 - Handoff output schema:
 
 ## Boundaries
@@ -33,6 +38,7 @@ Use this before launch for every Codex subagent, parallel worker, or read-only s
 - Approval requirements:
 - External/provider/browser/git/cache/live-server actions:
 - Raw conversation history included:
+- Raw research body included:
 - Secrets / private data boundary:
 - Stop conditions:
 - Sequential fallback:
@@ -48,4 +54,3 @@ Use this before launch for every Codex subagent, parallel worker, or read-only s
 - files actually read:
 - outputs:
 - Subagent Result Packet required after completion:
-

@@ -280,6 +280,7 @@ def _sections(snapshot: dict[str, Any]) -> str:
     completion_skeptic = _dict(snapshot.get("completion_skeptic"))
     pilot_evidence = _dict(snapshot.get("pilot_evidence_rollup"))
     first_run_analysis = _dict(snapshot.get("first_run_analysis"))
+    professional_code = _dict(snapshot.get("professional_code_authoring"))
     projection_decisions = _dict(snapshot.get("projection_decisions"))
     task_matrix_projection = _dict(projection_decisions.get("task_matrix_state"))
 
@@ -330,6 +331,7 @@ def _sections(snapshot: dict[str, Any]) -> str:
         _completion_skeptic_section(completion_skeptic),
         _pilot_evidence_section(pilot_evidence),
         _first_run_analysis_section(first_run_analysis),
+        _professional_code_authoring_section(professional_code),
         _system_hygiene_section(hygiene),
         _section(
             "section-evidence",
@@ -422,6 +424,22 @@ def _first_run_analysis_section(packet: dict[str, Any]) -> str:
             ("Unsupported claims", packet.get("unsupported_claim_count")),
             ("Generated view policy", packet.get("generated_view_policy")),
             ("Source policy", packet.get("source_policy")),
+        ],
+    )
+
+
+def _professional_code_authoring_section(packet: dict[str, Any]) -> str:
+    return _section(
+        "section-professional-code-authoring",
+        "Professional Code Authoring",
+        [
+            ("Status", packet.get("status")),
+            ("Gate", packet.get("gate")),
+            ("Workflow", packet.get("workflow")),
+            ("Checklist", packet.get("checklist")),
+            ("Required evidence", packet.get("required_evidence")),
+            ("Next action", packet.get("safe_next_action") or packet.get("next_action")),
+            ("Generated view policy", packet.get("generated_view_policy")),
         ],
     )
 

@@ -50,6 +50,25 @@ Use the chain `requirement -> scenario -> check -> evidence owner`.
 - Expected result:
 - Evidence owner:
 
+## Professional Code Authoring Scenario
+
+Use this section for non-mechanical code work, refactors, bugfixes, dependency changes, generated-code edits, legacy cleanup, or code-quality claims.
+
+- Requirement:
+- Scenario:
+- Gate: `professional_code_authoring_evidence_present`
+- Existing capability scan: existing API/helper/config/dependency checked before custom code.
+- One-line candidate:
+- Selected leverage path:
+- Rejected alternatives:
+- Dependency decision:
+- Comment/noise decision:
+- Abstraction or rewrite justification:
+- Check/eval/manual evidence:
+- Evidence owner:
+- Status: `present_unverified | present_verified | explicit_gap_accepted | not_applicable`
+- `not_applicable` reason:
+
 ## Boundaries
 
 - Does not replace requirements.
@@ -70,6 +89,8 @@ Use the chain `requirement -> scenario -> check -> evidence owner`.
 - Scenario without requirement.
 - Scenario without check.
 - Scenario without evidence owner.
+- Non-mechanical code work without coding-standard checklist status or `not_applicable` reason.
+- Custom code, dependency, abstraction or rewrite before existing-capability scan.
 - BDD replaces tests.
 - Gherkin is mandatory.
 - User story template is complete requirements.

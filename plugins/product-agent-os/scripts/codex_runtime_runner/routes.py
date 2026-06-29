@@ -118,6 +118,11 @@ def plan_route(
     route["usage_mode"] = usage_mode
     route["behavioral_route_inputs"] = behavioral_route_inputs or _default_behavioral_route_inputs()
     route["methodology_packet"] = methodology_packet
+    route["professional_code_authoring"] = _professional_code_authoring_summary(methodology_intelligence)
+    route["expected_outputs"].append("coding-standard-checklist status")
+    route["stop_conditions"].append(
+        "professional code quality claim requires coding-standard evidence or not_applicable reason"
+    )
     route["question_queue"] = question_queue
     if status_snapshot_ref is not None:
         route["status_snapshot_ref"] = status_snapshot_ref
@@ -146,6 +151,8 @@ def plan_route(
     route["stop_conditions"].append("completion skeptic pass requires current evidence or accepted gaps")
     route["finish_options"] = finish_options
     evidence_gaps = _evidence_gaps(methodology_packet)
+    if route["professional_code_authoring"]["status"] in {"present_unverified", "applicable_missing"}:
+        evidence_gaps.append("coding-standard-checklist evidence or professional_code_authoring_not_applicable_reason")
     if graph_blocks_readiness:
         evidence_gaps.append("source file confirmation for stale or ambiguous project graph")
     route["first_response_contract"] = {
@@ -161,6 +168,7 @@ def plan_route(
         "evidence_gaps": evidence_gaps,
         "approval_boundary": write_policy,
         "finish_options": finish_options,
+        "professional_code_authoring": route["professional_code_authoring"],
     }
     if project_graph_status is not None:
         route["first_response_contract"]["project_graph_summary"] = _project_graph_summary(project_graph_status)
@@ -208,6 +216,52 @@ def _finish_options(
     options.append("run_verification")
     options.append("stop_blocked")
     return options
+
+
+def _professional_code_authoring_summary(methodology_intelligence: dict[str, Any] | None) -> dict[str, Any]:
+    intelligence = methodology_intelligence if isinstance(methodology_intelligence, dict) else {}
+    applicability = intelligence.get("methodology_applicability")
+    packet = applicability.get("professional_code_authoring") if isinstance(applicability, dict) else {}
+    if not isinstance(packet, dict):
+        packet = {}
+    status = str(packet.get("status") or "not_applicable")
+    if status not in {"not_applicable", "applicable_missing", "present_unverified", "present_verified", "proposal_staged", "explicit_gap_accepted", "approval_required"}:
+        status = "present_unverified"
+    return {
+        "status": status,
+        "gate": "professional_code_authoring_evidence_present",
+        "workflow": ".codex/workflows/coding-standards.md",
+        "checklist": ".codex/artifact-templates/coding-standard-checklist.md",
+        "activation": "present_unverified_until_current_evidence",
+        "required_evidence": _bounded_strings(
+            packet.get("required_evidence"),
+            [
+                "existing_capability_scan",
+                "one_line_candidate",
+                "selected_leverage_path",
+                "dependency_decision",
+                "current command/eval evidence or not_applicable reason",
+            ],
+            limit=8,
+        ),
+        "safe_next_action": (
+            "Record coding-standard checklist evidence before code-quality claims."
+            if status in {"present_unverified", "applicable_missing"}
+            else "Keep professional code authoring status visible as a route note."
+        ),
+    }
+
+
+def _bounded_strings(value: Any, fallback: list[str], *, limit: int) -> list[str]:
+    if not isinstance(value, list):
+        return fallback[:limit]
+    result: list[str] = []
+    for item in value:
+        if isinstance(item, str) and item.strip():
+            result.append(item.strip())
+        if len(result) >= limit:
+            break
+    return result or fallback[:limit]
 
 
 STATUS_FINISH_OPTIONS = {

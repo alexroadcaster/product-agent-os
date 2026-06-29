@@ -24,6 +24,7 @@ Use this after completion, timeout, cancellation, or close for every Codex subag
 - Commands run:
 - Tools used:
 - Templates/workflows/evals used:
+- Coding-standard workflow/checklist used:
 - Outputs:
 
 ## Result
@@ -32,8 +33,13 @@ Use this after completion, timeout, cancellation, or close for every Codex subag
 - Findings:
 - Files touched:
 - Files proposed:
+- Existing-capability scan:
+- Selected leverage path:
+- Dependency decision:
+- Code-quality evidence:
 - Verification evidence:
 - Unsupported claims:
+- Unsupported code-quality claims:
 - Residual risks:
 - Stop reason:
 - Recommended next role:

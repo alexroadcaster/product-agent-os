@@ -593,10 +593,12 @@ QUALITY_TESTING_EVALS_GATES = (
     "test_data_privacy_present",
     "bug_reproduction_evidence_present",
     "regression_impact_present",
+    "professional_code_authoring_evidence_present",
 )
 QUALITY_TESTING_EVALS_ARTIFACTS = (
     "test-eval-matrix.md",
     "quality-strategy.md",
+    "coding-standard-checklist.md",
     "ci-evidence-record.md",
     "flaky-test-policy.md",
     "manual-qa-evidence.md",
@@ -619,6 +621,7 @@ QUALITY_TESTING_EVALS_EVAL_FIELDS = (
     "test_data_privacy_contract_present",
     "bug_reproduction_evidence_contract_present",
     "regression_impact_contract_present",
+    "professional_code_authoring_contract_present",
     "unsupported_quality_claims_rejected_contract_present",
 )
 QUALITY_TESTING_EVALS_TERMS = (
@@ -635,9 +638,30 @@ QUALITY_TESTING_EVALS_TERMS = (
     "visual_a11y_evidence_present",
     "coverage is a signal, not proof",
     "test data privacy",
+    "professional_code_authoring_evidence_present",
+    "coding-standard-checklist.md",
+    "existing_capability_scan",
     "present_unverified",
     "explicit_gap_accepted",
     "approval_required",
+)
+PROFESSIONAL_CODE_AUTHORING_TERMS = (
+    "professional_code_authoring_evidence_present",
+    "coding-standard-checklist.md",
+    ".codex/workflows/coding-standards.md",
+    "existing_capability_scan",
+    "one_line_candidate",
+    "selected_leverage_path",
+    "rejected_alternatives",
+    "dependency_decision",
+    "professional_code_authoring_not_applicable_reason",
+    "custom-code bloat",
+    "unnecessary dependency",
+    "shallow wrapper",
+    "unsupported code-quality claims",
+    "present_unverified",
+    "orientation_only_not_proof",
+    "candidate-only",
 )
 SEMANTIC_EVIDENCE_SUFFICIENCY_TERMS = (
     "semantic_evidence_sufficiency",
@@ -1088,6 +1112,7 @@ CODEX_AGENTIC_WORKFLOW_GATES = (
     "agent_eval_workflow_present",
     "memory_policy_present",
     "agentic_evidence_before_completion",
+    "professional_code_authoring_evidence_present",
     "unsupported_agentic_claims_rejected",
 )
 CODEX_AGENTIC_WORKFLOW_ARTIFACTS = (
@@ -1097,6 +1122,7 @@ CODEX_AGENTIC_WORKFLOW_ARTIFACTS = (
     "EVALS.md",
     "RUNLOG.md",
     "agent-task-packet.md",
+    "coding-standard-checklist.md",
     "handoff-contract.md",
     "worktree-ownership.md",
     "approval-record.md",
@@ -1126,6 +1152,7 @@ CODEX_AGENTIC_WORKFLOW_EVAL_FIELDS = (
     "agent_eval_workflow_contract_present",
     "memory_policy_contract_present",
     "agentic_evidence_before_completion_contract_present",
+    "professional_code_authoring_contract_present",
     "unsupported_agentic_claims_rejected_contract_present",
 )
 CODEX_AGENTIC_WORKFLOW_TERMS = (
@@ -1142,6 +1169,8 @@ CODEX_AGENTIC_WORKFLOW_TERMS = (
     "mcp",
     "agents sdk",
     "automation",
+    "coding-standard-checklist.md",
+    "professional_code_authoring_evidence_present",
     "memory as recall only",
     "no silent activation",
     "present_unverified",
@@ -1720,6 +1749,7 @@ CONDITIONAL_READINESS_GATE_IDS = (
     "behavioral_eval_when_new_route_added",
     "codex_only_compatibility_when_plugin_packaging_changes",
     "finish_options_when_release_ready",
+    "professional_code_authoring",
     "standards_trigger_policy_when_architecture_api_release_or_governance_changes",
     "quality_testing_evals_when_non_trivial_change",
     "semantic_evidence_sufficiency",
@@ -2159,6 +2189,7 @@ def _expected_checks(
         checks["requirements_domain_contract_present"] = _requirements_domain_contract_present()
         checks["solution_architecture_contract_present"] = _solution_architecture_contract_present()
         checks["quality_testing_evals_contract_present"] = _quality_testing_evals_contract_present()
+        checks["professional_code_authoring_contract_present"] = _professional_code_authoring_contract_present()
         checks["codex_agentic_workflow_contract_present"] = _codex_agentic_workflow_contract_present()
         checks["frontend_contract_present"] = _frontend_contract_present()
         checks["backend_contract_present"] = _backend_contract_present()
@@ -3056,6 +3087,7 @@ def _methodology_applicability_contract_present(audit: dict[str, Any]) -> bool:
         "llm_ai_rag_readiness",
         "security_privacy_compliance_readiness",
         "delivery_release_operations_readiness",
+        "professional_code_authoring",
         "agent_skill_metrics_loop",
         "methodology_synthesis",
     }
@@ -3369,6 +3401,36 @@ def _quality_testing_evals_contract_present() -> bool:
         f"{path.name}\n{path.read_text(encoding='utf-8')}" for path in paths
     ).lower()
     return all(term in payload for term in QUALITY_TESTING_EVALS_TERMS)
+
+
+def _professional_code_authoring_contract_present() -> bool:
+    paths = [
+        PLUGIN_ROOT / "assets" / "methodology" / "methodology-catalog.json",
+        TEMPLATE_ROOT / "workflows" / "coding-standards.md",
+        TEMPLATE_ROOT / "workflows" / "build-slice.md",
+        TEMPLATE_ROOT / "workflows" / "review-slice.md",
+        TEMPLATE_ROOT / "artifact-templates" / "coding-standard-checklist.md",
+        TEMPLATE_ROOT / "artifact-templates" / "acceptance-scenarios.md",
+        TEMPLATE_ROOT / "artifact-templates" / "test-eval-matrix.md",
+        TEMPLATE_ROOT / "artifact-templates" / "behavioral-eval-case.md",
+        TEMPLATE_ROOT / "artifact-templates" / "codex-compatibility-report.md",
+        TEMPLATE_ROOT / "artifact-templates" / "hook-governance.md",
+        TEMPLATE_ROOT / "evals" / "behavioral-workflows.json",
+        TEMPLATE_ROOT / "evals" / "agent-context-contract.json",
+        TEMPLATE_ROOT / "evals" / "project-readiness.json",
+        TEMPLATE_ROOT / "hooks" / "pre_tool_use_policy.py",
+        TEMPLATE_ROOT / "hooks" / "post_tool_use_evidence.py",
+        TEMPLATE_ROOT / "hooks" / "stop_runlog_reminder.py",
+        PLUGIN_ROOT / "scripts" / "product_agent_os" / "discovery.py",
+        PLUGIN_ROOT / "scripts" / "product_agent_os" / "first_run_analysis.py",
+        PLUGIN_ROOT / "scripts" / "product_agent_os" / "analysis_artifact_renderer.py",
+        PLUGIN_ROOT / "scripts" / "product_agent_os" / "status_dashboard.py",
+        PLUGIN_ROOT / "scripts" / "codex_runtime_runner" / "routes.py",
+    ]
+    payload = "\n".join(
+        f"{path.name}\n{path.read_text(encoding='utf-8')}" for path in paths
+    ).lower()
+    return all(term in payload for term in PROFESSIONAL_CODE_AUTHORING_TERMS)
 
 
 def _semantic_evidence_sufficiency_contract_present() -> bool:

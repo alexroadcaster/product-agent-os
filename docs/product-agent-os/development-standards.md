@@ -34,6 +34,8 @@ These templates convert recommendations в concrete outputs который мо�
 | `.codex/artifact-templates/database-dictionary.md` | Table meaning, sensitive fields, retention, migration history и schema verification. |
 | `.codex/artifact-templates/docs-tooling-decision.md` | Docs tooling selection, rejected tools, owner, command evidence и approval requirements. |
 | `.codex/artifact-templates/governance-proposal.md` | Staged governance proposal для CODEOWNERS status и GitHub Actions least privilege без external activation. |
+| `.codex/workflows/coding-standards.md` | Рабочий процесс для задач с кодом: сначала использовать существующие возможности проекта, платформы и фреймворка, а самописный код добавлять только после проверки альтернатив. |
+| `.codex/artifact-templates/coding-standard-checklist.md` | Чеклист доказательств для `enterprise_leverage_check`, `one_line_candidate`, решений о зависимостях, глубоких модулей и устаревших seams. |
 
 ## Discovery Signals
 
@@ -66,6 +68,14 @@ Before build или review, Product-Agent OS expects:
 - spec-compliance review до quality/risk review для risky public-contract, migration, security, data, release или parallel work.
 
 Subagents являются useful только когда ownership является clear. A handoff без source context, files, ожидаемые доказательства и stop condition является не enough.
+
+## Профессиональное написание кода
+
+Для не механических задач с кодом Product-Agent OS ожидает, что до правок загружены `workflow` стандарта кодирования и чеклист. Базовая лестница решений: удалить лишний код, настроить уже существующее поведение, использовать стандартную библиотеку или возможность платформы, применить `API` фреймворка, использовать текущую зависимость, применить проектный `helper`, и только затем добавить маленький `adapter` или самописный код, если предыдущие варианты недостаточны.
+
+Чеклист фиксирует `enterprise_leverage_check`, `existing_capability_scan`, `one_line_candidate`, выбранный путь повторного использования, отклоненные альтернативы, `negative_dependency_rule`, `deep_module_check`, `legacy_seam_check`, `cleverness_budget`, доказательства тестов/`evals` и неподтвержденные утверждения о качестве кода. Механические, `docs-only` или `generated-file sync` задачи могут отметить `gate` как `not_applicable` с причиной.
+
+Наличие шаблонов не является `runtime enforcement`. Эти артефакты сами по себе не активируют `hooks`, `automation`, `subagents`, `HTML reporting` или `plugin-cache behavior`; они дают агентам компактный `source-of-truth contract` только когда `workflow`, `skill` или `role profile` явно загружены.
 
 ## Domain-Specific Gates
 

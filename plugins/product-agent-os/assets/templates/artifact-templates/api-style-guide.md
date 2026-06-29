@@ -13,6 +13,20 @@ Project: {project_name}
 - Event-driven applicability:
 - Consumer and operational rationale:
 
+## Professional Coding Decisions
+
+- Framework-native option:
+- Existing project helper or adapter:
+- Existing generated client or SDK:
+- Custom protocol/client/serializer requested:
+- Rejected native/current-tooling alternatives:
+- Idempotency rule:
+- Error model:
+- Retry behavior:
+- Timeout behavior:
+- Compatibility evidence:
+- Dependency decision:
+
 ## Tooling Deferrals
 
 - Spectral status:
@@ -30,9 +44,11 @@ Project: {project_name}
 ## False Positive Policy
 
 - API-only contract fixtures do not force backend blockers.
+- Custom API helper, protocol, serializer, or dependency choice needs source-backed rationale and rejected native/current-tooling alternatives.
 
 ## Verification
 
 - Style rule owner:
 - Lint/check command or missing-tool gap:
+- Contract/idempotency/error/retry/timeout evidence:
 - Accepted gap owner/reason/review date/downstream risk/follow-up:

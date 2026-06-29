@@ -14,6 +14,17 @@ Use this artifact for `quality_testing_evals` traceability. Map requirement, sce
 | --- | --- | --- | --- | --- | --- | --- |
 | TBD | TBD | TBD | TBD | current command/eval/runtime/manual evidence | TBD | `present_unverified` |
 
+## Professional Code Authoring Mapping
+
+Map each non-mechanical code claim to the smallest useful check or accepted gap.
+
+| Code authoring claim | Risk | Required coding-standard evidence | Check/eval/manual evidence | Current Evidence | Owner | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| Existing capability preferred over custom code | custom-code bloat / wheel reinvention | `existing_capability_scan`, `one_line_candidate`, `selected_leverage_path`, `rejected_alternatives` | focused unit/contract/eval check or review evidence | current command/eval evidence or `explicit_gap_accepted` | builder/reviewer | `present_unverified` |
+| Dependency is justified or rejected | supply-chain debt / legacy burden | `dependency_decision`, standard-library/existing-dependency scan, supply-chain review when changed | dependency diff/test/security check | current command/eval evidence or `approval_required` | builder/security owner | `present_unverified` |
+| Refactor or abstraction is necessary | shallow wrapper / unnecessary indirection | abstraction justification, ownership boundary, complexity removed or duplication reduced | regression test, architecture review or accepted gap | current command/eval evidence | architect/reviewer | `present_unverified` |
+| Bugfix avoids broad legacy rewrite | hidden behavior change / rollback risk | reproduction evidence, root cause, smallest proven change, rewrite separated | failing-then-passing test or bug-rescue report | current command/eval evidence | builder/tester | `present_unverified` |
+
 ## Backend Check Mapping
 
 Backend behavior should map service boundary, runtime behavior, dependency failure, queue/job, data consistency, health, observability and rollback claims to unit, integration, contract, runtime and operational checks. Code inspection alone is not backend completion evidence.
@@ -37,6 +48,7 @@ Backend behavior should map service boundary, runtime behavior, dependency failu
 - `test_data_privacy_present`
 - `bug_reproduction_evidence_present`
 - `regression_impact_present`
+- `professional_code_authoring_evidence_present`
 
 Coverage is a signal, not proof.
 

@@ -10,6 +10,7 @@ Use this workflow when a change touches authn, authz, permissions, payment, bill
 - Current requirements, plan, changed files map, and relevant `AGENTS.md` rules.
 - Authn, authz, permissions, payment, billing, secrets, PII, sensitive data, abuse controls, rate limit, audit logging, tests, rollback, owner review, and approval evidence.
 - Known production, external-system, database, billing, or customer-data boundaries.
+- Secure-default existing capability scan.
 - Explicit user request for Codex Security scan if security scan integration is wanted.
 
 ## Process
@@ -20,12 +21,13 @@ Use this workflow when a change touches authn, authz, permissions, payment, bill
 4. Stage the security risk review artifact before implementation.
 5. Require spec compliance before quality/risk verdict: what behavior is allowed, what is forbidden, and which user or system role owns approval.
 6. Require security tests or an explicit test gap for authn, authz, permission, payment, billing, PII, sensitive data, abuse control, rate limit, and audit logging behavior touched by the change.
-7. Record rollback and mitigation: feature flag, kill switch, revert plan, permission rollback, payment disable path, or data access rollback.
-8. Do not store secrets, credentials, private keys, raw PII, raw customer data, payment data, access tokens, or secret-bearing config values in artifacts, prompts, fixtures, logs, or examples.
-9. Do not change auth, permissions, billing, payment, secrets handling, PII handling, sensitive data access, abuse controls, rate limit behavior, audit logging, or production policy until owner review and approval are explicit.
-10. Do not process payments, run billing operations, rotate production secrets, access customer data, or mutate external security systems without explicit approval.
-11. Use Codex Security only when explicitly requested; do not imply a Codex Security scan was run from this workflow alone.
-12. Keep the Scenario Handoff concise.
+7. Prefer secure framework/platform defaults, existing authorization primitives, current validation libraries, and project security helpers before custom security logic or dependencies.
+8. Record rollback and mitigation: feature flag, kill switch, revert plan, permission rollback, payment disable path, or data access rollback.
+9. Do not store secrets, credentials, private keys, raw PII, raw customer data, payment data, access tokens, or secret-bearing config values in artifacts, prompts, fixtures, logs, or examples.
+10. Do not change auth, permissions, billing, payment, secrets handling, PII handling, sensitive data access, abuse controls, rate limit behavior, audit logging, or production policy until owner review and approval are explicit.
+11. Do not process payments, run billing operations, rotate production secrets, access customer data, or mutate external security systems without explicit approval.
+12. Use Codex Security only when explicitly requested; do not imply a Codex Security scan was run from this workflow alone.
+13. Keep the Scenario Handoff concise.
 
 ## Outputs
 
@@ -37,6 +39,7 @@ Use this workflow when a change touches authn, authz, permissions, payment, bill
   - abuse controls and rate limit impact;
   - audit logging impact;
   - tests and missing checks;
+  - secure-default leverage decision and rejected custom-security alternatives;
   - owner review and approval boundary;
   - rollback and mitigation;
   - residual risk.
@@ -54,6 +57,7 @@ Use this workflow when a change touches authn, authz, permissions, payment, bill
 
 - Threat surface, authn, authz, permissions, payment, billing, secrets, PII, sensitive data, abuse controls, rate limit, audit logging, tests, rollback, owner review, approval, and residual risk are explicit.
 - Security-sensitive claims cite current tests, review evidence, owner evidence, or an explicit gap.
+- Custom security logic or new security dependency records secure-default alternatives, project helper options, tests, and owner-reviewed risk.
 - No secrets, credentials, private keys, raw PII, raw customer data, payment data, or access tokens are stored in artifacts.
 - Codex Security scan status is either explicitly requested and evidenced, or marked not run.
 - External writes, production changes, payment operations, customer-data access, secret rotation, policy changes, and deployment remain approval-bound.
@@ -63,6 +67,7 @@ Use this workflow when a change touches authn, authz, permissions, payment, bill
 - Threat surface is unclear.
 - Authn, authz, permissions, payment, billing, secrets, PII, sensitive data, abuse controls, rate limit, or audit logging impact is unknown.
 - Owner review, approval boundary, tests, rollback, or residual risk is missing.
+- Custom security logic is proposed before secure framework/platform defaults, current security helpers, or validation libraries are evaluated.
 - A secret, raw PII, raw customer data, payment data, or access token would be stored in an artifact.
 - The task requires Codex Security but the user has not explicitly requested it.
 - The task requires external security-system mutation, production policy change, payment processing, or customer-data access without approval.

@@ -14,6 +14,7 @@ Profile: {profile_name}
 - Docs slice:
 - Eval slice:
 - Release slice:
+- Coding-standard checklist:
 - External systems:
 - Approval boundary:
 
@@ -23,17 +24,19 @@ Profile: {profile_name}
 2. Build or update the integration catalog for every external system, webhook, event stream, queue, generated client, SDK or data exchange.
 3. Define ownership boundaries by subsystem and exact files.
 4. Define parallelization rules: independent files, independent systems, independent verification commands and explicit merge order.
-5. Check OpenAPI for HTTP contracts and AsyncAPI for event or message contracts.
-6. Check DB/docs impact for schema, migration, retention, database dictionary and docs-as-code changes.
-7. Define eval and test gates for each slice.
-8. Define release gates: compatibility, migration, changelog, rollback, monitoring and approval needs.
-9. Produce fresh-context task packets before parallel work.
+5. Apply the coding-standard sub-gate per code-owning slice: existing-capability scan, selected leverage path, rejected alternatives, dependency decision, and unsupported code-quality claims.
+6. Check OpenAPI for HTTP contracts and AsyncAPI for event or message contracts.
+7. Check DB/docs impact for schema, migration, retention, database dictionary and docs-as-code changes.
+8. Define eval and test gates for each slice.
+9. Define release gates: compatibility, migration, changelog, rollback, monitoring and approval needs.
+10. Produce fresh-context task packets before parallel work.
 
 ## Outputs
 
 - Integration catalog:
 - Ownership boundaries:
 - Parallelization rules:
+- Coding-standard ownership map:
 - OpenAPI impact:
 - AsyncAPI impact:
 - DB/docs impact:
@@ -58,6 +61,7 @@ Keep the handoff concise enough for the next role to act without reading raw con
 ## Verification
 
 - Every planned parallel worker has owned files and forbidden files.
+- Every code-owning worker has coding-standard checklist status, selected leverage path, dependency decision, and unsupported-claim field.
 - Every external system has an integration catalog entry.
 - Contract changes name OpenAPI, AsyncAPI or an explicit not-applicable status.
 - DB/docs impact is named even when not applicable.
@@ -69,5 +73,6 @@ Keep the handoff concise enough for the next role to act without reading raw con
 - Ownership boundaries are unclear.
 - Integration catalog is missing for a touched external system.
 - Parallel workers would edit overlapping files.
+- Code-owning parallel work lacks fresh-context coding-standard fields or shares ownership without sequential fallback.
 - Contract, database, docs, eval or release impact is unknown.
 - Required external system, production data, secret-bearing config, deployment, hosted docs or publish approval is unavailable.

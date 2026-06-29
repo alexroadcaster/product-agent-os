@@ -651,11 +651,33 @@ def _detect_methodology_signals(files: set[str], profile: dict[str, Any]) -> dic
         "llm_ai_rag": _has_llm_ai_rag_signal(lowered),
         "security_privacy_compliance": _has_security_surface(lowered),
         "quality_testing_evals": _has_quality_testing_signal(lowered, profile),
+        "professional_code_authoring": _has_professional_code_authoring_signal(lowered),
         "codex_agentic_workflow": _has_codex_agentic_workflow_signal(lowered),
         "agent_skill_metrics_loop": _has_agent_skill_metrics_loop_signal(lowered),
         "delivery_release_operations": _has_delivery_release_operations_signal(lowered, ci_present),
         "metrics": _has_any(files, ["metrics", "analytics", "telemetry", "observability"]),
     }
+
+
+def _has_professional_code_authoring_signal(lowered_files: set[str]) -> bool:
+    exact_files = {
+        ".codex/workflows/coding-standards.md",
+        ".codex/artifact-templates/coding-standard-checklist.md",
+        "coding-standard-checklist.md",
+        "agent-task-packet.md",
+        "review-slice.md",
+        "build-slice.md",
+        "development-standards.md",
+    }
+    code_suffixes = (".py", ".js", ".jsx", ".ts", ".tsx", ".go", ".rs", ".java", ".cs")
+    return any(
+        path in exact_files
+        or path.endswith("/coding-standard-checklist.md")
+        or path.endswith("/coding-standards.md")
+        or path.endswith("/agent-task-packet.md")
+        or path.endswith(code_suffixes)
+        for path in lowered_files
+    )
 
 
 def _has_codex_agentic_workflow_signal(lowered_files: set[str]) -> bool:
@@ -3488,6 +3510,29 @@ def _methodology_applicability(
             ["test command, eval command or accepted explicit gap"],
             "tester",
             "detection alone does not prove quality evidence; current run evidence is still required",
+        ),
+        "professional_code_authoring": _applicability_packet(
+            "present_unverified" if signals.get("professional_code_authoring") else "not_applicable",
+            (
+                "professional code authoring signal exists"
+                if signals.get("professional_code_authoring")
+                else "no non-mechanical code-authoring signal"
+            ),
+            _signal_evidence(signals, "professional_code_authoring"),
+            [
+                "coding-standard-checklist.md",
+                ".codex/workflows/coding-standards.md",
+                "existing_capability_scan",
+                "one_line_candidate",
+                "selected_leverage_path",
+                "dependency_decision",
+                "current command/eval evidence or not_applicable reason",
+            ],
+            "builder",
+            (
+                "detection alone does not prove professional code quality; custom-code bloat, "
+                "dependency debt, shallow wrappers, comment noise and rewrite claims need current evidence"
+            ),
         ),
         "docs_as_code_ownership": _applicability_packet(
             "present_unverified" if signals.get("codeowners") or signals.get("ci") else "applicable_missing",

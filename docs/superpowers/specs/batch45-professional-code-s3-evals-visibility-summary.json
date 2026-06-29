@@ -1,0 +1,173 @@
+{
+  "schema_version": "batch45_professional_code_s3_evals_visibility_summary_v1",
+  "evidence_id": "B45-S3-M10-M11-M16-M18-M21-M22-A01",
+  "checked_at": "2026-06-29",
+  "closure_level": "docs_contract_ready",
+  "batch": "B45-S3",
+  "implemented_rows": [
+    "B45-PCA-M10",
+    "B45-PCA-M11",
+    "B45-PCA-M16",
+    "B45-PCA-M18",
+    "B45-PCA-M21",
+    "B45-PCA-M22"
+  ],
+  "source_contract": "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md",
+  "source_inputs": [
+    "plugins/product-agent-os/assets/research/ai-agent-coding-standards-research.md",
+    "plugins/product-agent-os/assets/research/ai-agent-coding-literature-research.md",
+    "plugins/product-agent-os/assets/templates/workflows/coding-standards.md",
+    "plugins/product-agent-os/assets/templates/artifact-templates/coding-standard-checklist.md",
+    "plugins/product-agent-os/assets/templates/evals/behavioral-workflows.json",
+    "plugins/product-agent-os/assets/templates/evals/agent-context-contract.json",
+    "plugins/product-agent-os/assets/templates/evals/project-readiness.json",
+    "plugins/product-agent-os/assets/methodology/methodology-catalog.json"
+  ],
+  "implemented_surfaces": {
+    "behavioral_eval_cases": [
+      "professional-code-authoring-custom-code-bloat",
+      "professional-code-authoring-unnecessary-dependency",
+      "professional-code-authoring-missing-existing-capability-scan",
+      "professional-code-authoring-comment-noise",
+      "professional-code-authoring-shallow-wrapper",
+      "professional-code-authoring-unsupported-legacy-rewrite"
+    ],
+    "agent_context_contract": [
+      "local_style_conventions",
+      "coding_standards_workflow",
+      "coding_standard_checklist",
+      "existing_capability_scan_before_custom_code",
+      "professional_code_authoring_not_applicable_reason",
+      "no_raw_source_leakage"
+    ],
+    "acceptance_test_eval_artifacts": [
+      "plugins/product-agent-os/assets/templates/artifact-templates/acceptance-scenarios.md",
+      "plugins/product-agent-os/assets/templates/artifact-templates/test-eval-matrix.md",
+      "plugins/product-agent-os/assets/templates/artifact-templates/behavioral-eval-case.md",
+      "plugins/product-agent-os/assets/templates/artifact-templates/codex-compatibility-report.md"
+    ],
+    "readiness_discovery_runtime_visibility": [
+      "professional_code_authoring readiness gate in project-readiness.json",
+      "professional_code_authoring discovery signal and methodology_applicability packet",
+      "professional_code_authoring_evidence_present shared methodology gate",
+      "professional_code_authoring_summary in first_run_analysis.py",
+      "professional_code_authoring route field in codex_runtime_runner/routes.py",
+      "Professional Code Authoring HTML blocks in methodology, runtime-route, code-flow, quality-evals, risks and recommendations pages",
+      "section-professional-code-authoring in status_dashboard.py"
+    ],
+    "hook_governance_candidate_only": [
+      "plugins/product-agent-os/assets/templates/artifact-templates/hook-governance.md",
+      "plugins/product-agent-os/assets/templates/hooks/pre_tool_use_policy.py",
+      "plugins/product-agent-os/assets/templates/hooks/post_tool_use_evidence.py",
+      "plugins/product-agent-os/assets/templates/hooks/stop_runlog_reminder.py"
+    ],
+    "local_agent_visibility": [
+      ".codex/agents/builder.toml",
+      ".codex/agents/reviewer.toml",
+      ".codex/agents/architect.toml"
+    ]
+  },
+  "runtime_activation": {
+    "hook_activation": "not_performed",
+    "automation_activation": "not_performed",
+    "provider_or_model_call": "not_performed",
+    "browser_automation": "not_performed",
+    "target_workspace_mutation": "not_performed",
+    "installed_plugin_cache_refresh": "not_performed",
+    "git_stage_commit_push_pr": "not_performed",
+    "live_runtime_or_product_behavior_claim": "not_claimed"
+  },
+  "activation_boundary": {
+    "new_path": "professional_code_authoring route, eval and generated-view visibility for non-mechanical code work",
+    "old_path_or_fallback": "general quality_testing_evals and codex_agentic_workflow contracts without explicit professional-code authoring evidence",
+    "selector": [
+      "templates/workflows/coding-standards.md and coding-standard-checklist.md presence",
+      "discovery professional_code_authoring signal",
+      "project-readiness conditional gate",
+      "codex_runtime_runner route first_response_contract field",
+      "behavioral-workflows professional-code-authoring eval cases"
+    ],
+    "fallback_policy": "Detection and generated views are orientation-only. Missing professional-code evidence remains present_unverified or applicable_missing until current checklist/test/eval evidence or an explicit not_applicable gap exists."
+  },
+  "control_plane_sync": {
+    "workflow": ".codex/workflows/control-plane-sync.md",
+    "updated": [
+      "PLAN.md",
+      "TEST.md",
+      "EVALS.md",
+      "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md",
+      "docs/sources/registry.md",
+      "docs/sources/registry.en.md"
+    ],
+    "not_updated": [
+      {
+        "file": "RUNLOG.md",
+        "reason": "RUNLOG.md is already at the compact 50 KB budget edge; B45-S3 detailed handoff is source-owned by this packet, the Track 11 plan and registries."
+      }
+    ],
+    "handoff_required": []
+  },
+  "verification": [
+    {
+      "command": "python -m json.tool plugins/product-agent-os/assets/templates/evals/behavioral-workflows.json",
+      "status": "passed"
+    },
+    {
+      "command": "python -m json.tool plugins/product-agent-os/assets/templates/evals/agent-context-contract.json",
+      "status": "passed"
+    },
+    {
+      "command": "python -m json.tool .codex/evals/agent-context-contract.json",
+      "status": "passed"
+    },
+    {
+      "command": "python -m json.tool plugins/product-agent-os/assets/templates/evals/project-readiness.json",
+      "status": "passed"
+    },
+    {
+      "command": "python -m json.tool plugins/product-agent-os/assets/methodology/methodology-catalog.json",
+      "status": "passed"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_batch45_s3_professional_code_authoring -v",
+      "status": "passed"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_fixture_eval_runner -v",
+      "status": "passed"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_infrastructure_templates -v",
+      "status": "passed"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_batch45_s3_professional_code_authoring tests.product_agent_os.test_behavioral_workflow_evals tests.product_agent_os.test_discovery tests.product_agent_os.test_status_dashboard tests.product_agent_os.test_infrastructure_templates tests.product_agent_os.test_fixture_eval_runner -v",
+      "status": "passed"
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+      "status": "passed"
+    },
+    {
+      "command": "python tools\\check_docs.py",
+      "status": "passed"
+    },
+    {
+      "command": "git diff --check",
+      "status": "passed_with_line_ending_warnings"
+    }
+  ],
+  "accepted_gaps": [
+    "No public docs page is implemented in S3; B45-PCA-M12 and B45-PCA-M19 remain S4.",
+    "No hook activation/update is performed in S3; B45-PCA-M21 is candidate-only governance and template reminder text.",
+    "No real AI-agent behavior improvement is claimed until a later approval-gated runtime or owner pilot proves it.",
+    "No browser, provider, live runtime, target mutation, installed cache refresh, release, deploy, publish or git action is claimed."
+  ],
+  "next_rows": [
+    "B45-PCA-M12",
+    "B45-PCA-M13",
+    "B45-PCA-M19",
+    "B45-PCA-M14",
+    "B45-PCA-M23"
+  ]
+}

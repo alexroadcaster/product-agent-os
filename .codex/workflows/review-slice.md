@@ -19,8 +19,9 @@ Review a focused change for correctness, risk, evidence gaps, and fit with the e
 1. Read the changed files and nearby source needed to understand behavior.
 2. Prioritize bugs, regressions, missing tests, security/privacy risks, source-policy issues, and unsupported readiness claims.
 3. Do not reward template presence without current behavior or command evidence.
-4. Check `.codex/workflows/control-plane-sync.md`: identify missing updates or missing `not_applicable` / `handoff_required` decisions for control-plane files.
-5. Keep findings actionable and scoped.
+4. Check professional code authoring risk: missing `.codex/artifact-templates/coding-standard-checklist.md`, missing `existing_capability_scan`, unnecessary dependency, custom-code bloat, shallow wrapper, comment noise, broad rewrite, or unsupported code-quality claim.
+5. Check `.codex/workflows/control-plane-sync.md`: identify missing updates or missing `not_applicable` / `handoff_required` decisions for control-plane files.
+6. Keep findings actionable and scoped.
 
 ## Outputs
 
@@ -37,6 +38,7 @@ Review a focused change for correctness, risk, evidence gaps, and fit with the e
 
 - Diff context is incomplete.
 - Verification evidence is unavailable for the requested claim.
+- Non-mechanical code work lacks coding-standard checklist status or `not_applicable` reason.
 - Control-plane sync evidence is missing for changed scope, plan, tests, evals, runlog, or Batch 39 ledger state.
 - Review requires file mutation or external access without approval.
 

@@ -4186,6 +4186,12 @@ class InfrastructureTemplateTest(unittest.TestCase):
                 "backend-evidence-before-completion",
                 "llm-ai-rag-evidence-before-completion",
                 "api-integrations-evidence-before-completion",
+                "professional-code-authoring-custom-code-bloat",
+                "professional-code-authoring-unnecessary-dependency",
+                "professional-code-authoring-missing-existing-capability-scan",
+                "professional-code-authoring-comment-noise",
+                "professional-code-authoring-shallow-wrapper",
+                "professional-code-authoring-unsupported-legacy-rewrite",
                 "finish-options",
                 "runtime-methodology-packet-safety",
                 "agent-skill-metrics-loop-safety",
@@ -4928,6 +4934,7 @@ class InfrastructureTemplateTest(unittest.TestCase):
         self.assertIn("metric_hardening_when_product_behavior_changes", expected["methodology_gates"])
         self.assertIn("evidence_before_completion", expected["methodology_gates"])
         self.assertIn("test_eval_first_evidence", expected["methodology_gates"])
+        self.assertIn("professional_code_authoring", expected["methodology_gates"])
         self.assertIn("docs_as_code_impact", expected["methodology_gates"])
         self.assertIn("release_measurement", expected["methodology_gates"])
         self.assertIn("docs_tooling_selector", expected["methodology_gates"])
@@ -4938,6 +4945,8 @@ class InfrastructureTemplateTest(unittest.TestCase):
         self.assertIn("frontend", expected["methodology_signals"])
         self.assertIn("metric_spec", expected["methodology_signals"])
         self.assertIn("completion_evidence", expected["methodology_signals"])
+        self.assertIn("professional_code_authoring", expected["methodology_signals"])
+        self.assertIn("coding_standard_checklist", expected["methodology_signals"])
         self.assertIn("docs_tooling_decision", expected["methodology_signals"])
         self.assertIn("governance_proposal", expected["methodology_signals"])
         self.assertIn("security_privacy_compliance", expected["methodology_signals"])
@@ -5011,6 +5020,7 @@ class InfrastructureTemplateTest(unittest.TestCase):
             "finish_options_when_release_ready",
             "standards_trigger_policy_when_architecture_api_release_or_governance_changes",
             "quality_testing_evals_when_non_trivial_change",
+            "professional_code_authoring",
             "codex_agentic_workflow",
             "semantic_evidence_sufficiency",
             "runtime_methodology_packet_safety",

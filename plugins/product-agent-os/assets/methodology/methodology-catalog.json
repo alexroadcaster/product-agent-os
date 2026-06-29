@@ -73,6 +73,14 @@
           "api_integrations"
         ],
         "reason": "External mutation approval is a security/privacy boundary consumed by API and integration work."
+      },
+      "professional_code_authoring_evidence_present": {
+        "owner_domain": "quality_testing_evals",
+        "consumer_domains": [
+          "codex_agentic_workflow",
+          "solution_architecture"
+        ],
+        "reason": "Professional code authoring is verified as quality evidence and carried through agent task packets, handoffs and architecture/rewrite decisions."
       }
     },
     "artifact_owners": {
@@ -934,6 +942,7 @@
       "artifacts": [
         "test-eval-matrix.md",
         "quality-strategy.md",
+        "coding-standard-checklist.md",
         "ci-evidence-record.md",
         "flaky-test-policy.md",
         "manual-qa-evidence.md",
@@ -962,7 +971,8 @@
         "coverage_policy_present",
         "test_data_privacy_present",
         "bug_reproduction_evidence_present",
-        "regression_impact_present"
+        "regression_impact_present",
+        "professional_code_authoring_evidence_present"
       ],
       "eval_fields": [
         "quality_strategy_contract_present",
@@ -982,6 +992,7 @@
         "test_data_privacy_contract_present",
         "bug_reproduction_evidence_contract_present",
         "regression_impact_contract_present",
+        "professional_code_authoring_contract_present",
         "unsupported_quality_claims_rejected_contract_present"
       ],
       "overlaps": [
@@ -993,7 +1004,8 @@
         "database and security test data privacy",
         "LLM/AI/RAG eval baselines",
         "delivery and release CI gates",
-        "agent workflow evidence-before-completion"
+        "agent workflow evidence-before-completion",
+        "professional code authoring and refactor safety"
       ]
     },
     {
@@ -1050,6 +1062,7 @@
         "EVALS.md",
         "RUNLOG.md",
         "agent-task-packet.md",
+        "coding-standard-checklist.md",
         "handoff-contract.md",
         "worktree-ownership.md",
         "approval-record.md",
@@ -1079,6 +1092,7 @@
         "agent_eval_workflow_present",
         "memory_policy_present",
         "agentic_evidence_before_completion",
+        "professional_code_authoring_evidence_present",
         "unsupported_agentic_claims_rejected"
       ],
       "eval_fields": [
@@ -1099,6 +1113,7 @@
         "agent_eval_workflow_contract_present",
         "memory_policy_contract_present",
         "agentic_evidence_before_completion_contract_present",
+        "professional_code_authoring_contract_present",
         "unsupported_agentic_claims_rejected_contract_present"
       ],
       "overlaps": [
@@ -1107,7 +1122,8 @@
         "security and privacy trust boundaries",
         "LLM/AI/RAG tool and eval governance",
         "plugin and automation promotion",
-        "parallel ownership and worktree safety"
+        "parallel ownership and worktree safety",
+        "professional code authoring handoff context"
       ]
     },
     {

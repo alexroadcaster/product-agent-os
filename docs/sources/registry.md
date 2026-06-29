@@ -53,6 +53,8 @@ verification_status: "Current compaction preserves test-visible markers; full ev
 - Product-Agent OS AI-agent senior coding literature research corpus with 60 books, route `plugins/product-agent-os/assets/research/ai-agent-coding-literature-research.md` (checked_at=2026-06-29, trust=high for publisher/author anchors; medium for marketplace bibliography anchors)
 - Product-Agent OS Track 11 Batch 45 professional code authoring S0 synthesis and activation policy evidence with `B45-PCA-M01` and `B45-PCA-M20` implemented as `docs_contract_ready` (checked_at=2026-06-29, trust=high for local plan/spec evidence; does not prove runtime or agent behavior)
 - Product-Agent OS Track 11 Batch 45 professional code authoring S1 artifact/workflow contract evidence with `B45-PCA-M02..M04` implemented as `docs_contract_ready` (checked_at=2026-06-29, trust=high for local template/test/spec evidence; does not prove runtime or automatic agent behavior)
+- Product-Agent OS Track 11 Batch 45 professional code authoring S2 existing workflow/agent/skill retrofit evidence with `B45-PCA-M05..M09`, `B45-PCA-M15` and `B45-PCA-M17` implemented as `docs_contract_ready` (checked_at=2026-06-29, trust=high for local template/docs/test/spec evidence; does not prove runtime, hooks, automation or automatic agent behavior)
+- Product-Agent OS Track 11 Batch 45 professional code authoring S3 evals, readiness, route, HTML and hook-governance visibility evidence with `B45-PCA-M10`, `B45-PCA-M11`, `B45-PCA-M16`, `B45-PCA-M18`, `B45-PCA-M21` and `B45-PCA-M22` implemented as `docs_contract_ready` (checked_at=2026-06-29, trust=high for local eval/template/test/spec evidence; does not prove live runtime, hook activation, automation or real AI-agent behavior)
 - Codex web / cloud (checked_at=2026-05-14, trust=high)
 - Codex app (checked_at=2026-05-14, trust=high)
 - Codex CLI (checked_at=2026-05-14, trust=high)
@@ -1485,4 +1487,79 @@ These markers preserve source-owned test routing after registry compaction. Full
 - B45-PCA-M02, B45-PCA-M03 and B45-PCA-M04 implemented as docs_contract_ready template/workflow/handoff contracts
 - remaining B45-PCA-M05..M19 and B45-PCA-M21..M23 planned, with B45-PCA-M14 reserved for final closure
 - no eval enforcement, public docs page, runtime route, HTML visibility, hook activation/update, automation, provider/browser/cache/target/git/release/deploy/publish behavior proved by S1
+- Product-Agent OS Track 11 Batch 45 professional code authoring S2 existing workflow, agent and skill retrofit packet
+- B45-S2-M05-M09-M15-M17-A01
+- docs/superpowers/specs/batch45-professional-code-s2-existing-workflow-retrofit-summary.json
+- docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md
+- plugins/product-agent-os/assets/templates/workflows/development-standards.md
+- plugins/product-agent-os/assets/templates/workflows/build-slice.md
+- plugins/product-agent-os/assets/templates/workflows/review-slice.md
+- plugins/product-agent-os/assets/templates/workflows/legacy-onboarding.md
+- plugins/product-agent-os/assets/templates/workflows/bug-rescue.md
+- plugins/product-agent-os/assets/templates/workflows/api-migration.md
+- plugins/product-agent-os/assets/templates/workflows/data-migration.md
+- plugins/product-agent-os/assets/templates/workflows/security-sensitive-change.md
+- plugins/product-agent-os/assets/templates/workflows/ci-stabilization.md
+- plugins/product-agent-os/assets/templates/workflows/desktop-local-first.md
+- plugins/product-agent-os/assets/templates/workflows/complex-system-acceleration.md
+- plugins/product-agent-os/assets/templates/artifact-templates/api-style-guide.md
+- plugins/product-agent-os/assets/templates/artifact-templates/supply-chain-review.md
+- plugins/product-agent-os/assets/templates/artifact-templates/quality-strategy.md
+- plugins/product-agent-os/assets/templates/artifact-templates/plan-quality-check.md
+- plugins/product-agent-os/assets/templates/agents/builder.toml
+- plugins/product-agent-os/assets/templates/agents/reviewer.toml
+- plugins/product-agent-os/assets/templates/agents/architect.toml
+- plugins/product-agent-os/assets/templates/agents/tester.toml
+- plugins/product-agent-os/assets/templates/artifact-templates/subagent-context-packet.md
+- plugins/product-agent-os/assets/templates/artifact-templates/subagent-result-packet.md
+- plugins/product-agent-os/assets/templates/evals/handoff-completeness.json
+- plugins/product-agent-os/skills/implementation-planner/SKILL.md
+- plugins/product-agent-os/skills/agent-team-designer/SKILL.md
+- plugins/product-agent-os/skills/docs-maintainer/SKILL.md
+- docs/product-agent-os/development-standards.md and .en.md
+- docs/playbooks/code-review.md and .en.md
+- tests/product_agent_os/test_batch45_s2_existing_workflow_retrofit.py
+- B45-PCA-M05, B45-PCA-M06, B45-PCA-M07, B45-PCA-M08, B45-PCA-M09, B45-PCA-M15 and B45-PCA-M17 implemented as docs_contract_ready retrofit contracts
+- remaining B45-PCA-M10..M13, B45-PCA-M16, B45-PCA-M18..M19 and B45-PCA-M21..M23 planned, with B45-PCA-M14 reserved for final closure
+- no dedicated public coding-standards page, eval enforcement, runtime route, HTML visibility, hook activation/update, automation, provider/browser/cache/target/git/release/deploy/publish behavior proved by S2
+- Product-Agent OS Track 11 Batch 45 professional code authoring S3 evals, readiness, route, HTML and hook-governance visibility packet
+- B45-S3-M10-M11-M16-M18-M21-M22-A01
+- docs/superpowers/specs/batch45-professional-code-s3-evals-visibility-summary.json
+- docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md
+- plugins/product-agent-os/assets/templates/evals/behavioral-workflows.json
+- plugins/product-agent-os/assets/templates/evals/agent-context-contract.json
+- .codex/evals/agent-context-contract.json
+- plugins/product-agent-os/assets/templates/evals/project-readiness.json
+- plugins/product-agent-os/assets/methodology/methodology-catalog.json
+- plugins/product-agent-os/assets/templates/artifact-templates/acceptance-scenarios.md
+- plugins/product-agent-os/assets/templates/artifact-templates/test-eval-matrix.md
+- plugins/product-agent-os/assets/templates/artifact-templates/behavioral-eval-case.md
+- plugins/product-agent-os/assets/templates/artifact-templates/codex-compatibility-report.md
+- plugins/product-agent-os/assets/templates/artifact-templates/hook-governance.md
+- plugins/product-agent-os/assets/templates/hooks/pre_tool_use_policy.py
+- plugins/product-agent-os/assets/templates/hooks/post_tool_use_evidence.py
+- plugins/product-agent-os/assets/templates/hooks/stop_runlog_reminder.py
+- plugins/product-agent-os/scripts/product_agent_os/behavioral_evals.py
+- plugins/product-agent-os/scripts/product_agent_os/discovery.py
+- plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py
+- plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py
+- plugins/product-agent-os/scripts/product_agent_os/status_dashboard.py
+- plugins/product-agent-os/scripts/codex_runtime_runner/routes.py
+- plugins/product-agent-os/scripts/run_fixture_eval.py
+- .codex/workflows/coding-standards.md
+- .codex/artifact-templates/coding-standard-checklist.md
+- .codex/workflows/build-slice.md
+- .codex/workflows/review-slice.md
+- .codex/agents/builder.toml
+- .codex/agents/reviewer.toml
+- .codex/agents/architect.toml
+- tests/product_agent_os/test_batch45_s3_professional_code_authoring.py
+- tests/product_agent_os/test_behavioral_workflow_evals.py
+- tests/product_agent_os/test_discovery.py
+- tests/product_agent_os/test_status_dashboard.py
+- tests/product_agent_os/test_infrastructure_templates.py
+- tests/product_agent_os/test_fixture_eval_runner.py
+- B45-PCA-M10, B45-PCA-M11, B45-PCA-M16, B45-PCA-M18, B45-PCA-M21 and B45-PCA-M22 implemented as docs_contract_ready eval/visibility/governance contracts
+- remaining B45-PCA-M12, B45-PCA-M13, B45-PCA-M19 and B45-PCA-M23 planned, with B45-PCA-M14 reserved for final closure
+- no dedicated public coding-standards page, live runtime behavior, hook activation/update, automation, provider/browser/cache/target/git/release/deploy/publish behavior proved by S3
 ```

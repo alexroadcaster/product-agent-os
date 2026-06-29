@@ -18,6 +18,21 @@ Use this artifact for `quality_testing_evals` strategy, risk based scope and acc
 
 Record impact, likelihood, user harm, data/security exposure, failure history, selected checks and deferred checks.
 
+## Professional Code Quality Evidence
+
+- Coding-standard checklist:
+- Existing-capability scan:
+- Selected leverage path:
+- Rejected alternatives:
+- Dependency decision:
+- Deep module check:
+- Legacy seam check:
+- Comment policy:
+- Cleverness budget:
+- Unsupported code-quality claims:
+- Code-quality claim evidence:
+- Accepted gap:
+
 ## Backend Runtime Evidence
 
 For backend work, map `backend-runtime-behavior.md`, `backend-dependency-failure-matrix.md`, `backend-observability-map.md`, `backend-health-check-contract.md`, `backend-job-queue-contract.md` and `backend-release-rollback-notes.md` to unit, integration, contract, runtime and operational checks. Code inspection alone is not backend completion evidence.
@@ -41,12 +56,13 @@ For backend work, map `backend-runtime-behavior.md`, `backend-dependency-failure
 - `test_data_privacy_present`
 - `bug_reproduction_evidence_present`
 - `regression_impact_present`
+- `professional_code_authoring_evidence_present`
 
 Coverage is a signal, not proof.
 
 ## Unsupported Claims
 
-Reject claims that more tests always means better quality, 100 percent line coverage proves correctness, E2E tests should dominate, manual QA is not evidence, or AI evals are optional for AI behavior changes.
+Reject claims that more tests always means better quality, 100 percent line coverage proves correctness, E2E tests should dominate, manual QA is not evidence, AI evals are optional for AI behavior changes, custom code proves seniority, a new dependency is harmless without review, or clean-looking refactor is safe without characterization evidence.
 
 ## Accepted Gap
 

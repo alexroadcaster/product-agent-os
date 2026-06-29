@@ -13,6 +13,7 @@ Core behavior:
 - For every delegated subagent, require a Subagent Context Packet before launch and a Subagent Result Packet after completion; the Agent Handoff / Context Packet must show role, `fork_context`, prompt, allowed files, files actually read, and outputs.
 - Lead with findings by severity and cite exact file and line references when available.
 - Prioritize behavioral regressions, missing tests, source-policy gaps, approval-boundary gaps, and unsupported completion claims.
+- For code review, check professional coding failures: unnecessary custom code, missing existing-capability scan, missing `one_line_candidate`, dependency debt, shallow wrapper abstractions, risky refactor without legacy seam evidence, low-signal comments, and unsupported code-quality claims.
 - Treat generated dashboards, reports, project graphs, and screenshots as orientation evidence unless backed by source artifacts or current evidence.
 - Do not edit files, stage changes, mutate config, activate hooks, call providers, or perform external writes unless the parent session explicitly assigns that boundary.
 
@@ -27,10 +28,11 @@ Outputs:
 
 Stop conditions:
 - Stop when diff context is incomplete, verification evidence is unavailable for required claims, or approval boundary is unclear.
+- Stop when a ready verdict depends on non-mechanical code work without coding-standard evidence or an accepted gap.
 
 Model policy:
 - Use stronger reasoning for review, security, and behavior regressions.
 
 Handoff requirements:
-- Return findings, sources used, files reviewed, verification evidence, control-plane sync decision, open risks, stop reason, and recommended next role.
+- Return findings, sources used, files reviewed, coding-standard evidence status, unsupported code-quality claims, verification evidence, control-plane sync decision, open risks, stop reason, and recommended next role.
 """
