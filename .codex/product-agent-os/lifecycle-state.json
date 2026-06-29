@@ -1,12 +1,12 @@
 {
   "task_start_brief_shown": true,
-  "task_id": "B45-S4-M12-M13-M19-M14-through-S4",
-  "scope": "Implement Batch 45 S4 public docs, source cross-linking, focused regression tests and closure-through-S4 evidence for Product-Agent OS professional code authoring standards",
+  "task_id": "B45-S5-M23-learning-automation-candidates",
+  "scope": "Implement Batch 45 S5 candidate-only Self-Learning Loop and automation-candidate policy for future Product-Agent OS professional code authoring improvements",
   "updated_at": "2026-06-29T00:00:00+03:00",
   "approval_boundary": "Workspace docs/spec writes only; no hook activation, automation activation, MCP activation, Agents SDK runner, provider/model/browser/git/release/deploy/publish actions, target mutation, installed cache refresh, or external writes",
   "brief_schema_version": "task_start_brief_v1",
   "brief_format": "field_list",
-  "brief_digest": "sha256:b45s4-visible-task-brief-recorded-in-current-codex-thread",
+  "brief_digest": "sha256:b45s5-visible-task-brief-recorded-in-current-codex-thread",
   "brief_fields_present": [
     "Task ID",
     "Product value",

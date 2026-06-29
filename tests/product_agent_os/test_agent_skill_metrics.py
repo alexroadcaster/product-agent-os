@@ -123,12 +123,17 @@ class AgentSkillMetricsTest(unittest.TestCase):
                 "retrieval",
                 "composition",
                 "process_control",
+                "professional_code_authoring",
                 "memory_quality",
                 "safety",
                 "cost",
                 "regression",
             },
         )
+        professional_metrics = {item["metric_id"] for item in taxonomy["families"]["professional_code_authoring"]}
+        self.assertIn("existing_capability_scan_rate", professional_metrics)
+        self.assertIn("custom_code_avoidance_rate", professional_metrics)
+        self.assertIn("unnecessary_dependency_avoidance_rate", professional_metrics)
         self.assertIn("outcome.task_success_rate.denominator_missing", validate_metric_taxonomy(missing_denominator))
 
     def test_paired_skill_utility_eval_requires_baseline_cost_and_regression_context(self):

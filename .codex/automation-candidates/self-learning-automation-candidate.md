@@ -15,6 +15,18 @@ GitHub Action, external workflow or recurring job.
 - `flake_replay: required_before_activation`
 - `cost_check: required_before_activation`
 
+## Professional Code Authoring Candidate Gate
+
+- `candidate_policy: candidate_only`
+- `minimum_manual_successful_runs: 3`
+- `allowed_update_targets: coding-standard templates, skills, evals and hook-governance candidates`
+- `owner_review: required_before_apply`
+- `rollback_evidence: required_before_apply`
+- `false_positive_audit: required_before_apply`
+- `flake_replay: required_before_apply`
+- `cost_check: required_before_apply`
+- `future_activation_handoff_required: true`
+
 ## Forbidden Until Approval
 
 - no real Codex App session export import
@@ -23,6 +35,7 @@ GitHub Action, external workflow or recurring job.
 - no provider/model/live eval call
 - no target workspace mutation
 - no skill, prompt, route, memory, config, hook or automation auto-apply
+- no coding-standard template, skill, eval or hook-governance auto-apply
 - no git, release, deploy, publish or external write action
 
 ## Required Activation Approval Shape

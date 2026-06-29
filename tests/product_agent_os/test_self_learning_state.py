@@ -266,6 +266,61 @@ class SelfLearningStateTests(unittest.TestCase):
                 self.assertTrue(candidate["evidence_refs"])
         self.assertEqual(validate_candidate_packet(packet), [])
 
+    def test_professional_code_candidate_packet_stages_review_only_improvements(self) -> None:
+        from product_agent_os.self_learning_candidates import (
+            build_self_learning_candidate_packet,
+            validate_candidate_packet,
+        )
+
+        packet = build_self_learning_candidate_packet(
+            metrics_summary={
+                "status": "available",
+                "latest_run_id": "sll-20260629T100000Z-professional-code",
+                "latest_report_paths": ["docs/superpowers/specs/batch45-professional-code-s3-evals-visibility-summary.json"],
+                "regression_flags": ["professional_code_authoring_custom_code_bloat"],
+                "metric_delta_count": 1,
+                "professional_code_authoring_findings": [
+                    {
+                        "finding_type": "missing_existing_capability_scan",
+                        "target_id": "workflow:coding-standards",
+                        "reason": "Agents skipped the reuse-first scan before proposing custom code.",
+                        "evidence_refs": ["eval:professional-code-authoring-missing-existing-capability-scan"],
+                        "feedback_refs": ["owner_feedback:professional-code"],
+                    }
+                ],
+            },
+            feedback_summary={"status": "available"},
+            generated_at="2026-06-29T10:00:00Z",
+        )
+
+        candidates = [
+            candidate
+            for candidate in packet["candidates"]
+            if candidate.get("candidate_kind") == "professional_code_authoring_improvement"
+        ]
+
+        self.assertGreaterEqual(len(candidates), 1)
+        self.assertEqual(packet["candidate_policy"], "candidate_only")
+        self.assertEqual(packet["apply_policy"], "cannot_apply")
+        self.assertEqual(packet["auto_apply"], "disabled")
+        self.assertEqual(packet["provider_calls"], "not_performed")
+        self.assertEqual(packet["target_workspace_writes"], "not_performed")
+        self.assertEqual(packet["external_write_action"], "none")
+        self.assertEqual(packet["safety_report"]["promotion_status"], "review_ready")
+        for candidate in candidates:
+            with self.subTest(candidate=candidate["candidate_id"]):
+                self.assertEqual(candidate["component"], "professional_code_authoring")
+                self.assertEqual(candidate["status"], "staged_for_review")
+                self.assertEqual(candidate["approval_state"], "not_requested")
+                self.assertEqual(candidate["auto_apply"], "disabled")
+                self.assertEqual(candidate["external_write_action"], "none")
+                self.assertEqual(candidate["manual_pilot_gate"]["minimum_manual_successful_runs"], 3)
+                self.assertTrue(candidate["manual_pilot_gate"]["future_activation_handoff_required"])
+                self.assertIn("plugins/product-agent-os/assets/templates/workflows/coding-standards.md", candidate["allowed_update_targets"])
+                self.assertIn("auto_apply", candidate["forbidden_until_approval"])
+                self.assertIn("hidden_telemetry", candidate["forbidden_until_approval"])
+        self.assertEqual(validate_candidate_packet(packet), [])
+
     def test_forbidden_action_safety_report_blocks_auto_apply_and_external_actions(self) -> None:
         from product_agent_os.self_learning_candidates import evaluate_forbidden_action_fixtures
 
@@ -281,6 +336,7 @@ class SelfLearningStateTests(unittest.TestCase):
                         {"action_type": "git_push", "description": "push release branch"},
                         {"action_type": "deploy_publish", "description": "publish package"},
                         {"action_type": "auto_apply", "description": "apply patch automatically"},
+                        {"action_type": "hidden_telemetry", "description": "scrape hidden logs"},
                     ],
                 }
             ]
@@ -297,6 +353,7 @@ class SelfLearningStateTests(unittest.TestCase):
         self.assertIn("git_action", blocked["blocked_actions"])
         self.assertIn("release_deploy_publish", blocked["blocked_actions"])
         self.assertIn("auto_apply", blocked["blocked_actions"])
+        self.assertIn("hidden_telemetry", blocked["blocked_actions"])
 
     def test_default_state_is_manual_only_and_due_without_running_analysis(self) -> None:
         from product_agent_os.self_learning_state import build_default_self_learning_state, evaluate_self_learning_due

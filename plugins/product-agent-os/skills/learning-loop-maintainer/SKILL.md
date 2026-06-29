@@ -35,6 +35,7 @@ Read shared references when needed: [Lifecycle states](../references/lifecycle-s
 - Failures, decisions, blocked paths, repeated gaps, and open questions.
 - Review findings, reusable methods, recurring manual steps, and observed recovery actions.
 - Approval constraints, source status, unsupported claims, and evidence gaps.
+- Professional Code Authoring evidence when code-writing standards, shortcut-resistance evals, reuse-first guidance, dependency decisions, comment standards, or hook/eval candidates are affected.
 - Business/Product methodology evidence after delivery when product, MVP, user value, analytics, release measurement, or workflow promotion claims were made: `product_hypothesis_present`, `value_proposition_evidence_present`, `analytics_tracking_plan_present`, `qualitative_feedback_loop_present`, `release_measurement_evidence_present`, `decision_horizon_present`, `outcome_metric_level_separated`, `metric_scope_classified`, `.codex/artifact-templates/tracking-plan.md`, accepted gaps, and residual risks.
 
 ## Process
@@ -47,8 +48,9 @@ Read shared references when needed: [Lifecycle states](../references/lifecycle-s
 6. Capture Business/Product methodology lessons when product claims were made: record whether `product_hypothesis_present`, `value_proposition_evidence_present`, `analytics_tracking_plan_present`, `qualitative_feedback_loop_present`, `release_measurement_evidence_present`, `decision_horizon_present`, `outcome_metric_level_separated`, and `metric_scope_classified` were satisfied, accepted as gaps, or disproved by evidence.
 7. Use `.codex/artifact-templates/tracking-plan.md` and release evidence to compare planned product analytics with observed instrumentation, qualitative feedback, and release measurement evidence.
 8. Route stable recurring workflows to `automation-promoter` for candidate-only analysis, but only after value evidence, owner evidence, verification evidence, and residual risk are recorded.
-9. Keep all updates staged and list approval needs before any durable artifact change.
-10. Return next lifecycle state `learning_ready` only when decisions, failures, proposed compaction, candidates, and next action are explicit.
+9. For Professional Code Authoring lessons, produce only staged improvement candidates for coding-standard templates, skills, evals or hook-governance artifacts. Require at least three successful manual pilot uses or an owner-accepted gap before review; require rollback evidence, false-positive audit, flake replay, cost check and owner review before any apply discussion.
+10. Keep all updates staged and list approval needs before any durable artifact change.
+11. Return next lifecycle state `learning_ready` only when decisions, failures, proposed compaction, candidates, and next action are explicit.
 
 ## Outputs
 
@@ -62,6 +64,30 @@ learning_loop_packet:
   skill_candidates: []
   runlog_compaction: []
   observations: []
+  professional_code_authoring_learning:
+    candidate_policy: "candidate_only"
+    allowed_update_targets:
+      - "coding-standard templates"
+      - "skills"
+      - "evals"
+      - "hook-governance candidates"
+    minimum_manual_successful_runs: 3
+    forbidden_until_approval:
+      - "auto_apply"
+      - "hook_activation"
+      - "active_schedule_creation"
+      - "provider_call"
+      - "global_config_mutation"
+      - "target_mutation"
+      - "raw_transcript_storage"
+      - "hidden_telemetry"
+      - "external_write"
+    required_review_evidence:
+      - "owner review"
+      - "rollback evidence"
+      - "false-positive audit"
+      - "flake replay"
+      - "cost check"
   business_product_learning:
     gates_reviewed:
       - "product_hypothesis_present"

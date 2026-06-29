@@ -149,6 +149,38 @@ class AutomationPolicyTest(unittest.TestCase):
         self.assertIn("active metrics automation is forbidden", report["errors"])
         self.assertIn("external workflow creation is forbidden", report["errors"])
 
+    def test_professional_code_automation_candidate_remains_candidate_only_with_manual_gate(self):
+        text = _professional_code_automation_candidate_text()
+
+        report = validate_automation_candidate.from_text(text, "professional-code-authoring.md")
+
+        self.assertEqual(report["status"], "candidate_only")
+        self.assertTrue(report["professional_code_automation_candidate"])
+        self.assertEqual(report["manual_success_count"], 3)
+        self.assertEqual(report["active_schedule_status"], "not_created")
+        self.assertEqual(report["errors"], [])
+        self.assertIn("owner approval is required before activation", report["warnings"])
+        self.assertIn("accepted residual risks are required before activation", report["warnings"])
+
+    def test_professional_code_automation_candidate_blocks_active_schedule_and_hook_activation(self):
+        text = (
+            _professional_code_automation_candidate_text()
+            + "\n"
+            + "Cron: 0 9 * * *\n"
+            + "Hook activation: active\n"
+            + "External write: active\n"
+        )
+
+        report = validate_automation_candidate.from_text(text, "professional-code-authoring.md")
+
+        self.assertEqual(report["status"], "blocked")
+        self.assertTrue(report["professional_code_automation_candidate"])
+        self.assertEqual(report["active_schedule_status"], "detected")
+        self.assertIn("active automation is forbidden", report["errors"])
+        self.assertIn("active professional code automation is forbidden", report["errors"])
+        self.assertIn("hook activation is forbidden", report["errors"])
+        self.assertIn("external write is forbidden", report["errors"])
+
     def test_system_file_hygiene_candidate_remains_candidate_only_and_blocks_active_schedule(self):
         text = (
             "# System File Hygiene Audit Automation Candidate\n\n"
@@ -373,6 +405,34 @@ def _activation_candidate_text(
         "## Explicit Approval\n\n"
         f"- Approval status: {approval_status}\n\n"
         f"{residual_risks}"
+    )
+
+
+def _professional_code_automation_candidate_text() -> str:
+    return (
+        "# Professional Code Authoring Automation Candidate\n\n"
+        "Automation type: professional-code-authoring\n"
+        "Readiness: candidate_only\n\n"
+        "## Owner\n\n"
+        "- Accountable owner: Quality\n\n"
+        "## Cadence\n\n"
+        "- Trigger: manual only until explicit approval\n"
+        "- Frequency: after Batch 45 manual pilot evidence\n\n"
+        "## Stable Inputs\n\n"
+        "- Inputs: coding-standard checklist, owner feedback ledger and professional-code eval report\n\n"
+        "## Stable Outputs\n\n"
+        "- Outputs: staged coding-standard improvement candidate packet only\n\n"
+        "## Verification\n\n"
+        "- Deterministic checks: python -m unittest tests.product_agent_os.test_self_learning_state -v\n"
+        "- Successful manual workflow runs: 3\n\n"
+        "## Failure Modes\n\n"
+        "- Known failure: shortcut-resistance false positive or missing rollback target\n\n"
+        "## Rollback Or Disable Path\n\n"
+        "- Disable path: remove candidate packet and keep current coding-standard templates\n\n"
+        "## Explicit Write Policy\n\n"
+        "- Allowed write targets: staged artifacts only\n\n"
+        "## Explicit Approval\n\n"
+        "- Approval status: not requested\n"
     )
 
 

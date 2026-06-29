@@ -1,0 +1,133 @@
+{
+  "schema_version": "batch45_professional_code_s5_learning_automation_summary_v1",
+  "evidence_id": "B45-S5-M23-M14-A01",
+  "created_at": "2026-06-29",
+  "status": "implemented_s5_synthetic_green",
+  "closure_level": "synthetic_green",
+  "scope": "Batch 45 S5 candidate-only learning-loop and automation-candidate policy for future Product-Agent OS Professional Code Authoring improvements.",
+  "source_contract": "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md",
+  "row_status": {
+    "B45-PCA-M23": "implemented_candidate_only_synthetic_green",
+    "B45-PCA-M14": "implemented_full_batch45_closure_after_m23"
+  },
+  "candidate_policy": {
+    "candidate_kind": "professional_code_authoring_improvement",
+    "status": "candidate_only",
+    "allowed_update_targets": [
+      "plugins/product-agent-os/assets/templates/workflows/coding-standards.md",
+      "plugins/product-agent-os/assets/templates/artifact-templates/coding-standard-checklist.md",
+      "plugins/product-agent-os/assets/templates/evals/behavioral-workflows.json",
+      "plugins/product-agent-os/assets/templates/evals/agent-context-contract.json",
+      "plugins/product-agent-os/assets/templates/automations/automation-candidate.md",
+      "plugins/product-agent-os/assets/templates/artifact-templates/hook-governance.md",
+      "plugins/product-agent-os/skills/learning-loop-maintainer/SKILL.md",
+      "plugins/product-agent-os/skills/automation-promoter/SKILL.md",
+      ".codex/automation-candidates/self-learning-automation-candidate.md"
+    ],
+    "minimum_manual_successful_runs": 3,
+    "future_activation_handoff_required": true,
+    "required_review_gates": [
+      "owner_review",
+      "rollback_or_disable_path",
+      "false_positive_audit",
+      "flake_replay",
+      "cost_check",
+      "no_hidden_telemetry_or_raw_private_chat"
+    ]
+  },
+  "implemented_surfaces": {
+    "self_learning_candidate_generation": [
+      "plugins/product-agent-os/scripts/product_agent_os/self_learning_candidates.py"
+    ],
+    "self_learning_metrics_taxonomy": [
+      "plugins/product-agent-os/scripts/product_agent_os/self_learning_metrics.py"
+    ],
+    "automation_policy_guardrails": [
+      "plugins/product-agent-os/scripts/product_agent_os/automation_policy.py"
+    ],
+    "skills": [
+      "plugins/product-agent-os/skills/learning-loop-maintainer/SKILL.md",
+      "plugins/product-agent-os/skills/automation-promoter/SKILL.md"
+    ],
+    "automation_candidate_templates": [
+      ".codex/automation-candidates/self-learning-automation-candidate.md",
+      "plugins/product-agent-os/assets/templates/automations/automation-candidate.md"
+    ],
+    "tests": [
+      "tests/product_agent_os/test_self_learning_state.py",
+      "tests/product_agent_os/test_agent_skill_metrics.py",
+      "tests/product_agent_os/test_automation_policy.py",
+      "tests/product_agent_os/test_coding_standards_artifacts.py"
+    ],
+    "public_docs_and_control_plane": [
+      "docs/product-agent-os/coding-standards.md",
+      "docs/product-agent-os/coding-standards.en.md",
+      "docs/sources/registry.md",
+      "docs/sources/registry.en.md",
+      "PLAN.md",
+      "TEST.md",
+      "EVALS.md",
+      "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md"
+    ]
+  },
+  "supported_claims": [
+    "Self-Learning Loop candidate generation can stage Professional Code Authoring improvement candidates from aggregate metrics or owner feedback signals.",
+    "Professional Code Authoring automation candidates remain candidate_only and require manual pilot evidence before review.",
+    "Automation policy blocks active schedule, hook activation, global config mutation, target mutation, provider calls, external writes and auto-apply for this candidate class.",
+    "Public docs and source registry explain the candidate-only learning-loop boundary."
+  ],
+  "unsupported_claims": [
+    "real AI-agent behavior improvement",
+    "live runtime enforcement",
+    "hook activation or blocking code-quality hook",
+    "active automation or schedule creation",
+    "Self-Learning Loop auto-apply or prompt/skill/config mutation",
+    "provider/model/API call",
+    "browser proof",
+    "installed plugin cache refresh",
+    "target workspace mutation",
+    "raw private chat or hidden telemetry ingestion",
+    "git, release, deploy or publish action",
+    "root site freshness for the updated coding-standards page"
+  ],
+  "no_unapproved_actions": {
+    "hook_activation": false,
+    "automation_activation": false,
+    "active_schedule_creation": false,
+    "provider_call": false,
+    "browser_automation": false,
+    "runtime_launch": false,
+    "installed_plugin_cache_refresh": false,
+    "target_workspace_mutation": false,
+    "global_config_write": false,
+    "raw_private_chat_ingestion": false,
+    "hidden_telemetry": false,
+    "root_site_rebuild": false,
+    "git_stage_commit_push_pr": false,
+    "release_deploy_publish": false,
+    "external_write": false,
+    "auto_apply": false
+  },
+  "accepted_gaps": [
+    "root_site_freshness_for_updated_page_not_claimed",
+    "real_project_manual_pilot_not_run",
+    "runtime_activation_requires_later_exact_approval",
+    "RUNLOG.md not updated because current-cycle detail is source-owned here and RUNLOG is at the compact budget edge"
+  ],
+  "verification_plan": [
+    "python -m unittest tests.product_agent_os.test_self_learning_state tests.product_agent_os.test_agent_skill_metrics tests.product_agent_os.test_automation_policy tests.product_agent_os.test_infrastructure_templates -v",
+    "python -m unittest tests.product_agent_os.test_coding_standards_artifacts tests.product_agent_os.test_batch45_coding_standards tests.product_agent_os.test_batch45_s3_professional_code_authoring -v",
+    "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+    "python tools\\check_docs.py",
+    ".venv-docs\\Scripts\\mkdocs.exe build --strict --site-dir .docs-tools\\reports\\batch45-s5-mkdocs-strict-smoke",
+    "git diff --check"
+  ],
+  "verification_results": {
+    "self_learning_agent_metrics_automation_and_template_tests": "passed_165_tests",
+    "focused_batch45_coding_standards_tests": "passed_13_tests",
+    "tests.product_agent_os.test_product_agent_os_docs": "passed_99_tests",
+    "tools.check_docs": "passed",
+    "mkdocs_strict_smoke": "passed_with_project_local_venv_docs_mkdocs_under_docs_tools_reports",
+    "git_diff_check": "passed_with_crlf_normalization_warnings"
+  }
+}

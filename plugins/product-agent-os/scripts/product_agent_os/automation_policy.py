@@ -24,6 +24,7 @@ def validate_automation_candidate(candidate_file: str | Path) -> dict[str, Any]:
 def from_text(text: str, candidate_file: str) -> dict[str, Any]:
     manual_success_count = _manual_success_count(text)
     metrics_automation_candidate = _is_metrics_automation_candidate(text, candidate_file)
+    professional_code_automation_candidate = _is_professional_code_automation_candidate(text, candidate_file)
     active_schedule_present = _active_schedule_present(text)
     external_workflow_present = _external_workflow_present(text)
     github_actions_active = _github_actions_active(text)
@@ -64,6 +65,8 @@ def from_text(text: str, candidate_file: str) -> dict[str, Any]:
         errors.append("external write is forbidden")
     if metrics_automation_candidate and active_schedule_present:
         errors.append("active metrics automation is forbidden")
+    if professional_code_automation_candidate and active_schedule_present:
+        errors.append("active professional code automation is forbidden")
     if not stable_inputs_present:
         warnings.append("stable inputs are not documented")
     if not stable_outputs_present:
@@ -113,7 +116,7 @@ def from_text(text: str, candidate_file: str) -> dict[str, Any]:
         "blocked"
         if errors
         else "candidate_only"
-        if metrics_automation_candidate
+        if metrics_automation_candidate or professional_code_automation_candidate
         else "ready_for_manual_approval"
         if manual_success_count >= 2 and readiness_fields_present
         else "candidate_only"
@@ -134,6 +137,7 @@ def from_text(text: str, candidate_file: str) -> dict[str, Any]:
         owner_approval_present=owner_approval_present,
         accepted_residual_risks_present=accepted_residual_risks_present,
         metrics_automation_candidate=metrics_automation_candidate,
+        professional_code_automation_candidate=professional_code_automation_candidate,
         active_schedule_status="detected" if active_schedule_present else "not_created",
         github_actions_active=github_actions_active,
         codex_app_automation_active=codex_app_automation_active,
@@ -162,6 +166,7 @@ def _report(
     owner_approval_present: bool = False,
     accepted_residual_risks_present: bool = False,
     metrics_automation_candidate: bool = False,
+    professional_code_automation_candidate: bool = False,
     active_schedule_status: str = "not_applicable",
     github_actions_active: bool = False,
     codex_app_automation_active: bool = False,
@@ -191,6 +196,7 @@ def _report(
         "owner_approval_present": owner_approval_present,
         "accepted_residual_risks_present": accepted_residual_risks_present,
         "metrics_automation_candidate": metrics_automation_candidate,
+        "professional_code_automation_candidate": professional_code_automation_candidate,
         "active_schedule_status": active_schedule_status,
         "github_actions_active": github_actions_active,
         "codex_app_automation_active": codex_app_automation_active,
@@ -222,6 +228,17 @@ def _is_metrics_automation_candidate(text: str, candidate_file: str) -> bool:
         or "agent-skill-metrics" in lowered
         or "daily-agent-skill-metrics" in lowered
         or "weekly-agent-skill-metrics" in lowered
+    )
+
+
+def _is_professional_code_automation_candidate(text: str, candidate_file: str) -> bool:
+    lowered = f"{candidate_file}\n{text}".lower()
+    return (
+        "professional-code-authoring" in lowered
+        or "professional code authoring" in lowered
+        or "coding-standard" in lowered
+        or "coding standards" in lowered
+        or "code authoring standards" in lowered
     )
 
 

@@ -36,6 +36,7 @@ Read shared references when needed: [Lifecycle states](../references/lifecycle-s
 - Business/Product methodology evidence for internal workflow promotion when automation is justified by product or operating value: `product_hypothesis_present`, `value_proposition_evidence_present`, `analytics_tracking_plan_present`, `qualitative_feedback_loop_present`, `release_measurement_evidence_present`, `decision_horizon_present`, `outcome_metric_level_separated`, `metric_scope_classified`, `.codex/artifact-templates/tracking-plan.md`, engineering time saved, owner acceptance, and residual risk.
 - Write policy preference: `read_only`, `draft_only`, or `approved_write`.
 - Approval requirements, owner approval status, accepted residual risks, scope boundaries, source status, and unsupported claims.
+- Professional Code Authoring automation-candidate scope when future improvements to coding-standard templates, skills, evals, hook-governance or learning-loop candidate generation are proposed.
 
 ## Process
 
@@ -50,7 +51,8 @@ Read shared references when needed: [Lifecycle states](../references/lifecycle-s
 9. Keep `product_hypothesis_present`, `qualitative_feedback_loop_present`, `release_measurement_evidence_present`, and `decision_horizon_present` explicit when the automation candidate is promoted as a product or workflow improvement.
 10. Block active promotion when manual stability evidence, deterministic command evidence, owner approval, rollback_or_disable, value evidence, or accepted residual risks are missing.
 11. Produce a future activation handoff only as a staged approval packet. Current state remains `schedule_status: not_created`; GitHub Actions, Codex App automation, hook activation and external writes stay forbidden until a separate approved activation slice.
-12. Return next lifecycle state `maintenance` only when candidate readiness and blockers are explicit.
+12. For Professional Code Authoring automation candidates, keep readiness `candidate_only` even when manual stability exists. Require at least three successful manual pilot uses, deterministic focused tests, owner approval, accepted residual risks, rollback/disable path, false-positive audit, flake replay and cost check before a later activation review can be discussed.
+13. Return next lifecycle state `maintenance` only when candidate readiness and blockers are explicit.
 
 ## Outputs
 
@@ -89,6 +91,26 @@ automation_candidate:
     tracking_plan_artifact: ".codex/artifact-templates/tracking-plan.md"
     engineering_time_saved: ""
     residual_risk: ""
+  professional_code_authoring_candidate:
+    applies_when: "coding-standard templates, skills, evals, hook-governance or learning-loop candidate generation would change"
+    candidate_policy: "candidate_only"
+    minimum_manual_successful_runs: 3
+    deterministic_checks: []
+    required_before_activation_review:
+      - "owner approval"
+      - "accepted residual risks"
+      - "rollback or disable path"
+      - "false-positive audit"
+      - "flake replay"
+      - "cost check"
+    forbidden_current_slice:
+      - "active schedule"
+      - "hook activation"
+      - "Codex App automation"
+      - "GitHub Actions workflow"
+      - "provider/model call"
+      - "target workspace mutation"
+      - "external write"
   approval_required: []
   accepted_residual_risks: []
   readiness: "candidate_only"

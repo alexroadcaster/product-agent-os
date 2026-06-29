@@ -123,6 +123,17 @@ or auto-apply.
 
 ## Batch 45 Professional Code Authoring Checks
 
+For `B45-S5` learning-loop and automation-candidate policy, run:
+
+```powershell
+python -m unittest tests.product_agent_os.test_self_learning_state tests.product_agent_os.test_agent_skill_metrics tests.product_agent_os.test_automation_policy tests.product_agent_os.test_infrastructure_templates -v
+python -m unittest tests.product_agent_os.test_coding_standards_artifacts tests.product_agent_os.test_batch45_coding_standards tests.product_agent_os.test_batch45_s3_professional_code_authoring -v
+python -m unittest tests.product_agent_os.test_product_agent_os_docs -v
+python tools\check_docs.py
+.venv-docs\Scripts\mkdocs.exe build --strict --site-dir .docs-tools\reports\batch45-s5-mkdocs-strict-smoke
+git diff --check
+```
+
 For `B45-S4` public docs/source cross-linking and closure-through-S4, run:
 
 ```powershell
@@ -144,12 +155,14 @@ git diff --check
 ```
 
 The focused B45 route must keep Professional Code Authoring as
-`docs_contract_ready` / generated-view visibility until later approved runtime
-or owner-pilot evidence exists. S4 adds public docs and source cross-links but
-does not claim root `site` freshness for the new page unless a root site build
-is approved and run. It must not claim hook activation, automation,
+`docs_contract_ready` / `synthetic_green` / generated-view visibility until
+later approved runtime or owner-pilot evidence exists. S5 adds candidate-only
+learning-loop and automation-candidate policy with
+`minimum_manual_successful_runs: 3`; it does not claim root `site` freshness
+for the updated page unless a root site build is approved and run. It must not
+claim hook activation, active automation, schedule creation,
 provider/browser/runtime proof, plugin-cache refresh, target mutation,
-git/release/deploy/publish or real AI-agent behavior improvement from S0-S4.
+git/release/deploy/publish or real AI-agent behavior improvement from S0-S5.
 
 ## Control-Plane Size Budgets
 

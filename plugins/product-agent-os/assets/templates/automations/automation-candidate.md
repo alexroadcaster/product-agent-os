@@ -68,6 +68,20 @@ candidate_only: true
 Automation must not be enabled until the owner records explicit approval, stable inputs, expected outputs, rollback or disable path, monitoring, and write policy.
 Activation also requires accepted residual risks and a separate approval packet for any schedule, hook activation, GitHub Actions workflow, Codex App automation, external write or other privileged operation.
 
+## Professional Code Authoring Candidate Gate
+
+Use this gate when the candidate would update coding-standard templates, skills,
+evals, hook-governance candidates or learning-loop candidate generation.
+
+- Candidate policy: candidate_only
+- Minimum manual successful runs: 3
+- Owner review: required before apply
+- Rollback evidence: required before apply
+- False-positive audit: required before apply
+- Flake replay: required before apply
+- Cost check: required before apply
+- Forbidden current slice: auto-apply, active schedule, hook activation, provider call, global config mutation, target workspace mutation, raw transcript storage, hidden telemetry, external write.
+
 ## Future Activation Handoff
 
 activation_gate:

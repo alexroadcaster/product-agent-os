@@ -2,7 +2,7 @@
 
 Source status: `project-authored + research-backed + experiment`
 
-Источники: Batch 45 research packets `plugins/product-agent-os/assets/research/ai-agent-coding-standards-research.md` и `plugins/product-agent-os/assets/research/ai-agent-coding-literature-research.md`, [Development Standards](development-standards.md), [Artifact Contracts](artifact-contracts.md), [Behavioral evals](behavioral-evals.md), [Scenarios](scenarios.md), [Code Review playbook](../playbooks/code-review.md).
+Источники: Batch 45 research packets `plugins/product-agent-os/assets/research/ai-agent-coding-standards-research.md` и `plugins/product-agent-os/assets/research/ai-agent-coding-literature-research.md`, Batch 45 S5 packet `docs/superpowers/specs/batch45-professional-code-s5-learning-automation-summary.json`, [Development Standards](development-standards.md), [Artifact Contracts](artifact-contracts.md), [Behavioral evals](behavioral-evals.md), [Scenarios](scenarios.md), [Code Review playbook](../playbooks/code-review.md).
 
 Professional Code Authoring - это слой Product-Agent OS для не механических задач написания кода. Его цель проста: агент сначала ищет уже существующую возможность, стандартную библиотеку, фреймворк, конфигурацию или локальный helper, и только потом пишет новый код. Хороший результат может быть одной строкой, удалением лишнего кода или настройкой existing behavior, если это закрывает acceptance criteria с меньшим долгом.
 
@@ -32,6 +32,14 @@ Product-Agent OS применяет этот стандарт через staged 
 | Evals | `behavioral-workflows.json`, agent-context contract and focused tests reject shortcut behavior. | Local deterministic coverage only. |
 | Runtime route and HTML | `professional_code_authoring` appears as recommendation/visibility. | Generated view is `orientation_only_not_proof`. |
 
+## Learning-loop improvement policy
+
+Self-Learning Loop может предлагать будущие Professional Code Authoring improvements только как review candidates. Источники кандидатов - aggregate metrics, owner feedback, eval failures и manual pilot evidence; raw private chat bodies и hidden telemetry запрещены.
+
+Кандидат может указывать только staged update targets: coding standards workflow, coding-standard checklist, behavioral/agent-context evals, hook-governance candidate docs и learning-loop/automation-promoter skill guidance. До review на promotion он должен иметь `minimum_manual_successful_runs: 3`, owner review, rollback/disable path, false-positive audit, flake replay и cost check.
+
+До отдельного approval-gated batch Product-Agent OS не должен auto-apply такие candidates, activate hooks, create schedules, change global config, call providers, mutate target projects, ingest raw private chat или выполнять external writes.
+
 ## Senior leverage ladder
 
 Use this order before writing new code:
@@ -46,13 +54,13 @@ Use this order before writing new code:
 
 ## Evidence ceiling
 
-Batch 45 currently supports `docs_contract_ready` / `synthetic_green` claims for local source artifacts, templates, eval cases, discovery/readiness visibility, runtime route visibility and generated HTML visibility. It does not prove that AI agents now write enterprise-quality code in real projects.
+Batch 45 currently supports `docs_contract_ready` / `synthetic_green` claims for local source artifacts, templates, eval cases, discovery/readiness visibility, runtime route visibility, generated HTML visibility and candidate-only learning-loop/automation policy. It does not prove that AI agents now write enterprise-quality code in real projects.
 
 Unsupported without a later approval-gated batch:
 
 - live runtime or browser behavior;
 - hook activation or blocking enforcement;
-- automation or Self-Learning Loop auto-apply;
+- active automation, schedule creation or Self-Learning Loop auto-apply;
 - provider/model/API calls;
 - installed plugin cache refresh;
 - target workspace mutation;

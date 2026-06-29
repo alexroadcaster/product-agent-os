@@ -15,6 +15,12 @@ SUMMARY = (
     / "specs"
     / "batch45-professional-code-s4-public-docs-closure-summary.json"
 )
+S5_SUMMARY = (
+    DOCS
+    / "superpowers"
+    / "specs"
+    / "batch45-professional-code-s5-learning-automation-summary.json"
+)
 sys.path.insert(0, str(SCRIPTS))
 
 from product_agent_os.templates import required_templates, template_by_target  # noqa: E402
@@ -36,6 +42,8 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             "legacy_seam_check",
             "comment_policy",
             "cleverness_budget",
+            "minimum_manual_successful_runs: 3",
+            "candidate-only learning-loop/automation policy",
             "orientation_only_not_proof",
             "does not prove that ai agents now write enterprise-quality code in real projects",
         ]:
@@ -143,6 +151,42 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
                 self.assertFalse(performed)
 
         self.assertIn("root_site_freshness_for_new_page_not_claimed", packet["accepted_gaps"])
+
+    def test_s5_learning_automation_packet_closes_m23_without_activation(self):
+        packet = json.loads(S5_SUMMARY.read_text(encoding="utf-8"))
+        self.assertEqual(
+            "batch45_professional_code_s5_learning_automation_summary_v1",
+            packet["schema_version"],
+        )
+        self.assertEqual("B45-S5-M23-M14-A01", packet["evidence_id"])
+        self.assertEqual("implemented_s5_synthetic_green", packet["status"])
+        self.assertEqual(
+            "implemented_candidate_only_synthetic_green",
+            packet["row_status"]["B45-PCA-M23"],
+        )
+        self.assertEqual(
+            "implemented_full_batch45_closure_after_m23",
+            packet["row_status"]["B45-PCA-M14"],
+        )
+        self.assertEqual("candidate_only", packet["candidate_policy"]["status"])
+        self.assertEqual(3, packet["candidate_policy"]["minimum_manual_successful_runs"])
+        self.assertTrue(packet["candidate_policy"]["future_activation_handoff_required"])
+
+        for required in [
+            "owner_review",
+            "rollback_or_disable_path",
+            "false_positive_audit",
+            "flake_replay",
+            "cost_check",
+            "no_hidden_telemetry_or_raw_private_chat",
+        ]:
+            self.assertIn(required, packet["candidate_policy"]["required_review_gates"])
+
+        for action, performed in packet["no_unapproved_actions"].items():
+            with self.subTest(action=action):
+                self.assertFalse(performed)
+
+        self.assertIn("real_project_manual_pilot_not_run", packet["accepted_gaps"])
 
 
 if __name__ == "__main__":

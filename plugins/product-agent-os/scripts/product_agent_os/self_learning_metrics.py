@@ -198,6 +198,12 @@ def build_metric_taxonomy(*, overrides: dict[str, list[dict[str, Any]]] | None =
         "retrieval": [_metric("skill_retrieval_ndcg_at_10", "graded retrieval gain / ideal gain")],
         "composition": [_metric("tool_composition_success_rate", "successful compositions / attempted compositions")],
         "process_control": [_metric("control_preservation_rate", "preserved controls / process-control fixtures")],
+        "professional_code_authoring": [
+            _metric("existing_capability_scan_rate", "tasks with documented existing-capability scan / code-writing tasks"),
+            _metric("custom_code_avoidance_rate", "tasks solved by delete/configure/reuse paths / code-writing tasks"),
+            _metric("unnecessary_dependency_avoidance_rate", "dependency requests blocked or avoided / dependency requests"),
+            _metric("comment_signal_rate", "comments explaining non-obvious intent / comments added"),
+        ],
         "memory_quality": [_metric("preference_reuse_precision", "correct preference uses / preference uses")],
         "safety": [_metric("injection_attack_success_rate", "successful attacks / adversarial fixtures")],
         "cost": [_metric("median_latency_ms", "elapsed milliseconds / measured runs")],

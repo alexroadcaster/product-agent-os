@@ -10,6 +10,18 @@ from typing import Any
 SELF_LEARNING_CANDIDATE_PACKET_SCHEMA_VERSION = "self_learning_candidate_packet_v1"
 SELF_LEARNING_FORBIDDEN_ACTION_REPORT_SCHEMA_VERSION = "self_learning_forbidden_action_report_v1"
 CANDIDATE_PACKET_RELATIVE_PATH = ".codex/product-agent-os/self-learning-candidates.json"
+PROFESSIONAL_CODE_CANDIDATE_KIND = "professional_code_authoring_improvement"
+PROFESSIONAL_CODE_ALLOWED_UPDATE_TARGETS = [
+    "plugins/product-agent-os/assets/templates/workflows/coding-standards.md",
+    "plugins/product-agent-os/assets/templates/artifact-templates/coding-standard-checklist.md",
+    "plugins/product-agent-os/assets/templates/evals/behavioral-workflows.json",
+    "plugins/product-agent-os/assets/templates/evals/agent-context-contract.json",
+    "plugins/product-agent-os/assets/templates/automations/automation-candidate.md",
+    ".codex/automation-candidates/self-learning-automation-candidate.md",
+    "plugins/product-agent-os/skills/learning-loop-maintainer/SKILL.md",
+    "plugins/product-agent-os/skills/automation-promoter/SKILL.md",
+    "plugins/product-agent-os/assets/templates/artifact-templates/hook-governance.md",
+]
 
 
 _FORBIDDEN_ACTION_ALIASES = {
@@ -94,6 +106,9 @@ def build_self_learning_candidate_packet(
                 ],
             )
         )
+
+    for finding in _professional_code_findings(metrics, feedback):
+        candidates.append(_professional_code_candidate(finding, metrics))
 
     safety_report = evaluate_forbidden_action_fixtures(candidates)
     return {
@@ -189,6 +204,10 @@ def validate_candidate_packet(packet: Any) -> list[str]:
             errors.append(f"{candidate_id}.auto_apply:must_be_disabled")
         if candidate.get("approval_state") != "not_requested":
             errors.append(f"{candidate_id}.approval_state:must_be_not_requested")
+        if candidate.get("candidate_kind") == PROFESSIONAL_CODE_CANDIDATE_KIND:
+            for field in ("manual_pilot_gate", "allowed_update_targets", "forbidden_until_approval"):
+                if not candidate.get(field):
+                    errors.append(f"{candidate_id}.{field}:required")
     return errors
 
 
@@ -286,12 +305,126 @@ def _candidate(
     }
 
 
+def _professional_code_candidate(finding: dict[str, Any], metrics: dict[str, Any]) -> dict[str, Any]:
+    finding_type = str(finding.get("finding_type") or finding.get("id") or "professional_code_authoring_gap")
+    target_id = str(finding.get("target_id") or "workflow:coding-standards")
+    evidence_refs = _metric_evidence_refs(metrics)
+    evidence_refs.extend(str(item) for item in finding.get("evidence_refs", []) if str(item))
+    candidate = _candidate(
+        component="professional_code_authoring",
+        target_id=target_id,
+        reason=str(finding.get("reason") or f"Professional Code Authoring finding requires review: {finding_type}."),
+        evidence_refs=sorted(set(evidence_refs)),
+        metric_deltas={
+            "finding_type": finding_type,
+            "professional_code_authoring_signal": str(finding.get("signal") or "candidate_review"),
+            "metric_delta_count": metrics.get("metric_delta_count", 0),
+        },
+        feedback_refs=[str(item) for item in finding.get("feedback_refs", []) if str(item)],
+        expected_impact=str(
+            finding.get("expected_impact")
+            or "Improve reuse-first code authoring guidance while preserving owner-reviewed candidate-only changes."
+        ),
+        risk=str(finding.get("risk") or "medium"),
+        rollback_target=str(finding.get("rollback_target") or "current_professional_code_authoring_contract"),
+        tests_required=[
+            "python -m unittest tests.product_agent_os.test_batch45_coding_standards -v",
+            "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+            "python -m unittest tests.product_agent_os.test_self_learning_state -v",
+            "python -m unittest tests.product_agent_os.test_automation_policy -v",
+        ],
+    )
+    candidate.update(
+        {
+            "candidate_kind": PROFESSIONAL_CODE_CANDIDATE_KIND,
+            "allowed_update_targets": list(PROFESSIONAL_CODE_ALLOWED_UPDATE_TARGETS),
+            "manual_pilot_gate": {
+                "minimum_manual_successful_runs": 3,
+                "owner_review": "required_before_apply",
+                "rollback_evidence": "required_before_apply",
+                "false_positive_audit": "required_before_apply",
+                "flake_replay": "required_before_apply",
+                "cost_check": "required_before_apply",
+                "future_activation_handoff_required": True,
+            },
+            "forbidden_until_approval": [
+                "auto_apply",
+                "hook_activation",
+                "active_schedule_creation",
+                "provider_call",
+                "global_config_mutation",
+                "target_mutation",
+                "raw_transcript_storage",
+                "hidden_telemetry",
+                "git_action",
+                "release_deploy_publish",
+                "external_write",
+            ],
+        }
+    )
+    return candidate
+
+
 def _metric_evidence_refs(metrics: dict[str, Any]) -> list[str]:
     refs = [str(item) for item in metrics.get("latest_report_paths", []) if str(item)]
     latest_run_id = metrics.get("latest_run_id")
     if latest_run_id:
         refs.append(f"metrics_run:{latest_run_id}")
     return refs or ["metrics_summary"]
+
+
+def _professional_code_findings(metrics: dict[str, Any], feedback: dict[str, Any]) -> list[dict[str, Any]]:
+    findings: list[dict[str, Any]] = []
+    findings.extend(_normalized_findings(metrics.get("professional_code_authoring_findings"), source="metrics"))
+    findings.extend(_normalized_findings(feedback.get("professional_code_authoring_feedback"), source="feedback"))
+    for flag in [str(flag) for flag in metrics.get("regression_flags", [])]:
+        if _is_professional_code_signal(flag):
+            findings.append(
+                {
+                    "finding_type": flag,
+                    "signal": "regression_flag",
+                    "reason": f"Professional Code Authoring regression flag needs candidate-only review: {flag}.",
+                    "evidence_refs": _metric_evidence_refs(metrics),
+                    "target_id": "workflow:coding-standards",
+                }
+            )
+    unique: dict[str, dict[str, Any]] = {}
+    for finding in findings:
+        key = f"{finding.get('source')}:{finding.get('finding_type')}:{finding.get('target_id')}"
+        unique[key] = finding
+    return list(unique.values())[:5]
+
+
+def _normalized_findings(value: Any, *, source: str) -> list[dict[str, Any]]:
+    if not isinstance(value, list):
+        return []
+    findings: list[dict[str, Any]] = []
+    for index, item in enumerate(value, start=1):
+        if not isinstance(item, dict):
+            continue
+        finding = dict(item)
+        finding.setdefault("source", source)
+        finding.setdefault("finding_type", f"{source}_professional_code_finding_{index}")
+        finding.setdefault("target_id", "workflow:coding-standards")
+        findings.append(finding)
+    return findings
+
+
+def _is_professional_code_signal(value: str) -> bool:
+    normalized = value.lower().replace("-", "_")
+    return any(
+        signal in normalized
+        for signal in [
+            "professional_code",
+            "coding_standard",
+            "custom_code_bloat",
+            "unnecessary_dependency",
+            "existing_capability_scan",
+            "comment_noise",
+            "shallow_wrapper",
+            "legacy_rewrite",
+        ]
+    )
 
 
 def _blocked_action_types(action: Any) -> set[str]:
