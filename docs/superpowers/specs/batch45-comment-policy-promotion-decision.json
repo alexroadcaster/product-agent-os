@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "task_id": "B45-PCA-M27",
+  "status": "implemented_promotion_no_go_keep_advisory_only",
+  "closure_level": "docs_contract_ready",
+  "generated_at": "2026-06-30T15:46:05+03:00",
+  "decision_target": "Record the post-audit promotion decision for the Batch 45 comment-sufficiency advisory after M24 false-positive audit, M25 local advisory wiring and M26 live behavior eval evidence.",
+  "decision": {
+    "state": "keep_advisory_only_no_go_for_blocker_or_ci",
+    "promoted_surface": "local_non_blocking_post_tool_use_advisory",
+    "stronger_advisory_promoted": false,
+    "ci_wiring_promoted": false,
+    "blocker_enforcement_promoted": false,
+    "active_automation_promoted": false,
+    "real_ai_agent_behavior_improvement_claimed": false,
+    "reason": "M24/M25 proved a bounded local advisory can run with reviewer-sized warning output, but M26 did not prove real AI-agent behavior improvement: treatment average was lower than baseline, treatment was worse on half of held-out tasks, one treatment run timed out and the independent reviewer decision was no_go.",
+    "next_state": "keep M25 advisory local, non-blocking and reversible; do not promote CI or blocker enforcement without a later owner-approved behavior improvement eval."
+  },
+  "evidence_used": [
+    {
+      "task_id": "B45-PCA-M24-A01",
+      "source": "docs/superpowers/specs/batch45-comment-sufficiency-false-positive-audit.json",
+      "summary": "Broad corpus audit inspected 934 Python/JS objects and produced stable warning_count 130, including 111 acceptable advisory, 9 false positive and 10 needs-rule-tuning classifications."
+    },
+    {
+      "task_id": "B45-PCA-M24-TUNING-A02",
+      "source": "docs/superpowers/specs/batch45-comment-sufficiency-tuning-comparison.json",
+      "summary": "Tuned default advisory scope reduced visible warning_count to 30 with suppressed_warning_count 102 while preserving raw compatibility replay."
+    },
+    {
+      "task_id": "B45-PCA-M25",
+      "source": "docs/superpowers/specs/batch45-comment-sufficiency-advisory-wiring-summary.json",
+      "summary": "Approved local PostToolUse advisory replay stayed non-blocking: synthetic missing-comment warning_count 1 with blocking false, current changed-file warning_count 0 and V3 replay warning_count 0."
+    },
+    {
+      "task_id": "B45-PCA-M26",
+      "source": "docs/superpowers/specs/batch45-agent-behavior-eval-results.json",
+      "summary": "Approved live held-out eval ran 16 task runs plus one reviewer call: 15 completed, 1 timed out, baseline average 4.22, treatment average 3.88, warnings 29 -> 15 and reviewer decision no_go."
+    }
+  ],
+  "approval_boundary": {
+    "new_live_provider_or_model_call_performed": false,
+    "browser_automation_performed": false,
+    "target_workspace_mutated": false,
+    "ci_workflow_created": false,
+    "blocker_enforcement_enabled": false,
+    "active_automation_created": false,
+    "installed_plugin_cache_refreshed": false,
+    "git_action_performed": false,
+    "release_deploy_publish_performed": false,
+    "raw_private_trace_captured_in_repo": false
+  },
+  "rollback_or_disable_path": [
+    "Set B45_COMMENT_ADVISORY_DISABLED=1 to disable the local advisory.",
+    "Remove the comment_sufficiency_advisory.py PostToolUse command from .codex/hooks.json and .codex/hooks/hooks.json if the advisory must be fully detached.",
+    "Remove the packaged comment_sufficiency_advisory.py hook template only in a later approved rollback slice."
+  ],
+  "residual_risks": [
+    "M26 treatment reduced advisory warnings but did not improve aggregate behavior quality.",
+    "One M26 treatment run timed out, so promotion evidence is weaker rather than stronger.",
+    "M26 did not provide actual provider USD cost from CLI output.",
+    "No CI or blocker safety evidence exists; promoting enforcement would require a fresh approval-gated eval and rollback plan."
+  ],
+  "unsupported_claims": [
+    "Does not prove real AI-agent behavior improvement.",
+    "Does not prove enterprise-quality code in real projects.",
+    "Does not approve CI workflow creation or blocker enforcement.",
+    "Does not prove browser/runtime behavior, target mutation safety, installed plugin cache freshness, release readiness, deploy readiness or publication readiness."
+  ],
+  "future_reconsideration_gate": {
+    "required_before_any_promotion": [
+      "owner-approved fresh treatment design",
+      "held-out behavior eval with treatment average above baseline and no critical regressions",
+      "false-positive and flake replay for the exact promoted surface",
+      "rollback or disable path for any stronger advisory, CI or blocker route",
+      "explicit approval for provider/model/API, CI, browser, target, git, release, deploy or publish actions if used"
+    ],
+    "current_recommendation": "keep_advisory_only"
+  }
+}

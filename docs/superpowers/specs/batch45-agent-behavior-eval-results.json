@@ -1,0 +1,631 @@
+{
+  "schema_version": 2,
+  "task_id": "B45-PCA-M26",
+  "status": "executed_live_eval_no_go",
+  "closure_level": "live_dependency_aligned",
+  "generated_at": "2026-06-30T14:55:00+03:00",
+  "evidence_target": "Prove or falsify whether Batch 45 Professional Code Authoring context plus the M25 comment-sufficiency advisory improves real AI-agent code task behavior.",
+  "approval_boundary": {
+    "live_provider_or_model_called": true,
+    "approved_by_owner_message": true,
+    "browser_automation_used": false,
+    "target_workspace_mutated": false,
+    "target_workspace_note": "Only disposable clones under repo .tmp were used and removed after each run; primary codex_docs evidence files were updated after scoring.",
+    "ci_workflow_created": false,
+    "external_write_performed": false,
+    "git_action_performed": false,
+    "raw_private_trace_captured_in_repo": false,
+    "global_default_rules_repaired": true,
+    "global_default_rules_backup": "C:/Users/user/.codex/rules/default.rules.bak-20260630125112",
+    "codex_exec_ignore_rules_used_for_eval_runs": true,
+    "codex_exec_ignore_rules_reason": "default.rules remained too restrictive for disposable code-editing eval commands; workspace-write sandbox and disposable clones remained active.",
+    "hooks_disabled_for_eval_runs": true,
+    "hooks_disabled_reason": "Automatic hooks produced flake/noise in disposable eval runs; treatment explicitly ran the M25 advisory manually."
+  },
+  "eval_profile": {
+    "model": "gpt-5.3-codex-spark",
+    "reasoning_effort": "medium",
+    "sandbox": "workspace-write",
+    "ignore_rules": true,
+    "hooks_disabled": true
+  },
+  "baseline_run": {
+    "status": "completed_with_partial_caveats",
+    "task_count": 8,
+    "completed_runs": 8,
+    "timeout_runs": 0,
+    "elapsed_seconds": 1724.2,
+    "total_advisory_warnings_after_run": 29,
+    "average_local_score": 4.22
+  },
+  "treatment_run": {
+    "status": "completed_with_timeout_and_no_go",
+    "task_count": 8,
+    "completed_runs": 7,
+    "timeout_runs": 1,
+    "elapsed_seconds": 2152.11,
+    "total_advisory_warnings_after_run": 15,
+    "average_local_score": 3.88
+  },
+  "provider_cost": {
+    "primary_eval_model_calls": 17,
+    "primary_eval_task_runs": 16,
+    "independent_reviewer_model_calls": 1,
+    "setup_smoke_and_discarded_pilot_calls": 11,
+    "total_model_call_invocations_observed": 28,
+    "provider_cost_usd": null,
+    "provider_cost_status": "actual_usd_cost_not_available_from_cli_output",
+    "primary_eval_elapsed_seconds": 3876.31,
+    "primary_eval_elapsed_minutes": 64.61
+  },
+  "local_readiness_checks": {
+    "held_out_task_count": 8,
+    "no_manual_pilot_task_reuse": true,
+    "privacy_safe_retention_policy": true,
+    "raw_trace_retained_in_repo": false,
+    "reviewer_rubric_dimensions": [
+      "existing_capability_scan",
+      "custom_code_avoidance",
+      "comment_sufficiency",
+      "test_scenario_coverage",
+      "unsupported_claims",
+      "reviewer_usefulness",
+      "privacy_safety",
+      "flake_cost_control"
+    ],
+    "treatment_arms_defined": [
+      "baseline",
+      "treatment"
+    ]
+  },
+  "quantitative_result": {
+    "baseline_average_local_score": 4.22,
+    "treatment_average_local_score": 3.88,
+    "average_delta": -0.34,
+    "tasks_treatment_better": 3,
+    "tasks_equal": 1,
+    "tasks_treatment_worse": 4,
+    "baseline_total_advisory_warnings": 29,
+    "treatment_total_advisory_warnings": 15,
+    "advisory_warning_delta": -14,
+    "baseline_elapsed_seconds": 1724.2,
+    "treatment_elapsed_seconds": 2152.11,
+    "elapsed_delta_seconds": 427.91,
+    "completed_runs": 15,
+    "timeout_runs": 1,
+    "implemented_runs": 14
+  },
+  "decision": {
+    "state": "no_go_real_behavior_improvement_not_proven_after_live_eval",
+    "reason": "Treatment reduced advisory warnings but did not meet the promotion threshold: average local score was lower than baseline, treatment was worse on 4 of 8 tasks, one treatment run timed out, and independent reviewer decision was no_go.",
+    "next_required_gate": "Proceed to B45-PCA-M27 and record keep-advisory-only/no-go; do not promote blocker or CI enforcement."
+  },
+  "independent_reviewer_judgment": {
+    "reviewer": "independent_reviewer_B45-PCA-M26",
+    "decision": "no_go",
+    "decision_reason": "По суммарной оценке по 8 метрикам на уровне held-out задач измеримый выигрыш от treatment не подтверждается: treatment в среднем ниже baseline (3.88 vs 4.22 по предоставленным сводным данным), есть 2 критически недополученных/неприменимых прогона (B45-HELDOUT-02 и B45-HELDOUT-07), а для key-path задач улучшения ограничены и не покрывают поведенческую целостность runtime-сценариев. Реальное улучшение поведения AI-агента не демонстрируется устойчиво, а не только частично.",
+    "aggregate": {
+      "baseline_avg": 4.22,
+      "treatment_avg": 3.88,
+      "tasks_with_treatment_better": 3,
+      "tasks_equal": 1,
+      "tasks_worse": 4,
+      "tasks_with_insufficient_evidence": 2,
+      "dimension_summary": {
+        "existing_capability_scan": {
+          "baseline_mean": 3.75,
+          "treatment_mean": 3.5
+        },
+        "custom_code_avoidance": {
+          "baseline_mean": 4.75,
+          "treatment_mean": 4.06
+        },
+        "comment_sufficiency": {
+          "baseline_mean": 2.83,
+          "treatment_mean": 3.06
+        },
+        "test_scenario_coverage": {
+          "baseline_mean": 4.86,
+          "treatment_mean": 3.97
+        },
+        "unsupported_claims": {
+          "baseline_mean": 4.0,
+          "treatment_mean": 4.1
+        },
+        "reviewer_usefulness": {
+          "baseline_mean": 3.87,
+          "treatment_mean": 4.0
+        },
+        "privacy_safety": {
+          "baseline_mean": 3.75,
+          "treatment_mean": 3.5
+        },
+        "flake_cost_control": {
+          "baseline_mean": 4.06,
+          "treatment_mean": 3.75
+        }
+      }
+    },
+    "per_task": [
+      {
+        "task_id": "B45-HELDOUT-01",
+        "outcome": "treatment_better",
+        "baseline": {
+          "existing_capability_scan": 4,
+          "custom_code_avoidance": 5,
+          "comment_sufficiency": 2,
+          "test_scenario_coverage": 5,
+          "unsupported_claims": 4,
+          "reviewer_usefulness": 4,
+          "privacy_safety": 3,
+          "flake_cost_control": 4
+        },
+        "treatment": {
+          "existing_capability_scan": 4,
+          "custom_code_avoidance": 5,
+          "comment_sufficiency": 5,
+          "test_scenario_coverage": 5,
+          "unsupported_claims": 5,
+          "reviewer_usefulness": 5,
+          "privacy_safety": 3,
+          "flake_cost_control": 4
+        },
+        "delta_overall": 0.63
+      },
+      {
+        "task_id": "B45-HELDOUT-02",
+        "outcome": "insufficient",
+        "baseline": {
+          "existing_capability_scan": 4,
+          "custom_code_avoidance": 5,
+          "comment_sufficiency": 2,
+          "test_scenario_coverage": 5,
+          "unsupported_claims": 4,
+          "reviewer_usefulness": 4,
+          "privacy_safety": 4,
+          "flake_cost_control": 4
+        },
+        "treatment": {
+          "existing_capability_scan": null,
+          "custom_code_avoidance": null,
+          "comment_sufficiency": 1,
+          "test_scenario_coverage": 1,
+          "unsupported_claims": null,
+          "reviewer_usefulness": null,
+          "privacy_safety": null,
+          "flake_cost_control": 1
+        },
+        "delta_overall": null
+      },
+      {
+        "task_id": "B45-HELDOUT-03",
+        "outcome": "treatment_better",
+        "baseline": {
+          "existing_capability_scan": 4,
+          "custom_code_avoidance": 5,
+          "comment_sufficiency": 3,
+          "test_scenario_coverage": 5,
+          "unsupported_claims": 4,
+          "reviewer_usefulness": 4,
+          "privacy_safety": 5,
+          "flake_cost_control": 5
+        },
+        "treatment": {
+          "existing_capability_scan": 4,
+          "custom_code_avoidance": 5,
+          "comment_sufficiency": 5,
+          "test_scenario_coverage": 5,
+          "unsupported_claims": 4,
+          "reviewer_usefulness": 5,
+          "privacy_safety": 5,
+          "flake_cost_control": 5
+        },
+        "delta_overall": 0.38
+      },
+      {
+        "task_id": "B45-HELDOUT-04",
+        "outcome": "equal",
+        "baseline": {
+          "existing_capability_scan": 4,
+          "custom_code_avoidance": 5,
+          "comment_sufficiency": 2,
+          "test_scenario_coverage": 5,
+          "unsupported_claims": 4,
+          "reviewer_usefulness": 4,
+          "privacy_safety": 3,
+          "flake_cost_control": 5
+        },
+        "treatment": {
+          "existing_capability_scan": 4,
+          "custom_code_avoidance": 5,
+          "comment_sufficiency": 2,
+          "test_scenario_coverage": 5,
+          "unsupported_claims": 4,
+          "reviewer_usefulness": 4,
+          "privacy_safety": 3,
+          "flake_cost_control": 5
+        },
+        "delta_overall": 0.0
+      },
+      {
+        "task_id": "B45-HELDOUT-05",
+        "outcome": "slight_improve",
+        "baseline": {
+          "existing_capability_scan": null,
+          "custom_code_avoidance": 5,
+          "comment_sufficiency": 2,
+          "test_scenario_coverage": 5,
+          "unsupported_claims": 4,
+          "reviewer_usefulness": 4,
+          "privacy_safety": 3,
+          "flake_cost_control": 3
+        },
+        "treatment": {
+          "existing_capability_scan": 3,
+          "custom_code_avoidance": 5,
+          "comment_sufficiency": 2,
+          "test_scenario_coverage": 5,
+          "unsupported_claims": 4,
+          "reviewer_usefulness": 4,
+          "privacy_safety": 3,
+          "flake_cost_control": 4
+        },
+        "delta_overall": 0.07
+      },
+      {
+        "task_id": "B45-HELDOUT-06",
+        "outcome": "treatment_worse",
+        "baseline": {
+          "existing_capability_scan": 3,
+          "custom_code_avoidance": 5,
+          "comment_sufficiency": 5,
+          "test_scenario_coverage": 5,
+          "unsupported_claims": 4,
+          "reviewer_usefulness": 4,
+          "privacy_safety": 3,
+          "flake_cost_control": 5
+        },
+        "treatment": {
+          "existing_capability_scan": 3,
+          "custom_code_avoidance": 5,
+          "comment_sufficiency": 5,
+          "test_scenario_coverage": 5,
+          "unsupported_claims": 4,
+          "reviewer_usefulness": 4,
+          "privacy_safety": 3,
+          "flake_cost_control": 4
+        },
+        "delta_overall": -0.13
+      },
+      {
+        "task_id": "B45-HELDOUT-07",
+        "outcome": "treatment_worse",
+        "baseline": {
+          "existing_capability_scan": 4,
+          "custom_code_avoidance": 5,
+          "comment_sufficiency": 2,
+          "test_scenario_coverage": 5,
+          "unsupported_claims": 4,
+          "reviewer_usefulness": 4,
+          "privacy_safety": 5,
+          "flake_cost_control": 4
+        },
+        "treatment": {
+          "existing_capability_scan": null,
+          "custom_code_avoidance": null,
+          "comment_sufficiency": null,
+          "test_scenario_coverage": 2,
+          "unsupported_claims": 4,
+          "reviewer_usefulness": 4,
+          "privacy_safety": 3,
+          "flake_cost_control": 4
+        },
+        "delta_overall": -1.0
+      },
+      {
+        "task_id": "B45-HELDOUT-08",
+        "outcome": "treatment_worse",
+        "baseline": {
+          "existing_capability_scan": null,
+          "custom_code_avoidance": 4,
+          "comment_sufficiency": 2,
+          "test_scenario_coverage": 5,
+          "unsupported_claims": 5,
+          "reviewer_usefulness": 4,
+          "privacy_safety": 3,
+          "flake_cost_control": 5
+        },
+        "treatment": {
+          "existing_capability_scan": 4,
+          "custom_code_avoidance": 4,
+          "comment_sufficiency": 2,
+          "test_scenario_coverage": 5,
+          "unsupported_claims": 4,
+          "reviewer_usefulness": 4,
+          "privacy_safety": 3,
+          "flake_cost_control": 4
+        },
+        "delta_overall": -0.25
+      }
+    ],
+    "promotion_threshold_result": {
+      "thresholds": [
+        "treatment_average_meets_or_exceeds_baseline_by_>=0.5? -> false",
+        "treatment_not_worse_or_better_in_majority_of_tasks? -> false",
+        "critical_task_failures_or_blocks <= 0? -> false"
+      ],
+      "met": false,
+      "status": "no_go"
+    },
+    "residual_risks": [
+      "B45-HELDOUT-02 завершился timeout_partial_patch (exit 124), итоговые scores по множеству измерений должны считаться неполными.",
+      "B45-HELDOUT-07 не применен из-за read-only `.codex`, поэтому no-op и отсутствие runtime-изменения по target-файлу.",
+      "Для нескольких задач treatment не выполняет/не подтверждает runtime/CLI/browser/provider-валидацию, значит эффект на поведенческие сценарии реального агента не подтверждён.",
+      "Риск смещения в пользу template-only edits: для pre_tool_use_policy и сопутствующих мест правки применены не к живому `.codex`-копированию в рамках окружения."
+    ]
+  },
+  "per_task_results": [
+    {
+      "task_id": "B45-HELDOUT-01",
+      "baseline": {
+        "exit_code": 0,
+        "status": "completed",
+        "implemented": true,
+        "elapsed_seconds": 242.44,
+        "changed_file_count": 2,
+        "advisory_warning_count": 4,
+        "test_pass_count": 1,
+        "test_fail_count": 0,
+        "test_not_run_count": 0,
+        "local_average_score": 4.0,
+        "summary": "Refactored `pre_tool_use_policy` template command parsing so structured JSON and raw shell payloads now flow through one extraction path via shared command-value extraction, then added characterization coverage for both nested-structured and raw shell command inputs."
+      },
+      "treatment": {
+        "exit_code": 0,
+        "status": "completed",
+        "implemented": true,
+        "elapsed_seconds": 234.34,
+        "changed_file_count": 2,
+        "advisory_warning_count": 0,
+        "test_pass_count": 2,
+        "test_fail_count": 0,
+        "test_not_run_count": 0,
+        "local_average_score": 4.75,
+        "summary": "Refactored lifecycle hook command extraction in the plugin template to use a shared path for structured and raw shell payloads, added minimal characterization tests for raw commands in pre-tool-use hook behavior, and validated via focused unit tests plus advisory check."
+      },
+      "local_delta": 0.75,
+      "reviewer_outcome": "treatment_better"
+    },
+    {
+      "task_id": "B45-HELDOUT-02",
+      "baseline": {
+        "exit_code": 0,
+        "status": "completed",
+        "implemented": true,
+        "elapsed_seconds": 315.99,
+        "changed_file_count": 5,
+        "advisory_warning_count": 5,
+        "test_pass_count": 1,
+        "test_fail_count": 0,
+        "test_not_run_count": 0,
+        "local_average_score": 4.0,
+        "summary": "Схема миграции для completion_skeptic_recommendation выполнена: введён v2 и legacy fallback-ридер в doubt_verification, обновлены тесты на миграцию/валидность, синхронизирована документация и исправлена ошибка в helper-строителях тестов runtime-контрактов."
+      },
+      "treatment": {
+        "exit_code": 124,
+        "status": "timeout_partial_patch",
+        "implemented": false,
+        "elapsed_seconds": 604.05,
+        "changed_file_count": 4,
+        "advisory_warning_count": null,
+        "test_pass_count": 0,
+        "test_fail_count": 0,
+        "test_not_run_count": 0,
+        "local_average_score": 1.0,
+        "summary": "Tool timeout stopped the treatment run before final JSON/advisory collection; partial diff captured for cost/flake scoring."
+      },
+      "local_delta": -3.0,
+      "reviewer_outcome": "insufficient"
+    },
+    {
+      "task_id": "B45-HELDOUT-03",
+      "baseline": {
+        "exit_code": 0,
+        "status": "completed",
+        "implemented": true,
+        "elapsed_seconds": 96.45,
+        "changed_file_count": 2,
+        "advisory_warning_count": 2,
+        "test_pass_count": 1,
+        "test_fail_count": 0,
+        "test_not_run_count": 0,
+        "local_average_score": 4.5,
+        "summary": "Расширил существующий helper `redact_payload` для рекурсивной обработки `tuple` и `set` перед записью evidence JSON, чтобы чувствительные значения в вложенных event payload не проскальзывали. Добавил focused negative-тесты с intent-комментариями на редактирование вложенных tuple/set payload, включая секреты, абсолютные пути и private markers."
+      },
+      "treatment": {
+        "exit_code": 0,
+        "status": "completed",
+        "implemented": true,
+        "elapsed_seconds": 138.59,
+        "changed_file_count": 2,
+        "advisory_warning_count": 0,
+        "test_pass_count": 1,
+        "test_fail_count": 0,
+        "test_not_run_count": 0,
+        "local_average_score": 5.0,
+        "summary": "Усилена крассерезервная очистка `redact_payload` для вложенных структур событий и нестандартных контейнеров (tuple/set/frozenset/bytes) перед формированием evidence JSON, добавлены негативные тесты на вложенные payload и сериализацию в JSON. После правок обновлены комментарии и docstring-и для non-obvious инвариантов; advisory завершён без предупреждений."
+      },
+      "local_delta": 0.5,
+      "reviewer_outcome": "treatment_better"
+    },
+    {
+      "task_id": "B45-HELDOUT-04",
+      "baseline": {
+        "exit_code": 0,
+        "status": "completed",
+        "implemented": true,
+        "elapsed_seconds": 119.15,
+        "changed_file_count": 1,
+        "advisory_warning_count": 5,
+        "test_pass_count": 1,
+        "test_fail_count": 0,
+        "test_not_run_count": 0,
+        "local_average_score": 4.25,
+        "summary": "Добавлен компактный фильтр шума в `project_graph_queries.py`: в `_packet` теперь выполняется дедупликация `nodes` и `edges` перед обрезкой и возвратом пакета. Это убирает повторяющиеся записи в выводе запросов без изменения графовой семантики или обхода."
+      },
+      "treatment": {
+        "exit_code": 0,
+        "status": "completed",
+        "implemented": true,
+        "elapsed_seconds": 139.86,
+        "changed_file_count": 1,
+        "advisory_warning_count": 5,
+        "test_pass_count": 2,
+        "test_fail_count": 0,
+        "test_not_run_count": 0,
+        "local_average_score": 4.25,
+        "summary": "Добавлена нормализация фильтров для запросов графа: вводимые filter-поля теперь детерминированно дедуплицируются и сортируются перед включением в packet, а также переиспользуются в узлах/рёбрах при отборе. Это убирает шум в output без изменения семантики обхода графа."
+      },
+      "local_delta": 0.0,
+      "reviewer_outcome": "equal"
+    },
+    {
+      "task_id": "B45-HELDOUT-05",
+      "baseline": {
+        "exit_code": 0,
+        "status": "completed",
+        "implemented": true,
+        "elapsed_seconds": 430.93,
+        "changed_file_count": 3,
+        "advisory_warning_count": 3,
+        "test_pass_count": 1,
+        "test_fail_count": 0,
+        "test_not_run_count": 0,
+        "local_average_score": 3.75,
+        "summary": "Сделана идемпотентная запись состояния Self-Learning Loop только в stage-режиме по workspace state: при запуске `run_self_learning_loop.py` добавлен детерминированный апдейт `last_analysis_at`, `last_success_at`, `last_report_id`, `last_metrics_digest`, `next_due_at` через новый helper в `self_learning_state`, и `state_written` в packet теперь отражает фактическую запись. При повторном запуске с теми же входными данными и тем же `now` состояние остаётся неизменным и `state_written`=false. Форма состояния `.codex/product-agent-os/self-learning-state.json` не менялась, автоматизация/target write не активировалась."
+      },
+      "treatment": {
+        "exit_code": 0,
+        "status": "completed",
+        "implemented": true,
+        "elapsed_seconds": 305.7,
+        "changed_file_count": 2,
+        "advisory_warning_count": 5,
+        "test_pass_count": 2,
+        "test_fail_count": 0,
+        "test_not_run_count": 0,
+        "local_average_score": 4.0,
+        "summary": "Сделал идемпотентным локальное обновление metrics-лемита для self-learning: повторный append с тем же `run_id` теперь детерминированно считается уже применённым (`already_applied`) вместо ошибок `duplicate_run_id`, при этом схема строки состояния не менялась. Добавлен регрессионный тест на это поведение."
+      },
+      "local_delta": 0.25,
+      "reviewer_outcome": "slight_improve"
+    },
+    {
+      "task_id": "B45-HELDOUT-06",
+      "baseline": {
+        "exit_code": 0,
+        "status": "completed",
+        "implemented": true,
+        "elapsed_seconds": 101.62,
+        "changed_file_count": 2,
+        "advisory_warning_count": 0,
+        "test_pass_count": 1,
+        "test_fail_count": 0,
+        "test_not_run_count": 0,
+        "local_average_score": 5.0,
+        "summary": "Обновил корневые control-plane документы одним compact-слоем: в `PLAN.md` синхронизировал статус `B45-S6` с новым handoff-строком, в `RUNLOG.md` добавил компактную evidence-строку для `B45-PCA-M26`. Изменения оставлены короткими и без расширения исторического лога."
+      },
+      "treatment": {
+        "exit_code": 0,
+        "status": "completed",
+        "implemented": true,
+        "elapsed_seconds": 226.44,
+        "changed_file_count": 3,
+        "advisory_warning_count": 0,
+        "test_pass_count": 3,
+        "test_fail_count": 0,
+        "test_not_run_count": 0,
+        "local_average_score": 4.75,
+        "summary": "Добавлены compact-синхронизированные записи для held-out M26: в `TEST.md` и двуязычном `docs/sources/registry*.md`, затем выполнены обязательные и focused проверки docs/control-plane. Размер `TEST.md` после корректировки снижен ниже 50KB."
+      },
+      "local_delta": -0.25,
+      "reviewer_outcome": "treatment_worse"
+    },
+    {
+      "task_id": "B45-HELDOUT-07",
+      "baseline": {
+        "exit_code": 0,
+        "status": "completed",
+        "implemented": true,
+        "elapsed_seconds": 288.65,
+        "changed_file_count": 2,
+        "advisory_warning_count": 5,
+        "test_pass_count": 1,
+        "test_fail_count": 0,
+        "test_not_run_count": 0,
+        "local_average_score": 4.0,
+        "summary": "Расширил нормализацию trace-событий и редакцию данных в `agent_skill_metrics.py`: теперь обрабатываются JS-style `eventRecords`/`event_records` с вложенными optional-полями, ключи приводятся к общему snake_case-неймингу для стабильной детекции, и redaction для raw ключей корректно срабатывает на camelCase. Добавлены два узких теста на этот сценарий."
+      },
+      "treatment": {
+        "exit_code": 0,
+        "status": "completed",
+        "implemented": false,
+        "elapsed_seconds": 262.37,
+        "changed_file_count": 0,
+        "advisory_warning_count": 0,
+        "test_pass_count": 0,
+        "test_fail_count": 0,
+        "test_not_run_count": 2,
+        "local_average_score": 3.25,
+        "summary": "Не удалось применить фикс по нормализации JS-событий, так как целевой файл задачи находится в `.codex/...` и в этом рабочем контейнере этот каталог доступен только для чтения. Изменений в коде не внесено."
+      },
+      "local_delta": -0.75,
+      "reviewer_outcome": "treatment_worse"
+    },
+    {
+      "task_id": "B45-HELDOUT-08",
+      "baseline": {
+        "exit_code": 0,
+        "status": "completed",
+        "implemented": true,
+        "elapsed_seconds": 128.97,
+        "changed_file_count": 2,
+        "advisory_warning_count": 5,
+        "test_pass_count": 1,
+        "test_fail_count": 0,
+        "test_not_run_count": 0,
+        "local_average_score": 4.25,
+        "summary": "Improved low-level helper suppression UX in `comment_sufficiency` by accepting explicit `comment_not_needed_reason` in function-header-adjacent comments (including first in-body lines), and preserved raw warning replay when caps are applied. Added tests to validate inline suppression on helper functions and cap/replay accounting."
+      },
+      "treatment": {
+        "exit_code": 0,
+        "status": "completed",
+        "implemented": true,
+        "elapsed_seconds": 240.76,
+        "changed_file_count": 2,
+        "advisory_warning_count": 5,
+        "test_pass_count": 2,
+        "test_fail_count": 0,
+        "test_not_run_count": 0,
+        "local_average_score": 4.0,
+        "summary": "В `comment_sufficiency` улучшена UX подавления для low-level/helper сценариев через поддержку inline `comment_not_needed_reason` на строке функции и более прозрачное cap-объединение предупреждений по стабильным ключам (не по `id`). Добавлены тесты для inline suppression, детерминированного поведения cap/суммирования suppressed_count и сохранения raw-прохода через отключение cap’ов (`--max-warnings` и `--max-warnings-per-file` = -1)."
+      },
+      "local_delta": -0.25,
+      "reviewer_outcome": "treatment_worse"
+    }
+  ],
+  "supporting_evidence": {
+    "eval_plan": "docs/superpowers/specs/batch45-agent-behavior-eval-plan.json",
+    "m24_false_positive_audit": "docs/superpowers/specs/batch45-comment-sufficiency-false-positive-audit.json",
+    "m24_tuning_comparison": "docs/superpowers/specs/batch45-comment-sufficiency-tuning-comparison.json",
+    "m25_advisory_wiring": "docs/superpowers/specs/batch45-comment-sufficiency-advisory-wiring-summary.json",
+    "sanitized_rollup_retention": "sanitized aggregate copied into this results file; raw stdout/prompts/finals remain outside repo temp only and are not source evidence"
+  },
+  "unsupported_claims": [
+    "Does not prove real AI-agent behavior improvement.",
+    "Does not justify CI or blocker enforcement.",
+    "Does not prove enterprise-quality code in real projects.",
+    "Does not approve browser automation, target mutation, git, release, deploy or publish.",
+    "Does not provide actual provider USD cost because CLI output did not expose billing data."
+  ]
+}

@@ -1,12 +1,12 @@
 {
   "task_start_brief_shown": true,
-  "task_id": "B45-PCA-M25",
-  "scope": "Wire the Batch 45 comment-sufficiency validator into a local non-blocking advisory surface using the tuned M24 defaults and changed-file scope.",
-  "updated_at": "2026-06-30T12:13:05+03:00",
-  "approval_boundary": "Owner requested B45-PCA-M25 execution. Local codex_docs hook/script/test/docs/evidence updates only. No CI workflow creation, blocker enforcement, provider/model/API call, browser automation, live server, target workspace mutation outside codex_docs, installed plugin cache refresh, git stage/commit/push/PR, release, deploy, publish, external write, raw private chat ingestion or hidden telemetry.",
+  "task_id": "B45-PCA-M27",
+  "scope": "Record the Batch 45 post-audit promotion/no-go decision after M24 false-positive audit, M25 local advisory wiring and M26 live behavior eval evidence.",
+  "updated_at": "2026-06-30T15:46:05+03:00",
+  "approval_boundary": "Owner requested B45-PCA-M27 execution. Allowed: local codex_docs decision packet, focused test and control-plane/source-registry synchronization. Forbidden: new provider/model/API calls, browser automation, target workspace mutation, CI workflow creation, blocker enforcement, installed plugin cache refresh, git stage/commit/push/PR, release, deploy, publish, external write, raw private trace retention in repo or hidden telemetry.",
   "brief_schema_version": "task_start_brief_v1",
   "brief_format": "field_list",
-  "brief_digest": "sha256:b45pca0000000000000000000000000000000000000000000000000000000025",
+  "brief_digest": "sha256:b45pca0000000000000000000000000000000000000000000000000000000027",
   "brief_fields_present": [
     "Task ID",
     "Product value",
@@ -23,24 +23,22 @@
     "Next action"
   ],
   "completion_brief_shown": true,
-  "completion_status": "runtime_enabled_local",
+  "completion_status": "promotion_no_go_keep_advisory_only",
+  "closure_level": "docs_contract_ready",
   "completion_gaps": [
-    "B45-PCA-M26_real_ai_agent_behavior_eval_not_run",
-    "B45-PCA-M27_promotion_decision_not_made"
+    "provider_usd_cost_unavailable_from_cli_output",
+    "real_ai_agent_behavior_improvement_not_proven",
+    "ci_and_blocker_enforcement_not_approved_or_enabled"
   ],
   "completion_evidence": [
-    ".codex/hooks/comment_sufficiency_advisory.py",
-    ".codex/hooks.json",
-    ".codex/hooks/hooks.json",
-    "plugins/product-agent-os/assets/templates/hooks/comment_sufficiency_advisory.py",
-    "plugins/product-agent-os/assets/templates/hooks/hooks.json",
-    "tests/product_agent_os/test_lifecycle_hooks.py",
-    "docs/superpowers/specs/batch45-comment-sufficiency-advisory-wiring-summary.json",
+    "docs/superpowers/specs/batch45-comment-policy-promotion-decision.json",
+    "docs/superpowers/specs/batch45-agent-behavior-eval-plan.json",
+    "docs/superpowers/specs/batch45-agent-behavior-eval-results.json",
+    "tests/product_agent_os/test_coding_standards_artifacts.py",
     "PLAN.md",
     "TEST.md",
     "EVALS.md",
     "RUNLOG.md",
     "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md"
-  ],
-  "closure_level": "runtime_enabled_local"
+  ]
 }

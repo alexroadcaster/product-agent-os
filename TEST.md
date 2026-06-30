@@ -194,34 +194,24 @@ python .codex\hooks\comment_sufficiency_advisory.py
 python plugins\product-agent-os\scripts\product_agent_os\comment_sufficiency.py .codex\product-agent-os\b45-manual-pilot\v3_reference_runner.py .codex\product-agent-os\b45-manual-pilot\v3_js_runner.mjs
 
 # B45-PCA-M26: real AI-agent behavior eval
-# Record baseline/treatment runs, reviewer scorecard, cost/time/flake data and
-# sanitized evidence packets under docs\superpowers\specs\.
+python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v
+# Approved live baseline/treatment model runs were executed for M26; reruns remain approval-required.
 
 # B45-PCA-M27: promotion/no-go decision
+python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v
 python -m unittest tests.product_agent_os.test_product_agent_os_docs -v
 python tools\check_docs.py
 git diff --check
 ```
 
-S6 must not treat advisory warnings as blockers. `.github/workflows/` creation,
-CI activation, blocker enforcement, provider/model/API calls, browser
-automation, live servers, target mutation, installed plugin cache refresh and
-git actions all remain approval-required. S6 can close the current gaps only
-after M24-M27 have current evidence; unit tests or local pilots alone do not
-prove real AI-agent behavior improvement.
-
-Current `B45-PCA-M24-A01` and `B45-PCA-M24-TUNING-A02` evidence lives in
-`docs/superpowers/specs/batch45-comment-sufficiency-false-positive-audit.json`
-and `docs/superpowers/specs/batch45-comment-sufficiency-tuning-comparison.json`:
-baseline `130` warnings became tuned default `30` visible / `102` suppressed;
-raw compatibility is `134`. This is advisory/local evidence only.
-Current `B45-PCA-M25` evidence is
-`docs/superpowers/specs/batch45-comment-sufficiency-advisory-wiring-summary.json`.
-The local `PostToolUse` advisory scans changed Python/JS files with M24 tuned
-defaults: synthetic warning `1` / `blocking: false`, current changed-file warning
-`0`, V3 warning `0`. Disable with `B45_COMMENT_ADVISORY_DISABLED=1`; rollback by
-removing the added `comment_sufficiency_advisory.py` `PostToolUse` command. This
-is not CI or blocker enforcement.
+S6 must not treat advisory warnings as blockers. CI activation, blocker
+enforcement, provider/model/API calls, browser automation, target mutation,
+plugin-cache refresh and git actions remain approval-required. Current evidence:
+M24 audit/tuning JSONs, M25 advisory-wiring JSON, M26 live-eval JSON and M27
+decision JSON. M25 stays local, non-blocking and reversible
+(`B45_COMMENT_ADVISORY_DISABLED=1`); M27 is
+`keep_advisory_only_no_go_for_blocker_or_ci`. Real AI-agent behavior improvement,
+stronger advisory, CI and blocker promotion remain unproven/not promoted.
 
 For `B45-S5` learning-loop and automation-candidate policy, run:
 

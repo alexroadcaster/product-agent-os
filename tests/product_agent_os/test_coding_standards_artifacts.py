@@ -21,6 +21,9 @@ S5_SUMMARY = (
     / "specs"
     / "batch45-professional-code-s5-learning-automation-summary.json"
 )
+M26_RESULTS = DOCS / "superpowers" / "specs" / "batch45-agent-behavior-eval-results.json"
+M26_PLAN = DOCS / "superpowers" / "specs" / "batch45-agent-behavior-eval-plan.json"
+M27_DECISION = DOCS / "superpowers" / "specs" / "batch45-comment-policy-promotion-decision.json"
 sys.path.insert(0, str(SCRIPTS))
 
 from product_agent_os.templates import required_templates, template_by_target  # noqa: E402
@@ -187,6 +190,96 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
                 self.assertFalse(performed)
 
         self.assertIn("real_project_manual_pilot_not_run", packet["accepted_gaps"])
+
+    def test_m26_agent_behavior_eval_records_live_no_go_without_promotion_claim(self):
+        plan = json.dumps(json.loads(M26_PLAN.read_text(encoding="utf-8")), sort_keys=True)
+        packet = json.loads(M26_RESULTS.read_text(encoding="utf-8"))
+
+        self.assertEqual("B45-PCA-M26", packet["task_id"])
+        self.assertEqual("executed_live_eval_no_go", packet["status"])
+        self.assertEqual(
+            "no_go_real_behavior_improvement_not_proven_after_live_eval",
+            packet["decision"]["state"],
+        )
+        self.assertEqual(8, packet["local_readiness_checks"]["held_out_task_count"])
+        self.assertTrue(packet["local_readiness_checks"]["no_manual_pilot_task_reuse"])
+        self.assertEqual(8, packet["baseline_run"]["task_count"])
+        self.assertEqual(8, packet["treatment_run"]["task_count"])
+        self.assertTrue(packet["approval_boundary"]["live_provider_or_model_called"])
+        self.assertFalse(packet["approval_boundary"]["raw_private_trace_captured_in_repo"])
+        self.assertEqual(17, packet["provider_cost"]["primary_eval_model_calls"])
+        self.assertEqual("no_go", packet["independent_reviewer_judgment"]["decision"])
+        self.assertLess(
+            packet["quantitative_result"]["treatment_average_local_score"],
+            packet["quantitative_result"]["baseline_average_local_score"],
+        )
+        self.assertEqual(1, packet["quantitative_result"]["timeout_runs"])
+        self.assertEqual(-14, packet["quantitative_result"]["advisory_warning_delta"])
+
+        for task in packet["per_task_results"]:
+            with self.subTest(task=task["task_id"]):
+                self.assertIn(task["task_id"], plan)
+
+        for dimension in [
+            "existing_capability_scan",
+            "custom_code_avoidance",
+            "comment_sufficiency",
+            "test_scenario_coverage",
+            "unsupported_claims",
+            "reviewer_usefulness",
+            "privacy_safety",
+            "flake_cost_control",
+        ]:
+            with self.subTest(dimension=dimension):
+                self.assertIn(dimension, packet["local_readiness_checks"]["reviewer_rubric_dimensions"])
+                self.assertIn(dimension, plan)
+
+        self.assertIn("does not prove real ai-agent behavior improvement", json.dumps(packet, sort_keys=True).lower())
+
+    def test_m27_promotion_decision_keeps_advisory_only_after_no_go(self):
+        packet = json.loads(M27_DECISION.read_text(encoding="utf-8"))
+        serialized = json.dumps(packet, sort_keys=True).lower()
+
+        self.assertEqual("B45-PCA-M27", packet["task_id"])
+        self.assertEqual("implemented_promotion_no_go_keep_advisory_only", packet["status"])
+        self.assertEqual(
+            "keep_advisory_only_no_go_for_blocker_or_ci",
+            packet["decision"]["state"],
+        )
+        self.assertEqual(
+            "local_non_blocking_post_tool_use_advisory",
+            packet["decision"]["promoted_surface"],
+        )
+        self.assertFalse(packet["decision"]["stronger_advisory_promoted"])
+        self.assertFalse(packet["decision"]["ci_wiring_promoted"])
+        self.assertFalse(packet["decision"]["blocker_enforcement_promoted"])
+        self.assertFalse(packet["decision"]["real_ai_agent_behavior_improvement_claimed"])
+        self.assertEqual("keep_advisory_only", packet["future_reconsideration_gate"]["current_recommendation"])
+
+        evidence_ids = {item["task_id"] for item in packet["evidence_used"]}
+        for required in [
+            "B45-PCA-M24-A01",
+            "B45-PCA-M24-TUNING-A02",
+            "B45-PCA-M25",
+            "B45-PCA-M26",
+        ]:
+            with self.subTest(required=required):
+                self.assertIn(required, evidence_ids)
+
+        for action, performed in packet["approval_boundary"].items():
+            with self.subTest(action=action):
+                self.assertFalse(performed)
+
+        for expected in [
+            "no_go",
+            "baseline average 4.22",
+            "treatment average 3.88",
+            "warnings 29 -> 15",
+            "b45_comment_advisory_disabled=1",
+            "does not approve ci workflow creation or blocker enforcement",
+        ]:
+            with self.subTest(expected=expected):
+                self.assertIn(expected, serialized)
 
 
 if __name__ == "__main__":
