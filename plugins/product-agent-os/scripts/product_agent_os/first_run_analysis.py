@@ -1478,7 +1478,7 @@ def _empty_methodology_audit_summary() -> dict[str, Any]:
 def _empty_professional_code_authoring_summary() -> dict[str, Any]:
     return {
         "schema_version": "first_run_professional_code_authoring_summary_v1",
-        "status": "not_available",
+        "status": "not_applicable",
         "gate": "professional_code_authoring_evidence_present",
         "workflow": ".codex/workflows/coding-standards.md",
         "checklist": ".codex/artifact-templates/coding-standard-checklist.md",

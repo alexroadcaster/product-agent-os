@@ -12,6 +12,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from product_agent_os.self_learning_state import (  # noqa: E402
     evaluate_self_learning_due,
     load_self_learning_state,
+    load_self_learning_state_file,
     workspace_ref,
 )
 
@@ -23,6 +24,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("workspace", nargs="?", default=".", help="Workspace path to inspect.")
     parser.add_argument("--dry-run", action="store_true", help="Read state and print due status without writes.")
     parser.add_argument("--now", help="Deterministic ISO timestamp for tests.")
+    parser.add_argument("--state-file", help="Read Self-Learning Loop state from an explicit staged JSON file.")
     args = parser.parse_args(argv)
 
     if not args.dry_run:
@@ -52,7 +54,12 @@ def main(argv: list[str] | None = None) -> int:
         return 2
 
     workspace = Path(args.workspace)
-    state, load_errors = load_self_learning_state(workspace)
+    if args.state_file:
+        state, load_errors = load_self_learning_state_file(args.state_file)
+        state_source = "explicit_state_file"
+    else:
+        state, load_errors = load_self_learning_state(workspace)
+        state_source = "workspace_state_file"
     if load_errors:
         payload = evaluate_self_learning_due(None, now=now)
         payload["errors"] = load_errors
@@ -62,6 +69,8 @@ def main(argv: list[str] | None = None) -> int:
         {
             "mode": "dry_run",
             "workspace_ref": workspace_ref(workspace),
+            "state_source": state_source,
+            "state_workspace_write_required": False,
             "manual_run_command": "python plugins/product-agent-os/scripts/run_self_learning_loop.py <workspace> --dry-run",
             "manual_run_command_status": "available_manual_only",
             "manual_runner_boundary": {

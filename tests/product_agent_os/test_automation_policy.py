@@ -157,10 +157,40 @@ class AutomationPolicyTest(unittest.TestCase):
         self.assertEqual(report["status"], "candidate_only")
         self.assertTrue(report["professional_code_automation_candidate"])
         self.assertEqual(report["manual_success_count"], 3)
+        self.assertEqual(report["minimum_manual_successful_runs"], 3)
         self.assertEqual(report["active_schedule_status"], "not_created")
         self.assertEqual(report["errors"], [])
         self.assertIn("owner approval is required before activation", report["warnings"])
         self.assertIn("accepted residual risks are required before activation", report["warnings"])
+
+    def test_professional_code_automation_candidate_requires_three_runs_and_detects_underscore_kind(self):
+        text = _professional_code_automation_candidate_text().replace(
+            "- Successful manual workflow runs: 3",
+            "- Successful manual workflow runs: 2",
+        )
+
+        report = validate_automation_candidate.from_text(text, "professional_code_authoring_improvement.md")
+
+        self.assertEqual(report["status"], "candidate_only")
+        self.assertTrue(report["professional_code_automation_candidate"])
+        self.assertEqual(report["manual_success_count"], 2)
+        self.assertEqual(report["minimum_manual_successful_runs"], 3)
+        self.assertIn("manual success count is below 3", report["warnings"])
+        self.assertFalse(report["activation_gate"]["manual_stability_present"])
+
+    def test_professional_code_automation_candidate_failed_manual_runs_do_not_count_as_stable(self):
+        text = _professional_code_automation_candidate_text().replace(
+            "- Successful manual workflow runs: 3",
+            "- Successful manual workflow runs: 3\n- Failures observed: 1",
+        )
+
+        report = validate_automation_candidate.from_text(text, "professional-code-authoring.md")
+
+        self.assertEqual(report["status"], "candidate_only")
+        self.assertEqual(report["manual_success_count"], 3)
+        self.assertEqual(report["manual_failure_count"], 1)
+        self.assertIn("manual failures were observed", report["warnings"])
+        self.assertFalse(report["activation_gate"]["manual_stability_present"])
 
     def test_professional_code_automation_candidate_blocks_active_schedule_and_hook_activation(self):
         text = (

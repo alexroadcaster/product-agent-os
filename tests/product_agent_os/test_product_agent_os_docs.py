@@ -128,9 +128,10 @@ DOC_M25_HISTORICAL_PENDING_SITE_PAGES = {
 }
 DOC_M25_PENDING_SITE_PAGES = {
     DOCS / "product-agent-os" / "coding-standards.md",
+    DOCS / "product-agent-os" / "self-learning-loop.md",
 }
-BUILDABLE_MARKDOWN_PAGE_COUNT = 149
-LOCALIZED_MARKDOWN_PAGE_COUNT = 141
+BUILDABLE_MARKDOWN_PAGE_COUNT = 150
+LOCALIZED_MARKDOWN_PAGE_COUNT = 142
 SITE_PROMOTED_LOCALIZED_MARKDOWN_PAGE_COUNT = 140
 ENGLISH_ORIGINAL_MARKDOWN_PAGE_COUNT = 8
 
@@ -9246,7 +9247,10 @@ class ProductAgentOsDocsTest(unittest.TestCase):
             SITE_PROMOTED_LOCALIZED_MARKDOWN_PAGE_COUNT,
         )
         self.assertEqual(
-            ["docs/product-agent-os/coding-standards.md"],
+            [
+                "docs/product-agent-os/coding-standards.md",
+                "docs/product-agent-os/self-learning-loop.md",
+            ],
             sorted(f"docs/{path.relative_to(DOCS).as_posix()}" for path in DOC_M25_PENDING_SITE_PAGES),
         )
 
@@ -9506,9 +9510,9 @@ class ProductAgentOsDocsTest(unittest.TestCase):
                 "minimum manual successful runs: 3",
             ],
             "plan": [
-                "`B44-S0` through `B44-S6` are implemented",
-                "B44-SLL-M15-M16-A01",
-                "Continue with `B44-S7`",
+                "`B44-S0` through `B44-S7` are implemented",
+                "B44-S7-SELF-LEARNING-MANUAL-PILOT-A01",
+                "Continue with `B44-S8`",
             ],
             "test": [
                 "B44-SLL-M15-M16-A01",

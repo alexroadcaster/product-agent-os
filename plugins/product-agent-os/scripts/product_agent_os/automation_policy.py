@@ -7,6 +7,10 @@ from typing import Any
 from product_agent_os.validators import is_forbidden_secret_assignment
 
 
+DEFAULT_MIN_MANUAL_SUCCESS_COUNT = 2
+PROFESSIONAL_CODE_MIN_MANUAL_SUCCESS_COUNT = 3
+
+
 def validate_automation_candidate(candidate_file: str | Path) -> dict[str, Any]:
     """Validate an automation candidate packet without creating active automation."""
     path = Path(candidate_file)
@@ -23,8 +27,14 @@ def validate_automation_candidate(candidate_file: str | Path) -> dict[str, Any]:
 
 def from_text(text: str, candidate_file: str) -> dict[str, Any]:
     manual_success_count = _manual_success_count(text)
+    manual_failure_count = _manual_failure_count(text)
     metrics_automation_candidate = _is_metrics_automation_candidate(text, candidate_file)
     professional_code_automation_candidate = _is_professional_code_automation_candidate(text, candidate_file)
+    minimum_manual_success_count = (
+        PROFESSIONAL_CODE_MIN_MANUAL_SUCCESS_COUNT
+        if professional_code_automation_candidate
+        else DEFAULT_MIN_MANUAL_SUCCESS_COUNT
+    )
     active_schedule_present = _active_schedule_present(text)
     external_workflow_present = _external_workflow_present(text)
     github_actions_active = _github_actions_active(text)
@@ -77,8 +87,10 @@ def from_text(text: str, candidate_file: str) -> dict[str, Any]:
         warnings.append("failure modes are not documented")
     if not explicit_approval_present:
         warnings.append("explicit approval section is not documented")
-    if manual_success_count < 2:
-        warnings.append("manual success count is below 2")
+    if manual_failure_count:
+        warnings.append("manual failures were observed")
+    if manual_success_count < minimum_manual_success_count:
+        warnings.append(f"manual success count is below {minimum_manual_success_count}")
 
     readiness_fields_present = all(
         [
@@ -93,7 +105,7 @@ def from_text(text: str, candidate_file: str) -> dict[str, Any]:
             explicit_approval_present,
         ]
     )
-    manual_stability_present = manual_success_count >= 2
+    manual_stability_present = manual_success_count >= minimum_manual_success_count and manual_failure_count == 0
     activation_gate = _activation_gate(
         manual_stability_present=manual_stability_present,
         deterministic_command_evidence_present=verification_present,
@@ -118,13 +130,15 @@ def from_text(text: str, candidate_file: str) -> dict[str, Any]:
         else "candidate_only"
         if metrics_automation_candidate or professional_code_automation_candidate
         else "ready_for_manual_approval"
-        if manual_success_count >= 2 and readiness_fields_present
+        if manual_success_count >= minimum_manual_success_count and readiness_fields_present
         else "candidate_only"
     )
     return _report(
         status,
         candidate_file,
         manual_success_count=manual_success_count,
+        manual_failure_count=manual_failure_count,
+        minimum_manual_successful_runs=minimum_manual_success_count,
         owner_present=owner_present,
         cadence_present=cadence_present,
         stable_inputs_present=stable_inputs_present,
@@ -154,6 +168,8 @@ def _report(
     candidate_file: str,
     *,
     manual_success_count: int = 0,
+    manual_failure_count: int = 0,
+    minimum_manual_successful_runs: int = DEFAULT_MIN_MANUAL_SUCCESS_COUNT,
     owner_present: bool = False,
     cadence_present: bool = False,
     stable_inputs_present: bool = False,
@@ -184,6 +200,8 @@ def _report(
         "candidate_file": candidate_file,
         "required_fields_present": required_fields_present,
         "manual_success_count": manual_success_count,
+        "manual_failure_count": manual_failure_count,
+        "minimum_manual_successful_runs": minimum_manual_successful_runs,
         "owner_present": owner_present,
         "cadence_present": cadence_present,
         "stable_inputs_present": stable_inputs_present,
@@ -220,6 +238,13 @@ def _manual_success_count(text: str) -> int:
     return 0
 
 
+def _manual_failure_count(text: str) -> int:
+    match = re.search(r"Failures observed:\s*(\d+)", text)
+    if match:
+        return int(match.group(1))
+    return 0
+
+
 def _is_metrics_automation_candidate(text: str, candidate_file: str) -> bool:
     lowered = f"{candidate_file}\n{text}".lower()
     return (
@@ -233,12 +258,17 @@ def _is_metrics_automation_candidate(text: str, candidate_file: str) -> bool:
 
 def _is_professional_code_automation_candidate(text: str, candidate_file: str) -> bool:
     lowered = f"{candidate_file}\n{text}".lower()
-    return (
-        "professional-code-authoring" in lowered
-        or "professional code authoring" in lowered
-        or "coding-standard" in lowered
-        or "coding standards" in lowered
-        or "code authoring standards" in lowered
+    normalized = lowered.replace("_", "-")
+    return any(
+        phrase in normalized
+        for phrase in [
+            "professional-code-authoring",
+            "professional code authoring",
+            "coding-standard",
+            "coding standards",
+            "code authoring standards",
+            "code-authoring-standards",
+        ]
     )
 
 

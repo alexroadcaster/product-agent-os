@@ -211,8 +211,12 @@ def validate_preference_memory(memory: Any) -> list[str]:
     return errors
 
 
-def load_owner_feedback_ledger(workspace: str | Path) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
-    path = Path(workspace) / OWNER_FEEDBACK_LEDGER_RELATIVE_PATH
+def load_owner_feedback_ledger(
+    workspace: str | Path,
+    *,
+    ledger_path: str | Path | None = None,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    path = Path(ledger_path) if ledger_path is not None else Path(workspace) / OWNER_FEEDBACK_LEDGER_RELATIVE_PATH
     if not path.exists():
         return [], []
     rows: list[dict[str, Any]] = []
@@ -233,11 +237,16 @@ def load_owner_feedback_ledger(workspace: str | Path) -> tuple[list[dict[str, An
     return rows, rejected
 
 
-def summarize_owner_feedback_ledger(workspace: str | Path) -> dict[str, Any]:
-    rows, rejected = load_owner_feedback_ledger(workspace)
+def summarize_owner_feedback_ledger(
+    workspace: str | Path,
+    *,
+    ledger_path: str | Path | None = None,
+) -> dict[str, Any]:
+    rows, rejected = load_owner_feedback_ledger(workspace, ledger_path=ledger_path)
     if not rows and not rejected:
         return {
             "status": "no_owner_feedback_ledger",
+            "ledger_source": _ledger_source(ledger_path),
             "owner_feedback_rows": 0,
             "rejected_rows": 0,
             "raw_session_ingestion": "not_performed",
@@ -246,6 +255,7 @@ def summarize_owner_feedback_ledger(workspace: str | Path) -> dict[str, Any]:
         }
     return {
         "status": "available",
+        "ledger_source": _ledger_source(ledger_path),
         "owner_feedback_rows": len(rows),
         "rejected_rows": len(rejected),
         "raw_session_ingestion": "not_performed",
@@ -341,3 +351,7 @@ def _ratio(part: int, whole: int) -> float:
 
 def _now() -> str:
     return datetime.now(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+
+
+def _ledger_source(ledger_path: str | Path | None) -> str:
+    return "explicit_redacted_override" if ledger_path is not None else OWNER_FEEDBACK_LEDGER_RELATIVE_PATH

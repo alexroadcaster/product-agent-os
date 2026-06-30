@@ -1,0 +1,109 @@
+{
+  "schema_version": "batch44_self_learning_loop_approved_manual_pilot_summary_v1",
+  "evidence_id": "B44-S7-SELF-LEARNING-MANUAL-PILOT-A01",
+  "status": "manual_pilot_ready_for_owner_review",
+  "approval": {
+    "source": "owner_request_in_current_thread",
+    "approved_actions": [
+      "stage_only_state_initializer",
+      "B44-S7_manual_pilot",
+      "redacted_feedback_use",
+      "durable_eval_cases_and_failure_taxonomy",
+      "staged_repair_worker_contract",
+      "optional_promptfoo_export_adapter",
+      "halo_style_recommendation_packet",
+      "unified_self_learning_docs_page"
+    ],
+    "external_actions_approved": false
+  },
+  "evidence_window": {
+    "started_at": "2026-06-30T00:00:00Z",
+    "ended_at": "2026-06-30T00:30:00Z",
+    "timezone_basis": "UTC",
+    "local_run_date": "2026-06-30"
+  },
+  "commands": [
+    {
+      "command": "python plugins\\product-agent-os\\scripts\\init_self_learning_state.py . --stage [TEMP_STAGE_ROOT]/codex_docs-b44-s7-self-learning-state --now 2026-06-30T00:00:00Z --installed-at 2026-06-01T00:00:00Z",
+      "exit_code": 0,
+      "status": "passed",
+      "result": "state initializer packet staged; workspace state file remained missing; target workspace writes not performed"
+    },
+    {
+      "command": "python plugins\\product-agent-os\\scripts\\run_self_learning_loop.py . --stage [TEMP_STAGE_ROOT]/codex_docs-b44-s7-self-learning-run --now 2026-06-30T00:00:00Z --state-file [TEMP_STAGE_ROOT]/codex_docs-b44-s7-self-learning-state/.codex/product-agent-os/self-learning-state.json --metrics-ledger docs\\superpowers\\specs\\batch44-self-learning-loop-approved-manual-pilot-metrics.jsonl --feedback-ledger docs\\superpowers\\specs\\batch44-self-learning-loop-approved-manual-pilot-feedback.jsonl",
+      "exit_code": 0,
+      "status": "passed",
+      "result": "manual runner reached ready_for_owner_review with explicit staged state, one redacted feedback row, one metrics row and two review-only candidates"
+    },
+    {
+      "command": "python plugins\\product-agent-os\\scripts\\export_self_learning_promptfoo.py . --stage [TEMP_STAGE_ROOT]/codex_docs-b44-s7-self-learning-promptfoo --now 2026-06-30T00:30:00Z",
+      "exit_code": 0,
+      "status": "passed",
+      "result": "Promptfoo-compatible config, eval cases, failure taxonomy and HALO-style recommendation packet staged without provider calls"
+    }
+  ],
+  "results": {
+    "state_initializer": {
+      "schema_version": "self_learning_state_initializer_packet_v1",
+      "status": "ready_for_owner_review",
+      "state_exists_in_workspace_before_run": false,
+      "state_written": false,
+      "target_workspace_writes": "not_performed",
+      "auto_apply": "disabled"
+    },
+    "manual_runner": {
+      "schema_version": "self_learning_run_packet_v1",
+      "status": "ready_for_owner_review",
+      "due_status": "due",
+      "state_source": "explicit_state_file",
+      "feedback_rows": 1,
+      "metrics_rows": 1,
+      "candidate_count": 2,
+      "provider_calls": "not_performed",
+      "live_eval_services": "not_performed",
+      "target_workspace_writes": "not_performed_stage_root_only",
+      "auto_apply": "disabled"
+    },
+    "promptfoo_and_halo": {
+      "promptfoo_export_schema": "self_learning_promptfoo_export_v1",
+      "eval_case_count": 8,
+      "failure_class_count": 9,
+      "halo_recommendation_count": 6,
+      "provider_calls": "not_performed",
+      "halo_engine_calls": "not_performed",
+      "approval_required_before_promptfoo_run": true
+    }
+  },
+  "redaction": {
+    "raw_chat_stored": false,
+    "raw_session_ingestion": "not_performed",
+    "hidden_app_telemetry": "not_performed",
+    "absolute_stage_paths_in_summary": "redacted",
+    "workspace_ref_policy": "hash_only"
+  },
+  "artifacts": {
+    "repo_owned_inputs": [
+      "docs/superpowers/specs/batch44-self-learning-loop-approved-manual-pilot-feedback.jsonl",
+      "docs/superpowers/specs/batch44-self-learning-loop-approved-manual-pilot-metrics.jsonl"
+    ],
+    "stage_only_targets": [
+      ".codex/product-agent-os/self-learning-state.json",
+      ".codex/product-agent-os/self-learning/state-initializer-packet.json",
+      ".codex/product-agent-os/self-learning/progress.jsonl",
+      ".codex/product-agent-os/self-learning/self-learning-progress.json",
+      ".codex/product-agent-os/self-learning/self-learning-progress.html",
+      ".codex/product-agent-os/self-learning/evals/promptfooconfig.yaml",
+      ".codex/product-agent-os/self-learning/evals/promptfoo-export.json",
+      ".codex/product-agent-os/self-learning/evals/halo-recommendation-packet.json",
+      ".codex/product-agent-os/self-learning/evals/eval-cases.json",
+      ".codex/product-agent-os/self-learning/evals/failure-taxonomy.json"
+    ]
+  },
+  "accepted_gaps": [
+    "single manual pilot only; no denominator for promotion",
+    "Promptfoo export was generated but Promptfoo was not executed",
+    "HALO-style packet was generated locally; no HALO service was called",
+    "no provider/model/API, browser automation, target workspace mutation, git, release, deploy, publish or active automation action was performed"
+  ],
+  "closure_level": "staged_manual_pilot_ready_for_owner_review"
+}

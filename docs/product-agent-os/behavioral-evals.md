@@ -65,6 +65,7 @@ Generated graph, cockpit, local runtime contracts, provider gates, review ledger
 | transcript/session eval runner | Replay synthetic или redacted Codex session transcripts для multi-turn shortcut resistance, evidence quality и privacy/no-secrets checks. | Implemented. | `python plugins\product-agent-os\scripts\run_transcript_eval.py plugins\product-agent-os\assets\eval-fixtures\transcripts\product-agent-os-synthetic-sessions.json`. |
 | Guided question и status dashboard eval | Typed question packets, compact first response, generated dashboard boundaries и stale-evidence language. | Implemented. | `question_queue_contract_present`, `status_snapshot_present`, `status_dashboard_present`, `dashboard_no_external_assets`, `dashboard_not_source_of_truth`, `stale_evidence_no_success_claim`. |
 | Self-verification metrics loop eval | `agent_skill_metrics_loop` target registry, trace intake, dataset quality, grader/judge calibration, cadence recommendation, scorecard ledger, report safety, staged modernization candidates и approval boundary. | Implemented. | `agent_skill_metrics_loop_contract_present`, `metrics_report_redacted`, `trace_normalization_contract_present`, `judge_calibration_gate_present`, `scorecard_ledger_contract_present`, `metrics_loop_runtime_route_contract_present`, `metrics_loop_lifecycle_contract_present`. |
+| Self-Learning Loop eval | State initializer, due-check, redacted feedback, metrics summary, candidate-only summary, failure taxonomy, Promptfoo export, HALO-style packet и staged repair worker contract. | Local deterministic coverage плюс B44-S7 manual pilot evidence. | `python -m unittest tests.product_agent_os.test_self_learning_extensions -v`, `python -m unittest tests.product_agent_os.test_self_learning_state -v`. |
 | Professional Code Authoring eval | Отклоняет shortcut coding: 50-строчный helper до reuse, лишнюю dependency, отсутствующий existing-capability scan, shallow wrapper, шумные comments и неподтвержденные rewrite claims. | Локальное deterministic покрытие. | Cases `professional-code-authoring-*`, видимость `professional_code_authoring` в readiness/route/status и [Professional Code Authoring standards](coding-standards.md). |
 
 ## Guided Questions And Dashboard
@@ -90,6 +91,12 @@ Behavioral cases включают `guided-question-smallest-blocking-question`, 
 Политика канонического источника является частью eval contract: control-plane artifacts, запуск records, trace/eval packets и accepted gaps являются allowed evidence; generated dashboard/report HTML, memory, raw chat logs и unsupported community claims не являются evidence. Every metrics report является staged evidence only, и report является не является каноническим источником.
 
 Запрещенное поведение включает headline-metric-only approval, raw trace leakage, uncalibrated judge approval, нет self-applied updates, missing rollback target, нет live eval/model/API calls, нет active schedules и modernization candidates который cross approval boundary без explicit owner review.
+
+## Self-Learning Loop eval
+
+[Self-Learning Loop](self-learning-loop.md) имеет отдельные eval cases и failure taxonomy для recurring failures. Coverage проверяет, что missing state routes к stage-only initializer, completion claims без evidence становятся gaps, wrong skill/surface use становится candidate-only signal, forbidden approval-boundary actions блокируются, docs/source registry drift требует sync, weak evals требуют baseline/holdout, raw private context rejected, а staged repair worker не меняет files outside allowlist.
+
+Адаптер `Promptfoo` является export-only: `promptfooconfig.yaml` и `promptfoo-export.json` могут быть staged, но `provider_calls` остаются `not_performed`. Пакет в стиле `HALO` является local recommendation surface; вызов сервиса `HALO` и owner approval claim отсутствуют. B44-S7 manual pilot зафиксирован в `docs/superpowers/specs/batch44-self-learning-loop-approved-manual-pilot-summary.json`.
 
 ## Ожидаемое поведение
 

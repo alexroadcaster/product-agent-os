@@ -134,7 +134,8 @@ First-run analysis artifact - это локальный generated orientation pa
 
 | Артефакт | Создатель / потребитель | Роль контракта | Граница |
 | --- | --- | --- | --- |
-| `.codex/product-agent-os/self-learning-state.json` | Будущий approved state initializer/manual runner; `check_self_learning_due.py --dry-run` читает файл только для проверки. | `self_learning_state_v1`: `installed_at`, `last_analysis_at`, `last_success_at`, `last_failure_at`, `next_due_at`, `cadence_level`, `last_report_id`, `last_metrics_digest`, `approval_state`, `disable_reason`. | Только состояние для due-check; due-check CLI не пишет этот файл, не запускает analysis, не создает active schedule, не импортирует sessions, не вызывает providers, не меняет targets и не включает auto-apply. |
+| `.codex/product-agent-os/self-learning-state.json` | `init_self_learning_state.py --stage`, future approved state write, `check_self_learning_due.py --dry-run` и `run_self_learning_loop.py --state-file`. | `self_learning_state_v1`: `installed_at`, `last_analysis_at`, `last_success_at`, `last_failure_at`, `next_due_at`, `cadence_level`, `last_report_id`, `last_metrics_digest`, `approval_state`, `disable_reason`. | Stage-only initializer не пишет workspace state. Due-check CLI не запускает analysis, не создает active schedule, не импортирует sessions, не вызывает providers, не меняет targets и не включает auto-apply. |
+| `.codex/product-agent-os/self-learning/state-initializer-packet.json` | `init_self_learning_state.py --stage` | Предложенное начальное состояние, scope packet, validation errors, целевой путь состояния и approval boundary. | Только proposal; запись workspace, schedule, automation, provider call и target mutation требуют отдельного owner approval. |
 
 ## Артефакты прогресса Self-Learning Loop
 
@@ -144,6 +145,18 @@ First-run analysis artifact - это локальный generated orientation pa
 | `.codex/product-agent-os/self-learning/runs/<run_id>/progress.json` | `run_self_learning_loop.py --stage <dir>` | Снимок одного run: `run_id`, hash области проекта, состояние approval владельца, blockers и последние пути артефактов. | Только сгенерированное свидетельство для инспекции; не доказывает улучшение качества, удовлетворенность владельца или готовность. |
 | `.codex/product-agent-os/self-learning/runs/<run_id>/self-learning-run-packet.json` | `run_self_learning_loop.py --stage <dir>` | `self_learning_run_packet_v1` со scope packet, due-check packet, refs свидетельств, unsupported claims, placeholders метрик и summary кандидатов. | Только `manual-only` / `staged-only`; `provider calls`, `live eval services`, `target mutation` и `auto-apply` остаются `not performed`. |
 | `.codex/product-agent-os/self-learning/self-learning-progress.html` | `run_self_learning_loop.py --stage <dir>` | Сгенерированная офлайн-страница прогресса для проверки границ проекта, статуса запуска, фаз, блокеров и состояния просмотра владельцем. | Только сгенерированная страница просмотра; не является источником истины и не может одобрять, применять или доказывать завершение работы. |
+
+## Eval, Promptfoo And Repair Artifacts
+
+| Артефакт | Создатель | Роль контракта | Граница |
+| --- | --- | --- | --- |
+| `.codex/product-agent-os/self-learning/evals/eval-cases.json` | `export_self_learning_promptfoo.py --stage` | Долговечные eval cases для `state_or_scope_blocker`, gaps по evidence, wrong skill/surface, approval-boundary, docs drift, weak evals, privacy risk и repair validation. | Только synthetic/redacted; не доказывает semantic quality без отдельного eval run. |
+| `.codex/product-agent-os/self-learning/evals/failure-taxonomy.json` | `export_self_learning_promptfoo.py --stage` | `self_learning_failure_taxonomy_v1`, классификация repeat failures и recommended detection. | Routing evidence; не полный incident registry. |
+| `.codex/product-agent-os/self-learning/evals/promptfooconfig.yaml` | `export_self_learning_promptfoo.py --stage` | Необязательный Promptfoo-compatible config из долговечных eval cases. | `provider_calls: not_performed`; запуск Promptfoo/provider требует отдельного approval и baseline/eval packet. |
+| `.codex/product-agent-os/self-learning/evals/promptfoo-export.json` | `export_self_learning_promptfoo.py --stage` | Structured export packet с unsupported claims и approval boundary. | Не является proof запуска `Promptfoo`. |
+| `.codex/product-agent-os/self-learning/evals/halo-recommendation-packet.json` | `export_self_learning_promptfoo.py --stage` | HALO-style recommendations: hypothesis, action, learning objective, expected metric delta, guardrails и rollback target. | Только локальная recommendation; без вызова HALO service, owner approval и auto-apply. |
+| `self_learning_staged_repair_task_v1` | `self_learning_repair.py` | Codex staged repair worker task: candidate, objective, allowlist, forbidden files, validation commands, rollback и privacy boundary. | Только contract; worker возвращает staged result и не меняет workspace через contract. |
+| `self_learning_staged_repair_result_v1` | `self_learning_repair.py` | Result packet с changed files, validation results, summary и unsupported claims. | Блокирует out-of-allowlist changes, absolute/private refs, provider calls, target writes и `auto_apply`. |
 
 ## Doubt verification artifacts
 

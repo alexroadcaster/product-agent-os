@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
@@ -140,10 +141,15 @@ def build_default_self_learning_state(
 
 def load_self_learning_state(workspace: str | Path) -> tuple[dict[str, Any] | None, list[str]]:
     state_path = Path(workspace) / STATE_RELATIVE_PATH
+    return load_self_learning_state_file(state_path)
+
+
+def load_self_learning_state_file(path: str | Path) -> tuple[dict[str, Any] | None, list[str]]:
+    state_path = Path(path)
     if not state_path.exists():
         return None, ["state_file:missing"]
     try:
-        payload = __import__("json").loads(state_path.read_text(encoding="utf-8"))
+        payload = json.loads(state_path.read_text(encoding="utf-8"))
     except (OSError, ValueError) as exc:
         return None, [f"state_file:invalid_json:{exc.__class__.__name__}"]
     if not isinstance(payload, dict):

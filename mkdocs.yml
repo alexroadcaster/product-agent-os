@@ -107,6 +107,7 @@ plugins:
                 - Approval-Bound Real Testing: product-agent-os/approval-bound-real-testing.md
                 - Real-Project Pilot: product-agent-os/real-project-pilot.md
                 - Agent-Skill Modernization Loop: product-agent-os/agent-skill-modernization-loop.md
+                - Self-Learning Loop: product-agent-os/self-learning-loop.md
                 - Instruction And Tool-Use Compliance: product-agent-os/instruction-tool-use-compliance.md
                 - Operator Command Matrix: product-agent-os/operator-command-matrix.md
                 - Guided Questions And Answer Ledger: product-agent-os/guided-questions-answer-ledger.md
@@ -254,6 +255,7 @@ nav:
       - Approval-Bound Real Testing: product-agent-os/approval-bound-real-testing.md
       - Real-Project Pilot: product-agent-os/real-project-pilot.md
       - Agent-Skill Modernization Loop: product-agent-os/agent-skill-modernization-loop.md
+      - Self-Learning Loop: product-agent-os/self-learning-loop.md
       - Instruction And Tool-Use Compliance: product-agent-os/instruction-tool-use-compliance.md
       - Operator Command Matrix: product-agent-os/operator-command-matrix.md
       - Guided Questions And Answer Ledger: product-agent-os/guided-questions-answer-ledger.md

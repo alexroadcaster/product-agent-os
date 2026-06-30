@@ -317,9 +317,82 @@ class SelfLearningStateTests(unittest.TestCase):
                 self.assertEqual(candidate["manual_pilot_gate"]["minimum_manual_successful_runs"], 3)
                 self.assertTrue(candidate["manual_pilot_gate"]["future_activation_handoff_required"])
                 self.assertIn("plugins/product-agent-os/assets/templates/workflows/coding-standards.md", candidate["allowed_update_targets"])
+                self.assertIn(
+                    "plugins/product-agent-os/assets/templates/evals/handoff-completeness.json",
+                    candidate["allowed_update_targets"],
+                )
                 self.assertIn("auto_apply", candidate["forbidden_until_approval"])
                 self.assertIn("hidden_telemetry", candidate["forbidden_until_approval"])
         self.assertEqual(validate_candidate_packet(packet), [])
+
+    def test_professional_code_regression_flag_accepts_human_spaced_aliases(self) -> None:
+        from product_agent_os.self_learning_candidates import build_self_learning_candidate_packet
+
+        packet = build_self_learning_candidate_packet(
+            metrics_summary={
+                "status": "available",
+                "latest_run_id": "sll-20260630T010000Z-professional-code",
+                "regression_flags": ["coding standards comment noise"],
+            },
+            feedback_summary={"status": "available"},
+            generated_at="2026-06-30T01:00:00Z",
+        )
+
+        professional_candidates = [
+            candidate
+            for candidate in packet["candidates"]
+            if candidate.get("candidate_kind") == "professional_code_authoring_improvement"
+        ]
+
+        self.assertEqual(packet["safety_report"]["promotion_status"], "review_ready")
+        self.assertEqual(len(professional_candidates), 1)
+        self.assertEqual(
+            professional_candidates[0]["metric_deltas"]["finding_type"],
+            "coding standards comment noise",
+        )
+
+    def test_professional_code_candidate_redacts_private_evidence_references(self) -> None:
+        from product_agent_os.self_learning_candidates import (
+            build_self_learning_candidate_packet,
+            validate_candidate_packet,
+        )
+
+        packet = build_self_learning_candidate_packet(
+            metrics_summary={
+                "status": "available",
+                "latest_run_id": "sll-20260630T011500Z-professional-code",
+                "latest_report_paths": [
+                    "C:\\Users\\user\\Desktop\\project\\secret\\report.json",
+                    "docs/superpowers/specs/batch45-redacted-summary.json",
+                ],
+                "professional_code_authoring_findings": [
+                    {
+                        "finding_type": "comment_noise",
+                        "evidence_refs": [
+                            "alex@example.com",
+                            "eval:professional-code-authoring-comment-noise",
+                        ],
+                    }
+                ],
+            },
+            feedback_summary={"status": "available"},
+            generated_at="2026-06-30T01:15:00Z",
+        )
+
+        payload = json.dumps(packet, sort_keys=True)
+        candidates = [
+            candidate
+            for candidate in packet["candidates"]
+            if candidate.get("candidate_kind") == "professional_code_authoring_improvement"
+        ]
+
+        self.assertGreaterEqual(len(candidates), 1)
+        self.assertEqual(validate_candidate_packet(packet), [])
+        self.assertIn("redacted_local_path", payload)
+        self.assertIn("redacted_private_ref", payload)
+        self.assertIn("docs/superpowers/specs/batch45-redacted-summary.json", payload)
+        self.assertNotIn("C:\\Users", payload)
+        self.assertNotIn("alex@example.com", payload)
 
     def test_forbidden_action_safety_report_blocks_auto_apply_and_external_actions(self) -> None:
         from product_agent_os.self_learning_candidates import evaluate_forbidden_action_fixtures

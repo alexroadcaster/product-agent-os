@@ -19,6 +19,7 @@ from product_agent_os.self_learning_progress import (  # noqa: E402
 from product_agent_os.self_learning_state import (  # noqa: E402
     evaluate_self_learning_due,
     load_self_learning_state,
+    load_self_learning_state_file,
 )
 
 
@@ -30,6 +31,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--dry-run", action="store_true", help="Build a run packet without writing files.")
     parser.add_argument("--stage", help="Stage progress JSON/HTML artifacts under this output directory.")
     parser.add_argument("--now", help="Deterministic ISO timestamp for tests.")
+    parser.add_argument("--state-file", help="Read Self-Learning Loop state from an explicit staged JSON file.")
+    parser.add_argument("--metrics-ledger", help="Read metrics from an explicit redacted/staged JSONL ledger.")
+    parser.add_argument("--feedback-ledger", help="Read feedback from an explicit redacted/staged JSONL ledger.")
     args = parser.parse_args(argv)
 
     if bool(args.dry_run) == bool(args.stage):
@@ -72,12 +76,19 @@ def main(argv: list[str] | None = None) -> int:
         )
         return 2
 
-    state, load_errors = load_self_learning_state(workspace)
+    if args.state_file:
+        state, load_errors = load_self_learning_state_file(args.state_file)
+        state_source = "explicit_state_file"
+    else:
+        state, load_errors = load_self_learning_state(workspace)
+        state_source = "workspace_state_file"
     if load_errors:
         due_packet = evaluate_self_learning_due(None, now=now)
         due_packet["errors"] = load_errors
     else:
         due_packet = evaluate_self_learning_due(state, now=now)
+    due_packet["state_source"] = state_source
+    due_packet["state_workspace_write_required"] = False
 
     mode = "stage" if args.stage else "dry_run"
     packet = build_self_learning_run_packet(
@@ -86,6 +97,8 @@ def main(argv: list[str] | None = None) -> int:
         mode=mode,
         scope_packet=scope_packet,
         due_packet=due_packet,
+        metrics_ledger_path=args.metrics_ledger,
+        feedback_ledger_path=args.feedback_ledger,
     )
 
     if args.stage and packet["status"] != "blocked":

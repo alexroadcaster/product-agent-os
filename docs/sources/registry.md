@@ -57,6 +57,7 @@ verification_status: "Current compaction preserves test-visible markers; full ev
 - Product-Agent OS Track 11 Batch 45 professional code authoring S3 evals, readiness, route, HTML and hook-governance visibility evidence with `B45-PCA-M10`, `B45-PCA-M11`, `B45-PCA-M16`, `B45-PCA-M18`, `B45-PCA-M21` and `B45-PCA-M22` implemented as `docs_contract_ready` (checked_at=2026-06-29, trust=high for local eval/template/test/spec evidence; does not prove live runtime, hook activation, automation or real AI-agent behavior)
 - Product-Agent OS Track 11 Batch 45 professional code authoring S4 public docs/source cross-linking and closure-through-S4 evidence with `B45-PCA-M12`, `B45-PCA-M13` and `B45-PCA-M19` implemented as `docs_contract_ready`, while `B45-PCA-M14` remains closure-through-S4 pending `B45-PCA-M23` in S5 (checked_at=2026-06-29, trust=high for local docs/nav/test/spec evidence; does not prove root site freshness for the new page, runtime, hook activation, automation, provider/browser behavior or real AI-agent behavior)
 - Product-Agent OS Track 11 Batch 45 professional code authoring S5 learning-loop and automation-candidate policy evidence with `B45-PCA-M23` implemented as `synthetic_green` and `B45-PCA-M14` updated to full Batch 45 closure after M23 (checked_at=2026-06-29, trust=high for local code/docs/test/spec evidence; does not prove active automation, hook activation, schedule creation, provider/browser behavior, target mutation, raw private chat ingestion or real AI-agent behavior)
+- Product-Agent OS Track 11 Batch 45 owner-approved local manual pilot for six real non-mechanical code tasks with filled coding-standard checklists, false-positive, flake, cost and reviewer-usefulness evidence (`B45-PILOT-MANUAL-6-CODE-TASKS-A02`; checked_at=2026-06-30, trust=high for local code/test/spec evidence; promotion decision remains not_made and does not prove hook/blocker activation, active automation, provider/browser/runtime behavior, target mutation, git/release/deploy/publish or production readiness)
 - Codex web / cloud (checked_at=2026-05-14, trust=high)
 - Codex app (checked_at=2026-05-14, trust=high)
 - Codex CLI (checked_at=2026-05-14, trust=high)
@@ -1564,4 +1565,25 @@ These markers preserve source-owned test routing after registry compaction. Full
 - B45-PCA-M10, B45-PCA-M11, B45-PCA-M16, B45-PCA-M18, B45-PCA-M21 and B45-PCA-M22 implemented as docs_contract_ready eval/visibility/governance contracts
 - remaining B45-PCA-M12, B45-PCA-M13, B45-PCA-M19 and B45-PCA-M23 planned, with B45-PCA-M14 reserved for final closure
 - no dedicated public coding-standards page, live runtime behavior, hook activation/update, automation, provider/browser/cache/target/git/release/deploy/publish behavior proved by S3
+- Product-Agent OS Track 11 Batch 44 Self-Learning Loop S7 state initializer, manual pilot, Promptfoo/HALO and staged repair contracts
+- B44-S7-SELF-LEARNING-MANUAL-PILOT-A01
+- docs/superpowers/specs/batch44-self-learning-loop-approved-manual-pilot-summary.json
+- docs/superpowers/specs/batch44-self-learning-loop-approved-manual-pilot-feedback.jsonl
+- docs/superpowers/specs/batch44-self-learning-loop-approved-manual-pilot-metrics.jsonl
+- docs/product-agent-os/self-learning-loop.md
+- docs/product-agent-os/artifact-contracts.md
+- docs/product-agent-os/behavioral-evals.md
+- plugins/product-agent-os/scripts/init_self_learning_state.py
+- plugins/product-agent-os/scripts/run_self_learning_loop.py
+- plugins/product-agent-os/scripts/check_self_learning_due.py
+- plugins/product-agent-os/scripts/export_self_learning_promptfoo.py
+- plugins/product-agent-os/scripts/product_agent_os/self_learning_initializer.py
+- plugins/product-agent-os/scripts/product_agent_os/self_learning_evals.py
+- plugins/product-agent-os/scripts/product_agent_os/self_learning_repair.py
+- plugins/product-agent-os/scripts/product_agent_os/self_learning_progress.py
+- plugins/product-agent-os/scripts/product_agent_os/self_learning_state.py
+- tests/product_agent_os/test_self_learning_extensions.py
+- tests/product_agent_os/test_self_learning_state.py
+- B44-S7 manual pilot reached ready_for_owner_review using explicit staged state, one redacted feedback row, one metrics row and two review-only candidates
+- Promptfoo export staged 8 eval cases and failure taxonomy; HALO-style packet staged 6 local recommendations; no Promptfoo run, HALO service call, provider/model/API call, browser automation, target workspace mutation, active automation, git/release/deploy/publish or auto-apply was performed
 ```

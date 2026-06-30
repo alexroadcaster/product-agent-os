@@ -1,0 +1,211 @@
+{
+  "schema_version": "batch45_manual_pilot_6_code_tasks_v1",
+  "evidence_id": "B45-PILOT-MANUAL-6-CODE-TASKS-A02",
+  "extends": "B45-PILOT-MANUAL-3-CODE-TASKS-A01",
+  "checked_at": "2026-06-30T01:35:00+03:00",
+  "scope": "Owner-approved local manual pilot extension of Batch 45 Professional Code Authoring from three to six real non-mechanical code tasks in codex_docs.",
+  "approval_boundary": {
+    "local_workspace_writes": "approved_for_pilot_only",
+    "hook_activation": "not_performed",
+    "blocker_activation": "not_performed",
+    "active_automation": "not_performed",
+    "schedule_creation": "not_performed",
+    "provider_model_api_call": "not_performed",
+    "browser_automation": "not_performed",
+    "live_server": "not_performed",
+    "target_workspace_outside_codex_docs": "not_performed",
+    "installed_plugin_cache_refresh": "not_performed",
+    "git_action": "not_performed",
+    "release_deploy_publish": "not_performed",
+    "external_write": "not_performed",
+    "raw_private_chat_ingestion": "not_performed",
+    "hidden_telemetry": "not_performed"
+  },
+  "closure_level": "synthetic_green",
+  "promotion_decision": "not_made",
+  "checklist_artifact": ".codex/product-agent-os/b45-manual-pilot/coding-standard-checklists.md",
+  "tasks": [
+    {
+      "task_id": "B45-PILOT-CODE-TASK-1",
+      "title": "Professional Code automation candidates require three manual successful runs",
+      "code_surfaces": [
+        "plugins/product-agent-os/scripts/product_agent_os/automation_policy.py",
+        "tests/product_agent_os/test_automation_policy.py"
+      ],
+      "change_summary": "Added a Professional Code Authoring threshold of 3 manual runs, exposed the threshold in the report and normalized underscore candidate identifiers.",
+      "selected_leverage_path": "small_custom_code",
+      "new_dependency": false,
+      "false_positive_observation": "none_observed",
+      "real_gap_found": "Generic two-run manual stability was too weak for Batch 45 Professional Code Authoring automation candidates.",
+      "flake_signal": "focused_suite_passed_twice",
+      "cost_signal": "local_cpu_only_no_provider_browser_network_or_dependency_install",
+      "reviewer_usefulness": "high",
+      "review_comment": "A reviewer would catch that Professional Code automation needs a higher evidence bar than generic candidates.",
+      "unsupported_claims": [
+        "hook_activation_ready",
+        "blocker_activation_ready",
+        "active_automation_ready",
+        "real_ai_agent_behavior_improved"
+      ]
+    },
+    {
+      "task_id": "B45-PILOT-CODE-TASK-2",
+      "title": "Empty first-run Professional Code Authoring summary uses not_applicable",
+      "code_surfaces": [
+        "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+        "tests/product_agent_os/test_batch45_s3_professional_code_authoring.py"
+      ],
+      "change_summary": "Aligned the empty Professional Code Authoring summary with the existing allowed status vocabulary by using not_applicable instead of not_available.",
+      "selected_leverage_path": "small_custom_code",
+      "new_dependency": false,
+      "false_positive_observation": "none_observed",
+      "real_gap_found": "Empty summary bypassed the normal status vocabulary and could blur not-applicable versus missing-data semantics.",
+      "flake_signal": "focused_suite_passed_twice",
+      "cost_signal": "local_cpu_only_no_provider_browser_network_or_dependency_install",
+      "reviewer_usefulness": "medium_high",
+      "review_comment": "A reviewer would catch status vocabulary drift before generated artifacts rely on ambiguous values.",
+      "unsupported_claims": [
+        "browser_rendering_verified",
+        "real_target_first_run_verified",
+        "product_accepted"
+      ]
+    },
+    {
+      "task_id": "B45-PILOT-CODE-TASK-3",
+      "title": "Self-learning Professional Code candidates may target handoff-completeness eval",
+      "code_surfaces": [
+        "plugins/product-agent-os/scripts/product_agent_os/self_learning_candidates.py",
+        "tests/product_agent_os/test_self_learning_state.py"
+      ],
+      "change_summary": "Added the existing handoff-completeness eval template to the Professional Code Authoring candidate-only allowed update targets.",
+      "selected_leverage_path": "small_custom_code",
+      "new_dependency": false,
+      "false_positive_observation": "none_observed",
+      "real_gap_found": "Professional Code Authoring can surface handoff issues, but the candidate allow-list omitted the existing handoff-completeness eval.",
+      "flake_signal": "focused_suite_passed_twice",
+      "cost_signal": "local_cpu_only_no_provider_browser_network_or_dependency_install",
+      "reviewer_usefulness": "medium",
+      "review_comment": "A reviewer would catch scope completeness, but this is less urgent than safety or activation-policy drift.",
+      "unsupported_claims": [
+        "self_learning_auto_apply_ready",
+        "active_automation_ready",
+        "hook_activation_ready"
+      ]
+    },
+    {
+      "task_id": "B45-PILOT-CODE-TASK-4",
+      "title": "Failed manual runs block Professional Code automation stability",
+      "code_surfaces": [
+        "plugins/product-agent-os/scripts/product_agent_os/automation_policy.py",
+        "tests/product_agent_os/test_automation_policy.py"
+      ],
+      "change_summary": "Added manual failure parsing, surfaced manual_failure_count in the report and made Professional Code manual stability require 3 successes with zero failures.",
+      "selected_leverage_path": "small_custom_code",
+      "new_dependency": false,
+      "false_positive_observation": "none_observed",
+      "real_gap_found": "Three successes with an observed failure could previously look stable enough for candidate reporting.",
+      "flake_signal": "focused_suite_passed_twice",
+      "cost_signal": "local_cpu_only_no_provider_browser_network_or_dependency_install",
+      "reviewer_usefulness": "high",
+      "review_comment": "A reviewer would catch that success-count-only gates are misleading for automation promotion.",
+      "unsupported_claims": [
+        "active_automation_ready",
+        "hook_activation_ready",
+        "blocker_activation_ready"
+      ]
+    },
+    {
+      "task_id": "B45-PILOT-CODE-TASK-5",
+      "title": "Professional Code regression flags accept human-spaced aliases",
+      "code_surfaces": [
+        "plugins/product-agent-os/scripts/product_agent_os/self_learning_candidates.py",
+        "tests/product_agent_os/test_self_learning_state.py"
+      ],
+      "change_summary": "Normalized spaces in Professional Code signal detection so human-readable regression flags like coding standards comment noise create candidate-only packets.",
+      "selected_leverage_path": "small_custom_code",
+      "new_dependency": false,
+      "false_positive_observation": "none_observed",
+      "real_gap_found": "Human-spaced Professional Code regression flags were missed because only hyphen and underscore variants were normalized.",
+      "flake_signal": "focused_suite_passed_twice",
+      "cost_signal": "local_cpu_only_no_provider_browser_network_or_dependency_install",
+      "reviewer_usefulness": "medium_high",
+      "review_comment": "A reviewer would catch taxonomy alias drift where humans write labels differently from code constants.",
+      "unsupported_claims": [
+        "large_taxonomy_recall_proven",
+        "self_learning_auto_apply_ready",
+        "active_automation_ready"
+      ]
+    },
+    {
+      "task_id": "B45-PILOT-CODE-TASK-6",
+      "title": "Self-Learning candidate evidence references are privacy-safe",
+      "code_surfaces": [
+        "plugins/product-agent-os/scripts/product_agent_os/self_learning_candidates.py",
+        "tests/product_agent_os/test_self_learning_state.py"
+      ],
+      "change_summary": "Sanitized candidate evidence and feedback references so local absolute paths and private references become redacted markers before validation and persistence.",
+      "selected_leverage_path": "small_custom_code",
+      "new_dependency": false,
+      "false_positive_observation": "none_observed",
+      "real_gap_found": "Candidate packets could carry local absolute evidence paths or email-like private references before the validator rejected them, creating fragile reporting behavior.",
+      "flake_signal": "focused_suite_passed_twice",
+      "cost_signal": "local_cpu_only_no_provider_browser_network_or_dependency_install",
+      "reviewer_usefulness": "high",
+      "review_comment": "A reviewer would catch privacy-safe evidence handling before learning-loop artifacts store raw local or personal references.",
+      "unsupported_claims": [
+        "raw_private_chat_ingestion_ready",
+        "hidden_telemetry_ready",
+        "self_learning_auto_apply_ready"
+      ]
+    }
+  ],
+  "verification": [
+    {
+      "command": "python -m unittest tests.product_agent_os.test_automation_policy -v",
+      "run_count": 2,
+      "result": "passed",
+      "test_count": 19,
+      "covers_tasks": [
+        "B45-PILOT-CODE-TASK-1",
+        "B45-PILOT-CODE-TASK-4"
+      ]
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_batch45_s3_professional_code_authoring -v",
+      "run_count": 2,
+      "result": "passed",
+      "test_count": 5,
+      "covers_tasks": [
+        "B45-PILOT-CODE-TASK-2"
+      ]
+    },
+    {
+      "command": "python -m unittest tests.product_agent_os.test_self_learning_state -v",
+      "run_count": 2,
+      "result": "passed",
+      "test_count": 25,
+      "covers_tasks": [
+        "B45-PILOT-CODE-TASK-3",
+        "B45-PILOT-CODE-TASK-5",
+        "B45-PILOT-CODE-TASK-6"
+      ]
+    }
+  ],
+  "pilot_findings": {
+    "false_positive_result": "none_observed_in_six_tasks",
+    "false_negative_result": "four_real_gaps_found_and_fixed_plus_one_scope_completeness_gap",
+    "flake_result": "no_flake_observed_in_two_focused_replays_for_each_pilot_suite",
+    "cost_result": "low_local_cpu_only",
+    "reviewer_usefulness_result": "high_or_medium_high_for_five_tasks_medium_for_one_task",
+    "advisory_hook_or_blocker_decision": "defer_blocker; advisory_only_reminder_or_manual_checklist_next"
+  },
+  "unsupported_claims": [
+    "real_ai_agent_behavior_improvement",
+    "active_hook_or_blocker_readiness",
+    "active_automation_readiness",
+    "schedule_creation_readiness",
+    "provider_browser_runtime_proof",
+    "target_workspace_mutation_safety",
+    "release_or_production_readiness"
+  ]
+}

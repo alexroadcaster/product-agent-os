@@ -133,6 +133,8 @@ def build_self_learning_run_packet(
     mode: str,
     scope_packet: dict[str, Any],
     due_packet: dict[str, Any],
+    metrics_ledger_path: str | Path | None = None,
+    feedback_ledger_path: str | Path | None = None,
 ) -> dict[str, Any]:
     now_dt = _parse_datetime(now)
     run_id = build_run_id(now=now_dt, workspace=workspace, scope_packet=scope_packet)
@@ -147,8 +149,8 @@ def build_self_learning_run_packet(
         blockers=blockers,
     )
     progress_status = "blocked" if blockers else "ready_for_owner_review"
-    metrics_summary = summarize_self_learning_metrics(workspace)
-    feedback_summary = summarize_owner_feedback_ledger(workspace)
+    metrics_summary = summarize_self_learning_metrics(workspace, ledger_path=metrics_ledger_path)
+    feedback_summary = summarize_owner_feedback_ledger(workspace, ledger_path=feedback_ledger_path)
     candidate_summary = summarize_self_learning_candidates(
         workspace,
         metrics_summary=metrics_summary,
@@ -186,6 +188,20 @@ def build_self_learning_run_packet(
                 "id": "due_check",
                 "kind": "self_learning_due_check_packet",
                 "status": due_packet.get("status"),
+                "raw_private_paths": "excluded",
+            },
+            {
+                "id": "metrics_ledger",
+                "kind": "self_learning_metrics_summary",
+                "status": metrics_summary.get("status"),
+                "source": metrics_summary.get("ledger_path"),
+                "raw_private_paths": "excluded",
+            },
+            {
+                "id": "owner_feedback_ledger",
+                "kind": "redacted_owner_feedback_summary",
+                "status": feedback_summary.get("status"),
+                "source": feedback_summary.get("ledger_source"),
                 "raw_private_paths": "excluded",
             },
         ],

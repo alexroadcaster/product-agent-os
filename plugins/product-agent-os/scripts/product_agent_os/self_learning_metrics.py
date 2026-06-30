@@ -95,8 +95,12 @@ def append_metrics_ledger_row(existing_rows: list[dict[str, Any]], row: dict[str
     }
 
 
-def load_metrics_ledger(workspace: str | Path) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
-    path = Path(workspace) / METRICS_LEDGER_RELATIVE_PATH
+def load_metrics_ledger(
+    workspace: str | Path,
+    *,
+    ledger_path: str | Path | None = None,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    path = Path(ledger_path) if ledger_path is not None else Path(workspace) / METRICS_LEDGER_RELATIVE_PATH
     if not path.exists():
         return [], []
     rows: list[dict[str, Any]] = []
@@ -117,8 +121,12 @@ def load_metrics_ledger(workspace: str | Path) -> tuple[list[dict[str, Any]], li
     return rows, rejected
 
 
-def summarize_self_learning_metrics(workspace: str | Path) -> dict[str, Any]:
-    rows, rejected = load_metrics_ledger(workspace)
+def summarize_self_learning_metrics(
+    workspace: str | Path,
+    *,
+    ledger_path: str | Path | None = None,
+) -> dict[str, Any]:
+    rows, rejected = load_metrics_ledger(workspace, ledger_path=ledger_path)
     if not rows and not rejected:
         return {
             "schema_version": "self_learning_metrics_summary_v1",
@@ -129,7 +137,7 @@ def summarize_self_learning_metrics(workspace: str | Path) -> dict[str, Any]:
             "latest_run_id": None,
             "quality_regression_claim": "unsupported_without_current_verification",
             "generated_view_success_claim": "never",
-            "ledger_path": METRICS_LEDGER_RELATIVE_PATH,
+            "ledger_path": _ledger_source(ledger_path),
         }
     latest = rows[-1] if rows else {}
     metric_delta_count = sum(len(row.get("metrics", {})) for row in rows if isinstance(row.get("metrics"), dict))
@@ -145,7 +153,7 @@ def summarize_self_learning_metrics(workspace: str | Path) -> dict[str, Any]:
         "regression_flags": regression_flags,
         "quality_regression_claim": "unsupported_without_current_verification",
         "generated_view_success_claim": "never",
-        "ledger_path": METRICS_LEDGER_RELATIVE_PATH,
+        "ledger_path": _ledger_source(ledger_path),
         "rejected_row_errors": rejected,
     }
 
@@ -425,3 +433,7 @@ def _ndcg_at_10(expected: Any, retrieved: Any) -> float:
     ideal_count = min(len(expected_set), 10)
     ideal_dcg = sum(1.0 / math.log2(index + 1) for index in range(1, ideal_count + 1))
     return round(dcg / ideal_dcg, 4) if ideal_dcg else 0.0
+
+
+def _ledger_source(ledger_path: str | Path | None) -> str:
+    return "explicit_redacted_override" if ledger_path is not None else METRICS_LEDGER_RELATIVE_PATH

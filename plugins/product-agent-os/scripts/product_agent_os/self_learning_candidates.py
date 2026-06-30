@@ -16,6 +16,7 @@ PROFESSIONAL_CODE_ALLOWED_UPDATE_TARGETS = [
     "plugins/product-agent-os/assets/templates/artifact-templates/coding-standard-checklist.md",
     "plugins/product-agent-os/assets/templates/evals/behavioral-workflows.json",
     "plugins/product-agent-os/assets/templates/evals/agent-context-contract.json",
+    "plugins/product-agent-os/assets/templates/evals/handoff-completeness.json",
     "plugins/product-agent-os/assets/templates/automations/automation-candidate.md",
     ".codex/automation-candidates/self-learning-automation-candidate.md",
     "plugins/product-agent-os/skills/learning-loop-maintainer/SKILL.md",
@@ -307,9 +308,9 @@ def _candidate(
 
 def _professional_code_candidate(finding: dict[str, Any], metrics: dict[str, Any]) -> dict[str, Any]:
     finding_type = str(finding.get("finding_type") or finding.get("id") or "professional_code_authoring_gap")
-    target_id = str(finding.get("target_id") or "workflow:coding-standards")
+    target_id = _safe_reference(str(finding.get("target_id") or "workflow:coding-standards"))
     evidence_refs = _metric_evidence_refs(metrics)
-    evidence_refs.extend(str(item) for item in finding.get("evidence_refs", []) if str(item))
+    evidence_refs.extend(_safe_references(finding.get("evidence_refs", [])))
     candidate = _candidate(
         component="professional_code_authoring",
         target_id=target_id,
@@ -320,7 +321,7 @@ def _professional_code_candidate(finding: dict[str, Any], metrics: dict[str, Any
             "professional_code_authoring_signal": str(finding.get("signal") or "candidate_review"),
             "metric_delta_count": metrics.get("metric_delta_count", 0),
         },
-        feedback_refs=[str(item) for item in finding.get("feedback_refs", []) if str(item)],
+        feedback_refs=_safe_references(finding.get("feedback_refs", [])),
         expected_impact=str(
             finding.get("expected_impact")
             or "Improve reuse-first code authoring guidance while preserving owner-reviewed candidate-only changes."
@@ -366,10 +367,10 @@ def _professional_code_candidate(finding: dict[str, Any], metrics: dict[str, Any
 
 
 def _metric_evidence_refs(metrics: dict[str, Any]) -> list[str]:
-    refs = [str(item) for item in metrics.get("latest_report_paths", []) if str(item)]
+    refs = _safe_references(metrics.get("latest_report_paths", []))
     latest_run_id = metrics.get("latest_run_id")
     if latest_run_id:
-        refs.append(f"metrics_run:{latest_run_id}")
+        refs.append(f"metrics_run:{_safe_reference(str(latest_run_id))}")
     return refs or ["metrics_summary"]
 
 
@@ -411,7 +412,7 @@ def _normalized_findings(value: Any, *, source: str) -> list[dict[str, Any]]:
 
 
 def _is_professional_code_signal(value: str) -> bool:
-    normalized = value.lower().replace("-", "_")
+    normalized = value.lower().replace("-", "_").replace(" ", "_")
     return any(
         signal in normalized
         for signal in [
@@ -452,10 +453,42 @@ def _contains_raw_private_content(value: Any) -> bool:
         return any(_contains_raw_private_content(item) for item in value)
     if isinstance(value, str):
         lowered = value.lower()
+        if _is_local_absolute_path(value):
+            return True
         if "raw private chat" in lowered or "raw transcript body" in lowered:
             return True
         return bool(_EMAIL_RE.search(value))
     return False
+
+
+def _safe_references(value: Any) -> list[str]:
+    if isinstance(value, str):
+        value = [value]
+    if not isinstance(value, list):
+        return []
+    refs: list[str] = []
+    for item in value:
+        ref = _safe_reference(str(item))
+        if ref:
+            refs.append(ref)
+    return refs
+
+
+def _safe_reference(value: str) -> str:
+    text = value.strip()
+    if not text:
+        return ""
+    lowered = text.lower()
+    if _is_local_absolute_path(text):
+        return "redacted_local_path"
+    if _EMAIL_RE.search(text) or "raw private chat" in lowered or "raw transcript body" in lowered:
+        return "redacted_private_ref"
+    return text
+
+
+def _is_local_absolute_path(value: str) -> bool:
+    text = value.replace("\\", "/").strip()
+    return bool(re.match(r"^[A-Za-z]:/", text)) or text.startswith(("/", "//", "~"))
 
 
 def _stable_id(*parts: str) -> str:

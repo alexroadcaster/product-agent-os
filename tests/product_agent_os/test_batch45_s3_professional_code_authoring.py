@@ -196,6 +196,31 @@ class Batch45S3ProfessionalCodeAuthoringTest(unittest.TestCase):
         self.assertIn("coding-standards.md", pre_hook)
         self.assertIn("professional_code_authoring_not_applicable_reason", stop_hook)
 
+    def test_empty_professional_code_authoring_summary_uses_not_applicable_status(self):
+        packet = build_first_run_analysis_packet(
+            target_label="synthetic-docs-target",
+            generated_at="2026-06-30T10:00:00+03:00",
+            source_artifacts=[],
+            generated_pages=[],
+            section_summaries={
+                "discovery": {"status": "not_available"},
+                "runtime_route": {"status": "not_available"},
+                "methodology_audit": {"status": "not_available"},
+                "control_plane": {"status": "not_available"},
+                "source_policy": {"status": "not_available"},
+                "graph": {"status": "not_available"},
+                "status_snapshot": {"status": "not_available"},
+            },
+            safe_next_action="No professional code authoring signal detected.",
+        )
+
+        summary = packet["professional_code_authoring_summary"]
+
+        self.assertEqual(validate_first_run_analysis_packet(packet), [])
+        self.assertEqual(summary["status"], "not_applicable")
+        self.assertEqual(summary["completion_claim"], "not_claimed")
+        self.assertEqual(summary["evidence"], [])
+
     def _write_files(self, root: Path, files: dict[str, str]) -> None:
         for relative, text in files.items():
             path = root / relative
