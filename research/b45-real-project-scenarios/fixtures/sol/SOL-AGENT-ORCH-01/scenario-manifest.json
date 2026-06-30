@@ -1,0 +1,236 @@
+{
+  "schema": "b45_pca_scenario_manifest_v1",
+  "task_id": "B45-PCA-M31",
+  "scenario_id": "SOL-AGENT-ORCH-01",
+  "target_id": "sol_0_6",
+  "target_label": "SOL 0.6",
+  "status": "copied_sanitized",
+  "approval": {
+    "source_copy_approved": true,
+    "approval_reference": "owner message in current thread: приступаем к B45-PCA-M31 scenario_id SOL-AGENT-ORCH-01",
+    "approved_scope_summary": "Minimal selected paths from B45-PCA-M29 scenario-candidates for SOL-AGENT-ORCH-01 plus backend package.json and tsconfig.json; forbidden env/log/generated/vendor paths excluded",
+    "runtime_execution_approved": false,
+    "browser_approved": false,
+    "provider_or_live_api_approved": false,
+    "target_git_write_approved": false
+  },
+  "scope": {
+    "purpose": "analysis-only fixture pack for Product-Agent OS evaluation of SOL backend agent orchestration",
+    "scenario_family": "backend_agent_orchestration",
+    "copy_mode": "analysis_only",
+    "fixture_root": "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01",
+    "target_read_only_proof": {
+      "path_inventory_ran": true,
+      "hidden_ignored_risk_scan_ran": true,
+      "target_dirty_state_recorded": true,
+      "target_writes_performed": false
+    }
+  },
+  "selected_paths": [
+    {
+      "source_relative_path": "backend/package.json",
+      "source_class": "minimal_manifest",
+      "reason": "backend package scripts and dependencies for analysis-only fixture context",
+      "copy_destination": "config/backend/package.json"
+    },
+    {
+      "source_relative_path": "backend/tsconfig.json",
+      "source_class": "minimal_manifest",
+      "reason": "TypeScript compiler boundary for analysis-only fixture context",
+      "copy_destination": "config/backend/tsconfig.json"
+    },
+    {
+      "source_relative_path": "backend/src/index.ts",
+      "source_class": "application_source",
+      "reason": "backend entrypoint and route/socket orchestration for SOL agent scenario",
+      "copy_destination": "src/backend/src/index.ts"
+    },
+    {
+      "source_relative_path": "backend/src/services/ai.ts",
+      "source_class": "application_source",
+      "reason": "AI service boundary for backend agent orchestration",
+      "copy_destination": "src/backend/src/services/ai.ts"
+    },
+    {
+      "source_relative_path": "backend/src/services/taskMaster.ts",
+      "source_class": "application_source",
+      "reason": "task orchestration service for scenario",
+      "copy_destination": "src/backend/src/services/taskMaster.ts"
+    },
+    {
+      "source_relative_path": "backend/src/services/orchestrator.ts",
+      "source_class": "application_source",
+      "reason": "agent orchestration core for scenario",
+      "copy_destination": "src/backend/src/services/orchestrator.ts"
+    },
+    {
+      "source_relative_path": "backend/src/services/db.ts",
+      "source_class": "application_source",
+      "reason": "database access abstraction used by orchestration services",
+      "copy_destination": "src/backend/src/services/db.ts"
+    },
+    {
+      "source_relative_path": "backend/src/services/agent-registry.ts",
+      "source_class": "application_source",
+      "reason": "agent registry and role wiring for scenario",
+      "copy_destination": "src/backend/src/services/agent-registry.ts"
+    },
+    {
+      "source_relative_path": "backend/src/services/tools/dispatcher.ts",
+      "source_class": "application_source",
+      "reason": "tool dispatch boundary for agent workflow",
+      "copy_destination": "src/backend/src/services/tools/dispatcher.ts"
+    },
+    {
+      "source_relative_path": "backend/src/services/tools/createSubtasksTool.ts",
+      "source_class": "application_source",
+      "reason": "tool implementation used by agent workflow",
+      "copy_destination": "src/backend/src/services/tools/createSubtasksTool.ts"
+    },
+    {
+      "source_relative_path": "backend/src/services/agents/developer-agent.ts",
+      "source_class": "application_source",
+      "reason": "agent implementation in selected orchestration family",
+      "copy_destination": "src/backend/src/services/agents/developer-agent.ts"
+    },
+    {
+      "source_relative_path": "backend/src/services/agents/designer-agent.ts",
+      "source_class": "application_source",
+      "reason": "agent implementation in selected orchestration family",
+      "copy_destination": "src/backend/src/services/agents/designer-agent.ts"
+    },
+    {
+      "source_relative_path": "backend/src/services/agents/data-analyst-agent.ts",
+      "source_class": "application_source",
+      "reason": "agent implementation in selected orchestration family",
+      "copy_destination": "src/backend/src/services/agents/data-analyst-agent.ts"
+    },
+    {
+      "source_relative_path": "backend/src/services/agents/ba-agent.ts",
+      "source_class": "application_source",
+      "reason": "agent implementation in selected orchestration family",
+      "copy_destination": "src/backend/src/services/agents/ba-agent.ts"
+    },
+    {
+      "source_relative_path": "backend/src/services/agents/architect-agent.ts",
+      "source_class": "application_source",
+      "reason": "agent implementation in selected orchestration family",
+      "copy_destination": "src/backend/src/services/agents/architect-agent.ts"
+    },
+    {
+      "source_relative_path": "backend/src/services/agents/optimizer-agent.ts",
+      "source_class": "application_source",
+      "reason": "agent implementation in selected orchestration family",
+      "copy_destination": "src/backend/src/services/agents/optimizer-agent.ts"
+    },
+    {
+      "source_relative_path": "backend/src/services/agents/marketer-agent.ts",
+      "source_class": "application_source",
+      "reason": "agent implementation in selected orchestration family",
+      "copy_destination": "src/backend/src/services/agents/marketer-agent.ts"
+    },
+    {
+      "source_relative_path": "backend/src/services/agents/product-owner-agent.ts",
+      "source_class": "application_source",
+      "reason": "agent implementation in selected orchestration family",
+      "copy_destination": "src/backend/src/services/agents/product-owner-agent.ts"
+    },
+    {
+      "source_relative_path": "backend/src/services/agents/qa-agent.ts",
+      "source_class": "application_source",
+      "reason": "agent implementation in selected orchestration family",
+      "copy_destination": "src/backend/src/services/agents/qa-agent.ts"
+    },
+    {
+      "source_relative_path": "backend/src/services/agents/router-agent.ts",
+      "source_class": "application_source",
+      "reason": "agent implementation in selected orchestration family",
+      "copy_destination": "src/backend/src/services/agents/router-agent.ts"
+    },
+    {
+      "source_relative_path": "backend/src/services/agents/security-agent.ts",
+      "source_class": "application_source",
+      "reason": "agent implementation in selected orchestration family",
+      "copy_destination": "src/backend/src/services/agents/security-agent.ts"
+    }
+  ],
+  "excluded_paths": [
+    {
+      "source_relative_path": "backend/.env",
+      "reason": "forbidden env/secrets class"
+    },
+    {
+      "source_relative_path": "backend/sol.env",
+      "reason": "forbidden env/secrets class"
+    },
+    {
+      "source_relative_path": "backend/.sol_data",
+      "reason": "forbidden local runtime state"
+    },
+    {
+      "source_relative_path": "backend/dist",
+      "reason": "generated build output"
+    },
+    {
+      "source_relative_path": "backend/node_modules",
+      "reason": "dependency tree"
+    },
+    {
+      "source_relative_path": "frontend/build_output.log",
+      "reason": "generated log"
+    },
+    {
+      "source_relative_path": "frontend/.git",
+      "reason": "nested git metadata"
+    },
+    {
+      "source_relative_path": "antigravity-awesome-skills-main",
+      "reason": "bundled vendor/example corpus outside selected scenario"
+    },
+    {
+      "source_relative_path": "docs/Tasks",
+      "reason": "deferred docs/task traceability family"
+    },
+    {
+      "source_relative_path": "backend/mytest2",
+      "reason": "generated/example project corpus outside selected scenario"
+    },
+    {
+      "source_relative_path": "backend/test project",
+      "reason": "generated/example project corpus outside selected scenario"
+    },
+    {
+      "source_relative_path": "tmp-ai-test.ts",
+      "reason": "one-off scratch file outside selected scenario"
+    }
+  ],
+  "unsupported_claims": [
+    "runtime_behavior",
+    "browser_behavior",
+    "provider_or_live_api_behavior",
+    "target_command_success",
+    "release_readiness"
+  ],
+  "verification_plan": {
+    "manifest_validation": [
+      "Parse scenario-manifest.json fixture-manifest.json redaction-manifest.json",
+      "Validate manifests against M30 schemas when jsonschema is available"
+    ],
+    "denylist_scan": [
+      "Run path/content denylist scan over copied fixture files without retaining raw match values"
+    ],
+    "docs_checks": [
+      "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+      "python tools\\\\check_docs.py",
+      "git diff --check"
+    ],
+    "target_commands": []
+  },
+  "rollback": {
+    "delete_paths": [
+      "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01"
+    ],
+    "target_rollback_required": false,
+    "notes": "Delete only the fixture directory and related codex_docs registry/status edits. Target SOL 0.6 remains read-only."
+  }
+}

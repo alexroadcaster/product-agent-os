@@ -1,0 +1,185 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://codex-docs.local/schemas/b45-pca/redaction-manifest.schema.json",
+  "title": "B45-PCA Redaction Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "task_id",
+    "scenario_id",
+    "status",
+    "rules",
+    "files",
+    "forbidden_values_stored",
+    "raw_private_data_stored",
+    "review"
+  ],
+  "properties": {
+    "schema": {
+      "const": "b45_pca_redaction_manifest_v1"
+    },
+    "task_id": {
+      "type": "string",
+      "pattern": "^B45-PCA-M31$"
+    },
+    "scenario_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "no_redactions_needed",
+        "redacted",
+        "rejected_for_privacy",
+        "approval_required"
+      ]
+    },
+    "rules": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/redaction_rule"
+      }
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/redacted_file"
+      }
+    },
+    "forbidden_values_stored": {
+      "const": false
+    },
+    "raw_private_data_stored": {
+      "const": false
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reviewer",
+        "review_status",
+        "residual_risk",
+        "notes"
+      ],
+      "properties": {
+        "reviewer": {
+          "type": "string",
+          "minLength": 1
+        },
+        "review_status": {
+          "type": "string",
+          "enum": [
+            "not_reviewed",
+            "passed",
+            "failed",
+            "approval_required"
+          ]
+        },
+        "residual_risk": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "relative_path": {
+      "type": "string",
+      "minLength": 1,
+      "not": {
+        "anyOf": [
+          {
+            "pattern": "^[A-Za-z]:"
+          },
+          {
+            "pattern": "^/"
+          },
+          {
+            "pattern": "\\.\\."
+          },
+          {
+            "pattern": "\\\\"
+          }
+        ]
+      }
+    },
+    "redaction_rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rule_id",
+        "value_class",
+        "match_strategy",
+        "replacement_token",
+        "stores_original_value"
+      ],
+      "properties": {
+        "rule_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9_\\-]+$"
+        },
+        "value_class": {
+          "type": "string",
+          "enum": [
+            "secret",
+            "credential",
+            "private_path",
+            "private_message",
+            "private_prompt",
+            "customer_data",
+            "provider_response",
+            "local_database_value",
+            "other_sensitive_value"
+          ]
+        },
+        "match_strategy": {
+          "type": "string",
+          "enum": [
+            "literal_class_only",
+            "pattern_without_value_capture",
+            "manual_review"
+          ]
+        },
+        "replacement_token": {
+          "type": "string",
+          "pattern": "^<REDACTED_[A-Z0-9_]+>$"
+        },
+        "stores_original_value": {
+          "const": false
+        }
+      }
+    },
+    "redacted_file": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fixture_relative_path",
+        "redaction_rule_ids",
+        "redaction_count",
+        "residual_risk"
+      ],
+      "properties": {
+        "fixture_relative_path": {
+          "$ref": "#/$defs/relative_path"
+        },
+        "redaction_rule_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "redaction_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "residual_risk": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,239 @@
+{
+  "schema": "b45_pca_scenario_manifest_v1",
+  "task_id": "B45-PCA-M31",
+  "scenario_id": "MP-CRM-CHAT-OPEN-01",
+  "target_id": "mypartners",
+  "target_label": "myPartners",
+  "status": "copied_sanitized",
+  "approval": {
+    "source_copy_approved": true,
+    "approval_reference": "owner message in current thread: приступаем к B45-PCA-M31 добавляем второй scenario_id MP-CRM-CHAT-OPEN-01",
+    "approved_scope_summary": "Minimal selected paths from B45-PCA-M29 scenario-candidates for MP-CRM-CHAT-OPEN-01 plus server/frontend manifests; forbidden env/db/log/generated/vendor paths excluded",
+    "runtime_execution_approved": false,
+    "browser_approved": false,
+    "provider_or_live_api_approved": false,
+    "target_git_write_approved": false
+  },
+  "scope": {
+    "purpose": "analysis-only fixture pack for Product-Agent OS evaluation of myPartners CRM contact/chat-open workflow",
+    "scenario_family": "crm_chat_contact_workflow",
+    "copy_mode": "analysis_only",
+    "fixture_root": "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01",
+    "target_read_only_proof": {
+      "path_inventory_ran": true,
+      "hidden_ignored_risk_scan_ran": true,
+      "target_dirty_state_recorded": true,
+      "target_writes_performed": false
+    }
+  },
+  "selected_paths": [
+    {
+      "source_relative_path": "server/pyproject.toml",
+      "source_class": "minimal_manifest",
+      "reason": "Python backend dependency and pytest configuration boundary for analysis-only CRM fixture context",
+      "copy_destination": "config/server/pyproject.toml"
+    },
+    {
+      "source_relative_path": "frontend/package.json",
+      "source_class": "minimal_manifest",
+      "reason": "Frontend scripts and dependency boundary for CRM contract/e2e test context",
+      "copy_destination": "config/frontend/package.json"
+    },
+    {
+      "source_relative_path": "frontend/playwright.e2e.config.ts",
+      "source_class": "minimal_manifest",
+      "reason": "Browser/e2e command boundary recorded without running browser automation",
+      "copy_destination": "config/frontend/playwright.e2e.config.ts"
+    },
+    {
+      "source_relative_path": "frontend/tsconfig.json",
+      "source_class": "minimal_manifest",
+      "reason": "TypeScript compiler boundary for frontend CRM contract tests",
+      "copy_destination": "config/frontend/tsconfig.json"
+    },
+    {
+      "source_relative_path": "frontend/next.config.ts",
+      "source_class": "minimal_manifest",
+      "reason": "Next.js application boundary for frontend CRM test context",
+      "copy_destination": "config/frontend/next.config.ts"
+    },
+    {
+      "source_relative_path": "server/app/api/contacts_routes.py",
+      "source_class": "application_source",
+      "reason": "Contacts API route implementation used by CRM chat/contact open workflow",
+      "copy_destination": "src/server/app/api/contacts_routes.py"
+    },
+    {
+      "source_relative_path": "server/app/contacts/__init__.py",
+      "source_class": "application_source",
+      "reason": "Contacts package boundary for backend workflow source context",
+      "copy_destination": "src/server/app/contacts/__init__.py"
+    },
+    {
+      "source_relative_path": "server/app/contacts/merge_candidates.py",
+      "source_class": "application_source",
+      "reason": "Contact merge candidate logic connected to CRM contact workflow behavior",
+      "copy_destination": "src/server/app/contacts/merge_candidates.py"
+    },
+    {
+      "source_relative_path": "server/tests/test_contacts_chats.py",
+      "source_class": "focused_test",
+      "reason": "Focused backend test for contact chat-open behavior",
+      "copy_destination": "tests/server/tests/test_contacts_chats.py"
+    },
+    {
+      "source_relative_path": "server/tests/test_contacts_messages.py",
+      "source_class": "focused_test",
+      "reason": "Focused backend test for CRM contact messages behavior",
+      "copy_destination": "tests/server/tests/test_contacts_messages.py"
+    },
+    {
+      "source_relative_path": "server/tests/test_contacts_routes.py",
+      "source_class": "focused_test",
+      "reason": "Focused backend route test for contacts API workflow",
+      "copy_destination": "tests/server/tests/test_contacts_routes.py"
+    },
+    {
+      "source_relative_path": "server/tests/test_contacts_get_one.py",
+      "source_class": "focused_test",
+      "reason": "Focused backend test for single contact retrieval behavior",
+      "copy_destination": "tests/server/tests/test_contacts_get_one.py"
+    },
+    {
+      "source_relative_path": "server/tests/test_contacts_insights.py",
+      "source_class": "focused_test",
+      "reason": "Focused backend test for contact insights behavior",
+      "copy_destination": "tests/server/tests/test_contacts_insights.py"
+    },
+    {
+      "source_relative_path": "server/tests/test_contacts_list_extended.py",
+      "source_class": "focused_test",
+      "reason": "Focused backend test for extended contact list behavior",
+      "copy_destination": "tests/server/tests/test_contacts_list_extended.py"
+    },
+    {
+      "source_relative_path": "server/tests/test_contacts_merge.py",
+      "source_class": "focused_test",
+      "reason": "Focused backend test for contact merge workflow behavior",
+      "copy_destination": "tests/server/tests/test_contacts_merge.py"
+    },
+    {
+      "source_relative_path": "server/tests/test_contacts_patch.py",
+      "source_class": "focused_test",
+      "reason": "Focused backend test for contact update workflow behavior",
+      "copy_destination": "tests/server/tests/test_contacts_patch.py"
+    },
+    {
+      "source_relative_path": "server/tests/test_contacts_tags_assoc.py",
+      "source_class": "focused_test",
+      "reason": "Focused backend test for contact tag association behavior",
+      "copy_destination": "tests/server/tests/test_contacts_tags_assoc.py"
+    },
+    {
+      "source_relative_path": "frontend/tests/e2e/crm.spec.ts",
+      "source_class": "focused_test",
+      "reason": "Frontend e2e CRM workflow test recorded without browser execution",
+      "copy_destination": "tests/frontend/tests/e2e/crm.spec.ts"
+    },
+    {
+      "source_relative_path": "frontend/tests/contracts/crm-api.test.ts",
+      "source_class": "focused_test",
+      "reason": "Frontend contract test for CRM API behavior",
+      "copy_destination": "tests/frontend/tests/contracts/crm-api.test.ts"
+    },
+    {
+      "source_relative_path": "frontend/tests/contracts/crm-message-rendering.test.ts",
+      "source_class": "focused_test",
+      "reason": "Frontend contract test for CRM message rendering behavior",
+      "copy_destination": "tests/frontend/tests/contracts/crm-message-rendering.test.ts"
+    },
+    {
+      "source_relative_path": "frontend/tests/contracts/crm-model.test.ts",
+      "source_class": "focused_test",
+      "reason": "Frontend contract test for CRM model behavior",
+      "copy_destination": "tests/frontend/tests/contracts/crm-model.test.ts"
+    }
+  ],
+  "excluded_paths": [
+    {
+      "source_relative_path": "server/.env.example",
+      "reason": "environment template excluded under secrets/config boundary; not needed for analysis-only fixture"
+    },
+    {
+      "source_relative_path": "server/mypartners_dev.db",
+      "reason": "local database/runtime state is forbidden fixture class"
+    },
+    {
+      "source_relative_path": "server/.venv",
+      "reason": "dependency tree is forbidden fixture class"
+    },
+    {
+      "source_relative_path": "server/.pytest_cache",
+      "reason": "generated cache is forbidden fixture class"
+    },
+    {
+      "source_relative_path": "server/.ruff_cache",
+      "reason": "generated cache is forbidden fixture class"
+    },
+    {
+      "source_relative_path": "frontend/node_modules",
+      "reason": "dependency tree is forbidden fixture class"
+    },
+    {
+      "source_relative_path": "frontend/.next",
+      "reason": "generated application build output is forbidden fixture class"
+    },
+    {
+      "source_relative_path": "frontend/test-results",
+      "reason": "test output/traces are forbidden fixture class"
+    },
+    {
+      "source_relative_path": "frontend/playwright-report",
+      "reason": "browser report output is forbidden fixture class"
+    },
+    {
+      "source_relative_path": "frontend/debug.log",
+      "reason": "runtime log is forbidden fixture class"
+    },
+    {
+      "source_relative_path": "frontend/package-lock.json",
+      "reason": "lockfile excluded by default; exact dependency graph not required for analysis-only fixture"
+    },
+    {
+      "source_relative_path": "frontend/tsconfig.tsbuildinfo",
+      "reason": "generated TypeScript build metadata is forbidden fixture class"
+    }
+  ],
+  "unsupported_claims": [
+    "runtime_behavior",
+    "browser_behavior",
+    "provider_or_live_api_behavior",
+    "target_command_success",
+    "production_data_safety",
+    "release_readiness"
+  ],
+  "verification_plan": {
+    "manifest_validation": [
+      "Test-Json scenario-manifest.json against scenario-manifest.schema.json",
+      "Test-Json fixture-manifest.json against fixture-manifest.schema.json",
+      "Test-Json redaction-manifest.json against redaction-manifest.schema.json"
+    ],
+    "denylist_scan": [
+      "focused secret/private-key/value pattern scan over selected source paths before copy",
+      "focused secret/private-key/value pattern scan over fixture after copy"
+    ],
+    "docs_checks": [
+      "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+      "python tools/check_docs.py",
+      "git diff --check"
+    ],
+    "target_commands": []
+  },
+  "rollback": {
+    "delete_paths": [
+      "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01"
+    ],
+    "target_rollback_required": false,
+    "notes": "Delete only the fixture directory and related codex_docs registry/status edits. Target myPartners remains read-only."
+  }
+}

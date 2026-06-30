@@ -1,0 +1,224 @@
+{
+  "schema": "b45_pca_fixture_manifest_v1",
+  "task_id": "B45-PCA-M31",
+  "scenario_id": "SOL-AGENT-ORCH-01",
+  "fixture_root": "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01",
+  "status": "analysis_only",
+  "source_policy": {
+    "policy_file": "research/b45-real-project-scenarios/source-policy.md",
+    "forbidden_class_scan": "passed",
+    "path_normalization_checked": true,
+    "absolute_paths_stored": false,
+    "target_writes_performed": false
+  },
+  "files": [
+    {
+      "source_relative_path": "backend/package.json",
+      "fixture_relative_path": "config/backend/package.json",
+      "source_class": "minimal_manifest",
+      "copy_reason": "backend package scripts and dependencies for analysis-only fixture context",
+      "redaction_status": "none",
+      "sha256": "f7e92589bd9f77d53b4cd2de425c9b5c48c1e048bbc8947e913f35fcbf178231",
+      "bytes": 798
+    },
+    {
+      "source_relative_path": "backend/tsconfig.json",
+      "fixture_relative_path": "config/backend/tsconfig.json",
+      "source_class": "minimal_manifest",
+      "copy_reason": "TypeScript compiler boundary for analysis-only fixture context",
+      "redaction_status": "none",
+      "sha256": "5022f3778f9debb788ebd33f80c74f8f5cd55ba93df33f0b133c49baf56db3c7",
+      "bytes": 372
+    },
+    {
+      "source_relative_path": "backend/src/index.ts",
+      "fixture_relative_path": "src/backend/src/index.ts",
+      "source_class": "application_source",
+      "copy_reason": "backend entrypoint and route/socket orchestration for SOL agent scenario",
+      "redaction_status": "none",
+      "sha256": "e68fa23fcb7e5364ea99d942d02d6da93c97866833e460346b0c7390918799f1",
+      "bytes": 20535
+    },
+    {
+      "source_relative_path": "backend/src/services/ai.ts",
+      "fixture_relative_path": "src/backend/src/services/ai.ts",
+      "source_class": "application_source",
+      "copy_reason": "AI service boundary for backend agent orchestration",
+      "redaction_status": "none",
+      "sha256": "a2c35441b754cfa34b5e0285b11f2867b8486b1ee755c3c6a25319324a9b4770",
+      "bytes": 4855
+    },
+    {
+      "source_relative_path": "backend/src/services/taskMaster.ts",
+      "fixture_relative_path": "src/backend/src/services/taskMaster.ts",
+      "source_class": "application_source",
+      "copy_reason": "task orchestration service for scenario",
+      "redaction_status": "none",
+      "sha256": "07528d3e5f64896ef4ab5f22f0a2c9ce1b9236435075eff57c9f1140725197ed",
+      "bytes": 4020
+    },
+    {
+      "source_relative_path": "backend/src/services/orchestrator.ts",
+      "fixture_relative_path": "src/backend/src/services/orchestrator.ts",
+      "source_class": "application_source",
+      "copy_reason": "agent orchestration core for scenario",
+      "redaction_status": "none",
+      "sha256": "9f750fd58ae7f463b7fabe404943b013701aa28fac309471efb397d83c3984a8",
+      "bytes": 6660
+    },
+    {
+      "source_relative_path": "backend/src/services/db.ts",
+      "fixture_relative_path": "src/backend/src/services/db.ts",
+      "source_class": "application_source",
+      "copy_reason": "database access abstraction used by orchestration services",
+      "redaction_status": "none",
+      "sha256": "bb45a3f76e6f2289a8cfe97e1e791077c0aece190e17a5450907d4a72b55e58f",
+      "bytes": 5701
+    },
+    {
+      "source_relative_path": "backend/src/services/agent-registry.ts",
+      "fixture_relative_path": "src/backend/src/services/agent-registry.ts",
+      "source_class": "application_source",
+      "copy_reason": "agent registry and role wiring for scenario",
+      "redaction_status": "none",
+      "sha256": "ab7f164b020dbf8d14e1df9c526bce6d4f3d6d9a3bcef0ee76741a8122356427",
+      "bytes": 17962
+    },
+    {
+      "source_relative_path": "backend/src/services/tools/dispatcher.ts",
+      "fixture_relative_path": "src/backend/src/services/tools/dispatcher.ts",
+      "source_class": "application_source",
+      "copy_reason": "tool dispatch boundary for agent workflow",
+      "redaction_status": "none",
+      "sha256": "8ccea46dbed23741928ba3421424b3ab20f0ce76c81d6dcf3633e6d0fdda7080",
+      "bytes": 3092
+    },
+    {
+      "source_relative_path": "backend/src/services/tools/createSubtasksTool.ts",
+      "fixture_relative_path": "src/backend/src/services/tools/createSubtasksTool.ts",
+      "source_class": "application_source",
+      "copy_reason": "tool implementation used by agent workflow",
+      "redaction_status": "none",
+      "sha256": "925d1d971c2a6c0b43d825801c2b62d68d926b7ff138e787fe8fd39fbdfd9bc9",
+      "bytes": 3350
+    },
+    {
+      "source_relative_path": "backend/src/services/agents/developer-agent.ts",
+      "fixture_relative_path": "src/backend/src/services/agents/developer-agent.ts",
+      "source_class": "application_source",
+      "copy_reason": "agent implementation in selected orchestration family",
+      "redaction_status": "none",
+      "sha256": "786ce55f42b9b5c4ed99af0e0cdc43d1b11c3e83cdce63fe9967b85017287606",
+      "bytes": 9843
+    },
+    {
+      "source_relative_path": "backend/src/services/agents/designer-agent.ts",
+      "fixture_relative_path": "src/backend/src/services/agents/designer-agent.ts",
+      "source_class": "application_source",
+      "copy_reason": "agent implementation in selected orchestration family",
+      "redaction_status": "none",
+      "sha256": "bfe548370b775cac2991306b9317d00386a98eac195875639abaa6d84dd9f256",
+      "bytes": 4781
+    },
+    {
+      "source_relative_path": "backend/src/services/agents/data-analyst-agent.ts",
+      "fixture_relative_path": "src/backend/src/services/agents/data-analyst-agent.ts",
+      "source_class": "application_source",
+      "copy_reason": "agent implementation in selected orchestration family",
+      "redaction_status": "none",
+      "sha256": "93419cb6d918fb50b3570eb29052aef2981f795f93c4358746e1c1b6ac497393",
+      "bytes": 4269
+    },
+    {
+      "source_relative_path": "backend/src/services/agents/ba-agent.ts",
+      "fixture_relative_path": "src/backend/src/services/agents/ba-agent.ts",
+      "source_class": "application_source",
+      "copy_reason": "agent implementation in selected orchestration family",
+      "redaction_status": "none",
+      "sha256": "06b98adc0f03a12bca3af91bab80610a0fa4ecd45e58765169938bacd050ef5f",
+      "bytes": 5439
+    },
+    {
+      "source_relative_path": "backend/src/services/agents/architect-agent.ts",
+      "fixture_relative_path": "src/backend/src/services/agents/architect-agent.ts",
+      "source_class": "application_source",
+      "copy_reason": "agent implementation in selected orchestration family",
+      "redaction_status": "none",
+      "sha256": "e02b91afdc333bc6bc8f1c6a5931ea9c239430ce462fd539293b06dc7edca289",
+      "bytes": 5693
+    },
+    {
+      "source_relative_path": "backend/src/services/agents/optimizer-agent.ts",
+      "fixture_relative_path": "src/backend/src/services/agents/optimizer-agent.ts",
+      "source_class": "application_source",
+      "copy_reason": "agent implementation in selected orchestration family",
+      "redaction_status": "none",
+      "sha256": "0ec9ee9be051775b708b8028f1f9066670cf3227920d23c34acaa566ecf3771d",
+      "bytes": 4069
+    },
+    {
+      "source_relative_path": "backend/src/services/agents/marketer-agent.ts",
+      "fixture_relative_path": "src/backend/src/services/agents/marketer-agent.ts",
+      "source_class": "application_source",
+      "copy_reason": "agent implementation in selected orchestration family",
+      "redaction_status": "none",
+      "sha256": "b2bd5f18ffce14ad7252f7a51d6e946afe3176d32aa03f499c578383a5c4796a",
+      "bytes": 5771
+    },
+    {
+      "source_relative_path": "backend/src/services/agents/product-owner-agent.ts",
+      "fixture_relative_path": "src/backend/src/services/agents/product-owner-agent.ts",
+      "source_class": "application_source",
+      "copy_reason": "agent implementation in selected orchestration family",
+      "redaction_status": "none",
+      "sha256": "c50a87cc770f26ea9fef8609eaf29c4bec19d624373246c1790ba073ee7d5e10",
+      "bytes": 4258
+    },
+    {
+      "source_relative_path": "backend/src/services/agents/qa-agent.ts",
+      "fixture_relative_path": "src/backend/src/services/agents/qa-agent.ts",
+      "source_class": "application_source",
+      "copy_reason": "agent implementation in selected orchestration family",
+      "redaction_status": "none",
+      "sha256": "e504e96a7b6c2efa52def76af6b7d3abc27455919338b209051200991c60cffe",
+      "bytes": 3964
+    },
+    {
+      "source_relative_path": "backend/src/services/agents/router-agent.ts",
+      "fixture_relative_path": "src/backend/src/services/agents/router-agent.ts",
+      "source_class": "application_source",
+      "copy_reason": "agent implementation in selected orchestration family",
+      "redaction_status": "none",
+      "sha256": "de6afc7d78541c490538f4d5b40ff75f70b24d5901cdbe04d2ebeba0fe7d4844",
+      "bytes": 3604
+    },
+    {
+      "source_relative_path": "backend/src/services/agents/security-agent.ts",
+      "fixture_relative_path": "src/backend/src/services/agents/security-agent.ts",
+      "source_class": "application_source",
+      "copy_reason": "agent implementation in selected orchestration family",
+      "redaction_status": "none",
+      "sha256": "4e097c5946b55d354402fe517723fa32da690581ebcafba9d91d7440b0299a0d",
+      "bytes": 4196
+    }
+  ],
+  "validation": {
+    "json_schema_validation": "passed",
+    "denylist_scan": "passed",
+    "docs_checks": [
+      "Test-Json scenario-manifest.json against scenario-manifest.schema.json: passed",
+      "Test-Json fixture-manifest.json against fixture-manifest.schema.json: passed",
+      "Test-Json redaction-manifest.json against redaction-manifest.schema.json: passed",
+      "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v: passed",
+      "python tools/check_docs.py: passed"
+    ],
+    "target_commands_run": []
+  },
+  "unsupported_claims": [
+    "runtime behavior not proven",
+    "browser behavior not proven",
+    "provider/live API behavior not proven",
+    "target command success not proven",
+    "release readiness not claimed"
+  ]
+}

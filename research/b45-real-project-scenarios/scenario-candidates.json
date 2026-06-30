@@ -1,0 +1,579 @@
+{
+  "schema": "b45_real_project_scenario_candidates_v1",
+  "task_id": "B45-PCA-M29",
+  "checked_at": "2026-06-30",
+  "source_status": "project_authored_read_only_inventory_no_source_bodies",
+  "rereview_status": "rereview_complete_with_deferred_families_and_hardened_denylist",
+  "approval_provenance": {
+    "target_selection": "owner_named_target_labels_in_current_b45_pca_thread",
+    "approved_scope": "read_only_metadata_inventory_only",
+    "not_approved": [
+      "source_body_copy",
+      "target_command_execution",
+      "runtime_launch",
+      "browser_automation",
+      "provider_or_live_api_call",
+      "git_write",
+      "deployment_or_publication",
+      "external_automation"
+    ]
+  },
+  "privacy_scan_scope": "path_metadata_only_plus_files_with_matches_secret_pattern_discovery_no_raw_values_or_source_bodies_captured",
+  "inventory_method": {
+    "owned_source_count": "rg --files with recursive exclusions such as !**/node_modules/** and normal ignore handling",
+    "risk_surface_discovery": "rg --files --hidden --no-ignore with recursive exclusions to identify ignored runtime_state_paths",
+    "important_glob_rule": "exclude nested generated folders with !**/folder/** rather than only !folder/**"
+  },
+  "target_actions_performed": {
+    "read_only_filesystem_inventory": true,
+    "source_body_copy": false,
+    "target_mutation": false,
+    "target_build_or_test_execution": false,
+    "runtime_launch": false,
+    "browser_automation": false,
+    "provider_or_live_api_call": false,
+    "git_write": false,
+    "deployment_or_publication": false
+  },
+  "global_exclusions": [
+    ".git",
+    "nested .git",
+    "worktrees",
+    "node_modules",
+    ".next",
+    "dist",
+    "build",
+    "site",
+    "coverage",
+    "cache folders",
+    ".env",
+    "*.env",
+    "*.log",
+    "logs",
+    "*.pem",
+    "*.key",
+    "*.p12",
+    "*.crt",
+    "*.sqlite-wal",
+    "*.sqlite-shm",
+    ".wrangler",
+    ".vercel",
+    ".turbo",
+    ".vite",
+    ".cache",
+    ".ruff_cache",
+    ".mypy_cache",
+    "playwright-report",
+    "test-results",
+    "*.har",
+    "trace artifacts",
+    "video artifacts",
+    "screenshot artifacts",
+    "uploads",
+    "downloads",
+    "storage folders",
+    "bundled vendor or example corpora unless explicitly selected",
+    "local database files",
+    "raw chat or message bodies",
+    "raw private payloads",
+    "secrets or credentials",
+    "live provider responses"
+  ],
+  "targets": [
+    {
+      "target_id": "mypartners",
+      "label": "myPartners",
+      "read_only_status": "available_inspected_read_only",
+      "main_shape": [
+        "FastAPI server",
+        "Next.js frontend",
+        "Cloudflare Worker",
+        "docs",
+        "tools"
+      ],
+      "filtered_source_count": 1149,
+      "focused_app_file_count": 260,
+      "focused_roots": [
+        "server/app",
+        "frontend/src",
+        "worker/src"
+      ],
+      "root_counts": {
+        "server/app": 170,
+        "server/tests": 181,
+        "frontend/src": 61,
+        "frontend/tests": 46,
+        "worker/src": 29,
+        "worker/test": 15,
+        "tools": 139,
+        "docs": 440
+      },
+      "main_manifests": [
+        "server/pyproject.toml",
+        "frontend/package.json",
+        "frontend/tsconfig.json",
+        "worker/package.json",
+        "worker/tsconfig.json",
+        "worker/wrangler.toml",
+        "docs/package.json",
+        "docs/requirements.txt",
+        "tools/rag_pipeline/pyproject.toml"
+      ],
+      "dirty_state_summary": "pre_existing_modified_and_untracked_files_observed_no_changes_made",
+      "risk_paths_found_by_metadata_only_scan": [
+        "server/mypartners_dev.db",
+        ".pytest-basetemp-*",
+        ".tmp/pytest-of-user/*",
+        "worker/test/.wrangler/state/*",
+        "debug.log",
+        "frontend/debug.log",
+        "docs/.npm-cache/_logs/*",
+        "binary mockup or screenshot assets"
+      ],
+      "privacy_risk": "high_for_raw_messages_local_databases_embeddings_and_live_provider_payloads"
+    },
+    {
+      "target_id": "sol_0_6",
+      "label": "SOL 0.6",
+      "read_only_status": "available_inspected_read_only",
+      "main_shape": [
+        "Node TypeScript backend",
+        "Next.js frontend",
+        "Python helper scripts",
+        "bundled example or vendor-like material"
+      ],
+      "filtered_source_count": 92,
+      "focused_app_file_count": 49,
+      "focused_roots": [
+        "backend/src",
+        "frontend/src",
+        "scripts"
+      ],
+      "root_counts": {
+        "backend/src": 19,
+        "backend/test project": 3,
+        "frontend/src": 28,
+        "scripts": 2,
+        "docs": 21
+      },
+      "main_manifests": [
+        "backend/package.json",
+        "backend/tsconfig.json",
+        "frontend/package.json",
+        "frontend/tsconfig.json"
+      ],
+      "dirty_state_summary": "root_not_git_repository_frontend_has_nested_git_metadata",
+      "risk_paths_found_by_metadata_only_scan": [
+        "backend/.env",
+        "backend/sol.env",
+        "frontend/build_output.log",
+        "nested node_modules folders",
+        "dist and .next generated folders",
+        "nested .git metadata",
+        "antigravity-awesome-skills-main"
+      ],
+      "privacy_risk": "medium_high_for_env_files_local_runtime_state_logs_and_generated_artifacts"
+    }
+  ],
+  "deferred_families": [
+    {
+      "deferred_id": "MP-SETTINGS-DIAG-OBS-DEFERRED",
+      "target_id": "mypartners",
+      "signals": [
+        "server/app/api/diagnostics_routes.py",
+        "server/app/api/settings_routes.py",
+        "frontend/src/features/settings/*",
+        "diagnostics and settings tests"
+      ],
+      "reason": "real settings and observability surface not selected for first code_authoring_pilot"
+    },
+    {
+      "deferred_id": "MP-APPDATA-SELFCONTEXT-DEFERRED",
+      "target_id": "mypartners",
+      "signals": [
+        "server/app/operations/appdata_activation.py",
+        "server/app/operations/self_context_activation.py",
+        "server/app/operations/advisor_history_activation.py",
+        "memory history appdata tests"
+      ],
+      "reason": "high_risk_data_state_workflow_requires_stricter_approval_and_metadata_only_fixture_design"
+    },
+    {
+      "deferred_id": "MP-BOOTSTRAP-AUTH-SYNC-DEFERRED",
+      "target_id": "mypartners",
+      "signals": [
+        "server/app/bootstrap/*",
+        "worker/src/auth.ts",
+        "worker/src/commercial_auth.ts",
+        "tools/spike_beeper/*",
+        "auth scheduler config tests"
+      ],
+      "reason": "credentials_local_state_and_integration_boundaries_make_this_later_scenario"
+    },
+    {
+      "deferred_id": "MP-WORKER-INSIGHTS-DEFERRED",
+      "target_id": "mypartners",
+      "signals": [
+        "worker handlers",
+        "insights surfaces"
+      ],
+      "reason": "needs_separate_edge_runtime_provider_boundary_handling"
+    },
+    {
+      "deferred_id": "SOL-DOCS-TASK-TRACE-DEFERRED",
+      "target_id": "sol_0_6",
+      "signals": [
+        "docs/Tasks/*",
+        "docs/prd.md",
+        "docs/architecture_diagram.md",
+        "docs/taskmaster_plan.md",
+        "backend/mytest2/*",
+        "backend/test project/*",
+        "tmp-ai-test.ts",
+        "sol-ide.json"
+      ],
+      "reason": "useful_traceability_material_but_not_selected_as_first_pass_code_fixture"
+    }
+  ],
+  "scenarios": [
+    {
+      "scenario_id": "MP-CRM-CHAT-OPEN-01",
+      "target_id": "mypartners",
+      "family": "crm_chat_contact_workflow",
+      "selection_priority": 2,
+      "recommended_for": [
+        "privacy_safe_behavior_contracts",
+        "backend_frontend_traceability",
+        "real_workflow_refactor_comparison"
+      ],
+      "relative_paths": {
+        "backend": [
+          "server/app/api/contacts_routes.py",
+          "server/app/contacts/__init__.py",
+          "server/app/contacts/merge_candidates.py"
+        ],
+        "tests": [
+          "server/tests/test_contacts_chats.py",
+          "server/tests/test_contacts_messages.py",
+          "server/tests/test_contacts_routes.py",
+          "server/tests/test_contacts_get_one.py",
+          "server/tests/test_contacts_insights.py",
+          "server/tests/test_contacts_list_extended.py",
+          "server/tests/test_contacts_merge.py",
+          "server/tests/test_contacts_patch.py",
+          "server/tests/test_contacts_tags_assoc.py",
+          "frontend/tests/e2e/crm.spec.ts",
+          "frontend/tests/contracts/crm-api.test.ts",
+          "frontend/tests/contracts/crm-message-rendering.test.ts",
+          "frontend/tests/contracts/crm-model.test.ts"
+        ]
+      },
+      "candidate_checks": [
+        "server focused pytest for contacts family",
+        "frontend CRM contract tests",
+        "browser e2e only with exact approval"
+      ],
+      "approval_boundaries": [
+        "no raw messages copied",
+        "no local database copy",
+        "runtime and browser execution require exact approval"
+      ],
+      "risk_level": "medium_high"
+    },
+    {
+      "scenario_id": "MP-REL-GRAPH-SIGMA-02",
+      "target_id": "mypartners",
+      "family": "relationship_graph_sigma_rendering",
+      "selection_priority": 3,
+      "recommended_for": [
+        "architecture_depth",
+        "entity_relationship_mapping",
+        "visual_contract_vs_browser_proof"
+      ],
+      "relative_paths": {
+        "backend": [
+          "server/app/api/graph_routes.py",
+          "server/app/api/relationship_signal_routes.py",
+          "server/app/graph/topics.py",
+          "server/app/graph/recomputer.py",
+          "server/app/graph/projection_lifecycle.py",
+          "server/app/graph/projection_jobs.py",
+          "server/app/graph/projection_cache.py",
+          "server/app/graph/projection_benchmark.py",
+          "server/app/graph/metrics.py",
+          "server/app/graph/engine.py",
+          "server/app/graph/edge_candidates.py",
+          "server/app/relationship_signals/usefulness.py",
+          "server/app/relationship_signals/service.py",
+          "server/app/relationship_signals/scorer.py",
+          "server/app/relationship_signals/revisions.py"
+        ],
+        "tests": [
+          "server/tests/test_graph_routes.py",
+          "server/tests/test_graph_edge_candidates.py",
+          "server/tests/test_relationship_signal_*",
+          "frontend/tests/e2e/sigma-graphology-payload-preview.spec.ts",
+          "frontend/tests/e2e/home-graph.spec.ts",
+          "frontend/tests/contracts/sigma-graphology-spike.test.ts",
+          "frontend/tests/contracts/sigma-graphology-payload-preview-source.test.ts",
+          "frontend/tests/contracts/sigma-graphology-layout.test.ts",
+          "frontend/tests/contracts/sigma-graphology-adapter.test.ts",
+          "frontend/tests/contracts/relationship-signal-lenses.test.ts",
+          "frontend/tests/contracts/home-graph-workspace-hydration.test.ts",
+          "frontend/tests/contracts/home-graph-engagement.test.ts",
+          "frontend/tests/contracts/graph-model.test.ts",
+          "frontend/tests/contracts/graph-api.test.ts"
+        ]
+      },
+      "candidate_checks": [
+        "server graph and relationship signal tests",
+        "frontend graph contract tests",
+        "browser visual proof only with exact approval"
+      ],
+      "approval_boundaries": [
+        "no screenshot or browser automation without approval",
+        "no private graph payload copy",
+        "no runtime launch in M29"
+      ],
+      "risk_level": "medium_high"
+    },
+    {
+      "scenario_id": "MP-ADVISOR-BOUNDARY-03",
+      "target_id": "mypartners",
+      "family": "advisor_local_worker_boundary",
+      "selection_priority": 4,
+      "recommended_for": [
+        "activation_fallback_proof",
+        "local_vs_worker_boundary",
+        "eval_gate_design"
+      ],
+      "relative_paths": {
+        "server": [
+          "server/app/api/advisor_routes.py",
+          "server/app/advisor/worker_inference_client.py",
+          "server/app/advisor/v2_eval_gates.py",
+          "server/app/advisor/status.py",
+          "server/app/advisor/scope_resolver.py",
+          "server/app/advisor/run_store.py",
+          "server/app/advisor/run_citations.py",
+          "server/app/advisor/run_budget.py",
+          "server/app/advisor/role_policy.py",
+          "server/app/advisor/prompt_composer.py",
+          "server/app/advisor/product_help_eval.py",
+          "server/app/advisor/network_context.py",
+          "server/app/advisor/intent_router.py"
+        ],
+        "worker": [
+          "worker/src/handlers/advisor_infer.ts",
+          "worker/test/advisor_infer.test.ts"
+        ],
+        "tests": [
+          "server/tests/test_advisor_*"
+        ],
+        "live_eval_tools_approval_required": [
+          "tools/advisor_question_lens_live_eval.mjs",
+          "tools/advisor_live_worker_eval.mjs"
+        ]
+      },
+      "candidate_checks": [
+        "server advisor focused tests",
+        "worker vitest handler tests",
+        "live Worker eval only with exact approval"
+      ],
+      "approval_boundaries": [
+        "no provider call",
+        "no live Worker call",
+        "no raw prompt or response body copied"
+      ],
+      "risk_level": "high"
+    },
+    {
+      "scenario_id": "MP-RAG-SEMANTIC-04",
+      "target_id": "mypartners",
+      "family": "semantic_retrieval_vector_readiness",
+      "selection_priority": 3,
+      "recommended_for": [
+        "ai_eval_rag_quality",
+        "retrieval_architecture",
+        "privacy_safe_fixture_policy"
+      ],
+      "relative_paths": {
+        "server": [
+          "server/app/rag/card_retrieval.py",
+          "server/app/rag/card_practice_graph.py",
+          "server/app/rag/sqlite_vec_semantic_index.py",
+          "server/app/rag/semantic_retrieval_scorecards.py",
+          "server/app/rag/semantic_index_port.py",
+          "server/app/rag/retrieval_router.py",
+          "server/app/rag/retrieval_readiness.py",
+          "server/app/rag/retrieval_eval.py",
+          "server/app/rag/retrieval_contract.py",
+          "server/app/rag/retrieval_audit.py",
+          "server/app/rag/message_retrieval.py",
+          "server/app/rag/local_embedding_comparison_harness.py",
+          "server/app/rag/eval_retrieval_metrics.py",
+          "server/app/rag/eval_relationship_signal_contracts.py"
+        ],
+        "tests": [
+          "server/tests/test_rag_*",
+          "server/tests/test_sqlite_vec_semantic_index.py",
+          "server/tests/test_semantic_retrieval_*"
+        ],
+        "docs": [
+          "docs/adr/0056-phase-14-semantic-index-port-and-vector-readiness.md"
+        ]
+      },
+      "candidate_checks": [
+        "server rag and semantic retrieval tests",
+        "metadata-only eval artifact review",
+        "live model/provider/vector proof only with exact approval"
+      ],
+      "approval_boundaries": [
+        "no private database copy",
+        "no raw message embedding fixture",
+        "no live model/provider call",
+        "no production data access"
+      ],
+      "risk_level": "high"
+    },
+    {
+      "scenario_id": "SOL-AGENT-ORCH-01",
+      "target_id": "sol_0_6",
+      "family": "backend_agent_orchestration",
+      "selection_priority": 1,
+      "recommended_for": [
+        "first_low_risk_real_project_module_run",
+        "architecture_refactor_scoring",
+        "typed_build_baseline"
+      ],
+      "relative_paths": {
+        "backend": [
+          "backend/src/index.ts",
+          "backend/src/services/ai.ts",
+          "backend/src/services/taskMaster.ts",
+          "backend/src/services/orchestrator.ts",
+          "backend/src/services/db.ts",
+          "backend/src/services/agent-registry.ts",
+          "backend/src/services/tools/dispatcher.ts",
+          "backend/src/services/tools/createSubtasksTool.ts",
+          "backend/src/services/agents/developer-agent.ts",
+          "backend/src/services/agents/designer-agent.ts",
+          "backend/src/services/agents/data-analyst-agent.ts",
+          "backend/src/services/agents/ba-agent.ts",
+          "backend/src/services/agents/architect-agent.ts",
+          "backend/src/services/agents/optimizer-agent.ts",
+          "backend/src/services/agents/marketer-agent.ts",
+          "backend/src/services/agents/product-owner-agent.ts",
+          "backend/src/services/agents/qa-agent.ts",
+          "backend/src/services/agents/router-agent.ts",
+          "backend/src/services/agents/security-agent.ts"
+        ]
+      },
+      "candidate_checks": [
+        "backend npm run build after explicit approval",
+        "static dependency/refactor analysis inside copied approved fixture",
+        "no backend test suite declared beyond placeholder failing script"
+      ],
+      "approval_boundaries": [
+        "exclude backend/.env",
+        "exclude backend/sol.env",
+        "exclude backend/.sol_data",
+        "exclude dist",
+        "exclude node_modules"
+      ],
+      "risk_level": "medium"
+    },
+    {
+      "scenario_id": "SOL-FRONTEND-CHAT-02",
+      "target_id": "sol_0_6",
+      "family": "frontend_workspace_chat_task_ui",
+      "selection_priority": 2,
+      "recommended_for": [
+        "frontend_architecture_review",
+        "state_management_refactor",
+        "lint_build_comparison"
+      ],
+      "relative_paths": {
+        "frontend": [
+          "frontend/src/store/useAppStore.ts",
+          "frontend/src/store/useAgentStore.ts",
+          "frontend/src/lib/socket.ts",
+          "frontend/src/lib/utils.ts",
+          "frontend/src/app/layout.tsx",
+          "frontend/src/app/page.tsx",
+          "frontend/src/app/globals.css",
+          "frontend/src/components/layout/sidebar.tsx",
+          "frontend/src/components/layout/main-layout.tsx",
+          "frontend/src/components/views/projects-view.tsx",
+          "frontend/src/components/views/chat-view.tsx",
+          "frontend/src/components/views/tasks-view.tsx",
+          "frontend/src/components/views/team-view.tsx",
+          "frontend/src/components/ui/button.tsx",
+          "frontend/src/components/ui/card.tsx",
+          "frontend/src/components/ui/badge.tsx",
+          "frontend/src/components/ui/avatar.tsx",
+          "frontend/src/components/ui/input.tsx",
+          "frontend/src/components/ui/dialog.tsx",
+          "frontend/src/components/ui/label.tsx",
+          "frontend/src/components/ui/resizable.tsx",
+          "frontend/src/components/ui/scroll-area.tsx",
+          "frontend/src/components/ui/select.tsx",
+          "frontend/src/components/ui/textarea.tsx",
+          "frontend/src/components/ui/tabs.tsx",
+          "frontend/src/components/ui/sheet.tsx",
+          "frontend/src/components/ui/separator.tsx"
+        ]
+      },
+      "candidate_checks": [
+        "frontend npm run lint after explicit approval",
+        "frontend npm run build after explicit approval",
+        "browser/runtime proof only with exact approval"
+      ],
+      "approval_boundaries": [
+        "exclude frontend/.next",
+        "exclude frontend/node_modules",
+        "exclude frontend/.git",
+        "exclude build logs",
+        "no browser automation without approval"
+      ],
+      "risk_level": "medium"
+    },
+    {
+      "scenario_id": "SOL-SKILL-LOADER-03",
+      "target_id": "sol_0_6",
+      "family": "offline_skill_loader_scripts",
+      "selection_priority": 5,
+      "recommended_for": [
+        "small_python_static_analysis",
+        "command_surface_discovery",
+        "style_refactor_experiment"
+      ],
+      "relative_paths": {
+        "scripts": [
+          "scripts/filter_offline_skills.py",
+          "scripts/auto_skill_loader.py"
+        ]
+      },
+      "candidate_checks": [
+        "static read-only inspection",
+        "script help or dry-run only if command contract is confirmed",
+        "no external registry or plugin mutation without approval"
+      ],
+      "approval_boundaries": [
+        "no external registry calls",
+        "no plugin or skill folder mutation",
+        "no generated artifact publication"
+      ],
+      "risk_level": "low_medium"
+    }
+  ],
+  "unsupported_claims_after_m29": [
+    "privacy_safe_fixture_readiness_not_proven",
+    "target_commands_runnable_not_proven",
+    "runtime_browser_worker_provider_db_or_live_behavior_not_proven",
+    "recommended_first_scenario_is_selection_priority_not_execution_approval"
+  ],
+  "recommended_first_scenario": "SOL-AGENT-ORCH-01",
+  "recommended_second_scenario": "MP-CRM-CHAT-OPEN-01",
+  "next_gate": "B45-PCA-M30_fixture_policy_and_copy_plan"
+}

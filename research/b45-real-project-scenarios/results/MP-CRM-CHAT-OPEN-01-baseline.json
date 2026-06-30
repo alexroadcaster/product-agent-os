@@ -1,0 +1,401 @@
+{
+  "schema_version": "b45_real_project_scenario_baseline_v1",
+  "task_id": "B45-PCA-M32",
+  "evidence_id": "B45-PCA-M32-A02",
+  "generated_at": "2026-06-30",
+  "scenario_id": "MP-CRM-CHAT-OPEN-01",
+  "target_id": "mypartners",
+  "target_label": "myPartners",
+  "scenario_family": "crm_chat_contact_workflow",
+  "fixture_root": "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01",
+  "source_status": "fixture_local_analysis_only",
+  "closure_level": "synthetic_green_static_baseline_with_gaps",
+  "status": "baseline_static_complete_with_gaps",
+  "claim_ceiling": [
+    "M32 analyzes copied sanitized fixtures inside codex_docs only.",
+    "No target command, target mutation, runtime launch, browser automation, provider/live API call, git action, deployment, publication or external automation was performed.",
+    "Fixture-local static and syntax evidence does not prove target behavior, release readiness, production-data safety or real AI-agent behavior improvement."
+  ],
+  "source_artifacts": {
+    "scenario_manifest": "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/scenario-manifest.json",
+    "fixture_manifest": "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/fixture-manifest.json",
+    "redaction_manifest": "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/redaction-manifest.json"
+  },
+  "fixture_metrics": {
+    "file_count": 21,
+    "code_file_count": 18,
+    "counts_by_suffix": {
+      ".json": 2,
+      ".py": 12,
+      ".toml": 1,
+      ".ts": 6
+    },
+    "counts_by_source_class": {
+      "application_source": 3,
+      "focused_test": 13,
+      "minimal_manifest": 5
+    },
+    "total_text_lines": 7037,
+    "lines_by_suffix": {
+      ".json": 76,
+      ".py": 3772,
+      ".toml": 62,
+      ".ts": 3127
+    },
+    "large_files_250_plus_lines": [
+      {
+        "path": "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/tests/frontend/tests/e2e/crm.spec.ts",
+        "lines": 2196,
+        "bytes": 80551
+      },
+      {
+        "path": "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/src/server/app/api/contacts_routes.py",
+        "lines": 2031,
+        "bytes": 71924
+      },
+      {
+        "path": "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/tests/server/tests/test_contacts_merge.py",
+        "lines": 580,
+        "bytes": 19470
+      },
+      {
+        "path": "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/tests/frontend/tests/contracts/crm-api.test.ts",
+        "lines": 474,
+        "bytes": 16738
+      },
+      {
+        "path": "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/tests/frontend/tests/contracts/crm-model.test.ts",
+        "lines": 343,
+        "bytes": 9277
+      }
+    ]
+  },
+  "static_code_metrics": {
+    "python": {
+      "python_functions": 129,
+      "python_classes": 8,
+      "python_branch_nodes": 156,
+      "top_import_roots": {
+        "app": 44,
+        "sqlalchemy": 16,
+        "fastapi": 10,
+        "pytest_asyncio": 9,
+        "__future__": 4,
+        "json": 1,
+        "pytest": 1,
+        "logging": 1,
+        "re": 1,
+        "time": 1,
+        "typing": 1,
+        "urllib": 1,
+        "pydantic": 1,
+        "asyncio": 1,
+        "hashlib": 1,
+        "dataclasses": 1,
+        "rapidfuzz": 1
+      }
+    },
+    "python_complexity_candidates": [
+      {
+        "path": "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/src/server/app/api/contacts_routes.py",
+        "symbol": "get_contact_facets",
+        "line": 315,
+        "lines": 113,
+        "branch_nodes": 14
+      },
+      {
+        "path": "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/src/server/app/api/contacts_routes.py",
+        "symbol": "preview_contact_relationship_state",
+        "line": 434,
+        "lines": 59,
+        "branch_nodes": 10
+      },
+      {
+        "path": "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/src/server/app/contacts/merge_candidates.py",
+        "symbol": "_score_candidates",
+        "line": 104,
+        "lines": 46,
+        "branch_nodes": 8
+      },
+      {
+        "path": "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/src/server/app/api/contacts_routes.py",
+        "symbol": "post_merge",
+        "line": 1469,
+        "lines": 66,
+        "branch_nodes": 7
+      },
+      {
+        "path": "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/src/server/app/api/contacts_routes.py",
+        "symbol": "patch_contact_relationship_state",
+        "line": 1056,
+        "lines": 51,
+        "branch_nodes": 7
+      },
+      {
+        "path": "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/src/server/app/api/contacts_routes.py",
+        "symbol": "_person_summary_source_context_item",
+        "line": 591,
+        "lines": 42,
+        "branch_nodes": 7
+      },
+      {
+        "path": "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/src/server/app/api/contacts_routes.py",
+        "symbol": "list_contacts",
+        "line": 205,
+        "lines": 102,
+        "branch_nodes": 6
+      },
+      {
+        "path": "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/src/server/app/api/contacts_routes.py",
+        "symbol": "get_contact_messages",
+        "line": 1119,
+        "lines": 84,
+        "branch_nodes": 5
+      },
+      {
+        "path": "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/src/server/app/api/contacts_routes.py",
+        "symbol": "patch_contact",
+        "line": 852,
+        "lines": 61,
+        "branch_nodes": 5
+      },
+      {
+        "path": "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/src/server/app/api/contacts_routes.py",
+        "symbol": "patch_contact_location",
+        "line": 993,
+        "lines": 56,
+        "branch_nodes": 5
+      },
+      {
+        "path": "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/src/server/app/api/contacts_routes.py",
+        "symbol": "_contact_channels",
+        "line": 1780,
+        "lines": 46,
+        "branch_nodes": 5
+      },
+      {
+        "path": "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/src/server/app/api/contacts_routes.py",
+        "symbol": "attach_tag_to_contact",
+        "line": 1607,
+        "lines": 45,
+        "branch_nodes": 4
+      }
+    ],
+    "typescript": {
+      "typescript_exported_symbols": 0,
+      "typescript_class_like": 0,
+      "typescript_function_like": 137,
+      "typescript_branch_markers": 111,
+      "top_import_roots": {
+        "@/features": 5,
+        "@playwright/test": 4,
+        "node:path": 2,
+        "node:fs": 1,
+        "<relative>": 1,
+        "next": 1
+      }
+    },
+    "typescript_complexity_candidates": [
+      {
+        "path": "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/tests/frontend/tests/e2e/crm.spec.ts",
+        "lines": 2196,
+        "branch_markers": 98
+      },
+      {
+        "path": "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/tests/frontend/tests/contracts/crm-api.test.ts",
+        "lines": 474,
+        "branch_markers": 9
+      },
+      {
+        "path": "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/tests/frontend/tests/contracts/crm-model.test.ts",
+        "lines": 343,
+        "branch_markers": 0
+      }
+    ],
+    "javascript": {
+      "file_count": 0,
+      "coverage_note": "No JavaScript files in current fixtures unless count is nonzero."
+    }
+  },
+  "professional_code_checklist_baseline": {
+    "enterprise_leverage_check": "applicable_missing_for_future_refactor",
+    "existing_capability_scan": "present_unverified_from_fixture: FastAPI, Pydantic, SQLAlchemy/aiosqlite, pytest, Playwright/Next contract tests and CRM route tests are visible; no target execution evidence",
+    "selected_leverage_path_baseline": "not_selected_baseline_only",
+    "one_line_candidate": "not_applicable_to_whole_scenario; future changes should test whether route helpers/schemas can replace contact-route custom branching",
+    "deep_module_check": "required_before_refactor: contacts API route, message/chat behavior and frontend contracts cross backend/frontend boundaries",
+    "legacy_seam_check": "partially_present: focused tests copied, but not runnable in current fixture without full import/dependency/runtime boundary",
+    "cleverness_budget": "risk: large contacts_routes.py and large CRM e2e file should be split only behind characterization/contract evidence, not rewritten wholesale"
+  },
+  "comment_sufficiency_advisory": {
+    "status": "advisory_complete",
+    "blocking": false,
+    "warning_count": 2,
+    "suppressed_warning_count": 0,
+    "warnings": [
+      {
+        "path": "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/src/server/app/api/contacts_routes.py",
+        "symbol": "_person_summary_source_context_item",
+        "line": 591,
+        "language": "python",
+        "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+        "severity": "advisory",
+        "suppressed_count": 0
+      },
+      {
+        "path": "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/src/server/app/api/contacts_routes.py",
+        "symbol": "patch_contact_relationship_state",
+        "line": 1056,
+        "language": "python",
+        "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+        "severity": "advisory",
+        "suppressed_count": 0
+      }
+    ],
+    "validator": "plugins/product-agent-os/scripts/product_agent_os/comment_sufficiency.py",
+    "coverage": {
+      "python_files_seen": 12,
+      "javascript_files_seen": 0,
+      "typescript_files_seen_but_not_supported": 6,
+      "include_tests": true,
+      "default_excludes_disabled": true
+    }
+  },
+  "dependency_custom_code_review": {
+    "manifest_count": 2,
+    "manifests": {
+      "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/config/frontend/package.json": {
+        "scripts": [
+          "build",
+          "dev",
+          "dev:launcher",
+          "lint",
+          "start",
+          "test",
+          "test:e2e",
+          "test:launcher",
+          "typecheck"
+        ],
+        "dependency_count": 10,
+        "dev_dependency_count": 12,
+        "runtime_sensitive_dependencies_present": [
+          "@google/design.md",
+          "@google/stitch-sdk",
+          "@playwright/test"
+        ]
+      },
+      "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/config/server/pyproject.toml": {
+        "scripts": [
+          "mypartners-server"
+        ],
+        "dependency_count": 17,
+        "optional_dependency_group_count": 2,
+        "pytest_testpaths": [
+          "tests"
+        ],
+        "runtime_sensitive_dependencies_present": [
+          "apscheduler",
+          "beeper-desktop-api",
+          "keyring",
+          "sentence-transformers",
+          "sqlite-vec"
+        ]
+      }
+    },
+    "runtime_sensitive_dependencies": [
+      {
+        "manifest": "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/config/frontend/package.json",
+        "dependency": "@google/design.md"
+      },
+      {
+        "manifest": "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/config/frontend/package.json",
+        "dependency": "@google/stitch-sdk"
+      },
+      {
+        "manifest": "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/config/frontend/package.json",
+        "dependency": "@playwright/test"
+      },
+      {
+        "manifest": "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/config/server/pyproject.toml",
+        "dependency": "apscheduler"
+      },
+      {
+        "manifest": "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/config/server/pyproject.toml",
+        "dependency": "beeper-desktop-api"
+      },
+      {
+        "manifest": "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/config/server/pyproject.toml",
+        "dependency": "keyring"
+      },
+      {
+        "manifest": "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/config/server/pyproject.toml",
+        "dependency": "sentence-transformers"
+      },
+      {
+        "manifest": "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/config/server/pyproject.toml",
+        "dependency": "sqlite-vec"
+      }
+    ],
+    "new_dependency_delta": "none_baseline_analysis_only",
+    "negative_dependency_rule": "no new dependency proposed or installed in M32"
+  },
+  "available_local_checks": {
+    "executed": [
+      {
+        "check": "comment_sufficiency advisory over fixture code files",
+        "status": "passed_non_blocking",
+        "warning_count": 2
+      },
+      {
+        "check": "python -m py_compile over copied MP .py files",
+        "status": "passed_syntax_only",
+        "warning": "py_compile creates temporary __pycache__; generated caches were removed after the check"
+      }
+    ],
+    "skipped_or_gap": [
+      {
+        "check": "server focused pytest contacts family",
+        "status": "skipped_analysis_only",
+        "reason": "fixture contains selected files only, not the full import graph, DB/runtime state or installed dependencies; target pytest is not approved"
+      },
+      {
+        "check": "frontend CRM contract tests",
+        "status": "skipped_analysis_only",
+        "reason": "fixture excludes node_modules and app source dependency graph; npm test would require a runnable frontend workspace"
+      },
+      {
+        "check": "frontend CRM e2e / browser proof",
+        "status": "approval_required",
+        "reason": "browser automation is explicitly outside M31/M32 approval"
+      },
+      {
+        "check": "TypeScript comment-sufficiency advisory",
+        "status": "coverage_gap",
+        "reason": "current M24/M25 validator inspects Python and JavaScript, not TypeScript contract/e2e files"
+      }
+    ]
+  },
+  "standards_findings": {
+    "block_refactor_attempts_until_resolved_or_accepted": [
+      "Full backend pytest and frontend contract/e2e runs are skipped because the fixture is not a runnable workspace and target execution is not approved.",
+      "contacts_routes.py is a large shared API surface; any M33 refactor that changes it needs characterization or disposable runtime approval.",
+      "TypeScript contract/e2e files are outside current comment-sufficiency validator coverage."
+    ],
+    "accepted_or_recorded_gaps_for_baseline": [
+      "Python syntax-only check passed via py_compile for copied .py files; this is not import/runtime proof.",
+      "Two Python comment-sufficiency warnings are advisory and do not block baseline, but they should shape M33 review priorities.",
+      "Fixture is analysis_only by M31 design; production data safety remains unsupported because no DB/runtime data was copied or accessed."
+    ],
+    "safe_next_action": "For M33, prefer a small fixture-local route-helper or comment/structure refactor around the two advisory symbols; avoid broad CRM route rewrites until pytest/browser approval exists."
+  },
+  "unsupported_claims": [
+    "runtime_behavior",
+    "browser_behavior",
+    "provider_or_live_api_behavior",
+    "target_command_success",
+    "production_data_safety",
+    "release_readiness",
+    "fixture_local_tests_prove_target_behavior",
+    "static_baseline_proves_runtime_behavior",
+    "baseline_approves_broad_refactor"
+  ]
+}

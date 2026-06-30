@@ -1,0 +1,309 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://codex-docs.local/schemas/b45-pca/scenario-manifest.schema.json",
+  "title": "B45-PCA Scenario Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "task_id",
+    "scenario_id",
+    "target_id",
+    "target_label",
+    "status",
+    "approval",
+    "scope",
+    "selected_paths",
+    "excluded_paths",
+    "unsupported_claims",
+    "verification_plan",
+    "rollback"
+  ],
+  "properties": {
+    "schema": {
+      "const": "b45_pca_scenario_manifest_v1"
+    },
+    "task_id": {
+      "type": "string",
+      "pattern": "^B45-PCA-M31$"
+    },
+    "scenario_id": {
+      "type": "string",
+      "pattern": "^[A-Z0-9]+-[A-Z0-9-]+-[0-9]{2}$"
+    },
+    "target_id": {
+      "type": "string",
+      "enum": [
+        "mypartners",
+        "sol_0_6"
+      ]
+    },
+    "target_label": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "approval_required",
+        "approved_for_copy",
+        "copied_sanitized",
+        "rejected",
+        "deleted"
+      ]
+    },
+    "approval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_copy_approved",
+        "approval_reference",
+        "approved_scope_summary",
+        "runtime_execution_approved",
+        "browser_approved",
+        "provider_or_live_api_approved",
+        "target_git_write_approved"
+      ],
+      "properties": {
+        "source_copy_approved": {
+          "type": "boolean"
+        },
+        "approval_reference": {
+          "type": "string"
+        },
+        "approved_scope_summary": {
+          "type": "string"
+        },
+        "runtime_execution_approved": {
+          "type": "boolean"
+        },
+        "browser_approved": {
+          "type": "boolean"
+        },
+        "provider_or_live_api_approved": {
+          "type": "boolean"
+        },
+        "target_git_write_approved": {
+          "type": "boolean"
+        }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "purpose",
+        "scenario_family",
+        "copy_mode",
+        "fixture_root",
+        "target_read_only_proof"
+      ],
+      "properties": {
+        "purpose": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scenario_family": {
+          "type": "string",
+          "minLength": 1
+        },
+        "copy_mode": {
+          "type": "string",
+          "enum": [
+            "analysis_only",
+            "runnable_local_fixture",
+            "metadata_only"
+          ]
+        },
+        "fixture_root": {
+          "$ref": "#/$defs/relative_path"
+        },
+        "target_read_only_proof": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path_inventory_ran",
+            "hidden_ignored_risk_scan_ran",
+            "target_dirty_state_recorded",
+            "target_writes_performed"
+          ],
+          "properties": {
+            "path_inventory_ran": {
+              "type": "boolean"
+            },
+            "hidden_ignored_risk_scan_ran": {
+              "type": "boolean"
+            },
+            "target_dirty_state_recorded": {
+              "type": "boolean"
+            },
+            "target_writes_performed": {
+              "const": false
+            }
+          }
+        }
+      }
+    },
+    "selected_paths": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/selected_path"
+      }
+    },
+    "excluded_paths": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/excluded_path"
+      }
+    },
+    "unsupported_claims": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "enum": [
+          "runtime_behavior",
+          "browser_behavior",
+          "provider_or_live_api_behavior",
+          "target_command_success",
+          "privacy_safe_fixture_readiness_before_scan",
+          "production_data_safety",
+          "release_readiness"
+        ]
+      }
+    },
+    "verification_plan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "manifest_validation",
+        "denylist_scan",
+        "docs_checks",
+        "target_commands"
+      ],
+      "properties": {
+        "manifest_validation": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "denylist_scan": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "docs_checks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "target_commands": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "rollback": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "delete_paths",
+        "target_rollback_required",
+        "notes"
+      ],
+      "properties": {
+        "delete_paths": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/relative_path"
+          }
+        },
+        "target_rollback_required": {
+          "const": false
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "relative_path": {
+      "type": "string",
+      "minLength": 1,
+      "not": {
+        "anyOf": [
+          {
+            "pattern": "^[A-Za-z]:"
+          },
+          {
+            "pattern": "^/"
+          },
+          {
+            "pattern": "\\.\\."
+          },
+          {
+            "pattern": "\\\\"
+          }
+        ]
+      }
+    },
+    "selected_path": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_relative_path",
+        "source_class",
+        "reason",
+        "copy_destination"
+      ],
+      "properties": {
+        "source_relative_path": {
+          "$ref": "#/$defs/relative_path"
+        },
+        "source_class": {
+          "type": "string",
+          "enum": [
+            "application_source",
+            "focused_test",
+            "minimal_manifest",
+            "synthetic_fixture",
+            "architecture_doc",
+            "tool_script"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "copy_destination": {
+          "$ref": "#/$defs/relative_path"
+        }
+      }
+    },
+    "excluded_path": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_relative_path",
+        "reason"
+      ],
+      "properties": {
+        "source_relative_path": {
+          "$ref": "#/$defs/relative_path"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,207 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://codex-docs.local/schemas/b45-pca/fixture-manifest.schema.json",
+  "title": "B45-PCA Fixture Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "task_id",
+    "scenario_id",
+    "fixture_root",
+    "status",
+    "source_policy",
+    "files",
+    "validation",
+    "unsupported_claims"
+  ],
+  "properties": {
+    "schema": {
+      "const": "b45_pca_fixture_manifest_v1"
+    },
+    "task_id": {
+      "type": "string",
+      "pattern": "^B45-PCA-M31$"
+    },
+    "scenario_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "fixture_root": {
+      "$ref": "#/$defs/relative_path"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "copied_sanitized",
+        "analysis_only",
+        "rejected",
+        "deleted"
+      ]
+    },
+    "source_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy_file",
+        "forbidden_class_scan",
+        "path_normalization_checked",
+        "absolute_paths_stored",
+        "target_writes_performed"
+      ],
+      "properties": {
+        "policy_file": {
+          "$ref": "#/$defs/relative_path"
+        },
+        "forbidden_class_scan": {
+          "type": "string",
+          "enum": [
+            "not_run",
+            "passed",
+            "failed",
+            "approval_required"
+          ]
+        },
+        "path_normalization_checked": {
+          "type": "boolean"
+        },
+        "absolute_paths_stored": {
+          "const": false
+        },
+        "target_writes_performed": {
+          "const": false
+        }
+      }
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/fixture_file"
+      }
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "json_schema_validation",
+        "denylist_scan",
+        "docs_checks",
+        "target_commands_run"
+      ],
+      "properties": {
+        "json_schema_validation": {
+          "type": "string",
+          "enum": [
+            "not_run",
+            "passed",
+            "failed"
+          ]
+        },
+        "denylist_scan": {
+          "type": "string",
+          "enum": [
+            "not_run",
+            "passed",
+            "failed"
+          ]
+        },
+        "docs_checks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "target_commands_run": {
+          "type": "array",
+          "maxItems": 0
+        }
+      }
+    },
+    "unsupported_claims": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "$defs": {
+    "relative_path": {
+      "type": "string",
+      "minLength": 1,
+      "not": {
+        "anyOf": [
+          {
+            "pattern": "^[A-Za-z]:"
+          },
+          {
+            "pattern": "^/"
+          },
+          {
+            "pattern": "\\.\\."
+          },
+          {
+            "pattern": "\\\\"
+          }
+        ]
+      }
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "fixture_file": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_relative_path",
+        "fixture_relative_path",
+        "source_class",
+        "copy_reason",
+        "redaction_status",
+        "sha256",
+        "bytes"
+      ],
+      "properties": {
+        "source_relative_path": {
+          "$ref": "#/$defs/relative_path"
+        },
+        "fixture_relative_path": {
+          "$ref": "#/$defs/relative_path"
+        },
+        "source_class": {
+          "type": "string",
+          "enum": [
+            "application_source",
+            "focused_test",
+            "minimal_manifest",
+            "synthetic_fixture",
+            "architecture_doc",
+            "tool_script"
+          ]
+        },
+        "copy_reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "redaction_status": {
+          "type": "string",
+          "enum": [
+            "none",
+            "redacted",
+            "synthetic",
+            "excluded"
+          ]
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    }
+  }
+}

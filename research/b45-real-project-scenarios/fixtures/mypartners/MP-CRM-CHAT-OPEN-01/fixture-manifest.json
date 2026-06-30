@@ -1,0 +1,226 @@
+{
+  "schema": "b45_pca_fixture_manifest_v1",
+  "task_id": "B45-PCA-M31",
+  "scenario_id": "MP-CRM-CHAT-OPEN-01",
+  "fixture_root": "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01",
+  "status": "analysis_only",
+  "source_policy": {
+    "policy_file": "research/b45-real-project-scenarios/source-policy.md",
+    "forbidden_class_scan": "passed",
+    "path_normalization_checked": true,
+    "absolute_paths_stored": false,
+    "target_writes_performed": false
+  },
+  "files": [
+    {
+      "source_relative_path": "server/pyproject.toml",
+      "fixture_relative_path": "config/server/pyproject.toml",
+      "source_class": "minimal_manifest",
+      "copy_reason": "Python backend dependency and pytest configuration boundary for analysis-only CRM fixture context",
+      "redaction_status": "none",
+      "sha256": "78a4740190e1706847872dff17338aef065a016a1895c8c79a51a408755c6888",
+      "bytes": 1447
+    },
+    {
+      "source_relative_path": "frontend/package.json",
+      "fixture_relative_path": "config/frontend/package.json",
+      "source_class": "minimal_manifest",
+      "copy_reason": "Frontend scripts and dependency boundary for CRM contract/e2e test context",
+      "redaction_status": "none",
+      "sha256": "118017bb57b4a02ffeed9baa8d8b670a3e2f0e1f64e9b2c42c4b774127d5b271",
+      "bytes": 1322
+    },
+    {
+      "source_relative_path": "frontend/playwright.e2e.config.ts",
+      "fixture_relative_path": "config/frontend/playwright.e2e.config.ts",
+      "source_class": "minimal_manifest",
+      "copy_reason": "Browser/e2e command boundary recorded without running browser automation",
+      "redaction_status": "none",
+      "sha256": "6341dc4720d7250ab1de30b4a52f54d5031b449fdbfbec57ddf9cf06fed24bcb",
+      "bytes": 540
+    },
+    {
+      "source_relative_path": "frontend/tsconfig.json",
+      "fixture_relative_path": "config/frontend/tsconfig.json",
+      "source_class": "minimal_manifest",
+      "copy_reason": "TypeScript compiler boundary for frontend CRM contract tests",
+      "redaction_status": "none",
+      "sha256": "dbacf04aa5f38c1ce4b0f030fbb84e5adff19306fb785b2e4aafef9c58705658",
+      "bytes": 704
+    },
+    {
+      "source_relative_path": "frontend/next.config.ts",
+      "fixture_relative_path": "config/frontend/next.config.ts",
+      "source_class": "minimal_manifest",
+      "copy_reason": "Next.js application boundary for frontend CRM test context",
+      "redaction_status": "none",
+      "sha256": "2a9de80a6553cc71fa0331d4c3372496176851375c9f39cec73d7ac3ceb1502c",
+      "bytes": 290
+    },
+    {
+      "source_relative_path": "server/app/api/contacts_routes.py",
+      "fixture_relative_path": "src/server/app/api/contacts_routes.py",
+      "source_class": "application_source",
+      "copy_reason": "Contacts API route implementation used by CRM chat/contact open workflow",
+      "redaction_status": "none",
+      "sha256": "cecde02f484a49021531fe625980fbeb9e6739587699f8eac672839b46c0d75e",
+      "bytes": 71924
+    },
+    {
+      "source_relative_path": "server/app/contacts/__init__.py",
+      "fixture_relative_path": "src/server/app/contacts/__init__.py",
+      "source_class": "application_source",
+      "copy_reason": "Contacts package boundary for backend workflow source context",
+      "redaction_status": "none",
+      "sha256": "287b37fb5f695474835b2343818581ff2326c2161ad5f3f46c650524565b83fb",
+      "bytes": 206
+    },
+    {
+      "source_relative_path": "server/app/contacts/merge_candidates.py",
+      "fixture_relative_path": "src/server/app/contacts/merge_candidates.py",
+      "source_class": "application_source",
+      "copy_reason": "Contact merge candidate logic connected to CRM contact workflow behavior",
+      "redaction_status": "none",
+      "sha256": "8bbf181ae883c375c49cb0201ae6fd071b5c54343fb6fe85cc07381e9d0f7306",
+      "bytes": 4938
+    },
+    {
+      "source_relative_path": "server/tests/test_contacts_chats.py",
+      "fixture_relative_path": "tests/server/tests/test_contacts_chats.py",
+      "source_class": "focused_test",
+      "copy_reason": "Focused backend test for contact chat-open behavior",
+      "redaction_status": "none",
+      "sha256": "d00645bf2fff3ef4f0ff24b95d53684434336c23e432414cd2892cbc248c1d3b",
+      "bytes": 6168
+    },
+    {
+      "source_relative_path": "server/tests/test_contacts_messages.py",
+      "fixture_relative_path": "tests/server/tests/test_contacts_messages.py",
+      "source_class": "focused_test",
+      "copy_reason": "Focused backend test for CRM contact messages behavior",
+      "redaction_status": "none",
+      "sha256": "036647350e86992708a734204426925cba1e37972af2c27248f27ac758e1d51a",
+      "bytes": 7489
+    },
+    {
+      "source_relative_path": "server/tests/test_contacts_routes.py",
+      "fixture_relative_path": "tests/server/tests/test_contacts_routes.py",
+      "source_class": "focused_test",
+      "copy_reason": "Focused backend route test for contacts API workflow",
+      "redaction_status": "none",
+      "sha256": "45438ed833547f271011f48d8f171489a306febdd689136d22b937102b990bb9",
+      "bytes": 1955
+    },
+    {
+      "source_relative_path": "server/tests/test_contacts_get_one.py",
+      "fixture_relative_path": "tests/server/tests/test_contacts_get_one.py",
+      "source_class": "focused_test",
+      "copy_reason": "Focused backend test for single contact retrieval behavior",
+      "redaction_status": "none",
+      "sha256": "f3979516e0f5710fa32efcb15b87a3a2580831465ea79245c39a3c81e84b13c1",
+      "bytes": 3508
+    },
+    {
+      "source_relative_path": "server/tests/test_contacts_insights.py",
+      "fixture_relative_path": "tests/server/tests/test_contacts_insights.py",
+      "source_class": "focused_test",
+      "copy_reason": "Focused backend test for contact insights behavior",
+      "redaction_status": "none",
+      "sha256": "9493f968da00e04fc79616148faf4f6b0d202fe2af2569ac3fc50c92dd24d72a",
+      "bytes": 3328
+    },
+    {
+      "source_relative_path": "server/tests/test_contacts_list_extended.py",
+      "fixture_relative_path": "tests/server/tests/test_contacts_list_extended.py",
+      "source_class": "focused_test",
+      "copy_reason": "Focused backend test for extended contact list behavior",
+      "redaction_status": "none",
+      "sha256": "a6fca8ab2f2292163e4d4d39b7bd0fe16d5d181b59bd3c544882ce036bb3138a",
+      "bytes": 4423
+    },
+    {
+      "source_relative_path": "server/tests/test_contacts_merge.py",
+      "fixture_relative_path": "tests/server/tests/test_contacts_merge.py",
+      "source_class": "focused_test",
+      "copy_reason": "Focused backend test for contact merge workflow behavior",
+      "redaction_status": "none",
+      "sha256": "45c0f2f9e93fc2d9309865fe61d3320736ce21203c2bcb5665b7b60861a806cb",
+      "bytes": 19470
+    },
+    {
+      "source_relative_path": "server/tests/test_contacts_patch.py",
+      "fixture_relative_path": "tests/server/tests/test_contacts_patch.py",
+      "source_class": "focused_test",
+      "copy_reason": "Focused backend test for contact update workflow behavior",
+      "redaction_status": "none",
+      "sha256": "07b360ad8c4cd81c04bad37aedd36bcd1b58e5a245051168b03734f8ae55c90e",
+      "bytes": 3724
+    },
+    {
+      "source_relative_path": "server/tests/test_contacts_tags_assoc.py",
+      "fixture_relative_path": "tests/server/tests/test_contacts_tags_assoc.py",
+      "source_class": "focused_test",
+      "copy_reason": "Focused backend test for contact tag association behavior",
+      "redaction_status": "none",
+      "sha256": "a524fc7b38cbed3fe4db76e34f21f9f3b0b5efe248dbe3e8cdcb19c381c86780",
+      "bytes": 4391
+    },
+    {
+      "source_relative_path": "frontend/tests/e2e/crm.spec.ts",
+      "fixture_relative_path": "tests/frontend/tests/e2e/crm.spec.ts",
+      "source_class": "focused_test",
+      "copy_reason": "Frontend e2e CRM workflow test recorded without browser execution",
+      "redaction_status": "none",
+      "sha256": "76a0ce168964dd3fe542baff467e920e92ddf97f975041056f926e80eb23a3ea",
+      "bytes": 80551
+    },
+    {
+      "source_relative_path": "frontend/tests/contracts/crm-api.test.ts",
+      "fixture_relative_path": "tests/frontend/tests/contracts/crm-api.test.ts",
+      "source_class": "focused_test",
+      "copy_reason": "Frontend contract test for CRM API behavior",
+      "redaction_status": "none",
+      "sha256": "086cc9f28e2a48ee73e0aa65cc98d098c2333d39ac8f82a403dad3e49c677c69",
+      "bytes": 16738
+    },
+    {
+      "source_relative_path": "frontend/tests/contracts/crm-message-rendering.test.ts",
+      "fixture_relative_path": "tests/frontend/tests/contracts/crm-message-rendering.test.ts",
+      "source_class": "focused_test",
+      "copy_reason": "Frontend contract test for CRM message rendering behavior",
+      "redaction_status": "none",
+      "sha256": "058913b5d7348d574fc8334ff5e72b7bf814156f4bf6728242bf1fafb776a9c7",
+      "bytes": 3081
+    },
+    {
+      "source_relative_path": "frontend/tests/contracts/crm-model.test.ts",
+      "fixture_relative_path": "tests/frontend/tests/contracts/crm-model.test.ts",
+      "source_class": "focused_test",
+      "copy_reason": "Frontend contract test for CRM model behavior",
+      "redaction_status": "none",
+      "sha256": "b1bc2ffb106ef7dcad246f4d414e96f02e11883b060c6db97f14a75f485b9e9a",
+      "bytes": 9277
+    }
+  ],
+  "validation": {
+    "json_schema_validation": "passed",
+    "denylist_scan": "passed",
+    "docs_checks": [
+      "Test-Json scenario-manifest.json against scenario-manifest.schema.json: passed",
+      "Test-Json fixture-manifest.json against fixture-manifest.schema.json: passed",
+      "Test-Json redaction-manifest.json against redaction-manifest.schema.json: passed",
+      "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v: passed",
+      "python tools/check_docs.py: passed",
+      "git diff --check: passed"
+    ],
+    "target_commands_run": []
+  },
+  "unsupported_claims": [
+    "runtime behavior not proven",
+    "browser behavior not proven",
+    "provider/live API behavior not proven",
+    "target command success not proven",
+    "production data safety not proven",
+    "release readiness not claimed"
+  ]
+}

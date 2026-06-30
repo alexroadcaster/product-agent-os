@@ -1,0 +1,206 @@
+{
+  "schema_version": "b45_real_project_scenario_baseline_v1",
+  "task_id": "B45-PCA-M32",
+  "evidence_id": "B45-PCA-M32-A01",
+  "generated_at": "2026-06-30",
+  "scenario_id": "SOL-AGENT-ORCH-01",
+  "target_id": "sol_0_6",
+  "target_label": "SOL 0.6",
+  "scenario_family": "backend_agent_orchestration",
+  "fixture_root": "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01",
+  "source_status": "fixture_local_analysis_only",
+  "closure_level": "synthetic_green_static_baseline_with_gaps",
+  "status": "baseline_static_complete_with_gaps",
+  "claim_ceiling": [
+    "M32 analyzes copied sanitized fixtures inside codex_docs only.",
+    "No target command, target mutation, runtime launch, browser automation, provider/live API call, git action, deployment, publication or external automation was performed.",
+    "Fixture-local static and syntax evidence does not prove target behavior, release readiness, production-data safety or real AI-agent behavior improvement."
+  ],
+  "source_artifacts": {
+    "scenario_manifest": "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/scenario-manifest.json",
+    "fixture_manifest": "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/fixture-manifest.json",
+    "redaction_manifest": "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/redaction-manifest.json"
+  },
+  "fixture_metrics": {
+    "file_count": 21,
+    "code_file_count": 19,
+    "counts_by_suffix": {
+      ".json": 2,
+      ".ts": 19
+    },
+    "counts_by_source_class": {
+      "application_source": 19,
+      "minimal_manifest": 2
+    },
+    "total_text_lines": 2906,
+    "lines_by_suffix": {
+      ".json": 52,
+      ".ts": 2854
+    },
+    "large_files_250_plus_lines": [
+      {
+        "path": "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/index.ts",
+        "lines": 489,
+        "bytes": 20535
+      },
+      {
+        "path": "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/agent-registry.ts",
+        "lines": 381,
+        "bytes": 17962
+      }
+    ]
+  },
+  "static_code_metrics": {
+    "python": {
+      "top_import_roots": {}
+    },
+    "python_complexity_candidates": [],
+    "typescript": {
+      "typescript_exported_symbols": 46,
+      "typescript_class_like": 15,
+      "typescript_function_like": 53,
+      "typescript_branch_markers": 306,
+      "top_import_roots": {
+        "<relative>": 66,
+        "dotenv": 2,
+        "fs": 2,
+        "path": 2,
+        "express": 1,
+        "http": 1,
+        "socket.io": 1,
+        "cors": 1,
+        "@google/genai": 1,
+        "@lancedb/lancedb": 1
+      }
+    },
+    "typescript_complexity_candidates": [
+      {
+        "path": "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/index.ts",
+        "lines": 489,
+        "branch_markers": 80
+      },
+      {
+        "path": "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/agent-registry.ts",
+        "lines": 381,
+        "branch_markers": 16
+      }
+    ],
+    "javascript": {
+      "file_count": 0,
+      "coverage_note": "No JavaScript files in current fixtures unless count is nonzero."
+    }
+  },
+  "professional_code_checklist_baseline": {
+    "enterprise_leverage_check": "applicable_missing_for_future_refactor",
+    "existing_capability_scan": "present_unverified_from_fixture: Express, Socket.IO, Google GenAI, LanceDB/Arrow and role-agent files are visible; no target execution evidence",
+    "selected_leverage_path_baseline": "not_selected_baseline_only",
+    "one_line_candidate": "not_applicable_to_whole_scenario; future refactor should first test whether role-agent boilerplate can be configured instead of hand-coded per role",
+    "deep_module_check": "required_before_refactor: agent registry, orchestrator, tool dispatcher and provider/vector boundaries are shared runtime surfaces",
+    "legacy_seam_check": "applicable_missing_before_refactor: no characterization tests copied for SOL scenario",
+    "cleverness_budget": "risk: multi-agent orchestration can invite generic abstractions; require tiny-adapter or configuration proof before new framework code"
+  },
+  "comment_sufficiency_advisory": {
+    "status": "advisory_complete",
+    "blocking": false,
+    "warning_count": 0,
+    "suppressed_warning_count": 0,
+    "warnings": [],
+    "validator": "plugins/product-agent-os/scripts/product_agent_os/comment_sufficiency.py",
+    "coverage": {
+      "python_files_seen": 0,
+      "javascript_files_seen": 0,
+      "typescript_files_seen_but_not_supported": 19,
+      "include_tests": true,
+      "default_excludes_disabled": true
+    }
+  },
+  "dependency_custom_code_review": {
+    "manifest_count": 1,
+    "manifests": {
+      "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/config/backend/package.json": {
+        "scripts": [
+          "build",
+          "dev",
+          "start",
+          "test"
+        ],
+        "dependency_count": 8,
+        "dev_dependency_count": 6,
+        "runtime_sensitive_dependencies_present": [
+          "@google/genai",
+          "@lancedb/lancedb",
+          "apache-arrow",
+          "dotenv"
+        ]
+      }
+    },
+    "runtime_sensitive_dependencies": [
+      {
+        "manifest": "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/config/backend/package.json",
+        "dependency": "@google/genai"
+      },
+      {
+        "manifest": "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/config/backend/package.json",
+        "dependency": "@lancedb/lancedb"
+      },
+      {
+        "manifest": "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/config/backend/package.json",
+        "dependency": "apache-arrow"
+      },
+      {
+        "manifest": "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/config/backend/package.json",
+        "dependency": "dotenv"
+      }
+    ],
+    "new_dependency_delta": "none_baseline_analysis_only",
+    "negative_dependency_rule": "no new dependency proposed or installed in M32"
+  },
+  "available_local_checks": {
+    "executed": [
+      {
+        "check": "comment_sufficiency advisory over fixture code files",
+        "status": "passed_non_blocking",
+        "warning_count": 0
+      }
+    ],
+    "skipped_or_gap": [
+      {
+        "check": "npm run build / tsc",
+        "status": "skipped_analysis_only",
+        "reason": "fixture excludes node_modules and is not a runnable workspace; running target or installing dependencies is outside M32 approval"
+      },
+      {
+        "check": "npm test",
+        "status": "skipped_unavailable",
+        "reason": "fixture package script is a placeholder error path; no focused SOL tests were copied in M31"
+      },
+      {
+        "check": "TypeScript comment-sufficiency advisory",
+        "status": "coverage_gap",
+        "reason": "current M24/M25 validator inspects Python and JavaScript, not TypeScript"
+      }
+    ]
+  },
+  "standards_findings": {
+    "block_refactor_attempts_until_resolved_or_accepted": [
+      "No runnable SOL-focused test evidence inside the fixture; npm test is a placeholder and target/build execution is not approved.",
+      "TypeScript source is outside current comment-sufficiency validator coverage, so SOL comment quality is not proven by the zero-warning advisory result.",
+      "Provider/vector dependencies are visible in the manifest and require approval-bound runtime/data handling before behavioral claims."
+    ],
+    "accepted_or_recorded_gaps_for_baseline": [
+      "Fixture is analysis_only by M31 design; runtime/browser/provider/API behavior remains unsupported.",
+      "No target command was run; M32 baseline is static plus manifest evidence only."
+    ],
+    "safe_next_action": "Before any M33 refactor arm, create fixture-local TS/static test route or record owner-accepted no-test gap; prioritize role-agent duplication/configuration scan over broad orchestrator rewrite."
+  },
+  "unsupported_claims": [
+    "runtime_behavior",
+    "browser_behavior",
+    "provider_or_live_api_behavior",
+    "target_command_success",
+    "release_readiness",
+    "fixture_local_tests_prove_target_behavior",
+    "static_baseline_proves_runtime_behavior",
+    "baseline_approves_broad_refactor"
+  ]
+}

@@ -1,0 +1,62 @@
+[project]
+name = "mypartners-server"
+version = "0.2.0"
+description = "myPartners FastAPI backend + Beeper Bootstrap module"
+requires-python = ">=3.11"
+authors = [{name = "myPartners team"}]
+license = {text = "Proprietary"}
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.30",
+    "pydantic>=2.13",
+    "pydantic-settings>=2.5",
+    "keyring>=24.0",
+    "apscheduler>=3.10",
+    "httpx>=0.28",
+    "httpx-sse>=0.4",
+    "sqlalchemy[asyncio]>=2.0",
+    "aiosqlite>=0.20",
+    "alembic>=1.13",
+    "websockets>=13.0",
+    "networkx>=3.3",
+    "scikit-learn>=1.5",
+    "rapidfuzz>=3.10",
+    "sqlite-vec==0.1.9",
+    "beeper-desktop-api @ git+https://github.com/beeper/desktop-api-python.git",
+]
+
+[project.optional-dependencies]
+embeddings = [
+    "sentence-transformers>=5,<6",
+]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "freezegun>=1.5",
+    "ruff>=0.6",
+    "respx>=0.21",
+]
+
+[project.scripts]
+mypartners-server = "app.main:cli_main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["app*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "RUF"]
+ignore = ["E501"]  # line length handled by formatter
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+addopts = "-v --tb=short"
