@@ -44,6 +44,12 @@
             "command": "python \"$(git rev-parse --show-toplevel)/.codex/hooks/post_tool_use_evidence.py\"",
             "timeout": 30,
             "statusMessage": "Recording evidence reminder"
+          },
+          {
+            "type": "command",
+            "command": "python \"$(git rev-parse --show-toplevel)/.codex/hooks/comment_sufficiency_advisory.py\"",
+            "timeout": 30,
+            "statusMessage": "Running comment sufficiency advisory"
           }
         ]
       }

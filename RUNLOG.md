@@ -151,7 +151,7 @@ These markers are retained as compact discovery anchors, not as full evidence:
 
 - `B45-A02`: 6-task pilot fixed 4 gaps plus 1 scope gap; no activation/external/git.
 - `B45-A05`: V3 comments plus advisory validator; no blocker/hook.
-- `B45-S6`: `B45-PCA-M24-A01` plus tuning `B45-PCA-M24-TUNING-A02` recorded 130 baseline warnings -> 30 visible / 102 suppressed default warnings; raw compatibility is 134 after validator/test edits; M25-M27 pending, hook/CI approval-required.
+- `B45-S6`: M24 tuning cut 130 warnings -> 30 visible / 102 suppressed; M25 local `PostToolUse` advisory has synthetic warning 1 / blocking false and V3 warning 0; M26-M27 pending.
 
 ## Verification Runbook
 

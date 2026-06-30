@@ -1,4 +1,5 @@
 import json
+import os
 import subprocess
 import sys
 import tempfile
@@ -43,6 +44,7 @@ class LifecycleHooksTest(unittest.TestCase):
     def test_project_local_hook_scripts_are_installed(self):
         self.assertTrue((LOCAL_HOOKS / "hooks.json").exists())
         for name in [
+            "comment_sufficiency_advisory.py",
             "session_start_context.py",
             "pre_tool_use_policy.py",
             "permission_request_summary.py",
@@ -51,6 +53,63 @@ class LifecycleHooksTest(unittest.TestCase):
         ]:
             with self.subTest(name=name):
                 self.assertTrue((LOCAL_HOOKS / name).exists())
+
+    def test_project_local_post_tool_use_runs_comment_sufficiency_advisory(self):
+        data = json.loads(ACTIVE_HOOKS_JSON.read_text(encoding="utf-8"))
+        commands = data["hooks"]["PostToolUse"][0]["hooks"]
+
+        self.assertIn(
+            "comment_sufficiency_advisory.py",
+            " ".join(command["command"] for command in commands),
+        )
+
+    def test_comment_sufficiency_advisory_warns_without_blocking(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            subprocess.run(["git", "init"], cwd=root, check=True, capture_output=True, text=True)
+            path = root / "complex_case.py"
+            path.write_text(
+                "\n".join(
+                    [
+                        "def complex_case(value):",
+                        "    total = 0",
+                        "    for item in value:",
+                        "        if item:",
+                        "            total += 1",
+                        "        elif item == 0:",
+                        "            total -= 1",
+                        "    try:",
+                        "        if total > 10 and value:",
+                        "            return total",
+                        "    except TypeError:",
+                        "        return -1",
+                        "    while total < 0:",
+                        "        total += 1",
+                        "    return total",
+                    ]
+                ),
+                encoding="utf-8",
+            )
+            env = os.environ.copy()
+            env["B45_COMMENT_ADVISORY_ROOT"] = str(root)
+            result = subprocess.run(
+                [sys.executable, str(LOCAL_HOOKS / "comment_sufficiency_advisory.py")],
+                input=json.dumps({"tool_name": "functions.apply_patch"}),
+                cwd=ROOT,
+                env=env,
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        payload = json.loads(result.stdout)
+        self.assertEqual("comment_sufficiency_advisory", payload["hook"])
+        self.assertEqual("observe", payload["decision"])
+        self.assertFalse(payload["blocking"])
+        self.assertEqual("advisory_complete", payload["status"])
+        self.assertEqual(1, payload["validator"]["warning_count"])
+        self.assertEqual("advisory", payload["validator"]["warnings"][0]["severity"])
 
     def test_session_start_reports_lifecycle_contract_files(self):
         result = run_hook(HOOKS / "session_start_context.py")

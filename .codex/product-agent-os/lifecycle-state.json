@@ -1,12 +1,12 @@
 {
   "task_start_brief_shown": true,
-  "task_id": "B45-PCA-M24-TUNING-A02",
-  "scope": "Tune the Batch 45 comment-sufficiency advisory validator after the broad false-positive audit, then rerun the same corpus and compare warning volume, false positives, tuning-needed cases, cost and reviewer usefulness.",
-  "updated_at": "2026-06-30T11:50:29+03:00",
-  "approval_boundary": "Owner requested local validator tuning and repeat audit only. No hook activation, CI workflow creation, blocker enforcement, automation activation, schedule creation, MCP activation, Agents SDK runner, provider/model/API call, browser automation, live server, target workspace mutation outside codex_docs, installed plugin cache refresh, git stage/commit/push/PR, release, deploy, publish, external write, raw private chat ingestion or hidden telemetry.",
+  "task_id": "B45-PCA-M25",
+  "scope": "Wire the Batch 45 comment-sufficiency validator into a local non-blocking advisory surface using the tuned M24 defaults and changed-file scope.",
+  "updated_at": "2026-06-30T12:13:05+03:00",
+  "approval_boundary": "Owner requested B45-PCA-M25 execution. Local codex_docs hook/script/test/docs/evidence updates only. No CI workflow creation, blocker enforcement, provider/model/API call, browser automation, live server, target workspace mutation outside codex_docs, installed plugin cache refresh, git stage/commit/push/PR, release, deploy, publish, external write, raw private chat ingestion or hidden telemetry.",
   "brief_schema_version": "task_start_brief_v1",
   "brief_format": "field_list",
-  "brief_digest": "sha256:b45-pca-m24-tuning-a02-visible-task-brief-recorded-in-current-codex-thread",
+  "brief_digest": "sha256:b45pca0000000000000000000000000000000000000000000000000000000025",
   "brief_fields_present": [
     "Task ID",
     "Product value",
@@ -23,24 +23,24 @@
     "Next action"
   ],
   "completion_brief_shown": true,
-  "completion_status": "synthetic_green",
+  "completion_status": "runtime_enabled_local",
   "completion_gaps": [
-    "B45-PCA-M25_advisory_wiring_not_performed",
     "B45-PCA-M26_real_ai_agent_behavior_eval_not_run",
-    "B45-PCA-M27_promotion_decision_not_made",
-    "hook_or_ci_advisory_wiring_not_performed",
-    "real_ai_agent_behavior_improvement_not_proven",
-    "promotion_decision_not_made"
+    "B45-PCA-M27_promotion_decision_not_made"
   ],
   "completion_evidence": [
-    "plugins/product-agent-os/scripts/product_agent_os/comment_sufficiency.py",
-    "tests/product_agent_os/test_comment_sufficiency.py",
-    "docs/superpowers/specs/batch45-comment-sufficiency-tuning-comparison.json",
+    ".codex/hooks/comment_sufficiency_advisory.py",
+    ".codex/hooks.json",
+    ".codex/hooks/hooks.json",
+    "plugins/product-agent-os/assets/templates/hooks/comment_sufficiency_advisory.py",
+    "plugins/product-agent-os/assets/templates/hooks/hooks.json",
+    "tests/product_agent_os/test_lifecycle_hooks.py",
+    "docs/superpowers/specs/batch45-comment-sufficiency-advisory-wiring-summary.json",
     "PLAN.md",
     "TEST.md",
     "EVALS.md",
     "RUNLOG.md",
     "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md"
   ],
-  "closure_level": "synthetic_green"
+  "closure_level": "runtime_enabled_local"
 }

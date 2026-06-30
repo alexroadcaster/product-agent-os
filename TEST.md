@@ -190,6 +190,8 @@ python plugins\product-agent-os\scripts\product_agent_os\comment_sufficiency.py 
 python -m unittest tests.product_agent_os.test_comment_sufficiency tests.product_agent_os.test_lifecycle_hooks -v
 python plugins\product-agent-os\scripts\validate_hooks.py .codex\hooks.json
 python plugins\product-agent-os\scripts\validate_hooks.py .codex\hooks
+python .codex\hooks\comment_sufficiency_advisory.py
+python plugins\product-agent-os\scripts\product_agent_os\comment_sufficiency.py .codex\product-agent-os\b45-manual-pilot\v3_reference_runner.py .codex\product-agent-os\b45-manual-pilot\v3_js_runner.mjs
 
 # B45-PCA-M26: real AI-agent behavior eval
 # Record baseline/treatment runs, reviewer scorecard, cost/time/flake data and
@@ -202,26 +204,24 @@ git diff --check
 ```
 
 S6 must not treat advisory warnings as blockers. `.github/workflows/` creation,
-hook activation/update, provider/model/API calls, browser automation, live
-servers, target mutation, installed plugin cache refresh and git actions all
-remain approval-required. S6 can close the current gaps only after M24-M27 have
-current evidence; unit tests or local pilots alone do not prove real AI-agent
-behavior improvement.
+CI activation, blocker enforcement, provider/model/API calls, browser
+automation, live servers, target mutation, installed plugin cache refresh and
+git actions all remain approval-required. S6 can close the current gaps only
+after M24-M27 have current evidence; unit tests or local pilots alone do not
+prove real AI-agent behavior improvement.
 
-Current `B45-PCA-M24-A01` evidence is
-`docs/superpowers/specs/batch45-comment-sufficiency-false-positive-audit.json`.
-The broad audit inspected 934 Python/JS objects and produced stable
-`warning_count: 130`; this is local audit evidence only and blocks broad M25
-hook/CI wiring until the validator is tuned or scoped.
-Current `B45-PCA-M24-TUNING-A02` evidence is
-`docs/superpowers/specs/batch45-comment-sufficiency-tuning-comparison.json`.
-The tuned default advisory scan on the same path list now records 943 current
-objects, visible `warning_count: 30`, `suppressed_warning_count: 102` and 76.92%
-visible-warning reduction. Raw compatibility mode remains available through
-`--include-tests --no-default-excludes --max-warnings-per-file -1 --max-warnings -1`
-and currently reports `warning_count: 134` because validator/test helpers
-changed after the original baseline. This is still advisory/local evidence only:
-no hook, CI workflow or blocker activation is implied.
+Current `B45-PCA-M24-A01` and `B45-PCA-M24-TUNING-A02` evidence lives in
+`docs/superpowers/specs/batch45-comment-sufficiency-false-positive-audit.json`
+and `docs/superpowers/specs/batch45-comment-sufficiency-tuning-comparison.json`:
+baseline `130` warnings became tuned default `30` visible / `102` suppressed;
+raw compatibility is `134`. This is advisory/local evidence only.
+Current `B45-PCA-M25` evidence is
+`docs/superpowers/specs/batch45-comment-sufficiency-advisory-wiring-summary.json`.
+The local `PostToolUse` advisory scans changed Python/JS files with M24 tuned
+defaults: synthetic warning `1` / `blocking: false`, current changed-file warning
+`0`, V3 warning `0`. Disable with `B45_COMMENT_ADVISORY_DISABLED=1`; rollback by
+removing the added `comment_sufficiency_advisory.py` `PostToolUse` command. This
+is not CI or blocker enforcement.
 
 For `B45-S5` learning-loop and automation-candidate policy, run:
 
