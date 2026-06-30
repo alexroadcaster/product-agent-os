@@ -149,9 +149,8 @@ These markers are retained as compact discovery anchors, not as full evidence:
 
 ## Current Batch 45 Handoff
 
-- `B45-A02`: 6-task pilot fixed 4 gaps plus 1 scope gap; no activation/external/git.
-- `B45-A05`: V3 comments plus advisory validator; no blocker/hook.
-- `B45-S6`: M24 tuning cut 130 warnings -> 30 visible / 102 suppressed; M25 advisory is non-blocking; M26 live eval no-go: 4.22 vs 3.88, 15/16 completed, reviewer `no_go`; M27 decision keeps advisory-only and rejects CI/blocker promotion.
+- `B45-A02/A05/S6`: 6-task pilot, V3 comments/advisory validator and M24-M27 no-go promotion evidence are closed; M25 remains non-blocking and M27 keeps advisory-only, no CI/blocker promotion.
+- `B45-S7`: M28-M34 fixture-local only. M34 scorecard keeps promotion blocked; no target/runtime/browser/provider/database/git/release/deploy/automation proof.
 
 ## Verification Runbook
 

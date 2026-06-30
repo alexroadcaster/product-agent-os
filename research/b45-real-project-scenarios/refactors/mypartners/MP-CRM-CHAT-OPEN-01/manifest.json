@@ -1,0 +1,71 @@
+{
+  "schema_version": "b45_pca_refactor_scenario_manifest_v1",
+  "task_id": "B45-PCA-M33",
+  "evidence_id": "B45-PCA-M33-A01",
+  "generated_at": "2026-06-30",
+  "scenario_id": "MP-CRM-CHAT-OPEN-01",
+  "target_id": "mypartners",
+  "target_label": "myPartners",
+  "source_status": "fixture_local_source_arms_only",
+  "baseline_source": "research/b45-real-project-scenarios/results/MP-CRM-CHAT-OPEN-01-baseline.json",
+  "fixture_source": "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01",
+  "claim_ceiling": [
+    "M33 source arms are copied and edited inside codex_docs only.",
+    "No myPartners target command, mutation, runtime launch, browser automation, provider/API call, database access, git action, deployment, publication or automation activation was performed.",
+    "AST syntax and advisory replay do not prove runtime behavior or production-data safety."
+  ],
+  "arms": [
+    {
+      "arm_id": "original",
+      "variant_type": "baseline_reference",
+      "artifact": "research/b45-real-project-scenarios/refactors/mypartners/MP-CRM-CHAT-OPEN-01/original/src/server/app/api/contacts_routes.py",
+      "sha256": "cecde02f484a49021531fe625980fbeb9e6739587699f8eac672839b46c0d75e",
+      "bytes": 71924,
+      "diff_added_lines": 0,
+      "diff_deleted_lines": 0,
+      "comment_warning_count": 2
+    },
+    {
+      "arm_id": "checklist-guided",
+      "variant_type": "small_structure_refactor",
+      "artifact": "research/b45-real-project-scenarios/refactors/mypartners/MP-CRM-CHAT-OPEN-01/checklist-guided/src/server/app/api/contacts_routes.py",
+      "sha256": "1c771a50eafb9acc0fc1d2ec948d3280fa4f0fd694e718e451f1952de87db89f",
+      "bytes": 72156,
+      "diff_added_lines": 9,
+      "diff_deleted_lines": 4,
+      "comment_warning_count": 1,
+      "reused_apis": [
+        "HTTPException",
+        "Contact",
+        "ensure_relationship_state"
+      ],
+      "new_dependencies": []
+    },
+    {
+      "arm_id": "advisory-guided",
+      "variant_type": "intent_docstring_refactor",
+      "artifact": "research/b45-real-project-scenarios/refactors/mypartners/MP-CRM-CHAT-OPEN-01/advisory-guided/src/server/app/api/contacts_routes.py",
+      "sha256": "70183ee5dca8c55e9cab6048943b592e64797820d234a6c82bc67362f1273065",
+      "bytes": 72109,
+      "diff_added_lines": 2,
+      "diff_deleted_lines": 0,
+      "comment_warning_count": 0,
+      "reused_apis": [],
+      "new_dependencies": []
+    }
+  ],
+  "verification": [
+    {
+      "command": "python -c \"import ast,pathlib; ... ast.parse(...)\"",
+      "status": "passed",
+      "scope": "original, checklist-guided and advisory-guided contacts_routes.py arms",
+      "claim": "syntax_only_ast_parse"
+    },
+    {
+      "command": "python plugins\\product-agent-os\\scripts\\product_agent_os\\comment_sufficiency.py <arm> --root . --include-tests --no-default-excludes --max-warnings-per-file -1 --max-warnings -1",
+      "status": "passed_non_blocking",
+      "scope": "original/checklist/advisory arms",
+      "claim": "comment_advisory_replay_only"
+    }
+  ]
+}

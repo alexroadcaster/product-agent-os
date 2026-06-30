@@ -24,6 +24,8 @@ S5_SUMMARY = (
 M26_RESULTS = DOCS / "superpowers" / "specs" / "batch45-agent-behavior-eval-results.json"
 M26_PLAN = DOCS / "superpowers" / "specs" / "batch45-agent-behavior-eval-plan.json"
 M27_DECISION = DOCS / "superpowers" / "specs" / "batch45-comment-policy-promotion-decision.json"
+M33_COMPARISON = DOCS / "superpowers" / "specs" / "batch45-real-project-refactor-comparison.json"
+M34_SCORECARD = DOCS / "superpowers" / "specs" / "batch45-real-project-scorecard.json"
 sys.path.insert(0, str(SCRIPTS))
 
 from product_agent_os.templates import required_templates, template_by_target  # noqa: E402
@@ -277,6 +279,135 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             "warnings 29 -> 15",
             "b45_comment_advisory_disabled=1",
             "does not approve ci workflow creation or blocker enforcement",
+        ]:
+            with self.subTest(expected=expected):
+                self.assertIn(expected, serialized)
+
+    def test_m33_real_project_refactor_comparison_is_fixture_local_and_bounded(self):
+        packet = json.loads(M33_COMPARISON.read_text(encoding="utf-8"))
+        serialized = json.dumps(packet, sort_keys=True).lower()
+
+        self.assertEqual("batch45_real_project_refactor_comparison_v1", packet["schema_version"])
+        self.assertEqual("B45-PCA-M33", packet["task_id"])
+        self.assertEqual("B45-PCA-M33-A01", packet["evidence_id"])
+        self.assertEqual("synthetic_green_fixture_local_with_accepted_gaps", packet["closure_level"])
+        self.assertEqual(2, packet["scenario_count"])
+
+        for artifact in packet["source_artifacts"]:
+            with self.subTest(artifact=artifact):
+                self.assertTrue(ROOT.joinpath(artifact).exists())
+
+        scenarios = {scenario["scenario_id"]: scenario for scenario in packet["scenarios"]}
+        self.assertEqual({"SOL-AGENT-ORCH-01", "MP-CRM-CHAT-OPEN-01"}, set(scenarios))
+
+        sol_arms = {arm["arm_id"]: arm for arm in scenarios["SOL-AGENT-ORCH-01"]["arms"]}
+        self.assertEqual("none", sol_arms["checklist-guided"]["code_change"])
+        self.assertEqual("none", sol_arms["advisory-guided"]["code_change"])
+        self.assertIn("churn prevention", scenarios["SOL-AGENT-ORCH-01"]["comparison_result"])
+
+        mp_arms = {arm["arm_id"]: arm for arm in scenarios["MP-CRM-CHAT-OPEN-01"]["arms"]}
+        self.assertEqual(2, mp_arms["original"]["comment_warning_count"])
+        self.assertEqual(1, mp_arms["checklist-guided"]["comment_warning_count"])
+        self.assertEqual(0, mp_arms["advisory-guided"]["comment_warning_count"])
+        self.assertEqual(9, mp_arms["checklist-guided"]["diff_added_lines"])
+        self.assertEqual(4, mp_arms["checklist-guided"]["diff_deleted_lines"])
+        self.assertEqual(2, mp_arms["advisory-guided"]["diff_added_lines"])
+        self.assertEqual([], mp_arms["checklist-guided"]["new_dependencies"])
+        self.assertEqual([], mp_arms["advisory-guided"]["new_dependencies"])
+
+        for action, performed in packet["approval_boundary"].items():
+            with self.subTest(action=action):
+                self.assertFalse(performed)
+
+        for expected in [
+            "fixture-local",
+            "does not mutate sol 0.6 or mypartners",
+            "target_behavior",
+            "static_refactor_comparison_proves_real_ai_agent_behavior_improvement",
+            "mp-crm-chat-open-01 advisory-guided",
+        ]:
+            with self.subTest(expected=expected):
+                self.assertIn(expected, serialized)
+
+    def test_m34_real_project_scorecard_keeps_promotion_blocked(self):
+        packet = json.loads(M34_SCORECARD.read_text(encoding="utf-8"))
+        serialized = json.dumps(packet, sort_keys=True).lower()
+
+        self.assertEqual("batch45_real_project_scorecard_v1", packet["schema_version"])
+        self.assertEqual("B45-PCA-M34", packet["task_id"])
+        self.assertEqual("B45-PCA-M34-A01", packet["evidence_id"])
+        self.assertEqual(
+            "synthetic_green_scorecard_with_promotion_blocked",
+            packet["closure_level"],
+        )
+        self.assertEqual(2, packet["scenario_count"])
+        self.assertEqual(
+            "blocked_static_fixture_only",
+            packet["score_summary"]["promotion_state"],
+        )
+
+        for artifact in packet["input_sources"]:
+            with self.subTest(artifact=artifact):
+                self.assertTrue(ROOT.joinpath(artifact).exists())
+        self.assertTrue(ROOT.joinpath(packet["reviewer_notes"]).exists())
+
+        expected_dimensions = [
+            "existing_capability_reuse",
+            "custom_code_reduction",
+            "dependency_avoidance",
+            "comment_sufficiency",
+            "tests",
+            "unsupported_claims",
+            "privacy_safety",
+            "reviewer_usefulness",
+            "runtime_gap",
+            "flake_cost",
+        ]
+        self.assertEqual(expected_dimensions, packet["rubric"]["dimension_order"])
+        self.assertTrue(packet["rubric"]["aggregate_score_is_not_promotion_gate"])
+        self.assertTrue(packet["rubric"]["critical_blockers_override_average"])
+
+        outcomes = {outcome["selected_outcome"]: outcome for outcome in packet["scored_outcomes"]}
+        self.assertEqual(6.2, outcomes["no-code checklist/advisory"]["average_score"])
+        self.assertEqual(6.8, outcomes["checklist-guided"]["average_score"])
+        self.assertEqual(7.4, outcomes["advisory-guided"]["average_score"])
+        self.assertEqual(
+            "best_low_churn_static_arm_but_not_promotable",
+            outcomes["advisory-guided"]["promotion_result"],
+        )
+        self.assertEqual(
+            "blocked_until_characterization_or_runtime_evidence",
+            outcomes["checklist-guided"]["promotion_result"],
+        )
+
+        for blocker in [
+            "runtime_gap",
+            "tests_gap",
+            "type_script_advisory_gap_for_SOL",
+            "owner_or_reviewer_weight_judgment_pending",
+            "real_ai_agent_behavior_improvement_unproven",
+        ]:
+            with self.subTest(blocker=blocker):
+                self.assertIn(blocker, packet["calibration_findings"]["critical_blockers"])
+
+        self.assertEqual(
+            "no_go_for_promotion_keep_fixture_local_static_only",
+            packet["promotion_recommendation"]["state"],
+        )
+        self.assertEqual("B45-PCA-M35", packet["promotion_recommendation"]["next_task"])
+
+        for action, performed in packet["approval_boundary"].items():
+            with self.subTest(action=action):
+                self.assertFalse(performed)
+
+        for expected in [
+            "critical_blockers_override_average",
+            "mp-crm-chat-open-01 advisory-guided",
+            "mp-crm-chat-open-01 checklist-guided",
+            "sol-agent-orch-01",
+            "target_behavior",
+            "static_scorecard_proves_real_ai_agent_behavior_improvement",
+            "m34_approves_ci_or_blocker_promotion",
         ]:
             with self.subTest(expected=expected):
                 self.assertIn(expected, serialized)
