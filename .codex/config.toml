@@ -58,9 +58,11 @@ fresh_context_files = [
   ".codex/workflows/source-context-pack.md",
   ".codex/workflows/worktree-ownership.md",
   ".codex/workflows/build-slice.md",
+  ".codex/workflows/coding-standards.md",
   ".codex/workflows/task-plan-lifecycle.md",
   ".codex/workflows/control-plane-sync.md",
   ".codex/workflows/review-slice.md",
+  ".codex/artifact-templates/coding-standard-checklist.md",
   ".codex/evals/agent-context-contract.json",
   ".codex/hooks.json",
   ".codex/hooks/hooks.json",
@@ -111,6 +113,7 @@ destructive_commands = "explicit"
 source_context_pack = ".codex/workflows/source-context-pack.md"
 worktree_ownership = ".codex/workflows/worktree-ownership.md"
 build_slice = ".codex/workflows/build-slice.md"
+coding_standards = ".codex/workflows/coding-standards.md"
 task_plan_lifecycle = ".codex/workflows/task-plan-lifecycle.md"
 control_plane_sync = ".codex/workflows/control-plane-sync.md"
 review_slice = ".codex/workflows/review-slice.md"

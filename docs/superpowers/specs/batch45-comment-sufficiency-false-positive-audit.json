@@ -1,0 +1,2509 @@
+{
+  "approval_boundary": {
+    "automation_activation": false,
+    "blocker_enforcement": false,
+    "browser_automation": false,
+    "ci_workflow_creation": false,
+    "git_action": false,
+    "hook_activation": false,
+    "provider_or_model_call": false,
+    "target_workspace_mutation": false
+  },
+  "classification_summary": {
+    "classification_counts": {
+      "acceptable_advisory": 111,
+      "false_positive": 9,
+      "needs_rule_tuning": 10
+    },
+    "classified_warning_count": 130,
+    "false_positive_count": 9,
+    "false_positive_rate": 0.0692,
+    "needs_rule_tuning_count": 10,
+    "needs_rule_tuning_rate": 0.0769,
+    "reviewer_usefulness": "mixed_low_for_broad_hook_due_to_130_warning_volume",
+    "warning_count": 130,
+    "warnings_by_path": {
+      ".codex/hooks/pre_tool_use_policy.py": 4,
+      ".codex/hooks/session_start_context.py": 1,
+      ".codex/hooks/stop_runlog_reminder.py": 2,
+      "plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py": 15,
+      "plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py": 11,
+      "plugins/product-agent-os/scripts/product_agent_os/automation_policy.py": 2,
+      "plugins/product-agent-os/scripts/product_agent_os/comment_sufficiency.py": 2,
+      "plugins/product-agent-os/scripts/product_agent_os/discovery.py": 15,
+      "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py": 17,
+      "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py": 17,
+      "plugins/product-agent-os/scripts/product_agent_os/project_code_graph.py": 3,
+      "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py": 21,
+      "plugins/product-agent-os/scripts/product_agent_os/self_learning_candidates.py": 3,
+      "plugins/product-agent-os/scripts/product_agent_os/self_learning_state.py": 2,
+      "plugins/product-agent-os/scripts/product_agent_os/status_dashboard.py": 4,
+      "plugins/product-agent-os/scripts/product_agent_os/task_plan_lifecycle.py": 2,
+      "plugins/product-agent-os/scripts/product_agent_os/validators.py": 7,
+      "tests/product_agent_os/test_batch45_s3_professional_code_authoring.py": 1,
+      "tests/product_agent_os/test_coding_standards_artifacts.py": 1
+    }
+  },
+  "classifications": [
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 86,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/comment_sufficiency.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "analyze_javascript_file"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 137,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/comment_sufficiency.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_maybe_warn_python"
+    },
+    {
+      "classification": "false_positive",
+      "classification_rationale": "Low-level path/value extraction helper; broad complexity heuristic overstates comment need.",
+      "language": "python",
+      "line": 222,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_relative_files"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Validation, detection, policy, sanitization, or classification logic is plausible intent-comment debt.",
+      "language": "python",
+      "line": 262,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "detect_product_agent_os_scope"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Validation, detection, policy, sanitization, or classification logic is plausible intent-comment debt.",
+      "language": "python",
+      "line": 392,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_detect_fsd_structure"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Validation, detection, policy, sanitization, or classification logic is plausible intent-comment debt.",
+      "language": "python",
+      "line": 430,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_detect_frontend_signal"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Validation, detection, policy, sanitization, or classification logic is plausible intent-comment debt.",
+      "language": "python",
+      "line": 582,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_detect_methodology_signals"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 928,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_methodology_gaps"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Validation, detection, policy, sanitization, or classification logic is plausible intent-comment debt.",
+      "language": "python",
+      "line": 960,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_classify_usage_mode"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 1119,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_secondary_usage_modes"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 1506,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_api_migration_signals"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 2084,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_delivery_release_operations_signals"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 3260,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_docs_tooling_decision"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 3472,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_methodology_applicability"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 3899,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_profile_for"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 3924,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_build_discovery_question_queue"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 3981,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "analyze_workspace"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Validation, detection, policy, sanitization, or classification logic is plausible intent-comment debt.",
+      "language": "python",
+      "line": 314,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "validate_first_run_automation_contract"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Validation, detection, policy, sanitization, or classification logic is plausible intent-comment debt.",
+      "language": "python",
+      "line": 425,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "validate_first_run_analysis_packet"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Validation, detection, policy, sanitization, or classification logic is plausible intent-comment debt.",
+      "language": "python",
+      "line": 683,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "validate_first_run_script_registry"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 917,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_first_run_source_artifacts"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 1114,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_docs_logging_summary"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 1142,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_dependency_readiness_summary"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 1338,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_first_run_route_options"
+    },
+    {
+      "classification": "needs_rule_tuning",
+      "classification_rationale": "Low-level helper prefix should be reviewed for allow/suppression or file-level warning caps.",
+      "language": "python",
+      "line": 1628,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_safe_refs"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Validation, detection, policy, sanitization, or classification logic is plausible intent-comment debt.",
+      "language": "python",
+      "line": 1777,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_validate_source_artifacts"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Validation, detection, policy, sanitization, or classification logic is plausible intent-comment debt.",
+      "language": "python",
+      "line": 1797,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_validate_generated_pages"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Validation, detection, policy, sanitization, or classification logic is plausible intent-comment debt.",
+      "language": "python",
+      "line": 1815,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_validate_section_summaries"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Validation, detection, policy, sanitization, or classification logic is plausible intent-comment debt.",
+      "language": "python",
+      "line": 1842,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_validate_redaction_status"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Graph/query logic has non-obvious traversal, budget, or evidence invariants.",
+      "language": "python",
+      "line": 1873,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_validate_graph_artifact_summary"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Validation, detection, policy, sanitization, or classification logic is plausible intent-comment debt.",
+      "language": "python",
+      "line": 1907,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_validate_guided_first_response"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Validation, detection, policy, sanitization, or classification logic is plausible intent-comment debt.",
+      "language": "python",
+      "line": 1931,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_validate_answer_ledger_routing"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 2062,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_runtime_entrypoints_from_workspace"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 2081,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_provider_risks"
+    },
+    {
+      "classification": "false_positive",
+      "classification_rationale": "Low-level path/value extraction helper; broad complexity heuristic overstates comment need.",
+      "language": "python",
+      "line": 921,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_relative_inventory"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 977,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_observed_signals"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 1067,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_frontend_signal_evidence"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 1358,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_security_signal_evidence"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Validation, detection, policy, sanitization, or classification logic is plausible intent-comment debt.",
+      "language": "python",
+      "line": 1546,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_classify_maturity"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Validation, detection, policy, sanitization, or classification logic is plausible intent-comment debt.",
+      "language": "python",
+      "line": 1582,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_classify_complexity"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 1938,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_business_product_recommendations"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 2133,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_requirements_domain_recommendations"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 2477,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_solution_architecture_recommendations"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 2693,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_quality_testing_evals_recommendations"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 2931,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_codex_agentic_workflow_recommendations"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 3719,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_api_integrations_recommendations"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 3972,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_database_data_recommendations"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 4299,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_llm_ai_rag_recommendations"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 4932,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_delivery_release_operations_recommendations"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 5673,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_database_has_destructive_change"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 5774,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_questions_for_owner"
+    },
+    {
+      "classification": "needs_rule_tuning",
+      "classification_rationale": "Generic parser/CLI/helper symbol needs narrower rule or explicit allow/suppression before hook use.",
+      "language": "python",
+      "line": 28,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/automation_policy.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "from_text"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 338,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/automation_policy.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_activation_gate"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Validation, detection, policy, sanitization, or classification logic is plausible intent-comment debt.",
+      "language": "python",
+      "line": 1445,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_guardrail_blockers"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 1484,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_partition_run_artifacts"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 1516,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_daily_recommendation"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 1578,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_normalize_trace_source"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 1649,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_trace_span_types"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 1670,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_span_types_from_mapping"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Validation, detection, policy, sanitization, or classification logic is plausible intent-comment debt.",
+      "language": "python",
+      "line": 1708,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_sanitize_raw_metrics_payload"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 1744,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_trace_dataset_records"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 1854,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_binary_label_counts"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 1891,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_agent_targets"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 1928,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_skill_targets"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 2052,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_target"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 2086,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_evidence_candidate_paths"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 2106,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_records_from_text"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 2171,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_excluded_source_type"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 160,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/self_learning_state.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "evaluate_self_learning_due"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Validation, detection, policy, sanitization, or classification logic is plausible intent-comment debt.",
+      "language": "python",
+      "line": 228,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/self_learning_state.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "validate_self_learning_state"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Validation, detection, policy, sanitization, or classification logic is plausible intent-comment debt.",
+      "language": "python",
+      "line": 168,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/self_learning_candidates.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "validate_candidate_packet"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 309,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/self_learning_candidates.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_professional_code_candidate"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 444,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/self_learning_candidates.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_contains_raw_private_content"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 645,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_first_run_schema_contract_surface"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Graph/query logic has non-obvious traversal, budget, or evidence invariants.",
+      "language": "python",
+      "line": 713,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_first_run_graph_code_surface"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Graph/query logic has non-obvious traversal, budget, or evidence invariants.",
+      "language": "python",
+      "line": 1165,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_first_run_cockpit_graph_payload"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Graph/query logic has non-obvious traversal, budget, or evidence invariants.",
+      "language": "python",
+      "line": 1356,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_first_run_code_graph_payload"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 1431,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_cosmos_payload_from_visual_projection"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Graph/query logic has non-obvious traversal, budget, or evidence invariants.",
+      "language": "python",
+      "line": 1562,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_code_graph_hotspots"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 1617,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_first_run_navigation_search_model"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 2261,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_cockpit_section_html"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Graph/query logic has non-obvious traversal, budget, or evidence invariants.",
+      "language": "python",
+      "line": 2917,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_graph_svg_html"
+    },
+    {
+      "classification": "needs_rule_tuning",
+      "classification_rationale": "Low-level helper prefix should be reviewed for allow/suppression or file-level warning caps.",
+      "language": "python",
+      "line": 3421,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_previous_page_digests"
+    },
+    {
+      "classification": "needs_rule_tuning",
+      "classification_rationale": "Low-level helper prefix should be reviewed for allow/suppression or file-level warning caps.",
+      "language": "python",
+      "line": 3437,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_previous_source_digests"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 125,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/status_dashboard.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_dashboard_renderer_result"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Validation, detection, policy, sanitization, or classification logic is plausible intent-comment debt.",
+      "language": "python",
+      "line": 234,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/status_dashboard.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_redacted_snapshot"
+    },
+    {
+      "classification": "needs_rule_tuning",
+      "classification_rationale": "Low-level helper prefix should be reviewed for allow/suppression or file-level warning caps.",
+      "language": "python",
+      "line": 578,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/status_dashboard.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_safe_system_hygiene_statuses"
+    },
+    {
+      "classification": "false_positive",
+      "classification_rationale": "Low-level path/value extraction helper; broad complexity heuristic overstates comment need.",
+      "language": "python",
+      "line": 735,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/status_dashboard.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_value"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Graph/query logic has non-obvious traversal, budget, or evidence invariants.",
+      "language": "python",
+      "line": 128,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_validate_request"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Graph/query logic has non-obvious traversal, budget, or evidence invariants.",
+      "language": "python",
+      "line": 166,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_validate_positive_int_limit"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Graph/query logic has non-obvious traversal, budget, or evidence invariants.",
+      "language": "python",
+      "line": 224,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_search"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Graph/query logic has non-obvious traversal, budget, or evidence invariants.",
+      "language": "python",
+      "line": 281,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_read_order"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Graph/query logic has non-obvious traversal, budget, or evidence invariants.",
+      "language": "python",
+      "line": 380,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_why_changed"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Graph/query logic has non-obvious traversal, budget, or evidence invariants.",
+      "language": "python",
+      "line": 400,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_status_packet"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Graph/query logic has non-obvious traversal, budget, or evidence invariants.",
+      "language": "python",
+      "line": 418,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_packet"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Graph/query logic has non-obvious traversal, budget, or evidence invariants.",
+      "language": "python",
+      "line": 471,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_enforce_budget"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Graph/query logic has non-obvious traversal, budget, or evidence invariants.",
+      "language": "python",
+      "line": 517,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_index_graph"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Graph/query logic has non-obvious traversal, budget, or evidence invariants.",
+      "language": "python",
+      "line": 536,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_shortest_path"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Graph/query logic has non-obvious traversal, budget, or evidence invariants.",
+      "language": "python",
+      "line": 556,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_reverse_reachable"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Graph/query logic has non-obvious traversal, budget, or evidence invariants.",
+      "language": "python",
+      "line": 614,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_related_nodes"
+    },
+    {
+      "classification": "needs_rule_tuning",
+      "classification_rationale": "Low-level helper prefix should be reviewed for allow/suppression or file-level warning caps.",
+      "language": "python",
+      "line": 639,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_compact_source_spans"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Graph/query logic has non-obvious traversal, budget, or evidence invariants.",
+      "language": "python",
+      "line": 668,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_confidence_summary"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Graph/query logic has non-obvious traversal, budget, or evidence invariants.",
+      "language": "python",
+      "line": 692,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_stale_status_for_node"
+    },
+    {
+      "classification": "needs_rule_tuning",
+      "classification_rationale": "Low-level helper prefix should be reviewed for allow/suppression or file-level warning caps.",
+      "language": "python",
+      "line": 744,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_bounded_coverage_map"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Graph/query logic has non-obvious traversal, budget, or evidence invariants.",
+      "language": "python",
+      "line": 780,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_rejected_links"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Graph/query logic has non-obvious traversal, budget, or evidence invariants.",
+      "language": "python",
+      "line": 809,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_rejected_link_summary"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Graph/query logic has non-obvious traversal, budget, or evidence invariants.",
+      "language": "python",
+      "line": 845,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_unsupported_languages"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Graph/query logic has non-obvious traversal, budget, or evidence invariants.",
+      "language": "python",
+      "line": 881,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_framework_semantics"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Graph/query logic has non-obvious traversal, budget, or evidence invariants.",
+      "language": "python",
+      "line": 984,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_search_score"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 261,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/project_code_graph.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_node_type_for_file"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 315,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/project_code_graph.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_coverage_map"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 408,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/project_code_graph.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_build_conservative_linker"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Validation, detection, policy, sanitization, or classification logic is plausible intent-comment debt.",
+      "language": "python",
+      "line": 139,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/validators.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "validate_agent_file"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 173,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/validators.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "is_forbidden_secret_assignment"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Validation, detection, policy, sanitization, or classification logic is plausible intent-comment debt.",
+      "language": "python",
+      "line": 202,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/validators.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "validate_hook_json_text"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 259,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/validators.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_parse_task_matrix_tasks"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Validation, detection, policy, sanitization, or classification logic is plausible intent-comment debt.",
+      "language": "python",
+      "line": 291,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/validators.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_validate_task_matrix_task"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 399,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/validators.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "main_agents"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 437,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/validators.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "main_hooks"
+    },
+    {
+      "classification": "needs_rule_tuning",
+      "classification_rationale": "Generic parser/CLI/helper symbol needs narrower rule or explicit allow/suppression before hook use.",
+      "language": "python",
+      "line": 162,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/task_plan_lifecycle.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "main"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Complex Product-Agent OS workflow/helper logic; warning is plausible but too noisy for automation without caps.",
+      "language": "python",
+      "line": 313,
+      "path": "plugins/product-agent-os/scripts/product_agent_os/task_plan_lifecycle.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_replace_or_append_completion_brief"
+    },
+    {
+      "classification": "false_positive",
+      "classification_rationale": "Low-level path/value extraction helper; broad complexity heuristic overstates comment need.",
+      "language": "python",
+      "line": 65,
+      "path": ".codex/hooks/pre_tool_use_policy.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_workspace_root"
+    },
+    {
+      "classification": "false_positive",
+      "classification_rationale": "Low-level path/value extraction helper; broad complexity heuristic overstates comment need.",
+      "language": "python",
+      "line": 97,
+      "path": ".codex/hooks/pre_tool_use_policy.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_strings_from"
+    },
+    {
+      "classification": "acceptable_advisory",
+      "classification_rationale": "Hook/policy logic is safety-sensitive enough for reviewer-visible advisory signals.",
+      "language": "python",
+      "line": 151,
+      "path": ".codex/hooks/pre_tool_use_policy.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_lifecycle_marker_ok"
+    },
+    {
+      "classification": "needs_rule_tuning",
+      "classification_rationale": "Generic parser/CLI/helper symbol needs narrower rule or explicit allow/suppression before hook use.",
+      "language": "python",
+      "line": 189,
+      "path": ".codex/hooks/pre_tool_use_policy.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "main"
+    },
+    {
+      "classification": "false_positive",
+      "classification_rationale": "Low-level path/value extraction helper; broad complexity heuristic overstates comment need.",
+      "language": "python",
+      "line": 35,
+      "path": ".codex/hooks/session_start_context.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_workspace_root"
+    },
+    {
+      "classification": "false_positive",
+      "classification_rationale": "Low-level path/value extraction helper; broad complexity heuristic overstates comment need.",
+      "language": "python",
+      "line": 11,
+      "path": ".codex/hooks/stop_runlog_reminder.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_workspace_root"
+    },
+    {
+      "classification": "needs_rule_tuning",
+      "classification_rationale": "Generic parser/CLI/helper symbol needs narrower rule or explicit allow/suppression before hook use.",
+      "language": "python",
+      "line": 30,
+      "path": ".codex/hooks/stop_runlog_reminder.py",
+      "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "_marker_summary"
+    },
+    {
+      "classification": "false_positive",
+      "classification_rationale": "Test classes and focused test helpers are negative controls for this advisory policy.",
+      "language": "python",
+      "line": 35,
+      "path": "tests/product_agent_os/test_batch45_s3_professional_code_authoring.py",
+      "reason": "complex class lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "Batch45S3ProfessionalCodeAuthoringTest"
+    },
+    {
+      "classification": "false_positive",
+      "classification_rationale": "Test classes and focused test helpers are negative controls for this advisory policy.",
+      "language": "python",
+      "line": 29,
+      "path": "tests/product_agent_os/test_coding_standards_artifacts.py",
+      "reason": "complex class lacks docstring, intent comment, or comment_not_needed_reason",
+      "severity": "advisory",
+      "symbol": "CodingStandardsArtifactsTest"
+    }
+  ],
+  "closure_level": "local_audit_evidence_no_enforcement",
+  "corpus": {
+    "code_file_count": 26,
+    "file_count": 28,
+    "minimum_required_objects": 30,
+    "non_code_control_count": 2,
+    "non_code_controls": [
+      "docs/superpowers/specs/batch45-professional-code-s5-learning-automation-summary.json",
+      ".codex/product-agent-os/b45-manual-pilot/coding-standard-checklists.md"
+    ],
+    "object_count": 934,
+    "objects_by_file": {
+      ".codex/hooks/permission_request_summary.py": 1,
+      ".codex/hooks/post_tool_use_evidence.py": 1,
+      ".codex/hooks/pre_tool_use_policy.py": 12,
+      ".codex/hooks/session_start_context.py": 4,
+      ".codex/hooks/stop_runlog_reminder.py": 3,
+      ".codex/product-agent-os/b45-manual-pilot/v3_js_runner.mjs": 7,
+      ".codex/product-agent-os/b45-manual-pilot/v3_reference_runner.py": 37,
+      "plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py": 106,
+      "plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py": 93,
+      "plugins/product-agent-os/scripts/product_agent_os/automation_policy.py": 16,
+      "plugins/product-agent-os/scripts/product_agent_os/comment_sufficiency.py": 14,
+      "plugins/product-agent-os/scripts/product_agent_os/discovery.py": 224,
+      "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py": 91,
+      "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py": 99,
+      "plugins/product-agent-os/scripts/product_agent_os/methodology_synthesis.py": 17,
+      "plugins/product-agent-os/scripts/product_agent_os/project_code_graph.py": 25,
+      "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py": 48,
+      "plugins/product-agent-os/scripts/product_agent_os/self_learning_candidates.py": 18,
+      "plugins/product-agent-os/scripts/product_agent_os/self_learning_state.py": 12,
+      "plugins/product-agent-os/scripts/product_agent_os/status_dashboard.py": 45,
+      "plugins/product-agent-os/scripts/product_agent_os/task_plan_lifecycle.py": 13,
+      "plugins/product-agent-os/scripts/product_agent_os/validators.py": 18,
+      "tests/product_agent_os/test_batch45_s3_professional_code_authoring.py": 7,
+      "tests/product_agent_os/test_coding_standards_artifacts.py": 6,
+      "tests/product_agent_os/test_comment_sufficiency.py": 4,
+      "tests/product_agent_os/test_lifecycle_hooks.py": 13
+    },
+    "paths": [
+      "plugins/product-agent-os/scripts/product_agent_os/comment_sufficiency.py",
+      "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
+      "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+      "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+      "plugins/product-agent-os/scripts/product_agent_os/methodology_synthesis.py",
+      "plugins/product-agent-os/scripts/product_agent_os/automation_policy.py",
+      "plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py",
+      "plugins/product-agent-os/scripts/product_agent_os/self_learning_state.py",
+      "plugins/product-agent-os/scripts/product_agent_os/self_learning_candidates.py",
+      "plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py",
+      "plugins/product-agent-os/scripts/product_agent_os/status_dashboard.py",
+      "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+      "plugins/product-agent-os/scripts/product_agent_os/project_code_graph.py",
+      "plugins/product-agent-os/scripts/product_agent_os/validators.py",
+      "plugins/product-agent-os/scripts/product_agent_os/task_plan_lifecycle.py",
+      ".codex/hooks/permission_request_summary.py",
+      ".codex/hooks/post_tool_use_evidence.py",
+      ".codex/hooks/pre_tool_use_policy.py",
+      ".codex/hooks/session_start_context.py",
+      ".codex/hooks/stop_runlog_reminder.py",
+      ".codex/product-agent-os/b45-manual-pilot/v3_reference_runner.py",
+      ".codex/product-agent-os/b45-manual-pilot/v3_js_runner.mjs",
+      "tests/product_agent_os/test_comment_sufficiency.py",
+      "tests/product_agent_os/test_batch45_s3_professional_code_authoring.py",
+      "tests/product_agent_os/test_coding_standards_artifacts.py",
+      "tests/product_agent_os/test_lifecycle_hooks.py",
+      "docs/superpowers/specs/batch45-professional-code-s5-learning-automation-summary.json",
+      ".codex/product-agent-os/b45-manual-pilot/coding-standard-checklists.md"
+    ]
+  },
+  "decision": {
+    "accepted_residual_risks": [
+      "Classification is rule-assisted and metadata-only; it does not semantically review every legacy function body.",
+      "Many acceptable advisory warnings are real comment-sufficiency debt, but fixing them is outside M24.",
+      "The current validator remains local advisory only and is not ready for hook/CI activation."
+    ],
+    "broad_false_positive_audit_performed": true,
+    "m24_status": "implemented_with_findings",
+    "promotion_recommendation": "do_not_wire_broad_hook_or_ci_until_tuned",
+    "required_follow_up_before_B45_PCA_M25": [
+      "Add test/generated-file exclusions or explicit negative-control handling.",
+      "Add per-file warning caps or focused scope selection for legacy mega-modules.",
+      "Consider allow/suppression support for comment_not_needed_reason on low-level helpers.",
+      "Re-run this corpus after tuning and compare warning_count, false_positive_rate, reviewer_usefulness and elapsed_ms."
+    ]
+  },
+  "generated_at": "2026-06-30T11:15:00+03:00",
+  "schema_version": "batch45_comment_sufficiency_false_positive_audit_v1",
+  "task_id": "B45-PCA-M24",
+  "unsupported_claims": [
+    "No hook or CI advisory surface was activated.",
+    "No blocker enforcement was added.",
+    "No real AI-agent behavior improvement was proven.",
+    "No target workspace, provider/model, browser, git, release, deploy or publish action was performed."
+  ],
+  "validator_run": {
+    "command_shape": "python plugins/product-agent-os/scripts/product_agent_os/comment_sufficiency.py <approved-corpus-paths>",
+    "exit_code": 0,
+    "max_elapsed_ms": 435.519,
+    "payload": {
+      "blocking": false,
+      "status": "advisory_complete",
+      "warning_count": 130,
+      "warnings": [
+        {
+          "language": "python",
+          "line": 86,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/comment_sufficiency.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "analyze_javascript_file"
+        },
+        {
+          "language": "python",
+          "line": 137,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/comment_sufficiency.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_maybe_warn_python"
+        },
+        {
+          "language": "python",
+          "line": 222,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_relative_files"
+        },
+        {
+          "language": "python",
+          "line": 262,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "detect_product_agent_os_scope"
+        },
+        {
+          "language": "python",
+          "line": 392,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_detect_fsd_structure"
+        },
+        {
+          "language": "python",
+          "line": 430,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_detect_frontend_signal"
+        },
+        {
+          "language": "python",
+          "line": 582,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_detect_methodology_signals"
+        },
+        {
+          "language": "python",
+          "line": 928,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_methodology_gaps"
+        },
+        {
+          "language": "python",
+          "line": 960,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_classify_usage_mode"
+        },
+        {
+          "language": "python",
+          "line": 1119,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_secondary_usage_modes"
+        },
+        {
+          "language": "python",
+          "line": 1506,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_api_migration_signals"
+        },
+        {
+          "language": "python",
+          "line": 2084,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_delivery_release_operations_signals"
+        },
+        {
+          "language": "python",
+          "line": 3260,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_docs_tooling_decision"
+        },
+        {
+          "language": "python",
+          "line": 3472,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_methodology_applicability"
+        },
+        {
+          "language": "python",
+          "line": 3899,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_profile_for"
+        },
+        {
+          "language": "python",
+          "line": 3924,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_build_discovery_question_queue"
+        },
+        {
+          "language": "python",
+          "line": 3981,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/discovery.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "analyze_workspace"
+        },
+        {
+          "language": "python",
+          "line": 314,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "validate_first_run_automation_contract"
+        },
+        {
+          "language": "python",
+          "line": 425,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "validate_first_run_analysis_packet"
+        },
+        {
+          "language": "python",
+          "line": 683,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "validate_first_run_script_registry"
+        },
+        {
+          "language": "python",
+          "line": 917,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_first_run_source_artifacts"
+        },
+        {
+          "language": "python",
+          "line": 1114,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_docs_logging_summary"
+        },
+        {
+          "language": "python",
+          "line": 1142,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_dependency_readiness_summary"
+        },
+        {
+          "language": "python",
+          "line": 1338,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_first_run_route_options"
+        },
+        {
+          "language": "python",
+          "line": 1628,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_safe_refs"
+        },
+        {
+          "language": "python",
+          "line": 1777,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_validate_source_artifacts"
+        },
+        {
+          "language": "python",
+          "line": 1797,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_validate_generated_pages"
+        },
+        {
+          "language": "python",
+          "line": 1815,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_validate_section_summaries"
+        },
+        {
+          "language": "python",
+          "line": 1842,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_validate_redaction_status"
+        },
+        {
+          "language": "python",
+          "line": 1873,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_validate_graph_artifact_summary"
+        },
+        {
+          "language": "python",
+          "line": 1907,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_validate_guided_first_response"
+        },
+        {
+          "language": "python",
+          "line": 1931,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_validate_answer_ledger_routing"
+        },
+        {
+          "language": "python",
+          "line": 2062,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_runtime_entrypoints_from_workspace"
+        },
+        {
+          "language": "python",
+          "line": 2081,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_provider_risks"
+        },
+        {
+          "language": "python",
+          "line": 921,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_relative_inventory"
+        },
+        {
+          "language": "python",
+          "line": 977,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_observed_signals"
+        },
+        {
+          "language": "python",
+          "line": 1067,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_frontend_signal_evidence"
+        },
+        {
+          "language": "python",
+          "line": 1358,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_security_signal_evidence"
+        },
+        {
+          "language": "python",
+          "line": 1546,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_classify_maturity"
+        },
+        {
+          "language": "python",
+          "line": 1582,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_classify_complexity"
+        },
+        {
+          "language": "python",
+          "line": 1938,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_business_product_recommendations"
+        },
+        {
+          "language": "python",
+          "line": 2133,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_requirements_domain_recommendations"
+        },
+        {
+          "language": "python",
+          "line": 2477,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_solution_architecture_recommendations"
+        },
+        {
+          "language": "python",
+          "line": 2693,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_quality_testing_evals_recommendations"
+        },
+        {
+          "language": "python",
+          "line": 2931,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_codex_agentic_workflow_recommendations"
+        },
+        {
+          "language": "python",
+          "line": 3719,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_api_integrations_recommendations"
+        },
+        {
+          "language": "python",
+          "line": 3972,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_database_data_recommendations"
+        },
+        {
+          "language": "python",
+          "line": 4299,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_llm_ai_rag_recommendations"
+        },
+        {
+          "language": "python",
+          "line": 4932,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_delivery_release_operations_recommendations"
+        },
+        {
+          "language": "python",
+          "line": 5673,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_database_has_destructive_change"
+        },
+        {
+          "language": "python",
+          "line": 5774,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_questions_for_owner"
+        },
+        {
+          "language": "python",
+          "line": 28,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/automation_policy.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "from_text"
+        },
+        {
+          "language": "python",
+          "line": 338,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/automation_policy.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_activation_gate"
+        },
+        {
+          "language": "python",
+          "line": 1445,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_guardrail_blockers"
+        },
+        {
+          "language": "python",
+          "line": 1484,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_partition_run_artifacts"
+        },
+        {
+          "language": "python",
+          "line": 1516,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_daily_recommendation"
+        },
+        {
+          "language": "python",
+          "line": 1578,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_normalize_trace_source"
+        },
+        {
+          "language": "python",
+          "line": 1649,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_trace_span_types"
+        },
+        {
+          "language": "python",
+          "line": 1670,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_span_types_from_mapping"
+        },
+        {
+          "language": "python",
+          "line": 1708,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_sanitize_raw_metrics_payload"
+        },
+        {
+          "language": "python",
+          "line": 1744,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_trace_dataset_records"
+        },
+        {
+          "language": "python",
+          "line": 1854,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_binary_label_counts"
+        },
+        {
+          "language": "python",
+          "line": 1891,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_agent_targets"
+        },
+        {
+          "language": "python",
+          "line": 1928,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_skill_targets"
+        },
+        {
+          "language": "python",
+          "line": 2052,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_target"
+        },
+        {
+          "language": "python",
+          "line": 2086,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_evidence_candidate_paths"
+        },
+        {
+          "language": "python",
+          "line": 2106,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_records_from_text"
+        },
+        {
+          "language": "python",
+          "line": 2171,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/agent_skill_metrics.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_excluded_source_type"
+        },
+        {
+          "language": "python",
+          "line": 160,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/self_learning_state.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "evaluate_self_learning_due"
+        },
+        {
+          "language": "python",
+          "line": 228,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/self_learning_state.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "validate_self_learning_state"
+        },
+        {
+          "language": "python",
+          "line": 168,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/self_learning_candidates.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "validate_candidate_packet"
+        },
+        {
+          "language": "python",
+          "line": 309,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/self_learning_candidates.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_professional_code_candidate"
+        },
+        {
+          "language": "python",
+          "line": 444,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/self_learning_candidates.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_contains_raw_private_content"
+        },
+        {
+          "language": "python",
+          "line": 645,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_first_run_schema_contract_surface"
+        },
+        {
+          "language": "python",
+          "line": 713,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_first_run_graph_code_surface"
+        },
+        {
+          "language": "python",
+          "line": 1165,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_first_run_cockpit_graph_payload"
+        },
+        {
+          "language": "python",
+          "line": 1356,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_first_run_code_graph_payload"
+        },
+        {
+          "language": "python",
+          "line": 1431,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_cosmos_payload_from_visual_projection"
+        },
+        {
+          "language": "python",
+          "line": 1562,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_code_graph_hotspots"
+        },
+        {
+          "language": "python",
+          "line": 1617,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_first_run_navigation_search_model"
+        },
+        {
+          "language": "python",
+          "line": 2261,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_cockpit_section_html"
+        },
+        {
+          "language": "python",
+          "line": 2917,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_graph_svg_html"
+        },
+        {
+          "language": "python",
+          "line": 3421,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_previous_page_digests"
+        },
+        {
+          "language": "python",
+          "line": 3437,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_previous_source_digests"
+        },
+        {
+          "language": "python",
+          "line": 125,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/status_dashboard.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_dashboard_renderer_result"
+        },
+        {
+          "language": "python",
+          "line": 234,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/status_dashboard.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_redacted_snapshot"
+        },
+        {
+          "language": "python",
+          "line": 578,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/status_dashboard.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_safe_system_hygiene_statuses"
+        },
+        {
+          "language": "python",
+          "line": 735,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/status_dashboard.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_value"
+        },
+        {
+          "language": "python",
+          "line": 128,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_validate_request"
+        },
+        {
+          "language": "python",
+          "line": 166,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_validate_positive_int_limit"
+        },
+        {
+          "language": "python",
+          "line": 224,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_search"
+        },
+        {
+          "language": "python",
+          "line": 281,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_read_order"
+        },
+        {
+          "language": "python",
+          "line": 380,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_why_changed"
+        },
+        {
+          "language": "python",
+          "line": 400,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_status_packet"
+        },
+        {
+          "language": "python",
+          "line": 418,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_packet"
+        },
+        {
+          "language": "python",
+          "line": 471,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_enforce_budget"
+        },
+        {
+          "language": "python",
+          "line": 517,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_index_graph"
+        },
+        {
+          "language": "python",
+          "line": 536,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_shortest_path"
+        },
+        {
+          "language": "python",
+          "line": 556,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_reverse_reachable"
+        },
+        {
+          "language": "python",
+          "line": 614,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_related_nodes"
+        },
+        {
+          "language": "python",
+          "line": 639,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_compact_source_spans"
+        },
+        {
+          "language": "python",
+          "line": 668,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_confidence_summary"
+        },
+        {
+          "language": "python",
+          "line": 692,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_stale_status_for_node"
+        },
+        {
+          "language": "python",
+          "line": 744,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_bounded_coverage_map"
+        },
+        {
+          "language": "python",
+          "line": 780,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_rejected_links"
+        },
+        {
+          "language": "python",
+          "line": 809,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_rejected_link_summary"
+        },
+        {
+          "language": "python",
+          "line": 845,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_unsupported_languages"
+        },
+        {
+          "language": "python",
+          "line": 881,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_framework_semantics"
+        },
+        {
+          "language": "python",
+          "line": 984,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/project_graph_queries.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_search_score"
+        },
+        {
+          "language": "python",
+          "line": 261,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/project_code_graph.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_node_type_for_file"
+        },
+        {
+          "language": "python",
+          "line": 315,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/project_code_graph.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_coverage_map"
+        },
+        {
+          "language": "python",
+          "line": 408,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/project_code_graph.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_build_conservative_linker"
+        },
+        {
+          "language": "python",
+          "line": 139,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/validators.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "validate_agent_file"
+        },
+        {
+          "language": "python",
+          "line": 173,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/validators.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "is_forbidden_secret_assignment"
+        },
+        {
+          "language": "python",
+          "line": 202,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/validators.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "validate_hook_json_text"
+        },
+        {
+          "language": "python",
+          "line": 259,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/validators.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_parse_task_matrix_tasks"
+        },
+        {
+          "language": "python",
+          "line": 291,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/validators.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_validate_task_matrix_task"
+        },
+        {
+          "language": "python",
+          "line": 399,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/validators.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "main_agents"
+        },
+        {
+          "language": "python",
+          "line": 437,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/validators.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "main_hooks"
+        },
+        {
+          "language": "python",
+          "line": 162,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/task_plan_lifecycle.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "main"
+        },
+        {
+          "language": "python",
+          "line": 313,
+          "path": "plugins/product-agent-os/scripts/product_agent_os/task_plan_lifecycle.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_replace_or_append_completion_brief"
+        },
+        {
+          "language": "python",
+          "line": 65,
+          "path": ".codex/hooks/pre_tool_use_policy.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_workspace_root"
+        },
+        {
+          "language": "python",
+          "line": 97,
+          "path": ".codex/hooks/pre_tool_use_policy.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_strings_from"
+        },
+        {
+          "language": "python",
+          "line": 151,
+          "path": ".codex/hooks/pre_tool_use_policy.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_lifecycle_marker_ok"
+        },
+        {
+          "language": "python",
+          "line": 189,
+          "path": ".codex/hooks/pre_tool_use_policy.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "main"
+        },
+        {
+          "language": "python",
+          "line": 35,
+          "path": ".codex/hooks/session_start_context.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_workspace_root"
+        },
+        {
+          "language": "python",
+          "line": 11,
+          "path": ".codex/hooks/stop_runlog_reminder.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_workspace_root"
+        },
+        {
+          "language": "python",
+          "line": 30,
+          "path": ".codex/hooks/stop_runlog_reminder.py",
+          "reason": "complex function lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "_marker_summary"
+        },
+        {
+          "language": "python",
+          "line": 35,
+          "path": "tests/product_agent_os/test_batch45_s3_professional_code_authoring.py",
+          "reason": "complex class lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "Batch45S3ProfessionalCodeAuthoringTest"
+        },
+        {
+          "language": "python",
+          "line": 29,
+          "path": "tests/product_agent_os/test_coding_standards_artifacts.py",
+          "reason": "complex class lacks docstring, intent comment, or comment_not_needed_reason",
+          "severity": "advisory",
+          "symbol": "CodingStandardsArtifactsTest"
+        }
+      ]
+    },
+    "replay": [
+      {
+        "elapsed_ms": 434.904,
+        "run": 1,
+        "warning_count": 130
+      },
+      {
+        "elapsed_ms": 435.519,
+        "run": 2,
+        "warning_count": 130
+      }
+    ],
+    "stable_warning_count": true
+  }
+}

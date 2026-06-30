@@ -79,7 +79,10 @@ One line that uses an existing capability is preferred over fifty lines of custo
 - Formatter/linter source:
 - Local idioms followed:
 - `comment_policy`:
-- Comments added only for non-obvious intent, tradeoff, invariant, security, data, migration, concurrency, or compatibility risk:
+- State machines, algorithms, security/privacy/data/concurrency logic, and functions with non-obvious invariants inspected:
+- Docstring or intent comment added for each non-obvious invariant:
+- `comment_not_needed_reason` for inspected code that remains uncommented:
+- Comments added only for non-obvious intent, tradeoff, invariant, security, privacy, data, migration, concurrency, or compatibility risk:
 - Obvious comments avoided:
 - `cleverness_budget`:
 - Simpler alternative considered:

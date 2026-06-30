@@ -149,7 +149,9 @@ These markers are retained as compact discovery anchors, not as full evidence:
 
 ## Current Batch 45 Handoff
 
-- `B45-PILOT-MANUAL-6-CODE-TASKS-A02`: 6 code tasks, 4 real gaps fixed plus 1 scope gap, no scoped false positives, focused suites passed x2. Evidence: `docs/superpowers/specs/batch45-manual-pilot-6-code-tasks-summary.json` and `.codex/product-agent-os/b45-manual-pilot/coding-standard-checklists.md`. Next: manual/more pilots, advisory-only reminder or approved hook/blocker; no activation/external/git.
+- `B45-A02`: 6-task pilot fixed 4 gaps plus 1 scope gap; no activation/external/git.
+- `B45-A05`: V3 comments plus advisory validator; no blocker/hook.
+- `B45-S6`: `B45-PCA-M24-A01` plus tuning `B45-PCA-M24-TUNING-A02` recorded 130 baseline warnings -> 30 visible / 102 suppressed default warnings; raw compatibility is 134 after validator/test edits; M25-M27 pending, hook/CI approval-required.
 
 ## Verification Runbook
 

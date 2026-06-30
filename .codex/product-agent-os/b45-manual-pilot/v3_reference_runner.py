@@ -33,12 +33,16 @@ def _result(task_id: str, proof_level: str, cases: list[dict[str, Any]], notes: 
 
 
 class SagaEngine:
+    """Tiny saga state machine for idempotent retry and compensation fixtures."""
+
     def __init__(self) -> None:
         self.records: dict[str, dict[str, Any]] = {}
         self.side_effects: defaultdict[str, int] = defaultdict(int)
         self.events: list[str] = []
 
     def run(self, saga_id: str, order: dict[str, Any], *, fail_step: str | None = None, compensation_fail: str | None = None) -> dict[str, Any]:
+        """Run or replay a saga while preserving conflict and compensation invariants."""
+
         body = json.dumps(order, sort_keys=True)
         if saga_id in self.records:
             record = self.records[saga_id]
@@ -109,6 +113,8 @@ class OutboxRow:
 
 
 class Publisher:
+    """Failure-injection publisher used to exercise outbox ack and retry invariants."""
+
     def __init__(self, *, fail_before_ack: set[str] | None = None, crash_after_publish: set[str] | None = None) -> None:
         self.fail_before_ack = fail_before_ack or set()
         self.crash_after_publish = crash_after_publish or set()
@@ -125,12 +131,16 @@ class Publisher:
 
 
 class OutboxRelay:
+    """Reference transactional-outbox relay with per-aggregate ordering and retry budget."""
+
     def __init__(self, rows: list[OutboxRow], publisher: Publisher, *, max_attempts: int = 3) -> None:
         self.rows = rows
         self.publisher = publisher
         self.max_attempts = max_attempts
 
     def run_once(self) -> None:
+        """Publish only rows whose earlier same-aggregate events are no longer pending."""
+
         pending = [row for row in self.rows if row.status == "pending"]
         pending.sort(key=lambda row: (row.aggregate_id, row.sequence))
         for row in pending:
@@ -185,6 +195,8 @@ def run_ent_py_02() -> dict[str, Any]:
 
 
 def plan_query(filters: dict[str, Any]) -> dict[str, Any]:
+    """Build safe query predicates with tenant isolation and partial-index eligibility."""
+
     allowed = {"tenant_id", "deleted", "status", "created_after", "created_before", "admin_scope", "audit_reason"}
     unknown = set(filters) - allowed
     if unknown:
@@ -241,6 +253,8 @@ def run_ent_rs_01() -> dict[str, Any]:
 
 
 class Dinic:
+    """Residual graph implementation for max-flow fixture coverage."""
+
     def __init__(self, n: int) -> None:
         self.graph: list[list[list[int]]] = [[] for _ in range(n)]
 
@@ -251,6 +265,8 @@ class Dinic:
         self.graph[v].append(backward)
 
     def max_flow(self, source: int, sink: int) -> int:
+        """Compute max flow with Dinic levels and residual-capacity augmentation."""
+
         flow = 0
         n = len(self.graph)
         while True:
@@ -276,6 +292,7 @@ class Dinic:
                     if capacity > 0 and level[v] == level[u] + 1:
                         sent = dfs(v, min(pushed, capacity))
                         if sent:
+                            # Residual reverse capacity preserves the augmenting-path invariant.
                             edge[1] -= sent
                             self.graph[v][rev][1] += sent
                             return sent
@@ -331,6 +348,8 @@ def run_oly_cpp_02() -> dict[str, Any]:
 
 
 def flight_routes(n: int, edges: list[tuple[int, int, int]], k: int) -> list[int]:
+    """Return the k cheapest route costs, counting duplicate path variants separately."""
+
     graph: defaultdict[int, list[tuple[int, int]]] = defaultdict(list)
     for u, v, cost in edges:
         graph[u].append((v, cost))
@@ -395,6 +414,8 @@ class DSU:
 
 
 def new_roads_queries(n: int, roads: list[tuple[int, int]], queries: list[tuple[int, int]]) -> list[int]:
+    """Slow oracle for earliest connectivity day; suitable for fixtures, not production scale."""
+
     answers = [0 if a == b else -1 for a, b in queries]
     dsu = DSU(n)
     for day, (u, v) in enumerate(roads, start=1):

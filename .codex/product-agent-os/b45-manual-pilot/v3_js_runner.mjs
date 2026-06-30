@@ -17,6 +17,9 @@ function check(name, actual, expected) {
   return { case: name, status: "passed" };
 }
 
+/**
+ * Enforces object-level authorization with default-deny and audited break-glass access.
+ */
 function evaluateAccess(request) {
   const audit = [];
   if (!request || !request.actor || !request.resource || !request.action) {
@@ -91,6 +94,9 @@ const emailPattern = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i;
 const severities = new Set(["DEBUG", "INFO", "WARN", "ERROR"]);
 const categories = new Set(["auth", "billing", "data_access", "system"]);
 
+/**
+ * Recursively strips privacy-sensitive values before normalized audit data can escape.
+ */
 function redact(value) {
   if (Array.isArray(value)) return value.map(redact);
   if (value && typeof value === "object") {
@@ -108,6 +114,9 @@ function redact(value) {
   return value;
 }
 
+/**
+ * Normalizes bounded audit events while rejecting bad taxonomy without returning raw payloads.
+ */
 function normalizeEvent(event) {
   if (!event || typeof event !== "object") {
     return { accepted: false, error: "invalid_event" };

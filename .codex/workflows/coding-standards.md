@@ -36,7 +36,7 @@ This is a coding sub-gate. It does not replace Task Brief / Completion Brief lif
 6. Apply `deep_module_check` before shared-module, public API, schema, runtime, concurrency, cache, generated-code, or cross-boundary edits.
 7. Apply `legacy_seam_check` before refactoring fragile or legacy code; prefer characterization tests, small seams, adapters, or branch-by-abstraction over broad rewrites.
 8. Add abstractions only when they remove real duplication, reduce meaningful complexity, or match an existing pattern.
-9. Apply `comment_policy`: comment non-obvious intent, invariants, tradeoffs, security/data/migration/concurrency risk, and compatibility constraints; avoid comments that repeat code.
+9. Apply `comment_policy`: this is not "comment everything". State machines, algorithms, security/privacy/data/concurrency logic, and functions with non-obvious invariants need a docstring, intent comment, or explicit `comment_not_needed_reason`; avoid comments that repeat code.
 10. Update tests, evals, docs, and evidence artifacts before ready/fixed/complete/works claims.
 
 ## Outputs

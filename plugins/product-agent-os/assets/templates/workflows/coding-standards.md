@@ -48,7 +48,7 @@ The workflow turns the professional code authoring standard into a compact task 
 6. Apply `deep_module_check` before shared-module, public API, schema, runtime, concurrency, cache, generated-code, or cross-boundary edits.
 7. Apply `legacy_seam_check` before refactoring fragile or legacy code; prefer characterization tests, small seams, strangler patterns, adapters, or branch-by-abstraction over big rewrites.
 8. Keep the implementation boring, local, and reviewable. Add abstractions only when they remove real duplication or match an existing pattern.
-9. Apply `comment_policy`: comment non-obvious intent, invariants, tradeoffs, security/data/migration/concurrency risk, and compatibility constraints; avoid obvious comments that repeat code.
+9. Apply `comment_policy`: this is not "comment everything". State machines, algorithms, security/privacy/data/concurrency logic, and functions with non-obvious invariants need a docstring, intent comment, or explicit `comment_not_needed_reason`; avoid obvious comments that repeat code.
 10. Apply `cleverness_budget`: choose the simplest readable solution that satisfies the contract; record why any clever or generic solution is justified.
 11. Update tests, evals, docs, and evidence artifacts before making ready/fixed/complete/works claims.
 

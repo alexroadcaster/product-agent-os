@@ -16,7 +16,7 @@ Professional Code Authoring - это слой Product-Agent OS для не ме�
 | `negative_dependency_rule` | Почему новая dependency нужна, какие alternatives rejected, rollback/removal path. | Нет новой dependency. |
 | `deep_module_check` | Почему abstraction hides real complexity вместо shallow wrapper. | Direct call лучше abstraction. |
 | `legacy_seam_check` | Characterization evidence, seam strategy, rollback или accepted gap. | Нет legacy/refactor impact. |
-| `comment_policy` | Comments explain why, invariant, hazard или trade-off; they do not narrate code. | Код self-explanatory и comments не нужны. |
+| `comment_policy` | Comments explain why, invariant, hazard или trade-off; state machines, algorithms, security/privacy/data/concurrency logic и функции с неочевидным invariant требуют docstring, intent comment или `comment_not_needed_reason`. | Код self-explanatory и comments не нужны; obvious comments запрещены как noise. |
 | `cleverness_budget` | Payoff, tests, naming clarity и reviewer rationale. | Direct/simple path chosen. |
 
 ## Activation path

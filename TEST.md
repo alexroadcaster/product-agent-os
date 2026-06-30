@@ -163,6 +163,66 @@ evidence, but it must not claim hook/blocker activation, active automation,
 schedule creation, provider/browser/runtime proof, target mutation, git action
 or production readiness without a later exact approval.
 
+For `B45-COMMENT-POLICY-ENFORCEMENT-A05` V3 runner comment-sufficiency
+corrective work, run:
+
+```powershell
+python -m unittest tests.product_agent_os.test_comment_sufficiency -v
+python plugins\product-agent-os\scripts\product_agent_os\comment_sufficiency.py .codex\product-agent-os\b45-manual-pilot\v3_reference_runner.py .codex\product-agent-os\b45-manual-pilot\v3_js_runner.mjs
+python .codex\product-agent-os\b45-manual-pilot\v3_reference_runner.py --task all
+node .codex\product-agent-os\b45-manual-pilot\v3_js_runner.mjs V3-ENT-JS-01
+node .codex\product-agent-os\b45-manual-pilot\v3_js_runner.mjs V3-ENT-JS-02
+```
+
+The comment-sufficiency validator is advisory only: warnings are reviewer
+signals, the CLI exits `0`, and no hook/blocker activation is implied.
+
+For planned `B45-S6` advisory-validation and behavior-proof tasks, keep the
+checks split by row:
+
+```powershell
+# B45-PCA-M24: broad false-positive audit
+python -m unittest tests.product_agent_os.test_comment_sufficiency -v
+python plugins\product-agent-os\scripts\product_agent_os\comment_sufficiency.py <approved-corpus-paths>
+python plugins\product-agent-os\scripts\product_agent_os\comment_sufficiency.py <approved-corpus-paths> --include-tests --no-default-excludes --max-warnings-per-file -1 --max-warnings -1
+
+# B45-PCA-M25: non-blocking advisory wiring, only after exact hook/CI approval
+python -m unittest tests.product_agent_os.test_comment_sufficiency tests.product_agent_os.test_lifecycle_hooks -v
+python plugins\product-agent-os\scripts\validate_hooks.py .codex\hooks.json
+python plugins\product-agent-os\scripts\validate_hooks.py .codex\hooks
+
+# B45-PCA-M26: real AI-agent behavior eval
+# Record baseline/treatment runs, reviewer scorecard, cost/time/flake data and
+# sanitized evidence packets under docs\superpowers\specs\.
+
+# B45-PCA-M27: promotion/no-go decision
+python -m unittest tests.product_agent_os.test_product_agent_os_docs -v
+python tools\check_docs.py
+git diff --check
+```
+
+S6 must not treat advisory warnings as blockers. `.github/workflows/` creation,
+hook activation/update, provider/model/API calls, browser automation, live
+servers, target mutation, installed plugin cache refresh and git actions all
+remain approval-required. S6 can close the current gaps only after M24-M27 have
+current evidence; unit tests or local pilots alone do not prove real AI-agent
+behavior improvement.
+
+Current `B45-PCA-M24-A01` evidence is
+`docs/superpowers/specs/batch45-comment-sufficiency-false-positive-audit.json`.
+The broad audit inspected 934 Python/JS objects and produced stable
+`warning_count: 130`; this is local audit evidence only and blocks broad M25
+hook/CI wiring until the validator is tuned or scoped.
+Current `B45-PCA-M24-TUNING-A02` evidence is
+`docs/superpowers/specs/batch45-comment-sufficiency-tuning-comparison.json`.
+The tuned default advisory scan on the same path list now records 943 current
+objects, visible `warning_count: 30`, `suppressed_warning_count: 102` and 76.92%
+visible-warning reduction. Raw compatibility mode remains available through
+`--include-tests --no-default-excludes --max-warnings-per-file -1 --max-warnings -1`
+and currently reports `warning_count: 134` because validator/test helpers
+changed after the original baseline. This is still advisory/local evidence only:
+no hook, CI workflow or blocker activation is implied.
+
 For `B45-S5` learning-loop and automation-candidate policy, run:
 
 ```powershell

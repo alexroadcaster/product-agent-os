@@ -1,12 +1,12 @@
 {
   "task_start_brief_shown": true,
-  "task_id": "B45-MULTILANG-V3-TEST-RUN-A04",
-  "scope": "Execute local testing for the 10-task Enterprise/Olympiad V3 test variant, recording intermediate per-task results in the Batch 45 multilanguage task corpus.",
-  "updated_at": "2026-06-30T01:46:36+03:00",
-  "approval_boundary": "Owner requested testing for the existing 10-task V3 set with intermediate results recorded per task. No C++/Rust toolchain installation, external online judge/compiler execution, hook activation, automation activation, schedule creation, MCP activation, Agents SDK runner, provider/model/API call, browser automation, live server, target workspace outside codex_docs, installed plugin cache refresh, git stage/commit/push/PR, release, deploy, publish, external write, raw private chat ingestion or hidden telemetry.",
+  "task_id": "B45-PCA-M24-TUNING-A02",
+  "scope": "Tune the Batch 45 comment-sufficiency advisory validator after the broad false-positive audit, then rerun the same corpus and compare warning volume, false positives, tuning-needed cases, cost and reviewer usefulness.",
+  "updated_at": "2026-06-30T11:50:29+03:00",
+  "approval_boundary": "Owner requested local validator tuning and repeat audit only. No hook activation, CI workflow creation, blocker enforcement, automation activation, schedule creation, MCP activation, Agents SDK runner, provider/model/API call, browser automation, live server, target workspace mutation outside codex_docs, installed plugin cache refresh, git stage/commit/push/PR, release, deploy, publish, external write, raw private chat ingestion or hidden telemetry.",
   "brief_schema_version": "task_start_brief_v1",
   "brief_format": "field_list",
-  "brief_digest": "sha256:b45-multilang-v3-test-run-a04-visible-task-brief-recorded-in-current-codex-thread",
+  "brief_digest": "sha256:b45-pca-m24-tuning-a02-visible-task-brief-recorded-in-current-codex-thread",
   "brief_fields_present": [
     "Task ID",
     "Product value",
@@ -23,18 +23,24 @@
     "Next action"
   ],
   "completion_brief_shown": true,
-  "completion_status": "tested_with_target_runtime_and_reference_gaps",
-  "completion_updated_at": "2026-06-30T01:56:25+03:00",
-  "completion_evidence": [
-    ".codex/product-agent-os/b45-manual-pilot/multilang-test-tasks.md",
-    ".codex/product-agent-os/b45-manual-pilot/v3_reference_runner.py",
-    ".codex/product-agent-os/b45-manual-pilot/v3_js_runner.mjs"
-  ],
+  "completion_status": "synthetic_green",
   "completion_gaps": [
-    "cpp_target_runtime_blocked_missing_local_compiler",
-    "rust_target_runtime_blocked_missing_local_toolchain",
-    "external_online_judge_or_compiler_not_used",
-    "hook_blocker_automation_activation_not_performed",
-    "v3_oly_rs_01_initial_fixture_definition_error_fixed_before_final_result"
-  ]
+    "B45-PCA-M25_advisory_wiring_not_performed",
+    "B45-PCA-M26_real_ai_agent_behavior_eval_not_run",
+    "B45-PCA-M27_promotion_decision_not_made",
+    "hook_or_ci_advisory_wiring_not_performed",
+    "real_ai_agent_behavior_improvement_not_proven",
+    "promotion_decision_not_made"
+  ],
+  "completion_evidence": [
+    "plugins/product-agent-os/scripts/product_agent_os/comment_sufficiency.py",
+    "tests/product_agent_os/test_comment_sufficiency.py",
+    "docs/superpowers/specs/batch45-comment-sufficiency-tuning-comparison.json",
+    "PLAN.md",
+    "TEST.md",
+    "EVALS.md",
+    "RUNLOG.md",
+    "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md"
+  ],
+  "closure_level": "synthetic_green"
 }

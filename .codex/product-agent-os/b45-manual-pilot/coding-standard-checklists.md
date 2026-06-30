@@ -525,6 +525,63 @@ Approval boundary: owner-approved local manual pilot for six real non-mechanical
 - Fallback status: `forbidden`
 - Closure level: `synthetic_green`
 
+## Checklist 7: V3 Runner Comment Sufficiency Corrective Slice
+
+- Task row id: `B45-MULTILANG-V3-TEST-RUN-A04` plus corrective slice `B45-COMMENT-POLICY-ENFORCEMENT-A05`.
+- Task classification: non-mechanical code/config/docs/test corrective work.
+- Code surfaces: `.codex/config.toml`, `.codex/workflows/coding-standards.md`, `.codex/artifact-templates/coding-standard-checklist.md`, `plugins/product-agent-os/assets/templates/workflows/coding-standards.md`, `plugins/product-agent-os/assets/templates/artifact-templates/coding-standard-checklist.md`, `docs/product-agent-os/coding-standards.md`, `docs/product-agent-os/coding-standards.en.md`, `.codex/product-agent-os/b45-manual-pilot/v3_reference_runner.py`, `.codex/product-agent-os/b45-manual-pilot/v3_js_runner.mjs`, `plugins/product-agent-os/scripts/product_agent_os/comment_sufficiency.py`, `tests/product_agent_os/test_comment_sufficiency.py`.
+- Owner: Codex local maintenance under owner request.
+- Related workflow: `.codex/workflows/coding-standards.md`.
+
+## Enterprise Leverage Check
+
+- `enterprise_leverage_check`: configure existing fresh-context/workflow routing and add a tiny stdlib advisory validator instead of enabling a hook/blocker.
+- `existing_capability_scan`: current coding standards workflow, checklist template, Batch 45 manual pilot ledger and V3 runner files inspected.
+- Configuration option: selected for `.codex/config.toml` fresh-context and workflow references.
+- Standard library or language construct option: selected for Python `ast`, regex and JSON advisory payloads.
+- Project helper or existing abstraction: existing Product-Agent OS script/test placement reused.
+- `one_line_candidate`: Add coding standards files to `fresh_context_files` and route `coding_standards` under `[workflows]`.
+- Selected leverage path: `configure | stdlib | small_custom_code`.
+- New dependency requested: no.
+- Maximum new custom-code surface: one advisory validator module and focused unittest.
+
+## Module And Legacy Safety
+
+- `deep_module_check`: validator is not wired into lifecycle hooks, CI blockers or automation; it is callable evidence only.
+- Public API or contract touched: `.codex/config.toml` workflow routing and coding-standard artifact fields.
+- State, concurrency, cache, or migration risk: none.
+- Refactoring pattern: `small_safe_refactor`.
+- Rollback path: revert config entries, wording edits, runner comments, validator and focused test.
+
+## Code Style And Comments
+
+- Naming/style source: existing Product-Agent OS Python script/test style.
+- Local idioms followed: pure functions, dataclass warning payload, `unittest`, no dependency.
+- `comment_policy`: V3 runner state machines, outbox retry ordering, query planner safety, Dinic residual update, k-route search, connectivity oracle, object-level authorization, redaction and audit normalization now have docstrings or intent comments.
+- State machines, algorithms, security/privacy/data/concurrency logic, and functions with non-obvious invariants inspected: `SagaEngine`, `OutboxRelay`, `plan_query`, `Dinic.max_flow`, `flight_routes`, `new_roads_queries`, `evaluateAccess`, `redact`, `normalizeEvent`.
+- Docstring or intent comment added for each non-obvious invariant: yes.
+- `comment_not_needed_reason` for inspected code that remains uncommented: simple test-case wrappers and literal fixture declarations remain uncommented because names and expected outputs are the evidence surface.
+- Obvious comments avoided: yes.
+- `cleverness_budget`: low; advisory heuristic remains conservative and non-blocking.
+
+## Test And Evidence
+
+- Test-first or eval-first path: focused validator test added for current V3 runner files and artificial missing-comment warnings.
+- Deterministic tests: `python -m unittest tests.product_agent_os.test_comment_sufficiency -v`.
+- Contract tests: CLI returns `0` with advisory warning payload and `blocking: false`.
+- Runtime/manual evidence: V3 Python and Node runners pass after docstring/comment-only edits.
+- Current evidence: `test_comment_sufficiency` OK; Batch 45 coding/template suites OK; advisory CLI returned `warning_count: 0`; V3 Python runner passed all local/reference fixture cases; Node V3 tasks `V3-ENT-JS-01` and `V3-ENT-JS-02` passed; docs unittest, `tools/check_docs.py` and `git diff --check` completed.
+- Missing evidence: no hook/blocker activation, no CI integration, no broad false-positive audit beyond focused V3 and artificial cases.
+- `unsupported_code_quality_claims`: does not prove all future complex code is sufficiently commented; it only provides advisory local warning coverage.
+
+## Completion Gate
+
+- Ready/fixed/complete/works claim: corrective local slice implemented with current-run verification.
+- Unsupported claim blocked: active enforcement, blocker behavior, hook activation, automation promotion or enterprise-wide comment quality.
+- Fallback allowed: yes.
+- Fallback status: `product_intended`.
+- Closure level: `synthetic_green`; no stronger runtime activation claim.
+
 ## Review Comments And Usefulness Ledger
 
 | Task | Review comment | Action taken | Reviewer usefulness |
