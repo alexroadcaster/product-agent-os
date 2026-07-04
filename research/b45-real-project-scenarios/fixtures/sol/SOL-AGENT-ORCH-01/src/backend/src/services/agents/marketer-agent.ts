@@ -7,6 +7,7 @@ export class MarketerAgent implements AgentNode {
     name = 'Mia (Marketer)';
     role: Role = 'marketer';
 
+    // Waits for PRD and market research before generating the go-to-market strategy, otherwise routes back to the BA prerequisite.
     async execute(state: AgentState): Promise<AgentState> {
         console.log(`[marketer]: Executing Marketer logic...`);
 

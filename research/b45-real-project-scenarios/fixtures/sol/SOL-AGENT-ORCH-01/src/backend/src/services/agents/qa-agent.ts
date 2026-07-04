@@ -7,6 +7,7 @@ export class QaAgent implements AgentNode {
     name = 'Eve (Lead Quality Assurance)';
     role = 'qa' as const;
 
+    // Uses architecture and task context to produce the QA strategy and pass the project toward security review.
     async execute(state: AgentState): Promise<AgentState> {
         const userMessage = state.messages.find(m => m.role === 'user')?.content || '';
         const architecture = state.artifacts.architecture || '';

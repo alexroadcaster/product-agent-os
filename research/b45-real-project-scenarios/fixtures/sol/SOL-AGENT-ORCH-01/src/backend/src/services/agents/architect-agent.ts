@@ -7,6 +7,7 @@ export class ArchitectAgent implements AgentNode {
     name = 'Leo (Architect)';
     role: Role = 'architect';
 
+    // Builds the architecture-stage prompt from prior artifacts and either asks for missing constraints or hands a completed architecture to the developer role.
     async execute(state: AgentState): Promise<AgentState> {
         console.log(`[architect]: Executing System Architect logic...`);
 

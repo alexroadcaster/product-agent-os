@@ -74,6 +74,9 @@ verification_status: "Current compaction preserves test-visible markers; full ev
 - Product-Agent OS Track 11 Batch 45 repeat quality/refactor retest Q3 fixture-static with `B45-RETEST-Q3-FIXTURE-STATIC` / `B45-RETEST-Q3-FIXTURE-STATIC-A01`, route `docs/superpowers/specs/batch45-quality-retest-fixture-static-summary.json` (checked_at=2026-07-04, trust=high for local/static sanitized-fixture replay; 37 files, 14 advisory warnings, blocking=false; no live/model/runtime/browser/provider/target/git/release/deploy/automation action or promotion claim)
 - Product-Agent OS Track 11 Batch 45 repeat quality/refactor retest Q4 project-slices-static with `B45-RETEST-Q4-PROJECT-SLICES-STATIC` / `B45-RETEST-Q4-PROJECT-SLICES-STATIC-A01`, route `docs/superpowers/specs/batch45-quality-retest-project-slices-static-summary.json` (checked_at=2026-07-04, trust=high for local/static project-slice replay; 5 slices, 46 files, 14 advisory warnings, blocking=false; no live/model/runtime/browser/provider/target/git/release/deploy/automation action or promotion claim)
 - Product-Agent OS Track 11 Batch 45 post-Q4 next task queue with `B45-POST-Q4-NEXT-TASKS` / `B45-POST-Q4-NEXT-TASKS-A01`, route `docs/superpowers/specs/batch45-post-q4-next-tasks.json` (checked_at=2026-07-04, trust=high for source-owned post-Q4 task planning; routes targeted static repair, static delta verification, approval-gated live/model proof, promotion decision and optional M36 runtime/browser packet; no live/model/runtime/browser/provider/target/git/release/deploy/automation action or promotion claim)
+- Product-Agent OS Track 11 Batch 45 post-Q4 T01-T04 execution with `B45-POSTQ4-T01-T04` / `B45-POSTQ4-T01-T04-A01` and `B45-POSTQ4-T04-A01`, routes `docs/superpowers/specs/batch45-postq4-t01-t04-execution-summary.json` and `docs/superpowers/specs/batch45-postq4-live-model-rerun-approval-packet.json` (checked_at=2026-07-04, trust=high for copied-fixture static delta and approval-packet-only evidence; Q4 warnings reduce 14 -> 0; no live/model/runtime/browser/provider/target/git/release/deploy/automation action or promotion claim)
+- Product-Agent OS Track 11 Batch 45 post-Q4 T05 exact-approved live/model rerun attempt with `B45-POSTQ4-T05-LIVE-MODEL-RERUN` / `B45-POSTQ4-T05-A01`, route `docs/superpowers/specs/batch45-postq4-t05-live-model-rerun-results.json` (checked_at=2026-07-04, trust=high for sanitized T05 rollup; approved Codex CLI/OpenAI calls started 2 primary task runs, completed 1, timed out 1, stopped remaining 14 primary runs plus reviewer by policy; no treatment/reviewer comparison, no M26/M35 reversal, no target/runtime/browser/CI/git/release/deploy/automation proof)
+- Product-Agent OS Track 11 Batch 45 post-Q4 T05B revised rerun approval packet with `B45-POSTQ4-T05B-RERUN-PACKET-REVISION` / `B45-POSTQ4-T05B-A01`, route `docs/superpowers/specs/batch45-postq4-t05b-rerun-approval-packet.json` (checked_at=2026-07-04, trust=high for approval-packet-only design after T05 timeout; no live/model/provider call, no reused T05 approval, no treatment/reviewer comparison, no M26/M35 reversal, no target/runtime/browser/CI/git/release/deploy/automation proof)
 - Codex web / cloud (checked_at=2026-05-14, trust=high)
 - Codex app (checked_at=2026-05-14, trust=high)
 - Codex CLI (checked_at=2026-05-14, trust=high)
@@ -1613,6 +1616,15 @@ These markers preserve source-owned test routing after registry compaction. Full
 - B45-POST-Q4-NEXT-TASKS; B45-POST-Q4-NEXT-TASKS-A01
 - docs/superpowers/specs/batch45-post-q4-next-tasks.json
 - Post-Q4 tasks route targeted static hotspot repair, static delta verification, approval-gated live/model rerun, promotion decision and optional M36 runtime/browser packet while preserving advisory-only/no-go and all approval boundaries
+- Product-Agent OS Track 11 Batch 45 post-Q4 T01-T04 execution and approval packet
+- B45-POSTQ4-T01-T04; B45-POSTQ4-T01-T04-A01; B45-POSTQ4-T04-A01
+- docs/superpowers/specs/batch45-postq4-t01-t04-execution-summary.json
+- docs/superpowers/specs/batch45-postq4-live-model-rerun-approval-packet.json
+- T01-T03 copied-fixture static repair reduced Q4 advisory warnings 14 -> 0; T04 only stages an approval packet for a future live/model rerun and preserves all no-go/promotion boundaries
+- Product-Agent OS Track 11 Batch 45 post-Q4 T05 exact-approved live/model rerun timeout rollup
+- B45-POSTQ4-T05-LIVE-MODEL-RERUN; B45-POSTQ4-T05-A01
+- docs/superpowers/specs/batch45-postq4-t05-live-model-rerun-results.json
+- T05 used exact-approved Codex CLI/OpenAI calls but stopped on baseline timeout after 1 completed primary run and 1 timed-out primary run; 14 primary runs and the reviewer were not run by stop rule, so M26/M35 no-go remains active
 - Product-Agent OS Track 11 Batch 44 Self-Learning Loop S7 state initializer, manual pilot, Promptfoo/HALO and staged repair contracts
 - B44-S7-SELF-LEARNING-MANUAL-PILOT-A01
 - docs/superpowers/specs/batch44-self-learning-loop-approved-manual-pilot-summary.json

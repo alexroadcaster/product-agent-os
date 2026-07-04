@@ -2082,6 +2082,7 @@ async function mockCrmApis(
   });
 }
 
+// Capture requested offsets while stubbing the CRM list endpoints used by the pagination scenario.
 async function mockCrmPaginationApis(page: Page, contactOffsets: number[]) {
   await page.route("http://127.0.0.1:8000/api/**", async (route) => {
     const request = route.request();

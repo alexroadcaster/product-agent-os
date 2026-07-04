@@ -7,6 +7,7 @@ export class SecurityAgent implements AgentNode {
     name = 'Trent (Lead Security Auditor)';
     role = 'security' as const;
 
+    // Reviews architecture and task context for security gaps, then emits a structured threat-model and hardening plan.
     async execute(state: AgentState): Promise<AgentState> {
         const userMessage = state.messages.find(m => m.role === 'user')?.content || '';
         const architecture = state.artifacts.architecture || '';

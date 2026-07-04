@@ -7,6 +7,7 @@ export class OptimizerAgent implements AgentNode {
     name = 'Diana (Lead Optimizer)';
     role = 'optimizer' as const;
 
+    // Reads architecture context to produce token, caching and delivery optimization guidance for the QA handoff.
     async execute(state: AgentState): Promise<AgentState> {
         const userMessage = state.messages.find(m => m.role === 'user')?.content || '';
         const architecture = state.artifacts.architecture || '';

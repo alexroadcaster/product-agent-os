@@ -1,0 +1,289 @@
+{
+  "schema_version": "batch45_postq4_t05_live_model_rerun_results_v1",
+  "task_id": "B45-POSTQ4-T05-LIVE-MODEL-RERUN",
+  "evidence_id": "B45-POSTQ4-T05-A01",
+  "status": "stopped_on_timeout_inconclusive_no_go",
+  "created_at": "2026-07-04T20:06:55+03:00",
+  "source_status": "sanitized rollup of approved live/model rerun attempt; raw outputs retained in temp only",
+  "approval_used": {
+    "provider_surface": "Codex CLI/OpenAI via codex exec",
+    "model": "gpt-5.3-codex-spark",
+    "allowed_run_count": {
+      "baseline_tasks": 8,
+      "treatment_tasks": 8,
+      "reviewer_calls": 1,
+      "setup_or_smoke_calls": 0
+    },
+    "command_surface": "codex exec --ephemeral --disable hooks --ignore-rules --sandbox workspace-write --model gpt-5.3-codex-spark -C <TEMP disposable copy>",
+    "disposable_root_pattern": "%TEMP%\\codex-b45-postq4-t05-*",
+    "timeout_seconds_per_task": 600,
+    "stop_on_timeout": true,
+    "cost_cap": "accepted_gap_cost_unavailable_call_count_cap_only",
+    "retention": "raw outputs only in temp; repo stores sanitized rollup only",
+    "reviewer_route": "independent Codex reviewer/subagent"
+  },
+  "source_freeze": {
+    "task_plan": {
+      "path": "docs/superpowers/specs/batch45-agent-behavior-eval-plan.json",
+      "sha256": "A902B39706BD3056CEC7608A2524EDD2D4BC957917D056EBF503A21F3F074C4E"
+    },
+    "approval_packet": {
+      "path": "docs/superpowers/specs/batch45-postq4-live-model-rerun-approval-packet.json",
+      "sha256": "2A185BF7E2D511B3D47A0552328841A7AB5CE90F9A91AA3F4B31A50727B25275"
+    },
+    "treatment_workflow": {
+      "path": ".codex/workflows/coding-standards.md",
+      "sha256": "D32228CC2ED2752668F90C414165DF7A00B59CCD19D453FC5D838A86DBA490B8"
+    },
+    "treatment_checklist": {
+      "path": ".codex/artifact-templates/coding-standard-checklist.md",
+      "sha256": "E6D4881284A44C9FCB43ABD11D34BA5EAA856FE5869F0BC554EA2247535CBB48"
+    }
+  },
+  "execution_summary": {
+    "planned_primary_task_runs": 16,
+    "approved_primary_task_model_calls_started": 2,
+    "completed_primary_task_runs": 1,
+    "timeout_primary_task_runs": 1,
+    "not_run_due_stop_rule": 14,
+    "reviewer_calls_started": 0,
+    "reviewer_calls_not_run_due_stop_rule": 1,
+    "setup_or_smoke_model_calls": 0,
+    "cli_health_checks_without_provider_model_call": 2,
+    "wrapper_failures_before_first_model_call": 4,
+    "stop_reason": "baseline B45-HELDOUT-02 exceeded the approved 600s task timeout; remaining baseline/treatment/reviewer calls were stopped by policy",
+    "result_interpretation": "The rerun cannot compare baseline vs treatment and cannot supersede M26. It preserves no-go and adds a fresh flake/cost-control warning."
+  },
+  "baseline_run": {
+    "planned_task_count": 8,
+    "attempted_task_count": 2,
+    "completed_runs": 1,
+    "timeout_runs": 1,
+    "not_run_due_stop_rule": 6,
+    "average_local_score": null,
+    "aggregate_warning_count": null,
+    "status": "stopped_on_timeout_before_baseline_complete"
+  },
+  "treatment_run": {
+    "planned_task_count": 8,
+    "attempted_task_count": 0,
+    "completed_runs": 0,
+    "timeout_runs": 0,
+    "not_run_due_stop_rule": 8,
+    "average_local_score": null,
+    "aggregate_warning_count": null,
+    "status": "not_run_due_baseline_timeout_stop_rule"
+  },
+  "per_task_results": [
+    {
+      "task_id": "B45-HELDOUT-01",
+      "arm": "baseline",
+      "status": "completed",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 94.399,
+      "final_json_parse_ok": true,
+      "final_status": "completed",
+      "changed_file_count": 2,
+      "changed_files": [
+        {
+          "path": "plugins/product-agent-os/assets/templates/hooks/pre_tool_use_policy.py",
+          "change_type": "modified"
+        },
+        {
+          "path": "tests/product_agent_os/test_lifecycle_hooks.py",
+          "change_type": "modified"
+        }
+      ],
+      "comment_sufficiency": {
+        "ran": true,
+        "warning_count": 0,
+        "exit_code": 0,
+        "raw_output_retained": "temp_only"
+      },
+      "raw_retention": {
+        "raw_outputs_location": "temp_only",
+        "stdout_sha256": "C3F1C9AE71A41540039F452ACB19A88CD9405017091CD0606A160E41F570F705",
+        "stderr_sha256": "E14156E5ED36848B12E5EE40336BD4663839199B3E8AD2ABE15BDC972131D3DE",
+        "last_message_sha256": "9BF4B6F96A4B8089B631E7F3AC4C2DC6F6499E03D788FE58BFE8E8D4B00F18A9",
+        "prompt_sha256": "C733FBB307A908250DDB322A4A6B0802B661FDDA09C046B2EA65497C585DECA9"
+      }
+    },
+    {
+      "task_id": "B45-HELDOUT-02",
+      "arm": "baseline",
+      "status": "timeout_partial_patch",
+      "exit_code": 124,
+      "timed_out": true,
+      "timeout_seconds": 600,
+      "observed_outer_timeout_seconds": 664.023,
+      "final_json_parse_ok": false,
+      "changed_candidate_count": 3,
+      "changed_candidates": [
+        {
+          "path": "plugins/product-agent-os/scripts/product_agent_os/analysis_artifact_renderer.py",
+          "change_type": "modified_candidate",
+          "sha256": "29B12F678D43D365E2CD0F78899C987767D7098C5CC7EBB64F10EF5A6F00838C"
+        },
+        {
+          "path": "plugins/product-agent-os/scripts/product_agent_os/first_run_analysis.py",
+          "change_type": "modified_candidate",
+          "sha256": "5642DE2A1542CDE910286A2E4BA26F6D0170155B8815A0FC617FFEB07431BAF4"
+        },
+        {
+          "path": "tests/product_agent_os/test_first_run_analysis.py",
+          "change_type": "modified_candidate",
+          "sha256": "79054392AE1A956AF75BE07EC7BCC6CC13E82697BFC6EB790F80AA85ADA546A0"
+        }
+      ],
+      "comment_sufficiency": {
+        "ran": false,
+        "warning_count": null,
+        "note": "timeout stopped run before advisory collection"
+      },
+      "process_stop_evidence": {
+        "scoped_processes_stopped": [
+          "powershell.exe parent for baseline-b45-heldout-02",
+          "node.exe codex wrapper for baseline-b45-heldout-02",
+          "codex.exe eval process for baseline-b45-heldout-02",
+          "python.exe child process inside disposable baseline-b45-heldout-02 run"
+        ],
+        "external_temp_fixture_after_stop": "not_found"
+      },
+      "raw_retention": {
+        "raw_outputs_location": "temp_only",
+        "prompt_sha256": "62D7DBE902B370D7EE5734ABBBE7BD240DF9B17B9FD37D18D205FAFF66D4D208",
+        "robocopy_log_sha256": "B9662B3146690545B754CA1D417F9D72AA98F99C8643CA3347CB5F072D5602F0",
+        "stdout_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+        "stderr_sha256": "5AABC77638B0BAE39C8CBA8684EBCF89C11DB19DFAC85E9C0BA438D67FEFD728",
+        "stderr_length_bytes": 6270806
+      }
+    }
+  ],
+  "comparison_to_previous_m26": {
+    "previous_packet": "docs/superpowers/specs/batch45-agent-behavior-eval-results.json",
+    "previous_status": "executed_live_eval_no_go",
+    "previous_baseline": {
+      "completed_runs": 8,
+      "timeout_runs": 0,
+      "average_local_score": 4.22,
+      "total_advisory_warnings": 29
+    },
+    "previous_treatment": {
+      "completed_runs": 7,
+      "timeout_runs": 1,
+      "average_local_score": 3.88,
+      "total_advisory_warnings": 15
+    },
+    "previous_reviewer_decision": "no_go",
+    "current_completed_runs": 1,
+    "current_timeout_runs": 1,
+    "current_reviewer_decision": "not_run_due_stop_rule",
+    "delta_assessment": "not_comparable_due_early_timeout",
+    "decision_impact": "does_not_reverse_M26_no_go; increases confidence that flake_cost_control remains a blocker for promotion"
+  },
+  "reviewer": {
+    "status": "not_run_due_stop_on_timeout",
+    "reason": "The approved stop rule halted the experiment on the B45-HELDOUT-02 baseline timeout before a baseline/treatment comparison existed.",
+    "reviewer_gap": "accepted_by_stop_rule_for_this_attempt"
+  },
+  "decision": {
+    "state": "no_go_stopped_on_timeout",
+    "promotion_allowed": false,
+    "static_warning_delta_can_promote": false,
+    "m26_reversed": false,
+    "m35_reversed": false,
+    "recommended_next_task": "B45-POSTQ4-T06-PROMOTION-DECISION",
+    "reason": "The approved rerun stopped during baseline collection with one completed run and one timeout. Treatment and reviewer evidence do not exist, so real AI-agent behavior improvement remains unproven."
+  },
+  "next_actions": [
+    {
+      "task_id": "B45-POSTQ4-T06-PROMOTION-DECISION",
+      "action": "Record a promotion decision that preserves advisory-only/no-go after T05 timeout."
+    },
+    {
+      "task_id": "B45-POSTQ4-T05B-RERUN-PACKET-REVISION",
+      "action": "Optional only: prepare a revised approval packet with a stricter external watchdog, smaller per-task fixture boundaries and timeout-diagnostic policy before any future rerun."
+    },
+    {
+      "task_id": "B45-POSTQ4-T05-TIMEOUT-FORENSICS",
+      "action": "Optional only: inspect temp-only raw stderr for timeout root cause and summarize without persisting raw traces in repo."
+    }
+  ],
+  "approved_actions_performed": {
+    "approved_codex_exec_live_model_task_calls_started": 2,
+    "approved_codex_exec_live_model_task_calls_completed": 1,
+    "approved_codex_exec_live_model_task_calls_timed_out": 1,
+    "approved_process_stop_after_timeout": true
+  },
+  "cost_and_retention": {
+    "provider_cost_usd": null,
+    "provider_cost_status": "accepted_gap_cost_unavailable_call_count_cap_only",
+    "raw_outputs_in_repo": false,
+    "raw_outputs_retained_in_temp_only": true,
+    "repo_retention": "sanitized rollup only"
+  },
+  "no_unapproved_actions": {
+    "provider_or_model_call_outside_exact_approval": false,
+    "setup_or_smoke_model_call": false,
+    "reviewer_call_after_timeout_stop": false,
+    "runtime_or_live_server_launched": false,
+    "browser_automation_run": false,
+    "target_workspace_command_run": false,
+    "target_workspace_mutated": false,
+    "database_accessed": false,
+    "ci_or_blocker_enforcement_created": false,
+    "git_branch_stage_commit_push_pr": false,
+    "release_deploy_publish": false,
+    "active_automation_created_or_enabled": false,
+    "external_write_performed_outside_temp_cleanup": false
+  },
+  "unsupported_claims": [
+    "Does not prove treatment improves real AI-agent behavior.",
+    "Does not provide a baseline-vs-treatment comparison.",
+    "Does not reverse B45-PCA-M26, B45-PCA-M27, B45-PCA-M35 or B45-PCA-M37-A01 no-go/advisory-only boundaries.",
+    "Does not justify CI or blocker enforcement.",
+    "Does not prove runtime/browser/provider/target/release/deploy/automation readiness."
+  ],
+  "verification": {
+    "status": "repo_checks_passed_with_crlf_warnings",
+    "current_run_evidence": [
+      "baseline B45-HELDOUT-01 completed with final JSON parse and advisory warning_count=0",
+      "baseline B45-HELDOUT-02 timed out and remaining approved calls were stopped",
+      "scoped lingering B45-POSTQ4-T05 processes were stopped after timeout",
+      "raw output hashes recorded without retaining raw content in repo"
+    ],
+    "repo_checks": [
+      {
+        "command": "python -m unittest tests.product_agent_os.test_comment_sufficiency tests.product_agent_os.test_lifecycle_hooks -v",
+        "status": "passed",
+        "evidence": "Ran 29 tests; OK"
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+        "status": "passed",
+        "evidence": "Ran 16 tests; OK"
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+        "status": "passed",
+        "evidence": "Ran 99 tests; OK"
+      },
+      {
+        "command": "python tools\\check_docs.py",
+        "status": "passed",
+        "evidence": "OK: documentation structure checks passed"
+      },
+      {
+        "command": "git diff --check",
+        "status": "passed_with_crlf_warnings",
+        "evidence": "No whitespace errors; Git reported CRLF/LF normalization warnings for existing edited files."
+      },
+      {
+        "command": "Get-CimInstance Win32_Process scoped to temp root, excluding current inspector",
+        "status": "passed",
+        "evidence": "no_t05_processes_found_excluding_current_inspector"
+      }
+    ]
+  }
+}

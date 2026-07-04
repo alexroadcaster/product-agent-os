@@ -588,6 +588,7 @@ async def _load_person_summary_evidence_ref(
     ).scalar_one_or_none()
 
 
+# Restore source context only when message evidence is visible, retained, and not redacted.
 async def _person_summary_source_context_item(
     session: AsyncSession,
     evidence: MemoryFactEvidence,
@@ -1080,6 +1081,8 @@ async def patch_contact_relationship_state(
     contact_id: int = Path(..., ge=1),
     session: AsyncSession = Depends(get_session),  # noqa: B008
 ) -> ContactRelationshipStateResponse:
+    """Apply user-owned relationship-state overrides while preserving self-contact invariants."""
+
     contact = await session.get(Contact, contact_id)
     if contact is None:
         raise HTTPException(404, "contact_not_found")

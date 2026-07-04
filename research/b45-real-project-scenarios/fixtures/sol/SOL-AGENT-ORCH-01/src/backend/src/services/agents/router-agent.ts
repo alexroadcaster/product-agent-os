@@ -6,6 +6,7 @@ export class RouterAgent implements AgentNode {
     name = 'System Router';
     role: Role = 'router';
 
+    // Classifies the latest user turn against project artifact state and selects the next specialist role.
     async execute(state: AgentState): Promise<AgentState> {
         console.log(`[router]: Analyzing intent...`);
         const lastMessage = state.messages[state.messages.length - 1];

@@ -131,7 +131,7 @@
       ],
       "scope": "Prepare the owner approval packet for a fresh live/model baseline-vs-treatment rerun if real AI-agent behavior improvement must be proven.",
       "acceptance": [
-        "Packet names model/provider, task set, baseline/treatment prompts, cost/timeout budget, privacy boundary, rollback/abort condition and result schema.",
+        "Packet names provider/model placeholder policy, owner-fill-required approval fields, task set, baseline/treatment prompt sources, cost/timeout budget, privacy boundary, rollback/abort condition and result schema.",
         "No provider/model/API call is performed while preparing the packet.",
         "M26 no-go remains active until a new approved live eval proves otherwise."
       ],
@@ -149,7 +149,7 @@
       "task_id": "B45-POSTQ4-T05-LIVE-MODEL-RERUN",
       "priority": "P1",
       "route": "approval_required_live_eval",
-      "status": "blocked_until_exact_owner_approval",
+      "status": "attempted_approved_live_eval_stopped_on_timeout_no_go",
       "depends_on": [
         "B45-POSTQ4-T04-LIVE-MODEL-RERUN-PACKET"
       ],
@@ -172,15 +172,41 @@
       ]
     },
     {
+      "task_id": "B45-POSTQ4-T05B-RERUN-PACKET-REVISION",
+      "priority": "P1",
+      "route": "approval_packet_only",
+      "status": "implemented_approval_packet_only_not_run",
+      "depends_on": [
+        "B45-POSTQ4-T05-LIVE-MODEL-RERUN"
+      ],
+      "scope": "Create a separate revised approval packet for any optional T05 rerun after the timeout/no-go attempt.",
+      "acceptance": [
+        "Packet states that T05 approval was consumed and a new exact owner approval is required before any rerun.",
+        "Packet separates strict stop-on-timeout, paired continue and diagnostic-only options.",
+        "Packet preserves raw-temp-only retention, watchdog/process-tree kill, no-unapproved-actions and no-promotion ceiling."
+      ],
+      "verification_gates": [
+        "approval packet assertions in focused tests",
+        "PLAN/TEST/EVALS/source registry sync",
+        "docs checks and diff hygiene"
+      ],
+      "stop_conditions": [
+        "Stop before any live/model/provider/API call.",
+        "Stop before runtime/browser/target/git/release/deploy/automation actions.",
+        "Stop if approval wording could be read as reusing the consumed T05 approval."
+      ]
+    },
+    {
       "task_id": "B45-POSTQ4-T06-PROMOTION-DECISION",
       "priority": "P1",
       "route": "decision_gate",
       "status": "planned_after_static_delta_or_live_eval",
       "depends_on": [
         "B45-POSTQ4-T03-STATIC-DELTA-VERIFY",
-        "B45-POSTQ4-T05-LIVE-MODEL-RERUN"
+        "B45-POSTQ4-T05-LIVE-MODEL-RERUN",
+        "B45-POSTQ4-T05B-RERUN-PACKET-REVISION"
       ],
-      "dependency_mode": "static_delta_only_can_preserve_no_go; promotion_requires_live_eval_evidence",
+      "dependency_mode": "static_delta_or_t05_timeout_can_preserve_no_go; promotion_requires_live_eval_evidence from completed comparable runs; T05B is approval-packet-only unless separately approved and run",
       "scope": "Decide whether to keep advisory-only, run more pilots, or request a new approval for CI/blocker promotion.",
       "acceptance": [
         "Decision separates static warning delta, live behavior evidence, runtime/browser evidence and owner risk tolerance.",
@@ -220,6 +246,51 @@
       ]
     }
   ],
+  "execution_update": {
+    "latest_evidence": "docs/superpowers/specs/batch45-postq4-t01-t04-execution-summary.json",
+    "approval_packet": "docs/superpowers/specs/batch45-postq4-live-model-rerun-approval-packet.json",
+    "latest_t05_evidence": "docs/superpowers/specs/batch45-postq4-t05-live-model-rerun-results.json",
+    "latest_t05b_packet": "docs/superpowers/specs/batch45-postq4-t05b-rerun-approval-packet.json",
+    "executed_task_ids": [
+      "B45-POSTQ4-T01-SOL-ROLE-STATIC-FIX",
+      "B45-POSTQ4-T02-MP-CRM-STATIC-FIX",
+      "B45-POSTQ4-T03-STATIC-DELTA-VERIFY",
+      "B45-POSTQ4-T04-LIVE-MODEL-RERUN-PACKET",
+      "B45-POSTQ4-T05-LIVE-MODEL-RERUN",
+      "B45-POSTQ4-T05B-RERUN-PACKET-REVISION"
+    ],
+    "status_by_task": {
+      "B45-POSTQ4-T01-SOL-ROLE-STATIC-FIX": "implemented_minimal_fixture_copy_intent_comments",
+      "B45-POSTQ4-T02-MP-CRM-STATIC-FIX": "implemented_minimal_fixture_copy_comments",
+      "B45-POSTQ4-T03-STATIC-DELTA-VERIFY": "implemented_local_static_delta_verify",
+      "B45-POSTQ4-T04-LIVE-MODEL-RERUN-PACKET": "implemented_approval_packet_only_not_run",
+      "B45-POSTQ4-T05-LIVE-MODEL-RERUN": "stopped_on_timeout_inconclusive_no_go",
+      "B45-POSTQ4-T05B-RERUN-PACKET-REVISION": "implemented_approval_packet_only_not_run"
+    },
+    "warning_delta": {
+      "q4_baseline_warning_count": 14,
+      "post_t03_warning_count": 0,
+      "delta": -14,
+      "unresolved_advisory_warnings": 0,
+      "blocking": false,
+      "suppressed_warning_count": 0
+    },
+    "t05_live_eval_result": {
+      "status": "stopped_on_timeout_inconclusive_no_go",
+      "completed_primary_task_runs": 1,
+      "timeout_primary_task_runs": 1,
+      "not_run_due_stop_rule": 14,
+      "reviewer_calls_started": 0,
+      "decision": "does_not_reverse_M26_or_M35_no_go"
+    },
+    "approved_actions_performed": {
+      "approved_codex_exec_live_model_task_calls_started": 2,
+      "approved_codex_exec_live_model_task_calls_completed": 1,
+      "approved_codex_exec_live_model_task_calls_timed_out": 1,
+      "approved_process_stop_after_timeout": true
+    },
+    "claim_ceiling": "T01-T03 prove local static copied-fixture warning reduction only. T04 and T05B are approval packets only. T05 performed an approved live/model rerun attempt but stopped on baseline timeout after 1 completed and 1 timed-out primary run, with no treatment or reviewer evidence. M26/M35 no-go remains active and no runtime/browser/target/CI/git/release/deploy/automation proof exists."
+  },
   "control_plane_sync_decision": {
     "REQUIREMENTS.md": "not_applicable_no_scope_or_acceptance_change",
     "PLAN.md": "updated_compact_next_queue_pointer",
@@ -232,8 +303,9 @@
     "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md": "updated_track11_marker",
     ".codex/product-agent-os/lifecycle-state.json": "updated_current_marker"
   },
+  "no_unapproved_actions_note": "T05 approved Codex CLI/OpenAI calls are recorded under execution_update.approved_actions_performed. The booleans below mean no unapproved action occurred.",
   "no_unapproved_actions": {
-    "live_model_or_provider_api_called": false,
+    "live_model_or_provider_api_called_without_approval": false,
     "runtime_or_live_server_launched": false,
     "browser_automation_run": false,
     "target_workspace_command_run": false,
@@ -248,9 +320,14 @@
   "verification": {
     "results": [
       {
+        "command": "python -m unittest tests.product_agent_os.test_comment_sufficiency tests.product_agent_os.test_lifecycle_hooks -v",
+        "status": "passed",
+        "evidence": "Ran 29 tests; OK"
+      },
+      {
         "command": "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
         "status": "passed",
-        "evidence": "Ran 15 tests; OK"
+        "evidence": "Ran 16 tests; OK"
       },
       {
         "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
@@ -271,9 +348,9 @@
         "command": "Get-Item PLAN.md, TEST.md, EVALS.md, RUNLOG.md | Select-Object Name, Length",
         "status": "passed_with_existing_runlog_budget_gap",
         "evidence": {
-          "PLAN.md": 49364,
-          "TEST.md": 49954,
-          "EVALS.md": 49928,
+          "PLAN.md": 49717,
+          "TEST.md": 49900,
+          "EVALS.md": 49978,
           "RUNLOG.md": 51123
         }
       }

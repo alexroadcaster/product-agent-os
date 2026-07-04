@@ -7,6 +7,7 @@ export class ProductOwnerAgent implements AgentNode {
     name = 'Anna (PO)';
     role: Role = 'po';
 
+    // Converts the user's conversation into either one focused discovery question or a PRD artifact for downstream specialist roles.
     async execute(state: AgentState): Promise<AgentState> {
         console.log(`[po]: Executing Product Owner logic...`);
 

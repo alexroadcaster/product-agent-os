@@ -222,10 +222,10 @@ M37 is local advisory hardening/docs sync: TS/TSX, fail-open, redacted paths,
 active/template parity. `B45-PCA-M36` remains reserved; no provider/
 target/git/release/deploy/automation or promotion beyond no-go.
 
-For Batch 45 retest Q0-Q4/post-Q4 (`B45-RETEST-Q0-Q2-A01`,
-`B45-RETEST-Q3-FIXTURE-STATIC-A01`,
-`B45-RETEST-Q4-PROJECT-SLICES-STATIC-A01`,
-`B45-POST-Q4-NEXT-TASKS-A01`), run:
+For Batch 45 retest/post-Q4 (`B45-RETEST-Q0-Q2-A01`,
+`B45-RETEST-Q3-FIXTURE-STATIC-A01`, `B45-RETEST-Q4-PROJECT-SLICES-STATIC-A01`,
+`B45-POST-Q4-NEXT-TASKS-A01`, `B45-POSTQ4-T01-T04-A01`, T04,
+`B45-POSTQ4-T05-A01` and `B45-POSTQ4-T05B-A01`), run:
 
 ```powershell
 python -m unittest tests.product_agent_os.test_comment_sufficiency tests.product_agent_os.test_lifecycle_hooks -v
@@ -234,10 +234,8 @@ python tools\check_docs.py
 git diff --check
 ```
 
-Q0-Q4/post-Q4 is local/static planning only. Q4 records 5 slices, 46 files,
-14 warnings, `blocking=false`; post-Q4 adds targeted static repair and
-approval-gated proof routes. Keep M26/M27/M35/M37 no-go; no live/model, target,
-browser, CI/blocker, git/release/automation.
+Q4: 14 warnings; T01-T03 `14 -> 0`; T04/T05B packet-only. T05 stopped
+after 1 completed + 1 timeout baseline; no treatment/reviewer. Keep no-go.
 
 For `B45-S5` learning-loop and automation-candidate policy, run:
 

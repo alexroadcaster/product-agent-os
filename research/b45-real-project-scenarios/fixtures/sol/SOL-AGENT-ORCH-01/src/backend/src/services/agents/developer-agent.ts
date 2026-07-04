@@ -8,6 +8,7 @@ export class IntentEngineerAgent implements AgentNode {
     name = 'Max (Lead Intent Engineer)';
     role: Role = 'developer';
 
+    // Requires architecture first, then decomposes the approved artifacts into tool-created execution tasks for the team.
     async execute(state: AgentState): Promise<AgentState> {
         console.log(`[intent-engineer]: Executing Lead Intent Engineer logic...`);
 

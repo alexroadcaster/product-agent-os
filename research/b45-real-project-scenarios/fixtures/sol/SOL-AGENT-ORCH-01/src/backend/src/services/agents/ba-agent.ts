@@ -7,6 +7,7 @@ export class BusinessAnalystAgent implements AgentNode {
     name = 'Ben (Business Analyst)';
     role: Role = 'ba';
 
+    // Turns the PRD and conversation history into market-research output, or routes back to the PO when the prerequisite PRD is absent.
     async execute(state: AgentState): Promise<AgentState> {
         console.log(`[ba]: Executing Business Analyst logic...`);
 

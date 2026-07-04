@@ -7,6 +7,7 @@ export class DesignerAgent implements AgentNode {
     name = 'Sophie (Designer)';
     role: Role = 'designer';
 
+    // Converts current product context into design guidance while preserving the one-question fallback for missing style direction.
     async execute(state: AgentState): Promise<AgentState> {
         console.log(`[designer]: Executing Designer logic...`);
 

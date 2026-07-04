@@ -7,6 +7,7 @@ export class DataAnalystAgent implements AgentNode {
     name = 'Ben (Lead Data Analyst)';
     role = 'data_analyst' as const;
 
+    // Reviews architecture and execution tasks for data-pipeline risks, then emits a structured database plan for the next role.
     async execute(state: AgentState): Promise<AgentState> {
         const userMessage = state.messages.find(m => m.role === 'user')?.content || '';
         const architecture = state.artifacts.architecture || '';
