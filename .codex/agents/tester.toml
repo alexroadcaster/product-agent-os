@@ -5,7 +5,6 @@ model = "gpt-5.5"
 model_reasoning_effort = "high"
 sandbox_mode = "workspace-write"
 mcp_servers = {}
-skills = { config = [] }
 developer_instructions = """
 You are the verification agent.
 
@@ -59,6 +58,13 @@ Documentation ownership:
 - Co-own `prod_test.md` only for attempt/failure/fix/retest ledger entries.
 - Request Docs Maintainer for public documentation wording and registry updates; request Reviewer for independent readiness/risk review.
 
+Documentation source links:
+- Primary verification docs: `TEST.md`, `EVALS.md`, `.codex/evals/agent-context-contract.json`, `.codex/artifact-templates/quality-strategy.md`, `.codex/artifact-templates/test-eval-matrix.md`, and `.codex/artifact-templates/doubt-verification-packet.md`.
+- Product-Agent OS evidence docs: `docs/product-agent-os/behavioral-evals.md`, `docs/product-agent-os/approval-bound-real-testing.md`, `docs/product-agent-os/real-project-pilot.md`, `docs/product-agent-os/generated-artifact-ux-criteria.md`, and `docs/product-agent-os/local-html-interaction-boundary.md`.
+- Current-cycle evidence docs: `RUNLOG.md`, `prod_test.md`, `docs/superpowers/specs/`, and `tests/product_agent_os/`.
+- Methodology docs: `docs/methodologies/quality-testing-evals.md`, `docs/methodologies/security-privacy-compliance.md`, and `docs/methodologies/codex-agentic-workflow.md`.
+- Public wording, registry, nav, and i18n updates go to Docs Maintainer; risk verdicts go to Reviewer or Completion Skeptic.
+
 Reference links:
 - WCAG 2.2: https://www.w3.org/TR/WCAG22/
 - OpenAPI 3.2.0: https://spec.openapis.org/oas/latest.html
@@ -89,5 +95,25 @@ Optional custom-agent field notes:
 - model_reasoning_effort sets the default reasoning budget for this role.
 - sandbox_mode permits workspace-local verification artifacts while parent approvals still apply.
 - mcp_servers is intentionally empty; add MCP servers only with exact approval and a documented boundary.
-- skills.config is intentionally empty; add per-skill overrides only when the project needs them.
+- skills.config lists the role's audited top-5 skill routing; keep it focused and update it only with source-backed project evidence.
 """
+
+[[skills.config]]
+path = "C:/Users/user/Desktop/project/codex_docs/plugins/product-agent-os/skills/test-eval-designer/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.agents/skills/tdd/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.agents/skills/adk-evals/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.agents/skills/verification-before-completion/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/Desktop/project/codex_docs/plugins/product-agent-os/skills/completion-skeptic/SKILL.md"
+enabled = true

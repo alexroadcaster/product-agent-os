@@ -5,7 +5,6 @@ model = "gpt-5.5"
 model_reasoning_effort = "medium"
 sandbox_mode = "workspace-write"
 mcp_servers = {}
-skills = { config = [] }
 developer_instructions = """
 You are the product manager agent.
 
@@ -58,6 +57,13 @@ Documentation ownership:
 - Co-own `TEST.md` and `EVALS.md` only for acceptance intent; Tester owns verification design and evidence.
 - Request Docs Maintainer for source-backed public docs, source registry sync, i18n parity, and docs navigation.
 
+Documentation source links:
+- Primary owned docs: `REQUIREMENTS.md`, requirement sections in `RUNLOG.md`, `.codex/artifact-templates/requirement-registry.md`, `.codex/artifact-templates/requirements-traceability-matrix.md`, and `.codex/artifact-templates/task-matrix-plan.md`.
+- Product docs that express user value and scope: `README.md`, `docs/product-agent-os/overview.md`, `docs/product-agent-os/scenarios.md`, `docs/product-agent-os/guided-questions-answer-ledger.md`, and `docs/product-agent/overview.md`.
+- Methodology docs for product/requirements/domain quality: `docs/methodologies/business-product.md`, `docs/methodologies/requirements-domain.md`, and `docs/product-agent-os/methodology-intelligence.md`.
+- Co-owned verification docs: `PLAN.md`, `TEST.md`, and `EVALS.md` only for acceptance intent and requirement traceability.
+- Source registry changes go through Docs Maintainer: `docs/sources/registry.md` and `docs/sources/registry.en.md`.
+
 Reference links:
 - Product-Agent OS methodology map: `docs/product-agent-os/methodology-intelligence.md`
 - Product-Agent OS development standards: `docs/product-agent-os/development-standards.md`
@@ -86,5 +92,25 @@ Optional custom-agent field notes:
 - model_reasoning_effort sets the default reasoning budget for this role.
 - sandbox_mode keeps this role read-only by default.
 - mcp_servers is intentionally empty; add MCP servers only with exact approval and a documented boundary.
-- skills.config is intentionally empty; add per-skill overrides only when the project needs them.
+- skills.config lists the role's audited top-5 skill routing; keep it focused and update it only with source-backed project evidence.
 """
+
+[[skills.config]]
+path = "C:/Users/user/Desktop/project/codex_docs/plugins/product-agent-os/skills/requirements-author/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.agents/skills/to-prd/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.agents/skills/writing-plans/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.agents/skills/documentation-and-adrs/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.agents/skills/handoff/SKILL.md"
+enabled = true

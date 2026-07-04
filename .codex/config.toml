@@ -46,6 +46,27 @@ config_file = "./agents/docs-maintainer.toml"
 [agents.release-operator]
 config_file = "./agents/release-operator.toml"
 
+[agents.lifecycle-orchestrator]
+config_file = "./agents/lifecycle-orchestrator.toml"
+
+[agents.plugin-runtime-builder]
+config_file = "./agents/plugin-runtime-builder.toml"
+
+[agents.graph-cockpit-engineer]
+config_file = "./agents/graph-cockpit-engineer.toml"
+
+[agents.learning-loop-engineer]
+config_file = "./agents/learning-loop-engineer.toml"
+
+[agents.completion-skeptic]
+config_file = "./agents/completion-skeptic.toml"
+
+[agents.security-privacy-supply-chain-reviewer]
+config_file = "./agents/security-privacy-supply-chain-reviewer.toml"
+
+[agents.research-source-analyst]
+config_file = "./agents/research-source-analyst.toml"
+
 [product_agent_os.autonomy]
 default_mode = "act_within_workspace_scope"
 ask_only_when_blocked = true
@@ -92,8 +113,8 @@ mechanical = "low"
 
 [sandbox]
 default_mode = "workspace-write"
-read_only_roles = ["explorer", "reviewer", "release_operator"]
-workspace_write_roles = ["product_manager", "architect", "builder", "tester", "docs_maintainer"]
+read_only_roles = ["explorer", "reviewer", "release_operator", "completion_skeptic", "security_privacy_supply_chain_reviewer", "research_source_analyst"]
+workspace_write_roles = ["product_manager", "architect", "builder", "tester", "docs_maintainer", "lifecycle_orchestrator", "plugin_runtime_builder", "graph_cockpit_engineer", "learning_loop_engineer"]
 
 [approvals]
 external_writes = "explicit"
@@ -123,7 +144,78 @@ agent_context_contract = ".codex/evals/agent-context-contract.json"
 
 [product_agent_os]
 project_profile = "python_docs_plugin"
-current_focus = "Batch 39 hardening and Product-Agent OS local pilot readiness"
+current_focus = "Codex Docs Product-Agent OS specialist agent-team expansion"
 source_policy = "source files and current command evidence outrank generated views"
 memory_policy = "memory is recall, not source truth"
 completion_policy = "no done, fixed, verified, ready, or release claim without current evidence or explicit accepted gap"
+
+[product_agent_os.agent_skill_routing]
+source = "find-skills search, installed local skills, Product-Agent OS project docs, and official Codex skills/subagents documentation"
+policy = "Agent TOML files own executable [[skills.config]] entries; this table records the audited top-5 skill routing for governance."
+third_party_skill_policy = "Advisory only; project source files, current command evidence, and official OpenAI/Codex docs remain source truth."
+external_action_policy = "Skills that can publish, create issues, call providers, use browser automation, or mutate external systems must be used in local-synthesis-only mode unless exact approval is granted."
+installed_external_skill_status = "Installed to user-level .agents skills; Codex skill folders are present. PromptScript target may report unsupported global installation and is not used as Product-Agent OS evidence."
+installed_external_skills = [
+  "adk-evals",
+  "antv-g6-graph",
+  "changelog-writer",
+  "dispatching-parallel-agents",
+  "documentation-and-adrs",
+  "documentation-writer",
+  "executing-plans",
+  "handoff",
+  "improve-codebase-architecture",
+  "qa",
+  "security-review",
+  "subagent-driven-development",
+  "tdd",
+  "to-prd",
+  "verification-before-completion",
+  "writing-plans",
+]
+installed_but_not_assigned = ["qa"]
+
+[product_agent_os.agent_skill_routing.explorer]
+top_skills = ["workspace-discovery-auditor", "improve-codebase-architecture", "documentation-and-adrs", "handoff", "graphify"]
+
+[product_agent_os.agent_skill_routing.product-manager]
+top_skills = ["requirements-author", "to-prd", "writing-plans", "documentation-and-adrs", "handoff"]
+
+[product_agent_os.agent_skill_routing.architect]
+top_skills = ["implementation-planner", "improve-codebase-architecture", "documentation-and-adrs", "python-design-patterns", "writing-plans"]
+
+[product_agent_os.agent_skill_routing.builder]
+top_skills = ["implementation-planner", "tdd", "python-code-style", "python-design-patterns", "executing-plans"]
+
+[product_agent_os.agent_skill_routing.tester]
+top_skills = ["test-eval-designer", "tdd", "adk-evals", "verification-before-completion", "completion-skeptic"]
+
+[product_agent_os.agent_skill_routing.reviewer]
+top_skills = ["risk-reviewer", "completion-skeptic", "security-review", "verification-before-completion", "improve-codebase-architecture"]
+
+[product_agent_os.agent_skill_routing.docs-maintainer]
+top_skills = ["docs-maintainer", "documentation-writer", "documentation-and-adrs", "openai-docs", "changelog-writer"]
+
+[product_agent_os.agent_skill_routing.release-operator]
+top_skills = ["pr-release-operator", "changelog-writer", "verification-before-completion", "risk-reviewer", "documentation-and-adrs"]
+
+[product_agent_os.agent_skill_routing.lifecycle-orchestrator]
+top_skills = ["project-lifecycle-orchestrator", "workspace-discovery-auditor", "agent-team-designer", "subagent-driven-development", "dispatching-parallel-agents"]
+
+[product_agent_os.agent_skill_routing.plugin-runtime-builder]
+top_skills = ["implementation-planner", "python-code-style", "python-design-patterns", "tdd", "executing-plans"]
+
+[product_agent_os.agent_skill_routing.graph-cockpit-engineer]
+top_skills = ["workspace-discovery-auditor", "test-eval-designer", "graphify", "antv-g6-graph", "documentation-and-adrs"]
+
+[product_agent_os.agent_skill_routing.learning-loop-engineer]
+top_skills = ["learning-loop-maintainer", "automation-promoter", "test-eval-designer", "adk-evals", "verification-before-completion"]
+
+[product_agent_os.agent_skill_routing.completion-skeptic]
+top_skills = ["completion-skeptic", "risk-reviewer", "verification-before-completion", "test-eval-designer", "handoff"]
+
+[product_agent_os.agent_skill_routing.security-privacy-supply-chain-reviewer]
+top_skills = ["risk-reviewer", "security-best-practices", "security-review", "verification-before-completion", "openai-docs"]
+
+[product_agent_os.agent_skill_routing.research-source-analyst]
+top_skills = ["openai-docs", "docs-maintainer", "documentation-writer", "documentation-and-adrs", "find-skills"]

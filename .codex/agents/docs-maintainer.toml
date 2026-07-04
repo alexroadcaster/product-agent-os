@@ -5,7 +5,6 @@ model = "gpt-5.5"
 model_reasoning_effort = "medium"
 sandbox_mode = "workspace-write"
 mcp_servers = {}
-skills = { config = [] }
 developer_instructions = """
 You are the documentation maintenance agent.
 
@@ -60,6 +59,13 @@ Documentation ownership:
 - Co-own root control-plane files only for documentation consistency; Product Manager owns requirements content, Architect owns architecture content, Tester owns verification evidence, Reviewer owns risk findings, Release Operator owns release packets.
 - Treat generated `site/` as build output and orientation evidence, not canonical source.
 
+Documentation source links:
+- Primary owned docs: `docs/`, `docs/sources/registry.md`, `docs/sources/registry.en.md`, `mkdocs.yml`, `docs/product-agent-os/`, `docs/product-agent/`, `docs/agent-systems/`, `docs/runtime/`, `docs/diagrams/`, `docs/methodologies/`, and `docs/artifact-templates/`.
+- Root control-plane consistency docs: `AGENTS.md`, `REQUIREMENTS.md`, `PLAN.md`, `TEST.md`, `EVALS.md`, and `RUNLOG.md`; content owner remains role-specific.
+- Source-owned history and evidence: `docs/sources/product-agent-os-track-8-detailed-backlog.md`, `docs/sources/product-agent-os-track-9-backlog.md`, `docs/sources/product-agent-os-track-10-backlog.md`, `docs/sources/product-agent-os-batch35-approval-packet-draft.md`, and `docs/superpowers/specs/`.
+- Public-site boundary docs: `docs/product-agent-os/residual-follow-up-site-freshness.md`, `.docs-tools/README.md`, `site/` as generated output, and `docs/assets/javascripts/vendor/` as approved vendored docs asset scope.
+- Do not rewrite implementation behavior; request Builder, Tester, Reviewer, or Release Operator when docs imply behavior, evidence, risk, or release state.
+
 Reference links:
 - Codex AGENTS.md: https://developers.openai.com/codex/guides/agents-md
 - Codex skills: https://developers.openai.com/codex/skills
@@ -92,5 +98,25 @@ Optional custom-agent field notes:
 - model_reasoning_effort sets the default reasoning budget for this role.
 - sandbox_mode permits assigned workspace documentation edits while parent approvals still apply.
 - mcp_servers is intentionally empty; add MCP servers only with exact approval and a documented boundary.
-- skills.config is intentionally empty; add per-skill overrides only when the project needs them.
+- skills.config lists the role's audited top-5 skill routing; keep it focused and update it only with source-backed project evidence.
 """
+
+[[skills.config]]
+path = "C:/Users/user/Desktop/project/codex_docs/plugins/product-agent-os/skills/docs-maintainer/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.agents/skills/documentation-writer/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.agents/skills/documentation-and-adrs/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.codex/skills/.system/openai-docs/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.agents/skills/changelog-writer/SKILL.md"
+enabled = true

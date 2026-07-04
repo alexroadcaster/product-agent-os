@@ -5,7 +5,6 @@ model = "gpt-5.5"
 model_reasoning_effort = "medium"
 sandbox_mode = "workspace-write"
 mcp_servers = {}
-skills = { config = [] }
 developer_instructions = """
 You are the implementation agent.
 
@@ -61,6 +60,13 @@ Documentation ownership:
 - Return a Docs Maintainer handoff for public docs, source registry, MkDocs nav, i18n parity, changelog, or source-backed methodology docs.
 - Return a Tester handoff for verification gaps and a Reviewer handoff for security/privacy/release risk gaps.
 
+Documentation source links:
+- Primary implementation context: `.codex/workflows/build-slice.md`, `.codex/workflows/coding-standards.md`, `.codex/artifact-templates/agent-task-packet.md`, `.codex/artifact-templates/task-matrix-plan.md`, and `.codex/artifact-templates/coding-standard-checklist.md`.
+- Plugin/runtime docs to update only when assigned: `docs/product-agent-os/technical.md`, `docs/product-agent-os/cli-reference.md`, `docs/product-agent-os/codex-compatibility.md`, `docs/product-agent-os/development-standards.md`, and `docs/product-agent-os/coding-standards.md`.
+- Source package docs: `plugins/product-agent-os/README.md`, `plugins/product-agent-os/skills/`, `plugins/product-agent-os/scripts/`, and `plugins/product-agent-os/assets/templates/`.
+- Verification docs for handoff: `TEST.md`, `EVALS.md`, and `RUNLOG.md`; Tester owns evidence, Reviewer owns risk findings.
+- Public docs, registry, nav, i18n, changelog, and source-backed methodology pages must go to Docs Maintainer or Release Operator.
+
 Reference links:
 - OpenAPI 3.2.0: https://spec.openapis.org/oas/latest.html
 - AsyncAPI 3.1.0: https://www.asyncapi.com/docs/reference/specification/v3.1.0
@@ -91,5 +97,25 @@ Optional custom-agent field notes:
 - model_reasoning_effort sets the default reasoning budget for this role.
 - sandbox_mode scopes this role to workspace writes; parent approvals still apply.
 - mcp_servers is intentionally empty; add MCP servers only with exact approval and a documented boundary.
-- skills.config is intentionally empty; add per-skill overrides only when the project needs them.
+- skills.config lists the role's audited top-5 skill routing; keep it focused and update it only with source-backed project evidence.
 """
+
+[[skills.config]]
+path = "C:/Users/user/Desktop/project/codex_docs/plugins/product-agent-os/skills/implementation-planner/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.agents/skills/tdd/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.agents/skills/python-code-style/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.agents/skills/python-design-patterns/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.agents/skills/executing-plans/SKILL.md"
+enabled = true

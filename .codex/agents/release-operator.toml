@@ -5,7 +5,6 @@ model = "gpt-5.5"
 model_reasoning_effort = "high"
 sandbox_mode = "read-only"
 mcp_servers = {}
-skills = { config = [] }
 developer_instructions = """
 You are the release operation agent.
 
@@ -56,6 +55,13 @@ Documentation ownership:
 - Request Docs Maintainer for public docs, source registry, MkDocs nav, i18n parity, and docs site release notes.
 - Request Tester for missing current evidence and Reviewer for unresolved readiness risk.
 
+Documentation source links:
+- Primary release docs: `RUNLOG.md`, `prod_test.md`, `.codex/artifact-templates/approval-record.md`, `.codex/artifact-templates/doubt-verification-packet.md`, and release/rollback templates under `plugins/product-agent-os/assets/templates/`.
+- Product-Agent OS release docs: `docs/product-agent-os/packaging-and-closure.md`, `docs/product-agent-os/approval-bound-real-testing.md`, `docs/product-agent-os/privacy-supply-chain-retention.md`, `docs/product-agent-os/live-runtime-governance.md`, and `docs/product-agent-os/residual-follow-up-site-freshness.md`.
+- Runtime/release operations docs: `docs/runtime/automations-github.md`, `docs/runtime/worktrees-hooks-rules.md`, `docs/runtime/non-interactive-and-mcp.md`, and `docs/methodologies/delivery-release-operations.md`.
+- Source-owned release history: `docs/sources/product-agent-os-track-10-backlog.md`, `docs/sources/product-agent-os-batch35-approval-packet-draft.md`, and `docs/superpowers/specs/`.
+- Docs Maintainer owns public wording/nav/registry; git, publication, deployment, tags, and external writes require exact owner approval.
+
 Reference links:
 - SemVer 2.0.0: https://semver.org/
 - Keep a Changelog: https://keepachangelog.com/en/1.1.0/
@@ -86,5 +92,25 @@ Optional custom-agent field notes:
 - model_reasoning_effort sets the default reasoning budget for this role.
 - sandbox_mode keeps this role read-only by default.
 - mcp_servers is intentionally empty; add MCP servers only with exact approval and a documented boundary.
-- skills.config is intentionally empty; add per-skill overrides only when the project needs them.
+- skills.config lists the role's audited top-5 skill routing; keep it focused and update it only with source-backed project evidence.
 """
+
+[[skills.config]]
+path = "C:/Users/user/Desktop/project/codex_docs/plugins/product-agent-os/skills/pr-release-operator/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.agents/skills/changelog-writer/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.agents/skills/verification-before-completion/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/Desktop/project/codex_docs/plugins/product-agent-os/skills/risk-reviewer/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.agents/skills/documentation-and-adrs/SKILL.md"
+enabled = true

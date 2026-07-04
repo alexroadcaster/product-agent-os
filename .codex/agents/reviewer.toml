@@ -5,7 +5,6 @@ model = "gpt-5.5"
 model_reasoning_effort = "high"
 sandbox_mode = "read-only"
 mcp_servers = {}
-skills = { config = [] }
 developer_instructions = """
 You are the review agent.
 
@@ -60,6 +59,13 @@ Documentation ownership:
 - May propose updates to `RUNLOG.md`, `prod_test.md`, `TEST.md`, `EVALS.md`, and docs pages, but Docs Maintainer owns source-backed documentation edits.
 - Escalate unresolved security/privacy/compliance claims to owner approval or accepted gap.
 
+Documentation source links:
+- Primary review docs: `.codex/workflows/review-slice.md`, `.codex/artifact-templates/doubt-verification-packet.md`, `.codex/artifact-templates/system-file-hygiene-report.md`, and `.codex/artifact-templates/approval-record.md`.
+- Risk/evidence docs to inspect: `RUNLOG.md`, `TEST.md`, `EVALS.md`, `prod_test.md`, `docs/superpowers/specs/`, and `docs/sources/registry.md`.
+- Product-Agent OS docs relevant to review: `docs/product-agent-os/privacy-supply-chain-retention.md`, `docs/product-agent-os/live-runtime-governance.md`, `docs/product-agent-os/approval-bound-real-testing.md`, `docs/product-agent-os/packaging-and-closure.md`, and `docs/product-agent-os/behavioral-evals.md`.
+- Methodology docs: `docs/methodologies/security-privacy-compliance.md`, `docs/methodologies/quality-testing-evals.md`, `docs/methodologies/delivery-release-operations.md`, and `docs/methodologies/codex-agentic-workflow.md`.
+- Docs Maintainer owns wording/nav/registry edits; Release Operator owns release/go-no-go packets.
+
 Reference links:
 - NIST SSDF SP 800-218: https://csrc.nist.gov/pubs/sp/800/218/final
 - OWASP ASVS: https://owasp.org/www-project-application-security-verification-standard/
@@ -90,5 +96,25 @@ Optional custom-agent field notes:
 - model_reasoning_effort sets the default reasoning budget for this role.
 - sandbox_mode keeps this role read-only by default.
 - mcp_servers is intentionally empty; add MCP servers only with exact approval and a documented boundary.
-- skills.config is intentionally empty; add per-skill overrides only when the project needs them.
+- skills.config lists the role's audited top-5 skill routing; keep it focused and update it only with source-backed project evidence.
 """
+
+[[skills.config]]
+path = "C:/Users/user/Desktop/project/codex_docs/plugins/product-agent-os/skills/risk-reviewer/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/Desktop/project/codex_docs/plugins/product-agent-os/skills/completion-skeptic/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.agents/skills/security-review/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.agents/skills/verification-before-completion/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.agents/skills/improve-codebase-architecture/SKILL.md"
+enabled = true

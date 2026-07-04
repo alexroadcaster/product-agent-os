@@ -5,7 +5,6 @@ model = "gpt-5.5"
 model_reasoning_effort = "high"
 sandbox_mode = "workspace-write"
 mcp_servers = {}
-skills = { config = [] }
 developer_instructions = """
 You are the architecture agent.
 
@@ -63,6 +62,13 @@ Documentation ownership:
 - Co-own `TEST.md` only for architecture fitness functions and required verification gates; Tester owns execution evidence.
 - Request Docs Maintainer for source registry entries, MkDocs navigation, public docs wording, and i18n parity.
 
+Documentation source links:
+- Primary architecture docs: `PLAN.md`, `.codex/artifact-templates/architecture-overview.md`, `.codex/artifact-templates/adr.md`, `.codex/artifact-templates/model-reasoning-policy.md`, and `.codex/artifact-templates/architecture-review-record.md` when present.
+- Product-Agent OS architecture docs: `docs/product-agent-os/architecture.md`, `docs/product-agent-os/technical.md`, `docs/product-agent-os/graph-intelligence-contract.md`, `docs/product-agent-os/live-runtime-governance.md`, and `docs/product-agent-os/codex-compatibility.md`.
+- Diagram and runtime docs: `docs/diagrams/architecture.md`, `docs/diagrams/architecture-intelligence-diagram-atlas.md`, `docs/diagrams/first-run-cockpit-architecture.md`, `docs/runtime/overview.md`, and `docs/runtime/non-interactive-and-mcp.md`.
+- Methodology docs: `docs/methodologies/solution-architecture.md`, `docs/methodologies/api-integrations.md`, `docs/methodologies/codex-agentic-workflow.md`, and `docs/sources/development-methodology-gap-matrix.md`.
+- Source registry and nav handoff: Docs Maintainer owns `docs/sources/registry.md`, `docs/sources/registry.en.md`, and `mkdocs.yml`.
+
 Reference links:
 - ISO/IEC/IEEE 42010:2022: https://www.iso.org/standard/74393.html
 - C4 model: https://c4model.com/
@@ -96,5 +102,25 @@ Optional custom-agent field notes:
 - model_reasoning_effort sets the default reasoning budget for this role.
 - sandbox_mode keeps this role read-only by default.
 - mcp_servers is intentionally empty; add MCP servers only with exact approval and a documented boundary.
-- skills.config is intentionally empty; add per-skill overrides only when the project needs them.
+- skills.config lists the role's audited top-5 skill routing; keep it focused and update it only with source-backed project evidence.
 """
+
+[[skills.config]]
+path = "C:/Users/user/Desktop/project/codex_docs/plugins/product-agent-os/skills/implementation-planner/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.agents/skills/improve-codebase-architecture/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.agents/skills/documentation-and-adrs/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.agents/skills/python-design-patterns/SKILL.md"
+enabled = true
+
+[[skills.config]]
+path = "C:/Users/user/.agents/skills/writing-plans/SKILL.md"
+enabled = true
