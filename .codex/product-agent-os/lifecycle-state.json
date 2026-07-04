@@ -1,12 +1,12 @@
 {
   "task_start_brief_shown": true,
-  "task_id": "B45-PCA-M37-A01",
-  "scope": "Batch 45 review remediation local hook/validator hardening plus docs/control-plane/source sync only; no promotion claim.",
-  "updated_at": "2026-07-04T14:34:10+03:00",
-  "approval_boundary": "Allowed: local codex_docs hook, validator, docs, source registry, control-plane and focused test changes named by B45-PCA-M37-A01. Forbidden: runtime/live server, browser automation, provider/live API calls, target workspace commands or mutation, database access, git stage/commit/push/branch/PR, release, deploy, publish, active automation and external writes.",
+  "task_id": "B45-RETEST-Q3-FIXTURE-STATIC",
+  "scope": "Batch 45 local/static fixture replay on exact existing sanitized fixture corpus paths only; source-owned Q3 summary, compact control-plane sync and local deterministic checks. No live/model/runtime/browser/provider/target execution.",
+  "updated_at": "2026-07-04T15:24:05+03:00",
+  "approval_boundary": "Allowed: local codex_docs source-owned Q3 fixture-static evidence, exact sanitized fixture/refactor corpus inspection, comment_sufficiency static replay, syntax-only py_compile checks, no-index numstat, compact docs/control-plane/source registry sync and local deterministic checks. Forbidden: live/model/provider/API calls, runtime/live server, browser automation, target workspace commands or mutation, database access, raw private data retention, screenshots/traces, CI/blocker creation, git branch/stage/commit/push/PR, release/deploy/publish, active automation and external writes.",
   "brief_schema_version": "task_start_brief_v1",
   "brief_format": "field_list",
-  "brief_digest": "sha256:b45pca0000000000000000000000000000000000000000000000000000000037",
+  "brief_digest": "sha256:b45retestq3fixturestatic000000000000000000000000000000000001",
   "brief_fields_present": [
     "Task ID",
     "Product value",
@@ -23,22 +23,23 @@
     "Next action"
   ],
   "completion_brief_shown": true,
-  "completion_status": "implemented_local_advisory_hardening_docs_sync_only",
-  "closure_level": "local_synthetic_hardening_no_promotion_claim",
+  "completion_status": "implemented_local_static_fixture_retest_with_gaps",
+  "closure_level": "local_static_retest_with_gaps",
   "completion_gaps": [
-    "RUNLOG.md remains near the configured 50 KiB budget and detailed Batch 45 history is routed to source-owned packets.",
+    "Q3 does not execute live/model behavior eval.",
+    "Q3 does not execute runtime/browser/target proof.",
+    "Q3 does not prove real AI-agent behavior improvement.",
+    "M26/M27/M35/M37 no-go and advisory-only blockers remain active.",
     "B45-PCA-M36 remains reserved for optional runtime/browser approval packet and was not executed.",
-    "M37 hook/validator changes are local non-blocking advisory hardening only and are not CI/blocker/promotion proof.",
-    "M26 live no-go and S7 fixture-local evidence still block any promotion claim."
+    "Q4 live/model rerun remains approval_required."
   ],
   "completion_evidence": [
-    "docs/superpowers/specs/batch45-review-remediation-summary.json",
-    ".codex/product-agent-os/reviews/batch45/remediation-agent-02-docs-control-plane.md",
-    ".codex/product-agent-os/reviews/batch45/remediation-agent-04-code-repair.md",
-    "python -m unittest tests.product_agent_os.test_comment_sufficiency tests.product_agent_os.test_lifecycle_hooks -v: OK, 26 tests",
-    "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v: OK, 11 tests",
-    "python tools\\check_docs.py: OK",
-    "git diff --check scoped M37 write set: OK"
+    "docs/superpowers/specs/batch45-quality-retest-fixture-static-summary.json",
+    "B45-RETEST-Q3-FIXTURE-STATIC-A01",
+    "comment_sufficiency fixture replay: 37 files, 14 advisory warnings, blocking=false",
+    "python -m py_compile <mypartners fixture/refactor py files>: OK",
+    "git diff --no-index --numstat fixture refactor arms: diff_present_expected",
+    "python -m unittest tests.product_agent_os.test_comment_sufficiency -v: OK"
   ],
-  "completed_at": "2026-07-04T14:34:10+03:00"
+  "completed_at": "2026-07-04T15:24:05+03:00"
 }

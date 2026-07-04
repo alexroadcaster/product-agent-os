@@ -204,30 +204,40 @@ python tools\check_docs.py
 git diff --check
 ```
 
-S6 must not treat advisory warnings as blockers. CI activation, blocker
-enforcement, provider/model/API calls, browser automation, target mutation,
-plugin-cache refresh and git actions remain approval-required. Current evidence:
-M24 audit/tuning JSONs, M25 advisory-wiring JSON, M26 live-eval JSON and M27
-decision JSON. M25 stays local, non-blocking and reversible
-(`B45_COMMENT_ADVISORY_DISABLED=1`); M27 is
-`keep_advisory_only_no_go_for_blocker_or_ci`. Real AI-agent behavior improvement,
-stronger advisory, CI and blocker promotion remain unproven/not promoted.
+S6 warns stay non-blocking. M24-M27 evidence source-owned; M25 is local/
+reversible (`B45_COMMENT_ADVISORY_DISABLED=1`) and M27 remains
+`keep_advisory_only_no_go_for_blocker_or_ci`. CI/blocker promotion, provider,
+browser, target, plugin-cache and git remain approval-required.
 
-For `B45-PCA-M37-A01` review remediation local hook/validator hardening and docs/control-plane/source sync, run:
+For `B45-PCA-M37-A01` local hardening/docs sync, run:
 
 ```powershell
 python -m unittest tests.product_agent_os.test_comment_sufficiency tests.product_agent_os.test_lifecycle_hooks -v
 python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v
 python tools\check_docs.py
-git diff --check -- .codex/hooks/comment_sufficiency_advisory.py .codex/product-agent-os/lifecycle-state.json docs/product-agent-os/coding-standards.md docs/product-agent-os/coding-standards.en.md docs/sources/registry.md docs/sources/registry.en.md docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md PLAN.md EVALS.md TEST.md docs/superpowers/specs/batch45-review-remediation-summary.json plugins/product-agent-os/assets/templates/hooks/comment_sufficiency_advisory.py plugins/product-agent-os/scripts/product_agent_os/comment_sufficiency.py tests/product_agent_os/test_comment_sufficiency.py tests/product_agent_os/test_lifecycle_hooks.py tests/product_agent_os/test_coding_standards_artifacts.py
+git diff --check
 ```
 
-M37 is local advisory hardening/docs sync only. Hook/validator changes are
-limited to the local non-blocking advisory path: TS/TSX scanning, fail-open
-diagnostics, redacted paths and active/template parity. It must keep `B45-PCA-M36`
-reserved for the optional runtime/browser approval packet and must not claim
-runtime/browser/provider/target/git/release/deploy/automation evidence or
-promotion beyond no-go/advisory-only.
+M37 is local advisory hardening/docs sync: TS/TSX, fail-open, redacted paths,
+active/template parity. `B45-PCA-M36` remains reserved; no provider/
+target/git/release/deploy/automation or promotion beyond no-go.
+
+For `B45-RETEST-Q0-Q2-A01` / `B45-RETEST-Q3-FIXTURE-STATIC-A01`, run:
+
+```powershell
+python -m unittest tests.product_agent_os.test_comment_sufficiency tests.product_agent_os.test_lifecycle_hooks -v
+python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v
+python tools\check_docs.py
+git diff --check
+```
+
+Q0-Q2 protocol; Q3 local/static: 37 sanitized files, 14 advisory warnings,
+`blocking=false`. Keep M26/M27/M35/M37 no-go; no live/model, target, browser,
+CI/blocker, git/release/automation. Q3 replay:
+
+```powershell
+python plugins\product-agent-os\scripts\product_agent_os\comment_sufficiency.py <approved-corpus-paths> --root . --include-tests --no-default-excludes --max-warnings-per-file -1 --max-warnings -1
+```
 
 For `B45-S5` learning-loop and automation-candidate policy, run:
 

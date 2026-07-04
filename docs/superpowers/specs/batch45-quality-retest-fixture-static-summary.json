@@ -1,0 +1,445 @@
+{
+  "schema_version": "batch45_quality_retest_fixture_static_summary_v1",
+  "task_id": "B45-RETEST-Q3-FIXTURE-STATIC",
+  "evidence_id": "B45-RETEST-Q3-FIXTURE-STATIC-A01",
+  "status": "implemented_local_static_fixture_retest_with_gaps",
+  "created_at": "2026-07-04T15:24:05+03:00",
+  "source_status": "project-authored local static fixture replay summary",
+  "trigger": "Owner requested B45-RETEST-Q3-FIXTURE-STATIC with agents after Q0-Q2 protocol accepted.",
+  "parent_protocol": "docs/superpowers/specs/batch45-quality-retest-protocol.json",
+  "scope": {
+    "execution_class": "local_static_existing_sanitized_fixture_replay",
+    "closure_level": "local_static_retest_with_gaps",
+    "promotion_state": "keep_advisory_only_no_go",
+    "fallback": "keep_advisory_only_no_go",
+    "live_model_behavior_eval": "approval_required_not_run",
+    "runtime_browser_pilot": "approval_required_not_run_B45_PCA_M36_reserved",
+    "target_workspace_command_or_mutation": "not_run",
+    "claim_ceiling": "Q3 supports local/static advisory replay evidence only; it does not prove real AI-agent behavior improvement, promotion readiness, runtime/browser/provider behavior, target safety, CI/blocker readiness, release/deploy/publish readiness or automation readiness."
+  },
+  "sidecar_agents": [
+    {
+      "agent_id": "019f2d0e-e815-72d2-92b3-6e758639ea4f",
+      "nickname": "Archivist",
+      "role": "approved corpus explorer",
+      "status": "completed_read_only",
+      "key_result": "Selected 37 .py/.ts fixture paths under existing sanitized SOL and myPartners fixture roots; excluded metadata and non-fixture paths."
+    },
+    {
+      "agent_id": "019f2d0f-24f9-7313-b8d3-57a49e070083",
+      "nickname": "Gauge",
+      "role": "verification queue reviewer",
+      "status": "completed_read_only",
+      "key_result": "Confirmed Q3 flags, advisory JSON fields and the need to count py_compile errors separately from comment_sufficiency payload."
+    },
+    {
+      "agent_id": "019f2d0f-5c15-7171-b279-ab75e3698979",
+      "nickname": "Shield",
+      "role": "privacy and approval boundary reviewer",
+      "status": "completed_read_only",
+      "key_result": "No hard blocker for local/static Q3 under existing sanitized corpus; provider env-name references are static activation risk, not leakage."
+    },
+    {
+      "agent_id": "019f2d0f-9bea-76d2-9607-243ff048095a",
+      "nickname": "Ledger",
+      "role": "docs and control-plane reviewer",
+      "status": "completed_read_only",
+      "key_result": "Recommended source-owned Q3 packet plus compact PLAN/TEST/EVALS/registry/Track 11 pointers; do not append RUNLOG due budget."
+    },
+    {
+      "agent_id": "019f2d0f-de8d-7391-ba36-ace1c0145f3c",
+      "nickname": "Marshal",
+      "role": "lifecycle orchestrator",
+      "status": "completed_read_only",
+      "key_result": "Set Q3 closure ceiling to local_static_retest_with_gaps and required a fresh lifecycle marker."
+    },
+    {
+      "agent_id": "019f2d10-1dba-7372-b680-c15dea7e6834",
+      "nickname": "Doubt",
+      "role": "completion skeptic",
+      "status": "completed_read_only",
+      "key_result": "Q3 cannot reverse M26/M27/M35/M37; final decision must be continue_investigation or keep_advisory_only_no_go, not promotion_go."
+    }
+  ],
+  "approved_corpus": {
+    "selection_status": "approved_corpus_paths_existing_sanitized_fixtures",
+    "file_count": 37,
+    "fixture_roots": [
+      "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01",
+      "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01"
+    ],
+    "paths": [
+      "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/config/frontend/next.config.ts",
+      "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/config/frontend/playwright.e2e.config.ts",
+      "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/src/server/app/api/contacts_routes.py",
+      "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/src/server/app/contacts/__init__.py",
+      "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/src/server/app/contacts/merge_candidates.py",
+      "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/tests/frontend/tests/contracts/crm-api.test.ts",
+      "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/tests/frontend/tests/contracts/crm-message-rendering.test.ts",
+      "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/tests/frontend/tests/contracts/crm-model.test.ts",
+      "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/tests/frontend/tests/e2e/crm.spec.ts",
+      "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/tests/server/tests/test_contacts_chats.py",
+      "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/tests/server/tests/test_contacts_get_one.py",
+      "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/tests/server/tests/test_contacts_insights.py",
+      "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/tests/server/tests/test_contacts_list_extended.py",
+      "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/tests/server/tests/test_contacts_merge.py",
+      "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/tests/server/tests/test_contacts_messages.py",
+      "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/tests/server/tests/test_contacts_patch.py",
+      "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/tests/server/tests/test_contacts_routes.py",
+      "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/tests/server/tests/test_contacts_tags_assoc.py",
+      "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/index.ts",
+      "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/agent-registry.ts",
+      "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/agents/architect-agent.ts",
+      "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/agents/ba-agent.ts",
+      "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/agents/data-analyst-agent.ts",
+      "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/agents/designer-agent.ts",
+      "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/agents/developer-agent.ts",
+      "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/agents/marketer-agent.ts",
+      "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/agents/optimizer-agent.ts",
+      "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/agents/product-owner-agent.ts",
+      "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/agents/qa-agent.ts",
+      "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/agents/router-agent.ts",
+      "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/agents/security-agent.ts",
+      "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/ai.ts",
+      "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/db.ts",
+      "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/orchestrator.ts",
+      "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/taskMaster.ts",
+      "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/tools/createSubtasksTool.ts",
+      "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/tools/dispatcher.ts"
+    ],
+    "excluded_paths": [
+      {
+        "pattern": "*.json, *.toml, *.md",
+        "reason": "Metadata or config files are not scanned by comment_sufficiency.py."
+      },
+      {
+        "pattern": "research/b45-real-project-scenarios/source-policy.md, results/**, refactors/**",
+        "reason": "Outside the Q3 selected sanitized fixture replay corpus."
+      },
+      {
+        "pattern": "repo tests/** outside research/b45-real-project-scenarios/fixtures/**",
+        "reason": "Outside requested corpus boundary."
+      }
+    ]
+  },
+  "static_replay": {
+    "command": "python plugins\\product-agent-os\\scripts\\product_agent_os\\comment_sufficiency.py <37 approved corpus paths> --root . --include-tests --no-default-excludes --max-warnings-per-file -1 --max-warnings -1",
+    "exit_code": 0,
+    "status": "advisory_complete",
+    "blocking": false,
+    "warning_count": 14,
+    "suppressed_warning_count": 0,
+    "language_counts": {
+      "javascript": 12,
+      "python": 2
+    },
+    "fixture_counts": {
+      "mypartners": 3,
+      "sol": 11
+    },
+    "warnings": [
+      {
+        "path": "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/src/server/app/api/contacts_routes.py",
+        "symbol": "_person_summary_source_context_item",
+        "line": 591,
+        "language": "python",
+        "severity": "advisory",
+        "suppressed_count": 0
+      },
+      {
+        "path": "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/src/server/app/api/contacts_routes.py",
+        "symbol": "patch_contact_relationship_state",
+        "line": 1056,
+        "language": "python",
+        "severity": "advisory",
+        "suppressed_count": 0
+      },
+      {
+        "path": "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/tests/frontend/tests/e2e/crm.spec.ts",
+        "symbol": "mockCrmPaginationApis",
+        "line": 2085,
+        "language": "javascript",
+        "severity": "advisory",
+        "suppressed_count": 0
+      },
+      {
+        "path": "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/agents/architect-agent.ts",
+        "symbol": "execute",
+        "line": 10,
+        "language": "javascript",
+        "severity": "advisory",
+        "suppressed_count": 0
+      },
+      {
+        "path": "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/agents/ba-agent.ts",
+        "symbol": "execute",
+        "line": 10,
+        "language": "javascript",
+        "severity": "advisory",
+        "suppressed_count": 0
+      },
+      {
+        "path": "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/agents/data-analyst-agent.ts",
+        "symbol": "execute",
+        "line": 10,
+        "language": "javascript",
+        "severity": "advisory",
+        "suppressed_count": 0
+      },
+      {
+        "path": "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/agents/designer-agent.ts",
+        "symbol": "execute",
+        "line": 10,
+        "language": "javascript",
+        "severity": "advisory",
+        "suppressed_count": 0
+      },
+      {
+        "path": "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/agents/developer-agent.ts",
+        "symbol": "execute",
+        "line": 11,
+        "language": "javascript",
+        "severity": "advisory",
+        "suppressed_count": 0
+      },
+      {
+        "path": "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/agents/marketer-agent.ts",
+        "symbol": "execute",
+        "line": 10,
+        "language": "javascript",
+        "severity": "advisory",
+        "suppressed_count": 0
+      },
+      {
+        "path": "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/agents/optimizer-agent.ts",
+        "symbol": "execute",
+        "line": 10,
+        "language": "javascript",
+        "severity": "advisory",
+        "suppressed_count": 0
+      },
+      {
+        "path": "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/agents/product-owner-agent.ts",
+        "symbol": "execute",
+        "line": 10,
+        "language": "javascript",
+        "severity": "advisory",
+        "suppressed_count": 0
+      },
+      {
+        "path": "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/agents/qa-agent.ts",
+        "symbol": "execute",
+        "line": 10,
+        "language": "javascript",
+        "severity": "advisory",
+        "suppressed_count": 0
+      },
+      {
+        "path": "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/agents/router-agent.ts",
+        "symbol": "execute",
+        "line": 9,
+        "language": "javascript",
+        "severity": "advisory",
+        "suppressed_count": 0
+      },
+      {
+        "path": "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/agents/security-agent.ts",
+        "symbol": "execute",
+        "line": 10,
+        "language": "javascript",
+        "severity": "advisory",
+        "suppressed_count": 0
+      }
+    ]
+  },
+  "syntax_only_checks": [
+    {
+      "command": "python -m py_compile <mypartners fixture py files>",
+      "file_count": 12,
+      "exit_code": 0,
+      "status": "syntax_only_passed",
+      "runtime_claim": "not_claimed"
+    },
+    {
+      "command": "python -m py_compile <mypartners refactor py files>",
+      "file_count": 3,
+      "exit_code": 0,
+      "status": "syntax_only_passed",
+      "runtime_claim": "not_claimed"
+    }
+  ],
+  "refactor_numstat": [
+    {
+      "scenario": "mypartners_checklist_guided",
+      "command": "git diff --no-index --numstat research\\b45-real-project-scenarios\\refactors\\mypartners\\MP-CRM-CHAT-OPEN-01\\original research\\b45-real-project-scenarios\\refactors\\mypartners\\MP-CRM-CHAT-OPEN-01\\checklist-guided",
+      "exit_code": 1,
+      "exit_code_interpretation": "diff_present_expected",
+      "added": 9,
+      "deleted": 4,
+      "files_changed": 1
+    },
+    {
+      "scenario": "mypartners_advisory_guided",
+      "command": "git diff --no-index --numstat research\\b45-real-project-scenarios\\refactors\\mypartners\\MP-CRM-CHAT-OPEN-01\\original research\\b45-real-project-scenarios\\refactors\\mypartners\\MP-CRM-CHAT-OPEN-01\\advisory-guided",
+      "exit_code": 1,
+      "exit_code_interpretation": "diff_present_expected",
+      "added": 2,
+      "deleted": 0,
+      "files_changed": 1
+    },
+    {
+      "scenario": "sol_checklist_guided",
+      "command": "git diff --no-index --numstat research\\b45-real-project-scenarios\\refactors\\sol\\SOL-AGENT-ORCH-01\\original research\\b45-real-project-scenarios\\refactors\\sol\\SOL-AGENT-ORCH-01\\checklist-guided",
+      "exit_code": 1,
+      "exit_code_interpretation": "diff_present_expected",
+      "added": 10,
+      "deleted": 6,
+      "files_changed": 1
+    },
+    {
+      "scenario": "sol_advisory_guided",
+      "command": "git diff --no-index --numstat research\\b45-real-project-scenarios\\refactors\\sol\\SOL-AGENT-ORCH-01\\original research\\b45-real-project-scenarios\\refactors\\sol\\SOL-AGENT-ORCH-01\\advisory-guided",
+      "exit_code": 1,
+      "exit_code_interpretation": "diff_present_expected",
+      "added": 9,
+      "deleted": 6,
+      "files_changed": 1
+    }
+  ],
+  "privacy_review": {
+    "status": "conditional_go_for_local_static_only",
+    "forbidden_artifact_file_count": {
+      "fixtures": 0,
+      "refactors": 0
+    },
+    "absolute_path_match_count": {
+      "fixtures": 0,
+      "refactors": 0
+    },
+    "provider_env_name_match_count": {
+      "fixtures": 10,
+      "refactors": 0
+    },
+    "provider_env_name_classification": "static_provider_activation_risk_not_secret_value_leakage",
+    "redaction_policy": "Store only repo-relative paths, counts, symbols, line numbers and classifications; do not retain raw matched source lines or raw private payloads.",
+    "pycache_cleanup": {
+      "removed_generated_pycache_directory_count": 6,
+      "cleanup_scope": "research/b45-real-project-scenarios",
+      "reason": "Normal py_compile emitted bytecode caches during syntax-only checks."
+    }
+  },
+  "tests_added_or_extended": [
+    "test_cli_caps_disabled_replays_raw_warnings_without_suppression",
+    "test_cli_include_tests_and_no_default_excludes_scans_q3_style_paths",
+    "test_cli_rejects_zero_warning_cap_per_file"
+  ],
+  "verification": {
+    "results": [
+      {
+        "command": "python -m unittest tests.product_agent_os.test_comment_sufficiency -v",
+        "exit_code": 0,
+        "result": "OK",
+        "observed": "Ran 12 tests in 0.098s"
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_comment_sufficiency tests.product_agent_os.test_coding_standards_artifacts -v",
+        "exit_code": 0,
+        "result": "OK",
+        "observed": "Ran 25 tests in 0.101s"
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_lifecycle_hooks -v",
+        "exit_code": 0,
+        "result": "OK",
+        "observed": "Ran 17 tests in 2.521s"
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+        "exit_code": 0,
+        "result": "OK",
+        "observed": "Ran 99 tests in 1.947s"
+      },
+      {
+        "command": "python tools\\check_docs.py",
+        "exit_code": 0,
+        "result": "OK",
+        "observed": "documentation structure checks passed"
+      },
+      {
+        "command": "git diff --check",
+        "exit_code": 0,
+        "result": "OK",
+        "observed": "diff whitespace check passed; CRLF normalization warnings only"
+      },
+      {
+        "command": "Get-Item TEST.md,EVALS.md | Select-Object Name,Length",
+        "exit_code": 0,
+        "result": "OK",
+        "observed": "TEST.md 49993 bytes; EVALS.md 49999 bytes"
+      },
+      {
+        "command": "Get-ChildItem research\\b45-real-project-scenarios -Recurse -Directory -Filter __pycache__",
+        "exit_code": 0,
+        "result": "OK",
+        "observed": "No generated __pycache__ directories remained after cleanup."
+      }
+    ],
+    "remaining_required_before_completion_claim": []
+  },
+  "unsupported_claims_after_q3": [
+    "real_ai_agent_behavior_improvement",
+    "treatment_v2_promotion_readiness",
+    "ci_or_blocker_enforcement_readiness",
+    "target_runtime_behavior",
+    "browser_behavior",
+    "provider_or_live_api_behavior",
+    "target_workspace_safety_after_mutation",
+    "database_or_production_data_safety",
+    "release_deploy_publish_readiness",
+    "active_automation_readiness",
+    "M26_no_go_reversed",
+    "M27_promotion_no_go_reversed",
+    "M35_no_go_reversed",
+    "SOL_TypeScript_runtime_validated",
+    "myPartners_CRM_behavior_validated"
+  ],
+  "carried_forward_blockers": [
+    "B45-PCA-M26 no_go_real_behavior_improvement_not_proven_after_live_eval",
+    "B45-PCA-M27 keep_advisory_only_no_go_for_blocker_or_ci",
+    "B45-PCA-M35 keep_advisory_only_no_go_for_treatment_v2_promotion",
+    "B45-PCA-M37-A01 local_advisory_hardening_docs_sync_only"
+  ],
+  "decision": {
+    "status": "continue_investigation_keep_advisory_only_no_go",
+    "rationale": "Q3 found useful local/static advisory replay signals on sanitized fixtures, but static warning evidence cannot reverse live behavior no-go results or prove runtime/product/promotion readiness.",
+    "next_queue": "B45-RETEST-Q4-LIVE-MODEL-RERUN",
+    "next_queue_status": "approval_required_not_run",
+    "alternative_next_queue": "B45-PCA-M36",
+    "alternative_next_queue_status": "approval_required_runtime_browser_packet_not_run"
+  },
+  "no_unapproved_actions": {
+    "live_model_or_provider_api_called": false,
+    "runtime_or_live_server_launched": false,
+    "browser_automation_run": false,
+    "target_workspace_command_run": false,
+    "target_workspace_mutated": false,
+    "database_accessed": false,
+    "ci_or_blocker_enforcement_created": false,
+    "git_branch_stage_commit_push_pr": false,
+    "release_deploy_publish": false,
+    "active_automation_created_or_enabled": false,
+    "external_write_performed": false
+  },
+  "control_plane_sync_decision": {
+    "REQUIREMENTS.md": "not_applicable_no_scope_or_acceptance_change",
+    "PLAN.md": "update_required_compact_pointer",
+    "TEST.md": "update_required_q3_route",
+    "EVALS.md": "update_required_claim_ceiling",
+    "RUNLOG.md": "handoff_required_due_runlog_budget",
+    "prod_test.md": "not_applicable_batch39_surface",
+    "docs/sources/registry.md": "update_required_source_route",
+    "docs/sources/registry.en.md": "update_required_source_route",
+    "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md": "update_required_track11_marker",
+    ".codex/product-agent-os/lifecycle-state.json": "updated_current_marker"
+  }
+}

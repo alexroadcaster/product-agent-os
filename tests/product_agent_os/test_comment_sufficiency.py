@@ -207,6 +207,105 @@ class CommentSufficiencyAdvisoryTest(unittest.TestCase):
         self.assertEqual(1, len(warnings))
         self.assertEqual(3, warnings[0].suppressed_count)
 
+    def test_cli_caps_disabled_replays_raw_warnings_without_suppression(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            path = root / "legacy_module.py"
+            blocks = []
+            for index in range(4):
+                blocks.extend(
+                    [
+                        f"def complex_case_{index}(value):",
+                        "    total = 0",
+                        "    for item in value:",
+                        "        if item:",
+                        "            total += 1",
+                        "        elif item == 0:",
+                        "            total -= 1",
+                        "    try:",
+                        "        if total > 10 and value:",
+                        "            return total",
+                        "    except TypeError:",
+                        "        return -1",
+                        "    while total < 0:",
+                        "        total += 1",
+                        "    return total",
+                        "",
+                    ]
+                )
+            path.write_text("\n".join(blocks), encoding="utf-8")
+
+            stdout = StringIO()
+            with redirect_stdout(stdout):
+                exit_code = main(
+                    [
+                        str(path),
+                        "--root",
+                        tmp,
+                        "--max-warnings-per-file",
+                        "-1",
+                        "--max-warnings",
+                        "-1",
+                    ]
+                )
+
+        payload = json.loads(stdout.getvalue())
+        self.assertEqual(0, exit_code)
+        self.assertEqual(4, payload["warning_count"])
+        self.assertEqual(0, payload["suppressed_warning_count"])
+        self.assertTrue(all(warning["suppressed_count"] == 0 for warning in payload["warnings"]))
+
+    def test_cli_include_tests_and_no_default_excludes_scans_q3_style_paths(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            test_path = root / "tests" / "test_complex_case.py"
+            spec_path = root / "docs" / "superpowers" / "specs" / "generated_case.py"
+            test_path.parent.mkdir(parents=True)
+            spec_path.parent.mkdir(parents=True)
+            source = "\n".join(
+                [
+                    "def complex_case(value):",
+                    "    total = 0",
+                    "    for item in value:",
+                    "        if item:",
+                    "            total += 1",
+                    "        elif item == 0:",
+                    "            total -= 1",
+                    "    try:",
+                    "        if total > 10 and value:",
+                    "            return total",
+                    "    except TypeError:",
+                    "        return -1",
+                    "    while total < 0:",
+                    "        total += 1",
+                    "    return total",
+                ]
+            )
+            test_path.write_text(source, encoding="utf-8")
+            spec_path.write_text(source, encoding="utf-8")
+
+            stdout = StringIO()
+            with redirect_stdout(stdout):
+                exit_code = main(
+                    [
+                        str(test_path),
+                        str(spec_path),
+                        "--root",
+                        tmp,
+                        "--include-tests",
+                        "--no-default-excludes",
+                        "--max-warnings-per-file",
+                        "-1",
+                        "--max-warnings",
+                        "-1",
+                    ]
+                )
+
+        payload = json.loads(stdout.getvalue())
+        self.assertEqual(0, exit_code)
+        self.assertEqual(2, payload["warning_count"])
+        self.assertEqual({"tests/test_complex_case.py", "docs/superpowers/specs/generated_case.py"}, {warning["path"] for warning in payload["warnings"]})
+
     def test_cli_returns_zero_with_warning_payload(self):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "complex_case.mjs"
@@ -250,6 +349,15 @@ class CommentSufficiencyAdvisoryTest(unittest.TestCase):
 
         self.assertEqual(2, raised.exception.code)
         self.assertIn("--max-warnings must be positive", stderr.getvalue())
+
+    def test_cli_rejects_zero_warning_cap_per_file(self):
+        stderr = StringIO()
+        with redirect_stderr(stderr):
+            with self.assertRaises(SystemExit) as raised:
+                main(["complex_case.py", "--max-warnings-per-file", "0"])
+
+        self.assertEqual(2, raised.exception.code)
+        self.assertIn("--max-warnings-per-file must be positive", stderr.getvalue())
 
 
 if __name__ == "__main__":

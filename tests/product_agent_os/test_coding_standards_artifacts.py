@@ -28,6 +28,8 @@ M33_COMPARISON = DOCS / "superpowers" / "specs" / "batch45-real-project-refactor
 M34_SCORECARD = DOCS / "superpowers" / "specs" / "batch45-real-project-scorecard.json"
 M35_DECISION = DOCS / "superpowers" / "specs" / "batch45-real-project-decision-packet.json"
 M37_REMEDIATION = DOCS / "superpowers" / "specs" / "batch45-review-remediation-summary.json"
+RETEST_PROTOCOL = DOCS / "superpowers" / "specs" / "batch45-quality-retest-protocol.json"
+RETEST_Q3_SUMMARY = DOCS / "superpowers" / "specs" / "batch45-quality-retest-fixture-static-summary.json"
 sys.path.insert(0, str(SCRIPTS))
 
 from product_agent_os.templates import required_templates, template_by_target  # noqa: E402
@@ -179,7 +181,6 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             / "plans"
             / "2026-06-20-track-11-documentation-architecture-refresh.md"
         ).read_text(encoding="utf-8")
-        lifecycle = json.loads((ROOT / ".codex" / "product-agent-os" / "lifecycle-state.json").read_text(encoding="utf-8"))
 
         self.assertEqual("batch45_review_remediation_summary_v1", packet["schema_version"])
         self.assertEqual("B45-PCA-M37", packet["task_id"])
@@ -236,8 +237,159 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
         self.assertIn("B45-PCA-M37-A01", evals)
         self.assertIn("B45-PCA-M37-A01", test_plan)
         self.assertIn("| `B45-PCA-M37` |", track11)
-        self.assertEqual("B45-PCA-M37-A01", lifecycle["task_id"])
-        self.assertEqual("local_synthetic_hardening_no_promotion_claim", lifecycle["closure_level"])
+
+    def test_b45_retest_q0_q2_protocol_links_sources_tasks_and_control_plane(self):
+        packet = json.loads(RETEST_PROTOCOL.read_text(encoding="utf-8"))
+        serialized = json.dumps(packet, sort_keys=True).lower()
+        registry_ru = (DOCS / "sources" / "registry.md").read_text(encoding="utf-8")
+        registry_en = (DOCS / "sources" / "registry.en.md").read_text(encoding="utf-8")
+        plan = (ROOT / "PLAN.md").read_text(encoding="utf-8")
+        evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")
+        test_plan = (ROOT / "TEST.md").read_text(encoding="utf-8")
+        track11 = (
+            DOCS
+            / "superpowers"
+            / "plans"
+            / "2026-06-20-track-11-documentation-architecture-refresh.md"
+        ).read_text(encoding="utf-8")
+
+        self.assertEqual("batch45_quality_retest_protocol_v1", packet["schema_version"])
+        self.assertEqual("B45-RETEST-Q0-Q2", packet["task_id"])
+        self.assertEqual("B45-RETEST-Q0-Q2-A01", packet["evidence_id"])
+        self.assertEqual("implemented_source_only_protocol_harness_ready", packet["status"])
+        self.assertEqual(
+            "docs_contract_ready_for_local_static_retest_protocol",
+            packet["scope"]["closure_level"],
+        )
+        self.assertEqual("approval_required_not_run", packet["scope"]["live_model_behavior_eval"])
+        self.assertEqual("approval_required_not_run_B45_PCA_M36_reserved", packet["scope"]["runtime_browser_pilot"])
+
+        self.assertEqual(
+            {
+                "B45-RETEST-Q0-SOURCE-FREEZE",
+                "B45-RETEST-Q1-HELDOUT-V2",
+                "B45-RETEST-Q2-HARNESS-DRY-RUN",
+            },
+            set(packet["queue_status"]),
+        )
+        self.assertEqual(8, len(packet["held_out_tasks_v2"]))
+        self.assertEqual({f"H{i}" for i in range(1, 9)}, {task["slot"] for task in packet["held_out_tasks_v2"]})
+        self.assertEqual(
+            {"SOL-TS-STATIC-01", "MP-CRM-CHAR-01"},
+            {canary["scenario_id"] for canary in packet["fixture_canaries"]},
+        )
+
+        blocker_ids = {blocker["id"] for blocker in packet["source_freeze"]["active_blockers"]}
+        self.assertEqual({"B45-PCA-M26", "B45-PCA-M27", "B45-PCA-M35", "B45-PCA-M37-A01"}, blocker_ids)
+        self.assertEqual(0.5, packet["thresholds"]["promotion_candidate_gate"]["treatment_delta_min"])
+        self.assertEqual(0, packet["thresholds"]["promotion_candidate_gate"]["timeout_count_required"])
+        self.assertIn("runtime_or_product_behavior_claim_from_local_static_evidence", packet["thresholds"]["automatic_no_go"])
+
+        for action, performed in packet["privacy_and_approval_boundary"]["no_unapproved_actions"].items():
+            with self.subTest(action=action):
+                self.assertFalse(performed)
+
+        for expected in [
+            "real_ai_agent_behavior_improvement",
+            "ci_or_blocker_enforcement_readiness",
+            "target_runtime_behavior",
+            "B45-RETEST-Q3-FIXTURE-STATIC".lower(),
+            "comment_sufficiency.py <approved-corpus-paths>",
+        ]:
+            with self.subTest(expected=expected):
+                self.assertIn(expected.lower(), serialized)
+
+        for registry in [registry_ru, registry_en]:
+            with self.subTest(registry="source_registry"):
+                self.assertIn("B45-RETEST-Q0-Q2", registry)
+                self.assertIn("B45-RETEST-Q0-Q2-A01", registry)
+                self.assertIn("docs/superpowers/specs/batch45-quality-retest-protocol.json", registry)
+
+        for control_plane in [plan, evals, test_plan, track11]:
+            with self.subTest(control_plane="compact_pointer"):
+                self.assertIn("B45-RETEST-Q0-Q2-A01", control_plane)
+
+        self.assertIn("| `B45-RETEST-Q0-Q2` |", track11)
+
+    def test_b45_retest_q3_fixture_static_summary_records_local_static_replay_only(self):
+        packet = json.loads(RETEST_Q3_SUMMARY.read_text(encoding="utf-8"))
+        serialized = json.dumps(packet, sort_keys=True).lower()
+        registry_ru = (DOCS / "sources" / "registry.md").read_text(encoding="utf-8")
+        registry_en = (DOCS / "sources" / "registry.en.md").read_text(encoding="utf-8")
+        plan = (ROOT / "PLAN.md").read_text(encoding="utf-8")
+        evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")
+        test_plan = (ROOT / "TEST.md").read_text(encoding="utf-8")
+        track11 = (
+            DOCS
+            / "superpowers"
+            / "plans"
+            / "2026-06-20-track-11-documentation-architecture-refresh.md"
+        ).read_text(encoding="utf-8")
+        lifecycle = json.loads((ROOT / ".codex" / "product-agent-os" / "lifecycle-state.json").read_text(encoding="utf-8"))
+
+        self.assertEqual("batch45_quality_retest_fixture_static_summary_v1", packet["schema_version"])
+        self.assertEqual("B45-RETEST-Q3-FIXTURE-STATIC", packet["task_id"])
+        self.assertEqual("B45-RETEST-Q3-FIXTURE-STATIC-A01", packet["evidence_id"])
+        self.assertEqual("implemented_local_static_fixture_retest_with_gaps", packet["status"])
+        self.assertEqual("local_static_retest_with_gaps", packet["scope"]["closure_level"])
+        self.assertEqual("keep_advisory_only_no_go", packet["scope"]["promotion_state"])
+        self.assertEqual("approval_required_not_run", packet["scope"]["live_model_behavior_eval"])
+        self.assertEqual("approval_required_not_run_B45_PCA_M36_reserved", packet["scope"]["runtime_browser_pilot"])
+
+        self.assertEqual(37, packet["approved_corpus"]["file_count"])
+        self.assertEqual(14, packet["static_replay"]["warning_count"])
+        self.assertFalse(packet["static_replay"]["blocking"])
+        self.assertEqual(0, packet["static_replay"]["suppressed_warning_count"])
+        self.assertEqual({"javascript": 12, "python": 2}, packet["static_replay"]["language_counts"])
+        self.assertEqual({"mypartners": 3, "sol": 11}, packet["static_replay"]["fixture_counts"])
+        self.assertEqual(14, len(packet["static_replay"]["warnings"]))
+        self.assertEqual(0, packet["privacy_review"]["forbidden_artifact_file_count"]["fixtures"])
+        self.assertEqual(0, packet["privacy_review"]["absolute_path_match_count"]["fixtures"])
+        self.assertEqual(10, packet["privacy_review"]["provider_env_name_match_count"]["fixtures"])
+        self.assertEqual(
+            "static_provider_activation_risk_not_secret_value_leakage",
+            packet["privacy_review"]["provider_env_name_classification"],
+        )
+
+        for check in packet["syntax_only_checks"]:
+            with self.subTest(command=check["command"]):
+                self.assertEqual(0, check["exit_code"])
+                self.assertEqual("not_claimed", check["runtime_claim"])
+
+        self.assertTrue(all(item["exit_code_interpretation"] == "diff_present_expected" for item in packet["refactor_numstat"]))
+        self.assertEqual("continue_investigation_keep_advisory_only_no_go", packet["decision"]["status"])
+        self.assertEqual("approval_required_not_run", packet["decision"]["next_queue_status"])
+        self.assertEqual("approval_required_runtime_browser_packet_not_run", packet["decision"]["alternative_next_queue_status"])
+
+        for action, performed in packet["no_unapproved_actions"].items():
+            with self.subTest(action=action):
+                self.assertFalse(performed)
+
+        for expected in [
+            "real_ai_agent_behavior_improvement",
+            "treatment_v2_promotion_readiness",
+            "target_runtime_behavior",
+            "B45-PCA-M26".lower(),
+            "B45-PCA-M27".lower(),
+            "B45-PCA-M35".lower(),
+            "B45-PCA-M37-A01".lower(),
+        ]:
+            with self.subTest(expected=expected):
+                self.assertIn(expected.lower(), serialized)
+
+        for registry in [registry_ru, registry_en]:
+            with self.subTest(registry="source_registry"):
+                self.assertIn("B45-RETEST-Q3-FIXTURE-STATIC", registry)
+                self.assertIn("B45-RETEST-Q3-FIXTURE-STATIC-A01", registry)
+                self.assertIn("docs/superpowers/specs/batch45-quality-retest-fixture-static-summary.json", registry)
+
+        for control_plane in [plan, evals, test_plan, track11]:
+            with self.subTest(control_plane="compact_pointer"):
+                self.assertIn("B45-RETEST-Q3-FIXTURE-STATIC-A01", control_plane)
+
+        self.assertIn("| `B45-RETEST-Q3-FIXTURE-STATIC` |", track11)
+        self.assertEqual("B45-RETEST-Q3-FIXTURE-STATIC", lifecycle["task_id"])
+        self.assertEqual("local_static_retest_with_gaps", lifecycle["closure_level"])
 
     def test_s5_learning_automation_packet_closes_m23_without_activation(self):
         packet = json.loads(S5_SUMMARY.read_text(encoding="utf-8"))
