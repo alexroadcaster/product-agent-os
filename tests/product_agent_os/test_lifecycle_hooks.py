@@ -54,6 +54,12 @@ class LifecycleHooksTest(unittest.TestCase):
             with self.subTest(name=name):
                 self.assertTrue((LOCAL_HOOKS / name).exists())
 
+    def test_comment_sufficiency_active_hook_matches_packaged_template(self):
+        self.assertEqual(
+            (HOOKS / "comment_sufficiency_advisory.py").read_text(encoding="utf-8"),
+            (LOCAL_HOOKS / "comment_sufficiency_advisory.py").read_text(encoding="utf-8"),
+        )
+
     def test_project_local_post_tool_use_runs_comment_sufficiency_advisory(self):
         data = json.loads(ACTIVE_HOOKS_JSON.read_text(encoding="utf-8"))
         commands = data["hooks"]["PostToolUse"][0]["hooks"]
@@ -110,6 +116,87 @@ class LifecycleHooksTest(unittest.TestCase):
         self.assertEqual("advisory_complete", payload["status"])
         self.assertEqual(1, payload["validator"]["warning_count"])
         self.assertEqual("advisory", payload["validator"]["warnings"][0]["severity"])
+        self.assertIn(payload["validator_source_ref"], {"workspace_plugin", "packaged_plugin"})
+        self.assertFalse(payload["raw_workspace_path_included"])
+        self.assertNotIn("workspace_root", payload)
+        self.assertNotIn(str(root), result.stdout)
+
+    def test_comment_sufficiency_advisory_scans_typescript_files(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            subprocess.run(["git", "init"], cwd=root, check=True, capture_output=True, text=True)
+            path = root / "policy.tsx"
+            path.write_text(
+                "export const evaluateAccess = async (value: unknown): Promise<boolean> => {\n"
+                "  return Boolean(value);\n"
+                "};\n",
+                encoding="utf-8",
+            )
+            env = os.environ.copy()
+            env["B45_COMMENT_ADVISORY_ROOT"] = str(root)
+            result = subprocess.run(
+                [sys.executable, str(LOCAL_HOOKS / "comment_sufficiency_advisory.py")],
+                input=json.dumps({"tool_name": "functions.apply_patch"}),
+                cwd=ROOT,
+                env=env,
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        payload = json.loads(result.stdout)
+        self.assertEqual("advisory_complete", payload["status"])
+        self.assertEqual(["policy.tsx"], payload["scanned_paths"])
+        self.assertEqual(["evaluateAccess"], [warning["symbol"] for warning in payload["validator"]["warnings"]])
+        self.assertNotIn(str(root), result.stdout)
+
+    def test_comment_sufficiency_invalid_root_fails_open_without_absolute_path(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            missing_root = Path(tmp) / "missing-workspace"
+            env = os.environ.copy()
+            env["B45_COMMENT_ADVISORY_ROOT"] = str(missing_root)
+            result = subprocess.run(
+                [sys.executable, str(LOCAL_HOOKS / "comment_sufficiency_advisory.py")],
+                input=json.dumps({"tool_name": "functions.apply_patch"}),
+                cwd=ROOT,
+                env=env,
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        payload = json.loads(result.stdout)
+        self.assertEqual("invalid_workspace_root_fail_open", payload["status"])
+        self.assertFalse(payload["blocking"])
+        self.assertEqual("unresolved", payload["workspace_ref"])
+        self.assertNotIn(str(missing_root), result.stdout)
+
+    def test_comment_sufficiency_validator_error_fails_open_without_absolute_path(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            subprocess.run(["git", "init"], cwd=root, check=True, capture_output=True, text=True)
+            path = root / "broken.py"
+            path.write_text("def broken(:\n    return 1\n", encoding="utf-8")
+            env = os.environ.copy()
+            env["B45_COMMENT_ADVISORY_ROOT"] = str(root)
+            result = subprocess.run(
+                [sys.executable, str(LOCAL_HOOKS / "comment_sufficiency_advisory.py")],
+                input=json.dumps({"tool_name": "functions.apply_patch"}),
+                cwd=ROOT,
+                env=env,
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        payload = json.loads(result.stdout)
+        self.assertEqual("validator_error_fail_open", payload["status"])
+        self.assertFalse(payload["blocking"])
+        self.assertEqual("SyntaxError", payload["error_type"])
+        self.assertNotIn(str(root), result.stdout)
 
     def test_session_start_reports_lifecycle_contract_files(self):
         result = run_hook(HOOKS / "session_start_context.py")

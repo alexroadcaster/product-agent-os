@@ -26,6 +26,57 @@ class CommentSufficiencyAdvisoryTest(unittest.TestCase):
 
         self.assertEqual([], [warning.as_dict() for warning in warnings])
 
+    def test_typescript_and_modern_javascript_forms_are_analyzed(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            ts_path = root / "pipeline.ts"
+            tsx_path = root / "policy.tsx"
+            js_path = root / "redactor.js"
+            ts_path.write_text(
+                "export async function normalizeEvent(value: unknown): Promise<unknown> {\n"
+                "  return value;\n"
+                "}\n",
+                encoding="utf-8",
+            )
+            tsx_path.write_text(
+                "export const evaluateAccess = async (value: unknown): Promise<boolean> => {\n"
+                "  return Boolean(value);\n"
+                "};\n",
+                encoding="utf-8",
+            )
+            js_path.write_text(
+                "class Redactor {\n"
+                "  async redact(value) {\n"
+                "    return value;\n"
+                "  }\n"
+                "}\n",
+                encoding="utf-8",
+            )
+
+            warnings = analyze_paths([ts_path, tsx_path, js_path], root=root)
+
+        self.assertEqual({"evaluateAccess", "normalizeEvent", "redact"}, {warning.symbol for warning in warnings})
+        self.assertEqual({"javascript"}, {warning.language for warning in warnings})
+        self.assertEqual({"pipeline.ts", "policy.tsx", "redactor.js"}, {warning.path for warning in warnings})
+
+    def test_warning_path_outside_root_is_redacted(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            outside_path = Path(tmp) / "outside.js"
+            root = Path(tmp) / "workspace"
+            root.mkdir()
+            outside_path.write_text(
+                "function evaluateAccess(value) {\n"
+                "  return Boolean(value);\n"
+                "}\n",
+                encoding="utf-8",
+            )
+
+            warnings = analyze_paths([outside_path], root=root, use_default_excludes=False)
+
+        self.assertEqual(1, len(warnings))
+        self.assertEqual("<outside-root>/outside.js", warnings[0].path)
+        self.assertNotIn(str(outside_path.parent), warnings[0].path)
+
     def test_missing_complex_python_docstring_is_advisory_warning(self):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "complex_case.py"

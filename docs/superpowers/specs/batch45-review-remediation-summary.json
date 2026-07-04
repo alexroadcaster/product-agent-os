@@ -1,0 +1,197 @@
+{
+  "schema_version": "batch45_review_remediation_summary_v1",
+  "task_id": "B45-PCA-M37",
+  "evidence_id": "B45-PCA-M37-A01",
+  "status": "implemented_local_advisory_hardening_docs_sync_only",
+  "created_at": "2026-07-04T13:59:52+03:00",
+  "updated_at": "2026-07-04T14:34:10+03:00",
+  "source_status": "project-authored local remediation packet",
+  "trigger": "Batch 45 independent review remediation for architecture lifecycle, verification/evals, docs/source sync, and product scenario scorecard findings",
+  "reserved_ids": {
+    "B45-PCA-M36": "reserved_for_optional_runtime_browser_approval_packet_not_used_by_this_remediation"
+  },
+  "scope": {
+    "implemented_fixes_target": "local hook/validator advisory hardening and docs/source/control-plane sync only",
+    "promotion_state": "no_go_advisory_only",
+    "promotion_state_note": "promotion remains no_go/advisory-only",
+    "closure_level": "local_synthetic_hardening_no_promotion_claim",
+    "runtime_or_product_activation": "not_claimed"
+  },
+  "review_inputs": [
+    ".codex/product-agent-os/reviews/batch45/agent-01-architecture-lifecycle.md",
+    ".codex/product-agent-os/reviews/batch45/agent-02-runtime-code.md",
+    ".codex/product-agent-os/reviews/batch45/agent-03-verification-evals.md",
+    ".codex/product-agent-os/reviews/batch45/agent-04-docs-source-sync.md",
+    ".codex/product-agent-os/reviews/batch45/agent-05-security-privacy-approvals.md",
+    ".codex/product-agent-os/reviews/batch45/agent-06-product-scenarios-scorecard.md",
+    ".codex/product-agent-os/reviews/batch45/remediation-agent-02-docs-control-plane.md",
+    ".codex/product-agent-os/reviews/batch45/remediation-agent-03-final-review.md",
+    ".codex/product-agent-os/reviews/batch45/remediation-agent-04-code-repair.md"
+  ],
+  "source_evidence_used": [
+    "docs/superpowers/specs/batch45-agent-behavior-eval-results.json",
+    "docs/superpowers/specs/batch45-comment-policy-promotion-decision.json",
+    "docs/superpowers/specs/batch45-real-project-scorecard.json",
+    "docs/superpowers/specs/batch45-real-project-decision-packet.json",
+    "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md",
+    "PLAN.md",
+    "EVALS.md",
+    "TEST.md",
+    "RUNLOG.md",
+    ".codex/product-agent-os/lifecycle-state.json",
+    ".codex/hooks/comment_sufficiency_advisory.py",
+    "plugins/product-agent-os/assets/templates/hooks/comment_sufficiency_advisory.py",
+    "plugins/product-agent-os/scripts/product_agent_os/comment_sufficiency.py",
+    "tests/product_agent_os/test_comment_sufficiency.py",
+    "tests/product_agent_os/test_lifecycle_hooks.py"
+  ],
+  "implemented_changes": [
+    {
+      "file": ".codex/product-agent-os/lifecycle-state.json",
+      "change": "updated current marker to B45-PCA-M37-A01 with local/synthetic hardening closure level, local hook/validator scope and no promotion claim"
+    },
+    {
+      "file": ".codex/hooks/comment_sufficiency_advisory.py",
+      "change": "added TS/TSX changed-file coverage, fail-open invalid-root and validator-error handling, workspace_ref diagnostics and no raw workspace path output"
+    },
+    {
+      "file": "plugins/product-agent-os/assets/templates/hooks/comment_sufficiency_advisory.py",
+      "change": "kept packaged hook template in parity with the active local advisory hook"
+    },
+    {
+      "file": "plugins/product-agent-os/scripts/product_agent_os/comment_sufficiency.py",
+      "change": "added TS/TSX suffix coverage, modern JS/TS arrow/function/method detection and redacted outside-root display paths"
+    },
+    {
+      "file": "tests/product_agent_os/test_comment_sufficiency.py",
+      "change": "added regression coverage for TypeScript, TSX, modern JavaScript forms and outside-root path redaction"
+    },
+    {
+      "file": "tests/product_agent_os/test_lifecycle_hooks.py",
+      "change": "added regression coverage for active/template hook parity, TSX hook scanning, invalid-root fail-open, validator-error fail-open and no raw workspace path output"
+    },
+    {
+      "file": "docs/product-agent-os/coding-standards.md",
+      "change": "added M26/M27/M35/M37 evidence ceiling, local hook/validator hardening boundary and unsupported runtime/browser/provider/target/git/release/deploy/automation boundary"
+    },
+    {
+      "file": "docs/product-agent-os/coding-standards.en.md",
+      "change": "kept EN parity for M26/M27/M35/M37 evidence ceiling and unsupported-claim boundary"
+    },
+    {
+      "file": "docs/sources/registry.md",
+      "change": "added RU registry M37 source route and detailed marker"
+    },
+    {
+      "file": "docs/sources/registry.en.md",
+      "change": "added EN registry M37 source route and detailed marker"
+    },
+    {
+      "file": "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md",
+      "change": "added B45-PCA-M37 matrix row and current-status marker without changing M36"
+    },
+    {
+      "file": "PLAN.md",
+      "change": "added compact M37 sequencing/evidence pointer"
+    },
+    {
+      "file": "EVALS.md",
+      "change": "added compact M37 evaluation ceiling and active eval route"
+    },
+    {
+      "file": "TEST.md",
+      "change": "added focused M37 hook/validator and docs/control-plane check route"
+    },
+    {
+      "file": "tests/product_agent_os/test_coding_standards_artifacts.py",
+      "change": "added focused assertions for M37 packet and public docs/source registry/control-plane linkage"
+    },
+    {
+      "file": ".codex/product-agent-os/reviews/batch45/remediation-agent-04-code-repair.md",
+      "change": "added code-side remediation handoff with verification result and unsupported-claim boundary"
+    }
+  ],
+  "local_remediation_actions": {
+    "hook_or_code_files_changed_within_m37_scope": true,
+    "comment_sufficiency_tests_changed_within_m37_scope": true,
+    "active_and_packaged_hook_template_kept_in_parity": true
+  },
+  "no_unapproved_actions": {
+    "runtime_or_live_server_launched": false,
+    "browser_automation_run": false,
+    "provider_or_live_api_called": false,
+    "target_workspace_command_run": false,
+    "target_workspace_mutated": false,
+    "database_accessed": false,
+    "git_branch_stage_commit_push_pr": false,
+    "release_deploy_publish": false,
+    "active_automation_created_or_enabled": false,
+    "external_write_performed": false
+  },
+  "unsupported_claims": [
+    "real_ai_agent_behavior_improvement",
+    "target_runtime_behavior",
+    "browser_behavior",
+    "provider_or_live_api_behavior",
+    "target_workspace_safety_after_mutation",
+    "database_or_production_data_safety",
+    "ci_or_blocker_promotion",
+    "release_readiness",
+    "deploy_or_publish_readiness",
+    "active_automation_readiness"
+  ],
+  "control_plane_sync_decision": {
+    "REQUIREMENTS.md": "not_applicable_no_scope_or_acceptance_change",
+    "PLAN.md": "updated_compact_pointer",
+    "TEST.md": "updated_focused_check_route",
+    "EVALS.md": "updated_claim_ceiling_and_eval_route",
+    "RUNLOG.md": "handoff_required_due_runlog_budget",
+    "prod_test.md": "not_applicable_batch39_surface",
+    "docs/sources/registry.md": "updated_source_route",
+    "docs/sources/registry.en.md": "updated_source_route",
+    ".codex/product-agent-os/lifecycle-state.json": "updated_current_marker"
+  },
+  "runlog_budget_decision": {
+    "observed_size_bytes_before_remediation": 51123,
+    "budget_bytes": 51200,
+    "decision": "do_not_expand_runlog; route detail to source-owned summary and remediation handoff"
+  },
+  "verification": {
+    "planned_commands": [
+      "python -m unittest tests.product_agent_os.test_comment_sufficiency tests.product_agent_os.test_lifecycle_hooks -v",
+      "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+      "python tools\\check_docs.py",
+      "git diff --check -- .codex/hooks/comment_sufficiency_advisory.py .codex/product-agent-os/lifecycle-state.json docs/product-agent-os/coding-standards.md docs/product-agent-os/coding-standards.en.md docs/sources/registry.md docs/sources/registry.en.md docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md PLAN.md EVALS.md TEST.md docs/superpowers/specs/batch45-review-remediation-summary.json plugins/product-agent-os/assets/templates/hooks/comment_sufficiency_advisory.py plugins/product-agent-os/scripts/product_agent_os/comment_sufficiency.py tests/product_agent_os/test_comment_sufficiency.py tests/product_agent_os/test_lifecycle_hooks.py tests/product_agent_os/test_coding_standards_artifacts.py"
+    ],
+    "results": [
+      {
+        "command": "python -m unittest tests.product_agent_os.test_comment_sufficiency tests.product_agent_os.test_lifecycle_hooks -v",
+        "exit_code": 0,
+        "result": "26 tests OK"
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+        "exit_code": 0,
+        "result": "11 tests OK"
+      },
+      {
+        "command": "python tools\\check_docs.py",
+        "exit_code": 0,
+        "result": "OK: documentation structure checks passed"
+      },
+      {
+        "command": "git diff --check -- .codex/hooks/comment_sufficiency_advisory.py .codex/product-agent-os/lifecycle-state.json docs/product-agent-os/coding-standards.md docs/product-agent-os/coding-standards.en.md docs/sources/registry.md docs/sources/registry.en.md docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md PLAN.md EVALS.md TEST.md docs/superpowers/specs/batch45-review-remediation-summary.json plugins/product-agent-os/assets/templates/hooks/comment_sufficiency_advisory.py plugins/product-agent-os/scripts/product_agent_os/comment_sufficiency.py tests/product_agent_os/test_comment_sufficiency.py tests/product_agent_os/test_lifecycle_hooks.py tests/product_agent_os/test_coding_standards_artifacts.py",
+        "exit_code": 0,
+        "result": "no whitespace errors; Git reported CRLF-to-LF working-copy warnings for changed Markdown files"
+      }
+    ]
+  },
+  "residual_risks": [
+    "RUNLOG.md remains near the configured 50 KiB budget and should not receive detailed Batch 45 history without compaction.",
+    "M36 remains reserved for the optional runtime/browser approval packet.",
+    "M36 runtime/browser approval packet is still optional and not executed.",
+    "M37 hook/validator changes are local non-blocking advisory hardening only and are not CI/blocker/promotion proof.",
+    "M26 live no-go and S7 fixture-local evidence still block any promotion claim."
+  ],
+  "recommended_next_role": "owner or runtime/browser pilot planner only if B45-PCA-M36 is explicitly requested; otherwise keep Professional Code Authoring advisory-only"
+}

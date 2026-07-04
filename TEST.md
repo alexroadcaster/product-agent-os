@@ -213,6 +213,22 @@ decision JSON. M25 stays local, non-blocking and reversible
 `keep_advisory_only_no_go_for_blocker_or_ci`. Real AI-agent behavior improvement,
 stronger advisory, CI and blocker promotion remain unproven/not promoted.
 
+For `B45-PCA-M37-A01` review remediation local hook/validator hardening and docs/control-plane/source sync, run:
+
+```powershell
+python -m unittest tests.product_agent_os.test_comment_sufficiency tests.product_agent_os.test_lifecycle_hooks -v
+python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v
+python tools\check_docs.py
+git diff --check -- .codex/hooks/comment_sufficiency_advisory.py .codex/product-agent-os/lifecycle-state.json docs/product-agent-os/coding-standards.md docs/product-agent-os/coding-standards.en.md docs/sources/registry.md docs/sources/registry.en.md docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md PLAN.md EVALS.md TEST.md docs/superpowers/specs/batch45-review-remediation-summary.json plugins/product-agent-os/assets/templates/hooks/comment_sufficiency_advisory.py plugins/product-agent-os/scripts/product_agent_os/comment_sufficiency.py tests/product_agent_os/test_comment_sufficiency.py tests/product_agent_os/test_lifecycle_hooks.py tests/product_agent_os/test_coding_standards_artifacts.py
+```
+
+M37 is local advisory hardening/docs sync only. Hook/validator changes are
+limited to the local non-blocking advisory path: TS/TSX scanning, fail-open
+diagnostics, redacted paths and active/template parity. It must keep `B45-PCA-M36`
+reserved for the optional runtime/browser approval packet and must not claim
+runtime/browser/provider/target/git/release/deploy/automation evidence or
+promotion beyond no-go/advisory-only.
+
 For `B45-S5` learning-loop and automation-candidate policy, run:
 
 ```powershell

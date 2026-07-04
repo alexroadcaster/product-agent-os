@@ -25,6 +25,7 @@ PYTHON_REQUIRED_DOC_SYMBOLS = frozenset(
 )
 
 JAVASCRIPT_REQUIRED_COMMENT_SYMBOLS = frozenset({"evaluateAccess", "redact", "normalizeEvent"})
+JAVASCRIPT_SUFFIXES = frozenset({".js", ".mjs", ".cjs", ".ts", ".tsx"})
 DEFAULT_EXCLUDED_PATH_PREFIXES = (
     "tests/",
     "docs/superpowers/specs/",
@@ -73,7 +74,7 @@ def analyze_paths(
             continue
         if path.suffix == ".py":
             warnings.extend(analyze_python_file(path, root=root))
-        elif path.suffix in {".js", ".mjs", ".cjs"}:
+        elif path.suffix in JAVASCRIPT_SUFFIXES:
             warnings.extend(analyze_javascript_file(path, root=root))
     return _cap_warnings(warnings, max_warnings_per_file=max_warnings_per_file, max_warnings=max_warnings)
 
@@ -111,12 +112,7 @@ def analyze_javascript_file(
 ) -> list[CommentSufficiencyWarning]:
     lines = path.read_text(encoding="utf-8").splitlines()
     warnings: list[CommentSufficiencyWarning] = []
-    function_pattern = re.compile(r"^\s*function\s+([A-Za-z_$][\w$]*)\s*\(")
-    for index, line in enumerate(lines):
-        match = function_pattern.match(line)
-        if not match:
-            continue
-        symbol = match.group(1)
+    for index, symbol in _javascript_function_symbols(lines):
         end_index = _javascript_function_end(lines, index)
         body = "\n".join(lines[index : end_index + 1])
         needs_comment = symbol in required_symbols or _javascript_looks_complex(body, end_index - index + 1)
@@ -131,6 +127,32 @@ def analyze_javascript_file(
                 )
             )
     return warnings
+
+
+def _javascript_function_symbols(lines: Sequence[str]) -> Iterable[tuple[int, str]]:
+    """Yield conservative JS/TS function-like definitions without a JS parser dependency."""
+    declaration_pattern = re.compile(
+        r"^\s*(?:export\s+)?(?:default\s+)?(?:async\s+)?function\s+([A-Za-z_$][\w$]*)\s*\("
+    )
+    arrow_pattern = re.compile(
+        r"^\s*(?:export\s+)?(?:const|let|var)\s+([A-Za-z_$][\w$]*)\s*=\s*"
+        r"(?:async\s*)?(?:\([^)]*\)|[A-Za-z_$][\w$]*)(?:\s*:\s*[^=]+?)?\s*=>"
+    )
+    method_pattern = re.compile(
+        r"^\s*(?:(?:public|private|protected|static|readonly|async)\s+)*"
+        r"([A-Za-z_$][\w$]*)\s*(?:<[^>]+>)?\([^)]*\)(?:\s*:\s*[^{]+)?\s*\{"
+    )
+    excluded_methods = frozenset({"if", "for", "while", "switch", "catch", "function", "constructor"})
+    for index, line in enumerate(lines):
+        for pattern in (declaration_pattern, arrow_pattern):
+            match = pattern.match(line)
+            if match:
+                yield index, match.group(1)
+                break
+        else:
+            method_match = method_pattern.match(line)
+            if method_match and method_match.group(1) not in excluded_methods:
+                yield index, method_match.group(1)
 
 
 def advisory_payload(warnings: Sequence[CommentSufficiencyWarning]) -> dict[str, object]:
@@ -337,7 +359,7 @@ def _display_path(path: Path, root: Path | None) -> str:
     try:
         return path.resolve().relative_to(root).as_posix()
     except ValueError:
-        return str(path)
+        return f"<outside-root>/{path.name}"
 
 
 if __name__ == "__main__":

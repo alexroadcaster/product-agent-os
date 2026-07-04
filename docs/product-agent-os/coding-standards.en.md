@@ -2,7 +2,7 @@
 
 Source status: `project-authored + research-backed + experiment`
 
-Sources: Batch 45 research packets `plugins/product-agent-os/assets/research/ai-agent-coding-standards-research.md` and `plugins/product-agent-os/assets/research/ai-agent-coding-literature-research.md`, Batch 45 S5 packet `docs/superpowers/specs/batch45-professional-code-s5-learning-automation-summary.json`, [Development Standards](development-standards.md), [Artifact Contracts](artifact-contracts.md), [Behavioral Evals](behavioral-evals.md), [Scenarios](scenarios.md), [Code Review playbook](../playbooks/code-review.md).
+Sources: Batch 45 research packets `plugins/product-agent-os/assets/research/ai-agent-coding-standards-research.md` and `plugins/product-agent-os/assets/research/ai-agent-coding-literature-research.md`, Batch 45 S5 packet `docs/superpowers/specs/batch45-professional-code-s5-learning-automation-summary.json`, S6 packets `docs/superpowers/specs/batch45-agent-behavior-eval-results.json` and `docs/superpowers/specs/batch45-comment-policy-promotion-decision.json`, S7 packets `docs/superpowers/specs/batch45-real-project-scorecard.json` and `docs/superpowers/specs/batch45-real-project-decision-packet.json`, M37 remediation packet `docs/superpowers/specs/batch45-review-remediation-summary.json`, [Development Standards](development-standards.md), [Artifact Contracts](artifact-contracts.md), [Behavioral Evals](behavioral-evals.md), [Scenarios](scenarios.md), [Code Review playbook](../playbooks/code-review.md).
 
 Professional Code Authoring is the Product-Agent OS layer for non-mechanical coding tasks. Its main rule is simple: the agent checks existing capability, standard library support, framework primitives, configuration paths, current dependencies and project helpers before adding custom code. The best implementation may be one line, a deletion or a configuration change when that satisfies the acceptance criteria with less debt.
 
@@ -54,7 +54,7 @@ Use this order before writing new code:
 
 ## Evidence Ceiling
 
-Batch 45 currently supports `docs_contract_ready` / `synthetic_green` claims for local source artifacts, templates, eval cases, discovery/readiness visibility, runtime route visibility, generated HTML visibility and candidate-only learning-loop/automation policy. It does not prove that AI agents now write enterprise-quality code in real projects.
+Batch 45 currently supports `docs_contract_ready` / `synthetic_green` claims for local source artifacts, templates, eval cases, discovery/readiness visibility, runtime route visibility, generated HTML visibility and candidate-only learning-loop/automation policy. M26 records a live behavior-eval no-go, M27 keeps the M25 advisory local/non-blocking and rejects stronger advisory, CI and blocker promotion, M35 keeps S7 fixture-local/source-only with no-go for treatment v2 promotion, and M37 records local hook/validator hardening plus review remediation docs/control-plane sync only. It does not prove that AI agents now write enterprise-quality code in real projects; M26/M27/M35/M37 only sharpen that ceiling.
 
 Unsupported without a later approval-gated batch:
 

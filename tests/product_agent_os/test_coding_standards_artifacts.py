@@ -27,6 +27,7 @@ M27_DECISION = DOCS / "superpowers" / "specs" / "batch45-comment-policy-promotio
 M33_COMPARISON = DOCS / "superpowers" / "specs" / "batch45-real-project-refactor-comparison.json"
 M34_SCORECARD = DOCS / "superpowers" / "specs" / "batch45-real-project-scorecard.json"
 M35_DECISION = DOCS / "superpowers" / "specs" / "batch45-real-project-decision-packet.json"
+M37_REMEDIATION = DOCS / "superpowers" / "specs" / "batch45-review-remediation-summary.json"
 sys.path.insert(0, str(SCRIPTS))
 
 from product_agent_os.templates import required_templates, template_by_target  # noqa: E402
@@ -52,6 +53,10 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             "candidate-only learning-loop/automation policy",
             "orientation_only_not_proof",
             "does not prove that ai agents now write enterprise-quality code in real projects",
+            "m26 records a live behavior-eval no-go",
+            "m27 keeps the m25 advisory local/non-blocking",
+            "m35 keeps s7 fixture-local/source-only",
+            "m37 records local hook/validator hardening plus review remediation docs/control-plane sync only",
         ]:
             with self.subTest(expected=expected):
                 self.assertIn(expected, combined)
@@ -157,6 +162,82 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
                 self.assertFalse(performed)
 
         self.assertIn("root_site_freshness_for_new_page_not_claimed", packet["accepted_gaps"])
+
+    def test_m37_review_remediation_packet_links_public_docs_registry_and_control_plane(self):
+        packet = json.loads(M37_REMEDIATION.read_text(encoding="utf-8"))
+        serialized = json.dumps(packet, sort_keys=True).lower()
+        ru = (PRODUCT_AGENT_OS / "coding-standards.md").read_text(encoding="utf-8").lower()
+        en = (PRODUCT_AGENT_OS / "coding-standards.en.md").read_text(encoding="utf-8").lower()
+        registry_ru = (DOCS / "sources" / "registry.md").read_text(encoding="utf-8")
+        registry_en = (DOCS / "sources" / "registry.en.md").read_text(encoding="utf-8")
+        plan = (ROOT / "PLAN.md").read_text(encoding="utf-8")
+        evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")
+        test_plan = (ROOT / "TEST.md").read_text(encoding="utf-8")
+        track11 = (
+            DOCS
+            / "superpowers"
+            / "plans"
+            / "2026-06-20-track-11-documentation-architecture-refresh.md"
+        ).read_text(encoding="utf-8")
+        lifecycle = json.loads((ROOT / ".codex" / "product-agent-os" / "lifecycle-state.json").read_text(encoding="utf-8"))
+
+        self.assertEqual("batch45_review_remediation_summary_v1", packet["schema_version"])
+        self.assertEqual("B45-PCA-M37", packet["task_id"])
+        self.assertEqual("B45-PCA-M37-A01", packet["evidence_id"])
+        self.assertEqual("implemented_local_advisory_hardening_docs_sync_only", packet["status"])
+        self.assertEqual(
+            "reserved_for_optional_runtime_browser_approval_packet_not_used_by_this_remediation",
+            packet["reserved_ids"]["B45-PCA-M36"],
+        )
+        self.assertEqual("no_go_advisory_only", packet["scope"]["promotion_state"])
+        self.assertEqual(
+            "local_synthetic_hardening_no_promotion_claim",
+            packet["scope"]["closure_level"],
+        )
+        self.assertEqual(
+            "handoff_required_due_runlog_budget",
+            packet["control_plane_sync_decision"]["RUNLOG.md"],
+        )
+
+        for action, performed in packet["no_unapproved_actions"].items():
+            with self.subTest(action=action):
+                self.assertFalse(performed)
+
+        self.assertTrue(packet["local_remediation_actions"]["hook_or_code_files_changed_within_m37_scope"])
+        self.assertTrue(packet["local_remediation_actions"]["comment_sufficiency_tests_changed_within_m37_scope"])
+        self.assertTrue(packet["local_remediation_actions"]["active_and_packaged_hook_template_kept_in_parity"])
+
+        for expected in [
+            "b45-pca-m37-a01",
+            "m36 remains reserved",
+            "local hook/validator",
+            "promotion remains no_go/advisory-only",
+            "runtime/browser/provider/target/git/release/deploy/automation",
+        ]:
+            with self.subTest(expected=expected):
+                self.assertIn(expected, serialized)
+
+        for doc in [ru, en]:
+            with self.subTest(doc="public_coding_standards"):
+                self.assertIn("batch45-review-remediation-summary.json", doc)
+                self.assertIn("m26 records a live behavior-eval no-go", doc)
+                self.assertIn("m27 keeps the m25 advisory local/non-blocking", doc)
+                self.assertIn("m35 keeps s7 fixture-local/source-only", doc)
+                self.assertIn("m37 records local hook/validator hardening plus review remediation docs/control-plane sync only", doc)
+
+        for registry in [registry_ru, registry_en]:
+            with self.subTest(registry="source_registry"):
+                self.assertIn("B45-PCA-M37", registry)
+                self.assertIn("B45-PCA-M37-A01", registry)
+                self.assertIn("docs/superpowers/specs/batch45-review-remediation-summary.json", registry)
+                self.assertIn("M36 remains reserved", registry)
+
+        self.assertIn("B45-PCA-M37-A01", plan)
+        self.assertIn("B45-PCA-M37-A01", evals)
+        self.assertIn("B45-PCA-M37-A01", test_plan)
+        self.assertIn("| `B45-PCA-M37` |", track11)
+        self.assertEqual("B45-PCA-M37-A01", lifecycle["task_id"])
+        self.assertEqual("local_synthetic_hardening_no_promotion_claim", lifecycle["closure_level"])
 
     def test_s5_learning_automation_packet_closes_m23_without_activation(self):
         packet = json.loads(S5_SUMMARY.read_text(encoding="utf-8"))

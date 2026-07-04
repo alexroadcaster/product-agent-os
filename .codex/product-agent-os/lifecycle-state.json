@@ -1,12 +1,12 @@
 {
   "task_start_brief_shown": true,
-  "task_id": "B45-PCA-M27",
-  "scope": "Record the Batch 45 post-audit promotion/no-go decision after M24 false-positive audit, M25 local advisory wiring and M26 live behavior eval evidence.",
-  "updated_at": "2026-06-30T15:46:05+03:00",
-  "approval_boundary": "Owner requested B45-PCA-M27 execution. Allowed: local codex_docs decision packet, focused test and control-plane/source-registry synchronization. Forbidden: new provider/model/API calls, browser automation, target workspace mutation, CI workflow creation, blocker enforcement, installed plugin cache refresh, git stage/commit/push/PR, release, deploy, publish, external write, raw private trace retention in repo or hidden telemetry.",
+  "task_id": "B45-PCA-M37-A01",
+  "scope": "Batch 45 review remediation local hook/validator hardening plus docs/control-plane/source sync only; no promotion claim.",
+  "updated_at": "2026-07-04T14:34:10+03:00",
+  "approval_boundary": "Allowed: local codex_docs hook, validator, docs, source registry, control-plane and focused test changes named by B45-PCA-M37-A01. Forbidden: runtime/live server, browser automation, provider/live API calls, target workspace commands or mutation, database access, git stage/commit/push/branch/PR, release, deploy, publish, active automation and external writes.",
   "brief_schema_version": "task_start_brief_v1",
   "brief_format": "field_list",
-  "brief_digest": "sha256:b45pca0000000000000000000000000000000000000000000000000000000027",
+  "brief_digest": "sha256:b45pca0000000000000000000000000000000000000000000000000000000037",
   "brief_fields_present": [
     "Task ID",
     "Product value",
@@ -23,22 +23,22 @@
     "Next action"
   ],
   "completion_brief_shown": true,
-  "completion_status": "promotion_no_go_keep_advisory_only",
-  "closure_level": "docs_contract_ready",
+  "completion_status": "implemented_local_advisory_hardening_docs_sync_only",
+  "closure_level": "local_synthetic_hardening_no_promotion_claim",
   "completion_gaps": [
-    "provider_usd_cost_unavailable_from_cli_output",
-    "real_ai_agent_behavior_improvement_not_proven",
-    "ci_and_blocker_enforcement_not_approved_or_enabled"
+    "RUNLOG.md remains near the configured 50 KiB budget and detailed Batch 45 history is routed to source-owned packets.",
+    "B45-PCA-M36 remains reserved for optional runtime/browser approval packet and was not executed.",
+    "M37 hook/validator changes are local non-blocking advisory hardening only and are not CI/blocker/promotion proof.",
+    "M26 live no-go and S7 fixture-local evidence still block any promotion claim."
   ],
   "completion_evidence": [
-    "docs/superpowers/specs/batch45-comment-policy-promotion-decision.json",
-    "docs/superpowers/specs/batch45-agent-behavior-eval-plan.json",
-    "docs/superpowers/specs/batch45-agent-behavior-eval-results.json",
-    "tests/product_agent_os/test_coding_standards_artifacts.py",
-    "PLAN.md",
-    "TEST.md",
-    "EVALS.md",
-    "RUNLOG.md",
-    "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md"
-  ]
+    "docs/superpowers/specs/batch45-review-remediation-summary.json",
+    ".codex/product-agent-os/reviews/batch45/remediation-agent-02-docs-control-plane.md",
+    ".codex/product-agent-os/reviews/batch45/remediation-agent-04-code-repair.md",
+    "python -m unittest tests.product_agent_os.test_comment_sufficiency tests.product_agent_os.test_lifecycle_hooks -v: OK, 26 tests",
+    "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v: OK, 11 tests",
+    "python tools\\check_docs.py: OK",
+    "git diff --check scoped M37 write set: OK"
+  ],
+  "completed_at": "2026-07-04T14:34:10+03:00"
 }

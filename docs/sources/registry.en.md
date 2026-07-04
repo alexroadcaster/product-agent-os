@@ -69,6 +69,7 @@ verification_status: "Current compaction preserves test-visible markers; full ev
 - Product-Agent OS Track 11 Batch 45 S7 real-project refactor comparison, route `docs/superpowers/specs/batch45-real-project-refactor-comparison.json` and `research/b45-real-project-scenarios/refactors/` (checked_at=2026-06-30, trust=high for fixture-local comparison evidence; SOL no-code arms record churn prevention under unresolved TypeScript/test gaps; MP source arms reduce advisory warnings `2 -> 1 -> 0` with no new dependencies and syntax-only AST proof; no target command/runtime/browser/provider/live API/database/git/deploy/publish/automation evidence; promotion/readiness not claimed)
 - Product-Agent OS Track 11 Batch 45 S7 real-project scorecard, route `docs/superpowers/specs/batch45-real-project-scorecard.json` and `research/b45-real-project-scenarios/results/B45-PCA-M34-scorecard-review.md` (checked_at=2026-06-30, trust=high for fixture-local scorecard evidence; MP advisory-guided is the best low-churn static arm, MP checklist-guided is a structure candidate blocked by characterization/runtime proof, SOL no-code arms are churn prevention; critical runtime/test/TypeScript-advisory/reviewer gaps override averages; no target command/runtime/browser/provider/live API/database/git/deploy/publish/automation/CI-blocker evidence; promotion/readiness not claimed)
 - Product-Agent OS Track 11 Batch 45 S7 post-real-project decision packet, route `docs/superpowers/specs/batch45-real-project-decision-packet.json` (checked_at=2026-06-30, trust=high for source-owned decision evidence; keeps advisory-only/no-go for treatment v2 promotion, leaves smaller treatment v2 as source-only future option, defers more fixture pilots, marks disposable runtime/browser pilot approval_required and rejects CI/blocker promotion; no target command/runtime/browser/provider/live API/database/git/deploy/publish/automation/CI-blocker evidence; promotion/readiness not claimed)
+- Product-Agent OS Track 11 Batch 45 review remediation local hook/validator hardening and docs/control-plane sync with `B45-PCA-M37` / `B45-PCA-M37-A01`, route `docs/superpowers/specs/batch45-review-remediation-summary.json`, `.codex/product-agent-os/reviews/batch45/remediation-agent-02-docs-control-plane.md` and `.codex/product-agent-os/reviews/batch45/remediation-agent-04-code-repair.md` (checked_at=2026-07-04, trust=high for local hook/validator/docs/source/control-plane/test evidence; M36 remains reserved for optional runtime/browser approval packet; no runtime/browser/provider/target/git/release/deploy/automation action or promotion claim)
 - Codex web / cloud (checked_at=2026-05-14, trust=high)
 - Codex app (checked_at=2026-05-14, trust=high)
 - Codex CLI (checked_at=2026-05-14, trust=high)
@@ -1587,6 +1588,12 @@ These markers preserve source-owned test routing after registry compaction. Full
 - docs/superpowers/specs/batch45-comment-policy-promotion-decision.json
 - M26 live no-go: baseline 4.22, treatment 3.88, 15/16 completed, warnings 29 -> 15, reviewer no_go
 - M27 decision keeps M25 advisory-only and rejects stronger advisory, CI and blocker promotion; no browser/target/git/release/deploy proof
+- Product-Agent OS Track 11 Batch 45 M37 review remediation/docs-control-plane packet
+- B45-PCA-M37; B45-PCA-M37-A01
+- docs/superpowers/specs/batch45-review-remediation-summary.json
+- .codex/product-agent-os/reviews/batch45/remediation-agent-02-docs-control-plane.md
+- .codex/product-agent-os/reviews/batch45/remediation-agent-04-code-repair.md
+- M37 implements local advisory hook/validator hardening/docs sync only; M36 remains reserved; promotion remains no_go/advisory-only; no runtime/browser/provider/target/git/release/deploy/automation proof
 - Product-Agent OS Track 11 Batch 44 Self-Learning Loop S7 state initializer, manual pilot, Promptfoo/HALO and staged repair contracts
 - B44-S7-SELF-LEARNING-MANUAL-PILOT-A01
 - docs/superpowers/specs/batch44-self-learning-loop-approved-manual-pilot-summary.json
