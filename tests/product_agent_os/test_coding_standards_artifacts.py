@@ -30,6 +30,8 @@ M35_DECISION = DOCS / "superpowers" / "specs" / "batch45-real-project-decision-p
 M37_REMEDIATION = DOCS / "superpowers" / "specs" / "batch45-review-remediation-summary.json"
 RETEST_PROTOCOL = DOCS / "superpowers" / "specs" / "batch45-quality-retest-protocol.json"
 RETEST_Q3_SUMMARY = DOCS / "superpowers" / "specs" / "batch45-quality-retest-fixture-static-summary.json"
+RETEST_Q4_SUMMARY = DOCS / "superpowers" / "specs" / "batch45-quality-retest-project-slices-static-summary.json"
+POST_Q4_NEXT_TASKS = DOCS / "superpowers" / "specs" / "batch45-post-q4-next-tasks.json"
 sys.path.insert(0, str(SCRIPTS))
 
 from product_agent_os.templates import required_templates, template_by_target  # noqa: E402
@@ -325,7 +327,6 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
             / "plans"
             / "2026-06-20-track-11-documentation-architecture-refresh.md"
         ).read_text(encoding="utf-8")
-        lifecycle = json.loads((ROOT / ".codex" / "product-agent-os" / "lifecycle-state.json").read_text(encoding="utf-8"))
 
         self.assertEqual("batch45_quality_retest_fixture_static_summary_v1", packet["schema_version"])
         self.assertEqual("B45-RETEST-Q3-FIXTURE-STATIC", packet["task_id"])
@@ -388,8 +389,185 @@ class CodingStandardsArtifactsTest(unittest.TestCase):
                 self.assertIn("B45-RETEST-Q3-FIXTURE-STATIC-A01", control_plane)
 
         self.assertIn("| `B45-RETEST-Q3-FIXTURE-STATIC` |", track11)
-        self.assertEqual("B45-RETEST-Q3-FIXTURE-STATIC", lifecycle["task_id"])
-        self.assertEqual("local_static_retest_with_gaps", lifecycle["closure_level"])
+
+    def test_b45_retest_q4_project_slices_static_summary_records_static_only(self):
+        packet = json.loads(RETEST_Q4_SUMMARY.read_text(encoding="utf-8"))
+        serialized = json.dumps(packet, sort_keys=True).lower()
+        registry_ru = (DOCS / "sources" / "registry.md").read_text(encoding="utf-8")
+        registry_en = (DOCS / "sources" / "registry.en.md").read_text(encoding="utf-8")
+        plan = (ROOT / "PLAN.md").read_text(encoding="utf-8")
+        evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")
+        test_plan = (ROOT / "TEST.md").read_text(encoding="utf-8")
+        track11 = (
+            DOCS
+            / "superpowers"
+            / "plans"
+            / "2026-06-20-track-11-documentation-architecture-refresh.md"
+        ).read_text(encoding="utf-8")
+
+        self.assertEqual("batch45_quality_retest_project_slices_static_summary_v1", packet["schema_version"])
+        self.assertEqual("B45-RETEST-Q4-PROJECT-SLICES-STATIC", packet["task_id"])
+        self.assertEqual("B45-RETEST-Q4-PROJECT-SLICES-STATIC-A01", packet["evidence_id"])
+        self.assertEqual("implemented_local_static_project_slice_retest_with_gaps", packet["status"])
+        self.assertEqual("local_static_project_slice_retest_with_gaps", packet["scope"]["closure_level"])
+        self.assertEqual("keep_advisory_only_no_go", packet["scope"]["promotion_state"])
+        self.assertEqual("approval_required_not_run", packet["scope"]["live_model_behavior_eval"])
+        self.assertEqual("approval_required_not_run_B45_PCA_M36_reserved", packet["scope"]["runtime_browser_pilot"])
+
+        slice_set = packet["slice_set"]
+        self.assertEqual(5, slice_set["slice_count"])
+        self.assertEqual(46, slice_set["total_files"])
+        self.assertEqual(37, slice_set["code_files"])
+        self.assertEqual(9, slice_set["config_doc_files"])
+        self.assertEqual(
+            {
+                "Q4-SOL-01-BOOTSTRAP": 0,
+                "Q4-SOL-02-ORCHESTRATION-CORE": 0,
+                "Q4-SOL-03-AGENT-ROLES-TOOLS": 11,
+                "Q4-MP-01-SERVER-CRM-CORE": 2,
+                "Q4-MP-02-FRONTEND-CRM-TESTS": 1,
+            },
+            {
+                item["slice_id"]: item["comment_sufficiency"]["warning_count"]
+                for item in slice_set["slices"]
+            },
+        )
+        self.assertTrue(all(not item["comment_sufficiency"]["blocking"] for item in slice_set["slices"]))
+        self.assertTrue(all(item["comment_sufficiency"]["suppressed_warning_count"] == 0 for item in slice_set["slices"]))
+
+        aggregate = packet["aggregate_static_replay"]
+        self.assertEqual(14, aggregate["warning_count_total"])
+        self.assertEqual(0, aggregate["blocking_slices"])
+        self.assertEqual(0, aggregate["suppressed_warning_count_total"])
+        self.assertEqual({"javascript": 12, "python": 2}, aggregate["language_counts"])
+        self.assertEqual({"mypartners": 3, "sol": 11}, aggregate["fixture_counts"])
+
+        privacy = packet["privacy_review"]
+        self.assertEqual(0, privacy["forbidden_artifact_file_count"])
+        self.assertEqual(0, privacy["secret_literal_match_count"])
+        self.assertEqual(6, privacy["absolute_path_match_count"])
+        self.assertEqual(2, privacy["provider_env_name_match_count"])
+        self.assertEqual("static_env_lookup_name_not_secret_value_leakage", privacy["provider_env_name_classification"])
+
+        self.assertEqual(1, len(packet["syntax_only_checks"]))
+        self.assertEqual(0, packet["syntax_only_checks"][0]["exit_code"])
+        self.assertEqual("not_claimed", packet["syntax_only_checks"][0]["runtime_claim"])
+        self.assertEqual(
+            "no_generated_pycache_directories_remain",
+            packet["syntax_only_checks"][0]["generated_cache_cleanup"]["post_cleanup_status"],
+        )
+        self.assertTrue(all(item["exit_code_interpretation"] == "diff_present_expected" for item in packet["refactor_numstat"]))
+
+        self.assertEqual("continue_investigation_keep_advisory_only_no_go", packet["decision"]["status"])
+        self.assertEqual("approval_required_not_run", packet["decision"]["next_queue_status"])
+        self.assertEqual("approval_required_runtime_browser_packet_not_run", packet["decision"]["alternative_next_queue_status"])
+        self.assertEqual(
+            "handoff_required_due_runlog_budget",
+            packet["control_plane_sync_decision"]["RUNLOG.md"],
+        )
+
+        for action, performed in packet["no_unapproved_actions"].items():
+            with self.subTest(action=action):
+                self.assertFalse(performed)
+
+        for expected in [
+            "real_ai_agent_behavior_improvement",
+            "treatment_v2_promotion_readiness",
+            "target_runtime_behavior",
+            "B45-PCA-M26".lower(),
+            "B45-PCA-M27".lower(),
+            "B45-PCA-M35".lower(),
+            "B45-PCA-M37-A01".lower(),
+            "B45-RETEST-Q5-LIVE-MODEL-RERUN".lower(),
+        ]:
+            with self.subTest(expected=expected):
+                self.assertIn(expected.lower(), serialized)
+
+        for registry in [registry_ru, registry_en]:
+            with self.subTest(registry="source_registry"):
+                self.assertIn("B45-RETEST-Q4-PROJECT-SLICES-STATIC", registry)
+                self.assertIn("B45-RETEST-Q4-PROJECT-SLICES-STATIC-A01", registry)
+                self.assertIn("docs/superpowers/specs/batch45-quality-retest-project-slices-static-summary.json", registry)
+
+        for control_plane in [plan, evals, test_plan, track11]:
+            with self.subTest(control_plane="compact_pointer"):
+                self.assertIn("B45-RETEST-Q4-PROJECT-SLICES-STATIC-A01", control_plane)
+
+        self.assertIn("| `B45-RETEST-Q4-PROJECT-SLICES-STATIC` |", track11)
+
+    def test_b45_post_q4_next_tasks_records_followup_queue_without_promotion_claim(self):
+        packet = json.loads(POST_Q4_NEXT_TASKS.read_text(encoding="utf-8"))
+        serialized = json.dumps(packet, sort_keys=True).lower()
+        registry_ru = (DOCS / "sources" / "registry.md").read_text(encoding="utf-8")
+        registry_en = (DOCS / "sources" / "registry.en.md").read_text(encoding="utf-8")
+        plan = (ROOT / "PLAN.md").read_text(encoding="utf-8")
+        evals = (ROOT / "EVALS.md").read_text(encoding="utf-8")
+        test_plan = (ROOT / "TEST.md").read_text(encoding="utf-8")
+        track11 = (
+            DOCS
+            / "superpowers"
+            / "plans"
+            / "2026-06-20-track-11-documentation-architecture-refresh.md"
+        ).read_text(encoding="utf-8")
+        lifecycle = json.loads((ROOT / ".codex" / "product-agent-os" / "lifecycle-state.json").read_text(encoding="utf-8"))
+
+        self.assertEqual("batch45_post_q4_next_tasks_v1", packet["schema_version"])
+        self.assertEqual("B45-POST-Q4-NEXT-TASKS", packet["task_id"])
+        self.assertEqual("B45-POST-Q4-NEXT-TASKS-A01", packet["evidence_id"])
+        self.assertEqual("planned_source_owned_next_tasks_after_q4", packet["status"])
+        self.assertEqual(14, packet["basis"]["q3_warning_count"])
+        self.assertEqual(14, packet["basis"]["q4_warning_count"])
+        self.assertEqual(5, packet["basis"]["q4_slice_count"])
+        self.assertTrue(packet["basis"]["stable_signal"])
+        self.assertEqual("Q4-SOL-03-AGENT-ROLES-TOOLS", packet["basis"]["main_static_hotspot"])
+        self.assertTrue(packet["planning_decision"]["do_not_repeat_generic_static_replay"])
+        self.assertEqual("keep_advisory_only_no_go", packet["planning_decision"]["promotion_state"])
+
+        expected_tasks = {
+            "B45-POSTQ4-T01-SOL-ROLE-STATIC-FIX",
+            "B45-POSTQ4-T02-MP-CRM-STATIC-FIX",
+            "B45-POSTQ4-T03-STATIC-DELTA-VERIFY",
+            "B45-POSTQ4-T04-LIVE-MODEL-RERUN-PACKET",
+            "B45-POSTQ4-T05-LIVE-MODEL-RERUN",
+            "B45-POSTQ4-T06-PROMOTION-DECISION",
+            "B45-POSTQ4-T07-RUNTIME-BROWSER-PACKET",
+        }
+        self.assertEqual(expected_tasks, {task["task_id"] for task in packet["task_queue"]})
+        self.assertEqual(7, len(packet["task_queue"]))
+
+        approval_required = {
+            task["task_id"]: task["status"]
+            for task in packet["task_queue"]
+            if "approval_required" in task["route"]
+        }
+        self.assertEqual(
+            {
+                "B45-POSTQ4-T05-LIVE-MODEL-RERUN": "blocked_until_exact_owner_approval",
+            },
+            approval_required,
+        )
+        self.assertIn("approval_required_not_run", serialized)
+        self.assertIn("B45-PCA-M36".lower(), serialized)
+        self.assertIn("promotion_requires_live_eval_evidence", serialized)
+        self.assertIn("targeted_static_repair_then_delta_verify", serialized)
+
+        for action, performed in packet["no_unapproved_actions"].items():
+            with self.subTest(action=action):
+                self.assertFalse(performed)
+
+        for registry in [registry_ru, registry_en]:
+            with self.subTest(registry="source_registry"):
+                self.assertIn("B45-POST-Q4-NEXT-TASKS", registry)
+                self.assertIn("B45-POST-Q4-NEXT-TASKS-A01", registry)
+                self.assertIn("docs/superpowers/specs/batch45-post-q4-next-tasks.json", registry)
+
+        for control_plane in [plan, evals, test_plan, track11]:
+            with self.subTest(control_plane="compact_pointer"):
+                self.assertIn("B45-POST-Q4-NEXT-TASKS-A01", control_plane)
+
+        self.assertIn("| `B45-POST-Q4-NEXT-TASKS` |", track11)
+        self.assertEqual("B45-POST-Q4-NEXT-TASKS", lifecycle["task_id"])
+        self.assertEqual("batch45_post_q4_next_tasks_planned_with_gaps", lifecycle["closure_level"])
 
     def test_s5_learning_automation_packet_closes_m23_without_activation(self):
         packet = json.loads(S5_SUMMARY.read_text(encoding="utf-8"))

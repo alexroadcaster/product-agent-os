@@ -1,0 +1,283 @@
+{
+  "schema_version": "batch45_post_q4_next_tasks_v1",
+  "task_id": "B45-POST-Q4-NEXT-TASKS",
+  "evidence_id": "B45-POST-Q4-NEXT-TASKS-A01",
+  "status": "planned_source_owned_next_tasks_after_q4",
+  "created_at": "2026-07-04T18:35:00+03:00",
+  "source_status": "project-authored Batch 45 post-Q4 task list",
+  "basis": {
+    "q3_packet": "docs/superpowers/specs/batch45-quality-retest-fixture-static-summary.json",
+    "q4_packet": "docs/superpowers/specs/batch45-quality-retest-project-slices-static-summary.json",
+    "q3_warning_count": 14,
+    "q4_warning_count": 14,
+    "q4_slice_count": 5,
+    "q4_blocking_slices": 0,
+    "stable_signal": true,
+    "main_static_hotspot": "Q4-SOL-03-AGENT-ROLES-TOOLS",
+    "secondary_static_hotspots": [
+      "Q4-MP-01-SERVER-CRM-CORE",
+      "Q4-MP-02-FRONTEND-CRM-TESTS"
+    ],
+    "decision_basis": "Q4 localized the same 14 advisory warnings already seen in Q3. Another broad static replay would add little new information; next work should either repair targeted static hotspots or move to approval-gated behavior/runtime proof."
+  },
+  "planning_decision": {
+    "status": "continue_investigation_keep_advisory_only_no_go",
+    "primary_local_route": "targeted_static_repair_then_delta_verify",
+    "proof_route": "approval_required_live_model_or_runtime_browser",
+    "do_not_repeat_generic_static_replay": true,
+    "promotion_state": "keep_advisory_only_no_go",
+    "carried_forward_blockers": [
+      "B45-PCA-M26 no_go_real_behavior_improvement_not_proven_after_live_eval",
+      "B45-PCA-M27 keep_advisory_only_no_go_for_blocker_or_ci",
+      "B45-PCA-M35 keep_advisory_only_no_go_for_treatment_v2_promotion",
+      "B45-PCA-M37-A01 local_advisory_hardening_docs_sync_only"
+    ]
+  },
+  "task_queue": [
+    {
+      "task_id": "B45-POSTQ4-T01-SOL-ROLE-STATIC-FIX",
+      "priority": "P0",
+      "route": "local_static_targeted_repair",
+      "status": "planned",
+      "depends_on": [
+        "B45-RETEST-Q4-PROJECT-SLICES-STATIC-A01"
+      ],
+      "scope": "Analyze and stage a minimal static repair plan for the 11 SOL role-agent execute-method advisory warnings in Q4-SOL-03-AGENT-ROLES-TOOLS.",
+      "owned_surfaces": [
+        "research/b45-real-project-scenarios/fixtures/sol/SOL-AGENT-ORCH-01/src/backend/src/services/agents/*.ts",
+        "future copied-fixture/refactor artifacts only unless a separate approval names a target workspace mutation"
+      ],
+      "acceptance": [
+        "Every SOL role-agent warning is classified as fix, accepted static gap, or false-positive candidate.",
+        "No target SOL workspace command or mutation is performed.",
+        "No npm, tsc, runtime, browser or provider call is performed."
+      ],
+      "verification_gates": [
+        "comment_sufficiency replay over Q4-SOL-03 paths",
+        "diff review limited to copied fixture/refactor artifacts if edits are later approved",
+        "privacy aggregate remains 0 secret literals"
+      ],
+      "stop_conditions": [
+        "Stop before target workspace mutation.",
+        "Stop if a fix would require runtime/provider/browser proof.",
+        "Stop if static repair broadens outside Q4-SOL-03 without a new packet."
+      ]
+    },
+    {
+      "task_id": "B45-POSTQ4-T02-MP-CRM-STATIC-FIX",
+      "priority": "P0",
+      "route": "local_static_targeted_repair",
+      "status": "planned",
+      "depends_on": [
+        "B45-RETEST-Q4-PROJECT-SLICES-STATIC-A01"
+      ],
+      "scope": "Analyze and stage minimal static repair for the three myPartners CRM warnings: two backend contacts_routes.py symbols and one frontend crm.spec.ts helper.",
+      "owned_surfaces": [
+        "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/src/server/app/api/contacts_routes.py",
+        "research/b45-real-project-scenarios/fixtures/mypartners/MP-CRM-CHAT-OPEN-01/tests/frontend/tests/e2e/crm.spec.ts",
+        "future copied-fixture/refactor artifacts only unless a separate approval names a target workspace mutation"
+      ],
+      "acceptance": [
+        "All three myPartners advisory warnings are classified as fix, accepted static gap, or false-positive candidate.",
+        "Python syntax-only check remains green for copied fixture files.",
+        "No myPartners target command, database access, browser run or mutation is performed."
+      ],
+      "verification_gates": [
+        "comment_sufficiency replay over Q4-MP-01 and Q4-MP-02 paths",
+        "python -B -m py_compile over copied myPartners fixture .py files",
+        "post-check no generated __pycache__ directories remain"
+      ],
+      "stop_conditions": [
+        "Stop before target workspace mutation.",
+        "Stop if production/local database access would be needed.",
+        "Stop if browser/runtime proof is needed without B45-PCA-M36 approval."
+      ]
+    },
+    {
+      "task_id": "B45-POSTQ4-T03-STATIC-DELTA-VERIFY",
+      "priority": "P0",
+      "route": "local_static_delta_verification",
+      "status": "planned_after_T01_T02",
+      "depends_on": [
+        "B45-POSTQ4-T01-SOL-ROLE-STATIC-FIX",
+        "B45-POSTQ4-T02-MP-CRM-STATIC-FIX"
+      ],
+      "scope": "Rerun the Q4 slice matrix after targeted static repairs or accepted-gap classification.",
+      "acceptance": [
+        "Warning delta is recorded slice-by-slice against Q4 baseline 14.",
+        "Target outcome is <=3 unresolved advisory warnings or a source-owned accepted-gap ledger for the remainder.",
+        "blocking remains false and suppressed_warning_count remains 0 unless a future policy explicitly changes warning behavior."
+      ],
+      "verification_gates": [
+        "comment_sufficiency replay over all five Q4 slices",
+        "python -B -m py_compile copied myPartners fixture .py files",
+        "git diff --no-index --numstat copied fixture/refactor arms when edits exist",
+        "privacy aggregate scan",
+        "focused coding-standards artifact test",
+        "docs/control-plane tests and diff hygiene"
+      ],
+      "stop_conditions": [
+        "Stop if static warning reduction is used as live behavior proof.",
+        "Stop if broad static rerun is attempted without targeted delta rationale."
+      ]
+    },
+    {
+      "task_id": "B45-POSTQ4-T04-LIVE-MODEL-RERUN-PACKET",
+      "priority": "P1",
+      "route": "approval_packet_only",
+      "status": "approval_required_not_run",
+      "depends_on": [
+        "B45-RETEST-Q4-PROJECT-SLICES-STATIC-A01"
+      ],
+      "scope": "Prepare the owner approval packet for a fresh live/model baseline-vs-treatment rerun if real AI-agent behavior improvement must be proven.",
+      "acceptance": [
+        "Packet names model/provider, task set, baseline/treatment prompts, cost/timeout budget, privacy boundary, rollback/abort condition and result schema.",
+        "No provider/model/API call is performed while preparing the packet.",
+        "M26 no-go remains active until a new approved live eval proves otherwise."
+      ],
+      "verification_gates": [
+        "approval packet review",
+        "privacy and cost boundary review",
+        "no-unapproved-actions proof"
+      ],
+      "stop_conditions": [
+        "Stop before any live/model/provider/API call.",
+        "Stop if task data would include secrets, private data or raw private logs."
+      ]
+    },
+    {
+      "task_id": "B45-POSTQ4-T05-LIVE-MODEL-RERUN",
+      "priority": "P1",
+      "route": "approval_required_live_eval",
+      "status": "blocked_until_exact_owner_approval",
+      "depends_on": [
+        "B45-POSTQ4-T04-LIVE-MODEL-RERUN-PACKET"
+      ],
+      "scope": "Run a fresh approved live/model baseline-vs-treatment eval only after exact approval.",
+      "acceptance": [
+        "Treatment beats baseline by the packet threshold, with timeout_count=0 or explicitly accepted timeout handling.",
+        "Independent reviewer decision is not no_go.",
+        "Warning reduction is reported separately from behavior quality and cannot substitute for behavior improvement."
+      ],
+      "verification_gates": [
+        "approved live eval command/output",
+        "scorecard and reviewer packet",
+        "cost/timeout/privacy ledger",
+        "source-owned decision packet update"
+      ],
+      "stop_conditions": [
+        "Stop without exact owner approval.",
+        "Stop on provider/model/API uncertainty.",
+        "Stop if private data or raw traces would be retained."
+      ]
+    },
+    {
+      "task_id": "B45-POSTQ4-T06-PROMOTION-DECISION",
+      "priority": "P1",
+      "route": "decision_gate",
+      "status": "planned_after_static_delta_or_live_eval",
+      "depends_on": [
+        "B45-POSTQ4-T03-STATIC-DELTA-VERIFY",
+        "B45-POSTQ4-T05-LIVE-MODEL-RERUN"
+      ],
+      "dependency_mode": "static_delta_only_can_preserve_no_go; promotion_requires_live_eval_evidence",
+      "scope": "Decide whether to keep advisory-only, run more pilots, or request a new approval for CI/blocker promotion.",
+      "acceptance": [
+        "Decision separates static warning delta, live behavior evidence, runtime/browser evidence and owner risk tolerance.",
+        "CI/blocker promotion remains rejected unless live behavior and runtime/rollback evidence support it.",
+        "No active automation or CI workflow is created by this decision packet."
+      ],
+      "verification_gates": [
+        "decision packet assertions in focused tests",
+        "PLAN/TEST/EVALS/source registry sync",
+        "docs checks and diff hygiene"
+      ],
+      "stop_conditions": [
+        "Stop if promotion is inferred from static-only evidence.",
+        "Stop before creating CI/blocker/automation without exact approval."
+      ]
+    },
+    {
+      "task_id": "B45-POSTQ4-T07-RUNTIME-BROWSER-PACKET",
+      "priority": "P2",
+      "route": "approval_packet_only",
+      "status": "optional_approval_required_not_run",
+      "depends_on": [
+        "B45-PCA-M36"
+      ],
+      "scope": "Keep the optional B45-PCA-M36 disposable runtime/browser packet available for runtime or UI proof, separate from static quality and live/model behavior proof.",
+      "acceptance": [
+        "Packet names disposable target, commands, rollback, data boundary, browser/runtime evidence and stop conditions.",
+        "No runtime/live server, browser automation, target command, target mutation or provider/API call is performed by planning alone."
+      ],
+      "verification_gates": [
+        "approval packet review",
+        "no-unapproved-actions proof",
+        "runtime/browser evidence only after approval"
+      ],
+      "stop_conditions": [
+        "Stop before runtime/browser/provider/target execution without exact owner approval."
+      ]
+    }
+  ],
+  "control_plane_sync_decision": {
+    "REQUIREMENTS.md": "not_applicable_no_scope_or_acceptance_change",
+    "PLAN.md": "updated_compact_next_queue_pointer",
+    "TEST.md": "updated_compact_post_q4_route_pointer",
+    "EVALS.md": "updated_compact_post_q4_claim_ceiling",
+    "RUNLOG.md": "handoff_required_due_runlog_budget",
+    "prod_test.md": "not_applicable_batch39_surface",
+    "docs/sources/registry.md": "updated_source_route",
+    "docs/sources/registry.en.md": "updated_source_route",
+    "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md": "updated_track11_marker",
+    ".codex/product-agent-os/lifecycle-state.json": "updated_current_marker"
+  },
+  "no_unapproved_actions": {
+    "live_model_or_provider_api_called": false,
+    "runtime_or_live_server_launched": false,
+    "browser_automation_run": false,
+    "target_workspace_command_run": false,
+    "target_workspace_mutated": false,
+    "database_accessed": false,
+    "ci_or_blocker_enforcement_created": false,
+    "git_branch_stage_commit_push_pr": false,
+    "release_deploy_publish": false,
+    "active_automation_created_or_enabled": false,
+    "external_write_performed": false
+  },
+  "verification": {
+    "results": [
+      {
+        "command": "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+        "status": "passed",
+        "evidence": "Ran 15 tests; OK"
+      },
+      {
+        "command": "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+        "status": "passed",
+        "evidence": "Ran 99 tests; OK"
+      },
+      {
+        "command": "python tools\\check_docs.py",
+        "status": "passed",
+        "evidence": "OK: documentation structure checks passed"
+      },
+      {
+        "command": "git diff --check",
+        "status": "passed_with_crlf_warnings",
+        "evidence": "No whitespace errors. Git reported CRLF/LF normalization warnings for edited markdown files."
+      },
+      {
+        "command": "Get-Item PLAN.md, TEST.md, EVALS.md, RUNLOG.md | Select-Object Name, Length",
+        "status": "passed_with_existing_runlog_budget_gap",
+        "evidence": {
+          "PLAN.md": 49364,
+          "TEST.md": 49954,
+          "EVALS.md": 49928,
+          "RUNLOG.md": 51123
+        }
+      }
+    ],
+    "remaining_required_before_completion_claim": []
+  }
+}

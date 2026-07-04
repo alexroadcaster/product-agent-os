@@ -1,12 +1,12 @@
 {
   "task_start_brief_shown": true,
-  "task_id": "B45-RETEST-Q3-FIXTURE-STATIC",
-  "scope": "Batch 45 local/static fixture replay on exact existing sanitized fixture corpus paths only; source-owned Q3 summary, compact control-plane sync and local deterministic checks. No live/model/runtime/browser/provider/target execution.",
-  "updated_at": "2026-07-04T15:24:05+03:00",
-  "approval_boundary": "Allowed: local codex_docs source-owned Q3 fixture-static evidence, exact sanitized fixture/refactor corpus inspection, comment_sufficiency static replay, syntax-only py_compile checks, no-index numstat, compact docs/control-plane/source registry sync and local deterministic checks. Forbidden: live/model/provider/API calls, runtime/live server, browser automation, target workspace commands or mutation, database access, raw private data retention, screenshots/traces, CI/blocker creation, git branch/stage/commit/push/PR, release/deploy/publish, active automation and external writes.",
+  "task_id": "B45-POST-Q4-NEXT-TASKS",
+  "scope": "Batch 45 post-Q4 source-owned next task queue based on Q3/Q4 static retest results; add targeted static repair, static delta verification, approval-gated live/model proof, promotion decision and optional M36 runtime/browser packet. No live/model/runtime/browser/provider/target execution.",
+  "updated_at": "2026-07-04T18:35:00+03:00",
+  "approval_boundary": "Allowed: local codex_docs source-owned post-Q4 task packet, compact docs/control-plane/source registry sync and deterministic checks. Forbidden: live/model/provider/API calls, runtime/live server, browser automation, target workspace commands or mutation, database access, raw private data retention, screenshots/traces, CI/blocker creation, git branch/stage/commit/push/PR, release/deploy/publish, active automation and external writes.",
   "brief_schema_version": "task_start_brief_v1",
   "brief_format": "field_list",
-  "brief_digest": "sha256:b45retestq3fixturestatic000000000000000000000000000000000001",
+  "brief_digest": "sha256:b45postq4nexttasks00000000000000000000000000000000001",
   "brief_fields_present": [
     "Task ID",
     "Product value",
@@ -23,23 +23,30 @@
     "Next action"
   ],
   "completion_brief_shown": true,
-  "completion_status": "implemented_local_static_fixture_retest_with_gaps",
-  "closure_level": "local_static_retest_with_gaps",
+  "completion_status": "planned_source_owned_next_tasks_after_q4",
+  "closure_level": "batch45_post_q4_next_tasks_planned_with_gaps",
   "completion_gaps": [
-    "Q3 does not execute live/model behavior eval.",
-    "Q3 does not execute runtime/browser/target proof.",
-    "Q3 does not prove real AI-agent behavior improvement.",
+    "Post-Q4 task list does not execute live/model behavior eval.",
+    "Post-Q4 task list does not execute runtime/browser/target proof.",
+    "Post-Q4 task list does not prove real AI-agent behavior improvement.",
     "M26/M27/M35/M37 no-go and advisory-only blockers remain active.",
     "B45-PCA-M36 remains reserved for optional runtime/browser approval packet and was not executed.",
-    "Q4 live/model rerun remains approval_required."
+    "Any live/model rerun remains approval_required."
   ],
   "completion_evidence": [
-    "docs/superpowers/specs/batch45-quality-retest-fixture-static-summary.json",
-    "B45-RETEST-Q3-FIXTURE-STATIC-A01",
-    "comment_sufficiency fixture replay: 37 files, 14 advisory warnings, blocking=false",
-    "python -m py_compile <mypartners fixture/refactor py files>: OK",
-    "git diff --no-index --numstat fixture refactor arms: diff_present_expected",
-    "python -m unittest tests.product_agent_os.test_comment_sufficiency -v: OK"
-  ],
-  "completed_at": "2026-07-04T15:24:05+03:00"
+    "docs/superpowers/specs/batch45-post-q4-next-tasks.json",
+    "docs/superpowers/specs/batch45-quality-retest-project-slices-static-summary.json",
+    "tests/product_agent_os/test_coding_standards_artifacts.py",
+    "PLAN.md",
+    "TEST.md",
+    "EVALS.md",
+    "docs/sources/registry.md",
+    "docs/sources/registry.en.md",
+    "docs/superpowers/plans/2026-06-20-track-11-documentation-architecture-refresh.md",
+    "python -m unittest tests.product_agent_os.test_coding_standards_artifacts -v",
+    "python -m unittest tests.product_agent_os.test_comment_sufficiency tests.product_agent_os.test_lifecycle_hooks -v",
+    "python -m unittest tests.product_agent_os.test_product_agent_os_docs -v",
+    "python tools\\check_docs.py",
+    "git diff --check"
+  ]
 }

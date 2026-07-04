@@ -72,6 +72,8 @@ verification_status: "Current compaction preserves test-visible markers; full ev
 - Product-Agent OS Track 11 Batch 45 review remediation local hook/validator hardening and docs/control-plane sync with `B45-PCA-M37` / `B45-PCA-M37-A01`, route `docs/superpowers/specs/batch45-review-remediation-summary.json`, `.codex/product-agent-os/reviews/batch45/remediation-agent-02-docs-control-plane.md` and `.codex/product-agent-os/reviews/batch45/remediation-agent-04-code-repair.md` (checked_at=2026-07-04, trust=high for local hook/validator/docs/source/control-plane/test evidence; M36 remains reserved for optional runtime/browser approval packet; no runtime/browser/provider/target/git/release/deploy/automation action or promotion claim)
 - Product-Agent OS Track 11 Batch 45 repeat quality/refactor retest protocol with `B45-RETEST-Q0-Q2` / `B45-RETEST-Q0-Q2-A01`, route `docs/superpowers/specs/batch45-quality-retest-protocol.json` (checked_at=2026-07-04, trust=high for local source-owned protocol, held-out task contract and harness schema evidence; Q3 fixture-static retest remains next local route; no live/model eval, runtime/browser/provider/target/git/release/deploy/automation action or promotion claim)
 - Product-Agent OS Track 11 Batch 45 repeat quality/refactor retest Q3 fixture-static with `B45-RETEST-Q3-FIXTURE-STATIC` / `B45-RETEST-Q3-FIXTURE-STATIC-A01`, route `docs/superpowers/specs/batch45-quality-retest-fixture-static-summary.json` (checked_at=2026-07-04, trust=high for local/static sanitized-fixture replay; 37 files, 14 advisory warnings, blocking=false; no live/model/runtime/browser/provider/target/git/release/deploy/automation action or promotion claim)
+- Product-Agent OS Track 11 Batch 45 repeat quality/refactor retest Q4 project-slices-static with `B45-RETEST-Q4-PROJECT-SLICES-STATIC` / `B45-RETEST-Q4-PROJECT-SLICES-STATIC-A01`, route `docs/superpowers/specs/batch45-quality-retest-project-slices-static-summary.json` (checked_at=2026-07-04, trust=high for local/static project-slice replay; 5 slices, 46 files, 14 advisory warnings, blocking=false; no live/model/runtime/browser/provider/target/git/release/deploy/automation action or promotion claim)
+- Product-Agent OS Track 11 Batch 45 post-Q4 next task queue with `B45-POST-Q4-NEXT-TASKS` / `B45-POST-Q4-NEXT-TASKS-A01`, route `docs/superpowers/specs/batch45-post-q4-next-tasks.json` (checked_at=2026-07-04, trust=high for source-owned post-Q4 task planning; routes targeted static repair, static delta verification, approval-gated live/model proof, promotion decision and optional M36 runtime/browser packet; no live/model/runtime/browser/provider/target/git/release/deploy/automation action or promotion claim)
 - Codex web / cloud (checked_at=2026-05-14, trust=high)
 - Codex app (checked_at=2026-05-14, trust=high)
 - Codex CLI (checked_at=2026-05-14, trust=high)
@@ -1603,6 +1605,14 @@ These markers preserve source-owned test routing after registry compaction. Full
 - B45-RETEST-Q3-FIXTURE-STATIC; B45-RETEST-Q3-FIXTURE-STATIC-A01
 - docs/superpowers/specs/batch45-quality-retest-fixture-static-summary.json
 - Q3 scanned 37 existing sanitized fixture files, found 14 advisory warnings with blocking=false, keeps continue_investigation_keep_advisory_only_no_go and does not prove live/model/runtime/browser/provider/target/git/release/deploy/automation readiness
+- Product-Agent OS Track 11 Batch 45 repeat quality/refactor retest Q4 project-slices-static packet
+- B45-RETEST-Q4-PROJECT-SLICES-STATIC; B45-RETEST-Q4-PROJECT-SLICES-STATIC-A01
+- docs/superpowers/specs/batch45-quality-retest-project-slices-static-summary.json
+- Q4 scanned five existing sanitized SOL/myPartners project slices, found 14 advisory warnings with blocking=false, keeps continue_investigation_keep_advisory_only_no_go and does not prove live/model/runtime/browser/provider/target/git/release/deploy/automation readiness
+- Product-Agent OS Track 11 Batch 45 post-Q4 next task queue packet
+- B45-POST-Q4-NEXT-TASKS; B45-POST-Q4-NEXT-TASKS-A01
+- docs/superpowers/specs/batch45-post-q4-next-tasks.json
+- Post-Q4 tasks route targeted static hotspot repair, static delta verification, approval-gated live/model rerun, promotion decision and optional M36 runtime/browser packet while preserving advisory-only/no-go and all approval boundaries
 - Product-Agent OS Track 11 Batch 44 Self-Learning Loop S7 state initializer, manual pilot, Promptfoo/HALO and staged repair contracts
 - B44-S7-SELF-LEARNING-MANUAL-PILOT-A01
 - docs/superpowers/specs/batch44-self-learning-loop-approved-manual-pilot-summary.json
